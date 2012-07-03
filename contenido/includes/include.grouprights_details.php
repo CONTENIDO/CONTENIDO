@@ -21,11 +21,8 @@
  *
  * {@internal
  *   created 2003-04-30
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -34,28 +31,23 @@ if (!defined('CON_FRAMEWORK')) {
 
 $idclient = 2;
 $idlang = 2;
-die;
+die(); // But why? Is it too much to ask for writing the reason here???
 
 $sql = 'SELECT * FROM '.$cfg["tab"]["rights"].' WHERE idlang = 2 AND idclient = 2 AND user_id = \"'.cSecurity::escapeDB($userid, $db).'\"';
 echo $sql;
 
 $db->query($sql);
 
-while ($db->next_record())
-{
+while ($db->next_record()) {
     echo $db->f(0)."<br>";
 }
 
-if ( !isset($useridas) )
-{
+if (!isset($useridas)) {
 
 } else {
-    if ($action == "user_edit")
-    {
-        if (strlen($password) > 0)
-        {
-            if (strcmp($password, $passwordagain) == 0)
-            {
+    if ($action == "user_edit") {
+        if (strlen($password) > 0) {
+            if (strcmp($password, $passwordagain) == 0) {
                 $sql = 'UPDATE
                             '.$cfg["tab"]["phplib_auth_user_md5"].'
                         SET
@@ -114,61 +106,60 @@ if ( !isset($useridas) )
     $tpl->set('s', 'BORDERCOLOR', $cfg["color"]["table_border"]);
     $tpl->set('s', 'BGCOLOR', $cfg["color"]["table_light"]);
     $tpl->set('s', 'SUBMITTEXT', "Änderungen &uuml;bernehmen");
-    if ($error)
-    {
+    if ($error) {
         echo $error;
     }
     $tpl->set('d', 'CATNAME', "Name");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-	$oTxtName = new cHTMLTextbox("realname", $db->f("realname"), 40, 255);
+    $oTxtName = new cHTMLTextbox("realname", $db->f("realname"), 40, 255);
     $tpl->set('d', 'CATFIELD', $oTxtName->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "Neues Passwort");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-	$oTxtPass = new cHTMLPasswordbox("password", "", 40, 255);
+    $oTxtPass = new cHTMLPasswordbox("password", "", 40, 255);
     $tpl->set('d', 'CATFIELD', $oTxtPass->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "Neues Passwort (Bestätigung)");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-	$oTxtWord = new cHTMLPasswordbox("passwordagain", "", 40, 255);
+    $oTxtWord = new cHTMLPasswordbox("passwordagain", "", 40, 255);
     $tpl->set('d', 'CATFIELD', $oTxtWord->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "E-Mail");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-	$oTxtEmail = new cHTMLTextbox("email", $db->f("email"), 40, 255);
+    $oTxtEmail = new cHTMLTextbox("email", $db->f("email"), 40, 255);
     $tpl->set('d', 'CATFIELD', $oTxtEmail->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "Telefon");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-	$oTxtTel= new cHTMLTextbox("telephone", $db->f("telephone"), 40, 255);
+    $oTxtTel= new cHTMLTextbox("telephone", $db->f("telephone"), 40, 255);
     $tpl->set('d', 'CATFIELD', $oTxtTel->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "Strasse");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-	$oTxtStreet = new cHTMLTextbox("address_street", $db->f("address_street"), 40, 255);
+    $oTxtStreet = new cHTMLTextbox("address_street", $db->f("address_street"), 40, 255);
     $tpl->set('d', 'CATFIELD', $oTxtStreet->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "Stadt");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-	$oTxtCity = new cHTMLTextbox("address_city", $db->f("address_city"), 40, 255);
+    $oTxtCity = new cHTMLTextbox("address_city", $db->f("address_city"), 40, 255);
     $tpl->set('d', 'CATFIELD', $oTxtCity->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "Land");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-	$oTxtLand = new cHTMLTextbox("address_country", $db->f("address_country"), 40, 255);
+    $oTxtLand = new cHTMLTextbox("address_country", $db->f("address_country"), 40, 255);
     $tpl->set('d', 'CATFIELD', $oTxtLand->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "WYSIWYG-Editor");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-	$oCheckbox = new cHTMLCheckbox("wysi", "1", "wysi1", $db->f("wysi"));
+    $oCheckbox = new cHTMLCheckbox("wysi", "1", "wysi1", $db->f("wysi"));
     $tpl->set('d', 'CATFIELD', $oCheckbox->toHTML(false));
     $tpl->next();
 

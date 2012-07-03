@@ -21,17 +21,8 @@
  *
  * {@internal
  *   created 2003-04-30
- *   modified 2008-06-24, Timo Trautmann, storage for valid from valid to added
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2008-08-26, Timo Trautmann - fixed CON-200 - User can only get lang rights, if he has client access
- *   modified 2008-10-??, Bilal Arslan - direct DB user modifications are now encapsulated in new ConUser class
- *   modified 2008-11-17, Holger Librenz - method calls for new user object modified, comments updated
- *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
- *   modified 2011-02-07, Murat Purc, Cleanup, optimization and formatting
- *
  *   $Id$:
  * }}
- *
  * TODO error handling!!!
  * TODO export functions to new cApiUser object!
  */
@@ -163,12 +154,12 @@ $tpl->set('s','SID', $sess->id);
 $tpl->set('s','NOTIFICATION', $sNotification);
 
 $form = '<form name="user_properties" method="post" action="'.$sess->url("main.php?").'">
-         '.$sess->hidden_session(true).'
-         <input type="hidden" name="area" value="'.$area.'">
-         <input type="hidden" name="action" value="user_edit">
-         <input type="hidden" name="frame" value="'.$frame.'">
-         <input type="hidden" name="userid" value="'.$userid.'">
-         <input type="hidden" name="idlang" value="'.$lang.'">';
+        '.$sess->hidden_session(true).'
+        <input type="hidden" name="area" value="'.$area.'">
+        <input type="hidden" name="action" value="user_edit">
+        <input type="hidden" name="frame" value="'.$frame.'">
+        <input type="hidden" name="userid" value="'.$userid.'">
+        <input type="hidden" name="idlang" value="'.$lang.'">';
 
 $tpl->set('s', 'FORM', $form);
 $tpl->set('s', 'GET_USERID', $userid);
@@ -190,12 +181,12 @@ $tpl->next();
 // @since 2006-07-04 Display password fields only if not authenticated via LDAP/AD
 if ($msysadmin || $oUser->getField('password') != 'active_directory_auth') {
     $tpl->set('d', 'CATNAME', i18n("New password"));
-	$oTxtPass = new cHTMLPasswordbox('password', '', 40, 255);
+    $oTxtPass = new cHTMLPasswordbox('password', '', 40, 255);
     $tpl->set('d', 'CATFIELD', $oTxtPass->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', i18n("Confirm new password"));
-	$oTxtWord = new cHTMLPasswordbox('passwordagain', '', 40, 255);
+    $oTxtWord = new cHTMLPasswordbox('passwordagain', '', 40, 255);
     $tpl->set('d', 'CATFIELD', $oTxtWord->render());
     $tpl->next();
 }
@@ -258,8 +249,8 @@ $aClients = $oClientsCollection->getAvailableClients();
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     if (in_array("admin[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)){
-    	$oCheckbox = new cHTMLCheckbox("madmin[".$idclient."]", $idclient, "madmin[".$idclient."]".$idclient, in_array("admin[".$idclient."]", $aPerms));
-    	$oCheckbox->setLabelText($item['name']." (".$idclient.")");
+        $oCheckbox = new cHTMLCheckbox("madmin[".$idclient."]", $idclient, "madmin[".$idclient."]".$idclient, in_array("admin[".$idclient."]", $aPerms));
+        $oCheckbox->setLabelText($item['name']." (".$idclient.")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }
@@ -274,8 +265,8 @@ if ($sClientCheckboxes !== '' && !in_array('sysadmin', $aPerms)) {
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     if ((in_array("client[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[".$idclient."]", $aAuthPerms)) && !in_array("admin[".$idclient."]", $aPerms)) {
-	    $oCheckbox = new cHTMLCheckbox("mclient[".$idclient."]", $idclient, "mclient[".$idclient."]".$idclient, in_array("client[".$idclient."]", $aPerms));
-	    $oCheckbox->setLabelText($item['name']." (". $idclient . ")");
+        $oCheckbox = new cHTMLCheckbox("mclient[".$idclient."]", $idclient, "mclient[".$idclient."]".$idclient, in_array("client[".$idclient."]", $aPerms));
+        $oCheckbox->setLabelText($item['name']." (". $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }
@@ -291,8 +282,8 @@ $aClientsLanguages = getAllClientsAndLanguages();
 $sClientCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
     if (($perm->have_perm_client("lang[".$item['idlang']."]") || $perm->have_perm_client("admin[".$item['idclient']."]")) && !in_array("admin[".$item['idclient']."]", $aPerms)) {
-    	$oCheckbox = new cHTMLCheckbox("mlang[".$item['idlang']."]", $item['idlang'], "mlang[".$item['idlang']."]".$item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms));
-    	$oCheckbox->setLabelText( $item['langname']." (". $item['clientname'] .")");
+        $oCheckbox = new cHTMLCheckbox("mlang[".$item['idlang']."]", $item['idlang'], "mlang[".$item['idlang']."]".$item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms));
+        $oCheckbox->setLabelText( $item['langname']." (". $item['clientname'] .")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }

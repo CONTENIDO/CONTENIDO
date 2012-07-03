@@ -39,9 +39,9 @@ if (!defined('CON_FRAMEWORK')) {
  * CON_CHECK_PRIMITIVESTRING   => simple string
  * CON_CHECK_STRING            => more complex string
  * CON_CHECK_HASH32            => 32-character hash
- * CON_CHECK_BELANG			   => Valid values for belang
- * CON_CHECK_AREASTRING		   => Checks for a string consisting of letters and "_" only
- * CON_CHECK_PATHSTRING		   => Validates file paths for file uploading (matches "folder/", "", "dbfs:" and "dbfs:/*")
+ * CON_CHECK_BELANG            => Valid values for belang
+ * CON_CHECK_AREASTRING        => Checks for a string consisting of letters and "_" only
+ * CON_CHECK_PATHSTRING        => Validates file paths for file uploading (matches "folder/", "", "dbfs:" and "dbfs:/*")
  *
  */
 
@@ -117,9 +117,8 @@ $aCheck['POST']['contenido'] = CON_CHECK_HASH32;
 
 $aCheck['POST']['belang'] = CON_CHECK_BELANG;
 $aCheck['POST']['path'] = CON_CHECK_PATHSTRING;
-/*
- * If one of these parameters is set (either get or post) the script will halt.
- */
+
+// If one of these parameters is set (either get or post) the script will halt.
 #### Paramater blacklist ####
 $aBlacklist = array('cfg', 'cfgClient', 'contenido_path', '_PHPLIB', 'db', 'sess');
 ?>

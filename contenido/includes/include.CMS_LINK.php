@@ -21,18 +21,15 @@
  *
  * {@internal
  *   created 2003-05-07
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-if(isset($area) && $area == 'con_content_list'){
+if (isset($area) && $area == 'con_content_list') {
     $tmp_area = $area;
     $path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
             '&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
@@ -44,10 +41,7 @@ if(isset($area) && $area == 'con_content_list'){
 }
 
 if ($doedit == "1") {
-    global $cfgClient;
-    global $client;
-    global $upldir;
-    global $uplfile;
+    global $cfgClient, $client, $upldir, $uplfile;
 
     cInclude("includes","functions.upl.php");
 
@@ -55,110 +49,105 @@ if ($doedit == "1") {
 
     $CMS_LINK = $CMS_LINKextern;
 
-    if ($CMS_LINKintern)
-    {
+    if ($CMS_LINKintern) {
         $CMS_LINK = $CMS_LINKintern;
     }
 
-    if($selectpdf){
+    if ($selectpdf) {
         $CMS_LINK = $rootpath . $selectpdf;
     }
-    if($selectimg){
+    if ($selectimg) {
         $CMS_LINK = $rootpath . $selectimg;
     }
-    if($selectzip){
+    if ($selectzip) {
         $CMS_LINK = $rootpath . $selectzip;
     }
-    if($selectaudio){
+    if ($selectaudio) {
         $CMS_LINK = $rootpath . $selectaudio;
     }
-    if($selectany){
+    if ($selectany) {
         $CMS_LINK = $rootpath . $selectany;
     }
 
-    if (count($_FILES) == 1)
-    {
-        foreach ($_FILES['uplfile']['name'] as $key => $value)
-        {
-            if (file_exists($_FILES['uplfile']['tmp_name'][$key]))
-            {
+    if (count($_FILES) == 1) {
+        foreach ($_FILES['uplfile']['name'] as $key => $value) {
+            if (file_exists($_FILES['uplfile']['tmp_name'][$key])) {
                 $friendlyName = uplCreateFriendlyName($_FILES['uplfile']['name'][$key]);
                 move_uploaded_file($_FILES['uplfile']['tmp_name'][$key], $cfgClient[$client]['upl']['path'].$upldir.$friendlyName);
 
                 uplSyncDirectory($upldir);
 
-                if ($path == "") { $path = "/"; }
+                if ($path == "") {
+                    $path = "/";
+                }
 
-                $sql = "SELECT idupl FROM ".$cfg["tab"]["upl"]." WHERE dirname='".cSecurity::escapeDB($upldir, $db)."' AND filename='".cSecurity::escapeDB($friendlyName, $db)."'";
+                $sql = "SELECT idupl FROM ".$cfg["tab"]["upl"]." WHERE dirname='".$db->escape($upldir)."' AND filename='".$db->escape($friendlyName)."'";
                 $db->query($sql);
                 $db->next_record();
 
                 $CMS_LINK = $rootpath . $upldir. $friendlyName;
             }
-
         }
     }
 
-
-    conSaveContentEntry ($idartlang, "CMS_LINK", $typenr, $CMS_LINK);
-    conSaveContentEntry ($idartlang, "CMS_LINKDESCR", $typenr, $CMS_LINKDESCR);
-    conSaveContentEntry ($idartlang, "CMS_LINKTARGET", $typenr, $CMS_LINKTARGET);
-    conMakeArticleIndex ($idartlang, $idart);
+    conSaveContentEntry($idartlang, "CMS_LINK", $typenr, $CMS_LINK);
+    conSaveContentEntry($idartlang, "CMS_LINKDESCR", $typenr, $CMS_LINKDESCR);
+    conSaveContentEntry($idartlang, "CMS_LINKTARGET", $typenr, $CMS_LINKTARGET);
+    conMakeArticleIndex($idartlang, $idart);
     conGenerateCodeForartInAllCategories($idart);
-    Header("Location:".$sess->url($path1));
+    header("Location:".$sess->url($path1));
 }
 
 header("Content-Type: text/html; charset={$encoding[$lang]}");
+
 ?>
-
-
 <html>
 <head>
-<title>CONTENIDO</title>
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>">
-<link rel="stylesheet" type="text/css" href="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["styles"] ?>contenido.css">
-</HEAD>
-<BODY MARGINHEIGHT=0 MARGINWIDTH=0 LEFTMARGIN=0 TOPMARGIN=0>
-<table width="100%"  border=0 cellspacing="0" cellpadding="0">
-  <tr>
-    <td width="10" rowspan="4"><img src="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
-    <td width="100%"><img src="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
-    <td width="10" rowspan="4"><img src="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
-  </tr>
-  <tr>
-    <td>
-    <?php
+    <title>CONTENIDO</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo $cfg["path"]["contenido_fullhtml"].$cfg["path"]["styles"] ?>contenido.css">
+</head>
+<body>
+<table width="100%" border=0 cellspacing="0" cellpadding="0">
+    <tr>
+        <td width="10" rowspan="4"><img src="<?php echo $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
+        <td width="100%"><img src="<?php echo $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
+        <td width="10" rowspan="4"><img src="<?php echo $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
+    </tr>
+    <tr>
+        <td>
+        <?php
 
         getAvailableContentTypes($idartlang);
 
-        cInclude("includes","functions.forms.php");
+        cInclude("includes", "functions.forms.php");
         global $typenr;
 
         $form = new UI_Table_Form("editcontent", $cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php");
 
-        $form->setVar("lang",$lang);
-        $form->setVar("typenr",$typenr);
-        $form->setVar("idart",$idart);
-        $form->setVar("idcat",$idcat);
-        $form->setVar("idartlang",$idartlang);
-        $form->setVar("contenido",$sess->id);
-        $form->setVar("action",10);
-        $form->setVar("doedit",1);
-        $form->setVar("type",$type);
-        $form->setVar("changeview","edit");
+        $form->setVar("lang", $lang);
+        $form->setVar("typenr", $typenr);
+        $form->setVar("idart", $idart);
+        $form->setVar("idcat", $idcat);
+        $form->setVar("idartlang", $idartlang);
+        $form->setVar("contenido", $sess->id);
+        $form->setVar("action", 10);
+        $form->setVar("doedit", 1);
+        $form->setVar("type", $type);
+        $form->setVar("changeview", "edit");
         $form->setVar("CMS_LINK", $a_content["CMS_LINK"][$typenr]);
 
-        $header = sprintf(i18n("Edit link for container %s"),$typenr);
+        $header = sprintf(i18n("Edit link for container %s"), $typenr);
         $form->addHeader($header);
 
         if (is_numeric($a_content["CMS_LINK"][$typenr])) {
-                $a_link_intern_value = $a_content["CMS_LINK"][$typenr];
-                $a_link_extern_value = "";
+            $a_link_intern_value = $a_content["CMS_LINK"][$typenr];
+            $a_link_extern_value = "";
         } else {
-                $a_link_intern_value = "0";
-                $a_link_extern_value = $a_content["CMS_LINK"][$typenr];
+            $a_link_intern_value = "0";
+            $a_link_extern_value = $a_content["CMS_LINK"][$typenr];
         }
-		$oTxtEXLink = new cHTMLTextbox("CMS_LINKextern", $a_link_extern_value, 60, 255);
+        $oTxtEXLink = new cHTMLTextbox("CMS_LINKextern", $a_link_extern_value, 60, 255);
         $form->add(i18n("External link"), $oTxtEXLink->render());
 
         $sql = "SELECT
@@ -172,55 +161,49 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
                 WHERE
                     a.idcat = b.idcat AND
                     b.idcat = d.idcat AND
-                    d.idlang = '".cSecurity::toInteger($lang)."' AND
+                    d.idlang = " . (int) $lang . " AND
                     b.idart  = e.idart AND
                     c.idcat = a.idcat AND
-                    c.idclient = '".cSecurity::toInteger($client)."' AND
-                    e.idlang = '".cSecurity::toInteger($lang)."'
+                    c.idclient = " . (int) $client . " AND
+                    e.idlang = " . (int) $lang . "
                 ORDER BY
                     a.idtree";
 
-
         $db->query($sql);
 
-        $intlink .= "<SELECT name=CMS_LINKintern SIZE=1 onChange=\"editcontent.CMS_LINK.value=this.value; editcontent.CMS_LINKextern.value='';\">";
+        $intlink .= "<select name=\"cms_linkintern\" size=\"1\" onchange=\"editcontent.CMS_LINK.value=this.value; editcontent.CMS_LINKextern.value='';\">";
 
-                if ($a_link_intern_value != 0) {
-                    $intlink .= "<option value=0>-- ".i18n("None")." --</option>";
-                } else {
-                    $intlink .= "<option value=0 selected>-- ".i18n("None")." --</option>";
-                }
+        if ($a_link_intern_value != 0) {
+            $intlink .= "<option value='0'>-- ".i18n("None")." --</option>";
+        } else {
+            $intlink .= "<option value='0' selected>-- ".i18n("None")." --</option>";
+        }
 
-                while ( $db->next_record() ) {
+        while ($db->next_record()) {
+            $spaces = "";
+            for ($i=0; $i<$db->f("level"); $i++) {
+                $spaces .= "&nbsp;&nbsp;&nbsp;&nbsp;";
+            }
+            $spaces .= "> ";
 
-                        $spaces = "";
+            $tmp_title = $db->f("title");
+            if (strlen($tmp_title) > 32) {
+                $tmp_title = substr($tmp_title, 0, 32);
+            }
 
-                        for ($i=0; $i<$db->f("level"); $i++) {
-                            $spaces .= "&nbsp;&nbsp;&nbsp;&nbsp;";
-                        }
+            if ($db->f("idcatart") != $a_link_intern_value) {
+                $intlink .= "<option value=\"".$db->f("idcatart")."\">$spaces ".$db->f("name")."---".$tmp_title."</option>";
+            } else {
+                $intlink .= "<option value=\"".$db->f("idcatart")."\" selected>$spaces ".$db->f("name")."---".$tmp_title."</option>";
+            }
+        }
 
-                        $tmp_title = $db->f("title");
+        $intlink .= "</select>";
 
-                        if ( strlen($tmp_title) > 32 ) {
-                            $tmp_title = substr($tmp_title, 0, 32);
-                        }
-
-                        $spaces .= "> ";
-
-                        if ( $db->f("idcatart") != $a_link_intern_value ) {
-                                $intlink .= "<option value=\"".$db->f("idcatart")."\">$spaces ".$db->f("name")."---".$tmp_title."</option>";
-                        } else {
-                                $intlink .= "<option value=\"".$db->f("idcatart")."\" selected>$spaces ".$db->f("name")."---".$tmp_title."</option>";
-                        }
-                }
-
-                $intlink .= "</SELECT>";
-
-        $form->add(i18n("Internal link"),$intlink);
+        $form->add(i18n("Internal link"), $intlink);
 
 
-
-        $pdflink.= "<SELECT name=\"selectpdf\" SIZE=1>";
+        $pdflink.= "<select name=\"selectpdf\" size='1'>";
         $pdflink.= "<option value=\"\" selected>".i18n("Please choose")."</option>";
 
         $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('pdf','doc','ppt','xls','rtf','dot') ORDER BY dirname, filename";
@@ -237,12 +220,12 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
             $pdflink.= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
-        $pdflink.= "</SELECT>";
+        $pdflink.= "</select>";
 
-        $form->add(i18n("Link to a document"),$pdflink);
+        $form->add(i18n("Link to a document"), $pdflink);
 
 
-        $imglink .= "<SELECT name=\"selectimg\" SIZE=1>";
+        $imglink .= "<select name=\"selectimg\" size='1'>";
         $imglink .= "<option value=\"\" selected>".i18n("Please choose")."</option>";
 
         $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('png','gif','tif','jpg','jpeg','psd','pdd','iff','bmp','rle','eps','fpx','pcx','jpe','pct','pic','pxr','tga') ORDER BY dirname, filename";
@@ -259,11 +242,11 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
             $imglink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
-        $imglink .= "</SELECT>";
+        $imglink .= "</select>";
 
-        $form->add(i18n("Link to an image"),$imglink);
+        $form->add(i18n("Link to an image"), $imglink);
 
-        $ziplink .= "<SELECT name=\"selectzip\" SIZE=1>";
+        $ziplink .= "<select name=\"selectzip\" size='1'>";
         $ziplink .= "<option value=\"\" selected>".i18n("Please choose")."</option>";
 
         $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".$client."' AND filetype IN ('zip','arj','lha','lhx','tar','tgz','rar','gz') ORDER BY dirname, filename";
@@ -280,11 +263,11 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
             $ziplink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
-        $ziplink .= "</SELECT>";
+        $ziplink .= "</select>";
 
-        $form->add(i18n("Link to an archive"),$ziplink);
+        $form->add(i18n("Link to an archive"), $ziplink);
 
-        $audiolink .= "<SELECT name=\"selectaudio\" SIZE=1>";
+        $audiolink .= "<select name=\"selectaudio\" size='1'>";
         $audiolink .= "<option value=\"\" selected>".i18n("Please choose")."</option>";
 
         $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('mp3','mp2','avi','mpg','mpeg','mid','wav','mov','wmv') ORDER BY dirname, filename";
@@ -301,12 +284,12 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
             $audiolink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
-        $audiolink .= "</SELECT>";
+        $audiolink .= "</select>";
 
-        $form->add(i18n("Link to a media file"),$audiolink);
+        $form->add(i18n("Link to a media file"), $audiolink);
 
 
-        $anylink .= "<SELECT name=\"selectany\" SIZE=1>";
+        $anylink .= "<select name=\"selectany\" size=1>";
         $anylink .= "<option value=\"\" selected>".i18n("Please choose")."</option>";
 
         $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' ORDER BY dirname, filename";
@@ -323,12 +306,12 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
             $anylink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
-        $anylink .= "</SELECT>";
+        $anylink .= "</select>";
 
-        $form->add(i18n("Link to any file"),$anylink);
+        $form->add(i18n("Link to any file"), $anylink);
 
 
-       cInclude("includes","functions.upl.php");
+        cInclude("includes", "functions.upl.php");
 
         // Laden der Verzeichnisse und Dateien in separate Arrays
         $olddir = getcwd();
@@ -336,69 +319,59 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 
         $dirlist = uplDirectoryListRecursive($cfgClient[$client]['upl']['path'].rawurldecode($path));
 
-
         chdir($olddir);
 
         $upldirs = '<select name="upldir">';
         $upldirs .= '<option value="/">&lt;upload&gt;/</option>';
 
-        foreach ($dirlist as $key => $value)
-        {
-                $upldirs .= '<option value="'.$value["pathstring"].'">'."&lt;upload&gt;/".$value["pathstring"].'</option>';
+        foreach ($dirlist as $key => $value) {
+            $upldirs .= '<option value="'.$value["pathstring"].'">'."&lt;upload&gt;/".$value["pathstring"].'</option>';
         }
 
         $upldirs .= "</select>";
 
-        $form->add(i18n("Upload file"),$upldirs.'<input name="uplfile[]" type="file">');
-        $form->add(i18n("Description"),"<TEXTAREA name=CMS_LINKDESCR ROWS=3 COLS=60>".htmlspecialchars($a_content["CMS_LINKDESCR"][$typenr])."</TEXTAREA>");
+        $form->add(i18n("Upload file"), $upldirs.'<input name="uplfile[]" type="file">');
+        $form->add(i18n("Description"), "<textarea name=CMS_LINKDESCR rows=3 cols=60>".htmlspecialchars($a_content["CMS_LINKDESCR"][$typenr])."</textarea>");
 
-        $linktarget = "  <INPUT class=text_medium type=text name=CMS_LINKTARGET VALUE=\"".$a_content["CMS_LINKTARGET"][$typenr]."\" SIZE=60 onChange=\"setlinktargettosomething();\">";
+        $linktarget = "  <input class=text_medium type=text name=CMS_LINKTARGET value=\"".$a_content["CMS_LINKTARGET"][$typenr]."\" size=60 onchange=\"setlinktargettosomething();\">";
 
-        $form->add(i18n("Target frame"),$linktarget);
+        $form->add(i18n("Target frame"), $linktarget);
 
-              $newwindow =  "  <INPUT TYPE=checkbox name=checkboxlinktarget value=\"1\" onClick=\"setlinktargettoblank();\" ";
-
-              if ($a_content["CMS_LINKTARGET"][$typenr]=="_blank")
-              {
-                  $newwindow .= " checked";
-              }
-                  $newwindow .= ">".i18n("Open link in new window")."</INPUT>";
-              $newwindow .= "
-                    <!---------JavaScript-------------------->
-                           <script language=\"JavaScript\">
-                <!--
-                function setlinktargettosomething() {
-                        document.editcontent.checkboxlinktarget.value = 1;
-                        document.editcontent.checkboxlinktarget.checked = false;
+        $newwindow =  "  <input type=checkbox name=checkboxlinktarget value=\"1\" onclick=\"setlinktargettoblank();\" ";
+        if ($a_content["CMS_LINKTARGET"][$typenr] == "_blank") {
+            $newwindow .= " checked";
+        }
+        $newwindow .= ">".i18n("Open link in new window")."</input>";
+        $newwindow .= "
+            <script type=\"text/javascript\">
+            <!--
+            function setlinktargettosomething() {
+                document.editcontent.checkboxlinktarget.value = 1;
+                document.editcontent.checkboxlinktarget.checked = false;
+            }
+            function setlinktargettoblank() {
+                if (document.editcontent.checkboxlinktarget.value == 1) {
+                    document.editcontent.CMS_LINKTARGET.value = \"_blank\";
+                    document.editcontent.checkboxlinktarget.value = 0;
+                } else {
+                    document.editcontent.CMS_LINKTARGET.value = \"\";
+                    document.editcontent.checkboxlinktarget.value = 1;
                 }
-                        function setlinktargettoblank() {
-                        if (document.editcontent.checkboxlinktarget.value == 1) {
-                                document.editcontent.CMS_LINKTARGET.value       = \"_blank\";
-                                document.editcontent.checkboxlinktarget.value = 0;
-                        } else {
-                                document.editcontent.CMS_LINKTARGET.value       = \"\";
-                                document.editcontent.checkboxlinktarget.value = 1;
-                        }
-                }
-                //-->
-                </SCRIPT>
-                ";
+            }
+            //-->
+            </script>
+        ";
 
-        $form->add(i18n("Open in new window"),$newwindow);
+        $form->add(i18n("Open in new window"), $newwindow);
 
         $form->addCancel($sess->url($path2));
         echo $form->render();
 
-        echo "  </TD></TR>";
+        echo "</form>";
 
-
-        echo "  </TABLE>
-                      </FORM>";
-
-
-
-
-?>
-</td></tr></table>
+        ?>
+        </td>
+    </tr>
+</table>
 </body>
-</HTML>
+</html>

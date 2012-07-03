@@ -21,13 +21,8 @@
  *
  * {@internal
  *   created 2003-04-30
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2009-05-25, Oliver Lohkemper, add iso-639-2- & iso-3166-selecter
- *   modified 2012-02-15, Rusmir Jusufovic, show message
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -35,18 +30,17 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-includePlugins("languages");
+includePlugins('languages');
 
 $clang = new cApiLanguage($idlang);
 
-#Script for refreshing Language Box in Header
+// Script for refreshing Language Box in Header
 $newOption = '';
 
 $db2 = cRegistry::getDb();
 
-$sReload = '<script language="javascript">
+$sReload = '<script type="text/javascript">
                 var left_bottom = top.content.left.left_bottom;
-
                 if (left_bottom) {
                     var href = left_bottom.location.href;
                     href = href.replace(/&idlang[^&]*/, \'\');
@@ -54,53 +48,49 @@ $sReload = '<script language="javascript">
                 }
             </script>';
 
-if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
-{
-        $page = new UI_Page;
+if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
+    $page = new UI_Page();
 
-        if ($action == "lang_deletelanguage")
-        {
-            $notification-> displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted language successfully!"));
-            // finally delete from dropdown in header
-            $newOption = '<script>
-                            var langList = top.header.document.getElementById("cLanguageSelect");
-                            var thepos="";
-                            for(var i=0;i<langList.length;i++) {
-                                if(langList.options[i].value == '.$idlang.') {
-                                    thepos = langList.options[i].index;
-                                }
+    if ($action == "lang_deletelanguage") {
+        $notification-> displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted language successfully!"));
+        // finally delete from dropdown in header
+        $newOption = '<script type="text/javascript">
+                        var langList = top.header.document.getElementById("cLanguageSelect");
+                        var thepos = "";
+                        for (var i=0;i<langList.length;i++) {
+                            if (langList.options[i].value == '.$idlang.') {
+                                thepos = langList.options[i].index;
                             }
-                            langList.remove(thepos);
-                          </script>';
+                        }
+                        langList.remove(thepos);
+                      </script>';
+    }
+
+    if ($action == "lang_newlanguage") {
+        // update language dropdown in header
+        $new_idlang = 0;
+        $db->query('SELECT MAX(idlang) AS newlang FROM '.$cfg["tab"]["lang"].';' );
+        if ($db->next_record()) {
+            $new_idlang = $db->f('newlang');
         }
 
-        if ($action == "lang_newlanguage") {
-            // update language dropdown in header
-            $new_idlang = 0;
-            $db->query( 'SELECT max(idlang) as newlang FROM '.$cfg["tab"]["lang"].';' );
-            if ($db->next_record()) {
-                $new_idlang = $db->f('newlang');
-            }
+        $newOption = '<script type="text/javascript">
+                        var newLang = new Option("'.i18n("New language").' ('.$new_idlang.')", "'.$new_idlang.'", false, false);
+                        var langList = top.header.document.getElementById("cLanguageSelect");
+                        langList.options[langList.options.length] = newLang;
+                      </script>';
+        $idlang = $new_idlang;
+        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new language successfully!"));
+    }
 
-            $newOption = '<script language="javascript">
-                            var newLang = new Option("'.i18n("New language").' ('.$new_idlang.')", "'.$new_idlang.'", false, false);
-                            var langList = top.header.document.getElementById("cLanguageSelect");
-                            langList.options[langList.options.length] = newLang;
-                            </script>';
-            $idlang = $new_idlang;
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new language successfully!"));
-        }
-
-        if ($targetclient == $client) {
-            $page->addScript('refreshHeader', $newOption);
-        }
-        $page->addScript('reload', $sReload);
-        $page->render();
-} else
-{
-    if ($action == "lang_edit")
-    {
-        callPluginStore("languages");
+    if ($targetclient == $client) {
+        $page->addScript('refreshHeader', $newOption);
+    }
+    $page->addScript('reload', $sReload);
+    $page->render();
+} else {
+    if ($action == "lang_edit") {
+        callPluginStore('languages');
 
         $language = new cApiLanguage($idlang);
 
@@ -108,41 +98,31 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
         $language->setProperty("dateformat", "date", stripslashes($dateformat));
         $language->setProperty("dateformat", "time", stripslashes($timeformat));
 
-        $language->setProperty("language", "code", stripslashes($languagecode) );
-        $language->setProperty("country", "code", stripslashes($countrycode) );
+        $language->setProperty("language", "code", stripslashes($languagecode));
+        $language->setProperty("country", "code", stripslashes($countrycode));
 
         // update dropdown in header
-        $newOption = '<script language="javascript">
+        $newOption = '<script type="text/javascript">
                         var langList = top.header.document.getElementById("cLanguageSelect");
-                        var thepos="";
-                        for(var i=0;i<langList.length;i++)
-                        {
-                            if(langList.options[i].value == '.$idlang.')
-                            {
+                        var thepos = "";
+                        for (var i=0; i<langList.length; i++) {
+                            if (langList.options[i].value == '.$idlang.') {
                                 langList.options[i].innerHTML = \''.$langname.' ('.$idlang.')\';
                             }
                         }
-                        </script>';
+                      </script>';
     }
 
-    if(!$perm->have_perm_area_action($area, $action))
-    {
+    if (!$perm->have_perm_area_action($area, $action)) {
       $notification->displayNotification("error", i18n("Permission denied"));
-
     } else {
-
-        if ( !isset($idlang) && $action != "lang_new")
-        {
-          $notification->displayNotification("error", "no language id given. Usually, this shouldn't happen, except if you played around with your system. if you didn't play around, please report a bug.");
-
+        if (!isset($idlang) && $action != "lang_new") {
+            $notification->displayNotification("error", "no language id given. Usually, this shouldn't happen, except if you played around with your system. if you didn't play around, please report a bug.");
         } else {
-
-            if (($action == "lang_edit") && ($perm->have_perm_area_action($area, $action)))
-            {
+            if (($action == "lang_edit") && ($perm->have_perm_area_action($area, $action))) {
                 langEditLanguage($idlang, $langname, $sencoding, $active, $direction);
                 $noti = $notification->returnNotification("info", i18n("Changes saved"))."<br>";
             }
-
 
             $tpl->reset();
 
@@ -153,8 +133,8 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
                         ".$cfg["tab"]["lang"]." AS A,
                         ".$cfg["tab"]["clients_lang"]." AS B
                     WHERE
-                        A.idlang = '".cSecurity::toInteger($idlang)."' AND
-                        B.idlang = '".cSecurity::toInteger($idlang)."'";
+                        A.idlang = ".cSecurity::toInteger($idlang)." AND
+                        B.idlang = ".cSecurity::toInteger($idlang);
 
             $db->query($sql);
             $db->next_record();
@@ -166,17 +146,14 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
             $form->setVar("area", $area);
             $form->setVar("frame", $frame);
 
-
             $charsets = array();
-            foreach ($cfg['AvailableCharsets'] as $charset)
-            {
+            foreach ($cfg['AvailableCharsets'] as $charset) {
                 $charsets[$charset] = $charset;
             }
 
             if ($error) {
                 echo $error;
             }
-
 
             $iso_639_2_tags = array('aa' => 'Afar', 'ab' => 'Abkhazian', 'af' => 'Afrikaans', 'am' => 'Amharic', 'ar' => 'Arabic', 'as' => 'Assamese', 'ay' => 'Aymara', 'az' => 'Azerbaijani', 'ba' => 'Bashkir', 'be' => 'Byelorussian', 'bg' => 'Bulgarian', 'bh' => 'Bihari', 'bi' => 'Bislama', 'bn' => 'Bengali',
                                     'bo' => 'Tibetan', 'br' => 'Breton', 'ca' => 'Catalan', 'co' => 'Corsican', 'cs' => 'Czech', 'cy' => 'Welsh', 'da' => 'Danish', 'de' => 'German', 'dz' => 'Bhutani', 'el' => 'Greek', 'en' => 'English', 'eo' => 'Esperanto', 'es' => 'Spanish', 'et' => 'Estonian', 'eu' => 'Basque', 'fa' => 'Persian',
@@ -210,7 +187,6 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
                                     'vg' => 'Virgin Islands, British', 'vi' => 'Virgin Islands, U.S.', 'wf' => 'Wallis/Futuna Islands', 'eh' => 'Western Sahara', 'ye' => 'Yemen', 'yu' => 'Yougoslavia', 'zm' => 'Zambia', 'zw' => 'Zimbabwe' );
             array_multisort($iso_3166_codes);
 
-
             $eselect = new cHTMLSelectElement("sencoding");
             $eselect->setStyle('width:255px');
             $eselect->autoFill($charsets);
@@ -239,9 +215,9 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
             $timeformat = new cHTMLTextbox("timeformat", $clang->getProperty("dateformat", "time"), 40);
 
             $form->addHeader(i18n("Edit language"));
-			$oTxtLang = new cHTMLTextBox("langname", htmlspecialchars($db->f("name")), 40, 255);
+            $oTxtLang = new cHTMLTextBox("langname", htmlspecialchars($db->f("name")), 40, 255);
             $form->add(i18n("Language name"), $oTxtLang->render());
-			$oCheckbox = new cHTMLCheckbox("active", "1", "active1",$db->f("active"));
+            $oCheckbox = new cHTMLCheckbox("active", "1", "active1",$db->f("active"));
             $form->add(i18n("Active"), $oCheckbox->toHTML(false));
 
             $form->addSubHeader(i18n("Language"));
@@ -256,8 +232,8 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
             $form->add(i18n("Time format"), $timeformat->render());
 
 
-            $page = new UI_Page;
-            $page->setContent($noti.$form->render());
+            $page = new UI_Page();
+            $page->setContent($noti . $form->render());
 
             if ($targetclient == $client) {
                 $page->addScript('refreshHeader', $newOption);

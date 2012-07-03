@@ -25,7 +25,7 @@
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -40,161 +40,161 @@ define('CON_CHECK_PATHSTRING', '!([*]*\/)|(dbfs:\/[*]*)|(dbfs:)|(^)$!'); //valid
 
 class cRequestValidator {
 
-	/**
-	 * Path and filename of logfile
-	 *
-	 * @var string
-	 */
-	protected $sLogPath;
+    /**
+     * Path and filename of logfile
+     *
+     * @var string
+     */
+    protected $sLogPath;
 
-	/**
-	 * Flag whether to write log or not.
-	 *
-	 * @var boolean
-	 */
-	protected $bLog;
+    /**
+     * Flag whether to write log or not.
+     *
+     * @var boolean
+     */
+    protected $bLog;
 
-	/**
-	 * Path to config file.
-	 *
-	 * @var string
-	 */
-	protected $sConfigPath;
+    /**
+     * Path to config file.
+     *
+     * @var string
+     */
+    protected $sConfigPath;
 
-	/**
-	 * Array with all possible parameters and parameter formats.
-	 * Structure has to be:
-	 *
-	 * <code>
-	 * $check['GET']['param1']    = VALIDATE_FORMAT;
-	 * $check['POST']['param2']    = VALIDATE_FORMAT;
-	 * </code>
-	 *
-	 * Possible formats are defined as constants in top of these class file.
-	 *
-	 * @var array
-	 */
-	protected $aCheck;
+    /**
+     * Array with all possible parameters and parameter formats.
+     * Structure has to be:
+     *
+     * <code>
+     * $check['GET']['param1']  = VALIDATE_FORMAT;
+     * $check['POST']['param2'] = VALIDATE_FORMAT;
+     * </code>
+     *
+     * Possible formats are defined as constants in top of these class file.
+     *
+     * @var array
+     */
+    protected $aCheck;
 
-	/**
-	 * Array with forbidden parameters. If any of these is set the request will be invalid
-	 *
-	 *
-	 * @var array
-	 */
-	protected $aBlacklist;
+    /**
+     * Array with forbidden parameters. If any of these is set the request will be invalid
+     *
+     *
+     * @var array
+     */
+    protected $aBlacklist;
 
-	/**
-	 * Contains first invalid parameter name.
-	 *
-	 * @var string
-	 */
-	protected $sFailure;
+    /**
+     * Contains first invalid parameter name.
+     *
+     * @var string
+     */
+    protected $sFailure;
 
-	/**
-	 * Current mode
-	 *
-	 * @var string
-	 */
-	protected $sMode;
+    /**
+     * Current mode
+     *
+     * @var string
+     */
+    protected $sMode;
 
-	/**
-	 * The constructor will check if every parameter defined in the $sConfigPath."/config.http_check.php" is valid. If not it will stop the execution.
-	 *
-	 * @param string The path to config.http_check.php and config.http_check.local.php
-	 */
-	public function __construct($sConfigPath) {
+    /**
+     * The constructor will check if every parameter defined in the $sConfigPath."/config.http_check.php" is valid. If not it will stop the execution.
+     *
+     * @param string The path to config.http_check.php and config.http_check.local.php
+     */
+    public function __construct($sConfigPath) {
 
-		$this->sLogPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/logs/security.txt';
-		$this->bLog = true;
-		$this->aCheck = array();
-		$this->aBlacklist = array();
-		$this->sFailure = "";
-		$this->sMode = "";
+        $this->sLogPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/logs/security.txt';
+        $this->bLog = true;
+        $this->aCheck = array();
+        $this->aBlacklist = array();
+        $this->sFailure = "";
+        $this->sMode = "";
 
-		// check config and logging path
-		if(!empty($sConfigPath) && file_exists($sConfigPath."/config.http_check.php")) {
-			$this->sConfigPath = realpath($sConfigPath);
-		} else {
-			die('Could not load cRequestValidator configuration! (invalid path) '.$sConfigPath);
-		}
+        // check config and logging path
+        if (!empty($sConfigPath) && file_exists($sConfigPath."/config.http_check.php")) {
+            $this->sConfigPath = realpath($sConfigPath);
+        } else {
+            die('Could not load cRequestValidator configuration! (invalid path) '.$sConfigPath);
+        }
 
-		// include configuration
-		require($this->sConfigPath."/config.http_check.php");
+        // include configuration
+        require($this->sConfigPath."/config.http_check.php");
 
-		// if custom config exists, include it also here
-		if(file_exists(dirname($this->sConfigPath) . '/config.http_check.local.php')) {
-			require(dirname($this->sConfigPath) . '/config.http_check.local.php');
-		}
+        // if custom config exists, include it also here
+        if (file_exists(dirname($this->sConfigPath) . '/config.http_check.local.php')) {
+            require(dirname($this->sConfigPath) . '/config.http_check.local.php');
+        }
 
-		$this->bLog = $bLog;
-		$this->sMode = $sMode;
+        $this->bLog = $bLog;
+        $this->sMode = $sMode;
 
-		if($this->bLog === true) {
-			if (empty($this->sLogPath) || !is_writeable(dirname($this->sLogPath))) {
-				die('Could not log into not existing or empty log path!');
-			}
-		}
+        if ($this->bLog === true) {
+            if (empty($this->sLogPath) || !is_writeable(dirname($this->sLogPath))) {
+                die('Could not log into not existing or empty log path!');
+            }
+        }
 
-		$this->aCheck = $aCheck;
-		foreach($aBlacklist as $elem) {
-			$this->aBlacklist[] = strtolower($elem);
-		}
+        $this->aCheck = $aCheck;
+        foreach ($aBlacklist as $elem) {
+            $this->aBlacklist[] = strtolower($elem);
+        }
 
-		if((!$this->checkGetParams()) || (!$this->checkPostParams())) {
-			$this->logHackTrial();
+        if ((!$this->checkGetParams()) || (!$this->checkPostParams())) {
+            $this->logHackTrial();
 
-			if($this->sMode == 'stop') {
-				ob_end_clean();
-				die('Parameter check failed! (' . $this->sFailure . '='.$_GET[$this->sFailure].$_POST[$this->sFailure].')');
-			}
-		}
-	}
+            if ($this->sMode == 'stop') {
+                ob_end_clean();
+                die('Parameter check failed! (' . $this->sFailure . '='.$_GET[$this->sFailure].$_POST[$this->sFailure].')');
+            }
+        }
+    }
 
-	/**
-	 * Checks every given parameter. Parameters which aren't defined in config.http_check.php are considered to be fine
-	 *
-	 * @return bool True if every parameter is fine
-	 */
-	public function checkParams() {
-		return $this->checkGetParams() && $this->checkPostParams();
-	}
+    /**
+     * Checks every given parameter. Parameters which aren't defined in config.http_check.php are considered to be fine
+     *
+     * @return bool True if every parameter is fine
+     */
+    public function checkParams() {
+        return $this->checkGetParams() && $this->checkPostParams();
+    }
 
-	/**
-	 * Checks GET parameters only.
-	 *
-	 * @see cRequestValidator::checkParams()
-	 * @return bool True if every parameter is fine
-	 */
-	public function checkGetParams() {
-		return $this->checkArray($_GET, "GET");
-	}
+    /**
+     * Checks GET parameters only.
+     *
+     * @see cRequestValidator::checkParams()
+     * @return bool True if every parameter is fine
+     */
+    public function checkGetParams() {
+        return $this->checkArray($_GET, "GET");
+    }
 
-	/**
-	 * Checks POST parameters only.
-	 *
-	 * @see cRequestValidator::checkParams()
-	 * @return bool True if every parameter is fine
-	 */
-	public function checkPostParams() {
-		return $this->checkArray($_POST, "POST");
-	}
+    /**
+     * Checks POST parameters only.
+     *
+     * @see cRequestValidator::checkParams()
+     * @return bool True if every parameter is fine
+     */
+    public function checkPostParams() {
+        return $this->checkArray($_POST, "POST");
+    }
 
-	/**
-	 * Checks a single parameter.
-	 *
-	 * @see cRequestValidator::checkParams()
-	 *
-	 * @param string GET or POST
-	 * @param string the key of the parameter
-	 * @param mixed the value of the parameter
-	 * @return bool True if the parameter is fine
-	 */
-	public function checkParameter($sType, $sKey, $mValue) {
+    /**
+     * Checks a single parameter.
+     *
+     * @see cRequestValidator::checkParams()
+     *
+     * @param string GET or POST
+     * @param string the key of the parameter
+     * @param mixed the value of the parameter
+     * @return bool True if the parameter is fine
+     */
+    public function checkParameter($sType, $sKey, $mValue) {
         $bResult = false;
 
-        if(in_array(strtolower($sKey), $this->aBlacklist)) {
-        	return false;
+        if (in_array(strtolower($sKey), $this->aBlacklist)) {
+            return false;
         }
 
         if (in_array(strtoupper($sType), array('GET', 'POST'))) {
@@ -205,28 +205,29 @@ class cRequestValidator {
                 // parameter is known, check it...
                 $bResult = preg_match($this->aCheck[$sType][$sKey], $mValue);
             } else {
-            	//unknown parameter. Will return tru
-            	//file_put_contents($this->sLogPath, "Unkown parameter: ".$sType.":".$sKey."\n", FILE_APPEND);
-            	$bResult = true;
+                //unknown parameter. Will return tru
+                //file_put_contents($this->sLogPath, "Unkown parameter: ".$sType.":".$sKey."\n", FILE_APPEND);
+                $bResult = true;
             }
-		}
+        }
 
         return $bResult;
-	}
-	/**
-	 * Returns the first bad parameter
-	 *
-	 * @return string the key of the bad parameter
-	 */
-	public function getBadParameter() {
-		return $this->sFailure;
-	}
+    }
 
-	/**
-	 * Writes a log entry containing information about the request which led to the halt of the execution
-	 *
-	 */
-	protected function logHackTrial() {
+    /**
+     * Returns the first bad parameter
+     *
+     * @return string the key of the bad parameter
+     */
+    public function getBadParameter() {
+        return $this->sFailure;
+    }
+
+    /**
+     * Writes a log entry containing information about the request which led to the halt of the execution
+     *
+     */
+    protected function logHackTrial() {
         if ($this->bLog === true && !empty($this->sLogPath)) {
             if (($rLogFile = @fopen($this->sLogPath, 'a')) !== false) {
                 fwrite($rLogFile, date('Y-m-d H:i:s'));
@@ -251,11 +252,11 @@ class cRequestValidator {
      *
      * @return bool true if everything is fine.
      */
-	protected function checkArray($arr, $type) {
+    protected function checkArray($arr, $type) {
         $bResult = true;
 
-        foreach($arr as $sKey => $mValue) {
-            if(!$this->checkParameter(strtoupper($type), $sKey, $mValue)) {
+        foreach ($arr as $sKey => $mValue) {
+            if (!$this->checkParameter(strtoupper($type), $sKey, $mValue)) {
                 $this->sFailure = $sKey;
                 $bResult = false;
                 break;
@@ -263,5 +264,5 @@ class cRequestValidator {
         }
 
         return $bResult;
-	}
+    }
 }

@@ -304,7 +304,7 @@ $tpl->next();
 
 if ($new == true) {
     $tpl->set('d', 'CATNAME', i18n("Copy frontend template"));
-	$defaultform = new cHTMLCheckbox("copytemplate", "checked", "copytemplatechecked", true);
+    $defaultform = new cHTMLCheckbox("copytemplate", "checked", "copytemplatechecked", true);
     $tpl->set('d', 'CATFIELD', $defaultform->toHTML(false));
     $tpl->next();
 }

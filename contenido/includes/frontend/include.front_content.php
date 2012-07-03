@@ -119,28 +119,28 @@ if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
 // Check frontend globals
 // @TODO: Should be outsourced into startup process but requires a better detection (frontend or backend)
 if (isset($tmpchangelang) && $tmpchangelang > 0) {
-	// savelang is needed to set language before closing the page, see
-	// {frontend_clientdir}/front_content.php before cRegistry::shutdown()
-	$savedlang = $lang;
-	$lang      = $tmpchangelang;
+    // savelang is needed to set language before closing the page, see
+    // {frontend_clientdir}/front_content.php before cRegistry::shutdown()
+    $savedlang = $lang;
+    $lang      = $tmpchangelang;
 }
 
 // Change client
-if (isset($changeclient)){
-	$client = $changeclient;
-	unset($lang);
-	unset($load_lang);
+if (isset($changeclient)) {
+    $client = $changeclient;
+    unset($lang);
+    unset($load_lang);
 }
 
 // Change language
 if (isset($changelang)) {
-	$lang = $changelang;
+    $lang = $changelang;
 }
 
 // Initialize client
 if (!isset($client)) {
-	// load_client defined in {frontend_clientdir}/config.php
-	$client = $load_client;
+    // load_client defined in {frontend_clientdir}/config.php
+    $client = $load_client;
 }
 
 // Update urlbuilder, set http base path

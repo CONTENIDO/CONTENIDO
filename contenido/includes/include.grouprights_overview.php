@@ -21,13 +21,8 @@
  *
  * {@internal
  *   created  2003-05-30
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
- *   modified 2011-02-07, Murat Purc, Cleanup, optimization and formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -129,9 +124,9 @@ $aClients = $oClientsCollection->getAvailableClients();
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     if (in_array("admin[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
-    	$oCheckbox = new cHTMLCheckbox("madmin[".$idclient."]", $idclient, "madmin[".$idclient."]".$idclient, in_array("admin[".$idclient."]", $aPerms));
-    	$oCheckbox->setLabelText($item['name']." (".$idclient.")");
-    	$sClientCheckboxes .= $oCheckbox->toHTML();
+        $oCheckbox = new cHTMLCheckbox("madmin[".$idclient."]", $idclient, "madmin[".$idclient."]".$idclient, in_array("admin[".$idclient."]", $aPerms));
+        $oCheckbox->setLabelText($item['name']." (".$idclient.")");
+        $sClientCheckboxes .= $oCheckbox->toHTML();
         //$sClientCheckboxes .= formGenerateCheckbox("madmin[".$idclient."]", $idclient, in_array("admin[".$idclient."]", $aPerms), $item['name']." (".$idclient.")")."<br>";
     }
 }
@@ -146,9 +141,9 @@ if ($sClientCheckboxes !== '' && !in_array('sysadmin', $aPerms)) {
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     if ((in_array("client[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[".$idclient."]", $aAuthPerms)) && !in_array("admin[".$idclient."]", $aPerms)) {
-    	$oCheckbox = new cHTMLCheckbox("mclient[".$idclient."]", $idclient, "mclient[".$idclient."]".$idclient, in_array("client[".$idclient."]", $aPerms));
-    	$oCheckbox->setLabelText($item['name']." (". $idclient . ")");
-    	$sClientCheckboxes .= $oCheckbox->toHTML();
+        $oCheckbox = new cHTMLCheckbox("mclient[".$idclient."]", $idclient, "mclient[".$idclient."]".$idclient, in_array("client[".$idclient."]", $aPerms));
+        $oCheckbox->setLabelText($item['name']." (". $idclient . ")");
+        $sClientCheckboxes .= $oCheckbox->toHTML();
         //$sClientCheckboxes .= formGenerateCheckbox("mclient[".$idclient."]", $idclient, in_array("client[".$idclient."]", $aPerms), $item['name']." (". $idclient . ")")."<br>";
     }
 }
@@ -164,9 +159,9 @@ $aClientsLanguages = getAllClientsAndLanguages();
 $sClientCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
     if (($perm->have_perm_client("lang[".$item['idlang']."]") || $perm->have_perm_client("admin[".$item['idclient']."]")) && !in_array("admin[".$item['idclient']."]", $aPerms)) {
-    	$oCheckbox = new cHTMLCheckbox("mlang[".$item['idlang']."]", $item['idlang'], "mlang[".$item['idlang']."]".$item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms));
-    	$oCheckbox->setLabelText($item['langname']." (". $item['clientname'] .")");
-    	$sClientCheckboxes .= $oCheckbox->toHTML();
+        $oCheckbox = new cHTMLCheckbox("mlang[".$item['idlang']."]", $item['idlang'], "mlang[".$item['idlang']."]".$item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms));
+        $oCheckbox->setLabelText($item['langname']." (". $item['clientname'] .")");
+        $sClientCheckboxes .= $oCheckbox->toHTML();
         //$sClientCheckboxes .= formGenerateCheckbox("mlang[".$item['idlang']."]", $item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms), $item['langname']." (". $item['clientname'] .")")."<br>";
     }
 }
