@@ -405,7 +405,7 @@ abstract class DB_Sql_Abstract
      * // call with one parameter
      * $obj->query('SELECT * FROM `tablename` WHERE id = 123');
      *
-     * // call with multple parameter
+     * // call with multiple parameter
      * $obj->query('SELECT * FROM `%s` WHERE id = %d', 'tablename', 123);
      *
      * // 2 parameter where the first is the statement with formatting signs and the second the entries array
@@ -473,7 +473,7 @@ abstract class DB_Sql_Abstract
      *
      * Examples:
      * <pre>
-     * // multple parameter
+     * // multiple parameter
      * $sql = $obj->prepare('SELECT * FROM `%s` WHERE id = %d', 'tablename', 123);
      *
      * // 2 parameter where the first is the statement with formatting signs and the second the entries array
