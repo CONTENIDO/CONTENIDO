@@ -238,8 +238,8 @@ class Contenido_Backend {
      */
     function getCode($action) {
         $actionCodeFile = $cfg['path']['contenido'] . 'includes/type/action/include.' . $action . '.action.php';
-        if (file_exists($actionCodeFile)) {
-            return file_get_contents($actionCodeFile);
+        if (cFileHandler::exists($actionCodeFile)) {
+            return cFileHandler::read($actionCodeFile);
         }
 
         return '';

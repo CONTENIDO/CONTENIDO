@@ -60,7 +60,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
     $aMessages = array();
 
     // Check, if setup folder is still available
-    if (file_exists(dirname(dirname(__FILE__)) . '/setup')) {
+    if (cFileHandler::exists(dirname(dirname(__FILE__)) . '/setup')) {
         $aMessages[] = i18n("The setup directory still exists. Please remove the setup directory before you continue.");
     }
 

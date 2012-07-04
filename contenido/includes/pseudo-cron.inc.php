@@ -334,7 +334,7 @@ function getJobFileName($jobname, $PC_writeDir) {
 
 function getLastActialRunTime($jobname, $PC_writeDir) {
    $jobfile = getJobFileName($jobname, $PC_writeDir);
-   if (file_exists($jobfile)) {
+   if (cFileHandler::exists($jobfile)) {
       $file = fopen($jobfile,"rb");
       $lastRun = fgets($file,100);
       fclose($file);

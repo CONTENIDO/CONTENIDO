@@ -109,8 +109,8 @@ class ContenidoXmlWriter extends ContenidoXmlBase
             $sDirectory = $sDirectory . '/';
         }
 
-        file_put_contents($sDirectory . $sFileName, $this->saveToString());
+        cFileHandler::write($sDirectory . $sFileName, $this->saveToString());
 
-        return file_exists($sDirectory . $sFileName);
+        return cFileHandler::exists($sDirectory . $sFileName);
     }
 }

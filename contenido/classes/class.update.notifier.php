@@ -364,14 +364,14 @@ class Contenido_UpdateNotifier
 
         $aCheckFiles = array($this->sVendorXMLFile, $this->sVendorRssDeFile, $this->sVendorRssEnFile, $this->sTimestampCacheFile);
         foreach ($aCheckFiles as $sFilename) {
-            if (!file_exists($this->sCacheDirectory.$sFilename)) {
+            if (!cFileHandler::exists($this->sCacheDirectory.$sFilename)) {
                 $bUpdateNecessity = true;
                 break;
             }
         }
 
         if ($bUpdateNecessity == false) {
-            $iLastUpdate = file_get_contents($this->sCacheDirectory.$this->sTimestampCacheFile);
+            $iLastUpdate = cFileHandler::read($this->sCacheDirectory.$this->sTimestampCacheFile);
 
             $iCheckTimestamp = $iLastUpdate + ($this->iCacheDuration * 60);
             $iCurrentTime = time();
@@ -413,9 +413,9 @@ class Contenido_UpdateNotifier
                 $this->handleVendorUpdate($aXmlContent);
             }
         } else {
-            $sXMLContent                             = file_get_contents($this->sCacheDirectory.$this->sVendorXMLFile);
-            $aRSSContent[$this->sVendorRssDeFile]     = file_get_contents($this->sCacheDirectory.$this->sVendorRssDeFile);
-            $aRSSContent[$this->sVendorRssEnFile]     = file_get_contents($this->sCacheDirectory.$this->sVendorRssEnFile);
+            $sXMLContent                             = cFileHandler::read($this->sCacheDirectory.$this->sVendorXMLFile);
+            $aRSSContent[$this->sVendorRssDeFile]     = cFileHandler::read($this->sCacheDirectory.$this->sVendorRssDeFile);
+            $aRSSContent[$this->sVendorRssEnFile]     = cFileHandler::read($this->sCacheDirectory.$this->sVendorRssEnFile);
 
             $sXMLHash = md5($sXMLContent.$aRSSContent[$this->sVendorRssDeFile].$aRSSContent[$this->sVendorRssEnFile]);
             $sPropertyHash = $this->getHashProperty();
@@ -476,8 +476,8 @@ class Contenido_UpdateNotifier
         // To prevent simplexml and rss reader parser errors by loading an error page from the vendor host
         // the content will be replaced with the cached file (if existing) or a string
         if ($bValidXMLFile != true) {
-            if (file_exists($this->sCacheDirectory.$this->sVendorXMLFile)) {
-                $sXMLReplace = file_get_contents($this->sCacheDirectory.$this->sVendorXMLFile);
+            if (cFileHandler::exists($this->sCacheDirectory.$this->sVendorXMLFile)) {
+                $sXMLReplace = cFileHandler::read($this->sCacheDirectory.$this->sVendorXMLFile);
             } else {
                 $sXMLReplace = "<error>The vendor host file at ".$this->sVendorHost." is not availiable!</error>";
             }
@@ -485,8 +485,8 @@ class Contenido_UpdateNotifier
         }
 
         if ($bValidDeRSSFile != true) {
-            if (file_exists($this->sCacheDirectory.$this->sVendorRssDeFile)) {
-                $sDeRSSReplace = file_get_contents($this->sCacheDirectory.$this->sVendorRssDeFile);
+            if (cFileHandler::exists($this->sCacheDirectory.$this->sVendorRssDeFile)) {
+                $sDeRSSReplace = cFileHandler::read($this->sCacheDirectory.$this->sVendorRssDeFile);
             } else {
                 $sDeRSSReplace = "<rss></rss>";
             }
@@ -494,8 +494,8 @@ class Contenido_UpdateNotifier
         }
 
         if ($bValidEnRSSFile != true) {
-            if (file_exists($this->sCacheDirectory.$this->sVendorRssEnFile)) {
-                $sEnRSSReplace = file_get_contents($this->sCacheDirectory.$this->sVendorRssEnFile);
+            if (cFileHandler::exists($this->sCacheDirectory.$this->sVendorRssEnFile)) {
+                $sEnRSSReplace = cFileHandler::read($this->sCacheDirectory.$this->sVendorRssEnFile);
             } else {
                 $sEnRSSReplace = "<rss></rss>";
             }
@@ -549,10 +549,7 @@ class Contenido_UpdateNotifier
         if (is_writable($this->sCacheDirectory)) {
             foreach ($aWriteCache as $sFile=>$sContent) {
                 $sCacheFile = $this->sCacheDirectory.$sFile;
-                $oFile = fopen($sCacheFile, "w+");
-                ftruncate($oFile, 0);
-                fwrite($oFile, $sContent);
-                fclose($oFile);
+                cFileHandler::write($sCacheFile, $sContent, false);
             }
         }
     }

@@ -97,7 +97,7 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
         // Note, that createcode may be 0, but no code is available (all code for other languages will be deleted in
         // front_content, if code for one language will be created). This "bug" may be fixed in future releases.
         if ($iCreateCode == 0) {
-            $iCreateCode = !file_exists($cfgClient[$client]['code_path'].$client.".".$lang.".".$iIDCatArt.".php");
+            $iCreateCode = !cFileHandler::exists($cfgClient[$client]['code_path'].$client.".".$lang.".".$iIDCatArt.".php");
         }
 
         // Create code if necessary
@@ -108,8 +108,8 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
             conGenerateCode($iIDCat, $iIDArt, $lang, $client);
         }
 
-        if (file_exists($cfgClient[$client]['code_path'].$client.".".$lang.".".$iIDCatArt.".php")) {
-            $sCode = stripslashes(file_get_contents($cfgClient[$client]['code_path'].$client.".".$lang.".".$iIDCatArt.".php"));
+        if (cFileHandler::exists($cfgClient[$client]['code_path'].$client.".".$lang.".".$iIDCatArt.".php")) {
+            $sCode = stripslashes(cFileHandler::read($cfgClient[$client]['code_path'].$client.".".$lang.".".$iIDCatArt.".php"));
             ob_start();
             eval("?>\n" . $sCode . "\n<?php\n");
             $sCode = ob_get_contents();

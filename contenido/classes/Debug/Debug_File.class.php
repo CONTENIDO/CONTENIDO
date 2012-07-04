@@ -53,20 +53,6 @@ class Debug_File implements IDebug
         $this->_sPathToLogs = $cfg['path']['contenido_logs'];
         $this->_sFileName = 'debug.log';
         $this->_sPathToFile = $this->_sPathToLogs.$this->_sFileName;
-        if (file_exists($this->_sPathToLogs) && is_writeable($this->_sPathToLogs)) {
-            self::$_hFileHandle = @fopen($this->_sPathToFile, 'a+'); // keep it quiet, might be used in production systems
-        }
-    }
-
-    /**
-     * Closes file handle upon destruction of object
-     * @return void
-     */
-    public function __destruct()
-    {
-        if (is_resource(self::$_hFileHandle)) {
-            fclose(self::$_hFileHandle);
-        }
     }
 
     /**
@@ -85,7 +71,7 @@ class Debug_File implements IDebug
     {
         if (is_resource(self::$_hFileHandle) && is_writeable($this->_sPathToFile)) {
             $sDate = date('Y-m-d H:i:s');
-            fwrite(self::$_hFileHandle, $sDate.": ".$msg."\n");
+            cFileHandler::write($this->_sPathToFile, $sDate.": ".$msg."\n");
         }
     }
 
@@ -100,10 +86,10 @@ class Debug_File implements IDebug
     {
         if (is_resource(self::$_hFileHandle) && is_writeable($this->_sPathToFile)) {
             $sDate = date('Y-m-d H:i:s');
-            fwrite(self::$_hFileHandle, '#################### '.$sDate.' ####################'."\n");
-            fwrite(self::$_hFileHandle, $sVariableDescription."\n");
-            fwrite(self::$_hFileHandle, print_r($mVariable, true)."\n");
-            fwrite(self::$_hFileHandle, '#################### /'.$sDate.' ###################'."\n\n");
+            cFileHandler::write($this->_sPathToFile, '#################### '.$sDate.' ####################'."\n");
+            cFileHandler::write($this->_sPathToFile, $sVariableDescription."\n");
+            cFileHandler::write($this->_sPathToFile, print_r($mVariable, true)."\n");
+            cFileHandler::write($this->_sPathToFile, '#################### /'.$sDate.' ###################'."\n\n");
         }
     }
 

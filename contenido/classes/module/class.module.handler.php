@@ -223,7 +223,7 @@ class Contenido_Module_Handler
             return false;
         }
 
-        $fileOperation = file_put_contents($sSaveDirectory . $templateName . "." . $fileType, $fileContent);
+        $fileOperation = cFileHandler::write($sSaveDirectory . $templateName . "." . $fileType, $fileContent);
         if ($fileOperation === false) {
             return false;
         }
@@ -368,7 +368,7 @@ class Contenido_Module_Handler
      */
     public function existFile($type, $fileName)
     {
-        return file_exists($this->_modulePath . $this->_directories[$type] . $fileName);
+        return cFileHandler::exists($this->_modulePath . $this->_directories[$type] . $fileName);
     }
 
     /**
@@ -417,7 +417,7 @@ class Contenido_Module_Handler
                     return false;
                 }
 
-                if (file_put_contents($this->_modulePath . $this->_directories[$type] . $fileName, $content) === false) {
+                if (cFileHandler::write($this->_modulePath . $this->_directories[$type] . $fileName, $content) === false) {
                     $notification = new Contenido_Notification();
                     $notification->displayNotification('error', i18n("Can't make file: "). $fileName);
                     return false;
@@ -427,7 +427,7 @@ class Contenido_Module_Handler
                 if(!$this->isWritable($this->_modulePath . $this->_directories[$type] . $fileName,$this->_modulePath . $this->_directories[$type] )){
                     return false;
                 }
-                if (file_put_contents($this->_modulePath. $this->_directories[$type]. $fileName, $content) === false) {
+                if (cFileHandler::write($this->_modulePath. $this->_directories[$type]. $fileName, $content) === false) {
                     $notification = new Contenido_Notification();
                     $notification->displayNotification('error', i18n("Can't make file: "). $fileName);
                     return false;
@@ -486,7 +486,7 @@ class Contenido_Module_Handler
         }
 
         if ($this->existFile($directory, $fileName)) {
-            $content = file_get_contents($this->_modulePath . $this->_directories[$directory] . $fileName);
+            $content = cFileHandler::read($this->_modulePath . $this->_directories[$directory] . $fileName);
             $content = iconv($this->_fileEncoding, $this->_encoding. "//IGNORE", $content);
             return $content;
         }
@@ -604,11 +604,11 @@ class Contenido_Module_Handler
      */
     public function readInput()
     {
-        if (file_exists($this->_modulePath . $this->_directories['php']. $this->_moduleAlias . "_input.php") == FALSE) {
+        if (cFileHandler::exists($this->_modulePath . $this->_directories['php']. $this->_moduleAlias . "_input.php") == FALSE) {
             return false;
         }
 
-        $content = file_get_contents($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias. "_input.php");
+        $content = cFileHandler::read($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias. "_input.php");
 
         return iconv($this->_fileEncoding, $this->_encoding. "//IGNORE", $content);
     }
@@ -620,11 +620,11 @@ class Contenido_Module_Handler
      */
     public function readOutput()
     {
-        if (file_exists($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . "_output.php") == FALSE) {
+        if (cFileHandler::exists($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . "_output.php") == FALSE) {
             return false;
         }
 
-        $content = file_get_contents($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias. "_output.php");
+        $content = cFileHandler::read($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias. "_output.php");
         return iconv($this->_fileEncoding, $this->_encoding. "//IGNORE", $content);
     }
 
@@ -658,7 +658,7 @@ class Contenido_Module_Handler
      */
     public function isWritable($fileName, $directory)
     {
-        if (file_exists($fileName)) {
+        if (cFileHandler::exists($fileName)) {
             if (!is_writable($fileName)) {
                 return false;
             }
@@ -690,7 +690,7 @@ class Contenido_Module_Handler
 
         $output = iconv($this->_encoding, $this->_fileEncoding, $output);
 
-        $fileOperation = file_put_contents($fileName, $output, LOCK_EX);
+        $fileOperation = cFileHandler::write($fileName, $output);
 
         if ($fileOperation === FALSE) {
             return false; //return false if file_put_contents dont work
@@ -720,7 +720,7 @@ class Contenido_Module_Handler
 
         $input = iconv($this->_encoding, $this->_fileEncoding, $input);
 
-        $fileOperation = file_put_contents( $fileName, $input, LOCK_EX);
+        $fileOperation = cFileHandler::write($fileName, $input);
 
         if ($fileOperation === FALSE) {
             return false; //return false if file_put_contents dont work
@@ -839,27 +839,27 @@ class Contenido_Module_Handler
             $retOutput = true;
 
             //if file input exist rename it
-            if (file_exists($this->_path. $new. "/". $this->_directories['php']. $old. "_input.php"))
+            if (cFileHandler::exists($this->_path. $new. "/". $this->_directories['php']. $old. "_input.php"))
                 $retInput = rename($this->_path. $new. "/". $this->_directories['php']. $old. "_input.php",
                 $this->_path. $new. "/". $this->_directories['php']. $new. "_input.php");
 
              //if file output exist rename it
-            if (file_exists($this->_path. $new. "/". $this->_directories['php']. $old. "_output.php"))
+            if (cFileHandler::exists($this->_path. $new. "/". $this->_directories['php']. $old. "_output.php"))
                 $retOutput = rename($this->_path. $new. "/". $this->_directories['php']. $old. "_output.php",
                 $this->_path. $new. "/". $this->_directories['php']. $new. "_output.php");
 
              //rename the  css file
-            if (file_exists($this->_path. $new. "/". $this->_directories['css']. $old. ".css"))
+            if (cFileHandler::exists($this->_path. $new. "/". $this->_directories['css']. $old. ".css"))
                 rename($this->_path. $new. "/". $this->_directories['css']. $old. ".css",
                 $this->_path. $new. "/". $this->_directories['css']. $new. ".css");
 
              //rename the javascript file
-            if (file_exists($this->_path. $new. "/". $this->_directories['js']. $old. ".js"))
+            if (cFileHandler::exists($this->_path. $new. "/". $this->_directories['js']. $old. ".js"))
                 rename($this->_path. $new. "/". $this->_directories['js']. $old. ".js",
                 $this->_path. $new. "/". $this->_directories['js']. $new. ".js");
 
              //rename the template file
-            if (file_exists($this->_path. $new. "/". $this->_directories['template']. $old. ".html"))
+            if (cFileHandler::exists($this->_path. $new. "/". $this->_directories['template']. $old. ".html"))
                 rename($this->_path. $new. "/". $this->_directories['template']. $old. ".html",
                 $this->_path. $new. "/". $this->_directories['template']. $new. ".html");
 

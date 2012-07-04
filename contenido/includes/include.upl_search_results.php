@@ -104,7 +104,7 @@ class UploadList extends FrontendList
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
                     $sCacheName = substr($sCacheThumbnail, strrpos($sCacheThumbnail, "/")+1, strlen($sCacheThumbnail)-(strrchr($sCacheThumbnail, '/')+1));
                     $sFullPath = $cfgClient[$client]['cache_path'].$sCacheName;
-                    if (file_exists($sFullPath)) {
+                    if (cFileHandler::exists($sFullPath)) {
                         $aDimensions = getimagesize($sFullPath);
                         $iWidth = $aDimensions[0];
                         $iHeight = $aDimensions[1];
@@ -330,13 +330,13 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
             $filesize = $item->get("size");
 
             if ($filesize == 0) {
-                if (file_exists($dirname.$filename)) {
+                if (cFileHandler::exists($dirname.$filename)) {
                     $filesize = filesize($dirname.$filename);
                 }
             }
             $description = $item->get("description");
         } else {
-            if (file_exists($dirname.$filename)) {
+            if (cFileHandler::exists($dirname.$filename)) {
                 $filesize = filesize($dirname.$filename);
             }
         }

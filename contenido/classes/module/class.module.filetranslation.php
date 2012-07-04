@@ -33,13 +33,13 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // @fixme: No need to inlude classes since we have autoloading!
-if (file_exists(dirname(__FILE__)."/class.module.handler.php")) {
+if (cFileHandler::exists(dirname(__FILE__)."/class.module.handler.php")) {
     include_once(dirname(__FILE__)."/class.module.handler.php");
 }
-if (file_exists(dirname(__FILE__)."/../class.genericdb.php")) {
+if (cFileHandler::exists(dirname(__FILE__)."/../class.genericdb.php")) {
     include_once(dirname(__FILE__)."/../class.genericdb.php");
 }
-if (file_exists(dirname(__FILE__)."/../class.lang.php")) {
+if (cFileHandler::exists(dirname(__FILE__)."/../class.lang.php")) {
     include_once(dirname(__FILE__)."/../class.lang.php");
 }
 
@@ -298,7 +298,7 @@ class Contenido_Module_FileTranslation extends Contenido_Module_Handler
             return false;
         }
 
-        if (file_put_contents($fileName,$this->_serializeArray($wordListArray)) === false) {
+        if (cFileHandler::write($fileName,$this->_serializeArray($wordListArray)) === false) {
             return false;
         } else {
             return true;
@@ -311,8 +311,8 @@ class Contenido_Module_FileTranslation extends Contenido_Module_Handler
      */
     public function getTranslationArray()
     {
-        if (file_exists($this->_modulePath.$this->_directories['lang'].self::$fileName)) {
-            $array = $this->_unserializeArray(file_get_contents($this->_modulePath.$this->_directories['lang'].self::$fileName));
+        if (cFileHandler::exists($this->_modulePath.$this->_directories['lang'].self::$fileName)) {
+            $array = $this->_unserializeArray(cFileHandler::read($this->_modulePath.$this->_directories['lang'].self::$fileName));
             return $array;
         } else {
             return array();

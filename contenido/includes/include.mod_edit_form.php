@@ -128,7 +128,7 @@ if ($action == "mod_importexport_module") {
         $module->export();
     }
     if ($mode == "import") {
-        if (file_exists($_FILES["upload"]["tmp_name"])) {
+        if (cFileHandler::exists($_FILES["upload"]["tmp_name"])) {
             if (!$module->import($_FILES['upload']['name'], $_FILES["upload"]["tmp_name"])) {
                 $noti .= sprintf(i18n("Culd not import modul:")). "<br>";
             } else {

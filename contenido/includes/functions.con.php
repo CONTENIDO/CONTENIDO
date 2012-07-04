@@ -1142,8 +1142,8 @@ function conCreateLocationString($idcat, $seperator, &$cat_str, $makeLink = fals
 
     if ($final == true && $usecache == true) {
         if (!is_array($_locationStringCache)) {
-            if (file_exists($cfgClient[$client]['cache_path']."locationstring-cache-$uselang.txt")) {
-                $_locationStringCache = unserialize(file_get_contents($cfgClient[$client]['cache_path']."locationstring-cache-$uselang.txt"));
+            if (cFileHandler::exists($cfgClient[$client]['cache_path']."locationstring-cache-$uselang.txt")) {
+                $_locationStringCache = unserialize(cFileHandler::read($cfgClient[$client]['cache_path']."locationstring-cache-$uselang.txt"));
             } else {
                 $_locationStringCache = array();
             }
@@ -1206,7 +1206,7 @@ function conCreateLocationString($idcat, $seperator, &$cat_str, $makeLink = fals
         $_locationStringCache[$idcat]["expires"] = time() + 3600;
 
         if (is_writable($cfgClient[$client]['cache_path'])) {
-            file_put_contents($cfgClient[$client]['cache_path']."locationstring-cache-$uselang.txt", serialize($_locationStringCache));
+            cFileHandler::write($cfgClient[$client]['cache_path']."locationstring-cache-$uselang.txt", serialize($_locationStringCache));
         }
     }
 }

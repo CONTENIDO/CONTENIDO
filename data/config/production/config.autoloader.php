@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-07-03
+ *     created  2012-07-04
  * }}
  */
 
@@ -61,6 +61,7 @@ return array(
     'CSV' => 'contenido/classes/class.csv.php',
     'Contenido_Effective_Setting' => 'contenido/classes/class.effective.setting.php',
     'ExcelWorksheet' => 'contenido/classes/class.excel.php',
+    'cFileHandler' => 'contenido/classes/class.filehandler.php',
     'Form' => 'contenido/classes/class.form.php',
     'FormField' => 'contenido/classes/class.form.php',
     'FormCheck' => 'contenido/classes/class.form.php',
@@ -130,8 +131,9 @@ return array(
     'SearchIndex' => 'contenido/classes/class.search.php',
     'Search' => 'contenido/classes/class.search.php',
     'SearchResult' => 'contenido/classes/class.search.php',
-    'cSecurity_Exception' => 'contenido/classes/class.security.php',
+    'Contenido_Security_Exception' => 'contenido/classes/class.security.php',
     'cSecurity' => 'contenido/classes/class.security.php',
+    'Contenido_Security' => 'contenido/classes/class.security.php',
     'Structure' => 'contenido/classes/class.structure.php',
     'SynchronizeLayouts' => 'contenido/classes/class.synchronizeLayouts.php',
     'Table' => 'contenido/classes/class.table.php',

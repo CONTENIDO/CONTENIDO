@@ -537,7 +537,7 @@ if (extension_loaded('xsl'))
   function result_dump_file($dom_document,$filename)
   {
    $html=$dom_document->myDOMNode->saveHTML();
-   file_put_contents($filename,$html);
+   cFileHandler::write($filename,$html);
    return $html;
   }
   function result_dump_mem($dom_document) {return $dom_document->myDOMNode->saveHTML();}

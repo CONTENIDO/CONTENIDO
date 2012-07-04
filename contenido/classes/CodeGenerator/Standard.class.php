@@ -176,10 +176,10 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
             if (!is_dir($cfgClient[$this->_client]['code_path'])) {
                 mkdir($cfgClient[$this->_client]['code_path']);
                 chmod($cfgClient[$this->_client]['code_path'], 0777);
-                file_put_contents($cfgClient[$this->_client]['code_path'] . ".htaccess", "Order Deny,Allow\nDeny from all\n");
+                cFileHandler::write($cfgClient[$this->_client]['code_path'] . ".htaccess", "Order Deny,Allow\nDeny from all\n");
             }
             $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $this->_layoutCode;
-            file_put_contents($cfgClient[$this->_client]['code_path'].$this->_client.".".$this->_lang.".".$idcatart.".php", $code);
+            cFileHandler::write($cfgClient[$this->_client]['code_path'].$this->_client.".".$this->_lang.".".$idcatart.".php", $code);
 
             $db->update($cfg['tab']['cat_art'], array('createcode' => 0), array('idcatart' => (int) $idcatart));
         }

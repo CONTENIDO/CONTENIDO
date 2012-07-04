@@ -84,27 +84,17 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
         $sourcePath = $cfg['path']['contenido'] . $cfg['path']['frontendtemplate'];
 
         if ($copytemplate) {
-            if (!file_exists($destPath)) {
+            if (!cFileHandler::exists($destPath)) {
                 recursiveCopy($sourcePath, $destPath);
-                $res = fopen($destPath."config.php","rb+");
-                $res2 = fopen($destPath."config.php.new", "ab+");
-
-                if ($res && $res2) {
-                    while (!feof($res)) {
-                        $buffer = fgets($res, 4096);
-                        $buffer = str_replace("!CLIENT!", $idclient, $buffer);
-                        $buffer = str_replace("!PATH!", $cfg["path"]["contenido"], $buffer);
-                        fwrite($res2, $buffer);
-                    }
-                } else {
+                $buffer = cFileHandler::read($destPath."config.php");
+                $outbuf = str_replace("!CLIENT!", $idclient, $buffer);
+                $outbuf = str_replace("!PATH!", $cfg["path"]["contenido"], $outbuf);
+                if(!cFileHandler::write($destPath."config.php.new")) {
                       $notification->displayNotification("error",i18n("Couldn't write the file config.php."));
                 }
 
-                fclose($res);
-                fclose($res2);
-
-                unlink($destPath."config.php");
-                rename($destPath."config.php.new", $destPath."config.php");
+                cFileHandler::remove($destPath."config.php");
+                cFileHandler::rename($destPath."config.php.new", "config.php");
             } else {
                 $message = sprintf(i18n("The directory %s already exists. The client was created, but you have to copy the frontend-template yourself"),$destPath);
                 $notification->displayNotification("warning", $message);

@@ -104,7 +104,7 @@ class cApiDbfsCollection extends ItemCollection
         $targetfile = cApiDbfs::stripPath($targetfile);
         $mimetype   = fileGetMimeContentType($localfile);
 
-        $this->write($targetfile, file_get_contents($localfile), $mimetype);
+        $this->write($targetfile, cFileHandler::read($localfile), $mimetype);
     }
 
     /**
@@ -116,7 +116,7 @@ class cApiDbfsCollection extends ItemCollection
     {
         $sourcefile = cApiDbfs::stripPath($sourcefile);
 
-        file_put_contents($localfile, $this->read($sourcefile));
+        cFileHandler::write($localfile, $this->read($sourcefile));
     }
 
     /**

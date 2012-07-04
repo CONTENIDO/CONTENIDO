@@ -220,7 +220,7 @@ function uplSyncDirectory($sPath)
     // delete all db entries related to current directory without existing file on file system
     $oUploadsColl->select("dirname='" . $oUploadsColl->escape($sPath) . "' AND idclient=" . (int) $client);
     while ($oUpload = $oUploadsColl->next()) {
-        if (!file_exists($cfgClient[$client]['upl']['path'] . $oUpload->get('dirname') . $oUpload->get('filename'))) {
+        if (!cFileHandler::exists($cfgClient[$client]['upl']['path'] . $oUpload->get('dirname') . $oUpload->get('filename'))) {
             $oUploadsColl->delete($oUpload->get('idupl'));
         }
     }
@@ -307,7 +307,7 @@ function uplmkdir($sPath, $sName)
 
     $sName = uplCreateFriendlyName($sName);
     $sName = strtr($sName, "'", '.');
-    if (file_exists($cfgClient[$client]['upl']['path'] . $sPath . $sName)) {
+    if (cFileHandler::exists($cfgClient[$client]['upl']['path'] . $sPath . $sName)) {
         $action = 'upl_mkdir';
         return '0702';
     } else {
@@ -655,7 +655,7 @@ function uplGetFileIcon($sFile)
             $icon = "css.gif";
             break;
         default:
-            if (file_exists($sPathFiletypes . $sFileType . '.gif')) {
+            if (cFileHandler::exists($sPathFiletypes . $sFileType . '.gif')) {
                 $icon = $sFileType . '.gif';
             } else {
                 $icon = "unknown.gif";

@@ -278,15 +278,9 @@ class Contenido_CT_File extends CT_File
      */
     public function ac_get_value($sId, $sName)
     {
-        if (file_exists($this->file_path . "$sId$sName")) {
-            $f = fopen($this->file_path . "$sId$sName", 'r');
-            if ($f<0) {
-                return '';
-            }
+        if (cFileHandler::exists($this->file_path . "$sId$sName")) {
 
-            $s = fgets($f, $this->iLineLength);
-            fclose($f);
-
+            $s = cFileHandler::readLine($this->file_path . "$sId$sName");
             return urldecode($s);
         } else {
             return '';

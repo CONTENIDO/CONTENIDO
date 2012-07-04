@@ -51,7 +51,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // Clients local configuration
-if (file_exists('config.local.php')) {
+if (cFileHandler::exists('config.local.php')) {
     @include('config.local.php');
 }
 
@@ -441,7 +441,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     $oCatArtColl = new cApiCategoryArticleCollection();
     $oCatArt = $oCatArtColl->fetchByCategoryIdAndArticleId($idcat, $idart);
 
-    if (!file_exists($cfgClient[$client]['code_path'].$client.".".$lang.".".$idcatart.".php")) {
+    if (!cFileHandler::exists($cfgClient[$client]['code_path'].$client.".".$lang.".".$idcatart.".php")) {
         cInclude('includes', 'functions.tpl.php');
         cInclude('includes', 'functions.mod.php');
         conGenerateCode($idcat, $idart, $lang, $client);
@@ -451,7 +451,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         conGenerateCode($idcat, $idart, $lang, $client);
     }
 
-    $code = file_get_contents($cfgClient[$client]['code_path'].$client.".".$lang.".".$idcatart.".php");
+    $code = cFileHandler::read($cfgClient[$client]['code_path'].$client.".".$lang.".".$idcatart.".php");
 
     // Add mark Script to code if user is in the backend
     $code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);
@@ -640,7 +640,7 @@ if ($cfg['cache']['disable'] != '1') {
 }
 
 // Configuration settings after the site is displayed.
-if (file_exists('config.after.php')) {
+if (cFileHandler::exists('config.after.php')) {
     @include('config.after.php');
 }
 

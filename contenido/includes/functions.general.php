@@ -522,7 +522,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
     }
 
     $aConfigFileContent[] = '?>';
-    file_put_contents($cfg['path']['contenido_config'] . 'config.clients.php', implode(PHP_EOL, $aConfigFileContent));
+    cFileHandler::write($cfg['path']['contenido_config'] . 'config.clients.php', implode(PHP_EOL, $aConfigFileContent));
 }
 
 function rereadClients()
@@ -1133,7 +1133,7 @@ function scanPlugins($entity)
         while (($file = readdir($dh)) !== false) {
             if (is_dir($basedir . $file) && $file != 'includes' && $file != '.' && $file != '..') {
                 if (!in_array($file, $plugins)) {
-                    if (file_exists($basedir . $file . '/' . $file . '.php')) {
+                    if (cFileHandler::exists($basedir . $file . '/' . $file . '.php')) {
                         $plugins[] = $file;
                     }
                 }
@@ -1141,7 +1141,7 @@ function scanPlugins($entity)
         }
 
         foreach ($plugins as $key => $value) {
-            if (!is_dir($basedir . $value) || !file_exists($basedir . $value . '/' . $value . '.php')) {
+            if (!is_dir($basedir . $value) || !cFileHandler::exists($basedir . $value . '/' . $value . '.php')) {
                 unset($plugins[$key]);
             }
         }
@@ -1153,7 +1153,7 @@ function scanPlugins($entity)
     }
 
     foreach ($plugins as $key => $value) {
-        if (!is_dir($basedir . $value) || !file_exists($basedir . $value . '/' . $value . '.php')) {
+        if (!is_dir($basedir . $value) || !cFileHandler::exists($basedir . $value . '/' . $value . '.php')) {
             unset($plugins[$key]);
         } else {
             i18nRegisterDomain($entity . '_' . $value, $basedir . $value . '/locale/');
@@ -1417,7 +1417,7 @@ function cWarning($file, $line, $message)
     $msg .= buildStackString();
     $msg .= "\n";
 
-    file_put_contents($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, FILE_APPEND);
+    cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
 
     trigger_error($message, E_USER_WARNING);
 }
@@ -1444,7 +1444,7 @@ function cError($file, $line, $message)
     $msg .= buildStackString();
     $msg .= "\n";
 
-    file_put_contents($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, FILE_APPEND);
+    cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
 
     trigger_error($message, E_USER_ERROR);
 }
@@ -1472,7 +1472,7 @@ function cDeprecated($amsg = '')
 
     $msg .= buildStackString(2)."\n";
 
-    file_put_contents($cfg['path']['contenido_logs'] . 'deprecatedlog.txt', $msg, FILE_APPEND);
+    cFileHandler::write($cfg['path']['contenido_logs'] . 'deprecatedlog.txt', $msg, true);
 }
 
 /**
@@ -1585,8 +1585,8 @@ function notifyOnError($errortitle, $errormessage)
 
     $notifyFile = $cfg['path']['contenido_logs'] . 'notify.txt';
 
-    if (file_exists($notifyFile)) {
-        $notifytimestamp = file_get_contents($notifyFile);
+    if (cFileHandler::exists($notifyFile)) {
+        $notifytimestamp = cFileHandler::read($notifyFile);
     } else {
         $notifytimestamp = 0;
     }
@@ -1612,7 +1612,7 @@ function notifyOnError($errortitle, $errormessage)
             $oMail->Send();
 
             // Write last notify log file
-            file_put_contents($notifyFile, time());
+            cFileHandler::write($notifyFile, time());
         }
     }
 }

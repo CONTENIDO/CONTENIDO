@@ -39,7 +39,7 @@ global $cfg;
 // Try to load GenericDB database driver
 $driver_filename = $cfg['path']['contenido'].$cfg['path']['classes'].'drivers/'.$cfg['sql']['gdb_driver'].'/class.gdb.'.$cfg['sql']['gdb_driver'].'.php';
 
-if (file_exists($driver_filename)) {
+if (cFileHandler::exists($driver_filename)) {
     include_once($driver_filename);
 }
 

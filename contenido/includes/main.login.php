@@ -204,7 +204,7 @@ $tpl->set('s', 'ADMIN_EMAIL', $sOutputAdmin);
 
 $tpl->set('s', 'SYMBOLHELP', '<a href="' . $sess->url("frameset.php?area=symbolhelp&frame=4") . '">' . i18n('Symbol help') . '</a>');
 
-if (file_exists($cfg['contenido']['handbook_path'])) {
+if (cFileHandler::exists($cfg['contenido']['handbook_path'])) {
     $tpl->set('s', 'CONTENIDOMANUAL', '<a href="' . $cfg['contenido']['handbook_url'] . '" target="_blank">' . i18n('CONTENIDO Manual') . '</a>');
 } else {
     $tpl->set('s', 'CONTENIDOMANUAL', '');

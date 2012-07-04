@@ -198,7 +198,7 @@ class Template
         global $cfg;
 
         //check if the template is a file or a string
-        if (!@ file_exists($template))
+        if (!@ cFileHandler::exists($template))
             $content = & $template; //template is a string (it is a reference to save memory!!!)
         else
             $content = implode("", file($template)); //template is a file

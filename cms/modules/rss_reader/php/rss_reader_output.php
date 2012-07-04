@@ -28,7 +28,7 @@ if ("CMS_VALUE[2]" == "") {
 }
 
 // Preparse feed for an encoding due to the poorly designed PHP XML parser
-$sFeedContent = substr(@file_get_contents($sFeed),0,1024);
+$sFeedContent = substr(@cFileHandler::read($sFeed),0,1024);
 
 $regExp = "/<\?xml.*encoding=[\"\'](.*)[\"\']\?>/i";
 

@@ -50,7 +50,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @return  string  Path to the resulting image
  */
 function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand) {
-    if (!file_exists($sImg)) {
+    if (!cFileHandler::exists($sImg)) {
         return false;
     }
 
@@ -96,7 +96,7 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
 {
     global $cfgClient,  $client;
 
-    if (!file_exists($img)) {
+    if (!cFileHandler::exists($img)) {
         return false;
     }
 
@@ -202,7 +202,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
 {
     global $cfgClient, $client;
 
-    if (!file_exists($img)) {
+    if (!cFileHandler::exists($img)) {
         return false;
     }
 
@@ -316,7 +316,7 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
 {
     global $cfg, $cfgClient, $client;
 
-    if (!file_exists($img)) {
+    if (!cFileHandler::exists($img)) {
         return false;
     }
 
@@ -369,7 +369,7 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
 
     exec($cmd, $output, $retVal);
 
-    if (!file_exists($cacheFile)) {
+    if (!cFileHandler::exists($cacheFile)) {
         return false;
     } else {
         return $webFile;
@@ -449,9 +449,9 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false,
 
         $img = $cfgClient[$client]['cache_path'] . $file;
         $deleteAfter = true;
-    } else if (!file_exists($img)) {
+    } else if (!cFileHandler::exists($img)) {
         // Try with upload string
-        if (file_exists($cfgClient[$client]['upl']['path'].$img) && !is_dir($cfgClient[$client]['upl']['path'].$img)) {
+        if (cFileHandler::exists($cfgClient[$client]['upl']['path'].$img) && !is_dir($cfgClient[$client]['upl']['path'].$img)) {
             $img = $cfgClient[$client]['upl']['path'].$img;
         } else {
             // No, it's neither in the upload directory nor in the dbfs. return.
@@ -626,7 +626,7 @@ function cApiImageGetCacheFileName($md5, $filetype, $keepType) {
  */
 function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
     // Check if the file exists. If it does, check if the file is valid.
-    if (file_exists($cacheFile)) {
+    if (cFileHandler::exists($cacheFile)) {
         if ($cacheTime == 0) {
             // Do not check expiration date
             return true;

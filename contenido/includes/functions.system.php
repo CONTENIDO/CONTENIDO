@@ -46,11 +46,10 @@ function emptyLogFile() {
     // clear errorlog.txt
     $filename = $cfg['path']['contenido_logs'] . 'errorlog.txt';
 
-    if (file_exists($filename) && is_writeable($filename)) {
-        $errorLogHandle = fopen($filename, "wb+");
-        fclose($errorLogHandle);
+    if (cFileHandler::exists($filename) && is_writeable($filename)) {
+    	cFileHandler::truncate($filename);
         $tmp_notification = $notification->returnNotification("info", i18n("Error log successfully cleared!"));
-    } else if (file_exists($filename) && !is_writeable($filename)) {
+    } else if (cFileHandler::exists($filename) && !is_writeable($filename)) {
         $tmp_notification = $notification->returnNotification("error", i18n("Can't clear error log : Access is denied!"));
     }
 

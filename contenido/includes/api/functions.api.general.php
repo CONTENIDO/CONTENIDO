@@ -138,7 +138,7 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
         // now we check if the file is available in the include path
         $aPaths = explode(PATH_SEPARATOR, ini_get('include_path'));
         foreach ($aPaths as $sPath) {
-            if (@file_exists($sPath . DIRECTORY_SEPARATOR . $sInclude)) {
+            if (@cFileHandler::exists($sPath . DIRECTORY_SEPARATOR . $sInclude)) {
                 $sFoundPath = $sPath;
                 break;
             }
@@ -150,7 +150,7 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
 
         unset($aPaths, $sPath);
     } else {
-        if (!file_exists($sInclude) || preg_match('#^\.\./#', $sWhat)) {
+        if (!cFileHandler::exists($sInclude) || preg_match('#^\.\./#', $sWhat)) {
             $bError = true;
         }
     }

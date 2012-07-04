@@ -61,7 +61,7 @@ class Debug_FileAndVisAdv extends Debug_VisibleAdv
 
         if (is_writeable($this->_filePathName)) {
             $sDate = date('Y-m-d H:i:s');
-            file_put_contents($this->_filePathName, $sDate . ": " . $msg . "\n", FILE_APPEND);
+            cFileHandler::write($this->_filePathName, $sDate . ": " . $msg . "\n", true);
         }
     }
 
@@ -75,7 +75,7 @@ class Debug_FileAndVisAdv extends Debug_VisibleAdv
                       . $sVariableDescription . "\n"
                       . print_r($mVariable, true) . "\n"
                       . '#################### /' . $sDate . ' ###################' . "\n\n";
-            file_put_contents($file, $sContent, FILE_APPEND);
+            cFileHandler::write($file, $sContent, true);
         }
     }
 }

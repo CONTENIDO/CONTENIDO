@@ -783,7 +783,7 @@ class Cms_Teaser {
         }
 
         //scale image if exists and return it
-        if (file_exists($sTeaserImage)) {
+        if (cFileHandler::exists($sTeaserImage)) {
              //Scale Image using cApiImgScale
             $sImgSrc = cApiImgScale($sTeaserImage, $iMaxX, $iMaxY, $bCropped);
 
@@ -1021,7 +1021,7 @@ class Cms_Teaser {
 
         $sCode = '';
         //generate teasertemplate
-        if (file_exists($this->aCfgClient[$this->iClient]['path']['frontend'].'templates/'.$this->aSettings['teaser_style'])) {
+        if (cFileHandler::exists($this->aCfgClient[$this->iClient]['path']['frontend'].'templates/'.$this->aSettings['teaser_style'])) {
             $sCode = $oTpl->generate($this->aCfgClient[$this->iClient]['path']['frontend'].'templates/'.$this->aSettings['teaser_style'], 1);
         }
 

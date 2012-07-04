@@ -58,7 +58,7 @@ define("E_BASEDIR_INCOMPATIBLE",          4);
 function isWriteable($file)
 {
     clearstatcache();
-    if (!file_exists($file)) {
+    if (!cFileHandler::exists($file)) {
         return false;
     }
 
@@ -84,10 +84,7 @@ function canReadFile($sFilename)
 {
     if (isReadable(dirname($sFilename))) {
         if (isReadable($sFilename)) {
-            $fp = fopen($sFilename, "r");
-            fclose($fp);
-
-            return true;
+            return (bool) cFileHandler::read($sFilename);
         }
     }
     return false;
@@ -102,7 +99,7 @@ function canWriteFile($sFilename)
         $i = 0;
 
         // Try to find a random filename for write test, which does not exist
-        while (file_exists($sRandFilenamePath) &&  $i < 100) {
+        while (cFileHandler::exists($sRandFilenamePath) &&  $i < 100) {
             $sRandFilename = 'con_test'.rand(0,1000000000).'con_test';
             $sRandFilenamePath = '';
 
@@ -121,18 +118,12 @@ function canWriteFile($sFilename)
         }
 
         // Ignore errors in case isWriteable() returns a wrong information
-        $fp = @fopen($sRandFilenamePath, "w");
-        if ($fp) {
-            @fclose($fp);
-            unlink($sRandFilenamePath);
-            return true;
-        } else {
-            return false;
-        }
+        cFileHandler::create($sRandFilenamePath, "test");
+        return cFileHandler::remove($sRandFilenamePath);
     }
 
     if (isWriteable(dirname($sFilename))) {
-        if (file_exists($sFilename)) {
+        if (cFileHandler::exists($sFilename)) {
             if (!isWriteable($sFilename)) {
                 return false;
             } else {
@@ -141,17 +132,10 @@ function canWriteFile($sFilename)
         }
 
         // Ignore errors in case isWriteable() returns a wrong information
-        $fp = @fopen($sFilename, "w");
-        @fclose($fp);
-
-        if (file_exists($sFilename)) {
-            @unlink($sFilename);
-            return true;
-        } else {
-            return false;
-        }
+        cFileHandler::create($sFilename, "test");
+        return cFileHandler::remove($sFilename);
     } else {
-        if (file_exists($sFilename)) {
+        if (cFileHandler::exists($sFilename)) {
             if (!isWriteable($sFilename)) {
                 return false;
             } else {
@@ -166,7 +150,7 @@ function canDeleteFile($sFilename)
     if (isWriteable($sFilename)) {
         unlink($sFilename);
 
-        if (file_exists($sFilename)) {
+        if (cFileHandler::exists($sFilename)) {
             return false;
         } else {
             return true;
@@ -178,7 +162,7 @@ function canDeleteFile($sFilename)
 
 function getFileInfo($sFilename)
 {
-    if (!file_exists($sFilename)) {
+    if (!cFileHandler::exists($sFilename)) {
         return false;
     }
 

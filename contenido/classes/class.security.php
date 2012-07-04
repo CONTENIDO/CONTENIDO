@@ -67,7 +67,7 @@ class Contenido_Security_Exception extends Exception
             $sFileContent .= "Original value was '" . $_REQUEST[$sParamName] . "'" . PHP_EOL;
             $sFileContent .= "URL: " . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] . " (Protocol: " . $_SERVER['SERVER_PROTOCOL'] . ")" . PHP_EOL;
 
-            file_put_contents($sLogFile, $sFileContent, FILE_APPEND);
+            cFileHandler::write($sLogFile, $sFileContent, true);
         }
 
         // strictly die here

@@ -182,7 +182,7 @@ class Form
         if (!$this->passed) {
 
             // check if the template is a file or a string
-            if (!@file_exists($template)) {
+            if (!@cFileHandler::exists($template)) {
                 // template is a string
                 $tmp_template['complete'] = explode("\n", $template);
             } else {

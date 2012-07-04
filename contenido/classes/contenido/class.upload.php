@@ -149,7 +149,7 @@ class cApiUploadCollection extends ItemCollection
         if (cApiDbfs::isDbfs($sDirFileName)) {
             $oDbfs = new cApiDbfsCollection();
             $oDbfs->remove($sDirFileName);
-        } elseif (file_exists($cfgClient[$client]['upl']['path'] . $sDirFileName)) {
+        } elseif (cFileHandler::exists($cfgClient[$client]['upl']['path'] . $sDirFileName)) {
             unlink($cfgClient[$client]['upl']['path'] . $sDirFileName);
         }
 
@@ -309,7 +309,7 @@ class cApiUpload extends Item
         if ($bIsDbfs) {
             $oDbfsCol = new cApiDbfsCollection();
             $iFileSize = $oDbfsCol->getSize($sFilePathName);
-        } elseif (file_exists($sFilePathName)) {
+        } elseif (cFileHandler::exists($sFilePathName)) {
             $iFileSize = filesize($sFilePathName);
         }
 

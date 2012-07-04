@@ -125,20 +125,8 @@ if (!defined('CON_FRAMEWORK')) {
     * @return void only init sCode
     */
     protected function initFileContent() {
-        if (file_exists($this->sPath.$this->sFileName)) {
-            if (!$handle = fopen( $this->sPath.$this->sFileName, "rb")) {
-                print i18n("Can not open file "). $this->sPath.$this->sFileName;
-                return;
-            }
-            
-            do {
-                $_data = fread($handle, 4096);
-                if (strlen($_data) == 0) {
-                    break;
-                }
-                $this->sCode .=  $_data;
-            } while (true);
-            fclose($handle);
+        if (cFileHandler::exists($this->sPath.$this->sFileName)) {
+        	$this->sCode = cFileHandler::read($this->sPath.$this->sFileName);
         } else {
             echo "<br>File not exists " . $this->sPath.$this->sFileName;
         }

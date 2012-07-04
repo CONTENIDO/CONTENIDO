@@ -91,7 +91,7 @@ class LayoutInFile {
      */
     static function existLayout($layoutAlias, $cfgClient, $client) {
         $file = $cfgClient[$client]['layout_path'] . $layoutAlias.'/';
-        return file_exists($file);
+        return cFileHandler::exists($file);
     }
 
     /**
@@ -203,7 +203,7 @@ class LayoutInFile {
      * @return boolean, success true else false
      */
     public function isWritable($fileName, $directory) {
-        if (file_exists($fileName)) {
+        if (cFileHandler::exists($fileName)) {
             if (!is_writable($fileName)) {
                 return false;
             }
@@ -241,7 +241,7 @@ class LayoutInFile {
      */
     public function saveLayoutByUpgrade($layoutCode = '') {
         // if file exist dont overwirte it
-        if (file_exists($this->_layoutPath . $this->_fileName)) {
+        if (cFileHandler::exists($this->_layoutPath . $this->_fileName)) {
             return true;
         }
 
@@ -262,7 +262,7 @@ class LayoutInFile {
         $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
         $layoutCode = iconv($this->_encoding, $fileEncoding, $layoutCode);
 
-        $save = file_put_contents($this->_layoutPath . $this->_fileName, $layoutCode);
+        $save = cFileHandler::write($this->_layoutPath . $this->_fileName, $layoutCode);
 
         return (strlen($layoutCode) == 0 && $save == 0) || $save > 0;
     }
@@ -368,7 +368,7 @@ class LayoutInFile {
         }
 
         // if file input exist rename it
-        if (!file_exists($newPath . $this->_fileName)) {
+        if (!cFileHandler::exists($newPath . $this->_fileName)) {
             return false;
         }
 
@@ -394,7 +394,7 @@ class LayoutInFile {
             return false;
         }
 
-        if (($content = file_get_contents($this->_layoutPath . $this->_fileName)) === FALSE) {
+        if (($content = cFileHandler::read($this->_layoutPath . $this->_fileName)) === FALSE) {
             return false;
         } else {
             // convert

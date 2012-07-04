@@ -39,17 +39,15 @@ if (isset($tmp_notification)) {
 }
 
 // error log
-if (file_exists($cfg['path']['contenido_logs'] . 'errorlog.txt')) {
-    $errorLogHandle = fopen($cfg['path']['contenido_logs'] . 'errorlog.txt', 'rb');
+if (cFileHandler::exists($cfg['path']['contenido_logs'] . 'errorlog.txt')) {
+	$info = cFileHandler::info($cfg['path']['contenido_logs'] . 'errorlog.txt');
+	if($info['size'] >= 16384) {
+		$errorLogBuffer = cFileHandler::read($cfg['path']['contenido_logs'] . 'errorlog.txt', 16384, 0, true);
+	} else {
+		$errorLogBuffer = cFileHandler::read($cfg['path']['contenido_logs'] . 'errorlog.txt');
+	}
     $txtAreaHeight = "200";
 
-    // If the file is larger than 16KB, seek to the file's length - 16KB)
-    fseek($errorLogHandle, -16384, SEEK_END);
-
-    while (!feof($errorLogHandle)) {
-        $errorLogBuffer .= fgets($errorLogHandle, 16384);
-    }
-    fclose($errorLogHandle);
     if (strlen($errorLogBuffer) == 0) {
         $errorLogBuffer = i18n("No error log entries found");
         $txtAreaHeight = "20";

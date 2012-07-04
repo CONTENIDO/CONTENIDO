@@ -634,7 +634,7 @@ class cSetupSystemtest extends cSetupMask
         $sMessage = sprintf(i18n("Setup or CONTENIDO can't write to the file %s. Please change the file permissions to correct this problem."), $sFile);
 
         if ($status == false) {
-            if (file_exists(C_FRONTEND_PATH . $sFile)) {
+            if (cFileHandler::exists(C_FRONTEND_PATH . $sFile)) {
                 $sTarget = C_FRONTEND_PATH . $sFile;
 
                 $iPerm = predictCorrectFilepermissions(C_FRONTEND_PATH . $sFile);

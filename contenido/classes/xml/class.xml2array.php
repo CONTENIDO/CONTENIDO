@@ -74,8 +74,8 @@ class cApiXml2Array
     {
         if (substr(trim($sXML), 0, 5) != "<?xml") {
             // check for file
-            if (@file_exists($sXML)) {
-                $sXML = file_get_contents($sXML);
+            if (@cFileHandler::exists($sXML)) {
+                $sXML = cFileHandler::read($sXML);
             }
         }
 

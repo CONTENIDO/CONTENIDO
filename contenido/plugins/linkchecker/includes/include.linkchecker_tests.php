@@ -168,7 +168,7 @@ function checkLinks() {
             if(url_is_uri($aSearchIDInfosNonID[$i]['url'])) {
 
                 if(substr($aSearchIDInfosNonID[$i]['url'], 0, strlen($aSearchIDInfosNonID[$i]['url'])) == $cfgClient[$client]['path']['htmlpath']) {
-                    $iPing = @file_exists(str_replace($cfgClient[$client]['path']['htmlpath'], $cfgClient[$client]['path']['frontend'], $aSearchIDInfosNonID[$i]['url']));
+                    $iPing = @cFileHandler::exists(str_replace($cfgClient[$client]['path']['htmlpath'], $cfgClient[$client]['path']['frontend'], $aSearchIDInfosNonID[$i]['url']));
                 } else {
                     $iPing = @fopen($aSearchIDInfosNonID[$i]['url'], 'r');
                 }
@@ -185,7 +185,7 @@ function checkLinks() {
 
             } elseif(substr($aSearchIDInfosNonID[$i]['url'], strlen($aSearchIDInfosNonID[$i]['url'])-5, 5) == ".html") {
 
-                $iPing = @file_exists($cfgClient[$client]['path']['htmlpath'] . $aSearchIDInfosNonID[$i]['url']);
+                $iPing = @cFileHandler::exists($cfgClient[$client]['path']['htmlpath'] . $aSearchIDInfosNonID[$i]['url']);
 
                 if(!$iPing) {
                     $aErrors['art'][] = array_merge($aSearchIDInfosNonID[$i], array("error_type" => "unknown"));
@@ -209,7 +209,7 @@ function checkLinks() {
 
             } else {
 
-                if(!file_exists($cfgClient[$client]['path']['frontend'] . $aSearchIDInfosNonID[$i]['url'])) {
+                if(!cFileHandler::exists($cfgClient[$client]['path']['frontend'] . $aSearchIDInfosNonID[$i]['url'])) {
 
                     if(url_is_image($aSearchIDInfosNonID[$i]['url'])) {
                         $aErrors['docimages'][] = array_merge($aSearchIDInfosNonID[$i], array("error_type" => "unknown"));

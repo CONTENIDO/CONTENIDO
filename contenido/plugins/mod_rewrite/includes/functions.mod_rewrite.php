@@ -668,7 +668,7 @@ function mr_getConfiguration($clientId)
     if (!is_file($file) || !is_readable($file)) {
         return null;
     }
-    if ($content = file_get_contents($file)) {
+    if ($content = cFileHandler::read($file)) {
         return unserialize($content);
     } else {
         return null;
@@ -691,7 +691,7 @@ function mr_setConfiguration($clientId, array $config)
     global $cfg;
 
     $file = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
-    $result = file_put_contents($file, serialize($config), LOCK_EX);
+    $result = cFileHandler::write($file, serialize($config));
     return ($result) ? true : false;
 }
 

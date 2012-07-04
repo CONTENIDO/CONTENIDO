@@ -41,7 +41,7 @@ function injectSQL($db, $prefix, $file, $replacements = array())
         return false;
     }
 
-    $sqlFile = file_get_contents($file);
+    $sqlFile = cFileHandler::read($file);
 
     $sqlFile = removeComments($sqlFile);
     $sqlFile = removeRemarks($sqlFile);

@@ -200,7 +200,7 @@ class XsltProcessor
      */
     function readFromFile($file)
     {
-        if (file_exists($file))
+        if (cFileHandler::exists($file))
         {
             $data = file($file);
             $data = join($data, "");
@@ -237,7 +237,7 @@ class XsltProcessor
      *
      *        if ($scheme == 'file_exists')
      *        {   // result is returned as valid xml string
-     *           return '<?xml version="1.0" encoding="UTF-8"?><root>'.(file_exists($param) ? "true" : "false")."</root>";
+     *           return '<?xml version="1.0" encoding="UTF-8"?><root>'.(cFileHandler::exists($param) ? "true" : "false")."</root>";
      *     }
      * }
      *

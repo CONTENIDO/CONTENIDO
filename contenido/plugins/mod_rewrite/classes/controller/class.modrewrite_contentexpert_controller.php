@@ -138,7 +138,7 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
             $source = $this->_htaccessSimple;
         }
 
-        $this->_oView->content = file_get_contents($source);
+        $this->_oView->content = cFileHandler::read($source);
 
         header('Content-Type: text/plain');
         header('Etag: ' . md5(mt_rand()));

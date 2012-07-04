@@ -251,7 +251,7 @@ class Purge {
                         $iCountDelete = ($iCount <= $iFileNumber) ? 0 : ($iCount - $iFileNumber);
                         // delete the files
                         for ($i = 0; $i < $iCountDelete; $i++) {
-                            if (file_exists($aTmpFile[$sKey][$i]) && is_writable($aTmpFile[$sKey][$i])) {
+                            if (cFileHandler::exists($aTmpFile[$sKey][$i]) && is_writable($aTmpFile[$sKey][$i])) {
                                 unlink($aTmpFile[$sKey][$i]);
                             }
                         }
@@ -426,11 +426,11 @@ class Purge {
                 if ($file != "." && $file != ".." &&  in_array($sFileExt, $aTypes)) {
                     $sFilePath = $sDirPath . '/' . $file;
 
-                    if (file_exists($sFilePath) && is_writable($sFilePath)) {
+                    if (cFileHandler::exists($sFilePath) && is_writable($sFilePath)) {
                         $iCount++;
 
                         //chmod($sFilePath, 0777);
-                        if (fclose(fopen($sFilePath, 'w+'))) {
+                        if (cFileHandler::truncate($sFilePath)) {
                             $iCountCleared++;
                         }
                     }

@@ -132,15 +132,15 @@ foreach ($plugins as $key => $ipc_plugin)
         $ipc_langfile   = $ipc_conpluginpath . $ipc_plugin . "/includes/language.plugin.php";
         $ipc_configfile = $ipc_conpluginpath . $ipc_plugin . "/includes/config.plugin.php";
 
-        if (file_exists($ipc_localedir))
+        if (cFileHandler::exists($ipc_localedir))
         {
             i18nRegisterDomain($ipc_plugin, $ipc_localedir);
         }
-        if (file_exists($ipc_langfile))
+        if (cFileHandler::exists($ipc_langfile))
         {
             include_once($ipc_langfile);
         }
-        if (file_exists($ipc_configfile))
+        if (cFileHandler::exists($ipc_configfile))
         {
             include_once($ipc_configfile);
         }

@@ -49,20 +49,16 @@ function getServerUID()
     $sFilename = md5(mt_rand()) . ".txt";
 
     if (isWriteable(".")) {
-        $fp = fopen($sFilename, "w");
-        fwrite($fp, "test");
-        fclose($fp);
+        cFileHandler::create($sFilename, "test");
         $iUserId = fileowner($sFilename);
-        unlink($sFilename);
+        cFileHandler::remove($sFilename);
 
         return ($iUserId);
     } else {
         if (isWriteable("/tmp/")) {
-            $fp = fopen("/tmp/".$sFilename, "w");
-            fwrite($fp, "test");
-            fclose($fp);
+            cFileHandler::create("/tmp/".$sFilename, "w");
             $iUserId = fileowner("/tmp/".$sFilename);
-            unlink("/tmp/".$sFilename);
+            cFileHandler::remove("/tmp/".$sFilename);
 
             return ($iUserId);
         }
@@ -78,10 +74,9 @@ function getServerGID() {
     $sFilename = md5(mt_rand()) . ".txt";
 
     if (isWriteable(".")) {
-        $fp = fopen($sFilename, "w+");
-        fclose($fp);
+        cFileHandler::create($sFilename, "test");
         $iUserId = filegroup($sFilename);
-        unlink($sFilename);
+        cFileHandler::remove($sFilename);
 
         return ($iUserId);
     } else {

@@ -90,8 +90,8 @@ class Cronjobs {
     public function getDateLastExecute() {
 
         $timestamp = '';
-        if(file_exists($this->_cronlogDirectory .$this->_phpFile.self::$JOB_ENDING))
-        if(($timestamp = file_get_contents($this->_cronlogDirectory.$this->_phpFile.self::$JOB_ENDING))) {
+        if(cFileHandler::exists($this->_cronlogDirectory .$this->_phpFile.self::$JOB_ENDING))
+        if(($timestamp = cFileHandler::read($this->_cronlogDirectory.$this->_phpFile.self::$JOB_ENDING))) {
             return date("d.m.Y H:i:s",$timestamp);
         }
         return $timestamp;
@@ -104,8 +104,8 @@ class Cronjobs {
      * @return string, contents of the file or ''
      */
     public function getContentsCrontabFile() {
-        if (file_exists($this->_cronlogDirectory.self::$CRONTAB_FILE)) {
-            return file_get_contents($this->_cronlogDirectory.self::$CRONTAB_FILE);
+        if (cFileHandler::exists($this->_cronlogDirectory.self::$CRONTAB_FILE)) {
+            return cFileHandler::read($this->_cronlogDirectory.self::$CRONTAB_FILE);
         } else {
             return '';
         }
@@ -119,7 +119,7 @@ class Cronjobs {
      */
     public function saveCrontabFile($data) {
 
-        return file_put_contents($this->_cronlogDirectory.self::$CRONTAB_FILE, $data);
+        return cFileHandler::write($this->_cronlogDirectory.self::$CRONTAB_FILE, $data);
 
     }
 
@@ -130,7 +130,7 @@ class Cronjobs {
      */
     public function setRunTime($timestamp) {
 
-        file_put_contents($this->_cronlogDirectory.$this->_phpFile.self::$JOB_ENDING,$timestamp);
+        cFileHandler::write($this->_cronlogDirectory.$this->_phpFile.self::$JOB_ENDING,$timestamp);
     }
 
 
@@ -142,8 +142,8 @@ class Cronjobs {
      */
     public function getLastLines($lines = 25) {
 
-        if(file_exists($this->_cronlogDirectory . $this->_phpFile.self::$LOG_ENDING)) {
-            $content = explode("\n", file_get_contents($this->_cronlogDirectory . $this->_phpFile.self::$LOG_ENDING));
+        if(cFileHandler::exists($this->_cronlogDirectory . $this->_phpFile.self::$LOG_ENDING)) {
+            $content = explode("\n", cFileHandler::read($this->_cronlogDirectory . $this->_phpFile.self::$LOG_ENDING));
             $number = count($content);
             $pos = $number - $lines;
             if ($pos < 0) {
@@ -163,7 +163,7 @@ class Cronjobs {
      */
     public function existFile() {
 
-        if(file_exists($this->_cronjobDirectory.$this->_phpFile) && !is_dir($this->_cronjobDirectory.$this->_phpFile))
+        if(cFileHandler::exists($this->_cronjobDirectory.$this->_phpFile) && !is_dir($this->_cronjobDirectory.$this->_phpFile))
             if(substr($this->_phpFile,-4)=='.php')
                 return true;
             else

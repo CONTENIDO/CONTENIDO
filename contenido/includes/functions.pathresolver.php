@@ -369,7 +369,7 @@ function prWriteCacheFileContent($data, $client, $lang)
 
     $res = false;
     if (is_writable($path)) {
-        $res = file_put_contents($path . $filename, serialize($data));
+        $res = cFileHandler::write($path . $filename, serialize($data));
     }
 
     return ($res) ? true : false;
@@ -389,8 +389,8 @@ function prGetCacheFileContent($client, $lang)
     $path = $cfgClient[$client]['cache_path'];
     $filename = "locationstring-url-cache-$lang.txt";
 
-    if (file_exists($path . $filename)) {
-        $data = unserialize(file_get_contents($path . $filename));
+    if (cFileHandler::exists($path . $filename)) {
+        $data = unserialize(cFileHandler::read($path . $filename));
     } else {
         $data = array();
     }

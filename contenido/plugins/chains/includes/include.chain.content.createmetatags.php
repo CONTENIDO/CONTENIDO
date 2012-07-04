@@ -52,7 +52,7 @@ function cecCreateMetatags($metatags) {
 
     $fileexists = false;
 
-    if (file_exists($cachefilename)) {
+    if (cFileHandler::exists($cachefilename)) {
         $fileexists = true;
 
         $diff =  time() - filemtime($cachefilename);
@@ -247,11 +247,11 @@ function cecCreateMetatags($metatags) {
         }
 
         // save metatags in cache file
-        file_put_contents($cachefilename, serialize($metatags));
+        cFileHandler::write($cachefilename, serialize($metatags));
 
     } else {
         #Get metatags from file system cache
-        $metatags = unserialize(file_get_contents($cachefilename));
+        $metatags = unserialize(cFileHandler::read($cachefilename));
     }
 
     return $metatags;

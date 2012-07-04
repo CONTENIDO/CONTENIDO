@@ -44,7 +44,7 @@ if($action == "mod_importexport_module") {
                 $notification->displayNotification('error', i18n("Could not export module!"));
             break;
         case 'import':
-            if (file_exists($_FILES["upload"]["tmp_name"]))
+            if (cFileHandler::exists($_FILES["upload"]["tmp_name"]))
             {
                 if (!$module->import($_FILES['upload']['name'] , $_FILES["upload"]["tmp_name"]))
                 {
@@ -73,7 +73,7 @@ if($action == "mod_importexport_module") {
                 $modules = new cApiModuleCollection;
 
 
-            if (file_exists($_FILES["upload"]["tmp_name"]))
+            if (cFileHandler::exists($_FILES["upload"]["tmp_name"]))
             {
                 $modulName = substr($_FILES['upload']['name'],0,-4);
 

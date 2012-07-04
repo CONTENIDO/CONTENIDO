@@ -82,19 +82,19 @@ class Contenido_Module_Synchronizer extends Contenido_Module_Handler
     */
     private function _renameFiles($dir, $oldModulName, $newModulName)
     {
-        if (file_exists($dir.$newModulName.'/'.$this->_directories['php'].$oldModulName.'_input.php') == true) {
+        if (cFileHandler::exists($dir.$newModulName.'/'.$this->_directories['php'].$oldModulName.'_input.php') == true) {
             rename($dir.$newModulName.'/'.$this->_directories['php'].$oldModulName.'_input.php', $dir.$newModulName.'/'.$this->_directories['php'].$newModulName.'_input.php');
         }
 
-        if (file_exists($dir.$newModulName.'/'.$this->_directories['php'].$oldModulName.'_output.php') == true){
+        if (cFileHandler::exists($dir.$newModulName.'/'.$this->_directories['php'].$oldModulName.'_output.php') == true){
             rename($dir.$newModulName.'/'.$this->_directories['php'].$oldModulName.'_output.php', $dir.$newModulName.'/'.$this->_directories['php'].$newModulName.'_output.php');
         }
 
-        if (file_exists($dir.$newModulName.'/'.$this->_directories['css'].$oldModulName.'.css') == true){
+        if (cFileHandler::exists($dir.$newModulName.'/'.$this->_directories['css'].$oldModulName.'.css') == true){
             rename($dir.$newModulName.'/'.$this->_directories['css'].$oldModulName.'.css', $dir.$newModulName.'/'.$this->_directories['css'].$newModulName.'.css');
         }
 
-        if (file_exists($dir.$newModulName.'/'.$this->_directories['js'].$oldModulName.'.js') == true){
+        if (cFileHandler::exists($dir.$newModulName.'/'.$this->_directories['js'].$oldModulName.'.js') == true){
             rename($dir.$newModulName.'/'.$this->_directories['js'].$oldModulName.'.js', $dir.$newModulName.'/'.$this->_directories['js'].$newModulName.'.js');
         }
     }
@@ -145,11 +145,11 @@ class Contenido_Module_Synchronizer extends Contenido_Module_Handler
 
             $lastmodInput = $lastmodOutput = 0;
 
-            if (file_exists($modulePath . "_input.php")) {
+            if (cFileHandler::exists($modulePath . "_input.php")) {
                 $lastmodInput  = filemtime($modulePath . "_input.php");
             }
 
-            if (file_exists($modulePath . "_output.php")) {
+            if (cFileHandler::exists($modulePath . "_output.php")) {
                 $lastmodOutput  = filemtime($modulePath . "_output.php");
             }
 

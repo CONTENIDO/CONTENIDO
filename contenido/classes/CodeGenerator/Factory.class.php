@@ -63,7 +63,7 @@ class Contenido_CodeGenerator_Factory
         if (!class_exists($className)) {
             $fileName = $name . '.class.php';
             $path     = str_replace('\\', '/', dirname(__FILE__)) . '/';
-            if (!file_exists($path . $fileName)) {
+            if (!cFileHandler::exists($path . $fileName)) {
                 throw new InvalidArgumentException('The classfile couldn\'t included by Contenido_CodeGenerator_Factory: '.$name.'!');
             }
 

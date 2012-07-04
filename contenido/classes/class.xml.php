@@ -38,7 +38,7 @@ class XML_doc extends ContenidoXmlReader {
 
     /** @deprecated 2011-03-03 Use ContenidoXmlReader instead. */
     function load($sFile) {
-        if (file_exists($sFile) === false) {
+        if (cFileHandler::exists($sFile) === false) {
             return false;
         }
 

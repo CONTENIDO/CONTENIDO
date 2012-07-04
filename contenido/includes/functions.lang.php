@@ -84,26 +84,15 @@ function langNewLanguage($name, $client)
     // Ab hyr seynd Drachen
     $destPath = $cfgClient[$client]['path']['frontend'];
 
-    if (file_exists($destPath) && file_exists($destPath . 'config.php')) {
-        $res = fopen($destPath . 'config.php', 'rb+');
-        $res2 = fopen($destPath . 'config.php.new', 'ab+');
+    if (cFileHandler::exists($destPath) && cFileHandler::exists($destPath . 'config.php')) {
+    	$buffer = cFileHandler::read($destPath . 'config.php');
+    	$outbuf = str_replace('!LANG!', $oLangItem->get('idlang'), $buffer);
+    	cFileHandler::write($destPath . 'config.php.new', $outbuf);
+    	if (cFileHandler::exists($destPath . 'config.php')) {
+    		cFileHandler::remove($destPath . 'config.php');
+    	}
 
-        if ($res && $res2) {
-            while (!feof($res)) {
-                $buffer = fgets($res, 4096);
-                $outbuf = str_replace('!LANG!', $oLangItem->get('idlang'), $buffer);
-                fwrite($res2, $outbuf);
-            }
-
-            fclose($res);
-            fclose($res2);
-
-            if (file_exists($destPath . 'config.php')) {
-                unlink($destPath . 'config.php');
-            }
-
-            rename($destPath . 'config.php.new', $destPath . 'config.php');
-        }
+    	cFileHandler::rename($destPath . 'config.php.new', 'config.php');
     } else {
         $notification->displayNotification('error',
             i18n("Could not set the language-ID in the file 'config.php'. Please set the language manually.")

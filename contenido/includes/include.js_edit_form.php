@@ -57,7 +57,7 @@ if (!(int) $client > 0) {
 if ($action == $sActionDelete) {
     $path = $cfgClient[$client]["js"]["path"];
     if (!strrchr($_REQUEST['delfile'], "/")) {
-        if (file_exists($path.$_REQUEST['delfile'])) {
+        if (cFileHandler::exists($path.$_REQUEST['delfile'])) {
             unlink($path.$_REQUEST['delfile']);
             removeFileInformation($client, $_REQUEST['delfile'], 'js', $db);
             $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted JS-File successfully!"));

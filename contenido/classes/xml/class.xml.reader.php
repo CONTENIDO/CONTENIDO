@@ -31,7 +31,7 @@ class ContenidoXmlReader extends ContenidoXmlBase
      */
     public function load($sFilename)
     {
-        if (!file_exists($sFilename)) {
+        if (!cFileHandler::exists($sFilename)) {
             return false;
         }
 

@@ -267,7 +267,7 @@ class Cms_Image {
             $sUploadPath = $this->aCfgClient[$this->iClient]['upl']['path'];
             $oHandle = opendir($sUploadPath.$sDirectoryPath);
             while ($sEntry = readdir($oHandle)) {
-                if ( $sEntry != "." && $sEntry != ".." && file_exists( $sUploadPath.$sDirectoryPath."/".$sEntry ) && !is_dir( $sUploadPath.$sDirectoryPath."/".$sEntry ) ) {
+                if ( $sEntry != "." && $sEntry != ".." && cFileHandler::exists( $sUploadPath.$sDirectoryPath."/".$sEntry ) && !is_dir( $sUploadPath.$sDirectoryPath."/".$sEntry ) ) {
                     if ($sDirectoryPath=='/' || $sDirectoryPath==''){
                         $oHtmlSelectOption = new cHTMLOptionElement($sEntry, $sEntry);
                     } else {
@@ -577,7 +577,7 @@ class Cms_Image {
         {
             foreach ($_FILES['file']['name'] as $key => $value)
             {
-                if (file_exists($_FILES['file']['tmp_name'][$key]))
+                if (cFileHandler::exists($_FILES['file']['tmp_name'][$key]))
                 {
                     $friendlyName = uplCreateFriendlyName($_FILES['file']['name'][$key]);
                     move_uploaded_file($_FILES['file']['tmp_name'][$key], $cfgClient[$client]['upl']['path'].$sPath.$friendlyName);

@@ -1425,11 +1425,11 @@ class PHPMailer {
     } elseif ($this->sign_key_file) {
       try {
         $file = tempnam('', 'mail');
-        file_put_contents($file, $body); //TODO check this worked
+        cFileHandler::write($file, $body); //TODO check this worked
         $signed = tempnam("", "signed");
         if (@openssl_pkcs7_sign($file, $signed, "file://".$this->sign_cert_file, array("file://".$this->sign_key_file, $this->sign_key_pass), NULL)) {
           @unlink($file);
-          $body = file_get_contents($signed);
+          $body = cFileHandler::read($signed);
           @unlink($signed);
         } else {
           @unlink($file);
@@ -1666,7 +1666,7 @@ class PHPMailer {
           ini_set('magic_quotes_runtime', 0);
         }
       }
-      $file_buffer  = file_get_contents($path);
+      $file_buffer  = cFileHandler::read($path);
       $file_buffer  = $this->EncodeString($file_buffer, $encoding);
       if ($magic_quotes) {
         if (version_compare(PHP_VERSION, '5.3.0', '<')) {
@@ -2444,7 +2444,7 @@ class PHPMailer {
    * @param string $s Header
    */
   public function DKIM_Sign($s) {
-    $privKeyStr = file_get_contents($this->DKIM_private);
+    $privKeyStr = cFileHandler::read($this->DKIM_private);
     if ($this->DKIM_passphrase != '') {
       $privKey = openssl_pkey_get_private($privKeyStr, $this->DKIM_passphrase);
     } else {

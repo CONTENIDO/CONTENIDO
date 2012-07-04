@@ -44,7 +44,7 @@ class cSetupSystemData extends cSetupMask
         cInitializeArrayKey($_SESSION, "dbname", "");
         cInitializeArrayKey($_SESSION, "dbpass", "");
 
-        if (file_exists($cfg['path']['contenido_config'] . 'config.php')) {
+        if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
             $contenido_host     = ""; // Just define the variables to avoid warnings in IDE
             $contenido_user     = "";
             $contenido_database = "";

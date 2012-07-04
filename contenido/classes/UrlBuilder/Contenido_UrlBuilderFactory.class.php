@@ -64,7 +64,7 @@ class Contenido_UrlBuilderFactory
                     $sClassName = 'Contenido_UrlBuilder_' . $sBuilder;
                     $sFileName  = 'Contenido_UrlBuilder_' . $sBuilder . '.class.php';
                     $sPath      = str_replace('\\', '/', dirname(__FILE__)) . '/';
-                    if (!file_exists($sPath . $sFileName)) {
+                    if (!cFileHandler::exists($sPath . $sFileName)) {
                         throw new InvalidArgumentException('The classfile of Contenido_UrlBuilder couldn\'t included by Contenido_UrlBuilderFactory: '.$sBuilder.'!');
                     }
                     cInclude('classes', 'UrlBuilder/' . $sFileName);

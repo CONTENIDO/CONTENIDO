@@ -80,13 +80,14 @@ $cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(dirname(__FIL
 // Security check: Include security class and invoke basic request checks
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.security.php');
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.requestvalidator.php');
+require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.filehandler.php');
 $oRequestValidator = new cRequestValidator(realpath(dirname(__FILE__) . '/../..') . '/data/config/' . CONTENIDO_ENVIRONMENT);
 
 // "Workaround" for register_globals=off settings.
 require_once(dirname(__FILE__) . '/globals_off.inc.php');
 
 // Check if configuration file exists, this is a basic indicator to find out, if CONTENIDO is installed
-if (!file_exists($cfg['path']['contenido_config'] . 'config.php')) {
+if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
     $msg  = "<h1>Fatal Error</h1><br>"
           . "Could not open the configuration file <b>config.php</b>.<br><br>"
           . "Please make sure that you saved the file in the setup program."
@@ -102,13 +103,13 @@ require_once($cfg['path']['contenido_config'] . 'config.colors.php');
 require_once($cfg['path']['contenido_config'] . 'config.templates.php');
 require_once($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
 
-if (file_exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
+if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
     require_once($cfg['path']['contenido_config'] . 'config.clients.php');
 }
 
 // Include userdefined configuration (if available), where you are able to
 // extend/overwrite core settings from included configuration files above
-if (file_exists($cfg['path']['contenido_config'] . 'config.local.php')) {
+if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.local.php')) {
     require_once($cfg['path']['contenido_config'] . 'config.local.php');
 }
 
@@ -133,8 +134,8 @@ $localePath = $cfg['path']['contenido_locale'];
 $handle = opendir($localePath);
 while ($locale = readdir($handle)) {
     if (is_dir($localePath . $locale) && $locale != '..' && $locale != '.') {
-        if (file_exists($localePath . $locale . '/LC_MESSAGES/contenido.po') &&
-            file_exists($localePath . $locale . '/LC_MESSAGES/contenido.mo')) {
+        if (cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.po') &&
+            cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.mo')) {
             $cfg['login_languages'][] = $locale;
             $cfg['lang'][$locale] = 'lang_' . $locale . '.xml';
         }

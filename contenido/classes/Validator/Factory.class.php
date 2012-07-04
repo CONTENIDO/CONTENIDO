@@ -69,7 +69,7 @@ class Contenido_Validator_Factory
             $obj = new $className();
         } else {
             $path = str_replace('\\', '/', dirname(__FILE__)) . '/';
-            if (!file_exists($path . $fileName)) {
+            if (!cFileHandler::exists($path . $fileName)) {
                 throw new InvalidArgumentException("The class file of Contenido_Validator couldn't included by Contenido_Validator_Factory: " . $validator . "!");
             }
 

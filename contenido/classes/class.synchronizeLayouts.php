@@ -57,8 +57,8 @@ class SynchronizeLayouts {
              //add new Layout in db-tablle
              $this->_addLayout($newLayoutName,$idclient);
              //make a layout file if not exist
-             if (!file_exists($dir.$newLayoutName.'/'.$newLayoutName.'.html')) {
-                 file_put_contents($dir.$newLayoutName.'/'.$newLayoutName.'.html', '');
+             if (!cFileHandler::exists($dir.$newLayoutName.'/'.$newLayoutName.'.html')) {
+                 cFileHandler::write($dir.$newLayoutName.'/'.$newLayoutName.'.html', '');
              }
 
              //set output message
@@ -153,7 +153,7 @@ class SynchronizeLayouts {
      */
     private function _renameFiles($dir, $oldLayoutName, $newLayoutName)
     {
-        if (file_exists($dir.$newLayoutName.'/'.$oldLayoutName.'.html') == true) {
+        if (cFileHandler::exists($dir.$newLayoutName.'/'.$oldLayoutName.'.html') == true) {
             rename($dir.$newLayoutName.'/'.$oldLayoutName.'.html', $dir.$newLayoutName.'/'.$newLayoutName.'.html');
         }
     }
@@ -191,7 +191,7 @@ class SynchronizeLayouts {
             //exist layout directory
             if (is_dir($dir.$db->f('alias').'/')) {
 
-                if (file_exists($dir.$db->f('alias').'/'.$db->f('alias').'.html')) {
+                if (cFileHandler::exists($dir.$db->f('alias').'/'.$db->f('alias').'.html')) {
                     $lastmodifiedLayout = filemtime($dir.$db->f('alias').'/'.$db->f('alias').'.html');
 
                     //update layout data

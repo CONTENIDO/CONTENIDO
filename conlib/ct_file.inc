@@ -69,8 +69,7 @@ class CT_File
 
     public function ac_store($id, $name, $str)
     {
-        $flags = defined(LOCK_EX) ? FILE_APPEND | LOCK_EX : FILE_APPEND;
-        return (bool) file_put_contents($this->file_path . "$id$name", $flags);
+        return (bool) cFileHandler::write($this->file_path . "$id$name", true);
     }
 
     public function ac_delete($id, $name)
@@ -106,8 +105,8 @@ class CT_File
 
     public function ac_get_value($id, $name)
     {
-        if (file_exists($this->file_path . "$id$name")) {
-            $content = file_get_contents($this->file_path . "$id$name");
+        if (cFileHandler::exists($this->file_path . "$id$name")) {
+            $content = cFileHandler::read($this->file_path . "$id$name");
             return urldecode($content);
         } else {
             return '';

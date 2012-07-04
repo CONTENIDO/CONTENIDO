@@ -113,7 +113,7 @@ class cRequestValidator {
         $this->sMode = "";
 
         // check config and logging path
-        if (!empty($sConfigPath) && file_exists($sConfigPath."/config.http_check.php")) {
+        if (!empty($sConfigPath) && cFileHandler::exists($sConfigPath."/config.http_check.php")) {
             $this->sConfigPath = realpath($sConfigPath);
         } else {
             die('Could not load cRequestValidator configuration! (invalid path) '.$sConfigPath);
@@ -123,7 +123,7 @@ class cRequestValidator {
         require($this->sConfigPath."/config.http_check.php");
 
         // if custom config exists, include it also here
-        if (file_exists(dirname($this->sConfigPath) . '/config.http_check.local.php')) {
+        if (cFileHandler::exists(dirname($this->sConfigPath) . '/config.http_check.local.php')) {
             require(dirname($this->sConfigPath) . '/config.http_check.local.php');
         }
 
@@ -206,7 +206,6 @@ class cRequestValidator {
                 $bResult = preg_match($this->aCheck[$sType][$sKey], $mValue);
             } else {
                 //unknown parameter. Will return tru
-                //file_put_contents($this->sLogPath, "Unkown parameter: ".$sType.":".$sKey."\n", FILE_APPEND);
                 $bResult = true;
             }
         }
@@ -229,15 +228,12 @@ class cRequestValidator {
      */
     protected function logHackTrial() {
         if ($this->bLog === true && !empty($this->sLogPath)) {
-            if (($rLogFile = @fopen($this->sLogPath, 'a')) !== false) {
-                fwrite($rLogFile, date('Y-m-d H:i:s'));
-                fwrite($rLogFile, '  ');
-                fwrite($rLogFile, $_SERVER['REMOTE_ADDR'] . str_repeat(' ', 17 - strlen($_SERVER['REMOTE_ADDR'])));
-                fwrite($rLogFile, $_SERVER['QUERY_STRING']);
-                fwrite($rLogFile, "\n");
-                fwrite($rLogFile, print_r($_POST, true)."\n");
-                fclose($rLogFile);
-            }
+        	cFileHandler::write($this->sLogPath, date('Y-m-d H:i:s'));
+        	cFileHandler::write($this->sLogPath, '  ');
+        	cFileHandler::write($this->sLogPath, $_SERVER['REMOTE_ADDR'] . str_repeat(' ', 17 - strlen($_SERVER['REMOTE_ADDR'])));
+        	cFileHandler::write($this->sLogPath, $_SERVER['QUERY_STRING']);
+        	cFileHandler::write($this->sLogPath, "\n");
+        	cFileHandler::write($this->sLogPath, print_r($_POST, true)."\n");
         } elseif ($this->sMode == 'continue') {
             echo "\n<br />VIOLATION: URL contains invalid or undefined paramaters! URL: '" .
                 htmlentities($_SERVER['QUERY_STRING']) . "' <br />\n";

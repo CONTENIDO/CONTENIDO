@@ -117,7 +117,7 @@ $oRcpGroups->setWhere("idlang", $lang);
 $oRcpGroups->setOrder("groupname");
 $oRcpGroups->query();
 
-while ($oRcpGroup = $oRcpGroups->next()) 
+while ($oRcpGroup = $oRcpGroups->next())
 {
     $sField = "g" . $oRcpGroup->get($oRcpGroup->primaryKey);
 
@@ -145,9 +145,9 @@ while ($oRcpGroup = $oRcpGroups->next())
 if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipients", "recipients_create")) {
 
     //get content from uploaded file
-    if (file_exists($_FILES['receptionis_file']['tmp_name'])) {
+    if (cFileHandler::exists($_FILES['receptionis_file']['tmp_name'])) {
         if (strtolower(substr($_FILES['receptionis_file']['name'], -3)) == 'csv') {
-            $sFileData = file_get_contents($_FILES['receptionis_file']['tmp_name']);
+            $sFileData = cFileHandler::read($_FILES['receptionis_file']['tmp_name']);
             if ($sFileData == '') {
                 $aMessage[] = i18n("The file is empty!", 'newsletter');
             }

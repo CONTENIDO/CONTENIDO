@@ -337,7 +337,7 @@ class Contenido_Navigation
             $sClientName = $classclient->getClientName($client).' ('.$client.')';
             $sClientUrl  = $cfgClient[$client]["path"]["htmlpath"];
 
-            if ($clientImage !== false && $clientImage != "" && file_exists($cfgClient[$client]['path']['frontend'].$clientImage)) {
+            if ($clientImage !== false && $clientImage != "" && cFileHandler::exists($cfgClient[$client]['path']['frontend'].$clientImage)) {
                 $sClientImageTemplate = '<img src="%s" alt="%s" title="%s" />';
 
                 $sThumbnailPath  = cApiImgScale($cfgClient[$client]['path']['frontend'].$clientImage, 80, 25, 0, 1);

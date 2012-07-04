@@ -588,18 +588,10 @@ class XmlParser
      */
     function parseFile($file)
     {
-        if (!($fp = fopen($file, "rb")))
-        {
-
-        }
-
-        while ($sData = fread($fp, 4096))
-        {
-              if (!xml_parse($this->parser, $sData, feof($fp)))
-            {
-                $this->_error();
-                return false;
-            }
+    	$sData = cFileHandler::read($file);
+        if (!xml_parse($this->parser, $sData)) {
+        	$this->_error();
+        	return false;
         }
 
         if ($this->autofree)

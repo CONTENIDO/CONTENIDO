@@ -52,7 +52,7 @@
          */
         public function getBody(cApiMailLog $oItem){
             $fileName = md5($oItem->getField('idmail'). $oItem->getField('created'));
-            return file_get_contents($this->mailLogDirectory . 'body_'. $fileName .'.'. $this->mailLogEnding);
+            return cFileHandler::read($this->mailLogDirectory . 'body_'. $fileName .'.'. $this->mailLogEnding);
         }
 
 
@@ -64,7 +64,7 @@
         public function getHeader(cApiMailLog $oItem) {
 
             $fileName = md5($oItem->getField('idmail'). $oItem->getField('created'));
-            return file_get_contents($this->mailLogDirectory . 'header_'. $fileName .'.'. $this->mailLogEnding);
+            return cFileHandler::read($this->mailLogDirectory . 'header_'. $fileName .'.'. $this->mailLogEnding);
         }
 
         /**
@@ -97,11 +97,11 @@
             $item->set('exception', $exception);
             $fileName = md5($item->getField('idmail'). $date);
 
-            if (file_put_contents($this->mailLogDirectory . 'body_'. $fileName .'.'. $this->mailLogEnding, $body) === false) {
+            if (cFileHandler::write($this->mailLogDirectory . 'body_'. $fileName .'.'. $this->mailLogEnding, $body) === false) {
                 return false;
             }
 
-            if (file_put_contents($this->mailLogDirectory . 'header_'.$fileName .'.'. $this->mailLogEnding, $header) === false) {
+            if (cFileHandler::write($this->mailLogDirectory . 'header_'.$fileName .'.'. $this->mailLogEnding, $header) === false) {
                 return false;
             }
 

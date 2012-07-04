@@ -332,7 +332,7 @@ abstract class Contenido_CodeGenerator_Abstract
             $typeCodeFile = $cfg['path']['contenido'] . 'includes/type/code/include.' . $type . '.code.php';
 
             foreach ($a_[$key] as $val) {
-                if (file_exists($typeCodeFile)) {
+                if (cFileHandler::exists($typeCodeFile)) {
                     // include CMS type code
                     include($typeCodeFile);
                 } elseif (!empty($_typeItem->code)) {

@@ -58,7 +58,7 @@ if ($action == $sActionDelete) {
     $path = $cfgClient[$client]['css']['path'];
     // Delete file
     if (!strrchr($_REQUEST['delfile'], '/')) {
-        if (file_exists($path.$_REQUEST['delfile'])) {
+        if (cFileHandler::exists($path.$_REQUEST['delfile'])) {
             unlink($path.$_REQUEST['delfile']);
             removeFileInformation($client, $_REQUEST['delfile'], 'css', $db);
             $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Deleted CSS file successfully!'));

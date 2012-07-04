@@ -142,12 +142,12 @@ function i18nEmulateGettext($string, $domain = 'contenido')
 
     $translationFile = $_conI18n['domains'][$domain] . $_conI18n['language'] . '/LC_MESSAGES/' . $domain . '.po';
 
-    if (!file_exists($translationFile)) {
+    if (!cFileHandler::exists($translationFile)) {
         return $string;
     }
 
     if (!isset($_conI18n['files'][$domain])) {
-        $_conI18n['files'][$domain] = file_get_contents($translationFile);
+        $_conI18n['files'][$domain] = cFileHandler::read($translationFile);
 
         // Normalize eol chars
         $_conI18n['files'][$domain] = str_replace("\n\r", "\n", $_conI18n['files'][$domain]);

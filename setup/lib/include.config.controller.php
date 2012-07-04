@@ -52,11 +52,9 @@ $tpl->set('s', 'NOLOCK', $_SESSION['nolock']);
 if ($_SESSION['configmode'] == 'save') {
     @unlink($cfg['path']['contenido_config'] . 'config.php');
 
-    @$handle = fopen($cfg['path']['contenido_config'] . 'config.php', 'wb');
-    @fwrite($handle, $tpl->generate('templates/config.php.tpl', true, false));
-    @fclose($handle);
+    cFileHandler::create($cfg['path']['contenido_config'] . 'config.php', $tpl->generate('templates/config.php.tpl', true, false));
 
-    if (!file_exists($cfg['path']['contenido_config'] . 'config.php')) {
+    if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
         $_SESSION['configsavefailed'] = true;
     } else {
         unset($_SESSION['configsavefailed']);

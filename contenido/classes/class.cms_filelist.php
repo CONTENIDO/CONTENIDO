@@ -522,7 +522,7 @@ class Cms_FileList {
             $oHandle = opendir($sUploadPath.$sDirectoryPath);
             while ($sEntry = readdir($oHandle)) {
                 if ( $sEntry != "." && $sEntry != ".." &&
-                     file_exists( $sUploadPath.$sDirectoryPath."/".$sEntry ) &&
+                     cFileHandler::exists( $sUploadPath.$sDirectoryPath."/".$sEntry ) &&
                      !is_dir( $sUploadPath.$sDirectoryPath."/".$sEntry ) ) {
                     $oHtmlSelectOption = new cHTMLOptionElement($sEntry, $sDirectoryPath."/".$sEntry, false);
                     $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);

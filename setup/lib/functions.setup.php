@@ -60,7 +60,7 @@ function cGenerateSetupStepsDisplay($iCurrentStep)
 function logSetupFailure($sErrorMessage)
 {
     global $cfg;
-    file_put_contents($cfg['path']['contenido_logs'] . 'setuplog.txt', $sErrorMessage . PHP_EOL . PHP_EOL, FILE_APPEND);
+    cFileHandler::write($cfg['path']['contenido_logs'] . 'setuplog.txt', $sErrorMessage . PHP_EOL . PHP_EOL, true);
 }
 
 ?>

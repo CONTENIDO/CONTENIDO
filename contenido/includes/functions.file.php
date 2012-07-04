@@ -186,6 +186,8 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
  *
  * Exits the script, if file could not opened!
  *
+ * @deprecated [2012-07-04] These functions are now in cFileHandler
+ *
  * @param   string  $filename  The file to write the content
  * @param   string  $sCode     File content to write
  * @param   string  $path      Path to the file
@@ -195,6 +197,8 @@ function fileEdit($filename, $sCode, $path)
 {
     global $notification;
 
+    cDeprecated("This function was replaced by cFileHandler");
+
     // FIXME: fileValidateFilename does also the validation but display another message!
     if (strlen(trim($filename)) == 0) {
         $notification->displayNotification("error", i18n("Please insert file name."));
@@ -203,27 +207,8 @@ function fileEdit($filename, $sCode, $path)
 
     fileValidateFilename($filename, true);
 
-    // FIXME: Should be replaced against file_put_contents($path . $filename, FILE_BINARY | LOCK_EX | FILE_APPEND)
-
-    if (is_writable($path.$filename)) {
-        if (strlen(stripslashes(trim($sCode))) >= 0) {
-            // open file
-            if (!$handle = fopen($path.$filename, "wb+")) {
-                $notification->displayNotification("error", sprintf(i18n("Could not open file %s"), $path.$filename));
-                exit;
-            }
-            // write file
-            if (fwrite($handle, stripslashes($sCode))=== FALSE) {
-                $notification->displayNotification("error", sprintf(i18n("Could not write file %s"), $path.$filename));
-                exit;
-            }
-
-            fclose($handle);
-            return true;
-
-        } else {
-            return false;
-        }
+    if (cFileHandler::write($path.$filename, $sCode)) {
+    	return cFileHandler::read($path.$filename);
     } else {
         $notification->displayNotification("error", sprintf(i18n("%s is not writable"), $path.$filename));
         exit;
@@ -235,6 +220,8 @@ function fileEdit($filename, $sCode, $path)
  *
  * Exits the script, if file could not opened!
  *
+ * @deprecated [2012-07-04] These functions are now in cFileHandler
+ *
  * @param   string  $filename  The file to get the content
  * @param   string  $path      Path to the file
  * @return  (string|void)      Either content of file o nothing
@@ -243,36 +230,32 @@ function getFileContent($filename, $path)
 {
     global $notification;
 
-    // FIXME: Should be replaced against file_get_contents($path . $filename, FILE_BINARY)
+    cDeprecated("This function was replaced by cFileHandler");
 
-    if (!$handle = fopen($path.$filename, "rb")) {
+	$ret = "";
+    if (($ret = cFileHandler::read($path.$filename)) === false) {
        $notification->displayNotification("error", sprintf(i18n("Can not open file%s "), $path.$filename));
        exit;
     }
 
-    do {
-        $_data = fread($handle, 4096);
-        if (strlen($_data) == 0) {
-            break;
-        }
-        $sFileContents .= $_data;
-    } while (true);
-
-    fclose($handle);
-    return $sFileContents;
+    return $ret;
 }
 
 
 /**
  * Returns the filetype (extension).
  *
+ * @deprecated [2012-07-04] These functions are now in cFileHandler
+ *
  * @param   string  $filename  The file to get the type
  * @return  string  Filetype
  */
 function getFileType($filename)
 {
-    $aFileName = explode(".", $filename);
-    return $aFileName[count($aFileName) - 1];
+    cDeprecated("This function was replaced by cFileHandler");
+
+    $ret = cFileHandler::info($filename);
+    return $ret['extension'];
 }
 
 
@@ -280,6 +263,8 @@ function getFileType($filename)
  * Creates a file.
  *
  * Exits the script, if filename is not valid or creation (touch or chmod) fails!
+ *
+ * @deprecated [2012-07-04] These functions are now in cFileHandler
  *
  * @param   string  $filename  The file to create
  * @param   string  $path      Path to the file
@@ -289,12 +274,14 @@ function createFile($filename, $path)
 {
     global $notification;
 
+    cDeprecated("This function was replaced by cFileHandler");
+
     fileValidateFilename($filename, true);
 
     // create the file
-    if (touch($path.$filename)) {
+    if (cFileHandler::create($filename)) {
         // change file access permission
-        if (chmod ($path.$filename, 0777)) {
+        if (cFileHandler::chmod($path.$filename, "0777")) {
             return true;
         } else {
             $notification->displayNotification("error", $path.$filename." ".i18n("Unable to change file access permission."));
@@ -307,9 +294,11 @@ function createFile($filename, $path)
 }
 
 /**
- * Renames a existing file.
+ * Renames an existing file.
  *
  * Exits the script, if new filename is not valid or renaming fails!
+ *
+ * @deprecated [2012-07-04] These functions are now in cFileHandler
  *
  * @param   string  $sOldFile  Old filename
  * @param   string  $sNewFile  New filename
@@ -320,19 +309,14 @@ function renameFile($sOldFile, $sNewFile, $path)
 {
     global $notification;
 
-    fileValidateFilename($sNewFile, true);
+    cDeprecated("This function was replaced by cFileHandler");
 
-    if (is_writable($path.$sOldFile)) {
-        // rename file
-        if (rename($path.$sOldFile, $path.$sNewFile)) {
-            return $sNewFile;
-        } else {
-            $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"),$path.$sOldFile));
-            exit;
-        }
+    fileValidateFilename($sNewFile, true);
+    if (cFileHandler::rename($path.$sOldFile, $sNewFile)) {
+    	return $sNewFile;
     } else {
-        $notification->displayNotification("error", sprintf(i18n("%s is not writable"), $path.$sOldFile));
-        exit;
+    	$notification->displayNotification("error", sprintf(i18n("Can not rename file %s"),$path.$sOldFile));
+    	exit;
     }
 }
 
@@ -364,21 +348,18 @@ function fileValidateFilename($filename, $notifyAndExitOnFailure = true)
 
 /**
  * Returns MIME content-type for a file.
+ *
+ * @deprecated [2012-07-04] These functions are now in cFileHandler
+ *
  * @param  string  $file  Full path and name of file
  * @return string|null  MIME content-type on success, or null
  */
 function fileGetMimeContentType($file)
 {
-    if (function_exists('finfo_file')) {
-        // Since PHP >= 5.3.0
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        return finfo_file($finfo, $file);
-    } elseif (function_exists('mime_content_type')) {
-        // Deprecated version
-        return mime_content_type($file);
-    } else {
-        return null;
-    }
+    cDeprecated("This function was replaced by cFileHandler");
+
+	$ret = cFileHandler::info($file);
+	return $ret['mime'];
 }
 
 /**
@@ -398,7 +379,8 @@ function getDirectorySize($sDirectory, $bRecursive = false)
     }
 
     foreach ($files as $file) {
-        $ret += filesize($file);
+    	$temp = cFileHandler::info($file);
+    	$ret += $temp['size'];
     }
 
     return $ret;
@@ -432,7 +414,7 @@ function scanDirectory($sDirectory, $bRecursive = false)
             while (($sFile = readdir($hDirHandle)) !== false) {
                 if ($sFile != '.' && $sFile != '..') {
                     $sFullpathFile = $sDirectory . '/' . $sFile;
-                    if (is_file($sFullpathFile) && is_readable($sFullpathFile)) {
+                    if (is_file($sFullpathFile) && cFileHandler::readable($sFullpathFile)) {
                         array_push($aFiles, $sFullpathFile);
                     } elseif (is_dir($sFullpathFile) && $bRecursive == true) {
                         if (!in_array($sFullpathFile, $closedDirs)) {
@@ -469,7 +451,7 @@ function recursiveCopy($sourcePath, $destinationPath, $mode = 0777)
                 if (is_dir($file)) {
                     recursiveCopy($sourcePath . $file . '/', $destinationPath . $file . '/');
                     chdir($sourcePath);
-                } elseif (file_exists($file)) {
+                } elseif (cFileHandler::exists($file)) {
                     copy($sourcePath . $file, $destinationPath . $file);
                 }
             }

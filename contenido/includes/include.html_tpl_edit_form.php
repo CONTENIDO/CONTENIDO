@@ -62,7 +62,7 @@ if ($action == $sActionDelete) {
     $path = $cfgClient[$client]["tpl"]["path"];
     # delete file
     if (!strrchr($_REQUEST['delfile'], "/")) {
-        if (file_exists($path.$_REQUEST['delfile'])) {
+        if (cFileHandler::exists($path.$_REQUEST['delfile'])) {
             unlink($path.$_REQUEST['delfile']);
             removeFileInformation($client, $_REQUEST['delfile'], 'templates', $db);
             $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Deleted template file successfully!"));

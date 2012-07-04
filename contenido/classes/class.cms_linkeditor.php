@@ -583,7 +583,7 @@ class Cms_LinkEditor {
             if(is_dir($sUploadPath.$sDirectoryPath)){
             $oHandle = opendir($sUploadPath.$sDirectoryPath);
             while ($sEntry = readdir($oHandle)) {
-                if ( $sEntry != "." && $sEntry != ".." && file_exists( $sUploadPath.$sDirectoryPath."/".$sEntry ) && !is_dir( $sUploadPath.$sDirectoryPath."/".$sEntry ) ) {
+                if ( $sEntry != "." && $sEntry != ".." && cFileHandler::exists( $sUploadPath.$sDirectoryPath."/".$sEntry ) && !is_dir( $sUploadPath.$sDirectoryPath."/".$sEntry ) ) {
                     $oHtmlSelectOption = new cHTMLOptionElement($sEntry, $sDirectoryPath."/".$sEntry);
                     $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
                     $i++;

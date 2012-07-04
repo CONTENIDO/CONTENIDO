@@ -71,7 +71,7 @@ if ($doedit == "1") {
 
     if (count($_FILES) == 1) {
         foreach ($_FILES['uplfile']['name'] as $key => $value) {
-            if (file_exists($_FILES['uplfile']['tmp_name'][$key])) {
+            if (cFileHandler::exists($_FILES['uplfile']['tmp_name'][$key])) {
                 $friendlyName = uplCreateFriendlyName($_FILES['uplfile']['name'][$key]);
                 move_uploaded_file($_FILES['uplfile']['tmp_name'][$key], $cfgClient[$client]['upl']['path'].$upldir.$friendlyName);
 
