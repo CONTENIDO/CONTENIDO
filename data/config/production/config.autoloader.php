@@ -345,7 +345,7 @@ return array(
     'cValidatorAbstract' => 'contenido/classes/Validator/Abstract.class.php',
     'cValidatorEmail' => 'contenido/classes/Validator/Email.class.php',
     'cValidatorFactory' => 'contenido/classes/Validator/Factory.class.php',
-    'Contenido_Validator_Regex' => 'contenido/classes/Validator/Regex.class.php',
+    'cValidatorRegex' => 'contenido/classes/Validator/Regex.class.php',
     'cVersionFile' => 'contenido/classes/version/class.version.file.php',
     'cVersionImport' => 'contenido/classes/version/class.version.import.php',
     'cVersionLayout' => 'contenido/classes/version/class.version.layout.php',

@@ -40,7 +40,7 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * @package    CONTENIDO Validator
  */
-class Contenido_Validator_Regex extends cValidatorAbstract
+class cValidatorRegex extends cValidatorAbstract
 {
 
     /**
