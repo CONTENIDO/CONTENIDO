@@ -45,12 +45,12 @@ if (cFileHandler::exists($driver_filename)) {
 
 
 /**
- * Class Contenido_ItemException.
+ * Class cItemException.
  * @author     Murat Purc <murat@purc.de>
  * @version    0.1
  * @copyright  four for business AG <www.4fb.de>
  */
-class Contenido_ItemException extends Exception {}
+class cItemException extends Exception {}
 
 
 /**
@@ -361,7 +361,7 @@ abstract class Contenido_ItemBaseAbstract
      * @param  string  $sPrimaryKey  Primary key of table
      * @param  string  $sClassName   Name of parent class
      * @param  int     $iLifetime    Lifetime of the object in seconds (NOT USED!)
-     * @throws  Contenido_ItemException  If table name or primary key is not set
+     * @throws  cItemException  If table name or primary key is not set
      */
     protected function __construct($sTable, $sPrimaryKey, $sClassName, $iLifetime = 10)
     {
@@ -371,10 +371,10 @@ abstract class Contenido_ItemBaseAbstract
 
         if ($sTable == '') {
             $sMsg = "$sClassName: No table specified. Inherited classes *need* to set a table";
-            throw new Contenido_ItemException($sMsg);
+            throw new cItemException($sMsg);
         } elseif ($sPrimaryKey == '') {
             $sMsg = "No primary key specified. Inherited classes *need* to set a primary key";
-            throw new Contenido_ItemException($sMsg);
+            throw new cItemException($sMsg);
         }
 
         $this->_settings = $cfg['sql'];
@@ -1490,14 +1490,14 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
      * @param   mixed   $mItem  The primary key of the item to load or a recordset
      *                          with itemdata (array) to inject to the item object.
      * @return  Item  The newly created object
-     * @throws  Contenido_ItemException  If item class is not set
+     * @throws  cItemException  If item class is not set
      */
     public function loadItem($mItem)
     {
         if (empty($this->_itemClass)) {
             $sMsg = "ItemClass has to be set in the constructor of class "
                    . get_class($this) . ")";
-            throw new Contenido_ItemException($sMsg);
+            throw new cItemException($sMsg);
         }
 
         if (!is_object($this->_iteratorItem)) {

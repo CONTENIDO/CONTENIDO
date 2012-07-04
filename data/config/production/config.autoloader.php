@@ -66,7 +66,7 @@ return array(
     'FormField' => 'contenido/classes/class.form.php',
     'FormCheck' => 'contenido/classes/class.form.php',
     'FrontendLogic' => 'contenido/classes/class.frontend.logic.php',
-    'Contenido_ItemException' => 'contenido/classes/class.genericdb.php',
+    'cItemException' => 'contenido/classes/class.genericdb.php',
     'Contenido_ItemCache' => 'contenido/classes/class.genericdb.php',
     'Contenido_ItemBaseAbstract' => 'contenido/classes/class.genericdb.php',
     'ItemCollection' => 'contenido/classes/class.genericdb.php',
