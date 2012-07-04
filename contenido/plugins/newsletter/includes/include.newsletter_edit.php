@@ -497,9 +497,9 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             $oCkbSaveAsDefault->toHTML(false)."&nbsp;".i18n("Save option settings as default", 'newsletter'));
 
     $oUser = new cApiUser($oNewsletter->get("author"));
-    $oForm->add(i18n("Author", 'newsletter'), $oUser->get('username') . " (". $oNewsletter->get("created").")" );
+    $oForm->add(i18n("Author", 'newsletter'), $oUser->get('username') . " (". displayTime($oNewsletter->get("created")).")" );
     $oUser = new cApiUser($oNewsletter->get("modifiedby"));
-    $oForm->add(i18n("Last modified by", 'newsletter'), $oUser->get('username') . " (". $oNewsletter->get("modified").")" );
+    $oForm->add(i18n("Last modified by", 'newsletter'), $oUser->get('username') . " (". displayTime($oNewsletter->get("modified")).")" );
 
     $sExecScript = '
     <script type="text/javascript">

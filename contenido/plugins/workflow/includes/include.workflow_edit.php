@@ -88,7 +88,7 @@ if ($workflow->virgin) {
     $header = i18n("Edit workflow", "workflow");
     $description = $workflow->get("description");
     $name = $workflow->get("name");
-    $created = $workflow->get("created");
+    $created = displayTime($workflow->get("created"));
     $userclass = new cApiUser($workflow->get("idauthor"));
     $author = $userclass->getEffectiveName();
 }

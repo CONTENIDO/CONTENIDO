@@ -82,7 +82,7 @@ $where = '';
 $iLangID = ((int) $lang > 0 ? (int) $lang : 1);
 
 // effektive Einstellung fuer Zeitdarstellung holen
-$dateformat = getEffectiveSetting('backend', 'timeformat_date', 'Y-m-d');
+$dateformat = getEffectiveSetting('dateformat', 'date', 'Y-m-d');
 
 // fuer das Initialiseren der Sub-Navi benoetigte Werte
 $sLoadSubnavi = '';

@@ -78,7 +78,7 @@ class cDateChooser extends cDatefield
         }
 
         $sDatefield = parent::render();
-        $sTimeformat = getEffectiveSetting("backend", "timeformat_date", "Y-m-d");
+        $sTimeformat = getEffectiveSetting("dateformat", "date", "Y-m-d");
 
         $parseScript = '
             <script language="JavaScript">
@@ -161,7 +161,7 @@ class cDateChooser extends cDatefield
         ';
 
         $sEventRegister = '<script language="JavaScript">{cid}_attachClickCallback({wid}_datefieldSetter);</script>';
-        $clickScript = "if (!document.getElementById('{wid}').disabled) { if (document.getElementById('{did}_display').style.display == 'none') { {wid}_passToWidget('".getEffectiveSetting("backend", "timeformat_date", "Y-m-d")."', document.getElementById('".$this->getId()."').value); document.getElementById('{did}_display').style.display = 'block'; {wid}_hideselects(true); } else { document.getElementById('{did}_display').style.display = 'none'; {wid}_hideselects(false); } }";
+        $clickScript = "if (!document.getElementById('{wid}').disabled) { if (document.getElementById('{did}_display').style.display == 'none') { {wid}_passToWidget('".getEffectiveSetting("dateformat", "date", "Y-m-d")."', document.getElementById('".$this->getId()."').value); document.getElementById('{did}_display').style.display = 'block'; {wid}_hideselects(true); } else { document.getElementById('{did}_display').style.display = 'none'; {wid}_hideselects(false); } }";
 
         $div = new cHTMLDiv();
 

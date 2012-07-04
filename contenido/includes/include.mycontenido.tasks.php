@@ -38,7 +38,7 @@ if (!isset($sortmode)) {
     $sortby   = $currentuser->getUserProperty("system","tasks_sortby");
 }
 
-$dateformat = getEffectiveSetting("backend", "timeformat", "Y-m-d H:i:s");
+$dateformat = getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s");
 
 if (isset($_REQUEST["listsubmit"])) {
     if (isset($c_restrict)) {

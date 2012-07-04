@@ -102,6 +102,11 @@ function addAutoIncrementToTables($db, $cfg)
     }
 }
 
+function convertToDatetime($db, $cfg) {
+	$db->query("ALTER TABLE ".$cfg['sql']['sqlprefix']."_piwf_art_allocation CHANGE  `starttime`  `starttime` DATETIME NOT NULL");
+	$db->query("ALTER TABLE ".$cfg['sql']['sqlprefix']."_template_conf CHANGE  `created`  `created` DATETIME NOT NULL");
+}
+
 // @FIXME: Comment me plz!
 function alterTableHandling($row)
 {

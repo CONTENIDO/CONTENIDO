@@ -43,7 +43,7 @@ $db2 = cRegistry::getDb();
 $idcat = (isset($_REQUEST['idcat']) && is_numeric($_REQUEST['idcat'])) ? $_REQUEST['idcat'] : -1;
 $next  = (isset($_REQUEST['next']) && is_numeric($_REQUEST['next']) && $_REQUEST['next'] > 0) ? $_REQUEST['next'] : 0;
 
-$dateformat = getEffectiveSetting("backend", "timeformat_date", "Y-m-d");
+$dateformat = getEffectiveSetting("dateformat", "date", "Y-m-d");
 $templateDescription = '';
 
 if (!isset($syncfrom)) {

@@ -230,7 +230,7 @@ if($sCache_errors && $_GET['live'] != 1) {
         $sLang_where = "AND art.idlang = '" . cSecurity::toInteger($lang) . "' AND catName.idlang = '" . cSecurity::toInteger($lang) . "'";
     }
 
-    // How many articles exists? [Text]
+    // How many articles exist? [Text]
     $sql = "SELECT art.title, art.idlang, cat.idart, cat.idcat, catName.name AS namecat, con.value FROM " . $cfg['tab']['cat_art'] . " cat
             LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idart = cat.idart)
             LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)
@@ -255,7 +255,7 @@ if($sCache_errors && $_GET['live'] != 1) {
 
     }
 
-    // How many articles exists? [Redirects]
+    // How many articles exist? [Redirects]
     $sql = "SELECT art.title, art.redirect_url, art.idlang, cat.idart, cat.idcat, catName.name AS namecat FROM " . $cfg['tab']['cat_art'] . " cat
             LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idart = cat.idart)
             LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)

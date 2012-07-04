@@ -382,13 +382,13 @@ class cDatatypeDateTime extends cDatatype
 
         switch ($iFormat) {
             case cDateTime_Locale_TimeOnly:
-                $sTimeformat = getEffectiveSetting("backend", "timeformat_time", "H:i:s");
+                $sTimeformat = getEffectiveSetting("dateformat", "time", "H:i:s");
                 return date($sTimeformat, mktime($this->_iHour, $this->_iMinute, $this->iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
             case cDateTime_Locale_DateOnly:
-                $sTimeformat = getEffectiveSetting("backend", "timeformat_date", "Y-m-d");
+                $sTimeformat = getEffectiveSetting("dateformat", "date", "Y-m-d");
                 return date($sTimeformat, mktime($this->_iHour, $this->_iMinute, $this->iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
             case cDateTime_Locale:
-                $sTimeformat = getEffectiveSetting("backend", "timeformat", "Y-m-d H:i:s");
+                $sTimeformat = getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s");
                 return date($sTimeformat, mktime($this->_iHour, $this->_iMinute, $this->iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
             case cDateTime_Custom:
                 return strftime($this->_sCustomTargetFormat, mktime($this->_iHour, $this->_iMinute, $this->_iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
@@ -413,7 +413,7 @@ class cDatatypeDateTime extends cDatatype
                 $this->_iSecond = date("s", $sTemporaryTimestamp);
                 break;
             case cDateTime_Locale_DateOnly:
-                $sTimeformat = getEffectiveSetting('backend', 'timeformat_date', 'Y-m-d');
+                $sTimeformat = getEffectiveSetting('dateformat', 'date', 'Y-m-d');
 
                 $targetFormat = str_replace('.', '\.', $sTimeformat);
                 $targetFormat = str_replace('d', '([0-9]{2,2})', $targetFormat);
@@ -453,7 +453,7 @@ class cDatatypeDateTime extends cDatatype
                 }
                 break;
             case cDateTime_Locale:
-                $sTimeformat = getEffectiveSetting('backend', 'timeformat', 'Y-m-d H:i:s');
+                $sTimeformat = getEffectiveSetting('dateformat', 'full', 'Y-m-d H:i:s');
 
                 $targetFormat = str_replace('.', '\.', $sTimeformat);
                 $targetFormat = str_replace('d', '([0-9]{2,2})', $targetFormat);

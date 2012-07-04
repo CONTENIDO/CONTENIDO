@@ -68,6 +68,11 @@ class Contenido_Effective_Setting
      */
     protected static $_clientLanguage;
 
+    /**
+     * @var cApiLanguage
+     */
+    protected static $_language;
+
 
     /**
      * Returns effective setting for a property. The requested setting will be cached
@@ -100,12 +105,17 @@ class Contenido_Effective_Setting
             $value = $obj->getUserProperty($type, $name, true);
         }
 
-        if (false === $value) {
+        if (false == $value) {
+			$obj = self::_getLanguageInstance();
+			$value = $obj->getProperty($type, $name);
+        }
+
+        if (false == $value) {
             $obj = self::_getClientLanguageInstance();
             $value = $obj->getProperty($type, $name);
         }
 
-        if (false === $value) {
+        if (false == $value) {
             $obj = self::_getClientInstance();
             $value = self::$_client->getProperty($type, $name);
         }
@@ -241,6 +251,22 @@ class Contenido_Effective_Setting
             self::$_clientLanguage = new cApiClientLanguage(false, $client, $lang);
         }
         return self::$_clientLanguage;
+    }
+
+
+    /**
+     * Returns the language object instance.
+     *
+     * @return  cApiLanguage
+     */
+    protected static function _getLanguageInstance()
+    {
+    	global $lang;
+
+    	if (!isset(self::$_language)) {
+    		self::$_language = new cApiLanguage($lang);
+    	}
+    	return self::$_language;
     }
 
 

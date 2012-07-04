@@ -150,7 +150,7 @@ $oJobs->query();
 // Output data
 $oMenu = new UI_Menu();
 $iMenu = 0;
-$sDateFormat = getEffectiveSetting("backend", "timeformat", "d.m.Y H:i");
+$sDateFormat = getEffectiveSetting("dateformat", "full", "d.m.Y H:i");
 
 // Store messages for repeated use (speeds performance, as i18n translation is only needed once)
 $aMsg = array();

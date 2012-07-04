@@ -220,6 +220,32 @@ function getCanonicalDay($iDay)
     }
 }
 
+/**
+ * Returns a formatted date and/or timestring according to the current settings
+ *
+ * @param mixed $timestamp a timestamp. If no value is given the current time will be used.
+ * @param bool $date if true the date will be included in the string
+ * @param bool $time if true the time will be included in the string
+ * @return string the formatted timestring.
+ */
+function displayDatetime($timestamp = "", $date = false, $time = false) {
+	if($timestamp == "") {
+		$timestamp = time();
+	} else {
+		$timestamp = strtotime($timestamp);
+	}
+
+	$ret = "";
+
+	if($date && !$time) {
+		$ret = date(getEffectiveSetting("dateformat", "date", "Y-m-d"), $timestamp);
+	} else if($time && !$date) {
+		$ret = date(getEffectiveSetting("dateformat", "time", "H:i:s"), $timestamp);
+	} else {
+		$ret = date(getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s"), $timestamp);
+	}
+	return $ret;
+}
 
 /**
  * Returns the id of passed area

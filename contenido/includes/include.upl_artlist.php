@@ -89,7 +89,7 @@ foreach ($headlines as $headline)
 
 $content[] = '</tr>';
 
-$dateformat = getEffectiveSetting("backend", "timeformat", "Y-m-d H:i:s");
+$dateformat = getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s");
 
 $odd = false;
 

@@ -164,7 +164,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tmp_external_redirect = '';
     }
 
-    $dateformat = getEffectiveSetting("backend", "timeformat", "Y-m-d H:i:s");
+    $dateformat = getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s");
 
     $tmp2_created = date($dateformat,strtotime($tmp_created));
     $tmp2_lastmodified = date($dateformat,strtotime($tmp_lastmodified));

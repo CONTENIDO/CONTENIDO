@@ -244,7 +244,7 @@ class NoteListItem extends cHTMLDiv
 
     public function setDate($iDate)
     {
-        $dateformat = getEffectiveSetting('backend', 'timeformat', 'Y-m-d H:i:s');
+        $dateformat = getEffectiveSetting('dateformat', 'full', 'Y-m-d H:i:s');
 
         if (is_string($iDate)) {
             $iDate = strtotime($iDate);

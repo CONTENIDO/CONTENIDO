@@ -120,7 +120,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         $_REQUEST["sortmode"] = "ASC";
     }
 
-    $sDateFormat = getEffectiveSetting("backend", "timeformat", "d.m.Y H:i");
+    $sDateFormat = getEffectiveSetting("dateformat", "full", "d.m.Y H:i");
 
     // Set default values
     $oUser = new cApiUser($auth->auth["uid"]);
@@ -296,7 +296,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
     $oForm->add(i18n("Name", 'newsletter'), $oJob->get("name"));
 
-    $sDateFormat = getEffectiveSetting("backend", "timeformat", "d.m.Y H:i");
+    $sDateFormat = getEffectiveSetting("dateformat", "full", "d.m.Y H:i");
     switch ($oJob->get("status")) {
         case 1:
             $oForm->add(i18n("Status", 'newsletter'), i18n("Pending", 'newsletter'));

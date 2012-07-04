@@ -241,9 +241,9 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
         $form->add(i18n("Group membership"), $sTemp );
 
         $oUser = new cApiUser($feuser->get("author"));
-        $form->add(i18n("Author"), $oUser->get('username') . " (". $feuser->get("created").")" );
+        $form->add(i18n("Author"), $oUser->get('username') . " (". displayDatetime($feuser->get("created")).")" );
         $oUser2 = new cApiUser($feuser->get("modifiedby"));
-        $form->add(i18n("Last modified by"), $oUser2->get('username') . " (". $feuser->get("modified").")" );
+        $form->add(i18n("Last modified by"), $oUser2->get('username') . " (". displayDatetime($feuser->get("modified")).")" );
     }
     $page->setContent($notis . $form->render(true));
     $page->addScript('reload', $sReloadScript);

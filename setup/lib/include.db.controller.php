@@ -340,6 +340,8 @@ if ($currentStep < $totalSteps) {
         unset($clientBackup, $langBackup);
     }
 
+    convertToDatetime($db, $cfg);
+
     echo '
         <script type="text/javascript">
         parent.document.getElementById("installing").style.visibility="hidden";

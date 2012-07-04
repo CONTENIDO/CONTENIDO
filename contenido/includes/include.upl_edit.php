@@ -307,12 +307,12 @@ if ($upload = $uploads->next()) {
 
             case "author":
                 $oUser = new cApiUser($upload->get("author"));
-                $sCell = $oUser->get('username') . " (". $upload->get("created").")";
+                $sCell = $oUser->get('username') . " (". displayDatetime($upload->get("created")).")";
                 break;
 
             case "modified":
                 $oUser = new cApiUser($upload->get("modifiedby"));
-                $sCell = $oUser->get('username') . " (". $upload->get("lastmodified").")";
+                $sCell = $oUser->get('username') . " (". displayDatetime($upload->get("lastmodified")).")";
                 break;
 
             default:

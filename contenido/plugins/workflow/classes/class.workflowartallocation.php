@@ -357,7 +357,12 @@ class WorkflowArtAllocation extends Item {
 
 
         }
-        return parent::store();
+        if(parent::store()) {
+        	$this->db->query("UPDATE ".$this->table." SET `starttime`=NOW() WHERE `".$this->primaryKey."`='".$this->get($this->primaryKey)."'");
+        	return true;
+        } else {
+        	return false;
+        }
     }
 }
 ?>

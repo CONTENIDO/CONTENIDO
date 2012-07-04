@@ -74,28 +74,48 @@ if ($action == "mycontenido_editself")
             #$user->set("password", md5($newpassword));
 
             if ( $iResult == cApiUser::PASS_OK ) {
-                $noti = $notification->returnNotification("info", i18n("Password changed"))."<br>";
+                $noti = $notification->returnNotification("info", i18n("Changes saved"))."<br>";
             } else {
-                $noti = $notification->returnNotification("error", cApiUser::getErrorString($iResult));
+                $noti = $notification->returnNotification("error", cApiUser::getErrorString($iResult)."<br>");
             }
 
         }
     }
 
-    $user->set("realname", $name);
-    $user->set("email", $email);
-    $user->set("telephone", $phonenumber);
-    $user->set("address_street", $street);
-    $user->set("address_zip", $zip);
-    $user->set("address_city", $city);
-    $user->set("address_country", $country);
+    if($user->get("realname") != $name) {
+    	$user->set("realname", $name);
+    }
+    if($user->get("email") != $email) {
+    	$user->set("email", $email);
+    }
+    if($user->get("telephone") != $phonenumber) {
+    	$user->set("telephone", $phonenumber);
+    }
+    if($user->get("address_street") != $street) {
+    	$user->set("address_street", $street);
+    }
+    if($user->get("address_zip") != $zip) {
+    	$user->set("address_zip", $zip);
+    }
+    if($user->get("address_city") != $city) {
+    	$user->set("address_city", $city);
+    }
+    if($user->get("address_country") != $country) {
+    	$user->set("address_country", $country);
+    }
+    if($user->get("wysi") != $wysi) {
+    	$user->set("wysi", $wysi);
+    }
 
-    $user->set("wysi", $wysi);
+    $user->setUserProperty("dateformat", "full", $format);
+    $user->setUserProperty("dateformat", "date", $formatdate);
+    $user->setUserProperty("dateformat", "time", $formattime);
 
-    $user->setUserProperty("backend", "timeformat", $format);
-    $user->setUserProperty("backend", "timeformat_date", $formatdate);
-    $user->setUserProperty("backend", "timeformat_time", $formattime);
-    $user->store();
+    if($user->store() && $noti == "") {
+    	$noti = $notification->returnNotification("info", i18n("Changes saved"))."<br>";
+    } else if($noti == "") {
+    	$noti = $notification->returnNotification("error", i18n("An error occured while saving user info."))."<br>";
+    }
 }
 
 
@@ -156,9 +176,9 @@ $formathint.= "d M Y H:i => 01 Jan 2004 00:00";
 $formathint.= "<br>";
 $formathint.= "d.m.Y H:i:s => 01.01.2004 00:00:00";
 
-$format = new cHTMLTextbox("format", $user->getUserProperty("backend", "timeformat"));
-$format2 = new cHTMLTextbox("formatdate", $user->getUserProperty("backend", "timeformat_date"));
-$format3 = new cHTMLTextbox("formattime", $user->getUserProperty("backend", "timeformat_time"));
+$format = new cHTMLTextbox("format", $user->getUserProperty("dateformat", "full"));
+$format2 = new cHTMLTextbox("formatdate", $user->getUserProperty("dateformat", "date"));
+$format3 = new cHTMLTextbox("formattime", $user->getUserProperty("dateformat", "time"));
 
 $form->add(i18n("Date/Time format"), array($format, $formathint));
 $form->add(i18n("Date format"), array($format2));
