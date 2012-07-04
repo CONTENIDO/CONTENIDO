@@ -46,7 +46,7 @@ class cValidatorEmailTest extends PHPUnit_Framework_TestCase
             'mx_check' => false,
         );
 
-        $this->_validator = Contenido_Validator_Factory::getInstance('email');
+        $this->_validator = cValidatorFactory::getInstance('email');
     }
 
     public function tearDown()

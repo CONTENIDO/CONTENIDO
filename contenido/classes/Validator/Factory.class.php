@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
  * Validator factory
  * @package    CONTENIDO Validator
  */
-class Contenido_Validator_Factory
+class cValidatorFactory
 {
 
     /**
@@ -70,7 +70,7 @@ class Contenido_Validator_Factory
         } else {
             $path = str_replace('\\', '/', dirname(__FILE__)) . '/';
             if (!cFileHandler::exists($path . $fileName)) {
-                throw new InvalidArgumentException("The class file of Contenido_Validator couldn't included by Contenido_Validator_Factory: " . $validator . "!");
+                throw new InvalidArgumentException("The class file of Contenido_Validator couldn't included by cValidatorFactory: " . $validator . "!");
             }
 
             require_once($path . $fileName);

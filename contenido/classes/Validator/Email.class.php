@@ -42,7 +42,7 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * Usage:
  * <pre>
- * $validator = Contenido_Validator_Factory::getInstance('email');
+ * $validator = cValidatorFactory::getInstance('email');
  * if ($validator->isValid('user@contenido.org')) {
  *     // email is valid
  * } else {

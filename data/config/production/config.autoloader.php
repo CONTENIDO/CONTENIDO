@@ -344,7 +344,7 @@ return array(
     'Contenido_Sitemap_Util' => 'contenido/classes/Util/Modules/Contenido_Sitemap_Util.class.php',
     'cValidatorAbstract' => 'contenido/classes/Validator/Abstract.class.php',
     'cValidatorEmail' => 'contenido/classes/Validator/Email.class.php',
-    'Contenido_Validator_Factory' => 'contenido/classes/Validator/Factory.class.php',
+    'cValidatorFactory' => 'contenido/classes/Validator/Factory.class.php',
     'Contenido_Validator_Regex' => 'contenido/classes/Validator/Regex.class.php',
     'cVersionFile' => 'contenido/classes/version/class.version.file.php',
     'cVersionImport' => 'contenido/classes/version/class.version.import.php',

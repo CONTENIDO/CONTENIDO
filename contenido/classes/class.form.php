@@ -658,7 +658,7 @@ class FormCheck
      */
     public function isEmail($value)
     {
-        $validator = Contenido_Validator_Factory::getInstance('email');
+        $validator = cValidatorFactory::getInstance('email');
         return $validator->isValid($value);
     }
 

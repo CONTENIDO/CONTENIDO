@@ -489,7 +489,7 @@ function getGroupOrUserName($uid)
  */
 function isValidMail($email, $strict = false)
 {
-    $validator = Contenido_Validator_Factory::getInstance('email');
+    $validator = cValidatorFactory::getInstance('email');
     return $validator->isValid($email);
 }
 
