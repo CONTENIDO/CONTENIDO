@@ -29,7 +29,7 @@ class Contenido_Validator_EmailTest extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var Contenido_Validator_Abstract
+     * @var cValidatorAbstract
      */
     protected $_validator = null;
 

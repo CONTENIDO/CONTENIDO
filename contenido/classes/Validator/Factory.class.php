@@ -56,7 +56,7 @@ class Contenido_Validator_Factory
      * @param   string $validator  Validator to get
      * @param   array  $options  Options to use for the validator. Any passed option
      *                           overwrites the related option in global validator configuration.
-     * @return  Contenido_Validator_Abstract
+     * @return  cValidatorAbstract
      * @throws  InvalidArgumentException If type of validator is unknown or not available
      */
     public static function getInstance($validator, array $options = array())

@@ -55,7 +55,7 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * @package    CONTENIDO Validator
  */
-class Contenido_Validator_Email extends Contenido_Validator_Abstract
+class Contenido_Validator_Email extends cValidatorAbstract
 {
     /**
      * Flag about existing flter_var function

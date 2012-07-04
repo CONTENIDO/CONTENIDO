@@ -35,7 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
  * Abstract validator
  * @package    CONTENIDO Validator
  */
-abstract class Contenido_Validator_Abstract
+abstract class cValidatorAbstract
 {
     /**
      * List of options, depends by used validator
