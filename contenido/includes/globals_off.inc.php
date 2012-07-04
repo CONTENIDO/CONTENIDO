@@ -78,7 +78,7 @@ if (!CONTENIDO_STRIPSLASHES && (version_compare(PHP_VERSION, '5.3.0', '<'))) {
 }
 
 // register globals
-$types_to_register = array ('GET', 'POST', 'COOKIE', 'SESSION', 'SERVER');
+$types_to_register = array('GET', 'POST', 'COOKIE', 'SESSION', 'SERVER');
 foreach ($types_to_register as $global_type) {
     $arr = @ ${'_' . $global_type};
     if (is_array($arr) && count($arr) > 0) {
@@ -94,5 +94,5 @@ foreach ($types_to_register as $global_type) {
     }
 }
 // save memory
-unset ($types_to_register, $global_type, $arr);
+unset($types_to_register, $global_type, $arr);
 ?>

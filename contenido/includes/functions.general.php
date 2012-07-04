@@ -229,22 +229,22 @@ function getCanonicalDay($iDay)
  * @return string the formatted timestring.
  */
 function displayDatetime($timestamp = "", $date = false, $time = false) {
-	if($timestamp == "") {
-		$timestamp = time();
-	} else {
-		$timestamp = strtotime($timestamp);
-	}
+    if ($timestamp == "") {
+        $timestamp = time();
+    } else {
+        $timestamp = strtotime($timestamp);
+    }
 
-	$ret = "";
+    $ret = "";
 
-	if($date && !$time) {
-		$ret = date(getEffectiveSetting("dateformat", "date", "Y-m-d"), $timestamp);
-	} else if($time && !$date) {
-		$ret = date(getEffectiveSetting("dateformat", "time", "H:i:s"), $timestamp);
-	} else {
-		$ret = date(getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s"), $timestamp);
-	}
-	return $ret;
+    if ($date && !$time) {
+        $ret = date(getEffectiveSetting("dateformat", "date", "Y-m-d"), $timestamp);
+    } else if ($time && !$date) {
+        $ret = date(getEffectiveSetting("dateformat", "time", "H:i:s"), $timestamp);
+    } else {
+        $ret = date(getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s"), $timestamp);
+    }
+    return $ret;
 }
 
 /**

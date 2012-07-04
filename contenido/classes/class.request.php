@@ -23,7 +23,7 @@ echo '<pre>';
 var_dump(Request :: get('myFirstPara')); // normal usage
 var_dump(Request :: get('mySecondPara')); // normal usage
 var_dump(Request :: request('myThirdPara', true)); // still has the ValidationError objects in case of errors.
-var_dump(Request :: hasValidationErrors(Request :: GET, array ('myFirstPara', 'mySecondPara', 'myThirdPara')); // returns true, if a validation error occured.
+var_dump(Request :: hasValidationErrors(Request :: GET, array('myFirstPara', 'mySecondPara', 'myThirdPara')); // returns true, if a validation error occured.
 echo '</pre>';
 */
 
@@ -66,9 +66,9 @@ class Request {
 
         cDeprecated("This class was replaced by cRequestValidator");
 
-        $this->POST = array ();
-        $this->COOKIE = array ();
-        $this->GET = array ();
+        $this->POST = array();
+        $this->COOKIE = array();
+        $this->GET = array();
     }
 
     /**
@@ -137,10 +137,10 @@ class Request {
         }
 
         if (is_array($mRequest[$sName])) {
-            array_walk_recursive($mRequest[$sName], array (
+            array_walk_recursive($mRequest[$sName], array(
                 'self',
                 'validateArray'
-            ), array (
+            ), array(
                 'iType' => $iType,
                 'iMin' => $iMin,
                 'iMax' => $iMax,
@@ -227,7 +227,7 @@ class Request {
 
         foreach ($aParams as $sName) {
             if (is_array($mRequest[$sName])) {
-                array_walk_recursive($mRequest[$sName], array (
+                array_walk_recursive($mRequest[$sName], array(
                     'self',
                     'hasError'
                 ));
@@ -272,17 +272,17 @@ class Request {
         $this->GETcleared = $this->GET;
         $this->COOKIEcleared = $this->COOKIE;
 
-        array_walk_recursive($this->POSTcleared, array (
+        array_walk_recursive($this->POSTcleared, array(
             'self',
             'setErrorsToNull'
         ));
 
-        array_walk_recursive($this->GETcleared, array (
+        array_walk_recursive($this->GETcleared, array(
             'self',
             'setErrorsToNull'
         ));
 
-        array_walk_recursive($this->COOKIEcleared, array (
+        array_walk_recursive($this->COOKIEcleared, array(
             'self',
             'setErrorsToNull'
         ));

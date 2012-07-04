@@ -30,41 +30,33 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-if ($action == "client_artspec_save")
-{
-    if(!$perm->have_perm_area_action($area, $action))
-    {
-          $notification->displayNotification("error", i18n("Permission denied"));
+if ($action == "client_artspec_save") {
+    if (!$perm->have_perm_area_action($area, $action)) {
+        $notification->displayNotification("error", i18n("Permission denied"));
     } else {
         addArtspec($_POST['artspectext'], $online);
     }
 }
 
-if ($action == "client_artspec_delete")
-{
-    if(!$perm->have_perm_area_action($area, $action))
-    {
-          $notification->displayNotification("error", i18n("Permission denied"));
+if ($action == "client_artspec_delete") {
+    if (!$perm->have_perm_area_action($area, $action)) {
+        $notification->displayNotification("error", i18n("Permission denied"));
     } else {
         deleteArtspec($_GET['idartspec']);
     }
 }
 
-if ($action == "client_artspec_online")
-{
-    if(!$perm->have_perm_area_action($area, "client_artspec_save"))
-    {
-          $notification->displayNotification("error", i18n("Permission denied"));
+if ($action == "client_artspec_online") {
+    if (!$perm->have_perm_area_action($area, "client_artspec_save")) {
+        $notification->displayNotification("error", i18n("Permission denied"));
     } else {
         setArtspecOnline($_GET['idartspec'], $online);
     }
 }
 
-if ($action == "client_artspec_default")
-{
-    if(!$perm->have_perm_area_action($area, "client_artspec_save"))
-    {
-          $notification->displayNotification("error", i18n("Permission denied"));
+if ($action == "client_artspec_default") {
+    if (!$perm->have_perm_area_action($area, "client_artspec_save")) {
+        $notification->displayNotification("error", i18n("Permission denied"));
     } else {
         setArtspecDefault($_GET['idartspec'], $online);
     }
@@ -97,64 +89,57 @@ $defLink->setCLink($area, $frame, "client_artspec_default");
 
 $artspec = getArtspec();
 
-if (is_array($artspec))
-{
-    foreach ($artspec as $id => $tmp_artspec)
-    {
+if (is_array($artspec)) {
+    foreach ($artspec as $id => $tmp_artspec) {
         $link->setCustom("idartspec", $id);
-        $link->updateAttributes(array ('style' => 'padding:3'));
+        $link->updateAttributes(array('style' => 'padding:3'));
 
-           $dlink->setCustom("idartspec", $id);
-        $dlink->updateAttributes(array ('style' => 'padding:3'));
+        $dlink->setCustom("idartspec", $id);
+        $dlink->updateAttributes(array('style' => 'padding:3'));
 
         $olink->setCustom("idartspec", $id);
-        $olink->updateAttributes(array ('style' => 'padding:3'));
+        $olink->updateAttributes(array('style' => 'padding:3'));
 
-           $defLink->setCustom("idartspec", $id);
-        $defLink->updateAttributes(array ('style' => 'padding:3'));
+        $defLink->setCustom("idartspec", $id);
+        $defLink->updateAttributes(array('style' => 'padding:3'));
 
-        if (($action == "client_artspec_edit") && ($idartspec == $id))
-            {
-                $form = new UI_Form("artspec");
-                $form->setVar("area",$area);
-                $form->setVar("frame", $frame);
-                $form->setVar("idartspec", $id);
-                $form->setVar("action", "client_artspec_save");
-                $form->setVar("online", $artspec[$id]['online']);
-                $inputbox = new cHTMLTextbox ("artspectext", urldecode($artspec[$id]['artspec']));
-                $form->add("name",$inputbox->render());
-                $form->add("submit", '<input type="image" value="submit" src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'submit.gif" alt="'.i18n('Save').'" title="'.i18n('Save').'">');
+        if (($action == "client_artspec_edit") && ($idartspec == $id)) {
+            $form = new UI_Form("artspec");
+            $form->setVar("area",$area);
+            $form->setVar("frame", $frame);
+            $form->setVar("idartspec", $id);
+            $form->setVar("action", "client_artspec_save");
+            $form->setVar("online", $artspec[$id]['online']);
+            $inputbox = new cHTMLTextbox ("artspectext", urldecode($artspec[$id]['artspec']));
+            $form->add("name",$inputbox->render());
+            $form->add("submit", '<input type="image" value="submit" src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'submit.gif" alt="'.i18n('Save').'" title="'.i18n('Save').'">');
 
-               $list->setCell($count,1, $form->render(true));
-            } else {
-                $list->setCell($count,1, urldecode($artspec[$id]['artspec']));
-            }
+            $list->setCell($count,1, $form->render(true));
+        } else {
+            $list->setCell($count,1, urldecode($artspec[$id]['artspec']));
+        }
 
-        if ($artspec[$id]['online'] == 0)
-        { //it is offline (std!)
-                $olink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'offline.gif" alt="'.i18n('Make online').'" title="'.i18n('Make online').'">');
-                $olink->setCustom("online", 1);
-        } else
-        {
+        if ($artspec[$id]['online'] == 0) {
+            //it is offline (std!)
+            $olink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'offline.gif" alt="'.i18n('Make online').'" title="'.i18n('Make online').'">');
+            $olink->setCustom("online", 1);
+        } else {
             $olink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'online.gif" alt="'.i18n('Make offline').'" title="'.i18n('Make offline').'">');
             $olink->setCustom("online", 0);
         }
 
-        if ($artspec[$id]['default'] == 0)
-        {
+        if ($artspec[$id]['default'] == 0) {
             $defLink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'artikel_spez_inakt.gif" title="'.i18n("Make this article specification default").'">');
             $list->setCell($count,2, $link->render().$dlink->render().$olink->render().$defLink->render());
-        } else
-        {
-               $defLinkText = '<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'artikel_spez_akt.gif" title="'.i18n("This article specification is default").'" style="padding-left:3px;">';
+        } else {
+            $defLinkText = '<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'artikel_spez_akt.gif" title="'.i18n("This article specification is default").'" style="padding-left:3px;">';
             $list->setCell($count,2, $link->render().$dlink->render().$olink->render().$defLinkText);
         }
 
         $count++;
     }
 
-} else
-{
+} else {
     $list->setCell($count,1, i18n("No article specifications found!"));
     $list->setCell($count,2, '');
 }

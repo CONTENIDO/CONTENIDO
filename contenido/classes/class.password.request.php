@@ -367,7 +367,7 @@ class cPasswordRequest {
         //set users e mail adress as recipient
         $oMail->AddAddress($this->sEmail, "");
         //set mail subject
-        $oMail->Subject = stripslashes (i18n('Your new password for CONTENIDO Backend'));
+        $oMail->Subject = stripslashes(i18n('Your new password for CONTENIDO Backend'));
         //append mail body
         $oMail->Body = $sMailBody;
         //wrap after 1000 chars

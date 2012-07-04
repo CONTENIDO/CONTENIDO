@@ -40,12 +40,12 @@ if (isset($tmp_notification)) {
 
 // error log
 if (cFileHandler::exists($cfg['path']['contenido_logs'] . 'errorlog.txt')) {
-	$info = cFileHandler::info($cfg['path']['contenido_logs'] . 'errorlog.txt');
-	if($info['size'] >= 16384) {
-		$errorLogBuffer = cFileHandler::read($cfg['path']['contenido_logs'] . 'errorlog.txt', 16384, 0, true);
-	} else {
-		$errorLogBuffer = cFileHandler::read($cfg['path']['contenido_logs'] . 'errorlog.txt');
-	}
+    $info = cFileHandler::info($cfg['path']['contenido_logs'] . 'errorlog.txt');
+    if ($info['size'] >= 16384) {
+        $errorLogBuffer = cFileHandler::read($cfg['path']['contenido_logs'] . 'errorlog.txt', 16384, 0, true);
+    } else {
+        $errorLogBuffer = cFileHandler::read($cfg['path']['contenido_logs'] . 'errorlog.txt');
+    }
     $txtAreaHeight = "200";
 
     if (strlen($errorLogBuffer) == 0) {
@@ -208,7 +208,7 @@ $sClients = '';
 while ($oItem = $oClientColl->next()) {
     $iIdClient = $oItem->get('idclient');
 
-    if (system_have_perm($iIdClient)) {
+    if (systemHavePerm($iIdClient)) {
         $htmlpath = $cfgClient[$iIdClient]['path']['htmlpath'];
         $frontendpath = $cfgClient[$iIdClient]['path']['frontend'];
 
@@ -225,8 +225,8 @@ while ($oItem = $oClientColl->next()) {
         $oTpl2->next();
 
         $oClientLanguageColl = new cApiClientLanguageCollection();
-            $oClientLanguageColl->setWhere('idclient', $iIdClient);
-            $oClientLanguageColl->query();
+        $oClientLanguageColl->setWhere('idclient', $iIdClient);
+        $oClientLanguageColl->query();
 
         $aLanguages = array();
 

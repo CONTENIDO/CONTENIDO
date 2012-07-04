@@ -217,9 +217,9 @@ if (isset($_REQUEST['limit'])) {
 $olangauge = new cHTMLSelectElement('display_langauge');
 $olangauge->autoFill($aDisplayLangauge);
 
-if(isset($_REQUEST['display_langauge'])) {
+if (isset($_REQUEST['display_langauge'])) {
     $olangauge->setDefault($_REQUEST['display_langauge']);
-}else  {
+} else  {
     $olangauge->setDefault($belang);
 }
 

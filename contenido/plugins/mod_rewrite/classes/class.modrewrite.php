@@ -590,7 +590,7 @@ class ModRewrite extends ModRewriteBase
         }
 
         // check for additional parameter in url
-        $aParamsToIgnore = array ('idcat', 'idart', 'lang', 'client', 'idcatart', 'changelang', 'changeclient', 'idartlang', 'parts', 'artname');
+        $aParamsToIgnore = array('idcat', 'idart', 'lang', 'client', 'idcatart', 'changelang', 'changeclient', 'idartlang', 'parts', 'artname');
         $sOtherParams = '';
 
         if (isset($_GET) && count($_GET) > 0) {

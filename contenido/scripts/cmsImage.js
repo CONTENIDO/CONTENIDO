@@ -44,7 +44,7 @@ function addImageEvents(sImageFrameId, sImageId, sPath, sSession, iImageIdArtLan
     addSaveEvent(sImageFrameId, iImageIdArtLang, iImageId, aImageData);
     addImageFrameCloseEvents(sImageFrameId);//close dialog
     addImageNaviActions(sImageFrameId, iImageId);//select tree action
-    if(sContent!=''){
+    if (sContent != '') {
         //$('#directoryShow_'+iImageId).html('<div><img src="'+sContent+'"/></div>');
     }
     addSelectAction(sImageFrameId, iImageId);
@@ -63,7 +63,7 @@ function addImageEvents(sImageFrameId, sImageId, sPath, sSession, iImageIdArtLan
  * @param int    iImageId
  */
 function appendImageValue(sImageFrameId, sName, sValue, iImageId) {
-    if($('#hidden_'+sName+'_'+iImageId).length>0){
+    if ($('#hidden_'+sName+'_'+iImageId).length > 0) {
         $('#hidden_'+sName+'_'+iImageId).remove();
     }
     $("form[name='editcontent']").append('<input type="hidden" value="'+sValue+'" id="hidden_'+sName+'_'+iImageId+'" name="'+sName+'"/>');
@@ -77,7 +77,7 @@ function appendImageValue(sImageFrameId, sName, sValue, iImageId) {
  */
 function addImageFrameShowEvent(sImageFrameId, sImageId) {
     $(sImageId).css('cursor', 'pointer');
-    $(sImageId).click(function () {
+    $(sImageId).click(function() {
         $(sImageFrameId).fadeIn("normal");
         $(sImageFrameId).css('top', $(sImageId).offset().top);
         $(sImageFrameId).css('left', $(sImageId).offset().left+$(sImageId).width()+3);
@@ -94,7 +94,7 @@ function addImageFrameShowEvent(sImageFrameId, sImageId) {
 function addImageTabbingEvents(sImageFrameId, iImageId) {
     $(sImageFrameId+" .menu li").css('cursor', 'pointer');
     //add layer click events
-    $(sImageFrameId+" .menu li").click(function(){
+    $(sImageFrameId+" .menu li").click(function() {
         var curAction = $(this);
 
         $(sImageFrameId+" .menu li").css('font-weight', 'normal');
@@ -106,18 +106,17 @@ function addImageTabbingEvents(sImageFrameId, iImageId) {
         curAction.css('font-weight', 'bold');
 
         $(sImageFrameId).animate({
-        height: "auto",
-        }, 250 , 'linear', function () {
+            height: "auto",
+        }, 250 , 'linear', function() {
             $(sImageFrameId+" #image_"+iImageId+'_'+curAction.attr('class')).css('display', 'block');
             $(sImageFrameId+" #image_"+iImageId+'_'+curAction.attr('class')).css('height', 'auto');
             $(sImageFrameId+" #image_"+iImageId+'_'+curAction.attr('class')).fadeIn("normal");
         });
-        if(curAction.attr('class')=='upload'){
+        if (curAction.attr('class') == 'upload') {
             $(sImageFrameId+" #image_"+iImageId+'_directories').css('display', 'block');
             $(sImageFrameId+" #image_"+iImageId+'_directories').css('height', 'auto');
             $(sImageFrameId+" #image_"+iImageId+'_directories').fadeIn("normal");
         }
-
     });
 }
 
@@ -153,13 +152,13 @@ function addSaveEvent(sImageFrameId, iImageIdArtLang, iImageId, aImageData) {
 function addImageFrameCloseEvents(sImageFrameId) {
     //add cancel image event
     $(sImageFrameId+' .close').css('cursor', 'pointer');
-    $(sImageFrameId+' .close').click(function () {
+    $(sImageFrameId+' .close').click(function() {
         $(sImageFrameId).fadeOut("normal");
     });
 
     //add cancel button event
     $(sImageFrameId+' .filelist_cancel').css('cursor', 'pointer');
-    $(sImageFrameId+' .filelist_cancel').click(function () {
+    $(sImageFrameId+' .filelist_cancel').click(function() {
         $(sImageFrameId).fadeOut("normal");
     });
 }
@@ -199,21 +198,23 @@ function addImageNaviActions(sImageFrameId, iImageId) {
     //show actually articles
     $(sImageFrameId+' #image_'+iImageId+'_directories #directoryList_'+iImageId+' a[class="on"]').parent('div').unbind('click');
     $(sImageFrameId+' #image_'+iImageId+'_directories #directoryList_'+iImageId+' a[class="on"]').parent('div').click(function () {
-        $.each($(sImageFrameId+' div'), function(){
-            if($(this).hasClass('active')){
+        $.each($(sImageFrameId+' div'), function() {
+            if ($(this).hasClass('active')) {
                 $(this).removeClass('active');
             }
         });
-        if(!$(this).hasClass('active')){
+        if (!$(this).hasClass('active')) {
             $(this).addClass('active');
         }
         var dirname = $(this).children('a[class="on"]').attr('title');
-        if(dirname=='upload'){dirname = '/';}
+        if (dirname == 'upload') {
+            dirname = '/';
+        }
         $.ajax({
             type: "POST",
             url: sPath+"ajaxmain.php",
             data: "ajax=imagelist&dir=" + dirname + "&id=" + iImageId + "&idartlang=" + iIdArtLang + "&contenido="+sSession,
-            success: function(msg){
+            success: function(msg) {
                 $(sImageFrameId+' #image_'+iImageId+'_directories #directoryFile_'+iImageId).html(msg);
                 addSelectAction(sImageFrameId, iImageId);
             }
@@ -223,11 +224,11 @@ function addImageNaviActions(sImageFrameId, iImageId) {
     });
     //downside more directory
     $(sImageFrameId+' #directoryList_'+iImageId+' em a').unbind('click');
-    $(sImageFrameId+' #directoryList_'+iImageId+' em a').click(function () {
-        var divContainer     = $(this).parent().parent();
-        var dirname         = $(this).parent('em').parent().find('a[class="on"]').attr('title');
-        if(divContainer.next('ul').length > 0) {
-            divContainer.next('ul').toggle(function () {
+    $(sImageFrameId+' #directoryList_'+iImageId+' em a').click(function() {
+        var divContainer = $(this).parent().parent();
+        var dirname      = $(this).parent('em').parent().find('a[class="on"]').attr('title');
+        if (divContainer.next('ul').length > 0) {
+            divContainer.next('ul').toggle(function() {
                 if (divContainer.next('ul').css('display') == 'none') {
                     divContainer.parent().addClass('collapsed');
                 } else {
@@ -239,7 +240,7 @@ function addImageNaviActions(sImageFrameId, iImageId) {
                 type: "POST",
                 url: sPath+"ajaxmain.php",
                 data: "ajax=dirlist&dir=" + dirname + "&id=" + iImageId + "&idartlang=" + iIdArtLang + "&contenido="+sSession,
-                success: function(msg){
+                success: function(msg) {
                     divContainer.after(msg);
                     divContainer.parent('li').removeClass('collapsed');
                     addImageNaviActions(sImageFrameId, iImageId);
@@ -256,19 +257,19 @@ function addImageNaviActions(sImageFrameId, iImageId) {
  * @param string sImageFrameId
  * @param int      iImageId
  */
-function showImageFolderPath(sImageFrameId, iImageId){
+function showImageFolderPath(sImageFrameId, iImageId) {
     //upload datei
     aTitle = Array();
-    $(sImageFrameId+' div[class="active"] a[class="on"]').each(function(){
+    $(sImageFrameId+' div[class="active"] a[class="on"]').each(function() {
         aTitle.push($(this).attr('title'));
     });
-    if(aTitle.length<1){
+    if (aTitle.length<1) {
         $(sImageFrameId+' #image_'+iImageId+'_directories li#root>div').addClass('active');
     }
     var dirname = $(sImageFrameId+' div[class="active"] a[class="on"]').attr('title');
     divContainer[iImageId] = $(sImageFrameId+' div[class="active"] em a').parent().parent();
     createPath[iImageId] = dirname;
-    if(createPath[iImageId] != '' && createPath[iImageId] != 'upload'){dirname = createPath[iImageId]+'/';} else {dirname = '';}
+    if (createPath[iImageId] != '' && createPath[iImageId] != 'upload') {dirname = createPath[iImageId]+'/';} else {dirname = '';}
 
     $(sImageFrameId+' #caption1').text(dirname);
     $(sImageFrameId+' #caption2').text(dirname);
@@ -284,8 +285,8 @@ function showImageFolderPath(sImageFrameId, iImageId){
  * @param string sImageFrameId
  * @param int      iImageId
  */
-function addSelectAction(sImageFrameId, iImageId){
-    if(document.getElementById('image_filename_'+iImageId) && document.getElementById('image_filename_'+iImageId).length>0){
+function addSelectAction(sImageFrameId, iImageId) {
+    if (document.getElementById('image_filename_'+iImageId) && document.getElementById('image_filename_'+iImageId).length>0) {
         $(sImageFrameId+' select[class="text_medium"]').change(function () {
             var str = "";
             var wert = "";
@@ -294,7 +295,7 @@ function addSelectAction(sImageFrameId, iImageId){
                 wert += $(this).val();
             });
             //show image
-            if (str == "Kein"){
+            if (str == "Kein") {
                 $('#directoryShow_'+iImageId).html('');
             } else {
                 var surl = "";
@@ -305,13 +306,13 @@ function addSelectAction(sImageFrameId, iImageId){
                     type: "POST",
                     url: sPath+"ajaxmain.php",
                     data: "ajax=scaleImage&sUrl="+surl+ "&idartlang=" + iIdArtLang + "&contenido="+sSession,
-                    success: function(msg){//show meta data
+                    success: function(msg) {//show meta data
                         $('#directoryShow_'+iImageId).html('<div><img src="'+msg+'"/></div>');
                     }
                 });
             }
             //upload meta data
-            if (str == "Kein"){
+            if (str == "Kein") {
                 $('#image_medianame_'+iImageId).val('');
                 $('#image_description_'+iImageId).html('');
                 $('#image_keywords_'+iImageId).val('');
@@ -323,7 +324,7 @@ function addSelectAction(sImageFrameId, iImageId){
                     type: "POST",
                     url: sPath+"ajaxmain.php",
                     data: "ajax=loadImageMeta&filename="+wert+"&id=" + iImageId + "&idartlang=" + iIdArtLang + "&contenido="+sSession,
-                    success: function(msg){//show meta data
+                    success: function(msg) {//show meta data
                         val = msg.split('+++');
                         $('#image_medianame_'+iImageId).val(val[0]);
                         $('#image_description_'+iImageId).html(val[1]);
@@ -344,44 +345,44 @@ function addSelectAction(sImageFrameId, iImageId){
  * @param string sImageFrameId
  * @param int      iImageId
  */
-function createMKDir(sImageFrameId, iImageId){
+function createMKDir(sImageFrameId, iImageId) {
     $(sImageFrameId+' #image_'+iImageId+'_upload form[name="newdir"] input[type="image"]').unbind('click');
     $(sImageFrameId+' #image_'+iImageId+'_upload form[name="newdir"] input[type="image"]').click(function () {
         var folderName = $(sImageFrameId+' input[name="foldername"]').val();
         var dirname = '';
-        if(createPath[iImageId] != '' && createPath[iImageId] != 'upload'){dirname = createPath[iImageId]+'/';}
-        if(folderName != ''){
+        if (createPath[iImageId] != '' && createPath[iImageId] != 'upload') {dirname = createPath[iImageId]+'/';}
+        if (folderName != '') {
         $.ajax({
             type: "POST",
             url: sPath+"ajaxmain.php",
             data: "ajax=upl_mkdir&id=" + iImageId + "&idartlang=" + iIdArtLang + "&path=" + dirname + "&foldername=" + folderName + "&contenido="+sSession,
             //url: sPath+"main.php",
             //data: "area=upl&action=upl_mkdir&frame=2&appendparameters=&path=" + dirname + "&foldername=" + folderName + "&contenido="+sSession,
-            success: function(msg){//make create folder
-            if(msg!='0702'){
+            success: function(msg) {//make create folder
+            if (msg!='0702') {
                 $('input[name="foldername"]').val('');
                 $.ajax({
                     type: "POST",
                     url: sPath+"ajaxmain.php",
                     data: "ajax=dirlist&idartlang=" + iIdArtLang + "&id=" + iImageId + "&dir=" + dirname + "&contenido="+sSession,
-                    success: function(msg){//create directory list
-                        if(createPath[iImageId] == 'upload'){
+                    success: function(msg) {//create directory list
+                        if (createPath[iImageId] == 'upload') {
                             var title = folderName;
-                        }else{
+                        } else {
                             var title = dirname+folderName;
                         }
                         aTitle = Array();
-                        $(sImageFrameId+' div a[class="on"]').each(function(){
+                        $(sImageFrameId+' div a[class="on"]').each(function() {
                             aTitle.push($(this).attr('title'));
                         });
 
-                        if(!in_array(title,aTitle)){
+                        if (!in_array(title,aTitle)) {
                             //divContainer[iImageId].parent('li').children('ul').remove();
                             //divContainer[iImageId].after(msg);
                             //divContainer[iImageId].parent('li').removeClass('collapsed');
                             //addImageNaviActions(sImageFrameId, iImageId);
-                            $('div.cms_image .con_str_tree li div>a').each(function(index){
-                                if($(this).attr('title') == createPath[iImageId]){
+                            $('div.cms_image .con_str_tree li div>a').each(function(index) {
+                                if ($(this).attr('title') == createPath[iImageId]) {
                                     $(this).parent().parent('li:has(ul)').children('ul').remove();
                                     $(this).parent().after(msg);
                                     $(this).parent().parent('li').removeClass('collapsed');
@@ -406,33 +407,33 @@ function createMKDir(sImageFrameId, iImageId){
  * @param string sImageFrameId
  * @param int      iImageId
  */
-function imageFileUpload(sImageFrameId, iImageId){
+function imageFileUpload(sImageFrameId, iImageId) {
     var folderName = $(sImageFrameId+' input[name="file[]"]').val();
     var dirname = '';
-    if(createPath[iImageId] != '' && createPath[iImageId] != 'upload'){dirname = createPath[iImageId]+'/';}
+    if (createPath[iImageId] != '' && createPath[iImageId] != 'upload') {dirname = createPath[iImageId]+'/';}
 
     new AjaxUpload('#cms_image_m'+iImageId, {
         //action: sPath+"main.php?area=upl&action=upl_upload&frame=4&appendparameters=&leftframe=0&rightframe=0&file=&path=" + dirname + "&contenido="+sSession,
         action: sPath+"ajaxmain.php?ajax=upl_upload&id=" + iImageId + "&idartlang=" + iIdArtLang + "&path=" + dirname + "&contenido="+sSession,
         name: 'file[]',
-        onSubmit:function(){
+        onSubmit:function() {
             $('img.loading').css('display','block');
         },
-        onComplete : function(file){
+        onComplete : function(file) {
             /*var aValue = Array();
-            $(sImageFrameId+' select#image_filename_'+iImageId+' option').each(function(){
+            $(sImageFrameId+' select#image_filename_'+iImageId+' option').each(function() {
                 aValue.push($(this).attr('value'));
             });
             $('img.loading').css('display','none');
-            if(!in_array(dirname+file,aValue)){
+            if (!in_array(dirname+file,aValue)) {
                 $(sImageFrameId+' #image_filename_'+iImageId).append('<option id="" value="'+dirname+file+'">'+file+'</option>');
             }*/
-            if(dirname=='upload'||dirname==''){dirname = '/';}
+            if (dirname=='upload'||dirname=='') {dirname = '/';}
             $.ajax({
                 type: "POST",
                 url: sPath+"ajaxmain.php",
                 data: "ajax=imagelist&dir=" + createPath[iImageId] + "&id=" + iImageId + "&idartlang=" + iIdArtLang + "&contenido="+sSession,
-                success: function(msg){
+                success: function(msg) {
                     $('img.loading').css('display','none');
                     $(sImageFrameId+' #image_'+iImageId+'_directories #directoryFile_'+iImageId).html(msg);
                     addSelectAction(sImageFrameId, iImageId);
@@ -450,10 +451,10 @@ function dirname(path) {
 }
 
 //Read a page's GET URL variables and return them as an associative array.
-function getUrlVars(){
+function getUrlVars() {
   var vars = [], hash;
   var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-  for(var i = 0; i < hashes.length; i++){
+  for(var i = 0; i < hashes.length; i++) {
       hash = hashes[i].split('=');
       vars.push(hash[0]);
       vars[hash[0]] = hash[1];
@@ -474,13 +475,13 @@ function in_array(needle, haystack) {
 /* function to include a script */
 function include(filename, filetype) {
     var html_head = document.getElementsByTagName('head').item(0);
-    if(filetype=='js'){
+    if (filetype=='js') {
         var js = document.createElement('script');
         js.setAttribute('language', 'javascript');
         js.setAttribute('type', 'text/javascript');
         js.setAttribute('src', filename);
         html_head.appendChild(js);
-    } else if(filetype=='css'){
+    } else if (filetype=='css') {
         var css = document.createElement('link');
         css.setAttribute('media', 'all');
         css.setAttribute('type', 'text/css');
@@ -499,9 +500,9 @@ var included_cssfiles = new Array();
 
 /* function */
 function include_once(script_filename, filetype) {
-    if(filetype=='js'){
+    if (filetype=='js') {
         afiles = included_files;
-    } else if(filetype=='css'){
+    } else if (filetype=='css') {
         afiles = included_cssfiles;
     }
     if (!in_array(script_filename, afiles)) {
@@ -515,11 +516,11 @@ function include_once(script_filename, filetype) {
 * function scans the document for already included files
 * and puts them into the 'included_files' array
 */
-function initIncludedFiles () {
+function initIncludedFiles() {
     var scripts = document.getElementsByTagName('script');
     /* put them into the array if they have a 'src' attribute */
     for (var i=0; i < scripts.length; i++) {
-        if(scripts[i].src) {
+        if (scripts[i].src) {
             if (!in_array(scripts[i].src, included_files)) {
                 included_files[i] = scripts[i].src;
             }
@@ -535,7 +536,7 @@ function initIncludedFiles () {
     var scripts = document.getElementsByTagName('link');
     /* put them into the array if they have a 'src' attribute */
     for (var i=0; i < scripts.length; i++) {
-        if(scripts[i].href) {
+        if (scripts[i].href) {
             if (!in_array(scripts[i].href, included_cssfiles)) {
                 included_cssfiles[i] = scripts[i].href;
             }
@@ -548,10 +549,10 @@ function initIncludedFiles () {
     }
 }
 
-function showUrlforMeta(sImageFrameId,iImageId){
+function showUrlforMeta(sImageFrameId,iImageId) {
     var str = "";
     var wert = "";
-    $(sImageFrameId+" select#image_filename_"+iImageId+" option:selected").each(function () {
+    $(sImageFrameId+" select#image_filename_"+iImageId+" option:selected").each(function() {
         str += $(this).text();
         wert += $(this).val();
     });

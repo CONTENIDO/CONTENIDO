@@ -694,7 +694,7 @@ while ($db->next_record()) {
         } else {
             $active = false;
         }
-        $navigationTree[$db->f('parentid')][$db->f('idcat')] = array (
+        $navigationTree[$db->f('parentid')][$db->f('idcat')] = array(
            'idcat' => $db->f('idcat'),
            'preid' => $db->f('preid'),
            'postid' => $db->f('postid'),

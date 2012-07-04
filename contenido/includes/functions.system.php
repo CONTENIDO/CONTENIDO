@@ -32,12 +32,12 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Clears CONTENIDO standard errorlog.txt
- * @return string returns message if clearing was successfull or not
+ * @return  string   Message if clearing was successfull or not
  */
 function emptyLogFile() {
     global $cfg, $notification, $auth;
 
-    if(strpos($auth->auth["perm"],"sysadmin") === false) {
+    if (strpos($auth->auth["perm"], "sysadmin") === false) {
         return $notification->returnNotification("error", i18n("Can't clear error log : Access is denied!"));
     }
 
@@ -47,7 +47,7 @@ function emptyLogFile() {
     $filename = $cfg['path']['contenido_logs'] . 'errorlog.txt';
 
     if (cFileHandler::exists($filename) && is_writeable($filename)) {
-    	cFileHandler::truncate($filename);
+        cFileHandler::truncate($filename);
         $tmp_notification = $notification->returnNotification("info", i18n("Error log successfully cleared!"));
     } else if (cFileHandler::exists($filename) && !is_writeable($filename)) {
         $tmp_notification = $notification->returnNotification("error", i18n("Can't clear error log : Access is denied!"));
@@ -57,12 +57,9 @@ function emptyLogFile() {
 }
 
 /**
- * phpInfoToHtml - grabs phpinfo() output
+ * Grabs phpinfo() output.
  *
- * grabs phpinfo() HTML output
- *
- * @return string returns phpinfo() HTML output
- * @author Marco Jahn
+ * @return string  HTML output of phpinfo()
  */
 function phpInfoToHtml() {
     // get output
@@ -75,16 +72,12 @@ function phpInfoToHtml() {
 }
 
 /**
- * check users right for a client
+ * Check if the user has a right for a defined client.
  *
- * check if the user has a right for a defined client
- *
- * @param integer client id
- *
- * @return boolean wether user has access or not
- * @author Marco Jahn
+ * @param  int  $client client id
+ * @return  bool  Wether user has access or not
  */
-function system_have_perm($client) {
+function systemHavePerm($client) {
     global $auth;
 
     if (!isset ($auth->perm['perm'])) {
@@ -104,11 +97,10 @@ function system_have_perm($client) {
 }
 
 /**
- * check for valid ip adress
+ * Check for valid ip adress
  *
- * @param string ip adress
- *
- * @return boolean if string is a valid ip or not
+ * @param   string  $strHostAdress  IP adress
+ * @return  bool If string is a valid ip or not
  */
 function isIPv4($strHostAdress) {
     // ip pattern needed for validation
@@ -122,12 +114,9 @@ function isIPv4($strHostAdress) {
 /**
  * must be done
  *
- * must be done
- *
- * @param string CONTENIDO fullhtmlPath
- * @param string current browser string
- *
- * @return string status of path comparement
+ * @param string  $strConUrl  CONTENIDO fullhtmlPath
+ * @param string  $strBrowserUrl  current browser string
+ * @return string  Status of path comparement
  */
 function checkPathInformation($strConUrl, $strBrowserUrl) {
     // parse url
@@ -202,16 +191,20 @@ function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false) {
 }
 
 /**
- * writeSystemValuesOutput - get several server and CONTENIDO settings
- *
+ * Get several server and CONTENIDO settings
  * parse system and CONTENIDO output into a string
  *
  * @deprecated 2012-02-26 Moved directly to include.system_sysvalues.php
- *
- * @return void
  */
 function writeSystemValuesOutput($usage) {
     cDeprecated("This function is not longer supported.");
+}
+
+
+/** @deprecated  [2012-07-04] Use function systemHavePerm() instead */
+function system_have_perm($client) {
+    cDeprecated("Use function systemHavePerm() instead");
+    return systemHavePerm($client);
 }
 
 ?>

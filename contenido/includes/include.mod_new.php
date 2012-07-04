@@ -57,8 +57,8 @@ if ((int) $client > 0) {
     ###############
     # List Options
     ###############
-    $aSortByOptions            = array ("name" => i18n("Name"), "type" => i18n("Type"));
-    $aSortOrderOptions      = array ("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
+    $aSortByOptions            = array("name" => i18n("Name"), "type" => i18n("Type"));
+    $aSortOrderOptions      = array("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
     $listoplink="listoptions";
     $oListOptionRow = new cFoldingRow("e9ddf415-4b2d-4a75-8060-c3cd88b6ff98", i18n("List options"), $listoplink);
     $tpl->set('s', 'LISTOPLINK', $listoplink);

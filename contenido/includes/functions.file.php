@@ -208,7 +208,7 @@ function fileEdit($filename, $sCode, $path)
     fileValidateFilename($filename, true);
 
     if (cFileHandler::write($path.$filename, $sCode)) {
-    	return cFileHandler::read($path.$filename);
+        return cFileHandler::read($path.$filename);
     } else {
         $notification->displayNotification("error", sprintf(i18n("%s is not writable"), $path.$filename));
         exit;
@@ -232,7 +232,7 @@ function getFileContent($filename, $path)
 
     cDeprecated("This function was replaced by cFileHandler");
 
-	$ret = "";
+    $ret = "";
     if (($ret = cFileHandler::read($path.$filename)) === false) {
        $notification->displayNotification("error", sprintf(i18n("Can not open file%s "), $path.$filename));
        exit;
@@ -313,10 +313,10 @@ function renameFile($sOldFile, $sNewFile, $path)
 
     fileValidateFilename($sNewFile, true);
     if (cFileHandler::rename($path.$sOldFile, $sNewFile)) {
-    	return $sNewFile;
+        return $sNewFile;
     } else {
-    	$notification->displayNotification("error", sprintf(i18n("Can not rename file %s"),$path.$sOldFile));
-    	exit;
+        $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"),$path.$sOldFile));
+        exit;
     }
 }
 
@@ -358,8 +358,8 @@ function fileGetMimeContentType($file)
 {
     cDeprecated("This function was replaced by cFileHandler");
 
-	$ret = cFileHandler::info($file);
-	return $ret['mime'];
+    $ret = cFileHandler::info($file);
+    return $ret['mime'];
 }
 
 /**
@@ -379,8 +379,8 @@ function getDirectorySize($sDirectory, $bRecursive = false)
     }
 
     foreach ($files as $file) {
-    	$temp = cFileHandler::info($file);
-    	$ret += $temp['size'];
+        $temp = cFileHandler::info($file);
+        $ret += $temp['size'];
     }
 
     return $ret;

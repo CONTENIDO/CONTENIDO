@@ -29,7 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-if(isset($area) && $area == 'con_content_list'){
+if (isset($area) && $area == 'con_content_list') {
     $tmp_area = $area;
     $path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
             '&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
@@ -41,8 +41,8 @@ if(isset($area) && $area == 'con_content_list'){
 }
 
 if ($doedit == "1") {
-    conSaveContentEntry ($idartlang, "CMS_HTMLTEXT", $typenr, $CMS_HTMLTEXT);
-    conMakeArticleIndex ($idartlang, $idart);
+    conSaveContentEntry($idartlang, "CMS_HTMLTEXT", $typenr, $CMS_HTMLTEXT);
+    conMakeArticleIndex($idartlang, $idart);
     conGenerateCodeForArtInAllCategories($idart);
     header("Location:".$sess->url($path1)."");
 }
@@ -65,40 +65,34 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
     <td>
 
 <?php
-       getAvailableContentTypes($idartlang);
+   getAvailableContentTypes($idartlang);
 
-        echo "  <FORM name=\"editcontent\" method=\"post\" action=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php\">";
-        $sess->hidden_session();
-        echo "  <INPUT type=hidden name=lang value=\"$lang\">";
-//        echo "  <INPUT type=hidden name=submit value=\"editcontent\">";
-        echo "  <INPUT type=hidden name=typenr value=\"$typenr\">";
-        echo "  <INPUT type=hidden name=idart value=\"$idart\">";
-        echo "  <INPUT type=hidden name=action value=\"10\">";
-        echo "  <INPUT type=hidden name=type value=\"$type\">";
-        echo "<INPUT type=hidden name=doedit value=1>";
-        echo "  <INPUT type=hidden name=idcat value=\"$idcat\">";
-        echo "  <INPUT type=hidden name=idartlang value=\"$idartlang\">";
-        echo "<INPUT type=hidden name=changeview value=\"edit\">";
-        echo "  <TABLE cellpadding=$cellpadding cellspacing=$cellpadding border=0>";
+    echo "  <form name=\"editcontent\" method=\"post\" action=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php\">";
+    $sess->hidden_session();
+    echo "  <input type=hidden name=lang value=\"$lang\">";
+//        echo "  <input type=hidden name=submit value=\"editcontent\">";
+    echo "  <input type=hidden name=typenr value=\"$typenr\">";
+    echo "  <input type=hidden name=idart value=\"$idart\">";
+    echo "  <input type=hidden name=action value=\"10\">";
+    echo "  <input type=hidden name=type value=\"$type\">";
+    echo "<input type=hidden name=doedit value=1>";
+    echo "  <input type=hidden name=idcat value=\"$idcat\">";
+    echo "  <input type=hidden name=idartlang value=\"$idartlang\">";
+    echo "<input type=hidden name=changeview value=\"edit\">";
+    echo "  <table cellpadding=$cellpadding cellspacing=$cellpadding border=0>";
 
-        echo "  <TR><TD valign=top class=text_medium>&nbsp;".$typenr.".&nbsp;".$a_description[$type][$typenr].":&nbsp;</TD><TD class=content>";
-        echo "  <TEXTAREA name=CMS_HTMLTEXT ROWS=15 COLS=90>".strip_tags(urldecode($a_content[$type][$typenr]))."</TEXTAREA>";
-        echo "  </TD></TR>";
-        echo "  <TR valign=top><TD colspan=2><br>
-                      <a href=".$sess->url($path2)."><img src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_cancel.gif\" border=0></a>
-                      <INPUT type=image name=submit value=editcontent src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_ok.gif\" border=0>
-                      </TD></TR>";
+    echo "  <tr><td valign=top class=text_medium>&nbsp;".$typenr.".&nbsp;".$a_description[$type][$typenr].":&nbsp;</td><td class=content>";
+    echo "  <textarea name=CMS_HTMLTEXT rows=15 cols=90>".strip_tags(urldecode($a_content[$type][$typenr]))."</textarea>";
+    echo "  </td></tr>";
+    echo "  <tr valign=top><td colspan=2><br>
+                  <a href=".$sess->url($path2)."><img src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_cancel.gif\" border=0></a>
+                  <input type=image name=submit value=editcontent src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_ok.gif\" border=0>
+                  </td></tr>";
 
-        echo "  </TABLE>
-                      </FORM>";
+    echo "  </table>
+                  </form>";
 
 ?>
-
-
-
-
-
-
 </td></tr></table>
 </body>
-</HTML>
+</html>

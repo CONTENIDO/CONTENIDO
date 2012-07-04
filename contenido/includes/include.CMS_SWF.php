@@ -21,18 +21,15 @@
  *
  * {@internal
  *   created 2003-05-07
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-if(isset($area) && $area == 'con_content_list'){
+if (isset($area) && $area == 'con_content_list') {
     $tmp_area = $area;
     $path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
             '&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
@@ -44,20 +41,20 @@ if(isset($area) && $area == 'con_content_list'){
 }
 
 if ($doedit == "1") {
-    conSaveContentEntry ($idartlang, "CMS_SWF", $typenr, $CMS_SWF);
-    conMakeArticleIndex ($idartlang, $idart);
+    conSaveContentEntry($idartlang, "CMS_SWF", $typenr, $CMS_SWF);
+    conMakeArticleIndex($idartlang, $idart);
     conGenerateCodeForArtInAllCategories($idart);
-    header("location:".$sess->url($path1));
+    header("Location:".$sess->url($path1));
 }
 
 ?>
 <html>
 <head>
 <title>CONTENIDO</title>
-<link rel="stylesheet" type="text/css" href="<?php print $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["styles"] ?>contenido.css">
-</HEAD>
+    <link rel="stylesheet" type="text/css" href="<?php print $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["styles"] ?>contenido.css">
+</head>
 <body>
-<table width="100%"  border=0 cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+<table width="100%" border=0 cellspacing="0" cellpadding="0" bgcolor="#ffffff">
   <tr>
     <td width="10" rowspan="4"><img src="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
     <td width="100%"><img src="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
@@ -68,57 +65,53 @@ if ($doedit == "1") {
 
 <?php
 
-       getAvailableContentTypes($idartlang);
+   getAvailableContentTypes($idartlang);
 
-        echo "  <FORM name=\"editcontent\" method=\"post\" action=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php\">";
+    echo "  <form name=\"editcontent\" method=\"post\" action=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php\">";
 
-        $sess->hidden_session();
+    $sess->hidden_session();
 
-        echo "  <INPUT type=hidden name=lang value=\"$lang\">";
-        echo "  <INPUT type=hidden name=typenr value=\"$typenr\">";
-        echo "  <INPUT type=hidden name=idart value=\"$idart\">";
-        echo "  <INPUT type=hidden name=idcat value=\"$idcat\">";
-        echo "  <INPUT type=hidden name=idartlang value=\"$idartlang\">";
-        echo "<INPUT type=hidden name=doedit value=1>";
-        echo "  <INPUT type=hidden name=action value=\"10\">";
-        echo "  <INPUT type=hidden name=type value=\"$type\">";
-        echo "<INPUT type=hidden name=changeview value=\"edit\">";
+    echo "  <input type=hidden name=lang value=\"$lang\">";
+    echo "  <input type=hidden name=typenr value=\"$typenr\">";
+    echo "  <input type=hidden name=idart value=\"$idart\">";
+    echo "  <input type=hidden name=idcat value=\"$idcat\">";
+    echo "  <input type=hidden name=idartlang value=\"$idartlang\">";
+    echo "  <input type=hidden name=doedit value=1>";
+    echo "  <input type=hidden name=action value=\"10\">";
+    echo "  <input type=hidden name=type value=\"$type\">";
+    echo "  <input type=hidden name=changeview value=\"edit\">";
 
-        echo "  <TABLE cellpadding=$cellpadding cellspacing=$cellpadding border=0>";
+    echo "  <table cellpadding=$cellpadding cellspacing=$cellpadding border=0>";
 
-        echo "  <TR><TD valign=\"top\" class=\"text_medium\" nowrap>&nbsp;".$typenr.".&nbsp;".$a_description["CMS_SWF"][$typenr].":&nbsp;</TD><TD class=content>";
-                echo "<SELECT name=CMS_SWF SIZE=1>";
-                echo "<option value=0>-- ".i18n("None")." --</option>";
+    echo "  <tr><td valign=\"top\" class=\"text_medium\" nowrap>&nbsp;".$typenr.".&nbsp;".$a_description["CMS_SWF"][$typenr].":&nbsp;</td><td class=content>";
+    echo "<select name=CMS_SWF size=1>";
+    echo "<option value=0>-- ".i18n("None")." --</option>";
 
-                $sql = "SELECT idupl, dirname, filename FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype = 'swf' ORDER BY filename";
+    $sql = "SELECT idupl, dirname, filename FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype = 'swf' ORDER BY filename";
 
-                $db->query($sql);
+    $db->query($sql);
 
-                while ( $db->next_record() ) {
+    while ($db->next_record()) {
 
-                    if ( $db->f("idupl") != $a_content['CMS_SWF'][$typenr] ) {
+        if ($db->f("idupl") != $a_content['CMS_SWF'][$typenr]) {
+            echo "<option value=\"".$db->f("idupl")."\">".$db->f("dirname").$db->f("filename")."</option>";
+        } else {
+            echo "<option value=\"".$db->f("idupl")."\" selected=\"selected\">".$db->f("dirname").$db->f("filename")."</option>";
+        }
+    }
 
-                        echo "<option value=\"".$db->f("idupl")."\">".$db->f("dirname").$db->f("filename")."</option>";
+    echo "</select>";
+    echo "  </td></tr>";
 
-                    } else {
+    echo "  <tr valign=top><td colspan=2><br>
+          <a href=".$sess->url($path2)."><img src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_cancel.gif\" border=0></a>
+          <input type=image name=submit value=editcontent src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_ok.gif\" border=0>
+          </td></tr>";
 
-                        echo "<option value=\"".$db->f("idupl")."\" selected=\"selected\">".$db->f("dirname").$db->f("filename")."</option>";
-
-                    }
-                }
-
-                echo "</SELECT>";
-        echo "  </TD></TR>";
-
-               echo "  <TR valign=top><TD colspan=2><br>
-                      <a href=".$sess->url($path2)."><img src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_cancel.gif\" border=0></a>
-                      <INPUT type=image name=submit value=editcontent src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_ok.gif\" border=0>
-                      </TD></TR>";
-
-        echo "  </TABLE>
-                      </FORM>";
+    echo "  </table>
+                  </form>";
 
 ?>
 </td></tr></table>
 </body>
-</HTML>
+</html>

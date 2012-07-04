@@ -41,25 +41,25 @@ class Template
      * Needles (static)
      * @var array
      */
-    var $needles = array ();
+    var $needles = array();
 
     /**
      * Replacements (static)
      * @var array
      */
-    var $replacements = array ();
+    var $replacements = array();
 
     /**
      * Dyn_Needles (dynamic)
      * @var array
      */
-    var $Dyn_needles = array ();
+    var $Dyn_needles = array();
 
     /**
      * Dyn_Replacements (dynamic)
      * @var array
      */
-    var $Dyn_replacements = array ();
+    var $Dyn_replacements = array();
 
     /**
      * Database instance
@@ -97,8 +97,8 @@ class Template
      */
     function Template($tags = false)
     {
-        $this->tplcache = Array ();
-        $this->tplnamecache = Array ();
+        $this->tplcache = array();
+        $this->tplnamecache = array();
 
         if (is_array($tags))
         {
@@ -177,10 +177,10 @@ class Template
     function reset()
     {
         $this->dyn_cnt = 0;
-        $this->needles = array ();
-        $this->replacements = array ();
-        $this->Dyn_needles = array ();
-        $this->Dyn_replacements = array ();
+        $this->needles = array();
+        $this->replacements = array();
+        $this->Dyn_needles = array();
+        $this->Dyn_replacements = array();
     }
 
     /**

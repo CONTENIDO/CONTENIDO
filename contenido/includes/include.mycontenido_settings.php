@@ -21,14 +21,8 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2008-10-??, Bilal Arslan - moved password DB queries, added new ConUser object
- *   modified 2008-11-17, H. Librenz - method calls on new ConUser object modified, comments added
- *   modified 2011-02-07, Dominik Ziegler, removed integration of not supported java module editor
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -40,31 +34,25 @@ $user = new cApiUser($auth->auth["uid"]);
 
 $noti = "";
 
-if ($action == "mycontenido_editself")
-{
+if ($action == "mycontenido_editself") {
 
-    if (!isset($wysi))
-    {
+    if (!isset($wysi)) {
         $wysi = false;
     }
 
     $error = false;
 
-    if ($newpassword != "")
-    {
-        if (cApiUser::encodePassword($oldpassword) != $user->get("password"))
-        {
+    if ($newpassword != "") {
+        if (cApiUser::encodePassword($oldpassword) != $user->get("password")) {
             $error = i18n("Old password incorrect");
         }
 
-        if (strcmp($newpassword, $newpassword2) != 0)
-        {
+        if (strcmp($newpassword, $newpassword2) != 0) {
             $error = i18n("Passwords don't match");
         }
 
 
-        if ($error !== false)
-        {
+        if ($error !== false) {
             $noti = $notification->returnNotification("error", $error)."<br>";
         } else {
             // New Class User, update password
@@ -73,48 +61,47 @@ if ($action == "mycontenido_editself")
 
             #$user->set("password", md5($newpassword));
 
-            if ( $iResult == cApiUser::PASS_OK ) {
+            if ($iResult == cApiUser::PASS_OK) {
                 $noti = $notification->returnNotification("info", i18n("Changes saved"))."<br>";
             } else {
                 $noti = $notification->returnNotification("error", cApiUser::getErrorString($iResult)."<br>");
             }
-
         }
     }
 
-    if($user->get("realname") != $name) {
-    	$user->set("realname", $name);
+    if ($user->get("realname") != $name) {
+        $user->set("realname", $name);
     }
-    if($user->get("email") != $email) {
-    	$user->set("email", $email);
+    if ($user->get("email") != $email) {
+        $user->set("email", $email);
     }
-    if($user->get("telephone") != $phonenumber) {
-    	$user->set("telephone", $phonenumber);
+    if ($user->get("telephone") != $phonenumber) {
+        $user->set("telephone", $phonenumber);
     }
-    if($user->get("address_street") != $street) {
-    	$user->set("address_street", $street);
+    if ($user->get("address_street") != $street) {
+        $user->set("address_street", $street);
     }
-    if($user->get("address_zip") != $zip) {
-    	$user->set("address_zip", $zip);
+    if ($user->get("address_zip") != $zip) {
+        $user->set("address_zip", $zip);
     }
-    if($user->get("address_city") != $city) {
-    	$user->set("address_city", $city);
+    if ($user->get("address_city") != $city) {
+        $user->set("address_city", $city);
     }
-    if($user->get("address_country") != $country) {
-    	$user->set("address_country", $country);
+    if ($user->get("address_country") != $country) {
+        $user->set("address_country", $country);
     }
-    if($user->get("wysi") != $wysi) {
-    	$user->set("wysi", $wysi);
+    if ($user->get("wysi") != $wysi) {
+        $user->set("wysi", $wysi);
     }
 
     $user->setUserProperty("dateformat", "full", $format);
     $user->setUserProperty("dateformat", "date", $formatdate);
     $user->setUserProperty("dateformat", "time", $formattime);
 
-    if($user->store() && $noti == "") {
-    	$noti = $notification->returnNotification("info", i18n("Changes saved"))."<br>";
-    } else if($noti == "") {
-    	$noti = $notification->returnNotification("error", i18n("An error occured while saving user info."))."<br>";
+    if ($user->store() && $noti == "") {
+        $noti = $notification->returnNotification("info", i18n("Changes saved"))."<br>";
+    } else if ($noti == "") {
+        $noti = $notification->returnNotification("error", i18n("An error occured while saving user info."))."<br>";
     }
 }
 
@@ -184,7 +171,7 @@ $form->add(i18n("Date/Time format"), array($format, $formathint));
 $form->add(i18n("Date format"), array($format2));
 $form->add(i18n("Time format"), array($format3));
 
-$page = new cPage;
+$page = new cPage();
 
 $page->setContent(array($noti, $form, markSubMenuItem(3, true)));
 $page->render();

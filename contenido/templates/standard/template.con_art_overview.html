@@ -35,13 +35,11 @@
             vertical-align:middle;
             margin-right:3px;
         }
-
     </style>
 </head>
 <body style="margin:10px">
 
 <form action ="main.php" name="bulk_editing" class="bulk_editing_form" method="post">
-
     <input type="hidden" name="area" value="con"/>
     <input type="hidden" name="action" value=""/>
     <input type="hidden" name="frame" value="4"/>
@@ -53,62 +51,53 @@
     <input type="hidden" name="idlang" value="{IDLANG}" />
     <input type="submit" name="submit" value="senden" style="display:none;"/>
 </form>
+
 <table width="100%" cellspacing="0" cellpadding="2" border="0">
     <div class="text_large">{CATEGORY}</div>
     <tr>
-      <td colspan="12"><img src="images/spacer.gif" width="1" height="10"></td>
-  </tr>
-
-  <tr valign="middle">
-      <td colspan="4" class="text_medium" style="padding-right: 5px;border: 1px; border-color: #B3B3B3; border-style: solid; border-right: none; background-color: #E2E2E2">
+        <td colspan="12"><img src="images/spacer.gif" width="1" height="10"></td>
+    </tr>
+    <tr valign="middle">
+        <td colspan="4" class="text_medium" style="padding-right: 5px;border: 1px; border-color: #B3B3B3; border-style: solid; border-right: none; background-color: #E2E2E2">
         <table cellspacing="0" cellpadding="0" border="0">
-          <tr>
-                    <td>{NEWARTICLE_IMG}</td>
-                    <td>&nbsp;</td>
-                    <td>{NEWARTICLE_TEXT}</td>
-         </tr>
-            </table>
-    </td>
-    <td align="right" class="text_medium" colspan="10" style="border: 1px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #E2E2E2">{ARTSORTCAPTION} {ARTSORT} {ELEMPERPAGECAPTION} {ELEMPERPAGE}</td>
-  </tr>
+            <tr>
+                <td>{NEWARTICLE_IMG}</td>
+                <td>&nbsp;</td>
+                <td>{NEWARTICLE_TEXT}</td>
+            </tr>
+        </table>
+        </td>
+        <td align="right" class="text_medium" colspan="10" style="border: 1px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #E2E2E2">{ARTSORTCAPTION} {ARTSORT} {ELEMPERPAGECAPTION} {ELEMPERPAGE}</td>
+    </tr>
 
-  <tr>
-   <td colspan="12"><img src="images/spacer.gif" width="1" height="10"></td>
-  </tr>
+    <tr>
+        <td colspan="12"><img src="images/spacer.gif" width="1" height="10"></td>
+    </tr>
 
   {NOTIFICATION}
 </table>
 
 <table width="100%" cellspacing="0" cellpadding="2" border="0">
-
-
-       <tr valign="middle">
-                    <td  style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; text-align:right; border-style: solid; background-color: #E2E2E2; " colspan="7">
-                        <div style="float:left; heigth:20px; line-height:20px; vertical-align:middle;  width:600px; text-align:left;">
-
-                            <div class="bulk_editing_functions" style="float:left;height:16px; display:none;">
-                                <span> i18n("Apply to all selected articles"):</span>
-                                <a class="con_makeonline" > <img src="images/online.gif" title='i18n("Set articles online")' alt='i18n("Set articles online")' border="0" style=""></a>
-                                    <a class="con_makeonline invert" > <img src="images/offline.gif" title='i18n("Set articles offline")' alt='i18n("Set articles offline")' border="0" ></a>
-                                <a class="con_lock" > <img src="images/article_unlocked.gif" title='i18n("Freeze articles")' alt='i18n("Freeze articles")' border="0"></a>
-                                <a class="con_lock invert" > <img src="images/article_locked.gif" title='i18n("Unfreeze articles")' alt='i18n("Unfreeze articles")' border="0"></a>
-                                <a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteArticels()');" > <img src="images/delete.gif" title='i18n("Delete articles")' alt='i18n("Delete articles")' border="0" ></a>
-                                <span style="padding-left:15px;">&nbsp;</span>
-                            </div>
-                            <a  onmouseover="this.style.cursor='pointer'" class="flip_mark"><img onmouseover="this.style.cursor='pointer'" alt="i18n('Flip Selection')" title="Markierung umkehren" src="images/but_invert_selection.gif" style="margin-right:0px; vertical-align:middle;"> i18n("Flip Selection")</a>
-
-
-                        </div>
-
-
-
-                        <div style="clear:both;"></div>
-                    </td>
-                </tr>
-
-      <tr height="10">
-                        <td colspan="7"></td>
-                   </tr>
+    <tr valign="middle">
+        <td  style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; text-align:right; border-style: solid; background-color: #E2E2E2;" colspan="7">
+            <div style="float:left; heigth:20px; line-height:20px; vertical-align:middle;  width:600px; text-align:left;">
+                <div class="bulk_editing_functions" style="float:left;height:16px; display:none;">
+                    <span> i18n("Apply to all selected articles"):</span>
+                    <a class="con_makeonline"> <img src="images/online.gif" title='i18n("Set articles online")' alt='i18n("Set articles online")' border="0" style=""></a>
+                    <a class="con_makeonline invert"> <img src="images/offline.gif" title='i18n("Set articles offline")' alt='i18n("Set articles offline")' border="0" ></a>
+                    <a class="con_lock"> <img src="images/article_unlocked.gif" title='i18n("Freeze articles")' alt='i18n("Freeze articles")' border="0"></a>
+                    <a class="con_lock invert"> <img src="images/article_locked.gif" title='i18n("Unfreeze articles")' alt='i18n("Unfreeze articles")' border="0"></a>
+                    <a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteArticels()');"> <img src="images/delete.gif" title='i18n("Delete articles")' alt='i18n("Delete articles")' border="0"></a>
+                    <span style="padding-left:15px;">&nbsp;</span>
+                </div>
+                <a onmouseover="this.style.cursor='pointer'" class="flip_mark"><img onmouseover="this.style.cursor='pointer'" alt="i18n('Flip Selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif" style="margin-right:0px; vertical-align:middle;"> i18n("Flip Selection")</a>
+            </div>
+            <div style="clear:both;"></div>
+        </td>
+    </tr>
+    <tr height="10">
+        <td colspan="7"></td>
+    </tr>
 </table>
 
 <table class="generic" width="100%" border="0" cellspacing="0" cellpadding="2">
@@ -124,43 +113,32 @@
 </table>
 
 
-
 <table width="100%" cellspacing="0" cellpadding="2" border="0">
+    <tr height="10">
+        <td colspan="7"></td>
+    </tr>
+    <tr valign="middle">
+        <td style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; text-align:right; border-style: solid; background-color: #E2E2E2;" colspan="7">
+            <div style="float:left; heigth:20px; line-height:20px; vertical-align:middle; width:600px; text-align:left;">
+                <div class="bulk_editing_functions" style="float:left;height:16px; display:none;">
+                    <span> i18n("Apply to all selected articles"):</span>
+                    <a class="con_makeonline" > <img src="images/online.gif" title='i18n("Set articles online")' alt='i18n("Set articles online")' border="0" style=""></a>
+                    <a class="con_makeonline invert" > <img src="images/offline.gif" title='i18n("Set articles offline")' alt='i18n("Set articles offline")' border="0" ></a>
+                    <a class="con_lock" > <img src="images/article_unlocked.gif" title='i18n("Freeze articles")' alt='i18n("Freeze articles")' border="0"></a>
+                    <a class="con_lock invert" > <img src="images/article_locked.gif" title='i18n("Unfreeze articles")' alt='i18n("Unfreeze articles")' border="0"></a>
+                    <a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteArticels()');" > <img src="images/delete.gif" title='i18n("Delete articles")' alt='i18n("Delete articles")' border="0" ></a>
+                    <span style="padding-left:15px;">&nbsp;</span>
+                </div>
+                <a onmouseover="this.style.cursor='pointer'" class="flip_mark"><img onmouseover="this.style.cursor='pointer'" alt="i18n('Flip Selection')" title="Markierung umkehren" src="images/but_invert_selection.gif" style="margin-right:0px; vertical-align:middle;"> i18n("Flip Selection")</a>
+            </div>
 
-             <tr height="10">
-                        <td colspan="7"></td>
-                   </tr>
-       <tr valign="middle">
-                    <td  style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; text-align:right; border-style: solid; background-color: #E2E2E2; " colspan="7">
-                        <div style="float:left; heigth:20px; line-height:20px; vertical-align:middle;  width:600px; text-align:left;">
-
-                            <div class="bulk_editing_functions" style="float:left;height:16px; display:none;">
-                                <span> i18n("Apply to all selected articles"):</span>
-                                <a class="con_makeonline" > <img src="images/online.gif" title='i18n("Set articles online")' alt='i18n("Set articles online")' border="0" style=""></a>
-                                    <a class="con_makeonline invert" > <img src="images/offline.gif" title='i18n("Set articles offline")' alt='i18n("Set articles offline")' border="0" ></a>
-                                <a class="con_lock" > <img src="images/article_unlocked.gif" title='i18n("Freeze articles")' alt='i18n("Freeze articles")' border="0"></a>
-                                <a class="con_lock invert" > <img src="images/article_locked.gif" title='i18n("Unfreeze articles")' alt='i18n("Unfreeze articles")' border="0"></a>
-                                <a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteArticels()');" > <img src="images/delete.gif" title='i18n("Delete articles")' alt='i18n("Delete articles")' border="0" ></a>
-                                <span style="padding-left:15px;">&nbsp;</span>
-                            </div>
-                            <a  onmouseover="this.style.cursor='pointer'" class="flip_mark"><img onmouseover="this.style.cursor='pointer'" alt="i18n('Flip Selection')" title="Markierung umkehren" src="images/but_invert_selection.gif" style="margin-right:0px; vertical-align:middle;"> i18n("Flip Selection")</a>
-
-
-                        </div>
-
-
-
-                        <div style="clear:both;"></div>
-                    </td>
-                </tr>
-
-      <tr height="10">
-                        <td colspan="7"></td>
-                   </tr>
+            <div style="clear:both;"></div>
+        </td>
+    </tr>
+    <tr height="10">
+        <td colspan="7"></td>
+    </tr>
 </table>
-
-
-
 
 <table width="100%" cellspacing="0" cellpadding="2" border="0">
     <tr>
@@ -273,41 +251,34 @@
 
     {ROWMARKSCRIPT};
 
-
     //show mark function or hidde
-    $('input.mark_articles').click(function () {
-
+    $('input.mark_articles').click(function() {
         $('div.bulk_editing_functions').css('display', 'none');
-        if( $(this).attr('checked') == "checked") {
+        if ($(this).attr('checked') == "checked") {
             $('div.bulk_editing_functions').css('display', 'block');
-        }else  {
-             if($('input.mark_articles:checked').length > 0) {
+        } else {
+            if( $('input.mark_articles:checked').length > 0) {
                 $('div.bulk_editing_functions').css('display', 'block');
             }
         }
-
     });
 
     //flip mark
-    $('a.flip_mark').click(function () {
+    $('a.flip_mark').click(function() {
         $('div.bulk_editing_functions').css('display', 'none');
-        $('input.mark_articles').each(function (index, value){
-
-            if( $(this).attr('checked') == "checked") {
+        $('input.mark_articles').each(function(index, value) {
+            if ($(this).attr('checked') == "checked") {
                 $(this).removeAttr('checked');
-            }else {
+            } else {
                 $('div.bulk_editing_functions').css('display', 'block');
                 $(this).attr('checked', 'checked');
             }
-
         });
     });
 
-
     //execute the action
-    $('div.bulk_editing_functions a:not(a.con_deleteart)').click(function (){
+    $('div.bulk_editing_functions a:not(a.con_deleteart)').click(function() {
         doAction($(this));
-
     });
 
     //execute the delete action
@@ -315,36 +286,34 @@
         doAction($('div.bulk_editing_functions a.con_deleteart'));
     }
 
-    function doAction (thisObject) {
+    function doAction(thisObject) {
         var action = '';
         var selectedIdArts = '';
-            if(thisObject.hasClass('invert')) {
-                $('form.bulk_editing_form input[name="invert"]').val('1');
-                if(thisObject.hasClass('con_makeonline')) {
-                        action = 'con_makeonline';
-                }
-
-                if(thisObject.hasClass('con_lock')) {
-                action = 'con_lock';
-               }
-
-            }else  {
-                action = thisObject.attr('class');
+        if (thisObject.hasClass('invert')) {
+            $('form.bulk_editing_form input[name="invert"]').val('1');
+            if (thisObject.hasClass('con_makeonline')) {
+                action = 'con_makeonline';
             }
 
-            //set action
-            $('form.bulk_editing_form input[name="action"]').val(action);
+            if (thisObject.hasClass('con_lock')) {
+                action = 'con_lock';
+            }
+        } else {
+            action = thisObject.attr('class');
+        }
 
-            //collect all selected idarts
-            $('input.mark_articles:checked').each(function(index, value){
-                selectedIdArts += '+'+$(this).val();
-            });
+        //set action
+        $('form.bulk_editing_form input[name="action"]').val(action);
 
-           //set all selected idarts
-            $('form.bulk_editing_form input[name="idarts"]').val(selectedIdArts);
-            //send form
-            $('form.bulk_editing_form input[name="submit"]').click();
+        //collect all selected idarts
+        $('input.mark_articles:checked').each(function(index, value) {
+            selectedIdArts += '+'+$(this).val();
+        });
 
+        //set all selected idarts
+        $('form.bulk_editing_form input[name="idarts"]').val(selectedIdArts);
+        //send form
+        $('form.bulk_editing_form input[name="submit"]').click();
     }
 </script>
 </body>

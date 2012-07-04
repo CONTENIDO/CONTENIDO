@@ -22,12 +22,8 @@
  *
  * {@internal
  *   created  2007-01-01, Björn Behrens (HerrB)
- *   modified 2008-06-27, Dominik Ziegler, add security fix
- *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -58,7 +54,7 @@ if (isset($_GET['idnewsletter']) && (int) $_GET['idnewsletter'] > 0) {
     // Generate the third navigation layer
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['subnav']);
 } else {
-    include ($cfg['path']['contenido'].$cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
+    include($cfg['path']['contenido'].$cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
 }
 
 ?>

@@ -63,7 +63,7 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * A small example:
  *
- * include ("class.xmlparser.php");
+ * include("class.xmlparser.php");
  *
  * // The XML String
  * $xml = '
@@ -123,7 +123,7 @@ class XmlParser
      var $depth = -1;
 
     /**
-      * Element counter
+     * Element counter
      * @var int
      * @access private
      */
@@ -180,8 +180,7 @@ class XmlParser
      */
     function XmlParser($sEncoding = false)
     {
-        if (!$sEncoding)
-        {
+        if (!$sEncoding) {
             $sEncoding = "UTF-8";
         }
 
@@ -197,8 +196,7 @@ class XmlParser
      */
     function _init($sEncoding = false)
     {
-        if (!$sEncoding)
-        {
+        if (!$sEncoding) {
             $sEncoding = "UTF-8";
         }
         // Create parser instance
@@ -238,9 +236,9 @@ class XmlParser
      * Example:
      *
      * 1.) $parser->setEvents(array("startElement"          => "myFunction",
-     *                                "endElement"            => "myFunction",
-     *                                 "characterData"         => "myFunction",
-     *                                "processingInstruction" => "myFunction");
+     *                              "endElement"            => "myFunction",
+     *                              "characterData"         => "myFunction",
+     *                              "processingInstruction" => "myFunction");
      *
      * The value can also be an array with the object reference and the method to call.
      * i.e. "startElement"=>array(&$myObj, "myMethod") instead of "startelement"=>"myFunction"
@@ -255,30 +253,25 @@ class XmlParser
      *
      * @param array Options array, valid keys are 'startElement', 'endElement', 'characterData', 'processingInstruction', or a path
      *
-     * @access public
      * @return void
      */
     function setEventHandlers($options = array(NULL))
     {
         $options = $this->_changeKeyCase($options);
 
-        if (array_key_exists('startelement', $options))
-        {
+        if (array_key_exists('startelement', $options)) {
             $this->events['startelement'] = $options['startelement'];
         }
 
-        if (array_key_exists('endelement', $options))
-        {
+        if (array_key_exists('endelement', $options)) {
             $this->events['endelement'] = $options['endelement'];
         }
 
-        if (array_key_exists('characterdata', $options))
-        {
+        if (array_key_exists('characterdata', $options)) {
             $this->events['characterdata'] = $options['characterdata'];
         }
 
-        if (array_key_exists('processinginstruction', $options))
-        {
+        if (array_key_exists('processinginstruction', $options)) {
             $this->events['processinginstruction'] = $options['processinginstruction'];
         }
 
@@ -299,13 +292,10 @@ class XmlParser
     {
         $handler = $this->_getEventHandler('processinginstruction');
 
-        if ($handler)
-        {
-            if (is_array($handler))
-            {
+        if ($handler) {
+            if (is_array($handler)) {
                 $handler[0]->$handler[1]($target, $data);
-            } else
-            {
+            } else {
                 $handler($target, $data);
             }
         }
@@ -324,8 +314,7 @@ class XmlParser
     {
         $tmp = array();
 
-        foreach ($options as $key => $value)
-        {
+        foreach ($options as $key => $value) {
             $tmp[strtolower($key)] = $value;
         }
 
@@ -340,17 +329,14 @@ class XmlParser
      * @return sring Event handler name
      * @access private
      */
-    function _getEventHandler($event)
-    {
+    function _getEventHandler($event) {
         // Standard events
-        if (array_key_exists($event, $this->events))
-        {
+        if (array_key_exists($event, $this->events)) {
             return $this->events[$event];
         }
 
         // Paths events
-        if (array_key_exists($event, $this->events['paths']))
-        {
+        if (array_key_exists($event, $this->events['paths'])) {
             return $this->events['paths'][$event];
         }
 
@@ -372,10 +358,8 @@ class XmlParser
     {
         $tmp = array();
 
-        foreach ($options as $key => $value)
-        {
-            if (strstr($key, '/'))
-            {
+        foreach ($options as $key => $value) {
+            if (strstr($key, '/')) {
                 $tmp[$key] = $value;
             }
         }
@@ -404,8 +388,7 @@ class XmlParser
     {
         $tmp = array();
 
-        for ($i=0; $i<=$this->depth; $i++)
-        {
+        for ($i=0; $i<=$this->depth; $i++) {
             $tmp[] = $this->paths[$i];
         }
 
@@ -432,11 +415,9 @@ class XmlParser
         $this->activenode = $name;
 
         // Increase element counter
-        if ($this->activenode == $this->pathdata[$this->activepath][$this->count]['name'])
-        {
+        if ($this->activenode == $this->pathdata[$this->activepath][$this->count]['name']) {
             $this->count ++;
-        } else
-        {
+        } else {
             $this->count = 0;
         }
 
@@ -447,13 +428,10 @@ class XmlParser
         $handler = $this->_getEventHandler('startelement');
 
         // If a handler is defined call it
-        if ($handler)
-        {
-            if (is_array($handler))
-            {
+        if ($handler) {
+            if (is_array($handler)) {
                 $handler[0]->$handler[1]($name, $attribs);
-            } else
-            {
+            } else {
                 $handler($name, $attribs);
             }
         }
@@ -477,8 +455,7 @@ class XmlParser
     function _characterData($parser, $data)
     {
         // Reset node count
-        if ($this->activenode != $this->pathdata[$this->activepath][$this->count]['name'])
-        {
+        if ($this->activenode != $this->pathdata[$this->activepath][$this->count]['name']) {
             $this->count = 0;
         }
 
@@ -489,13 +466,10 @@ class XmlParser
         $handler = $this->_getEventHandler('characterdata');
 
         // If a handler is defined call it
-        if ($handler)
-        {
-            if (is_array($handler))
-            {
+        if ($handler) {
+            if (is_array($handler)) {
                 $handler[0]->$handler[1]($data);
-            } else
-            {
+            } else {
                 $handler($data);
             }
         }
@@ -516,13 +490,10 @@ class XmlParser
         $handler = $this->_getEventHandler('endelement');
 
         // Call Element handler
-        if ($handler)
-        {
-            if (is_array($handler))
-            {
+        if ($handler) {
+            if (is_array($handler)) {
                 $handler[0]->$handler[1]($name);
-            } else
-            {
+            } else {
                 $handler($name);
             }
         }
@@ -534,23 +505,22 @@ class XmlParser
         $handler = $this->_getEventHandler($this->activepath);
 
         // Call path handler
-        if ($handler)
-        {
-            if (is_array($handler))
-            { // Handler is an object method
-                    $handler[0]->$handler[1]($this->pathdata[$this->activepath][$this->count]['name'],
-                                               $this->pathdata[$this->activepath][$this->count]['attribs'],
-                                              $this->pathdata[$this->activepath][$this->count]['content']);
-            } else
-            { // Handler is a function
-                    $handler($this->pathdata[$this->activepath][$this->count]['name'],
-                              $this->pathdata[$this->activepath][$this->count]['attribs'],
-                             $this->pathdata[$this->activepath][$this->count]['content']);
+        if ($handler) {
+            if (is_array($handler)) {
+                // Handler is an object method
+                $handler[0]->$handler[1]($this->pathdata[$this->activepath][$this->count]['name'],
+                                         $this->pathdata[$this->activepath][$this->count]['attribs'],
+                                         $this->pathdata[$this->activepath][$this->count]['content']);
+            } else {
+                // Handler is a function
+                $handler($this->pathdata[$this->activepath][$this->count]['name'],
+                         $this->pathdata[$this->activepath][$this->count]['attribs'],
+                         $this->pathdata[$this->activepath][$this->count]['content']);
             }
         }
 
         // Decrease depth
-        $this->depth --;
+        $this->depth--;
     }
 
     /**
@@ -565,13 +535,11 @@ class XmlParser
     {
         $success = xml_parse($this->parser, trim($data), $final);
 
-        if ($final && $this->autofree)
-        {
+        if ($final && $this->autofree) {
             xml_parser_free($this->parser);
         }
 
-        if (!$success)
-        {
+        if (!$success) {
             return $this->_error();
         }
 
@@ -588,20 +556,19 @@ class XmlParser
      */
     function parseFile($file)
     {
-    	$sData = cFileHandler::read($file);
+        $sData = cFileHandler::read($file);
         if (!xml_parse($this->parser, $sData)) {
-        	$this->_error();
-        	return false;
+            $this->_error();
+            return false;
         }
 
-        if ($this->autofree)
-        {
+        if ($this->autofree) {
             xml_parser_free($this->parser);
         }
 
         return true;
     }
 
-} // XML_Parser
+}
 
 ?>

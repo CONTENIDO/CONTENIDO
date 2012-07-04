@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created  2003-01-25
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -34,9 +30,9 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-if ( isset($_GET['idcat']) ) {
+if (isset($_GET['idcat'])) {
 
-    $nav = new Contenido_Navigation;
+    $nav = new Contenido_Navigation();
 
     $sql = "SELECT
                 b.location AS location,
@@ -53,31 +49,29 @@ if ( isset($_GET['idcat']) ) {
                 b.idnavs";
 
     $db->query($sql);
-    while ( $db->next_record() ) {
 
-      /* Extract names from the XML document. */
-      $caption = $nav->getName($db->f("location"));
+    while ($db->next_record()) {
+        // Extract names from the XML document.
+        $caption = $nav->getName($db->f("location"));
 
         $tmp_area = $db->f("name");
 
-        if ($perm->have_perm_area_action($tmp_area) || ($db->f("relevant") == 0))
-        {
-        # Set template data
-            $tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt);
-            $tpl->set("d", "CLASS",     '');
-            $tpl->set("d", "OPTIONS",   '');
-            $tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=$tmp_area&frame=4&idcat=$idcat").'">'.$caption.'</a>');
+        if ($perm->have_perm_area_action($tmp_area) || ($db->f("relevant") == 0)) {
+            // Set template data
+            $tpl->set("d", "ID",      'c_'.$tpl->dyn_cnt);
+            $tpl->set("d", "CLASS",   '');
+            $tpl->set("d", "OPTIONS", '');
+            $tpl->set("d", "CAPTION", '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=$tmp_area&frame=4&idcat=$idcat").'">'.$caption.'</a>');
             $tpl->next();
         }
     }
 
     $tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
 
-    # Generate the third
-    # navigation layer
+    // Generate the third navigation layer
     $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["subnav"]);
 
 } else {
-    include ($cfg["path"]["contenido"].$cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
+    include($cfg["path"]["contenido"].$cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
 }
 ?>

@@ -17,6 +17,10 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  */
 
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
+
 class ContenidoXmlReader extends ContenidoXmlBase
 {
 
@@ -24,9 +28,9 @@ class ContenidoXmlReader extends ContenidoXmlBase
      * Loads a XML document from file and initializes a corresponding DOMXPath instance.
      *
      * @param    string    $sFilename path to the XML document
-     * 
+     *
      * @throws    Exception    if file could not be loaded
-     * 
+     *
      * @return    boolean    load state (true = successfully loaded, false = not found or loaded)
      */
     public function load($sFilename)
@@ -38,12 +42,12 @@ class ContenidoXmlReader extends ContenidoXmlBase
         // Load document via object method to avoid warning in PHP strict mode.
         $oDoc = new DOMDocument();
         if (false === $oDoc->load($sFilename)) {
-        	throw new Exception('could not load file "' . $sFilename . '"');
+            throw new Exception('could not load file "' . $sFilename . '"');
         }
-        
+
         $this->_dom = $oDoc;
         $this->_initXpathInstance();
-        
+
         return ($this->_dom instanceof DOMDocument);
     }
 
@@ -51,22 +55,22 @@ class ContenidoXmlReader extends ContenidoXmlBase
      * Loads a XML document from file and initializes a corresponding DOMXPath instance.
      *
      * @param    string    $sFilename path to the XML document
-     * 
+     *
      * @throws    Exception    if XML could not be loaded
-     * 
+     *
      * @return    boolean    load state (true = successfully loaded, false = not found or loaded)
      */
     public function loadXML($sXml)
     {
         // Load document via object method to avoid warning in PHP strict mode.
-      	$oDoc = new DOMDocument();
+        $oDoc = new DOMDocument();
         if (false === $oDoc->loadXML($sXml)) {
-        	throw new Exception('could not load XML');
+            throw new Exception('could not load XML');
         }
-        
+
         $this->_dom = $oDoc;
         $this->_initXpathInstance();
-        
+
         return ($this->_dom instanceof DOMDocument);
     }
 

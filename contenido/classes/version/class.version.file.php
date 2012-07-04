@@ -27,34 +27,34 @@
  */
 
 if (!defined('CON_FRAMEWORK')) {
- die('Illegal call');
+    die('Illegal call');
 }
 
- class cVersionFile extends Version {
+class cVersionFile extends Version {
 
     /**
-    * Content code of current file.
-    * @access public
-    */
+     * Content code of current file.
+     * @access public
+     */
     public $sCode;
 
     /**
-    * Description folder of history sub nav.
-    * Its not required to use it.
-    * @access protected
-    */
+     * Description folder of history sub nav.
+     * Its not required to use it.
+     * @access protected
+     */
     public $sDescripion;
 
     /**
-    * The path of style file.
-    * @access public
-    */
+     * The path of style file.
+     * @access public
+     */
     public $sPath;
 
     /**
-    * The id of Type.
-    * @access public
-    */
+     * The id of Type.
+     * @access public
+     */
     public $sFileName;
 
    /**
@@ -65,13 +65,13 @@ if (!defined('CON_FRAMEWORK')) {
     * @param array $aCfg
     * @param array $aCfgClient
     * @param object $oDB
-    * @param integer $iClient
-    * @param object $sArea
-    * @param object $iFrame
+    * @param int $iClient
+    * @param string $sArea
+    * @param int $iFrame
     *
     * @return void its only initialize class members
     */
-       public function __construct($iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = '') {
+    public function __construct($iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = '') {
 //        Set globals in super class constructer
         parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
 
@@ -88,7 +88,7 @@ if (!defined('CON_FRAMEWORK')) {
         $this->dCreated = $aFileInfo["created"];
 
 //         Frontendpath to files
-        if ($sTypeContent == "templates"){
+        if ($sTypeContent == "templates") {
             $sTypeContent = "tpl";
         }
 
@@ -126,7 +126,7 @@ if (!defined('CON_FRAMEWORK')) {
     */
     protected function initFileContent() {
         if (cFileHandler::exists($this->sPath.$this->sFileName)) {
-        	$this->sCode = cFileHandler::read($this->sPath.$this->sFileName);
+            $this->sCode = cFileHandler::read($this->sPath.$this->sFileName);
         } else {
             echo "<br>File not exists " . $this->sPath.$this->sFileName;
         }
@@ -190,14 +190,14 @@ if (!defined('CON_FRAMEWORK')) {
                      right_top.location.href = href;
                  }
 
-                 if (left_bottom){
+                 if (left_bottom) {
                     var href = '".$sess->url("main.php?area=$sArea&frame=2&file=$sFilename")."';
                     left_bottom.location.href = href;
                  }
-
                  </script>";
         return $sReloadScript;
     }
 
- } // end of class
+}
+
 ?>

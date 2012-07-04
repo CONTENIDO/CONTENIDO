@@ -21,27 +21,22 @@
  *
  * {@internal
  *   created  2003-05-07
- *   modified 2008-06-16, H. Librenz, Hotfix: check for illegal calls added
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-if(isset($area) && $area == 'con_content_list'){
+if (isset($area) && $area == 'con_content_list') {
     $tmp_area = $area;
     $href = "&action=10&idartlang=".$idartlang."&frame=4"."&lang=".$lang;
     $path1 = $cfg['path']['contenido_fullhtml']."main.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client".$href;
     $path2 = $path1;
-    $inputHTML = "        <input type=hidden name=area value=\"$area\">\n".
-                "        <input type=hidden name=frame value=\"4\">\n".
-                "        <input type=hidden name=client value=\"$client\">\n";
+    $inputHTML = "    <input type=hidden name=area value=\"$area\">\n".
+                 "    <input type=hidden name=frame value=\"4\">\n".
+                 "    <input type=hidden name=client value=\"$client\">\n";
 } else {
     $tmp_area = 'con_editcontent';
     $path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
@@ -49,17 +44,17 @@ if(isset($area) && $area == 'con_content_list'){
     $inputHTML = "";
 }
 
-if ( $doedit == "1" || $doedit == "2" )
-{
+if ($doedit == "1" || $doedit == "2") {
     conSaveContentEntry($idartlang, "CMS_HTML", $typenr, $CMS_HTML);
-    conMakeArticleIndex ($idartlang, $idart);
+    conMakeArticleIndex($idartlang, $idart);
     conGenerateCodeForArtInAllCategories($idart);
 }
-if ( $doedit == "1" )
-{
-    header( "location:".$sess->url($path1)."");
+
+if ($doedit == "1") {
+    header("Location:".$sess->url($path1)."");
 }
 header("Content-Type: text/html; charset={$encoding[$lang]}");
+
 ?>
 <html>
 <head>
@@ -100,7 +95,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
     echo "          <tr>\n";
     echo "            <td>";
 
-    include ($cfg["path"]["wysiwyg"] . 'editor.php');
+    include($cfg["path"]["wysiwyg"] . 'editor.php');
 
     echo "\n            </td>\n";
     echo "          </tr>\n";

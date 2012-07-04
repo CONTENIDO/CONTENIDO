@@ -35,12 +35,12 @@ if (!defined('CON_FRAMEWORK')) {
  * website design and software consulting.
  */
 
-define ("NODE_TYPE_START",0);
-define ("NODE_TYPE_ELEMENT",1);
-define ("NODE_TYPE_ENDELEMENT",2);
-define ("NODE_TYPE_TEXT",3);
-define ("NODE_TYPE_COMMENT",4);
-define ("NODE_TYPE_DONE",5);
+define("NODE_TYPE_START",0);
+define("NODE_TYPE_ELEMENT",1);
+define("NODE_TYPE_ENDELEMENT",2);
+define("NODE_TYPE_TEXT",3);
+define("NODE_TYPE_COMMENT",4);
+define("NODE_TYPE_DONE",5);
 
 /**
  * Class HtmlParser.
@@ -89,7 +89,7 @@ class HtmlParser {
      * Constructs an HtmlParser instance with
      * the HTML text given.
      */
-    function HtmlParser ($aHtmlText) {
+    function HtmlParser($aHtmlText) {
         $this->iHtmlText = $aHtmlText;
         $this->iHtmlTextLength = strlen($aHtmlText);
     }
@@ -120,20 +120,21 @@ class HtmlParser {
             $this->iNodeType = NODE_TYPE_DONE;
             return false;
         }
-        $this->skipInTag ("<");
+
+        $this->skipInTag("<");
         $this->clearAttributes();
         $name = $this->skipToBlanksInTag();
         $pos = strpos($name, "/");
+
         if ($pos === 0) {
             $this->iNodeType = NODE_TYPE_ENDELEMENT;
-            $this->iNodeName = substr ($name, 1);
+            $this->iNodeName = substr($name, 1);
             $this->iNodeValue = "";
-        }
-        else {
-            if (!$this->isValidTagIdentifier ($name)) {
+        } else {
+            if (!$this->isValidTagIdentifier($name)) {
                 $comment = false;
                 if ($name == "!--") {
-                    $rest = $this->skipToStringInTag ("-->");
+                    $rest = $this->skipToStringInTag("-->");
                     if ($rest != "") {
                         $this->iNodeType = NODE_TYPE_COMMENT;
                         $this->iNodeName = "Comment";
@@ -147,19 +148,18 @@ class HtmlParser {
                     $this->iNodeValue = "<" . $name;
                 }
                 return true;
-            }
-            else {
+            } else {
                 $this->iNodeType = NODE_TYPE_ELEMENT;
                 $this->iNodeValue = "";
                 $nameLength = strlen($name);
                 if ($nameLength > 0 && substr($name, $nameLength - 1, 1) == "/") {
                     $this->iNodeName = substr($name, 0, $nameLength - 1);
-                }
-                else {
+                } else {
                     $this->iNodeName = $name;
                 }
             }
         }
+
         while ($this->skipBlanksInTag()) {
             $attrName = $this->skipToBlanksOrEqualsInTag();
             if ($attrName != "") {
@@ -169,8 +169,7 @@ class HtmlParser {
                     $this->skipBlanksInTag();
                     $value = $this->readValueInTag();
                     $this->iNodeAttributes[strtolower($attrName)] = $value;
-                }
-                else {
+                } else {
                     $this->iNodeAttributes[strtolower($attrName)] = "";
                 }
             }
@@ -179,42 +178,42 @@ class HtmlParser {
         return true;
     }
 
-    function isValidTagIdentifier ($name) {
+    function isValidTagIdentifier($name) {
         return preg_match('/[A-Za-z0-9]+/', $name);
     }
 
     function skipBlanksInTag() {
-        return "" != ($this->skipInTag (array (" ", "\t", "\r", "\n" )));
+        return "" != ($this->skipInTag(array(" ", "\t", "\r", "\n")));
     }
 
     function skipToBlanksOrEqualsInTag() {
-        return $this->skipToInTag (array (" ", "\t", "\r", "\n", "=" ));
+        return $this->skipToInTag(array(" ", "\t", "\r", "\n", "="));
     }
 
     function skipToBlanksInTag() {
-        return $this->skipToInTag (array (" ", "\t", "\r", "\n" ));
+        return $this->skipToInTag(array(" ", "\t", "\r", "\n"));
     }
 
     function skipEqualsInTag() {
-        return $this->skipInTag (array ( "=" ));
+        return $this->skipInTag(array("="));
     }
 
     function readValueInTag() {
         $ch = $this->currentChar();
         $value = "";
+
         if ($ch == "\"") {
-            $this->skipInTag (array ( "\"" ));
-            $value = $this->skipToInTag (array ( "\"" ));
-            $this->skipInTag (array ( "\"" ));
-        }
-        else if ($ch == "\'") {
-            $this->skipInTag (array ( "\'" ));
-            $value = $this->skipToInTag (array ( "\'" ));
-            $this->skipInTag (array ( "\'" ));
-        }
-        else {
+            $this->skipInTag(array("\""));
+            $value = $this->skipToInTag(array("\""));
+            $this->skipInTag(array("\""));
+        } else if ($ch == "\'") {
+            $this->skipInTag(array("\'"));
+            $value = $this->skipToInTag(array("\'"));
+            $this->skipInTag(array("\'"));
+        } else {
             $value = $this->skipToBlanksInTag();
         }
+
         return $value;
     }
 
@@ -229,8 +228,7 @@ class HtmlParser {
         if ($this->iHtmlTextIndex < $this->iHtmlTextLength) {
             $this->iHtmlTextIndex++;
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -248,7 +246,7 @@ class HtmlParser {
         return $sb;
     }
 
-    function skipInTag ($chars) {
+    function skipInTag($chars) {
         $sb = "";
         while (($ch = $this->currentChar()) !== -1) {
             if ($ch == ">") {
@@ -271,7 +269,7 @@ class HtmlParser {
         return $sb;
     }
 
-    function skipToInTag ($chars) {
+    function skipToInTag($chars) {
         $sb = "";
         while (($ch = $this->currentChar()) !== -1) {
             $match = $ch == ">";
@@ -310,13 +308,13 @@ class HtmlParser {
      * after the location of $needle, or not moved at all
      * if nothing is found.
      */
-    function skipToStringInTag ($needle) {
-        $pos = strpos ($this->iHtmlText, $needle, $this->iHtmlTextIndex);
+    function skipToStringInTag($needle) {
+        $pos = strpos($this->iHtmlText, $needle, $this->iHtmlTextIndex);
         if ($pos === false) {
             return "";
         }
         $top = $pos + strlen($needle);
-        $retvalue = substr ($this->iHtmlText, $this->iHtmlTextIndex, $top - $this->iHtmlTextIndex);
+        $retvalue = substr($this->iHtmlText, $this->iHtmlTextIndex, $top - $this->iHtmlTextIndex);
         $this->iHtmlTextIndex = $top;
         return $retvalue;
     }

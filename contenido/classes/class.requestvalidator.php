@@ -228,15 +228,14 @@ class cRequestValidator {
      */
     protected function logHackTrial() {
         if ($this->bLog === true && !empty($this->sLogPath)) {
-        	cFileHandler::write($this->sLogPath, date('Y-m-d H:i:s'));
-        	cFileHandler::write($this->sLogPath, '  ');
-        	cFileHandler::write($this->sLogPath, $_SERVER['REMOTE_ADDR'] . str_repeat(' ', 17 - strlen($_SERVER['REMOTE_ADDR'])));
-        	cFileHandler::write($this->sLogPath, $_SERVER['QUERY_STRING']);
-        	cFileHandler::write($this->sLogPath, "\n");
-        	cFileHandler::write($this->sLogPath, print_r($_POST, true)."\n");
+            $content = date('Y-m-d H:i:s') . '  ' .
+                       $_SERVER['REMOTE_ADDR'] . str_repeat(' ', 17 - strlen($_SERVER['REMOTE_ADDR'])) .
+                       $_SERVER['QUERY_STRING'] . "\n" .
+                       print_r($_POST, true) . "\n";
+            cFileHandler::write($this->sLogPath, $content);
         } elseif ($this->sMode == 'continue') {
             echo "\n<br />VIOLATION: URL contains invalid or undefined paramaters! URL: '" .
-                htmlentities($_SERVER['QUERY_STRING']) . "' <br />\n";
+                 htmlentities($_SERVER['QUERY_STRING']) . "' <br />\n";
         }
     }
 

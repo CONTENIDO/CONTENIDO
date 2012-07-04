@@ -49,10 +49,10 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // Include the config file of the frontend to init the Client and Language Id
-include_once ('config.php');
+include_once('config.php');
 
 // Contenido startup process
-include_once ($contenido_path.'includes/startup.php');
+include_once($contenido_path.'includes/startup.php');
 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.con2.php');
@@ -168,7 +168,7 @@ if (isset($path) && strlen($path) > 1) {
 }
 
 // Error page
-$aParams = array (
+$aParams = array(
     'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client],
     'lang' => $lang, 'error'=> '1'
 );

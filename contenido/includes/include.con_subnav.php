@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created 2003-01-25
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -34,22 +30,20 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 //Get sync options
-if (isset($syncoptions))
-{
+if (isset($syncoptions)) {
     $syncfrom = $syncoptions;
     $remakeCatTable = true;
 }
 
-if (!isset($syncfrom))
-{
+if (!isset($syncfrom)) {
     $syncfrom = 0;
 }
-if(!isset($idcat) || $idcat == "") {
+if (!isset($idcat) || $idcat == "") {
     $idcat = 0;
 }
 
-if ( isset($_GET['display_menu']) && $_GET['display_menu'] == 1 ) {
-    $nav = new Contenido_Navigation;
+if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
+    $nav = new Contenido_Navigation();
 
     $sql = "SELECT
                 idarea
@@ -63,10 +57,9 @@ if ( isset($_GET['display_menu']) && $_GET['display_menu'] == 1 ) {
 
     $db->query($sql);
 
-
     $in_str = "";
 
-    while ( $db->next_record() ) {
+    while ($db->next_record()) {
         $in_str .= $db->f('idarea') . ',';
     }
 
@@ -90,41 +83,36 @@ if ( isset($_GET['display_menu']) && $_GET['display_menu'] == 1 ) {
 
     $db->query($sql);
 
-    while ( $db->next_record() ) {
-
-        /* Extract names from the XML document. */
+    while ($db->next_record()) {
+        // Extract names from the XML document.
         $caption = $nav->getName($db->f("location"));
 
         $tmp_area = $db->f("name");
 
-        # Set template data
-        $tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt);
-        $tpl->set("d", "CLASS",     '');
-        $tpl->set("d", "OPTIONS",   '');
-        if ($cfg['help'] == true)
-        {
-            $tpl->set("d", "CAPTION",   '<a onclick="'.setHelpContext(i18n("Article")."/$caption").'sub.clicked(this);artObj.doAction(\''.$tmp_area.'\')">'.$caption.'</a>');
+        // Set template data
+        $tpl->set("d", "ID",      'c_'.$tpl->dyn_cnt);
+        $tpl->set("d", "CLASS",   '');
+        $tpl->set("d", "OPTIONS", '');
+        if ($cfg['help'] == true) {
+            $tpl->set("d", "CAPTION", '<a onclick="'.setHelpContext(i18n("Article")."/$caption").'sub.clicked(this);artObj.doAction(\''.$tmp_area.'\')">'.$caption.'</a>');
         } else {
-            $tpl->set("d", "CAPTION",   '<a onclick="sub.clicked(this);artObj.doAction(\''.$tmp_area.'\')">'.$caption.'</a>');
+            $tpl->set("d", "CAPTION", '<a onclick="sub.clicked(this);artObj.doAction(\''.$tmp_area.'\')">'.$caption.'</a>');
         }
 
         $tpl->next();
-
     }
 
     $tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
-
     $tpl->set('s', 'IDCAT', $idcat);
     $tpl->set('s', 'SESSID', $sess->id);
     $tpl->set('s', 'CLIENT', $client);
     $tpl->set('s', 'LANG', $lang);
 
-    # Generate the third
-    # navigation layer
+    // Generate the third navigation layer
     $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["con_subnav"]);
 
 } else {
-    include ($cfg["path"]["contenido"].$cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
+    include($cfg["path"]["contenido"].$cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
 }
 
 ?>

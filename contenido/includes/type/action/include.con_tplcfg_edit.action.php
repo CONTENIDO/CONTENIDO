@@ -23,5 +23,5 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-include ($cfg["path"]["includes"] . "include.tplcfg_edit_form.php");
+include($cfg["path"]["includes"] . "include.tplcfg_edit_form.php");
 ?>

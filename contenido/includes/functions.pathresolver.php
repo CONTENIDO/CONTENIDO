@@ -140,7 +140,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck)
 
     // Initialize variables
     $db = cRegistry::getDb();
-    $categories = array ();
+    $categories = array();
     $results = array();
     $iLangCheckOrg = $iLangCheck;
 
@@ -171,7 +171,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck)
             AND C.visible = 1 AND B.idclient= " . (int) $client . " ORDER BY A.idtree";
     $db->query($sql);
 
-    $catpath = array ();
+    $catpath = array();
     $arrLangMatches = array();
 
     while ($db->next_record()) {

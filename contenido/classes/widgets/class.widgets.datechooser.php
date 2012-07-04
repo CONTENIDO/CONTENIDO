@@ -20,10 +20,8 @@
  *
  * {@internal
  *   created
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -71,10 +69,10 @@ class cDateChooser extends cDatefield
         $this->_bReadOnly = $bReadOnly;
     }
 
-    function render ()
+    function render()
     {
         if ($this->_bReadOnly) {
-            $this->updateAttributes(array ("readonly" => "readonly"));
+            $this->updateAttributes(array("readonly" => "readonly"));
         }
 
         $sDatefield = parent::render();

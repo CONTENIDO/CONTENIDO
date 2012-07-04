@@ -77,7 +77,7 @@ class cFoldingRow extends cHTML
         $this->_headerRow   = new cHTMLTableRow;
         $this->_headerData  = new cHTMLTableData;
         $this->_contentRow  = new cHTMLTableRow;
-        $this->_contentRow->updateAttributes(array ("id" => $uuid));
+        $this->_contentRow->updateAttributes(array("id" => $uuid));
         $this->_contentData = new cHTMLTableData;
         $this->_uuid        = $uuid;
         $this->_link        = new cHTMLLink;

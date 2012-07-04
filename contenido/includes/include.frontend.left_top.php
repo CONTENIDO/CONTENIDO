@@ -110,7 +110,7 @@ if ($bUsePlugins == true) {
     }
 }
 
-$aSortOrderOptions = array ("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
+$aSortOrderOptions = array("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
 
 ###########
 # Buttons

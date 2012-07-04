@@ -859,12 +859,12 @@ class Cms_Teaser {
         //search an image tag
         $sRegEx = "/<img[^>]*?>.*?/i";
 
-        $aMatch = array ();
+        $aMatch = array();
         preg_match($sRegEx, $sContent, $aMatch);
 
         //if found extract its src content
         $sRegEx = "/(src)(=)(['\"]?)([^\"']*)(['\"]?)/i";
-        $aImg = array ();
+        $aImg = array();
         preg_match($sRegEx, $aMatch[0], $aImg);
 
         //check if this image lies in upload folder

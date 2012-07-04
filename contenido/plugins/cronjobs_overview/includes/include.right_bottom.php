@@ -1,8 +1,8 @@
 <?php
 
-include_once (dirname(__FILE__).'/config.plugin.php');
+include_once(dirname(__FILE__).'/config.plugin.php');
 $tpl = new Template();
-$contenidoVars = array('cfg'=>$cfg);
+$contenidoVars = array('cfg' => $cfg);
 
 $cronjobs = new Cronjobs($contenidoVars, $_REQUEST['file']);
 $notification = new Contenido_Notification();

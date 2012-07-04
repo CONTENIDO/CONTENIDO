@@ -85,14 +85,14 @@ function langNewLanguage($name, $client)
     $destPath = $cfgClient[$client]['path']['frontend'];
 
     if (cFileHandler::exists($destPath) && cFileHandler::exists($destPath . 'config.php')) {
-    	$buffer = cFileHandler::read($destPath . 'config.php');
-    	$outbuf = str_replace('!LANG!', $oLangItem->get('idlang'), $buffer);
-    	cFileHandler::write($destPath . 'config.php.new', $outbuf);
-    	if (cFileHandler::exists($destPath . 'config.php')) {
-    		cFileHandler::remove($destPath . 'config.php');
-    	}
+        $buffer = cFileHandler::read($destPath . 'config.php');
+        $outbuf = str_replace('!LANG!', $oLangItem->get('idlang'), $buffer);
+        cFileHandler::write($destPath . 'config.php.new', $outbuf);
+        if (cFileHandler::exists($destPath . 'config.php')) {
+            cFileHandler::remove($destPath . 'config.php');
+        }
 
-    	cFileHandler::rename($destPath . 'config.php.new', 'config.php');
+        cFileHandler::rename($destPath . 'config.php.new', 'config.php');
     } else {
         $notification->displayNotification('error',
             i18n("Could not set the language-ID in the file 'config.php'. Please set the language manually.")

@@ -153,7 +153,7 @@ class pApiTree {
                 }
             }
 
-            $rs = array (
+            $rs = array(
                 'idpica_alloc' => $this->db->f('idpica_alloc'),
                 'parentid' => ($this->db->f('parentid') == NULL) ? false : $this->db->f('parentid'),
                 'sortorder' => $this->db->f('sortorder'),
@@ -222,7 +222,7 @@ class pApiTree {
 
             if ($showOffline OR $item['online'] == 1)
             {
-                $rs = array (
+                $rs = array(
                     'idpica_alloc' => $this->db->f('idpica_alloc')
                 );
 
@@ -306,7 +306,7 @@ class pApiTree {
                 $itemStatus = 'collapsed';
             }
 
-            $rs = array (
+            $rs = array(
                 'idpica_alloc' => $this->db->f('idpica_alloc'),
                 'parentid' => ($this->db->f('parentid') == NULL) ? false : $this->db->f('parentid'),
                 'sortorder' => $this->db->f('sortorder'),
@@ -431,7 +431,7 @@ class pApiTree {
         $item = $this->_fetchItemNameLang($idpica_alloc);
 
         if ($this->db->next_record()) {
-            $row = array (
+            $row = array(
                 'idpica_alloc' => $idpica_alloc,
                 'parentid' => ($this->db->f('parentid') == NULL) ? false : $this->db->f('parentid'),
                 'sortorder' => $this->db->f('sortorder'),

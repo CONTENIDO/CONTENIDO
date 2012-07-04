@@ -336,19 +336,19 @@ class Newsletter extends Item
 
         /*
         $sRegExp = '/\[mail\s*([^]]+)\]((?:.|\s)+?)\[\/mail\]/is';
-        $aMatch = array ();
+        $aMatch = array();
         preg_match_all($sRegExp, $sHTML, $aMatch, PREG_SET_ORDER);
         print_r ($aMatch);
 
         // Auf bestimmten Typ matchen
         $sRegExp = '/\[mail.*?name="name".*?\]((?:.|\s)+?)\[\/mail\]/is';
-        $aMatch = array ();
+        $aMatch = array();
         preg_match_all($sRegExp, $sHTML, $aMatch, PREG_SET_ORDER);
         print_r ($aMatch); */
 
         // Parameter auseinandernehmen (ohne PREG_SET_ORDER)
         #$sRegExp = '/\s*(.*?)\s*=\s*"(.*?)"\s*/i';
-        #$aMatch = array ();
+        #$aMatch = array();
         #preg_match_all($sRegExp, $sHTML, $aMatch);
         #print_r ($aMatch);
     }

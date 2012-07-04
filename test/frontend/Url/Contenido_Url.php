@@ -28,7 +28,7 @@ class Contenido_UrlTest extends PHPUnit_Framework_TestCase
     public function testErrorPageUrlCreation()
     {
         // error page
-        $aParams = array (
+        $aParams = array(
             'client' => $GLOBALS['client'],
             'idcat'  => $GLOBALS['errsite_idcat'][$GLOBALS['client']],
             'idart'  => $GLOBALS['errsite_idart'][$GLOBALS['client']],

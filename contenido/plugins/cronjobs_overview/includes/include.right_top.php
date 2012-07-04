@@ -21,10 +21,9 @@
  *
  *
  * {@internal
- * Created:      18.06.2007
+ *   Created:      18.06.2007
+ *   $Id: include.right_top.php,v 1.0.0 18.06.2007 16:08:02 mario.diaz$
  * }}
- *
- * $Id: include.right_top.php,v 1.0.0 18.06.2007 16:08:02 mario.diaz$
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -35,5 +34,5 @@ if (isset($_REQUEST['cfg'])) {
 }
 
 
-include ($cfg["path"]["contenido"].$cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
+include($cfg["path"]["contenido"].$cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
 ?>

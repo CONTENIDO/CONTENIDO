@@ -92,12 +92,12 @@ $upldbfsexpandedList     = unserialize($currentuser->getUserProperty("system", "
 
 if (!is_array($uplexpandedList))
 {
-    $uplexpandedList = array ();
+    $uplexpandedList = array();
 }
 
 if (!is_array($upldbfsexpandedList))
 {
-    $upldbfsexpandedList = array ();
+    $upldbfsexpandedList = array();
 }
 
 if ($action == "upl_renamedir")
@@ -128,7 +128,7 @@ if ($action == "upl_delete")
         /* Check for files */
         if (uplHasFiles($path))
         {
-            $failedFiles = array ();
+            $failedFiles = array();
 
             $directory = opendir($cfgClient[$client]["upl"]["path"].$path);
             while (false !== ($dir_entry = readdir($directory)))
@@ -200,12 +200,12 @@ if (is_string($expand))
     $rootTreeItem->markExpanded($expand);
 }
 
-$uplexpandedList = Array ();
+$uplexpandedList = array();
 $rootTreeItem->getExpandedList($uplexpandedList);
 
 $currentuser->setUserProperty("system", "upl_expandstate", serialize($uplexpandedList));
 
-$objects = Array ();
+$objects = array();
 $rootTreeItem->traverse($objects);
 unset ($objects[0]);
 
@@ -213,7 +213,7 @@ if ($appendparameters == "filebrowser")
 {
     $mtree = new cWidgetTreeView("b58f0ae3-8d4e-4bb3-a754-5f0628863364");
     $cattree = conFetchCategoryTree();
-    $marray = array ();
+    $marray = array();
 
     foreach ($cattree as $key => $catitem)
     {
@@ -289,7 +289,7 @@ if ($appendparameters == "filebrowser")
         $idcat = $catitem["idcat"];
 
         $name = '&nbsp;<a href="'.$sess->url("main.php?area=$area&frame=5&idcat=$idcat&appendparameters=$appendparameters").'" target="right_bottom">'.$catitem["name"].'</a>';
-        $marray[] = array ("id" => $catitem["idcat"], "name" => $name, "level" => $catitem["level"], "attributes" => array ("icon" => $icon));
+        $marray[] = array("id" => $catitem["idcat"], "name" => $name, "level" => $catitem["level"], "attributes" => array("icon" => $icon));
     }
 
     $mtree->setTreeName(i18n("Categories"));
@@ -306,7 +306,7 @@ if ($appendparameters == "filebrowser")
     $mtree->setCollapsed($collapsed);
     $mtree->processParameters();
 
-    $collapsed = array ();
+    $collapsed = array();
     $mtree->getCollapsedList($collapsed);
 
     $tpl->set('s', 'CATBROWSER', $mtree->render());
@@ -447,12 +447,12 @@ if (is_string($expand))
     $rootTreeItem->markExpanded($expand);
 }
 
-$upldbfsexpandedList = Array ();
+$upldbfsexpandedList = array();
 $rootTreeItem->getExpandedList($upldbfsexpandedList);
 
 $currentuser->setUserProperty("system", "upl_dbfs_expandstate", serialize($upldbfsexpandedList));
 
-$objects = Array ();
+$objects = array();
 $rootTreeItem->traverse($objects);
 
 unset ($objects[0]);
@@ -472,7 +472,7 @@ $tpl->next();
 
 $dbfsc = new cApiDbfsCollection();
 
-$dlevels = array ();
+$dlevels = array();
 
 if (is_array($objects))
 {

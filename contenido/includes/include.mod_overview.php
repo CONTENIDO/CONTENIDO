@@ -133,9 +133,9 @@ foreach ($allModules as $idmod => $module)//$cApiModule = $cApiModuleCollection-
             $link = new cHTMLLink;
             $link->setMultiLink("mod", "", "mod_edit", "");
             $link->setCustom("idmod", $idmod);
-            $link->updateAttributes(array ("alt" => $module['description']));
-            $link->updateAttributes(array ("title" => $module['description']));
-            $link->updateAttributes(array ("style" => "margin-left:5px"));
+            $link->updateAttributes(array("alt" => $module['description']));
+            $link->updateAttributes(array("title" => $module['description']));
+            $link->updateAttributes(array("style" => "margin-left:5px"));
 
             $sName = $module ['name'];//$cApiModule->get("name");
 

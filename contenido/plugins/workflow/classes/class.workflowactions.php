@@ -58,37 +58,36 @@ class WorkflowActions extends ItemCollection {
         $this->__construct();
     }
 
-    function get ($idworkflowitem, $action)
+    function get($idworkflowitem, $action)
     {
         $this->select("idworkflowitem = '".cSecurity::escapeDB($idworkflowitem, NULL)."' AND action = '".cSecurity::escapeDB($action, NULL)."'");
-        if ($this->next())
-        {
+        if ($this->next()) {
             return true;
         } else {
             return false;
         }
     }
 
-    function getAvailableWorkflowActions ()
+    function getAvailableWorkflowActions()
     {
-        $availableWorkflowActions = array (
-        "publish" => i18n("Publish article", "workflow"),
-        "lock" => i18n("Lock article", "workflow"),
-        "last" => i18n("Move back to last editor", "workflow"),
-        "reject" => i18n("Reject article", "workflow"),
-        "articleedit" => i18n("Edit article content", "workflow"),
-        "propertyedit" => i18n("Edit article properties", "workflow"),
-        "templateedit" => i18n("Edit template", "workflow"),
-        "revise" => i18n("Revise article", "workflow"));
+        $availableWorkflowActions = array(
+            "publish" => i18n("Publish article", "workflow"),
+            "lock" => i18n("Lock article", "workflow"),
+            "last" => i18n("Move back to last editor", "workflow"),
+            "reject" => i18n("Reject article", "workflow"),
+            "articleedit" => i18n("Edit article content", "workflow"),
+            "propertyedit" => i18n("Edit article properties", "workflow"),
+            "templateedit" => i18n("Edit template", "workflow"),
+            "revise" => i18n("Revise article", "workflow")
+        );
 
         return($availableWorkflowActions);
     }
 
-    function set ($idworkflowitem, $action)
+    function set($idworkflowitem, $action)
     {
         $this->select("idworkflowitem = '".cSecurity::escapeDB($idworkflowitem, NULL)."' AND action = '".cSecurity::escapeDB($action, NULL)."'");
-        if (!$this->next())
-        {
+        if (!$this->next()) {
             $newitem = parent::createNewItem();
             $newitem->setField("idworkflowitem", $idworkflowitem);
             $newitem->setField("action", $action);
@@ -96,16 +95,15 @@ class WorkflowActions extends ItemCollection {
         }
     }
 
-    function remove ($idworkflowitem, $action)
+    function remove($idworkflowitem, $action)
     {
         $this->select("idworkflowitem = '$idworkflowitem' AND action = '$action'");
-        if ($item = $this->next())
-        {
+        if ($item = $this->next()) {
             $this->delete($item->getField("idworkflowaction"));
         }
     }
 
-    function select ($where = "", $group_by = "", $order_by = "", $limit = "")
+    function select($where = "", $group_by = "", $order_by = "", $limit = "")
     {
         global $client;
 

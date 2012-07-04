@@ -106,8 +106,8 @@ class Contenido_Effective_Setting
         }
 
         if (false == $value) {
-			$obj = self::_getLanguageInstance();
-			$value = $obj->getProperty($type, $name);
+            $obj = self::_getLanguageInstance();
+            $value = $obj->getProperty($type, $name);
         }
 
         if (false == $value) {
@@ -261,12 +261,12 @@ class Contenido_Effective_Setting
      */
     protected static function _getLanguageInstance()
     {
-    	global $lang;
+        global $lang;
 
-    	if (!isset(self::$_language)) {
-    		self::$_language = new cApiLanguage($lang);
-    	}
-    	return self::$_language;
+        if (!isset(self::$_language)) {
+            self::$_language = new cApiLanguage($lang);
+        }
+        return self::$_language;
     }
 
 

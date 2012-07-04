@@ -338,13 +338,12 @@ class Cms_Date
         $oDivBox->setStyleDefinition('border', '1px dashed #dddddd');
         $this->sEditAreaId  = 'DATE_' . $this->oDB->f('idtype') . '_' . $this->iNumberOfCms;
         $oDivBox->setId($this->sEditAreaId);
-        #$oDivBox->updateAttributes(array ('contentEditable' => 'true'));
+        #$oDivBox->updateAttributes(array('contentEditable' => 'true'));
         $oDivBox->setContent('_REPLACEMENT_');
         $sFinalEditingDiv = $oDivBox->render();
         $sFinalEditingDiv = addslashes($sFinalEditingDiv);
         $sFinalEditingDiv = str_replace("\\'", "'", $sFinalEditingDiv);
         $sFinalEditingDiv = str_replace('_REPLACEMENT_', $this->sContent, $sFinalEditingDiv);
-
 
         return $sFinalEditingDiv;
     }
