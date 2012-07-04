@@ -68,7 +68,7 @@ return array(
     'FrontendLogic' => 'contenido/classes/class.frontend.logic.php',
     'cItemException' => 'contenido/classes/class.genericdb.php',
     'cItemCache' => 'contenido/classes/class.genericdb.php',
-    'Contenido_ItemBaseAbstract' => 'contenido/classes/class.genericdb.php',
+    'cItemBaseAbstract' => 'contenido/classes/class.genericdb.php',
     'ItemCollection' => 'contenido/classes/class.genericdb.php',
     'Item' => 'contenido/classes/class.genericdb.php',
     'cHTML' => 'contenido/classes/class.htmlelements.php',

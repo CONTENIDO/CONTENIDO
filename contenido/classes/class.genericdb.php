@@ -266,14 +266,14 @@ class cItemCache
 
 
 /**
- * Class Contenido_ItemBaseAbstract.
+ * Class cItemBaseAbstract.
  * Base class with common features for database based items and item collections.
  *
  * @author     Murat Purc <murat@purc.de>
  * @version    0.2
  * @copyright  four for business AG <www.4fb.de>
  */
-abstract class Contenido_ItemBaseAbstract
+abstract class cItemBaseAbstract
 {
     /**
      * Database instance, contains the database object
@@ -441,7 +441,7 @@ abstract class Contenido_ItemBaseAbstract
  * @version    0.2
  * @copyright  four for business 2003
  */
-abstract class ItemCollection extends Contenido_ItemBaseAbstract
+abstract class ItemCollection extends cItemBaseAbstract
 {
     /**
      * Storage of all result items
@@ -1700,7 +1700,7 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
  * @version    0.3
  * @copyright  four for business 2003
  */
-abstract class Item extends Contenido_ItemBaseAbstract
+abstract class Item extends cItemBaseAbstract
 {
     /**
      * Storage of the source table to use for the user informations
