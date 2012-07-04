@@ -25,7 +25,7 @@ cInclude('classes', 'Validator/Email.class.php');
  * @package     Contenido_Frontend
  * @subpackage  Validator
  */
-class Contenido_Validator_EmailTest extends PHPUnit_Framework_TestCase
+class cValidatorEmailTest extends PHPUnit_Framework_TestCase
 {
 
     /**

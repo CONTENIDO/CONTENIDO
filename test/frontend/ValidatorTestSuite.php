@@ -23,7 +23,7 @@ class ContenidoValidatorAllTest
     public static function suite()
     {
         $suite = new PHPUnit_Framework_TestSuite('CONTENIDO Validator');
-        $suite->addTestSuite('Contenido_Validator_EmailTest');
+        $suite->addTestSuite('cValidatorEmailTest');
         return $suite;
     }
 
