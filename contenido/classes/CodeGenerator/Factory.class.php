@@ -42,7 +42,7 @@ class cCodeGeneratorFactory
      * Returns code generator instance by it's name.
      *
      * @param  string  $name  The generator name, e. g. 'Standard' to retrieve instance of
-     *                        Contenido_CodeGenerator_Standard
+     *                        cCodeGeneratorStandard
      * @return cCodeGeneratorAbstract
      * @throws InvalidArgumentException  If name is invalid, class file is missing or
      *                                   class isn't available

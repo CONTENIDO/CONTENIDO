@@ -165,7 +165,7 @@ return array(
     'XsltProcessor' => 'contenido/classes/class.xsltprocessor.php',
     'cCodeGeneratorAbstract' => 'contenido/classes/CodeGenerator/Abstract.class.php',
     'cCodeGeneratorFactory' => 'contenido/classes/CodeGenerator/Factory.class.php',
-    'Contenido_CodeGenerator_Standard' => 'contenido/classes/CodeGenerator/Standard.class.php',
+    'cCodeGeneratorStandard' => 'contenido/classes/CodeGenerator/Standard.class.php',
     'cApiActionCollection' => 'contenido/classes/contenido/class.action.php',
     'cApiAction' => 'contenido/classes/contenido/class.action.php',
     'Action' => 'contenido/classes/contenido/class.action.php',
