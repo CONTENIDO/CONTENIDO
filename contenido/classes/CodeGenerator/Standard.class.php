@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
  * CONTENIDO standard code generator.
  * @package    CONTENIDO Backend Classes
  */
-class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
+class Contenido_CodeGenerator_Standard extends cCodeGeneratorAbstract
 {
 
     /**

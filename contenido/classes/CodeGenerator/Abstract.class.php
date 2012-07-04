@@ -37,7 +37,7 @@ if (!defined('CON_FRAMEWORK')) {
  * CONTENIDO abstract code generator class.
  * @package    CONTENIDO Backend Classes
  */
-abstract class Contenido_CodeGenerator_Abstract
+abstract class cCodeGeneratorAbstract
 {
     /**
      * CONTENIDO database instance

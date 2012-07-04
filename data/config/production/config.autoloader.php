@@ -163,7 +163,7 @@ return array(
     'XmlTree' => 'contenido/classes/class.xmltree.php',
     'XmlNode' => 'contenido/classes/class.xmltree.php',
     'XsltProcessor' => 'contenido/classes/class.xsltprocessor.php',
-    'Contenido_CodeGenerator_Abstract' => 'contenido/classes/CodeGenerator/Abstract.class.php',
+    'cCodeGeneratorAbstract' => 'contenido/classes/CodeGenerator/Abstract.class.php',
     'Contenido_CodeGenerator_Factory' => 'contenido/classes/CodeGenerator/Factory.class.php',
     'Contenido_CodeGenerator_Standard' => 'contenido/classes/CodeGenerator/Standard.class.php',
     'cApiActionCollection' => 'contenido/classes/contenido/class.action.php',

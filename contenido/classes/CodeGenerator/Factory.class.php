@@ -43,7 +43,7 @@ class Contenido_CodeGenerator_Factory
      *
      * @param  string  $name  The generator name, e. g. 'Standard' to retrieve instance of
      *                        Contenido_CodeGenerator_Standard
-     * @return Contenido_CodeGenerator_Abstract
+     * @return cCodeGeneratorAbstract
      * @throws InvalidArgumentException  If name is invalid, class file is missing or
      *                                   class isn't available
      */
