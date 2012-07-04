@@ -83,8 +83,6 @@ if ($handle = opendir($path)) {
         sort($aFiles);
 
         foreach ($aFiles as $filename) {
-            $bgcolor = ( is_int($tpl->dyn_cnt / 2) ) ? $cfg["color"]["table_light"] : $cfg["color"]["table_dark"];
-            $tpl->set('d', 'BGCOLOR', $bgcolor);
 
             $tmp_mstr = '<a class=\"action\" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')" title="%s" alt="%s">%s</a>';
 

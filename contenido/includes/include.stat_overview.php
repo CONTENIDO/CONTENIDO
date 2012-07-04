@@ -98,9 +98,6 @@ if ($action == "stat_show") {
         }
     }
 
-    $tpl->set('s', 'BGCOLOR', '#FFFFFF');
-    $tpl->set('s', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-    $tpl->set('s', 'TITLEBGCOLOR', $cfg["color"]["table_header"]);
     $tpl->set('s', 'TITLETEXT', i18n("Title"));
     $tpl->set('s', 'TITLESTATUS', i18n("Status"));
     $tpl->set('s', 'TITLENUMBEROFARTICLES', i18n("Number of articles"));

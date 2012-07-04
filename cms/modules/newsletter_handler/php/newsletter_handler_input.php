@@ -146,7 +146,6 @@ if ($oRcpGroups->Count() == 0) {
     }
     $oRadJoinDefault->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = true; document.forms[0].selGroup".$cnumber.".disabled = true;");
     $oCfgTable->setCell('join_01', 1, $oRadJoinDefault->toHTML(false).mi18n("default group"));
-    $oCfgTable->setRowBgColor('join_01', $cfg["color"]["table_dark"]);
 
     // Join admin selected groups automatically
     if ($aSettings['JoinSel'] == 'Selected') {
@@ -157,7 +156,6 @@ if ($oRcpGroups->Count() == 0) {
     $oRadJoinSelected->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = false; document.forms[0].selGroup".$cnumber.".disabled = false;");
     $oCfgTable->setCell('join_02', 0, '');
     $oCfgTable->setCell('join_02', 1, $oRadJoinSelected->toHTML(false).mi18n("selected group(s)"));
-    $oCfgTable->setRowBgColor('join_02', $cfg["color"]["table_dark"]);
 
     // Join the groups the user has selected (-> provide a list for the user), optionally, the user may select more than one group
     if ($aSettings['JoinSel'] == 'UserSelected') {
@@ -170,7 +168,6 @@ if ($oRcpGroups->Count() == 0) {
     $oRadJoinUserSel->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = false; document.forms[0].selGroup".$cnumber.".disabled = false;");
     $oCfgTable->setCell('join_03', 0, '');
     $oCfgTable->setCell('join_03', 1, $oRadJoinUserSel->toHTML(false).mi18n("group(s) as selected by user").'<br />'."\n".$oCkbJoinMultiple->toHTML(false).mi18n("Multiple group selection allowed"));
-    $oCfgTable->setRowBgColor('join_03', $cfg["color"]["table_dark"]);
 
     $oCfgTable->setCell('groups', 0, mi18n("Select group(s):"));
 
@@ -248,7 +245,6 @@ $sSkript = "if (this.checked) {
 $oCkbLink->setEvent("click", $sSkript);
 
 $oCfgTable->setCell('link_01', 1, $oCkbLink->toHTML(false).mi18n("Activate Link"));
-$oCfgTable->setRowBgColor('link_01', $cfg["color"]["table_light"]);
 
 // Link: Activation options
 $oCfgTable->setCell('link_02', 0, '');
@@ -290,7 +286,6 @@ if ($aSettings['FrontendLink'] == '') {
 $oCfgTable->setCell('link_02', 1, mi18n("Confirmation means:").'<br />'.
                     $oRadActivateUser->toHTML(false).mi18n("Activate").
                     $oRadActivateNothing->toHTML(false).mi18n("No changes"));
-$oCfgTable->setRowBgColor('link_02', $cfg["color"]["table_light"]);
 
 // Link: Cancellation options
 $oCfgTable->setCell('link_03', 0, '');
@@ -299,7 +294,6 @@ $oCfgTable->setCell('link_03', 1, mi18n("Cancellation means:").'<br />'.
                     $oRadDelDelete->toHTML(false).mi18n("Delete").
                     $oRadDelDisable->toHTML(false).mi18n("Disable").
                     $oRadDelNothing->toHTML(false).mi18n("No changes"));
-$oCfgTable->setRowBgColor('link_03', $cfg["color"]["table_light"]);
 
 $oCfgTable->render(true);
 

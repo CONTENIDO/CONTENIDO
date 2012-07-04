@@ -40,7 +40,6 @@ $page = new cPage();
 $oNoteList = new NoteList($itemtype, $itemid);
 $oNoteList->setDeleteable(true);
 
-$page->setExtra('background: '.$cfg['color']['table_light']);
 $page->setMargin(0);
 $page->setContent($oNoteList);
 $page->render();

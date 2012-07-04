@@ -56,26 +56,26 @@
 
 <p class="text_medium">{LASTARTICLES}</p>
 
-<table class="content" width="100%" cellspacing="0" cellpadding="2" border="0">
-    <tr class="textg_medium" style="background-color:#e2e2e2">
-        <th class="textg_medium col-first" nowrap="nowrap">i18n("Start")</th>
-        <th class="textg_medium col-mid" nowrap="nowrap">i18n("Title")</th>
-        <th class="textg_medium col-mid" nowrap="nowrap">i18n("Category")</th>
-        <th class="textg_medium col-mid" nowrap="nowrap">i18n("Created")</th>
-        <th class="textg_medium col-mid" nowrap="nowrap">i18n("Modified")</th>
-        <th class="textg_medium col-mid" nowrap="nowrap">i18n("Template")</th>
-        <th class="textg_medium col-last" colspan="4" nowrap="nowrap">i18n("Info")</th>
+<table class="generic" width="100%" cellspacing="0" cellpadding="2" border="0">
+    <tr class="textg_medium">
+        <th nowrap="nowrap">i18n("Start")</th>
+        <th nowrap="nowrap">i18n("Title")</th>
+        <th nowrap="nowrap">i18n("Category")</th>
+        <th nowrap="nowrap">i18n("Created")</th>
+        <th nowrap="nowrap">i18n("Modified")</th>
+        <th nowrap="nowrap">i18n("Template")</th>
+        <th colspan="4" nowrap="nowrap">i18n("Info")</th>
     </tr>
 
     <!-- BEGIN:BLOCK -->
-    <tr id="{ROWID}" class="text_medium" style="background-color:{BGCOLOR};" >
-        <td class="text_medium col-first" nowrap="nowrap" align="center">{START}</td>
-        <td class="text_medium col-mid" width="50%" nowrap="nowrap">{ARTICLE}</td>
-        <td class="text_medium col-mid" width="50%" nowrap="nowrap">{CATEGORY}</td>
-        <td class="text_medium col-mid" nowrap="nowrap">{CREATED}</td>
-        <td class="text_medium col-mid" nowrap="nowrap">{LASTMODIFIED}</td>
-        <td class="text_medium col-mid" nowrap="nowrap">{TPLNAME}</td>
-        <td class="col-last" >{ONLINE}</td>
+    <tr id="{ROWID}" >
+        <td nowrap="nowrap" align="center">{START}</td>
+        <td width="50%" nowrap="nowrap">{ARTICLE}</td>
+        <td width="50%" nowrap="nowrap">{CATEGORY}</td>
+        <td nowrap="nowrap">{CREATED}</td>
+        <td nowrap="nowrap">{LASTMODIFIED}</td>
+        <td nowrap="nowrap">{TPLNAME}</td>
+        <td>{ONLINE}</td>
     </tr>
     <!-- END:BLOCK -->
 </table>

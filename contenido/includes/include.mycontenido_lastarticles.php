@@ -115,11 +115,6 @@ while ( $db->next_record() ) {
         $category = "&nbsp;";
     }
 
-    $bgcolor = (is_int($tpl->dyn_cnt / 2)) ? $cfg["color"]["table_light"] : $cfg["color"]["table_dark"];
-
-    # Backgroundcolor of the table row
-    $tpl->set('d', 'BGCOLOR', $bgcolor);
-
     # Article Title
     $tmp_alink = $sess->url("frameset.php?area=con&override_area4=con_editcontent&override_area3=con&action=con_editart&idartlang=$idartlang&idart=$idart&idcat=$idcat&idartlang=$idartlang");
     $tpl->set('d', 'ARTICLE', $db->f('title'));

@@ -39,7 +39,6 @@ $currentLink = '<a target="right_bottom" href="'.$sess->url("main.php?area=stat&
 $availableYears = statGetAvailableYears($client,$lang);
 
 // Title
-$bgcolor = "#FFFFFF";
 $tpl->set('s', 'PADDING_LEFT', '17');
 $tpl->set('s', 'OVERVIEWTEXT', "<b>".i18n("Statistics Overview")."</b>");
 
@@ -48,14 +47,11 @@ $tpl->set('s', 'CURRENTTEXT', $currentLink);
 $tpl->set('s', 'PADDING_LEFT', '17');
 
 // Empty Row
-$bgcolor = '#FFFFFF';
 $text = '&nbsp;';
 if (count($availableYears) != 0) {
-    $bgcolor = $cfg["color"]["table_header"];
     $text = '<b>' . i18n("Archived Statistics") . '</b>';
 }
 
-$tpl->set('s', 'ARCHIVEBGCOLOR', $bgcolor);
 $tpl->set('s', 'ARCHIVETEXT', $text);
 $tpl->set('s', 'PADDING_LEFT', '17');
 

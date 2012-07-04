@@ -80,7 +80,7 @@ $cApiCategoryArticleCollection->query();
 $headlines = array(i18n("Start"), i18n("Title"), i18n("Created"), i18n("Modified"), i18n("Sort order"), i18n("Online"));
 $fields = array("is_start", "title", "created", "lastmodified", "artsort", "online");
 
-$content[] = '<table width="100%" style="margin-top: 10px; border-left: 1px solid '.$cfg['color']['table_border'].'; border-top: 1px solid '.$cfg['color']['table_border'].';" cellspacing="0" cellpadding="0"><tr>';
+$content[] = 'haaaaaaalllllllooooo<table width="100%" style="margin-top: 10px; border-left: 1px solid '.$cfg['color']['table_border'].'; border-top: 1px solid '.$cfg['color']['table_border'].';" cellspacing="0" cellpadding="0"><tr>';
 
 foreach ($headlines as $headline)
 {

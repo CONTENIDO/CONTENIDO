@@ -127,7 +127,6 @@ if ($oRcpGroups->Count() == 0) {
     }
     $oRadJoinDefault->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = true; document.forms[0].selGroup".$cnumber.".disabled = true;");
     $oCfgTable->setCell('join_01', 1, $oRadJoinDefault->toHTML(false).mi18n("default group"));
-    $oCfgTable->setRowBgColor('join_01', $cfg["color"]["table_light"]);
 
     // Join admin selected groups automatically
     if ($aSettings['JoinSel'] == 'Selected') {
@@ -138,7 +137,6 @@ if ($oRcpGroups->Count() == 0) {
     $oRadJoinSelected->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = false; document.forms[0].selGroup".$cnumber.".disabled = false;");
     $oCfgTable->setCell('join_02', 0, '');
     $oCfgTable->setCell('join_02', 1, $oRadJoinSelected->toHTML(false).mi18n("selected group(s)"));
-    $oCfgTable->setRowBgColor('join_02', $cfg["color"]["table_light"]);
 
     // Join the groups the user has selected (-> provide a list for the user), optionally, the user may select more than one group
     if ($aSettings['JoinSel'] == 'UserSelected') {
@@ -151,7 +149,6 @@ if ($oRcpGroups->Count() == 0) {
     $oRadJoinUserSel->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = false; document.forms[0].selGroup".$cnumber.".disabled = false;");
     $oCfgTable->setCell('join_03', 0, '');
     $oCfgTable->setCell('join_03', 1, $oRadJoinUserSel->toHTML(false).mi18n("group(s) as selected by user").'<br />'."\n".$oCkbJoinMultiple->toHTML(false).mi18n("Multiple group selection allowed"));
-    $oCfgTable->setRowBgColor('join_03', $cfg["color"]["table_light"]);
 
     $oCfgTable->setCell('groups', 0, mi18n("Select group(s):"));
 
@@ -214,7 +211,6 @@ $oCfgTable->setCell('options_01', 1, mi18n("Default message type:").'&nbsp;'.$oS
 $oCfgTable->setCell('options_02', 0, '');
 $oCkbNewWindow = new cHTMLCheckbox("CMS_VAR[4]", 'enabled', '', "CMS_VALUE[4]");
 $oCfgTable->setCell('options_02', 1, $oCkbNewWindow->toHTML(false).mi18n("Open handler article in new window"));
-$oCfgTable->setRowBgColor('options_02', $cfg["color"]["table_light"]);
 
 $oCfgTable->render(true);
 
