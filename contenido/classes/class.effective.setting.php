@@ -46,7 +46,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-class Contenido_Effective_Setting
+class cEffectiveSetting
 {
     /**
      * @var array

@@ -696,7 +696,7 @@ function getSystemPropertiesByType($type)
  */
 function getEffectiveSetting($type, $name, $default = '')
 {
-    return Contenido_Effective_Setting::get($type, $name, $default);
+    return cEffectiveSetting::get($type, $name, $default);
 }
 
 /**
@@ -713,7 +713,7 @@ function getEffectiveSetting($type, $name, $default = '')
  */
 function getEffectiveSettingsByType($type)
 {
-    return Contenido_Effective_Setting::getByType($type);
+    return cEffectiveSetting::getByType($type);
 }
 
 /**

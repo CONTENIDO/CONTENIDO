@@ -59,7 +59,7 @@ return array(
     'Cms_Teaser' => 'contenido/classes/class.cms_teaser.php',
     'ConUser' => 'contenido/classes/class.conuser.php',
     'CSV' => 'contenido/classes/class.csv.php',
-    'Contenido_Effective_Setting' => 'contenido/classes/class.effective.setting.php',
+    'cEffectiveSetting' => 'contenido/classes/class.effective.setting.php',
     'ExcelWorksheet' => 'contenido/classes/class.excel.php',
     'cFileHandler' => 'contenido/classes/class.filehandler.php',
     'Form' => 'contenido/classes/class.form.php',
