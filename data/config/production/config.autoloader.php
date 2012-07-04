@@ -44,7 +44,7 @@ return array(
     'Art' => 'contenido/classes/class.art.php',
     'Article' => 'contenido/classes/class.article.php',
     'ArticleCollection' => 'contenido/classes/class.article.php',
-    'Contenido_Autoload' => 'contenido/classes/class.autoload.php',
+    'cAutoload' => 'contenido/classes/class.autoload.php',
     'Contenido_Backend' => 'contenido/classes/class.backend.php',
     'Cat' => 'contenido/classes/class.cat.php',
     'cApiCECRegistry' => 'contenido/classes/class.cec.php',

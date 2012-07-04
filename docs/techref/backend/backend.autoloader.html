@@ -185,7 +185,7 @@ $context->options = array(
 </p>
 <ul>
     <li>
-        <span class="pre">Contenido_Autoload::addClassmapConfig(array $config)</span><br>
+        <span class="pre">cAutoload::addClassmapConfig(array $config)</span><br>
         Adding additional autoloader classmap configuration.<br>
 <pre>
 // Structure is: "Classname" => "Path to classfile from CONTENIDO installation folder"
@@ -193,15 +193,15 @@ $config = array(
     'myPluginsClass' => 'contenido/plugins/myplugin/classes/class.myPluginClass.php',
     'myPluginsOtherClass' => 'contenido/plugins/myplugin/classes/class.myPluginsOtherClass.php',
 );
-Contenido_Autoload::addClassmapConfig(array $config);
+cAutoload::addClassmapConfig(array $config);
 </pre>
     </li>
     <li>
-        <span class="pre">Contenido_Autoload::addClassmapConfigFile($configFile)</span><br>
+        <span class="pre">cAutoload::addClassmapConfigFile($configFile)</span><br>
         Adding additional autoloader class map configuration file.<br>
 <pre>
 $configFile = '/path/to/additional/classmap/config.php';
-Contenido_Autoload::addClassmapConfigFile($configFile);
+cAutoload::addClassmapConfigFile($configFile);
 </pre>
 
 The provided file must return a class map configuration array as follows:

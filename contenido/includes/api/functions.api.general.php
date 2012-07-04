@@ -96,7 +96,7 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
             $sInclude = $cfg['path']['phplib'] . $sWhat;
             break;
         case 'classes':
-            if (Contenido_Autoload::isAutoloadable($cfg['path'][$sWhere] . $sWhat)) {
+            if (cAutoload::isAutoloadable($cfg['path'][$sWhere] . $sWhat)) {
                 // The class file will be loaded automatically by the autoloader - get out here
                 return;
             }

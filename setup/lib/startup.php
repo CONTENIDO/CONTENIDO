@@ -19,7 +19,6 @@
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.9.0
  *
- * mofified 2012-02-20, Rusmir Jusufovic, add condition for max PHP_VERSION (JIRA CON 481)
  * {@internal
  *   created  2011-02-28
  *   $Id$
@@ -169,7 +168,7 @@ $cfg['db']['sequenceTable'] = $cfg['tab']['sequence'];
 
 // Initialization of autoloader
 checkAndInclude($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');
-Contenido_Autoload::initialize($cfg);
+cAutoload::initialize($cfg);
 
 
 // Common includes

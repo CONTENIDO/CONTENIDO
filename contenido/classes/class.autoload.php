@@ -17,8 +17,8 @@
  *
  * You can also add additional class map configuration by using function following
  * functions:
- * - Contenido_Autoload::addClassmapConfig(array $config)
- * - Contenido_Autoload::addClassmapConfigFile($configFile)
+ * - cAutoload::addClassmapConfig(array $config)
+ * - cAutoload::addClassmapConfigFile($configFile)
  *
  * Read also docs/techref/backend/backend.autoloader.html to get involved in
  * CONTENIDO autoloader mechanism.
@@ -47,7 +47,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-class Contenido_Autoload
+class cAutoload
 {
 
     const ERROR_FILE_NOT_FOUND = 'file_not_found';
@@ -221,7 +221,7 @@ class Contenido_Autoload
     }
 
     /**
-     * Returns the loaded classes (@see Contenido_Autoload::$_loadedClasses)
+     * Returns the loaded classes (@see cAutoload::$_loadedClasses)
      *
      * @return  array
      */
@@ -231,7 +231,7 @@ class Contenido_Autoload
     }
 
     /**
-     * Returns the errorlist containing invalid classes (@see Contenido_Autoload::$_errors)
+     * Returns the errorlist containing invalid classes (@see cAutoload::$_errors)
      *
      * @return  array
      */

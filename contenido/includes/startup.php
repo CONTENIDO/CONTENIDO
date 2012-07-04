@@ -126,7 +126,7 @@ require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'api/functio
 
 // Initialization of autoloader
 require_once($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');
-Contenido_Autoload::initialize($cfg);
+cAutoload::initialize($cfg);
 
 // Generate arrays for available login languages
 // Author: Martin Horwath
