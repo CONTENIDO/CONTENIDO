@@ -54,7 +54,7 @@ class cItemException extends Exception {}
 
 
 /**
- * Class Contenido_ItemCache.
+ * Class cItemCache.
  *
  * Implements features to cache entries, usually result sets of Item classes.
  * Contains a list of self instances, where each instance contains cached Items
@@ -64,10 +64,10 @@ class cItemException extends Exception {}
  * @version    0.1.2
  * @copyright  four for business AG <www.4fb.de>
  */
-class Contenido_ItemCache
+class cItemCache
 {
     /**
-     * List of self instances (Contenido_ItemCache)
+     * List of self instances (cItemCache)
      * @var  array
      */
     protected static $_oInstances = array();
@@ -97,7 +97,7 @@ class Contenido_ItemCache
     protected $_bEnable = false;
 
     /**
-     * Contructor of Contenido_ItemCache
+     * Contructor of cItemCache
      * @param  string  $sTable   Table name
      * @param  array   $aOptions Options array as follows:
      *                 - $aOptions['max_items_to_cache'] = (int) Number of items to cache
@@ -296,7 +296,7 @@ abstract class Contenido_ItemBaseAbstract
 
     /**
      * Item cache instance
-     * @var  Contenido_ItemCache
+     * @var  cItemCache
      */
     protected $_oCache;
 
@@ -381,7 +381,7 @@ abstract class Contenido_ItemBaseAbstract
 
         // instanciate caching
         $aCacheOpt = (isset($this->_settings['cache'])) ? $this->_settings['cache'] : array();
-        $this->_oCache = Contenido_ItemCache::getInstance($sTable, $aCacheOpt);
+        $this->_oCache = cItemCache::getInstance($sTable, $aCacheOpt);
 
         $this->table      = $sTable;
         $this->primaryKey = $sPrimaryKey;
