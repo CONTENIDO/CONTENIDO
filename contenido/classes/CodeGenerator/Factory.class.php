@@ -36,7 +36,7 @@ if (!defined('CON_FRAMEWORK')) {
  * CONTENIDO code generator factory.
  * @package    CONTENIDO Backend Classes
  */
-class Contenido_CodeGenerator_Factory
+class cCodeGeneratorFactory
 {
     /**
      * Returns code generator instance by it's name.
@@ -56,7 +56,7 @@ class Contenido_CodeGenerator_Factory
         }
 
         if ($name == 'Factory' || $name == 'Abstract') {
-            throw new InvalidArgumentException('Invalid name passed to Contenido_CodeGenerator_Factory: '.$name.'!');
+            throw new InvalidArgumentException('Invalid name passed to cCodeGeneratorFactory: '.$name.'!');
         }
 
         $className = 'Contenido_CodeGenerator_' . $name;
@@ -64,12 +64,12 @@ class Contenido_CodeGenerator_Factory
             $fileName = $name . '.class.php';
             $path     = str_replace('\\', '/', dirname(__FILE__)) . '/';
             if (!cFileHandler::exists($path . $fileName)) {
-                throw new InvalidArgumentException('The classfile couldn\'t included by Contenido_CodeGenerator_Factory: '.$name.'!');
+                throw new InvalidArgumentException('The classfile couldn\'t included by cCodeGeneratorFactory: '.$name.'!');
             }
 
             include_once($path . $fileName);
             if (!class_exists($className)) {
-                throw new InvalidArgumentException('The class isn\'t available for Contenido_CodeGenerator_Factory: '.$name.'!');
+                throw new InvalidArgumentException('The class isn\'t available for cCodeGeneratorFactory: '.$name.'!');
             }
         }
         return new $className();
