@@ -175,7 +175,7 @@ class NewsletterLogCollection extends ItemCollection
                 default:
                     $sDestination = "unknown";
             }
-            unset ($oNewsletter);
+            unset($oNewsletter);
 
             if ($sDestination == "unknown") {
                 return 0;
@@ -211,7 +211,7 @@ class NewsletterLogCollection extends ItemCollection
         $oJob = new NewsletterJob($iIDNewsJob);
         $oJob->set("rcpcount", $oJob->get("rcpcount") - 1);
         $oJob->store();
-        unset ($oJob);
+        unset($oJob);
 
         parent::delete($idnewslog);
     }

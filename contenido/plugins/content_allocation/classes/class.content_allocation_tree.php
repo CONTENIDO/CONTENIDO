@@ -21,11 +21,8 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-07-02, Frederic Schneider, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -485,8 +482,8 @@ class pApiTree {
                 $aResult = reset($aNames);
             }
         }
-        unset ($oDB);
-        unset ($aNames);
+        unset($oDB);
+        unset($aNames);
 
         return $aResult;
     }

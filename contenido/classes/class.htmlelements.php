@@ -21,13 +21,8 @@
  *
  * {@internal
  *   created 2003-08-21
- *   modified 2008-07-02, Frederic Schneider, add security fix
- *   modified 2010-12-28, Murat Purc, replaced cHTMLDIV/cHTMLSPAN against cHTMLDiv/cHTMLSpan
- *   modofied 2011-08-22, Timo Trautmann, removed hard coded css class text_medium with optional parameter
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -260,11 +255,9 @@ class cHTML
      */
     public function setEvent($event, $action)
     {
-        if (substr($event, 0, 2) != "on")
-        {
+        if (substr($event, 0, 2) != "on") {
             $this->updateAttributes(array("on".$event => $action));
-        } else
-        {
+        } else {
             $this->updateAttributes(array($event => $action));
         }
     }
@@ -279,11 +272,9 @@ class cHTML
      */
     public function unsetEvent($event)
     {
-        if (substr($event, 0, 2) != "on")
-        {
+        if (substr($event, 0, 2) != "on") {
             $this->removeAttribute("on".$event);
-        } else
-        {
+        } else {
             $this->removeAttribute($event);
         }
     }
@@ -300,11 +291,9 @@ class cHTML
      */
     public function fillSkeleton($attributes)
     {
-        if ($this->_contentlessTag == true)
-        {
+        if ($this->_contentlessTag == true) {
             return sprintf($this->_skeletonSingle, $this->_tag, $attributes);
-        } else
-        {
+        } else {
             return sprintf($this->_skeletonOpen, $this->_tag, $attributes);
         }
     }
@@ -357,8 +346,7 @@ class cHTML
 
     public function addRequiredScript($script)
     {
-        if (!is_array($this->_requiredScripts))
-        {
+        if (!is_array($this->_requiredScripts)) {
             $this->_requiredScripts = array();
         }
 
@@ -375,48 +363,37 @@ class cHTML
     protected function _setContent($content)
     {
         $this->setContentlessTag(false);
-        /* Is it an array? */
-        if (is_array($content))
-        {
-            unset ($this->_content);
+        // Is it an array?
+        if (is_array($content)) {
+            unset($this->_content);
 
             $this->_content = "";
 
-            foreach ($content as $item)
-            {
-                if (is_object($item))
-                {
-                    if (method_exists($item, "render"))
-                    {
+            foreach ($content as $item) {
+                if (is_object($item)) {
+                    if (method_exists($item, "render")) {
                         $this->_content .= $item->render();
                     }
 
-                    if (count($item->_requiredScripts) > 0)
-                    {
+                    if (count($item->_requiredScripts) > 0) {
                         $this->_requiredScripts = array_merge($this->_requiredScripts, $item->_requiredScripts);
                     }
-                } else
-                {
+                } else {
                     $this->_content .= $item;
                 }
             }
-        } else
-        {
-            if (is_object($content))
-            {
-                if (method_exists($content, "render"))
-                {
+        } else {
+            if (is_object($content)) {
+                if (method_exists($content, "render")) {
                     $this->_content = $content->render();
                 }
 
-                if (count($content->_requiredScripts) > 0)
-                {
+                if (count($content->_requiredScripts) > 0) {
                     $this->_requiredScripts = array_merge($this->_requiredScripts, $content->_requiredScripts);
                 }
 
                 return;
-            } else
-            {
+            } else {
                 $this->_content = $content;
             }
         }
@@ -566,60 +543,46 @@ class cHTML
      */
     public function toHTML()
     {
-        /* Fill style definition */
+        // Fill style definition
         $style = $this->getAttribute("style");
 
-        /* If the style doesn't end with a semicolon, append one */
-        if (is_string($style))
-        {
+        // If the style doesn't end with a semicolon, append one
+        if (is_string($style)) {
             $style = trim($style);
-
-            if (substr($style, strlen($style) - 1) != ";")
-            {
+            if (substr($style, strlen($style) - 1) != ";") {
                 $style .= ";";
             }
         }
 
-        foreach ($this->_styleDefinitions as $sEntry)
-        {
+        foreach ($this->_styleDefinitions as $sEntry) {
             $style .= $sEntry;
-
-            if (substr($style, strlen($style) - 1) != ";")
-            {
+            if (substr($style, strlen($style) - 1) != ";") {
                 $style .= ";";
             }
         }
 
-        foreach ($this->_eventDefinitions as $sEventName => $sEntry)
-        {
+        foreach ($this->_eventDefinitions as $sEventName => $sEntry) {
             $aFullCode = array();
-
-            foreach ($sEntry as $sName => $sCode)
-            {
+            foreach ($sEntry as $sName => $sCode) {
                 $aFullCode[] = $sCode;
             }
-
             $this->setAttribute($sEventName, $this->getAttribute($sEventName).implode(" ", $aFullCode));
         }
 
-        /* Apply all stored styles */
-        foreach ($this->_styleDefs as $key => $value)
-        {
+        // Apply all stored styles
+        foreach ($this->_styleDefs as $key => $value) {
             $style .= "$key: $value;";
         }
 
-        if ($style != "")
-        {
+        if ($style != "") {
             $this->setStyle($style);
         }
 
-        if ($this->_content != "" || $this->_contentlessTag == false)
-        {
+        if ($this->_content != "" || $this->_contentlessTag == false) {
             $attributes = $this->getAttributes(true);
             return $this->fillSkeleton($attributes).$this->_content.$this->fillCloseSkeleton();
-        } else
-        {
-            /* This is a single style tag */
+        } else {
+            // This is a single style tag
             $attributes = $this->getAttributes(true);
 
             return $this->fillSkeleton($attributes);
@@ -678,8 +641,7 @@ class cHTMLFormElement extends cHTML
 
         $this->updateAttributes(array("name" => $name));
 
-        if (is_string($id) && !empty($id))
-        {
+        if (is_string($id) && !empty($id)) {
             $this->updateAttributes(array("id" => $id));
         }
 
@@ -713,11 +675,9 @@ class cHTMLFormElement extends cHTML
      */
     public function setDisabled($disabled)
     {
-        if (!empty($disabled))
-        {
+        if (!empty($disabled)) {
             $this->updateAttributes(array("disabled" => "disabled"));
-        } else
-        {
+        } else {
             $this->removeAttribute("disabled");
         }
     }
@@ -730,8 +690,7 @@ class cHTMLFormElement extends cHTML
      */
     public function setTabindex($tabindex)
     {
-        if (is_numeric($tabindex) && $tabindex >= 0 && $tabindex <= 32767)
-        {
+        if (is_numeric($tabindex) && $tabindex >= 0 && $tabindex <= 32767) {
             $this->updateAttributes(array("tabindex" => $tabindex));
         }
     }
@@ -743,11 +702,9 @@ class cHTMLFormElement extends cHTML
      */
     public function setAccessKey($accesskey)
     {
-        if ((strlen($accesskey) == 1) && is_alphanumeric($accesskey))
-        {
+        if ((strlen($accesskey) == 1) && is_alphanumeric($accesskey)) {
             $this->updateAttributes(array("accesskey" => $accesskey));
-        } else
-        {
+        } else {
             $this->removeAttribute("accesskey");
         }
     }
@@ -866,19 +823,18 @@ class cHTMLButton extends cHTMLFormElement
      */
     public function setMode($mode)
     {
-        switch ($mode)
-        {
-            case "submit" :
-            case "reset" :
+        switch ($mode) {
+            case "submit":
+            case "reset":
                 $this->updateAttributes(array("type" => $mode));
                 break;
-            case "image" :
+            case "image":
                 $this->updateAttributes(array("type" => $mode));
                 break;
-            case "button" :
+            case "button":
                 $this->updateAttributes(array("type" => $mode));
                 break;
-            default :
+            default:
                 return false;
         }
     }
@@ -960,8 +916,7 @@ class cHTMLTextbox extends cHTMLFormElement
     {
         $width = intval($width);
 
-        if ($width <= 0)
-        {
+        if ($width <= 0) {
             $width = 50;
         }
 
@@ -976,11 +931,9 @@ class cHTMLTextbox extends cHTMLFormElement
     {
         $maxlen = intval($maxlen);
 
-        if ($maxlen <= 0)
-        {
+        if ($maxlen <= 0) {
             $this->removeAttribute("maxlength");
-        } else
-        {
+        } else {
             $this->updateAttributes(array("maxlength" => $maxlen));
         }
     }
@@ -1048,8 +1001,7 @@ class cHTMLPasswordbox extends cHTMLFormElement
     {
         $width = intval($width);
 
-        if ($width <= 0)
-        {
+        if ($width <= 0) {
             $width = 20;
         }
 
@@ -1064,11 +1016,9 @@ class cHTMLPasswordbox extends cHTMLFormElement
     {
         $maxlen = intval($maxlen);
 
-        if ($maxlen <= 0)
-        {
+        if ($maxlen <= 0) {
             $this->removeAttribute("maxlength");
-        } else
-        {
+        } else {
             $this->updateAttributes(array("maxlength" => $maxlen));
         }
     }
@@ -1130,8 +1080,7 @@ class cHTMLTextarea extends cHTMLFormElement
     {
         $width = intval($width);
 
-        if ($width <= 0)
-        {
+        if ($width <= 0) {
             $width = 50;
         }
 
@@ -1146,13 +1095,11 @@ class cHTMLTextarea extends cHTMLFormElement
     {
         $height = intval($height);
 
-        if ($height <= 0)
-        {
+        if ($height <= 0) {
             $height = 5;
         }
 
         $this->updateAttributes(array("rows" => $height));
-
     }
 
     /**
@@ -1287,16 +1234,12 @@ class cHTMLSelectElement extends cHTMLFormElement
      */
     public function autoFill($stuff)
     {
-        if (is_array($stuff))
-        {
-            foreach ($stuff as $key => $row)
-            {
-                if (is_array($row))
-                {
+        if (is_array($stuff)) {
+            foreach ($stuff as $key => $row) {
+                if (is_array($row)) {
                     $option = new cHTMLOptionElement($row[1], $row[0]);
                     $this->addOptionElement($row[0], $option);
-                } else
-                {
+                } else {
                     $option = new cHTMLOptionElement($row, $key);
                     $this->addOptionElement($key, $option);
                 }
@@ -1354,16 +1297,13 @@ class cHTMLSelectElement extends cHTMLFormElement
 
     /**
      * Search for the selected elements
-     * @return  string  Selected "lvalue"
+     * @return  string|bool  Selected "lvalue" or false
      */
     public function getDefault()
     {
-        if (is_array($this->_options))
-        {
-            foreach ($this->_options as $key => $value)
-            {
-                if ($value->isSelected())
-                {
+        if (is_array($this->_options)) {
+            foreach ($this->_options as $key => $value) {
+                if ($value->isSelected()) {
                     return $key;
                 }
             }
@@ -1377,12 +1317,9 @@ class cHTMLSelectElement extends cHTMLFormElement
      */
     public function setSelected($aElements)
     {
-        if (is_array($this->_options) && is_array($aElements))
-        {
-            foreach ($this->_options as $sKey => $oOption)
-            {
-                if (in_array($oOption->getAttribute("value"), $aElements))
-                {
+        if (is_array($this->_options) && is_array($aElements)) {
+            foreach ($this->_options as $sKey => $oOption) {
+                if (in_array($oOption->getAttribute("value"), $aElements)) {
                     $oOption->setSelected(true);
                     $this->_options[$sKey] = $oOption;
                 } else {
@@ -1403,10 +1340,8 @@ class cHTMLSelectElement extends cHTMLFormElement
 
         $options = "";
 
-        if (is_array($this->_options))
-        {
-            foreach ($this->_options as $key => $value)
-            {
+        if (is_array($this->_options)) {
+            foreach ($this->_options as $key => $value) {
                 $options .= $value->toHtml();
             }
         }
@@ -1438,7 +1373,7 @@ class cHTMLOptionElement extends cHTMLFormElement
      */
     public function __construct($title, $value, $selected = false, $disabled = false)
     {
-        cHTML :: __construct();
+        cHTML::__construct();
         $this->_tag = "option";
         $this->_title = $title;
 
@@ -1464,11 +1399,9 @@ class cHTMLOptionElement extends cHTMLFormElement
      */
     public function setSelected($selected)
     {
-        if ($selected == true)
-        {
+        if ($selected == true) {
             $this->updateAttributes(array("selected" => "selected"));
-        } else
-        {
+        } else {
             $this->removeAttribute("selected");
         }
     }
@@ -1479,11 +1412,9 @@ class cHTMLOptionElement extends cHTMLFormElement
      */
     public function isSelected()
     {
-        if ($this->getAttribute("selected") == "selected")
-        {
+        if ($this->getAttribute("selected") == "selected") {
             return true;
-        } else
-        {
+        } else {
             return false;
         }
     }
@@ -1494,11 +1425,9 @@ class cHTMLOptionElement extends cHTMLFormElement
      */
     public function setDisabled($disabled)
     {
-        if ($disabled == true)
-        {
+        if ($disabled == true) {
             $this->updateAttributes(array("disabled" => "disabled"));
-        } else
-        {
+        } else {
             $this->removeAttribute("disabled");
         }
     }
@@ -1566,11 +1495,9 @@ class cHTMLRadiobutton extends cHTMLFormElement
      */
     public function setChecked($checked)
     {
-        if ($checked == true)
-        {
+        if ($checked == true) {
             $this->updateAttributes(array("checked" => "checked"));
-        } else
-        {
+        } else {
             $this->removeAttribute("checked");
         }
     }
@@ -1598,8 +1525,7 @@ class cHTMLRadiobutton extends cHTMLFormElement
     {
         $attributes = $this->getAttributes(true);
 
-        if ($renderLabel == false)
-        {
+        if ($renderLabel == false) {
             return $this->fillSkeleton($attributes);
         }
 
@@ -1607,18 +1533,15 @@ class cHTMLRadiobutton extends cHTMLFormElement
 
         $renderedLabel = "";
 
-        if ($id != "")
-        {
+        if ($id != "") {
             $label = new cHTMLLabel($this->_value, $this->getAttribute("id"));
 
-            if ($this->_labelText != "")
-            {
+            if ($this->_labelText != "") {
                 $label->text = $this->_labelText;
             }
 
             $renderedLabel = $label->toHtml();
-        } else
-        {
+        } else {
             $renderedLabel = $this->_value;
         }
 
@@ -1673,11 +1596,9 @@ class cHTMLCheckbox extends cHTMLFormElement
      */
     public function setChecked($checked)
     {
-        if ($checked == true)
-        {
+        if ($checked == true) {
             $this->updateAttributes(array("checked" => "checked"));
-        } else
-        {
+        } else {
             $this->removeAttribute("checked");
         }
     }
@@ -1707,37 +1628,32 @@ class cHTMLCheckbox extends cHTMLFormElement
 
         $renderedLabel = "";
 
-        if ($renderlabel == true)
-        {
-            if ($id != "")
-            {
+        if ($renderlabel == true) {
+            if ($id != "") {
                 $label = new cHTMLLabel($this->_value, $this->getAttribute("id"));
 
                 $label->setClass($this->getAttribute("class"));
 
-                if ($this->_labelText != "")
-                {
+                if ($this->_labelText != "") {
                     $label->text = $this->_labelText;
                 }
 
                 $renderedLabel = $label->toHtml();
-            } else
-            {
+            } else {
 
                 $renderedLabel = $this->_value;
 
-                if ($this->_labelText != "")
-                {
+                if ($this->_labelText != "") {
                     $label = new cHTMLLabel($this->_value, $this->getAttribute("id"));
                     $label->text = $this->_labelText;
                     $renderedLabel = $label->toHtml();
                 }
-
             }
 
-            return '<table class="borderless" border="0" cellspacing="0" cellpadding="0"><tr><td nowrap="nowrap">'.parent::toHTML().'</td><td nowrap="nowrap">'.$renderedLabel.'</td></tr></table>';
-        } else
-        {
+            return '<table class="borderless" border="0" cellspacing="0" cellpadding="0"><tr><td nowrap="nowrap">'
+                 . parent::toHTML().'</td><td nowrap="nowrap">'.$renderedLabel
+                 . '</td></tr></table>';
+        } else {
             return parent::toHTML();
         }
     }
@@ -1795,8 +1711,7 @@ class cHTMLUpload extends cHTMLFormElement
     {
         $width = intval($width);
 
-        if ($width <= 0)
-        {
+        if ($width <= 0) {
             $width = 20;
         }
 
@@ -1811,11 +1726,9 @@ class cHTMLUpload extends cHTMLFormElement
     {
         $maxlen = intval($maxlen);
 
-        if ($maxlen <= 0)
-        {
+        if ($maxlen <= 0) {
             $this->removeAttribute("maxlength");
-        } else
-        {
+        } else {
             $this->updateAttributes(array("maxlength" => $maxlen));
         }
     }
@@ -1863,11 +1776,9 @@ class cHTMLLink extends cHTML
         $this->setContentlessTag(false);
         $this->_tag = "a";
 
-        /* Check for backend */
-        if (is_object($sess))
-        {
-            if ($sess->classname == "Contenido_Session")
-            {
+        // Check for backend
+        if (is_object($sess)) {
+            if ($sess->classname == "Contenido_Session") {
                 $this->enableAutomaticParameterAppend();
             }
         }
@@ -1901,8 +1812,7 @@ class cHTMLLink extends cHTML
         $this->_link = $href;
         $this->_type = "link";
 
-        if (strpos($href, "javascript:") !== false)
-        {
+        if (strpos($href, "javascript:") !== false) {
             $this->disableAutomaticParameterAppend();
         }
     }
@@ -1962,37 +1872,28 @@ class cHTMLLink extends cHTML
     {
         global $sess;
 
-        if (is_array($this->_custom))
-        {
+        if (is_array($this->_custom)) {
             $custom = "";
 
-            foreach ($this->_custom as $key => $value)
-            {
+            foreach ($this->_custom as $key => $value) {
                 $custom .= "&$key=$value";
             }
         }
 
-        if ($this->_anchor)
-        {
+        if ($this->_anchor) {
             $anchor = "#".$this->_anchor;
-        } else
-        {
+        } else {
             $anchor = "";
         }
 
-        switch ($this->_type)
-        {
+        switch ($this->_type) {
             case "link" :
                 $custom = "";
-                if (is_array($this->_custom))
-                {
-                    foreach ($this->_custom as $key => $value)
-                    {
-                        if ($custom == "")
-                        {
+                if (is_array($this->_custom)) {
+                    foreach ($this->_custom as $key => $value) {
+                        if ($custom == "") {
                             $custom .= "?$key=$value";
-                        } else
-                        {
+                        } else {
                             $custom .= "&$key=$value";
                         }
                     }
@@ -2189,11 +2090,9 @@ class cHTMLImage extends cHTML
      */
     public function setSrc($src)
     {
-        if ($src === null)
-        {
+        if ($src === null) {
             $this->_src = "images/spacer.gif";
-        } else
-        {
+        } else {
             $this->_src = $src;
         }
     }
@@ -2237,14 +2136,12 @@ class cHTMLImage extends cHTML
     {
         global $cfg;
 
-        /* Try to open the image */
-        list ($width, $height) = @ getimagesize($cfg['path']['contenido'].$this->_src);
+        // Try to open the image
+        list($width, $height) = @getimagesize($cfg['path']['contenido'].$this->_src);
 
-        if (!empty($width) && !empty($height))
-        {
+        if (!empty($width) && !empty($height)) {
             $this->_width = $width;
             $this->_height = $height;
-
         }
     }
 
@@ -2256,13 +2153,11 @@ class cHTMLImage extends cHTML
     {
         $this->updateAttributes(array("src" => $this->_src));
 
-        if (!empty($this->_width))
-        {
+        if (!empty($this->_width)) {
             $this->updateAttributes(array("width" => $this->_width));
         }
 
-        if (!empty($this->_height))
-        {
+        if (!empty($this->_height)) {
             $this->updateAttributes(array("height" => $this->_height));
         }
 
@@ -2678,13 +2573,12 @@ class cHTMLAlignmentTable extends cHTMLTable
 
     public function render()
     {
-        $tr = new cHTMLTableRow;
-        $td = new cHTMLTableData;
+        $tr = new cHTMLTableRow();
+        $td = new cHTMLTableData();
 
         $out = "";
 
-        foreach ($this->_data as $data)
-        {
+        foreach ($this->_data as $data) {
             $td->setContent($data);
             $out .= $td->render();
         }
@@ -2736,8 +2630,7 @@ class cHTMLForm extends cHTML
     public function toHTML()
     {
         $out = '';
-                foreach ($this->_vars as $var => $value)
-        {
+        foreach ($this->_vars as $var => $value) {
             $f = new cHTMLHiddenField($var, $value);
             $out .= $f->render();
         }

@@ -98,7 +98,7 @@ class cHTMLValidator
                 if ($htmlParser->iNodeType == NODE_TYPE_ENDELEMENT) {
                     // Check if we've an element of this type on the stack
                     if ($this->nestingLevel[$htmlParser->iNodeName] > 0) {
-                        unset ($this->nestingNodes[$htmlParser->iNodeName][$this->nestingLevel[$htmlParser->iNodeName]]);
+                        unset($this->nestingNodes[$htmlParser->iNodeName][$this->nestingLevel[$htmlParser->iNodeName]]);
                         $this->nestingLevel[$htmlParser->iNodeName]--;
 
                         if ($this->nestingNodes[$htmlParser->iNodeName][intval($this->nestingLevel[$htmlParser->iNodeName])]["level"] != $nestingLevel) {

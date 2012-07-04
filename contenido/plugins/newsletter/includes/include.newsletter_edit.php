@@ -22,12 +22,8 @@
  *
  * {@internal
  *   created 2007-01-01, Björn Behrens (HerrB)
- *   modified 2008-06-27, Dominik Ziegler, add security fix
- *   modified 2010-12-14, Dominik Ziegler, newsletter encoding is ignored due to wrong parameter values [#CON-374]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -129,7 +125,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     // Create job
     $oJobs = new cNewsletterJobCollection();
     $oJob = $oJobs->create($idnewsletter, $oClientLang->getProperty("newsletter", "idcatart"));
-    unset ($oJobs);
+    unset($oJobs);
 
     if ($oJob) {
         $notis = $notification->returnNotification("info", i18n("Newsletter dispatch job has been added for this newsletter", 'newsletter')) . "<br>";

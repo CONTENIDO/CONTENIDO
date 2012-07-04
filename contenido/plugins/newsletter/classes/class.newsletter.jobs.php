@@ -86,7 +86,7 @@ class NewsletterJobCollection extends ItemCollection
 
             $oLang = new cApiLanguage($lang);
             $oItem->set("encoding", $oLang->get("encoding"));
-            unset ($oLang);
+            unset($oLang);
 
             $oItem->set("idart", $oNewsletter->get("idart"));
             $oItem->set("subject", $oNewsletter->get("subject"));
@@ -178,8 +178,8 @@ class NewsletterJobCollection extends ItemCollection
                         $aSendInfo[] = $oGroup->get("groupname");
                     }
 
-                    unset ($oGroup);
-                    unset ($oGroups);
+                    unset($oGroup);
+                    unset($oGroups);
                     break;
                 case "single":
                     if (is_numeric($oNewsletter->get("send_ids"))) {
@@ -202,12 +202,12 @@ class NewsletterJobCollection extends ItemCollection
             $oItem->set("created", date("Y-m-d H:i:s"), false);
             $oItem->set("author", $auth->auth["uid"]);
             $oItem->set("authorname", $auth->auth["uname"]);
-            unset ($oNewsletter); // Not needed anymore
+            unset($oNewsletter); // Not needed anymore
 
             // Adds log items for all recipients and returns recipient count
             $oLogs = new NewsletterLogCollection();
             $iRecipientCount = $oLogs->initializeJob($oItem->get($oItem->primaryKey), $iIDNews);
-            unset ($oLogs);
+            unset($oLogs);
 
             $oItem->set("rcpcount", $iRecipientCount);
             $oItem->set("sendcount", 0);
@@ -301,7 +301,7 @@ class NewsletterJob extends Item
             $oLanguage = new cApiLanguage($this->get("idlang"));
             $sFormatDate = $oLanguage->getProperty("dateformat", "date");
             $sFormatTime = $oLanguage->getProperty("dateformat", "time");
-            unset ($oLanguage);
+            unset($oLanguage);
 
             if ($sFormatDate == "") {
                 $sFormatDate = "%d.%m.%Y";

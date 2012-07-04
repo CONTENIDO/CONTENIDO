@@ -22,11 +22,8 @@
  *
  * {@internal
  *   created 2007-01-01, Björn Behrens (HerrB)
- *   modified 2008-06-27, Dominik Ziegler, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -81,8 +78,8 @@ $_REQUEST["sortby"] = "groupname"; // Default sort by field, possible values see
 $_REQUEST["searchin"] = "--all--";
 
 // Free memory
-unset ($oUser);
-unset ($oClient);
+unset($oUser);
+unset($oClient);
 
 ##################################
 # Get data

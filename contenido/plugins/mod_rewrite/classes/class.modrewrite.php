@@ -24,12 +24,8 @@
  *
  * {@internal
  *   created   2004-12-04
- *   modified  2005-12-28
- *   modified  2011-05-19  Murat Purc, fixed wrong code in function recreateArticlesAliases()
- *
  *   $Id$:
  * }}
- *
  */
 
 
@@ -951,7 +947,7 @@ class ModRewrite extends ModRewriteBase
             self::setArtWebsafeName($db->f('title'), $db->f('idart'), $db->f('idlang'));
         }
 
-        unset ($db);
+        unset($db);
     }
 
 

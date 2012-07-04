@@ -22,11 +22,8 @@
  *
  * {@internal
  *   created 2007-01-01, Björn Behrens (HerrB)
- *   modified 2008-06-27, Dominik Ziegler, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -234,7 +231,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
                        $aInvalidLines[] = $sLine;
                     $iDublettes++;
                 } else {
-                    unset ($sLine);
+                    unset($sLine);
 
                     // Must be $recipient for plugins
                     if ($recipient = $oRecipients->create($sEMail, $sName)) {
@@ -372,7 +369,7 @@ $sInfo = '<a href="javascript:fncShowHide(\'idInfoText\');"><strong>'.i18n("Impo
          implode("<br />\n", $aFields);
 
 $oForm->add(i18n("Recipients", 'newsletter'), $ofileUpload->render()."<br />".$sInfo);
-unset ($sInfo);
+unset($sInfo);
 
 $sExecScript = '
 <script type="text/javascript">

@@ -22,12 +22,8 @@
  *
  * {@internal
  *   created  unknown
- *   modified unknown, Stefan Jelner (Optimizations)
- *   modified 2008-07-07, bilal arslan, added security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 
@@ -222,7 +218,7 @@ class Template
             $this->replacei18n($pieces[0][0], "i18n");
             $this->replacei18n($pieces[0][0], "trans");
             $content .= $pieces[0][0];
-            unset ($pieces[0][0]);
+            unset($pieces[0][0]);
 
             //generate dynamic blocks
             for ($a = 0; $a < $this->dyn_cnt; $a ++)
@@ -232,14 +228,14 @@ class Template
                 $this->replacei18n($temp, "trans");
                 $content .= $temp;
             }
-            unset ($temp);
+            unset($temp);
 
             //end block
             $pieces[2][0] = str_replace($this->needles, $this->replacements, $pieces[2][0]);
             $this->replacei18n($pieces[2][0], "i18n");
             $this->replacei18n($pieces[2][0], "trans");
             $content .= $pieces[2][0];
-            unset ($pieces[2][0]);
+            unset($pieces[2][0]);
         } else
         {
             $content = str_replace($this->needles, $this->replacements, $content);

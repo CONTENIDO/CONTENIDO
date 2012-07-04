@@ -110,7 +110,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         // Editor language
         $aLangs = i18nGetAvailableLanguages();
         $this->setSetting("language", $aLangs[$belang][4]);
-        unset ($aLangs);
+        unset($aLangs);
 
         // Set document base URL
         //$this->setSetting("document_base_url", $cfgClient[$client]["path"]["htmlpath"], true);

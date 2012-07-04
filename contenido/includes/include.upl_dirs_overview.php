@@ -207,7 +207,7 @@ $currentuser->setUserProperty("system", "upl_expandstate", serialize($uplexpande
 
 $objects = array();
 $rootTreeItem->traverse($objects);
-unset ($objects[0]);
+unset($objects[0]);
 
 if ($appendparameters == "filebrowser")
 {
@@ -455,7 +455,7 @@ $currentuser->setUserProperty("system", "upl_dbfs_expandstate", serialize($upldb
 $objects = array();
 $rootTreeItem->traverse($objects);
 
-unset ($objects[0]);
+unset($objects[0]);
 
 $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"),

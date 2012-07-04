@@ -21,11 +21,8 @@
  *
  * {@internal
  *   created 2003-07-18
- *   modified 2008-07-04, Dominik Ziegler, fixed bug CON-169
- *
  *   $Id$
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -305,10 +302,10 @@ function piworkflowProcessArticleColumns ($array)
                 $bInserted = true;
             }
         }
-        unset ($narray['title']);
-        unset ($narray['changeddate']);
-        unset ($narray['publisheddate']);
-        unset ($narray['sortorder']);
+        unset($narray['title']);
+        unset($narray['changeddate']);
+        unset($narray['publisheddate']);
+        unset($narray['sortorder']);
     } else {
         $narray = $array;
     }

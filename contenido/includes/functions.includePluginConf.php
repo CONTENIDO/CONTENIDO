@@ -84,7 +84,7 @@ if ($contenido) {
             if (!is_dir($ipc_conpluginpath . $ipc_plugin . "/") ||
                 in_array($ipc_plugin, $dirsToExclude))
             {
-                unset ($plugins[$key]);
+                unset($plugins[$key]);
             }
         }
 

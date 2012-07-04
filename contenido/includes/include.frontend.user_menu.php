@@ -21,11 +21,8 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -44,7 +41,7 @@ if (!is_numeric($_REQUEST['elemperpage'])) {
     $_REQUEST['elemperpage'] = 25;
 }
 $oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
-unset ($oUser);
+unset($oUser);
 
 if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['page'] <= 0 || $_REQUEST["elemperpage"] == 0) {
     $_REQUEST["page"] = 1;

@@ -117,7 +117,7 @@ class NewsletterCollection extends ItemCollection
                                          sprintf(i18n("Newsletter: %s"), $oItem->get("name")));
                 conMakeOnline($iIDArt, $lang); // Article has to be online for sending...
             }
-            unset ($oClientLang);
+            unset($oClientLang);
         }
         $oItem->set("idart", $iIDArt);
         $oItem->set("template_idart", $oBaseItem->get("template_idart"));
@@ -216,8 +216,8 @@ class Newsletter extends Item
                 $oItem->set("welcome", 0);
                 $oItem->store();
             }
-            unset ($oItem);
-            unset ($oItems);
+            unset($oItem);
+            unset($oItems);
         }
 
         return parent::store();
@@ -252,7 +252,7 @@ class Newsletter extends Item
                 if (preg_match_all($sRegExp, $sParameter, $aMatch) > 0) {
                     // Store parameter data as assoziative array
                     $aParameter = array_combine($aMatch[1], $aMatch[2]);
-                    unset ($aMatch); // $aMatch not needed anymore
+                    unset($aMatch); // $aMatch not needed anymore
 
                     if (!array_key_exists("type", $aParameter)) {
                         $aParameter["type"] = "text";
@@ -279,8 +279,8 @@ class Newsletter extends Item
 
                             // Remove not needed parameters from the parameters list
                             // everything else goes into the link as parameters
-                            unset ($aParameter["type"]);
-                            unset ($aParameter["text"]);
+                            unset($aParameter["type"]);
+                            unset($aParameter["text"]);
 
                             $sParameter = "";
                             if (count($aParameter) > 0) {
@@ -432,13 +432,13 @@ class Newsletter extends Item
             // Category ID
             $oClientLang = new cApiClientLanguage(false, $client, $lang);
             $iIDCat      = $oClientLang->getProperty("newsletter", "html_newsletter_idcat");
-            unset ($oClientLang);
+            unset($oClientLang);
 
             // Get http username and password, if frontend is protected
             $oClient = new cApiClient($client);
             $sHTTPUserName = $oClient->getProperty("newsletter", "html_username");
             $sHTTPPassword = $oClient->getProperty("newsletter", "html_password");
-            unset ($oClient);
+            unset($oClient);
 
             // Get HTML
             if ($iIDArt > 0 && $iIDCat > 0) {
@@ -455,9 +455,9 @@ class Newsletter extends Item
                         $oArticle->set("online", 1);
                         $oArticle->store();
                     }
-                    unset ($oArticle);
+                    unset($oArticle);
                 }
-                unset ($oArticles);
+                unset($oArticles);
 
                 $sFile = "front_content.php?client=$client&lang=$lang&idcat=$iIDCat&idart=$iIDArt&noex=1&send=1";
                 $aURL  = parse_url($cfgClient[$client]['path']['htmlpath']);
@@ -551,8 +551,8 @@ class Newsletter extends Item
                         $oArticle->set("online", 0);
                         $oArticle->store();
                     }
-                    unset ($oArticle);
-                    unset ($oArticles);
+                    unset($oArticle);
+                    unset($oArticles);
                 }
 
                 return $sReturn;
@@ -582,7 +582,7 @@ class Newsletter extends Item
                 $bReturn = false;
             }
 
-            unset ($oArticles);
+            unset($oArticles);
         } else {
             $bReturn = false;
         }
@@ -611,7 +611,7 @@ class Newsletter extends Item
         $oLanguage = new cApiLanguage($lang);
         $sFormatDate = $oLanguage->getProperty("dateformat", "date");
         $sFormatTime = $oLanguage->getProperty("dateformat", "time");
-        unset ($oLanguage);
+        unset($oLanguage);
 
         if ($sFormatDate == "") {
             $sFormatDate = "%d.%m.%Y";
@@ -766,7 +766,7 @@ class Newsletter extends Item
         $aMessages  = array();
 
         $oLanguage = new cApiLanguage($lang);
-        unset ($oLanguage);
+        unset($oLanguage);
 
         if ($sFormatDate == "") {
             $sFormatDate = "%d.%m.%Y";

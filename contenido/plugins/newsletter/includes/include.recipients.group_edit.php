@@ -22,11 +22,8 @@
  *
  * {@internal
  *   created 2004-08-01, Björn Behrens (HerrB)
- *   modified 2008-06-27, Dominik Ziegler, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -159,7 +156,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
         // -- All -- will not be stored, as it may be impossible to change this back to something more useful
         $oUser->setProperty("itemsperpage", $area."_edit_outsider", $_REQUEST["outsider_elemperpage"]);
     }
-    unset ($oUser);
+    unset($oUser);
 
     if (!isset($_REQUEST["member_page"]) || !is_numeric($_REQUEST["member_page"]) || $_REQUEST["member_page"] <= 0 || $_REQUEST["member_elemperpage"] == 0) {
         $_REQUEST["member_page"] = 1;
@@ -382,10 +379,10 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
                                              $oMemberListOptionRow->render().
                                              $oMemberPager->render().
                                              '<tr><td>'.$oAddedRecipientList->render().'</td></tr></table>');
-    unset ($oInsiders);
-    unset ($oMemberListOptionRow);
-    unset ($oMemberPager);
-    unset ($oAddedRecipientList);
+    unset($oInsiders);
+    unset($oMemberListOptionRow);
+    unset($oMemberPager);
+    unset($oAddedRecipientList);
 
     // Outsiders
     // Outsider list options folding row
@@ -553,9 +550,9 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
                                         $oOutsiderListOptionRow->render().
                                         $oOutsiderPager->render().
                                         '<tr><td>'.$oSelUser->render().'<br />'.i18n("Note: Hold &lt;Ctrl&gt; to<br>select multiple items.", 'newsletter').'</td></tr></table>');
-    unset ($oOutsiders);
-    unset ($oOutsiderListOptionRow);
-    unset ($oOutsiderPager);
+    unset($oOutsiders);
+    unset($oOutsiderListOptionRow);
+    unset($oOutsiderPager);
 
     $sDelMarkScript = '    <script type="text/javascript">
         /* Function to select all ckbDel boxes */
