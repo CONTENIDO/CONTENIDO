@@ -88,10 +88,12 @@ if ($workflow->virgin) {
     $header = i18n("Edit workflow", "workflow");
     $description = $workflow->get("description");
     $name = $workflow->get("name");
-    $created = displayTime($workflow->get("created"));
+    $created = displayDatetime($workflow->get("created"));
     $userclass = new cApiUser($workflow->get("idauthor"));
     $author = $userclass->getEffectiveName();
 }
+
+die("hi");
 
 $form->addHeader($header);
 $oTxtWFName = new cHTMLTextbox("wfname", $name, 40, 255);
