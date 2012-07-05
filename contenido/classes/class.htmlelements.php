@@ -1868,6 +1868,17 @@ class cHTMLLink extends cHTML
         $this->_custom[$key] = $value;
     }
 
+    /**
+     * Unsets a previous set custom attribute
+     * @param  string  $key    Parameter name
+     */
+    public function unsetCustom($key)
+    {
+        if (isset($this->_custom[$key])) {
+            unset($this->_custom[$key]);
+        }
+    }
+
     public function getHref()
     {
         global $sess;

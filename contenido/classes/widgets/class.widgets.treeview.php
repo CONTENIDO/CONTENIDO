@@ -1,19 +1,37 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.widgets.treeview.php,v $
-* Project   :   CONTENIDO
-* Descr     :   Visual representation of a cTree
-* Modified  :   $Date: 2006/10/05 23:47:21 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id$
-******************************************/
+/**
+ * Project:
+ * CONTENIDO Content Management System
+ *
+ * Description:
+ * Visual representation of a cTree
+ *
+ * Requirements:
+ * @con_php_req 5.0
+ *
+ *
+ * @package    CONTENIDO Backend Classes
+ * @version    1.0
+ * @author     ??
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ *
+ * {@internal
+ *   created 2006-10-05
+ *   $Id$
+ * }}
+ */
 
-define("TREEVIEW_GRIDLINE_SOLID" , "solid");
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
+
+define("TREEVIEW_GRIDLINE_SOLID", "solid");
 define("TREEVIEW_GRIDLINE_DASHED", "dashed");
 define("TREEVIEW_GRIDLINE_DOTTED", "dotted");
-define("TREEVIEW_GRIDLINE_NONE"  , "none");
+define("TREEVIEW_GRIDLINE_NONE", "none");
 
 define("TREEVIEW_BACKGROUND_NONE", "none");
 define("TREEVIEW_BACKGROUND_SHADED", "shaded");
@@ -21,16 +39,12 @@ define("TREEVIEW_BACKGROUND_SHADED", "shaded");
 define("TREEVIEW_MOUSEOVER_NONE", "none");
 define("TREEVIEW_MOUSEOVER_MARK", "mark");
 
-
 /**
  * class cWidgetTreeView
  * cWidgetTreeView is a visual representation of a cTree. It supports folding,
  * optional gridline marks and item icons.
  */
-class cWidgetTreeView extends cTree
-{
-
-    /*** Attributes: ***/
+class cWidgetTreeView extends cTree {
 
     /**
      *
@@ -62,12 +76,13 @@ class cWidgetTreeView extends cTree
      */
     var $_unsetAttributeActions;
 
-
+    /**
+     *
+     * @access private
+     */
     var $_baseLink;
 
-
-    function cWidgetTreeView($uuid, $treename = false)
-    {
+    function cWidgetTreeView($uuid, $treename = false) {
         global $cfg, $auth;
 
         cTree::cTree();
@@ -80,11 +95,9 @@ class cWidgetTreeView extends cTree
         }
 
         $this->_user = new cApiUser($auth->auth["uid"]);
-
     }
 
-    function processParameters()
-    {
+    function processParameters() {
         if (($items = $this->_user->getUserProperty("expandstate", $this->_uuid)) !== false) {
             $list = unserialize($items);
 
@@ -94,15 +107,15 @@ class cWidgetTreeView extends cTree
         }
 
         if (!empty($this->_name)) {
-            $treename = $this->_name."_";
+            $treename = $this->_name . "_";
         }
 
-        if (array_key_exists($treename."collapse", $_GET)) {
-            $this->setCollapsed($_GET[$treename."collapse"]);
+        if (array_key_exists($treename . "collapse", $_GET)) {
+            $this->setCollapsed($_GET[$treename . "collapse"]);
         }
 
-        if (array_key_exists($treename."expand", $_GET)) {
-            $this->setExpanded($_GET[$treename."expand"]);
+        if (array_key_exists($treename . "expand", $_GET)) {
+            $this->setExpanded($_GET[$treename . "expand"]);
         }
 
         $xlist = array(); // Define variable before using it by reference...
@@ -119,8 +132,8 @@ class cWidgetTreeView extends cTree
      * @return void
      * @access public
      */
-    function applyGlobalAction($action)
-    {
+    function applyGlobalAction($action) {
+
     }
 
     /**
@@ -130,8 +143,8 @@ class cWidgetTreeView extends cTree
      * @return void
      * @access public
      */
-    function removeGlobalAction($action)
-    {
+    function removeGlobalAction($action) {
+
     }
 
     /**
@@ -140,8 +153,8 @@ class cWidgetTreeView extends cTree
      * @return void
      * @access public
      */
-    function flushGlobalActions()
-    {
+    function flushGlobalActions() {
+
     }
 
     /**
@@ -152,8 +165,8 @@ class cWidgetTreeView extends cTree
      * @return void
      * @access public
      */
-    function applyItemAction($item, $action)
-    {
+    function applyItemAction($item, $action) {
+
     }
 
     /**
@@ -165,8 +178,8 @@ class cWidgetTreeView extends cTree
      * @return void
      * @access public
      */
-    function removeItemAction($item, $action)
-    {
+    function removeItemAction($item, $action) {
+
     }
 
     /**
@@ -176,8 +189,8 @@ class cWidgetTreeView extends cTree
      * @return void
      * @access public
      */
-    function flushItemActions($item)
-    {
+    function flushItemActions($item) {
+
     }
 
     /**
@@ -189,8 +202,8 @@ class cWidgetTreeView extends cTree
      * @return void
      * @access public
      */
-    function applyActionByItemAttribute($attributes,  $action)
-    {
+    function applyActionByItemAttribute($attributes, $action) {
+
     }
 
     /**
@@ -202,8 +215,8 @@ class cWidgetTreeView extends cTree
      * @return void
      * @access public
      */
-    function removeActionByItemAttribute($attributes,  $action)
-    {
+    function removeActionByItemAttribute($attributes, $action) {
+
     }
 
     /**
@@ -214,8 +227,8 @@ class cWidgetTreeView extends cTree
      * @return void
      * @access public
      */
-    function flushActionByItemAttribute($attributes)
-    {
+    function flushActionByItemAttribute($attributes) {
+
     }
 
     /**
@@ -228,23 +241,19 @@ class cWidgetTreeView extends cTree
      * @return void
      * @access public
      */
-    function setGridlineMode($mode)
-    {
+    function setGridlineMode($mode) {
         $this->_gridlineMode = $mode;
     }
 
-    function setBackgroundMode($mode)
-    {
+    function setBackgroundMode($mode) {
         $this->_backgroundMode = $mode;
     }
 
-    function setMouseoverMode($mode)
-    {
+    function setMouseoverMode($mode) {
         $this->_mouseoverMode = $mode;
     }
 
-    function setBackgroundColors($colors)
-    {
+    function setBackgroundColors($colors) {
         $this->_backgroundColors = $colors;
     }
 
@@ -252,8 +261,8 @@ class cWidgetTreeView extends cTree
      * @return void
      * @access public
      */
-    function render($with_root = true)
-    {
+    function render($with_root = true) {
+        /** @var cTreeItem[] $objects */
         $objects = $this->flatTraverse(0);
 
         if ($with_root == false) {
@@ -288,7 +297,7 @@ class cWidgetTreeView extends cTree
         $r_actioncell->setWidth("1%");
 
         if (!is_object($this->_baseLink)) {
-            $this->_baseLink = new cHTMLLink;
+            $this->_baseLink = new cHTMLLink();
         }
 
         $lastitem = array();
@@ -378,32 +387,32 @@ class cWidgetTreeView extends cTree
 
                         $renderedIcon = $edit->render();
 
-                        $edit->_link->setContent($object->_name);
+                        $edit->_link->setContent($object->getName());
                         $edit->_link->advanceID();
                         $renderedName = $edit->_link->render();
                     } else {
                         $img->setSrc($icon);
                         $renderedIcon = $img->render();
-                        $renderedName = $object->_name;
+                        $renderedName = $object->getName();
                     }
                 }
             } else {
                 if (isset($object->_attributes["icon"])) {
                     $img->setSrc($object->_attributes["icon"]);
                     $renderedIcon = $img->render();
-                    $renderedName = $object->_name;
+                    $renderedName = $object->getName();
                 } else {
                     /* Fetch tree icon */
-                    if ($object->_id == 0) {
-                        $icon = $object->_treeIcon;
+                    if ($object->getId() == 0) {
+                        $icon = $object->getTreeIcon();
                         $img->setSrc($icon);
                         $renderedIcon = $img->render();
-                        $renderedName = $object->_name;
+                        $renderedName = $object->getName();
                     } else {
-                        $icon = $object->_treeIcon;
+                        $icon = $object->getTreeIcon();
                         $img->setSrc($icon);
                         $renderedIcon = $img->render();
-                        $renderedName = $object->_name;
+                        $renderedName = $object->getName();
                     }
                 }
             }
@@ -421,43 +430,45 @@ class cWidgetTreeView extends cTree
             unset($out);
         }
 
-        return ('<table cellspacing="0" cellpadding="0" width="100%" border="0"><tr><td>'.$result.'</td></tr></table>');
+        return ('<table cellspacing="0" cellpadding="0" width="100%" border="0"><tr><td>' . $result . '</td></tr></table>');
     }
 
-    function _getExpandCollapseIcon($object)
-    {
-        if ($object->_collapsed == true) {
+    function _getExpandCollapseIcon($object) {
+        if ($object->getCollapsed() == true) {
             return ($this->_buildImagePath("grid_expand.gif"));
         } else {
             return ($this->_buildImagePath("grid_collapse.gif"));
         }
     }
 
-    function _setExpandCollapseLink($link, $object)
-    {
+    /**
+     * Sets collapsed state
+     * @param   cHTMLLink  $link
+     * @param   cTreeItem  $object
+     * @return  cHTMLLink
+     */
+    function _setExpandCollapseLink($link, $object) {
         if (!empty($this->_name)) {
-            $treename = $this->_name."_";
+            $treename = $this->_name . "_";
         }
 
-        unset($link->_custom[$treename."expand"]);
-        unset($link->_custom[$treename."collapse"]);
+        $link->unsetCustom($treename . "expand");
+        $link->unsetCustom($treename . "collapse");
 
-        if ($object->_collapsed == true) {
-            $link->setCustom($treename."expand", $object->_id);
+        if ($object->getCollapsed() == true) {
+            $link->setCustom($treename . "expand", $object->getId());
         } else {
-            $link->setCustom($treename."collapse", $object->_id);
+            $link->setCustom($treename . "collapse", $object->getId);
         }
 
         return ($link);
     }
 
-    function _buildImagePath($image)
-    {
-        return ("./images/".$this->_gridlineMode."/".$image);
+    function _buildImagePath($image) {
+        return ("./images/" . $this->_gridlineMode . "/" . $image);
     }
 
-    function setBaseLink($link)
-    {
+    function setBaseLink($link) {
         $this->_baseLink = $link;
     }
 

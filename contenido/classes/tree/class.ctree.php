@@ -20,29 +20,30 @@
  *
  * {@internal
  *   created 2004-08-04
- *
  *   $Id$
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * class cTree
  */
-class cTree extends cTreeItem
-{
+class cTree extends cTreeItem {
+
+    /**
+     * Tree icon
+     * @var string
+     * @protected
+     */
     var $_treeIcon;
 
-    function cTree($name = "")
-    {
+    function cTree($name = "") {
         /* The root item currently has to be a "0".
          * This is a bug, feel free to fix it. */
-        cTreeItem::cTreeItem(0,$name);
+        cTreeItem::cTreeItem(0, $name);
     }
 
     /**
@@ -50,16 +51,29 @@ class cTree extends cTreeItem
      *
      * @param string name Name of the tree
      * @return void
-     * @access public
      */
-    function setTreeName($name)
-    {
+    function setTreeName($name) {
         $this->setName($name);
     }
 
-    function setIcon($path)
-    {
+    function setIcon($path) {
+        $this->setTreeIcon($path);
+    }
+
+    /**
+     * Tree icon setter
+     * @param  string  $path
+     */
+    function setTreeIcon($path) {
         $this->_treeIcon = $path;
+    }
+
+    /**
+     * Tree icon getter
+     * @return  string
+     */
+    function getTreeIcon() {
+        return $this->_treeIcon;
     }
 
 }

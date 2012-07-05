@@ -20,21 +20,18 @@
  *
  * {@internal
  *   created
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/* @deprecated 2012-03-10 This class is not longer supported. */
-class cWidgetTableEdit
-{
-    function cWidgetTableEdit($metaobject, $title)
-    {
+/** @deprecated 2012-03-10 This class is not longer supported. */
+class cWidgetTableEdit {
+
+    function cWidgetTableEdit($metaobject, $title) {
         cDeprecated("This class is not longer supported.");
         $this->_metaobject = $metaobject;
         $this->_title = $title;
@@ -43,8 +40,7 @@ class cWidgetTableEdit
         }
     }
 
-    function render()
-    {
+    function render() {
         global $cfg, $sess, $action, $area, $frame;
 
         if ($this->_metaobject->_objectInvalid) {
@@ -74,7 +70,7 @@ class cWidgetTableEdit
 
         if (count($this->_metaobject->_fields) == 1) {
             foreach ($this->_metaobject->_fields as $key => $value) {
-                $out .= $this->renderRows($key,$this->_iconWidth+6);
+                $out .= $this->renderRows($key, $this->_iconWidth + 6);
             }
         } else {
             foreach ($this->_metaobject->_fields as $key => $value) {
@@ -91,8 +87,7 @@ class cWidgetTableEdit
         return ($form->render());
     }
 
-    function renderHeader()
-    {
+    function renderHeader() {
         global $cfg;
         $td = new cHTMLTableHeader;
         $td->setColSpan(2);
@@ -109,7 +104,7 @@ class cWidgetTableEdit
         }
         $td->setStyle("padding-left: 2px;");
 
-        $a = new cHTMLAlignmentTable($image, '<b style="margin: 0px 4px 0px 4px;">'.$this->_title."</b>");
+        $a = new cHTMLAlignmentTable($image, '<b style="margin: 0px 4px 0px 4px;">' . $this->_title . "</b>");
 
         $td->setContent($a);
         $td->setHeight(18);
@@ -117,17 +112,15 @@ class cWidgetTableEdit
         return $td;
     }
 
-    function renderGroup($group)
-    {
+    function renderGroup($group) {
         return renderRows($group);
     }
 
-    function renderRows($group, $padding = 2)
-    {
+    function renderRows($group, $padding = 2) {
         global $cfg;
 
         foreach ($this->_metaobject->_fields[$group] as $field => $parameters) {
-            $this->_darkShading = ! $this->_darkShading;
+            $this->_darkShading = !$this->_darkShading;
 
             $c = new cHTMLTableRow;
             $b = new cHTMLTableData;
@@ -135,7 +128,7 @@ class cWidgetTableEdit
             $r = new cHTMLTableData;
 
             $l->setContent($parameters["name"]);
-            $paramname = get_class($this->_metaobject)."_".$field;
+            $paramname = get_class($this->_metaobject) . "_" . $field;
 
             $widget = new $parameters["editwidget"]($paramname, $parameters["parameters"]);
 
@@ -153,8 +146,7 @@ class cWidgetTableEdit
         return $out;
     }
 
-    function renderButtons()
-    {
+    function renderButtons() {
         global $cfg;
 
         $c = new cHTMLTableRow;
@@ -176,6 +168,7 @@ class cWidgetTableEdit
 
         return ($c->render());
     }
+
 }
 
 ?>
