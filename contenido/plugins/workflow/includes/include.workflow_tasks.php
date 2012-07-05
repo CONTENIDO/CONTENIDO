@@ -223,7 +223,6 @@ if (is_array($isCurrent)) {
                 $tpl->set('d', 'WORKFLOW_STEP', $step);
                 $tpl->set('d', 'WORKFLOW_ACTION', $actionSelect);
                 $tpl->set('d', 'TEMPLATE', $templatename);
-                $tpl->set('d', 'BGCOLOR', $cfg['color']['table_dark_offline']);
                 $tpl->set('d', 'ROWID', $sRowId);
                 $tpl->set('d', 'ACTIONS', $sReminderHtml);
                 $tpl->next();

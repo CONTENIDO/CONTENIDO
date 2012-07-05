@@ -111,7 +111,7 @@ $oTpl->set('s', 'ACTIONLINK', $sLink);
 
 if ($perm->have_perm_area_action("news", "news_create")) {
     // Create the link to add a newsletter
-    $sContent = '<div class="news_section news_section_create" style="background:'.$cfg['color']['table_dark'].';">'."\n";
+    $sContent = '<div class="news_section news_section_create">'."\n";
 
     $oLink = new cHTMLLink();
     $oLink->setMultiLink("news", "", "news", "news_create");
@@ -983,7 +983,6 @@ $oTpl->set('s', 'CRECIPIENTGROUP',    $sContainer);
 $oTpl->set('s', 'ID_CRECIPIENTGROUP', $sContainerId);
 
 $oTpl->set('s', 'SESSID', $sess->id);
-$oTpl->set('s', 'SECTION_BG_COLOR', $cfg['color']['table_dark']);
 
 $oTpl->generate(
     $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.newsletter_left_top.html'

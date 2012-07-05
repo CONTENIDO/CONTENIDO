@@ -63,7 +63,7 @@ class cValidatorFactory
     {
         global $cfg;
 
-        $className = 'Contenido_Validator_' . ucfirst(strtolower($validator));
+        $className = 'cValidator' . ucfirst(strtolower($validator));
         $fileName = ucfirst(strtolower($validator)) . '.class.php';
         if (class_exists($className)) {
             $obj = new $className();

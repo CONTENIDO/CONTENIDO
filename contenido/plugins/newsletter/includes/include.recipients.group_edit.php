@@ -227,7 +227,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 
     $oSubmit = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
 
-    $sContent = '<div style="border-bottom: 1px solid black; background: '.$cfg['color']['table_dark'].';">'.chr(10);
+    $sContent = '<div style="border-bottom: 1px solid black;">'.chr(10);
     $sContent .= '   <table>'.chr(10);
     $sContent .= '      <tr>'.chr(10);
     $sContent .= '         <td>'. i18n("Items / page", 'newsletter').'</td>'.chr(10);
@@ -424,7 +424,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 
     $oSubmit = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
 
-    $sContent = '<div style="border-bottom: 1px solid black; background: '.$cfg['color']['table_dark'].';">'.chr(10);
+    $sContent = '<div style="border-bottom: 1px solid black;">'.chr(10);
     $sContent .= '   <table>'.chr(10);
     $sContent .= '      <tr>'.chr(10);
     $sContent .= '         <td>'. i18n("Items / page", 'newsletter').'</td>'.chr(10);

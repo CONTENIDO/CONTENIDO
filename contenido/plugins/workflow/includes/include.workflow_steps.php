@@ -20,7 +20,7 @@
  * @link       http://www.contenido.org
  *
  * {@internal
- *   created  
+ *   created
  *   $Id$:
  * }}
  */
@@ -250,7 +250,6 @@ function createNewWorkflow() {
     $ui->setImage("create", $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/workflow_step_new.gif");
     $ui->setLink("create", $createstep);
     $ui->setRowmark ($rowmark);
-    $ui->setBgColor("create", $cfg['color']['table_header']);
 
     $content = $ui->render(false);
     return $content;

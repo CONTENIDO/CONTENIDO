@@ -46,16 +46,16 @@ class UploadList extends FrontendList
     {
         global $cfg, $sess, $client, $cfgClient, $appendparameters;
 
-        if ($field == 6) {
+        if ($field == 5) {
             if ($data == "") {
                 return i18n("None");
             }
         }
-        if ($field == 5) {
+        if ($field == 4) {
             return human_readable_size($data);
         }
 
-        if ($field == 4) {
+        if ($field == 3) {
             if ($data == "") {
                 return "&nbsp;";
             } else {
@@ -63,7 +63,7 @@ class UploadList extends FrontendList
             }
         }
 
-        if ($field == 3) {
+        if ($field == 2) {
             $vpath = str_replace($cfgClient[$client]["upl"]["path"], "", $this->pathdata);
             $slashpos = strrpos($vpath, "/");
             if ($slashpos === false) {
@@ -84,7 +84,7 @@ class UploadList extends FrontendList
             return $mstr;
         }
 
-        if ($field == 2) {
+        if ($field == 1) {
             $this->pathdata = $data;
 
             // If this file is an image, try to open
@@ -136,22 +136,13 @@ class UploadList extends FrontendList
             }
         }
 
-        if ($field == 1) {
-            if ($this->dark) {
-                $data = $cfg["color"]["table_dark"];
-            } else {
-                $data = $cfg["color"]["table_light"];
-            }
-            $this->dark = !$this->dark;
-        }
-
         return $data;
     }
 }
 
 function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmode)
 {
-    global $cfg, $client, $cfgClient, $area, $frame, $sess, $appendparameters;
+    global $cfg, $client, $cfgClient, $area, $frame, $sess, $appendparameters, $currentuser;
 
     if ($sortby == "") {
         $sortby = 7;
@@ -166,100 +157,99 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
     $scrollthisfile = $thisfile."&sortmode=$sortmode&sortby=$sortby";
 
     if ($sortby == 3 && $sortmode == "DESC") {
-        $fnsort = '<a href="'.$thisfile.'&sortby=3&sortmode=ASC&startpage='.$startpage.'">'.i18n("Filename / Description").'<img src="images/sort_down.gif" border="0"></a>';
+        $fnsort = '<a class="gray" href="'.$thisfile.'&sortby=3&sortmode=ASC&startpage='.$startpage.'">'.i18n("Filename / Description").'<img src="images/sort_down.gif" border="0"></a>';
     } else {
         if ($sortby == 3) {
-            $fnsort = '<a href="'.$thisfile.'&sortby=3&sortmode=DESC&startpage='.$startpage.'">'.i18n("Filename / Description").'<img src="images/sort_up.gif" border="0"></a>';
+            $fnsort = '<a class="gray" href="'.$thisfile.'&sortby=3&sortmode=DESC&startpage='.$startpage.'">'.i18n("Filename / Description").'<img src="images/sort_up.gif" border="0"></a>';
         } else
         {
-            $fnsort = '<a href="'.$thisfile.'&sortby=3&sortmode=ASC&startpage='.$startpage.'">'.i18n("Filename / Description").'</a>';
+            $fnsort = '<a class="gray" href="'.$thisfile.'&sortby=3&sortmode=ASC&startpage='.$startpage.'">'.i18n("Filename / Description").'</a>';
         }
     }
 
     if ($sortby == 4 && $sortmode == "DESC") {
-        $pathsort = '<a href="'.$thisfile.'&sortby=4&sortmode=ASC&startpage='.$startpage.'">'.i18n("Path").'<img src="images/sort_down.gif" border="0"></a>';
+        $pathsort = '<a class="gray" href="'.$thisfile.'&sortby=4&sortmode=ASC&startpage='.$startpage.'">'.i18n("Path").'<img src="images/sort_down.gif" border="0"></a>';
     } else {
         if ($sortby == 4) {
-            $pathsort = '<a href="'.$thisfile.'&sortby=4&sortmode=DESC&startpage='.$startpage.'">'.i18n("Path").'<img src="images/sort_up.gif" border="0"></a>';
+            $pathsort = '<a class="gray" href="'.$thisfile.'&sortby=4&sortmode=DESC&startpage='.$startpage.'">'.i18n("Path").'<img src="images/sort_up.gif" border="0"></a>';
         } else {
-            $pathsort = '<a href="'.$thisfile.'&sortby=4&sortmode=ASC&startpage='.$startpage.'">'.i18n("Path")."</a>";
+            $pathsort = '<a class="gray" href="'.$thisfile.'&sortby=4&sortmode=ASC&startpage='.$startpage.'">'.i18n("Path")."</a>";
         }
     }
 
     if ($sortby == 5 && $sortmode == "DESC") {
-        $sizesort = '<a href="'.$thisfile.'&sortby=5&sortmode=ASC&startpage='.$startpage.'">'.i18n("Size").'<img src="images/sort_down.gif" border="0"></a>';
+        $sizesort = '<a class="gray" href="'.$thisfile.'&sortby=5&sortmode=ASC&startpage='.$startpage.'">'.i18n("Size").'<img src="images/sort_down.gif" border="0"></a>';
     } else {
         if ($sortby == 5) {
-            $sizesort = '<a href="'.$thisfile.'&sortby=5&sortmode=DESC&startpage='.$startpage.'">'.i18n("Size").'<img src="images/sort_up.gif" border="0"></a>';
+            $sizesort = '<a class="gray" href="'.$thisfile.'&sortby=5&sortmode=DESC&startpage='.$startpage.'">'.i18n("Size").'<img src="images/sort_up.gif" border="0"></a>';
         } else {
-            $sizesort = '<a href="'.$thisfile.'&sortby=5&sortmode=ASC&startpage='.$startpage.'">'.i18n("Size")."</a>";
+            $sizesort = '<a class="gray" href="'.$thisfile.'&sortby=5&sortmode=ASC&startpage='.$startpage.'">'.i18n("Size")."</a>";
         }
     }
 
     if ($sortby == 6 && $sortmode == "DESC") {
-        $typesort = '<a href="'.$thisfile.'&sortby=6&sortmode=ASC&startpage='.$startpage.'">'.i18n("Type").'<img src="images/sort_down.gif" border="0"></a>';
+        $typesort = '<a class="gray" href="'.$thisfile.'&sortby=6&sortmode=ASC&startpage='.$startpage.'">'.i18n("Type").'<img src="images/sort_down.gif" border="0"></a>';
     } else {
         if ($sortby == 6) {
-            $typesort = '<a href="'.$thisfile.'&sortby=6&sortmode=DESC&startpage='.$startpage.'">'.i18n("Type").'<img src="images/sort_up.gif" border="0"></a>';
+            $typesort = '<a class="gray" href="'.$thisfile.'&sortby=6&sortmode=DESC&startpage='.$startpage.'">'.i18n("Type").'<img src="images/sort_up.gif" border="0"></a>';
         } else {
-            $typesort = '<a href="'.$thisfile.'&sortby=6&sortmode=ASC&startpage='.$startpage.'">'.i18n("Type")."</a>";
+            $typesort = '<a class="gray" href="'.$thisfile.'&sortby=6&sortmode=ASC&startpage='.$startpage.'">'.i18n("Type")."</a>";
         }
     }
 
     if ($sortby == 7 && $sortmode == "DESC") {
-        $srelevance = '<a href="'.$thisfile.'&sortby=7&sortmode=ASC&startpage='.$startpage.'">'.i18n("Relevance").'<img src="images/sort_down.gif" border="0"></a>';
+        $srelevance = '<a class="gray" href="'.$thisfile.'&sortby=7&sortmode=ASC&startpage='.$startpage.'">'.i18n("Relevance").'<img src="images/sort_down.gif" border="0"></a>';
     } else {
         if ($sortby == 7) {
-            $srelevance = '<a href="'.$thisfile.'&sortby=7&sortmode=DESC&startpage='.$startpage.'">'.i18n("Relevance").'<img src="images/sort_up.gif" border="0"></a>';
+            $srelevance = '<a class="gray" href="'.$thisfile.'&sortby=7&sortmode=DESC&startpage='.$startpage.'">'.i18n("Relevance").'<img src="images/sort_up.gif" border="0"></a>';
         } else {
-            $srelevance = '<a href="'.$thisfile.'&sortby=7&sortmode=ASC&startpage='.$startpage.'">'.i18n("Relevance")."</a>";
+            $srelevance = '<a class="gray" href="'.$thisfile.'&sortby=7&sortmode=ASC&startpage='.$startpage.'">'.i18n("Relevance")."</a>";
         }
     }
 
     $sToolsRow = '<tr class="textg_medium">
-                        <td colspan="6" style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; vertical-align:middle; border-style: solid; background-color: #E2E2E2; padding-left:5px;" id="cat_navbar">
+                        <th colspan="6" style="border-bottom: 1px solid #b3b3b3; height:20px; line-height:20px; vertical-align:middle; padding-left:5px;" id="cat_navbar">
                             <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:300px; padding:0px 5px; text-align:right;">'.i18n("Searched for:")." ".$searchfor.'</div>
                             <div style="clear:both;"></div>
-                        </td>
+                        </th>
                     </tr>';
 
     // List wraps
 
     $sSpacedRow = '<tr height="10">
-                    <td colspan="6"></td>
-                   </tr>';
+    					<td colspan="6" style="border-bottom-width: 0px;"></td>
+    			   </tr>';
 
-    $pagerwrap = '<tr class="textg_medium">
-                    <td colspan="6" style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; vertical-align:middle; border-style: solid; background-color: #E2E2E2; padding-left:5px;" id="cat_navbar">
+
+
+    $pagerwrap = '<tr>
+                    <th colspan="6" id="cat_navbar">
                         <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLRIGHT-</div>
                         <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-PAGE-</div>
                         <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLLEFT-</div>
                         <span style="margin-right:10px; line-height:20px; vertical-align:middle;">'.i18n("Files per Page").'</span> -C-FILESPERPAGE-
                         <div style="clear:both;"></div>
-                    </td>
+                    </th>
                 </tr>';
 
-    $startwrap =
-            '<table cellspacing="0" cellpadding="2" border="0" class="hoverbox">
-             <input type="hidden" name="thumbnailmode" value="-C-THUMBNAILMODE-">
-                '.$pagerwrap.$sSpacedRow.$sToolsRow.$sSpacedRow.'
-                <tr bgcolor="#E2E2E2" style="border-color:#B3B3B3; border-style: solid;border-top: 1px;">
-                    <td align="left" valign="top" class="textg_medium" style="border: 1px; border-color: #B3B3B3; border-style: solid; border-bottom:0px;white-space:nowrap;" nowrap="nowrap">'.i18n("Preview").'</td>
-                    <td align="left" valign="top" class="textg_medium" style="border: 0px; border-top: 1px; border-right: 1px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.$fnsort.'</td>
-                        <td align="left" valign="top" class="textg_medium" style="border: 0px; border-top: 1px; border-right: 1px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.$pathsort.'</td>
-                    <td align="left" valign="top" class="textg_medium" style="border: 0px; border-top: 1px; border-right: 1px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.$sizesort.'</td>
-                    <td align="left" valign="top" class="textg_medium" style="border: 0px; border-top: 1px; border-right: 1px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.$typesort.'</td>
-                    <td align="left" valign="top" class="textg_medium" style="border: 0px; border-top: 1px; border-right: 1px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.$srelevance.'</td>
-                </tr>';
-    $itemwrap = '
-              <tr bgcolor="%s">
-              <td align="center" valign="top" class="text_medium" style="border: 1px; border-top: 0px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">%s</td>
-              <td align="left" valign="top" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" width="300" nowrap="nowrap">%s</td>
-              <td align="left" valign="top" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
-                <td align="left" valign="top" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
-              <td align="left" valign="top" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
-              <td align="left" valign="top" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
-            </tr>';
+    $startwrap = '<table class="hoverbox generic" cellspacing="0" cellpadding="2" border="0">
+                    '.$pagerwrap.$sSpacedRow.$sToolsRow.$sSpacedRow.'
+                   <tr>
+                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">'.i18n("Preview").'</th>
+                        <th width="100%" align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">'.$fnsort.'</th>
+                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">'.$pathsort.'</th>
+                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">'.$sizesort.'</th>
+                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">'.$typesort.'</th>
+                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">'.$srelevance.'</th>
+                    </tr>';
+    $itemwrap = '<tr>
+                        <td align="center" valign="top" class="text_medium" style="white-space:nowrap;" nowrap="nowrap">%s</td>
+                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" nowrap="nowrap">%s</td>
+                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="200" nowrap="nowrap">%s</td>
+                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
+                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
+                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="75" nowrap="nowrap">%s</td>
+                    </tr>';
     $endwrap = $sSpacedRow.$sToolsRow.$sSpacedRow.$pagerwrap.'</table>';
 
     // Object initializing
@@ -271,10 +261,8 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
     // Fetch data
     $files = uplSearch($searchfor);
 
-    $user = new cApiUser($auth->auth["uid"]);
-
     if ($thumbnailmode == '') {
-        $current_mode = $user->getUserProperty('upload_folder_thumbnailmode', md5('search_results_num_per_page'));
+        $current_mode = $currentuser->getUserProperty('upload_folder_thumbnailmode', md5('search_results_num_per_page'));
         if ($current_mode != '') {
             $thumbnailmode = $current_mode;
         } else {
@@ -292,7 +280,7 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
                  break;
     }
 
-    $user->setUserProperty('upload_folder_thumbnailmode', md5('search_results_num_per_page'), $thumbnailmode);
+    $currentuser->setUserProperty('upload_folder_thumbnailmode', md5('search_results_num_per_page'), $thumbnailmode);
 
     $list2->setResultsPerPage($numpics);
 
@@ -341,8 +329,6 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
             }
         }
 
-        $dark = !$dark;
-
         $count ++;
 
         $medianame = $properties->getValue("upload", $mydirname.$filename, "file", "medianame");
@@ -352,7 +338,7 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
         $bgColor = false;
 
         $fileType = strtolower(getFileType($data));
-        $list2->setData($rownum, $bgColor, $mydirname.$filename, $showfilename, $mydirname, $filesize, $fileType, $rating / 10);
+        $list2->setData($rownum, $mydirname.$filename, $showfilename, $mydirname, $filesize, $fileType, $rating / 10);
 
         $rownum ++;
     }

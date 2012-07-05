@@ -37,7 +37,6 @@ class Debug_File implements IDebug
 {
 
     static private $_instance;
-    static private $_hFileHandle;
     private $_sPathToLogs;
     private $_sFileName;
     private $_sPathToFile;
@@ -69,7 +68,7 @@ class Debug_File implements IDebug
 
     public function out($msg)
     {
-        if (is_resource(self::$_hFileHandle) && is_writeable($this->_sPathToFile)) {
+        if (cFileHandler::writeable($this->_sPathToFile)) {
             $sDate = date('Y-m-d H:i:s');
             cFileHandler::write($this->_sPathToFile, $sDate.": ".$msg."\n");
         }
@@ -84,7 +83,7 @@ class Debug_File implements IDebug
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false)
     {
-        if (is_resource(self::$_hFileHandle) && is_writeable($this->_sPathToFile)) {
+        if (cFileHandler::writeable($this->_sPathToFile)) {
             $sDate = date('Y-m-d H:i:s');
             cFileHandler::write($this->_sPathToFile, '#################### '.$sDate.' ####################'."\n");
             cFileHandler::write($this->_sPathToFile, $sVariableDescription."\n");
