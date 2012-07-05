@@ -79,8 +79,6 @@ class cWidgetTreeView extends cTree
             $this->setTreeName($treename);
         }
 
-        $this->setBackgroundColors(array($cfg['color']['table_light'], $cfg['color']['table_dark']));
-
         $this->_user = new cApiUser($auth->auth["uid"]);
 
     }
@@ -408,19 +406,6 @@ class cWidgetTreeView extends cTree
                         $renderedName = $object->_name;
                     }
                 }
-            }
-
-            if ($this->_backgroundMode == TREEVIEW_BACKGROUND_SHADED) {
-                if (current($this->_backgroundColors) === false) {
-                    reset($this->_backgroundColors);
-                }
-
-                $color = current($this->_backgroundColors);
-                next($this->_backgroundColors);
-
-                $r_rightcell->setBackgroundColor($color);
-                $r_leftcell->setBackgroundColor($color);
-                $r_actioncell->setBackgroundColor($color);
             }
 
             $img->setSrc($icon);

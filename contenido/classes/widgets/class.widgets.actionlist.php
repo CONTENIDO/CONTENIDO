@@ -55,13 +55,12 @@ class cWidgetMenuActionList extends cFoldingRow
 
         cFoldingRow::cFoldingRow($uuid, $title);
 
-        $this->_headerData->setBackgroundColor($cfg['color']['table_subheader']);
-        $this->_headerData->setStyle("font-weight: bold; text-decoration: none; border-bottom: 1px solid ".$cfg['color']['table_border'].";");
+        $this->_headerData->setStyle("font-weight: bold; text-decoration: none;");
         $this->_headerData->setHeight(18);
         $this->_headerData->setWidth("100%");
         $this->_contentData->setWidth("100%");
         $this->_link->setStyle("text-decoration: none;");
-        $this->_contentData->setStyle("font-weight: bold; border-bottom: 1px solid ".$cfg['color']['table_border'].";");
+        $this->_contentData->setStyle("font-weight: bold;");
 
         $this->_dark = true;
 
@@ -85,7 +84,6 @@ class cWidgetMenuActionList extends cFoldingRow
         global $cfg;
 
         if (class_exists($action)) {
-            $this->_dark = !$this->_dark;
             $class = $this->_metaClass->getAction($action);
 
             $row = new cHTMLTableRow;
@@ -99,14 +97,6 @@ class cWidgetMenuActionList extends cFoldingRow
             $l->setHeight(18);
             $r->setHeight(18);
             $r->setWidth("100%");
-
-            if ($this->_dark) {
-                $l->setBackgroundColor($cfg["color"]["table_dark"]);
-                $r->setBackgroundColor($cfg["color"]["table_dark"]);
-            } else {
-                $l->setBackgroundColor($cfg["color"]["table_light"]);
-                $r->setBackgroundColor($cfg["color"]["table_light"]);
-            }
 
             $row->setContent(array($l,$r));
 

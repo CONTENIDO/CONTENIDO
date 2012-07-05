@@ -103,8 +103,6 @@ if ($bUsePlugins == true) {
 
 $aSortOrderOptions = array("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
 
-$oListOptionRow = new cFoldingRow("f081b6ab-370d-4fd8-984f-6b38590fe48b", i18n("List options"));
-
 $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
 $oSelectItemsPerPage->autoFill(array(25 => 25, 50 => 50, 75 => 75, 100 => 100));
 $oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);

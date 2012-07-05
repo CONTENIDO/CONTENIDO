@@ -392,7 +392,7 @@ $sContainer .= $oPagerRow->render();
 
 $sContainer = '
 <div id="'.$sContainerId.'">
-    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+    <table class="generic" border="0" cellspacing="0" cellpadding="0" width="100%">
     ' . $sContainer . '
     </table>
 </div>
@@ -563,7 +563,7 @@ $oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e303", 0, 1, 1, $
 ######################################
 $sContainerId = 'cont_dispatch';
 $sContainer = '<div id="'.$sContainerId.'">
-    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+    <table class="generic" border="0" cellspacing="0" cellpadding="0" width="100%">
         ' . $oListOptionsRow->render() . '
         ' . $oPagerRow->render() . '
     </table>
@@ -817,7 +817,7 @@ $sContainer .= $oPagerRow->render();
 
 $sContainer = '
 <div id="' . $sContainerId . '">
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<table class="generic" border="0" cellspacing="0" cellpadding="0" width="100%">
 ' . $sContainer . '
 </table>
 </div>
@@ -974,7 +974,7 @@ $sContainer .= $oListOptionsRow->render();
 $sContainer .= $oPagerRow->render();
 
 $sContainer = '<div id="' . $sContainerId . '">
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<table class="generic" border="0" cellspacing="0" cellpadding="0" width="100%">
 ' . $sContainer . '
 </table>
 </div>

@@ -65,7 +65,7 @@ class cWidgetTableEdit
         $form->setVar($this->_metaobject->_payloadObject->primaryKey, $this->_metaobject->_payloadObject->get($this->_metaobject->_payloadObject->primaryKey));
 
         $table = new cHTMLTable;
-        $table->setStyle("border: 1px solid ".$cfg['color']['table_border'].";");
+        $table->setClass("generic");
         $row = new cHTMLTableRow;
 
         $row->setContent($this->renderHeader());
@@ -94,7 +94,7 @@ class cWidgetTableEdit
     function renderHeader()
     {
         global $cfg;
-        $td = new cHTMLTableData;
+        $td = new cHTMLTableHeader;
         $td->setColSpan(2);
         $td->setVerticalAlignment("middle");
 
@@ -113,7 +113,6 @@ class cWidgetTableEdit
 
         $td->setContent($a);
         $td->setHeight(18);
-        $td->setBackgroundColor($cfg['color']['table_header']);
 
         return $td;
     }
@@ -142,16 +141,9 @@ class cWidgetTableEdit
 
             $r->setContent($widget);
 
-            $r->setStyle("padding: 2px; border-top: 1px solid ". $cfg["color"]["table_border"]);
-            $l->setStyle("padding: 4px; padding-left: {$padding}px; border-top: 1px solid ". $cfg["color"]["table_border"]."; border-right: 1px solid ". $cfg["color"]["table_border"]);
+            $r->setStyle("padding: 2px;");
+            $l->setStyle("padding: 4px; padding-left: {$padding}px;");
             $l->setVerticalAlignment("top");
-            if ($this->_darkShading) {
-                $l->setBackgroundColor($cfg["color"]["table_dark"]);
-                $r->setBackgroundColor($cfg["color"]["table_dark"]);
-            } else {
-                $l->setBackgroundColor($cfg["color"]["table_light"]);
-                $r->setBackgroundColor($cfg["color"]["table_light"]);
-            }
 
             $c->setContent(array($l, $r));
 
@@ -168,7 +160,7 @@ class cWidgetTableEdit
         $c = new cHTMLTableRow;
         $b = new cHTMLTableData;
 
-        $b->setStyle("padding: 2px; border-top: 1px solid ".$cfg["color"]["table_border"]);
+        $b->setStyle("padding: 2px;");
         $b->setAlignment("right");
 
         $submit = new cHTMLButton("submit");

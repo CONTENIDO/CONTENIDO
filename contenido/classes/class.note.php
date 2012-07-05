@@ -126,7 +126,6 @@ class NoteView extends cHTMLIFrame
         cHTMLIFrame::cHTMLIFrame();
         $this->setSrc($sess->url("main.php?itemtype=$sItemType&itemid=$sItemId&area=note&frame=2"));
         $this->setBorder(0);
-        $this->setStyleDefinition('border', '1px solid '.$cfg['color']['table_border']);
     }
 }
 
@@ -154,8 +153,6 @@ class NoteList extends cHTMLDiv
 
         $sItemType = $this->_sItemType;
         $sItemId = $this->_sItemId;
-
-        $this->setStyleDefinition('background', $cfg['color']['table_light']);
 
         $oPropertyCollection = new cApiPropertyCollection();
         $oPropertyCollection->select("itemtype = 'idcommunication' AND type = 'note' AND name = 'idlang' AND value = " . (int) $lang);
@@ -222,11 +219,6 @@ class NoteListItem extends cHTMLDiv
     {
         global $cfg;
 
-        if ($dark) {
-            $this->setStyleDefinition('background', $cfg['color']['table_dark']);
-        } else {
-            $this->setStyleDefinition('background', $cfg['color']['table_light']);
-        }
     }
 
     public function setAuthor($sAuthor)
@@ -284,7 +276,7 @@ class NoteListItem extends cHTMLDiv
         $oMessage->setContent($this->_sMessage);
         $oMessage->setStyle("padding-bottom: 8px;");
 
-        $this->setContent(array($table, '<hr style="margin-top:2px;margin-bottom:2px;border:0px;border-top:1px solid' . $cfg['color']['table_border'].';">',$oMessage));
+        $this->setContent(array($table, '<hr style="margin-top:2px;margin-bottom:2px;>',$oMessage));
 
         return parent::render();
     }

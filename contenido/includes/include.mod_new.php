@@ -111,7 +111,7 @@ if ((int) $client > 0) {
     $content .= '<div style="border: 1px solid #B3B3B3;border-left:none;border-top:none;margin-bottom:1px;">';
     // Ye stuff will be done in javascript on apply button
     $content .= '<form action="javascript:execFilter(\''.$sess->id.'\');" id="filter" name="filter" method="get">';
-    $content .= '<table>';
+    $content .= '<table class="borderless">';
     $content .= '<input type="hidden" name="area" value="mod">';
     $content .= '<input type="hidden" name="frame" value="1">';
     $content .= '<input type="hidden" name="contenido" value="'.$sess->id.'">';
@@ -175,7 +175,7 @@ if ((int) $client > 0) {
     $tpl->set('s', 'PAGINGLINK', $pagerl);
 
 
-    $tpl->set('s', 'ACTION', $str.$strSync.'<table style="margin-top:1px" border="0" cellspacing="0" cellpadding="0" width="100%">'.$oListOptionRow->render().$oPager ->render().'</table>');
+    $tpl->set('s', 'ACTION', $str.$strSync.'<table class="generic" style="margin-top:1px" border="0" cellspacing="0" cellpadding="0" width="100%">'.$oListOptionRow->render().$oPager ->render().'</table>');
      //$tpl->set('s', 'ACTION2', $str.'<table style="margin-top:1px" border="0" cellspacing="0" cellpadding="0" width="100%">'.$oListOptionRow->render().$oPager ->render().'</table>');
 } else {
     $tpl->set('s', 'PAGINGLINK', '');

@@ -938,7 +938,7 @@ input.textbox_readonly {font-family: verdana, arial, helvetica, sans-serif; font
 div.folding_content     {border-right: 1px solid #b3b3b3; padding-left: 15px; padding-top: 5px; padding-bottom: 5px;}
 td.foldingrow           {background-color: #e2e2e2; border-top: 1px solid #b3b3b3; border-right: 1px solid #b3b3b3; padding: 2px 2px 2px 2px;}
 td.foldingrow_content   {background-color: #e2e2e2; border: 1px solid #b3b3b3; border-bottom: none; padding: 2px;}
-a.foldingrow            {font-weight: bold; text-decoration: none; margin-left: 15px;}
+a.foldingrow            {background-color: #e2e2e2; font-weight: bold; text-decoration: none; margin-left: 15px;}
 span.cpager_currentitem {color: #000; font-weight: bold; }
 
 table.bordered {border: 1px solid #b3b3b3; border-right: none; border-bottom: none;}

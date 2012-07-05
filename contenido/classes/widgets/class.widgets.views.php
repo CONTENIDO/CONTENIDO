@@ -72,7 +72,6 @@ class cTableView
         $this->formmethod = $method;
 
         $this->tableid = "";
-        $this->tablebordercolor = $cfg['color']['table_border'];
         $this->setAccessKey('s');
         $this->custom = array();
 
@@ -188,8 +187,8 @@ class cTableView
         $tpl->set('s', 'BORDERCOLOR', $this->tablebordercolor);
 
         if ($this->header != "") {
-            $header  = '<tr class="text_medium" style="background-color: '.$cfg["color"]["table_header"].';">';
-            $header .= '<td colspan="2" valign="top" style="border: 0px; border-top:1px; border-right:1px;border-color: '.$cfg["color"]["table_border"].'; border-style: solid;">'.$this->header.'</td></tr>';
+            $header  = '<tr>';
+            $header .= '<th colspan="2" valign="top">'.$this->header.'</th></tr>';
         }
 
         $tpl->set('s', 'HEADER', $header);
@@ -201,13 +200,6 @@ class cTableView
                 $tpl->set('d', 'CATNAME', $this->captions[$key]);
                 $tpl->set('d', 'CATFIELD', $value);
                 $tpl->set('d', 'ROWNAME', $this->rownames[$key]);
-
-                $dark = !$dark;
-                if ($dark) {
-                    $bgColor = $cfg["color"]["table_dark"];
-                } else {
-                    $bgColor = $cfg["color"]["table_light"];
-                }
 
                 $tpl->set('d', 'BGCOLOR', $bgColor);
                 $tpl->set('d', 'BORDERCOLOR', $this->tablebordercolor);
