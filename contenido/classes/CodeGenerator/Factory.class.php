@@ -59,7 +59,7 @@ class cCodeGeneratorFactory
             throw new InvalidArgumentException('Invalid name passed to cCodeGeneratorFactory: '.$name.'!');
         }
 
-        $className = 'Contenido_CodeGenerator_' . $name;
+        $className = 'cCodeGenerator' . $name;
         if (!class_exists($className)) {
             $fileName = $name . '.class.php';
             $path     = str_replace('\\', '/', dirname(__FILE__)) . '/';
