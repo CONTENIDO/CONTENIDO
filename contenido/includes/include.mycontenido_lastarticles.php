@@ -21,27 +21,23 @@
  *
  * {@internal
  *   created 2003-08-05
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-die();
 
 cInclude("includes", "functions.con.php");
 
 $sql = "SELECT
             logtimestamp
         FROM
-            ".$cfg["tab"]["actionlog"]."
+            " . $cfg["tab"]["actionlog"] . "
         WHERE
-           user_id = '".$db->escape($auth->auth["uid"]). "'
+           user_id = '" . $db->escape($auth->auth["uid"]) . "'
         ORDER BY
             logtimestamp DESC
         LIMIT 2";
@@ -65,17 +61,17 @@ $sql = "SELECT
             a.created AS created,
             a.lastmodified AS lastmodified
         FROM
-            ".$cfg["tab"]["art_lang"]." AS a,
-            ".$cfg["tab"]["art"]." AS b,
-            ".$cfg["tab"]["cat_art"]." AS c,
-            ".$cfg["tab"]["actionlog"]." AS d
+            " . $cfg["tab"]["art_lang"] . " AS a,
+            " . $cfg["tab"]["art"] . " AS b,
+            " . $cfg["tab"]["cat_art"] . " AS c,
+            " . $cfg["tab"]["actionlog"] . " AS d
         WHERE
-            a.idlang    = '".cSecurity::toInteger($lang)."' AND
+            a.idlang    = " . (int) $lang . " AND
             a.idart     = b.idart AND
-            b.idclient  = '".cSecurity::toInteger($client)."' AND
+            b.idclient  = " . (int) $client . " AND
             b.idart     = c.idart AND
-            d.idaction  = '".cSecurity::toInteger($idaction)."' AND
-            d.user_id    = '".$db->escape($auth->auth["uid"])."' AND
+            d.idaction  = " . (int) $idaction . " AND
+            d.user_id   = '" . $db->escape($auth->auth["uid"]) . "' AND
             d.idcatart  = c.idcatart
         GROUP BY
                 c.idcatart
@@ -83,58 +79,53 @@ $sql = "SELECT
                 logtimestamp DESC
         LIMIT 5";
 
-# Debug info
+// Debug info
 cDebug($sql);
 
 $db->query($sql);
 
-# Reset Template
+// Reset Template
 $tpl->reset();
 
-# No article
+// No article
 $no_article = true;
 
-$tpl->set('s', 'LASTARTICLES', i18n("Recently edited articles").":".markSubMenuItem(1));
+$tpl->set('s', 'LASTARTICLES', i18n("Recently edited articles") . ":" . markSubMenuItem(1));
 
-while ( $db->next_record() ) {
-    $idtplcfg   = $db->f("idtplcfg");
-    $idartlang  = $db->f("idartlang");
-    $idlang     = $db->f("idlang");
-    $idcat      = $db->f("idcat");
-    $idart      = $db->f("idart");
-    $online     = $db->f("online");
+while ($db->next_record()) {
+    $idtplcfg = $db->f("idtplcfg");
+    $idartlang = $db->f("idartlang");
+    $idlang = $db->f("idlang");
+    $idcat = $db->f("idcat");
+    $idart = $db->f("idart");
+    $online = $db->f("online");
 
     $is_start = isStartArticle($idartlang, $idcat, $idlang);
 
-    $idcatart   = $db->f("idcatart");
-    $created    = $db->f("created");
-    $modified   = $db->f("lastmodified");
+    $idcatart = $db->f("idcatart");
+    $created = $db->f("created");
+    $modified = $db->f("lastmodified");
     $category = "";
     conCreateLocationString($idcat, "&nbsp;/&nbsp;", $category);
     if ($category == "") {
         $category = "&nbsp;";
     }
 
-    # Article Title
+    // Article Title
     $tmp_alink = $sess->url("frameset.php?area=con&override_area4=con_editcontent&override_area3=con&action=con_editart&idartlang=$idartlang&idart=$idart&idcat=$idcat&idartlang=$idartlang");
     $tpl->set('d', 'ARTICLE', $db->f('title'));
 
-    # Created
     $tpl->set('d', 'CREATED', $created);
-
-    # Lastmodified
     $tpl->set('d', 'LASTMODIFIED', $modified);
-
-    # Category
     $tpl->set('d', 'CATEGORY', $category);
 
-    # Article Template
-    if (0 == $idtplcfg) { # Uses Category Template
-        $a_tplname = "--- ".i18n("None")." ---";
+    // Article Template
+    if (0 == $idtplcfg) {
+        // Uses Category Template
+        $a_tplname = "--- " . i18n("None") . " ---";
         $a_idtpl = 0;
-
-    } else { # Has own Template
-
+    } else {
+        // Has own Template
         if (!isset($db2) || !is_object($db2)) {
             $db2 = cRegistry::getDb();
         }
@@ -143,10 +134,10 @@ while ( $db->next_record() ) {
                     b.name AS tplname,
                     b.idtpl AS idtpl
                  FROM
-                    ".$cfg["tab"]["tpl_conf"]." AS a,
-                    ".$cfg["tab"]["tpl"]." AS b
+                    " . $cfg["tab"]["tpl_conf"] . " AS a,
+                    " . $cfg["tab"]["tpl"] . " AS b
                  WHERE
-                    a.idtplcfg = '".cSecurity::toInteger($idtplcfg)."' AND
+                    a.idtplcfg = " . (int) $idtplcfg . " AND
                     a.idtpl = b.idtpl";
 
         $db2->query($sql2);
@@ -162,26 +153,26 @@ while ( $db->next_record() ) {
 
     $tpl->set('d', 'TPLNAME', $a_tplname);
 
-    # Make Startarticle button
+    // Make Startarticle button
     $tmp_img = (1 == $is_start) ? '<img src="images/isstart1.gif" border="0">' : '<img src="images/isstart0.gif" border="0">';
     $tpl->set('d', 'START', $tmp_img);
 
     if ($online) {
-        $tmp_online = '<img src="images/online.gif" title="'.i18n("Article is online").'" alt="'.i18n("Article is online").'" border="0">';
+        $tmp_online = '<img src="images/online.gif" title="' . i18n("Article is online") . '" alt="' . i18n("Article is online") . '" border="0">';
     } else {
-        $tmp_online = '<img src="images/offline.gif" title="'.i18n("Article is offline").'" alt="'.i18n("Article is offline").'" border="0"></a>';
+        $tmp_online = '<img src="images/offline.gif" title="' . i18n("Article is offline") . '" alt="' . i18n("Article is offline") . '" border="0"></a>';
     }
 
     $tpl->set('d', 'ONLINE', $tmp_online);
 
-    # Next iteration
+    // Next iteration
     $tpl->next();
 
-    # Articles found
+    // Articles found
     $no_article = false;
 }
 
-# Sort select
+// Sort select
 $s_types = array(
     1 => i18n("Alphabetical"),
     2 => i18n("Last change"),
@@ -195,34 +186,34 @@ $tpl2->set('s', 'OPTIONS', 'onchange="artSort(this)"');
 
 foreach ($s_types as $key => $value) {
     $selected = (isset($_GET['sort']) && $_GET['sort'] == $key) ? 'selected="selected"' : '';
-    $tpl2->set('d', 'VALUE',    $key);
-    $tpl2->set('d', 'CAPTION',  $value);
+    $tpl2->set('d', 'VALUE', $key);
+    $tpl2->set('d', 'CAPTION', $value);
     $tpl2->set('d', 'SELECTED', $selected);
     $tpl2->next();
 }
 
-$select  = (!$no_article) ? $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true) : '';
+$select = (!$no_article) ? $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true) : '';
 $caption = (!$no_article) ? 'Artikel sortieren' : '';
 
 $tpl->set('s', 'ARTSORTCAPTION', $caption);
 $tpl->set('s', 'ARTSORT', $select);
 
-# Extract Category and Catcfg
+// Extract Category and Catcfg
 $sql = "SELECT
             b.name AS name,
             d.idtpl AS idtpl
         FROM
-            (".$cfg["tab"]["cat"]." AS a,
-            ".$cfg["tab"]["cat_lang"]." AS b,
-            ".$cfg["tab"]["tpl_conf"]." AS c)
+            (" . $cfg["tab"]["cat"] . " AS a,
+            " . $cfg["tab"]["cat_lang"] . " AS b,
+            " . $cfg["tab"]["tpl_conf"] . " AS c)
         LEFT JOIN
-            ".$cfg["tab"]["tpl"]." AS d
+            " . $cfg["tab"]["tpl"] . " AS d
         ON
             d.idtpl = c.idtpl
         WHERE
-            a.idclient = '".cSecurity::toInteger($client)."' AND
-            a.idcat = '".cSecurity::toInteger($idcat)."' AND
-            b.idlang = '".cSecurity::toInteger($lang)."' AND
+            a.idclient = " . (int) $client . " AND
+            a.idcat = " . (int) $idcat . " AND
+            b.idlang = " . (int) $lang . " AND
             b.idcat = a.idcat AND
             c.idtplcfg = b.idtplcfg";
 
@@ -231,7 +222,7 @@ $db->next_record();
 
 $cat_idtpl = $db->f("idtpl");
 
-# Notify if no article was found
+// Notify if no article was found
 if ($no_article) {
     $tpl->set("d", "START", "&nbsp;");
     $tpl->set("d", "ARTICLE", i18n("No article found"));
@@ -249,15 +240,15 @@ if ($no_article) {
 
 $cat_name = "";
 
-# SELF_URL (Variable für das javascript);
+// SELF_URL (Variable für das javascript);
 $tpl->set('s', 'SELF_URL', $sess->url("main.php?area=con&frame=4&idcat=$idcat"));
 
-# New article link
-$tpl->set('s', 'NEWARTICLE', '<a href="'.$sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat").'">' . i18n("Create article") . '</a>');
+// New article link
+$tpl->set('s', 'NEWARTICLE', '<a href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '">' . i18n("Create article") . '</a>');
 
 $tpl->set('s', 'HELP', "");
 
-# Generate template
+// Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['mycontenido_lastarticles']);
 
 ?>
