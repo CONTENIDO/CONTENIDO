@@ -32,128 +32,120 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
- *
  * Description: Class for handling passwort recovery
  *
  * @author Timo Trautmann
  * @copyright four for business AG <www.4fb.de>
- *
  */
 class cPasswordRequest {
+
     /**
-      * The CONTENIDO database object
-      *
-      * @var object
-      * @access private
-      */
+     * The CONTENIDO database object
+     *
+     * @var object
+     * @access private
+     */
     var $oDb;
 
     /**
-      * The CONTENIDO configuration array
-      *
-      * @var array
-      * @access private
-      */
+     * The CONTENIDO configuration array
+     *
+     * @var array
+     * @access private
+     */
     var $aCfg;
 
     /**
-      * The CONTENIDO template object
-      *
-      * @var object
-      * @access private
-      */
+     * The CONTENIDO template object
+     *
+     * @var object
+     * @access private
+     */
     var $oTpl;
 
-    /*################################################################*/
+    /* ################################################################ */
 
     /**
-      * Username of user which requests password
-      *
-      * @var string
-      * @access private
-      */
+     * Username of user which requests password
+     *
+     * @var string
+     * @access private
+     */
     var $sUsername;
 
     /**
-      * E-mail address of user which requests password
-      *
-      * @var string
-      * @access private
-      */
+     * E-mail address of user which requests password
+     *
+     * @var string
+     * @access private
+     */
     var $sEmail;
 
-    /*################################################################*/
+    /* ################################################################ */
 
     /**
-      * Time in minutes after which user is allowed to request a new password
-      *
-      * @var integer
-      * @access private
-      */
+     * Time in minutes after which user is allowed to request a new password
+     *
+     * @var integer
+     * @access private
+     */
     var $iReloadTime;
 
     /**
-      * Length of new passwort, which is generated automatically
-      *
-      * @var integer
-      * @access private
-      */
+     * Length of new passwort, which is generated automatically
+     *
+     * @var integer
+     * @access private
+     */
     var $iPassLength;
 
-    /*################################################################*/
+    /* ################################################################ */
 
     /**
-      * Definies if passwort request is enabled or disabled.
-      * Default: This feature is enabled
-      *
-      * @var boolean
-      * @access private
-      */
+     * Definies if passwort request is enabled or disabled.
+     * Default: This feature is enabled
+     *
+     * @var boolean
+     * @access private
+     */
     var $bIsEnabled;
 
     /**
-      * E-mail address of the sender
-      *
-      * @var string
-      * @access private
-      */
+     * E-mail address of the sender
+     *
+     * @var string
+     * @access private
+     */
     var $sSendermail;
 
     /**
-      * Name of the sender
-      *
-      * @var string
-      * @access private
-      */
+     * Name of the sender
+     *
+     * @var string
+     * @access private
+     */
     var $sSendername;
 
     /**
-      * Host of mailserver, which sends new password via mail
-      *
-      * @var string
-      * @access private
-      */
+     * Host of mailserver, which sends new password via mail
+     *
+     * @var string
+     * @access private
+     */
     var $sMailhost;
 
-    /*################################################################*/
-    /*################################################################*/
+    /* ################################################################ */
+    /* ################################################################ */
 
-     /** @deprecated  [2012-07-02] Old constructor function for downwards compatibility */
-    public function cPasswordRequest($oDb, $aCfg)
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($oDb, $aCfg);
-    }
     /**
-      * Constructor of RequestPassword initializes class variables
-      *
-      * @param  object $oDb - The CONTENIDO database object
-      * @param  array $aCfg - The CONTENIDO configuration array
-      * @access public
-      */
-    function __construct ($oDb, $aCfg) {
+     * Constructor of RequestPassword initializes class variables
+     *
+     * @param  object $oDb - The CONTENIDO database object
+     * @param  array $aCfg - The CONTENIDO configuration array
+     * @access public
+     */
+    function __construct($oDb, $aCfg) {
         //generate new dbobject, if it does not exist
         if (!is_object($oDb)) {
             $this->oDb = cRegistry::getDb();
@@ -207,13 +199,13 @@ class cPasswordRequest {
     }
 
     /**
-      * Function displays form for password request and sets new password, if password is submitted this function
-      * also starts the passwort change an sending process
-      *
-      * @access public
-      * @param  bool    $return    Return or print template
-      */
-    function renderForm ($return = 0) {
+     * Function displays form for password request and sets new password, if password is submitted this function
+     * also starts the passwort change an sending process
+     *
+     * @access public
+     * @param  bool    $return    Return or print template
+     */
+    function renderForm($return = 0) {
         //if feature is not enabled, do nothing
         if (!$this->bIsEnabled) {
             return;
@@ -246,34 +238,34 @@ class cPasswordRequest {
         $oForm->setVar('belang', $GLOBALS['belang']);
 
         //generate submitbutton and fill the form
-        $oForm->add('submit', '<input type="image" src="images/submit.gif" alt="'.i18n('Submit').'" title="'.i18n('Submit').'" style="vertical-align:top; margin-top:2px; float:right; margin-right:6px;">');
+        $oForm->add('submit', '<input type="image" src="images/submit.gif" alt="' . i18n('Submit') . '" title="' . i18n('Submit') . '" style="vertical-align:top; margin-top:2px; float:right; margin-right:6px;">');
         $oForm->add('request_username', $oInputUsername->render());
         $this->oTpl->set('s', 'FORM', $oForm->render());
         $this->oTpl->set('s', 'MESSAGE', $sMessage);
-        $this->oTpl->set('s', 'LABEL', i18n('Please enter your login').':');
+        $this->oTpl->set('s', 'LABEL', i18n('Please enter your login') . ':');
 
         //if handleNewPassword() returns a message, display it
         if ($return) {
-            return $this->oTpl->generate($this->aCfg['path']['contenido'].$this->aCfg['path']['templates'].$this->aCfg['templates']['request_password'], 1);
+            return $this->oTpl->generate($this->aCfg['path']['contenido'] . $this->aCfg['path']['templates'] . $this->aCfg['templates']['request_password'], 1);
         } else {
-            return $this->oTpl->generate($this->aCfg['path']['contenido'].$this->aCfg['path']['templates'].$this->aCfg['templates']['request_password']);
+            return $this->oTpl->generate($this->aCfg['path']['contenido'] . $this->aCfg['path']['templates'] . $this->aCfg['templates']['request_password']);
         }
     }
 
     /**
-      * Function checks password request for errors an delegate request to setNewPassword() if there is no error
-      *
-      * @access private
-      * @param string - contains message for displaying (errors or success message)
-      */
-    function handleNewPassword () {
+     * Function checks password request for errors an delegate request to setNewPassword() if there is no error
+     *
+     * @access private
+     * @param string - contains message for displaying (errors or success message)
+     */
+    function handleNewPassword() {
         //notification message, which is returned to caller
         $sMessage = '';
         $this->sUsername = stripslashes($this->sUsername);
 
         //check if requested username exists, also get email and  timestamp when user last requests a new password (last_pw_request)
-        $sSql = "SELECT username, last_pw_request, email FROM ".$this->aCfg["tab"]["phplib_auth_user_md5"]."
-                 WHERE username = '".$this->oDb->escape($this->sUsername)."'
+        $sSql = "SELECT username, last_pw_request, email FROM " . $this->aCfg["tab"]["phplib_auth_user_md5"] . "
+                 WHERE username = '" . $this->oDb->escape($this->sUsername) . "'
                  AND ( valid_from <= NOW() OR valid_from = '0000-00-00')
                  AND ( valid_to >= NOW() OR valid_to = '0000-00-00' )";
 
@@ -291,7 +283,7 @@ class cPasswordRequest {
                 $iNow = time();
 
                 //check if this last request is longer ago then timelimit.
-                if ($iNow-$iLastRequest < (60*$this->iReloadTime)) {
+                if ($iNow - $iLastRequest < (60 * $this->iReloadTime)) {
                     //user is not allowed to request new password, he has to wait
                     $bIsAllowed = false;
                     $sMessage = sprintf(i18n('Password requests are allowed every %s minutes.'), $this->iReloadTime);
@@ -322,32 +314,32 @@ class cPasswordRequest {
     }
 
     /**
-      * Function sets new password for user and sets last request time to now
-      *
-      * @access private
-      */
-    function setNewPassword () {
+     * Function sets new password for user and sets last request time to now
+     *
+     * @access private
+     */
+    function setNewPassword() {
         //generate new password, using generatePassword()
         $sPassword = $this->generatePassword();
 
         //update database entry, set new password and last_pw_request time
-        $sSql = "UPDATE ".$this->aCfg["tab"]["phplib_auth_user_md5"]."
-                         SET last_pw_request = '".date('Y-m-d H:i:s')."',
-                             tmp_pw_request = '".md5($sPassword)."'
-                         WHERE username = '".$this->sUsername."'";
+        $sSql = "UPDATE " . $this->aCfg["tab"]["phplib_auth_user_md5"] . "
+                         SET last_pw_request = '" . date('Y-m-d H:i:s') . "',
+                             tmp_pw_request = '" . md5($sPassword) . "'
+                         WHERE username = '" . $this->sUsername . "'";
         $this->oDb->query($sSql);
 
         //call function submitMail(), which sends new password to user
         $this->submitMail($sPassword);
     }
 
-   /**
-      * Function submits new password to users mail adress
-      *
-      * @access private
-      * @param string $sPassword - the new password
-      */
-    function submitMail ($sPassword) {
+    /**
+     * Function submits new password to users mail adress
+     *
+     * @access private
+     * @param string $sPassword - the new password
+     */
+    function submitMail($sPassword) {
         $sPassword = (string) $sPassword;
 
         //get translation for mailbody and insert username and new password
@@ -378,14 +370,14 @@ class cPasswordRequest {
     }
 
     /**
-      * Function generates new password
-      *
-      * @access private
-      * @return string - the new password
-      */
-    function generatePassword () {
-       //possible chars which were used in password
-       $sChars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghjkmnopqrstuvwxyz123456789";
+     * Function generates new password
+     *
+     * @access private
+     * @return string - the new password
+     */
+    function generatePassword() {
+        //possible chars which were used in password
+        $sChars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghjkmnopqrstuvwxyz123456789";
 
         $sPw = "";
 
@@ -396,5 +388,7 @@ class cPasswordRequest {
 
         return $sPw;
     }
+
 }
+
 ?>
