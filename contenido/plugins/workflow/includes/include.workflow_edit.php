@@ -93,8 +93,6 @@ if ($workflow->virgin) {
     $author = $userclass->getEffectiveName();
 }
 
-die("hi");
-
 $form->addHeader($header);
 $oTxtWFName = new cHTMLTextbox("wfname", $name, 40, 255);
 $form->add(i18n("Workflow name", "workflow"), $oTxtWFName->render());
