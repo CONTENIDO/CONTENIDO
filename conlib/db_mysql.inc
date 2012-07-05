@@ -218,10 +218,14 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
+     *
+     * @deprecated [2012-07-05] No longer needed
      * {@inheritdoc}
      */
     public function lock($table, $mode = 'write')
     {
+    	cDeprecated("This function is no longer needed. Tables don't need to be locked.");
+
         if ($this->_bNolock == true) {
             return true;
         }
@@ -249,10 +253,14 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
+     *
+     * @deprecated [2012-07-05] No longer needed
      * {@inheritdoc}
      */
     public function unlock()
     {
+    	cDeprecated("This function is no longer needed. Tables don't need to be locked.");
+
         if ($this->_bNolock == true) {
             return true;
         }
@@ -295,11 +303,14 @@ class DB_Sql extends DB_Sql_Abstract
     /**
      * get next possible id for requested db-table and update sequence table
      *
+     * @deprecated [2012-07-05] No longer needed
      * @param string $seq_name name of db-table to get nextid
      * @return int  nextid for requested table or 0 if an error occured
      */
     public function nextid($seq_name)
     {
+    	cDeprecated("This function is no longer needed. The ids get updated by the DB");
+
         $nextid = 0;
 
         if ($this->lock($this->Seq_Table)) {

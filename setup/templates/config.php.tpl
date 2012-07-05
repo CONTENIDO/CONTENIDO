@@ -104,8 +104,6 @@ $cfg['db'] = array(
         'password' => '{MYSQL_PASS}', // (string) The password to access the database
         'charset'  => '',             // (string) The charset of connection to database
     ),
-    'nolock'          => {NOLOCK}, // (bool) Flag to not lock tables
-    'sequenceTable'   => '',       // (string) will be set later in startup!
     'haltBehavior'    => 'report', // (string) Feasible values are 'yes', 'no' or 'report'
     'haltMsgPrefix'   => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
     'enableProfiling' => false,    // (bool) Flag to enable profiling

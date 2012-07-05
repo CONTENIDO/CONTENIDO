@@ -228,8 +228,6 @@ abstract class DB_Sql_Abstract
      * will overwrite connection settings for current instance.
      *
      * @param  array  $aOptions  Assoziative options as follows:
-     *                          - $aOptions['sequenceTable']  (string)  Optional, the sequence table name
-     *                          - $aOptions['nolock']  (bool)  Optional, not lock table
      *                          - $aOptions['haltBehavior']  (string)  Optional, halt behavior on occured errors
      *                          - $aOptions['haltMsgPrefix']  (string)  Optional, Text to prepend to the halt message
      *                          - $aOptions['type']  (string)  Database driver name
@@ -241,10 +239,6 @@ abstract class DB_Sql_Abstract
     {
         // use default connection configuration, but overwrite it by passed options
         $this->_aDbCfg = array_merge(self::$_aDefaultDbCfg, $aOptions);
-
-        if (isset($this->_aDbCfg['sequenceTable']) && is_string($this->_aDbCfg['sequenceTable'])) {
-            $this->Seq_Table = $this->_aDbCfg['sequenceTable'];
-        }
 
         if (isset($this->_aDbCfg['haltBehavior'])) {
             switch ($this->_aDbCfg['haltBehavior']) {
@@ -268,9 +262,6 @@ abstract class DB_Sql_Abstract
             $this->type = $this->_aDbCfg['type'];
         }
 
-        if (isset($this->_aDbCfg['nolock']) && is_bool($this->_aDbCfg['nolock'])) {
-            $this->_bNolock = (bool) $this->_aDbCfg['nolock'];
-        }
         if (isset($this->_aDbCfg['enableProfiling']) && is_bool($this->_aDbCfg['enableProfiling'])) {
             $this->_bProfile = (bool) $this->_aDbCfg['enableProfiling'];
         }
@@ -743,6 +734,7 @@ abstract class DB_Sql_Abstract
     /**
      * Locks the desired table.
      *
+     * @deprecated [2012-07-05] No longer needed
      * @param   string  $sTable  The table to lock
      * @param   string  $sMode   The lock mode. Only mode 'write' is supported!
      * @return  int     Status of lock success (1 or 0)
@@ -753,6 +745,7 @@ abstract class DB_Sql_Abstract
     /**
      * Frees a previous locked result.
      *
+     * @deprecated [2012-07-05] No longer needed
      * @return  int  Status of lock success (1 or 0)
      */
     abstract public function unlock();
@@ -911,6 +904,7 @@ abstract class DB_Sql_Abstract
     /**
      * Returns the next id (sequence number).
      *
+     * @deprecated [2012-07-05] No longer needed
      * @param   string  $sSeqName  The sequence name to get the next id from
      * @return  int  The next id or 0 on error
      */

@@ -83,7 +83,6 @@ $cfg['tab']['phplib_auth_user_md5']      = $cfg['sql']['sqlprefix'] . '_phplib_a
 $cfg['tab']['plugins']                   = $cfg['sql']['sqlprefix'] . '_plugins';
 $cfg['tab']['properties']                = $cfg['sql']['sqlprefix'] . '_properties';
 $cfg['tab']['rights']                    = $cfg['sql']['sqlprefix'] . '_rights';
-$cfg['tab']['sequence']                  = $cfg['sql']['sqlprefix'] . '_sequence';
 $cfg['tab']['stat_archive']              = $cfg['sql']['sqlprefix'] . '_stat_archive';
 $cfg['tab']['stat_heap_table']           = $cfg['sql']['sqlprefix'] . '_stat_heap_table';
 $cfg['tab']['stat']                      = $cfg['sql']['sqlprefix'] . '_stat';

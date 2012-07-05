@@ -44,8 +44,6 @@ class DB_Contenido extends DB_Sql
      *                          - $options['connection']['database']  (string) Database name
      *                          - $options['connection']['user']  (string) User name
      *                          - $options['connection']['password']  (string)  User password
-     *                          - $options['nolock']  (bool)  Optional, not lock table
-     *                          - $options['sequenceTable']  (string)  Optional, sequesnce table
      *                          - $options['haltBehavior']  (string)  Optional, halt behavior on occured errors
      *                          - $options['haltMsgPrefix']  (string)  Optional, Text to prepend to the halt message
      *                          - $options['enableProfiling']  (bool)  Optional, flag to enable profiling

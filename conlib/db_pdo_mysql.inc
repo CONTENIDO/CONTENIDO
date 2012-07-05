@@ -321,10 +321,13 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
+     * @deprecated [2012-07-05] No longer needed
      * {@inheritdoc}
      */
     public function nextid($seq_name)
     {
+    	cDeprecated("This function is no longer needed. The ids get updated by the DB");
+
         $nextid = 0;
 
         if ($this->lock($this->Seq_Table)) {
