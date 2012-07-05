@@ -70,20 +70,33 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
 
 $colspan = 0;
 
-$oTable = new Table("", "", 0, 2, "", "", "", 0, 0);
-
-$sTable .= $oTable->start_table();
-$sTable .= $oTable->header_row();
-$sTable .= $oTable->header_cell(i18n("Layout name"));
-$sTable .= $oTable->header_cell(i18n("Description"));
-
 $possible_areas = array();
 $sCheckboxesRow = '';
 $aSecondHeaderRow = array();
 
+//Init Table
+$oTable = new cHTMLTable;
+$oTable->updateAttributes(array("class" => "generic", "cellspacing" => "0", "cellpadding" => "2"));
+$objHeaderRow = new cHTMLTableRow;
+$objHeaderItem = new cHTMLTableHead;
+$objFooterRow = new cHTMLTableRow;
+$objFooterItem = new cHTMLTableData;
+$objRow = new cHTMLTableRow;
+$objItem = new cHTMLTableData;
+
+//table header
+//1. zeile
+$headeroutput = "";
+$items = "";
+$objHeaderItem->updateAttributes(array("class" => "center", "valign" => "top", "align" => "center"));
+$objHeaderItem->setContent(i18n("Layout name"));
+$items .= $objHeaderItem->render();
+$objHeaderItem->advanceID();
+$objHeaderItem->setContent(i18n("Description"));
+$items .= $objHeaderItem->render();
+$objHeaderItem->advanceID();
 // look for possible actions   in mainarea []
-foreach ($right_list["lay"] as $value2)
-{
+foreach ($right_list["lay"] as $value2){
     //if there are some actions
     if(is_array($value2["action"])) {
         //set the areas that are in use
@@ -94,43 +107,62 @@ foreach ($right_list["lay"] as $value2)
             $sJsBefore .= "actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";\n";
 
             //checkbox for the whole action
-            $sTable .= $oTable->header_cell($lngAct[$value2["perm"]][$value3]);
+            $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3]);
+			$items .= $objHeaderItem->render();
+			$objHeaderItem->advanceID();
             array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
         }
     }
 }
 
-// Checkbox for all rights
-$sTable .= $oTable->header_cell(i18n("Check all"));
 array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
-$sTable .= $oTable->end_row();
-
+// Checkbox for all rights
+$objHeaderItem->setContent(i18n("Check all"));
+$items .= $objHeaderItem->render();
+$objHeaderItem->advanceID();
 $colspan++;
 
-$sTable .= $oTable->header_row();
-$sTable .= $oTable->header_cell('&nbsp', 'center', '', '', 0);
-$sTable .= $oTable->header_cell('&nbsp', 'center', '', '', 0);
-
-// Put the checkbox in the table
+$objHeaderRow->updateAttributes(array("class" => "textw_medium"));
+$objHeaderRow->setContent($items);
+$items = "";
+$headeroutput .= $objHeaderRow->render();
+$objHeaderRow->advanceID();
+//2. zeile
+$objHeaderItem->updateAttributes(array("class" => "center", "valign" => "", "align" => "center", "style" => "border-top-width: 0px;"));
+$objHeaderItem->setContent("&nbsp;");
+$items .= $objHeaderItem->render();
+$objHeaderItem->advanceID();
+$objHeaderItem->setContent("&nbsp;");
+$items .= $objHeaderItem->render();
+$objHeaderItem->advanceID();
 foreach ($aSecondHeaderRow as $value) {
-    $sTable .= $oTable->header_cell($value, "center", "", "", 0);
+	$objHeaderItem->setContent($value);
+	$items .= $objHeaderItem->render();
+	$objHeaderItem->advanceID();
 }
-$sTable .= $oTable->end_row();
-
+$objHeaderRow->updateAttributes(array("class" => "textw_medium"));
+$objHeaderRow->setContent($items);
+$items = "";
+$headeroutput .= $objHeaderRow->render();
+$objHeaderRow->advanceID();
+//table content
+$output = "";
 //Select the itemid´s
 $sql = "SELECT * FROM ".$cfg["tab"]["lay"]." WHERE idclient='".cSecurity::toInteger($rights_client)."' ORDER BY name";
 $db->query($sql);
 
-
 while ($db->next_record()) {
-
     $sTplName     = htmlentities($db->f("name"));
     $sDescription = htmlentities($db->f("description"));
 
-    $sTable .= $oTable->row();
-    $sTable .= $oTable->cell($sTplName, "", "", " class=\"td_rights0\"", false);
-    $sTable .= $oTable->cell($sDescription, "", "", " class=\"td_rights1\" style=\"white-space:normal; \"", false);
-
+	$objItem->updateAttributes(array("class" => "td_rights0"));
+    $objItem->setContent($sTplName ? $sTplName : "&nbsp;");
+	$items .= $objItem->render();
+	$objItem->advanceID();
+	$objItem->updateAttributes(array("class" => "td_rights1", "style" => "white-space:normal;"));
+	$objItem->setContent($sDescription ? $sDescription : "&nbsp;");
+	$items .= $objItem->render();
+	$objItem->advanceID();
 
     //set javscript array for itemids
     $sJsBefore .= "itemids[\"".$db->f("idlay")."\"]=\"x\";\n";
@@ -149,23 +181,39 @@ while ($db->next_record()) {
 
                 //set the checkbox the name consits of areait+actionid+itemid
                 //"<input type=\"checkbox\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idlay")."]\" value=\"x\" $checked>
-                $sTable .= $oTable->cell("<input type=\"checkbox\"  name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idlay")."]\" value=\"x\" $checked>", "", "", " class=\"td_rights3\"", false);
+				$objItem->updateAttributes(array("class" => "td_rights3", "style" => ""));
+				$objItem->setContent("<input type=\"checkbox\"  name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idlay")."]\" value=\"x\" $checked>", "", "", " class=\"td_rights3\"");
+				$items .= $objItem->render();
+				$objItem->advanceID();
             }
         }
     }
 
     // checkbox for checking all actions fore this itemid
-    $sTable .= $oTable->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idlay")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idlay")."')\">","", "", " class=\"td_rights3\"", false);
-    $sTable .= $oTable->end_row();
+	$objItem->setContent("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idlay")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idlay")."')\">","", "", " class=\"td_rights3\"");
+	$items .= $objItem->render();
+	$objItem->advanceID();
+
+	$objRow->setContent($items);
+	$items = "";
+	$output .= $objRow->render();
+	$objRow->advanceID();
 
 }
+//table footer
+$footeroutput = "";
+$objItem->updateAttributes(array("class" => "","valign" => "top", "align" => "right", "colspan" => "8"));
+$objItem->setContent("<a href=javascript:submitrightsform('','area')><img src=\"".$cfg['path']['images']."but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"><a href=javascript:submitrightsform('group_edit','')><img src=\"".$cfg['path']['images']."but_ok.gif\" border=0></a>");
+$items = $objItem->render();
+$objItem->advanceID();
+$objFooterRow->setContent($items);
+$items = "";
+$footeroutput = $objFooterRow->render();
+$objFooterRow->advanceID();
 
-$sTable .= $oTable->end_row();
-$sTable .= $oTable->row();
-$sTable .= $oTable->sumcell("<a href=javascript:submitrightsform('','area')><img src=\"".$cfg['path']['images']."but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=javascript:submitrightsform('group_edit','')><img src=\"".$cfg['path']['images']."but_ok.gif\" border=0></a>","right");
-$sTable .= $oTable->end_row();
-$sTable .= $oTable->end_table();
-
+$oTable->setContent($headeroutput.$output.$footeroutput);
+$sTable = stripslashes($oTable->render());
+//Table end
 
 // generate Template
 $oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
