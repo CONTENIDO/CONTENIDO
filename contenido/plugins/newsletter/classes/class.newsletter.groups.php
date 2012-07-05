@@ -328,7 +328,7 @@ class RecipientGroupCollection extends NewsletterRecipientGroupCollection {
     public function __construct()
     {
         cDeprecated("Use NewsletterRecipientGroupCollection instead");
-        $this->__construct();
+        parent::__construct();
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
@@ -345,7 +345,7 @@ class RecipientGroup extends NewsletterRecipientGroup {
     public function __construct()
     {
         cDeprecated("Use NewsletterRecipientGroup instead");
-        $this->__construct();
+        parent::__construct();
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
@@ -362,7 +362,7 @@ class RecipientGroupMemberCollection extends NewsletterRecipientGroupMemberColle
     public function __construct()
     {
         cDeprecated("Use NewsletterRecipientGroupMemberCollection instead");
-        $this->__construct();
+        parent::__construct();
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
@@ -379,7 +379,7 @@ class RecipientGroupMember extends NewsletterRecipientGroupMember {
     public function __construct()
     {
         cDeprecated("Use NewsletterRecipientGroupMember instead");
-        $this->__construct();
+        parent::__construct();
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
