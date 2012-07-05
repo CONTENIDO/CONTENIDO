@@ -245,17 +245,14 @@ function getFileContent($filename, $path)
 /**
  * Returns the filetype (extension).
  *
- * @deprecated [2012-07-04] These functions are now in cFileHandler
  *
  * @param   string  $filename  The file to get the type
  * @return  string  Filetype
  */
 function getFileType($filename)
 {
-    cDeprecated("This function was replaced by cFileHandler");
-
-    $ret = cFileHandler::info($filename);
-    return $ret['extension'];
+    $aFileName = explode(".", $filename);
+    return $aFileName[count($aFileName) - 1];
 }
 
 

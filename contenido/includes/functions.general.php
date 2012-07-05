@@ -1325,7 +1325,7 @@ function cDie($file, $line, $message)
  *     and 1 is the function called buildStackString (e.g. cWarning)
  * @return string
  */
-function buildStackString($startlevel = 3)
+function buildStackString($startlevel = 2)
 {
     $e = new Exception();
     $stack = $e->getTrace();

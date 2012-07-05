@@ -236,26 +236,32 @@ class cFileHandler
     public static function info($filename) {
         $ret = array();
 
-        $ret['size'] = filesize($filename);
-        $ret['atime'] = fileatime($filename);
-        $ret['ctime'] = filectime($filename);
-        $ret['mtime'] = filemtime($filename);
+		$ret['size'] = @filesize($filename);
+		$ret['atime'] = @fileatime($filename);
+		$ret['ctime'] = @filectime($filename);
+		$ret['mtime'] = @filemtime($filename);
 
-        $temp = decoct(fileperms($filename));
-        $ret['perms'] = substr($temp, strlen($temp) - 4);
+		$temp = @decoct(fileperms($filename));
+		$ret['perms'] = substr($temp, strlen($temp) - 4);
 
-        $ret['extension'] = substr(basename($filename), strrpos($filename, "."));
-        if ($ret['extension'] == basename($filename)) {
-            $reet['extension'] = "";
-        }
+		$ret['extension'] = substr(basename($filename), (int) strrpos(basename($filename), ".") + 1);
+		if($ret['extension'] == basename($filename)) {
+			$ret['extension'] = "";
+		}
 
-        if (version_compare(PHP_VERSION, "5.3", "<")) {
-            $ret['mime'] = mime_content_type($filename); //function is deprecated in PHP 5.3
-        } else {
-            $finfo = finfo_open(FILEINFO_MIME_TYPE); //extension has to be installed seperately in versions prior to 5.3
-            $ret['mime'] = finfo_file($finfo, $filename);
-        }
+		if(version_compare(PHP_VERSION, "5.3", "<")) {
+			$ret['mime'] = @mime_content_type($filename); //function is deprecated in PHP 5.3
+		} else {
+			$finfo = @finfo_open(FILEINFO_MIME_TYPE); //extension has to be installed seperately in versions prior to 5.3
+			$ret['mime'] = @finfo_file($finfo, $filename);
+		}
 
+		foreach($ret as $value) {
+			if($value === false) {
+				cWarning(__FILE__, __LINE__, "Couldn't read ".$filename);
+				return $ret;
+			}
+		}
         return $ret;
     }
 }
