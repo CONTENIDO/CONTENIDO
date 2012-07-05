@@ -217,7 +217,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
                  . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
             $db2->query($sql);
             $db2->next_record();
-            $pdflink.= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
+            $pdflink.= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".$db2->f("description")."]</option>";
         }
 
         $pdflink.= "</select>";
@@ -239,7 +239,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
                  . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
             $db2->query($sql);
             $db2->next_record();
-            $imglink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
+            $imglink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".$db2->f("description")."]</option>";
         }
 
         $imglink .= "</select>";
@@ -260,7 +260,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
                  . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
             $db2->query($sql);
             $db2->next_record();
-            $ziplink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
+            $ziplink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".$db2->f("description")."]</option>";
         }
 
         $ziplink .= "</select>";
@@ -281,7 +281,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
                  . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
             $db2->query($sql);
             $db2->next_record();
-            $audiolink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
+            $audiolink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".$db2->f("description")."]</option>";
         }
 
         $audiolink .= "</select>";
@@ -303,7 +303,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
                  . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
             $db2->query($sql);
             $db2->next_record();
-            $anylink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
+            $anylink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".$db2->f("description")."]</option>";
         }
 
         $anylink .= "</select>";

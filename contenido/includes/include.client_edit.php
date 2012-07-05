@@ -89,7 +89,7 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
                 $buffer = cFileHandler::read($destPath."config.php");
                 $outbuf = str_replace("!CLIENT!", $idclient, $buffer);
                 $outbuf = str_replace("!PATH!", $cfg["path"]["contenido"], $outbuf);
-                if(!cFileHandler::write($destPath."config.php.new")) {
+                if(!cFileHandler::write($destPath."config.php.new", $outbuf)) {
                       $notification->displayNotification("error",i18n("Couldn't write the file config.php."));
                 }
 

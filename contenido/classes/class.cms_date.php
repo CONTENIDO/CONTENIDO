@@ -153,7 +153,7 @@ class Cms_Date
         $this->sEditAreaId = '';
         $this->sDivSelectId = '';
         // if is empty, fill it with space character. Thats important for CONTENIDO input area!
-        $this->sContent = ($sContent == '') ? '&nbsp;' : urldecode($sContent);
+        $this->sContent = ($sContent == '') ? '&nbsp;' : $sContent;
         $this->sSelectId = '';
         $this->iTotalCount = $iTotalCount;
         $this->sJS = '';
@@ -167,7 +167,7 @@ class Cms_Date
      */
     public function getAllWidgetEdit()
     {
-        $this->sContent = urldecode($this->sContent);
+        $this->sContent = $this->sContent;
         $this->sContent = addslashes($this->sContent);
         $this->sContent = str_replace("\\'", "'", $this->sContent);
         $this->sContent = str_replace("\$", '\\$', $this->sContent);

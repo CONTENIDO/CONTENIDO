@@ -94,7 +94,7 @@ class cSecurity
         if (defined('CONTENIDO_STRIPSLASHES')) {
             $sString = stripslashes($sString);
         }
-        return self::escapeDB(htmlspecialchars(urlencode($sString)), $oDb, false);
+        return self::escapeDB(htmlspecialchars($sString), $oDb, false);
     }
 
     /**
@@ -106,7 +106,7 @@ class cSecurity
     public static function unFilter($sString)
     {
         $sString = self::toString($sString);
-        return urldecode(htmldecode(self::unEscapeDB($sString)));
+        return htmldecode(self::unEscapeDB($sString));
     }
 
     /**

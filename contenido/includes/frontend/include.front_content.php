@@ -474,7 +474,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             $userProperties = $userPropColl->fetchByTypeName('frontend', 'allowed_ip');
             foreach ($userProperties as $userProperty) {
                 $user_id = $userProperty->get('user_id');
-                $range = urldecode($userProperty->f('value'));
+                $range = $userProperty->f('value');
                 $slash = strpos($range, '/');
 
                 if ($slash == false) {

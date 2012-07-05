@@ -264,7 +264,7 @@ class cApiArticleLanguage extends Item
 
         $this->content = array();
         while ($this->db->next_record()) {
-            $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')] = urldecode($this->db->f('value'));
+            $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
         }
     }
 
@@ -305,7 +305,7 @@ class cApiArticleLanguage extends Item
      */
     public function getField($name)
     {
-        return urldecode($this->values[$name]);
+        return $this->values[$name];
     }
 
     /**

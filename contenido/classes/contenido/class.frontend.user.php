@@ -79,7 +79,7 @@ class cApiFrontendUserCollection extends ItemCollection
         global $client, $auth;
 
         // Check if the username already exists
-        $this->select("idclient=" . (int) $client . " AND username='" . urlencode($username) . "'");
+        $this->select("idclient=" . (int) $client . " AND username='" . $username . "'");
 
         if ($this->next()) {
             return $this->create($username . '_' . substr(md5(rand()), 0, 10), $password);

@@ -475,11 +475,11 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
                     if ($sSQLSearchIn !== "") {
                         $sSQLSearchIn .= " OR ";
                     }
-                    $sSQLSearchIn .= $aData["field"] . " LIKE '%" . urlencode($_REQUEST["outsider_filter"]) . "%'";
+                    $sSQLSearchIn .= $aData["field"] . " LIKE '%" . $_REQUEST["outsider_filter"] . "%'";
                 }
             }
         } else {
-            $sSQLSearchIn .= urlencode($_REQUEST["outsider_searchin"]) . " LIKE '%" . urlencode($_REQUEST["outsider_filter"]) . "%'";
+            $sSQLSearchIn .= $_REQUEST["outsider_searchin"] . " LIKE '%" . urlencode($_REQUEST["outsider_filter"]) . "%'";
         }
         $sSQL .= " AND (" . $sSQLSearchIn . ")";
     }
@@ -496,7 +496,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     }
 
     // Get data
-    $sSQLSort = " ORDER BY ".urlencode($_REQUEST["outsider_sortby"])." ".$_REQUEST["outsider_sortorder"];
+    $sSQLSort = " ORDER BY ".$_REQUEST["outsider_sortby"]." ".$_REQUEST["outsider_sortorder"];
     if ($_REQUEST["outsider_sortby"] == "name")
     {
         // Name field may be empty, add email as sort criteria

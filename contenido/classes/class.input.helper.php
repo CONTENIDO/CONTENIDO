@@ -100,7 +100,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
                 while ($oDB->next_record())
                 {
                     // Generate new option element
-                    $oOption = new cHTMLOptionElement($sSpaces."&nbsp;&nbsp;&nbsp;".substr(urldecode($oDB->f("title")), 0, 32), $oDB->f("idcatart"));
+                    $oOption = new cHTMLOptionElement($sSpaces."&nbsp;&nbsp;&nbsp;".substr($oDB->f("title"), 0, 32), $oDB->f("idcatart"));
 
                     if ($bColored)
                     {
@@ -192,7 +192,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
                     // Show only categories - and everything is fine...
                     $sValue = $iID;
                 }
-                $oOption = new cHTMLOptionElement($sSpaces.">&nbsp;".urldecode($oDB->f("name")), $sValue);
+                $oOption = new cHTMLOptionElement($sSpaces.">&nbsp;".$oDB->f("name"), $sValue);
 
                 // Coloring option element, restricted shows grey color
                 $oOption->setStyle("background-color: #EFEFEF");
@@ -253,7 +253,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
                     $sTypeIdentifier = "tblData.idtype = '".$oDB->f('idtype')."' AND tblData.typeid = '".$oDB->f('typeid')."'";
 
                     // Generate new option element
-                    $oOption = new cHTMLOptionElement($oDB->f('type')."[".$oDB->f('typeid')."]: ".substr(strip_tags(urldecode($oDB->f("value"))), 0, 50), $sTypeIdentifier);
+                    $oOption = new cHTMLOptionElement($oDB->f('type')."[".$oDB->f('typeid')."]: ".substr(strip_tags($oDB->f("value")), 0, 50), $sTypeIdentifier);
 
                     // Add option element to the list
                     $this->addOptionElement($sTypeIdentifier, $oOption);

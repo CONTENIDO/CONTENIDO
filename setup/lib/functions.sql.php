@@ -99,6 +99,43 @@ function addAutoIncrementToTables($db, $cfg)
     }
 }
 
+function URLDecodeTables($db) {
+	global $cfg;
+
+	URLDecodeTable($db, $cfg['tab']['frontendusers']);
+	URLDecodeTable($db, $cfg['tab']['content']);
+	URLDecodeTable($db, $cfg['tab']['properties']);
+	URLDecodeTable($db, $cfg['tab']['upl_meta']);
+	URLDecodeTable($db, $cfg['tab']['container']);
+	URLDecodeTable($db, $cfg['tab']['pica_lang']);
+	URLDecodeTable($db, $cfg['tab']['news_rcp']);
+	URLDecodeTable($db, $cfg['tab']['art_lang']);
+	URLDecodeTable($db, $cfg['tab']['user_prop']);
+	URLDecodeTable($db, $cfg['tab']['system_prop']);
+	URLDecodeTable($db, $cfg['tab']['art_spec']);
+	URLDecodeTable($db, $cfg['tab']['news_jobs']);
+}
+
+function URLDecodeTable($db, $table) {
+	$sql = "SELECT * FROM ".$table;
+	$db->query($sql);
+
+	while($db->next_record()) {
+		$row = $db->toArray(FETCH_ASSOC);
+		$sql = "UPDATE ".$table." SET ";
+		foreach($row as $key => $value) {
+			$sql .= "`".$key."`='".urldecode($value)."', ";
+		}
+		$sql = substr($sql, 0, strlen($sql) - 2)." WHERE ";
+		foreach($row as $key => $value) {
+			$sql .= "`".$key."`= '".$value."' AND ";
+		}
+		$sql = substr($sql, 0, strlen($sql) - 5).";";
+		$db2 = getSetupMySQLDBConnection(false);
+		$db2->query($sql);
+	}
+}
+
 function convertToDatetime($db, $cfg) {
     $db->query("ALTER TABLE ".$cfg['sql']['sqlprefix']."_piwf_art_allocation CHANGE  `starttime`  `starttime` DATETIME NOT NULL");
     $db->query("ALTER TABLE ".$cfg['sql']['sqlprefix']."_template_conf CHANGE  `created`  `created` DATETIME NOT NULL");

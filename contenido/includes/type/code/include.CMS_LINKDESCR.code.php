@@ -36,7 +36,6 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 $tmp = $a_content['CMS_LINKDESCR'][$val];
-$tmp = urldecode($tmp);
 $tmp = htmlspecialchars($tmp);
 $tmp = str_replace("'", "\'", $tmp);
 

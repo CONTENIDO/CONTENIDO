@@ -82,7 +82,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
     echo "  <table cellpadding=$cellpadding cellspacing=$cellpadding border=0>";
 
     echo "  <tr><td valign=top class=text_medium>&nbsp;".$typenr.".&nbsp;".$a_description[$type][$typenr].":&nbsp;</td><td class=content>";
-    echo "  <textarea name=CMS_HTMLTEXT rows=15 cols=90>".strip_tags(urldecode($a_content[$type][$typenr]))."</textarea>";
+    echo "  <textarea name=CMS_HTMLTEXT rows=15 cols=90>".strip_tags($a_content[$type][$typenr])."</textarea>";
     echo "  </td></tr>";
     echo "  <tr valign=top><td colspan=2><br>
                   <a href=".$sess->url($path2)."><img src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_cancel.gif\" border=0></a>

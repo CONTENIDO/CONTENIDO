@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$tmp = urldecode($a_content['CMS_LINK'][$val]);
+$tmp = $a_content['CMS_LINK'][$val];
 
 // Internal link
 if (is_numeric($tmp)) {

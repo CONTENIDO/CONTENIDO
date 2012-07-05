@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$tmp = urldecode($a_content['CMS_IMG'][$val]);
+$tmp = $a_content['CMS_IMG'][$val];
 
 if ($tmp == '' || $tmp == '0') {
     $tmp = '';
@@ -50,7 +50,6 @@ if ($tmp == '' || $tmp == '0') {
     }
 
     $tmp = htmlspecialchars($tmp);
-    $tmp = urldecode($tmp);
     $tmp = str_replace("'", "\'", $tmp);
 }
 

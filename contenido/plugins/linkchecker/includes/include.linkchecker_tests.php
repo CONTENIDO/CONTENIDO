@@ -200,7 +200,7 @@ function checkLinks() {
                 $sFilename = substr($sDBurl, $iPos + 1);
 
                 // Check categorys
-                $sql = "SELECT iddbfs FROM " . $cfg['tab']['dbfs'] . " WHERE dirname IN('" . $sDirname . "', '" . html_entity_decode($sDirname) . "', '" . urldecode($sDirname) . "') AND filename = '" . $sFilename . "'";
+                $sql = "SELECT iddbfs FROM " . $cfg['tab']['dbfs'] . " WHERE dirname IN('" . $sDirname . "', '" . html_entity_decode($sDirname) . "', '" . $sDirname . "') AND filename = '" . $sFilename . "'";
                 $db->query($sql);
 
                 if($db->num_rows() == 0) {

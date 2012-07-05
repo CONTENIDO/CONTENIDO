@@ -36,7 +36,6 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 $tmp = $a_content['CMS_HEAD'][$val];
-$tmp = urldecode($tmp);
 $tmp = htmlspecialchars($tmp);
 
 if ($edit) {

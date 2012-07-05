@@ -797,7 +797,7 @@ function uplSearch($searchfor)
     $oUploadsCol = new cApiUploadCollection();
 
     $clientdb = cSecurity::toInteger($client);
-    $searchfordb = $oPropertiesCol->escape(urlencode($searchfor));
+    $searchfordb = $oPropertiesCol->escape($searchfor);
 
     // Search for keywords first, ranking +5
     $oPropertiesCol->select("idclient='".$clientdb."' AND itemtype='upload' AND type='file' AND name='keywords' AND value LIKE '%".$searchfordb."%'",'itemid');

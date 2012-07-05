@@ -262,7 +262,7 @@ function conGetContentFromArticle($iIdArtLang)
             WHERE A.idtype=C.idtype AND A.idartlang=B.idartlang AND A.idartlang='. (int) $iIdArtLang;
     $oDB->query($sql);
     while ($oDB->next_record()) {
-        $aContent[$oDB->f('type')][$oDB->f('typeid')] = urldecode($oDB->f('value'));
+        $aContent[$oDB->f('type')][$oDB->f('typeid')] = $oDB->f('value');
     }
 
     return $aContent;

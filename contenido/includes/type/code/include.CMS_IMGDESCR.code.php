@@ -36,7 +36,6 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 $tmp = $a_content['CMS_IMGDESCR'][$val];
-$tmp = urldecode($tmp);
 $tmp = htmlentities($tmp, ENT_QUOTES);
 
 if ($edit) {

@@ -243,7 +243,7 @@ if($sCache_errors && $_GET['live'] != 1) {
     while ($db->next_record()) {
 
         // Text decode
-        $value = urldecode($db->f("value"));
+        $value = $db->f("value");
 
         // Search the text
         searchLinks($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"));

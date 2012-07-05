@@ -104,7 +104,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
         $messages = array();
 
         if ($feuser->get("username") != stripslashes($username)) {
-            $feusers->select("username = '".urlencode($username)."' and idclient='$client'");
+            $feusers->select("username = '".$username."' and idclient='$client'");
             if ($feusers->next()) {
                 $messages[] = i18n("Could not set new username: Username already exists");
             } else {

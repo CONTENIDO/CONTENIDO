@@ -390,7 +390,7 @@ abstract class cCodeGeneratorAbstract
         $CiCMS_Values = array();
 
         foreach ($containerCfgList as $key3 => $value3) {
-            $tmp = urldecode($value3);
+            $tmp = $value3;
             $tmp = str_replace("\'", "'", $tmp);
             $CiCMS_Values[] = $CiCMS_Var . '[' . $key3 . '] = "' . $tmp . '"; ';
             $this->_moduleCode = str_replace("\$CMS_VALUE[$key3]", $tmp, $this->_moduleCode);

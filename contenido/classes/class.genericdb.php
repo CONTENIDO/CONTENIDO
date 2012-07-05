@@ -1725,13 +1725,13 @@ abstract class Item extends cItemBaseAbstract
      * List of funcion names of the filters used when data is stored to the db.
      * @var  array
      */
-    protected $_arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
+    protected $_arrInFilters = array('htmlspecialchars', 'addslashes');
 
     /**
      * List of funcion names of the filtersused when data is retrieved from the db
      * @var  array
      */
-    protected $_arrOutFilters = array('stripslashes', 'htmldecode', 'urldecode');
+    protected $_arrOutFilters = array('stripslashes', 'htmldecode');
 
     /**
      * Class name of meta object

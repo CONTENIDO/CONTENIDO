@@ -89,12 +89,12 @@ class pApiTree {
     /**
      *
      */
-    var $_arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
+    var $_arrInFilters = array('htmlspecialchars', 'addslashes');
 
     /**
      *
      */
-    var $_arrOutFilters = array('stripslashes', 'htmldecode', 'urldecode');
+    var $_arrOutFilters = array('stripslashes', 'htmldecode');
 
     function pApiTree ($uuid) {
         global $db, $cfg, $lang, $client, $auth;

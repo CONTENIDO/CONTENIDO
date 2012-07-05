@@ -1026,7 +1026,7 @@ class cApiUser extends Item
             $result = $userProp->get('value');
         }
 
-        return ($result !== false) ? urldecode($result) : false;
+        return ($result !== false) ? $result : false;
     }
 
     /**
@@ -1058,7 +1058,7 @@ class cApiUser extends Item
                 $groupPropColl = new cApiGroupPropertyCollection($groupid);
                 $groupProps = $groupPropColl->fetchByGroupIdType($type);
                 foreach ($groupProps as $groupProp) {
-                    $props[$groupProp->get('name')] = urldecode($groupProp->get('value'));
+                    $props[$groupProp->get('name')] = $groupProp->get('value');
                 }
             }
         }
@@ -1067,7 +1067,7 @@ class cApiUser extends Item
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
         $userProps = $userPropColl->fetchByUserIdType($type);
         foreach ($userProps as $userProp) {
-            $props[$userProp->get('name')] = urldecode($userProp->get('value'));
+            $props[$userProp->get('name')] = $userProp->get('value');
         }
 
         return $props;

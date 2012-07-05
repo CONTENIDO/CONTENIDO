@@ -56,7 +56,6 @@ if ( $idtpl != 0 && $idtplcfg != 0 ) {
                 if (isset($tmp)) {
 
                         foreach ($tmp as $key=>$value) {
-                                $value = urlencode($value);
                                 if (!isset($varstring[$i])) $varstring[$i]="";
                                 $varstring[$i] = $varstring[$i].$key."=".$value."&";
                         }

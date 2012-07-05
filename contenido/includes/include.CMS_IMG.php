@@ -115,7 +115,7 @@ while ($oItem = $oUploadColl->next()) {
     $aImages[] = array(
         'selected' => ($a_content['CMS_IMG'][$typenr] == $oItem->get('idupl')),
         'idupl' => $oItem->get('idupl'),
-        'description' => urldecode($db->f('description')),
+        'description' => $db->f('description'),
         'filename' => $oItem->get('filename'),
     );
 }

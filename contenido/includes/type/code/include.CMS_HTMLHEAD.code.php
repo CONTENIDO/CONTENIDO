@@ -36,7 +36,6 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 $tmp = $a_content['CMS_HTMLHEAD'][$val];
-$tmp = urldecode($tmp);
 
 cInclude('includes', 'functions.lang.php');
 

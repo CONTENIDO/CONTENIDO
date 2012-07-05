@@ -144,7 +144,7 @@ class Cms_LinkEditor {
         $this->aCfg         = $aCfg;
         $this->iId             = $iNumberOfCms;
         $this->iIdArtLang     = $iIdArtLang;
-        $this->sContent     = urldecode($sContent);
+        $this->sContent     = $sContent;
         $this->iClient         = $iClient;
         $this->iLang         = $iLang;
         $this->aCfgClient     = $aCfgClient;
@@ -735,7 +735,7 @@ class Cms_LinkEditor {
         } else {
             $sCode = "";
         }
-        $aCode = explode(']+[', urldecode($sCode));
+        $aCode = explode(']+[', $sCode);
         $aCode[0] = substr($aCode[0], 1);
         $aCode[3] = substr($aCode[3], 0, -1);
         //echo $this->hostName;

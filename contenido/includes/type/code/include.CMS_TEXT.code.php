@@ -38,7 +38,6 @@ if (!defined('CON_FRAMEWORK')) {
 cInclude('includes', 'functions.lang.php');
 
 $tmp = $a_content['CMS_TEXT'][$val];
-$tmp = urldecode($tmp);
 $tmp = htmlspecialchars($tmp);
 $tmp = nl2br($tmp);
 $tmp = str_replace('<br />', '<br>', $tmp);

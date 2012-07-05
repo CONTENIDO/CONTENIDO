@@ -178,7 +178,7 @@ class Cms_FileList {
         $this->aCfg         = $aCfg;
         $this->iId             = $iNumberOfCms;
         $this->iIdArtLang     = $iIdArtLang;
-        $this->sContent     = urldecode($sContent);
+        $this->sContent     = $sContent;
         $this->iClient         = $iClient;
         $this->iLang         = $iLang;
         $this->aCfgClient     = $aCfgClient;

@@ -203,9 +203,9 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     foreach ($arrArtSpecs as $id => $value) {
         if ($arrArtSpecs[$id]['online'] == 1) {
             if (($arrArtSpecs[$id]['default'] == 1) && (strlen($tmp_artspec) == 0 || $tmp_artspec == 0)) {
-                $tmp_inputArtSort .= "<option value=\"$id\" selected>".urldecode($arrArtSpecs[$id]['artspec'])."</option>";
+                $tmp_inputArtSort .= "<option value=\"$id\" selected>".$arrArtSpecs[$id]['artspec']."</option>";
             } elseif ($id == $tmp_artspec) {
-                $tmp_inputArtSort .= "<option value=\"$id\" selected>".urldecode($arrArtSpecs[$id]['artspec'])."</option>";
+                $tmp_inputArtSort .= "<option value=\"$id\" selected>".$arrArtSpecs[$id]['artspec']."</option>";
             } else {
                 $tmp_inputArtSort .= "<option value=\"$id\">".ucfirst($arrArtSpecs[$id]['artspec'])."</option>";
             }

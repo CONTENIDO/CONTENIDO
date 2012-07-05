@@ -38,6 +38,5 @@ if (!defined('CON_FRAMEWORK')) {
 $tmp = $a_content['CMS_LINKTARGET'][$val];
 $tmp = htmlspecialchars($tmp);
 $tmp = str_replace("'", "\'", $tmp);
-$tmp = urldecode($tmp);
 
 ?>

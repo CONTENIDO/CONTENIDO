@@ -38,7 +38,6 @@ if (!defined('CON_FRAMEWORK')) {
 cInclude('includes', 'functions.lang.php');
 
 $content = $a_content['CMS_HTMLTEXT'][$val];
-$content = urldecode($content);
 $content = htmldecode($content);
 $content = strip_tags($content);
 

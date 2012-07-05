@@ -150,7 +150,7 @@ class Cms_Image {
         $this->aCfg         = $aCfg;
         $this->iId             = $iNumberOfCms;
         $this->iIdArtLang     = $iIdArtLang;
-        $this->sContent     = urldecode($sContent);
+        $this->sContent     = $sContent;
         $this->iClient         = $iClient;
         $this->iLang         = $iLang;
         $this->aCfgClient     = $aCfgClient;
@@ -467,7 +467,7 @@ class Cms_Image {
 
             $oTpl->set('s', 'DIRECTORY_FILE',                         $this->getFileSelect($this->activeFilename, $this->iId));
             $oTpl->set('s', 'IMAGE_TITLE',                             $this->oDb->f('medianame'));
-            $oTpl->set('s', 'IMAGE_DESC',                            urldecode($this->oDb->f('description')));
+            $oTpl->set('s', 'IMAGE_DESC',                            $this->oDb->f('description'));
             $oTpl->set('s', 'IMAGE_KEYWORDS',                         $this->oDb->f('keywords'));
             $oTpl->set('s', 'IMAGE_INTERNAL_NOTICE',                 $this->oDb->f('internal_notice'));
             $oTpl->set('s', 'IMAGE_COPYRIGHT',                         $this->oDb->f('copyright'));
@@ -539,15 +539,15 @@ class Cms_Image {
         $this->oDb->query($query);
         $array = array();
         if ($this->oDb->next_record()) {
-            echo $array[$iImageId]['medianame'] = urldecode($this->oDb->f('medianame'));
+            echo $array[$iImageId]['medianame'] = $this->oDb->f('medianame');
             echo '+++';
-            echo $array[$iImageId]['description'] = urldecode($this->oDb->f('description'));
+            echo $array[$iImageId]['description'] = $this->oDb->f('description');
             echo '+++';
-            echo $array[$iImageId]['keywords'] = urldecode($this->oDb->f('keywords'));
+            echo $array[$iImageId]['keywords'] = $this->oDb->f('keywords');
             echo '+++';
-            echo $array[$iImageId]['internal_notice'] = urldecode($this->oDb->f('internal_notice'));
+            echo $array[$iImageId]['internal_notice'] = $this->oDb->f('internal_notice');
             echo '+++';
-            echo $array[$iImageId]['copyright'] = urldecode($this->oDb->f('copyright'));
+            echo $array[$iImageId]['copyright'] = $this->oDb->f('copyright');
             echo '+++';
         } else {
             echo '';

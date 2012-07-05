@@ -318,7 +318,7 @@ function ig_getImageDescription($idupl) {
     }
     $db->query($query);
     if ($db->next_record()) {
-        return htmlspecialchars(urldecode($db->f("description")));
+        return htmlspecialchars($db->f("description"));
     } else {
         return '';
     }

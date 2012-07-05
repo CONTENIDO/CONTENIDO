@@ -62,7 +62,7 @@ function getAvailableContentTypes($idartlang)
     $db->query($sql);
 
     while ($db->next_record()) {
-        $a_content[$db->f('type')][$db->f('typeid')] = urldecode($db->f('value'));
+        $a_content[$db->f('type')][$db->f('typeid')] = $db->f('value');
         $a_description[$db->f('type')][$db->f('typeid')] = i18n($db->f('description'));
     }
 }
@@ -634,10 +634,10 @@ function getSystemProperties($bGetPropId = false)
         $item = $prop->toArray();
 
         if ($bGetPropId) {
-            $return[$item['type']][$item['name']]['value'] = urldecode($item['value']);
-            $return[$item['type']][$item['name']]['idsystemprop'] = urldecode($item['idsystemprop']);
+            $return[$item['type']][$item['name']]['value'] = $item['value'];
+            $return[$item['type']][$item['name']]['idsystemprop'] = $item['idsystemprop'];
         } else {
-            $return[$item['type']][$item['name']] = urldecode($item['value']);
+            $return[$item['type']][$item['name']] = $item['value'];
         }
 
     }
@@ -656,7 +656,7 @@ function getSystemProperty($type, $name)
 {
     $systemPropColl = new cApiSystemPropertyCollection();
     $prop = $systemPropColl->fetchByTypeName($type, $name);
-    return ($prop) ? urldecode($prop->get('value')) : false;
+    return ($prop) ? $prop->get('value') : false;
 }
 
 /**
@@ -672,7 +672,7 @@ function getSystemPropertiesByType($type)
     $systemPropColl = new cApiSystemPropertyCollection();
     $props = $systemPropColl->fetchByType($type);
     foreach ($props as $prop) {
-        $return[$prop->get('name')] = urldecode($prop->get('value'));
+        $return[$prop->get('name')] = $prop->get('value');
     }
     if (count($return) > 1) {
         ksort($return);
@@ -750,14 +750,14 @@ function addArtspec($artspectext, $online)
     global $db, $cfg, $lang, $client;
 
     if (isset($_POST['idartspec'])) { //update
-        $fields = array('artspec' => urldecode($artspectext), 'online' => (int) $online);
+        $fields = array('artspec' => $artspectext, 'online' => (int) $online);
         $where = array('idartspec' => (int) $_POST['idartspec']);
         $sql = $db->buildUpdate($cfg['tab']['art_spec'], $fields, $where);
     } else {
         $fields = array(
             'client' => (int) $client,
             'lang' => (int) $lang,
-            'artspec' => urldecode($artspectext),
+            'artspec' => $artspectext,
             'online' => 0,
             'artspecdefault' => 0
         );

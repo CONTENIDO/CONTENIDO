@@ -494,7 +494,6 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     while ($chainEntry = $iterator->next()) {
         $value = $chainEntry->execute($idartlang, $type, $typeid, $value);
     }
-    $value = urlencode($value);
 
     $sql = "SELECT * FROM ".$cfg["tab"]["type"]." WHERE type = '".$db->escape($type)."'";
     $db->query($sql);

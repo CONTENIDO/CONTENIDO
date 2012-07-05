@@ -434,7 +434,7 @@ while ($oDB->next_record()) {
     if ($oDB->f("author") == $auth->auth["uid"]) {
         $bUserInList = true;
     }
-    $aItems[] = array($oDB->f("author"), urldecode($oDB->f("authorname")));
+    $aItems[] = array($oDB->f("author"), $oDB->f("authorname"));
 }
 $oSelAuthor->autoFill($aItems);
 

@@ -342,6 +342,8 @@ if ($currentStep < $totalSteps) {
 
     convertToDatetime($db, $cfg);
 
+    URLDecodeTables($db);
+
     echo '
         <script type="text/javascript">
         parent.document.getElementById("installing").style.visibility="hidden";

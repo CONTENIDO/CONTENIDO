@@ -651,7 +651,7 @@ class ModRewrite extends ModRewriteBase
         $sql = "SELECT urlname FROM " . $cfg['tab']['art_lang'] . " WHERE "
              . "idart = '" . $iArtId . "' AND idlang = '" . $iLangId . "'";
         if ($aData = mr_queryAndNextRecord($sql)) {
-            return urldecode($aData['urlname']);
+            return $aData['urlname'];
         }
         return null;
     }
@@ -670,7 +670,7 @@ class ModRewrite extends ModRewriteBase
         $iArtLangId = (int) $iArtLangId;
         $sql = "SELECT urlname FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang = '". $iArtLangId . "'";
         if ($aData = mr_queryAndNextRecord($sql)) {
-            return urldecode($aData['urlname']);
+            return $aData['urlname'];
         }
         return null;
     }
@@ -722,7 +722,7 @@ class ModRewrite extends ModRewriteBase
             return $mr_statics[$key];
         }
 
-        $sql = "SELECT idclient FROM " . $cfg['tab']['clients'] . " WHERE name = '" . urldecode($sClientName) . "'";
+        $sql = "SELECT idclient FROM " . $cfg['tab']['clients'] . " WHERE name = '" . $sClientName . "'";
         if ($aData = mr_queryAndNextRecord($sql)) {
             $clientId = $aData['idclient'];
         } else {
@@ -785,7 +785,7 @@ class ModRewrite extends ModRewriteBase
 
         $sql  = "SELECT l.idlang FROM " . $cfg['tab']['lang'] . " as l "
               . "LEFT JOIN " . $cfg['tab']['clients_lang'] . " AS cl ON l.idlang = cl.idlang "
-              . "WHERE cl.idclient = '". $iClientId . "' AND l.name = '" . urldecode($sLanguageName) . "'";
+              . "WHERE cl.idclient = '". $iClientId . "' AND l.name = '" . $sLanguageName . "'";
         if ($aData = mr_queryAndNextRecord($sql)) {
             $languageId = $aData['idlang'];
         } else {

@@ -137,7 +137,7 @@ class TemplateConfig
             foreach ($tmpVar as $string)
             {
                 $tmpData = explode("=", $string);
-                $tmpArray[$tmpData[0]] = urldecode($tmpData[1]);
+                $tmpArray[$tmpData[0]] = $tmpData[1];
             }
             return $tmpArray;
         }
