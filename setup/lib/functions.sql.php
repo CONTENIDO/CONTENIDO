@@ -124,7 +124,7 @@ function URLDecodeTable($db, $table) {
 		$row = $db->toArray(FETCH_ASSOC);
 		$sql = "UPDATE ".$table." SET ";
 		foreach($row as $key => $value) {
-			$sql .= "`".$key."`='".urldecode($value)."', ";
+			$sql .= "`".$key."`='".cSecurity::escapeDB(urldecode($value), $db)."', ";
 		}
 		$sql = substr($sql, 0, strlen($sql) - 2)." WHERE ";
 		foreach($row as $key => $value) {
