@@ -326,7 +326,7 @@ class DB_Sql extends DB_Sql_Abstract
      */
     public function nextid($seq_name)
     {
-    	cDeprecated("This function is no longer needed. The ids get updated by the DB");
+        cDeprecated("This function is no longer needed. The ids get updated by the DB");
 
         $nextid = 0;
 

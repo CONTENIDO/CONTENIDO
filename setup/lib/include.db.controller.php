@@ -342,7 +342,7 @@ if ($currentStep < $totalSteps) {
 
     convertToDatetime($db, $cfg);
 
-    URLDecodeTables($db);
+    urlDecodeTables($db);
 
     echo '
         <script type="text/javascript">

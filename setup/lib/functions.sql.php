@@ -25,13 +25,11 @@
  */
 
 if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
+    die('Illegal call');
 }
 
-
 // @FIXME: Comment me plz!
-function injectSQL($db, $prefix, $file, $replacements = array())
-{
+function injectSQL($db, $prefix, $file, $replacements = array()) {
     $file = trim($file);
 
     if (!isReadable($file)) {
@@ -64,16 +62,15 @@ function injectSQL($db, $prefix, $file, $replacements = array())
 }
 
 // @FIXME: Comment me plz!
-function addAutoIncrementToTables($db, $cfg)
-{
+function addAutoIncrementToTables($db, $cfg) {
     $filterTables = array(
-        $cfg['sql']['sqlprefix'].'_pica_alloc_con',
-        $cfg['sql']['sqlprefix'].'_pica_lang',
-        $cfg['sql']['sqlprefix'].'_sequence',
-        $cfg['sql']['sqlprefix'].'_phplib_active_sessions',
-        $cfg['sql']['sqlprefix'].'_online_user',
-        $cfg['sql']['sqlprefix'].'_pi_linkwhitelist',
-        $cfg['sql']['sqlprefix'].'_phplib_auth_user_md5',
+        $cfg['sql']['sqlprefix'] . '_pica_alloc_con',
+        $cfg['sql']['sqlprefix'] . '_pica_lang',
+        $cfg['sql']['sqlprefix'] . '_sequence',
+        $cfg['sql']['sqlprefix'] . '_phplib_active_sessions',
+        $cfg['sql']['sqlprefix'] . '_online_user',
+        $cfg['sql']['sqlprefix'] . '_pi_linkwhitelist',
+        $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5',
     );
 
     $sql = 'SHOW TABLES FROM  ' . $cfg['db']['connection']['database'] . '';
@@ -86,64 +83,63 @@ function addAutoIncrementToTables($db, $cfg)
 
     $i = 0;
     while ($row = mysql_fetch_row($db->Query_ID)) {
-        if (in_array($row[0], $filterTables) === false && strpos($row[0], $cfg['sql']['sqlprefix'].'_') !== false) {
-           alterTableHandling($row);
-           $i++;
+        if (in_array($row[0], $filterTables) === false && strpos($row[0], $cfg['sql']['sqlprefix'] . '_') !== false) {
+            alterTableHandling($row);
+            $i++;
         }
     }
 
     // Security reason: Check iterator alter table before drop table. The count of Tables must be not less than 65.
     if ($i > 65) {
-        $sql = 'DROP TABLE IF EXISTS '.$cfg['sql']['sqlprefix'].'_sequence';
+        $sql = 'DROP TABLE IF EXISTS ' . $cfg['sql']['sqlprefix'] . '_sequence';
         $db->query($sql);
     }
 }
 
-function URLDecodeTables($db) {
-	global $cfg;
+function urlDecodeTables($db) {
+    global $cfg;
 
-	URLDecodeTable($db, $cfg['tab']['frontendusers']);
-	URLDecodeTable($db, $cfg['tab']['content']);
-	URLDecodeTable($db, $cfg['tab']['properties']);
-	URLDecodeTable($db, $cfg['tab']['upl_meta']);
-	URLDecodeTable($db, $cfg['tab']['container']);
-	URLDecodeTable($db, $cfg['tab']['pica_lang']);
-	URLDecodeTable($db, $cfg['tab']['news_rcp']);
-	URLDecodeTable($db, $cfg['tab']['art_lang']);
-	URLDecodeTable($db, $cfg['tab']['user_prop']);
-	URLDecodeTable($db, $cfg['tab']['system_prop']);
-	URLDecodeTable($db, $cfg['tab']['art_spec']);
-	URLDecodeTable($db, $cfg['tab']['news_jobs']);
+    urlDecodeTable($db, $cfg['tab']['frontendusers']);
+    urlDecodeTable($db, $cfg['tab']['content']);
+    urlDecodeTable($db, $cfg['tab']['properties']);
+    urlDecodeTable($db, $cfg['tab']['upl_meta']);
+    urlDecodeTable($db, $cfg['tab']['container']);
+    urlDecodeTable($db, $cfg['tab']['pica_lang']);
+    urlDecodeTable($db, $cfg['tab']['news_rcp']);
+    urlDecodeTable($db, $cfg['tab']['art_lang']);
+    urlDecodeTable($db, $cfg['tab']['user_prop']);
+    urlDecodeTable($db, $cfg['tab']['system_prop']);
+    urlDecodeTable($db, $cfg['tab']['art_spec']);
+    urlDecodeTable($db, $cfg['tab']['news_jobs']);
 }
 
-function URLDecodeTable($db, $table) {
-	$sql = "SELECT * FROM ".$table;
-	$db->query($sql);
+function urlDecodeTable($db, $table) {
+    $sql = "SELECT * FROM " . $table;
+    $db->query($sql);
 
-	while($db->next_record()) {
-		$row = $db->toArray(FETCH_ASSOC);
-		$sql = "UPDATE ".$table." SET ";
-		foreach($row as $key => $value) {
-			$sql .= "`".$key."`='".cSecurity::escapeDB(urldecode($value), $db)."', ";
-		}
-		$sql = substr($sql, 0, strlen($sql) - 2)." WHERE ";
-		foreach($row as $key => $value) {
-			$sql .= "`".$key."`= '".$value."' AND ";
-		}
-		$sql = substr($sql, 0, strlen($sql) - 5).";";
-		$db2 = getSetupMySQLDBConnection(false);
-		$db2->query($sql);
-	}
+    while ($db->next_record()) {
+        $row = $db->toArray(FETCH_ASSOC);
+        $sql = "UPDATE " . $table . " SET ";
+        foreach ($row as $key => $value) {
+            $sql .= "`" . $key . "`='" . cSecurity::escapeDB(urldecode($value), $db) . "', ";
+        }
+        $sql = substr($sql, 0, strlen($sql) - 2) . " WHERE ";
+        foreach ($row as $key => $value) {
+            $sql .= "`" . $key . "`= '" . $value . "' AND ";
+        }
+        $sql = substr($sql, 0, strlen($sql) - 5) . ";";
+        $db2 = getSetupMySQLDBConnection(false);
+        $db2->query($sql);
+    }
 }
 
 function convertToDatetime($db, $cfg) {
-    $db->query("ALTER TABLE ".$cfg['sql']['sqlprefix']."_piwf_art_allocation CHANGE  `starttime`  `starttime` DATETIME NOT NULL");
-    $db->query("ALTER TABLE ".$cfg['sql']['sqlprefix']."_template_conf CHANGE  `created`  `created` DATETIME NOT NULL");
+    $db->query("ALTER TABLE " . $cfg['sql']['sqlprefix'] . "_piwf_art_allocation CHANGE  `starttime`  `starttime` DATETIME NOT NULL");
+    $db->query("ALTER TABLE " . $cfg['sql']['sqlprefix'] . "_template_conf CHANGE  `created`  `created` DATETIME NOT NULL");
 }
 
 // @FIXME: Comment me plz!
-function alterTableHandling($row)
-{
+function alterTableHandling($row) {
     $tableName = $row[0];
 
     $db = getSetupMySQLDBConnection(false);
@@ -167,8 +163,7 @@ function alterTableHandling($row)
  * @param   string  $output
  * @return  string
  */
-function removeComments(&$output)
-{
+function removeComments(&$output) {
     $lines = explode("\n", $output);
     $output = "";
 
@@ -199,8 +194,7 @@ function removeComments(&$output)
  * @param   string  $sql
  * @return  string
  */
-function removeRemarks($sql)
-{
+function removeRemarks($sql) {
     $lines = explode("\n", $sql);
 
     // try to keep mem. use down
@@ -231,8 +225,7 @@ function removeRemarks($sql)
  * @param   string  $delimiter
  * @return  string
  */
-function splitSqlFile($sql, $delimiter)
-{
+function splitSqlFile($sql, $delimiter) {
     // Split up our string into "possible" SQL statements.
     $tokens = explode($delimiter, $sql);
 
@@ -301,7 +294,6 @@ function splitSqlFile($sql, $delimiter)
                         // save memory.
                         $tokens[$j] = "";
                     }
-
                 } // for..
             } // else
         }
