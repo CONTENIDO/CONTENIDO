@@ -52,8 +52,8 @@ $oTpl->reset();
 if (!is_array($right_list)) {
     // Select all rights, actions an their locations without area login
     $sql = "SELECT A.idarea, A.parent_id, B.location, A.name "
-         . "FROM ".$cfg["tab"]["area"]." AS A LEFT JOIN ".$cfg["tab"]["nav_sub"]." AS B ON  A.idarea = B.idarea "
-         . "WHERE A.name!='login' AND A.relevant='1' AND A.online='1' GROUP BY A.name ORDER BY A.idarea";
+            . "FROM " . $cfg["tab"]["area"] . " AS A LEFT JOIN " . $cfg["tab"]["nav_sub"] . " AS B ON  A.idarea = B.idarea "
+            . "WHERE A.name!='login' AND A.relevant='1' AND A.online='1' GROUP BY A.name ORDER BY A.idarea";
     $db->query($sql);
 
     while ($db->next_record()) {
@@ -65,7 +65,7 @@ if (!is_array($right_list)) {
             $right_list[$db->f('parent_id')][$db->f('name')]['location'] = $db->f('location');
         }
 
-        $sql = "SELECT * FROM ".$cfg["tab"]["actions"]." WHERE idarea=" . (int) $db->f("idarea") . " AND relevant='1'";
+        $sql = "SELECT * FROM " . $cfg["tab"]["actions"] . " WHERE idarea=" . (int) $db->f("idarea") . " AND relevant='1'";
         $db2->query($sql);
         while ($db2->next_record()) {
             if ($db->f('parent_id') == '0') {
@@ -100,27 +100,26 @@ $firstClientsLang = 0;
 $counter = 0;
 
 foreach ($clientList as $key => $value) {
-    $sql = "SELECT * FROM ".$cfg["tab"]["lang"]." AS A, ".$cfg["tab"]["clients_lang"]." AS B WHERE B.idclient=" . (int) $key . " AND A.idlang=B.idlang";
+    $sql = "SELECT * FROM " . $cfg["tab"]["lang"] . " AS A, " . $cfg["tab"]["clients_lang"] . " AS B WHERE B.idclient=" . (int) $key . " AND A.idlang=B.idlang";
     $db->query($sql);
 
     while ($db->next_record()) {
         if ((strpos($userPerms, "client[$key]") !== false) &&
-            (strpos($userPerms, "lang[".$db->f("idlang")."]") !== false) &&
-            ($perm->have_perm("lang[".$db->f("idlang")."]")))
-        {
+                (strpos($userPerms, "lang[" . $db->f("idlang") . "]") !== false) &&
+                ($perm->have_perm("lang[" . $db->f("idlang") . "]"))) {
             if ($firstSel == false) {
                 $firstSel = true;
                 $firstClientsLang = $db->f('idclientslang');
             }
 
             if ($rights_clientslang == $db->f('idclientslang')) {
-                $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> '.$db->f('name'), $db->f('idclientslang'), true);
+                $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> ' . $db->f('name'), $db->f('idclientslang'), true);
                 $oHtmlSelect->addOptionElement($counter, $oHtmlSelectOption);
                 if (!isset($rights_client)) {
                     $firstClientsLang = $db->f('idclientslang');
                 }
             } else {
-                $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> '.$db->f('name'), $db->f('idclientslang'), false);
+                $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> ' . $db->f('name'), $db->f('idclientslang'), false);
                 $oHtmlSelect->addOptionElement($counter, $oHtmlSelectOption);
             }
             $counter++;
@@ -141,7 +140,7 @@ if ($area != 'user_content') {
 } else {
     // Filter for displaying rights
     $oHtmlSelect = new cHTMLSelectElement('filter_rights', '', 'filter_rights');
-    $oHtmlSelectOption = new cHTMLOptionElement('--- '.i18n('All').' ---', '', false);
+    $oHtmlSelectOption = new cHTMLOptionElement('--- ' . i18n('All') . ' ---', '', false);
     $oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
     $oHtmlSelectOption = new cHTMLOptionElement(i18n('Article rights'), 'article', false);
     $oHtmlSelect->addOptionElement(1, $oHtmlSelectOption);
@@ -223,13 +222,11 @@ if ($bEndScript == true) {
     $oTpl->set('s', 'JS_SCRIPT_AFTER', '');
     $oTpl->set('s', 'RIGHTS_CONTENT', '');
     $oTpl->set('s', 'EXTERNAL_SCRIPTS', '');
-    $oTpl->generate('templates/standard/'.$cfg['templates']['rights_inc']);
+    $oTpl->generate('templates/standard/' . $cfg['templates']['rights_inc']);
     die();
 }
 
-
-function saverightsarea()
-{
+function saverightsarea() {
     global $userid;
     global $rights_client, $rights_lang, $rights_admin, $rights_sysadmin, $rights_perms, $rights_list;
 
@@ -289,8 +286,7 @@ function saverightsarea()
     saverights();
 }
 
-function saverights()
-{
+function saverights() {
     global $perm, $notification, $db, $userid;
     global $rights_list, $rights_list_old, $rights_client, $rights_lang;
 
@@ -312,8 +308,8 @@ function saverights()
             $data[1] = $perm->getIDForAction($data[1]);
 
             $where = "user_id = '" . $db->escape($userid) . "' AND idclient = " . (int) $rights_client
-                   . " AND idlang = " . (int) $rights_lang . " AND idarea = " . (int) $data[0]
-                   . " AND idcat = " . (int) $data[2] . " AND idaction = " . (int) $data[1] . " AND type = 0";
+                    . " AND idlang = " . (int) $rights_lang . " AND idarea = " . (int) $data[0]
+                    . " AND idcat = " . (int) $data[2] . " AND idaction = " . (int) $data[1] . " AND type = 0";
             $oRightColl = new cApiRightCollection();
             $oRightColl->deleteByWhereClause($where);
         }

@@ -87,7 +87,7 @@ $objHeaderItem->setContent("&nbsp;");
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
 
-// look for possible actions   in mainarea []   in str and con
+// look for possible actions in mainarea [] in str and con
 foreach ($right_list["str"] as $value2) {
     // If there are some actions
     if (is_array($value2["action"])) {
@@ -102,9 +102,9 @@ foreach ($right_list["str"] as $value2) {
                 $sJsBefore .= "actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";";
 
                 $objHeaderItem->updateAttributes(array("class" => "center", "valign" => "top", "align" => "center"));
-				$objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
-				$items .= $objHeaderItem->render();
-				$objHeaderItem->advanceID();
+                $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
+                $items .= $objHeaderItem->render();
+                $objHeaderItem->advanceID();
 
                 array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
             }
@@ -135,8 +135,8 @@ $objHeaderItem->advanceID();
 
 foreach ($aSecondHeaderRow as $value) {
     $objHeaderItem->setContent($value);
-	$items .= $objHeaderItem->render();
-	$objHeaderItem->advanceID();
+    $items .= $objHeaderItem->render();
+    $objHeaderItem->advanceID();
 }
 $objHeaderRow->updateAttributes(array("class" => "textw_medium"));
 $objHeaderRow->setContent($items);
@@ -157,15 +157,15 @@ $iLevel = 0;
 while ($db->next_record()) {
 
     if ($db->f("level") == 0 && $db->f("preid") != 0) {
-		$objItem->updateAttributes(array("colspan" => "13"));
-		$objItem->setContent("&nbsp;");
-		$items = $objItem->render();
-		$objItem->advanceID();
+        $objItem->updateAttributes(array("colspan" => "13"));
+        $objItem->setContent("&nbsp;");
+        $items = $objItem->render();
+        $objItem->advanceID();
 
-		$objRow->setContent($items);
-		$items = "";
-		$output = $objRow->render();
-		$objRow->advanceID();
+        $objRow->setContent($items);
+        $items = "";
+        $output = $objRow->render();
+        $objRow->advanceID();
     } else {
         if ($db->f("level") < $iLevel) {
             $iDistance = $iLevel-$db->f("level");
@@ -206,15 +206,15 @@ while ($db->next_record()) {
             $spaces = $spaces . "&nbsp;&nbsp;&nbsp;&nbsp;";
         }
 
-		$objItem->updateAttributes(array("class" => "td_rights0"));
-	    $objItem->setContent('<img src="images/spacer.gif" height="1" width="'.($db->f("level")*15).'"><a><img src="images/spacer.gif" width="7" id="'.implode('_', $aRowname).'_img"></a> '.$db->f("name"));
-		$items .= $objItem->render();
-		$objItem->advanceID();
+        $objItem->updateAttributes(array("class" => "td_rights0"));
+        $objItem->setContent('<img src="images/spacer.gif" height="1" width="'.($db->f("level")*15).'"><a><img src="images/spacer.gif" width="7" id="'.implode('_', $aRowname).'_img"></a> '.$db->f("name"));
+        $items .= $objItem->render();
+        $objItem->advanceID();
 
-		$objItem->updateAttributes(array("class" => "td_rights0"));
-	    $objItem->setContent("<a href=\"javascript:rightsInheritanceUp('$parentid','$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\"></a> <a href=\"javascript:rightsInheritanceDown('".$db->f("idcat")."')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\"></a>");
-		$items .= $objItem->render();
-		$objItem->advanceID();
+        $objItem->updateAttributes(array("class" => "td_rights0"));
+        $objItem->setContent("<a href=\"javascript:rightsInheritanceUp('$parentid','$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\"></a> <a href=\"javascript:rightsInheritanceDown('".$db->f("idcat")."')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\"></a>");
+        $items .= $objItem->render();
+        $objItem->advanceID();
 
         // look for possible actions in mainarea[]
         foreach ($right_list["str"] as $value2) {
@@ -232,9 +232,9 @@ while ($db->next_record()) {
 
                         //set the checkbox the name consits of areaid+actionid+itemid the id = parebntid+couter for these parentid+areaid+actionid
                         $objItem->updateAttributes(array("class" => "td_rights2"));
-					    $objItem->setContent("<input type=\"checkbox\" id=\"str_".$parentid."_".$counter[$parentid]."_".$value2["perm"]."_$value3\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idcat")."]\" value=\"x\" $checked>");
-						$items .= $objItem->render();
-						$objItem->advanceID();
+                        $objItem->setContent("<input type=\"checkbox\" id=\"str_".$parentid."_".$counter[$parentid]."_".$value2["perm"]."_$value3\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idcat")."]\" value=\"x\" $checked>");
+                        $items .= $objItem->render();
+                        $objItem->advanceID();
                     }
                 }
             }
@@ -242,15 +242,15 @@ while ($db->next_record()) {
 
         //checkbox for checking all actions fore this itemid
         $objItem->updateAttributes(array("class" => "td_rights2"));
-	    $objItem->setContent("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idcat")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idcat")."')\">");
-		$items .= $objItem->render();
-		$objItem->advanceID();
+        $objItem->setContent("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idcat")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idcat")."')\">");
+        $items .= $objItem->render();
+        $objItem->advanceID();
     }
     $objRow->updateAttributes(array("id" => implode('_', $aRowname), "style" => "display: table-row;"));
-	$objRow->setContent($items);
-	$items = "";
-	$output .= $objRow->render();
-	$objRow->advanceID();
+    $objRow->setContent($items);
+    $items = "";
+    $output .= $objRow->render();
+    $objRow->advanceID();
 }
 
 //table footer
