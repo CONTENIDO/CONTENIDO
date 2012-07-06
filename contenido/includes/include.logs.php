@@ -79,7 +79,7 @@ foreach ($clientList as $key => $value) {
 
 foreach ($users as $key => $value) {
     $selected = (strcmp($idquser, $key) == 0) ? ' selected="selected"' : '';
-    $userselect .= '<option value="' . $key . '"' . $selected . '>' . $value['username'] . '(' . $value['realname'] . ')</option>';
+    $userselect .= '<option value="' . $key . '"' . $selected . '>' . $value['username'] . ' (' . $value['realname'] . ')</option>';
 }
 
 foreach ($actions as $key => $value) {
@@ -93,7 +93,7 @@ foreach ($actions as $key => $value) {
         $actionDescription = $value["name"];
     }
 
-    $actionselect .= '<option value="' . $key . '"' . $selected . '>' . $value['name'] . '(' . $actionDescription . ')</option>';
+    $actionselect .= '<option value="' . $key . '"' . $selected . '>' . $value['name'] . ' (' . $actionDescription . ')</option>';
 }
 
 $days = array();
