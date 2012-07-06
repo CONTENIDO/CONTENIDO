@@ -80,7 +80,7 @@ $objHeaderItem->updateAttributes(array("class" => "center", "valign" => "top", "
 $objHeaderItem->setContent(i18n("Module name"));
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
-$objHeaderItem->setContent("Description");
+$objHeaderItem->setContent(i18n("Description"));
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
 

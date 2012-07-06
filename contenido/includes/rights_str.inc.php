@@ -216,7 +216,7 @@ while ($db->next_record()) {
 		$objItem->advanceID();
 
 		$objItem->updateAttributes(array("class" => "td_rights0"));
-	    $objItem->setContent("<a href=\"javascript:rightsInheritanceUp('$parentid','$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\"></a><a href=\"javascript:rightsInheritanceDown('".$db->f("idcat")."')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\"></a>");
+	    $objItem->setContent("<a href=\"javascript:rightsInheritanceUp('$parentid','$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\"></a> <a href=\"javascript:rightsInheritanceDown('".$db->f("idcat")."')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\"></a>");
 		$items .= $objItem->render();
 		$objItem->advanceID();
         // look for possible actions in mainarea[]

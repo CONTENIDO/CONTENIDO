@@ -188,7 +188,7 @@ while ($db->next_record()) {
                 //set the checkbox the name consits of areait+actionid+itemid
                 //"<input type=\"checkbox\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idlay")."]\" value=\"x\" $checked>
                 $objItem->updateAttributes(array("class" => "td_rights3", "style" => ""));
-                $objItem->setContent("<input type=\"checkbox\"  name=\"rights_list[" . $value2["perm"] . "|$value3|" . $db->f("idlay") . "]\" value=\"x\" $checked>", "", "", " class=\"td_rights3\"");
+                $objItem->setContent("<input type=\"checkbox\"  name=\"rights_list[" . $value2["perm"] . "|$value3|" . $db->f("idlay") . "]\" value=\"x\" $checked>");
                 $items .= $objItem->render();
                 $objItem->advanceID();
             }
@@ -196,7 +196,7 @@ while ($db->next_record()) {
     }
 
     // checkbox for checking all actions fore this itemid
-    $objItem->setContent("<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_" . $value3 . "_" . $db->f("idlay") . "\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "','$value3','" . $db->f("idlay") . "')\">", "", "", " class=\"td_rights3\"");
+    $objItem->setContent("<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_" . $value3 . "_" . $db->f("idlay") . "\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "','$value3','" . $db->f("idlay") . "')\">");
     $items .= $objItem->render();
     $objItem->advanceID();
 
