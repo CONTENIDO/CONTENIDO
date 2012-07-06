@@ -389,19 +389,6 @@ class cSetupSystemtest extends cSetupMask
                         return;
                     }
 
-                    // Good, check if we can lock the table
-                    $status = checkMySQLLockTable($db, $_SESSION["dbname"], sprintf("%s_test", $_SESSION["dbprefix"]));
-                    if (!$status) {
-                        $this->runTest(
-                            false, C_SEVERITY_WARNING, i18n("Unable to lock tables in the selected MySQL database"),
-                            sprintf(i18n("Setup tried to lock a test table in the database %s and failed. You can continue, however, you should be aware of possible data losses due to missing locking. It is highly recommended that you assign the LOCK TABLES permission to your database user!"),
-                            $_SESSION["dbname"])
-                        );
-                        $_SESSION["nolock"] = 'true';
-                    } else {
-                        $_SESSION["nolock"] = 'false';
-                    }
-
                     // Good, we could create a table. Now remove it again
                     $status = checkMySQLDropTable ($db, $_SESSION["dbname"], sprintf("%s_test", $_SESSION["dbprefix"]));
                     if (!$status) {
@@ -433,19 +420,6 @@ class cSetupSystemtest extends cSetupMask
                             $_SESSION["dbname"])
                         );
                         return;
-                    }
-
-                    // Good, check if we can lock the table
-                    $status = checkMySQLLockTable($db, $_SESSION["dbname"], sprintf("%s_test", $_SESSION["dbprefix"]));
-                    if (!$status) {
-                        $this->runTest(
-                            false, C_SEVERITY_WARNING, i18n("Unable to lock tables in the selected MySQL database"),
-                            sprintf(i18n("Setup tried to lock a test table in the database %s and failed. You can continue, however, you should be aware of possible data losses due to missing locking. It is highly recommended that you assign the LOCK TABLES permission to your database user!"),
-                            $_SESSION["dbname"])
-                        );
-                        $_SESSION["nolock"] = 'true';
-                    } else {
-                        $_SESSION["nolock"] = 'false';
                     }
 
                     // Good, we could create a table. Now remove it again
@@ -487,18 +461,6 @@ class cSetupSystemtest extends cSetupMask
                     return;
                 }
 
-                // Good, check if we can lock the table
-                $status = checkMySQLLockTable($db, $_SESSION["dbname"], sprintf("%s_actions", $_SESSION["dbprefix"]));
-                if (!$status) {
-                    $this->runTest(
-                        false, C_SEVERITY_WARNING, i18n("Unable to lock tables in the selected MySQL database"),
-                        sprintf(i18n("Setup tried to lock a test table in the database %s and failed. You can continue, however, you should be aware of possible data losses due to missing locking. It is highly recommended that you assign the LOCK TABLES permission to your database user!"),
-                        $_SESSION["dbname"])
-                    );
-                    $_SESSION["nolock"] = 'true';
-                } else {
-                    $_SESSION["nolock"] = 'false';
-                }
                 break;
             case "upgrade":
                 $db = getSetupMySQLDBConnection(false);
@@ -528,18 +490,6 @@ class cSetupSystemtest extends cSetupMask
                     return;
                 }
 
-                // Good, check if we can lock the table
-                $status = checkMySQLLockTable ($db, $_SESSION["dbname"], sprintf("%s_actions", $_SESSION["dbprefix"]));
-                if (!$status) {
-                    $this->runTest(
-                        false, C_SEVERITY_WARNING, i18n("Unable to lock tables in the selected MySQL database"),
-                        sprintf(i18n("Setup tried to lock a test table in the database %s and failed. You can continue, however, you should be aware of possible data losses due to missing locking. It is highly recommended that you assign the LOCK TABLES permission to your database user!"),
-                        $_SESSION["dbname"])
-                    );
-                    $_SESSION["nolock"] = 'true';
-                } else {
-                    $_SESSION["nolock"] = 'false';
-                }
                 break;
         }
     }

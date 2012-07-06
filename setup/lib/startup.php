@@ -152,8 +152,6 @@ $cfg['db'] = array(
         'user'     => (isset($_SESSION['dbuser'])) ? $_SESSION['dbuser'] : '',
         'password' => (isset($_SESSION['dbpass'])) ? $_SESSION['dbpass'] : '',
     ),
-    'nolock'          => false,
-    'sequenceTable'   => '',
     'haltBehavior'    => 'report',
     'haltMsgPrefix'   => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
     'enableProfiling' => false,

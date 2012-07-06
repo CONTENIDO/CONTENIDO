@@ -119,6 +119,5 @@ $contenido_host = $cfg['db']['connection']['host'];
 $contenido_database = $cfg['db']['connection']['database'];
 $contenido_user = $cfg['db']['connection']['user'];
 $contenido_password = $cfg['db']['connection']['password'];
-$cfg['nolock'] = $cfg['db']['nolock'];
 
 ?>
