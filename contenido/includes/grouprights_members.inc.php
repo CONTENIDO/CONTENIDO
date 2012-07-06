@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created 2003-06-03
- *   modified 2008-06-26, Dominik Ziegler, add security fix
- *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -106,15 +102,15 @@ $tab2 = $cfg["tab"]["phplib_auth_user_md5"];
 
 $sortby = getEffectiveSetting("backend", "sort_backend_users_by", "");
 
-if ($sortby!='') {
-    $sql = "SELECT ".$tab1.".idgroupuser, ".$tab1.".user_id FROM ".$tab1."
-            INNER JOIN ".$tab2." ON ".$tab1.".user_id = ".$tab2.".user_id WHERE
-            group_id = '".$db->escape($groupid)."' ORDER BY ".$tab2.".".$sortby;
+if ($sortby != '') {
+    $sql = "SELECT " . $tab1 . ".idgroupuser, " . $tab1 . ".user_id FROM " . $tab1 . "
+            INNER JOIN " . $tab2 . " ON " . $tab1 . ".user_id = " . $tab2 . ".user_id WHERE
+            group_id = '" . $db->escape($groupid) . "' ORDER BY " . $tab2 . "." . $sortby;
 } else {
     #Show previous behaviour by default
-    $sql = "SELECT ".$tab1.".idgroupuser, ".$tab1.".user_id FROM ".$tab1."
-            INNER JOIN ".$tab2." ON ".$tab1.".user_id = ".$tab2.".user_id WHERE
-            group_id = '".$db->escape($groupid)."' ORDER BY ".$tab2.".realname, ".$tab2.".username";
+    $sql = "SELECT " . $tab1 . ".idgroupuser, " . $tab1 . ".user_id FROM " . $tab1 . "
+            INNER JOIN " . $tab2 . " ON " . $tab1 . ".user_id = " . $tab2 . ".user_id WHERE
+            group_id = '" . $db->escape($groupid) . "' ORDER BY " . $tab2 . ".realname, " . $tab2 . ".username";
 }
 
 $db->query($sql);
@@ -124,14 +120,13 @@ $aAddedUsers = array();
 $myUser = new cApiUser();
 
 while ($db->next_record()) {
-
     $myUser->loadByPrimaryKey($db->f("user_id"));
     $aAddedUsers[] = $myUser->getField("username");
 
-    $sOptionLabel = $myUser->getField("realname").' ('.$myUser->getField("username").')';
+    $sOptionLabel = $myUser->getField("realname") . ' (' . $myUser->getField("username") . ')';
     $sOptionValue = $db->f("idgroupuser");
     if ($sOptionValue != '' && $sOptionLabel != '') {
-        $sInGroupOptions .= '<option value="'.$sOptionValue.'">'.$sOptionLabel.'</option>'."\n";
+        $sInGroupOptions .= '<option value="' . $sOptionValue . '">' . $sOptionLabel . '</option>' . "\n";
     }
 }
 
@@ -149,10 +144,10 @@ if (is_array($users)) {
     foreach ($users as $key => $value) {
         if (!in_array($value["username"], $aAddedUsers)) {
             $bAddedUser = true;
-            $sOptionLabel = $value["realname"] . " (".$value["username"].")";
+            $sOptionLabel = $value["realname"] . " (" . $value["username"] . ")";
             $sOptionValue = $key;
             if ($sOptionValue != '' && $sOptionLabel != '') {
-                $sNonGroupOptions .= '<option value="'.$sOptionValue.'">'.$sOptionLabel.'</option>'."\n";
+                $sNonGroupOptions .= '<option value="' . $sOptionValue . '">' . $sOptionLabel . '</option>' . "\n";
             }
         }
     }
@@ -176,8 +171,9 @@ $tpl3->set('s', 'NON_GROUP_VALUE', $_POST['filter_non']);
 $tpl3->set('s', 'DISPLAY_OK', 'none');
 $tpl3->set('s', 'RELOADSCRIPT', '');
 
-# Generate template
-$tpl3gen = $tpl3->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_memberselect'],true);
+// Generate template
+$tpl3gen = $tpl3->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_memberselect'], true);
+
 echo $tpl3gen;
 
 ?>

@@ -220,12 +220,13 @@ $objFooterRow->advanceID();
 $oTable->setContent($headeroutput . $output . $footeroutput);
 $sTable = stripslashes($oTable->render());
 //Table end
-//
+
 // generate Template
 $oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
 $oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
 $oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
 $oTpl->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
+
 $oTpl->generate('templates/standard/' . $cfg['templates']['rights_inc']);
 
 ?>
