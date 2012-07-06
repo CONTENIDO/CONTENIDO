@@ -440,11 +440,11 @@ window.onload = scrolltheother;
         ';
         $page->addScript("syncScript", $sSyncScript);
 
-        $form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oInputRows->render().'</td></tr></table>', $input->render());
-        $form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oOutputRows->render().'</td></tr></table>', $output->render());
+        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oInputRows->render().'</td></tr></table>', $input->render());
+        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oOutputRows->render().'</td></tr></table>', $output->render());
     } else {
-        $form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td></tr></table>', $input->render());
-        $form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td></tr></table>', $output->render());
+        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td></tr></table>', $input->render());
+        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td></tr></table>', $output->render());
     }
 
     $noti = '';

@@ -231,7 +231,7 @@ $oSubmit = new cHTMLButton("submit", i18n("Search"));
 $content  = '<div id="artsearch" style="border: 1px solid #B3B3B3; border-top: none; margin:0;padding:0; padding-bottom: 10px;">';
 $content .= '<form action="backend_search.php" method="post" name="backend_search" target="right_bottom" id="backend_search">';
 
-$content .= '<table dir="'.langGetTextDirection($lang).'">';
+$content .= '<table class="borderless" dir="'.langGetTextDirection($lang).'">';
 $content .= '<input type="hidden" name="area" value="'.$area.'">';
 $content .= '<input type="hidden" name="frame" value="'.$frame.'">';
 $content .= '<input type="hidden" name="contenido" value="'.$sess->id.'">';
@@ -462,7 +462,7 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
     $sSyncButtonMultiple = '<div id="sync_cat_multiple" style="display:none;"><a href="javascript:generateSyncAction(1);"><img style="vertical-align: middle;" src="images/but_sync_cat.gif" vspace="2" hspace="2" border="0" title="'.i18n("Also copy subcategories").'" alt="'.i18n("Also copy subcategories").'"></a>';
     $sSyncButtonMultiple .= '<a href="javascript:generateSyncAction(1);">'.i18n("Also copy subcategories").'</a></div>';
 
-    $content = '<table style="padding:3px; margin-left:12px; border-right: 1px solid #B3B3B3;" width="100%" border="0" dir="'.langGetTextDirection($lang).'">
+    $content = '<table class="borderless" style="padding:3px; margin-left:12px; border-right: 1px solid #B3B3B3;" width="100%" border="0" dir="'.langGetTextDirection($lang).'">
                     <tr>
                         <td>'.$form->render().'</td>
                     </tr>
