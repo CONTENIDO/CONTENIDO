@@ -445,7 +445,7 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
         time_online_move = " . (int) $onlineaftermove;
     }
 
-    $sql .= "WHERE idartlang=". (int) $idartlang;
+    $sql .= " WHERE idartlang=". (int) $idartlang;
     $db->query($sql);
 
     /*$availableTags = conGetAvailableMetaTagTypes();
