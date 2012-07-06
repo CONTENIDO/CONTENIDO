@@ -45,6 +45,7 @@ if (!defined('CON_FRAMEWORK')) {
  */
 function formGenerateField ($type, $name, $initvalue, $width, $maxlen)
 {
+    cDeprecated("Use class cHTMLTextbox or cHTMLPasswordbox instead");
     switch ($type)
     {
         case "text":
@@ -78,6 +79,7 @@ function formGenerateField ($type, $name, $initvalue, $width, $maxlen)
  */
 function formGenerateCheckbox ($name, $value, $checked, $caption = "")
 {
+    cDeprecated("Use class cHTMLCheckbox instead");
     if (strlen($caption) > 0)
     {
         $label = '<label for="'.$name.$value.'">'.$caption.'</label>';

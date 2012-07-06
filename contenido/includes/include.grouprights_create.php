@@ -119,7 +119,6 @@ $aClients = $oClientsCollection->getAvailableClients();
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     if (in_array("admin[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
-        //$sClientCheckboxes .= formGenerateCheckbox("madmin[".$idclient."]", $idclient, in_array("admin[".$idclient."]", $aPerms), $item['name'] . " (".$idclient.")")."<br>";
         $defaultadmin = new cHTMLCheckbox("madmin[".$idclient."]", $idclient, "madmin[".$idclient."]".$idclient, in_array("admin[".$idclient."]", $aPerms));
         $defaultadmin->setLabelText($item['name'] . " (".$idclient.")");
         $sClientCheckboxes .= $defaultadmin->toHTML(true);
@@ -136,7 +135,6 @@ if ($sClientCheckboxes !== '') {
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     if (in_array("client[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[".$idclient."]", $aAuthPerms)) {
-        //$sClientCheckboxes .= formGenerateCheckbox("mclient[".$idclient."]", $idclient, in_array("client[".$idclient."]", $aPerms), $item['name'] . " (". $idclient . ")")."<br>";
         $defaultperms = new cHTMLCheckbox("mclient[".$idclient."]", $idclient, "mclient[".$idclient."]".$idclient, in_array("client[".$idclient."]", $aPerms));
         $defaultperms->setLabelText($item['name'] . " (". $idclient . ")");
         $sClientCheckboxes .= $defaultperms->toHTML(true);
@@ -152,7 +150,6 @@ $aClientsLanguages = getAllClientsAndLanguages();
 $sClientCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
     if ($perm->have_perm_client("lang[".$item['idlang']."]") || $perm->have_perm_client("admin[".$item['idclient']."]")) {
-        //$sClientCheckboxes .= formGenerateCheckbox("mlang[".$item['idlang']."]", $item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms), $item['langname']." (". $item['clientname'] .")")."<br>";
         $defaultlanguages = new cHTMLCheckbox("mlang[".$item['idlang']."]", $item['idlang'], "mlang[".$item['idlang']."]".$item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms));
         $defaultlanguages->setLabelText($item['langname']." (". $item['clientname'] .")");
         $sClientCheckboxes .= $defaultlanguages->toHTML(true);

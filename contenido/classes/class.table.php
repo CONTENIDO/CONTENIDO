@@ -113,7 +113,10 @@ class Table {
      * Constructor
      */
     function Table($m_bordercolor = "", $m_borderstyle = "", $m_cellspacing = "0", $m_cellpadding="2", $m_header_color = "", $m_light_color = "", $m_dark_color = "", $m_fullborder = false, $m_directoutput = true) {
-        $this->border_color = $m_bordercolor;
+
+    	cDeprecated("Use class cHTMLTable instead");
+
+    	$this->border_color = $m_bordercolor;
         $this->border_style = $m_borderstyle;
         $this->cellspacing = $m_cellspacing;
         $this->cellpadding = $m_cellpadding;

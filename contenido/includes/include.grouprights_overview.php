@@ -127,7 +127,6 @@ foreach ($aClients as $idclient => $item) {
         $oCheckbox = new cHTMLCheckbox("madmin[".$idclient."]", $idclient, "madmin[".$idclient."]".$idclient, in_array("admin[".$idclient."]", $aPerms));
         $oCheckbox->setLabelText($item['name']." (".$idclient.")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
-        //$sClientCheckboxes .= formGenerateCheckbox("madmin[".$idclient."]", $idclient, in_array("admin[".$idclient."]", $aPerms), $item['name']." (".$idclient.")")."<br>";
     }
 }
 
@@ -144,7 +143,6 @@ foreach ($aClients as $idclient => $item) {
         $oCheckbox = new cHTMLCheckbox("mclient[".$idclient."]", $idclient, "mclient[".$idclient."]".$idclient, in_array("client[".$idclient."]", $aPerms));
         $oCheckbox->setLabelText($item['name']." (". $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
-        //$sClientCheckboxes .= formGenerateCheckbox("mclient[".$idclient."]", $idclient, in_array("client[".$idclient."]", $aPerms), $item['name']." (". $idclient . ")")."<br>";
     }
 }
 
@@ -162,7 +160,6 @@ foreach ($aClientsLanguages as $item) {
         $oCheckbox = new cHTMLCheckbox("mlang[".$item['idlang']."]", $item['idlang'], "mlang[".$item['idlang']."]".$item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms));
         $oCheckbox->setLabelText($item['langname']." (". $item['clientname'] .")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
-        //$sClientCheckboxes .= formGenerateCheckbox("mlang[".$item['idlang']."]", $item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms), $item['langname']." (". $item['clientname'] .")")."<br>";
     }
 }
 
