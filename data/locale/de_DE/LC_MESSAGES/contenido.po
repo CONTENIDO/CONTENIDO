@@ -4460,6 +4460,9 @@ msgstr "Style bearbeiten"
 msgid "Create style"
 msgstr "Style erstellen"
 
+msgid "You don't have the permission to make changes here"
+msgstr "Ihnen fehlt die Berechtigung hier etwas zu ändern."
+
 # section adminstration system expert
 #: includes/include.systemsettings.php:49
 msgid "Created new item successfully!"
@@ -4609,6 +4612,15 @@ msgstr "Mandant"
 #, php-format
 msgid "The entries of %s table are not deleted!"
 msgstr "Einträge von der Tabelle %s wurden nicht gelöscht!"
+
+msgid "Delete the code cache"
+msgstr "Code Cache löschen"
+
+msgid "Force code generation"
+msgstr "Erzwinge Code Generierung"
+
+msgid "There is no tagging tree."
+msgstr "Es gibt noch keinen Tagging-Baum."
 
 #: includes/include.system_purge.php:93
 #, php-format
