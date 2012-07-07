@@ -30,7 +30,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-class cVersionFile extends Version {
+class cVersionFile extends cVersion {
 
     /**
      * Content code of current file.

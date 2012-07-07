@@ -31,7 +31,7 @@ if (!defined('CON_FRAMEWORK')) {
  die('Illegal call');
 }
 
- class cVersionLayout extends Version {
+ class cVersionLayout extends cVersion {
    /**
     * The name of Layout
     * @access private

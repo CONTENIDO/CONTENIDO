@@ -29,7 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
  die('Illegal call');
 }
 
- class cVersionImport extends Version {
+ class cVersionImport extends cVersion {
 
     /**
     * The name of modul

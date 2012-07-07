@@ -29,7 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
  die('Illegal call');
 }
 
- class cVersionModule extends Version {
+ class cVersionModule extends cVersion {
     /**
     * Type of modul
     * @access public
