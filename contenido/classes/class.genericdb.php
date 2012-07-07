@@ -52,6 +52,172 @@ if (cFileHandler::exists($driver_filename)) {
  */
 class cItemException extends Exception {}
 
+/**
+ * Class cGenericDb.
+ * Handles the generic execution of callbacks.
+ *
+ * @copyright  four for business AG <www.4fb.de>
+ */
+class cGenericDb {
+	/**
+	 * Callbacks are executed before a item is created.
+	 * Expected parameters for callback: none
+	 */
+	const CREATE_BEFORE = 10;
+	
+	/**
+	 * Callbacks are executed if item could not be created.
+	 * Expected parameters for callback: none
+	 */
+	const CREATE_FAILURE = 11;
+	
+	/**
+	 * Callbacks are executed if item could be created successfully.
+	 * Expected parameters for callback: ID of created item
+	 */
+	const CREATE_SUCCESS = 12; 
+
+	
+	/**
+	 * Callbacks are executed before store process is executed.
+	 * Expected parameters for callback: Item instance
+	 */
+	const STORE_BEFORE = 20;
+	
+	/**
+	 * Callbacks are executed if store process failed.
+	 * This is also likely to happen if query would not change anything in database!
+	 * Expected parameters for callback: Item instance
+	 */
+	const STORE_FAILURE = 21;
+	
+	/**
+	 * Callbacks are executed if store process saved the values in the database.
+	 * Expected parameters for callback: Item instance
+	 */
+	const STORE_SUCCESS = 22;
+	
+	
+	/**
+	 * Callbacks are executed before deleting an item.
+	 * Expected parameters for callback: ID of them item to delete
+	 */
+	const DELETE_BEFORE = 30;
+	
+	/**
+	 * Callbacks are executed if deletion of an item fails.
+	 * Expected parameters for callback: ID of them item to delete
+	 */
+	const DELETE_FAILURE = 31;
+	
+	/**
+	 * Callbacks are executed if item was deleted successfully.
+	 * Expected parameters for callback: ID of them item to delete
+	 */
+	const DELETE_SUCCESS = 32;
+
+	/**
+	 * Callback stack.
+	 * @var	array
+	 */
+	private static $_callbacks = array();
+	
+	/**
+	 * Registers a new callback.
+	 *
+	 * Example:
+	 * cGenericDb::register(cGenericDb::CREATE_SUCCESS, 'itemCreateHandler', 'cApiArticle');
+	 * cGenericDb::register(cGenericDb::CREATE_SUCCESS, array('cCallbackHandler', 'executeCreateHandle'), 'cApiArticle');
+	 *
+	 * @param	string	$event		Callback event, must be a valid value of a cGenericDb event constant
+	 * @param	mixed	$callback	Callback to register
+	 * @param	mixed	$class		Class name for registering callback (can be string of array with names of the concrete Item classes)
+	 * 
+	 * @return	void
+	 */
+	public static function register($event, $callback, $class) {
+		if (isset($event) === false) {
+			throw new cItemException("No callback event for execution was given");
+		}
+		
+		if (is_callable($callback) === false) {
+			throw new cItemException("Given callback is not callable.");
+		}
+		
+		if (isset($class) === false) {
+			throw new cItemException("No class for registering callback was given.");
+		}
+		
+		if (is_array($class)) {
+			foreach ($class as $className) {
+				self::$_callbacks[$className][$event][] = $callback;
+			}
+		} else {
+			self::$_callbacks[$class][$event][] = $callback;
+		}
+	}
+
+	/**
+	 * Unregisters all callbacks for a specific event in a class.
+	 *
+	 * Example:
+	 * cGenericDb::unregister(cGenericDb::CREATE_SUCCESS, 'cApiArticle');
+	 *
+	 * @param	string	$event	Callback event, must be a valid value of a cGenericDb event constant
+	 * @param	mixed	$class	Class name for unregistering callback (can be string of array with names of the concrete Item classes)
+	 * 
+	 * @return	void
+	 */
+	public static function unregister($event, $class) {
+		if (isset($event) === false) {
+			throw new cItemException("No callback event for execution was given");
+		}
+		
+		if (isset($class) === false) {
+			throw new cItemException("No class for unregistering callbacks was given.");
+		}
+		
+		if (is_array($class)) {
+			foreach ($class as $className) {
+				unset(self::$_callbacks[$className][$event]);
+			}
+		} else {
+			unset(self::$_callbacks[$class][$event]);
+		}
+	}
+	
+	/**
+	 * Executes all callbacks for a specific event in a class.
+	 *
+	 * @param	string	$event		Callback event, must be a valid value of a cGenericDb event constant
+	 * @param	string	$class		Class name for executing callback
+	 * @param 	array	$arguments	Arguments to pass to the callback function
+	 * 
+	 * @return	void
+	 */
+	protected final function _executeCallbacks($event, $class, $arguments = array()) {
+		if (isset($event) === false) {
+			throw new cItemException("No callback event for execution was given");
+		}
+		
+		if (isset($class) === false) {
+			throw new cItemException("No class for executing callbacks was given.");
+		}
+		
+		if (!isset(self::$_callbacks[$class])) {
+			return;
+		}
+
+		if (!isset(self::$_callbacks[$class][$event])) {
+			return;
+		}
+
+		foreach (self::$_callbacks[$class][$event] as $callback) {
+			call_user_func_array($callback, $arguments);
+		}
+	}
+}
+
 
 /**
  * Class cItemCache.
@@ -273,7 +439,7 @@ class cItemCache
  * @version    0.2
  * @copyright  four for business AG <www.4fb.de>
  */
-abstract class cItemBaseAbstract
+abstract class cItemBaseAbstract extends cGenericDb
 {
     /**
      * Database instance, contains the database object
@@ -1538,6 +1704,8 @@ abstract class ItemCollection extends cItemBaseAbstract
      */
     public function createNewItem($primaryKeyValue = null)
     {
+		$this->_executeCallbacks(self::CREATE_BEFORE, get_class($this), array());
+		
         $oDb = $this->_getSecondDBInstance();
 
         $sql = 'INSERT INTO `%s` (%s) VALUES ("%s")';
@@ -1546,8 +1714,14 @@ abstract class ItemCollection extends cItemBaseAbstract
         if ($primaryKeyValue === null) {
             $primaryKeyValue = $oDb->getLastInsertedId($this->table);
         }
-
-        return $this->loadItem($primaryKeyValue);
+		
+		if ($oDb->affected_rows() == 0) {
+			$this->_executeCallbacks(self::CREATE_FAILURE, $this->_itemClass, array());
+		} else {
+			$this->_executeCallbacks(self::CREATE_SUCCESS, $this->_itemClass, array($mId));
+		}
+		
+		return $this->loadItem($primaryKeyValue);
     }
 
     /**
@@ -1641,6 +1815,8 @@ abstract class ItemCollection extends cItemBaseAbstract
      */
     protected function _delete($mId)
     {
+		$this->_executeCallbacks(self::DELETE_BEFORE, $this->_itemClass, array($mId));
+		
         $oDb = $this->_getSecondDBInstance();
 
         // delete db entry
@@ -1653,8 +1829,14 @@ abstract class ItemCollection extends cItemBaseAbstract
         // delete the property values
         $oProperties = $this->_getPropertiesCollectionInstance();
         $oProperties->deleteProperties($this->primaryKey, $mId);
-
-        return ($oDb->affected_rows() == 0) ? false : true;
+		
+		if ($oDb->affected_rows() == 0) {
+			$this->_executeCallbacks(self::DELETE_FAILURE, $this->_itemClass, array($mId));
+			return false;
+		} else {
+			$this->_executeCallbacks(self::DELETE_SUCCESS, $this->_itemClass, array($mId));
+			return true;
+		}
     }
 
     /**
@@ -1797,14 +1979,14 @@ abstract class Item extends cItemBaseAbstract
         $this->_lastSQL = $sql;
 
         if ($this->db->num_rows() > 1) {
-            $sMsg = "Tried to load a single line with field $sField and value $mValue from "
+			$sMsg = "Tried to load a single line with field $sField and value $mValue from "
                   . $this->table . " but found more than one row";
             cWarning(__FILE__, __LINE__, $sMsg);
         }
 
         // Advance to the next record, return false if nothing found
         if (!$this->db->next_record()) {
-            return false;
+			return false;
         }
 
         $this->loadByRecordSet($this->db->toArray());
@@ -1832,14 +2014,14 @@ abstract class Item extends cItemBaseAbstract
         $this->_lastSQL = $sql;
 
         if ($this->db->num_rows() > 1) {
-            $sMsg = "Tried to load a single line with where clause '" . $sWhere . "' from "
+			$sMsg = "Tried to load a single line with where clause '" . $sWhere . "' from "
                   . $this->table . " but found more than one row";
             cWarning(__FILE__, __LINE__, $sMsg);
         }
 
         // Advance to the next record, return false if nothing found
         if (!$this->db->next_record()) {
-            return false;
+			return false;
         }
 
         $id = $this->db->f('pk');
@@ -1856,9 +2038,10 @@ abstract class Item extends cItemBaseAbstract
     {
         $bSuccess = $this->loadBy($this->primaryKey, $mValue);
 
-        if (($bSuccess == true) && method_exists($this, '_onLoad')) {
-            $this->_onLoad();
+        if ($bSuccess == true && method_exists($this, '_onLoad')) {
+			$this->_onLoad();
         }
+		
         return $bSuccess;
     }
 
@@ -1873,6 +2056,10 @@ abstract class Item extends cItemBaseAbstract
         $this->oldPrimaryKey = $this->values[$this->primaryKey];
         $this->virgin        = false;
         $this->_oCache->addItem($this->oldPrimaryKey, $this->values);
+		
+		if (method_exists($this, '_onLoad')) {
+			$this->_onLoad();
+        }
     }
 
     /**
@@ -1967,8 +2154,11 @@ abstract class Item extends cItemBaseAbstract
      */
     public function store()
     {
+		$this->_executeCallbacks(self::STORE_BEFORE, get_class($this), array($this));
+
         if ($this->virgin == true) {
             $this->lasterror = 'No item loaded';
+			$this->_executeCallbacks(self::STORE_FAILURE, get_class($this), array($this));
             return false;
         }
 
@@ -1976,6 +2166,7 @@ abstract class Item extends cItemBaseAbstract
         $first = true;
 
         if (!is_array($this->modifiedValues)) {
+			$this->_executeCallbacks(self::STORE_SUCCESS, get_class($this), array($this));
             return true;
         }
 
@@ -1996,9 +2187,12 @@ abstract class Item extends cItemBaseAbstract
 
         if ($this->db->affected_rows() > 0) {
             $this->_oCache->addItem($this->oldPrimaryKey, $this->values);
+			$this->_executeCallbacks(self::STORE_SUCCESS, get_class($this), array($this));
+			return true;
         }
 
-        return ($this->db->affected_rows() < 1) ? false : true;
+		$this->_executeCallbacks(self::STORE_FAILURE, get_class($this), array($this));
+		return false;
     }
 
     /**
@@ -2215,5 +2409,4 @@ abstract class Item extends cItemBaseAbstract
     }
 
 }
-
 ?>
