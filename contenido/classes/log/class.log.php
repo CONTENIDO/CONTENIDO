@@ -4,74 +4,75 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Log facility
- *
- * Requirements:
- * @con_php_req 5.0
- *
+ * This file contains the global log class.
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.2.1
- * @author     Timo A. Hummel
+ * @version    1.0.0
+ * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2004-09-28
- *   $Id$
- * }}
+ * @since      file available since CONTENIDO release 4.9.0
  */
 
- /** Examples **
-
-  Standard logging (file logger, to data/log/contenido.log):
-
-  $log = new cLog;
-  $log->("this is a log message");
-
-  => [2004-09-28 14:38:02] [2e8e00efa314c8c2c07ae7316b875529] [   info   ] this is a log message
-
-
-  Standard logging (file logger, custom log format):
-  $log = new cLog;
-  $log->setLogFormat("%date %message");
-  $log->("this log message just contains the date and the message");
-
-  => [2004-09-28 14:38:02] this log message just contains the date and the message
-*/
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-
-cInclude('pear', 'Log.php');
-cInclude('includes', 'functions.general.php');
-
-class cLog
-{
+/**
+ * This class contains the main functionalities for the logging in CONTENIDO.
+ *
+ * Examples:
+ *
+ * $writer = cLogWriter::factory("File", array('destination' => 'contenido.log'));
+ * $log = new cLog($writer);
+ *
+ * $log->addPriority("CONTENIDO", 10);
+ * $log->log("Contenido Log Message.", "CONTENIDO");
+ * $log->contenido("Same log entry in short notation.");
+ * $log->removePriority("CONTENIDO");
+ *
+ * $log->emerg("System down.");
+ *
+ * $log->log('Notice Log Message', cLog::NOTICE);
+ *
+ * $log->buffer('Buffered Log Message', cLog::WARN);
+ * $log->commit();
+ */
+class cLog {
+    const EMERG   = 0;
+    const ALERT   = 1;
+    const CRIT    = 2;
+    const ERR     = 3;
+    const WARN    = 4;
+    const NOTICE  = 5;
+    const INFO    = 6;
+    const DEBUG   = 7;
+	
     /**
-     * @var object Contains the logger object
+     * @var cLogWriter Contains the local log writer instance.
      */
-    protected $_oLogger;
-
-    /**
-     * @var string Contains the Log Format string
-     */
-    protected $_sLogFormat;
-
-    /**
+    protected $_writer;
+	
+	/**
      * @var array Contains all shortcut handlers
      */
-    protected $_aShortcutHandlers;
+    protected $_shortcutHandlers = array();
+	
+	/**
+     * @var array Contains all available priorities
+     */
+	protected $_priorities = array();
+	
+	/**
+     * @var array Contains all default priorities
+     */
+	protected $_defaultPriorities = array();
+	
+	/**
+     * @var array Contains all buffered messages
+     */
+	protected $_buffer = array();
 
     /**
      * Creates a new instance of the CONTENIDO Log mechanism.
-     *
-     * cLog is a logging facility which uses PEAR::Log to do its logging,
-     * and features log categories.
      *
      * The log format interface of cLog is capable of being extended by subclasses. See the note about
      * the log shortcuts below.
@@ -83,183 +84,291 @@ class cLog
      * percentage sign (%) and contain one or more characters. Each placeholder is handled by an own function which
      * decides what to do.
      *
-     * @param  mixed  oLogger  Logger object (any subclass of PEAR::Log), or false if cLog
-     *                         should handle the logger creation
+     * @param  mixed  writer   Writer object (any subclass of cLogWriter), or false if cLog should handle the writer creation
      */
-    public function __construct($oLogger = false)
-    {
+    public function __construct($writer = false) {
         global $cfg;
 
-        $this->_aShortcutHandlers = array();
-        $this->_oLogger = null;
+        $createWriter = false;
 
-        $bCreateLogger = false;
-
-        // If no logger was given, create a new file based logger
-        if ($oLogger === false) {
-            $bCreateLogger = true;
-        } else {
-            // Check if the passed logger object is really an object
-            if (!is_object($oLogger)) {
-                cWarning(__FILE__, __LINE__, "The logger passed to cBufferedLog is not a class. Creating own logger.");
-                $bCreateLogger = true;
-            }
-
-            // Check if the passed logger is really a subclass of PEAR::Log
-            if (!is_a($oLogger, "Log")) {
-                cWarning(__FILE__, __LINE__, "The passed class to cBufferedLog is not a subclass of Log. " .
-                                             "Creating own logger.");
-                $bCreateLogger = true;
-            }
+        if ($writer == false) {
+            $createWriter = true;
+        } else if (!is_object($writer) || ($writer instanceof cLogWriter) == false) {
+			cWarning(__FILE__, __LINE__, "The passed class is not a subclass of cLogWriter. Creating new one.");
+			$createWriter = true;
         }
 
-        if ($bCreateLogger === true) {
-            $oLogger = &Log::factory("file", $cfg['path']['contenido_logs'] . 'contenido.log');
-            $oLogger->_lineFormat = '%4$s';
+        if ($createWriter == true) {
+			$options = array('destination' => $cfg['path']['contenido_logs'] . 'data/contenido.log');
+			$writer = cLogWriter::factory("File", $options);
         }
 
-        $this->_oLogger = $oLogger;
-        $this->setLogFormat("[%date] [%session] [%level] %message");
-
-        $this->_setShortcutHandler("%date", "_shDate");
-        $this->_setShortcutHandler("%level", "_shLevel");
-        $this->_setShortcutHandler("%session", "_shSession");
-        $this->_setShortcutHandler("%message", "_shMessage");
+        $this->setWriter($writer);
+		$this->setShortcutHandler("%date", array($this, "shDate"));
+		$this->setShortcutHandler("%level", array($this, "shLevel"));
+		$this->setShortcutHandler("%message", array($this, "shMessage"));
+		
+		$this->getWriter()->setOption('log_format', '[%date] [%level] %message', false);
+		
+		$reflection = new ReflectionClass($this);
+		$this->_priorities = $this->_defaultPriorities = array_flip($reflection->getConstants());
     }
-
-    /** @deprecated  [2012-05-25] Old constructor function for downwards compatibility */
-    public function cLog($oLogger = false)
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($oLogger);
-    }
-
-    /**
-     * Sets user-defined log formats
+	
+	/**
+	 * Returns the local writer instance.
+	 * @return	cLogWriter
+	 */
+	public function getWriter() {
+		return $this->_writer;
+	}
+	
+	/**
+	 * Sets the local writer instance.
+	 * 
+	 * @param	cLogWriter	$writer	Writer instacne
+	 * 
+	 * @return	void
+	 */
+	public function setWriter(cLogWriter $writer) {
+		$this->_writer = $writer;
+	}
+	
+	/**
+     * Defines a custom shortcut handler.
      *
-     * The following placeholders are defined in this class:
-     * %date    Date and Time
-     * %session    Session-ID
-     * %level    Log Level
-     * %message    Message
+     * Each shortcut handler receives an array with the
+	 * message and the priority of the entry.
      *
-     * @param  string  sLogFormat Format string
+     * @param  string  $shortcut	Shortcut name
+     * @param  string  $handler		Name of the function to call
+	 *
+     * @return	bool	True if setting was successful
      */
-    public function setLogFormat($sLogFormat)
-    {
-        $this->_sLogFormat = $sLogFormat;
-    }
-
-    /**
-     * _setShortcutHandler: Defines a custom shortcut handler.
-     *
-     * Each shortcut handler receives two parameters:
-     * - The message
-     * - The log level
-     *
-     * @param  string  sShortcut  Shortcut name
-     * @param  string  sHandler  Name of the function to call
-     * @return bool True if set was successful
-     */
-    public function _setShortcutHandler($sShortcut, $sHandler)
-    {
-        if (substr($sShortcut, 0, 1) == "%") {
-            $sShortcut = substr($sShortcut, 1);
-        }
-
-        // Check if the handler function exists
-        if (method_exists($this, $sHandler)) {
-            // Check if the shortcut handler already exists
-            if (in_array($sShortcut, $this->_aShortcutHandlers)) {
-                // The shortcut handler exists. If the passed handler is different, complain.
-                if ($this->_aShortcutHandlers[$sShortcut] != $sHandler) {
-                    cWarning(__FILE__, __LINE__, "The shortcut $sShortcut is already in use!");
-                    return false;
-                }
-            } else {
-                // Add shortcut handler to stack
-                $this->_aShortcutHandlers[$sShortcut] = $sHandler;
-            }
-        } else {
-            cWarning(__FILE__, __LINE__, "The specified shortcut handler does not exist.");
+    public function setShortcutHandler($shortcut, $handler) {
+        if ($shortcut == '') {
+			cWarning(__FILE__, __LINE__, "The shortcut name must not be empty.");
             return false;
         }
+		
+		if (substr($shortcut, 0, 1) == "%") {
+            $shortcut = substr($shortcut, 1);
+        }
 
+        if (is_callable($handler) == false) {
+			cWarning(__FILE__, __LINE__, "The specified shortcut handler does not exist.");
+            return false;
+        }
+		
+		if (array_key_exists($shortcut, $this->_shortcutHandlers)) {
+			cWarning(__FILE__, __LINE__, "The shortcut " . $shortcut . " is already in use!");
+			return false;
+		}
+		
+		$this->_shortcutHandlers[$shortcut] = $handler;
+			
         return true;
     }
+	
+	/**
+	 * Unsets a specific shortcut handler.
+	 * 
+	 * @param	string	$shortcut	Name of the shortcut
+	 * 
+	 * @return	boolean
+	 */
+	public function unsetShortcutHandler($shortcut) {
+		if (!in_array($shortcut, $this->_shortcutHandlers)) {
+			cWarning(__FILE__, __LINE__, "The specified shortcut handler does not exist.");
+            return false;
+		}
+		
+		unset($this->_shortcutHandlers[$shortcut]);
+		return true;
+	}
+	
+	/**
+	 * Buffers a log message for committing them on a later moment.
+	 *
+	 * @param	string	$message	Message to buffer
+	 * @param	mixed	$priority	Priority of the log entry (optional)
+	 *
+	 * @return	void
+	 */
+	public function buffer($message, $priority = NULL) {
+		$this->_buffer[] = array($message, $priority);
+	}
+	
+	/**
+	 * Commits all buffered messages and empties the message buffer if parameter is not false.
+	 *
+	 * @param	boolean	$revoke	Flag, whether the buffer is cleared or not (optional, default: true)
+	 *
+	 * @return	void
+	 */
+	public function commit($revoke = true) {
+		if (count($this->_buffer) == 0) {
+			cWarning(__FILE__, __LINE__, "There are no buffered messages to commit.");
+            return false;
+		}
+		
+		foreach ($this->_buffer as $bufferInfo) {
+			$this->log($bufferInfo[0], $bufferInfo[1]);
+		}
+		
+		if ($revoke == true) {
+			$this->revoke();
+		}
+	}
+	
+	/** 
+	 * Empties the message buffer.
+	 * @return	void
+	 */
+	public function revoke() {
+		$this->_buffer = array();
+	}
 
-    /**
-     * Logs a message using the logger object
+	/**
+     * Logs a message using the local writer instance
      *
-     * @param  string  sMessage  Message to log
-     * @param  bool  bPriority   PEAR Loglevel (or default if null / omitted)
+     * @param	string	$message	Message to log
+     * @param	mixed  	$priority	Priority of the log entry (optional)
+	 *
+	 * @return	void
      */
-    public function log($sMessage, $bPriority = null)
-    {
-        if ($bPriority === null) {
-            $bPriority = $this->_oLogger->_priority;
+    public function log($message, $priority = NULL) {
+		if ($priority && is_int($priority) == false && in_array($priority, $this->_priorities)) {
+			$priority = array_search($priority, $this->_priorities);
+		}
+		
+		if ($priority === NULL || array_key_exists($priority, $this->_priorities) == false) {
+            $priority = $this->getWriter()->getOption('default_priority');
         }
-        $sLogMessage = $this->_sLogFormat;
+		
+        $logMessage = $this->getWriter()->getOption('log_format');
+		$lineEnding = $this->getWriter()->getOption('line_ending');
 
-        foreach ($this->_aShortcutHandlers as $sShortcut => $sHandler) {
-            if (substr($sShortcut, 0, 1) != "%") {
-                $sShortcut = "%" . $sShortcut;
+        foreach ($this->_shortcutHandlers as $shortcut => $handler) {
+            if (substr($shortcut, 0, 1) != "%") {
+                $shortcut = "%" . $shortcut;
             }
+			
+			$info = array(
+				'message' => $message,
+				'priority' => $priority
+			);
 
-            $sValue = call_user_func(array($this, $sHandler), $sMessage, $bPriority);
+            $value = call_user_func($handler, $info);
 
-            $sLogMessage = str_replace($sShortcut, $sValue, $sLogMessage);
+            $logMessage = str_replace($shortcut, $value, $logMessage);
         }
 
-        $this->_oLogger->log($sLogMessage, $bPriority);
+        $this->getWriter()->write($logMessage . $lineEnding, $priority);
     }
-
-    /**
-     * Returns the current date
-     *
-     * @return The current date
+	
+	/**
+	 * Adds a new priority to the log.
+	 *
+	 * @param	string	$name	Name of the log priority
+	 * @param	int		$value	Index value of the log priority
+	 *
+	 * @return	void
+	 */
+	public function addPriority($name, $value) {
+		if ($name == '') {
+			cWarning(__FILE__, __LINE__, "Priority name must be not empty.");
+            return false;
+		}
+		
+		if (in_array($name, $this->_priorities)) {
+			cWarning(__FILE__, __LINE__, "The given priority name still exists.");
+            return false;
+		}
+		
+		if (array_key_exists($value, $this->_priorities)) {
+			cWarning(__FILE__, __LINE__, "The priority value still exists.");
+            return false;
+		}
+		
+		$this->_priorities[$value] = $name;
+	}
+	
+	/**
+	 * Removes a priority from log. Default properties can not be removed.
+	 *
+	 * @param	string	$name	Name of the log priority to remove
+	 *
+	 * @return	void
+	 */
+	public function removePriority($name) {
+		if ($name == '') {
+			cWarning(__FILE__, __LINE__, "Priority name must be not empty.");
+            return false;
+		}
+		
+		if (in_array($name, $this->_priorities) == false) {
+			cWarning(__FILE__, __LINE__, "Priority name does not exist.");
+            return false;
+		}
+		
+		if (in_array($name, $this->_defaultPriorities) == true) {
+			cWarning(__FILE__, __LINE__, "Removing default priorities is not allowed.");
+            return false;
+		}
+		
+		$priorityIndex = array_search($name, $this->_priorities);
+		
+		unset($this->_priorities[$priorityIndex]);
+	}
+	
+	/**
+	 * Magic call method for direct priority named calls.
+	 *
+	 * @param	string	$method		Name of the method
+	 * @param	array	$arguments	Array with the method arguments
+	 *
+	 * @return	void
+	 */
+	public function __call($method, $arguments) {
+		$priorityName = strtoupper($method);
+		
+		if (in_array($priorityName, $this->_priorities) == false) {
+			cWarning(__FILE__, __LINE__, "The given priority " . $priorityName . " is not supported.");
+            return false;
+		}
+		
+		$priorityIndex = array_search($priorityName, $this->_priorities);
+		
+		return $this->log($arguments[0], $priorityIndex);
+	}
+	
+	/**
+     * Shortcut Handler Date.
+	 * Returns the current date
+     * @return	string	The current date
      */
-    public function _shDate()
-    {
+    public function shDate() {
         return date("Y-m-d H:i:s");
     }
 
     /**
-     * Returns the current session, if existant
-     *
-     * @return The current session
-     */
-    public function _shSession()
-    {
-        global $sess;
-
-        if (is_object($sess)) {
-            return $sess->id;
-        } else {
-            return "";
-        }
-    }
-
-    /**
-     * Returns the canonical name of the priority.
-     *
+     * Shortcut Handler Level.
+	 * Returns the canonical name of the priority.
      * The canonical name is padded to 10 characters to achieve a better formatting.
-     *
-     * @return The canonical log level
+     * @return	string	The canonical log level
      */
-    public function _shLevel($message, $loglevel)
-    {
-        return str_pad($this->_oLogger->priorityToString($loglevel), 10, " ", STR_PAD_BOTH);
+    public function shLevel($info) {
+		$logLevel = $info['priority'];
+		return str_pad($this->_priorities[$logLevel], 10, " ", STR_PAD_BOTH);
     }
 
     /**
-     * Returns the log message.
-     *
-     * @return The log message
+     * Shortcut Handler Message.
+	 * Returns the log message.
+     * @return	string	The log message
      */
-    public function _shMessage($message, $loglevel)
-    {
-        return $message;
+    public function shMessage($info) {
+        return $info['message'];
     }
 }
 

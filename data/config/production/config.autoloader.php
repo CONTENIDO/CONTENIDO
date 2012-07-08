@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-07-07
+ *     created  2012-07-08
  * }}
  */
 
@@ -362,6 +362,8 @@ return array(
     'Contenido_UpdateNotifier' => 'contenido/classes/class.update.notifier.php',
     'Contenido_Url' => 'contenido/classes/Url/Contenido_Url.class.php',
     'cModuleLog' => 'contenido/classes/log/class.modulelog.php',
+    'cLogWriterFile' => 'contenido/classes/log/class.log.writer.file.php',
+    'cLogWriter' => 'contenido/classes/log/class.log.writer.php',
     'cLog' => 'contenido/classes/log/class.log.php',
     'cBufferedLog' => 'contenido/classes/log/class.bufferedlog.php',
     'Contenido_Category' => 'contenido/classes/Contenido_Category/Contenido_Category.class.php',
