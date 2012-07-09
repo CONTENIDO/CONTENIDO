@@ -32,12 +32,13 @@ if (!defined('CON_FRAMEWORK')) {
  * $log->setModule(1);
  * $log->log("Anything you want to log.");
  */
-class cModuleLog extends cLog
-	/** 
-	 * @var cApiModule	Object instance of module model 
+class cModuleLog extends cLog {
+
+	/**
+	 * @var cApiModule	Object instance of module model
 	 */
 	private $_module;
-	
+
 	/**
 	 * Constructor of the module log.
      *
@@ -46,7 +47,7 @@ class cModuleLog extends cLog
 	 */
 	public function __construct($writer = false) {
 		parent::__construct($writer);
-		
+
 		$this->setShortcutHandler('module', array($this, 'shModule'));
 		$this->getWriter()->setOption("log_format", "[%date] [%level] [%module] %message", true);
 	}
@@ -78,7 +79,7 @@ class cModuleLog extends cLog
 		if ($this->_module->isLoaded() == false) {
 			return '';
 		}
-		
+
         return $this->_module->get("idmod") . ": " . $this->_module->get("name");
     }
 }
