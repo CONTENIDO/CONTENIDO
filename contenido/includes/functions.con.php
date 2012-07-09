@@ -68,7 +68,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
     // Create article entry
     $oArtColl = new cApiArticleCollection();
     $oArt = $oArtColl->create($client);
-    $new_idart = $oArt->get('idart');
+    $idart = $oArt->get('idart');
 
     // Set self defined Keywords
     if ($keyart != "") {
@@ -82,13 +82,12 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
     $oCatArt = $oCatArtColl->create($idcat, $idart, $status);
     $idcatart = $oCatArt->get('idcatart');
 
-    $a_languages[] = $lang;
+    $aLanguages = array($lang);
 
     // Table 'con_art_lang', one entry for every language
-    foreach ($a_languages as $tmp_lang) {
-        $lastmodified = ($lang == $tmp_lang) ? $lastmodified : 0;
+    foreach ($aLanguages as $curLang) {
+        $lastmodified = ($lang == $curLang) ? $lastmodified : 0;
 
-        //$nextidartlang = $db->nextid($cfg["tab"]["art_lang"]);
         if ($online == 1) {
             $published_value = date('Y-m-d H:i:s');
             $publishedby_value = $auth->auth['uname'];
@@ -99,12 +98,12 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
 
         // Create an stat entry
         $oStatColl = new cApiStatCollection();
-        $oStat = $oStatColl->create($idcatart, $tmp_lang, $client, 0);
+        $oStat = $oStatColl->create($idcatart, $curLang, $client, 0);
 
         // Create an article language entry
         $oArtLangColl = new cApiArticleLanguageCollection();
         $oArtLang = $oArtLangColl->create(
-            $new_idart, $tmp_lang, $title, $urlname, $page_title, $summary, $artspec, $created,
+            $idart, $curLang, $title, $urlname, $page_title, $summary, $artspec, $created,
             $lastmodified, $auth->auth['uname'], $published_value, $publishedby_value, $online,
             $redirect, $redirect_url, $external_redirect, $artsort, $timemgmt, $datestart,
             $dateend, $status, $time_move_cat, $time_target_cat, $time_online_move
@@ -119,42 +118,40 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
         }
     }
 
-    // Set new idart
-    $idart = $new_idart;
-
     // Table 'cat_art'
     $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart=". (int) $idart; // get all idcats that contain art
     $db->query($sql);
 
-    $tmp_idcat = array();
+    $aCatsForArt = array();
     while ($db->next_record()) {
-        $tmp_idcat[] = $db->f("idcat");
+        $aCatsForArt[] = $db->f("idcat");
     }
 
     if (!is_array($idcatnew)) {
         $idcatnew[0] = 0;
     }
-    if (count($tmp_idcat) == 0) {
-        $tmp_idcat[0] = 0;
+    if (count($aCatsForArt) == 0) {
+        $aCatsForArt[0] = 0;
     }
 
+    $aLanguages = getLanguagesByClient($client);
+
     foreach ($idcatnew as $value) {
-        if (!in_array($value, $tmp_idcat)) {
+        if (!in_array($value, $aCatsForArt)) {
             // New category article entry
             $oCatArtColl = new cApiCategoryArticleCollection();
             $oCatArt = $oCatArtColl->create($value, $idart);
-            $tmp_idcatart = $oCatArt->get('idcatart');
+            $curIdcatart = $oCatArt->get('idcatart');
 
             // New statistics entry for each language
-            $a_languages = getLanguagesByClient($client);
-            foreach ($a_languages as $tmp_lang) {
+            foreach ($aLanguages as $curLang) {
                 $oStatColl = new cApiStatCollection();
-                $oStatColl->create($tmp_idcatart, $tmp_lang, $client, 0);
+                $oStatColl->create($curIdcatart, $curLang, $client, 0);
             }
         }
     }
 
-    foreach ($tmp_idcat as $value) {
+    foreach ($aCatsForArt as $value) {
         if (!in_array($value, $idcatnew)) {
             // Get category article that will no longer exist
             $oCatArtToDeleteColl = new cApiCategoryArticleCollection();
@@ -196,14 +193,13 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
     }
 
     if (!$title) {
-        $title = "--- " . i18n("Default title"). " ---";
+        $title = '--- ' . i18n("Default title"). ' ---';
     }
 
     // Update article language for all languages
-    $a_languages = getLanguagesByClient($client);
-    foreach ($a_languages as $tmp_lang) {
-        $tmp_online       = ($lang == $tmp_lang) ? $online : 0;
-        $tmp_lastmodified = ($lang == $tmp_lang) ? $lastmodified : 0;
+    foreach ($aLanguages as $curLang) {
+        $curOnline       = ($lang == $curLang) ? $online : 0;
+        $curLastmodified = ($lang == $curLang) ? $lastmodified : 0;
 
         $oArtLang = new cApiArticleLanguage();
         $oArtLang->loadByArticleAndLanguageId($idart, $lang);
@@ -217,9 +213,9 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
         $oArtLang->set('summary', $oArtLang->escape($summary));
         $oArtLang->set('artspec', (int) $artspec);
         $oArtLang->set('created', $oArtLang->escape($created));
-        $oArtLang->set('lastmodified', $oArtLang->escape($tmp_lastmodified));
+        $oArtLang->set('lastmodified', $oArtLang->escape($curLastmodified));
         $oArtLang->set('modifiedby', $oArtLang->escape($author));
-        $oArtLang->set('online', (int) $tmp_online);
+        $oArtLang->set('online', (int) $curOnline);
         $oArtLang->set('redirect', (int) $redirect);
         $oArtLang->set('redirect_url', $oArtLang->escape($redirect_url));
         $oArtLang->set('external_redirect', (int) $external_redirect);
@@ -229,7 +225,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
         $oArtLang->store();
     }
 
-    return $new_idart;
+    return $idart;
 }
 
 
@@ -276,20 +272,20 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
     $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart=" . (int) $idart; // get all idcats that contain art
     $db->query($sql);
     while ($db->next_record()) {
-        $tmp_idcat[] = $db->f("idcat");
+        $aCatsForArt[] = $db->f("idcat");
     }
 
     if (!is_array($idcatnew)) {
         $idcatnew[0] = 0;
     }
 
-    if (!is_array($tmp_idcat)) {
-        $tmp_idcat[0] = 0;
+    if (!is_array($aCatsForArt)) {
+        $aCatsForArt[0] = 0;
     }
 
     // if (is_array($idcatnew)) {
     foreach ($idcatnew as $value) {
-        if (!in_array($value, $tmp_idcat) ) {
+        if (!in_array($value, $aCatsForArt) ) {
             // INSERT insert 'cat_art' table
             $sql = "INSERT INTO ".$cfg["tab"]["cat_art"]." (idcat, idart) VALUES (" . (int) $value . ", ". (int) $idart . ")";
             $db->query($sql);
@@ -299,17 +295,17 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
             $db->query($sql);
             $db->next_record();
 
-            $tmp_idcatart = $db->f("idcatart");
+            $curIdcatart = $db->f("idcatart");
 
             $a_languages = getLanguagesByClient($client);
-            foreach ($a_languages as $tmp_lang) {
+            foreach ($a_languages as $curLang) {
                 $oStatColl = new cApiStatCollection();
-                $oStatColl->create($tmp_idcatart, $tmp_lang, $client, 0);
+                $oStatColl->create($curIdcatart, $curLang, $client, 0);
             }
         }
     }
 
-    foreach ($tmp_idcat as $value) {
+    foreach ($aCatsForArt as $value) {
         if (!in_array($value, $idcatnew)) {
             $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idcat=" . (int) $value . " AND idart=" . (int) $idart;  // get all idcatarts that will no longer exist
             $db->query($sql);
