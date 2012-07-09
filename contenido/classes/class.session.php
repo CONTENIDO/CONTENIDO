@@ -241,7 +241,9 @@ class cFrontendSession extends cSession
 	 */
 	public function __construct()
 	{
-		parent::__construct("frontend");
+		global $client;
+
+		parent::__construct($client."frontend");
 	}
 
 	public function url($url) {

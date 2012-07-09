@@ -231,7 +231,11 @@ if (!$idcatart) {
                     die(i18n('No start article for this category'));
                 } else {
                     if ($error == 1) {
-                        echo "Fatal error: Could not display error page. Error to display was: 'No start article in this category'";
+                    	$tpl = new Template();
+						$tpl->set("s", "ERROR_TITLE", "Fatal error");
+						$tpl->set("s", "ERROR_TEXT", "No start article for this category.");
+						$tpl->generate($cfgClient[$client]['tpl']['path']."error_page.html");
+						exit;
                     } else {
                         header($errsite);
                         exit;
@@ -259,7 +263,11 @@ if (!$idcatart) {
                     die(i18n('No start article for this category'));
                 } else {
                     if ($error == 1) {
-                        echo "Fatal error: Could not display error page. Error to display was: 'No start article in this category'";
+                    	$tpl = new Template();
+						$tpl->set("s", "ERROR_TITLE", "Fatal error");
+						$tpl->set("s", "ERROR_TEXT", "No start article for this category.");
+						$tpl->generate($cfgClient[$client]['tpl']['path']."error_page.html");
+						exit;
                     } else {
                         header($errsite);
                         exit;
@@ -626,7 +634,11 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             eval("?>\n" . $code . "\n<?php\n");
         } else {
             if ($error == 1) {
-                echo "Fatal error: Could not display error page. Error to display was: 'No CONTENIDO session variable set. Probable error cause: Start article in this category is not set on-line.'";
+            	$tpl = new Template();
+            	$tpl->set("s", "ERROR_TITLE", "Fatal error");
+            	$tpl->set("s", "ERROR_TEXT", "No CONTENIDO session variable set. Probable error cause: Start article in this category is not set on-line.");
+            	$tpl->generate($cfgClient[$client]['tpl']['path']."error_page.html");
+            	exit;
             } else {
                 header($errsite);
                 exit;

@@ -175,6 +175,7 @@ cms/templates/cms_filelist_style_default.html -text
 cms/templates/cms_teaser_style_block.html -text
 cms/templates/cms_teaser_style_blog.html -text
 cms/templates/contenido_header.html -text
+cms/templates/error_page.html -text
 cms/templates/footnotes_1.html -text
 cms/templates/footnotes_2.html -text
 cms/templates/gallery.html -text
