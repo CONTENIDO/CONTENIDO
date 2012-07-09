@@ -51,15 +51,32 @@ $aPerms        = array();
 
 // edit group
 if (($action == 'group_edit')) {
-    $aPerms = buildUserOrGroupPermsFromRequest();
-    $oGroup->setField('description', $description);
-    $oGroup->setField('perms', implode(',', $aPerms));
+    $bError = false;
 
-    if ($oGroup->store()) {
-        $sNotification = $notification->returnNotification("info", i18n("Changes saved"));
+    if(isset($mlang) && count($mlang > 0) && (!isset($mclient))) {
+    	$sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
+    	$bError = true;
     } else {
-        $sNotification = $notification->returnNotification("warn", i18n("Changes couldn't saved"));
-        $bError = true;
+	    foreach($mlang as $ilang) {
+	    	if(!checkLangInClients($mclient, $ilang, null, null)) {
+	    		$sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
+	    		$bError = true;
+	    		break;
+	    	}
+	    }
+    }
+
+    if(!$bError) {
+    	$aPerms = buildUserOrGroupPermsFromRequest();
+    	$oGroup->setField('description', $description);
+    	$oGroup->setField('perms', implode(',', $aPerms));
+
+	    if ($oGroup->store()) {
+	        $sNotification = $notification->returnNotification("info", i18n("Changes saved"));
+	    } else {
+	        $sNotification = $notification->returnNotification("error", i18n("Changes couldn't be saved"));
+	        $bError = true;
+	    }
     }
 }
 

@@ -3616,8 +3616,11 @@ msgid "Do you really want to delete the following group:<br><br>%s<br>"
 msgstr "Möchten Sie die folgende Gruppe wirklich löschen:<br><br><b>%s</b>"
 
 #: includes/include.grouprights_overview.php:67
-msgid "Changes couldn't saved"
+msgid "Changes couldn't be saved"
 msgstr "Änderungen nicht gespeichert"
+
+msgid "If you want to assign a language to a group you need to give it access to the client too."
+msgstr "Wenn Sie Gruppen eine Sprache zuweisen wollen, müssen Sie sicherstellen, dass diesen der entsprechende Mandant auch zugewiesen wird."
 
 #: includes/include.grouprights_overview.php:112
 msgid "Groupname"

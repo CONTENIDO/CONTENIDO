@@ -70,7 +70,7 @@ class Debug_File implements IDebug
     {
         if (cFileHandler::writeable($this->_sPathToFile)) {
             $sDate = date('Y-m-d H:i:s');
-            cFileHandler::write($this->_sPathToFile, $sDate.": ".$msg."\n");
+            cFileHandler::write($this->_sPathToFile, $sDate.": ".$msg."\n", true);
         }
     }
 
@@ -85,10 +85,10 @@ class Debug_File implements IDebug
     {
         if (cFileHandler::writeable($this->_sPathToFile)) {
             $sDate = date('Y-m-d H:i:s');
-            cFileHandler::write($this->_sPathToFile, '#################### '.$sDate.' ####################'."\n");
-            cFileHandler::write($this->_sPathToFile, $sVariableDescription."\n");
-            cFileHandler::write($this->_sPathToFile, print_r($mVariable, true)."\n");
-            cFileHandler::write($this->_sPathToFile, '#################### /'.$sDate.' ###################'."\n\n");
+            cFileHandler::write($this->_sPathToFile, '#################### '.$sDate.' ####################'."\n", true);
+            cFileHandler::write($this->_sPathToFile, $sVariableDescription."\n", true);
+            cFileHandler::write($this->_sPathToFile, print_r($mVariable, true)."\n", true);
+            cFileHandler::write($this->_sPathToFile, '#################### /'.$sDate.' ###################'."\n\n", true);
         }
     }
 
