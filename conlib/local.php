@@ -28,13 +28,12 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * @package    CONTENIDO Core
  * @subpackage Database
  */
-class DB_Contenido extends DB_Sql
-{
+class DB_Contenido extends DB_Sql {
+
     /**
      * Constructor of database class.
      *
@@ -49,8 +48,7 @@ class DB_Contenido extends DB_Sql
      *                          - $options['enableProfiling']  (bool)  Optional, flag to enable profiling
      * @return  void
      */
-    public function __construct(array $options = array())
-    {
+    public function __construct(array $options = array()) {
         global $cachemeta;
         global $cfg;
 
@@ -62,7 +60,7 @@ class DB_Contenido extends DB_Sql
 
         // @FIXME: Database class should throw a error. Redirecting to the error page is not a good idea.
         //         What if the db connection within a cli script fails???
-        if($this->Errno == 1) {
+        if ($this->Errno == 1) {
             $errortitle = i18n("MySQL Database not reachable for installation %s");
             $errortitle = sprintf($errortitle, $cfg["path"]["contenido_fullhtml"]);
 
@@ -72,10 +70,10 @@ class DB_Contenido extends DB_Sql
             notifyOnError($errortitle, $errormessage);
 
             if ($cfg["contenido"]["errorpage"] != "") {
-                header("Location: ".$cfg["contenido"]["errorpage"]);
+                header("Location: " . $cfg["contenido"]["errorpage"]);
             } else {
                 //The script should not die if we are in the setup process. The setup has to make sure the connection works
-                if(strrpos(C_SETUP_PATH, "setup") != (strlen(C_SETUP_PATH) - strlen("/setup"))) {
+                if (strrpos(C_SETUP_PATH, "setup") != (strlen(C_SETUP_PATH) - strlen("/setup"))) {
                     die("Could not connect to database wtih this configuration");
                 }
             }
@@ -83,19 +81,16 @@ class DB_Contenido extends DB_Sql
 
         // TODO check this out
         // HerrB: Checked and disabled. Kills umlauts, if tables are latin1_general.
-
         // try to use the new connection and get the needed encryption
         //$this->query("SET NAMES 'utf8'");
     }
-
 
     /**
      * Fetches the next recordset from result set
      *
      * @param  bool
      */
-    public function next_record()
-    {
+    public function next_record() {
         global $cCurrentModule;
         // FIXME  For what reason is NoRecord used???
         $this->NoRecord = false;
@@ -111,6 +106,7 @@ class DB_Contenido extends DB_Sql
 
         return parent::next_record();
     }
+
     /**
      *
      * Get last inserted id of given tablename
@@ -118,12 +114,12 @@ class DB_Contenido extends DB_Sql
      * @param string $tableName
      * @return int|null last id of table
      */
-    public function getLastInsertedId($tableName='') {
+    public function getLastInsertedId($tableName = '') {
         $lastId = null;
-        if(strlen($tableName) > 0) {
-            $sqlGetLastInsertedId = 'SELECT LAST_INSERT_ID() as last_id FROM '.$tableName;
+        if (strlen($tableName) > 0) {
+            $sqlGetLastInsertedId = 'SELECT LAST_INSERT_ID() as last_id FROM ' . $tableName;
             $this->query($sqlGetLastInsertedId);
-            if($this->next_record()) {
+            if ($this->next_record()) {
                 $lastId = $this->f('last_id');
             }
         }
@@ -139,8 +135,7 @@ class DB_Contenido extends DB_Sql
      *                       or false in case of an error
      * @deprecated [2011-03-03] Use db drivers toArray() method instead
      */
-    public function copyResultToArray($sTable = '')
-    {
+    public function copyResultToArray($sTable = '') {
         global $cachemeta;
         cDeprecated("Use db drivers toArray() method instead");
 
@@ -167,15 +162,15 @@ class DB_Contenido extends DB_Sql
 
         return $aValues;
     }
-}
 
+}
 
 /**
  * @package    CONTENIDO Core
  * @subpackage Session
  */
-class Contenido_CT_Sql extends CT_Sql
-{
+class Contenido_CT_Sql extends CT_Sql {
+
     /**
      * Database class name
      * @var  string
@@ -188,8 +183,7 @@ class Contenido_CT_Sql extends CT_Sql
      */
     public $database_table = '';
 
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         $this->database_table = $cfg['tab']['phplib_active_sessions'];
     }
@@ -208,29 +202,27 @@ class Contenido_CT_Sql extends CT_Sql
      * @param   string  $str   The value to store
      * @return  bool
      */
-    public function ac_store($id, $name, $str)
-    {
+    public function ac_store($id, $name, $str) {
         switch ($this->encoding_mode) {
             case 'slashes':
                 $str = addslashes($name . ':' . $str);
-            break;
+                break;
             case 'base64':
             default:
                 $str = base64_encode($name . ':' . $str);
         }
 
         $name = addslashes($name);
-        $now  = date('YmdHis', time());
+        $now = date('YmdHis', time());
 
         $iquery = sprintf(
-            "REPLACE INTO %s (sid, name, val, changed) VALUES ('%s', '%s', '%s', '%s')",
-            $this->database_table, $id, $name, $str, $now
+                "REPLACE INTO %s (sid, name, val, changed) VALUES ('%s', '%s', '%s', '%s')", $this->database_table, $id, $name, $str, $now
         );
 
         return ($this->db->query($iquery)) ? true : false;
     }
-}
 
+}
 
 /**
  * Implements the interface class for storing session data to disk using file
@@ -238,8 +230,8 @@ class Contenido_CT_Sql extends CT_Sql
  * @package    CONTENIDO Core
  * @subpackage Session
  */
-class Contenido_CT_File extends CT_File
-{
+class Contenido_CT_File extends CT_File {
+
     /**
      * The maximum length for one line in session file.
      * @var int
@@ -254,8 +246,7 @@ class Contenido_CT_File extends CT_File
      *
      * @author Holger Librenz <holger.librenz@4fb.de>
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
 
         if (isset($cfg['session_line_length']) && !empty($cfg['session_line_length'])) {
@@ -274,8 +265,7 @@ class Contenido_CT_File extends CT_File
      * @param   string  $sName
      * @return  mixed
      */
-    public function ac_get_value($sId, $sName)
-    {
+    public function ac_get_value($sId, $sName) {
         if (cFileHandler::exists($this->file_path . "$sId$sName")) {
 
             $s = cFileHandler::readLine($this->file_path . "$sId$sName");
@@ -284,6 +274,7 @@ class Contenido_CT_File extends CT_File
             return '';
         }
     }
+
 }
 
 /**
@@ -300,38 +291,37 @@ class Contenido_CT_File extends CT_File
  * @subpackage Session
  * @author     Murat Purc <murat@purc.de>
  */
-class Contenido_CT_Session extends CT_Session
-{
-    public function __construct()
-    {
+class Contenido_CT_Session extends CT_Session {
+
+    public function __construct() {
         $this->ac_start(array(
-            'namespace'                        => 'contenido_ct_session_ns',
-            'session.hash_function'            => '1', // use sha-1 function
-            'session.hash_bits_per_character'  => '5', // and set 5 character to achieve 32 chars
+            'namespace' => 'contenido_ct_session_ns',
+            'session.hash_function' => '1', // use sha-1 function
+            'session.hash_bits_per_character' => '5', // and set 5 character to achieve 32 chars
 #            'session.save_path'                => 'your path',
 #            'session.name'                     => 'your session name',
 #            'session.gc_maxlifetime'           => 'your lifetime in seconds',
         ));
     }
+
 }
 
 /**
  * @package    CONTENIDO Core
  * @subpackage Session
  */
-class Contenido_Session extends Session
-{
-    public $classname          = 'Contenido_Session';
-    public $cookiename         = 'contenido';        ## defaults to classname
-    public $magic              = '123Hocuspocus';    ## ID seed
-    public $mode               = 'get';              ## We propagate session IDs with cookies
-    public $fallback_mode      = 'cookie';
-    public $lifetime           = 0;                  ## 0 = do session cookies, else minutes
-    public $that_class         = 'Contenido_CT_Sql'; ## name of data storage container
-    public $gc_probability     = 5;
+class Contenido_Session extends Session {
 
-    public function __construct()
-    {
+    public $classname = 'Contenido_Session';
+    public $cookiename = 'contenido';        ## defaults to classname
+    public $magic = '123Hocuspocus';    ## ID seed
+    public $mode = 'get';              ## We propagate session IDs with cookies
+    public $fallback_mode = 'cookie';
+    public $lifetime = 0;                  ## 0 = do session cookies, else minutes
+    public $that_class = 'Contenido_CT_Sql'; ## name of data storage container
+    public $gc_probability = 5;
+
+    public function __construct() {
         global $cfg;
 
         $sFallback = 'sql';
@@ -339,7 +329,7 @@ class Contenido_Session extends Session
 
         $sStorageContainer = strtolower($cfg['session_container']);
 
-        if (class_exists ($sClassPrefix . ucfirst($sStorageContainer))) {
+        if (class_exists($sClassPrefix . ucfirst($sStorageContainer))) {
             $sClass = $sClassPrefix . ucfirst($sStorageContainer);
         } else {
             $sClass = $sClassPrefix . ucfirst($sFallback);
@@ -348,57 +338,56 @@ class Contenido_Session extends Session
         $this->that_class = $sClass;
     }
 
-    public function delete()
-    {
+    public function delete() {
         $oCol = new cApiInUseCollection();
         $oCol->removeSessionMarks($this->id);
         parent::delete();
     }
-}
 
+}
 
 /**
  * @package    CONTENIDO Core
  * @subpackage Session
  * @deprecated This class was replaced by cFrontendSession. Please use that instead
  */
-class Contenido_Frontend_Session extends Session
-{
-	public $classname      = 'Contenido_Frontend_Session';
-	public $cookiename     = 'sid';              ## defaults to classname
-	public $magic          = 'Phillipip';        ## ID seed
-	public $mode           = 'cookie';           ## We propagate session IDs with cookies
-	public $fallback_mode  = 'cookie';
-	public $lifetime       = 0;                  ## 0 = do session cookies, else minutes
-	public $that_class     = 'Contenido_CT_Sql'; ## name of data storage container
-	public $gc_probability = 5;
+class Contenido_Frontend_Session extends Session {
 
-	public function __construct()
-	{
-		global $load_lang, $load_client, $cfg;
+    public $classname = 'Contenido_Frontend_Session';
+    public $cookiename = 'sid';              ## defaults to classname
+    public $magic = 'Phillipip';        ## ID seed
+    public $mode = 'cookie';           ## We propagate session IDs with cookies
+    public $fallback_mode = 'cookie';
+    public $lifetime = 0;                  ## 0 = do session cookies, else minutes
+    public $that_class = 'Contenido_CT_Sql'; ## name of data storage container
+    public $gc_probability = 5;
 
-		cDeprecated("This class was replaced by cFrontendSession. Please use it instead.");
+    public function __construct() {
+        global $load_lang, $load_client, $cfg;
 
-		$this->cookiename = 'sid_' . $load_client . '_' . $load_lang;
+        cDeprecated("This class was replaced by cFrontendSession. Please use it instead.");
 
-		$this->setExpires(time()+3600);
+        $this->cookiename = 'sid_' . $load_client . '_' . $load_lang;
 
-		// added 2007-10-11, H. Librenz
-		// bugfix (found by dodger77): we need alternative session containers
-		//                             also in frontend
-		$sFallback = 'sql';
-		$sClassPrefix = 'Contenido_CT_';
+        $this->setExpires(time() + 3600);
 
-		$sStorageContainer = strtolower($cfg['session_container']);
+        // added 2007-10-11, H. Librenz
+        // bugfix (found by dodger77): we need alternative session containers
+        //                             also in frontend
+        $sFallback = 'sql';
+        $sClassPrefix = 'Contenido_CT_';
 
-		if (class_exists($sClassPrefix . ucfirst($sStorageContainer))) {
-			$sClass = $sClassPrefix . ucfirst($sStorageContainer);
-		} else {
-			$sClass = $sClassPrefix . ucfirst($sFallback);
-		}
+        $sStorageContainer = strtolower($cfg['session_container']);
 
-		$this->that_class = $sClass;
-	}
+        if (class_exists($sClassPrefix . ucfirst($sStorageContainer))) {
+            $sClass = $sClassPrefix . ucfirst($sStorageContainer);
+        } else {
+            $sClass = $sClassPrefix . ucfirst($sFallback);
+        }
+
+        $this->that_class = $sClass;
+    }
+
 }
 
 /**
@@ -406,21 +395,19 @@ class Contenido_Frontend_Session extends Session
  * @package    CONTENIDO Core
  * @subpackage Authentication
  */
-class Contenido_Auth extends Auth
-{
-    public $classname      = 'Contenido_Auth';
-    public $lifetime       =  15;
+class Contenido_Auth extends Auth {
+
+    public $classname = 'Contenido_Auth';
+    public $lifetime = 15;
     public $database_class = 'DB_Contenido';
     public $database_table = 'con_phplib_auth_user';
 
-    public function auth_loginform()
-    {
+    public function auth_loginform() {
         global $sess, $_PHPLIB;
         include($_PHPLIB['libdir'] . 'loginform.ihtml');
     }
 
-    public function auth_validatelogin()
-    {
+    public function auth_validatelogin() {
         global $username, $password;
 
         if ($password == '') {
@@ -446,6 +433,7 @@ class Contenido_Auth extends Auth
         }
         return $uid;
     }
+
 }
 
 /**
@@ -454,18 +442,17 @@ class Contenido_Auth extends Auth
  * @subpackage Authentication
  * @author     Jim Zajkowski <jim@jimz.com>
  */
-class Contenido_Challenge_Crypt_Auth extends Contenido_Auth
-{
-    public $classname      = 'Contenido_Challenge_Crypt_Auth';
-    public $lifetime       =  15;
-    public $magic          = 'Frrobo123xxica';  ## Challenge seed
+class Contenido_Challenge_Crypt_Auth extends Contenido_Auth {
+
+    public $classname = 'Contenido_Challenge_Crypt_Auth';
+    public $lifetime = 15;
+    public $magic = 'Frrobo123xxica';  ## Challenge seed
     public $database_class = 'DB_Contenido';
     public $database_table = '';
-    public $group_table    = '';
-    public $member_table   = '';
+    public $group_table = '';
+    public $member_table = '';
 
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         $this->database_table = $cfg['tab']['phplib_auth_user_md5'];
         $this->group_table = $cfg['tab']['groups'];
@@ -477,8 +464,7 @@ class Contenido_Challenge_Crypt_Auth extends Contenido_Auth
         }
     }
 
-    public function auth_loginform()
-    {
+    public function auth_loginform() {
         global $sess, $challenge, $_PHPLIB, $cfg;
 
         $challenge = md5(uniqid($this->magic));
@@ -487,11 +473,10 @@ class Contenido_Challenge_Crypt_Auth extends Contenido_Auth
         include($cfg['path']['contenido'] . 'main.loginform.php');
     }
 
-    public function auth_loglogin($uid)
-    {
+    public function auth_loglogin($uid) {
         global $cfg, $client, $lang, $sess, $saveLoginTime;
 
-        $perm     = new Contenido_Perm();
+        $perm = new Contenido_Perm();
         $idcatart = 0;
 
         /* Find the first accessible client and language for the user */
@@ -499,17 +484,17 @@ class Contenido_Challenge_Crypt_Auth extends Contenido_Auth
         // reference to the clients table. Maybe fail-safe technology, who knows...
         // @todo Replace following query against usage of a model
         $sql = 'SELECT cl.idclient, cl.idlang FROM %s AS c, %s AS cl ' .
-            'WHERE c.idclient = cl.idclient ORDER BY idclient ASC, idlang ASC';
+                'WHERE c.idclient = cl.idclient ORDER BY idclient ASC, idlang ASC';
         $this->db->query($sql, $cfg['tab']['clients'], $cfg['tab']['clients_lang']);
 
         $bFound = false;
         while ($this->db->next_record() && !$bFound) {
             $iTmpClient = $this->db->f('idclient');
-            $iTmpLang   = $this->db->f('idlang');
+            $iTmpLang = $this->db->f('idlang');
 
             if ($perm->have_perm_client_lang($iTmpClient, $iTmpLang)) {
                 $client = $iTmpClient;
-                $lang   = $iTmpLang;
+                $lang = $iTmpLang;
                 $bFound = true;
             }
         }
@@ -535,8 +520,7 @@ class Contenido_Challenge_Crypt_Auth extends Contenido_Auth
         $saveLoginTime = true;
     }
 
-    public function auth_validatelogin()
-    {
+    public function auth_validatelogin() {
         global $username, $password, $challenge, $response, $formtimestamp, $auth_handlers;
 
         $gperm = array();
@@ -545,7 +529,7 @@ class Contenido_Challenge_Crypt_Auth extends Contenido_Auth
             return false;
         }
 
-        if (($formtimestamp + (60*15)) < time()) {
+        if (($formtimestamp + (60 * 15)) < time()) {
             return false;
         }
 
@@ -558,7 +542,7 @@ class Contenido_Challenge_Crypt_Auth extends Contenido_Auth
             return $uid;
         }
 
-        $uid  = false;
+        $uid = false;
         $perm = false;
         $pass = false;
 
@@ -571,9 +555,9 @@ class Contenido_Challenge_Crypt_Auth extends Contenido_Auth
 
         $sMaintenanceMode = getSystemProperty('maintenance', 'mode');
         while ($this->db->next_record()) {
-            $uid   = $this->db->f('user_id');
-            $perm  = $this->db->f('perms');
-            $pass  = $this->db->f('password'); // Password is stored as a md5 hash
+            $uid = $this->db->f('user_id');
+            $perm = $this->db->f('perms');
+            $pass = $this->db->f('password'); // Password is stored as a md5 hash
 
             $bInMaintenance = false;
             if ($sMaintenanceMode == 'enabled') {
@@ -605,7 +589,7 @@ class Contenido_Challenge_Crypt_Auth extends Contenido_Auth
             return false;
         } else {
             $sql = "SELECT a.group_id AS group_id, a.perms AS perms "
-                 . "FROM %s AS a, %s AS b WHERE a.group_id = b.group_id AND b.user_id = '%s'";
+                    . "FROM %s AS a, %s AS b WHERE a.group_id = b.group_id AND b.user_id = '%s'";
             $this->db->query($sql, $this->group_table, $this->member_table, $uid);
 
             if ($perm != '') {
@@ -617,7 +601,7 @@ class Contenido_Challenge_Crypt_Auth extends Contenido_Auth
             }
 
             if (is_array($gperm)) {
-                $perm = implode(',',$gperm);
+                $perm = implode(',', $gperm);
             }
 
             if ($response == '') {                   ## True when JS is disabled
@@ -643,26 +627,26 @@ class Contenido_Challenge_Crypt_Auth extends Contenido_Auth
             }
         }
     }
+
 }
 
 /**
  * @package    CONTENIDO Core
  * @subpackage Authentication
  */
-class Contenido_Frontend_Challenge_Crypt_Auth extends Contenido_Auth
-{
-    public $classname      = 'Contenido_Frontend_Challenge_Crypt_Auth';
-    public $lifetime       =  15;
-    public $magic          = 'Frrobo123xxica';  ## Challenge seed
+class Contenido_Frontend_Challenge_Crypt_Auth extends Contenido_Auth {
+
+    public $classname = 'Contenido_Frontend_Challenge_Crypt_Auth';
+    public $lifetime = 15;
+    public $magic = 'Frrobo123xxica';  ## Challenge seed
     public $database_class = 'DB_Contenido';
     public $database_table = '';
     public $fe_database_table = '';
-    public $group_table    = '';
-    public $member_table   = '';
-    public $nobody         = true;
+    public $group_table = '';
+    public $member_table = '';
+    public $nobody = true;
 
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         $this->database_table = $cfg['tab']['phplib_auth_user_md5'];
         $this->fe_database_table = $cfg['tab']['frontendusers'];
@@ -670,8 +654,7 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Contenido_Auth
         $this->member_table = $cfg['tab']['groupmembers'];
     }
 
-    public function auth_preauth()
-    {
+    public function auth_preauth() {
         global $password;
 
         if ($password == '') {
@@ -683,21 +666,19 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Contenido_Auth
         return $this->auth_validatelogin();
     }
 
-    public function auth_loginform()
-    {
+    public function auth_loginform() {
         global $sess, $challenge, $_PHPLIB, $client, $cfgClient;
 
         $challenge = md5(uniqid($this->magic));
         $sess->register('challenge');
 
-        include($cfgClient[$client]['path']['frontend'].'front_crcloginform.inc.php');
+        include($cfgClient[$client]['path']['frontend'] . 'front_crcloginform.inc.php');
     }
 
-    public function auth_validatelogin()
-    {
+    public function auth_validatelogin() {
         global $username, $password, $challenge, $response, $auth_handlers, $client;
 
-        $client = (int)$client;
+        $client = (int) $client;
 
         if (isset($username)) {
             // This provides access for 'loginform.ihtml'
@@ -715,7 +696,7 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Contenido_Auth
         $this->db->query($sql, $this->fe_database_table, $username, $client);
 
         if ($this->db->next_record()) {
-            $uid  = $this->db->f('idfrontenduser');
+            $uid = $this->db->f('idfrontenduser');
             $perm = 'frontend';
             $pass = $this->db->f('password');
         }
@@ -726,15 +707,15 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Contenido_Auth
             $this->db->query($sql, $this->database_table, $username);
 
             while ($this->db->next_record()) {
-                $uid   = $this->db->f('user_id');
-                $perm  = $this->db->f('perms');
-                $pass  = $this->db->f('password');   ## Password is stored as a md5 hash
+                $uid = $this->db->f('user_id');
+                $perm = $this->db->f('perms');
+                $pass = $this->db->f('password');   ## Password is stored as a md5 hash
 
                 if (is_array($auth_handlers)) {
                     if (array_key_exists($pass, $auth_handlers)) {
                         $success = call_user_func($auth_handlers[$pass], $username, $password);
                         if ($success) {
-                            $uid  = md5($username);
+                            $uid = md5($username);
                             $pass = md5($password);
                         }
                     }
@@ -743,12 +724,12 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Contenido_Auth
 
             if ($uid !== false) {
                 $sql = "SELECT a.group_id AS group_id, a.perms AS perms "
-                     . "FROM %s AS a, %s AS b WHERE a.group_id = b.group_id AND b.user_id = '%s'";
+                        . "FROM %s AS a, %s AS b WHERE a.group_id = b.group_id AND b.user_id = '%s'";
                 $this->db->query($sql, $this->group_table, $this->member_table, $uid);
 
                 /* Deactivated: Backend user would be sysadmin when logged on as frontend user
-                *  (and perms would be checked), see http://www.contenido.org/forum/viewtopic.php?p=85666#85666
-                $perm = 'sysadmin'; */
+                 *  (and perms would be checked), see http://www.contenido.org/forum/viewtopic.php?p=85666#85666
+                  $perm = 'sysadmin'; */
                 if ($perm != '') {
                     $gperm[] = $perm;
                 }
@@ -758,7 +739,7 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Contenido_Auth
                 }
 
                 if (is_array($gperm)) {
-                    $perm = implode(',',$gperm);
+                    $perm = implode(',', $gperm);
                 }
             }
         }
@@ -788,13 +769,13 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Contenido_Auth
             }
         }
     }
+
 }
 
 /**
  * Registers an external auth handler
  */
-function register_auth_handler($aHandlers)
-{
+function register_auth_handler($aHandlers) {
     global $auth_handlers;
 
     if (!is_array($auth_handlers)) {

@@ -23,7 +23,6 @@
  *   created 2003-07-03
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -53,7 +52,6 @@ $_conI18n = array(
     'cache' => array()
 );
 
-
 /**
  * gettext wrapper (for future extensions). Usage:
  * trans('Your text which has to be translated');
@@ -61,8 +59,7 @@ $_conI18n = array(
  * @param $string string The string to translate
  * @return string  Returns the translation
  */
-function trans($string)
-{
+function trans($string) {
     return i18n($string);
 }
 
@@ -74,8 +71,7 @@ function trans($string)
  * @param  string  $domain  The domain to look up
  * @return string  Returns the translation
  */
-function i18n($string, $domain = 'contenido')
-{
+function i18n($string, $domain = 'contenido') {
     global $cfg, $_conI18n, $belang, $contenido, $lang;
 
     // Auto initialization
@@ -116,7 +112,7 @@ function i18n($string, $domain = 'contenido')
 
     // Emulator as fallback
     $ret = i18nEmulateGettext($string, $domain);
-    if(is_utf8($ret)) {
+    if (is_utf8($ret)) {
         $ret = utf8_decode($ret);
     }
     return $ret;
@@ -129,12 +125,11 @@ function i18n($string, $domain = 'contenido')
  * @param  string  $domain  The domain to look up
  * @return string  Returns the translation
  */
-function i18nEmulateGettext($string, $domain = 'contenido')
-{
+function i18nEmulateGettext($string, $domain = 'contenido') {
     global $_conI18n;
 
-    if($string == "") {
-    	return "";
+    if ($string == "") {
+        return "";
     }
 
     if (!isset($_conI18n['cache'][$domain])) {
@@ -162,33 +157,33 @@ function i18nEmulateGettext($string, $domain = 'contenido')
 
         // Prepare for special po edit format
         /* Something like:
-            #, php-format
-            msgid ""
-            "Hello %s,\n"
-            "\n"
-            "you've got a new reminder for the client '%s' at\n"
-            "%s:\n"
-            "\n"
-            "%s"
-            msgstr ""
-            "Hallo %s,\n"
-            "\n"
-            "du hast eine Wiedervorlage erhalten f�r den Mandanten '%s' at\n"
-            "%s:\n"
-            "\n"
-            "%s"
+          #, php-format
+          msgid ""
+          "Hello %s,\n"
+          "\n"
+          "you've got a new reminder for the client '%s' at\n"
+          "%s:\n"
+          "\n"
+          "%s"
+          msgstr ""
+          "Hallo %s,\n"
+          "\n"
+          "du hast eine Wiedervorlage erhalten f�r den Mandanten '%s' at\n"
+          "%s:\n"
+          "\n"
+          "%s"
 
-            has to be converted to:
-            msgid "Hello %s,\n\nyou've got a new reminder for the client '%s' at\n%s:\n\n%s"
-            msgstr "Hallo %s,\n\ndu hast eine Wiedervorlage erhalten f�r den Mandanten '%s' at\n%s:\n\n%s"
-        */
+          has to be converted to:
+          msgid "Hello %s,\n\nyou've got a new reminder for the client '%s' at\n%s:\n\n%s"
+          msgstr "Hallo %s,\n\ndu hast eine Wiedervorlage erhalten f�r den Mandanten '%s' at\n%s:\n\n%s"
+         */
         $_conI18n['files'][$domain] = preg_replace('/\\\n"\\s+"/m', '\\\\n', $_conI18n['files'][$domain]);
         $_conI18n['files'][$domain] = preg_replace('/(""\\s+")/m', '"', $_conI18n['files'][$domain]);
     }
 
     $stringStart = strpos($_conI18n['files'][$domain], '"' . str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $string) . '"');
     if ($stringStart === false) {
-    	cDebug("translation: ".$string."=".$string);
+        cDebug("translation: " . $string . "=" . $string);
         return $string;
     }
 
@@ -205,7 +200,7 @@ function i18nEmulateGettext($string, $domain = 'contenido')
         $_conI18n['cache'][$domain][$string] = $string;
     }
 
-    cDebug("translation: ".$string."=".$_conI18n['cache'][$domain][$string]);
+    cDebug("translation: " . $string . "=" . $_conI18n['cache'][$domain][$string]);
     return $_conI18n['cache'][$domain][$string];
 }
 
@@ -215,8 +210,7 @@ function i18nEmulateGettext($string, $domain = 'contenido')
  * @param  string  $localePath  Path to the locales
  * @param  string  $langCode  Language code to set
  */
-function i18nInit($localePath, $langCode)
-{
+function i18nInit($localePath, $langCode) {
     global $_conI18n;
 
     if (function_exists('bindtextdomain')) {
@@ -250,8 +244,7 @@ function i18nInit($localePath, $langCode)
  * @param  string  $domain  Domain to bind to
  * @return string  Returns the translation
  */
-function i18nRegisterDomain($domain, $localePath)
-{
+function i18nRegisterDomain($domain, $localePath) {
     global $_conI18n;
 
     if (function_exists('bindtextdomain')) {
@@ -269,8 +262,7 @@ function i18nRegisterDomain($domain, $localePath)
  * @param  string  $accept  Comma searated list of languages to accept
  * @return array array with the short form of the accept languages
  */
-function i18nStripAcceptLanguages($accept)
-{
+function i18nStripAcceptLanguages($accept) {
     $languages = explode(',', $accept);
     $shortLanguages = array();
     foreach ($languages as $value) {
@@ -288,8 +280,7 @@ function i18nStripAcceptLanguages($accept)
  * @param  string  $accept  Language to accept
  * @return string The locale key for the given accept string
  */
-function i18nMatchBrowserAccept($accept)
-{
+function i18nMatchBrowserAccept($accept) {
     $available_languages = i18nGetAvailableLanguages();
 
     // Try to match the whole accept string
@@ -301,8 +292,8 @@ function i18nMatchBrowserAccept($accept)
     }
 
     /* Whoops, we are still here. Let's match the stripped-down string.
-       Example: de-ch isn't in the list. Cut it down after the '-' to 'de'
-       which should be in the list. */
+      Example: de-ch isn't in the list. Cut it down after the '-' to 'de'
+      which should be in the list. */
     $accept = substr($accept, 0, 2);
     foreach ($available_languages as $key => $value) {
         list($country, $lang, $encoding, $shortaccept) = $value;
@@ -312,7 +303,7 @@ function i18nMatchBrowserAccept($accept)
     }
 
     /// Whoops, still here? Seems that we didn't find any language. Return the default (german, yikes)
-   return false;
+    return false;
 }
 
 /**
@@ -320,19 +311,18 @@ function i18nMatchBrowserAccept($accept)
  *
  * @return array All available languages
  */
-function i18nGetAvailableLanguages()
-{
+function i18nGetAvailableLanguages() {
     /* array notes:
-        First field: Language
-        Second field: Country
-        Third field: ISO-Encoding
-        Fourth field: Browser accept mapping
-        Fifth field: SPAW language
-    */
+      First field: Language
+      Second field: Country
+      Third field: ISO-Encoding
+      Fourth field: Browser accept mapping
+      Fifth field: SPAW language
+     */
     $aLanguages = array(
-        'ar_AA' => array('Arabic','Arabic Countries', 'ISO8859-6', 'ar','en'),
+        'ar_AA' => array('Arabic', 'Arabic Countries', 'ISO8859-6', 'ar', 'en'),
         'be_BY' => array('Byelorussian', 'Belarus', 'ISO8859-5', 'be', 'en'),
-        'bg_BG' => array('Bulgarian','Bulgaria', 'ISO8859-5', 'bg', 'en'),
+        'bg_BG' => array('Bulgarian', 'Bulgaria', 'ISO8859-5', 'bg', 'en'),
         'cs_CZ' => array('Czech', 'Czech Republic', 'ISO8859-2', 'cs', 'cz'),
         'da_DK' => array('Danish', 'Denmark', 'ISO8859-1', 'da', 'dk'),
         'de_CH' => array('German', 'Switzerland', 'ISO8859-1', 'de-ch', 'de'),
@@ -371,8 +361,7 @@ function i18nGetAvailableLanguages()
     return $aLanguages;
 }
 
-function mi18n($string)
-{
+function mi18n($string) {
     global $cCurrentModule;
 
     // dont workd by setup/upgrade
@@ -383,9 +372,9 @@ function mi18n($string)
     $array = $contenidoTranslateFromFile->getLangarray();
 
     /*
-    if (!is_object($mi18nTranslator)) {
-        $mi18nTranslator = new cApiModuleTranslationCollection;
-    }*/
+      if (!is_object($mi18nTranslator)) {
+      $mi18nTranslator = new cApiModuleTranslationCollection;
+      } */
 
     return ($array[$string] == '') ? $string : $array[$string];
 }

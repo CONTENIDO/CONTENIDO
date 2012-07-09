@@ -45,38 +45,38 @@ if (!isset($groupid)) {
 
 // create group instance
 $oGroup = new cApiGroup($groupid);
-$bError        = false;
+$bError = false;
 $sNotification = '';
-$aPerms        = array();
+$aPerms = array();
 
 // edit group
 if (($action == 'group_edit')) {
     $bError = false;
 
-    if(isset($mlang) && count($mlang > 0) && (!isset($mclient))) {
-    	$sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
-    	$bError = true;
+    if (isset($mlang) && count($mlang > 0) && (!isset($mclient))) {
+        $sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
+        $bError = true;
     } else {
-	    foreach($mlang as $ilang) {
-	    	if(!checkLangInClients($mclient, $ilang, null, null)) {
-	    		$sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
-	    		$bError = true;
-	    		break;
-	    	}
-	    }
+        foreach ($mlang as $ilang) {
+            if (!checkLangInClients($mclient, $ilang, null, null)) {
+                $sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
+                $bError = true;
+                break;
+            }
+        }
     }
 
-    if(!$bError) {
-    	$aPerms = buildUserOrGroupPermsFromRequest();
-    	$oGroup->setField('description', $description);
-    	$oGroup->setField('perms', implode(',', $aPerms));
+    if (!$bError) {
+        $aPerms = buildUserOrGroupPermsFromRequest();
+        $oGroup->setField('description', $description);
+        $oGroup->setField('perms', implode(',', $aPerms));
 
-	    if ($oGroup->store()) {
-	        $sNotification = $notification->returnNotification("info", i18n("Changes saved"));
-	    } else {
-	        $sNotification = $notification->returnNotification("error", i18n("Changes couldn't be saved"));
-	        $bError = true;
-	    }
+        if ($oGroup->store()) {
+            $sNotification = $notification->returnNotification("info", i18n("Changes saved"));
+        } else {
+            $sNotification = $notification->returnNotification("error", i18n("Changes couldn't be saved"));
+            $bError = true;
+        }
     }
 }
 
@@ -87,7 +87,7 @@ if (is_string($del_groupprop_type) && is_string($del_groupprop_name)) {
 
 // add group property
 if (is_string($groupprop_type) && is_string($groupprop_name) && is_string($groupprop_value)
-    && !empty($groupprop_type) && !empty($groupprop_name)) {
+        && !empty($groupprop_type) && !empty($groupprop_name)) {
     $oGroup->setGroupProperty($groupprop_type, $groupprop_name, $groupprop_value);
 }
 
@@ -95,15 +95,15 @@ if (is_string($groupprop_type) && is_string($groupprop_name) && is_string($group
 $aPerms = explode(',', $oGroup->getField('perms'));
 
 $tpl->reset();
-$tpl->set('s','NOTIFICATION', $sNotification);
+$tpl->set('s', 'NOTIFICATION', $sNotification);
 
-$form = '<form name="group_properties" method="post" action="'.$sess->url("main.php?").'">
-             '.$sess->hidden_session(true).'
-             <input type="hidden" name="area" value="'.$area.'">
+$form = '<form name="group_properties" method="post" action="' . $sess->url("main.php?") . '">
+             ' . $sess->hidden_session(true) . '
+             <input type="hidden" name="area" value="' . $area . '">
              <input type="hidden" name="action" value="group_edit">
-             <input type="hidden" name="frame" value="'.$frame.'">
-             <input type="hidden" name="groupid" value="'.$groupid.'">
-             <input type="hidden" name="idlang" value="'.$lang.'">';
+             <input type="hidden" name="frame" value="' . $frame . '">
+             <input type="hidden" name="groupid" value="' . $groupid . '">
+             <input type="hidden" name="idlang" value="' . $lang . '">';
 
 $tpl->set('s', 'FORM', $form);
 $tpl->set('s', 'GET_GROUPID', $groupid);
@@ -140,9 +140,9 @@ $oClientsCollection = new cApiClientCollection();
 $aClients = $oClientsCollection->getAvailableClients();
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
-    if (in_array("admin[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
-        $oCheckbox = new cHTMLCheckbox("madmin[".$idclient."]", $idclient, "madmin[".$idclient."]".$idclient, in_array("admin[".$idclient."]", $aPerms));
-        $oCheckbox->setLabelText($item['name']." (".$idclient.")");
+    if (in_array("admin[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
+        $oCheckbox = new cHTMLCheckbox("madmin[" . $idclient . "]", $idclient, "madmin[" . $idclient . "]" . $idclient, in_array("admin[" . $idclient . "]", $aPerms));
+        $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }
@@ -156,9 +156,9 @@ if ($sClientCheckboxes !== '' && !in_array('sysadmin', $aPerms)) {
 // clients perms
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
-    if ((in_array("client[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[".$idclient."]", $aAuthPerms)) && !in_array("admin[".$idclient."]", $aPerms)) {
-        $oCheckbox = new cHTMLCheckbox("mclient[".$idclient."]", $idclient, "mclient[".$idclient."]".$idclient, in_array("client[".$idclient."]", $aPerms));
-        $oCheckbox->setLabelText($item['name']." (". $idclient . ")");
+    if ((in_array("client[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[" . $idclient . "]", $aAuthPerms)) && !in_array("admin[" . $idclient . "]", $aPerms)) {
+        $oCheckbox = new cHTMLCheckbox("mclient[" . $idclient . "]", $idclient, "mclient[" . $idclient . "]" . $idclient, in_array("client[" . $idclient . "]", $aPerms));
+        $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }
@@ -173,9 +173,9 @@ if ($sClientCheckboxes != '' && !in_array('sysadmin', $aPerms)) {
 $aClientsLanguages = getAllClientsAndLanguages();
 $sClientCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
-    if (($perm->have_perm_client("lang[".$item['idlang']."]") || $perm->have_perm_client("admin[".$item['idclient']."]")) && !in_array("admin[".$item['idclient']."]", $aPerms)) {
-        $oCheckbox = new cHTMLCheckbox("mlang[".$item['idlang']."]", $item['idlang'], "mlang[".$item['idlang']."]".$item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms));
-        $oCheckbox->setLabelText($item['langname']." (". $item['clientname'] .")");
+    if (($perm->have_perm_client("lang[" . $item['idlang'] . "]") || $perm->have_perm_client("admin[" . $item['idclient'] . "]")) && !in_array("admin[" . $item['idclient'] . "]", $aPerms)) {
+        $oCheckbox = new cHTMLCheckbox("mlang[" . $item['idlang'] . "]", $item['idlang'], "mlang[" . $item['idlang'] . "]" . $item['idlang'], in_array("lang[" . $item['idlang'] . "]", $aPerms));
+        $oCheckbox->setLabelText($item['langname'] . " (" . $item['clientname'] . ")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }
@@ -188,10 +188,10 @@ if ($sClientCheckboxes != '' && !in_array('sysadmin', $aPerms)) {
 
 // group properties
 $aProperties = $oGroup->getGroupProperties();
-$sPropRows   = '';
+$sPropRows = '';
 foreach ($aProperties as $propertyId => $prop) {
-    $type  = $prop['type'];
-    $name  = $prop['name'];
+    $type = $prop['type'];
+    $name = $prop['name'];
     $value = $prop['value'];
     $sPropRows .= '
     <tr class="text_medium">
@@ -207,9 +207,9 @@ foreach ($aProperties as $propertyId => $prop) {
 $table = '
     <table class="generic" width="100%" cellspacing="0" cellpadding="2">
     <tr>
-        <th>'.i18n("Area/Type").'</th>
-        <th>'.i18n("Property").'</th>
-        <th>'.i18n("Value").'</th>
+        <th>' . i18n("Area/Type") . '</th>
+        <th>' . i18n("Property") . '</th>
+        <th>' . i18n("Value") . '</th>
     </tr>
     ' . $sPropRows . '
     <tr class="text_medium">

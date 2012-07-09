@@ -67,6 +67,7 @@ $max_log_size = getSystemProperty('backend', 'max_log_size');
 if ($max_log_size === false) {
     $max_log_size = 10;
 }
+
 if (in_array('sysadmin', explode(',', $vuser->getEffectiveUserPerms())) && $max_log_size > 0) {
     $log_size = getDirectorySize($cfg['path']['contenido_logs']);
     if ($log_size > $max_log_size * 1024 * 1024) {
@@ -81,9 +82,9 @@ $userid = $auth->auth['uid'];
 $tpl->set('s', 'WELCOME', '<b>' . i18n('Welcome') . ' </b>' . $vuser->getRealname($userid, true) . '.');
 $tpl->set('s', 'LASTLOGIN', i18n('Last login') . ': ' . $lastlogin);
 
-$clients= $classclient->getAccessibleClients();
+$clients = $classclient->getAccessibleClients();
 
-$cApiClient= new cApiClient();
+$cApiClient = new cApiClient();
 
 if (count($clients) > 1) {
     $clientform = '<form style="margin: 0px" name="clientselect" method="post" target="_top" action="' . $sess->url('index.php') . '">';
@@ -231,7 +232,7 @@ $sTemplate = '<li class="welcome">%s, %s</li>';
 foreach ($aMemberList as $key) {
     $sRealName = $key['realname'];
     $aPerms['0'] = $key['perms'];
-    $sOutput .= sprintf($sTemplate,  $sRealName, $aPerms['0']);
+    $sOutput .= sprintf($sTemplate, $sRealName, $aPerms['0']);
 }
 
 // set template welcome

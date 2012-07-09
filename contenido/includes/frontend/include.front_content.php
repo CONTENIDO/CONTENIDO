@@ -122,7 +122,7 @@ if (isset($tmpchangelang) && $tmpchangelang > 0) {
     // savelang is needed to set language before closing the page, see
     // {frontend_clientdir}/front_content.php before cRegistry::shutdown()
     $savedlang = $lang;
-    $lang      = $tmpchangelang;
+    $lang = $tmpchangelang;
 }
 
 // Change client
@@ -166,7 +166,7 @@ if (!$sess->is_registered('client')) {
 }
 
 if (isset($username)) {
-    $auth->login_if (true);
+    $auth->login_if(true);
 }
 
 // Send HTTP header with encoding
@@ -189,7 +189,7 @@ if (isset($path) && strlen($path) > 1) {
     } else {
         $iLangCheck = 0;
         $idcat = prResolvePathViaCategoryNames($path, $iLangCheck);
-        if (($lang != $iLangCheck) && ((int)$iLangCheck != 0)) {
+        if (($lang != $iLangCheck) && ((int) $iLangCheck != 0)) {
             $lang = $iLangCheck;
         }
     }
@@ -198,12 +198,12 @@ if (isset($path) && strlen($path) > 1) {
 // Error page
 $aParams = array(
     'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client],
-    'lang' => $lang, 'error'=> '1'
+    'lang' => $lang, 'error' => '1'
 );
 $errsite = 'Location: ' . Contenido_Url::getInstance()->buildRedirect($aParams);
 
-if($error == 1) {
-	header("HTTP/1.0 404 Not found");
+if ($error == 1) {
+    header("HTTP/1.0 404 Not found");
 }
 
 
@@ -235,11 +235,11 @@ if (!$idcatart) {
                     die(i18n('No start article for this category'));
                 } else {
                     if ($error == 1) {
-                    	$tpl = new Template();
-						$tpl->set("s", "ERROR_TITLE", "Fatal error");
-						$tpl->set("s", "ERROR_TEXT", "No start article for this category.");
-						$tpl->generate($cfgClient[$client]['tpl']['path']."error_page.html");
-						exit;
+                        $tpl = new Template();
+                        $tpl->set("s", "ERROR_TITLE", "Fatal error");
+                        $tpl->set("s", "ERROR_TEXT", "No start article for this category.");
+                        $tpl->generate($cfgClient[$client]['tpl']['path'] . "error_page.html");
+                        exit;
                     } else {
                         header($errsite);
                         exit;
@@ -267,11 +267,11 @@ if (!$idcatart) {
                     die(i18n('No start article for this category'));
                 } else {
                     if ($error == 1) {
-                    	$tpl = new Template();
-						$tpl->set("s", "ERROR_TITLE", "Fatal error");
-						$tpl->set("s", "ERROR_TEXT", "No start article for this category.");
-						$tpl->generate($cfgClient[$client]['tpl']['path']."error_page.html");
-						exit;
+                        $tpl = new Template();
+                        $tpl->set("s", "ERROR_TITLE", "Fatal error");
+                        $tpl->set("s", "ERROR_TEXT", "No start article for this category.");
+                        $tpl->generate($cfgClient[$client]['tpl']['path'] . "error_page.html");
+                        exit;
                     } else {
                         header($errsite);
                         exit;
@@ -306,11 +306,11 @@ if ($idartlang === false) {
             $tpl->set('s', 'CONTENIDO_PATH', $cfg['path']['contenido_fullhtml']);
             $tpl->set('s', 'ERROR_TITLE', i18n('Error page'));
             $tpl->set('s', 'ERROR_TEXT', i18n('Error article/category not found!'));
-            $tpl->generate($cfg['path']['contenido']. $cfg['path']['templates'].'template.error_page.html');
+            $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . 'template.error_page.html');
         }
         exit;
     } else {
-        header($errsite. '&display_errorpage=1');
+        header($errsite . '&display_errorpage=1');
     }
     exit;
 }
@@ -376,7 +376,7 @@ if ($contenido) {
     // CEC to check if the user has permission to edit articles in this category
     CEC_Hook::setBreakCondition(false, true); // break at 'false', default value 'true'
     $allow = CEC_Hook::executeWhileBreakCondition(
-        'Contenido.Frontend.AllowEdit', $lang, $idcat, $idart, $auth->auth['uid']
+                    'Contenido.Frontend.AllowEdit', $lang, $idcat, $idart, $auth->auth['uid']
     );
 
     if ($perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat) && $inUse == false && $allow == true) {
@@ -439,21 +439,18 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 } else {
 
     // Frontend view
-
     // Mark submenuitem 'Preview' in the CONTENIDO Backend (Area: Contenido --> Articles --> Preview)
     if ($contenido) {
         $markscript = markSubMenuItem(6, true);
     }
 
     unset($edit); // disable editmode
-
     // 'mode' is preview (Area: Contenido --> Articles --> Preview) or article displayed in the front-end
-
     // Code generation
     $oCatArtColl = new cApiCategoryArticleCollection();
     $oCatArt = $oCatArtColl->fetchByCategoryIdAndArticleId($idcat, $idart);
 
-    if (!cFileHandler::exists($cfgClient[$client]['code_path'].$client.".".$lang.".".$idcatart.".php")) {
+    if (!cFileHandler::exists($cfgClient[$client]['code_path'] . $client . "." . $lang . "." . $idcatart . ".php")) {
         cInclude('includes', 'functions.tpl.php');
         cInclude('includes', 'functions.mod.php');
         conGenerateCode($idcat, $idart, $lang, $client);
@@ -465,7 +462,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         conGenerateCode($idcat, $idart, $lang, $client);
     }
 
-    $code = cFileHandler::read($cfgClient[$client]['code_path'].$client.".".$lang.".".$idcatart.".php");
+    $code = cFileHandler::read($cfgClient[$client]['code_path'] . $client . "." . $lang . "." . $idcatart . ".php");
 
     // Add mark Script to code if user is in the backend
     $code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);
@@ -496,7 +493,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                     $network = $range;
                 } else {
                     $network = substr($range, 0, $slash);
-                    $netmask = substr($range, $slash +1, strlen($range) - $slash -1);
+                    $netmask = substr($range, $slash + 1, strlen($range) - $slash - 1);
                 }
 
                 if (IP_match($network, $netmask, $_SERVER['REMOTE_ADDR'])) {
@@ -511,15 +508,15 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                 // CEC to check category access
                 CEC_Hook::setBreakCondition(true, false); // break at 'true', default value 'false'
                 $allow = CEC_Hook::executeWhileBreakCondition(
-                    'Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']
+                                'Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']
                 );
-                $auth->login_if (!$allow);
+                $auth->login_if(!$allow);
             }
         } else {
             // CEC to check category access
             CEC_Hook::setBreakCondition(true, false); // break at 'true', default value 'false'
             $allow = CEC_Hook::executeWhileBreakCondition(
-                'Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']
+                            'Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']
             );
 
             // In backendeditmode also check if logged in backenduser has permission to view preview of page
@@ -561,7 +558,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         $dateEnd = $oArtLang->get('dateend');
 
         if ($dateStart != '0000-00-00 00:00:00' && $dateEnd != '0000-00-00 00:00:00'
-            && (strtotime($dateStart) <= time() || strtotime($dateEnd) > time()) && strtotime($dateStart) < strtotime($dateEnd)) {
+                && (strtotime($dateStart) <= time() || strtotime($dateEnd) > time()) && strtotime($dateStart) < strtotime($dateEnd)) {
             $online = 1;
         } elseif ($dateStart != '0000-00-00 00:00:00' && $dateEnd == '0000-00-00 00:00:00' && strtotime($dateStart) <= time()) {
             $online = 1;
@@ -571,7 +568,6 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     }
 
     @eval("\$" . "redirect_url = \"$redirect_url\";"); // transform variables
-
     // Generate base url
     $insertBaseHref = getEffectiveSetting('generator', 'basehref', 'true');
     if ($insertBaseHref == 'true') {
@@ -608,7 +604,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             exit;
         } else {
             if ($cfg['debug']['codeoutput']) {
-                echo '<textarea>'.htmlspecialchars($code).'</textarea>';
+                echo '<textarea>' . htmlspecialchars($code) . '</textarea>';
             }
 
             // That's it! The code of an article will be evaluated.
@@ -638,11 +634,11 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             eval("?>\n" . $code . "\n<?php\n");
         } else {
             if ($error == 1) {
-            	$tpl = new Template();
-            	$tpl->set("s", "ERROR_TITLE", "Fatal error");
-            	$tpl->set("s", "ERROR_TEXT", "No CONTENIDO session variable set. Probable error cause: Start article in this category is not set on-line.");
-            	$tpl->generate($cfgClient[$client]['tpl']['path']."error_page.html");
-            	exit;
+                $tpl = new Template();
+                $tpl->set("s", "ERROR_TITLE", "Fatal error");
+                $tpl->set("s", "ERROR_TEXT", "No CONTENIDO session variable set. Probable error cause: Start article in this category is not set on-line.");
+                $tpl->generate($cfgClient[$client]['tpl']['path'] . "error_page.html");
+                exit;
             } else {
                 header($errsite);
                 exit;

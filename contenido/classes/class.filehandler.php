@@ -255,7 +255,7 @@ class cFileHandler
             $finfo = @finfo_open(FILEINFO_MIME_TYPE); //extension has to be installed seperately in versions prior to 5.3
             $ret['mime'] = @finfo_file($finfo, $filename);
         } else {
-        	$ret['mime'] = "";
+            $ret['mime'] = "";
         }
 
         foreach ($ret as $value) {

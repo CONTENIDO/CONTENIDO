@@ -26,7 +26,7 @@
  */
 
 if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
+    die('Illegal call');
 }
 
 global $db;
@@ -64,7 +64,7 @@ while (($data = fgetcsv($file, 4000, ';')) !== false) {
         } else {
             $drop = false;
         }
-        dbUpgradeTable($db, $cfg['sql']['sqlprefix'].'_'.$data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], '', $drop);
+        dbUpgradeTable($db, $cfg['sql']['sqlprefix'] . '_' . $data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], '', $drop);
 
         if ($db->Errno != 0) {
             $_SESSION['install_failedupgradetable'] = true;
@@ -90,7 +90,7 @@ while (($data = fgetcsv($file, 4000, ';')) !== false) {
         } else {
             $drop = false;
         }
-        dbUpgradeTable($db, $cfg['sql']['sqlprefix'].'_'.$data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], '', $drop);
+        dbUpgradeTable($db, $cfg['sql']['sqlprefix'] . '_' . $data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], '', $drop);
 
         if ($db->Errno != 0) {
             $_SESSION['install_failedupgradetable'] = true;
@@ -153,7 +153,7 @@ if ($_SESSION['setuptype'] == 'setup') {
 
 $fullChunks = array_merge($fullChunks, $pluginChunks);
 
-$totalSteps = ceil($fullCount/C_SETUP_MAX_CHUNKS_PER_STEP) + count($fullChunks) + 1;
+$totalSteps = ceil($fullCount / C_SETUP_MAX_CHUNKS_PER_STEP) + count($fullChunks) + 1;
 foreach ($fullChunks as $fullChunk) {
     $step++;
     if ($step == $currentStep) {
@@ -168,7 +168,7 @@ foreach ($fullChunks as $fullChunk) {
 
 $percent = intval((100 / $totalSteps) * ($currentStep));
 
-echo '<script type="text/javascript">parent.updateProgressbar('.$percent.');</script>';
+echo '<script type="text/javascript">parent.updateProgressbar(' . $percent . ');</script>';
 
 if ($currentStep < $totalSteps) {
 
@@ -178,7 +178,6 @@ if ($currentStep < $totalSteps) {
     } else {
         echo '<a href="javascript:nextStep();">Next step</a>';
     }
-
 } else {
     // For import mod_history rows to versioning
     if ($_SESSION['setuptype'] == 'migration' || $_SESSION['setuptype'] == 'upgrade') {
@@ -208,14 +207,14 @@ if ($currentStep < $totalSteps) {
     }
 
     if ($_SESSION['setuptype'] == 'upgrade') {
-        $sql = "SELECT * FROM ".$cfg["tab"]["lang"];
+        $sql = "SELECT * FROM " . $cfg["tab"]["lang"];
         $db->query($sql);
 
         while ($db->next_record()) {
             $langs[] = $db->f("idlang");
         }
 
-        $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE is_start='1'";
+        $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " WHERE is_start='1'";
         $db->query($sql);
 
         $db2 = getSetupMySQLDBConnection();
@@ -225,18 +224,18 @@ if ($currentStep < $totalSteps) {
             $idcat = $db->f("idcat");
 
             foreach ($langs as $vlang) {
-                $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart='$startidart' AND idlang='$vlang'";
+                $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart='$startidart' AND idlang='$vlang'";
                 $db2->query($sql);
                 if ($db2->next_record()) {
                     $idartlang = $db2->f("idartlang");
 
-                    $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET startidartlang='$idartlang' WHERE idcat='$idcat' AND idlang='$vlang'";
+                    $sql = "UPDATE " . $cfg["tab"]["cat_lang"] . " SET startidartlang='$idartlang' WHERE idcat='$idcat' AND idlang='$vlang'";
                     $db2->query($sql);
                 }
             }
         }
 
-        $sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET is_start='0'";
+        $sql = "UPDATE " . $cfg["tab"]["cat_art"] . " SET is_start='0'";
         $db->query($sql);
     }
 
@@ -282,7 +281,7 @@ if ($currentStep < $totalSteps) {
 
             $db->query($sql);
             if ($db->num_rows() != 0) {
-                $sql = "SELECT * FROM ".$cfg['tab']['clients'];
+                $sql = "SELECT * FROM " . $cfg['tab']['clients'];
                 $db->query($sql);
 
                 while ($db->next_record()) {
@@ -303,7 +302,6 @@ if ($currentStep < $totalSteps) {
         Contenido_Module_Handler::setEncoding('ISO-8859-1');
 
         //set default configuration for connection,
-
         //for all db objects in Contenido_UpgradeJob
 
         DB_Contenido::setDefaultConfiguration($cfg['db']);
@@ -317,20 +315,20 @@ if ($currentStep < $totalSteps) {
         $layoutInFile->upgrade();
 
         $db2 = getSetupMySQLDBConnection();
-        $sql = "SELECT * FROM ".$cfg['tab']['lay'];
+        $sql = "SELECT * FROM " . $cfg['tab']['lay'];
         $db->query($sql);
         while ($db->next_record()) {
-            if($db->f("alias") == "") {
-                $sql = "UPDATE ".$cfg['tab']['lay']." SET `alias`='".$db->f("name")."' WHERE `idlay`='".$db->f("idlay")."';";
+            if ($db->f("alias") == "") {
+                $sql = "UPDATE " . $cfg['tab']['lay'] . " SET `alias`='" . $db->f("name") . "' WHERE `idlay`='" . $db->f("idlay") . "';";
                 $db2->query($sql);
             }
         }
 
-        $sql = "SELECT * FROM ".$cfg['tab']['mod'];
+        $sql = "SELECT * FROM " . $cfg['tab']['mod'];
         $db->query($sql);
         while ($db->next_record()) {
-               if($db->f("alias") == "") {
-                $sql = "UPDATE ".$cfg['tab']['mod']." SET `alias`='".$db->f("name")."' WHERE `idmod`='".$db->f("idmod")."';";
+            if ($db->f("alias") == "") {
+                $sql = "UPDATE " . $cfg['tab']['mod'] . " SET `alias`='" . $db->f("name") . "' WHERE `idmod`='" . $db->f("idmod") . "';";
                 $db2->query($sql);
             }
         }
@@ -360,11 +358,10 @@ if ($currentStep < $totalSteps) {
     } else {
         echo '<a href="javascript:nextStep();">Last step</a>';
     }
-
 }
 
 $done = false;
-$sSql = "SHOW FIELDS FROM ".$cfg['tab']['upl'];
+$sSql = "SHOW FIELDS FROM " . $cfg['tab']['upl'];
 $db->query($sSql);
 while ($db->next_record()) {
     if ($db->f("Field") == 'description') {
@@ -377,11 +374,11 @@ if ($done) {
 
 //update description from con_upl to con_upl_meta
 function updateUpl2Meta() {
-	global $cfg, $client, $db;
+    global $cfg, $client, $db;
     $client = 1;
     //get
     $aUpl = array();
-    $sSql = "SELECT * FROM " . $cfg['tab']['upl'] . " WHERE idclient = ". $client." AND `description` != '' ORDER BY idupl ASC";
+    $sSql = "SELECT * FROM " . $cfg['tab']['upl'] . " WHERE idclient = " . $client . " AND `description` != '' ORDER BY idupl ASC";
     $db->query($sSql);
     while ($db->next_record()) {
         $aUpl[$db->f('idupl')]['description'] = $db->f('description');
@@ -391,7 +388,7 @@ function updateUpl2Meta() {
         $aUpl[$db->f('idupl')]['modifiedby'] = $db->f('modifiedby');
     }
     $aLang = array();
-    $sSql = "SELECT idlang FROM " . $cfg['tab']['clients_lang'] . " WHERE idclient = ". $client." ORDER BY idlang ASC";
+    $sSql = "SELECT idlang FROM " . $cfg['tab']['clients_lang'] . " WHERE idclient = " . $client . " ORDER BY idlang ASC";
     $db->query($sSql);
     while ($db->next_record()) {
         $aLang[] = $db->f('idlang');
@@ -403,7 +400,7 @@ function updateUpl2Meta() {
         if ($elem['description'] != '') {
             foreach ($aLang as $idlang) {
                 $aUplMeta = array();
-                $sSql = "SELECT * FROM " . $cfg['tab']['upl_meta'] . " WHERE idlang = ".$idlang."  AND idupl = ".$idupl." ORDER BY idupl ASC";
+                $sSql = "SELECT * FROM " . $cfg['tab']['upl_meta'] . " WHERE idlang = " . $idlang . "  AND idupl = " . $idupl . " ORDER BY idupl ASC";
                 $db->query($sSql);
                 $i = 0;
                 while ($db->next_record()) {
@@ -417,25 +414,25 @@ function updateUpl2Meta() {
                         idupl = $idupl,
                         idlang = $idlang,
                         medianame = '',
-                        description = '" . $elem['description'] ."',
+                        description = '" . $elem['description'] . "',
                         keywords = '',
                         internal_notice = '',
-                        author = '" . $elem['author'] ."',
-                        created = '" . $elem['created'] ."',
-                        modified = '" . $elem['lastmodified'] ."',
-                        modifiedby = '" . $elem['modifiedby'] ."',
+                        author = '" . $elem['author'] . "',
+                        created = '" . $elem['created'] . "',
+                        modified = '" . $elem['lastmodified'] . "',
+                        modifiedby = '" . $elem['modifiedby'] . "',
                         copyright = ''";
                 } elseif (count($aUplMeta) == 1 && $aUplMeta[0]['description'] == '') {
                     //there is already an entry and the field "description" is empty
                     $sSql = "UPDATE " . $cfg['tab']['upl_meta'] . " SET
-                        description = '" . $elem['description'] ."'
+                        description = '" . $elem['description'] . "'
                         WHERE id_uplmeta = " . $aUplMeta[0]['id_uplmeta'];
                 } else {
                     //there is already an entry with an exising content in "description"
                     //do nothing;
                 }
                 $db->query($sSql);
-                if ($db->Error !=0) {
+                if ($db->Error != 0) {
                     $bError = false;
                     echo "<pre>" . $sql . "\nMysql Error:" . $db->Error . "(" . $db->Errno . ")</pre>";
                 }
@@ -445,13 +442,14 @@ function updateUpl2Meta() {
     }
     //At the end remove all values of con_upl.description and drop the field from table
     if ($bError && $j == count($aUpl)) {
-        $sSql = "ALTER TABLE `".$cfg['tab']['upl']."` DROP `description`";
+        $sSql = "ALTER TABLE `" . $cfg['tab']['upl'] . "` DROP `description`";
         $db->query($sSql);
-        if ($db->Error !=0) {
+        if ($db->Error != 0) {
             echo "<pre>" . $sql . "\nMysql Error:" . $db->Error . "(" . $db->Errno . ")</pre>";
         }
     } else {
-        echo "<pre>error on updateUpl2Meta();".$j.'=='.count($aUpl)."</pre>";
+        echo "<pre>error on updateUpl2Meta();" . $j . '==' . count($aUpl) . "</pre>";
     }
 }
+
 ?>

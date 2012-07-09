@@ -32,10 +32,10 @@ if (!defined('CON_FRAMEWORK')) {
 
 /** @deprecated 2012-07-08 This class is not needed any longer. */
 class cBufferedLog extends cLog {
-	public function __construct($oLogger = false) {
-		cDeprecated("This class is not needed any longer because cLog implements the handling for buffered logging");
-		parent::__construct();
-	}
+    public function __construct($oLogger = false) {
+        cDeprecated("This class is not needed any longer because cLog implements the handling for buffered logging");
+        parent::__construct();
+    }
 
     /** @deprecated  [2012-05-25] Old constructor function for downwards compatibility */
     public function cBufferedLog($oLogger = false) {

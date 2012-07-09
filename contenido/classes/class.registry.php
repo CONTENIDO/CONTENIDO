@@ -370,7 +370,7 @@ class cRegistry {
      * @return    void
      */
     public final static function shutdown() {
-    	debugPrint();
+        debugPrint();
 
         $sess = self::_fetchGlobalVariable('sess');
         if (isset($sess)) {
