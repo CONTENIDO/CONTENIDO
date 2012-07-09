@@ -758,7 +758,7 @@ if ($iAffectedRows <= 0 || (empty($where) && !$bLostAndFound)) {
 # Save Search Parameters
 ###########################
 
-if (sizeof($_GET) == 0 && isset($_POST)) {
+if (sizeof($_GET) == 0 && isset($_POST) && !$bNoCriteria) {
     // Build form with hidden fields that contain all search parameters to be stored using generic db
     $searchForm = '<form id="save_search" target="right_bottom" method="post" action="backend_search.php">';
     // Meta for CONTENIDO

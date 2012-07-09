@@ -133,6 +133,10 @@ function i18nEmulateGettext($string, $domain = 'contenido')
 {
     global $_conI18n;
 
+    if($string == "") {
+    	return "";
+    }
+
     if (!isset($_conI18n['cache'][$domain])) {
         $_conI18n['cache'][$domain] = array();
     }
@@ -184,6 +188,7 @@ function i18nEmulateGettext($string, $domain = 'contenido')
 
     $stringStart = strpos($_conI18n['files'][$domain], '"' . str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $string) . '"');
     if ($stringStart === false) {
+    	cDebug("translation: ".$string."=".$string);
         return $string;
     }
 
@@ -200,6 +205,7 @@ function i18nEmulateGettext($string, $domain = 'contenido')
         $_conI18n['cache'][$domain][$string] = $string;
     }
 
+    cDebug("translation: ".$string."=".$_conI18n['cache'][$domain][$string]);
     return $_conI18n['cache'][$domain][$string];
 }
 
