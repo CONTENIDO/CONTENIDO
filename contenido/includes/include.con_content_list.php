@@ -196,7 +196,7 @@ if (count($result)<=0) {
                     $class = ' noactive';
                 }
                 $layoutcode .= '<div class="contypeList '.$class.'">
-                <div class="headline">'.$name.' '.$idtype.':</div>'.$name.'['.$idtype.']</div>';
+                <div class="headline">'.$name.'<<'.$idtype.'>>:</div>'.$name.'['.$idtype.']</div>';
             }
         }
     }
@@ -322,11 +322,11 @@ cRegistry::shutdown();
                 }
                 $replacements[$val] = $tmp.
                     '<a style="text-decoration:none;" href="javascript:setcontent(\'1\',\''.$path.'\');">
-                    <img border="0" src="'.$cfg['path']['contenido_fullhtml'].'images/but_cancel.gif">
+                    <img border="0" src="'.$cfg['path']['contenido_fullhtml'].'images/delete.gif">
                     </a>';
                 $keycode[$type][$val] = $tmp.
                     '<a style="text-decoration:none;" href="javascript:setcontent(\'1\',\''.$path.'\');">
-                    <img border="0" src="'.$cfg['path']['contenido_fullhtml'].'images/but_cancel.gif">
+                    <img border="0" src="'.$cfg['path']['contenido_fullhtml'].'images/delete.gif">
                     </a>';
             }
 
@@ -337,6 +337,8 @@ cRegistry::shutdown();
 
             }
         }
+        $layoutCode = str_ireplace("<<", "[", $layoutCode);
+        $layoutCode = str_ireplace(">>", "]", $layoutCode);
         return $layoutCode;
     }
 
