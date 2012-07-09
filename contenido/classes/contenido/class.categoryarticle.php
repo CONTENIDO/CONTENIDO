@@ -20,27 +20,22 @@
  *
  * {@internal
  *   created  2005-08-30
- *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Category article collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiCategoryArticleCollection extends ItemCollection
-{
-    public function __construct($select = false)
-    {
+class cApiCategoryArticleCollection extends ItemCollection {
+
+    public function __construct($select = false) {
         global $cfg;
         parent::__construct($cfg['tab']['cat_art'], 'idcatart');
         $this->_setItemClass('cApiCategoryArticle');
@@ -52,10 +47,50 @@ class cApiCategoryArticleCollection extends ItemCollection
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiCategoryArticleCollection($select = false)
-    {
+    public function cApiCategoryArticleCollection($select = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($select);
+    }
+
+    /**
+     * Creates an article item entry
+     *
+     * @param   int     $idcat
+     * @param   int     $idart
+     * @param   int     $status
+     * @param   string  $author
+     * @param   string  $created
+     * @param   string  $lastmodified
+     * @param   int     $createcode 
+     * @param   int     $is_start  NOTE: Is deprecated but still available due to downwards compatibility.
+     * @return  cApiCategoryArticle
+     */
+    public function create($idcat, $idart, $status = 0, $author = "", $created = "", $lastmodified = "", $createcode = 1, $is_start = 0) {
+        global $auth;
+
+        if (empty($author)) {
+            $author = $auth->auth['uname'];
+        }
+        if (empty($created)) {
+            $created = date('Y-m-d H:i:s');
+        }
+        if (empty($lastmodified)) {
+            $lastmodified = date('Y-m-d H:i:s');
+        }
+
+        $item = parent::createNewItem();
+
+        $item->set('idcat', (int) $idcat);
+        $item->set('idart', (int) $idart);
+        $item->set('is_start', ($is_start == 0) ? 0 : 1);
+        $item->set('status', (int) $status);
+        $item->set('author', $this->escape($author));
+        $item->set('created', $this->escape($created));
+        $item->set('lastmodified', $this->escape($lastmodified));
+        $item->set('createcode', ($createcode == 1) ? 1 : 0);
+
+        $item->store();
+        return $item;
     }
 
     /**
@@ -67,13 +102,12 @@ class cApiCategoryArticleCollection extends ItemCollection
      * @param int $lang
      * @return cApiCategoryArticle|null
      */
-    public function fetchFirstFromTreeByClientIdAndLangId($client, $lang)
-    {
+    public function fetchFirstFromTreeByClientIdAndLangId($client, $lang) {
         global $cfg;
 
         $sql = "SELECT A.* FROM `:cat_art` AS A, `:cat_tree` AS B, `:cat` AS C, `:cat_lang` AS D, `:art_lang` AS E "
-             . "WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND D.startidartlang = E.idartlang AND D.idlang = :lang AND E.idart = A.idart AND E.idlang = :lang AND idclient = :client "
-             . "ORDER BY idtree ASC LIMIT 1";
+                . "WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND D.startidartlang = E.idartlang AND D.idlang = :lang AND E.idart = A.idart AND E.idlang = :lang AND idclient = :client "
+                . "ORDER BY idtree ASC LIMIT 1";
 
         $params = array(
             'cat_art' => $this->table,
@@ -105,6 +139,7 @@ class cApiCategoryArticleCollection extends ItemCollection
         $aProps = array('idcat' => $idcat, 'idart' => $idart);
         $aRecordSet = $this->_oCache->getItemByProperties($aProps);
         if ($aRecordSet) {
+            var_dump($aRecordSet);
             // entry in cache found, load entry from cache
             $oItem = new cApiCategoryArticle();
             $oItem->loadByRecordSet($aRecordSet);
@@ -117,20 +152,18 @@ class cApiCategoryArticleCollection extends ItemCollection
 
 }
 
-
 /**
  * Category article item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiCategoryArticle extends Item
-{
+class cApiCategoryArticle extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['cat_art'], 'idcatart');
         $this->setFilters(array(), array());
@@ -140,11 +173,11 @@ class cApiCategoryArticle extends Item
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiCategoryArticle($mId = false)
-    {
+    public function cApiCategoryArticle($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
 }
 
 ?>

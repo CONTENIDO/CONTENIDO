@@ -58,6 +58,95 @@ class cApiArticleLanguageCollection extends ItemCollection
         cDeprecated("Use __construct() instead");
         $this->__construct($select);
     }
+
+    /**
+     * Creates an article language item entry.
+     * @global  object  $auth
+     * @param   int  $idart
+     * @param   int  $idlang
+     * @param   string  $title
+     * @param   string  $urlname
+     * @param   string  $pagetitle
+     * @param   string  $summary
+     * @param   int  $artspec
+     * @param   string  $created
+     * @param   string  $lastmodified
+     * @param   string  $author
+     * @param   string  $published
+     * @param   string  $publishedby
+     * @param   int  $online
+     * @param   int  $redirect
+     * @param   string  $redirect_url
+     * @param   int  $external_redirect
+     * @param   int  $artsort
+     * @param   int  $timemgmt
+     * @param   string  $datestart
+     * @param   string  $dateend
+     * @param   int  $status
+     * @param   int  $time_move_cat
+     * @param   int  $time_target_cat
+     * @param   int  $time_online_move
+     * @return cApiArticleLanguage
+     */
+    public function create($idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0, $created = '',
+                           $lastmodified = '', $author = '', $published = '', $publishedby = '', $online = 0,
+                           $redirect = 0, $redirect_url = '', $external_redirect = 0, $artsort = 0,
+                           $timemgmt = 0, $datestart = '', $dateend = '', $status = 0, $time_move_cat = 0,
+                           $time_target_cat = 0, $time_online_move = 0)
+    {
+        global $auth;
+
+        if (empty($author)) {
+            $author = $auth->auth['uname'];
+        }
+        if (empty($created)) {
+            $created = date('Y-m-d H:i:s');
+        }
+        if (empty($lastmodified)) {
+            $lastmodified = date('Y-m-d H:i:s');
+        }
+
+        $urlname            = (trim($urlname) == '') ? trim($title) : trim($urlname);
+        $urlname            = htmlspecialchars(cApiStrCleanURLCharacters($urlname), ENT_QUOTES);
+        $timemgmt           = ($timemgmt == 1) ? 1 : 0;
+        $time_move_cat      = ($time_move_cat == 1) ? 1 : 0;
+        $time_online_move   = ($time_online_move == 1) ? 1 : 0;
+        $redirect           = ($redirect == 1) ? 1 : 0;
+        $external_redirect  = ($external_redirect == 1) ? 1 : 0;
+        $redirect_url       = ($redirect_url == 'http://' || $redirect_url == '') ? '0' : $redirect_url;
+
+        $item = parent::createNewItem();
+
+        $item->set('idart', (int) $idart);
+        $item->set('idlang', (int) $idlang);
+        $item->set('title', $this->escape($title));
+        $item->set('urlname', $this->escape($urlname));
+        $item->set('pagetitle', $this->escape($pagetitle));
+        $item->set('summary', $this->escape($summary));
+        $item->set('artspec', (int) $artspec);
+        $item->set('created', $this->escape($created));
+        $item->set('lastmodified', $this->escape($lastmodified));
+        $item->set('author', $this->escape($author));
+        $item->set('published', $this->escape($published));
+        $item->set('publishedby', $this->escape($publishedby));
+        $item->set('online', (int) $online);
+        $item->set('redirect', (int) $redirect);
+        $item->set('redirect_url', $this->escape($redirect_url));
+        $item->set('external_redirect', (int) $external_redirect);
+        $item->set('artsort', (int) $artsort);
+        $item->set('timemgmt', (int) $timemgmt);
+        $item->set('datestart',  $this->escape($datestart));
+        $item->set('dateend',  $this->escape($dateend));
+        $item->set('status', (int) $status);
+        $item->set('time_move_cat', (int) $time_move_cat);
+        $item->set('time_target_cat', (int) $time_target_cat);
+        $item->set('time_online_move', (int) $time_online_move);
+
+        $item->store();
+
+        return $item;
+    }
+
 }
 
 

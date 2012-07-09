@@ -20,11 +20,8 @@
  *
  * {@internal
  *   created  2004-08-04
- *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -34,16 +31,14 @@ if (!defined('CON_FRAMEWORK')) {
 
 cInclude('includes', 'functions.str.php');
 
-
 /**
  * Article collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiArticleCollection extends ItemCollection
-{
-    public function __construct($select = false)
-    {
+class cApiArticleCollection extends ItemCollection {
+
+    public function __construct($select = false) {
         global $cfg;
         parent::__construct($cfg['tab']['art'], 'idart');
         $this->_setItemClass('cApiArticle');
@@ -53,28 +48,41 @@ class cApiArticleCollection extends ItemCollection
         }
     }
 
+    /**
+     * Creates an article item entry
+     *
+     * @param  int  $idclient
+     * @return cApiArticle
+     */
+    public function create($idclient) {
+        $item = parent::createNewItem();
+
+        $item->set('idclient', (int) $idclient);
+        $item->store();
+
+        return $item;
+    }
+
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiArticleCollection($select = false)
-    {
+    public function cApiArticleCollection($select = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($select);
     }
-}
 
+}
 
 /**
  * Article item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiArticle extends Item
-{
+class cApiArticle extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['art'], 'idart');
         $this->setFilters(array(), array());
@@ -84,11 +92,11 @@ class cApiArticle extends Item
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiArticle($mId = false)
-    {
+    public function cApiArticle($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
 }
 
 ?>

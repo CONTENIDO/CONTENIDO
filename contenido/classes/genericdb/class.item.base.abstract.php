@@ -6,6 +6,10 @@
  * Description:
  * Generic database abstract base item.
  *
+ * NOTE:
+ * Because of required downwards compatibilitiy all protected/private member
+ * variables or methods don't have an leading underscore.
+ *
  * Requirements:
  * @con_php_req 5.0
  *
