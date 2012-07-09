@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-07-09
+ *     created  2012-07-10
  * }}
  */
 
@@ -66,12 +66,12 @@ return array(
     'FormField' => 'contenido/classes/class.form.php',
     'FormCheck' => 'contenido/classes/class.form.php',
     'FrontendLogic' => 'contenido/classes/class.frontend.logic.php',
-    'cItemException' => 'contenido/classes/class.genericdb.php',
-    'cGenericDb' => 'contenido/classes/class.genericdb.php',
-    'cItemCache' => 'contenido/classes/class.genericdb.php',
-    'cItemBaseAbstract' => 'contenido/classes/class.genericdb.php',
-    'ItemCollection' => 'contenido/classes/class.genericdb.php',
-    'Item' => 'contenido/classes/class.genericdb.php',
+    'cItemException' => 'contenido/classes/genericdb/class.item.base.abstract.php',
+    'cGenericDb' => 'contenido/classes/genericdb/class.genericdb.php',
+    'cItemCache' => 'contenido/classes/genericdb/class.item.cache.php',
+    'cItemBaseAbstract' => 'contenido/classes/genericdb/class.item.base.abstract.php',
+    'ItemCollection' => 'contenido/classes/genericdb/class.item.collection.php',
+    'Item' => 'contenido/classes/genericdb/class.item.php',
     'cHTML' => 'contenido/classes/class.htmlelements.php',
     'cHTMLFormElement' => 'contenido/classes/class.htmlelements.php',
     'cHTMLHiddenField' => 'contenido/classes/class.htmlelements.php',
@@ -307,6 +307,7 @@ return array(
     'cDatatypeDateTime' => 'contenido/classes/datatypes/class.datatype.datetime.php',
     'cDatatypeNumber' => 'contenido/classes/datatypes/class.datatype.number.php',
     'cDatatype' => 'contenido/classes/datatypes/class.datatype.php',
+    'DebuggerFactory' => 'contenido/classes/Debug/DebuggerFactory.class.php',
     'Debug_DevNull' => 'contenido/classes/Debug/Debug_DevNull.class.php',
     'Debug_File' => 'contenido/classes/Debug/Debug_File.class.php',
     'Debug_FileAndVisAdv' => 'contenido/classes/Debug/Debug_FileAndVisAdv.php',
@@ -314,7 +315,6 @@ return array(
     'Debug_Visible' => 'contenido/classes/Debug/Debug_Visible.class.php',
     'Debug_VisibleAdv' => 'contenido/classes/Debug/Debug_VisibleAdv.class.php',
     'Debug_VisibleAdv_Item' => 'contenido/classes/Debug/Debug_VisibleAdv.class.php',
-    'DebuggerFactory' => 'contenido/classes/Debug/DebuggerFactory.class.php',
     'IDebug' => 'contenido/classes/Debug/IDebug.php',
     'gdbDriver' => 'contenido/classes/drivers/class.gdb.driver.php',
     'gdbMySQL' => 'contenido/classes/drivers/mysql/class.gdb.mysql.php',
@@ -338,13 +338,13 @@ return array(
     'cTreeItem' => 'contenido/classes/tree/class.ctreeitem.php',
     'Contenido_Url' => 'contenido/classes/Url/Contenido_Url.class.php',
     'Contenido_UrlBuilder' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder.class.php',
+    'NotInitializedException' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilderConfig.class.php',
+    'Contenido_UrlBuilderConfig' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilderConfig.class.php',
+    'Contenido_UrlBuilderFactory' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilderFactory.class.php',
     'Contenido_UrlBuilder_Custom' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_Custom.class.php',
     'Contenido_UrlBuilder_CustomPath' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_CustomPath.class.php',
     'Contenido_UrlBuilder_Frontcontent' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_Frontcontent.class.php',
     'Contenido_UrlBuilder_MR' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_MR.class.php',
-    'NotInitializedException' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilderConfig.class.php',
-    'Contenido_UrlBuilderConfig' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilderConfig.class.php',
-    'Contenido_UrlBuilderFactory' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilderFactory.class.php',
     'Contenido_NavMain_Util' => 'contenido/classes/Util/Modules/Contenido_NavMain_Util.class.php',
     'Contenido_Sitemap_Util' => 'contenido/classes/Util/Modules/Contenido_Sitemap_Util.class.php',
     'cValidatorAbstract' => 'contenido/classes/Validator/Abstract.class.php',
