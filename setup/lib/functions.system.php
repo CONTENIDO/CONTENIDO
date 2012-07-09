@@ -96,8 +96,8 @@ function updateSystemProperties($db, $table)
 
     $aStandardvalues = array(
         array('type' => 'pw_request', 'name' => 'enable', 'value' => 'true'),
-        array('type' => 'system', 'name' => 'mail_sender_name', 'value' => 'info%40contenido.org'),
-        array('type' => 'system', 'name' => 'mail_sender', 'value' => 'CONTENIDO+Backend'),
+        array('type' => 'system', 'name' => 'mail_sender_name', 'value' => 'CONTENIDO Backend'),
+        array('type' => 'system', 'name' => 'mail_sender', 'value' => 'info@contenido.org'),
         array('type' => 'system', 'name' => 'mail_host', 'value' => 'localhost'),
         array('type' => 'maintenance', 'name' => 'mode', 'value' => 'disabled'),
         array('type' => 'codemirror', 'name' => 'activated', 'value' => 'true'),
