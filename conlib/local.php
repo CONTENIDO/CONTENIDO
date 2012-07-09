@@ -360,42 +360,45 @@ class Contenido_Session extends Session
 /**
  * @package    CONTENIDO Core
  * @subpackage Session
+ * @deprecated This class was replaced by cFrontendSession. Please use that instead
  */
 class Contenido_Frontend_Session extends Session
 {
-    public $classname      = 'Contenido_Frontend_Session';
-    public $cookiename     = 'sid';              ## defaults to classname
-    public $magic          = 'Phillipip';        ## ID seed
-    public $mode           = 'cookie';           ## We propagate session IDs with cookies
-    public $fallback_mode  = 'cookie';
-    public $lifetime       = 0;                  ## 0 = do session cookies, else minutes
-    public $that_class     = 'Contenido_CT_Sql'; ## name of data storage container
-    public $gc_probability = 5;
+	public $classname      = 'Contenido_Frontend_Session';
+	public $cookiename     = 'sid';              ## defaults to classname
+	public $magic          = 'Phillipip';        ## ID seed
+	public $mode           = 'cookie';           ## We propagate session IDs with cookies
+	public $fallback_mode  = 'cookie';
+	public $lifetime       = 0;                  ## 0 = do session cookies, else minutes
+	public $that_class     = 'Contenido_CT_Sql'; ## name of data storage container
+	public $gc_probability = 5;
 
-    public function __construct()
-    {
-        global $load_lang, $load_client, $cfg;
+	public function __construct()
+	{
+		global $load_lang, $load_client, $cfg;
 
-        $this->cookiename = 'sid_' . $load_client . '_' . $load_lang;
+		cDeprecated("This class was replaced by cFrontendSession. Please use it instead.");
 
-        $this->setExpires(time()+3600);
+		$this->cookiename = 'sid_' . $load_client . '_' . $load_lang;
 
-        // added 2007-10-11, H. Librenz
-        // bugfix (found by dodger77): we need alternative session containers
-        //                             also in frontend
-        $sFallback = 'sql';
-        $sClassPrefix = 'Contenido_CT_';
+		$this->setExpires(time()+3600);
 
-        $sStorageContainer = strtolower($cfg['session_container']);
+		// added 2007-10-11, H. Librenz
+		// bugfix (found by dodger77): we need alternative session containers
+		//                             also in frontend
+		$sFallback = 'sql';
+		$sClassPrefix = 'Contenido_CT_';
 
-        if (class_exists($sClassPrefix . ucfirst($sStorageContainer))) {
-            $sClass = $sClassPrefix . ucfirst($sStorageContainer);
-        } else {
-            $sClass = $sClassPrefix . ucfirst($sFallback);
-        }
+		$sStorageContainer = strtolower($cfg['session_container']);
 
-        $this->that_class = $sClass;
-    }
+		if (class_exists($sClassPrefix . ucfirst($sStorageContainer))) {
+			$sClass = $sClassPrefix . ucfirst($sStorageContainer);
+		} else {
+			$sClass = $sClassPrefix . ucfirst($sFallback);
+		}
+
+		$this->that_class = $sClass;
+	}
 }
 
 /**

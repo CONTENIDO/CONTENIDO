@@ -74,7 +74,7 @@ if ($cfg['use_pseudocron'] == true) {
 if ($contenido) {
     // Backend
     cRegistry::bootstrap(array(
-        'sess' => 'Contenido_Session',
+        'sess' => 'cSession',
         'auth' => 'Contenido_Challenge_Crypt_Auth',
         'perm' => 'Contenido_Perm'
     ));
@@ -82,7 +82,7 @@ if ($contenido) {
 } else {
     // Frontend
     cRegistry::bootstrap(array(
-        'sess' => 'Contenido_Frontend_Session',
+        'sess' => 'cFrontendSession',
         'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth',
         'perm' => 'Contenido_Perm'
     ));
@@ -445,7 +445,9 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         cInclude('includes', 'functions.tpl.php');
         cInclude('includes', 'functions.mod.php');
         conGenerateCode($idcat, $idart, $lang, $client);
-    } else if ($oCatArt->get('createcode') == 1 || $force) {
+    }
+
+    if ($oCatArt->get('createcode') == 1 || $force) {
         cInclude('includes', 'functions.tpl.php');
         cInclude('includes', 'functions.mod.php');
         conGenerateCode($idcat, $idart, $lang, $client);
@@ -470,7 +472,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Protected categories
     if ($public == 0) {
         if ($auth->auth['uid'] == 'nobody') {
-            $userPropColl = new cApiUserPropertyCollection();
+            $userPropColl = new cApiUserPropertyCollection($auth->auth['uid']);
             $userProperties = $userPropColl->fetchByTypeName('frontend', 'allowed_ip');
             foreach ($userProperties as $userProperty) {
                 $user_id = $userProperty->get('user_id');

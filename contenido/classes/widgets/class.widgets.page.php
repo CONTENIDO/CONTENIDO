@@ -215,7 +215,7 @@ class cPage extends cHTML
     /**
      * set default JS for a messagebox
      *
-     * @global Contenido_Session $sess
+     * @global cSession $sess
      */
     public function setMessageBoxScript()
     {
@@ -265,7 +265,7 @@ class cPage extends cHTML
     /**
      * returns or echos rendered HTML-page
      *
-     * @global Contenido_Session $sess
+     * @global cSession $sess
      * @global array $cfg
      * @param bool $print if true echo, if false print (default: true)
      * @return string or nothing if print

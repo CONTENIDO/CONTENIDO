@@ -329,6 +329,7 @@ contenido/classes/class.request.php -text
 contenido/classes/class.requestvalidator.php -text
 contenido/classes/class.search.php -text
 contenido/classes/class.security.php -text
+contenido/classes/class.session.php -text
 contenido/classes/class.structure.php -text
 contenido/classes/class.synchronizeLayouts.php -text
 contenido/classes/class.table.php -text

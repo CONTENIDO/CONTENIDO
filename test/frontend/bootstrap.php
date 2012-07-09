@@ -65,7 +65,7 @@ cInclude('includes', 'functions.pathresolver.php');
 if ($contenido) {
     // Backend
     cRegistry::bootstrap(array(
-        'sess' => 'Contenido_Session',
+        'sess' => 'cSession',
         'auth' => 'Contenido_Challenge_Crypt_Auth',
         'perm' => 'Contenido_Perm'
     ));
@@ -73,7 +73,7 @@ if ($contenido) {
 } else {
     // Frontend
     cRegistry::bootstrap(array(
-        'sess' => 'Contenido_Frontend_Session',
+        'sess' => 'cFrontendSession',
         'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth',
         'perm' => 'Contenido_Perm'
     ));

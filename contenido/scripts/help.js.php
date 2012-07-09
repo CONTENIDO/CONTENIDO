@@ -34,7 +34,7 @@ include_once('../includes/startup.php');
 
 header('Content-Type: text/javascript');
 
-cRegistry::bootstrap(array('sess' => 'Contenido_Session',
+cRegistry::bootstrap(array('sess' => 'cSession',
                 'auth' => 'Contenido_Challenge_Crypt_Auth',
                 'perm' => 'Contenido_Perm'));
 

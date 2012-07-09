@@ -38,7 +38,7 @@ cInclude('includes', 'functions.api.php');
 cInclude('includes', 'functions.forms.php');
 
 cRegistry::bootstrap(array(
-    'sess' => 'Contenido_Session',
+    'sess' => 'cSession',
     'auth' => 'Contenido_Challenge_Crypt_Auth',
     'perm' => 'Contenido_Perm'
 ));
@@ -220,8 +220,6 @@ cDebug('Building the complete page took: ' . ($cfg['debug']['backend_exectime'][
 cDebug('Include memory usage: '.human_readable_size(memory_get_usage()-$oldmemusage));
 cDebug('Complete memory usage: '.human_readable_size(memory_get_usage()));
 cDebug("*****".$sFilename."*****");
-
-debugPrint();
 
 // Do user tracking (who is online)
 $oActiveUser = new cApiOnlineUserCollection();

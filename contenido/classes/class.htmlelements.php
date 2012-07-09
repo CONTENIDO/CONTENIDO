@@ -1778,7 +1778,7 @@ class cHTMLLink extends cHTML
 
         // Check for backend
         if (is_object($sess)) {
-            if ($sess->classname == "Contenido_Session") {
+            if ($sess->classname == "cSession") {
                 $this->enableAutomaticParameterAppend();
             }
         }

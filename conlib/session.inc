@@ -37,12 +37,14 @@
 
 /**
  * @package    CONTENIDO Core
+ * @deprecated [2012-07-06] This class was replcaed by cSession
  * @subpackage Session
  */
 class Session
 {
     /**
      * Needed for object serialization.
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var string
      */
     public $classname = 'Session';
@@ -52,60 +54,70 @@ class Session
 
     /**
      * Some string you should change.
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var string
      */
     public $magic = '';
 
     /**
      * We propagate session IDs with cookies
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var string
      */
     public $mode = 'cookie';
 
     /**
      * If this doesn't work, fall back... (feasible is 'get' or 'cookie')
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var string
      */
     public $fallback_mode;
 
     /**
      * 0 = do session cookies, else minutes
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var int
      */
     public $lifetime = 0;
 
     /**
      * If set, the domain for which the session cookie is set.
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var string
      */
     public $cookie_domain = '';
 
     /**
      * Purge all session data older than 1440 minutes.
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var int
      */
     public $gc_time  = 1440;
 
     /**
      * Garbage collect probability in percent
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var int
      */
     public $gc_probability = 5;
 
     /**
      * 'passive', 'no', 'private' or 'public'
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var string
      */
     public $allowcache = 'no';
 
     /**
      * If you allowcache, data expires in this many minutes.
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var int
      */
     public $allowcache_expire = 1440;
 
     /**
      * Name of data storage container
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var string
      */
     public $that_class = '';
@@ -116,53 +128,69 @@ class Session
 
     /**
      * Session name
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var string
      */
     public $name;
 
     /**
      * Unique Session ID
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var string
      */
     public $id;
 
     /**
      * Session sotorage instance
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var Object
      */
     public $that;
 
     /**
      * This array contains the registered things
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var array
      */
     public $pt = array();
 
     /**
      * Marker: Did we already include the autoinit file?
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var int
      */
     public $in = 0;
 
     /**
      * Expire date (not used???)
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var int
      */
     public $expires;
 
     /**
      * Expire date
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @var int
      */
     public $_expires;
 
+    /**
+     *
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
+     */
+    public function __construct() {
+    	cDeprecated("This class was replaced by cSession");
+    }
 
     /**
      * Call this function to register the things that should become persistent
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @param  string  $things  One thing or comma separated things
      */
     public function register($things)
     {
+    	cDeprecated("This class was replaced by cSession");
         $things = explode(',', $things);
         reset($things);
         while (list(,$thing) = each($things)) {
@@ -173,13 +201,18 @@ class Session
         }
     }
 
+    /**
+     * @deprecated [2012-07-06] This class was replcaed by cSession
+     */
     public function setExpires($time)
     {
+    	cDeprecated("This class was replaced by cSession");
         $this->_expires = $time;
     }
 
     public function is_registered($name)
     {
+    	cDeprecated("This class was replaced by cSession");
         if (isset($this->pt[$name]) && $this->pt[$name] == true) {
             return true;
         }
@@ -188,10 +221,12 @@ class Session
 
     /**
      * Call this function to unregister the things that should be removed
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @param  string  $things  One thing or comma separated things
      */
     public function unregister($things)
     {
+    	cDeprecated("This class was replaced by cSession");
         $things = explode(',', $things);
         reset($things);
         while (list(,$thing) = each($things)) {
@@ -207,10 +242,12 @@ class Session
      * Will create a new id if necessary. To take over abandoned sessions,
      * one may provide the new session id as a parameter (not recommended).
      *
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @param  string  $id
      */
     public function get_id($id = '')
     {
+    	cDeprecated("This class was replaced by cSession");
         $newid = true;
 
         $this->name = ($this->cookiename == '') ? $this->classname : $this->cookiename;
@@ -276,9 +313,11 @@ class Session
 
     /**
      * Stop using the current session id (unset cookie, ...) and abandon a session.
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      */
     public function put_id()
     {
+    	cDeprecated("This class was replaced by cSession");
         switch ($this->mode) {
             case 'cookie':
                 $this->name = ($this->cookiename == '') ? $this->classname : $this->cookiename;
@@ -293,20 +332,24 @@ class Session
 
     /**
      * Delete the current session record and put the session id.
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      */
     public function delete()
     {
+    	cDeprecated("This class was replaced by cSession");
         $this->that->ac_delete($this->id, $this->name);
         $this->put_id();
     }
 
     /**
      * Returns $url concatenated with the current session $id.
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @param string $url
      * @return string
      */
     public function url($url)
     {
+    	cDeprecated("This class was replaced by cSession");
         // Remove existing session info from url
         $url = preg_replace(
             '/([&?])'.quotemeta(urlencode($this->name)).'='.$this->id.'(&|$)/', "\\1", $url
@@ -331,20 +374,24 @@ class Session
 
     /**
      * Prints $url concatenated with the current session $id.
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @param string $url
      */
     public function purl($url)
     {
+    	cDeprecated("This class was replaced by cSession");
         print $this->url($url);
     }
 
     /**
      * Builds and returns self url
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      *
      * @return string
      */
     public function self_url()
     {
+    	cDeprecated("This class was replaced by cSession");
         return $this->url($_SERVER['PHP_SELF'] .
             ((isset($_SERVER['QUERY_STRING']) && ('' != $_SERVER['QUERY_STRING']))
             ? '?' . $_SERVER['QUERY_STRING'] : ''));
@@ -352,20 +399,24 @@ class Session
 
     /**
      * Prints builded self url
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      */
     public function pself_url()
     {
+    	cDeprecated("This class was replaced by cSession");
         print $this->self_url();
     }
 
     /**
      * Prints or returns hidden form field containing session name and id
      *
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @param   int  $mode  1 to print the formfield or 0 to return it
      * @return  string|void
      */
     public function hidden_session($mode = 0)
     {
+    	cDeprecated("This class was replaced by cSession");
         if ($mode) {
             return sprintf('<input type="hidden" name="%s" value="%s">' . "\n", $this->name, $this->id);
         } else {
@@ -375,12 +426,14 @@ class Session
 
     /**
      * Builda a query string by usingpassed query parameter
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      *
      * @param   array  $qarray  List of parameter/key values
      * @return  string  Query string like "?paramA=1&paramB=2" ...
      */
     public function add_query($qarray)
     {
+    	cDeprecated("This class was replaced by cSession");
         if ((isset($_SERVER['QUERY_STRING']) && ('' != $_SERVER['QUERY_STRING'])) || ($this->mode == 'get')) {
             $sep_char = '&';
         } else {
@@ -398,6 +451,7 @@ class Session
 
     public function padd_query($qarray)
     {
+    	cDeprecated("This class was replaced by cSession");
         print $this->add_query($qarray);
     }
 
@@ -409,11 +463,13 @@ class Session
      * and a variable $persistent_slots (containing the names of the slots
      * to be saved as an array of strings).
      *
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * @param string $var
      * @param string $str
      */
     public function serialize($var, &$str)
     {
+    	cDeprecated("This class was replaced by cSession");
         static $t,$l,$k;
 
         // Determine the type of $$var
@@ -447,22 +503,34 @@ class Session
         }
     }
 
+    /**
+     *
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
+     */
     public function get_lock()
     {
+    	cDeprecated("This class was replaced by cSession");
         $this->that->ac_get_lock();
     }
 
+    /**
+     *
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
+     */
     public function release_lock()
     {
+    	cDeprecated("This class was replaced by cSession");
         $this->that->ac_release_lock();
     }
 
     /**
      * Freezes all registered things (scalar variables, arrays, objects) into
      * a database table.
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      */
     public function freeze()
     {
+    	cDeprecated("This class was replaced by cSession");
         $str = '';
         //print 'DBG: <pre>'; var_dump($this->pt); print '</pre>';
         $this->serialize('this->in', $str);
@@ -486,9 +554,11 @@ class Session
 
     /**
      * Reload frozen variables from the database and microwave them.
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      */
     public function thaw()
     {
+    	cDeprecated("This class was replaced by cSession");
         $this->get_lock();
         $vals = $this->that->ac_get_value($this->id, $this->name);
         eval(sprintf(';%s', $vals));
@@ -496,31 +566,38 @@ class Session
 
     /**
      * Imports content of superglobal $_GET into superglobal $GLOBALS
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      */
     public function reimport_get_vars()
     {
+    	cDeprecated("This class was replaced by cSession");
         $this->reimport_any_vars('_GET');
     }
 
     /**
      * Imports content of superglobal $_POST into superglobal $GLOBALS
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      */
     public function reimport_post_vars()
     {
+    	cDeprecated("This class was replaced by cSession");
         $this->reimport_any_vars('_POST');
     }
 
     /**
      * Imports content of superglobal $_COOKIE into superglobal $GLOBALS
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      */
     public function reimport_cookie_vars()
     {
+    	cDeprecated("This class was replaced by cSession");
         $this->reimport_any_vars('_COOKIE');
     }
 
     /**
      * Imports content an passed globaö available variable from type array into
      * superglobal $GLOBALS
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      *
      * @var string $arrayname Feasible values are e. g. $_GET, $POST, $_COOKIE
      */
@@ -528,6 +605,7 @@ class Session
     {
         global $$arrayname;
 
+        cDeprecated("This class was replaced by cSession");
         if (!is_array($$arrayname)) {
             return;
         }
@@ -544,9 +622,11 @@ class Session
 
     /**
      * Sets and instantiates the session container class
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      */
     public function set_container()
     {
+    	cDeprecated("This class was replaced by cSession");
         $name = $this->that_class;
         $this->that = new $name;
         $this->that->ac_start();
@@ -554,14 +634,20 @@ class Session
 
     /**
      * Sets the token name
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      */
     public function set_tokenname()
     {
+    	cDeprecated("This class was replaced by cSession");
         $this->name = ($this->cookiename == '') ? $this->classname : $this->cookiename;
     }
 
+    /**
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
+ 	 */
     public function release_token($sid = '')
     {
+    	cDeprecated("This class was replaced by cSession");
         if (isset($this->fallback_mode) && ('get' == $this->fallback_mode)
             && ('cookie' == $this->mode) && (!isset($_COOKIE[$this->name])))
         {
@@ -593,6 +679,10 @@ class Session
         }
     }
 
+    /**
+     *
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
+     */
     public function put_headers()
     {
         # Allowing a limited amount of caching, as suggested by
@@ -606,6 +696,7 @@ class Session
         # Added pre- and post-check for MSIE 5.x as suggested by R.C.Winters,
         # see http://msdn.microsoft.com/workshop/author/perf/perftips.asp#Use%20Cache-Control%20Extensions
         # for details
+    	cDeprecated("This class was replaced by cSession");
         switch ($this->allowcache) {
             case 'passive':
                 $mod_gmt = gmdate('D, d M Y H:i:s', getlastmod()) . ' GMT';
@@ -655,10 +746,12 @@ class Session
     /**
      * Garbage collection
      *
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      * Destroy all session data older than this
      */
     public function gc()
     {
+    	cDeprecated("This class was replaced by cSession");
         srand(time());
         if ((rand()%100) < $this->gc_probability) {
             $this->that->ac_gc($this->gc_time, $this->name);
@@ -667,9 +760,11 @@ class Session
 
     /**
      * Initialization
+ 	 * @deprecated [2012-07-06] This class was replcaed by cSession
      */
     public function start($sid = '')
     {
+    	cDeprecated("This class was replaced by cSession");
         $this->set_container();
         $this->set_tokenname();
         $this->put_headers();

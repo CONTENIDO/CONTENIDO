@@ -84,11 +84,11 @@ $aCheck['GET']['tmpchangelang'] = CON_CHECK_INTEGER;
 $aCheck['GET']['changeview'] = CON_CHECK_PRIMITIVESTRING;
 $aCheck['GET']['action'] = CON_CHECK_PRIMITIVESTRING;
 $aCheck['GET']['changeclient'] = CON_CHECK_INTEGER;
+//$aCheck['GET']['contenido'] = CON_CHECK_HASH32;
 
 $aCheck['GET']['page'] = CON_CHECK_INTEGER;
 
 $aCheck['GET']['catname'] = CON_CHECK_PRIMITIVESTRING;
-$aCheck['GET']['contenido'] = CON_CHECK_HASH32;
 
 $aCheck['GET']['belang'] = CON_CHECK_BELANG;
 $aCheck['GET']['path'] = CON_CHECK_PATHSTRING;
@@ -113,7 +113,7 @@ $aCheck['POST']['changeclient'] = CON_CHECK_INTEGER;
 $aCheck['POST']['page'] = CON_CHECK_INTEGER;
 
 $aCheck['POST']['catname'] = CON_CHECK_PRIMITIVESTRING;
-$aCheck['POST']['contenido'] = CON_CHECK_HASH32;
+//$aCheck['POST']['contenido'] = CON_CHECK_HASH32;
 
 $aCheck['POST']['belang'] = CON_CHECK_BELANG;
 $aCheck['POST']['path'] = CON_CHECK_PATHSTRING;

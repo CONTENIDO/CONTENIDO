@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
 include_once('./includes/startup.php');
 
 cRegistry::bootstrap(array(
-    'sess' => 'Contenido_Session',
+    'sess' => 'cSession',
     'auth' => 'Contenido_Challenge_Crypt_Auth',
     'perm' => 'Contenido_Perm'
 ));

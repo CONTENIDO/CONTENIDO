@@ -38,7 +38,7 @@ cInclude('includes', 'functions.api.php');
 cInclude('includes', 'functions.forms.php');
 
 cRegistry::bootstrap(array(
-    'sess' => 'Contenido_Session',
+    'sess' => 'cSession',
     'auth' => 'Contenido_Challenge_Crypt_Auth',
     'perm' => 'Contenido_Perm'
 ));

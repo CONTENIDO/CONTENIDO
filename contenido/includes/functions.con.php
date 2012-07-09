@@ -1459,7 +1459,7 @@ function conGenerateCodeForAllArts()
  */
 function conSetCodeFlag($idcatart)
 {
-    global $cfg;
+    global $cfg, $client, $cfgClient;
 
     $db = cRegistry::getDb();
 
@@ -1470,8 +1470,10 @@ function conSetCodeFlag($idcatart)
      * database structure. Remove all con_code entries for a specific
      * idcatart in the con_code table.
      */
-     $sql = "DELETE FROM ".$cfg["tab"]["code"] ." WHERE idcatart='".cSecurity::toInteger($idcatart)."'";
-     $db->query($sql);
+    $arr = glob($cfgClient[$client]['code_path']."*.*.".$idcatart.".php");
+    foreach($arr as $file) {
+    	cFileHandler::remove($file);
+    }
 }
 
 

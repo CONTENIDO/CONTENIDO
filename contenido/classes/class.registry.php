@@ -202,7 +202,7 @@ class cRegistry {
 
     /**
      * Return the session object stored in the global variable "sess".
-     * @return Contenido_Session
+     * @return cSession
      */
     public static function getSession() {
         return self::_fetchGlobalVariable('sess');
@@ -370,6 +370,8 @@ class cRegistry {
      * @return    void
      */
     public final static function shutdown() {
+    	debugPrint();
+
         $sess = self::_fetchGlobalVariable('sess');
         if (isset($sess)) {
             $sess->freeze();
