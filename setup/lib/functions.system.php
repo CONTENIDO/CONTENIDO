@@ -20,20 +20,13 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *   modified 2008-07-08  Thorsten Granz, added option to disable menu hover effect. clicking is now possible again
- *   modified 2011-05-17, Ortwin Pinke, cleanup and bugfixing
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
+    die('Illegal call');
 }
-
-
 
 /**
  * Checks if a plugin is already installed
@@ -41,8 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @param   string  $sPluginname
  * @return  bool
  */
-function checkExistingPlugin($db, $sPluginname)
-{
+function checkExistingPlugin($db, $sPluginname) {
     global $cfg;
 
     #new install: all plugins are checked
@@ -50,7 +42,7 @@ function checkExistingPlugin($db, $sPluginname)
         return true;
     }
 
-    $sPluginname = (string)$sPluginname;
+    $sPluginname = (string) $sPluginname;
     $sTable = $cfg['tab']['nav_sub'];
     $sSql = '';
 
@@ -90,8 +82,7 @@ function checkExistingPlugin($db, $sPluginname)
  * @param  DB_Contenido $db
  * @param  string  $table  DB table name
  */
-function updateSystemProperties($db, $table)
-{
+function updateSystemProperties($db, $table) {
     $table = cSecurity::escapeDB($table, $db);
 
     $aStandardvalues = array(
@@ -139,8 +130,7 @@ function updateSystemProperties($db, $table)
  * @param  string  $table  DB table name
  * @param  string  $version  Version
  */
-function updateContenidoVersion($db, $table, $version)
-{
+function updateContenidoVersion($db, $table, $version) {
     $sql = "SELECT idsystemprop FROM %s WHERE type='system' AND name='version'";
     $db->query(sprintf($sql, cSecurity::escapeDB($table, $db)));
 
@@ -160,8 +150,7 @@ function updateContenidoVersion($db, $table, $version)
  * @param  string  $table  DB table name
  * @return string
  */
-function getContenidoVersion($db, $table)
-{
+function getContenidoVersion($db, $table) {
     $sql = "SELECT value FROM %s WHERE type='system' AND name='version'";
     $db->query(sprintf($sql, cSecurity::escapeDB($table, $db)));
 
@@ -173,8 +162,7 @@ function getContenidoVersion($db, $table)
 }
 
 // @FIXME: Comment me plz!
-function updateSysadminPassword($db, $table, $password)
-{
+function updateSysadminPassword($db, $table, $password) {
     $sql = "SELECT password FROM %s WHERE username='sysadmin'";
     $db->query(sprintf($sql, cSecurity::escapeDB($table, $db)));
 
@@ -189,8 +177,7 @@ function updateSysadminPassword($db, $table, $password)
 }
 
 // @FIXME: Comment me plz!
-function listClients($db, $table)
-{
+function listClients($db, $table) {
     global $cfgClient;
 
     $sql = "SELECT idclient, name FROM %s";
@@ -209,8 +196,7 @@ function listClients($db, $table)
 }
 
 // @FIXME: Comment me plz!
-function updateClientPath($db, $table, $idclient, $frontendpath, $htmlpath)
-{
+function updateClientPath($db, $table, $idclient, $frontendpath, $htmlpath) {
     global $cfg, $cfgClient;
     checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
 
@@ -219,18 +205,16 @@ function updateClientPath($db, $table, $idclient, $frontendpath, $htmlpath)
 }
 
 // @FIXME: Comment me plz!
-function stripLastSlash($sInput)
-{
-    if (substr($sInput, strlen($sInput)-1,1) == "/") {
-        $sInput = substr($sInput, 0, strlen($sInput)-1);
+function stripLastSlash($sInput) {
+    if (substr($sInput, strlen($sInput) - 1, 1) == "/") {
+        $sInput = substr($sInput, 0, strlen($sInput) - 1);
     }
 
     return $sInput;
 }
 
 // @FIXME: Comment me plz!
-function getSystemDirectories($bOriginalPath = false)
-{
+function getSystemDirectories($bOriginalPath = false) {
     $root_path = stripLastSlash(C_FRONTEND_PATH);
 
     $root_http_path = dirname(dirname($_SERVER["PHP_SELF"]));
@@ -243,14 +227,14 @@ function getSystemDirectories($bOriginalPath = false)
         if ($_SERVER["SERVER_PORT"] == 443) {
             $protocol = "https://";
         } else {
-            $port = ":".$_SERVER["SERVER_PORT"];
+            $port = ":" . $_SERVER["SERVER_PORT"];
         }
     }
 
-    $root_http_path = $protocol . $_SERVER["SERVER_NAME"].$port . $root_http_path;
+    $root_http_path = $protocol . $_SERVER["SERVER_NAME"] . $port . $root_http_path;
 
-    if (substr($root_http_path, strlen($root_http_path)-1, 1) == "/") {
-      $root_http_path = substr($root_http_path, 0, strlen($root_http_path)-1);
+    if (substr($root_http_path, strlen($root_http_path) - 1, 1) == "/") {
+        $root_http_path = substr($root_http_path, 0, strlen($root_http_path) - 1);
     }
 
     if ($bOriginalPath == true) {
@@ -272,9 +256,8 @@ function getSystemDirectories($bOriginalPath = false)
 }
 
 // @FIXME: Comment me plz!
-function findSimilarText($string1, $string2)
-{
-    for ($i=0;$i<strlen($string1);$i++) {
+function findSimilarText($string1, $string2) {
+    for ($i = 0; $i < strlen($string1); $i++) {
         if (substr($string1, 0, $i) != substr($string2, 0, $i)) {
             return $i - 1;
         }

@@ -26,7 +26,7 @@
  */
 
 if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
+    die('Illegal call');
 }
 
 // Don't display errors
@@ -74,24 +74,22 @@ if (!defined('CONTENIDO_ENVIRONMENT')) {
  *
  * @param  string  $filename
  */
-function checkAndInclude($filename)
-{
+function checkAndInclude($filename) {
     if (file_exists($filename) && is_readable($filename)) {
         include_once($filename);
     } else {
         echo "<pre>";
         echo "Setup was unable to include neccessary files. The file $filename was not found. Solutions:\n\n";
         echo "- Make sure that all files are correctly uploaded to the server.\n";
-        echo "- Make sure that include_path is set to '.' (of course, it can contain also other directories). Your include path is: ".ini_get("include_path")."\n";
+        echo "- Make sure that include_path is set to '.' (of course, it can contain also other directories). Your include path is: " . ini_get("include_path") . "\n";
         echo "</pre>";
     }
 }
 
-
 // Include security class and check request variables
 checkAndInclude(C_FRONTEND_PATH . 'contenido/classes/class.filehandler.php');
 checkAndInclude(C_FRONTEND_PATH . 'contenido/classes/class.requestvalidator.php');
-$oRequestValidator = new cRequestValidator(C_FRONTEND_PATH . "data/config/".CONTENIDO_ENVIRONMENT);
+$oRequestValidator = new cRequestValidator(C_FRONTEND_PATH . "data/config/" . CONTENIDO_ENVIRONMENT);
 
 session_start();
 
@@ -106,54 +104,54 @@ if (is_array($_REQUEST)) {
         }
     }
     /*
-    ############################################################################
-    // FIXME  Following lines of code would enshure that previous selected optional
-    //        settings will be removed from session, if they are unselected afterwards.
-    //        But, how should we handle not selected plugins, whose files will be included
-    //        even if the are not installed?
+      ############################################################################
+      // FIXME  Following lines of code would enshure that previous selected optional
+      //        settings will be removed from session, if they are unselected afterwards.
+      //        But, how should we handle not selected plugins, whose files will be included
+      //        even if the are not installed?
 
-    // check for not selected options (radio button or checkbox)
-    $aSetupOptionalSettingsList = array(
-        'setup7' => array(
-            'plugin_newsletter',
-            'plugin_content_allocation',
-            'plugin_mod_rewrite',
-        )
-    );
+      // check for not selected options (radio button or checkbox)
+      $aSetupOptionalSettingsList = array(
+      'setup7' => array(
+      'plugin_newsletter',
+      'plugin_content_allocation',
+      'plugin_mod_rewrite',
+      )
+      );
 
-    if (isset($_REQUEST['step']) && isset($aSetupOptionalSettingsList[$_REQUEST['step']])) {
-        $aList = $aSetupOptionalSettingsList[$_REQUEST['step']];
-        foreach ($aList as $key) {
-            if (isset($_SESSION[$key]) && !isset($_REQUEST[$key])) {
-                unset($_SESSION[$key]);
-            }
-        }
-    }
-    ############################################################################
-    */
+      if (isset($_REQUEST['step']) && isset($aSetupOptionalSettingsList[$_REQUEST['step']])) {
+      $aList = $aSetupOptionalSettingsList[$_REQUEST['step']];
+      foreach ($aList as $key) {
+      if (isset($_SESSION[$key]) && !isset($_REQUEST[$key])) {
+      unset($_SESSION[$key]);
+      }
+      }
+      }
+      ############################################################################
+     */
 }
 
 
 // Some basic configuration
 global $cfg;
 
-$cfg['path']['frontend']  = C_FRONTEND_PATH;
+$cfg['path']['frontend'] = C_FRONTEND_PATH;
 $cfg['path']['contenido'] = $cfg['path']['frontend'] . 'contenido/';
-$cfg['path']['phplib']    = $cfg['path']['frontend'] . 'conlib/';
-$cfg['path']['pear']      = $cfg['path']['frontend'] . 'pear/';
+$cfg['path']['phplib'] = $cfg['path']['frontend'] . 'conlib/';
+$cfg['path']['pear'] = $cfg['path']['frontend'] . 'pear/';
 $cfg['path']['contenido_config'] = C_FRONTEND_PATH . 'data/config/' . CONTENIDO_ENVIRONMENT . '/';
 
 // DB related settings
-$cfg['sql']['sqlprefix']  = (isset($_SESSION['dbprefix'])) ? $_SESSION['dbprefix'] : 'con';
+$cfg['sql']['sqlprefix'] = (isset($_SESSION['dbprefix'])) ? $_SESSION['dbprefix'] : 'con';
 $cfg['db'] = array(
     'connection' => array(
-        'host'     => (isset($_SESSION['dbhost'])) ? $_SESSION['dbhost'] : '',
+        'host' => (isset($_SESSION['dbhost'])) ? $_SESSION['dbhost'] : '',
         'database' => (isset($_SESSION['dbname'])) ? $_SESSION['dbname'] : '',
-        'user'     => (isset($_SESSION['dbuser'])) ? $_SESSION['dbuser'] : '',
+        'user' => (isset($_SESSION['dbuser'])) ? $_SESSION['dbuser'] : '',
         'password' => (isset($_SESSION['dbpass'])) ? $_SESSION['dbpass'] : '',
     ),
-    'haltBehavior'    => 'report',
-    'haltMsgPrefix'   => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
+    'haltBehavior' => 'report',
+    'haltMsgPrefix' => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
     'enableProfiling' => false,
 );
 

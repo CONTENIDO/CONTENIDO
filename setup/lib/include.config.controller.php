@@ -26,7 +26,7 @@
  */
 
 if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
+    die('Illegal call');
 }
 
 
