@@ -277,7 +277,7 @@ class Contenido_Navigation
         $link->setClass('main');
         $link->setTargetFrame('content');
         $link->setLink($sess->url("frameset.php?area=mycontenido&frame=4"));
-        $link->setContent('<img src="'.$cfg['path']['contenido_fullhtml'].$cfg['path']['images'].'my_contenido.gif" border="0" alt="MyContenido" id="imgMyContenido" title="MyContenido">');
+        $link->setContent('<img src="'.$cfg['path']['contenido_fullhtml'].$cfg['path']['images'].'my_contenido.gif" border="0" alt="My CONTENIDO" id="imgMyContenido" title="My CONTENIDO">');
         $main->set('s', 'MYCONTENIDO', $link->render());
 
         // info link

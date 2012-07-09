@@ -21,7 +21,7 @@ msgid "Store tagging"
 msgstr "Speichere Tagging"
 
 #: includes/include.tagging_article.php:86
-msgid "There is no Tagging tree."
+msgid "There is no tagging tree."
 msgstr "Es gibt noch keinen Tagging Baum"
 
 #: includes/include.tagging_article.php:111

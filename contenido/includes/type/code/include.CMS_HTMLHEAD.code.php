@@ -48,8 +48,8 @@ if ($edit) {
     $insiteEditingDIV->setId('HTMLHEAD_' . $_typeItem->idtype . '_' . $val);
     $insiteEditingDIV->setEvent('Focus', "this.style.border='1px solid #bb5577';");
     $insiteEditingDIV->setEvent('Blur', "this.style.border='1px dashed #bfbfbf';");
-    $insiteEditingDIV->setStyleDefinition('border', '1px dashed #bfbfbf');
-    $insiteEditingDIV->setStyleDefinition('direction', langGetTextDirection($lang));
+    $insiteEditingDIV->attachStyleDefinition('border', '1px dashed #bfbfbf');
+    $insiteEditingDIV->attachStyleDefinition('direction', langGetTextDirection($lang));
     $insiteEditingDIV->updateAttributes(array('contentEditable' => 'true'));
     $insiteEditingDIV->setContent('_REPLACEMENT_');
 

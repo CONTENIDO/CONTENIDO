@@ -1864,7 +1864,7 @@ msgstr "Sprache umbenennen"
 
 #: includes/cfg_language_de.inc.php:141
 msgid "Create language"
-msgstr "Sprache erstellen für"
+msgstr "Sprache erstellen"
 
 #: includes/cfg_language_de.inc.php:142
 #: includes/include.lang_overview.php:78
@@ -2638,6 +2638,10 @@ msgstr "Rechte dieser Kategorie allen Kategorien unter dieser Kategorie zuweisen
 msgid "Close category"
 msgstr "Kategorie schliessen"
 
+#: includes/include.str_overview.php
+msgid "Move tree"
+msgstr "Baum bewegen"
+
 #: templates/template.sr_overview.html
 msgid "One or more subtrees and one or more articles are existing, unable to delete."
 msgstr "Löschen ist nicht möglich, da noch Unterkategorien und Artikel vorhanden sind."
@@ -3345,7 +3349,7 @@ msgstr "-- Neue Gruppe --"
 # section adminstration system expert
 #: includes/include.frontend.group_edit.php:58
 msgid "Created new frontend-group successfully"
-msgstr "Neues Frontendbenutzer-Gruppe erfolgreich angelegt!"
+msgstr "Neue Frontendbenutzer-Gruppe erfolgreich angelegt!"
 
 #: includes/include.frontend.group_edit.php:72
 msgid "Removed user from group successfully!"
@@ -4619,9 +4623,6 @@ msgstr "Code Cache löschen"
 msgid "Force code generation"
 msgstr "Erzwinge Code Generierung"
 
-msgid "There is no tagging tree."
-msgstr "Es gibt noch keinen Tagging-Baum."
-
 #: includes/include.system_purge.php:93
 #, php-format
 msgid "The %s is not updated!"
@@ -4666,7 +4667,7 @@ msgstr "Die Änderungen wurden teilweise nicht erfolgreich ausgeführt."
 #: includes/include.system_purge.php:190
 #: includes/include.system_purge.php:213
 msgid "System purge"
-msgstr "System Bereinigen"
+msgstr "System bereinigen"
 
 #: includes/include.system_purge.php:191
 msgid "No Client selected!"
@@ -4682,7 +4683,7 @@ msgstr "aus Liste"
 
 #: includes/include.system_purge.php:198
 msgid "Select clients"
-msgstr "Mandanten Auswahl"
+msgstr "Mandantenauswahl"
 
 #: includes/include.system_purge.php:199
 #: includes/include.system_purge.php:201
