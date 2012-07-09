@@ -167,7 +167,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
 
             // Delete statistics
             $oStatColl = new cApiStatCollection();
-            $oStatColl->deleteByCatAndArt($value, $idart);
+            $oStatColl->deleteByCategoryArticleAndLanguage($oCatArtToDelete->get('idcatart'), $lang);
 
             // Delete category article
             $oCatArtToDeleteColl->delete($oCatArtToDelete->get('idcatart'));

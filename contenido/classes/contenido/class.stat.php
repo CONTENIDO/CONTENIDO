@@ -91,13 +91,13 @@ class cApiStatCollection extends ItemCollection {
     }
 
     /**
-     * Deletes statistics entries by category id and article id.
-     * @param   int  $idcat
-     * @param   int  $idart
+     * Deletes statistics entries by category article id and language id.
+     * @param   int  $idcatart
+     * @param   int  $idlang
      * @return  int  Number of deleted items
      */
-    public function deleteByCatAndArt($idcat, $idart) {
-        $where = 'idcat = ' . (int) $idcat . ' AND idart = ' . (int) $idart;
+    public function deleteByCategoryArticleAndLanguage($idcatart, $idlang) {
+        $where = 'idcatart = ' . (int) $idcatart . ' AND idlang = ' . (int) $idlang;
         return $this->deleteByWhereClause($where);
     }
 
