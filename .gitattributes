@@ -554,6 +554,7 @@ contenido/external/frontend/js/index.php -text
 contenido/external/frontend/logs/errorlog.txt -text
 contenido/external/frontend/logs/index.php -text
 contenido/external/frontend/robots.txt -text
+contenido/external/frontend/templates/error_page.html -text
 contenido/external/frontend/templates/index.php -text
 contenido/external/frontend/upload/test.txt -text
 contenido/external/index.php -text
