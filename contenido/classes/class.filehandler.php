@@ -112,7 +112,7 @@ class cFileHandler
      * @param bool $append if true the data will be appended to the file. Optional.
      * @return bool true on success, false otherwise
      */
-    public static function write($filename, $content, $append = true) {
+    public static function write($filename, $content, $append = false) {
         $flag = 0;
         if ($append) {
             $flag = FILE_APPEND;
