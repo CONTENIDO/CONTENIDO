@@ -129,7 +129,7 @@ class cFileHandler
      * @param bool $append if true the data will be appended to file. Optional.
      * @return bool true on success, false otherwise
      */
-    public static function writeLine($filename, $content, $append = true) {
+    public static function writeLine($filename, $content, $append = false) {
         return self::write($filename, $content."\n", $append);
     }
 
