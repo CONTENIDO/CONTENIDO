@@ -129,6 +129,18 @@ table.generic th {
     color: #666666;
 }
 
+table.strong_headline th {
+    border-top: 1px solid #b3b3b3;
+    border-right: 1px solid #b3b3b3;
+    background-color: #E2E2E2;
+
+    text-align: left;
+    padding: 2px;
+
+    font-weight: normal;
+    color: #666666;
+}
+
 table.generic th.center {
     border-top: 1px solid #b3b3b3;
     border-right: 1px solid #b3b3b3;

@@ -312,7 +312,6 @@ class cHTML
      * @deprecated name change, use attachStyleDefinition
      * @param  string  $entity  Entity to define
      * @param  string  $definition  Definition for the given entity
-     * @return string  Filled SGML closing skeleton
      */
     public function setStyleDefinition($entity, $definition)
     {
@@ -337,7 +336,6 @@ class cHTML
      *
      * @param  string  $sName  Name for a style definition
      * @param  string  $sDefinition  Definition for the given entity
-     * @return string  Filled SGML closing skeleton
      */
     public function attachStyleDefinition($sName, $sDefinition)
     {

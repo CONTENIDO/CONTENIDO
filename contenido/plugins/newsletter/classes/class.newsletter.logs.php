@@ -135,11 +135,11 @@ class NewsletterLogCollection extends ItemCollection
                 case "default" :
                     $sDistinct = "distinct";
                     $sFrom     = $cfg["tab"]["news_groups"]." AS groups, ".$cfg["tab"]["news_groupmembers"]." AS groupmembers ";
-                    $sSQL      = "recipientcollection.idclient = '".$iIDClient."' AND ".
-                                 "recipientcollection.idlang = '".$iIDLang."' AND ".
-                                 "recipientcollection.deactivated = '0' AND ".
-                                 "recipientcollection.confirmed = '1' AND ".
-                                 "recipientcollection.idnewsrcp = groupmembers.idnewsrcp AND ".
+                    $sSQL      = $cfg['tab']['news_rcp'].".idclient = '".$iIDClient."' AND ".
+                                 $cfg['tab']['news_rcp'].".idlang = '".$iIDLang."' AND ".
+                                 $cfg['tab']['news_rcp'].".deactivated = '0' AND ".
+                                 $cfg['tab']['news_rcp'].".confirmed = '1' AND ".
+                                 $cfg['tab']['news_rcp'].".idnewsrcp = groupmembers.idnewsrcp AND ".
                                  "groupmembers.idnewsgroup = groups.idnewsgroup AND ".
                                  "groups.defaultgroup = '1' AND groups.idclient = '".$iIDClient."' AND ".
                                  "groups.idlang = '".$iIDLang."'";
@@ -152,11 +152,11 @@ class NewsletterLogCollection extends ItemCollection
 
                         $sDistinct  = "distinct";
                         $sFrom      = $cfg["tab"]["news_groupmembers"]." AS groupmembers ";
-                        $sSQL       = "recipientcollection.idclient = '".$iIDClient."' AND ".
-                                      "recipientcollection.idlang = '".$iIDLang."' AND ".
-                                      "recipientcollection.deactivated = '0' AND ".
-                                      "recipientcollection.confirmed = '1' AND ".
-                                      "recipientcollection.idnewsrcp = groupmembers.idnewsrcp AND ".
+                        $sSQL       = $cfg['tab']['news_rcp'].".idclient = '".$iIDClient."' AND ".
+                                      $cfg['tab']['news_rcp'].".idlang = '".$iIDLang."' AND ".
+                                      $cfg['tab']['news_rcp'].".deactivated = '0' AND ".
+                                      $cfg['tab']['news_rcp'].".confirmed = '1' AND ".
+                                      $cfg['tab']['news_rcp'].".idnewsrcp = groupmembers.idnewsrcp AND ".
                                       "groupmembers.idnewsgroup IN (".$sGroups.")";
                     } else {
                         $sDestination = "unknown";
