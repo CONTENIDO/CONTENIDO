@@ -174,6 +174,7 @@ checkAndInclude(C_SETUP_PATH . 'lib/defines.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.i18n.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/api/functions.api.general.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
+checkAndInclude($cfg['path']['contenido'] . 'classes/class.template.php');
 checkAndInclude(C_SETUP_PATH . 'lib/class.setupcontrols.php');
 checkAndInclude(C_SETUP_PATH . 'lib/functions.filesystem.php');
 checkAndInclude(C_SETUP_PATH . 'lib/functions.environment.php');
@@ -184,7 +185,6 @@ checkAndInclude(C_SETUP_PATH . 'lib/functions.libraries.php');
 checkAndInclude(C_SETUP_PATH . 'lib/functions.system.php');
 checkAndInclude(C_SETUP_PATH . 'lib/functions.sql.php');
 checkAndInclude(C_SETUP_PATH . 'lib/functions.setup.php');
-checkAndInclude(C_SETUP_PATH . 'lib/class.template.php');
 checkAndInclude(C_SETUP_PATH . 'lib/class.setupmask.php');
 
 // PHP verion check
