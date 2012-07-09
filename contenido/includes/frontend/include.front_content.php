@@ -202,6 +202,10 @@ $aParams = array(
 );
 $errsite = 'Location: ' . Contenido_Url::getInstance()->buildRedirect($aParams);
 
+if($error == 1) {
+	header("HTTP/1.0 404 Not found");
+}
+
 
 // Try to initialize variables $idcat, $idart, $idcatart, $idartlang
 // Note: These variables can be set via http globals e.g. front_content.php?idcat=41&idart=34&idcatart=35&idartlang=42
