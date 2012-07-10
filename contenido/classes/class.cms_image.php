@@ -194,6 +194,7 @@ class Cms_Image {
      * @return    void
      */
     private function storeImage($idart = -1) {
+    	global $auth;
         $aFilenameData['filename'] = basename($_REQUEST['image_filename']);
         $aFilenameData['dirname'] = dirname($_REQUEST['image_filename']);
 
@@ -230,15 +231,16 @@ class Cms_Image {
         if ($this->oDb->next_record()) {
             $id_uplmeta = $this->oDb->f('id_uplmeta');
         }
+		$time = date("Y-m-d H:i:s");
         if (!isset($id_uplmeta)){
             //$id = $this->oDb->nextid($this->aCfg['tab']['upl_meta']);
-            $query = "INSERT INTO ".$this->aCfg['tab']['upl_meta']."( idupl, idlang, medianame, description, keywords, internal_notice, copyright)
-            VALUES('".$idupl."', '".$idlang."', '".$medianame."', '".$description."', '".$keywords."', '".$internal_notice."', '".$copyright."')";
+            $query = "INSERT INTO ".$this->aCfg['tab']['upl_meta']."( idupl, idlang, medianame, description, keywords, internal_notice, author, created, modified, modifiedby, copyright)
+            VALUES('".$idupl."', '".$idlang."', '".$medianame."', '".$description."', '".$keywords."', '".$internal_notice."', '".$auth->auth['uid']."', '".$time."', '".$time."', '".$auth->auth['uid']."', '".$copyright."')";
             $this->oDb->query($query);
             //echo '2'.$this->oDb->Error;
         } else {
             $query = "UPDATE ".$this->aCfg['tab']['upl_meta'].
-                    " SET idupl='".$idupl."', idlang='".$idlang."', medianame='".$medianame."', description='".$description."', keywords='".$keywords."', internal_notice='".$internal_notice."', copyright='".$copyright."'
+                    " SET idupl='".$idupl."', idlang='".$idlang."', medianame='".$medianame."', description='".$description."', keywords='".$keywords."', internal_notice='".$internal_notice."', modified='".$time."', modifiedby='".$auth->auth['uid']."', copyright='".$copyright."'
                     WHERE id_uplmeta='".$id_uplmeta."'";
             $this->oDb->query($query);
             //echo '3'.$this->oDb->Error;
