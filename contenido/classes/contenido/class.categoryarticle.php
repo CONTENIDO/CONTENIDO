@@ -61,7 +61,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * @param   string  $author
      * @param   string  $created
      * @param   string  $lastmodified
-     * @param   int     $createcode 
+     * @param   int     $createcode
      * @param   int     $is_start  NOTE: Is deprecated but still available due to downwards compatibility.
      * @return  cApiCategoryArticle
      */
@@ -139,7 +139,6 @@ class cApiCategoryArticleCollection extends ItemCollection {
         $aProps = array('idcat' => $idcat, 'idart' => $idart);
         $aRecordSet = $this->_oCache->getItemByProperties($aProps);
         if ($aRecordSet) {
-            var_dump($aRecordSet);
             // entry in cache found, load entry from cache
             $oItem = new cApiCategoryArticle();
             $oItem->loadByRecordSet($aRecordSet);

@@ -420,10 +420,13 @@ function getmicrotime()
 /**
  * Small hack to clean up unused sessions. As we are probably soon rewriting the
  * session management, this hack is OK.
+ * @deprecated PHP will handle cleaning up sessions
  */
 function cleanupSessions()
 {
     global $cfg;
+
+    cDeprecated("Sessions don't need to be cleaned up anymore");
 
     $db = cRegistry::getDb();
     $db2 = cRegistry::getDb();

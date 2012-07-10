@@ -158,10 +158,10 @@ if (!isset($lang)) {
     }
 }
 
-if (!$sess->is_registered('lang')) {
+if (!$sess->isRegistered('lang')) {
     $sess->register('lang');
 }
-if (!$sess->is_registered('client')) {
+if (!$sess->isRegistered('client')) {
     $sess->register('client');
 }
 

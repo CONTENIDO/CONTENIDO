@@ -289,11 +289,11 @@ class Auth {
 
     // Helper functions
     public function url() {
-        return $GLOBALS['sess']->self_url();
+        return $GLOBALS['sess']->selfURL();
     }
 
     public function purl(){
-        print $GLOBALS['sess']->self_url();
+        print $GLOBALS['sess']->selfURL();
     }
 
     /* This method can authenticate a user before the loginform

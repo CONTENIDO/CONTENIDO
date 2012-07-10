@@ -47,7 +47,7 @@ if (!is_array($browserparameters) && ($appendparameters != "imagebrowser" || $ap
     $browserparameters = array();
 }
 
-if (!$sess->is_registered("upl_last_path")) {
+if (!$sess->isRegistered("upl_last_path")) {
     $upl_last_path = $path;
     $sess->register("upl_last_path");
 } elseif (!isset($path)) {

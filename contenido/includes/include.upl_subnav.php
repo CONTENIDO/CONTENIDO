@@ -31,7 +31,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 // Use remembered path from upl_last_path (from session)
-if (!isset($_GET['path']) && $sess->is_registered("upl_last_path")) {
+if (!isset($_GET['path']) && $sess->isRegistered("upl_last_path")) {
     $_GET['path'] = $upl_last_path;
 }
 

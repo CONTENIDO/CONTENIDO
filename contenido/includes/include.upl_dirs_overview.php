@@ -73,7 +73,7 @@ function getExpandCollapseButton($item)
 #################
 #Fixxed by Timo Trautmann double database entries also called by action upl_mkdir
 // Use remembered path from upl_last_path (from session)
-if (!isset($path) && $sess->is_registered("upl_last_path"))
+if (!isset($path) && $sess->isRegistered("upl_last_path"))
 {
     $path = $upl_last_path;
 }

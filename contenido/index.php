@@ -63,7 +63,7 @@ if (isset($changeclient) && is_numeric($changeclient)) {
 }
 
 // Preselect client, if definied
-if (!$sess->is_registered('client')) { // only check at first login into backend
+if (!$sess->isRegistered('client')) { // only check at first login into backend
     $iTmpClient = getEffectiveSetting('backend', 'preferred_idclient', false);
 
     if ($iTmpClient && ($perm->have_perm_client('admin['.$iTmpClient.']') || $perm->have_perm_client('client['.$iTmpClient.']'))) {

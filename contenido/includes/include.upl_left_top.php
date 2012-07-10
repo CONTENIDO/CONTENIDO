@@ -76,7 +76,7 @@ if ($appendparameters != 'filebrowser' && (int) $client > 0) {
 
 if ($perm->have_perm_area_action('upl', 'upl_mkdir') && (int) $client > 0) {
     $sCurrentPathInfo = '';
-    if ($sess->is_registered('upl_last_path') && !isset($path)) {
+    if ($sess->isRegistered('upl_last_path') && !isset($path)) {
         $path = $upl_last_path;
     }
 
