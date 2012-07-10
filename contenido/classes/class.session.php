@@ -20,11 +20,11 @@
  *
  * {@internal
  *   created  2012-07-06
- *
  *   $Id: class.session.php 2486 2012-07-02 21:49:26Z xmurrix $:
  * }}
  *
  */
+
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
@@ -69,7 +69,7 @@ class cSession {
         $this->id = "1";
         $this->name = "contenido";
 
-        if(!isset($_SESSION)) {
+        if (!isset($_SESSION)) {
             session_name($this->_prefix);
             session_start();
         }
@@ -79,11 +79,10 @@ class cSession {
      * Registers a global variable which will become persistent
      * @param string $things The name of the variable (e.g. "idclient")
      */
-    public function register($things)
-    {
+    public function register($things) {
         $things = explode(',', $things);
 
-        foreach($things as $thing) {
+        foreach ($things as $thing) {
             $thing = trim($thing);
             if ($thing) {
                 $this->_pt[$thing] = true;
@@ -126,12 +125,12 @@ class cSession {
      */
     public function url($url) {
         // Remove existing session info from url
-        $url = preg_replace('/([&?])'.quotemeta(urlencode($this->name)).'='.$this->id.'(&|$)/', "\\1", $url);
+        $url = preg_replace('/([&?])' . quotemeta(urlencode($this->name)) . '=' . $this->id . '(&|$)/', "\\1", $url);
 
         // Remove trailing ?/& if needed
         $url = preg_replace('/[&?]+$/', '', $url);
 
-        $url .= (strpos($url, '?') != false ? '&' : '?') . urlencode($this->name).'='.$this->id;
+        $url .= (strpos($url, '?') != false ? '&' : '?') . urlencode($this->name) . '=' . $this->id;
 
         // Encode naughty characters in the URL
         $url = str_replace(array('<', '>', ' ', '"', '\''), array('%3C', '%3E', '+', '%22', '%27'), $url);
@@ -153,7 +152,7 @@ class cSession {
      * @param string $url A URL
      */
     public function selfURL() {
-        return $this->url($_SERVER['PHP_SELF'].((isset($_SERVER['QUERY_STRING']) && ('' != $_SERVER['QUERY_STRING'])) ? '?' . $_SERVER['QUERY_STRING'] : ''));
+        return $this->url($_SERVER['PHP_SELF'] . ((isset($_SERVER['QUERY_STRING']) && ('' != $_SERVER['QUERY_STRING'])) ? '?' . $_SERVER['QUERY_STRING'] : ''));
     }
 
     /**
@@ -173,7 +172,7 @@ class cSession {
      * @param string $str The PHP code will be attached to this string
      */
     protected function _rSerialize($var, &$str) {
-        static $t,$l,$k;
+        static $t, $l, $k;
 
         // Determine the type of $$var
         eval("\$t = gettype(\$$var);");
@@ -184,7 +183,7 @@ class cSession {
                 $str .= "\$$var = array(); ";
                 while ('array' == $l) {
                     // Structural recursion
-                    $this->_rSerialize($var."['".preg_replace("/([\\'])/", "\\\\1", $k)."']", $str);
+                    $this->_rSerialize($var . "['" . preg_replace("/([\\'])/", "\\\\1", $k) . "']", $str);
                     eval("\$l = gettype(list(\$k)=each(\$$var));");
                 }
                 break;
@@ -194,15 +193,15 @@ class cSession {
                 $str.="\$$var = new $k; ";
                 while ($l) {
                     // Structural recursion.
-                    $this->_rSerialize($var."->".$l, $str);
+                    $this->_rSerialize($var . "->" . $l, $str);
                     eval("\$l = next(\$${var}->persistent_slots);");
-        }
-        break;
-        default:
-            // $$var is an atom. Extract it to $l, then generate code.
-            eval("\$l = \$$var;");
-            $str.="\$$var = '".preg_replace("/([\\'])/", "\\\\1", $l)."'; ";
-            break;
+                }
+                break;
+            default:
+                // $$var is an atom. Extract it to $l, then generate code.
+                eval("\$l = \$$var;");
+                $str.="\$$var = '" . preg_replace("/([\\'])/", "\\\\1", $l) . "'; ";
+                break;
         }
     }
 
@@ -212,22 +211,22 @@ class cSession {
     public function freeze() {
         $str = $this->serialize("this->_pt");
 
-        foreach($this->_pt as $thing => $value) {
+        foreach ($this->_pt as $thing => $value) {
             $thing = trim($thing);
             if ($value) {
-                $str .= $this->serialize("GLOBALS['".$thing."']");
+                $str .= $this->serialize("GLOBALS['" . $thing . "']");
             }
         }
 
-        $_SESSION[$this->_prefix.'csession'] = $str;
+        $_SESSION[$this->_prefix . 'csession'] = $str;
     }
 
     /**
      * Rebuilds every registered variable from the session.
      */
     public function thaw() {
-        if($_SESSION[$this->_prefix.'csession'] != "") {
-            eval(sprintf(';%s', $_SESSION[$this->_prefix.'csession']));
+        if ($_SESSION[$this->_prefix . 'csession'] != "") {
+            eval(sprintf(';%s', $_SESSION[$this->_prefix . 'csession']));
         }
     }
 
@@ -253,21 +252,21 @@ class cSession {
     public function start() {
         $this->thaw();
     }
+
 }
 
 /**
  * Session class for the frontend. It uses a different prefix. The rest is the same
  */
-class cFrontendSession extends cSession
-{
+class cFrontendSession extends cSession {
+
     /**
      * Starts the session and initilializes the class
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $client;
 
-        parent::__construct($client."frontend");
+        parent::__construct($client . "frontend");
     }
 
     /**
@@ -275,7 +274,7 @@ class cFrontendSession extends cSession
      * @see cSession::url()
      */
     public function url($url) {
-        $url = preg_replace('/([&?])'.quotemeta(urlencode($this->name)).'='.$this->id.'(&|$)/', "\\1", $url);
+        $url = preg_replace('/([&?])' . quotemeta(urlencode($this->name)) . '=' . $this->id . '(&|$)/', "\\1", $url);
 
         $url = preg_replace('/[&?]+$/', '', $url);
 
@@ -283,6 +282,7 @@ class cFrontendSession extends cSession
 
         return $url;
     }
+
 }
 
 ?>
