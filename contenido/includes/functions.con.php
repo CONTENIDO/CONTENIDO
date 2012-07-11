@@ -297,71 +297,53 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
 /**
  * Save a content element and generate index
  *
- * @param integer $idartlang idartlang of the article
- * @param string $type Type of content element
- * @param integer $typeid Serial number of the content element
- * @param string $value Content
- *
+ * @param   int  $idartlang  idartlang of the article
+ * @param   string  $type  Type of content element
+ * @param   int   $typeid  Serial number of the content element
+ * @param   string  $value  Content
+ * @param   bool  $bForce  Not used: Was a flag to use existing db instance in global scope
  * @return void
- *
- * @author Olaf Niemann <olaf.niemann@4fb.de>
- *         Jan Lengowski <jan.lengowski@4fb.de>
- *
- * @copyright four for business AG <www.4fb.de>
  */
-function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false)
-{
-    global $auth, $cfg, $cfgClient, $client, $lang, $_cecRegistry;
-
-    if ($bForce == true) {
-        $db = cRegistry::getDb();
-    } else {
-        global $db;
+function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false) {
+    global $auth, $cfgClient, $client, $_cecRegistry;
+    $oType = new cApiType();
+    if (!$oType->loadByType($type)) {
+        // Couldn't load type...
+        return;
     }
 
     $date   = date('Y-m-d H:i:s');
     $author = $auth->auth['uname'];
-
-    $cut_path  = $cfgClient[$client]['path']['htmlpath'];
-
-    $value = str_replace($cut_path, '', $value);
-    $value = stripslashes($value);
+    $value  = str_replace($cfgClient[$client]['path']['htmlpath'], '', $value);
+    $value  = stripslashes($value);
 
     $iterator = $_cecRegistry->getIterator('Contenido.Content.SaveContentEntry');
     while ($chainEntry = $iterator->next()) {
         $value = $chainEntry->execute($idartlang, $type, $typeid, $value);
     }
 
-    $sql = "SELECT * FROM ".$cfg["tab"]["type"]." WHERE type = '".$db->escape($type)."'";
-    $db->query($sql);
-    $db->next_record();
-    $idtype=$db->f("idtype");
+    $idtype = $oType->get('idtype');
 
-    $sql = "SELECT * FROM ".$cfg["tab"]["content"]." WHERE idartlang='".cSecurity::toInteger($idartlang)."' AND idtype='".cSecurity::toInteger($idtype)."' AND typeid='".cSecurity::toInteger($typeid)."'";
-    $db->query($sql);
-
-    if ($db->next_record()) {
-        $sql = "UPDATE ".$cfg["tab"]["content"]." SET value='".cSecurity::escapeDB($value, $db)."', author='".cSecurity::escapeDB($author, $db)."', lastmodified='".cSecurity::escapeDB($date, $db)."'
-                WHERE idartlang='".cSecurity::toInteger($idartlang)."' AND idtype='".cSecurity::toInteger($idtype)."' AND typeid='".cSecurity::toInteger($typeid)."'";
-        $db->query($sql);
+    $oContent = new cApiContent();
+    $oContent->loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid);
+    if ($oContent->isLoaded()) {
+        // Update existing entry
+        $oContent->set('value', $value);
+        $oContent->set('author', $author);
+        $oContent->set('lastmodified', $date);
+        $oContent->store();
     } else {
-        $sql = "INSERT INTO ".$cfg["tab"]["content"]." (idartlang, idtype, typeid, value, author, created, lastmodified) VALUES(
-                '".cSecurity::toInteger($idartlang)."', '".cSecurity::toInteger($idtype)."', '".cSecurity::toInteger($typeid)."', '".cSecurity::escapeDB($value, $db)."',
-                '".cSecurity::escapeDB($author, $db)."', '".cSecurity::escapeDB($date, $db)."', '".cSecurity::escapeDB($date, $db)."')";
-        $db->query($sql);
+        // Create new entry
+        $oContentColl = new cApiContentCollection();
+        $oContent = $oContentColl->create($idartlang, $idtype, $typeid, $value, 0, $author, $date, $date);
     }
 
     // Touch the article to update last modified date
-    $lastmodified = date("Y-m-d H:i:s");
-
-    $sql = "UPDATE
-                ".$cfg["tab"]["art_lang"]."
-            SET
-                lastmodified = '".cSecurity::escapeDB($lastmodified, $db)."',
-                modifiedby = '".cSecurity::escapeDB($author, $db)."'
-            WHERE
-                idartlang='".cSecurity::toInteger($idartlang)."'";
-    $db->query($sql);
+    $lastmodified = date('Y-m-d H:i:s');
+    $oArtLang = new cApiArticleLanguage($idartlang);
+    $oArtLang->set('lastmodified', $lastmodified);
+    $oArtLang->set('modifiedby', $author);
+    $oArtLang->store();
 }
 
 /**
