@@ -20,28 +20,22 @@
  *
  * {@internal
  *   created  2007-05-25
- *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *   modified 2011-10-19, Murat Purc, moved Article implementation to cApiArticleLanguage in favor of normalizing the API
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Article language collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiArticleLanguageCollection extends ItemCollection
-{
-    public function __construct($select = false)
-    {
+class cApiArticleLanguageCollection extends ItemCollection {
+
+    public function __construct($select = false) {
         global $cfg;
         parent::__construct($cfg['tab']['art_lang'], 'idartlang');
         $this->_setItemClass('cApiArticleLanguage');
@@ -53,8 +47,7 @@ class cApiArticleLanguageCollection extends ItemCollection
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiArticleLanguageCollection($select = false)
-    {
+    public function cApiArticleLanguageCollection($select = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($select);
     }
@@ -88,12 +81,11 @@ class cApiArticleLanguageCollection extends ItemCollection
      * @param   int  $time_online_move
      * @return cApiArticleLanguage
      */
-    public function create($idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0, $created = '',
-                           $lastmodified = '', $author = '', $published = '', $publishedby = '', $online = 0,
-                           $redirect = 0, $redirect_url = '', $external_redirect = 0, $artsort = 0,
-                           $timemgmt = 0, $datestart = '', $dateend = '', $status = 0, $time_move_cat = 0,
-                           $time_target_cat = 0, $time_online_move = 0)
-    {
+    public function create($idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0,
+                           $created = '', $lastmodified = '', $author = '', $published = '',
+                           $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '',
+                           $external_redirect = 0, $artsort = 0, $timemgmt = 0, $datestart = '',
+                           $dateend = '', $status = 0, $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0) {
         global $auth;
 
         if (empty($author)) {
@@ -106,41 +98,34 @@ class cApiArticleLanguageCollection extends ItemCollection
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $urlname            = (trim($urlname) == '') ? trim($title) : trim($urlname);
-        $urlname            = htmlspecialchars(cApiStrCleanURLCharacters($urlname), ENT_QUOTES);
-        $timemgmt           = ($timemgmt == 1) ? 1 : 0;
-        $time_move_cat      = ($time_move_cat == 1) ? 1 : 0;
-        $time_online_move   = ($time_online_move == 1) ? 1 : 0;
-        $redirect           = ($redirect == 1) ? 1 : 0;
-        $external_redirect  = ($external_redirect == 1) ? 1 : 0;
-        $redirect_url       = ($redirect_url == 'http://' || $redirect_url == '') ? '0' : $redirect_url;
+        $urlname = (trim($urlname) == '') ? trim($title) : trim($urlname);
 
         $item = parent::createNewItem();
 
-        $item->set('idart', (int) $idart);
-        $item->set('idlang', (int) $idlang);
-        $item->set('title', $this->escape($title));
-        $item->set('urlname', $this->escape($urlname));
-        $item->set('pagetitle', $this->escape($pagetitle));
-        $item->set('summary', $this->escape($summary));
-        $item->set('artspec', (int) $artspec);
-        $item->set('created', $this->escape($created));
-        $item->set('lastmodified', $this->escape($lastmodified));
-        $item->set('author', $this->escape($author));
-        $item->set('published', $this->escape($published));
-        $item->set('publishedby', $this->escape($publishedby));
-        $item->set('online', (int) $online);
-        $item->set('redirect', (int) $redirect);
-        $item->set('redirect_url', $this->escape($redirect_url));
-        $item->set('external_redirect', (int) $external_redirect);
-        $item->set('artsort', (int) $artsort);
-        $item->set('timemgmt', (int) $timemgmt);
-        $item->set('datestart',  $this->escape($datestart));
-        $item->set('dateend',  $this->escape($dateend));
-        $item->set('status', (int) $status);
-        $item->set('time_move_cat', (int) $time_move_cat);
-        $item->set('time_target_cat', (int) $time_target_cat);
-        $item->set('time_online_move', (int) $time_online_move);
+        $item->set('idart', $idart);
+        $item->set('idlang', $idlang);
+        $item->set('title', $title);
+        $item->set('urlname', $urlname);
+        $item->set('pagetitle', $pagetitle);
+        $item->set('summary', $summary);
+        $item->set('artspec', $artspec);
+        $item->set('created', $created);
+        $item->set('lastmodified', $lastmodified);
+        $item->set('author', $author);
+        $item->set('published', $published);
+        $item->set('publishedby', $publishedby);
+        $item->set('online', $online);
+        $item->set('redirect', $redirect);
+        $item->set('redirect_url', $redirect_url);
+        $item->set('external_redirect', $external_redirect);
+        $item->set('artsort', $artsort);
+        $item->set('timemgmt', $timemgmt);
+        $item->set('datestart', $datestart);
+        $item->set('dateend', $dateend);
+        $item->set('status', $status);
+        $item->set('time_move_cat', $time_move_cat);
+        $item->set('time_target_cat', $time_target_cat);
+        $item->set('time_online_move', $time_online_move);
 
         $item->store();
 
@@ -148,7 +133,6 @@ class cApiArticleLanguageCollection extends ItemCollection
     }
 
 }
-
 
 /**
  * CONTENIDO API - Article Object
@@ -231,8 +215,8 @@ class cApiArticleLanguageCollection extends ItemCollection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiArticleLanguage extends Item
-{
+class cApiArticleLanguage extends Item {
+
     /**
      * Config array
      * @var array
@@ -250,8 +234,7 @@ class cApiArticleLanguage extends Item
      * @param  mixed  $mId  Specifies the ID of item to load
      * @param  bool  $fetchContent  Flag to fetch content
      */
-    public function __construct($mId = false, $fetchContent = false)
-    {
+    public function __construct($mId = false, $fetchContent = false) {
         global $cfg;
         parent::__construct($cfg['tab']['art_lang'], 'idartlang');
         $this->setFilters(array(), array());
@@ -264,8 +247,7 @@ class cApiArticleLanguage extends Item
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiArticleLanguage($mId = false)
-    {
+    public function cApiArticleLanguage($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
@@ -278,8 +260,7 @@ class cApiArticleLanguage extends Item
      * @param  bool  $fetchContent  Flag to fetch content
      * @return  bool  true on success, otherwhise false
      */
-    public function loadByArticleAndLanguageId($idart, $idlang, $fetchContent = false)
-    {
+    public function loadByArticleAndLanguageId($idart, $idlang, $fetchContent = false) {
         $result = true;
         if ($this->virgin == true) {
             $aProps = array('idart' => $idart, 'idlang' => $idlang);
@@ -307,8 +288,7 @@ class cApiArticleLanguage extends Item
      * @param int $idlang Language id
      * @return int Language dependant article id
      */
-    protected function _getIdArtLang($idart, $idlang)
-    {
+    protected function _getIdArtLang($idart, $idlang) {
         global $cfg;
 
         $sql = 'SELECT idartlang FROM `%s` WHERE idart = %d AND idlang = %d';
@@ -324,8 +304,7 @@ class cApiArticleLanguage extends Item
      *
      * $article->content[type][number] = value;
      */
-    public function loadArticleContent()
-    {
+    public function loadArticleContent() {
         $this->_getArticleContent();
     }
 
@@ -337,8 +316,7 @@ class cApiArticleLanguage extends Item
      *
      * @return void
      */
-    protected function _getArticleContent()
-    {
+    protected function _getArticleContent() {
         global $cfg;
 
         if (null !== $this->content) {
@@ -346,8 +324,8 @@ class cApiArticleLanguage extends Item
         }
 
         $sql = 'SELECT b.type, a.typeid, a.value FROM `%s` AS a, `%s` AS b '
-             . 'WHERE a.idartlang = %d AND b.idtype = a.idtype '
-             . 'ORDER BY a.idtype, a.typeid';
+                . 'WHERE a.idartlang = %d AND b.idtype = a.idtype '
+                . 'ORDER BY a.idtype, a.typeid';
 
         $this->db->query($sql, $cfg['tab']['content'], $cfg['tab']['type'], $this->get('idartlang'));
 
@@ -392,9 +370,46 @@ class cApiArticleLanguage extends Item
      * @param   string  $name
      * @return  string  Value of property
      */
-    public function getField($name)
-    {
+    public function getField($name) {
         return $this->values[$name];
+    }
+
+    /**
+     * Userdefined setter for article language fields.
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'urlname':
+                $value = htmlspecialchars(cApiStrCleanURLCharacters($value), ENT_QUOTES);
+                break;
+            case 'timemgmt':
+            case 'time_move_cat':
+            case 'time_online_move':
+            case 'redirect':
+            case 'external_redirect':
+                $value = ($value == 1) ? 1 : 0;
+                break;
+            case 'idart':
+            case 'idlang':
+            case 'artspec':
+            case 'online':
+            case 'artsort':
+            case 'status':
+                $value = (int) $value;
+                break;
+            case 'redirect_url':
+                $value = ($value == 'http://' || $value == '') ? '0' : $value;
+                break;
+        }
+
+        if (is_string($value)) {
+            $value = $this->escape($value);
+        }
+
+        parent::setField($name, $value, $bSafe);
     }
 
     /**
@@ -424,8 +439,7 @@ class cApiArticleLanguage extends Item
      * @param   int|null     $id    Id of the content
      * @return  string|array  Content data
      */
-    public function getContent($type, $id = null)
-    {
+    public function getContent($type, $id = null) {
 
         if (null === $this->content) {
             $this->_getArticleContent();
@@ -459,8 +473,7 @@ class cApiArticleLanguage extends Item
      *
      * @return array
      */
-    public function getContentTypes()
-    {
+    public function getContentTypes() {
         if (empty($this->content)) {
             throw new Exception('getContentTypes() No content loaded');
         }

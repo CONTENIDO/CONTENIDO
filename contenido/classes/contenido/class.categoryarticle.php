@@ -149,6 +149,25 @@ class cApiCategoryArticleCollection extends ItemCollection {
         }
     }
 
+    /**
+     * Returns all available category ids of entries having a secific article id
+     * @param   int  $idart
+     * @return  array
+     */
+    public function getcategoryIdsByArticleId($idart) {
+        $aIdCats = array();
+
+        $sql = "SELECT idcat FROM `:cat_art` WHERE idart=:idart";
+        $sql = $this->db->prepare($sql, array('cat_art' => $this->table, 'idart' => (int) $idart));
+        $this->db->query($sql);
+
+        while ($this->db->next_record()) {
+            $aIdCats[] = $this->db->f('idcat');
+        }
+
+        return $aIdCats;
+    }
+
 }
 
 /**
