@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-07-10
+ *     created  2012-07-11
  * }}
  */
 
@@ -66,12 +66,6 @@ return array(
     'FormField' => 'contenido/classes/class.form.php',
     'FormCheck' => 'contenido/classes/class.form.php',
     'FrontendLogic' => 'contenido/classes/class.frontend.logic.php',
-    'cItemException' => 'contenido/classes/genericdb/class.item.base.abstract.php',
-    'cGenericDb' => 'contenido/classes/genericdb/class.genericdb.php',
-    'cItemCache' => 'contenido/classes/genericdb/class.item.cache.php',
-    'cItemBaseAbstract' => 'contenido/classes/genericdb/class.item.base.abstract.php',
-    'ItemCollection' => 'contenido/classes/genericdb/class.item.collection.php',
-    'Item' => 'contenido/classes/genericdb/class.item.php',
     'cHTML' => 'contenido/classes/class.htmlelements.php',
     'cHTMLFormElement' => 'contenido/classes/class.htmlelements.php',
     'cHTMLHiddenField' => 'contenido/classes/class.htmlelements.php',
@@ -283,6 +277,8 @@ return array(
     'cApiTemplate' => 'contenido/classes/contenido/class.template.php',
     'cApiTemplateConfigurationCollection' => 'contenido/classes/contenido/class.templateconfig.php',
     'cApiTemplateConfiguration' => 'contenido/classes/contenido/class.templateconfig.php',
+    'cApiTypeCollection' => 'contenido/classes/contenido/class.type.php',
+    'cApiType' => 'contenido/classes/contenido/class.type.php',
     'cApiUploadMetaCollection' => 'contenido/classes/contenido/class.upload.meta.php',
     'cApiUploadMeta' => 'contenido/classes/contenido/class.upload.meta.php',
     'cApiUploadCollection' => 'contenido/classes/contenido/class.upload.php',
@@ -319,6 +315,12 @@ return array(
     'gdbDriver' => 'contenido/classes/drivers/class.gdb.driver.php',
     'gdbMySQL' => 'contenido/classes/drivers/mysql/class.gdb.mysql.php',
     'ConUserException' => 'contenido/classes/exceptions/exception.conuser.php',
+    'cGenericDb' => 'contenido/classes/genericdb/class.genericdb.php',
+    'cItemException' => 'contenido/classes/genericdb/class.item.base.abstract.php',
+    'cItemBaseAbstract' => 'contenido/classes/genericdb/class.item.base.abstract.php',
+    'cItemCache' => 'contenido/classes/genericdb/class.item.cache.php',
+    'ItemCollection' => 'contenido/classes/genericdb/class.item.collection.php',
+    'Item' => 'contenido/classes/genericdb/class.item.php',
     'iConUser' => 'contenido/classes/interfaces/interface.conuser.php',
     'cBufferedLog' => 'contenido/classes/log/class.bufferedlog.php',
     'cLog' => 'contenido/classes/log/class.log.php',
