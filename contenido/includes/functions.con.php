@@ -520,34 +520,24 @@ function conMakeCatOnline($idcat, $lang, $status) {
 /**
  * Toggle the public status of a category
  *
- * Almost the same function as strMakePublic in
- * functions.str.php (conDeeperCategoriesArray instead of
- * strDeeperCategoriesArray)
+ * Almost the same function as strMakePublic in functions.str.php
+ * (conDeeperCategoriesArray instead of strDeeperCategoriesArray)
  *
- * @param int $idcat Article Id
- * @param int $idcat Language Id
- * @param bool $public Start status of the Article
- *
- * @author Olaf Niemann <olaf.niemann@4fb-de>
- *         Jan Lengowski <jan.lengowski@4fb.de>
- *
- * @copyright four for business AG <www.4fb.de>
+ * @param  int  $idcat  Category Id
+ * @param  int  $idcat  Language Id
+ * @param  bool  $public  Public status of the Article
  */
-function conMakePublic($idcat, $lang, $public)
-{
-    global $db, $cfg;
-    $public = (int) $public;
-    if ($public != 1) {
-        $public = 0;
+function conMakePublic($idcat, $lang, $public) {
+    $oCatLang = new cApiCategoryLanguage();
+    if (!$oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
+        return;
     }
 
-    $a_catstring = conDeeperCategoriesArray($idcat);
-    foreach ($a_catstring as $value) {
-        $sql = "UPDATE ".$cfg["tab"]["cat_lang"].
-               " SET public='".cSecurity::toInteger($public)."', lastmodified = '".cSecurity::escapeDB(date("Y-m-d H:i:s"), $db).
-               "' WHERE idcat='".cSecurity::toInteger($value)."' AND idlang='".cSecurity::toInteger($lang)."' ";
-        $db->query($sql);
-    }
+    $public = (1 == $public) ? 1 : 0;
+
+    $oCatLang->set('public', $public);
+    $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
+    $oCatLang->store();
 }
 
 /**
