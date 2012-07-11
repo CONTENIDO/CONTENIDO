@@ -70,12 +70,6 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
     $oArt = $oArtColl->create($client);
     $idart = $oArt->get('idart');
 
-    // Set self defined Keywords
-    // @fixme  $keycode is not used in this scope
-    if ($keyart != '') {
-        $keycode[1][1] = $keyart;
-    }
-
     $status = 0;
 
     // Create an category article entry
@@ -644,7 +638,6 @@ function conDeleteart($idart)
 
     ##################################################
     # set keywords
-    $keycode[1][1] = "";
 
     if (count($idcatart) > 0) {
         foreach ($idcatart as $value) {
