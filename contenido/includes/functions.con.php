@@ -347,7 +347,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
 }
 
 /**
- * generate index of article content
+ * Generate index of article content.
  *
  * added by stese
  * removed from function conSaveContentEntry  before
@@ -356,17 +356,19 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
  * @see conSaveContentEntry
  * @param integer $idart
  */
-function conMakeArticleIndex($idartlang, $idart)
-{
-    global $db, $auth, $cfg;
+function conMakeArticleIndex($idartlang, $idart) {
+    global $db;
 
-    // generate index of article content
-    $oIndex = new SearchIndex($db);
-    $aOptions = array("img", "link", "linktarget", "swf"); // cms types to be excluded from indexing
-    // indexing an article depends on the complete content with all content types, i.e it can not by differentiated by specific content types.
+    // indexing an article depends on the complete content with all content types,
+    // i.e it can not by differentiated by specific content types.
     // Therefore one must fetch the complete content arrray.
-
     $aContent = conGetContentFromArticle($idartlang);
+
+    // cms types to be excluded from indexing
+    // @todo  Make this configurable!
+    $aOptions = array('img', 'link', 'linktarget', 'swf');
+
+    $oIndex = new SearchIndex($db);
     $oIndex->start($idart, $aContent, 'auto', $aOptions);
 }
 
@@ -375,46 +377,42 @@ function conMakeArticleIndex($idartlang, $idart)
  *
  * @param int $idart Article Id
  * @param ing $lang Language Id
- *
- * @author Olaf Niemann <olaf.niemann@4fb-de>
- *         Jan Lengowski <jan.lengowski@4fb.de>
- *
- * @copyright four for business AG <www.4fb.de>
  */
-function conMakeOnline($idart, $lang)
-{
-    global $db, $cfg, $auth;
+function conMakeOnline($idart, $lang) {
+    global $auth;
 
-    $sql = "SELECT online FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '".cSecurity::toInteger($idart)."' AND idlang = '".cSecurity::toInteger($lang)."'";
-    $db->query($sql);
-
-    $db->next_record();
-
-    $set = ($db->f("online") == 0) ? 1 : 0;
-
-    if ($set == 1) {
-        $publisher_info = "published = '".date("Y-m-d H:i:s")."', publishedby='".$auth->auth["uname"]."',";
-    } else {
-        $publisher_info = '';
+    $oArtLang = new cApiArticleLanguage();
+    if (!$oArtLang->loadByArticleAndLanguageId($idart, $lang)) {
+        return;
     }
-    $sql = "UPDATE ".$cfg["tab"]["art_lang"]."  SET ".$publisher_info." online = '".cSecurity::toInteger($set)."' WHERE idart = '".cSecurity::toInteger($idart)."'
-            AND idlang = '".cSecurity::toInteger($lang)."'";
-    $db->query($sql);
+
+    // Reverse current value
+    $online = ($oArtLang->get('online') == 0) ? 1 : 0;
+
+    $oArtLang->set('online', $online);
+
+    if ($online == 1) {
+        // Update published date and publisher
+        $oArtLang->set('published', date('Y-m-d H:i:s'));
+        $oArtLang->set('publishedby', $auth->auth['uname']);
+    }
+
+    $oArtLang->store();
 }
 
 
-
 /**
- *
  * Set the status from articles to online or offline.
  *
- * @param array $idarts all articles
- * @param int $idlang
- * @param boolean $online
+ * @todo  Should we not use cApiArticleLanguage, even if it is not performant?
+ *
+ * @param  array  $idarts  All articles
+ * @param  int  $idlang
+ * @param  bool  $online
  */
-
 function conMakeOnlineBulkEditing($idarts, $idlang, $online) {
     global $db, $cfg, $auth;
+
     $where = '1=2';
     if ($online == 1) {
          $publisher_info = "published = '".date("Y-m-d H:i:s")."', publishedby='".$auth->auth["uname"]."',";
@@ -434,37 +432,36 @@ function conMakeOnlineBulkEditing($idarts, $idlang, $online) {
 
 
 /**
- * Toggle the lock status
- * of an article
+ * Toggle the lock status of an article
  *
  * @param int $idart Article Id
  * @param ing $lang Language Id
- *
  */
-function conLock($idart, $lang)
-{
-    global $db, $cfg;
+function conLock($idart, $lang) {
+    $oArtLang = new cApiArticleLanguage();
+    if (!$oArtLang->loadByArticleAndLanguageId($idart, $lang)) {
+        return;
+    }
 
-    $sql = "SELECT locked FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '".cSecurity::toInteger($idart)."' AND idlang = '".cSecurity::toInteger($lang)."'";
-    $db->query($sql);
+    $locked = ($oArtLang->get('locked') == 0) ? 1 : 0;
 
-    $db->next_record();
-
-    $set = ($db->f("locked") == 0) ? 1 : 0;
-
-    $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET locked = '".cSecurity::toInteger($set)."' WHERE idart = '".cSecurity::toInteger($idart)."' AND idlang = '".cSecurity::toInteger($lang)."'";
-    $db->query($sql);
+    $oArtLang->set('locked', $locked);
+    $oArtLang->store();
 }
 
 
 /**
  * Freeze/Lock more articles.
- * @param array $idarts all articles
- * @param int $idlang
- * @param boolean $lock
+ *
+ * @todo  Should we not use cApiArticleLanguage, even if it is not performant?
+ *
+ * @param  array  $idarts  All articles
+ * @param  int  $idlang
+ * @param  bool $lock
  */
 function conLockBulkEditing($idarts, $idlang , $lock) {
     global $db, $cfg;
+
     $where = '1=2';
     if ($lock != 1) {
         $lock = 0;
@@ -485,34 +482,34 @@ function conLockBulkEditing($idarts, $idlang , $lock) {
  * @param   int  $lang   Language Id
  * @return  bool
  */
-function conIsLocked($idart, $lang)
-{
-    global $db, $cfg;
-
-    $sql = 'SELECT locked FROM ' . $cfg['tab']['art_lang'] . ' WHERE idart=' . (int) $idart . ' AND idlang=' . (int) $lang;
-    $db->query($sql);
-    $db->next_record();
-    return (1 == $db->f('locked'));
+function conIsLocked($idart, $lang) {
+    $oArtLang = new cApiArticleLanguage();
+    if (!$oArtLang->loadByArticleAndLanguageId($idart, $lang)) {
+        return false;
+    }
+    return (1 == $oArtLang->get('locked'));
 }
 
 /**
  * Toggle the online status of a category
  *
- * @param int $idcat id of the category
- * @param int $lang id of the language
- * @param int $status status of the category
- *
- * @author Jan Lengowski <jan.lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
+ * @param  int  $idcat  Id of the category
+ * @param  int  $lang  Id of the language
+ * @param  int  $status  Status of the category
  */
-function conMakeCatOnline($idcat, $lang, $status)
-{
-    global $cfg, $db;
+function conMakeCatOnline($idcat, $lang, $status) {
+    global $cfg;
 
-     $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET visible = '".cSecurity::toInteger($status)."',
-                lastmodified = '".cSecurity::escapeDB(date("Y-m-d H:i:s"), $db)."'
-                WHERE idcat = '".cSecurity::toInteger($idcat)."' AND idlang = '".cSecurity::toInteger($lang)."'";
-     $db->query($sql);
+    $oCatLang = new cApiCategoryLanguage();
+    if (!$oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
+        return;
+    }
+
+    $status = (1 == $status) ? 1 : 0;
+
+    $oCatLang->set('visible', $status);
+    $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
+    $oCatLang->store();
 
     if ($cfg['pathresolve_heapcache'] == true && !$status = 0) {
         $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
