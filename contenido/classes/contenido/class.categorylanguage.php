@@ -73,17 +73,25 @@ class cApiCategoryLanguageCollection extends ItemCollection
      * @param  int  $status
      * @param  string  $author
      * @param  int  $startidartlang
+     * @param  string  $created
+     * @param  string  $lastmodified
      * @return cApiCategoryLanguage
      */
     public function create($idcat, $idlang, $name, $urlname, $urlpath = '', $idtplcfg = 0,
-        $visible = 0, $public = 0, $status = 0, $author = '', $startidartlang = 0)
+        $visible = 0, $public = 0, $status = 0, $author = '', $startidartlang = 0,
+        $created = '', $lastmodified = '')
     {
         global $auth;
 
         if (empty($author)) {
             $author = $auth->auth['uname'];
         }
-        $created = date('Y-m-d H:i:s');
+        if (empty($created)) {
+            $created = date('Y-m-d H:i:s');
+        }
+        if (empty($lastmodified)) {
+            $lastmodified = date('Y-m-d H:i:s');
+        }
 
         $visible = (1 == $visible) ? 1 : 0;
         $public = (1 == $public) ? 1 : 0;
@@ -102,7 +110,7 @@ class cApiCategoryLanguageCollection extends ItemCollection
         $oItem->set('status', (int) $status);
         $oItem->set('author', $this->escape($author));
         $oItem->set('created', $created);
-        $oItem->set('lastmodified', $created);
+        $oItem->set('lastmodified', $lastmodified);
         $oItem->store();
 
         return $oItem;
