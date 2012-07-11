@@ -64,14 +64,14 @@ class cApiContentCollection extends ItemCollection {
 
         $oItem = parent::createNewItem();
 
-        $oItem->set('idartlang', (int) $idArtLang);
-        $oItem->set('idtype', (int) $idType);
-        $oItem->set('typeid', (int) $typeId);
-        $oItem->set('value', $this->escape($value));
-        $oItem->set('version', (int) $version);
-        $oItem->set('author', $this->escape($author));
-        $oItem->set('created', $this->escape($created));
-        $oItem->set('lastmodified', $this->escape($lastmodified));
+        $oItem->set('idartlang', $idArtLang);
+        $oItem->set('idtype', $idType);
+        $oItem->set('typeid', $typeId);
+        $oItem->set('value', $value);
+        $oItem->set('version', $version);
+        $oItem->set('author', $author);
+        $oItem->set('created', $created);
+        $oItem->set('lastmodified', $lastmodified);
 
         $oItem->store();
 
@@ -97,6 +97,49 @@ class cApiContent extends Item {
         $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
+        }
+    }
+
+    /**
+     * Userdefined setter for item fields.
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idartlang':
+            case 'idtype':
+            case 'typeid':
+            case 'version':
+                $value = (int) $value;
+                break;
+        }
+
+        if (is_string($value)) {
+            $value = $this->escape($value);
+        }
+
+        parent::setField($name, $value, $bSafe);
+    }
+
+    /**
+     * Loads an content entry by its article language id, idtype and type id.
+     * @param   int  $idartlang
+     * @param   int  $idtype
+     * @param   int  $typeid
+     * @return  bool
+     */
+    public function loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid) {
+        $aProps = array('idartlang' => $idartlang, 'idtype' => $idtype, 'typeid' => $typeid);
+        $aRecordSet = $this->_oCache->getItemByProperties($aProps);
+        if ($aRecordSet) {
+            // entry in cache found, load entry from cache
+            $this->loadByRecordSet($aRecordSet);
+            return true;
+        } else {
+            $where = $this->db->prepare("idartlang = %d AND idtype = %d AND typeid = %d", $idartlang, $idtype, $typeid);
+            return $this->_loadByWhereClause($where);
         }
     }
 }
