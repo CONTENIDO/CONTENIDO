@@ -46,7 +46,7 @@ cInclude('includes', 'functions.con2.php');
 function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang,
                           $title, $summary, $artspec, $created, $lastmodified, $author,
                           $online, $datestart, $dateend, $artsort, $keyart = 0) {
-    global $db, $client, $lang, $cfg, $auth, $urlname, $page_title, $cfgClient;
+    global $client, $lang, $auth, $urlname, $page_title;
     //Some stuff for the redirect
     global $redirect, $redirect_url, $external_redirect;
     global $time_move_cat; // Used to indicate "move to cat"
@@ -189,7 +189,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
 function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang,
                     $title, $summary, $artspec, $created, $lastmodified, $author,
                     $online, $datestart, $dateend, $artsort, $keyart = 0) {
-    global $db, $client, $lang, $cfg, $redirect, $redirect_url, $external_redirect, $perm, $cfgClient;
+    global $client, $lang, $redirect, $redirect_url, $external_redirect, $perm;
     global $urlname, $page_title;
     global $time_move_cat, $time_target_cat;
     global $time_online_move; // Used to indicate if the moved article should be online
@@ -319,16 +319,15 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
         global $db;
     }
 
-    $date   = date("Y-m-d H:i:s");
-    $author = $auth->auth["uname"];
+    $date   = date('Y-m-d H:i:s');
+    $author = $auth->auth['uname'];
 
-    $cut_path  = $cfgClient[$client]["path"]["htmlpath"];
+    $cut_path  = $cfgClient[$client]['path']['htmlpath'];
 
-    $value = str_replace($cut_path, "", $value);
+    $value = str_replace($cut_path, '', $value);
     $value = stripslashes($value);
 
-    $iterator = $_cecRegistry->getIterator("Contenido.Content.SaveContentEntry");
-
+    $iterator = $_cecRegistry->getIterator('Contenido.Content.SaveContentEntry');
     while ($chainEntry = $iterator->next()) {
         $value = $chainEntry->execute($idartlang, $type, $typeid, $value);
     }
