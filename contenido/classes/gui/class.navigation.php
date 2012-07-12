@@ -429,3 +429,16 @@ class cGuiNavigation
         return $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
     }
 }
+
+/**
+ * Old classname for downwards compatibility
+ * @deprecated This class was replaced by cGuiNavigation
+ */
+class Contenido_Navigation extends cGuiNavigation {
+
+    public function __construct() {
+        cDeprecated("The class Contenido_Navigation was replaced by cGuiNavigation.");
+
+        parent::__construct();
+    }
+}

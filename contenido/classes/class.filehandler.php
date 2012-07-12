@@ -156,10 +156,6 @@ class cFileHandler
      * @return bool true if the file can be written
      */
     public static function writeable($filename) {
-        if(!cFileHandler::exists($filename)) {
-            cError(__FILE__, __LINE__, "The file ".$filename. "could not be accessed because it doesn't exist.");
-        }
-
         return is_writeable(dirname($filename));
     }
 

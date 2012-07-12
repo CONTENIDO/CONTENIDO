@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$oPage = new UI_Left_Top;
+$oPage = new cGuiPage("left_top", "content_allocation");
 
 $oPage->render();
 

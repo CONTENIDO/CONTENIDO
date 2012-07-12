@@ -31,6 +31,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+$page = new cGuiPage("workflow_left_top", "workflow");
 
 $create = new Link;
 $create->setMultiLink("workflow","","workflow_common","workflow_create");
@@ -42,8 +43,7 @@ $aAttributes = array();
 $aAttributes['class'] = "addfunction";
 $create->updateAttributes($aAttributes);
 
-$ui = new UI_Left_Top;
-$ui->setLink($create);
-$ui->render();
+$page->set("s", "LINK", $create->render());
+$page->render();
 
 ?>

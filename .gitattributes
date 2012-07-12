@@ -1685,6 +1685,7 @@ contenido/plugins/workflow/locale/de_DE/LC_MESSAGES/workflow.po -text
 contenido/plugins/workflow/locale/potfiles.txt svneol=native#text/plain
 contenido/plugins/workflow/locale/workflow.pot -text
 contenido/plugins/workflow/plugin_workflow.xml -text
+contenido/plugins/workflow/templates/template.workflow_left_top.html -text
 contenido/plugins/workflow/templates/template.workflow_list.html -text
 contenido/plugins/workflow/templates/template.workflow_steps.html -text
 contenido/plugins/workflow/templates/template.workflow_tasks.html -text

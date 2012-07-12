@@ -29,7 +29,9 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
+/**
+ * @deprecated This class shouldn't be used anymore. Please use templates instead.
+ */
 class UI_Left_Top
 {
     var $link;
@@ -37,6 +39,7 @@ class UI_Left_Top
 
     function UI_Left_Top ()
     {
+        cDeprecated("This class shouldn't be used anymore. Please use templates instead.");
     }
 
     function setLink ($link)

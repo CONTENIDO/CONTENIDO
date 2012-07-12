@@ -211,7 +211,37 @@ class cGuiNotification
     {
         echo $this->returnMessageBox($sLevel, $sMessage, $iStyle) . '<br>';
     }
+}
 
+/**
+ * Old class name for downwards compatibility
+ * @deprecated Please use cGuiNavigation instead
+ */
+class Contenido_Notification extends cGuiNotification {
+
+    public function __construct() {
+        cDeprecated("The class Contenido_Notification was replaced by cGuiNotification.");
+
+        parent::__construct();
+    }
+
+    /**
+     * Old function name for downwards compatibility
+     *
+     * @deprecated This function was renamed to returnMessageBox
+     *
+     * @see cGuiNotification::returnMessageBox()
+     *
+     * @param unknown_type $sLevel
+     * @param unknown_type $sMessage
+     * @param unknown_type $iStyle
+     * @return string
+     */
+    public function messageBox($sLevel, $sMessage, $iStyle = 1) {
+        cDeprecated("This function was renamed to returnMessageBox.");
+
+        return parent::returnMessageBox($sLevel, $sMessage, $iStyle);
+    }
 }
 
 ?>
