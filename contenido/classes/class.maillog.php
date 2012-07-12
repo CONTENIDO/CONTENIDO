@@ -2,8 +2,7 @@
 
 /**
  *
- * @author marcus.gnass
- *
+ * @author
  */
 class cApiMailLog extends Item {
 
