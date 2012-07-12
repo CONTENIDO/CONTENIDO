@@ -26,7 +26,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Regular page
- *
+ * @deprecated This class was replaced by cGuiPage
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
  */
 class cPage extends cHTML
@@ -64,6 +64,7 @@ class cPage extends cHTML
 
     /**
      *
+     * @deprecated This class was replaced by cGuiPage
      * @global obj $auth
      * @global string $lang
      * @param obj $object
@@ -71,6 +72,8 @@ class cPage extends cHTML
     public function __construct($object = false)
     {
         global $auth, $lang;
+
+        cDeprecated("This class was replaced by cGuiPage. Please use that instead.");
 
         $this->_margin = 10;
         $this->_object = $object;
@@ -102,7 +105,7 @@ class cPage extends cHTML
      */
     public function cPage($object = false)
     {
-        cDeprecated("Use __construct() instead");
+        cDeprecated("This class was replaced by cGuiPage. Please use that instead.");
         $this->__construct($object);
     }
 

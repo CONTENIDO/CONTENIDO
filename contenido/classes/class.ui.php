@@ -678,6 +678,10 @@ class UI_Form
     }
 }
 
+/**
+ *
+ * @deprecated This class was replaced by cGuiPage. Please use it instead.
+ */
 class UI_Page
 {
     var $scripts;
@@ -686,6 +690,7 @@ class UI_Page
 
     function UI_Page ()
     {
+        cDeprecated("This class was replaced by cGuiPage. Please use that instead.");
         $this->margin = 10;
     }
 
