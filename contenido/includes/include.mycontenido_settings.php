@@ -111,7 +111,7 @@ if ($action == "mycontenido_editself") {
 
 $settingsfor = sprintf(i18n("Settings for %s"), $user->get("username") . " (".$user->get("realname").")");
 
-$form = new UI_Table_Form("settings");
+$form = new cGuiTableForm("settings");
 
 $form->setVar("idlang", $lang);
 $form->setVar("area", $area);

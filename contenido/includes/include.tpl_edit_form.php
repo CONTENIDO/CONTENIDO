@@ -148,7 +148,7 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
     }
 
 
-    $form = new UI_Table_Form("tplform");
+    $form = new cGuiTableForm("tplform");
     $form->setVar("area", $area);
     $form->setVar("changelayout", 0);
     $form->setVar("frame", $frame);

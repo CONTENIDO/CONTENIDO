@@ -146,7 +146,7 @@ if (is_array($artspec)) {
 
 unset($form);
 
-$form = new UI_Table_Form("artspec");
+$form = new cGuiTableForm("artspec");
 $form->setVar("area",$area);
 $form->setVar("frame", $frame);
 $form->setVar("action", "client_artspec_save");

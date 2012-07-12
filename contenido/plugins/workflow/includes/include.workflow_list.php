@@ -55,7 +55,7 @@ if ($action == "workflow_delete")
                 </script>';
 }
 
-$ui = new UI_Menu;
+$ui = new cGuiMenu;
 $workflows->select("idclient = '$client' AND idlang = '$lang'");
 
 while ($workflow = $workflows->next())

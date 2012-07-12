@@ -335,7 +335,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
     }
 }
 
-$oForm = new UI_Table_Form("properties");
+$oForm = new cGuiTableForm("properties");
 $oForm->setVar("frame", $frame);
 $oForm->setVar("area", $area);
 $oForm->setVar("action", "recipients_import_exec");

@@ -167,7 +167,7 @@ if ($count == 2)
 }
 unset($form);
 
-$form = new UI_Table_Form("systemsettings");
+$form = new cGuiTableForm("systemsettings");
 $form->setVar("area",$area);
 $form->setVar("frame", $frame);
 $form->setVar("action", "systemsettings_save_item");

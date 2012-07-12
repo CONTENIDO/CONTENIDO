@@ -173,9 +173,8 @@ if ($action == $sActionDelete) {
             $sCode = stripslashes($_REQUEST['code']); # stripslashes is required here in case of creating a new file
         }
 
-        $form = new UI_Table_Form("file_editor");
+        $form = new cGuiTableForm("file_editor");
         $form->addHeader(i18n("Edit file"));
-        $form->setWidth("100%");
         $form->setVar("area", $area);
         $form->setVar("action", $sAction);
         $form->setVar("frame", $frame);

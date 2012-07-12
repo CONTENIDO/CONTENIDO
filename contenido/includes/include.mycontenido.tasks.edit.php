@@ -34,7 +34,7 @@ $cpage = new cGuiPage("mycontenido.tasks.edit");
 $todoitem = new TODOItem();
 $todoitem->loadByPrimaryKey($idcommunication);
 
-$ui = new UI_Table_Form("reminder");
+$ui = new cGuiTableForm("reminder");
 $ui->addHeader(i18n("Edit reminder item"));
 
 $ui->addCancel($sess->url("main.php?area=mycontenido_tasks&frame=$frame"));

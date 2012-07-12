@@ -49,7 +49,7 @@ if ($action == 'todo_save_item') {
 
     $cpage->addScript('<script>window.close();</script>');
 } else {
-    $ui = new UI_Table_Form('reminder');
+    $ui = new cGuiTableForm('reminder');
     $ui->addHeader(i18n('Add TODO item'));
 
     $ui->setVar('area', $area);

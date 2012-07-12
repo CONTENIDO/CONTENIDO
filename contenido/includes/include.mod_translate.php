@@ -102,7 +102,7 @@ if (!isset($row)) {
 }
 
 
-$form = new UI_Table_Form('translation');
+$form = new cGuiTableForm('translation');
 $form->addHeader(sprintf(i18n("Translate module '%s'"), $module->get('name')));
 $form->setVar('area', $area);
 $form->setVar('frame', $frame);

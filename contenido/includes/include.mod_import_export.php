@@ -112,7 +112,7 @@ if ($inputChecked != "" && $outputChecked != "") {
 } else {
     $import->setChecked("checked");
 }
-$form2 = new UI_Table_Form("export");
+$form2 = new cGuiTableForm("export");
 $form2->setVar("action", "mod_importexport_module");
 $form2->setVar("use_encoding", "false");
 $form2->addHeader("Import/Export");

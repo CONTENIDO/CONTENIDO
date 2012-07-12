@@ -643,6 +643,8 @@ class cHTMLFormElement extends cHTML
             $this->updateAttributes(array("id" => $id));
         }
 
+        $this->_tag = "input";
+
         $this->setClass($class);
         $this->setDisabled($disabled);
         $this->setTabindex($tabindex);

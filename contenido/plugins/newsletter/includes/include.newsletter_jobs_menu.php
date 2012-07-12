@@ -38,7 +38,7 @@ if (!defined('CON_FRAMEWORK')) {
 # Initialization
 ##################################
 $oPage = new cGuiPage("newsletter_jobs_menu", "newsletter");
-$oMenu = new UI_Menu();
+$oMenu = new cGuiMenu();
 $oJobs = new NewsletterJobCollection();
 $oUser = new cApiUser($auth->auth["uid"]);
 
@@ -148,7 +148,7 @@ $oJobs->setOrder($_REQUEST["sortby"] . " " . $_REQUEST["sortorder"]);
 $oJobs->query();
 
 // Output data
-$oMenu = new UI_Menu();
+$oMenu = new cGuiMenu();
 $iMenu = 0;
 $sDateFormat = getEffectiveSetting("dateformat", "full", "d.m.Y H:i");
 

@@ -197,9 +197,8 @@ if (!$layout->virgin) {
         $page->displayWarning($msg);
     }
 
-    $form = new UI_Table_Form("module");
+    $form = new cGuiTableForm("module");
     $form->addHeader(i18n("Edit Layout"));
-    $form->setWidth("100%");
     $form->setVar("area", $area);
     $form->setVar("action", "lay_edit");
     $form->setVar("frame", $frame);

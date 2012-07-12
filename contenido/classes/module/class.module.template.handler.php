@@ -401,9 +401,8 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler
 
     private function _makeFormular($belang)
     {
-        $form = new UI_Table_Form("file_editor");
+        $form = new cGuiTableForm("file_editor");
         $form->addHeader(i18n("Edit file"));
-        $form->setWidth("100%");
 
         $form->setVar("area", $this->_area);
         $form->setVar("action", $this->_action);

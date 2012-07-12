@@ -149,7 +149,7 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
         $oPage->displayWarning(implode("<br>", $aMessages));
     }
 
-    $oForm = new UI_Table_Form("properties");
+    $oForm = new cGuiTableForm("properties");
     $oForm->setVar("frame",  $frame);
     $oForm->setVar("area",   $area);
     $oForm->setVar("action", "recipients_save");

@@ -22,7 +22,6 @@
  *
  *   $Id: class.page.php 2379 2012-06-22 21:00:16Z xmurrix $:
  * }}
- *
  */
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');

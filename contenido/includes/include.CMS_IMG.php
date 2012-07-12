@@ -120,7 +120,7 @@ while ($oItem = $oUploadColl->next()) {
     );
 }
 
-$form = new UI_Table_Form('editcontent', $cfg['path']['contenido_fullhtml'] . $cfg['path']['includes'] . 'include.backendedit.php');
+$form = new cGuiTableForm('editcontent', $cfg['path']['contenido_fullhtml'] . $cfg['path']['includes'] . 'include.backendedit.php');
 $form->setVar('lang', $lang);
 $form->setVar('typenr', $typenr);
 $form->setVar('idart', $idart);

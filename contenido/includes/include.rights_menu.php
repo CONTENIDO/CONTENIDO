@@ -80,7 +80,7 @@ if ($elemperpage == 0)
     $elemperpage = 25;
 }
 
-$mlist = new UI_Menu;
+$mlist = new cGuiMenu;
 $sToday = date('Y-m-d');
 
 

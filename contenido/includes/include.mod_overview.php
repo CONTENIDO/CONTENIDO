@@ -64,7 +64,7 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
 
 
 // Build list for left_bottom considering filter values
-$mlist              = new UI_Menu();
+$mlist              = new cGuiMenu();
 $sOptionModuleCheck = getSystemProperty("system", "modulecheck");
 $sOptionForceCheck  = getEffectiveSetting("modules", "force-menu-check", "false");
 $iMenu              = 0;

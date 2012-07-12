@@ -39,7 +39,7 @@ if (strlen($idclient) == 0)
     $idclient = $_POST['idclient'];
 }
 
-$oFrmRange = new UI_Table_Form('range');
+$oFrmRange = new cGuiTableForm('range');
 $oFrmRange->setVar('area',$area);
 $oFrmRange->setVar('frame', $frame);
 $oFrmRange->setVar('idclient', $idclient);
@@ -164,7 +164,7 @@ if ($aItems !== false)
     $oList->setData(0, i18n("No defined properties"));
 }
 
-$oForm = new UI_Table_Form('clientsettings');
+$oForm = new cGuiTableForm('clientsettings');
 $oForm->setVar('area',$area);
 $oForm->setVar('frame', $frame);
 $oForm->setVar('action', 'clientsettings_save_item');

@@ -120,9 +120,8 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage'))
         $sSelectBox = $oVersionStyle->buildSelectBox("style_history", "Style History", "Show History Entry", "idstylehistory");
 
         // Generate Form
-        $oForm = new UI_Table_Form("style_display");
+        $oForm = new cGuiTableForm("style_display");
         $oForm->addHeader(i18n("Edit style"));
-        $oForm ->setWidth("100%");
         $oForm->setVar("area", "style_history");
         $oForm->setVar("frame", $frame);
         $oForm->setVar("idstyle", $sFileName);

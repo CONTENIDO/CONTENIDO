@@ -362,7 +362,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
         }
     }
 
-    $oForm = new UI_Table_Form("properties");
+    $oForm = new cGuiTableForm("properties");
     $oForm->setVar("frame", $frame);
     $oForm->setVar("area", $area);
     $oForm->setVar("action", "news_save");

@@ -233,7 +233,7 @@ if ($_REQUEST["sortby"]) {
     $aUserTable = array_csort($aUserTable, "username", $sortorder);
 }
 
-$mlist = new UI_Menu();
+$mlist = new cGuiMenu();
 $iMenu = 0;
 $iItemCount = 0;
 

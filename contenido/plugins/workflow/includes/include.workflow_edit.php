@@ -36,7 +36,7 @@ plugin_include('workflow', 'classes/class.workflow.php');
 
 $page = new cGuiPage("workflow_edit", "workflow");
 
-$form = new UI_Table_Form("workflow_edit");
+$form = new cGuiTableForm("workflow_edit");
 $workflows = new Workflows;
 
 $workflow = $workflows->loadItem($idworkflow);

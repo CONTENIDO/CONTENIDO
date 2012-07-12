@@ -167,7 +167,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
     }
 
 
-    $form = new UI_Table_Form("properties");
+    $form = new cGuiTableForm("properties");
     $form->setVar("frame", $frame);
     $form->setVar("area", $area);
     $form->setVar("action", "frontend_save_user");

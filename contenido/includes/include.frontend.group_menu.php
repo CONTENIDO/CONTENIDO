@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 $page = new cGuiPage("frontend.group_menu");
-$menu = new UI_Menu();
+$menu = new cGuiMenu();
 
 $fegroups = new cApiFrontendGroupCollection();
 $fegroups->select("idclient = '$client'","", "groupname ASC");

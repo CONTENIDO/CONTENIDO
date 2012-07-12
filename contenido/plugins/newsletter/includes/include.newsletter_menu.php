@@ -159,7 +159,7 @@ $oNewsletters->setOrder("welcome DESC, " . $_REQUEST["sortby"] . " " . $_REQUEST
 $oNewsletters->query();
 
 // Output data
-$oMenu = new UI_Menu();
+$oMenu = new cGuiMenu();
 $iMenu = 0;
 
 // Store messages for repeated use (speeds performance, as i18n translation is only needed once)

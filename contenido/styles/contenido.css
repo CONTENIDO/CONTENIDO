@@ -101,6 +101,10 @@ img.bordered {
     border: 1px solid #b3b3b3;
 }
 
+input.image_button {
+	margin-left: 5px;
+}
+
 table.generic {
     border-left: 1px solid #b3b3b3;
 }

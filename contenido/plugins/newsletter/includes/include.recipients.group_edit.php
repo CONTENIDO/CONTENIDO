@@ -172,7 +172,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     }
 
     // Output form
-    $oForm = new UI_Table_Form("properties", "main.php?1", "get"); // Use "get" for folding rows...
+    $oForm = new cGuiTableForm("properties", "main.php?1", "get"); // Use "get" for folding rows...
     $oForm->setVar("frame", $frame);
     $oForm->setVar("area", $area);
     $oForm->setVar("action", "recipientgroup_save_group");

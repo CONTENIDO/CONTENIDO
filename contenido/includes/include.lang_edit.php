@@ -140,7 +140,7 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
             $db->query($sql);
             $db->next_record();
 
-            $form = new UI_Table_Form("lang_properties");
+            $form = new cGuiTableForm("lang_properties");
             $form->setVar("idlang", $idlang);
             $form->setVar("targetclient", $db->f("idclient"));
             $form->setVar("action", "lang_edit");

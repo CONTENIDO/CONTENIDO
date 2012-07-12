@@ -160,7 +160,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     }
 
     $page = new cGuiPage("mod_edit_form");
-    $form = new UI_Table_Form("mod_edit");
+    $form = new cGuiTableForm("mod_edit");
     $form->setVar("area","mod_edit");
     $form->setVar("frame", $frame);
     $form->setVar("idmod", $idmod);
@@ -168,7 +168,6 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     if (!$bInUse) {
         $form->setVar("action", "mod_edit");
     }
-    $form->setWidth("100%");
 
     $form->addHeader(i18n("Edit module"));
 
@@ -404,7 +403,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         } else {
             $import->setChecked("checked");
         }
-        $form2 = new UI_Table_Form("export");
+        $form2 = new cGuiTableForm("export");
 
         $form2->setVar("action", "mod_importexport_module");
         $form2->setVar("use_encoding", "false");

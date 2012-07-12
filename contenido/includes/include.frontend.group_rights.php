@@ -54,7 +54,7 @@ $className = 'frontendlogic_' . $useplugin;
 $class = new $className;
 $perms = new cApiFrontendPermissionCollection();
 
-$rights = new UI_Table_Form('rights');
+$rights = new cGuiTableForm('rights');
 $rights->setVar('area', $area);
 $rights->setVar('frame', $frame);
 $rights->setVar('useplugin', $useplugin);

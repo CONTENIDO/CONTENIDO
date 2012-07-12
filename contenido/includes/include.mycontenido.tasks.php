@@ -344,7 +344,7 @@ while ($todo = $todoitems->next()) {
     }
 }
 
-$form = new UI_Table_Form("restrict");
+$form = new cGuiTableForm("restrict");
 $form->addHeader(i18n("Restrict display"));
 $form->setVar("listsubmit", "true");
 

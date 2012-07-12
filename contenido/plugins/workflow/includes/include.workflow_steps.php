@@ -170,7 +170,7 @@ function getTimeUnitSelector($listid, $default) {
 function getWorkflowList() {
     global $idworkflow, $cfg;
 
-    $ui = new UI_Menu;
+    $ui = new cGuiMenu;
     $workflowitems = new WorkflowItems;
 
     $workflowitems->select("idworkflow = '$idworkflow'", "", "position ASC");
@@ -240,7 +240,7 @@ function createNewWorkflow() {
     global $idworkflow, $cfg;
 
     $content = "";
-    $ui = new UI_Menu;
+    $ui = new cGuiMenu;
     $rowmark = false;
 
     $createstep = new Link;
@@ -274,7 +274,7 @@ function editWorkflowStep($idworkflowitem) {
     $id = $workflowitem->get("idworkflowitem");
     $task = $workflowitem->get("idtask");
 
-    $form = new UI_Table_Form("workflow_edit");
+    $form = new cGuiTableForm("workflow_edit");
 
     $form->setVar("area", $area);
     $form->setVar("action", "workflow_save_step");
@@ -303,7 +303,7 @@ function editWorkflowStep($idworkflowitem) {
 function getWorkflowUsers($idworkflowitem) {
     global $idworkflow, $cfg;
 
-    $ui = new UI_Menu;
+    $ui = new cGuiMenu;
     $workflowusers = new WorkflowUserSequences;
 
     $workflowusers->select("idworkflowitem = '$idworkflowitem'", "", "position ASC");

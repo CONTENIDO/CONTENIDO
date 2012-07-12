@@ -88,9 +88,8 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
     $sSelectBox = $oVersion->buildSelectBox("mod_history", "Mod History", "Show History Entry", "idmodhistory");
 
     // Generate Form
-    $oForm = new UI_Table_Form("mod_display");
+    $oForm = new cGuiTableForm("mod_display");
     $oForm->addHeader(i18n("Edit module"));
-    $oForm ->setWidth("100%");
     $oForm->setVar("area", "mod_history");
     $oForm->setVar("frame", $frame);
     $oForm->setVar("idmod", $idmod);

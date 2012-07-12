@@ -47,7 +47,7 @@ $page->addScript("datetimepicker/jquery-ui-timepicker-addon.js");
 $page->addScript("jquery.tipsy.js");
 $page->addScript("registerTipsy.js");
 
-$form = new UI_Table_Form("properties");
+$form = new cGuiTableForm("properties");
 $form->setVar("frame", $frame);
 $form->setVar("area", "upl");
 $form->setVar("path", $_REQUEST["path"]);

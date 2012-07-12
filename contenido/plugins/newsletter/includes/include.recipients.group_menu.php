@@ -35,7 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
 # Initialization
 ##################################
 $oPage = new cGuiPage("recipients.group_menu", "newsletter");
-$oMenu = new UI_Menu();
+$oMenu = new cGuiMenu();
 $oUser = new cApiUser($auth->auth["uid"]);
 
 // Specify fields for search, sort and validation. Design makes enhancements
@@ -119,7 +119,7 @@ $oRcpGroups->setOrder("defaultgroup DESC, ".$_REQUEST["sortby"]." ".$_REQUEST["s
 $oRcpGroups->query();
 
 // Output data
-$oMenu = new UI_Menu();
+$oMenu = new cGuiMenu();
 $iMenu = 0;
 
 // Store messages for repeated use (speeds performance, as i18n translation is only needed once)

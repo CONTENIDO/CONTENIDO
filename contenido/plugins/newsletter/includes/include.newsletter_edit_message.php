@@ -127,12 +127,11 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
         }
     }
 
-    $oForm = new UI_Table_Form("frmNewsletterMsg");
+    $oForm = new cGuiTableForm("frmNewsletterMsg");
     $oForm->setVar("frame", $frame);
     $oForm->setVar("area", $area);
     $oForm->setVar("action", "news_save");
     $oForm->setVar("idnewsletter", $idnewsletter);
-    $oForm->setWidth("100%");
 
     $oForm->addHeader(sprintf(i18n("Edit newsletter message (%s)", 'newsletter'), $oNewsletter->get("name")));
     $oForm->add(i18n("Subject", 'newsletter'), $oNewsletter->get("subject"));

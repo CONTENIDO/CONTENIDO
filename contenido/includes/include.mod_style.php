@@ -191,9 +191,8 @@ if (isset($actionRequest)) {
 
     $aFileInfo = getFileInformation($client, $sTempFilename, 'css', $db);
 
-    $form = new UI_Table_Form('file_editor');
+    $form = new cGuiTableForm('file_editor');
     $form->addHeader(i18n('Edit file'));
-    $form->setWidth('100%');
     $form->setVar('area', $area);
     $form->setVar('action', $sAction);
     $form->setVar('frame', $frame);

@@ -349,7 +349,7 @@ if ($_REQUEST["sortby"]) {
     $aUserTable = array_csort($aUserTable, "username", $sortorder);
 }
 
-$mlist = new UI_Menu();
+$mlist = new cGuiMenu();
 $iMenu = 0;
 $iItemCount = 0;
 
@@ -407,7 +407,7 @@ $oPager->setExpanded(true);
 # Groups create Groups
 ######################
 $link = new Link();
-$menu = new UI_Menu();
+$menu = new cGuiMenu();
 if ((int) $client > 0) {
     $link->setLink('javascript:conMultiLink(\'right_bottom\', \''.$sess->url("main.php?area=frontendgroups&frame=4&action=frontendgroup_create").'\');');
     $menu->setTitle("-2", i18n("Create group"));

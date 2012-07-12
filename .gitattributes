@@ -400,9 +400,11 @@ contenido/classes/drivers/class.gdb.driver.php -text
 contenido/classes/drivers/drivers.txt -text
 contenido/classes/drivers/mysql/class.gdb.mysql.php -text
 contenido/classes/exceptions/exception.conuser.php -text
+contenido/classes/gui/class.menu.php -text
 contenido/classes/gui/class.navigation.php -text
 contenido/classes/gui/class.notification.php -text
 contenido/classes/gui/class.page.php -text
+contenido/classes/gui/class.tableform.php -text
 contenido/classes/index.php -text
 contenido/classes/interfaces/interface.conuser.php -text
 contenido/classes/log/class.bufferedlog.php -text

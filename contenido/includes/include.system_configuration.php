@@ -157,9 +157,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
 
 $aSettings = getSystemProperties(1);
 
-$oForm = new UI_Table_Form("system_configuration");
+$oForm = new cGuiTableForm("system_configuration");
 $oForm->addHeader(i18n("System Configuration"));
-$oForm ->setWidth("770");
 $oForm->setVar("area", $area);
 $oForm->setVar("frame", $frame);
 $oForm->setVar("action", 'edit_sysconf');

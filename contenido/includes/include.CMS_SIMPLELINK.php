@@ -121,7 +121,7 @@ if ($doedit == "1") {
         cInclude("includes", "functions.forms.php");
         global $typenr;
 
-        $form = new UI_Table_Form("editcontent", $cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php");
+        $form = new cGuiTableForm("editcontent", $cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php");
 
         $form->setVar("lang", $lang);
         $form->setVar("typenr", $typenr);

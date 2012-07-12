@@ -60,7 +60,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
         if ($oJob->get("dispatch_delay") == 0) {
             // Send manually
-            $oForm = new UI_Table_Form("properties", $sPathNext);
+            $oForm = new cGuiTableForm("properties", $sPathNext);
             $oForm->addHeader(i18n("Report:",'newsletter'));
             $oForm->add("", "");
 
@@ -71,7 +71,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
             $oForm->setActionButton("submit", $cfg['path']['contenido_fullhtml']."images/but_ok.gif", i18n("Send next chunk", 'newsletter'), "s", "news_job_run");
         } else {
             // Send automatically
-            $oForm = new UI_Table_Form("properties");
+            $oForm = new cGuiTableForm("properties");
             $oForm->addHeader(i18n("Report:",'newsletter'));
             $oForm->add("", "");
 
@@ -84,7 +84,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         }
     } else {
         // All newsletters should have been sent
-        $oForm = new UI_Table_Form("properties");
+        $oForm = new cGuiTableForm("properties");
         $oForm->addHeader(i18n("Report:",'newsletter'));
         $oForm->add("", "");
 
@@ -135,7 +135,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         $oUser->setProperty("itemsperpage", $area."_job_details", $_REQUEST["elemperpage"]);
     }
 
-    $oFrmOptions = new UI_Table_Form("frmOptions");
+    $oFrmOptions = new cGuiTableForm("frmOptions");
     $oFrmOptions->setVar("contenido", $sess->id);
     $oFrmOptions->setVar("area",      $area);
     $oFrmOptions->setVar("action",    $action);
@@ -286,7 +286,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     // Just show the job data
     $oJob = new NewsletterJob($_REQUEST["idnewsjob"]);
 
-    $oForm = new UI_Table_Form("properties");
+    $oForm = new cGuiTableForm("properties");
     $oForm->setVar("frame",     $frame);
     $oForm->setVar("area",      $area);
     $oForm->setVar("action",    "");

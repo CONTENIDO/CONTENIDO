@@ -81,9 +81,8 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
     $sSelectBox = $oVersion->buildSelectBox("mod_history", "Layout History", "Show History Entry", "idlayhistory");
 
     // Generate Form
-    $oForm = new UI_Table_Form("lay_display");
+    $oForm = new cGuiTableForm("lay_display");
     $oForm->addHeader(i18n("Edit Layout"));
-    $oForm ->setWidth("100%");
     $oForm->setVar("area", "lay_history");
     $oForm->setVar("frame", $frame);
     $oForm->setVar("idlay", $idlay);

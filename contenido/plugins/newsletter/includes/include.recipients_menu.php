@@ -35,7 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
 # Initialization
 ##################################
 $oPage = new cGuiPage("recipients_menu", "newsletter");
-$oMenu = new UI_Menu;
+$oMenu = new cGuiMenu;
 $oClient = new cApiClient($client);
 $oUser = new cApiUser($auth->auth["uid"]);
 //$sLocation = $sess->url("main.php?area=$area&frame=$frame");
@@ -176,7 +176,7 @@ if ($_REQUEST["elemperpage"] > 0) {
 $oRecipients->query();
 
 // Output data
-$oMenu = new UI_Menu();
+$oMenu = new cGuiMenu();
 $iMenu = 0;
 
 // Store messages for repeated use (speeds performance, as i18n translation is only needed once)
