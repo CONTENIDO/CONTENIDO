@@ -168,7 +168,7 @@ while ($oJob = $oJobs->next()) {
     $iID = $oJob->get("idnewsjob");
     $sName = $oJob->get("name") . " (" . date($sDateFormat, strtotime($oJob->get("created"))) .")";
 
-    $oLnk = new cHTMLLink();
+    $oLnk = new cGuiLink();
     $oLnk->setMultiLink($area, "", $area, "");
     $oLnk->setCustom("idnewsjob", $iID);
 
@@ -287,7 +287,7 @@ $oPage->addScript('parameterCollector.js');
 
 //generate current content for Object Pager
 $sPagerId = '0ed6d632-6adf-4f09-a0c6-1e38ab60e303';
-$oPagerLink = new cHTMLLink();
+$oPagerLink = new cGuiLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("selAuthor",     $_REQUEST["selAuthor"]);

@@ -80,9 +80,9 @@ $list->setBorder(1);
 
 $count = 2;
 
-$oLinkEdit = new Link;
+$oLinkEdit = new cGuiLink();
 $oLinkEdit->setCLink($area, $frame, "systemsettings_edit_item");
-$oLinkDelete = new Link;
+$oLinkDelete = new cGuiLink();
 $oLinkDelete->setCLink($area, $frame, "systemsettings_delete_item");
 if(strpos($auth->auth["perm"], "sysadmin") === false) {
     $oLinkEdit->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren_off.gif" alt="'.i18n("Edit").'" title="'.i18n("Edit").'">');

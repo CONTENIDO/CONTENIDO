@@ -56,7 +56,7 @@ class cSetupTypeChooser extends cSetupMask
         $nextSetup->setMouseOver(C_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
         $nextSetup->setClass("button");
 
-        $link = new cHTMLLink("#");
+        $link = new cGuiLink("#");
         $link->setContent($nextSetup);
         $link->attachEventDefinition("stepAttach", "onclick", "document.setupform.step.value = 'setup1';");
         $link->attachEventDefinition("setuptypeAttach", "onclick", "document.setupform.setuptype.value = 'setup';");
@@ -69,7 +69,7 @@ class cSetupTypeChooser extends cSetupMask
         $nextSetup->setMouseOver(C_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
         $nextSetup->setClass("button");
 
-        $link = new cHTMLLink("#");
+        $link = new cGuiLink("#");
         $link->setContent($nextSetup);
         $link->attachEventDefinition("stepAttach", "onclick", "document.setupform.step.value = 'upgrade1';");
         $link->attachEventDefinition("setuptypeAttach", "onclick", "document.setupform.setuptype.value = 'upgrade';");
@@ -81,7 +81,7 @@ class cSetupTypeChooser extends cSetupMask
         $nextSetup->setMouseOver(C_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
         $nextSetup->setClass("button");
 
-        $link = new cHTMLLink("#");
+        $link = new cGuiLink("#");
         $link->setContent($nextSetup);
         $link->attachEventDefinition("stepAttach", "onclick", "document.setupform.step.value = 'migration1';");
         $link->attachEventDefinition("setuptypeAttach", "onclick", "document.setupform.setuptype.value = 'migration';");

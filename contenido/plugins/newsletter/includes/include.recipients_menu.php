@@ -193,7 +193,7 @@ while ($oRecipient = $oRecipients->next()) {
         $sName = $oRecipient->get("email");
     }
 
-    $oLnk = new cHTMLLink();
+    $oLnk = new cGuiLink();
     $oLnk->setMultiLink($area, "", $area, "");
     $oLnk->setCustom("idrecipient", $idnewsrcp);
 
@@ -247,7 +247,7 @@ $oPage->addScript('parameterCollector.js');
 
 //generate current content for Object Pager�
 $sPagerId = '0ed6d632-6adf-4f09-a0c6-1e38ab60e304';
-$oPagerLink = new cHTMLLink();
+$oPagerLink = new cGuiLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("elemperpage", $_REQUEST["elemperpage"]);

@@ -41,7 +41,7 @@ $tmp = htmlentities($tmp, ENT_QUOTES);
 if ($edit) {
     // Edit anchor and image
     $editLink = $sess->url("front_content.php?action=10&idcat=$idcat&idart=$idart&idartlang=$idartlang&type=CMS_IMG&typenr=$val&lang=$lang");
-    $editAnchor = new cHTMLLink();
+    $editAnchor = new cGuiLink();
     $editAnchor->setClass('CMS_IMGDESCR_' . $val . '_EDIT CMS_LINK_EDIT');
     $editAnchor->setLink("javascript:setcontent('$idartlang','".$editLink."');");
 

@@ -245,7 +245,7 @@ class cDataMultiTextboxWidget extends cHTMLTable
         $r->setVerticalAlignment("middle");
         $textbox = new cHTMLTextbox($this->name."[]", $data);
         $r->setContent($textbox);
-        $clearlink = new cHTMLLink;
+        $clearlink = new cGuiLink;
         $clearimage = new cHTMLImage;
         $clearimage->setSrc("images/actions/clear_right.gif");
         $clearlink->setAlt(i18n("Clear contents"));

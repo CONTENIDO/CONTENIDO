@@ -354,7 +354,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     }
 
     // Member list pager (-> below data, as iMembers is needed)
-    $oPagerLink = new cHTMLLink;
+    $oPagerLink = new cGuiLink;
     $oPagerLink->setLink("main.php");
     $oPagerLink->setCustom("member_elemperpage", $_REQUEST["member_elemperpage"]);
     $oPagerLink->setCustom("member_filter", $_REQUEST["member_filter"]);
@@ -525,7 +525,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     $oSelUser->autoFill($aItems);
 
     // Outsider list pager (-> below data, as iOutsiders is needed)
-    $oPagerLink = new cHTMLLink;
+    $oPagerLink = new cGuiLink;
     $oPagerLink->setLink("main.php");
     $oPagerLink->setCustom("member_elemperpage", $_REQUEST["member_elemperpage"]);
     $oPagerLink->setCustom("member_filter", $_REQUEST["member_filter"]);

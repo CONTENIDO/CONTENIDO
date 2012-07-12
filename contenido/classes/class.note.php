@@ -263,7 +263,7 @@ class NoteListItem extends cHTMLDiv
         $table .= $this->_sDate;
 
         if ($this->_bDeleteable == true) {
-            $oDeleteable = new cHTMLLink();
+            $oDeleteable = new cGuiLink();
             $oDeletePic = new cHTMLImage($cfg['path']['contenido_fullhtml'].'/images/delete.gif');
             $oDeleteable->setContent($oDeletePic);
             $oDeleteable->setLink($sess->url("main.php?frame=2&area=note&itemtype=$itemtype&itemid=$itemid&action=note_delete&deleteitem=$deleteitem"));
@@ -283,7 +283,7 @@ class NoteListItem extends cHTMLDiv
 
 }
 
-class NoteLink extends cHTMLLink
+class NoteLink extends cGuiLink
 {
     /**
      * @var string Object type
@@ -317,7 +317,7 @@ class NoteLink extends cHTMLLink
      */
     public function NoteLink($sItemType, $sItemID)
     {
-        parent::cHTMLLink();
+        parent::cGuiLink();
 
         $img = new cHTMLImage('images/note.gif');
         $img->setStyle('padding-left: 2px; padding-right: 2px;');

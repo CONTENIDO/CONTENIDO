@@ -71,7 +71,7 @@ class cSetupConfigMode extends cSetupMask
 
     function _createNavigation()
     {
-        $link = new cHTMLLink("#");
+        $link = new cGuiLink("#");
 
         if ($this->_bNextstep == "doinstall") {
             // Install launcher
@@ -88,7 +88,7 @@ class cSetupConfigMode extends cSetupMask
 
         $this->_oStepTemplate->set("s", "NEXT", $link->render());
 
-        $backlink = new cHTMLLink("#");
+        $backlink = new cGuiLink("#");
         $backlink->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_bBackstep."';");
         $backlink->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
 

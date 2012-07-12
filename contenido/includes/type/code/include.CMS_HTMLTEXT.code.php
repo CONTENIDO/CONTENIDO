@@ -59,14 +59,14 @@ if ($edit) {
     $div->updateAttributes(array('contentEditable' => 'true'));
     $div->setStyleDefinition('direction', langGetTextDirection($lang));
 
-    $editlink = new cHTMLLink();
+    $editlink = new cGuiLink();
     $editlink->setClass('CMS_HTMLTEXT_' . $val . '_EDIT CMS_LINK_EDIT');
     $editlink->setLink($sess->url("front_content.php?action=10&idcat=$idcat&idart=$idart&idartlang=$idartlang&type=CMS_HTMLTEXT&typenr=$val&lang=$lang"));
 
     $editimg = new cHTMLImage();
     $editimg->setSrc($cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_edittext.gif');
 
-    $savelink = new cHTMLLink();
+    $savelink = new cGuiLink();
     $savelink->setClass('CMS_HTMLTEXT_' . $val . '_SAVE  CMS_LINK_SAVE');
     $savelink->setLink("javascript:setcontent('$idartlang','0')");
 

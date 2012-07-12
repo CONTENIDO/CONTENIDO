@@ -80,7 +80,7 @@ class cFoldingRow extends cHTML
         $this->_contentRow->updateAttributes(array("id" => $uuid));
         $this->_contentData = new cHTMLTableData;
         $this->_uuid        = $uuid;
-        $this->_link        = new cHTMLLink;
+        $this->_link        = new cGuiLink;
         $this->_linkId      = $link_id;
 
         $this->_headerData->setClass("foldingrow");

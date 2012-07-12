@@ -143,7 +143,7 @@ if ($action == "mod_importexport_module") {
 $idmod = $module->get("idmod");
 
 if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
-    $link = new cHTMLLink();
+    $link = new cGuiLink();
     $link->setCLink("mod_translate", 4, "");
     $link->setCustom("idmod", $idmod);
     header("Location: ".$link->getHREF());

@@ -101,13 +101,13 @@ $aItems = $oClient->getProperties();
 
 if ($aItems !== false)
 {
-    $oLnkDelete = new Link;
+    $oLnkDelete = new cGuiLink();
     $oLnkDelete->setCLink($area, $frame, "clientsettings_delete_item");
     $oLnkDelete->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete.gif" alt="'.i18n("Delete").'" title="'.i18n("Delete").'">');
     $oLnkDelete->setCustom("idclient", $idclient);
     $oLnkDelete->setCustom("idclientslang", $_REQUEST["idclientslang"]);
 
-    $oLnkEdit = new Link;
+    $oLnkEdit = new cGuiLink();
     $oLnkEdit->setCLink($area, $frame, "clientsettings_edit_item");
     $oLnkEdit->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren.gif" alt="'.i18n("Edit").'" title="'.i18n("Edit").'">');
     $oLnkEdit->setCustom("idclient", $idclient);

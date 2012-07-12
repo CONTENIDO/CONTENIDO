@@ -283,7 +283,7 @@ class Cms_Date
     private function getCalendarButton()
     {
         // html link for save
-        $oEditAnchor = new cHTMLLink();
+        $oEditAnchor = new cGuiLink();
         $oEditAnchor->setClass('CMS_DATE_' . ($this->iNumberOfCms) . '_EDIT CMS_LINK_EDIT');
         $oEditAnchor->setLink("javascript:setcontent('$this->iIdArtLang','" . $this->sEditLink . "');");
         // Calendar Button
@@ -311,7 +311,7 @@ class Cms_Date
     private function getOkButton()
     {
         // Ok Image
-        $oSaveAnchor = new cHTMLLink();
+        $oSaveAnchor = new cGuiLink();
         $oSaveAnchor->setClass('CMS_DATE_' . ($this->iNumberOfCms) . '_SAVE CMS_LINK_SAVE');
         $oSaveAnchor->setLink("javascript:setcontent('" . $this->iIdArtLang . "','0')");
         $oSaveButton = new cHTMLImage();

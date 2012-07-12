@@ -117,7 +117,7 @@ foreach ($allModules as $idmod => $module) {
     {
         //$idmod = $cApiModule->get("idmod");
 
-        $link = new cHTMLLink;
+        $link = new cGuiLink;
         $link->setMultiLink("mod", "", "mod_edit", "");
         $link->setCustom("idmod", $idmod);
         $link->updateAttributes(array("alt" => $module['description']));
@@ -200,7 +200,7 @@ $oPage->addScript("parameterCollector.js");
 $oPage->set("s", "FORM", $mlist->render(false));
 
 //generate current content for Object Pager
-$oPagerLink = new cHTMLLink;
+$oPagerLink = new cGuiLink;
 $pagerl="pagerlink";
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setLink("main.php");

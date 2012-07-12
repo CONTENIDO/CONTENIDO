@@ -296,7 +296,7 @@ if ($appendparameters == "filebrowser")
     $mtree->setIcon("images/grid_folder.gif");
     $mtree->importTable($marray);
 
-    $baselink = new cHTMLLink;
+    $baselink = new cGuiLink;
     $baselink->setCLink($area, $frame, "");
     $baselink->setCustom("appendparameters", $appendparameters);
 

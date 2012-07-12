@@ -115,7 +115,7 @@ $transmodname = new cHTMLTextbox('translatedname', $module->getTranslatedName(),
 
 $form->add(i18n('Translated name'), $transmodname);
 
-$ilink = new cHTMLLink;
+$ilink = new cGuiLink;
 $ilink->setCLink('mod_translate', 5, '');
 $ilink->setCustom('idmod', $idmod);
 $ilink->setCustom('row', $row);

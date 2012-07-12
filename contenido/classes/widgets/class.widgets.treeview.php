@@ -297,7 +297,7 @@ class cWidgetTreeView extends cTree {
         $r_actioncell->setWidth("1%");
 
         if (!is_object($this->_baseLink)) {
-            $this->_baseLink = new cHTMLLink();
+            $this->_baseLink = new cGuiLink();
         }
 
         $lastitem = array();
@@ -443,9 +443,9 @@ class cWidgetTreeView extends cTree {
 
     /**
      * Sets collapsed state
-     * @param   cHTMLLink  $link
+     * @param   cGuiLink  $link
      * @param   cTreeItem  $object
-     * @return  cHTMLLink
+     * @return  cGuiLink
      */
     function _setExpandCollapseLink($link, $object) {
         if (!empty($this->_name)) {

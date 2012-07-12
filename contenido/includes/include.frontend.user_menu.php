@@ -240,7 +240,7 @@ $iItemCount = 0;
 foreach ($aUserTable as $mkey => $params)
 {
     $idfrontenduser = $params["idfrontenduser"];
-    $link = new cHTMLLink();
+    $link = new cGuiLink();
     $link->setMultiLink($area, "", $area, "");
     $link->setCustom("idfrontenduser", $idfrontenduser);
 
@@ -273,7 +273,7 @@ if ($bUsePlugins == false) {
 $oPage->addScript('parameterCollector.js');
 
 //generate current content for Object Pager
-$oPagerLink = new cHTMLLink();
+$oPagerLink = new cGuiLink();
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setLink("main.php");
 $oPagerLink->setCustom("elemperpage", $elemperpage);

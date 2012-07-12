@@ -158,7 +158,7 @@ if ((int) $client > 0) {
     $cApiModuleCollection->query();
     $iItemCount = $cApiModuleCollection->count();
 
-    $oPagerLink = new cHTMLLink;
+    $oPagerLink = new cGuiLink;
     $pagerl="pagerlink";
     $oPagerLink->setTargetFrame('left_bottom');
     $oPagerLink->setLink("main.php");

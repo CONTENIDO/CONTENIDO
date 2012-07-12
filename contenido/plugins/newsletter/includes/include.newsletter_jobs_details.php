@@ -250,7 +250,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
         $sLnkRemove = "";
         if ($oLog->get("status") == "pending" && $perm->have_perm_area_action($area, "news_job_detail_delete")) {
-            $oLnkRemove = new cHTMLLink();
+            $oLnkRemove = new cGuiLink();
             $oLnkRemove->setCLink("news_jobs", 4, "news_job_detail_delete");
             $oLnkRemove->setCustom("idnewsjob", $_REQUEST["idnewsjob"]);
             $oLnkRemove->setCustom("idnewslog", $oLog->get($oLog->primaryKey));

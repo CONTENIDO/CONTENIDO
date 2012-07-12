@@ -73,18 +73,18 @@ $list->setWidth ("250px");
 
 $count = 2;
 
-$link = new Link;
+$link = new cGuiLink();
 $link->setCLink($area, $frame, "client_artspec_edit");
 $link->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren.gif" alt="'.i18n('Edit').'" title="'.i18n('Edit').'">');
 
-$dlink = new Link;
+$dlink = new cGuiLink();
 $dlink->setCLink($area, $frame, "client_artspec_delete");
 $dlink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete.gif" alt="'.i18n('Delete').'" title="'.i18n('Delete').'">');
 
-$olink = new Link;
+$olink = new cGuiLink();
 $olink->setCLink($area, $frame, "client_artspec_online");
 
-$defLink = new Link;
+$defLink = new cGuiLink();
 $defLink->setCLink($area, $frame, "client_artspec_default");
 
 $artspec = getArtspec();

@@ -44,7 +44,7 @@ while ($fegroup = $fegroups->next())
     $groupname = $fegroup->get("groupname");
     $idfegroup = $fegroup->get("idfrontendgroup");
 
-    $link = new Link();
+    $link = new cGuiLink();
     $link->setMultiLink("frontendgroups","","frontendgroups","");
     $link->setCustom("idfrontendgroup",$idfegroup);
 

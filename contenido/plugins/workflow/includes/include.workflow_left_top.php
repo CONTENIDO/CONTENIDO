@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 $page = new cGuiPage("workflow_left_top", "workflow");
 
-$create = new Link;
+$create = new cGuiLink();
 $create->setMultiLink("workflow","","workflow_common","workflow_create");
 //$create->setCLink("workflow_common",4,"workflow_create");
 $create->setContent(i18n("Create workflow", "workflow"));

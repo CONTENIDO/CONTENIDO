@@ -43,10 +43,10 @@ $page = new cGuiPage("mod_translate_stringlist");
 
 $v = '<table class="borderless" cellspacing="0" cellpadding="0" width="600">';
 
-$link = new cHTMLLink;
+$link = new cGuiLink;
 $link->setCLink("mod_translate", 4, "");
 
-$mylink = new cHTMLLink;
+$mylink = new cGuiLink;
 
 $rowCount = 0;
 

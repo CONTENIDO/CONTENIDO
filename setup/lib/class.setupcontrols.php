@@ -200,13 +200,13 @@ class cHTMLLanguageLink extends cHTMLDiv
 
 
         $this->setStyle("vertical-align:center;height:40px;width:150px;");
-        $link = new cHTMLLink("#");
+        $link = new cGuiLink("#");
         $link->setContent($langname);
         $link->attachEventDefinition("stepAttach", "onclick", "document.setupform.step.value = '$stepnumber';");
         $link->attachEventDefinition("languageAttach", "onclick", "document.setupform.elements.language.value = '$langcode';");
         $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
 
-        $link2 = new cHTMLLink("#");
+        $link2 = new cGuiLink("#");
         $link2->setContent($langname);
         $link2->attachEventDefinition("stepAttach", "onclick", "document.setupform.step.value = '$stepnumber';");
         $link2->attachEventDefinition("languageAttach", "onclick", "document.setupform.elements.language.value = '$langcode';");
@@ -234,11 +234,11 @@ class cHTMLButtonLink extends cHTMLDiv
         $linkImage->setHeight(16);
 
         $this->setStyle("vertical-align:center;height:40px;width:165px;");
-        $link = new cHTMLLink($href);
+        $link = new cGuiLink($href);
         $link->setAttribute("target", "_blank");
         $link->setContent($title);
 
-        $link2 = new cHTMLLink($href);
+        $link2 = new cGuiLink($href);
         $link2->setAttribute("target", "_blank");
         $link2->setContent($title);
 
