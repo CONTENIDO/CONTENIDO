@@ -1,17 +1,17 @@
 <script type="text/javascript">
-	function cls() {
-	        parent.parent.header.document.getElementById("debug_msg").innerHTML = "";
-	}
-	
-	function assignEvent() {
-	        var obj = document.getElementById(\'debug{_}debug_to_screen\');
-	        if(obj == null) {
-	            window.setTimeout("assignEvent()", 50);
-	            return;
-	        }
-	        obj.onchange = cls;
-	}
-	assignEvent();
+    function cls() {
+        parent.parent.header.document.getElementById("debug_msg").innerHTML = "";
+    }
+
+    function assignEvent() {
+        var obj = document.getElementById(\'debug{_}debug_to_screen\');
+        if (obj == null) {
+            window.setTimeout("assignEvent()", 50);
+            return;
+        }
+        obj.onchange = cls;
+    }
+    assignEvent();
 
 </script>
 

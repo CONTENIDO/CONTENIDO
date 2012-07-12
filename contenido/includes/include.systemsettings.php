@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created 2003-11-18
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2008-11-13,  Timo Trautmann - Fixed wron escaping of chars
- *     modified 2012-02-15, Rusmir Jusufovic show messages
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -35,32 +31,33 @@ if (!defined('CON_FRAMEWORK')) {
 
 $page = new cGuiPage("systemsettings");
 
-$aManagedValues = array('versioning_prune_limit', 'update_check', 'update_news_feed', 'versioning_path', 'versioning_activated',
-                        'update_check_period', 'system_clickmenu', 'system_mail_host', 'system_mail_sender',
-                        'system_mail_sender_name', 'pw_request_enable', 'maintenance_mode', 'codemirror_activated',
-                        'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml', 'imagemagick_available',
-                        'system_insight_editing_activated');
+$aManagedValues = array(
+    'versioning_prune_limit', 'update_check', 'update_news_feed', 'versioning_path', 'versioning_activated',
+    'update_check_period', 'system_clickmenu', 'system_mail_host', 'system_mail_sender',
+    'system_mail_sender_name', 'pw_request_enable', 'maintenance_mode', 'codemirror_activated',
+    'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml', 'imagemagick_available',
+    'system_insight_editing_activated'
+);
 
-if ($action == "systemsettings_save_item")
-{
-    if(strpos($auth->auth["perm"], "sysadmin") === false) {
+if ($action == "systemsettings_save_item") {
+    if (strpos($auth->auth["perm"], "sysadmin") === false) {
         $page->displayError(i18n("You don't have the permission to make changes here."), 1);
     } else {
-        if (!in_array($systype.'_'.$sysname, $aManagedValues)) {
-            setSystemProperty ($systype, $sysname, $sysvalue, $csidsystemprop);
-            if(isset($x))
+        if (!in_array($systype . '_' . $sysname, $aManagedValues)) {
+            setSystemProperty($systype, $sysname, $sysvalue, $csidsystemprop);
+            if (isset($x)) {
                 $page->displayInfo(i18n('Saved changes successfully!'), 1);
-            else
+            } else {
                 $page->displayInfo(i18n('Created new item successfully!'), 1);
+            }
         } else {
-           $page->displayWarning(i18n('Please set this property in systemsettings directly'), 1);
+            $page->displayWarning(i18n('Please set this property in systemsettings directly'), 1);
         }
     }
 }
 
-if ($action == "systemsettings_delete_item")
-{
-    if(strpos($auth->auth["perm"], "sysadmin") === false) {
+if ($action == "systemsettings_delete_item") {
+    if (strpos($auth->auth["perm"], "sysadmin") === false) {
         $page->displayError(i18n("You don't have the permission to make changes here."), 1);
     } else {
         deleteSystemProperty($systype, $sysname);
@@ -71,10 +68,10 @@ if ($action == "systemsettings_delete_item")
 $settings = getSystemProperties(1);
 
 $list = new cGuiList();
-$list->setCell(1,1, i18n("Type"));
-$list->setCell(1,2, i18n("Name"));
-$list->setCell(1,3, i18n("Value"));
-$list->setCell(1,4, "&nbsp;");
+$list->setCell(1, 1, i18n("Type"));
+$list->setCell(1, 2, i18n("Name"));
+$list->setCell(1, 3, i18n("Value"));
+$list->setCell(1, 4, "&nbsp;");
 
 $count = 2;
 
@@ -82,23 +79,20 @@ $oLinkEdit = new cGuiLink();
 $oLinkEdit->setCLink($area, $frame, "systemsettings_edit_item");
 $oLinkDelete = new cGuiLink();
 $oLinkDelete->setCLink($area, $frame, "systemsettings_delete_item");
-if(strpos($auth->auth["perm"], "sysadmin") === false) {
-    $oLinkEdit->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren_off.gif" alt="'.i18n("Edit").'" title="'.i18n("Edit").'">');
-    $oLinkDelete->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete_inact.gif" alt="'.i18n("Delete").'" title="'.i18n("Delete").'">');
+if (strpos($auth->auth["perm"], "sysadmin") === false) {
+    $oLinkEdit->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'editieren_off.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
+    $oLinkDelete->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'delete_inact.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
 } else {
-    $oLinkEdit->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren.gif" alt="'.i18n("Edit").'" title="'.i18n("Edit").'">');
-    $oLinkDelete->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete.gif" alt="'.i18n("Delete").'" title="'.i18n("Delete").'">');
+    $oLinkEdit->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
+    $oLinkDelete->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'delete.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
 }
 
-$spacer = new cHTMLImage;
+$spacer = new cHTMLImage();
 $spacer->setWidth(5);
 
-if (is_array($settings))
-{
-    foreach ($settings as $key => $types)
-    {
-        foreach ($types as $type => $value)
-        {
+if (is_array($settings)) {
+    foreach ($settings as $key => $types) {
+        foreach ($types as $type => $value) {
             $oLinkEdit->setCustom("sysname", urlencode($type));
             $oLinkEdit->setCustom("systype", urlencode($key));
 
@@ -108,21 +102,19 @@ if (is_array($settings))
             $link = $oLinkEdit;
             $dlink = $oLinkDelete->render();
 
-            if (in_array($key.'_'.$type, $aManagedValues)) {
+            if (in_array($key . '_' . $type, $aManagedValues)) {
                 #ignore record
-
             } else if (($action == "systemsettings_edit_item") && (stripslashes($systype) == $key) && (stripslashes($sysname) == $type) && (strpos($auth->auth["perm"], "sysadmin") !== false)) {
                 $oInputboxValue = new cHTMLTextbox("sysvalue", $value['value']);
                 $oInputboxName = new cHTMLTextbox("sysname", $type);
                 $oInputboxType = new cHTMLTextbox("systype", $key);
 
-                $hidden = '<input type="hidden" name="csidsystemprop" value="'.$value['idsystemprop'].'">';
-                $sSubmit = '<input type="image" style="vertical-align:top;" value="submit" src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'submit.gif">';
+                $hidden = '<input type="hidden" name="csidsystemprop" value="' . $value['idsystemprop'] . '">';
+                $sSubmit = '<input type="image" style="vertical-align:top;" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif">';
 
-                $list->setCell($count,1, $oInputboxType->render(true));
-                $list->setCell($count,2, $oInputboxName->render(true));
-                $list->setCell($count,3, $oInputboxValue->render(true).$hidden.$sSubmit);
-
+                $list->setCell($count, 1, $oInputboxType->render(true));
+                $list->setCell($count, 2, $oInputboxName->render(true));
+                $list->setCell($count, 3, $oInputboxValue->render(true) . $hidden . $sSubmit);
             } else {
                 $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
@@ -140,24 +132,22 @@ if (is_array($settings))
                     $sShort = htmlspecialchars(cApiStrTrimHard($key, 35));
                     $key = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($key), ENT_QUOTES), $sShort);
                 }
-
                 !strlen(trim($value['value'])) ? $sValue = '&nbsp;' : $sValue = $value['value'];
 
-                $list->setCell($count,1, $key);
-                $list->setCell($count,2, $type);
-                $list->setCell($count,3, $sValue);
+                $list->setCell($count, 1, $key);
+                $list->setCell($count, 2, $type);
+                $list->setCell($count, 3, $sValue);
             }
 
-            if (!in_array($key.'_'.$type, $aManagedValues)) {
-                $list->setCell($count,4, $spacer->render().$link->render().$spacer->render().$dlink.$spacer->render());
+            if (!in_array($key . '_' . $type, $aManagedValues)) {
+                $list->setCell($count, 4, $spacer->render() . $link->render() . $spacer->render() . $dlink . $spacer->render());
                 $count++;
             }
         }
     }
 }
 
-if ($count == 2)
-{
+if ($count == 2) {
     $list->setCell($count, 4, "");
     $list->setCell($count, 1, i18n("No defined properties"));
     $list->setCell($count, 2, "");
@@ -166,32 +156,31 @@ if ($count == 2)
 unset($form);
 
 $form = new cGuiTableForm("systemsettings");
-$form->setVar("area",$area);
+$form->setVar("area", $area);
 $form->setVar("frame", $frame);
 $form->setVar("action", "systemsettings_save_item");
 $form->addHeader(i18n("Add new variable"));
-$inputbox = new cHTMLTextbox ("systype");
-$form->add(i18n("Type"),$inputbox->render());
+$inputbox = new cHTMLTextbox("systype");
+$form->add(i18n("Type"), $inputbox->render());
 
-$inputbox = new cHTMLTextbox ("sysname");
-$form->add(i18n("Name"),$inputbox->render());
+$inputbox = new cHTMLTextbox("sysname");
+$form->add(i18n("Name"), $inputbox->render());
 
-$inputbox = new cHTMLTextbox ("sysvalue");
-$form->add(i18n("Value"),$inputbox->render());
+$inputbox = new cHTMLTextbox("sysvalue");
+$form->add(i18n("Value"), $inputbox->render());
 
 $spacer = new cHTMLDiv();
 $spacer->setContent("<br>");
 
 $renderobj = array();
 
-if ($action == "systemsettings_edit_item")
-{
-    if(strpos($auth->auth["perm"], "sysadmin") === false) {
+if ($action == "systemsettings_edit_item") {
+    if (strpos($auth->auth["perm"], "sysadmin") === false) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
         $renderobj[] = $list;
     } else {
         $form2 = new cHTMLForm("systemsettings");
-        $form2->setVar("area",$area);
+        $form2->setVar("area", $area);
         $form2->setVar("frame", $frame);
         $form2->setVar("action", "systemsettings_save_item");
         $form2->add($list->render());
@@ -201,7 +190,7 @@ if ($action == "systemsettings_edit_item")
     $renderobj[] = $list;
 }
 
-if(strpos($auth->auth["perm"], "sysadmin") !== false) {
+if (strpos($auth->auth["perm"], "sysadmin") !== false) {
     $renderobj[] = $spacer;
     $renderobj[] = $form;
 }

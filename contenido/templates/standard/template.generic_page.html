@@ -6,7 +6,7 @@
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="pragma" content="no-cache">
     {META}
-    
+
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
     <script type="text/javascript" src="scripts/general.js"></script>
@@ -16,32 +16,32 @@
     <script type="text/javascript" src="scripts/jquery.tipsy.js"></script>
     <script type="text/javascript" src="scripts/registerTipsy.js"></script>
     <script type="text/javascript">
-		/* Session-ID */
-		var sid = "1";
-		
-		/* Create messageBox
-		instance */
-		box = new messageBox("", "", "", 0, 0);
+        /* Session-ID */
+        var sid = "1";
+
+        /* Create messageBox
+        instance */
+        box = new messageBox("", "", "", 0, 0);
     </script>
     <script type="text/javascript">
-		try {
-			// Check if we are in a dual-frame or a quad-frame
-			if (parent.parent.frames[0].name == "header") {
-				if (parent.frames["right_top"].document.getElementById("c_{SUBMENU}")) {
-					menuItem = parent.frames["right_top"].document.getElementById("c_{SUBMENU}").getElementsByTagName('a')[0];
-					parent.frames["right_top"].sub.clicked(menuItem);
-				}
-			} else {
-				// Check if submenuItem is existing and mark it
-				if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_{SUBMENU}")) {
-					menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_{SUBMENU}").getElementsByTagName('a')[0];
-					parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem);
-				}
-			}
-		} catch (e) {}
-	</script>
+        try {
+            // Check if we are in a dual-frame or a quad-frame
+            if (parent.parent.frames[0].name == "header") {
+                if (parent.frames["right_top"].document.getElementById("c_{SUBMENU}")) {
+                    menuItem = parent.frames["right_top"].document.getElementById("c_{SUBMENU}").getElementsByTagName('a')[0];
+                    parent.frames["right_top"].sub.clicked(menuItem);
+                }
+            } else {
+                // Check if submenuItem is existing and mark it
+                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_{SUBMENU}")) {
+                    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_{SUBMENU}").getElementsByTagName('a')[0];
+                    parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem);
+                }
+            }
+        } catch (e) {}
+    </script>
     {SCRIPTS}
-    
+
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <link rel="stylesheet" type="text/css" href="styles/tipsy.css">
     {STYLES}

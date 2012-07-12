@@ -21,15 +21,12 @@
  *
  * {@internal
  *   created 2008-08-19
- *   modified 2010-11-30, Dominik Ziegler, added check of minimum period time at update notifier check period [CON-372]
- *
  * }}
- *
  */
-if (!defined('CON_FRAMEWORK')) {
-   die('Illegal call');
-}
 
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
 
 function renderBooleanProperty($sName, $aPossValues, $sValue, $sLabel) {
     global $auth;
@@ -43,10 +40,10 @@ function renderBooleanProperty($sName, $aPossValues, $sValue, $sLabel) {
     }
 
     $oCheckbox = new cHTMLCheckbox($sName, $aPossValues[1], $sName, $bChecked);
-    $oCheckbox->setLabelText('&nbsp;&nbsp;'.$sLabel);
+    $oCheckbox->setLabelText('&nbsp;&nbsp;' . $sLabel);
     $oCheckbox->setStyle('margin:0; padding:0px;margin-left:3px;');
-    if(strpos($auth->auth["perm"], "sysadmin") === false) {
-            $oCheckbox->updateAttributes(array('disabled' => 'true'));
+    if (strpos($auth->auth["perm"], "sysadmin") === false) {
+        $oCheckbox->updateAttributes(array('disabled' => 'true'));
     }
 
     $aReturn['input'] = $oCheckbox->render();
@@ -56,8 +53,8 @@ function renderBooleanProperty($sName, $aPossValues, $sValue, $sLabel) {
 }
 
 function renderLabel($sLabel, $sName, $iWidth = 250, $sSeperator = ':') {
-    $oLabel = new cHTMLLabel($sLabel.$sSeperator, $sName);
-    $oLabel->setStyle('padding:3px;display:block;float:left;width:'.$iWidth.'px;');
+    $oLabel = new cHTMLLabel($sLabel . $sSeperator, $sName);
+    $oLabel->setStyle('padding:3px;display:block;float:left;width:' . $iWidth . 'px;');
     return $oLabel->render();
 }
 
@@ -66,8 +63,8 @@ function renderTextProperty($sName, $sValue, $sLabel) {
 
     $oTextbox = new cHTMLTextbox($sName, $sValue, "50", "96");
     $oTextbox->setStyle('width:320px;');
-    if(strpos($auth->auth["perm"], "sysadmin") === false) {
-            $oTextbox->updateAttributes(array('disabled' => 'true'));
+    if (strpos($auth->auth["perm"], "sysadmin") === false) {
+        $oTextbox->updateAttributes(array('disabled' => 'true'));
     }
     $aReturn['input'] = $oTextbox->render();
     $aReturn['label'] = renderLabel($sLabel, $sName);
@@ -75,7 +72,7 @@ function renderTextProperty($sName, $sValue, $sLabel) {
 }
 
 function getPostValue($aProperty) {
-    $sName = $aProperty['type'].'{_}'.$aProperty['name'];
+    $sName = $aProperty['type'] . '{_}' . $aProperty['name'];
     if (isset($_POST[$sName])) {
         if (is_array($aProperty['value'])) {
             if (in_array($_POST[$sName], $aProperty['value'])) {
@@ -102,33 +99,33 @@ function getPostValue($aProperty) {
 $oPage = new cGuiPage("system_configuration", "", "1");
 
 $aManagedProperties = array(
-                          array('type' => 'versioning', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Versioning activated'), 'group' => i18n('Versioning')),
-                          array('type' => 'versioning', 'name' => 'path', 'value' => '', 'label' => i18n('Serverpath to version files'), 'group' => i18n('Versioning')),
-                          array('type' => 'versioning', 'name' => 'prune_limit', 'value' => 'integer', 'label' => i18n('Maximum number of stored versions'), 'group' => i18n('Versioning')),
-                          array('type' => 'update', 'name' => 'check', 'value' => array('false', 'true'), 'label' => i18n('Check for updates'), 'group' => i18n('Update notifier')),
-                          array('type' => 'update', 'name' => 'news_feed', 'value' => array('false', 'true'), 'label' => i18n('Get news from contenido.org'), 'group' => i18n('Update notifier')),
-                          array('type' => 'update', 'name' => 'check_period', 'value' => 'integer', 'label' => i18n('Update check period (minutes)'), 'group' => i18n('Update notifier')),
-                          array('type' => 'system', 'name' => 'clickmenu', 'value' => array('false', 'true'), 'label' => i18n('Clickable menu in backend'), 'group' => i18n('Backend')),
-                          array('type' => 'pw_request', 'name' => 'enable', 'value' => array('false', 'true'), 'label' => i18n('Use passwordrequest in Backend'), 'group' => i18n('Backend')),
-                          array('type' => 'maintenance', 'name' => 'mode', 'value' => array('disabled', 'enabled'), 'label' => i18n('Activate maintenance mode'), 'group' => i18n('Backend')),
-                          array('type' => 'codemirror', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Use CodeMirror for code highlighting'), 'group' => i18n('Backend')),
-                          array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => array('false', 'true'), 'label' => i18n('Use TinyMce as insight editor'), 'group' => i18n('Backend')),
-                          array('type' => 'backend', 'name' => 'preferred_idclient', 'value' => 'integer', 'label' => i18n('Default client (ID)'), 'group' => i18n('Backend')),
-                          array('type' => 'backend', 'name' => 'max_log_size', 'value' => 'label', 'label' => i18n('Maximum log size in MiB (0 = infinite)'), 'group' => i18n('Backend')),
-                          array('type' => 'system', 'name' => 'mail_host', 'value' => '', 'label' => i18n('Mailserver host'), 'group' => i18n('Mailserver')),
-                          array('type' => 'system', 'name' => 'mail_sender', 'value' => '', 'label' => i18n('Mailserver sender mail'), 'group' => i18n('Mailserver')),
-                          array('type' => 'system', 'name' => 'mail_sender_name', 'value' => '', 'label' => i18n('Mailserver sender name'), 'group' => i18n('Mailserver')),
-                          array('type' => 'generator', 'name' => 'xhtml', 'value' => array('false', 'true'), 'label' => i18n('Generate XHTML'), 'group' => i18n('Development')),
-                          array('type' => 'generator', 'name' => 'basehref', 'value' => array('false', 'true'), 'label' => i18n('Generate basehref'), 'group' => i18n('Development')),
-                          array('type' => 'imagemagick', 'name' => 'available', 'value' => array('0', '1'), 'label' => i18n('Use image magic (if available)'), 'group' => i18n('Development')),
-                          array('type' => 'debug', 'name' => 'debug_to_file', 'value' => array("false", "true"), 'label' => i18n('Debug to file'), 'group' => i18n('Debug')),
-                          array('type' => 'debug', 'name' => 'debug_to_screen', 'value' => array("false", "true"), 'label' => i18n('Visible debug'), 'group' => i18n('Debug'))
-                      );
+    array('type' => 'versioning', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Versioning activated'), 'group' => i18n('Versioning')),
+    array('type' => 'versioning', 'name' => 'path', 'value' => '', 'label' => i18n('Serverpath to version files'), 'group' => i18n('Versioning')),
+    array('type' => 'versioning', 'name' => 'prune_limit', 'value' => 'integer', 'label' => i18n('Maximum number of stored versions'), 'group' => i18n('Versioning')),
+    array('type' => 'update', 'name' => 'check', 'value' => array('false', 'true'), 'label' => i18n('Check for updates'), 'group' => i18n('Update notifier')),
+    array('type' => 'update', 'name' => 'news_feed', 'value' => array('false', 'true'), 'label' => i18n('Get news from contenido.org'), 'group' => i18n('Update notifier')),
+    array('type' => 'update', 'name' => 'check_period', 'value' => 'integer', 'label' => i18n('Update check period (minutes)'), 'group' => i18n('Update notifier')),
+    array('type' => 'system', 'name' => 'clickmenu', 'value' => array('false', 'true'), 'label' => i18n('Clickable menu in backend'), 'group' => i18n('Backend')),
+    array('type' => 'pw_request', 'name' => 'enable', 'value' => array('false', 'true'), 'label' => i18n('Use passwordrequest in Backend'), 'group' => i18n('Backend')),
+    array('type' => 'maintenance', 'name' => 'mode', 'value' => array('disabled', 'enabled'), 'label' => i18n('Activate maintenance mode'), 'group' => i18n('Backend')),
+    array('type' => 'codemirror', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Use CodeMirror for code highlighting'), 'group' => i18n('Backend')),
+    array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => array('false', 'true'), 'label' => i18n('Use TinyMce as insight editor'), 'group' => i18n('Backend')),
+    array('type' => 'backend', 'name' => 'preferred_idclient', 'value' => 'integer', 'label' => i18n('Default client (ID)'), 'group' => i18n('Backend')),
+    array('type' => 'backend', 'name' => 'max_log_size', 'value' => 'label', 'label' => i18n('Maximum log size in MiB (0 = infinite)'), 'group' => i18n('Backend')),
+    array('type' => 'system', 'name' => 'mail_host', 'value' => '', 'label' => i18n('Mailserver host'), 'group' => i18n('Mailserver')),
+    array('type' => 'system', 'name' => 'mail_sender', 'value' => '', 'label' => i18n('Mailserver sender mail'), 'group' => i18n('Mailserver')),
+    array('type' => 'system', 'name' => 'mail_sender_name', 'value' => '', 'label' => i18n('Mailserver sender name'), 'group' => i18n('Mailserver')),
+    array('type' => 'generator', 'name' => 'xhtml', 'value' => array('false', 'true'), 'label' => i18n('Generate XHTML'), 'group' => i18n('Development')),
+    array('type' => 'generator', 'name' => 'basehref', 'value' => array('false', 'true'), 'label' => i18n('Generate basehref'), 'group' => i18n('Development')),
+    array('type' => 'imagemagick', 'name' => 'available', 'value' => array('0', '1'), 'label' => i18n('Use image magic (if available)'), 'group' => i18n('Development')),
+    array('type' => 'debug', 'name' => 'debug_to_file', 'value' => array("false", "true"), 'label' => i18n('Debug to file'), 'group' => i18n('Debug')),
+    array('type' => 'debug', 'name' => 'debug_to_screen', 'value' => array("false", "true"), 'label' => i18n('Visible debug'), 'group' => i18n('Debug'))
+);
 
 $aSettings = getSystemProperties(1);
 
 if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have_perm_area_action($area, 'edit_sysconf')) {
-    if(strpos($auth->auth["perm"],"sysadmin") === false) {
+    if (strpos($auth->auth["perm"], "sysadmin") === false) {
         $oPage->displayError(i18n("You don't have the permission to make changes here."));
     } else {
         $bStored = false;
@@ -136,8 +133,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
             $sValue = getPostValue($aProperty);
             $sStoredValue = $aSettings[$aProperty['type']][$aProperty['name']]['value'];
 
-            if ($sStoredValue != $sValue &&  (is_array($aProperty['value']) && $sValue != '' || !is_array($aProperty['value']))) {
-                if ( $aProperty['type'] == 'update' && $aProperty['name'] == 'check_period' && (int) $sValue < 60 ) {
+            if ($sStoredValue != $sValue && (is_array($aProperty['value']) && $sValue != '' || !is_array($aProperty['value']))) {
+                if ($aProperty['type'] == 'update' && $aProperty['name'] == 'check_period' && (int) $sValue < 60) {
                     $oPage->displayError(i18n("Update check period must be at least 60 minutes."));
                     $bStored = false;
                     break;
@@ -163,8 +160,8 @@ $oForm->setVar("area", $area);
 $oForm->setVar("frame", $frame);
 $oForm->setVar("action", 'edit_sysconf');
 
-if(strpos($auth->auth["perm"],"sysadmin") === false) {
-    $oForm->setActionButton("submit", $cfg['path']['contenido_fullhtml']."images/but_ok_off.gif", i18n("Save changes"), "s");
+if (strpos($auth->auth["perm"], "sysadmin") === false) {
+    $oForm->setActionButton("submit", $cfg['path']['contenido_fullhtml'] . "images/but_ok_off.gif", i18n("Save changes"), "s");
 }
 
 $sCurGroup = '';
@@ -173,7 +170,7 @@ $sLeftContent = '';
 $sRowTemplate = '<p style="margin:0; padding:3px;">%s</p>';
 
 foreach ($aManagedProperties as $aProperty) {
-    $sName = $aProperty['type'].'{_}'.$aProperty['name'];
+    $sName = $aProperty['type'] . '{_}' . $aProperty['name'];
     if (isset($aSettings[$aProperty['type']][$aProperty['name']]['value'])) {
         $sValue = $aSettings[$aProperty['type']][$aProperty['name']]['value'];
     } else {
@@ -190,11 +187,11 @@ foreach ($aManagedProperties as $aProperty) {
         if ($sCurGroup == '') {
             $sCurGroup = $aProperty['group'];
         }
-        $sLeftContent .= sprintf($sRowTemplate, $aHtmlElement['label']. $aHtmlElement['input']);
+        $sLeftContent .= sprintf($sRowTemplate, $aHtmlElement['label'] . $aHtmlElement['input']);
     } else {
         $oForm->add(renderLabel($sCurGroup, '', 150, ''), $sLeftContent);
         $sCurGroup = $aProperty['group'];
-        $sLeftContent = sprintf($sRowTemplate, $aHtmlElement['label']. $aHtmlElement['input']);
+        $sLeftContent = sprintf($sRowTemplate, $aHtmlElement['label'] . $aHtmlElement['input']);
     }
 }
 
@@ -207,4 +204,5 @@ if ($perm->have_perm_area_action($area, 'edit_sysconf')) {
 }
 
 $oPage->render();
+
 ?>

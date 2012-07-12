@@ -180,9 +180,9 @@ class cItemCache {
                     break;
                 }
             }
-			if (true === $mFound) {
-				return $aEntry;
-			}
+            if (true === $mFound) {
+                return $aEntry;
+            }
         }
         return null;
     }

@@ -304,6 +304,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
  */
 function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false) {
     global $auth, $cfgClient, $client, $_cecRegistry;
+
     $oType = new cApiType();
     if (!$oType->loadByType($type)) {
         // Couldn't load type...

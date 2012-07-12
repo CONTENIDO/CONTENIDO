@@ -24,6 +24,7 @@
  *   $Id$:
  * }}
  */
+
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
@@ -32,19 +33,20 @@ cInclude("includes", "functions.upl.php");
 
 $page = new cGuiPage("upl_files_upload");
 
-if ((cFileHandler::writeable($cfgClient[$client]["upl"]["path"].$path) || cApiDbfs::isDbfs($path)) && (int) $client > 0)
-{
+if ((cFileHandler::writeable($cfgClient[$client]["upl"]["path"] . $path) || cApiDbfs::isDbfs($path)) && (int) $client > 0) {
     if (cApiDbfs::isDbfs($path)) {
-        $mpath = $path."/";
+        $mpath = $path . "/";
     } else {
-        $mpath = "upload/".$path;
+        $mpath = "upload/" . $path;
     }
     $sDisplayPath = generateDisplayFilePath($mpath, 85);
     $page->set("s", "DISPLAY_PATH", $sDisplayPath);
 
     $page->set("s", "PATH", $path);
 } else {
-    $page->displayCriticalError(i18n("Directory not writable") . ' (' . $cfgClient[$client]["upl"]["path"].$path . ')');
+    $page->displayCriticalError(i18n("Directory not writable") . ' (' . $cfgClient[$client]["upl"]["path"] . $path . ')');
 }
+
 $page->render();
+
 ?>

@@ -34,35 +34,34 @@ $oPage = new cGuiPage("clientsettings");
 $oList = new cGuiScrollList;
 
 $idclient = $_GET['idclient'];
-if (strlen($idclient) == 0)
-{
+if (strlen($idclient) == 0) {
     $idclient = $_POST['idclient'];
 }
 
 $oFrmRange = new cGuiTableForm('range');
-$oFrmRange->setVar('area',$area);
+$oFrmRange->setVar('area', $area);
 $oFrmRange->setVar('frame', $frame);
 $oFrmRange->setVar('idclient', $idclient);
 $oFrmRange->addHeader(i18n('Select range'));
 
-$oSelRange     = new cHTMLSelectElement ('idclientslang');
-$oOption    = new cHTMLOptionElement(i18n("Language independent"), 0);
+$oSelRange = new cHTMLSelectElement('idclientslang');
+$oOption = new cHTMLOptionElement(i18n("Language independent"), 0);
 $oSelRange->addOptionElement(0, $oOption);
 
 $sSQL = "SELECT A.name AS name, A.idlang AS idlang, B.idclientslang AS idclientslang
         FROM
-        ".$cfg["tab"]["lang"]." AS A,
-        ".$cfg["tab"]["clients_lang"]." AS B
+        " . $cfg["tab"]["lang"] . " AS A,
+        " . $cfg["tab"]["clients_lang"] . " AS B
         WHERE
         A.idlang=B.idlang AND
-        B.idclient='".cSecurity::toInteger($idclient)."'
+        B.idclient='" . cSecurity::toInteger($idclient) . "'
         ORDER BY A.idlang";
 
 $db->query($sSQL);
 
 while ($db->next_record()) {
     $iID = $db->f("idclientslang");
-    $oOption = new cHTMLOptionElement($db->f("name")." (".$db->f("idlang").")", $iID);
+    $oOption = new cHTMLOptionElement($db->f("name") . " (" . $db->f("idlang") . ")", $iID);
     $oSelRange->addOptionElement($iID, $oOption);
 }
 
@@ -71,7 +70,7 @@ if (is_numeric($_REQUEST["idclientslang"])) {
 }
 
 $oSelRange->setEvent("onchange", "document.forms.range.submit();");
-$oFrmRange->add(i18n('Range'),$oSelRange->render());
+$oFrmRange->add(i18n('Range'), $oSelRange->render());
 
 if (!is_numeric($_REQUEST["idclientslang"]) || $_REQUEST["idclientslang"] == 0) {
     $oClient = new cApiClient($idclient);
@@ -80,17 +79,14 @@ if (!is_numeric($_REQUEST["idclientslang"]) || $_REQUEST["idclientslang"] == 0) 
     $oClient->loadByPrimaryKey($_REQUEST["idclientslang"]);
 }
 
-if ($_POST['action'] == 'clientsettings_save_item')
-{
+if ($_POST['action'] == 'clientsettings_save_item') {
     $oClient->setProperty($_POST['cstype'], $_POST['csname'], $_POST['csvalue'], $_POST['csidproperty']);
     $oPage->displayInfo(i18n("Save changes successfully!"));
 }
 
-if ($_GET['action'] == 'clientsettings_delete_item')
-{
+if ($_GET['action'] == 'clientsettings_delete_item') {
     $oClient->deleteProperty($_GET['idprop']);
     $oPage->displayInfo(i18n("Deleted item successfully!"));
-
 }
 
 $oList->setHeader(i18n('Type'), i18n('Name'), i18n('Value'), '&nbsp;');
@@ -99,17 +95,16 @@ $oList->objRow->updateAttributes(array('valign' => 'top'));
 
 $aItems = $oClient->getProperties();
 
-if ($aItems !== false)
-{
+if ($aItems !== false) {
     $oLnkDelete = new cGuiLink();
     $oLnkDelete->setCLink($area, $frame, "clientsettings_delete_item");
-    $oLnkDelete->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete.gif" alt="'.i18n("Delete").'" title="'.i18n("Delete").'">');
+    $oLnkDelete->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'delete.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
     $oLnkDelete->setCustom("idclient", $idclient);
     $oLnkDelete->setCustom("idclientslang", $_REQUEST["idclientslang"]);
 
     $oLnkEdit = new cGuiLink();
     $oLnkEdit->setCLink($area, $frame, "clientsettings_edit_item");
-    $oLnkEdit->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren.gif" alt="'.i18n("Edit").'" title="'.i18n("Edit").'">');
+    $oLnkEdit->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
     $oLnkEdit->setCustom("idclient", $idclient);
     $oLnkEdit->setCustom("idclientslang", $_REQUEST["idclientslang"]);
 
@@ -118,19 +113,16 @@ if ($aItems !== false)
         $oLnkDelete->setCustom("idprop", $iKey);
         $oLnkEdit->setCustom("idprop", $iKey);
 
-        if (($_GET['action'] == "clientsettings_edit_item") && ($_GET['idprop'] == $iKey))
-        {
+        if (($_GET['action'] == "clientsettings_edit_item") && ($_GET['idprop'] == $iKey)) {
+            $oInputboxValue = new cHTMLTextbox("csvalue", $aValue['value']);
+            $oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
+            $oInputboxType = new cHTMLTextbox("cstype", $aValue['type']);
 
-                $oInputboxValue = new cHTMLTextbox("csvalue", $aValue['value']);
-                $oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
-                $oInputboxType = new cHTMLTextbox("cstype", $aValue['type']);
+            $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
+            $sSubmit = ' <input type="image" style="vertical-align:top;" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif">';
 
-                $hidden = '<input type="hidden" name="csidproperty" value="'.$iKey.'">';
-                $sSubmit = ' <input type="image" style="vertical-align:top;" value="submit" src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'submit.gif">';
-
-                $oList->setData($iCounter, $oInputboxType->render(), $oInputboxName->render(), $oInputboxValue->render().$hidden.$sSubmit, $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
-        } else
-        {
+            $oList->setData($iCounter, $oInputboxType->render(), $oInputboxName->render(), $oInputboxValue->render() . $hidden . $sSubmit, $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
+        } else {
             $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
             if (strlen($aValue['type']) > 35) {
@@ -152,14 +144,13 @@ if ($aItems !== false)
         }
         $iCounter++;
     }
-} else
-{
+} else {
     $oList->objItem->updateAttributes(array('colspan' => 4));
     $oList->setData(0, i18n("No defined properties"));
 }
 
 $oForm = new cGuiTableForm('clientsettings');
-$oForm->setVar('area',$area);
+$oForm->setVar('area', $area);
 $oForm->setVar('frame', $frame);
 $oForm->setVar('action', 'clientsettings_save_item');
 $oForm->setVar('idclient', $idclient);
@@ -178,10 +169,9 @@ $oForm->add(i18n('Value'), $oInputbox->render());
 $spacer = new cHTMLDiv();
 $spacer->setContent("<br>");
 
-if (($_GET['action'] == "clientsettings_edit_item"))
-{
+if (($_GET['action'] == "clientsettings_edit_item")) {
     $oForm2 = new cHTMLForm("clientsettings", "main.php");
-    $oForm2->setVar("area",$area);
+    $oForm2->setVar("area", $area);
     $oForm2->setVar("frame", $frame);
     $oForm2->setVar("action", "clientsettings_save_item");
     $oForm2->setVar("idclient", $idclient);
@@ -197,4 +187,5 @@ $oPage->addStyle('tipsy.css');
 $oPage->addScript("jquery.tipsy.js");
 $oPage->addScript("registerTipsy.js");
 $oPage->render();
+
 ?>
