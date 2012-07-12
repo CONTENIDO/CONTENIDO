@@ -64,8 +64,8 @@ switch ($facebookPlugin) {
         $tpl->generate('facebook_like_box.html');
         break;
     default:
-        $display = new Contenido_Notification();
-        $display->displayMessageBox(Contenido_Notification::LEVEL_ERROR, 'Please configure facebook plugin!');
+        $display = new cGuiNotification();
+        $display->displayMessageBox(cGuiNotification::LEVEL_ERROR, 'Please configure facebook plugin!');
 }
 
 ?>
