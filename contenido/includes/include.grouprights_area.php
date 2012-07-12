@@ -4,7 +4,7 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * CONTENIDO Rights Area
+ * CONTENIDO Group Rights
  *
  * Requirements:
  * @con_php_req 5.0
@@ -30,21 +30,28 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-//notice $oTpl is filled and generated in file rights.inc.php this file renders $oTpl to browser
-include_once($cfg['path']['CONTENIDO'] . 'includes/rights.inc.php');
+//notice $oTpl is filled and generated in file include.rights.php this file renders $oTpl to browser
+include_once($cfg['path']['contenido'] . 'includes/include.grouprights.php');
 $debug = (getDebugger() != DebuggerFactory::getDebugger("devnull"));
+// declare new Template variables
+$sJsBefore = '';
+$sJsAfter = '';
+$sJsExternal = '';
+$sTable = '';
 
-//set the areas which are in use for selecting these
+// declare new javascript variables;
+$sJsBefore .= "var areatree = new Array();\n";
 
-$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C WHERE user_id='" . cSecurity::escapeDB($userid, $db) . "' AND idclient='" . cSecurity::toInteger($rights_client) . "' AND idlang='" . cSecurity::toInteger($rights_lang) . "' AND idcat='0' AND A.idaction = C.idaction AND A.idarea = B.idarea";
+//set the areas which are in use fore selecting these
+
+$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C WHERE user_id='" . cSecurity::escapeDB($groupid, $db) . "' AND idclient='" . cSecurity::toInteger($rights_client) . "' AND idlang='" . cSecurity::toInteger($rights_lang) . "' AND idcat='0' AND A.idaction = C.idaction AND A.idarea = B.idarea";
 $db->query($sql);
-
 $rights_list_old = array();
 while ($db->next_record()) { //set a new rights list fore this user
     $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f("idcat")] = "x";
 }
 
-if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit")) {
+if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit")) {
     saverights();
 } else {
     if (!$perm->have_perm_area_action($area, $action)) {
@@ -52,16 +59,9 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit")) 
     }
 }
 
-$sJsBefore = '';
-$sJsAfter = '';
-$sJsExternal = '';
-$sTable = '';
-
-$sJsBefore .= "var areatree = new Array();\n";
-
 if (!isset($rights_perms) || $action == "" || !isset($action)) {
     //search for the permissions of this user
-    $sql = "SELECT perms FROM " . $cfg["tab"]["phplib_auth_user_md5"] . " WHERE user_id='$userid'";
+    $sql = "SELECT perms FROM " . $cfg["tab"]["groups"] . " WHERE group_id='" . cSecurity::escapeDB($groupid, $db) . "'";
 
     $db->query($sql);
     $db->next_record();
@@ -102,6 +102,7 @@ foreach ($aTh as $i => $tr) {
 //table content
 $output = "";
 $nav = new cGuiNavigation;
+
 foreach ($right_list as $key => $value) {
     // look for possible actions in mainarea
     foreach ($value as $key2 => $value2) {
@@ -116,7 +117,6 @@ foreach ($right_list as $key => $value) {
 
             // Extract names from the XML document.
             $main = $nav->getName(str_replace('/overview', '/main', $value2['location']));
-
             if ($debug) {
                 $locationString = $value2["location"] . " " . $value2["perm"] . "-->" . $main;
             } else {
@@ -135,7 +135,7 @@ foreach ($right_list as $key => $value) {
             $objItem->advanceID();
 
             $objItem->updateAttributes(array("class" => "td_rights2"));
-            $objItem->setContent("<input type=\"checkbox\" name=\"checkall_$key\" value=\"\" onclick=\"setRightsForArea('$key')\">");
+            $objItem->setContent("<input type=\"checkbox\" name=\"checkall_$key\" value=\"\" onClick=\"setRightsForArea('$key')\">");
             $items .= $objItem->render();
             $objItem->advanceID();
 
@@ -145,8 +145,9 @@ foreach ($right_list as $key => $value) {
             $objRow->advanceID();
             // table tr erfüllen end
             //set javscript array for areatree
-            $sJsBefore .= "areatree[\"$key\"] = new Array();
-                           areatree[\"$key\"][\"" . $value2["perm"] . "0\"] = \"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\"\n";
+            $sJsBefore .= "
+            areatree[\"$key\"]=new Array();
+            areatree[\"$key\"][\"" . $value2["perm"] . "0\"]=\"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\";\n";
         }
 
         //if there area some
@@ -159,7 +160,6 @@ foreach ($right_list as $key => $value) {
                 } else {
                     $checked = "";
                 }
-
                 //set the checkbox the name consits of areait+actionid+itemid
                 $sCellContent = '';
                 if ($debug) {
@@ -194,17 +194,16 @@ foreach ($right_list as $key => $value) {
                 $objRow->advanceID();
                 // table tr erfüllen end
                 //set javscript array for areatree
-                $sJsBefore .= "areatree[\"$key\"][\"" . $value2["perm"] . "$value3\"]=\"rights_list[" . $value2["perm"] . "|$value3|0]\"\n";
+                $sJsBefore .= "areatree[\"$key\"][\"" . $value2["perm"] . "$value3\"]=\"rights_list[" . $value2["perm"] . "|$value3|0]\";";
             }
         }
     }
-    //checkbox for checking all actions fore this itemid
 }
 
 //table footer
 $footeroutput = "";
 $objItem->updateAttributes(array("class" => "", "valign" => "top", "align" => "right", "colspan" => "3"));
-$objItem->setContent("<a href=javascript:submitrightsform('','area')><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"><a href=javascript:submitrightsform('user_edit','')><img src=\"" . $cfg['path']['images'] . "but_ok.gif\" border=0></a>");
+$objItem->setContent("<a href=javascript:submitrightsform('','area')><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"><a href=javascript:submitrightsform('group_edit','')><img src=\"" . $cfg['path']['images'] . "but_ok.gif\" border=0></a>");
 $items = $objItem->render();
 $objItem->advanceID();
 $objFooterRow->setContent($items);
@@ -220,7 +219,6 @@ $oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
 $oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
 $oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
 $oTpl->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
-
-$oTpl->generate('templates/standard/' . $cfg['templates']['rights_inc']);
+$oTpl->generate('templates/standard/' . $cfg['templates']['include.rights']);
 
 ?>

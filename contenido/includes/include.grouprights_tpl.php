@@ -4,14 +4,14 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Rights for Template
+ * CONTENIDO Group Rights
  *
  * Requirements:
  * @con_php_req 5.0
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.1
+ * @version    1.0.0
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -29,36 +29,37 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-//notice $oTpl is filled and generated in file rights.inc.php this file renders $oTpl to browser
-include_once($cfg['path']['contenido'] . 'includes/rights.inc.php');
+//notice $oTpl is filled and generated in file include.rights.php this file renders $oTpl to browser
+include_once($cfg['path']['contenido'] . 'includes/include.grouprights.php');
+
 //set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("tpl")]) . "'";
-$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C WHERE user_id='" . cSecurity::escapeDB($userid, $db) . "'
-        AND idclient='" . cSecurity::escapeDB($rights_client, $db) . "' AND A.type = 0 AND idlang='" . cSecurity::escapeDB($rights_lang, $db) . "' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C WHERE user_id='" . cSecurity::escapeDB($groupid, $db) . "' AND idclient='" . cSecurity::toInteger($rights_client) . "' AND A.type = 1 AND idlang='" . cSecurity::toInteger($rights_lang) . "' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
-
 $rights_list_old = array();
 while ($db->next_record()) { //set a new rights list fore this user
     $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f("idcat")] = "x";
 }
 
-if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit")) {
+if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit")) {
     saverights();
 } else {
     if (!$perm->have_perm_area_action($area, $action)) {
         $notification->displayNotification("error", i18n("Permission denied"));
     }
 }
-
+// Temp variables
 $sJsBefore = '';
 $sJsAfter = '';
 $sTable = '';
 
-$sJsBefore .= "var itemids = new Array();\n
+// declare new javascript variables;
+$sJsBefore .= "var itemids = new Array();
                var actareaids = new Array();\n";
 
-// declare new javascript variables;
 $colspan = 0;
+$aSecondHeaderRow = array();
+$possible_areas = array();
 
 //Init Table
 $oTable = new cHTMLTable;
@@ -82,38 +83,34 @@ $objHeaderItem->setContent(i18n("Description"));
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
 
-$aSecondHeaderRow = array();
-$possible_areas = array();
-
-// look for possible actions in mainarea []
+// Look for possible actions   in mainarea []
 foreach ($right_list["tpl"] as $value2) {
     //if there are some actions
     if (is_array($value2["action"])) {
-        foreach ($value2["action"] as $key3 => $value3) {
-            //set the areas that are in use
+        foreach ($value2["action"] as $key3 => $value3) {       //set the areas that are in use
             $possible_areas[$value2["perm"]] = "";
 
             $colspan++;
             //set  the possible areas and actions for this areas
-
-            $sJsBefore .= "actareaids[\"$value3|" . $value2["perm"] . "\"]=\"x\"\n";
+            $sJsBefore .= "actareaids[\"$value3|" . $value2["perm"] . "\"]=\"x\"; \n";
 
             //checkbox for the whole action
             $objHeaderItem->updateAttributes(array("class" => "center", "valign" => "top", "align" => "center"));
             $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
             $items .= $objHeaderItem->render();
             $objHeaderItem->advanceID();
+
             array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "','$value3','')\">");
         }
     }
 }
+
 
 //checkbox for all rights
 $objHeaderItem->setContent(i18n("Check all"));
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
 array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
-
 $colspan++;
 
 $objHeaderRow->updateAttributes(array("class" => "textw_medium"));
@@ -143,7 +140,6 @@ $objHeaderRow->advanceID();
 
 //table content
 $output = "";
-
 //Select the itemid´s
 $sql = "SELECT * FROM " . $cfg["tab"]["tpl"] . " WHERE idclient='" . cSecurity::toInteger($rights_client) . "' ORDER BY name";
 $db->query($sql);
@@ -163,7 +159,7 @@ while ($db->next_record()) {
     $objItem->advanceID();
 
     //set javscript array for itemids
-    $sJsAfter.="itemids[\"" . $db->f("idtpl") . "\"]=\"x\";\n";
+    $sJsAfter .= "itemids[\"" . $db->f("idtpl") . "\"]=\"x\";\n";
 
     // look for possible actions in mainarea[]
     foreach ($right_list["tpl"] as $value2) {
@@ -185,7 +181,6 @@ while ($db->next_record()) {
             }
         }
     }
-
     //checkbox for checking all actions fore this itemid
     $objItem->updateAttributes(array("class" => "td_rights3"));
     $objItem->setContent("<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_" . $value3 . "_" . $db->f("idtpl") . "\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "','$value3','" . $db->f("idtpl") . "')\">");
@@ -201,7 +196,7 @@ while ($db->next_record()) {
 //table footer
 $footeroutput = "";
 $objItem->updateAttributes(array("class" => "", "valign" => "top", "align" => "right", "colspan" => "8"));
-$objItem->setContent("<a href=javascript:submitrightsform('','area')><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=javascript:submitrightsform('user_edit','')><img src=\"" . $cfg['path']['images'] . "but_ok.gif\" border=0></a>");
+$objItem->setContent("<a href=javascript:submitrightsform('','area')><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=javascript:submitrightsform('group_edit','')><img src=\"" . $cfg['path']['images'] . "but_ok.gif\" border=0></a>");
 $items = $objItem->render();
 $objItem->advanceID();
 $objFooterRow->setContent($items);
@@ -218,6 +213,6 @@ $oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
 $oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
 $oTpl->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
 
-$oTpl->generate('templates/standard/' . $cfg['templates']['rights_inc']);
+$oTpl->generate('templates/standard/' . $cfg['templates']['include.rights']);
 
 ?>

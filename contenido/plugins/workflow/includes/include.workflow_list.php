@@ -80,7 +80,7 @@ while ($workflow = $workflows->next())
     $ui->setActions($wfid, 'delete', $delete);
 
     if ($wfid == $iIdMarked) {
-        $ui->setExtra ($wfid, 'id="marked" ');
+        $ui->setMarked($wfid);
     }
 
 }

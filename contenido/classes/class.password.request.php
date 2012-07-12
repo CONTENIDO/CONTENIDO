@@ -227,7 +227,7 @@ class cPasswordRequest {
         }
 
         //generate new form
-        $oForm = new cGuiForm('request_pw', 'index.php', 'post');
+        $oForm = new cHTMLForm('request_pw', 'index.php', 'post');
 
         //generate input for username
         $oInputUsername = new cHTMLTextbox('request_username', stripslashes($_POST['request_username']), '', '', 'request_username');

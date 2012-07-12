@@ -58,7 +58,7 @@ while ($fegroup = $fegroups->next())
     $menu->setActions($idfegroup, 'delete', $delete);
 
     if ($_GET['idfrontendgroup'] == $idfegroup) {
-        $menu->setExtra($idfegroup, 'id="marked" ');
+        $menu->setMarked($idfegroup);
     }
 }
 

@@ -100,7 +100,7 @@ $cfg['templates']['rights_menu']          = 'template.rights_menu.html';
 $cfg['templates']['rights_overview']      = 'template.rights_overview.html';
 $cfg['templates']['rights_details']       = 'template.rights_details.html';
 $cfg['templates']['rights_create']        = 'template.rights_create.html';
-$cfg['templates']['rights_inc']           = 'template.rights_inc.html';
+$cfg['templates']['include.rights']           = 'template.rights.html';
 
 $cfg['templates']['log_main']             = 'template.log_main.html';
 

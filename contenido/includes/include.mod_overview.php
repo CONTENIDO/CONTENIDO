@@ -188,7 +188,7 @@ foreach ($allModules as $idmod => $module) {
         $mlist->setActions($iMenu, "delete", $deletebutton);
 
         if ($_GET['idmod'] == $idmod) {
-            $mlist->setExtra($iMenu, 'id="marked" ');
+            $mlist->setMarked($iMenu);
         }
         //$mlist->setImage($iMenu, "images/but_module.gif");
         //$mlist->setImage($iMenu, 'images/spacer.gif', 5);

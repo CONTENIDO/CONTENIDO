@@ -42,8 +42,6 @@ class cGuiMenu
     protected $_marked;
 
     public function __construct() {
-        die("HERE COMES CGUIMENU");
-
         $this->rowmark = true;
         $this->_marked = false;
     }

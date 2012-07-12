@@ -151,7 +151,7 @@ while ($cApiUser = $cApiUserCollection->next())
             $mlist->setActions($iMenu, "delete", $deletebutton);
 
             if ($_GET['userid'] == $cApiUser->get("user_id")) {
-                $mlist->setExtra($iMenu, 'id="marked" ');
+                $mlist->setMarked($iMenu);
             }
         }
     }

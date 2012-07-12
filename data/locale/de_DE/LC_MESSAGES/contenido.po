@@ -199,8 +199,8 @@ msgstr "Suche speichern"
 
 #: classes/class.ajax.php:104
 #: classes/class.ajax.php:128
-#: includes/grouprights_tpl.inc.php:72
-#: includes/rights_tpl.inc.php:73
+#: includes/include.grouprights_tpl.php:72
+#: includes/include.rights_tpl.php:73
 msgid "Template name"
 msgstr "Vorlagenname"
 
@@ -212,12 +212,12 @@ msgstr "Keine Daten gefunden!"
 
 #: classes/class.ajax.php:153
 #: classes/class.cms_teaser.php:592
-#: includes/grouprights_con.inc.php:78
-#: includes/grouprights_str.inc.php:76
+#: includes/include.grouprights_con.php:78
+#: includes/include.grouprights_str.php:76
 #: includes/include.con_edit_form.php:468
 #: includes/include.note.popup.php:90
-#: includes/rights_con.inc.php:78
-#: includes/rights_str.inc.php:77
+#: includes/include.rights_con.php:78
+#: includes/include.rights_str.php:77
 #: templates/standard/template.log_main.html:55
 #: templates/standard/template.mycontenido_lastarticles.html:63
 #: templates/standard/template.str_overview.html:125
@@ -467,9 +467,9 @@ msgid "Selected file"
 msgstr "Gewählte Datei"
 
 #: classes/class.cms_image.php:399
-#: includes/grouprights_lay.inc.php:86
-#: includes/grouprights_mod.inc.php:74
-#: includes/grouprights_tpl.inc.php:73
+#: includes/include.grouprights_lay.php:86
+#: includes/include.grouprights_mod.php:74
+#: includes/include.grouprights_tpl.php:73
 #: includes/include.CMS_IMG.php:196
 #: includes/include.CMS_LINK.php:312
 #: includes/include.CMS_SIMPLELINK.php:151
@@ -490,9 +490,9 @@ msgstr "Gewählte Datei"
 #: includes/include.todo.popup.php:70
 #: includes/include.tpl_edit_form.php:166
 #: includes/include.upl_edit.php:90
-#: includes/rights_lay.inc.php:76
-#: includes/rights_mod.inc.php:76
-#: includes/rights_tpl.inc.php:74
+#: includes/include.rights_lay.php:76
+#: includes/include.rights_mod.php:76
+#: includes/include.rights_tpl.php:74
 #: scripts/langref.php:28
 #: templates/standard/template.lay_edit_form.html:32
 #: templates/standard/template.mod_edit_form.html:33
@@ -1366,14 +1366,14 @@ msgstr "Templatedatei wurde erfolgreich gelöscht!"
 #: classes/module/class.module.template.handler.php:381
 #: classes/module/class.module.template.handler.php:390
 #: classes/module/class.module.template.handler.php:397
-#: includes/grouprights_area.inc.php:65
-#: includes/grouprights_con.inc.php:56
-#: includes/grouprights_lay.inc.php:55
-#: includes/grouprights_lay.inc.php:74
-#: includes/grouprights_members.inc.php:41
-#: includes/grouprights_mod.inc.php:54
-#: includes/grouprights_str.inc.php:54
-#: includes/grouprights_tpl.inc.php:53
+#: includes/include.grouprights_area.php:65
+#: includes/include.grouprights_con.php:56
+#: includes/include.grouprights_lay.php:55
+#: includes/include.grouprights_lay.php:74
+#: includes/include.grouprights_members.php:41
+#: includes/include.grouprights_mod.php:54
+#: includes/include.grouprights_str.php:54
+#: includes/include.grouprights_tpl.php:53
 #: includes/include.client_artspec.php:40
 #: includes/include.client_artspec.php:50
 #: includes/include.client_artspec.php:60
@@ -1406,12 +1406,12 @@ msgstr "Templatedatei wurde erfolgreich gelöscht!"
 #: includes/include.tpl_edit_form.php:50
 #: includes/include.upl_dirs_overview.php:389
 #: includes/include.upl_dirs_overview.php:536
-#: includes/rights_area.inc.php:58
-#: includes/rights_con.inc.php:56
-#: includes/rights_lay.inc.php:57
-#: includes/rights_mod.inc.php:55
-#: includes/rights_str.inc.php:55
-#: includes/rights_tpl.inc.php:55
+#: includes/include.rights_area.php:58
+#: includes/include.rights_con.php:56
+#: includes/include.rights_lay.php:57
+#: includes/include.rights_mod.php:55
+#: includes/include.rights_str.php:55
+#: includes/include.rights_tpl.php:55
 msgid "Permission denied"
 msgstr "Zugriff verweigert"
 
@@ -2312,12 +2312,12 @@ msgstr "Kategorie ist offline"
 #: includes/functions.stat.php:315
 #: includes/functions.stat.php:638
 #: includes/functions.stat.php:639
-#: includes/grouprights_con.inc.php:241
-#: includes/grouprights_str.inc.php:215
+#: includes/include.grouprights_con.php:241
+#: includes/include.grouprights_str.php:215
 #: includes/include.str_overview.php:171
 #: includes/include.upl_dirs_overview.php:56
-#: includes/rights_con.inc.php:227
-#: includes/rights_str.inc.php:221
+#: includes/include.rights_con.php:227
+#: includes/include.rights_str.php:221
 msgid "Open category"
 msgstr "Kategorie öffnen"
 
@@ -2358,11 +2358,11 @@ msgstr "Top 30"
 
 #: includes/functions.stat.php:970
 #: includes/functions.stat.php:997
-#: includes/grouprights.inc.php:150
+#: includes/include.grouprights.php:150
 #: includes/include.con_art_overview.php:790
 #: includes/include.grouprights_left_top.php:59
 #: includes/include.rights_left_top.php:76
-#: includes/rights.inc.php:267
+#: includes/include.rights.php:267
 msgid "All"
 msgstr "Alle"
 
@@ -2566,75 +2566,75 @@ msgstr "Windows Media-Video"
 msgid "-File"
 msgstr "-Datei"
 
-#: includes/grouprights.inc.php:152
-#: includes/rights.inc.php:269
+#: includes/include.grouprights.php:152
+#: includes/include.rights.php:269
 msgid "Article rights"
 msgstr "Artikelrechte"
 
-#: includes/grouprights.inc.php:154
-#: includes/rights.inc.php:271
+#: includes/include.grouprights.php:154
+#: includes/include.rights.php:271
 msgid "Category rights"
 msgstr "Kategorierechte"
 
-#: includes/grouprights.inc.php:156
-#: includes/rights.inc.php:273
+#: includes/include.grouprights.php:156
+#: includes/include.rights.php:273
 msgid "Template rights"
 msgstr "Vorlagenrechte"
 
-#: includes/grouprights.inc.php:158
-#: includes/rights.inc.php:275
+#: includes/include.grouprights.php:158
+#: includes/include.rights.php:275
 msgid "Plugin/Other rights"
 msgstr "Pluginrechte / Andere Rechte"
 
-#: includes/grouprights.inc.php:208
+#: includes/include.grouprights.php:208
 msgid "Current group doesn't have any rights to any client/language."
 msgstr "Die aktuelle Gruppe hat keine Zugriffsrechte auf irgendeine(n) Sprache bzw Mandant"
 
-#: includes/grouprights.inc.php:328
+#: includes/include.grouprights.php:328
 #: includes/include.client_edit.php:153
 #: includes/include.grouprights_overview.php:65
 #: includes/include.lang_edit.php:143
 #: includes/include.rights_overview.php:136
 #: includes/include.system_configuration.php:134
-#: includes/rights.inc.php:92
+#: includes/include.rights.php:92
 msgid "Changes saved"
 msgstr "Änderungen gespeichert"
 
-#: includes/grouprights_area.inc.php:86
-#: includes/grouprights_con.inc.php:111
-#: includes/grouprights_lay.inc.php:113
-#: includes/grouprights_mod.inc.php:99
-#: includes/grouprights_str.inc.php:105
-#: includes/grouprights_tpl.inc.php:101
-#: includes/rights_area.inc.php:87
-#: includes/rights_con.inc.php:112
-#: includes/rights_lay.inc.php:100
-#: includes/rights_mod.inc.php:99
-#: includes/rights_str.inc.php:106
-#: includes/rights_tpl.inc.php:100
+#: includes/include.grouprights_area.php:86
+#: includes/include.grouprights_con.php:111
+#: includes/include.grouprights_lay.php:113
+#: includes/include.grouprights_mod.php:99
+#: includes/include.grouprights_str.php:105
+#: includes/include.grouprights_tpl.php:101
+#: includes/include.rights_area.php:87
+#: includes/include.rights_con.php:112
+#: includes/include.rights_lay.php:100
+#: includes/include.rights_mod.php:99
+#: includes/include.rights_str.php:106
+#: includes/include.rights_tpl.php:100
 msgid "Check all"
 msgstr "Alle markieren"
 
-#: includes/grouprights_con.inc.php:237
-#: includes/grouprights_str.inc.php:212
-#: includes/rights_con.inc.php:223
-#: includes/rights_str.inc.php:217
+#: includes/include.grouprights_con.php:237
+#: includes/include.grouprights_str.php:212
+#: includes/include.rights_con.php:223
+#: includes/include.rights_str.php:217
 msgid "Apply rights for this category to all categories on the same level or above"
 msgstr "Rechte dieser Kategorie allen Kategorien auf derselben Ebene oder darüber zuweisen"
 
-#: includes/grouprights_con.inc.php:238
-#: includes/grouprights_str.inc.php:213
-#: includes/rights_con.inc.php:224
-#: includes/rights_str.inc.php:218
+#: includes/include.grouprights_con.php:238
+#: includes/include.grouprights_str.php:213
+#: includes/include.rights_con.php:224
+#: includes/include.rights_str.php:218
 msgid "Apply rights for this category to all categories below the current category"
 msgstr "Rechte dieser Kategorie allen Kategorien unter dieser Kategorie zuweisen"
 
-#: includes/grouprights_con.inc.php:241
-#: includes/grouprights_str.inc.php:215
+#: includes/include.grouprights_con.php:241
+#: includes/include.grouprights_str.php:215
 #: includes/include.str_overview.php:176
 #: includes/include.upl_dirs_overview.php:60
-#: includes/rights_con.inc.php:227
-#: includes/rights_str.inc.php:221
+#: includes/include.rights_con.php:227
+#: includes/include.rights_str.php:221
 msgid "Close category"
 msgstr "Kategorie schliessen"
 
@@ -2654,12 +2654,12 @@ msgstr "Löschen ist nicht möglich, da noch Unterkategorien vorhanden sind."
 msgid "One or more articles are existing, unable to delete."
 msgstr "Löschen ist nicht möglich, da noch Artikel in dieser Kategorie vorhanden sind."
 
-#: includes/grouprights_lay.inc.php:85
-#: includes/rights_lay.inc.php:75
+#: includes/include.grouprights_lay.php:85
+#: includes/include.rights_lay.php:75
 msgid "Layout name"
 msgstr "Layoutname"
 
-#: includes/grouprights_members.inc.php:66
+#: includes/include.grouprights_members.php:66
 msgid "Removed member from group successfully!"
 msgstr "Benutzer wurde erfolgreich aus der Gruppe entfernt!"
 
@@ -2684,18 +2684,18 @@ msgid "Remove left side selected users from group"
 msgstr "Ausgewählte Benutzer von der linken Seite aus der Gruppe entfernen"
 
 # section groups members
-#: includes/grouprights_members.inc.php:119
+#: includes/include.grouprights_members.php:119
 #: includes/include.frontend.group_edit.php:81
 msgid "Added user to group successfully!"
 msgstr "Benutzer wurde erfolgreich der Gruppe hinzugefüt!"
 
-#: includes/grouprights_members.inc.php:209
+#: includes/include.grouprights_members.php:209
 msgid "Manage group members"
 msgstr "Gruppenmitglieder verwalten"
 
-#: includes/grouprights_mod.inc.php:73
+#: includes/include.grouprights_mod.php:73
 #: includes/include.mod_new.php:77
-#: includes/rights_mod.inc.php:75
+#: includes/include.rights_mod.php:75
 msgid "Module name"
 msgstr "Modulname"
 
@@ -5273,15 +5273,15 @@ msgstr "Symbolhilfe"
 msgid "CONTENIDO Manual"
 msgstr "CONTENIDO Redakteurshandbuch"
 
-#: includes/rights.inc.php:337
+#: includes/include.rights.php:337
 msgid "The selected user is a system administrator. A system administrator has all rights for all clients for all languages and therefore rights can't be specified in more detail."
 msgstr "Der gewählte Nutzer ist ein Systemadministrator. Ein Systemadministrator verfügt über alle Rechte für alle Mandanten in allen Sprachen, es können keine weiteren Einstellungen für Rechte vorgenommen werden."
 
-#: includes/rights.inc.php:342
+#: includes/include.rights.php:342
 msgid "The selected user is assigned to clients as admin, only. An admin has all rights for a client and therefore rights can't be specified in more detail."
 msgstr "Der gewählte Nutzer ist nur als Administrator Mandanten zugeordnet. Ein Administrator verfügt über alle Rechte für den oder die zugeordneten Mandanten in allen Sprachen, es können keine weiteren Einstellungen für Rechte vorgenommen werden."
 
-#: includes/rights.inc.php:346
+#: includes/include.rights.php:346
 msgid "Current user doesn't have any rights to any client/language."
 msgstr "Der aktuelle Benutzer hat keine Zugriffsrechte auf irgendeine(n) Sprache bzw Mandant"
 
@@ -5454,11 +5454,11 @@ msgstr "Beschränkung"
 msgid "Your clients"
 msgstr "Ihre Mandanten"
 
-#: templates/standard/template.rights_inc.html:24
+#: templates/standard/template.rights.html:24
 msgid "Client / Language"
 msgstr "Mandant / Sprache"
 
-#: templates/standard/template.rights_inc.html:24
+#: templates/standard/template.rights.html:24
 msgid "Rights type"
 msgstr "Art der Rechte"
 

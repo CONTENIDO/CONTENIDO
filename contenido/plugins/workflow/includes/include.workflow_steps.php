@@ -227,7 +227,7 @@ function getWorkflowList() {
         $ui->setActions($id, "delete", $deletestep->render());
 
         if ($_GET['idworkflowitem'] == $id) {
-             $ui->setExtra ($id, 'id="marked" ');
+            $ui->setMarked($id);
         }
     }
 

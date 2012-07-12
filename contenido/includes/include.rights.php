@@ -198,12 +198,12 @@ if ($oClientLang->isLoaded()) {
 
     // Account is sysadmin
     if (strpos($userPerms, 'sysadmin') !== false) {
-        $oTpl->set('s', 'NOTIFICATION', $notification->messageBox('warning', i18n("The selected user is a system administrator. A system administrator has all rights for all clients for all languages and therefore rights can't be specified in more detail."), 0));
+        $oTpl->set('s', 'NOTIFICATION', $notification->returnMessageBox('warning', i18n("The selected user is a system administrator. A system administrator has all rights for all clients for all languages and therefore rights can't be specified in more detail."), 0));
     } else if (strpos($userPerms, 'admin[') !== false) {
         // Account is only assigned to clients with admin rights
-        $oTpl->set('s', 'NOTIFICATION', $notification->messageBox('warning', i18n("The selected user is assigned to clients as admin, only. An admin has all rights for a client and therefore rights can't be specified in more detail."), 0));
+        $oTpl->set('s', 'NOTIFICATION', $notification->returnMessageBox('warning', i18n("The selected user is assigned to clients as admin, only. An admin has all rights for a client and therefore rights can't be specified in more detail."), 0));
     } else {
-        $oTpl->set('s', 'NOTIFICATION', $notification->messageBox('error', i18n("Current user doesn't have any rights to any client/language."), 0));
+        $oTpl->set('s', 'NOTIFICATION', $notification->returnMessageBox('error', i18n("Current user doesn't have any rights to any client/language."), 0));
     }
     $oTpl->set('s', 'DISPLAY_FILTER', 'none');
 }
@@ -222,7 +222,7 @@ if ($bEndScript == true) {
     $oTpl->set('s', 'JS_SCRIPT_AFTER', '');
     $oTpl->set('s', 'RIGHTS_CONTENT', '');
     $oTpl->set('s', 'EXTERNAL_SCRIPTS', '');
-    $oTpl->generate('templates/standard/' . $cfg['templates']['rights_inc']);
+    $oTpl->generate('templates/standard/' . $cfg['templates']['include.rights']);
     die();
 }
 
