@@ -36,22 +36,15 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-04-04, Timo Trautmann, added new colors and functions for direct output
- *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2011-05-19, Murat Purc, adapted to PHP 5, formatted and documented code
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
-class cGuiNotification
-{
+class cGuiNotification {
     /**
      * Error message level
      * @var string
@@ -82,24 +75,19 @@ class cGuiNotification
      */
     protected $_sPathImages;
 
-
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         $this->_sPathImages = $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'];
     }
 
-
     /** @deprecated  [2011-05-19] Old constructor function for downwards compatibility */
-    public function cGuiNotification()
-    {
+    public function cGuiNotification() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
-
 
     /**
      * Generates message box and returns it back.
@@ -109,8 +97,7 @@ class cGuiNotification
      * @param   int     $iStyle   Flag tp use styles for display or not (feasible 1 or 0)
      * @return  string
      */
-    public function returnMessageBox($sLevel, $sMessage, $iStyle = 1)
-    {
+    public function returnMessageBox($sLevel, $sMessage, $iStyle = 1) {
         switch ($sLevel) {
             case self::LEVEL_ERROR:
                 $sHead = i18n('Error');
@@ -135,21 +122,20 @@ class cGuiNotification
         if ($iStyle == 1) {
             // Box on login page
             $sMessageBox =
-                '<div class="alertbox ' . $sHeadClass . '_color" id="contenido_notification" style="border-top:0px;">' .
+                    '<div class="alertbox ' . $sHeadClass . '_color" id="contenido_notification" style="border-top:0px;">' .
                     '<h1 class="alertbox_head ' . $sHeadClass . '">' . $sHead . '</h1>' .
                     '<div class="alertbox_message">' . $sMessage . '</div>' .
-                '</div>';
+                    '</div>';
         } else {
             // Simple box
             $sMessageBox =
-                '<div class="alertbox_line ' . $sHeadClass . '_color" id="contenido_notification">' .
+                    '<div class="alertbox_line ' . $sHeadClass . '_color" id="contenido_notification">' .
                     '<h1 class=" alertbox_head ' . $sHeadClass . ' ' . $sHeadClass . '_color">' . $sHead . '</h1>' .
                     '<div class="alertbox_message ' . $sHeadClass . '_color">' . $sMessage . '</div>' .
-                '</div>';
+                    '</div>';
         }
         return $sMessageBox;
     }
-
 
     /**
      * Generates message box and returns it back, uses markup with table.
@@ -158,8 +144,7 @@ class cGuiNotification
      * @param   string  $sMessage  The message to display
      * @return  string
      */
-    public function returnNotification($sLevel, $sMessage)
-    {
+    public function returnNotification($sLevel, $sMessage) {
 
         $oNotifySpan = new cHTMLSpan($sMessage);
 
@@ -185,7 +170,6 @@ class cGuiNotification
         return $sNoti;
     }
 
-
     /**
      * Displays small message box directly.
      *
@@ -193,11 +177,9 @@ class cGuiNotification
      * @param   string  $sMessage  The message to display
      * @return  void
      */
-    public function displayNotification($sLevel, $sMessage)
-    {
+    public function displayNotification($sLevel, $sMessage) {
         echo $this->returnNotification($sLevel, $sMessage) . '<br>';
     }
-
 
     /**
      * Displays large message box directly.
@@ -207,15 +189,15 @@ class cGuiNotification
      * @param   int     $iStyle   Flag tp use styles for display or not (feasible 1 or 0)
      * @return  void
      */
-    public function displayMessageBox($sLevel, $sMessage, $iStyle = 1)
-    {
+    public function displayMessageBox($sLevel, $sMessage, $iStyle = 1) {
         echo $this->returnMessageBox($sLevel, $sMessage, $iStyle) . '<br>';
     }
+
 }
 
 /**
  * Old class name for downwards compatibility
- * @deprecated Please use cGuiNavigation instead
+ * @deprecated [2012-07-12] Please use cGuiNavigation instead
  */
 class Contenido_Notification extends cGuiNotification {
 
@@ -225,23 +207,12 @@ class Contenido_Notification extends cGuiNotification {
         parent::__construct();
     }
 
-    /**
-     * Old function name for downwards compatibility
-     *
-     * @deprecated This function was renamed to returnMessageBox
-     *
-     * @see cGuiNotification::returnMessageBox()
-     *
-     * @param unknown_type $sLevel
-     * @param unknown_type $sMessage
-     * @param unknown_type $iStyle
-     * @return string
-     */
     public function messageBox($sLevel, $sMessage, $iStyle = 1) {
         cDeprecated("This function was renamed to returnMessageBox.");
 
         return parent::returnMessageBox($sLevel, $sMessage, $iStyle);
     }
+
 }
 
 ?>

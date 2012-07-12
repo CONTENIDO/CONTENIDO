@@ -33,7 +33,7 @@ class Contenido_Backend {
 
     /**
      * Debug flag
-     * @deprecated No longer needed. The debug mode gets chosen by the system settings.
+     * @deprecated [2012-03-12] No longer needed. The debug mode gets chosen by the system settings.
      */
     var $debug = 0;
 
@@ -41,13 +41,13 @@ class Contenido_Backend {
      * Possible actions
      * @var array
      */
-     var $actions = array();
+    var $actions = array();
 
     /**
      * Files
      * @var array
      */
-     var $files = array();
+    var $files = array();
 
     /**
      * Stores the frame number
@@ -59,37 +59,31 @@ class Contenido_Backend {
      * Errors
      * @var array
      */
-     var $errors = array();
+    var $errors = array();
 
     /**
      * Save area
      * @var string
      */
-     var $area = '';
+    var $area = '';
 
     /**
-     * Set the frame number
-     * in which the file is
-     * loaded
+     * Set the frame number in which the file is loaded
      * @return void
      */
     function setFrame($frame_nr = 0) {
         $frame_nr = cSecurity::toInteger($frame_nr);
         $this->frame = $frame_nr;
-
-    } # end function
-
+    }
 
     /**
-     * Loads all required data
-     * from the DB and stores it
-     * in the $actions and $files array
+     * Loads all required data from the DB and stores it in the $actions and $files array
      *
      * @param $area string selected area
-     * @return
+     * @return void
      */
     function select($area) {
-        # Required global vars
+        // Required global vars
         global $cfg, $client, $lang, $db, $perm, $action, $idcat;
         global $idcat, $idtpl, $idmod, $idlay;
 
@@ -106,31 +100,28 @@ class Contenido_Backend {
         }
 
         $itemid = cSecurity::toInteger($itemid);
-        $area    = cSecurity::escapeDB($area, $db);
+        $area = cSecurity::escapeDB($area, $db);
 
-        # Store Area
+        // Store Area
         $this->area = $area;
 
-        # extract actions
+        // extract actions
         $sql = "SELECT
                     b.name AS name,
                     b.code AS code,
                     b.relevant as relevant_action,
                     a.relevant as relevant_area
                 FROM
-                    ".$cfg["tab"]["area"]." AS a,
-                    ".$cfg["tab"]["actions"]." AS b
+                    " . $cfg["tab"]["area"] . " AS a,
+                    " . $cfg["tab"]["actions"] . " AS b
                 WHERE
-                    a.name   = '".$area."' AND
+                    a.name   = '" . $area . "' AND
                     b.idarea = a.idarea AND
                     a.online = '1'";
 
-        # Check if the user has
-        # access to this area.
-        # Yes -> Grant him all actions
-        # No  -> Grant him only action
-        #        which are irrelevant
-        #        = (Field 'relevant' is 0)
+        // Check if the user has access to this area.
+        // Yes -> Grant him all actions
+        // No  -> Grant him only action which are irrelevant = (Field 'relevant' is 0)
 
         if (!$perm->have_perm_area_action($area)) {
             $sql .= " AND a.relevant = '0'";
@@ -140,59 +131,51 @@ class Contenido_Backend {
 
         while ($db->next_record()) {
 
-                # Save the action only access to
-                # the desired action is granted.
-                # If this action is relevant for rights
-                # check if the user has permission to
-                # execute this action
+            // Save the action only access to the desired action is granted.
+            // If this action is relevant for rights check if the user has permission to
+            // execute this action
 
-                if ($db->f("relevant_action") == 1 && $db->f("relevant_area") == 1) {
+            if ($db->f("relevant_action") == 1 && $db->f("relevant_area") == 1) {
 
-                    if ($perm->have_perm_area_action_item($area, $db->f("name"), $itemid)) {
-                        $this->actions[$area][$db->f('name')] = $db->f('code');
-                    }
-
-                    if ($itemid == 0) {
-                        // itemid not available, since its impossible the get the correct rights out
-                        // we only check if userrights are given for these three items on any item
-                        if ($action=="mod_edit" || $action=="tpl_edit" || $action=="lay_edit") {
-                            if ($perm->have_perm_area_action_anyitem($area, $db->f("name"))) {
-                                $this->actions[$area][$db->f('name')] = $db->f('code');
-                            }
-                        }
-                    }
-
-                } else {
+                if ($perm->have_perm_area_action_item($area, $db->f("name"), $itemid)) {
                     $this->actions[$area][$db->f('name')] = $db->f('code');
-
                 }
 
-
-        } # end while
+                if ($itemid == 0) {
+                    // itemid not available, since its impossible the get the correct rights out
+                    // we only check if userrights are given for these three items on any item
+                    if ($action == "mod_edit" || $action == "tpl_edit" || $action == "lay_edit") {
+                        if ($perm->have_perm_area_action_anyitem($area, $db->f("name"))) {
+                            $this->actions[$area][$db->f('name')] = $db->f('code');
+                        }
+                    }
+                }
+            } else {
+                $this->actions[$area][$db->f('name')] = $db->f('code');
+            }
+        }
 
         $sql = "SELECT
                     b.filename AS name,
                     b.filetype AS type,
                     a.parent_id AS parent_id
                 FROM
-                    ".$cfg['tab']['area']." AS a,
-                    ".$cfg['tab']['files']." AS b,
-                    ".$cfg['tab']['framefiles']." AS c
+                    " . $cfg['tab']['area'] . " AS a,
+                    " . $cfg['tab']['files'] . " AS b,
+                    " . $cfg['tab']['framefiles'] . " AS c
                 WHERE
-                    a.name    = '".$area."' AND
+                    a.name    = '" . $area . "' AND
                     b.idarea  = a.idarea AND
                     b.idfile  = c.idfile AND
                     c.idarea  = a.idarea AND
-                    c.idframe = '".$this->frame."' AND
+                    c.idframe = '" . $this->frame . "' AND
                     a.online  = '1'";
 
-          # Check if the user has
-        # access to this area.
-        # Yes -> Extract all files
-        # No  -> Extract only irrelevant
-        #        Files = (Field 'relevant' is 0)
-      if (!$perm->have_perm_area_action($area)) {
-              $sql .= " AND a.relevant = '0'";
+        // Check if the user has access to this area.
+        // Yes -> Extract all files
+        // No  -> Extract only irrelevant Files = (Field 'relevant' is 0)
+        if (!$perm->have_perm_area_action($area)) {
+            $sql .= " AND a.relevant = '0'";
         }
         $sql .= " ORDER BY b.filename";
 
@@ -200,38 +183,31 @@ class Contenido_Backend {
 
         while ($db->next_record()) {
 
-            # Test if entry is a plug-in.
-            # If so don't add the Include path
+            // Test if entry is a plug-in. If so don't add the Include path
             if (strstr($db->f('name'), "/")) {
                 $filepath = $cfg["path"]["plugins"] . $db->f('name');
             } else {
                 $filepath = $cfg["path"]["includes"] . $db->f('name');
             }
 
-            # If filetype is Main AND
-            # parent_id is 0 file is
-            # a sub file
-            if ($db->f('parent_id') != 0 && $db->f('type') == 'main'){
+            // If filetype is Main AND parent_id is 0 file is a sub file
+            if ($db->f('parent_id') != 0 && $db->f('type') == 'main') {
                 $this->files['sub'][] = $filepath;
             }
 
             $this->files[$db->f('type')][] = $filepath;
-        } # end while
+        }
 
-        cDebug("Files:\n");
-        cDebug(print_r($this->files, true));
-        cDebug("\nActions:\n");
-        cDebug(print_r($this->actions[$this->area], true));
-        cDebug("\nInformation:\n");
-        cDebug("Area: $area\n");
-        cDebug("Action: $action\n");
-        cDebug("Client: $client\n");
-        cDebug("Lang: $lang\n");
-    } # end function
+        $debug = "Files:\n" . print_r($this->files, true) . "\n"
+               . "Actions:\n" . print_r($this->actions[$this->area], true) . "\n"
+               . "Information:\n"
+               . "Area: $area\n" . "Action: $action\n"
+               . "Client: $client\n" . "Lang: $lang\n";
+        cDebug($debug);
+    }
 
     /**
-     * Checks if choosen action exists.
-     * If so, execute/eval it.
+     * Checks if choosen action exists. If so, execute/eval it.
      *
      * @param $action String Action to execute
      * @return $action String Code for selected Action
@@ -243,12 +219,11 @@ class Contenido_Backend {
         }
 
         return '';
-    } # end function
+    }
 
     /**
      * Returns the specified file path.
-     * Distinction between 'inc' and 'main'
-     * files.
+     * Distinction between 'inc' and 'main' files.
      *
      * 'inc'  => Required file like functions/classes etc.
      * 'main' => Main file
@@ -259,7 +234,7 @@ class Contenido_Backend {
         if (isset($this->files[$which])) {
             return $this->files[$which];
         }
-    } # end function
+    }
 
     /**
      * Creates a log entry for the specified parameters.
@@ -271,60 +246,42 @@ class Contenido_Backend {
      * @param $action Action (ID or canonical name)
      */
     function log($idcat, $idart, $client, $lang, $idaction) {
-        global $perm, $auth, $cfg;
-
-        $db_log = cRegistry::getDb();
-
-        $timestamp = date("Y-m-d H:i:s");
-        $idcatart = "0";
-
-        $idcat         = cSecurity::toInteger($idcat);
-        $idart         = cSecurity::toInteger($idart);
-        $client     = cSecurity::toInteger($client);
-        $lang         = cSecurity::toInteger($lang);
-        $idaction     = cSecurity::escapeDB($idaction, $db_log);
+        global $perm, $auth;
 
         if (!cSecurity::isInteger($client)) {
             return;
-        }
-
-        if (!cSecurity::isInteger($lang)) {
+        } elseif (!cSecurity::isInteger($lang)) {
             return;
         }
 
-        if (isset($idcat) && isset($idart) && $idcat != "" && $idart != "") {
-            $sql = "SELECT idcatart
-                        FROM
-                       ". $cfg["tab"]["cat_art"] ."
-                    WHERE
-                        idcat = '".$idcat."' AND
-                        idart = '".$idart."'";
+        $oDb = cRegistry::getDb();
 
-            $db_log->query($sql);
+        $timestamp = date('Y-m-d H:i:s');
+        $idcatart = 0;
 
-            $db_log->next_record();
-            $idcatart = $db_log->f("idcatart");
+        $idcat = (int) $idcat;
+        $idart = (int) $idart;
+        $client = (int) $client;
+        $lang = (int) $lang;
+        $idaction = $oDb->escape($idaction);
+
+        if ($idcat > 0 && $idart > 0) {
+            $oCatArtColl = new cApiCategoryArticleCollection();
+            $oCatArt = $oCatArtColl->fetchByCategoryIdAndArticleId($idcat, $idart);
+            $idcatart = $oCatArt->get('idcatart');
         }
 
         $oldaction = $idaction;
         $idaction = $perm->getIDForAction($idaction);
 
-        if ($idaction != "") {
-        $sql = "INSERT INTO
-                    ". $cfg["tab"]["actionlog"]."
-                SET
-                    user_id = '".$auth->auth["uid"]."',
-                    idclient = '".$client."',
-                    idlang = '".$lang."',
-                    idaction = '".$idaction."',
-                    idcatart = '".$idcatart."',
-                    logtimestamp = '".$timestamp."'";
-
+        if ($idaction != '') {
+            $oActionLogColl = new cApiActionlogCollection();
+            $oActionLogColl->create($auth->auth["uid"], $client, $lang, $idaction, $idcatart, $timestamp);
         } else {
-           echo $oldaction. " is not in the actions table!<br><br>";
+            echo $oldaction . " is not in the actions table!<br><br>";
         }
-
-        $db_log->query($sql);
     }
-} # end class Contenido_Backend
+
+}
+
 ?>

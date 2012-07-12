@@ -19,16 +19,16 @@
  *
  * {@internal
  *   created  2012-07-12
- *
  *   $Id: class.menu.php 2379 2012-06-22 21:00:16Z xmurrix $:
  * }}
  */
+
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-class cGuiMenu
-{
+class cGuiMenu {
+
     public $link;
     public $title;
     public $caption;
@@ -38,7 +38,6 @@ class cGuiMenu
     public $actions;
     public $imagewidth;
     public $show;
-
     protected $_marked;
 
     public function __construct() {
@@ -46,25 +45,25 @@ class cGuiMenu
         $this->_marked = false;
     }
 
-    public function setTitle ($item, $title) {
+    public function setTitle($item, $title) {
         $this->title[$item] = $title;
     }
 
-    public function setRowmark ($rowmark = true) {
+    public function setRowmark($rowmark = true) {
         $this->rowmark = $rowmark;
     }
 
-    public function setImage ($item, $image, $maxwidth = 0) {
+    public function setImage($item, $image, $maxwidth = 0) {
         $this->image[$item] = $image;
         $this->imagewidth[$item] = $maxwidth;
         $this->show[$item] = $show;
     }
 
-    public function setLink ($item, $link) {
+    public function setLink($item, $link) {
         $this->link[$item] = $link;
     }
 
-    public function setActions ($item, $key, $action) {
+    public function setActions($item, $key, $action) {
         $this->actions[$item][$key] = $action;
     }
 
@@ -83,10 +82,10 @@ class cGuiMenu
             foreach ($this->link as $key => $value) {
                 if ($value != NULL) {
                     if ($this->imagewidth[$key] != 0) {
-                        $value->setContent('<img border="0" src="'.$this->image[$key].'" width="'.$this->imagewidth[$key].'">');
+                        $value->setContent('<img border="0" src="' . $this->image[$key] . '" width="' . $this->imagewidth[$key] . '">');
                         $img = $value->render();
                     } else {
-                        $value->setContent('<img border="0" src="'.$this->image[$key].'">');
+                        $value->setContent('<img border="0" src="' . $this->image[$key] . '">');
                         $img = $value->render();
                     }
                     $value->setContent($this->title[$key]);
@@ -96,9 +95,9 @@ class cGuiMenu
 
                     if ($this->image[$key] != "") {
                         if ($this->imagewidth[$key] != 0) {
-                            $img = '<img border="0" src="'.$this->image[$key].'" width="'.$this->imagewidth[$key].'">';
+                            $img = '<img border="0" src="' . $this->image[$key] . '" width="' . $this->imagewidth[$key] . '">';
                         } else {
-                            $img = '<img border="0" src="'.$this->image[$key].'">';
+                            $img = '<img border="0" src="' . $this->image[$key] . '">';
                         }
                     } else {
                         $img = "&nbsp;";
@@ -117,7 +116,7 @@ class cGuiMenu
                 if ($this->rowmark == true) {
                     $extra .= 'onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)" ';
                 }
-                if($this->_marked === $key) {
+                if ($this->_marked === $key) {
                     $extra .= "id='marked'";
                 }
                 $tpl->set('d', 'EXTRA', $extra);
@@ -128,7 +127,7 @@ class cGuiMenu
                     $fullactions = '<table border="0"><tr>';
 
                     foreach ($this->actions[$key] as $key => $singleaction) {
-                        $fullactions .= '<td nowrap="nowrap">'.$singleaction.'</td>';
+                        $fullactions .= '<td nowrap="nowrap">' . $singleaction . '</td>';
                     }
 
                     $fullactions .= '</tr></table>';
@@ -137,9 +136,8 @@ class cGuiMenu
                 $tpl->set('d', 'ACTIONS', $fullactions);
                 $tpl->next();
             }
-
         }
-        $rendered = $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_menu'],true);
+        $rendered = $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_menu'], true);
 
         if ($print == true) {
             echo $rendered;
@@ -147,11 +145,12 @@ class cGuiMenu
             return $rendered;
         }
     }
+
 }
 
 /**
  * Old class name for downwards compatibility
- * @deprecated This class was renamend to cGuiMenu
+ * @deprecated [2012-07-12] This class was renamend to cGuiMenu
  */
 class UI_Menu extends cGuiMenu {
 
@@ -181,5 +180,7 @@ class UI_Menu extends cGuiMenu {
     public function setExtra($extra) {
         cDeprecated("This functions doesn't do anything. Please use CSS to style your elements");
     }
+
 }
+
 ?>

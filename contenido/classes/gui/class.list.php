@@ -20,17 +20,16 @@
  *
  * {@internal
  *   created 2005-05-11
- *
  *   $Id: class.list.php 2379 2012-06-22 21:00:16Z xmurrix $
  * }}
- *
  */
+
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-class cGuiList
-{
+class cGuiList {
+
     protected $cells;
 
     public function __construct() {
@@ -49,8 +48,8 @@ class cGuiList
 
         $colcount = 0;
 
-        if (is_array($this->cells)){
-            foreach ($this->cells as $row => $cells){
+        if (is_array($this->cells)) {
+            foreach ($this->cells as $row => $cells) {
                 $thefont = '';
                 $unne = '';
 
@@ -64,10 +63,10 @@ class cGuiList
                     $tpl2->reset();
 
                     $tpl2->set('s', 'CONTENT', $value);
-                    if($colcount == 1) {
-                        $content .= $tpl2->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list_head'],true);
+                    if ($colcount == 1) {
+                        $content .= $tpl2->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list_head'], true);
                     } else {
-                        $content .= $tpl2->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list_row'],true);
+                        $content .= $tpl2->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list_row'], true);
                     }
                 }
 
@@ -76,7 +75,7 @@ class cGuiList
             }
         }
 
-        $rendered = $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list'],true);
+        $rendered = $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list'], true);
 
         if ($print == true) {
             echo $rendered;
@@ -84,11 +83,12 @@ class cGuiList
             return $rendered;
         }
     }
+
 }
 
 /**
  * Old classname for downwards compatibility
- * @deprecated This class was renamed to cGuiList
+ * @deprecated [2012-07-12] This class was renamed to cGuiList
  */
 class UI_List extends cGuiList {
 
@@ -114,40 +114,42 @@ class UI_List extends cGuiList {
         parent::__construct();
     }
 
-    public function setWidth ($width) {
+    public function setWidth($width) {
         cDeprecated("This function doesn't do anything. Please use CSS to style your elements");
     }
 
-    public function setBgColor ($item, $color) {
+    public function setBgColor($item, $color) {
         cDeprecated("This function doesn't do anything. Please use CSS to style your elements");
     }
 
-    public function setCellExtra ($item, $cell, $extra) {
+    public function setCellExtra($item, $cell, $extra) {
         cDeprecated("This function doesn't do anything. Please use CSS to style your elements");
     }
 
-    public function setPadding ($padding) {
+    public function setPadding($padding) {
         cDeprecated("This function doesn't do anything. Please use CSS to style your elements");
     }
 
-    public function setBorder ($border) {
+    public function setBorder($border) {
         cDeprecated("This function doesn't do anything. Please use CSS to style your elements");
     }
 
-    public function setExtra ($item, $extra) {
+    public function setExtra($item, $extra) {
         cDeprecated("This function doesn't do anything. Please use CSS to style your elements");
     }
 
-    public function setSolidBorder ($solid) {
+    public function setSolidBorder($solid) {
         cDeprecated("This function doesn't do anything. Please use CSS to style your elements");
     }
 
-    public function setCellAlignment ($item, $cell, $alignment) {
+    public function setCellAlignment($item, $cell, $alignment) {
         cDeprecated("This function doesn't do anything. Please use CSS to style your elements");
     }
 
-    public function setCellVAlignment ($item, $cell, $alignment) {
+    public function setCellVAlignment($item, $cell, $alignment) {
         cDeprecated("This function doesn't do anything. Please use CSS to style your elements");
     }
+
 }
+
 ?>

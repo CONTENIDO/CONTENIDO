@@ -20,71 +20,71 @@
  *
  * {@internal
  *   created 2004-08-04
- *
  *   $Id: class.foldingrow.php 2629 2012-07-12 12:14:35Z mischa.holz $
  * }}
- *
  */
+
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+class cGuiFoldingRow extends cHTML {
 
-class cGuiFoldingRow extends cHTML
-{
     /**
      * Table row with the header
-     * @private array
-     * @access private
+     * @var cHTMLTableRow
      */
     protected $_headerRow;
 
     /**
      * Table header data
-     * @private array
-     * @access private
+     * @var cHTMLTableHead
      */
     protected $_headerData;
 
     /**
      * Table row with the content
-     * @private array
-     * @access private
+     * @var cHTMLTableRow
      */
     protected $_contentRow;
 
     /**
      * ID for link that triggers expandCollapse
-     * @private string
-     * @access private
+     * @var string
      */
     protected $_linkId;
 
     /**
+     * Link
+     * @var cGuiLink
+     */
+    protected $_link;
+
+    /**
      * Table content data
-     * @private array
+     * @private cHTMLTableData
      */
     protected $_contentData;
 
-    public function __construct($uuid, $caption = "", $link_id = "", $bExpanded = null) {
+    public function __construct($uuid, $caption = "", $linkId = "", $bExpanded = null) {
         global $auth;
 
         $this->setCaption($caption);
 
-        $this->_headerRow   = new cHTMLTableRow;
-        $this->_headerData  = new cHTMLTableHead;
-        $this->_contentRow  = new cHTMLTableRow;
+        $this->_headerRow = new cHTMLTableRow();
+        $this->_headerData = new cHTMLTableHead();
+        $this->_contentRow = new cHTMLTableRow();
         $this->_contentRow->updateAttributes(array("id" => $uuid));
-        $this->_contentData = new cHTMLTableData;
-        $this->_uuid        = $uuid;
-        $this->_link        = new cGuiLink;
-        $this->_linkId      = $link_id;
+        $this->_contentData = new cHTMLTableData();
+        $this->_uuid = $uuid;
+        $this->_link = new cGuiLink();
+        $this->_linkId = $linkId;
 
         $this->_headerData->setClass("foldingrow");
 
-        $this->_hiddenField = new cHTMLHiddenField("expandstate_".$this->_contentRow->getID());
+        $this->_hiddenField = new cHTMLHiddenField("expandstate_" . $this->_contentRow->getID());
 
-        $this->_foldingImage = new cHTMLImage;
+        $this->_foldingImage = new cHTMLImage();
         $this->_foldingImage->setStyle("margin-right: 4px;");
 
         $this->setExpanded(false);
@@ -95,7 +95,7 @@ class cGuiFoldingRow extends cHTML
         $user = new cApiUser($auth->auth["uid"]);
 
         if ($bExpanded == null) {
-            /* Check for expandstate */
+            // Check for expandstate
             if (!$user->virgin) {
                 if ($user->getProperty("expandstate", $uuid) == "true") {
                     $this->setExpanded($user->getProperty("expandstate", $uuid));
@@ -142,7 +142,7 @@ class cGuiFoldingRow extends cHTML
     }
 
     public function render() {
-        /* Build the expand/collapse link */
+        // Build the expand/collapse link
         $this->_link->setClass("foldingrow");
         if ($this->_linkId != NULL) {
             $this->_link->setID($this->_linkId);
@@ -156,21 +156,22 @@ class cGuiFoldingRow extends cHTML
         $this->_link->setLink("javascript:cGuiFoldingRow_expandCollapse('$imgid', '$rowid', '$hiddenid', '$uuid');");
         $this->_link->setContent($this->_foldingImage->render() . $this->_caption);
 
-        $this->_headerData->setContent(array($this->_hiddenField,$this->_link));
+        $this->_headerData->setContent(array($this->_hiddenField, $this->_link));
         $this->_headerRow->setContent($this->_headerData);
 
         $this->_contentRow->setContent($this->_contentData);
 
-        $output  = $this->_headerRow->render();
+        $output = $this->_headerRow->render();
         $output .= $this->_contentRow->render();
 
         return ($output);
     }
+
 }
 
 /**
  * Old classname for downwards compatibility
- * @deprecated This class was renamed to cGuiFoldingRow
+ * @deprecated [2012-07-12] This class was renamed to cGuiFoldingRow
  */
 class cFoldingRow extends cGuiFoldingRow {
 
@@ -179,5 +180,7 @@ class cFoldingRow extends cGuiFoldingRow {
 
         parent::__construct($uuid, $caption, $link_id, $bExpanded);
     }
+
 }
+
 ?>

@@ -98,8 +98,7 @@ cInclude( "exceptions", "exception.conuser.php" );
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release => 4.8.8
  *
- * @deprecated Use cApiUser instead [2012-02-23]
- *
+ * @deprecated [2012-02-23] Use cApiUser instead
  */
 
 class ConUser extends cApiUser {

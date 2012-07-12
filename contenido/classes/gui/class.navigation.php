@@ -21,18 +21,8 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2008-07-08  Thorsten Granz, added option to disable menu hover effect. clicking is now possible again
- *   modified 2009-12-17, Dominik Ziegler, added support for username fallback and fixed double quote
- *   modified 2009-12-16  Corrected rendering of multiple apostrophes in anchors
- *   modified 2010-01-15, Dominik Ziegler, added frontend url to client name
- *   modified 2011-01-28, Dominik Ziegler, added check for client existance for link to frontend [#CON-378]
- *   modified 2011-08-22, Timo Trautman, removed commented code
- *   modified 2011-10-11, Murat Purc, Partly ported to PHP5
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -42,14 +32,12 @@ if (!defined('CON_FRAMEWORK')) {
 cInclude('includes', 'functions.api.string.php');
 cInclude('includes', 'functions.api.images.php');
 
-
 /**
  * Backend navigaton class. Renders the header navigation document containing the navigtion structure.
  *
  * @package    CONTENIDO Backend Classes
  */
-class cGuiNavigation
-{
+class cGuiNavigation {
 
     /**
      * Flag to debug this vlass
@@ -64,13 +52,11 @@ class cGuiNavigation
      */
     public $data = array();
 
-
     /**
      * Constructor. Loads the XML language file using ContenidoXmlReader.
      */
-    public function __construct()
-    {
-        global $cfg, $belang;
+    public function __construct() {
+        global $cfg;
 
         $this->xml = new ContenidoXmlReader();
         $this->plugxml = new ContenidoXmlReader();
@@ -80,7 +66,6 @@ class cGuiNavigation
             die('Unable to load any XML language file');
         }
     }
-
 
     /**
      * Extracts caption from the XML language file including plugins extended multilang version.
@@ -92,32 +77,31 @@ class cGuiNavigation
      *                            - "{XPath}": XPath value to extract caption from CONTENIDO XML file
      * @return  string  The found caption
      */
-    public function getName($location)
-    {
+    public function getName($location) {
         global $cfg, $belang;
 
         // If a ";" is found entry is from a plugin -> explode location, first is xml file path,
         // second is xpath location in xml file
         if (strstr($location, ';')) {
-            $locs  = explode(';', $location);
-            $file  = trim($locs[0]);
+            $locs = explode(';', $location);
+            $file = trim($locs[0]);
             $xpath = trim($locs[1]);
 
             $filepath = explode('/', $file);
-            $counter = count($filepath)-1;
+            $counter = count($filepath) - 1;
 
             if ($filepath[$counter] == '') {
                 unset($filepath[$counter]);
                 $counter--;
             }
 
-            if(strstr($filepath[$counter], '.xml')) {
+            if (strstr($filepath[$counter], '.xml')) {
                 $filename = $filepath[$counter];
                 unset($filepath[$counter]);
                 $counter--;
             }
 
-            $filepath[($counter+1)] = '';
+            $filepath[($counter + 1)] = '';
 
             $filepath = implode('/', $filepath);
 
@@ -130,7 +114,6 @@ class cGuiNavigation
                 }
             }
             $caption = $this->plugxml->getXpathValue('/language/' . $xpath);
-
         } else {
             $caption = $this->xml->getXpathValue('/language/' . $location);
         }
@@ -138,17 +121,15 @@ class cGuiNavigation
         return i18n($caption);
     }
 
+    /**
+     * Reads and fills the navigation structure data
+     *
+     * @return  void
+     */
+    public function _buildHeaderData() {
+        global $cfg, $perm;
 
-   /**
-    * Reads and fills the navigation structure data
-    *
-    * @return  void
-    */
-    public function _buildHeaderData()
-    {
-        global $cfg, $perm, $belang;
-
-        $db  = cRegistry::getDb();
+        $db = cRegistry::getDb();
         $db2 = cRegistry::getDb();
 
         // Load main items
@@ -170,7 +151,7 @@ class cGuiNavigation
                     FROM
                         " . $cfg['tab']['nav_sub'] . " AS a, " . $cfg['tab']['area'] . " AS b
                     WHERE
-                        a.idnavm = ".$db->f('idnavm')." AND
+                        a.idnavm = " . $db->f('idnavm') . " AND
                         a.level  = 0 AND
                         b.idarea = a.idarea AND
                         a.online = 1 AND
@@ -182,7 +163,7 @@ class cGuiNavigation
 
             while ($db2->next_record()) {
                 $area = $db2->f('area');
-                if ($perm->have_perm_area_action($area) || $db2->f('relevant') == 0){
+                if ($perm->have_perm_area_action($area) || $db2->f('relevant') == 0) {
                     // Extract names from the XML document.
                     $name = $this->getName($db2->f('location'));
                     $this->data[$db->f('idnavm')][] = array($name, $area);
@@ -194,20 +175,18 @@ class cGuiNavigation
         cDebug(print_r($this->data, true));
     }
 
-
     /**
      * Function to build the CONTENIDO header document for backend
      *
      * @param  int  $lang  The language to use for header doc creation
      */
-    public function buildHeader($lang)
-    {
-        global $cfg, $sess, $client, $changelang, $auth, $cfgClient;
+    public function buildHeader($lang) {
+        global $cfg, $sess, $client, $auth, $cfgClient;
 
         $this->_buildHeaderData();
 
         $main = new Template();
-        $sub  = new Template();
+        $sub = new Template();
 
         $cnt = 0;
         $t_sub = '';
@@ -223,7 +202,7 @@ class cGuiNavigation
 
             foreach ($item as $key => $value) {
                 if (is_array($value)) {
-                    $sub->set('s', 'SUBID', 'sub_'.$id);
+                    $sub->set('s', 'SUBID', 'sub_' . $id);
 
                     // create sub menu link
                     $link = new cGuiLink();
@@ -235,7 +214,7 @@ class cGuiNavigation
                     $link->setContent(i18n($value[0]));
 
                     if ($cfg['help'] == true) {
-                        $sJsEvents .= "\n\t" . '$("#sub_' . $value[1] . '").click(function(){ $("#help").attr("data", "'.$value[0].'"); })';
+                        $sJsEvents .= "\n\t" . '$("#sub_' . $value[1] . '").click(function(){ $("#help").attr("data", "' . $value[0] . '"); })';
                     }
                     $sub->set('d', 'CAPTION', $link->render());
 
@@ -262,7 +241,7 @@ class cGuiNavigation
 
             // generate a sub menu item.
             $t_sub .= $sub->generate($cfg['path']['templates'] . $cfg['templates']['submenu'], true);
-            $cnt ++;
+            $cnt++;
         }
 
         if ($numSubMenus == 0) {
@@ -277,7 +256,7 @@ class cGuiNavigation
         $link->setClass('main');
         $link->setTargetFrame('content');
         $link->setLink($sess->url("frameset.php?area=mycontenido&frame=4"));
-        $link->setContent('<img src="'.$cfg['path']['contenido_fullhtml'].$cfg['path']['images'].'my_contenido.gif" border="0" alt="My CONTENIDO" id="imgMyContenido" title="My CONTENIDO">');
+        $link->setContent('<img src="' . $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'my_contenido.gif" border="0" alt="My CONTENIDO" id="imgMyContenido" title="My CONTENIDO">');
         $main->set('s', 'MYCONTENIDO', $link->render());
 
         // info link
@@ -285,7 +264,7 @@ class cGuiNavigation
         $link->setClass('main');
         $link->setTargetFrame('content');
         $link->setLink($sess->url('frameset.php?area=info&frame=4'));
-        $link->setContent('<img src="'.$cfg['path']['contenido_fullhtml'].$cfg['path']['images'].'info.gif" border="0" alt="Info" title="Info" id="imgInfo">');
+        $link->setContent('<img src="' . $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'info.gif" border="0" alt="Info" title="Info" id="imgInfo">');
         $main->set('s', 'INFO', $link->render());
 
         $main->set('s', 'LOGOUT', $sess->url('logout.php'));
@@ -297,7 +276,7 @@ class cGuiNavigation
             $link->setClass('main');
             $link->setLink('javascript://');
             $link->setEvent('click', 'callHelp($(\'#help\').attr(\'data\'));');
-            $link->setContent('<img src="'.$cfg['path']['contenido_fullhtml'].$cfg['path']['images'].'but_help.gif" border="0" alt="Hilfe" title="Hilfe">');
+            $link->setContent('<img src="' . $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_help.gif" border="0" alt="Hilfe" title="Hilfe">');
             $main->set('s', 'HELP', $link->render());
         } else {
             $main->set('s', 'HELP', '');
@@ -313,14 +292,14 @@ class cGuiNavigation
         } else {
             // set delay menu
             $mouseOver = getEffectiveSetting('system', 'delaymenu_mouseover', 300);
-            $mouseOot  = getEffectiveSetting('system', 'delaymenu_mouseout', 1000);
+            $mouseOot = getEffectiveSetting('system', 'delaymenu_mouseout', 1000);
             $main->set('s', 'HEADER_MENU_OBJ', 'HeaderDelayMenu');
-            $main->set('s', 'HEADER_MENU_OPTIONS', '{menuId: "main_0", subMenuId: "sub_0", mouseOverDelay: '.$mouseOver.', mouseOutDelay: '.$mouseOot.'}');
+            $main->set('s', 'HEADER_MENU_OPTIONS', '{menuId: "main_0", subMenuId: "sub_0", mouseOverDelay: ' . $mouseOver . ', mouseOutDelay: ' . $mouseOot . '}');
         }
 
         $main->set('s', 'ACTION', $sess->url('index.php'));
         $main->set('s', 'LANG', $this->_renderLanguageSelect());
-        $main->set('s', 'WIDTH', $itemWidth);####
+        $main->set('s', 'WIDTH', $itemWidth); ####
 
         $sClientName = $classclient->getClientName($client);
         if (strlen($sClientName) > 25) {
@@ -328,19 +307,19 @@ class cGuiNavigation
         }
 
         $client = cSecurity::toInteger($client);
-        if ( $client == 0 ) {
+        if ($client == 0) {
             $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> %s';
             $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientName));
         } else {
             $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
 
-            $sClientName = $classclient->getClientName($client).' ('.$client.')';
-            $sClientUrl  = $cfgClient[$client]["path"]["htmlpath"];
+            $sClientName = $classclient->getClientName($client) . ' (' . $client . ')';
+            $sClientUrl = $cfgClient[$client]["path"]["htmlpath"];
 
-            if ($clientImage !== false && $clientImage != "" && cFileHandler::exists($cfgClient[$client]['path']['frontend'].$clientImage)) {
+            if ($clientImage !== false && $clientImage != "" && cFileHandler::exists($cfgClient[$client]['path']['frontend'] . $clientImage)) {
                 $sClientImageTemplate = '<img src="%s" alt="%s" title="%s" />';
 
-                $sThumbnailPath  = cApiImgScale($cfgClient[$client]['path']['frontend'].$clientImage, 80, 25, 0, 1);
+                $sThumbnailPath = cApiImgScale($cfgClient[$client]['path']['frontend'] . $clientImage, 80, 25, 0, 1);
                 $sClientImageTag = sprintf($sClientImageTemplate, $sThumbnailPath, $sClientName, $sClientName);
 
                 $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientImageTag));
@@ -349,7 +328,7 @@ class cGuiNavigation
             }
         }
 
-        $main->set('s', 'CHOSENUSER', "<b>".i18n("User").":</b> " . $oUser->getEffectiveName());
+        $main->set('s', 'CHOSENUSER', "<b>" . i18n("User") . ":</b> " . $oUser->getEffectiveName());
         $main->set('s', 'SID', $sess->id);
         $main->set('s', 'MAINLOGINLINK', $sess->url("frameset.php?area=mycontenido&frame=4"));
 
@@ -363,14 +342,12 @@ class cGuiNavigation
         $main->generate($cfg['path']['templates'] . $cfg['templates']['header']);
     }
 
-
     /**
      * Renders the language select box
      *
      * @return  string
      */
-    public function _renderLanguageSelect()
-    {
+    public function _renderLanguageSelect() {
         global $cfg, $client, $lang;
 
         $tpl = new Template();
@@ -392,13 +369,13 @@ class cGuiNavigation
 
         if ($availableLanguages->count() > 0) {
             while ($myLang = $availableLanguages->nextAccessible()) {
-                $key   = $myLang->get('idlang');
+                $key = $myLang->get('idlang');
                 $value = $myLang->get('name');
 
                 // I want to get rid of such silly constructs very soon :)
 
-                $sql = "SELECT idclient FROM ".$cfg['tab']['clients_lang']." WHERE
-                        idlang = '".cSecurity::toInteger($key)."'";
+                $sql = "SELECT idclient FROM " . $cfg['tab']['clients_lang'] . " WHERE
+                        idlang = '" . cSecurity::toInteger($key) . "'";
 
                 $db->query($sql);
 
@@ -415,7 +392,7 @@ class cGuiNavigation
                         }
 
                         $tpl->set('d', 'VALUE', $key);
-                        $tpl->set('d', 'CAPTION', $value.' ('.$key.')');
+                        $tpl->set('d', 'CAPTION', $value . ' (' . $key . ')');
                         $tpl->next();
                     }
                 }
@@ -428,11 +405,12 @@ class cGuiNavigation
 
         return $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
     }
+
 }
 
 /**
  * Old classname for downwards compatibility
- * @deprecated This class was replaced by cGuiNavigation
+ * @deprecated [2012-07-12] This class was replaced by cGuiNavigation
  */
 class Contenido_Navigation extends cGuiNavigation {
 
@@ -441,4 +419,5 @@ class Contenido_Navigation extends cGuiNavigation {
 
         parent::__construct();
     }
+
 }

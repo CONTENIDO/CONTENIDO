@@ -19,40 +19,35 @@
  *
  * {@internal
  *   created  2012-07-12
- *
  *   $Id: class.tableform.php 2379 2012-06-22 21:00:16Z xmurrix $:
  * }}
  */
+
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-class cGuiTableForm
-{
+class cGuiTableForm {
+
     public $items;
     public $captions;
     public $id;
     public $rownames;
     public $itemType;
-
     public $formname;
     public $formmethod;
     public $formaction;
     public $formvars;
-
     public $tableid;
-
     public $header;
     public $cancelLink;
     public $submitjs;
-
 
     public function __construct($name, $action = "", $method = "post") {
         global $sess, $cfg;
         $this->formname = $name;
 
-        if ($action == "")
-        {
+        if ($action == "") {
             $this->formaction = "main.php";
         } else {
             $this->formaction = $action;
@@ -63,16 +58,14 @@ class cGuiTableForm
         $this->tableid = "";
         $this->custom = array();
 
-        $this->setActionButton("submit", $cfg['path']['contenido_fullhtml']."images/but_ok.gif", i18n("Save changes"), "s");
-
+        $this->setActionButton("submit", $cfg['path']['contenido_fullhtml'] . "images/but_ok.gif", i18n("Save changes"), "s");
     }
-
 
     public function setVar($name, $value) {
         $this->formvars[$name] = $value;
     }
 
-    public function add ($caption, $field, $rowname = "") {
+    public function add($caption, $field, $rowname = "") {
         $n = "";
 
         if (is_array($field)) {
@@ -109,30 +102,30 @@ class cGuiTableForm
         $this->rownames[$this->id] = $rowname;
     }
 
-    public function addCancel ($link) {
+    public function addCancel($link) {
         $this->cancelLink = $link;
     }
 
-    public function addHeader ($header) {
+    public function addHeader($header) {
         $this->header = $header;
     }
 
-    public function addSubHeader ($header) {
+    public function addSubHeader($header) {
         $this->id++;
         $this->items[$this->id] = '';
         $this->captions[$this->id] = $header;
         $this->itemType[$this->id] = 'subheader';
     }
 
-    public function setSubmitJS ($js) {
+    public function setSubmitJS($js) {
         $this->submitjs = $js;
     }
 
-    public function setActionEvent ($id, $event) {
+    public function setActionEvent($id, $event) {
         $this->custom[$id]["event"] = $event;
     }
 
-    public function setActionButton ($id, $image, $description = "", $accesskey = false, $action = false) {
+    public function setActionButton($id, $image, $description = "", $accesskey = false, $action = false) {
         $this->custom[$id]["image"] = $image;
         $this->custom[$id]["type"] = "actionsetter";
         $this->custom[$id]["action"] = $action;
@@ -141,22 +134,22 @@ class cGuiTableForm
         $this->custom[$id]["event"] = "";
     }
 
-    public function setConfirm ($id, $title, $description) {
+    public function setConfirm($id, $title, $description) {
         $this->custom[$id]["confirmtitle"] = $title;
         $this->custom[$id]["confirmdescription"] = $description;
     }
 
-    public function unsetActionButton ($id) {
+    public function unsetActionButton($id) {
         unset($this->custom[$id]);
     }
 
-    public function render ($return = true) {
+    public function render($return = true) {
         global $sess, $cfg;
 
         $tpl = new Template();
 
         if ($this->submitjs != "") {
-            $tpl->set("s", "JSEXTRA", 'onsubmit="'.$this->submitjs.'"');
+            $tpl->set("s", "JSEXTRA", 'onsubmit="' . $this->submitjs . '"');
         } else {
             $tpl->set("s", "JSEXTRA", '');
         }
@@ -171,13 +164,13 @@ class cGuiTableForm
         if (is_array($this->formvars)) {
             foreach ($this->formvars as $key => $value) {
                 $val = new cHTMLHiddenField($key, $value);
-                $hidden .= $val->render()."\n";
+                $hidden .= $val->render() . "\n";
             }
         }
 
         if (!array_key_exists("action", $this->formvars)) {
-                $val = new cHTMLHiddenField("", "");
-                $hidden .= $val->render()."\n";
+            $val = new cHTMLHiddenField("", "");
+            $hidden .= $val->render() . "\n";
         }
 
         $tpl->set("s", "HIDDEN_VALUES", $hidden);
@@ -220,13 +213,13 @@ class cGuiTableForm
         }
 
         if ($this->cancelLink != "") {
-            $image = new cHTMLImage($cfg["path"]["contenido_fullhtml"].'images/but_cancel.gif');
+            $image = new cHTMLImage($cfg["path"]["contenido_fullhtml"] . 'images/but_cancel.gif');
             $link = new cGuiLink($this->cancelLink);
             $link->setContent($image);
 
             $tpl->set('s', 'CANCELLINK', $link->render());
         } else {
-            $tpl->set('s', 'CANCELLINK','');
+            $tpl->set('s', 'CANCELLINK', '');
         }
 
         $custombuttons = "";
@@ -243,13 +236,13 @@ class cGuiTableForm
 
                 if ($value["confirmtitle"] != "") {
                     $action = '[\'';
-                    $action .= addslashes('document.forms[\''.$this->formname.'\'].elements[\'action\'].value = \''.$value["action"].'\'').'\',\'';
-                    $action .= addslashes('document.forms[\''.$this->formname.'\'].submit()');
+                    $action .= addslashes('document.forms[\'' . $this->formname . '\'].elements[\'action\'].value = \'' . $value["action"] . '\'') . '\',\'';
+                    $action .= addslashes('document.forms[\'' . $this->formname . '\'].submit()');
                     $action .= '\']';
 
-                    $onclick = 'box.confirm(\''.$value["confirmtitle"].'\', \''.$value["confirmdescription"].'\', '.$action.');return false;';
+                    $onclick = 'box.confirm(\'' . $value["confirmtitle"] . '\', \'' . $value["confirmdescription"] . '\', ' . $action . ');return false;';
                 } else {
-                    $onclick = 'document.forms[\''.$this->formname.'\'].elements[\'action\'].value = \''.$value["action"].'\';';
+                    $onclick = 'document.forms[\'' . $this->formname . '\'].elements[\'action\'].value = \'' . $value["action"] . '\';';
                 }
             }
 
@@ -271,7 +264,7 @@ class cGuiTableForm
 
         $tpl->set('s', 'ROWNAME', $this->id);
 
-        $rendered = $tpl->generate($cfg["path"]["contenido"].$cfg['path']['templates'] . $cfg['templates']['generic_table_form'],true);
+        $rendered = $tpl->generate($cfg["path"]["contenido"] . $cfg['path']['templates'] . $cfg['templates']['generic_table_form'], true);
 
         if ($return == true) {
             return ($rendered);
@@ -279,11 +272,12 @@ class cGuiTableForm
             echo $rendered;
         }
     }
+
 }
 
 /**
  * Old classname for downwards compatibility
- * @deprecated This class was renamed to cGuiTableForm.
+ * @deprecated [2012-07-12] This class was renamed to cGuiTableForm.
  */
 class UI_Table_Form extends cGuiTableForm {
 
@@ -300,5 +294,7 @@ class UI_Table_Form extends cGuiTableForm {
     public function setWidth($width) {
         cDeprecated("This function doesn't do anything. Please use CSS to style your pages.");
     }
+
 }
+
 ?>

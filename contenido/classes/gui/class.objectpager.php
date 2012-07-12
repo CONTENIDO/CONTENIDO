@@ -1,41 +1,39 @@
 <?php
 /**
  * Project:
-* CONTENIDO Content Management System
-*
-* Description:
-* Foldable pager for menus
-*
-* Requirements:
-* @con_php_req 5.0
-*
-*
-* @package    CONTENIDO Backend Classes
-* @version    1.2
-* @author     Timo Hummel
-* @copyright  four for business AG <www.4fb.de>
-* @license    http://www.contenido.org/license/LIZENZ.txt
-* @link       http://www.4fb.de
-* @link       http://www.contenido.org
-*
-* {@internal
-*   created 2005-05-11
-*
-*   $Id: class.objectpager.php 2379 2012-06-22 21:00:16Z xmurrix $
-* }}
-*
-*/
+ * CONTENIDO Content Management System
+ *
+ * Description:
+ * Foldable pager for menus
+ *
+ * Requirements:
+ * @con_php_req 5.0
+ *
+ *
+ * @package    CONTENIDO Backend Classes
+ * @version    1.2
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ *
+ * {@internal
+ *   created 2005-05-11
+ *   $Id: class.objectpager.php 2379 2012-06-22 21:00:16Z xmurrix $
+ * }}
+ */
+
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+class cGuiObjectPager extends cGuiFoldingRow {
 
-class cGuiObjectPager extends cGuiFoldingRow
-{
     public $_pagerLink;
     public $_parameterToAdd;
 
-    public function __construct($uuid, $items, $itemsperpage, $currentpage, $link, $parameterToAdd, $id='') {
+    public function __construct($uuid, $items, $itemsperpage, $currentpage, $link, $parameterToAdd, $id = '') {
         if ((int) $currentpage == 0) {
             $currentpage = 1;
         }
@@ -93,9 +91,11 @@ class cGuiObjectPager extends cGuiFoldingRow
             $link->setCustom($this->_parameterToAdd, $key);
 
             switch ($item) {
-                case "|":        $output .= "..."; break;
-                case "current":  $output .= '<span class="cpager_currentitem">'.$key."</span>"; break;
-                default:         $output .= $link->render();
+                case "|": $output .= "...";
+                    break;
+                case "current": $output .= '<span class="cpager_currentitem">' . $key . "</span>";
+                    break;
+                default: $output .= $link->render();
             }
 
             $output .= " ";
@@ -139,11 +139,12 @@ class cGuiObjectPager extends cGuiFoldingRow
             return parent::render();
         }
     }
+
 }
 
 /**
  * Old classname for downwards compatibility
- * @deprecated This class was renamed to cGuiObjectPager
+ * @deprecated [2012-07-12] This class was renamed to cGuiObjectPager
  */
 class cObjectPager extends cGuiObjectPager {
 
@@ -152,6 +153,7 @@ class cObjectPager extends cGuiObjectPager {
 
         parent::__construct($uuid, $items, $itemsperpage, $currentpage, $link, $parameterToAdd, $id);
     }
+
 }
 
 ?>

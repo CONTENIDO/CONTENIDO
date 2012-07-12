@@ -19,16 +19,15 @@
  *
  * {@internal
  *   created  2012-07-12
- *
  *   $Id: class.link.php 2379 2012-06-22 21:00:16Z xmurrix $:
  * }}
  */
+
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-class cGuiLink extends cHTML
-{
+class cGuiLink extends cHTML {
     /* Stores the link location */
     protected $_link;
 
@@ -40,7 +39,6 @@ class cGuiLink extends cHTML
 
     /* Stores the custom entries */
     protected $_custom;
-
     protected $_image;
 
     /**
@@ -158,7 +156,7 @@ class cGuiLink extends cHTML
         }
 
         if ($this->_anchor) {
-            $anchor = "#".$this->_anchor;
+            $anchor = "#" . $this->_anchor;
         } else {
             $anchor = "";
         }
@@ -176,16 +174,16 @@ class cGuiLink extends cHTML
                     }
                 }
 
-                return $this->_link.$custom.$anchor;
+                return $this->_link . $custom . $anchor;
                 break;
             case "clink" :
                 $this->disableAutomaticParameterAppend();
-                return 'main.php?area='.$this->_targetarea.'&frame='.$this->_targetframe.'&action='.$this->_targetaction.$custom."&contenido=".$sess->id.$anchor;
+                return 'main.php?area=' . $this->_targetarea . '&frame=' . $this->_targetframe . '&action=' . $this->_targetaction . $custom . "&contenido=" . $sess->id . $anchor;
                 break;
             case "multilink" :
                 $this->disableAutomaticParameterAppend();
                 $tmp_mstr = 'javascript:conMultiLink(\'%s\',\'%s\',\'%s\',\'%s\');';
-                $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=".$this->_targetarea."&frame=".$this->_targetframe."&action=".$this->_targetaction.$custom), 'right_bottom', $sess->url("main.php?area=".$this->_targetarea2."&frame=".$this->_targetframe2."&action=".$this->_targetaction2.$custom));
+                $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=" . $this->_targetarea . "&frame=" . $this->_targetframe . "&action=" . $this->_targetaction . $custom), 'right_bottom', $sess->url("main.php?area=" . $this->_targetarea2 . "&frame=" . $this->_targetframe2 . "&action=" . $this->_targetaction2 . $custom));
                 return $mstr;
                 break;
         }
@@ -216,18 +214,19 @@ class cGuiLink extends cHTML
     public function toHTML() {
         $this->updateAttributes(array("href" => $this->getHref()));
 
-         if($this->_image != "") {
-             $image = new cHTMLImage($this->_image);
-             $this->setContent($image);
-         }
+        if ($this->_image != "") {
+            $image = new cHTMLImage($this->_image);
+            $this->setContent($image);
+        }
 
         return parent::toHTML();
     }
+
 }
 
 /**
  * Old class name for downwards compatibility
- * @deprecated This class was renamed to cGuiLink
+ * @deprecated [2012-07-12] This class was renamed to cGuiLink
  */
 class Link extends cGuiLink {
 
@@ -256,14 +255,15 @@ class Link extends cGuiLink {
         parent::__construct();
     }
 
-    function setJavascript ($js) {
+    function setJavascript($js) {
         cDeprecated("This function never did anything.");
     }
+
 }
 
 /**
  * Old class name for downwards compatibility
- * @deprecated This class was renamed to cGuiLink
+ * @deprecated [2012-07-12] This class was renamed to cGuiLink
  */
 class cHTMLLink extends cGuiLink {
 
@@ -272,6 +272,7 @@ class cHTMLLink extends cGuiLink {
 
         parent::__construct($link);
     }
+
 }
 
 ?>

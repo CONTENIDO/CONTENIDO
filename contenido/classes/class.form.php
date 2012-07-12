@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/* @deprecated 2011-03-10 This class is not longer supported. */
+/* @deprecated [2011-03-10] This class is not longer supported. */
 class Form
 {
 

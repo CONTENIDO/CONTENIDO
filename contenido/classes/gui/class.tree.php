@@ -23,6 +23,7 @@
  *   $Id: class.tree.php 2629 2012-07-12 12:14:35Z mischa.holz $
  * }}
  */
+
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
@@ -127,7 +128,7 @@ class cGuiTree extends cTree {
     /**
      * applies an action to all items in the tree.
      *
-     * @deprecated This function doesn't do anything
+     * @deprecated [2012-07-12] Thisfunction doesn't do anything
      * @param cApiClickableAction action action object
      * @return void
      * @access public
@@ -139,7 +140,7 @@ class cGuiTree extends cTree {
     /**
      * removes the action from all treeitems.
      *
-     * @deprecated This function doesn't do anything
+     * @deprecated [2012-07-12] Thisfunction doesn't do anything
      * @param cApiClickableAction action Removes the action from the global context.
      * @return void
      * @access public
@@ -151,7 +152,7 @@ class cGuiTree extends cTree {
     /**
      * flushes all actions
      *
-     * @deprecated This function doesn't do anything
+     * @deprecated [2012-07-12] Thisfunction doesn't do anything
      * @return void
      * @access public
      */
@@ -162,7 +163,7 @@ class cGuiTree extends cTree {
     /**
      * sets an action to a specific item.
      *
-     * @deprecated This function doesn't do anything
+     * @deprecated [2012-07-12] Thisfunction doesn't do anything
      * @param mixed item cTreeItem-Object or an id of a TreeItem-Object
      * @param cApiClickableAction action
      * @return void
@@ -176,7 +177,7 @@ class cGuiTree extends cTree {
      * unsets an action from a specific item. Note that you can unset global actions
      * using this method!
      *
-     * @deprecated This function doesn't do anything
+     * @deprecated [2012-07-12] Thisfunction doesn't do anything
      * @param mixed item cTreeItem-Object or an id of a TreeItem-Object
      * @param cApiClickableAction action Action to unset
      * @return void
@@ -189,7 +190,7 @@ class cGuiTree extends cTree {
     /**
      * flushes all actions for a specific item
      *
-     * @deprecated This function doesn't do anything
+     * @deprecated [2012-07-12] Thisfunction doesn't do anything
      * @param mixed item cTreeItem-Object or an id of a TreeItem-Object
      * @return void
      * @access public
@@ -201,7 +202,7 @@ class cGuiTree extends cTree {
     /**
      * Applies an action to all items with a certain attribute set.
      *
-     * @deprecated This function doesn't do anything
+     * @deprecated [2012-07-12] Thisfunction doesn't do anything
      * @param array attributes Values which need to match. The array key is the attribute name. Multiple array
      *        entries are connected with "AND".
      * @param cApiClickableAction action Action to apply
@@ -215,7 +216,7 @@ class cGuiTree extends cTree {
     /**
      * Removes an action from all items with a certain attribute set.
      *
-     * @deprecated This function doesn't do anything
+     * @deprecated [2012-07-12] Thisfunction doesn't do anything
      * @param array attributes Values which need to match. The array key is the attribute name. Multiple array
      *        entries are connected with "AND".
      * @param cApiClickableAction action Action to remove
@@ -229,7 +230,7 @@ class cGuiTree extends cTree {
     /**
      * Removes all actions for items with specific attributes
      *
-     * @deprecated This function doesn't do anything
+     * @deprecated [2012-07-12] Thisfunction doesn't do anything
      * @param array attributes Values which need to match. The array key is the attribute name. Multiple array
      *        entries are connected with "AND".
      * @return void
@@ -479,11 +480,12 @@ class cGuiTree extends cTree {
     public function setBaseLink($link) {
         $this->_baseLink = $link;
     }
+
 }
 
 /**
  * Old classname for downwards compatibility
- * @deprecated This class was renamed to cGuiTree
+ * @deprecated [2012-07-12] This class was renamed to cGuiTree
  */
 class cWidgetTreeView extends cGuiTree {
 
@@ -492,6 +494,7 @@ class cWidgetTreeView extends cGuiTree {
 
         parent::__construct($uuid, $treename);
     }
+
 }
 
 ?>
