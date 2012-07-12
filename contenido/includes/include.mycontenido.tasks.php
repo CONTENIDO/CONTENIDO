@@ -232,7 +232,7 @@ if ($action == "todo_save_item") {
     $todoitem->store();
 }
 
-$cpage = new cPage();
+$cpage = new cGuiPage("mycontenido.tasks", "", "1");
 
 $todoitems = new TODOCollection();
 
@@ -368,7 +368,8 @@ $submit->setImageSource("images/submit.gif");
 $form->add(i18n("Options"), $restrict->render());
 
 if ($lcount == 0) {
-    $cpage->setContent($form->render() . "<br>" . i18n("No tasks found") . "<br>" . markSubMenuItem(1, true));
+    $cpage->displayInfo(i18n("No tasks found"));
+    $cpage->setContent(array($form));
 } else {
     if (!isset($sortby)) {
         $sortby = 1;
@@ -387,7 +388,7 @@ if ($lcount == 0) {
     $list->setSortable(7, true);
     $list->sort($sortby, $sortmode);
 
-    $cpage->setContent($form->render() . "<br>" . $list->render() . markSubMenuItem(1, true));
+    $cpage->setContent(array($form, $list));
 }
 $cpage->render();
 

@@ -33,6 +33,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+$page = new cGuiPage("systemsettings");
+
 $aManagedValues = array('versioning_prune_limit', 'update_check', 'update_news_feed', 'versioning_path', 'versioning_activated',
                         'update_check_period', 'system_clickmenu', 'system_mail_host', 'system_mail_sender',
                         'system_mail_sender_name', 'pw_request_enable', 'maintenance_mode', 'codemirror_activated',
@@ -42,16 +44,16 @@ $aManagedValues = array('versioning_prune_limit', 'update_check', 'update_news_f
 if ($action == "systemsettings_save_item")
 {
     if(strpos($auth->auth["perm"], "sysadmin") === false) {
-        $sWarning = $notification->returnNotification("error", i18n("You don't have the permission to make changes here."), 1).'<br>';
+        $page->displayError(i18n("You don't have the permission to make changes here."), 1);
     } else {
         if (!in_array($systype.'_'.$sysname, $aManagedValues)) {
             setSystemProperty ($systype, $sysname, $sysvalue, $csidsystemprop);
             if(isset($x))
-                $sWarning = $notification->returnNotification("info", i18n('Saved changes successfully!'), 1).'<br>';
+                $page->displayInfo(i18n('Saved changes successfully!'), 1);
             else
-                $sWarning = $notification->returnNotification("info", i18n('Created new item successfully!'), 1).'<br>';
+                $page->displayInfo(i18n('Created new item successfully!'), 1);
         } else {
-           $sWarning = $notification->returnNotification("warning", i18n('Please set this property in systemsettings directly'), 1).'<br>';
+           $page->displayWarning(i18n('Please set this property in systemsettings directly'), 1);
         }
     }
 }
@@ -59,10 +61,10 @@ if ($action == "systemsettings_save_item")
 if ($action == "systemsettings_delete_item")
 {
     if(strpos($auth->auth["perm"], "sysadmin") === false) {
-        $sWarning = $notification->returnNotification("error", i18n("You don't have the permission to make changes here."), 1).'<br>';
+        $page->displayError(i18n("You don't have the permission to make changes here."), 1);
     } else {
         deleteSystemProperty($systype, $sysname);
-        $sWarning = $notification->returnNotification("info", i18n('Deleted item successfully!'), 1).'<br>';
+        $page->displayInfo(i18n('Deleted item successfully!'), 1);
     }
 }
 
@@ -179,38 +181,34 @@ $form->add(i18n("Name"),$inputbox->render());
 $inputbox = new cHTMLTextbox ("sysvalue");
 $form->add(i18n("Value"),$inputbox->render());
 
+$spacer = new cHTMLDiv();
+$spacer->setContent("<br>");
+
+$renderobj = array();
 
 if ($action == "systemsettings_edit_item")
 {
     if(strpos($auth->auth["perm"], "sysadmin") === false) {
-        $sWarning = $notification->returnNotification("error", i18n("You don't have the permission to make changes here."), 1).'<br>';
-        $sListstring = $list->render();
+        $page->displayError(i18n("You don't have the permission to make changes here."));
+        $renderobj[] = $list;
     } else {
         $form2 = new UI_Form("systemsettings");
         $form2->setVar("area",$area);
         $form2->setVar("frame", $frame);
         $form2->setVar("action", "systemsettings_save_item");
         $form2->add('list', $list->render());
-        $sListstring = $form2->render();
+        $renderobj[] = $form2;
     }
 } else {
-    $sListstring = $list->render();
+    $renderobj[] = $list;
 }
 
-$page = new UI_Page;
-$sTooltippScript = '<script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-                    <script type="text/javascript" src="scripts/jquery.tipsy.js"></script>
-                    <script type="text/javascript" src="scripts/registerTipsy.js"></script>';
-
-$page->addScript('tooltippstyle', '<link rel="stylesheet" type="text/css" href="styles/tipsy.css" />');
-$page->addScript('tooltip-js', $sTooltippScript);
-
-$content = $sWarning."\n".$sListstring."<br>";
 if(strpos($auth->auth["perm"], "sysadmin") !== false) {
-    $content .= $form->render();
+    $renderobj[] = $spacer;
+    $renderobj[] = $form;
 }
 
-$page->setContent($content);
+$page->setContent($renderobj);
 $page->render();
 
 ?>

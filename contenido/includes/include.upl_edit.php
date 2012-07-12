@@ -31,31 +31,21 @@ if (!defined('CON_FRAMEWORK')) {
 
 cInclude("includes", "functions.upl.php");
 
-$page = new UI_Page();
+$page = new cGuiPage("upl_edit");
 
 
 //get language js files
 if(($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
 
-    $langscripts=  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
-    <script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
+    $page->addScript("datetimepicker/jquery-ui-timepicker-".$lang_short.".js");
+    $page->addScript("jquery/jquery.ui.datepicker-".$lang_short.".js");
 }
 
-$path_to_calender_pic =  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif';
-
-
-$page->addScript('tooltippstyle', '<link rel="stylesheet" type="text/css" href="styles/tipsy.css" />');
-$page->addScript("cal", '<link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
-        <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
-        <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-        <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-        <script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>'
-        . $langscripts);
-
-
-$sTooltippScript = '<script type="text/javascript" src="scripts/jquery.tipsy.js"></script>
-                    <script type="text/javascript" src="scripts/registerTipsy.js"></script>';
-$page->addScript("tooltip-js", $sTooltippScript);
+$page->addStyle("datetimepicker/jquery-ui-timepicker-addon.css");
+$page->addStyle("smoothness/jquery-ui-1.8.20.custom.css");
+$page->addScript("datetimepicker/jquery-ui-timepicker-addon.js");
+$page->addScript("jquery.tipsy.js");
+$page->addScript("registerTipsy.js");
 
 $form = new UI_Table_Form("properties");
 $form->setVar("frame", $frame);
@@ -244,56 +234,6 @@ if ($upload = $uploads->next()) {
                     '</td></tr>';
                 $sHtmlTimeMng .= "</table>\n";
 
-                $sHtmlTimeMng .= '<script type="text/javascript">
-                $(document).ready(function() {
-    $("#datestart").datetimepicker({
-             buttonImage:"'. $path_to_calender_pic.'",
-              buttonImageOnly: true,
-              showOn: "both",
-              dateFormat: "yy-mm-dd",
-            onClose: function(dateText, inst) {
-                var endDateTextBox = $("#dateend");
-                if (endDateTextBox.val() != "") {
-                    var testStartDate = new Date(dateText);
-                    var testEndDate = new Date(endDateTextBox.val());
-                    if (testStartDate > testEndDate)
-                        endDateTextBox.val(dateText);
-                }
-                else {
-                    endDateTextBox.val(dateText);
-                }
-            },
-            onSelect: function (selectedDateTime){
-                var start = $(this).datetimepicker("getDate");
-                $("#dateend").datetimepicker("option", "minDate", new Date(start.getTime()));
-            }
-        });
-        $("#dateend").datetimepicker({
-             buttonImage: "'. $path_to_calender_pic .'",
-               buttonImageOnly: true,
-               showOn: "both",
-               dateFormat: "yy-mm-dd",
-            onClose: function(dateText, inst) {
-                var startDateTextBox = $("#datestart");
-                if (startDateTextBox.val() != "") {
-                    var testStartDate = new Date(startDateTextBox.val());
-                    var testEndDate = new Date(dateText);
-                    if (testStartDate > testEndDate)
-                        startDateTextBox.val(dateText);
-                }
-                else {
-                    startDateTextBox.val(dateText);
-                }
-            },
-            onSelect: function (selectedDateTime){
-                var end = $(this).datetimepicker("getDate");
-                $("#datestart").datetimepicker("option", "maxDate", new Date(end.getTime()) );
-            }
-        });
-
-});
-                </script>';
-
                 $sCell = $sHtmlTimeMng;
                 break;
 
@@ -349,15 +289,12 @@ if ($upload = $uploads->next()) {
     }
 
     if ($bDirectoryIsWritable == false) {
-        $sErrorMessage = $notification->returnNotification("error", i18n("Directory not writable")  . ' (' . $cfgClient[$client]["upl"]["path"].$path . ')');
-        $sErrorMessage .= '<br />';
-    } else {
-        $sErrorMessage = '';
+        $pager->displayError(i18n("Directory not writable")  . ' (' . $cfgClient[$client]["upl"]["path"].$path . ')');
     }
 
-    $page->setContent($sErrorMessage . $form->render() . $sScript);
+    $page->set("s", "FORM", $form->render() . $sScript);
 } else {
-   $page->setContent(sprintf(i18n("Could not load file %s"),$_REQUEST["file"]));
+   $page->displayCriticalError(sprintf(i18n("Could not load file %s"),$_REQUEST["file"]));
 }
 
 $page->render();

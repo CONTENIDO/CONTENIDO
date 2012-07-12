@@ -49,19 +49,17 @@ if($sFileName == ""){
 $sType = "templates";
 $sTypeContent = "templates";
 
-$oPage = new cPage;
-$oPage->addScript('messageBox', '<script type="text/javascript" src="'.$sess->url('scripts/messageBox.js.php').'"></script>');
-$oPage->addScript('messageBoxInit', '<script type="text/javascript">box = new messageBox("", "", "", 0, 0);</script>');
+$oPage = new cGuiPage("html_tpl_history");
 
 
 if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
 {
-  $notification->displayNotification("error", i18n("Permission denied"));
+  $oPage->displayCriticalError(i18n("Permission denied"));
   $oPage->render();
 } else if (!(int) $client > 0) {
   $oPage->render();
 } else if (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
-  $notification->displayNotification("warning", i18n("Versioning is not activated"));
+  $oPage->displayWarning(i18n("Versioning is not activated"));
   $oPage->render();
 } else {
 
@@ -96,7 +94,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
             }
 
             renameFile($sFileName, $sHTMLName, $oVersionHtmlTemp->getPathFile());
-            $oPage->addScript("reload", $oVersionHtmlTemp->renderReloadScript('htmltpl', $sHTMLName, $sess));
+            $oPage->addScript($oVersionHtmlTemp->renderReloadScript('htmltpl', $sHTMLName, $sess));
         }
 
         if(fileEdit($sHTMLName, $sHTMLCode, $sPath)) {
@@ -170,23 +168,25 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
         $oPage->setEncoding("utf-8");
 
         $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
-        $oPage->addScript('IdLaycode', $oCodeMirrorOutput->renderScript());
+        $oPage->addScript($oCodeMirrorOutput->renderScript());
 
         if($sSelectBox !="") {
-            $oPage->setContent($sSelectBox . $oForm->render());
+            $oPage->set("s", "FORM", $sSelectBox . $oForm->render());
 
         } else {
-            $notification->displayNotification("warning", i18n("No template history available"));
+            $oPage->displayWarning(i18n("No template history available"));
+            $oPage->abortRendering();
         }
         $oPage->render();
 
     } else {
         if($bDeleteFile){
-            $notification->displayNotification("warning", i18n("Version history was cleared"));
+            $oPage->displayWarning(i18n("Version history was cleared"));
         } else {
-            $notification->displayNotification("warning", i18n("No template history available"));
+            $oPage->displayWarning(i18n("No template history available"));
         }
-
+        $oPage->abortRendering();
+        $oPage->render();
     }
 }
 ?>

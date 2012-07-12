@@ -34,6 +34,8 @@ plugin_include('workflow', 'classes/class.workflow.php');
 plugin_include('workflow', 'includes/functions.workflow.php');
 cInclude("includes", "functions.encoding.php");
 
+$page = new cGuiPage("workflow_steps", "workflow");
+
 $iIdMarked = (int) $_GET['idworkflowitem'];
 
 $availableWorkflowActions = WorkflowActions::getAvailableWorkflowActions();
@@ -390,14 +392,10 @@ function getWorkflowUsers($idworkflowitem) {
     return ($content);
 }
 
-$tpl = new Template;
-$tpl->set('s', 'NEW', createNewWorkflow());
-$tpl->set('s', 'STEPS', getWorkflowList());
-$tpl->set('s', 'EDITSTEP', editWorkflowStep($idworkflowitem));
-$frame = $tpl->generate($cfg["path"]["contenido"] . $cfg["path"]["plugins"] . "workflow/templates/template.workflow_steps.html", true);
+$page->set('s', 'NEW', createNewWorkflow());
+$page->set('s', 'STEPS', getWorkflowList());
+$page->set('s', 'EDITSTEP', editWorkflowStep($idworkflowitem));
 
-$page = new UI_Page;
-$page->setContent($frame);
 $page->render();
 
 ?>

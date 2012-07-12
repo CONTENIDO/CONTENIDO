@@ -36,19 +36,17 @@ cInclude("includes", "functions.lay.php");
 // For Editor syntax highlighting
 cInclude("external", "codemirror/class.codemirror.php");
 
-$oPage = new cPage;
-$oPage->addScript('messageBox', '<script type="text/javascript" src="'.$sess->url('scripts/messageBox.js.php').'"></script>');
-$oPage->addScript('messageBoxInit', '<script type="text/javascript">box = new messageBox("", "", "", 0, 0);</script>');
+$oPage = new cGuiPage("lay_history");
 
 $bDeleteFile = false;
 
 if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
-  $notification->displayNotification("error", i18n("Permission denied"));
+  $oPage->displayError(i18n("Permission denied"));
   $oPage->render();
 } else if (!(int) $client > 0) {
   $oPage->render();
 } else if (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
-  $notification->displayNotification("warning", i18n("Versioning is not activated"));
+  $oPage->displayWarning(i18n("Versioning is not activated"));
   $oPage->render();
 } else {
     if ($_POST["lay_send"] == true && $_POST["layname"]!="" && $_POST["laycode"] !="" && (int) $idlay > 0) { // save button
@@ -58,7 +56,7 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
         $sLayoutDescription = $_POST["laydesc"];
 
     //    save and mak new revision
-        $oPage->addScript('refresh', $oVersion->renderReloadScript('lay', $idlay, $sess));
+        $oPage->addScript($oVersion->renderReloadScript('lay', $idlay, $sess));
         layEditLayout($idlay, $sLayoutName, $sLayoutDescription, $sLayoutCode);
         unset($oVersion);
     }
@@ -125,16 +123,18 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
 
     // Render and handle History Area
     $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
-    $oPage->addScript('IdLaycode', $oCodeMirrorOutput->renderScript());
+    $oPage->addScript($oCodeMirrorOutput->renderScript());
 
     if($sSelectBox !="") {
-        $oPage->setContent($sSelectBox . $oForm->render());
+        $div = new cHTMLDiv();
+        $div->setContent($sSelectBox."<br>");
+        $oPage->setContent(array($div, $oForm));
 
     } else {
         if($bDeleteFile){
-            $notification->displayNotification("warning", i18n("Version history was cleared"));
+            $oPage->displayInfo(i18n("Version history was cleared"));
         } else {
-            $notification->displayNotification("warning", i18n("No layout history available"));
+            $oPage->displayWarning(i18n("No layout history available"));
         }
 
     }

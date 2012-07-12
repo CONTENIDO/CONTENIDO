@@ -402,6 +402,7 @@ contenido/classes/drivers/class.gdb.driver.php -text
 contenido/classes/drivers/drivers.txt -text
 contenido/classes/drivers/mysql/class.gdb.mysql.php -text
 contenido/classes/exceptions/exception.conuser.php -text
+contenido/classes/gui/class.page.php -text
 contenido/classes/index.php -text
 contenido/classes/interfaces/interface.conuser.php -text
 contenido/classes/log/class.bufferedlog.php -text
@@ -1210,6 +1211,7 @@ contenido/includes/include.mod_style.php -text
 contenido/includes/include.mod_template.php -text
 contenido/includes/include.mod_translate.php -text
 contenido/includes/include.mod_translate_stringlist.php -text
+contenido/includes/include.mycontenido.php -text
 contenido/includes/include.mycontenido.tasks.edit.php -text
 contenido/includes/include.mycontenido.tasks.php -text
 contenido/includes/include.mycontenido_lastarticles.php -text
@@ -1255,7 +1257,6 @@ contenido/includes/include.upl_left_top.php -text
 contenido/includes/include.upl_search_results.php -text
 contenido/includes/include.upl_subnav.php -text
 contenido/includes/index.php -text
-contenido/includes/main.login.php -text
 contenido/includes/pseudo-cron.inc.php -text
 contenido/includes/rights.inc.php -text
 contenido/includes/rights_area.inc.php -text
@@ -1684,6 +1685,7 @@ contenido/plugins/workflow/locale/de_DE/LC_MESSAGES/workflow.po -text
 contenido/plugins/workflow/locale/potfiles.txt svneol=native#text/plain
 contenido/plugins/workflow/locale/workflow.pot -text
 contenido/plugins/workflow/plugin_workflow.xml -text
+contenido/plugins/workflow/templates/template.workflow_list.html -text
 contenido/plugins/workflow/templates/template.workflow_steps.html -text
 contenido/plugins/workflow/templates/template.workflow_tasks.html -text
 contenido/plugins/workflow/xml/lang_de_DE.xml -text svneol=unset#text/plain
@@ -1692,7 +1694,9 @@ contenido/plugins/workflow/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/scripts/HTMLObj.js -text
 contenido/scripts/addImageTags.js -text
 contenido/scripts/articleObject.js.php -text
+contenido/scripts/boxes.upl_files_overview.js -text
 contenido/scripts/browserCheck.js -text
+contenido/scripts/calendar.mycontenido.tasks.edit.js -text
 contenido/scripts/cfoldingrow.js -text
 contenido/scripts/cmsFileList.js -text
 contenido/scripts/cmsImage.js -text
@@ -1703,7 +1707,7 @@ contenido/scripts/con_tiny.js -text
 contenido/scripts/contenidoConfig.js -text
 contenido/scripts/datetimepicker/jquery-ui-timepicker-addon.js -text svneol=unset#text/plain
 contenido/scripts/datetimepicker/jquery-ui-timepicker-de.js -text svneol=unset#text/plain
-contenido/scripts/dragAndDropUpload.js -text
+contenido/scripts/dragdrop.upl_files_upload.js -text
 contenido/scripts/expandCollapse.js -text
 contenido/scripts/general.js -text
 contenido/scripts/group_association.js -text
@@ -1722,6 +1726,7 @@ contenido/scripts/md5.js -text
 contenido/scripts/messageBox.js.php -text
 contenido/scripts/parameterCollector.js -text
 contenido/scripts/registerTipsy.js -text
+contenido/scripts/reload.js -text
 contenido/scripts/rights.js -text
 contenido/scripts/rowMark.js -text
 contenido/scripts/setPager.js -text
@@ -1793,6 +1798,8 @@ contenido/templates/standard/template.default_subnav.html -text
 contenido/templates/standard/template.error_page.html -text svneol=unset#text/plain
 contenido/templates/standard/template.file_subnav.html -text
 contenido/templates/standard/template.files_overview.html -text
+contenido/templates/standard/template.frontend.group_menu.html -text
+contenido/templates/standard/template.frontend.user_menu.html -text
 contenido/templates/standard/template.generic_form.html -text
 contenido/templates/standard/template.generic_left_top.html -text
 contenido/templates/standard/template.generic_list.html -text
@@ -1808,14 +1815,15 @@ contenido/templates/standard/template.grouprights_memberlist.html -text
 contenido/templates/standard/template.grouprights_memberselect.html -text
 contenido/templates/standard/template.grouprights_menu.html -text
 contenido/templates/standard/template.grouprights_overview.html -text
+contenido/templates/standard/template.html_tpl_history.html -text
 contenido/templates/standard/template.html_tpl_left_top.html -text
 contenido/templates/standard/template.info.html -text
 contenido/templates/standard/template.input_helper.html -text
 contenido/templates/standard/template.input_helper_row.html -text
 contenido/templates/standard/template.inuse_lay_mod.html -text
 contenido/templates/standard/template.inuse_tpl.html -text
+contenido/templates/standard/template.js_history.html -text
 contenido/templates/standard/template.js_left_top.html -text
-contenido/templates/standard/template.lang_edit.html -text
 contenido/templates/standard/template.lang_left_top.html -text
 contenido/templates/standard/template.lang_overview.html -text
 contenido/templates/standard/template.lay_edit_form.html -text
@@ -1829,7 +1837,12 @@ contenido/templates/standard/template.mail_log.detail.html -text svneol=unset#te
 contenido/templates/standard/template.mail_log.left_bottom.html -text
 contenido/templates/standard/template.mail_log.right_bottom.html -text
 contenido/templates/standard/template.mod_edit_form.html -text
+contenido/templates/standard/template.mod_history.html -text
 contenido/templates/standard/template.mod_left_top.html -text
+contenido/templates/standard/template.mod_overview.html -text
+contenido/templates/standard/template.mod_translate.html -text
+contenido/templates/standard/template.mod_translate_stringlist.html -text
+contenido/templates/standard/template.mycontenido.html -text
 contenido/templates/standard/template.mycontenido_lastarticles.html -text
 contenido/templates/standard/template.mycontenido_settings.html -text
 contenido/templates/standard/template.mycontenido_start.html -text
@@ -1850,11 +1863,13 @@ contenido/templates/standard/template.stat_overview.html -text
 contenido/templates/standard/template.stat_subnav.html -text
 contenido/templates/standard/template.stat_top.html -text
 contenido/templates/standard/template.str_overview.html -text
+contenido/templates/standard/template.style_history.html -text
 contenido/templates/standard/template.style_left_top.html -text
 contenido/templates/standard/template.subnav.html -text
 contenido/templates/standard/template.subnav_blank.html -text
 contenido/templates/standard/template.subnav_noleft.html -text
 contenido/templates/standard/template.symbolhelp.html -text
+contenido/templates/standard/template.system_configuration.html -text
 contenido/templates/standard/template.system_purge.html -text
 contenido/templates/standard/template.system_subnav.html -text
 contenido/templates/standard/template.system_variables.html -text
@@ -1863,9 +1878,11 @@ contenido/templates/standard/template.tpl_edit_form.html -text
 contenido/templates/standard/template.tpl_overview.html -text
 contenido/templates/standard/template.tplcfg_edit_form.html -text
 contenido/templates/standard/template.upl_dirs_overview.html -text
+contenido/templates/standard/template.upl_edit.html -text
 contenido/templates/standard/template.upl_files_overview.html -text
+contenido/templates/standard/template.upl_files_upload.html -text
 contenido/templates/standard/template.upl_left_top.html -text
-contenido/templates/standard/template.welcome.html -text
+contenido/templates/standard/template.upl_search_results.html -text
 contenido/templates/standard/template.welcome_update.html -text
 contenido/templates/standard/white.html -text
 contenido/templates/standard/widgets/template.widgets.left_top.html -text

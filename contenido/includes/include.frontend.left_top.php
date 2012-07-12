@@ -29,13 +29,9 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$tpl->reset();
-
-$oPage = new cPage();
+$tpl = new Template();
 
 $user = new cApiUser($auth->auth["uid"]);
-
-$tpl->set('s', '{SESSID}', $sess->id);
 
 /* Set default values */
 $oUser = new cApiUser($auth->auth["uid"]);
@@ -431,7 +427,7 @@ $menu->setRowmark(false);
 #######################
 $containerUsersId='cont_users';
 $containerUsers  = '<div id="'.$containerUsersId.'">';
-$containerUsers .= '<table class="generic" border="0" cellspacing="0" cellpadding="0" width="100%">';
+$containerUsers .= '<table class="borderless strong_headline" border="0" cellspacing="0" cellpadding="0" width="100%">';
 $containerUsers .= $oActionRow->render();
 $containerUsers .= $oListOptionRow->render();
 $containerUsers .= $oPager->render();
@@ -451,7 +447,6 @@ $tpl->set('s', 'CGROUPS', $containerGroups);
 $tpl->set('s', 'ID_GROUPS', $containerGroupsId);
 
 $tpl->set('s', 'PAGE', $_REQUEST["page"]);
-
-$tpl->generate($cfg['path']['templates'] . $cfg['templates']['admin_frontend']);
+$tpl->generate($cfg['path']['templates'].$cfg['templates']['admin_frontend']);
 
 ?>

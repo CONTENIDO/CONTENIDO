@@ -38,12 +38,13 @@ $sActionCreate = 'js_create';
 $sActionEdit = 'js_edit';
 $sActionDelete = 'js_delete';
 $sFilename = '';
-$page = new cPage();
+$page = new cGuiPage("js_edit_form");
 
 $tpl->reset();
 
 if (!$perm->have_perm_area_action($area, $action)) {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $page->displayCriticalError(i18n("Permission denied"));
+    $page->render();
     return;
 }
 
@@ -72,7 +73,7 @@ if ($action == $sActionDelete) {
                             left_bottom.location.href = href+'&file='+'".$sFilename."';
                         }
                       </script>";
-    $page->addScript('reload', $sReloadScript);
+    $page->addScript($sReloadScript);
     $page->render();
 } else {
     $path = $cfgClient[$client]["js"]["path"];
@@ -193,12 +194,12 @@ if ($action == $sActionDelete) {
         $form->add(i18n("Description"), $descr->render());
         $form->add(i18n("Code"), $ta_code);
 
-        $page->setContent($form->render());
+        $page->setContent($form);
 
         $oCodeMirror = new CodeMirror('code', 'js', substr(strtolower($belang), 0, 2), true, $cfg);
-        $page->addScript('codemirror', $oCodeMirror->renderScript());
+        $page->addScript($oCodeMirror->renderScript());
 
-        $page->addScript('reload', $sReloadScript);
+        $page->addScript($sReloadScript);
         $page->render();
 
     }

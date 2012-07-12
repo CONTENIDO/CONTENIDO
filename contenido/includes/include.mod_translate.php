@@ -34,6 +34,8 @@ $langobj = new cApiLanguage($lang);
 
 $langstring = $langobj->get('name') . ' ('.$lang.')';
 
+$page = new cGuiPage("mod_translate");
+
 $moduletranslations = new cApiModuleTranslationCollection();
 $module = new cApiModule($idmod);
 
@@ -50,9 +52,9 @@ if ($action == 'mod_translation_save') {
     $transaltionArray[stripslashes($t_orig)] = stripslashes($t_trans);
     //print_r($transaltionArray);
     if ($contenidoTranslateFromFile->saveTranslationArray($transaltionArray)) {
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Saved translation successfully!'));
+        $page->displayInfo(i18n('Saved translation successfully!'));
     } else {
-        $notification->displayNotification(Contenido_Notification::LEVEL_ERROR, i18n("Can't save translation!"));
+        $page->displayError(i18n("Can't save translation!"));
     }
 }
 
@@ -99,7 +101,6 @@ if (!isset($row)) {
     }
 }
 
-$page = new cPage();
 
 $form = new UI_Table_Form('translation');
 $form->addHeader(sprintf(i18n("Translate module '%s'"), $module->get('name')));
@@ -135,9 +136,7 @@ $table .= '<tr><td>'.$original->render().'</td><td>'.$translated->render().'</td
 $table .= i18n("Hint: Hit ALT+SHIFT+S to save the translated entry and advance to the next string.");
 $form->add(i18n("String list"), $table);
 
-$mark = '<script language="JavaScript">document.translation.t_trans.focus();</script>';
-
-$page->setContent($form->render(). $mark .'<br>');
+$page->set("s", "FORM", $form->render());
 $page->setMarkScript(2);
 $page->setEncoding($langobj->get('encoding'));
 $page->render();

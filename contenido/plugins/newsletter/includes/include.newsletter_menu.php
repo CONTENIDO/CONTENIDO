@@ -37,7 +37,7 @@ if (!defined('CON_FRAMEWORK')) {
 ##################################
 # Initialization
 ##################################
-$oPage = new cPage();
+$oPage = new cGuiPage("newsletter_menu", "newsletter");
 $oUser = new cApiUser($auth->auth["uid"]);
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 
@@ -313,12 +313,9 @@ $sExecScript = '
         }
     </script>';
 
-$oPage->setMargin(0);
-
 // Messagebox JS has to be included before ExecScript!
-$oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
-$oPage->addScript('exec', $sExecScript);
-$oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
+$oPage->addScript($sExecScript);
+$oPage->addScript('parameterCollector.js');
 
 // Generate current content for Object Pager
 $sPagerId = "0ed6d632-6adf-4f09-a0c6-1e38ab60e302";
@@ -347,7 +344,7 @@ $sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
 $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 
 // Send new object pager to left_top
-$oPage->addScript('setpager', '<script type="text/javascript" src="scripts/setPager.js"></script>');
+$oPage->addScript('etPager.js');
 
 $sRefreshPager = '
     <script type="text/javascript">
@@ -359,7 +356,7 @@ $sRefreshPager = '
 
 $oPage->addScript('refreshpager', $sRefreshPager);
 
-$oPage->setContent($oMenu->render(false));
+$oPage->setContent($oMenu);
 $oPage->render();
 
 ?>

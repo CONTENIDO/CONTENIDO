@@ -969,7 +969,7 @@ abstract class DB_Sql_Abstract
         }
 
         $sMsg  = sprintf("%s error: %s (%s) - info: %s\n", $this->type, $this->Errno, $this->Error, $sMsg);
-        error_log($sMsg);
+        cWarning(__FILE__, __LINE__, $sMsg);
     }
 
 

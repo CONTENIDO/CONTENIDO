@@ -30,7 +30,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$oPage = new cPage;
+$oPage = new cGuiPage("clientsettings");
 $oList = new cScrollList;
 
 $idclient = $_GET['idclient'];
@@ -83,13 +83,13 @@ if (!is_numeric($_REQUEST["idclientslang"]) || $_REQUEST["idclientslang"] == 0) 
 if ($_POST['action'] == 'clientsettings_save_item')
 {
     $oClient->setProperty($_POST['cstype'], $_POST['csname'], $_POST['csvalue'], $_POST['csidproperty']);
-    $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Save changes successfully!"));
+    $oPage->displayInfo(i18n("Save changes successfully!"));
 }
 
 if ($_GET['action'] == 'clientsettings_delete_item')
 {
     $oClient->deleteProperty($_GET['idprop']);
-    $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted item successfully!"));
+    $oPage->displayInfo(i18n("Deleted item successfully!"));
 
 }
 
@@ -181,6 +181,9 @@ $oForm->add(i18n('Name'), $oInputbox->render());
 $oInputbox = new cHTMLTextbox('csvalue');
 $oForm->add(i18n('Value'), $oInputbox->render());
 
+$spacer = new cHTMLDiv();
+$spacer->setContent("<br>");
+
 if (($_GET['action'] == "clientsettings_edit_item"))
 {
     $oForm2 = new UI_Form("clientsettings");
@@ -191,17 +194,13 @@ if (($_GET['action'] == "clientsettings_edit_item"))
     $oForm2->setVar("idclientslang", $_REQUEST["idclientslang"]);
 
     $oForm2->add('list', $oList->render());
-    $sSettingsList = $oForm2->render();
+    $oPage->setContent(array($oFrmRange, $spacer, $oForm2, $spacer, $oForm));
 } else {
-    $sSettingsList = $oList->render();
+    $oPage->setContent(array($oFrmRange, $spacer, $oList, $spacer, $oForm));
 }
 
-$sTooltippScript = '<script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-                    <script type="text/javascript" src="scripts/jquery.tipsy.js"></script>
-                    <script type="text/javascript" src="scripts/registerTipsy.js"></script>';
-
-$oPage->addScript('tooltippstyle', '<link rel="stylesheet" type="text/css" href="styles/tipsy.css" />');
-$oPage->addScript('tooltip-js', $sTooltippScript);
-$oPage->setContent("\n".$oFrmRange->render() . '<br>' . $sSettingsList . '<br>' . $oForm->render());
+$oPage->addStyle('tipsy.css');
+$oPage->addScript("jquery.tipsy.js");
+$oPage->addScript("registerTipsy.js");
 $oPage->render();
 ?>

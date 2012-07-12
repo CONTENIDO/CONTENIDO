@@ -48,18 +48,16 @@ if($sFileName == ""){
 
 $sType = "css";
 
-$oPage = new cPage;
-$oPage->addScript('messageBox', '<script type="text/javascript" src="'.$sess->url('scripts/messageBox.js.php').'"></script>');
-$oPage->addScript('messageBoxInit', '<script type="text/javascript">box = new messageBox("", "", "", 0, 0);</script>');
+$oPage = new cGuiPage("style_history");
 
 if (!$perm->have_perm_area_action($area, 'style_history_manage'))
 {
-  $notification->displayNotification("error", i18n("Permission denied"));
+  $oPage->displayCriticalError(i18n("Permission denied"));
   $oPage->render();
 } else if (!(int) $client > 0) {
   $oPage->render();
 } else if (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
-  $notification->displayNotification("warning", i18n("Versioning is not activated"));
+  $oPage->displayWarning(i18n("Versioning is not activated"));
   $oPage->render();
 } else {
 
@@ -93,7 +91,7 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage'))
             }
 
             renameFile($sFileName, $sStyleName, $oVersionStyle->getPathFile());
-            $oPage->addScript("reload", $oVersionStyle->renderReloadScript('style', $sStyleName, $sess));
+            $oPage->addScript($oVersionStyle->renderReloadScript('style', $sStyleName, $sess));
         }
 
         if(fileEdit($sStyleName, $sStyleCode, $sPath)) {
@@ -167,12 +165,12 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage'))
         $oPage->setEncoding("utf-8");
 
         $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'css', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
-        $oPage->addScript('IdLaycode', $oCodeMirrorOutput->renderScript());
+        $oPage->addScript($oCodeMirrorOutput->renderScript());
 
         if ($sSelectBox !="") {
-            $oPage->setContent($sSelectBox . $oForm->render());
+            $oPage->set("s", "FORM", $sSelectBox . $oForm->render());
         } else {
-            $notification->displayNotification("warning", i18n("No style history available"));
+            $oPage->displayWarning(i18n("No style history available"));
         }
         $oPage->render();
 

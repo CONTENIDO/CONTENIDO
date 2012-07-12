@@ -35,7 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 // Initialization
-$oPage = new cPage();
+$oPage = new cGuiPage("newsletter_job_details", "newsletter");
 
 if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) && is_numeric($_REQUEST["idnewsjob"])) {
     // Run job

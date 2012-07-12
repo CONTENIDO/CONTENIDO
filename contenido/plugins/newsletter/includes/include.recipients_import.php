@@ -31,7 +31,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$oPage = new cPage();
+$oPage = new cGuiPage("recipients_import", "newsletter");
 $oRecipients = new NewsletterRecipientCollection();
 
 if (is_array($cfg['plugins']['recipients'])) {
@@ -173,7 +173,6 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
         $iRow = 0;
         $iCol = 0;
         $bStop = false;
-        $sMessage = "";
         $aInvalidLines = array();
         $oGroupMembers = new NewsletterRecipientGroupMemberCollection;
 
@@ -324,9 +323,9 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
             $_REQUEST["txtData"] = implode("\n", $aInvalidLines);
         }
         if (count($aMessage) > 0) {
-            $sMessage = $notification->returnNotification("warning", implode("<br />", $aMessage))."<br />";
+            $oPage->displayWarning(implode("<br />", $aMessage))."<br />";
         }
-        $sMessage .= $notification->returnNotification("info", sprintf(i18n("%d recipients added, %d recipients skipped (e-mail already exists) and %d invalid recipients/e-mail addresses ignored. Invalid recipients are shown (if any).", 'newsletter'), $iAdded, $iDublettes, $iInvalid));
+        $oPage->displayInfo(sprintf(i18n("%d recipients added, %d recipients skipped (e-mail already exists) and %d invalid recipients/e-mail addresses ignored. Invalid recipients are shown (if any).", 'newsletter'), $iAdded, $iDublettes, $iInvalid));
         if ($iAdded > 0) {
             $oPage->setReload();
         }
@@ -384,8 +383,8 @@ $sExecScript = '
         }
     }
     </script>';
-$oPage->addScript('execscript', $sExecScript);
-$oPage->setContent($sMessage.$oForm->render(true));
+$oPage->addScript($sExecScript);
+$oPage->setContent($oForm);
 $oPage->render();
 
 ?>

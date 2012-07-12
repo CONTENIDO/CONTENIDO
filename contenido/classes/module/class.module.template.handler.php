@@ -93,7 +93,7 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler
     public function __construct($idmod)
     {
         parent::__construct($idmod);
-        $this->_page = new cPage();
+        $this->_page = new cGuiPage("mod_template");
         $this->_notification = new Contenido_Notification();
     }
 
@@ -461,10 +461,10 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler
         $form->add(i18n("File"),$selectFile);
         $form->add(i18n("Name"),$tb_name);
         $form->add(i18n("Code"),$ta_code);
-        $this->_page->setContent($notis . $form->render());
+        $this->_page->setContent(array($form));
 
         $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $this->_cfg);
-        $this->_page->addScript('codemirror', $oCodeMirror->renderScript());
+        $this->_page->addScript($oCodeMirror->renderScript());
 
         //$this->_page->addScript('reload', $this->_reloadScript);
         $this->_page->render();
@@ -509,7 +509,8 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler
             $this->_makeFormular($belang);
 
         } catch(Exception $e) {
-            $notificatioin->displayNotification('error', i18n($e->getMessage()));
+            $this->_page->displayError(i18n($e->getMessage()));
+            $this->_page->render();
         }
     }
 }

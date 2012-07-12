@@ -49,7 +49,7 @@ if (empty($action)) {
     $actionRequest = $action;
 }
 
-$page = new cPage();
+$page = new cGuiPage("mod_style");
 
 $tpl->reset();
 $premCreate = false;
@@ -211,13 +211,13 @@ if (isset($actionRequest)) {
     //$form->add(i18n('Description'), $descr->render());
     $form->add(i18n('Code'), $ta_code);
 
-    $page->setContent($form->render());
+    $page->setContent(array($form));
 
     $oCodeMirror = new CodeMirror('code', 'css', substr(strtolower($belang), 0, 2), true, $cfg);
-    $page->addScript('codemirror', $oCodeMirror->renderScript());
+    $page->addScript($oCodeMirror->renderScript());
 
     //$page->addScript('reload', $sReloadScript);
     $page->render();
 }
 
-?> 
+?>

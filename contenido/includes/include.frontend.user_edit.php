@@ -35,7 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$page = new cPage();
+$page = new cGuiPage("frontend.user_edit");
 
 $feusers = new cApiFrontendUserCollection();
 
@@ -94,13 +94,13 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
 
     $idfrontenduser = 0;
     $feuser = new cApiFrontendUser();
-    $page->addScript('reload', $sReloadScript);
+    $page->addScript($sReloadScript);
     $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Delteted user successfully!"));
 }
 
 if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
     if ($action == "frontend_save_user") {
-        $page->addScript('reload', $sReloadScript);
+        $page->addScript($sReloadScript);
         $messages = array();
 
         if ($feuser->get("username") != stripslashes($username)) {
@@ -163,7 +163,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
     }
 
     if (count($messages) > 0) {
-        $notis = $notification->returnNotification("warning", implode("<br>", $messages)) . "<br>";
+        $oPage->displayWarning(implode("<br>", $messages)) . "<br>";
     }
 
 
@@ -245,10 +245,8 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
         $oUser2 = new cApiUser($feuser->get("modifiedby"));
         $form->add(i18n("Last modified by"), $oUser2->get('username') . " (". displayDatetime($feuser->get("modified")).")" );
     }
-    $page->setContent($notis . $form->render(true));
-    $page->addScript('reload', $sReloadScript);
-} else {
-    $page->setContent("");
+    $page->setContent($form);
+    $page->addScript($sReloadScript);
 }
 
 $page->render();

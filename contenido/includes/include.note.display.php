@@ -35,12 +35,11 @@ if ($action == 'note_delete') {
     $oNoteCollection->delete($deleteitem);
 }
 
-$page = new cPage();
+$page = new cGuiPage("note.display");
 
 $oNoteList = new NoteList($itemtype, $itemid);
 $oNoteList->setDeleteable(true);
 
-$page->setMargin(0);
 $page->setContent($oNoteList);
 $page->render();
 

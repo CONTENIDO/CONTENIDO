@@ -38,7 +38,7 @@ $tpl->reset();
 
 if (!(int) $client > 0) {
     // If there is no client selected, display empty page
-    $oPage = new cPage();
+    $oPage = new cGuiPage("style_files_overview");
     $oPage->render();
     return;
 }

@@ -39,8 +39,7 @@ $translationsArray = $contenidoTranslateFromFile->getTranslationArray();
 $translations = new cApiModuleTranslationCollection;
 $translations->select("idmod = '$idmod' AND idlang='$lang'");
 
-$page = new cPage;
-$page->setMargin(0);
+$page = new cGuiPage("mod_translate_stringlist");
 
 $v = '<table class="borderless" cellspacing="0" cellpadding="0" width="600">';
 
@@ -79,7 +78,7 @@ foreach ($translationsArray as $key => $value)
 
 $v .= '</table>';
 
-$page->setContent($v);
+$page->set("s", "FORM", $v);
 
 $clang = new cApiLanguage($lang);
 

@@ -31,7 +31,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 if (!(int) $client > 0) {
     // If there is no client selected, display empty page
-    $oPage = new cPage();
+    $oPage = new cGuiPage("mod_overview");
     $oPage->render();
     return;
 }
@@ -41,7 +41,7 @@ if (!(int) $client > 0) {
 ############################
 $cApiModuleCollection = new cApiModuleCollection();
 $classmodule          = new cApiModule();
-$oPage                = new cPage();
+$oPage                = new cGuiPage("mod_overview");
 $searchOptions = array();
 
 // no value found in request for items per page -> get form db or set default
@@ -195,67 +195,9 @@ foreach ($allModules as $idmod => $module) {
     }
 }
 
-$deleteScript = '    <script type="text/javascript">
-    var sid = "'.$sess->id.'";
-    box = new messageBox("", "", "", 0, 0);
-
-    function deleteModule(idmod) {
-        //console.log(parent.frames[1].document.filter.sortorder);
-        form = document.getElementById("filter");
-
-        url  = \'main.php?area=mod_edit\';
-        url += \'&action=mod_delete\';
-        url += \'&frame=4\';
-        url += \'&idmod=\' + idmod;
-        url += \'&contenido=\' + sid;
-        url += get_registered_parameters();
-        url += \'&sortby=\' + parent.frames[1].document.filter.sortby;
-        url += \'&sortorder=\' + parent.frames[1].document.filter.sortorder;
-        url += \'&filter=\' + parent.frames[1].document.filtertype;
-        url += \'&elemperpage=\' + parent.frames[1].document.filter.elemperpage;
-        url += \'&page=\' + parent.frames[1].document.filter.page;
-        parent.parent.right.right_bottom.location.href = url;
-    }
-
-</script>';
-
-$sShowUsedInfo = '
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $(".in_used_mod").live("click", function() {
-                var iId = $(this).attr("rel");
-
-                var modName = $(this).parents().filter(\'table:first\').parent().prev().text();
-                if (iId) {
-                    $.post(
-                       "' . $cfg['path']['contenido_fullhtml'] . 'ajaxmain.php' . '",
-                         { area: "' . $area . '", ajax: "inused_module", id: iId, contenido: sid },
-                         function(data) {
-                               var inUseTitle = "' . i18n("The module '%s' is used for following templates") . '";
-                              inUseTitle = inUseTitle.replace(\'%s\', modName);
-                            box.notify(inUseTitle, data);
-                         }
-                      );
-                }
-            });
-        });
-    </script>
-        ';
-
-$sMarkRow = '<script language="javascript">
-                if (document.getElementById(\'marked\')) {
-                    row.click(document.getElementById(\'marked\'));
-                }
-            </script>';
-
-$oPage->setMargin(0);
-$oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
-$oPage->addScript('jquery', '<script type="text/javascript" src="scripts/jquery/jquery.js"></script>');
-$oPage->addScript('delete', $deleteScript);
-$oPage->addScript('showUsedInfo', $sShowUsedInfo);
-$oPage->addScript('cfoldingrow.js', '<script language="JavaScript" src="scripts/cfoldingrow.js"></script>');
-$oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
-$oPage->setContent($mlist->render(false).$sMarkRow);
+$oPage->addScript("cfoldingrow.js");
+$oPage->addScript("parameterCollector.js");
+$oPage->set("s", "FORM", $mlist->render(false));
 
 //generate current content for Object Pager
 $oPagerLink = new cHTMLLink;
@@ -292,7 +234,7 @@ $sRefreshPager = '
         }
     </script>';
 
-$oPage->addScript('refreshpager', $sRefreshPager);
+$oPage->addScript($sRefreshPager);
 
 $oPage->render();
 ?>

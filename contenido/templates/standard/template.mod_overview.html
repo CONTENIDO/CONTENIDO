@@ -1,0 +1,48 @@
+<script type="text/javascript">
+    var sid = "1";
+    box = new messageBox("", "", "", 0, 0);
+
+    function deleteModule(idmod) {
+        //console.log(parent.frames[1].document.filter.sortorder);
+        form = document.getElementById("filter");
+
+        url  = 'main.php?area=mod_edit';
+        url += '&action=mod_delete';
+        url += '&frame=4';
+        url += '&idmod=' + idmod;
+        url += '&contenido=' + sid;
+        url += get_registered_parameters();
+        url += '&sortby=' + parent.frames[1].document.filter.sortby;
+        url += '&sortorder=' + parent.frames[1].document.filter.sortorder;
+        url += '&filter=' + parent.frames[1].document.filtertype;
+        parent.parent.right.right_bottom.location.href = url;
+    }
+</script>
+
+<script type="text/javascript">
+        $(document).ready(function() {
+            $(".in_used_mod").live("click", function() {
+                var iId = $(this).attr("rel");
+
+                var modName = $(this).parents().filter('table:first').parent().prev().text();
+                if (iId) {
+                    $.post(
+                       "{CONTENIDO_FULLHTML}ajaxmain.php",
+                         { area: "mod", ajax: "inused_module", id: iId, contenido: sid },
+                         function(data) {
+                               var inUseTitle = "i18n("The module '%s' is used for following templates")";
+                              inUseTitle = inUseTitle.replace('%s', modName);
+                            box.notify(inUseTitle, data);
+                         }
+                      );
+                }
+            });
+        });
+</script>
+{FORM}
+
+<script language="javascript">
+                if (document.getElementById('marked')) {
+                    row.click(document.getElementById('marked'));
+                }
+</script>

@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$oPage = new cPage();
+$oPage = new cGuiPage("recipients_edit", "newsletter");
 $oRecipients = new NewsletterRecipientCollection();
 
 if (is_array($cfg['plugins']['recipients'])) {
@@ -60,9 +60,9 @@ if ($action == "recipients_create" && $perm->have_perm_area_action($area, $actio
     $purgedrecipients = $oRecipients->purge($timeframe);
     /* backslashdollar: There is a problem translating \$ - it is either not recognized or translated correctly (using poEdit) */
     if ($purgedrecipients > 0) {
-        $sNotis = $notification->messageBox("info", sprintf(str_replace("backslashdollar", "\$", i18n("%1backslashdollard recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.", 'newsletter')),$purgedrecipients,$timeframe),0);
+        $oPage->displayInfo(sprintf(str_replace("backslashdollar", "\$", i18n("%1backslashdollard recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.", 'newsletter')),$purgedrecipients,$timeframe),0);
     } else {
-        $sNotis = $notification->messageBox("info", sprintf(str_replace("backslashdollar", "\$", i18n("There are no recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.", 'newsletter')), 0, $timeframe),0);
+        $oPage->displayInfo(sprintf(str_replace("backslashdollar", "\$", i18n("There are no recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.", 'newsletter')), 0, $timeframe),0);
     }
 
     $recipient = new NewsletterRecipient;
@@ -146,7 +146,7 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
     }
 
     if (count($aMessages) > 0) {
-        $sNotis = $notification->returnNotification("warning", implode("<br>", $aMessages)) . "<br>";
+        $oPage->displayWarning(implode("<br>", $aMessages));
     }
 
     $oForm = new UI_Table_Form("properties");
@@ -207,9 +207,9 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
     $oGroupList->setBorder(1);
 
     $oAssocGroups = new NewsletterRecipientGroupMemberCollection();
-    $oAssocGroups->link("RecipientGroupCollection");
-    $oAssocGroups->setWhere("recipientgroupmembercollection.idnewsrcp", $recipient->get("idnewsrcp"));
-    $oAssocGroups->setOrder("recipientgroupcollection.groupname");
+    $oAssocGroups->link("NewsletterRecipientGroupCollection");
+    $oAssocGroups->setWhere("idnewsrcp", $recipient->get("idnewsrcp"));
+    $oAssocGroups->setOrder("groupname");
     $oAssocGroups->query();
 
     if ($oAssocGroups->count() == 0) {
@@ -240,9 +240,7 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
     $oUser = new cApiUser($recipient->get("modifiedby"));
     $oForm->add(i18n("Last modified by", 'newsletter'), $oUser->get('username') . " (". $recipient->get("lastmodified").")" );
 
-    $oPage->setContent($sNotis . $oForm->render(true));
-} else {
-    $oPage->setContent($sNotis . "");
+    $oPage->setContent($oForm);
 }
 
 $oPage->render();

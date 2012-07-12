@@ -30,7 +30,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$oPage = new cPage();
+$oPage = new cGuiPage("frontend.user_menu");
 //
 ///* Set default values */
 $oUser = new cApiUser($auth->auth["uid"]);
@@ -269,40 +269,8 @@ if ($bUsePlugins == false) {
     $iItemCount = $iFullTableCount;
 }
 
-$deleteScript = '<script>
-    var sid = "'.$sess->id.'";
-    var box = new messageBox("", "", "", 0, 0);
-
-    function deleteFrontenduser(idfrontenduser) {
-        form = parent.left_top.document.getElementById("filter");
-        url  = \'main.php?area=frontend\';
-        url += \'&action=frontend_delete\';
-        url += \'&frame=4\';
-        url += \'&idfrontenduser=\' + idfrontenduser;
-        url += \'&contenido=\' + sid;
-        url += get_registered_parameters();
-        url += \'&sortby=\' +form.sortby.value;
-        url += \'&sortorder=\' +form.sortorder.value;
-        url += \'&filter=\' +form.filter.value;
-        url += \'&searchin=\' +form.searchin.value;
-        url += \'&elemperpage=\' +form.elemperpage.value;
-        url += \'&restrictgroup=\' +form.restrictgroup.value;
-        url += \'&page=\' +\''.$mPage.'\';
-        parent.parent.right.right_bottom.location.href = url;
-    }
-</script>';
-
-$sInitRowMark = "<script type=\"text/javascript\">
-    if (document.getElementById('marked')) {
-        row.markedRow = document.getElementById('marked');
-    }
-</script>";
-
-$oPage->setMargin(0);
-$oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
-$oPage->addScript('delete', $deleteScript);
 //$oPage->addScript('cfoldingrow.js', '<script language="JavaScript" src="scripts/cfoldingrow.js"></script>');
-$oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
+$oPage->addScript('parameterCollector.js');
 
 //generate current content for Object Pager
 $oPagerLink = new cHTMLLink();
@@ -326,25 +294,11 @@ $sPagerContent = $oPager->render(1);
 $sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
 $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 
-//send new object pager to left_top
-$sRefreshPager = '
-    <script type="text/javascript">
-        var sNavigation = \''.$sPagerContent.'\';
-        var left_top = parent.left_top;
-        if (left_top.document) {
-            var oPager = left_top.document.getElementById(\'25c6a67d-a3f1-4ea4-8391-446c131952c9\');
 
-            if (oPager) {
-                oInsert = oPager.firstChild;
-                oInsert.innerHTML = sNavigation;
-                 left_top.iPage = '.$_REQUEST["page"].';
-                 left_top.toggle_pager(\'25c6a67d-a3f1-4ea4-8391-446c131952c9\');
-            }
-        }
-    </script>';
-
-$oPage->addScript('refreshpager', $sRefreshPager);
-$oPage->setContent($mlist->render(false).$sInitRowMark);
+$oPage->set("s", "MPAGE", $mpage);
+$oPage->set("s", "PAGER_CONTENT", $sPagerContent);
+$oPage->set("s", "PAGE", $_REQUEST['page']);
+$oPage->set("s", "FORM", $mlist->render(false));
 $oPage->render();
 
 ?>

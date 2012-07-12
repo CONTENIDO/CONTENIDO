@@ -130,7 +130,7 @@ if ($action == "mod_importexport_module") {
     if ($mode == "import") {
         if (cFileHandler::exists($_FILES["upload"]["tmp_name"])) {
             if (!$module->import($_FILES['upload']['name'], $_FILES["upload"]["tmp_name"])) {
-                $noti .= sprintf(i18n("Culd not import modul:")). "<br>";
+                $page->displayError(i18n("Culd not import modul:"));
             } else {
                 // Load the item again (clearing slashes from import)
                 $module->loadByPrimaryKey($module->get($module->primaryKey));
@@ -159,7 +159,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         $disabled = "";
     }
 
-    $page = new cPage();
+    $page = new cGuiPage("mod_edit_form");
     $form = new UI_Table_Form("mod_edit");
     $form->setVar("area","mod_edit");
     $form->setVar("frame", $frame);
@@ -254,61 +254,6 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
     // Check, if tabs may be inserted in text areas (instead jumping to next element)
     if (getEffectiveSetting("modules", "edit-with-tabs", "false") == "true") {
-        $sTabScript = '<script type="text/javascript"><!--
-/**
- * Insert a tab at the current text position in a textarea
- * Jan Dittmer, jdittmer@ppp0.net, 2005-05-28
- * Inspired by http://www.forum4designers.com/archive22-2004-9-127735.html
- * Tested on:
- *   Mozilla Firefox 1.0.3 (Linux)
- *   Mozilla 1.7.8 (Linux)
- *   Epiphany 1.4.8 (Linux)
- *   Internet Explorer 6.0 (Linux)
- * Does not work in:
- *   Konqueror (no tab inserted, but focus stays)
- * Fix for IE "free focus" problem:
- *   Idea from mastercomputers from New Zealand
- *   http://www.antilost.com/community/index.php?showtopic=134&pid=1022&st=0&#entry1022
- *   integrated by HerrB
- */
-function insertTab(event, obj) {
-    var tabKeyCode = 9;
-
-    if (event.which) { // mozilla
-        var keycode = event.which;
-    } else { // ie
-        var keycode = event.keyCode;
-    }
-
-    if (keycode == tabKeyCode) {
-        if (event.type == "keydown") {
-            if (obj.setSelectionRange) { // mozilla
-                var s = obj.selectionStart;
-                var e = obj.selectionEnd;
-                obj.value = obj.value.substring(0, s) + "\t" + obj.value.substr(e);
-                obj.setSelectionRange(s + 1, s + 1);
-                obj.focus();
-            } else if (obj.createTextRange) { // ie
-                document.selection.createRange().text = "\t";
-                setTimeout("document.getElementById(\'"+obj.id+"\').focus();",0);
-            } else {
-                // unsupported browsers
-            }
-        }
-        if (event.returnValue) { // ie ?
-            event.returnValue = false;
-        }
-        if (event.preventDefault) { // dom
-            event.preventDefault();
-        }
-        return false; // should work in all browsers
-    } else {
-        return true;
-    }
-}
-//--></script>';
-        $page->addScript("tabScript", $sTabScript);
-
         $input->setEvent("onkeydown", "return insertTab(event,this);");
         $output->setEvent("onkeydown", "return insertTab(event,this);");
     }
@@ -423,23 +368,6 @@ function insertTab(event, obj) {
 
     if ($sOptionDebugRows == "always" || ($sOptionDebugRows == "onerror" && (!$inputok || !$outputok)))
     {
-        $sSyncScript = '<script type="text/javascript"><!--
-function scrolltheother() {
-    var oICArea = document.mod_edit.input;
-    var oOCArea = document.mod_edit.output;
-    var oIRArea = document.mod_edit.txtInputRows;
-    var oORArea = document.mod_edit.txtOutputRows;
-
-    oIRArea.scrollTop = oICArea.scrollTop;
-    oORArea.scrollTop = oOCArea.scrollTop;
-
-    setTimeout("scrolltheother()", 10);
-}
-window.onload = scrolltheother;
-        //--></script>
-        ';
-        $page->addScript("syncScript", $sSyncScript);
-
         $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oInputRows->render().'</td></tr></table>', $input->render());
         $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oOutputRows->render().'</td></tr></table>', $output->render());
     } else {
@@ -447,10 +375,8 @@ window.onload = scrolltheother;
         $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td></tr></table>', $output->render());
     }
 
-    $noti = '';
     if ($module->isOldModule()) {
-        $noti .= $notification->returnNotification("warning", i18n("This module uses variables and/or functions which are probably not available in this CONTENIDO version. Please make sure that you use up-to-date modules."));
-        $noti .= "<br>";
+        $page->displayWarning(i18n("This module uses variables and/or functions which are probably not available in this CONTENIDO version. Please make sure that you use up-to-date modules."));
     }
 
     if ($idmod != 0) {
@@ -506,36 +432,23 @@ window.onload = scrolltheother;
                     </script>';
         //Dont show form if we delete or synchronize a module
         if ($action == "mod_sync" || $action == "mod_delete") {
-            $page->setContent($noti.$message.$applet."<br>");
+            $page->abortRendering();
         } else {
-            $page->setContent($noti.$message.$form->render().$applet."<br>");
+            $page->set("s", "FORM", $message.$form->render()."<br>");
         }
     }
 
 
     if ($action) {
         if (stripslashes($idmod > 0) || $action == "mod_sync") {
-            $sReloadScript = "<script type=\"text/javascript\">
-                                 var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                                 if (left_bottom) {
-                                     var href = left_bottom.location.href;
-                                     href = href.replace(/&idmod[^&]*/, '');
-                                     left_bottom.location.href = href+'&idmod=".$idmod."';
-                                 }
-                            </script>";
-        } else {
-            $sReloadScript = "";
+            $page->setReload();
         }
-
-
-        // Only reload overview/menu page, if something may have changed
-        $page->addScript('reload', $sReloadScript);
     }
     if (!($action == "mod_importexport_module" && $mode == "export")) {
         $oCodeMirrorInput = new CodeMirror('input', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
         $oCodeMirrorOutput = new CodeMirror('output', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
 
-        $page->addScript('codemirror', $oCodeMirrorInput->renderScript().$oCodeMirrorOutput->renderScript());
+        $page->addScript($oCodeMirrorInput->renderScript().$oCodeMirrorOutput->renderScript());
 
         //dont print meneu
         if($action == "mod_sync") {

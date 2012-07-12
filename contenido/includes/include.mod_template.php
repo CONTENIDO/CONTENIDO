@@ -44,7 +44,7 @@ $fileRequest =    $_REQUEST['file'];
 $TmpFileRequest = $_REQUEST['tmp_file'];
 
 
-$page = new cPage;
+$page = new cGuiPage("mod_template");
 
 $tpl->reset();
 
@@ -55,12 +55,10 @@ if (!is_object($notification)) {
 //$_REQUEST['action'] = $sActionEdit;
 
 
-if (!$perm->have_perm_area_action($area, $action))
-{
-    $notification->displayNotification("error", i18n("Permission denied"));
+if (!$perm->have_perm_area_action($area, $action)) {
+    $page->displayCriticalError(i18n("Permission denied"));
 } else if (!(int) $client > 0) {
   #if there is no client selected, display empty page
-  $page->render();
 } else {
     $contenidoModulTemplateHandler = new Contenido_Module_Template_Handler($idmod);
     $contenidoModulTemplateHandler->setAction($action);
@@ -71,6 +69,6 @@ if (!$perm->have_perm_area_action($area, $action))
     $contenidoModulTemplateHandler->setSelectedFile($_REQUEST['selectedFile']);
     $contenidoModulTemplateHandler->setStatus($_REQUEST['status']);
     $contenidoModulTemplateHandler->display($perm, $notification, $belang);
-
 }
-?> 
+  $page->render();
+?>

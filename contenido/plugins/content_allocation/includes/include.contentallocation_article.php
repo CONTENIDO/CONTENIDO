@@ -53,8 +53,7 @@ $db->query($sql);
 $db->next_record();
 $this_idartlang = $db->f('idartlang');
 
-$oPage = new cPage;
-$oPage->setMargin(10);
+$oPage = new cGuiPage("contentallocation_article", "content_allocataion", "7");
 
 $oTree = new pApiContentAllocationComplexList('06bd456d-fe76-40cb-b041-b9ba90dc400a');
 $oAlloc = new pApiContentAllocation;
@@ -111,13 +110,14 @@ if ($result == false) {
 
     $result = $tpl->generate($cfg['pica']['treetemplate_complexlist'], true);
 
-    $script = '<link rel="stylesheet" type="text/css" href="'.$cfg['pica']['style_complexlist'].'"/>
-    <script language="javascript" src="'.$cfg['pica']['script_complexlist'].'"></script>';
-    $oPage->addScript('style', $script);
+    $oPage->addStyle($cfg['pica']['style_complexlist']);
+    $oPage->addScript($cfg['pica']['script_complexlist']);
 }
 
+$div = new cHTMLDiv();
+$div->setContent($sLocationString.$result);
 
-$oPage->setContent($sLocationString.$result . markSubMenuItem(7, true));
+$oPage->setContent($div);
 $oPage->render();
 
 ?>

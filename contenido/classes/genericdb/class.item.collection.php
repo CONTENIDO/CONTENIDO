@@ -885,18 +885,18 @@ abstract class ItemCollection extends cItemBaseAbstract {
     }
 
     /**
-     * Fetches the resultset related to current loaded primary key as a object
+     * Fetches the resultset related to current loaded primary key as an object
      *
      * @param  Item
      */
     public function fetchObject($sClassName) {
         $sKey = strtolower($sClassName);
 
-        if (is_object($this->_collectionCache[$sKey])) {
+        if (!is_object($this->_collectionCache[$sKey])) {
             $this->_collectionCache[$sKey] = new $sClassName;
         }
         $obj = $this->_collectionCache[$sKey];
-        return $obj->loadItem($this->db->f($obj[$sKey]->primaryKey));
+        return $obj->loadItem($this->db->f($obj->primaryKey));
     }
 
     /* Prelimary documentation

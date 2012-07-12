@@ -45,11 +45,8 @@ defined('CON_FRAMEWORK') or die('Illegal call');
 
 if ((int) $client <= 0) {
     // if there is no client selected, display empty page
-    $oPage = new cPage();
-    $sMsg = $notification->returnNotification(
-        Contenido_Notification::LEVEL_ERROR, i18n("No Client selected")
-    );
-    $oPage->setContent($sMsg);
+    $oPage = new cGuiPage("mod_rewrite_contenttest", "mod_rewrite");
+    $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
     return;
 }

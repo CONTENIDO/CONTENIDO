@@ -72,7 +72,7 @@ INSERT INTO !PREFIX!_files VALUES('77', '39', 'include.rights_create.php', 'main
 INSERT INTO !PREFIX!_files VALUES('78', '39', 'functions.forms.php', 'inc');
 INSERT INTO !PREFIX!_files VALUES('79', '39', 'include.rights_subnav.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('81', '16', 'newsletter/includes/include.newsletter_left_top.php', 'main');
-INSERT INTO !PREFIX!_files VALUES('82', '42', 'main.login.php', 'main');
+INSERT INTO !PREFIX!_files VALUES('82', '42', 'include.mycontenido.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('83', '42', 'include.mycontenido_subnav.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('84', '45', 'include.mycontenido_settings.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('85', '45', 'functions.forms.php', 'inc');

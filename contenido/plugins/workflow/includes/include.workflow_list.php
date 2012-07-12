@@ -36,6 +36,7 @@ $iIdMarked = (int) $_GET['idworkflow'];
 
 plugin_include('workflow', 'classes/class.workflow.php');
 
+$page = new cGuiPage("workflow_list", "workflow");
 $workflows = new Workflows;
 $sScript = '';
 if ($action == "workflow_delete")
@@ -83,48 +84,9 @@ while ($workflow = $workflows->next())
     }
 
 }
-$content = $ui->render(false);
 
-$delScript = '
-    <script type="text/javascript">
-
-
-        function foo(){return true;}
-
-        /* Session-ID */
-        var sid = "'.$sess->id.'";
-
-        /* Create messageBox
-           instance */
-        box = new messageBox("", "", "", 0, 0);
-
-        /* Function for deleting
-           modules */
-
-        function deleteWorkflow(idworkflow) {
-            url  = "main.php?area=workflow";
-            url += "&action=workflow_delete";
-            url += "&frame=2";
-            url += "&idworkflow=" + idworkflow;
-            url += "&contenido=" + sid;
-            parent.left_bottom.location.href = url;
-
-        }
-        </script>';
-
-$sInitRowMark = "<script type=\"text/javascript\">
-                     if (document.getElementById('marked')) {
-                         row.markedRow = document.getElementById('marked');
-                     }
-                 </script>";
-
-$msgboxInclude = '    <script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>';
-$page = new UI_Page;
-$page->addScript('include', $msgboxInclude);
-$page->addScript('del',$delScript);
 $page->addScript('refresh', $sScript);
-$page->setMargin(0);
-$page->setContent($content.$sInitRowMark);
+$page->set("s", "FORM", $ui->render());
 $page->render();
 
 ?>

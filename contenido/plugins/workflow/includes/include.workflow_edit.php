@@ -34,6 +34,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 plugin_include('workflow', 'classes/class.workflow.php');
 
+$page = new cGuiPage("workflow_edit", "workflow");
+
 $form = new UI_Table_Form("workflow_edit");
 $workflows = new Workflows;
 
@@ -101,9 +103,8 @@ $form->add(i18n("Description", "workflow"), $oTxtWFDesc->render());
 $form->add(i18n("Author", "workflow"), $author);
 $form->add(i18n("Created", "workflow"), $created);
 
-$page = new UI_Page;
-$page->setContent($form->render(true));
-$page->addScript('reload', $sReloadScript);
+$page->setContent($form);
+$page->addScript($sReloadScript);
 
 $page->render();
 

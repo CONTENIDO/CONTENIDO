@@ -35,7 +35,7 @@ cInclude('includes', 'functions.file.php');
 
 if (!(int) $client > 0) {
     // if there is no client selected, display empty page
-    $oPage = new cPage;
+    $oPage = new cGuiPage("upl_files_overview");
     $oPage->render();
     return;
 }
@@ -486,8 +486,7 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
     $endwrap = $sSpacedRow.$sToolsRow.$sSpacedRow.$pagerwrap.'</table>';
 
     // Object initializing
-    $page = new UI_Page();
-    $page->addScript('reloadscript', $sReloadScript);
+    $page = new cGuiPage("upl_files_overview", "", 0);
     $list2 = new UploadList($startwrap, $endwrap, $itemwrap);
 
     $uploads = new cApiUploadCollection();
@@ -601,7 +600,8 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
     }
 
     if ($rownum == 0) {
-        $page->setContent(i18n("No files found"));
+        $page->displayWarning(i18n("No files found"));
+        $page->abortRendering();
         $page->render();
         return;
     }
@@ -685,134 +685,6 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 
     $output = str_replace("-C-FILESPERPAGE-", $topbar, $output);
 
-    $page->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
-
-    $sDelTitle = i18n("Delete file");
-    $sDelDescr = i18n("Do you really want to delete the following file:<br>");
-
-    $script = '<script type="text/javascript">
-        // Session-ID
-        var sid = "{SID}";
-
-        // Create messageBox instance
-        box = new messageBox("", "", "", 0, 0);
-
-        function showDelMsg(strElement, path, file, page) {
-            box.confirm("'.$sDelTitle.'", "'.$sDelDescr.'<b>" + strElement + "</b>", "deleteFile(\'" + path + "\', \'" + file + "\', " + page + ")");
-        }
-
-        // Function for deleting items
-        function deleteFile(path, file, page) {
-            url  = \'main.php?area=upl\';
-            url += \'&action=upl_delete\';
-            url += \'&frame=4\';
-            url += \'&path=\' + path;
-            url += \'&file=\' + file;
-            url += \'&startpage=\' + page;
-            url += \'&contenido=\' + sid;
-            url += \'&appendparameters='.$appendparameters.'\';
-
-            window.location.href = url;
-        }
-
-        function renameFile (oldname, path, page) {
-            var newname = prompt("{RENAME}", oldname),
-                url;
-
-            if (newname) {
-                url  = \'main.php?area=upl\';
-                url += \'&action=upl_renamefile\';
-                url += \'&frame=4\';
-                url += \'&newname=\' + newname;
-                url += \'&oldname=\' + oldname;
-                url += \'&startpage=\' + page;
-                url += \'&path=\' + path;
-                url += \'&contenido=\' + sid;
-
-                window.location.href = url;
-            }
-        }
-
-        function getY(e) {
-            var y = 0;
-            while (e) {
-                y += e.offsetTop;
-                e = e.offsetParent;
-            }
-            return y;
-        }
-
-        function getX(e) {
-            var x = 0;
-            while (e) {
-                x += e.offsetLeft;
-                e = e.offsetParent;
-            }
-            return x;
-        }
-
-        function findPreviewImage(smallImg) {
-            var prevImages = document.getElementsByName("prevImage"),
-
-                i;
-            for (i=0; i<prevImages.length; i++) {
-                if (prevImages[i].src == smallImg.src) {
-                    return prevImages[i];
-                }
-            }
-        }
-
-        // Hoverbox
-        function correctPosition(theImage, iWidth, iHeight) {
-            var previewImage = findPreviewImage(theImage);
-
-            if (typeof(previewShowIe6) == "function") {
-                previewShowIe6(previewImage);
-            }
-            previewImage.style.width = iWidth;
-            previewImage.style.height = iHeight;
-            previewImage.style.marginTop = getY(theImage);
-            previewImage.style.marginLeft = getX(theImage) + 100;
-        }
-
-        // Invert selection of checkboxes
-        function invertSelection() {
-            var delcheckboxes = document.getElementsByName("fdelete[]"),
-
-                i;
-            for (i=0; i<delcheckboxes.length; i++) {
-                delcheckboxes[i].checked = !(delcheckboxes[i].checked);
-            }
-        }
-
-        if (parent.parent.frames["right"].frames["right_top"].document.getElementById(\'c_0\')) {
-            menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById(\'c_0\');
-            parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
-        }
-    </script>
-    <!--[if IE 6]>
-        <script type="text/javascript">
-            function previewShowIe6(previewImage) {
-                previewImage.style.display = "block"
-                previewImage.style.position = "absolute"
-                previewImage.style.top = "-33px"
-                previewImage.style.left = "-45px"
-                previewImage.style.zIndex = "1"
-            }
-
-            function previewHideIe6(theImage) {
-                var previewImage = findPreviewImage(theImage);
-                previewImage.style.display = "none";
-            }
-        </script>
-    <![endif]-->';
-
-    $script = str_replace('{SID}', $sess->id, $script);
-    $script = str_replace('{RENAME}', i18n("Enter new filename"), $script);
-
-    $page->addScript("script", $script);
-    $markSubItem = markSubMenuItem(0, true);
-
     $delform = new UI_Form("del");
     $delform->setVar("area", $area);
     $delform->setVar("action", "");
@@ -827,28 +699,13 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
     // Table with (preview) images
     $delform->add("list", $output);
 
-    $page->addScript('iZoom', '<script type="text/javascript" src="'.$sess->url("scripts/iZoom.js.php").'"></script>');
-    $page->addScript('style', '<style type="text/css">
-                               select {
-                                vertical-align:middle;
-                               }
-                               a.invert_hover:active, a.invert_hover:link, a.invert_hover:visited {
-                                   cursor: pointer;
-                                   color: #0060B1;
-                               }
-                               a.invert_hover:hover {
-                                  color: #000000;
-                               }
-                               </style>');
+    $page->addScript($sess->url("iZoom.js.php"));
 
     if ($bDirectoryIsWritable == false) {
-        $sErrorMessage = $notification->returnNotification("error", i18n("Directory not writable")  . ' (' . $cfgClient[$client]["upl"]["path"].$path . ')');
-        $sErrorMessage .= '<br />';
-    } else {
-        $sErrorMessage = '';
+        $page->displayError(i18n("Directory not writable")  . ' (' . $cfgClient[$client]["upl"]["path"].$path . ')');
     }
 
-    $page->setContent($sScriptinBody . $sErrorMessage . $delform->render());
+    $page->setContent(array($delform));
 
     $page->render();
 }

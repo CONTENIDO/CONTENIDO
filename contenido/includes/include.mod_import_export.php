@@ -26,7 +26,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$page = new cPage();
+$page = new cGuiPage("mod_import_export");
 
 $module = new cApiModule();
 $module->loadByPrimaryKey($idmod);
@@ -131,8 +131,8 @@ $form2->setVar("frame", $frame);
 $form2->setVar("idmod", $idmod);
 $form2->custom["submit"]["accesskey"] = '';
 
-
-$page->setContent($form2->render().$sScript);
+$page->addScript($sScript);
+$page->setContent(array($form2));
 
 
 $page->render();

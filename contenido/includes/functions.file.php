@@ -276,9 +276,9 @@ function createFile($filename, $path)
     fileValidateFilename($filename, true);
 
     // create the file
-    if (cFileHandler::create($filename)) {
+    if (cFileHandler::create($path.$filename)) {
         // change file access permission
-        if (cFileHandler::chmod($path.$filename, "0777")) {
+        if (cFileHandler::chmod($path.$filename, 0777)) {
             return true;
         } else {
             $notification->displayNotification("error", $path.$filename." ".i18n("Unable to change file access permission."));

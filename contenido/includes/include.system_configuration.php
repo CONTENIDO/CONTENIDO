@@ -99,6 +99,8 @@ function getPostValue($aProperty) {
     }
 }
 
+$oPage = new cGuiPage("system_configuration", "", "1");
+
 $aManagedProperties = array(
                           array('type' => 'versioning', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Versioning activated'), 'group' => i18n('Versioning')),
                           array('type' => 'versioning', 'name' => 'path', 'value' => '', 'label' => i18n('Serverpath to version files'), 'group' => i18n('Versioning')),
@@ -127,7 +129,7 @@ $aSettings = getSystemProperties(1);
 
 if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have_perm_area_action($area, 'edit_sysconf')) {
     if(strpos($auth->auth["perm"],"sysadmin") === false) {
-        $sNotification = $notification->displayNotification("error", i18n("You don't have the permission to make changes here."));
+        $oPage->displayError(i18n("You don't have the permission to make changes here."));
     } else {
         $bStored = false;
         foreach ($aManagedProperties as $aProperty) {
@@ -136,7 +138,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
 
             if ($sStoredValue != $sValue &&  (is_array($aProperty['value']) && $sValue != '' || !is_array($aProperty['value']))) {
                 if ( $aProperty['type'] == 'update' && $aProperty['name'] == 'check_period' && (int) $sValue < 60 ) {
-                    $sNotification = $notification->displayNotification("error", i18n("Update check period must be at least 60 minutes."));
+                    $oPage->displayError(i18n("Update check period must be at least 60 minutes."));
                     $bStored = false;
                     break;
                 } else {
@@ -146,7 +148,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
             }
         }
         if ($bStored) {
-            $sNotification = $notification->displayNotification("info", i18n("Changes saved"));
+            $oPage->displayInfo(i18n("Changes saved"));
         }
     }
 }
@@ -199,34 +201,11 @@ foreach ($aManagedProperties as $aProperty) {
 
 $oForm->add(renderLabel($sCurGroup, '', 150, ''), $sLeftContent);
 
-$sJs = '<script type="text/javascript">
-          if (top.content.right_top.document.getElementById(\'c_1\') ) {
-              menuItem = top.content.right_top.document.getElementById(\'c_1\');
-              top.content.right_top.sub.clicked(menuItem.firstChild);
-          }
-
-          function cls() {
-                  parent.parent.header.document.getElementById("debug_msg").innerHTML = "";
-          }
-
-          function assignEvent() {
-                  var obj = document.getElementById(\'debug{_}debug_to_screen\');
-                  if(obj == null) {
-                      window.setTimeout("assignEvent()", 50);
-                      return;
-                  }
-                  obj.onchange = cls;
-          }
-          assignEvent();
-
-       </script>';
-
-$oPage = new cPage;
 if ($perm->have_perm_area_action($area, 'edit_sysconf')) {
-    $oPage->setContent($sNotification.$oForm->render());
+    $oPage->set("s", "FORM", $oForm->render());
 } else {
-    $oPage->setContent($notification->returnNotification("error", i18n('Access denied'), 1));
+    $oPage->displayCriticalError(i18n('Access denied'));
 }
-$oPage->addScript('setMenu', $sJs);
+
 $oPage->render();
 ?>

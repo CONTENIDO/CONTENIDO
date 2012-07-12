@@ -37,17 +37,18 @@ if (!defined('CON_FRAMEWORK')) {
 
 $tpl2 = new Template();
 
+$page = new cGuiPage("tpl_edit_form");
 if($action == "tpl_delete" && $perm->have_perm_area_action_anyitem($area, $action)) {
-    $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted Template succcessfully!"));
+    $page->displayInfo(i18n("Deleted Template succcessfully!"));
+    $page->abortRendering();
 
-    $page = new cPage;
     $page->render();
     exit;
 }
 
 
 if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $page->displayCriticalError(i18n("Permission denied"));
 } else {
 
     if ($action == "tpl_new") {
@@ -254,36 +255,19 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
         }
     }
 
-
-
-
     $href = $sess->url("main.php?area=tpl&frame=2&idtpl=".$idtpl);
 
-    $sReloadScript = "<script type=\"text/javascript\">
-    var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-    if (left_bottom) {
-    var href = left_bottom.location.href;
-    href = href.replace(/&file.*/, '');
-    left_bottom.location.href = ".href."
-
-    }
-    </script>";
-
-    $page = new cPage();
-    $page->addScript('reload', $sReloadScript);
-
+    $page->setReload();
     $page->setSubnav("idtpl=$idtpl", "tpl");
 
     if ($action != "tpl_duplicate") {
-        $page->setContent($form->render());
+        $page->setContent(array($form));
     }
 
-    $notification = new Contenido_Notification();
-
     if ($_POST["idtpl"] === "" && $idtpl > 0) {
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new Template successfully!"));
+        $page->displayInfo(i18n("Created new Template successfully!"));
     } elseif (isset($_POST["submit_x"]) || ($_POST["idtpl"] == $idtpl && $action != 'tpl_new' )) {
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
+        $page->displayInfo(i18n("Saved changes successfully!"));
     }
 
     $page->render();

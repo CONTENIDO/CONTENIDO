@@ -57,7 +57,7 @@ if (!$contenidoModulHandler->existFile('js', $contenidoModulHandler->getJsFileNa
     }
 }
 
-$page = new cPage();
+$page = new cGuiPage("mod_script");
 
 $tpl->reset();
 
@@ -184,10 +184,10 @@ if (isset($actionRequest)) {
     $form->add(i18n('Name'), $tb_name);
     $form->add(i18n('Code'), $ta_code);
 
-    $page->setContent($form->render());
+    $page->setContent(array($form));
 
     $oCodeMirror = new CodeMirror('code', 'js', substr(strtolower($belang), 0, 2), true, $cfg);
-    $page->addScript('codemirror', $oCodeMirror->renderScript());
+    $page->addScript($oCodeMirror->renderScript());
 
     //$page->addScript('reload', $sReloadScript);
     $page->render();

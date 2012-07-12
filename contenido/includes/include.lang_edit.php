@@ -34,6 +34,8 @@ includePlugins('languages');
 
 $clang = new cApiLanguage($idlang);
 
+$page = new cGuiPage("lang_edit");
+
 // Script for refreshing Language Box in Header
 $newOption = '';
 
@@ -49,10 +51,9 @@ $sReload = '<script type="text/javascript">
             </script>';
 
 if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
-    $page = new UI_Page();
 
     if ($action == "lang_deletelanguage") {
-        $notification-> displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted language successfully!"));
+        $page->displayInfo(i18n("Deleted language successfully!"));
         // finally delete from dropdown in header
         $newOption = '<script type="text/javascript">
                         var langList = top.header.document.getElementById("cLanguageSelect");
@@ -80,13 +81,13 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
                         langList.options[langList.options.length] = newLang;
                       </script>';
         $idlang = $new_idlang;
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new language successfully!"));
+        $page->displayInfo(i18n("Created new language successfully!"));
     }
 
     if ($targetclient == $client) {
-        $page->addScript('refreshHeader', $newOption);
+        $page->addScript($newOption);
     }
-    $page->addScript('reload', $sReload);
+    $page->addScript($sReload);
     $page->render();
 } else {
     if ($action == "lang_edit") {
@@ -114,14 +115,14 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
     }
 
     if (!$perm->have_perm_area_action($area, $action)) {
-      $notification->displayNotification("error", i18n("Permission denied"));
+      $page->displayCriticalError(i18n("Permission denied"));
     } else {
         if (!isset($idlang) && $action != "lang_new") {
-            $notification->displayNotification("error", "no language id given. Usually, this shouldn't happen, except if you played around with your system. if you didn't play around, please report a bug.");
+            $page->displayCriticalError("no language id given. Usually, this shouldn't happen, except if you played around with your system. if you didn't play around, please report a bug.");
         } else {
             if (($action == "lang_edit") && ($perm->have_perm_area_action($area, $action))) {
                 langEditLanguage($idlang, $langname, $sencoding, $active, $direction);
-                $noti = $notification->returnNotification("info", i18n("Changes saved"))."<br>";
+                $page->displayInfo(i18n("Changes saved"));
             }
 
             $tpl->reset();
@@ -231,16 +232,14 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
             $form->add(i18n("Date format"), $dateformat->render());
             $form->add(i18n("Time format"), $timeformat->render());
 
-
-            $page = new UI_Page();
-            $page->setContent($noti . $form->render());
+            $page->setContent($form);
 
             if ($targetclient == $client) {
-                $page->addScript('refreshHeader', $newOption);
+                $page->addScript($newOption);
             }
 
             if ($_REQUEST['action'] != '') {
-                $page->addScript('reload', $sReload);
+                $page->addScript($sReload);
             }
 
             $page->render();

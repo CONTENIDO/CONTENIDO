@@ -43,18 +43,16 @@ if($idmod =="") {
 }
 
 $bDeleteFile = false;
-$oPage = new cPage;
-$oPage->addScript('messageBox', '<script type="text/javascript" src="'.$sess->url('scripts/messageBox.js.php').'"></script>');
-$oPage->addScript('messageBoxInit', '<script type="text/javascript">box = new messageBox("", "", "", 0, 0);</script>');
+$oPage = new cGuiPage("mod_history");
 
 if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
 {
-  $notification->displayNotification("error", i18n("Permission denied"));
+  $oPage->displayError(i18n("Permission denied"));
   $oPage->render();
 } else if (!(int) $client > 0) {
   $oPage->render();
 } else if (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
-  $notification->displayNotification("warning", i18n("Versioning is not activated"));
+  $oPage->displayWarning(i18n("Versioning is not activated"));
   $oPage->render();
 } else {
 
@@ -66,7 +64,7 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
         $sDescription = $_POST["moddesc"];
 
     //    save and mak new revision
-        $oPage->addScript('refresh', $oVersion->renderReloadScript('mod', $idmod, $sess));
+        $oPage->addScript($oVersion->renderReloadScript('mod', $idmod, $sess));
         modEditModule($idmod, $sName, $sDescription, $sCodeInput, $sCodeOutput, $oVersion->sTemplate, $oVersion->sModType);
         unset($oVersion);
     }
@@ -139,16 +137,18 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
         // Render and handle History Area
         $oCodeMirrorIn = new CodeMirror('IdCodeIn', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
         $oCodeMirrorOutput = new CodeMirror('IdCodeOut', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
-        $oPage->addScript('IdCodeIn', $oCodeMirrorIn->renderScript());
-        $oPage->addScript('IdCodeOut', $oCodeMirrorOutput->renderScript());
+        $oPage->addScript($oCodeMirrorIn->renderScript());
+        $oPage->addScript($oCodeMirrorOutput->renderScript());
 
-        $oPage->setContent($sSelectBox . $oForm->render());
+        $oPage->set("s", "FORM", $sSelectBox . $oForm->render());
 
     } else {
         if($bDeleteFile){
-            $notification->displayNotification("warning", i18n("Version history was cleared"));
+            $oPage->displayWarning(i18n("Version history was cleared"));
+            $oPage->abortRendering();
         } else {
-            $notification->displayNotification("warning", i18n("No module history available"));
+            $oPage->displayWarning(i18n("No module history available"));
+            $oPage->abortRendering();
         }
 
 

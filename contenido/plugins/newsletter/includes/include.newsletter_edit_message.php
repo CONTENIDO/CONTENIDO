@@ -36,7 +36,7 @@ if (!defined('CON_FRAMEWORK')) {
 cInclude("includes", "functions.con.php");    // For conDeleteArt and conCopyArt
 
 // Initialization
-$oPage = new cPage();
+$oPage = new cGuiPage("newsletter_edit_message", "newsletter");
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 
 // Ensure to have numeric newsletter id
@@ -93,7 +93,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
          }
 
         $oNewsletter->store();
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!", 'newsletter'));
+        $oPage->displayInfo(i18n("Saved changes successfully!", 'newsletter'));
     } elseif ($oNewsletter->get("idart") > 0) {
         // Check, if html message article and template article are still available
         $oArticles = new cApiArticleLanguageCollection();
@@ -103,7 +103,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 
         if ($oArticles->count() == 0) {
             // Ups, article lost, reset idart and template_idart for newsletter
-            $notis = $notification->returnNotification("error", sprintf(i18n("The html newsletter article has been deleted (idart: %s), the html message is lost", 'newsletter'), $oNewsletter->get("idart"))) . "<br>";
+            $oPage->displayError(sprintf(i18n("The html newsletter article has been deleted (idart: %s), the html message is lost", 'newsletter'), $oNewsletter->get("idart"))) . "<br>";
 
             $oNewsletter->set("idart", 0);
             $oNewsletter->set("template_idart", 0);
@@ -116,7 +116,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 
             if ($oArticles->count() == 0) {
                 // Ups, template has been deleted: Restore from current newsletter message article
-                $notis = $notification->returnNotification("warning", i18n("The html newsletter template article has been deleted, it has been restored using the html message article of this newsletter", 'newsletter')) . "<br>";
+                $oPage->displayWarning(i18n("The html newsletter template article has been deleted, it has been restored using the html message article of this newsletter", 'newsletter')) . "<br>";
 
                 $iIDArt = conCopyArticle($oNewsletter->get("idart"),
                                          $oClientLang->getProperty("newsletter", "html_template_idcat"),
@@ -212,7 +212,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             $oForm->add(i18n("HTML Message", 'newsletter'), '<iframe width="100%" height="600" src="'.$sFrameSrc.'"></iframe><br />'.$sTagInfoHTML);
         } else {
             // Add a real note, that a template has to be specified
-            $notis .= $notification->returnNotification("warning", i18n("Newsletter type has been set to HTML/text, please remember to select an html template", 'newsletter')) . "<br />";
+            $oPage->displayWarning(i18n("Newsletter type has been set to HTML/text, please remember to select an html template", 'newsletter')) . "<br />";
 
             $oForm->add(i18n("HTML Message", 'newsletter'), i18n("Please choose a template first", 'newsletter'));
         }
@@ -258,11 +258,8 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             document.frmNewsletterMsg.submit();
         }
     </script>';
-    $oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
-    $oPage->addScript('execscript', $sExecScript);
-    $oPage->setContent($notis . $oForm->render(true));
-} else {
-    $oPage->setContent($notis . "");
+    $oPage->addScript($sExecScript);
+    $oPage->setContent($oForm);
 }
 
 $oPage->render();

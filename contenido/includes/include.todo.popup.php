@@ -30,7 +30,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$cpage = new cPage();
+$cpage = new cGuiPage("todo.popup");
 
 if ($action == 'todo_save_item') {
     $todo = new TODOCollection();
@@ -47,7 +47,7 @@ if ($action == 'todo_save_item') {
         }
     }
 
-    $cpage->setContent('<script>window.close();</script>');
+    $cpage->addScript('<script>window.close();</script>');
 } else {
     $ui = new UI_Table_Form('reminder');
     $ui->addHeader(i18n('Add TODO item'));
@@ -148,12 +148,11 @@ $(document).ready(function() {
     $userselect->setSize(5);
 
     $ui->add(i18n("Assigned to"), $userselect->render());
-    $cpage->setcontent($ui->render().$calscript);
+    $cpage->addScript($calscript);
+    $cpage->setcontent($ui);
 
-    $cpage->addScript("cal", '<link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
+    $cpage->addScript('<link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
                     <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
-                    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-                    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
                     <script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>'
                     . $langscripts);
 }

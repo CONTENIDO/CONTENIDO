@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$page = new cPage();
+$page = new cGuiPage("frontend.group_menu");
 $menu = new UI_Menu();
 
 $fegroups = new cApiFrontendGroupCollection();
@@ -62,39 +62,7 @@ while ($fegroup = $fegroups->next())
     }
 }
 
-$sInitRowMark = "<script type=\"text/javascript\">
-    if (document.getElementById('marked')) {
-        row.markedRow = document.getElementById('marked');
-    }
-</script>";
-
-$delScript = '
-    <script type="text/javascript">
-        // Session-ID
-        var sid = "'.$sess->id.'";
-
-        // Create messageBox instance
-        box = new messageBox("", "", "", 0, 0);
-
-        // Function for deleting modules
-
-        function deleteFrontendGroup(idfrontendgroup) {
-            url  = "main.php?area=frontendgroups";
-            url += "&action=frontendgroup_delete";
-            url += "&frame=4";
-            url += "&idfrontendgroup=" + idfrontendgroup;
-            url += "&contenido=" + sid;
-            parent.parent.right.right_bottom.location.href = url;
-        }
-    </script>';
-
-$msgboxInclude = '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>';
-
-$page->addScript('include', $msgboxInclude);
-$page->addScript('del',$delScript);
-$page->setMargin(0);
-$page->setMargin(0);
-$page->setContent($menu->render(false).$sInitRowMark);
+$page->setContent($menu);
 $page->render();
 
 ?>

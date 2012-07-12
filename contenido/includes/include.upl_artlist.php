@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 cInclude("includes", "functions.con.php");
 
-$page = new cPage;
+$page = new cGuiPage("upl_artlist");
 
 conCreateLocationString($idcat, "/", $cat_str);
 
@@ -179,6 +179,8 @@ while ($cApiCategoryArticle = $cApiCategoryArticleCollection->next())
 }
 
 $content[] = '</table>';
-$page->setContent(implode("", $content));
+$div = new cHTMLDiv();
+$div->setContent(implode("", $content));
+$page->setContent($div);
 $page->render();
 ?>

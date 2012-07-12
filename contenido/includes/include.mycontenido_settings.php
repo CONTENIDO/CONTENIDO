@@ -29,12 +29,13 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+$cpage = new cGuiPage("mycontenido_settings", "", "3");
 
 $user = new cApiUser($auth->auth["uid"]);
 
-$noti = "";
-
 if ($action == "mycontenido_editself") {
+
+    $notidisplayed = false;
 
     if (!isset($wysi)) {
         $wysi = false;
@@ -53,7 +54,7 @@ if ($action == "mycontenido_editself") {
 
 
         if ($error !== false) {
-            $noti = $notification->returnNotification("error", $error)."<br>";
+            $cpage->displayError($error);
         } else {
             // New Class User, update password
 
@@ -62,9 +63,11 @@ if ($action == "mycontenido_editself") {
             #$user->set("password", md5($newpassword));
 
             if ($iResult == cApiUser::PASS_OK) {
-                $noti = $notification->returnNotification("info", i18n("Changes saved"))."<br>";
+                $notidisplayed = true;
+                $cpage->displayInfo(i18n("Changes saved"));
             } else {
-                $noti = $notification->returnNotification("error", cApiUser::getErrorString($iResult)."<br>");
+                $notidisplayed = true;
+                $cpage->displayError(cApiUser::getErrorString($iResult));
             }
         }
     }
@@ -98,10 +101,10 @@ if ($action == "mycontenido_editself") {
     $user->setUserProperty("dateformat", "date", $formatdate);
     $user->setUserProperty("dateformat", "time", $formattime);
 
-    if ($user->store() && $noti == "") {
-        $noti = $notification->returnNotification("info", i18n("Changes saved"))."<br>";
-    } else if ($noti == "") {
-        $noti = $notification->returnNotification("error", i18n("An error occured while saving user info."))."<br>";
+    if ($user->store() && !$notidisplayed) {
+        $cpage->displayInfo(i18n("Changes saved"));
+    } else if (!$notidisplayed) {
+        $cpage->displayError(i18n("An error occured while saving user info."));
     }
 }
 
@@ -171,8 +174,6 @@ $form->add(i18n("Date/Time format"), array($format, $formathint));
 $form->add(i18n("Date format"), array($format2));
 $form->add(i18n("Time format"), array($format3));
 
-$page = new cPage();
-
-$page->setContent(array($noti, $form, markSubMenuItem(3, true)));
-$page->render();
+$cpage->setContent(array($form));
+$cpage->render();
 ?>

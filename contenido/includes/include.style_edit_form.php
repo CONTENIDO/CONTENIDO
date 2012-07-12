@@ -38,13 +38,14 @@ $sActionCreate = 'style_create';
 $sActionEdit = 'style_edit';
 $sActionDelete = 'style_delete';
 $sFilename = '';
-$page = new cPage;
+$page = new cGuiPage("style_edit_form");
 $page->setEncoding('utf-8');
 
 $tpl->reset();
 
 if (!$perm->have_perm_area_action($area, $action)) {
-    $notification->displayNotification('error', i18n('Permission denied'));
+    $page->displayCriticalError(i18n('Permission denied'));
+    $page->render();
     return;
 }
 
@@ -61,18 +62,11 @@ if ($action == $sActionDelete) {
         if (cFileHandler::exists($path.$_REQUEST['delfile'])) {
             unlink($path.$_REQUEST['delfile']);
             removeFileInformation($client, $_REQUEST['delfile'], 'css', $db);
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Deleted CSS file successfully!'));
+            $page->displayInfo(i18n('Deleted CSS file successfully!'));
         }
     }
-    $sReloadScript = "<script type=\"text/javascript\">
-                        var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                        if (left_bottom) {
-                            var href = left_bottom.location.href;
-                            href = href.replace(/&file.*/, '');
-                            left_bottom.location.href = href+'&file='+'".$_REQUEST['file']."';
-                        }
-                      </script>";
-    $page->addScript('reload', $sReloadScript);
+
+    $page->setReload();
     $page->render();
 } else {
     $path = $cfgClient[$client]['css']['path'];
@@ -98,19 +92,6 @@ if ($action == $sActionDelete) {
         $sFilename .= stripslashes($_REQUEST['file']);
     }
 
-    if (stripslashes($_REQUEST['file'])) {
-        $sReloadScript = "<script type=\"text/javascript\">
-                             var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                             if (left_bottom) {
-                                 var href = left_bottom.location.href;
-                                 href = href.replace(/&file[^&]*/, '');
-                                 left_bottom.location.href = href+'&file='+'".$sFilename."';
-                             }
-                         </script>";
-    } else {
-        $sReloadScript = '';
-    }
-
     // Content Type is css
     $sTypeContent = 'css';
     $aFileInfo = getFileInformation($client, $sTempFilename, $sTypeContent, $db);
@@ -129,7 +110,7 @@ if ($action == $sActionDelete) {
                      }
                      </script>";
         if ($bEdit) {
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Created new CSS file successfully!'));
+            $page->displayInfo(i18n('Created new CSS file successfully!'));
         }
     }
 
@@ -211,12 +192,12 @@ if ($action == $sActionDelete) {
         $form->add(i18n('Description'), $descr->render());
         $form->add(i18n('Code'), $ta_code);
 
-        $page->setContent($form->render());
+        $page->setContent(array($form));
 
         $oCodeMirror = new CodeMirror('code', 'css', substr(strtolower($belang), 0, 2), true, $cfg);
-        $page->addScript('codemirror', $oCodeMirror->renderScript());
+        $page->addScript($oCodeMirror->renderScript());
 
-        $page->addScript('reload', $sReloadScript);
+        $page->addScript($sReloadScript);
         $page->render();
     }
 }

@@ -42,7 +42,7 @@ $sActionCreate = 'htmltpl_create';
 $sActionEdit = 'htmltpl_edit';
 $sActionDelete = 'htmltpl_delete';
 $sFilename = '';
-$page = new cPage();
+$page = new cGuiPage("html_tpl_edit_form");
 
 $tpl->reset();
 
@@ -77,7 +77,7 @@ if ($action == $sActionDelete) {
     }
     </script>";
 
-    $page->addScript('reload', $sReloadScript);
+    $page->addScript($sReloadScript);
     $page->render();
 
 } else {
@@ -202,7 +202,7 @@ if ($action == $sActionDelete) {
             }
 
             if ($msg != "") {
-                $notis = $notification->returnNotification("warning", $msg) . "<br />";
+                $page->displayWarning($msg);
             }
         }
 
@@ -229,12 +229,12 @@ if ($action == $sActionDelete) {
         $form->add(i18n("Description"), $descr->render());
         $form->add(i18n("Code"), $ta_code);
 
-        $page->setContent($notis . $form->render());
+        $page->setContent($form);
 
         $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
-        $page->addScript('codemirror', $oCodeMirror->renderScript());
+        $page->addScript($oCodeMirror->renderScript());
 
-        $page->addScript('reload', $sReloadScript);
+        $page->addScript($sReloadScript);
         $page->render();
     }
 }

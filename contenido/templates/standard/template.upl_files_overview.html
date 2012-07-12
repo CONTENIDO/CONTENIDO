@@ -1,13 +1,16 @@
-<html>
-<head>
-    <title></title>
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
-    <script type="text/javascript" src="scripts/general.js"></script>
-    <script type="text/javascript" src="scripts/infoBox.js"></script>
+<style type="text/css">
+                               select {
+                                vertical-align:middle;
+                               }
+                               a.invert_hover:active, a.invert_hover:link, a.invert_hover:visited {
+                                   cursor: pointer;
+                                   color: #0060B1;
+                               }
+                               a.invert_hover:hover {
+                                  color: #000000;
+                               }
+</style>
+
     <script type="text/javascript">
         box = new messageBox("", "", "", 0, 0);
 
@@ -38,14 +41,105 @@
             zwin.document.write(zcon);
             zwin.document.close();
         }
+        
+        function showDelMsg(strElement, path, file, page) {
+            box.confirm("i18n("Delete file")", "i18n("Do you really want to delete the following file:<br>")<b>" + strElement + "</b>", "deleteFile('" + path + "', '" + file + "', " + page + ")");
+        }
+
+        // Function for deleting items
+        function deleteFile(path, file, page) {
+            url  = 'main.php?area=upl';
+            url += '&action=upl_delete';
+            url += '&frame=4';
+            url += '&path=' + path;
+            url += '&file=' + file;
+            url += ''&startpage=' + page;
+            url += '&contenido=1';
+            url += '&appendparameters='{APPENDPARAMETERS}';
+
+            window.location.href = url;
+        }
+
+        function renameFile (oldname, path, page) {
+            var newname = prompt("i18n("Enter new filename")", oldname),
+                url;
+
+            if (newname) {
+                url  = 'main.php?area=upl';
+                url += '&action=upl_renamefile';
+                url += '&frame=4';
+                url += '&newname=' + newname;
+                url += '&oldname=' + oldname;
+                url += '&startpage=' + page;
+                url += '&path=' + path;
+                url += '&contenido=1';
+
+                window.location.href = url;
+            }
+        }
+
+        function getY(e) {
+            var y = 0;
+            while (e) {
+                y += e.offsetTop;
+                e = e.offsetParent;
+            }
+            return y;
+        }
+
+        function getX(e) {
+            var x = 0;
+            while (e) {
+                x += e.offsetLeft;
+                e = e.offsetParent;
+            }
+            return x;
+        }
+
+        function findPreviewImage(smallImg) {
+            var prevImages = document.getElementsByName("prevImage"),
+
+                i;
+            for (i=0; i<prevImages.length; i++) {
+                if (prevImages[i].src == smallImg.src) {
+                    return prevImages[i];
+                }
+            }
+        }
+
+        // Hoverbox
+        function correctPosition(theImage, iWidth, iHeight) {
+            var previewImage = findPreviewImage(theImage);
+
+            if (typeof(previewShowIe6) == "function") {
+                previewShowIe6(previewImage);
+            }
+            previewImage.style.width = iWidth;
+            previewImage.style.height = iHeight;
+            previewImage.style.marginTop = getY(theImage);
+            previewImage.style.marginLeft = getX(theImage) + 100;
+        }
+
+        // Invert selection of checkboxes
+        function invertSelection() {
+            var delcheckboxes = document.getElementsByName("fdelete[]"),
+
+                i;
+            for (i=0; i<delcheckboxes.length; i++) {
+                delcheckboxes[i].checked = !(delcheckboxes[i].checked);
+            }
+        }
+
+        if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_0')) {
+            menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_0');
+            parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
+        }
     </script>
 
     <script type="text/javascript">
         parent.parent.frames["left"].frames["left_bottom"].location.reload();
     </script>
-</head>
-<body style="margin:10px">
-
+    
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
     <tr valign="middle">
         <td class="text_medium">&nbsp;</td>
@@ -86,5 +180,3 @@
 
 </table>
 
-</body>
-</html>

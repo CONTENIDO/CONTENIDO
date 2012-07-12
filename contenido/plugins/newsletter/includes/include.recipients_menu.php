@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
 ##################################
 # Initialization
 ##################################
-$oPage = new cPage;
+$oPage = new cGuiPage("recipients_menu", "newsletter");
 $oMenu = new UI_Menu;
 $oClient = new cApiClient($client);
 $oUser = new cApiUser($auth->auth["uid"]);
@@ -126,23 +126,22 @@ unset($oClient);
 $oRecipients = new NewsletterRecipientCollection;
 
 // Updating keys, if activated; all recipients of all clients!
-$sMsg = "";
 if (getSystemProperty("newsletter", "updatekeys"))
 {
     $iUpdatedRecipients = $oRecipients->updateKeys();
-    $sMsg = $notification->returnNotification("info", sprintf(i18n("%d recipients, with no or incompatible key has been updated. Deactivate update function.", 'newsletter'), $iUpdatedRecipients));
+    $oPage->displayInfo(sprintf(i18n("%d recipients, with no or incompatible key has been updated. Deactivate update function.", 'newsletter'), $iUpdatedRecipients));
 }
 
-$oRecipients->setWhere("recipientcollection.idclient", $client);
-$oRecipients->setWhere("recipientcollection.idlang", $lang);
+$oRecipients->setWhere("idclient", $client);
+$oRecipients->setWhere("idlang", $lang);
 
 // sort by and sort order
-$oRecipients->setOrder("recipientcollection." . $_REQUEST["sortby"] . " " . $_REQUEST["sortorder"]);
+$oRecipients->setOrder($_REQUEST["sortby"] . " " . $_REQUEST["sortorder"]);
 
 // Show group
 if ($_REQUEST["restrictgroup"] != "--all--") {
     $oRecipients->link("RecipientGroupMemberCollection");
-    $oRecipients->setWhere("RecipientGroupMemberCollection.idnewsgroup", $_REQUEST["restrictgroup"]);
+    $oRecipients->setWhere("idnewsgroup", $_REQUEST["restrictgroup"]);
 }
 
 // Search for
@@ -150,12 +149,12 @@ if ($_REQUEST["filter"] != "") {
     if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "") {
         foreach ($aFields as $sKey => $aData) {
             if (strpos($aData["type"], "search") !== false) {
-                $oRecipients->setWhereGroup("filter", "recipientcollection.".$aData["field"], $_REQUEST["filter"], "LIKE");
+                $oRecipients->setWhereGroup("filter", $aData["field"], $_REQUEST["filter"], "LIKE");
             }
         }
         $oRecipients->setInnerGroupCondition("filter", "OR");
     } else {
-        $oRecipients->setWhere("recipientcollection.".$_REQUEST["searchin"], $_REQUEST["filter"], "LIKE");
+        $oRecipients->setWhere($_REQUEST["searchin"], $_REQUEST["filter"], "LIKE");
     }
 }
 
@@ -242,11 +241,8 @@ $sExecScript = '
         }
     </script>';
 
-$oPage->setMargin(0);
-$oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
-$oPage->addScript('exec', $sExecScript);
-//$oPage->addScript('cfoldingrow.js', '<script language="JavaScript" src="scripts/cfoldingrow.js"></script>');
-$oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
+$oPage->addScript($sExecScript);
+$oPage->addScript('parameterCollector.js');
 //$oPage->addScript('refreshTop', $sRefreshTop);
 
 //generate current content for Object Pager�
@@ -275,7 +271,7 @@ $sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
 $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 
 // Send new object pager to left_top
-$oPage->addScript('setpager', '<script type="text/javascript" src="scripts/setPager.js"></script>');
+$oPage->addScript('setPager.js');
 
 $sRefreshPager = '
     <script type="text/javascript">
@@ -285,10 +281,10 @@ $sRefreshPager = '
         var oTimer = window.setInterval("fncSetPager(\'' . $sPagerId . '\',\'' . $_REQUEST["page"] . '\')", 200);
     </script>';
 
-$oPage->addScript('refreshpager', $sRefreshPager);
+$oPage->addScript($sRefreshPager);
 
 //$oPage->setContent(array('<table border="0" cellspacing="0" cellpadding="0" width="100%">', '</table>', $sMsg . $oMenu->render(false)));
-$oPage->setContent($sMsg . $oMenu->render(false));
+$oPage->setContent($oMenu);
 $oPage->render();
 
 ?>

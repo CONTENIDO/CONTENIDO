@@ -251,7 +251,7 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
     $endwrap = $sSpacedRow . $sToolsRow . $sSpacedRow . $pagerwrap . '</table>';
 
     // Object initializing
-    $page = new UI_Page();
+    $page = new cGuiPage("upl_search_results");
     $list2 = new UploadList($startwrap, $endwrap, $itemwrap);
 
     $uploads = new cApiUploadCollection();
@@ -346,7 +346,8 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
     }
 
     if ($rownum == 0) {
-        $page->setContent(i18n("No files found"));
+        $page->displayWarning(i18n("No files found"));
+        $page->abortRendering();
         $page->render();
         return;
     }
@@ -442,99 +443,10 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
 
     $output = str_replace("-C-FILESPERPAGE-", $topbar, $output);
 
-    $script = '<script type="text/javascript">
-                // Session-ID
-                var sid = "{SID}";
+    $page->addScript($sess->url("iZoom.js.php"));
 
-                function getY(e) {
-                    var y = 0;
-                    while (e) {
-                        y += e.offsetTop;
-                        e = e.offsetParent;
-                    }
-                    return y;
-                }
-
-                function getX(e) {
-                    var x = 0;
-                    while (e) {
-                        x += e.offsetLeft;
-                        e = e.offsetParent;
-                    }
-                    return x;
-                }
-
-                function findPreviewImage(smallImg) {
-                    var prevImages = document.getElementsByName("prevImage"),
-                        i;
-                    for (i=0; i<prevImages.length; i++) {
-                        if (prevImages[i].src == smallImg.src) {
-                            return prevImages[i];
-                        }
-                    }
-                }
-
-                // Hoverbox
-                function correctPosition(theImage, iWidth, iHeight) {
-                    var previewImage = findPreviewImage(theImage);
-
-                    if (typeof(previewShowIe6) == "function") {
-                        previewShowIe6(previewImage);
-                    }
-                    previewImage.style.width = iWidth;
-                    previewImage.style.height = iHeight;
-                    previewImage.style.marginTop = getY(theImage);
-                    previewImage.style.marginLeft = getX(theImage) + 100;
-                }
-
-                // Invert selection of checkboxes
-                function invertSelection() {
-                    var delcheckboxes = document.getElementsByName("fdelete[]"),
-                        i;
-                    for(i=0; i<delcheckboxes.length; i++) {
-                        delcheckboxes[i].checked = !(delcheckboxes[i].checked);
-                    }
-                }
-                </script>
-                <!--[if IE 6]>
-                    <script type="text/javascript">
-                        function previewShowIe6 (previewImage) {
-                            previewImage.style.display = "block"
-                            previewImage.style.position = "absolute"
-                            previewImage.style.top = "-33px"
-                            previewImage.style.left = "-45px"
-                            previewImage.style.zIndex = "1"
-                        }
-
-                        function previewHideIe6(theImage) {
-                            var previewImage = findPreviewImage(theImage);
-                            previewImage.style.display = "none";
-                        }
-                    </script>
-                <![endif]-->';
-
-    $script = str_replace('{SID}', $sess->id, $script);
-    $script = str_replace('{RENAME}', i18n("Enter new filename"), $script);
-
-    $page->addScript("script", $script);
-    $markSubItem = markSubMenuItem(0, true);
-
-    $page->addScript("mark", $markSubItem);
-    $page->addScript('iZoom', '<script type="text/javascript" src="' . $sess->url("scripts/iZoom.js.php") . '"></script>');
-    $page->addScript('style', '<style type="text/css">
-                               select {
-                                vertical-align:middle;
-                               }
-                               a.invert_hover:active, a.invert_hover:link, a.invert_hover:visited {
-                                   cursor: pointer;
-                                   color: #0060B1;
-                               }
-                               a.invert_hover:hover {
-                                  color: #000000;
-                               }
-                               </style>');
     $form->add("", $output);
-    $page->setContent($form->render());
+    $page->set("s", "FORM", $form->render());
     $page->render();
 }
 

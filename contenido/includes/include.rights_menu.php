@@ -33,8 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
-$oPage = new cPage;
+$oPage = new cGuiPage("rights_menu");
 
 $cApiUserCollection = new cApiUserCollection;
 $cApiUserCollection->query();
@@ -199,12 +198,11 @@ $markActiveScript = '<script type="text/javascript">
                          }
                     </script>';
     //<script type="text/javascript" src="scripts/rowMark.js"></script>
-$oPage->setMargin(0);
-$oPage->addScript('rowMark.js', '<script language="JavaScript" src="scripts/rowMark.js"></script>');
-$oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
-$oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
-$oPage->addScript('delete', $deleteScript);
-$oPage->setContent($mlist->render(false).$markActiveScript);
+$oPage->addScript('parameterCollector.js');
+$oPage->addScript($deleteScript);
+$oDiv = new cHTMLDiv();
+$oDiv->setContent($markActiveScript);
+$oPage->setContent(array($mlist, $oDiv));
 
 //generate current content for Object Pager
 $oPagerLink = new cHTMLLink;
@@ -243,7 +241,7 @@ $sRefreshPager = '
             }
         }
     </script>';
-$oPage->addScript('refreshpager', $sRefreshPager);
+$oPage->addScript($sRefreshPager);
 
 $oPage->render();
 

@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 // Initialization
-$oPage = new cPage;
+$oPage = new cGuiPage("recipients.group_edit", "newsletter");
 $oRGroups = new NewsletterRecipientGroupCollection;
 $oRGroupMembers = new NewsletterRecipientGroupMemberCollection;
 $oRGroup = new NewsletterRecipientGroup;
@@ -53,7 +53,7 @@ if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $a
 } elseif ($action == "recipientgroup_delete" && $perm->have_perm_area_action($area, $action)) {
     $oRGroups->delete($_REQUEST["idrecipientgroup"]);
     $sRefreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'remove\')</script>';
-    $oPage->addScript('refreshlefttop', $sRefreshLeftTopScript);
+    $oPage->addScript($sRefreshLeftTopScript);
 
     $_REQUEST["idrecipientgroup"] = 0;
     $oRGroup = new NewsletterRecipientGroup;
@@ -126,11 +126,11 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 
         $sRefreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'remove\');
                                     top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'add\', \''.$sGroupName.'\');</script>';
-        $oPage->addScript('refreshlefttop', $sRefreshLeftTopScript);
+        $oPage->addScript($sRefreshLeftTopScript);
     }
 
     if (count($aMessages) > 0) {
-        $sNotis = $notification->returnNotification("warning", implode("<br>", $aMessages)) . "<br>";
+        $oPage->displayWarning(implode("<br>", $aMessages)) . "<br>";
     }
 
     // Set default values
@@ -271,9 +271,9 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     $oInsiders = new NewsletterRecipientCollection;
 
     $oInsiders->link("RecipientGroupMemberCollection");
-    $oInsiders->setWhere("recipientcollection.idclient", $client);
-    $oInsiders->setWhere("recipientcollection.idlang", $lang);
-    $oInsiders->setWhere("RecipientGroupMemberCollection.idnewsgroup", $_REQUEST["idrecipientgroup"]);
+    $oInsiders->setWhere("idclient", $client);
+    $oInsiders->setWhere("idlang", $lang);
+    $oInsiders->setWhere("idnewsgroup", $_REQUEST["idrecipientgroup"]);
 
     // Get insiders for outsiders list (*sigh!*)
     // TODO: Ask user to have at least mySQL 4.1...
@@ -293,12 +293,12 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
         if ($_REQUEST["member_searchin"] == "--all--" || $_REQUEST["member_searchin"] == "") {
             foreach ($aFields as $sKey => $aData) {
                 if (strpos($aData["type"], "search") !== false) {
-                    $oInsiders->setWhereGroup("filter", "recipientcollection.".$aData["field"], $_REQUEST["member_filter"], "LIKE");
+                    $oInsiders->setWhereGroup("filter", $aData["field"], $_REQUEST["member_filter"], "LIKE");
                 }
             }
             $oInsiders->setInnerGroupCondition("filter", "OR");
         } else {
-            $oInsiders->setWhere("recipientcollection.".$_REQUEST["member_searchin"], $_REQUEST["member_filter"], "LIKE");
+            $oInsiders->setWhere($_REQUEST["member_searchin"], $_REQUEST["member_filter"], "LIKE");
         }
     }
 
@@ -313,7 +313,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     }
 
     // Get data
-    $sSortSQL = "recipientcollection.".$_REQUEST["member_sortby"]." ".$_REQUEST["member_sortorder"];
+    $sSortSQL = $_REQUEST["member_sortby"]." ".$_REQUEST["member_sortorder"];
     if ($_REQUEST["member_sortby"] == "name")
     {
         // Name field may be empty, add email as sort criteria
@@ -571,13 +571,12 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
         }
     </script>';
 
-    $oPage->addScript('DelMarkScript', $sDelMarkScript);
-    $oPage->addScript('cfoldingrow.js', '<script language="JavaScript" src="scripts/cfoldingrow.js"></script>');
-    $oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
+    $oPage->addScript($sDelMarkScript);
+    $oPage->addScript('cfoldingrow.js');
+    $oPage->addScript('parameterCollector.js');
 
-    $oPage->setContent($sNotis.$oForm->render(true));
-} else {
-    $oPage->setContent($sNotis."");
+
+    $oPage->setContent($oForm);
 }
 $oPage->render();
 

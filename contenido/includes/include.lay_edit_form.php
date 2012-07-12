@@ -36,7 +36,7 @@ if (!isset($idlay)) {
     $idlay = 0;
 }
 
-$page = new cPage();
+$page = new cGuiPage("lay_edit_form");
 $layout = new cApiLayout();
 $bReloadSyncSrcipt = false;
 if ($idlay != 0) {
@@ -45,12 +45,12 @@ if ($idlay != 0) {
 
 if ($action == "lay_new") {
     if (!$perm->have_perm_area_action_anyitem($area, $action)) {
-        $notification->displayNotification("error", i18n("Permission denied"));
+        $page->displayError(i18n("Permission denied"));
     } else {
         $layoutAlias = strtolower(cApiStrCleanURLCharacters(i18n("-- New Layout --")));
 
         if (LayoutInFile::existLayout($layoutAlias, $cfgClient, $client)) {
-            $notification->displayNotification("error", i18n("Layout name exist, rename the layout!"));
+            $page->displayError(i18n("Layout name exist, rename the layout!"));
         } else {
             $layouts = new cApiLayoutCollection();
 
@@ -63,25 +63,25 @@ if ($action == "lay_new") {
             // make new layout in filesystem
             $layoutInFile = new LayoutInFile($layout->get("idlay"), "", $cfg, $lang);
             if ($layoutInFile->saveLayout('') == false) {
-                $notification->displayNotification("error", i18n("Cant save layout in filesystem!"));
+                $page->displayError(i18n("Cant save layout in filesystem!"));
             } else {
-                $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created layout succsessfully!"));
+                $page->displayInfo(i18n("Created layout succsessfully!"));
             }
         }
     }
     $bReloadSyncSrcipt = true;
 } elseif ($action == "lay_delete") {
     if (!$perm->have_perm_area_action_anyitem($area, $action)) {
-        $notification->displayNotification("error", i18n("Permission denied"));
+        $page->displayError(i18n("Permission denied"));
     } else {
         $errno = layDeleteLayout($idlay);
         $layout->virgin = true;
-        $notification->displayNotification("info", i18n("Layout deleted"));
+        $page->displayInfo(i18n("Layout deleted"));
     }
 } elseif ($action == "lay_sync") {
     // Synchronize layout from db and filesystem
     if (!$perm->have_perm_area_action_anyitem($area, $action)) {
-        $notification->displayNotification("error", i18n("Permission denied"));
+        $page->displayError(i18n("Permission denied"));
     } else {
         $layoutSynchronization = new SynchronizeLayouts($cfg, $cfgClient, $lang, $client);
         $layoutSynchronization->synchronize();
@@ -108,8 +108,6 @@ if ($refreshtemplates != "") {
 
 if (!$layout->virgin) {
     $msg = "";
-
-    $tpl->reset();
 
     $idlay = $layout->get("idlay");
     $layoutInFile = new LayoutInFile($idlay, "", $cfg, $lang);
@@ -196,7 +194,7 @@ if (!$layout->virgin) {
     }
 
     if ($msg != "") {
-        $notification->displayNotification("warning", $msg);
+        $page->displayWarning($msg);
     }
 
     $form = new UI_Table_Form("module");
@@ -223,22 +221,8 @@ if (!$layout->virgin) {
     $form->add(i18n("Code"),$ta_code);
     $form->add(i18n("Options"), $cb_refresh);
 
-    // Set static pointers
-    $tpl->set('s', 'ACTION',    $sess->url("main.php?area=$area&frame=$frame&action=lay_edit"));
-    $tpl->set('s', 'IDLAY',     $idlay);
-    $tpl->set('s', 'DESCR',     $description);
-    $tpl->set('s', 'CLASS', 'code_sfullwidth');
-    $tpl->set('s', 'NAME',      htmlspecialchars($name));
-
-    // Set dynamic pointers
-    $tpl->set('d', 'CAPTION', i18n("Code").':');
-    $tpl->set('d', 'VALUE',   htmlspecialchars($code));
-    $tpl->set('d', 'CLASS', 'code_fullwidth');
-    $tpl->set('d', 'NAME',    'code');
-    $tpl->next();
-
     $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
-    $page->addScript('codemirror', $oCodeMirror->renderScript());
+    $page->addScript($oCodeMirror->renderScript());
 
     $sScript = '<script type="text/javascript">
                             if (document.getElementById(\'scroll\')) {
@@ -249,27 +233,15 @@ if (!$layout->virgin) {
                             }
                         </script>';
 
-    $page->setContent($form->render().$sScript);
+    $page->set("s", "FORM", $form->render().$sScript);
 
 
-} else {
-    $page->setContent("");
 }
 
 
 
 if (stripslashes($_REQUEST['idlay'] || $bReloadSyncSrcipt)) {
-    $sReloadScript = "<script type=\"text/javascript\">
-                             var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                             if (left_bottom) {
-                                 var href = left_bottom.location.href;
-                                 href = href.replace(/&idlay[^&]*/, '');
-                                 left_bottom.location.href = href+'&idlay='+'".$_REQUEST['idlay']."';
-
-                             }
-                    </script>";
-} else {
-    $sReloadScript = "";
+    $page->setReload();
 }
 
 if ($action == "lay_sync") {
@@ -277,8 +249,6 @@ if ($action == "lay_sync") {
 } else {
     $page->setSubnav("idlay=$idlay", "lay");
 }
-
-$page->addScript('reload', $sReloadScript);
 $page->render();
 
 ?>

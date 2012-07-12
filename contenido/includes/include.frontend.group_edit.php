@@ -35,7 +35,6 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$page = new cPage();
 $fegroups = new cApiFrontendGroupCollection();
 
 if (is_array($cfg['plugins']['frontendgroups'])) {
@@ -269,9 +268,8 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
 
     $tpl = $tpl->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_memberselect']);
 } else {
-    $page = new UI_Page();
-    $page->setContent("");
-    $page->addScript('reload', $sReloadScript);
+    $page = new cGuiPage("frontend.group_edit");
+    $page->addScript($sReloadScript);
 
     $page->render();
 }

@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 // Initialization
-$oPage = new cPage();
+$oPage = new cGuiPage("newsletter_edit", "newsletter");
 $oRcpGroups = new NewsletterRecipientGroupCollection();
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 $oNewsletters = new NewsletterCollection();
@@ -93,7 +93,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     $oNewsletter->set("dispatch_delay", $iValue);
     $oNewsletter->store();
     //show message
-    $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Created newsletter successfully!", 'newsletter'));
+    $oPage->displayInfo(i18n("Created newsletter successfully!", 'newsletter'));
 } elseif ($action == "news_duplicate" && $perm->have_perm_area_action($area, "news_create")) {
     // Copy newsletter
     $oNewsletter = $oNewsletters->duplicate($idnewsletter);
@@ -102,7 +102,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     $oPage->setSubnav("idnewsletter=".$oNewsletter->get("idnews"), "news");
     $oPage->setReload();
     //show message
-    $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Dupplicate newsletter successfully!", 'newsletter'));
+    $oPage->displayInfo(i18n("Dupplicate newsletter successfully!", 'newsletter'));
 } elseif ($action == "news_delete" && $perm->have_perm_area_action($area, "news_delete")) {
     // Delete newsletter
     // If it is an html newsletter, delete html message article, also
@@ -120,7 +120,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     // and must not contain "idnewsletter" as this is checked in the _subnav file.
     $oPage->setSubnav("blank", "news");
     $oPage->setReload();
-    $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Deleted newsletter successfully!", 'newsletter'));
+    $oPage->displayInfo(i18n("Deleted newsletter successfully!", 'newsletter'));
 } elseif ($action == "news_add_job" && $perm->have_perm_area_action($area, "news_add_job")) {
     // Create job
     $oJobs = new cNewsletterJobCollection();
@@ -128,9 +128,9 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     unset($oJobs);
 
     if ($oJob) {
-        $notis = $notification->returnNotification("info", i18n("Newsletter dispatch job has been added for this newsletter", 'newsletter')) . "<br>";
+        $oPage->displayInfo(i18n("Newsletter dispatch job has been added for this newsletter", 'newsletter'));
     } else {
-        $notis = $notification->returnNotification("error", i18n("Newsletter dispatch job has been not been added! Please check newsletter details", 'newsletter')) . "<br>";
+        $oPage->displayError(i18n("Newsletter dispatch job has been not been added! Please check newsletter details", 'newsletter'));
     }
 
     $oNewsletter = new Newsletter($idnewsletter);
@@ -176,9 +176,9 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     unset($oUser);
 
     if ($bSend) {
-        $notis = $notification->returnNotification("info", i18n("Test newsletter has been sent to:", 'newsletter') . "<br />" . implode("<br />", $aRecipients) . "<br />");
+        $oPage->displayInfo(i18n("Test newsletter has been sent to:", 'newsletter') . "<br />" . implode("<br />", $aRecipients) . "<br />");
     } else {
-        $notis = $notification->returnNotification("warning", i18n("Test newsletter has not been sent (partly or completely):", 'newsletter') . "<br />" .
+        $oPage->displayWarning(i18n("Test newsletter has not been sent (partly or completely):", 'newsletter') . "<br />" .
                                                               i18n("Successful:", 'newsletter') . "<br />" . implode("<br />", $aRecipients, 'newsletter') . "<br />" .
                                                               i18n("Error messages:", 'newsletter') . "<br />" . $oNewsletter->_sError, 'newsletter');
     }
@@ -340,10 +340,10 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
         }
 
         if (count($aMessages) > 0) {
-            $notis .= $notification->returnNotification("warning", implode("<br>", $aMessages)) . "<br>";
+            $oPage->displayWarning(implode("<br>", $aMessages));
         } else {
             //show message
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!", 'newsletter'));
+            $oPage->displayInfo(i18n("Saved changes successfully!", 'newsletter'));
         }
     } else {
         $_REQUEST["selGroup"] = unserialize ($oNewsletter->get("send_ids"));
@@ -510,11 +510,9 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             }
         }
     </script>';
-    $oPage->addScript('exec', $sExecScript);
+    $oPage->addScript($sExecScript);
 
-    $oPage->setContent($notis . $oForm->render(true));
-} else {
-    $oPage->setContent($notis . "");
+    $oPage->setContent($oForm);
 }
 
 $oPage->render();

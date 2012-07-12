@@ -29,6 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+$page = new cGuiPage("client_artspec");
 
 if ($action == "client_artspec_save") {
     if (!$perm->have_perm_area_action($area, $action)) {
@@ -62,7 +63,6 @@ if ($action == "client_artspec_default") {
     }
 }
 
-$page = new UI_Page;
 $list = new UI_List;
 
 $list->setCell(1,1, i18n("Article specification"));
@@ -154,6 +154,9 @@ $form->addHeader(i18n("Create new article specification"));
 $inputbox = new cHTMLTextbox ("artspectext");
 $form->add(i18n("Specification name"),$inputbox->render());
 
-$page->setContent($list->render()."<br>".$form->render());
+$spacer = new cHTMLDiv();
+$spacer->setContent("<br>");
+
+$page->setContent(array($list, $spacer, $form));
 $page->render();
 ?>

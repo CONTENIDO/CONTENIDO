@@ -276,14 +276,14 @@ class Template
 
         // Be sure that php code stays unchanged
         $php_matches = array();
-        if (preg_match_all('/<\?(php)?((.)|(\s))*?\?>/i', $template, $php_matches)) {
+        /*if (preg_match_all('/<\?(php)?((.)|(\s))*?\?>/i', $template, $php_matches)) {
             $x = 0;
             foreach ($php_matches[0] as $php_match) {
                 $x++;
                 $template = str_replace($php_match , '{PHP#' . $x . '#PHP}', $template);
                 $container[$x] = $php_match;
             }
-        }
+        }*/
 
         $functionNameQ = preg_quote($functionName, '/');
 

@@ -30,7 +30,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$cpage = new cPage();
+$cpage = new cGuiPage("note.popup");
 
 if ($action == 'note_save_item') {
     $notes = new NoteCollection();
@@ -48,7 +48,7 @@ if ($action == 'note_save_item') {
     $item = $notes->createItem($itemtype, $itemid, $lang, $note, $categoryname);
     $item->store();
 
-    $cpage->setContent('<script>window.close();</script>');
+    $cpage->addScript('<script>window.close();</script>');
 } else {
     $list = new NoteView($itemtype, $itemid);
     $list->setWidth('100%');
@@ -87,7 +87,7 @@ if ($action == 'note_save_item') {
     $ui->add(i18n('Category'), array($cselect, $centry));
     $ui->setWidth('100%');
 
-    $cpage->setcontent($list->render().$ui->render());
+    $cpage->setcontent(array($list, $ui));
 }
 
 $cpage->render();

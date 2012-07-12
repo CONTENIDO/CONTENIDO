@@ -60,26 +60,18 @@ if (isset($_REQUEST['treeItemPost']['name'])) {
 $_GET['idpica_alloc'] = (int) $_GET['idpica_alloc'];
 #end added 24.06.08 timo.trautmann
 
-$oPage = new cPage();
-$oPage->setMargin(10);
-$oPage->setMessageBox();
+$oPage = new cGuiPage("content_allocation_edit", "content_allocation");
 $oTree = new pApiContentAllocationTreeView('f7771624-4874-4745-8b7e-21a49a71a447');
 
 // store item
 if ($_POST['step'] == 'store') {
-    $pNotify = '<div style="width:410px;margin-bottom:20px;">';
-    $sMessage = sprintf(i18n("New Category %s successfully stored!", 'content_allocation'), $treeItem['name']);
-    $notification->displayNotification("info", $sMessage);
-    $pNotify .= '</div>';
     $oTree->storeItem($aPostTreeItem);
+    $oPage->displayInfo(sprintf(i18n("New Category %s successfully stored!", 'content_allocation'), $treeItem['name']));
 }
 // rename item
 if ($_POST['step'] == 'storeRename') {
-    $pNotify = '<div style="width:410px;margin-bottom:20px;">';
-    $sMessage = sprintf(i18n("Category %s successfully renamed!", 'content_allocation'), $treeItem['name']);
-    $notification->displayNotification("info", $sMessage);
-    $pNotify .= '</div>';
     $oTree->storeItem($aPostTreeItem);
+    $oPage->displayInfo(sprintf(i18n("Category %s successfully renamed!", 'content_allocation'), $treeItem['name']));
 }
 // rename item
 if ($_GET['step'] == 'moveup') {
@@ -87,10 +79,7 @@ if ($_GET['step'] == 'moveup') {
 }
 
 if ($_GET['step'] == 'deleteItem') { // delete item
-    $pNotify = '<div style="width:410px;margin-bottom:20px;">';
-    $sMessage = i18n("Category successfully deleted!", 'content_allocation');
-    $notification->displayNotification("info", $sMessage);
-    $pNotify .= '</div>';
+    $oPage->displayInfo(i18n("Category successfully deleted!", 'content_allocation'));
     $oTree->deleteItem($_GET['idpica_alloc']);
 }
 if ($_GET['step'] == 'collapse') {
@@ -104,7 +93,6 @@ if ($_GET['step'] == 'offline') {
 }
 
 $oDiv = new cHTMLDiv;
-$oDiv->updateAttributes(array('style' => 'padding: 5px; width: 400px; border: 1px #B3B3B3 solid; background-color: #FFFFFF;'));
 $sTemp = '';
 
 if ($_GET['step'] == 'createRoot') { // create new root item
@@ -137,17 +125,19 @@ if ($_GET['step'] == 'createRoot') { // create new root item
                 return true;
             }
         </script>';
+    $oDiv->updateAttributes(array('style' => 'padding: 5px; width: 400px; border: 1px #B3B3B3 solid; background-color: #FFFFFF;'));
     $oDiv->setContent($form);
-    $sTemp = $oDiv->render();
 } else {
-    $newTree = '<a href="main.php?action='.$action.'&step=createRoot&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img  src="images/folder_new.gif" border="0" style="vertical-align: middle; margin-right: 5px;">'.i18n("Create new tree", 'content_allocation').'</a><div style="height:10px"></div>';
+    $oDiv->setContent('<a href="main.php?action='.$action.'&step=createRoot&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img  src="images/folder_new.gif" border="0" style="vertical-align: middle; margin-right: 5px;">'.i18n("Create new tree", 'content_allocation').'</a><div style="height:10px"></div>');
 }
 
+$treeDiv = new cHTMLDiv();
 $result = $oTree->renderTree(true);
 
 if ($result === false) {
     $result = '&nbsp;';
 }
+$treeDiv->setContent($result);
 
 $js = '
 <script language="javascript">
@@ -158,9 +148,9 @@ function deleteCategory(idpica_alloc) {
 }
 </script>';
 
-$oPage->addScript('deleteCategory', $js);
+$oPage->addScript($js);
 
-$oPage->setContent($pNotify . $newTree . $sTemp. '<br/>' . $result);
+$oPage->setContent(array($oDiv, $treeDiv));
 $oPage->render();
 
 ?>

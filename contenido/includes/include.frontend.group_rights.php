@@ -40,10 +40,10 @@ if ($_REQUEST['useplugin'] != 'category') {
 }
 
 
-$page = new cPage();
+$page = new cGuiPage("frontend.group_rights");
 
 if (!in_array($useplugin, $cfg['plugins']['frontendlogic'])) {
-    $page->setContent(i18n("Invalid plugin"));
+    $page->displayCriticalError(i18n("Invalid plugin"));
     $page->render();
     return;
 }
@@ -116,7 +116,7 @@ foreach ($actions as $key => $action) {
     }
 }
 
-$page->setContent($rights->render());
+$page->setContent($rights);
 
 $page->render();
 
