@@ -59,8 +59,8 @@ if ($appendparameters != 'filebrowser' && (int) $client > 0) {
     $search->setStyle = 'width:170px;';
     $sSearch = $search->render();
 
-    $form = new UI_Form('search');
-    $form->add('search', '<table border="0" cellspacing="0" cellpadding="0"><tr><td>'.$sSearch.'</td><td><input style="margin-left: 5px;" type="image" src="images/submit.gif"></td></tr></table>');
+    $form = new cHTMLForm('search');
+    $form->add('<table border="0" cellspacing="0" cellpadding="0"><tr><td>'.$sSearch.'</td><td><input style="margin-left: 5px;" type="image" src="images/submit.gif"></td></tr></table>');
     $form->setVar('area', $area);
     $form->setVar('frame', $frame);
     $form->setVar('contenido', $sess->id);

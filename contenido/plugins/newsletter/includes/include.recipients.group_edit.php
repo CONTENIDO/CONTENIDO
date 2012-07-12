@@ -258,9 +258,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     $oMemberListOptionRow->setContentData($sContent);
 
     // Members
-    $oAddedRecipientList = new UI_List;
-    $oAddedRecipientList->setWidth("100%");
-    $oAddedRecipientList->setBorder(1);
+    $oAddedRecipientList = new cGuiList;
 
     $oAddedRecipientList->setCell(0, 1, "<strong>".i18n("Name", 'newsletter')."</strong>");
     $oImgDel = new cHTMLImage("images/but_invert_selection.gif");

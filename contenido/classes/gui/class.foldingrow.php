@@ -37,28 +37,28 @@ class cGuiFoldingRow extends cHTML
      * @private array
      * @access private
      */
-    private $_headerRow;
+    protected $_headerRow;
 
     /**
      * Table header data
      * @private array
      * @access private
      */
-    private $_headerData;
+    protected $_headerData;
 
     /**
      * Table row with the content
      * @private array
      * @access private
      */
-    private $_contentRow;
+    protected $_contentRow;
 
     /**
      * ID for link that triggers expandCollapse
      * @private string
      * @access private
      */
-    private $_linkId;
+    protected $_linkId;
 
     /**
      * Table content data

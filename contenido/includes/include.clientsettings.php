@@ -120,12 +120,6 @@ if ($aItems !== false)
 
         if (($_GET['action'] == "clientsettings_edit_item") && ($_GET['idprop'] == $iKey))
         {
-                $oForm = new UI_Form("clientsettings");
-                $oForm->setVar("area", $area);
-                $oForm->setVar("frame", $frame);
-                $oForm->setVar("action", "clientsettings_save_item");
-                $oForm->setVar("idclient", $idclient);
-                $oForm->setVar("idclientslang", $_REQUEST["idclientslang"]);
 
                 $oInputboxValue = new cHTMLTextbox("csvalue", $aValue['value']);
                 $oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
@@ -186,14 +180,14 @@ $spacer->setContent("<br>");
 
 if (($_GET['action'] == "clientsettings_edit_item"))
 {
-    $oForm2 = new UI_Form("clientsettings");
+    $oForm2 = new cHTMLForm("clientsettings", "main.php");
     $oForm2->setVar("area",$area);
     $oForm2->setVar("frame", $frame);
     $oForm2->setVar("action", "clientsettings_save_item");
     $oForm2->setVar("idclient", $idclient);
     $oForm2->setVar("idclientslang", $_REQUEST["idclientslang"]);
 
-    $oForm2->add('list', $oList->render());
+    $oForm2->add($oList->render());
     $oPage->setContent(array($oFrmRange, $spacer, $oForm2, $spacer, $oForm));
 } else {
     $oPage->setContent(array($oFrmRange, $spacer, $oList, $spacer, $oForm));

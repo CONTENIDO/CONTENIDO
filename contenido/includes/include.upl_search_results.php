@@ -417,7 +417,7 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
     $output = str_replace("-C-PAGE-", i18n("Page") . " " . $curpage, $output);
     $output = str_replace("-C-THUMBNAILMODE-", $thumbnailmode, $output);
 
-    $form = new UI_Form("options");
+    $form = new cHTMLForm("options");
     $form->setVar("contenido", $sess->id);
     $form->setVar("area", $area);
     $form->setVar("frame", $frame);
@@ -445,7 +445,7 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
 
     $page->addScript($sess->url("iZoom.js.php"));
 
-    $form->add("", $output);
+    $form->add($output);
     $page->set("s", "FORM", $form->render());
     $page->render();
 }

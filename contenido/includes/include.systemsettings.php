@@ -70,13 +70,11 @@ if ($action == "systemsettings_delete_item")
 
 $settings = getSystemProperties(1);
 
-$list = new UI_List;
-$list->setSolidBorder(true);
+$list = new cGuiList();
 $list->setCell(1,1, i18n("Type"));
 $list->setCell(1,2, i18n("Name"));
 $list->setCell(1,3, i18n("Value"));
 $list->setCell(1,4, "&nbsp;");
-$list->setBorder(1);
 
 $count = 2;
 
@@ -192,11 +190,11 @@ if ($action == "systemsettings_edit_item")
         $page->displayError(i18n("You don't have the permission to make changes here."));
         $renderobj[] = $list;
     } else {
-        $form2 = new UI_Form("systemsettings");
+        $form2 = new cHTMLForm("systemsettings");
         $form2->setVar("area",$area);
         $form2->setVar("frame", $frame);
         $form2->setVar("action", "systemsettings_save_item");
-        $form2->add('list', $list->render());
+        $form2->add($list->render());
         $renderobj[] = $form2;
     }
 } else {

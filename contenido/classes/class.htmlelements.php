@@ -2390,11 +2390,20 @@ class cHTMLAlignmentTable extends cHTMLTable
 
 class cHTMLForm extends cHTML
 {
-    public function __construct()
+    protected $_name;
+
+    protected $_action;
+
+    protected $_method;
+
+    public function __construct($name = "", $action = "main.php", $method = "post")
     {
         parent::__construct();
         $this->setContentlessTag(false);
         $this->_tag = "form";
+        $this->_name = $name;
+        $this->_action = $action;
+        $this->_method = $method;
     }
 
     /**
@@ -2404,6 +2413,10 @@ class cHTMLForm extends cHTML
     {
         cDeprecated("Use __construct() instead");
         $this->__construct();
+    }
+
+    public function add($content) {
+        $this->_content .= $content;
     }
 
     public function setVar($var, $value)
@@ -2430,6 +2443,15 @@ class cHTMLForm extends cHTML
         foreach ($this->_vars as $var => $value) {
             $f = new cHTMLHiddenField($var, $value);
             $out .= $f->render();
+        }
+        if($this->getAttribute("name") == "") {
+            $this->setAttribute("name", $this->_name);
+        }
+        if($this->getAttribute("method") == "") {
+            $this->setAttribute("method", $this->_method);
+        }
+        if($this->getAttribute("action") == "") {
+            $this->setAttribute("action", $this->_action);
         }
 
         $attributes = $this->getAttributes(true);

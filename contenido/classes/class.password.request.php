@@ -227,7 +227,7 @@ class cPasswordRequest {
         }
 
         //generate new form
-        $oForm = new UI_Form('request_pw', 'index.php', 'post');
+        $oForm = new cGuiForm('request_pw', 'index.php', 'post');
 
         //generate input for username
         $oInputUsername = new cHTMLTextbox('request_username', stripslashes($_POST['request_username']), '', '', 'request_username');
@@ -238,8 +238,7 @@ class cPasswordRequest {
         $oForm->setVar('belang', $GLOBALS['belang']);
 
         //generate submitbutton and fill the form
-        $oForm->add('submit', '<input type="image" src="images/submit.gif" alt="' . i18n('Submit') . '" title="' . i18n('Submit') . '" style="vertical-align:top; margin-top:2px; float:right; margin-right:6px;">');
-        $oForm->add('request_username', $oInputUsername->render());
+        $oForm->setContent('<input type="image" src="images/submit.gif" alt="' . i18n('Submit') . '" title="' . i18n('Submit') . '" style="vertical-align:top; margin-top:2px; float:right; margin-right:6px;">'.$oInputUsername->render());
         $this->oTpl->set('s', 'FORM', $oForm->render());
         $this->oTpl->set('s', 'MESSAGE', $sMessage);
         $this->oTpl->set('s', 'LABEL', i18n('Please enter your login') . ':');

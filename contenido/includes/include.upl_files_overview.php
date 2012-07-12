@@ -685,7 +685,7 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 
     $output = str_replace("-C-FILESPERPAGE-", $topbar, $output);
 
-    $delform = new UI_Form("del");
+    $delform = new cHTMLForm("del");
     $delform->setVar("area", $area);
     $delform->setVar("action", "");
     $delform->setVar("startpage", $startpage);
@@ -697,7 +697,7 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
     $delform->setVar("frame", 4);
 
     // Table with (preview) images
-    $delform->add("list", $output);
+    $delform->add($output);
 
     $page->addScript($sess->url("iZoom.js.php"));
 

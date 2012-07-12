@@ -402,15 +402,15 @@ function piworkflowRenderColumn ($idcat, $idart, $idartlang, $column)
                 $mayEdit = false;
             }
 
-            $form = new UI_Form("wfaction".$idartlang, "main.php", "get");
+            $form = new cHTMLForm("wfaction".$idartlang, "main.php", "get");
             $form->setVar("area",$area);
             $form->setVar("action","workflow_do_action");
             $form->setVar("frame", $frame);
             $form->setVar("idcat", $idcat);
             $form->setVar("modidartlang", $idartlang);
             $form->setVar("idtpl", $idtpl);
-            $form->add("select", '<table cellspacing="0" border="0"><tr><td>'.$sActionSelect.'</td><td>');
-            $form->add("button", '<input type="image" src="'.$cfg["path"]["htmlpath"].$cfg["path"]["images"]."submit.gif".'"></tr></table>');
+            $form->add('<table cellspacing="0" border="0"><tr><td>'.$sActionSelect.'</td><td>');
+            $form->add('<input type="image" src="'.$cfg["path"]["htmlpath"].$cfg["path"]["images"]."submit.gif".'"></tr></table>');
 
             if ($mayEdit == true)
             {

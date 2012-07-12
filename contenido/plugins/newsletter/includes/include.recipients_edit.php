@@ -202,9 +202,7 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
         }
     }
 
-    $oGroupList = new UI_List();
-    $oGroupList->setWidth("100%");
-    $oGroupList->setBorder(1);
+    $oGroupList = new cGuiList();
 
     $oAssocGroups = new NewsletterRecipientGroupMemberCollection();
     $oAssocGroups->link("NewsletterRecipientGroupCollection");

@@ -21,7 +21,7 @@
 * {@internal
 *   created 2005-05-11
 *
-*   $Id: class.widgets.pager.php 2379 2012-06-22 21:00:16Z xmurrix $
+*   $Id: class.objectpager.php 2379 2012-06-22 21:00:16Z xmurrix $
 * }}
 *
 */

@@ -92,6 +92,10 @@ class UI_Left_Top
 
 }
 
+/**
+ *
+ * @deprecated This class should no longer be used. Use cHTMLForm instead.
+ */
 class UI_Form
 {
     var $items;
@@ -114,6 +118,8 @@ class UI_Form
     function UI_Form ($name, $action = "", $method = "post", $target = "")
     {
         global $sess, $cfg;
+
+        cDeprecated("This class should no longer be used. Use cHTMLForm instead");
 
         $this->formname = $name;
 
@@ -267,148 +273,6 @@ class UI_Page
         $tpl->set('s', 'EXTRA', '');
 
         $rendered = $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_page'],false);
-
-        if ($print == true)
-        {
-            echo $rendered;
-        } else {
-            return $rendered;
-        }
-    }
-}
-
-class UI_List
-{
-    var $link;
-    var $title;
-    var $caption;
-    var $javascripts;
-    var $type;
-    var $image;
-    var $alt;
-    var $actions;
-    var $padding;
-    var $imagewidth;
-     var $extra;
-     var $border;
-     var $bgcolor;
-     var $solid;
-     var $width;
-
-    function UI_List ()
-    {
-        $this->padding = 2;
-        $this->border = 0;
-    }
-
-    function setWidth ($width)
-    {
-        $this->width = $width;
-    }
-
-    function setCellAlignment ($item, $cell, $alignment)
-    {
-        $this->cellalignment[$item][$cell] = $alignment;
-    }
-
-    function setCellVAlignment ($item, $cell, $alignment)
-    {
-        $this->cellvalignment[$item][$cell] = $alignment;
-    }
-
-    function setBgColor ($item, $color)
-    {
-        $this->bgcolor[$item] = $color;
-    }
-
-    function setCell ($item, $cell, $value)
-    {
-        $this->cells[$item][$cell] = $value;
-        $this->cellalignment[$item][$cell] = "";
-    }
-
-    function setCellExtra ($item, $cell, $extra)
-    {
-        $this->extra[$item][$cell] = $extra;
-    }
-
-    function setPadding ($padding)
-    {
-        $this->padding = $padding;
-    }
-
-    function setBorder ($border)
-    {
-        $this->border = $border;
-    }
-
-    function setExtra ($item, $extra)
-    {
-        $this->extra[$item] = $extra;
-    }
-
-    function setSolidBorder ($solid)
-    {
-        $this->solid = $solid;
-    }
-
-    function render($print = false)
-    {
-        global $sess, $cfg;
-
-        $tpl = new Template;
-        $tpl2 = new Template;
-
-        $tpl->reset();
-        $tpl->set('s', 'SID', $sess->id);
-
-        $colcount = 0;
-
-        if (is_array($this->cells))
-        {
-            foreach ($this->cells as $row => $cells)
-            {
-                $thefont='';
-                $unne='';
-
-                $colcount++;
-
-                $content = "";
-                $count = 0;
-
-                foreach ($cells as $key => $value)
-                {
-                    $count++;
-                    $tpl2->reset();
-
-                    if ($this->cellalignment[$row][$key] != "")
-                    {
-                        $tpl2->set('s', 'ALIGN', $this->cellalignment[$row][$key]);
-                    } else {
-                        $tpl2->set('s', 'ALIGN', 'left');
-                    }
-
-                    if ($this->cellvalignment[$row][$key] != "")
-                    {
-                        $tpl2->set('s', 'VALIGN', $this->cellvalignment[$row][$key]);
-                    } else {
-                        $tpl2->set('s', 'VALIGN', 'top');
-                    }
-
-                    $tpl2->set('s', 'CONTENT', $value);
-                    if($colcount == 1) {
-                        $content .= $tpl2->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list_head'],true);
-                    } else {
-                        $content .= $tpl2->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list_row'],true);
-                    }
-                }
-
-                $tpl->set('d', 'ROWS', $content);
-                $tpl->next();
-            }
-        }
-
-        $rendered = $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list'],true);
 
         if ($print == true)
         {

@@ -63,13 +63,10 @@ if ($action == "client_artspec_default") {
     }
 }
 
-$list = new UI_List;
+$list = new cGuiList();
 
 $list->setCell(1,1, i18n("Article specification"));
 $list->setCell(1,2, i18n("Options"));
-
-$list->setBorder(1);
-$list->setWidth ("250px");
 
 $count = 2;
 
@@ -104,15 +101,15 @@ if (is_array($artspec)) {
         $defLink->updateAttributes(array('style' => 'padding:3'));
 
         if (($action == "client_artspec_edit") && ($idartspec == $id)) {
-            $form = new UI_Form("artspec");
+            $form = new cHTMLForm("artspec");
             $form->setVar("area",$area);
             $form->setVar("frame", $frame);
             $form->setVar("idartspec", $id);
             $form->setVar("action", "client_artspec_save");
             $form->setVar("online", $artspec[$id]['online']);
             $inputbox = new cHTMLTextbox ("artspectext", $artspec[$id]['artspec']);
-            $form->add("name",$inputbox->render());
-            $form->add("submit", '<input type="image" value="submit" src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'submit.gif" alt="'.i18n('Save').'" title="'.i18n('Save').'">');
+            $form->add($inputbox->render());
+            $form->add('<input type="image" value="submit" src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'submit.gif" alt="'.i18n('Save').'" title="'.i18n('Save').'">');
 
             $list->setCell($count,1, $form->render(true));
         } else {
@@ -155,8 +152,9 @@ $inputbox = new cHTMLTextbox ("artspectext");
 $form->add(i18n("Specification name"),$inputbox->render());
 
 $spacer = new cHTMLDiv();
-$spacer->setContent("<br>");
+$spacer->setStyle("width: 1%");
+$spacer->setContent("<br>".$form->render());
 
-$page->setContent(array($list, $spacer, $form));
+$page->setContent(array($list, $spacer));
 $page->render();
 ?>

@@ -502,7 +502,7 @@ class cVersion {
             $oForm->setConfirm("clearhistory", $aMessage["alt"], $aMessage["popup"]);
             $oForm->setActionButton("submit", "images/but_refresh.gif", i18n("Refresh"), "s");
 
-            return $oForm ->render().'<div style="margin-top:20px;"></div>';
+            return "<div style='width: 1%'>".$oForm ->render().'</div><div style="margin-top:20px;"></div>';
         } else {
             return '';
         }
