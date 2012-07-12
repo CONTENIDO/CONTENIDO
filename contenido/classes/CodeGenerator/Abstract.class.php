@@ -250,15 +250,17 @@ abstract class cCodeGeneratorAbstract
 
     abstract protected function _processNoConfigurationError();
 
-
-    protected function _getTemplateData()
-    {
+    protected function _getTemplateData() {
         global $cfg;
 
         // Get IDLAY and IDMOD array
-        $sql = "SELECT a.idlay AS idlay, a.idtpl AS idtpl, a.name AS name
-                FROM " . $cfg['tab']['tpl'] . " AS a, " . $cfg['tab']['tpl_conf'] . " AS b
-                WHERE b.idtplcfg = " . $this->_idtplcfg . " AND b.idtpl = a.idtpl";
+        $sql = "SELECT a.idlay AS idlay
+                , a.idtpl AS idtpl
+                , a.name AS name
+                FROM " . $cfg['tab']['tpl'] . " AS a
+                , " . $cfg['tab']['tpl_conf'] . " AS b
+                WHERE b.idtplcfg = " . $this->_idtplcfg . "
+                AND b.idtpl = a.idtpl;";
         $this->_db->query($sql);
         $this->_db->next_record();
         $data = $this->_db->toArray();
@@ -266,6 +268,9 @@ abstract class cCodeGeneratorAbstract
         if ($this->_layout !== false) {
             $data['idlay'] = $this->_layout;
         }
+
+        $idlay = $data['idlay'];
+        $idtpl = $data['idtpl'];
         $this->_debug("Usging Layout: $idlay and Template: $idtpl for generation of code.<br><br>");
 
         return $data;
