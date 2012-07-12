@@ -56,14 +56,14 @@ if (isset($_REQUEST["listsubmit"])) {
     }
 }
 
-class TODOBackendList extends cScrollList
+class TODOBackendList extends cGuiScrollList
 {
     var $statustypes;
     function TODOBackendList()
     {
         global $todoitems;
 
-        parent::cScrollList();
+        parent::__construct();
 
         $this->statustypes = $todoitems->getStatusTypes();
         $this->prioritytypes = $todoitems->getPriorityTypes();

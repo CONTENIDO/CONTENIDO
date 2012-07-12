@@ -21,55 +21,52 @@
  * {@internal
  *   created 2004-08-04
  *
- *   $Id$
+ *   $Id: class.foldingrow.php 2629 2012-07-12 12:14:35Z mischa.holz $
  * }}
  *
  */
-
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
 
-class cFoldingRow extends cHTML
+class cGuiFoldingRow extends cHTML
 {
     /**
      * Table row with the header
-     * @var array
+     * @private array
      * @access private
      */
-    var $_headerRow;
+    private $_headerRow;
 
     /**
      * Table header data
-     * @var array
+     * @private array
      * @access private
      */
-    var $_headerData;
+    private $_headerData;
 
     /**
      * Table row with the content
-     * @var array
+     * @private array
      * @access private
      */
-    var $_contentRow;
-
-    /**
-     * Table content data
-     * @var array
-     * @access private
-     */
-    var $_contentData;
+    private $_contentRow;
 
     /**
      * ID for link that triggers expandCollapse
-     * @var string
+     * @private string
      * @access private
      */
-    var $_linkId;
+    private $_linkId;
 
-    function cFoldingRow($uuid, $caption = "", $link_id = "", $bExpanded = null)
-    {
+    /**
+     * Table content data
+     * @private array
+     */
+    protected $_contentData;
+
+    public function __construct($uuid, $caption = "", $link_id = "", $bExpanded = null) {
         global $auth;
 
         $this->setCaption($caption);
@@ -113,8 +110,7 @@ class cFoldingRow extends cHTML
         }
     }
 
-    function setExpanded($expanded = false)
-    {
+    public function setExpanded($expanded = false) {
         if ($expanded == true) {
             $this->_foldingImage->setSrc("images/widgets/foldingrow/expanded.gif");
             $this->_foldingImage->updateAttributes(array("data" => "expanded"));
@@ -129,28 +125,23 @@ class cFoldingRow extends cHTML
         $this->_expanded = $expanded;
     }
 
-    function setCaption($caption)
-    {
+    public function setCaption($caption) {
         $this->_caption = $caption;
     }
 
-    function setHelpContext($context = false)
-    {
+    public function setHelpContext($context = false) {
         $this->_helpContext = $context;
     }
 
-    function setIndent($indent = 0)
-    {
+    public function setIndent($indent = 0) {
         $this->_indent = $indent;
     }
 
-    function setContentData($content)
-    {
+    function setContentData($content) {
         $this->_contentData->setContent($content);
     }
 
-    function render()
-    {
+    public function render() {
         /* Build the expand/collapse link */
         $this->_link->setClass("foldingrow");
         if ($this->_linkId != NULL) {
@@ -162,7 +153,7 @@ class cFoldingRow extends cHTML
         $hiddenid = $this->_hiddenField->getID();
         $uuid = $this->_uuid;
 
-        $this->_link->setLink("javascript:cFoldingRow_expandCollapse('$imgid', '$rowid', '$hiddenid', '$uuid');");
+        $this->_link->setLink("javascript:cGuiFoldingRow_expandCollapse('$imgid', '$rowid', '$hiddenid', '$uuid');");
         $this->_link->setContent($this->_foldingImage->render() . $this->_caption);
 
         $this->_headerData->setContent(array($this->_hiddenField,$this->_link));
@@ -175,7 +166,18 @@ class cFoldingRow extends cHTML
 
         return ($output);
     }
-
 }
 
+/**
+ * Old classname for downwards compatibility
+ * @deprecated This class was renamed to cGuiFoldingRow
+ */
+class cFoldingRow extends cGuiFoldingRow {
+
+    public function __construct($uuid, $caption = "", $link_id = "", $bExpanded = null) {
+        cDeprecated("This class was renamed to cGuiFoldingRow");
+
+        parent::__construct($uuid, $caption, $link_id, $bExpanded);
+    }
+}
 ?>

@@ -120,7 +120,7 @@ $aSortOrderOptions = array(    "asc" => i18n("Ascending"),
 
 $listOptionId="listoption";
 $tpl->set('s', 'LISTOPLINK', $listOptionId);
-$oListOptionRow = new cFoldingRow(    "5498dbba-ed4a-4618-8e49-3a3635396e22",    i18n("List options"), $listOptionId);
+$oListOptionRow = new cGuiFoldingRow(    "5498dbba-ed4a-4618-8e49-3a3635396e22",    i18n("List options"), $listOptionId);
 $oListOptionRow->setExpanded('true');
 $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
 $oSelectItemsPerPage->autoFill(array(25 => 25, 50 => 50, 75 => 75, 100 => 100));
@@ -189,7 +189,7 @@ $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
 
 $pagerID="pager";
-$oPager = new cObjectPager("44b41691-0dd4-443c-a594-66a8164e25fd", $iItemCount, $elemperpage, $page, $oPagerLink, "page", $pagerID);
+$oPager = new cGuiObjectPager("44b41691-0dd4-443c-a594-66a8164e25fd", $iItemCount, $elemperpage, $page, $oPagerLink, "page", $pagerID);
 $oPager->setExpanded('true');
 $tpl->set('s', 'PAGINGLINK', $pagerID);
 $tpl->set('s', 'PAGING', $oPager->render());

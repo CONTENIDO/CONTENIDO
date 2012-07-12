@@ -260,7 +260,7 @@ foreach ($aUserTable as $mkey => $params)
         $mlist->setImage($iMenu, "");
 
         if ($_GET['frontenduser'] == $idfrontenduser) {
-            $mlist->setExtra($iMenu, 'id="marked" ');
+            $mlist->setMarked($iMenu);
         }
     }
 }
@@ -287,7 +287,7 @@ $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
 
-$oPager = new cObjectPager("25c6a67d-a3f1-4ea4-8391-446c131952c9", $iItemCount, $_REQUEST['elemperpage'], $mPage, $oPagerLink, "page", $pagingLink);
+$oPager = new cGuiObjectPager("25c6a67d-a3f1-4ea4-8391-446c131952c9", $iItemCount, $_REQUEST['elemperpage'], $mPage, $oPagerLink, "page", $pagingLink);
 
 //add slashes, to insert in javascript
 $sPagerContent = $oPager->render(1);

@@ -106,7 +106,7 @@ unset($sButtonRow);
 # 1.1 Newsletter: Actions folding row
 ######################################
 $sLink = "actionlink"; // ID for HTML element
-$oActionsRow = new cFoldingRow("28cf9b31-e6d7-4657-a9a7-db31478e7a5c", i18n("Actions", 'newsletter'), $sLink);
+$oActionsRow = new cGuiFoldingRow("28cf9b31-e6d7-4657-a9a7-db31478e7a5c", i18n("Actions", 'newsletter'), $sLink);
 $oTpl->set('s', 'ACTIONLINK', $sLink);
 
 if ($perm->have_perm_area_action("news", "news_create")) {
@@ -127,7 +127,7 @@ if ($perm->have_perm_area_action("news", "news_create")) {
 # 1.2 Newsletter: Settings folding row
 ######################################
 $sLink = "settingslink";
-$oSettingsRow = new cFoldingRow("d64baf0a-aea9-47b3-8490-54a00fce02b5", i18n("Settings", 'newsletter'), $sLink);
+$oSettingsRow = new cGuiFoldingRow("d64baf0a-aea9-47b3-8490-54a00fce02b5", i18n("Settings", 'newsletter'), $sLink);
 $oTpl->set('s', 'SETTINGSLINK', $sLink);
 
 // HTML Newsletter: Template and newsletter category
@@ -348,7 +348,7 @@ $sContent = '
 
 // To template
 $sLink = "listoption";
-$oListOptionsRow = new cFoldingRow("9d0968be-601d-44f8-a666-99d51c9c777d", i18n("List options", 'newsletter'), $sLink);
+$oListOptionsRow = new cGuiFoldingRow("9d0968be-601d-44f8-a666-99d51c9c777d", i18n("List options", 'newsletter'), $sLink);
 $oListOptionsRow->setContentData($sContent);
 $oTpl->set('s', 'LISTOPTIONLINK', $sLink);
 
@@ -374,7 +374,7 @@ $oPagerLink->setCustom("contenido",   $sess->id);
 $sLink = "pagerlink";
 $oTpl->set('s', 'PAGINGLINK', $sLink);
 //$oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e302", $iItemCount, $iItemsPerPage, 1, $oPagerLink, 'page', $sLink);
-$oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e302", 0, 1, 1, $oPagerLink, 'page', $sLink);
+$oPagerRow = new cGuiObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e302", 0, 1, 1, $oPagerLink, 'page', $sLink);
 
 ######################################
 # Newsletter: Container
@@ -531,7 +531,7 @@ $sContent = '
 
 // To template
 $sLink = "listoptiondisp";
-$oListOptionsRow = new cFoldingRow("dfa6cc00-0acf-11db-9cd8-0800200c9a66", i18n("List options", 'newsletter'), $sLink);
+$oListOptionsRow = new cGuiFoldingRow("dfa6cc00-0acf-11db-9cd8-0800200c9a66", i18n("List options", 'newsletter'), $sLink);
 $oListOptionsRow->setContentData($sContent);
 $oTpl->set('s', 'LISTOPTIONLINKDISP', $sLink);
 
@@ -556,7 +556,7 @@ $oPagerLink->setCustom("contenido",   $sess->id);
 $sLink = "pagerlinkdisp";
 $oTpl->set('s', 'PAGINGLINKDISP', $sLink);
 //$oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e303", $iItemCount, $iItemsPerPage, 1, $oPagerLink, "page", $sLink);
-$oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e303", 0, 1, 1, $oPagerLink, 'page', $sLink);
+$oPagerRow = new cGuiObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e303", 0, 1, 1, $oPagerLink, 'page', $sLink);
 
 ######################################
 # Job dispatch: Container
@@ -625,7 +625,7 @@ $oTpl->set('s', 'VALUE_PURGETIMEFRAME', $iTimeframe);
 
 // To template
 $sLink = "actionrec";
-$oListActionsRow = new cFoldingRow("f0d7bf80-e73e-11d9-8cd6-0800200c9a66", i18n("Actions", 'newsletter'), $sLink);
+$oListActionsRow = new cGuiFoldingRow("f0d7bf80-e73e-11d9-8cd6-0800200c9a66", i18n("Actions", 'newsletter'), $sLink);
 $oListActionsRow->setContentData($sContent);
 $oTpl->set('s', 'ACTIONLINKREC', $sLink);
 
@@ -663,7 +663,7 @@ $sContent = '
 
 // To template
 $sLink = "settingsrec";
-$oSettingsRow = new cFoldingRow("5ddbe820-e6f1-11d9-8cd6-0800200c9a69", i18n("Settings", 'newsletter'), $sLink);
+$oSettingsRow = new cGuiFoldingRow("5ddbe820-e6f1-11d9-8cd6-0800200c9a69", i18n("Settings", 'newsletter'), $sLink);
 $oSettingsRow->setContentData($sContent);
 $oTpl->set('s', 'SETTINGSLINKREC', $sLink);
 
@@ -776,7 +776,7 @@ $sContent = '
 
 // To template
 $sLink = "listoptionsrec";
-$oListOptionsRow = new cFoldingRow("5ddbe820-e6f1-11d9-8cd6-0800200c9a66", i18n("List options", 'newsletter'), $sLink);
+$oListOptionsRow = new cGuiFoldingRow("5ddbe820-e6f1-11d9-8cd6-0800200c9a66", i18n("List options", 'newsletter'), $sLink);
 $oListOptionsRow->setContentData($sContent);
 $oTpl->set('s', 'LISTOPTIONLINKREC', $sLink);
 
@@ -801,7 +801,7 @@ $oPagerLink->setCustom("contenido", $sess->id);
 $sLink = "pagingrec";
 $oTpl->set('s', 'PAGINGLINKREC', $sLink);
 //$oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e304", $iItemCount, $iItemsPerPage, 1, $oPagerLink, "page", $sLink);
-$oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e304", 0, 1, 1, $oPagerLink, 'page', $sLink);
+$oPagerRow = new cGuiObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e304", 0, 1, 1, $oPagerLink, 'page', $sLink);
 
 ######################################
 # Recipients: Container
@@ -852,7 +852,7 @@ $sContent = '
 ';
 
 $sLink = "actiongroup";
-$oListActionsRow = new cFoldingRow("f0d7bf80-e73e-11d9-8cd6-0800200c9a67", i18n("Actions", 'newsletter'), $sLink);
+$oListActionsRow = new cGuiFoldingRow("f0d7bf80-e73e-11d9-8cd6-0800200c9a67", i18n("Actions", 'newsletter'), $sLink);
 $oListActionsRow->setContentData($sContent);
 $oTpl->set('s', 'ACTIONLINKGROUP', $sLink);
 
@@ -936,7 +936,7 @@ $sContent = '
 
 // To template
 $sLink = "listoptionsgroup";
-$oListOptionsRow = new cFoldingRow("79efc1fc-111d-11dc-8314-0800200c9a66", i18n("List options", 'newsletter'), $sLink);
+$oListOptionsRow = new cGuiFoldingRow("79efc1fc-111d-11dc-8314-0800200c9a66", i18n("List options", 'newsletter'), $sLink);
 $oListOptionsRow->setContentData($sContent);
 $oTpl->set('s', 'LISTOPTIONLINKGROUP', $sLink);
 
@@ -960,7 +960,7 @@ $oPagerLink->setCustom("contenido",   $sess->id);
 $sLink = "paginggroup";
 $oTpl->set('s', 'PAGINGLINKGROUP', $sLink);
 //$oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e305", $iItemCount, $iItemsPerPage, 1, $oPagerLink, "page", $sLink);
-$oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e305", 0, 1, 1, $oPagerLink, 'page', $sLink);
+$oPagerRow = new cGuiObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e305", 0, 1, 1, $oPagerLink, 'page', $sLink);
 
 ######################################
 # Recipient Groups: Container

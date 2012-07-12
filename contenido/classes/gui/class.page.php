@@ -4,7 +4,8 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Manages HTML pages and provides functions for rendering them
+ * Manages HTML pages and provides functions for rendering them.
+ * As a usage example you can take a look at include.upl_files_upload.php
  *
  * Requirements:
  * @con_php_req 5

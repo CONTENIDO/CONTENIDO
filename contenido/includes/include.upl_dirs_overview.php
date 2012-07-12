@@ -211,7 +211,7 @@ unset($objects[0]);
 
 if ($appendparameters == "filebrowser")
 {
-    $mtree = new cWidgetTreeView("b58f0ae3-8d4e-4bb3-a754-5f0628863364");
+    $mtree = new cGuiTree("b58f0ae3-8d4e-4bb3-a754-5f0628863364");
     $cattree = conFetchCategoryTree();
     $marray = array();
 

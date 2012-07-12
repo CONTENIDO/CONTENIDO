@@ -189,7 +189,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     $oForm->add(i18n("Default group", 'newsletter'), $oCkbDefault->toHTML(false));
 
     // Member list options folding row
-    $oMemberListOptionRow = new cFoldingRow("a91f5540-52db-11db-b0de-0800200c9a66",i18n("Member list options", 'newsletter'));
+    $oMemberListOptionRow = new cGuiFoldingRow("a91f5540-52db-11db-b0de-0800200c9a66",i18n("Member list options", 'newsletter'));
 
     $oSelItemsPerPage = new cHTMLSelectElement("member_elemperpage");
     $oSelItemsPerPage->autoFill(array(0 => i18n("-- All --", 'newsletter'), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
@@ -372,7 +372,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     #$oPagerLink->enableAutomaticParameterAppend();
     $oPagerLink->setCustom("contenido", $sess->id);
 
-    $oMemberPager = new cObjectPager("d82a3ff0-52d9-11db-b0de-0800200c9a66", $iMembers, $_REQUEST["member_elemperpage"], $_REQUEST["member_page"], $oPagerLink, "member_page");
+    $oMemberPager = new cGuiObjectPager("d82a3ff0-52d9-11db-b0de-0800200c9a66", $iMembers, $_REQUEST["member_elemperpage"], $_REQUEST["member_page"], $oPagerLink, "member_page");
     $oMemberPager->setCaption(i18n("Member navigation", 'newsletter'));
 
     $oForm->add(i18n("Recipients in group", 'newsletter'), '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.
@@ -386,7 +386,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 
     // Outsiders
     // Outsider list options folding row
-    $oOutsiderListOptionRow = new cFoldingRow("ca633b00-52e9-11db-b0de-0800200c9a66",i18n("Outsider list options", 'newsletter'));
+    $oOutsiderListOptionRow = new cGuiFoldingRow("ca633b00-52e9-11db-b0de-0800200c9a66",i18n("Outsider list options", 'newsletter'));
 
     $oSelItemsPerPage = new cHTMLSelectElement("outsider_elemperpage");
     $oSelItemsPerPage->autoFill(array(0 => i18n("-- All --", 'newsletter'), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
@@ -543,7 +543,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     #$oPagerLink->enableAutomaticParameterAppend();
     $oPagerLink->setCustom("contenido", $sess->id);
 
-    $oOutsiderPager = new cObjectPager("4d3a7330-52eb-11db-b0de-0800200c9a66", $iOutsiders, $_REQUEST["outsider_elemperpage"], $_REQUEST["outsider_page"], $oPagerLink, "outsider_page");
+    $oOutsiderPager = new cGuiObjectPager("4d3a7330-52eb-11db-b0de-0800200c9a66", $iOutsiders, $_REQUEST["outsider_elemperpage"], $_REQUEST["outsider_page"], $oPagerLink, "outsider_page");
     $oOutsiderPager->setCaption(i18n("Outsider navigation", 'newsletter'));
 
     $oForm->add(i18n("Add recipients", 'newsletter'), '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.

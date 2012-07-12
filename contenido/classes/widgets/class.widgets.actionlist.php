@@ -31,7 +31,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /* @deprecated 2012-03-10 This class is not longer supported. */
-class cWidgetMenuActionList extends cFoldingRow
+class cWidgetMenuActionList extends cGuiFoldingRow
 {
     function cWidgetMenuActionList($uuid, $title, $dataClassName)
     {
@@ -53,7 +53,7 @@ class cWidgetMenuActionList extends cFoldingRow
             $this->_metaClass = $dataClass->getMetaObject();
         }
 
-        cFoldingRow::cFoldingRow($uuid, $title);
+        parent::__construct($uuid, $title);
 
         $this->_headerData->setStyle("font-weight: bold; text-decoration: none;");
         $this->_headerData->setHeight(18);

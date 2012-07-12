@@ -146,7 +146,7 @@ if(isset($_GET['view']) && $_GET['view'] == $imgGroupId) {
 $actionLink="actionlink";
 $sActionUuid = '28cf9b31-e6d7-4657-a9a7-db31478e7a5c';
 
-$oActionRow = new cFoldingRow($sActionUuid ,i18n("Actions"), $actionLink);
+$oActionRow = new cGuiFoldingRow($sActionUuid ,i18n("Actions"), $actionLink);
 if(isset($_GET['actionrow']) && $_GET['actionrow'] == 'collapsed') {
     $oActionRow->setExpanded(false);
     $user->setProperty("expandstate", $sActionUuid, 'false');
@@ -174,7 +174,7 @@ $oActionRow->setContentData($oLink->render());
 
 $sListOptionId = 'f081b6ab-370d-4fd8-984f-6b38590fe48b';
 $listOptionLink="listoptionlink";
-$oListOptionRow = new cFoldingRow($sListOptionId, i18n("List options"), $listOptionLink);
+$oListOptionRow = new cGuiFoldingRow($sListOptionId, i18n("List options"), $listOptionLink);
 $oListOptionRow->setExpanded(true);
 
 if(isset($_GET['filterrow']) && $_GET['filterrow'] == 'collapsed') {
@@ -400,7 +400,7 @@ $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
 
-$oPager = new cObjectPager("25c6a67d-a3f1-4ea4-8391-446c131952c9", $iItemCount, $_REQUEST['elemperpage'], $mPage, $oPagerLink, "page", $pagingLink);
+$oPager = new cGuiObjectPager("25c6a67d-a3f1-4ea4-8391-446c131952c9", $iItemCount, $_REQUEST['elemperpage'], $mPage, $oPagerLink, "page", $pagingLink);
 $oPager->setExpanded(true);
 
 ######################

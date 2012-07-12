@@ -39,10 +39,11 @@ class cGuiMenu
     public $imagewidth;
     public $show;
 
+    protected $_marked;
+
     public function __construct() {
-        $this->padding = 2;
-        $this->border = 0;
         $this->rowmark = true;
+        $this->_marked = false;
     }
 
     public function setTitle ($item, $title) {
@@ -65,6 +66,10 @@ class cGuiMenu
 
     public function setActions ($item, $key, $action) {
         $this->actions[$item][$key] = $action;
+    }
+
+    public function setMarked($item) {
+        $this->_marked = $item;
     }
 
     public function render($print = true) {
@@ -108,12 +113,14 @@ class cGuiMenu
                     $tpl->set('d', 'ICON', $img);
                 }
 
+                $extra = "";
                 if ($this->rowmark == true) {
-                    $extraadd = 'onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)"';
-                    $tpl->set('d', 'EXTRA', $extraadd);
-                } else {
-                    $tpl->set('d', 'EXTRA', '');
+                    $extra .= 'onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)" ';
                 }
+                if($this->_marked === $key) {
+                    $extra .= "id='marked'";
+                }
+                $tpl->set('d', 'EXTRA', $extra);
 
                 $fullactions = "";
                 if (is_array($this->actions[$key])) {

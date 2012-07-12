@@ -31,7 +31,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 $oPage = new cGuiPage("clientsettings");
-$oList = new cScrollList;
+$oList = new cGuiScrollList;
 
 $idclient = $_GET['idclient'];
 if (strlen($idclient) == 0)

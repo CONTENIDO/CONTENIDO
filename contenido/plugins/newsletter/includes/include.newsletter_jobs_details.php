@@ -166,7 +166,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oFrmOptions->add(i18n("Items per page:",'newsletter'), $oSelElements->render());
 
     // Ouput data
-    $oList = new cScrollList (true, "news_job_details");
+    $oList = new cGuiScrollList (true, "news_job_details");
     $oList->setCustom("idnewsjob",   $_REQUEST["idnewsjob"]);
     $oList->setCustom("nextpage",    $iNextPage);
     $oList->setCustom("elemperpage", $_REQUEST["elemperpage"]);

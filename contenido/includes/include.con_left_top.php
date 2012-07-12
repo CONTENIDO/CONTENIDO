@@ -130,7 +130,7 @@ $arrDateTypes['lastmodified'] = i18n('Date modified');
 $arrDateTypes['published'] = i18n('Date published');
 
 $articleLink="editarticle";
-$oListOptionRow = new cFoldingRow("3498dbba-ed4a-4618-8e49-3a3635396e22", i18n("Article search"), $articleLink, $bShowArticleSearch);
+$oListOptionRow = new cGuiFoldingRow("3498dbba-ed4a-4618-8e49-3a3635396e22", i18n("Article search"), $articleLink, $bShowArticleSearch);
 $tpl->set('s', 'ARTICLELINK', $articleLink);
 
 // Textfeld
@@ -366,7 +366,7 @@ $tpl->set('d', 'SELECTED', '');
 $tpl->next();
 
 $categoryLink = "editcat";
-$editCategory = new cFoldingRow("3498dbbb-ed4a-4618-8e49-3a3635396e22", i18n("Edit category"), $categoryLink);
+$editCategory = new cGuiFoldingRow("3498dbbb-ed4a-4618-8e49-3a3635396e22", i18n("Edit category"), $categoryLink);
 
 while ($db->next_record()) {
     $tplname = $db->f('name');
@@ -426,7 +426,7 @@ $tpl->set('s', 'PLUS', $expandimg);
 $languages = getLanguageNamesByClient($client);
 if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat")) {
     $sListId = 'sync';
-    $oListOptionRow = new cFoldingRow("4808dbba-ed4a-4618-8e49-3a3635396e22", i18n("Synchronize from"), $sListId);
+    $oListOptionRow = new cGuiFoldingRow("4808dbba-ed4a-4618-8e49-3a3635396e22", i18n("Synchronize from"), $sListId);
 
     if (($syncoptions > 0) && ($syncoptions != $lang)) {
         $oListOptionRow->setExpanded (true);

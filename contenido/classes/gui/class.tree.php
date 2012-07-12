@@ -12,18 +12,17 @@
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0
- * @author     ??
+ * @author     mischa.holz
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  *
  * {@internal
- *   created 2006-10-05
- *   $Id$
+ *   created 2012-07-12
+ *   $Id: class.tree.php 2629 2012-07-12 12:14:35Z mischa.holz $
  * }}
  */
-
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
@@ -40,49 +39,49 @@ define("TREEVIEW_MOUSEOVER_NONE", "none");
 define("TREEVIEW_MOUSEOVER_MARK", "mark");
 
 /**
- * class cWidgetTreeView
- * cWidgetTreeView is a visual representation of a cTree. It supports folding,
+ * class cGuiTree
+ * cGuiTree is a visual representation of a cTree. It supports folding,
  * optional gridline marks and item icons.
  */
-class cWidgetTreeView extends cTree {
+class cGuiTree extends cTree {
 
     /**
      *
      * @access private
      */
-    var $_globalActions;
+    private $_globalActions;
 
     /**
      *
      * @access private
      */
-    var $_setItemActions;
+    private $_setItemActions;
 
     /**
      *
      * @access private
      */
-    var $_unsetItemActions;
+    private $_unsetItemActions;
 
     /**
      *
      * @access private
      */
-    var $_setAttributeActions;
+    private $_setAttributeActions;
 
     /**
      *
      * @access private
      */
-    var $_unsetAttributeActions;
+    private $_unsetAttributeActions;
 
     /**
      *
      * @access private
      */
-    var $_baseLink;
+    private $_baseLink;
 
-    function cWidgetTreeView($uuid, $treename = false) {
+    public function __construct($uuid, $treename = false) {
         global $cfg, $auth;
 
         cTree::cTree();
@@ -97,7 +96,7 @@ class cWidgetTreeView extends cTree {
         $this->_user = new cApiUser($auth->auth["uid"]);
     }
 
-    function processParameters() {
+    public function processParameters() {
         if (($items = $this->_user->getUserProperty("expandstate", $this->_uuid)) !== false) {
             $list = unserialize($items);
 
@@ -128,107 +127,116 @@ class cWidgetTreeView extends cTree {
     /**
      * applies an action to all items in the tree.
      *
+     * @deprecated This function doesn't do anything
      * @param cApiClickableAction action action object
      * @return void
      * @access public
      */
-    function applyGlobalAction($action) {
-
+    public function applyGlobalAction($action) {
+        cDeprecated("This function doesn't do anything.");
     }
 
     /**
      * removes the action from all treeitems.
      *
+     * @deprecated This function doesn't do anything
      * @param cApiClickableAction action Removes the action from the global context.
      * @return void
      * @access public
      */
-    function removeGlobalAction($action) {
-
+    public function removeGlobalAction($action) {
+        cDeprecated("This function doesn't do anything.");
     }
 
     /**
      * flushes all actions
      *
+     * @deprecated This function doesn't do anything
      * @return void
      * @access public
      */
-    function flushGlobalActions() {
-
+    public function flushGlobalActions() {
+        cDeprecated("This function doesn't do anything.");
     }
 
     /**
      * sets an action to a specific item.
      *
+     * @deprecated This function doesn't do anything
      * @param mixed item cTreeItem-Object or an id of a TreeItem-Object
      * @param cApiClickableAction action
      * @return void
      * @access public
      */
-    function applyItemAction($item, $action) {
-
+    public function applyItemAction($item, $action) {
+        cDeprecated("This function doesn't do anything.");
     }
 
     /**
      * unsets an action from a specific item. Note that you can unset global actions
      * using this method!
      *
+     * @deprecated This function doesn't do anything
      * @param mixed item cTreeItem-Object or an id of a TreeItem-Object
      * @param cApiClickableAction action Action to unset
      * @return void
      * @access public
      */
-    function removeItemAction($item, $action) {
-
+    public function removeItemAction($item, $action) {
+        cDeprecated("This function doesn't do anything.");
     }
 
     /**
      * flushes all actions for a specific item
      *
+     * @deprecated This function doesn't do anything
      * @param mixed item cTreeItem-Object or an id of a TreeItem-Object
      * @return void
      * @access public
      */
-    function flushItemActions($item) {
-
+    public function flushItemActions($item) {
+        cDeprecated("This function doesn't do anything.");
     }
 
     /**
      * Applies an action to all items with a certain attribute set.
      *
+     * @deprecated This function doesn't do anything
      * @param array attributes Values which need to match. The array key is the attribute name. Multiple array
      *        entries are connected with "AND".
      * @param cApiClickableAction action Action to apply
      * @return void
      * @access public
      */
-    function applyActionByItemAttribute($attributes, $action) {
-
+    public function applyActionByItemAttribute($attributes, $action) {
+        cDeprecated("This function doesn't do anything.");
     }
 
     /**
      * Removes an action from all items with a certain attribute set.
      *
+     * @deprecated This function doesn't do anything
      * @param array attributes Values which need to match. The array key is the attribute name. Multiple array
      *        entries are connected with "AND".
      * @param cApiClickableAction action Action to remove
      * @return void
      * @access public
      */
-    function removeActionByItemAttribute($attributes, $action) {
-
+    public function removeActionByItemAttribute($attributes, $action) {
+        cDeprecated("This function doesn't do anything.");
     }
 
     /**
      * Removes all actions for items with specific attributes
      *
+     * @deprecated This function doesn't do anything
      * @param array attributes Values which need to match. The array key is the attribute name. Multiple array
      *        entries are connected with "AND".
      * @return void
      * @access public
      */
-    function flushActionByItemAttribute($attributes) {
-
+    public function flushActionByItemAttribute($attributes) {
+        cDeprecated("This function doesn't do anything.");
     }
 
     /**
@@ -241,27 +249,27 @@ class cWidgetTreeView extends cTree {
      * @return void
      * @access public
      */
-    function setGridlineMode($mode) {
+    public function setGridlineMode($mode) {
         $this->_gridlineMode = $mode;
     }
 
-    function setBackgroundMode($mode) {
+    public function setBackgroundMode($mode) {
         $this->_backgroundMode = $mode;
     }
 
-    function setMouseoverMode($mode) {
+    public function setMouseoverMode($mode) {
         $this->_mouseoverMode = $mode;
     }
 
-    function setBackgroundColors($colors) {
+    public function setBackgroundColors($colors) {
         $this->_backgroundColors = $colors;
     }
 
     /**
-     * @return void
+     * @return string
      * @access public
      */
-    function render($with_root = true) {
+    public function render($with_root = true) {
         /** @var cTreeItem[] $objects */
         $objects = $this->flatTraverse(0);
 
@@ -433,7 +441,7 @@ class cWidgetTreeView extends cTree {
         return ('<table cellspacing="0" cellpadding="0" width="100%" border="0"><tr><td>' . $result . '</td></tr></table>');
     }
 
-    function _getExpandCollapseIcon($object) {
+    public function _getExpandCollapseIcon($object) {
         if ($object->getCollapsed() == true) {
             return ($this->_buildImagePath("grid_expand.gif"));
         } else {
@@ -447,7 +455,7 @@ class cWidgetTreeView extends cTree {
      * @param   cTreeItem  $object
      * @return  cGuiLink
      */
-    function _setExpandCollapseLink($link, $object) {
+    public function _setExpandCollapseLink($link, $object) {
         if (!empty($this->_name)) {
             $treename = $this->_name . "_";
         }
@@ -464,14 +472,26 @@ class cWidgetTreeView extends cTree {
         return ($link);
     }
 
-    function _buildImagePath($image) {
+    public function _buildImagePath($image) {
         return ("./images/" . $this->_gridlineMode . "/" . $image);
     }
 
-    function setBaseLink($link) {
+    public function setBaseLink($link) {
         $this->_baseLink = $link;
     }
+}
 
+/**
+ * Old classname for downwards compatibility
+ * @deprecated This class was renamed to cGuiTree
+ */
+class cWidgetTreeView extends cGuiTree {
+
+    public function __construct($uuid, $treename = false) {
+        cDeprecated("This class was renamed to cGuiTree");
+
+        parent::__construct($uuid, $treename);
+    }
 }
 
 ?>

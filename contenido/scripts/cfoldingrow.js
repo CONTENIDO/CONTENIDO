@@ -1,7 +1,7 @@
 /*****************************************
 * File      :   $RCSfile: class.frontend.groups.php,v $
 * Project   :   CONTENIDO
-* Descr     :   cFoldingRow JavaScript helpers
+* Descr     :   cGuiFoldingRow JavaScript helpers
 * Modified  :   $Date: 2004/03/16 13:41:45 $
 *
 * © four for business AG, www.4fb.de
@@ -9,7 +9,7 @@
 * $Id$
 ******************************************/
 
-function cFoldingRow_expandCollapse (image, row, hidden, uuid)
+function cGuiFoldingRow_expandCollapse (image, row, hidden, uuid)
 {
     if (document.getElementById(image).getAttribute("data") == "collapsed")
     {

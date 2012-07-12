@@ -304,7 +304,7 @@ $oPagerLink->setCustom("contenido",     $sess->id);
 // Note, that after the "page" parameter no "pagerlink" parameter is specified -
 // it is not used, as the JS below only uses the INNER html and the "pagerlink" parameter is
 // set by ...left_top.html for the foldingrow itself
-$oPager = new cObjectPager($sPagerId, $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page");
+$oPager = new cGuiObjectPager($sPagerId, $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page");
 
 // Add slashes, to insert in javascript
 $sPagerContent = $oPager->render(1);

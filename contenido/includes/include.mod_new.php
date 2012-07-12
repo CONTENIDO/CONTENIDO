@@ -60,7 +60,7 @@ if ((int) $client > 0) {
     $aSortByOptions            = array("name" => i18n("Name"), "type" => i18n("Type"));
     $aSortOrderOptions      = array("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
     $listoplink="listoptions";
-    $oListOptionRow = new cFoldingRow("e9ddf415-4b2d-4a75-8060-c3cd88b6ff98", i18n("List options"), $listoplink);
+    $oListOptionRow = new cGuiFoldingRow("e9ddf415-4b2d-4a75-8060-c3cd88b6ff98", i18n("List options"), $listoplink);
     $tpl->set('s', 'LISTOPLINK', $listoplink);
     $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
     $oSelectItemsPerPage->autoFill(array(0 => i18n("-- All --"),5=>5, 25 => 25, 50 => 50, 75 => 75, 100 => 100));
@@ -170,7 +170,7 @@ if ((int) $client > 0) {
     $oPagerLink->setCustom("area", $area);
     $oPagerLink->enableAutomaticParameterAppend();
     $oPagerLink->setCustom("contenido", $sess->id);
-    $oPager = new cObjectPager("02420d6b-a77e-4a97-9395-7f6be480f497", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $pagerl);
+    $oPager = new cGuiObjectPager("02420d6b-a77e-4a97-9395-7f6be480f497", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $pagerl);
 
     $tpl->set('s', 'PAGINGLINK', $pagerl);
 
