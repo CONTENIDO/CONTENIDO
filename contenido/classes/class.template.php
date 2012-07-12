@@ -193,6 +193,7 @@ class Template
     {
         global $cCurrentModule, $cfg;
 
+        $moduleHandler = NULL;
         if (!is_null($cCurrentModule)) {
             $moduleHandler = new Contenido_Module_Handler($cCurrentModule);
         }
