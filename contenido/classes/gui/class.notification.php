@@ -109,7 +109,7 @@ class cGuiNotification
      * @param   int     $iStyle   Flag tp use styles for display or not (feasible 1 or 0)
      * @return  string
      */
-    public function messageBox($sLevel, $sMessage, $iStyle = 1)
+    public function returnMessageBox($sLevel, $sMessage, $iStyle = 1)
     {
         switch ($sLevel) {
             case self::LEVEL_ERROR:
@@ -209,7 +209,7 @@ class cGuiNotification
      */
     public function displayMessageBox($sLevel, $sMessage, $iStyle = 1)
     {
-        echo $this->messageBox($sLevel, $sMessage, $iStyle) . '<br>';
+        echo $this->returnMessageBox($sLevel, $sMessage, $iStyle) . '<br>';
     }
 
 }

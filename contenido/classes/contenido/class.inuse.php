@@ -243,7 +243,7 @@ class cApiInUseCollection extends ItemCollection
                     $notification = new cGuiNotification();
                 }
 
-                $noti = $notification->messageBox('warning', $message.$override, 0);
+                $noti = $notification->returnMessageBox('warning', $message.$override, 0);
                 $inUse = true;
             }
         }

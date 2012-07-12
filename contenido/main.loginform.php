@@ -89,7 +89,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
 
     if (count($aMessages) > 0) {
         $notification = new cGuiNotification();
-        $noti = $notification->messageBox('warning', implode('<br />', $aMessages), 1). '<br />';
+        $noti = $notification->returnMessageBox('warning', implode('<br />', $aMessages), 1). '<br />';
     }
 }
 

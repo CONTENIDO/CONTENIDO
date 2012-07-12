@@ -432,7 +432,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
         $sql = "DELETE FROM ".$cfg['tab']['lang']." WHERE idlang=" . $iIdLang;
         $db->query($sql);
     } else {
-        return $notification->messageBox('error', i18n("Could not delete language"), 0);
+        return $notification->returnMessageBox('error', i18n("Could not delete language"), 0);
     }
 }
 
