@@ -154,7 +154,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * @param   int  $idart
      * @return  array
      */
-    public function getcategoryIdsByArticleId($idart) {
+    public function getCategoryIdsByArticleId($idart) {
         $aIdCats = array();
 
         $sql = "SELECT idcat FROM `:cat_art` WHERE idart=:idart";

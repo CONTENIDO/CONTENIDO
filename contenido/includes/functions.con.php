@@ -218,7 +218,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
 
     // Get all idcats that contain art
     $oCatArtColl = new cApiCategoryArticleCollection();
-    $aCatsForArt = $oCatArtColl->getcategoryIdsByArticleId($idart);
+    $aCatsForArt = $oCatArtColl->getCategoryIdsByArticleId($idart);
     if (count($aCatsForArt) == 0) {
         $aCatsForArt[0] = 0;
     }
@@ -544,96 +544,84 @@ function conMakePublic($idcat, $lang, $public) {
 function conDeleteart($idart) {
     global $db, $cfg, $lang, $_cecRegistry, $cfgClient, $client;
 
-    // Delete current language
-    $sql = "SELECT idartlang, idtplcfg FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = '" . cSecurity::toInteger($idart) . "' AND idlang='" . cSecurity::toInteger($lang) . "'";
-    $db->query($sql);
-    $db->next_record();
-
-    $idartlang = $db->f("idartlang");
-    $idtplcfg = $db->f("idtplcfg");
-
-    // Fetch idcat
-    $sql = "SELECT idcat FROM " . $cfg["tab"]["cat_art"] . " WHERE idart = '" . cSecurity::toInteger($idart) . "'";
-    $db->query($sql);
-    $db->next_record();
-
-    $idcat = $db->f("idcat");
-
-    // Remove startidartlang
-    if (isStartArticle($idartlang, $idcat, $lang)) {
-        $sql = "UPDATE " . $cfg["tab"]["cat_lang"] . " SET startidartlang='0' WHERE idcat='" . cSecurity::toInteger($idcat) . "' AND idlang='" . cSecurity::toInteger($lang) . "'";
-        $db->query($sql);
-    }
-
-    $sql = "DELETE FROM " . $cfg["tab"]["content"] . " WHERE idartlang = '" . cSecurity::toInteger($idartlang) . "'";
-    $db->query($sql);
-
-    $sql = "DELETE FROM " . $cfg["tab"]["art_lang"] . " WHERE idartlang = '" . cSecurity::toInteger($idartlang) . "'";
-    $db->query($sql);
-
-    if ($idtplcfg != "0") {
-        $sql = "DELETE FROM " . $cfg["tab"]["container_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "'";
-        $db->query($sql);
-
-        $sql = "DELETE FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "'";
-        $db->query($sql);
-    }
-
-    // Check if there are remaining languages
-    $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = '" . cSecurity::toInteger($idart) . "'";
-    $db->query($sql);
-
-    if ($db->num_rows() > 0) {
+    // Get article language
+    $oArtLang = new cApiArticleLanguage();
+    if (!$oArtLang->loadByArticleAndLanguageId($idart, $lang)) {
         return;
     }
 
-    $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " WHERE idart = '" . cSecurity::toInteger($idart) . "'";
-    $db->query($sql);
-    $idcatart = array();
-    while ($db->next_record()) {
-        $idcatart[] = $db->f("idcatart");
+    $idartlang = $oArtLang->get('idartlang');
+    $idtplcfg = $oArtLang->get('idtplcfg');
+
+    // Fetch idcat
+    $oCatArt = new cApiCategoryArticle();
+    $oCatArt->loadBy('idart', (int) $idart);
+    $idcat = $oCatArt->get('idcat');
+
+    // Remove startidartlang
+    if (isStartArticle($idartlang, $idcat, $lang)) {
+        $oCatLang = new cApiCategoryLanguage();
+        $oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang);
+        $oCatLang->set('startidartlang', 0);
+        $oCatLang->store();
     }
 
-    ##################################################
-    # set keywords
+    $oContentColl = new cApiContentCollection();
+    $oContentColl->deleteBy('idartlang', (int) $idartlang);
 
-    if (count($idcatart) > 0) {
-        foreach ($idcatart as $value) {
-            //********* delete from code cache **********
-            $mask = $cfgClient[$client]['code_path'] . "*." . $value . ".php";
-            array_map("unlink", glob($mask));
+    $oArtLangColl = new cApiArticleLanguageCollection();
+    $oArtLangColl->delete((int) $idartlang);
 
-            //****** delete from 'stat'-table ************
-            $sql = "DELETE FROM " . $cfg["tab"]["stat"] . " WHERE idcatart = '" . cSecurity::toInteger($value) . "'";
-            $db->query($sql);
+    if ($idtplcfg != 0) {
+        $oContainerConfColl = new cApiContainerConfigurationCollection();
+        $oContainerConfColl->deleteBy('idtplcfg', (int) $idtplcfg);
+
+        $oTplConfColl = new cApiTemplateConfigurationCollection();
+        $oTplConfColl->delete('idtplcfg', $idtplcfg);
+    }
+
+    // Check if there are remaining languages
+    $oArtLangColl = new cApiArticleLanguageCollection();
+    $oArtLangColl->select('idart = ' . (int) $idart);
+    if (!$oArtLangColl->next()) {
+        return;
+    }
+
+    $oCatArtColl = new cApiCategoryArticleCollection();
+    $oCatArtColl->select('idart = ' . (int) $idart);
+    while ($oCatArtItem = $oCatArtColl->next()) {
+        // Delete from code cache
+        $mask = $cfgClient[$client]['code_path'] . '*.' . $oCatArtItem->get('idcatart') . '.php';
+        array_map('unlink', glob($mask));
+
+        // Delete from 'stat'-table
+        $oStatColl = new cApiStatCollection();
+        $oStatColl->deleteBy('idcatart', (int) $oCatArtItem->get('idcatart'));
+    }
+
+    $oArtLangColl = new cApiArticleLanguageCollection();
+    $oArtLangColl->select('idart = ' . (int) $idart);
+    while ($oArtLangColl = $oCatArtColl->next()) {
+        // Reset startidlang value of related entry in category language table
+        $oCatLang = new cApiCategoryLanguage();
+        if ($oCatLang->loadBy('startidartlang', (int) $oArtLangColl->get('idartlang'))) {
+            $oCatLang->set('startidartlang', 0);
+            $oCatLang->store();
         }
+
+        // Delete entries from content table
+        $oContentColl = new cApiContentCollection();
+        $oContentColl->deleteBy('idartlang', (int) $oArtLangColl->get('idartlang'));
     }
 
-    $sql = "SELECT * FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = '" . cSecurity::toInteger($idart) . "'";
-    $db->query($sql);
-    while ($db->next_record()) {
-        $idartlang[] = $db->f("idartlang");
-    }
+    $oCatArtColl = new cApiCategoryArticleCollection();
+    $oCatArtColl->deleteBy('idart', (int) $idart);
 
-    if (is_array($idartlang)) {
-        foreach ($idartlang as $value) {
-            $sql = "UPDATE " . $cfg["tab"]["cat_lang"] . " SET startidartlang='0' WHERE startidartlang ='" . cSecurity::toInteger($value) . "'";
-            $db->query($sql);
+    $oArtLangColl = new cApiArticleLanguageCollection();
+    $oArtLangColl->deleteBy('idart', (int) $idart);
 
-            //********* delete from content table **********
-            $sql = "DELETE FROM " . $cfg["tab"]["content"] . " WHERE idartlang = '" . cSecurity::toInteger($value) . "'";
-            $db->query($sql);
-        }
-    }
-
-    $sql = "DELETE FROM " . $cfg["tab"]["cat_art"] . " WHERE idart = '" . cSecurity::toInteger($idart) . "'";
-    $db->query($sql);
-
-    $sql = "DELETE FROM " . $cfg["tab"]["art"] . " WHERE idart = '" . cSecurity::toInteger($idart) . "'";
-    $db->query($sql);
-
-    $sql = "DELETE FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = '" . cSecurity::toInteger($idart) . "'";
-    $db->query($sql);
+    $oArtColl = new cApiArticleCollection();
+    $oArtColl->delete((int) $idart);
 
     # Contenido Extension Chain
     # @see docs/techref/plugins/Contenido Extension Chainer.pdf
