@@ -85,7 +85,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
    $idfrontendgroup= 0;
    $fegroup = new cApiFrontendGroup();
 
-  $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted group successfully!"));
+  $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Deleted group successfully!"));
 }
 
 if ($action != '') {
@@ -155,9 +155,9 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
         $notis = $notification->returnNotification("warning", implode("<br>", $messages)) . "<br>";
     } else {
         if (strlen($successMessage) > 0) {
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO,$successMessage);
+            $notification->displayNotification(cGuiNotification::LEVEL_INFO,$successMessage);
         } elseif (strlen($action) > 0) {
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!"));
+            $notification->displayNotification(cGuiNotification::LEVEL_INFO,i18n("Saved changes successfully!"));
         }
     }
 

@@ -418,7 +418,7 @@ class Contenido_Module_Handler
                 }
 
                 if (cFileHandler::write($this->_modulePath . $this->_directories[$type] . $fileName, $content) === false) {
-                    $notification = new Contenido_Notification();
+                    $notification = new cGuiNotification();
                     $notification->displayNotification('error', i18n("Can't make file: "). $fileName);
                     return false;
                 }
@@ -428,7 +428,7 @@ class Contenido_Module_Handler
                     return false;
                 }
                 if (cFileHandler::write($this->_modulePath. $this->_directories[$type]. $fileName, $content) === false) {
-                    $notification = new Contenido_Notification();
+                    $notification = new cGuiNotification();
                     $notification->displayNotification('error', i18n("Can't make file: "). $fileName);
                     return false;
                 }

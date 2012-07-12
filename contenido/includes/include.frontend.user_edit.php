@@ -64,7 +64,7 @@ if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "fr
     $feuser = $feusers->create(" ".i18n("-- new user --"));
     $idfrontenduser = $feuser->get("idfrontenduser");
     //show success message
-    $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new user successfully!"));
+    $page->displayInfo(i18n("Created new user successfully!"));
 }
 
 if ($idfrontenduser && $action != '') {
@@ -95,7 +95,7 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
     $idfrontenduser = 0;
     $feuser = new cApiFrontendUser();
     $page->addScript($sReloadScript);
-    $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Delteted user successfully!"));
+    $page->displayInfo(i18n("Delteted user successfully!"));
 }
 
 if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
@@ -159,7 +159,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
         }
 
         $feuser->store();
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
+        $page->displayInfo(i18n("Saved changes successfully!"));
     }
 
     if (count($messages) > 0) {

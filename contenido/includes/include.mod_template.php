@@ -49,7 +49,7 @@ $page = new cGuiPage("mod_template");
 $tpl->reset();
 
 if (!is_object($notification)) {
-    $notification = new Contenido_Notification();
+    $notification = new cGuiNotification();
 }
 
 //$_REQUEST['action'] = $sActionEdit;

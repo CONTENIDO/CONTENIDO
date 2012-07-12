@@ -94,7 +94,7 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler
     {
         parent::__construct($idmod);
         $this->_page = new cGuiPage("mod_template");
-        $this->_notification = new Contenido_Notification();
+        $this->_notification = new cGuiNotification();
     }
 
     /**
@@ -239,7 +239,7 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler
         $ret = $this->createModuleFile('template' , $this->_file , $this->_code);
         //show message
         if ($ret) {
-            $this->_notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
+            $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved changes successfully!"));
         }
         //if user selected other file display it
         if ($this->_hasSelectedFileChanged()) {
@@ -258,7 +258,7 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler
             throw new Exception(i18n("Rename of the file failed!"));
         } else {
             $this->createModuleFile('template', $this->_file,$this->_code);
-            $this->_notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed the template file successfully!"));
+            $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Renamed the template file successfully!"));
             $this->_tmp_file = $this->_file;
         }
     }
@@ -272,10 +272,10 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler
         if ($this->existFile('template', $this->_newFileName.'.'.$this->_templateFileEnding)) {
             $fileName = $this->_newFileName.$this->getRandomCharacters(5).".".$this->_templateFileEnding;
             $this->createModuleFile('template', $fileName ,'');
-            $this->_notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created a new template file successfully!"));
+            $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Created a new template file successfully!"));
         } else {
             $this->createModuleFile('template', $this->_newFileName.'.'.$this->_templateFileEnding ,'');
-            $this->_notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created a new template file successfully!"));
+            $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Created a new template file successfully!"));
             $fileName = $this->_newFileName.".".$this->_templateFileEnding;
         }
         //set to new fileName
@@ -290,7 +290,7 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler
     {
         $ret = $this->deleteFile('template',$this->_tmp_file);
         if ($ret == true) {
-            $this->_notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted the template file successfully!"));
+            $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Deleted the template file successfully!"));
         }
         $files = $this->getAllFilesFromDirectory('template');
 
@@ -327,7 +327,7 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler
      * Have the user premissions for the actions.
      *
      * @param Contenido_Perm $perm
-     * @param Contenido_Notification $notification
+     * @param cGuiNotification $notification
      * @param string $action
      *
      * @return int if user dont have permission return -1
@@ -474,7 +474,7 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler
      * Display the form and evaluate the action and excute the action.
      *
      * @param Contenido_Perm $perm
-     * @param Contenido_Notification $notificatioin
+     * @param cGuiNotification $notificatioin
      */
     public function display($perm, $notificatioin, $belang)
     {

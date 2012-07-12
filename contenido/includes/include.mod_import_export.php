@@ -30,7 +30,7 @@ $page = new cGuiPage("mod_import_export");
 
 $module = new cApiModule();
 $module->loadByPrimaryKey($idmod);
-$notification = new Contenido_Notification();
+$notification = new cGuiNotification();
 
 $sScript = '';
 if ($action == "mod_importexport_module") {

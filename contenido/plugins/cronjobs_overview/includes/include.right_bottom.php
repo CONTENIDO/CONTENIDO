@@ -5,7 +5,7 @@ $tpl = new Template();
 $contenidoVars = array('cfg' => $cfg);
 
 $cronjobs = new Cronjobs($contenidoVars, $_REQUEST['file']);
-$notification = new Contenido_Notification();
+$notification = new cGuiNotification();
 
 switch ($_REQUEST['action']) {
     case 'cronjob_overview':

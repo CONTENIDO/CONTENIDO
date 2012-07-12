@@ -40,7 +40,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     $date   = date('Y-m-d H:i:s');
     $author = $auth->auth['uname'];
     $contenidoModuleHandler = '';
-    $notification = new Contenido_Notification();
+    $notification = new cGuiNotification();
     $messageIfError = '';
 
     // Alias for modul name for the file system
@@ -92,7 +92,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
                 $notification->displayNotification('error', i18n("Can't rename module, is a module file open ??? !"));
                 die();
             } else {
-                $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Renamed module successfully!'));
+                $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Renamed module successfully!'));
                 $cApiModule->set('name', $name);
                 $cApiModule->set('template', $template);
                 $cApiModule->set('description', $description);
@@ -138,22 +138,22 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             }
 
             if ($retInput == true && $retOutput == true) {
-                $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Saved module successfully!'));
+                $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Saved module successfully!'));
             } else {
                 $messageIfError = '<br/>' . i18n("Can't save input !");
                 $messageIfError .= '<br/>' . i18n("Can't save output !");
-                $notification->displayNotification(Contenido_Notification::LEVEL_INFO, $messageIfError);
+                $notification->displayNotification(cGuiNotification::LEVEL_INFO, $messageIfError);
             }
         }
     } else {
 
         // No changes for save
         if ($retInput == true && $retOutput == true) {
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Saved module successfully!'));
+            $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Saved module successfully!'));
         } else {
             $messageIfError = i18n("Can't save input !");
             $messageIfError .= ' '. i18n("Can't save output !");
-            $notification->displayNotification(Contenido_Notification::LEVEL_ERROR, $messageIfError);
+            $notification->displayNotification(cGuiNotification::LEVEL_ERROR, $messageIfError);
         }
     }
     return $idmod;
@@ -258,7 +258,7 @@ function modTestModule($code, $id, $output = false)
         $modErrorMessage = i18n('Please do not use short open tags. (Use <?php instead of <?).');
     }
 
-    // Now, check if the magic value is 941. If not, the function didn't compile 
+    // Now, check if the magic value is 941. If not, the function didn't compile
     if ($magicvalue != 941 || $bHasShortTags) {
         return false;
     } else {

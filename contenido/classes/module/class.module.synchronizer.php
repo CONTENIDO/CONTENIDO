@@ -63,7 +63,7 @@ class Contenido_Module_Synchronizer extends Contenido_Module_Handler
         if ($this->_isExistInTable($oldModulName, $client) == false) {
              //add new Module in db-tablle
              $this->_addModul($newModulName,$client);
-             $notification = new Contenido_Notification();
+             $notification = new cGuiNotification();
              $notification->displayNotification('info', sprintf(i18n("Module %s successfull synchronized"), $newModulName));
         } else {
             //update the name of the module
@@ -132,7 +132,7 @@ class Contenido_Module_Synchronizer extends Contenido_Module_Handler
         $sql = sprintf("SELECT UNIX_TIMESTAMP(mod1.lastmodified) AS lastmodified,mod1.idclient,description,type, mod1.name, mod1.alias, mod1.idmod FROM %s AS mod1 WHERE mod1.idclient = %s",
                         $this->_cfg['tab']['mod'],
                         $this->_client);
-        $notification = new Contenido_Notification();
+        $notification = new cGuiNotification();
 
         $db = cRegistry::getDb();
         $db->query($sql);
@@ -198,7 +198,7 @@ class Contenido_Module_Synchronizer extends Contenido_Module_Handler
             if ($modul->moduleInUse($db->f("idmod")) == true) {
                 //modul in use, make new modul in filesystem
                 if ($this->createModule()== false) {
-                    $notification = new Contenido_Notification();
+                    $notification = new cGuiNotification();
                     $notification->displayNotification('error', i18n("Can't make module: ").$db->f("name"));
                 }
             } else {

@@ -65,7 +65,7 @@ if ($action == $sActionDelete) {
         if (cFileHandler::exists($path.$_REQUEST['delfile'])) {
             unlink($path.$_REQUEST['delfile']);
             removeFileInformation($client, $_REQUEST['delfile'], 'templates', $db);
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Deleted template file successfully!"));
+            $page->displayInfo(i18n("Deleted template file successfully!"));
         }
     }
     $sReloadScript = "<script type=\"text/javascript\">
@@ -121,7 +121,7 @@ if ($action == $sActionDelete) {
                  }
                  </script>";
         updateFileInformation($client, $sFilename, 'templates', $auth->auth['uid'], $_REQUEST['description'], $db);
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Created new template file successfully!"));
+        $page->displayInfo(i18n("Created new template file successfully!"));
     }
 
     // Edit selected file
@@ -141,9 +141,9 @@ if ($action == $sActionDelete) {
         }
 
         if ($sFilename != $sTempTempFilename) {
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Renamed template file successfully!"));
+            $page->displayInfo(i18n("Renamed template file successfully!"));
         } else {
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!"));
+            $page->displayInfo(i18n("Saved changes successfully!"));
         }
         updateFileInformation($client, $sOrigFileName, 'templates', $auth->auth['uid'], $_REQUEST['description'], $db, $sFilename);
 

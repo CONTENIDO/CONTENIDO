@@ -61,7 +61,7 @@ if ($action == $sActionDelete) {
         if (cFileHandler::exists($path.$_REQUEST['delfile'])) {
             unlink($path.$_REQUEST['delfile']);
             removeFileInformation($client, $_REQUEST['delfile'], 'js', $db);
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted JS-File successfully!"));
+            $apge->displayInfo(i18n("Deleted JS-File successfully!"));
         }
     }
 
@@ -117,7 +117,7 @@ if ($action == $sActionDelete) {
                  }
                  </script>";
         if ($bEdit) {
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Crated new JS-File successfully!"));
+            $page->displayInfo(i18n("Crated new JS-File successfully!"));
         }
     }
 
@@ -155,9 +155,9 @@ if ($action == $sActionDelete) {
         $bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
 
         if ($sFilename != $sTempTempFilename) {
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed the JS-File successfully!"));
+            $page->displayInfo(i18n("Renamed the JS-File successfully!"));
         } else {
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
+            $page->displayInfo(i18n("Saved changes successfully!"));
         }
     }
 

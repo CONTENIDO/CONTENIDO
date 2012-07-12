@@ -9,15 +9,15 @@
  * Usage:
  * <code>
  * // render a error directly
- * $oNotification = new Contenido_Notification();
+ * $oNotification = new cGuiNotification();
  * $oNotification->displayNotification(
- *     Contenido_Notification::LEVEL_ERROR, 'Foobar does not exists'
+ *     cGuiNotification::LEVEL_ERROR, 'Foobar does not exists'
  * );
  *
  * // assign a notification to a variable
- * $oNotification = new Contenido_Notification();
+ * $oNotification = new cGuiNotification();
  * $sNotification = $oNotification->displayNotification(
- *     Contenido_Notification::LEVEL_NOTIFICATION, 'Hey dude, you did it!'
+ *     cGuiNotification::LEVEL_NOTIFICATION, 'Hey dude, you did it!'
  * );
  * </code>
  *
@@ -50,7 +50,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-class Contenido_Notification
+class cGuiNotification
 {
     /**
      * Error message level
@@ -94,7 +94,7 @@ class Contenido_Notification
 
 
     /** @deprecated  [2011-05-19] Old constructor function for downwards compatibility */
-    public function Contenido_Notification()
+    public function cGuiNotification()
     {
         cDeprecated("Use __construct() instead");
         $this->__construct();
@@ -104,7 +104,7 @@ class Contenido_Notification
     /**
      * Generates message box and returns it back.
      *
-     * @param   string  $sLevel  Message level, one of Contenido_Notification::LEVEL_* constants
+     * @param   string  $sLevel  Message level, one of cGuiNotification::LEVEL_* constants
      * @param   string  $sMessage  The message to display
      * @param   int     $iStyle   Flag tp use styles for display or not (feasible 1 or 0)
      * @return  string
@@ -154,7 +154,7 @@ class Contenido_Notification
     /**
      * Generates message box and returns it back, uses markup with table.
      *
-     * @param   string  $sLevel  Message level, one of Contenido_Notification::LEVEL_* constants
+     * @param   string  $sLevel  Message level, one of cGuiNotification::LEVEL_* constants
      * @param   string  $sMessage  The message to display
      * @return  string
      */
@@ -189,7 +189,7 @@ class Contenido_Notification
     /**
      * Displays small message box directly.
      *
-     * @param   string  $sLevel  Message level, one of Contenido_Notification::LEVEL_* constants
+     * @param   string  $sLevel  Message level, one of cGuiNotification::LEVEL_* constants
      * @param   string  $sMessage  The message to display
      * @return  void
      */
@@ -202,7 +202,7 @@ class Contenido_Notification
     /**
      * Displays large message box directly.
      *
-     * @param   string  $sLevel  Message level, one of Contenido_Notification::LEVEL_* constants
+     * @param   string  $sLevel  Message level, one of cGuiNotification::LEVEL_* constants
      * @param   string  $sMessage  The message to display
      * @param   int     $iStyle   Flag tp use styles for display or not (feasible 1 or 0)
      * @return  void

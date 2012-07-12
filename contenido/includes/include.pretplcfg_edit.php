@@ -103,6 +103,6 @@ if (isset($idtplcfg)) {
         }
         //is form send
         if($x>0)
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!"));
+            $notification->displayNotification(cGuiNotification::LEVEL_INFO,i18n("Saved changes successfully!"));
 }
 ?>

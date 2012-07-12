@@ -493,7 +493,7 @@ class cApiModule extends Item
     {
         global $cfgClient, $db, $client, $cfg, $encoding, $lang;
         $zip = new ZipArchive();
-        $notification = new Contenido_Notification();
+        $notification = new cGuiNotification();
         $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
         // file name Hello_World.zip => Hello_World
         // @TODO: fetch file extension correctly
@@ -547,7 +547,7 @@ class cApiModule extends Item
         global $db,$cfgClient, $client, $cfg,$encoding,$lang;
 
         $inputOutput = array();
-        $notification = new Contenido_Notification();
+        $notification = new cGuiNotification();
 
         $aModuleData = $this->_parseImportFile($sFile);
         if (count($aModuleData) > 0) {
@@ -617,7 +617,7 @@ class cApiModule extends Item
                     } else{
                         // Add the files
                         if ($zipArchive->addFile($dir . $file, $zipdir . $file) === FALSE) {
-                            $notification = new Contenido_Notification();
+                            $notification = new cGuiNotification();
                             $notification->displayNotification('error', sprintf(i18n("Could not add file %s to zip!"), $file));
                         }
                     }
@@ -632,7 +632,7 @@ class cApiModule extends Item
      *
      */
     function export() {
-        $notification = new Contenido_Notification();
+        $notification = new cGuiNotification();
         $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
 
         // exist modul

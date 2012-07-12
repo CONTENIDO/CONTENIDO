@@ -119,9 +119,9 @@ if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
 
     // Show message for user
     if ($ret == true) {
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Created new js file successfully'));
+        $page->displayInfo(i18n('Created new js file successfully'));
     } else {
-        $notification->displayNotification(Contenido_Notification::LEVEL_ERROR, i18n('Could not create a new js file.'));
+        $page->displayError(i18n('Could not create a new js file.'));
     }
 }
 
@@ -147,9 +147,9 @@ if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
 
     // Show message for user
     if ($sFilename != $sTempFilename) {
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Renamed and saved changes successfully!'));
+        $page->displayInfo(i18n('Renamed and saved changes successfully!'));
     } else {
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Saved changes successfully!'));
+        $page->displayInfo(i18n('Saved changes successfully!'));
     }
 }
 

@@ -59,7 +59,7 @@ if ($action == "mod_delete") {
     if ($contenidoModuleHandler->eraseModule() == true) {
         $modules = new cApiModuleCollection;
         $modules->delete($idmod);
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted module successfully!"));
+        $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Deleted module successfully!"));
 
     }
 }
@@ -116,7 +116,7 @@ if ($action == "mod_new") {
          $notification->displayNotification("error", i18n("Cant make a new modul!"));
          die();
     } else {
-         $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new module successfuly!"));
+         $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Created new module successfuly!"));
     }
 } else {
     $module = new cApiModule();

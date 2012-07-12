@@ -179,7 +179,7 @@ class SynchronizeLayouts {
     {
         //get all layouts from client
         $sql = sprintf("SELECT UNIX_TIMESTAMP(lastmodified) AS lastmodified, alias,name,description, idlay FROM %s WHERE idclient=%s", $this->_cfg['tab']['lay'],$this->_client);
-        $notification = new Contenido_Notification();
+        $notification = new cGuiNotification();
         $dir = $this->_cfgClient[$this->_client]['layout_path'];
 
         $db = cRegistry::getDb();
@@ -229,7 +229,7 @@ class SynchronizeLayouts {
     private function _showOutputMessage()
     {
         $emptyMessage = true;
-        $notification = new Contenido_Notification();
+        $notification = new cGuiNotification();
         foreach ($this->_outputMessage as $typ) {
             foreach ($typ as $message) {
                 $emptyMessage = false;

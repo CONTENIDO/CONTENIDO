@@ -30,7 +30,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 $tpl->reset();
-$contenidoNotification = new Contenido_Notification();
+$contenidoNotification = new cGuiNotification();
 $trackingNotification = "";
 $googleNotification = "";
 $piwikNotification = "";

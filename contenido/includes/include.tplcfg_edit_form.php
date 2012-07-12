@@ -227,7 +227,7 @@ if (!$db->next_record()) {
 }
 
 if (count($_POST) > 0 && $message == '') {
-     $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Save change successfully!"));
+     $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Save change successfully!"));
 }
 
 // Get template configuration from 'con_container_conf' and create configuration data array

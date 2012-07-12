@@ -203,7 +203,7 @@ class cVersion {
         if (is_dir($this->sAlternativePath) == false) {
             // Alternative Path is not true or is not exist, we use the frontendpath
             if ($this->sAlternativePath != '' AND self::$iDisplayNotification < 2){
-                $oNotification = new Contenido_Notification();
+                $oNotification = new cGuiNotification();
                 $sNotification = i18n('Alternative path %s does not exist. Version was saved in frondendpath.');
                 $oNotification->displayNotification("warning",  sprintf($sNotification, $this->sAlternativePath));
             }

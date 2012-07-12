@@ -62,7 +62,8 @@ if (!$contenidoModulHandler->existFile('css', $contenidoModulHandler->getCssFile
 
 
 if (!$perm->have_perm_area_action('style', $actionRequest)|| $premCreate) {
-    $notification->displayNotification('error', i18n('Permission denied'));
+    $page->displayCriticalError(i18n('Permission denied'));
+    $page->render();
     return;
 }
 
@@ -75,7 +76,8 @@ if (!(int) $client > 0) {
 $path = $contenidoModulHandler->getCssPath();// $cfgClient[$client]['css']['path'];
 // Make automatic a new css file
 if (!$contenidoModulHandler->createModuleFile('css')) {
-    $notification->displayNotification(Contenido_Notification::LEVEL_ERROR, i18n('Could not create a new css file!'));
+    $page->displayCriticalError(i18n('Could not create a new css file!'));
+    $page->render();
     return;
 }
 
@@ -138,9 +140,9 @@ if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
                  </script>";
 
     if ($ret && $bEdit) {
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Created new css file successfully'));
+        $page->displayInfo(i18n('Created new css file successfully'));
     } else {
-        $notification->displayNotification(Contenido_Notification::LEVEL_ERROR, i18n('Could not create a new css file!'));
+        $page->displayInfo(i18n('Could not create a new css file!'));
     }
 }
 
@@ -166,11 +168,11 @@ if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
     $bEdit = fileEdit($sFilename, $tempCode, $path);
 
     if ($sFilename != $sTempFilename && $bEdit) {
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Renamed and saved changes successfully!'));
+        $page->displayInfo(i18n('Renamed and saved changes successfully!'));
     } elseif (!$bEdit) {
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Can't save file!"));
+        $page->displayError(i18n("Can't save file!"));
     } else {
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Saved changes successfully!'));
+        $page->displayInfo(i18n('Saved changes successfully!'));
     }
 }
 

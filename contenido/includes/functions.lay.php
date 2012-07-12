@@ -55,7 +55,7 @@ function layEditLayout($idlay, $name, $description, $code)
     $date = date('Y-m-d H:i:s');
     $author = (string) $auth->auth['uname'];
     $description = (string) stripslashes($description);
-    $notification = new Contenido_Notification();
+    $notification = new cGuiNotification();
     set_magic_quotes_gpc($name);
     set_magic_quotes_gpc($description);
 
@@ -90,7 +90,7 @@ function layEditLayout($idlay, $name, $description, $code)
         if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
             $notification->displayNotification("error", i18n("Can't save layout in file"));
         } else {
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
+            $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
         }
 
         // Set correct rights for element
@@ -123,7 +123,7 @@ function layEditLayout($idlay, $name, $description, $code)
                 if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
                     $notification->displayNotification("error", i18n("Can't save layout in file!"));
                 } else {
-                    $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed layout succsessfully!"));
+                    $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Renamed layout succsessfully!"));
                      $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".cSecurity::escapeDB($name, $db)."', alias='".cSecurity::escapeDB($layoutAlias, $db)."' , description='".cSecurity::escapeDB($description, $db)."',
                             author='".cSecurity::escapeDB($author, $db)."', lastmodified='".cSecurity::escapeDB($date, $db)."' WHERE idlay='".cSecurity::toInteger($idlay)."'";
                 }
@@ -139,7 +139,7 @@ function layEditLayout($idlay, $name, $description, $code)
             if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
                 $notification->displayNotification("error", i18n("Can't save layout in file!"));
             } else {
-                $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
+                $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
                 $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".cSecurity::escapeDB($name, $db)."', alias='".cSecurity::escapeDB($layoutAlias, $db)."' , description='".cSecurity::escapeDB($description, $db)."',
                     author='".cSecurity::escapeDB($author, $db)."', lastmodified='".cSecurity::escapeDB($date, $db)."' WHERE idlay='".cSecurity::toInteger($idlay)."'";
             }
@@ -163,7 +163,7 @@ function layDeleteLayout($idlay)
 {
     global $db, $client, $cfg, $area_tree, $perm;
 
-    $notification = new Contenido_Notification();
+    $notification = new cGuiNotification();
 
     $sql = 'SELECT * FROM '.$cfg['tab']['tpl'].' WHERE idlay='.(int) $idlay;
     $db->query($sql);

@@ -44,9 +44,9 @@ $workflow = $workflows->loadItem($idworkflow);
 if ($action == "workflow_save") {
     if ($idworkflow == "-1") {
         $workflow = $workflows->create();
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new workflow successfully!"));
+        $page->displayInfo(i18n("Created new workflow successfully!"));
     } elseif ($idworkflow > 0) {
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
+        $page->displayInfo(i18n("Saved changes successfully!"));
     }
 
     $workflow->set("name", htmlspecialchars($wfname));

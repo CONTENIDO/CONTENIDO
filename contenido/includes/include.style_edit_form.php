@@ -134,11 +134,11 @@ if ($action == $sActionDelete) {
 
         // Show message
         if ($sFilename != $tempTemplate && $bEdit) {
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Renamed CSS file successfully!'));
+            $page->displayInfo(i18n('Renamed CSS file successfully!'));
         } elseif ($bEdit) {
-            $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Saved changes successfully!'));
+            $page->displayInfo(i18n('Saved changes successfully!'));
         } else {
-            $notification->displayNotification(Contenido_Notification::LEVEL_ERROR, i18n("Can't save file!"));
+            $page->displayError(i18n("Can't save file!"));
         }
         updateFileInformation($client, $sOrigFileName, 'css', $auth->auth['uid'], $_REQUEST['description'], $db, $sFilename);
 

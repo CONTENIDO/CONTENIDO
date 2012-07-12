@@ -240,7 +240,7 @@ class cApiInUseCollection extends ItemCollection
                 }
 
                 if (!is_object($notification)) {
-                    $notification = new Contenido_Notification();
+                    $notification = new cGuiNotification();
                 }
 
                 $noti = $notification->messageBox('warning', $message.$override, 0);

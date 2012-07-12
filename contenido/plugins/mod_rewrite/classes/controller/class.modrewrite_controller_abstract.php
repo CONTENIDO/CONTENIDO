@@ -247,7 +247,7 @@ abstract class ModRewrite_ControllerAbstract
 
     /**
      * Returns rendered notification markup by using global $notification variable.
-     * @param   string  $type  One of Contenido_Notification::LEVEL_* constants
+     * @param   string  $type  One of cGuiNotification::LEVEL_* constants
      * @param   string  $msg   The message to display
      * @return  string
      */
