@@ -48,7 +48,7 @@ cInclude('includes', 'functions.api.images.php');
  *
  * @package    CONTENIDO Backend Classes
  */
-class Contenido_Navigation
+class cGuiNavigation
 {
 
     /**

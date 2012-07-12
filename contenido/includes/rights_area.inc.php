@@ -101,7 +101,7 @@ foreach ($aTh as $i => $tr) {
 
 //table content
 $output = "";
-$nav = new Contenido_Navigation;
+$nav = new cGuiNavigation;
 foreach ($right_list as $key => $value) {
     // look for possible actions in mainarea
     foreach ($value as $key2 => $value2) {

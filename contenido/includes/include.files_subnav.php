@@ -38,7 +38,7 @@ if (isset($_GET['file'])) {
 
     $area = $_GET['area'];
 
-    $nav = new Contenido_Navigation();
+    $nav = new cGuiNavigation();
 
     $sql = "SELECT
                 idarea

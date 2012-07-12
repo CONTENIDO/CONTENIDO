@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 if (isset($_GET['idcat'])) {
 
-    $nav = new Contenido_Navigation();
+    $nav = new cGuiNavigation();
 
     $sql = "SELECT
                 b.location AS location,

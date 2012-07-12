@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
 if (isset($_GET['groupid'])) {
     $area = $_GET['area'];
 
-    $nav = new Contenido_Navigation();
+    $nav = new cGuiNavigation();
 
     $sql = "SELECT
                 idarea

@@ -43,7 +43,7 @@ if (!isset($idcat) || $idcat == "") {
 }
 
 if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
-    $nav = new Contenido_Navigation();
+    $nav = new cGuiNavigation();
 
     $sql = "SELECT
                 idarea

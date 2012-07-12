@@ -39,7 +39,7 @@ if (isset($_GET['path'])) {
     $path = $_GET['path'];
     $area = $_GET['area'];
 
-    $nav = new Contenido_Navigation();
+    $nav = new cGuiNavigation();
 
     $sql = "SELECT
                 idarea

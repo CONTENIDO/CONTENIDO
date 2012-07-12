@@ -103,7 +103,7 @@ sendEncodingHeader($db, $cfg, $lang);
 $perm->load_permissions();
 
 $tpl = new Template();
-$nav = new Contenido_Navigation();
+$nav = new cGuiNavigation();
 
 rereadClients();
 

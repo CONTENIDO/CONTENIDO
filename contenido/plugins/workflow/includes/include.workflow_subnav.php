@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-    $nav = new Contenido_Navigation;
+    $nav = new cGuiNavigation;
 
     $parentarea = getParentAreaID($area);
     $sql = "SELECT
