@@ -20,25 +20,20 @@
  *
  * {@internal
  *   created  2011-08-11
- *   modified 2011-08-24, Dominik Ziegler, removed deprecated function SaveKeywordsforart
- *
  *   $Id$:
  * }}
- *
  */
-
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * CONTENIDO abstract code generator class.
  * @package    CONTENIDO Backend Classes
  */
-abstract class cCodeGeneratorAbstract
-{
+abstract class cCodeGeneratorAbstract {
+
     /**
      * CONTENIDO database instance
      * @var DB_Contenido
@@ -148,13 +143,9 @@ abstract class cCodeGeneratorAbstract
      */
     protected $_moduleSuffix = array();
 
-
-    public function __construct()
-    {
-        global $cfg, $cfgClient;
+    public function __construct() {
         $this->_db = cRegistry::getDb();
     }
-
 
     /**
      * Setter for debug property
@@ -162,11 +153,9 @@ abstract class cCodeGeneratorAbstract
      * @deprecated No longer needed. The backend chooses the debug mode.
      * @param  bool  $debug
      */
-    public function setDebug($debug)
-    {
+    public function setDebug($debug) {
         $this->_debug = $debug;
     }
-
 
     /**
      * Setter for frontend debug options (see $frontend_debug in config.php
@@ -174,11 +163,9 @@ abstract class cCodeGeneratorAbstract
      *
      * @param  bool  $debug
      */
-    public function setFrontendDebugOptions(array $debugOptions)
-    {
+    public function setFrontendDebugOptions(array $debugOptions) {
         $this->_feDebugOptions = $debugOptions;
     }
-
 
     /**
      * Generates the code for a specific article (article for a client in a language).
@@ -192,8 +179,7 @@ abstract class cCodeGeneratorAbstract
      * @return  string  Generated code or error code '0601' if no template
      *                  configuration was found for category or article.
      */
-    public function generate($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true)
-    {
+    public function generate($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true) {
         global $cfg;
 
         $this->_idcat = (int) $idcat;
@@ -204,7 +190,7 @@ abstract class cCodeGeneratorAbstract
         $this->_save = (bool) $save;
 
         $sql = "SELECT idartlang, pagetitle FROM " . $cfg['tab']['art_lang']
-             . " WHERE idart=" . (int) $this->_idart . " AND idlang=" . (int) $this->_lang;
+                . " WHERE idart=" . (int) $this->_idart . " AND idlang=" . (int) $this->_lang;
         $this->_db->query($sql);
         $this->_db->next_record();
 
@@ -214,13 +200,11 @@ abstract class cCodeGeneratorAbstract
         return $this->_generate($contype);
     }
 
-
     /**
      * Generates the code for a specific article (article for a client in a language).
      * @return  string  The generated code
      */
     abstract function _generate($contype = true);
-
 
     /**
      * Returns the template configuration id, either by configured article or by
@@ -228,8 +212,7 @@ abstract class cCodeGeneratorAbstract
      *
      * @return int|null
      */
-    protected function _getTemplateConfigurationId()
-    {
+    protected function _getTemplateConfigurationId() {
         // Get configuration for article
         $idtplcfg = conGetTemplateConfigurationIdForArticle($this->_idart, $this->_idcat, $this->_lang, $this->_client);
         if (is_numeric($idtplcfg)) {
@@ -246,7 +229,6 @@ abstract class cCodeGeneratorAbstract
 
         return (is_numeric($idtplcfg)) ? $idtplcfg : null;
     }
-
 
     abstract protected function _processNoConfigurationError();
 
@@ -276,15 +258,13 @@ abstract class cCodeGeneratorAbstract
         return $data;
     }
 
-
     /**
      * Processes replacements of all existing CMS_... tags within passed code
      *
      * @param  array   $contentList  Assoziative list of CMS variables
      * @param  bool    $saveKeywords  Flag to save collected keywords during replacement process.
      */
-    protected function _processCmsTags($contentList, $saveKeywords = true)
-    {
+    protected function _processCmsTags($contentList, $saveKeywords = true) {
         // #####################################################################
         // NOTE: Variables below are required in included/evaluated content type codes!
         global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
@@ -355,18 +335,15 @@ abstract class cCodeGeneratorAbstract
         }
     }
 
-
     /**
      * Processes title tag in page code (layout)
      */
     abstract protected function _processCodeTitleTag();
 
-
     /**
      * Processes all meta tags in page code (layout)
      */
     abstract protected function _processCodeMetaTags();
-
 
     /**
      * Replaces all container/module configuration tags (CMS_VALUE[n] values)
@@ -377,19 +354,18 @@ abstract class cCodeGeneratorAbstract
      *                              parameter, e. g. param1=value1&param2=value2...
      * @return  string  Concatenated PHP code containing CMS_VALUE variables and their values
      */
-    protected function _processCmsValueTags($containerId, $containerCfg)
-    {
+    protected function _processCmsValueTags($containerId, $containerCfg) {
         $containerCfgList = array();
 
         $containerCfg = preg_replace('/(&\$)/', '', $containerCfg);
         parse_str($containerCfg, $containerCfgList);
-/*        $tmp1 = preg_split('/&/', $containerCfg);
-        foreach ($tmp1 as $key1 => $value1) {
-            $tmp2 = explode('=', $value1);
-            foreach ($tmp2 as $key2 => $value2) {
-                $containerCfgList["$tmp2[0]"] = $tmp2[1];
-            }
-        }*/
+        /*        $tmp1 = preg_split('/&/', $containerCfg);
+          foreach ($tmp1 as $key1 => $value1) {
+          $tmp2 = explode('=', $value1);
+          foreach ($tmp2 as $key2 => $value2) {
+          $containerCfgList["$tmp2[0]"] = $tmp2[1];
+          }
+          } */
 
         $CiCMS_Var = '$C' . $containerId . 'CMS_VALUE';
         $CiCMS_Values = array();
@@ -409,7 +385,6 @@ abstract class cCodeGeneratorAbstract
         return implode("\n", $CiCMS_Values);
     }
 
-
     /**
      * Extends container code by adding several debug features, if enabled and
      * configured.
@@ -417,8 +392,7 @@ abstract class cCodeGeneratorAbstract
      * @param int  $containerId  Container id
      * @param array $module Recordset as assoziative array of related module (container code)
      */
-    protected function _processFrontendDebug($containerId, array $module)
-    {
+    protected function _processFrontendDebug($containerId, array $module) {
         global $cfg;
 
         if (empty($this->_feDebugOptions)) {
@@ -451,14 +425,12 @@ abstract class cCodeGeneratorAbstract
         }
     }
 
-
     /**
      * Replaces container tag in layout against the parsed container code (module code).
      *
      * @param  int  $containerId  Container id
      */
-    protected function _processCmsContainer($containerId)
-    {
+    protected function _processCmsContainer($containerId) {
         $cmsContainer = "CMS_CONTAINER[$containerId]";
 
         // Replace new container (<container id="n"..>) against old one (CMS_CONTAINER[n])
@@ -475,14 +447,12 @@ abstract class cCodeGeneratorAbstract
 //        $this->_layoutCode = addslashes($this->_layoutCode);
     }
 
-
     /**
      * Returns array of all CMS_... vars being used by current article and language
      *
      * @return array like $arr[type][typeid] = value;
      */
-    protected function _getUsedCmsTypesData()
-    {
+    protected function _getUsedCmsTypesData() {
         global $cfg;
 
         $return = array();
@@ -500,12 +470,10 @@ abstract class cCodeGeneratorAbstract
         return $return;
     }
 
-
     /**
      * Resets module related variables
      */
-    protected function _resetModule()
-    {
+    protected function _resetModule() {
         $this->_modulePrefix = array();
         $this->_moduleCode = '';
         $this->_moduleSuffix = array();
@@ -516,8 +484,8 @@ abstract class cCodeGeneratorAbstract
      *
      * @param  string  $msg
      */
-    protected function _debug($msg)
-    {
+    protected function _debug($msg) {
         cDebug($msg);
     }
+
 }

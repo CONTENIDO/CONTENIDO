@@ -147,7 +147,7 @@ if ($_POST['action'] == "subscribe") {
             $oMail->Subject  = mi18n("Newsletter: Confirmation");
             $oMail->Body     = $sBody;
 
-            if($oMail->Send()) {
+            if ($oMail->Send()) {
                 $sMessage = mi18n("Dear subscriber,<br>your e-mail address is now subscribed for our newsletter. You will now receive an e-mail asking you to confirm your subscription.");
 
                 if ($aSettings['FrontendLink'] == "enabled") {
@@ -194,7 +194,7 @@ if ($_POST['action'] == "subscribe") {
         $oMail->Subject  = mi18n("Newsletter: Cancel subscription");
         $oMail->Body     = $sBody;
 
-        if($oMail->Send()) {
+        if ($oMail->Send()) {
             $sMessage = mi18n("Dear subscriber,<br>a mail has been sent to your e-mail address. Please confirm the cancelation of the newsletter subscription.");
         } else {
             $sMessage = mi18n("Sorry, there was a problem sending you the cancelation confirmation e-mail. Please ask the webmaster for help.");
@@ -255,7 +255,7 @@ if ($_POST['action'] == "subscribe") {
                 $oMail->Subject  = mi18n("Website account");
                 $oMail->Body     = $sBody;
 
-                if($oMail->Send()) {
+                if ($oMail->Send()) {
                     $sMessage .= mi18n("<br><br>The account details and the password has also been sent to your mail account.");
                 } else {
                     $sMessage .= mi18n("<br><br><b>Sorry, there was a problem sending you the account details by mail. Please remember the given password.</b><b>");

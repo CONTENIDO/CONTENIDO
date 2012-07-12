@@ -22,38 +22,27 @@
  *
  * {@internal
  *   created  2011-03-03
- *   modified 2011-03-13, Murat Purc, Added FETCH_* constants, extended toArray(),
- *                        moved close(), table_names() and server_info() from child
- *                        implementations.
- *   modified 2011-07-06, Murat Purc, Fixed fetch modes in toArray() and haltmsg(),
- *                        added new methods to build insert/update queries, added
- *                        method _getInstanceClone(), documented code
- *   modified 2012-01-18, Mischa Holz, moved checkMySQLConnectivity() to the DB_Contenido class itself, see [CON-429]
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Abstract database driver class.
  * @package    CONTENIDO Core
  * @subpackage Database
  */
-abstract class DB_Sql_Abstract
-{
+abstract class DB_Sql_Abstract {
 
-    const HALT_YES    = 'yes';
-    const HALT_NO     = 'no';
+    const HALT_YES = 'yes';
+    const HALT_NO = 'no';
     const HALT_REPORT = 'report';
-
     const FETCH_NUMERIC = 'numeric';
-    const FETCH_ASSOC   = 'assoc';
-    const FETCH_BOTH    = 'both';
+    const FETCH_ASSOC = 'assoc';
+    const FETCH_BOTH = 'both';
 
     /**
      * A clone of self instance, meant for internal use to work with additonal
@@ -115,7 +104,7 @@ abstract class DB_Sql_Abstract
      * Resource identifier of last executed query
      * @var  resource
      */
-    public $Query_ID  = 0;
+    public $Query_ID = 0;
 
     /**
      * Recordset data array. Could contain either indexed or assoziative result set (or both)
@@ -172,7 +161,7 @@ abstract class DB_Sql_Abstract
      * Text to prepend to the halt message
      * @var  string
      */
-     protected $_sHaltMsgPrefix = '';
+    protected $_sHaltMsgPrefix = '';
 
     /**
      * Default database connection for all instances
@@ -220,7 +209,6 @@ abstract class DB_Sql_Abstract
         'Halt_On_Error' => '_sHaltOnError',
     );
 
-
     /**
      * Constructor, sets passed options and connects to the DBMS, if not done before.
      *
@@ -235,8 +223,7 @@ abstract class DB_Sql_Abstract
      *                          - $aOptions['connection']  (array)  Optional, assoziative connection settings
      * @return  void
      */
-    protected function __construct(array $aOptions)
-    {
+    protected function __construct(array $aOptions) {
         // use default connection configuration, but overwrite it by passed options
         $this->_aDbCfg = array_merge(self::$_aDefaultDbCfg, $aOptions);
 
@@ -266,23 +253,20 @@ abstract class DB_Sql_Abstract
             $this->_bProfile = (bool) $this->_aDbCfg['enableProfiling'];
         }
 
-        if($this->connect() == null) {
+        if ($this->connect() == null) {
             $this->Errno = 1;
             $this->Error = "Could not connect to database";
         }
     }
-
 
     /**
      * Setter for default database configuration, the connection values.
      *
      * @param  array  $aDefaultDbCfg
      */
-    public static function setDefaultConfiguration(array $aDefaultDbCfg)
-    {
+    public static function setDefaultConfiguration(array $aDefaultDbCfg) {
         self::$_aDefaultDbCfg = $aDefaultDbCfg;
     }
-
 
     /**
      * Establishes a connection to the database server.
@@ -290,8 +274,7 @@ abstract class DB_Sql_Abstract
      * @return  object|resource|int|null  Connection handler. Return value depends on
      *                                    used driver and is null in case of an error.
      */
-    public function connect()
-    {
+    public function connect() {
         if ($this->Link_ID = $this->_getConnection($this->_aDbCfg['connection'])) {
             return $this->Link_ID;
         } else {
@@ -303,17 +286,14 @@ abstract class DB_Sql_Abstract
         return null;
     }
 
-
     /**
      * Resource id/object of current connection
      *
      * @return  mixed  The resource id/object of current connection
      */
-    public function link_id()
-    {
+    public function link_id() {
         return $this->Link_ID;
     }
-
 
     /**
      * Returns connection from connection cache
@@ -321,12 +301,10 @@ abstract class DB_Sql_Abstract
      * @param   mixed  $mData  Connection data array or variable
      * @return  mixed  Either  The connection (object, resource, integer) or null
      */
-    protected function _getConnection($mData)
-    {
+    protected function _getConnection($mData) {
         $hash = md5($this->type . '-' . (is_array($mData) ? implode('-', $mData) : (string) $mData));
         return (isset(self::$_connectionCache[$hash])) ? self::$_connectionCache[$hash] : null;
     }
-
 
     /**
      * Stores connection in connection cache
@@ -335,12 +313,10 @@ abstract class DB_Sql_Abstract
      * @param   mixed  $mConnection  The connection to store in cache
      * @return  void
      */
-    protected function _setConnection($mData, $mConnection)
-    {
+    protected function _setConnection($mData, $mConnection) {
         $hash = md5($this->type . '-' . (is_array($mData) ? implode('-', $mData) : (string) $mData));
         self::$_connectionCache[$hash] = $mConnection;
     }
-
 
     /**
      * Removes connection from cache
@@ -348,8 +324,7 @@ abstract class DB_Sql_Abstract
      * @param   mixed  $connection  The connection to remove in cache
      * @return  void
      */
-    protected function _removeConnection($connection)
-    {
+    protected function _removeConnection($connection) {
         foreach (self::$_connectionCache as $hash => $res) {
             if ($res == $connection) {
                 unset(self::$_connectionCache[$hash]);
@@ -358,17 +333,14 @@ abstract class DB_Sql_Abstract
         }
     }
 
-
     /**
      * Returns the current cursor
      *
      * @return  resource  Current cursor
      */
-    public function query_id()
-    {
+    public function query_id() {
         return $this->Query_ID;
     }
-
 
     /**
      * Connects to the database.
@@ -377,7 +349,6 @@ abstract class DB_Sql_Abstract
      *                                    used driver and is null in case of an error.
      */
     abstract protected function _connect();
-
 
     /**
      * Executes the statement.
@@ -411,8 +382,7 @@ abstract class DB_Sql_Abstract
      *                    will be replaced against formatting sign in query.
      * @return  resource|int|object|bool  Depends on used database driver, false on error
      */
-    public function query($sStatement)
-    {
+    public function query($sStatement) {
         // No empty queries, please, since PHP4 chokes on them
         if ($sStatement == '') {
             // The empty query string is passed on from the constructor, when calling
@@ -480,8 +450,7 @@ abstract class DB_Sql_Abstract
      * @return  string    The prepared sql statement
      * @throws Exception  If statement is empty or function is called with less than 2 parameters
      */
-    public function prepare($sStatement)
-    {
+    public function prepare($sStatement) {
         // No empty queries
         if (empty($sStatement)) {
             throw new Exception('Empty statement!');
@@ -512,8 +481,7 @@ abstract class DB_Sql_Abstract
      * @param  array  $aArgs
      * @return  string
      */
-    protected function _prepareStatement($sStatement, array $aArgs)
-    {
+    protected function _prepareStatement($sStatement, array $aArgs) {
         if (count($aArgs) == 1 && is_array($aArgs[0])) {
             $aArgs = $aArgs[0];
             if (count(array_filter(array_keys($aArgs), 'is_string')) > 0) {
@@ -543,8 +511,7 @@ abstract class DB_Sql_Abstract
      *                          signs and the entries.
      * @return  string
      */
-    protected function _prepareStatementF($sStatement, array $aArgs)
-    {
+    protected function _prepareStatementF($sStatement, array $aArgs) {
         if (count($aArgs) > 0) {
             $aArgs = array_map(array($this, 'escape'), $aArgs);
             array_unshift($aArgs, $sStatement);
@@ -567,8 +534,7 @@ abstract class DB_Sql_Abstract
      * @param   array   $aArgs  Arguments array containing the query with named parameter and assoziative entries array
      * @return  string
      */
-    protected function _prepareStatementA($sStatement, array $aArgs)
-    {
+    protected function _prepareStatementA($sStatement, array $aArgs) {
         if (count($aArgs) > 0) {
             foreach ($aArgs as $key => $value) {
                 $param = ':' . $key;
@@ -582,7 +548,6 @@ abstract class DB_Sql_Abstract
         }
         return $sStatement;
     }
-
 
     /**
      * Builds and executes a insert query. String values in passed aFields
@@ -605,12 +570,10 @@ abstract class DB_Sql_Abstract
      * @param   array    $aFields  Assoziative array of fields to insert
      * @return  bool
      */
-    public function insert($sTable, array $aFields)
-    {
+    public function insert($sTable, array $aFields) {
         $sStatement = $this->_insert($sTable, $aFields);
         return $this->query($sStatement);
     }
-
 
     /**
      * Builds and returns a insert query. String values in passed aFields
@@ -634,11 +597,9 @@ abstract class DB_Sql_Abstract
      * @param   array    $aFields  Assoziative array of fields to insert
      * @return  string
      */
-    public function buildInsert($sTable, array $aFields)
-    {
+    public function buildInsert($sTable, array $aFields) {
         return $this->_insert($sTable, $aFields);
     }
-
 
     /**
      * Builds a insert query. String values in passed aFields
@@ -649,7 +610,6 @@ abstract class DB_Sql_Abstract
      * @return  string  The INSERT SQL query
      */
     abstract protected function _insert($sTable, array $aFields);
-
 
     /**
      * Builds and executes a update query. String values in passed aFields
@@ -669,12 +629,10 @@ abstract class DB_Sql_Abstract
      *                             Multiple entries will be concatenated with AND
      * @return  bool
      */
-    public function update($sTable, array $aFields, array $aWhere)
-    {
+    public function update($sTable, array $aFields, array $aWhere) {
         $sStatement = $this->_update($sTable, $aFields, $aWhere);
         return $this->query($sStatement);
     }
-
 
     /**
      * Builds and returns a update query. String values in passed aFields
@@ -695,11 +653,9 @@ abstract class DB_Sql_Abstract
      *                             Multiple entries will be concatenated with AND
      * @return  string
      */
-    public function buildUpdate($sTable, array $aFields, array $aWhere)
-    {
+    public function buildUpdate($sTable, array $aFields, array $aWhere) {
         return $this->_update($sTable, $aFields, $aWhere);
     }
-
 
     /**
      * Builds a update query. String values in passed aFields
@@ -713,14 +669,12 @@ abstract class DB_Sql_Abstract
      */
     abstract protected function _update($sTable, array $aFields, array $aWhere);
 
-
     /**
      * Moves the result to the next record, if exists and returns the status of the movement
      *
      * @return  int  Flag about move status 1 on success or 0
      */
     abstract public function next_record();
-
 
     /**
      * Moves the cursor (position inside current result sets).
@@ -729,7 +683,6 @@ abstract class DB_Sql_Abstract
      * @return  void
      */
     abstract public function seek($iPos = 0);
-
 
     /**
      * Locks the desired table.
@@ -741,7 +694,6 @@ abstract class DB_Sql_Abstract
      */
     abstract public function lock($sTable, $sMode = 'write');
 
-
     /**
      * Frees a previous locked result.
      *
@@ -749,7 +701,6 @@ abstract class DB_Sql_Abstract
      * @return  int  Status of lock success (1 or 0)
      */
     abstract public function unlock();
-
 
     /**
      * Parses te table structure and generates a metadata from it.
@@ -759,8 +710,7 @@ abstract class DB_Sql_Abstract
      * @param   bool    $bFull   Flag to load full metada
      * @return  array   Depends on used database and on parameter $full
      */
-    public function metadata($sTable = '', $bFull = false)
-    {
+    public function metadata($sTable = '', $bFull = false) {
         $sKey = (string) $this->Database . '_' . $sTable . '_' . (($bFull) ? '1' : '0');
 
         if (!isset(self::$_metaCache[$sKey])) {
@@ -781,14 +731,12 @@ abstract class DB_Sql_Abstract
      */
     abstract protected function _metaData($sTable = '', $full = false);
 
-
     /**
      * Returns number of affected rows from last executed query (update, delete)
      *
      * @return  int  Number of affected rows
      */
     abstract public function affected_rows();
-
 
     /**
      * Returns the number of rows from last executed select query.
@@ -797,7 +745,6 @@ abstract class DB_Sql_Abstract
      */
     abstract public function num_rows();
 
-
     /**
      * Returns the number of fields (colums) from current record set
      *
@@ -805,29 +752,24 @@ abstract class DB_Sql_Abstract
      */
     abstract public function num_fields();
 
-
     /**
      * Returns the number of rows (record set).
      * Shortcut for function num_rows().
      *
      * @return  int  Number of rows
      */
-    public function nf()
-    {
+    public function nf() {
         return $this->num_rows();
     }
-
 
     /**
      * Displays the number of rows (record set) using print.
      *
      * @return  void
      */
-    public function np()
-    {
+    public function np() {
         print $this->num_rows();
     }
-
 
     /**
      * Returns the desired field value from current record set.
@@ -836,11 +778,9 @@ abstract class DB_Sql_Abstract
      * @param   mixed  $mDefault  The default value to return
      * @return  mixed  The value of field
      */
-    public function f($mName, $mDefault = null)
-    {
+    public function f($mName, $mDefault = null) {
         return (isset($this->Record[$mName])) ? $this->Record[$mName] : $mDefault;
     }
-
 
     /**
      * Displays the desired field value from current record set using print.
@@ -848,8 +788,7 @@ abstract class DB_Sql_Abstract
      * @param   mixed  $mName  The field name or index position
      * @return  void
      */
-    public function p($mName)
-    {
+    public function p($mName) {
         if (isset($this->Record[$mName])) {
             print $this->Record[$mName];
         }
@@ -861,8 +800,7 @@ abstract class DB_Sql_Abstract
      * @param   string  $sFetchMode  One of DB_SQL_Abstract::FETCH_* constants
      * @return  array
      */
-    public function toArray($sFetchMode = DB_SQL_Abstract::FETCH_ASSOC)
-    {
+    public function toArray($sFetchMode = DB_SQL_Abstract::FETCH_ASSOC) {
         switch ($sFetchMode) {
             case self::FETCH_NUMERIC:
             case self::FETCH_ASSOC:
@@ -889,17 +827,14 @@ abstract class DB_Sql_Abstract
         return $aResult;
     }
 
-
     /**
      * Returns current recordset as a object
      *
      * @return  stdClass
      */
-    public function toObject()
-    {
+    public function toObject() {
         return (object) $this->toArray(self::FETCH_ASSOC);
     }
-
 
     /**
      * Returns the next id (sequence number).
@@ -910,16 +845,13 @@ abstract class DB_Sql_Abstract
      */
     abstract public function nextid($sSeqName);
 
-
     /**
      * Wrapper method for disconnect()
      * @see DB_Sql_Abstract::disconnect()
      */
-    public function close()
-    {
+    public function close() {
         $this->disconnect();
     }
-
 
     /**
      * Closes the connection and frees the query id.
@@ -927,7 +859,6 @@ abstract class DB_Sql_Abstract
      * @return  void
      */
     abstract public function disconnect();
-
 
     /**
      * Error handling
@@ -940,8 +871,7 @@ abstract class DB_Sql_Abstract
      * @param   string  $sMsg  The message to use for error handling
      * @return  void
      */
-    public function halt($sMsg)
-    {
+    public function halt($sMsg) {
         if ($this->Halt_On_Error == self::HALT_REPORT) {
             $this->haltmsg($this->_sHaltMsgPrefix . $sMsg);
         }
@@ -951,7 +881,6 @@ abstract class DB_Sql_Abstract
         }
     }
 
-
     /**
      * Logs passed message, basically the last db error to the error log.
      * Concatenates a detailed error message and invokey PHP's error_log() method.
@@ -959,8 +888,7 @@ abstract class DB_Sql_Abstract
      * @param   string  $sMsg
      * @return  void
      */
-    public function haltmsg($sMsg)
-    {
+    public function haltmsg($sMsg) {
         if (!$this->Error) {
             $this->Error = $this->_getErrorMessage();
         }
@@ -968,10 +896,9 @@ abstract class DB_Sql_Abstract
             $this->Errno = $this->_getErrorNumber();
         }
 
-        $sMsg  = sprintf("%s error: %s (%s) - info: %s\n", $this->type, $this->Errno, $this->Error, $sMsg);
+        $sMsg = sprintf("%s error: %s (%s) - info: %s\n", $this->type, $this->Errno, $this->Error, $sMsg);
         cWarning(__FILE__, __LINE__, $sMsg);
     }
-
 
     /**
      * Returns names of existing tables.
@@ -982,8 +909,7 @@ abstract class DB_Sql_Abstract
      *                      - $info[$i]['tablespace_name']
      *                      - $info[$i]['database']
      */
-    public function table_names()
-    {
+    public function table_names() {
         if (!$this->connect()) {
             return null;
         }
@@ -999,7 +925,6 @@ abstract class DB_Sql_Abstract
      */
     abstract protected function _tableNames();
 
-
     /**
      * Escape string for using in SQL-Statement.
      *
@@ -1007,7 +932,6 @@ abstract class DB_Sql_Abstract
      * @return  string  Escaped string
      */
     abstract public function escape($sString);
-
 
     /**
      * Returns information about DB server. The return value depends allways on
@@ -1017,8 +941,7 @@ abstract class DB_Sql_Abstract
      *                      - $arr['description']  (string)  Optional, server description
      *                      - $arr['version']      (string)  Optional, server version
      */
-    public function server_info()
-    {
+    public function server_info() {
         if (!$this->connect()) {
             return null;
         }
@@ -1034,17 +957,14 @@ abstract class DB_Sql_Abstract
      */
     abstract protected function _serverInfo();
 
-
     /**
      * Returns error message of last occured error.
      *
      * @return  string
      */
-    public function getErrorMessage()
-    {
+    public function getErrorMessage() {
         return $this->Error;
     }
-
 
     /**
      * Returns error message of last occured error by using databases interface.
@@ -1053,17 +973,14 @@ abstract class DB_Sql_Abstract
      */
     abstract protected function _getErrorMessage();
 
-
     /**
      * Returns error code of last occured error by using databases interface.
      *
      * @return  int
      */
-    public function getErrorNumber()
-    {
+    public function getErrorNumber() {
         return $this->Errno;
     }
-
 
     /**
      * Returns error code of last occured error by using databases interface.
@@ -1071,7 +988,6 @@ abstract class DB_Sql_Abstract
      * @return  int
      */
     abstract protected function _getErrorNumber();
-
 
     /**
      * Adds a entry to the profile data.
@@ -1081,14 +997,12 @@ abstract class DB_Sql_Abstract
      * @param   string  $sStatement
      * @return  void
      */
-    protected static function _addProfileData($fStartTime, $fEndTime, $sStatement)
-    {
+    protected static function _addProfileData($fStartTime, $fEndTime, $sStatement) {
         self::$_aProfileData[] = array(
-            'time'  => $fEndTime - $fStartTime,
+            'time' => $fEndTime - $fStartTime,
             'query' => $sStatement
         );
     }
-
 
     /**
      * Returns collected profile data.
@@ -1097,11 +1011,9 @@ abstract class DB_Sql_Abstract
      *                 - $arr[$i]['time']   (float)   Elapsed time to execute the query
      *                 - $arr[$i]['query']  (string)  The query itself
      */
-    public static function getProfileData()
-    {
+    public static function getProfileData() {
         return self::$_aProfileData;
     }
-
 
     /**
      * Returns a cloned version of self. Clones itself only at first call.
@@ -1109,14 +1021,12 @@ abstract class DB_Sql_Abstract
      *
      * @return DB_Sql_Abstract
      */
-    protected function _getInstanceClone()
-    {
+    protected function _getInstanceClone() {
         if (null === $this->_instanceClone) {
             $this->_instanceClone = clone $this;
         }
         return $this->_instanceClone;
     }
-
 
     /**
      * Displays the passed message, if debug is enabled (see $this->Debug)
@@ -1124,8 +1034,8 @@ abstract class DB_Sql_Abstract
      * @param   string  $sMsg  The message to display
      * @return  void
      */
-    protected function _debug($sMsg)
-    {
+    protected function _debug($sMsg) {
         cDebug($sMsg);
     }
+
 }

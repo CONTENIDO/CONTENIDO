@@ -158,8 +158,8 @@ if ($oRcpGroups->Count() == 0) {
     $sSkript = '              <script type="text/javascript"><!--'."\n".
              '                  function fncUpdateSel() {'."\n".
              '                     var strSel = "";'."\n".
-             '                     for(i = 0; i < document.forms[0].selGroup'.$cnumber.'.length; i++) {'."\n".
-             '                        if(document.forms[0].selGroup'.$cnumber.'.options[i].selected == true) {'."\n".
+             '                     for (i = 0; i < document.forms[0].selGroup'.$cnumber.'.length; i++) {'."\n".
+             '                        if (document.forms[0].selGroup'.$cnumber.'.options[i].selected == true) {'."\n".
              '                           if (strSel != "")'."\n".
              '                              strSel = strSel + ",";'."\n".
              '                           strSel = strSel + document.forms[0].selGroup'.$cnumber.'.options[i].value;'."\n".

@@ -20,10 +20,8 @@
  *
  * {@internal
  *   created 2011-11-18
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -40,18 +38,16 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * @package    CONTENIDO Validator
  */
-class cValidatorRegex extends cValidatorAbstract
-{
+class cValidatorRegex extends cValidatorAbstract {
 
     /**
      * {@inheritdoc}
      */
-    protected function _isValid($value)
-    {
+    protected function _isValid($value) {
         if (!is_string($value)) {
             $this->addError('Invalid value', 1);
             return false;
-        } elseif(!$this->getOption('pattern')) {
+        } elseif (!$this->getOption('pattern')) {
             $this->addError('Missing pattern', 2);
             return false;
         }

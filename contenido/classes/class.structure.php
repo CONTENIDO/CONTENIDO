@@ -22,11 +22,8 @@
  *
  * {@internal
  *   created 2003
- *   modified 2008-06-30, Frederic Schneider, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -34,15 +31,15 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /** @deprecated [2012-03-29] This class is deprecated use cApiCategoryLanguage() or cApiCategoryArticle() instead */
-class Structure
-{
+class Structure {
+
     /** @deprecated [2012-03-29] This class is deprecated use cApiCategoryLanguage() or cApiCategoryArticle() instead */
     function Structure() {
         cDeprecated("Use cApiArticleLanguage() or cApiCategoryArticle() instead");
     }
+
     /** @deprecated [2012-03-29] Use cApiCategoryLanguage() instead */
-    function getStructureName($structure, $idlang)
-    {
+    function getStructureName($structure, $idlang) {
         cDeprecated("Use cApiCategoryLanguage() instead");
         $oCatLang = new cApiCategoryLanguage();
         if ($oCatLang->loadByCategoryIdAndLanguageId($structure, $idlang)) {
@@ -51,13 +48,14 @@ class Structure
             return '';
         }
     }
+
     /** @deprecated [2012-03-29] Use cApiCategoryArticle() instead */
-    function getStructureIDForCatArt($idcatart)
-    {
+    function getStructureIDForCatArt($idcatart) {
         cDeprecated("Use cApiCategoryArticle() instead");
         $oCatArt = new cApiCategoryArticle($idcatart);
         return ($oCatArt->isLoaded()) ? $oCatArt->get('idcat') : null;
     }
+
 }
 
 ?>

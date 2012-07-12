@@ -29,57 +29,55 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Module collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiModuleCollection extends ItemCollection
-{
+class cApiModuleCollection extends ItemCollection {
+
     /**
      * Constructor Function
      * @param none
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg["tab"]["mod"], "idmod");
         $this->_setItemClass("cApiModule");
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiModuleCollection()
-    {
+    public function cApiModuleCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
     /**
-     * Creates a new communication item
+     * Creates a new module item
      */
-    public function create($name)
-    {
+    public function create($name) {
         global $auth, $client;
+
         $item = parent::createNewItem();
 
         $item->set("idclient", $client);
         $item->set("name", $name);
         $item->set("author", $auth->auth["uid"]);
-        $item->set("created", date("Y-m-d H:i:s"),false);
+        $item->set("created", date("Y-m-d H:i:s"), false);
         $item->store();
+
         return $item;
     }
-}
 
+}
 
 /**
  * Module item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiModule extends Item
-{
+class cApiModule extends Item {
+
     protected $_error;
 
     /**
@@ -97,8 +95,7 @@ class cApiModule extends Item
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg, $cfgClient, $client;
         parent::__construct($cfg["tab"]["mod"], "idmod");
 
@@ -112,16 +109,15 @@ class cApiModule extends Item
             $this->loadByPrimaryKey($mId);
         }
 
-        if(isset($client) && $client != 0) {
-            $this->_packageStructure = array("jsfiles"  => $cfgClient[$client]["js"]["path"],
-                                             "tplfiles" => $cfgClient[$client]["tpl"]["path"],
-                                             "cssfiles" => $cfgClient[$client]["css"]["path"]);
+        if (isset($client) && $client != 0) {
+            $this->_packageStructure = array("jsfiles" => $cfgClient[$client]["js"]["path"],
+                "tplfiles" => $cfgClient[$client]["tpl"]["path"],
+                "cssfiles" => $cfgClient[$client]["css"]["path"]);
         }
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiModule($mId = false)
-    {
+    public function cApiModule($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
@@ -132,8 +128,7 @@ class cApiModule extends Item
      * @param none
      * @return string Translated module name or original
      */
-    public function getTranslatedName()
-    {
+    public function getTranslatedName() {
         global $lang;
 
         // If we're not loaded, return
@@ -156,111 +151,19 @@ class cApiModule extends Item
      * @param $name string Translated name of the module
      * @return none
      */
-    public function setTranslatedName($name)
-    {
+    public function setTranslatedName($name) {
         global $lang;
         $this->setProperty("translated-name", $lang, $name);
     }
+
     /**
-    *This method get the input and output for translating
-    *from files and not from db-table.
-    *
-    */
-    function parseModuleForStringsLoadFromFile ($cfg , $client,$lang)
-    {
+     * This method get the input and output for translating
+     * from files and not from db-table.
+     *
+     */
+    function parseModuleForStringsLoadFromFile($cfg, $client, $lang) {
         global $client;
 
-        if ($this->virgin == true)
-        {
-            return false;
-        }
-
-        /* Fetch the code, append input to output */
-        //$code  = $this->get("output");
-        //$code .= $this->get("input");
-
-
-        //Get the code(input,output) from files
-         $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
-         $code = $contenidoModuleHandler->readOutput()." ";
-         $code.= $contenidoModuleHandler->readInput();
-
-
-
-        /* Initialize array */
-        $strings = array();
-
-        /* Split the code into mi18n chunks */
-        $varr = preg_split('/mi18n([\s]*)\(([\s]*)"/', $code, -1);
-
-        if (count($varr) > 1)
-        {
-            foreach ($varr as $key => $value)
-            {
-                /* Search first closing */
-                $closing = strpos($value,'")');
-
-                if ($closing === false)
-                {
-                    $closing = strpos($value,'" )');
-                }
-
-                if ($closing !== false)
-                {
-                    $value = substr($value,0, $closing).'")';
-                }
-
-                /* Append mi18n again */
-                $varr[$key] = 'mi18n("'.$value;
-
-                /* Parse for the mi18n stuff */
-                preg_match_all('/mi18n([\s]*)\("(.*)"\)/', $varr[$key], $results);
-
-                /* Append to strings array if there are any results */
-                if (is_array($results[1]) && count($results[2]) > 0)
-                {
-                    $strings = array_merge($strings, $results[2]);
-                }
-
-                /* Unset the results for the next run */
-                unset($results);
-            }
-        }
-
-        // adding dynamically new module translations by content types
-        // this function was introduced with CONTENIDO 4.8.13
-
-        // checking if array is set to prevent crashing the module translation page
-        if ( is_array( $cfg['translatable_content_types'] ) && count ( $cfg['translatable_content_types'] ) > 0 ) {
-            // iterate over all defines cms content types
-            foreach ( $cfg['translatable_content_types'] as $sContentType ) {
-                // check if the content type exists and include his class file
-                if ( file_exists ( $cfg['contenido']['path'] . "classes/class." . strtolower ( $sContentType ) . ".php" ) ) {
-                    cInclude("classes", "class." . strtolower ( $sContentType ) . ".php" );
-                    // if the class exists, has the method "addModuleTranslations"
-                    // and the current module contains this cms content type we
-                    // add the additional translations for the module
-                    if ( class_exists ( $sContentType ) &&
-                        method_exists( $sContentType, 'addModuleTranslations' ) &&
-                        preg_match('/' . strtoupper ( $sContentType ) . '\[\d+\]/', $code) ) {
-
-                        $strings = call_user_func(array($sContentType, 'addModuleTranslations'), $strings);
-                    }
-                }
-            }
-        }
-
-        /* Make the strings unique */
-        return array_unique($strings);
-    }
-
-    /**
-     * Parses the module for mi18n strings and returns them in an array
-     *
-     * @return array Found strings for this module
-     */
-    public function parseModuleForStrings()
-    {
         if ($this->virgin == true) {
             return false;
         }
@@ -268,11 +171,10 @@ class cApiModule extends Item
         // Fetch the code, append input to output
         //$code  = $this->get("output");
         //$code .= $this->get("input");
-
         //Get the code(input,output) from files
-         $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
-         $code = $contenidoModuleHandler->readOutput()." ";
-         $code.= $contenidoModuleHandler->readInput();
+        $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
+        $code = $contenidoModuleHandler->readOutput() . " ";
+        $code.= $contenidoModuleHandler->readInput();
 
         // Initialize array
         $strings = array();
@@ -283,18 +185,18 @@ class cApiModule extends Item
         if (count($varr) > 1) {
             foreach ($varr as $key => $value) {
                 // Search first closing
-                $closing = strpos($value,'")');
+                $closing = strpos($value, '")');
 
                 if ($closing === false) {
-                    $closing = strpos($value,'" )');
+                    $closing = strpos($value, '" )');
                 }
 
                 if ($closing !== false) {
-                    $value = substr($value,0, $closing).'")';
+                    $value = substr($value, 0, $closing) . '")';
                 }
 
                 // Append mi18n again
-                $varr[$key] = 'mi18n("'.$value;
+                $varr[$key] = 'mi18n("' . $value;
 
                 // Parse for the mi18n stuff
                 preg_match_all('/mi18n([\s]*)\("(.*)"\)/', $varr[$key], $results);
@@ -311,7 +213,85 @@ class cApiModule extends Item
 
         // adding dynamically new module translations by content types
         // this function was introduced with CONTENIDO 4.8.13
+        // checking if array is set to prevent crashing the module translation page
+        if (is_array($cfg['translatable_content_types']) && count($cfg['translatable_content_types']) > 0) {
+            // iterate over all defines cms content types
+            foreach ($cfg['translatable_content_types'] as $sContentType) {
+                // check if the content type exists and include his class file
+                if (file_exists($cfg['contenido']['path'] . "classes/class." . strtolower($sContentType) . ".php")) {
+                    cInclude("classes", "class." . strtolower($sContentType) . ".php");
+                    // if the class exists, has the method "addModuleTranslations"
+                    // and the current module contains this cms content type we
+                    // add the additional translations for the module
+                    if (class_exists($sContentType) &&
+                            method_exists($sContentType, 'addModuleTranslations') &&
+                            preg_match('/' . strtoupper($sContentType) . '\[\d+\]/', $code)) {
 
+                        $strings = call_user_func(array($sContentType, 'addModuleTranslations'), $strings);
+                    }
+                }
+            }
+        }
+
+        /* Make the strings unique */
+        return array_unique($strings);
+    }
+
+    /**
+     * Parses the module for mi18n strings and returns them in an array
+     *
+     * @return array Found strings for this module
+     */
+    public function parseModuleForStrings() {
+        if ($this->virgin == true) {
+            return false;
+        }
+
+        // Fetch the code, append input to output
+        //$code  = $this->get("output");
+        //$code .= $this->get("input");
+        //Get the code(input,output) from files
+        $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
+        $code = $contenidoModuleHandler->readOutput() . " ";
+        $code.= $contenidoModuleHandler->readInput();
+
+        // Initialize array
+        $strings = array();
+
+        // Split the code into mi18n chunks
+        $varr = preg_split('/mi18n([\s]*)\(([\s]*)"/', $code, -1);
+
+        if (count($varr) > 1) {
+            foreach ($varr as $key => $value) {
+                // Search first closing
+                $closing = strpos($value, '")');
+
+                if ($closing === false) {
+                    $closing = strpos($value, '" )');
+                }
+
+                if ($closing !== false) {
+                    $value = substr($value, 0, $closing) . '")';
+                }
+
+                // Append mi18n again
+                $varr[$key] = 'mi18n("' . $value;
+
+                // Parse for the mi18n stuff
+                preg_match_all('/mi18n([\s]*)\("(.*)"\)/', $varr[$key], $results);
+
+                // Append to strings array if there are any results
+                if (is_array($results[1]) && count($results[2]) > 0) {
+                    $strings = array_merge($strings, $results[2]);
+                }
+
+                // Unset the results for the next run
+                unset($results);
+            }
+        }
+
+        // adding dynamically new module translations by content types
+        // this function was introduced with CONTENIDO 4.8.13
         // checking if array is set to prevent crashing the module translation page
         if (is_array($cfg['translatable_content_types']) && count($cfg['translatable_content_types']) > 0) {
             // iterate over all defines cms content types
@@ -323,8 +303,8 @@ class cApiModule extends Item
                     // and the current module contains this cms content type we
                     // add the additional translations for the module
                     if (class_exists($sContentType) &&
-                        method_exists($sContentType, 'addModuleTranslations') &&
-                        preg_match('/' . strtoupper($sContentType) . '\[\d+\]/', $code)) {
+                            method_exists($sContentType, 'addModuleTranslations') &&
+                            preg_match('/' . strtoupper($sContentType) . '\[\d+\]/', $code)) {
 
                         $strings = call_user_func(array($sContentType, 'addModuleTranslations'), $strings);
                     }
@@ -340,8 +320,7 @@ class cApiModule extends Item
      * Checks if the module is in use
      * @return bool    Specifies if the module is in use
      */
-    public function moduleInUse($module, $bSetData = false)
-    {
+    public function moduleInUse($module, $bSetData = false) {
         global $cfg;
 
         $db = cRegistry::getDb();
@@ -349,8 +328,8 @@ class cApiModule extends Item
         $sql = "SELECT
                     c.idmod, c.idtpl, t.name
                 FROM
-                ". $cfg["tab"]["container"] . " as c,
-                ". $cfg["tab"]["tpl"] . " as t
+                " . $cfg["tab"]["container"] . " as c,
+                " . $cfg["tab"]["tpl"] . " as t
                 WHERE
                     c.idmod = '" . cSecurity::toInteger($module) . "' AND
                     t.idtpl=c.idtpl
@@ -366,7 +345,7 @@ class cApiModule extends Item
             if ($bSetData === true) {
                 while ($db->next_record()) {
                     $this->aUsedTemplates[$i]['tpl_name'] = $db->f('name');
-                    $this->aUsedTemplates[$i]['tpl_id'] = (int)$db->f('idmod');
+                    $this->aUsedTemplates[$i]['tpl_id'] = (int) $db->f('idmod');
                     $i++;
                 }
             }
@@ -379,8 +358,7 @@ class cApiModule extends Item
      * Get the informations of used templates
      * @return array template data
      */
-    public function getUsedTemplates()
-    {
+    public function getUsedTemplates() {
         return $this->aUsedTemplates;
     }
 
@@ -388,12 +366,11 @@ class cApiModule extends Item
      * Checks if the module is a pre-4.3 module
      * @return boolean true if this module is an old one
      */
-    public function isOldModule()
-    {
+    public function isOldModule() {
         // Keywords to scan
         $scanKeywords = array('$cfgTab', 'idside', 'idsidelang');
 
-        $input  = $this->get("input");
+        $input = $this->get("input");
         $output = $this->get("output");
 
         foreach ($scanKeywords as $keyword) {
@@ -406,8 +383,7 @@ class cApiModule extends Item
         }
     }
 
-    public function getField($field)
-    {
+    public function getField($field) {
         $value = parent::getField($field);
 
         switch ($field) {
@@ -419,8 +395,7 @@ class cApiModule extends Item
         return ($value);
     }
 
-    public function store($bJustStore = false)
-    {
+    public function store($bJustStore = false) {
         global $cfg;
 
         if ($bJustStore) {
@@ -489,22 +464,21 @@ class cApiModule extends Item
      *
      * @param string    $file     Filename of data file (full path)
      */
-    function import($sFile, $tempName)
-    {
+    function import($sFile, $tempName) {
         global $cfgClient, $db, $client, $cfg, $encoding, $lang;
         $zip = new ZipArchive();
         $notification = new cGuiNotification();
         $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
         // file name Hello_World.zip => Hello_World
         // @TODO: fetch file extension correctly
-        $modulName = substr($sFile,0,-4);
+        $modulName = substr($sFile, 0, -4);
 
         $sModulePath = $cfgClient[$client]['module_path'] . $modulName;
 
         // exist the modul in directory
         if (is_dir($sModulePath)) {
             $notification->displayNotification('error', i18n("Module exist!"));
-            return false ;
+            return false;
         }
 
         if ($zip->open($tempName)) {
@@ -518,7 +492,7 @@ class cApiModule extends Item
                 $moduleProperties = $this->_getModuleProperties($sModulePath . '/info.xml');
 
                 // set module properties and save it
-                foreach ($moduleProperties as $key=>$value) {
+                foreach ($moduleProperties as $key => $value) {
                     $module->set($key, $value);
                 }
 
@@ -542,9 +516,8 @@ class cApiModule extends Item
      *
      * @param string    $file     Filename of data file (full path)
      */
-    function importModuleFromXML ($sFile)
-    {
-        global $db,$cfgClient, $client, $cfg,$encoding,$lang;
+    function importModuleFromXML($sFile) {
+        global $db, $cfgClient, $client, $cfg, $encoding, $lang;
 
         $inputOutput = array();
         $notification = new cGuiNotification();
@@ -552,10 +525,9 @@ class cApiModule extends Item
         $aModuleData = $this->_parseImportFile($sFile);
         if (count($aModuleData) > 0) {
             foreach ($aModuleData as $key => $value) {
-                if ($this->get($key) != $value)
-                {
+                if ($this->get($key) != $value) {
                     #the columns input/and outputs dont exist in table
-                    if($key == "output" || $key == "input")
+                    if ($key == "output" || $key == "input")
                         $inputOutput[$key] = $value;
                     else
                         $this->set($key, addslashes($value));
@@ -598,7 +570,7 @@ class cApiModule extends Item
      * @param string $zipArchive name of the archive
      * @param string $zipdir
      */
-    private function _addFolderToZip($dir, $zipArchive, $zipdir = ''){
+    private function _addFolderToZip($dir, $zipArchive, $zipdir = '') {
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
                 //Add the directory
@@ -614,7 +586,7 @@ class cApiModule extends Item
                         if (($file !== ".") && ($file !== "..")) {
                             $this->_addFolderToZip($dir . $file . "/", $zipArchive, $zipdir . $file . "/");
                         }
-                    } else{
+                    } else {
                         // Add the files
                         if ($zipArchive->addFile($dir . $file, $zipdir . $file) === FALSE) {
                             $notification = new cGuiNotification();
@@ -638,7 +610,7 @@ class cApiModule extends Item
         // exist modul
         if ($contenidoModuleHandler->modulePathExists()) {
             $zip = new ZipArchive();
-            $zipName = $this->get('alias').'.zip';
+            $zipName = $this->get('alias') . '.zip';
             if ($zip->open($zipName, ZipArchive::CREATE)) {
                 $retAddToFolder = $this->_addFolderToZip($contenidoModuleHandler->getModulePath(), $zip);
 
@@ -681,19 +653,18 @@ class cApiModule extends Item
         cDeprecated("This function is not longer supported.");
         return false;
     }
+
 }
 
+class cApiModuleTranslationCollection extends ItemCollection {
 
-class cApiModuleTranslationCollection extends ItemCollection
-{
     protected $_error;
 
     /**
      * Constructor Function
      * @param none
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg["tab"]["mod_translations"], "idmodtranslation");
         $this->_setItemClass("cApiModuleTranslation");
@@ -702,8 +673,7 @@ class cApiModuleTranslationCollection extends ItemCollection
     /**
      * Creates a new module translation item
      */
-    public function create($idmod, $idlang, $original, $translation = false)
-    {
+    public function create($idmod, $idlang, $original, $translation = false) {
         // Check if the original already exists. If it does,
         // update the translation if passed
         $mod = new cApiModuleTranslation();
@@ -735,8 +705,7 @@ class cApiModuleTranslationCollection extends ItemCollection
      * @param $lang   int Language ID
      * @param $string string String to lookup
      */
-    public function fetchTranslation($module, $lang, $string)
-    {
+    public function fetchTranslation($module, $lang, $string) {
         // If the f_obj does not exist, create one
         if (!is_object($this->f_obj)) {
             $this->f_obj = new cApiModuleTranslation();
@@ -777,65 +746,61 @@ class cApiModuleTranslationCollection extends ItemCollection
         cDeprecated("This function is not longer supported.");
         return false;
     }
-}
 
+}
 
 /**
  * Module access class
  */
-class cApiModuleTranslation extends Item
-{
+class cApiModuleTranslation extends Item {
+
     /**
      * Constructor Function
      * @param $loaditem Item to load
      */
-    public function __construct($loaditem = false)
-    {
+    public function __construct($loaditem = false) {
         global $cfg;
         parent::__construct($cfg["tab"]["mod_translations"], "idmodtranslation");
         if ($loaditem !== false) {
             $this->loadByPrimaryKey($loaditem);
         }
     }
+
 }
 
 /** @deprecated 2012-03-03 Not supported any longer. */
-function cHandler_ModuleData($sName, $aAttribs, $sContent)
-{
+function cHandler_ModuleData($sName, $aAttribs, $sContent) {
     cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["module"][$sName] = $sContent;
 }
 
 /** @deprecated 2012-03-03 Not supported any longer. */
-function cHandler_ItemArea($sName, $aAttribs, $sContent)
-{
+function cHandler_ItemArea($sName, $aAttribs, $sContent) {
     cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["current_item_area"] = $sContent;
 }
 
 /** @deprecated 2012-03-03 Not supported any longer. */
-function cHandler_ItemName($sName, $aAttribs, $sContent)
-{
+function cHandler_ItemName($sName, $aAttribs, $sContent) {
     cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["current_item_name"] = $sContent;
 }
 
 /** @deprecated 2012-03-03 Not supported any longer. */
-function cHandler_ItemData($sName, $aAttribs, $sContent)
-{
+function cHandler_ItemData($sName, $aAttribs, $sContent) {
     cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["items"][$_mImport["current_item_area"]][$_mImport["current_item_name"]][$sName] = $sContent;
 }
 
 /** @deprecated 2012-03-03 Not supported any longer. */
-function cHandler_Translation($sName, $aAttribs, $sContent)
-{
+function cHandler_Translation($sName, $aAttribs, $sContent) {
     cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["translations"][$_mImport["current_item_area"]][$_mImport["current_item_name"]] = $sContent;
 }
+
 ?>

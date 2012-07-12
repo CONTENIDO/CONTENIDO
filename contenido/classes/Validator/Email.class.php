@@ -20,10 +20,8 @@
  *
  * {@internal
  *   created 2011-11-18
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -55,20 +53,18 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * @package    CONTENIDO Validator
  */
-class cValidatorEmail extends cValidatorAbstract
-{
+class cValidatorEmail extends cValidatorAbstract {
+
     /**
      * Flag about existing flter_var function
      * @var  bool
      */
     protected static $_filterVarExists;
 
-
     /**
      * Constructor function, sets some predefined options
      */
-    public function __construct()
-    {
+    public function __construct() {
         // Some default options to exclude tld or host
         // RFC 2606 filter (<http://tools.ietf.org/html/rfc2606>)
         $this->setOption('disallow_tld', array('.test', '.example', '.invalid', '.localhost'));
@@ -79,31 +75,28 @@ class cValidatorEmail extends cValidatorAbstract
      * Filter variable function exists setter
      * @param  bool  $exists
      */
-    public static function setFilterVarExists($exists)
-    {
+    public static function setFilterVarExists($exists) {
         self::$_filterVarExists = (bool) $exists;
     }
 
     /**
      * Unsets filter variable function state
      */
-    public static function resetFilterVarExists()
-    {
+    public static function resetFilterVarExists() {
         unset(self::$_filterVarExists);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function _isValid($value)
-    {
+    protected function _isValid($value) {
         if (!is_string($value) || empty($value)) {
             $this->addError('Invalid or empty value', 1);
             return false;
         }
 
         $host = substr($value, strpos($value, '@') + 1);
-        $tld  = strrchr($value, '.');
+        $tld = strrchr($value, '.');
 
         // do RFC 2606 or user defined filter if configured
         if ($this->getOption('disallow_tld')) {
@@ -181,8 +174,7 @@ class cValidatorEmail extends cValidatorAbstract
      *
      * @return bool
      */
-    private function _checkMx($host)
-    {
+    private function _checkMx($host) {
         return checkdnsrr($host, 'MX');
     }
 

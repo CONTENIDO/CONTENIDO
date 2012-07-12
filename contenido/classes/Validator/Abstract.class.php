@@ -20,23 +20,20 @@
  *
  * {@internal
  *   created 2011-11-18
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Abstract validator
  * @package    CONTENIDO Validator
  */
-abstract class cValidatorAbstract
-{
+abstract class cValidatorAbstract {
+
     /**
      * List of options, depends by used validator
      * @var array
@@ -53,8 +50,7 @@ abstract class cValidatorAbstract
      * Options setter, merges passed options with previous set options.
      * @param  array  $options
      */
-    public function setOptions(array $options)
-    {
+    public function setOptions(array $options) {
         $this->_options = array_merge($this->_options, $options);
     }
 
@@ -63,8 +59,7 @@ abstract class cValidatorAbstract
      * @param  string  $name
      * @param  mixed   $value
      */
-    public function setOption($name, $value)
-    {
+    public function setOption($name, $value) {
         $this->_options[$name] = $value;
     }
 
@@ -73,8 +68,7 @@ abstract class cValidatorAbstract
      * @param   string  $name
      * @return  mixed|null
      */
-    public function getOption($name)
-    {
+    public function getOption($name) {
         return isset($this->_options[$name]) ? $this->_options[$name] : null;
     }
 
@@ -82,8 +76,7 @@ abstract class cValidatorAbstract
      * Returns list of validations errors
      * @return  array
      */
-    public function getErrors()
-    {
+    public function getErrors() {
         return $this->_errors;
     }
 
@@ -92,8 +85,7 @@ abstract class cValidatorAbstract
      * @param  string  $message
      * @param  mixed   $code
      */
-    protected function addError($message, $code)
-    {
+    protected function addError($message, $code) {
         $this->_errors[] = (object) array('message' => $message, 'code' => $code);
     }
 
@@ -103,8 +95,7 @@ abstract class cValidatorAbstract
      * @param   mixed  $value
      * @return  bool
      */
-    public function isValid($value)
-    {
+    public function isValid($value) {
         return $this->_isValid($value);
     }
 

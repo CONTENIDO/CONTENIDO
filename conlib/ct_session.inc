@@ -22,23 +22,20 @@
  *
  * {@internal
  *   created  2011-03-18
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * @package    CONTENIDO Core
  * @subpackage Session
  */
-class CT_Session
-{
+class CT_Session {
+
     /**
      * Namespace in superglobal $_SESSION
      * @var  string
@@ -54,8 +51,7 @@ class CT_Session
      *                           - $aOptions['session.*']  (string)  Each possible session configuration
      *                                                               see php.ini
      */
-    public function ac_start(array $aOptions = array())
-    {
+    public function ac_start(array $aOptions = array()) {
         // set namespace
         if (isset($aOptions['namespace'])) {
             $this->_sNameSpace = $aOptions['namespace'];
@@ -77,34 +73,28 @@ class CT_Session
         }
     }
 
-    public function ac_get_lock()
-    {
+    public function ac_get_lock() {
         // no need to lock session
     }
 
-    public function ac_release_lock()
-    {
+    public function ac_release_lock() {
         // no need to release lock session
     }
 
-    public function ac_gc($gc_time, $name)
-    {
+    public function ac_gc($gc_time, $name) {
         // no need for garbace collection, will be done by PHP's gc
     }
 
-    public function ac_store($id, $name, $str)
-    {
+    public function ac_store($id, $name, $str) {
         $_SESSION[$this->_sNameSpace][$name] = $str;
         return true;
     }
 
-    public function ac_get_value($id, $name)
-    {
+    public function ac_get_value($id, $name) {
         return isset($_SESSION[$this->_sNameSpace][$name]) ? $_SESSION[$this->_sNameSpace][$name] : '';
     }
 
-    public function ac_delete($id, $name)
-    {
+    public function ac_delete($id, $name) {
         // don't destroy session, untill backend and frontend uses it
         #session_destroy();
         if (isset($_SESSION[$this->_sNameSpace][$name])) {
@@ -112,16 +102,15 @@ class CT_Session
         }
     }
 
-    public function ac_newid($str, $name)
-    {
+    public function ac_newid($str, $name) {
         session_regenerate_id(false);
         return session_id();
     }
 
-    public function ac_halt($s)
-    {
+    public function ac_halt($s) {
         die($s);
     }
+
 }
 
 ?>

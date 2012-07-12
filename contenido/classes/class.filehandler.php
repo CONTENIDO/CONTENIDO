@@ -18,7 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.9
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -29,8 +28,8 @@ if (!defined('CON_FRAMEWORK')) {
  * Provides functions for dealing with files
  *
  */
-class cFileHandler
-{
+class cFileHandler {
+
     /**
      * Creates a new file
      * @param string $filename the name and path of the new file
@@ -50,8 +49,8 @@ class cFileHandler
      * @return string|bool On success it returns the bytes which have been read. Otherwise false.
      */
     public static function read($filename, $length = 0, $offset = 0, $reverse = false) {
-        if(!cFileHandler::exists($filename)) {
-            cError(__FILE__, __LINE__, "The file ".$filename. "could not be accessed because it doesn't exist.");
+        if (!cFileHandler::exists($filename)) {
+            cError(__FILE__, __LINE__, "The file " . $filename . "could not be accessed because it doesn't exist.");
         }
 
         if ($reverse) {
@@ -75,8 +74,8 @@ class cFileHandler
      * @return string|array|bool If only one line was read the function will return it. If more than one line was read the function will return an array containing the lines. Otherwise false is returned
      */
     public static function readLine($filename, $lines = 0, $lineoffset = 0) {
-        if(!cFileHandler::exists($filename)) {
-            cError(__FILE__, __LINE__, "The file ".$filename. "could not be accessed because it doesn't exist.");
+        if (!cFileHandler::exists($filename)) {
+            cError(__FILE__, __LINE__, "The file " . $filename . "could not be accessed because it doesn't exist.");
         }
 
         $f = fopen($filename, "r");
@@ -138,7 +137,7 @@ class cFileHandler
      * @return bool true on success, false otherwise
      */
     public static function writeLine($filename, $content, $append = false) {
-        return self::write($filename, $content."\n", $append);
+        return self::write($filename, $content . "\n", $append);
     }
 
     /**
@@ -165,8 +164,8 @@ class cFileHandler
      * @return bool true if the file is readable
      */
     public static function readable($filename) {
-        if(!cFileHandler::exists($filename)) {
-            cError(__FILE__, __LINE__, "The file ".$filename. "could not be accessed because it doesn't exist.");
+        if (!cFileHandler::exists($filename)) {
+            cError(__FILE__, __LINE__, "The file " . $filename . "could not be accessed because it doesn't exist.");
         }
 
         return is_readable($filename);
@@ -178,8 +177,8 @@ class cFileHandler
      * @return bool true on success
      */
     public static function remove($filename) {
-        if(!cFileHandler::exists($filename)) {
-            cError(__FILE__, __LINE__, "The file ".$filename. "could not be accessed because it doesn't exist.");
+        if (!cFileHandler::exists($filename)) {
+            cError(__FILE__, __LINE__, "The file " . $filename . "could not be accessed because it doesn't exist.");
         }
 
         return unlink($filename);
@@ -191,8 +190,8 @@ class cFileHandler
      * @return bool true on success
      */
     public static function truncate($filename) {
-        if(!cFileHandler::exists($filename)) {
-            cError(__FILE__, __LINE__, "The file ".$filename. "could not be accessed because it doesn't exist.");
+        if (!cFileHandler::exists($filename)) {
+            cError(__FILE__, __LINE__, "The file " . $filename . "could not be accessed because it doesn't exist.");
         }
 
         return file_put_contents($filename, "") === 0;
@@ -205,8 +204,8 @@ class cFileHandler
      * @return bool true on success
      */
     public static function move($filename, $destination) {
-        if(!cFileHandler::exists($filename)) {
-            cError(__FILE__, __LINE__, "The file ".$filename. "could not be accessed because it doesn't exist.");
+        if (!cFileHandler::exists($filename)) {
+            cError(__FILE__, __LINE__, "The file " . $filename . "could not be accessed because it doesn't exist.");
         }
 
         return rename($filename, $destination);
@@ -219,11 +218,11 @@ class cFileHandler
      * @return bool true on success
      */
     public static function rename($filename, $new_filename) {
-        if(!cFileHandler::exists($filename)) {
-            cError(__FILE__, __LINE__, "The file ".$filename. "could not be accessed because it doesn't exist.");
+        if (!cFileHandler::exists($filename)) {
+            cError(__FILE__, __LINE__, "The file " . $filename . "could not be accessed because it doesn't exist.");
         }
 
-        return rename($filename, dirname($filename)."/".$new_filename);
+        return rename($filename, dirname($filename) . "/" . $new_filename);
     }
 
     /**
@@ -233,8 +232,8 @@ class cFileHandler
      * @return bool true on success
      */
     public static function copy($filename, $destination) {
-        if(!cFileHandler::exists($filename)) {
-            cError(__FILE__, __LINE__, "The file ".$filename. "could not be accessed because it doesn't exist.");
+        if (!cFileHandler::exists($filename)) {
+            cError(__FILE__, __LINE__, "The file " . $filename . "could not be accessed because it doesn't exist.");
         }
 
         return copy($filename, $destination);
@@ -247,8 +246,8 @@ class cFileHandler
      * @return bool true on success
      */
     public static function chmod($filename, $mode) {
-        if(!cFileHandler::exists($filename)) {
-            cError(__FILE__, __LINE__, "The file ".$filename. "could not be accessed because it doesn't exist.");
+        if (!cFileHandler::exists($filename)) {
+            cError(__FILE__, __LINE__, "The file " . $filename . "could not be accessed because it doesn't exist.");
         }
 
         return chmod($filename, $mode);
@@ -270,8 +269,8 @@ class cFileHandler
      * @return array Returns an array containing information about the file
      */
     public static function info($filename) {
-        if(!cFileHandler::exists($filename)) {
-            cError(__FILE__, __LINE__, "The file ".$filename. "could not be accessed because it doesn't exist.");
+        if (!cFileHandler::exists($filename)) {
+            cError(__FILE__, __LINE__, "The file " . $filename . "could not be accessed because it doesn't exist.");
         }
 
         $ret = array();
@@ -291,7 +290,7 @@ class cFileHandler
 
         if (version_compare(PHP_VERSION, "5.3", "<")) {
             $ret['mime'] = @mime_content_type($filename); //function is deprecated in PHP 5.3
-        } else if(function_exists("finfo_open")) {
+        } else if (function_exists("finfo_open")) {
             $finfo = @finfo_open(FILEINFO_MIME_TYPE); //extension has to be installed seperately in versions prior to 5.3
             $ret['mime'] = @finfo_file($finfo, $filename);
         } else {
@@ -300,12 +299,13 @@ class cFileHandler
 
         foreach ($ret as $value) {
             if ($value === false) {
-                cWarning(__FILE__, __LINE__, "Couldn't read ".$filename);
+                cWarning(__FILE__, __LINE__, "Couldn't read " . $filename);
                 return $ret;
             }
         }
         return $ret;
     }
+
 }
 
 ?>

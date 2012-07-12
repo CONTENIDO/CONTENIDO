@@ -25,72 +25,68 @@
  *
  * {@internal
  *   created 2007-07-14 Bilal Arslan, Timo Trautmann
- *   modified 2008-07-28 Bilal Arslan, added new Date format timestamp
- *   modified 2009-04-14 OliverL, added class in Edit- & Save-Link
- *   $Id
+ *   $Id$
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-class Cms_Date
-{
+class Cms_Date {
 
-   /**
-    * Contains user input of cms_type
-    * @access private
-    */
+    /**
+     * Contains user input of cms_type
+     * @access private
+     */
     private $sContent;
 
-   /**
-    * The format value for the calendar
-    * @access private
-    */
+    /**
+     * The format value for the calendar
+     * @access private
+     */
     private $aFormat;
 
-   /**
-    * The number of cms_date[?] parameter
-    * @access private
-    */
+    /**
+     * The number of cms_date[?] parameter
+     * @access private
+     */
     private $iNumberOfCms;
 
-   /**
-    * The output javascript
-    * @access private
-    */
+    /**
+     * The output javascript
+     * @access private
+     */
     private $sJS;
 
-   /**
-    * The the static variable, controlls howmuch object exists
-    * @access private
-    */
+    /**
+     * The the static variable, controlls howmuch object exists
+     * @access private
+     */
     private static $iNumOutput;
 
-   /**
-    * The CONTENIDO global
-    * @access private
-    */
+    /**
+     * The CONTENIDO global
+     * @access private
+     */
     private $iIdArtLang;
 
-   /**
-    * The CONTENIDO Edit link
-    * @access private
-    */
+    /**
+     * The CONTENIDO Edit link
+     * @access private
+     */
     private $sEditLink;
 
-   /**
-    * The CONTENIDO global
-    * @access private
-    */
+    /**
+     * The CONTENIDO global
+     * @access private
+     */
     private $aCfg;
 
-   /**
-    * The CmsDate object for call cmsDate functions
-    * @access private
-    */
+    /**
+     * The CmsDate object for call cmsDate functions
+     * @access private
+     */
     private $sCalName;
 
     /**
@@ -105,22 +101,22 @@ class Cms_Date
      */
     private $sEditAreaId;
 
-   /**
-    * the id of Div Element select box
-    * @access private
-    */
+    /**
+     * the id of Div Element select box
+     * @access private
+     */
     private $sDivSelectId;
 
-   /**
-    * The id of select box
-    * @access private
-    */
+    /**
+     * The id of select box
+     * @access private
+     */
     private $sSelectId;
 
-   /**
-    * Total count of cms_date
-    * @access private
-    */
+    /**
+     * Total count of cms_date
+     * @access private
+     */
     private $iTotalCount;
 
     /**
@@ -139,8 +135,7 @@ class Cms_Date
      * @param {Object} $aCfg
      * @param {Object} $aDB
      */
-    public function __construct($sContent, $iNumberOfCms, $iIdArtLang, $sEditLink, $aCfg, $aDB, $iTotalCount, $sContenidoLang)
-    {
+    public function __construct($sContent, $iNumberOfCms, $iIdArtLang, $sEditLink, $aCfg, $aDB, $iTotalCount, $sContenidoLang) {
         $this->iNumberOfCms = $iNumberOfCms;
         $this->iIdArtLang = $iIdArtLang;
         $this->sEditLink = $sEditLink;
@@ -165,15 +160,14 @@ class Cms_Date
      *
      * @return the all widgets
      */
-    public function getAllWidgetEdit()
-    {
+    public function getAllWidgetEdit() {
         $this->sContent = $this->sContent;
         $this->sContent = addslashes($this->sContent);
         $this->sContent = str_replace("\\'", "'", $this->sContent);
         $this->sContent = str_replace("\$", '\\$', $this->sContent);
 
         // Render all Widgetes
-        $this->sContent =  $this->getEditingField() .$this->getJsScript() . $this->getOkButton();
+        $this->sContent = $this->getEditingField() . $this->getJsScript() . $this->getOkButton();
         return $this->sContent;
     }
 
@@ -183,8 +177,7 @@ class Cms_Date
      *
      * @return  Returns user input of cms_type
      */
-    public function getAllWidgetView()
-    {
+    public function getAllWidgetView() {
         return $this->sContent;
     }
 
@@ -195,8 +188,7 @@ class Cms_Date
      *
      * @return the format as an array
      */
-    private function getDateFormats()
-    {
+    private function getDateFormats() {
         $sMonthName = '';
         $sDayName = '';
         $sMonthName = getCanonicalMonth(date('m'));
@@ -207,35 +199,35 @@ class Cms_Date
         $iYearShort = date('y');
 
         $this->aFormat = array(
-           '0'                     => i18n('Please choose a format'),
-           'd.m.yy'             => date('d.m.Y'),
-           'DD, d.m.yy'         => $sDayName . ', ' . $iDay . '.' . $iMonth . '.' . $iYear,
-           'd. MM yy'             => $iDay . '. ' . $sMonthName . ' '. $iYear,
-           'yy-m-d'             => date('Y-m-d'),
-           'd/MM/yy'             => $iDay . '/' . $sMonthName . '/' . $iYear,
-           'd/m/yy'             => date('d/m/y'),
-           'MM y'                 => $sMonthName . ' ' . $iYearShort,
-           'MM-y'                 => $sMonthName . '-' . $iYearShort,
-           'd.m.yy h:m'         => date('d.m.Y H:i'),
-           'm.d.yy h:m:s'         => date('d.m.Y H:i:s'),
-           'h:m'                 => date('H:i'),
-           'h:m:s'             => date('H:i:s'),
-           'h:m TT'             => date('h:i A'),
-           '#h:m:s TT'             => date('h:i:s A'),
-           '@'                     => 'Timestamp'
+            '0' => i18n('Please choose a format'),
+            'd.m.yy' => date('d.m.Y'),
+            'DD, d.m.yy' => $sDayName . ', ' . $iDay . '.' . $iMonth . '.' . $iYear,
+            'd. MM yy' => $iDay . '. ' . $sMonthName . ' ' . $iYear,
+            'yy-m-d' => date('Y-m-d'),
+            'd/MM/yy' => $iDay . '/' . $sMonthName . '/' . $iYear,
+            'd/m/yy' => date('d/m/y'),
+            'MM y' => $sMonthName . ' ' . $iYearShort,
+            'MM-y' => $sMonthName . '-' . $iYearShort,
+            'd.m.yy h:m' => date('d.m.Y H:i'),
+            'm.d.yy h:m:s' => date('d.m.Y H:i:s'),
+            'h:m' => date('H:i'),
+            'h:m:s' => date('H:i:s'),
+            'h:m TT' => date('h:i A'),
+            '#h:m:s TT' => date('h:i:s A'),
+            '@' => 'Timestamp'
         );
 
         return $this->aFormat;
     }
 
-    private function getFormatSelect()  {
+    private function getFormatSelect() {
         $options = "";
 
         foreach ($this->getDateFormats() as $format) {
             $options .= sprintf('<option value="%s">%s</option>', $format[0], $format[1]);
         }
 
-        return '<select style=\"float:right;\" class=\"cms_date_format_select\">'.$options.'</select>';
+        return '<select style=\"float:right;\" class=\"cms_date_format_select\">' . $options . '</select>';
     }
 
     /**
@@ -244,8 +236,7 @@ class Cms_Date
      *
      * @return (String) js-script
      */
-    public function getJsScript()
-    {
+    public function getJsScript() {
         $tpl = new Template();
         $path = $this->aCfg['path']['contenido_fullhtml'];
         $lang = $this->getLanguageContenido();
@@ -258,20 +249,20 @@ class Cms_Date
         $tpl->set('s', 'ID_TYPE', $this->oDB->f('idtype'));
         //$tpl->set('s', 'ALL_OPTIONS', json_encode($this->getDateFormats()));
         //$tpl->set('s', 'LABEL_FORMAT', i18n('Formate'));
-        $load = "conLoadFile('".$path."scripts/jquery/jquery.ui.datepicker-".$lang.".js', 'load2_$this->sCalName()');";
+        $load = "conLoadFile('" . $path . "scripts/jquery/jquery.ui.datepicker-" . $lang . ".js', 'load2_$this->sCalName()');";
         //add timepicker language
         if ($this->getLanguageContenido() != 'en') {
             $tpl->set('s', 'LOAD_LANG', $load);
-        } else{
+        } else {
             $tpl->set('s', 'LOAD_LANG', '');
         }
 
 
-       $this->sJS = $tpl->generate($this->aCfg['path']['contenido'] . 'templates/standard/template.cms_date.html', true);
-       $this->sJS = addslashes($this->sJS);
-       $this->sJS = str_replace("\\'", "'", $this->sJS);
+        $this->sJS = $tpl->generate($this->aCfg['path']['contenido'] . 'templates/standard/template.cms_date.html', true);
+        $this->sJS = addslashes($this->sJS);
+        $this->sJS = str_replace("\\'", "'", $this->sJS);
 
-       return $this->sJS;
+        return $this->sJS;
     }
 
     /**
@@ -280,8 +271,7 @@ class Cms_Date
      *
      * @return (String)calendar Button widget
      */
-    private function getCalendarButton()
-    {
+    private function getCalendarButton() {
         // html link for save
         $oEditAnchor = new cGuiLink();
         $oEditAnchor->setClass('CMS_DATE_' . ($this->iNumberOfCms) . '_EDIT CMS_LINK_EDIT');
@@ -293,7 +283,7 @@ class Cms_Date
         $oEditButton->setStyleDefinition('margin-right', '2px');
         $oEditButton->setClass('CMS_DATE_' . ($this->iNumberOfCms) . '_EDIT CMS_LINK_EDIT');
         $oEditButton->setID('trigger_start' . $this->iNumberOfCms);
-       // $oEditButton->setEvent('Click', "$this->sCalName.showCalendar()");
+        // $oEditButton->setEvent('Click', "$this->sCalName.showCalendar()");
         $oEditAnchor->setContent($oEditButton);
         $sFinalEditButton = $oEditButton->render();
         $sFinalEditButton = addslashes($sFinalEditButton);
@@ -308,8 +298,7 @@ class Cms_Date
      *
      * @return (String)Ok Button widget
      */
-    private function getOkButton()
-    {
+    private function getOkButton() {
         // Ok Image
         $oSaveAnchor = new cGuiLink();
         $oSaveAnchor->setClass('CMS_DATE_' . ($this->iNumberOfCms) . '_SAVE CMS_LINK_SAVE');
@@ -331,12 +320,11 @@ class Cms_Date
      *
      * @return (String) Editing Field widget
      */
-    private function getEditingField()
-    {
+    private function getEditingField() {
         // Inline Editing Field
         $oDivBox = new cHTMLDiv();
         $oDivBox->setStyleDefinition('border', '1px dashed #dddddd');
-        $this->sEditAreaId  = 'DATE_' . $this->oDB->f('idtype') . '_' . $this->iNumberOfCms;
+        $this->sEditAreaId = 'DATE_' . $this->oDB->f('idtype') . '_' . $this->iNumberOfCms;
         $oDivBox->setId($this->sEditAreaId);
         #$oDivBox->updateAttributes(array('contentEditable' => 'true'));
         $oDivBox->setContent('_REPLACEMENT_');
@@ -356,8 +344,7 @@ class Cms_Date
      *
      * @return (String)Select-Box widget
      */
-    private function getSelectBox()
-    {
+    private function getSelectBox() {
         // Div Format SelectBox
         $oMenueDiv = new cHTMLDiv();
         $this->sDivSelectId = "menue-$this->iNumberOfCms";
@@ -386,8 +373,7 @@ class Cms_Date
      *
      * @return (String)Current Language of CONTENIDOs
      */
-    private function getLanguageContenido()
-    {
+    private function getLanguageContenido() {
         $sLang = '';
         switch ($this->sContenidoLang) {
             case'de_DE':
@@ -397,7 +383,7 @@ class Cms_Date
                 $sLang = 'en';
                 break;
             default:
-            break;
+                break;
         }
 
         return $sLang;

@@ -24,10 +24,10 @@
             <?php echo mi18n("Aussehen");?>
         </td>
         <td>
-            <input type="radio" name="CMS_VAR[1]" value="small" <?php  $value = "CMS_VALUE[1]"; if($value == "small" ) echo 'checked="checked"'; ?>>
+            <input type="radio" name="CMS_VAR[1]" value="small" <?php  $value = "CMS_VALUE[1]"; if ($value == "small" ) echo 'checked="checked"'; ?>>
             <img src="http://www.xing.com/img/n/xing_icon_32x32.png" alt="profil bild" />
             <br/>
-            <input type="radio" name="CMS_VAR[1]" value="big"  <?php $value =  "CMS_VALUE[1]"; if($value =="big" || $value !="big" && $value!="small") echo 'checked="checked"'; ?>>
+            <input type="radio" name="CMS_VAR[1]" value="big"  <?php $value =  "CMS_VALUE[1]"; if ($value =="big" || $value !="big" && $value!="small") echo 'checked="checked"'; ?>>
             <img src="http://www.xing.com/img/buttons/1_de_btn.gif" alt="profil bild" />
         </td>
     </tr>

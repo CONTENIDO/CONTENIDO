@@ -29,14 +29,13 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Base class for all CONTENIDO HTML classes
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTML
-{
+class cHTML {
+
     /**
      * Id attribute counter, used to generate unique values for id-attributes
      * @var int
@@ -120,8 +119,7 @@ class cHTML
      * @param   array   $aAttributes   Associative array of table tag attributes
      * @return  void
      */
-    public function __construct($aAttributes = null)
-    {
+    public function __construct($aAttributes = null) {
         $this->setAttributes($aAttributes);
 
         $this->_skeletonOpen = '<%s%s>';
@@ -150,8 +148,7 @@ class cHTML
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTML()
-    {
+    public function cHTML() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -160,8 +157,7 @@ class cHTML
      * Contentless tag setter
      * @param  bool  $contentlessTag
      */
-    public function setContentlessTag($contentlessTag = true)
-    {
+    public function setContentlessTag($contentlessTag = true) {
         $this->_contentlessTag = $contentlessTag;
     }
 
@@ -171,8 +167,7 @@ class cHTML
      * This function is useful if you need to use HTML elements
      * in a loop, but don't want to re-create new objects each time.
      */
-    public function advanceID()
-    {
+    public function advanceID() {
         self::$_idCounter++;
         $this->updateAttributes(array('id' => 'm' . self::$_idCounter));
     }
@@ -181,8 +176,7 @@ class cHTML
      * Returns the current ID
      * @return string current ID
      */
-    public function getID()
-    {
+    public function getID() {
         return $this->getAttribute("id");
     }
 
@@ -190,8 +184,7 @@ class cHTML
      * Sets the HTML tag to $tag
      * @param  string  $tag  The new tag
      */
-    public function setTag($tag)
-    {
+    public function setTag($tag) {
         $this->_tag = $tag;
     }
 
@@ -207,8 +200,7 @@ class cHTML
      *
      * @param  string  $alt  Text to set as the "alt" and "title" attribute
      */
-    public function setAlt($alt)
-    {
+    public function setAlt($alt) {
         $attributes = array("alt" => $alt, "title" => $alt);
 
         $this->updateAttributes($attributes);
@@ -219,8 +211,7 @@ class cHTML
      *
      * @param  string  $id  Text to set as the "id"
      */
-    public function setID($id)
-    {
+    public function setID($id) {
         $this->updateAttributes(array("id" => $id));
     }
 
@@ -229,8 +220,7 @@ class cHTML
      *
      * @param  string  $class  Text to set as the "class" attribute
      */
-    public function setClass($class)
-    {
+    public function setClass($class) {
         $this->updateAttributes(array("class" => $class));
     }
 
@@ -239,8 +229,7 @@ class cHTML
      *
      * @param  string  $style  Text to set as the "style" attribute
      */
-    public function setStyle($style)
-    {
+    public function setStyle($style) {
         $this->updateAttributes(array("style" => $style));
     }
 
@@ -253,10 +242,9 @@ class cHTML
      * @param  string  $event  Type of the event, e. g. "change" for "onchange"
      * @param  string  $action  Function or action to call (JavaScript Code)
      */
-    public function setEvent($event, $action)
-    {
+    public function setEvent($event, $action) {
         if (substr($event, 0, 2) != "on") {
-            $this->updateAttributes(array("on".$event => $action));
+            $this->updateAttributes(array("on" . $event => $action));
         } else {
             $this->updateAttributes(array($event => $action));
         }
@@ -270,10 +258,9 @@ class cHTML
      *
      * @param  string  $event  Type of the event
      */
-    public function unsetEvent($event)
-    {
+    public function unsetEvent($event) {
         if (substr($event, 0, 2) != "on") {
-            $this->removeAttribute("on".$event);
+            $this->removeAttribute("on" . $event);
         } else {
             $this->removeAttribute($event);
         }
@@ -289,8 +276,7 @@ class cHTML
      * @param  string  $attributes  Attributes to set
      * @return string filled SGML opener skeleton
      */
-    public function fillSkeleton($attributes)
-    {
+    public function fillSkeleton($attributes) {
         if ($this->_contentlessTag == true) {
             return sprintf($this->_skeletonSingle, $this->_tag, $attributes);
         } else {
@@ -303,8 +289,7 @@ class cHTML
      *
      * @return string filled SGML closer skeleton
      */
-    public function fillCloseSkeleton()
-    {
+    public function fillCloseSkeleton() {
         return sprintf($this->_skeletonClose, $this->_tag);
     }
 
@@ -313,8 +298,7 @@ class cHTML
      * @param  string  $entity  Entity to define
      * @param  string  $definition  Definition for the given entity
      */
-    public function setStyleDefinition($entity, $definition)
-    {
+    public function setStyleDefinition($entity, $definition) {
         cDeprecated("Use attachStyleDefinition instead");
         $this->_styleDefs[$entity] = $definition;
     }
@@ -337,13 +321,11 @@ class cHTML
      * @param  string  $sName  Name for a style definition
      * @param  string  $sDefinition  Definition for the given entity
      */
-    public function attachStyleDefinition($sName, $sDefinition)
-    {
+    public function attachStyleDefinition($sName, $sDefinition) {
         $this->_styleDefinitions[$sName] = $sDefinition;
     }
 
-    public function addRequiredScript($script)
-    {
+    public function addRequiredScript($script) {
         if (!is_array($this->_requiredScripts)) {
             $this->_requiredScripts = array();
         }
@@ -358,8 +340,7 @@ class cHTML
      *
      * @param  string|object  $content  String with the content or an object to render.
      */
-    protected function _setContent($content)
-    {
+    protected function _setContent($content) {
         $this->setContentlessTag(false);
         // Is it an array?
         if (is_array($content)) {
@@ -407,8 +388,7 @@ class cHTML
      * @param  string  $sEvent  Defines the event (e.g. onClick)
      * @param  string  $sCode  Defines the code
      */
-    public function attachEventDefinition($sName, $sEvent, $sCode)
-    {
+    public function attachEventDefinition($sName, $sEvent, $sCode) {
         $this->_eventDefinitions[strtolower($sEvent)][$sName] = $sCode;
     }
 
@@ -418,8 +398,7 @@ class cHTML
      * @param  string  $sAttributeName  Name of the attribute
      * @param  string  $sValue  Value of the attribute
      */
-    public function setAttribute($sAttributeName, $sValue)
-    {
+    public function setAttribute($sAttributeName, $sValue) {
         $sAttributeName = strtolower($sAttributeName);
         if (is_null($sValue)) {
             $sValue = $sAttributeName;
@@ -431,8 +410,7 @@ class cHTML
      * Sets the HTML attributes
      * @param   array  $aAttributes  Associative array with attributes
      */
-    public function setAttributes($aAttributes)
-    {
+    public function setAttributes($aAttributes) {
         $this->_attributes = $this->_parseAttributes($aAttributes);
     }
 
@@ -441,8 +419,7 @@ class cHTML
      * @param  array  $aAttributes  Associative array with attributes
      * @return  array
      */
-    protected function _parseAttributes($aAttributes)
-    {
+    protected function _parseAttributes($aAttributes) {
         if (!is_array($aAttributes)) {
             return array();
         }
@@ -465,8 +442,7 @@ class cHTML
      * Removes an attribute
      * @param  string  $sAttributeName  Attribute name
      */
-    public function removeAttribute($sAttributeName)
-    {
+    public function removeAttribute($sAttributeName) {
         if (isset($this->_attributes[$sAttributeName])) {
             unset($this->_attributes[$sAttributeName]);
         }
@@ -477,8 +453,7 @@ class cHTML
      * @param  string  $sAttributeName  Attribute name
      * @return  string|null  Returns null if the attribute does not exist
      */
-    public function getAttribute($sAttributeName)
-    {
+    public function getAttribute($sAttributeName) {
         $sAttributeName = strtolower($sAttributeName);
 
         if (isset($this->_attributes[$sAttributeName])) {
@@ -492,8 +467,7 @@ class cHTML
      * Updates the passed attributes without changing the other existing attributes
      * @param  array  $aAttributes  Associative array with attributes
      */
-    public function updateAttributes($aAttributes)
-    {
+    public function updateAttributes($aAttributes) {
         $aAttributes = $this->_parseAttributes($aAttributes);
 
         foreach ($aAttributes as $sKey => $sValue) {
@@ -506,8 +480,7 @@ class cHTML
      * @param  array  $aAttributes  Associative array with attributes
      * @return  string  Attrbiute string in HTML format
      */
-    protected function _getAttrString($aAttributes)
-    {
+    protected function _getAttrString($aAttributes) {
         $sAttrString = '';
 
         if (!is_array($aAttributes)) {
@@ -526,8 +499,7 @@ class cHTML
      * @param  bool  $bReturnAsString  Whether to return the attributes as string
      * @return  array|string  Attributes
      */
-    public function getAttributes($bReturnAsString = false)
-    {
+    public function getAttributes($bReturnAsString = false) {
         if ($bReturnAsString) {
             return $this->_getAttrString($this->_attributes);
         } else {
@@ -539,8 +511,7 @@ class cHTML
      * Generates the markup of the element
      * @return  string   Generated markup
      */
-    public function toHTML()
-    {
+    public function toHTML() {
         // Fill style definition
         $style = $this->getAttribute("style");
 
@@ -564,7 +535,7 @@ class cHTML
             foreach ($sEntry as $sName => $sCode) {
                 $aFullCode[] = $sCode;
             }
-            $this->setAttribute($sEventName, $this->getAttribute($sEventName).implode(" ", $aFullCode));
+            $this->setAttribute($sEventName, $this->getAttribute($sEventName) . implode(" ", $aFullCode));
         }
 
         // Apply all stored styles
@@ -578,7 +549,7 @@ class cHTML
 
         if ($this->_content != "" || $this->_contentlessTag == false) {
             $attributes = $this->getAttributes(true);
-            return $this->fillSkeleton($attributes).$this->_content.$this->fillCloseSkeleton();
+            return $this->fillSkeleton($attributes) . $this->_content . $this->fillCloseSkeleton();
         } else {
             // This is a single style tag
             $attributes = $this->getAttributes(true);
@@ -591,8 +562,7 @@ class cHTML
      * Alias for toHtml
      * @return  string  Generated markup
      */
-    public function render()
-    {
+    public function render() {
         return $this->toHtml();
     }
 
@@ -600,18 +570,17 @@ class cHTML
      * Direct call of object as string will return it's generated markup.
      * @return  string  Generated markup
      */
-    public function __toString()
-    {
+    public function __toString() {
         return $this->render();
     }
 
     /**
      * Outputs the generated markup
      */
-    public function display()
-    {
+    public function display() {
         echo $this->render();
     }
+
 }
 
 /**
@@ -619,8 +588,7 @@ class cHTML
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLFormElement extends cHTML
-{
+class cHTMLFormElement extends cHTML {
 
     /**
      * Constructor. This is a generic form element, where
@@ -633,8 +601,7 @@ class cHTMLFormElement extends cHTML
      * @param  string  $accesskey  Key to access the field
      * @param  string  $class  CSS class name to set
      */
-    public function __construct($name = "", $id = "", $disabled = "", $tabindex = "", $accesskey = "", $class = "text_medium")
-    {
+    public function __construct($name = "", $id = "", $disabled = "", $tabindex = "", $accesskey = "", $class = "text_medium") {
         parent::__construct();
 
         $this->updateAttributes(array("name" => $name));
@@ -654,8 +621,7 @@ class cHTMLFormElement extends cHTML
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLFormElement($name = "", $id = "", $disabled = "", $tabindex = "", $accesskey = "", $class = "text_medium")
-    {
+    public function cHTMLFormElement($name = "", $id = "", $disabled = "", $tabindex = "", $accesskey = "", $class = "text_medium") {
         cDeprecated("Use __construct() instead");
         $this->__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
     }
@@ -673,8 +639,7 @@ class cHTMLFormElement extends cHTML
      *
      * @param  string  $disabled  Sets the disabled-flag if non-empty
      */
-    public function setDisabled($disabled)
-    {
+    public function setDisabled($disabled) {
         if (!empty($disabled)) {
             $this->updateAttributes(array("disabled" => "disabled"));
         } else {
@@ -688,8 +653,7 @@ class cHTMLFormElement extends cHTML
      *
      * @param  int  $tabindex Desired tab index
      */
-    public function setTabindex($tabindex)
-    {
+    public function setTabindex($tabindex) {
         if (is_numeric($tabindex) && $tabindex >= 0 && $tabindex <= 32767) {
             $this->updateAttributes(array("tabindex" => $tabindex));
         }
@@ -700,14 +664,14 @@ class cHTMLFormElement extends cHTML
      *
      * @param  string  $accesskey  The length of the access key. May be A-Z and 0-9.
      */
-    public function setAccessKey($accesskey)
-    {
+    public function setAccessKey($accesskey) {
         if ((strlen($accesskey) == 1) && is_alphanumeric($accesskey)) {
             $this->updateAttributes(array("accesskey" => $accesskey));
         } else {
             $this->removeAttribute("accesskey");
         }
     }
+
 }
 
 /**
@@ -715,8 +679,7 @@ class cHTMLFormElement extends cHTML
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLHiddenField extends cHTMLFormElement
-{
+class cHTMLHiddenField extends cHTMLFormElement {
 
     /**
      * Constructor. Creates an HTML hidden field.
@@ -725,8 +688,7 @@ class cHTMLHiddenField extends cHTMLFormElement
      * @param  string  $value  Title of the button
      * @param  string  $id  ID of the element
      */
-    public function __construct($name, $value = "", $id = "")
-    {
+    public function __construct($name, $value = "", $id = "") {
         parent::__construct($name, $id);
         $this->setContentlessTag();
         $this->updateAttributes(array("type" => "hidden"));
@@ -738,8 +700,7 @@ class cHTMLHiddenField extends cHTMLFormElement
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLHiddenField($name, $value = "", $id = "")
-    {
+    public function cHTMLHiddenField($name, $value = "", $id = "") {
         cDeprecated("Use __construct() instead");
         $this->__construct($name, $value, $id);
     }
@@ -749,8 +710,7 @@ class cHTMLHiddenField extends cHTMLFormElement
      *
      * @param  string  $value  Value of the field
      */
-    public function setValue($value)
-    {
+    public function setValue($value) {
         $this->updateAttributes(array("value" => $value));
     }
 
@@ -758,11 +718,11 @@ class cHTMLHiddenField extends cHTMLFormElement
      * Renders the hidden field
      * @return  string  Generated markup
      */
-    public function toHtml()
-    {
+    public function toHtml() {
         $attributes = $this->getAttributes(true);
         return $this->fillSkeleton($attributes);
     }
+
 }
 
 /**
@@ -770,8 +730,7 @@ class cHTMLHiddenField extends cHTMLFormElement
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLButton extends cHTMLFormElement
-{
+class cHTMLButton extends cHTMLFormElement {
 
     /**
      * Constructor. Creates an HTML button.
@@ -787,8 +746,7 @@ class cHTMLButton extends cHTMLFormElement
      * @param  string  $accesskey  Key to access the field
      * @param  string  $mode  Mode of button
      */
-    public function __construct($name, $title = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "", $mode = "submit")
-    {
+    public function __construct($name, $title = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "", $mode = "submit") {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
         $this->_tag = "input";
         $this->setContentlessTag();
@@ -799,8 +757,7 @@ class cHTMLButton extends cHTMLFormElement
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLButton($name, $title = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "", $mode = "submit")
-    {
+    public function cHTMLButton($name, $title = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "", $mode = "submit") {
         cDeprecated("Use __construct() instead");
         $this->__construct($name, $title, $id, $disabled, $tabindex, $accesskey, $mode);
     }
@@ -810,8 +767,7 @@ class cHTMLButton extends cHTMLFormElement
      *
      * @param  string  $title  The title to set
      */
-    public function setTitle($title)
-    {
+    public function setTitle($title) {
         $this->updateAttributes(array("value" => $title));
     }
 
@@ -821,8 +777,7 @@ class cHTMLButton extends cHTMLFormElement
      * @param  string  $mode  Either "submit", "reset" or "image".
      * @return  bool  Returns false if failed to set the mode
      */
-    public function setMode($mode)
-    {
+    public function setMode($mode) {
         switch ($mode) {
             case "submit":
             case "reset":
@@ -844,8 +799,7 @@ class cHTMLButton extends cHTMLFormElement
      *
      * @param  string  $mode Image path.
      */
-    public function setImageSource($src)
-    {
+    public function setImageSource($src) {
         $this->updateAttributes(array("src" => $src));
     }
 
@@ -854,8 +808,7 @@ class cHTMLButton extends cHTMLFormElement
      *
      * @return string Rendered HTML
      */
-    public function toHtml()
-    {
+    public function toHtml() {
         $attributes = $this->getAttributes(true);
         return $this->fillSkeleton($attributes);
     }
@@ -867,8 +820,7 @@ class cHTMLButton extends cHTMLFormElement
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLTextbox extends cHTMLFormElement
-{
+class cHTMLTextbox extends cHTMLFormElement {
 
     /**
      * Constructor. Creates an HTML text box.
@@ -885,8 +837,7 @@ class cHTMLTextbox extends cHTMLFormElement
      * @param  string  $tabindex  Tab index for form elements
      * @param  string  $accesskey  Key to access the field
      */
-    public function __construct($name, $initvalue = "", $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
-    {
+    public function __construct($name, $initvalue = "", $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
 
         $this->_tag = "input";
@@ -902,8 +853,7 @@ class cHTMLTextbox extends cHTMLFormElement
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLTextbox($name, $initvalue = "", $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
-    {
+    public function cHTMLTextbox($name, $initvalue = "", $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
         cDeprecated("Use __construct() instead");
         $this->__construct($name, $initvalue, $width, $maxlength, $id, $disabled, $tabindex, $accesskey);
     }
@@ -912,8 +862,7 @@ class cHTMLTextbox extends cHTMLFormElement
      * Sets the width of the text box.
      * @param  int  $width  width of the text box
      */
-    public function setWidth($width)
-    {
+    public function setWidth($width) {
         $width = intval($width);
 
         if ($width <= 0) {
@@ -927,8 +876,7 @@ class cHTMLTextbox extends cHTMLFormElement
      * Sets the maximum input length of the text box.
      * @param  int  $maxlen  maximum input length
      */
-    public function setMaxLength($maxlen)
-    {
+    public function setMaxLength($maxlen) {
         $maxlen = intval($maxlen);
 
         if ($maxlen <= 0) {
@@ -943,10 +891,10 @@ class cHTMLTextbox extends cHTMLFormElement
      *
      * @param  string  $value  Initial value
      */
-    public function setValue($value)
-    {
+    public function setValue($value) {
         $this->updateAttributes(array("value" => $value));
     }
+
 }
 
 /**
@@ -954,8 +902,7 @@ class cHTMLTextbox extends cHTMLFormElement
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLPasswordbox extends cHTMLFormElement
-{
+class cHTMLPasswordbox extends cHTMLFormElement {
 
     /**
      * Constructor. Creates an HTML password box.
@@ -972,8 +919,7 @@ class cHTMLPasswordbox extends cHTMLFormElement
      * @param  string  $tabindex  Tab index for form elements
      * @param  string  $accesskey  Key to access the field
      */
-    public function __construct($name, $initvalue = "", $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
-    {
+    public function __construct($name, $initvalue = "", $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
         $this->_tag = "input";
         $this->setValue($initvalue);
@@ -987,8 +933,7 @@ class cHTMLPasswordbox extends cHTMLFormElement
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLPasswordbox($name, $initvalue = "", $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
-    {
+    public function cHTMLPasswordbox($name, $initvalue = "", $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
         cDeprecated("Use __construct() instead");
         $this->__construct($name, $initvalue, $width, $maxlength, $id, $disabled, $tabindex, $accesskey);
     }
@@ -997,8 +942,7 @@ class cHTMLPasswordbox extends cHTMLFormElement
      * Sets the width of the text box.
      * @param  int  $width  width of the text box
      */
-    public function setWidth($width)
-    {
+    public function setWidth($width) {
         $width = intval($width);
 
         if ($width <= 0) {
@@ -1012,8 +956,7 @@ class cHTMLPasswordbox extends cHTMLFormElement
      * Sets the maximum input length of the text box.
      * @param  int  $maxlen  maximum input length
      */
-    public function setMaxLength($maxlen)
-    {
+    public function setMaxLength($maxlen) {
         $maxlen = intval($maxlen);
 
         if ($maxlen <= 0) {
@@ -1027,14 +970,14 @@ class cHTMLPasswordbox extends cHTMLFormElement
      * Sets the initial value of the text box.
      * @param  string  $value  Initial value
      */
-    public function setValue($value)
-    {
+    public function setValue($value) {
         $this->updateAttributes(array("value" => $value));
     }
+
 }
 
-class cHTMLTextarea extends cHTMLFormElement
-{
+class cHTMLTextarea extends cHTMLFormElement {
+
     protected $_value;
 
     /**
@@ -1052,8 +995,7 @@ class cHTMLTextarea extends cHTMLFormElement
      * @param  string  $tabindex  Tab index for form elements
      * @param  string  $accesskey  Key to access the field
      */
-    public function __construct($name, $initvalue = "", $width = "", $height = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
-    {
+    public function __construct($name, $initvalue = "", $width = "", $height = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
         $this->_tag = "textarea";
         $this->setValue($initvalue);
@@ -1062,12 +1004,10 @@ class cHTMLTextarea extends cHTMLFormElement
         $this->setHeight($height);
     }
 
-
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLTextarea($name, $initvalue = "", $width = "", $height = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
-    {
+    public function cHTMLTextarea($name, $initvalue = "", $width = "", $height = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
         cDeprecated("Use __construct() instead");
         $this->__construct($name, $initvalue, $width, $height, $id, $disabled, $tabindex, $accesskey);
     }
@@ -1076,8 +1016,7 @@ class cHTMLTextarea extends cHTMLFormElement
      * Sets the width of the text box.
      * @param  int  $width  width of the text box
      */
-    public function setWidth($width)
-    {
+    public function setWidth($width) {
         $width = intval($width);
 
         if ($width <= 0) {
@@ -1091,8 +1030,7 @@ class cHTMLTextarea extends cHTMLFormElement
      * Sets the maximum input length of the text box.
      * @param  int  $maxlen  maximum input length
      */
-    public function setHeight($height)
-    {
+    public function setHeight($height) {
         $height = intval($height);
 
         if ($height <= 0) {
@@ -1106,8 +1044,7 @@ class cHTMLTextarea extends cHTMLFormElement
      * Sets the initial value of the text box.
      * @param  string  $value  Initial value
      */
-    public function setValue($value)
-    {
+    public function setValue($value) {
         $this->_value = $value;
     }
 
@@ -1115,11 +1052,11 @@ class cHTMLTextarea extends cHTMLFormElement
      * Renders the textbox
      * @return string Rendered HTML
      */
-    public function toHtml()
-    {
+    public function toHtml() {
         $attributes = $this->getAttributes(true);
-        return $this->fillSkeleton($attributes).$this->_value.$this->fillCloseSkeleton();
+        return $this->fillSkeleton($attributes) . $this->_value . $this->fillCloseSkeleton();
     }
+
 }
 
 /**
@@ -1127,8 +1064,7 @@ class cHTMLTextarea extends cHTMLFormElement
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLLabel extends cHTML
-{
+class cHTMLLabel extends cHTML {
 
     /**
      * The text to display on the label
@@ -1149,8 +1085,7 @@ class cHTMLLabel extends cHTML
      *
      * @return none
      */
-    public function __construct($text, $for)
-    {
+    public function __construct($text, $for) {
         parent::__construct();
         $this->_tag = "label";
         $this->setContentlessTag(false);
@@ -1161,8 +1096,7 @@ class cHTMLLabel extends cHTML
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLLabel($text, $for)
-    {
+    public function cHTMLLabel($text, $for) {
         cDeprecated("Use __construct() instead");
         $this->__construct($text, $for);
     }
@@ -1173,11 +1107,11 @@ class cHTMLLabel extends cHTML
      * @param none
      * @return string Rendered HTML
      */
-    public function toHtml()
-    {
+    public function toHtml() {
         $attributes = $this->getAttributes(true);
-        return $this->fillSkeleton($attributes).$this->text.$this->fillCloseSkeleton();
+        return $this->fillSkeleton($attributes) . $this->text . $this->fillCloseSkeleton();
     }
+
 }
 
 /**
@@ -1185,8 +1119,8 @@ class cHTMLLabel extends cHTML
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLSelectElement extends cHTMLFormElement
-{
+class cHTMLSelectElement extends cHTMLFormElement {
+
     /**
      * All cHTMLOptionElements
      * @var array
@@ -1203,8 +1137,7 @@ class cHTMLSelectElement extends cHTMLFormElement
      * @param  string  $tabindex  Tab index for form elements
      * @param  string  $accesskey  Key to access the field
      */
-    public function __construct($name, $width = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
-    {
+    public function __construct($name, $width = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
         $this->_tag = "select";
         $this->setContentlessTag(false);
@@ -1213,8 +1146,7 @@ class cHTMLSelectElement extends cHTMLFormElement
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLSelectElement($name, $width = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
-    {
+    public function cHTMLSelectElement($name, $width = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
         cDeprecated("Use __construct() instead");
         $this->__construct($name, $width, $id, $disabled, $tabindex, $accesskey);
     }
@@ -1232,8 +1164,7 @@ class cHTMLSelectElement extends cHTMLFormElement
      *
      * @param  array  $stuff  Array with all items
      */
-    public function autoFill($stuff)
-    {
+    public function autoFill($stuff) {
         if (is_array($stuff)) {
             foreach ($stuff as $key => $row) {
                 if (is_array($row)) {
@@ -1252,18 +1183,15 @@ class cHTMLSelectElement extends cHTMLFormElement
      * @param  string  $index  Index of the element
      * @param  object  $element  Filled cHTMLOptionElement to add
      */
-    public function addOptionElement($index, $element)
-    {
+    public function addOptionElement($index, $element) {
         $this->_options[$index] = $element;
     }
 
-    public function setMultiselect()
-    {
+    public function setMultiselect() {
         $this->updateAttributes(array("multiple" => "multiple"));
     }
 
-    public function setSize($size)
-    {
+    public function setSize($size) {
         $this->updateAttributes(array("size" => $size));
     }
 
@@ -1299,8 +1227,7 @@ class cHTMLSelectElement extends cHTMLFormElement
      * Search for the selected elements
      * @return  string|bool  Selected "lvalue" or false
      */
-    public function getDefault()
-    {
+    public function getDefault() {
         if (is_array($this->_options)) {
             foreach ($this->_options as $key => $value) {
                 if ($value->isSelected()) {
@@ -1315,8 +1242,7 @@ class cHTMLSelectElement extends cHTMLFormElement
      * Sets specified elements as selected (and all others as unselected)
      * @param  array  $aElements  Array with "values" of the cHTMLOptionElement to set
      */
-    public function setSelected($aElements)
-    {
+    public function setSelected($aElements) {
         if (is_array($this->_options) && is_array($aElements)) {
             foreach ($this->_options as $sKey => $oOption) {
                 if (in_array($oOption->getAttribute("value"), $aElements)) {
@@ -1334,8 +1260,7 @@ class cHTMLSelectElement extends cHTMLFormElement
      * Renders the select box
      * @return string Rendered HTML
      */
-    public function toHtml()
-    {
+    public function toHtml() {
         $attributes = $this->getAttributes(true);
 
         $options = "";
@@ -1346,8 +1271,9 @@ class cHTMLSelectElement extends cHTMLFormElement
             }
         }
 
-        return ($this->fillSkeleton($attributes).$options.$this->fillCloseSkeleton());
+        return ($this->fillSkeleton($attributes) . $options . $this->fillCloseSkeleton());
     }
+
 }
 
 /**
@@ -1355,8 +1281,8 @@ class cHTMLSelectElement extends cHTMLFormElement
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLOptionElement extends cHTMLFormElement
-{
+class cHTMLOptionElement extends cHTMLFormElement {
+
     /**
      * Title to display
      * @var string
@@ -1371,8 +1297,7 @@ class cHTMLOptionElement extends cHTMLFormElement
      * @param  bool  $selected  If true, element is selected
      * @param  bool  $disabled  If true, element is disabled
      */
-    public function __construct($title, $value, $selected = false, $disabled = false)
-    {
+    public function __construct($title, $value, $selected = false, $disabled = false) {
         cHTML::__construct();
         $this->_tag = "option";
         $this->_title = $title;
@@ -1387,8 +1312,7 @@ class cHTMLOptionElement extends cHTMLFormElement
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLOptionElement($title, $value, $selected = false, $disabled = false)
-    {
+    public function cHTMLOptionElement($title, $value, $selected = false, $disabled = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($title, $value, $selected, $disabled);
     }
@@ -1397,8 +1321,7 @@ class cHTMLOptionElement extends cHTMLFormElement
      * Sets the selected flag
      * @param  bool  $selected  If true, adds the "selected" attribute
      */
-    public function setSelected($selected)
-    {
+    public function setSelected($selected) {
         if ($selected == true) {
             $this->updateAttributes(array("selected" => "selected"));
         } else {
@@ -1410,8 +1333,7 @@ class cHTMLOptionElement extends cHTMLFormElement
      * Sets the selected flag
      * @param  bool  $selected  If true, adds the "selected" attribute
      */
-    public function isSelected()
-    {
+    public function isSelected() {
         if ($this->getAttribute("selected") == "selected") {
             return true;
         } else {
@@ -1423,8 +1345,7 @@ class cHTMLOptionElement extends cHTMLFormElement
      * Sets the disabled flag
      * @param  bool  $disabled  If true, adds the "disabled" attribute
      */
-    public function setDisabled($disabled)
-    {
+    public function setDisabled($disabled) {
         if ($disabled == true) {
             $this->updateAttributes(array("disabled" => "disabled"));
         } else {
@@ -1437,11 +1358,11 @@ class cHTMLOptionElement extends cHTMLFormElement
      * the cHTMLSelectElement renders the options by itself.
      * @return string Rendered HTML
      */
-    public function toHtml()
-    {
+    public function toHtml() {
         $attributes = $this->getAttributes(true);
-        return $this->fillSkeleton($attributes).$this->_title.$this->fillCloseSkeleton();
+        return $this->fillSkeleton($attributes) . $this->_title . $this->fillCloseSkeleton();
     }
+
 }
 
 /**
@@ -1449,8 +1370,8 @@ class cHTMLOptionElement extends cHTMLFormElement
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLRadiobutton extends cHTMLFormElement
-{
+class cHTMLRadiobutton extends cHTMLFormElement {
+
     /**
      * Values for the check box
      * @var string
@@ -1468,8 +1389,7 @@ class cHTMLRadiobutton extends cHTMLFormElement
      * @param  string  $tabindex  Tab index for form elements
      * @param  string  $accesskey  Key to access the field
      */
-    public function __construct($name, $value, $id = "", $checked = false, $disabled = false, $tabindex = null, $accesskey = "")
-    {
+    public function __construct($name, $value, $id = "", $checked = false, $disabled = false, $tabindex = null, $accesskey = "") {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
         $this->_tag = "input";
         $this->_value = $value;
@@ -1483,8 +1403,7 @@ class cHTMLRadiobutton extends cHTMLFormElement
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLRadiobutton($name, $value, $id = "", $checked = false, $disabled = false, $tabindex = null, $accesskey = "")
-    {
+    public function cHTMLRadiobutton($name, $value, $id = "", $checked = false, $disabled = false, $tabindex = null, $accesskey = "") {
         cDeprecated("Use __construct() instead");
         $this->__construct($name, $value, $id, $checked, $disabled, $tabindex, $accesskey);
     }
@@ -1493,8 +1412,7 @@ class cHTMLRadiobutton extends cHTMLFormElement
      * Sets the checked flag.
      * @param  bool  $checked  If true, the "checked" attribute will be assigned.
      */
-    public function setChecked($checked)
-    {
+    public function setChecked($checked) {
         if ($checked == true) {
             $this->updateAttributes(array("checked" => "checked"));
         } else {
@@ -1506,8 +1424,7 @@ class cHTMLRadiobutton extends cHTMLFormElement
      * Sets a custom label text
      * @param  string  $text  Text to display
      */
-    public function setLabelText($text)
-    {
+    public function setLabelText($text) {
         $this->_labelText = $text;
     }
 
@@ -1521,8 +1438,7 @@ class cHTMLRadiobutton extends cHTMLFormElement
      * @param  bool  $renderlabel  If true, renders a label
      * @return string Rendered HTML
      */
-    public function toHtml($renderLabel = true)
-    {
+    public function toHtml($renderLabel = true) {
         $attributes = $this->getAttributes(true);
 
         if ($renderLabel == false) {
@@ -1545,8 +1461,9 @@ class cHTMLRadiobutton extends cHTMLFormElement
             $renderedLabel = $this->_value;
         }
 
-        return $this->fillSkeleton($attributes).$renderedLabel;
+        return $this->fillSkeleton($attributes) . $renderedLabel;
     }
+
 }
 
 /**
@@ -1554,8 +1471,8 @@ class cHTMLRadiobutton extends cHTMLFormElement
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLCheckbox extends cHTMLFormElement
-{
+class cHTMLCheckbox extends cHTMLFormElement {
+
     protected $_value;
 
     /**
@@ -1569,8 +1486,7 @@ class cHTMLCheckbox extends cHTMLFormElement
      * @param  string  $tabindex  Tab index for form elements
      * @param  string  $accesskey  Key to access the field
      */
-    public function __construct($name, $value, $id = "", $checked = false, $disabled = false, $tabindex = null, $accesskey = "")
-    {
+    public function __construct($name, $value, $id = "", $checked = false, $disabled = false, $tabindex = null, $accesskey = "") {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
         $this->_tag = "input";
         $this->_value = $value;
@@ -1584,8 +1500,7 @@ class cHTMLCheckbox extends cHTMLFormElement
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLRadiobutton($name, $value, $id = "", $checked = false, $disabled = false, $tabindex = null, $accesskey = "")
-    {
+    public function cHTMLRadiobutton($name, $value, $id = "", $checked = false, $disabled = false, $tabindex = null, $accesskey = "") {
         cDeprecated("Use __construct() instead");
         $this->__construct($name, $value, $id, $checked, $disabled, $tabindex, $accesskey);
     }
@@ -1594,8 +1509,7 @@ class cHTMLCheckbox extends cHTMLFormElement
      * Sets the checked flag.
      * @param  bool  $checked  If true, the "checked" attribute will be assigned.
      */
-    public function setChecked($checked)
-    {
+    public function setChecked($checked) {
         if ($checked == true) {
             $this->updateAttributes(array("checked" => "checked"));
         } else {
@@ -1607,8 +1521,7 @@ class cHTMLCheckbox extends cHTMLFormElement
      * Sets a custom label text
      * @param  string  $text  Text to display
      */
-    public function setLabelText($text)
-    {
+    public function setLabelText($text) {
         $this->_labelText = $text;
     }
 
@@ -1622,8 +1535,7 @@ class cHTMLCheckbox extends cHTMLFormElement
      * @param  bool  $renderlabel  If true, renders a label
      * @return string Rendered HTML
      */
-    public function toHtml($renderlabel = true)
-    {
+    public function toHtml($renderlabel = true) {
         $id = $this->getAttribute("id");
 
         $renderedLabel = "";
@@ -1651,12 +1563,13 @@ class cHTMLCheckbox extends cHTMLFormElement
             }
 
             return '<table class="borderless" border="0" cellspacing="0" cellpadding="0"><tr><td nowrap="nowrap">'
-                 . parent::toHTML().'</td><td nowrap="nowrap">'.$renderedLabel
-                 . '</td></tr></table>';
+                    . parent::toHTML() . '</td><td nowrap="nowrap">' . $renderedLabel
+                    . '</td></tr></table>';
         } else {
             return parent::toHTML();
         }
     }
+
 }
 
 /**
@@ -1664,8 +1577,7 @@ class cHTMLCheckbox extends cHTMLFormElement
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLUpload extends cHTMLFormElement
-{
+class cHTMLUpload extends cHTMLFormElement {
 
     /**
      * Constructor. Creates an HTML upload box.
@@ -1682,8 +1594,7 @@ class cHTMLUpload extends cHTMLFormElement
      * @param  string  $tabindex  Tab index for form elements
      * @param  string  $accesskey  Key to access the field
      */
-    public function __construct($name, $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
-    {
+    public function __construct($name, $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
         $this->_tag = "input";
         $this->setContentlessTag();
@@ -1697,8 +1608,7 @@ class cHTMLUpload extends cHTMLFormElement
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLUpload($name, $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
-    {
+    public function cHTMLUpload($name, $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
         cDeprecated("Use __construct() instead");
         $this->__construct($name, $width, $maxlength, $id, $disabled, $tabindex, $accesskey);
     }
@@ -1707,8 +1617,7 @@ class cHTMLUpload extends cHTMLFormElement
      * Sets the width of the text box.
      * @param  int  $width  width of the text box
      */
-    public function setWidth($width)
-    {
+    public function setWidth($width) {
         $width = intval($width);
 
         if ($width <= 0) {
@@ -1722,8 +1631,7 @@ class cHTMLUpload extends cHTMLFormElement
      * Sets the maximum input length of the text box.
      * @param  int  $maxlen  maximum input length
      */
-    public function setMaxLength($maxlen)
-    {
+    public function setMaxLength($maxlen) {
         $maxlen = intval($maxlen);
 
         if ($maxlen <= 0) {
@@ -1737,11 +1645,11 @@ class cHTMLUpload extends cHTMLFormElement
      * Renders the textbox
      * @return string Rendered HTML
      */
-    public function toHtml()
-    {
+    public function toHtml() {
         $attributes = $this->getAttributes(true);
         return $this->fillSkeleton($attributes);
     }
+
 }
 
 /**
@@ -1749,15 +1657,14 @@ class cHTMLUpload extends cHTMLFormElement
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLDiv extends cHTML
-{
+class cHTMLDiv extends cHTML {
+
     /**
      * Constructor. Creates an HTML Div element.
      *
      * @param  mixed  $content  String or object with the contents
      */
-    public function __construct($content = "")
-    {
+    public function __construct($content = "") {
         parent::__construct();
         $this->setContent($content);
         $this->setContentlessTag(false);
@@ -1767,8 +1674,7 @@ class cHTMLDiv extends cHTML
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLDiv($content = "")
-    {
+    public function cHTMLDiv($content = "") {
         cDeprecated("Use __construct() instead");
         $this->__construct($content);
     }
@@ -1777,10 +1683,10 @@ class cHTMLDiv extends cHTML
      * Sets the div's content
      * @param  string|object  $content  String with the content or an object to render.
      */
-    public function setContent($content)
-    {
+    public function setContent($content) {
         $this->_setContent($content);
     }
+
 }
 
 /**
@@ -1788,15 +1694,14 @@ class cHTMLDiv extends cHTML
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLSpan extends cHTML
-{
+class cHTMLSpan extends cHTML {
+
     /**
      * Constructor. Creates an HTML Span element.
      *
      * @param  mixed  $content  String or object with the contents
      */
-    public function __construct($content = "")
-    {
+    public function __construct($content = "") {
         parent::__construct();
         $this->setContent($content);
         $this->setContentlessTag(false);
@@ -1806,8 +1711,7 @@ class cHTMLSpan extends cHTML
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLSpan($content = "")
-    {
+    public function cHTMLSpan($content = "") {
         cDeprecated("Use __construct() instead");
         $this->__construct($content);
     }
@@ -1816,8 +1720,7 @@ class cHTMLSpan extends cHTML
      * Sets the div's content
      * @param  string|object  $content  String with the content or an object to render.
      */
-    public function setContent($content)
-    {
+    public function setContent($content) {
         $this->_setContent($content);
     }
 
@@ -1825,11 +1728,11 @@ class cHTMLSpan extends cHTML
      * Renders the SPAN element
      * @return string Rendered HTML
      */
-    public function toHTML()
-    {
+    public function toHTML() {
         $attributes = $this->getAttributes(true);
-        return $this->fillSkeleton($attributes).$this->_content.$this->fillCloseSkeleton();
+        return $this->fillSkeleton($attributes) . $this->_content . $this->fillCloseSkeleton();
     }
+
 }
 
 /**
@@ -1837,8 +1740,8 @@ class cHTMLSpan extends cHTML
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLImage extends cHTML
-{
+class cHTMLImage extends cHTML {
+
     /**
      * Image source
      * @var string
@@ -1861,8 +1764,7 @@ class cHTMLImage extends cHTML
      * Constructor. Creates an HTML IMG element.
      * @param  mixed  $content  String or object with the contents
      */
-    public function __construct($src = null)
-    {
+    public function __construct($src = null) {
         parent::__construct();
 
         $this->_tag = "img";
@@ -1875,8 +1777,7 @@ class cHTMLImage extends cHTML
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLImage($src = null)
-    {
+    public function cHTMLImage($src = null) {
         cDeprecated("Use __construct() instead");
         $this->__construct($src);
     }
@@ -1885,8 +1786,7 @@ class cHTMLImage extends cHTML
      * Sets the image's source file
      * @param  string  $src  source location
      */
-    public function setSrc($src)
-    {
+    public function setSrc($src) {
         if ($src === null) {
             $this->_src = "images/spacer.gif";
         } else {
@@ -1898,8 +1798,7 @@ class cHTMLImage extends cHTML
      * Sets the image's width
      * @param  int  $width  Image width
      */
-    public function setWidth($width)
-    {
+    public function setWidth($width) {
         $this->_width = $width;
     }
 
@@ -1907,8 +1806,7 @@ class cHTMLImage extends cHTML
      * Sets the image's height
      * @param  int  $height  Image height
      */
-    public function setHeight($height)
-    {
+    public function setHeight($height) {
         $this->_height = $height;
     }
 
@@ -1916,25 +1814,22 @@ class cHTMLImage extends cHTML
      * Sets the border size
      * @param  int  $border  Border size
      */
-    public function setBorder($border)
-    {
+    public function setBorder($border) {
         $this->_border = $border;
     }
 
-    public function setAlignment($alignment)
-    {
+    public function setAlignment($alignment) {
         $this->updateAttributes(array("align" => $alignment));
     }
 
     /**
      * Apply dimensions from the source image
      */
-    public function applyDimensions()
-    {
+    public function applyDimensions() {
         global $cfg;
 
         // Try to open the image
-        list($width, $height) = @getimagesize($cfg['path']['contenido'].$this->_src);
+        list($width, $height) = @getimagesize($cfg['path']['contenido'] . $this->_src);
 
         if (!empty($width) && !empty($height)) {
             $this->_width = $width;
@@ -1946,8 +1841,7 @@ class cHTMLImage extends cHTML
      * Renders the IMG element
      * @return string Rendered HTML
      */
-    public function toHTML()
-    {
+    public function toHTML() {
         $this->updateAttributes(array("src" => $this->_src));
 
         if (!empty($this->_width)) {
@@ -1970,10 +1864,9 @@ class cHTMLImage extends cHTML
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLTable extends cHTML
-{
-    public function __construct()
-    {
+class cHTMLTable extends cHTML {
+
+    public function __construct() {
         parent::__construct();
 
         $this->_tag = "table";
@@ -1986,8 +1879,7 @@ class cHTMLTable extends cHTML
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLTable()
-    {
+    public function cHTMLTable() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -1996,8 +1888,7 @@ class cHTMLTable extends cHTML
      * Sets the table's content
      * @param  string|object  $content  String with the content or an object to render.
      */
-    public function setContent($content)
-    {
+    public function setContent($content) {
         $this->_setContent($content);
     }
 
@@ -2005,18 +1896,15 @@ class cHTMLTable extends cHTML
      * Sets the spacing between cells
      * @param  string  $cellspacing  Spacing
      */
-    public function setCellSpacing($cellspacing)
-    {
+    public function setCellSpacing($cellspacing) {
         $this->updateAttributes(array("cellspacing" => $cellspacing));
     }
 
-    public function setPadding($cellpadding)
-    {
+    public function setPadding($cellpadding) {
         $this->setCellPadding($cellpadding);
     }
 
-    public function setSpacing($cellspacing)
-    {
+    public function setSpacing($cellspacing) {
         $this->setCellSpacing($cellspacing);
     }
 
@@ -2024,8 +1912,7 @@ class cHTMLTable extends cHTML
      * Sets the padding between cells
      * @param  string  $cellpadding  Padding
      */
-    public function setCellPadding($cellpadding)
-    {
+    public function setCellPadding($cellpadding) {
         $this->updateAttributes(array("cellpadding" => $cellpadding));
     }
 
@@ -2033,8 +1920,7 @@ class cHTMLTable extends cHTML
      * Sets the table's border
      * @param  string  $border Border size
      */
-    public function setBorder($border)
-    {
+    public function setBorder($border) {
         $this->updateAttributes(array("border" => $border));
     }
 
@@ -2044,10 +1930,10 @@ class cHTMLTable extends cHTML
      * @param $width Width
      *
      */
-    public function setWidth($width)
-    {
+    public function setWidth($width) {
         $this->updateAttributes(array("width" => $width));
     }
+
 }
 
 /**
@@ -2055,10 +1941,9 @@ class cHTMLTable extends cHTML
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLTableBody extends cHTML
-{
-    public function __construct()
-    {
+class cHTMLTableBody extends cHTML {
+
+    public function __construct() {
         parent::__construct();
         $this->setContentlessTag(false);
         $this->_tag = "tbody";
@@ -2067,8 +1952,7 @@ class cHTMLTableBody extends cHTML
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLTableBody()
-    {
+    public function cHTMLTableBody() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -2077,10 +1961,10 @@ class cHTMLTableBody extends cHTML
      * Sets the table body's content
      * @param  string|object  $content  String with the content or an object to render.
      */
-    public function setContent($content)
-    {
+    public function setContent($content) {
         $this->_setContent($content);
     }
+
 }
 
 /**
@@ -2088,10 +1972,9 @@ class cHTMLTableBody extends cHTML
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLTableRow extends cHTML
-{
-    public function __construct()
-    {
+class cHTMLTableRow extends cHTML {
+
+    public function __construct() {
         parent::__construct();
         $this->setContentlessTag(false);
         $this->_tag = "tr";
@@ -2100,8 +1983,7 @@ class cHTMLTableRow extends cHTML
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLTableRow()
-    {
+    public function cHTMLTableRow() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -2110,10 +1992,10 @@ class cHTMLTableRow extends cHTML
      * Sets the table row's content
      * @param  string|object  $content  String with the content or an object to render.
      */
-    public function setContent($content)
-    {
+    public function setContent($content) {
         $this->_setContent($content);
     }
+
 }
 
 /**
@@ -2121,10 +2003,9 @@ class cHTMLTableRow extends cHTML
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLTableData extends cHTML
-{
-    public function __construct()
-    {
+class cHTMLTableData extends cHTML {
+
+    public function __construct() {
         parent::__construct();
         $this->setContentlessTag(false);
         $this->_tag = "td";
@@ -2133,8 +2014,7 @@ class cHTMLTableData extends cHTML
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLTableData()
-    {
+    public function cHTMLTableData() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -2143,33 +2023,27 @@ class cHTMLTableData extends cHTML
      * Sets the table width
      * @param  string  $width Width
      */
-    public function setWidth($width)
-    {
+    public function setWidth($width) {
         $this->updateAttributes(array("width" => $width));
     }
 
-    public function setHeight($height)
-    {
+    public function setHeight($height) {
         $this->updateAttributes(array("height" => $height));
     }
 
-    public function setAlignment($alignment)
-    {
+    public function setAlignment($alignment) {
         $this->updateAttributes(array("align" => $alignment));
     }
 
-    public function setVerticalAlignment($alignment)
-    {
+    public function setVerticalAlignment($alignment) {
         $this->updateAttributes(array("valign" => $alignment));
     }
 
-    public function setBackgroundColor($color)
-    {
+    public function setBackgroundColor($color) {
         $this->updateAttributes(array("bgcolor" => $color));
     }
 
-    public function setColspan($colspan)
-    {
+    public function setColspan($colspan) {
         $this->updateAttributes(array("colspan" => $colspan));
     }
 
@@ -2177,8 +2051,7 @@ class cHTMLTableData extends cHTML
      * Sets the table data's content
      * @param  string|object  $content  String with the content or an object to render.
      */
-    public function setContent($content)
-    {
+    public function setContent($content) {
         $this->_setContent($content);
     }
 
@@ -2186,11 +2059,11 @@ class cHTMLTableData extends cHTML
      * Renders the table data element
      * @return string Rendered HTML
      */
-    public function toHTML()
-    {
+    public function toHTML() {
         $attributes = $this->getAttributes(true);
-        return $this->fillSkeleton($attributes).$this->_content.$this->fillCloseSkeleton();
+        return $this->fillSkeleton($attributes) . $this->_content . $this->fillCloseSkeleton();
     }
+
 }
 
 /**
@@ -2198,10 +2071,9 @@ class cHTMLTableData extends cHTML
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLTableHead extends cHTML
-{
-    public function __construct()
-    {
+class cHTMLTableHead extends cHTML {
+
+    public function __construct() {
         parent::__construct();
         $this->setContentlessTag(false);
         $this->_tag = "th";
@@ -2210,8 +2082,7 @@ class cHTMLTableHead extends cHTML
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLTableHead()
-    {
+    public function cHTMLTableHead() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -2220,8 +2091,7 @@ class cHTMLTableHead extends cHTML
      * Sets the table head's content
      * @param  string|object  $content  String with the content or an object to render.
      */
-    public function setContent($content)
-    {
+    public function setContent($content) {
         $this->_setContent($content);
     }
 
@@ -2229,11 +2099,11 @@ class cHTMLTableHead extends cHTML
      * Renders the table head element
      * @return string Rendered HTML
      */
-    public function toHTML()
-    {
+    public function toHTML() {
         $attributes = $this->getAttributes(true);
-        return $this->fillSkeleton($attributes).$this->_content.$this->fillCloseSkeleton();
+        return $this->fillSkeleton($attributes) . $this->_content . $this->fillCloseSkeleton();
     }
+
 }
 
 /**
@@ -2241,10 +2111,9 @@ class cHTMLTableHead extends cHTML
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLTableHeader extends cHTML
-{
-    public function __construct()
-    {
+class cHTMLTableHeader extends cHTML {
+
+    public function __construct() {
         parent::__construct();
         $this->setContentlessTag(false);
         $this->_tag = "thead";
@@ -2253,8 +2122,7 @@ class cHTMLTableHeader extends cHTML
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLTableHeader()
-    {
+    public function cHTMLTableHeader() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -2263,8 +2131,7 @@ class cHTMLTableHeader extends cHTML
      * Sets the table head's content
      * @param  string|object  $content  String with the content or an object to render.
      */
-    public function setContent($content)
-    {
+    public function setContent($content) {
         $this->_setContent($content);
     }
 
@@ -2272,11 +2139,11 @@ class cHTMLTableHeader extends cHTML
      * Renders the table head element
      * @return string Rendered HTML
      */
-    public function toHTML()
-    {
+    public function toHTML() {
         $attributes = $this->getAttributes(true);
-        return $this->fillSkeleton($attributes).$this->_content.$this->fillCloseSkeleton();
+        return $this->fillSkeleton($attributes) . $this->_content . $this->fillCloseSkeleton();
     }
+
 }
 
 /**
@@ -2284,10 +2151,9 @@ class cHTMLTableHeader extends cHTML
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLIFrame extends cHTML
-{
-    public function __construct()
-    {
+class cHTMLIFrame extends cHTML {
+
+    public function __construct() {
         parent::__construct();
         $this->setContentlessTag(false);
         $this->_tag = "iframe";
@@ -2296,8 +2162,7 @@ class cHTMLIFrame extends cHTML
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLIFrame()
-    {
+    public function cHTMLIFrame() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -2306,8 +2171,7 @@ class cHTMLIFrame extends cHTML
      * Sets this frame's source
      * @param  string|object  $content  String with the content or an object to render.
      */
-    public function setSrc($src)
-    {
+    public function setSrc($src) {
         $this->updateAttributes(array("src" => $src));
     }
 
@@ -2315,8 +2179,7 @@ class cHTMLIFrame extends cHTML
      * Sets this frame's width
      * @param  string  $width Width of the item
      */
-    public function setWidth($width)
-    {
+    public function setWidth($width) {
         $this->updateAttributes(array("width" => $width));
     }
 
@@ -2324,8 +2187,7 @@ class cHTMLIFrame extends cHTML
      * Sets this frame's height
      * @param  string  $height Height of the item
      */
-    public function setHeight($height)
-    {
+    public function setHeight($height) {
         $this->updateAttributes(array("height" => $height));
     }
 
@@ -2333,8 +2195,7 @@ class cHTMLIFrame extends cHTML
      * Sets wether this iframe should have a border or not
      * @param  string  $border If 1 or true, this frame will have a border
      */
-    public function setBorder($border)
-    {
+    public function setBorder($border) {
         $this->updateAttributes(array("frameborder" => intval($border)));
     }
 
@@ -2342,17 +2203,16 @@ class cHTMLIFrame extends cHTML
      * Renders the table head element
      * @return string Rendered HTML
      */
-    public function toHTML()
-    {
+    public function toHTML() {
         $attributes = $this->getAttributes(true);
-        return $this->fillSkeleton($attributes).$this->_content.$this->fillCloseSkeleton();
+        return $this->fillSkeleton($attributes) . $this->_content . $this->fillCloseSkeleton();
     }
+
 }
 
-class cHTMLAlignmentTable extends cHTMLTable
-{
-    public function __construct()
-    {
+class cHTMLAlignmentTable extends cHTMLTable {
+
+    public function __construct() {
         parent::__construct();
 
         $this->_data = func_get_args();
@@ -2362,14 +2222,12 @@ class cHTMLAlignmentTable extends cHTMLTable
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLAlignmentTable()
-    {
+    public function cHTMLAlignmentTable() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
-    public function render()
-    {
+    public function render() {
         $tr = new cHTMLTableRow();
         $td = new cHTMLTableData();
 
@@ -2386,18 +2244,16 @@ class cHTMLAlignmentTable extends cHTMLTable
 
         return $this->toHTML();
     }
+
 }
 
-class cHTMLForm extends cHTML
-{
+class cHTMLForm extends cHTML {
+
     protected $_name;
-
     protected $_action;
-
     protected $_method;
 
-    public function __construct($name = "", $action = "main.php", $method = "post")
-    {
+    public function __construct($name = "", $action = "main.php", $method = "post") {
         parent::__construct();
         $this->setContentlessTag(false);
         $this->_tag = "form";
@@ -2409,8 +2265,7 @@ class cHTMLForm extends cHTML
     /**
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cHTMLForm()
-    {
+    public function cHTMLForm() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -2419,8 +2274,7 @@ class cHTMLForm extends cHTML
         $this->_content .= $content;
     }
 
-    public function setVar($var, $value)
-    {
+    public function setVar($var, $value) {
         $this->_vars[$var] = $value;
     }
 
@@ -2428,8 +2282,7 @@ class cHTMLForm extends cHTML
      * Sets the form's content
      * @param  string|object  $content  String with the content or an object to render.
      */
-    public function setContent($content)
-    {
+    public function setContent($content) {
         $this->_setContent($content);
     }
 
@@ -2437,27 +2290,27 @@ class cHTMLForm extends cHTML
      * Renders the form element
      * @return string Rendered HTML
      */
-    public function toHTML()
-    {
+    public function toHTML() {
         $out = '';
         foreach ($this->_vars as $var => $value) {
             $f = new cHTMLHiddenField($var, $value);
             $out .= $f->render();
         }
-        if($this->getAttribute("name") == "") {
+        if ($this->getAttribute("name") == "") {
             $this->setAttribute("name", $this->_name);
         }
-        if($this->getAttribute("method") == "") {
+        if ($this->getAttribute("method") == "") {
             $this->setAttribute("method", $this->_method);
         }
-        if($this->getAttribute("action") == "") {
+        if ($this->getAttribute("action") == "") {
             $this->setAttribute("action", $this->_action);
         }
 
         $attributes = $this->getAttributes(true);
 
-        return $this->fillSkeleton($attributes).$out.$this->_content.$this->fillCloseSkeleton();
+        return $this->fillSkeleton($attributes) . $out . $this->_content . $this->fillCloseSkeleton();
     }
+
 }
 
 /**
@@ -2465,10 +2318,9 @@ class cHTMLForm extends cHTML
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLScript extends cHTML
-{
-    public function __construct()
-    {
+class cHTMLScript extends cHTML {
+
+    public function __construct() {
         parent::__construct();
         $this->setContentlessTag(false);
         $this->_tag = "script";
@@ -2478,8 +2330,7 @@ class cHTMLScript extends cHTML
      * Sets the table head's content
      * @param  string|object  $content  String with the content or an object to render.
      */
-    public function setContent($content)
-    {
+    public function setContent($content) {
         $this->_setContent($content);
     }
 
@@ -2487,11 +2338,11 @@ class cHTMLScript extends cHTML
      * Renders the table head element
      * @return string Rendered HTML
      */
-    public function toHTML()
-    {
+    public function toHTML() {
         $attributes = $this->getAttributes(true);
-        return $this->fillSkeleton($attributes).$this->_content.$this->fillCloseSkeleton();
+        return $this->fillSkeleton($attributes) . $this->_content . $this->fillCloseSkeleton();
     }
+
 }
 
 ?>

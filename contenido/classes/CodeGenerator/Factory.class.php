@@ -20,24 +20,20 @@
  *
  * {@internal
  *   created  2011-08-11
- *
  *   $Id$:
  * }}
- *
  */
-
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * CONTENIDO code generator factory.
  * @package    CONTENIDO Backend Classes
  */
-class cCodeGeneratorFactory
-{
+class cCodeGeneratorFactory {
+
     /**
      * Returns code generator instance by it's name.
      *
@@ -47,8 +43,7 @@ class cCodeGeneratorFactory
      * @throws InvalidArgumentException  If name is invalid, class file is missing or
      *                                   class isn't available
      */
-    public static function getInstance($name = '')
-    {
+    public static function getInstance($name = '') {
         global $cfg;
 
         if ($name == '') {
@@ -56,22 +51,23 @@ class cCodeGeneratorFactory
         }
 
         if ($name == 'Factory' || $name == 'Abstract') {
-            throw new InvalidArgumentException('Invalid name passed to cCodeGeneratorFactory: '.$name.'!');
+            throw new InvalidArgumentException('Invalid name passed to cCodeGeneratorFactory: ' . $name . '!');
         }
 
         $className = 'cCodeGenerator' . $name;
         if (!class_exists($className)) {
             $fileName = $name . '.class.php';
-            $path     = str_replace('\\', '/', dirname(__FILE__)) . '/';
+            $path = str_replace('\\', '/', dirname(__FILE__)) . '/';
             if (!cFileHandler::exists($path . $fileName)) {
-                throw new InvalidArgumentException('The classfile couldn\'t included by cCodeGeneratorFactory: '.$name.'!');
+                throw new InvalidArgumentException('The classfile couldn\'t included by cCodeGeneratorFactory: ' . $name . '!');
             }
 
             include_once($path . $fileName);
             if (!class_exists($className)) {
-                throw new InvalidArgumentException('The class isn\'t available for cCodeGeneratorFactory: '.$name.'!');
+                throw new InvalidArgumentException('The class isn\'t available for cCodeGeneratorFactory: ' . $name . '!');
             }
         }
         return new $className();
     }
+
 }

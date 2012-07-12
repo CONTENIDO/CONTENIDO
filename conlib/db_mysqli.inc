@@ -44,14 +44,13 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * MySQLi database driver
  * @package    CONTENIDO Core
  * @subpackage Database
  */
-class DB_Sql extends DB_Sql_Abstract
-{
+class DB_Sql extends DB_Sql_Abstract {
+
     protected $_aDataTypes = array(
         0 => 'decimal',
         1 => 'tinyint',
@@ -71,26 +70,22 @@ class DB_Sql extends DB_Sql_Abstract
         254 => 'enum',
     );
 
-
     /**
      * Constructor.
      *
      * @param  array  $options  Optional assoziative options
      */
-    public function __construct(array $options = array())
-    {
+    public function __construct(array $options = array()) {
         $options = array_merge($options, array(
             'type' => 'mysqli',
-        ));
+                ));
         parent::__construct($options);
     }
-
 
     /**
      * {@inheritdoc}
      */
-    protected function _connect()
-    {
+    protected function _connect() {
         if (!extension_loaded('mysqli')) {
             $this->halt('MySQLi _connect() extension not loaded!');
             return null;
@@ -132,8 +127,7 @@ class DB_Sql extends DB_Sql_Abstract
         }
 
         $res = mysqli_real_connect(
-            $dbh, $aCon['host'], $aCon['user'], $aCon['password'], $aCon['database'],
-            $aCon['port'], $aCon['socket'], $aCon['flags']
+                $dbh, $aCon['host'], $aCon['user'], $aCon['password'], $aCon['database'], $aCon['port'], $aCon['socket'], $aCon['flags']
         );
 
         if ($res && $dbh && $aCon['database']) {
@@ -157,39 +151,33 @@ class DB_Sql extends DB_Sql_Abstract
         return $dbh;
     }
 
-
     /**
      * Discard the query result
      */
-    public function free()
-    {
+    public function free() {
         if (is_object($this->Query_ID)) {
             mysqli_free_result($this->Query_ID);
         }
         $this->Query_ID = 0;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function _query($sQuery)
-    {
+    protected function _query($sQuery) {
         $this->Query_ID = mysqli_query($this->Link_ID, $sQuery);
-        $this->Row      = 0;
-        $this->Errno    = $this->_getErrorNumber();
-        $this->Error    = $this->_getErrorMessage();
+        $this->Row = 0;
+        $this->Errno = $this->_getErrorNumber();
+        $this->Error = $this->_getErrorMessage();
         if (!$this->Query_ID) {
             $this->halt($sQuery);
         }
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function _insert($sTable, array $aFields)
-    {
+    protected function _insert($sTable, array $aFields) {
         $sFields = '';
         $sValues = '';
         foreach ($aFields as $field => $value) {
@@ -205,12 +193,10 @@ class DB_Sql extends DB_Sql_Abstract
         return sprintf('INSERT INTO `%s` (%s) VALUES (%s)', $sTable, $sFields, $sValues);
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function _update($sTable, array $aFields, array $aWhere)
-    {
+    protected function _update($sTable, array $aFields, array $aWhere) {
         $sUpdate = '';
         $sWhere = '';
         foreach ($aFields as $field => $value) {
@@ -236,16 +222,14 @@ class DB_Sql extends DB_Sql_Abstract
         return sprintf('UPDATE `%s` SET %s WHERE %s', $sTable, $sUpdate, $sWhere);
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function next_record()
-    {
+    public function next_record() {
         $this->Record = mysqli_fetch_array($this->Query_ID, MYSQLI_BOTH);
-        $this->Row   += 1;
-        $this->Errno  = $this->_getErrorNumber();
-        $this->Error  = $this->_getErrorMessage();
+        $this->Row += 1;
+        $this->Errno = $this->_getErrorNumber();
+        $this->Error = $this->_getErrorMessage();
 
         $stat = is_array($this->Record);
         if (!$stat && $this->Auto_Free) {
@@ -254,12 +238,10 @@ class DB_Sql extends DB_Sql_Abstract
         return $stat;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function seek($pos = 0)
-    {
+    public function seek($pos = 0) {
         $status = mysqli_data_seek($this->Query_ID, $pos);
         if ($status) {
             $this->Row = $pos;
@@ -275,12 +257,10 @@ class DB_Sql extends DB_Sql_Abstract
         return 1;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function lock($table, $mode = 'write')
-    {
+    public function lock($table, $mode = 'write') {
         if ($this->_bNolock == true) {
             return true;
         }
@@ -306,12 +286,10 @@ class DB_Sql extends DB_Sql_Abstract
         return $res;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function unlock()
-    {
+    public function unlock() {
         if ($this->_bNolock == true) {
             return true;
         }
@@ -323,40 +301,32 @@ class DB_Sql extends DB_Sql_Abstract
         return $res;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function affected_rows()
-    {
+    public function affected_rows() {
         return ($this->Link_ID) ? mysqli_affected_rows($this->Link_ID) : 0;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function num_rows()
-    {
+    public function num_rows() {
         return ($this->Query_ID) ? mysqli_num_rows($this->Query_ID) : 0;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function num_fields()
-    {
+    public function num_fields() {
         return ($this->Query_ID) ? mysqli_num_fields($this->Query_ID) : 0;
     }
-
 
     /**
      * @deprecated [2012-07-05] No longer needed
      * {@inheritdoc}
      */
-    public function nextid($seq_name)
-    {
+    public function nextid($seq_name) {
         cDeprecated("This function is no longer needed. The ids get updated by the DB");
 
         $nextid = 0;
@@ -384,30 +354,26 @@ class DB_Sql extends DB_Sql_Abstract
         return $nextid;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function disconnect()
-    {
+    public function disconnect() {
         $this->_debug("Debug: Disconnecting $this->Link_ID...");
         if (is_resource($this->Link_ID)) {
             mysqli_close($this->Link_ID);
             $this->_removeConnection($this->Link_ID);
         }
-        $this->Link_ID  = 0;
+        $this->Link_ID = 0;
         $this->Query_ID = 0;
     }
-
 
     /**
      * {@inheritdoc}
      */
-    protected function _metaData($table = '', $full = false)
-    {
+    protected function _metaData($table = '', $full = false) {
         $count = 0;
-        $id    = 0;
-        $aRes   = array();
+        $id = 0;
+        $aRes = array();
 
         /*
          * Due to compatibility problems with Table we changed the behavior
@@ -456,12 +422,12 @@ class DB_Sql extends DB_Sql_Abstract
         $count = mysqli_num_fields($id);
 
         // made this IF due to performance (one if is faster than $count if's)
-        for ($i = 0; $i < $count; $i ++) {
+        for ($i = 0; $i < $count; $i++) {
             $finfo = mysqli_fetch_field($id);
             $aRes[$i]['table'] = $finfo->table;
-            $aRes[$i]['name']  = $finfo->name;
-            $aRes[$i]['type']  = $this->_aDataTypes[$finfo->type];
-            $aRes[$i]['len']   = $finfo->max_length;
+            $aRes[$i]['name'] = $finfo->name;
+            $aRes[$i]['type'] = $this->_aDataTypes[$finfo->type];
+            $aRes[$i]['len'] = $finfo->max_length;
             $aRes[$i]['flags'] = $finfo->flags;
             if ($full) {
                 $aRes['meta'][$aRes[$i]['name']] = $i;
@@ -478,12 +444,10 @@ class DB_Sql extends DB_Sql_Abstract
         return $aRes;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function escape($sString)
-    {
+    public function escape($sString) {
         $sResult = '';
         if (is_resource($this->Link_ID) || $this->connect()) {
             $sResult = mysqli_real_escape_string($this->Link_ID, $sString);
@@ -491,12 +455,10 @@ class DB_Sql extends DB_Sql_Abstract
         return $sResult;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function _tableNames()
-    {
+    protected function _tableNames() {
         $aReturn = array();
         $oDb = $this->_getInstanceClone();
         if ($oDb->query('SHOW TABLES')) {
@@ -512,12 +474,10 @@ class DB_Sql extends DB_Sql_Abstract
         return $aReturn;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function _serverInfo()
-    {
+    protected function _serverInfo() {
         if ($this->Link_ID) {
             $arr = array();
             $arr['description'] = mysqli_get_server_info($this->Link_ID);
@@ -526,12 +486,10 @@ class DB_Sql extends DB_Sql_Abstract
         return null;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function _getErrorMessage()
-    {
+    protected function _getErrorMessage() {
         if ($this->Link_ID) {
             return @mysqli_error($this->Link_ID);
         } else {
@@ -539,19 +497,16 @@ class DB_Sql extends DB_Sql_Abstract
         }
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function _getErrorNumber()
-    {
+    protected function _getErrorNumber() {
         if ($this->Link_ID) {
             return @mysqli_errno($this->Link_ID);
         } else {
             return @mysqli_connect_errno();
         }
     }
-
 
     /**
      * This method equates to mysqli_fetch_object(). It returns the current
@@ -564,8 +519,7 @@ class DB_Sql extends DB_Sql_Abstract
      * @author Holger Librenz <holger.librenz@4fb.de>
      * @version 1.0
      */
-    public function getResultObject($sClassName = null)
-    {
+    public function getResultObject($sClassName = null) {
         $oResult = null;
 
         if (is_resource($this->Link_ID) && is_resource($this->Query_ID)) {
@@ -578,4 +532,5 @@ class DB_Sql extends DB_Sql_Abstract
 
         return $oResult;
     }
+
 }

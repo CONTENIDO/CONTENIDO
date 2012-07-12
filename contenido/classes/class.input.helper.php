@@ -485,7 +485,7 @@ class UI_Config_Table
                '                       {'."\n".
                '                          for (i = 0; i < oSelectBox.length; i++)'."\n".
                '                          {'."\n".
-               '                             if(oSelectBox.options[i].selected == true)'."\n".
+               '                             if (oSelectBox.options[i].selected == true)'."\n".
                '                             {'."\n".
                '                                if (sSelection != "")'."\n".
                '                                   sSelection = sSelection + ",";'."\n".
@@ -525,7 +525,7 @@ class UI_Config_Table
                     $tplCell = new Template();
                     $tplCell->reset();
 
-                    if($this->_aCellClass[$sRow][$sCell] != "") {
+                    if ($this->_aCellClass[$sRow][$sCell] != "") {
                         $tplCell->set("s", "CLASS", $this->_aCellClass[$sRow][$sCell]);
                     } else {
                         $tplCell->set("s", "CLASS", "");

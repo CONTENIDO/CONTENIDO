@@ -22,7 +22,6 @@
  *   created  2012-07-06
  *   $Id: class.session.php 2486 2012-07-02 21:49:26Z xmurrix $:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

@@ -20,10 +20,8 @@
  *
  * {@internal
  *   created 2011-11-18
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -34,8 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
  * Validator factory
  * @package    CONTENIDO Validator
  */
-class cValidatorFactory
-{
+class cValidatorFactory {
 
     /**
      * Instantiates and returns the validator. Sets also validators default options.
@@ -59,8 +56,7 @@ class cValidatorFactory
      * @return  cValidatorAbstract
      * @throws  InvalidArgumentException If type of validator is unknown or not available
      */
-    public static function getInstance($validator, array $options = array())
-    {
+    public static function getInstance($validator, array $options = array()) {
         global $cfg;
 
         $className = 'cValidator' . ucfirst(strtolower($validator));

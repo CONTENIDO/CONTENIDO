@@ -462,7 +462,7 @@ if (!empty($sSearchStrAuthor) && ($sSearchStrAuthor != 'n/a')) {
 if (!empty($where)) {
     $sql_1 .= $where;
     $db->query($sql_1);
-} elseif($bLostAndFound) {
+} elseif ($bLostAndFound) {
     $sql_1 = "SELECT
           DISTINCT a.idart, a.idartlang, a.title, a.online, a.locked, a.idartlang, a.created, a.published,
           a.artsort, a.lastmodified, b.idcat, b.idcatart, b.idcatart, c.startidartlang,
@@ -747,7 +747,7 @@ if ($iAffectedRows <= 0 || (empty($where) && !$bLostAndFound)) {
         $tpl->next();
     }
 
-    if($bLostAndFound) {
+    if ($bLostAndFound) {
         $iDisplayMenu = 1;
     }
     $sLoadSubnavi = 'parent.parent.frames["right"].frames["right_top"].location.href = \'main.php?area=con&frame=3&idcat=' . $iIDCat . '&idtpl=' . $iIDTpl . '&display_menu=' . $iDisplayMenu . '&contenido=' . $sSession . "';";

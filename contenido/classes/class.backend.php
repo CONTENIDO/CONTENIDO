@@ -239,11 +239,11 @@ class Contenido_Backend {
     /**
      * Creates a log entry for the specified parameters.
      *
-     * @param $idcat  Category-ID
-     * @param $idart  Article-ID
-     * @param $client Client-ID
-     * @param $lang   Language-ID
-     * @param $action Action (ID or canonical name)
+     * @param  int  $idcat  Category-ID
+     * @param  int  $idart  Article-ID
+     * @param  int  $client Client-ID
+     * @param  int  $lang   Language-ID
+     * @param  int|string  $action  Action (ID or canonical name)
      */
     function log($idcat, $idart, $client, $lang, $idaction) {
         global $perm, $auth;

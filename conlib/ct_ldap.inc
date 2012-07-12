@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created  2000-01-01
- *   modified 2008-07-03, bilal arslan, added security fix
- *   modified 2011-10-09, Murat Purc, Partly ported to PHP 5 and formatted/documented code
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -37,8 +33,8 @@ if (!defined('CON_FRAMEWORK')) {
  * @package    CONTENIDO Core
  * @subpackage Session
  */
-class CT_Ldap
-{
+class CT_Ldap {
+
     /**
      * LDAP host name
      * @var string
@@ -81,9 +77,7 @@ class CT_Ldap
      */
     public $ds;
 
-
-    public function ac_start()
-    {
+    public function ac_start() {
         $this->ds = ldap_connect($this->ldap_host, $this->ldap_port);
         if (!$this->ds) {
             $this->ac_halt('LDAP connect failed');
@@ -93,15 +87,13 @@ class CT_Ldap
         }
     }
 
-    public function ac_halt($msg = '')
-    {
-        echo 'Session_ldap failed: <b>'.htmlentities($msg).'</b><p>' . "\n";
+    public function ac_halt($msg = '') {
+        echo 'Session_ldap failed: <b>' . htmlentities($msg) . '</b><p>' . "\n";
         exit;
     }
 
-    public function ac_store($id, $name, $str)
-    {
-        $dn = "cn=$id_$name, ".$this->basedn;
+    public function ac_store($id, $name, $str) {
+        $dn = "cn=$id_$name, " . $this->basedn;
         $entry = array(
             'cn' => "$id_$name",
             'str' => $str,
@@ -114,13 +106,11 @@ class CT_Ldap
         }
     }
 
-    public function ac_delete($id, $name)
-    {
-        ldap_delete($this->ds, "cn=$id_$name, ".$this->basedn);
+    public function ac_delete($id, $name) {
+        ldap_delete($this->ds, "cn=$id_$name, " . $this->basedn);
     }
 
-    public function ac_get_value($id, $name)
-    {
+    public function ac_get_value($id, $name) {
         $sr = ldap_search($this->ds, $this->basedn, "cn=$id_$name");
         $inf = ldap_get_entries($this->ds, $sr);
         $str = $inf[0]['str'][0];
@@ -128,33 +118,32 @@ class CT_Ldap
         return $str;
     }
 
-    public function ac_release_lock()
-    {
+    public function ac_release_lock() {
+
     }
 
-    public function ac_get_lock()
-    {
+    public function ac_get_lock() {
+
     }
 
-    public function ac_newid($str, $name)
-    {
+    public function ac_newid($str, $name) {
         return $str;
     }
 
-    public function ac_auth($username, $password)
-    {
+    public function ac_auth($username, $password) {
         // we need a username and a md5() encrypted password
         $sr = ldap_search($this->ds, $this->basedn, "username=$username");
         if (ldap_count_entries($this->ds, $sr) > 0) {
             $inf = ldap_get_entries($this->ds, $sr);
-                $passmd5 = $inf[0]['password'][0];
-                if (md5($password) == $passmd5) {
+            $passmd5 = $inf[0]['password'][0];
+            if (md5($password) == $passmd5) {
                 return array($inf[0]['uid'][0],
-                $inf[0]['perms'][0]);
+                    $inf[0]['perms'][0]);
             }
         }
         return array();
     }
+
 }
 
 ?>

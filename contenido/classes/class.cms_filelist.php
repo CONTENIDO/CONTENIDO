@@ -21,9 +21,9 @@
  *
  * {@internal
  *   created 2009-10-01
+ *   $Id$
  * }}
  */
-
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
@@ -37,6 +37,7 @@ cInclude("includes", "functions.upl.php");
  * stored as a xml document in the database.
  */
 class Cms_FileList {
+
     /**
      * CONTENIDO configuration array
      * @var     array
@@ -152,7 +153,7 @@ class Cms_FileList {
      * @access    private
      */
     private static $aTranslations = array("LABEL_FILESIZE" => "Dateigr&ouml;&szlig;e",
-                                          "LABEL_UPLOAD_DATE" => "Hochgeladen am");
+        "LABEL_UPLOAD_DATE" => "Hochgeladen am");
 
     /**
      * Constructor of class inits some important class variables and
@@ -175,45 +176,45 @@ class Cms_FileList {
      */
     function __construct($sContent, $iNumberOfCms, $iIdArtLang, $sEditLink, $aCfg, $oDB, $sContenidoLang, $iClient, $iLang, $aCfgClient, $oSess) {
         //set arguments to class variables directly
-        $this->aCfg         = $aCfg;
-        $this->iId             = $iNumberOfCms;
-        $this->iIdArtLang     = $iIdArtLang;
-        $this->sContent     = $sContent;
-        $this->iClient         = $iClient;
-        $this->iLang         = $iLang;
-        $this->aCfgClient     = $aCfgClient;
-        $this->oSess         = $oSess;
+        $this->aCfg = $aCfg;
+        $this->iId = $iNumberOfCms;
+        $this->iIdArtLang = $iIdArtLang;
+        $this->sContent = $sContent;
+        $this->iClient = $iClient;
+        $this->iLang = $iLang;
+        $this->aCfgClient = $aCfgClient;
+        $this->oSess = $oSess;
 
         //init other variables with default values
-        $this->oDb             = cRegistry::getDb();
-        $this->sUploadPath     = $this->aCfgClient[$this->iClient]['upl']['path'];
+        $this->oDb = cRegistry::getDb();
+        $this->sUploadPath = $this->aCfgClient[$this->iClient]['upl']['path'];
 
         //define class array which contains all names of the filelist properties. They were also base for generating dynamic javascripts for
         //retrival this properties out of html forms and retriving their values to screen
-        $this->aFileListData     = array(    'filelist_title', 'filelist_style', 'filelist_directories', 'filelist_incl_subdirectories',
-                                            'filelist_manual', 'filelist_sort', 'filelist_incl_metadata', 'filelist_extensions',
-                                            'filelist_sortorder', 'filelist_filesizefilter_from', 'filelist_filesizefilter_to',
-                                            'filelist_ignore_extensions', 'filelist_manual_files', 'filelist_filecount');
+        $this->aFileListData = array('filelist_title', 'filelist_style', 'filelist_directories', 'filelist_incl_subdirectories',
+            'filelist_manual', 'filelist_sort', 'filelist_incl_metadata', 'filelist_extensions',
+            'filelist_sortorder', 'filelist_filesizefilter_from', 'filelist_filesizefilter_to',
+            'filelist_ignore_extensions', 'filelist_manual_files', 'filelist_filecount');
 
         // defines the default extensions displayed in the filelist
         // additional extensions can be added via client settings
-        $this->aFileExtensions     = array(    'gif', 'jpeg', 'jpg', 'png', 'doc', 'xls', 'pdf', 'txt', 'zip', 'ppt' );
+        $this->aFileExtensions = array('gif', 'jpeg', 'jpg', 'png', 'doc', 'xls', 'pdf', 'txt', 'zip', 'ppt');
 
-        $this->aDateFields         = array(    'ctime' => 'creationdate', 'mtime' => 'modifydate' );
+        $this->aDateFields = array('ctime' => 'creationdate', 'mtime' => 'modifydate');
 
-        $this->aMetaDataIdents     = array(    'description' => 'Description',
-                                            'medianame' => 'Media name',
-                                            'copyright' => 'Copyright',
-                                            'keywords' => 'Keywords',
-                                            'internal_notice' => 'Internal notes');
+        $this->aMetaDataIdents = array('description' => 'Description',
+            'medianame' => 'Media name',
+            'copyright' => 'Copyright',
+            'keywords' => 'Keywords',
+            'internal_notice' => 'Internal notes');
 
         // dynamically add file list data based on the meta data idents
-        foreach ( $this->aMetaDataIdents as $sIdentName => $sTranslation ) {
+        foreach ($this->aMetaDataIdents as $sIdentName => $sTranslation) {
             $this->aFileListData[] = 'filelist_md_' . $sIdentName . '_limit';
         }
 
         // dynamically add file list data based on the date fields
-        foreach ( $this->aDateFields as $sIdentName => $sDateField ) {
+        foreach ($this->aDateFields as $sIdentName => $sDateField) {
             $this->aFileListData[] = 'filelist_' . $sDateField . 'filter_from';
             $this->aFileListData[] = 'filelist_' . $sDateField . 'filter_to';
         }
@@ -221,7 +222,7 @@ class Cms_FileList {
         //if form is submitted there is a need to store current file list settings
         //notice: there is also a need, that filelist_id is the same (case: more than one cms file list is used on the same page
         if (isset($_POST['filelist_action']) && $_POST['filelist_action'] == 'store' &&
-            isset($_POST['filelist_id']) && (int)$_POST['filelist_id'] == $this->iId) {
+                isset($_POST['filelist_id']) && (int) $_POST['filelist_id'] == $this->iId) {
             $this->storeFileList();
         }
 
@@ -246,7 +247,6 @@ class Cms_FileList {
         return $aTranslationStrings;
     }
 
-
     /**
      * Function parses XML document which contains file list settings
      * and store properties as array into $aSettings
@@ -263,53 +263,53 @@ class Cms_FileList {
 
         $bPutInExtArray = $bPutInDirArray = $bPutInFileArray = false;
 
-        $this->aSettings['filelist_extensions']     = array();
-        $this->aSettings['filelist_directories']     = array();
-        $this->aSettings['filelist_manual_files']     = array();
+        $this->aSettings['filelist_extensions'] = array();
+        $this->aSettings['filelist_directories'] = array();
+        $this->aSettings['filelist_manual_files'] = array();
 
         while ($oXmlReader->read()) {
             switch ($oXmlReader->nodeType) {
-              //read property name (ignore root node or block of manual arts for teaser)
-              case XMLReader::ELEMENT:
-              if (    $oXmlReader->name != 'filelist' &&
-                    $oXmlReader->name != 'extensions' &&
-                    $oXmlReader->name != 'ext' &&
-                    $oXmlReader->name != 'directories' &&
-                    $oXmlReader->name != 'dir' &&
-                    $oXmlReader->name != 'manual_files' &&
-                    $oXmlReader->name != 'file' ) {
-                $sLastNode = 'filelist_'.$oXmlReader->name;
-                $this->aSettings[$sLastNode] = '';
-              }
+                //read property name (ignore root node or block of manual arts for teaser)
+                case XMLReader::ELEMENT:
+                    if ($oXmlReader->name != 'filelist' &&
+                            $oXmlReader->name != 'extensions' &&
+                            $oXmlReader->name != 'ext' &&
+                            $oXmlReader->name != 'directories' &&
+                            $oXmlReader->name != 'dir' &&
+                            $oXmlReader->name != 'manual_files' &&
+                            $oXmlReader->name != 'file') {
+                        $sLastNode = 'filelist_' . $oXmlReader->name;
+                        $this->aSettings[$sLastNode] = '';
+                    }
 
-              if ($oXmlReader->name == 'ext') {
-                $bPutInExtArray = true;
-              }
+                    if ($oXmlReader->name == 'ext') {
+                        $bPutInExtArray = true;
+                    }
 
-              if ($oXmlReader->name == 'dir') {
-                $bPutInDirArray = true;
-              }
+                    if ($oXmlReader->name == 'dir') {
+                        $bPutInDirArray = true;
+                    }
 
-              if ($oXmlReader->name == 'file') {
-                $bPutInFileArray = true;
-              }
-              break;
+                    if ($oXmlReader->name == 'file') {
+                        $bPutInFileArray = true;
+                    }
+                    break;
 
-              case XMLReader::TEXT:
-                if ($bPutInExtArray == true) {
-                    $bPutInExtArray = false;
-                    array_push($this->aSettings['filelist_extensions'], $oXmlReader->value);
-                } else if ($bPutInDirArray == true) {
-                    $bPutInDirArray = false;
-                    array_push($this->aSettings['filelist_directories'], $oXmlReader->value);
-                } else if ($bPutInFileArray == true) {
-                    $bPutInFileArray = false;
-                    array_push($this->aSettings['filelist_manual_files'], $oXmlReader->value);
-                } else {
-                    $this->aSettings[$sLastNode] = $oXmlReader->value;
-                }
-                break;
-          }
+                case XMLReader::TEXT:
+                    if ($bPutInExtArray == true) {
+                        $bPutInExtArray = false;
+                        array_push($this->aSettings['filelist_extensions'], $oXmlReader->value);
+                    } else if ($bPutInDirArray == true) {
+                        $bPutInDirArray = false;
+                        array_push($this->aSettings['filelist_directories'], $oXmlReader->value);
+                    } else if ($bPutInFileArray == true) {
+                        $bPutInFileArray = false;
+                        array_push($this->aSettings['filelist_manual_files'], $oXmlReader->value);
+                    } else {
+                        $this->aSettings[$sLastNode] = $oXmlReader->value;
+                    }
+                    break;
+            }
         }
     }
 
@@ -370,13 +370,13 @@ class Cms_FileList {
                         $oParam->appendChild($oFile);
                     }
                 }
-            } else if ( $sParam == 'filelist_creationdatefilter_from' || $sParam == 'filelist_creationdatefilter_to' ||
-                        $sParam == 'filelist_modifydatefilter_from' || $sParam == 'filelist_modifydatefilter_to' ) {
+            } else if ($sParam == 'filelist_creationdatefilter_from' || $sParam == 'filelist_creationdatefilter_to' ||
+                    $sParam == 'filelist_modifydatefilter_from' || $sParam == 'filelist_modifydatefilter_to') {
 
                 $sValue = cSecurity::toString($_POST[$sParam]);
                 // check if value is set and if its length equals ten characters
                 // (two for day, two for month, four for year and two for the points)
-                if ( $sValue != "" && $sValue != "DD.MM.YYYY" && strlen( $sValue ) == 10 ) {
+                if ($sValue != "" && $sValue != "DD.MM.YYYY" && strlen($sValue) == 10) {
                     $aDateSplits = explode(".", $sValue);
                     $iTimestamp = mktime(0, 0, 0, (int) $aDateSplits[1], (int) $aDateSplits[0], (int) $aDateSplits[2]);
                 } else {
@@ -405,7 +405,7 @@ class Cms_FileList {
      * @return     string    rendered cHTMLSelectElement
      */
     private function getStyleSelect($sSelected) {
-        $oHtmlSelect = new     cHTMLSelectElement ('filelist_style', "", 'filelist_style');
+        $oHtmlSelect = new cHTMLSelectElement('filelist_style', "", 'filelist_style');
 
         $oHtmlSelectOption = new cHTMLOptionElement(i18n("Default style"), 'cms_filelist_style_default.html', true);
         $oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
@@ -430,7 +430,7 @@ class Cms_FileList {
      * @return     string    rendered cHTMLSelectElement
      */
     private function getSortSelect($sSelected) {
-        $oHtmlSelect = new     cHTMLSelectElement ('filelist_sort', "", 'filelist_sort');
+        $oHtmlSelect = new cHTMLSelectElement('filelist_sort', "", 'filelist_sort');
 
         $oHtmlSelectOption = new cHTMLOptionElement(i18n("File name"), 'filename', true);
         $oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
@@ -457,7 +457,7 @@ class Cms_FileList {
      * @return     string    rendered cHTMLSelectElement
      */
     private function getSortOrderSelect($sSelected) {
-        $oHtmlSelect = new     cHTMLSelectElement ('filelist_sortorder', "", 'filelist_sortorder');
+        $oHtmlSelect = new cHTMLSelectElement('filelist_sortorder', "", 'filelist_sortorder');
 
         $oHtmlSelectOption = new cHTMLOptionElement(i18n("Ascending"), 'asc', true);
         $oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
@@ -479,27 +479,27 @@ class Cms_FileList {
      * @return     string    rendered cHTMLSelectElement
      */
     private function getExtensionSelect($aSelected) {
-        $oHtmlSelect = new     cHTMLSelectElement ('filelist_extensions', "", 'filelist_extensions');
+        $oHtmlSelect = new cHTMLSelectElement('filelist_extensions', "", 'filelist_extensions');
 
         //set other avariable options manually
         $i = 1;
-        foreach ( $this->aFileExtensions as $sFileExtension ) {
-            $oHtmlSelectOption = new cHTMLOptionElement( uplGetFileTypeDescription( $sFileExtension ) . " (." . $sFileExtension . ")", $sFileExtension, false );
-            $oHtmlSelectOption->setAlt(uplGetFileTypeDescription( $sFileExtension ) . " (." . $sFileExtension . ")");
+        foreach ($this->aFileExtensions as $sFileExtension) {
+            $oHtmlSelectOption = new cHTMLOptionElement(uplGetFileTypeDescription($sFileExtension) . " (." . $sFileExtension . ")", $sFileExtension, false);
+            $oHtmlSelectOption->setAlt(uplGetFileTypeDescription($sFileExtension) . " (." . $sFileExtension . ")");
             $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
             $i++;
         }
 
         $aAdditionalOptions = getEffectiveSettingsByType('cms_filelist_extensions');
         foreach ($aAdditionalOptions as $sLabel => $sExtension) {
-            $oHtmlSelectOption = new cHTMLOptionElement( $sLabel . " (." . $sExtension . ")", $sExtension, false );
+            $oHtmlSelectOption = new cHTMLOptionElement($sLabel . " (." . $sExtension . ")", $sExtension, false);
             $oHtmlSelectOption->setAlt($sLabel . " (." . $sExtension . ")");
             $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
             $i++;
         }
 
         //set default values
-        $oHtmlSelect->setSelected ( $aSelected );
+        $oHtmlSelect->setSelected($aSelected);
         $oHtmlSelect->setMultiselect();
         $oHtmlSelect->setSize(5);
         $oHtmlSelect->setClass("manual");
@@ -507,24 +507,24 @@ class Cms_FileList {
         return $oHtmlSelect->render();
     }
 
-     /**
-      * Function which generate a select box for the manual files.
-      *
-      * @param     array     $sDirectoryPath    Path to directory of the files
-      * @return     string    rendered cHTMLSelectElement
-      */
+    /**
+     * Function which generate a select box for the manual files.
+     *
+     * @param     array     $sDirectoryPath    Path to directory of the files
+     * @return     string    rendered cHTMLSelectElement
+     */
     public function getFileSelect($sDirectoryPath = "") {
-        $oHtmlSelect = new cHTMLSelectElement ('filelist_filename', "", 'filelist_filename');
+        $oHtmlSelect = new cHTMLSelectElement('filelist_filename', "", 'filelist_filename');
 
         $i = 0;
-        if ($sDirectoryPath != "" ) {
+        if ($sDirectoryPath != "") {
             $sUploadPath = $this->aCfgClient[$this->iClient]['upl']['path'];
-            $oHandle = opendir($sUploadPath.$sDirectoryPath);
+            $oHandle = opendir($sUploadPath . $sDirectoryPath);
             while ($sEntry = readdir($oHandle)) {
-                if ( $sEntry != "." && $sEntry != ".." &&
-                     cFileHandler::exists( $sUploadPath.$sDirectoryPath."/".$sEntry ) &&
-                     !is_dir( $sUploadPath.$sDirectoryPath."/".$sEntry ) ) {
-                    $oHtmlSelectOption = new cHTMLOptionElement($sEntry, $sDirectoryPath."/".$sEntry, false);
+                if ($sEntry != "." && $sEntry != ".." &&
+                        cFileHandler::exists($sUploadPath . $sDirectoryPath . "/" . $sEntry) &&
+                        !is_dir($sUploadPath . $sDirectoryPath . "/" . $sEntry)) {
+                    $oHtmlSelectOption = new cHTMLOptionElement($sEntry, $sDirectoryPath . "/" . $sEntry, false);
                     $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
                     $i++;
                 }
@@ -533,12 +533,12 @@ class Cms_FileList {
             closedir($oHandle);
         }
 
-        if ( $i == 0 ) {
-            $oHtmlSelectOption = new cHTMLOptionElement( i18n('No files found'), '', false );
-            $oHtmlSelectOption->setAlt( i18n('No files found') );
-            $oHtmlSelectOption->setDisabled( true );
+        if ($i == 0) {
+            $oHtmlSelectOption = new cHTMLOptionElement(i18n('No files found'), '', false);
+            $oHtmlSelectOption->setAlt(i18n('No files found'));
+            $oHtmlSelectOption->setDisabled(true);
             $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
-            $oHtmlSelect->setDisabled( true );
+            $oHtmlSelect->setDisabled(true);
         }
 
         //set default value
@@ -547,24 +547,24 @@ class Cms_FileList {
         return $oHtmlSelect->render();
     }
 
-     /**
-      * Function which generate a select box for existing files in the manual filelist.
-      *
-      * @param     array     $sDirectoryPath    Path to directory of the files
-      * @return    string    rendered cHTMLSelectElement
-      */
+    /**
+     * Function which generate a select box for existing files in the manual filelist.
+     *
+     * @param     array     $sDirectoryPath    Path to directory of the files
+     * @return    string    rendered cHTMLSelectElement
+     */
     private function getExistingFileSelect() {
         $aSelectedFiles = $this->aSettings['filelist_manual_files'];
-        $oHtmlSelect = new     cHTMLSelectElement ('filelist_manual_files', "", 'filelist_manual_files');
+        $oHtmlSelect = new cHTMLSelectElement('filelist_manual_files', "", 'filelist_manual_files');
         $i = 0;
 
         if (is_array($aSelectedFiles)) {
-            foreach ( $aSelectedFiles as $sSelectedFile ) {
+            foreach ($aSelectedFiles as $sSelectedFile) {
                 $aSplits = explode("/", $sSelectedFile);
-                $iSplitCount = count( $aSplits );
+                $iSplitCount = count($aSplits);
                 $sFileName = $aSplits[$iSplitCount - 1];
-                $oHtmlSelectOption = new cHTMLOptionElement( $sFileName, $sSelectedFile, false );
-                $oHtmlSelectOption->setAlt( $sFileName );
+                $oHtmlSelectOption = new cHTMLOptionElement($sFileName, $sSelectedFile, false);
+                $oHtmlSelectOption->setAlt($sFileName);
                 $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
                 $i++;
             }
@@ -578,20 +578,20 @@ class Cms_FileList {
         return $oHtmlSelect->render();
     }
 
-        public function getMetaDataList() {
+    public function getMetaDataList() {
         $oTpl = new Template();
 
         $i = 1;
-        foreach ( $this->aMetaDataIdents as $sIdentName => $sTranslation ) {
+        foreach ($this->aMetaDataIdents as $sIdentName => $sTranslation) {
 
             $iMetaDataLimit = $this->aSettings['filelist_md_' . $sIdentName . '_limit'];
-            if ( !isset ( $iMetaDataLimit ) || $iMetaDataLimit == "" ) {
+            if (!isset($iMetaDataLimit) || $iMetaDataLimit == "") {
                 $iMetaDataLimit = 0;
             }
 
-            $oTpl->set('d', 'METADATA_NAME',         $sIdentName);
-            $oTpl->set('d', 'METADATA_DISPLAYNAME',    i18n($sTranslation));
-            $oTpl->set('d', 'METADATA_LIMIT',         $iMetaDataLimit);
+            $oTpl->set('d', 'METADATA_NAME', $sIdentName);
+            $oTpl->set('d', 'METADATA_DISPLAYNAME', i18n($sTranslation));
+            $oTpl->set('d', 'METADATA_LIMIT', $iMetaDataLimit);
 
             $i++;
             $oTpl->next();
@@ -606,15 +606,15 @@ class Cms_FileList {
      * @param     array     $aDirs    Array with directory information
      * @return    string    html of the directory list
      */
-    public function getDirectoryList( $aDirs ) {
+    public function getDirectoryList($aDirs) {
         $oTpl = new Template();
         $i = 1;
 
-        foreach ( $aDirs as $aDirData ) {
-            $sRelativePath = str_replace( $this->sUploadPath, '', $aDirData['path'] ) . $aDirData['name'];
+        foreach ($aDirs as $aDirData) {
+            $sRelativePath = str_replace($this->sUploadPath, '', $aDirData['path']) . $aDirData['name'];
             $sLiClasses = '';
 
-            if ( is_array( $this->aSettings['filelist_directories'] ) && in_array( $sRelativePath, $this->aSettings['filelist_directories'] ) ) {
+            if (is_array($this->aSettings['filelist_directories']) && in_array($sRelativePath, $this->aSettings['filelist_directories'])) {
                 $oTpl->set('d', 'DIVCLASS', ' class="active"');
             } else {
                 $oTpl->set('d', 'DIVCLASS', '');
@@ -626,17 +626,17 @@ class Cms_FileList {
             $bGo = false;
 
             if (is_array($this->aSettings['filelist_directories'])) {
-                foreach ( $this->aSettings['filelist_directories'] as $sDirectoryName ) {
-                    if ( preg_match ('#^'.$sRelativePath.'/.*#', $sDirectoryName) ) {
+                foreach ($this->aSettings['filelist_directories'] as $sDirectoryName) {
+                    if (preg_match('#^' . $sRelativePath . '/.*#', $sDirectoryName)) {
                         $bGo = true;
                         break;
                     }
                 }
             }
 
-            if ( $bGo == true ) {
-                $oTpl->set('d', 'SUBDIRLIST', $this->getDirectoryList( $aDirData['sub'] ) );
-            } else if ( isset( $aDirData['sub'] ) && count( $aDirData['sub'] ) > 0 ) {
+            if ($bGo == true) {
+                $oTpl->set('d', 'SUBDIRLIST', $this->getDirectoryList($aDirData['sub']));
+            } else if (isset($aDirData['sub']) && count($aDirData['sub']) > 0) {
                 $sLiClasses .= " collapsed";
                 $oTpl->set('d', 'SUBDIRLIST', '');
             } else {
@@ -647,8 +647,8 @@ class Cms_FileList {
                 $sLiClasses .= " last";
             }
 
-            if ( $sLiClasses != "" ) {
-                $oTpl->set('d', 'LICLASS', ' class="'.substr($sLiClasses, 1).'"');
+            if ($sLiClasses != "") {
+                $oTpl->set('d', 'LICLASS', ' class="' . substr($sLiClasses, 1) . '"');
             } else {
                 $oTpl->set('d', 'LICLASS', '');
             }
@@ -660,29 +660,29 @@ class Cms_FileList {
         return $oTpl->generate($this->aCfg['path']['contenido'] . 'templates/standard/template.cms_filelist_dirlistitem.html', 1);
     }
 
-     /**
-      * Builds a directory list by a given upload directory path.
-      *
-      * @param     string     $sUploadPath    Path to directory (per default the root upload path of client)
-      * @return    array    Array with directory information
-      */
-    public function buildDirectoryList( $sUploadPath = "" ) {
-        if ( $sUploadPath == "") {
+    /**
+     * Builds a directory list by a given upload directory path.
+     *
+     * @param     string     $sUploadPath    Path to directory (per default the root upload path of client)
+     * @return    array    Array with directory information
+     */
+    public function buildDirectoryList($sUploadPath = "") {
+        if ($sUploadPath == "") {
             $sUploadPath = $this->sUploadPath;
         }
 
-        if ( substr( $sUploadPath, -1 ) != "/" ) {
-            $sUploadPath = $sUploadPath."/";
+        if (substr($sUploadPath, -1) != "/") {
+            $sUploadPath = $sUploadPath . "/";
         }
 
         $aDirectories = array();
         $oHandle = opendir($sUploadPath);
         $i = 0;
         while ($sEntry = readdir($oHandle)) {
-            if ( $sEntry != "." && $sEntry != ".." && is_dir( $sUploadPath . $sEntry ) ) {
+            if ($sEntry != "." && $sEntry != ".." && is_dir($sUploadPath . $sEntry)) {
                 $aDirectories[$i]['name'] = $sEntry;
                 $aDirectories[$i]['path'] = $sUploadPath;
-                $aDirectories[$i]['sub'] = $this->buildDirectoryList( $sUploadPath . $sEntry );
+                $aDirectories[$i]['sub'] = $this->buildDirectoryList($sUploadPath . $sEntry);
                 $i++;
             }
         }
@@ -699,118 +699,118 @@ class Cms_FileList {
     public function getAllWidgetEdit() {
         $oTpl = new Template();
 
-        /*Set some values into javascript for a better handling*/
-        $oTpl->set('s', 'CON_PATH',                             $this->aCfg['path']['contenido_fullhtml']);
-        $oTpl->set('s', 'ID',                                     $this->iId);
-        $oTpl->set('s', 'IDARTLANG',                            $this->iIdArtLang);
-        $oTpl->set('s', 'CONTENIDO',                             $_REQUEST['contenido']);
-        $oTpl->set('s', 'FIELDS',                                 "'".implode("','",$this->aFileListData)."'");
+        /* Set some values into javascript for a better handling */
+        $oTpl->set('s', 'CON_PATH', $this->aCfg['path']['contenido_fullhtml']);
+        $oTpl->set('s', 'ID', $this->iId);
+        $oTpl->set('s', 'IDARTLANG', $this->iIdArtLang);
+        $oTpl->set('s', 'CONTENIDO', $_REQUEST['contenido']);
+        $oTpl->set('s', 'FIELDS', "'" . implode("','", $this->aFileListData) . "'");
 
-        if ( $this->aSettings['filelist_ignore_extensions'] == 'on' ) {
-            $oTpl->set('s', 'IGNOREEXTENSIONS',                 'true');
+        if ($this->aSettings['filelist_ignore_extensions'] == 'on') {
+            $oTpl->set('s', 'IGNOREEXTENSIONS', 'true');
         } else {
-            $oTpl->set('s', 'IGNOREEXTENSIONS',                 'false');
+            $oTpl->set('s', 'IGNOREEXTENSIONS', 'false');
         }
 
-        /*Start set a lot of translations*/
-        $oTpl->set('s', 'DIRECTORIES',                             i18n("Directories"));
-        $oTpl->set('s', 'GENERAL',                                 i18n("General"));
-        $oTpl->set('s', 'MANUAL',                                 i18n("Manual"));
-        $oTpl->set('s', 'FILTER',                                 i18n("Filter"));
+        /* Start set a lot of translations */
+        $oTpl->set('s', 'DIRECTORIES', i18n("Directories"));
+        $oTpl->set('s', 'GENERAL', i18n("General"));
+        $oTpl->set('s', 'MANUAL', i18n("Manual"));
+        $oTpl->set('s', 'FILTER', i18n("Filter"));
 
-        $oTpl->set('s', 'LABEL_GENERAL',                         i18n("General settings"));
-        $oTpl->set('s', 'LABEL_MANUAL',                         i18n("Manual settings"));
-        $oTpl->set('s', 'LABEL_FILTER',                         i18n("Filter settings"));
-        $oTpl->set('s', 'LABEL_FILELIST_SETTINGS',                 i18n("File list settings"));
-        $oTpl->set('s', 'LABEL_FILELIST_TITLE',                 i18n("File list title"));
-        $oTpl->set('s', 'LABEL_FILELIST_FILESIZE_LIMIT',         i18n("File size limit"));
-        $oTpl->set('s', 'LABEL_FILELIST_CREATIONDATE_LIMIT',     i18n("Creation date limit"));
-        $oTpl->set('s', 'LABEL_FILELIST_MODIFYDATE_LIMIT',         i18n("Modify date limit"));
+        $oTpl->set('s', 'LABEL_GENERAL', i18n("General settings"));
+        $oTpl->set('s', 'LABEL_MANUAL', i18n("Manual settings"));
+        $oTpl->set('s', 'LABEL_FILTER', i18n("Filter settings"));
+        $oTpl->set('s', 'LABEL_FILELIST_SETTINGS', i18n("File list settings"));
+        $oTpl->set('s', 'LABEL_FILELIST_TITLE', i18n("File list title"));
+        $oTpl->set('s', 'LABEL_FILELIST_FILESIZE_LIMIT', i18n("File size limit"));
+        $oTpl->set('s', 'LABEL_FILELIST_CREATIONDATE_LIMIT', i18n("Creation date limit"));
+        $oTpl->set('s', 'LABEL_FILELIST_MODIFYDATE_LIMIT', i18n("Modify date limit"));
 
-        $oTpl->set('s', 'LABEL_STYLE',                             i18n("File list style"));
-        $oTpl->set('s', 'LABEL_SOURCE_DIRECTORY',                 i18n("Source directory"));
-        $oTpl->set('s', 'LABEL_INCLUDE_SUBDIRECTORIES',         i18n('Include subdirectories?'));
-        $oTpl->set('s', 'LABEL_INCLUDE_METADATA',                 i18n('Include meta data?'));
-        $oTpl->set('s', 'LABEL_SORT',                             i18n("File list sort"));
-        $oTpl->set('s', 'LABEL_SORTORDER',                         i18n("Sort order"));
-        $oTpl->set('s', 'LABEL_FILE_EXTENSIONS',                 i18n("Displayed file extensions"));
-        $oTpl->set('s', 'LABEL_IGNORESELECTION',                 i18n('Ignore selection (use all)'));
-        $oTpl->set('s', 'LABEL_SELECTIONWILLBEIGNORED',         i18n('Selection will be ignored!'));
-        $oTpl->set('s', 'LABEL_SELECTALLENTRIES',                 i18n('Select all entries'));
-        $oTpl->set('s', 'LABEL_MANUAL_FILELIST',                 i18n("Use manual file list?"));
-        $oTpl->set('s', 'LABEL_DIRECTORY',                        i18n("Directory"));
-        $oTpl->set('s', 'LABEL_FILE',                             i18n("File"));
-        $oTpl->set('s', 'LABEL_FILES',                             i18n("Files"));
-        $oTpl->set('s', 'LABEL_EXISTING_FILES',                    i18n("Existing files"));
-        $oTpl->set('s', 'LABEL_ADD_FILE',                        i18n("Add file"));
-        $oTpl->set('s', 'LABEL_FILECOUNT',                        i18n("File count"));
-        /*End set a lot of translations*/
+        $oTpl->set('s', 'LABEL_STYLE', i18n("File list style"));
+        $oTpl->set('s', 'LABEL_SOURCE_DIRECTORY', i18n("Source directory"));
+        $oTpl->set('s', 'LABEL_INCLUDE_SUBDIRECTORIES', i18n('Include subdirectories?'));
+        $oTpl->set('s', 'LABEL_INCLUDE_METADATA', i18n('Include meta data?'));
+        $oTpl->set('s', 'LABEL_SORT', i18n("File list sort"));
+        $oTpl->set('s', 'LABEL_SORTORDER', i18n("Sort order"));
+        $oTpl->set('s', 'LABEL_FILE_EXTENSIONS', i18n("Displayed file extensions"));
+        $oTpl->set('s', 'LABEL_IGNORESELECTION', i18n('Ignore selection (use all)'));
+        $oTpl->set('s', 'LABEL_SELECTIONWILLBEIGNORED', i18n('Selection will be ignored!'));
+        $oTpl->set('s', 'LABEL_SELECTALLENTRIES', i18n('Select all entries'));
+        $oTpl->set('s', 'LABEL_MANUAL_FILELIST', i18n("Use manual file list?"));
+        $oTpl->set('s', 'LABEL_DIRECTORY', i18n("Directory"));
+        $oTpl->set('s', 'LABEL_FILE', i18n("File"));
+        $oTpl->set('s', 'LABEL_FILES', i18n("Files"));
+        $oTpl->set('s', 'LABEL_EXISTING_FILES', i18n("Existing files"));
+        $oTpl->set('s', 'LABEL_ADD_FILE', i18n("Add file"));
+        $oTpl->set('s', 'LABEL_FILECOUNT', i18n("File count"));
+        /* End set a lot of translations */
 
-        /*Start set values into configuration array and generate select boxes used previous defined values*/
-        $oTpl->set('s', 'FILELIST_TITLE',                         $this->aSettings['filelist_title']);
-        $oTpl->set('s', 'STYLE_SELECT',                         $this->getStyleSelect($this->aSettings['filelist_style']));
-        $oTpl->set('s', 'DIRECTORY_LIST',                         $this->getDirectoryList( $this->buildDirectoryList() ));
-        $oTpl->set('s', 'EXTENSION_LIST',                         $this->getExtensionSelect($this->aSettings['filelist_extensions']));
+        /* Start set values into configuration array and generate select boxes used previous defined values */
+        $oTpl->set('s', 'FILELIST_TITLE', $this->aSettings['filelist_title']);
+        $oTpl->set('s', 'STYLE_SELECT', $this->getStyleSelect($this->aSettings['filelist_style']));
+        $oTpl->set('s', 'DIRECTORY_LIST', $this->getDirectoryList($this->buildDirectoryList()));
+        $oTpl->set('s', 'EXTENSION_LIST', $this->getExtensionSelect($this->aSettings['filelist_extensions']));
 
-        if ( $this->aSettings['filelist_incl_subdirectories'] == 'checked' ) {
-            $oTpl->set('s', 'FILELIST_INCL_SUBDIRECTORIES',     'checked="checked"');
+        if ($this->aSettings['filelist_incl_subdirectories'] == 'checked') {
+            $oTpl->set('s', 'FILELIST_INCL_SUBDIRECTORIES', 'checked="checked"');
         } else {
-            $oTpl->set('s', 'FILELIST_INCL_SUBDIRECTORIES',     '');
+            $oTpl->set('s', 'FILELIST_INCL_SUBDIRECTORIES', '');
         }
 
-        if ( $this->aSettings['filelist_incl_metadata'] == 'checked' ) {
-            $oTpl->set('s', 'FILELIST_INCL_METADATA',             'checked="checked"');
+        if ($this->aSettings['filelist_incl_metadata'] == 'checked') {
+            $oTpl->set('s', 'FILELIST_INCL_METADATA', 'checked="checked"');
         } else {
-            $oTpl->set('s', 'FILELIST_INCL_METADATA',             '');
+            $oTpl->set('s', 'FILELIST_INCL_METADATA', '');
         }
 
-        if ( $this->aSettings['filelist_manual'] == 'checked' ) {
-            $oTpl->set('s', 'FILELIST_MANUAL',                     'checked="checked"');
+        if ($this->aSettings['filelist_manual'] == 'checked') {
+            $oTpl->set('s', 'FILELIST_MANUAL', 'checked="checked"');
         } else {
-            $oTpl->set('s', 'FILELIST_MANUAL',                     '');
+            $oTpl->set('s', 'FILELIST_MANUAL', '');
         }
 
-        foreach ( $this->aDateFields as $sDateField ) {
-            if ( $this->aSettings['filelist_' . $sDateField . 'filter_from'] != 0 ) {
-                $oTpl->set('s', 'FILELIST_' . strtoupper( $sDateField ) . 'FILTER_FROM', date("d.m.Y", $this->aSettings['filelist_' . $sDateField . 'filter_from']));
+        foreach ($this->aDateFields as $sDateField) {
+            if ($this->aSettings['filelist_' . $sDateField . 'filter_from'] != 0) {
+                $oTpl->set('s', 'FILELIST_' . strtoupper($sDateField) . 'FILTER_FROM', date("d.m.Y", $this->aSettings['filelist_' . $sDateField . 'filter_from']));
             } else {
-                $oTpl->set('s', 'FILELIST_' . strtoupper( $sDateField ) . 'FILTER_FROM', 'DD.MM.YYYY');
+                $oTpl->set('s', 'FILELIST_' . strtoupper($sDateField) . 'FILTER_FROM', 'DD.MM.YYYY');
             }
 
-            if ( $this->aSettings['filelist_' . $sDateField . 'filter_to'] != 0 ) {
-                $oTpl->set('s', 'FILELIST_' . strtoupper( $sDateField ) . 'FILTER_TO', date("d.m.Y", $this->aSettings['filelist_' . $sDateField . 'filter_to']));
+            if ($this->aSettings['filelist_' . $sDateField . 'filter_to'] != 0) {
+                $oTpl->set('s', 'FILELIST_' . strtoupper($sDateField) . 'FILTER_TO', date("d.m.Y", $this->aSettings['filelist_' . $sDateField . 'filter_to']));
             } else {
-                $oTpl->set('s', 'FILELIST_' . strtoupper( $sDateField ) . 'FILTER_TO', 'DD.MM.YYYY');
+                $oTpl->set('s', 'FILELIST_' . strtoupper($sDateField) . 'FILTER_TO', 'DD.MM.YYYY');
             }
         }
 
         $iFilesizeLimitFrom = $this->aSettings['filelist_filesizefilter_from'];
-        if ( $iFilesizeLimitFrom == "" ) {
+        if ($iFilesizeLimitFrom == "") {
             $iFilesizeLimitFrom = 0;
         }
 
         $iFilesizeLimitTo = $this->aSettings['filelist_filesizefilter_to'];
-        if ( $iFilesizeLimitTo == "" ) {
+        if ($iFilesizeLimitTo == "") {
             $iFilesizeLimitTo = 0;
         }
 
         $iFileCount = $this->aSettings['filelist_filecount'];
-        if ( $iFileCount == "" ) {
+        if ($iFileCount == "") {
             $iFileCount = 0;
         }
 
-        $oTpl->set('s', 'FILELIST_FILESIZEFILTER_FROM',         $iFilesizeLimitFrom);
-        $oTpl->set('s', 'FILELIST_FILESIZEFILTER_TO',             $iFilesizeLimitTo);
-        $oTpl->set('s', 'FILELIST_FILECOUNT',                    $iFileCount);
-        $oTpl->set('s', 'SORT_SELECT',                             $this->getSortSelect($this->aSettings['filelist_sort']));
-        $oTpl->set('s', 'FILE_SELECT',                             $this->getFileSelect());
-        $oTpl->set('s', 'SORTORDER_SELECT',                     $this->getSortOrderSelect($this->aSettings['filelist_sortorder']));
-        $oTpl->set('s', 'METADATALIST',                         $this->getMetaDataList());
-        $oTpl->set('s', 'MANUAL_OPTIONS',                         $this->getExistingFileSelect());
-        /*End set values into configuration array and generate select boxes used previous defined values*/
+        $oTpl->set('s', 'FILELIST_FILESIZEFILTER_FROM', $iFilesizeLimitFrom);
+        $oTpl->set('s', 'FILELIST_FILESIZEFILTER_TO', $iFilesizeLimitTo);
+        $oTpl->set('s', 'FILELIST_FILECOUNT', $iFileCount);
+        $oTpl->set('s', 'SORT_SELECT', $this->getSortSelect($this->aSettings['filelist_sort']));
+        $oTpl->set('s', 'FILE_SELECT', $this->getFileSelect());
+        $oTpl->set('s', 'SORTORDER_SELECT', $this->getSortOrderSelect($this->aSettings['filelist_sortorder']));
+        $oTpl->set('s', 'METADATALIST', $this->getMetaDataList());
+        $oTpl->set('s', 'MANUAL_OPTIONS', $this->getExistingFileSelect());
+        /* End set values into configuration array and generate select boxes used previous defined values */
 
-        $sCode = $oTpl->generate($this->aCfg['path']['contenido'].'templates/standard/template.cms_filelist_edit.html', 1);
-        return $this->getAllWidgetView( true ) . $this->encodeForOutput($sCode);
+        $sCode = $oTpl->generate($this->aCfg['path']['contenido'] . 'templates/standard/template.cms_filelist_edit.html', 1);
+        return $this->getAllWidgetView(true) . $this->encodeForOutput($sCode);
     }
 
     /**
@@ -844,58 +844,58 @@ class Cms_FileList {
     private function fillFileListTemplateEntry($aFileData, &$oTpl) {
         global $cCurrentModule;
 
-        $sFilename             = $aFileData['filename'];
-        $sDirectoryName     = $aFileData['path'];
-        $sFileExtension     = $aFileData['extension'];
-        $sFileLink             = $this->aCfgClient[$this->iClient]['upl']['htmlpath'] . $sDirectoryName . "/" . $sFilename;
+        $sFilename = $aFileData['filename'];
+        $sDirectoryName = $aFileData['path'];
+        $sFileExtension = $aFileData['extension'];
+        $sFileLink = $this->aCfgClient[$this->iClient]['upl']['htmlpath'] . $sDirectoryName . "/" . $sFilename;
 
-        $iFilesize            = $aFileData['filesize'];
-        $sFileCreationDate    = date( "d.m.Y", $aFileData['filecreationdate'] );
-        $sFileModifyDate     = date( "d.m.Y", $aFileData['filemodifydate'] );
+        $iFilesize = $aFileData['filesize'];
+        $sFileCreationDate = date("d.m.Y", $aFileData['filecreationdate']);
+        $sFileModifyDate = date("d.m.Y", $aFileData['filemodifydate']);
 
-        $aMetaData            = $aFileData['metadata'];
+        $aMetaData = $aFileData['metadata'];
 
         $sFilesizeUnit = "Byte";
-        if ( $iFilesize < 1024 ) {
+        if ($iFilesize < 1024) {
             $sFilesizeUnit = "Byte";
-        } else if ( $iFilesize < ( 1024 * 1024) ) {
+        } else if ($iFilesize < ( 1024 * 1024)) {
             $iFilesize = $iFilesize / 1024;
             $sFilesizeUnit = "KB";
-        } else if ( $iFilesize < ( 1024 * 1024 * 1024 ) ) {
+        } else if ($iFilesize < ( 1024 * 1024 * 1024 )) {
             $iFilesize = $iFilesize / 1024 / 1024;
             $sFilesizeUnit = "MB";
-        } else if ( $iFilesize < ( 1024 * 1024 * 1024 * 1024 ) ) {
+        } else if ($iFilesize < ( 1024 * 1024 * 1024 * 1024 )) {
             $iFilesize = $iFilesize / 1024 / 1024 / 1024;
             $sFilesizeUnit = "GB";
         }
 
-        $sFilesize = number_format( $iFilesize, 2, ',', '.');
+        $sFilesize = number_format($iFilesize, 2, ',', '.');
 
-        if ( $this->aSettings['filelist_incl_metadata'] == 'checked' && count ( $aMetaData ) != 0 ) {
-            $oTpl->set('d', 'FILEMETA_DESCRIPTION',     $aMetaData['description']);
-            $oTpl->set('d', 'FILEMETA_MEDIANAME',         $aMetaData['medianame']);
-            $oTpl->set('d', 'FILEMETA_KEYWORDS',        $aMetaData['keywords']);
+        if ($this->aSettings['filelist_incl_metadata'] == 'checked' && count($aMetaData) != 0) {
+            $oTpl->set('d', 'FILEMETA_DESCRIPTION', $aMetaData['description']);
+            $oTpl->set('d', 'FILEMETA_MEDIANAME', $aMetaData['medianame']);
+            $oTpl->set('d', 'FILEMETA_KEYWORDS', $aMetaData['keywords']);
             $oTpl->set('d', 'FILEMETA_INTERNAL_NOTICE', $aMetaData['internal_notice']);
-            $oTpl->set('d', 'FILEMETA_COPYRIGHT',        $aMetaData['copyright']);
+            $oTpl->set('d', 'FILEMETA_COPYRIGHT', $aMetaData['copyright']);
         } else {
-            $oTpl->set('d', 'FILEMETA_DESCRIPTION',     '');
-            $oTpl->set('d', 'FILEMETA_MEDIANAME',         '');
-            $oTpl->set('d', 'FILEMETA_KEYWORDS',        '');
+            $oTpl->set('d', 'FILEMETA_DESCRIPTION', '');
+            $oTpl->set('d', 'FILEMETA_MEDIANAME', '');
+            $oTpl->set('d', 'FILEMETA_KEYWORDS', '');
             $oTpl->set('d', 'FILEMETA_INTERNAL_NOTICE', '');
-            $oTpl->set('d', 'FILEMETA_COPYRIGHT',         '');
+            $oTpl->set('d', 'FILEMETA_COPYRIGHT', '');
         }
 
-        $oTpl->set('d', 'FILESIZE_UNIT',     $sFilesizeUnit);
-        $oTpl->set('d', 'FILENAME',         $sFilename);
-        $oTpl->set('d', 'FILESIZE',         $sFilesize);
-        $oTpl->set('d', 'FILEEXTENSION',     $sFileExtension);
+        $oTpl->set('d', 'FILESIZE_UNIT', $sFilesizeUnit);
+        $oTpl->set('d', 'FILENAME', $sFilename);
+        $oTpl->set('d', 'FILESIZE', $sFilesize);
+        $oTpl->set('d', 'FILEEXTENSION', $sFileExtension);
         $oTpl->set('d', 'FILECREATIONDATE', $sFileCreationDate);
-        $oTpl->set('d', 'FILEMODIFYDATE',     $sFileModifyDate);
-        $oTpl->set('d', 'FILEDIRECTORY',     $sDirectoryName);
-        $oTpl->set('d', 'FILELINK',             $sFileLink);
+        $oTpl->set('d', 'FILEMODIFYDATE', $sFileModifyDate);
+        $oTpl->set('d', 'FILEDIRECTORY', $sDirectoryName);
+        $oTpl->set('d', 'FILELINK', $sFileLink);
 
-        foreach (self::$aTranslations as $sKey => $sValue ) {
-            $oTpl->set('d', $sKey, mi18n( $sValue ));
+        foreach (self::$aTranslations as $sKey => $sValue) {
+            $oTpl->set('d', $sKey, mi18n($sValue));
         }
 
         $oTpl->next();
@@ -927,13 +927,13 @@ class Cms_FileList {
      *
      * @return    array    Directory array
      */
-    public function recursiveCheckForSubdirectories( $sDirectoryPath, $aDirectories ) {
-        $oHandle = opendir($this->sUploadPath.$sDirectoryPath);
+    public function recursiveCheckForSubdirectories($sDirectoryPath, $aDirectories) {
+        $oHandle = opendir($this->sUploadPath . $sDirectoryPath);
         while ($sEntry = readdir($oHandle)) {
-            if ( $sEntry != "." && $sEntry != ".." &&
-                is_dir( $this->sUploadPath.$sDirectoryPath."/".$sEntry ) ) {
-                $aDirectories[] = $sDirectoryPath."/".$sEntry;
-                $aDirectories = $this->recursiveCheckForSubdirectories( $sDirectoryPath."/".$sEntry, $aDirectories );
+            if ($sEntry != "." && $sEntry != ".." &&
+                    is_dir($this->sUploadPath . $sDirectoryPath . "/" . $sEntry)) {
+                $aDirectories[] = $sDirectoryPath . "/" . $sEntry;
+                $aDirectories = $this->recursiveCheckForSubdirectories($sDirectoryPath . "/" . $sEntry, $aDirectories);
             }
         }
 
@@ -947,22 +947,22 @@ class Cms_FileList {
      *
      * @return    boolean    check state (true = tests passed, false = tests not passed)
      */
-    private function performFileDateFilters ( $aFileStats ) {
+    private function performFileDateFilters($aFileStats) {
         $bDateCheck = false;
-        foreach ( $this->aDateFields as $sIndex => $sDateField ) {
+        foreach ($this->aDateFields as $sIndex => $sDateField) {
             $iDate = $aFileStats[$sIndex];
-            if ( $this->aSettings['filelist_' . $sDateField . 'filter_from'] == 0 && $this->aSettings['filelist_' . $sDateField . 'filter_from'] == 0 ) {
+            if ($this->aSettings['filelist_' . $sDateField . 'filter_from'] == 0 && $this->aSettings['filelist_' . $sDateField . 'filter_from'] == 0) {
                 $bDateCheck = true;
-            } else if ( $this->aSettings['filelist_' . $sDateField . 'filter_to'] == 0 &&
-                        $iDate >= $this->aSettings['filelist_' . $sDateField . 'filter_from']  )  {
+            } else if ($this->aSettings['filelist_' . $sDateField . 'filter_to'] == 0 &&
+                    $iDate >= $this->aSettings['filelist_' . $sDateField . 'filter_from']) {
                 $bDateCheck = true;
-            } else if ( $this->aSettings['filelist_' . $sDateField . 'filter_from'] == 0 &&
-                        $iDate <= $this->aSettings['filelist_' . $sDateField . 'filter_to']  )  {
+            } else if ($this->aSettings['filelist_' . $sDateField . 'filter_from'] == 0 &&
+                    $iDate <= $this->aSettings['filelist_' . $sDateField . 'filter_to']) {
                 $bDateCheck = true;
-            } else if ( $this->aSettings['filelist_' . $sDateField . 'filter_from'] != 0 &&
-                        $this->aSettings['filelist_' . $sDateField . 'filter_to'] != 0 &&
-                        $iDate >= $this->aSettings['filelist_' . $sDateField . 'filter_from'] &&
-                        $iDate <= $this->aSettings['filelist_' . $sDateField . 'filter_to'] )  {
+            } else if ($this->aSettings['filelist_' . $sDateField . 'filter_from'] != 0 &&
+                    $this->aSettings['filelist_' . $sDateField . 'filter_to'] != 0 &&
+                    $iDate >= $this->aSettings['filelist_' . $sDateField . 'filter_from'] &&
+                    $iDate <= $this->aSettings['filelist_' . $sDateField . 'filter_to']) {
                 $bDateCheck = true;
             }
         }
@@ -977,36 +977,36 @@ class Cms_FileList {
      *
      * @return    array    array with filtered files
      */
-    private function applyFileFilters ( $aFileList ) {
-        foreach ( $aFileList as $iIndex => $sFullname ) {
-            $sFilename = basename( $sFullname );
-            $sDirectoryName = str_replace( "/" . $sFilename, '', $sFullname );
+    private function applyFileFilters($aFileList) {
+        foreach ($aFileList as $iIndex => $sFullname) {
+            $sFilename = basename($sFullname);
+            $sDirectoryName = str_replace("/" . $sFilename, '', $sFullname);
 
             // checking the extension stuff
-            $sExtensionName = uplGetFileExtension( $sFilename );
+            $sExtensionName = uplGetFileExtension($sFilename);
 
-            if ( $this->aSettings['filelist_ignore_extensions'] == "on" || count( $this->aSettings['filelist_extensions'] ) == 0 ||
-                ( $this->aSettings['filelist_ignore_extensions'] == "off" && in_array( $sExtensionName, $this->aSettings['filelist_extensions'] ) ) ) {
+            if ($this->aSettings['filelist_ignore_extensions'] == "on" || count($this->aSettings['filelist_extensions']) == 0 ||
+                    ( $this->aSettings['filelist_ignore_extensions'] == "off" && in_array($sExtensionName, $this->aSettings['filelist_extensions']) )) {
 
                 // checking filesize filter
-                $aFileStats = stat( $this->sUploadPath.$sDirectoryName."/".$sFilename );
-                $iFilesize    = $aFileStats['size'];
+                $aFileStats = stat($this->sUploadPath . $sDirectoryName . "/" . $sFilename);
+                $iFilesize = $aFileStats['size'];
 
                 $iFilesizeMib = $iFilesize / 1024 / 1024;
-                if ( ( $this->aSettings['filelist_filesizefilter_from'] == 0 &&
-                       $this->aSettings['filelist_filesizefilter_to'] == 0 )
-                       ||
-                     ( $this->aSettings['filelist_filesizefilter_from'] <= $iFilesizeMib &&
-                       $this->aSettings['filelist_filesizefilter_to'] >= $iFilesizeMib) ) {
+                if (( $this->aSettings['filelist_filesizefilter_from'] == 0 &&
+                        $this->aSettings['filelist_filesizefilter_to'] == 0 )
+                        ||
+                        ( $this->aSettings['filelist_filesizefilter_from'] <= $iFilesizeMib &&
+                        $this->aSettings['filelist_filesizefilter_to'] >= $iFilesizeMib)) {
 
-                    $bDateCheck = $this->performFileDateFilters ( $aFileStats );
+                    $bDateCheck = $this->performFileDateFilters($aFileStats);
 
                     $iCreationDate = $aFileStats['ctime'];
                     $iModifyFate = $aFileStats['mtime'];
 
-                    if ( $bDateCheck == true ) {
+                    if ($bDateCheck == true) {
                         // conditional stuff is completed, start sorting
-                        switch ( $this->aSettings['filelist_sort'] ) {
+                        switch ($this->aSettings['filelist_sort']) {
                             case "filesize":
                                 $sIndexName = $iFilesize;
                                 break;
@@ -1018,10 +1018,10 @@ class Cms_FileList {
                                 break;
                             case "filename":
                             default:
-                                $sIndexName = strtolower ( $sFilename );
+                                $sIndexName = strtolower($sFilename);
                         }
 
-                        if ( $sLastIndex == $sIndexName ) {
+                        if ($sLastIndex == $sIndexName) {
                             $j++;
                         } else {
                             $j = 1;
@@ -1031,12 +1031,12 @@ class Cms_FileList {
                         $sIndexName = $sIndexName . "." . $j;
 
                         $aFiles[$sIndexName] = array();
-                        $aFiles[$sIndexName]['filename']             = $sFilename;
-                        $aFiles[$sIndexName]['path']                 = $sDirectoryName;
-                        $aFiles[$sIndexName]['extension']             = $sExtensionName;
-                        $aFiles[$sIndexName]['filesize']            = $iFilesize;
-                        $aFiles[$sIndexName]['filemodifydate']         = $iModifyDate;
-                        $aFiles[$sIndexName]['filecreationdate']    = $iCreationDate;
+                        $aFiles[$sIndexName]['filename'] = $sFilename;
+                        $aFiles[$sIndexName]['path'] = $sDirectoryName;
+                        $aFiles[$sIndexName]['extension'] = $sExtensionName;
+                        $aFiles[$sIndexName]['filesize'] = $iFilesize;
+                        $aFiles[$sIndexName]['filemodifydate'] = $iModifyDate;
+                        $aFiles[$sIndexName]['filecreationdate'] = $iCreationDate;
                         $i++;
                     } // end if date check
                 } // end if filesize filter
@@ -1055,65 +1055,64 @@ class Cms_FileList {
         $oTpl = new Template();
         $aFileList = array();
         //set title of teaser
-        if ( $this->aSettings['filelist_style'] != "" ) {
+        if ($this->aSettings['filelist_style'] != "") {
             $oTpl->set('s', 'TITLE', $this->aSettings['filelist_title']);
             $oTpl->set('s', 'ERROR', '-', 1);
 
-            if ( $this->aSettings['filelist_manual'] == 'checked' && count( $this->aSettings['filelist_manual_files'] ) > 0 ) {
+            if ($this->aSettings['filelist_manual'] == 'checked' && count($this->aSettings['filelist_manual_files']) > 0) {
                 $aFileList = $this->aSettings['filelist_manual_files'];
             } else {
-                if ( count ( $this->aSettings['filelist_directories'] ) > 0 ) {
+                if (count($this->aSettings['filelist_directories']) > 0) {
                     $aDirectories = $this->aSettings['filelist_directories'];
 
-                    if ( $this->aSettings['filelist_incl_subdirectories'] == 'checked' ) {
-                        foreach ( $aDirectories as $sDirectoryName ) {
+                    if ($this->aSettings['filelist_incl_subdirectories'] == 'checked') {
+                        foreach ($aDirectories as $sDirectoryName) {
                             $aDirectories = $this->recursiveCheckForSubdirectories($sDirectoryName, $aDirectories);
                         }
                     }
 
                     // strip duplicate directories to save performance
-                    $aDirectories = array_unique( $aDirectories );
+                    $aDirectories = array_unique($aDirectories);
 
-                    foreach ( $aDirectories as $sDirectoryName ) {
-                        $oHandle = opendir( $this->sUploadPath . $sDirectoryName );
+                    foreach ($aDirectories as $sDirectoryName) {
+                        $oHandle = opendir($this->sUploadPath . $sDirectoryName);
 
-                        while ( $sEntry = readdir( $oHandle ) ) {
+                        while ($sEntry = readdir($oHandle)) {
                             // checking if entry is file and is not a directory
-                            if ( $sEntry != "." && $sEntry != ".." && !is_dir( $this->sUploadPath . $sDirectoryName . "/" . $sEntry ) ) {
+                            if ($sEntry != "." && $sEntry != ".." && !is_dir($this->sUploadPath . $sDirectoryName . "/" . $sEntry)) {
                                 $aFileList[] = $sDirectoryName . "/" . $sEntry;
                             }
                         }
-                        closedir( $oHandle );
+                        closedir($oHandle);
                     }
                 }
             }
 
-            $aFiles = $this->applyFileFilters( $aFileList );
-            unset( $aFileList );
+            $aFiles = $this->applyFileFilters($aFileList);
+            unset($aFileList);
 
-            if ( count ( $aFiles ) > 0 ) {
+            if (count($aFiles) > 0) {
                 // check for descending sort order...
-                if ( $this->aSettings['filelist_sortorder'] == 'desc' ) {
-                    krsort( $aFiles ) ;
+                if ($this->aSettings['filelist_sortorder'] == 'desc') {
+                    krsort($aFiles);
                 } else {
-                    ksort ( $aFiles );
+                    ksort($aFiles);
                 }
 
                 $i = 1;
-                foreach ( $aFiles as $aFilenameData ) {
-                    if ( ( $this->aSettings['filelist_filecount'] != 0 && $i <= $this->aSettings['filelist_filecount'] ) ||
-                        $this->aSettings['filelist_filecount'] == 0 ) {
-                        if ( $this->aSettings['filelist_incl_metadata'] == 'checked' ) {
+                foreach ($aFiles as $aFilenameData) {
+                    if (( $this->aSettings['filelist_filecount'] != 0 && $i <= $this->aSettings['filelist_filecount'] ) ||
+                            $this->aSettings['filelist_filecount'] == 0) {
+                        if ($this->aSettings['filelist_incl_metadata'] == 'checked') {
                             $aMetaData = array();
-                            $this->oDb->query('SELECT upl.idupl, uplmeta.* FROM ' . $this->aCfg['tab']['upl'] . ' AS upl, ' . $this->aCfg['tab']['upl_meta'] . ' AS uplmeta WHERE upl.idupl = uplmeta.idupl AND upl.filename=\''.$aFilenameData['filename'].'\' AND upl.dirname=\''.$aFilenameData['path'].'/\' AND upl.idclient=\''.$this->iClient.'\' AND uplmeta.idlang=\''.$this->iLang.'\'');
+                            $this->oDb->query('SELECT upl.idupl, uplmeta.* FROM ' . $this->aCfg['tab']['upl'] . ' AS upl, ' . $this->aCfg['tab']['upl_meta'] . ' AS uplmeta WHERE upl.idupl = uplmeta.idupl AND upl.filename=\'' . $aFilenameData['filename'] . '\' AND upl.dirname=\'' . $aFilenameData['path'] . '/\' AND upl.idclient=\'' . $this->iClient . '\' AND uplmeta.idlang=\'' . $this->iLang . '\'');
                             $this->oDb->next_record();
 
-                            foreach ( $this->aMetaDataIdents as $sIdentName => $sTranslation ) {
-                                if ( $this->aSettings['filelist_md_' . $sIdentName . '_limit'] > 0 ) {
-                                    $aMetaData[$sIdentName] = cApiStrTrimAfterWord(    cSecurity::unFilter( $this->oDb->f($sIdentName) ),
-                                                                                    $this->aSettings['filelist_md_' . $sIdentName . '_limit'] ) . '...';
+                            foreach ($this->aMetaDataIdents as $sIdentName => $sTranslation) {
+                                if ($this->aSettings['filelist_md_' . $sIdentName . '_limit'] > 0) {
+                                    $aMetaData[$sIdentName] = cApiStrTrimAfterWord(cSecurity::unFilter($this->oDb->f($sIdentName)), $this->aSettings['filelist_md_' . $sIdentName . '_limit']) . '...';
                                 } else {
-                                    $aMetaData[$sIdentName] = cSecurity::unFilter( $this->oDb->f($sIdentName) );
+                                    $aMetaData[$sIdentName] = cSecurity::unFilter($this->oDb->f($sIdentName));
                                 }
                             }
 
@@ -1121,17 +1120,19 @@ class Cms_FileList {
                         } else {
                             $aFilenameData['metadata'] = array();
                         }
-                        $this->fillFileListTemplateEntry( $aFilenameData, $oTpl );
+                        $this->fillFileListTemplateEntry($aFilenameData, $oTpl);
                         $i++;
                     }
                 }
 
                 //generate template
-                $sCode = $oTpl->generate($this->aCfgClient[$this->iClient]['path']['frontend'].'templates/' . $this->aSettings['filelist_style'], 1);
+                $sCode = $oTpl->generate($this->aCfgClient[$this->iClient]['path']['frontend'] . 'templates/' . $this->aSettings['filelist_style'], 1);
             }
         }
 
         return $sCode;
     }
+
 }
+
 ?>

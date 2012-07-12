@@ -22,12 +22,8 @@
  *
  * {@internal
  *   created  2000-01-01
- *   modified 2008-07-03, bilal arslan, added security fix
- *   modified 2011-10-09, Murat Purc, Partly ported to PHP 5 and formatted/documented code
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -38,47 +34,39 @@ if (!defined('CON_FRAMEWORK')) {
  * @package    CONTENIDO Core
  * @subpackage Session
  */
-class CT_File
-{
+class CT_File {
+
     /**
      * Path where to store the session files writable by the web server UID
      * @vsr string
      */
     public $file_path = '';
 
-
-    public function ac_start()
-    {
+    public function ac_start() {
         // Not needed in this instance
     }
 
-    public function ac_get_lock()
-    {
+    public function ac_get_lock() {
         // Not needed in this instance
     }
 
-    public function ac_release_lock()
-    {
+    public function ac_release_lock() {
         // Not needed in this instance
     }
 
-    public function ac_newid($str, $name)
-    {
+    public function ac_newid($str, $name) {
         return $str;
     }
 
-    public function ac_store($id, $name, $str)
-    {
+    public function ac_store($id, $name, $str) {
         return (bool) cFileHandler::write($this->file_path . "$id$name", true);
     }
 
-    public function ac_delete($id, $name)
-    {
+    public function ac_delete($id, $name) {
         unlink($this->file_path . "$id$name");
     }
 
-    public function ac_gc($gc_time, $name)
-    {
+    public function ac_gc($gc_time, $name) {
         if (!$hDir = opendir($this->file_path)) {
             return;
         }
@@ -88,8 +76,7 @@ class CT_File
             if ($sDirEntry != '.' && $sDirEntry != '..') {
                 $pathName = $this->file_path . '/' . $sDirEntry;
                 if (is_file($pathName) && strpos($sDirEntry, $name) !== false
-                    && fileatime($pathName) < $time)
-                {
+                        && fileatime($pathName) < $time) {
                     unlink($pathName);
                 }
             }
@@ -97,14 +84,12 @@ class CT_File
         closedir($hDir);
     }
 
-    public function ac_halt($s)
-    {
+    public function ac_halt($s) {
         echo "<b>$s</b>";
         exit;
     }
 
-    public function ac_get_value($id, $name)
-    {
+    public function ac_get_value($id, $name) {
         if (cFileHandler::exists($this->file_path . "$id$name")) {
             $content = cFileHandler::read($this->file_path . "$id$name");
             return urldecode($content);
@@ -112,6 +97,7 @@ class CT_File
             return '';
         }
     }
+
 }
 
 ?>

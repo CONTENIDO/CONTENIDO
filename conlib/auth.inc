@@ -22,12 +22,8 @@
  *
  * {@internal
  *   created  2002-07-21
- *   modified 2008-07-03, bilal arslan, added security fix
- *   modified 2011-10-09, Murat Purc, Partly ported to PHP 5 and formatted/documented code
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -39,6 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @subpackage Authentication
  */
 class Auth {
+
     const AUTH_UID_NOBODY = 'nobody';
     const AUTH_UID_FORM = 'form';
 
@@ -98,7 +95,7 @@ class Auth {
      * In flag
      * @var bool
      */
-    public $in   = false;
+    public $in = false;
 
     /**
      * Database instance
@@ -161,7 +158,6 @@ class Auth {
         switch ($state) {
             case 1:
                 // No valid auth info or auth is expired
-
                 // Check for user supplied automatic login procedure
                 if ($uid = $this->auth_preauth()) {
                     $this->auth['uid'] = $uid;
@@ -238,15 +234,15 @@ class Auth {
     }
 
     public function unauth($nobody = false) {
-        $this->auth['uid']  = '';
+        $this->auth['uid'] = '';
         $this->auth['perm'] = '';
-        $this->auth['exp']  = 0;
+        $this->auth['exp'] = 0;
 
         // Back compatibility: passing $nobody to this method is deprecated
         if ($nobody) {
-            $this->auth['uid']  = self::AUTH_UID_NOBODY;
+            $this->auth['uid'] = self::AUTH_UID_NOBODY;
             $this->auth['perm'] = '';
-            $this->auth['exp']  = 0x7fffffff;
+            $this->auth['exp'] = 0x7fffffff;
         }
     }
 
@@ -259,14 +255,14 @@ class Auth {
         return true;
     }
 
-    public function is_authenticated(){
+    public function is_authenticated() {
         if (isset($this->auth['uid']) && $this->auth['uid']
-            && (($this->lifetime <= 0) || (time() < $this->auth['exp']))) {
+                && (($this->lifetime <= 0) || (time() < $this->auth['exp']))) {
             // If more than $this->refresh minutes are passed since last check,
             // perform auth data refreshing. Refresh is only done when current
             // session is valid (registered, not expired).
             if (($this->refresh > 0) && ($this->auth['refresh'])
-                && ($this->auth['refresh'] < time())) {
+                    && ($this->auth['refresh'] < time())) {
                 if ($this->auth_refreshlogin()) {
                     $this->auth['refresh'] = time() + (60 * $this->refresh);
                 } else {
@@ -292,7 +288,7 @@ class Auth {
         return $GLOBALS['sess']->selfURL();
     }
 
-    public function purl(){
+    public function purl() {
         print $GLOBALS['sess']->selfURL();
     }
 
@@ -301,6 +297,7 @@ class Auth {
      * (i.e. nobody IS NOT a valid uid) just like auth_validatelogin,
      * else it shall return false.
      */
+
     public function auth_preauth() {
         return false;
     }
@@ -325,6 +322,7 @@ class Auth {
     public function auth_doregister() {
         // donut
     }
+
 }
 
 ?>

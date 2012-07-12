@@ -19,25 +19,18 @@
  * @link       http://www.contenido.org
  *
  *
- *
  * {@internal
  *   created  2000-01-01
- *   modified 2008-07-04, bilal arslan, added security fix
- *   modified 2009-10-29, Murat Purc, automatic loading of configured database driver
- *   modified 2011-03-21, Murat Purc, inclusion of ct_session.inc
- *
  *   $Id$:
  * }}
- *
  */
 
-
 if (!defined('CON_FRAMEWORK')) {
-   die('Illegal call');
+    die('Illegal call');
 }
 
 $_PHPLIB = array();
-$_PHPLIB['libdir'] = str_replace ('\\', '/', dirname(__FILE__) . '/');
+$_PHPLIB['libdir'] = str_replace('\\', '/', dirname(__FILE__) . '/');
 
 global $cfg;
 
@@ -54,11 +47,10 @@ unset($dbDriverFileName);
 
 require_once($_PHPLIB['libdir'] . 'ct_sql.inc');    // Data storage container: database
 require_once($_PHPLIB['libdir'] . 'ct_file.inc');   // Data storage container: file
-require_once($_PHPLIB['libdir'] . 'ct_session.inc');// Data storage container: session
+require_once($_PHPLIB['libdir'] . 'ct_session.inc'); // Data storage container: session
 
 require_once($_PHPLIB['libdir'] . 'session.inc');   // Session management
 require_once($_PHPLIB['libdir'] . 'auth.inc');      // Authorization management
-
 // Additional require statements go before this line
 require_once($_PHPLIB['libdir'] . 'local.php');     // Required, contains your local configuration.
 require_once($_PHPLIB['libdir'] . 'page.inc');      // Required, contains the page management functions.

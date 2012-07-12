@@ -19,12 +19,8 @@
  *
  * {@internal
  *   created  2002-07-21
- *   modified 2008-07-04, bilal arslan, added security fix
- *   modified 2011-07-22, Murat Purc, added instantiation of db in page_open(), documenting and formatting.
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -48,7 +44,7 @@ function sess_load($session) {
     cDeprecated("This function is not longer supported.");
 
     reset($session);
-    while (list($k,$v) = each($session)) {
+    while (list($k, $v) = each($session)) {
         $GLOBALS[$k] = new $v;
         $GLOBALS[$k]->start();
     }
@@ -59,7 +55,7 @@ function sess_save($session) {
     cDeprecated("This function is not longer supported.");
 
     reset($session);
-    while (list(,$v) = each($session)) {
+    while (list(, $v) = each($session)) {
         $GLOBALS[$v]->freeze();
     }
 }

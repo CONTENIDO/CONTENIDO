@@ -24,24 +24,20 @@
  * }}
  */
 
-
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-
 
 /**
  * CONTENIDO standard code generator.
  * @package    CONTENIDO Backend Classes
  */
-class cCodeGeneratorStandard extends cCodeGeneratorAbstract
-{
+class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
      * {@inheritdoc}
      */
-    public function _generate($contype = true)
-    {
+    public function _generate($contype = true) {
         global $cfgClient;
         global $db, $cfg, $code;
 
@@ -110,11 +106,11 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
                 if ($moduleHandler->modulePathExists() == true) {
                     $this->_moduleCode = $moduleHandler->readOutput();
                     // Load css and js content of the js/css files
-                    if ($moduleHandler->getFilesContent("css", "css") !== false ) {
+                    if ($moduleHandler->getFilesContent("css", "css") !== false) {
                         $this->_cssData .= $moduleHandler->getFilesContent("css", "css");
                     }
 
-                    if ($moduleHandler->getFilesContent("js", "js") !== false ) {
+                    if ($moduleHandler->getFilesContent("js", "js") !== false) {
                         $this->_jsData .= $moduleHandler->getFilesContent("js", "js");
                     }
 
@@ -143,7 +139,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
         $a_content = $this->_getUsedCmsTypesData();
 
         // Replace all CMS_TAGS[]
-        if($contype) $this->_processCmsTags($a_content, true);
+        if ($contype) {
+            $this->_processCmsTags($a_content, true);
+        }
 
         // Add/replace title tag
         $this->_processCodeTitleTag();
@@ -156,20 +154,20 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
 
         if (strlen($this->_cssData) > 0) {
             if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, "css", $this->_cssData))) {
-                $cssFile = '<link rel="stylesheet" type="text/css" href="'.$myFileCss.'"/>';
+                $cssFile = '<link rel="stylesheet" type="text/css" href="' . $myFileCss . '"/>';
             }
         }
 
         $jsFile = '';
         if (strlen($this->_jsData) > 0) {
             if (($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, "js", $this->_jsData))) {
-                $jsFile = '<script src="'.$myFileJs.'" type="text/javascript"></script>';
+                $jsFile = '<script src="' . $myFileJs . '" type="text/javascript"></script>';
             }
         }
 
         // Add meta tags
         $this->_layoutCode = str_ireplace_once("</head>", $cssFile . "</head>", $this->_layoutCode);
-        $this->_layoutCode = str_ireplace_once("</body>",  $jsFile . "</body>", $this->_layoutCode);
+        $this->_layoutCode = str_ireplace_once("</body>", $jsFile . "</body>", $this->_layoutCode);
 
         // Write code in the cache of the client. If the folder does not exist create one.
         if ($this->_layout == false && $this->_save == true) {
@@ -179,7 +177,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
                 cFileHandler::write($cfgClient[$this->_client]['code_path'] . ".htaccess", "Order Deny,Allow\nDeny from all\n");
             }
             $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $this->_layoutCode;
-            cFileHandler::write($cfgClient[$this->_client]['code_path'].$this->_client.".".$this->_lang.".".$idcatart.".php", $code, false);
+            cFileHandler::write($cfgClient[$this->_client]['code_path'] . $this->_client . "." . $this->_lang . "." . $idcatart . ".php", $code, false);
 
             $db->update($cfg['tab']['cat_art'], array('createcode' => 0), array('idcatart' => (int) $idcatart));
         }
@@ -193,8 +191,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
      *
      * Creates a error message as and writes this into the code cache table.
      */
-    protected function _processNoConfigurationError()
-    {
+    protected function _processNoConfigurationError() {
         // fixme
         $this->_debug("Neither CAT or ART are configured!<br><br>");
 
@@ -209,15 +206,13 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
         }
     }
 
-
     /**
      * Processes and adds or replaces title tag for an article.
      *
      * Calls also the CEC 'Contenido.Content.CreateTitletag' for user defined title
      * creation.
      */
-    protected function _processCodeTitleTag()
-    {
+    protected function _processCodeTitleTag() {
         if ($this->_pageTitle == '') {
             CEC_Hook::setDefaultReturnValue($this->_pageTitle);
             $this->_pageTitle = CEC_Hook::executeAndReturn('Contenido.Content.CreateTitletag');
@@ -237,15 +232,13 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
         return $this->_layoutCode;
     }
 
-
     /**
      * Processes and adds or replaces all meta tags for an article.
      *
      * Calls also the CEC 'Contenido.Content.CreateMetatags' for user defined meta
      * tags creation.
      */
-    protected function _processCodeMetaTags()
-    {
+    protected function _processCodeMetaTags() {
         global $cfg, $encoding, $_cecRegistry;
 
         // Collect all available meta tag entries with non empty values
@@ -267,9 +260,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
         // Add content type meta tag
         // @todo html5 requires something like <meta charset="{encoding}">
         if (getEffectiveSetting('generator', 'xhtml', 'false') == 'true') {
-            $aMetaTags[] = array('http-equiv' => 'Content-Type', 'content' => 'application/xhtml+xml; charset='.$encoding[$this->_lang]);
+            $aMetaTags[] = array('http-equiv' => 'Content-Type', 'content' => 'application/xhtml+xml; charset=' . $encoding[$this->_lang]);
         } else {
-            $aMetaTags[] = array('http-equiv' => 'Content-Type', 'content' => 'text/html; charset='.$encoding[$this->_lang]);
+            $aMetaTags[] = array('http-equiv' => 'Content-Type', 'content' => 'text/html; charset=' . $encoding[$this->_lang]);
         }
 
         // Process chain to update meta tags

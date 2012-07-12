@@ -45,14 +45,12 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * PDO MySQL database driver
  * @package    CONTENIDO Core
  * @subpackage Database
  */
-class DB_Sql extends DB_Sql_Abstract
-{
+class DB_Sql extends DB_Sql_Abstract {
 
     /**
      * PDO connection
@@ -65,36 +63,31 @@ class DB_Sql extends DB_Sql_Abstract
      * @var PDOStatement
      */
     public $Link_ID;
-
     protected $_aDataTypes = array(
-        PDO::PARAM_BOOL     => 'bool',
-        PDO::PARAM_NULL     => 'null',
-        PDO::PARAM_INT      => 'int',
-        PDO::PARAM_STR      => 'string',
-        PDO::PARAM_LOB      => 'blob',
-        PDO::PARAM_STMT     => 'statement'
+        PDO::PARAM_BOOL => 'bool',
+        PDO::PARAM_NULL => 'null',
+        PDO::PARAM_INT => 'int',
+        PDO::PARAM_STR => 'string',
+        PDO::PARAM_LOB => 'blob',
+        PDO::PARAM_STMT => 'statement'
     );
-
 
     /**
      * Constructor.
      *
      * @param  array  $options  Optional assoziative options
      */
-    public function __construct(array $options = array())
-    {
+    public function __construct(array $options = array()) {
         $options = array_merge($options, array(
             'type' => 'pdo_mysql',
-        ));
+                ));
         parent::__construct($options);
     }
-
 
     /**
      * {@inheritdoc}
      */
-    protected function _connect()
-    {
+    protected function _connect() {
         $aCon = $this->_aDbCfg['connection'];
         if (!isset($aCon['host']) || !isset($aCon['user']) || !isset($aCon['password'])) {
             $this->halt('MySQL _connect() Connection settings not complete');
@@ -132,39 +125,33 @@ class DB_Sql extends DB_Sql_Abstract
         return $dbh;
     }
 
-
     /**
      * Discard the query result
      */
-    public function free()
-    {
+    public function free() {
         if ($this->Query_ID) {
             $this->Query_ID->closeCursor();
             unset($this->Query_ID);
         }
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function _query($sQuery)
-    {
+    protected function _query($sQuery) {
         $this->Query_ID = $this->Link_ID->query($sQuery);
-        $this->Row      = 0;
-        $this->Errno    = $this->_getErrorNumber();
-        $this->Error    = $this->_getErrorMessage();
+        $this->Row = 0;
+        $this->Errno = $this->_getErrorNumber();
+        $this->Error = $this->_getErrorMessage();
         if (!$this->Query_ID) {
             $this->halt($sQuery);
         }
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function _insert($sTable, array $aFields)
-    {
+    protected function _insert($sTable, array $aFields) {
         $sFields = '';
         $sValues = '';
         foreach ($aFields as $field => $value) {
@@ -180,12 +167,10 @@ class DB_Sql extends DB_Sql_Abstract
         return sprintf('INSERT INTO `%s` (%s) VALUES (%s)', $sTable, $sFields, $sValues);
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function _update($sTable, array $aFields, array $aWhere)
-    {
+    protected function _update($sTable, array $aFields, array $aWhere) {
         $sUpdate = '';
         $sWhere = '';
         foreach ($aFields as $field => $value) {
@@ -211,16 +196,14 @@ class DB_Sql extends DB_Sql_Abstract
         return sprintf('UPDATE `%s` SET %s WHERE %s', $sTable, $sUpdate, $sWhere);
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function next_record()
-    {
+    public function next_record() {
         $this->Record = $this->Query_ID->fetch(PDO::FETCH_BOTH);
-        $this->Row   += 1;
-        $this->Errno  = $this->_getErrorNumber();
-        $this->Error  = $this->_getErrorMessage();
+        $this->Row += 1;
+        $this->Errno = $this->_getErrorNumber();
+        $this->Error = $this->_getErrorMessage();
         $stat = is_array($this->Record);
         if (!$stat && $this->Auto_Free) {
             $this->free();
@@ -228,21 +211,17 @@ class DB_Sql extends DB_Sql_Abstract
         return $stat;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function seek($pos = 0)
-    {
+    public function seek($pos = 0) {
         throw new Exception('seek not supported');
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function lock($table, $mode = 'write')
-    {
+    public function lock($table, $mode = 'write') {
         if ($this->_bNolock == true) {
             return true;
         }
@@ -268,12 +247,10 @@ class DB_Sql extends DB_Sql_Abstract
         return $res;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function unlock()
-    {
+    public function unlock() {
         if ($this->_bNolock == true) {
             return true;
         }
@@ -285,47 +262,39 @@ class DB_Sql extends DB_Sql_Abstract
         return $res;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function affected_rows()
-    {
+    public function affected_rows() {
         return ($this->Query_ID) ? $this->Query_ID->rowCount() : 0;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function num_rows()
-    {
+    public function num_rows() {
         if ($this->Query_ID) {
             // clone statement and get count by using fetchAll
             $stmt = clone $this->Query_ID;
-            $res  = $stmt->fetchAll();
+            $res = $stmt->fetchAll();
             return (is_array($res)) ? count($stmt->fetchAll()) : 0;
         } else {
             return 0;
         }
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function num_fields()
-    {
+    public function num_fields() {
         return count($this->Record / 2);
     }
-
 
     /**
      * @deprecated [2012-07-05] No longer needed
      * {@inheritdoc}
      */
-    public function nextid($seq_name)
-    {
+    public function nextid($seq_name) {
         cDeprecated("This function is no longer needed. The ids get updated by the DB");
 
         $nextid = 0;
@@ -353,28 +322,24 @@ class DB_Sql extends DB_Sql_Abstract
         return $nextid;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function disconnect()
-    {
+    public function disconnect() {
         $this->_debug("Debug: Disconnecting $this->Link_ID...");
         // Destroy the PDO and PDOStatement object
         $this->_removeConnection($this->Link_ID);
-        $this->Link_ID  = null;
+        $this->Link_ID = null;
         $this->Query_ID = null;
     }
-
 
     /**
      * {@inheritdoc}
      */
-    protected function _metaData($table = '', $full = false)
-    {
+    protected function _metaData($table = '', $full = false) {
         $count = 0;
-        $id    = 0;
-        $aRes  = array();
+        $id = 0;
+        $aRes = array();
 
         /*
          * Due to compatibility problems with Table we changed the behavior
@@ -426,9 +391,9 @@ class DB_Sql extends DB_Sql_Abstract
             $field = $this->_getFieldTypeDetails($rs['Type']);
             $item = array();
             $item['table'] = $table;
-            $item['name']  = $rs['Field'];
-            $item['type']  = $field['type'];
-            $item['len']   = $field['size'];
+            $item['name'] = $rs['Field'];
+            $item['type'] = $field['type'];
+            $item['len'] = $field['size'];
             $item['flags'] = null; // @todo  detect field flags
             $aRes[$count] = $item;
             if ($full) {
@@ -447,23 +412,19 @@ class DB_Sql extends DB_Sql_Abstract
         return $aRes;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function escape($sString)
-    {
+    public function escape($sString) {
         // NOTE: Use mysql_real_escape_string, since PDO::quote wraps strings with
         // a single quote, which is not wanted in this case.
         return mysql_real_escape_string($sString);
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function _tableNames()
-    {
+    protected function _tableNames() {
         $aReturn = array();
         $oDb = $this->_getInstanceClone();
         if ($oDb->query('SHOW TABLES')) {
@@ -479,12 +440,10 @@ class DB_Sql extends DB_Sql_Abstract
         return $aReturn;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function _serverInfo()
-    {
+    protected function _serverInfo() {
         if ($this->Link_ID) {
             $arr = array();
             $arr['description'] = $this->Link_ID->getAttribute(PDO::ATTR_SERVER_INFO);
@@ -494,12 +453,10 @@ class DB_Sql extends DB_Sql_Abstract
         return null;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function _getErrorMessage()
-    {
+    protected function _getErrorMessage() {
         $err = null;
         if ($this->Query_ID) {
             $err = $this->Query_ID->errorInfo();
@@ -511,12 +468,10 @@ class DB_Sql extends DB_Sql_Abstract
         }
     }
 
-
     /**
      * {@inheritdoc}
      */
-    protected function _getErrorNumber()
-    {
+    protected function _getErrorNumber() {
         $err = null;
         if ($this->Query_ID) {
             $err = $this->Query_ID->errorCode();
@@ -528,9 +483,7 @@ class DB_Sql extends DB_Sql_Abstract
         }
     }
 
-
-    protected function _getFieldTypeDetails($field)
-    {
+    protected function _getFieldTypeDetails($field) {
         $ret = array('type' => null, 'size' => null);
         if (!$field) {
             return $ret;
@@ -551,8 +504,7 @@ class DB_Sql extends DB_Sql_Abstract
      * @param   string  sClassName  Optional the classname to instantiate.
      * @return  object|null
      */
-    public function getResultObject($sClassName = null)
-    {
+    public function getResultObject($sClassName = null) {
         $oResult = null;
 
         if ($this->Link_ID && $this->Query_ID) {
