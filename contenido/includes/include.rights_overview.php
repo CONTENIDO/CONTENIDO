@@ -299,23 +299,24 @@ if ($sClientCheckboxes != '' && !in_array('sysadmin', $aPerms)) {
 
 
 // user properties
-$aProperties = $oUser->getUserProperties();
+$aProperties = $oUser->getUserProperties(false);
 $sPropRows   = '';
 foreach ($aProperties as $entry) {
+    // ommit system props
+    if ('system' === $entry['type']) {
+        continue;
+    }
     $type = $entry['type'];
-    if ($type != 'system') {
-        $name  = $entry['name'];
-        $value = $entry['value'];
-        $sPropRows .= '
+    $name = $entry['name'];
+    $value = $entry['value'];
+    $href = $sess->url("main.php?area=$area&frame=4&userid=$userid&del_userprop_type=$type&del_userprop_name=$name");
+    $sPropRows .= '
         <tr>
             <td>' . $type . '</td>
             <td>' . $name . '</td>
             <td>' . $value . '</td>
-            <td>
-                <a href="' . $sess->url("main.php?area=$area&frame=4&userid=$userid&del_userprop_type=$type&del_userprop_name=$name") . '"><img src="images/delete.gif" border="0" alt="Eigenschaft löschen" title="Eigenschaft löschen"></a>
-            </td>
+            <td><a href="' . $href . '"><img src="images/delete.gif" border="0" alt="Eigenschaft lÃ¶schen" title="Eigenschaft lÃ¶schen"></a></td>
         </tr>';
-    }
 }
 $table = '
     <table class="generic" width="100%" cellspacing="0" cellpadding="2">
@@ -323,13 +324,15 @@ $table = '
         <th>'.i18n("Area/Type").'</th>
         <th>'.i18n("Property").'</th>
         <th>'.i18n("Value").'</th>
+        <th>'.i18n("Delete").'</th>
     </tr>
     ' . $sPropRows . '
     <tr>
         <td><input class="text_medium" type="text" size="16" maxlen="32" name="userprop_type"></td>
         <td><input class="text_medium" type="text" size="16" maxlen="32" name="userprop_name"></td>
         <td><input class="text_medium" type="text" size="32" name="userprop_value"></td>
-    </tr>
+        <td>&nbsp;</td>
+        </tr>
     </table>';
 
 $tpl->set('d', 'CATNAME', i18n("User-defined properties"));

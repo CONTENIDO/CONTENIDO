@@ -267,17 +267,24 @@ abstract class Item extends cItemBaseAbstract {
             return false;
         }
 
-        $this->modifiedValues[$sField] = true;
-
         if ($sField == $this->primaryKey) {
             $this->oldPrimaryKey = $this->values[$sField];
         }
 
-        if ($bSafe == true) {
-            $this->values[$sField] = $this->_inFilter($mValue);
-        } else {
-            $this->values[$sField] = $mValue;
+        // apply filter on value
+        if (true == $bSafe) {
+            $mValue = $this->_inFilter($mValue);
         }
+
+        // flag as modified
+        if ($this->values[$sField] != $mValue) {
+            echo "<br> $sField $mValue was " . $this->values[$sField];
+            $this->modifiedValues[$sField] = true;
+        }
+
+        // set new value
+        $this->values[$sField] = $mValue;
+
         return true;
     }
 

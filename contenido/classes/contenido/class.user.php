@@ -30,7 +30,7 @@
  *      If 'symbols_mandatory' set to a value greater than 0, at least so many symbols has to appear in
  *      given password. What symbols are regcognized can be administrated via 'symbols_regex'. This has
  *      to be a regular expression which is used to "find" the symbols in $password. If not set, following
- *      RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/"
+ *      RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^ï¿½\\\]/"
  *  $cfg['password']['mixed_case_mandatory'], int
  *      If set to a value greater than 0 so many lower and upper case character must appear in the password.
  *      (e.g.: if set to 2, 2 upper and 2 lower case characters must appear)
@@ -520,7 +520,7 @@ class cApiUser extends Item
             (int) $cfgPw['symbols_mandatory'] > 0) {
 
             $aSymbols = array();
-            $sSymbolsDefault = "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/";
+            $sSymbolsDefault = "/[|!@#$%&*\/=?,;.:\-_+~^ï¿½\\\]/";
             if (isset($cfgPw['symbols_regex']) && !empty($cfgPw['symbols_regex'])) {
                 $sSymbolsDefault = $cfgPw['symbols_regex'];
             }
@@ -605,8 +605,10 @@ class cApiUser extends Item
 
         $encPass = self::encodePassword($password);
 
-        $this->set('password', $encPass);
-        $this->set('using_pw_request', '0');
+        if ($this->get('password') != $encPass) {
+            $this->set('password', $encPass);
+            $this->set('using_pw_request', '0');
+        }
 
         return $result;
     }
@@ -652,7 +654,9 @@ class cApiUser extends Item
      */
     public function setUserName($sUserName)
     {
-        $this->set('username', $sUserName);
+        if ($this->get('username') != $sUserName) {
+            $this->set('username', $sUserName);
+        }
     }
 
     /**
@@ -772,7 +776,9 @@ class cApiUser extends Item
      */
     public function setRealName($sRealName)
     {
-        $this->set('realname', $sRealName);
+        if ($this->get('realname') != $sRealName) {
+            $this->set('realname', $sRealName);
+        }
     }
 
     /**
@@ -781,7 +787,9 @@ class cApiUser extends Item
      */
     public function setMail($sMail)
     {
-        $this->set('email', $sMail);
+        if ($this->get('email') != $sMail) {
+            $this->set('email', $sMail);
+        }
     }
 
     /**
@@ -790,7 +798,9 @@ class cApiUser extends Item
      */
     public function setTelNumber($sTelNumber)
     {
-        $this->set('telephone', $sTelNumber);
+        if ($this->get('telephone') != $sTelNumber) {
+            $this->set('telephone', $sTelNumber);
+        }
     }
 
     /**
@@ -802,10 +812,18 @@ class cApiUser extends Item
      */
     public function setAddressData($sStreet, $sCity, $sZip, $sCountry)
     {
-        $this->set('address_street', $sStreet);
-        $this->set('address_city', $sCity);
-        $this->set('address_zip', $sZip);
-        $this->set('address_country', $sCountry);
+        if ($this->get('address_street') != $sStreet) {
+            $this->set('address_street', $sStreet);
+        }
+        if ($this->get('address_city') != $sCity) {
+            $this->set('address_city', $sCity);
+        }
+        if ($this->get('address_zip') != $sZip) {
+            $this->set('address_zip', $sZip);
+        }
+        if ($this->get('address_country') != $sCountry) {
+            $this->set('address_country', $sCountry);
+        }
     }
 
     /**
@@ -815,7 +833,9 @@ class cApiUser extends Item
      */
     public function setStreet($sStreet)
     {
-        $this->set('address_street', $sStreet);
+        if ($this->get('address_street') != $sStreet) {
+            $this->set('address_street', $sStreet);
+        }
     }
 
     /**
@@ -825,7 +845,9 @@ class cApiUser extends Item
      */
     public function setCity($sCity)
     {
-        $this->set('address_city', $sCity);
+        if ($this->get('address_city') != $sCity) {
+            $this->set('address_city', $sCity);
+        }
     }
 
     /**
@@ -835,7 +857,9 @@ class cApiUser extends Item
      */
     public function setZip($sZip)
     {
-        $this->set('address_zip', $sZip);
+        if ($this->get('address_zip') != $sZip) {
+            $this->set('address_zip', $sZip);
+        }
     }
 
     /**
@@ -845,13 +869,15 @@ class cApiUser extends Item
      */
     public function setCountry($sCountry)
     {
-        $this->set('address_country', $sCountry);
+        if ($this->get('address_country') != $sCountry) {
+            $this->set('address_country', $sCountry);
+        }
     }
 
     /** @deprecated  [2012-03-06]  Function name should be more generic */
     public function setUseTiny($iUseTiny)
     {
-        cDeprecated("Use setUseWysie() instead");
+        cDeprecated("Use setUseWysi() instead");
         $this->setUseWysi($iUseTiny);
     }
 
@@ -862,7 +888,9 @@ class cApiUser extends Item
      */
     public function setUseWysi($iUseWysi)
     {
-        $this->set('wysi', $iUseWysi);
+        if ($this->get('wysi') != $iUseWysi) {
+            $this->set('wysi', $iUseWysi);
+        }
     }
 
     /**
@@ -874,7 +902,12 @@ class cApiUser extends Item
      */
     public function setValidDateTo($sValidateTo)
     {
-        $this->set('valid_to', $sValidateTo);
+        if ('0000-00-00' == $this->get('valid_to') && 0 == strlen(trim($sValidateTo))) {
+            return;
+        }
+        if ($this->get('valid_to') != $sValidateTo) {
+            $this->set('valid_to', $sValidateTo);
+        }
     }
 
     /**
@@ -886,7 +919,12 @@ class cApiUser extends Item
      */
     public function setValidDateFrom($sValidateFrom)
     {
-        $this->set('valid_from', $sValidateFrom);
+        if ('0000-00-00' == $this->get('valid_from') && 0 == strlen(trim($sValidateFrom))) {
+            return;
+        }
+        if ($this->get('valid_from') != $sValidateFrom) {
+            $this->set('valid_from', $sValidateFrom);
+        }
     }
 
     /**
@@ -896,7 +934,9 @@ class cApiUser extends Item
      */
     public function setPerms($perms)
     {
-        $this->set('perms', $perms);
+        if ($this->get('perms') != $perms) {
+            $this->set('perms', $perms);
+        }
     }
 
     /**
