@@ -118,6 +118,9 @@ if ($action == 'user_edit') {
             $sNotification = $notification->returnNotification("error", i18n("Passwords don't match"));
             $bError = true;
         }
+    } else if (strlen($password) === 0 && strlen($passwordagain) === 0) {
+        // it is okay if the password has not been changed - then the old password is kept.
+        $bPassOk = true;
     }
 
     if (strlen($password) == 0 || $bPassOk == true) {
