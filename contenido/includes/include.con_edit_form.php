@@ -254,12 +254,26 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'ZUORDNUNGSID', "idcatart");
     $tpl->set('s', 'ALLOCID', $tmp_cat_art);
 
-    // Author
+    // Author (Creator)
     $tpl->set('s', 'AUTHOR_CREATOR', i18n("Author (Creator)"));
-    $oAuthor = new cApiUser($tmp_author);
-    $oModifiedBy = new cApiUser($tmp_modifiedby);
-    $tpl->set('s', 'AUTOR-ERSTELLUNGS-NAME', $oAuthor->get('realname').'<input type="hidden" class="bb" name="author" value="'.$auth->auth["uname"].'">'.'&nbsp;');
-    $tpl->set('s', 'AUTOR-AENDERUNG-NAME', $oModifiedBy->get('realname').'&nbsp;');
+    $oAuthor = new cApiUser();
+    $oAuthor->loadUserByUsername($tmp_author);
+    if ($oAuthor->values && '' != $oAuthor->get('realname')) {
+    	$authorRealname = $oAuthor->get('realname');
+    }else {
+        $authorRealname = '&nbsp';
+    }
+    $tpl->set('s', 'AUTOR-ERSTELLUNGS-NAME', $authorRealname.'<input type="hidden" class="bb" name="author" value="'.$auth->auth["uname"].'">'.'&nbsp;');
+
+    // Author (Modifier)
+    $oModifiedBy = new cApiUser();
+    $oModifiedBy->loadUserByUsername($tmp_modifiedby);
+    if ($oModifiedBy->values && '' != $oModifiedBy->get('realname')) {
+    	$modifiedByRealname = $oModifiedBy->get('realname');
+    }else {
+        $modifiedByRealname = '&nbsp';
+    }
+    $tpl->set('s', 'AUTOR-AENDERUNG-NAME', $modifiedByRealname);
 
     // Created
     $tmp_erstellt = ($tmp_firstedit == 1) ? '<input type="hidden" name="created" value="'.date("Y-m-d H:i:s").'">' : '<input type="hidden" name="created" value="'.$tmp_created.'">';
@@ -271,7 +285,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'LETZTE-AENDERUNG', i18n("Last modified"));
     $tpl->set('s', 'AENDERUNGS-DATUM', $tmp2_lastmodified.'<input type="hidden" name="lastmodified" value="'.date("Y-m-d H:i:s").'">');
 
-    // Published
+    // Publishing date
     $tpl->set('s', 'PUBLISHING_DATE_LABEL', i18n("Publishing date"));
     if ($tmp_online) {
         $tpl->set('s', 'PUBLISHING_DATE', $tmp2_published);
@@ -279,15 +293,18 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tpl->set('s', 'PUBLISHING_DATE', i18n("not yet published"));
     }
 
+    // Publisher
     $tpl->set('s', 'PUBLISHER', i18n("Publisher"));
-    $oPublishedBy = new cApiUser($tmp_publishedby);
-    if ($oPublishedBy && $oPublishedBy->get('realname') != '') {
-        $tpl->set('s', 'PUBLISHER_NAME', '<input type="hidden" class="bb" name="publishedby" value="'.$auth->auth["uname"].'">'.$oPublishedBy->get('realname'));
-    } else {
-        $tpl->set('s', 'PUBLISHER_NAME', '<input type="hidden" class="bb" name="publishedby" value="'.$auth->auth["uname"].'">'.'&nbsp;');
+    $oPublishedBy = new cApiUser();
+    $oPublishedBy->loadUserByUsername($tmp_publishedby);
+    if ($oPublishedBy->values && '' != $oPublishedBy->get('realname')) {
+    	$publishedByRealname = $oPublishedBy->get('realname');
+    }else {
+        $publishedByRealname = '&nbsp';
     }
+    $tpl->set('s', 'PUBLISHER_NAME', '<input type="hidden" class="bb" name="publishedby" value="'.$auth->auth["uname"].'">'.$publishedByRealname);
 
-    // Redirect
+        // Redirect
     $tpl->set('s', 'WEITERLEITUNG', i18n("Redirect"));
     $tpl->set('s', 'CHECKBOX', '<input '.$disabled.' onclick="document.getElementById(\'redirect_url\').disabled = !this.checked;" type="checkbox" name="redirect" value="1" '.$tmp_redirect_checked.'>');
 
