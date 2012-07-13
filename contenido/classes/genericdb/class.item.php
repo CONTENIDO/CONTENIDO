@@ -278,7 +278,6 @@ abstract class Item extends cItemBaseAbstract {
 
         // flag as modified
         if ($this->values[$sField] != $mValue) {
-            echo "<br> $sField $mValue was " . $this->values[$sField];
             $this->modifiedValues[$sField] = true;
         }
 
