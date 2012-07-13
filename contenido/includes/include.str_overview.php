@@ -127,23 +127,31 @@ function getExpandCollapseButton($item, $catName)
 
     $img = new cHTMLImage();
     $img->updateAttributes(array('style' => 'padding:4px;'));
-//echo "<pre>" . print_r($item, true) . "</pre>";
-    $sDbg = " [{$item->id}, parent: {$item->custom['parentid']}, pre: {$item->custom['preid']}, post: {$item->custom['postid']}]";
+
+    // if current user is admin or sysadmin, show additional information as tooltip
+    $auth = cRegistry::getAuth();
+    $currentUser = new cApiUser($auth->auth['uid']);
+    $userPerms = $currentUser->getPerms();
+    if (strpos($userPerms, 'sysadmin') !== false || strpos($userPerms, 'admin[') !== false) {
+        $title = " title=\"idcat: {$item->id}, parentid: {$item->custom['parentid']}, preid: {$item->custom['preid']}, postid: {$item->custom['postid']}\"";
+    } else {
+        $title = '';
+    }
 
     if (count($item->subitems) > 0) {
         if ($item->collapsed == true) {
             $expandlink = $sess->url($selflink . "?area=$area&frame=$frame&expand=" . $item->id);
             $img->setSrc($item->collapsed_icon);
             $img->setAlt(i18n("Open category"));
-            return '<a href="'.$expandlink.'">'.$img->render().'</a>&nbsp;'.'<a href="'.$expandlink.'">' . $catName . $sDbg . '</a>';
+            return '<a href="'.$expandlink.'">'.$img->render().'</a>&nbsp;'.'<a href="'.$expandlink.'"'.$title.'>' . $catName . '</a>';
         } else {
             $collapselink = $sess->url($selflink . "?area=$area&frame=$frame&collapse=" . $item->id);
             $img->setSrc($item->expanded_icon);
             $img->setAlt(i18n("Close category"));
-            return '<a href="'.$collapselink.'">'.$img->render().'</a>&nbsp;'.'<a href="'.$collapselink.'">' . $catName . $sDbg . '</a>';
+            return '<a href="'.$collapselink.'">'.$img->render().'</a>&nbsp;'.'<a href="'.$collapselink.'"'.$title.'>' . $catName . '</a>';
         }
     } else {
-        return '<img src="images/spacer.gif" style="padding:4px;" width="7" height="7">&nbsp;' . $catName . $sDbg;
+        return '<img src="images/spacer.gif" style="padding:4px;" width="7" height="7">&nbsp;<span'.$title.'>' . $catName . '</span>';
     }
 }
 
