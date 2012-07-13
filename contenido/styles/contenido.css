@@ -1051,10 +1051,6 @@ div#navcontainer ul#navlist li a:visited {
     list-style: none;
 }
 
-.hoverbox a {
-    cursor: default;
-}
-
 .hoverbox a .preview {
     display: none;
 }
