@@ -30,7 +30,7 @@
  *      If 'symbols_mandatory' set to a value greater than 0, at least so many symbols has to appear in
  *      given password. What symbols are regcognized can be administrated via 'symbols_regex'. This has
  *      to be a regular expression which is used to "find" the symbols in $password. If not set, following
- *      RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^�\\\]/"
+ *      RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/"
  *  $cfg['password']['mixed_case_mandatory'], int
  *      If set to a value greater than 0 so many lower and upper case character must appear in the password.
  *      (e.g.: if set to 2, 2 upper and 2 lower case characters must appear)
@@ -520,7 +520,7 @@ class cApiUser extends Item
             (int) $cfgPw['symbols_mandatory'] > 0) {
 
             $aSymbols = array();
-            $sSymbolsDefault = "/[|!@#$%&*\/=?,;.:\-_+~^�\\\]/";
+            $sSymbolsDefault = "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/";
             if (isset($cfgPw['symbols_regex']) && !empty($cfgPw['symbols_regex'])) {
                 $sSymbolsDefault = $cfgPw['symbols_regex'];
             }
