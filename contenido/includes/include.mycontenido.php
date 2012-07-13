@@ -187,15 +187,24 @@ $page->set('s', 'MYCONTENIDO_TASKS', $mycontenido_tasks);
 $page->set('s', 'MYCONTENIDO_SETTINGS', $mycontenido_settings);
 
 // Systemadmins list
-$sAdminTemplate = '<li class="welcome">%s, %s</li>';
 $sOutputAdmin = '';
 $userColl = new cApiUserCollection();
 $admins = $userColl->fetchSystemAdmins(true);
 foreach ($admins as $pos => $item) {
     if ($item->get('email') != '') {
-        $sAdminEmail = '<a class="blue" href="mailto:' . $item->get('email') . '">' . $item->get('email') . '</a>';
         $sAdminName = $item->get('realname');
-        $sOutputAdmin .= sprintf($sAdminTemplate, $sAdminName, $sAdminEmail);
+        $sAdminEmail = '<a class="blue" href="mailto:' . $item->get('email') . '">' . $item->get('email') . '</a>';
+        $li = '<li class="welcome">';
+        if ($sAdminName !== '' && $sAdminEmail !== '') {
+            $li .= $sAdminName . ', ' . $sAdminEmail . '</li>';
+        } else if ($sAdminName === '' && $sAdminEmail !== '') {
+            $li .= $sAdminEmail . '</li>';
+        } else if ($sAdminName !== '' && $sAdminEmail === '') {
+            $li .= $sAdminName . '</li>';
+        } else {
+            $li = '';
+        }
+        $sOutputAdmin .= $li;
     }
 }
 
@@ -217,12 +226,20 @@ $aMemberList = $oActiveUsers->findAllUser();
 
 // Template for display current user
 $sOutput = '';
-$sTemplate = '<li class="welcome">%s, %s</li>';
-
 foreach ($aMemberList as $key) {
     $sRealName = $key['realname'];
     $aPerms['0'] = $key['perms'];
-    $sOutput .= sprintf($sTemplate, $sRealName, $aPerms['0']);
+    $li = '<li class="welcome">';
+    if ($sRealName !== '' && $aPerms['0'] !== '') {
+        $li .= $sRealName . ', ' . $aPerms['0'] . '</li>';
+    } else if ($sRealName === '' && $aPerms['0'] !== '') {
+        $li .= $aPerms['0'] . '</li>';
+    } else if ($sRealName !== '' && $aPerms['0'] === '') {
+        $li .= $sRealName . '</li>';
+    } else {
+        $li = '';
+    }
+    $sOutput .= $li;
 }
 
 // set template welcome
