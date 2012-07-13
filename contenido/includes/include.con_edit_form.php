@@ -259,8 +259,8 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $oAuthor = new cApiUser();
     $oAuthor->loadUserByUsername($tmp_author);
     if ($oAuthor->values && '' != $oAuthor->get('realname')) {
-    	$authorRealname = $oAuthor->get('realname');
-    }else {
+        $authorRealname = $oAuthor->get('realname');
+    } else {
         $authorRealname = '&nbsp';
     }
     $tpl->set('s', 'AUTOR-ERSTELLUNGS-NAME', $authorRealname.'<input type="hidden" class="bb" name="author" value="'.$auth->auth["uname"].'">'.'&nbsp;');
@@ -269,8 +269,8 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $oModifiedBy = new cApiUser();
     $oModifiedBy->loadUserByUsername($tmp_modifiedby);
     if ($oModifiedBy->values && '' != $oModifiedBy->get('realname')) {
-    	$modifiedByRealname = $oModifiedBy->get('realname');
-    }else {
+        $modifiedByRealname = $oModifiedBy->get('realname');
+    } else {
         $modifiedByRealname = '&nbsp';
     }
     $tpl->set('s', 'AUTOR-AENDERUNG-NAME', $modifiedByRealname);
@@ -298,8 +298,8 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $oPublishedBy = new cApiUser();
     $oPublishedBy->loadUserByUsername($tmp_publishedby);
     if ($oPublishedBy->values && '' != $oPublishedBy->get('realname')) {
-    	$publishedByRealname = $oPublishedBy->get('realname');
-    }else {
+        $publishedByRealname = $oPublishedBy->get('realname');
+    } else {
         $publishedByRealname = '&nbsp';
     }
     $tpl->set('s', 'PUBLISHER_NAME', '<input type="hidden" class="bb" name="publishedby" value="'.$auth->auth["uname"].'">'.$publishedByRealname);
