@@ -911,7 +911,10 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $tpl->set('s', 'SID', $sess->id);
 
         $tpl->set('s', 'NOTIFICATION', $str);
-
+        //display if there are articles
+    	if ($no_article) {
+			$tpl->set('s', 'noArticle', "display: none;");
+        }
         // Generate template
         $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_art_overview']);
     } else {
