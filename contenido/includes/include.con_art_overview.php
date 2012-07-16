@@ -120,8 +120,11 @@ $cat_idtpl = 0;
 if (is_numeric($idcat) && ($idcat >= 0)) {
     // Saving sort and elements per page user settings (if specified)
     // Should be changed to User->setProperty... someday
-    if (isset($sort)) {
-        $currentuser->setUserProperty("system", "sortorder-idlang-$lang-idcat-$idcat",$sort);
+    if (isset($sortby)) {
+        $currentuser->setUserProperty("system", "sortorder-idlang-$lang-idcat-$idcat",$sortby);
+    }
+    if (isset($sortmode)) {
+        $currentuser->setUserProperty("system", "sortmode-idlang-$lang-idcat-$idcat",$sortmode);
     }
 
     if (isset($elemperpage) && is_numeric($elemperpage)) {
@@ -164,7 +167,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
     {
 
-        $sort = $currentuser->getUserProperty("system", "sortorder-idlang-$lang-idcat-$idcat");
+        $sortby = $currentuser->getUserProperty("system", "sortorder-idlang-$lang-idcat-$idcat");
+        $sortmode = $currentuser->getUserProperty("system", "sortmode-idlang-$lang-idcat-$idcat");
 
         $sql  = "SELECT
                     a.idart AS idart,
@@ -222,20 +226,23 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         }
 
         // Article sort
-        switch ($sort) {
+        if ($sortmode !== 'asc' && $sortmode !== 'desc') {
+            $sortmode = 'asc';
+        }
+        switch ($sortby) {
             case 2:
-                $sql .= " ORDER BY a.lastmodified DESC";
+                $sql .= ' ORDER BY a.lastmodified ' . strtoupper($sortmode);
                 break;
             case 3:
-                $sql .= " ORDER BY a.published DESC, a.lastmodified DESC";
+                $sql .= ' ORDER BY a.published ' . strtoupper($sortmode) . ', a.lastmodified ' . strtoupper($sortmode);
                 break;
             case 4:
-                $sql .= " ORDER BY a.artsort ASC";
+                $sql .= ' ORDER BY a.artsort ' . strtoupper($sortmode);
                 break;
             default:
                 // Default sort order
-                $sql .= " ORDER BY a.title ASC";
-                $sort = 1;
+                $sql .= ' ORDER BY a.title ' . strtoupper($sortmode);
+                $sortby = 1;
         }
 
         // Getting article count, if necessary
@@ -664,13 +671,36 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         $headers = array();
 
+        // keep old keys so that saved user properties still work
+        $sortColumns = array(
+            'title' => 1,
+            'changeddate' => 2,
+            'publisheddate' => 3,
+            'sortorder' => 4
+        );
         foreach ($listColumns as $key => $listColumn) {
             // Dirty hack to force column widths
-            if ($key == "title" || $listColumn == i18n("Title")) {
-                $headers[] = '<th width="100%" nowrap="nowrap">'.$listColumn.'</th>';
+            $width = ($key == 'title' || $listColumn == i18n('Title'))? '100%' : '1%';
+            // if it should be possible to sort by this column, add a link
+            if (in_array($key, array_keys($sortColumns))) {
+                $newSortmode = 'asc';
+                // revert the sorting if it already has been sorted by this column
+                if ($sortby == $sortColumns[$key] && $sortmode == 'asc') {
+                    $newSortmode = 'desc';
+                }
+                // add the appropriate sorting image if necessary
+                if ($sortby == $sortColumns[$key]) {
+                    $imageSrc = ($sortmode == 'asc')? 'images/sort_up.gif' : 'images/sort_down.gif';
+                    $sortImage = '<img src="' . $imageSrc . '" />';
+                } else {
+                    $sortImage = '';
+                }
+                $sortLink = $sess->url("main.php?area=con&frame=4&idcat=$idcat&sortby=$sortColumns[$key]&sortmode=$newSortmode");
+                $col = '<a href="' . $sortLink . '" class="gray">' . $listColumn . $sortImage . '</a>';
             } else {
-                $headers[] = '<th width="1%" nowrap="nowrap">'.$listColumn.'</th>';
+                $col = $listColumn;
             }
+            $headers[] = '<th width="' . $width . '" nowrap="nowrap">' . $col . '</th>';
         }
 
         $tpl->set('s', 'HEADERS', implode("\n", $headers));
@@ -739,44 +769,13 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $tpl->set('s', 'ROWMARKSCRIPT', '');
         }
 
-        // Sort select
-        $s_types = array(
-
-            1 => i18n("Alphabetical"),
-            2 => i18n("Last change"),
-            3 => i18n("Published date"),
-            4 => i18n("Sort key")
-
-        );
-
-        $tpl2 = new Template();
-        $tpl2->set('s', 'NAME', 'sort');
-        $tpl2->set('s', 'CLASS', 'text_medium');
-        $tpl2->set('s', 'OPTIONS', 'onchange="artSort(this)"');
-
-        foreach ($s_types as $key => $value) {
-            $selected = ($sort == $key) ? 'selected="selected"' : '';
-            $tpl2->set('d', 'VALUE',    $key);
-            $tpl2->set('d', 'CAPTION',  $value);
-            $tpl2->set('d', 'SELECTED', $selected);
-            $tpl2->next();
-        }
-
-        $select   = (!$no_article) ? $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true) : '&nbsp;';
-        $caption  = (!$no_article) ? i18n("Sort articles:") : '&nbsp;';
-
-        $tpl->set('s', 'ARTSORTCAPTION', $caption);
-        $tpl->set('s', 'ARTSORT', $select);
-
         // Elements per Page select
         $aElemPerPage = array(
-
             0     => i18n("All"),
             25     => "25",
             50     => "50",
             75     => "75",
             100    => "100"
-
         );
 
         $tpl2 = new Template();

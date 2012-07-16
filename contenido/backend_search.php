@@ -124,6 +124,11 @@ if (!empty($sSession)) {
     ));
 }
 
+// get sorting values - make sure that they only contain valid values!
+$sortbyValues = array('title', 'lastmodified', 'published', 'artsort');
+$sortby = in_array($_POST['sortby'], $sortbyValues)? $_POST['sortby'] : 'lastmodified';
+$sortmode = ($_POST['sortmode'] == 'asc')? 'asc' : 'desc';
+
 /*
  * SAVE SEARCH
  * Some orientation info:
@@ -461,6 +466,7 @@ if (!empty($sSearchStrAuthor) && ($sSearchStrAuthor != 'n/a')) {
 
 if (!empty($where)) {
     $sql_1 .= $where;
+    $sql_1 .= ' ORDER BY a.' . $sortby . ' ' . strtoupper($sortmode);
     $db->query($sql_1);
 } elseif ($bLostAndFound) {
     $sql_1 = "SELECT
@@ -486,6 +492,34 @@ if (!empty($sSession)) {
 // Include Template Class
 include_once($cfg["path"]["contenido"] . 'classes/class.template.php');
 
+$tableHeaders = array();
+foreach ($sortbyValues as $value) {
+    $tableHeader = '<a href="#" class="gray">';
+    switch ($value) {
+        case 'title':
+            $tableHeader .= i18n('Title');
+            break;
+        case 'lastmodified':
+            $tableHeader .= i18n('Changed');
+            break;
+        case 'published':
+            $tableHeader .= i18n('Published');
+            break;
+        case 'artsort':
+            $tableHeader .= i18n('Sort order');
+            break;
+        default:
+            break;
+    }
+    $tableHeader .= '</a>';
+    // add the sorting arrow
+    if ($value == $sortby) {
+        $imageSrc = ($sortmode == 'asc')? 'images/sort_up.gif' : 'images/sort_down.gif';
+        $tableHeader .= '<img src="' . $imageSrc . '" />';
+    }
+    $tableHeaders[$value] = $tableHeader;
+}
+
 $tpl = new Template();
 
 $tpl->setEncoding('iso-8859-1');
@@ -494,12 +528,14 @@ $tpl->set('s', 'SCRIPT', $sScript);
 $tpl->set('s', 'SESSNAME', $sess->name);
 $tpl->set('s', 'TITLE', i18n('Search results'));
 $tpl->set('s', 'TH_START', i18n("Article"));
-$tpl->set('s', 'TH_TITLE', i18n("Title"));
-$tpl->set('s', 'TH_CHANGED', i18n("Changed"));
-$tpl->set('s', 'TH_PUBLISHED', i18n("Published"));
-$tpl->set('s', 'TH_SORTORDER', i18n("Sort order"));
+$tpl->set('s', 'TH_TITLE', $tableHeaders['title']);
+$tpl->set('s', 'TH_CHANGED', $tableHeaders['lastmodified']);
+$tpl->set('s', 'TH_PUBLISHED', $tableHeaders['published']);
+$tpl->set('s', 'TH_SORTORDER', $tableHeaders['artsort']);
 $tpl->set('s', 'TH_TEMPLATE', i18n("Template"));
 $tpl->set('s', 'TH_ACTIONS', i18n("Actions"));
+$tpl->set('s', 'CURRENT_SORTBY', $sortby);
+$tpl->set('s', 'CURRENT_SORTMODE', $sortmode);
 
 // Refresh top left frame
 $tpl->set('s', 'REFRESH', $refreshScript);

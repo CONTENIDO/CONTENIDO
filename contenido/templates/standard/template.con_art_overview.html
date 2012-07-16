@@ -67,7 +67,7 @@
             </tr>
         </table>
         </td>
-        <td align="right" class="text_medium" colspan="10" style="border: 1px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #E2E2E2">{ARTSORTCAPTION} {ARTSORT} {ELEMPERPAGECAPTION} {ELEMPERPAGE}</td>
+        <td align="right" class="text_medium" colspan="10" style="border: 1px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #E2E2E2">{ELEMPERPAGECAPTION} {ELEMPERPAGE}</td>
     </tr>
 
     <tr>
@@ -226,14 +226,6 @@
         }
 
         return true;
-    }
-
-    /* Function for sorting the articles */
-    function artSort(selObj) {
-        var url = '{SELF_URL}';
-        var i = selObj.selectedIndex;
-        var sortkey = selObj.options[i].value;
-        window.location.href = url + '&sort=' + sortkey;
     }
 
     function changeElemPerPage(selObj) {

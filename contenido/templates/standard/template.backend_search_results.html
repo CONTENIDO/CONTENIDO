@@ -7,6 +7,7 @@
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="pragma" content="no-cache">
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/messageBox.js.php?{SESSNAME}={SESSID}"></script>
     <script type="text/javascript" src="scripts/articleObject.js.php?{SESSNAME}={SESSID}"></script>
@@ -24,6 +25,37 @@
             window.location.href = url;
         }
 
+        /* Appends the given form value to the given form as a hidden input field. */
+        function appendFormField(form, name, value) {
+            // if a hidden input field with the given name already exists, just set the value
+            if ($(form).find('input[type="hidden"][name="' + name + '"]').length > 0) {
+            	$(form).find('input[type="hidden"][name="' + name + '"]').val(value);
+            } else {
+                // otherwise append a new field to the form
+            	$(form).append('<input type="hidden" value="' + value + '" name="' + name + '"/>');
+            }
+        }
+
+        // make the article table sortable
+        $(function() {
+        	$('td.sortable').css('cursor', 'pointer');
+        	$('td.sortable').click(function() {
+                var currentSortby = '{CURRENT_SORTBY}';
+                var currentSortmode = '{CURRENT_SORTMODE}';
+        		var id = $(this).attr('id').split('-')[1];
+        		var sortmode = 'asc';
+        		if (currentSortby == id && currentSortmode == 'asc') {
+        			sortmode = 'desc';
+        		}
+        		var searchForm = $('#backend_search', top.content.left.left_top.document);
+                appendFormField(searchForm, 'sortby', id);
+                appendFormField(searchForm, 'sortmode', sortmode);
+                // searchForm.submit() does not work, so trigger click event on submit button 
+                searchForm.find('input[type="submit"]').click();
+                return false;
+        	});
+        });
+
         {SCRIPT}
     //-->
     </script>
@@ -35,10 +67,10 @@
     <table width="100%" border="0" cellspacing="0" cellpadding="2" class="bordered">
     <tr>
         <td width="1%" class="headerbordercell" nowrap="nowrap">{TH_START}</td>
-        <td width="100%" class="headerbordercell" nowrap="nowrap">{TH_TITLE}</td>
-        <td width="1%" class="headerbordercell" nowrap="nowrap">{TH_CHANGED}</td>
-        <td width="1%" class="headerbordercell" nowrap="nowrap">{TH_PUBLISHED}</td>
-        <td width="1%" class="headerbordercell" nowrap="nowrap">{TH_SORTORDER}</td>
+        <td width="100%" class="headerbordercell sortable" id="col-title" nowrap="nowrap">{TH_TITLE}</td>
+        <td width="1%" class="headerbordercell sortable" id="col-lastmodified" nowrap="nowrap">{TH_CHANGED}</td>
+        <td width="1%" class="headerbordercell sortable" id="col-published" nowrap="nowrap">{TH_PUBLISHED}</td>
+        <td width="1%" class="headerbordercell sortable" id="col-artsort" nowrap="nowrap">{TH_SORTORDER}</td>
         <td width="1%" class="headerbordercell" nowrap="nowrap">{TH_TEMPLATE}</td>
         <td width="1%" class="headerbordercell" nowrap="nowrap">{TH_ACTIONS}</td>
     </tr>
