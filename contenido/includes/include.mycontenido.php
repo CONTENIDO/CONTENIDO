@@ -77,7 +77,7 @@ if (in_array('sysadmin', explode(',', $vuser->getEffectiveUserPerms())) && $max_
 
 $userid = $auth->auth['uid'];
 
-$page->set('s', 'WELCOME', '<b>' . i18n('Welcome') . ' </b>' . $vuser->getRealname($userid, true) . '.');
+$page->set('s', 'WELCOME', '<b>' . i18n('Welcome') . ' </b>' . ($vuser->getRealname($userid, true) ? $vuser->getRealname($userid, true) : $vuser->getUserName($userid, true)) . '.');
 $page->set('s', 'LASTLOGIN', i18n('Last login') . ': ' . $lastlogin);
 
 $clients = $classclient->getAccessibleClients();
@@ -190,9 +190,10 @@ $page->set('s', 'MYCONTENIDO_SETTINGS', $mycontenido_settings);
 $sOutputAdmin = '';
 $userColl = new cApiUserCollection();
 $admins = $userColl->fetchSystemAdmins(true);
+
 foreach ($admins as $pos => $item) {
     if ($item->get('email') != '') {
-        $sAdminName = $item->get('realname');
+        $sAdminName = $item->get('realname') ? $item->get('realname') : $item->get('username');
         $sAdminEmail = '<a class="blue" href="mailto:' . $item->get('email') . '">' . $item->get('email') . '</a>';
         $li = '<li class="welcome">';
         if ($sAdminName !== '' && $sAdminEmail !== '') {
@@ -227,7 +228,7 @@ $aMemberList = $oActiveUsers->findAllUser();
 // Template for display current user
 $sOutput = '';
 foreach ($aMemberList as $key) {
-    $sRealName = $key['realname'];
+    $sRealName = $key['realname'] ? $key['realname'] : $key['username'];
     $aPerms['0'] = $key['perms'];
     $li = '<li class="welcome">';
     if ($sRealName !== '' && $aPerms['0'] !== '') {
