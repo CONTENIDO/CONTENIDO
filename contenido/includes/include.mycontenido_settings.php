@@ -108,8 +108,12 @@ if ($action == "mycontenido_editself") {
     }
 }
 
-
-$settingsfor = sprintf(i18n("Settings for %s"), $user->get("username") . " (".$user->get("realname").")");
+$username = $user->get('username');
+$realname = $user->get('realname');
+if (!empty($realname)) {
+    $username .= ' (' . $realname . ')';
+}
+$settingsfor = sprintf(i18n("Settings for %s"), $username);
 
 $form = new cGuiTableForm("settings");
 
