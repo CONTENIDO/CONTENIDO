@@ -149,8 +149,6 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
             $oPage->displayWarning(i18n("No module history available"));
             $oPage->abortRendering();
         }
-
-
     }
     $oPage->render();
 }

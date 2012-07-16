@@ -171,14 +171,16 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage'))
         } else {
             $oPage->displayWarning(i18n("No style history available"));
         }
-        $oPage->render();
 
     } else {
-        if ($bDeleteFile) {
-            $notification->displayNotification("warning", i18n("Version history was cleared"));
+   		if($bDeleteFile){
+            $oPage->displayWarning(i18n("Version history was cleared"));
+            $oPage->abortRendering();
         } else {
-            $notification->displayNotification("warning", i18n("No style history available"));
+            $oPage->displayWarning(i18n("No style history available"));
+            $oPage->abortRendering();
         }
     }
+	$oPage->render();
 }
 ?>
