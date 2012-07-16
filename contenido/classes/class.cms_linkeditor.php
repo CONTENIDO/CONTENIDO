@@ -222,7 +222,7 @@ class Cms_LinkEditor {
                         " . $this->aCfg["tab"]["cat"] . " AS c,
                         " . $this->aCfg["tab"]["cat_lang"] . " AS d
                     WHERE
-                        b.idart = " . $this->aLink['link_src'] . " AND
+                        b.idart = " . cSecurity::toInteger($this->aLink['link_src']) . " AND
                         a.idcat = d.idcat AND
                         b.idcat = c.idcat AND
                         c.idcat = a.idcat AND
@@ -247,7 +247,7 @@ class Cms_LinkEditor {
                     FROM
                         " . $this->aCfg["tab"]["cat"] . " AS a
                     WHERE
-                        a.idcat = " . $idcat;
+                        a.idcat = " . cSecurity::toInteger($idcat);
         $sqlDb->query($sql);
 
         while ($sqlDb->next_record()) {
@@ -444,8 +444,8 @@ class Cms_LinkEditor {
                     " . $this->aCfg["tab"]["cat"] . " AS c,
                     " . $this->aCfg["tab"]["cat_lang"] . " AS d
                 WHERE
-                    a.level = " . $iLevelId . " AND
-                    c.parentid = " . $iParentidcat . " AND
+                    a.level = " . cSecurity::toInteger($iLevelId) . " AND
+                    c.parentid = " . cSecurity::toInteger($iParentidcat) . " AND
                     a.idcat = d.idcat AND
                     c.idcat = a.idcat AND
                     d.idlang = '" . cSecurity::toInteger($this->iLang) . "' AND
@@ -495,7 +495,7 @@ class Cms_LinkEditor {
                         " . $this->aCfg["tab"]["cat_lang"] . " AS d,
                         " . $this->aCfg["tab"]["art_lang"] . " AS e
                     WHERE
-                        b.idart = " . $this->aLink['link_src'] . " AND
+                        b.idart = " . cSecurity::toInteger($this->aLink['link_src']) . " AND
                         e.online = 1 AND
                         a.idcat = b.idcat AND
                         b.idcat = d.idcat AND
@@ -721,7 +721,7 @@ class Cms_LinkEditor {
     public function getAllWidgetView() {
 
         $sCode = '';
-        $this->oDb->query('SELECT * FROM ' . $this->aCfg['tab']['content'] . ' WHERE idartlang=' . $this->iIdArtLang . ' AND idtype=24 AND typeid=' . $this->iId);
+        $this->oDb->query('SELECT * FROM ' . $this->aCfg['tab']['content'] . ' WHERE idartlang=' . cSecurity::toInteger($this->iIdArtLang) . ' AND idtype=24 AND typeid=' . cSecurity::toInteger($this->iId));
         if ($this->oDb->next_record()) {
             $sCode = $this->oDb->f('value');
         } else {

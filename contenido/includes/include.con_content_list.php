@@ -84,14 +84,14 @@ $sortID = array("CMS_HTMLHEAD","CMS_HEAD","CMS_HTML","CMS_HTMLTEXT","CMS_TEXT",
                 "CMS_DATE","CMS_TEASER","CMS_FILELIST");
 
 $aIdtype = array();
-$sql = "SELECT DISTINCT typeid FROM ".$cfg["tab"]["content"]." WHERE idartlang=".$_REQUEST["idartlang"]." ORDER BY typeid";
+$sql = "SELECT DISTINCT typeid FROM ".$cfg["tab"]["content"]." WHERE idartlang=".cSecurity::toInteger($_REQUEST["idartlang"])." ORDER BY typeid";
 $db->query($sql);
 while ($db->next_record()) {
     $aIdtype[] = $db->f("typeid");
 }
 
 foreach ($sortID as $name) {
-    $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM ".$cfg["tab"]["content"]." as a, ".$cfg["tab"]["type"]." as b WHERE a.idartlang=".$_REQUEST["idartlang"]." AND a.idtype=b.idtype AND b.type = '".$name."' ORDER BY idtype,typeid,idcontent";
+    $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM ".$cfg["tab"]["content"]." as a, ".$cfg["tab"]["type"]." as b WHERE a.idartlang=".cSecurity::toInteger($_REQUEST["idartlang"])." AND a.idtype=b.idtype AND b.type = '".cSecurity::toString($name)."' ORDER BY idtype,typeid,idcontent";
     $db->query($sql);
     while ($db->next_record()) {
             $result[$db->f("name")][$db->f("id")] = $db->f("value");
@@ -303,8 +303,8 @@ cRegistry::shutdown();
 
                 $sql = "SELECT a.idcontent
                         FROM ".$cfg["tab"]["content"]." as a, ".$cfg["tab"]["type"]." as b
-                        WHERE a.idartlang=".$_REQUEST["idartlang"].
-                        " AND a.idtype=b.idtype AND a.typeid = ".$val." AND b.type = '".$type."'
+                        WHERE a.idartlang=".cSecurity::toInteger($_REQUEST["idartlang"]).
+                        " AND a.idtype=b.idtype AND a.typeid = ".cSecurity::toInteger($val)." AND b.type = '".cSecurity::toString($type)."'
                         ORDER BY a.idartlang, a.idtype, a.typeid";
                 $db->query($sql);
                 while ($db->next_record()) {

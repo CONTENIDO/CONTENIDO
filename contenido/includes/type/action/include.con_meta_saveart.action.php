@@ -23,7 +23,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET pagetitle = '".$_POST["page_title"]."' WHERE idartlang=".$_POST["idartlang"];$db->query($sql);
+$sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET pagetitle = '".$_POST["page_title"]."' WHERE idartlang=".cSecurity::toInteger($_POST["idartlang"]);
+$db->query($sql);
 
 $availableTags = conGetAvailableMetaTagTypes();
 foreach ($availableTags as $key => $value){

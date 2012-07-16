@@ -184,7 +184,7 @@ class Cms_Image {
         } else {
             $aFilenameData['dirname'] .= '/';
         }
-        $query = 'SELECT idupl FROM ' . $this->aCfg['tab']['upl'] . ' WHERE filename=\'' . $aFilenameData['filename'] . '\' AND dirname=\'' . $aFilenameData['dirname'] . '\' AND idclient=\'' . $this->iClient . '\'';
+        $query = 'SELECT idupl FROM ' . $this->aCfg['tab']['upl'] . ' WHERE filename=\'' . cSecurity::toString($aFilenameData['filename']) . '\' AND dirname=\'' . cSecurity::toString($aFilenameData['dirname']) . '\' AND idclient=\'' . cSecurity::toInteger($this->iClient) . '\'';
 
         $this->oDb->query($query);
         if ($this->oDb->next_record()) {
@@ -205,7 +205,7 @@ class Cms_Image {
         $keywords = $_REQUEST['image_keywords'];
         $internal_notice = $_REQUEST['image_internal_notice'];
         $copyright = $_REQUEST['image_copyright'];
-        $query = "SELECT id_uplmeta FROM " . $this->aCfg['tab']['upl_meta'] . " WHERE idupl='" . $idupl . "' AND idlang='" . $idlang . "'";
+        $query = "SELECT id_uplmeta FROM " . $this->aCfg['tab']['upl_meta'] . " WHERE idupl='" . cSecurity::toInteger($idupl) . "' AND idlang='" . cSecurity::toInteger($idlang) . "'";
         $this->oDb->query($query);
         //echo '1'.$this->oDb->Error;
         if ($this->oDb->next_record()) {
@@ -221,7 +221,7 @@ class Cms_Image {
         } else {
             $query = "UPDATE " . $this->aCfg['tab']['upl_meta'] .
                     " SET idupl='" . $idupl . "', idlang='" . $idlang . "', medianame='" . $medianame . "', description='" . $description . "', keywords='" . $keywords . "', internal_notice='" . $internal_notice . "', modified='" . $time . "', modifiedby='" . $auth->auth['uid'] . "', copyright='" . $copyright . "'
-                    WHERE id_uplmeta='" . $id_uplmeta . "'";
+                    WHERE id_uplmeta='" . cSecurity::toInteger($id_uplmeta) . "'";
             $this->oDb->query($query);
             //echo '3'.$this->oDb->Error;
         }
@@ -414,7 +414,7 @@ class Cms_Image {
 
         $idupl = $this->sContent;
         $idlang = $this->iLang;
-        $this->oDb->query('SELECT filename,dirname FROM ' . $this->aCfg['tab']['upl'] . ' WHERE idupl=\'' . $idupl . '\' AND idclient=\'' . $this->iClient . '\'');
+        $this->oDb->query('SELECT filename,dirname FROM ' . $this->aCfg['tab']['upl'] . ' WHERE idupl=\'' . cSecurity::toInteger($idupl) . '\' AND idclient=\'' . cSecurity::toInteger($this->iClient) . '\'');
         if ($this->oDb->next_record()) {
             $this->filename = $this->oDb->f('filename');
             $this->dirname = $this->oDb->f('dirname');
@@ -442,7 +442,7 @@ class Cms_Image {
         $oTpl->set('s', 'sContent', $this->aCfgClient[$this->iClient]['upl']['htmlpath'] . $this->dirname . $this->filename);
         $oTpl->set('s', 'DIRECTORY_LIST', $this->getDirectoryList($this->buildDirectoryList()));
 
-        $query = "SELECT * FROM " . $this->aCfg['tab']['upl_meta'] . " WHERE idupl='" . $idupl . "' AND idlang='" . $idlang . "'";
+        $query = "SELECT * FROM " . $this->aCfg['tab']['upl_meta'] . " WHERE idupl='" . cSecurity::toInteger($idupl) . "' AND idlang='" . cSecurity::toInteger($idlang) . "'";
         $this->oDb->query($query);
 
         if ($this->oDb->next_record() && $idupl != '') {
@@ -495,7 +495,7 @@ class Cms_Image {
         $oTpl = new Template();
         $sCode = '';
         //select metadaten
-        $this->oDb->query('SELECT * FROM ' . $this->aCfg['tab']['upl'] . ' WHERE idupl=\'' . $this->sContent . '\' AND idclient=\'' . $this->iClient . '\'');
+        $this->oDb->query('SELECT * FROM ' . $this->aCfg['tab']['upl'] . ' WHERE idupl=\'' . cSecurity::toInteger($this->sContent) . '\' AND idclient=\'' . cSecurity::toInteger($this->iClient) . '\'');
         if ($this->oDb->next_record()) {
             //set title of teaser
             $oTpl->set('s', 'TITLE', $this->oDb->f('filename'));
@@ -515,7 +515,7 @@ class Cms_Image {
     }
 
     public function getImageMeta($filename, $dirname, $iImageId) {
-        $query = "SELECT * FROM " . $this->aCfg['tab']['upl'] . " a," . $this->aCfg['tab']['upl_meta'] . " b WHERE a.filename='" . $filename . "' AND a.dirname='" . $dirname . "' AND a.idclient=" . $this->iClient . " AND a.idupl=b.idupl AND b.idlang=" . $this->iLang;
+        $query = "SELECT * FROM " . $this->aCfg['tab']['upl'] . " a," . $this->aCfg['tab']['upl_meta'] . " b WHERE a.filename='" . cSecurity::toString($filename) . "' AND a.dirname='" . cSecurity::toString($dirname) . "' AND a.idclient=" . cSecurity::toInteger($this->iClient) . " AND a.idupl=b.idupl AND b.idlang=" . cSecurity::toInteger($this->iLang);
         $this->oDb->query($query);
         $array = array();
         if ($this->oDb->next_record()) {
@@ -561,7 +561,7 @@ class Cms_Image {
 
                     uplSyncDirectory($sPath);
 
-                    $sql = "SELECT * FROM " . $this->aCfg["tab"]["upl"] . " WHERE dirname='" . $sPath . "' AND filename='" . $_FILES['file']['name'][$key] . "'";
+                    $sql = "SELECT * FROM " . $this->aCfg["tab"]["upl"] . " WHERE dirname='" . cSecurity::toString($sPath) . "' AND filename='" . cSecurity::toString($_FILES['file']['name'][$key]) . "'";
                     $this->oDb->query($sql);
                     if ($this->oDb->next_record()) {
                         $uplfilename = $rootpath . $this->oDb->f('dirname') . $this->oDb->f('filename');
