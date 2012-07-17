@@ -106,11 +106,11 @@ class cApiAreaCollection extends ItemCollection
     public function getIdareasByAreaNameOrParentId($nameOrId)
     {
         $sql = "SELECT idarea FROM `%s` AS a WHERE a.name = '%s' OR a.parent_id = '%s' ORDER BY idarea";
-        $this->db->query($sql, $this->table, $area, $area);
+        $this->db->query($sql, $this->table, $nameOrId, $nameOrId);
 
         $ids = array();
         while ($this->db->next_record()) {
-            $ids[] = $this->db->f('a');
+            $ids[] = $this->db->f('idarea');
         }
 
         return $ids;
