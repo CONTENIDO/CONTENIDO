@@ -20,27 +20,15 @@
  *
  * {@internal
  *   created  2009-09-29
- *   modified 2008-12-23, Murat Purc, added functions buildRedirect(), composeByComponents() and
- *                                    isExternalUrl() and exended flexibility of build()
- *   modified 2008-12-26, Murat Purc, added execution of chains 'Contenido.Frontend.PreprocessUrlBuilding'
- *                                    and 'Contenido.Frontend.PostprocessUrlBuilding' to build()
- *   modified 2009-01-13, Murat Purc, added new function isIdentifiableFrontContentUrl() for better
- *                                    identification of internal urls
- *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
- *   modified 2011-05-20, Murat Purc, fixed wrong condition in function parse(), see [#CON-399]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
-final class Contenido_Url
-{
+final class Contenido_Url {
 
     /**
      * Self instance.
@@ -60,16 +48,14 @@ final class Contenido_Url
      */
     private $_sUrlBuilderName;
 
-
     /**
      * Constructor of Contenido_Url. Is not callable from outside.
      * Gets the UrlBuilder configuration and creates an UrlBuilder instance.
      */
-    private function __construct()
-    {
+    private function __construct() {
         $this->_sUrlBuilderName = Contenido_UrlBuilderConfig::getUrlBuilderName();
-        $this->_oUrlBuilder     = Contenido_UrlBuilderFactory::getUrlBuilder(
-            $this->_sUrlBuilderName
+        $this->_oUrlBuilder = Contenido_UrlBuilderFactory::getUrlBuilder(
+                        $this->_sUrlBuilderName
         );
     }
 
@@ -77,10 +63,9 @@ final class Contenido_Url
      * Returns self instance
      * @return  Contenido_Url
      */
-    public static function getInstance()
-    {
+    public static function getInstance() {
         if (self::$_instance == null) {
-            self::$_instance = new Contenido_Url();
+            self::$_instance = new self();
         }
         return self::$_instance;
     }
@@ -96,16 +81,15 @@ final class Contenido_Url
      * @param   array    $aConfig  If not set, UrlBuilderConfig::getConfig() will be used by the URLBuilder
      * @return  string   The Url build by UrlBuilder
      */
-    public function build($param, $bUseAbsolutePath = false, array $aConfig = array())
-    {
+    public function build($param, $bUseAbsolutePath = false, array $aConfig = array()) {
         if (!is_array($param)) {
-            $arr   = $this->parse($param);
+            $arr = $this->parse($param);
             $param = $arr['params'];
         }
 
         // fallback for urls to homepage (/ or front_content.php)
         if (count($param) == 0 || (!isset($param['idart']) && !isset($param['idartlang']) &&
-            !isset($param['idcat']) && !isset($param['idcatlang']) && !isset($param['idcatart']))) {
+                !isset($param['idcat']) && !isset($param['idcatlang']) && !isset($param['idcatart']))) {
             $param['idcat'] = getEffectiveSetting('navigation', 'idcat-home', 1);
         }
 
@@ -160,8 +144,7 @@ final class Contenido_Url
      * @param   array    $aConfig  If not set, UrlBuilderConfig::getConfig() will be used by the URLBuilder
      * @return  string   The redirect Url build by UrlBuilder
      */
-    public function buildRedirect($param, array $aConfig = array())
-    {
+    public function buildRedirect($param, array $aConfig = array()) {
         $url = $this->build($param, true, $aConfig);
         return str_replace('&amp;', '&', $url);
     }
@@ -173,8 +156,7 @@ final class Contenido_Url
      * @return  array   Assoziative array created by using parse_url() having the key 'params' which
      *                  includes the parameter value pairs.
      */
-    public function parse($sUrl)
-    {
+    public function parse($sUrl) {
         $aUrl = @parse_url($sUrl);
         if (isset($aUrl['query'])) {
             $aUrl['query'] = str_replace('&amp;', '&', $aUrl['query']);
@@ -192,8 +174,7 @@ final class Contenido_Url
      * @param   array   Assoziative array created by parse_url()
      * @return  string  $sUrl  The composed Url
      */
-    public function composeByComponents(array $aComponents)
-    {
+    public function composeByComponents(array $aComponents) {
         $sUrl = (isset($aComponents['scheme']) ? $aComponents['scheme'] . '://' : '') .
                 (isset($aComponents['user']) ? $aComponents['user'] . ':' : '') .
                 (isset($aComponents['pass']) ? $aComponents['pass'] . '@' : '') .
@@ -211,8 +192,7 @@ final class Contenido_Url
      * @param   string  $sUrl  Url to check
      * @return  bool  True if url is a external url, otherwhise false
      */
-    public function isExternalUrl($sUrl)
-    {
+    public function isExternalUrl($sUrl) {
         $aComponents = $this->parse($sUrl);
         if (!isset($aComponents['host'])) {
             return false;
@@ -247,8 +227,7 @@ final class Contenido_Url
      * @param   string  $sUrl  Url to check
      * @return  bool  True if url is identifiable internal url, otherwhise false
      */
-    public function isIdentifiableFrontContentUrl($sUrl)
-    {
+    public function isIdentifiableFrontContentUrl($sUrl) {
         if ($this->isExternalUrl($sUrl)) {
             // detect a external url, return false
             return false;
@@ -294,8 +273,7 @@ final class Contenido_Url
      *
      * @return  Contenido_UrlBuilder
      */
-    public function getUrlBuilder()
-    {
+    public function getUrlBuilder() {
         return $this->_oUrlBuilder;
     }
 
