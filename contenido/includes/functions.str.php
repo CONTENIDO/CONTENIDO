@@ -223,14 +223,10 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
  */
 function strOrderedPostTreeList($idcat, $poststring)
 {
-    global $db, $cfg;
-
-    $sql = 'SELECT idcat FROM `%s` WHERE parentid=0 AND preid=%d AND idcat!=0';
-    $sql = $db->prepare($sql, $cfg['tab']['cat'], $idcat);
-    $db->query($sql);
-
-    if ($db->next_record()) {
-        $postIdcat = $db->f('idcat');
+    $oCatColl = new cApiCategoryCollection();
+    $oCatColl->select('parentid=0 AND preid=' . (int) $idcat . ' AND idcat!=0');
+    if ($oCat = $oCatColl->next()) {
+        $postIdcat = $oCat->get('idcat');
         $poststring = $poststring . ',' . $postIdcat;
         $poststring = strOrderedPostTreeList($postIdcat, $poststring);
     }
@@ -241,6 +237,8 @@ function strOrderedPostTreeList($idcat, $poststring)
 
 /**
  * Remakes the category tree structure in category tree table.
+ *
+ * It still uses manually build sql statements due to performance reasons.
  *
  * @return  void
  */
@@ -300,14 +298,6 @@ function strRemakeTreeTable()
     $db->unlock($cfg['tab']['cat_tree']);
 }
 
-/**
- * @deprecated 2012-04-26 This function is not longer supported, use strSortPrePost() instead
- */
-function sort_pre_post($arr)
-{
-    cDeprecated("This function is not longer supported, use strSortPrePost() instead");
-    return strSortPrePost($arr);
-}
 
 /**
  * Sorts passed assoziative categories array.
@@ -359,15 +349,6 @@ function strSortPrePost($arr)
 
 
 /**
- * @deprecated 2012-04-26 This function is not longer supported, use strBuildSqlValues() instead
- */
-function recCats($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0)
-{
-    cDeprecated("This function is not longer supported, use strBuildSqlValues() instead");
-    return strBuildSqlValues($aCats, $sInsertQuery, $aAllCats, $iLevel = 0);
-}
-
-/**
  * Builds values part of the SQL used to recreate the category tree table
  *
  * @param  array|??  $aCats  Assoziative categories array or something else, but what?
@@ -394,8 +375,6 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0)
 
 /**
  * Returns id of next deeper category.
- * @global array $cfg
- * @global DB_Contenido $db_str
  * @global int $lang
  * @param int $idcat  Category id to check next deeper item
  * @param bool $ignoreLang Flag to check for existing entry in category language table
@@ -403,24 +382,11 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0)
  */
 function strNextDeeper($idcat, $ignoreLang = false)
 {
-    global $cfg, $db_str, $lang;
+    global $lang;
 
-    $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid=" . (int) $idcat  . " AND preid=0";
-    $db_str->query($sql);
-    if ($db_str->next_record()) {
-        $midcat = (int) $db_str->f('idcat');
-        if ($ignoreLang == true) {
-            return $midcat;
-        }
-
-        // Deeper element exists, check for language dependent part
-        $sql = "SELECT idcatlang FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat=" . $midcat . " AND idlang=" . (int) $lang;
-        $db_str->query($sql);
-        return ($db_str->next_record()) ? $midcat : 0;
-    } else {
-        // Deeper element does not exist
-        return 0;
-    }
+    $languageId = (true == $ignoreLang) ? $lang : null;
+    $oCatColl = new cApiCategoryCollection();
+    return $oCatColl->getFirstChildCategoryId($idcat, $languageId);
 }
 
 
@@ -432,19 +398,10 @@ function strNextDeeper($idcat, $ignoreLang = false)
  */
 function strHasArticles($idcat)
 {
-    global $cfg, $db_str, $lang;
+    global $lang;
 
-    $sql = "SELECT b.idartlang AS idartlang FROM `:cat_art` AS a, `:art_lang` AS b "
-         . "WHERE a.idcat = :idcat AND a.idart = b.idart AND b.idlang = :idlang";
-    $sql = $db_str->prepare($sql, array(
-        'cat_art' => $cfg['tab']['cat_art'],
-        'art_lang' => $cfg['tab']['art_lang'],
-        'idcat' => $idcat,
-        'idlang' => $lang
-    ));
-    $db_str->query($sql);
-
-    return ($db_str->next_record()) ? true : false;
+    $oCatArtColl = new cApiCategoryArticleCollection();
+    return $oCatArtColl->getHasArticles($idcat, $lang);
 }
 
 
@@ -456,26 +413,8 @@ function strHasArticles($idcat)
  */
 function strNextPost($idcat)
 {
-    global $db, $cfg;
-
-    $sql = "SELECT idcat FROM `" . $cfg['tab']['cat'] . "` WHERE preid=" . (int) $idcat;
-    $db->query($sql);
-    if ($db->next_record()) {
-        // Post element exists
-        $idcat = $db->f('idcat');
-        $sql = "SELECT parentid FROM `" . $cfg['tab']['cat'] . "` WHERE idcat=" . (int) $idcat;
-        $db->query($sql);
-        if ($db->next_record()) {
-            // Parent from post must not be 0
-            $parentid = (int) $db->f('parentid');
-            return ($parentid != 0) ? $idcat : 0;
-        } else {
-            return 99;
-        }
-    } else {
-        // Post element does not exist
-        return 0;
-    }
+    $oCatColl = new cApiCategoryCollection();
+    return $oCatColl->getNextPostCategoryId($idcat);
 }
 
 /**
@@ -486,50 +425,14 @@ function strNextPost($idcat)
  */
 function strNextBackwards($idcat)
 {
-    global $db, $cfg;
-
-    $sql = "SELECT parentid FROM `" . $cfg['tab']['cat'] . "` WHERE idcat=" . (int) $idcat;
-    $db->query($sql);
-    if ($db->next_record()) {
-        // Parent exists
-        $idcat = $db->f('parentid');
-        if ($idcat != 0) {
-            $sql = "SELECT idcat FROM `" . $cfg['tab']['cat'] . "` WHERE preid=" . (int) $idcat;
-            $db->query($sql);
-            if ($db->next_record()) {
-                // Parent has post
-                $idcat = (int) $db->f('idcat');
-                $sql = "SELECT parentid FROM `" . $cfg['tab']['cat'] . "` WHERE idcat=" . (int) $idcat;
-                $db->query($sql);
-                if ($db->next_record()) {
-                    // Parent from post must not be 0
-                    $parentid = (int) $db->f('parentid');
-                    return ($parentid != 0) ? $idcat : 0;
-                } else {
-                    return 99;
-                }
-            } else {
-                // Parent has no post
-                return strNextBackwards($idcat);
-            }
-        } else {
-            return 0;
-        }
-    } else {
-        // No parent
-        return 0;
-    }
+    $oCatColl = new cApiCategoryCollection();
+    return $oCatColl->getParentsNextPostCategoryId($idcat);
 }
 
 
 /**
- * Returns list of categories.
+ * Returns list of child categories.
  *
- * Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann
- *
- * @global array $cfg
- * @global DB_Contentido $db_str
- * @global DB_Contentido $db_str2
  * @global int $lang
  * @param int $idcat
  * @param bool $ignoreLang
@@ -537,63 +440,11 @@ function strNextBackwards($idcat)
  */
 function strNextDeeperAll($idcat, $ignoreLang = false)
 {
-    global $cfg, $db_str, $db_str2, $lang;
+    global $lang;
 
-    $aCats = array();
-    $bLoop = true;
-
-    $sql = "SELECT idcat FROM `" . $cfg['tab']['cat'] . "` WHERE parentid=" . (int) $idcat . " AND preid=0";
-    $db_str->query($sql);
-    if ($db_str->next_record()) {
-        while ($bLoop) {
-            $midcat = $db_str->f('idcat');
-
-            if ($ignoreLang == true) {
-                $aCats[] = $midcat;
-            } else {
-                // Deeper element exists, check for language dependent part
-                $sql = "SELECT idcatlang FROM `" . $cfg['tab']['cat_lang'] . "` WHERE idcat=" . (int) $midcat . " AND idlang=" . (int) $lang;
-                $db_str2->query($sql);
-                if ($db_str2->next_record()) {
-                    $aCats[] = $midcat;
-                }
-            }
-
-            $sql = "SELECT idcat FROM `" . $cfg['tab']['cat'] . "` WHERE parentid=" . (int) $idcat . " AND preid=" . (int) $midcat;
-            $db_str->query($sql);
-            if (!$db_str->next_record()) {
-                $bLoop = false;
-            }
-        }
-    }
-    return $aCats;
-}
-
-/**
- * Renders the category tree a HTML table
- * @deprecated 2012-03-04 This function is not longer supported.
- * @return  void
- */
-function strShowTreeTable()
-{
-    global $db, $sess, $client, $lang, $cfg, $lngStr;
-
-    cDeprecated("This function is not longer supported.");
-
-    echo "<br><table cellpadding=0 cellspacing=0 border=0>";
-    $sql = "SELECT * FROM `".$cfg['tab']['cat_tree']."` AS A, `".$cfg['tab']['cat']."` AS B, `".$cfg['tab']['cat_lang']."` AS C "
-         . "WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang=".(int) $lang." AND B.idclient=".(int)$client." ORDER BY A.idtree";
-    $db->query($sql);
-    while ($db->next_record()) {
-        $tmp_id    = $db->f("idcat");
-        $tmp_name  = $db->f("name");
-        $tmp_level = $db->f("level");
-        echo "<tr><td>".$tmp_id." | ".$tmp_name." | ".$tmp_level."</td>";
-        echo "<td><a class=action href=\"".$sess->url("main.php?action=20&idcat=$tmp_id")."\">".$lngStr["actions"]["20"]."</a></td>";
-        echo "<td><a class=action href=\"".$sess->url("main.php?action=30&idcat=$tmp_id")."\">".$lngStr["actions"]["30"]."</a></td>";
-        echo "</td></tr>";
-    }
-    echo "</table>";
+    $languageId = (true == $ignoreLang) ? $lang : null;
+    $oCatColl = new cApiCategoryCollection();
+    return $oCatColl->getAllChildCategoryIds($idcat, $languageId);
 }
 
 
@@ -730,35 +581,10 @@ function strMakePublic($idcat, $lang, $public)
  */
 function strDeeperCategoriesArray($startIdcat)
 {
-    global $db, $client, $cfg;
+    global $client;
 
-    $catList = array();
-    $openList = array();
-
-    array_push($openList, $startIdcat);
-
-    while (($actId = array_pop($openList)) != null) {
-        if (in_array($actId, $catList)) {
-            continue;
-        }
-
-        array_push($catList, $actId);
-
-        $sql = "SELECT * FROM `:cat_tree` AS A, `:cat` AS B WHERE A.idcat=B.idcat AND B.parentid=:parentid AND idclient=:idclient ORDER BY idtree";
-        $db->prepare($sql, array(
-            'cat_tree' => $cfg['tab']['cat_tree'],
-            'cat' => $cfg['tab']['cat'],
-            'parentid' => (int) $actId,
-            'idclient' => (int) $client,
-        ));
-        $db->query($sql);
-
-        while ($db->next_record()) {
-            array_push($openList, $db->f('idcat'));
-        }
-    }
-
-    return $catList;
+    $oCatColl = new cApiCategoryCollection();
+    return $oCatColl->getAllCategoryIdsRecursive($startIdcat, $client);
 }
 
 
@@ -1341,6 +1167,51 @@ function strAssignTemplate($idcat, $client, $idTplCfg)
             $cat->assignTemplate($idtpl);
         }
     }
+}
+
+/**
+ * @deprecated 2012-04-26 This function is not longer supported, use strSortPrePost() instead
+ */
+function sort_pre_post($arr)
+{
+    cDeprecated("This function is not longer supported, use strSortPrePost() instead");
+    return strSortPrePost($arr);
+}
+
+/**
+ * @deprecated 2012-04-26 This function is not longer supported, use strBuildSqlValues() instead
+ */
+function recCats($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0)
+{
+    cDeprecated("This function is not longer supported, use strBuildSqlValues() instead");
+    return strBuildSqlValues($aCats, $sInsertQuery, $aAllCats, $iLevel = 0);
+}
+
+/**
+ * Renders the category tree a HTML table
+ * @deprecated 2012-03-04 This function is not longer supported.
+ * @return  void
+ */
+function strShowTreeTable()
+{
+    global $db, $sess, $client, $lang, $cfg, $lngStr;
+
+    cDeprecated("This function is not longer supported.");
+
+    echo "<br><table cellpadding=0 cellspacing=0 border=0>";
+    $sql = "SELECT * FROM `".$cfg['tab']['cat_tree']."` AS A, `".$cfg['tab']['cat']."` AS B, `".$cfg['tab']['cat_lang']."` AS C "
+         . "WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang=".(int) $lang." AND B.idclient=".(int)$client." ORDER BY A.idtree";
+    $db->query($sql);
+    while ($db->next_record()) {
+        $tmp_id    = $db->f("idcat");
+        $tmp_name  = $db->f("name");
+        $tmp_level = $db->f("level");
+        echo "<tr><td>".$tmp_id." | ".$tmp_name." | ".$tmp_level."</td>";
+        echo "<td><a class=action href=\"".$sess->url("main.php?action=20&idcat=$tmp_id")."\">".$lngStr["actions"]["20"]."</a></td>";
+        echo "<td><a class=action href=\"".$sess->url("main.php?action=30&idcat=$tmp_id")."\">".$lngStr["actions"]["30"]."</a></td>";
+        echo "</td></tr>";
+    }
+    echo "</table>";
 }
 
 ?>
