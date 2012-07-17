@@ -61,7 +61,7 @@ class cSession {
      * Starts the session
      * @param string The prefix for the session variables
      */
-    public function __construct($prefix = "backend") {
+    public function __construct($prefix = null) {
         $this->_pt = array();
         $this->_prefix = $prefix;
 
@@ -69,7 +69,9 @@ class cSession {
         $this->name = "contenido";
 
         if (!isset($_SESSION)) {
-            session_name($this->_prefix);
+            if ($prefix !== null) {
+                session_name($this->_prefix);
+            }
             session_start();
         }
     }
