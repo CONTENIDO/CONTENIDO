@@ -129,6 +129,254 @@ class cApiCategoryCollection extends ItemCollection
         }
         return $list;
     }
+
+    /**
+     * Returns the id of category which is located after passed category id.
+     *
+     * Example:
+     * <pre>
+     * ...
+     * parent_category
+     *     this_category
+     *     post_category (*)
+     * ...
+     * (*) Returned category id
+     * </pre>
+     *
+     * @param  int  $idcat
+     * @return int
+     */
+    public function getNextPostCategoryId($idcat)
+    {
+        $sql = "SELECT idcat FROM `%s` WHERE preid = %d";
+        $this->db->query($sql, $this->table, $idcat);
+        if ($this->db->next_record()) {
+            // Post element exists
+            $idcat = $this->db->f('idcat');
+            $sql = "SELECT parentid FROM `%s` WHERE idcat = %d";
+            $this->db->query($sql, $this->table, $idcat);
+            if ($this->db->next_record()) {
+                // Parent from post can't be 0
+                $parentid = (int) $this->db->f('parentid');
+                return ($parentid != 0) ? $idcat : 0;
+            } else {
+                return 99;
+            }
+        } else {
+            // Post element does not exist
+            return 0;
+        }
+    }
+
+    /**
+     * Returns the id of category which is located after passed category ids parent category.
+     *
+     * Example:
+     * <pre>
+     * ...
+     * root_category
+     *     parent_category
+     *         previous_cateory
+     *         this_category
+     *         post_category
+     *     parents_post_category (*)
+     * ...
+     * (*) Returned category id
+     * </pre>
+     *
+     * @param   int  $idcat  Category id
+     * @return  int
+     */
+    public function getParentsNextPostCategoryId($idcat)
+    {
+        $sql = "SELECT parentid FROM `%s` WHERE idcat = %d";
+        $this->db->query($sql, $this->table, $idcat);
+        if ($this->db->next_record()) {
+            // Parent exists
+            $idcat = $this->db->f('parentid');
+            if ($idcat != 0) {
+                $sql = "SELECT idcat FROM `%s` WHERE preid = %d";
+                $this->db->query($sql, $this->table, $idcat);
+                if ($this->db->next_record()) {
+                    // Parent has post
+                    $idcat = (int) $this->db->f('idcat');
+                    $sql = "SELECT parentid FROM `%s` WHERE idcat = %d";
+                    $this->db->query($sql, $this->table, $idcat);
+                    if ($this->db->next_record()) {
+                        // Parent from post must not be 0
+                        $parentid = (int) $this->db->f('parentid');
+                        return ($parentid != 0) ? $idcat : 0;
+                    } else {
+                        return 99;
+                    }
+                } else {
+                    // Parent has no post
+                    return $this->getNextBackwardsCategoryId($idcat);
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            // No parent
+            return 0;
+        }
+    }
+
+    /**
+     * Returns id of first child category, where parent id is the same as passed
+     * id and the previous id is 0.
+     *
+     * Example:
+     * <pre>
+     * ...
+     * this_category
+     *     child_category (*)
+     *     child_category2
+     *     child_category3
+     * ...
+     * (*) Returned category id
+     * </pre>
+     *
+     * @global  array  $cfg
+     * @param  int  $idcat
+     * @param  int|null  $idlang  If defined, it checks also if there is a next deeper category in this language.
+     * @return int
+     */
+    public function getFirstChildCategoryId($idcat, $idlang = null) {
+        global $cfg;
+
+        $sql = "SELECT idcat FROM `%s` WHERE parentid = %d AND preid = 0";
+        $sql = $this->db->prepare($sql, $this->table, $idcat);
+        $this->db->query($sql);
+        if ($this->db->next_record()) {
+            $midcat = (int) $this->db->f('idcat');
+            if (null == $idlang) {
+                return $midcat;
+            }
+
+            // Deeper element exists, check for language dependent part
+            $sql = "SELECT idcatlang FROM `%s` WHERE idcat = %d AND idlang = %d";
+            $sql = $this->db->prepare($sql, $cfg['tab']['cat_lang'], $idcat, $idlang);
+            $this->db->query($sql);
+            return ($this->db->next_record()) ? $midcat : 0;
+        } else {
+            // Deeper element does not exist
+            return 0;
+        }
+    }
+
+    /**
+     * Returns list of all child category ids, only them on next deeper level (not recursive!)
+     * The returned array contains already the order of the categories.
+     * Example:
+     * <pre>
+     * ...
+     * this_category
+     *     child_category (*)
+     *     child_category2 (*)
+     *         child_of_child_category2
+     *     child_category3 (*)
+     * ...
+     * (*) Returned category ids
+     * </pre>
+     *
+     * @global  array  $cfg
+     * @param  int  $idcat
+     * @param  int|null  $idlang
+     * @return array
+     */
+    public function getAllChildCategoryIds($idcat, $idlang = null) {
+        global $cfg;
+
+        $aCats = array();
+        $bLoop = true;
+        $db2 = $this->_getSecondDBInstance();
+
+        $sql = "SELECT idcat FROM `%s` WHERE parentid = %d AND preid = 0";
+        $this->db->query($sql, $this->table, $idcat);
+        if ($this->db->next_record()) {
+            while ($bLoop) {
+                $midcat = $this->db->f('idcat');
+                if (null == $idlang) {
+                    $aCats[] = $midcat;
+                } else {
+                    // Deeper element exists, check for language dependent part
+                    $sql = "SELECT idcatlang FROM `%s` WHERE idcat = %d AND idlang = %d";
+                    $db2->query($sql, $cfg['tab']['cat_lang'], $midcat, $idlang);
+                    $db2->query($sql);
+                    if ($db2->next_record()) {
+                        $aCats[] = $midcat;
+                    }
+                }
+
+                $sql = "SELECT idcat FROM `%s` WHERE parentid = %d AND preid = %d";
+                $this->db->query($sql, $this->table, $idcat, $midcat);
+                if (!$this->db->next_record()) {
+                    $bLoop = false;
+                }
+            }
+        }
+        return $aCats;
+    }
+
+    /**
+     * Returns list of all child category ids and their child category ids of
+     * passed category id. The list also contains the id of passed category.
+     *
+     * The return value of this function could be used to perform bulk actions
+     * on a specific category an all of its childcategories.
+     *
+     * NOTE: The returned array is not sorted!
+     *
+     * Example:
+     * <pre>
+     * ...
+     * this_category (*)
+     *     child_category (*)
+     *     child_category2 (*)
+     *         child_of_child_category2 (*)
+     *     child_category3 (*)
+     *         child_of_child_category3 (*)
+     * ...
+     * (*) Returned category ids
+     * </pre>
+     *
+     * @global  array  $cfg
+     * @param  int  $idcat
+     * @param  int|null  $idlang
+     * @return array
+     */
+    public function getAllCategoryIdsRecursive($idcat, $client) {
+        global $cfg;
+
+        $catList = array();
+        $openList = array();
+
+        $openList[] = $idcat;
+
+        while (($actId = array_pop($openList)) != null) {
+            if (in_array($actId, $catList)) {
+                continue;
+            }
+
+            $catList[] = $actId;
+
+            $sql = "SELECT * FROM `:cat_tree` AS A, `:cat` AS B WHERE A.idcat=B.idcat AND B.parentid=:parentid AND idclient=:idclient ORDER BY idtree";
+            $sql = $this->db->prepare($sql, array(
+                'cat_tree' => $cfg['tab']['cat_tree'],
+                'cat' => $this->table,
+                'parentid' => (int) $actId,
+                'idclient' => (int) $client,
+            ));
+            $this->db->query($sql);
+
+            while ($this->db->next_record()) {
+                $openList[] = $this->db->f('idcat');
+            }
+        }
+
+        return $catList;
+    }
 }
 
 

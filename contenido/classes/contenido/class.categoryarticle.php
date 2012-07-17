@@ -168,6 +168,29 @@ class cApiCategoryArticleCollection extends ItemCollection {
         return $aIdCats;
     }
 
+    /**
+    * Checks, if passed category contains any articles in specified language.
+    *
+    * @param   int  $idcat  Category id
+    * @param   int  $idlang  Language id
+    * @return  bool
+    */
+    public function getHasArticles($idcat, $idlang) {
+        global $cfg;
+
+        $sql = "SELECT b.idartlang AS idartlang FROM `:cat_art` AS a, `:art_lang` AS b "
+            . "WHERE a.idcat = :idcat AND a.idart = b.idart AND b.idlang = :idlang";
+        $sql = $this->db->prepare($sql, array(
+            'cat_art' => $this->table,
+            'art_lang' => $cfg['tab']['art_lang'],
+            'idcat' => $idcat,
+            'idlang' => $idlang
+        ));
+        $this->db->query($sql);
+
+        return ($this->db->next_record()) ? true : false;
+    }
+
 }
 
 /**
