@@ -1562,9 +1562,9 @@ class cHTMLCheckbox extends cHTMLFormElement {
                 }
             }
 
-            return '<table class="borderless" border="0" cellspacing="0" cellpadding="0"><tr><td nowrap="nowrap">'
-                    . parent::toHTML() . '</td><td nowrap="nowrap">' . $renderedLabel
-                    . '</td></tr></table>';
+            $result = new cHTMLDiv(parent::toHTML() . $renderedLabel);
+            $result->setClass('checkboxWrapper');
+            return $result->render();
         } else {
             return parent::toHTML();
         }
