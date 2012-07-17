@@ -312,8 +312,8 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
                 b.idclient  = " . (int) $client . " AND
                 b.idcat     = " . (int) $idcat . " AND
                 a.idcat     = b.idcat AND
-                c.idcat 	= b.idcat AND
-                a.idtplcfg 	= d.idtplcfg";
+                c.idcat     = b.idcat AND
+                a.idtplcfg  = d.idtplcfg";
 
     $db->query($sql);
     $db->next_record();
@@ -326,7 +326,7 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
         }
 
         $parentid = $db->f('parentid');
-		$idtpl = $db->f('idtpl');
+        $idtpl = $db->f('idtpl');
         //create link
         if ($makeLink == true) {
             $linkUrl = $sess->url("front_content.php?idcat=$idcat&idtpl=$idtpl");

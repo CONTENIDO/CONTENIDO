@@ -23,26 +23,21 @@
  *   created 2008-08-05
  *   $Id$:
  * }}
- *
  */
+
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
 
-// For update current layout with Revision
 cInclude("includes", "functions.lay.php");
-
-// For read Fileinformation an get the id of current File
 cInclude("includes", "functions.file.php");
-
-// For Editor syntax highlighting
 cInclude("external", "codemirror/class.codemirror.php");
 
 $sFileName = "";
 $sFileName = $_REQUEST['file'];
 
-if($sFileName == ""){
+if ($sFileName == "") {
     $sFileName = $_REQUEST['idstyle'];    // Content Type is css
 }
 
@@ -50,29 +45,28 @@ $sType = "css";
 
 $oPage = new cGuiPage("style_history");
 
-if (!$perm->have_perm_area_action($area, 'style_history_manage'))
-{
-  $oPage->displayCriticalError(i18n("Permission denied"));
-  $oPage->render();
+if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
+    $oPage->displayCriticalError(i18n("Permission denied"));
+    $oPage->render();
 } else if (!(int) $client > 0) {
-  $oPage->render();
+    $oPage->render();
 } else if (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
-  $oPage->displayWarning(i18n("Versioning is not activated"));
-  $oPage->render();
+    $oPage->displayWarning(i18n("Versioning is not activated"));
+    $oPage->render();
 } else {
 
     $sTypeContent = "css";
 
-    $aFileInfo = getFileInformation ($client, $sFileName , $sTypeContent, $db);
+    $aFileInfo = getFileInformation($client, $sFileName, $sTypeContent, $db);
 
     // [action] => history_truncate delete all current history
-      if($_POST["action"] == "history_truncate") {
-        $oVersionStyle = new cVersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName ,$sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
-           $bDeleteFile = $oVersionStyle->deleteFile();
+    if ($_POST["action"] == "history_truncate") {
+        $oVersionStyle = new cVersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $bDeleteFile = $oVersionStyle->deleteFile();
         unset($oVersionStyle);
-      }
+    }
 
-    if ($_POST["style_send"] == true && $_POST["stylecode"] !="" && $sFileName != "" && $aFileInfo["idsfi"]!="") { // save button
+    if ($_POST["style_send"] == true && $_POST["stylecode"] != "" && $sFileName != "" && $aFileInfo["idsfi"] != "") { // save button
         //        Get Post variables
         $oVersionStyle = new cVersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
@@ -82,23 +76,21 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage'))
 
         $sPath = $oVersionStyle->getPathFile();
 
-        //    Edit File
-
-        //        There is a need for renaming file
-        if($sFileName != $sStyleName){
+        // Edit File, there is a need for renaming file
+        if ($sFileName != $sStyleName) {
             if (getFileType($sStyleName) != 'css' AND strlen(stripslashes(trim($sStyleName))) > 0) {
-                $sStyleName = stripslashes($sStyleName).".css";
+                $sStyleName = stripslashes($sStyleName) . ".css";
             }
 
             renameFile($sFileName, $sStyleName, $oVersionStyle->getPathFile());
             $oPage->addScript($oVersionStyle->renderReloadScript('style', $sStyleName, $sess));
         }
 
-        if(fileEdit($sStyleName, $sStyleCode, $sPath)) {
-            //        make new revision File
+        if (fileEdit($sStyleName, $sStyleCode, $sPath)) {
+            // make new revision File
             $oVersionStyle->createNewVersion();
 
-            //         Update File Information
+            //Update File Information
             updateFileInformation($client, $sFileName, $sType, $aFileInfo["author"], $sStyleDesc, $db, $sStyleName);
             $sFileName = $sStyleName;
         }
@@ -106,12 +98,12 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage'))
         unset($oVersionStyle);
     }
 
-    if($sFileName != "" && $aFileInfo["idsfi"]!="" && $_POST["action"] != "history_truncate") {
+    if ($sFileName != "" && $aFileInfo["idsfi"] != "" && $_POST["action"] != "history_truncate") {
         $oVersionStyle = new cVersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
         // Init Form variables of SelectBox
         $sSelectBox = "";
-        $oVersionStyle->setVarForm("area",  $area);
+        $oVersionStyle->setVarForm("area", $area);
         $oVersionStyle->setVarForm("frame", $frame);
         $oVersionStyle->setVarForm("idstyle", $sFileName);
         $oVersionStyle->setVarForm("file", $sFileName);
@@ -144,20 +136,18 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage'))
 
             // Create Textarea and fill it with xml nodes
             if (count($aNodes) > 1) {
-                //    if choose xml file read value an set it
+                // If choose xml file read value an set it
                 $sName = $oVersionStyle->getTextBox("stylename", $aNodes["name"], 60);
                 $sDescription = $oVersionStyle->getTextarea("styledesc", $aNodes["desc"], 100, 10);
                 $sCode = $oVersionStyle->getTextarea("stylecode", $aNodes["code"], 100, 30, "IdLaycode");
-
             }
-
         }
 
         // Add new Elements of Form
         $oForm->add(i18n("Name"), $sName);
         $oForm->add(i18n("Description"), $sDescription);
         $oForm->add(i18n("Code"), $sCode);
-        $oForm->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c" /*, "mod_history_takeover"*/); //modified it
+        $oForm->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c" /* , "mod_history_takeover" */); //modified it
         $oForm->unsetActionButton("submit");
 
         // Render and handle History Area
@@ -166,14 +156,13 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage'))
         $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'css', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
         $oPage->addScript($oCodeMirrorOutput->renderScript());
 
-        if ($sSelectBox !="") {
+        if ($sSelectBox != "") {
             $oPage->set("s", "FORM", $sSelectBox . $oForm->render());
         } else {
             $oPage->displayWarning(i18n("No style history available"));
         }
-
     } else {
-   		if($bDeleteFile){
+        if ($bDeleteFile) {
             $oPage->displayWarning(i18n("Version history was cleared"));
             $oPage->abortRendering();
         } else {
@@ -181,6 +170,7 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage'))
             $oPage->abortRendering();
         }
     }
-	$oPage->render();
+    $oPage->render();
 }
+
 ?>

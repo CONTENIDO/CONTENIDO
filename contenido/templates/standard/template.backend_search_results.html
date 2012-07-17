@@ -13,47 +13,47 @@
     <script type="text/javascript" src="scripts/articleObject.js.php?{SESSNAME}={SESSID}"></script>
     <script type="text/javascript">
     <!--
-        /* CONTENIDO Session-ID */
+        // CONTENIDO Session-ID
         var sid = "{SESSID}";
 
-        /* New messageBox instance */
+        // New messageBox instance
         box = new messageBox("", "", "", 0, 0);
 
-        /* Function for deleting articles */
+        // Function for deleting articles
         function deleteArticle(idart, idcat) {
             var url = "main.php?area=con&action=con_deleteart&frame=4&idcat="+idcat+"&idart="+idart+"&{SESSNAME}="+sid;
             window.location.href = url;
         }
 
-        /* Appends the given form value to the given form as a hidden input field. */
+        // Appends the given form value to the given form as a hidden input field.
         function appendFormField(form, name, value) {
             // if a hidden input field with the given name already exists, just set the value
             if ($(form).find('input[type="hidden"][name="' + name + '"]').length > 0) {
-            	$(form).find('input[type="hidden"][name="' + name + '"]').val(value);
+                $(form).find('input[type="hidden"][name="' + name + '"]').val(value);
             } else {
                 // otherwise append a new field to the form
-            	$(form).append('<input type="hidden" value="' + value + '" name="' + name + '"/>');
+                $(form).append('<input type="hidden" value="' + value + '" name="' + name + '"/>');
             }
         }
 
         // make the article table sortable
         $(function() {
-        	$('td.sortable').css('cursor', 'pointer');
-        	$('td.sortable').click(function() {
+            $('td.sortable').css('cursor', 'pointer');
+            $('td.sortable').click(function() {
                 var currentSortby = '{CURRENT_SORTBY}';
                 var currentSortmode = '{CURRENT_SORTMODE}';
-        		var id = $(this).attr('id').split('-')[1];
-        		var sortmode = 'asc';
-        		if (currentSortby == id && currentSortmode == 'asc') {
-        			sortmode = 'desc';
-        		}
-        		var searchForm = $('#backend_search', top.content.left.left_top.document);
+                var id = $(this).attr('id').split('-')[1];
+                var sortmode = 'asc';
+                if (currentSortby == id && currentSortmode == 'asc') {
+                    sortmode = 'desc';
+                }
+                var searchForm = $('#backend_search', top.content.left.left_top.document);
                 appendFormField(searchForm, 'sortby', id);
                 appendFormField(searchForm, 'sortmode', sortmode);
-                // searchForm.submit() does not work, so trigger click event on submit button 
+                // searchForm.submit() does not work, so trigger click event on submit button
                 searchForm.find('input[type="submit"]').click();
                 return false;
-        	});
+            });
         });
 
         {SCRIPT}
@@ -91,13 +91,13 @@
 <!--
     rcount = 0;
 
-    /* Update frame right top for sub navigation */
+    // Update frame right top for sub navigation
     {SUBNAVI}
 
-    /* Refresh top_left frame to show new saved searches */
+    // Refresh top_left frame to show new saved searches
     {REFRESH}
 
-    /* Create a reference to the Article Object in frame 'right_top' */
+    // Create a reference to the Article Object in frame 'right_top'
     artObj = parent.parent.frames["left"].frames["left_top"].artObj;
 
     /* Reset article object
@@ -110,7 +110,7 @@
         artObj.setHrefOverview(document.location.href);
     }
 
-    /* Timeout to call the function afer 250ms */
+    // Timeout to call the function afer 250ms
     window.setTimeout("createReference()", 250);
 
     /* Javascript-Error work-around... try to create the reference after
@@ -155,7 +155,7 @@
         return true;
     }
 
-    /* Function for sorting the articles */
+    // Function for sorting the articles
     function artSort(selObj) {
         var url = 'main.php?area=con&frame=4&idcat=57&{SESSNAME}={SESSID}';
         var i = selObj.selectedIndex;
@@ -163,7 +163,7 @@
         window.location.href = url + '&sort=' + sortkey;
     }
 
-    /* Mark the first submenu item i.e. 'Overview' */
+    // Mark the first submenu item i.e. 'Overview'
     if (parent.parent.frames['right'].frames['right_top'].document.getElementById('c_0')) {
         menuItem = parent.parent.frames['right'].frames['right_top'].document.getElementById('c_0');
         parent.parent.frames['right'].frames['right_top'].sub.click(menuItem);
@@ -175,6 +175,7 @@
        artRow.over(theOne);
        artRow.click(theOne)
     }
+
     initTheOne();
 //-->
 </script>

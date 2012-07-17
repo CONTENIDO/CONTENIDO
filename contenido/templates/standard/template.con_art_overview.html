@@ -6,7 +6,7 @@
         <meta http-equiv="pragma" content="no-cache">
         <link rel="stylesheet" type="text/css" href="styles/contenido.css">
         <script type="text/javascript" src="scripts/rowMark.js"></script>
-    	<script type="text/javascript" src="scripts/general.js"></script>
+        <script type="text/javascript" src="scripts/general.js"></script>
         <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
         <script type="text/javascript" src="scripts/articleObject.js.php?contenido={SID}"></script>
         <link rel="stylesheet" type="text/css" href="styles/tipsy.css">
@@ -16,48 +16,48 @@
         <script type="text/javascript">
             /* CONTENIDO Session-ID */
             var sid = "{SID}";
-            
+
             /* New messageBox
              instance */
             box = new messageBox("", "", "", 0, 0);
-            
+
             /* Function for deleting articles */
             function deleteArticle(idart, idcat, next){
                 var url = "main.php?area=con&action=con_deleteart&frame=4&idcat=" + idcat + "&idart=" + idart + "&next=" + next + "&contenido=" + sid;
                 window.location.href = url;
             }
-		$(document).ready(function(){
-			$("div#categorypath > a").click(function () {
-				var url = $(this).attr('href');
-				var sVal = url.split("&");
-				var aVal = sVal[0].split("idcat=");
-				var iIdcat = aVal[1];
-				aVal = sVal[1].split("idtpl=");
-				var iIdtpl = aVal[1];
-				conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}',	
-				'right_bottom', 'main.php?area=con&frame=4&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&syncoptions={SYNCOPTIONS}&contenido={SESSION}',	
-				'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido={SESSION}');
-				return false;
+        $(document).ready(function(){
+            $("div#categorypath > a").click(function () {
+                var url = $(this).attr('href');
+                var sVal = url.split("&");
+                var aVal = sVal[0].split("idcat=");
+                var iIdcat = aVal[1];
+                aVal = sVal[1].split("idtpl=");
+                var iIdtpl = aVal[1];
+                conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
+                'right_bottom', 'main.php?area=con&frame=4&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
+                'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido={SESSION}');
+                return false;
             });
-			/*$("a#newArtTxt").click(function () {
-				var url = $(this).attr('href');
-				conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + {iIdcat} + '&idtpl=' + {iIdtpl} + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&action=newArt',	
-				'right_bottom', url+ '&idtpl=' + {iIdtpl} + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}');
-				return false;
+            /*$("a#newArtTxt").click(function () {
+                var url = $(this).attr('href');
+                conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + {iIdcat} + '&idtpl=' + {iIdtpl} + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&action=newArt',
+                'right_bottom', url+ '&idtpl=' + {iIdtpl} + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}');
+                return false;
             });
-			$("a#newArtImg").click(function () {
-				$("a#newArtTxt").click();
+            $("a#newArtImg").click(function () {
+                $("a#newArtTxt").click();
             });
-			$("a#deleteart").click(function () {				
-	        });*/
-			
-		});
+            $("a#deleteart").click(function () {
+            });*/
+
+        });
         </script>
         <style>
             .bulk_editing_functions a, a.flip_mark {
                 cursor: pointer;
             }
-            
+
             .bulk_editing_functions a img, a.flip_mark img {
                 vertical-align: middle;
                 margin-right: 3px;
@@ -175,12 +175,12 @@
         <script type="text/javascript">
                             rcount = 0;
                             initValues();
-                        
+
                             function initValues() {
                                 /* Create a reference to the
                                    Article Object in frame 'right_top' */
                                 artObj = parent.parent.frames["left"].frames["left_top"].artObj;
-                        
+
                                 /* Reset article object properties.
                                    e.g. Some article was edited and we are
                                    now back in the overview mask. There is
@@ -190,37 +190,37 @@
                                     artObj.reset();
                                     artObj.enable();
                                     artObj.setHrefOverview(document.location.href);
-                        
+
                                     /* Save current page selection */
                                     artObj.next = {NEXT};
                                 }
-                        
+
                                 /* Timeout to call the function afer 250ms */
                                 window.setTimeout("createReference()", 250);
                             }
-                        
+
                             /* Javascript-Error work-around...
                                try to create the reference after
                                250ms again... and hope it works.. */
                             function createReference() {
                                 if (!artObj) {
                                     artObj = parent.parent.frames["left"].frames["left_top"].artObj;
-                        
+
                                     if (artObj) {
                                         artObj.reset();
                                         artObj.enable();
                                         artObj.setHrefOverview(document.location.href);
-                        
+
                                         /* Save current page selection */
                                         artObj.next = {NEXT};
                                     }
                                 }
-                        
+
                                 if (!artObj) {
                                     return false;
                                 }
                             }
-                        
+
                             /* Extract data from
                                the article grid and
                                send them to the articleObject
@@ -236,7 +236,7 @@
                                 }
                                 var datastring  = obj.id;
                                 var data        = datastring.split( "-" );
-                        
+
                                 if (data.length == 6) {
                                     /* Send data to articleObject instance:
                                         0:  idart
@@ -246,25 +246,25 @@
                                         5:  idcatart */
                                     artObj.setProperties(data[0], data[1], data[2], data[3], data[4], data[5]);
                                 }
-                        
+
                                 return true;
                             }
-                        
+
                             function changeElemPerPage(selObj) {
                                 var url = '{SELF_URL}';
                                 var i = selObj.selectedIndex;
                                 var elemperpage = selObj.options[i].value;
                                 window.location.href = url + '&elemperpage=' + elemperpage;
                             }
-                        
+
                             /* Mark the first submenu item i.e. 'Overview' */
                             if (parent.parent.frames['right'].frames['right_top'].document.getElementById('c_0')) {
                                 menuItem = parent.parent.frames['right'].frames['right_top'].document.getElementById('c_0');
                                 parent.parent.frames['right'].frames['right_top'].sub.click(menuItem);
                             }
-                        
+
                             {ROWMARKSCRIPT};
-                        
+
                             //show mark function or hidde
                             $('input.mark_articles').click(function() {
                                 $('div.bulk_editing_functions').css('display', 'none');
@@ -276,7 +276,7 @@
                                     }
                                 }
                             });
-                        
+
                             //flip mark
                             $('a.flip_mark').click(function() {
                                 $('div.bulk_editing_functions').css('display', 'none');
@@ -289,17 +289,17 @@
                                     }
                                 });
                             });
-                        
+
                             //execute the action
                             $('div.bulk_editing_functions a:not(a.con_deleteart)').click(function() {
                                 doAction($(this));
                             });
-                        
+
                             //execute the delete action
                             function deleteArticels() {
                                 doAction($('div.bulk_editing_functions a.con_deleteart'));
                             }
-                        
+
                             function doAction(thisObject) {
                                 var action = '';
                                 var selectedIdArts = '';
@@ -308,28 +308,28 @@
                                     if (thisObject.hasClass('con_makeonline')) {
                                         action = 'con_makeonline';
                                     }
-                        
+
                                     if (thisObject.hasClass('con_lock')) {
                                         action = 'con_lock';
                                     }
                                 } else {
                                     action = thisObject.attr('class');
                                 }
-                        
+
                                 //set action
                                 $('form.bulk_editing_form input[name="action"]').val(action);
-                        
+
                                 //collect all selected idarts
                                 $('input.mark_articles:checked').each(function(index, value) {
                                     selectedIdArts += '+'+$(this).val();
                                 });
-                        
+
                                 //set all selected idarts
                                 $('form.bulk_editing_form input[name="idarts"]').val(selectedIdArts);
                                 //send form
                                 $('form.bulk_editing_form input[name="submit"]').click();
                             }
-                    
+
         </script>
     </body>
 </html>

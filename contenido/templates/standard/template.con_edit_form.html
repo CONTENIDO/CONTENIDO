@@ -279,16 +279,16 @@
     }
 
     {DATAPUSH}
-	$(document).ready(function(){
-		var iArticleCount = {iArticleCount};
-		if(iArticleCount == 0){
-			$("input#saveart").click(function () {
-				conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + {iIdcat} + '&idtpl=' + {iIdtpl} + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&action=saveArt');
-				return true;
-	        });
-		}
-		
-	});
+    $(document).ready(function(){
+        var iArticleCount = {iArticleCount};
+        if(iArticleCount == 0){
+            $("input#saveart").click(function () {
+                conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + {iIdcat} + '&idtpl=' + {iIdtpl} + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&action=saveArt');
+                return true;
+            });
+        }
+
+    });
 </script>
 </body>
 </html>

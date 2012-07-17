@@ -361,17 +361,17 @@ if ($currentStep < $totalSteps) {
 }
 
 if ($_SESSION['setuptype'] != 'setup') {
-	$done = false;
-	$sSql = "SHOW FIELDS FROM " . $cfg['tab']['upl'];
-	$db->query($sSql);
-	while ($db->next_record()) {
-	    if ($db->f("Field") == 'description') {
-	        $done = true;
-	    }
-	}
-	if ($done) {
-	    updateUpl2Meta();
-	}
+    $done = false;
+    $sSql = "SHOW FIELDS FROM " . $cfg['tab']['upl'];
+    $db->query($sSql);
+    while ($db->next_record()) {
+        if ($db->f("Field") == 'description') {
+            $done = true;
+        }
+    }
+    if ($done) {
+        updateUpl2Meta();
+    }
 }
 
 //update description from con_upl to con_upl_meta

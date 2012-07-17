@@ -45,66 +45,48 @@ if (!isset($idcat) || $idcat == "") {
 if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
     $nav = new cGuiNavigation();
 
-    $sql = "SELECT
-                idarea
-            FROM
-                ".$cfg["tab"]["area"]." AS a
-            WHERE
-                a.name = '".cSecurity::escapeDB($area, $db)."' OR
-                a.parent_id = '".cSecurity::escapeDB($area, $db)."'
-            ORDER BY
-                idarea";
-
-    $db->query($sql);
-
-    $in_str = "";
-
-    while ($db->next_record()) {
-        $in_str .= $db->f('idarea') . ',';
-    }
-
-    $len = strlen($in_str)-1;
-    $in_str = substr($in_str, 0, $len);
-    $in_str = '('.$in_str.')';
+    $oAreaColl = new cApiAreaCollection();
+    $aIdareas = $oAreaColl->getIdareasByAreaNameOrParentId($area);
+    $in_str = '(' . implode(',', $aIdareas) . ')';
 
     // Simple SQL statement to get the number of articles
-	$sql_count =
-                "SELECT
+    $sql_count =
+            "SELECT
                     COUNT(*) AS article_count
                  FROM
-                    ".$cfg["tab"]["art_lang"]." AS a,
-                    ".$cfg["tab"]["art"]." AS b,
-                    ".$cfg["tab"]["cat_art"]." AS c
+                    " . $cfg["tab"]["art_lang"] . " AS a,
+                    " . $cfg["tab"]["art"] . " AS b,
+                    " . $cfg["tab"]["cat_art"] . " AS c
                  WHERE
-                    (a.idlang   = ".cSecurity::toInteger($lang)." {SYNCOPTIONS}) AND
+                    (a.idlang   = " . cSecurity::toInteger($lang) . " {SYNCOPTIONS}) AND
                     a.idart     = b.idart AND
-                    b.idclient  = ".cSecurity::toInteger($client)." AND
+                    b.idclient  = " . cSecurity::toInteger($client) . " AND
                     b.idart     = c.idart AND
-                    c.idcat     = ".cSecurity::toInteger($idcat);
+                    c.idcat     = " . cSecurity::toInteger($idcat);
 
-        $sql = str_replace("{ISSTART}", '', $sql);
+    $sql = str_replace("{ISSTART}", '', $sql);
 
-        if ($syncoptions == -1) {
-            $sql       = str_replace("{SYNCOPTIONS}", '', $sql);
-            $sql_count = str_replace("{SYNCOPTIONS}", '', $sql_count);
-        } else {
-            $sql       = str_replace("{SYNCOPTIONS}", "OR a.idlang = '".$syncoptions."'", $sql);
-            $sql_count = str_replace("{SYNCOPTIONS}", "OR a.idlang = '".$syncoptions."'", $sql_count);
-        }
+    if ($syncoptions == -1) {
+        $sql = str_replace("{SYNCOPTIONS}", '', $sql);
+        $sql_count = str_replace("{SYNCOPTIONS}", '', $sql_count);
+    } else {
+        $sql = str_replace("{SYNCOPTIONS}", "OR a.idlang = '" . $syncoptions . "'", $sql);
+        $sql_count = str_replace("{SYNCOPTIONS}", "OR a.idlang = '" . $syncoptions . "'", $sql_count);
+    }
 
     $db->query($sql_count);
     while ($db->next_record()) {
-    	$iArticleCount = $db->f("article_count");
+        $iArticleCount = $db->f("article_count");
     }
 
     $sql = "SELECT
                 b.location AS location,
                 a.name AS name
             FROM
-                ".$cfg["tab"]["area"]." AS a,
-                ".$cfg["tab"]["nav_sub"]." AS b
+                " . $cfg["tab"]["area"] . " AS a,
+                " . $cfg["tab"]["nav_sub"] . " AS b
             WHERE
-                b.idarea IN ".cSecurity::escapeDB($in_str, $db)." AND
+                b.idarea IN " . cSecurity::escapeDB($in_str, $db) . " AND
                 b.idarea = a.idarea AND
                 b.level = 1 AND
                 b.online = 1
@@ -114,24 +96,24 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
     $db->query($sql);
 
     while ($db->next_record()) {
-    	if($action == 'saveArt' || $iArticleCount > 0 || ($iArticleCount <= 0 && $tpl->dyn_cnt == 0) || ($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $action == 'newArt')){
-			$style = '';
-		} else {
-			$style = 'display:none;';
-		}
+        if ($action == 'saveArt' || $iArticleCount > 0 || ($iArticleCount <= 0 && $tpl->dyn_cnt == 0) || ($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $action == 'newArt')) {
+            $style = '';
+        } else {
+            $style = 'display:none;';
+        }
         // Extract names from the XML document.
         $caption = $nav->getName($db->f("location"));
 
         $tmp_area = $db->f("name");
 
         // Set template data
-        $tpl->set("d", "ID",      'c_'.$tpl->dyn_cnt);
-        $tpl->set("d", "CLASS",   '');
+        $tpl->set("d", "ID", 'c_' . $tpl->dyn_cnt);
+        $tpl->set("d", "CLASS", '');
         $tpl->set("d", "OPTIONS", '');
         if ($cfg['help'] == true) {
-            $tpl->set("d", "CAPTION", '<a style="'.$style.'" onclick="'.setHelpContext(i18n("Article")."/$caption").'sub.clicked(this);artObj.doAction(\''.$tmp_area.'\')">'.$caption.'</a>');
+            $tpl->set("d", "CAPTION", '<a style="' . $style . '" onclick="' . setHelpContext(i18n("Article") . "/$caption") . 'sub.clicked(this);artObj.doAction(\'' . $tmp_area . '\')">' . $caption . '</a>');
         } else {
-            $tpl->set("d", "CAPTION", '<a style="'.$style.'" onclick="sub.clicked(this);artObj.doAction(\''.$tmp_area.'\')">'.$caption.'</a>');
+            $tpl->set("d", "CAPTION", '<a style="' . $style . '" onclick="sub.clicked(this);artObj.doAction(\'' . $tmp_area . '\')">' . $caption . '</a>');
         }
 
         $tpl->next();
@@ -145,9 +127,8 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
 
     // Generate the third navigation layer
     $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["con_subnav"]);
-
 } else {
-    include($cfg["path"]["contenido"].$cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
+    include($cfg["path"]["contenido"] . $cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
 }
 
 ?>

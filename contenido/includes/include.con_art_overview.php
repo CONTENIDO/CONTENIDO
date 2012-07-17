@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Project:
@@ -22,28 +21,25 @@
  *
  * {@internal
  *   created 2003-01-26
- *   modified 2005-06-23, Andreas Lindner
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-cInclude("includes", "functions.tpl.php");
-cInclude("includes", "functions.str.php");
-cInclude("includes", "functions.pathresolver.php");
+cInclude('includes', 'functions.tpl.php');
+cInclude('includes', 'functions.str.php');
+cInclude('includes', 'functions.pathresolver.php');
+
 $firstMark = false;
 $db2 = cRegistry::getDb();
 
 $idcat = (isset($_REQUEST['idcat']) && is_numeric($_REQUEST['idcat'])) ? $_REQUEST['idcat'] : -1;
-$next  = (isset($_REQUEST['next']) && is_numeric($_REQUEST['next']) && $_REQUEST['next'] > 0) ? $_REQUEST['next'] : 0;
+$next = (isset($_REQUEST['next']) && is_numeric($_REQUEST['next']) && $_REQUEST['next'] > 0) ? $_REQUEST['next'] : 0;
 
-$dateformat = getEffectiveSetting("dateformat", "date", "Y-m-d");
+$dateformat = getEffectiveSetting('dateformat', 'date', 'Y-m-d');
 $templateDescription = '';
 
 if (!isset($syncfrom)) {
@@ -58,9 +54,8 @@ if ($action == 'con_duplicate') {
 
 if ($action == 'con_syncarticle') {
     // Verify that the category is available in this language
-    $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat=".cSecurity::toInteger($idcat)." AND idlang=".cSecurity::toInteger($lang);
-    $db->query($sql);
-    if ($db->next_record()) {
+    $oCatLang = new cApiCategoryLanguage();
+    if ($oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
         conSyncArticle($syncarticle, $sourcelanguage, $lang);
     } else {
         strSyncCategory($idcat, $sourcelanguage, $lang);
@@ -70,7 +65,7 @@ if ($action == 'con_syncarticle') {
 
 // Which columns to display?
 $listColumns = array(
-    "mark"    => i18n("Mark"),
+    "mark" => i18n("Mark"),
     "start" => i18n("Article"),
     "title" => i18n("Title"),
     "changeddate" => i18n("Changed"),
@@ -78,20 +73,16 @@ $listColumns = array(
     "sortorder" => i18n("Sort order"),
     "template" => i18n("Template"),
     "actions" => i18n("Actions")
-
-
 );
 
 // Which actions to display?
 $actionList = array(
-
     "online",
     "duplicate",
     "locked",
     "todo",
     "delete",
     "usetime"
-
 );
 
 // Call chains to process the columns and the action list
@@ -121,10 +112,10 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
     // Saving sort and elements per page user settings (if specified)
     // Should be changed to User->setProperty... someday
     if (isset($sortby)) {
-        $currentuser->setUserProperty("system", "sortorder-idlang-$lang-idcat-$idcat",$sortby);
+        $currentuser->setUserProperty("system", "sortorder-idlang-$lang-idcat-$idcat", $sortby);
     }
     if (isset($sortmode)) {
-        $currentuser->setUserProperty("system", "sortmode-idlang-$lang-idcat-$idcat",$sortmode);
+        $currentuser->setUserProperty("system", "sortmode-idlang-$lang-idcat-$idcat", $sortmode);
     }
 
     if (isset($elemperpage) && is_numeric($elemperpage)) {
@@ -139,38 +130,36 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
     $col = new cApiInUseCollection();
 
     if ((($idcat == 0 ||
-        $perm->have_perm_area_action('con')) && $perm->have_perm_item('str', $idcat)) ||
-        $perm->have_perm_area_action('con', 'con_makestart') ||
-        $perm->have_perm_area_action('con', 'con_makeonline') ||
-        $perm->have_perm_area_action('con', 'con_deleteart') ||
-        $perm->have_perm_area_action('con', 'con_tplcfg_edit') ||
-        $perm->have_perm_area_action('con', 'con_lock') ||
-        $perm->have_perm_area_action('con', 'con_makecatonline') ||
-        $perm->have_perm_area_action('con', 'con_changetemplate') ||
-        $perm->have_perm_area_action('con_editcontent', 'con_editart') ||
-        $perm->have_perm_area_action('con_editart', 'con_edit') ||
-        $perm->have_perm_area_action('con_editart', 'con_newart') ||
-        $perm->have_perm_area_action('con_editart', 'con_saveart') ||
-        $perm->have_perm_area_action('con_tplcfg', 'con_tplcfg_edit') ||
-        $perm->have_perm_area_action_item('con', 'con_makestart', $idcat) ||
-        $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat) ||
-        $perm->have_perm_area_action_item('con', 'con_deleteart', $idcat) ||
-        $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat) ||
-        $perm->have_perm_area_action_item('con', 'con_lock', $idcat) ||
-        $perm->have_perm_area_action_item('con', 'con_makecatonline', $idcat) ||
-        $perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) ||
-        $perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat) ||
-        $perm->have_perm_area_action_item('con_editart', 'con_edit', $idcat) ||
-        $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat) ||
-        $perm->have_perm_area_action_item('con_tplcfg', 'con_tplcfg_edit', $idcat) ||
-        $perm->have_perm_area_action_item('con_editart', 'con_saveart', $idcat))
-
-    {
+            $perm->have_perm_area_action('con')) && $perm->have_perm_item('str', $idcat)) ||
+            $perm->have_perm_area_action('con', 'con_makestart') ||
+            $perm->have_perm_area_action('con', 'con_makeonline') ||
+            $perm->have_perm_area_action('con', 'con_deleteart') ||
+            $perm->have_perm_area_action('con', 'con_tplcfg_edit') ||
+            $perm->have_perm_area_action('con', 'con_lock') ||
+            $perm->have_perm_area_action('con', 'con_makecatonline') ||
+            $perm->have_perm_area_action('con', 'con_changetemplate') ||
+            $perm->have_perm_area_action('con_editcontent', 'con_editart') ||
+            $perm->have_perm_area_action('con_editart', 'con_edit') ||
+            $perm->have_perm_area_action('con_editart', 'con_newart') ||
+            $perm->have_perm_area_action('con_editart', 'con_saveart') ||
+            $perm->have_perm_area_action('con_tplcfg', 'con_tplcfg_edit') ||
+            $perm->have_perm_area_action_item('con', 'con_makestart', $idcat) ||
+            $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat) ||
+            $perm->have_perm_area_action_item('con', 'con_deleteart', $idcat) ||
+            $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat) ||
+            $perm->have_perm_area_action_item('con', 'con_lock', $idcat) ||
+            $perm->have_perm_area_action_item('con', 'con_makecatonline', $idcat) ||
+            $perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) ||
+            $perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat) ||
+            $perm->have_perm_area_action_item('con_editart', 'con_edit', $idcat) ||
+            $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat) ||
+            $perm->have_perm_area_action_item('con_tplcfg', 'con_tplcfg_edit', $idcat) ||
+            $perm->have_perm_area_action_item('con_editart', 'con_saveart', $idcat)) {
 
         $sortby = $currentuser->getUserProperty("system", "sortorder-idlang-$lang-idcat-$idcat");
         $sortmode = $currentuser->getUserProperty("system", "sortmode-idlang-$lang-idcat-$idcat");
 
-        $sql  = "SELECT
+        $sql = "SELECT
                     a.idart AS idart,
                     a.idlang AS idlang,
                     a.idartlang AS idartlang,
@@ -190,39 +179,39 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     a.redirect AS redirect,
                     a.locked AS locked
                  FROM
-                    ".$cfg["tab"]["art_lang"]." AS a,
-                    ".$cfg["tab"]["art"]." AS b,
-                    ".$cfg["tab"]["cat_art"]." AS c
+                    " . $cfg["tab"]["art_lang"] . " AS a,
+                    " . $cfg["tab"]["art"] . " AS b,
+                    " . $cfg["tab"]["cat_art"] . " AS c
                  WHERE
-                    (a.idlang   = ".$lang." {SYNCOPTIONS}) AND
+                    (a.idlang   = " . $lang . " {SYNCOPTIONS}) AND
                     a.idart     = b.idart AND
-                    b.idclient  = ".$client." AND
+                    b.idclient  = " . $client . " AND
                     b.idart     = c.idart AND
-                    c.idcat     = ".$idcat;
+                    c.idcat     = " . $idcat;
 
         // Simple SQL statement to get the number of articles
         $sql_count =
                 "SELECT
                     COUNT(*) AS article_count
                  FROM
-                    ".$cfg["tab"]["art_lang"]." AS a,
-                    ".$cfg["tab"]["art"]." AS b,
-                    ".$cfg["tab"]["cat_art"]." AS c
+                    " . $cfg["tab"]["art_lang"] . " AS a,
+                    " . $cfg["tab"]["art"] . " AS b,
+                    " . $cfg["tab"]["cat_art"] . " AS c
                  WHERE
-                    (a.idlang   = ".cSecurity::toInteger($lang)." {SYNCOPTIONS}) AND
+                    (a.idlang   = " . cSecurity::toInteger($lang) . " {SYNCOPTIONS}) AND
                     a.idart     = b.idart AND
-                    b.idclient  = ".cSecurity::toInteger($client)." AND
+                    b.idclient  = " . cSecurity::toInteger($client) . " AND
                     b.idart     = c.idart AND
-                    c.idcat     = ".cSecurity::toInteger($idcat);
+                    c.idcat     = " . cSecurity::toInteger($idcat);
 
         $sql = str_replace("{ISSTART}", '', $sql);
 
         if ($syncoptions == -1) {
-            $sql       = str_replace("{SYNCOPTIONS}", '', $sql);
+            $sql = str_replace("{SYNCOPTIONS}", '', $sql);
             $sql_count = str_replace("{SYNCOPTIONS}", '', $sql_count);
         } else {
-            $sql       = str_replace("{SYNCOPTIONS}", "OR a.idlang = '".$syncoptions."'", $sql);
-            $sql_count = str_replace("{SYNCOPTIONS}", "OR a.idlang = '".$syncoptions."'", $sql_count);
+            $sql = str_replace("{SYNCOPTIONS}", "OR a.idlang = '" . $syncoptions . "'", $sql);
+            $sql_count = str_replace("{SYNCOPTIONS}", "OR a.idlang = '" . $syncoptions . "'", $sql_count);
         }
 
         // Article sort
@@ -276,28 +265,28 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         $aArticles = Array();
 
-        while ($db->next_record() ) {
+        while ($db->next_record()) {
             $sItem = "k" . $db->f("idart");
 
             if ($db->f("idlang") == $lang || !array_key_exists($sItem, $aArticles)) {
-                $aArticles[$sItem]["idart"]     = $db->f("idart");
-                $aArticles[$sItem]["idlang"]    = $db->f("idlang");
+                $aArticles[$sItem]["idart"] = $db->f("idart");
+                $aArticles[$sItem]["idlang"] = $db->f("idlang");
                 $aArticles[$sItem]["idartlang"] = $db->f("idartlang");
-                $aArticles[$sItem]["title"]     = $db->f("title");
+                $aArticles[$sItem]["title"] = $db->f("title");
                 $aArticles[$sItem]["is_start"] = isStartArticle($db->f("idartlang"), $idcat, $lang);
-                $aArticles[$sItem]["idcatart"]     = $db->f("idcatart");
-                $aArticles[$sItem]["idtplcfg"]     = $db->f("idtplcfg");
-                $aArticles[$sItem]["published"]    = $db->f("published");
-                $aArticles[$sItem]["online"]       = $db->f("online");
-                $aArticles[$sItem]["created"]      = $db->f("created");
-                $aArticles[$sItem]["idcat"]        = $db->f("idcat");
+                $aArticles[$sItem]["idcatart"] = $db->f("idcatart");
+                $aArticles[$sItem]["idtplcfg"] = $db->f("idtplcfg");
+                $aArticles[$sItem]["published"] = $db->f("published");
+                $aArticles[$sItem]["online"] = $db->f("online");
+                $aArticles[$sItem]["created"] = $db->f("created");
+                $aArticles[$sItem]["idcat"] = $db->f("idcat");
                 $aArticles[$sItem]["lastmodified"] = $db->f("lastmodified");
-                $aArticles[$sItem]["timemgmt"]     = $db->f("timemgmt");
-                $aArticles[$sItem]["datestart"]    = $db->f("datestart");
-                $aArticles[$sItem]["dateend"]      = $db->f("dateend");
-                $aArticles[$sItem]["artsort"]      = $db->f("artsort");
-                $aArticles[$sItem]["locked"]       = $db->f("locked");
-                $aArticles[$sItem]["redirect"]     = $db->f("redirect");
+                $aArticles[$sItem]["timemgmt"] = $db->f("timemgmt");
+                $aArticles[$sItem]["datestart"] = $db->f("datestart");
+                $aArticles[$sItem]["dateend"] = $db->f("dateend");
+                $aArticles[$sItem]["artsort"] = $db->f("artsort");
+                $aArticles[$sItem]["locked"] = $db->f("locked");
+                $aArticles[$sItem]["redirect"] = $db->f("redirect");
             }
         }
 
@@ -305,34 +294,34 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         foreach ($aArticles as $sart) {
             $dyn_cnt++;
-            $idart      = $sart["idart"];
-            $idlang     = $sart["idlang"];
+            $idart = $sart["idart"];
+            $idlang = $sart["idlang"];
 
-            $idtplcfg   = $sart["idtplcfg"];
-            $idartlang  = $sart["idartlang"];
-            $lidcat     = $sart["idcat"];
-            $idcatlang  = 0;
-            $idart      = $sart["idart"];
-            $published  = $sart["published"];
-            $online     = $sart["online"];
+            $idtplcfg = $sart["idtplcfg"];
+            $idartlang = $sart["idartlang"];
+            $lidcat = $sart["idcat"];
+            $idcatlang = 0;
+            $idart = $sart["idart"];
+            $published = $sart["published"];
+            $online = $sart["online"];
 
-            $is_start   = $sart["is_start"];
+            $is_start = $sart["is_start"];
 
-            $idcatart   = $sart["idcatart"];
-            $created    = $sart["created"];
-            $modified   = $sart["lastmodified"];
-            $title      = htmlspecialchars($sart["title"]);
-            $timemgmt   = $sart["timemgmt"];
-            $datestart  = $sart["datestart"];
-            $dateend    = $sart["dateend"];
-            $sortkey    = $sart["artsort"];
-            $locked     = $sart["locked"];
-            $redirect   = $sart["redirect"];
+            $idcatart = $sart["idcatart"];
+            $created = $sart["created"];
+            $modified = $sart["lastmodified"];
+            $title = htmlspecialchars($sart["title"]);
+            $timemgmt = $sart["timemgmt"];
+            $datestart = $sart["datestart"];
+            $dateend = $sart["dateend"];
+            $sortkey = $sart["artsort"];
+            $locked = $sart["locked"];
+            $redirect = $sart["redirect"];
 
-            $published = ($published != '0000-00-00 00:00:00') ? date($dateformat,strtotime($published)) : i18n("not yet published");
-            $created = date($dateformat,strtotime($created));
-            $modified = date($dateformat,strtotime($modified));
-            $alttitle = "idart" . '&#58; '.$idart.' '."idcatart".'&#58; '.$idcatart.' '."idartlang".'&#58; '.$idartlang;
+            $published = ($published != '0000-00-00 00:00:00') ? date($dateformat, strtotime($published)) : i18n("not yet published");
+            $created = date($dateformat, strtotime($created));
+            $modified = date($dateformat, strtotime($modified));
+            $alttitle = "idart" . '&#58; ' . $idart . ' ' . "idcatart" . '&#58; ' . $idcatart . ' ' . "idartlang" . '&#58; ' . $idartlang;
 
             if ((($obj = $col->checkMark("article", $idartlang)) === false) || $obj->get("userid") == $auth->auth['uid']) {
                 $inUse = false;
@@ -342,24 +331,23 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $inUseUserRealName = $vuser->getField("realname");
 
                 $inUse = true;
-                $title = $title . " (" . i18n("Article is in use").")";
-                $alttitle = sprintf(i18n("Article in use by %s (%s)"), $inUseUser, $inUseUserRealName). " " . $alttitle;
+                $title = $title . " (" . i18n("Article is in use") . ")";
+                $alttitle = sprintf(i18n("Article in use by %s (%s)"), $inUseUser, $inUseUserRealName) . " " . $alttitle;
             }
 
             // Id of the row, stores informations about the article and category
-            $tmp_rowid  = $idart."-".$idartlang."-".$lidcat."-".$idcatlang."-".$idcatart."-".$idlang;
+            $tmp_rowid = $idart . "-" . $idartlang . "-" . $lidcat . "-" . $idcatlang . "-" . $idcatart . "-" . $idlang;
             $tpl->set('d', 'ROWID', $tmp_rowid);
 
             // Article Title
-            if ($perm->have_perm_area_action('con_editcontent', 'con_editart' ) ||
-                $perm->have_perm_area_action_item('con_editcontent', 'con_editart' ,$idcat))
-            {
+            if ($perm->have_perm_area_action('con_editcontent', 'con_editart') ||
+                    $perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat)) {
                 if ($idlang != $lang) {
                     $tmp_alink = $sess->url("main.php?area=con_editcontent&action=con_editart&changeview=prev&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=$frame&tmpchangelang=$idlang");
-                    $titlelink = '<a href="'.$tmp_alink.'" title="'.$alttitle.'">'.$title.'</a>';
+                    $titlelink = '<a href="' . $tmp_alink . '" title="' . $alttitle . '">' . $title . '</a>';
                 } else {
                     $tmp_alink = $sess->url("main.php?area=con_editcontent&action=con_editart&changeview=edit&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=$frame");
-                    $titlelink = '<a href="'.$tmp_alink.'" title="'.$alttitle.'">'.$title.'</a>';
+                    $titlelink = '<a href="' . $tmp_alink . '" title="' . $alttitle . '">' . $title . '</a>';
                 }
             } else {
                 $tmp_alink = '';
@@ -389,8 +377,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             // Article Title
             if (($perm->have_perm_area_action('con', 'con_lock') ||
-                $perm->have_perm_area_action_item('con', 'con_lock', $idcat)) && $inUse == false )
-            {
+                    $perm->have_perm_area_action_item('con', 'con_lock', $idcat)) && $inUse == false) {
                 if ($locked == 1) {
                     $lockimg = 'images/article_locked.gif';
                     $lockalt = i18n("Unfreeze article");
@@ -398,7 +385,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     $lockimg = 'images/article_unlocked.gif';
                     $lockalt = i18n("Freeze article");
                 }
-                $tmp_lock = '<a href="'.$sess->url("main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&next=$next").'" title="'.$lockalt.'"><img src="'.$lockimg.'" title="'.$lockalt.'" alt="'.$lockalt.'" border="0"></a>';
+                $tmp_lock = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&next=$next") . '" title="' . $lockalt . '"><img src="' . $lockimg . '" title="' . $lockalt . '" alt="' . $lockalt . '" border="0"></a>';
             } else {
                 if ($locked == 1) {
                     $lockimg = 'images/article_locked.gif';
@@ -407,7 +394,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     $lockimg = 'images/article_unlocked.gif';
                     $lockalt = i18n("Article is not frozen");
                 }
-                $tmp_lock = '<img src="'.$lockimg.'" title="'.$lockalt.'" alt="'.$lockalt.'" border="0">';
+                $tmp_lock = '<img src="' . $lockimg . '" title="' . $lockalt . '" alt="' . $lockalt . '" border="0">';
             }
 
             if ($idlang != $lang) {
@@ -424,19 +411,18 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             // Article conf button
             if ($perm->have_perm_area_action('con_editart', 'con_edit') ||
-                $perm->have_perm_area_action_item('con_editart', 'con_edit', $idcat))
-            {
-                $tmp_artconf = '<a href="'.$sess->url("main.php?area=con_editart&action=con_edit&frame=4&idart=$idart&idcat=$idcat").'" title="'.i18n("Article properties").'"><img src="'.$cfg["path"]["images"].'but_art_conf2.gif" alt="'.i18n("Article properties").'" title="'.i18n("Article properties").'" border="0"></a>';
+                    $perm->have_perm_area_action_item('con_editart', 'con_edit', $idcat)) {
+                $tmp_artconf = '<a href="' . $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idart=$idart&idcat=$idcat") . '" title="' . i18n("Article properties") . '"><img src="' . $cfg["path"]["images"] . 'but_art_conf2.gif" alt="' . i18n("Article properties") . '" title="' . i18n("Article properties") . '" border="0"></a>';
             } else {
-                $tmp_artconf='';
+                $tmp_artconf = '';
             }
 
             $tmp_sync = '';
             if ($idlang != $lang) {
-                $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".cSecurity::toInteger($idcat)."' AND idlang='".cSecurity::toInteger($lang)."'";
+                $sql = "SELECT idcatlang FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat='" . cSecurity::toInteger($idcat) . "' AND idlang='" . cSecurity::toInteger($lang) . "'";
                 $db->query($sql);
                 if ($db->next_record()) {
-                    $tmp_sync = '<a href="'.$sess->url("main.php?area=con&action=con_syncarticle&syncarticle=$idart&sourcelanguage=$idlang&frame=4&idcat=$idcat&next=$next").'" title="'.i18n("Copy article to the current language").'"><img src="'.$cfg["path"]["images"].'but_sync_art.gif" alt="'.i18n("Copy article to the current language").'" title="'.i18n("Copy article to the current language").'" border="0" style="margin-left:3px;"></a>';
+                    $tmp_sync = '<a href="' . $sess->url("main.php?area=con&action=con_syncarticle&syncarticle=$idart&sourcelanguage=$idlang&frame=4&idcat=$idcat&next=$next") . '" title="' . i18n("Copy article to the current language") . '"><img src="' . $cfg["path"]["images"] . 'but_sync_art.gif" alt="' . i18n("Copy article to the current language") . '" title="' . i18n("Copy article to the current language") . '" border="0" style="margin-left:3px;"></a>';
                 } else {
                     $tmp_sync = '';
                 }
@@ -452,10 +438,10 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         b.idtpl AS idtpl,
                         b.description AS description
                      FROM
-                        ".$cfg["tab"]["tpl_conf"]." AS a,
-                        ".$cfg["tab"]["tpl"]." AS b
+                        " . $cfg["tab"]["tpl_conf"] . " AS a,
+                        " . $cfg["tab"]["tpl"] . " AS b
                      WHERE
-                        a.idtplcfg = ".cSecurity::toInteger($idtplcfg)." AND
+                        a.idtplcfg = " . cSecurity::toInteger($idtplcfg) . " AND
                         a.idtpl = b.idtpl";
 
             $db2->query($sql2);
@@ -467,7 +453,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             // Uses Category Template
             if (0 == $idtplcfg) {
-                $a_tplname = "--- ".i18n("None")." ---";
+                $a_tplname = "--- " . i18n("None") . " ---";
             }
 
             // Make Startarticle button
@@ -489,9 +475,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             if (($perm->have_perm_area_action('con', 'con_makestart') || $perm->have_perm_area_action_item('con', 'con_makestart', $idcat)) && $idcat != 0) {
                 if ($is_start == false) {
-                    $tmp_link = '<a href="'.$sess->url("main.php?area=con&amp;idcat=$idcat&amp;action=con_makestart&amp;idcatart=$idcatart&amp;frame=4&is_start=1&amp;next=$next").'" title="'.i18n("Flag as start article").'"><img src="images/'.$imgsrc.'" border="0" title="'.i18n("Flag as start article").'" alt="'.i18n("Flag as start article").'" style="margin-left:3px;"></a>';
+                    $tmp_link = '<a href="' . $sess->url("main.php?area=con&amp;idcat=$idcat&amp;action=con_makestart&amp;idcatart=$idcatart&amp;frame=4&is_start=1&amp;next=$next") . '" title="' . i18n("Flag as start article") . '"><img src="images/' . $imgsrc . '" border="0" title="' . i18n("Flag as start article") . '" alt="' . i18n("Flag as start article") . '" style="margin-left:3px;"></a>';
                 } else {
-                    $tmp_link = '<a href="'.$sess->url("main.php?area=con&amp;idcat=$idcat&amp;action=con_makestart&amp;idcatart=$idcatart&amp;frame=4&amp;is_start=0&amp;next=$next").'" title="'.i18n("Flag as normal article").'"><img src="images/'.$imgsrc.'" border="0" title="'.i18n("Flag as normal article").'" alt="'.i18n("Flag as normal article").'" style="margin-left:3px;"></a>';
+                    $tmp_link = '<a href="' . $sess->url("main.php?area=con&amp;idcat=$idcat&amp;action=con_makestart&amp;idcatart=$idcatart&amp;frame=4&amp;is_start=0&amp;next=$next") . '" title="' . i18n("Flag as normal article") . '"><img src="images/' . $imgsrc . '" border="0" title="' . i18n("Flag as normal article") . '" alt="' . i18n("Flag as normal article") . '" style="margin-left:3px;"></a>';
                 }
             } else {
                 if ($is_start == true) {
@@ -500,7 +486,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     $sTitle = i18n("Normal article");
                 }
 
-                $tmp_img = '<img src="images/'.$imgsrc.'" border="0" title="'.$sTitle.'" alt="'.$sTitle.'" style="margin-left:3px;">';
+                $tmp_img = '<img src="images/' . $imgsrc . '" border="0" title="' . $sTitle . '" alt="' . $sTitle . '" style="margin-left:3px;">';
 
                 $tmp_link = $tmp_img;
             }
@@ -510,7 +496,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             // Make copy button
             if (($perm->have_perm_area_action('con', 'con_duplicate') || $perm->have_perm_area_action_item('con', 'con_duplicate', $idcat)) && $idcat != 0) {
                 $imgsrc = "but_copy.gif";
-                $tmp_link = '<a href="'.$sess->url("main.php?area=con&idcat=$idcat&action=con_duplicate&duplicate=$idart&frame=4&next=$next").'" title="'.i18n("Duplicate article").'"><img src="images/'.$imgsrc.'" border="0" title="'.i18n("Duplicate article").'" alt="'.i18n("Duplicate article").'" style="margin-left:3px;"></a>';
+                $tmp_link = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_duplicate&duplicate=$idart&frame=4&next=$next") . '" title="' . i18n("Duplicate article") . '"><img src="images/' . $imgsrc . '" border="0" title="' . i18n("Duplicate article") . '" alt="' . i18n("Duplicate article") . '" style="margin-left:3px;"></a>';
             } else {
                 $tmp_link = '';
             }
@@ -521,29 +507,27 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $duplicatelink = $tmp_link;
             }
 
-            $subject = urlencode(sprintf(i18n("Reminder for article '%s'"),$title));
+            $subject = urlencode(sprintf(i18n("Reminder for article '%s'"), $title));
             $mycatname = '';
             conCreateLocationString($idcat, "&nbsp;/&nbsp;", $mycatname);
-            $message = urlencode(sprintf(i18n("Reminder for article '%s'\nCategory: %s"),$title,$mycatname));
+            $message = urlencode(sprintf(i18n("Reminder for article '%s'\nCategory: %s"), $title, $mycatname));
 
             $todolink = new TODOLink("idart", $idart, $subject, $message);
 
             // Make On-/Offline button
             if ($online) {
                 if (($perm->have_perm_area_action('con', 'con_makeonline') ||
-                    $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) && ($idcat != 0))
-                {
-                    $tmp_online = '<a href="'.$sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next").'" title="'.i18n("Make offline").'"><img src="images/online.gif" title="'.i18n("Make offline").'" alt="'.i18n("Make offline").'" border="0" style="margin-left:3px;"></a>';
+                        $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) && ($idcat != 0)) {
+                    $tmp_online = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next") . '" title="' . i18n("Make offline") . '"><img src="images/online.gif" title="' . i18n("Make offline") . '" alt="' . i18n("Make offline") . '" border="0" style="margin-left:3px;"></a>';
                 } else {
-                    $tmp_online = '<img src="images/online.gif" title="'.i18n("Article is online").'" alt="'.i18n("Article is online").'" border="0" style="margin-left:3px;">';
+                    $tmp_online = '<img src="images/online.gif" title="' . i18n("Article is online") . '" alt="' . i18n("Article is online") . '" border="0" style="margin-left:3px;">';
                 }
             } else {
                 if (($perm->have_perm_area_action('con', 'con_makeonline') ||
-                    $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) && ($idcat != 0))
-                {
-                    $tmp_online = '<a href="'.$sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next").'" title="'.i18n("Make online").'"><img src="images/offline.gif" title="'.i18n("Make online").'" alt="'.i18n("Make online").'" border="0" style="margin-left:3px;"></a>';
+                        $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) && ($idcat != 0)) {
+                    $tmp_online = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next") . '" title="' . i18n("Make online") . '"><img src="images/offline.gif" title="' . i18n("Make online") . '" alt="' . i18n("Make online") . '" border="0" style="margin-left:3px;"></a>';
                 } else {
-                    $tmp_online = '<img src="images/offline.gif" title="'.i18n("Article is offline").'" alt="'.i18n("Article is offline").'" border="0" style="margin-left:3px;">';
+                    $tmp_online = '<img src="images/offline.gif" title="' . i18n("Article is offline") . '" alt="' . i18n("Article is offline") . '" border="0" style="margin-left:3px;">';
                 }
             }
 
@@ -555,15 +539,14 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             // Delete button
             if (($perm->have_perm_area_action('con', 'con_deleteart') ||
-                $perm->have_perm_area_action_item('con', 'con_deleteart', $idcat)) && $inUse == false)
-            {
+                    $perm->have_perm_area_action_item('con', 'con_deleteart', $idcat)) && $inUse == false) {
                 $tmp_title = $title;
                 if (strlen($tmp_title) > 30) {
                     $tmp_title = substr($tmp_title, 0, 27) . "...";
                 }
 
-                $confirmString = sprintf(i18n("Are you sure to delete the following article:<br><br><b>%s</b>"),htmlspecialchars($tmp_title));
-                $tmp_del = '<a id="deleteart" href="javascript://" onclick="box.confirm(&quot;'.i18n("Delete article").'&quot;, &quot;'.addslashes($confirmString).'&quot;, &quot;deleteArticle('.$idart.','.$idcat.','.$next.')&quot;)" title="'.i18n("Delete article").'"><img src="images/delete.gif" title="'.i18n("Delete article").'" alt="'.i18n("Delete article").'" border="0" style="margin-left:3px;"></a>';
+                $confirmString = sprintf(i18n("Are you sure to delete the following article:<br><br><b>%s</b>"), htmlspecialchars($tmp_title));
+                $tmp_del = '<a id="deleteart" href="javascript://" onclick="box.confirm(&quot;' . i18n("Delete article") . '&quot;, &quot;' . addslashes($confirmString) . '&quot;, &quot;deleteArticle(' . $idart . ',' . $idcat . ',' . $next . ')&quot;)" title="' . i18n("Delete article") . '"><img src="images/delete.gif" title="' . i18n("Delete article") . '" alt="' . i18n("Delete article") . '" border="0" style="margin-left:3px;"></a>';
             } else {
                 $tmp_del = '';
             }
@@ -579,13 +562,12 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $tpl->set('d', 'DIRECTION', 'dir="' . langGetTextDirection($lang) . '"');
 
             // Next iteration
-
             // Articles found
             $no_article = false;
             foreach ($listColumns as $listColumn => $ctitle) {
                 switch ($listColumn) {
                     case "mark":
-                        $value = '<input type="checkbox" name="mark" value="'.$idart.'" class="mark_articles"/>';
+                        $value = '<input type="checkbox" name="mark" value="' . $idart . '" class="mark_articles"/>';
                         break;
                     case "start":
                         $value = $tmp_start;
@@ -680,7 +662,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         );
         foreach ($listColumns as $key => $listColumn) {
             // Dirty hack to force column widths
-            $width = ($key == 'title' || $listColumn == i18n('Title'))? '100%' : '1%';
+            $width = ($key == 'title' || $listColumn == i18n('Title')) ? '100%' : '1%';
             // if it should be possible to sort by this column, add a link
             if (in_array($key, array_keys($sortColumns))) {
                 $newSortmode = 'asc';
@@ -690,7 +672,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 }
                 // add the appropriate sorting image if necessary
                 if ($sortby == $sortColumns[$key]) {
-                    $imageSrc = ($sortmode == 'asc')? 'images/sort_up.gif' : 'images/sort_down.gif';
+                    $imageSrc = ($sortmode == 'asc') ? 'images/sort_up.gif' : 'images/sort_down.gif';
                     $sortImage = '<img src="' . $imageSrc . '" />';
                 } else {
                     $sortImage = '';
@@ -715,7 +697,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     $sBrowseLinks .= $i . "\n"; // I'm on the current page, no link
                 } else {
                     $tmp_alink = $sess->url("main.php?area=con&frame=$frame&idcat=$idcat&next=$iNext");
-                    $sBrowseLinks .= '<a href="'.$tmp_alink.'">'.$i.'</a>'."\n";
+                    $sBrowseLinks .= '<a href="' . $tmp_alink . '">' . $i . '</a>' . "\n";
                 }
             }
             $tpl->set('s', 'NEXT', $next);
@@ -730,7 +712,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             foreach ($artlist as $key2 => $artitem) {
                 if ($firstMark == false) {
                     $script = 'function initTheOne() {
-                                   var theOne = document.getElementById("'.$key2.'");
+                                   var theOne = document.getElementById("' . $key2 . '");
                                    artRow.reset();
                                    artRow.over(theOne);
                                    artRow.click(theOne);
@@ -746,16 +728,16 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     // Description for hover effect
                     if ($key == 'template') {
                         $templateDescription = $artitem['templateDescription'];
-                        $descString = '<b>'.$artitem[$key].'</b>';
+                        $descString = '<b>' . $artitem[$key] . '</b>';
 
                         $sTemplatename = cApiStrTrimHard($artitem[$key], 20);
                         if (strlen($artitem[$key]) > 20) {
-                            $cells[] = '<td nowrap="nowrap" class="bordercell tooltip" title="'.$descString.'">'.$sTemplatename.'</td>';
+                            $cells[] = '<td nowrap="nowrap" class="bordercell tooltip" title="' . $descString . '">' . $sTemplatename . '</td>';
                         } else {
-                            $cells[] = '<td nowrap="nowrap" class="bordercell">'.$artitem[$key].'</td>';
+                            $cells[] = '<td nowrap="nowrap" class="bordercell">' . $artitem[$key] . '</td>';
                         }
                     } else {
-                        $cells[] = '<td nowrap="nowrap" class="bordercell">'.$artitem[$key].'</td>';
+                        $cells[] = '<td nowrap="nowrap" class="bordercell">' . $artitem[$key] . '</td>';
                     }
                 }
                 $tpl->set('d', 'CELLS', implode("\n", $cells));
@@ -764,18 +746,18 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $tpl->next();
             }
         } else {
-            $emptyCell = '<td nowrap="nowrap" class="bordercell" colspan="'.count($listColumns).'">'.i18n("No articles found").'</td>';
+            $emptyCell = '<td nowrap="nowrap" class="bordercell" colspan="' . count($listColumns) . '">' . i18n("No articles found") . '</td>';
             $tpl->set('d', 'CELLS', $emptyCell);
             $tpl->set('s', 'ROWMARKSCRIPT', '');
         }
 
         // Elements per Page select
         $aElemPerPage = array(
-            0     => i18n("All"),
-            25     => "25",
-            50     => "50",
-            75     => "75",
-            100    => "100"
+            0 => i18n("All"),
+            25 => "25",
+            50 => "50",
+            75 => "75",
+            100 => "100"
         );
 
         $tpl2 = new Template();
@@ -785,13 +767,13 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         foreach ($aElemPerPage as $key => $value) {
             $selected = ($elemperpage == $key) ? 'selected="selected"' : '';
-            $tpl2->set('d', 'VALUE',    $key);
-            $tpl2->set('d', 'CAPTION',  $value);
+            $tpl2->set('d', 'VALUE', $key);
+            $tpl2->set('d', 'CAPTION', $value);
             $tpl2->set('d', 'SELECTED', $selected);
             $tpl2->next();
         }
 
-        $select  = (!$no_article) ? $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true) : '&nbsp;';
+        $select = (!$no_article) ? $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true) : '&nbsp;';
         $caption = (!$no_article) ? i18n("Items per page:") : '&nbsp;';
 
         $tpl->set('s', 'ELEMPERPAGECAPTION', $caption);
@@ -808,17 +790,17 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     b.name AS name,
                     d.idtpl AS idtpl
                 FROM
-                    (".$cfg["tab"]["cat"]." AS a,
-                    ".$cfg["tab"]["cat_lang"]." AS b,
-                    ".$cfg["tab"]["tpl_conf"]." AS c)
+                    (" . $cfg["tab"]["cat"] . " AS a,
+                    " . $cfg["tab"]["cat_lang"] . " AS b,
+                    " . $cfg["tab"]["tpl_conf"] . " AS c)
                 LEFT JOIN
-                    ".$cfg["tab"]["tpl"]." AS d
+                    " . $cfg["tab"]["tpl"] . " AS d
                 ON
                     d.idtpl = c.idtpl
                 WHERE
-                    a.idclient = ".cSecurity::toInteger($client)." AND
-                    a.idcat    = ".cSecurity::toInteger($idcat)." AND
-                    b.idlang   = ".cSecurity::toInteger($lang)." AND
+                    a.idclient = " . cSecurity::toInteger($client) . " AND
+                    a.idcat    = " . cSecurity::toInteger($idcat) . " AND
+                    b.idlang   = " . cSecurity::toInteger($lang) . " AND
                     b.idcat    = a.idcat AND
                     c.idtplcfg = b.idtplcfg";
 
@@ -834,7 +816,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         if ($cat_name_tmp != '') {
             $cat_name = '<div id="categorypath" class="categorypath">';
-            $cat_name .= $cat_name_tmp.' > '.htmlspecialchars($sFistArticleName);
+            $cat_name .= $cat_name_tmp . ' > ' . htmlspecialchars($sFistArticleName);
             $cat_name .= "</div>";
         } else {
             $cat_name = '';
@@ -844,33 +826,31 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // Hinweis wenn kein Artikel gefunden wurde
         if ($no_article) {
-            $tpl->set('d', "START",         '&nbsp;');
-            $tpl->set('d', "ARTICLE",       i18n("No articles found"));
-            $tpl->set('d', "PUBLISHED",     '&nbsp;');
-            $tpl->set('d', "LASTMODIFIED",  '&nbsp;');
-            $tpl->set('d', "ARTCONF",       '&nbsp;');
-            $tpl->set('d', "TPLNAME",       '&nbsp;');
-            $tpl->set('d', "LOCKED",        '&nbsp;');
-            $tpl->set('d', "DUPLICATE",     '&nbsp;');
-            $tpl->set('d', "TPLCONF",       '&nbsp;');
-            $tpl->set('d', "ONLINE",        '&nbsp;');
-            $tpl->set('d', "DELETE",        '&nbsp;');
-            $tpl->set('d', "USETIME",       '&nbsp;');
-            $tpl->set('d', "TODO",          '&nbsp;');
-            $tpl->set('d', "SORTKEY",       '&nbsp;');
+            $tpl->set('d', "START", '&nbsp;');
+            $tpl->set('d', "ARTICLE", i18n("No articles found"));
+            $tpl->set('d', "PUBLISHED", '&nbsp;');
+            $tpl->set('d', "LASTMODIFIED", '&nbsp;');
+            $tpl->set('d', "ARTCONF", '&nbsp;');
+            $tpl->set('d', "TPLNAME", '&nbsp;');
+            $tpl->set('d', "LOCKED", '&nbsp;');
+            $tpl->set('d', "DUPLICATE", '&nbsp;');
+            $tpl->set('d', "TPLCONF", '&nbsp;');
+            $tpl->set('d', "ONLINE", '&nbsp;');
+            $tpl->set('d', "DELETE", '&nbsp;');
+            $tpl->set('d', "USETIME", '&nbsp;');
+            $tpl->set('d', "TODO", '&nbsp;');
+            $tpl->set('d', "SORTKEY", '&nbsp;');
 
             $tpl->next();
         }
 
         // Kategorie anzeigen und Konfigurieren button
         /* JL 23.06.03 Check right from "Content" instead of "Category"
-        if ($perm->have_perm_area_action("str_tplcfg","str_tplcfg") ||
-        $perm->have_perm_area_action_item("str_tplcfg","str_tplcfg",$lidcat)) */
+          if ($perm->have_perm_area_action("str_tplcfg","str_tplcfg") ||
+          $perm->have_perm_area_action_item("str_tplcfg","str_tplcfg",$lidcat)) */
 
         if (($perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat) ||
-            $perm->have_perm_area_action('con', 'con_tplcfg_edit')) && $foreignlang == false)
-
-        {
+                $perm->have_perm_area_action('con', 'con_tplcfg_edit')) && $foreignlang == false) {
             if (0 != $idcat) {
                 $tpl->set('s', 'CATEGORY', $cat_name);
                 $tpl->set('s', 'CATEGORY_CONF', $tmp_img);
@@ -891,11 +871,10 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // New Article link
         if (($perm->have_perm_area_action('con_editart', 'con_newart') ||
-            $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat)) && $foreignlang == false)
-        {
+                $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat)) && $foreignlang == false) {
             if ($idcat != 0 && $cat_idtpl != 0) {
-                $tpl->set('s', 'NEWARTICLE_TEXT', '<a id="newArtTxt" href="'.$sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat").'">'.i18n("Create new article").'</a>');
-                $tpl->set('s', 'NEWARTICLE_IMG', '<a id="newArtImg" href="'.$sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat").'" title="'.i18n("Create new article").'"><img src="images/but_art_new.gif" border="0" alt="'.i18n("Create new article").'"></a>');
+                $tpl->set('s', 'NEWARTICLE_TEXT', '<a id="newArtTxt" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '">' . i18n("Create new article") . '</a>');
+                $tpl->set('s', 'NEWARTICLE_IMG', '<a id="newArtImg" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '" title="' . i18n("Create new article") . '"><img src="images/but_art_new.gif" border="0" alt="' . i18n("Create new article") . '"></a>');
             } else {
                 $tpl->set('s', 'NEWARTICLE_TEXT', '&nbsp;');
                 $tpl->set('s', 'NEWARTICLE_IMG', '&nbsp;');
@@ -913,8 +892,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $tpl->set('s', 'NOTIFICATION', $str);
         //modified by fulai.zhang 17.07.2012
         //display if there are articles
-    	if ($no_article) {
-			$tpl->set('s', 'noArticle', "display: none;");
+        if ($no_article) {
+            $tpl->set('s', 'noArticle', "display: none;");
         }
 
         //breadcrumb onclick
@@ -922,7 +901,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $tpl->set('s', 'iIdtpl', $idtpl);
         $tpl->set('s', 'SYNCOPTIONS', $syncoptions);
         $tpl->set('s', 'SESSION', $contenido);
-    	$tpl->set('s', 'DISPLAY_MENU', 1);
+        $tpl->set('s', 'DISPLAY_MENU', 1);
 
         // Generate template
         $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_art_overview']);
@@ -934,5 +913,4 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
     $tpl->set('s', 'CONTENTS', '');
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['blank']);
 }
-
 ?>
