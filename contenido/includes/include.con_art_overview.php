@@ -563,7 +563,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 }
 
                 $confirmString = sprintf(i18n("Are you sure to delete the following article:<br><br><b>%s</b>"),htmlspecialchars($tmp_title));
-                $tmp_del = '<a href="javascript://" onclick="box.confirm(&quot;'.i18n("Delete article").'&quot;, &quot;'.addslashes($confirmString).'&quot;, &quot;deleteArticle('.$idart.','.$idcat.','.$next.')&quot;)" title="'.i18n("Delete article").'"><img src="images/delete.gif" title="'.i18n("Delete article").'" alt="'.i18n("Delete article").'" border="0" style="margin-left:3px;"></a>';
+                $tmp_del = '<a id="deleteart" href="javascript://" onclick="box.confirm(&quot;'.i18n("Delete article").'&quot;, &quot;'.addslashes($confirmString).'&quot;, &quot;deleteArticle('.$idart.','.$idcat.','.$next.')&quot;)" title="'.i18n("Delete article").'"><img src="images/delete.gif" title="'.i18n("Delete article").'" alt="'.i18n("Delete article").'" border="0" style="margin-left:3px;"></a>';
             } else {
                 $tmp_del = '';
             }
@@ -830,11 +830,11 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         }
 
         // Show path of selected category to user
-        prCreateURLNameLocationString($idcat, '/', $cat_name_tmp);
+        prCreateURLNameLocationString($idcat, ' > ', $cat_name_tmp, true, 'breadcrumb');
 
         if ($cat_name_tmp != '') {
-            $cat_name = '<div class="categorypath">';
-            $cat_name .= $cat_name_tmp.'/'.htmlspecialchars($sFistArticleName);
+            $cat_name = '<div id="categorypath" class="categorypath">';
+            $cat_name .= $cat_name_tmp.' > '.htmlspecialchars($sFistArticleName);
             $cat_name .= "</div>";
         } else {
             $cat_name = '';
@@ -894,8 +894,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat)) && $foreignlang == false)
         {
             if ($idcat != 0 && $cat_idtpl != 0) {
-                $tpl->set('s', 'NEWARTICLE_TEXT', '<a href="'.$sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat").'">'.i18n("Create new article").'</a>');
-                $tpl->set('s', 'NEWARTICLE_IMG', '<a href="'.$sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat").'" title="'.i18n("Create new article").'"><img src="images/but_art_new.gif" border="0" alt="'.i18n("Create new article").'"></a>');
+                $tpl->set('s', 'NEWARTICLE_TEXT', '<a id="newArtTxt" href="'.$sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat").'">'.i18n("Create new article").'</a>');
+                $tpl->set('s', 'NEWARTICLE_IMG', '<a id="newArtImg" href="'.$sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat").'" title="'.i18n("Create new article").'"><img src="images/but_art_new.gif" border="0" alt="'.i18n("Create new article").'"></a>');
             } else {
                 $tpl->set('s', 'NEWARTICLE_TEXT', '&nbsp;');
                 $tpl->set('s', 'NEWARTICLE_IMG', '&nbsp;');
@@ -911,10 +911,19 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $tpl->set('s', 'SID', $sess->id);
 
         $tpl->set('s', 'NOTIFICATION', $str);
+        //modified by fulai.zhang 17.07.2012
         //display if there are articles
     	if ($no_article) {
 			$tpl->set('s', 'noArticle', "display: none;");
         }
+
+        //breadcrumb onclick
+        $tpl->set('s', 'iIdcat', $idcat);
+        $tpl->set('s', 'iIdtpl', $idtpl);
+        $tpl->set('s', 'SYNCOPTIONS', $syncoptions);
+        $tpl->set('s', 'SESSION', $contenido);
+    	$tpl->set('s', 'DISPLAY_MENU', 1);
+
         // Generate template
         $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_art_overview']);
     } else {

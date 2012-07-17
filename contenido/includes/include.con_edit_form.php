@@ -663,6 +663,43 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
             $notification->displayNotification("warning", $message);
         }
     }
+
+    //Simple SQL statement to get the number of articles
+	$sql_count =
+                "SELECT
+                    COUNT(*) AS article_count
+                 FROM
+                    ".$cfg["tab"]["art_lang"]." AS a,
+                    ".$cfg["tab"]["art"]." AS b,
+                    ".$cfg["tab"]["cat_art"]." AS c
+                 WHERE
+                    (a.idlang   = ".cSecurity::toInteger($lang)." {SYNCOPTIONS}) AND
+                    a.idart     = b.idart AND
+                    b.idclient  = ".cSecurity::toInteger($client)." AND
+                    b.idart     = c.idart AND
+                    c.idcat     = ".cSecurity::toInteger($idcat);
+
+        $sql = str_replace("{ISSTART}", '', $sql);
+
+        if ($syncoptions == -1) {
+            $sql       = str_replace("{SYNCOPTIONS}", '', $sql);
+            $sql_count = str_replace("{SYNCOPTIONS}", '', $sql_count);
+        } else {
+            $sql       = str_replace("{SYNCOPTIONS}", "OR a.idlang = '".$syncoptions."'", $sql);
+            $sql_count = str_replace("{SYNCOPTIONS}", "OR a.idlang = '".$syncoptions."'", $sql_count);
+        }
+
+    $db->query($sql_count);
+    while ($db->next_record()) {
+    	$iArticleCount = $db->f("article_count");
+    }
+    $tpl->set('s', 'iArticleCount', $iArticleCount);
+    $tpl->set('s', 'iIdcat', $idcat);
+    $tpl->set('s', 'iIdtpl', $idtpl);
+    $tpl->set('s', 'SYNCOPTIONS', $syncoptions);
+    $tpl->set('s', 'SESSION', $contenido);
+    $tpl->set('s', 'DISPLAY_MENU', $display_menu);
+
     // Genereate the Template
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_edit_form']);
 

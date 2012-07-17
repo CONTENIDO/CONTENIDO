@@ -67,6 +67,36 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
     $in_str = substr($in_str, 0, $len);
     $in_str = '('.$in_str.')';
 
+    // Simple SQL statement to get the number of articles
+	$sql_count =
+                "SELECT
+                    COUNT(*) AS article_count
+                 FROM
+                    ".$cfg["tab"]["art_lang"]." AS a,
+                    ".$cfg["tab"]["art"]." AS b,
+                    ".$cfg["tab"]["cat_art"]." AS c
+                 WHERE
+                    (a.idlang   = ".cSecurity::toInteger($lang)." {SYNCOPTIONS}) AND
+                    a.idart     = b.idart AND
+                    b.idclient  = ".cSecurity::toInteger($client)." AND
+                    b.idart     = c.idart AND
+                    c.idcat     = ".cSecurity::toInteger($idcat);
+
+        $sql = str_replace("{ISSTART}", '', $sql);
+
+        if ($syncoptions == -1) {
+            $sql       = str_replace("{SYNCOPTIONS}", '', $sql);
+            $sql_count = str_replace("{SYNCOPTIONS}", '', $sql_count);
+        } else {
+            $sql       = str_replace("{SYNCOPTIONS}", "OR a.idlang = '".$syncoptions."'", $sql);
+            $sql_count = str_replace("{SYNCOPTIONS}", "OR a.idlang = '".$syncoptions."'", $sql_count);
+        }
+
+    $db->query($sql_count);
+    while ($db->next_record()) {
+    	$iArticleCount = $db->f("article_count");
+    }
+
     $sql = "SELECT
                 b.location AS location,
                 a.name AS name
@@ -84,6 +114,11 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
     $db->query($sql);
 
     while ($db->next_record()) {
+    	if($action == 'saveArt' || $iArticleCount > 0 || ($iArticleCount <= 0 && $tpl->dyn_cnt == 0) || ($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $action == 'newArt')){
+			$style = '';
+		} else {
+			$style = 'display:none;';
+		}
         // Extract names from the XML document.
         $caption = $nav->getName($db->f("location"));
 
@@ -94,9 +129,9 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
         $tpl->set("d", "CLASS",   '');
         $tpl->set("d", "OPTIONS", '');
         if ($cfg['help'] == true) {
-            $tpl->set("d", "CAPTION", '<a onclick="'.setHelpContext(i18n("Article")."/$caption").'sub.clicked(this);artObj.doAction(\''.$tmp_area.'\')">'.$caption.'</a>');
+            $tpl->set("d", "CAPTION", '<a style="'.$style.'" onclick="'.setHelpContext(i18n("Article")."/$caption").'sub.clicked(this);artObj.doAction(\''.$tmp_area.'\')">'.$caption.'</a>');
         } else {
-            $tpl->set("d", "CAPTION", '<a onclick="sub.clicked(this);artObj.doAction(\''.$tmp_area.'\')">'.$caption.'</a>');
+            $tpl->set("d", "CAPTION", '<a style="'.$style.'" onclick="sub.clicked(this);artObj.doAction(\''.$tmp_area.'\')">'.$caption.'</a>');
         }
 
         $tpl->next();

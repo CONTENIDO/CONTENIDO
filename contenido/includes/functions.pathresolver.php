@@ -300,17 +300,20 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
                 a.name    AS name,
                 a.idcat AS idcat,
                 b.parentid AS parentid,
-                c.level as level
+                c.level as level,
+                d.idtpl as idtpl
             FROM
                 ".$cfg["tab"]["cat_lang"]." AS a,
                 ".$cfg["tab"]["cat"]." AS b,
-                ".$cfg["tab"]["cat_tree"]." AS c
+                ".$cfg["tab"]["cat_tree"]." AS c,
+                ".$cfg["tab"]["tpl_conf"]." AS d
             WHERE
                 a.idlang    = " . (int) $uselang . " AND
                 b.idclient  = " . (int) $client . " AND
                 b.idcat     = " . (int) $idcat . " AND
                 a.idcat     = b.idcat AND
-                c.idcat = b.idcat";
+                c.idcat 	= b.idcat AND
+                a.idtplcfg 	= d.idtplcfg";
 
     $db->query($sql);
     $db->next_record();
@@ -323,10 +326,10 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
         }
 
         $parentid = $db->f('parentid');
-
+		$idtpl = $db->f('idtpl');
         //create link
         if ($makeLink == true) {
-            $linkUrl = $sess->url("front_content.php?idcat=$idcat");
+            $linkUrl = $sess->url("front_content.php?idcat=$idcat&idtpl=$idtpl");
             $name = '<a href="'.$linkUrl.'" class="'.$linkClass.'">'.$name.'</a>';
         }
 

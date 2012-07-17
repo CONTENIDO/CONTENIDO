@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
     <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
+    <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
 
@@ -261,7 +262,7 @@
         <td colspan="3" style="border: 1px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">&nbsp;</td>
     </tr-->
 
-     <tr><td colspan="4" class="text_medium" align="right"><input accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}"></td></tr>
+     <tr><td colspan="4" class="text_medium" align="right"><input id="saveart" accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}"></td></tr>
 
     </table>
 
@@ -278,6 +279,16 @@
     }
 
     {DATAPUSH}
+	$(document).ready(function(){
+		var iArticleCount = {iArticleCount};
+		if(iArticleCount == 0){
+			$("input#saveart").click(function () {
+				conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + {iIdcat} + '&idtpl=' + {iIdtpl} + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&action=saveArt');
+				return true;
+	        });
+		}
+		
+	});
 </script>
 </body>
 </html>
