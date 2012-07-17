@@ -235,6 +235,7 @@ final class Contenido_Url
      * Following urls will be identified as a internal url:
      * - "/", "/?idart=123", "/?idcat=123", ...
      * - "front_content.php", "front_content.php?idart=123", "front_content.php?idcat=123", ...
+     * - "/front_content.php", "/front_content.php?idart=123", "/front_content.php?idcat=123", ...
      * - The path component of an client HTML base path: e. g. "/cms/", "/cms/?idart=123", "/cms/?idcat=123"
      * - Also possible: "/cms/front_content.php", "/cms/front_content.php?idart=123", "/cms/front_content.php?idcat=123"
      * All of them prefixed with protocol and client host (e. g. http://host/) will also be identified
@@ -266,9 +267,22 @@ final class Contenido_Url
             }
         }
 
-        $path = $aComponents['path'];
-        if ($path == '/' || strpos($path, 'front_content.php') === 0 ||
-            strpos($path, '/front_content.php') > 0 || ($clientPath !== '' && $clientPath == $path)) {
+        // Use pathinfo to get the path part (dirname) of the url
+        $pathinfo = pathinfo($aComponents['path']);
+        $baseName = $pathinfo['basename'];
+        $path = $pathinfo['dirname'];
+        $path = str_replace('\\', '/', $path);
+        if ($path == '.') {
+            $path = '';
+        }
+
+        // Remove leading/ending slashes
+        $path = trim($path, '/');
+        $clientPath = trim($clientPath, '/');
+
+        if (($path == '' && ($baseName == 'front_content.php' || $baseName == ''))) {
+            return true;
+        } elseif (($path == $clientPath && ($baseName == 'front_content.php' || $baseName == ''))) {
             return true;
         } else {
             return false;
