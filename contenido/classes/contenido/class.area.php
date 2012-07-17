@@ -98,6 +98,25 @@ class cApiAreaCollection extends ItemCollection
     }
 
     /**
+     * Returns all area ids having passed area as name or as parent id
+     *
+     * @param   int|string  $nameOrId  Area name or parent id
+     * @return  array  List of area ids
+     */
+    public function getIdareasByAreaNameOrParentId($nameOrId)
+    {
+        $sql = "SELECT idarea FROM `%s` AS a WHERE a.name = '%s' OR a.parent_id = '%s' ORDER BY idarea";
+        $this->db->query($sql, $this->table, $area, $area);
+
+        $ids = array();
+        while ($this->db->next_record()) {
+            $ids[] = $this->db->f('a');
+        }
+
+        return $ids;
+    }
+
+    /**
      * Returns all areas available in the system
      *
      * @return  array   Array with id and name entries
