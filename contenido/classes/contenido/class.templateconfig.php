@@ -56,51 +56,80 @@ class cApiTemplateConfigurationCollection extends ItemCollection
     public function delete($idtplcfg)
     {
         $result = parent::delete($idtplcfg);
-        $oContainerConfCollection = new cApiContainerConfigurationCollection('idtplcfg=' . (int) $idtplcfg);
+        $oContainerConfColl = new cApiContainerConfigurationCollection('idtplcfg=' . (int) $idtplcfg);
         $aDelContainerConfIds = array();
-        while ($oContainerConf = $oContainerConfCollection->next()) {
+        while ($oContainerConf = $oContainerConfColl->next()) {
             array_push($aDelContainerConfIds, $oContainerConf->get('idcontainerc'));
         }
 
         foreach ($aDelContainerConfIds as $iDelContainerConfId) {
-            $oContainerConfCollection->delete($iDelContainerConfId);
+            $oContainerConfColl->delete($iDelContainerConfId);
         }
         return $result;
     }
 
-    public function create($idtpl)
+    /**
+     * Creates an template config item entry
+     *
+     * @param   int     $idtpl
+     * @param   int     $status
+     * @param   string  $author
+     * @param   string  $created
+     * @param   string  $lastmodified
+     * @return  cApiTemplateConfiguration
+     */
+    public function create($idtpl, $status = 0, $author = '', $created = '', $lastmodified = '')
     {
         global $auth;
 
+        if (empty($author)) {
+            $author = $auth->auth['uname'];
+        }
+        if (empty($created)) {
+            $created = date('Y-m-d H:i:s');
+        }
+        if (empty($lastmodified)) {
+            $lastmodified = '0000-00-00 00:00:00';
+        }
+
         $item = parent::createNewItem();
-        $item->set('idtpl', $idtpl);
-        $item->set('author', $auth->auth['uname']);
-        $item->set('status', 0);
-        $item->set('created', date('YmdHis'));
-        $item->set('lastmodified', '0000-00-00 00:00:00');
+        $item->set('idtpl', (int) $idtpl);
+        $item->set('author', $author);
+        $item->set('status', (int) $status);
+        $item->set('created', $created);
+        $item->set('lastmodified', $lastmodified);
         $item->store();
 
-        $iNewTplCfgId = $item->get('idtplcfg');
+        $newidtplcfg = $item->get('idtplcfg');
 
-        #if there is a preconfiguration of template, copy its settings into templateconfiguration
-        $templateCollection = new cApiTemplateCollection('idtpl=' . (int) $idtpl);
+        // If there is a preconfiguration of template, copy its settings into templateconfiguration
+        $this->copyTemplatePreconfiguration($idtpl, $newidtplcfg);
 
-        if ($template = $templateCollection->next()) {
-            $idTplcfgStandard = $template->get('idtplcfg');
-            if ($idTplcfgStandard > 0) {
-                $oContainerConfCollection = new cApiContainerConfigurationCollection('idtplcfg=' . $idTplcfgStandard);
+        return $item;
+    }
+
+    /**
+     * If there is a preconfiguration of template, copy its settings into templateconfiguration
+     *
+     * @param  int  $idtpl
+     * @param  int  $idtplcfg
+     */
+    public function copyTemplatePreconfiguration($idtpl, $idtplcfg) {
+        $oTemplateColl = new cApiTemplateCollection('idtpl=' . (int) $idtpl);
+
+        if ($oTemplate = $oTemplateColl->next()) {
+            if ($oTemplate->get('idtplcfg') > 0) {
+                $oContainerConfColl = new cApiContainerConfigurationCollection('idtplcfg = ' . $oTemplate->get('idtplcfg'));
                 $aStandardconfig = array();
-                while ($oContainerConf = $oContainerConfCollection->next()) {
+                while ($oContainerConf = $oContainerConfColl->next()) {
                     $aStandardconfig[$oContainerConf->get('number')] = $oContainerConf->get('container');
                 }
 
-                foreach ($aStandardconfig as $iContainernumber => $sContainer) {
-                    $oContainerConfCollection->create($iNewTplCfgId, $iContainernumber, $sContainer);
+                foreach ($aStandardconfig as $number => $container) {
+                    $oContainerConfColl->create($idtplcfg, $number, $container);
                 }
             }
         }
-
-        return $item;
     }
 }
 
