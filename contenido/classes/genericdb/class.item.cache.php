@@ -227,6 +227,25 @@ class cItemCache {
         }
     }
 
+    /**
+     * Removes multiple existing cache entries by their keys
+     *
+     * @param   array  $aIds
+     * @return  void
+     */
+    public function removeItems(array $aIds) {
+        if (!$this->_bEnable) {
+            return null;
+        }
+
+        // remove entries
+        foreach ($aIds as $mId) {
+            if (!isset($this->_aItemsCache[$mId])) {
+                unset($this->_aItemsCache[$mId]);
+            }
+        }
+    }
+
 }
 
 ?>

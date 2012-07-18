@@ -1093,6 +1093,27 @@ abstract class ItemCollection extends cItemBaseAbstract {
     }
 
     /**
+     * Returns all ids of recordsets in the table matching the rules in the passed where clause.
+     *
+     * @param   string  $sWhere  The where clause of the SQL statement
+     * @return  array  List of ids
+     */
+    public function getIdsByWhereClause($sWhere) {
+        $oDb = $this->_getSecondDBInstance();
+
+        $aIds = array();
+
+        // get all ids
+        $sql = 'SELECT ' . $this->primaryKey . ' AS pk FROM `' . $this->table . '` WHERE ' . $sWhere;
+        $oDb->query($sql);
+        while ($oDb->next_record()) {
+            $aIds[] = $oDb->f('pk');
+        }
+
+        return $aIds;
+    }
+
+    /**
      * Deletes an item in the table.
      * Deletes also cached e entry and any existing properties.
      *
@@ -1115,15 +1136,9 @@ abstract class ItemCollection extends cItemBaseAbstract {
     public function deleteByWhereClause($sWhere) {
         $oDb = $this->_getSecondDBInstance();
 
-        $aIds = array();
-        $numDeleted = 0;
-
         // get all ids
-        $sql = 'SELECT ' . $this->primaryKey . ' AS pk FROM `' . $this->table . '` WHERE ' . $sWhere;
-        $oDb->query($sql);
-        while ($oDb->next_record()) {
-            $aIds[] = $oDb->f('pk');
-        }
+        $aIds = $this->getIdsByWhereClause($sWhere);
+        $numDeleted = 0;
 
         // delete entries by their ids
         foreach ($aIds as $id) {
