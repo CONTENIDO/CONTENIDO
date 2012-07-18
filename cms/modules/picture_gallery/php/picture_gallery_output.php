@@ -12,7 +12,6 @@
  * }}
  */
 
-
 cInclude('includes', 'functions.api.images.php');
 cInclude('includes', 'functions.file.php');
 
@@ -293,35 +292,38 @@ if ($_REQUEST['view'] == '') {
 }
 
 function ig_getImageDescription($idupl) {
-    global $cfg, $cfgClient, $db, $client, $lang;
-
-/*
-    $cApiClient = new cApiClient($client);
-    $language_separator = $cApiClient->getProperty('language', 'separator');
-    if ($language_separator == "") {
-        //Sanity, if module used in client without set client setting
-        $language_separator = "§§§";
-        $cApiClient->setProperty('language', 'separator', $language_separator);
-    }
-*/
+    global $cfgClient, $client, $lang;
+    $uploadMeta = new cApiUploadMeta();
     if (is_numeric($idupl)) {
-        //ID is a number
-        $query = "SELECT description FROM " . $cfg["tab"]["upl"] . " WHERE idupl = " . $idupl;
+        // ID is a number
+        $uploadMeta->loadByPrimaryKey($idupl);
     } else {
-        //ID is a string
+        // ID is a string
         $path_parts = pathinfo($idupl);
         $upload = $cfgClient[$client]['upl']['frontendpath'];
         $len = strlen($upload);
         $pos = strpos($idupl, $upload);
         $dirname = substr($path_parts['dirname'], $pos + $len) . '/';
-        $query = "SELECT description FROM " . $cfg["tab"]["upl"] . " WHERE (dirname = '" . $dirname . "') AND (filename ='" . $path_parts['basename'] . "') AND (filetype ='" . $path_parts['extension'] . "')";
+        $upload = new cApiUpload();
+        $upload->loadByMany(array(
+            'filename' => $path_parts['basename'],
+            'dirname' => $dirname,
+            'filetype' => $path_parts['extension']
+        ));
+        $uploadId = $upload->get('idupl');
+        if (empty($uploadId)) {
+            return '';
+        }
+        $uploadMeta->loadByMany(array(
+            'idupl' => $uploadId,
+            'idlang' => $lang
+        ));
     }
-    $db->query($query);
-    if ($db->next_record()) {
-        return htmlspecialchars($db->f("description"));
-    } else {
-        return '';
+    $description = $uploadMeta->get('description');
+    if (!empty($description)) {
+        return htmlspecialchars($description);
     }
+    return '';
 }
 
 function ig_GetReadableFileSize($path) {
