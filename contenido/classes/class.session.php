@@ -69,10 +69,15 @@ class cSession {
         $this->name = 'contenido';
 
         if (!isset($_SESSION)) {
-            $client = cRegistry::getClientId();
-            $cfgClient = cRegistry::getClientConfig($client);
-            $frontendPath = $cfgClient[$client]['path']['htmlpath'];
-            session_set_cookie_params(0, $frontendPath);
+            if ($prefix === 'backend') {
+                $cfg = cRegistry::getConfig();
+                $path = $cfg['path']['contenido_fullhtml'];
+            } else {
+                $client = cRegistry::getClientId();
+                $cfgClient = cRegistry::getClientConfig($client);
+                $path = $cfgClient[$client]['path']['htmlpath'];
+            }
+            session_set_cookie_params(0, $path);
             session_name($this->_prefix);
             session_start();
         }
