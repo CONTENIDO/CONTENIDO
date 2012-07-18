@@ -147,6 +147,67 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
+     * Loads an item by colums/fields from the database.
+     *
+     * @param array $aAttributes associative array with field / value pairs
+     * @param bool $bSafe Use inFilter or not
+     * @return bool True if the load was successful
+     */
+    public function loadByMany(array $aAttributes, $bSafe = true) {
+        if ($bSafe) {
+            $aAttributes = $this->_inFilter($aAttributes);
+        }
+
+        // check, if cache contains a matching entry
+        $aRecordSet = null;
+        if (count($aAttributes) == 1 && isset($aAttributes[$this->primaryKey])) {
+            $aRecordSet = $this->_oCache->getItem($aAttributes[$this->primaryKey]);
+        } else {
+            $aRecordSet = $this->_oCache->getItemByProperties($aAttributes);
+        }
+
+        if ($aRecordSet) {
+            // entry in cache found, load entry from cache
+            $this->loadByRecordSet($aRecordSet);
+            return true;
+        }
+
+        // SQL-Statement to select by fields
+        $sql = 'SELECT * FROM `:mytab` WHERE';
+        foreach (array_keys($aAttributes) as $sKey) {
+            // add quotes if key is a string
+            if (is_string($sKey)) {
+                $sql .= " $sKey = ':$sKey' AND";
+            } else {
+                $sql .= " $sKey = :$sKey AND";
+            }
+        }
+        // strip the last " AND" token
+        $sql = substr($sql, 0, strlen($sql) - 4);
+        $sql = $this->db->prepare($sql, array_merge(array(
+            'mytab' => $this->table
+        ), $aAttributes));
+
+        // Query the database
+        $this->db->query($sql);
+
+        $this->_lastSQL = $sql;
+
+        if ($this->db->num_rows() > 1) {
+            $sMsg = 'Tried to load a single line with fields ' . print_r(array_keys($aAttributes), true) . ' and values ' . print_r(array_values($aAttributes), true) . ' from ' . $this->table . ' but found more than one row';
+            cWarning(__FILE__, __LINE__, $sMsg);
+        }
+
+        // Advance to the next record, return false if nothing found
+        if (!$this->db->next_record()) {
+            return false;
+        }
+
+        $this->loadByRecordSet($this->db->toArray());
+        return true;
+    }
+
+    /**
      * Loads an item by passed where clause from the database.
      * This function is expensive, since it executes allways a query to the database
      * to retrieve the primary key, even if the record set is aleady cached.
@@ -495,7 +556,13 @@ abstract class Item extends cItemBaseAbstract {
     public function _inFilter($mData) {
         foreach ($this->_arrInFilters as $_function) {
             if (function_exists($_function)) {
-                $mData = $_function($mData);
+                if (is_array($mData)) {
+                    foreach ($mData as $key => $value) {
+                        $mData[$key] = $_function($value);
+                    }
+                } else {
+                    $mData = $_function($mData);
+                }
             }
         }
         return $mData;
@@ -512,7 +579,13 @@ abstract class Item extends cItemBaseAbstract {
     protected function _outFilter($mData) {
         foreach ($this->_arrOutFilters as $_function) {
             if (function_exists($_function)) {
-                $mData = $_function($mData);
+                if (is_array($mData)) {
+                    foreach ($mData as $key => $value) {
+                        $mData[$key] = $_function($value);
+                    }
+                } else {
+                    $mData = $_function($mData);
+                }
             }
         }
         return $mData;
