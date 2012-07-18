@@ -1122,7 +1122,6 @@ abstract class ItemCollection extends cItemBaseAbstract {
      */
     public function delete($mId) {
         $result = $this->_delete($mId);
-
         return $result;
     }
 
@@ -1134,19 +1133,9 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @return  int  Number of deleted entries
      */
     public function deleteByWhereClause($sWhere) {
-        $oDb = $this->_getSecondDBInstance();
-
-        // get all ids
+        // Get all ids and delete related entries
         $aIds = $this->getIdsByWhereClause($sWhere);
-        $numDeleted = 0;
-
-        // delete entries by their ids
-        foreach ($aIds as $id) {
-            if ($this->_delete($id)) {
-                $numDeleted++;
-            }
-        }
-
+        $numDeleted = $this->_deleteMultiple($aIds);
         return $numDeleted;
     }
 
@@ -1216,6 +1205,48 @@ abstract class ItemCollection extends cItemBaseAbstract {
             $this->_executeCallbacks(self::DELETE_SUCCESS, $this->_itemClass, array($mId));
             return true;
         }
+    }
+
+    /**
+     * Deletes all items in the table, deletes also existing cache entries and
+     * properties of the item.
+     *
+     * @param   array  $aIds  Id of entries to delete
+     * @return  int  Number of affected records
+     */
+    protected function _deleteMultiple(array $aIds) {
+        foreach ($aIds as $mId) {
+            $this->_executeCallbacks(self::DELETE_BEFORE, $this->_itemClass, array($mId));
+        }
+
+        $oDb = $this->_getSecondDBInstance();
+
+        // Delete multiple db entries at once
+        $aEscapedIds = array_map(array($oDb, 'escape'), $aIds);
+        $in = "'" . implode("', '", $aEscapedIds) . "'";
+        $sql = "DELETE FROM `%s` WHERE %s IN (" . $in . ")";
+        $oDb->query($sql, $this->table, $this->primaryKey);
+        $numAffected = $oDb->affected_rows();
+
+        // Delete cache entries
+        $this->_oCache->removeItems($aIds);
+
+        // Delete the property values
+        $oProperties = $this->_getPropertiesCollectionInstance();
+        $oProperties->deletePropertiesMultiple($this->primaryKey, $aIds);
+
+        // NOTE: Deleteing multiple entries at once has a drawback. There is no
+        //       way to detect faulty ids, if one or more entries couldn't deleted.
+        if ($numAffected == 0) {
+            foreach ($aIds as $mId) {
+                $this->_executeCallbacks(self::DELETE_FAILURE, $this->_itemClass, array($mId));
+            }
+        } else {
+            foreach ($aIds as $mId) {
+                $this->_executeCallbacks(self::DELETE_SUCCESS, $this->_itemClass, array($mId));
+            }
+        }
+        return $numAffected;
     }
 
     /**

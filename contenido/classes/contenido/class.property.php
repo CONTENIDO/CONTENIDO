@@ -167,7 +167,7 @@ class cApiPropertyCollection extends ItemCollection
     {
         self::$_enableCache = false;
         self::$_entries = array();
-           self::$_cacheItemtypes = array();
+        self::$_cacheItemtypes = array();
     }
 
 
@@ -175,8 +175,7 @@ class cApiPropertyCollection extends ItemCollection
      * Creates a new property item.
      *
      * Example:
-     *
-     * $properties->create('idcat', 27, 'visual', 'image', 'images/tool.gif');
+     * $proerty = $properties->create('idcat', 27, 'visual', 'image', 'images/tool.gif');
      *
      * @param   mixed  $itemtype     Type of the item (example: idcat)
      * @param   mixed  $itemid       ID of the item (example: 31)
@@ -223,8 +222,7 @@ class cApiPropertyCollection extends ItemCollection
      * Returns the value for a given item.
      *
      * Example:
-     *
-     * $file = $properties->getValue('idcat', 27, 'visual', 'image');
+     * $value = $properties->getValue('idcat', 27, 'visual', 'image');
      *
      * @param   mixed  $itemtype  Type of the item (example: idcat)
      * @param   mixed  $itemid    ID of the item (example: 31)
@@ -261,8 +259,7 @@ class cApiPropertyCollection extends ItemCollection
      * Returns the value for a given item.
      *
      * Example:
-     *
-     * $file = $properties->getValuesByType('idcat', 27, 'visual');
+     * $values = $properties->getValuesByType('idcat', 27, 'visual');
      *
      * @param   mixed  $itemtype  Type of the item (example: idcat)
      * @param   mixed  $itemid    ID of the item (example: 31)
@@ -298,8 +295,7 @@ class cApiPropertyCollection extends ItemCollection
      * Returns the values only by type and name.
      *
      * Example:
-     *
-     * $file = $properties->getValuesOnlyByTypeName('note', 'category');
+     * $values = $properties->getValuesOnlyByTypeName('note', 'category');
      *
      * @param   mixed  $itemtype  Type of the item (example: idcat)
      * @param   mixed  $name      Type of the data to store (arbitary data)
@@ -323,9 +319,9 @@ class cApiPropertyCollection extends ItemCollection
 
     /**
      * Sets a property item. Handles creation and updating.
+     * Existing item will be updated, not existing item will be created.
      *
      * Example:
-     *
      * $properties->setValue('idcat', 27, 'visual', 'image', 'images/tool.gif');
      *
      * @param   mixed  $itemtype  Type of the item (example: idcat)
@@ -369,7 +365,6 @@ class cApiPropertyCollection extends ItemCollection
      * Delete a property item.
      *
      * Example:
-     *
      * $properties->deleteValue('idcat', 27, 'visual', 'image');
      *
      * @param  mixed  $itemtype  Type of the item (example: idcat)
@@ -385,16 +380,16 @@ class cApiPropertyCollection extends ItemCollection
         $name     = $this->db->escape($name);
 
         if (isset($this->client)) {
-            $this->select("idclient = ".(int)$this->client." AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");
+            $where = "idclient = ".(int)$this->client." AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'";
         } else {
-            $this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");
+            $where = "itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'";
         }
 
-        if ($item = $this->next()) {
-            $this->delete($item->get('idproperty'));
-            if ($this->_useCache()) {
-                $this->_deleteFromCache($item->get('idproperty'));
-            }
+        $idproperties = $this->getIdsByWhereClause($where);
+
+        $this->_deleteMultiple($idproperties);
+        if ($this->_useCache()) {
+            $this->_deleteFromCacheMultiple($idproperties);
         }
     }
 
@@ -489,23 +484,39 @@ class cApiPropertyCollection extends ItemCollection
         $itemid   = $this->db->escape($itemid);
 
         if (isset($this->client)) {
-            $this->select("idclient = ".(int)$this->client." AND itemtype = '".$itemtype."' AND itemid = '".$itemid."'");
+            $where = "idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "'";
         } else {
-            $this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."'");
+            $where = "itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "'";
         }
 
-        $deleteProperties = array();
+        $idproperties = $this->getIdsByWhereClause($where);
 
-        while ($item = $this->next()) {
-            $deleteProperties[] = $item->get('idproperty');
+        $this->_deletePropertiesByIds($idproperties);
+    }
+
+
+    /**
+     * Delete all properties which match itemtype and multiple itemids.
+     *
+     * @param  mixed  $itemtype  Type of the item (example: idcat)
+     * @param  array  $itemids   Ids of multiple items (example: array(31,12,22))
+     */
+    public function deletePropertiesMultiple($itemtype, array $itemids)
+    {
+        $itemtype = $this->db->escape($itemtype);
+        $itemids = array_map(array($this, 'escape'), $itemids);
+
+        $in = "'" . implode("', '", $itemids) . "'";
+
+        if (isset($this->client)) {
+            $where = "idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid IN (" . $in . ")";
+        } else {
+            $where = "itemtype = '" . $itemtype . "' AND itemid IN (" . $in . ")";
         }
 
-        foreach ($deleteProperties as $idproperty) {
-            $this->delete($idproperty);
-            if ($this->_useCache()) {
-                $this->_deleteFromCache($idproperty);
-            }
-        }
+        $idproperties = $this->getIdsByWhereClause($where);
+
+        $this->_deletePropertiesByIds($idproperties);
     }
 
 
@@ -567,6 +578,20 @@ class cApiPropertyCollection extends ItemCollection
         }
     }
 
+    /**
+     * Deletes multiple property entries by their ids. Deletes them also from internal cache.
+     * @param array $ids
+     */
+    protected function _deletePropertiesByIds(array $ids)
+    {
+        if (count($ids) > 0) {
+            $this->_deleteMultiple($ids);
+            if ($this->_useCache()) {
+                $this->_deleteFromCacheMultiple($ids);
+            }
+        }
+    }
+
 
     /**
      * Adds a entry to the cache.
@@ -588,6 +613,20 @@ class cApiPropertyCollection extends ItemCollection
     {
         if (isset(self::$_entries[$id])) {
             unset(self::$_entries[$id]);
+        }
+    }
+
+
+    /**
+     * Removes multiple entries from cache.
+     * @param   array  $ids
+     */
+    protected function _deleteFromCacheMultiple(array $ids)
+    {
+        foreach ($ids as $id) {
+            if (isset(self::$_entries[$id])) {
+                unset(self::$_entries[$id]);
+            }
         }
     }
 
