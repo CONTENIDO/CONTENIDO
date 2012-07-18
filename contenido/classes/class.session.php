@@ -61,17 +61,19 @@ class cSession {
      * Starts the session
      * @param string The prefix for the session variables
      */
-    public function __construct($prefix = null) {
+    public function __construct($prefix = 'backend') {
         $this->_pt = array();
         $this->_prefix = $prefix;
 
-        $this->id = "1";
-        $this->name = "contenido";
+        $this->id = '1';
+        $this->name = 'contenido';
 
         if (!isset($_SESSION)) {
-            if ($prefix !== null) {
-                session_name($this->_prefix);
-            }
+            $client = cRegistry::getClientId();
+            $cfgClient = cRegistry::getClientConfig($client);
+            $frontendPath = $cfgClient[$client]['path']['htmlpath'];
+            session_set_cookie_params(0, $frontendPath);
+            session_name($this->_prefix);
             session_start();
         }
     }
