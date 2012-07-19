@@ -663,6 +663,13 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
             $notification->displayNotification("warning", $message);
         }
     }
+
+
+	if (isset($bNoArticle)) {
+        $tpl->set('s', 'bNoArticle', $bNoArticle);
+    } else {
+        $tpl->set('s', 'bNoArticle', 'false');
+    }
 	//breadcrumb onclick
     $tpl->set('s', 'iIdcat', $idcat);
 	$tpl->set('s', 'iIdtpl', $idtpl);

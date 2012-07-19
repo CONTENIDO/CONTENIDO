@@ -96,7 +96,9 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
     $db->query($sql);
 
     while ($db->next_record()) {
-        if ($action == 'saveArt' || $iArticleCount > 0 || ($iArticleCount <= 0 && $tpl->dyn_cnt == 0) || ($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $action == 'newArt')) {
+        if ($iArticleCount > 0 || ($iArticleCount <= 0 && $tpl->dyn_cnt == 0) ||
+        ($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $bNoArticle == 'true') || ($bNoArticle == 'true' && $action =='saveart') ||
+        ($iArticleCount <= 0 && $tpl->dyn_cnt == 0 && $action == 'deleteArt')) {
             $style = '';
         } else {
             $style = 'display:none;';

@@ -546,7 +546,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 }
 
                 $confirmString = sprintf(i18n("Are you sure to delete the following article:<br><br><b>%s</b>"), htmlspecialchars($tmp_title));
-                $tmp_del = '<a id="deleteart" href="javascript://" onclick="box.confirm(&quot;' . i18n("Delete article") . '&quot;, &quot;' . addslashes($confirmString) . '&quot;, &quot;deleteArticle(' . $idart . ',' . $idcat . ',' . $next . ')&quot;)" title="' . i18n("Delete article") . '"><img src="images/delete.gif" title="' . i18n("Delete article") . '" alt="' . i18n("Delete article") . '" border="0" style="margin-left:3px;"></a>';
+                $tmp_del = '<a href="javascript://" onclick="box.confirm(&quot;' . i18n("Delete article") . '&quot;, &quot;' . addslashes($confirmString) . '&quot;, &quot;deleteArticle(' . $idart . ',' . $idcat . ',' . $next . ')&quot;)" title="' . i18n("Delete article") . '"><img src="images/delete.gif" title="' . i18n("Delete article") . '" alt="' . i18n("Delete article") . '" border="0" style="margin-left:3px;"></a>';
             } else {
                 $tmp_del = '';
             }
@@ -894,11 +894,15 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         //display if there are articles
         if ($no_article) {
             $tpl->set('s', 'noArticle', "display: none;");
+        	$tpl->set('s', 'bNoArticle', 'true');
+        } else {
+            $tpl->set('s', 'noArticle', "");
+        	$tpl->set('s', 'bNoArticle', 'false');
         }
 
         //breadcrumb onclick
         $tpl->set('s', 'iIdcat', $idcat);
-        $tpl->set('s', 'iIdtpl', $idtpl);
+        $tpl->set('s', 'iIdtpl', $idtpl? $idtpl:$cat_idtpl);
         $tpl->set('s', 'SYNCOPTIONS', $syncoptions);
         $tpl->set('s', 'SESSION', $contenido);
         $tpl->set('s', 'DISPLAY_MENU', 1);
