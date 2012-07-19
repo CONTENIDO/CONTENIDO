@@ -819,10 +819,10 @@ function strMoveDownCategory($idcat)
  * Moves a subtree to another destination.
  *
  * @param   int  $idcat  Id of category
- * @param   int  $parentid_new  Id of destination parent category
+ * @param   int  $parentId  Id of destination parent category
  * @return  void
  */
-function strMoveSubtree($idcat, $parentid_new)
+function strMoveSubtree($idcat, $parentId)
 {
     global $db, $cfg, $movesubtreeidcat, $sess;
 
@@ -832,61 +832,67 @@ function strMoveSubtree($idcat, $parentid_new)
     $remakeCatTable = true;
     $remakeStrTable = true;
 
-    $idcat        = (int) $idcat;
-    $iNewParentId = (int) $parentid_new;
+    $idcat = (int) $idcat;
+    $newParentId = (int) $parentId;
 
-    // Check if iNewParentId is 0 and the unescaped value is not null
-    if ($iNewParentId == 0 && !is_null($parentid_new)) {
+    // Check if new parent id is 0 and the unescaped value is not null
+    if ($newParentId == 0 && !is_null($parentId)) {
         $movesubtreeidcat = 0;
-    } else if ($iNewParentId != 0) {
-        $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='" . $idcat . "'";
-        $db->query($sql);
-        $db->next_record();
-        $tmp_idcat  = $db->f("idcat");
-        $tmp_preid  = $db->f("preid");
-        $tmp_postid = $db->f("postid");
+    } elseif ($newParentId != 0) {
+        $oCat = new cApiCategory((int) $idcat);
+        $preid  = $oCat->get('preid');
+        $postid = $oCat->get('postid');
 
-        // update predecessor (pre)
-        if ($tmp_preid != 0) {
-            $sql = "UPDATE ".$cfg['tab']['cat']." SET postid='" . $tmp_postid . "' WHERE idcat='" . $tmp_preid . "'";
-            $db->query($sql);
+        // Update predecessor (pre)
+        if ($preid != 0) {
+            $oPreCat = new cApiCategory($preid);
+            $oPreCat->set('postid', $postid);
+            $oPreCat->store();
         }
 
-        // update follower (post)
-        if ($tmp_postid != 0) {
-            $sql = "UPDATE ".$cfg['tab']['cat']." SET preid='" . $tmp_preid . "' WHERE idcat='" . $tmp_postid . "'";
-            $db->query($sql);
+        // Update follower (post)
+        if ($postid != 0) {
+            $oPostCat = new cApiCategory($postid);
+            $oPostCat->set('preid', $preid);
+            $oPostCat->store();
         }
 
-        // find new pre
-        $sql = "SELECT idcat, preid FROM ".$cfg['tab']['cat']." WHERE parentid='" . $iNewParentId . "' AND postid='0'";
-        $db->query($sql);
-        if ($db->next_record()) {
-            $tmp_new_preid = $db->f("idcat");
-            $tmp_preid_2   = $db->f("preid");
-            if ($tmp_new_preid != $idcat) {
-                // update new pre: set post
-                $sql = "UPDATE ".$cfg['tab']['cat']." SET postid='" . $idcat . "' WHERE idcat='" . $tmp_new_preid . "'";
-                $db->query($sql);
+        // Find new pre
+        $oCatColl = new cApiCategoryCollection();
+        $oCatColl->select("parentid = " . $newParentId . " AND postid = 0");
+        if ($oNewPreCat = $oCatColl->next()) {
+            $newPreId = $oNewPreCat->get('idcat');
+            $newPrePreId   = $oNewPreCat->get('preid');
+            if ($newPreId != $idcat) {
+                // Update new pre, set post
+                $oPreCat = new cApiCategory($newPreId);
+                if ($oPreCat->isLoaded()) {
+                    $oPreCat->set('postid', (int) $idcat);
+                    $oPreCat->store();
+                }
             } else {
-                $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE idcat='" . $tmp_preid_2 . "'";
-                $db->query($sql);
-                if ($db->next_record()) {
-                    $tmp_new_preid = $db->f("idcat");
-                    // update new pre: set post
-                    $sql = "UPDATE ".$cfg['tab']['cat']." SET postid='" . $idcat . "' WHERE idcat='" . $tmp_new_preid . "'";
-                    $db->query($sql);
+                $oPreCat = new cApiCategory($newPrePreId);
+                if ($oPreCat->isLoaded()) {
+                    // Update new pre, set post
+                    $newPreId = $oPreCat->get('idcat');
+                    $oPreCat2 = new cApiCategory($newPreId);
+                    if ($oPreCat2->isLoaded()) {
+                        $oPreCat2->set('postid', (int) $idcat);
+                        $oPreCat2->store();
+                    }
                 } else {
-                    $tmp_new_preid = 0;
+                    $newPreId = 0;
                 }
             }
         } else {
-            $tmp_new_preid = 0;
+            $newPreId = 0;
         }
 
-        // update idcat
-        $sql = "UPDATE ".$cfg['tab']['cat']." SET parentid='" . $iNewParentId . "', preid='" . $tmp_new_preid . "', postid='0' WHERE idcat='" . $idcat . "'";
-        $db->query($sql);
+        // Update current category
+        $oCat->set('parentid', (int) $newParentId);
+        $oCat->set('preid', (int) $newPreId);
+        $oCat->set('postid', 0);
+        $oCat->store();
 
         $movesubtreeidcat = 0;
     } else {
