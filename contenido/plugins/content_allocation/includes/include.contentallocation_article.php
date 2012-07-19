@@ -67,12 +67,12 @@ if ($_GET['step'] == 'collapse') {
 
 #build category path
 $catString = '';
-prCreateURLNameLocationString($idcat, '/', $catString);
+prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
 $oArticle = new cApiArticleLanguage();
 $oArticle->loadByArticleAndLanguageId($idart, $lang);
 $sArticleTitle = $oArticle->getField('title');
 
-$sLocationString = '<div class="categorypath">' . $catString . '/' . htmlspecialchars($sArticleTitle) . '</div>';
+$sLocationString = '<div id="categorypath" class="categorypath">' . i18n("Sie sind hier") . ": " . $catString . ' ' . htmlspecialchars($sArticleTitle) . '</div>';
 
 // load allocations
 $loadedAllocations = $oAlloc->loadAllocations($this_idartlang);
@@ -113,9 +113,32 @@ if ($result == false) {
     $oPage->addStyle($cfg['pica']['style_complexlist']);
     $oPage->addScript($cfg['pica']['script_complexlist']);
 }
+//breadcrumb onclick
+if (!isset($syncfrom)) {
+    $syncfrom = -1;
+}
+$syncoptions = $syncfrom;
+$sLocationString .= "<script type='text/javascript'>
+		$(document).ready(function(){
+            $('div#categorypath > a').click(function () {
+                var url = $(this).attr('href');
+                var sVal = url.split('idcat=');
+                var aVal = sVal[1].split('&');
+                var iIdcat = aVal[0];
+				sVal = url.split('idtpl=');
+                aVal = sVal[1].split('&');
+                var iIdtpl = aVal[0];
+                conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu=1&syncoptions=".$syncoptions."&contenido=".$contenido."',
+                'right_bottom', url,
+                'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido=".$contenido."');
+                return false;
+            });
+        });
+    </script>";
 
 $div = new cHTMLDiv();
 $div->setContent($sLocationString.$result);
+
 
 $oPage->setContent($div);
 $oPage->render();

@@ -319,17 +319,24 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
     $db->next_record();
 
     if ($db->f('level') >= $firstTreeElementToUse) {
-        $name = $db->f('urlname');
+        $name = $db->f('name');
 
         if (trim($name) == '') {
-            $name = $db->f('name');
+            $name = $db->f('urlname');
         }
 
         $parentid = $db->f('parentid');
         $idtpl = $db->f('idtpl');
+
+        if(!isset($GLOBALS['syncoptions'])){
+        	$syncoptions = -1;
+        } else {
+        	$syncoptions = $GLOBALS['syncoptions'];
+        }
         //create link
+
         if ($makeLink == true) {
-            $linkUrl = $sess->url("front_content.php?idcat=$idcat&idtpl=$idtpl");
+            $linkUrl = $sess->url($cfg["path"]["contenido_fullhtml"]."main.php?area=con&frame=4&idcat=$idcat&idtpl=$idtpl&syncoptions=$syncoptions&contenido=1");
             $name = '<a href="'.$linkUrl.'" class="'.$linkClass.'">'.$name.'</a>';
         }
 

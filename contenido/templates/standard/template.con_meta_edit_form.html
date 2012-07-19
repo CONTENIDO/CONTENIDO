@@ -6,8 +6,9 @@
     <meta http-equiv="pragma" content="no-cache">
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
 
-  <link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
+    <link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
     <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
+    <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
 
@@ -22,12 +23,27 @@
     <script type="text/javascript">
         var sid = "{SID}";
         box = new messageBox("", "", "", 0, 0);
+		$(document).ready(function(){
+            $("div#categorypath > a").click(function () {
+                var url = $(this).attr('href');
+                var sVal = url.split("idcat=");
+                var aVal = sVal[1].split("&");
+                var iIdcat = aVal[0];
+				sVal = url.split("idtpl=");
+                aVal = sVal[1].split("&");
+                var iIdtpl = aVal[0];
+                conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
+                'right_bottom', url,
+                'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido={SESSION}');
+                return false;
+            });
+        });
     </script>
 </head>
 <body style="margin: 10px">
 
+<div id="categorypath" class="categorypath">{CATEGORY}</div>
 <p style="display:block;font-weight:bold;">{TITEL}</p>
-<div class="categorypath">{CATEGORY}</div>
 
 <form method="post" name="art_props" action="{ACTION}">
 

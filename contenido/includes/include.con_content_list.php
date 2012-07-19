@@ -176,12 +176,11 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
         <body style="margin: 10px">';
     //Show path of selected category to user
     $catString = '';
-    prCreateURLNameLocationString($idcat, '/', $catString);
+    prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
     $sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".cSecurity::toInteger($idart)." AND idlang=".cSecurity::toInteger($lang);
     $db->query($sql);
     $db->next_record();
-    $layoutcode .= '<p style="display:block;font-weight:bold;">'.i18n("Content Verwaltung").'</p>
-        <div class="categorypath">'.$catString.'/'.htmlspecialchars($db->f("title")).'</div>';
+    $layoutcode .= '<div id="categorypath" class="categorypath">'.i18n("Sie sind hier") . ": " .$catString.' '.htmlspecialchars($db->f("title")).'</div><p style="display:block;font-weight:bold;">'.i18n("Content Verwaltung").'</p>';
 
 if (count($result)<=0) {
     $layoutcode .= '<div>--- '.i18n("kein").' ---</div>';

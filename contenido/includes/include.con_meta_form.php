@@ -199,10 +199,10 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
 
     // Show path of selected category to user
     $catString = '';
-    prCreateURLNameLocationString($idcat, '/', $catString);
+    prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
 
     $tpl->set('s', 'TITEL', i18n("Meta-Tags Verwaltung"));
-    $tpl->set('s', 'CATEGORY', $catString.'/'.htmlspecialchars($tmp_title));
+    $tpl->set('s', 'CATEGORY', i18n("Sie sind hier") . ": " .$catString.' '.htmlspecialchars($tmp_title));
 
     // Title
     $tpl->set('s', 'TITEL', i18n("Title"));
@@ -379,6 +379,12 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
         $tpl->set('s', 'ADDMETABTN', '<span id="addMeta" style="color: green;">+</span>');
         $tpl->set('s', 'ADDNEWMETA', $select);
     }
+	//breadcrumb onclick
+    $tpl->set('s', 'iIdcat', $idcat);
+	$tpl->set('s', 'iIdtpl', $idtpl);
+	$tpl->set('s', 'SYNCOPTIONS', -1);
+	$tpl->set('s', 'SESSION', $contenido);
+	$tpl->set('s', 'DISPLAY_MENU', 1);
 
     // Genereate the Template
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_meta_edit_form']);

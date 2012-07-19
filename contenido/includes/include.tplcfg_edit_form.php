@@ -264,8 +264,8 @@ $oArticle->loadByArticleAndLanguageId($idart, $lang);
 
 $sArticleTitle = $oArticle->getField('title');
 $catString = '';
-prCreateURLNameLocationString($idcat, '/', $catString);
-$tpl->set('s', 'CATEGORY', $catString.'/'.$sArticleTitle);
+prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
+$tpl->set('s', 'CATEGORY', i18n("Sie sind hier") . ": " .$catString.' '.$sArticleTitle);
 
 //SELECT Box for Templates
 
@@ -468,6 +468,13 @@ if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && (int) $idart == 0) {
     $tpl->set('s', 'HEADER', '');
     $tpl->set('s', 'DISPLAY_HEADER', 'none');
 }
+
+//breadcrumb onclick
+    $tpl->set('s', 'iIdcat', $idcat);
+$tpl->set('s', 'iIdtpl', $idtpl);
+$tpl->set('s', 'SYNCOPTIONS', -1);
+$tpl->set('s', 'SESSION', $contenido);
+$tpl->set('s', 'DISPLAY_MENU', 1);
 
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tplcfg_edit_form']);

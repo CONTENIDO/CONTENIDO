@@ -103,11 +103,27 @@
             });
         });
     </script>
-
+	<script type="text/javascript">
+		$(document).ready(function(){
+            $("div#categorypath > a").click(function () {
+                var url = $(this).attr('href');
+                var sVal = url.split("idcat=");
+                var aVal = sVal[1].split("&");
+                var iIdcat = aVal[0];
+				sVal = url.split("idtpl=");
+                aVal = sVal[1].split("&");
+                var iIdtpl = aVal[0];
+                conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
+                'right_bottom', url,
+                'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido={SESSION}');
+                return false;
+            });
+        });
+    </script>
 </head>
 <body style="margin: 10px" onload="disableFunctionsOnTimeControl()">
 
-<div class="categorypath">{CATEGORY}</div>
+<div id="categorypath" class="categorypath">{CATEGORY}</div>
 
 <form method="post" name="art_props" action="{ACTION}">
 

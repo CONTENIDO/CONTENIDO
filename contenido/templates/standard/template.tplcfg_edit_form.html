@@ -12,14 +12,32 @@
     table.content td.module_config {border:1px;border-top:0px;border-color:#b3b3b3;border-style:solid;background-color:#fff;}
     table.content td.module_config table td {padding:5px;vertical-align:top;}
     </style>
+    <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+            $("div#categorypath > a").click(function () {
+                var url = $(this).attr('href');
+                var sVal = url.split("idcat=");
+                var aVal = sVal[1].split("&");
+                var iIdcat = aVal[0];
+				sVal = url.split("idtpl=");
+                aVal = sVal[1].split("&");
+                var iIdtpl = aVal[0];
+                conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
+                'right_bottom', url,
+                'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido={SESSION}');
+                return false;
+            });
+        });
+    </script>
 </head>
 
 <body style="margin:10px">
 
-<p style="display:{DISPLAY_HEADER};font-weight:bold;">{HEADER}</p>
+<div id="categorypath" class="categorypath">{CATEGORY}</div>
 
-<div class="categorypath">{CATEGORY}</div>
+<p style="display:{DISPLAY_HEADER};font-weight:bold;">{HEADER}</p>
 
 <form name="tplcfgform" action="{FORMACTION}" id="tpl_form" method="post" enctype="multipart/form-data">
 

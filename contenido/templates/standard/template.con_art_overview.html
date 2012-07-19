@@ -29,17 +29,18 @@
         $(document).ready(function(){
             $("div#categorypath > a").click(function () {
                 var url = $(this).attr('href');
-                var sVal = url.split("&");
-                var aVal = sVal[0].split("idcat=");
-                var iIdcat = aVal[1];
-                aVal = sVal[1].split("idtpl=");
-                var iIdtpl = aVal[1];
+                var sVal = url.split("idcat=");
+                var aVal = sVal[1].split("&");
+                var iIdcat = aVal[0];
+				sVal = url.split("idtpl=");
+                aVal = sVal[1].split("&");
+                var iIdtpl = aVal[0];
                 conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
-                'right_bottom', 'main.php?area=con&frame=4&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
+                'right_bottom', url,
                 'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido={SESSION}');
                 return false;
             });
-            /*$("a#newArtTxt").click(function () {
+            $/*("a#newArtTxt").click(function () {
                 var url = $(this).attr('href');
                 conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + {iIdcat} + '&idtpl=' + {iIdtpl} + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&action=newArt',
                 'right_bottom', url+ '&idtpl=' + {iIdtpl} + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}');
@@ -66,7 +67,17 @@
     </head>
     <body style="margin:10px">
         <form action ="main.php" name="bulk_editing" class="bulk_editing_form" method="post">
-            <input type="hidden" name="area" value="con"/><input type="hidden" name="action" value=""/><input type="hidden" name="frame" value="4"/><input type="hidden" name="idcat" value="{IDCAT}"/><input type="hidden" name="contenido" value="{SID}"/><input type="hidden" name="idarts" value=""/><input type="hidden" name="invert" value="" /><input type="hidden" name="next" value="{NEXT}" /><input type="hidden" name="idlang" value="{IDLANG}" /><input type="submit" name="submit" value="senden" style="display:none;"/>
+            <input type="hidden" name="area" value="con"/>
+			<input type="hidden" name="action" value=""/>
+			<input type="hidden" name="frame" value="4"/>
+			<input type="hidden" name="idcat" value="{IDCAT}"/>
+			<input type="hidden" name="contenido" value="{SID}"/>
+			<input type="hidden" name="idarts" value=""/>
+			<input type="hidden" name="invert" value="" />
+			<input type="hidden" name="next" value="{NEXT}" />
+			<input type="hidden" name="idlang" value="{IDLANG}" />
+			<input type="hidden" name="syncoptions" value="{SYNCOPTIONS}" />
+			<input type="submit" name="submit" value="senden" style="display:none;"/>			
         </form>
         <table width="100%" cellspacing="0" cellpadding="2" border="0">
             <div class="text_large">

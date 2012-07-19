@@ -21,39 +21,50 @@
  *
  * {@internal
  *   created 2003-01-21
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2008-08-29, Murat Purc, add handling of urlname
+ *   modified 2008-09-11, Andreas Lindner, added decoding of text and cat names
+ *                         with unFilter function
+ *
  *   $Id$:
  * }}
+ *
  */
+
+
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-cInclude('includes', 'functions.str.php');
-cInclude('includes', 'functions.pathresolver.php');
+cInclude("includes", "functions.str.php");
+cInclude("includes", "functions.pathresolver.php");
 
 $tpl->reset();
 
 if ($action == "remove_assignments") {
-    $sql = "DELETE FROM " . $cfg["tab"]["cat_art"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idcat != " . cSecurity::toInteger($idcat);
+    $sql = "DELETE FROM ".$cfg["tab"]["cat_art"]." WHERE idart=".cSecurity::toInteger($idart)." AND idcat != ".cSecurity::toInteger($idcat);
     $db->query($sql);
 }
 if ($action == "con_newart" && $newart != true) {
     // nothing to be done here ?!
+
     return;
 }
 
 $disabled = '';
 
 if ($perm->have_perm_area_action($area, "con_edit") ||
-        $perm->have_perm_area_action_item($area, "con_edit", $idcat)) {
-    $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idcat=" . cSecurity::toInteger($idcat);
+    $perm->have_perm_area_action_item($area,"con_edit", $idcat))
+
+{
+    $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idart=".cSecurity::toInteger($idart)." AND idcat=".cSecurity::toInteger($idcat);
     $db->query($sql);
     $db->next_record();
 
     $tmp_cat_art = $db->f("idcatart");
 
-    $sql = "SELECT * FROM " . $cfg["tab"]["art_lang"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
+    $sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".cSecurity::toInteger($idart)." AND idlang=".cSecurity::toInteger($lang);
     $db->query($sql);
     $db->next_record();
 
@@ -62,33 +73,33 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     if ($db->f("created")) {
 
         //****************** this art was edited before ********************
-        $tmp_firstedit = 0;
-        $tmp_idartlang = $db->f("idartlang");
-        $tmp_page_title = cSecurity::unFilter(stripslashes($db->f("pagetitle")));
-        $tmp_idlang = $db->f("idlang");
-        $tmp_title = cSecurity::unFilter($db->f("title"));
-        $tmp_urlname = cSecurity::unFilter($db->f("urlname"));      // plugin Advanced Mod Rewrite - edit by stese
-        $tmp_artspec = $db->f("artspec");
-        $tmp_summary = cSecurity::unFilter($db->f("summary"));
-        $tmp_created = $db->f("created");
+        $tmp_firstedit    = 0;
+        $tmp_idartlang    = $db->f("idartlang");
+        $tmp_page_title   = cSecurity::unFilter(stripslashes($db->f("pagetitle")));
+        $tmp_idlang       = $db->f("idlang");
+        $tmp_title        = cSecurity::unFilter($db->f("title"));
+        $tmp_urlname      = cSecurity::unFilter($db->f("urlname"));      // plugin Advanced Mod Rewrite - edit by stese
+        $tmp_artspec      = $db->f("artspec");
+        $tmp_summary      = cSecurity::unFilter($db->f("summary"));
+        $tmp_created      = $db->f("created");
         $tmp_lastmodified = $db->f("lastmodified");
-        $tmp_author = $db->f("author");
-        $tmp_modifiedby = $db->f("modifiedby");
-        $tmp_online = $db->f("online");
-        $tmp_published = $db->f("published");
-        $tmp_publishedby = $db->f("publishedby");
-        $tmp_datestart = $db->f("datestart");
-        $tmp_dateend = $db->f("dateend");
-        $tmp_sort = $db->f("artsort");
-        $tmp_movetocat = $db->f("time_move_cat");
-        $tmp_targetcat = $db->f("time_target_cat");
+        $tmp_author       = $db->f("author");
+        $tmp_modifiedby   = $db->f("modifiedby");
+        $tmp_online       = $db->f("online");
+        $tmp_published    = $db->f("published");
+        $tmp_publishedby  = $db->f("publishedby");
+        $tmp_datestart    = $db->f("datestart");
+        $tmp_dateend      = $db->f("dateend");
+        $tmp_sort         = $db->f("artsort");
+        $tmp_movetocat    = $db->f("time_move_cat");
+        $tmp_targetcat    = $db->f("time_target_cat");
         $tmp_onlineaftermove = $db->f("time_online_move");
-        $tmp_usetimemgmt = $db->f("timemgmt");
-        $tmp_locked = $db->f("locked");
-        $tmp_redirect_checked = ($db->f("redirect") == '1') ? 'checked' : '';
-        $tmp_redirect_url = ($db->f("redirect_url") != '0') ? $db->f("redirect_url") : "http://";
+        $tmp_usetimemgmt  = $db->f("timemgmt");
+        $tmp_locked       = $db->f("locked");
+        $tmp_redirect_checked          = ($db->f("redirect") == '1') ? 'checked' : '';
+        $tmp_redirect_url              = ($db->f("redirect_url") != '0') ? $db->f("redirect_url") : "http://";
         $tmp_external_redirect_checked = ($db->f("external_redirect") == '1') ? 'checked' : '';
-        $idtplinput = $db->f("idtplinput");
+        $idtplinput                    = $db->f("idtplinput");
 
         if ($tmp_modifiedby == '') {
             $tmp_modifiedby = $tmp_author;
@@ -118,66 +129,65 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
             $inUse = true;
             $disabled = 'disabled="disabled"';
         }
+
     } else {
 
         //***************** this art is edited the first time *************
 
-        if (!$idart) {
-            $tmp_firstedit = 1; //**** is needed when input is written to db (update or insert)
-        }
+        if (!$idart) $tmp_firstedit = 1; //**** is needed when input is written to db (update or insert)
 
-        $tmp_idartlang = 0;
-        $tmp_idlang = $lang;
-        $tmp_page_title = stripslashes($db->f("pagetitle"));
-        $tmp_title = '';
-        $tmp_urlname = '';   // plugin Advanced Mod Rewrite - edit by stese
-        $tmp_artspec = '';
-        $tmp_summary = '';
-        $tmp_created = date("Y-m-d H:i:s");
-        $tmp_lastmodified = date("Y-m-d H:i:s");
-        $tmp_published = date("Y-m-d H:i:s");
-        $tmp_publishedby = '';
-        $tmp_author = '';
-        $tmp_online = "0";
-        $tmp_datestart = "0000-00-00 00:00:00";
-        $tmp_dateend = "0000-00-00 00:00:00";
-        $tmp_keyart = '';
-        $tmp_keyautoart = '';
-        $tmp_sort = '';
+        $tmp_idartlang      = 0;
+        $tmp_idlang         = $lang;
+        $tmp_page_title     = stripslashes($db->f("pagetitle"));
+        $tmp_title          = '';
+        $tmp_urlname        = '';   // plugin Advanced Mod Rewrite - edit by stese
+        $tmp_artspec        = '';
+        $tmp_summary        = '';
+        $tmp_created        = date("Y-m-d H:i:s");
+        $tmp_lastmodified   = date("Y-m-d H:i:s");
+        $tmp_published      = date("Y-m-d H:i:s");
+        $tmp_publishedby    = '';
+        $tmp_author         = '';
+        $tmp_online         = "0";
+        $tmp_datestart      = "0000-00-00 00:00:00";
+        $tmp_dateend        = "0000-00-00 00:00:00";
+        $tmp_keyart         = '';
+        $tmp_keyautoart     = '';
+        $tmp_sort           = '';
 
         if (!strHasStartArticle($idcat, $lang)) {
             $tmp_is_start = 1;
         }
 
-        $tmp_redirect_checked = '';
-        $tmp_redirect_url = "http://";
+        $tmp_redirect_checked  = '';
+        $tmp_redirect_url      = "http://";
         $tmp_external_redirect = '';
     }
 
     $dateformat = getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s");
 
-    $tmp2_created = date($dateformat, strtotime($tmp_created));
-    $tmp2_lastmodified = date($dateformat, strtotime($tmp_lastmodified));
-    $tmp2_published = date($dateformat, strtotime($tmp_published));
+    $tmp2_created = date($dateformat,strtotime($tmp_created));
+    $tmp2_lastmodified = date($dateformat,strtotime($tmp_lastmodified));
+    $tmp2_published = date($dateformat,strtotime($tmp_published));
 
-    $tpl->set('s', 'ACTION', $sess->url("main.php?area=$area&frame=$frame&action=con_saveart"));
+    $tpl->set('s', 'ACTION', $sess->url("main.php?area=$area&frame=$frame&action=con_saveart") );
     $tpl->set('s', 'HIDDENSESSION', $sess->hidden_session(true));
     $tpl->set('s', 'TMP_FIRSTEDIT', $tmp_firstedit);
     $tpl->set('s', 'IDART', $idart);
     $tpl->set('s', 'SID', $sess->id);
     $tpl->set('s', 'IDCAT', $idcat);
-    $tpl->set('s', 'IDARTLANG', $tmp_idartlang);
+    $tpl->set('s', 'IDARTLANG', $tmp_idartlang );
 
-    $hiddenfields = '<input type="hidden" name="idcat" value="' . $idcat . '">
-                     <input type="hidden" name="idart" value="' . $idart . '">
+    $hiddenfields = '<input type="hidden" name="idcat" value="'.$idcat.'">
+                     <input type="hidden" name="idart" value="'.$idart.'">
                      <input type="hidden" name="send" value="1">';
 
     $tpl->set('s', 'HIDDENFIELDS', $hiddenfields);
 
     // Show path of selected category to user
     $catString = '';
-    prCreateURLNameLocationString($idcat, '/', $catString);
-    $tpl->set('s', 'CATEGORY', $catString . '/' . htmlspecialchars($tmp_title));
+    prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
+    $tpl->set('s', 'CATEGORY', i18n("Sie sind hier") . ": " .$catString.' '.htmlspecialchars($tmp_title));
 
     // Title
     $tpl->set('s', 'TITEL', i18n("Title"));
@@ -193,11 +203,11 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     foreach ($arrArtSpecs as $id => $value) {
         if ($arrArtSpecs[$id]['online'] == 1) {
             if (($arrArtSpecs[$id]['default'] == 1) && (strlen($tmp_artspec) == 0 || $tmp_artspec == 0)) {
-                $tmp_inputArtSort .= "<option value=\"$id\" selected>" . $arrArtSpecs[$id]['artspec'] . "</option>";
+                $tmp_inputArtSort .= "<option value=\"$id\" selected>".$arrArtSpecs[$id]['artspec']."</option>";
             } elseif ($id == $tmp_artspec) {
-                $tmp_inputArtSort .= "<option value=\"$id\" selected>" . $arrArtSpecs[$id]['artspec'] . "</option>";
+                $tmp_inputArtSort .= "<option value=\"$id\" selected>".$arrArtSpecs[$id]['artspec']."</option>";
             } else {
-                $tmp_inputArtSort .= "<option value=\"$id\">" . ucfirst($arrArtSpecs[$id]['artspec']) . "</option>";
+                $tmp_inputArtSort .= "<option value=\"$id\">".ucfirst($arrArtSpecs[$id]['artspec'])."</option>";
             }
             $iAvariableSpec++;
         }
@@ -211,10 +221,10 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'ARTIKELART', i18n("Article specification"));
     $tpl->set('s', 'ARTIKELARTSELECT', $tmp_inputArtSort);
 
-    $tpl->set('s', 'TITEL-FIELD', '<input ' . $disabled . ' style="width:400px;" type="text" class="text_medium" name="title" value="' . htmlspecialchars($tmp_title) . '">');
+    $tpl->set('s', 'TITEL-FIELD', '<input '.$disabled.' style="width:400px;" type="text" class="text_medium" name="title" value="'.htmlspecialchars($tmp_title).'">');
 
     // plugin Advanced Mod Rewrite - edit by stese
-    $tpl->set('s', 'URLNAME-FIELD', '<input ' . $disabled . ' style="width:400px;" type="text" class="text_medium" name="urlname" value="' . htmlspecialchars($tmp_urlname) . '">');
+    $tpl->set('s', 'URLNAME-FIELD', '<input '.$disabled.' style="width:400px;" type="text" class="text_medium" name="urlname" value="'.htmlspecialchars($tmp_urlname).'">');
     // end plugin Advanced Mod Rewrite
 
     $tpl->set('s', 'ARTIKELID', "idart");
@@ -225,13 +235,13 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $select = new cHTMLSelectElement("directlink");
     $select->setEvent("change", "document.getElementById('linkhint').value = this.form.directlink.options[this.form.directlink.options.selectedIndex].value;");
 
-    $baselink = $cfgClient[$client]["path"]["htmlpath"] . "front_content.php?idart=$idart";
+    $baselink = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?idart=$idart";
 
     $option[0] = new cHTMLOptionElement(i18n("Select an entry to display link"), '');
     $option[1] = new cHTMLOptionElement(i18n("Article only"), $baselink);
-    $option[2] = new cHTMLOptionElement(i18n("Article with category"), $baselink . "&idcat=$idcat");
-    $option[3] = new cHTMLOptionElement(i18n("Article with category and language"), $baselink . "&idcat=$idcat&lang=$lang");
-    $option[4] = new cHTMLOptionElement(i18n("Article with language"), $baselink . "&lang=$lang");
+    $option[2] = new cHTMLOptionElement(i18n("Article with category"), $baselink."&idcat=$idcat");
+    $option[3] = new cHTMLOptionElement(i18n("Article with category and language"), $baselink."&idcat=$idcat&lang=$lang");
+    $option[4] = new cHTMLOptionElement(i18n("Article with language"), $baselink."&lang=$lang");
 
     $select->addOptionElement(0, $option[0]);
     $select->addOptionElement(1, $option[1]);
@@ -239,7 +249,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $select->addOptionElement(3, $option[3]);
     $select->addOptionElement(4, $option[4]);
 
-    $tpl->set('s', 'DIRECTLINK', $select->render() . '<br><br><input style="width:400px;" class="text_medium" type="text" id="linkhint">');
+    $tpl->set('s', 'DIRECTLINK', $select->render().'<br><br><input style="width:400px;" class="text_medium" type="text" id="linkhint">');
 
     $tpl->set('s', 'ZUORDNUNGSID', "idcatart");
     $tpl->set('s', 'ALLOCID', $tmp_cat_art);
@@ -253,7 +263,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     } else {
         $authorRealname = '&nbsp';
     }
-    $tpl->set('s', 'AUTOR-ERSTELLUNGS-NAME', $authorRealname . '<input type="hidden" class="bb" name="author" value="' . $auth->auth["uname"] . '">' . '&nbsp;');
+    $tpl->set('s', 'AUTOR-ERSTELLUNGS-NAME', $authorRealname.'<input type="hidden" class="bb" name="author" value="'.$auth->auth["uname"].'">'.'&nbsp;');
 
     // Author (Modifier)
     $oModifiedBy = new cApiUser();
@@ -266,14 +276,14 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'AUTOR-AENDERUNG-NAME', $modifiedByRealname);
 
     // Created
-    $tmp_erstellt = ($tmp_firstedit == 1) ? '<input type="hidden" name="created" value="' . date("Y-m-d H:i:s") . '">' : '<input type="hidden" name="created" value="' . $tmp_created . '">';
+    $tmp_erstellt = ($tmp_firstedit == 1) ? '<input type="hidden" name="created" value="'.date("Y-m-d H:i:s").'">' : '<input type="hidden" name="created" value="'.$tmp_created.'">';
     $tpl->set('s', 'ERSTELLT', i18n("Created"));
-    $tpl->set('s', 'ERSTELLUNGS-DATUM', $tmp2_created . $tmp_erstellt);
+    $tpl->set('s', 'ERSTELLUNGS-DATUM', $tmp2_created.$tmp_erstellt);
 
     // Last modified
     $tpl->set('s', 'AUTHOR_MODIFIER', i18n("Author (Modifier)"));
     $tpl->set('s', 'LETZTE-AENDERUNG', i18n("Last modified"));
-    $tpl->set('s', 'AENDERUNGS-DATUM', $tmp2_lastmodified . '<input type="hidden" name="lastmodified" value="' . date("Y-m-d H:i:s") . '">');
+    $tpl->set('s', 'AENDERUNGS-DATUM', $tmp2_lastmodified.'<input type="hidden" name="lastmodified" value="'.date("Y-m-d H:i:s").'">');
 
     // Publishing date
     $tpl->set('s', 'PUBLISHING_DATE_LABEL', i18n("Publishing date"));
@@ -292,11 +302,11 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     } else {
         $publishedByRealname = '&nbsp';
     }
-    $tpl->set('s', 'PUBLISHER_NAME', '<input type="hidden" class="bb" name="publishedby" value="' . $auth->auth["uname"] . '">' . $publishedByRealname);
+    $tpl->set('s', 'PUBLISHER_NAME', '<input type="hidden" class="bb" name="publishedby" value="'.$auth->auth["uname"].'">'.$publishedByRealname);
 
-    // Redirect
+        // Redirect
     $tpl->set('s', 'WEITERLEITUNG', i18n("Redirect"));
-    $tpl->set('s', 'CHECKBOX', '<input ' . $disabled . ' onclick="document.getElementById(\'redirect_url\').disabled = !this.checked;" type="checkbox" name="redirect" value="1" ' . $tmp_redirect_checked . '>');
+    $tpl->set('s', 'CHECKBOX', '<input '.$disabled.' onclick="document.getElementById(\'redirect_url\').disabled = !this.checked;" type="checkbox" name="redirect" value="1" '.$tmp_redirect_checked.'>');
 
     // Redirect - URL
     if ($tmp_redirect_checked != '') {
@@ -304,19 +314,20 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     } else {
         $forceDisable = "disabled";
     }
-    $tpl->set('s', 'URL', '<input type="text" ' . $disabled . ' ' . $forceDisable . ' class="text_medium" name="redirect_url" style="width:380px;" id="redirect_url" value="' . htmlspecialchars($tmp_redirect_url) . '">');
+    $tpl->set('s', 'URL', '<input type="text" '.$disabled.' '.$forceDisable.' class="text_medium" name="redirect_url" style="width:380px;" id="redirect_url" value="'.htmlspecialchars($tmp_redirect_url).'">');
 
     // Redirect - New window
     if (getEffectiveSetting("articles", "show-new-window-checkbox", "false") == "true") {
-        $tpl->set('s', 'CHECKBOX-NEWWINDOW', '<input type="checkbox" ' . $disabled . ' id="external_redirect" name="external_redirect" value="1" ' . $tmp_external_redirect_checked . '></td><td><label for="external_redirect">' . i18n("New window") . '</label>');
+        $tpl->set('s', 'CHECKBOX-NEWWINDOW', '<input type="checkbox" '.$disabled.' id="external_redirect" name="external_redirect" value="1" '.$tmp_external_redirect_checked.'></td><td><label for="external_redirect">'.i18n("New window").'</label>');
     } else {
         $tpl->set('s', 'CHECKBOX-NEWWINDOW', '&nbsp;');
     }
 
     // Online
     if ($perm->have_perm_area_action("con", "con_makeonline") ||
-            $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) {
-        $tmp_ocheck = ($tmp_online != 1) ? '<input ' . $disabled . ' id="online" type="checkbox" name="online" value="1">' : '<input type="checkbox" ' . $disabled . ' id="online" name="online" value="1" checked="checked">';
+        $perm->have_perm_area_action_item("con","con_makeonline", $idcat))
+    {
+        $tmp_ocheck = ($tmp_online != 1) ? '<input '.$disabled.' id="online" type="checkbox" name="online" value="1">' : '<input type="checkbox" '.$disabled.' id="online" name="online" value="1" checked="checked">';
     } else {
         $tmp_ocheck = ($tmp_online != 1) ? '<input disabled="disabled" type="checkbox" name="" value="1">' : '<input disabled="disabled" type="checkbox" name="" value="1" checked="checked">';
     }
@@ -325,8 +336,9 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     // Startartikel
     if ($perm->have_perm_area_action("con", "con_makestart") ||
-            $perm->have_perm_area_action_item("con", "con_makestart", $idcat)) {
-        $tmp_start = ($tmp_is_start == 0) ? '<input ' . $disabled . ' id="is_start" type="checkbox" name="is_start" value="1">' : '<input ' . $disabled . ' type="checkbox" name="is_start" id="is_start" value="1" checked="checked">';
+        $perm->have_perm_area_action_item("con", "con_makestart", $idcat))
+    {
+        $tmp_start = ($tmp_is_start == 0) ? '<input '.$disabled.' id="is_start" type="checkbox" name="is_start" value="1">' : '<input '.$disabled.' type="checkbox" name="is_start" id="is_start" value="1" checked="checked">';
     } else {
         $tmp_start = ($tmp_is_start == 0) ? '<input disabled="disabled" type="checkbox" name="" value="1">' : '<input disabled="disabled" type="checkbox" name="" value="1" checked="checked">';
     }
@@ -335,9 +347,10 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     // Sortierung
     $tpl->set('s', 'SORTIERUNG', i18n("Sort key"));
-    $tpl->set('s', 'SORTIERUNG-FIELD', '<input type="text" ' . $disabled . ' class="text_medium" name="artsort" style="width:400px;" value="' . $tmp_sort . '">');
+    $tpl->set('s', 'SORTIERUNG-FIELD', '<input type="text" '.$disabled.' class="text_medium" name="artsort" style="width:400px;" value="'.$tmp_sort.'">');
 
     // Category select
+
     // Fetch setting
     $oClient = new cApiClient($client);
     $cValue = $oClient->getProperty("system", "multiassign", true);
@@ -348,7 +361,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $moveOK = true;
 
     if ($cValue == false || $sValue == false) {
-        $sql = "SELECT idartlang, online FROM " . $cfg["tab"]["art_lang"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND online=1 AND idlang != " . cSecurity::toInteger($lang);
+        $sql = "SELECT idartlang, online FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".cSecurity::toInteger($idart)." AND online=1 AND idlang != ".cSecurity::toInteger($lang);
         $db->query($sql);
 
         if ($db->num_rows() > 0) {
@@ -361,9 +374,9 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
             if (count(conGetCategoryAssignments($idart)) > 1) {
                 // Old behaviour
                 $tpl2 = new Template();
-                $tpl2->set('s', 'ID', 'catsel');
-                $tpl2->set('s', 'NAME', 'fake[]');
-                $tpl2->set('s', 'CLASS', 'text_medium');
+                $tpl2->set('s', 'ID',      'catsel');
+                $tpl2->set('s', 'NAME',    'fake[]');
+                $tpl2->set('s', 'CLASS',   'text_medium');
                 $tpl2->set('s', 'OPTIONS', 'multiple="multiple" disabled="disabled" size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;background:lightgrey;"');
 
                 $rbutton = new cHTMLButton("removeassignment", i18n("Remove assignments"));
@@ -371,36 +384,36 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
                 $boxTitle = i18n("Remove multiple category assignments");
                 $boxDescr = i18n("Do you really want to remove the assignments to all categories except the current one?");
 
-                $rbutton->setEvent("click", 'box.confirm(\'' . $boxTitle . '\', \'' . $boxDescr . '\', \'removeAssignments(' . $idart . ', ' . $idcat . ')\'); return false;');
-                $button = "<br>" . $rbutton->render();
+                $rbutton->setEvent("click", 'box.confirm(\''.$boxTitle.'\', \''.$boxDescr.'\', \'removeAssignments('.$idart.', '.$idcat.')\'); return false;');
+                $button = "<br>".$rbutton->render();
 
                 $moveOK = false;
             } else {
                 $tpl2 = new Template();
-                $tpl2->set('s', 'ID', 'catsel');
-                $tpl2->set('s', 'NAME', 'idcatnew[]');
-                $tpl2->set('s', 'CLASS', 'text_medium');
+                $tpl2->set('s', 'ID',      'catsel');
+                $tpl2->set('s', 'NAME',    'idcatnew[]');
+                $tpl2->set('s', 'CLASS',   'text_medium');
                 $tpl2->set('s', 'OPTIONS', 'size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;"');
             }
         } else {
             $note = i18n("Language parts of the articles are existing in other languages and are online. To change the category assignment, please set the other articles offline first.");
-            $tpl2->set('s', 'ID', 'catsel');
-            $tpl2->set('s', 'NAME', 'fake[]');
-            $tpl2->set('s', 'CLASS', 'text_medium');
+            $tpl2->set('s', 'ID',      'catsel');
+            $tpl2->set('s', 'NAME',    'fake[]');
+            $tpl2->set('s', 'CLASS',   'text_medium');
             $tpl2->set('s', 'OPTIONS', 'multiple="multiple" disabled="disabled" size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;background:lightgrey;"');
         }
     } else {
         // Old behaviour
-        $tpl2->set('s', 'ID', 'catsel');
-        $tpl2->set('s', 'NAME', 'idcatnew[]');
-        $tpl2->set('s', 'CLASS', 'text_medium');
-        $tpl2->set('s', 'OPTIONS', 'multiple="multiple" ' . $disabled . ' size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;"');
+        $tpl2->set('s', 'ID',      'catsel');
+        $tpl2->set('s', 'NAME',    'idcatnew[]');
+        $tpl2->set('s', 'CLASS',   'text_medium');
+        $tpl2->set('s', 'OPTIONS', 'multiple="multiple" '.$disabled.' size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;"');
     }
 
     if (isset($tplinputchanged) && $tplinputchanged == 1) {
         $tmp_idcat_in_art = $idcatnew;
     } else {
-        $sql = "SELECT idcat FROM " . $cfg["tab"]["cat_art"] . " WHERE idart='" . $idart . "'"; // get all idcats that contain art
+        $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart='".$idart."'"; // get all idcats that contain art
         $db->query($sql);
         while ($db->next_record()) {
             $tmp_idcat_in_art[] = $db->f("idcat");
@@ -420,7 +433,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     // End date
     if ($tmp_dateend == "0000-00-00 00:00:00") {
-        $tpl->set('s', 'ENDDATE', '');
+        $tpl->set('s', 'ENDDATE','');
     } else {
         $tpl->set('s', 'ENDDATE', $tmp_dateend);
     }
@@ -430,14 +443,14 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
                 A.level,
                 C.name
             FROM
-                " . $cfg["tab"]["cat_tree"] . " AS A,
-                " . $cfg["tab"]["cat"] . " AS B,
-                " . $cfg["tab"]["cat_lang"] . " AS C
+                ".$cfg["tab"]["cat_tree"]." AS A,
+                ".$cfg["tab"]["cat"]." AS B,
+                ".$cfg["tab"]["cat_lang"]." AS C
             WHERE
                 A.idcat=B.idcat AND
                 B.idcat=C.idcat AND
-                C.idlang=" . cSecurity::toInteger($lang) . " AND
-                B.idclient=" . cSecurity::toInteger($client) . "
+                C.idlang=".cSecurity::toInteger($lang)." AND
+                B.idclient=".cSecurity::toInteger($client)."
             ORDER BY
                 A.idtree";
 
@@ -446,24 +459,24 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     while ($db->next_record()) {
         $spaces = '';
 
-        for ($i = 0; $i < $db->f("level"); $i++) {
+        for ($i = 0; $i < $db->f("level"); $i ++) {
             $spaces .= "&nbsp;&nbsp;&nbsp;&nbsp;";
         }
 
         if (!in_array($db->f("idcat"), $tmp_idcat_in_art)) {
             $tpl2->set('d', 'VALUE', $db->f("idcat"));
             $tpl2->set('d', 'SELECTED', '');
-            $tpl2->set('d', 'CAPTION', $spaces . cSecurity::unFilter($db->f("name")));
+            $tpl2->set('d', 'CAPTION', $spaces.cSecurity::unFilter($db->f("name")));
 
             $tpl2->next();
         } else {
             $tpl2->set('d', 'VALUE', $db->f("idcat"));
             $tpl2->set('d', 'SELECTED', 'selected="selected"');
-            $tpl2->set('d', 'CAPTION', $spaces . cSecurity::unFilter($db->f("name")));
+            $tpl2->set('d', 'CAPTION', $spaces.cSecurity::unFilter($db->f("name")));
             $tpl2->next();
 
             if ($moveOK == false) {
-                $button .= '<input type="hidden" name="idcatnew[]" value="' . $db->f("idcat") . '">';
+                $button .= '<input type="hidden" name="idcatnew[]" value="'.$db->f("idcat").'">';
             }
         }
     }
@@ -475,15 +488,16 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'STRUKTUR-FIELD', $select . $button);
 
     if (isset($tmp_notification)) {
-        $tpl->set('s', 'NOTIFICATION', '<tr><td colspan="4">' . $tmp_notification . '<br></td></tr>');
+        $tpl->set('s', 'NOTIFICATION', '<tr><td colspan="4">'.$tmp_notification.'<br></td></tr>');
     } else {
         $tpl->set('s', 'NOTIFICATION', '');
     }
 
-    $tpl->set('s', 'PATH_TO_CALENDER_PIC', $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'calendar.gif');
+    $tpl->set('s', 'PATH_TO_CALENDER_PIC',  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif');
 
     if (($perm->have_perm_area_action("con", "con_makeonline") ||
-            $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) && $inUse == false) {
+        $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) && $inUse == false)
+    {
         $allow_usetimemgmt = '';
         $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 0);
     } else {
@@ -496,7 +510,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'EDOPTS', $allow_usetimemgmt);
 
     if ($tmp_usetimemgmt == '1') {
-        $tpl->set('s', 'TIMEMGMTCHECKED', 'checked' . $allow_usetimemgmt);
+        $tpl->set('s','TIMEMGMTCHECKED', 'checked'.$allow_usetimemgmt);
     } else {
         $tpl->set('s', 'TIMEMGMTCHECKED', $allow_usetimemgmt);
     }
@@ -506,24 +520,24 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     // Move to category
     $tpl2 = new Template();
-    $tpl2->set('s', 'ID', 'catsel');
-    $tpl2->set('s', 'NAME', 'time_target_cat');
-    $tpl2->set('s', 'CLASS', 'text_medium');
-    $tpl2->set('s', 'OPTIONS', 'size="1" style="width: 160px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#B3B3B3;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;"' . $allow_usetimemgmt);
+    $tpl2->set('s', 'ID',       'catsel');
+    $tpl2->set('s', 'NAME',     'time_target_cat');
+    $tpl2->set('s', 'CLASS',    'text_medium');
+    $tpl2->set('s', 'OPTIONS',  'size="1" style="width: 160px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#B3B3B3;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;"'.$allow_usetimemgmt);
 
     $sql = "SELECT
                 A.idcat,
                 A.level,
                 C.name
             FROM
-                " . $cfg["tab"]["cat_tree"] . " AS A,
-                " . $cfg["tab"]["cat"] . " AS B,
-                " . $cfg["tab"]["cat_lang"] . " AS C
+                ".$cfg["tab"]["cat_tree"]." AS A,
+                ".$cfg["tab"]["cat"]." AS B,
+                ".$cfg["tab"]["cat_lang"]." AS C
             WHERE
                 A.idcat=B.idcat AND
                 B.idcat=C.idcat AND
-                C.idlang=" . cSecurity::toInteger($lang) . " AND
-                B.idclient=" . cSecurity::toInteger($client) . "
+                C.idlang=".cSecurity::toInteger($lang)." AND
+                B.idclient=".cSecurity::toInteger($client)."
             ORDER BY
                 A.idtree";
 
@@ -532,19 +546,19 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     while ($db->next_record()) {
         $spaces = '';
 
-        for ($i = 0; $i < $db->f("level"); $i++) {
+        for ($i = 0; $i < $db->f("level"); $i ++) {
             $spaces .= "&nbsp;&nbsp;";
         }
 
         if ($db->f("idcat") != $tmp_targetcat) {
             $tpl2->set('d', 'VALUE', $db->f("idcat"));
             $tpl2->set('d', 'SELECTED', '');
-            $tpl2->set('d', 'CAPTION', $spaces . cSecurity::unFilter($db->f("name")));
+            $tpl2->set('d', 'CAPTION', $spaces.cSecurity::unFilter($db->f("name")));
             $tpl2->next();
         } else {
             $tpl2->set('d', 'VALUE', $db->f("idcat"));
             $tpl2->set('d', 'SELECTED', 'selected="selected"');
-            $tpl2->set('d', 'CAPTION', $spaces . cSecurity::unFilter($db->f("name")));
+            $tpl2->set('d', 'CAPTION', $spaces.cSecurity::unFilter($db->f("name")));
             $tpl2->next();
         }
     }
@@ -552,7 +566,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $select = $tpl2->generate($cfg["path"]["templates"] . $cfg["templates"]["generic_select"], true);
 
     // Seitentitel
-    $title_input = '<input type="text" ' . $disabled . ' class="text_medium" name="page_title" style="width:400px;" value="' . htmlspecialchars($tmp_page_title) . '">';
+    $title_input = '<input type="text" '.$disabled.' class="text_medium" name="page_title" style="width:400px;" value="'.htmlspecialchars($tmp_page_title).'">';
     $tpl->set("s", "TITLE-INPUT", $title_input);
 
 
@@ -560,32 +574,32 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'MOVETOCATEGORYSELECT', $select);
 
     if ($tmp_movetocat == "1") {
-        $tpl->set('s', 'MOVETOCATCHECKED', 'checked' . $allow_usetimemgmt);
+        $tpl->set('s','MOVETOCATCHECKED', 'checked'.$allow_usetimemgmt);
     } else {
-        $tpl->set('s', 'MOVETOCATCHECKED', '' . $allow_usetimemgmt);
+        $tpl->set('s','MOVETOCATCHECKED', ''.$allow_usetimemgmt);
     }
 
     if ($tmp_onlineaftermove == "1") {
-        $tpl->set('s', 'ONLINEAFTERMOVECHECKED', 'checked' . $allow_usetimemgmt);
+        $tpl->set('s', 'ONLINEAFTERMOVECHECKED', 'checked'.$allow_usetimemgmt);
     } else {
-        $tpl->set('s', 'ONLINEAFTERMOVECHECKED', '' . $allow_usetimemgmt);
+        $tpl->set('s', 'ONLINEAFTERMOVECHECKED', ''.$allow_usetimemgmt);
     }
 
     // Summary
     $tpl->set('s', 'SUMMARY', i18n("Summary"));
-    $tpl->set('s', 'SUMMARY-INPUT', '<textarea ' . $disabled . ' style="width:400px" class="text_medium" name="summary" cols="50" rows="5">' . $tmp_summary . '</textarea>');
+    $tpl->set('s', 'SUMMARY-INPUT', '<textarea '.$disabled.' style="width:400px" class="text_medium" name="summary" cols="50" rows="5">'.$tmp_summary.'</textarea>');
 
     $sql = "SELECT
                 b.idcat
             FROM
-                " . $cfg["tab"]["cat"] . " AS a,
-                " . $cfg["tab"]["cat_lang"] . " AS b,
-                " . $cfg["tab"]["cat_art"] . " AS c
+                ".$cfg["tab"]["cat"]." AS a,
+                ".$cfg["tab"]["cat_lang"]." AS b,
+                ".$cfg["tab"]["cat_art"]." AS c
             WHERE
-                a.idclient = " . cSecurity::toInteger($client) . " AND
+                a.idclient = ".cSecurity::toInteger($client)." AND
                 a.idcat    = b.idcat AND
                 c.idcat    = b.idcat AND
-                c.idart    = " . cSecurity::toInteger($idart);
+                c.idart    = ".cSecurity::toInteger($idart);
 
     $db->query($sql);
     $db->next_record();
@@ -594,7 +608,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     if (isset($idart)) {
         if (!isset($idartlang) || 0 == $idartlang) {
-            $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
+            $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".cSecurity::toInteger($idart)." AND idlang=".cSecurity::toInteger($lang);
             $db->query($sql);
             $db->next_record();
             $idartlang = $db->f("idartlang");
@@ -603,7 +617,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     if (isset($midcat)) {
         if (!isset($idcatlang) || 0 == $idcatlang) {
-            $sql = "SELECT idcatlang FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat=" . cSecurity::toInteger($midcat) . " AND idlang=" . cSecurity::toInteger($lang);
+            $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat=".cSecurity::toInteger($midcat)." AND idlang=".cSecurity::toInteger($lang);
             $db->query($sql);
             $db->next_record();
             $idcatlang = $db->f("idcatlang");
@@ -612,7 +626,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     if (isset($midcat) && isset($idart)) {
         if (!isset($idcatart) || 0 == $idcatart) {
-            $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idcat=" . cSecurity::toInteger($midcat);
+            $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idart=".cSecurity::toInteger($idart)." AND idcat=".cSecurity::toInteger($midcat);
             $db->query($sql);
             $db->next_record();
             $idcatart = $db->f("idcatart");
@@ -620,7 +634,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     }
 
     if (0 != $idart && 0 != $midcat) {
-        $script = 'artObj.setProperties("' . $idart . '", "' . $idartlang . '", "' . $midcat . '", "' . $idcatlang . '", "' . $idcatart . '", "' . $lang . '");';
+        $script = 'artObj.setProperties("'.$idart.'", "'.$idartlang.'", "'.$midcat.'", "'.$idcatlang.'", "'.$idcatart.'", "'.$lang.'");';
     } else {
         $script = 'artObj.reset();';
     }
@@ -636,8 +650,8 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     }
 
     if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
-        $langscripts = '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-' . $lang_short . '.js"></script>
-                 <script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-' . $lang_short . '.js"></script>';
+        $langscripts=  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
+                 <script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
         $tpl->set('s', 'CAL_LANG', $langscripts);
     } else {
         $tpl->set('s', 'CAL_LANG', '');
@@ -649,48 +663,20 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
             $notification->displayNotification("warning", $message);
         }
     }
-
-    //Simple SQL statement to get the number of articles
-    $sql_count =
-            "SELECT
-                    COUNT(*) AS article_count
-                 FROM
-                    " . $cfg["tab"]["art_lang"] . " AS a,
-                    " . $cfg["tab"]["art"] . " AS b,
-                    " . $cfg["tab"]["cat_art"] . " AS c
-                 WHERE
-                    (a.idlang   = " . cSecurity::toInteger($lang) . " {SYNCOPTIONS}) AND
-                    a.idart     = b.idart AND
-                    b.idclient  = " . cSecurity::toInteger($client) . " AND
-                    b.idart     = c.idart AND
-                    c.idcat     = " . cSecurity::toInteger($idcat);
-
-    $sql = str_replace("{ISSTART}", '', $sql);
-
-    if ($syncoptions == -1) {
-        $sql = str_replace("{SYNCOPTIONS}", '', $sql);
-        $sql_count = str_replace("{SYNCOPTIONS}", '', $sql_count);
-    } else {
-        $sql = str_replace("{SYNCOPTIONS}", "OR a.idlang = '" . $syncoptions . "'", $sql);
-        $sql_count = str_replace("{SYNCOPTIONS}", "OR a.idlang = '" . $syncoptions . "'", $sql_count);
-    }
-
-    $db->query($sql_count);
-    while ($db->next_record()) {
-        $iArticleCount = $db->f("article_count");
-    }
-    $tpl->set('s', 'iArticleCount', $iArticleCount);
+	//breadcrumb onclick
     $tpl->set('s', 'iIdcat', $idcat);
-    $tpl->set('s', 'iIdtpl', $idtpl);
-    $tpl->set('s', 'SYNCOPTIONS', $syncoptions);
-    $tpl->set('s', 'SESSION', $contenido);
-    $tpl->set('s', 'DISPLAY_MENU', $display_menu);
+	$tpl->set('s', 'iIdtpl', $idtpl);
+	$tpl->set('s', 'SYNCOPTIONS', -1);
+	$tpl->set('s', 'SESSION', $contenido);
+	$tpl->set('s', 'DISPLAY_MENU', 1);
 
     // Genereate the Template
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_edit_form']);
+
 } else {
     // User hat no permission to see this form
     $notification->displayNotification("error", i18n("Permission denied"));
 }
+
 
 ?>
