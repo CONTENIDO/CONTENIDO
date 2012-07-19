@@ -604,89 +604,82 @@ function strDeleteCategory($idcat)
     global $remakeCatTable, $remakeStrTable;
 
     if (strNextDeeper($idcat)) {
-        // category has subcategories
+        // Category has subcategories
         return "0201";
     } elseif (strHasArticles($idcat)) {
-        // category has arts
+        // Category has articles
         return "0202";
     }
 
-    $db2 = cRegistry::getDb();
+    cInclude('includes', 'functions.rights.php');
+
     $remakeCatTable = true;
     $remakeStrTable = true;
 
-    $sql = "SELECT idtplcfg FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".cSecurity::toInteger($idcat)."' AND idlang='".cSecurity::toInteger($lang)."'";
-    $db->query($sql);
+    // Load category language
+    $oCatLang = new cApiCategoryLanguage();
+    $oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang);
 
-    while ($db->next_record()) {
-        // delete entry in 'tpl_conf'-table
-        $sql = "DELETE FROM ".$cfg['tab']['tpl_conf']." WHERE idtplcfg='".cSecurity::toInteger($db->f("idtplcfg"))."'";
-        $db2->query($sql);
+    if ($oCatLang->isLoaded()) {
+        // Delete template configuration (deletes also all container configurations)
+        $oTemplateConfigColl = new cApiTemplateConfigurationCollection();
+        $oTemplateConfigColl->delete($oCatLang->get('idtplcfg'));
 
-        $sql = "DELETE FROM ".$cfg['tab']['container_conf']." WHERE idtplcfg = '".cSecurity::toInteger($db->f("idtplcfg"))."'";
-        $db2->query($sql);
+        // Delete category language
+        $oCatLangColl = new cApiCategoryLanguageCollection();
+        $oCatLangColl->delete($oCatLang->get('idcatlang'));
     }
 
-    // Delete language dependend part
-    $sql = "DELETE FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".cSecurity::toInteger($idcat)."' AND idlang='".cSecurity::toInteger($lang)."'";
-    $db->query($sql);
-
-    // Are there any additional languages?
-    $sql = "SELECT idcatlang FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".cSecurity::toInteger($idcat)."'";
-    $db->query($sql);
-
-    if ($db->num_rows() > 0) {
-        // more languages found, delete rights for element
-        cInclude('includes', 'functions.rights.php');
+    // Are there any additional entries for other languages?
+    $oCatLangColl = new cApiCategoryLanguageCollection();
+    $oCatLangColl->select('idcat = ' . (int) $idcat);
+    if ($oCatLang = $oCatLangColl->next()) {
+        // More languages found, delete rights for current category
         deleteRightsForElement('str', $idcat, $lang);
         deleteRightsForElement('con', $idcat, $lang);
         return;
     }
 
-    $sql = "SELECT * FROM ".$cfg['tab']['cat']." WHERE idcat='".cSecurity::toInteger($idcat)."'";
-    $db->query($sql);
-    $db->next_record();
-    $tmp_preid  = $db->f("preid");
-    $tmp_postid = $db->f("postid");
+    // Load category
+    $oCat = new cApiCategory((int) $idcat);
+    $preid  = (int) $oCat->get('preid');
+    $postid = (int) $oCat->get('postid');
 
-    // update pre cat set new postid
-    if ($tmp_preid != 0) {
-        $sql = "UPDATE ".$cfg['tab']['cat']." SET postid='".cSecurity::toInteger($tmp_postid)."' WHERE idcat='".cSecurity::toInteger($tmp_preid)."'";
-        $db->query($sql);
+    // Update pre cat, set it to new postid
+    if ($preid != 0) {
+        $oPreCat = new cApiCategory($preid);
+        $oPreCat->set('postid', $postid);
+        $oPreCat->store();
     }
 
-    // update post cat set new preid
-    if ($tmp_postid != 0) {
-        $sql = "UPDATE ".$cfg['tab']['cat']." SET preid='".cSecurity::toInteger($tmp_preid)."' WHERE idcat='".cSecurity::toInteger($tmp_postid)."'";
-        $db->query($sql);
+    // Update post cat, set it to new preid
+    if ($postid != 0) {
+        $oPostCat = new cApiCategory($postid);
+        $oPostCat->set('preid', $preid);
+        $oPostCat->store();
     }
 
-    // delete entry in 'cat'-table
-    $sql = "DELETE FROM ".$cfg['tab']['cat']." WHERE idcat='".cSecurity::toInteger($idcat)."'";
-    $db->query($sql);
+    // Delete category
+    $oCatColl = new cApiCategoryCollection();
+    $oCatColl->deleteBy('idcat', (int) $idcat);
 
-    $sql = "SELECT idtplcfg FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".cSecurity::toInteger($idcat)."'";
-    $db->query($sql);
-    while ($db->next_record()) {
-        // delete entry in 'tpl_conf'-table
-        $sql = "DELETE FROM ".$cfg['tab']['tpl_conf']." WHERE idtplcfg='".cSecurity::toInteger($db->f("idtplcfg"))."'";
-        $db2->query($sql);
-
-        $sql = "DELETE FROM ".$cfg['tab']['container_conf']." WHERE idtplcfg = '".cSecurity::toInteger($db->f("idtplcfg"))."'";
-        echo $sql;
-        $db2->query($sql);
+    $oCatLangColl = new cApiCategoryLanguageCollection();
+    $oCatLangColl->select('idcat = ' . (int) $idcat);
+    if ($oCatLang = $oCatLangColl->next()) {
+        // Delete template configuration (deletes also all container configurations)
+        $oTemplateConfigColl = new cApiTemplateConfigurationCollection();
+        $oTemplateConfigColl->delete($oCatLang->get('idtplcfg'));
     }
 
-    ////// delete entry in 'cat_lang'-table
-    $sql = "DELETE FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".cSecurity::toInteger($idcat)."'";
-    $db->query($sql);
+    // Delete category language entry by category id
+    $oCatLangColl->resetQuery();
+    $oCatLangColl->deleteBy('idcat', (int) $idcat);
 
-    ////// delete entry in 'cat_tree'-table
-    $sql = "DELETE FROM ".$cfg['tab']['cat_tree']." WHERE idcat='".cSecurity::toInteger($idcat)."'";
-    $db->query($sql);
+    // Delete category tree entry by category id
+    $oCatTreeColl = new cApiCategoryTreeCollection();
+    $oCatTreeColl->deleteBy('idcat', (int) $idcat);
 
-    // delete rights for element
-    cInclude('includes', 'functions.rights.php');
+    // Delete rights for element
     deleteRightsForElement('str', $idcat);
     deleteRightsForElement('con', $idcat);
 }
