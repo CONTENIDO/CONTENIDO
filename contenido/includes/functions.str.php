@@ -4,15 +4,16 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Defines the "str" related functions
+ * Defines the structure/category ("str") related functions
  *
  * Requirements:
  * @con_php_req 5.0
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.3.24
+ * @version    1.4.0
  * @author     Olaf Niemann
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -23,7 +24,6 @@
  *   created 2002-03-02
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -267,12 +267,12 @@ function strRemakeTreeTable()
 
     // Delete entries from category table having idcat = 0
     // @todo: Check this, how it is possible to have an invalid entry with primary key = 0
-    $sql = 'DELETE FROM ' . $cfg['tab']['cat'] . ' WHERE idcat=0';
+    $sql = 'DELETE FROM ' . $cfg['tab']['cat'] . ' WHERE idcat = 0';
     $db->query($sql);
 
     // Delete entries from category language table having idcat = 0
     // @todo: Check this, how it is possible to have an invalid entry with primary key = 0
-    $sql = 'DELETE FROM ' . $cfg['tab']['cat_lang'] . ' WHERE idcat=0';
+    $sql = 'DELETE FROM ' . $cfg['tab']['cat_lang'] . ' WHERE idcat = 0';
     $db->query($sql);
 
     // Get all categories by client
@@ -560,9 +560,6 @@ function strMakeVisible($idcat, $lang, $visible)
  */
 function strMakePublic($idcat, $lang, $public)
 {
-    $public = (int) $public;
-    $lang = (int) $lang;
-
     $categories = strDeeperCategoriesArray($idcat);
     foreach ($categories as $value) {
         $oCatLang = new cApiCategoryLanguage();
@@ -598,17 +595,17 @@ function strDeeperCategoriesArray($startIdcat)
  */
 function strDeleteCategory($idcat)
 {
-    global $db, $lang, $client, $lang, $cfg;
+    global $lang, $lang;
 
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
 
     if (strNextDeeper($idcat)) {
         // Category has subcategories
-        return "0201";
+        return '0201';
     } elseif (strHasArticles($idcat)) {
         // Category has articles
-        return "0202";
+        return '0202';
     }
 
     cInclude('includes', 'functions.rights.php');
@@ -730,22 +727,22 @@ function strMoveUpCategory($idcat)
 
     // Update category before previous, if exists
     if ($oPrePreCat->isLoaded()) {
-        $oPrePreCat->set('postid', (int) $idcat);
+        $oPrePreCat->set('postid', $idcat);
         $oPrePreCat->store();
     }
 
     // Update previous category
-    $oPreCat->set('preid', (int) $idcat);
-    $oPreCat->set('postid', (int) $postid);
+    $oPreCat->set('preid', $idcat);
+    $oPreCat->set('postid', $postid);
     $oPreCat->store();
 
     // Update current category
-    $oCat->set('preid', (int) $prePreid);
-    $oCat->set('postid', (int) $preid);
+    $oCat->set('preid', $prePreid);
+    $oCat->set('postid', $preid);
     $oCat->store();
 
     // Update post category, if exists!
-    $oPostCat->set('preid', (int) $preIdcat);
+    $oPostCat->set('preid', $preIdcat);
     $oPostCat->store();
 }
 
@@ -797,19 +794,19 @@ function strMoveDownCategory($idcat)
     }
 
     // Update current category
-    $oCat->set('preid', (int) $postid);
-    $oCat->set('postid', (int) $postPostid);
+    $oCat->set('preid', $postid);
+    $oCat->set('postid', $postPostid);
     $oCat->store();
 
     // Update post category
-    $oPostCat->set('preid', (int) $preIdcat);
-    $oPostCat->set('postid', (int) $idcat);
+    $oPostCat->set('preid', $preIdcat);
+    $oPostCat->set('postid', $idcat);
     $oPostCat->store();
 
     if ($postPostid != 0) {
         // Update post post category, if exists
         $oPostPostCat = new cApiCategory($postPostid);
-        $oPostPostCat->set('preid', (int) $idcat);
+        $oPostPostCat->set('preid', $idcat);
         $oPostPostCat->store();
     }
 }
@@ -824,7 +821,7 @@ function strMoveDownCategory($idcat)
  */
 function strMoveSubtree($idcat, $parentId)
 {
-    global $db, $cfg, $movesubtreeidcat, $sess;
+    global $movesubtreeidcat;
 
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
@@ -867,7 +864,7 @@ function strMoveSubtree($idcat, $parentId)
                 // Update new pre, set post
                 $oPreCat = new cApiCategory($newPreId);
                 if ($oPreCat->isLoaded()) {
-                    $oPreCat->set('postid', (int) $idcat);
+                    $oPreCat->set('postid', $idcat);
                     $oPreCat->store();
                 }
             } else {
@@ -877,7 +874,7 @@ function strMoveSubtree($idcat, $parentId)
                     $newPreId = $oPreCat->get('idcat');
                     $oPreCat2 = new cApiCategory($newPreId);
                     if ($oPreCat2->isLoaded()) {
-                        $oPreCat2->set('postid', (int) $idcat);
+                        $oPreCat2->set('postid', $idcat);
                         $oPreCat2->store();
                     }
                 } else {
@@ -889,8 +886,8 @@ function strMoveSubtree($idcat, $parentId)
         }
 
         // Update current category
-        $oCat->set('parentid', (int) $newParentId);
-        $oCat->set('preid', (int) $newPreId);
+        $oCat->set('parentid', $newParentId);
+        $oCat->set('preid', $newPreId);
         $oCat->set('postid', 0);
         $oCat->store();
 
@@ -903,6 +900,7 @@ function strMoveSubtree($idcat, $parentId)
         $movesubtreeidcat = $idcat;
     }
 
+    $sess = cRegistry::getSession();
     $sess->register('movesubtreeidcat');
     $sess->freeze();
 }
@@ -931,67 +929,49 @@ function strMoveCatTargetallowed($idcat, $source)
  */
 function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = false)
 {
-    global $cfg;
-
-    $db2 = cRegistry::getDb();
     $bMultiple = (bool) $bMultiple;
 
     $aCatArray = array();
     if ($bMultiple == true) {
         $aCatArray = strDeeperCategoriesArray($idcatParam);
     } else {
-        array_push($aCatArray, $idcatParam);
+        $aCatArray[] = $idcatParam;
     }
 
     foreach ($aCatArray as $idcat) {
-        // Check if category already exists
-        $sql = "SELECT * FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $targetlang;
-        $db2->query($sql);
-        if ($db2->next_record()) {
+        // Check if category for target language already exists
+        $oCatLang = new cApiCategoryLanguage();
+        if ($oCatLang->loadByCategoryIdAndLanguageId($idcat, $targetlang)) {
             return false;
         }
 
-        $sql = "SELECT * FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $sourcelang;
-        $db2->query($sql);
+        // Get source category language
+        $oCatLang = new cApiCategoryLanguage();
+        if ($oCatLang->loadByCategoryIdAndLanguageId($idcat, $sourcelang)) {
+            $aRs = $oCatLang->toArray();
 
-        if ($db2->next_record()) {
-            if ($db2->f("idtplcfg") != 0) {
-                // Copy the template configuration
-                $newidtplcfg = tplcfgDuplicate($db2->f("idtplcfg"));
-            } else {
-                $newidtplcfg = 0;
-            }
-            //$newidcatlang = $db2->nextid($cfg['tab']['cat_lang']);
+            // Copy the template configuration, if exists
+            $newidtplcfg = ($aRs['idtplcfg'] != 0) ? tplcfgDuplicate($aRs['idtplcfg']) : 0;
 
-            $idcat = $db2->f("idcat");
             $visible = 0;
+            $startidartlang = 0;
+            $urlpath = '';
 
-            $aRs = $db2->toArray();
+            $oCatLangColl = new cApiCategoryLanguageCollection();
+            $oNewCatLang = $oCatLangColl->create(
+                $aRs['idcat'], $targetlang, $aRs['name'], $aRs['urlname'], $urlpath,
+                $newidtplcfg, $visible, $aRs['public'], $aRs['status'], $aRs['author'],
+                $startidartlang, $aRs['created'], $aRs['lastmodified']
+            );
 
-            $sql = $db2->buildInsert($cfg['tab']['cat_lang'], array(
-                'idcat' => (int) $aRs['idcat'],
-                'idlang' => (int) $targetlang,
-                'idtplcfg' => (int) $newidtplcfg,
-                'name' => $aRs['name'],
-                'visible' => $visible,
-                'public' => $aRs['public'],
-                'status' => (int) $aRs['status'],
-                'urlname' => $aRs['urlname'],
-                'author' => $aRs['author'],
-                'created' => $aRs['created'],
-                'lastmodified' => $aRs['lastmodified'],
-            ));
-
-            $db2->query($sql);
-
-            // execute CEC hook
+            // Execute CEC hook
             $param = $aRs;
             $param['idlang']   = $targetlang;
             $param['idtplcfg'] = (int) $newidtplcfg;
             $param['visible']  = $visible;
             CEC_Hook::execute('Contenido.Category.strSyncCategory_Loop', $param);
 
-            // set correct rights for element
+            // Set correct rights for element
             cInclude('includes', 'functions.rights.php');
             createRightsForElement('str', $idcat, $targetlang);
             createRightsForElement('con', $idcat, $targetlang);
@@ -1023,83 +1003,76 @@ function strHasStartArticle($idcat, $idlang)
  */
 function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel = true)
 {
-    global $cfg, $client, $lang;
-
-    $lang = (int) $lang;
-    $idcat = (int) $idcat;
+    global $cfg, $lang;
 
     $newidcat = (int) strNewCategory($destidcat, 'a', $remakeTree);
     if ($newidcat == 0) {
         return;
     }
 
-    // Selectors
-    $_oldcatlang = new cApiCategoryLanguageCollection();
-    $_newcatlang = new cApiCategoryLanguageCollection();
-
-    $_oldcatlang->select("idcat = $idcat AND idlang = $lang");
-    $oldcatlang = $_oldcatlang->next();
-    if (!is_object($oldcatlang)) {
+    // Load old and new category
+    $oOldCatLang = new cApiCategoryLanguage();
+    if (!$oOldCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
         return;
     }
 
-    $_newcatlang->select("idcat = $newidcat AND idlang = $lang");
-    $newcatlang = $_newcatlang->next();
-    if (!is_object($newcatlang)) {
+    $oNewCatLang = new cApiCategoryLanguage();
+    if (!$oNewCatLang->loadByCategoryIdAndLanguageId($newidcat, $lang)) {
         return;
     }
 
     // Worker objects
-    $newcat = new cApiCategory($newidcat);
-    $oldcat = new cApiCategory($idcat);
+    $oNewCat = new cApiCategory((int) $newidcat);
+    $oOldCat = new cApiCategory((int) $idcat);
 
     // Copy properties
     if ($bUseCopyLabel == true) {
-        $newcatlang->set("name", sprintf(i18n("%s (Copy)"), $oldcatlang->get("name")));
+        $oNewCatLang->set('name', sprintf(i18n('%s (Copy)'), $oOldCatLang->get('name')));
     } else {
-        $newcatlang->set("name", $oldcatlang->get("name"));
+        $oNewCatLang->set('name', $oOldCatLang->get('name'));
     }
 
-    $newcatlang->set("public", $oldcatlang->get("public"));
-    $newcatlang->set("visible", 0);
-    $newcatlang->store();
+    $oNewCatLang->set('public', $oOldCatLang->get('public'));
+    $oNewCatLang->set('visible', 0);
+    $oNewCatLang->store();
 
-    // execute cec hook
+    // Execute cec hook
     CEC_Hook::execute('Contenido.Category.strCopyCategory', array(
-        'oldcat'     => $oldcat,
-        'newcat'     => $newcat,
-        'newcatlang' => $newcatlang
+        'oldcat'     => $oOldCat,
+        'newcat'     => $oNewCat,
+        'newcatlang' => $oNewCatLang
     ));
 
     // Copy template configuration
-    if ($oldcatlang->get("idtplcfg") != 0) {
+    if ($oOldCatLang->get('idtplcfg') != 0) {
         // Create new template configuration
-        $newcatlang->assignTemplate($oldcatlang->getTemplate());
+        $oNewCatLang->assignTemplate($oOldCatLang->getTemplate());
 
         // Copy the container configuration
-        $c_cconf = new cApiContainerConfigurationCollection;
-        $m_cconf = new cApiContainerConfigurationCollection;
-        $c_cconf->select("idtplcfg = '".$oldcatlang->get("idtplcfg")."'");
+        $oContainerConfColl = new cApiContainerConfigurationCollection();
+        $oContainerConfColl->select('idtplcfg = ' . (int) $oOldCatLang->get('idtplcfg'));
 
-        while ($i_cconf = $c_cconf->next()) {
-            $m_cconf->create($newcatlang->get("idtplcfg"), $i_cconf->get("number"), $i_cconf->get("container"));
+        $oNewContainerConfColl = new cApiContainerConfigurationCollection();
+        while ($oItem = $oContainerConfColl->next()) {
+            $oNewContainerConfColl->create($oNewCatLang->get('idtplcfg'), $oItem->get('number'), $oItem->get('container'));
         }
     }
 
     $db = cRegistry::getDb();
-    $db2 = cRegistry::getDb();
+
+    $oCatArtColl = new cApiCategoryArticleCollection();
 
     // Copy all articles
-    $sql = "SELECT A.idart, B.idartlang FROM " . $cfg['tab']['cat_art'] . " AS A, " . $cfg['tab']['art_lang'] . " AS B WHERE A.idcat = " . $idcat . " AND B.idart = A.idart AND B.idlang = " . $lang;
-    $db->query($sql);
+    $sql = "SELECT A.idart, B.idartlang FROM %s AS A, %s AS B WHERE A.idcat = %d AND B.idart = A.idart AND B.idlang = %s";
+    $db->query($sql, $cfg['tab']['cat_art'], $cfg['tab']['art_lang'], $idcat, $lang);
 
     while ($db->next_record()) {
-        $newidart = (int) conCopyArticle($db->f("idart"), $newidcat, "", $bUseCopyLabel);
-        if ($db->f("idartlang") == $oldcatlang->get("startidartlang")) {
-            $sql = "SELECT idcatart FROM " . $cfg['tab']['cat_art'] . " WHERE idcat = " . $newidcat . " AND idart = " . $newidart;
-            $db2->query($sql);
-            if ($db2->next_record()) {
-                conMakeStart($db2->f("idcatart"), 1);
+        $newidart = (int) conCopyArticle($db->f('idart'), $newidcat, '', $bUseCopyLabel);
+        if ($db->f('idartlang') == $oOldCatLang->get('startidartlang')) {
+            $oCatArtColl->resetQuery();
+            $idcatart = $oCatArtColl->getIdByCategoryIdAndArticleId($newidcat, $newidart);
+            if ($idcatart) {
+                conMakeStart($idcatart, 1);
             }
         }
     }
@@ -1118,14 +1091,12 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
  */
 function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true)
 {
-    global $cfg;
-
     $newidcat = strCopyCategory($idcat, $destcat, false, $bUseCopyLabel);
 
-    $db = cRegistry::getDb();
-    $db->query("SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid = " . (int) $idcat);
-    while ($db->next_record()) {
-        strCopyTree($db->f("idcat"), $newidcat, false, $bUseCopyLabel);
+    $oCatColl = new cApiCategoryCollection();
+    $aIds = $oCatColl->getIdsByWhereClause('parentid = ' . (int) $idcat);
+    foreach ($aIds as $id) {
+        strCopyTree($id, $newidcat, false, $bUseCopyLabel);
     }
 
     if ($remakeTree == true) {
@@ -1150,9 +1121,9 @@ function strAssignTemplate($idcat, $client, $idTplCfg)
 
     if ($iIdtplcfg == 0) {
         // Get default template
-        $templateColl = new cApiTemplateCollection('defaulttemplate = 1 AND idclient = ' . (int) $client);
-        if ($template = $templateColl->next()) {
-            $idtpl = $template->get('idtpl');
+        $oTemplateColl = new cApiTemplateCollection('defaulttemplate = 1 AND idclient = ' . (int) $client);
+        if ($oTemplate = $oTemplateColl->next()) {
+            $idtpl = $oTemplate->get('idtpl');
         }
     } else {
         // Use passed template
@@ -1161,9 +1132,9 @@ function strAssignTemplate($idcat, $client, $idTplCfg)
 
     if ($idtpl) {
         // Assign template
-        $catColl = new cApiCategoryLanguageCollection('idcat = ' . (int) $idcat);
-        while ($cat = $catColl->next()) {
-            $cat->assignTemplate($idtpl);
+        $oCatLangColl = new cApiCategoryLanguageCollection('idcat = ' . (int) $idcat);
+        while ($oCatLang = $oCatLangColl->next()) {
+            $oCatLang->assignTemplate($idtpl);
         }
     }
 }
