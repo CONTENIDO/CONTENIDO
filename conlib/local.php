@@ -396,44 +396,6 @@ class Contenido_Frontend_Session extends Session {
  * @subpackage Authentication
  */
 class Contenido_Auth extends Auth {
-
-    public $classname = 'Contenido_Auth';
-    public $lifetime = 15;
-    public $database_class = 'DB_Contenido';
-    public $database_table = 'con_phplib_auth_user';
-
-    public function auth_loginform() {
-        global $sess, $_PHPLIB;
-        include($_PHPLIB['libdir'] . 'loginform.ihtml');
-    }
-
-    public function auth_validatelogin() {
-        global $username, $password;
-
-        if ($password == '') {
-            return false;
-        }
-
-        if (isset($username)) {
-            // This provides access for 'loginform.ihtml'
-            $this->auth['uname'] = $username;
-        } elseif ($this->nobody) {
-            //  provides for 'default login cancel'
-            $uid = $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
-            return $uid;
-        }
-        $uid = false;
-
-        $sql = "SELECT user_id, perms FROM %s WHERE username = '%s' AND password = '%s'";
-        $this->db->query($sql, $this->database_table, $username, $password);
-
-        while ($this->db->next_record()) {
-            $uid = $this->db->f('user_id');
-            $this->auth['perm'] = $this->db->f('perms');
-        }
-        return $uid;
-    }
-
 }
 
 /**
@@ -442,7 +404,7 @@ class Contenido_Auth extends Auth {
  * @subpackage Authentication
  * @author     Jim Zajkowski <jim@jimz.com>
  */
-class Contenido_Challenge_Crypt_Auth extends Contenido_Auth {
+class Contenido_Challenge_Crypt_Auth extends Auth {
 
     public $classname = 'Contenido_Challenge_Crypt_Auth';
     public $lifetime = 15;
@@ -634,7 +596,7 @@ class Contenido_Challenge_Crypt_Auth extends Contenido_Auth {
  * @package    CONTENIDO Core
  * @subpackage Authentication
  */
-class Contenido_Frontend_Challenge_Crypt_Auth extends Contenido_Auth {
+class Contenido_Frontend_Challenge_Crypt_Auth extends Auth {
 
     public $classname = 'Contenido_Frontend_Challenge_Crypt_Auth';
     public $lifetime = 15;
