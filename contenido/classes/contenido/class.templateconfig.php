@@ -53,18 +53,19 @@ class cApiTemplateConfigurationCollection extends ItemCollection
         $this->__construct($select);
     }
 
+    /**
+     * Deletes template configuration entry, removes also all related container configurations.
+     * @param  int  $idtplcfg
+     * @return  bool
+     */
     public function delete($idtplcfg)
     {
         $result = parent::delete($idtplcfg);
-        $oContainerConfColl = new cApiContainerConfigurationCollection('idtplcfg=' . (int) $idtplcfg);
-        $aDelContainerConfIds = array();
-        while ($oContainerConf = $oContainerConfColl->next()) {
-            array_push($aDelContainerConfIds, $oContainerConf->get('idcontainerc'));
-        }
 
-        foreach ($aDelContainerConfIds as $iDelContainerConfId) {
-            $oContainerConfColl->delete($iDelContainerConfId);
-        }
+        // Delete also all container configurations
+        $oContainerConfColl = new cApiContainerConfigurationCollection('idtplcfg=' . (int) $idtplcfg);
+        $oContainerConfColl->deleteByWhereClause('idtplcfg=' . (int) $idtplcfg);
+
         return $result;
     }
 

@@ -1148,31 +1148,10 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @return  int  Number of deleted entries
      */
     public function deleteBy($sField, $mValue) {
-        $oDb = $this->_getSecondDBInstance();
+        $where = (is_string($mValue)) ? "`%s` = '%s'" : "`%s` = %d";
+        $where = $this->db->prepare($where, $sField, $mValue);
 
-        $aIds = array();
-        $numDeleted = 0;
-
-        // get all ids
-        if (is_string($mValue)) {
-            $sql = "SELECT %s AS pk FROM `%s` WHERE `%s` = '%s'";
-        } else {
-            $sql = "SELECT %s AS pk FROM `%s` WHERE `%s` = %d";
-        }
-
-        $oDb->query($sql, $this->primaryKey, $this->table, $sField, $mValue);
-        while ($oDb->next_record()) {
-            $aIds[] = $oDb->f('pk');
-        }
-
-        // delete entries by their ids
-        foreach ($aIds as $id) {
-            if ($this->_delete($id)) {
-                $numDeleted++;
-            }
-        }
-
-        return $numDeleted;
+        return $this->deleteByWhereClause($where);
     }
 
     /**
