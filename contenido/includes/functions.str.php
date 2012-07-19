@@ -41,7 +41,6 @@ if (class_exists('DB_Contenido')) {
     $db_str2 = cRegistry::getDb();
 }
 
-
 /**
  * Creates a new category tree (root category item).
  *
@@ -52,8 +51,7 @@ if (class_exists('DB_Contenido')) {
  * @param   int     $iIdtplcfg   Id of template configuration
  * @return  (int|void)  Id of new generated category or nothing on failure
  */
-function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0)
-{
+function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0) {
     global $client, $lang, $perm;
 
     // Flag to rebuild the category table
@@ -123,7 +121,6 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     return $newIdcat;
 }
 
-
 /**
  * Creates a new category.
  *
@@ -136,8 +133,7 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
  * @param   int     $iIdtplcfg   Id of template configuration
  * @return  (int|void)  Id of new generated category or nothing on failure
  */
-function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0)
-{
+function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0) {
     global $client, $lang, $perm;
 
     // Flag to rebuild the category table
@@ -170,7 +166,7 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
 
     // Get previous category on same level, if exists
     $oCatColl = new cApiCategoryCollection();
-    $oCatColl->select('parentid=' . (int) $parentid . ' AND postid=0');
+    $oCatColl->select('parentid=' . (int) $parentid . ' AND postid = 0');
     $oPrevCat = $oCatColl->next();
     $preIdcat = (is_object($oPrevCat)) ? $oPrevCat->get('idcat') : 0;
 
@@ -213,7 +209,6 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
     return $newIdcat;
 }
 
-
 /**
  * Builds ordered post string for a passed category
  *
@@ -221,10 +216,9 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
  * @param string  $poststring
  * @return  string
  */
-function strOrderedPostTreeList($idcat, $poststring)
-{
+function strOrderedPostTreeList($idcat, $poststring) {
     $oCatColl = new cApiCategoryCollection();
-    $oCatColl->select('parentid=0 AND preid=' . (int) $idcat . ' AND idcat!=0');
+    $oCatColl->select('parentid = 0 AND preid = ' . (int) $idcat . ' AND idcat != 0');
     if ($oCat = $oCatColl->next()) {
         $postIdcat = $oCat->get('idcat');
         $poststring = $poststring . ',' . $postIdcat;
@@ -234,7 +228,6 @@ function strOrderedPostTreeList($idcat, $poststring)
     return $poststring;
 }
 
-
 /**
  * Remakes the category tree structure in category tree table.
  *
@@ -242,8 +235,7 @@ function strOrderedPostTreeList($idcat, $poststring)
  *
  * @return  void
  */
-function strRemakeTreeTable()
-{
+function strRemakeTreeTable() {
     global $db, $client, $cfg;
 
     // Flag to rebuild the category table
@@ -298,15 +290,13 @@ function strRemakeTreeTable()
     $db->unlock($cfg['tab']['cat_tree']);
 }
 
-
 /**
  * Sorts passed assoziative categories array.
  * @todo  Check logic, move sorting to db layer, if possible!
  * @param  array  $arr
  * @return array
  */
-function strSortPrePost($arr)
-{
+function strSortPrePost($arr) {
     $firstElement = null;
     foreach ($arr as $row) {
         if ($row['preid'] == 0) {
@@ -347,7 +337,6 @@ function strSortPrePost($arr)
     return $array;
 }
 
-
 /**
  * Builds values part of the SQL used to recreate the category tree table
  *
@@ -357,12 +346,11 @@ function strSortPrePost($arr)
  * @param  int  $iLevel  Category level
  * @return  string
  */
-function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0)
-{
+function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0) {
     if (is_array($aCats)) {
         $aCats = strSortPrePost($aCats);
         foreach ($aCats as $aCat) {
-            $sInsertQuery .= '(' .(int) $aCat['idcat'] . ', ' . (int) $iLevel . '), ';
+            $sInsertQuery .= '(' . (int) $aCat['idcat'] . ', ' . (int) $iLevel . '), ';
             if (is_array($aAllCats[$aCat['idcat']])) {
                 $iSubLevel = $iLevel + 1;
                 $sInsertQuery = strBuildSqlValues($aAllCats[$aCat['idcat']], $sInsertQuery, $aAllCats, $iSubLevel);
@@ -372,7 +360,6 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0)
     return $sInsertQuery;
 }
 
-
 /**
  * Returns id of next deeper category.
  * @global int $lang
@@ -380,8 +367,7 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0)
  * @param bool $ignoreLang Flag to check for existing entry in category language table
  * @return int
  */
-function strNextDeeper($idcat, $ignoreLang = false)
-{
+function strNextDeeper($idcat, $ignoreLang = false) {
     global $lang;
 
     $languageId = (true == $ignoreLang) ? $lang : null;
@@ -389,21 +375,18 @@ function strNextDeeper($idcat, $ignoreLang = false)
     return $oCatColl->getFirstChildCategoryId($idcat, $languageId);
 }
 
-
 /**
  * Checks, if passed category contains any articles
  *
  * @param   int  $idcat  ID of category
  * @return  bool
  */
-function strHasArticles($idcat)
-{
+function strHasArticles($idcat) {
     global $lang;
 
     $oCatArtColl = new cApiCategoryArticleCollection();
     return $oCatArtColl->getHasArticles($idcat, $lang);
 }
-
 
 /**
  * Returns next post category id
@@ -411,8 +394,7 @@ function strHasArticles($idcat)
  * @param   int  $idcat  ID of category
  * @return  int
  */
-function strNextPost($idcat)
-{
+function strNextPost($idcat) {
     $oCatColl = new cApiCategoryCollection();
     return $oCatColl->getNextPostCategoryId($idcat);
 }
@@ -423,12 +405,10 @@ function strNextPost($idcat)
  * @param   int  $idcat  ID of category
  * @return  int
  */
-function strNextBackwards($idcat)
-{
+function strNextBackwards($idcat) {
     $oCatColl = new cApiCategoryCollection();
     return $oCatColl->getParentsNextPostCategoryId($idcat);
 }
-
 
 /**
  * Returns list of child categories.
@@ -438,15 +418,13 @@ function strNextBackwards($idcat)
  * @param bool $ignoreLang
  * @return array
  */
-function strNextDeeperAll($idcat, $ignoreLang = false)
-{
+function strNextDeeperAll($idcat, $ignoreLang = false) {
     global $lang;
 
     $languageId = (true == $ignoreLang) ? $lang : null;
     $oCatColl = new cApiCategoryCollection();
     return $oCatColl->getAllChildCategoryIds($idcat, $languageId);
 }
-
 
 /**
  * Renames a category
@@ -457,8 +435,7 @@ function strNextDeeperAll($idcat, $ignoreLang = false)
  * @param   string  $newcategoryalias  New category alias
  * @return  void
  */
-function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias)
-{
+function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
     global $client;
 
     if (trim($newCategoryName) == '') {
@@ -496,8 +473,7 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias)
  * @param   string  $newcategoryalias  New category alias
  * @return  void
  */
-function strRenameCategoryAlias($idcat, $lang, $newcategoryalias)
-{
+function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
     global $client;
 
     $oCatLang = new cApiCategoryLanguage();
@@ -527,8 +503,7 @@ function strRenameCategoryAlias($idcat, $lang, $newcategoryalias)
  * @param   int  $visible  Visible status
  * @return  void
  */
-function strMakeVisible($idcat, $lang, $visible)
-{
+function strMakeVisible($idcat, $lang, $visible) {
     global $cfg;
 
     $visible = (int) $visible;
@@ -549,7 +524,6 @@ function strMakeVisible($idcat, $lang, $visible)
     }
 }
 
-
 /**
  * Sets the public status of the category and its childs
  *
@@ -558,8 +532,7 @@ function strMakeVisible($idcat, $lang, $visible)
  * @param   int  $public  Public status
  * @return  void
  */
-function strMakePublic($idcat, $lang, $public)
-{
+function strMakePublic($idcat, $lang, $public) {
     $categories = strDeeperCategoriesArray($idcat);
     foreach ($categories as $value) {
         $oCatLang = new cApiCategoryLanguage();
@@ -576,14 +549,12 @@ function strMakePublic($idcat, $lang, $public)
  * @param    int    $startIdcat  The start category
  * @return   array  Contains all childs of $startIdcat and $startIdcat start itself
  */
-function strDeeperCategoriesArray($startIdcat)
-{
+function strDeeperCategoriesArray($startIdcat) {
     global $client;
 
     $oCatColl = new cApiCategoryCollection();
     return $oCatColl->getAllCategoryIdsRecursive($startIdcat, $client);
 }
-
 
 /**
  * Deletes the category and its template configurations.
@@ -593,8 +564,7 @@ function strDeeperCategoriesArray($startIdcat)
  * @param   int   $idcat  Id of category to delete
  * @return  void
  */
-function strDeleteCategory($idcat)
-{
+function strDeleteCategory($idcat) {
     global $lang, $lang;
 
     // Flag to rebuild the category table
@@ -639,7 +609,7 @@ function strDeleteCategory($idcat)
 
     // Load category
     $oCat = new cApiCategory((int) $idcat);
-    $preid  = (int) $oCat->get('preid');
+    $preid = (int) $oCat->get('preid');
     $postid = (int) $oCat->get('postid');
 
     // Update pre cat, set it to new postid
@@ -681,15 +651,13 @@ function strDeleteCategory($idcat)
     deleteRightsForElement('con', $idcat);
 }
 
-
 /**
  * Moves a category upwards.
  *
  * @param   int  $idcat  Id of category to move upwards
  * @return  void
  */
-function strMoveUpCategory($idcat)
-{
+function strMoveUpCategory($idcat) {
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
 
@@ -711,7 +679,7 @@ function strMoveUpCategory($idcat)
     $oPreCat = new cApiCategory();
     $oPreCat->loadByPrimaryKey((int) $preid);
     $prePreid = $oPreCat->get('preid');
-    $preIdcat  = $oPreCat->get('idcat');
+    $preIdcat = $oPreCat->get('idcat');
 
     // Load category before previous category
     $oPrePreCat = new cApiCategory();
@@ -746,15 +714,13 @@ function strMoveUpCategory($idcat)
     $oPostCat->store();
 }
 
-
 /**
  * Moves a category downwards.
  *
  * @param   int  $idcat  Id of category to move downwards
  * @return  void
  */
-function strMoveDownCategory($idcat)
-{
+function strMoveDownCategory($idcat) {
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
 
@@ -811,7 +777,6 @@ function strMoveDownCategory($idcat)
     }
 }
 
-
 /**
  * Moves a subtree to another destination.
  *
@@ -819,8 +784,7 @@ function strMoveDownCategory($idcat)
  * @param   int  $parentId  Id of destination parent category
  * @return  void
  */
-function strMoveSubtree($idcat, $parentId)
-{
+function strMoveSubtree($idcat, $parentId) {
     global $movesubtreeidcat;
 
     // Flag to rebuild the category table
@@ -837,7 +801,7 @@ function strMoveSubtree($idcat, $parentId)
         $movesubtreeidcat = 0;
     } elseif ($newParentId != 0) {
         $oCat = new cApiCategory((int) $idcat);
-        $preid  = $oCat->get('preid');
+        $preid = $oCat->get('preid');
         $postid = $oCat->get('postid');
 
         // Update predecessor (pre)
@@ -859,7 +823,7 @@ function strMoveSubtree($idcat, $parentId)
         $oCatColl->select("parentid = " . $newParentId . " AND postid = 0");
         if ($oNewPreCat = $oCatColl->next()) {
             $newPreId = $oNewPreCat->get('idcat');
-            $newPrePreId   = $oNewPreCat->get('preid');
+            $newPrePreId = $oNewPreCat->get('preid');
             if ($newPreId != $idcat) {
                 // Update new pre, set post
                 $oPreCat = new cApiCategory($newPreId);
@@ -895,7 +859,6 @@ function strMoveSubtree($idcat, $parentId)
     } else {
         // We recoded this function to prevent crashing the cat tree
         // when a user copies a tree and forget to set the target category
-
         // Copy transaction now is only performed by setting the target
         $movesubtreeidcat = $idcat;
     }
@@ -905,7 +868,6 @@ function strMoveSubtree($idcat, $parentId)
     $sess->freeze();
 }
 
-
 /**
  * Checks if category is movable.
  *
@@ -913,11 +875,9 @@ function strMoveSubtree($idcat, $parentId)
  * @param   int  $source  Id of source category
  * @return  bool
  */
-function strMoveCatTargetallowed($idcat, $source)
-{
+function strMoveCatTargetallowed($idcat, $source) {
     return ($idcat == $source) ? 0 : 1;
 }
-
 
 /**
  * Synchronizes a category from one language to another language.
@@ -927,8 +887,7 @@ function strMoveCatTargetallowed($idcat, $source)
  * @param   int   $targetlang  Id of target language
  * @param   bool  $bMultiple   Flag to synchronize child languages
  */
-function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = false)
-{
+function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = false) {
     $bMultiple = (bool) $bMultiple;
 
     $aCatArray = array();
@@ -966,9 +925,9 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
 
             // Execute CEC hook
             $param = $aRs;
-            $param['idlang']   = $targetlang;
+            $param['idlang'] = $targetlang;
             $param['idtplcfg'] = (int) $newidtplcfg;
-            $param['visible']  = $visible;
+            $param['visible'] = $visible;
             CEC_Hook::execute('Contenido.Category.strSyncCategory_Loop', $param);
 
             // Set correct rights for element
@@ -986,8 +945,7 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
  * @param   int   $idlang  The language id
  * @return  bool
  */
-function strHasStartArticle($idcat, $idlang)
-{
+function strHasStartArticle($idcat, $idlang) {
     $oCatLangColl = new cApiCategoryLanguageCollection();
     return ($oCatLangColl->getStartIdartlangByIdcatAndIdlang($idcat, $idlang) > 0);
 }
@@ -1001,8 +959,7 @@ function strHasStartArticle($idcat, $idlang)
  * @param   bool  $bUseCopyLabel  Flag to add copy label to the new categories
  * @return  void
  */
-function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel = true)
-{
+function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel = true) {
     global $cfg, $lang;
 
     $newidcat = (int) strNewCategory($destidcat, 'a', $remakeTree);
@@ -1038,8 +995,8 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
 
     // Execute cec hook
     CEC_Hook::execute('Contenido.Category.strCopyCategory', array(
-        'oldcat'     => $oOldCat,
-        'newcat'     => $oNewCat,
+        'oldcat' => $oOldCat,
+        'newcat' => $oNewCat,
         'newcatlang' => $oNewCatLang
     ));
 
@@ -1080,7 +1037,6 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
     return $newidcat;
 }
 
-
 /**
  * Copies the categorytree (category and its childs) to an another category.
  *
@@ -1089,8 +1045,7 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
  * @param   bool  $remakeTree     Flag to rebuild category tree
  * @param   bool  $bUseCopyLabel  Flag to add copy label to the new categories
  */
-function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true)
-{
+function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true) {
     $newidcat = strCopyCategory($idcat, $destcat, false, $bUseCopyLabel);
 
     $oCatColl = new cApiCategoryCollection();
@@ -1110,8 +1065,7 @@ function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true
  * @param  int  $client
  * @param  int  $idTplCfg
  */
-function strAssignTemplate($idcat, $client, $idTplCfg)
-{
+function strAssignTemplate($idcat, $client, $idTplCfg) {
     global $perm;
 
     // Template permissition check
@@ -1142,8 +1096,7 @@ function strAssignTemplate($idcat, $client, $idTplCfg)
 /**
  * @deprecated 2012-04-26 This function is not longer supported, use strSortPrePost() instead
  */
-function sort_pre_post($arr)
-{
+function sort_pre_post($arr) {
     cDeprecated("This function is not longer supported, use strSortPrePost() instead");
     return strSortPrePost($arr);
 }
@@ -1151,8 +1104,7 @@ function sort_pre_post($arr)
 /**
  * @deprecated 2012-04-26 This function is not longer supported, use strBuildSqlValues() instead
  */
-function recCats($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0)
-{
+function recCats($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0) {
     cDeprecated("This function is not longer supported, use strBuildSqlValues() instead");
     return strBuildSqlValues($aCats, $sInsertQuery, $aAllCats, $iLevel = 0);
 }
@@ -1162,23 +1114,22 @@ function recCats($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0)
  * @deprecated 2012-03-04 This function is not longer supported.
  * @return  void
  */
-function strShowTreeTable()
-{
+function strShowTreeTable() {
     global $db, $sess, $client, $lang, $cfg, $lngStr;
 
     cDeprecated("This function is not longer supported.");
 
     echo "<br><table cellpadding=0 cellspacing=0 border=0>";
-    $sql = "SELECT * FROM `".$cfg['tab']['cat_tree']."` AS A, `".$cfg['tab']['cat']."` AS B, `".$cfg['tab']['cat_lang']."` AS C "
-         . "WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang=".(int) $lang." AND B.idclient=".(int)$client." ORDER BY A.idtree";
+    $sql = "SELECT * FROM `" . $cfg['tab']['cat_tree'] . "` AS A, `" . $cfg['tab']['cat'] . "` AS B, `" . $cfg['tab']['cat_lang'] . "` AS C "
+            . "WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang=" . (int) $lang . " AND B.idclient=" . (int) $client . " ORDER BY A.idtree";
     $db->query($sql);
     while ($db->next_record()) {
-        $tmp_id    = $db->f("idcat");
-        $tmp_name  = $db->f("name");
+        $tmp_id = $db->f("idcat");
+        $tmp_name = $db->f("name");
         $tmp_level = $db->f("level");
-        echo "<tr><td>".$tmp_id." | ".$tmp_name." | ".$tmp_level."</td>";
-        echo "<td><a class=action href=\"".$sess->url("main.php?action=20&idcat=$tmp_id")."\">".$lngStr["actions"]["20"]."</a></td>";
-        echo "<td><a class=action href=\"".$sess->url("main.php?action=30&idcat=$tmp_id")."\">".$lngStr["actions"]["30"]."</a></td>";
+        echo "<tr><td>" . $tmp_id . " | " . $tmp_name . " | " . $tmp_level . "</td>";
+        echo "<td><a class=action href=\"" . $sess->url("main.php?action=20&idcat=$tmp_id") . "\">" . $lngStr["actions"]["20"] . "</a></td>";
+        echo "<td><a class=action href=\"" . $sess->url("main.php?action=30&idcat=$tmp_id") . "\">" . $lngStr["actions"]["30"] . "</a></td>";
         echo "</td></tr>";
     }
     echo "</table>";
