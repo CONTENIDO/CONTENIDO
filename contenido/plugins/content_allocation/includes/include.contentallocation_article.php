@@ -22,11 +22,8 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-07-02, Frederic Schneider, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -35,20 +32,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 cInclude('includes', 'functions.pathresolver.php');
 
-function str_replace_recursive($array) {
-    if (!is_array($array)) return false;
-
-    $result = array();
-
-    foreach ($array as $value) {
-        $result[] = str_replace('e', '', $value);
-    }
-
-    return $result;
-}
-
 // fetch idartlang for idart
-$sql = "SELECT idartlang FROM ".$cfg['tab']['art_lang']." WHERE idart=".(int) $idart." AND idlang=".(int) $lang;
+$sql = "SELECT idartlang FROM " . $cfg['tab']['art_lang'] . " WHERE idart=" . (int) $idart . " AND idlang=" . (int) $lang;
 $db->query($sql);
 $db->next_record();
 $this_idartlang = $db->f('idartlang');
@@ -83,13 +68,15 @@ $result = $oTree->renderTree(true);
 if ($result == false) {
     $result = $notification->returnNotification('warning', i18n('There is no tagging tree.', 'content_allocation'));
 } else {
-    if (!is_object($tpl)) { $tpl = new Template(); }
+    if (!is_object($tpl)) {
+        $tpl = new Template();
+    }
     $hiddenfields = '<input type="hidden" name="action" value="storeallocation">
-        <input type="hidden" name="idart" value="'.$idart.'">
-        <input type="hidden" name="contenido" value="'.$sess->id.'">
-        <input type="hidden" name="area" value="'.$area.'">
-        <input type="hidden" name="frame" value="'.$frame.'">
-        <input type="hidden" name="idcat" value="'.$idcat.'">';
+        <input type="hidden" name="idart" value="' . $idart . '">
+        <input type="hidden" name="contenido" value="' . $sess->id . '">
+        <input type="hidden" name="area" value="' . $area . '">
+        <input type="hidden" name="frame" value="' . $frame . '">
+        <input type="hidden" name="idcat" value="' . $idcat . '">';
     $tpl->set('s', 'HIDDENFIELDS', $hiddenfields);
 
     if (sizeof($loadedAllocations) > 0) {
@@ -119,28 +106,27 @@ if (!isset($syncfrom)) {
 }
 $syncoptions = $syncfrom;
 $sLocationString .= "<script type='text/javascript'>
-		$(document).ready(function(){
+        $(document).ready(function(){
             $('div#categorypath > a').click(function () {
                 var url = $(this).attr('href');
                 var sVal = url.split('idcat=');
                 var aVal = sVal[1].split('&');
                 var iIdcat = aVal[0];
-				sVal = url.split('idtpl=');
+                sVal = url.split('idtpl=');
                 aVal = sVal[1].split('&');
                 var iIdtpl = aVal[0];
-                conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu=1&syncoptions=".$syncoptions."&contenido=".$contenido."',
+                conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu=1&syncoptions=" . $syncoptions . "&contenido=" . $contenido . "',
                 'right_bottom', url,
-                'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido=".$contenido."');
+                'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido=" . $contenido . "');
                 return false;
             });
         });
     </script>";
 
 $div = new cHTMLDiv();
-$div->setContent($sLocationString.$result);
+$div->setContent($sLocationString . $result);
 
 
 $oPage->setContent($div);
 $oPage->render();
-
 ?>

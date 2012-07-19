@@ -14,52 +14,51 @@
         <script type="text/javascript" src="scripts/jquery.tipsy.js"></script>
         <script type="text/javascript" src="scripts/registerTipsy.js"></script>
         <script type="text/javascript">
-            /* CONTENIDO Session-ID */
+            // CONTENIDO Session-ID
             var sid = "{SID}";
 
-            /* New messageBox
-             instance */
+            // New messageBox instance
             box = new messageBox("", "", "", 0, 0);
 
-            /* Function for deleting articles */
-            function deleteArticle(idart, idcat, next){           
-				conMultiLink('right_bottom', "main.php?area=con&action=con_deleteart&frame=4&idcat=" + idcat + "&idart=" + idart + "&next=" + next + "&contenido=" + sid,
-				'right_top', 'main.php?area=con&frame=3&idcat=' + idcat + '&idtpl={iIdtpl}&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&action=deleteArt');
+            // Function for deleting articles
+            function deleteArticle(idart, idcat, next){
+                conMultiLink('right_bottom', "main.php?area=con&action=con_deleteart&frame=4&idcat=" + idcat + "&idart=" + idart + "&next=" + next + "&contenido=" + sid,
+                'right_top', 'main.php?area=con&frame=3&idcat=' + idcat + '&idtpl={iIdtpl}&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&action=deleteArt');
             }
-			
-        $(document).ready(function(){
-            $("div#categorypath > a").click(function () {
-                var url = $(this).attr('href');
-                var sVal = url.split("idcat=");
-                var aVal = sVal[1].split("&");
-                var iIdcat = aVal[0];
-				sVal = url.split("idtpl=");
-                aVal = sVal[1].split("&");
-                var iIdtpl = aVal[0];
-                conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
-                'right_bottom', url,
-                'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido={SESSION}');
-                return false;
+
+            $(document).ready(function() {
+                $("div#categorypath > a").click(function() {
+                    var url = $(this).attr('href');
+                    var sVal = url.split("idcat=");
+                    var aVal = sVal[1].split("&");
+                    var iIdcat = aVal[0];
+                    sVal = url.split("idtpl=");
+                    aVal = sVal[1].split("&");
+                    var iIdtpl = aVal[0];
+                    conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
+                    'right_bottom', url,
+                    'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido={SESSION}');
+                    return false;
+                });
+
+                //if no article exists
+                var bNoArticle = {bNoArticle};
+                if (bNoArticle) {
+                    $("a#newArtTxt").click(function() {
+                        var url = $(this).attr('href');
+                        conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + {iIdcat} + '&idtpl=' + {iIdtpl} + '&bNoArticle='+bNoArticle+'&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
+                        'right_bottom', url+ '&idtpl=' + {iIdtpl} + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&bNoArticle='+bNoArticle);
+                        if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1')) {
+                            menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1');
+                            parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
+                        }
+                        return false;
+                    });
+                    $("a#newArtImg").click(function() {
+                        $("a#newArtTxt").click();
+                    });
+                }
             });
-			
-			//if no article exists
-			var bNoArticle = {bNoArticle};
-			if(bNoArticle){
-	            $("a#newArtTxt").click(function () {
-	                var url = $(this).attr('href');
-	                conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + {iIdcat} + '&idtpl=' + {iIdtpl} + '&bNoArticle='+bNoArticle+'&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
-	                'right_bottom', url+ '&idtpl=' + {iIdtpl} + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&bNoArticle='+bNoArticle);
-					if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1')) {
-				        menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1');
-				        parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
-				    }
-	                return false;
-	            });
-	            $("a#newArtImg").click(function () {
-	                $("a#newArtTxt").click();
-	            });	            
-			}
-        });
         </script>
         <style>
             .bulk_editing_functions a, a.flip_mark {
@@ -75,16 +74,16 @@
     <body style="margin:10px">
         <form action ="main.php" name="bulk_editing" class="bulk_editing_form" method="post">
             <input type="hidden" name="area" value="con"/>
-			<input type="hidden" name="action" value=""/>
-			<input type="hidden" name="frame" value="4"/>
-			<input type="hidden" name="idcat" value="{IDCAT}"/>
-			<input type="hidden" name="contenido" value="{SID}"/>
-			<input type="hidden" name="idarts" value=""/>
-			<input type="hidden" name="invert" value="" />
-			<input type="hidden" name="next" value="{NEXT}" />
-			<input type="hidden" name="idlang" value="{IDLANG}" />
-			<input type="hidden" name="syncoptions" value="{SYNCOPTIONS}" />
-			<input type="submit" name="submit" value="senden" style="display:none;"/>			
+            <input type="hidden" name="action" value=""/>
+            <input type="hidden" name="frame" value="4"/>
+            <input type="hidden" name="idcat" value="{IDCAT}"/>
+            <input type="hidden" name="contenido" value="{SID}"/>
+            <input type="hidden" name="idarts" value=""/>
+            <input type="hidden" name="invert" value="" />
+            <input type="hidden" name="next" value="{NEXT}" />
+            <input type="hidden" name="idlang" value="{IDLANG}" />
+            <input type="hidden" name="syncoptions" value="{SYNCOPTIONS}" />
+            <input type="submit" name="submit" value="senden" style="display:none;"/>
         </form>
         <table width="100%" cellspacing="0" cellpadding="2" border="0">
             <div class="text_large">
@@ -145,209 +144,210 @@
                 {HEADERS}
             </tr>
             <!-- BEGIN:BLOCK -->
-            <tr id="{ROWID}" {CSS_CLASS}  onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
-
+            <tr id="{ROWID}" {CSS_CLASS} onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
                 {CELLS}
-
             </tr>
             <!-- END:BLOCK -->
         </table>
-        <table width="100%" cellspacing="0" cellpadding="2" border="0" style="{noArticle}">
-            <tr height="10">
-                <td colspan="7">
-                </td>
-            </tr>
-            <tr valign="middle">
-                <td style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; text-align:right; border-style: solid; background-color: #E2E2E2;" colspan="7">
-                    <div style="float:left; heigth:20px; line-height:20px; vertical-align:middle; width:600px; text-align:left;">
-                        <a style="float:left;" onmouseover="this.style.cursor='pointer'" class="flip_mark"><img onmouseover="this.style.cursor='pointer'" alt="i18n('Flip Selection')" title="Markierung umkehren" src="images/but_invert_selection.gif" style="margin-right:0px; vertical-align:middle;"> i18n("Flip Selection")</a>
-                        <div class="bulk_editing_functions" style="float:left;margin-left:5px;height:16px;display:none;">
-                            <span>i18n("Apply to all selected articles"):</span>
-                            <a class="con_makeonline"><img src="images/online.gif" title='i18n("Set articles online")' alt='i18n("Set articles online")' border="0" style=""></a><a class="con_makeonline invert"><img src="images/offline.gif" title='i18n("Set articles offline")' alt='i18n("Set articles offline")' border="0"></a><a class="con_lock"><img src="images/article_unlocked.gif" title='i18n("Freeze articles")' alt='i18n("Freeze articles")' border="0"></a><a class="con_lock invert"><img src="images/article_locked.gif" title='i18n("Unfreeze articles")' alt='i18n("Unfreeze articles")' border="0"></a><a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteArticels()');"><img src="images/delete.gif" title='i18n("Delete articles")' alt='i18n("Delete articles")' border="0"></a><span style="padding-left:15px;">&nbsp;</span>
-                        </div>
+    <table width="100%" cellspacing="0" cellpadding="2" border="0" style="{noArticle}">
+        <tr height="10">
+            <td colspan="7">
+            </td>
+        </tr>
+        <tr valign="middle">
+            <td style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; text-align:right; border-style: solid; background-color: #E2E2E2;" colspan="7">
+                <div style="float:left; heigth:20px; line-height:20px; vertical-align:middle; width:600px; text-align:left;">
+                    <a style="float:left;" onmouseover="this.style.cursor='pointer'" class="flip_mark"><img onmouseover="this.style.cursor='pointer'" alt="i18n('Flip Selection')" title="Markierung umkehren" src="images/but_invert_selection.gif" style="margin-right:0px; vertical-align:middle;"> i18n("Flip Selection")</a>
+                    <div class="bulk_editing_functions" style="float:left;margin-left:5px;height:16px;display:none;">
+                        <span>i18n("Apply to all selected articles"):</span>
+                        <a class="con_makeonline"><img src="images/online.gif" title='i18n("Set articles online")' alt='i18n("Set articles online")' border="0" style=""></a><a class="con_makeonline invert"><img src="images/offline.gif" title='i18n("Set articles offline")' alt='i18n("Set articles offline")' border="0"></a><a class="con_lock"><img src="images/article_unlocked.gif" title='i18n("Freeze articles")' alt='i18n("Freeze articles")' border="0"></a><a class="con_lock invert"><img src="images/article_locked.gif" title='i18n("Unfreeze articles")' alt='i18n("Unfreeze articles")' border="0"></a><a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteArticels()');"><img src="images/delete.gif" title='i18n("Delete articles")' alt='i18n("Delete articles")' border="0"></a><span style="padding-left:15px;">&nbsp;</span>
                     </div>
-                    <div style="clear:both;">
-                    </div>
-                </td>
-            </tr>
-            <tr height="10">
-                <td colspan="7">
-                </td>
-            </tr>
-        </table>
-        <table width="100%" cellspacing="0" cellpadding="2" border="0">
-            <tr>
-                <td>
-                    <img src="images/spacer.gif" width="1" height="10">
-                </td>
-            </tr>
-            <tr class="text_medium" style="background-color: #ffffff;">
-                <td style="border: 1px; border-right:0px; border-color: #B3B3B3; border-style: solid; background-color: #E2E2E2; color:#666666">
-                    {BROWSE}
-                </td>
-                <td style="border: 1px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #E2E2E2; color:#666666; text-align:right;">
-                    {CLICK_ROW_NOTIFICATION}
-                </td>
-            </tr>
-        </table>
-        <script type="text/javascript">
-                            rcount = 0;
-                            initValues();
+                </div>
+                <div style="clear:both;">
+                </div>
+            </td>
+        </tr>
+        <tr height="10">
+            <td colspan="7">
+            </td>
+        </tr>
+    </table>
+    <table width="100%" cellspacing="0" cellpadding="2" border="0">
+        <tr>
+            <td>
+                <img src="images/spacer.gif" width="1" height="10">
+            </td>
+        </tr>
+        <tr class="text_medium" style="background-color: #ffffff;">
+            <td style="border: 1px; border-right:0px; border-color: #B3B3B3; border-style: solid; background-color: #E2E2E2; color:#666666">
+                {BROWSE}
+            </td>
+            <td style="border: 1px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #E2E2E2; color:#666666; text-align:right;">
+                {CLICK_ROW_NOTIFICATION}
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        rcount = 0;
+        initValues();
 
-                            function initValues() {
-                                /* Create a reference to the
-                                   Article Object in frame 'right_top' */
-                                artObj = parent.parent.frames["left"].frames["left_top"].artObj;
+        function initValues() {
+            /* Create a reference to the
+                Article Object in frame 'right_top' */
+            artObj = parent.parent.frames["left"].frames["left_top"].artObj;
 
-                                /* Reset article object properties.
-                                   e.g. Some article was edited and we are
-                                   now back in the overview mask. There is
-                                   now no marked article, the articleObject
-                                   data should be reset.  */
-                                if (artObj) {
-                                    artObj.reset();
-                                    artObj.enable();
-                                    artObj.setHrefOverview(document.location.href);
+            /* Reset article object properties.
+                e.g. Some article was edited and we are
+                now back in the overview mask. There is
+                now no marked article, the articleObject
+                data should be reset.  */
+            if (artObj) {
+                artObj.reset();
+                artObj.enable();
+                artObj.setHrefOverview(document.location.href);
 
-                                    /* Save current page selection */
-                                    artObj.next = {NEXT};
-                                }
+                /* Save current page selection */
+                artObj.next = {NEXT};
+            }
 
-                                /* Timeout to call the function afer 250ms */
-                                window.setTimeout("createReference()", 250);
-                            }
+            /* Timeout to call the function afer 250ms */
+            window.setTimeout("createReference()", 250);
+        }
 
-                            /* Javascript-Error work-around...
-                               try to create the reference after
-                               250ms again... and hope it works.. */
-                            function createReference() {
-                                if (!artObj) {
-                                    artObj = parent.parent.frames["left"].frames["left_top"].artObj;
+        /* Javascript-Error work-around...
+            try to create the reference after
+            250ms again... and hope it works.. */
+        function createReference() {
+            if (!artObj) {
+                artObj = parent.parent.frames["left"].frames["left_top"].artObj;
 
-                                    if (artObj) {
-                                        artObj.reset();
-                                        artObj.enable();
-                                        artObj.setHrefOverview(document.location.href);
+                if (artObj) {
+                    artObj.reset();
+                    artObj.enable();
+                    artObj.setHrefOverview(document.location.href);
 
-                                        /* Save current page selection */
-                                        artObj.next = {NEXT};
-                                    }
-                                }
+                    /* Save current page selection */
+                    artObj.next = {NEXT};
+                }
+            }
 
-                                if (!artObj) {
-                                    return false;
-                                }
-                            }
+            if (!artObj) {
+                return false;
+            }
+        }
 
-                            /* Extract data from
-                               the article grid and
-                               send them to the articleObject
-                               Instance. The data is stored in
-                               the attribute 'id' of the row
-                               object. */
-                            function conArtOverviewExtractData(obj) {
-                                if (!artObj) {
-                                    var rval = createReference();
-                                    if (rval == false) {
-                                        return false;
-                                    }
-                                }
-                                var datastring  = obj.id;
-                                var data        = datastring.split( "-" );
+        /* Extract data from
+            the article grid and
+            send them to the articleObject
+            Instance. The data is stored in
+            the attribute 'id' of the row
+            object. */
+        function conArtOverviewExtractData(obj) {
+            if (!artObj) {
+                var rval = createReference();
+                if (rval == false) {
+                    return false;
+                }
+            }
+            var datastring  = obj.id;
+            var data        = datastring.split( "-" );
 
-                                if (data.length == 6) {
-                                    /* Send data to articleObject instance:
-                                        0:  idart
-                                        1:  idartlang
-                                        2:  idcat
-                                        3:  idcatlang
-                                        5:  idcatart */
-                                    artObj.setProperties(data[0], data[1], data[2], data[3], data[4], data[5]);
-                                }
+            if (data.length == 6) {
+                /* Send data to articleObject instance:
+                    0:  idart
+                    1:  idartlang
+                    2:  idcat
+                    3:  idcatlang
+                    5:  idcatart */
+                artObj.setProperties(data[0], data[1], data[2], data[3], data[4], data[5]);
+            }
 
-                                return true;
-                            }
+            return true;
+        }
 
-                            function changeElemPerPage(selObj) {
-                                var url = '{SELF_URL}';
-                                var i = selObj.selectedIndex;
-                                var elemperpage = selObj.options[i].value;
-                                window.location.href = url + '&elemperpage=' + elemperpage;
-                            }
+        function changeElemPerPage(selObj) {
+            var url = '{SELF_URL}';
+            var i = selObj.selectedIndex;
+            var elemperpage = selObj.options[i].value;
+            window.location.href = url + '&elemperpage=' + elemperpage;
+        }
 
-                            /* Mark the first submenu item i.e. 'Overview' */
-                            if (parent.parent.frames['right'].frames['right_top'].document.getElementById('c_0')) {
-                                menuItem = parent.parent.frames['right'].frames['right_top'].document.getElementById('c_0');
-                                parent.parent.frames['right'].frames['right_top'].sub.click(menuItem);
-                            }
+        /* Mark the first submenu item i.e. 'Overview' */
+        if (parent.parent.frames['right'].frames['right_top'].document.getElementById('c_0')) {
+            menuItem = parent.parent.frames['right'].frames['right_top'].document.getElementById('c_0');
+            parent.parent.frames['right'].frames['right_top'].sub.click(menuItem);
+        }
 
-                            {ROWMARKSCRIPT};
+        {ROWMARKSCRIPT};
 
-                            //show mark function or hidde
-                            $('input.mark_articles').click(function() {
-                                $('div.bulk_editing_functions').css('display', 'none');
-                                if ($(this).attr('checked') == "checked") {
-                                    $('div.bulk_editing_functions').css('display', 'block');
-                                } else {
-                                    if( $('input.mark_articles:checked').length > 0) {
-                                        $('div.bulk_editing_functions').css('display', 'block');
-                                    }
-                                }
-                            });
+        //show mark function or hidde
+        $('input.mark_articles').click(function() {
+            $('div.bulk_editing_functions').css('display', 'none');
+            if ($(this).attr('checked') == "checked") {
+                $('div.bulk_editing_functions').css('display', 'block');
+            } else {
+                if( $('input.mark_articles:checked').length > 0) {
+                    $('div.bulk_editing_functions').css('display', 'block');
+                }
+            }
+        });
 
-                            //flip mark
-                            $('a.flip_mark').click(function() {
-                                $('div.bulk_editing_functions').css('display', 'none');
-                                $('input.mark_articles').each(function(index, value) {
-                                    if ($(this).attr('checked') == "checked") {
-                                        $(this).removeAttr('checked');
-                                    } else {
-                                        $('div.bulk_editing_functions').css('display', 'block');
-                                        $(this).attr('checked', 'checked');
-                                    }
-                                });
-                            });
+        //flip mark
+        $('a.flip_mark').click(function() {
+            $('div.bulk_editing_functions').css('display', 'none');
+            $('input.mark_articles').each(function(index, value) {
+                if ($(this).attr('checked') == "checked") {
+                    $(this).removeAttr('checked');
+                } else {
+                    $('div.bulk_editing_functions').css('display', 'block');
+                    $(this).attr('checked', 'checked');
+                }
+            });
+        });
 
-                            //execute the action
-                            $('div.bulk_editing_functions a:not(a.con_deleteart)').click(function() {
-                                doAction($(this));
-                            });
+        //execute the action
+        $('div.bulk_editing_functions a:not(a.con_deleteart)').click(function() {
+            doAction($(this));
+        });
 
-                            //execute the delete action
-                            function deleteArticels() {
-                                doAction($('div.bulk_editing_functions a.con_deleteart'));
-                            }
-							
-                            function doAction(thisObject) {
-                                var action = '';
-                                var selectedIdArts = '';
-                                if (thisObject.hasClass('invert')) {
-                                    $('form.bulk_editing_form input[name="invert"]').val('1');
-                                    if (thisObject.hasClass('con_makeonline')) {
-                                        action = 'con_makeonline';
-                                    }
+        //execute the delete action
+        function deleteArticels() {
+            doAction($('div.bulk_editing_functions a.con_deleteart'));
+        }
 
-                                    if (thisObject.hasClass('con_lock')) {
-                                        action = 'con_lock';
-                                    }
-                                } else {
-                                    action = thisObject.attr('class');
-                                }
+        function doAction(thisObject) {
+            var action = '';
+            var selectedIdArts = '';
+            if (thisObject.hasClass('invert')) {
+                $('form.bulk_editing_form input[name="invert"]').val('1');
+                if (thisObject.hasClass('con_makeonline')) {
+                    action = 'con_makeonline';
+                }
 
-                                //set action
-                                $('form.bulk_editing_form input[name="action"]').val(action);
+                if (thisObject.hasClass('con_lock')) {
+                    action = 'con_lock';
+                }
+            } else {
+                action = thisObject.attr('class');
+            }
 
-                                //collect all selected idarts
-                                $('input.mark_articles:checked').each(function(index, value) {
-                                    selectedIdArts += '+'+$(this).val();
-                                });
+            //set action
+            $('form.bulk_editing_form input[name="action"]').val(action);
 
-                                //set all selected idarts
-                                $('form.bulk_editing_form input[name="idarts"]').val(selectedIdArts);
-                                //send form
-                                $('form.bulk_editing_form input[name="submit"]').click();
-                            }
+            //collect all selected idarts
+            $('input.mark_articles:checked').each(function(index, value) {
+                selectedIdArts += '+'+$(this).val();
+            });
 
-        </script>
-    </body>
+            //set all selected idarts
+            $('form.bulk_editing_form input[name="idarts"]').val(selectedIdArts);
+            //send form
+            $('form.bulk_editing_form input[name="submit"]').click();
+        }
+
+    </script>
+</body>
 </html>
+<!--
+template.con_art_overview
+-->

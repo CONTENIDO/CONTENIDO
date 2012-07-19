@@ -894,10 +894,10 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         //display if there are articles
         if ($no_article) {
             $tpl->set('s', 'noArticle', "display: none;");
-        	$tpl->set('s', 'bNoArticle', 'true');
+            $tpl->set('s', 'bNoArticle', 'true');
         } else {
             $tpl->set('s', 'noArticle', "");
-        	$tpl->set('s', 'bNoArticle', 'false');
+            $tpl->set('s', 'bNoArticle', 'false');
         }
 
         //breadcrumb onclick
