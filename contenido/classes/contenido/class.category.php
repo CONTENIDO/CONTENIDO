@@ -419,6 +419,32 @@ class cApiCategory extends Item
         $this->set('lastmodified', date('Y-m-d H:i:s'));
         return parent::store();
     }
+
+    /**
+     * Userdefined setter for category fields.
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  bool    $safe   Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $safe = true) {
+        switch ($name) {
+            case 'idcat':
+            case 'idclient':
+            case 'parentid':
+            case 'preid':
+            case 'postid':
+            case 'status':
+                $value = (int) $value;
+                break;
+        }
+
+        if (is_string($value)) {
+            $value = $this->escape($value);
+        }
+
+        parent::setField($name, $value, $safe);
+    }
+
 }
 
 

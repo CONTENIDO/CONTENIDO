@@ -144,9 +144,22 @@ class cApiCategoryArticleCollection extends ItemCollection {
             $oItem->loadByRecordSet($aRecordSet);
             return $oItem;
         } else {
-            $this->select('idcat=' . (int) $idcat . ' AND idart=' . (int) $idart);
+            $this->select('idcat = ' . (int) $idcat . ' AND idart = ' . (int) $idart);
             return $this->next();
         }
+    }
+
+    /**
+     * Returns a category article id by category id and article id.
+     * @param int $idcat
+     * @param int $idart
+     * @return int|null
+     */
+    public function getIdByCategoryIdAndArticleId($idcat, $idart) {
+        $where = "idcat = %d AND idart = %d";
+        $where = $this->db->prepare("idcat = %d AND idart = %d", $idcat, $idart);
+        $aIds = $this->getIdsByWhereClause($where);
+        return (count($aIds) > 0) ? $aIds[0] : null;
     }
 
     /**
