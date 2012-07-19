@@ -162,6 +162,7 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
             <meta http-equiv="pragma" content="no-cache">
             <link rel="stylesheet" type="text/css" href="../contenido/styles/contenido.css">
             <script type="text/javascript" src="../contenido/scripts/general.js"></script>
+        	<script type="text/javascript" src="../contenido/scripts/jquery/jquery.js"></script>
             <style>
             .contypeList {
                 border: 1px solid #B3B3B3;
@@ -200,7 +201,29 @@ if (count($result)<=0) {
         }
     }
 }
-
+	//breadcrumb onclick
+	if (!isset($syncfrom)) {
+	    $syncfrom = -1;
+	}
+	$syncoptions = $syncfrom;
+	$layoutcode .= "<script type='text/javascript'>
+		$(document).ready(function(){
+            $('div#categorypath > a').click(function () {
+                var url = $(this).attr('href');
+                var sVal = url.split('idcat=');
+                var aVal = sVal[1].split('&');
+                var iIdcat = aVal[0];
+				sVal = url.split('idtpl=');
+                aVal = sVal[1].split('&');
+                var iIdtpl = aVal[0];
+                var path = url.split('?');
+                conMultiLink('right_top', path[0] + '?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu=1&syncoptions=".$syncoptions."&contenido=".$contenido."',
+                'right_bottom', url,
+                'left_bottom', path[0] + '?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido=".$contenido."');
+                return false;
+            });
+        });
+    </script>";
     $layoutcode .= '</body></html>';
 
     // generate code
