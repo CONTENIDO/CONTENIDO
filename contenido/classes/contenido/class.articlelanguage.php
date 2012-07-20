@@ -132,6 +132,18 @@ class cApiArticleLanguageCollection extends ItemCollection {
         return $item;
     }
 
+    /**
+     * Returns id (idartlang) of articlelanguage by article id and language id
+     * @param  int  $idcat
+     * @param  int  $idlang
+     * @return  int
+     */
+    public function getIdByArticleIdAndLanguageId($idart, $idlang) {
+        $sql = "SELECT idartlang FROM `%s` WHERE idart = %d AND idlang = %d";
+        $this->db->query($sql, $this->table, $idart, $idlang);
+        return ($this->db->next_record()) ? $this->db->f('idartlang') : 0;
+    }
+
 }
 
 /**

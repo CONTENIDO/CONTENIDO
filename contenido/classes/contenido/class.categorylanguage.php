@@ -107,7 +107,7 @@ class cApiCategoryLanguageCollection extends ItemCollection {
     }
 
     /**
-     * Returns startarticle  id of articlelanguage by category id and language id
+     * Returns startidartlang of articlelanguage by category id and language id
      * @param  int  $idcat
      * @param  int  $idlang
      * @return  int

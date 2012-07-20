@@ -91,22 +91,9 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save 
  */
 function getArtLang($idart, $idlang)
 {
-    global $cfg;
-
-    static $oDB;
-    if (!isset($oDB)) {
-        $oDB = cRegistry::getDb();
-    }
-
-    $sql = 'SELECT idartlang FROM ' . $cfg['tab']['art_lang'] . '
-            WHERE idart=' . (int) $idart . ' AND idlang=' . (int) $idlang;
-
-    $oDB->query($sql);
-    if ($oDB->next_record()) {
-        return $oDB->f('idartlang');
-    } else {
-        return false;
-    }
+    $oArtLangColl = new cApiArticleLanguageCollection();
+    $idartlang = $oArtLangColl->getIdByArticleIdAndLanguageId($idart, $idlang);
+    return ($idartlang) ? $idartlang : false;
 }
 
 
