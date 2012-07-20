@@ -244,6 +244,8 @@ return array(
     'cApiLayout' => 'contenido/classes/contenido/class.layout.php',
     'cApiMetaTagCollection' => 'contenido/classes/contenido/class.meta.tag.php',
     'cApiMetaTag' => 'contenido/classes/contenido/class.meta.tag.php',
+    'cApiMetaTypeCollection' => 'contenido/classes/contenido/class.meta.type.php',
+    'cApiMetaType' => 'contenido/classes/contenido/class.meta.type.php',
     'cApiModuleCollection' => 'contenido/classes/contenido/class.module.php',
     'cApiModule' => 'contenido/classes/contenido/class.module.php',
     'cApiModuleTranslationCollection' => 'contenido/classes/contenido/class.module.php',

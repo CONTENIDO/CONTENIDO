@@ -104,26 +104,18 @@ function getArtLang($idart, $idlang)
  */
 function conGetAvailableMetaTagTypes()
 {
-    global $cfg;
-
-    static $oDB;
-    if (!isset($oDB)) {
-        $oDB = cRegistry::getDb();
-    }
-
-    $sql = 'SELECT idmetatype, metatype, fieldtype, maxlength, fieldname
-            FROM ' . $cfg['tab']['meta_type'];
-
-    $oDB->query($sql);
-
+    $oMetaTypeColl = new cApiMetaTypeCollection();
+    $oMetaTypeColl->select();
     $aMetaTypes = array();
 
-    while ($oDB->next_record()) {
-        $newentry['name'] = $oDB->f('metatype');
-        $newentry['fieldtype'] = $oDB->f('fieldtype');
-        $newentry['maxlength'] = $oDB->f('maxlength');
-        $newentry['fieldname'] = $oDB->f('fieldname');
-        $aMetaTypes[$oDB->f('idmetatype')] = $newentry;
+    while ($oMetaType = $oMetaTypeColl->next()) {
+        $rs = $oMetaType->toArray();
+        $aMetaTypes[$rs['idmetatype']] = array(
+            'metatype' => $rs['metatype'],
+            'fieldtype' => $rs['fieldtype'],
+            'maxlength' => $rs['maxlength'],
+            'fieldname' => $rs['fieldname'],
+        );
     }
 
     return $aMetaTypes;
