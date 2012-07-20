@@ -239,7 +239,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $select->addOptionElement(3, $option[3]);
     $select->addOptionElement(4, $option[4]);
 
-    $tpl->set('s', 'DIRECTLINK', $select->render() . '<br><br><input style="width:400px;" class="text_medium" type="text" id="linkhint">');
+    $tpl->set('s', 'DIRECTLINK', $select->render() . '<br><br><input style="width:400px;" class="text_medium" type="text" id="linkhint" disabled="disabled">');
 
     $tpl->set('s', 'ZUORDNUNGSID', "idcatart");
     $tpl->set('s', 'ALLOCID', $tmp_cat_art);

@@ -37,10 +37,12 @@
                         document.getElementById("online").checked = false;
                         document.getElementById("online").disabled = true;
                     }
+					$("#timemgmt").parent("td").parent("tr").nextAll("tr").css('display', '');
                 } else {
                     // Timecontrol disable => enable Online and Startarticle
                     document.getElementById("is_start").disabled = false;
                     document.getElementById("online").disabled = false;
+					$("#timemgmt").parent("td").parent("tr").nextAll("tr").css('display', 'none');
                 }
 
                 if (document.getElementById("datestart").value == '') {
@@ -203,7 +205,7 @@
                         <table border="0" cellspacing="0" cellpadding="0">
                             <tr>
                                 <td valign="top"><input type="checkbox" onclick="javascript:disableFunctionsOnTimeControl();" name="timemgmt" id="timemgmt" value="1" {TIMEMGMTCHECKED}></td>
-                                <td colspan="2" class="text_medium"><label for="timemgmt">i18n("Use time control")</label></td>
+                                <td style="width: 500px;" colspan="2" class="text_medium"><label for="timemgmt">i18n("Use time control")</label></td>
                             </tr>
                             <tr>
                                 <td valign="top">&nbsp;</td>

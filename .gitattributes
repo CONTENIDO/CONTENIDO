@@ -1915,6 +1915,7 @@ contenido/tools/updateseqruntime.php -text
 contenido/tools/upgrade.php -text
 contenido/tools/upgradeseq.php -text
 contenido/xml/index.php -text
+contenido/xml/legend.xml -text
 contenido/xml/navigation.xml -text
 data/.htaccess -text
 data/cronlog/crontab.txt -text
