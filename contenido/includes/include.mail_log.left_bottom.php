@@ -37,36 +37,46 @@ $tpl->set('s', 'URL', 'main.php?area=mail_log&frame=2');
 
 
 //reload script
-if (!empty($_POST['mail_client']) && !empty($_POST['mail_status'])) {
+if(!empty($_POST['mail_client']) && !empty($_POST['mail_status'])) {
      $reloadScript = "<script type=\"text/javascript\">
-                             var left_bottom = parent.parent.frames['right'].frames['right_bottom'];
-                             if (left_bottom) {
-                                 var href = left_bottom.location.href;
-                                 href = href.replace(/&idlay[^&]*/, '');
-                             left_bottom.location.href = href+'&mail_client=".$_POST['mail_client']."&mail_status=".$_POST['mail_status']."';
+                             var right_bottom = parent.parent.frames['right'].frames['right_bottom'];
+                             if (right_bottom) {
+                             right_bottom.location.href = 'main.php?area=mail_log_overview&mail_client=".$_POST['mail_client']."&mail_status=".$_POST['mail_status']."&frame=4&contenido=$sess->id';
 
                              }
                     </script>";
 
     $tpl->set('s', 'RELOAD_SCRIPT', $reloadScript);
-} else {
+}else  {
     $tpl->set('s', 'RELOAD_SCRIPT', '');
 }
 
 $tpl->generate($cfg['path']['templates'] . 'template.mail_log.left_bottom.html');
 
 
+
+
+
+
+
+
+
+
+
+
+
 function generateSelect($options, $selected, $name = '' , $id = '', $class = '') {
+
     $select = '';
-    foreach ($options as $key => $value) {
-        if ($selected == $key) {
+    foreach($options as $key => $value) {
+
+        if($selected == $key) {
             $select .= '<option selected="selected" value="'.$key.'">'.$value . '</option>';
-        } else  {
+        }else  {
             $select .= '<option  value="'.$key.'">'.$value . '</option>';
         }
     }
 
     return '<select name="'.$name.'" class="'.$class.'" id="'.$id.'" >'. $select .'</select>';
 }
-
 ?>

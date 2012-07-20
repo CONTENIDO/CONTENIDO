@@ -83,6 +83,27 @@ function resendEmail() {
     $('form.bulk_editing_form input[name="submit"]').click();
 
 }
+$(document).ready(function (){
+	  
+   	/* Mark the first submenu item i.e. 'Overview' or other item */
+    if (parent.parent.frames['right'].frames['right_top'].document.getElementById('navlist')) {
+    
+        menuItem = parent.parent.frames['right'].frames['right_top'].document.getElementById('navlist');
+      
+      $(menuItem).find('a').removeClass('current');
+      
+      var selectedArea =  $(menuItem).find('a.{AREA}');
+      
+      if(selectedArea.length == 0) {
+      
+      	 $(menuItem).find('a:first').addClass('current');
+      }else {
+      	selectedArea.addClass('current');
+      }
+      	
+    }
+
+});
 </script>
 
 </body>

@@ -1218,6 +1218,7 @@ contenido/includes/include.logs.php -text
 contenido/includes/include.mail_log.left_bottom.php -text
 contenido/includes/include.mail_log.left_top.php -text
 contenido/includes/include.mail_log.right_bottom.php -text
+contenido/includes/include.mail_log_subnav.php -text
 contenido/includes/include.mod_edit_form.php -text
 contenido/includes/include.mod_history.php -text
 contenido/includes/include.mod_import_export.php -text
