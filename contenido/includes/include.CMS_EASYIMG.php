@@ -41,7 +41,7 @@ if(isset($area) && $area == 'con_content_list'){
     if ($action == "cancel") {
         $path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
     } else {
-        $path1 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit";
+        $path1 = $cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit";
     }
 }
 
@@ -72,7 +72,7 @@ if ($doedit == "1") {
 
                     $CMS_LINK = $rootpath . $upldir. $friendlyName;
 
-                    conSaveContentEntry($idartlang, "CMS_IMG", $typenr, $db->f("idupl"));
+                    conSaveContentEntry($idartlang, "CMS_IMGEDITOR", $typenr, $db->f("idupl"));
                     // Note: Not conMakeArticleIndex as img not relevant for the index
                     conGenerateCodeForArtInAllCategories($idart);
                 }
@@ -108,6 +108,11 @@ if ($doedit == "1") {
 
 </script>
 <body onLoad="window.setTimeout('disp_preview()',500);">
+<?php
+cDeprecated('Do not use CMS_EASYIMGEDIT any more - use CMS_IMGEDITOR instead!');
+$cNotification = new Contenido_Notification();
+$cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie bearbeiten einen veralteten Content-Typen (CMS_EASYIMGEDIT). Dieser Content-Typ wird in einer späteren Version von CONTENIDO nicht mehr unterstützt. Bitte wechseln Sie auf den neuen Content-Typen CMS_IMGEDITOR.');
+?>
 <table width="100%"  border=0 cellspacing="0" cellpadding="0" bgcolor="#ffffff">
   <tr>
     <td width="10" rowspan="4"><img src="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>

@@ -419,7 +419,7 @@ class cApiModule extends Item {
      * @return    array    Array with module data from XML file
      */
     private function _parseImportFile($sFile) {
-        $oXmlReader = new ContenidoXmlReader();
+        $oXmlReader = new cXmlReader();
         $oXmlReader->load($sFile);
 
         $aData = array();

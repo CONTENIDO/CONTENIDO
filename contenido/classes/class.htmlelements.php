@@ -1736,6 +1736,53 @@ class cHTMLSpan extends cHTML {
 }
 
 /**
+ * P Element
+ *
+ * @author  Simon Sprankel <simon.sprankel@4fb.de>
+ */
+class cHTMLParagraph extends cHTML
+{
+    /**
+     * Constructor. Creates an HTML p element.
+     *
+     * @param  mixed  $content  String or object with the contents
+     */
+    public function __construct($content = "") {
+        parent::__construct();
+        $this->setContent($content);
+        $this->setContentlessTag(false);
+        $this->_tag = "p";
+    }
+
+    /**
+     * @deprecated [2012-01-19] use __construct instead
+     */
+    public function cHTMLParagraph($content = "")
+    {
+        cDeprecated("Use __construct() instead");
+        $this->__construct($content);
+    }
+
+    /**
+     * Sets the p's content
+     * @param  string|object  $content  String with the content or an object to render.
+     */
+    public function setContent($content) {
+        $this->_setContent($content);
+    }
+
+    /**
+     * Renders the SPAN element
+     * @return string Rendered HTML
+     */
+    public function toHTML() {
+        $attributes = $this->getAttributes(true);
+        return $this->fillSkeleton($attributes) . $this->_content . $this->fillCloseSkeleton();
+    }
+
+}
+
+/**
  * Image Element
  *
  * @author  Timo A. Hummel <timo.hummel@4fb.de>
@@ -2292,9 +2339,11 @@ class cHTMLForm extends cHTML {
      */
     public function toHTML() {
         $out = '';
-        foreach ($this->_vars as $var => $value) {
-            $f = new cHTMLHiddenField($var, $value);
-            $out .= $f->render();
+        if (is_array($this->_vars)) {
+            foreach ($this->_vars as $var => $value) {
+                $f = new cHTMLHiddenField($var, $value);
+                $out .= $f->render();
+            }
         }
         if ($this->getAttribute("name") == "") {
             $this->setAttribute("name", $this->_name);
@@ -2345,4 +2394,47 @@ class cHTMLScript extends cHTML {
 
 }
 
-?>
+class cHTMLList extends cHTML
+{
+	public function __construct($type = 'ul', $id = '', $class = '', $elements = array())
+	{
+		parent::__construct();
+		$this->setContentlessTag(false);
+		$this->_tag = $type;
+		$this->setID($id);
+		$this->setClass($class);
+		$this->setContent($elements);
+	}
+
+	/**
+	 * Sets the list's content
+	 * @param  string|object  $content  String with the content or an object to render.
+	 */
+	public function setContent($content)
+	{
+		$this->_setContent($content);
+	}
+
+}
+
+class cHTMLListItem extends cHTML
+{
+	public function __construct($id = '', $class = '')
+	{
+		parent::__construct();
+		$this->setContentlessTag(false);
+		$this->_tag = 'li';
+		$this->setID($id);
+		$this->setClass($class);
+	}
+
+	/**
+	 * Sets the list item's content
+	 * @param  string|object  $content  String with the content or an object to render.
+	 */
+	public function setContent($content)
+	{
+		$this->_setContent($content);
+	}
+
+}

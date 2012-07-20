@@ -35,6 +35,39 @@ class cApiUploadMetaCollection extends ItemCollection {
         parent::__construct($cfg['tab']['upl_meta'], 'id_uplmeta');
         $this->_setItemClass('cApiUploadMeta');
     }
+
+    /**
+     * Creates a upload meta entry.
+     * @global object $auth
+     * @param int $iIdupl
+     * @param int $iIdlang
+     * @param string $sMedianame
+     * @param string $sDescription
+     * @param string $sKeywords
+     * @param string $sInternalNotice
+     * @param string $sCopyright
+     * @return cApiUpload
+     */
+    public function create($iIdupl, $iIdlang, $sMedianame = '', $sDescription = '', $sKeywords = '', $sInternalNotice = '', $sCopyright = '')
+    {
+        global $auth;
+
+        $oItem = parent::createNewItem();
+
+        $oItem->set('idupl', $iIdupl);
+        $oItem->set('idlang', $iIdlang);
+        $oItem->set('medianame', $sMedianame, false);
+        $oItem->set('description', $sDescription, false);
+        $oItem->set('keywords', $sKeywords, false);
+        $oItem->set('internal_notice', $sInternalNotice, false);
+        $oItem->set('author', $auth->auth['uid']);
+        $oItem->set('created', date('Y-m-d H:i:s'), false);
+        $oItem->set('modified', date('Y-m-d H:i:s'), false);
+        $oItem->set('copyright', $sCopyright, false);
+        $oItem->store();
+
+        return $oItem;
+    }
 }
 
 

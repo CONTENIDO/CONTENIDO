@@ -1,27 +1,16 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * CONTENIDO code generator abstract class
  *
- * Requirements:
- * @con_php_req 5.0
+ * @package Core
+ * @subpackage Content Type
+ * @version SVN Revision $Rev:$
  *
- * @package    CONTENIDO Backend Classes
- * @version    0.0.2
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-08-11
- *   $Id$:
- * }}
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -30,24 +19,29 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * CONTENIDO abstract code generator class.
- * @package    CONTENIDO Backend Classes
+ *
+ * @package Core
+ * @subpackage Content Type
  */
 abstract class cCodeGeneratorAbstract {
 
     /**
      * CONTENIDO database instance
+     *
      * @var DB_Contenido
      */
     protected $_db;
 
     /**
      * Frontend debug options, see $frontend_debug in cms/config.php
+     *
      * @var array
      */
     protected $_feDebugOptions = array();
 
     /**
      * Debug flag, prints some status messages if enabled.
+     *
      * @var bool
      * @deprecated No longer needed. The backend chooses the debug mode.
      */
@@ -55,90 +49,107 @@ abstract class cCodeGeneratorAbstract {
 
     /**
      * Collected CSS data for current template
+     *
      * @var string
      */
     protected $_cssData = '';
 
     /**
      * Collected JS data for current template
+     *
      * @var string
      */
     protected $_jsData = '';
 
     /**
      * Template name
+     *
      * @var string
      */
     protected $_tplName = '';
 
     /**
      * Category id
+     *
      * @var int
      */
     protected $_idcat;
 
     /**
      * Article id
+     *
      * @var int
      */
     protected $_idart;
 
     /**
      * Language id
+     *
      * @var int
      */
     protected $_lang;
 
     /**
      * Client id
+     *
      * @var int
      */
     protected $_client;
 
     /**
      * Flag to process layout
+     *
      * @var bool
      */
     protected $_layout;
 
     /**
      * Flag to persist generated code
+     *
      * @var bool
      */
     protected $_save;
 
     /**
      * Article language id
+     *
      * @var int
      */
     protected $_idartlang;
 
     /**
      * Page title (generally from article language table)
+     *
      * @var string
      */
     protected $_pageTitle;
 
     /**
-     * Layout code. Initially with container tags which will be replaced against module outputs.
+     * Layout code.
+     * Initially with container tags which will be replaced against module
+     * outputs.
+     *
      * @var string
      */
     protected $_layoutCode = '';
 
     /**
      * Module output code prefix
+     *
      * @var array
      */
     protected $_modulePrefix = array();
 
     /**
      * Module output code
+     *
      * @var string
      */
     protected $_moduleCode = '';
 
     /**
      * Module output code suffix
+     *
      * @var array
      */
     protected $_moduleSuffix = array();
@@ -151,7 +162,7 @@ abstract class cCodeGeneratorAbstract {
      * Setter for debug property
      *
      * @deprecated No longer needed. The backend chooses the debug mode.
-     * @param  bool  $debug
+     * @param bool $debug
      */
     public function setDebug($debug) {
         $this->_debug = $debug;
@@ -161,23 +172,24 @@ abstract class cCodeGeneratorAbstract {
      * Setter for frontend debug options (see $frontend_debug in config.php
      * located in clients frontend directory)
      *
-     * @param  bool  $debug
+     * @param bool $debug
      */
     public function setFrontendDebugOptions(array $debugOptions) {
         $this->_feDebugOptions = $debugOptions;
     }
 
     /**
-     * Generates the code for a specific article (article for a client in a language).
+     * Generates the code for a specific article (article for a client in a
+     * language).
      *
-     * @param  int   $idcat
-     * @param  int   $idart
-     * @param  int   $lang
-     * @param  int   $client
-     * @param  bool  $layout
-     * @param  bool  $save  Flag to persist generated code
-     * @return  string  Generated code or error code '0601' if no template
-     *                  configuration was found for category or article.
+     * @param int $idcat
+     * @param int $idart
+     * @param int $lang
+     * @param int $client
+     * @param bool $layout
+     * @param bool $save Flag to persist generated code
+     * @return string Generated code or error code '0601' if no template
+     *         configuration was found for category or article.
      */
     public function generate($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true) {
         global $cfg;
@@ -189,8 +201,7 @@ abstract class cCodeGeneratorAbstract {
         $this->_layout = (bool) $layout;
         $this->_save = (bool) $save;
 
-        $sql = "SELECT idartlang, pagetitle FROM " . $cfg['tab']['art_lang']
-                . " WHERE idart=" . (int) $this->_idart . " AND idlang=" . (int) $this->_lang;
+        $sql = "SELECT idartlang, pagetitle FROM " . $cfg['tab']['art_lang'] . " WHERE idart=" . (int) $this->_idart . " AND idlang=" . (int) $this->_lang;
         $this->_db->query($sql);
         $this->_db->next_record();
 
@@ -201,8 +212,10 @@ abstract class cCodeGeneratorAbstract {
     }
 
     /**
-     * Generates the code for a specific article (article for a client in a language).
-     * @return  string  The generated code
+     * Generates the code for a specific article (article for a client in a
+     * language).
+     *
+     * @return string The generated code
      */
     abstract function _generate($contype = true);
 
@@ -210,7 +223,7 @@ abstract class cCodeGeneratorAbstract {
      * Returns the template configuration id, either by configured article or by
      * configured category.
      *
-     * @return int|null
+     * @return int null
      */
     protected function _getTemplateConfigurationId() {
         // Get configuration for article
@@ -227,7 +240,7 @@ abstract class cCodeGeneratorAbstract {
             }
         }
 
-        return (is_numeric($idtplcfg)) ? $idtplcfg : null;
+        return (is_numeric($idtplcfg))? $idtplcfg : null;
     }
 
     abstract protected function _processNoConfigurationError();
@@ -259,18 +272,21 @@ abstract class cCodeGeneratorAbstract {
     }
 
     /**
-     * Processes replacements of all existing CMS_... tags within passed code
+     * Processes replacements of all existing CMS_...
+     * tags within passed code
      *
-     * @param  array   $contentList  Assoziative list of CMS variables
-     * @param  bool    $saveKeywords  Flag to save collected keywords during replacement process.
+     * @param array $contentList Assoziative list of CMS variables
+     * @param bool $saveKeywords Flag to save collected keywords during
+     *        replacement process.
      */
     protected function _processCmsTags($contentList, $saveKeywords = true) {
         // #####################################################################
-        // NOTE: Variables below are required in included/evaluated content type codes!
+        // NOTE: Variables below are required in included/evaluated content type
+        // codes!
         global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
 
         // NOTE: Variables below are additionally required in included/evaluated
-        //       content type codes within backend edit mode!
+        // content type codes within backend edit mode!
         global $edit, $editLink, $belang;
 
         $idcat = $this->_idcat;
@@ -292,7 +308,7 @@ abstract class cCodeGeneratorAbstract {
         $a_content = $contentList;
 
         // Select all cms_type entries
-        $sql = 'SELECT idtype, type, code FROM ' . $cfg['tab']['type'];
+        $sql = 'SELECT `idtype`, `type`, `code`, `class` FROM `' . $cfg['tab']['type'] . '`';
         $db->query($sql);
         $_typeList = array();
         while ($db->next_record()) {
@@ -304,7 +320,8 @@ abstract class cCodeGeneratorAbstract {
             $key = strtolower($_typeItem->type);
             $type = $_typeItem->type;
             // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
-#            $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i', $this->_layoutCode, $match);
+            // $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i',
+            // $this->_layoutCode, $match);
             $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $this->_layoutCode, $match);
 
             $a_[$key] = $match[0];
@@ -315,11 +332,20 @@ abstract class cCodeGeneratorAbstract {
             $replacements = array();
 
             $typeCodeFile = $cfg['path']['contenido'] . 'includes/type/code/include.' . $type . '.code.php';
+            $cTypeClassFile = $cfg['path']['contenido'] . 'classes/content_types/class.ctype.' . strtolower(str_replace('CMS_', '', $type)) . '.php';
 
             foreach ($a_[$key] as $val) {
-                if (cFileHandler::exists($typeCodeFile)) {
+                if (cFileHandler::exists($cTypeClassFile)) {
+                    $tmp = $a_content[$_typeItem->type][$val];
+                    $cTypeObject = new $_typeItem->class($tmp, $val, $a_content);
+                    if (cRegistry::isBackendEditMode()) {
+                        $tmp = $cTypeObject->generateEditCode();
+                    } else {
+                        $tmp = $cTypeObject->generateViewCode();
+                    }
+                } else if (cFileHandler::exists($typeCodeFile)) {
                     // include CMS type code
-                    include($typeCodeFile);
+                    include ($typeCodeFile);
                 } elseif (!empty($_typeItem->code)) {
                     // old version, evaluate CMS type code
                     cDeprecated("Move code for $type from table into file system (contenido/includes/cms/code/)");
@@ -349,23 +375,23 @@ abstract class cCodeGeneratorAbstract {
      * Replaces all container/module configuration tags (CMS_VALUE[n] values)
      * against their settings.
      *
-     * @param int  $containerId  Container id
-     * @param string $containerCfg  A string being formatted like concatenated query
-     *                              parameter, e. g. param1=value1&param2=value2...
-     * @return  string  Concatenated PHP code containing CMS_VALUE variables and their values
+     * @param int $containerId Container id
+     * @param string $containerCfg A string being formatted like concatenated
+     *        query
+     *        parameter, e. g. param1=value1&param2=value2...
+     * @return string Concatenated PHP code containing CMS_VALUE variables and
+     *         their values
      */
     protected function _processCmsValueTags($containerId, $containerCfg) {
         $containerCfgList = array();
 
         $containerCfg = preg_replace('/(&\$)/', '', $containerCfg);
         parse_str($containerCfg, $containerCfgList);
-        /*        $tmp1 = preg_split('/&/', $containerCfg);
-          foreach ($tmp1 as $key1 => $value1) {
-          $tmp2 = explode('=', $value1);
-          foreach ($tmp2 as $key2 => $value2) {
-          $containerCfgList["$tmp2[0]"] = $tmp2[1];
-          }
-          } */
+        /*
+         * $tmp1 = preg_split('/&/', $containerCfg); foreach ($tmp1 as $key1 =>
+         * $value1) { $tmp2 = explode('=', $value1); foreach ($tmp2 as $key2 =>
+         * $value2) { $containerCfgList["$tmp2[0]"] = $tmp2[1]; } }
+         */
 
         $CiCMS_Var = '$C' . $containerId . 'CMS_VALUE';
         $CiCMS_Values = array();
@@ -389,8 +415,9 @@ abstract class cCodeGeneratorAbstract {
      * Extends container code by adding several debug features, if enabled and
      * configured.
      *
-     * @param int  $containerId  Container id
-     * @param array $module Recordset as assoziative array of related module (container code)
+     * @param int $containerId Container id
+     * @param array $module Recordset as assoziative array of related module
+     *        (container code)
      */
     protected function _processFrontendDebug($containerId, array $module) {
         global $cfg;
@@ -426,14 +453,16 @@ abstract class cCodeGeneratorAbstract {
     }
 
     /**
-     * Replaces container tag in layout against the parsed container code (module code).
+     * Replaces container tag in layout against the parsed container code
+     * (module code).
      *
-     * @param  int  $containerId  Container id
+     * @param int $containerId Container id
      */
     protected function _processCmsContainer($containerId) {
         $cmsContainer = "CMS_CONTAINER[$containerId]";
 
-        // Replace new container (<container id="n"..>) against old one (CMS_CONTAINER[n])
+        // Replace new container (<container id="n"..>) against old one
+        // (CMS_CONTAINER[n])
         $this->_layoutCode = preg_replace("/<container( +)id=\\\"$containerId\\\"(.*)>(.*)<\/container>/Uis", $cmsContainer, $this->_layoutCode);
         $this->_layoutCode = preg_replace("/<container( +)id=\\\"$containerId\\\"(.*)\/>/i", $cmsContainer, $this->_layoutCode);
 
@@ -444,11 +473,12 @@ abstract class cCodeGeneratorAbstract {
 
         // Replace container (CMS_CONTAINER[n]) against the container code
         $this->_layoutCode = str_ireplace($cmsContainer, $moduleOutput, $this->_layoutCode);
-//        $this->_layoutCode = addslashes($this->_layoutCode);
+        // $this->_layoutCode = addslashes($this->_layoutCode);
     }
 
     /**
-     * Returns array of all CMS_... vars being used by current article and language
+     * Returns array of all CMS_...
+     * vars being used by current article and language
      *
      * @return array like $arr[type][typeid] = value;
      */
@@ -482,7 +512,7 @@ abstract class cCodeGeneratorAbstract {
     /**
      * Outputs passed message, if debug is enabled
      *
-     * @param  string  $msg
+     * @param string $msg
      */
     protected function _debug($msg) {
         cDebug($msg);

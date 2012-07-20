@@ -68,9 +68,9 @@ class Ajax
 
                 $oArt = new cApiArticleLanguage($iIdArtLang, true);
                 $sArtReturn = $oArt->getContent('CMS_FILELIST', $iFileListId);
-                $oFileList = new Cms_FileList($sArtReturn, $iFileListId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+                $oFileList = new cContentTypeFileList($sArtReturn, $iFileListId, array());
 
-                $sString = $oFileList->getDirectoryList($oFileList->buildDirectoryList($cfgClient[$client]['upl']['path'] . $sDirName));
+                $sString = $oFileList->generateDirectoryList($oFileList->buildDirectoryList($cfgClient[$client]['upl']['path'] . $sDirName));
                 break;
 
             case 'filelist':
@@ -82,9 +82,9 @@ class Ajax
 
                 $oArt = new cApiArticleLanguage($iIdArtLang, true);
                 $sArtReturn = $oArt->getContent('CMS_FILELIST', $iFileListId);
-                $oFileList = new Cms_FileList($sArtReturn, $iFileListId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+                $oFileList = new cContentTypeFileList($sArtReturn, $iFileListId, array());
 
-                $sString = $oFileList->getFileSelect($sDirName);
+                $sString = $oFileList->generateFileSelect($sDirName);
                 break;
 
             case 'inused_layout':
@@ -191,7 +191,7 @@ class Ajax
 
             case 'scaleImage':
                 global $cfg, $client, $lang, $cfgClient;
-                $filename = $_REQUEST['sUrl'];
+                $filename = $_REQUEST['url'];
                 $filename = str_replace($cfgClient[$client]['path']['htmlpath'], $cfgClient[$client]['path']['frontend'], $filename);
                 //$filename muss not url path(http://) sondern globale PC Path(c:/) sein.
                 $filetype = substr($filename, strlen($filename) -4, 4);
@@ -217,32 +217,31 @@ class Ajax
                 $iIdArtLang = (int) $_REQUEST['idartlang'];
 
                 $oArt = new cApiArticleLanguage($iIdArtLang, true);
-                $sArtReturn = $oArt->getContent('CMS_IMAGE', $iImageId);
-                $oImage = new Cms_Image($sArtReturn, $iImageId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+                $sArtReturn = $oArt->getContent('CMS_IMGEDITOR', $iImageId);
+                $oImage = new cContentTypeImgEditor($sArtReturn, $iImageId, array());
 
-                $sString = $oImage->getFileSelect($sDirName, $iImageId);
+                $sString = $oImage->generateFileSelect($sDirName);
                 break;
 
             case 'loadImageMeta':
                 global $cfg, $client, $lang, $cfgClient;
 
-                $sDirName = (string) $_REQUEST['dir'];
                 $iImageId = (int) $_REQUEST['id'];
                 $iIdArtLang = (int) $_REQUEST['idartlang'];
 
                 $oArt = new cApiArticleLanguage($iIdArtLang, true);
-                $sArtReturn = $oArt->getContent('CMS_IMAGE', $iImageId);
-                $oImage = new Cms_Image($sArtReturn, $iImageId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+                $sArtReturn = $oArt->getContent('CMS_IMGEDITOR', $iImageId);
+                $oImage = new cContentTypeImgEditor($sArtReturn, $iImageId, array());
 
                 $sFilename = (string) basename($_REQUEST['filename']);
                 $sDirname = (string) dirname($_REQUEST['filename']);
                 if ($sDirname != '.'){
-                    $sDirname .= "/";
+                    $sDirname .= '/';
                 } else {
-                    $sDirname = "";
+                    $sDirname = '';
                 }
 
-                $sString = $oImage->getImageMeta($sFilename, $sDirname, $iImageId);
+                $sString = $oImage->getImageMeta($sFilename, $sDirname);
                 break;
 
             case 'upl_mkdir':
@@ -254,8 +253,8 @@ class Ajax
                 $sName = (string) $_REQUEST['foldername'];
 
                 $oArt = new cApiArticleLanguage($iIdArtLang, true);
-                $sArtReturn = $oArt->getContent('CMS_IMAGE', $iImageId);
-                $oImage = new Cms_Image($sArtReturn, $iImageId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+                $sArtReturn = $oArt->getContent('CMS_IMGEDITOR', $iImageId);
+                $oImage = new cContentTypeImgEditor($sArtReturn, $iImageId, array());
 
                 $sString = $oImage->uplmkdir($sPath, $sName);
                 break;
@@ -268,8 +267,8 @@ class Ajax
                 $sPath = (string) $_REQUEST['path'];
 
                 $oArt = new cApiArticleLanguage($iIdArtLang, true);
-                $sArtReturn = $oArt->getContent('CMS_IMAGE', $iImageId);
-                $oImage = new Cms_Image($sArtReturn, $iImageId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+                $sArtReturn = $oArt->getContent('CMS_IMGEDITOR', $iImageId);
+                $oImage = new cContentTypeImgEditor($sArtReturn, $iImageId, array());
 
                 $sString = $oImage->uplupload($sPath);
                 break;
@@ -283,9 +282,9 @@ class Ajax
 
                 $oArt = new cApiArticleLanguage($iIdArtLang, true);
                 $sArtReturn = $oArt->getContent('CMS_LINKEDITOR', $iId);
-                $oLinkEditor = new Cms_LinkEditor($sArtReturn, $iId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+                $oLinkEditor = new cContentTypeLinkEditor($sArtReturn, $iId, array());
 
-                $sString = $oLinkEditor->getFileSelect($iIdCat, $iId);
+                $sString = $oLinkEditor->generateArticleSelect($iIdCat);
                 break;
 
             case 'linkeditordirlist':
@@ -293,15 +292,28 @@ class Ajax
 
                 $iId = (int) $_REQUEST['id'];
                 $iIdArtLang = (int) $_REQUEST['idartlang'];
-                $iIdCat = (string) $_REQUEST['idcat'];
                 $iLevelId = (string) $_REQUEST['level'];
                 $iParentidcat = (string) $_REQUEST['parentidcat'];
 
                 $oArt = new cApiArticleLanguage($iIdArtLang, true);
                 $sArtReturn = $oArt->getContent('CMS_LINKEDITOR', $iId);
-                $oLinkEditor = new Cms_LinkEditor($sArtReturn, $iId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+                $oLinkEditor = new cContentTypeLinkEditor($sArtReturn, $iId, array());
 
-                $sString = $oLinkEditor->getDirectoryList($oLinkEditor->buildDirectoryList($iLevelId, $iParentidcat));
+                $sString = $oLinkEditor->getCategoryList($oLinkEditor->buildCategoryArray($iLevelId, $iParentidcat));
+                break;
+
+            case 'linkeditorimagelist':
+                global $cfg, $client, $lang, $cfgClient;
+
+                $sDirName = (string) $_REQUEST['dir'];
+                $iId = (int) $_REQUEST['id'];
+                $iIdArtLang = (int) $_REQUEST['idartlang'];
+
+                $oArt = new cApiArticleLanguage($iIdArtLang, true);
+                $sArtReturn = $oArt->getContent('CMS_LINKEDITOR', $iId);
+                $oLinkEditor = new cContentTypeLinkEditor($sArtReturn, $iId, array());
+
+                $sString = $oLinkEditor->getUploadFileSelect($sDirName);
                 break;
             //if action is unknown generate error message
             default:

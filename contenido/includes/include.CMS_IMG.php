@@ -38,10 +38,17 @@ if(isset($area) && $area == 'con_content_list'){
 }
 
 if ($doedit == '1') {
-    conSaveContentEntry($idartlang, 'CMS_IMG', $typenr, $CMS_IMG);
-    conSaveContentEntry($idartlang, 'CMS_IMGDESCR', $typenr, $CMS_IMGDESCR);
+    conSaveContentEntry($idartlang, 'CMS_IMGEDITOR', $typenr, $CMS_IMG);
     conMakeArticleIndex($idartlang, $idart);
     conGenerateCodeForArtInAllCategories($idart);
+    // load meta data object
+    $uploadMeta = new cApiUploadMeta();
+    $uploadMeta->loadByMany(array(
+        'idupl' => $CMS_IMG,
+        'idlang' => $lang
+    ));
+    $uploadMeta->set('description', $CMS_IMGDESCR);
+    $uploadMeta->store();
     header('location:'.$sess->url($path));
 }
 
@@ -53,6 +60,11 @@ if ($doedit == '1') {
     <script type="text/javascript" src="<?php print $cfg['path']['contenido_fullhtml'] . $cfg['path']['scripts'] ?>jquery/jquery.js"></script>
 </head>
 <body>
+<?php
+cDeprecated('Do not use CMS_IMGEDIT any more - use CMS_IMGEDITOR instead!');
+$cNotification = new Contenido_Notification();
+$cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie bearbeiten einen veralteten Content-Typen (CMS_IMGEDIT). Dieser Content-Typ wird in einer späteren Version von CONTENIDO nicht mehr unterstützt. Bitte wechseln Sie auf den neuen Content-Typen CMS_IMGEDITOR.');
+?>
 <table width="100%"  border=0 cellspacing="0" cellpadding="0" bgcolor="#ffffff">
     <tr>
         <td width="10" rowspan="4"><img src="<?php print $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] ?>spacer.gif" width="10" height="10"></td>

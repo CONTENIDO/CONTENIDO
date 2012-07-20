@@ -104,7 +104,7 @@ function urlDecodeTables($db) {
     urlDecodeTable($db, $cfg['tab']['properties']);
     urlDecodeTable($db, $cfg['tab']['upl_meta']);
     urlDecodeTable($db, $cfg['tab']['container']);
-    urlDecodeTable($db, $cfg['tab']['pica_lang']);
+    urlDecodeTable($db, $cfg['sql']['sqlprefix'] . '_pica_lang');
     urlDecodeTable($db, $cfg['tab']['news_rcp']);
     urlDecodeTable($db, $cfg['tab']['art_lang']);
     urlDecodeTable($db, $cfg['tab']['user_prop']);
@@ -125,7 +125,7 @@ function urlDecodeTable($db, $table) {
         }
         $sql = substr($sql, 0, strlen($sql) - 2) . " WHERE ";
         foreach ($row as $key => $value) {
-            $sql .= "`" . $key . "`= '" . $value . "' AND ";
+            $sql .= "`" . $key . "`= '" . cSecurity::escapeDB($value, $db) . "' AND ";
         }
         $sql = substr($sql, 0, strlen($sql) - 5) . ";";
         $db2 = getSetupMySQLDBConnection(false);

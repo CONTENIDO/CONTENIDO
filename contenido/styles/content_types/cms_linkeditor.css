@@ -1,0 +1,46 @@
+@import url("cms_dirlist.css");
+
+.cms_linkeditor .directoryList {
+    float: left;
+    margin-right: 5px;
+    width: 210px;
+}
+
+.cms_linkeditor {
+    width: 430px;
+}
+
+.cms_linkeditor .directoryFile {
+    border: 1px solid #CCC;
+    height: 170px;
+    overflow: auto;
+}
+
+.cms_linkeditor select {
+    border: none;
+    color: #000;
+    font-size: 11px;
+    height: 170px;
+    width: 210px;
+}
+
+.cms_linkeditor #basic-settings {
+    margin-top: 15px;
+}
+
+.cms_linkeditor input[type="image"] {
+    height: 16px;
+    margin-left: 5px;
+    vertical-align: middle;
+    width: 16px;
+}
+
+.loading {
+    left: 22%;
+    position: absolute;
+    top: 25%;
+}
+
+.cms_linkeditor #caption1,.cms_linkeditor #caption2 {
+    margin-left: 10px;
+}

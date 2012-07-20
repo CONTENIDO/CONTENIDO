@@ -53,13 +53,13 @@ class cGuiNavigation {
     public $data = array();
 
     /**
-     * Constructor. Loads the XML language file using ContenidoXmlReader.
+     * Constructor. Loads the XML language file using cXmlReader.
      */
     public function __construct() {
         global $cfg;
 
-        $this->xml = new ContenidoXmlReader();
-        $this->plugxml = new ContenidoXmlReader();
+        $this->xml = new cXmlReader();
+        $this->plugxml = new cXmlReader();
 
         // Load language file
         if ($this->xml->load($cfg['path']['xml'] . "navigation.xml") == false) {

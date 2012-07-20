@@ -1,0 +1,76 @@
+@import url("cms_dirlist.css");
+
+.cms_filelist .directoryList {
+    height: 205px;
+    width: 410px;
+}
+
+.cms_filelist #manual .directoryList {
+    height: 135px;
+}
+
+.cms_filelist #manual .directoryList ul li div.active,.cms_filelist #manual .directoryList ul li#root li div.active a,.cms_filelist #manual .directoryList ul li#root li div.active em a,.cms_filelist #manual .directoryList ul li#root li div.active em span
+    {
+    background-color: #FFF !important;
+}
+
+.cms_filelist {
+    width: 432px;
+}
+
+.cms_filelist label {
+    width: 220px;
+}
+.cms_filelist label.filelist_filename {
+    width: 100px;
+}
+
+.cms_filelist select.filelist_filename {
+    width: 300px;
+}
+
+.cms_filelist #add_file {
+    margin: 2px 0 0 5px;
+}
+
+.cms_filelist input,.cms_filelist select {
+    border: 1px solid #CCC;
+    display: block;
+    float: left;
+}
+
+.cms_filelist #metaDataList  ul li {
+    list-style: none;
+}
+
+.cms_filelist #metaDataList input {
+    width: 30px;
+}
+
+#filter span,#metaDataList span,#manual span {
+    float: left;
+    padding-top: 3px;
+}
+
+.cms_filelist #filter .manual {
+    width: 420px;
+}
+
+.cms_filelist #filter input {
+    font-size: 10px;
+    width: 75px;
+}
+
+.cms_filelist #filter #filelist_all_extensions {
+    display: block;
+    margin: 5px 0;
+}
+
+.cms_filelist #filter label.filelist_ignore_extensions {
+    margin: 5px 0;
+    width: 230px;
+}
+
+.cms_filelist #manual .manual {
+    width: 420px;
+}

@@ -59,7 +59,7 @@ if (!defined('CON_FRAMEWORK')) {
 * <?xml version="1.0" encoding="ISO-8859-1"?>
 * <rootname foo="bar">some content<foo>bar</foo></rootname>
 *
-* @deprecated 2012-03-03 Use ContenidoXmlWriter instead
+* @deprecated 2012-03-03 Use cXmlWriter instead
 *
 * !! ALWAYS use '=&' with the addRoot and appendChild methods. !!
 *
@@ -132,7 +132,7 @@ class XmlTree
     */
     function XmlTree($strXmlVersion = '1.0', $strXmlEncoding = 'UTF-8')
     {
-        cDeprecated("Use ContenidoXmlWriter instead.");
+        cDeprecated("Use cXmlWriter instead.");
 
         $this->_strXmlVersion = 'version="'.$strXmlVersion.'"';
         $this->_strXmlEncoding = 'encoding="'.$strXmlEncoding.'"';
@@ -202,7 +202,7 @@ class XmlTree
 * Object of a XML Tree Node
 *
 * @see XmlTree
-* @deprecated 2012-03-03 Use ContenidoXmlWriter instead
+* @deprecated 2012-03-03 Use cXmlWriter instead
 *
 * !! ALWAYS use '=&' with the addRoot and appendChild methods. !!
 *
@@ -288,7 +288,7 @@ class XmlNode
     */
     function XmlNode($strNodeName, $strNodeContent = '', $arrNodeAttribs = array(), $cdata = false)
     {
-        cDeprecated("Use ContenidoXmlWriter instead.");
+        cDeprecated("Use cXmlWriter instead.");
 
         if (!$strNodeName)
         {

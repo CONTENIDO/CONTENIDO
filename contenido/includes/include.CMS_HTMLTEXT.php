@@ -37,7 +37,7 @@ if (isset($area) && $area == 'con_content_list') {
 } else {
     $tmp_area = "con_editcontent";
     $path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&changeview=edit&client=$client";
-    $path2 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang";
+    $path2 = $cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang";
 }
 
 if ($doedit == "1") {
@@ -55,6 +55,11 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
     <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>">
 </head>
 <body>
+<?php
+cDeprecated('Do not use CMS_HTMLTEXT any more - use CMS_TEXT instead!');
+$cNotification = new Contenido_Notification();
+$cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie bearbeiten einen veralteten Content-Typen (CMS_HTMLTEXT). Dieser Content-Typ wird in einer späteren Version von CONTENIDO nicht mehr unterstützt. Bitte wechseln Sie auf den neuen Content-Typen CMS_TEXT.');
+?>
 <table width="100%"  border=0 cellspacing="0" cellpadding="0" bgcolor="#ffffff">
   <tr>
     <td width="10" rowspan="4"><img src="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>

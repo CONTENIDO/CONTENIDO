@@ -51,6 +51,12 @@ if ($content == '') {
 $content = nl2br($content);
 
 if ($edit) {
+    // show deprecation warning
+    cDeprecated('Do not use CMS_HTMLTEXT any more - use CMS_TEXT instead!');
+    $cNotification = new Contenido_Notification();
+    $notification = $cNotification->messageBox(Contenido_Notification::LEVEL_WARNING, 'Sie benutzen einen veralteten Content-Typen (CMS_HTMLTEXT). Dieser Content-Typ wird in einer späteren Version von CONTENIDO nicht mehr unterstützt. Bitte wechseln Sie auf den neuen Content-Typen CMS_TEXT.');
+    $tmp = $notification;
+
     $div = new cHTMLDiv();
     $div->setID('HTMLTEXT_' . $_typeItem->idtype . '_' . $val);
     $div->setEvent('focus', "this.style.border='1px solid #bb5577'");
@@ -61,7 +67,7 @@ if ($edit) {
 
     $editlink = new cGuiLink();
     $editlink->setClass('CMS_HTMLTEXT_' . $val . '_EDIT CMS_LINK_EDIT');
-    $editlink->setLink($sess->url("front_content.php?action=10&idcat=$idcat&idart=$idart&idartlang=$idartlang&type=CMS_HTMLTEXT&typenr=$val&lang=$lang"));
+    $editlink->setLink($sess->url($cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?action=10&idcat=$idcat&idart=$idart&idartlang=$idartlang&type=CMS_HTMLTEXT&typenr=$val&lang=$lang"));
 
     $editimg = new cHTMLImage();
     $editimg->setSrc($cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_edittext.gif');
@@ -79,7 +85,7 @@ if ($edit) {
 
     $div->setContent($content);
 
-    $tmp = implode('', array($div->render(), $editlink->render(), ' ', $savelink->render()));
+    $tmp .= implode('', array($div->render(), $editlink->render(), ' ', $savelink->render()));
 } else {
     $tmp = $content;
 }

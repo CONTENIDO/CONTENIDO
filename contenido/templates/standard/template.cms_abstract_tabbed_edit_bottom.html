@@ -1,0 +1,16 @@
+</div>
+
+<script type="text/javascript">
+    //<![CDATA[
+    conLoadFile('{PATH_BACKEND}scripts/content_types/cmsAbstractTabbed.js', '{PREFIX}{ID}AbstractTabbedClassLoaded();');
+    
+    function {PREFIX}{ID}AbstractTabbedClassLoaded() {
+        conLoadFile('{JS_CLASS_SCRIPT}', '{PREFIX}{ID}ContentTypeClassLoaded();');
+    }
+
+    function {PREFIX}{ID}ContentTypeClassLoaded() {
+        var contentTypeInstance = new {JS_CLASS_NAME}('#cms_{PREFIX}_{ID}_settings', '#cms_{PREFIX}_{ID}', '{PATH_BACKEND}', '{PATH_FRONTEND}', '{IDARTLANG}', '{ID}', Array({FIELDS}), '{PREFIX}', '{CONTENIDO}', {SETTINGS});
+        contentTypeInstance.initialise();
+    }
+    //]]>
+</script>

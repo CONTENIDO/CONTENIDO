@@ -1,0 +1,81 @@
+@import url("cms_dirlist.css");
+
+.cms_imgeditor .directoryList {
+    float: left;
+    margin-right: 5px;
+    width: 210px;
+}
+
+.cms_imgeditor .directoryShow {
+    width: 410px;
+}
+
+.cms_imgeditor {
+    width: 430px;
+}
+
+.cms_imgeditor .directoryFile {
+    border: 1px solid #CCC;
+    height: 170px;
+    overflow: auto;
+}
+
+.cms_imgeditor .directories .directoryShow,.cms_imgeditor .upload .directoryShow
+    {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    min-height: 50px;
+    margin-top: 5px;
+    max-height: 210px;
+    overflow: auto;
+}
+
+.cms_imgeditor .meta label {
+    margin: 10px 0 3px 10px;
+}
+
+.cms_imgeditor .meta input {
+    border: 1px solid #ccc;
+    font-size: 11px;
+    margin: 10px 0 3px 10px;
+    width: 275px;
+}
+
+.cms_imgeditor .meta textarea {
+    border: 1px solid #ccc;
+    font-size: 11px;
+    height: 50px;
+    margin: 10px 0 3px 10px;
+    resize: vertical;
+    width: 275px;
+}
+
+.cms_imgeditor select {
+    border: none;
+    color: #000;
+    font-size: 11px;
+    height: 170px;
+    width: 210px;
+}
+
+.cms_imgeditor select option {
+    margin-left: 2px;
+}
+
+.cms_imgeditor input[type="image"] {
+    height: 16px;
+    margin-left: 5px;
+    vertical-align: middle;
+    width: 16px;
+}
+
+.loading {
+    display: none;
+    left: 22%;
+    position: absolute;
+    top: 17%;
+}
+
+.cms_imgeditor #caption1,.cms_imgeditor #caption2,.cms_imgeditor .image_meta_url {
+    margin-left: 10px;
+}

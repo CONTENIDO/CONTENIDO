@@ -756,7 +756,7 @@ class Contenido_Module_Handler
             $alias = $this->_moduleAlias;
         }
 
-        $oWriter = new ContenidoXmlWriter();
+        $oWriter = new cXmlWriter();
         $oRootElement = $oWriter->addElement('module', '', null);
 
         $oWriter->addElement('name', htmlspecialchars($moduleName), $oRootElement);

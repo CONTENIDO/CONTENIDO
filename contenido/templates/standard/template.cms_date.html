@@ -1,36 +1,12 @@
-
-<input type="hidden" id="cms_date{INDEX_OF_CMS_DATE}_format" value="" />
-<input type="hidden" id="cms_date{INDEX_OF_CMS_DATE}"/>
-
 <script type="text/javascript">
-    /**
-    * Load language files
-    */
-    function load1_{CALL_NAME}() {
-        {LOAD_LANG}
-    }
+//<![CDATA[
 
-    /**
-    *Init the datepicker
-    */
-    function load2_{CALL_NAME}() {
+conLoadFile('{PATH_BACKEND}scripts/content_types/cmsDate.js', '{PREFIX}{ID}ClassLoaded();');
 
-     $('#cms_date{INDEX_OF_CMS_DATE}').datepicker({
-        buttonImage: '{PATH_TO_CALENDER_PIC}',
-        buttonImageOnly: true,
-        showOn: 'both',
-        onClose: function(dateText, inst) {
+function {PREFIX}{ID}ClassLoaded() {
+    var contentTypeInstance = new cContentTypeDate('#cms_{PREFIX}_{ID}_settings', '{PREFIX}', {ID}, '{IDARTLANG}', '{PATH_BACKEND}', '{LANG}', {SETTINGS});
+    contentTypeInstance.initialise('{PATH_TO_CALENDAR_PIC}');
+}
 
-            // aEditdata is global from include.con_editcontent.php
-            aEditdata['DATE_{ID_TYPE}_{INDEX_OF_CMS_DATE}'] = dateText;
-            //set date to div
-            $('#DATE__{INDEX_OF_CMS_DATE}').html(dateText);
-        }
-     });
-    }
-
-    //Loade language files and css file
-    $('head').append('<link rel="stylesheet" id="cms_date" href="{PATH_CONTENIDO_FULLHTML}styles/smoothness/jquery-ui-1.8.20.custom.css" type="text/css" media="all" />');
-    conLoadFile('{PATH_CONTENIDO_FULLHTML}scripts/jquery/jquery-ui.js', 'load1_{CALL_NAME}();');
-
+//]]>
 </script>

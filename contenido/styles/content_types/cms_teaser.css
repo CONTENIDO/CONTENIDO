@@ -1,0 +1,16 @@
+.cms_teaser {
+    height: 320px;
+    width: 322px;
+}
+
+.cms_teaser .manual {
+    width: 320px;
+}
+
+.cms_teaser select.teaser_type_select {
+    width: 147px;
+}
+
+.cms_teaser input.teaser_type_count {
+    width: 50px;
+}

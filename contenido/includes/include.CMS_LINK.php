@@ -37,7 +37,7 @@ if (isset($area) && $area == 'con_content_list') {
 } else {
     $tmp_area = "con_editcontent";
     $path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
-    $path2 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat";
+    $path2 = $cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat";
 }
 
 if ($doedit == "1") {
@@ -90,9 +90,19 @@ if ($doedit == "1") {
         }
     }
 
-    conSaveContentEntry($idartlang, "CMS_LINK", $typenr, $CMS_LINK);
-    conSaveContentEntry($idartlang, "CMS_LINKDESCR", $typenr, $CMS_LINKDESCR);
-    conSaveContentEntry($idartlang, "CMS_LINKTARGET", $typenr, $CMS_LINKTARGET);
+    // construct the XML structure
+    $newWindow = ($CMS_LINKTARGET == '_blank')? 'true' : 'false';
+    // if link is a relative path, prepend the upload path
+    if (strpos($CMS_LINK, 'http://') == 0 || strpos($CMS_LINK, 'www.') == 0) {
+        $link = $CMS_LINK;
+    } else {
+        $link = $cfgClient[$this->_client]['upl']['path'] . $CMS_LINK;
+    }
+    $xml = <<<EOT
+<?xml version="1.0" encoding="utf-8"?>
+<linkeditor><type>external</type><externallink>{$link}</externallink><title>{$CMS_LINKDESCR}</title><newwindow>{$newWindow}</newwindow><idart></idart><filename></filename></linkeditor>
+EOT;
+    conSaveContentEntry($idartlang, "CMS_LINKEDITOR", $typenr, $xml);
     conMakeArticleIndex($idartlang, $idart);
     conGenerateCodeForartInAllCategories($idart);
     header("Location:".$sess->url($path1));

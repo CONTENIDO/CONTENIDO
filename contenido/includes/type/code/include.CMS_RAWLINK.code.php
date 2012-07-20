@@ -34,14 +34,20 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$tmp = $a_content['CMS_LINK'][$val];
 
-// Internal link
-if (is_numeric($tmp)) {
-    $tmp = 'front_content.php?idcatart='. $tmp . '&client=' . $client . '&lang=' . $lang;
-    if ($edit) {
-        $tmp = $sess->url("$tmp");
-    }
+$link = new cContentTypeLink($a_content['CMS_LINK'][$val], $val, $a_content);
+
+if ($edit) {
+    cDeprecated('Do not use CMS_RAWLINK any more - use CMS_LINK instead!');
+    $cNotification = new Contenido_Notification();
+    $notification = $cNotification->messageBox(Contenido_Notification::LEVEL_WARNING, 'Sie benutzen einen veralteten Content-Typen (CMS_RAWLINK). Dieser Content-Typ wird in einer späteren Version von CONTENIDO nicht mehr unterstützt. Bitte wechseln Sie auf den neuen Content-Typen CMS_LINK.');
+    $notification = addslashes($notification);
+    $notification = str_replace("\\'", "'", $notification);
+    $notification = str_replace('\$', '\\$', $notification);
+    $tmp = $notification;
+    $tmp .= $link->generateEditCode();
+} else {
+    $tmp = $link->generateViewCode();
 }
 
 ?>

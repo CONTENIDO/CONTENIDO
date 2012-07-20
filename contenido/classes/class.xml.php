@@ -29,14 +29,14 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/** @deprecated 2011-03-03 Use ContenidoXmlReader instead */
-class XML_doc extends ContenidoXmlReader {
-    /** @deprecated 2011-03-03 Use ContenidoXmlReader instead. */
+/** @deprecated 2011-03-03 Use cXmlReader instead */
+class XML_doc extends cXmlReader {
+    /** @deprecated 2011-03-03 Use cXmlReader instead. */
     function XML_doc() {
-        cDeprecated("Use ContenidoXmlReader instead.");
+        cDeprecated("Use cXmlReader instead.");
     }
 
-    /** @deprecated 2011-03-03 Use ContenidoXmlReader instead. */
+    /** @deprecated 2011-03-03 Use cXmlReader instead. */
     function load($sFile) {
         if (cFileHandler::exists($sFile) === false) {
             return false;
@@ -46,9 +46,9 @@ class XML_doc extends ContenidoXmlReader {
         return true;
     }
 
-    /** @deprecated 2011-03-03 Use ContenidoXmlReader instead. */
+    /** @deprecated 2011-03-03 Use cXmlReader instead. */
     function valueOf($xpath) {
-        cDeprecated("Use ContenidoXmlReader instead.");
+        cDeprecated("Use cXmlReader instead.");
         $val = $this->getXpathValue('*/' . $xpath);
 
         if ($val != '') {

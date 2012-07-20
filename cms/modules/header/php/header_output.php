@@ -1,16 +1,18 @@
 <?php
 /**
- * Description: Display Header with CONTENIDO Logo, an image and the current (navigation-) location.
+ * Description: Display Header with CONTENIDO Logo, an image and the current
+ * (navigation-) location.
  * If no image is selected, the default one will be used.
  *
- * @version    1.0.0
- * @author     Rudi Bieller
- * @copyright  four for business AG <www.4fb.de>
+ * @package Core
+ * @subpackage Frontend
+ * @version SVN Revision $Rev:$
  *
- * {@internal
- *   created 2008-04-07
- *   $Id$
- * }}
+ * @author Rudi Bieller
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!isset($tpl) || !is_object($tpl)) {
@@ -24,17 +26,15 @@ try {
     // get headline
     $oConCat = new Contenido_Category($db, $cfg);
     $oConCat->load($idcat, true, $lang);
-    $sImgEdit = "CMS_IMAGE[1]";
+    $sImgEdit = "CMS_IMGEDITOR[1]";
     $sImgSrc = "CMS_IMG[1]";
-    $sHeadline = $iIdcatStart != intval($idcat)
-                 ? $oConCat->getCategoryLanguage()->getName()
-                 : mi18n("Willkommen!");
+    $sHeadline = $iIdcatStart != intval($idcat)? $oConCat->getCategoryLanguage()->getName() : mi18n("Willkommen!");
     $sCssStyle = '';
     if ($contenido && $edit) {
-        echo '<div id="modHeaderImgEdit">'.$sImgEdit.'</div>';
+        echo '<div id="modHeaderImgEdit">' . $sImgEdit . '</div>';
     }
     if ($sImgSrc != '') {
-        $sCssStyle = ' style="background-image:url('.$sImgSrc.');"';
+        $sCssStyle = ' style="background-image:url(' . $sImgSrc . ');"';
     }
 
     $tpl->reset();
@@ -44,9 +44,9 @@ try {
     $tpl->set('s', 'headline', $sHeadline);
     $tpl->generate('templates/header.html');
 } catch (InvalidArgumentException $eI) {
-    echo 'Some error occured: ' . $eI->getMessage() . ': ' . $eI->getFile() . ' at line '.$eI->getLine() . ' ('.$eI->getTraceAsString().')';
+    echo 'Some error occured: ' . $eI->getMessage() . ': ' . $eI->getFile() . ' at line ' . $eI->getLine() . ' (' . $eI->getTraceAsString() . ')';
 } catch (Exception $e) {
-    echo 'Some error occured: ' . $e->getMessage() . ': ' . $e->getFile() . ' at line '.$e->getLine() . ' ('.$e->getTraceAsString().')';
+    echo 'Some error occured: ' . $e->getMessage() . ': ' . $e->getFile() . ' at line ' . $e->getLine() . ' (' . $e->getTraceAsString() . ')';
 }
 
 ?>

@@ -1,0 +1,219 @@
+.directoryList {
+    background-color: #FFF;
+    border: 1px solid #ccc;
+    height: 170px;
+    margin-bottom: 10px;
+    overflow: auto;
+}
+
+.directoryList ul li div {
+    background: #FFF url("../../images/dash.gif") no-repeat 16px 8px;
+}
+
+.directoryList ul li li li div {
+    background-position: 36px 8px;
+}
+
+.directoryList ul li li li li div {
+    background-position: 56px 8px;
+}
+
+.directoryList ul li li li li li div {
+    background-position: 76px 8px;
+}
+
+.directoryList ul li li li li li li div {
+    background-position: 96px 8px;
+}
+
+.directoryList ul li li li li li li li div {
+    background-position: 116px 8px;
+}
+
+.directoryList ul li li li li li li li li div {
+    background-position: 136px 8px;
+}
+
+.directoryList ul li li li li li li li li li div {
+    background-position: 156px 8px;
+}
+
+.directoryList ul li li li li li li li li li li div {
+    background-position: 176px 8px;
+}
+
+.directoryList ul li li li li li li li li li li li div {
+    background-position: 196px 8px;
+}
+
+.directoryList ul li#root li li em {
+    width: 40px;
+}
+
+.directoryList ul li#root li li li em {
+    width: 60px;
+}
+
+.directoryList ul li#root li li li li em {
+    width: 80px;
+}
+
+.directoryList ul li#root li li li li li em {
+    width: 100px;
+}
+
+.directoryList ul li#root li li li li li li em {
+    width: 120px;
+}
+
+.directoryList ul li#root li li li li li li li em {
+    width: 140px;
+}
+
+.directoryList ul li#root li li li li li li li li em {
+    width: 160px;
+}
+
+.directoryList ul li#root li li li li li li li li li em {
+    width: 180px;
+}
+
+.directoryList ul li#root li li li li li li li li li li em {
+    width: 200px;
+}
+
+.directoryList ul li div.active,.directoryList ul li#root li div.active a,.directoryList ul li#root li div.active em a,.directoryList ul li#root li div.active em span
+    {
+    background-color: #ECF1B2 !important;
+}
+
+.directoryList ul li div:hover {
+    cursor: pointer;
+}
+
+.directoryList ul li div:hover,.directoryList ul li div:hover a,.directoryList ul li#root li div:hover a,.directoryList ul li#root li div:hover em a,.directoryList ul li#root li div:hover em span,.directoryList div.hover,.directoryList div.hover a,.directoryList ul li#root li div.hover a,.directoryList ul li#root li div.hover em a,.directoryList ul li#root li div.hover em span
+    {
+    background-color: #F8FDDC !important;
+}
+
+.directoryList ul li a:hover {
+    background-color: #F8FDDC !important;
+    color: #0060B1 !important;
+    text-decoration: none;
+}
+
+.directoryList ul li a {
+    background: #FFF;
+    color: #000000;
+    line-height: 20px;
+    padding: 4px 5px 4px 20px;
+}
+
+.directoryList ul li#root em {
+    float: left;
+}
+.directoryList ul li#root>em {
+    float: none;
+    height: 20px;
+    line-height: 20px;
+    padding-left: 20px;
+}
+
+.directoryList ul li#root li.last ul em {
+    background-position: -1000px 0;
+}
+
+.directoryList ul li#root li li.last ul em {
+    background-position: -980px 0;
+}
+
+.directoryList ul li#root li li li.last ul em {
+    background-position: -960px 0;
+}
+
+.directoryList ul li#root li li li li.last ul em {
+    background-position: -940px 0;
+}
+
+.directoryList ul li#root li li li li li.last ul em {
+    background-position: -920px 0;
+}
+
+.directoryList ul li#root li li li li li li.last ul em {
+    background-position: -900px 0;
+}
+
+.directoryList ul li#root li li li li li li li.last ul em {
+    background-position: -880px 0;
+}
+
+.directoryList ul li#root li li li li li li li li.last ul em {
+    background-position: -860px 0;
+}
+
+.directoryList ul li#root li li li li li li li li li.last ul em {
+    background-position: -840px 0;
+}
+
+.directoryList ul li#root li li li li li li li li li li.last ul em {
+    background-position: -820px 0;
+}
+
+.directoryList ul li#root li em {
+    background: url("../../images/vert-neu.gif") no-repeat scroll right top
+        transparent;
+}
+
+.directoryList ul li#root li em a,.directoryList ul li#root li em span {
+    background: #FFF url("../../images/but_minus.gif") no-repeat 0 0;
+    float: right;
+    height: 20px;
+    margin: 0 4px 0 0;
+    padding: 0;
+    width: 16px;
+}
+
+.directoryList ul li#root li.collapsed em a,.directoryList ul li#root li.collapsed em span
+    {
+    background: #FFF url("../../images/but_plus.gif") no-repeat 0 0;
+}
+
+.directoryList ul li#root li.last em a,.directoryList ul li#root li.last li.last em a,.directoryList ul li#root li.last em span,.directoryList ul li#root li.last li.last em span
+    {
+    background: #FFF url("../../images/but_lastnode.gif") no-repeat 0 0;
+}
+
+.directoryList ul li#root li.last li em a,.directoryList ul li#root li.collapsed li em a,.directoryList ul li#root li.last li.collapsed li em a,.directoryList ul li#root li.last li em span,.directoryList ul li#root li.collapsed li em span,.directoryList ul li#root li.last li.collapsed li em span
+    {
+    background: #FFF url("../../images/but_minus.gif") no-repeat 0 0;
+}
+
+.directoryList ul li#root li.last li.collapsed em a,.directoryList ul li#root li.last.collapsed em a,.directoryList ul li#root li.last li.collapsed em span,.directoryList ul li#root li.last.collapsed em span
+    {
+    background: #FFF url("../../images/but_plus.gif") no-repeat 0 0;
+}
+
+.directoryList ul li#root li.collapsed ul {
+    display: none;
+}
+
+.directoryList ul li#root {
+    background: url("../../images/ordner_oben.gif") no-repeat 0 2px;
+}
+
+.directoryList ul li#root>div {
+    background: none;
+}
+
+.directoryList ul li#root>div>a {
+    background: url("../../images/ordner_oben.gif") no-repeat 0 2px;
+    font-style: italic;
+}
+
+.directoryList ul li#root>div>em>a {
+    padding: 0;
+}
+
+.directoryList ul li a {
+    background: url("../../images/folder_on.gif") no-repeat 0 2px;
+}

@@ -37,26 +37,17 @@ if (!defined('CON_FRAMEWORK')) {
 
 $tmp = '';
 
+$linkEditor = new cContentTypeLinkEditor($a_content['CMS_LINKEDITOR'][$val], $val, array());
+
 if ($edit) {
-    // Edit anchor and image
-    $editLink = $sess->url("front_content.php?action=10&idcat=$idcat&idart=$idart&idartlang=$idartlang&type=CMS_SIMPLELINK&typenr=$val");
-    $editAnchor = new cGuiLink();
-    $editAnchor->setClass('CMS_SIMPLELINKEDIT_' . $val . '_EDIT CMS_LINK_EDIT');
-    $editAnchor->setLink("javascript:setcontent('$idartlang','".$editLink."');");
-
-    // Save all content
-    $editButton = new cHTMLImage();
-    $editButton->setSrc($cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_editlink.gif');
-    $editButton->setBorder(0);
-
-    $editAnchor->setContent($editButton);
-
-    // Process for output with echo
-    $finalEditButton = $editAnchor->render();
-    $finalEditButton = addslashes($finalEditButton);
-    $finalEditButton = str_replace("\\'", "'", $finalEditButton);
-
-    $tmp = $finalEditButton;
+    cDeprecated('Do not use CMS_SIMPLELINKEDIT any more - use CMS_LINKEDITOR instead!');
+    $cNotification = new Contenido_Notification();
+    $notification = $cNotification->messageBox(Contenido_Notification::LEVEL_WARNING, 'Sie benutzen einen veralteten Content-Typen (CMS_SIMPLELINKEDIT). Dieser Content-Typ wird in einer späteren Version von CONTENIDO nicht mehr unterstützt. Bitte wechseln Sie auf den neuen Content-Typen CMS_LINKEDITOR.');
+    $notification = addslashes($notification);
+    $notification = str_replace("\\'", "'", $notification);
+    $notification = str_replace('\$', '\\$', $notification);
+    $tmp .= $notification;
+    $tmp .= $linkEditor->generateEditCode();
 }
 
 ?>

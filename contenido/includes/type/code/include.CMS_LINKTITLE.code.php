@@ -35,8 +35,19 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$tmp = $a_content['CMS_LINKDESCR'][$val];
-$tmp = htmlspecialchars($tmp);
-$tmp = addslashes($tmp);
+$linkDescr = new cContentTypeLinkDescr($a_content['CMS_LINKDESCR'][$val], $val, $a_content);
+
+if ($edit) {
+    cDeprecated('Do not use CMS_LINKTITLE any more - use CMS_LINKDESCR instead!');
+    $cNotification = new Contenido_Notification();
+    $notification = $cNotification->messageBox(Contenido_Notification::LEVEL_WARNING, 'Sie benutzen einen veralteten Content-Typen (CMS_LINKTITLE). Dieser Content-Typ wird in einer späteren Version von CONTENIDO nicht mehr unterstützt. Bitte wechseln Sie auf den neuen Content-Typen CMS_LINKDESCR.');
+    $notification = addslashes($notification);
+    $notification = str_replace("\\'", "'", $notification);
+    $notification = str_replace('\$', '\\$', $notification);
+    $tmp = $notification;
+    $tmp .= $linkDescr->generateEditCode();
+} else {
+    $tmp = $linkDescr->generateViewCode();
+}
 
 ?>
