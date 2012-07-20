@@ -6002,7 +6002,8 @@ msgstr "Artikel löschen"
 msgid "Flip Selection"
 msgstr ""
 
-
+msgid "Do you really want to create a new language?"
+msgstr "Möchten Sie wirklich eine neue Sprache erstellen?"
 
 
 
