@@ -14,7 +14,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.3.8
+ * @version    1.3.9
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,24 +24,8 @@
  *
  * {@internal
  *   created 2003-12-15
- *   modified 2008-06-25, Timo Trautmann, user meta tags and system meta tags were merged, not replaced
- *   modified 2008-06-25, Frederic Schneider, add security fix
- *   modified 2008-08-29, Murat Purc, add new chain execution
- *   modified 2009-03-27, Andreas Lindner, Add title tag generation via chain
- *   modified 2009-10-29, Murat Purc, removed deprecated functions (PHP 5.3 ready)
- *   modified 2009-12-18, Murat Purc, fixed meta tag generation, see [#CON-272]
- *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
- *   modified 2010-10-11, Dominik Ziegler, display only major and minor version of version number
- *   modified 2010-12-09, Dominik Ziegler, fixed multiple replacements of title tags [#CON-373]
- *   modified 2011-01-11, Rusmir Jusufovic
- *       - load input and output of moduls from files
- *   modified 2011-06-24, Rusmir Jusufovic , load layout code from file
- *   modified 2011-07-20, Murat Purc, partly refactored function conGenerateCode(), cleanup, documenting and formatting.
- *   modified 2011-08-11, Murat Purc, code generation replaced by new Contenido_CodeGenerator implementation
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -60,8 +44,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @return string The generated code or "0601" if neither article nor category configuration
  *                was found
  */
-function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true)
-{
+function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true) {
     global $frontend_debug;
 
     // @todo make generator configurable
@@ -78,7 +61,6 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save 
     return $code;
 }
 
-
 /**
  * Returns the idartlang for a given article and language
  *
@@ -89,21 +71,18 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save 
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @copyright four for business AG 2003
  */
-function getArtLang($idart, $idlang)
-{
+function getArtLang($idart, $idlang) {
     $oArtLangColl = new cApiArticleLanguageCollection();
     $idartlang = $oArtLangColl->getIdByArticleIdAndLanguageId($idart, $idlang);
     return ($idartlang) ? $idartlang : false;
 }
-
 
 /**
  * Returns all available meta tag types
  *
  * @return  array  Assoziative meta tags list
  */
-function conGetAvailableMetaTagTypes()
-{
+function conGetAvailableMetaTagTypes() {
     $oMetaTypeColl = new cApiMetaTypeCollection();
     $oMetaTypeColl->select();
     $aMetaTypes = array();
@@ -121,7 +100,6 @@ function conGetAvailableMetaTagTypes()
     return $aMetaTypes;
 }
 
-
 /**
  * Get the meta tag value for a specific article
  *
@@ -129,8 +107,7 @@ function conGetAvailableMetaTagTypes()
  * @param int $idmetatype Metatype-ID
  * @return  string
  */
-function conGetMetaValue($idartlang, $idmetatype)
-{
+function conGetMetaValue($idartlang, $idmetatype) {
     static $oMetaTagColl;
     if (!isset($oMetaTagColl)) {
         $oMetaTagColl = new cApiMetaTagCollection();
@@ -148,7 +125,6 @@ function conGetMetaValue($idartlang, $idmetatype)
     }
 }
 
-
 /**
  * Set the meta tag value for a specific article.
  *
@@ -156,8 +132,7 @@ function conGetMetaValue($idartlang, $idmetatype)
  * @param  int  $idmetatype Metatype-ID
  * @param  string  $value Value of the meta tag
  */
-function conSetMetaValue($idartlang, $idmetatype, $value)
-{
+function conSetMetaValue($idartlang, $idmetatype, $value) {
     static $oMetaTagColl;
     if (!isset($oMetaTagColl)) {
         $oMetaTagColl = new cApiMetaTagCollection();
@@ -171,7 +146,6 @@ function conSetMetaValue($idartlang, $idmetatype, $value)
     }
 }
 
-
 /**
  * (re)generate keywords for all articles of a given client (with specified language)
  * @param int $client Client
@@ -183,8 +157,7 @@ function conSetMetaValue($idartlang, $idmetatype, $value)
  * Modified  :   13.05.2004
  * @copyright four for business AG 2003
  */
-function conGenerateKeywords($client, $lang)
-{
+function conGenerateKeywords($client, $lang) {
     global $cfg;
 
     static $oDB;
@@ -214,7 +187,6 @@ function conGenerateKeywords($client, $lang)
     }
 }
 
-
 /**
  * Get content from article by article language.
  * @param int $iIdArtLang ArticleLanguageId of an article (idartlang)
@@ -226,8 +198,7 @@ function conGenerateKeywords($client, $lang)
  * Modified  :   13.05.2004
  * @copyright four for business AG 2003
  */
-function conGetContentFromArticle($iIdArtLang)
-{
+function conGetContentFromArticle($iIdArtLang) {
     global $cfg;
 
     static $oDB;
@@ -238,7 +209,7 @@ function conGetContentFromArticle($iIdArtLang)
     $aContent = array();
 
     $sql = 'SELECT * FROM ' . $cfg['tab']['content'] . ' AS A, ' . $cfg['tab']['art_lang'] . ' AS B, ' . $cfg['tab']['type'] . ' AS C
-            WHERE A.idtype=C.idtype AND A.idartlang=B.idartlang AND A.idartlang='. (int) $iIdArtLang;
+            WHERE A.idtype=C.idtype AND A.idartlang=B.idartlang AND A.idartlang=' . (int) $iIdArtLang;
     $oDB->query($sql);
     while ($oDB->next_record()) {
         $aContent[$oDB->f('type')][$oDB->f('typeid')] = $oDB->f('value');
@@ -247,25 +218,21 @@ function conGetContentFromArticle($iIdArtLang)
     return $aContent;
 }
 
-
 /**
  * Returns list of all used modules by template id
  *
  * @param  int $idtpl  Template id
  * @return  array  Assoziative array where the key is the number and value the module id
  */
-function conGetUsedModules($idtpl)
-{
-    global $cfg, $db;
-
-    // List of used modules
+function conGetUsedModules($idtpl) {
     $modules = array();
-    $sql = 'SELECT number, idmod FROM ' . $cfg['tab']['container'] . '
-            WHERE idtpl=' . (int) $idtpl . ' ORDER BY number ASC';
-    $db->query($sql);
-    while ($db->next_record()) {
-        $modules[(int) $db->f('number')] = (int) $db->f('idmod');
+
+    $oContainerColl = new cApiContainerCollection();
+    $oContainerColl->select('idtpl = ' . (int) $idtpl, '', 'number ASC');
+    while ($oContainer = $oContainerColl->next()) {
+        $modules[(int) $oContainer->get('number')] = (int) $oContainer->get('idmod');
     }
+
     return $modules;
 }
 
@@ -276,20 +243,17 @@ function conGetUsedModules($idtpl)
  * @return  array  Assoziative array where the key is the number and value the container
  *                 configuration
  */
-function conGetContainerConfiguration($idtplcfg)
-{
-    global $cfg, $db;
-
+function conGetContainerConfiguration($idtplcfg) {
     $configuration = array();
-    $sql = 'SELECT * FROM ' . $cfg['tab']['container_conf'] . '
-             WHERE idtplcfg=' . (int) $idtplcfg . ' ORDER BY number ASC';
-    $db->query($sql);
-    while ($db->next_record()) {
-        $configuration[$db->f('number')] = $db->f('container');
+
+    $oContainerConfColl = new cApiContainerConfigurationCollection();
+    $oContainerConfColl->select('idtplcfg = ' . (int) $idtplcfg, '', 'number ASC');
+    while ($oContainerConf = $oContainerConfColl->next()) {
+        $configuration[(int) $oContainerConf->get('number')] = $oContainerConf->get('container');
     }
+
     return $configuration;
 }
-
 
 /**
  * Returns category article id
@@ -298,41 +262,36 @@ function conGetContainerConfiguration($idtplcfg)
  * @param  int  $idart
  * @return  int|null
  */
-function conGetCategoryArticleId($idcat, $idart)
-{
+function conGetCategoryArticleId($idcat, $idart) {
     global $cfg, $db;
 
-    // get idcatart, we need this to retrieve the template configuration
-    $sql = 'SELECT idcatart FROM ' . $cfg['tab']['cat_art'] . '
-            WHERE idcat=' . (int) $idcat . ' AND idart = ' . (int) $idart;
+    // Get idcatart, we need this to retrieve the template configuration
+    $sql = 'SELECT idcatart FROM `%s` WHERE idcat = %d AND idart = %d';
+    $sql = $db->prepare($sql, $cfg['tab']['cat_art'], $idcat, $idart);
     $db->query($sql);
-    $db->next_record();
-    return $db->f('idcatart');
+
+    return ($db->next_record()) ? $db->f('idcatart') : null;
 }
 
 /**
  * Returns template configuration id for a configured article.
  *
  * @param  int  $idart
- * @param  int  $idcat
+ * @param  int  $idcat  NOT used
  * @param  int  $lang
  * @param  int  $client
  * @return  int|null
  */
-function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client)
-{
+function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client) {
     global $cfg, $db;
 
-    // retrieve template configuration id
-    $sql = "SELECT a.idtplcfg AS idtplcfg
-            FROM " . $cfg["tab"]["art_lang"] . " AS a, " . $cfg["tab"]["art"] . " AS b
-            WHERE a.idart = " . (int) $idart . " AND a.idlang = " . (int) $lang . " AND
-                  b.idart = a.idart AND b.idclient = " . (int) $client;
-
+    // Retrieve template configuration id
+    $sql = "SELECT a.idtplcfg AS idtplcfg FROM `%s` AS a, `%s` AS b WHERE a.idart = %d "
+         . "AND a.idlang = %d AND b.idart = a.idart AND b.idclient = %d";
+    $sql = $db->prepare($sql, $cfg['tab']['art_lang'], $cfg['tab']['art'], $idart, $lang, $client);
     $db->query($sql);
-    $db->next_record();
 
-    return ($db->f('idtplcfg') != 0) ? $db->f('idtplcfg') : null;
+    return ($db->next_record()) ? $db->f('idtplcfg') : null;
 }
 
 /**
@@ -343,20 +302,16 @@ function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client)
  * @param  int  $client
  * @return  int|null
  */
-function conGetTemplateConfigurationIdForCategory($idcat, $lang, $client)
-{
+function conGetTemplateConfigurationIdForCategory($idcat, $lang, $client) {
     global $cfg, $db;
 
-    // Check whether category is configured
-    $sql = "SELECT a.idtplcfg AS idtplcfg
-            FROM " . $cfg["tab"]["cat_lang"] . " AS a, " . $cfg["tab"]["cat"] . " AS b
-            WHERE a.idcat = " . (int) $idcat . " AND a.idlang = " . (int) $lang . " AND
-                b.idcat = a.idcat AND b.idclient = " . (int) $client;
-
+    // Retrieve template configuration id
+    $sql = "SELECT a.idtplcfg AS idtplcfg FROM `%s` AS a, `%s` AS b WHERE a.idcat = %d AND "
+         . "a.idlang = %d AND b.idcat = a.idcat AND b.idclient = %d";
+    $sql = $db->prepare($sql, $cfg['tab']['cat_lang'], $cfg['tab']['cat'], $idcat, $lang, $client);
     $db->query($sql);
-    $db->next_record();
 
-    return ($db->f('idtplcfg') != 0) ? $db->f('idtplcfg') : null;
+    return ($db->next_record()) ? $db->f('idtplcfg') : null;
 }
 
 ?>
