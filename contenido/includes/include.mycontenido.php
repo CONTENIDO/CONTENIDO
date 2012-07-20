@@ -112,8 +112,6 @@ if (count($clients) > 1) {
 
     if ($perm->have_perm() && count($warnings) > 0) {
         $page->displayWarning(implode('<br>', $warnings));
-    } else {
-        $page->set('s', 'WARNINGS', '');
     }
     $page->set('s', 'OKBUTTON', '<input type="image" src="images/but_ok.gif" alt="' . i18n('Change client') . '" title="' . i18n('Change client') . '" border="0">');
 } else {
@@ -138,8 +136,6 @@ if (count($clients) > 1) {
 
     if ($perm->have_perm() && count($warnings) > 0) {
         $page->displayWarning(implode('<br>', $warnings));
-    } else {
-        $page->set('s', 'WARNINGS', '');
     }
 
     $page->set('s', 'CLIENTSDROPDOWN', $name);
