@@ -497,22 +497,11 @@ $legendlink = 'legend';
 $editCategory = new cGuiFoldingRow("31f52be2-7499-4d21-8175-3917129e6014", i18n("Legend"), $legendlink);
 
 $editLegend = '<ul class="artikel_search">';
-$oXmlReader = new ContenidoXmlReader();
-$oXmlReader->load($cfg['path']['xml'] . "legend.xml");
 
-$aData = array();
 $aInformation = array('imgsrc', 'description');
-foreach ($aInformation as $sInfoName) {
-	$sPath = '/legend/article/' . $sInfoName;
-	$sum = $oXmlReader->countXpathNodes($sPath);
-	for($i = 0; $i < $sum; $i++){
-		$sPath = $oXmlReader->getLevelXpath($sPath, $i);
-		$oDomNodeList = $oXmlReader->getXpathNodeList($sPath);
-        $value = $oXmlReader->getXpathValue($sPath);
-		$aData[$i][$sInfoName] = $value;
-	}
-}
-//print_r($aData);
+$aData = xmlFileToArray($cfg['path']['xml'] . "legend.xml",$aData,$aInformation);
+
+
 foreach($aData as $data){
 	$editLegend .= '<li style="margin-bottom: 3px;"><img src="'.(string)$data['imgsrc'].'"/>'.(string)$data['description'].'</li>';
 }
@@ -527,4 +516,14 @@ $tpl->set('s', 'LEGEND', $editCategory->render());
 $tpl->set('s', 'HELPSCRIPT', setHelpContext("con"));
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_left_top']);
 
+function xmlFileToArray($filename, $aData = array(),$aInformation){
+	$_dom = simplexml_load_file($filename);
+	for($i=0,$size=count($_dom);$i<$size;$i++){
+		foreach ($aInformation as $sInfoName) {
+		    $aData[$i][$sInfoName] = ($_dom->article[$i]->$sInfoName);
+		}
+
+	}
+	return $aData;
+}
 ?>
