@@ -65,7 +65,6 @@ class cSession {
         $this->_pt = array();
         $this->_prefix = $prefix;
 
-        $this->id = '1';
         $this->name = 'contenido';
 
         if (!isset($_SESSION)) {
@@ -80,6 +79,7 @@ class cSession {
             session_set_cookie_params(0, $path);
             session_name($this->_prefix);
             session_start();
+            $this->id = session_id();
         }
     }
 
