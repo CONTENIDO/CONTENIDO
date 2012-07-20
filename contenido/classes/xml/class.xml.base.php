@@ -138,9 +138,9 @@ abstract class cXmlBase {
     /**
      * Converts an array to a SimpleXMLElement. Example:
      * array(
-     * 	'key1' => 'value1',
-     * 	'key2' => array('value21', 'value22'),
-     * 	'key3' => array('key31' => 'value31', 'key32' => 'value32')
+     *     'key1' => 'value1',
+     *     'key2' => array('value21', 'value22'),
+     *     'key3' => array('key31' => 'value31', 'key32' => 'value32')
      * );
      *
      * becomes

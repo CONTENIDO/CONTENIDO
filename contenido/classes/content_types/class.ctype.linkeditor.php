@@ -378,21 +378,21 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
         $activeIdcats = array();
         if ($this->_settings['linkeditor_type'] === 'internal') {
             $sql = 'SELECT distinct
-	                    *
-	                FROM
-	                    ' . $this->_cfg['tab']['cat_tree'] . ' AS a,
-	                    ' . $this->_cfg['tab']['cat_art'] . ' AS b,
-	                    ' . $this->_cfg['tab']['cat'] . ' AS c,
-	                    ' . $this->_cfg['tab']['cat_lang'] . ' AS d
-	                WHERE
-	                    b.idart = ' . Contenido_Security::toInteger($this->_settings['linkeditor_idart']) . ' AND
-	                    a.idcat = d.idcat AND
-	                    b.idcat = c.idcat AND
-	                    c.idcat = a.idcat AND
-	                    d.idlang = ' . Contenido_Security::toInteger($this->_lang) . ' AND
-	                    c.idclient = ' . Contenido_Security::toInteger($this->_client) . '
-	                ORDER BY
-	                    a.idtree';
+                        *
+                    FROM
+                        ' . $this->_cfg['tab']['cat_tree'] . ' AS a,
+                        ' . $this->_cfg['tab']['cat_art'] . ' AS b,
+                        ' . $this->_cfg['tab']['cat'] . ' AS c,
+                        ' . $this->_cfg['tab']['cat_lang'] . ' AS d
+                    WHERE
+                        b.idart = ' . Contenido_Security::toInteger($this->_settings['linkeditor_idart']) . ' AND
+                        a.idcat = d.idcat AND
+                        b.idcat = c.idcat AND
+                        c.idcat = a.idcat AND
+                        d.idlang = ' . Contenido_Security::toInteger($this->_lang) . ' AND
+                        c.idclient = ' . Contenido_Security::toInteger($this->_client) . '
+                    ORDER BY
+                        a.idtree';
             $db = cRegistry::getDb();
             $db->query($sql);
             while ($db->next_record()) {
@@ -462,7 +462,7 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
                     b.idart  = e.idart AND
                     c.idcat = a.idcat AND
                     c.idclient = ' . Contenido_Security::toInteger($this->_client) . ' AND
-				    e.idlang = ' . Contenido_Security::toInteger($this->_lang) . '
+                    e.idlang = ' . Contenido_Security::toInteger($this->_lang) . '
                 ORDER BY
                     a.idtree';
         $db = cRegistry::getDb();

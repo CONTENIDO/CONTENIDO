@@ -15,7 +15,7 @@
 /**
  * Creates a new cContentTypeFileList with the given properties.
  * You most probably want to call initialise() after creating a new object of this class.
- * 
+ *
  * @constructor
  * @property {String} frameId The ID of the frame in which the content type can be set up.
  * @property {String} imageId The ID of the button on which one clicks in order to edit the content type.
@@ -42,7 +42,7 @@ cContentTypeFileList.prototype.constructor = cContentTypeFileList;
 
 /**
  * Initialises the content type by adding event handlers etc.
- * 
+ *
  * @override
  */
 cContentTypeFileList.prototype.initialise = function() {
@@ -56,7 +56,7 @@ cContentTypeFileList.prototype.initialise = function() {
 /**
  * Loads external styles and scripts so that they are only loaded when they are
  * really needed.
- * 
+ *
  * @override
  */
 cContentTypeFileList.prototype.loadExternalFiles = function() {
@@ -148,7 +148,7 @@ cContentTypeFileList.prototype.addClickEvent = function() {
 };
 
 /**
- * Adds possibility to select all file extensions at once and 
+ * Adds possibility to select all file extensions at once and
  * disables file extension select if file extensions should be ignored.
  */
 cContentTypeFileList.prototype.addExtensionActions = function() {
@@ -156,24 +156,24 @@ cContentTypeFileList.prototype.addExtensionActions = function() {
     // let the user select all file extensions at once
     $(self.frameId + ' #filelist_all_extensions').css('cursor', 'pointer');
     $(self.frameId + ' #filelist_all_extensions').click(function () {
-    	// only react if the extensions should not be ignored
+        // only react if the extensions should not be ignored
         if ($(self.frameId + ' #filelist_extensions_' + self.id).is(':not(:disabled)')) {
-        	// check if all options are selected
-        	var allSelected = true;
-        	$(self.frameId + ' #filelist_extensions_' + self.id + ' option').each(function() {
-        		if (!$(this).is(':selected')) {
-        			allSelected = false;
-        		}
-        	});
-        	if (allSelected) {
-        		// all options are selected, so unselect them
-        		$(self.frameId + ' #filelist_all_extensions').css('font-weight', 'normal');
+            // check if all options are selected
+            var allSelected = true;
+            $(self.frameId + ' #filelist_extensions_' + self.id + ' option').each(function() {
+                if (!$(this).is(':selected')) {
+                    allSelected = false;
+                }
+            });
+            if (allSelected) {
+                // all options are selected, so unselect them
+                $(self.frameId + ' #filelist_all_extensions').css('font-weight', 'normal');
                 $(self.frameId + ' #filelist_extensions_' + self.id + ' option').prop('selected', false);
-        	} else {
-        		// some options are not selected, so select them
-        		$(self.frameId + ' #filelist_all_extensions').css('font-weight', 'bold');
-            	$(self.frameId + ' #filelist_extensions_' + self.id + ' option').prop('selected', 'selected');
-        	}
+            } else {
+                // some options are not selected, so select them
+                $(self.frameId + ' #filelist_all_extensions').css('font-weight', 'bold');
+                $(self.frameId + ' #filelist_extensions_' + self.id + ' option').prop('selected', 'selected');
+            }
         }
         return false;
     });
@@ -254,7 +254,7 @@ cContentTypeFileList.prototype.addNaviActions = function() {
 
 /**
  * Adds save event to the save button of content type edit form.
- * 
+ *
  * @override
  */
 cContentTypeFileList.prototype.addSaveEvent = function() {
@@ -264,9 +264,9 @@ cContentTypeFileList.prototype.addSaveEvent = function() {
         var value = '';
         $(self.frameId + ' #directories #directoryList_' + self.id + ' div[class="active"]').each(function () {
             if (value === '') {
-            	value = $(this).find('a[class="on"]').attr('title');
+                value = $(this).find('a[class="on"]').attr('title');
             } else {
-            	value += ',' + $(this).find('a[class="on"]').attr('title');
+                value += ',' + $(this).find('a[class="on"]').attr('title');
             }
         });
         self.appendFormField('filelist_array_directories', value);

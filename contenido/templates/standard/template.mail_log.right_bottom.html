@@ -44,7 +44,7 @@
 <form action ="main.php" name="bulk_editing" class="bulk_editing_form" method="get">
 
     <input type="hidden" name="area" value="mail_log_detail"/>
-    
+
     <input type="hidden" name="frame" value="4"/>
      <input type="hidden" name="action" value=""/>
     <input type="hidden" name="contenido" value="{SID}"/>
@@ -135,8 +135,8 @@
 
 <script type="text/javascript">
 
- 
-    
+
+
 $(document).ready(function () {
 
          //flip mark
@@ -184,25 +184,25 @@ $(document).ready(function () {
         return false;
     });
 
-     
-   	/* Mark the first submenu item i.e. 'Overview' or other item */
+
+       /* Mark the first submenu item i.e. 'Overview' or other item */
     if (parent.parent.frames['right'].frames['right_top'].document.getElementById('navlist')) {
-    
+
         menuItem = parent.parent.frames['right'].frames['right_top'].document.getElementById('navlist');
-      
+
       $(menuItem).find('a').removeClass('current');
-      
+
       var selectedArea =  $(menuItem).find('a.{AREA}');
-      
+
       if(selectedArea.length == 0) {
-      
-      	 $(menuItem).find('a:first').addClass('current');
+
+           $(menuItem).find('a:first').addClass('current');
       }else {
-      	selectedArea.addClass('current');
+          selectedArea.addClass('current');
       }
-      	
+
     }
-    
+
 });
 function deleteEmails() {
         var idmails = '';
@@ -220,12 +220,12 @@ function deleteEmails() {
         $('form.bulk_editing_form input[name="idmails"]').val(idmails);
         //send form
             $('form.bulk_editing_form input[name="submit"]').click();
-       
-    
+
+
 
     }
-    
-    
+
+
 </script>
 
 </body>

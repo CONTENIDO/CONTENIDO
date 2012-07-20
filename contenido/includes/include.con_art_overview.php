@@ -632,10 +632,10 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                             $actions[] = $tmp_sync;
                         }
 
-						//add properties button
-                		$actions[] = '<a id="properties" href="main.php?area=con_editart&action=con_edit&frame=4&idcat='.$idcat.'&idart='.$idart.'&contenido='.$contenido.'">
-                			<img onmouseover="this.style.cursor=\'pointer\'" src="images/but_art_conf2.gif" title="'.i18n("Display properties").'" alt="'.i18n("Display properties").'" style="margin-left: 2px; margin-right: 2px; cursor: pointer;">
-                		</a>';
+                        //add properties button
+                        $actions[] = '<a id="properties" href="main.php?area=con_editart&action=con_edit&frame=4&idcat='.$idcat.'&idart='.$idart.'&contenido='.$contenido.'">
+                            <img onmouseover="this.style.cursor=\'pointer\'" src="images/but_art_conf2.gif" title="'.i18n("Display properties").'" alt="'.i18n("Display properties").'" style="margin-left: 2px; margin-right: 2px; cursor: pointer;">
+                        </a>';
 
                         $value = implode("\n", $actions);
                         break;

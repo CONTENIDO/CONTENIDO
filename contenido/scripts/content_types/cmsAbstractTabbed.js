@@ -15,7 +15,7 @@
 /**
  * Creates a new cContentTypeAbstractTabbed with the given properties.
  * You most probably want to call initialise() after creating a new object of this class.
- * 
+ *
  * @constructor
  * @property {String} frameId The ID of the frame in which the content type can be set up.
  * @property {String} imageId The ID of the button on which one clicks in order to edit the content type.
@@ -32,70 +32,70 @@ function cContentTypeAbstractTabbed(frameId, imageId, pathBackend, pathFrontend,
 
     /**
      * ID of the frame in which all settings are made.
-     * 
+     *
      * @type String
      */
     this.frameId = frameId;
 
     /**
      * ID of the edit image.
-     * 
+     *
      * @type String
      */
     this.imageId = imageId;
 
     /**
      * The HTTP path to the CONTENIDO backend.
-     * 
+     *
      * @type String
      */
     this.pathBackend = pathBackend;
 
     /**
      * The HTTP path to the CONTENIDO frontend.
-     * 
+     *
      * @type String
      */
     this.pathFrontend = pathFrontend;
 
     /**
      * IdArtLang of the article which is currently in edit- or viewmode.
-     * 
+     *
      * @type Number
      */
     this.idArtLang = idArtLang;
 
     /**
      * ID of the content type, e.g. 3 if CMS_TEASER[3] is used.
-     * 
+     *
      * @type Number
      */
     this.id = id;
 
     /**
      * Array of form field names which are used by this content type.
-     * 
+     *
      * @type Array
      */
     this.fields = fields;
 
     /**
      * The prefix of this content type.
-     * 
+     *
      * @type String
      */
     this.prefix = prefix;
 
     /**
      * The CONTENIDO session.
-     * 
+     *
      * @type String
      */
     this.session = session;
 
     /**
      * The old settings.
-     * 
+     *
      * @type Object|String
      */
     this.settings = settings;
@@ -137,9 +137,9 @@ cContentTypeAbstractTabbed.prototype.jQueryUiCallback = function() {
 
 /**
  * Adds the given name/value pair as a hidden field to the editform so that it
- * is submitted to CONTENIDO. If a hidden field with the given name already 
+ * is submitted to CONTENIDO. If a hidden field with the given name already
  * exists, the value is overriden.
- * 
+ *
  * @param {String} name The name of the form field which should be added.
  * @param {String} value The value of the form field which should be added.
  */

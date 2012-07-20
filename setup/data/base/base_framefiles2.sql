@@ -20,7 +20,7 @@ INSERT INTO !PREFIX!_frame_files VALUES ('503', '52', '3', '503');
 INSERT INTO !PREFIX!_frame_files VALUES ('550', '550', '2', '550');
 INSERT INTO !PREFIX!_frame_files VALUES ('554', '550', '3', '554');
 INSERT INTO !PREFIX!_frame_files VALUES ('551', '550', '4', '551');
-INSERT INTO !PREFIX!_frame_files VALUES	('555', '551', '4', '555');
+INSERT INTO !PREFIX!_frame_files VALUES ('555', '551', '4', '555');
 INSERT INTO !PREFIX!_frame_files VALUES ('556', '552', '4', '556');
 INSERT INTO !PREFIX!_frame_files VALUES ('600', '600', '1', '600');
 INSERT INTO !PREFIX!_frame_files VALUES ('601', '600', '2', '601');

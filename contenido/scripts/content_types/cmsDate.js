@@ -13,7 +13,7 @@
  */
 
 /**
- * 
+ *
  * @constructor
  * @property {String} frameId The ID of the frame in which the content type can be set up.
  * @property {String} prefix The prefix of the content type.
@@ -27,49 +27,49 @@ function cContentTypeDate(frameId, prefix, id, idArtLang, pathBackend, lang, set
 
     /**
      * ID of the frame in which all settings are made.
-     * 
+     *
      * @type String
      */
     this.frameId = frameId;
 
     /**
      * The prefix of this content type.
-     * 
+     *
      * @type String
      */
     this.prefix = prefix;
 
     /**
      * ID of the content type, e.g. 3 if CMS_TEASER[3] is used.
-     * 
+     *
      * @type Number
      */
     this.id = id;
 
     /**
      * IdArtLang of the article which is currently in edit- or viewmode.
-     * 
+     *
      * @type Number
      */
     this.idArtLang = idArtLang;
 
     /**
      * The HTTP path to the CONTENIDO backend.
-     * 
+     *
      * @type String
      */
     this.pathBackend = pathBackend;
 
     /**
      * The language which should be used.
-     * 
+     *
      * @type String
      */
     this.lang = lang;
 
     /**
      * The old settings.
-     * 
+     *
      * @type Object|String
      */
     this.settings = settings;
@@ -114,16 +114,16 @@ cContentTypeDate.prototype.jQueryUiTimepickerCallback = function(calendarPic) {
     var self = this;
     // initialise the datepicker
     $('#date_timestamp_' + self.id).datetimepicker({
-    	alwaysSetTime: false,
+        alwaysSetTime: false,
         buttonImage: calendarPic,
         buttonImageOnly: true,
         showOn: 'both'
     });
     $(function() {
         // set the initial date
-    	var date = new Date();
+        var date = new Date();
         if (!isNaN(self.settings.date_timestamp)) {
-        	date = new Date(self.settings.date_timestamp * 1000);
+            date = new Date(self.settings.date_timestamp * 1000);
         }
         $('#date_timestamp_' + self.id).datetimepicker('setDate', date);
         // set the initial format
@@ -134,11 +134,11 @@ cContentTypeDate.prototype.jQueryUiTimepickerCallback = function(calendarPic) {
         $('#date_timestamp_' + self.id).datetimepicker('option', 'timeFormat', format.timeFormat);
         // change the format when a new format is selected
         $('#date_format_select_' + self.id).change(function() {
-        	var format = $(this).val();
-        	format = format.replace(/\\"/g, '\"');
-        	format = $.parseJSON(format);
-    		$('#date_timestamp_' + self.id).datetimepicker('option', 'dateFormat', format.dateFormat);
-    		$('#date_timestamp_' + self.id).datetimepicker('option', 'timeFormat', format.timeFormat);
+            var format = $(this).val();
+            format = format.replace(/\\"/g, '\"');
+            format = $.parseJSON(format);
+            $('#date_timestamp_' + self.id).datetimepicker('option', 'dateFormat', format.dateFormat);
+            $('#date_timestamp_' + self.id).datetimepicker('option', 'timeFormat', format.timeFormat);
         });
     });
     // only load the localisation file if the language is not english
@@ -155,11 +155,11 @@ cContentTypeDate.prototype.addSaveEvent = function() {
     var self = this;
     $(self.frameId + ' .save_settings').css('cursor', 'pointer');
     $(self.frameId + ' .save_settings').click(function() {
-    	var date = $('#date_timestamp_' + self.id).datetimepicker('getDate');
-    	var timestamp = date.getTime() / 1000;
-    	var format = $(self.frameId + ' #date_format_select_' + self.id).val();
-    	alert(date);
-    	alert(format);
+        var date = $('#date_timestamp_' + self.id).datetimepicker('getDate');
+        var timestamp = date.getTime() / 1000;
+        var format = $(self.frameId + ' #date_format_select_' + self.id).val();
+        alert(date);
+        alert(format);
         self.appendFormField(self.prefix + '_timestamp', timestamp);
         self.appendFormField(self.prefix + '_format', format);
         self.appendFormField(self.prefix + '_action', 'store');
@@ -171,9 +171,9 @@ cContentTypeDate.prototype.addSaveEvent = function() {
 
 /**
  * Adds the given name/value pair as a hidden field to the editform so that it
- * is submitted to CONTENIDO. If a hidden field with the given name already 
+ * is submitted to CONTENIDO. If a hidden field with the given name already
  * exists, the value is overriden.
- * 
+ *
  * @param {String} name The name of the form field which should be added.
  * @param {String} value The value of the form field which should be added.
  */
@@ -183,7 +183,7 @@ cContentTypeDate.prototype.appendFormField = function(name, value) {
         $('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').val(value);
     } else {
         // otherwise append a new field to the form
-    	alert('<input type="hidden" value="' + value + '" name="' + name + '"/>');
+        alert('<input type="hidden" value="' + value + '" name="' + name + '"/>');
         $('form[name="editcontent"]').append('<input type="hidden" value="' + value + '" name="' + name + '"/>');
     }
 };

@@ -2394,47 +2394,43 @@ class cHTMLScript extends cHTML {
 
 }
 
-class cHTMLList extends cHTML
-{
-	public function __construct($type = 'ul', $id = '', $class = '', $elements = array())
-	{
-		parent::__construct();
-		$this->setContentlessTag(false);
-		$this->_tag = $type;
-		$this->setID($id);
-		$this->setClass($class);
-		$this->setContent($elements);
-	}
+class cHTMLList extends cHTML {
 
-	/**
-	 * Sets the list's content
-	 * @param  string|object  $content  String with the content or an object to render.
-	 */
-	public function setContent($content)
-	{
-		$this->_setContent($content);
-	}
+    public function __construct($type = 'ul', $id = '', $class = '', $elements = array()) {
+        parent::__construct();
+        $this->setContentlessTag(false);
+        $this->_tag = $type;
+        $this->setID($id);
+        $this->setClass($class);
+        $this->setContent($elements);
+    }
+
+    /**
+     * Sets the list's content
+     * @param  string|object  $content  String with the content or an object to render.
+     */
+    public function setContent($content) {
+        $this->_setContent($content);
+    }
 
 }
 
-class cHTMLListItem extends cHTML
-{
-	public function __construct($id = '', $class = '')
-	{
-		parent::__construct();
-		$this->setContentlessTag(false);
-		$this->_tag = 'li';
-		$this->setID($id);
-		$this->setClass($class);
-	}
+class cHTMLListItem extends cHTML {
 
-	/**
-	 * Sets the list item's content
-	 * @param  string|object  $content  String with the content or an object to render.
-	 */
-	public function setContent($content)
-	{
-		$this->_setContent($content);
-	}
+    public function __construct($id = '', $class = '') {
+        parent::__construct();
+        $this->setContentlessTag(false);
+        $this->_tag = 'li';
+        $this->setID($id);
+        $this->setClass($class);
+    }
+
+    /**
+     * Sets the list item's content
+     * @param  string|object  $content  String with the content or an object to render.
+     */
+    public function setContent($content) {
+        $this->_setContent($content);
+    }
 
 }

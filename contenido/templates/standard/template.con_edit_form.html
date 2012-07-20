@@ -37,12 +37,12 @@
                         document.getElementById("online").checked = false;
                         document.getElementById("online").disabled = true;
                     }
-					$("#timemgmt").parent("td").parent("tr").nextAll("tr").css('display', '');
+                    $("#timemgmt").parent("td").parent("tr").nextAll("tr").css('display', '');
                 } else {
                     // Timecontrol disable => enable Online and Startarticle
                     document.getElementById("is_start").disabled = false;
                     document.getElementById("online").disabled = false;
-					$("#timemgmt").parent("td").parent("tr").nextAll("tr").css('display', 'none');
+                    $("#timemgmt").parent("td").parent("tr").nextAll("tr").css('display', 'none');
                 }
 
                 if (document.getElementById("datestart").value == '') {

@@ -15,7 +15,7 @@
 /**
  * Creates a new cContentTypeTeaser with the given properties.
  * You most probably want to call initialise() after creating a new object of this class.
- * 
+ *
  * @constructor
  * @property {String} frameId The ID of the frame in which the content type can be set up.
  * @property {String} imageId The ID of the button on which one clicks in order to edit the content type.
@@ -42,7 +42,7 @@ cContentTypeTeaser.prototype.constructor = cContentTypeTeaser;
 
 /**
  * Initialises the content type by adding event handlers etc.
- * 
+ *
  * @override
  */
 cContentTypeTeaser.prototype.initialise = function() {
@@ -57,7 +57,7 @@ cContentTypeTeaser.prototype.initialise = function() {
 /**
  * Loads external styles and scripts so that they are only loaded when they are
  * really needed.
- * 
+ *
  * @override
  */
 cContentTypeTeaser.prototype.loadExternalFiles = function() {

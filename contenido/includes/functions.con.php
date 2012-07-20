@@ -113,7 +113,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
 
     // Get all idcats that contain art
     $oCatArtColl = new cApiCategoryArticleCollection();
-    $aCatsForArt = $oCatArtColl->getcategoryIdsByArticleId($idart);
+    $aCatsForArt = $oCatArtColl->getCategoryIdsByArticleId($idart);
     if (count($aCatsForArt) == 0) {
         $aCatsForArt[0] = 0;
     }

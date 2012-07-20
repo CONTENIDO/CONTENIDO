@@ -15,7 +15,7 @@
 /**
  * Creates a new cContentTypeImgEditor with the given properties.
  * You most probably want to call initialise() after creating a new object of this class.
- * 
+ *
  * @constructor
  * @property {String} frameId The ID of the frame in which the content type can be set up.
  * @property {String} imageId The ID of the button on which one clicks in order to edit the content type.
@@ -35,7 +35,7 @@ function cContentTypeImgEditor(frameId, imageId, pathBackend, pathFrontend, idAr
 
     /**
      * The path which has been selected by the user.
-     * 
+     *
      * @type String
      */
     this.selectedPath = '';
@@ -49,7 +49,7 @@ cContentTypeImgEditor.prototype.constructor = cContentTypeImgEditor;
 
 /**
  * Initialises the content type by adding event handlers etc.
- * 
+ *
  * @override
  */
 cContentTypeImgEditor.prototype.initialise = function() {
@@ -66,7 +66,7 @@ cContentTypeImgEditor.prototype.initialise = function() {
 /**
  * Loads external styles and scripts so that they are only loaded when they are
  * really needed.
- * 
+ *
  * @override
  */
 cContentTypeImgEditor.prototype.loadExternalFiles = function() {
@@ -81,7 +81,7 @@ cContentTypeImgEditor.prototype.loadExternalFiles = function() {
 /**
  * Adds tabbing events to menubar of content type edit form. Lets the user
  * switch between the different tabs.
- * 
+ *
  * @override
  */
 cContentTypeImgEditor.prototype.addTabbingEvents = function() {
@@ -107,7 +107,7 @@ cContentTypeImgEditor.prototype.addNaviActions = function() {
     $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').unbind('click');
     $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').click(function() {
         // update the "active" class
-        $.each($(self.frameId + ' div'), function() {  
+        $.each($(self.frameId + ' div'), function() {
             $(this).removeClass('active');
         });
         $(this).addClass('active');
@@ -133,7 +133,7 @@ cContentTypeImgEditor.prototype.addNaviActions = function() {
     $(self.frameId + ' #directoryList_' + self.id + ' em a').unbind('click');
     $(self.frameId + ' #directoryList_' + self.id + ' em a').click(function() {
         var divContainer = $(this).parent().parent();
-        var dirname = $(this).parent('em').parent().find('a[class="on"]').attr('title');        
+        var dirname = $(this).parent('em').parent().find('a[class="on"]').attr('title');
         if (divContainer.next('ul').length > 0) {
             divContainer.next('ul').toggle(function() {
                 if (divContainer.next('ul').css('display') === 'none') {
@@ -141,7 +141,7 @@ cContentTypeImgEditor.prototype.addNaviActions = function() {
                 } else {
                     divContainer.parent().removeClass('collapsed');
                 }
-            });            
+            });
         } else {
             $.ajax({
                 type: 'POST',
@@ -184,7 +184,7 @@ cContentTypeImgEditor.prototype.showFolderPath = function() {
     // show the selected directory in the upload tab and set the form values accordingly
     $(self.frameId + ' #caption1').text(selectedPath);
     $(self.frameId + ' #caption2').text(selectedPath);
-    $(self.frameId + ' form[name="newdir"] input[name="path"]').val(selectedPath);        
+    $(self.frameId + ' form[name="newdir"] input[name="path"]').val(selectedPath);
     $(self.frameId + ' form[name="properties"] input[name="path"]').val(selectedPath);
 
     setTimeout(function() {
@@ -202,7 +202,7 @@ cContentTypeImgEditor.prototype.addSelectAction = function() {
             var filename = $('select#image_filename_' + self.id + ' option:selected').val();
             // update the image preview element with the new selected image
             if (filename === '') {
-                $('#directoryShow_' + self.id).html('');                
+                $('#directoryShow_' + self.id).html('');
             } else {
                 var url = self.pathFrontend + 'upload/' + filename;
                 $.ajax({
@@ -290,11 +290,11 @@ cContentTypeImgEditor.prototype.createMKDir = function() {
                                         $(this).parent().after(msg);
                                         $(this).parent().parent('li').removeClass('collapsed');
                                         self.addNaviActions();
-                                    }                                    
-                                });                    
+                                    }
+                                });
                             }
                         }
-                    }); 
+                    });
                 }
             }
         });
@@ -331,7 +331,7 @@ cContentTypeImgEditor.prototype.imageFileUpload = function() {
                     $(self.frameId + ' #directoryFile_' + self.id).html(msg);
                     self.addSelectAction();
                 }
-            });    
+            });
         }
     });
 };

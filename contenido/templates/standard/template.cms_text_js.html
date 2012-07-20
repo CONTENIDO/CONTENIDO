@@ -1,50 +1,50 @@
 <script type="text/javascript">
-	$(function() {
-		// replace the text div with an input field if the div or the edit button is clicked
-		$('#{PREFIX}_editbutton_{ID}, #{PREFIX}_text_{ID}').click(function() {
-			var text = $('#{PREFIX}_text_{ID}').html();
-			$('#{PREFIX}_text_{ID}').replaceWith('{TEXTBOX}');
-			$('#{PREFIX}_text_{ID}').val(text);
-			$('#{PREFIX}_text_{ID}').focus();
-			$('#{PREFIX}_editbutton_{ID}').replaceWith('{SAVEBUTTON}');
-		});
-		// submit the form if the save button or enter is clicked
-		$(document).on('click', '#{PREFIX}_savebutton_{ID}', function() {
-			cContentType{PREFIX}Save{ID}();
-		});
-		$(document).keypress(function(e) {
-		    if (e.which == 13 && $('#{PREFIX}_text_{ID}').is(':focus')) {
-		    	cContentType{PREFIX}Save{ID}();
-		    }
-		});
+    $(function() {
+        // replace the text div with an input field if the div or the edit button is clicked
+        $('#{PREFIX}_editbutton_{ID}, #{PREFIX}_text_{ID}').click(function() {
+            var text = $('#{PREFIX}_text_{ID}').html();
+            $('#{PREFIX}_text_{ID}').replaceWith('{TEXTBOX}');
+            $('#{PREFIX}_text_{ID}').val(text);
+            $('#{PREFIX}_text_{ID}').focus();
+            $('#{PREFIX}_editbutton_{ID}').replaceWith('{SAVEBUTTON}');
+        });
+        // submit the form if the save button or enter is clicked
+        $(document).on('click', '#{PREFIX}_savebutton_{ID}', function() {
+            cContentType{PREFIX}Save{ID}();
+        });
+        $(document).keypress(function(e) {
+            if (e.which == 13 && $('#{PREFIX}_text_{ID}').is(':focus')) {
+                cContentType{PREFIX}Save{ID}();
+            }
+        });
 
-		/**
-		 * Adds the given name/value pair as a hidden field to the editform so that it
-		 * is submitted to CONTENIDO. If a hidden field with the given name already 
-		 * exists, the value is overriden.
-		 * 
-		 * @param {String} name The name of the form field which should be added.
-		 * @param {String} value The value of the form field which should be added.
-		 */
-		function cContentType{PREFIX}AppendFormField{ID}(name, value) {
-		    // if a hidden input field with the given name already exists, just set the value
-		    if ($('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').length > 0) {
-		        $('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').val(value);
-		    } else {
-		        // otherwise append a new field to the form
-		        $('form[name="editcontent"]').append('<input type="hidden" value="' + value + '" name="' + name + '"/>');
-		    }
-		};
+        /**
+         * Adds the given name/value pair as a hidden field to the editform so that it
+         * is submitted to CONTENIDO. If a hidden field with the given name already
+         * exists, the value is overriden.
+         *
+         * @param {String} name The name of the form field which should be added.
+         * @param {String} value The value of the form field which should be added.
+         */
+        function cContentType{PREFIX}AppendFormField{ID}(name, value) {
+            // if a hidden input field with the given name already exists, just set the value
+            if ($('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').length > 0) {
+                $('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').val(value);
+            } else {
+                // otherwise append a new field to the form
+                $('form[name="editcontent"]').append('<input type="hidden" value="' + value + '" name="' + name + '"/>');
+            }
+        };
 
-		/**
-		 * Saves the entered text.
-		 */
-		function cContentType{PREFIX}Save{ID}() {
-			cContentType{PREFIX}AppendFormField{ID}('{PREFIX}_action', 'store');
+        /**
+         * Saves the entered text.
+         */
+        function cContentType{PREFIX}Save{ID}() {
+            cContentType{PREFIX}AppendFormField{ID}('{PREFIX}_action', 'store');
             cContentType{PREFIX}AppendFormField{ID}('{PREFIX}_id', '{ID}');
             var text = $('#{PREFIX}_text_{ID}').val();
             cContentType{PREFIX}AppendFormField{ID}('{PREFIX}_text_{ID}', text);
             setcontent('{IDARTLANG}', '0');
-		}
-	});
+        }
+    });
 </script>
