@@ -632,6 +632,11 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                             $actions[] = $tmp_sync;
                         }
 
+						//add properties button
+                		$actions[] = '<a id="properties" href="main.php?area=con_editart&action=con_edit&frame=4&idcat='.$idcat.'&idart='.$idart.'&contenido='.$contenido.'">
+                			<img onmouseover="this.style.cursor=\'pointer\'" src="images/but_art_conf2.gif" title="'.i18n("Display properties").'" alt="'.i18n("Display properties").'" style="margin-left: 2px; margin-right: 2px; cursor: pointer;">
+                		</a>';
+
                         $value = implode("\n", $actions);
                         break;
                     default:
@@ -687,7 +692,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         $tpl->set('s', 'HEADERS', implode("\n", $headers));
 
-        if ($elemperpage > 0 && $iArticleCount > 0) {
+        if ($elemperpage > 0 && $iArticleCount > 0 && $iArticleCount > $elemperpage) {
             for ($i = 1; $i <= ceil($iArticleCount / $elemperpage); $i++) {
                 $iNext = ($i - 1) * $elemperpage;
                 if ($sBrowseLinks !== '') {
@@ -704,7 +709,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $tpl->set('s', 'BROWSE', sprintf(i18n("Go to page: %s"), $sBrowseLinks));
         } else {
             $tpl->set('s', 'NEXT', "0");
-            $tpl->set('s', 'BROWSE', sprintf(i18n("Go to page: %s"), "1"));
+            $tpl->set('s', 'BROWSE', '&nbsp;');
         }
         $tpl->set('s', 'CLICK_ROW_NOTIFICATION', i18n("with click select line for further treatment"));
 

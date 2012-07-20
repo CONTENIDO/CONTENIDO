@@ -48,10 +48,7 @@
                         var url = $(this).attr('href');
                         conMultiLink('right_bottom', url+ '&idtpl=' + {iIdtpl} + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&bNoArticle='+bNoArticle, 
 						'right_top', 'main.php?area=con&frame=3&idcat=' + {iIdcat} + '&idtpl=' + {iIdtpl} + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}'+'&bNoArticle='+bNoArticle);
-                        if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1')) {
-	                        menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1');
-	                        parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
-	                    }
+                        refreshSubMenu('c_1');
                         return false;
                     });
                     $("a#newArtImg").click(function() {
@@ -59,6 +56,16 @@
                     });
                 }
             });
+			function refreshSubMenu(iId){
+				if (parent.parent.frames["right"].frames["right_top"].document.getElementById(iId)) {
+                    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById(iId);
+                    parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
+                }
+				return true;
+			}
+			$('#properties').click(function(){
+				refreshSubMenu('c_1');
+			});
         </script>
         <style>
             .bulk_editing_functions a, a.flip_mark {
