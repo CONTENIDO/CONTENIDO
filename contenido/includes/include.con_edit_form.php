@@ -177,7 +177,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     // Show path of selected category to user
     $catString = '';
     prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
-    $tpl->set('s', 'CATEGORY', i18n("Sie sind hier") . ": " . $catString . ' ' . htmlspecialchars($tmp_title));
+    $tpl->set('s', 'CATEGORY', i18n("Sie sind hier") . ": " . $catString . ' > ' . htmlspecialchars($tmp_title));
 
     // Title
     $tpl->set('s', 'TITEL', i18n("Title"));

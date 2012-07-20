@@ -94,14 +94,19 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
                 b.idnavs";
 
     $db->query($sql);
-
+	$num = 0;
     while ($db->next_record()) {
         if ($iArticleCount > 0 || ($iArticleCount <= 0 && $tpl->dyn_cnt == 0) ||
-        ($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $bNoArticle == 'true') || ($bNoArticle == 'true' && $action =='saveart') ||
+        ($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $bNoArticle == 'true') ||
+        ($bNoArticle == 'true' && $action =='saveart') ||
         ($iArticleCount <= 0 && $tpl->dyn_cnt == 0 && $action == 'deleteArt')) {
             $style = '';
         } else {
             $style = 'display:none;';
+        }
+        if(($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $bNoArticle == 'true')||
+        ($tpl->dyn_cnt == 1 && $bNoArticle == 'true' && $action =='saveart')) {
+        	$num = $tpl->dyn_cnt;
         }
         // Extract names from the XML document.
         $caption = $nav->getName($db->f("location"));
@@ -120,6 +125,7 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
 
         $tpl->next();
     }
+    $tpl->set("s", "iID", 'c_' . $num);
 
     $tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
     $tpl->set('s', 'IDCAT', $idcat);

@@ -197,7 +197,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
     prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
 
     $tpl->set('s', 'TITEL', i18n("Meta-Tags Verwaltung"));
-    $tpl->set('s', 'CATEGORY', i18n("Sie sind hier") . ": " . $catString . ' ' . htmlspecialchars($tmp_title));
+    $tpl->set('s', 'CATEGORY', i18n("Sie sind hier") . ": " . $catString . ' > ' . htmlspecialchars($tmp_title));
 
     // Title
     $tpl->set('s', 'TITEL', i18n("Title"));
