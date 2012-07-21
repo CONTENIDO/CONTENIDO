@@ -21,15 +21,8 @@
  *
  * {@internal
  *   created 2003-08-08
- *   modified 2008-06-25, Frederic Schneider, add security fix
- *   modified 2008-09-15, Murat Purc, added replacement of characters with diacritics
- *   modified 2009-04-30, Ortwin Pinke, CON-252
- *   modified 2010-01-07, Ingo van Peren, CON-293
- *   modified 2011-07-21, Murat Purc, added cApiStrNormalizeLineEndings(), some cleanup and documenting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -46,7 +39,6 @@ if (!defined('CON_FRAMEWORK')) {
  * 3.) The function makes sense and is generically usable
  *
  */
-
 
 /**
  * Trims a string to a given length and makes sure that all words up to $maxlen
@@ -66,19 +58,16 @@ if (!defined('CON_FRAMEWORK')) {
  * @param   int     $maxlen  The maximum number of characters
  * @return  string  The resulting string
  */
-function cApiStrTrimAfterWord($string, $maxlen)
-{
+function cApiStrTrimAfterWord($string, $maxlen) {
     // If the string is smaller than the maximum lenght, it makes no sense to
     // process it any further. Return it.
-    if (strlen($string) < $maxlen)
-    {
+    if (strlen($string) < $maxlen) {
         return $string;
     }
 
     // If the character after the $maxlen position is a space, we can return
     // the string until $maxlen.
-    if (substr($string, $maxlen,1) == ' ')
-    {
+    if (substr($string, $maxlen, 1) == ' ') {
         return substr($string, 0, $maxlen);
     }
 
@@ -106,12 +95,10 @@ function cApiStrTrimAfterWord($string, $maxlen)
  * @param   int     $maxlen  The maximum number of characters
  * @return  string  The resulting string
  */
-function cApiStrTrimHard($string, $maxlen, $fillup = "...")
-{
+function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
     // If the string is smaller than the maximum lenght, it makes no sense to
     // process it any further. Return it.
-    if (strlen($string) < $maxlen)
-    {
+    if (strlen($string) < $maxlen) {
         return $string;
     }
 
@@ -165,12 +152,10 @@ function cApiStrTrimHard($string, $maxlen, $fillup = "...")
  * @param  bool    $hard       If true, use a hard limit for the number of characters
  * @return string  The resulting string
  */
-function cApiStrTrimSentence($string, $approxlen, $hard = false)
-{
+function cApiStrTrimSentence($string, $approxlen, $hard = false) {
     // If the string is smaller than the maximum lenght, it makes no sense to
     // process it any further. Return it.
-    if (strlen($string) < $approxlen)
-    {
+    if (strlen($string) < $approxlen) {
         return $string;
     }
 
@@ -179,8 +164,7 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false)
 
     // If there's no next sentence (somebody forgot the dot?), set it to the end
     // of the string.
-    if ($next_sentence_start === false)
-    {
+    if ($next_sentence_start === false) {
         $next_sentence_start = strlen($string);
     }
 
@@ -191,15 +175,13 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false)
     $previous_sentence_start = strrpos($previous_sentence_cutted, '.');
 
     // If the sentence doesn't contain a dot, use the text start.
-    if ($previous_sentence_start === false)
-    {
+    if ($previous_sentence_start === false) {
         $previous_sentence_start = 0;
     }
 
     // If we have a hard limit, we only want to process everything before $approxlen
-    if (($hard == true) && ($next_sentence_start > $approxlen))
-    {
-        return (substr($string, 0, $previous_sentence_start+1));
+    if (($hard == true) && ($next_sentence_start > $approxlen)) {
+        return (substr($string, 0, $previous_sentence_start + 1));
     }
 
     // Calculate next and previous sentence distances
@@ -209,17 +191,15 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false)
     // Sanity: Return at least one sentence.
     $sanity = substr($string, 0, $previous_sentence_start + 1);
 
-    if (strpos($sanity,'.') === false)
-    {
+    if (strpos($sanity, '.') === false) {
         return (substr($string, 0, $next_sentence_start + 1));
     }
 
     // Decide wether the next or previous sentence is nearer
-    if ($distance_previous_sentence > $distance_next_sentence)
-    {
-        return (substr($string, 0, $next_sentence_start+1));
+    if ($distance_previous_sentence > $distance_next_sentence) {
+        return (substr($string, 0, $next_sentence_start + 1));
     } else {
-        return (substr($string, 0, $previous_sentence_start+1));
+        return (substr($string, 0, $previous_sentence_start + 1));
     }
 }
 
@@ -238,12 +218,8 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false)
  * @param  string  $sourceEncoding  The source encoding (default: ISO-8859-1)
  * @param  string  $targetEncoding  The target encoding (default: ISO-8859-1)
  * @return string  The resulting string
- *
- * @author Timo A. Hummel
- * @copyright four for business AG, http://www.4fb.de
  */
-function cApiStrReplaceDiacritics($sString, $sourceEncoding = "ISO-8859-1", $targetEncoding = "ISO-8859-1")
-{
+function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'ISO-8859-1', $targetEncoding = 'ISO-8859-1') {
     if ($sourceEncoding == 'UTF-8') {
         $sString = utf8_decode($sString);
     }
@@ -251,7 +227,7 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = "ISO-8859-1", $tar
     // replace regular german umlauts and other common characters with diacritics
     static $aSearch, $aReplace;
     if (!isset($aSearch)) {
-        $aSearch  = array('Ä',  'Ö',  'Ü',  'ä',  'ö', 'ü',  'ß',  'Á', 'À', 'Â', 'á', 'à', 'â', 'É', 'È', 'Ê', 'é', 'è', 'ê', 'Í', 'Ì', 'Î', 'í', 'ì', 'î', 'Ó', 'Ò', 'Ô', 'ó', 'ò', 'ô', 'Ú', 'Ù', 'Û', 'ú', 'ù', 'û');
+        $aSearch = array('Ä', 'Ö', 'Ü', 'ä', 'ö', 'ü', 'ß', 'Á', 'À', 'Â', 'á', 'à', 'â', 'É', 'È', 'Ê', 'é', 'è', 'ê', 'Í', 'Ì', 'Î', 'í', 'ì', 'î', 'Ó', 'Ò', 'Ô', 'ó', 'ò', 'ô', 'Ú', 'Ù', 'Û', 'ú', 'ù', 'û');
         $aReplace = array('Ae', 'Oe', 'Ue', 'ae', 'oe', 'ue', 'ss', 'A', 'A', 'A', 'a', 'a', 'a', 'E', 'E', 'E', 'e', 'e', 'e', 'I', 'I', 'I', 'i', 'i', 'i', 'O', 'O', 'O', 'o', 'o', 'o', 'U', 'U', 'U', 'u', 'u', 'u');
     }
     $sString = str_replace($aSearch, $aReplace, $sString);
@@ -260,7 +236,6 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = "ISO-8859-1", $tar
 
     return $sString;
 }
-
 
 /**
  * Converts a string to another encoding. This function tries to detect which function
@@ -289,37 +264,28 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = "ISO-8859-1", $tar
  * @param   string  $sourceEncoding  The source encoding (default: ISO-8859-1)
  * @param   string  $targetEncoding  The target encoding (if false, use source encoding)
  * @return  string  The resulting string
- *
- * @author Timo A. Hummel
- * @copyright four for business AG, http://www.4fb.de
  */
-function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding)
-{
+function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding) {
     // If sourceEncoding and targetEncoding are the same, return
-    if ($sourceEncoding == $targetEncoding)
-    {
+    if ($sourceEncoding == $targetEncoding) {
         return $sString;
     }
 
     // Check for the "recode" support
-    if (function_exists("recode"))
-    {
+    if (function_exists('recode')) {
         $sResult = recode_string("$sourceEncoding..$targetEncoding", $sString);
-
-        return ($sResult);
+        return $sResult;
     }
 
     // Check for the "iconv" support
-    if (function_exists("iconv"))
-    {
+    if (function_exists('iconv')) {
         $sResult = iconv($sourceEncoding, $targetEncoding, $sString);
-
-        return ($sResult);
+        return $sResult;
     }
 
     // No charset converters found; return with warning
-    cWarning(__FILE__, __LINE__, "cApiStrRecodeString could not find either recode or iconv to do charset conversion.");
-    return ($sString);
+    cWarning(__FILE__, __LINE__, 'cApiStrRecodeString could not find either recode or iconv to do charset conversion.');
+    return $sString;
 }
 
 /**
@@ -333,39 +299,30 @@ function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding)
  * @param   string  $sString   The string to operate on
  * @param   bool    $bReplace  If true, all "unclean" characters are replaced
  * @return  string  The resulting string
- *
- * @author Timo A. Hummel
- * @copyright four for business AG, http://www.4fb.de
  */
-function cApiStrCleanURLCharacters($sString, $bReplace = false)
-{
+function cApiStrCleanURLCharacters($sString, $bReplace = false) {
     $sString = cApiStrReplaceDiacritics($sString);
-    $sString = str_replace(" ", "-", $sString);
-    $sString = str_replace("/", "-", $sString);
-    $sString = str_replace("&", "-", $sString);
-    $sString = str_replace("+", "-", $sString);
+    $sString = str_replace(' ', '-', $sString);
+    $sString = str_replace('/', '-', $sString);
+    $sString = str_replace('&', '-', $sString);
+    $sString = str_replace('+', '-', $sString);
 
     $iStrLen = strlen($sString);
 
-    for ($i=0; $i < $iStrLen; $i++)
-    {
+    for ($i = 0; $i < $iStrLen; $i++) {
         $sChar = substr($sString, $i, 1);
 
-        if (preg_match('/^[a-z0-9]*$/i', $sChar) || $sChar ==  "-" || $sChar == "_" || $sChar == ".")
-        {
+        if (preg_match('/^[a-z0-9]*$/i', $sChar) || $sChar == '-' || $sChar == '_' || $sChar == '.') {
             $sResultString .= $sChar;
         } else {
-            if ($bReplace == true)
-            {
-                $sResultString .= "_";
+            if ($bReplace == true) {
+                $sResultString .= '_';
             }
         }
-
     }
 
-    return ($sResultString);
+    return $sResultString;
 }
-
 
 /**
  * Normalizes line endings in passed string.
@@ -373,8 +330,7 @@ function cApiStrCleanURLCharacters($sString, $bReplace = false)
  * @param  string  $sLineEnding  Feasible values are "\n", "\r" or "\r\n"
  * @return string
  */
-function cApiStrNormalizeLineEndings($sString, $sLineEnding = "\n")
-{
+function cApiStrNormalizeLineEndings($sString, $sLineEnding = "\n") {
     if ($sLineEnding !== "\n" && $sLineEnding !== "\r" && $sLineEnding !== "\r\n") {
         $sLineEnding = "\n";
     }
