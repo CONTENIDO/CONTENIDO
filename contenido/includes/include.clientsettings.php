@@ -115,8 +115,11 @@ if ($aItems !== false) {
 
         if (($_GET['action'] == "clientsettings_edit_item") && ($_GET['idprop'] == $iKey)) {
             $oInputboxValue = new cHTMLTextbox("csvalue", $aValue['value']);
+            $oInputboxValue->setWidth(30);
             $oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
+            $oInputboxName->setWidth(15);
             $oInputboxType = new cHTMLTextbox("cstype", $aValue['type']);
+            $oInputboxType->setWidth(15);
 
             $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
             $sSubmit = ' <input type="image" style="vertical-align:top;" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif">';
