@@ -4,53 +4,36 @@
     <title>{TITEL}</title>
     <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
     <link rel="shortcut icon" href="{BASEPATH}favicon.ico" />
-    <script type="text/javascript" src="scripts/md5.js"></script>
     <script type="text/javascript" src="scripts/str_overview.js"></script>
     <script type="text/javascript">
         if (top != self) {
             top.location = "index.php";
-        }
-
-        function doChallengeResponse()
-        {
-            str = document.login.username.value + ":"
-                + MD5(document.login.password.value) + ":"
-                + document.login.challenge.value;
-            document.login.response.value = MD5(str);
-            document.login.password.value = "";
-            document.login.submit();
         }
     </script>
     <style type="text/css">
         #page {border-top:1px solid #0060b1;height:110px;overflow:hidden;}
         #lblusername {width:75px; display:block; float:left;}
         #lblpasswd {width:75px; display:block; float:left;}
-        #navcontainer {border-top:1px solid #666;}
+        #navcontainer {border-top:1px solid #666; clear: left;}
         .text_login_error {float:right; margin-right:25px;}
         .style1 {background-color:#f1f1f1;height:80px;}
     </style>
 </head>
-
 <body>
-
 <div id="page">
     <div id="head">
         <a id="head_logo" href="http://www.contenido.org"><img title="CONTENIDO Website." alt="CONTENIDO Website." src="images/conlogo.gif" /></a>
-
         <div id="head_content" class="left_menu_dist">
             <div id="head_info" class="left_dist">
                 &nbsp;
             </div>
             <form name="login" method="post" action="{ACTION}">
                 <div id="head_nav1" class="left_dist head_nav_login">
-
                     <select id="lang" name="belang" tabindex="3" class="text_medium" onchange="document.login.submit();">
                         {OPTIONS}
                     </select>
                     <label id="lbllang" for="lang">{LANGUAGE}</label>
-
                     <div class="text_medium_bold login_title">{BACKEND}</div>
-
                     <label id="lblusername" for="username">{LOGIN}:</label>
                     <input id="username" tabindex="1" type="text" class="text_medium" name="username" size="25" maxlength="32" value="{USERNAME}" />
                 </div>
@@ -59,24 +42,17 @@
                     <div class="text_error text_login_error">{ERROR}</div>
                     <div style="clear:both;display:none;"></div>
                     <div class="text_medium_bold login_title">&nbsp;</div>
-
                     <label id="lblpasswd" for="passwd">{PASSWORD}:</label>
                     <input id="passwd" tabindex="2" type="password" class="text_medium" name="password" size="25" />
-
                     <input type="hidden" name="vaction" value="login" />
                     <input type="hidden" name="formtimestamp" value="{TIME}" />
                 </div>
             </form>
         </div>
-
-        <div id="navcontainer" style="clear:left;">{FORM}</div>
+        <div id="navcontainer">{FORM}</div>
     </div>
-
-    <div class="style1"></div>
-    <div id="navcontainer"></div>
 </div>
 <div id="alertbox">{NOTI}</div>
-
 <script type="text/javascript">
     if (document.login.username.value == '') {
         document.login.username.focus();
