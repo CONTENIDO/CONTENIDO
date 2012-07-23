@@ -333,7 +333,6 @@ class cRegistry {
     public final static function bootstrap($features) {
         $cfg = self::getConfig();
 
-        $bootstrapClasses = array();
         $bootstrapFeatures = array('sess', 'auth', 'perm');
         foreach ($bootstrapFeatures as $feature) {
             $varFeatureClass = $feature . 'Class';
