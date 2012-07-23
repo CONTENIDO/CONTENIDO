@@ -382,8 +382,6 @@ function getAktuellType($r, $aList) {
     $client = $_REQUEST['client'];
     global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
 
-    // generate code
-    $templatecode = conGenerateCode($idcat, $idart, $lang, $client, false, false, false);
     // Select all cms_type entries
     $sql = 'SELECT idtype, type, code FROM ' . $cfg['tab']['type'];
     $db->query($sql);
