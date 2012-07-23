@@ -142,7 +142,7 @@ function statsArchive($yearmonth)
  */
 function statsOverviewAll($yearmonth)
 {
-    global $cfg, $db, $tpl, $client, $lang;
+    global $cfg, $db, $tpl, $client, $lang, $cfgClient;
 
     $sDisplay = 'table-row';
 
@@ -185,7 +185,6 @@ function statsOverviewAll($yearmonth)
 
     while ($db->next_record()) {
         if ($db->f("level") == 0 && $db->f("preid") != 0) {
-            $bgcolor = '#FFFFFF';
             $tpl->set('d', 'PADDING_LEFT', '10');
             $tpl->set('d', 'TEXT', '&nbsp;');
             $tpl->set('d', 'NUMBEROFARTICLES', '');
@@ -197,6 +196,8 @@ function statsOverviewAll($yearmonth)
             $tpl->set('d', 'INTHISLANGUAGE', '');
             $tpl->set('d', 'EXPAND', '');
             $tpl->set('d', 'DISPLAY_ROW', $sDisplay);
+	        $tpl->set('d', 'PATH', '');
+	        $tpl->set('d', 'ULR_TO_PAGE', '');
 
             $tpl->next();
             $currentRow++;
@@ -321,6 +322,10 @@ function statsOverviewAll($yearmonth)
         } else {
             $tpl->set('d', 'DISPLAY_ROW', $sDisplay);
         }
+        $cat_name = "";
+        statCreateLocationString($db->f('idcat'),"&nbsp;/&nbsp;", $cat_name);
+        $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;".$cat_name);
+        $tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'].'front_content.php?idcat='.$db->f('idcat'));
 
         $tpl->next();
         $currentRow++;
@@ -370,15 +375,15 @@ function statsOverviewAll($yearmonth)
 
             //************** hits of art in this language ***************
             if (strcmp($yearmonth,"current") == 0) {
-                $sql = "SELECT visited FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat=".cSecurity::toInteger($idcat)."
+                $sql = "SELECT visited, idart FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat=".cSecurity::toInteger($idcat)."
                         AND A.idart=".cSecurity::toInteger($idart)." AND B.idlang=".cSecurity::toInteger($lang)." AND B.idclient=".cSecurity::toInteger($client);
             } else {
                 if (!$bUseHeapTable) {
-                    $sql = "SELECT visited FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat=".cSecurity::toInteger($idcat)."
+                    $sql = "SELECT visited, idart FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat=".cSecurity::toInteger($idcat)."
                             AND A.idart=".cSecurity::toInteger($idart)." AND B.idlang=".cSecurity::toInteger($lang)." AND B.idclient=".cSecurity::toInteger($client)."
                             AND B.archived='".$db3->escape($yearmonth)."'";
                 } else {
-                    $sql = "SELECT visited FROM ".$db3->escape($sHeapTable)." WHERE idcat=".cSecurity::toInteger($idcat)." AND idart=".cSecurity::toInteger($idart)."
+                    $sql = "SELECT visited, idart FROM ".$db3->escape($sHeapTable)." WHERE idcat=".cSecurity::toInteger($idcat)." AND idart=".cSecurity::toInteger($idart)."
                             AND idlang=".cSecurity::toInteger($lang)." AND idclient=".cSecurity::toInteger($client)." AND archived='".$db3->escape($yearmonth)."'";
                 }
             }
@@ -407,6 +412,10 @@ function statsOverviewAll($yearmonth)
             $tpl->set('d', 'INTHISLANGUAGE', $inThisLanguage);
             $tpl->set('d', 'EXPAND', '<img src="'.$cfg['path']['images'].'spacer.gif" width="7">');
             $tpl->set('d', 'DISPLAY_ROW', 'none');
+	        $cat_name = "";
+	        statCreateLocationString($db3->f('idart'),"&nbsp;/&nbsp;", $cat_name);
+	        $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;".$cat_name);
+	        $tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'].'front_content.php?idart='.$db3->f('idart'));
             $tpl->next();
             $currentRow++;
 

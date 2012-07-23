@@ -105,9 +105,9 @@ if ($action == "stat_show") {
     $tpl->set('s', 'TITLEPADDING_LEFT',"5");
     $tpl->set('s', 'TITLEINTHISLANGUAGE', i18n("Hits in this language"));
 
-    $tpl->set('s', 'GOOGLE_NOTIFICATION', $googleNotification.'<br/>');
-    $tpl->set('s', 'PIWIK_NOTIFICATION', $piwikNotification. '<br/>');
-    $tpl->set('s', 'TRACKING_NOTIFICATION', $trackingNotification.'<br/>');
+    $tpl->set('s', 'GOOGLE_NOTIFICATION', $googleNotification.($googleNotification!='')?'<br/>':'');
+    $tpl->set('s', 'PIWIK_NOTIFICATION', $piwikNotification. ($piwikNotification!='')?'<br/>':'');
+    $tpl->set('s', 'TRACKING_NOTIFICATION', $trackingNotification.($trackingNotification!='')?'<br/>':'');
 
     switch ($displaytype) {
         case "all":
