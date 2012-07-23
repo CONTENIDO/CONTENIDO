@@ -70,13 +70,14 @@ class cSession {
         if (!isset($_SESSION)) {
             if ($prefix === 'backend') {
                 $cfg = cRegistry::getConfig();
-                $path = $cfg['path']['contenido_fullhtml'];
+                $url = $cfg['path']['contenido_fullhtml'];
             } else {
                 $client = cRegistry::getClientId();
                 $cfgClient = cRegistry::getClientConfig($client);
-                $path = $cfgClient[$client]['path']['htmlpath'];
+                $url = $cfgClient[$client]['path']['htmlpath'];
             }
-            session_set_cookie_params(0, $path);
+            $url = parse_url($url);
+            session_set_cookie_params(0, $url['path']);
             session_name($this->_prefix);
             session_start();
             $this->id = session_id();
