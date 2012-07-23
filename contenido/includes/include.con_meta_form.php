@@ -229,21 +229,21 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
 
         switch ($value["fieldtype"]) {
             case "text":
-                if ($value["name"] == 'date') {
-                    $element = '<input ' . $disabled . ' class="text_medium" type="text" name="META' . $value["name"] . '" id="META' . $value["name"] . '" style="width:380px;" maxlength=' . $value["maxlength"] . ' value="' . htmlspecialchars(conGetMetaValue($tmp_idartlang, $key)) . '">';
+                if ($value["metatype"] == 'date') {
+                    $element = '<input ' . $disabled . ' class="text_medium" type="text" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" style="width:380px;" maxlength=' . $value["maxlength"] . ' value="' . htmlspecialchars(conGetMetaValue($tmp_idartlang, $key)) . '">';
                 } else {
-                    $element = '<input ' . $disabled . ' class="text_medium" type="text" name="META' . $value["name"] . '" id="META' . $value["name"] . '" style="width:400px;" maxlength=' . $value["maxlength"] . ' value="' . htmlspecialchars(conGetMetaValue($tmp_idartlang, $key)) . '">';
+                    $element = '<input ' . $disabled . ' class="text_medium" type="text" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" style="width:400px;" maxlength=' . $value["maxlength"] . ' value="' . htmlspecialchars(conGetMetaValue($tmp_idartlang, $key)) . '">';
                 }
                 break;
             case "textarea":
-                $element = '<textarea ' . $disabled . ' class="text_medium" name="META' . $value["name"] . '" id="META' . $value["name"] . '" style="width:400px;" rows=3>' . htmlspecialchars(conGetMetaValue($tmp_idartlang, $key)) . '</textarea>';
+                $element = '<textarea ' . $disabled . ' class="text_medium" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" style="width:400px;" rows=3>' . htmlspecialchars(conGetMetaValue($tmp_idartlang, $key)) . '</textarea>';
                 break;
         }
 
 
         $tpl->set('d', 'METAFIELDTYPE', $element);
         //$tpl->set('d', 'METAVALUE', conGetMetaValue($tmp_idartlang,$key));
-        $tpl->set('d', 'METATITLE', $value["name"] . ':');
+        $tpl->set('d', 'METATITLE', $value["metatype"] . ':');
         $tpl->next();
     }
 

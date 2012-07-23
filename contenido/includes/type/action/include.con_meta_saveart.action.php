@@ -27,8 +27,9 @@ $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET pagetitle = '".$_POST["page_title
 $db->query($sql);
 
 $availableTags = conGetAvailableMetaTagTypes();
+
 foreach ($availableTags as $key => $value){
-    conSetMetaValue($idartlang,$key,$_POST["META".$value["name"]]);
+    conSetMetaValue($idartlang,$key,$_POST["META".$value["metatype"]]);
 }
 
 $notification->displayNotification("info", i18n("Changes saved"));
