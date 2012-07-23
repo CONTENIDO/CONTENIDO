@@ -228,7 +228,7 @@ abstract class cCodeGeneratorAbstract {
     protected function _getTemplateConfigurationId() {
         // Get configuration for article
         $idtplcfg = conGetTemplateConfigurationIdForArticle($this->_idart, $this->_idcat, $this->_lang, $this->_client);
-        if (is_numeric($idtplcfg)) {
+        if (is_numeric($idtplcfg) && $idtplcfg!=0) {
             // Article is configured
             $this->_debug("configuration for article found: $idtplcfg<br><br>");
         } else {
