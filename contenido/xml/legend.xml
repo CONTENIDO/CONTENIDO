@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- CONTENIDO XML language file -->
 <legend>
-    <article>
-        <imgsrc>images/folder_on_error.gif</imgsrc>
-        <description>
-            error
-        </description>
+	<article>
+        <imgsrc>images/isstart1.gif</imgsrc>
+        <description>start article</description>
+    </article>
+	<article>
+        <imgsrc>images/isstart0.gif</imgsrc>
+        <description>general article</description>
     </article>
     <article>
         <imgsrc>images/folder_on.gif</imgsrc>
-        <description>
-            normal
-        </description>
+        <description>general categorie</description>
+    </article>
+	<article>
+        <imgsrc>images/folder_off_error.gif</imgsrc>
+        <description>categorie offline</description>
     </article>
     <article>
-        <imgsrc>images/folder_delock.gif</imgsrc>
-        <description>
-            delock
-        </description>
+        <imgsrc>images/folder_on_error.gif</imgsrc>
+        <description>categorie has no article or no start article or article offline</description>
+    </article>
+	<article>
+        <imgsrc>images/folder_on_locked.gif</imgsrc>
+        <description>locked categorie</description>
+    </article>
+	<article>
+        <imgsrc>images/folder_on_error_locked.gif</imgsrc>
+        <description>locked categorie has no article or no startarticle or article offline</description>
+    </article>		
+	<article>
+        <imgsrc>images/but_sync_cat_off.gif</imgsrc>
+        <description>synchronized categorie</description>
     </article>
 </legend>

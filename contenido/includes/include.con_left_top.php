@@ -461,17 +461,18 @@ $tpl->set('s', 'AJAXURL', $cfg['path']['contenido_fullhtml'] . 'ajaxmain.php');
 $legendlink = 'legend';
 $editCategory = new cGuiFoldingRow("31f52be2-7499-4d21-8175-3917129e6014", i18n("Legend"), $legendlink);
 
-$editLegend = '<ul class="artikel_search">';
+$editLegend = '<div id="legend"><ul>';
 
 $aInformation = array('imgsrc', 'description');
 $aData = xmlFileToArray($cfg['path']['xml'] . "legend.xml", $aData, $aInformation);
 
 foreach ($aData as $data) {
-    $editLegend .= '<li style="margin-bottom: 3px;"><img src="' . (string) $data['imgsrc'] . '"/>' . (string) $data['description'] . '</li>';
+    $editLegend .= '<li><img src="' . (string) $data['imgsrc'] . '"/><span>' . i18n((string) $data['description']) . '</span></li>';
 }
-$editLegend .= '</ul>';
+$editLegend .= '</ul></div>';
 $editCategory->setContentData($editLegend);
 $tpl->set('s', 'LEGEND', $editCategory->render());
+$tpl->set('s', 'LEGENDLINK', $legendlink);
 
 // Help
 $tpl->set('s', 'HELPSCRIPT', setHelpContext("con"));
