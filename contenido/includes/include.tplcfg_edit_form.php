@@ -470,11 +470,37 @@ if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && (int) $idart == 0) {
 }
 
 //breadcrumb onclick
-    $tpl->set('s', 'iIdcat', $idcat);
+$tpl->set('s', 'iIdcat', $idcat);
 $tpl->set('s', 'iIdtpl', $idtpl);
 $tpl->set('s', 'SYNCOPTIONS', -1);
 $tpl->set('s', 'SESSION', $contenido);
 $tpl->set('s', 'DISPLAY_MENU', 1);
+
+//Improve display of inherited templates
+if(!$idtpl && $idcat && $idart){
+	$sql = "SELECT
+                c.idtpl AS idtpl,
+                c.name AS name,
+                c.description,
+                b.idtplcfg AS idtplcfg
+            FROM
+                ".$cfg['tab']['tpl_conf']." AS a,
+                ".$cfg['tab']['cat_lang']." AS b,
+                ".$cfg['tab']['tpl']." AS c
+            WHERE
+                b.idcat     = ".(int) $idcat." AND
+                b.idlang    = ".(int) $lang." AND
+                b.idtplcfg  = a.idtplcfg AND
+                c.idtpl     = a.idtpl AND
+                c.idclient  = ".(int) $client;
+    $db2->query($sql);
+	if ($db2->next_record()){
+		$message = sprintf(i18n("This article has no template. Therefore the categories template (%s) is used. You can set the article template below."), $db2->f('name'));
+	} else {
+		$message = i18n("no template with this categories and/or article associated. You must be set a template.");
+	}
+	$notification->displayNotification('warning', $message);
+}
 
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tplcfg_edit_form']);
