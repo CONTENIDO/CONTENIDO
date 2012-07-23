@@ -118,6 +118,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
             $inUse = true;
             $disabled = 'disabled="disabled"';
         }
+        $newArtStyle = '';
     } else {
 
         //***************** this art is edited the first time *************
@@ -152,6 +153,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tmp_redirect_checked = '';
         $tmp_redirect_url = "http://";
         $tmp_external_redirect = '';
+        $newArtStyle = ' style="display: none;"';
     }
 
     $dateformat = getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s");
@@ -167,6 +169,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'SID', $sess->id);
     $tpl->set('s', 'IDCAT', $idcat);
     $tpl->set('s', 'IDARTLANG', $tmp_idartlang);
+    $tpl->set('s', 'newArtStyle', $newArtStyle);
 
     $hiddenfields = '<input type="hidden" name="idcat" value="' . $idcat . '">
                      <input type="hidden" name="idart" value="' . $idart . '">
@@ -242,7 +245,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'DIRECTLINK', $select->render() . '<br><br><input style="width:400px;" class="text_medium" type="text" id="linkhint" disabled="disabled">');
 
     $tpl->set('s', 'ZUORDNUNGSID', "idcatart");
-    $tpl->set('s', 'ALLOCID', $tmp_cat_art);
+    $tpl->set('s', 'ALLOCID', $tmp_cat_art ? $tmp_cat_art : '&nbsp;');
 
     // Author (Creator)
     $tpl->set('s', 'AUTHOR_CREATOR', i18n("Author (Creator)"));
