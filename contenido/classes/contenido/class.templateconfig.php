@@ -94,9 +94,9 @@ class cApiTemplateConfigurationCollection extends ItemCollection
         }
 
         $item = parent::createNewItem();
-        $item->set('idtpl', (int) $idtpl);
+        $item->set('idtpl', $idtpl);
         $item->set('author', $author);
-        $item->set('status', (int) $status);
+        $item->set('status', $status);
         $item->set('created', $created);
         $item->set('lastmodified', $lastmodified);
         $item->store();
@@ -162,6 +162,28 @@ class cApiTemplateConfiguration extends Item
         cDeprecated("Use __construct() instead");
         $this->__construct($mId = false);
     }
+
+    /**
+     * Userdefined setter for template configuration fields.
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idtpl':
+            case 'status':
+                $value = (int) $value;
+                break;
+        }
+
+        if (is_string($value)) {
+            $value = $this->escape($value);
+        }
+
+        parent::setField($name, $value, $bSafe);
+    }
+
 }
 
 ?>
