@@ -116,7 +116,7 @@ $tpl->set('s', 'PROPERTY', i18n("Property"));
 $tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'CATNAME', i18n("Groupname"));
-$tpl->set('d', 'CATFIELD', stripslashes($oGroup->getGroupName()));
+$tpl->set('d', 'CATFIELD', stripslashes($oGroup->getGroupName(true)));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Description"));
