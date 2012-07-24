@@ -916,7 +916,7 @@ a.activemenu:hover    {font-family: verdana, arial, helvetica, sans-serif; font-
 
 /* Texts */
 .text_small        {font-family: verdana, arial, helvetica, sans-serif; font-size: 10px; color: #000}
-.text_medium       {font-family: verdana, arial, helvetica, sans-serif; font-size: 11px; color: #000}
+.text_medium, select {font-family: verdana, arial, helvetica, sans-serif; font-size: 11px; color: #000}
 .text_medium_bold  {font-family: verdana, arial, helvetica, sans-serif; font-size: 11px; color: #000; font-weight: bold;}
 .text_large        {font-family: verdana, arial, helvetica, sans-serif; font-size: 12px; color: #000}
 
