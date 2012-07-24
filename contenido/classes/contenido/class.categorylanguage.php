@@ -203,22 +203,25 @@ class cApiCategoryLanguage extends Item {
      * Assigns the passed template to the category language item.
      *
      * @param int $idtpl
-     * @return cApiTemplateConfigurationCollection
+     * @return cApiTemplateConfiguration
      */
     public function assignTemplate($idtpl) {
-        $templateConfigurationColl = new cApiTemplateConfigurationCollection();
+        $oTplConfColl = new cApiTemplateConfigurationCollection();
 
         if ($this->get('idtplcfg') != 0) {
             // Remove old template first
-            $templateConfigurationColl->delete($this->get('idtplcfg'));
+            $oTplConfColl->delete($this->get('idtplcfg'));
         }
 
-        $templateConfiguration = $templateConfigurationColl->create($idtpl);
+        $oTplConf = $oTplConfColl->create($idtpl);
 
-        $this->set('idtplcfg', $templateConfiguration->get('idtplcfg'));
+        // If there is a preconfiguration of template, copy its settings into templateconfiguration
+        $oTplConfColl->copyTemplatePreconfiguration($idtpl, $oTplConf->get('idtplcfg'));
+
+        $this->set('idtplcfg', $oTplConf->get('idtplcfg'));
         $this->store();
 
-        return $templateConfiguration;
+        return $oTplConf;
     }
 
     /**
@@ -227,8 +230,8 @@ class cApiCategoryLanguage extends Item {
      * @return int
      */
     public function getTemplate() {
-        $templateConfiguration = new cApiTemplateConfiguration($this->get('idtplcfg'));
-        return $templateConfiguration->get('idtpl');
+        $oTplConf = new cApiTemplateConfiguration($this->get('idtplcfg'));
+        return $oTplConf->get('idtpl');
     }
 
     /**

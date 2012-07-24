@@ -101,11 +101,6 @@ class cApiTemplateConfigurationCollection extends ItemCollection
         $item->set('lastmodified', $lastmodified);
         $item->store();
 
-        $newidtplcfg = $item->get('idtplcfg');
-
-        // If there is a preconfiguration of template, copy its settings into templateconfiguration
-        $this->copyTemplatePreconfiguration($idtpl, $newidtplcfg);
-
         return $item;
     }
 
