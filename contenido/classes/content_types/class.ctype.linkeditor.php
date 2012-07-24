@@ -431,7 +431,7 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
         $htmlSelect = new cHTMLSelectElement('linkeditor_idart', '', 'linkeditor_idart_' . $this->_id);
         $htmlSelect->setSize(16);
         $htmlSelectOption = new cHTMLOptionElement('Kein', '', false);
-        $htmlSelect->addOptionElement(0, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
         // if no idcat has been given, do not search for articles
         if (empty($idCat)) {
             return $htmlSelect->render();
@@ -461,11 +461,9 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
                     a.idtree';
         $db = cRegistry::getDb();
         $db->query($sql);
-        $i = 1;
         while ($db->next_record()) {
             $htmlSelectOption = new cHTMLOptionElement($db->f('title'), $db->f('idart'), ($db->f('idart') == $this->_settings['linkeditor_idart']));
-            $htmlSelect->addOptionElement($i, $htmlSelectOption);
-            $i++;
+            $htmlSelect->appendOptionElement($htmlSelectOption);
         }
 
         return $htmlSelect->render();

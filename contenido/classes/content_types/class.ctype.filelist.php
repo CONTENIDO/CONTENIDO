@@ -574,7 +574,7 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         $htmlSelect = new cHTMLSelectElement('filelist_style_' . $this->_id, '', 'filelist_style_' . $this->_id);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n('Default style'), 'cms_filelist_style_default.html', true);
-        $htmlSelect->addOptionElement(0, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
         $additionalOptions = getEffectiveSettingsByType('cms_filelist_style');
         $htmlSelect->autoFill($additionalOptions);
 
@@ -591,16 +591,16 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         $htmlSelect = new cHTMLSelectElement('filelist_sort_' . $this->_id, '', 'filelist_sort_' . $this->_id);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n('File name'), 'filename', true);
-        $htmlSelect->addOptionElement(0, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n('File size'), 'filesize', false);
-        $htmlSelect->addOptionElement(1, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n('Date created'), 'createdate', false);
-        $htmlSelect->addOptionElement(2, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n('Date modified'), 'modifydate', false);
-        $htmlSelect->addOptionElement(3, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         $htmlSelect->setDefault($this->_settings['filelist_sort']);
 
@@ -616,10 +616,10 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         $htmlSelect = new cHTMLSelectElement('filelist_sortorder_' . $this->_id, '', 'filelist_sortorder_' . $this->_id);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n('Ascending'), 'asc', true);
-        $htmlSelect->addOptionElement(0, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n('Descending'), 'desc', false);
-        $htmlSelect->addOptionElement(1, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         // set default value
         $htmlSelect->setDefault($this->_settings['filelist_sortorder']);
@@ -713,20 +713,17 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         $htmlSelect = new cHTMLSelectElement('filelist_extensions_' . $this->_id, '', 'filelist_extensions_' . $this->_id, ($this->_settings['filelist_ignore_extensions'] !== 'false'), '', '', 'manual');
 
         // set other avariable options manually
-        $i = 1;
         foreach ($this->_fileExtensions as $fileExtension) {
             $htmlSelectOption = new cHTMLOptionElement(uplGetFileTypeDescription($fileExtension) . ' (.' . $fileExtension . ')', $fileExtension, false);
             $htmlSelectOption->setAlt(uplGetFileTypeDescription($fileExtension) . ' (.' . $fileExtension . ')');
-            $htmlSelect->addOptionElement($i, $htmlSelectOption);
-            $i++;
+            $htmlSelect->appendOptionElement($htmlSelectOption);
         }
 
         $additionalOptions = getEffectiveSettingsByType('cms_filelist_extensions');
         foreach ($additionalOptions as $label => $extension) {
             $htmlSelectOption = new cHTMLOptionElement($label . ' (.' . $extension . ')', $extension);
             $htmlSelectOption->setAlt($label . ' (.' . $extension . ')');
-            $htmlSelect->addOptionElement($i, $htmlSelectOption);
-            $i++;
+            $htmlSelect->appendOptionElement($htmlSelectOption);
         }
 
         // set default values
@@ -827,7 +824,6 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
     private function _generateExistingFileSelect() {
         $selectedFiles = $this->_settings['filelist_manual_files'];
         $htmlSelect = new cHTMLSelectElement('filelist_manual_files_' . $this->_id, '', 'filelist_manual_files_' . $this->_id, false, '', '', 'manual');
-        $i = 0;
 
         if (is_array($selectedFiles)) {
             foreach ($selectedFiles as $selectedFile) {
@@ -836,8 +832,7 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
                 $fileName = $splits[$splitCount - 1];
                 $htmlSelectOption = new cHTMLOptionElement($fileName, $selectedFile, true);
                 $htmlSelectOption->setAlt($fileName);
-                $htmlSelect->addOptionElement($i, $htmlSelectOption);
-                $i++;
+                $htmlSelect->appendOptionElement($htmlSelectOption);
             }
         }
 

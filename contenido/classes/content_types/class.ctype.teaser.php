@@ -599,13 +599,13 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         // set please chose option element
         $htmlSelectOption = new cHTMLOptionElement(i18n('Please choose'), '', true);
-        $htmlSelect->addOptionElement(0, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         // generate a select box containing count 1 to 20 for maximum teaser
         // count
         for ($i = 1; $i <= 20; $i++) {
             $htmlSelectOption = new cHTMLOptionElement($i, $i, false);
-            $htmlSelect->addOptionElement($i, $htmlSelectOption);
+            $htmlSelect->appendOptionElement($htmlSelectOption);
         }
 
         // set default value
@@ -625,21 +625,19 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         // set please chose option element
         $htmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
-        $htmlSelect->addOptionElement(0, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         // set other avariable options manually
         $htmlSelectOption = new cHTMLOptionElement(i18n("Block style"), 'cms_teaser_style_block.html', false);
-        $htmlSelect->addOptionElement(1, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n("Blog style"), 'cms_teaser_style_blog.html', false);
-        $htmlSelect->addOptionElement(2, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         $additionalOptions = getEffectiveSettingsByType('cms_teaser');
-        $i = 3;
         foreach ($additionalOptions as $sLabel => $sTemplate) {
             $htmlSelectOption = new cHTMLOptionElement($sLabel, $sTemplate, false);
-            $htmlSelect->addOptionElement($i, $htmlSelectOption);
-            $i++;
+            $htmlSelect->appendOptionElement($htmlSelectOption);
         }
 
         // set default value
@@ -678,9 +676,9 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         // use $this->_cmsTypes as basis for this select box which contains all
         // avariable content types in system
-        foreach ($this->_cmsTypes as $sKey => $value) {
+        foreach ($this->_cmsTypes as $key => $value) {
             $htmlSelectOption = new cHTMLOptionElement($value, $value, false);
-            $htmlSelect->addOptionElement($sKey, $htmlSelectOption);
+            $htmlSelect->addOptionElement($key, $htmlSelectOption);
         }
 
         // set default value
@@ -734,20 +732,20 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         // set please chose option element
         $htmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
-        $htmlSelect->addOptionElement(0, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         // set other avariable options manually
         $htmlSelectOption = new cHTMLOptionElement(i18n("Sort sequence"), 'sortsequence', false);
-        $htmlSelect->addOptionElement(1, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n("Creation date"), 'creationdate', false);
-        $htmlSelect->addOptionElement(2, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n("Published date"), 'publisheddate', false);
-        $htmlSelect->addOptionElement(3, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n("Modification date"), 'modificationdate', false);
-        $htmlSelect->addOptionElement(4, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         // set default value
         $htmlSelect->setDefault($this->_settings['teaser_sort']);
@@ -766,14 +764,14 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         // set please chose option element
         $htmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
-        $htmlSelect->addOptionElement(0, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         // set other avariable options manually
         $htmlSelectOption = new cHTMLOptionElement(i18n("Ascending"), 'asc', false);
-        $htmlSelect->addOptionElement(1, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n("Descending"), 'desc', false);
-        $htmlSelect->addOptionElement(2, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         // set default value
         $htmlSelect->setDefault($this->_settings['teaser_sort_order']);
@@ -791,14 +789,14 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         // set please chose option element
         $htmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
-        $htmlSelect->addOptionElement(0, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         // set other avariable options manually
         $htmlSelectOption = new cHTMLOptionElement(i18n("Scaled"), 'false', false);
-        $htmlSelect->addOptionElement(1, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n("Cropped"), 'true', false);
-        $htmlSelect->addOptionElement(2, $htmlSelectOption);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         // set default value
         $htmlSelect->setDefault($this->_settings['teaser_image_crop']);

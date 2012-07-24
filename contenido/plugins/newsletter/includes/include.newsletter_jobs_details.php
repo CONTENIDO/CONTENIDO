@@ -155,10 +155,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
                    "100" => "100",
                    "250" => "250",
                    "500" => "500");
-    foreach ($aData as $sKey => $sValue) {
-        $oOption = new cHTMLOptionElement($sValue, $sKey);
-        $oSelElements->addOptionElement($sKey, $oOption);
-    }
+    $oSelElements->autoFill($aData);
 
     $oSelElements->setDefault($_REQUEST["elemperpage"]);
 

@@ -65,7 +65,7 @@ function buildCategorySelectRights()
     $oHtmlSelect = new cHTMLSelectElement('idcat', '', 'new_idcat');
 
     $oHtmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
-    $oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
+    $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
 
     $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
            ".$cfg["tab"]["cat"]." AS a, ".$cfg["tab"]["cat_lang"]." AS b,
@@ -103,7 +103,6 @@ function buildCategorySelectRights()
         }
     }
 
-    $j = 1;
     foreach ($categories as $tmpidcat => $props) {
         $spaces = '&nbsp;&nbsp;';
         for ($i = 0; $i < $props['level']; $i ++) {
@@ -113,8 +112,7 @@ function buildCategorySelectRights()
         $sCategoryname = $props['name'];
         $sCategoryname = cApiStrTrimHard($sCategoryname, 30);
         $oHtmlSelectOption = new cHTMLOptionElement($spaces.">".$sCategoryname, $tmpidcat, false, !$props['perm']);
-        $oHtmlSelect->addOptionElement($j, $oHtmlSelectOption);
-        $j++;
+        $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
     }
 
     return $oHtmlSelect->toHtml();
@@ -162,18 +160,16 @@ function getTemplateSelect()
     $oHtmlSelect = new cHTMLSelectElement('cat_template_select', '', 'cat_template_select');
 
     $oHtmlSelectOption = new cHTMLOptionElement('--- '.i18n("none"). ' ---', 0, false);
-    $oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
+    $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
 
     $sql = "SELECT idtpl, name, defaulttemplate FROM ".$cfg['tab']['tpl']
          . " WHERE idclient = '".$client."' ORDER BY name";
 
-    $i = 1;
     if ($db->query($sql)) {
         while ($db->next_record()) {
             $bDefaultTemplate = $db->f('defaulttemplate');
             $oHtmlSelectOption = new cHTMLOptionElement($db->f('name'), $db->f('idtpl'), $bDefaultTemplate);
-            $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
-            $i++;
+            $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
         }
     }
 

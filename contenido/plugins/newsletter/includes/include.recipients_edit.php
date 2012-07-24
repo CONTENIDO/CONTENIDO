@@ -166,9 +166,9 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
 
     $oSelNewsType = new cHTMLSelectElement("newstype");
     $oOption = new cHTMLOptionElement(i18n("Text only", 'newsletter'), "0");
-    $oSelNewsType->addOptionElement(0, $oOption);
+    $oSelNewsType->appendOptionElement($oOption);
     $oOption = new cHTMLOptionElement(i18n("HTML and text", 'newsletter'), "1");
-    $oSelNewsType->addOptionElement(1, $oOption);
+    $oSelNewsType->appendOptionElement($oOption);
     $oSelNewsType->setDefault($recipient->get("news_type"));
 
     $oForm->add(i18n("Name", 'newsletter'), $oTxtName->render());

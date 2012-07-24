@@ -90,7 +90,6 @@ $oClientColl = new cApiClientCollection();
 $clientList = $oClientColl->getAccessibleClients();
 $firstSel = false;
 $firstClientsLang = 0;
-$counter = 0;
 
 foreach ($clientList as $key => $value) {
     $sql = "SELECT * FROM ".$cfg["tab"]["lang"]." AS A, ".$cfg["tab"]["clients_lang"]." AS B WHERE B.idclient=" . (int) $key . " AND A.idlang=B.idlang";
@@ -108,15 +107,14 @@ foreach ($clientList as $key => $value) {
 
             if ($rights_clientslang == $db->f('idclientslang')) {
                 $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> '.$db->f('name'), $db->f('idclientslang'), true);
-                $oHtmlSelect->addOptionElement($counter, $oHtmlSelectOption);
+                $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
                 if (!isset($rights_client)) {
                     $firstClientsLang = $db->f('idclientslang');
                 }
             } else {
                 $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> '.$db->f('name'), $db->f('idclientslang'), false);
-                $oHtmlSelect->addOptionElement($counter, $oHtmlSelectOption);
+                $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
             }
-            $counter++;
         }
     }
 }
@@ -135,15 +133,15 @@ if ($area != 'groups_content') {
     // Filter for displaying rights
     $oHtmlSelect = new cHTMLSelectElement('filter_rights', '', 'filter_rights');
     $oHtmlSelectOption = new cHTMLOptionElement('--- '.i18n('All').' ---', '', false);
-    $oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
+    $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
     $oHtmlSelectOption = new cHTMLOptionElement(i18n('Article rights'), 'article', false);
-    $oHtmlSelect->addOptionElement(1, $oHtmlSelectOption);
+    $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
     $oHtmlSelectOption = new cHTMLOptionElement(i18n('Category rights'), 'category', false);
-    $oHtmlSelect->addOptionElement(2, $oHtmlSelectOption);
+    $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
     $oHtmlSelectOption = new cHTMLOptionElement(i18n('Template rights'), 'template', false);
-    $oHtmlSelect->addOptionElement(3, $oHtmlSelectOption);
+    $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
     $oHtmlSelectOption = new cHTMLOptionElement(i18n('Plugin/Other rights'), 'other', false);
-    $oHtmlSelect->addOptionElement(4, $oHtmlSelectOption);
+    $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
     $oHtmlSelect->setEvent('change', 'document.rightsform.submit();');
     $oHtmlSelect->setDefault($_POST['filter_rights']);
 

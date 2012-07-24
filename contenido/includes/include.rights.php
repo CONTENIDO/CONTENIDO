@@ -97,7 +97,6 @@ $oClientColl = new cApiClientCollection();
 $clientList = $oClientColl->getAccessibleClients();
 $firstSel = false;
 $firstClientsLang = 0;
-$counter = 0;
 
 foreach ($clientList as $key => $value) {
     $sql = "SELECT * FROM " . $cfg["tab"]["lang"] . " AS A, " . $cfg["tab"]["clients_lang"] . " AS B WHERE B.idclient=" . (int) $key . " AND A.idlang=B.idlang";
@@ -114,15 +113,14 @@ foreach ($clientList as $key => $value) {
 
             if ($rights_clientslang == $db->f('idclientslang')) {
                 $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> ' . $db->f('name'), $db->f('idclientslang'), true);
-                $oHtmlSelect->addOptionElement($counter, $oHtmlSelectOption);
+                $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
                 if (!isset($rights_client)) {
                     $firstClientsLang = $db->f('idclientslang');
                 }
             } else {
                 $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> ' . $db->f('name'), $db->f('idclientslang'), false);
-                $oHtmlSelect->addOptionElement($counter, $oHtmlSelectOption);
+                $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
             }
-            $counter++;
         }
     }
 }

@@ -384,8 +384,8 @@ class cHTML {
      * Appends the given style definitions to the HTML element.
      * Example usage:
      * $element->appendStyleDefinitions(array(
-     *     'margin' => '5px',
-     *     'padding' => '0'
+     * 'margin' => '5px',
+     * 'padding' => '0'
      * ));
      *
      * @param string $styles the styles to append
@@ -1337,14 +1337,14 @@ class cHTMLSelectElement extends cHTMLFormElement {
      *
      * Array format:
      * $stuff = array(
-     *     array('value', 'title'),
-     *     array('value', 'title')
+     * array('value', 'title'),
+     * array('value', 'title')
      * );
      *
      * or regular key => value arrays:
      * $stuff = array(
-     *    'value' => 'title',
-     *    'value' => 'title'
+     * 'value' => 'title',
+     * 'value' => 'title'
      * );
      *
      * @param array $stuff Array with all items
@@ -1355,10 +1355,10 @@ class cHTMLSelectElement extends cHTMLFormElement {
             foreach ($stuff as $key => $row) {
                 if (is_array($row)) {
                     $option = new cHTMLOptionElement($row[1], $row[0]);
-                    $this->addOptionElement($row[0], $option);
+                    $this->appendOptionElement($option);
                 } else {
                     $option = new cHTMLOptionElement($row, $key);
-                    $this->addOptionElement($key, $option);
+                    $this->appendOptionElement($option);
                 }
             }
         }
@@ -1367,7 +1367,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
     }
 
     /**
-     * Adds an cHTMLOptionElement to the number of choices.
+     * Adds an cHTMLOptionElement to the number of choices at the specified
+     * position.
      *
      * @param string $index Index of the element
      * @param cHTMLOptionElement $element Filled cHTMLOptionElement to add
@@ -1375,6 +1376,18 @@ class cHTMLSelectElement extends cHTMLFormElement {
      */
     public function addOptionElement($index, cHTMLOptionElement $element) {
         $this->_options[$index] = $element;
+
+        return $this;
+    }
+
+    /**
+     * Appends a cHTMLOptionElement to the number of choices.
+     *
+     * @param cHTMLOptionElement $element Filled cHTMLOptionElement to add
+     * @return cHTMLSelectElement $this
+     */
+    public function appendOptionElement(cHTMLOptionElement $element) {
+        $this->_options[] = $element;
 
         return $this;
     }
@@ -2951,11 +2964,14 @@ class cHTMLLink extends cHTML {
 
     /* Stores the custom entries */
     protected $_custom;
+
     protected $_image;
 
     /**
-     * Constructor. Creates an HTML link.
-     * @param  string  $href  String with the location to link to
+     * Constructor.
+     * Creates an HTML link.
+     *
+     * @param string $href String with the location to link to
      * @return void
      */
     public function __construct($href = '') {
@@ -2985,7 +3001,8 @@ class cHTMLLink extends cHTML {
 
     /**
      * Sets the link to a specific location
-     * @param  string  $href  String with the location to link to
+     *
+     * @param string $href String with the location to link to
      * @return cHTMLLink $this
      */
     public function setLink($href) {
@@ -3001,7 +3018,8 @@ class cHTMLLink extends cHTML {
 
     /**
      * Sets the target frame
-     * @param  string  $target  Target frame identifier
+     *
+     * @param string $target Target frame identifier
      * @return cHTMLLink $this
      */
     public function setTargetFrame($target) {
@@ -3010,9 +3028,10 @@ class cHTMLLink extends cHTML {
 
     /**
      * Sets a CONTENIDO link (area, frame, action)
-     * @param  string  $targetarea  Target backend area
-     * @param  string  $targetframe  Target frame (1-4)
-     * @param  string  $targetaction  Target action
+     *
+     * @param string $targetarea Target backend area
+     * @param string $targetframe Target frame (1-4)
+     * @param string $targetaction Target action
      * @return cHTMLLink $this
      */
     public function setCLink($targetarea, $targetframe, $targetaction = '') {
@@ -3026,10 +3045,11 @@ class cHTMLLink extends cHTML {
 
     /**
      * Sets a multilink
-     * @param  string  $righttoparea       Area   (right top)
-     * @param  string  $righttopaction     Action (right top)
-     * @param  string  $rightbottomarea    Area   (right bottom)
-     * @param  string  $rightbottomaction  Action (right bottom)
+     *
+     * @param string $righttoparea Area (right top)
+     * @param string $righttopaction Action (right top)
+     * @param string $rightbottomarea Area (right bottom)
+     * @param string $rightbottomaction Action (right bottom)
      * @return cHTMLLink $this
      */
     public function setMultiLink($righttoparea, $righttopaction, $rightbottomarea, $rightbottomaction) {
@@ -3046,8 +3066,9 @@ class cHTMLLink extends cHTML {
 
     /**
      * Sets a custom attribute to be appended to the link
-     * @param  string  $key    Parameter name
-     * @param  string  $value  Parameter value
+     *
+     * @param string $key Parameter name
+     * @param string $value Parameter value
      * @return cHTMLLink $this
      */
     public function setCustom($key, $value) {
@@ -3064,7 +3085,8 @@ class cHTMLLink extends cHTML {
 
     /**
      * Unsets a previous set custom attribute
-     * @param  string  $key    Parameter name
+     *
+     * @param string $key Parameter name
      * @return cHTMLLink $this
      */
     public function unsetCustom($key) {
@@ -3093,7 +3115,7 @@ class cHTMLLink extends cHTML {
         }
 
         switch ($this->_type) {
-            case 'link' :
+            case 'link':
                 $custom = '';
                 if (is_array($this->_custom)) {
                     foreach ($this->_custom as $key => $value) {
@@ -3107,11 +3129,11 @@ class cHTMLLink extends cHTML {
 
                 return $this->_link . $custom . $anchor;
                 break;
-            case 'clink' :
+            case 'clink':
                 $this->disableAutomaticParameterAppend();
                 return 'main.php?area=' . $this->_targetarea . '&frame=' . $this->_targetframe . '&action=' . $this->_targetaction . $custom . '&contenido=' . $sess->id . $anchor;
                 break;
-            case 'multilink' :
+            case 'multilink':
                 $this->disableAutomaticParameterAppend();
                 $tmp_mstr = 'javascript:conMultiLink(\'%s\',\'%s\',\'%s\',\'%s\');';
                 $mstr = sprintf($tmp_mstr, 'right_top', $sess->url('main.php?area=' . $this->_targetarea . '&frame=' . $this->_targetframe . '&action=' . $this->_targetaction . $custom), 'right_bottom', $sess->url('main.php?area=' . $this->_targetarea2 . '&frame=' . $this->_targetframe2 . '&action=' . $this->_targetaction2 . $custom));
@@ -3123,7 +3145,8 @@ class cHTMLLink extends cHTML {
     /**
      * Sets an anchor
      * Only works for the link types Link and cLink.
-     * @param  string  $content  Anchor name
+     *
+     * @param string $content Anchor name
      * @return cHTMLLink $this
      */
     public function setAnchor($anchor) {
@@ -3134,7 +3157,9 @@ class cHTMLLink extends cHTML {
 
     /**
      * Sets the link's content
-     * @param  string|object  $content  String with the content or an object to render.
+     *
+     * @param string|object $content String with the content or an object to
+     *            render.
      * @return cHTMLLink $this
      */
     public function setContent($content) {
@@ -3161,27 +3186,45 @@ class cHTMLLink extends cHTML {
 
 /**
  * Old class name for downwards compatibility
+ *
  * @deprecated [2012-07-12] This class was renamed to cHTMLLink
  */
 class Link extends cHTMLLink {
 
     public $link;
+
     public $title;
+
     public $targetarea;
+
     public $targetframe;
+
     public $targetaction;
+
     public $targetarea2;
+
     public $targetframe2;
+
     public $targetaction2;
+
     public $caption;
+
     public $javascripts;
+
     public $type;
+
     public $custom;
+
     public $content;
+
     public $attributes;
+
     public $img_width;
+
     public $img_height;
+
     public $img_type;
+
     public $img_attr;
 
     public function __construct() {

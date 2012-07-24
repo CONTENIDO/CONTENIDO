@@ -431,10 +431,7 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
 
     $values = array(25 => "25", 50 => "50", 100 => "100", 200 => "200");
 
-    foreach ($values as $key => $value) {
-        $option = new cHTMLOptionElement($value, $key);
-        $select->addOptionElement($key, $option);
-    }
+    $select->autoFill($values);
 
     $select->setDefault($thumbnailmode);
     $select->setEvent('change', "document.options.thumbnailmode.value = this.value");

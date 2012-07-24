@@ -236,11 +236,11 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $option[3] = new cHTMLOptionElement(i18n("Article with category and language"), $baselink . "&idcat=$idcat&lang=$lang");
     $option[4] = new cHTMLOptionElement(i18n("Article with language"), $baselink . "&lang=$lang");
 
-    $select->addOptionElement(0, $option[0]);
-    $select->addOptionElement(1, $option[1]);
-    $select->addOptionElement(2, $option[2]);
-    $select->addOptionElement(3, $option[3]);
-    $select->addOptionElement(4, $option[4]);
+    $select->appendOptionElement($option[0]);
+    $select->appendOptionElement($option[1]);
+    $select->appendOptionElement($option[2]);
+    $select->appendOptionElement($option[3]);
+    $select->appendOptionElement($option[4]);
 
     $tpl->set('s', 'DIRECTLINK', $select->render() . '<br><br><input style="width:400px;" class="text_medium" type="text" id="linkhint" disabled="disabled">');
 

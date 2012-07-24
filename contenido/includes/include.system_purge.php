@@ -175,11 +175,9 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
 
     $oHtmlSelectHour = new  cHTMLSelectElement ('purge_clients[]', '', 'client_select');
 
-    $i = 0;
     foreach ($aAvailableClient as $iClientId => $aClient) {
         $oHtmlSelectOption = new cHTMLOptionElement($aClient['name'], $iClientId, false);
-        $oHtmlSelectHour->addOptionElement($i, $oHtmlSelectOption);
-        $i++;
+        $oHtmlSelectHour->appendOptionElement($oHtmlSelectOption);
     }
 
     $oHtmlSelectHour->setMultiselect();
