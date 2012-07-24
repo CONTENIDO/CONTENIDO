@@ -542,7 +542,7 @@ function conMakePublic($idcat, $lang, $public) {
  * @param int $idart Article Id
  */
 function conDeleteart($idart) {
-    global $db, $cfg, $lang, $_cecRegistry, $cfgClient, $client;
+    global $lang, $_cecRegistry, $cfgClient, $client;
 
     // Get article language
     $oArtLang = new cApiArticleLanguage();
@@ -558,7 +558,7 @@ function conDeleteart($idart) {
     $oCatArt->loadBy('idart', (int) $idart);
     $idcat = $oCatArt->get('idcat');
 
-    // Remove startidartlang
+    // Reset startidartlang
     if (isStartArticle($idartlang, $idcat, $lang)) {
         $oCatLang = new cApiCategoryLanguage();
         $oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang);
@@ -649,7 +649,7 @@ function conDeleteart($idart) {
  * @param string $string String var by reference
  */
 function extractNumber(&$string) {
-    $string = preg_replace("/[^0-9]/", "", $string);
+    $string = preg_replace('/[^0-9]/', '', $string);
 }
 
 /**
@@ -659,116 +659,51 @@ function extractNumber(&$string) {
  * @param int $idtpl Template Id
  */
 function conChangeTemplateForCat($idcat, $idtpl) {
-    global $db, $db2, $cfg, $lang;
+    global $lang;
 
-    // DELETE old entries
-    $sql = "SELECT idtplcfg FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
-    $db->query($sql);
-    $db->next_record();
-    $old_idtplcfg = $db->f("idtplcfg");
+    $oCatLang = new cApiCategoryLanguage();
+    if (!$oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
+        return;
+    }
 
-    $sql = "DELETE FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($old_idtplcfg) . "'";
-    $db->query($sql);
+    if ($oCatLang->get('idtplcfg')) {
+        // Delete old container configuration
+        $oContainerConfColl = new cApiContainerConfigurationCollection();
+        $oContainerConfColl->deleteBy('idtplcfg', (int) $oCatLang->get('idtplcfg'));
 
-    $sql = "DELETE FROM " . $cfg["tab"]["container_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($old_idtplcfg) . "'";
-    $db->query($sql);
+        // Delete old template configuration
+        $oTplConfColl = new cApiTemplateConfigurationCollection();
+        $oTplConfColl->delete('idtplcfg', (int) $oCatLang->get('idtplcfg'));
+    }
 
-    // parameter $idtpl is 0, reset the template
+    // Parameter $idtpl is 0, reset the template
     if (0 == $idtpl) {
-        // get $idtplcfg
-        $sql = "SELECT idtplcfg FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
-
-        $db->query($sql);
-        $db->next_record();
-
-        $idtplcfg = $db->f("idtplcfg");
-
-        // DELETE 'template_conf' entry
-        $sql = "DELETE FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "'";
-        $db->query($sql);
-
-        // DELETE 'container_conf entries'
-        $sql = "DELETE FROM " . $cfg["tab"]["container_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "'";
-        $db->query($sql);
-
-        // UPDATE 'cat_lang' table
-        $sql = "UPDATE " . $cfg["tab"]["cat_lang"] . " SET idtplcfg = '0' WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
-        $db->query($sql);
+        $oCatLang->set('idtplcfg', 0);
+        $oCatLang->store();
     } else {
+        // Check if a pre-configuration is assigned
+        $oTpl = new cApiTemplate();
+        $oTpl->loadBy('idtpl', (int) $idtpl);
 
-        if (!is_object($db2)) {
-            $db2 = cRegistry::getDb();
-        }
+        if (0 != $oTpl->get('idtplcfg')) {
+            // Template is pre-configured, create new configuration
+            $oTplConfColl = new cApiTemplateConfigurationCollection();
+            $oTplConf = $oTplConfColl->create($idtpl);
 
-        // check if a pre-configuration is assigned
-        $sql = "SELECT idtplcfg FROM " . $cfg["tab"]["tpl"] . " WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "'";
+            // If there is a preconfiguration of template, copy its settings into templateconfiguration
+            $oTplConfColl->copyTemplatePreconfiguration($idtpl, $oTplConf->get('idtplcfg'));
 
-        $db->query($sql);
-        $db->next_record();
-
-        if (0 != $db->f("idtplcfg")) {
-            // template is pre-configured, create new configuration and
-            // copy data from pre-cfg
-            // create new configuration
-            $sql = "INSERT INTO " . $cfg["tab"]["tpl_conf"] . " (idtpl) VALUES ('" . cSecurity::toInteger($idtpl) . "')";
-            $db->query($sql);
-
-            // get new id
-            $new_idtplcfg = $db2->getLastInsertedId($cfg["tab"]["tpl_conf"]);
-
-            // extract pre-configuration data
-            $sql = "SELECT * FROM " . $cfg["tab"]["container_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($db->f("idtplcfg")) . "'";
-            $db->query($sql);
-
-            while ($db->next_record()) {
-                // get data
-                //$nextid     = $db2->nextid($cfg["tab"]["container_conf"]);
-
-                $number = $db->f("number");
-                $container = $db->f("container");
-
-                // write new entry
-                $sql = "INSERT INTO
-                            " . $cfg["tab"]["container_conf"] . "
-                            (idtplcfg, number, container)
-                        VALUES
-                            ('" . cSecurity::toInteger($new_idtplcfg) . "', '" . cSecurity::toInteger($number) . "', '" . cSecurity::escapeDB($container, $db2) . "')";
-
-                $db2->query($sql);
-            }
-
-            // extract old idtplcfg
-            $sql = "SELECT idtplcfg FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
-            $db->query($sql);
-            $db->next_record();
-            $tmp_idtplcfg = $db->f("idtplcfg");
-
-            if ($tmp_idtplcfg != 0) {
-                // DELETE 'template_conf' entry
-                $sql = "DELETE FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
-                $db->query($sql);
-
-                // DELETE 'container_conf entries'
-                $sql = "DELETE FROM " . $cfg["tab"]["container_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
-                $db->query($sql);
-            }
-
-            // update 'cat_lang' table
-            $sql = "UPDATE " . $cfg["tab"]["cat_lang"] . " SET idtplcfg = '" . cSecurity::toInteger($new_idtplcfg) . "' WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
-            $db->query($sql);
+            // Update category language
+            $oCatLang->set('idtplcfg', $oTplConf->get('idtplcfg'));
+            $oCatLang->store();
         } else {
-            // template is not pre-configured, create a new configuration.
+            // Template is not pre-configured, create a new configuration.
+            $oTplConfColl = new cApiTemplateConfigurationCollection();
+            $oTplConf = $oTplConfColl->create($idtpl);
 
-            $sql = "INSERT INTO " . $cfg["tab"]["tpl_conf"] . "
-                    ( idtpl) VALUES
-                    ('" . cSecurity::toInteger($idtpl) . "')";
-            $db->query($sql);
-
-            $new_idtplcfg = $db->getLastInsertedId(($cfg["tab"]["tpl_conf"]));
-
-            // update 'cat_lang' table
-            $sql = "UPDATE " . $cfg["tab"]["cat_lang"] . " SET idtplcfg = '" . cSecurity::toInteger($new_idtplcfg) . "' WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
-            $db->query($sql);
+            // Update category language
+            $oCatLang->set('idtplcfg', $oTplConf->get('idtplcfg'));
+            $oCatLang->store();
         }
     }
 
