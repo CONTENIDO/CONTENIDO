@@ -78,9 +78,6 @@ $objHeaderItem->updateAttributes(array("class" => "center", "valign" => "top", "
 $objHeaderItem->setContent(i18n("Template name"));
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
-$objHeaderItem->setContent(i18n("Description"));
-$items .= $objHeaderItem->render();
-$objHeaderItem->advanceID();
 
 $aSecondHeaderRow = array();
 $possible_areas = array();
@@ -127,9 +124,6 @@ $objHeaderItem->updateAttributes(array("class" => "center", "valign" => "", "ali
 $objHeaderItem->setContent("&nbsp;");
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
-$objHeaderItem->setContent("&nbsp;");
-$items .= $objHeaderItem->render();
-$objHeaderItem->advanceID();
 foreach ($aSecondHeaderRow as $value) {
     $objHeaderItem->setContent($value);
     $items .= $objHeaderItem->render();
@@ -144,7 +138,7 @@ $objHeaderRow->advanceID();
 //table content
 $output = "";
 
-//Select the itemid´s
+//Select the itemidï¿½s
 $sql = "SELECT * FROM " . $cfg["tab"]["tpl"] . " WHERE idclient='" . cSecurity::toInteger($rights_client) . "' ORDER BY name";
 $db->query($sql);
 
@@ -154,11 +148,7 @@ while ($db->next_record()) {
 
     $objItem->updateAttributes(array("class" => "td_rights0"));
     $objItem->setContent($tplname);
-    $items .= $objItem->render();
-    $objItem->advanceID();
-
-    $objItem->updateAttributes(array("class" => "td_rights1"));
-    $objItem->setContent($description ? $description : "&nbsp;");
+    $objItem->setAttribute($description);
     $items .= $objItem->render();
     $objItem->advanceID();
 
