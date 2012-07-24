@@ -198,7 +198,7 @@ cContentTypeImgEditor.prototype.showFolderPath = function() {
 cContentTypeImgEditor.prototype.addSelectAction = function() {
     var self = this;
     if ($('#image_filename_' + self.id).length > 0) {
-        $(self.frameId + ' select[class="text_medium"]').change(function() {
+        $(self.frameId + ' select[name="image_filename"]').change(function() {
             var filename = $('select#image_filename_' + self.id + ' option:selected').val();
             // update the image preview element with the new selected image
             if (filename === '') {
