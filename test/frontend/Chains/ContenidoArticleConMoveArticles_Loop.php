@@ -60,7 +60,7 @@ class ContenidoArticleConMoveArticles_LoopTest extends PHPUnit_Framework_TestCas
     public function testNoChain()
     {
         // execute chain
-        CEC_Hook::execute($this->_chain, $this->_data);
+        cApiCecHook::execute($this->_chain, $this->_data);
 
         $this->assertEquals(array(0, $this->_data), array(self::$invokeCounter, $this->_data));
     }
@@ -78,7 +78,7 @@ class ContenidoArticleConMoveArticles_LoopTest extends PHPUnit_Framework_TestCas
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoArticleConMoveArticles_Loop_Test');
 
         // execute chain
-        CEC_Hook::execute($this->_chain, $this->_data);
+        cApiCecHook::execute($this->_chain, $this->_data);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoArticleConMoveArticles_Loop_Test');
@@ -100,7 +100,7 @@ class ContenidoArticleConMoveArticles_LoopTest extends PHPUnit_Framework_TestCas
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoArticleConMoveArticles_Loop_Test2');
 
         // execute chain
-        CEC_Hook::execute($this->_chain, $this->_data);
+        cApiCecHook::execute($this->_chain, $this->_data);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoArticleConMoveArticles_Loop_Test');

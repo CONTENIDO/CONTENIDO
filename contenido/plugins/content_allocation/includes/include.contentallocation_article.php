@@ -69,7 +69,7 @@ if ($result == false) {
     $result = $notification->returnNotification('warning', i18n('There is no tagging tree.', 'content_allocation'));
 } else {
     if (!is_object($tpl)) {
-        $tpl = new Template();
+        $tpl = new cTemplate();
     }
     $hiddenfields = '<input type="hidden" name="action" value="storeallocation">
         <input type="hidden" name="idart" value="' . $idart . '">

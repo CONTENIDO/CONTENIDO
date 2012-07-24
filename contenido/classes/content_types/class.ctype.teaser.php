@@ -187,7 +187,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * @return html string of select box
      */
     public function generateTeaserCode() {
-        $template = new Template();
+        $template = new cTemplate();
         // set title of teaser
         $template->set('s', 'TITLE', $this->_settings['teaser_title']);
 
@@ -256,10 +256,10 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * informations from a CONTENIDO article object.
      *
      * @param cApiArticleLanguage $article - CONTENIDO Article object
-     * @param Template $template - CONTENIDO Template object (as reference)
+     * @param cTemplate $template - CONTENIDO Template object (as reference)
      * @return boolean - success state of this operation
      */
-    private function _fillTeaserTemplateEntry(cApiArticleLanguage $article, Template &$template) {
+    private function _fillTeaserTemplateEntry(cApiArticleLanguage $article, cTemplate &$template) {
         // get necessary informations for teaser from articles use properties in
         // a Settings for retrieval
         $title = $this->_getArtContent($article, $this->_settings['teaser_source_head'], $this->_settings['teaser_source_head_count']);
@@ -459,7 +459,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
     public function generateEditCode() {
         $this->_initCmsTypes();
 
-        $template = new Template();
+        $template = new cTemplate();
         // Set some values into javascript for a better handling
         $template->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $template->set('s', 'ID', $this->_id);
@@ -467,7 +467,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $template->set('s', 'CONTENIDO', $_REQUEST['contenido']);
         $template->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
 
-        $templateTabs = new Template();
+        $templateTabs = new cTemplate();
         $templateTabs->set('s', 'PREFIX', $this->_prefix);
 
         // create code for general tab
@@ -491,7 +491,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $codeTabs = $templateTabs->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_tabs.html', true);
 
         // construct the top code of the template
-        $templateTop = new Template();
+        $templateTop = new cTemplate();
         $templateTop->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $templateTop->set('s', 'ICON', 'images/isstart0.gif');
         $templateTop->set('s', 'ID', $this->_id);
@@ -507,7 +507,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         );
 
         // construct the bottom code of the template
-        $templateBottom = new Template();
+        $templateBottom = new cTemplate();
         $templateBottom->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $templateBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
         $templateBottom->set('s', 'ID', $this->_id);

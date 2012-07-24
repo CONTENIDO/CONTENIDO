@@ -46,7 +46,7 @@ function getUsers ($listid, $default)
     $groupColl = new cApiGroupCollection();
     $groups = $groupColl->getAccessibleGroups(explode(',', $auth->auth['perm']));
 
-    $tpl2 = new Template;
+    $tpl2 = new cTemplate;
     $tpl2->set('s', 'NAME', 'user'.$listid);
     $tpl2->set('s', 'CLASS', 'text_small');
     $tpl2->set('s', 'OPTIONS', 'size=1');
@@ -153,7 +153,7 @@ function getActionSelect ($idartlang, $idusersequence)
 
     $allActions = $workflowActions->getAvailableWorkflowActions();
 
-    $wfSelect = new Template;
+    $wfSelect = new cTemplate;
     $wfSelect->set('s', 'NAME', 'wfselect'.$idartlang);
     $wfSelect->set('s', 'CLASS', 'text_medium');
 

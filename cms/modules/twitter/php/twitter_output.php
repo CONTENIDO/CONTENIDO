@@ -12,12 +12,12 @@
  * }}
  */
 
-$tpl = new Template();
-$tplFollowButton = new Template();
-$tplTwitts= new Template();
-$tplLableTranslation = new Template();
-$tplTweets = new Template();
-$tpl2 = new Template();
+$tpl = new cTemplate();
+$tplFollowButton = new cTemplate();
+$tplTwitts= new cTemplate();
+$tplLableTranslation = new cTemplate();
+$tplTweets = new cTemplate();
+$tpl2 = new cTemplate();
 
 $twitterName = "CMS_VALUE[0]";
 $twitterLook = "CMS_VALUE[1]";

@@ -99,7 +99,7 @@ if ($action == 10) {
 
 
     //Replace vars in Script
-    $oScriptTpl = new Template();
+    $oScriptTpl = new cTemplate();
 
     $oScriptTpl->set('s', 'CONTENIDO_FULLHTML', $cfg['path']['contenido_fullhtml']);
 

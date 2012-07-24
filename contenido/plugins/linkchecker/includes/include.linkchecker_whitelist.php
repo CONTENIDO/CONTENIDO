@@ -59,7 +59,7 @@ $db->query($sql);
 
 while ($db->next_record()) {
 
-    $tpl2 = new Template;
+    $tpl2 = new cTemplate;
     $tpl2->reset();
 
     $tpl2->set('s', 'CONTENIDO_URL', $cfg['path']['contenido_fullhtml']);

@@ -61,20 +61,20 @@ class DB_Contenido extends DB_Sql {
         // @FIXME: Database class should throw a error. Redirecting to the error page is not a good idea.
         //         What if the db connection within a cli script fails???
         if ($this->Errno == 1) {
-            $errortitle = i18n("MySQL Database not reachable for installation %s");
-            $errortitle = sprintf($errortitle, $cfg["path"]["contenido_fullhtml"]);
+            $errortitle = i18n('MySQL Database not reachable for installation %s');
+            $errortitle = sprintf($errortitle, $cfg['path']['contenido_fullhtml']);
 
-            $errormessage = i18n("The MySQL Database for the installation %s is not reachable. Please check if this is a temporary problem or if it is a real fault.");
-            $errormessage = sprintf($errormessage, $cfg["path"]["contenido_fullhtml"]);
+            $errormessage = i18n('The MySQL Database for the installation %s is not reachable. Please check if this is a temporary problem or if it is a real fault.');
+            $errormessage = sprintf($errormessage, $cfg['path']['contenido_fullhtml']);
 
             notifyOnError($errortitle, $errormessage);
 
-            if ($cfg["contenido"]["errorpage"] != "") {
-                header("Location: " . $cfg["contenido"]["errorpage"]);
+            if ($cfg['contenido']['errorpage'] != '') {
+                header('Location: ' . $cfg['contenido']['errorpage']);
             } else {
                 //The script should not die if we are in the setup process. The setup has to make sure the connection works
-                if (strrpos(C_SETUP_PATH, "setup") != (strlen(C_SETUP_PATH) - strlen("/setup"))) {
-                    die("Could not connect to database wtih this configuration");
+                if (strrpos(C_SETUP_PATH, 'setup') != (strlen(C_SETUP_PATH) - strlen('/setup'))) {
+                    die('Could not connect to database wtih this configuration');
                 }
             }
         }
@@ -97,9 +97,9 @@ class DB_Contenido extends DB_Sql {
         if (!$this->Query_ID) {
             $this->NoRecord = true;
             if ($cCurrentModule > 0) {
-                $this->halt("next_record called with no query pending in Module ID $cCurrentModule.");
+                $this->halt('next_record called with no query pending in Module ID ' . $cCurrentModule . '.');
             } else {
-                $this->halt("next_record called with no query pending.");
+                $this->halt('next_record called with no query pending.');
             }
             return false;
         }
@@ -137,7 +137,7 @@ class DB_Contenido extends DB_Sql {
      */
     public function copyResultToArray($sTable = '') {
         global $cachemeta;
-        cDeprecated("Use db drivers toArray() method instead");
+        cDeprecated('Use db drivers toArray() method instead');
 
         $aValues = array();
 
@@ -266,9 +266,9 @@ class Contenido_CT_File extends CT_File {
      * @return  mixed
      */
     public function ac_get_value($sId, $sName) {
-        if (cFileHandler::exists($this->file_path . "$sId$sName")) {
+        if (cFileHandler::exists($this->file_path . $sId . $sName)) {
 
-            $s = cFileHandler::readLine($this->file_path . "$sId$sName");
+            $s = cFileHandler::readLine($this->file_path . $sId . $sName);
             return urldecode($s);
         } else {
             return '';
@@ -283,7 +283,7 @@ class Contenido_CT_File extends CT_File {
  * NOTE: Is experimental, so don't use this in a production environment.
  *
  * To use this, set session container in data/config/{environment}/config.misc.php to
- * $cfg["session_container"] = 'session';
+ * $cfg['session_container'] = 'session';
  *
  * @todo  Make session container configurable
  *
@@ -365,7 +365,7 @@ class Contenido_Frontend_Session extends Session {
     public function __construct() {
         global $load_lang, $load_client, $cfg;
 
-        cDeprecated("This class was replaced by cFrontendSession. Please use it instead.");
+        cDeprecated('This class was replaced by cFrontendSession. Please use it instead.');
 
         $this->cookiename = 'sid_' . $load_client . '_' . $load_lang;
 
@@ -438,7 +438,7 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
     public function auth_loglogin($uid) {
         global $cfg, $client, $lang, $sess, $saveLoginTime;
 
-        $perm = new Contenido_Perm();
+        $perm = new cPermission();
         $idcatart = 0;
 
         /* Find the first accessible client and language for the user */
@@ -550,7 +550,7 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
             sleep(5);
             return false;
         } else {
-            $sql = "SELECT a.group_id AS group_id, a.perms AS perms "
+            $sql = 'SELECT a.group_id AS group_id, a.perms AS perms '
                     . "FROM %s AS a, %s AS b WHERE a.group_id = b.group_id AND b.user_id = '%s'";
             $this->db->query($sql, $this->group_table, $this->member_table, $uid);
 

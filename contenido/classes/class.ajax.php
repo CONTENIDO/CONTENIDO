@@ -10,319 +10,300 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Content Types
- * @version    1.0.2
- * @author     Timo Trautmann
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.8.12
- *
- * {@internal
- *   created 2009-04-08
- *
- *   $Id$:
- * }}
- *
+ * @package CONTENIDO Content Types
+ * @version 1.0.2
+ * @author Timo Trautmann
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release 4.8.12
  */
 
 /**
  * Class for outputting some content for Ajax use
- *
  */
-class Ajax
-{
+class cAjaxRequest {
 
     /**
-     * Constructor of class
+     * Function for handling requested ajax data
+     *
+     * @param string $action - name of requested ajax action
      */
-    public function __construct()
-    {
-        // donut
-    }
-
-    /**
-      * Function for handling requested ajax data
-      *
-      * @param string $sAction - name of requested ajax action
-      */
-    public function handle($sAction)
-    {
-        $sString = '';
-        switch ($sAction) {
-            //case to get an article select box param name value and idcat were neded (name= name of select box value=selected item)
+    public function handle($action) {
+        $string = '';
+        switch ($action) {
+            // case to get an article select box param name value and idcat were
+            // neded (name= name of select box value=selected item)
             case 'artsel':
-                $sName = (string) $_REQUEST['name'];
-                $iValue = (int) $_REQUEST['value'];
-                $iIdCat = (int) $_REQUEST['idcat'];
-                $sString = buildArticleSelect($sName, $iIdCat, $iValue);
+                $name = (string) $_REQUEST['name'];
+                $value = (int) $_REQUEST['value'];
+                $idCat = (int) $_REQUEST['idcat'];
+                $string = buildArticleSelect($name, $idCat, $value);
                 break;
 
             case 'dirlist':
-                global $cfg, $client, $lang, $cfgClient;
+                global $cfgClient, $client;
 
-                $sDirName = (string) $_REQUEST['dir'];
-                $iFileListId = (int) $_REQUEST['id'];
-                $iIdArtLang = (int) $_REQUEST['idartlang'];
+                $dirName = (string) $_REQUEST['dir'];
+                $fileListId = (int) $_REQUEST['id'];
+                $idArtLang = (int) $_REQUEST['idartlang'];
 
-                $oArt = new cApiArticleLanguage($iIdArtLang, true);
-                $sArtReturn = $oArt->getContent('CMS_FILELIST', $iFileListId);
-                $oFileList = new cContentTypeFileList($sArtReturn, $iFileListId, array());
+                $art = new cApiArticleLanguage($idArtLang, true);
+                $artReturn = $art->getContent('CMS_FILELIST', $fileListId);
+                $fileList = new cContentTypeFileList($artReturn, $fileListId, array());
 
-                $sString = $oFileList->generateDirectoryList($oFileList->buildDirectoryList($cfgClient[$client]['upl']['path'] . $sDirName));
+                $string = $fileList->generateDirectoryList($fileList->buildDirectoryList($cfgClient[$client]['upl']['path'] . $dirName));
                 break;
 
             case 'filelist':
-                global $cfg, $client, $lang, $cfgClient;
+                $dirName = (string) $_REQUEST['dir'];
+                $fileListId = (int) $_REQUEST['id'];
+                $idArtLang = (int) $_REQUEST['idartlang'];
 
-                $sDirName = (string) $_REQUEST['dir'];
-                $iFileListId = (int) $_REQUEST['id'];
-                $iIdArtLang = (int) $_REQUEST['idartlang'];
+                $art = new cApiArticleLanguage($idArtLang, true);
+                $artReturn = $art->getContent('CMS_FILELIST', $fileListId);
+                $fileList = new cContentTypeFileList($artReturn, $fileListId, array());
 
-                $oArt = new cApiArticleLanguage($iIdArtLang, true);
-                $sArtReturn = $oArt->getContent('CMS_FILELIST', $iFileListId);
-                $oFileList = new cContentTypeFileList($sArtReturn, $iFileListId, array());
-
-                $sString = $oFileList->generateFileSelect($sDirName);
+                $string = $fileList->generateFileSelect($dirName);
                 break;
 
             case 'inused_layout':
-                //list of used templates for a layout
+                // list of used templates for a layout
                 global $cfg;
                 if ((int) $_REQUEST['id'] > 0) {
-                    $oLayout = new cApiLayout((int) $_REQUEST['id']);
-                    if ($oLayout->isInUse(true)) {
-                        $oTpl = new Template();
-                        $aUsedTpl = $oLayout->getUsedTemplates();
-                        if (count($aUsedTpl) > 0) {
-                            $sResponse = '<br />';
-                            foreach ($aUsedTpl as $i => $aTpl) {
-                                $oTpl->set('d', 'NAME', $aTpl['tpl_name'] );
-                                $oTpl->next();
+                    $layout = new cApiLayout((int) $_REQUEST['id']);
+                    if ($layout->isInUse(true)) {
+                        $template = new cTemplate();
+                        $usedTemplates = $layout->getUsedTemplates();
+                        if (count($usedTemplates) > 0) {
+                            $response = '<br />';
+                            foreach ($usedTemplates as $i => $usedTemplate) {
+                                $template->set('d', 'NAME', $usedTemplate['tpl_name']);
+                                $template->next();
                             }
 
-                            $oTpl->set('s', 'HEAD_NAME', i18n('Template name'));
-                            $sString = '<div class="inuse_info" >' .
-                                        $oTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] .
-                                                        $cfg['templates']['inuse_lay_mod'], true) .
-                                        '</div>';
+                            $template->set('s', 'HEAD_NAME', i18n('Template name'));
+                            $string = '<div class="inuse_info" >' . $template->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['inuse_lay_mod'], true) . '</div>';
                         } else {
-                            $sString = i18n("No data found!");
+                            $string = i18n('No data found!');
                         }
                     }
                 }
                 break;
 
             case 'inused_module':
-                //list of used templates for a module
+                // list of used templates for a module
                 global $cfg;
-                $oModule = new cApiModule();
-                if ((int) $_REQUEST['id'] > 0 && $oModule->moduleInUse((int) $_REQUEST['id'], true)) {
-                    $oTpl = new Template();
-                    $aUsedTpl = $oModule->getUsedTemplates();
-                    if (count($aUsedTpl) > 0) {
-                        foreach ($aUsedTpl as $i => $aTpl) {
-                            $oTpl->set('d', 'NAME', $aTpl['tpl_name'] );
-                            $oTpl->next();
+                $module = new cApiModule();
+                if ((int) $_REQUEST['id'] > 0 && $module->moduleInUse((int) $_REQUEST['id'], true)) {
+                    $template = new cTemplate();
+                    $usedTemplates = $module->getUsedTemplates();
+                    if (count($usedTemplates) > 0) {
+                        foreach ($usedTemplates as $i => $usedTemplate) {
+                            $template->set('d', 'NAME', $usedTemplate['tpl_name']);
+                            $template->next();
                         }
 
-                        $oTpl->set('s', 'HEAD_NAME', i18n('Template name'));
-                        $sString = '<div class="inuse_info" >' .
-                                    $oTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] .
-                                                    $cfg['templates']['inuse_lay_mod'], true) .
-                                    '</div>';
-
+                        $template->set('s', 'HEAD_NAME', i18n('Template name'));
+                        $string = '<div class="inuse_info" >' . $template->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['inuse_lay_mod'], true) . '</div>';
                     } else {
-                        $sString = i18n("No data found!");
+                        $string = i18n('No data found!');
                     }
                 }
-
                 break;
 
             case 'inused_template':
                 // list of used category and art
-
                 global $cfg;
                 cInclude('backend', 'includes/functions.tpl.php');
 
                 if ((int) $_REQUEST['id'] > 0) {
-                    $oTpl = new Template();
-                    $oTpl->reset();
-                    $aUsedData = tplGetInUsedData((int) $_REQUEST['id']);
+                    $template = new cTemplate();
+                    $template->reset();
+                    $usedData = tplGetInUsedData((int) $_REQUEST['id']);
 
-                    if (isset($aUsedData['cat'])) {
-                        $oTpl->set('s', 'HEAD_TYPE', i18n('Category'));
-                        foreach ($aUsedData['cat'] as $i => $aCat) {
-                            $oTpl->set('d', 'ID', $aCat['idcat']);
-                            $oTpl->set('d', 'LANG', $aCat['lang']);
-                            $oTpl->set('d', 'NAME', $aCat['name']);
-                            $oTpl->next();
+                    if (isset($usedData['cat'])) {
+                        $template->set('s', 'HEAD_TYPE', i18n('Category'));
+                        foreach ($usedData['cat'] as $i => $cat) {
+                            $template->set('d', 'ID', $cat['idcat']);
+                            $template->set('d', 'LANG', $cat['lang']);
+                            $template->set('d', 'NAME', $cat['name']);
+                            $template->next();
                         }
-                        $oTpl->set('s', 'HEAD_ID', i18n('idcat'));
-                        $oTpl->set('s', 'HEAD_LANG', i18n('idlang'));
-                        $oTpl->set('s', 'HEAD_NAME', i18n('Name'));
-                        $sResponse = $oTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['inuse_tpl'], true);
+                        $template->set('s', 'HEAD_ID', i18n('idcat'));
+                        $template->set('s', 'HEAD_LANG', i18n('idlang'));
+                        $template->set('s', 'HEAD_NAME', i18n('Name'));
+                        $response = $template->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['inuse_tpl'], true);
                     }
 
-                    $oTpl->reset();
+                    $template->reset();
 
-                    if (isset($aUsedData['art'])) {
-                        $oTpl->set('s', 'HEAD_TYPE', i18n('Article'));
-                        foreach ($aUsedData['art'] as $i => $aArt) {
-                            $oTpl->set('d', 'ID', $aArt['idart']);
-                            $oTpl->set('d', 'LANG', $aArt['lang']);
-                            $oTpl->set('d', 'NAME', $aArt['title']);
-                            $oTpl->next();
+                    if (isset($usedData['art'])) {
+                        $template->set('s', 'HEAD_TYPE', i18n('Article'));
+                        foreach ($usedData['art'] as $i => $aArt) {
+                            $template->set('d', 'ID', $aArt['idart']);
+                            $template->set('d', 'LANG', $aArt['lang']);
+                            $template->set('d', 'NAME', $aArt['title']);
+                            $template->next();
                         }
-                        $oTpl->set('s', 'HEAD_ID', i18n('idart'));
-                        $oTpl->set('s', 'HEAD_LANG', i18n('idlang'));
-                        $oTpl->set('s', 'HEAD_NAME', i18n('Name'));
-                        $sResponse .= $oTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['inuse_tpl'], true);
+                        $template->set('s', 'HEAD_ID', i18n('idart'));
+                        $template->set('s', 'HEAD_LANG', i18n('idlang'));
+                        $template->set('s', 'HEAD_NAME', i18n('Name'));
+                        $response .= $template->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['inuse_tpl'], true);
                     }
 
-                    $sString = '<div class="inuse_info" >' . $sResponse . '</div>';
-
+                    $string = '<div class="inuse_info" >' . $response . '</div>';
                 } else {
-                    $sString = i18n("No data found!");
+                    $string = i18n('No data found!');
                 }
 
                 break;
 
             case 'scaleImage':
-                global $cfg, $client, $lang, $cfgClient;
+                global $cfgClient, $client;
                 $filename = $_REQUEST['url'];
                 $filename = str_replace($cfgClient[$client]['path']['htmlpath'], $cfgClient[$client]['path']['frontend'], $filename);
-                //$filename muss not url path(http://) sondern globale PC Path(c:/) sein.
-                $filetype = substr($filename, strlen($filename) -4, 4);
-                switch (strtolower($filetype)){
-                    case '.gif': $sString = cApiImgScale($filename, 428, 210); break;
-                    case '.png': $sString = cApiImgScale($filename, 428, 210); break;
-                    case '.jpg': $sString = cApiImgScale($filename, 428, 210); break;
-                    case 'jpeg': $sString = cApiImgScale($filename, 428, 210); break;
-                    default: $sString = $_REQUEST['sUrl']; break;
+                // $filename muss not url path(http://) sondern globale PC
+                // Path(c:/) sein.
+                $filetype = substr($filename, strlen($filename) - 4, 4);
+                switch (strtolower($filetype)) {
+                    case '.gif':
+                        $string = cApiImgScale($filename, 428, 210);
+                        break;
+                    case '.png':
+                        $string = cApiImgScale($filename, 428, 210);
+                        break;
+                    case '.jpg':
+                        $string = cApiImgScale($filename, 428, 210);
+                        break;
+                    case 'jpeg':
+                        $string = cApiImgScale($filename, 428, 210);
+                        break;
+                    default:
+                        $string = $_REQUEST['sUrl'];
+                        break;
                 }
-                //if can not scale, so $sString is null, then show the original image.
-                if ($sString == '') {
+                // if can not scale, so $sString is null, then show the original
+                // image.
+                if ($string == '') {
                     $filename = str_replace($cfgClient[$client]['path']['frontend'], $cfgClient[$client]['path']['htmlpath'], $_REQUEST['sUrl']);
-                    $sString = $filename;
+                    $string = $filename;
                 }
                 break;
 
             case 'imagelist':
                 global $cfg, $client, $lang, $cfgClient;
 
-                $sDirName = (string) $_REQUEST['dir'];
-                $iImageId = (int) $_REQUEST['id'];
-                $iIdArtLang = (int) $_REQUEST['idartlang'];
+                $dirName = (string) $_REQUEST['dir'];
+                $imageId = (int) $_REQUEST['id'];
+                $idArtLang = (int) $_REQUEST['idartlang'];
 
-                $oArt = new cApiArticleLanguage($iIdArtLang, true);
-                $sArtReturn = $oArt->getContent('CMS_IMGEDITOR', $iImageId);
-                $oImage = new cContentTypeImgEditor($sArtReturn, $iImageId, array());
+                $art = new cApiArticleLanguage($idArtLang, true);
+                $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
+                $image = new cContentTypeImgEditor($artReturn, $imageId, array());
 
-                $sString = $oImage->generateFileSelect($sDirName);
+                $string = $image->generateFileSelect($dirName);
                 break;
 
             case 'loadImageMeta':
-                global $cfg, $client, $lang, $cfgClient;
+                $imageId = (int) $_REQUEST['id'];
+                $idArtLang = (int) $_REQUEST['idartlang'];
 
-                $iImageId = (int) $_REQUEST['id'];
-                $iIdArtLang = (int) $_REQUEST['idartlang'];
+                $art = new cApiArticleLanguage($idArtLang, true);
+                $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
+                $image = new cContentTypeImgEditor($artReturn, $imageId, array());
 
-                $oArt = new cApiArticleLanguage($iIdArtLang, true);
-                $sArtReturn = $oArt->getContent('CMS_IMGEDITOR', $iImageId);
-                $oImage = new cContentTypeImgEditor($sArtReturn, $iImageId, array());
-
-                $sFilename = (string) basename($_REQUEST['filename']);
-                $sDirname = (string) dirname($_REQUEST['filename']);
-                if ($sDirname != '.'){
-                    $sDirname .= '/';
+                $filename = (string) basename($_REQUEST['filename']);
+                $dirname = (string) dirname($_REQUEST['filename']);
+                if ($dirname != '.') {
+                    $dirname .= '/';
                 } else {
-                    $sDirname = '';
+                    $dirname = '';
                 }
 
-                $sString = $oImage->getImageMeta($sFilename, $sDirname);
+                $string = $image->getImageMeta($filename, $dirname);
                 break;
 
             case 'upl_mkdir':
-                global $cfg, $client, $lang, $cfgClient;
+                $imageId = (int) $_REQUEST['id'];
+                $idArtLang = (int) $_REQUEST['idartlang'];
+                $path = (string) $_REQUEST['path'];
+                $name = (string) $_REQUEST['foldername'];
 
-                $iImageId = (int) $_REQUEST['id'];
-                $iIdArtLang = (int) $_REQUEST['idartlang'];
-                $sPath = (string) $_REQUEST['path'];
-                $sName = (string) $_REQUEST['foldername'];
+                $art = new cApiArticleLanguage($idArtLang, true);
+                $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
+                $image = new cContentTypeImgEditor($artReturn, $imageId, array());
 
-                $oArt = new cApiArticleLanguage($iIdArtLang, true);
-                $sArtReturn = $oArt->getContent('CMS_IMGEDITOR', $iImageId);
-                $oImage = new cContentTypeImgEditor($sArtReturn, $iImageId, array());
-
-                $sString = $oImage->uplmkdir($sPath, $sName);
+                $string = $image->uplmkdir($path, $name);
                 break;
 
             case 'upl_upload':
-                global $cfg, $client, $lang, $cfgClient;
+                $imageId = (int) $_REQUEST['id'];
+                $idArtLang = (int) $_REQUEST['idartlang'];
+                $path = (string) $_REQUEST['path'];
 
-                $iImageId = (int) $_REQUEST['id'];
-                $iIdArtLang = (int) $_REQUEST['idartlang'];
-                $sPath = (string) $_REQUEST['path'];
+                $art = new cApiArticleLanguage($idArtLang, true);
+                $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
+                $image = new cContentTypeImgEditor($artReturn, $imageId, array());
 
-                $oArt = new cApiArticleLanguage($iIdArtLang, true);
-                $sArtReturn = $oArt->getContent('CMS_IMGEDITOR', $iImageId);
-                $oImage = new cContentTypeImgEditor($sArtReturn, $iImageId, array());
-
-                $sString = $oImage->uplupload($sPath);
+                $string = $image->uplupload($path);
                 break;
 
             case 'linkeditorfilelist':
-                global $cfg, $client, $lang, $cfgClient;
+                $id = (int) $_REQUEST['id'];
+                $idArtLang = (int) $_REQUEST['idartlang'];
+                $idCat = (string) $_REQUEST['idcat'];
 
-                $iId = (int) $_REQUEST['id'];
-                $iIdArtLang = (int) $_REQUEST['idartlang'];
-                $iIdCat = (string) $_REQUEST['idcat'];
+                $art = new cApiArticleLanguage($idArtLang, true);
+                $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
+                $linkEditor = new cContentTypeLinkEditor($artReturn, $id, array());
 
-                $oArt = new cApiArticleLanguage($iIdArtLang, true);
-                $sArtReturn = $oArt->getContent('CMS_LINKEDITOR', $iId);
-                $oLinkEditor = new cContentTypeLinkEditor($sArtReturn, $iId, array());
-
-                $sString = $oLinkEditor->generateArticleSelect($iIdCat);
+                $string = $linkEditor->generateArticleSelect($idCat);
                 break;
 
             case 'linkeditordirlist':
-                global $cfg, $client, $lang, $cfgClient;
+                $id = (int) $_REQUEST['id'];
+                $idArtLang = (int) $_REQUEST['idartlang'];
+                $levelId = (string) $_REQUEST['level'];
+                $parentidcat = (string) $_REQUEST['parentidcat'];
 
-                $iId = (int) $_REQUEST['id'];
-                $iIdArtLang = (int) $_REQUEST['idartlang'];
-                $iLevelId = (string) $_REQUEST['level'];
-                $iParentidcat = (string) $_REQUEST['parentidcat'];
+                $art = new cApiArticleLanguage($idArtLang, true);
+                $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
+                $linkEditor = new cContentTypeLinkEditor($artReturn, $id, array());
 
-                $oArt = new cApiArticleLanguage($iIdArtLang, true);
-                $sArtReturn = $oArt->getContent('CMS_LINKEDITOR', $iId);
-                $oLinkEditor = new cContentTypeLinkEditor($sArtReturn, $iId, array());
-
-                $sString = $oLinkEditor->getCategoryList($oLinkEditor->buildCategoryArray($iLevelId, $iParentidcat));
+                $string = $linkEditor->getCategoryList($linkEditor->buildCategoryArray($levelId, $parentidcat));
                 break;
 
             case 'linkeditorimagelist':
-                global $cfg, $client, $lang, $cfgClient;
+                $dirName = (string) $_REQUEST['dir'];
+                $id = (int) $_REQUEST['id'];
+                $idArtLang = (int) $_REQUEST['idartlang'];
 
-                $sDirName = (string) $_REQUEST['dir'];
-                $iId = (int) $_REQUEST['id'];
-                $iIdArtLang = (int) $_REQUEST['idartlang'];
+                $art = new cApiArticleLanguage($idArtLang, true);
+                $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
+                $linkEditor = new cContentTypeLinkEditor($artReturn, $id, array());
 
-                $oArt = new cApiArticleLanguage($iIdArtLang, true);
-                $sArtReturn = $oArt->getContent('CMS_LINKEDITOR', $iId);
-                $oLinkEditor = new cContentTypeLinkEditor($sArtReturn, $iId, array());
-
-                $sString = $oLinkEditor->getUploadFileSelect($sDirName);
+                $string = $linkEditor->getUploadFileSelect($dirName);
                 break;
-            //if action is unknown generate error message
             default:
-                $sString = 'Unknown Ajax Action';
+                // if action is unknown generate error message
+                $string = 'Unknown Ajax Action';
                 break;
         }
 
-        return $sString;
+        return $string;
     }
-}
 
-?>
+}
+class Ajax extends cAjaxRequest {
+
+    /**
+     *
+     * @deprecated Class was renamed to cAjaxRequest
+     */
+    public function __construct() {
+        cDeprecated('Class was renamed to cAjaxRequest');
+    }
+
+}

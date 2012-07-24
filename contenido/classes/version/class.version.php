@@ -205,7 +205,7 @@ class cVersion {
             if ($this->sAlternativePath != '' AND self::$iDisplayNotification < 2){
                 $oNotification = new cGuiNotification();
                 $sNotification = i18n('Alternative path %s does not exist. Version was saved in frondendpath.');
-                $oNotification->displayNotification("warning",  sprintf($sNotification, $this->sAlternativePath));
+                $oNotification->displayNotification('warning',  sprintf($sNotification, $this->sAlternativePath));
             }
 
             $this->sAlternativePath = '';
@@ -278,13 +278,13 @@ class cVersion {
      * @return boolean true if saving file was successful, otherwise false
      */
     public function createNewXml($sDirectory, $sFileName) {
-        $oWriter = new ContenidoXmlWriter();
+        $oWriter = new cXmlWriter();
         $oRootElement = $oWriter->addElement('version', '', null, array('xml:lang' => 'de'));
         $oHeadElement = $oWriter->addElement('head', '', $oRootElement);
 
         $oWriter->addElement('version_id', $this->iIdentity . '_' . $this->iVersion, $oHeadElement);
         $oWriter->addElement('type', $this->sType, $oHeadElement);
-        $oWriter->addElement('date', date("Y-m-d H:i:s"), $oHeadElement);
+        $oWriter->addElement('date', date('Y-m-d H:i:s'), $oHeadElement);
         $oWriter->addElement('author', $this->sAuthor, $oHeadElement);
         $oWriter->addElement('client', $this->iClient, $oHeadElement);
         $oWriter->addElement('created', $this->dCreated, $oHeadElement);
@@ -487,7 +487,7 @@ class cVersion {
      * return string  if is exists Revision, then returns HTML Code of full SelectBox else returns empty string
      */
     public function buildSelectBox($sTableForm, $sAddHeader, $sLabelOfSelectBox, $sIdOfSelectBox) {
-        $oForm = new cGuiTableForm("lay_history");
+        $oForm = new cGuiTableForm('lay_history');
         $aMessage = array();
         // if exists xml files
         if (count($this->dTimestamp) > 0) {
@@ -498,9 +498,9 @@ class cVersion {
             $aMessage = $this->getMessages();
             $oForm->addHeader(i18n($sAddHeader));
             $oForm->add(i18n($sLabelOfSelectBox),  $this->getSelectBox($this->getFormatTimestamp(), $sIdOfSelectBox));
-            $oForm->setActionButton("clearhistory", "images/but_delete.gif", $aMessage["alt"], "c", "history_truncate");
-            $oForm->setConfirm("clearhistory", $aMessage["alt"], $aMessage["popup"]);
-            $oForm->setActionButton("submit", "images/but_refresh.gif", i18n("Refresh"), "s");
+            $oForm->setActionButton('clearhistory', 'images/but_delete.gif', $aMessage['alt'], 'c', 'history_truncate');
+            $oForm->setConfirm('clearhistory', $aMessage['alt'], $aMessage['popup']);
+            $oForm->setActionButton('submit', 'images/but_refresh.gif', i18n('Refresh'), 's');
 
             return "<div style='width: 1%'>".$oForm ->render().'</div><div style="margin-top:20px;"></div>';
         } else {
@@ -516,28 +516,28 @@ class cVersion {
         $aMessage = array();
         switch ($this->sType) {
             case 'layout':
-                $aMessage["alt"] = i18n("Clear layout history");
-                $aMessage["popup"] = i18n("Do you really want to clear layout history?")."<br><br>".i18n("Note: This only affects the current layout.");
+                $aMessage['alt'] = i18n('Clear layout history');
+                $aMessage['popup'] = i18n('Do you really want to clear layout history?').'<br><br>'.i18n('Note: This only affects the current layout.');
             break;
             case 'module':
-                $aMessage["alt"] = i18n("Clear module history");
-                $aMessage["popup"] = i18n("Do you really want to clear module history?")."<br><br>".i18n("Note: This only affects the current module.");
+                $aMessage['alt'] = i18n('Clear module history');
+                $aMessage['popup'] = i18n('Do you really want to clear module history?').'<br><br>'.i18n('Note: This only affects the current module.');
             break;
             case 'css':
-                $aMessage["alt"] = i18n("Clear style history");
-                $aMessage["popup"] = i18n("Do you really want to clear style history?")."<br><br>".i18n("Note: This only affects the current style.");
+                $aMessage['alt'] = i18n('Clear style history');
+                $aMessage['popup'] = i18n('Do you really want to clear style history?').'<br><br>'.i18n('Note: This only affects the current style.');
             break;
             case 'js':
-                $aMessage["alt"] = i18n("Clear Java-Script history");
-                $aMessage["popup"] = i18n("Do you really want to clear Java-Script history?")."<br><br>".i18n("Note: This only affects the current Java-Script.");
+                $aMessage['alt'] = i18n('Clear Java-Script history');
+                $aMessage['popup'] = i18n('Do you really want to clear Java-Script history?').'<br><br>'.i18n('Note: This only affects the current Java-Script.');
             break;
             case 'templates':
-                $aMessage["alt"] = i18n("Clear HTML-Template history");
-                $aMessage["popup"] = i18n("Do you really want to clear HTML-Template history?")."<br><br>".i18n("Note: This only the affects current HTML-Template.");
+                $aMessage['alt'] = i18n('Clear HTML-Template history');
+                $aMessage['popup'] = i18n('Do you really want to clear HTML-Template history?').'<br><br>'.i18n('Note: This only the affects current HTML-Template.');
             break;
               default:
-                  $aMessage["alt"] = i18n("Clear history");
-                $aMessage["popup"] = i18n("Do you really want to clear history?")."<br><br>".i18n("Note: This only affects the current history.");
+                  $aMessage['alt'] = i18n('Clear history');
+                $aMessage['popup'] = i18n('Do you really want to clear history?').'<br><br>'.i18n('Note: This only affects the current history.');
               break;
 
         }
@@ -581,8 +581,8 @@ class cVersion {
             $oHTMLTextarea = new cHTMLTextarea($sName, $sInitValue, $iWidth, $iHeight);
         }
 
-        $oHTMLTextarea->setStyle("font-family: monospace; width: 100%;");
-        $oHTMLTextarea->updateAttributes(array("wrap" => "off"));
+        $oHTMLTextarea->setStyle('font-family: monospace; width: 100%;');
+        $oHTMLTextarea->updateAttributes(array('wrap' => 'off'));
 
         return $oHTMLTextarea->render();
     }
@@ -598,8 +598,8 @@ class cVersion {
      */
     public function getTextBox($sName, $sInitValue, $iWidth, $bDisabled = false) {
         $oHTMLTextbox = new cHTMLTextbox($sName, html_entity_decode($sInitValue), $iWidth, '', '', $bDisabled);
-        $oHTMLTextbox->setStyle("font-family:monospace; width:100%;");
-        $oHTMLTextbox->updateAttributes(array("wrap" => "off"));
+        $oHTMLTextbox->setStyle('font-family:monospace; width:100%;');
+        $oHTMLTextbox->updateAttributes(array('wrap' => 'off'));
 
         return $oHTMLTextbox->render();
     }
@@ -626,7 +626,7 @@ class cVersion {
     public function setBodyNodeDescription($sDesc) {
         if ($sDesc != '') {
             $this->sDescripion = htmlentities($sDesc);
-            $this->setData("description", $this->sDescripion);
+            $this->setData('description', $this->sDescripion);
         }
     }
 

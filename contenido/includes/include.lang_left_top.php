@@ -43,7 +43,7 @@ $tpl->set('s', 'SID', $sess->id);
 $clients = $classclient->getAccessibleClients();
 
 
-$tpl2 = new Template;
+$tpl2 = new cTemplate;
 $tpl2->set('s', 'ID', 'editclient');
 $tpl2->set('s', 'NAME', 'editclient');
 $tpl2->set('s', 'CLASS', 'text_medium');

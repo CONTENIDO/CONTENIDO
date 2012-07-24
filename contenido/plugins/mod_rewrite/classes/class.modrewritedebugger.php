@@ -60,7 +60,7 @@ class ModRewriteDebugger
 
     /**
      * Adds variable to debugger.
-     * Wrapper for <code>DebuggerFactory::getDebugger('visible_adv')</code>.
+     * Wrapper for <code>cDebugFactory::getDebugger('visible_adv')</code>.
      *
      * @param  mixed   $mVar  The variable to dump
      * @param  string  $sLabel  Describtion for passed $mVar
@@ -93,7 +93,7 @@ class ModRewriteDebugger
 
     /**
      * Logs variable to debugger.
-     * Wrapper for <code>DebuggerFactory::getDebugger('file')</code>.
+     * Wrapper for <code>cDebugFactory::getDebugger('file')</code>.
      *
      * @param  mixed   $mVar  The variable to log the contents
      * @param  string  $sLabel  Describtion for passed $mVar

@@ -22,7 +22,7 @@ $look = "CMS_VALUE[1]";
 $name = "CMS_VALUE[2]";
 
 if ($url != '' && $look != '') {
-    $tpl = new Template();
+    $tpl = new cTemplate();
 
     $tpl->set('s', 'NAME', $name);
     $tpl->set('s', 'URL' , $url);

@@ -48,7 +48,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
     /**
      * GenericDB driver object
-     * @var  gdbDriver
+     * @var  cGenericDbDriver
      */
     protected $_driver;
 
@@ -201,7 +201,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      */
     protected function _initializeDriver($bForceInit = false) {
         if (!is_object($this->_driver) || $bForceInit == true) {
-            $this->_driver = new gdbMySQL();
+            $this->_driver = new cGenericDbDriverMysql();
         }
     }
 

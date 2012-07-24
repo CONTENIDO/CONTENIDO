@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 //notice $oTpl is filled and generated in file include.rights.php this file renders $oTpl to browser
 include_once($cfg['path']['contenido'] . 'includes/include.grouprights.php');
-$debug = (getDebugger() != DebuggerFactory::getDebugger("devnull"));
+$debug = (getDebugger() != cDebugFactory::getDebugger("devnull"));
 // declare new Template variables
 $sJsBefore = '';
 $sJsAfter = '';
@@ -123,7 +123,7 @@ foreach ($right_list as $key => $value) {
                 $locationString = $main;
             }
 
-            //table tr erfüllen start
+            //table tr erfï¿½llen start
             $objItem->updateAttributes(array("class" => "td_rights1"));
             $objItem->setContent($locationString);
             $items .= $objItem->render();
@@ -143,7 +143,7 @@ foreach ($right_list as $key => $value) {
             $items = "";
             $output .= $objRow->render();
             $objRow->advanceID();
-            // table tr erfüllen end
+            // table tr erfï¿½llen end
             //set javscript array for areatree
             $sJsBefore .= "
             areatree[\"$key\"]=new Array();
@@ -172,7 +172,7 @@ foreach ($right_list as $key => $value) {
                     }
                 }
 
-                //table tr erfüllen start
+                //table tr erfï¿½llen start
                 $objItem->updateAttributes(array("class" => "td_rights1"));
                 $objItem->setContent($sCellContent);
                 $items .= $objItem->render();
@@ -192,7 +192,7 @@ foreach ($right_list as $key => $value) {
                 $items = "";
                 $output .= $objRow->render();
                 $objRow->advanceID();
-                // table tr erfüllen end
+                // table tr erfï¿½llen end
                 //set javscript array for areatree
                 $sJsBefore .= "areatree[\"$key\"][\"" . $value2["perm"] . "$value3\"]=\"rights_list[" . $value2["perm"] . "|$value3|0]\";";
             }

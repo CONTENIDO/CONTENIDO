@@ -50,7 +50,7 @@ class ContenidoContentConGenerateCodeTest extends PHPUnit_Framework_TestCase
     public function testNoChain()
     {
         // execute chain
-        $newCode = CEC_Hook::executeAndReturn($this->_chain, $this->_code);
+        $newCode = cApiCecHook::executeAndReturn($this->_chain, $this->_code);
 
         $this->assertEquals($this->_code, $newCode);
     }
@@ -68,7 +68,7 @@ class ContenidoContentConGenerateCodeTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentConGenerateCode_Test');
 
         // execute chain
-        $newCode = CEC_Hook::executeAndReturn($this->_chain, $this->_code);
+        $newCode = cApiCecHook::executeAndReturn($this->_chain, $this->_code);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentConGenerateCode_Test');
@@ -90,7 +90,7 @@ class ContenidoContentConGenerateCodeTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentConGenerateCode_Test2');
 
         // execute chain
-        $newCode = CEC_Hook::executeAndReturn($this->_chain, $this->_code);
+        $newCode = cApiCecHook::executeAndReturn($this->_chain, $this->_code);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentConGenerateCode_Test');

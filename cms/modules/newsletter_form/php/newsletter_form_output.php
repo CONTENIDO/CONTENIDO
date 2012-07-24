@@ -38,7 +38,7 @@ if ($aSettings["JoinSel"] == "" || ($aSettings["JoinSel"] == "UserSelected" && $
 }
 
 if (!isset($oPage) || !is_object($oPage)) {
-    $oPage = new Template();
+    $oPage = new cTemplate();
 }
 $oPage->reset();
 

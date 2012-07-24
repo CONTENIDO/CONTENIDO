@@ -150,7 +150,7 @@ class Contenido_FrontendNavigation_Base {
         $this->sDbgMode = $sDebugMode;
         if ($bDebug === true) {
             $this->bDbg = true;
-            $this->oDbg = DebuggerFactory::getDebugger($sDebugMode);
+            $this->oDbg = cDebugFactory::getDebugger($sDebugMode);
         } else {
             $this->bDbg = false;
             $this->oDbg = null;

@@ -15,7 +15,7 @@
 $sText = "CMS_HTMLHEAD[2]";
 
 if (!isset($tpl) || !is_object($tpl)) {
-    $tpl = new Template();
+    $tpl = new cTemplate();
 }
 
 $tpl->reset();

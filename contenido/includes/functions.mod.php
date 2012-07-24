@@ -44,7 +44,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     $messageIfError = '';
 
     // Alias for modul name for the file system
-    $alias = strtolower(Contenido_Module_Handler::getCleanName($name));
+    $alias = strtolower(cModuleHandler::getCleanName($name));
 
     // Track version
     $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
@@ -58,11 +58,11 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 
         cInclude('includes', 'functions.rights.php');
         createRightsForElement('mod', $idmod);
-        $contenidoModuleHandler = new Contenido_Module_Handler($idmod);
+        $contenidoModuleHandler = new cModuleHandler($idmod);
     } else {
         $cApiModule = new cApiModule();
         $cApiModule->loadByPrimaryKey($idmod);
-        $contenidoModuleHandler = new Contenido_Module_Handler($idmod);
+        $contenidoModuleHandler = new cModuleHandler($idmod);
     }
 
     // Save contents of input or output

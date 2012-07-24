@@ -146,7 +146,7 @@ class cGuiTableForm {
     public function render($return = true) {
         global $sess, $cfg;
 
-        $tpl = new Template();
+        $tpl = new cTemplate();
 
         if ($this->submitjs != "") {
             $tpl->set("s", "JSEXTRA", 'onsubmit="' . $this->submitjs . '"');

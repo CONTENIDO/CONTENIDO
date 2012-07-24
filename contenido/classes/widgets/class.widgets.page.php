@@ -277,7 +277,7 @@ class cPage extends cHTML
     {
         global $sess, $cfg;
 
-        $tpl = new Template();
+        $tpl = new cTemplate();
         $scripts = "";
 
         if (is_array($this->_scripts)) {
@@ -369,7 +369,7 @@ class cPageLeftTop extends cPage
     {
         global $cfg;
 
-        $tpl = new Template();
+        $tpl = new cTemplate();
         $tpl->set('s', 'CONTENT', $content);
         $this->setContent($tpl->generate($cfg['path']['contenido']
                 .$cfg['path']['templates'].$cfg['templates']['widgets']['left_top'],true));
@@ -469,7 +469,7 @@ class cPageLeftTopMultiPane extends cPageLeftTop
 
         $content = $this->_content;
 
-        $tpl = new Template;
+        $tpl = new cTemplate;
         $tpl->set('s', 'CONTENT', $content);
         $this->setContent($tpl->generate($cfg['path']['templates'].$cfg['templates']['widgets']['left_top'],true));
 

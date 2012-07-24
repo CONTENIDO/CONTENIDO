@@ -179,7 +179,6 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
     $tmp2_published = date($dateformat, strtotime($tmp_published));
 
     $tpl->set('s', 'ACTION', $sess->url("main.php?area=$area&frame=$frame&action=con_meta_saveart"));
-    $tpl->set('s', 'HIDDENSESSION', $sess->hidden_session(true));
     $tpl->set('s', 'TMP_FIRSTEDIT', $tmp_firstedit);
     $tpl->set('s', 'IDART', $idart);
     $tpl->set('s', 'SID', $sess->id);
@@ -341,7 +340,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
         "maxlength" => "255",
         "fieldname" => "name"
     );
-    $tpl2 = new Template();
+    $tpl2 = new cTemplate();
     $tpl2->set('s', 'METATITLE', i18n("Neue Meta_Tag"));
 
     $sql = "SHOW FIELDS FROM `" . $cfg['tab']['meta_type'] . "`";

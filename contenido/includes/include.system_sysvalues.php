@@ -84,7 +84,7 @@ $aServerConfiguration = array(
     array(i18n('CONTENIDO WYSIWYG editor URL'), $cfg['path']['wysiwyg_html'], 5),
 );
 
-$oTpl2 = new Template();
+$oTpl2 = new cTemplate();
 $oTpl2->set('s', 'HEADLINE', i18n('System configuration'));
 foreach ($aServerConfiguration as $aConfData) {
     $sValue = $aConfData[1];
@@ -120,7 +120,7 @@ $aSystemStatistics = array(
     array(i18n('Number of groups'), 'cApiGroupCollection'),
 );
 
-$oTpl2 = new Template();
+$oTpl2 = new cTemplate();
 $oTpl2->set('s', 'HEADLINE', i18n('System statistics (all clients)'));
 foreach ($aSystemStatistics as $aStatData) {
     $sCollName = $aStatData[1];
@@ -148,7 +148,7 @@ $aInstalledVersions = array(
     array(i18n('PHP database extension'), $cfg['database_extension'])
 );
 
-$oTpl2 = new Template();
+$oTpl2 = new cTemplate();
 $oTpl2->set('s', 'HEADLINE', i18n('Installed versions'));
 foreach ($aInstalledVersions as $aVersionInfo) {
     $oTpl2->set('d', 'NAME', $aVersionInfo[0]);
@@ -167,7 +167,7 @@ $aPhpConfiguration = array(
     'max_execution_time', 'max_file_uploads', 'max_input_time',  'sql.safe_mode', 'disable_classes', 'disable_functions'
 );
 
-$oTpl2 = new Template();
+$oTpl2 = new cTemplate();
 $oTpl2->set('s', 'HEADLINE', i18n('PHP configuration'));
 foreach ($aPhpConfiguration as $sConfigName) {
     $sValue = ini_get($sConfigName);
@@ -212,7 +212,7 @@ while ($oItem = $oClientColl->next()) {
         $htmlpath = $cfgClient[$iIdClient]['path']['htmlpath'];
         $frontendpath = $cfgClient[$iIdClient]['path']['frontend'];
 
-        $oTpl2 = new Template();
+        $oTpl2 = new cTemplate();
         $oTpl2->set('s', 'HEADLINE', i18n('Client') . ' ' . $oItem->get('name'));
         $oTpl2->set('s', 'ADDITIONAL', '');
 

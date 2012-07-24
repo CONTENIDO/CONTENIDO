@@ -196,7 +196,7 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         if ($this->_settings['filelist_style'] === '') {
             return '';
         }
-        $template = new Template();
+        $template = new cTemplate();
         $fileList = array();
 
         $template->set('s', 'TITLE', $this->_settings['filelist_title']);
@@ -260,9 +260,9 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
 
                         foreach ($this->_metaDataIdents as $identName => $translation) {
                             if ($this->_settings['filelist_md_' . $identName . '_limit'] > 0) {
-                                $metaData[$identName] = cApiStrTrimAfterWord(Contenido_Security::unFilter($uploadMeta->get($identName)), $this->_settings['filelist_md_' . $identName . '_limit']) . '...';
+                                $metaData[$identName] = cApiStrTrimAfterWord(cSecurity::unFilter($uploadMeta->get($identName)), $this->_settings['filelist_md_' . $identName . '_limit']) . '...';
                             } else {
-                                $metaData[$identName] = Contenido_Security::unFilter($uploadMeta->get($identName));
+                                $metaData[$identName] = cSecurity::unFilter($uploadMeta->get($identName));
                             }
                         }
 
@@ -379,10 +379,10 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
      * Method to fill single entry (file) of the file list.
      *
      * @param array $fileData information about the file
-     * @param Template $template reference to the used template object
+     * @param cTemplate $template reference to the used template object
      * @return void
      */
-    private function fillFileListTemplateEntry(array $fileData, Template &$template) {
+    private function fillFileListTemplateEntry(array $fileData, cTemplate &$template) {
         $filename = $fileData['filename'];
         $directoryName = $fileData['path'];
         $fileLink = $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $directoryName . '/' . $filename;
@@ -425,14 +425,14 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
      *         edited
      */
     public function generateEditCode() {
-        $template = new Template();
+        $template = new cTemplate();
         $template->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $template->set('s', 'ID', $this->_id);
         $template->set('s', 'IDARTLANG', $this->_idArtLang);
         $template->set('s', 'CONTENIDO', $_REQUEST['contenido']);
         $template->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
 
-        $templateTabs = new Template();
+        $templateTabs = new cTemplate();
         $templateTabs->set('s', 'PREFIX', $this->_prefix);
 
         // create code for external tab
@@ -462,7 +462,7 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         $codeTabs = $templateTabs->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_tabs.html', true);
 
         // construct the top code of the template
-        $templateTop = new Template();
+        $templateTop = new cTemplate();
         $templateTop->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $templateTop->set('s', 'ICON', 'images/but_editlink.gif');
         $templateTop->set('s', 'ID', $this->_id);
@@ -479,7 +479,7 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         );
 
         // construct the bottom code of the template
-        $templateBottom = new Template();
+        $templateBottom = new cTemplate();
         $templateBottom->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $templateBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
         $templateBottom->set('s', 'ID', $this->_id);
@@ -633,7 +633,7 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
      * @return string HTML code showing a list of meta data
      */
     private function _generateMetaDataList() {
-        $template = new Template();
+        $template = new cTemplate();
 
         foreach ($this->_metaDataIdents as $identName => $translation) {
             $metaDataLimit = $this->_settings['filelist_md_' . $identName . '_limit'];

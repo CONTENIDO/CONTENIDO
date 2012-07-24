@@ -896,7 +896,7 @@ class Contenido_Category_Base {
             try {
                 $this->sDbgMode = $sDebugMode;
                 $this->bDbg = true;
-                $this->oDbg = DebuggerFactory::getDebugger($sDebugMode);
+                $this->oDbg = cDebugFactory::getDebugger($sDebugMode);
             } catch (InvalidArgumentException $e) {
                 throw $e;
             }

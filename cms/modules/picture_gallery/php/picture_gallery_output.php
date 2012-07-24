@@ -92,9 +92,9 @@ if ($_REQUEST['view'] == '') {
 
         $aImagesToDisplay = array_slice($aGalleryFiles, ($iCurrentPage - 1) * $iImagesPerPage, $iImagesPerPage);
 
-        $oImageTpl = new Template();
-        $oGalleryTpl = new Template();
-        $oEmptyImageTpl = new Template();
+        $oImageTpl = new cTemplate();
+        $oGalleryTpl = new cTemplate();
+        $oEmptyImageTpl = new cTemplate();
 
         $aRenderedImages = array();
 
@@ -186,7 +186,7 @@ if ($_REQUEST['view'] == '') {
         $sHtml = '<a href="%s" title="%s"> %s </a>'; // Template
 
         if ($iPages == 1) { // if pages count is = 1
-            $oCurrenTpl = new Template();
+            $oCurrenTpl = new cTemplate();
 
             $oCurrenTpl->set('s', 'Begin', '');
             $oCurrenTpl->set('s', 'Body', '');
@@ -196,7 +196,7 @@ if ($_REQUEST['view'] == '') {
 
         if ($iCurrentPage == 1 && $iPages > 1) { // current page =1
 
-            $oTpl1 = new Template();
+            $oTpl1 = new cTemplate();
 
             $sNextButton = sprintf($sHtml, $sNext, mi18n("vor"), mi18n("&nbsp;vor&nbsp;") . '<img src="images/link_pfeil_klein.gif" />');
             $oTpl1->set('s', 'Begin', '');
@@ -219,7 +219,7 @@ if ($_REQUEST['view'] == '') {
         }
 
         if ($iCurrentPage > 1 && ($iPages - $iCurrentPage) != 0) { // body see all
-            $oPreviousTpl = new Template();
+            $oPreviousTpl = new cTemplate();
 
             $sBackButton = sprintf($sHtml, $sBack, mi18n("zur&uuml;ck"), "<img src='images/link_pfeil_klein_links.gif' />" . mi18n("&nbsp;zur&uuml;ck&nbsp;"));
             $sNextButton = sprintf($sHtml, $sNext, mi18n("vor"), mi18n("&nbsp;vor&nbsp;") . '<img src="images/link_pfeil_klein.gif" />');
@@ -242,7 +242,7 @@ if ($_REQUEST['view'] == '') {
 
             $aLinks[] = $oPreviousTpl->generate('gallery_link.html', true, false);
         } else if ($iPages - $iCurrentPage == 0) { // this is end
-            $oNextTpl = new Template();
+            $oNextTpl = new cTemplate();
             $oNextTpl->reset();
             $sBackButton = sprintf($sHtml, $sBack, mi18n("zur&uuml;ck"), "<img src='images/link_pfeil_klein_links.gif' />" . mi18n("&nbsp;zur&uuml;ck&nbsp;"));
             $oNextTpl->set('s', 'End', '');
@@ -279,7 +279,7 @@ if ($_REQUEST['view'] == '') {
     $sDownloadLink = str_replace($cfgClient[$client]['path']['frontend'], '', $sImageToDisplay);
     $sDownloadSize = ig_GetReadableFileSize($sImageToDisplay);
 
-    $oImageTpl = new Template();
+    $oImageTpl = new cTemplate();
     $oImageTpl->set('s', 'IMG', $sScaledImageHtmlPath);
     $oImageTpl->set('s', 'BACKLINK', 'front_content.php?idcat=' . $idcat . '&amp;idart=' . $idart . '&amp;start=' . $start);
     $oImageTpl->set('s', 'BACKCAPTION', mi18n("&nbsp;zur&uuml;ck"));

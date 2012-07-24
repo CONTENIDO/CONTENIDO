@@ -38,11 +38,11 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * Following 3 types of CEC functions/callbacks are supported at the moment:
  * - Callbacks, which should only be invoked. They don't return a value and have no
- *   break conditions, @see CEC_Hook::execute()
+ *   break conditions, @see cApiCecHook::execute()
  * - Callbacks, which should return a value and/or should modify a passed parameter,
- *   @see CEC_Hook::executeAndReturn()
+ *   @see cApiCecHook::executeAndReturn()
  * - Callbacks, which should be processed untill a defined break condition achieves,
- *   @see CEC_Hook::executeWhileBreakCondition()
+ *   @see cApiCecHook::executeWhileBreakCondition()
  *
  * @author      Timo A. Hummel
  * @author      Murat Purc <murat@purc.de>

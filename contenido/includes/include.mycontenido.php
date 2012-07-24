@@ -244,7 +244,7 @@ $page->set('s', 'USER_ONLINE', $sOutput);
 $page->set('s', 'NUMBER', $iNumberOfUsers);
 
 // check for new updates
-$oUpdateNotifier = new Contenido_UpdateNotifier($cfg, $vuser, $perm, $sess, $belang);
+$oUpdateNotifier = new cUpdateNotifier($cfg, $vuser, $perm, $sess, $belang);
 $sUpdateNotifierOutput = $oUpdateNotifier->displayOutput();
 $page->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
 

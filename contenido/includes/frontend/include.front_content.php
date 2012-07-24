@@ -76,7 +76,7 @@ if ($contenido) {
     cRegistry::bootstrap(array(
         'sess' => 'cSession',
         'auth' => 'Contenido_Challenge_Crypt_Auth',
-        'perm' => 'Contenido_Perm'
+        'perm' => 'cPermission'
     ));
     i18nInit($cfg['path']['contenido_locale'], $belang);
 } else {
@@ -84,7 +84,7 @@ if ($contenido) {
     cRegistry::bootstrap(array(
         'sess' => 'cFrontendSession',
         'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth',
-        'perm' => 'Contenido_Perm'
+        'perm' => 'cPermission'
     ));
 }
 
@@ -92,7 +92,7 @@ if ($contenido) {
 require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
 // Call hook after plugins are loaded
-CEC_Hook::execute('Contenido.Frontend.AfterLoadPlugins');
+cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 
 $db = cRegistry::getDb();
 
@@ -235,7 +235,7 @@ if (!$idcatart) {
                     die(i18n('No start article for this category'));
                 } else {
                     if ($error == 1) {
-                        $tpl = new Template();
+                        $tpl = new cTemplate();
                         $tpl->set("s", "ERROR_TITLE", "Fatal error");
                         $tpl->set("s", "ERROR_TEXT", "No start article for this category.");
                         $tpl->generate($cfgClient[$client]['tpl']['path'] . "error_page.html");
@@ -267,7 +267,7 @@ if (!$idcatart) {
                     die(i18n('No start article for this category'));
                 } else {
                     if ($error == 1) {
-                        $tpl = new Template();
+                        $tpl = new cTemplate();
                         $tpl->set("s", "ERROR_TITLE", "Fatal error");
                         $tpl->set("s", "ERROR_TEXT", "No start article for this category.");
                         $tpl->generate($cfgClient[$client]['tpl']['path'] . "error_page.html");
@@ -302,7 +302,7 @@ if ($idartlang === false) {
     if ($_GET['display_errorpage']) {
         //show only if $idart > 0
         if ($idart > 0) {
-            $tpl = new Template();
+            $tpl = new cTemplate();
             $tpl->set('s', 'CONTENIDO_PATH', $cfg['path']['contenido_fullhtml']);
             $tpl->set('s', 'ERROR_TITLE', i18n('Error page'));
             $tpl->set('s', 'ERROR_TEXT', i18n('Error article/category not found!'));
@@ -374,8 +374,8 @@ if ($contenido) {
     }
 
     // CEC to check if the user has permission to edit articles in this category
-    CEC_Hook::setBreakCondition(false, true); // break at 'false', default value 'true'
-    $allow = CEC_Hook::executeWhileBreakCondition(
+    cApiCecHook::setBreakCondition(false, true); // break at 'false', default value 'true'
+    $allow = cApiCecHook::executeWhileBreakCondition(
                     'Contenido.Frontend.AllowEdit', $lang, $idcat, $idart, $auth->auth['uid']
     );
 
@@ -506,16 +506,16 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             }
             if ($validated != 1) {
                 // CEC to check category access
-                CEC_Hook::setBreakCondition(true, false); // break at 'true', default value 'false'
-                $allow = CEC_Hook::executeWhileBreakCondition(
+                cApiCecHook::setBreakCondition(true, false); // break at 'true', default value 'false'
+                $allow = cApiCecHook::executeWhileBreakCondition(
                                 'Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']
                 );
                 $auth->login_if(!$allow);
             }
         } else {
             // CEC to check category access
-            CEC_Hook::setBreakCondition(true, false); // break at 'true', default value 'false'
-            $allow = CEC_Hook::executeWhileBreakCondition(
+            cApiCecHook::setBreakCondition(true, false); // break at 'true', default value 'false'
+            $allow = cApiCecHook::executeWhileBreakCondition(
                             'Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']
             );
 
@@ -574,7 +574,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         $baseHref = $cfgClient[$client]['path']['htmlpath'];
 
         // CEC for base href generation
-        $baseHref = CEC_Hook::executeAndReturn('Contenido.Frontend.BaseHrefGeneration', $baseHref);
+        $baseHref = cApiCecHook::executeAndReturn('Contenido.Frontend.BaseHrefGeneration', $baseHref);
 
         $isXhtml = getEffectiveSetting('generator', 'xhtml', 'false');
         if ($isXhtml == 'true') {
@@ -622,7 +622,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                 ob_end_clean();
 
                 // Process CEC to do some preparations before output
-                $htmlCode = CEC_Hook::executeAndReturn('Contenido.Frontend.HTMLCodeOutput', $htmlCode);
+                $htmlCode = cApiCecHook::executeAndReturn('Contenido.Frontend.HTMLCodeOutput', $htmlCode);
 
                 // Print output
                 echo $htmlCode;
@@ -634,7 +634,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             eval("?>\n" . $code . "\n<?php\n");
         } else {
             if ($error == 1) {
-                $tpl = new Template();
+                $tpl = new cTemplate();
                 $tpl->set("s", "ERROR_TITLE", "Fatal error");
                 $tpl->set("s", "ERROR_TEXT", "No CONTENIDO session variable set. Probable error cause: Start article in this category is not set on-line.");
                 $tpl->generate($cfgClient[$client]['tpl']['path'] . "error_page.html");

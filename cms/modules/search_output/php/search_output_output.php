@@ -26,7 +26,7 @@ cInclude('includes', 'functions.api.string.php');
 
 // Initiliaze template object
 if (!is_object($tpl)) {
-    $tpl = new Template();
+    $tpl = new cTemplate();
 }
 $tpl->reset();
 
@@ -89,7 +89,7 @@ if (strlen(trim($searchterm)) > 0) {
         'protected' => true, // => do not search articles or articles in categories which are offline or protected
     );
 
-    $search = new Search($options);
+    $search = new cSearch($options);
 
     $cms_options = array('head', 'html', 'htmlhead', 'htmltext', 'text'); // search only in these cms-types
     $search->setCmsOptions($cms_options);
@@ -108,7 +108,7 @@ if (strlen(trim($searchterm)) > 0) {
 
         // Number of results per page
         $number_of_results = CON_SEARCH_ITEMSPERPAGE;
-        $oSearchResults = new SearchResult($aSearchResults, $number_of_results);
+        $oSearchResults = new cSearchResult($aSearchResults, $number_of_results);
 
         $num_res = $oSearchResults->getNumberOfResults() + $pdf_count;
         $num_pages = $oSearchResults->getNumberOfPages();

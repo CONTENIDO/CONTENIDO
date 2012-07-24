@@ -145,7 +145,7 @@ function getTimeUnitSelector($listid, $default) {
     $timeunits['Months'] = i18n("Months", "workflow");
     $timeunits['Years'] = i18n("Years", "workflow");
 
-    $tpl2 = new Template;
+    $tpl2 = new cTemplate;
     $tpl2->set('s', 'NAME', 'time' . $listid);
     $tpl2->set('s', 'CLASS', 'text_small');
     $tpl2->set('s', 'OPTIONS', 'size=1');

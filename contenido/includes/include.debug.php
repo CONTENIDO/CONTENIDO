@@ -35,7 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
 $areaList = new cApiAreaCollection();
 $areas = $areaList = $areaList->getAvailableAreas();
 
-$areaSelectTemplate= new Template;
+$areaSelectTemplate= new cTemplate;
 $areaSelectTemplate->set('s', 'NAME', 'areaselect');
 
 foreach ($areas as $key => $value)
@@ -51,7 +51,7 @@ $areaSelector = $areaSelectTemplate->generate($cfg['path']['templates'].$cfg['te
 $actionList = new cApiActionCollection();
 $actions = $actionList = $actionList->getAvailableActions();
 
-$actionSelectTemplate= new Template;
+$actionSelectTemplate= new cTemplate;
 $actionSelectTemplate->set('s', 'NAME', 'actionselect');
 
 foreach ($actions as $key => $value)

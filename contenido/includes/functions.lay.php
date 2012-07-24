@@ -66,7 +66,7 @@ function layEditLayout($idlay, $name, $description, $code)
     }
 
     // Replace all not allowed characters..
-    $layoutAlias = Contenido_Module_Handler::getCleanName(strtolower($name));
+    $layoutAlias = cModuleHandler::getCleanName(strtolower($name));
 
     // Constructor for the layout in filesystem
     $layoutInFile = new LayoutInFile($idlay, stripslashes($code), $cfg, $lang);

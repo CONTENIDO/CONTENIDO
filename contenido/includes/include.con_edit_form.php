@@ -163,7 +163,6 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tmp2_published = date($dateformat, strtotime($tmp_published));
 
     $tpl->set('s', 'ACTION', $sess->url("main.php?area=$area&frame=$frame&action=con_saveart"));
-    $tpl->set('s', 'HIDDENSESSION', $sess->hidden_session(true));
     $tpl->set('s', 'TMP_FIRSTEDIT', $tmp_firstedit);
     $tpl->set('s', 'IDART', $idart);
     $tpl->set('s', 'SID', $sess->id);
@@ -346,7 +345,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $cValue = $oClient->getProperty("system", "multiassign", true);
     $sValue = getSystemProperty("system", "multiassign", true);
 
-    $tpl2 = new Template();
+    $tpl2 = new cTemplate();
     $button = '';
     $moveOK = true;
 
@@ -363,7 +362,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         if ($moveOK == true) {
             if (count(conGetCategoryAssignments($idart)) > 1) {
                 // Old behaviour
-                $tpl2 = new Template();
+                $tpl2 = new cTemplate();
                 $tpl2->set('s', 'ID', 'catsel');
                 $tpl2->set('s', 'NAME', 'fake[]');
                 $tpl2->set('s', 'CLASS', 'text_medium');
@@ -379,7 +378,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
                 $moveOK = false;
             } else {
-                $tpl2 = new Template();
+                $tpl2 = new cTemplate();
                 $tpl2->set('s', 'ID', 'catsel');
                 $tpl2->set('s', 'NAME', 'idcatnew[]');
                 $tpl2->set('s', 'CLASS', 'text_medium');
@@ -508,7 +507,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
 
     // Move to category
-    $tpl2 = new Template();
+    $tpl2 = new cTemplate();
     $tpl2->set('s', 'ID', 'catsel');
     $tpl2->set('s', 'NAME', 'time_target_cat');
     $tpl2->set('s', 'CLASS', 'text_medium');

@@ -21,7 +21,7 @@ class View_MailLog {
         $this->_tableHeader = array('checkbox' => i18n('Mark'), 'created' => i18n('Date'), 'from' => i18n('From'), 'to' => i18n('To'), 'action' => i18n('Action'));
         $this->_sess = $conVars['sess'];
         $this->_area = $conVars['area'];
-        $this->_tpl = new Template();
+        $this->_tpl = new cTemplate();
         $this->_tpl->set('s', 'SID', $this->_sess->id);
         $this->_tpl->set('s', 'DELETE_TITLE', i18n('Delete email log'));
         $this->_tpl->set('s', 'DELETE_TEXT', i18n('Do you realy wont to delete selected emails.'));

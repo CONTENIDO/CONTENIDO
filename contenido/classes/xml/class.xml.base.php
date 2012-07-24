@@ -51,7 +51,7 @@ abstract class cXmlBase {
      */
     public function getEncoding() {
         if ($this->_dom === NULL) {
-            cWarning(__FILE__, __LINE__, "Can not determine encoding: DOMDocument not found.");
+            cWarning(__FILE__, __LINE__, 'Can not determine encoding: DOMDocument not found.');
             return false;
         }
 
@@ -66,7 +66,7 @@ abstract class cXmlBase {
      */
     protected function _initXpathInstance() {
         if (!($this->_dom instanceof DOMDocument)) {
-            cWarning(__FILE__, __LINE__, "Can not initialize XPath instance: DOMDocument not found.");
+            cWarning(__FILE__, __LINE__, 'Can not initialize XPath instance: DOMDocument not found.');
             return;
         }
 
@@ -205,8 +205,6 @@ abstract class cXmlBase {
     }
 
     /**
-     * Converts the given XML string to an array. Example:
-     * <?/**
      * Converts the given XML string to an array.
      * Example:
      * <?xml version="1.0" encoding="utf-8"?>
@@ -238,8 +236,6 @@ abstract class cXmlBase {
     }
 
     /**
-     * Converts the given SimpleXMLElement object to an array. Example:
-     * <?/**
      * Converts the given SimpleXMLElement object to an array.
      * Example:
      * <?xml version="1.0" encoding="utf-8"?>
@@ -304,6 +300,18 @@ abstract class cXmlBase {
         }
 
         return $array;
+    }
+
+}
+
+abstract class ContenidoXmlBase extends cXmlBase {
+
+    /**
+     *
+     * @deprecated [2012-07-24] class was renamed to cXmlBase
+     */
+    public function __construct() {
+        cDeprecated('Class was renamed to cXmlBase.');
     }
 
 }

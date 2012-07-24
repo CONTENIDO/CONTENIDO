@@ -296,7 +296,7 @@ if ($currentStep < $totalSteps) {
 
         rereadClients();
 
-        Contenido_Module_Handler::setEncoding('ISO-8859-1');
+        cModuleHandler::setEncoding('ISO-8859-1');
 
         //set default configuration for connection,
         //for all db objects in Contenido_UpgradeJob

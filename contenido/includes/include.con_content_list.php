@@ -117,7 +117,7 @@ $sConfigFullscreen = $oEditor->getConfigFullscreen();
 
 
 //Replace vars in Script
-$oScriptTpl = new Template();
+$oScriptTpl = new cTemplate();
 
 $oScriptTpl->set('s', 'CONTENIDO_FULLHTML', $cfg['path']['contenido_fullhtml']);
 
@@ -361,7 +361,7 @@ cRegistry::shutdown();
 
             $code = str_ireplace($search, $replacements, $layoutCode);
             // execute CEC hook
-            $code = CEC_Hook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
+            $code = cApiCecHook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
             $layoutCode = stripslashes($code);
         }
         }

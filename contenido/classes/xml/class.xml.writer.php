@@ -24,7 +24,7 @@ class cXmlWriter extends cXmlBase {
      *
      * @param string $version version of XML document (optional, default: 1.0)
      * @param string $encoding encoding of XML document (optional, default:
-     *            UTF-8)
+     *        UTF-8)
      *
      * @return void
      */
@@ -41,7 +41,7 @@ class cXmlWriter extends cXmlBase {
      * @param string $value value of the element (optional)
      * @param DOMElement $rootElement root element (optional)
      * @param array $attributes array of attributes added to this element
-     *            (optional)
+     *        (optional)
      *
      * @return DOMElement created DOM element
      */
@@ -101,7 +101,7 @@ class cXmlWriter extends cXmlBase {
      */
     public function saveToFile($directory, $fileName) {
         if (is_writable($directory) === false) {
-            cWarning(__FILE__, __LINE__, "Can not write XML file: Directory is not writable.");
+            cWarning(__FILE__, __LINE__, 'Can not write XML file: Directory is not writable.');
             return false;
         }
 
@@ -112,6 +112,18 @@ class cXmlWriter extends cXmlBase {
         cFileHandler::write($directory . $fileName, $this->saveToString());
 
         return cFileHandler::exists($directory . $fileName);
+    }
+
+}
+class ContenidoXmlWriter extends cXmlWriter {
+
+    /**
+     *
+     * @deprecated [2012-07-24] class was renamed to cXmlWriter
+     */
+    public function __construct($version = '', $encoding = '') {
+        cDeprecated('Class was renamed to cXmlWriter.');
+        parent::__construct($version, $encoding);
     }
 
 }

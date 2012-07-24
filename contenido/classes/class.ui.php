@@ -56,7 +56,7 @@ class UI_Left_Top
     {
         global $sess, $cfg;
 
-        $tpl = new Template;
+        $tpl = new cTemplate;
 
         $tpl->reset();
         $tpl->set('s', 'SESSID', $sess->id);
@@ -159,7 +159,7 @@ class UI_Form
 
         $content = "";
 
-        $tpl = new Template;
+        $tpl = new cTemplate;
 
         $form  = '<form style="margin:0px" name="'.$this->formname.'" method="'.$this->formmethod.'" action="'.$this->formaction.'" target="'.$this->formtarget.'" '.$this->formevent.'>'."\n";
         $this->formvars[$sess->name] = $sess->id;
@@ -254,7 +254,7 @@ class UI_Page
     {
         global $sess, $cfg;
 
-        $tpl = new Template;
+        $tpl = new cTemplate;
 
         $scripts = "";
 

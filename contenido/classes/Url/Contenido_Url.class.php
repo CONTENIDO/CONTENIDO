@@ -97,7 +97,7 @@ final class Contenido_Url {
         $aHookParams = array(
             'param' => $param, 'bUseAbsolutePath' => $bUseAbsolutePath, 'aConfig' => $aConfig
         );
-        if ($aResult = CEC_Hook::executeAndReturn('Contenido.Frontend.PreprocessUrlBuilding', $aHookParams)) {
+        if ($aResult = cApiCecHook::executeAndReturn('Contenido.Frontend.PreprocessUrlBuilding', $aHookParams)) {
             $param = (isset($aResult['param'])) ? $aResult['param'] : '';
             if (isset($aResult['bUseAbsolutePath'])) {
                 $bUseAbsolutePath = (bool) $aResult['bUseAbsolutePath'];
@@ -127,7 +127,7 @@ final class Contenido_Url {
         $url = $this->_oUrlBuilder->getUrl();
 
         // execute postprocess hook
-        if ($result = CEC_Hook::executeAndReturn('Contenido.Frontend.PostprocessUrlBuilding', $url)) {
+        if ($result = cApiCecHook::executeAndReturn('Contenido.Frontend.PostprocessUrlBuilding', $url)) {
             $url = (string) $result;
         }
 

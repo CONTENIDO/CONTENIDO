@@ -525,7 +525,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
         // Set browser windows
         // Difference between file and image browser is with (file) or without categories/articles (image)
-        $oTemplate = new Template;
+        $oTemplate = new cTemplate;
         $oTemplate->set('s', 'IMAGEBROWSER', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
         $oTemplate->set('s', 'FILEBROWSER', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=filebrowser');
         $oTemplate->set('s', 'FLASHBROWSER', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');

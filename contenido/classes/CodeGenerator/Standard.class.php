@@ -73,11 +73,11 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $this->_layoutCode = $layoutInFile->getLayoutCode();
         $this->_layoutCode = cApiStrNormalizeLineEndings($this->_layoutCode, "\n");
 
-        $moduleHandler = new Contenido_Module_Handler();
+        $moduleHandler = new cModuleHandler();
 
         // Create code for all containers
         if ($idlay) {
-            cInclude("includes", "functions.tpl.php");
+            cInclude('includes', 'functions.tpl.php');
             tplPreparseLayout($idlay);
             $tmp_returnstring = tplBrowseLayoutForContainers($idlay);
             $a_container = explode('&', $tmp_returnstring);
@@ -99,19 +99,19 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 $this->_modulePrefix[] = '$cCurrentModule = ' . $a_d[$value] . ';';
                 $this->_modulePrefix[] = '$cCurrentContainer = ' . $value . ';';
 
-                $moduleHandler = new Contenido_Module_Handler($a_d[$value]);
+                $moduleHandler = new cModuleHandler($a_d[$value]);
                 $input = '';
 
                 // Get the contents of input and output from files and not from db-table
                 if ($moduleHandler->modulePathExists() == true) {
                     $this->_moduleCode = $moduleHandler->readOutput();
                     // Load css and js content of the js/css files
-                    if ($moduleHandler->getFilesContent("css", "css") !== false) {
-                        $this->_cssData .= $moduleHandler->getFilesContent("css", "css");
+                    if ($moduleHandler->getFilesContent('css', 'css') !== false) {
+                        $this->_cssData .= $moduleHandler->getFilesContent('css', 'css');
                     }
 
-                    if ($moduleHandler->getFilesContent("js", "js") !== false) {
-                        $this->_jsData .= $moduleHandler->getFilesContent("js", "js");
+                    if ($moduleHandler->getFilesContent('js', 'js') !== false) {
+                        $this->_jsData .= $moduleHandler->getFilesContent('js', 'js');
                     }
 
                     $input = $moduleHandler->readInput();
@@ -153,31 +153,31 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $cssFile = '';
 
         if (strlen($this->_cssData) > 0) {
-            if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, "css", $this->_cssData))) {
+            if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, 'css', $this->_cssData))) {
                 $cssFile = '<link rel="stylesheet" type="text/css" href="' . $myFileCss . '"/>';
             }
         }
 
         $jsFile = '';
         if (strlen($this->_jsData) > 0) {
-            if (($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, "js", $this->_jsData))) {
+            if (($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, 'js', $this->_jsData))) {
                 $jsFile = '<script src="' . $myFileJs . '" type="text/javascript"></script>';
             }
         }
 
         // Add meta tags
-        $this->_layoutCode = str_ireplace_once("</head>", $cssFile . "</head>", $this->_layoutCode);
-        $this->_layoutCode = str_ireplace_once("</body>", $jsFile . "</body>", $this->_layoutCode);
+        $this->_layoutCode = str_ireplace_once('</head>', $cssFile . '</head>', $this->_layoutCode);
+        $this->_layoutCode = str_ireplace_once('</body>', $jsFile . '</body>', $this->_layoutCode);
 
         // Write code in the cache of the client. If the folder does not exist create one.
         if ($this->_layout == false && $this->_save == true) {
             if (!is_dir($cfgClient[$this->_client]['code_path'])) {
                 mkdir($cfgClient[$this->_client]['code_path']);
                 chmod($cfgClient[$this->_client]['code_path'], 0777);
-                cFileHandler::write($cfgClient[$this->_client]['code_path'] . ".htaccess", "Order Deny,Allow\nDeny from all\n");
+                cFileHandler::write($cfgClient[$this->_client]['code_path'] . '.htaccess', "Order Deny,Allow\nDeny from all\n");
             }
             $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $this->_layoutCode;
-            cFileHandler::write($cfgClient[$this->_client]['code_path'] . $this->_client . "." . $this->_lang . "." . $idcatart . ".php", $code, false);
+            cFileHandler::write($cfgClient[$this->_client]['code_path'] . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
 
             $db->update($cfg['tab']['cat_art'], array('createcode' => 0), array('idcatart' => (int) $idcatart));
         }
@@ -193,7 +193,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      */
     protected function _processNoConfigurationError() {
         // fixme
-        $this->_debug("Neither CAT or ART are configured!<br><br>");
+        $this->_debug('Neither CAT or ART are configured!<br><br>');
 
         $code = '<html><body>No code was created for this art in this category.</body><html>';
 
@@ -214,8 +214,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      */
     protected function _processCodeTitleTag() {
         if ($this->_pageTitle == '') {
-            CEC_Hook::setDefaultReturnValue($this->_pageTitle);
-            $this->_pageTitle = CEC_Hook::executeAndReturn('Contenido.Content.CreateTitletag');
+            cApiCecHook::setDefaultReturnValue($this->_pageTitle);
+            $this->_pageTitle = cApiCecHook::executeAndReturn('Contenido.Content.CreateTitletag');
         }
 
         // Add or replace title

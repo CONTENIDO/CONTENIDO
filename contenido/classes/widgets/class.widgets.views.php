@@ -166,7 +166,7 @@ class cTableView
     {
         global $sess, $cfg;
 
-        $tpl = new Template;
+        $tpl = new cTemplate;
 
         $extra = "";
 

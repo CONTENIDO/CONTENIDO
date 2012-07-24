@@ -179,7 +179,7 @@ $s_types = array(
     3 => i18n("Creation date")
 );
 
-$tpl2 = new Template();
+$tpl2 = new cTemplate();
 $tpl2->set('s', 'NAME', 'sort');
 $tpl2->set('s', 'CLASS', 'text_medium');
 $tpl2->set('s', 'OPTIONS', 'onchange="artSort(this)"');
@@ -240,7 +240,7 @@ if ($no_article) {
 
 $cat_name = "";
 
-// SELF_URL (Variable für das javascript);
+// SELF_URL (Variable fï¿½r das javascript);
 $tpl->set('s', 'SELF_URL', $sess->url("main.php?area=con&frame=4&idcat=$idcat"));
 
 // New article link

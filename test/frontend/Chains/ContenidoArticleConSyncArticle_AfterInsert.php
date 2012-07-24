@@ -63,7 +63,7 @@ class ContenidoArticleConSyncArticle_AfterInsertTest extends PHPUnit_Framework_T
     public function testNoChain()
     {
         // execute chain
-        CEC_Hook::execute($this->_chain, $this->_data);
+        cApiCecHook::execute($this->_chain, $this->_data);
 
         $this->assertEquals(array(0, $this->_data), array(self::$invokeCounter, $this->_data));
     }
@@ -81,7 +81,7 @@ class ContenidoArticleConSyncArticle_AfterInsertTest extends PHPUnit_Framework_T
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoArticleConSyncArticle_AfterInsert_Test');
 
         // execute chain
-        CEC_Hook::execute($this->_chain, $this->_data);
+        cApiCecHook::execute($this->_chain, $this->_data);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoArticleConSyncArticle_AfterInsert_Test');
@@ -103,7 +103,7 @@ class ContenidoArticleConSyncArticle_AfterInsertTest extends PHPUnit_Framework_T
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoArticleConSyncArticle_AfterInsert_Test2');
 
         // execute chain
-        CEC_Hook::execute($this->_chain, $this->_data);
+        cApiCecHook::execute($this->_chain, $this->_data);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoArticleConSyncArticle_AfterInsert_Test');

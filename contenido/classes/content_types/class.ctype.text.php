@@ -93,7 +93,7 @@ class cContentTypeText extends cContentTypeAbstract {
             'cursor', 'pointer'
         ));
 
-        $template = new Template();
+        $template = new cTemplate();
         $template->set('s', 'PREFIX', $this->_prefix);
         $template->set('s', 'ID', $this->_id);
         $template->set('s', 'TEXTBOX', $textbox->render());

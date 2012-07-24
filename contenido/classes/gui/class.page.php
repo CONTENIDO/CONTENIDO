@@ -131,8 +131,8 @@ class cGuiPage {
 
         $this->_pagename = $pagename;
         $this->_pluginname = $pluginname;
-        $this->_pagetemplate = new Template();
-        $this->_contenttemplate = new Template();
+        $this->_pagetemplate = new cTemplate();
+        $this->_contenttemplate = new cTemplate();
         $this->_scripts = array();
         $this->_styles = array();
         $this->_encoding = "";

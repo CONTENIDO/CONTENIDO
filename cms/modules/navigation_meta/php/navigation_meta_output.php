@@ -17,7 +17,7 @@ $iIdcatStart = getEffectiveSetting('navigation', 'idcat-meta', 2);
 
 // Check if there is a template instance
 if (!isset($tpl) || !is_object($tpl)) {
-    $tpl = new Template();
+    $tpl = new cTemplate();
 }
 
 // Reset template object

@@ -17,7 +17,7 @@
  *
  * @package    CONTENIDO Frontend
  * @version    2.1 (formerly known as functions.input.helper.php)
- * @author     Björn Behrens (HerrB), http://www.btech.de
+ * @author     Bjï¿½rn Behrens (HerrB), http://www.btech.de
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -503,7 +503,7 @@ class UI_Config_Table
 
     function render($bPrint = false)
     {
-        $oTable = new Template;
+        $oTable = new cTemplate;
         $oTable->reset();
 
         $iColCount            = 0;
@@ -522,7 +522,7 @@ class UI_Config_Table
                 foreach ($aCells as $sCell => $sData)
                 {
                     $iCount++;
-                    $tplCell = new Template();
+                    $tplCell = new cTemplate();
                     $tplCell->reset();
 
                     if ($this->_aCellClass[$sRow][$sCell] != "") {

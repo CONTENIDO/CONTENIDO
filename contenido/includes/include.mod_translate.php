@@ -41,7 +41,7 @@ $module = new cApiModule($idmod);
 
 $orginalString = '';
 $uebersetztungString = '';
-$contenidoTranslateFromFile = new Contenido_Module_FileTranslation($idmod);
+$contenidoTranslateFromFile = new cModuleFileTranslation($idmod);
 
 if ($action == 'mod_translation_save') {
     $orginalString = $t_orig;

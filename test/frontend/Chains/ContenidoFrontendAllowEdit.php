@@ -71,8 +71,8 @@ class ContenidoFrontendAllowEditTest extends PHPUnit_Framework_TestCase
     public function testNoChain()
     {
         // set n' execute chain
-        CEC_Hook::setBreakCondition(false, true); // break at "false", default value "true"
-        $allow = CEC_Hook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_idart, $this->_uid);
+        cApiCecHook::setBreakCondition(false, true); // break at "false", default value "true"
+        $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_idart, $this->_uid);
 
         $this->assertEquals(true, $allow);
     }
@@ -90,8 +90,8 @@ class ContenidoFrontendAllowEditTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test');
 
         // set n' execute chain
-        CEC_Hook::setBreakCondition(false, true); // break at "false", default value "true"
-        $allow = CEC_Hook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_idart, $this->_uid);
+        cApiCecHook::setBreakCondition(false, true); // break at "false", default value "true"
+        $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_idart, $this->_uid);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test');
@@ -114,8 +114,8 @@ class ContenidoFrontendAllowEditTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test3');
 
         // set n' execute chain
-        CEC_Hook::setBreakCondition(false, true); // break at "false", default value "true"
-        $allow = CEC_Hook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_idart, $this->_uid);
+        cApiCecHook::setBreakCondition(false, true); // break at "false", default value "true"
+        $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_idart, $this->_uid);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test');

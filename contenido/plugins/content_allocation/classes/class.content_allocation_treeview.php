@@ -60,7 +60,7 @@ class pApiContentAllocationTreeView extends pApiTree {
         global $cfg;
 
         parent::pApiTree($uuid);
-        $this->tpl = new Template;
+        $this->tpl = new cTemplate;
         $this->template = $cfg['pica']['treetemplate'];
     }
 

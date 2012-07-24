@@ -43,8 +43,8 @@ class cGuiList {
     public function render($print = false) {
         global $cfg;
 
-        $tpl = new Template();
-        $tpl2 = new Template();
+        $tpl = new cTemplate();
+        $tpl2 = new cTemplate();
 
         $colcount = 0;
 

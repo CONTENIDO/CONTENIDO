@@ -125,14 +125,14 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
      *         edited
      */
     public function generateEditCode() {
-        $template = new Template();
+        $template = new cTemplate();
         $template->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $template->set('s', 'ID', $this->_id);
         $template->set('s', 'IDARTLANG', $this->_idArtLang);
         $template->set('s', 'CONTENIDO', $_REQUEST['contenido']);
         $template->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
 
-        $templateTabs = new Template();
+        $templateTabs = new cTemplate();
         $templateTabs->set('s', 'PREFIX', $this->_prefix);
 
         // create code for external tab
@@ -163,7 +163,7 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
         $codeTabs = $templateTabs->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_tabs.html', true);
 
         // construct the top code of the template
-        $templateTop = new Template();
+        $templateTop = new cTemplate();
         $templateTop->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $templateTop->set('s', 'ICON', 'images/but_editlink.gif');
         $templateTop->set('s', 'ID', $this->_id);
@@ -179,7 +179,7 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
         );
 
         // construct the bottom code of the template
-        $templateBottom = new Template();
+        $templateBottom = new cTemplate();
         $templateBottom->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $templateBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
         $templateBottom->set('s', 'ID', $this->_id);
@@ -302,8 +302,8 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
                     c.parentid = ' . $parentid . ' AND
                     a.idcat = d.idcat AND
                     c.idcat = a.idcat AND
-                    d.idlang = ' . Contenido_Security::toInteger($this->_lang) . ' AND
-                    c.idclient = ' . Contenido_Security::toInteger($this->_client) . '
+                    d.idlang = ' . cSecurity::toInteger($this->_lang) . ' AND
+                    c.idclient = ' . cSecurity::toInteger($this->_client) . '
                 ORDER BY
                     a.idtree';
 
@@ -327,7 +327,7 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
      * @return string HTML code showing a directory list
      */
     public function getCategoryList(array $categories) {
-        $template = new Template();
+        $template = new cTemplate();
         $i = 1;
 
         foreach ($categories as $category) {
@@ -379,12 +379,12 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
                         ' . $this->_cfg['tab']['cat'] . ' AS c,
                         ' . $this->_cfg['tab']['cat_lang'] . ' AS d
                     WHERE
-                        b.idart = ' . Contenido_Security::toInteger($this->_settings['linkeditor_idart']) . ' AND
+                        b.idart = ' . cSecurity::toInteger($this->_settings['linkeditor_idart']) . ' AND
                         a.idcat = d.idcat AND
                         b.idcat = c.idcat AND
                         c.idcat = a.idcat AND
-                        d.idlang = ' . Contenido_Security::toInteger($this->_lang) . ' AND
-                        c.idclient = ' . Contenido_Security::toInteger($this->_client) . '
+                        d.idlang = ' . cSecurity::toInteger($this->_lang) . ' AND
+                        c.idclient = ' . cSecurity::toInteger($this->_client) . '
                     ORDER BY
                         a.idtree';
             $db = cRegistry::getDb();
@@ -452,11 +452,11 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
                     e.online = 1 AND
                     a.idcat = b.idcat AND
                     b.idcat = d.idcat AND
-                    d.idlang = ' . Contenido_Security::toInteger($this->_lang) . ' AND
+                    d.idlang = ' . cSecurity::toInteger($this->_lang) . ' AND
                     b.idart  = e.idart AND
                     c.idcat = a.idcat AND
-                    c.idclient = ' . Contenido_Security::toInteger($this->_client) . ' AND
-                    e.idlang = ' . Contenido_Security::toInteger($this->_lang) . '
+                    c.idclient = ' . cSecurity::toInteger($this->_client) . ' AND
+                    e.idlang = ' . cSecurity::toInteger($this->_lang) . '
                 ORDER BY
                     a.idtree';
         $db = cRegistry::getDb();

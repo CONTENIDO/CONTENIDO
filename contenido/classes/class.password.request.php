@@ -155,7 +155,7 @@ class cPasswordRequest {
 
         //init class variables
         $this->aCfg = $aCfg;
-        $this->oTpl = new Template();
+        $this->oTpl = new cTemplate();
         $this->sUsername = '';
         $this->sEmail = '';
 

@@ -315,7 +315,7 @@ if(empty($aErrors) && $cronjob != true) {
 
         for($i = 0; $i < count($aRow); $i++) {
 
-            $tpl2 = new Template;
+            $tpl2 = new cTemplate;
             $tpl2->reset();
 
             $tpl2->set('s', 'ERRORS_ERROR_TYPE', $aRow[$i]['error_type']);

@@ -64,7 +64,7 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
             $aClientToClear[] = (int)$_POST['purge_clients'];
         }
 
-        $oPurge = new Purge($db, $cfg, $cfgClient);
+        $oPurge = new cSystemPurge($db, $cfg, $cfgClient);
         if (count($aClientToClear) > 0) {
             // execute the selected actions
 

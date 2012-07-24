@@ -10,19 +10,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.2.3
- * @author     Jan Lengowski
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
+ * @package CONTENIDO Backend Classes
+ * @version 1.2.3
+ * @author Jan Lengowski
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -39,63 +34,74 @@ if (!defined('CON_FRAMEWORK')) {
  * @author Stefan Jelner (Optimizations)
  * @version 1.0
  */
-class Template
-{
+class cTemplate {
 
     /**
      * Needles (static)
+     *
      * @var array
      */
     public $needles = array();
 
     /**
      * Replacements (static)
+     *
      * @var array
      */
     public $replacements = array();
 
     /**
      * Dyn_Needles (dynamic)
+     *
      * @var array
      */
     public $Dyn_needles = array();
 
     /**
      * Dyn_Replacements (dynamic)
+     *
      * @var array
      */
     public $Dyn_replacements = array();
 
     /**
      * Database instance
+     *
      * @var DB_Contenido
      */
     public $db;
 
     /**
      * Dynamic counter
+     *
      * @var int
      */
     public $dyn_cnt = 0;
 
     /**
      * Tags array (for dynamic blocks);
+     *
      * @var array
      */
-    public $tags = array('static' => '{%s}', 'start' => '<!-- BEGIN:BLOCK -->', 'end' => '<!-- END:BLOCK -->');
+    public $tags = array(
+        'static' => '{%s}',
+        'start' => '<!-- BEGIN:BLOCK -->',
+        'end' => '<!-- END:BLOCK -->'
+    );
 
     /**
      * gettext domain (default: contenido)
+     *
      * @var string
      */
     protected $_sDomain = 'contenido';
 
     /**
      * Constructor function
+     *
      * @return void
      */
-    public function __construct($tags = false)
-    {
+    public function __construct($tags = false) {
         if (is_array($tags)) {
             $this->tags = $tags;
         }
@@ -103,21 +109,13 @@ class Template
         $this->setEncoding("");
     }
 
-    /** @deprecated  [2012-06-07] Old constructor function for downwards compatibility */
-    public function Template($tags = false)
-    {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($tags);
-    }
-
     /**
      * Sets the gettext domain to use for translations in a template
      *
-     * @param  string  $sDomain    Sets the domain to use for template translations
-     * @return  void
+     * @param string $sDomain Sets the domain to use for template translations
+     * @return void
      */
-    public function setDomain($sDomain)
-    {
+    public function setDomain($sDomain) {
         $this->_sDomain = $sDomain;
     }
 
@@ -127,13 +125,12 @@ class Template
      * With this method you can replace the placeholders
      * in the static templates with dynamic data.
      *
-     * @param  string  $which  's' for Static or else dynamic
-     * @param  string  $needle  Placeholder
-     * @param  string  $replacement  Replacement String
+     * @param string $which 's' for Static or else dynamic
+     * @param string $needle Placeholder
+     * @param string $replacement Replacement String
      * @return void
      */
-    public function set($which, $needle, $replacement)
-    {
+    public function set($which, $needle, $replacement) {
         if ($which == 's') {
             // static
             $this->needles[] = sprintf($this->tags['static'], $needle);
@@ -148,11 +145,10 @@ class Template
     /**
      * Sets an encoding for the template's head block.
      *
-     * @param  string  $encoding  Encoding to set
+     * @param string $encoding Encoding to set
      * @return void
      */
-    public function setEncoding($encoding)
-    {
+    public function setEncoding($encoding) {
         $this->_encoding = $encoding;
     }
 
@@ -161,8 +157,7 @@ class Template
      *
      * @return void
      */
-    public function next()
-    {
+    public function next() {
         $this->dyn_cnt++;
     }
 
@@ -171,8 +166,7 @@ class Template
      *
      * @return void
      */
-    public function reset()
-    {
+    public function reset() {
         $this->dyn_cnt = 0;
         $this->needles = array();
         $this->replacements = array();
@@ -182,20 +176,20 @@ class Template
 
     /**
      * Generate the template and
-     * print/return it. (do translations sequentially to save memory!!!)
+     * print/return it.
+     * (do translations sequentially to save memory!!!)
      *
-     * @param  string  $template  Either template string or template file path
-     * @param  bool    $return    Return or print template
-     * @param  bool    $note      Echo "Generated by ... " Comment
-     * @return string  Complete Template string
+     * @param string $template Either template string or template file path
+     * @param bool $return Return or print template
+     * @param bool $note Echo "Generated by ... " Comment
+     * @return string Complete Template string
      */
-    public function generate($template, $return = 0, $note = 0)
-    {
+    public function generate($template, $return = 0, $note = 0) {
         global $cCurrentModule, $cfg;
 
         $moduleHandler = NULL;
         if (!is_null($cCurrentModule)) {
-            $moduleHandler = new Contenido_Module_Handler($cCurrentModule);
+            $moduleHandler = new cModuleHandler($cCurrentModule);
         }
 
         // Check if the template is a file or a string
@@ -212,12 +206,12 @@ class Template
                 // Module directory has higher priority
                 $content = $moduleHandler->getFilesContent('template', '', $template);
             } else {
-                 // Template is a file in template directory
+                // Template is a file in template directory
                 $content = implode('', file($template));
             }
         }
 
-        $content = (($note) ? "<!-- Generated by CONTENIDO ".$cfg['version']."-->\n" : "").$content;
+        $content = (($note)? "<!-- Generated by CONTENIDO " . $cfg['version'] . "-->\n" : "") . $content;
 
         $pieces = array();
 
@@ -241,7 +235,7 @@ class Template
             unset($pieces[0][0]);
 
             // Generate dynamic blocks
-            for ($a = 0; $a < $this->dyn_cnt; $a ++) {
+            for ($a = 0; $a < $this->dyn_cnt; $a++) {
                 $content .= str_replace($this->Dyn_needles[$a], $this->Dyn_replacements[$a], $pieces[1][0]);
             }
             unset($pieces[1][0]);
@@ -254,7 +248,7 @@ class Template
         }
 
         if ($this->_encoding != '') {
-            $content = str_replace("</head>", '<meta http-equiv="Content-Type" content="text/html; charset='.$this->_encoding.'">'."\n".'</head>', $content);
+            $content = str_replace("</head>", '<meta http-equiv="Content-Type" content="text/html; charset=' . $this->_encoding . '">' . "\n" . '</head>', $content);
         }
 
         if ($return) {
@@ -267,24 +261,22 @@ class Template
     /**
      * Replaces a named function with the translated variant
      *
-     * @param  string  $template  Contents of the template to translate (it is reference to save memory!!!)
-     * @param  string  $functionName  Name of the translation function (e.g. i18n)
+     * @param string $template Contents of the template to translate (it is
+     *        reference to save memory!!!)
+     * @param string $functionName Name of the translation function (e.g. i18n)
      * @return void
      */
-    public function replacei18n(&$template, $functionName)
-    {
+    public function replacei18n(&$template, $functionName) {
         $container = array();
 
         // Be sure that php code stays unchanged
         $php_matches = array();
-        /*if (preg_match_all('/<\?(php)?((.)|(\s))*?\?>/i', $template, $php_matches)) {
-            $x = 0;
-            foreach ($php_matches[0] as $php_match) {
-                $x++;
-                $template = str_replace($php_match , '{PHP#' . $x . '#PHP}', $template);
-                $container[$x] = $php_match;
-            }
-        }*/
+        /*
+         * if (preg_match_all('/<\?(php)?((.)|(\s))*?\?>/i', $template,
+         * $php_matches)) { $x = 0; foreach ($php_matches[0] as $php_match) {
+         * $x++; $template = str_replace($php_match , '{PHP#' . $x . '#PHP}',
+         * $template); $container[$x] = $php_match; } }
+         */
 
         $functionNameQ = preg_quote($functionName, '/');
 
@@ -293,7 +285,7 @@ class Template
         preg_match_all('/' . $functionNameQ . "\\(([\\\"\\'])(.*?)\\1\\)/s", $template, $matches);
 
         $matches = array_values(array_unique($matches[2]));
-        for ($a = 0; $a < count($matches); $a ++) {
+        for ($a = 0; $a < count($matches); $a++) {
             $template = preg_replace('/' . $functionNameQ . "\\([\\\"\\']" . preg_quote($matches[$a], '/') . "[\\\"\\']\\)/s", i18n($matches[$a], $this->_sDomain), $template);
         }
 
@@ -304,6 +296,27 @@ class Template
             }
         }
     }
-}
 
-?>
+}
+class Template extends cTemplate {
+
+    /**
+     *
+     * @deprecated Class was renamed to cTemplate
+     */
+    public function __construct($tags = false) {
+        cDeprecated('Class was renamed to cTemplate');
+        parent::__construct($tags);
+    }
+
+    /**
+     *
+     * @deprecated [2012-06-07] Old constructor function for downwards
+     *             compatibility
+     */
+    public function Template($tags = false) {
+        cDeprecated('Use __construct() instead');
+        $this->__construct($tags);
+    }
+
+}

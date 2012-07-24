@@ -334,7 +334,7 @@ abstract class cContentTypeAbstract {
      * @return string HTML code showing a directory list
      */
     public function generateDirectoryList(array $dirs) {
-        $template = new Template();
+        $template = new cTemplate();
         $i = 1;
 
         foreach ($dirs as $dirData) {

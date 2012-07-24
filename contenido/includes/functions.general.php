@@ -1351,14 +1351,14 @@ function buildStackString($startlevel = 2)
  */
 function getDebugger()
 {
-    $debugger = DebuggerFactory::getDebugger('devnull');
+    $debugger = cDebugFactory::getDebugger('devnull');
     if (getSystemProperty('debug', 'debug_to_file') == 'true') {
-        $debugger = DebuggerFactory::getDebugger('file');
+        $debugger = cDebugFactory::getDebugger('file');
     } else if (getSystemProperty('debug', 'debug_to_screen') == 'true') {
-        $debugger = DebuggerFactory::getDebugger('visible_adv');
+        $debugger = cDebugFactory::getDebugger('visible_adv');
     }
     if ((getSystemProperty('debug', 'debug_to_screen') == 'true') && (getSystemProperty('debug', 'debug_to_file') == 'true')) {
-        $debugger = DebuggerFactory::getDebugger('vis_and_file');
+        $debugger = cDebugFactory::getDebugger('vis_and_file');
     }
 
     return $debugger;

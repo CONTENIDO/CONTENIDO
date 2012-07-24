@@ -218,7 +218,7 @@ class cRegistry {
 
     /**
      * Returns the permission object stored in the global variable "perm".
-     * @return Contenido_Perm
+     * @return cPermission
      */
     public static function getPerm() {
         return self::_fetchGlobalVariable('perm');

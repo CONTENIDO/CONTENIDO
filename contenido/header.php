@@ -40,7 +40,7 @@ include_once('./includes/startup.php');
 cRegistry::bootstrap(array(
     'sess' => 'cSession',
     'auth' => 'Contenido_Challenge_Crypt_Auth',
-    'perm' => 'Contenido_Perm'
+    'perm' => 'cPermission'
 ));
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
@@ -102,7 +102,7 @@ sendEncodingHeader($db, $cfg, $lang);
 
 $perm->load_permissions();
 
-$tpl = new Template();
+$tpl = new cTemplate();
 $nav = new cGuiNavigation();
 
 rereadClients();

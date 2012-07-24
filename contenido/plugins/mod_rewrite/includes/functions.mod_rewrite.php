@@ -15,7 +15,7 @@
  * @version     0.1
  * @author      Stefan Seifarth / stese
  * @author      Murat Purc <murat@purc.de>
- * @copyright   © www.polycoder.de
+ * @copyright   ï¿½ www.polycoder.de
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
@@ -521,7 +521,7 @@ function mr_buildGeneratedCode($code)
 
         // get base uri
         $sBaseUri = $cfgClient[$client]['path']['htmlpath'];
-        $sBaseUri = CEC_Hook::execute("Contenido.Frontend.BaseHrefGeneration", $sBaseUri);
+        $sBaseUri = cApiCecHook::execute("Contenido.Frontend.BaseHrefGeneration", $sBaseUri);
 
         // IE hack with wrong base href interpretation
         $code = preg_replace("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/ie", "stripslashes('\\1{$sBaseUri}upload/\\2\\3')", $code);

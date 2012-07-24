@@ -67,7 +67,7 @@ if ($contenido) {
     cRegistry::bootstrap(array(
         'sess' => 'cSession',
         'auth' => 'Contenido_Challenge_Crypt_Auth',
-        'perm' => 'Contenido_Perm'
+        'perm' => 'cPermission'
     ));
     i18nInit($cfg['path']['contenido_locale'], $belang);
 } else {
@@ -75,13 +75,13 @@ if ($contenido) {
     cRegistry::bootstrap(array(
         'sess' => 'cFrontendSession',
         'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth',
-        'perm' => 'Contenido_Perm'
+        'perm' => 'cPermission'
     ));
 }
 
 require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
-CEC_Hook::execute('Contenido.Frontend.AfterLoadPlugins');
+cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 
 $db = cRegistry::getDb();
 
@@ -103,7 +103,7 @@ while ($db->next_record()) {
 
 // Check frontend globals
 // @TODO: Should be outsourced into startup process but requires a better detection (frontend or backend)
-Contenido_Security::checkFrontendGlobals();
+cSecurity::checkFrontendGlobals();
 
 // update urlbuilder set http base path
 Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);

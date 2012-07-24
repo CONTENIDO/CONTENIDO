@@ -765,7 +765,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             100 => "100"
         );
 
-        $tpl2 = new Template();
+        $tpl2 = new cTemplate();
         $tpl2->set('s', 'NAME', 'sort');
         $tpl2->set('s', 'CLASS', 'text_medium');
         $tpl2->set('s', 'OPTIONS', 'onchange="changeElemPerPage(this)"');
@@ -871,7 +871,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $tpl->set('s', 'CATEGORY_LINK', '&nbsp;');
         }
 
-        // SELF_URL (Variable für das javascript);
+        // SELF_URL (Variable fï¿½r das javascript);
         $tpl->set('s', 'SELF_URL', $sess->url("main.php?area=con&frame=4&idcat=$idcat"));
 
         // New Article link

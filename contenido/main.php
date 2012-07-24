@@ -40,7 +40,7 @@ cInclude('includes', 'functions.forms.php');
 cRegistry::bootstrap(array(
     'sess' => 'cSession',
     'auth' => 'Contenido_Challenge_Crypt_Auth',
-    'perm' => 'Contenido_Perm'
+    'perm' => 'cPermission'
 ));
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
@@ -138,8 +138,8 @@ sendEncodingHeader($db, $cfg, $lang);
 $perm->load_permissions();
 
 // Create CONTENIDO classes
-$tpl = new Template();
-$backend = new Contenido_Backend();
+$tpl = new cTemplate();
+$backend = new cBackend();
 
 // Register session variables
 $sess->register('sess_area');

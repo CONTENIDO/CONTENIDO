@@ -54,7 +54,7 @@ class ContenidoFrontendBaseHrefGenerationTest extends PHPUnit_Framework_TestCase
     public function testNoChain()
     {
         // execute chain
-        $newBaseHref = CEC_Hook::executeAndReturn($this->_chain, $this->_baseHref);
+        $newBaseHref = cApiCecHook::executeAndReturn($this->_chain, $this->_baseHref);
 
         $this->assertEquals($this->_baseHref, $newBaseHref);
     }
@@ -72,7 +72,7 @@ class ContenidoFrontendBaseHrefGenerationTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test');
 
         // execute chain
-        $newBaseHref = CEC_Hook::executeAndReturn($this->_chain, $this->_baseHref);
+        $newBaseHref = cApiCecHook::executeAndReturn($this->_chain, $this->_baseHref);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test');
@@ -94,7 +94,7 @@ class ContenidoFrontendBaseHrefGenerationTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test2');
 
         // execute chain
-        $newBaseHref = CEC_Hook::executeAndReturn($this->_chain, $this->_baseHref);
+        $newBaseHref = cApiCecHook::executeAndReturn($this->_chain, $this->_baseHref);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test');

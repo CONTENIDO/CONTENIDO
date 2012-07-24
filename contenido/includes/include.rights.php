@@ -44,7 +44,7 @@ if (!is_object($db2)) {
 }
 
 if (!is_object($oTpl)) {
-    $oTpl = new Template();
+    $oTpl = new cTemplate();
 }
 $oTpl->reset();
 

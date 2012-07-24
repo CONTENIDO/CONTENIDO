@@ -13,7 +13,7 @@
  */
 
 if (!isset($tpl) || !is_object($tpl)) {
-    $tpl = new Template();
+    $tpl = new cTemplate();
 }
 
 $sText = "CMS_HTMLHEAD[1]";

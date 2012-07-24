@@ -3,7 +3,7 @@
  * @deprecated 2012-06-04 This class was ported directly into CONTENIDO.
  *
  * You can find its functionality
- * in contenido/classes/class.perm.php
+ * in contenido/classes/class.permission.php
  *
  * Note:
  * This class and this file will be removed

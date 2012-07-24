@@ -30,7 +30,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 $db2 = cRegistry::getDb();
-$tpl3 = new Template();
+$tpl3 = new cTemplate();
 
 if (!$perm->have_perm_area_action($area, $action)) {
     $notification->displayNotification("error", i18n("Permission denied"));

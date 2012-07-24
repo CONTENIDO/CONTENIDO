@@ -25,7 +25,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 strMoveSubtree($idcat, $parentid_new);
 strRemakeTreeTable();
-CEC_Hook::execute("Contenido.Action.str_movesubtree.AfterCall", array(
+cApiCecHook::execute("Contenido.Action.str_movesubtree.AfterCall", array(
     'idcat'        => $idcat,
     'parentid_new' => $parentid_new
 ));

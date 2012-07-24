@@ -50,8 +50,8 @@ class ContenidoContentCreateTitletagTest extends PHPUnit_Framework_TestCase
     public function testNoChain()
     {
         // set n' execute chain
-        CEC_Hook::setDefaultReturnValue($this->_title);
-        $newTitle = CEC_Hook::executeAndReturn($this->_chain);
+        cApiCecHook::setDefaultReturnValue($this->_title);
+        $newTitle = cApiCecHook::executeAndReturn($this->_chain);
 
         $this->assertEquals($this->_title, $newTitle);
     }
@@ -69,8 +69,8 @@ class ContenidoContentCreateTitletagTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test');
 
         // set n' execute chain
-        CEC_Hook::setDefaultReturnValue($this->_title);
-        $newTitle = CEC_Hook::executeAndReturn($this->_chain);
+        cApiCecHook::setDefaultReturnValue($this->_title);
+        $newTitle = cApiCecHook::executeAndReturn($this->_chain);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test');
@@ -92,8 +92,8 @@ class ContenidoContentCreateTitletagTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test2');
 
         // set n' execute chain
-        CEC_Hook::setDefaultReturnValue($this->_title);
-        $newTitle = CEC_Hook::executeAndReturn($this->_chain);
+        cApiCecHook::setDefaultReturnValue($this->_title);
+        $newTitle = cApiCecHook::executeAndReturn($this->_chain);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test');

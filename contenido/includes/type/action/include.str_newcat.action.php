@@ -24,7 +24,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 $tmp_newid  = strNewCategory($idcat, $categoryname, true, $categoryalias, $visible, $public, $idtplcfg);
-CEC_Hook::execute("Contenido.Action.str_newcat.AfterCall", array(
+cApiCecHook::execute("Contenido.Action.str_newcat.AfterCall", array(
     'newcategoryid' => $tmp_newid,
     'idcat'         => $idcat,
     'categoryname'  => $categoryname,

@@ -47,7 +47,7 @@ $sOptionDebugRows = getEffectiveSetting("modules", "show-debug-rows", "never");
 
 if (!isset($idmod)) $idmod = 0;
 
-$contenidoModuleHandler = new Contenido_Module_Handler($idmod );
+$contenidoModuleHandler = new cModuleHandler($idmod );
 if (($action == "mod_delete") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
     $notification->displayNotification("error", i18n("No permission"));
     return;
@@ -70,7 +70,7 @@ if (($action == "mod_synch") && (!$perm->have_perm_area_action_anyitem($area, $a
 }
 
 if ($action == "mod_sync") {
-    $contenidoModuleSynchronizer = new Contenido_Module_Synchronizer();
+    $contenidoModuleSynchronizer = new cModuleSynchronizer();
     $idmod = $contenidoModuleSynchronizer->synchronize();
 
     $idmodUpdate = $contenidoModuleSynchronizer->compareFileAndModulTimestamp();
@@ -83,7 +83,7 @@ if ($action == "mod_sync") {
     }
 
     // the actuly Modul is the last Modul from synchronize
-    $contenidoModuleHandler = new Contenido_Module_Handler($idmod);
+    $contenidoModuleHandler = new cModuleHandler($idmod);
 
 }
 
@@ -96,7 +96,7 @@ if ($action == "mod_new") {
     $modules = new cApiModuleCollection();
 
     $alias = cApiStrCleanURLCharacters(i18n("- Unnamed module -"));
-    $contenidoModuleHandler = new Contenido_Module_Handler();
+    $contenidoModuleHandler = new cModuleHandler();
     if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
         $notification->displayNotification("error", i18n("Modul name exist in module directory, rename the module."));
         die();
@@ -109,7 +109,7 @@ if ($action == "mod_new") {
 
     $module->store();
     // save into the file
-    $contenidoModuleHandler = new Contenido_Module_Handler($module->get("idmod"));
+    $contenidoModuleHandler = new cModuleHandler($module->get("idmod"));
 
     if ($contenidoModuleHandler->createModule() == false) {
          // logg error
@@ -134,7 +134,7 @@ if ($action == "mod_importexport_module") {
             } else {
                 // Load the item again (clearing slashes from import)
                 $module->loadByPrimaryKey($module->get($module->primaryKey));
-                $contenidoModuleHandler  = new Contenido_Module_Handler($module->get('idmod'));
+                $contenidoModuleHandler  = new cModuleHandler($module->get('idmod'));
             }
         }
     }

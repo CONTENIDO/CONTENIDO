@@ -70,8 +70,8 @@ class ContenidoFrontendCategoryAccessTest extends PHPUnit_Framework_TestCase
     public function testNoChain()
     {
         // set n' execute chain
-        CEC_Hook::setBreakCondition(true, false); // break at "true", default value "false"
-        $allow = CEC_Hook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_uid);
+        cApiCecHook::setBreakCondition(true, false); // break at "true", default value "false"
+        $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_uid);
 
         $this->assertEquals(false, $allow);
     }
@@ -89,8 +89,8 @@ class ContenidoFrontendCategoryAccessTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test');
 
         // set n' execute chain
-        CEC_Hook::setBreakCondition(true, false); // break at "true", default value "false"
-        $allow = CEC_Hook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_uid);
+        cApiCecHook::setBreakCondition(true, false); // break at "true", default value "false"
+        $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_uid);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test');
@@ -113,8 +113,8 @@ class ContenidoFrontendCategoryAccessTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test3');
 
         // set n' execute chain
-        CEC_Hook::setBreakCondition(true, false); // break at "true", default value "false"
-        $allow = CEC_Hook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_uid);
+        cApiCecHook::setBreakCondition(true, false); // break at "true", default value "false"
+        $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_uid);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test');

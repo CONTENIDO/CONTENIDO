@@ -21,7 +21,7 @@ $buttonLayout = "CMS_VALUE[1]";
 // show counter
 $showCount = "CMS_VALUE[3]";
 
-$tpl = new Template();
+$tpl = new cTemplate();
 if ($buttonLayout == 'standard') {
     $tpl->set('s', 'LAYOUT', '');
 } else {

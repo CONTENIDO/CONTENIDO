@@ -67,7 +67,7 @@ class ContenidoFrontendPreprocessUrlBuildingTest extends PHPUnit_Framework_TestC
     public function testNoChain()
     {
         // execute chain
-        $result = CEC_Hook::executeAndReturn($this->_chain, $this->_params);
+        $result = cApiCecHook::executeAndReturn($this->_chain, $this->_params);
 
         $this->assertEquals($this->_params, $result);
     }
@@ -85,7 +85,7 @@ class ContenidoFrontendPreprocessUrlBuildingTest extends PHPUnit_Framework_TestC
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test');
 
         // execute chain
-        $result = CEC_Hook::executeAndReturn($this->_chain, $this->_params);
+        $result = cApiCecHook::executeAndReturn($this->_chain, $this->_params);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test');
@@ -107,7 +107,7 @@ class ContenidoFrontendPreprocessUrlBuildingTest extends PHPUnit_Framework_TestC
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test2');
 
         // execute chain
-        $result = CEC_Hook::executeAndReturn($this->_chain, $this->_params);
+        $result = cApiCecHook::executeAndReturn($this->_chain, $this->_params);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test');

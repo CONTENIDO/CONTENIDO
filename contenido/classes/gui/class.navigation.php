@@ -185,8 +185,8 @@ class cGuiNavigation {
 
         $this->_buildHeaderData();
 
-        $main = new Template();
-        $sub = new Template();
+        $main = new cTemplate();
+        $sub = new cTemplate();
 
         $cnt = 0;
         $t_sub = '';
@@ -350,7 +350,7 @@ class cGuiNavigation {
     public function _renderLanguageSelect() {
         global $cfg, $client, $lang;
 
-        $tpl = new Template();
+        $tpl = new cTemplate();
 
         $tpl->set('s', 'NAME', 'changelang');
         $tpl->set('s', 'CLASS', 'text_medium');

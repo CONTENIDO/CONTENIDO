@@ -28,14 +28,14 @@ class Contenido_Sitemap_Util {
      *
      * @param Contenido_Category $oCategory
      * @param Contenido_FrontendNavigation $oFrontendNavigation
-     * @param Template $oTpl
+     * @param cTemplate $oTpl
      * @param string $sUrlStyle
      * @param array $aCfg
      * @param int $iLang
      * @param array $aDepthInfo Info on level depth / where to stop. Format: array(iCurrentLoopCount, iMaxLoopCount)
      * @return void
      */
-    public static function loopCats(Contenido_Category $oCategory, Contenido_FrontendNavigation $oFrontendNavigation, Template $oTpl, $sUrlStyle, array $aCfg, $iLang, array $aDepthInfo = array()) {
+    public static function loopCats(Contenido_Category $oCategory, Contenido_FrontendNavigation $oFrontendNavigation, cTemplate $oTpl, $sUrlStyle, array $aCfg, $iLang, array $aDepthInfo = array()) {
         $aDepthInfo[0] = isset($aDepthInfo[0]) ? $aDepthInfo[0] + 1 : 1;
         $aDepthInfo[1] = isset($aDepthInfo[1]) ? $aDepthInfo[1] : 1;
         // display current item

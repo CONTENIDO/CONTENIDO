@@ -56,7 +56,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save 
     $code = $codeGen->generate($idcat, $idart, $lang, $client, $layout, $save, $contype);
 
     // execute CEC hook
-    $code = CEC_Hook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
+    $code = cApiCecHook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
 
     return $code;
 }
@@ -180,7 +180,7 @@ function conGenerateKeywords($client, $lang) {
     foreach ($aArticles as $artid => $artlangid) {
         $aContent = conGetContentFromArticle($artlangid);
         if (count($aContent) > 0) {
-            $oIndex = new SearchIndex($oDB);
+            $oIndex = new cSearchIndex($oDB);
             $oIndex->lang = $lang;
             $oIndex->start($artid, $aContent, 'auto', $options);
         }

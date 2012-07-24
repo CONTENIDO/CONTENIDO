@@ -32,7 +32,7 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
      * @return string - the encoded code for the tab menu
      */
     protected function _generateTabMenuCode(array $tabs) {
-        $template = new Template();
+        $template = new cTemplate();
 
         // iterate over all tabs and set dynamic template placeholder for each
         foreach ($tabs as $id => $name) {
@@ -51,7 +51,7 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
      * @return string - the encoded code for the action buttons
      */
     protected function _generateActionCode() {
-        $template = new Template();
+        $template = new cTemplate();
 
         $template->set('s', 'CON_PATH', $this->_cfg['path']['contenido_fullhtml']);
         $code = $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_action.html', true);

@@ -24,7 +24,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 strRenameCategory ($idcat, $lang, $newcategoryname, $newcategoryalias);
-CEC_Hook::execute("Contenido.Action.str_renamecat.AfterCall", array(
+cApiCecHook::execute("Contenido.Action.str_renamecat.AfterCall", array(
     'idcat'            => $idcat,
     'lang'             => $lang,
     'newcategoryname'  => $newcategoryname,

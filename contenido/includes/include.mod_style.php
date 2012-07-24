@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.file.php');
 
-$contenidoModulHandler = new Contenido_Module_Handler($idmod);
+$contenidoModulHandler = new cModuleHandler($idmod);
 $sFileType = 'css';
 
 $sActionCreate = 'style_create';
@@ -127,7 +127,7 @@ if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
 
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 
-    $tempCode = iconv(Contenido_Module_Handler::getEncoding(), $fileEncoding, $_REQUEST['code']);
+    $tempCode = iconv(cModuleHandler::getEncoding(), $fileEncoding, $_REQUEST['code']);
     $bEdit = fileEdit($sFilename, $tempCode, $path);
 
     updateFileInformation($client, $sFilename, 'css', $auth->auth['uid'], $_REQUEST['description'], $db);
@@ -164,7 +164,7 @@ if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
     updateFileInformation($client, $sOrigFileName, 'css', $auth->auth['uid'], $_REQUEST['description'], $db, $sFilename);
 
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
-    $tempCode = iconv(Contenido_Module_Handler::getEncoding(), $fileEncoding, $_REQUEST['code']);
+    $tempCode = iconv(cModuleHandler::getEncoding(), $fileEncoding, $_REQUEST['code']);
     $bEdit = fileEdit($sFilename, $tempCode, $path);
 
     if ($sFilename != $sTempFilename && $bEdit) {
@@ -184,7 +184,7 @@ if (isset($actionRequest)) {
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 
     if ($actionRequest == $sActionEdit) {
-        $sCode = iconv($fileEncoding, Contenido_Module_Handler::getEncoding(), getFileContent($sFilename, $path));
+        $sCode = iconv($fileEncoding, cModuleHandler::getEncoding(), getFileContent($sFilename, $path));
     } else {
         $sCode = stripslashes($_REQUEST['code']); // stripslashes is required here in case of creating a new file
     }

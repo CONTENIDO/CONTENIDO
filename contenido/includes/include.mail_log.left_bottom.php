@@ -1,6 +1,6 @@
 <?php
 
-$tpl = new Template();
+$tpl = new cTemplate();
 
 $allClients = array('all' => i18n('All'));
 $allLangauges = array('all' => i18n('All'));

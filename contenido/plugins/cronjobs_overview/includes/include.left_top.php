@@ -7,7 +7,7 @@ if (!$perm->have_perm_area_action($area, 'crontab_edit'))
     return -1;
 }
 
-$tpl = new Template();
+$tpl = new cTemplate();
 
 
 $tpl->set('s', 'LABLE_CRONJOB_EDIT', i18n('Crontab bearbeiten'));

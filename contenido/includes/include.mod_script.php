@@ -31,7 +31,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.file.php');
-$contenidoModulHandler = new Contenido_Module_Handler($idmod);
+$contenidoModulHandler = new cModuleHandler($idmod);
 
 
 $sFileType = 'js';
@@ -106,7 +106,7 @@ $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
     $sTempFilename = $sFilename;
     $ret = createFile($sFilename, $path);
-    $tempCode = iconv(Contenido_Module_Handler::getEncoding(), $fileEncoding, $_REQUEST['code']);
+    $tempCode = iconv(cModuleHandler::getEncoding(), $fileEncoding, $_REQUEST['code']);
     $bEdit = fileEdit($sFilename, $tempCode , $path);
 
     $sReloadScript .= "<script type=\"text/javascript\">
@@ -142,7 +142,7 @@ if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
     }
 
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
-    $tempCode = iconv(Contenido_Module_Handler::getEncoding(), $fileEncoding, $_REQUEST['code']);
+    $tempCode = iconv(cModuleHandler::getEncoding(), $fileEncoding, $_REQUEST['code']);
     $bEdit = fileEdit($sFilename, $tempCode, $path);
 
     // Show message for user
@@ -159,7 +159,7 @@ if (isset($actionRequest)) {
     $sAction = ($bEdit) ? $sActionEdit : $actionRequest;
 
     if ($actionRequest == $sActionEdit) {
-        $sCode = iconv($fileEncoding, Contenido_Module_Handler::getEncoding(),getFileContent($sFilename, $path));
+        $sCode = iconv($fileEncoding, cModuleHandler::getEncoding(),getFileContent($sFilename, $path));
     } else {
         $sCode = stripslashes($_REQUEST['code']); # stripslashes is required here in case of creating a new file
     }

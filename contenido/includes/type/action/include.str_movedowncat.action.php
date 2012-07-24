@@ -25,5 +25,5 @@ if (!defined('CON_FRAMEWORK')) {
 
 strMoveDownCategory($idcat);
 strRemakeTreeTable();
-CEC_Hook::execute("Contenido.Action.str_movedowncat.AfterCall", $idcat);
+cApiCecHook::execute("Contenido.Action.str_movedowncat.AfterCall", $idcat);
 ?>

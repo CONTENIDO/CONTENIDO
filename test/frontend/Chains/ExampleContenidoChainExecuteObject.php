@@ -68,7 +68,7 @@ class ExampleContenidoChainExecuteObjectTest extends PHPUnit_Framework_TestCase
     public function testNoChain()
     {
         // execute chain
-        CEC_Hook::execute($this->_chain);
+        cApiCecHook::execute($this->_chain);
 
         $this->assertEquals(0, self::$invokeCounter);
     }
@@ -86,7 +86,7 @@ class ExampleContenidoChainExecuteObjectTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteObject_Test->callMe');
 
         // execute chain
-        CEC_Hook::execute($this->_chain);
+        cApiCecHook::execute($this->_chain);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteObject_Test->callMe');
@@ -108,7 +108,7 @@ class ExampleContenidoChainExecuteObjectTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteObject_Test2->callMe');
 
         // execute chain
-        CEC_Hook::execute($this->_chain);
+        cApiCecHook::execute($this->_chain);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteObject_Test->callMe');

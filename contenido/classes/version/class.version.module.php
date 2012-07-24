@@ -54,7 +54,7 @@ if (!defined('CON_FRAMEWORK')) {
         parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
 
 //         folder layout
-         $this->sType = "module";
+         $this->sType = 'module';
 
          $this->iIdentity = $iIdMod;
 
@@ -71,20 +71,20 @@ if (!defined('CON_FRAMEWORK')) {
         $oModule = new cApiModule($iIdMod);
 
         // create body node of XML file
-         $this->setData("Name",             $oModule->getField('name'));
-         $this->setData("Type",            $oModule->getField('type'));
-         $this->setData("Error",         $oModule->getField('error'));
-         $this->setData("Description",     $oModule->getField('description'));
-         $this->setData("Deletable",     $oModule->getField('deletable'));
-         $this->setData("Template",         $oModule->getField('template'));
-         $this->setData("Static",         $oModule->getField('static'));
-         $this->setData("PackageGuid",     $oModule->getField('package_guid'));
-         $this->setData("PackageData",     $oModule->getField('package_data'));
+         $this->setData('Name',             $oModule->getField('name'));
+         $this->setData('Type',            $oModule->getField('type'));
+         $this->setData('Error',         $oModule->getField('error'));
+         $this->setData('Description',     $oModule->getField('description'));
+         $this->setData('Deletable',     $oModule->getField('deletable'));
+         $this->setData('Template',         $oModule->getField('template'));
+         $this->setData('Static',         $oModule->getField('static'));
+         $this->setData('PackageGuid',     $oModule->getField('package_guid'));
+         $this->setData('PackageData',     $oModule->getField('package_data'));
 
         // retrieve module code from files
-        $oModuleHandler = new Contenido_Module_Handler($iIdMod);
-        $this->setData("CodeOutput", $oModuleHandler->readOutput());
-        $this->setData("CodeInput", $oModuleHandler->readInput());
+        $oModuleHandler = new cModuleHandler($iIdMod);
+        $this->setData('CodeOutput', $oModuleHandler->readOutput());
+        $this->setData('CodeInput', $oModuleHandler->readInput());
     }
 
    /**
@@ -96,17 +96,17 @@ if (!defined('CON_FRAMEWORK')) {
     */
     public function initXmlReader($sPath) {
         $aResult = array();
-        if($sPath !=""){
+        if($sPath !=''){
                 // Output this xml file
             $sXML = simplexml_load_file($sPath);
 
             if ($sXML) {
                 foreach ($sXML->body as $oBodyValues) {
                     //    if choose xml file read value an set it
-                    $aResult["name"] = $oBodyValues->Name;
-                    $aResult["desc"] = $oBodyValues->Description;
-                    $aResult["code_input"] = $oBodyValues->CodeInput;
-                    $aResult["code_output"] = $oBodyValues->CodeOutput;
+                    $aResult['name'] = $oBodyValues->Name;
+                    $aResult['desc'] = $oBodyValues->Description;
+                    $aResult['code_input'] = $oBodyValues->CodeInput;
+                    $aResult['code_output'] = $oBodyValues->CodeOutput;
                 }
 
             }

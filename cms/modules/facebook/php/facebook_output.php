@@ -12,7 +12,7 @@
  * }}
  */
 
-$tpl = new Template();
+$tpl = new cTemplate();
 
 //url
 $url = "CMS_VALUE[0]";

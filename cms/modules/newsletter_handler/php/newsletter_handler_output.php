@@ -47,7 +47,7 @@ $aSettings = array(
 $sTemplate = 'newsletter_handler.html';
 
 if (!isset($oPage) || !is_object($oPage)) {
-    $oPage = new Template();
+    $oPage = new cTemplate();
 }
 $oPage->reset();
 

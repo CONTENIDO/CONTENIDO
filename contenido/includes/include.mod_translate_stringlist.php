@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$contenidoTranslateFromFile = new Contenido_Module_FileTranslation($idmod);
+$contenidoTranslateFromFile = new cModuleFileTranslation($idmod);
 $translationsArray = $contenidoTranslateFromFile->getTranslationArray();
 
 $translations = new cApiModuleTranslationCollection;

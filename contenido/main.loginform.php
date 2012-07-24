@@ -94,7 +94,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
 }
 
 //Template erfüllen
-$tpl = new Template();
+$tpl = new cTemplate();
 $tpl->reset();
 
 $tpl->set('s', 'BASEPATH', $cfg['path']['contenido_fullhtml']);

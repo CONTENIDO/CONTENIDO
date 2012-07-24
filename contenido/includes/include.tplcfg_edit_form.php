@@ -271,7 +271,7 @@ $tpl->set('s', 'CATEGORY', i18n("Sie sind hier") . ": " .$catString.' > '.$sArti
 
 $tpl->set('s', 'TEMPLATECAPTION', i18n("Template"));
 
-$tpl2 = new Template();
+$tpl2 = new cTemplate();
 $tpl2->set('s', 'NAME', 'idtpl');
 $tpl2->set('s', 'CLASS', 'text_medium');
 
@@ -332,7 +332,7 @@ if (isset($a_d) && is_array($a_d)) {
 
 
             $input = "\n";
-            $contenidoModuleHandler = new Contenido_Module_Handler($db->f('idmod'));
+            $contenidoModuleHandler = new cModuleHandler($db->f('idmod'));
 
             // load data from file
             if ($contenidoModuleHandler->modulePathExists() == true) {

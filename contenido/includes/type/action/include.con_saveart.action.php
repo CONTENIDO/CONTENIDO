@@ -137,7 +137,7 @@ if (isset($title)) {
     }
 }
 
-CEC_Hook::execute("Contenido.Action.con_saveart.AfterCall", array(
+cApiCecHook::execute("Contenido.Action.con_saveart.AfterCall", array(
     'idcat'        => $idcat,
     'idcatnew'     => $idcatnew,
     'idart'        => $idart,

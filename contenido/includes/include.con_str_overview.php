@@ -46,7 +46,7 @@ cInclude('includes', 'functions.lang.php');
 function showTree($iIdcat, &$aWholelist) {
 global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client, $lang, $navigationTree;
 
-    $tpl = new Template;
+    $tpl = new cTemplate;
     $tpl->reset();
 
     $iIdcat = (int) $iIdcat;

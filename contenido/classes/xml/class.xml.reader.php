@@ -71,7 +71,7 @@ class cXmlReader extends cXmlBase {
      */
     public function getXpathNodeList($path) {
         if ($this->_xpath === NULL) {
-            cWarning(__FILE__, __LINE__, "Can not execute XPath string: DOMXpath instance not found.");
+            cWarning(__FILE__, __LINE__, 'Can not execute XPath string: DOMXpath instance not found.');
             return new DOMNodeList();
         }
 
@@ -134,6 +134,17 @@ class cXmlReader extends cXmlBase {
         }
 
         return $value;
+    }
+
+}
+class ContenidoXmlReader extends cXmlReader {
+
+    /**
+     *
+     * @deprecated [2012-07-24] class was renamed to cXmlReader
+     */
+    public function __construct() {
+        cDeprecated('Class was renamed to cXmlReader.');
     }
 
 }

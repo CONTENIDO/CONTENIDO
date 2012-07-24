@@ -254,7 +254,7 @@ class cContentTypeImgEditor extends cContentTypeAbstractTabbed {
      */
     public function generateEditCode() {
         // construct the top code of the template
-        $templateTop = new Template();
+        $templateTop = new cTemplate();
         $templateTop->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $templateTop->set('s', 'ICON', 'images/but_editimage.gif');
         $templateTop->set('s', 'ID', $this->_id);
@@ -268,7 +268,7 @@ class cContentTypeImgEditor extends cContentTypeAbstractTabbed {
             'upload' => i18n('Upload')
         );
 
-        $templateTabs = new Template();
+        $templateTabs = new cTemplate();
 
         // create code for upload tab
         $templateTabs->set('d', 'TAB_ID', 'upload');
@@ -292,7 +292,7 @@ class cContentTypeImgEditor extends cContentTypeAbstractTabbed {
         $codeTabs = $templateTabs->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_tabs.html', true);
 
         // construct the bottom code of the template
-        $templateBottom = new Template();
+        $templateBottom = new cTemplate();
         $templateBottom->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $templateBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
         $templateBottom->set('s', 'ID', $this->_id);

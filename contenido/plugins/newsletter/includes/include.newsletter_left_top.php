@@ -38,7 +38,7 @@ if (!defined('CON_FRAMEWORK')) {
 # Initialization
 ######################################
 if (!is_object($oTpl)) {
-    $oTpl = new Template();
+    $oTpl = new cTemplate();
 }
 if (!is_object($oDB)) {
     $oDB = cRegistry::getDb(); // We have really to send a special SQL statement - we need a DB object

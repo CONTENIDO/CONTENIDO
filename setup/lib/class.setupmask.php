@@ -35,8 +35,8 @@ class cSetupMask
 {
     function cSetupMask($sStepTemplate, $iStep = false)
     {
-        $this->_oTpl = new Template();
-        $this->_oStepTemplate = new Template();
+        $this->_oTpl = new cTemplate();
+        $this->_oStepTemplate = new cTemplate();
 
         $this->_sStepTemplate = $sStepTemplate;
         $this->_iStep = $iStep;

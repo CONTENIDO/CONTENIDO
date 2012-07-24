@@ -285,9 +285,7 @@ function strRemakeTreeTable() {
     $sInsertQuery = rtrim($sInsertQuery, " ,");
 
     // Lock db table and execute INSERT query
-    $db->lock($cfg['tab']['cat_tree']);
     $db->query($sInsertQuery);
-    $db->unlock($cfg['tab']['cat_tree']);
 }
 
 /**
@@ -928,7 +926,7 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
             $param['idlang'] = $targetlang;
             $param['idtplcfg'] = (int) $newidtplcfg;
             $param['visible'] = $visible;
-            CEC_Hook::execute('Contenido.Category.strSyncCategory_Loop', $param);
+            cApiCecHook::execute('Contenido.Category.strSyncCategory_Loop', $param);
 
             // Set correct rights for element
             cInclude('includes', 'functions.rights.php');
@@ -994,7 +992,7 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
     $oNewCatLang->store();
 
     // Execute cec hook
-    CEC_Hook::execute('Contenido.Category.strCopyCategory', array(
+    cApiCecHook::execute('Contenido.Category.strCopyCategory', array(
         'oldcat' => $oOldCat,
         'newcat' => $oNewCat,
         'newcatlang' => $oNewCatLang

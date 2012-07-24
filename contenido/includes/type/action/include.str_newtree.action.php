@@ -25,7 +25,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 $tmp_newid = strNewTree($categoryname, $categoryalias, $visible, $public, $idtplcfg);
 strRemakeTreeTable();
-CEC_Hook::execute("Contenido.Action.str_newtree.AfterCall", array(
+cApiCecHook::execute("Contenido.Action.str_newtree.AfterCall", array(
     'newcategoryid' => $tmp_newid,
     'categoryname'  => $categoryname,
     'categoryalias' => $categoryalias,

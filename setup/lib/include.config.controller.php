@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 list($rootPath, $rootHttpPath) = getSystemDirectories();
 
-$tpl = new Template();
+$tpl = new cTemplate();
 $tpl->set('s', 'CONTENIDO_ROOT', $rootPath);
 $tpl->set('s', 'CONTENIDO_WEB', $rootHttpPath);
 $tpl->set('s', 'MYSQL_HOST', $cfg['db']['connection']['host']);

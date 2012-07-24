@@ -88,7 +88,7 @@ if (isset($a_d) && is_array($a_d)) {
             $input = "\n";
 
             // Read the input for the editing in Backend from file
-            $contenidoModuleHandler = new Contenido_Module_Handler($db->f("idmod"));
+            $contenidoModuleHandler = new cModuleHandler($db->f("idmod"));
             if ($contenidoModuleHandler->modulePathExists() == true) {
                 $input = stripslashes($contenidoModuleHandler->readInput()) . "\n";
             }

@@ -13,7 +13,7 @@
  */
 
 if (!isset($tpl) || !is_object($tpl) || strtolower(get_class($tpl)) != 'template') {
-    $tpl = new Template();
+    $tpl = new cTemplate();
 }
 $tpl->reset();
 $tpl->generate('templates/contenido_header.html');

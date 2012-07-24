@@ -42,7 +42,7 @@ include_once('./includes/startup.php');
 cRegistry::bootstrap(array(
     'sess' => 'cSession',
     'auth' => 'Contenido_Challenge_Crypt_Auth',
-    'perm' => 'Contenido_Perm'
+    'perm' => 'cPermission'
 ));
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
@@ -52,7 +52,7 @@ cInclude('includes', 'functions.forms.php');
 
 // Create CONTENIDO classes
 $db  = cRegistry::getDb();
-$tpl = new Template();
+$tpl = new cTemplate();
 
 // Build the CONTENIDO content area frameset
 $tpl->reset();

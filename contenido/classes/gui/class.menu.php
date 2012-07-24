@@ -74,7 +74,7 @@ class cGuiMenu {
     public function render($print = true) {
         global $cfg;
 
-        $tpl = new Template;
+        $tpl = new cTemplate;
 
         $tpl->reset();
 

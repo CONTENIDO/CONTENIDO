@@ -11,148 +11,143 @@
  * @con_php_req simplexml
  *
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.3
- * @author     Dominik Ziegler
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.8.7
- *
- * {@internal
- *   created 2008-06-21
- *   $Id$:
- * }}
+ * @package CONTENIDO Backend Classes
+ * @version 1.0.3
+ * @author Dominik Ziegler
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release 4.8.7
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-
-class Contenido_UpdateNotifier {
+class cUpdateNotifier {
 
     /**
      * Minor release for the simplexml xpath() method
-     * @access protected
+     *
      * @var string
      */
     protected $sMinorRelease = "";
 
     /**
      * Host for vendor XML
-     * @access protected
+     *
      * @var string
      */
     protected $sVendorHost = "www.contenido.org";
 
     /**
      * Path to files
-     * @access protected
+     *
      * @var string
      */
     protected $sVendorHostPath = "con_version_check_feeds/";
 
     /**
      * Vendor XML file
-     * @access protected
+     *
      * @var string
      */
     protected $sVendorXMLFile = "vendor.xml";
 
     /**
      * German Vendor RSS file
-     * @access protected
+     *
      * @var string
      */
     protected $sVendorRssDeFile = "rss_de.xml";
 
     /**
      * English Vendor RSS file
-     * @access protected
+     *
      * @var string
      */
     protected $sVendorRssEnFile = "rss_en.xml";
 
     /**
      * Language specific RSS file
-     * @access protected
+     *
      * @var string
      */
     protected $sRSSFile = "";
 
     /**
      * Timestamp cache file
-     * @access protected
+     *
      * @var string
      */
     protected $sTimestampCacheFile = "update.txt";
 
     /**
      * Content of the XML file
-     * @access protected
+     *
      * @var string
      */
     protected $sXMLContent = "";
 
     /**
      * Content of the language specific RSS file
-     * @access protected
+     *
      * @var string
      */
     protected $sRSSContent = "";
 
     /**
      * Current available vendor version
-     * @access protected
+     *
      * @var string
      */
     protected $sVendorVersion = "";
 
     /**
      * Download URL
-     * @access protected
+     *
      * @var string
      */
     protected $sVendorURL = "http://www.contenido.org/de/redir";
 
     /**
      * Current backend language
-     * @access protected
+     *
      * @var string
      */
     protected $sBackendLanguage = "";
 
     /**
      * Contains the cache path.
-     * @access protected
+     *
      * @var string
      */
     protected $sCacheDirectory = "";
 
     /**
      * SimpleXML object
-     * @access protected
+     *
      * @var object
      */
     protected $oXML = null;
 
     /**
      * Properties object
-     * @access protected
+     *
      * @var object
      */
     protected $oProperties = null;
 
     /**
      * Session object
-     * @access protected
+     *
      * @var object
      */
     protected $oSession = null;
 
     /**
      * Timeout for the fsockopen connection
+     *
      * @access protected
      * @var integer
      */
@@ -160,92 +155,107 @@ class Contenido_UpdateNotifier {
 
     /**
      * Cache duration in minutes
-     * @access protected
+     *
      * @var integer
      */
     protected $iCacheDuration = 60;
 
     /**
      * Check for system setting
-     * @access protected
+     *
      * @var boolean
      */
     protected $bEnableCheck = false;
 
     /**
      * Check for system setting Rss
-     * @access protected
+     *
      * @var boolean
      */
     protected $bEnableCheckRss = false;
 
     /**
-     * If true CONTENIDO displays a special error message due to missing write permissions.
-     * @access protected
+     * If true CONTENIDO displays a special error message due to missing write
+     * permissions.
+     *
      * @var boolean
      */
     protected $bNoWritePermissions = false;
 
     /**
      * Display update notification based on user rights (sysadmin only)
-     * @access protected
+     *
      * @var boolean
      */
     protected $bEnableView = false;
 
     /**
      * Update necessity
-     * @access protected
+     *
      * @var boolean
      */
     protected $bUpdateNecessity = false;
 
     /**
      * Vendor host reachability.
-     * @access private
+     *
      * @var boolean
      */
     private $bVendorHostReachable = true;
 
     /**
      * Property configuration array
-     * @access protected
+     *
      * @var array
      */
-    protected $aPropConf = array("itemType" => "update", "itemID" => 1, "type" => "file_check", "name" => "xml");
+    protected $aPropConf = array(
+        "itemType" => "update",
+        "itemID" => 1,
+        "type" => "file_check",
+        "name" => "xml"
+    );
 
     /**
      * System property configuration array for update notification
-     * @access protected
+     *
      * @var array
      */
-    protected $aSysPropConf = array("type" => "update", "name" => "check");
+    protected $aSysPropConf = array(
+        "type" => "update",
+        "name" => "check"
+    );
 
     /**
      * System property configuration array for rss notification
-     * @access protected
+     *
      * @var array
      */
-    protected $aSysPropConfRss = array("type" => "update", "name" => "news_feed");
+    protected $aSysPropConfRss = array(
+        "type" => "update",
+        "name" => "news_feed"
+    );
 
     /**
      * System property configuration array for update period
-     * @access protected
+     *
      * @var array
      */
-    protected $aSysPropConfPeriod = array("type" => "update", "name" => "check_period");
+    protected $aSysPropConfPeriod = array(
+        "type" => "update",
+        "name" => "check_period"
+    );
 
     /**
      * CONTENIDO configuration array
-     * @access protected
+     *
      * @var array
      */
     protected $aCfg = array();
 
     /**
      * Constructor of Contenido_UpdateNotifier
-     * @access public
-     * @param  string $sConVersion
+     *
+     * @param string $sConVersion
      * @return void
      */
     public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage) {
@@ -299,7 +309,7 @@ class Contenido_UpdateNotifier {
 
     /**
      * Sets the actual RSS file for the reader
-     * @access protected
+     *
      * @return void
      */
     protected function setRSSFile() {
@@ -312,7 +322,7 @@ class Contenido_UpdateNotifier {
 
     /**
      * Updates the system property for activation/deactivation requests
-     * @access protected
+     *
      * @param $sAction string
      * @return void
      */
@@ -330,7 +340,7 @@ class Contenido_UpdateNotifier {
 
     /**
      * Sets the cache path
-     * @access protected
+     *
      * @return void
      */
     protected function setCachePath() {
@@ -348,14 +358,20 @@ class Contenido_UpdateNotifier {
     }
 
     /**
-     * Checks if the xml files must be loaded from the vendor host or local cache
-     * @access protected
+     * Checks if the xml files must be loaded from the vendor host or local
+     * cache
+     *
      * @return void
      */
     protected function checkUpdateNecessity() {
         $bUpdateNecessity = false;
 
-        $aCheckFiles = array($this->sVendorXMLFile, $this->sVendorRssDeFile, $this->sVendorRssEnFile, $this->sTimestampCacheFile);
+        $aCheckFiles = array(
+            $this->sVendorXMLFile,
+            $this->sVendorRssDeFile,
+            $this->sVendorRssEnFile,
+            $this->sTimestampCacheFile
+        );
         foreach ($aCheckFiles as $sFilename) {
             if (!cFileHandler::exists($this->sCacheDirectory . $sFilename)) {
                 $bUpdateNecessity = true;
@@ -381,7 +397,7 @@ class Contenido_UpdateNotifier {
 
     /**
      * Detects and converts the minor release of the system version
-     * @access protected
+     *
      * @return void
      */
     protected function detectMinorRelease() {
@@ -392,8 +408,9 @@ class Contenido_UpdateNotifier {
     }
 
     /**
-     * Reads the xml files from vendor host or cache and checks for file manipulations
-     * @access protected
+     * Reads the xml files from vendor host or cache and checks for file
+     * manipulations
+     *
      * @return void
      */
     protected function readVendorContent() {
@@ -440,7 +457,7 @@ class Contenido_UpdateNotifier {
 
     /**
      * Handles the update of files coming per vendor host
-     * @access protected
+     *
      * @return void
      */
     protected function handleVendorUpdate($aXMLContent) {
@@ -463,8 +480,10 @@ class Contenido_UpdateNotifier {
             $bValidEnRSSFile = false;
         }
 
-        // To prevent simplexml and rss reader parser errors by loading an error page from the vendor host
-        // the content will be replaced with the cached file (if existing) or a string
+        // To prevent simplexml and rss reader parser errors by loading an error
+        // page from the vendor host
+        // the content will be replaced with the cached file (if existing) or a
+        // string
         if ($bValidXMLFile != true) {
             if (cFileHandler::exists($this->sCacheDirectory . $this->sVendorXMLFile)) {
                 $sXMLReplace = cFileHandler::read($this->sCacheDirectory . $this->sVendorXMLFile);
@@ -500,7 +519,7 @@ class Contenido_UpdateNotifier {
 
     /**
      * Connects with vendor host and gets the xml files
-     * @access protected
+     *
      * @return array
      */
     protected function getVendorHostFiles() {
@@ -523,7 +542,7 @@ class Contenido_UpdateNotifier {
 
     /**
      * Updates the files in cache
-     * @access protected
+     *
      * @param $aRSSContent array
      * @return void
      */
@@ -544,7 +563,7 @@ class Contenido_UpdateNotifier {
 
     /**
      * Gets the xml file hash from the property table
-     * @access protected
+     *
      * @return string
      */
     protected function getHashProperty() {
@@ -554,7 +573,7 @@ class Contenido_UpdateNotifier {
 
     /**
      * Updates the xml file hash in the property table
-     * @access protected
+     *
      * @param $aRSSContent array
      * @return void
      */
@@ -569,7 +588,7 @@ class Contenido_UpdateNotifier {
 
     /**
      * Checks the patch level of system and vendor version
-     * @access protected
+     *
      * @return string
      */
     protected function checkPatchLevel() {
@@ -579,7 +598,7 @@ class Contenido_UpdateNotifier {
 
     /**
      * Generates the download URL
-     * @access protected
+     *
      * @return string
      */
     protected function getDownloadURL() {
@@ -590,12 +609,12 @@ class Contenido_UpdateNotifier {
 
     /**
      * Generates the output for the backend
-     * @access protected
+     *
      * @param $sMessage string
      * @return string
      */
     protected function renderOutput($sMessage) {
-        $oTpl = new Template();
+        $oTpl = new cTemplate();
         $oTpl->set('s', 'UPDATE_MESSAGE', $sMessage);
 
         if ($this->bEnableCheck == true) {
@@ -631,13 +650,13 @@ class Contenido_UpdateNotifier {
 
     /**
      * Generates the output for the rss informations
-     * @access protected
+     *
      * @param $oTpl
      * @return CONTENIDO template object
      */
     protected function renderRss($oTpl) {
         if (!is_object($oTpl)) {
-            $oTpl = new Template();
+            $oTpl = new cTemplate();
         }
 
         if ($this->sRSSContent != '') {
@@ -696,8 +715,8 @@ class Contenido_UpdateNotifier {
 
     /**
      * fetches given url for vendorfiles
+     *
      * @todo add a retry counter and a deathpoint with warning in errorlog
-     * @access private
      * @param string $sUrl
      */
     private function fetchUrl($sUrl) {
@@ -726,12 +745,12 @@ class Contenido_UpdateNotifier {
             fclose($oSocket);
         }
 
-        return ($sVendorFile != "") ? $sVendorFile : false;
+        return ($sVendorFile != "")? $sVendorFile : false;
     }
 
     /**
      * Displays the rendered output
-     * @access public
+     *
      * @return string
      */
     public function displayOutput() {
@@ -767,5 +786,15 @@ class Contenido_UpdateNotifier {
     }
 
 }
+class Contenido_UpdateNotifier extends cUpdateNotifier {
 
-?>
+    /**
+     *
+     * @deprecated [2012-07-24] class was renamed to cUpdateNotifier
+     */
+    public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage) {
+        cDeprecated('Class was renamed to cUpdateNotifier.');
+        parent::__construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage);
+    }
+
+}

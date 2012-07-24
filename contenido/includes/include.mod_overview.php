@@ -100,7 +100,7 @@ if ($_REQUEST['searchin']== 'name' || $_REQUEST['searchin'] == 'description' || 
 
 $searchOptions['selectedPage'] = $_REQUEST['page'];
 
-$contenidoModulSearch = new Contenido_Module_Search($searchOptions);
+$contenidoModulSearch = new cModuleSearch($searchOptions);
 
 $allModules = $contenidoModulSearch->getModules();
 

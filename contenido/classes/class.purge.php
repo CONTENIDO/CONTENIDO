@@ -1,21 +1,16 @@
 <?php
 /**
  * Description:
- * CONTENIDO Purge class to reset some datas and files.
+ * CONTENIDO cSystemPurge class to reset some datas and files.
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.2
- * @author     Munkh-Ulzii Balidar
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.8.12
- *
- * {@internal
- *   created  2010-01-11
- *   $Id$:
- * }}
+ * @package CONTENIDO Backend Classes
+ * @version 1.0.2
+ * @author Munkh-Ulzii Balidar
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.8.12
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -23,56 +18,71 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /**
- * class Purge
+ * class cSystemPurge
  */
-class Purge {
+class cSystemPurge {
 
     /**
+     *
      * @var $oDb
      */
     private $oDb;
 
     /**
+     *
      * @var $cfg
      */
     private $cfg;
 
     /**
+     *
      * @var $cfgClient
      */
     private $cfgClient;
 
     /**
+     *
      * @var string $sDefaultCacheDir
      */
     private $sDefaultCacheDir = 'cache/';
 
     /**
+     *
      * @var string $sDefaultLogDir
      */
     private $sDefaultLogDir = 'logs/';
 
     /**
+     *
      * @var string $sDefaultVersionDir
      */
     private $sDefaultVersionDir = 'version/';
 
     /**
+     *
      * @var string $sDefaultCronjobDir
      */
     private $sDefaultCronjobDir = 'cronjobs/';
 
     /**
+     *
      * @var string $aDirsExcludedWithFiles
      */
-    private $aDirsExcludedWithFiles = array('.', '..', '.svn', '.cvs');
+    private $aDirsExcludedWithFiles = array(
+        '.',
+        '..',
+        '.svn',
+        '.cvs'
+    );
 
     /**
+     *
      * @var array $aLogFileTypes
      */
     private $aLogFileTypes;
 
     /**
+     *
      * @var array $aCronjobFileTypes
      */
     private $aCronjobFileTypes;
@@ -89,8 +99,12 @@ class Purge {
         $this->cfg = $cfg;
         $this->cfgClient = $cfgClient;
 
-        $this->setLogFileTypes(array('txt'));
-        $this->setCronjobFileTypes(array('job'));
+        $this->setLogFileTypes(array(
+            'txt'
+        ));
+        $this->setCronjobFileTypes(array(
+            'job'
+        ));
 
         $this->_setSystemDirectory();
     }
@@ -128,17 +142,10 @@ class Purge {
         global $perm, $currentuser;
 
         if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $sSql = " UPDATE " . $this->cfg['tab']['cat_art'] . " cca, " .
-                    $this->cfg['tab']['cat'] . " cc, " .
-                    $this->cfg['tab']['art'] . " ca " .
-                    " SET cca.createcode=1 " .
-                    " WHERE cc.idcat = cca.idcat " .
-                    " AND ca.idart = cca.idart " .
-                    " AND cc.idclient = " . (int) $iClientId .
-                    " AND ca.idclient = " . (int) $iClientId;
+            $sSql = " UPDATE " . $this->cfg['tab']['cat_art'] . " cca, " . $this->cfg['tab']['cat'] . " cc, " . $this->cfg['tab']['art'] . " ca " . " SET cca.createcode=1 " . " WHERE cc.idcat = cca.idcat " . " AND ca.idart = cca.idart " . " AND cc.idclient = " . (int) $iClientId . " AND ca.idclient = " . (int) $iClientId;
             $this->oDb->query($sSql);
 
-            return ($this->oDb->Error == '') ? true : false;
+            return ($this->oDb->Error == '')? true : false;
         } else {
             return false;
         }
@@ -156,7 +163,7 @@ class Purge {
             $sSql = "DELETE FROM " . $this->cfg['tab']['inuse'];
             $this->oDb->query($sSql);
 
-            return ($this->oDb->Error == '') ? true : false;
+            return ($this->oDb->Error == '')? true : false;
         } else {
             return false;
         }
@@ -174,7 +181,7 @@ class Purge {
             $sSql = "DELETE FROM " . $this->cfg['tab']['phplib_active_sessions'];
             $this->oDb->query($sSql);
 
-            return ($this->oDb->Error == '') ? true : false;
+            return ($this->oDb->Error == '')? true : false;
         } else {
             return false;
         }
@@ -192,7 +199,7 @@ class Purge {
             $sSql = "DELETE FROM " . $this->cfg['tab']['inuse'];
             $this->oDb->query($sSql);
 
-            return ($this->oDb->Error == '') ? true : false;
+            return ($this->oDb->Error == '')? true : false;
         } else {
             return false;
         }
@@ -208,13 +215,13 @@ class Purge {
         global $perm, $currentuser;
 
         if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            //        $sClientDir = $this->getClientDir($iClientId);
+            // $sClientDir = $this->getClientDir($iClientId);
             $sClientDir = $this->cfgClient[$iClientId]['data_path'];
 
-            $sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/') ? $this->sDefaultCacheDir : $sCacheDir;
+            $sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/')? $this->sDefaultCacheDir : $sCacheDir;
             if (is_dir($sClientDir . $sCacheDir)) {
                 $sCachePath = $sClientDir . $sCacheDir;
-                return ($this->clearDir($sCachePath, $sCachePath) ? true : false);
+                return ($this->clearDir($sCachePath, $sCachePath)? true : false);
             }
 
             return false;
@@ -235,7 +242,7 @@ class Purge {
         if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
             $sClientDir = $this->getClientDir($iClientId);
 
-            $sCacheDir = (trim($sVersionDir) == '' || trim($sVersionDir) == '/') ? $this->sDefaultVersionDir : $sVersionDir;
+            $sCacheDir = (trim($sVersionDir) == '' || trim($sVersionDir) == '/')? $this->sDefaultVersionDir : $sVersionDir;
 
             if (is_dir($sClientDir . $sVersionDir)) {
                 $sVersionPath = $sClientDir . $sVersionDir;
@@ -248,7 +255,7 @@ class Purge {
 
                         $iCount = count($aTmpFile[$sKey]);
                         // find the total number to delete
-                        $iCountDelete = ($iCount <= $iFileNumber) ? 0 : ($iCount - $iFileNumber);
+                        $iCountDelete = ($iCount <= $iFileNumber)? 0 : ($iCount - $iFileNumber);
                         // delete the files
                         for ($i = 0; $i < $iCountDelete; $i++) {
                             if (cFileHandler::exists($aTmpFile[$sKey][$i]) && is_writable($aTmpFile[$sKey][$i])) {
@@ -280,7 +287,7 @@ class Purge {
         if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
             $sClientDir = $this->getClientDir($iClientId);
 
-            $sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/') ? $this->sDefaultLogDir : $sLogDir;
+            $sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/')? $this->sDefaultLogDir : $sLogDir;
 
             if (is_dir($sClientDir . $sLogDir)) {
                 return $this->emptyFile($sClientDir . $sLogDir, $this->aLogFileTypes);
@@ -306,7 +313,7 @@ class Purge {
         }
 
         if ($perm->isSysadmin($currentuser)) {
-            $sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/') ? $this->sDefaultLogDir : $sLogDir;
+            $sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/')? $this->sDefaultLogDir : $sLogDir;
 
             if (is_dir($sLogDir)) {
                 return $this->emptyFile($sLogDir, $this->aLogFileTypes);
@@ -328,7 +335,7 @@ class Purge {
         global $perm, $currentuser;
 
         if ($perm->isSysadmin($currentuser)) {
-            $sCronjobDir = (trim($sCronjobDir) == '' || trim($sCronjobDir) == '/') ? $this->sDefaultCronjobDir : $sCronjobDir;
+            $sCronjobDir = (trim($sCronjobDir) == '' || trim($sCronjobDir) == '/')? $this->sDefaultCronjobDir : $sCronjobDir;
 
             if (is_dir($sCronjobDir)) {
                 return $this->emptyFile($sCronjobDir, $this->aCronjobFileTypes);
@@ -350,10 +357,10 @@ class Purge {
         global $perm, $currentuser;
 
         if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/') ? $this->sDefaultCacheDir : $sCacheDir;
+            $sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/')? $this->sDefaultCacheDir : $sCacheDir;
 
             if (is_dir($sCacheDir)) {
-                return ($this->clearDir($sCacheDir, $sCacheDir) ? true : false);
+                return ($this->clearDir($sCacheDir, $sCacheDir)? true : false);
             }
 
             return false;
@@ -373,7 +380,10 @@ class Purge {
      */
     public function clearDir($sDirPath, $sTmpDirPath, $bKeep = false, &$aTmpFileList = array()) {
         if (is_dir($sDirPath) && ($handle = opendir($sDirPath))) {
-            $sTmp = str_replace(array('/', '..'), '', $sDirPath);
+            $sTmp = str_replace(array(
+                '/',
+                '..'
+            ), '', $sDirPath);
             while (false !== ($file = readdir($handle))) {
                 if (!in_array($file, $this->aDirsExcludedWithFiles)) {
                     $sFilePath = $sDirPath . '/' . $file;
@@ -396,8 +406,13 @@ class Purge {
             }
             $sDirName = end($aDirs);
 
-            if (str_replace(array('/', '..'), '', $sDirPath) != str_replace(array('/', '..'), '', $sTmpDirPath)
-                    && $bKeep === false && !in_array($sDirName, $this->aDirsExcludedWithFiles)) {
+            if (str_replace(array(
+                '/',
+                '..'
+            ), '', $sDirPath) != str_replace(array(
+                '/',
+                '..'
+            ), '', $sTmpDirPath) && $bKeep === false && !in_array($sDirName, $this->aDirsExcludedWithFiles)) {
                 rmdir($sDirPath);
             }
 
@@ -428,7 +443,7 @@ class Purge {
                     if (cFileHandler::exists($sFilePath) && is_writable($sFilePath)) {
                         $iCount++;
 
-                        //chmod($sFilePath, 0777);
+                        // chmod($sFilePath, 0777);
                         if (cFileHandler::truncate($sFilePath)) {
                             $iCountCleared++;
                         }
@@ -437,7 +452,7 @@ class Purge {
             }
 
             // true if all files are cleaned
-            return ($iCount == $iCountCleared) ? true : false;
+            return ($iCount == $iCountCleared)? true : false;
         }
 
         return false;
@@ -450,7 +465,8 @@ class Purge {
      * @return string $sClientDir
      */
     public function getClientDir($iClientId) {
-        //$sClientDir = str_replace($this->cfg['path']['frontend'], '..', $this->cfgClient[$iClientId]['path']['frontend']);
+        // $sClientDir = str_replace($this->cfg['path']['frontend'], '..',
+        // $this->cfgClient[$iClientId]['path']['frontend']);
         $sClientDir = $this->cfgClient[$iClientId]['path']['frontend'];
 
         return $sClientDir;
@@ -485,6 +501,7 @@ class Purge {
 
     /**
      * Check and set the system directories to exclude from purge
+     *
      * @return void
      */
     private function _setSystemDirectory() {
@@ -500,4 +517,14 @@ class Purge {
 
 }
 
-?>
+class Purge extends cSystemPurge {
+
+    /**
+     * @deprecated Class was renamed to cSystemPurge
+     */
+    public function __construct(&$db, $cfg, $cfgClient) {
+        cDeprecated('Class was renamed to cSystemPurge');
+        parent::__construct($db, $cfg, $cfgClient);
+    }
+
+}

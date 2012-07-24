@@ -50,7 +50,7 @@ class ContenidoFrontendHTMLCodeOutputTest extends PHPUnit_Framework_TestCase
     public function testNoChain()
     {
         // execute chain
-        $newHtml = CEC_Hook::executeAndReturn($this->_chain, $this->_html);
+        $newHtml = cApiCecHook::executeAndReturn($this->_chain, $this->_html);
 
         $this->assertEquals($this->_html, $newHtml);
     }
@@ -68,7 +68,7 @@ class ContenidoFrontendHTMLCodeOutputTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test');
 
         // execute chain
-        $newHtml = CEC_Hook::executeAndReturn($this->_chain, $this->_html);
+        $newHtml = cApiCecHook::executeAndReturn($this->_chain, $this->_html);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test');
@@ -90,7 +90,7 @@ class ContenidoFrontendHTMLCodeOutputTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test2');
 
         // execute chain
-        $newHtml = CEC_Hook::executeAndReturn($this->_chain, $this->_html);
+        $newHtml = cApiCecHook::executeAndReturn($this->_chain, $this->_html);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test');

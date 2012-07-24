@@ -60,7 +60,7 @@ class ContenidoCategoryStrCopyCategoryTest extends PHPUnit_Framework_TestCase
     public function testNoChain()
     {
         // execute chain
-        CEC_Hook::execute($this->_chain, $this->_data);
+        cApiCecHook::execute($this->_chain, $this->_data);
 
         $this->assertEquals(array(0, $this->_data), array(self::$invokeCounter, $this->_data));
     }
@@ -78,7 +78,7 @@ class ContenidoCategoryStrCopyCategoryTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoCategoryStrCopyCategory_Test');
 
         // execute chain
-        CEC_Hook::execute($this->_chain, $this->_data);
+        cApiCecHook::execute($this->_chain, $this->_data);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoCategoryStrCopyCategory_Test');
@@ -100,7 +100,7 @@ class ContenidoCategoryStrCopyCategoryTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoCategoryStrCopyCategory_Test2');
 
         // execute chain
-        CEC_Hook::execute($this->_chain, $this->_data);
+        cApiCecHook::execute($this->_chain, $this->_data);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoCategoryStrCopyCategory_Test');

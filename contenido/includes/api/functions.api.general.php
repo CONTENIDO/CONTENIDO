@@ -79,7 +79,7 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
 
     switch ($sWhere) {
         case 'module':
-               $handler = new Contenido_Module_Handler($cCurrentModule);
+               $handler = new cModuleHandler($cCurrentModule);
                $sInclude = $handler->getPhpPath() . $sWhat;
             break;
         case 'frontend':

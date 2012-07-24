@@ -29,7 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$tpl = new Template();
+$tpl = new cTemplate();
 
 $user = new cApiUser($auth->auth["uid"]);
 

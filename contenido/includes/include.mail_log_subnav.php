@@ -46,7 +46,7 @@ $aBasicParams = array('area', 'frame', 'contenido', 'appendparameters');
 $bVirgin = false;
 
 
-$area = Contenido_Security::escapeDB($area, $db);
+$area = cSecurity::escapeDB($area, $db);
 
 
 /*

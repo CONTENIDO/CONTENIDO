@@ -69,7 +69,7 @@ class ExampleContenidoChainExecuteStaticMethodTest extends PHPUnit_Framework_Tes
     public function testNoChain()
     {
         // execute chain
-        CEC_Hook::execute($this->_chain, $this->_obj);
+        cApiCecHook::execute($this->_chain, $this->_obj);
 
         $this->assertEquals(0, $this->_obj->counter);
     }
@@ -87,7 +87,7 @@ class ExampleContenidoChainExecuteStaticMethodTest extends PHPUnit_Framework_Tes
         $cecReg->addChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test::callMe');
 
         // execute chain
-        CEC_Hook::execute($this->_chain, $this->_obj);
+        cApiCecHook::execute($this->_chain, $this->_obj);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test::callMe');
@@ -109,7 +109,7 @@ class ExampleContenidoChainExecuteStaticMethodTest extends PHPUnit_Framework_Tes
         $cecReg->addChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test2::callMe');
 
         // execute chain
-        CEC_Hook::execute($this->_chain, $this->_obj);
+        cApiCecHook::execute($this->_chain, $this->_obj);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test::callMe');

@@ -35,11 +35,11 @@ include_once($contenido_path . 'includes/startup.php');
 if ($contenido) {
     cRegistry::bootstrap(array('sess' => 'cSession',
                     'auth' => 'Contenido_Challenge_Crypt_Auth',
-                    'perm' => 'Contenido_Perm'));
+                    'perm' => 'cPermission'));
 } else {
     cRegistry::bootstrap(array('sess' => 'cFrontendSession',
                     'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth',
-                    'perm' => 'Contenido_Perm'));
+                    'perm' => 'cPermission'));
 }
 
 // Shorten load time

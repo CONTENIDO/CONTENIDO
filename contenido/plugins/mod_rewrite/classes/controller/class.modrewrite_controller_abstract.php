@@ -216,7 +216,7 @@ abstract class ModRewrite_ControllerAbstract
             throw new Exception('Missing template to render.');
         }
 
-        $oTpl = new Template();
+        $oTpl = new cTemplate();
         foreach ($this->_oView as $k => $v) {
             $oTpl->set('s', strtoupper($k), $v);
         }

@@ -30,7 +30,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$tpl2 = new Template();
+$tpl2 = new cTemplate();
 
 $page = new cGuiPage("tpl_edit_form");
 

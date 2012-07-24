@@ -367,7 +367,7 @@ function conMakeArticleIndex($idartlang, $idart) {
     // @todo  Make this configurable!
     $aOptions = array('img', 'link', 'linktarget', 'swf');
 
-    $oIndex = new SearchIndex($db);
+    $oIndex = new cSearchIndex($db);
     $oIndex->start($idart, $aContent, 'auto', $aOptions);
 }
 
@@ -1259,7 +1259,7 @@ function conMoveArticles() {
             $db2->query($sql);
 
             // execute CEC hook
-            CEC_Hook::execute('Contenido.Article.conMoveArticles_Loop', $db->Record);
+            cApiCecHook::execute('Contenido.Article.conMoveArticles_Loop', $db->Record);
         }
     }
 }
@@ -1446,7 +1446,7 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $bUseCopyLabel = true) 
         conCopyContent($db->f("idartlang"), $db->getLastInsertedId($cfg["tab"]["art_lang"]));
 
         // execute CEC hook
-        CEC_Hook::execute('Contenido.Article.conCopyArtLang_AfterInsert', array(
+        cApiCecHook::execute('Contenido.Article.conCopyArtLang_AfterInsert', array(
             'idartlang' => cSecurity::toInteger($idartlang),
             'idart' => cSecurity::toInteger($idart),
             'idlang' => cSecurity::toInteger($idlang),
@@ -1628,7 +1628,7 @@ function conSyncArticle($idart, $srclang, $dstlang) {
         $param['dest_art_lang']['idartlang'] = (int) $newidartlang;
         $param['dest_art_lang']['idlang'] = (int) $dstlang;
         $param['dest_art_lang']['idtplcfg'] = (int) $newidtplcfg;
-        CEC_Hook::execute('Contenido.Article.conSyncArticle_AfterInsert', $param);
+        cApiCecHook::execute('Contenido.Article.conSyncArticle_AfterInsert', $param);
 
         // Copy content
         $sql = "SELECT * FROM " . $cfg["tab"]["content"] . " WHERE idartlang = " . (int) $idartlang;

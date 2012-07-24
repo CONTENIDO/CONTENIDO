@@ -243,7 +243,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string HTML code which includes the needed JavaScript
      */
     private function _generateJavaScript() {
-        $template = new Template();
+        $template = new cTemplate();
         $pathBackend = $this->_cfg['path']['contenido_fullhtml'];
 
         $template->set('s', 'PREFIX', $this->_prefix);

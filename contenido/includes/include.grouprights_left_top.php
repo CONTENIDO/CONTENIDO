@@ -50,7 +50,7 @@ $tpl->set('s', 'OPTIONS', '');
 $tpl->set('s', 'SESSID', $sess->id);
 $tpl->set('s', 'SID', $sess->id);
 
-$tpl2 = new Template;
+$tpl2 = new cTemplate;
 $tpl2->set('s', 'NAME', 'restrict');
 $tpl2->set('s', 'CLASS', 'text_medium');
 $tpl2->set('s', 'OPTIONS', 'onchange="groupChangeRestriction()"');

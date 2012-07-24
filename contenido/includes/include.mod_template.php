@@ -60,7 +60,7 @@ if (!$perm->have_perm_area_action($area, $action)) {
 } else if (!(int) $client > 0) {
   #if there is no client selected, display empty page
 } else {
-    $contenidoModulTemplateHandler = new Contenido_Module_Template_Handler($idmod);
+    $contenidoModulTemplateHandler = new cModuleTemplateHandler($idmod);
     $contenidoModulTemplateHandler->setAction($action);
     $contenidoModulTemplateHandler->setCode($_REQUEST['code']);
     $contenidoModulTemplateHandler->setFiles($_REQUEST['file'], $_REQUEST['tmp_file']);

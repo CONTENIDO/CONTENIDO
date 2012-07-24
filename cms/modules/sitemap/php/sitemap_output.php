@@ -20,7 +20,7 @@ if (!isset($db)) {
     $db = cRegistry::getDb();
 }
 if (!isset($tpl)) {
-    $tpl = new Template();
+    $tpl = new cTemplate();
 }
 $tpl->reset();
 
