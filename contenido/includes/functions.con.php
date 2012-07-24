@@ -720,45 +720,16 @@ function conFetchCategoryTree($client = false, $lang = false) {
     global $db, $cfg;
 
     if ($client === false) {
-        $client = $GLOBALS["client"];
+        $client = $GLOBALS['client'];
     }
-
     if ($lang === false) {
-        $lang = $GLOBALS["lang"];
+        $lang = $GLOBALS['lang'];
     }
 
-    $sql = "SELECT
-                *
-            FROM
-                " . $cfg["tab"]["cat_tree"] . " AS A,
-                " . $cfg["tab"]["cat"] . " AS B,
-                " . $cfg["tab"]["cat_lang"] . " AS C
-            WHERE
-                A.idcat  = B.idcat AND
-                B.idcat = C.idcat AND
-                C.idlang = '" . cSecurity::toInteger($lang) . "' AND
-                idclient = '" . cSecurity::toInteger($client) . "'
-            ORDER BY
-                idtree";
+    $oCatTreeColl = new cApiCategoryTreeCollection();
+    $aCatTree = $oCatTreeColl->getCategoryTreeStructureByClientIdAndLanguageId($client, $lang);
 
-    $catarray = array();
-
-    $db->query($sql);
-
-    while ($db->next_record()) {
-        $catarray[$db->f("idtree")] = array(
-            "idcat" => $db->f("idcat"),
-            "level" => $db->f("level"),
-            "idtplcfg" => $db->f("idtplcfg"),
-            "visible" => $db->f("visible"),
-            "name" => $db->f("name"),
-            "public" => $db->f("public"),
-            "urlname" => $db->f("urlname"),
-            "is_start" => $db->f("is_start")
-        );
-    }
-
-    return ($catarray);
+    return $aCatTree;
 }
 
 /**
@@ -767,56 +738,27 @@ function conFetchCategoryTree($client = false, $lang = false) {
  * @param int $idcat Id of category
  * @return array Array with all deeper categories
  */
-function conDeeperCategoriesArray($idcat_start) {
-    global $db, $client, $cfg;
+function conDeeperCategoriesArray($idcat) {
+    global $client;
 
-    $sql = "SELECT
-                *
-            FROM
-                " . $cfg["tab"]["cat_tree"] . " AS A,
-                " . $cfg["tab"]["cat"] . " AS B
-            WHERE
-                A.idcat  = B.idcat AND
-                idclient = '" . cSecurity::toInteger($client) . "'
-            ORDER BY
-                idtree";
+    $oCatColl = new cApiCategoryCollection();
+    $aCatIds = $oCatColl->getAllCategoryIdsRecursive2($idcat, $client);
 
-    $db->query($sql);
-
-    $found = false;
-    $curLevel = 0;
-    $catstring = array();
-
-    while ($db->next_record()) {
-        if ($found && $db->f("level") <= $curLevel) { // ending part of tree
-            $found = false;
-        }
-
-        if ($db->f("idcat") == $idcat_start) { // starting part of tree
-            $found = true;
-            $curLevel = $db->f("level");
-        }
-
-        if ($found) {
-            $catstring[] = $db->f("idcat");
-        }
-    }
-
-    return $catstring;
+    return $aCatIds;
 }
 
 /**
  * Recursive function to create an location string
  *
- * @param int $idcat ID of the starting category
- * @param string $seperator Seperation string
- * @param string $cat_str Category location string (by reference)
- * @param boolean $makeLink create location string with links
- * @param string $linkClass stylesheet class for the links
- * @param integer first navigation level location string should be printed out (first level = 0!!)
- * @return string location string
+ * @param int $idcat  ID of the starting category
+ * @param string $seperator  Seperation string
+ * @param string $cat_str  Category location string (by reference)
+ * @param bool $makeLink  Create location string with links
+ * @param string $linkClass  Stylesheet class for the links
+ * @param int  First navigation  Level location string should be printed out (first level = 0!!)
+ * @return string  Location string
  */
-function conCreateLocationString($idcat, $seperator, &$cat_str, $makeLink = false, $linkClass = "",
+function conCreateLocationString($idcat, $seperator, &$cat_str, $makeLink = false, $linkClass = '',
                                  $firstTreeElementToUse = 0, $uselang = 0, $final = true, $usecache = false) {
     global $cfg, $client, $cfgClient, $lang, $sess, $_locationStringCache;
 

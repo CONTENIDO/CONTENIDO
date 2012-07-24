@@ -87,14 +87,14 @@ class cApiCategoryCollection extends ItemCollection
 
         $oItem = parent::createNewItem();
 
-        $oItem->set('idclient', (int) $idclient);
-        $oItem->set('parentid', (int) $parentid);
-        $oItem->set('preid', (int) $preid);
-        $oItem->set('postid', (int) $postid);
-        $oItem->set('status', (int) $status);
-        $oItem->set('author', $this->escape($author));
-        $oItem->set('created', $this->escape($created));
-        $oItem->set('lastmodified', $this->escape($lastmodified));
+        $oItem->set('idclient', $idclient);
+        $oItem->set('parentid', $parentid);
+        $oItem->set('preid', $preid);
+        $oItem->set('postid', $postid);
+        $oItem->set('status', $status);
+        $oItem->set('author', $author);
+        $oItem->set('created', $created);
+        $oItem->set('lastmodified', $lastmodified);
         $oItem->store();
 
         return $oItem;
@@ -327,6 +327,7 @@ class cApiCategoryCollection extends ItemCollection
      * on a specific category an all of its childcategories.
      *
      * NOTE: The returned array is not sorted!
+     *       Return value is similar to getAllCategoryIdsRecursive2, only the sorting differs
      *
      * Example:
      * <pre>
@@ -343,10 +344,10 @@ class cApiCategoryCollection extends ItemCollection
      *
      * @global  array  $cfg
      * @param  int  $idcat
-     * @param  int|null  $idlang
+     * @param  int  $idclient
      * @return array
      */
-    public function getAllCategoryIdsRecursive($idcat, $client) {
+    public function getAllCategoryIdsRecursive($idcat, $idclient) {
         global $cfg;
 
         $catList = array();
@@ -366,7 +367,7 @@ class cApiCategoryCollection extends ItemCollection
                 'cat_tree' => $cfg['tab']['cat_tree'],
                 'cat' => $this->table,
                 'parentid' => (int) $actId,
-                'idclient' => (int) $client,
+                'idclient' => (int) $idclient,
             ));
             $this->db->query($sql);
 
@@ -377,6 +378,63 @@ class cApiCategoryCollection extends ItemCollection
 
         return $catList;
     }
+
+    /**
+     * Returns list of all child category ids and their child category ids of
+     * passed category id. The list also contains the id of passed category.
+     *
+     * The return value of this function could be used to perform bulk actions
+     * on a specific category an all of its childcategories.
+     *
+     * NOTE: Return value is similar to getAllCategoryIdsRecursive, only the sorting differs
+     *
+     * Example:
+     * <pre>
+     * ...
+     * this_category (*)
+     *     child_category (*)
+     *     child_category2 (*)
+     *         child_of_child_category2 (*)
+     *     child_category3 (*)
+     *         child_of_child_category3 (*)
+     * ...
+     * (*) Returned category ids
+     * </pre>
+     *
+     * @global  array  $cfg
+     * @param  int  $idcat
+     * @param  int  $client
+     * @return array  Sorted by category id
+     */
+    public function getAllCategoryIdsRecursive2($idcat, $idclient) {
+        global $cfg;
+
+        $aCats = array();
+        $found = false;
+        $curLevel = 0;
+
+        $sql = "SELECT * FROM `%s` AS a, `%s` AS b WHERE a.idcat = b.idcat AND idclient = %d ORDER BY idtree";
+        $sql = $this->db->prepare($sql, $cfg['tab']['cat_tree'], $cfg['tab']['cat'], $idclient);
+        $this->db->query($sql);
+
+        while ($this->db->next_record()) {
+            if ($found && $this->db->f('level') <= $curLevel) { // ending part of tree
+                $found = false;
+            }
+
+            if ($this->db->f('idcat') == $idcat) { // starting part of tree
+                $found = true;
+                $curLevel = $this->db->f('level');
+            }
+
+            if ($found) {
+                $aCats[] = $this->db->f('idcat');
+            }
+        }
+
+        return $aCats;
+    }
+
 }
 
 
