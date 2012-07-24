@@ -113,7 +113,7 @@ if ($perm->have_perm_area_action("news", "news_create")) {
     // Create the link to add a newsletter
     $sContent = '<div class="news_section news_section_create">'."\n";
 
-    $oLink = new cGuiLink();
+    $oLink = new cHTMLLink();
     $oLink->setMultiLink("news", "", "news", "news_create");
     $oLink->setContent('<img src="'.$cfg["path"]["images"] . 'folder_new.gif" alt="">'.i18n("Create newsletter", 'newsletter'));
 
@@ -357,7 +357,7 @@ $oTpl->set('s', 'LISTOPTIONLINK', $sLink);
 ######################################
 
 // Add paging folding row (current page = 1) to get HTML paging container (later on updated by ...menu.php)
-$oPagerLink = new cGuiLink();
+$oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame("left_bottom");
 $oPagerLink->setCustom("elemperpage", $iItemsPerPage);
@@ -538,7 +538,7 @@ $oTpl->set('s', 'LISTOPTIONLINKDISP', $sLink);
 ######################################
 # 2.2 Job dispatch: Paging folding row
 ######################################
-$oPagerLink = new cGuiLink();
+$oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("selAuthor",   $auth->auth["uid"]);
@@ -589,7 +589,7 @@ $sContent = '';
 
 // Create a link to add a recipient
 if ($perm->have_perm_area_action("recipients", "recipients_create")) {
-    $oLink = new cGuiLink();
+    $oLink = new cHTMLLink();
     $oLink->setMultiLink("recipients","","recipients","recipients_create");
     $oLink->setContent('<img src="'.$cfg["path"]["images"] . 'folder_new.gif">'.i18n("Create recipient", 'newsletter').'</a>');
     $sContent .= $oLink->render().'<br />'."\n";
@@ -597,7 +597,7 @@ if ($perm->have_perm_area_action("recipients", "recipients_create")) {
 
 // Create a link to import recipients
 if ($perm->have_perm_area_action("recipients", "recipients_create")) {
-    $oLink = new cGuiLink();
+    $oLink = new cHTMLLink();
     $oLink->setMultiLink("recipients", "", "recipients_import", "recipients_import");
     $oLink->setContent('<img src="'.$cfg["path"]["images"] . 'importieren.gif">'.i18n("Import recipients", 'newsletter').'</a>');
     $sContent .= $oLink->render().'<br />'."\n";
@@ -605,7 +605,7 @@ if ($perm->have_perm_area_action("recipients", "recipients_create")) {
 
 // Create a link to purge subscribed but not confirmed recipients
 if ($perm->have_perm_area_action("recipients", "recipients_delete")) {
-    $oLink = new cGuiLink();
+    $oLink = new cHTMLLink();
     $oLink->setLink('javascript:showPurgeMsg("'.i18n('Purge recipients', 'newsletter').'", "'.sprintf(i18n("Do you really want to remove recipients, that have not been confirmed since %s days and over?", 'newsletter'), '"+purgetimeframe+"').'")');
     $oLink->setContent('<img src="'.$cfg["path"]["images"] . 'delete.gif">'.i18n("Purge recipients", 'newsletter').'</a>');
     $sContent .= $oLink->render();
@@ -783,7 +783,7 @@ $oTpl->set('s', 'LISTOPTIONLINKREC', $sLink);
 ######################################
 # 3.4 Recipients: Paging
 ######################################
-$oPagerLink = new cGuiLink();
+$oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("elemperpage",   $iItemsPerPage);
@@ -839,7 +839,7 @@ $sContent = '';
 
 // Create a link to add a group
 if ($perm->have_perm_area_action("recipientgroups", "recipientgroup_create")) {
-    $oLnk = new cGuiLink();
+    $oLnk = new cHTMLLink();
     $oLnk->setMultiLink("recipientgroups","","recipientgroups","recipientgroup_create");
     $oLnk->setContent('<img src="'.$cfg["path"]["images"] . 'folder_new.gif" align="middle">'.i18n("Create group", 'newsletter').'</a>');
     $sContent .= $oLnk->render().'<br />'."\n";
@@ -943,7 +943,7 @@ $oTpl->set('s', 'LISTOPTIONLINKGROUP', $sLink);
 ######################################
 # 4.3 Recipient groups: Paging
 ######################################
-$oPagerLink = new cGuiLink();
+$oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("elemperpage", $iItemsPerPage);

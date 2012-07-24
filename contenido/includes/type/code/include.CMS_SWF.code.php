@@ -67,7 +67,7 @@ if ($tmp == '' || $tmp == '0') {
 if ($edit) {
     // Edit anchor and image
     $editLink = $sess->url($cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?action=10&idcat=$idcat&idart=$idart&idartlang=$idartlang&type=CMS_SWF&typenr=$val");
-    $editAnchor = new cGuiLink();
+    $editAnchor = new cHTMLLink();
     $editAnchor->setClass('CMS_SWF_' . $val . '_EDIT CMS_LINK_EDIT');
     $editAnchor->setLink("javascript:setcontent('$idartlang','".$editLink."');");
 

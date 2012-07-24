@@ -108,10 +108,10 @@ $aSortOrderOptions = array("asc" => i18n("Ascending"), "desc" => i18n("Descendin
 ###########
 # Buttons
 ###########
-$userlink = new cGuiLink();
+$userlink = new cHTMLLink();
 $userlink->setCLink("frontend", 2, "");
 
-$grouplink = new cGuiLink();
+$grouplink = new cHTMLLink();
 $grouplink->setCLink("frontendgroups", 2, "");
 
 $userlink="javascript:execFilter(2);";
@@ -156,7 +156,7 @@ if(isset($_GET['actionrow']) && $_GET['actionrow'] == 'collapsed') {
 }
 
 $tpl->set('s', 'ACTIONLINK', $actionLink);
-$oLink = new cGuiLink();
+$oLink = new cHTMLLink();
 if ((int) $client > 0) {
     $oLink->setMultiLink("frontend","","frontend","frontend_create");
     $oLink->setContent(i18n("Create user"));
@@ -355,7 +355,7 @@ $iItemCount = 0;
 
 foreach ($aUserTable as $mkey => $params) {
     $idfrontenduser = $params["idfrontenduser"];
-    $link = new cGuiLink();
+    $link = new cHTMLLink();
     $link->setMultiLink($area, "", $area, "");
     $link->setCustom("idfrontenduser", $idfrontenduser);
 
@@ -386,7 +386,7 @@ if ($bUsePlugins == false) {
 $pagingLink="paginglink";
 $tpl->set('s', 'PAGINGLINK', $pagingLink);
 
-$oPagerLink = new cGuiLink();
+$oPagerLink = new cHTMLLink();
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setLink("main.php");
 $oPagerLink->setCustom("elemperpage", $elemperpage);
@@ -406,7 +406,7 @@ $oPager->setExpanded(true);
 ######################
 # Groups create Groups
 ######################
-$link = new cGuiLink();
+$link = new cHTMLLink();
 $menu = new cGuiMenu();
 if ((int) $client > 0) {
     $link->setLink('javascript:conMultiLink(\'right_bottom\', \''.$sess->url("main.php?area=frontendgroups&frame=4&action=frontendgroup_create").'\');');

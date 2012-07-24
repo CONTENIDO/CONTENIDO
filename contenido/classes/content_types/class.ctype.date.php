@@ -228,15 +228,11 @@ class cContentTypeDate extends cContentTypeAbstract {
      *         edited
      */
     public function generateEditCode() {
-        $input = new cHTMLTextbox('date_timestamp_' . $this->_id, '', '', '', 'date_timestamp_' . $this->_id, true);
-        $input->setClass('date_timestamp');
-        $code = $input;
+        $code = new cHTMLTextbox('date_timestamp_' . $this->_id, '', '', '', 'date_timestamp_' . $this->_id, true, '', '', 'date_timestamp');
         $code .= $this->_generateJavaScript();
         $code .= $this->_generateFormatSelect();
         $code .= $this->_generateStoreButton();
-        $code = new cHTMLDiv($code);
-        $code->setID('cms_' . $this->_prefix . '_' . $this->_id . '_settings');
-        $code->setClass('cms_date');
+        $code = new cHTMLDiv($code, 'cms_date', 'cms_' . $this->_prefix . '_' . $this->_id . '_settings');
 
         return $this->_encodeForOutput($code);
     }
@@ -267,8 +263,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string HTML code for the save button
      */
     private function _generateStoreButton() {
-        $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif');
-        $saveButton->setClass('save_settings');
+        $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif', 'save_settings');
 
         return $saveButton->render();
     }
@@ -280,8 +275,10 @@ class cContentTypeDate extends cContentTypeAbstract {
      */
     private function _generateFormatSelect() {
         $formatSelect = new cHTMLSelectElement($this->_prefix . '_format_select_' . $this->_id, '', $this->_prefix . '_format_select_' . $this->_id);
-        $formatSelect->attachStyleDefinition('border', 'border: 1px solid #ccc;');
-        $formatSelect->attachStyleDefinition('margin', 'margin: 2px 5px 5px;');
+        $formatSelect->appendStyleDefinitions(array(
+            'border' => '1px solid #ccc',
+            'margin' => '2px 5px 5px'
+        ));
         $formatSelect->autoFill($this->_dateFormatsJs);
         $jsDateFormat = $this->_convertPhpToJqueryUiDateTimeFormat($this->_settings[$this->_prefix . '_format']);
         $formatSelect->setDefault($jsDateFormat);
@@ -295,7 +292,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      * The format strings are given as a JSON encoded object.
      *
      * @param string $dateTimeFormat JSON encoded object containing the date and
-     *            the time format
+     *        the time format
      * @return string the corresponding jQuery UI date time format
      */
     private function _convertPhpToJqueryUiDateTimeFormat($dateTimeFormat) {

@@ -139,7 +139,7 @@ class cSetupSystemData extends cSetupMask
 
     function _createNavigation()
     {
-        $link = new cGuiLink("#");
+        $link = new cHTMLLink("#");
 
         if ($_SESSION["setuptype"] == "setup") {
             $checkScript = sprintf(
@@ -163,7 +163,7 @@ class cSetupSystemData extends cSetupMask
 
         $this->_oStepTemplate->set("s", "NEXT", $link->render());
 
-        $backlink = new cGuiLink("#");
+        $backlink = new cHTMLLink("#");
         $backlink->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_bBackstep."';");
         $backlink->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
 

@@ -60,7 +60,7 @@ class cHTMLAlphaImage extends cHTMLImage
         $alphaLoader = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'%s\')';
         $imageLocations = "this.imgnormal = '%s'; this.imgover = '%s'; this.clickimgnormal = '%s'; this.clickimgover = '%s';";
 
-        $this->attachStyleDefinition("filter", sprintf($alphaLoader, $this->_src));
+        $this->appendStyleDefinition("filter", sprintf($alphaLoader, $this->_src));
         $this->attachEventDefinition("imagelocs", "onload", sprintf($imageLocations, $this->_src, $this->_sMouseoverSrc, $this->_sClickImage, $this->_sMouseoverClickImage));
         $this->attachEventDefinition("swapper", "onload", 'if (!this.init) {IEAlphaInit(this); IEAlphaApply(this, this.imgnormal); this.init = true;}');
 
@@ -200,13 +200,13 @@ class cHTMLLanguageLink extends cHTMLDiv
 
 
         $this->setStyle("vertical-align:center;height:40px;width:150px;");
-        $link = new cGuiLink("#");
+        $link = new cHTMLLink("#");
         $link->setContent($langname);
         $link->attachEventDefinition("stepAttach", "onclick", "document.setupform.step.value = '$stepnumber';");
         $link->attachEventDefinition("languageAttach", "onclick", "document.setupform.elements.language.value = '$langcode';");
         $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
 
-        $link2 = new cGuiLink("#");
+        $link2 = new cHTMLLink("#");
         $link2->setContent($langname);
         $link2->attachEventDefinition("stepAttach", "onclick", "document.setupform.step.value = '$stepnumber';");
         $link2->attachEventDefinition("languageAttach", "onclick", "document.setupform.elements.language.value = '$langcode';");
@@ -234,11 +234,11 @@ class cHTMLButtonLink extends cHTMLDiv
         $linkImage->setHeight(16);
 
         $this->setStyle("vertical-align:center;height:40px;width:165px;");
-        $link = new cGuiLink($href);
+        $link = new cHTMLLink($href);
         $link->setAttribute("target", "_blank");
         $link->setContent($title);
 
-        $link2 = new cGuiLink($href);
+        $link2 = new cHTMLLink($href);
         $link2->setAttribute("target", "_blank");
         $link2->setContent($title);
 

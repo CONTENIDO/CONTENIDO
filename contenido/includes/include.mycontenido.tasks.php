@@ -253,7 +253,7 @@ $list->setHeader(
 
 $lcount = 0;
 
-$link = new cGuiLink();
+$link = new cHTMLLink();
 $link->setCLink("mycontenido_tasks_edit", 4, "");
 $link->setCustom("sortmode", $sortmode);
 $link->setCustom("sortby", $sortby);
@@ -294,7 +294,7 @@ while ($todo = $todoitems->next()) {
 
         $idcommunication = $todo->get("idcommunication");
 
-        $delete = new cGuiLink();
+        $delete = new cHTMLLink();
         $delete->setCLink("mycontenido_tasks", 4, "mycontenido_tasks_delete");
         $delete->setCustom("idcommunication", $idcommunication);
         $delete->setCustom("sortby", $sortby);

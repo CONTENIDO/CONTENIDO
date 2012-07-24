@@ -118,7 +118,7 @@ while ($cApiUser = $cApiUserCollection->next())
         }
     }
 
-    $link = new cGuiLink;
+    $link = new cHTMLLink;
     $link->setMultiLink("user", "", "user_overview", "");
     $link->setCustom("userid", $cApiUser->get("user_id"));
 
@@ -205,7 +205,7 @@ $oDiv->setContent($markActiveScript);
 $oPage->setContent(array($mlist, $oDiv));
 
 //generate current content for Object Pager
-$oPagerLink = new cGuiLink;
+$oPagerLink = new cHTMLLink;
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("elemperpage", $elemperpage);

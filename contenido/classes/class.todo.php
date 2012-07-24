@@ -152,7 +152,7 @@ class TODOItem extends cApiCommunication
 }
 
 
-class TODOLink extends cGuiLink
+class TODOLink extends cHTMLLink
 {
     public function __construct($itemtype, $itemid, $subject, $message)
     {

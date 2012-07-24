@@ -70,18 +70,18 @@ $list->setCell(1, 2, i18n("Options"));
 
 $count = 2;
 
-$link = new cGuiLink();
+$link = new cHTMLLink();
 $link->setCLink($area, $frame, "client_artspec_edit");
 $link->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n('Edit') . '" title="' . i18n('Edit') . '">');
 
-$dlink = new cGuiLink();
+$dlink = new cHTMLLink();
 $dlink->setCLink($area, $frame, "client_artspec_delete");
 $dlink->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'delete.gif" alt="' . i18n('Delete') . '" title="' . i18n('Delete') . '">');
 
-$olink = new cGuiLink();
+$olink = new cHTMLLink();
 $olink->setCLink($area, $frame, "client_artspec_online");
 
-$defLink = new cGuiLink();
+$defLink = new cHTMLLink();
 $defLink->setCLink($area, $frame, "client_artspec_default");
 
 $artspec = getArtspec();

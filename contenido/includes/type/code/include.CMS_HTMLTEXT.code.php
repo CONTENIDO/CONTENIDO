@@ -54,25 +54,25 @@ if ($edit) {
     // show deprecation warning
     cDeprecated('Do not use CMS_HTMLTEXT any more - use CMS_TEXT instead!');
     $cNotification = new Contenido_Notification();
-    $notification = $cNotification->messageBox(Contenido_Notification::LEVEL_WARNING, 'Sie benutzen einen veralteten Content-Typen (CMS_HTMLTEXT). Dieser Content-Typ wird in einer späteren Version von CONTENIDO nicht mehr unterstützt. Bitte wechseln Sie auf den neuen Content-Typen CMS_TEXT.');
+    $notification = $cNotification->messageBox(Contenido_Notification::LEVEL_WARNING, 'Sie benutzen einen veralteten Content-Typen (CMS_HTMLTEXT). Dieser Content-Typ wird in einer spï¿½teren Version von CONTENIDO nicht mehr unterstï¿½tzt. Bitte wechseln Sie auf den neuen Content-Typen CMS_TEXT.');
     $tmp = $notification;
 
     $div = new cHTMLDiv();
     $div->setID('HTMLTEXT_' . $_typeItem->idtype . '_' . $val);
     $div->setEvent('focus', "this.style.border='1px solid #bb5577'");
     $div->setEvent('blur', "this.style.border='1px dashed #bfbfbf'");
-    $div->setStyleDefinition('border', '1px dashed #bfbfbf');
+    $div->appendStyleDefinition('border', '1px dashed #bfbfbf');
     $div->updateAttributes(array('contentEditable' => 'true'));
-    $div->setStyleDefinition('direction', langGetTextDirection($lang));
+    $div->appendStyleDefinition('direction', langGetTextDirection($lang));
 
-    $editlink = new cGuiLink();
+    $editlink = new cHTMLLink();
     $editlink->setClass('CMS_HTMLTEXT_' . $val . '_EDIT CMS_LINK_EDIT');
     $editlink->setLink($sess->url($cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?action=10&idcat=$idcat&idart=$idart&idartlang=$idartlang&type=CMS_HTMLTEXT&typenr=$val&lang=$lang"));
 
     $editimg = new cHTMLImage();
     $editimg->setSrc($cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_edittext.gif');
 
-    $savelink = new cGuiLink();
+    $savelink = new cHTMLLink();
     $savelink->setClass('CMS_HTMLTEXT_' . $val . '_SAVE  CMS_LINK_SAVE');
     $savelink->setLink("javascript:setcontent('$idartlang','0')");
 

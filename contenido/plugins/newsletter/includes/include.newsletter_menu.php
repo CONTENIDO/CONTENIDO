@@ -182,7 +182,7 @@ while ($oNewsletter = $oNewsletters->next()) {
     }
 
     // Create the link to show/edit the newsletter
-    $oLnk = new cGuiLink();
+    $oLnk = new cHTMLLink();
     $oLnk->setMultiLink($area, "", $area, "");
     $oLnk->setCustom("idnewsletter", $idnewsletter);
 
@@ -206,7 +206,7 @@ while ($oNewsletter = $oNewsletters->next()) {
 
     if ($perm->have_perm_area_action($area, "news_add_job")) {
         if (isValidMail($oNewsletter->get("newsfrom")) && $lIDCatArt > 0) {
-            $oLnkAddJob = new cGuiLink();
+            $oLnkAddJob = new cHTMLLink();
             $oLnkAddJob->setMultiLink("news","","news","news_add_job");
             $oLnkAddJob->setCustom("idnewsletter", $idnewsletter);
             $oLnkAddJob->setAlt($aMsg["AddJobTitle"]);
@@ -221,7 +221,7 @@ while ($oNewsletter = $oNewsletters->next()) {
     }
 
     if ($perm->have_perm_area_action($area, "news_create")) {
-        $oLnkCopy = new cGuiLink();
+        $oLnkCopy = new cHTMLLink();
         $oLnkCopy->setMultiLink("news", "", "news", "news_duplicate");
         $oLnkCopy->setCustom("idnewsletter", $idnewsletter);
         $oLnkCopy->setAlt($aMsg["CopyTitle"]);
@@ -319,7 +319,7 @@ $oPage->addScript('parameterCollector.js');
 
 // Generate current content for Object Pager
 $sPagerId = "0ed6d632-6adf-4f09-a0c6-1e38ab60e302";
-$oPagerLink = new cGuiLink();
+$oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("elemperpage", $_REQUEST["elemperpage"]);

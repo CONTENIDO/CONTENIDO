@@ -65,12 +65,15 @@ class cContentTypeText extends cContentTypeAbstract {
 
         $div = new cHTMLDiv($this->_rawSettings);
         $div->setID($this->_prefix . '_text_' . $this->_id);
-        $div->attachStyleDefinition('inline', 'display: inline');
+        $div->appendStyleDefinition('display', 'inline');
 
         $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithead.gif');
         $editButton->setID($this->_prefix . '_editbutton_' . $this->_id);
-        $editButton->attachStyleDefinition('margin-left', 'margin-left: 5px');
-        $editButton->attachStyleDefinition('cursor', 'cursor: pointer');
+        $editButton->appendStyleDefinitions(array(
+            'margin-left' => '5px',
+            'cursor',
+            'pointer'
+        ));
 
         return $this->_encodeForOutput($script . $div->render() . $editButton->render());
     }
@@ -85,8 +88,10 @@ class cContentTypeText extends cContentTypeAbstract {
 
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_ok.gif');
         $saveButton->setID($this->_prefix . '_savebutton_' . $this->_id);
-        $saveButton->attachStyleDefinition('margin-left', 'margin-left: 5px');
-        $saveButton->attachStyleDefinition('cursor', 'cursor: pointer');
+        $saveButton->appendStyleDefinitions(array(
+            'margin-left' => '5px',
+            'cursor', 'pointer'
+        ));
 
         $template = new Template();
         $template->set('s', 'PREFIX', $this->_prefix);

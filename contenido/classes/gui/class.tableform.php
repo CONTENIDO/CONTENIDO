@@ -214,7 +214,7 @@ class cGuiTableForm {
 
         if ($this->cancelLink != "") {
             $image = new cHTMLImage($cfg["path"]["contenido_fullhtml"] . 'images/but_cancel.gif');
-            $link = new cGuiLink($this->cancelLink);
+            $link = new cHTMLLink($this->cancelLink);
             $link->setContent($image);
 
             $tpl->set('s', 'CANCELLINK', $link->render());

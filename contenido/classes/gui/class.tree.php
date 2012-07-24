@@ -294,7 +294,7 @@ class cGuiTree extends cTree {
         $r_table->setCellPadding(0);
         $r_table->setCellSpacing(0);
         $r_table->setWidth("100%");
-        $r_rightcell->setStyleDefinition("padding-left", "3px");
+        $r_rightcell->appendStyleDefinition("padding-left", "3px");
         $r_rightcell->setVerticalAlignment("middle");
         $r_leftcell->setVerticalAlignment("middle");
         $r_leftcell->updateAttributes(array("nowrap" => "nowrap"));
@@ -306,7 +306,7 @@ class cGuiTree extends cTree {
         $r_actioncell->setWidth("1%");
 
         if (!is_object($this->_baseLink)) {
-            $this->_baseLink = new cGuiLink();
+            $this->_baseLink = new cHTMLLink();
         }
 
         $lastitem = array();
@@ -452,9 +452,9 @@ class cGuiTree extends cTree {
 
     /**
      * Sets collapsed state
-     * @param   cGuiLink  $link
+     * @param   cHTMLLink  $link
      * @param   cTreeItem  $object
-     * @return  cGuiLink
+     * @return  cHTMLLink
      */
     public function _setExpandCollapseLink($link, $object) {
         if (!empty($this->_name)) {

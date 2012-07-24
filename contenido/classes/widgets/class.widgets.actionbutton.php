@@ -54,7 +54,7 @@ class cApiClickableAction extends cApiAction
     private $_helpText;
 
     /**
-     * cGuiLink for rendering the icon
+     * cHTMLLink for rendering the icon
      * @access private
      */
     private $_link;
@@ -76,7 +76,7 @@ class cApiClickableAction extends cApiAction
         $this->_frame = 4;
         $this->_target = "right_bottom";
 
-        $this->_link = new cGuiLink;
+        $this->_link = new cHTMLLink;
         $this->_img  = new cHTMLImage;
         $this->_img->setBorder(0);
         $this->_img->setStyle("padding-left: 1px; padding-right: 1px;");

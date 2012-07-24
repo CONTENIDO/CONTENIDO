@@ -514,13 +514,9 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
-        $subHeadline = new cHTMLParagraph(i18n('Source directory'));
-        $subHeadline->setClass('head_sub');
-        $wrapperContent[] = $subHeadline;
+        $wrapperContent[] = new cHTMLParagraph(i18n('Source directory'), 'head_sub');
 
-        $directoryList = new cHTMLDiv();
-        $directoryList->setID('directoryList' . '_' . $this->_id);
-        $directoryList->setClass('directoryList');
+        $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList' . '_' . $this->_id);
         $liRoot = new cHTMLListItem('root', 'last');
         $directoryListCode = $this->generateDirectoryList($this->buildDirectoryList());
         $liRoot->setContent(array(
@@ -546,9 +542,7 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
-        $subHeadline = new cHTMLParagraph(i18n('General settings'));
-        $subHeadline->setClass('head_sub');
-        $wrapperContent[] = $subHeadline;
+        $wrapperContent[] = new cHTMLParagraph(i18n('General settings'), 'head_sub');
 
         $wrapperContent[] = new cHTMLLabel(i18n('File list title'), 'filelist_title_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox('filelist_title_' . $this->_id, $this->_settings['filelist_title'], '', '', 'filelist_title_' . $this->_id);
@@ -668,9 +662,7 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
-        $subHeadline = new cHTMLParagraph(i18n('Filter settings'));
-        $subHeadline->setClass('head_sub');
-        $wrapperContent[] = $subHeadline;
+        $wrapperContent[] = new cHTMLParagraph(i18n('Filter settings'), 'head_sub');
 
         $wrapperContent[] = new cHTMLLabel(i18n('Displayed file extensions'), 'filelist_extensions_' . $this->_id);
         $wrapperContent[] = $this->_generateExtensionSelect();
@@ -679,9 +671,7 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         $link->setID('filelist_all_extensions');
         $link->setContent(i18n('Select all entries'));
         $wrapperContent[] = $link;
-        $label = new cHTMLLabel(i18n('Ignore selection (use all)'), 'filelist_ignore_extensions_' . $this->_id);
-        $label->setClass('filelist_ignore_extensions');
-        $wrapperContent[] = $label;
+        $wrapperContent[] = new cHTMLLabel(i18n('Ignore selection (use all)'), 'filelist_ignore_extensions_' . $this->_id, 'filelist_ignore_extensions');
         $wrapperContent[] = new cHTMLCheckbox('filelist_ignore_extensions_' . $this->_id, '', 'filelist_ignore_extensions_' . $this->_id, ($this->_settings['filelist_ignore_extensions'] !== 'false'));
 
         $wrapperContent[] = new cHTMLLabel(i18n('File size limit'), 'filelist_filesizefilter_from_' . $this->_id);
@@ -720,7 +710,7 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
      * @return string rendered cHTMLSelectElement
      */
     private function _generateExtensionSelect() {
-        $htmlSelect = new cHTMLSelectElement('filelist_extensions_' . $this->_id, '', 'filelist_extensions_' . $this->_id, ($this->_settings['filelist_ignore_extensions'] !== 'false'));
+        $htmlSelect = new cHTMLSelectElement('filelist_extensions_' . $this->_id, '', 'filelist_extensions_' . $this->_id, ($this->_settings['filelist_ignore_extensions'] !== 'false'), '', '', 'manual');
 
         // set other avariable options manually
         $i = 1;
@@ -743,7 +733,6 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         $htmlSelect->setSelected($this->_settings['filelist_extensions']);
         $htmlSelect->setMultiselect();
         $htmlSelect->setSize(5);
-        $htmlSelect->setClass('manual');
 
         return $htmlSelect->render();
     }
@@ -788,30 +777,22 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
-        $subHeadline = new cHTMLParagraph(i18n('Manual settings'));
-        $subHeadline->setClass('head_sub');
-        $wrapperContent[] = $subHeadline;
+        $wrapperContent[] = new cHTMLParagraph(i18n('Manual settings'), 'head_sub');
 
         $wrapperContent[] = new cHTMLLabel(i18n('Use manual file list?'), 'filelist_manual_' . $this->_id);
         $wrapperContent[] = new cHTMLCheckbox('filelist_manual_' . $this->_id, '', 'filelist_manual_' . $this->_id, ($this->_settings['filelist_manual'] === 'true'));
 
         $manualDiv = new cHTMLDiv();
         $manualDiv->setID('manual_filelist_setting');
-        $manualDiv->attachStyleDefinition('hide', 'display: none;');
+        $manualDiv->appendStyleDefinition('display', 'none');
         $divContent = array();
-        $subHeadline = new cHTMLParagraph(i18n('Existing files'));
-        $subHeadline->setClass('head_sub');
-        $divContent[] = $subHeadline;
+        $divContent[] = new cHTMLParagraph(i18n('Existing files'), 'head_sub');
         $divContent[] = $this->_generateExistingFileSelect();
-        $subHeadline = new cHTMLParagraph(i18n('Add file'));
-        $subHeadline->setClass('head_sub');
-        $divContent[] = $subHeadline;
+        $divContent[] = new cHTMLParagraph(i18n('Add file'), 'head_sub');
         $divContent[] = new cHTMLLabel(i18n('Directory'), '');
 
         // directory navigation
-        $directoryList = new cHTMLDiv();
-        $directoryList->setID('directoryList_' . $this->_id . '_manual');
-        $directoryList->setClass('directoryList');
+        $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList_' . $this->_id . '_manual');
         $liRoot = new cHTMLListItem('root', 'last');
         $directoryListCode = $this->generateDirectoryList($this->buildDirectoryList());
         $liRoot->setContent(array(
@@ -822,13 +803,11 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         $directoryList->setContent($conStrTree);
         $divContent[] = $directoryList;
 
-        $label = new cHTMLLabel(i18n('File'), 'filelist_filename_' . $this->_id);
-        $label->setClass('filelist_filename');
-        $divContent[] = $label;
+        $divContent[] = new cHTMLLabel(i18n('File'), 'filelist_filename_' . $this->_id, 'filelist_filename');
         $divContent[] = $this->generateFileSelect();
         $image = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_art_new.gif');
         $image->setAttribute('id', 'add_file');
-        $image->attachStyleDefinition('linkStyle', 'cursor: pointer;');
+        $image->appendStyleDefinition('cursor', 'pointer');
         $divContent[] = $image;
 
         $manualDiv->setContent($divContent);
@@ -847,7 +826,7 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
      */
     private function _generateExistingFileSelect() {
         $selectedFiles = $this->_settings['filelist_manual_files'];
-        $htmlSelect = new cHTMLSelectElement('filelist_manual_files_' . $this->_id, '', 'filelist_manual_files_' . $this->_id);
+        $htmlSelect = new cHTMLSelectElement('filelist_manual_files_' . $this->_id, '', 'filelist_manual_files_' . $this->_id, false, '', '', 'manual');
         $i = 0;
 
         if (is_array($selectedFiles)) {
@@ -865,7 +844,6 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         // set default values
         $htmlSelect->setMultiselect();
         $htmlSelect->setSize(5);
-        $htmlSelect->setClass('manual');
 
         return $htmlSelect->render();
     }
@@ -877,8 +855,7 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
      * @return string rendered cHTMLSelectElement
      */
     public function generateFileSelect($directoryPath = '') {
-        $htmlSelect = new cHTMLSelectElement('filelist_filename_' . $this->_id, '', 'filelist_filename_' . $this->_id);
-        $htmlSelect->setClass('filelist_filename');
+        $htmlSelect = new cHTMLSelectElement('filelist_filename_' . $this->_id, '', 'filelist_filename_' . $this->_id, false, '', '', 'filelist_filename');
 
         $i = 0;
         if ($directoryPath != '') {

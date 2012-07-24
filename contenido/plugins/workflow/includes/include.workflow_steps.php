@@ -180,12 +180,12 @@ function getWorkflowList() {
         $name = $workflowitem->get("name");
         $id = $workflowitem->get("idworkflowitem");
 
-        $edititem = new cGuiLink();
+        $edititem = new cHTMLLink();
         $edititem->setCLink("workflow_steps", 4, "workflow_step_edit");
         $edititem->setCustom("idworkflowitem", $id);
         $edititem->setCustom("idworkflow", $idworkflow);
 
-        $moveup = new cGuiLink();
+        $moveup = new cHTMLLink();
         $moveup->setCLink("workflow_steps", 4, "workflow_step_up");
         $moveup->setCustom("idworkflowitem", $id);
         $moveup->setCustom("idworkflow", $idworkflow);
@@ -193,7 +193,7 @@ function getWorkflowList() {
         $moveup->setAlt(i18n("Move step up", "workflow"));
         $moveup->setContent('<img style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/no_verschieben.gif" . '">');
 
-        $movedown = new cGuiLink();
+        $movedown = new cHTMLLink();
         $movedown->setCLink("workflow_steps", 4, "workflow_step_down");
         $movedown->setCustom("idworkflowitem", $id);
         $movedown->setCustom("idworkflow", $idworkflow);
@@ -201,7 +201,7 @@ function getWorkflowList() {
         $movedown->setAlt(i18n("Move step down", "workflow"));
         $movedown->setContent('<img style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/nu_verschieben.gif" . '">');
 
-        $deletestep = new cGuiLink();
+        $deletestep = new cHTMLLink();
         $deletestep->setCLink("workflow_steps", 4, "workflow_step_delete");
         $deletestep->setCustom("idworkflowitem", $id);
         $deletestep->setCustom("idworkflow", $idworkflow);
@@ -243,7 +243,7 @@ function createNewWorkflow() {
     $ui = new cGuiMenu;
     $rowmark = false;
 
-    $createstep = new cGuiLink();
+    $createstep = new cHTMLLink();
     $createstep->setCLink("workflow_steps", 4, "workflow_create_step");
     $createstep->setCustom("idworkflow", $idworkflow);
 
@@ -318,7 +318,7 @@ function getWorkflowUsers($idworkflowitem) {
         $timeunit = $workflowitem->get("timeunit");
         $id = $workflowitem->get("idusersequence");
 
-        $moveup = new cGuiLink();
+        $moveup = new cHTMLLink();
         $moveup->setCLink("workflow_steps", 4, "workflow_user_up");
         $moveup->setCustom("idworkflowitem", $idworkflowitem);
         $moveup->setCustom("idworkflow", $idworkflow);
@@ -327,7 +327,7 @@ function getWorkflowUsers($idworkflowitem) {
         #$moveup->setContent('<img border="0" style="padding-left: 2px" src="images/pfeil_hoch.gif">');
         $moveup->setContent('<img style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/no_verschieben.gif" . '">');
 
-        $movedown = new cGuiLink();
+        $movedown = new cHTMLLink();
         $movedown->setCLink("workflow_steps", 4, "workflow_user_down");
         $movedown->setCustom("idworkflowitem", $idworkflowitem);
         $movedown->setCustom("idworkflow", $idworkflow);
@@ -335,7 +335,7 @@ function getWorkflowUsers($idworkflowitem) {
         $movedown->setAlt(i18n("Move user down", "workflow"));
         $movedown->setContent('<img style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/nu_verschieben.gif" . '">');
 
-        $deletestep = new cGuiLink();
+        $deletestep = new cHTMLLink();
         $deletestep->setCLink("workflow_steps", 4, "workflow_user_delete");
         $deletestep->setCustom("idworkflowitem", $idworkflowitem);
         $deletestep->setCustom("idworkflow", $idworkflow);
@@ -378,7 +378,7 @@ function getWorkflowUsers($idworkflowitem) {
         $ui->setImage($id, $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/workflow_user.gif");
     }
 
-    $createstep = new cGuiLink();
+    $createstep = new cHTMLLink();
     $createstep->setCLink("workflow_steps", 4, "workflow_create_user");
     $createstep->setCustom("idworkflow", $idworkflow);
     $createstep->setCustom("idworkflowitem", $idworkflowitem);

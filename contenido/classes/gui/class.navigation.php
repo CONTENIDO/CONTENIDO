@@ -205,7 +205,7 @@ class cGuiNavigation {
                     $sub->set('s', 'SUBID', 'sub_' . $id);
 
                     // create sub menu link
-                    $link = new cGuiLink();
+                    $link = new cHTMLLink();
                     $link->disableAutomaticParameterAppend();
                     $link->setClass('sub');
                     $link->setID('sub_' . $value[1]);
@@ -224,7 +224,7 @@ class cGuiNavigation {
             }
 
             if ($genSubMenu == true) {
-                $link = new cGuiLink();
+                $link = new cHTMLLink();
                 $link->setClass('main');
                 $link->setID('main_' . $id);
                 $link->setLink('javascript://');
@@ -252,7 +252,7 @@ class cGuiNavigation {
         $main->set('s', 'SUBMENUS', $t_sub);
 
         // my CONTENIDO link
-        $link = new cGuiLink();
+        $link = new cHTMLLink();
         $link->setClass('main');
         $link->setTargetFrame('content');
         $link->setLink($sess->url("frameset.php?area=mycontenido&frame=4"));
@@ -260,7 +260,7 @@ class cGuiNavigation {
         $main->set('s', 'MYCONTENIDO', $link->render());
 
         // info link
-        $link = new cGuiLink();
+        $link = new cHTMLLink();
         $link->setClass('main');
         $link->setTargetFrame('content');
         $link->setLink($sess->url('frameset.php?area=info&frame=4'));
@@ -271,7 +271,7 @@ class cGuiNavigation {
 
         if ($cfg['help'] == true) {
             // help link
-            $link = new cGuiLink();
+            $link = new cHTMLLink();
             $link->setID('help');
             $link->setClass('main');
             $link->setLink('javascript://');

@@ -77,18 +77,18 @@ class cContentTypeHtml extends cContentTypeAbstract {
 
         $wysiwygDiv->setEvent('Focus', "this.style.border='1px solid #bb5577';");
         $wysiwygDiv->setEvent('Blur', "this.style.border='1px dashed #bfbfbf';");
-        $wysiwygDiv->attachStyleDefinition('border', 'border: 1px dashed #bfbfbf');
-        $wysiwygDiv->attachStyleDefinition('direction', 'direction: ' . langGetTextDirection($this->_lang));
-        $wysiwygDiv->updateAttributes(array(
-            'contentEditable' => 'true'
+        $wysiwygDiv->appendStyleDefinitions(array(
+            'border' => '1px dashed #bfbfbf',
+            'direction' => langGetTextDirection($this->_lang)
         ));
+        $wysiwygDiv->updateAttribute('contentEditable', 'true');
         $wysiwygDiv->setContent($this->_rawSettings);
 
         // construct edit button
         $editLink = $this->_session->url($this->_cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . 'front_content.php?action=10&idcat=' . $this->_idCat . '&idart=' . $this->_idArt . '&idartlang=' . $this->_idArtLang . '&type=' . $this->_type . '&typenr=' . $this->_id);
         $editAnchor = new cHTMLLink('javascript:setcontent("' . $this->_idArtLang . '","' . $editLink . '");');
         $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithtml.gif');
-        $editButton->setStyleDefinition('margin-right', '2px');
+        $editButton->appendStyleDefinition('margin-right', '2px');
         $editAnchor->setContent($editButton);
 
         // construct save button

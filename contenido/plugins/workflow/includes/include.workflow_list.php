@@ -65,7 +65,7 @@ while ($workflow = $workflows->next())
     $wfdescription = $workflow->getField("description");
 
     /* Create the link to show/edit the workflow */
-    $link = new cGuiLink();
+    $link = new cHTMLLink();
     $link->setMultiLink("workflow","","workflow_common","workflow_show");
     $link->setAlt($wfdescription);
     $link->setCustom("idworkflow",$wfid);

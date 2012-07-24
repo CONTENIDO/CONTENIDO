@@ -65,7 +65,7 @@ class cWidgetButton extends cHTMLSpan
         cHTMLSpan::cHTMLSpan();
 
         $this->_img = new cHTMLImage($img);
-        $this->_link = new cGuiLink($link);
+        $this->_link = new cHTMLLink($link);
 
         $this->_img->setAlt($alt);
         $this->setBorder(1);
@@ -167,7 +167,7 @@ class cWidgetToggleButton extends cWidgetButton
         cHTMLSpan::cHTMLSpan();
 
         $this->_img = new cHTMLImage($img);
-        $this->_link = new cGuiLink("#");
+        $this->_link = new cHTMLLink("#");
 
         $this->_img->setAlt($alt);
     }
@@ -235,7 +235,7 @@ class cWidgetMultiToggleButton extends cWidgetButton
         cHTMLSpan::cHTMLSpan();
 
         $this->_img = new cHTMLImage($img);
-        $this->_link = new cGuiLink($link);
+        $this->_link = new cHTMLLink($link);
         $this->_img->setAlt($alt);
         $this->_linkedItems = Array();
         $this->_default = false;

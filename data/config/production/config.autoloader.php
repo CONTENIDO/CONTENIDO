@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-07-20
+ *     created  2012-07-24
  * }}
  */
 
@@ -90,6 +90,8 @@ return array(
     'cHTMLScript' => 'contenido/classes/class.htmlelements.php',
     'cHTMLList' => 'contenido/classes/class.htmlelements.php',
     'cHTMLListItem' => 'contenido/classes/class.htmlelements.php',
+    'cHTMLLink' => 'contenido/classes/class.htmlelements.php',
+    'Link' => 'contenido/classes/class.htmlelements.php',
     'HtmlParser' => 'contenido/classes/class.htmlparser.php',
     'cHTMLValidator' => 'contenido/classes/class.htmlvalidator.php',
     'HttpInputValidator' => 'contenido/classes/class.httpinputvalidator.php',
@@ -332,9 +334,6 @@ return array(
     'Item' => 'contenido/classes/genericdb/class.item.php',
     'cGuiFoldingRow' => 'contenido/classes/gui/class.foldingrow.php',
     'cFoldingRow' => 'contenido/classes/gui/class.foldingrow.php',
-    'cGuiLink' => 'contenido/classes/gui/class.link.php',
-    'Link' => 'contenido/classes/gui/class.link.php',
-    'cHTMLLink' => 'contenido/classes/gui/class.link.php',
     'cGuiList' => 'contenido/classes/gui/class.list.php',
     'UI_List' => 'contenido/classes/gui/class.list.php',
     'cGuiMenu' => 'contenido/classes/gui/class.menu.php',

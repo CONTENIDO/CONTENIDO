@@ -56,7 +56,7 @@ class cGuiFoldingRow extends cHTML {
 
     /**
      * Link
-     * @var cGuiLink
+     * @var cHTMLLink
      */
     protected $_link;
 
@@ -77,7 +77,7 @@ class cGuiFoldingRow extends cHTML {
         $this->_contentRow->updateAttributes(array("id" => $uuid));
         $this->_contentData = new cHTMLTableData();
         $this->_uuid = $uuid;
-        $this->_link = new cGuiLink();
+        $this->_link = new cHTMLLink();
         $this->_linkId = $linkId;
 
         $this->_headerData->setClass("foldingrow");

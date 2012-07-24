@@ -52,7 +52,7 @@ if ($action == 'note_save_item') {
 } else {
     $list = new NoteView($itemtype, $itemid);
     $list->setWidth('100%');
-    $list->setStyleDefinition('margin-bottom', '10px');
+    $list->appendStyleDefinition('margin-bottom', '10px');
     $ui = new cGuiTableForm('note');
     $ui->addHeader(i18n('Add note'));
 

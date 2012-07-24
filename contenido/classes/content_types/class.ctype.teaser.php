@@ -561,9 +561,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
-        $subHeadline = new cHTMLParagraph(i18n('General settings'));
-        $subHeadline->setClass('head_sub');
-        $wrapperContent[] = $subHeadline;
+        $wrapperContent[] = new cHTMLParagraph(i18n('General settings'), 'head_sub');
         $wrapperContent[] = new cHTMLLabel(i18n('Teaser title'), 'teaser_title_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox('teaser_title_' . $this->_id, $this->_settings['teaser_title'], '', '', 'teaser_title_' . $this->_id);
         $wrapperContent[] = new cHTMLLabel(i18n('Source category'), 'teaser_category_' . $this->_id);
@@ -575,9 +573,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $wrapperContent[] = new cHTMLLabel(i18n('Teaser start article'), 'teaser_start_' . $this->_id);
         $wrapperContent[] = new cHTMLCheckbox('teaser_start_' . $this->_id, '', 'teaser_start_' . $this->_id, ($this->_settings['teaser_start'] == 'true'));
 
-        $subHeadline = new cHTMLParagraph(i18n('Source settings'));
-        $subHeadline->setClass('head_sub');
-        $wrapperContent[] = $subHeadline;
+        $wrapperContent[] = new cHTMLParagraph(i18n('Source settings'), 'head_sub');
         $wrapperContent[] = new cHTMLLabel(i18n('Source headline'), 'teaser_source_head_' . $this->_id);
         $wrapperContent[] = $this->_generateTypeSelect('teaser_source_head_' . $this->_id, $this->_settings['teaser_source_head'], $this->_settings['teaser_source_head_count']);
         $wrapperContent[] = new cHTMLLabel(i18n('Source text'), 'teaser_source_text_' . $this->_id);
@@ -671,8 +667,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         // make sure that the ID is at the end of the form field name
         $inputName = str_replace('_' . $this->_id, '_count_' . $this->_id, $selectName);
         // generate textbox for content type id
-        $htmlInput = new cHTMLTextbox($inputName, $value, '', '', $inputName);
-        $htmlInput->setClass('teaser_type_count');
+        $htmlInput = new cHTMLTextbox($inputName, $value, '', '', $inputName, false, '', '', 'teaser_type_count');
 
         // generate content type select
         $htmlSelect = new cHTMLSelectElement($selectName, '', $selectName);
@@ -705,9 +700,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
-        $subHeadline = new cHTMLParagraph(i18n('Advanced teaser settings'));
-        $subHeadline->setClass('head_sub');
-        $wrapperContent[] = $subHeadline;
+        $wrapperContent[] = new cHTMLParagraph(i18n('Advanced teaser settings'), 'head_sub');
         $wrapperContent[] = new cHTMLLabel(i18n('Teaser filter'), 'teaser_filter_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox('teaser_filter_' . $this->_id, $this->_settings['teaser_filter'], '', '', 'teaser_filter_' . $this->_id);
         $wrapperContent[] = new cHTMLLabel(i18n('Teaser sort'), 'teaser_sort_' . $this->_id);
@@ -715,9 +708,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $wrapperContent[] = new cHTMLLabel(i18n('Sort order'), 'teaser_sort_order_' . $this->_id);
         $wrapperContent[] = $this->_generateSortOrderSelect();
 
-        $subHeadline = new cHTMLParagraph(i18n('Size settings'));
-        $subHeadline->setClass('head_sub');
-        $wrapperContent[] = $subHeadline;
+        $wrapperContent[] = new cHTMLParagraph(i18n('Size settings'), 'head_sub');
         $wrapperContent[] = new cHTMLLabel(i18n('Character length'), 'teaser_character_limit_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox('teaser_character_limit_' . $this->_id, $this->_settings['teaser_character_limit'], '', '', 'teaser_character_limit_' . $this->_id);
         $wrapperContent[] = new cHTMLLabel(i18n('Image width'), 'teaser_image_width_' . $this->_id);
@@ -726,9 +717,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $wrapperContent[] = new cHTMLTextbox('teaser_image_height_' . $this->_id, $this->_settings['teaser_image_height'], '', '', 'teaser_image_height_' . $this->_id);
         $wrapperContent[] = new cHTMLLabel(i18n('Image scale'), 'teaser_image_crop_' . $this->_id);
         $wrapperContent[] = $this->_generateCropSelect();
-        $spacer = new cHTMLDiv('&nbsp;');
-        $spacer->setClass('head_sub');
-        $wrapperContent[] = $spacer;
+        $wrapperContent[] = new cHTMLDiv('&nbsp;', 'head_sub');
 
         $wrapper->setContent($wrapperContent);
         return $wrapper->render();
@@ -828,17 +817,12 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
-        $subHeadline = new cHTMLParagraph(i18n('Manual teaser settings'));
-        $subHeadline->setClass('head_sub');
-        $wrapperContent[] = $subHeadline;
+        $wrapperContent[] = new cHTMLParagraph(i18n('Manual teaser settings'), 'head_sub');
         $wrapperContent[] = new cHTMLLabel(i18n('Manual teaser'), 'teaser_manual_' . $this->_id);
         $wrapperContent[] = new cHTMLCheckbox('teaser_manual_' . $this->_id, '', 'teaser_manual_' . $this->_id, ($this->_settings['teaser_manual'] == 'true'));
 
-        $subHeadline = new cHTMLParagraph(i18n('Included articles'));
-        $subHeadline->setClass('head_sub');
-        $wrapperContent[] = $subHeadline;
-        $selectElement = new cHTMLSelectElement('teaser_manual_art_' . $this->_id, '', 'teaser_manual_art_' . $this->_id);
-        $selectElement->setClass('manual');
+        $wrapperContent[] = new cHTMLParagraph(i18n('Included articles'), 'head_sub');
+        $selectElement = new cHTMLSelectElement('teaser_manual_art_' . $this->_id, '', 'teaser_manual_art_' . $this->_id, false, '', '', 'manual');
         $selectElement->setAttribute('size', '4');
         $selectElement->setAttribute('multiple', 'multiple');
         // there can be one or multiple selected articles
@@ -857,9 +841,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         }
         $wrapperContent[] = $selectElement;
 
-        $subHeadline = new cHTMLParagraph(i18n('Add article'));
-        $subHeadline->setClass('head_sub');
-        $wrapperContent[] = $subHeadline;
+        $wrapperContent[] = new cHTMLParagraph(i18n('Add article'), 'head_sub');
         $wrapperContent[] = new cHTMLLabel(i18n('Category'), 'teaser_cat_' . $this->_id);
         $wrapperContent[] = buildCategorySelect('teaser_cat_' . $this->_id, 0, 0);
         $wrapperContent[] = new cHTMLLabel(i18n('Article'), 'teaser_art_' . $this->_id);
@@ -867,7 +849,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $wrapperContent[] = new cHTMLLabel(i18n('Add'), 'add_art_' . $this->_id);
         $image = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_art_new.gif');
         $image->setAttribute('id', 'add_art_' . $this->_id);
-        $image->attachStyleDefinition('linkStyle', 'cursor: pointer;');
+        $image->appendStyleDefinition('cursor', 'pointer');
         $wrapperContent[] = $image;
 
         $wrapper->setContent($wrapperContent);

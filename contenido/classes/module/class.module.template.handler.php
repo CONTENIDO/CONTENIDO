@@ -439,11 +439,11 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler
         $inputDelete->setAttribute('type', 'image');
         $inputDelete->setClass("deletefunction");
         //$inputDelete->setAttribute("alt",i18n("Delete file"));
-        $aDelete = new cGuiLink('');
+        $aDelete = new cHTMLLink('');
         $aDelete->setContent($this->_file);
         $aDelete->setClass('deletefunction');
 
-        $aAdd = new cGuiLink('');
+        $aAdd = new cHTMLLink('');
         $aAdd->setContent(i18n("New template file"));
         $aAdd->setClass('addfunction');
 

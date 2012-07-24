@@ -41,7 +41,7 @@ if ($edit) {
     // show deprecation warning
     cDeprecated('Do not use CMS_IMGEDIT any more - use CMS_IMGEDITOR instead!');
     $cNotification = new Contenido_Notification();
-    $notification = $cNotification->messageBox(Contenido_Notification::LEVEL_WARNING, 'Sie benutzen einen veralteten Content-Typen (CMS_IMGEDIT). Dieser Content-Typ wird in einer späteren Version von CONTENIDO nicht mehr unterstützt. Bitte wechseln Sie auf den neuen Content-Typen CMS_IMGEDITOR.');
+    $notification = $cNotification->messageBox(Contenido_Notification::LEVEL_WARNING, 'Sie benutzen einen veralteten Content-Typen (CMS_IMGEDIT). Dieser Content-Typ wird in einer spï¿½teren Version von CONTENIDO nicht mehr unterstï¿½tzt. Bitte wechseln Sie auf den neuen Content-Typen CMS_IMGEDITOR.');
     $notification = addslashes($notification);
     $notification = str_replace("\\'", "'", $notification);
     $notification = str_replace('\$', '\\$', $notification);
@@ -49,7 +49,7 @@ if ($edit) {
 
     // Edit anchor and image
     $editLink = $sess->url($cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?action=10&idcat=$idcat&idart=$idart&idartlang=$idartlang&type=CMS_IMG&typenr=$val&lang=$lang");
-    $editAnchor = new cGuiLink();
+    $editAnchor = new cHTMLLink();
     $editAnchor->setClass('CMS_IMGEDIT_' . $val . '_EDIT CMS_LINK_EDIT');
     $editAnchor->setLink("javascript:setcontent('$idartlang','".$editLink."');");
 

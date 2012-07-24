@@ -75,9 +75,9 @@ $list->setCell(1, 4, "&nbsp;");
 
 $count = 2;
 
-$oLinkEdit = new cGuiLink();
+$oLinkEdit = new cHTMLLink();
 $oLinkEdit->setCLink($area, $frame, "systemsettings_edit_item");
-$oLinkDelete = new cGuiLink();
+$oLinkDelete = new cHTMLLink();
 $oLinkDelete->setCLink($area, $frame, "systemsettings_delete_item");
 if (strpos($auth->auth["perm"], "sysadmin") === false) {
     $oLinkEdit->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'editieren_off.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');

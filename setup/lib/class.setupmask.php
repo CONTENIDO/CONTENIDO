@@ -76,7 +76,7 @@ class cSetupMask
 
     function _createNavigation()
     {
-        $link = new cGuiLink("#");
+        $link = new cHTMLLink("#");
 
         $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_bNextstep."';");
         $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
@@ -94,7 +94,7 @@ class cSetupMask
             $this->_oStepTemplate->set("s", "NEXT", '');
         }
 
-        $backlink = new cGuiLink("#");
+        $backlink = new cHTMLLink("#");
         $backlink->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_bBackstep."';");
         $backlink->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
 

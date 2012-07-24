@@ -139,7 +139,7 @@ class NoteList extends cHTMLDiv
         $this->_sItemType = $sItemType;
         $this->_sItemId = $sItemId;
 
-        $this->setStyleDefinition('width', '100%');
+        $this->appendStyleDefinition('width', '100%');
     }
 
     public function setDeleteable($bDeleteable)
@@ -200,7 +200,7 @@ class NoteListItem extends cHTMLDiv
     public function NoteListItem($sItemType, $sItemId, $iDeleteItem)
     {
         cHTMLDiv::cHTMLDiv();
-        $this->setStyleDefinition('padding', '2px');
+        $this->appendStyleDefinition('padding', '2px');
         $this->setBackground();
         $this->setDeleteable(true);
 
@@ -263,7 +263,7 @@ class NoteListItem extends cHTMLDiv
         $table .= $this->_sDate;
 
         if ($this->_bDeleteable == true) {
-            $oDeleteable = new cGuiLink();
+            $oDeleteable = new cHTMLLink();
             $oDeletePic = new cHTMLImage($cfg['path']['contenido_fullhtml'].'/images/delete.gif');
             $oDeleteable->setContent($oDeletePic);
             $oDeleteable->setLink($sess->url("main.php?frame=2&area=note&itemtype=$itemtype&itemid=$itemid&action=note_delete&deleteitem=$deleteitem"));
@@ -283,7 +283,7 @@ class NoteListItem extends cHTMLDiv
 
 }
 
-class NoteLink extends cGuiLink
+class NoteLink extends cHTMLLink
 {
     /**
      * @var string Object type
@@ -317,7 +317,7 @@ class NoteLink extends cGuiLink
      */
     public function NoteLink($sItemType, $sItemID)
     {
-        parent::cGuiLink();
+        parent::__construct();
 
         $img = new cHTMLImage('images/note.gif');
         $img->setStyle('padding-left: 2px; padding-right: 2px;');

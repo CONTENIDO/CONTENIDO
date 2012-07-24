@@ -176,7 +176,7 @@ $cApiUserCollection    = new cApiUserCollection;
 $cApiUserCollection->query();
 $iItemCount = $cApiUserCollection->count();
 
-$oPagerLink = new cGuiLink;
+$oPagerLink = new cHTMLLink;
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("elemperpage", $elemperpage);

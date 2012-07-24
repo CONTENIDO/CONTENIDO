@@ -256,9 +256,7 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
-        $directoryList = new cHTMLDiv();
-        $directoryList->setID('directoryList' . '_' . $this->_id);
-        $directoryList->setClass('directoryList');
+        $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList' . '_' . $this->_id);
         $liRoot = new cHTMLListItem('root', 'last');
         $aUpload = new cHTMLLink('#');
         $aUpload->setClass('on');
@@ -277,12 +275,8 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
         $directoryList->setContent($conStrTree);
         $wrapperContent[] = $directoryList;
 
-        $directoryFile = new cHTMLDiv();
-        $directoryFile->setID('directoryFile' . '_' . $this->_id);
-        $directoryFile->setClass('directoryFile');
         $activeIdcats = $this->_getActiveIdcats();
-        $directoryFile->setContent($this->generateArticleSelect($activeIdcats[0]));
-        $wrapperContent[] = $directoryFile;
+        $wrapperContent[] = new cHTMLDiv($this->generateArticleSelect($activeIdcats[0]), 'directoryFile', 'directoryFile' . '_' . $this->_id);
 
         $wrapper->setContent($wrapperContent);
 
@@ -544,8 +538,7 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
             '<b>' . i18n('Path') . '</b>',
             $caption2Span
         ));
-        $imageUpload = new cHTMLUpload('file[]', '', '', 'cms_linkeditor_m' . $this->_id);
-        $imageUpload->setClass('file');
+        $imageUpload = new cHTMLUpload('file[]', '', '', 'cms_linkeditor_m' . $this->_id, false, '', '', 'file');
         $propertiesForm->setContent(array(
             $frame,
             $area,
@@ -559,14 +552,10 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
         ));
         $wrapperContent[] = $propertiesForm;
 
-        $loadingImage = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/ajax-loader.gif');
-        $loadingImage->setClass('loading');
-        $wrapperContent[] = $loadingImage;
+        $wrapperContent[] = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/ajax-loader.gif', 'loading');
 
         // directory navigation
-        $directoryList = new cHTMLDiv();
-        $directoryList->setID('directoryList_' . $this->_id);
-        $directoryList->setClass('directoryList');
+        $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList_' . $this->_id);
         $liRoot = new cHTMLListItem('root', 'last');
         $aUpload = new cHTMLLink('#');
         $aUpload->setClass('on');
@@ -589,11 +578,7 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
         $directoryList->setContent($conStrTree);
         $wrapperContent[] = $directoryList;
 
-        $directoryFile = new cHTMLDiv();
-        $directoryFile->setID('directoryFile' . '_' . $this->_id);
-        $directoryFile->setClass('directoryFile');
-        $directoryFile->setContent($this->getUploadFileSelect(dirname($this->_settings['linkeditor_filename'])));
-        $wrapperContent[] = $directoryFile;
+        $wrapperContent[] = new cHTMLDiv($this->getUploadFileSelect(dirname($this->_settings['linkeditor_filename'])), 'directoryFile', 'directoryFile' . '_' . $this->_id);
 
         $wrapper->setContent($wrapperContent);
 

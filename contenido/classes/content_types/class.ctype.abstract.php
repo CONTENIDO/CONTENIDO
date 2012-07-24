@@ -197,7 +197,7 @@ abstract class cContentTypeAbstract {
         $this->_lang = cRegistry::getLanguageId();
         $this->_cfgClient = cRegistry::getClientConfig();
         $this->_session = cRegistry::getSession();
-        $this->_useXHTML = Contenido_Security::toBoolean(getEffectiveSetting('generator', 'xhtml', 'false'));
+        $this->_useXHTML = cSecurity::toBoolean(getEffectiveSetting('generator', 'xhtml', 'false'));
         $this->_uploadPath = $this->_cfgClient[$this->_client]['upl']['path'];
 
         $this->_readSettings();
