@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- CONTENIDO XML language file -->
 <legend>
-	<article>
+    <article>
         <imgsrc>images/isstart1.gif</imgsrc>
         <description>start article</description>
     </article>
-	<article>
+    <article>
         <imgsrc>images/isstart0.gif</imgsrc>
         <description>general article</description>
     </article>
@@ -13,7 +13,7 @@
         <imgsrc>images/folder_on.gif</imgsrc>
         <description>general category</description>
     </article>
-	<article>
+    <article>
         <imgsrc>images/folder_off_error.gif</imgsrc>
         <description>category offline</description>
     </article>
@@ -21,15 +21,15 @@
         <imgsrc>images/folder_on_error.gif</imgsrc>
         <description>category has no article or no start article or article offline</description>
     </article>
-	<article>
+    <article>
         <imgsrc>images/folder_on_locked.gif</imgsrc>
         <description>locked category</description>
     </article>
-	<article>
+    <article>
         <imgsrc>images/folder_on_error_locked.gif</imgsrc>
         <description>locked category has no article or no startarticle or article offline</description>
-    </article>		
-	<article>
+    </article>
+    <article>
         <imgsrc>images/but_sync_cat_off.gif</imgsrc>
         <description>synchronized category</description>
     </article>

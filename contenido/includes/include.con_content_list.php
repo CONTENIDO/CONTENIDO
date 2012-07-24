@@ -30,8 +30,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-cInclude("includes", "functions.str.php");
-cInclude("includes", "functions.pathresolver.php");
+cInclude('includes', 'functions.str.php');
+cInclude('includes', 'functions.pathresolver.php');
 
 if (!isset($idcat)) {
     cRegistry::shutdown();
@@ -65,8 +65,8 @@ if ($action == 'savecontype' || $action == 10) {
     conGenerateCodeForArtInAllCategories($idart);
 } else if ($action == 'deletecontype') {
     if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
-        $sql = "DELETE FROM " . $cfg["tab"]["content"] . " WHERE idcontent='" . cSecurity::toInteger($_REQUEST['idcontent']) . "' LIMIT 1";
-        $db->query($sql);
+        $oContentColl = new cApiContentCollection();
+        $oContentColl->delete((int) $_REQUEST['idcontent']);
     }
 }
 
@@ -75,22 +75,24 @@ if ($action == 'savecontype' || $action == 10) {
 $result = array();
 $aList = array();
 $typeAktuell = array();
-$sortID = array("CMS_HTMLHEAD","CMS_HEAD","CMS_HTML","CMS_HTMLTEXT","CMS_TEXT",
-    "CMS_IMG","CMS_IMGDESCR","CMS_IMGTITLE","CMS_IMGEDIT","CMS_IMGEDITOR",
-    "CMS_EASYIMGEDIT","CMS_LINK","CMS_LINKTARGET","CMS_LINKDESCR","CMS_LINKTITLE",
-    "CMS_LINKEDIT","CMS_SIMPLELINKEDIT","CMS_LINKEDITOR","CMS_RAWLINK","CMS_SWF",
-    "CMS_DATE","CMS_TEASER","CMS_FILELIST");
+$sortID = array("CMS_HTMLHEAD", "CMS_HEAD", "CMS_HTML", "CMS_HTMLTEXT", "CMS_TEXT",
+    "CMS_IMG", "CMS_IMGDESCR", "CMS_IMGTITLE", "CMS_IMGEDIT", "CMS_IMGEDITOR",
+    "CMS_EASYIMGEDIT", "CMS_LINK", "CMS_LINKTARGET", "CMS_LINKDESCR", "CMS_LINKTITLE",
+    "CMS_LINKEDIT", "CMS_SIMPLELINKEDIT", "CMS_LINKEDITOR", "CMS_RAWLINK", "CMS_SWF",
+    "CMS_DATE", "CMS_TEASER", "CMS_FILELIST");
 
 $aIdtype = array();
-$sql = "SELECT DISTINCT typeid FROM " . $cfg["tab"]["content"] . " WHERE idartlang=" . cSecurity::toInteger($_REQUEST["idartlang"]) . " ORDER BY typeid";
-$db->query($sql);
+$sql = "SELECT DISTINCT typeid FROM %s WHERE idartlang = %d ORDER BY typeid";
+$db->query($sql, $cfg["tab"]["content"], $_REQUEST["idartlang"]);
 while ($db->next_record()) {
     $aIdtype[] = $db->f("typeid");
 }
 
 foreach ($sortID as $name) {
-    $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM " . $cfg["tab"]["content"] . " as a, " . $cfg["tab"]["type"] . " as b WHERE a.idartlang=" . cSecurity::toInteger($_REQUEST["idartlang"]) . " AND a.idtype=b.idtype AND b.type = '" . cSecurity::toString($name) . "' ORDER BY idtype,typeid,idcontent";
-    $db->query($sql);
+//    $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM " . $cfg["tab"]["content"] . " as a, " . $cfg["tab"]["type"] . " as b WHERE a.idartlang = " . cSecurity::toInteger($_REQUEST["idartlang"]) . " AND a.idtype = b.idtype AND b.type = '" . cSecurity::toString($name) . "' ORDER BY idtype, typeid, idcontent";
+    $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM %s AS a, %s AS b "
+         . "WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s' ORDER BY idtype, typeid, idcontent";
+    $db->query($sql, $cfg["tab"]["content"], $cfg["tab"]["type"], $_REQUEST["idartlang"], $name);
     while ($db->next_record()) {
         $result[$db->f("name")][$db->f("id")] = $db->f("value");
         if (!in_array($db->f("name"), $aList)) {
@@ -171,7 +173,7 @@ $layoutcode = '<html>
                 border: 1px solid red;
             }
             .contypeList div {
-            	min-height: 13px;
+                min-height: 13px;
             }
             </style>
         </head>
@@ -202,6 +204,7 @@ if (count($result) <= 0) {
         }
     }
 }
+
 //breadcrumb onclick
 if (!isset($syncfrom)) {
     $syncfrom = -1;
@@ -259,47 +262,47 @@ cRegistry::shutdown();
  * @param  bool    $saveKeywords  Flag to save collected keywords during replacement process.
  * @param  array   $contentList  Assoziative list of CMS variables
  */
-	function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode) {
-        // #####################################################################
-        // NOTE: Variables below are required in included/evaluated content type
-        // codes!
-        global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
+function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode) {
+    // #####################################################################
+    // NOTE: Variables below are required in included/evaluated content type
+    // codes!
+    global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
 
-        // NOTE: Variables below are additionally required in included/evaluated
-        // content type codes within backend edit mode!
-        global $edit, $editLink, $belang;
+    // NOTE: Variables below are additionally required in included/evaluated
+    // content type codes within backend edit mode!
+    global $edit, $editLink, $belang;
 
-        $idcat = $_REQUEST['idcat'];
-	    $idart = $_REQUEST['idart'];
-	    $lang = $_REQUEST['lang'];
-	    $client = $_REQUEST['client'];
-	    $idartlang = $_REQUEST['idartlang'];
-	    $contenido = $_REQUEST['contenido'];
+    $idcat = $_REQUEST['idcat'];
+    $idart = $_REQUEST['idart'];
+    $lang = $_REQUEST['lang'];
+    $client = $_REQUEST['client'];
+    $idartlang = $_REQUEST['idartlang'];
+    $contenido = $_REQUEST['contenido'];
 
-        if (!is_object($db2)) {
-            $db2 = cRegistry::getDb();
-        }
-        // End: Variables required in content type codes
-        // #####################################################################
+    if (!is_object($db2)) {
+        $db2 = cRegistry::getDb();
+    }
+    // End: Variables required in content type codes
+    // #####################################################################
 
-        $match = array();
-        $keycode = array();
+    $match = array();
+    $keycode = array();
 
-        // $a_content is used by included/evaluated content type codes below
-        $a_content = $contentList;
+    // $a_content is used by included/evaluated content type codes below
+    $a_content = $contentList;
 
-        // Select all cms_type entries
-        $sql = 'SELECT `idtype`, `type`, `code`, `class` FROM `' . $cfg['tab']['type'] . '`';
-        $db->query($sql);
-        $_typeList = array();
-        while ($db->next_record()) {
-            $_typeList[] = $db->toObject();
-        }
-        // Replace all CMS_TAGS[]
-        foreach ($_typeList as $_typeItem) {
-            $key = strtolower($_typeItem->type);
-            $type = $_typeItem->type;
-        	if (in_array($type, $aList)) {
+    // Select all cms_type entries
+    $sql = 'SELECT `idtype`, `type`, `code`, `class` FROM `' . $cfg['tab']['type'] . '`';
+    $db->query($sql);
+    $_typeList = array();
+    while ($db->next_record()) {
+        $_typeList[] = $db->toObject();
+    }
+    // Replace all CMS_TAGS[]
+    foreach ($_typeList as $_typeItem) {
+        $key = strtolower($_typeItem->type);
+        $type = $_typeItem->type;
+        if (in_array($type, $aList)) {
             // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
             // $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i',
             // $this->_layoutCode, $match);
@@ -332,7 +335,7 @@ cRegistry::shutdown();
                     cDeprecated("Move code for $type from table into file system (contenido/includes/cms/code/)");
                     eval($_typeItem->code);
                 }
-            	$sql = "SELECT a.idcontent
+                $sql = "SELECT a.idcontent
                     FROM " . $cfg["tab"]["content"] . " as a, " . $cfg["tab"]["type"] . " as b
                     WHERE a.idartlang=" . cSecurity::toInteger($_REQUEST["idartlang"]) .
                         " AND a.idtype=b.idtype AND a.typeid = " . cSecurity::toInteger($val) . " AND b.type = '" . cSecurity::toString($type) . "'
@@ -364,11 +367,12 @@ cRegistry::shutdown();
             $code = cApiCecHook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
             $layoutCode = stripslashes($code);
         }
-        }
-        $layoutCode = str_ireplace("<<", "[", $layoutCode);
-	    $layoutCode = str_ireplace(">>", "]", $layoutCode);
-	    return $layoutCode;
     }
+    $layoutCode = str_ireplace("<<", "[", $layoutCode);
+    $layoutCode = str_ireplace(">>", "]", $layoutCode);
+    return $layoutCode;
+}
+
 /**
  * Processes get all existing active CMS_... tags within passed code
  *

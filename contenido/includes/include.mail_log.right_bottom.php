@@ -14,7 +14,6 @@ class View_MailLog {
     protected $_sess = null;
 
     public function __construct($conVars) {
-
         $this->_cfg = $conVars['cfg'];
         $this->_tplFile = $this->_cfg['path']['templates'] . 'template.mail_log.right_bottom.html';
         $this->_action = $conVars['action'];
@@ -47,7 +46,6 @@ class View_MailLog {
     }
 
     public function makeAction() {
-
         switch ($this->_action) {
 
             case 'delete':
@@ -60,7 +58,6 @@ class View_MailLog {
                         if (is_numeric($idmail)) {
                             $where .= ' OR idmail=' . $idmail;
                             $itemCollection = new cApiMailLogCollection();
-
                             $itemCollection->deleteFiles($mailLogCollection->loadItem($this->_idmail));
                         }
                     }
@@ -70,8 +67,6 @@ class View_MailLog {
                 $this->_defaultAction();
                 break;
             case 'detail':
-
-
                 $this->_tpl->set('s', 'HEADER_TEXT', i18n('Detail of Email log'));
                 $this->_tpl->set('s', 'IDMAIL', $this->_idmail);
                 $this->_tpl->set('s', 'SESSID', $this->_sid);
@@ -82,17 +77,14 @@ class View_MailLog {
                 foreach ($this->_tableHeaderDetail as $key => $value) {
 
                     switch ($key) {
-
                         case 'body':
                             $this->_tpl->set('d', 'NAME', $value);
                             $this->_tpl->set('d', 'VALUE', $mailLogCollection->getBody($omailItem));
-
                             break;
                         case 'header':
                             $this->_tpl->set('d', 'NAME', $value);
                             $this->_tpl->set('d', 'VALUE', $mailLogCollection->getHeader($omailItem));
                             break;
-
                         case 'success':
                             $this->_tpl->set('d', 'NAME', $value);
 
@@ -109,7 +101,6 @@ class View_MailLog {
                             $this->_tpl->set('d', 'NAME', $value);
                             $this->_tpl->set('d', 'VALUE', ($omailItem->get($key) == 0) ? i18n('No') : i18n('Yes'));
                             break;
-
                         case 'bcc':
                         case 'cc':
                             $this->_tpl->set('d', 'NAME', $value);
@@ -126,7 +117,6 @@ class View_MailLog {
 
                 break;
             case 'resend_email':
-
                 echo "---resend_email debugg";
                 $mailLogCollection = new cApiMailLogCollection();
                 $omailItem = $mailLogCollection->loadItem($this->_idmail);
@@ -134,9 +124,8 @@ class View_MailLog {
                 if ($mailLogCollection->getBody($omailItem) == false) {
                     
                 } else {
-                    
-                }
 
+                }
 
                 $this->_defaultAction();
                 break;
@@ -149,21 +138,16 @@ class View_MailLog {
         $mailLogCollection = new cApiMailLogCollection();
 
         if (!empty($_REQUEST['mail_status'])) {
-
             switch ($_REQUEST['mail_status']) {
-
                 case 'faild':
                     $mailLogCollection->setWhere('success', 0);
                     break;
-
                 case 'success':
                     $mailLogCollection->setWhere('success', 1);
                     break;
-
                 case 'resend':
                     $mailLogCollection->setWhere('idmail_resend', 0, '>');
                     break;
-
                 default:
             }
         }
@@ -193,15 +177,12 @@ class View_MailLog {
     }
 
     private function _defaultAction() {
-
         //set table header
         $headers = '';
         foreach ($this->_tableHeader as $item) {
             $headers .= '<td class="headerbordercell">' . $item . '</td>';
         }
         $this->_tpl->set('s', 'HEADERS', $headers);
-
-
 
         $this->_tpl->set('s', 'MESSAGE', $this->_message);
 
@@ -213,9 +194,7 @@ class View_MailLog {
     }
 
     public function display() {
-
         if ($this->_area == 'mail_log_detail') {
-
             if (is_numeric($_REQUEST['idmail'])) {
                 //execute action
                 $this->makeAction();
@@ -231,10 +210,12 @@ class View_MailLog {
 
 }
 
-$params = array('cfg' => $cfg,
+$params = array(
+    'cfg' => $cfg,
     'action' => $action,
     'area' => $area,
-    'sess' => $sess);
+    'sess' => $sess
+);
 
 $viewMailLog = new View_MailLog($params);
 
