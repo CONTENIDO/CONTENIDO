@@ -88,8 +88,10 @@ class DB_Sql extends DB_Sql_Abstract {
      * {@inheritdoc}
      */
     protected function _connect() {
-        $aCon = $this->_aDbCfg['connection'];
-        if (!isset($aCon['host']) || !isset($aCon['user']) || !isset($aCon['password'])) {
+        if (isset($this->_aDbCfg['connection'])) {
+            $aCon = $this->_aDbCfg['connection'];
+        }
+        if (empty($aCon) || !isset($aCon['host']) || !isset($aCon['user']) || !isset($aCon['password'])) {
             $this->halt('MySQL _connect() Connection settings not complete');
             return null;
         }

@@ -97,8 +97,10 @@ class DB_Sql extends DB_Sql_Abstract {
             return null;
         }
 
-        $aCon = $this->_aDbCfg['connection'];
-        if (!isset($aCon['host']) || !isset($aCon['user']) || !isset($aCon['password'])) {
+        if (isset($this->_aDbCfg['connection'])) {
+            $aCon = $this->_aDbCfg['connection'];
+        }
+        if (empty($aCon) || !isset($aCon['host']) || !isset($aCon['user']) || !isset($aCon['password'])) {
             $this->halt('MySQLi _connect() Connection settings not complete');
             return null;
         }
@@ -136,7 +138,7 @@ class DB_Sql extends DB_Sql_Abstract {
                 return null;
             } else {
                 //set connection charset
-                if ($aCon['charset'] != '') {
+                if (isset($aCon['charset']) && $aCon['charset'] != '') {
                     if (!@mysqli_set_charset($dbh, $aCon['charset'])) {
                         $this->halt('Could not set database charset to ' . $aCon['charset']);
                         return null;

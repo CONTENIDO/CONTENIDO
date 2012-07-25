@@ -275,7 +275,7 @@ abstract class DB_Sql_Abstract {
      *                                    used driver and is null in case of an error.
      */
     public function connect() {
-        if ($this->Link_ID = $this->_getConnection($this->_aDbCfg['connection'])) {
+        if (isset($this->_aDbCfg['connection']) && $this->Link_ID = $this->_getConnection($this->_aDbCfg['connection'])) {
             return $this->Link_ID;
         } else {
             if ($this->Link_ID = $this->_connect()) {

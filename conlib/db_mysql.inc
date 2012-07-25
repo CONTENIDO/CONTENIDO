@@ -62,8 +62,10 @@ class DB_Sql extends DB_Sql_Abstract {
      * {@inheritdoc}
      */
     protected function _connect() {
-        $aCon = $this->_aDbCfg['connection'];
-        if (!isset($aCon['host']) || !isset($aCon['user']) || !isset($aCon['password'])) {
+        if (isset($this->_aDbCfg['connection'])) {
+            $aCon = $this->_aDbCfg['connection'];
+        }
+        if (empty($aCon) || !isset($aCon['host']) || !isset($aCon['user']) || !isset($aCon['password'])) {
             $this->halt('MySQL _connect() Connection settings not complete');
             return null;
         }
@@ -81,7 +83,7 @@ class DB_Sql extends DB_Sql_Abstract {
                 return null;
             } else {
                 //set connection charset
-                if ($aCon['charset'] != '') {
+                if (isset($aCon['charset']) && $aCon['charset'] != '') {
                     if (!@mysql_set_charset($aCon['charset'], $dbh)) {
                         $this->halt('Could not set database charset to ' . $aCon['charset']);
                         return null;

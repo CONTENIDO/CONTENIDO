@@ -93,6 +93,13 @@ class cEffectiveSetting
     {
         global $contenido;
 
+        // if the config file does not exist, there is no DB, so just return
+        // the default value in order to avoid PHP notices
+        $cfg = cRegistry::getConfig();
+        if (!file_exists($cfg['path']['contenido'] . '../data/config/' . CONTENIDO_ENVIRONMENT . '/config.php')) {
+            return $default;
+        }
+
         $key = self::_makeKey($type, $name);
 
         $value = self::_get($key);

@@ -9,54 +9,41 @@
  * @con_php_req 5
  *
  *
- * @package    CONTENIDO setup
- * @version    0.1
- * @author     unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- *
- * {@internal
- *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *
- *   $Id$:
- * }}
- *
+ * @package CONTENIDO setup
+ * @version 0.1
+ * @author unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
+    die('Illegal call');
 }
+class cHTMLAlphaImage extends cHTMLImage {
 
-
-class cHTMLAlphaImage extends cHTMLImage
-{
     var $_sClickImage;
+
     var $_sMouseoverClickImage;
+
     var $_sMouseoverSrc;
 
-    function cHTMLAlphaImage()
-    {
-        cHTMLImage::__construct();
+    function cHTMLAlphaImage() {
+        parent::__construct();
         $this->setAlt("");
     }
 
-    function setMouseover($sMouseoverSrc)
-    {
+    function setMouseover($sMouseoverSrc) {
         $this->_sMouseoverSrc = $sMouseoverSrc;
     }
 
-    function setSwapOnClick($sClickSrc, $sMouseoverClickSrc)
-    {
+    function setSwapOnClick($sClickSrc, $sMouseoverClickSrc) {
         $this->_sClickImage = $sClickSrc;
         $this->_sMouseoverClickImage = $sMouseoverClickSrc;
     }
 
-    function toHTML()
-    {
+    function toHTML() {
         $alphaLoader = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'%s\')';
         $imageLocations = "this.imgnormal = '%s'; this.imgover = '%s'; this.clickimgnormal = '%s'; this.clickimgover = '%s';";
 
@@ -71,47 +58,43 @@ class cHTMLAlphaImage extends cHTMLImage
                 $this->attachEventDefinition("mouseover", "onmouseout", "mouseoutHandler(this);");
             } else {
                 $sMouseScript = 'if (isMSIE) { this.style.filter = \'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\\\'%1$s\\\');\'; } else { this.src=\'%1$s\'; }';
-                $this->attachEventDefinition("mouseover", "onmouseover", sprintf($sMouseScript, $this->_sMouseoverSrc) );
-                $this->attachEventDefinition("mouseover", "onmouseout", sprintf($sMouseScript, $this->_src) );
+                $this->attachEventDefinition("mouseover", "onmouseover", sprintf($sMouseScript, $this->_sMouseoverSrc));
+                $this->attachEventDefinition("mouseover", "onmouseout", sprintf($sMouseScript, $this->_src));
             }
         }
 
         return parent::toHTML();
     }
-}
 
-class cHTMLErrorMessageList extends cHTMLDiv
-{
-    function cHTMLErrorMessageList()
-    {
+}
+class cHTMLErrorMessageList extends cHTMLDiv {
+
+    function cHTMLErrorMessageList() {
         $this->_oTable = new cHTMLTable();
         $this->_oTable->setWidth("100%");
-        cHTMLDiv::__construct();
+        parent::__construct();
         $this->setClass("errorlist");
         $this->setStyle("width: 450px;height:218px;overflow:auto;border:1px solid black;");
     }
 
-    function setContent($content)
-    {
+    function setContent($content) {
         $this->_oTable->setContent($content);
     }
 
-    function toHTML()
-    {
+    function toHTML() {
         $this->_setContent($this->_oTable->render());
         return parent::toHTML();
     }
-}
 
-class cHTMLFoldableErrorMessage extends cHTMLTableRow
-{
-    function cHTMLFoldableErrorMessage($sTitle, $sMessage, $sIcon = false, $sIconText = false)
-    {
+}
+class cHTMLFoldableErrorMessage extends cHTMLTableRow {
+
+    function cHTMLFoldableErrorMessage($sTitle, $sMessage, $sIcon = false, $sIconText = false) {
         $this->_oFolding = new cHTMLTableData();
         $this->_oContent = new cHTMLTableData();
-        $this->_oIcon    = new cHTMLTableData();
+        $this->_oIcon = new cHTMLTableData();
         $this->_oIconImg = new cHTMLAlphaImage();
-        $this->_oTitle   = new cHTMLDiv();
+        $this->_oTitle = new cHTMLDiv();
         $this->_oMessage = new cHTMLDiv();
 
         $alphaImage = new cHTMLAlphaImage();
@@ -120,11 +103,11 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow
         $alphaImage->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/open_all.gif");
         $alphaImage->setMouseover(C_SETUP_CONTENIDO_HTML_PATH . "images/open_all.gif");
         $alphaImage->setSwapOnClick(C_SETUP_CONTENIDO_HTML_PATH . "images/close_all.gif", C_SETUP_CONTENIDO_HTML_PATH . "images/close_all.gif");
-        $alphaImage->attachEventDefinition("showhide", "onclick", "aldiv = document.getElementById('".$this->_oMessage->getId()."');  showHideMessage(this, aldiv);");
+        $alphaImage->attachEventDefinition("showhide", "onclick", "aldiv = document.getElementById('" . $this->_oMessage->getId() . "');  showHideMessage(this, aldiv);");
 
         $this->_oTitle->setContent($sTitle);
         $this->_oTitle->setStyle("cursor:pointer;");
-        $this->_oTitle->attachEventDefinition("showhide", "onclick", "alimg = document.getElementById('".$alphaImage->getId()."'); aldiv = document.getElementById('".$this->_oMessage->getId()."'); showHideMessage(alimg, aldiv); clickHandler(alimg);");
+        $this->_oTitle->attachEventDefinition("showhide", "onclick", "alimg = document.getElementById('" . $alphaImage->getId() . "'); aldiv = document.getElementById('" . $this->_oMessage->getId() . "'); showHideMessage(alimg, aldiv); clickHandler(alimg);");
 
         $this->_oMessage->setContent($sMessage);
         $this->_oMessage->setClass("entry_closed");
@@ -135,7 +118,10 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow
 
         $this->_oContent->setVerticalAlignment("top");
         $this->_oContent->setClass("entry");
-        $this->_oContent->setContent(array($this->_oTitle, $this->_oMessage));
+        $this->_oContent->setContent(array(
+            $this->_oTitle,
+            $this->_oMessage
+        ));
 
         $this->_oIcon->setClass("icon");
         $this->_oIcon->setVerticalAlignment("top");
@@ -151,20 +137,22 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow
             $this->_oIcon->setContent("&nbsp;");
         }
 
-        cHTMLTableRow::__construct();
+        parent::__construct();
     }
 
-    function toHTML()
-    {
-        $this->setContent(array($this->_oFolding, $this->_oContent, $this->_oIcon));
+    function toHTML() {
+        $this->setContent(array(
+            $this->_oFolding,
+            $this->_oContent,
+            $this->_oIcon
+        ));
         return parent::toHTML();
     }
-}
 
-class cHTMLInfoMessage extends cHTMLTableRow
-{
-    function cHTMLInfoMessage($sTitle, $sMessage)
-    {
+}
+class cHTMLInfoMessage extends cHTMLTableRow {
+
+    function cHTMLInfoMessage($sTitle, $sMessage) {
         $this->_oTitle = new cHTMLTableData();
         $this->_oMessage = new cHTMLTableData();
 
@@ -176,28 +164,28 @@ class cHTMLInfoMessage extends cHTMLTableRow
         $this->_oMessage->setContent($sMessage);
         $this->_oMessage->setClass("entry_nowrap");
 
-        cHTMLTableRow::__construct();
+        parent::__construct();
     }
 
-    function toHTML()
-    {
-        $this->setContent(array($this->_oTitle, $this->_oMessage));
+    function toHTML() {
+        $this->setContent(array(
+            $this->_oTitle,
+            $this->_oMessage
+        ));
         return parent::toHTML();
     }
-}
 
-class cHTMLLanguageLink extends cHTMLDiv
-{
-    function cHTMLLanguageLink($langcode, $langname, $stepnumber)
-    {
-        cHTMLDiv::__construct();
+}
+class cHTMLLanguageLink extends cHTMLDiv {
+
+    function cHTMLLanguageLink($langcode, $langname, $stepnumber) {
+        parent::__construct();
 
         $linkImage = new cHTMLAlphaImage();
         $linkImage->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
         $linkImage->setMouseover(C_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
         $linkImage->setWidth(16);
         $linkImage->setHeight(16);
-
 
         $this->setStyle("vertical-align:center;height:40px;width:150px;");
         $link = new cHTMLLink("#");
@@ -219,13 +207,12 @@ class cHTMLLanguageLink extends cHTMLDiv
         $alignment = '<table border="0" width="100%%" cellspacing="0" cellpadding="0"><tr><td valign="middle">%s</td><td valign="middle" align="right">%s</td></tr></table>';
         $this->setContent(sprintf($alignment, $link->render(), $link2->render()));
     }
-}
 
-class cHTMLButtonLink extends cHTMLDiv
-{
-    function cHTMLButtonLink($href, $title)
-    {
-        cHTMLDiv::__construct();
+}
+class cHTMLButtonLink extends cHTMLDiv {
+
+    function cHTMLButtonLink($href, $title) {
+        parent::__construct();
 
         $linkImage = new cHTMLAlphaImage();
         $linkImage->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
@@ -249,6 +236,5 @@ class cHTMLButtonLink extends cHTMLDiv
         $alignment = '<table border="0" width="100%%" cellspacing="0" cellpadding="0"><tr><td valign="middle">%s</td><td valign="middle" align="right">%s</td></tr></table>';
         $this->setContent(sprintf($alignment, $link->render(), $link2->render()));
     }
-}
 
-?>
+}

@@ -61,11 +61,12 @@ class DB_Contenido extends DB_Sql {
         // @FIXME: Database class should throw a error. Redirecting to the error page is not a good idea.
         //         What if the db connection within a cli script fails???
         if ($this->Errno == 1) {
+            $contenidoPath = (empty($cfg['path']['contenido_fullhtml']))? $cfg['path']['frontend'] : $cfg['path']['contenido_fullhtml'];
             $errortitle = i18n('MySQL Database not reachable for installation %s');
-            $errortitle = sprintf($errortitle, $cfg['path']['contenido_fullhtml']);
+            $errortitle = sprintf($errortitle, $contenidoPath);
 
             $errormessage = i18n('The MySQL Database for the installation %s is not reachable. Please check if this is a temporary problem or if it is a real fault.');
-            $errormessage = sprintf($errormessage, $cfg['path']['contenido_fullhtml']);
+            $errormessage = sprintf($errormessage, $contenidoPath);
 
             notifyOnError($errortitle, $errormessage);
 

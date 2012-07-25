@@ -159,9 +159,6 @@ checkAndInclude($cfg['path']['contenido_config'] . 'config.path.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'config.misc.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
 
-$cfg['db']['sequenceTable'] = $cfg['tab']['sequence'];
-
-
 // Initialization of autoloader
 checkAndInclude($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');
 cAutoload::initialize($cfg);

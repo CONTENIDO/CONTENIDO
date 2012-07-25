@@ -151,8 +151,7 @@ cInclude('includes', 'functions.i18n.php');
 $_cecRegistry = cApiCECRegistry::getInstance();
 require_once($cfg['path']['contenido_config'] . 'config.chains.php');
 
-// Set default database connection parameter
-$cfg['db']['sequenceTable'] = $cfg['tab']['sequence'];
+// Set default database connection parameterecho '<pre>';
 DB_Contenido::setDefaultConfiguration($cfg['db']);
 
 // Initialize UrlBuilder, configuration is set in data/config/{environment}/config.misc.php
