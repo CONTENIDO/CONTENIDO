@@ -9,7 +9,7 @@
 /**
  * The Log_null class is a concrete implementation of the Log:: abstract
  * class.  It simply consumes log events.
- * 
+ *
  * @author  Jon Parise <jon@php.net>
  * @since   Log 1.8.2
  * @package Log
@@ -20,7 +20,7 @@ class Log_null extends Log
 {
     /**
      * Constructs a new Log_null object.
-     * 
+     *
      * @param string $name     Ignored.
      * @param string $ident    The identity string.
      * @param array  $conf     The configuration array.
@@ -28,7 +28,7 @@ class Log_null extends Log
      * @access public
      */
     function Log_null($name, $ident = '', $conf = array(),
-					  $level = PEAR_LOG_DEBUG)
+                      $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
         $this->_ident = $ident;
@@ -38,7 +38,7 @@ class Log_null extends Log
     /**
      * Simply consumes the log event.  The message will still be passed
      * along to any Log_observer instances that are observing this Log.
-     * 
+     *
      * @param mixed  $message    String or object containing the message to log.
      * @param string $priority The priority of the message.  Valid
      *                  values are: PEAR_LOG_EMERG, PEAR_LOG_ALERT,

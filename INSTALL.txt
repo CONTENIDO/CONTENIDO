@@ -17,32 +17,32 @@ I:       Deutsche Version README
   Windows (2000, NT, XP, Vista)
 
   Browser: Sämtliche Browser der neueren Generationen (Internet Explorer ab Version 6,
-           Firefox ab Version 2.0, Safari für Mac ab Version 3) 
-           Nicht getestet wurden Opera, Konqueror. 
-  
+           Firefox ab Version 2.0, Safari für Mac ab Version 3)
+           Nicht getestet wurden Opera, Konqueror.
+
   Wichtig: Bitte deaktivieren Sie sämtliche Firewalls wie Zone Alarm, Norton
   Internet Security und Popup- bzw. Werbeblocker. Diese Anwendungen verhindern
   die ordnungsgemäße Funktionsweise von CONTENIDO.
-  
+
   CONTENIDO Backend 4.8 wird derzeit nur in den Sprachen Deutsch und Englisch unterstützt.
-  
+
 
 -------------------------------------------------------------------
 2) Installation
 -------------------------------------------------------------------
 
 1.
-Entpacken Sie die ZIP-Datei der entsprechenden Version in das 
-"DocumentRoot"-Verzeichnis Ihres Webservers (unter Apache: schauen 
-Sie in der Konfigurationsdatei httpd.conf nach, in den meisten 
+Entpacken Sie die ZIP-Datei der entsprechenden Version in das
+"DocumentRoot"-Verzeichnis Ihres Webservers (unter Apache: schauen
+Sie in der Konfigurationsdatei httpd.conf nach, in den meisten
 Fällen ist es das Verzeichnis "htdocs/").
 
 Beim Entpacken (und ggf. beim Hochladen via FTP) muss die Groß-
 und Kleinschreibung der Dateien erhalten bleiben. Empfehlung für
-die Übertragung via FTP: FileZilla (http://filezilla.sourceforge.net). 
+die Übertragung via FTP: FileZilla (http://filezilla.sourceforge.net).
 
-2. 
-Setzen sie die Zugriffsrechte der nachfolgenden Verzeichnisse: 
+2.
+Setzen sie die Zugriffsrechte der nachfolgenden Verzeichnisse:
 
 data/
 
@@ -54,7 +54,7 @@ cms/templates/
 cms/upload/
 cms/version/
 
-auf rwxrwxrwx. (z.B.: chmod 777 cms/upload/) 
+auf rwxrwxrwx. (z.B.: chmod 777 cms/upload/)
 
 3.
 Rufen Sie die "setup/index.php" auf und folgen Sie den Instruktionen.
@@ -62,7 +62,7 @@ Nach dem vollzogenen Setup sollte der gesamte Ordner 'setup'
 gelöscht werden.
 
 Das Setup wird nur mit Internet Explorer, Mozilla und Firefox
-unterstützt. Opera wurde nicht getestet. Konqueror und Safari können 
+unterstützt. Opera wurde nicht getestet. Konqueror und Safari können
 NICHT für die Ausführung des Setups genutzt werden.
 
 4.
@@ -71,19 +71,19 @@ www.Ihre_Domain.de/contenido/ aufrufen, das Frontend mit
 www.Ihre_Domain.de/cms/.
 
 Systemadministrator:
-Username: sysadmin 
+Username: sysadmin
 Passwort: sysadmin
 
 Administrator für Beispiel-Mandant (sofern installiert):
-Username: admin 
+Username: admin
 Passwort: admin
 
 Ändern Sie nach der Installation sofort die Passwörter für
 die vorhanden Accounts (sysadmin und ggf. admin)!
 
 4.
-Benennen Sie "contenido/.htaccess_recommended" um in 
-"contenido/.htaccess" oder übernehmen Sie dessen Inhalte in eine 
+Benennen Sie "contenido/.htaccess_recommended" um in
+"contenido/.htaccess" oder übernehmen Sie dessen Inhalte in eine
 vorhandene .htaccess Datei (gilt für Apache HTTP-Server)
 
 -------------------------------------------------------------------
@@ -108,9 +108,9 @@ II:       English Version README
   Sun Solaris
   Windows (2000, NT, XP, Vista)
 - Browser (Internet Explorer Version 6 or higher,
-           Firefox Version 2.0 or higher, Safari für Mac Version 3 or 
+           Firefox Version 2.0 or higher, Safari für Mac Version 3 or
            higher)
-           
+
   CONTENIDO Backend 4.8 supports languages german and english only.
 
 -------------------------------------------------------------------
@@ -124,14 +124,14 @@ webserver (Apache: the "DocumentRoot" is defined in the file
 'httpd.conf'. Usually it is located in the directory 'htdocs/')
 
 Please use a FTP tool, that doesn't change the capitalization. Our
-recommendation: FileZilla (http://filezilla.sourceforge.net). 
+recommendation: FileZilla (http://filezilla.sourceforge.net).
 
-2. 
+2.
 Change the access rights for the following folders:
 
-contenido/logs/ 
+contenido/logs/
 contenido/cronjobs/
-contenido/temp/ 
+contenido/temp/
 contenido/cache/
 
 cms/cache/
@@ -142,35 +142,35 @@ cms/templates/
 cms/upload/
 cms/version/
 
-to rwxrwxrwx. (e.g. chmod 777 cms/upload/) 
+to rwxrwxrwx. (e.g. chmod 777 cms/upload/)
 
 3.
 Start the setup with "setup/index.php" using your browser and follow the
 instructions. The directory 'setup' should be removed after the
 installation process.
 
-The setup supports Internet Explorer, Mozilla and Firefox only. Opera 
-hasn't been tested, Konqueror and Safari CAN'T BE USED to run the 
+The setup supports Internet Explorer, Mozilla and Firefox only. Opera
+hasn't been tested, Konqueror and Safari CAN'T BE USED to run the
 CONTENIDO setup.
 
 4.
 You can start the backend after a successful installation with
-www.Your_Domain.com/contenido/. If you want to have a look at the 
+www.Your_Domain.com/contenido/. If you want to have a look at the
 frontend, use www.Your_Domain.com/cms/.
 
 Systemadministrator:
-Username: sysadmin 
+Username: sysadmin
 Passwort: sysadmin
 
 Administrator for example client (if installed):
 Username: admin
 Passwort: admin
 
-Change the passwords immediately after succesful installation 
+Change the passwords immediately after succesful installation
 (sysadmin and admin, if example client has been installed)!
 
 5.
-Rename "contenido/.htaccess_recommended" to "contenido/.htaccess" 
+Rename "contenido/.htaccess_recommended" to "contenido/.htaccess"
 ore takeover it's content into a existing .htaccess file
 (significant only for Apache HTTP-Server)
 

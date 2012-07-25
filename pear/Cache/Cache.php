@@ -25,16 +25,16 @@ cInclude('pear', 'Cache/Error.php');
 /**
 * Cache is a base class for cache implementations.
 *
-* The pear cache module is a generic data cache which can be used to 
+* The pear cache module is a generic data cache which can be used to
 * cache script runs. The idea behind the cache is quite simple. If you have
 * the same input parameters for whatever tasks/algorithm you use you'll
 * usually get the same output. So why not caching templates, functions calls,
 * graphic generation etc. Caching certain actions e.g. XSLT tranformations
-* saves you lots of time. 
+* saves you lots of time.
 *
-* The design of the cache reminds of PHPLibs session implementation. A 
-* (PHPLib: session) controller uses storage container (PHPLib: ct_*.inc) to save 
-* certain data (PHPLib: session data). In contrast to the session stuff it's up to 
+* The design of the cache reminds of PHPLibs session implementation. A
+* (PHPLib: session) controller uses storage container (PHPLib: ct_*.inc) to save
+* certain data (PHPLib: session data). In contrast to the session stuff it's up to
 * you to generate an ID for the data to cache. If you're using the output cache
 * you might use the script name as a seed for cache::generateID(), if your using the
 * function cache you'd use an array with all function parameters.
@@ -99,7 +99,7 @@ class Cache extends PEAR {
     * @access   public
     */
     var $gc_probability = 1;
-    
+
     /**
     * Garbage collection: delete all entries not use for n seconds.
     *

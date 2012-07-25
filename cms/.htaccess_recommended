@@ -2,7 +2,7 @@
 # Apache settings for CONTENIDO frontend.
 #
 # NOTE:
-# This file contains rules being configured for the default client directory 'cms' 
+# This file contains rules being configured for the default client directory 'cms'
 # in a CONTENIDO installation.
 # Ensure to adapt the client directory name if it differs from it.
 #

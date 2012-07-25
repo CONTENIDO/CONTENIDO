@@ -34,24 +34,24 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
 - phplib
   Lizenz:      GNU General Public Licence (GPL)
   Information: http://phplib.sourceforge.net
-  
+
 - Pseudo-Cron (Cron-Emulator)
-  Lizenz: 	   GNU General Public Licence (GPL)
+  Lizenz:        GNU General Public Licence (GPL)
   Copyright:   (c) 2003 Kai Blankenhorn
   Information: http://www.bitfolge.de/?l=en&s=pseudocron
-  
+
 - TinyMCE
   Lizenz:      GNU Library General Public Licence (LGPL)
   Information: http://tinymce.moxiecode.com/
-  
+
 - jQuery
   Lizenz:      Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
   Information: http://jquery.com/
-  
-- The DHTML / JavaScript Calendar 
+
+- The DHTML / JavaScript Calendar
   Lizenz:      GNU Lesser General Public License version 2.1 or above
   Information: http://www.dynarch.com/projects/calendar/
-  
+
 - CodeMirror
   Lizenz:      CodeMirror license
   Information: http://codemirror.net/LICENSE

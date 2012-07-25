@@ -7,7 +7,7 @@ CONTENIDO CHANGELOG
 $Id$:
 
 Release 4.9.0 Alpha 1
-----------------------------------------------------------------------	
+----------------------------------------------------------------------
 ** Bug
     * [CON-266] - Upgrade/Migration not possible without xmlwriter extension
     * [CON-306] - Inconsistent configuration of integrated caching feature
@@ -57,7 +57,7 @@ Release 4.9.0 Alpha 1
     * [CON-463] - Searching for article ID 0 leads into display error
     * [CON-464] - Removal of upgrade error log display
     * [CON-470] - Ampersand is displayed wrong in category creation
-    * [CON-471] - Display problem with headline in language creation 
+    * [CON-471] - Display problem with headline in language creation
     * [CON-481] - Gettext extension is never used
     * [CON-496] - Menu frame in tab "Logs" contains image for left frame
     * [CON-497] - Multple tab selection on dashboard links
@@ -139,7 +139,7 @@ Release 4.9.0 Alpha 1
     * [CON-551] - Update system requirement checks
 
 Release 4.8.14
-----------------------------------------------------------------------	
+----------------------------------------------------------------------
 ** Bug
 
     * [CON-305] - Initialization of global $encodinmg could fail
@@ -164,7 +164,7 @@ Release 4.8.14
 
 
 Release 4.8.13
-----------------------------------------------------------------------	
+----------------------------------------------------------------------
 ** Bug
     * [CON-249] - Bug in Contenido_FrontendNavigation::isActiveChild
     * [CON-250] - Changing template to none not working right under Artikel->Kategorie bearbeiten
@@ -235,9 +235,9 @@ Release 4.8.13
 
 ** Task
     * [CON-253] - Checking for write permissions of cronjob jobfiles
-    
+
 Release 4.8.12
-----------------------------------------------------------------------	
+----------------------------------------------------------------------
 ** Bug
 
     * [CON-240] - Rightsmanagement: Dateiverwaltung is called Übersicht instead of Dateiverwaltung
@@ -256,16 +256,16 @@ Release 4.8.12
     * [CON-244] - Added CMS_Type Teaser to Contenido
 
 ** Task
-	* [CON-248] - Removed TinyMce2 out of standard installation
+    * [CON-248] - Removed TinyMce2 out of standard installation
 
 Release 4.8.11
-----------------------------------------------------------------------	
+----------------------------------------------------------------------
 ** Bug
 
     * [CON-234] - con_tiny.js: wrong parameter in setFocus throws javascript error in IE
     * [CON-235] - bug which does not display any categories when root categories does not own the same right in content->article
-	* [CON-236] - Bug allows cross site scripting
-	
+    * [CON-236] - Bug allows cross site scripting
+
 ** Improvement
 
     * [CON-231] - Rewritten Contenido Example Client module Navigation
@@ -274,7 +274,7 @@ Release 4.8.11
 ** New Feature
 
     * [CON-233] - Modified Contenido Example Client links which contains full name to article
-	* [CON-237] - Added possibility for deactivating insight editing
+    * [CON-237] - Added possibility for deactivating insight editing
 
 ** Task
 
@@ -284,7 +284,7 @@ Release 4.8.11
 
 
 Release 4.8.10
-----------------------------------------------------------------------	
+----------------------------------------------------------------------
 ** Bug
 
     * [CON-222] - missing images for category tree in content->article
@@ -301,7 +301,7 @@ Release 4.8.10
 
 
 Release 4.8.9
-----------------------------------------------------------------------	
+----------------------------------------------------------------------
 ** Bug
 
     * [CON-102] - XHTML Bug im Backend <cx /> / werden bei der Speicherung gelöscht
@@ -312,7 +312,7 @@ Release 4.8.9
     * [CON-211] - Backend group management is still possible after group deletion!
     * [CON-212] - Can't read and save Copyright-Infos in File-Details
     * [CON-213] - Layoutproblem Firefox / Mac
-	* [CON-219] - Zusammenhang Artikelsuche/Rechtevergabe
+    * [CON-219] - Zusammenhang Artikelsuche/Rechtevergabe
 
 ** Improvement
 
@@ -324,10 +324,10 @@ Release 4.8.9
 
     * Commented out display_errors as this should be handled as defined in php.ini by default
 
-	
+
 Release 4.8.8
-----------------------------------------------------------------------	
-             
+----------------------------------------------------------------------
+
 ** Bug
 
     * [CON-141] - Kein Cursor im FF bei Headline- oder HTML-Feldern im Artikel-Editbereich
@@ -362,14 +362,14 @@ Release 4.8.8
 
 
 Release 4.8.7
-----------------------------------------------------------------------	
+----------------------------------------------------------------------
 ** Bug
     * [CON-139] - Link für Handbuch im cfg-array
     * [CON-144] - plugin createmetatags entfernt akzentuierte Zeichen
                   aus den keywords
     * [CON-154] - Creating inactive user by using a date in history
                   doesn't work
-    * [CON-156] - Some cronjobs do not use function 
+    * [CON-156] - Some cronjobs do not use function
                   "isRunningFromWeb()"
     * [CON-159] - Encoding isn't recognized in backend user and group
                   administration
@@ -402,26 +402,26 @@ Release 4.8.7
     * [CON-119] - Caching
     * [CON-142] - Linkchecker hängt nach Migration eines großen Portals
     * [CON-143] - php-Funktion mail() vermeiden, class.phpmailer.php verwenden
-	* [CON-176] - Contenido Security Class
-	* [CON-XXX] - Some XSS/RFI Bugfixes
+    * [CON-176] - Contenido Security Class
+    * [CON-XXX] - Some XSS/RFI Bugfixes
 
 ** Task
     * [CON-6] - Lock/ Unlock (neues Icon finden und umbenennen)
     * [CON-140] - class.ui.php Funktion setCellExtra
     * [CON-146] - neue Adresse von 4fb im Impressum ändern
     * [CON-148] - "docs\techref\backend\backend.customizing.html" auf den aktuellen Stand bringen
-	* [CON-XXX] - Removed Java Applets
-	* [CON-XXX] - Removed SPAW editor
+    * [CON-XXX] - Removed Java Applets
+    * [CON-XXX] - Removed SPAW editor
 
 ** New Feature
-	* [CON-175] - Contenido Update Notify and RSS-Feed
+    * [CON-175] - Contenido Update Notify and RSS-Feed
     * [CON-184] - CMS_DATE
 
 
 Release 4.8.6
 ----------------------------------------------------------------------
 * Security
-	* [CON-XXX] - Additional hot- and bugfixes added
+    * [CON-XXX] - Additional hot- and bugfixes added
 
 Release 4.8.5
 ----------------------------------------------------------------------

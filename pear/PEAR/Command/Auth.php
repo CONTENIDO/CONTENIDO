@@ -98,7 +98,7 @@ password from your user configuration.',
             $username = @$_ENV['USER'];
         }
         $this->ui->outputData("Logging in to $server.", $command);
-        
+
         list($username, $password) = $this->ui->userDialog(
             $command,
             array('Username', 'Password'),
@@ -107,10 +107,10 @@ password from your user configuration.',
             );
         $username = trim($username);
         $password = trim($password);
-        
+
         $this->config->set('username', $username);
         $this->config->set('password', $password);
-        
+
         $remote->expectError(401);
         $ok = $remote->call('logintest');
         $remote->popExpect();

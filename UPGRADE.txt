@@ -11,17 +11,17 @@ I:       Deutsche Version README
 - HINWEIS: Vor dem Upgrade sollte auf _jeden_ Fall eine Daten-
   sicherung vorgenommen werden. Es besteht keine Gewährleistung
   für die Funktion des Upgrades.
-  
-- HINWEIS: Damit Dateien, die in neuen Versionen nicht mehr benötigt 
-  werden (und die u.U. Sicherheitslücken darstellen können), aus Ihrer 
-  Installation entfernt werden, sollten Sie bei einem Upgrade 
+
+- HINWEIS: Damit Dateien, die in neuen Versionen nicht mehr benötigt
+  werden (und die u.U. Sicherheitslücken darstellen können), aus Ihrer
+  Installation entfernt werden, sollten Sie bei einem Upgrade
   folgende Schritte durchführen:
-  - Benennen Sie die vorhandenen CONTENIDO-Verzeichnisse 
+  - Benennen Sie die vorhandenen CONTENIDO-Verzeichnisse
     (conlib, contenido, pear) um
-  - Kopieren Sie die config.php-Datei aus 
+  - Kopieren Sie die config.php-Datei aus
     <altes contenido-Verzeichnis>/includes in das contenido/includes-
     -Verzeichnis der neuen Installation
-  - Nach erfolgreichem Setup und Test der Installation können Sie 
+  - Nach erfolgreichem Setup und Test der Installation können Sie
     alten CONTENIDO-Verzeichnisse löschen.
 
 -------------------------------------------------------------------
@@ -111,22 +111,22 @@ Ein Upgrade von CONTENIDO 4.2 ist leider derzeit noch nicht möglich.
 -------------------------------------------------------------------
 II:       English Version README
 -------------------------------------------------------------------
-1) Upgrade requirements 
+1) Upgrade requirements
 -------------------------------------------------------------------
 
 - Updating from CONTENIDO 4.3.x to 4.4.0 will work, altough
   an update from CONTENIDO 4.2.x is currently not supported.
-  
+
 - NOTE: Please backup your data before you start the upgrade
   process. There is no warranty and guarantee for an errorless
   upgrade.
-  
-- NOTE: Some files of the current installation may not be 
+
+- NOTE: Some files of the current installation may not be
   needed anymore. As these "orphaned" files may result in security
   issues, follow these steps for an upgrade:
   - Rename the current CONTENIDO folders (conlib, contenido, pear)
   - Upload the folders and files of the new version
-  - Copy the config.php file in <old contenido folder>/includes 
+  - Copy the config.php file in <old contenido folder>/includes
     from the previous installation to the contenido/includes folder
     of the new installation
   - Run setup and check your installation. If everything is working
@@ -144,14 +144,14 @@ NOTE: Please backup your data first before you start the
 upgrade procedure!!!
 
 1.
-Copy the unzipped data of the new version to your webserver, which 
+Copy the unzipped data of the new version to your webserver, which
 should replace the existing files.
 
 2.
 Start the upgrade with "setup/index.php", choose the option
-'Upgrade' and follow the instructions. The upgrade procedure will 
-extend and modifiy some tables. New tables will be created. Within 
-the next step the data from the old tables will be moved to the 
+'Upgrade' and follow the instructions. The upgrade procedure will
+extend and modifiy some tables. New tables will be created. Within
+the next step the data from the old tables will be moved to the
 new ones.
 
 3.
@@ -165,7 +165,7 @@ NOTE: Please backup your data first before you start the
 upgrade procedure!!!
 
 1.
-Copy the unzipped data of the new version to your webserver, which 
+Copy the unzipped data of the new version to your webserver, which
 should replace the existing files.
 
 2.
@@ -180,7 +180,7 @@ The start article function was changed. The new functions will
 be used by default. If you need to use the old functions, please
 set $cfg["is_start_compatible"] in your config.php to true.
 If you like to use the new functions, you can convert your old
-articles using "convert_startarticles.php". You should use the 
+articles using "convert_startarticles.php". You should use the
 compatibility option if you use older navigation modules.
 
 3.
@@ -195,7 +195,7 @@ NOTE: Please backup your data first before you start the
 upgrade procedure!!!
 
 1.
-Copy the unzipped data of the new version to your webserver, which 
+Copy the unzipped data of the new version to your webserver, which
 should replace the existing files.
 
 2.

@@ -95,7 +95,7 @@ class cApiMetaType extends Item {
      */
     public function setField($name, $value, $bSafe = true) {
         if ('maxlength' == $name) {
-			$value = (int) $value;
+            $value = (int) $value;
         }
 
         if (is_string($value)) {

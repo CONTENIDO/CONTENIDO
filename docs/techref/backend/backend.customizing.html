@@ -81,9 +81,9 @@ don't override each other.<br>
       <td>show-new-window-checkbox</td>
       <td>
         (true, false): If true, show "new window" checkbox for redirects in article properties.
-        Note: If a redirect has been specified, the page is redirected to the new URL using an html 
+        Note: If a redirect has been specified, the page is redirected to the new URL using an html
         page header. As header redirects can't open new windows, this setting is only useful,
-        if a navigation module is used, which mentions the "open in new window" setting and 
+        if a navigation module is used, which mentions the "open in new window" setting and
         adds a &prime;target=&quot;_blank&quot;&prime; to the link, if necessary. Default: false
       </td>
       <td>System, Clients, Groups, Users</td>
@@ -187,7 +187,7 @@ don't override each other.<br>
     <tr>
       <td>system</td>
       <td>languageorder</td>
-      <td>If set to "name", languages in the drop-down (top right) will be shown ordered by name, 
+      <td>If set to "name", languages in the drop-down (top right) will be shown ordered by name,
       if not specified or set to something else, languages will be ordered by language id (default)</td>
       <td>System, Clients, Groups, Users</td>
     </tr>
@@ -255,11 +255,11 @@ don't override each other.<br>
         users, set this to false to disable this function. Default: true</td>
       <td>System, Clients, Users</td>
     </tr>
-	<tr>
+    <tr>
       <td>frontendusers</td>
       <td>pluginsearch_valid_plugins</td>
-      <td>If pluginsearch is set to true, you can hereby 
-        limit the plugins to search over. This property must be a comma-separated list 
+      <td>If pluginsearch is set to true, you can hereby
+        limit the plugins to search over. This property must be a comma-separated list
         (no whitespaces) of all plugins that should be used for pluginsearch.
         All other plugins will be skipped to improve performance.</td>
       <td>System, Clients, Users</td>
@@ -280,25 +280,25 @@ don't override each other.<br>
         insert a base href tag. Default: true.</td>
       <td>System, Clients</td>
     </tr>
-	<tr>
+    <tr>
       <td>edit_area</td>
       <td>activated</td>
       <td>(true, false): Defines if syntax highlighting editor is used in backend for modul, js, css and html code Default: true.</td>
       <td>System, Clients, Groups, Users</td>
     </tr>
-	<tr>
+    <tr>
       <td>system</td>
       <td>insight_editing_activated</td>
       <td>(true, false): Defines if insight editing is used in article editor</td>
       <td>System, Clients, Groups, Users</td>
     </tr>
-  	<tr>
+      <tr>
       <td>maintenance</td>
       <td>mode</td>
       <td>(disabled, enabled): In maintenance mode, only sysadmins are allowed to login into contenido backend. Default: disabled</td>
       <td>System</td>
     </tr>
-	<tr>
+    <tr>
       <td>pw_request</td>
       <td>enable</td>
       <td>(true, false): Property definies if contanido is allowed to generate new passwords for backenduser and submits them via mail. Default: true</td>
@@ -310,25 +310,25 @@ don't override each other.<br>
       <td>Host which is used for sending system mails (PW-Request). Default: localhost</td>
       <td>System</td>
     </tr>
-	<tr>
+    <tr>
       <td>system</td>
       <td>mail_sender</td>
       <td>Sender mail-adress of CONTENIDO Systemmails. (PW-Request). Default: info@contenido.org</td>
       <td>System</td>
     </tr>
-	<tr>
+    <tr>
       <td>system</td>
       <td>mail_sender_name</td>
       <td>Sender name of CONTENIDO Systemmails. (PW-Request). Default: CONTENIDO Backend</td>
       <td>System</td>
     </tr>
-	<tr>
+    <tr>
       <td>update</td>
       <td>check</td>
       <td>(true, false): Update checker notifies sysadmins, if there are new updates for CONTENIDO on contenido org. Default: false </td>
       <td>System</td>
     </tr>
-	<tr>
+    <tr>
       <td>update</td>
       <td>news_feed</td>
       <td>(true, false): Update RSS News notifies sysadmins, about news on contenido org and security issues. Default: false </td>
@@ -351,7 +351,7 @@ These parameters can't be set using a setting: document_base_url, file_browser_c
     <tr>
       <td>tinymce</td>
       <td>content_css</td>
-      <td>Defines the stylesheet to 
+      <td>Defines the stylesheet to
         include within tinyMCE (&lt;= V4.6.15: wysiwyg/tinymce-stylesheet-file).</td>
       <td>System, Groups, Users</td>
     </tr>
@@ -365,14 +365,14 @@ These parameters can't be set using a setting: document_base_url, file_browser_c
     <tr>
       <td>tinymce</td>
       <td>width</td>
-      <td>Defines the width of tinyMCE (&lt;= V4.6.15: wysiwyg/tinymce-width, 
+      <td>Defines the width of tinyMCE (&lt;= V4.6.15: wysiwyg/tinymce-width,
         default 100%)</td>
       <td>System, Groups, Users</td>
     </tr>
     <tr>
       <td>tinymce</td>
       <td>height</td>
-      <td>Defines the height if tinyMCE (&lt;= V4.6.15: wysiwyg/tinymce-height, 
+      <td>Defines the height if tinyMCE (&lt;= V4.6.15: wysiwyg/tinymce-height,
         default 480px)</td>
       <td>System, Groups, Users</td>
     </tr>
@@ -412,14 +412,14 @@ These parameters can't be set using a setting: document_base_url, file_browser_c
            theme_advanced_buttons3</td>
       <td>Defines which items should be shown on
         the first/second/third toolbar. Please have a look at the tinyMCE documentation to
-        find out which items you can use (&lt;= V4.6.15: wysiwyg/tinymce-toolbar1/2/3). 
+        find out which items you can use (&lt;= V4.6.15: wysiwyg/tinymce-toolbar1/2/3).
         Only used if the toolbar mode is &quot;custom&quot;.</td>
       <td>System, Groups, Users</td>
     </tr>
     <tr>
       <td>tinymce</td>
       <td>plugins</td>
-      <td>Defines which plugins should be loaded 
+      <td>Defines which plugins should be loaded
       (&lt;= V4.6.15: wysiwyg/tinymce-plugins). Only used if the toolbar mode is &quot;custom&quot;.</td>
       <td>System, Groups, Users</td>
     </tr>
@@ -458,26 +458,26 @@ These parameters can't be set using a setting: document_base_url, file_browser_c
     <tr>
       <td>tinymce</td>
       <td>convert_urls</td>
-      <td>(true, false): Defines, if URLs will be converted (e.g. to relative URLs) 
-        at all. Please note, that URLs should be converted (e.g. for the time you may have to 
+      <td>(true, false): Defines, if URLs will be converted (e.g. to relative URLs)
+        at all. Please note, that URLs should be converted (e.g. for the time you may have to
         change the domain or server path). Default: true (&lt;= V4.6.15: wysiwyg/tinymce-convert-urls)</td>
       <td>System, Clients, Groups, Users</td>
     </tr>
     <tr>
       <td>tinymce</td>
       <td>relative_urls</td>
-      <td>(true, false): If convert_urls is true, then 
-        this setting specifies, if URLs will be converted to relative or absolute URLs. 
-        Please note, that relative URLs should be used (e.g. for the time you may have to 
+      <td>(true, false): If convert_urls is true, then
+        this setting specifies, if URLs will be converted to relative or absolute URLs.
+        Please note, that relative URLs should be used (e.g. for the time you may have to
         change the domain or server path). Default: true (&lt;= V4.6.15: wysiwyg/tinymce-relative-urls)</td>
       <td>System, Clients, Groups, Users</td>
     </tr>
     <tr>
       <td>tinymce</td>
       <td>contenido_lists</td>
-      <td>If specified, adds dropdown lists with links 
+      <td>If specified, adds dropdown lists with links
         for all articles (Insert Link popup window), images (Insert Image popup window) and/or
-        all media/flash files (Insert Media/Flash popup window). Valid values are: link, image, 
+        all media/flash files (Insert Media/Flash popup window). Valid values are: link, image,
         media, flash.
         Values have to be separated by a comma, e.g. &quot;link,image&quot;.<br><br>
         <strong>Do not specify</strong>, if you have a lot of articles, images and/or media files

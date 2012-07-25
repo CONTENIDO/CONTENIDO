@@ -72,7 +72,7 @@ class XML_RSS extends XML_Parser
      * @var array
      */
     var $textinput = array();
-    
+
     /**
      * @var array
      */
@@ -128,12 +128,12 @@ class XML_RSS extends XML_Parser
      */
     function XML_RSS($handle = '', $encoding = false)
     {
-    	if ($encoding !== false)
-    	{
-        	$this->XML_Parser($encoding);
-    	} else {
-    		$this->XML_Parser();	
-    	}
+        if ($encoding !== false)
+        {
+            $this->XML_Parser($encoding);
+        } else {
+            $this->XML_Parser();
+        }
 
         if (@is_resource($handle)) {
             $this->setInput($handle);
@@ -235,7 +235,7 @@ class XML_RSS extends XML_Parser
                 $this->_add($tagName, strtolower($this->activeTag),
                             $cdata);
             }
-            
+
         }
     }
 

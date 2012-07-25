@@ -181,14 +181,14 @@ class Cache_Output extends Cache {
     /**
     * Sends the data to the user.
     * This is for compatibility with OutputCompression
-    * 
+    *
     * @param    string
     * @access   public
-    */    
+    */
     function printContent($content = '') {
         if ('' == $content)
             $content = &$this->container->cachedata;
-            
+
         print $content;
     }
     /**

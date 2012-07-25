@@ -8,31 +8,31 @@ class cMail extends PHPMailer {
     public $resendName = '';
     public $resendHost = '';
 
-	/**
-	 * Constructor
-	 * @param boolean $exceptions Should we throw external exceptions?
-	 */
-	public function __construct($exceptions = false) {
-		parent::__construct($exceptions);
+    /**
+     * Constructor
+     * @param boolean $exceptions Should we throw external exceptions?
+     */
+    public function __construct($exceptions = false) {
+        parent::__construct($exceptions);
 
-		//get systemproperty for senders mail and validate mailadress, if not set use standard sender
-		$this->resendEmail = getSystemProperty('system', 'mail_sender');
-		if (!preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $this->resendEmail)) {
-			$this->resendEmail = 'noreply@contenido-resendemail.de';
-		}
+        //get systemproperty for senders mail and validate mailadress, if not set use standard sender
+        $this->resendEmail = getSystemProperty('system', 'mail_sender');
+        if (!preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $this->resendEmail)) {
+            $this->resendEmail = 'noreply@contenido-resendemail.de';
+        }
 
-		//get systemproperty for senders name, if not set use CONTENIDO Backend
-		$this->resendName = getSystemProperty('system', 'mail_sender_name');
-		if ($this->resendName == '') {
-			$this->resendName = 'CONTENIDO Backend';
-		}
+        //get systemproperty for senders name, if not set use CONTENIDO Backend
+        $this->resendName = getSystemProperty('system', 'mail_sender_name');
+        if ($this->resendName == '') {
+            $this->resendName = 'CONTENIDO Backend';
+        }
 
-		//get systemproperty for location of mailserver, if not set use localhost
-		$this->resendHost = getSystemProperty('system', 'mail_host');
-		if ($this->resendHost == '') {
-			$this->resendHost = 'localhost';
-		}
-	}
+        //get systemproperty for location of mailserver, if not set use localhost
+        $this->resendHost = getSystemProperty('system', 'mail_host');
+        if ($this->resendHost == '') {
+            $this->resendHost = 'localhost';
+        }
+    }
 
     /**
      * Log the information about sending the email.

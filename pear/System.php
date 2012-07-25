@@ -419,8 +419,8 @@ class System
     */
     function which($program, $fallback = false)
     {
-    	// is_executable() is not available on windows
-    	if (OS_WINDOWS) {
+        // is_executable() is not available on windows
+        if (OS_WINDOWS) {
             $pear_is_executable = 'is_file';
         } else {
             $pear_is_executable = 'is_executable';

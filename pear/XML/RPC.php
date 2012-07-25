@@ -886,7 +886,7 @@ class XML_RPC_Client extends XML_RPC_Base {
            $this->headers = 'POST ';
         }
         $this->headers .= $this->path. " HTTP/1.0\r\n";
-        
+
         $this->headers .= "User-Agent: PEAR XML_RPC\r\n";
         $this->headers .= 'Host: ' . $this->server . "\r\n";
 

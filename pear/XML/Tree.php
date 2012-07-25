@@ -111,7 +111,7 @@ class XML_Tree extends XML_Parser
     * @deprecated
     */
     function &add_root($name, $content = '', $attributes = array()) {
-		cDeprecated("This function is not supported any longer");
+        cDeprecated("This function is not supported any longer");
         return $this->addRoot($name, $content, $attributes);
     }
 
@@ -144,7 +144,7 @@ class XML_Tree extends XML_Parser
     * @deprecated
     */
     function &insert_child($path,$pos,$child, $content = '', $attributes = array()) {
-		cDeprecated("This function is not supported any longer");
+        cDeprecated("This function is not supported any longer");
         return $this->insertChild($path, $child, $content, $attributes);
     }
 
@@ -177,7 +177,7 @@ class XML_Tree extends XML_Parser
     * @deprecated
     */
     function &remove_child($path, $pos) {
-		cDeprecated("This function is not supported any longer");
+        cDeprecated("This function is not supported any longer");
         return $this->removeChild($path, $pos);
     }
 
@@ -348,7 +348,7 @@ class XML_Tree extends XML_Parser
     * @deprecated
     */
     function &get_name($name) {
-		cDeprecated("This function is not supported any longer");
+        cDeprecated("This function is not supported any longer");
         return $this->getName($name);
     }
 
@@ -368,7 +368,7 @@ class XML_Tree extends XML_Parser
     * @deprecated
     */
     function register_name($name, $path) {
-		cDeprecated("This function is not supported any longer");
+        cDeprecated("This function is not supported any longer");
         return $this->registerName($name, $path);
     }
 }
