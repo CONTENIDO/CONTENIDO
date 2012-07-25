@@ -259,8 +259,8 @@ contenido/classes/UrlBuilder/Contenido_UrlBuilder_CustomPath.class.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilder_Frontcontent.class.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilder_MR.class.php -text
 contenido/classes/UrlBuilder/Sample.php -text
-contenido/classes/Util/Modules/Contenido_NavMain_Util.class.php -text
-contenido/classes/Util/Modules/Contenido_Sitemap_Util.class.php -text
+contenido/classes/_util/Modules/Contenido_NavMain_Util.class.php -text
+contenido/classes/_util/Modules/Contenido_Sitemap_Util.class.php -text
 contenido/classes/abstract_classes/class.conuser.php -text
 contenido/classes/cache/class.outputcache.php -text
 contenido/classes/class.action.php -text
