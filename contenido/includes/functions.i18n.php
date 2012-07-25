@@ -29,28 +29,27 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/** @deprecated [2012-03-16] use global $_conI18n['language'] */
+/** @deprecated [2012-03-16] use $conI18n = cRegistry::getAppVar('conI18n') and $conI18n['language'] */
 global $i18nLanguage;
 
-/** @deprecated [2012-03-16] use global $_conI18n['domains'] */
+/** @deprecated [2012-03-16] use global $conI18n = cRegistry::getAppVar('conI18n') and $conI18n['domains'] */
 global $i18nDomains;
 
-/** @deprecated [2012-03-16] use global $_conI18n['files'] */
+/** @deprecated [2012-03-16] use global $conI18n = cRegistry::getAppVar('conI18n') and $conI18n['files'] */
 global $transFile;
 
-/** @deprecated [2012-03-16] use global $_conI18n['cache'] */
+/** @deprecated [2012-03-16] use global $conI18n = cRegistry::getAppVar('conI18n') and $conI18n['cache'] */
 global $_i18nTranslationCache;
 
 
-// Global variable containing i18n related data (since 2012-03-16, v4.9)
-global $_conI18n;
-
-$_conI18n = array(
+// Application variable containing i18n related data (since 2012-03-16, v4.9)
+cRegistry::setAppVar('conI18n', array(
     'language' => null,
     'domains' => array(),
     'files' => array(),
     'cache' => array()
-);
+));
+$conI18n = cRegistry::getAppVar('conI18n');
 
 /**
  * gettext wrapper (for future extensions). Usage:
@@ -72,10 +71,12 @@ function trans($string) {
  * @return string  Returns the translation
  */
 function i18n($string, $domain = 'contenido') {
-    global $cfg, $_conI18n, $belang, $contenido, $lang;
+    global $cfg, $belang, $contenido, $lang;
+
+    $conI18n = cRegistry::getAppVar('conI18n');
 
     // Auto initialization
-    if (!$_conI18n['language']) {
+    if (!$conI18n['language']) {
         if (!isset($belang)) {
             if ($contenido) {
                 // This is backend, we should trigger an error message here
@@ -126,34 +127,34 @@ function i18n($string, $domain = 'contenido') {
  * @return string  Returns the translation
  */
 function i18nEmulateGettext($string, $domain = 'contenido') {
-    global $_conI18n;
-
-    if ($string == "") {
-        return "";
+    if ($string == '') {
+        return '';
     }
 
-    if (!isset($_conI18n['cache'][$domain])) {
-        $_conI18n['cache'][$domain] = array();
+    $conI18n = cRegistry::getAppVar('conI18n');
+
+    if (!isset($conI18n['cache'][$domain])) {
+        $conI18n['cache'][$domain] = array();
     }
-    if (isset($_conI18n['cache'][$domain][$string])) {
-        return $_conI18n['cache'][$domain][$string];
+    if (isset($conI18n['cache'][$domain][$string])) {
+        return $conI18n['cache'][$domain][$string];
     }
 
-    $translationFile = $_conI18n['domains'][$domain] . $_conI18n['language'] . '/LC_MESSAGES/' . $domain . '.po';
+    $translationFile = $conI18n['domains'][$domain] . $conI18n['language'] . '/LC_MESSAGES/' . $domain . '.po';
 
     if (!cFileHandler::exists($translationFile)) {
         return $string;
     }
 
-    if (!isset($_conI18n['files'][$domain])) {
-        $_conI18n['files'][$domain] = cFileHandler::read($translationFile);
+    if (!isset($conI18n['files'][$domain])) {
+        $conI18n['files'][$domain] = cFileHandler::read($translationFile);
 
         // Normalize eol chars
-        $_conI18n['files'][$domain] = str_replace("\n\r", "\n", $_conI18n['files'][$domain]);
-        $_conI18n['files'][$domain] = str_replace("\r\n", "\n", $_conI18n['files'][$domain]);
+        $conI18n['files'][$domain] = str_replace("\n\r", "\n", $conI18n['files'][$domain]);
+        $conI18n['files'][$domain] = str_replace("\r\n", "\n", $conI18n['files'][$domain]);
 
         // Remove comment lines
-        $_conI18n['files'][$domain] = preg_replace('/^#.+\n/m', '', $_conI18n['files'][$domain]);
+        $conI18n['files'][$domain] = preg_replace('/^#.+\n/m', '', $conI18n['files'][$domain]);
 
         // Prepare for special po edit format
         /* Something like:
@@ -177,29 +178,31 @@ function i18nEmulateGettext($string, $domain = 'contenido') {
           msgid "Hello %s,\n\nyou've got a new reminder for the client '%s' at\n%s:\n\n%s"
           msgstr "Hallo %s,\n\ndu hast eine Wiedervorlage erhalten f�r den Mandanten '%s' at\n%s:\n\n%s"
          */
-        $_conI18n['files'][$domain] = preg_replace('/\\\n"\\s+"/m', '\\\\n', $_conI18n['files'][$domain]);
-        $_conI18n['files'][$domain] = preg_replace('/(""\\s+")/m', '"', $_conI18n['files'][$domain]);
+        $conI18n['files'][$domain] = preg_replace('/\\\n"\\s+"/m', '\\\\n', $conI18n['files'][$domain]);
+        $conI18n['files'][$domain] = preg_replace('/(""\\s+")/m', '"', $conI18n['files'][$domain]);
     }
 
-    $stringStart = strpos($_conI18n['files'][$domain], '"' . str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $string) . '"');
+    $stringStart = strpos($conI18n['files'][$domain], '"' . str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $string) . '"');
     if ($stringStart === false) {
         return $string;
     }
 
     $matches = array();
     $quotedString = preg_quote(str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $string), '/');
-    $result = preg_match("/msgid.*\"(" . $quotedString . ")\"(?:\s*)?\nmsgstr(?:\s*)\"(.*)\"/", $_conI18n['files'][$domain], $matches);
-    # Old: preg_match("/msgid.*\"".preg_quote($string,"/")."\".*\nmsgstr(\s*)\"(.*)\"/", $_conI18n['files'][$domain], $matches);
+    $result = preg_match("/msgid.*\"(" . $quotedString . ")\"(?:\s*)?\nmsgstr(?:\s*)\"(.*)\"/", $conI18n['files'][$domain], $matches);
+    # Old: preg_match("/msgid.*\"".preg_quote($string,"/")."\".*\nmsgstr(\s*)\"(.*)\"/", $conI18n['files'][$domain], $matches);
 
     if ($result && !empty($matches[2])) {
         // Translation found, cache it
-        $_conI18n['cache'][$domain][$string] = stripslashes(str_replace(array('\n', '\r', '\t'), array("\n", "\r", "\t"), $matches[2]));
+        $conI18n['cache'][$domain][$string] = stripslashes(str_replace(array('\n', '\r', '\t'), array("\n", "\r", "\t"), $matches[2]));
     } else {
         // Translation not found, cache original string
-        $_conI18n['cache'][$domain][$string] = $string;
+        $conI18n['cache'][$domain][$string] = $string;
     }
 
-    return $_conI18n['cache'][$domain][$string];
+    cRegistry::setAppVar('conI18n', $conI18n);
+
+    return $conI18n['cache'][$domain][$string];
 }
 
 /**
@@ -209,7 +212,6 @@ function i18nEmulateGettext($string, $domain = 'contenido') {
  * @param  string  $langCode  Language code to set
  */
 function i18nInit($localePath, $langCode) {
-    global $_conI18n;
 
     if (function_exists('bindtextdomain')) {
         // Bind the domain 'contenido' to our locale path
@@ -230,9 +232,12 @@ function i18nInit($localePath, $langCode) {
         setlocale(LC_CTYPE, $langCode);
     }
 
-    $_conI18n['domains']['contenido'] = $localePath;
+    $conI18n = cRegistry::getAppVar('conI18n');
 
-    $_conI18n['language'] = $langCode;
+    $conI18n['domains']['contenido'] = $localePath;
+    $conI18n['language'] = $langCode;
+
+    cRegistry::getAppVar('conI18n', $conI18n);
 }
 
 /**
@@ -243,14 +248,15 @@ function i18nInit($localePath, $langCode) {
  * @return string  Returns the translation
  */
 function i18nRegisterDomain($domain, $localePath) {
-    global $_conI18n;
 
     if (function_exists('bindtextdomain')) {
         // Bind the domain 'contenido' to our locale path
         bindtextdomain($domain, $localePath);
     }
 
-    $_conI18n['domains'][$domain] = $localePath;
+    $conI18n = cRegistry::getAppVar('conI18n');
+    $conI18n['domains'][$domain] = $localePath;
+    cRegistry::getAppVar('conI18n', $conI18n);
 }
 
 /**
