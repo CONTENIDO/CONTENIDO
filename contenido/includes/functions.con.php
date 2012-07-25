@@ -752,18 +752,21 @@ function conDeeperCategoriesArray($idcat) {
  *
  * @param int $idcat  ID of the starting category
  * @param string $seperator  Seperation string
- * @param string $cat_str  Category location string (by reference)
+ * @param string $catStr  Category location string (by reference)
  * @param bool $makeLink  Create location string with links
  * @param string $linkClass  Stylesheet class for the links
- * @param int  First navigation  Level location string should be printed out (first level = 0!!)
+ * @param int  $firstTreeElementToUse  First navigation  Level location string should be printed out (first level = 0!!)
+ * @param int  $uselang  Id of language
+ * @param  bool  $final
+ * @param  bool  $usecache
  * @return string  Location string
  */
-function conCreateLocationString($idcat, $seperator, &$cat_str, $makeLink = false, $linkClass = '',
+function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false, $linkClass = '',
                                  $firstTreeElementToUse = 0, $uselang = 0, $final = true, $usecache = false) {
     global $cfg, $client, $cfgClient, $lang, $sess, $_locationStringCache;
 
     if ($idcat == 0) {
-        $cat_str = "Lost and Found";
+        $catStr = "Lost and Found";
         return;
     }
 
@@ -782,7 +785,7 @@ function conCreateLocationString($idcat, $seperator, &$cat_str, $makeLink = fals
 
         if (array_key_exists($idcat, $_locationStringCache)) {
             if ($_locationStringCache[$idcat]["expires"] > time()) {
-                $cat_str = $_locationStringCache[$idcat]["name"];
+                $catStr = $_locationStringCache[$idcat]["name"];
                 return;
             }
         }
@@ -819,21 +822,21 @@ function conCreateLocationString($idcat, $seperator, &$cat_str, $makeLink = fals
             $name = '<a href="' . $linkUrl . '" class="' . $linkClass . '">' . $name . '</a>';
         }
 
-        $tmp_cat_str = $name . $seperator . $cat_str;
-        $cat_str = $tmp_cat_str;
+        $tmp_cat_str = $name . $seperator . $catStr;
+        $catStr = $tmp_cat_str;
     }
 
     if ($parentid != 0) {
-        conCreateLocationString($parentid, $seperator, $cat_str, $makeLink, $linkClass, $firstTreeElementToUse, $uselang, false);
+        conCreateLocationString($parentid, $seperator, $catStr, $makeLink, $linkClass, $firstTreeElementToUse, $uselang, false);
     } else {
         $sep_length = strlen($seperator);
-        $str_length = strlen($cat_str);
+        $str_length = strlen($catStr);
         $tmp_length = $str_length - $sep_length;
-        $cat_str = substr($cat_str, 0, $tmp_length);
+        $catStr = substr($catStr, 0, $tmp_length);
     }
 
     if ($final == true && $usecache == true) {
-        $_locationStringCache[$idcat]["name"] = $cat_str;
+        $_locationStringCache[$idcat]["name"] = $catStr;
         $_locationStringCache[$idcat]["expires"] = time() + 3600;
 
         if (is_writable($cfgClient[$client]['cache_path'])) {
