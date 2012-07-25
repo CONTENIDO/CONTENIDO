@@ -39,89 +39,89 @@ $currentStep = (isset($_REQUEST['step'])) ? $_REQUEST['step'] : '';
 
 switch ($currentStep) {
     case 'setuptype':
-        checkAndInclude(C_SETUP_PATH . 'steps/setuptype.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/setuptype.php');
         break;
     case 'setup1':
-        checkAndInclude(C_SETUP_PATH . 'steps/setup/step1.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/setup/step1.php');
         break;
     case 'setup2':
-        checkAndInclude(C_SETUP_PATH . 'steps/setup/step2.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/setup/step2.php');
         break;
     case 'setup3':
-        checkAndInclude(C_SETUP_PATH . 'steps/setup/step3.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/setup/step3.php');
         break;
     case 'setup4':
-        checkAndInclude(C_SETUP_PATH . 'steps/setup/step4.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/setup/step4.php');
         break;
     case 'setup5':
-        checkAndInclude(C_SETUP_PATH . 'steps/setup/step5.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/setup/step5.php');
         break;
     case 'setup6':
-        checkAndInclude(C_SETUP_PATH . 'steps/setup/step6.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/setup/step6.php');
         break;
     case 'setup7':
-        checkAndInclude(C_SETUP_PATH . 'steps/setup/step7.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/setup/step7.php');
         break;
     case 'setup8':
-        checkAndInclude(C_SETUP_PATH . 'steps/setup/step8.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/setup/step8.php');
         break;
     case 'migration1':
-        checkAndInclude(C_SETUP_PATH . 'steps/migration/step1.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/migration/step1.php');
         break;
     case 'migration2':
-        checkAndInclude(C_SETUP_PATH . 'steps/migration/step2.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/migration/step2.php');
         break;
     case 'migration3':
-        checkAndInclude(C_SETUP_PATH . 'steps/migration/step3.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/migration/step3.php');
         break;
     case 'migration4':
-        checkAndInclude(C_SETUP_PATH . 'steps/migration/step4.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/migration/step4.php');
         break;
     case 'migration5':
-        checkAndInclude(C_SETUP_PATH . 'steps/migration/step5.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/migration/step5.php');
         break;
     case 'migration6':
-        checkAndInclude(C_SETUP_PATH . 'steps/migration/step6.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/migration/step6.php');
         break;
     case 'migration7':
-        checkAndInclude(C_SETUP_PATH . 'steps/migration/step7.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/migration/step7.php');
         break;
     case 'migration8':
-        checkAndInclude(C_SETUP_PATH . 'steps/migration/step8.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/migration/step8.php');
         break;
     case 'upgrade1':
-        checkAndInclude(C_SETUP_PATH . 'steps/upgrade/step1.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/upgrade/step1.php');
         break;
     case 'upgrade2':
-        checkAndInclude(C_SETUP_PATH . 'steps/upgrade/step2.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/upgrade/step2.php');
         break;
     case 'upgrade3':
-        checkAndInclude(C_SETUP_PATH . 'steps/upgrade/step3.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/upgrade/step3.php');
         break;
     case 'upgrade4':
-        checkAndInclude(C_SETUP_PATH . 'steps/upgrade/step4.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/upgrade/step4.php');
         break;
     case 'upgrade5':
-        checkAndInclude(C_SETUP_PATH . 'steps/upgrade/step5.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/upgrade/step5.php');
         break;
     case 'upgrade6':
-        checkAndInclude(C_SETUP_PATH . 'steps/upgrade/step6.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/upgrade/step6.php');
         break;
     case 'upgrade7':
-        checkAndInclude(C_SETUP_PATH . 'steps/upgrade/step7.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/upgrade/step7.php');
         break;
     case 'domigration':
-        checkAndInclude(C_SETUP_PATH . 'steps/migration/domigration.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/migration/domigration.php');
         break;
     case 'doupgrade':
-        checkAndInclude(C_SETUP_PATH . 'steps/upgrade/doupgrade.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/upgrade/doupgrade.php');
         break;
     case 'doinstall':
-        checkAndInclude(C_SETUP_PATH . 'steps/setup/doinstall.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/setup/doinstall.php');
         break;
     case 'languagechooser':
     default:
-        checkAndInclude(C_SETUP_PATH . 'steps/languagechooser.php');
+        checkAndInclude(C_SETUP_PATH . '/steps/languagechooser.php');
         break;
 }
 

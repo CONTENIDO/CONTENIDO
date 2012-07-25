@@ -29,8 +29,8 @@
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
-define('C_SETUP_PATH', str_replace('\\', '/', realpath(dirname(__FILE__))) . '/');
-define('C_FRONTEND_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/');
+define('C_SETUP_PATH', str_replace('\\', '/', realpath(dirname(__FILE__))));
+define('C_FRONTEND_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')));
 
 include_once('lib/startup.php');
 
@@ -55,7 +55,7 @@ if (isset($_GET['c'])) {
 
 // Include detected controller
 $fileName = 'include.' . $controller . '.controller.php';
-$filePathName = C_SETUP_PATH . 'lib/' . $fileName;
+$filePathName = C_SETUP_PATH . '/lib/' . $fileName;
 if (is_file($filePathName)) {
     include($filePathName);
 } else {

@@ -87,9 +87,9 @@ function checkAndInclude($filename) {
 }
 
 // Include security class and check request variables
-checkAndInclude(C_FRONTEND_PATH . 'contenido/classes/class.filehandler.php');
-checkAndInclude(C_FRONTEND_PATH . 'contenido/classes/class.requestvalidator.php');
-$oRequestValidator = new cRequestValidator(C_FRONTEND_PATH . "data/config/" . CONTENIDO_ENVIRONMENT);
+checkAndInclude(C_FRONTEND_PATH . '/contenido/classes/class.filehandler.php');
+checkAndInclude(C_FRONTEND_PATH . '/contenido/classes/class.requestvalidator.php');
+$oRequestValidator = new cRequestValidator(C_FRONTEND_PATH . '/data/config/' . CONTENIDO_ENVIRONMENT);
 
 session_start();
 
@@ -136,10 +136,10 @@ if (is_array($_REQUEST)) {
 global $cfg;
 
 $cfg['path']['frontend'] = C_FRONTEND_PATH;
-$cfg['path']['contenido'] = $cfg['path']['frontend'] . 'contenido/';
-$cfg['path']['phplib'] = $cfg['path']['frontend'] . 'conlib/';
-$cfg['path']['pear'] = $cfg['path']['frontend'] . 'pear/';
-$cfg['path']['contenido_config'] = C_FRONTEND_PATH . 'data/config/' . CONTENIDO_ENVIRONMENT . '/';
+$cfg['path']['contenido'] = $cfg['path']['frontend'] . '/contenido/';
+$cfg['path']['phplib'] = $cfg['path']['frontend'] . '/conlib/';
+$cfg['path']['pear'] = $cfg['path']['frontend'] . '/pear/';
+$cfg['path']['contenido_config'] = C_FRONTEND_PATH . '/data/config/' . CONTENIDO_ENVIRONMENT . '/';
 
 // DB related settings
 $cfg['sql']['sqlprefix'] = (isset($_SESSION['dbprefix'])) ? $_SESSION['dbprefix'] : 'con';
@@ -165,33 +165,33 @@ cAutoload::initialize($cfg);
 
 
 // Common includes
-checkAndInclude(C_SETUP_PATH . 'lib/defines.php');
+checkAndInclude(C_SETUP_PATH . '/lib/defines.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.i18n.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/api/functions.api.general.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
 checkAndInclude($cfg['path']['contenido'] . 'classes/class.template.php');
-checkAndInclude(C_SETUP_PATH . 'lib/class.setupcontrols.php');
-checkAndInclude(C_SETUP_PATH . 'lib/functions.filesystem.php');
-checkAndInclude(C_SETUP_PATH . 'lib/functions.environment.php');
-checkAndInclude(C_SETUP_PATH . 'lib/functions.safe_mode.php');
-checkAndInclude(C_SETUP_PATH . 'lib/functions.mysql.php');
-checkAndInclude(C_SETUP_PATH . 'lib/functions.phpinfo.php');
-checkAndInclude(C_SETUP_PATH . 'lib/functions.libraries.php');
-checkAndInclude(C_SETUP_PATH . 'lib/functions.system.php');
-checkAndInclude(C_SETUP_PATH . 'lib/functions.sql.php');
-checkAndInclude(C_SETUP_PATH . 'lib/functions.setup.php');
-checkAndInclude(C_SETUP_PATH . 'lib/class.setupmask.php');
+checkAndInclude(C_SETUP_PATH . '/lib/class.setupcontrols.php');
+checkAndInclude(C_SETUP_PATH . '/lib/functions.filesystem.php');
+checkAndInclude(C_SETUP_PATH . '/lib/functions.environment.php');
+checkAndInclude(C_SETUP_PATH . '/lib/functions.safe_mode.php');
+checkAndInclude(C_SETUP_PATH . '/lib/functions.mysql.php');
+checkAndInclude(C_SETUP_PATH . '/lib/functions.phpinfo.php');
+checkAndInclude(C_SETUP_PATH . '/lib/functions.libraries.php');
+checkAndInclude(C_SETUP_PATH . '/lib/functions.system.php');
+checkAndInclude(C_SETUP_PATH . '/lib/functions.sql.php');
+checkAndInclude(C_SETUP_PATH . '/lib/functions.setup.php');
+checkAndInclude(C_SETUP_PATH . '/lib/class.setupmask.php');
 
 // PHP verion check
 if (phpversion() < C_SETUP_MIN_PHP_VERSION) {
     $sNotInstallableReason = 'php_version';
-    checkAndInclude(C_SETUP_PATH . 'steps/notinstallable.php');
+    checkAndInclude(C_SETUP_PATH . '/steps/notinstallable.php');
 }
 
 // PHP ini session check
 if (getPHPIniSetting('session.use_cookies') == 0) {
     $sNotInstallableReason = 'session_use_cookies';
-    checkAndInclude(C_SETUP_PATH . 'steps/notinstallable.php');
+    checkAndInclude(C_SETUP_PATH . '/steps/notinstallable.php');
 }
 
 // PHP database extension check
@@ -203,7 +203,7 @@ if (hasMySQLiExtension() && !hasMySQLExtension()) {
     $cfg['database_extension'] = 'mysql';
 } else {
     $sNotInstallableReason = 'database_extension';
-    checkAndInclude(C_SETUP_PATH . 'steps/notinstallable.php');
+    checkAndInclude(C_SETUP_PATH . '/steps/notinstallable.php');
 }
 
 checkAndInclude($cfg['path']['phplib'] . 'prepend.php');

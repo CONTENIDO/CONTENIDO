@@ -547,7 +547,7 @@ class cSetupSystemtest extends cSetupMask
 
         $this->logFilePrediction($cfg['path']['contenido_temp'], C_SEVERITY_WARNING);
 
-        if ($_SESSION["setuptype"] == "setup" || ($_SESSION["setuptype"] == "migration" && is_dir(C_FRONTEND_PATH . "cms/") )) {
+        if ($_SESSION["setuptype"] == "setup" || ($_SESSION["setuptype"] == "migration" && is_dir(C_FRONTEND_PATH . '/cms/') )) {
             // Setup mode or migration mode with a existing default client frontend path
             $this->logFilePrediction("cms/cache/", C_SEVERITY_WARNING);
             $this->logFilePrediction("cms/css/", C_SEVERITY_WARNING);
@@ -578,16 +578,16 @@ class cSetupSystemtest extends cSetupMask
             $sFile = substr($sFile, strlen(C_FRONTEND_PATH));
         }
 
-        $status = canWriteFile(C_FRONTEND_PATH . $sFile);
+        $status = canWriteFile(C_FRONTEND_PATH . '/' . $sFile);
 
         $sTitle = sprintf(i18n("Can't write %s"), $sFile);
         $sMessage = sprintf(i18n("Setup or CONTENIDO can't write to the file %s. Please change the file permissions to correct this problem."), $sFile);
 
         if ($status == false) {
-            if (cFileHandler::exists(C_FRONTEND_PATH . $sFile)) {
-                $sTarget = C_FRONTEND_PATH . $sFile;
+            if (cFileHandler::exists(C_FRONTEND_PATH . '/' . $sFile)) {
+                $sTarget = C_FRONTEND_PATH . '/' . $sFile;
 
-                $iPerm = predictCorrectFilepermissions(C_FRONTEND_PATH . $sFile);
+                $iPerm = predictCorrectFilepermissions(C_FRONTEND_PATH . '/' . $sFile);
 
                 switch ($iPerm) {
                     case C_PREDICT_WINDOWS:
@@ -597,23 +597,23 @@ class cSetupSystemtest extends cSetupMask
                         $sPredictMessage = sprintf(i18n("Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file %s, especially in environments where ACL (Access Control Lists) are used."), $sFile);
                         break;
                     case C_PREDICT_CHANGEPERM_SAMEOWNER:
-                        $mfileperms = substr(sprintf("%o", fileperms(C_FRONTEND_PATH . $sFile)), -3);
+                        $mfileperms = substr(sprintf("%o", fileperms(C_FRONTEND_PATH . '/' . $sFile)), -3);
                         $mfileperms{0} = intval($mfileperms{0}) | 0x6;
                         $sPredictMessage = sprintf(i18n("Your web server and the owner of your files are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the file mask to %s or set the owner to allow writing the file."), $sFile, $mfileperms);
                         break;
                     case C_PREDICT_CHANGEPERM_SAMEGROUP:
-                        $mfileperms = substr(sprintf("%o", fileperms(C_FRONTEND_PATH . $sFile)), -3);
+                        $mfileperms = substr(sprintf("%o", fileperms(C_FRONTEND_PATH . '/' . $sFile)), -3);
                         $mfileperms{1} = intval($mfileperms{1}) | 0x6;
                         $sPredictMessage = sprintf(i18n("Your web server's group and the group of your files are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the file mask to %s or set the group to allow writing the file."), $sFile, $mfileperms);
                         break;
                     case C_PREDICT_CHANGEPERM_OTHERS:
-                        $mfileperms = substr(sprintf("%o", fileperms(C_FRONTEND_PATH . $sFile)), -3);
+                        $mfileperms = substr(sprintf("%o", fileperms(C_FRONTEND_PATH . '/' . $sFile)), -3);
                         $mfileperms{2} = intval($mfileperms{2}) | 0x6;
                         $sPredictMessage = sprintf(i18n("Your web server is not equal to the file owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the files. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the file mask to %s or set the others to allow writing the file."), $sFile, $mfileperms);
                         break;
                 }
             } else {
-                $sTarget = dirname(C_FRONTEND_PATH . $sFile);
+                $sTarget = dirname(C_FRONTEND_PATH . '/' . $sFile);
 
                 $iPerm = predictCorrectFilepermissions($sTarget);
 
