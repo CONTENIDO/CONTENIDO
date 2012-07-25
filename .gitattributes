@@ -343,9 +343,9 @@ contenido/classes/class.xml.php -text
 contenido/classes/class.xmlparser.php -text
 contenido/classes/class.xmltree.php -text
 contenido/classes/class.xsltprocessor.php -text
-contenido/classes/code_generator/Abstract.class.php -text
-contenido/classes/code_generator/Factory.class.php -text
-contenido/classes/code_generator/Standard.class.php -text
+contenido/classes/code_generator/class.code.generator.abstract.php -text
+contenido/classes/code_generator/class.code.generator.factory.php -text
+contenido/classes/code_generator/class.code.generator.standard.php -text
 contenido/classes/contenido/class.action.php -text
 contenido/classes/contenido/class.actionlog.php -text
 contenido/classes/contenido/class.area.php -text
