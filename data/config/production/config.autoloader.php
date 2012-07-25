@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-07-24
+ *     created  2012-07-25
  * }}
  */
 
@@ -49,9 +49,9 @@ return array(
     'cBackend' => 'contenido/classes/class.backend.php',
     'Contenido_Backend' => 'contenido/classes/class.backend.php',
     'Cat' => 'contenido/classes/class.cat.php',
-    'cApiCECRegistry' => 'contenido/classes/class.cec.php',
+    'cApiCecRegistry' => 'contenido/classes/class.cec.php',
     'pApiCECChainItem' => 'contenido/classes/class.cec.php',
-    'cApiCECChainItem' => 'contenido/classes/class.cec.php',
+    'cApiCecChainItem' => 'contenido/classes/class.cec.php',
     'cApiCecHook' => 'contenido/classes/class.cec_hook.php',
     'CEC_Hook' => 'contenido/classes/class.cec_hook.php',
     'cCharacterConverter' => 'contenido/classes/class.chartable.php',

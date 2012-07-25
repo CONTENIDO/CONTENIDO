@@ -53,13 +53,13 @@ class ExampleContenidoChainExecuteStaticMethodTest extends PHPUnit_Framework_Tes
     {
         $this->_obj = new stdClass();
         $this->_obj->counter = 0;
-        cApiCECRegistry::getInstance()->registerChain($this->_chain, 'object');
+        cApiCecRegistry::getInstance()->registerChain($this->_chain, 'object');
     }
 
 
     protected function tearDown()
     {
-        cApiCECRegistry::getInstance()->unregisterChain($this->_chain);
+        cApiCecRegistry::getInstance()->unregisterChain($this->_chain);
     }
 
 
@@ -81,7 +81,7 @@ class ExampleContenidoChainExecuteStaticMethodTest extends PHPUnit_Framework_Tes
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test::callMe');
@@ -102,7 +102,7 @@ class ExampleContenidoChainExecuteStaticMethodTest extends PHPUnit_Framework_Tes
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test::callMe');

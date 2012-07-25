@@ -59,7 +59,7 @@ class ContenidoContentSaveContentEntryTest extends PHPUnit_Framework_TestCase
     public function testNoChain()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // execute chain
         $iterator = $cecReg->getIterator($this->_chain);
@@ -79,7 +79,7 @@ class ContenidoContentSaveContentEntryTest extends PHPUnit_Framework_TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentSaveContentEntry_Test');
@@ -105,7 +105,7 @@ class ContenidoContentSaveContentEntryTest extends PHPUnit_Framework_TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentSaveContentEntry_Test');

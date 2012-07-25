@@ -47,13 +47,13 @@ class ContenidoContentDeleteArticleTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         self::$invokeCounter = 0;
-        cApiCECRegistry::getInstance()->registerChain($this->_chain);
+        cApiCecRegistry::getInstance()->registerChain($this->_chain);
     }
 
 
     public function tearDown()
     {
-        cApiCECRegistry::getInstance()->unregisterChain($this->_chain);
+        cApiCecRegistry::getInstance()->unregisterChain($this->_chain);
     }
 
 
@@ -63,7 +63,7 @@ class ContenidoContentDeleteArticleTest extends PHPUnit_Framework_TestCase
     public function testNoChain()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // execute chain
         $idart = $this->_idart;
@@ -82,7 +82,7 @@ class ContenidoContentDeleteArticleTest extends PHPUnit_Framework_TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentDeleteArticle_Test');
@@ -107,7 +107,7 @@ class ContenidoContentDeleteArticleTest extends PHPUnit_Framework_TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentDeleteArticle_Test');

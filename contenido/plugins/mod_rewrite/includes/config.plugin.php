@@ -93,7 +93,7 @@ if (ModRewrite::isEnabled()) {
 
     $aMrCfg = ModRewrite::getConfig();
 
-    $_cecRegistry = cApiCECRegistry::getInstance();
+    $_cecRegistry = cApiCecRegistry::getInstance();
 
     // Add new tree function to CONTENIDO Extension Chainer
     $_cecRegistry->addChainFunction('Contenido.Action.str_newtree.AfterCall', 'mr_strNewTree');

@@ -1,6 +1,6 @@
 <?php
 /**
- * Unittest for Contenido cApiCECRegistry
+ * Unittest for Contenido cApiCecRegistry
  *
  * @author      Murat Purc <murat@purc.de>
  * @date        31.12.2009
@@ -13,7 +13,7 @@
 /**
  * Chain function
  */
-function chain_cApiCECRegistry_Test()
+function chain_cApiCecRegistry_Test()
 {
     // donut
 }
@@ -21,7 +21,7 @@ function chain_cApiCECRegistry_Test()
 /**
  * Chain callback class
  */
-class chain_cApiCECRegistryClass_Test
+class chain_cApiCecRegistryClass_Test
 {
     public function callMe()
     {
@@ -32,7 +32,7 @@ class chain_cApiCECRegistryClass_Test
 /**
  * Chain callback class with static method
  */
-class chain_cApiCECRegistryClassStatic_Test
+class chain_cApiCecRegistryClassStatic_Test
 {
     public static function callMe()
     {
@@ -43,7 +43,7 @@ class chain_cApiCECRegistryClassStatic_Test
 
 
 /**
- * Class to test cApiCECRegistry.
+ * Class to test cApiCecRegistry.
  *
  * @author      Murat Purc <murat@purc.de>
  * @date        30.12.2009
@@ -51,19 +51,19 @@ class chain_cApiCECRegistryClassStatic_Test
  * @package     Contenido_Frontend
  * @subpackage  Chains
  */
-class cApiCECRegistryTest extends PHPUnit_Framework_TestCase
+class cApiCecRegistryTest extends PHPUnit_Framework_TestCase
 {
 
     /**
      * Test
-     * - cApiCECRegistry->registerChain()
-     * - cApiCECRegistry->isChainRegistered()
-     * - cApiCECRegistry->unregisterChain()
+     * - cApiCecRegistry->registerChain()
+     * - cApiCecRegistry->isChainRegistered()
+     * - cApiCecRegistry->unregisterChain()
      */
     public function testChains()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // register chain
         $cecReg->registerChain('TestChain.Example');
@@ -79,46 +79,46 @@ class cApiCECRegistryTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test
-     * - cApiCECRegistry->addChainFunction()
-     * - cApiCECRegistry->chainFunctionExists()
-     * - cApiCECRegistry->removeChainFunction()
+     * - cApiCecRegistry->addChainFunction()
+     * - cApiCecRegistry->chainFunctionExists()
+     * - cApiCecRegistry->removeChainFunction()
      */
     public function testChainFunctions()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // register chain
         $cecReg->registerChain('TestChain.Example');
 
         // add chain function
-        $cecReg->addChainFunction('TestChain.Example', 'chain_cApiCECRegistry_Test');
-        $exists = $cecReg->chainFunctionExists('TestChain.Example', 'chain_cApiCECRegistry_Test');
+        $cecReg->addChainFunction('TestChain.Example', 'chain_cApiCecRegistry_Test');
+        $exists = $cecReg->chainFunctionExists('TestChain.Example', 'chain_cApiCecRegistry_Test');
         $this->assertEquals(true, $exists);
 
         // remove chain function
-        $cecReg->removeChainFunction('TestChain.Example', 'chain_cApiCECRegistry_Test');
-        $exists = $cecReg->chainFunctionExists('TestChain.Example', 'chain_cApiCECRegistry_Test');
+        $cecReg->removeChainFunction('TestChain.Example', 'chain_cApiCecRegistry_Test');
+        $exists = $cecReg->chainFunctionExists('TestChain.Example', 'chain_cApiCecRegistry_Test');
         $this->assertEquals(false, $exists);
 
         // add chain callback (object)
-        $cecReg->addChainFunction('TestChain.Example', 'chain_cApiCECRegistryClass_Test->callMe');
-        $exists = $cecReg->chainFunctionExists('TestChain.Example', 'chain_cApiCECRegistryClass_Test->callMe');
+        $cecReg->addChainFunction('TestChain.Example', 'chain_cApiCecRegistryClass_Test->callMe');
+        $exists = $cecReg->chainFunctionExists('TestChain.Example', 'chain_cApiCecRegistryClass_Test->callMe');
         $this->assertEquals(true, $exists);
 
         // remove chain callback (object)
-        $cecReg->removeChainFunction('TestChain.Example', 'chain_cApiCECRegistryClass_Test->callMe');
-        $exists = $cecReg->chainFunctionExists('TestChain.Example', 'chain_cApiCECRegistryClass_Test->callMe');
+        $cecReg->removeChainFunction('TestChain.Example', 'chain_cApiCecRegistryClass_Test->callMe');
+        $exists = $cecReg->chainFunctionExists('TestChain.Example', 'chain_cApiCecRegistryClass_Test->callMe');
         $this->assertEquals(false, $exists);
 
         // add chain callback (object with static method)
-        $cecReg->addChainFunction('TestChain.Example', 'chain_cApiCECRegistryClassStatic_Test::callMe');
-        $exists = $cecReg->chainFunctionExists('TestChain.Example', 'chain_cApiCECRegistryClassStatic_Test::callMe');
+        $cecReg->addChainFunction('TestChain.Example', 'chain_cApiCecRegistryClassStatic_Test::callMe');
+        $exists = $cecReg->chainFunctionExists('TestChain.Example', 'chain_cApiCecRegistryClassStatic_Test::callMe');
         $this->assertEquals(true, $exists);
 
         // remove chain callback (object with static method)
-        $cecReg->removeChainFunction('TestChain.Example', 'chain_cApiCECRegistryClassStatic_Test::callMe');
-        $exists = $cecReg->chainFunctionExists('TestChain.Example', 'chain_cApiCECRegistryClassStatic_Test::callMe');
+        $cecReg->removeChainFunction('TestChain.Example', 'chain_cApiCecRegistryClassStatic_Test::callMe');
+        $exists = $cecReg->chainFunctionExists('TestChain.Example', 'chain_cApiCecRegistryClassStatic_Test::callMe');
         $this->assertEquals(false, $exists);
 
         // unregister chain

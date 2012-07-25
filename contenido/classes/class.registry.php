@@ -278,7 +278,7 @@ class cRegistry {
 
     /**
      * Return the global CONTENIDO Execution Chain Registry.
-     * @return cApiCECRegistry
+     * @return cApiCecRegistry
      */
     public static function getCecRegistry() {
         return self::_fetchGlobalVariable('_cecRegistry');

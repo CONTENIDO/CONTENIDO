@@ -62,7 +62,7 @@ class ContenidoFrontendPostprocessUrlBuildingTest extends PHPUnit_Framework_Test
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendPostprocessUrlBuilding_Test');
@@ -83,7 +83,7 @@ class ContenidoFrontendPostprocessUrlBuildingTest extends PHPUnit_Framework_Test
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendPostprocessUrlBuilding_Test');

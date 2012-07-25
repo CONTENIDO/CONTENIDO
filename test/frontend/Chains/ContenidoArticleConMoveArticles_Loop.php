@@ -72,7 +72,7 @@ class ContenidoArticleConMoveArticles_LoopTest extends PHPUnit_Framework_TestCas
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoArticleConMoveArticles_Loop_Test');
@@ -93,7 +93,7 @@ class ContenidoArticleConMoveArticles_LoopTest extends PHPUnit_Framework_TestCas
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoArticleConMoveArticles_Loop_Test');

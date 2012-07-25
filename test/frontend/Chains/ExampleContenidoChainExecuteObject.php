@@ -52,13 +52,13 @@ class ExampleContenidoChainExecuteObjectTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         self::$invokeCounter = 0;
-        cApiCECRegistry::getInstance()->registerChain($this->_chain);
+        cApiCecRegistry::getInstance()->registerChain($this->_chain);
     }
 
 
     protected function tearDown()
     {
-        cApiCECRegistry::getInstance()->unregisterChain($this->_chain);
+        cApiCecRegistry::getInstance()->unregisterChain($this->_chain);
     }
 
 
@@ -80,7 +80,7 @@ class ExampleContenidoChainExecuteObjectTest extends PHPUnit_Framework_TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteObject_Test->callMe');
@@ -101,7 +101,7 @@ class ExampleContenidoChainExecuteObjectTest extends PHPUnit_Framework_TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteObject_Test->callMe');

@@ -78,7 +78,7 @@ class ContenidoArticleConCopyArtLang_AfterInsertTest extends PHPUnit_Framework_T
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoArticleConCopyArtLang_AfterInsert_Test');
@@ -99,7 +99,7 @@ class ContenidoArticleConCopyArtLang_AfterInsertTest extends PHPUnit_Framework_T
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoArticleConCopyArtLang_AfterInsert_Test');

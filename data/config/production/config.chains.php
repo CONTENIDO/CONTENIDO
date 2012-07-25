@@ -30,7 +30,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // get cec registry instance
-$_cecRegistry = cApiCECRegistry::getInstance();
+$_cecRegistry = cApiCecRegistry::getInstance();
 
 
 /* Chain Contenido.Content.CreateCategoryLink

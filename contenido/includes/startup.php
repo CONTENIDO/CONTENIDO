@@ -148,7 +148,7 @@ cInclude('conlib', 'prepend.php');
 cInclude('includes', 'functions.i18n.php');
 
 // Initialization of CEC
-$_cecRegistry = cApiCECRegistry::getInstance();
+$_cecRegistry = cApiCecRegistry::getInstance();
 require_once($cfg['path']['contenido_config'] . 'config.chains.php');
 
 // Set default database connection parameterecho '<pre>';

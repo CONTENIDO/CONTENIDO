@@ -121,7 +121,7 @@ class cApiUploadCollection extends ItemCollection
 
     /**
      * Deletes upload file and it's properties
-     * @global cApiCECRegistry $_cecRegistry
+     * @global cApiCecRegistry $_cecRegistry
      * @global array $cfgClient
      * @global int $client
      * @param int $id
@@ -252,7 +252,7 @@ class cApiUpload extends Item
     /**
      * Stores made changes
      * @global object $auth
-     * @global cApiCECRegistry $_cecRegistry
+     * @global cApiCecRegistry $_cecRegistry
      * @return bool
      */
     public function store()

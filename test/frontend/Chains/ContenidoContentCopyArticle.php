@@ -48,13 +48,13 @@ class ContenidoContentCopyArticleTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         self::$invokeCounter = 0;
-        cApiCECRegistry::getInstance()->registerChain($this->_chain);
+        cApiCecRegistry::getInstance()->registerChain($this->_chain);
     }
 
 
     public function tearDown()
     {
-        cApiCECRegistry::getInstance()->unregisterChain($this->_chain);
+        cApiCecRegistry::getInstance()->unregisterChain($this->_chain);
     }
 
 
@@ -64,7 +64,7 @@ class ContenidoContentCopyArticleTest extends PHPUnit_Framework_TestCase
     public function testNoChain()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // execute chain
         $srcIdart = $this->_srcIdart;
@@ -84,7 +84,7 @@ class ContenidoContentCopyArticleTest extends PHPUnit_Framework_TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test');
@@ -110,7 +110,7 @@ class ContenidoContentCopyArticleTest extends PHPUnit_Framework_TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCECRegistry::getInstance();
+        $cecReg = cApiCecRegistry::getInstance();
 
         // add chain functions
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test');

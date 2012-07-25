@@ -23,7 +23,7 @@ class ContenidoChainsAllTest
     public static function suite()
     {
         $suite = new PHPUnit_Framework_TestSuite('Contenido Chains');
-        $suite->addTestSuite('cApiCECRegistryTest');
+        $suite->addTestSuite('cApiCecRegistryTest');
         $suite->addTestSuite('ContenidoFrontendAllowEditTest');
         $suite->addTestSuite('ContenidoFrontendCategoryAccessTest');
         $suite->addTestSuite('ContenidoFrontendBaseHrefGenerationTest');

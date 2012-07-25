@@ -167,7 +167,7 @@ class cApiCecHook {
         $chainName = array_shift($args);
 
         // process CEC
-        $cecIterator = cApiCECRegistry::getInstance()->getIterator($chainName);
+        $cecIterator = cApiCecRegistry::getInstance()->getIterator($chainName);
         if ($cecIterator->count() > 0) {
             $cecIterator->reset();
 
@@ -217,7 +217,7 @@ class cApiCecHook {
         $return = self::$_defaultReturnValue;
 
         // process CEC
-        $cecIterator = cApiCECRegistry::getInstance()->getIterator($chainName);
+        $cecIterator = cApiCecRegistry::getInstance()->getIterator($chainName);
         if ($cecIterator->count() > 0) {
             $cecIterator->reset();
 
@@ -270,7 +270,7 @@ class cApiCecHook {
         $return = self::$_defaultReturnValue;
 
         // process CEC
-        $cecIterator = cApiCECRegistry::getInstance()->getIterator($chainName);
+        $cecIterator = cApiCecRegistry::getInstance()->getIterator($chainName);
         if ($cecIterator->count() > 0) {
             $cecIterator->reset();
 
