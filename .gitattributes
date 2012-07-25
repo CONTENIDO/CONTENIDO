@@ -436,10 +436,10 @@ contenido/classes/phpmailer/class.smtp.php -text
 contenido/classes/phpmailer/language/phpmailer.lang-de.php -text
 contenido/classes/tree/class.ctree.php -text
 contenido/classes/tree/class.ctreeitem.php -text
-contenido/classes/validator/Abstract.class.php -text
-contenido/classes/validator/Email.class.php -text
-contenido/classes/validator/Factory.class.php -text
-contenido/classes/validator/Regex.class.php -text
+contenido/classes/validator/class.validator.abstract.php -text
+contenido/classes/validator/class.validator.email.php -text
+contenido/classes/validator/class.validator.factory.php -text
+contenido/classes/validator/class.validator.regex.php -text
 contenido/classes/version/class.version.file.php -text
 contenido/classes/version/class.version.import.php -text
 contenido/classes/version/class.version.layout.php -text
