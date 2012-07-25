@@ -41,15 +41,13 @@ global $transFile;
 /** @deprecated [2012-03-16] use global $conI18n = cRegistry::getAppVar('conI18n') and $conI18n['cache'] */
 global $_i18nTranslationCache;
 
-
-// Application variable containing i18n related data (since 2012-03-16, v4.9)
+// Initialize application variable to store i18n related data (since 2012-03-16, v4.9)
 cRegistry::setAppVar('conI18n', array(
     'language' => null,
     'domains' => array(),
     'files' => array(),
     'cache' => array()
 ));
-$conI18n = cRegistry::getAppVar('conI18n');
 
 /**
  * gettext wrapper (for future extensions). Usage:
@@ -95,7 +93,7 @@ function i18n($string, $domain = 'contenido') {
     // Is emulator to use?
     if (!$cfg['native_i18n']) {
         $ret = i18nEmulateGettext($string, $domain);
-        $ret = mb_convert_encoding($ret, "HTML-ENTITIES", "utf-8");
+        $ret = mb_convert_encoding($ret, 'HTML-ENTITIES', 'utf-8');
         return $ret;
     }
 
