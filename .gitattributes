@@ -261,10 +261,6 @@ contenido/classes/UrlBuilder/Contenido_UrlBuilder_MR.class.php -text
 contenido/classes/UrlBuilder/Sample.php -text
 contenido/classes/Util/Modules/Contenido_NavMain_Util.class.php -text
 contenido/classes/Util/Modules/Contenido_Sitemap_Util.class.php -text
-contenido/classes/_validator/Abstract.class.php -text
-contenido/classes/_validator/Email.class.php -text
-contenido/classes/_validator/Factory.class.php -text
-contenido/classes/_validator/Regex.class.php -text
 contenido/classes/abstract_classes/class.conuser.php -text
 contenido/classes/cache/class.outputcache.php -text
 contenido/classes/class.action.php -text
@@ -440,6 +436,10 @@ contenido/classes/phpmailer/class.smtp.php -text
 contenido/classes/phpmailer/language/phpmailer.lang-de.php -text
 contenido/classes/tree/class.ctree.php -text
 contenido/classes/tree/class.ctreeitem.php -text
+contenido/classes/validator/Abstract.class.php -text
+contenido/classes/validator/Email.class.php -text
+contenido/classes/validator/Factory.class.php -text
+contenido/classes/validator/Regex.class.php -text
 contenido/classes/version/class.version.file.php -text
 contenido/classes/version/class.version.import.php -text
 contenido/classes/version/class.version.layout.php -text
