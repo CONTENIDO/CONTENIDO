@@ -122,7 +122,7 @@ class View_MailLog {
                 $omailItem = $mailLogCollection->loadItem($this->_idmail);
 
                 if ($mailLogCollection->getBody($omailItem) == false) {
-                    
+
                 } else {
 
                 }
@@ -199,7 +199,7 @@ class View_MailLog {
                 //execute action
                 $this->makeAction();
             } else {
-                $contenidoNotification = new Contenido_Notification();
+                $contenidoNotification = new cGuiNotification();
                 $contenidoNotification->displayNotification('error', i18n('No item selected!'));
             }
         } else {
@@ -223,7 +223,7 @@ if ($area == 'mail_log_detail') {
     if (is_numeric($_REQUEST['idmail'])) {
         $viewMailLog->display();
     } else {
-        $contenidoNotification = new Contenido_Notification();
+        $contenidoNotification = new cGuiNotification();
         $contenidoNotification->displayNotification('error', i18n('No item selected!'));
     }
 } else {

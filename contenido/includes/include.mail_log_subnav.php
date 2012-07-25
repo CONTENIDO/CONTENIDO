@@ -92,7 +92,7 @@ cDebug('Url-Params: ' . $sUrlParams);
 
 
 // Select NavSubItems from DB
-$nav = new Contenido_Navigation();
+$nav = new cGuiNavigation();
 
 $sql = "SELECT
         navsub.location AS location,
