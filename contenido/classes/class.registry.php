@@ -7,7 +7,7 @@
  * This file contains the global registry class.
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,6 +20,14 @@
  * This class contains functions for global interaction in CONTENIDO.
  */
 class cRegistry {
+
+    /**
+     * Container for application variables. Meant to set and get application wide 
+     * variables as an alternative to store them in global scope.
+     *
+     * @var array
+     */
+    protected static $_appVars = array();
 
     /**
      * Returns the CONTENIDO Session ID stored in the global variable "contenido"
@@ -282,6 +290,36 @@ class cRegistry {
      */
     public static function getCecRegistry() {
         return self::_fetchGlobalVariable('_cecRegistry');
+    }
+
+    /**
+     * Setter for an application variable.
+     * @param  string  $key
+     * @param  mixed   $value
+     */
+    public static function setAppVar($key, $value) {
+        self::$_appVars[$key] = $value;
+    }
+
+    /**
+     * Getter for an application variable.
+     * @param  string  $key
+     * @param  mixed   $default  Default value to return, if the application variable
+     *                           doesn't exists
+     * @return  mixed
+     */
+    public static function getAppVar($key, $default = null) {
+        return (isset(self::$_appVars[$key])) ? self::$_appVars[$key] : $default;
+    }
+
+    /**
+     * Unsets an existing application variable.
+     * @param  string  $key
+     */
+    public static function unsetAppVar($key) {
+        if (isset(self::$_appVars[$key])) {
+            unset(self::$_appVars[$key]);
+        }
     }
 
     /**
