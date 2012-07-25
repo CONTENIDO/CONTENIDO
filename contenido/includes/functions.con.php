@@ -763,7 +763,7 @@ function conDeeperCategoriesArray($idcat) {
  */
 function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false, $linkClass = '',
                                  $firstTreeElementToUse = 0, $uselang = 0, $final = true, $usecache = false) {
-    global $cfg, $client, $cfgClient, $lang, $sess, $_locationStringCache;
+    global $cfg, $client, $cfgClient, $lang, $sess;
 
     if ($idcat == 0) {
         $catStr = "Lost and Found";
@@ -774,18 +774,21 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
         $uselang = $lang;
     }
 
+    $locationStringCache = cRegistry::getAppVar('locationStringCache');
+    
     if ($final == true && $usecache == true) {
-        if (!is_array($_locationStringCache)) {
+        if (!is_array($locationStringCache)) {
             if (cFileHandler::exists($cfgClient[$client]['cache_path'] . "locationstring-cache-$uselang.txt")) {
-                $_locationStringCache = unserialize(cFileHandler::read($cfgClient[$client]['cache_path'] . "locationstring-cache-$uselang.txt"));
+                $locationStringCache = unserialize(cFileHandler::read($cfgClient[$client]['cache_path'] . "locationstring-cache-$uselang.txt"));
             } else {
-                $_locationStringCache = array();
+                $locationStringCache = array();
             }
+            cRegistry::setAppVar('locationStringCache', $locationStringCache);
         }
 
-        if (array_key_exists($idcat, $_locationStringCache)) {
-            if ($_locationStringCache[$idcat]["expires"] > time()) {
-                $catStr = $_locationStringCache[$idcat]["name"];
+        if (array_key_exists($idcat, $locationStringCache)) {
+            if ($locationStringCache[$idcat]["expires"] > time()) {
+                $catStr = $locationStringCache[$idcat]["name"];
                 return;
             }
         }
@@ -836,12 +839,13 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
     }
 
     if ($final == true && $usecache == true) {
-        $_locationStringCache[$idcat]["name"] = $catStr;
-        $_locationStringCache[$idcat]["expires"] = time() + 3600;
+        $locationStringCache[$idcat]["name"] = $catStr;
+        $locationStringCache[$idcat]["expires"] = time() + 3600;
 
         if (is_writable($cfgClient[$client]['cache_path'])) {
-            cFileHandler::write($cfgClient[$client]['cache_path'] . "locationstring-cache-$uselang.txt", serialize($_locationStringCache));
+            cFileHandler::write($cfgClient[$client]['cache_path'] . "locationstring-cache-$uselang.txt", serialize($locationStringCache));
         }
+        cRegistry::setAppVar('locationStringCache', $locationStringCache);
     }
 }
 
