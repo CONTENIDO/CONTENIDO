@@ -766,7 +766,7 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
     global $cfg, $client, $cfgClient, $lang, $sess;
 
     if ($idcat == 0) {
-        $catStr = "Lost and Found";
+        $catStr = 'Lost and Found';
         return;
     }
 
@@ -775,11 +775,12 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
     }
 
     $locationStringCache = cRegistry::getAppVar('locationStringCache');
-    
+    $locationStringCacheFile = $cfgClient[$client]['cache_path'] . "locationstring-cache-$uselang.txt";
+
     if ($final == true && $usecache == true) {
         if (!is_array($locationStringCache)) {
-            if (cFileHandler::exists($cfgClient[$client]['cache_path'] . "locationstring-cache-$uselang.txt")) {
-                $locationStringCache = unserialize(cFileHandler::read($cfgClient[$client]['cache_path'] . "locationstring-cache-$uselang.txt"));
+            if (cFileHandler::exists($locationStringCacheFile)) {
+                $locationStringCache = unserialize(cFileHandler::read($locationStringCacheFile));
             } else {
                 $locationStringCache = array();
             }
@@ -787,8 +788,8 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
         }
 
         if (array_key_exists($idcat, $locationStringCache)) {
-            if ($locationStringCache[$idcat]["expires"] > time()) {
-                $catStr = $locationStringCache[$idcat]["name"];
+            if ($locationStringCache[$idcat]['expires'] > time()) {
+                $catStr = $locationStringCache[$idcat]['name'];
                 return;
             }
         }
@@ -796,28 +797,24 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
 
     $db = cRegistry::getDb();
 
-    $sql = "SELECT
-                a.name AS name,
-                a.idcat AS idcat,
-                b.parentid AS parentid,
-                c.level as level
-            FROM
-                " . $cfg["tab"]["cat_lang"] . " AS a,
-                " . $cfg["tab"]["cat"] . " AS b,
-                " . $cfg["tab"]["cat_tree"] . " AS c
-            WHERE
-                a.idlang    = '" . cSecurity::toInteger($uselang) . "' AND
-                b.idclient  = '" . cSecurity::toInteger($client) . "' AND
-                b.idcat     = '" . cSecurity::toInteger($idcat) . "' AND
-                a.idcat     = b.idcat AND
-                c.idcat = b.idcat";
+    $sql = "SELECT a.name AS name, a.idcat AS idcat, b.parentid AS parentid, c.level as level "
+         . "FROM `:cat_lang` AS a, `:cat` AS b, `:cat_tree` AS c "
+         . "WHERE a.idlang = :idlang AND b.idclient = :idclient AND b.idcat = :idcat AND a.idcat = b.idcat AND c.idcat = b.idcat";
 
+    $sql = $db->prepare($sql, array(
+        'cat_lang' => $cfg['tab']['cat_lang'],
+        'cat' => $cfg['tab']['cat'],
+        'cat_tree' => $cfg['tab']['cat_tree'],
+        'idlang' => (int) $uselang,
+        'idclient' => (int) $client,
+        'idcat' => (int) $idcat
+    ));
     $db->query($sql);
     $db->next_record();
 
-    if ($db->f("level") >= $firstTreeElementToUse) {
-        $name = $db->f("name");
-        $parentid = $db->f("parentid");
+    if ($db->f('level') >= $firstTreeElementToUse) {
+        $name = $db->f('name');
+        $parentid = $db->f('parentid');
 
         //create link
         if ($makeLink == true) {
@@ -839,11 +836,11 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
     }
 
     if ($final == true && $usecache == true) {
-        $locationStringCache[$idcat]["name"] = $catStr;
-        $locationStringCache[$idcat]["expires"] = time() + 3600;
+        $locationStringCache[$idcat]['name'] = $catStr;
+        $locationStringCache[$idcat]['expires'] = time() + 3600;
 
         if (is_writable($cfgClient[$client]['cache_path'])) {
-            cFileHandler::write($cfgClient[$client]['cache_path'] . "locationstring-cache-$uselang.txt", serialize($locationStringCache));
+            cFileHandler::write($locationStringCacheFile, serialize($locationStringCache));
         }
         cRegistry::setAppVar('locationStringCache', $locationStringCache);
     }
@@ -857,40 +854,38 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
  * @param  bool  $isstart   Start article flag
  */
 function conMakeStart($idcatart, $isstart) {
-    global $db, $cfg, $lang;
+    global $lang;
 
-    $sql = "SELECT idcat, idart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcatart='" . cSecurity::toInteger($idcatart) . "'";
-    $db->query($sql);
-    $db->next_record();
+    // Load category article
+    $oCatArt = new cApiCategoryArticle((int) $idcatart);
+    if (!$oCatArt->isLoaded()) {
+        return;
+    }
+    $idart = $oCatArt->get('idart');
+    $idcat = $oCatArt->get('idcat');
 
-    $idart = $db->f("idart");
-    $idcat = $db->f("idcat");
+    // Load article language
+    $oArtLang = new cApiArticleLanguage();
+    if (!$oArtLang->loadByArticleAndLanguageId($idart, $lang)) {
+        return;
+    }
+    $idartlang = $oArtLang->get('idartlang');
 
-    $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart='" . cSecurity::toInteger($idart) . "' AND idlang='" . cSecurity::toInteger($lang) . "'";
-    $db->query($sql);
-    $db->next_record();
-
-    $idartlang = $db->f("idartlang");
-
-    if ($isstart == 1) {
-        $sql = "UPDATE " . $cfg["tab"]["cat_lang"] . " SET startidartlang='" . cSecurity::toInteger($idartlang) . "' WHERE idcat='" . cSecurity::toInteger($idcat) . "' AND idlang='" . cSecurity::toInteger($lang) . "'";
-        $db->query($sql);
-    } else {
-        $sql = "UPDATE " . $cfg["tab"]["cat_lang"] . " SET startidartlang='0' WHERE idcat='" . cSecurity::toInteger($idcat) . "' AND idlang='" . cSecurity::toInteger($lang) . "' AND startidartlang='" . cSecurity::toInteger($idartlang) . "'";
-        $db->query($sql);
+    // Update startidartlang for category language
+    $oCatLang = new cApiCategoryLanguage();
+    if ($oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
+        if ($isstart == 1) {
+            $oCatLang->set('startidartlang', $idartlang);
+        } else {
+            $oCatLang->set('startidartlang', 0);
+        }
+        $oCatLang->store();
     }
 
     if ($isstart == 1) {
         // Deactivate time management if article is a start article
-        $sql = "SELECT idart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcatart = '" . cSecurity::toInteger($idcatart) . "'";
-
-        $db->query($sql);
-        $db->next_record();
-
-        $idart = $db->f("idart");
-
-        $sql = "UPDATE " . $cfg["tab"]["art_lang"] . " SET timemgmt = 0 WHERE idart = '" . cSecurity::toInteger($idart) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
-        $db->query($sql);
+        $oArtLang->set('timemgmt', 0);
+        $oArtLang->store();
     }
 }
 
@@ -900,15 +895,9 @@ function conMakeStart($idcatart, $isstart) {
  * @param int $idart Article ID
  */
 function conGenerateCodeForArtInAllCategories($idart) {
-    global $lang, $client, $cfg;
-
-    $db = cRegistry::getDb();
-
-    $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idart = '" . cSecurity::toInteger($idart) . "'";
-    $db->query($sql);
-    while ($db->next_record()) {
-        conSetCodeFlag($db->f("idcatart"));
-    }
+    $oCatArtColl = new cApiCategoryArticleCollection();
+    $ids = $oCatArtColl->getIdsByWhereClause('idart = ' . (int) $idart);
+    conSetCodeFlagBulkEditing($ids);
 }
 
 /**
@@ -917,32 +906,19 @@ function conGenerateCodeForArtInAllCategories($idart) {
  * @param int $idcat Category ID
  */
 function conGenerateCodeForAllArtsInCategory($idcat) {
-    global $cfg;
-
-    $db = cRegistry::getDb();
-
-    $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat='" . cSecurity::toInteger($idcat) . "'";
-    $db->query($sql);
-    while ($db->next_record()) {
-        conSetCodeFlag($db->f("idcatart"));
-    }
+    $oCatArtColl = new cApiCategoryArticleCollection();
+    $ids = $oCatArtColl->getIdsByWhereClause('idcat = ' . (int) $idcat);
+    conSetCodeFlagBulkEditing($ids);
 }
 
 /**
  * Generate code for the active client
  */
 function conGenerateCodeForClient() {
-    global $client, $cfg;
-
-    $db = cRegistry::getDb();
-
-    $sql = "SELECT A.idcatart
-            FROM " . $cfg["tab"]["cat_art"] . " as A, " . $cfg["tab"]["cat"] . " as B
-            WHERE B.idclient=''" . cSecurity::toInteger($client) . "' AND B.idcat=A.idcat";
-    $db->query($sql);
-    while ($db->next_record()) {
-        conSetCodeFlag($db->f("idcatart"));
-    }
+    global $client;
+    $oCatArtColl = new cApiCategoryArticleCollection();
+    $ids = $oCatArtColl->getAllIdsByClientId($client);
+    conSetCodeFlagBulkEditing($ids);
 }
 
 /**
@@ -1073,6 +1049,36 @@ function conSetCodeFlag($idcatart) {
     $arr = glob($cfgClient[$client]['code_path'] . "*.*." . $idcatart . ".php");
     foreach ($arr as $file) {
         cFileHandler::remove($file);
+    }
+}
+
+/**
+ * Bulk editing to set code creation flag to true
+ *
+ * @param int $idcatart Contenido Category-Article-ID
+ */
+function conSetCodeFlagBulkEditing(array $idcatarts) {
+    global $cfg, $client, $cfgClient;
+
+    $db = cRegistry::getDb();
+
+    if (count($idcatarts) == 0) {
+        return;
+    }
+
+    foreach ($idcatarts as $pos => $id) {
+        $idcatarts[$pos] = (int) $id;
+    }
+
+    $inSql = implode(', ', $idcatarts);
+    $sql = "UPDATE " . $cfg['tab']['cat_art'] . " SET createcode = 1 WHERE idcatar IN (" . $inSql . ")";
+    $db->query($sql);
+
+    foreach ($idcatarts as $pos => $id) {
+        $arr = glob($cfgClient[$client]['code_path'] . '*.*.' . $id . '.php');
+        foreach ($arr as $file) {
+            cFileHandler::remove($file);
+        }
     }
 }
 

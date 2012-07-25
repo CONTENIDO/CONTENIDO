@@ -163,6 +163,25 @@ class cApiCategoryArticleCollection extends ItemCollection {
     }
 
     /**
+     * Returns all category article ids by client id.
+     * @param int $idclient
+     * @return array
+     */
+    public function getAllIdsByClientId($idclient) {
+        global $cfg;
+
+        $aIds = array();
+
+        $sql = "SELECT A.idcatart FROM `%s` as A, `%s` as B WHERE B.idclient = %d AND B.idcat = A.idcat";
+        $this->db->query($sql, $this->table, $cfg['tab']['cat'], $idclient);
+        while ($this->db->next_record()) {
+            $aIds[] = $this->db->f('idcatart');
+        }
+
+        return $aIds;
+    }
+
+    /**
      * Returns all available category ids of entries having a secific article id
      * @param   int  $idart
      * @return  array
