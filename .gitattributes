@@ -434,8 +434,8 @@ contenido/classes/phpmailer/class.smtp.php -text
 contenido/classes/phpmailer/language/phpmailer.lang-de.php -text
 contenido/classes/tree/class.ctree.php -text
 contenido/classes/tree/class.ctreeitem.php -text
-contenido/classes/util/_modules/Contenido_NavMain_Util.class.php -text
-contenido/classes/util/_modules/Contenido_Sitemap_Util.class.php -text
+contenido/classes/util/modules/Contenido_NavMain_Util.class.php -text
+contenido/classes/util/modules/Contenido_Sitemap_Util.class.php -text
 contenido/classes/validator/class.validator.abstract.php -text
 contenido/classes/validator/class.validator.email.php -text
 contenido/classes/validator/class.validator.factory.php -text
