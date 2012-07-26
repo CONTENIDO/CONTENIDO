@@ -331,8 +331,8 @@ abstract class cCodeGeneratorAbstract {
             $search = array();
             $replacements = array();
 
-            $typeCodeFile = $cfg['path']['contenido'] . 'includes/type/code/include.' . $type . '.code.php';
-            $cTypeClassFile = $cfg['path']['contenido'] . 'classes/content_types/class.content.type.' . strtolower(str_replace('CMS_', '', $type)) . '.php';
+            $typeCodeFile = $cfg['path']['contenido'] . $cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
+            $cTypeClassFile = $cfg['path']['contenido'] . $cfg['path']['classes'] . 'content_types/class.content.type.' . strtolower(str_replace('CMS_', '', $type)) . '.php';
 
             foreach ($a_[$key] as $val) {
                 if (cFileHandler::exists($cTypeClassFile)) {
