@@ -201,12 +201,12 @@ class cApiCategoryArticleCollection extends ItemCollection {
     }
 
     /**
-    * Checks, if passed category contains any articles in specified language.
-    *
-    * @param   int  $idcat  Category id
-    * @param   int  $idlang  Language id
-    * @return  bool
-    */
+     * Checks, if passed category contains any articles in specified language.
+     *
+     * @param   int  $idcat  Category id
+     * @param   int  $idlang  Language id
+     * @return  bool
+     */
     public function getHasArticles($idcat, $idlang) {
         global $cfg;
 
@@ -223,6 +223,31 @@ class cApiCategoryArticleCollection extends ItemCollection {
         return ($this->db->next_record()) ? true : false;
     }
 
+    /**
+     * Sets 'createcode' flag for one or more category articles.
+     * @param  int|array  $idcatart  One category article id or list of category article ids
+     * @return int  Number of updated entries
+     */
+    public function setCreateCodeFlag($idcatart) {
+        if (is_array($idcatart)) {
+            // Multiple ids
+            if (count($idcatart) == 0) {
+                return;
+            }
+            foreach ($idcatart as $pos => $id) {
+                $idcatart[$pos] = (int) $id;
+            }
+            $inSql = implode(', ', $idcatarts);
+            $sql = "UPDATE `%s` SET createcode = 1 WHERE idcatart IN (" . $inSql . ")";
+            $sql = $this->db->prepare($sql, $this->table);
+        } else {
+            // Single id
+            $sql = "UPDATE `%s` SET createcode = 1 WHERE idcatart = %d";
+            $sql = $db->prepare($sql, $this->table, $idcatart);
+        }
+        $this->db->query($sql);
+        return $this->db->affected_rows();
+    }
 }
 
 /**

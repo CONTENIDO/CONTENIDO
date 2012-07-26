@@ -1030,50 +1030,41 @@ function conGenerateCodeForAllArts() {
 }
 
 /**
- * Set code creation flag to true
+ * Set code creation flag for one category article id to true
  *
- * @param int $idcatart Contenido Category-Article-ID
+ * @param int $idcatart Category article id
  */
 function conSetCodeFlag($idcatart) {
-    global $cfg, $client, $cfgClient;
+    global $client, $cfgClient;
 
-    $db = cRegistry::getDb();
+    // Set 'createcode' flag
+    $oCatArtColl = new cApiCategoryArticleCollection();
+    $oCatArtColl->setCreateCodeFlag($idcatart);
 
-    $sql = "UPDATE " . $cfg["tab"]["cat_art"] . " SET createcode = '1' WHERE idcatart='" . cSecurity::toInteger($idcatart) . "'";
-    $db->query($sql);
-
-    /* Setting the createcode flag is not enough due to a bug in the
-     * database structure. Remove all con_code entries for a specific
-     * idcatart in the con_code table.
-     */
-    $arr = glob($cfgClient[$client]['code_path'] . "*.*." . $idcatart . ".php");
+    // Delete also generated code files from file system
+    $arr = glob($cfgClient[$client]['code_path'] . '*.*.' . $idcatart . '.php');
     foreach ($arr as $file) {
         cFileHandler::remove($file);
     }
 }
 
 /**
- * Bulk editing to set code creation flag to true
+ * Set code creation flag for several category article ids to true
  *
- * @param int $idcatart Contenido Category-Article-ID
+ * @param  array  $idcatarts  List of category article ids
  */
 function conSetCodeFlagBulkEditing(array $idcatarts) {
-    global $cfg, $client, $cfgClient;
-
-    $db = cRegistry::getDb();
+    global $client, $cfgClient;
 
     if (count($idcatarts) == 0) {
         return;
     }
 
-    foreach ($idcatarts as $pos => $id) {
-        $idcatarts[$pos] = (int) $id;
-    }
+    // Set 'createcode' flag
+    $oCatArtColl = new cApiCategoryArticleCollection();
+    $oCatArtColl->setCreateCodeFlag($idcatarts);
 
-    $inSql = implode(', ', $idcatarts);
-    $sql = "UPDATE " . $cfg['tab']['cat_art'] . " SET createcode = 1 WHERE idcatar IN (" . $inSql . ")";
-    $db->query($sql);
-
+    // Delete also generated code files from file system
     foreach ($idcatarts as $pos => $id) {
         $arr = glob($cfgClient[$client]['code_path'] . '*.*.' . $id . '.php');
         foreach ($arr as $file) {
