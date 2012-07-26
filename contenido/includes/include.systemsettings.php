@@ -106,8 +106,11 @@ if (is_array($settings)) {
                 #ignore record
             } else if (($action == "systemsettings_edit_item") && (stripslashes($systype) == $key) && (stripslashes($sysname) == $type) && (strpos($auth->auth["perm"], "sysadmin") !== false)) {
                 $oInputboxValue = new cHTMLTextbox("sysvalue", $value['value']);
+                $oInputboxValue->setWidth(30);
                 $oInputboxName = new cHTMLTextbox("sysname", $type);
+                $oInputboxName->setWidth(30);
                 $oInputboxType = new cHTMLTextbox("systype", $key);
+                $oInputboxType->setWidth(10);
 
                 $hidden = '<input type="hidden" name="csidsystemprop" value="' . $value['idsystemprop'] . '">';
                 $sSubmit = '<input type="image" style="vertical-align:top;" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif">';
@@ -161,12 +164,15 @@ $form->setVar("frame", $frame);
 $form->setVar("action", "systemsettings_save_item");
 $form->addHeader(i18n("Add new variable"));
 $inputbox = new cHTMLTextbox("systype");
+$inputbox->setWidth(10);
 $form->add(i18n("Type"), $inputbox->render());
 
 $inputbox = new cHTMLTextbox("sysname");
+$inputbox->setWidth(30);
 $form->add(i18n("Name"), $inputbox->render());
 
 $inputbox = new cHTMLTextbox("sysvalue");
+$inputbox->setWidth(30);
 $form->add(i18n("Value"), $inputbox->render());
 
 $spacer = new cHTMLDiv();

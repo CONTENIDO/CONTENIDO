@@ -161,12 +161,15 @@ $oForm->setVar('idclientslang', $_REQUEST["idclientslang"]);
 $oForm->addHeader(i18n('Add new variable'));
 
 $oInputbox = new cHTMLTextbox('cstype');
+$oInputbox->setWidth(15);
 $oForm->add(i18n('Type'), $oInputbox->render());
 
 $oInputbox = new cHTMLTextbox('csname');
+$oInputbox->setWidth(15);
 $oForm->add(i18n('Name'), $oInputbox->render());
 
 $oInputbox = new cHTMLTextbox('csvalue');
+$oInputbox->setWidth(30);
 $oForm->add(i18n('Value'), $oInputbox->render());
 
 $spacer = new cHTMLDiv();
