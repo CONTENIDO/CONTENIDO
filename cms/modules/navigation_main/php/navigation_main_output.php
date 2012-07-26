@@ -30,9 +30,6 @@ if (!isset($tpl)) {
 }
 $tpl->reset();
 
-cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation.class.php');
-cInclude('classes', 'Util/Modules/Contenido_NavMain_Util.class.php');
-
 $iStartIdcat = getEffectiveSetting('navigation', 'idcat-home', 1);
 $iSelectedDepth = getEffectiveSetting('navigation', 'level-depth', 3);
 
