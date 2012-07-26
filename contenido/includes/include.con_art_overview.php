@@ -453,7 +453,24 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             // Uses Category Template
             if (0 == $idtplcfg) {
-                $a_tplname = "--- " . i18n("None") . " ---";
+            	$sql2 = "SELECT
+	                c.idtpl AS idtpl,
+	                c.name AS name,
+	                c.description,
+	                b.idtplcfg AS idtplcfg
+	            FROM
+	                " . $cfg['tab']['tpl_conf'] . " AS a,
+	                " . $cfg['tab']['cat_lang'] . " AS b,
+	                " . $cfg['tab']['tpl'] . " AS c
+	            WHERE
+	                b.idcat     = " . cSecurity::toInteger($idcat) . " AND
+	                b.idlang    = " . cSecurity::toInteger($lang) . " AND
+	                b.idtplcfg  = a.idtplcfg AND
+	                c.idtpl     = a.idtpl AND
+	                c.idclient  = " . cSecurity::toInteger($client);
+            	$db2->query($sql2);
+            	$db2->next_record();
+                $a_tplname = $db2->f("name") ? '<i>'.$db2->f("name").'</i>' : "--- " . i18n("None") . " ---";
             }
 
             // Make Startarticle button
@@ -570,7 +587,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         $value = '<input type="checkbox" name="mark" value="' . $idart . '" class="mark_articles"/>';
                         break;
                     case "start":
-                        $value = $tmp_start;
+                        $value = $tmp_start.$usetime;
                         break;
                     case "title":
                         $value = $tmp_articletitle;
@@ -610,7 +627,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                                     $actionValue = $deletelink;
                                     break;
                                 case "usetime":
-                                    $actionValue = $usetime;
+                                    $actionValue = '';
                                     break;
                                 default:
                                     // Ask chain about the entry
