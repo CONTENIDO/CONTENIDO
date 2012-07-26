@@ -45,7 +45,7 @@
         <imgsrc>images/folder_on_error_locked.gif</imgsrc>
         <description>locked category has no article or no startarticle or article offline</description>
     </category>
-	<category>
+    <category>
         <imgsrc>images/but_sync_cat.gif</imgsrc>
         <description>synchronized category online</description>
     </category>

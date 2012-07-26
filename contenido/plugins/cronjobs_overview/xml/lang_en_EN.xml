@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<language>      
-	<plugin>
-		<cronjob>Cronjobs</cronjob>
-	</plugin>
+<language>
+    <plugin>
+        <cronjob>Cronjobs</cronjob>
+    </plugin>
 </language>
-    
+

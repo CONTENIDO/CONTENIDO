@@ -3,13 +3,13 @@
     <navigation>
         <extra>
             <content_allocation>
-            	<main>Tagging</main>
+                <main>Tagging</main>
             </content_allocation>
         </extra>
-		<contenido>
-			<article>
-				<content_allocation>Tagging</content_allocation>
-			</article>
-		</contenido>
+        <contenido>
+            <article>
+                <content_allocation>Tagging</content_allocation>
+            </article>
+        </contenido>
     </navigation>
 </language>

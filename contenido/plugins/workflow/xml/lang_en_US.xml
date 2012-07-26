@@ -2,16 +2,16 @@
 <language>
 
     <navigation>
-    
+
         <extra>
             <workflow>
-            	<main>Workflow</main>
+                <main>Workflow</main>
                 <settings>Workflow-Properties</settings>
                 <steps>Steps</steps>
             </workflow>
         </extra>
 
     </navigation>
-    
+
 
 </language>
