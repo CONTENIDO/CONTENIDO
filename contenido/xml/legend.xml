@@ -10,27 +10,43 @@
         <description>general article</description>
     </article>
     <article>
+        <imgsrc>images/isstart1r.gif</imgsrc>
+        <description>start referred article</description>
+    </article>
+    <article>
+        <imgsrc>images/isstart0r.gif</imgsrc>
+        <description>general referred article</description>
+    </article>
+    <article>
+        <imgsrc>images/but_time_2.gif</imgsrc>
+        <description>article with time control online</description>
+    </article>
+    <article>
+        <imgsrc>images/but_time_1.gif</imgsrc>
+        <description>article with time control offline</description>
+    </article>
+    <category>
         <imgsrc>images/folder_on.gif</imgsrc>
         <description>general category</description>
-    </article>
-    <article>
+    </category>
+    <category>
         <imgsrc>images/folder_off_error.gif</imgsrc>
         <description>category offline</description>
-    </article>
-    <article>
+    </category>
+    <category>
         <imgsrc>images/folder_on_error.gif</imgsrc>
         <description>category has no article or no start article or article offline</description>
-    </article>
-    <article>
+    </category>
+    <category>
         <imgsrc>images/folder_on_locked.gif</imgsrc>
         <description>locked category</description>
-    </article>
-    <article>
+    </category>
+    <category>
         <imgsrc>images/folder_on_error_locked.gif</imgsrc>
         <description>locked category has no article or no startarticle or article offline</description>
-    </article>
-    <article>
+    </category>
+    <category>
         <imgsrc>images/but_sync_cat_off.gif</imgsrc>
         <description>synchronized category</description>
-    </article>
+    </category>
 </legend>

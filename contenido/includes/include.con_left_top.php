@@ -461,15 +461,19 @@ $tpl->set('s', 'AJAXURL', $cfg['path']['contenido_fullhtml'] . 'ajaxmain.php');
 $legendlink = 'legend';
 $editCategory = new cGuiFoldingRow("31f52be2-7499-4d21-8175-3917129e6014", i18n("Legend"), $legendlink);
 
-$editLegend = '<div id="legend"><ul>';
+$editLegend = '<div id="legend">';
 
 $aInformation = array('imgsrc', 'description');
 $aData = xmlFileToArray($cfg['path']['xml'] . "legend.xml", $aData, $aInformation);
 
-foreach ($aData as $data) {
-    $editLegend .= '<li><img src="' . (string) $data['imgsrc'] . '"/><span>' . i18n((string) $data['description']) . '</span></li>';
+foreach ($aData as $key => $item) {
+	$editLegend .= '<table class=' . $key . '>';
+	foreach($item as $data){
+    	$editLegend .= '<tr><td><img src="' . (string) $data['imgsrc'] . '"/></td><td><span>' . i18n((string) $data['description']) . '</span></td></tr>';
+	}
+	$editLegend .= '</table>';
 }
-$editLegend .= '</ul></div>';
+$editLegend .= '</div>';
 $editCategory->setContentData($editLegend);
 $tpl->set('s', 'LEGEND', $editCategory->render());
 $tpl->set('s', 'LEGENDLINK', $legendlink);
@@ -482,7 +486,12 @@ function xmlFileToArray($filename, $aData = array(), $aInformation) {
     $_dom = simplexml_load_file($filename);
     for ($i = 0, $size = count($_dom); $i < $size; $i++) {
         foreach ($aInformation as $sInfoName) {
-            $aData[$i][$sInfoName] = ($_dom->article[$i]->$sInfoName);
+        	if($_dom->article[$i]->$sInfoName!=''){
+            	$aData['article'][$i][$sInfoName] = $_dom->article[$i]->$sInfoName;
+        	}
+        	if($_dom->category[$i]->$sInfoName!=''){
+            	$aData['category'][$i][$sInfoName] = $_dom->category[$i]->$sInfoName;
+        	}
         }
     }
     return $aData;
