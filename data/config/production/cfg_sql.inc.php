@@ -65,6 +65,8 @@ $cfg['tab']['inuse']                     = $cfg['sql']['sqlprefix'] . '_inuse';
 $cfg['tab']['keywords']                  = $cfg['sql']['sqlprefix'] . '_keywords';
 $cfg['tab']['lang']                      = $cfg['sql']['sqlprefix'] . '_lang';
 $cfg['tab']['lay']                       = $cfg['sql']['sqlprefix'] . '_lay';
+$cfg['tab']['mail_log']                  = $cfg['sql']['sqlprefix'] . '_mail_log';
+$cfg['tab']['mail_log_success']          = $cfg['sql']['sqlprefix'] . '_mail_log_success';
 $cfg['tab']['meta_tag']                  = $cfg['sql']['sqlprefix'] . '_meta_tag';
 $cfg['tab']['meta_type']                 = $cfg['sql']['sqlprefix'] . '_meta_type';
 $cfg['tab']['mod_translations']          = $cfg['sql']['sqlprefix'] . '_mod_translations';
@@ -93,5 +95,4 @@ $cfg['tab']['type']                      = $cfg['sql']['sqlprefix'] . '_type';
 $cfg['tab']['upl_meta']                  = $cfg['sql']['sqlprefix'] . '_upl_meta';
 $cfg['tab']['upl']                       = $cfg['sql']['sqlprefix'] . '_upl';
 $cfg['tab']['user_prop']                 = $cfg['sql']['sqlprefix'] . '_user_prop';
-$cfg['tab']['mail_log']                  = $cfg['sql']['sqlprefix'] . '_mail_log';
 ?>

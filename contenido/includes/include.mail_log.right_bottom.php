@@ -1,45 +1,54 @@
 <?php
-
 class View_MailLog {
 
-    protected $_cfg = array();
-    protected $_tplFile = '';
-    protected $_action = '';
-    protected $_tableHeader = array();
-    protected $_tpl = null;
-    protected $_sid = null;
-    protected $_message = '';
-    protected $_idmail = '';
-    protected $_area = '';
-    protected $_sess = null;
+    protected $_cfg;
 
-    public function __construct($conVars) {
-        $this->_cfg = $conVars['cfg'];
-        $this->_tplFile = $this->_cfg['path']['templates'] . 'template.mail_log.right_bottom.html';
-        $this->_action = $conVars['action'];
-        $this->_tableHeader = array('checkbox' => i18n('Mark'), 'created' => i18n('Date'), 'from' => i18n('From'), 'to' => i18n('To'), 'action' => i18n('Action'));
-        $this->_sess = $conVars['sess'];
-        $this->_area = $conVars['area'];
-        $this->_tpl = new cTemplate();
-        $this->_tpl->set('s', 'SID', $this->_sess->id);
-        $this->_tpl->set('s', 'DELETE_TITLE', i18n('Delete email log'));
-        $this->_tpl->set('s', 'DELETE_TEXT', i18n('Do you realy wont to delete selected emails.'));
-        $this->_tpl->set('s', 'AREA', $conVars['area']);
-        $this->_tableHeaderDetail = array('success' => i18n('Success'),
-            'mailer' => i18n('Mailer'),
-            'exception' => i18n('Exception'),
+    protected $_action = '';
+
+    protected $_tableHeader;
+
+    protected $_tpl;
+
+    protected $_idmail = '';
+
+    protected $_area = '';
+
+    /**
+     * Constructor initialises class attributes and prepares template.
+     *
+     * @param string $action the action which should be processed: delete,
+     *        detail, resend_mail
+     * @param string $area mail_log_overview or mail_log_detail depending on
+     *        which area should be shown
+     */
+    public function __construct($action, $area) {
+        $this->_cfg = cRegistry::getConfig();
+        $this->_action = $action;
+        $this->_tableHeader = array(
+            'checkbox' => i18n('Mark'),
             'created' => i18n('Date'),
-            'idmail_resend' => i18n('Resend'),
-            'subject' => i18n('Subject'),
-            'header' => i18n('Header'),
-            'body' => i18n('Body'),
             'from' => i18n('From'),
             'to' => i18n('To'),
+            'action' => i18n('Action')
+        );
+        $this->_area = $area;
+        $this->_tpl = new cTemplate();
+        $session = cRegistry::getSession();
+        $this->_tpl->set('s', 'SID', $session->id);
+        $this->_tpl->set('s', 'DELETE_TITLE', i18n('Delete email log'));
+        $this->_tpl->set('s', 'DELETE_TEXT', i18n('Do you realy wont to delete selected emails.'));
+        $this->_tpl->set('s', 'AREA', $area);
+        $this->_tableHeaderDetail = array(
+            'from' => i18n('From'),
+            'to' => i18n('To'),
+            'reply_to' => i18n('Reply to'),
             'cc' => i18n('CC'),
             'bcc' => i18n('BCC'),
-            'replay_to' => i18n('Replay to'),
+            'subject' => i18n('Subject'),
+            'body' => i18n('Body'),
+            'created' => i18n('Date')
         );
-        //set idmail
+        // set idmail
         if (!empty($_REQUEST['idmail']) && is_numeric($_REQUEST['idmail'])) {
             $this->_idmail = $_REQUEST['idmail'];
         }
@@ -47,48 +56,41 @@ class View_MailLog {
 
     public function makeAction() {
         switch ($this->_action) {
-
             case 'delete':
-                $mailLogCollection = new cApiMailLogCollection();
-                $where = '';
                 if (!empty($_REQUEST['idmails'])) {
-
-                    $idmails = explode('+', $_REQUEST['idmails']);
+                    $mailLogCollection = new cApiMailLogCollection();
+                    $where = '';
+                    $idmails = json_decode($_REQUEST['idmails']);
                     foreach ($idmails as $idmail) {
                         if (is_numeric($idmail)) {
-                            $where .= ' OR idmail=' . $idmail;
-                            $itemCollection = new cApiMailLogCollection();
-                            $itemCollection->deleteFiles($mailLogCollection->loadItem($this->_idmail));
+                            $where .= ' OR `idmail`=' . $idmail;
                         }
                     }
-                    //delete
-                    $mailLogCollection->deleteByWhereClause('1=2 ' . $where);
+                    // cut the first " OR "
+                    $where = substr($where, 4);
+                    // delete all entries with the given idmails
+                    $mailLogCollection->deleteByWhereClause($where);
+                    // also delete the entries in mail_log_success
+                    $mailLogSuccessCollection = new cApiMailLogSuccessCollection();
+                    $mailLogSuccessCollection->deleteByWhereClause($where);
                 }
                 $this->_defaultAction();
                 break;
             case 'detail':
                 $this->_tpl->set('s', 'HEADER_TEXT', i18n('Detail of Email log'));
                 $this->_tpl->set('s', 'IDMAIL', $this->_idmail);
-                $this->_tpl->set('s', 'SESSID', $this->_sid);
-                $this->_tpl->set('s', 'URL', 'main.php');
 
-                $mailLogCollection = new cApiMailLogCollection();
-                $omailItem = $mailLogCollection->loadItem($this->_idmail);
+                $mailItem = new cApiMailLog($this->_idmail);
                 foreach ($this->_tableHeaderDetail as $key => $value) {
-
                     switch ($key) {
-                        case 'body':
-                            $this->_tpl->set('d', 'NAME', $value);
-                            $this->_tpl->set('d', 'VALUE', $mailLogCollection->getBody($omailItem));
-                            break;
-                        case 'header':
-                            $this->_tpl->set('d', 'NAME', $value);
-                            $this->_tpl->set('d', 'VALUE', $mailLogCollection->getHeader($omailItem));
-                            break;
+                        // TODO success and resend mails now have to be shown a
+                        // different way - we can have multiple recipients per
+                        // mail! in the overview, each mail is shown only once.
+                        // the different recipients and success messages should
+                        // be shown separately
                         case 'success':
                             $this->_tpl->set('d', 'NAME', $value);
-
-                            if ($omailItem->get($key) == 1) {
+                            if ($mailItem->get($key) == 1) {
                                 $this->_tpl->set('d', 'VALUE', '<img src="images/but_ok.gif" />');
                                 $this->_tpl->set('s', 'RESEND_EMAIL_LINK', '');
                             } else {
@@ -99,32 +101,31 @@ class View_MailLog {
                             break;
                         case 'idmail_resend':
                             $this->_tpl->set('d', 'NAME', $value);
-                            $this->_tpl->set('d', 'VALUE', ($omailItem->get($key) == 0) ? i18n('No') : i18n('Yes'));
+                            $this->_tpl->set('d', 'VALUE', ($mailItem->get($key) == 0)? i18n('No') : i18n('Yes'));
                             break;
-                        case 'bcc':
+                        case 'from':
+                        case 'to':
+                        case 'reply_to':
                         case 'cc':
+                        case 'bcc':
                             $this->_tpl->set('d', 'NAME', $value);
-                            $this->_tpl->set('d', 'VALUE', str_replace('+', '<br/>', $omailItem->get($key)));
+                            $addresses = $this->_decodeAddresses($mailItem->get($key));
+                            $this->_tpl->set('d', 'VALUE', $addresses);
                             break;
                         default:
                             $this->_tpl->set('d', 'NAME', $value);
-                            $this->_tpl->set('d', 'VALUE', $omailItem->get($key));
+                            $this->_tpl->set('d', 'VALUE', $mailItem->get($key));
                     }
                     $this->_tpl->next();
                 }
-
                 $this->_tpl->generate($this->_cfg['path']['templates'] . 'template.mail_log.detail.html');
-
                 break;
-            case 'resend_email':
-                echo "---resend_email debugg";
+            case 'resend_mail':
                 $mailLogCollection = new cApiMailLogCollection();
-                $omailItem = $mailLogCollection->loadItem($this->_idmail);
+                $mailItem = $mailLogCollection->loadItem($this->_idmail);
 
-                if ($mailLogCollection->getBody($omailItem) == false) {
-
+                if ($mailLogCollection->getBody($mailItem) == false) {
                 } else {
-
                 }
 
                 $this->_defaultAction();
@@ -160,15 +161,24 @@ class View_MailLog {
 
         $mailLogCollection->query();
 
-        while ($oItem = $mailLogCollection->next()) {
+        while (($item = $mailLogCollection->next()) !== false) {
             $cells = '';
-            foreach ($this->_tableHeader as $key => $item) {
-                if ($key == 'checkbox') {
-                    $cells .= sprintf('<td class="bordercell"> <input class="mark_emails %s" type="checkbox" name="" value="%s"/ ></td>', 'id_' . $oItem->get('idmail'), $oItem->get('idmail'));
-                } elseif ($key == 'action') {
-                    $cells .= sprintf('<td class="bordercell"> <a id="%s" class="get_info" href=""> <img src="images/info.gif" alt="" /> </a></td>', 'id_' . $oItem->get('idmail'));
-                } else {
-                    $cells .= '<td class="bordercell"> ' . $oItem->get($key) . '&nbsp;</td>';
+            foreach ($this->_tableHeader as $key => $value) {
+                switch ($key) {
+                    case 'checkbox':
+                        $cells .= sprintf('<td class="bordercell"> <input class="mark_emails %s" type="checkbox" name="" value="%s"/ ></td>', 'id_' . $item->get('idmail'), $item->get('idmail'));
+                        break;
+                    case 'action':
+                        $cells .= sprintf('<td class="bordercell"> <a id="%s" class="get_info" href=""> <img src="images/info.gif" alt="" /> </a></td>', 'id_' . $item->get('idmail'));
+                        break;
+                    case 'from':
+                    case 'to':
+                        $addresses = $item->get($key);
+                        $addresses = $this->_decodeAddresses($addresses);
+                        $cells .= '<td class="bordercell"> ' . $addresses . '&nbsp;</td>';
+                        break;
+                    default:
+                        $cells .= '<td class="bordercell"> ' . $item->get($key) . '&nbsp;</td>';
                 }
             }
             $this->_tpl->set('d', 'CELLS', $cells);
@@ -176,11 +186,33 @@ class View_MailLog {
         }
     }
 
+    /**
+     * Takes an associative array where the keys represent the mail addresses
+     * and the values optionally represent the mailer name and returns an HTML
+     * representation in the following form:
+     * Vorname Nachname <vorname.nachname@domain.tld>
+     * Vorname2 Nachname2 <vorname2.nachname2@domain2.tld>
+     *
+     * @param array $addresses associative array containing the mail addresses
+     *        as keys and the mailer names as values
+     * @return string HTML code showing the given mail addresses and names
+     */
+    private function _decodeAddresses($addresses) {
+        $result = '';
+        $addresses = json_decode($addresses, true);
+        foreach ($addresses as $mail => $name) {
+            $result .= $name . ' &lt;' . $mail . '&gt;<br />';
+        }
+        $result = substr($result, 0, strlen($result) - 6);
+
+        return $result;
+    }
+
     private function _defaultAction() {
-        //set table header
+        // set table header
         $headers = '';
-        foreach ($this->_tableHeader as $item) {
-            $headers .= '<td class="headerbordercell">' . $item . '</td>';
+        foreach ($this->_tableHeader as $header) {
+            $headers .= '<td class="headerbordercell">' . $header . '</td>';
         }
         $this->_tpl->set('s', 'HEADERS', $headers);
 
@@ -188,46 +220,30 @@ class View_MailLog {
 
         $this->_tpl->set('s', 'MAIL_STATUS', $_REQUEST['mail_status']);
         $this->_tpl->set('s', 'MAIL_CLIENT', $_REQUEST['mail_client']);
-        //get Data
+        // get Data
         $this->getData();
-        $this->_tpl->generate($this->_tplFile);
+        $this->_tpl->generate($this->_cfg['path']['templates'] . 'template.mail_log.right_bottom.html');
     }
 
+    /**
+     * Displays the right content in dependency of $this->_area.
+     */
     public function display() {
         if ($this->_area == 'mail_log_detail') {
             if (is_numeric($_REQUEST['idmail'])) {
-                //execute action
+                // execute action
                 $this->makeAction();
             } else {
                 $contenidoNotification = new cGuiNotification();
                 $contenidoNotification->displayNotification('error', i18n('No item selected!'));
             }
         } else {
-            //execute action
+            // execute action
             $this->makeAction();
         }
     }
 
 }
 
-$params = array(
-    'cfg' => $cfg,
-    'action' => $action,
-    'area' => $area,
-    'sess' => $sess
-);
-
-$viewMailLog = new View_MailLog($params);
-
-if ($area == 'mail_log_detail') {
-    if (is_numeric($_REQUEST['idmail'])) {
-        $viewMailLog->display();
-    } else {
-        $contenidoNotification = new cGuiNotification();
-        $contenidoNotification->displayNotification('error', i18n('No item selected!'));
-    }
-} else {
-    $viewMailLog->display();
-}
-
-?>
+$viewMailLog = new View_MailLog($action, $area);
+$viewMailLog->display();

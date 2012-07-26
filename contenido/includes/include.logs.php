@@ -48,7 +48,6 @@ $clientColl = new cApiClientCollection();
 $tpl->reset();
 
 $form = '<form name="log_select" method="post" action="'.$sess->url("main.php?").'">
-             '.$sess->hidden_session().'
              <input type="hidden" name="area" value="'.$area.'">
              <input type="hidden" name="action" value="log_show">
              <input type="hidden" name="frame" value="'.$frame.'">';

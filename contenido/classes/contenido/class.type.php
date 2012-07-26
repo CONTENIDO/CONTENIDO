@@ -17,11 +17,6 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2012-07-11
- *   $Id$
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -68,18 +63,18 @@ class cApiTypeCollection extends ItemCollection {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $oItem = parent::createNewItem();
+        $item = parent::createNewItem();
 
-        $oItem->set('type', $type);
-        $oItem->set('description', $description);
-        $oItem->set('code', $code);
-        $oItem->set('status', $status);
-        $oItem->set('author', $author);
-        $oItem->set('created', $created);
-        $oItem->set('lastmodified', $lastmodified);
-        $oItem->store();
+        $item->set('type', $type);
+        $item->set('description', $description);
+        $item->set('code', $code);
+        $item->set('status', $status);
+        $item->set('author', $author);
+        $item->set('created', $created);
+        $item->set('lastmodified', $lastmodified);
+        $item->store();
 
-        return $oItem;
+        return $item;
     }
 
 }
@@ -93,14 +88,14 @@ class cApiType extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     * @param  mixed  $id  Specifies the ID of item to load
      */
-    public function __construct($mId = false) {
+    public function __construct($id = false) {
         global $cfg;
         parent::__construct($cfg['tab']['type'], 'idtype');
         $this->setFilters(array(), array());
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
@@ -126,9 +121,9 @@ class cApiType extends Item {
      * Userdefined setter for item fields.
      * @param  string  $name
      * @param  mixed   $value
-     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     * @param  bool    $safe   Flag to run defined inFilter on passed value
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $safe = true) {
         if ('status' === $name) {
             $value = (int) $value;
         }
@@ -137,7 +132,7 @@ class cApiType extends Item {
             $value = $this->escape($value);
         }
 
-        parent::setField($name, $value, $bSafe);
+        parent::setField($name, $value, $safe);
     }
 
 }

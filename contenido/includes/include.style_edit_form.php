@@ -163,7 +163,7 @@ if ($action == $sActionDelete) {
         $sAction = ($bEdit) ? $sActionEdit : $_REQUEST['action'];
 
         if ($_REQUEST['action'] == $sActionEdit) {
-            $sCode = getFileContent($sFilename, $path);
+            $sCode = cFileHandler::read($path . $sFilename);
         } else {
             $sCode = stripslashes($_REQUEST['code']); // stripslashes is required here in case of creating a new file
         }
