@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-07-26
+ *     created  2012-07-27
  * }}
  */
 
@@ -98,6 +98,7 @@ return array(
     'HtmlParser' => 'contenido/classes/class.htmlparser.php',
     'cHTMLValidator' => 'contenido/classes/class.htmlvalidator.php',
     'HttpInputValidator' => 'contenido/classes/class.httpinputvalidator.php',
+    'cI18n' => 'contenido/classes/class.i18n.php',
     'cHTMLInputSelectElement' => 'contenido/classes/class.input.helper.php',
     'UI_Config_Table' => 'contenido/classes/class.input.helper.php',
     'cIterator' => 'contenido/classes/class.iterator.php',
