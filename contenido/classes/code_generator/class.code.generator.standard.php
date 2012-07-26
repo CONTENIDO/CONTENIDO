@@ -29,8 +29,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * {@inheritdoc}
      */
     public function _generate($contype = true) {
-        global $cfgClient;
-        global $db, $cfg, $code;
+        global $cfg, $code;
 
         $this->_cssData = '';
         $this->_jsData = '';
@@ -159,18 +158,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $this->_layoutCode = str_ireplace_once('</head>', $cssFile . '</head>', $this->_layoutCode);
         $this->_layoutCode = str_ireplace_once('</body>', $jsFile . '</body>', $this->_layoutCode);
 
-        // Write code in the cache of the client. If the folder does not exist create one.
-        if ($this->_layout == false && $this->_save == true) {
-            if (!is_dir($cfgClient[$this->_client]['code_path'])) {
-                mkdir($cfgClient[$this->_client]['code_path']);
-                chmod($cfgClient[$this->_client]['code_path'], 0777);
-                cFileHandler::write($cfgClient[$this->_client]['code_path'] . '.htaccess', "Order Deny,Allow\nDeny from all\n");
-            }
-            $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $this->_layoutCode;
-            cFileHandler::write($cfgClient[$this->_client]['code_path'] . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
-
-            $db->update($cfg['tab']['cat_art'], array('createcode' => 0), array('idcatart' => (int) $idcatart));
-        }
+        // Save the generated code
+        $this->_saveGeneratedCode($code, $idcatart);
 
         return $this->_layoutCode;
     }
@@ -229,31 +218,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * tags creation.
      */
     protected function _processCodeMetaTags() {
-        global $cfg, $encoding, $_cecRegistry;
+        global $encoding, $_cecRegistry;
 
-        // Collect all available meta tag entries with non empty values
-        $aMetaTags = array();
-        $aAvailableTags = conGetAvailableMetaTagTypes();
-        foreach ($aAvailableTags as $key => $value) {
-            $sMetaValue = conGetMetaValue($this->_idartlang, $key);
-            if (strlen($sMetaValue) > 0) {
-                //$aMetaTags[$value['name']] = array(array('attribute' => $value['fieldname'], 'value' => $sMetaValue), ...);
-                $aMetaTags[] = array($value['fieldname'] => $value['name'], 'content' => $sMetaValue);
-            }
-        }
-
-        // Add CONTENIDO meta tag
-        $aVersion = explode('.', $cfg['version']);
-        $sContenidoVersion = $aVersion[0] . '.' . $aVersion[1];
-        $aMetaTags[] = array('name' => 'generator', 'content' => 'CMS CONTENIDO ' . $sContenidoVersion);
-
-        // Add content type meta tag
-        // @todo html5 requires something like <meta charset="{encoding}">
-        if (getEffectiveSetting('generator', 'xhtml', 'false') == 'true') {
-            $aMetaTags[] = array('http-equiv' => 'Content-Type', 'content' => 'application/xhtml+xml; charset=' . $encoding[$this->_lang]);
-        } else {
-            $aMetaTags[] = array('http-equiv' => 'Content-Type', 'content' => 'text/html; charset=' . $encoding[$this->_lang]);
-        }
+        // Get all basic meta tags
+        $aMetaTags = $this->_getBasicMetaTags();
 
         // Process chain to update meta tags
         $_cecIterator = $_cecRegistry->getIterator('Contenido.Content.CreateMetatags');
@@ -336,4 +304,65 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $this->_layoutCode = str_ireplace_once('</head>', $sMetatags . '</head>', $this->_layoutCode);
     }
 
+    /**
+     * Saves the generated code (if layout flag is false and save flag is true)
+     *
+     * @global  array  $cfgClient
+     * @param  string  $code  The generated code
+     * @param  int   $idcatart  Category article id
+     */
+    protected function _saveGeneratedCode($code, $idcatart) {
+        global $cfgClient;
+
+        // Write code in the cache of the client. If the folder does not exist create one.
+        if ($this->_layout == false && $this->_save == true) {
+            if (!is_dir($cfgClient[$this->_client]['code_path'])) {
+                mkdir($cfgClient[$this->_client]['code_path']);
+                chmod($cfgClient[$this->_client]['code_path'], 0777);
+                cFileHandler::write($cfgClient[$this->_client]['code_path'] . '.htaccess', "Order Deny,Allow\nDeny from all\n");
+            }
+            $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $this->_layoutCode;
+            cFileHandler::write($cfgClient[$this->_client]['code_path'] . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
+
+            // Update create code flag
+            $oCatArtColl = new cApiCategoryArticleCollection();
+            $oCatArtColl->setCreateCodeFlag($idcatart, 0);
+        }
+    }
+
+    /**
+     * Collects basic meta tags an returns them.
+     * @global  array  $encoding
+     * @return array  List of assozative meta tag values
+     */
+    protected function _getBasicMetaTags() {
+        global $cfg, $encoding;
+
+        // Collect all available meta tag entries with non empty values
+        $aMetaTags = array();
+        $aAvailableTags = conGetAvailableMetaTagTypes();
+        foreach ($aAvailableTags as $key => $value) {
+            $sMetaValue = conGetMetaValue($this->_idartlang, $key);
+            if (strlen($sMetaValue) > 0) {
+                //$aMetaTags[$value['name']] = array(array('attribute' => $value['fieldname'], 'value' => $sMetaValue), ...);
+                $aMetaTags[] = array($value['fieldname'] => $value['name'], 'content' => $sMetaValue);
+            }
+        }
+
+        // Add CONTENIDO meta tag
+        $aVersion = explode('.', $cfg['version']);
+        $sContenidoVersion = $aVersion[0] . '.' . $aVersion[1];
+        $aMetaTags[] = array('name' => 'generator', 'content' => 'CMS CONTENIDO ' . $sContenidoVersion);
+
+        // Add content type or charseet meta tag
+        if (getEffectiveSetting('generator', 'html5', 'false') == 'true') {
+            $aMetaTags[] = array('charset' => $encoding[$this->_lang]);
+        } elseif (getEffectiveSetting('generator', 'xhtml', 'false') == 'true') {
+            $aMetaTags[] = array('http-equiv' => 'Content-Type', 'content' => 'application/xhtml+xml; charset=' . $encoding[$this->_lang]);
+        } else {
+            $aMetaTags[] = array('http-equiv' => 'Content-Type', 'content' => 'text/html; charset=' . $encoding[$this->_lang]);
+        }
+
+        return $aMetaTags;
+    }
 }

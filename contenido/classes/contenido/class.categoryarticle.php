@@ -226,9 +226,11 @@ class cApiCategoryArticleCollection extends ItemCollection {
     /**
      * Sets 'createcode' flag for one or more category articles.
      * @param  int|array  $idcatart  One category article id or list of category article ids
+     * @param  int  $createcode  Create code state, either 1 or 0.
      * @return int  Number of updated entries
      */
-    public function setCreateCodeFlag($idcatart) {
+    public function setCreateCodeFlag($idcatart, $createcode = 1) {
+        $createcode = ($createcode == 1) ? 1 : 0;
         if (is_array($idcatart)) {
             // Multiple ids
             if (count($idcatart) == 0) {
@@ -238,12 +240,12 @@ class cApiCategoryArticleCollection extends ItemCollection {
                 $idcatart[$pos] = (int) $id;
             }
             $inSql = implode(', ', $idcatarts);
-            $sql = "UPDATE `%s` SET createcode = 1 WHERE idcatart IN (" . $inSql . ")";
-            $sql = $this->db->prepare($sql, $this->table);
+            $sql = "UPDATE `%s` SET createcode = %d WHERE idcatart IN (" . $inSql . ")";
+            $sql = $this->db->prepare($sql, $this->table, $createcode);
         } else {
             // Single id
-            $sql = "UPDATE `%s` SET createcode = 1 WHERE idcatart = %d";
-            $sql = $db->prepare($sql, $this->table, $idcatart);
+            $sql = "UPDATE `%s` SET createcode = %d WHERE idcatart = %d";
+            $sql = $this->db->prepare($sql, $this->table, $createcode, $idcatart);
         }
         $this->db->query($sql);
         return $this->db->affected_rows();
