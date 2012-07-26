@@ -1969,25 +1969,9 @@ div#legend {
     padding-left: 10px;
     padding-top: 10px;
 }
-div#legend ul {
-    list-style: none outside none;
-    margin: 0;
-    padding-left: 0;
-    padding-top: 0;
+div#legend table * {
+    border: none;
 }
-div#legend ul li {
-    margin-bottom: 3px;
-    clear: both;
-}
-div#legend ul li img {
-    padding-left: 3px;
-    vertical-align: middle;
-    float: left;
-    padding-bottom: 5px;
-}
-div#legend ul li span {
-    float: left;
-    padding-left: 3px;
-    width: 90%;
-    padding-bottom: 5px;
+div#legend table.article {
+	padding-bottom: 10px;
 }
