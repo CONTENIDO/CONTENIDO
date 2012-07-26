@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the cContentTypeImgEditor class.
+ * This file contains the cContentTypeImgeditor class.
  *
  * @package Core
  * @subpackage Content Type
@@ -26,7 +26,7 @@ cInclude('includes', 'functions.upl.php');
  * @package Core
  * @subpackage Content Type
  */
-class cContentTypeImgEditor extends cContentTypeAbstractTabbed {
+class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
     /**
      * The name of the directory where the image is stored.
@@ -302,7 +302,7 @@ class cContentTypeImgEditor extends cContentTypeAbstractTabbed {
         $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $templateBottom->set('s', 'SETTINGS', json_encode($this->_settings));
         $templateBottom->set('s', 'JS_CLASS_SCRIPT', $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsImgEditor.js');
-        $templateBottom->set('s', 'JS_CLASS_NAME', 'cContentTypeImgEditor');
+        $templateBottom->set('s', 'JS_CLASS_NAME', 'cContentTypeImgeditor');
         $codeBottom = $templateBottom->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html', true);
 
         $code = $this->_encodeForOutput($codeTop);

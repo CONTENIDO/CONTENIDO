@@ -23,7 +23,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @package Core
  * @subpackage Content Type
  */
-class cContentTypeLink extends cContentTypeLinkEditor {
+class cContentTypeLink extends cContentTypeLinkeditor {
 
     /**
      * Initialises class attributes and handles store events.

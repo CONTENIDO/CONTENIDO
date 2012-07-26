@@ -1,27 +1,17 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * CONTENIDO standard code generator
  *
- * Requirements:
- * @con_php_req 5.0
+ * @package Core
+ * @subpackage Content Type
+ * @version SVN Revision $Rev:$
+ * @id SVN Id $Id$
  *
- * @package    CONTENIDO Backend Classes
- * @version    0.0.1
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-08-11
- *   $Id$:
- * }}
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -30,7 +20,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * CONTENIDO standard code generator.
- * @package    CONTENIDO Backend Classes
+ * @package Core
+ * @subpackage Content Type
  */
 class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
@@ -151,7 +142,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         // Save the collected css/js data and save it under the template name ([templatename].css , [templatename].js in cache dir
         $cssFile = '';
-
         if (strlen($this->_cssData) > 0) {
             if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, 'css', $this->_cssData))) {
                 $cssFile = '<link rel="stylesheet" type="text/css" href="' . $myFileCss . '"/>';
@@ -165,7 +155,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             }
         }
 
-        // Add meta tags
+        // Add css files before closing head tag and js files before closing body tag
         $this->_layoutCode = str_ireplace_once('</head>', $cssFile . '</head>', $this->_layoutCode);
         $this->_layoutCode = str_ireplace_once('</body>', $jsFile . '</body>', $this->_layoutCode);
 

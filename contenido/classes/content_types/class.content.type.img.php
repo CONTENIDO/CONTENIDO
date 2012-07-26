@@ -23,7 +23,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @package Core
  * @subpackage Content Type
  */
-class cContentTypeImg extends cContentTypeImgEditor {
+class cContentTypeImg extends cContentTypeImgeditor {
 
     /**
      * Initialises class attributes and handles store events.

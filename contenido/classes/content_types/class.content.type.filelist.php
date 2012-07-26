@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the cContentTypeFileList class.
+ * This file contains the cContentTypeFilelist class.
  *
  * @package Core
  * @subpackage Content Type
@@ -27,7 +27,7 @@ cInclude('includes', 'functions.upl.php');
  * @package Core
  * @subpackage Content Type
  */
-class cContentTypeFileList extends cContentTypeAbstractTabbed {
+class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
     /**
      * Default file extensions.
@@ -177,7 +177,7 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
      */
     public function generateViewCode() {
         $code = '";?><?php
-                    $fileList = new cContentTypeFileList(\'%s\', %s, %s);
+                    $fileList = new cContentTypeFilelist(\'%s\', %s, %s);
 
                     echo $fileList->generateFileListCode();
                  ?><?php echo "';
@@ -489,7 +489,7 @@ class cContentTypeFileList extends cContentTypeAbstractTabbed {
         $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $templateBottom->set('s', 'SETTINGS', json_encode($this->_settings));
         $templateBottom->set('s', 'JS_CLASS_SCRIPT', $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsFileList.js');
-        $templateBottom->set('s', 'JS_CLASS_NAME', 'cContentTypeFileList');
+        $templateBottom->set('s', 'JS_CLASS_NAME', 'cContentTypeFilelist');
         $codeBottom = $templateBottom->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html', true);
 
         // construct the whole template code

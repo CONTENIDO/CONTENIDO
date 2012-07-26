@@ -5,6 +5,7 @@
  * @package Core
  * @subpackage Content Type
  * @version SVN Revision $Rev:$
+ * @id SVN Id $Id$
  *
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>
@@ -192,8 +193,6 @@ abstract class cCodeGeneratorAbstract {
      *         configuration was found for category or article.
      */
     public function generate($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true) {
-        global $cfg;
-
         $this->_idcat = (int) $idcat;
         $this->_idart = (int) $idart;
         $this->_lang = (int) $lang;
@@ -201,12 +200,16 @@ abstract class cCodeGeneratorAbstract {
         $this->_layout = (bool) $layout;
         $this->_save = (bool) $save;
 
-        $sql = "SELECT idartlang, pagetitle FROM " . $cfg['tab']['art_lang'] . " WHERE idart=" . (int) $this->_idart . " AND idlang=" . (int) $this->_lang;
-        $this->_db->query($sql);
-        $this->_db->next_record();
+        $oArtLang = new cApiArticleLanguage();
+        $oArtLang->loadByArticleAndLanguageId($idart, $lang);
+        if (!$oArtLang->isLoaded()) {
+            $msg = "Couldn't load article language for idart=" . (int) $idart . " AND idlang=" . (int) $lang;
+            cWarning(__FILE__, __LINE__, $msg);
+            return $msg;
+        }
 
-        $this->_idartlang = $this->_db->f('idartlang');
-        $this->_pageTitle = stripslashes($this->_db->f('pagetitle'));
+        $this->_idartlang = $oArtLang->get('idartlang');
+        $this->_pageTitle = stripslashes($oArtLang->get('pagetitle'));
 
         return $this->_generate($contype);
     }
@@ -228,7 +231,7 @@ abstract class cCodeGeneratorAbstract {
     protected function _getTemplateConfigurationId() {
         // Get configuration for article
         $idtplcfg = conGetTemplateConfigurationIdForArticle($this->_idart, $this->_idcat, $this->_lang, $this->_client);
-        if (is_numeric($idtplcfg) && $idtplcfg!=0) {
+        if (is_numeric($idtplcfg) && $idtplcfg != 0) {
             // Article is configured
             $this->_debug("configuration for article found: $idtplcfg<br><br>");
         } else {
@@ -240,22 +243,24 @@ abstract class cCodeGeneratorAbstract {
             }
         }
 
-        return (is_numeric($idtplcfg))? $idtplcfg : null;
+        return (is_numeric($idtplcfg)) ? $idtplcfg : null;
     }
 
     abstract protected function _processNoConfigurationError();
 
+    /**
+     * Returns array containing used layout, template and template name
+     * @global  array  $cfg
+     * @return  array  Asooziative array like array('idlay' => (int), 'idtpl' => (int), 'name' => (string))
+     */
     protected function _getTemplateData() {
         global $cfg;
 
         // Get IDLAY and IDMOD array
-        $sql = "SELECT a.idlay AS idlay
-                , a.idtpl AS idtpl
-                , a.name AS name
-                FROM " . $cfg['tab']['tpl'] . " AS a
-                , " . $cfg['tab']['tpl_conf'] . " AS b
-                WHERE b.idtplcfg = " . $this->_idtplcfg . "
-                AND b.idtpl = a.idtpl;";
+        $sql = "SELECT a.idlay AS idlay, a.idtpl AS idtpl, a.name AS name
+                FROM `%s` AS a, `%s` AS b WHERE b.idtplcfg = %d AND b.idtpl = a.idtpl;";
+
+        $sql = $this->_db->prepare($sql, $cfg['tab']['tpl'], $cfg['tab']['tpl_conf'], $this->_idtplcfg);
         $this->_db->query($sql);
         $this->_db->next_record();
         $data = $this->_db->toArray();
@@ -304,20 +309,21 @@ abstract class cCodeGeneratorAbstract {
         $match = array();
         $keycode = array();
 
-        // $a_content is used by included/evaluated content type codes below
+        // NOTE: $a_content is used by included/evaluated content type codes below
         $a_content = $contentList;
 
         // Select all cms_type entries
-        $sql = 'SELECT `idtype`, `type`, `code`, `class` FROM `' . $cfg['tab']['type'] . '`';
-        $db->query($sql);
         $_typeList = array();
-        while ($db->next_record()) {
-            $_typeList[] = $db->toObject();
+        $oTypeColl = new cApiTypeCollection();
+        $oTypeColl->select();
+        while ($oType = $oTypeColl->next()) {
+            $_typeList[] = $oType->toObject();
         }
 
         // Replace all CMS_TAGS[]
         foreach ($_typeList as $_typeItem) {
             $key = strtolower($_typeItem->type);
+
             $type = $_typeItem->type;
             // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
             // $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i',
@@ -331,24 +337,25 @@ abstract class cCodeGeneratorAbstract {
             $search = array();
             $replacements = array();
 
-            $typeCodeFile = $cfg['path']['contenido'] . $cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
-            $cTypeClassFile = $cfg['path']['contenido'] . $cfg['path']['classes'] . 'content_types/class.content.type.' . strtolower(str_replace('CMS_', '', $type)) . '.php';
+            $typeClassName = $this->_getContentTypeClassName($type);
+            $typeCodeFile = $this->_getContentTypeCodeFilePathName($type);
 
             foreach ($a_[$key] as $val) {
-                if (cFileHandler::exists($cTypeClassFile)) {
+                if (class_exists($typeClassName)) {
+                    // We have a class for the content type, use it
                     $tmp = $a_content[$_typeItem->type][$val];
-                    $cTypeObject = new $_typeItem->class($tmp, $val, $a_content);
+                    $cTypeObject = new $typeClassName($tmp, $val, $a_content);
                     if (cRegistry::isBackendEditMode()) {
                         $tmp = $cTypeObject->generateEditCode();
                     } else {
                         $tmp = $cTypeObject->generateViewCode();
                     }
                 } else if (cFileHandler::exists($typeCodeFile)) {
-                    // include CMS type code
-                    include ($typeCodeFile);
+                    // Include CMS type code file
+                    include($typeCodeFile);
                 } elseif (!empty($_typeItem->code)) {
-                    // old version, evaluate CMS type code
-                    cDeprecated("Move code for $type from table into file system (contenido/includes/cms/code/)");
+                    // Old version, evaluate CMS type code
+                    cDeprecated("Move code for $type from table into file system (contenido/classes/content_types/ or  contenido/includes/cms/code/)");
                     eval($_typeItem->code);
                 }
 
@@ -488,10 +495,11 @@ abstract class cCodeGeneratorAbstract {
         $return = array();
 
         // Find out what kind of CMS_... Vars are in use
-        $sql = "SELECT * FROM " . $cfg['tab']['content'] . " AS A,
-                    " . $cfg['tab']['art_lang'] . " AS B, " . $cfg['tab']['type'] . " AS C
-                WHERE A.idtype = C.idtype AND A.idartlang = B.idartlang AND
-                    B.idart = " . $this->_idart . " AND B.idlang = " . $this->_lang;
+        $sql = "SELECT * FROM `%s` AS A, `%s` AS B, `%s` AS C
+                WHERE A.idtype = C.idtype AND A.idartlang = B.idartlang AND B.idart = %d AND B.idlang = %d";
+        $sql = $this->_db->prepare(
+                $sql, $cfg['tab']['content'], $cfg['tab']['art_lang'], $cfg['tab']['type'], $this->_idart, $this->_lang
+        );
         $this->_db->query($sql);
         while ($this->_db->next_record()) {
             $return[$this->_db->f('type')][$this->_db->f('typeid')] = $this->_db->f('value');
@@ -507,6 +515,28 @@ abstract class cCodeGeneratorAbstract {
         $this->_modulePrefix = array();
         $this->_moduleCode = '';
         $this->_moduleSuffix = array();
+    }
+
+    /**
+     * Returns the classname for a content type.
+     * @param  string  $type  Content type, e. g. CMS_HTMLHEAD
+     * @return  string  The classname e. g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
+     */
+    protected function _getContentTypeClassName($type) {
+        $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
+        return $typeClassName;
+    }
+
+    /**
+     * Returns the full path to the include file name of a content type.
+     * @param  string  $type  Content type, e. g. CMS_HTMLHEAD
+     * @return  string  The full path e. g. {path_to_contenido_includes}/type/code/include.CMS_HTMLHEAD.code.php
+     *                  for content type CMS_HTMLHEAD
+     */
+    protected function _getContentTypeCodeFilePathName($type) {
+        global $cfg;
+        $typeCodeFile = $cfg['path']['contenido'] . $cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
+        return $typeCodeFile;
     }
 
     /**

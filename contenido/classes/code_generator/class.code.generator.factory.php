@@ -1,27 +1,17 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * CONTENIDO code generator factory
  *
- * Requirements:
- * @con_php_req 5.0
+ * @package Core
+ * @subpackage Content Type
+ * @version SVN Revision $Rev:$
+ * @id SVN Id $Id$
  *
- * @package    CONTENIDO Backend Classes
- * @version    0.0.1
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-08-11
- *   $Id$:
- * }}
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -30,7 +20,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * CONTENIDO code generator factory.
- * @package    CONTENIDO Backend Classes
+ * @package Core
+ * @subpackage Content Type
  */
 class cCodeGeneratorFactory {
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the cContentTypeLinkEditor class.
+ * This file contains the cContentTypeLinkeditor class.
  *
  * @package Core
  * @subpackage Content Type
@@ -26,7 +26,7 @@ cInclude('includes', 'functions.upl.php');
  * @package Core
  * @subpackage Content Type
  */
-class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
+class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
 
     /**
      * Initialises class attributes and handles store events.
@@ -189,7 +189,7 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
         $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $templateBottom->set('s', 'SETTINGS', json_encode($this->_settings));
         $templateBottom->set('s', 'JS_CLASS_SCRIPT', $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsLinkEditor.js');
-        $templateBottom->set('s', 'JS_CLASS_NAME', 'cContentTypeLinkEditor');
+        $templateBottom->set('s', 'JS_CLASS_NAME', 'cContentTypeLinkeditor');
         $codeBottom = $templateBottom->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html', true);
 
         // construct the whole template code
@@ -321,7 +321,7 @@ class cContentTypeLinkEditor extends cContentTypeAbstractTabbed {
 
     /**
      * Generates a category list from the given category information (which is
-     * typically built by {@link cContentTypeLinkEditor::buildCategoryArray}).
+     * typically built by {@link cContentTypeLinkeditor::buildCategoryArray}).
      *
      * @param array $dirs directory information
      * @return string HTML code showing a directory list

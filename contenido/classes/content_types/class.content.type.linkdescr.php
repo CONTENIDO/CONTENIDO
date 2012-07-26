@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the cContentTypeLinkDescr class.
+ * This file contains the cContentTypeLinkdescr class.
  *
  * @package Core
  * @subpackage Content Type
@@ -23,7 +23,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @package Core
  * @subpackage Content Type
  */
-class cContentTypeLinkDescr extends cContentTypeLinkEditor {
+class cContentTypeLinkdescr extends cContentTypeLinkeditor {
 
     /**
      * Initialises class attributes and handles store events.

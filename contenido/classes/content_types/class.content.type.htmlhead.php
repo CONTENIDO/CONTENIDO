@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the cContentTypeHtmlHead class.
+ * This file contains the cContentTypeHtmlhead class.
  *
  * @package Core
  * @subpackage Content Type
@@ -24,7 +24,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @package Core
  * @subpackage Content Type
  */
-class cContentTypeHtmlHead extends cContentTypeHtml {
+class cContentTypeHtmlhead extends cContentTypeHtml {
 
     /**
      * Initialises class attributes and handles store events.

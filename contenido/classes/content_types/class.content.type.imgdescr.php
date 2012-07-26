@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the cContentTypeImgDescr class.
+ * This file contains the cContentTypeImgdescr class.
  *
  * @package Core
  * @subpackage Content Type
@@ -24,7 +24,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @package Core
  * @subpackage Content Type
  */
-class cContentTypeImgDescr extends cContentTypeImgEditor {
+class cContentTypeImgdescr extends cContentTypeImgeditor {
 
     /**
      * Initialises class attributes and handles store events.

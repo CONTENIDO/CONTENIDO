@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the cContentTypeLinkEditor class.
+ * This file contains the cContentTypeLinkeditor class.
  *
  * @package Core
  * @subpackage Content Type
