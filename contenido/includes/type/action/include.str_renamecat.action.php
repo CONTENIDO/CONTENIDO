@@ -23,7 +23,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-strRenameCategory ($idcat, $lang, $newcategoryname, $newcategoryalias);
+strRenameCategory($idcat, $lang, $newcategoryname, $newcategoryalias);
 cApiCecHook::execute("Contenido.Action.str_renamecat.AfterCall", array(
     'idcat'            => $idcat,
     'lang'             => $lang,
