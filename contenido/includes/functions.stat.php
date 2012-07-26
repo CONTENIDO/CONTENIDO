@@ -282,7 +282,7 @@ function statsOverviewAll($yearmonth) {
         $db3->free();
 
         $tpl->set('d', 'PADDING_LEFT', $padding_left);
-        $tpl->set('d', 'TEXT', $text);
+        $tpl->set('d', 'TEXT', $text.' (idcat: '.cSecurity::toInteger($db->f('idcat')).')');
         $tpl->set('d', 'ONCLICK', $onclick);
         $tpl->set('d', 'ICON', $icon);
         $tpl->set('d', 'STATUS', $offonline);
@@ -385,7 +385,7 @@ function statsOverviewAll($yearmonth) {
 
             $icon = '<img src="' . $cfg['path']['images'] . 'article.gif" style="vertical-align:top;">';
             $tpl->set('d', 'PADDING_LEFT', $padding_left);
-            $tpl->set('d', 'TEXT', $text);
+            $tpl->set('d', 'TEXT', $text.' (idart: '.cSecurity::toInteger($db3->f('idart')).')');
             $tpl->set('d', 'ONCLICK', "");
             $tpl->set('d', 'ICON', $icon);
             $tpl->set('d', 'STATUS', $offonline);
@@ -592,7 +592,7 @@ function statsOverviewYear($year) {
         $db3->free();
 
         $tpl->set('d', 'PADDING_LEFT', $padding_left);
-        $tpl->set('d', 'TEXT', $text);
+        $tpl->set('d', 'TEXT', $text.' (idcat: '.cSecurity::toInteger($db->f('idcat')).')');
         $tpl->set('d', 'ONCLICK', $onclick);
         $tpl->set('d', 'ICON', $icon);
         $tpl->set('d', 'STATUS', $offonline);
@@ -618,6 +618,10 @@ function statsOverviewYear($year) {
         } else {
             $tpl->set('d', 'DISPLAY_ROW', $sDisplay);
         }
+        $cat_name = "";
+        statCreateLocationString($db->f('idcat'), "&nbsp;/&nbsp;", $cat_name);
+        $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
+        $tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'] . 'front_content.php?idcat=' . $db->f('idcat'));
 
         $tpl->next();
         $currentRow++;
@@ -672,7 +676,7 @@ function statsOverviewYear($year) {
 
             $icon = '<img src="' . $cfg['path']['images'] . 'article.gif" style="vertical-align:top;">';
             $tpl->set('d', 'PADDING_LEFT', $padding_left);
-            $tpl->set('d', 'TEXT', $text);
+            $tpl->set('d', 'TEXT', $text.' (idart: '.cSecurity::toInteger($idart).')');
             $tpl->set('d', 'ONCLICK', "");
             $tpl->set('d', 'ICON', $icon);
             $tpl->set('d', 'STATUS', $offonline);
@@ -683,6 +687,11 @@ function statsOverviewYear($year) {
             $tpl->set('d', 'EXPAND', '<img src="' . $cfg['path']['images'] . 'spacer.gif" width="7">');
             $tpl->set('d', 'INTHISLANGUAGE', $inThisLanguage);
             $tpl->set('d', 'DISPLAY_ROW', 'none');
+            $cat_name = "";
+            statCreateLocationString($idart, "&nbsp;/&nbsp;", $cat_name);
+        	$tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
+        	$tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'] . 'front_content.php?idart=' . $idart);
+
             $tpl->next();
             $currentRow++;
 
@@ -776,7 +785,7 @@ function statsOverviewTop($yearmonth, $top) {
         statCreateLocationString($db->f(2), "&nbsp;/&nbsp;", $cat_name);
         $tpl->set('d', 'PADDING_LEFT', '5');
         $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
-        $tpl->set('d', 'TEXT', $db->f(0));
+        $tpl->set('d', 'TEXT', $db->f(0).' (idart: '.cSecurity::toInteger($db->f('idart')).')');
         $tpl->set('d', 'TOTAL', $db->f(1));
         $tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'] . 'front_content.php?idart=' . $db->f('idart'));
         $tpl->next();
@@ -864,7 +873,7 @@ function statsOverviewTopYear($year, $top) {
 
         $tpl->set('d', 'PADDING_LEFT', '0');
         $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
-        $tpl->set('d', 'TEXT', $db->f(0));
+        $tpl->set('d', 'TEXT', $db->f(0).' (idart: '.cSecurity::toInteger($db->f('idart')).')');
         $tpl->set('d', 'TOTAL', $db->f(1));
         $tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'] . 'front_content.php?idart=' . $db->f('idart'));
         $tpl->next();
