@@ -24,9 +24,6 @@ if (!isset($tpl)) {
 }
 $tpl->reset();
 
-cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation.class.php');
-cInclude('classes', 'Util/Modules/Contenido_Sitemap_Util.class.php');
-
 $iSelectedCat = intval("CMS_VALUE[1]");
 $iSelectedDepth = intval("CMS_VALUE[2]");
 $iHtmlOutputType = intval("CMS_VALUE[3]");

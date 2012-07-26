@@ -12,8 +12,6 @@
  * }}
  */
 
-cInclude('classes', 'class.input.helper.php'); # Note, this file is located in <client-path>/includes!
-
 // Initialisation
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 $oClient     = new cApiClient($client);
