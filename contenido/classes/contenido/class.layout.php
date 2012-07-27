@@ -28,24 +28,21 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Layout collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiLayoutCollection extends ItemCollection
-{
-    public function __construct()
-    {
+class cApiLayoutCollection extends ItemCollection {
+
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['lay'], 'idlay');
         $this->_setItemClass('cApiLayout');
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiLayoutCollection()
-    {
+    public function cApiLayoutCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -63,8 +60,7 @@ class cApiLayoutCollection extends ItemCollection
      * @param  string  $lastmodified
      * @return cApiLayout
      */
-    public function create($name, $idclient = null, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '')
-    {
+    public function create($name, $idclient = null, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '') {
         global $client, $auth;
 
         if (null === $idclient) {
@@ -93,16 +89,16 @@ class cApiLayoutCollection extends ItemCollection
         $item->store();
         return ($item);
     }
-}
 
+}
 
 /**
  * Layout item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiLayout extends Item
-{
+class cApiLayout extends Item {
+
     /**
      * List of templates being used by current layout
      * @var array
@@ -113,8 +109,7 @@ class cApiLayout extends Item
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['lay'], 'idlay');
         $this->setFilters(array(), array());
@@ -124,8 +119,7 @@ class cApiLayout extends Item
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiLayout($mId = false)
-    {
+    public function cApiLayout($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
@@ -136,8 +130,7 @@ class cApiLayout extends Item
      * @return  bool
      * @throws  Exception  If layout item was not loaded before
      */
-    public function isInUse($setData = false)
-    {
+    public function isInUse($setData = false) {
         if ($this->virgin) {
             throw new Exception('Layout item not loaded!');
         }
@@ -165,8 +158,7 @@ class cApiLayout extends Item
      * Get the informations of used templates
      * @return array template data
      */
-    public function getUsedTemplates()
-    {
+    public function getUsedTemplates() {
         return $this->_aUsedTemplates;
     }
 

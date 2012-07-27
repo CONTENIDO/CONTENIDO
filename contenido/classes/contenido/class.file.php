@@ -28,33 +28,29 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * File collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiFileCollection extends ItemCollection
-{
+class cApiFileCollection extends ItemCollection {
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['files'], 'idfile');
         $this->_setItemClass('cApiFile');
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiFileCollection()
-    {
+    public function cApiFileCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
-    public function create($area, $filename, $filetype = 'main')
-    {
+    public function create($area, $filename, $filetype = 'main') {
         $item = parent::createNewItem();
 
         if (is_string($area)) {
@@ -82,22 +78,21 @@ class cApiFileCollection extends ItemCollection
 
         return ($item);
     }
-}
 
+}
 
 /**
  * File item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiFile extends Item
-{
+class cApiFile extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['files'], 'idfile');
         $this->setFilters(array('addslashes'), array('stripslashes'));
@@ -107,11 +102,11 @@ class cApiFile extends Item
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiFile($mId = false)
-    {
+    public function cApiFile($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
 }
 
 ?>

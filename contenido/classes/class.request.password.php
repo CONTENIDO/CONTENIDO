@@ -11,18 +11,18 @@
  * RequestPassword
  * @deprecated  [2012-07-02] Use cRequestPassword instead of this class.
  */
-class RequestPassword extends cPasswordRequest
-{
-    public function __construct($oDb, $aCfg)
-    {
+class RequestPassword extends cPasswordRequest {
+
+    public function __construct($oDb, $aCfg) {
         cDeprecated("Use class cPasswordRequest instead");
         parent::__construct($oDb, $aCfg);
     }
-    public function RequestPassword($oDb, $aCfg)
-    {
+
+    public function RequestPassword($oDb, $aCfg) {
         cDeprecated("Use __construct() instead");
         $this->__construct($oDb, $aCfg);
     }
+
 }
 
 ?>

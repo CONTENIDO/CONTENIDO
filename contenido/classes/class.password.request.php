@@ -238,7 +238,7 @@ class cPasswordRequest {
         $oForm->setVar('belang', $GLOBALS['belang']);
 
         //generate submitbutton and fill the form
-        $oForm->setContent('<input type="image" src="images/submit.gif" alt="' . i18n('Submit') . '" title="' . i18n('Submit') . '" style="vertical-align:top; margin-top:2px; float:right; margin-right:6px;">'.$oInputUsername->render());
+        $oForm->setContent('<input type="image" src="images/submit.gif" alt="' . i18n('Submit') . '" title="' . i18n('Submit') . '" style="vertical-align:top; margin-top:2px; float:right; margin-right:6px;">' . $oInputUsername->render());
         $this->oTpl->set('s', 'FORM', $oForm->render());
         $this->oTpl->set('s', 'MESSAGE', $sMessage);
         $this->oTpl->set('s', 'LABEL', i18n('Please enter your login') . ':');

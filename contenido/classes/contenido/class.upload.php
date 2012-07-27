@@ -32,25 +32,22 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Upload collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiUploadCollection extends ItemCollection
-{
+class cApiUploadCollection extends ItemCollection {
+
     /**
      * Constructor Function
      * @global array $cfg
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['upl'], 'idupl');
         $this->_setItemClass('cApiUpload');
     }
-
 
     /**
      * Syncronizes upload directory and file with database.
@@ -59,18 +56,17 @@ class cApiUploadCollection extends ItemCollection
      * @param string $sFilename
      * return cApiUpload
      */
-    public function sync($sDirname, $sFilename)
-    {
+    public function sync($sDirname, $sFilename) {
         global $client;
 
         $sDirname = $this->escape($sDirname);
         $sFilename = $this->escape($sFilename);
         if (strstr(strtolower($_ENV['OS']), 'windows') === false) {
             // Unix style OS distinguish between lower and uppercase file names, i.e. test.gif is not the same as Test.gif
-            $this->select("dirname = BINARY '$sDirname' AND filename = BINARY '$sFilename' AND idclient=" . (int) $client);
+            $this->select("dirname = BINARY '$sDirname' AND filename = BINARY '$sFilename' AND idclient = " . (int) $client);
         } else {
             // Windows OS doesn't distinguish between lower and uppercase file names, i.e. test.gif is the same as Test.gif in file system
-            $this->select("dirname = '$sDirname' AND filename = '$sFilename' AND idclient=" . (int) $client);
+            $this->select("dirname = '$sDirname' AND filename = '$sFilename' AND idclient = " . (int) $client);
         }
 
         if ($oItem = $this->next()) {
@@ -83,7 +79,6 @@ class cApiUploadCollection extends ItemCollection
 
         return $oItem;
     }
-
 
     /**
      * Creates a upload entry.
@@ -98,8 +93,7 @@ class cApiUploadCollection extends ItemCollection
      * @param int $iStatus
      * @return cApiUpload
      */
-    public function create($sDirname, $sFilename, $sFiletype = '', $iFileSize = 0, $sDescription = '', $iStatus = 0)
-    {
+    public function create($sDirname, $sFilename, $sFiletype = '', $iFileSize = 0, $sDescription = '', $iStatus = 0) {
         global $client, $cfg, $auth;
 
         $oItem = parent::createNewItem();
@@ -118,7 +112,6 @@ class cApiUploadCollection extends ItemCollection
         return $oItem;
     }
 
-
     /**
      * Deletes upload file and it's properties
      * @global cApiCecRegistry $_cecRegistry
@@ -128,8 +121,7 @@ class cApiUploadCollection extends ItemCollection
      * @return bool
      * FIXME  Code is similar/redundant to include.upl_files_overview.php 216-230
      */
-    public function delete($id)
-    {
+    public function delete($id) {
         global $_cecRegistry, $cfgClient, $client;
 
         $oUpload = new cApiUpload();
@@ -170,11 +162,10 @@ class cApiUploadCollection extends ItemCollection
      * @param int $idupl
      * @return bool
      */
-    protected function deleteUploadMetaData($idupl)
-    {
+    protected function deleteUploadMetaData($idupl) {
         global $client, $db, $cfg;
         $sql = "DELETE FROM `%s` WHERE %s = '%s'";
-        return $db->query($sql, $cfg['tab']['upl_meta'],  'idupl', (int)$idupl);
+        return $db->query($sql, $cfg['tab']['upl_meta'], 'idupl', (int) $idupl);
     }
 
     /**
@@ -182,25 +173,24 @@ class cApiUploadCollection extends ItemCollection
      * @global int $client
      * @param string $sDirname
      */
-    public function deleteByDirname($sDirname)
-    {
+    public function deleteByDirname($sDirname) {
         global $client;
 
-        $this->select("dirname='" . $this->escape($sDirname) . "' AND idclient=" . (int) $client);
+        $this->select("dirname = '" . $this->escape($sDirname) . "' AND idclient = " . (int) $client);
         while ($oUpload = $this->next()) {
             $this->delete($oUpload->get('idupl'));
         }
     }
-}
 
+}
 
 /**
  * Upload item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiUpload extends Item
-{
+class cApiUpload extends Item {
+
     /**
      * Property collection instance
      * @var cApiPropertyCollection
@@ -211,8 +201,7 @@ class cApiUpload extends Item
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['upl'], 'idupl');
         if ($mId !== false) {
@@ -220,12 +209,10 @@ class cApiUpload extends Item
         }
     }
 
-
     /**
      * Updates upload recordset
      */
-    public function update()
-    {
+    public function update() {
         $sDirname = $this->get('dirname');
         $sFilename = $this->get('filename');
         $sExtension = (string) uplGetFileExtension($sFilename);
@@ -248,15 +235,13 @@ class cApiUpload extends Item
         }
     }
 
-
     /**
      * Stores made changes
      * @global object $auth
      * @global cApiCecRegistry $_cecRegistry
      * @return bool
      */
-    public function store()
-    {
+    public function store() {
         global $auth, $_cecRegistry;
 
         $this->set('modifiedby', $auth->auth['uid']);
@@ -273,17 +258,14 @@ class cApiUpload extends Item
         return parent::store();
     }
 
-
     /**
      * Deletes all upload properties by it's itemid
      * @param string $sItemid
      */
-    public function deletePropertiesByItemid($sItemid)
-    {
+    public function deletePropertiesByItemid($sItemid) {
         $oPropertiesColl = $this->_getPropertiesCollectionInstance();
         $oPropertiesColl->deleteProperties('upload', $sItemid);
     }
-
 
     /**
      * Returns the filesize
@@ -292,8 +274,7 @@ class cApiUpload extends Item
      * @param string $sFilename
      * @return string
      */
-    public static function getFileSize($sDirname, $sFilename)
-    {
+    public static function getFileSize($sDirname, $sFilename) {
         global $client, $cfgClient;
 
         $bIsDbfs = cApiDbfs::isDbfs($sDirname);
@@ -321,8 +302,7 @@ class cApiUpload extends Item
      * @global int $client
      * @return cApiPropertyCollection
      */
-    protected function _getPropertiesCollectionInstanceX()
-    {
+    protected function _getPropertiesCollectionInstanceX() {
         global $client;
 
         // Runtime on-demand allocation of the properties object
@@ -335,7 +315,6 @@ class cApiUpload extends Item
 
 }
 
-
 ################################################################################
 # Old versions of upload item collection and upload item classes
 #
@@ -343,42 +322,40 @@ class cApiUpload extends Item
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 
-
 /**
  * Upload collection
  * @deprecated  [2011-10-11] Use cApiUploadCollection instead of this class.
  */
-class UploadCollection extends cApiUploadCollection
-{
-    public function __construct()
-    {
-        cDeprecated("Use class ". get_parent_class($this)." instead");
+class UploadCollection extends cApiUploadCollection {
+
+    public function __construct() {
+        cDeprecated("Use class " . get_parent_class($this) . " instead");
         parent::__construct();
     }
-    public function UploadCollection()
-    {
+
+    public function UploadCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
-}
 
+}
 
 /**
  * Single upload item
  * @deprecated  [2011-10-11] Use cApiUpload instead of this class.
  */
-class UploadItem extends cApiUpload
-{
-    public function __construct($mId = false)
-    {
-        cDeprecated("Use class ". get_parent_class($this)." instead");
+class UploadItem extends cApiUpload {
+
+    public function __construct($mId = false) {
+        cDeprecated("Use class " . get_parent_class($this) . " instead");
         parent::__construct($mId);
     }
-    public function UploadItem($mId = false)
-    {
+
+    public function UploadItem($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
 }
 
 ?>

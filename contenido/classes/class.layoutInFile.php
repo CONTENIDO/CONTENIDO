@@ -25,6 +25,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 class LayoutInFile {
+
     /**
      * The code of the layout
      * @var string
@@ -90,7 +91,7 @@ class LayoutInFile {
      * @return boolen if file exist true
      */
     static function existLayout($layoutAlias, $cfgClient, $client) {
-        $file = $cfgClient[$client]['layout_path'] . $layoutAlias.'/';
+        $file = $cfgClient[$client]['layout_path'] . $layoutAlias . '/';
         return cFileHandler::exists($file);
     }
 
@@ -119,7 +120,7 @@ class LayoutInFile {
         if ($cApiLayout->virgin == false) {
             $this->_layoutName = $cApiLayout->get('alias');
             $this->_layoutMainPath = $cfgClient[$client]['layout_path'];
-            $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName."/";
+            $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . "/";
             $this->_fileName = $this->_layoutName . ".html";
 
             // make directoryies for layout
@@ -147,7 +148,7 @@ class LayoutInFile {
         $this->_layoutName = $dbObject->f('alias');
         $this->_layoutMainPath = $cfgClient[$client]['layout_path'];
         $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . "/";
-        $this->_fileName = $this->_layoutName.".html";
+        $this->_fileName = $this->_layoutName . ".html";
 
         // make directoryies for layout
         $this->_makeDirectories();
@@ -276,11 +277,11 @@ class LayoutInFile {
      */
     private function _rec_rmdir($path) {
         // schau' nach, ob das ueberhaupt ein Verzeichnis ist
-        if (!is_dir ($path)) {
-        return -1;
+        if (!is_dir($path)) {
+            return -1;
         }
         // oeffne das Verzeichnis
-        $dir = @opendir ($path);
+        $dir = @opendir($path);
 
         // Fehler?
         if (!$dir) {
@@ -291,45 +292,46 @@ class LayoutInFile {
         while (($entry = @readdir($dir)) !== false) {
             // wenn der Eintrag das aktuelle Verzeichnis oder das Elternverzeichnis
             // ist, ignoriere es
-            if ($entry == '.' || $entry == '..') continue;
+            if ($entry == '.' || $entry == '..')
+                continue;
             // wenn der Eintrag ein Verzeichnis ist, dann
-            if (is_dir ($path.'/'.$entry)) {
+            if (is_dir($path . '/' . $entry)) {
                 // rufe mich selbst auf
-                $res = $this->_rec_rmdir ($path.'/'.$entry);
+                $res = $this->_rec_rmdir($path . '/' . $entry);
                 // wenn ein Fehler aufgetreten ist
                 if ($res == -1) { // dies duerfte gar nicht passieren
-                    @closedir ($dir); // Verzeichnis schliessen
+                    @closedir($dir); // Verzeichnis schliessen
                     return -2; // normalen Fehler melden
                 } else if ($res == -2) { // Fehler?
-                    @closedir ($dir); // Verzeichnis schliessen
+                    @closedir($dir); // Verzeichnis schliessen
                     return -2; // Fehler weitergeben
                 } else if ($res == -3) { // nicht unterstuetzer Dateityp?
-                    @closedir ($dir); // Verzeichnis schliessen
+                    @closedir($dir); // Verzeichnis schliessen
                     return -3; // Fehler weitergeben
                 } else if ($res != 0) { // das duerfe auch nicht passieren...
-                    @closedir ($dir); // Verzeichnis schliessen
+                    @closedir($dir); // Verzeichnis schliessen
                     return -2; // Fehler zurueck
                 }
-            } else if (is_file ($path.'/'.$entry) || is_link ($path.'/'.$entry)) {
+            } else if (is_file($path . '/' . $entry) || is_link($path . '/' . $entry)) {
                 // ansonsten loesche diese Datei / diesen Link
-                $res = @unlink ($path.'/'.$entry);
+                $res = @unlink($path . '/' . $entry);
                 // Fehler?
                 if (!$res) {
-                    @closedir ($dir); // Verzeichnis schliessen
+                    @closedir($dir); // Verzeichnis schliessen
                     return -2; // melde ihn
                 }
             } else {
                 // ein nicht unterstuetzer Dateityp
-                @closedir ($dir); // Verzeichnis schliessen
+                @closedir($dir); // Verzeichnis schliessen
                 return -3; // tut mir schrecklich leid...
             }
         }
 
         // schliesse nun das Verzeichnis
-        @closedir ($dir);
+        @closedir($dir);
 
         // versuche nun, das Verzeichnis zu loeschen
-        $res = @rmdir ($path);
+        $res = @rmdir($path);
 
         // gab's einen Fehler?
         if (!$res) {
@@ -431,6 +433,7 @@ class LayoutInFile {
             $db->query($sql);
         }
     }
+
 }
 
 ?>

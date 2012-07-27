@@ -53,26 +53,16 @@
  * @copyright four for business AG
  *
  * {@internal
- *  created 04.11.2008
- *  modified 2008-11-16,  H. Librenz - added structure, comments fixed, code debugged
- *  modified 2008-11-21,  H. Librenz - some documentation stuff added
- *  modified 2008-11-25, Timo Trautman - removed not existing include
- *  modified 2008-12-04, Bilal Arslan, Bugfixed for set passwort length, comments "how to use" fixed.
- *  Bugfixed for password, lower Case Upper case count, for symbols count and numbers count.
- *  modified 2008-12-04, Timo Trautman, Added CONTENIDO $cfg as param for getErrorString()
- *  modified 2011-02-26, Ortwin Pinke, added unset for pw-request-marker, changed header svn-id and version declaration
- *
- *  $Id$
+ *   created 04.11.2008
  * }}
- *
- **/
+ */
 
-if (! defined ( 'CON_FRAMEWORK' )) {
-    die ( 'Illegal call' );
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 // Exception classes
-cInclude( "exceptions", "exception.conuser.php" );
+cInclude("exceptions", "exception.conuser.php");
 
 /**
  * Project:
@@ -100,7 +90,6 @@ cInclude( "exceptions", "exception.conuser.php" );
  *
  * @deprecated [2012-02-23] Use cApiUser instead
  */
-
 class ConUser extends cApiUser {
 
     public function load($sUserId) {
@@ -124,7 +113,7 @@ class ConUser extends cApiUser {
     public function __construct($aCfg, $oDb = null, $sUserId = null) {
         cDeprecated("Deprecated class. Please use cApiUser instead");
 
-        parent::__construct ($sUserId);
+        parent::__construct($sUserId);
     }
 
     /**
@@ -137,5 +126,7 @@ class ConUser extends cApiUser {
 
         $this->store();
     }
+
 }
+
 ?>

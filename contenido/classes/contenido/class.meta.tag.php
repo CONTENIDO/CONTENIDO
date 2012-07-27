@@ -28,19 +28,17 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Metatag collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiMetaTagCollection extends ItemCollection
-{
+class cApiMetaTagCollection extends ItemCollection {
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['meta_tag'], 'idmetatag');
         $this->_setItemClass('cApiMetaTag');
@@ -53,8 +51,7 @@ class cApiMetaTagCollection extends ItemCollection
      * @param string $sMetaValue
      * @return cApiMetaTag
      */
-    public function create($iIdArtLang, $iIdMetaType, $sMetaValue)
-    {
+    public function create($iIdArtLang, $iIdMetaType, $sMetaValue) {
         $oItem = parent::createNewItem();
 
         $oItem->set('idartlang', (int) $iIdArtLang, false);
@@ -71,29 +68,25 @@ class cApiMetaTagCollection extends ItemCollection
      * @param int $iIdMetaType
      * @return cApiMetaTag|null
      */
-    public function fetchByArtLangAndMetaType($iIdArtLang, $iIdMetaType)
-    {
+    public function fetchByArtLangAndMetaType($iIdArtLang, $iIdMetaType) {
         $this->select('idartlang=' . (int) $iIdArtLang . ' AND idmetatype=' . (int) $iIdMetaType);
         return $this->next();
     }
 
 }
 
-
 /**
  * Metatag item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiMetaTag extends Item
-{
+class cApiMetaTag extends Item {
 
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['meta_tag'], 'idmetatag');
         $this->setFilters(array(), array());
@@ -107,8 +100,7 @@ class cApiMetaTag extends Item
      * @param   string  $sMetaValue
      * @return  bool
      */
-    public function updateMetaValue($sMetaValue)
-    {
+    public function updateMetaValue($sMetaValue) {
         $this->set('metavalue', $this->escape($sMetaValue), false);
         return $this->store();
     }

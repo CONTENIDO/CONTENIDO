@@ -211,13 +211,13 @@ class cApiCategoryArticleCollection extends ItemCollection {
         global $cfg;
 
         $sql = "SELECT b.idartlang AS idartlang FROM `:cat_art` AS a, `:art_lang` AS b "
-            . "WHERE a.idcat = :idcat AND a.idart = b.idart AND b.idlang = :idlang";
+                . "WHERE a.idcat = :idcat AND a.idart = b.idart AND b.idlang = :idlang";
         $sql = $this->db->prepare($sql, array(
             'cat_art' => $this->table,
             'art_lang' => $cfg['tab']['art_lang'],
             'idcat' => $idcat,
             'idlang' => $idlang
-        ));
+                ));
         $this->db->query($sql);
 
         return ($this->db->next_record()) ? true : false;
@@ -250,6 +250,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
         $this->db->query($sql);
         return $this->db->affected_rows();
     }
+
 }
 
 /**

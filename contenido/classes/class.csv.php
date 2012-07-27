@@ -32,53 +32,47 @@ if (!defined('CON_FRAMEWORK')) {
 /**
  * @deprecated 2011-09-02 this class is not supported any longer
  */
-class CSV
-{
+class CSV {
 
     var $_data = array();
     var $_delimiter;
 
-    function CSV ()
-    {
+    function CSV() {
         cDeprecated("This class is not supported any longer");
         $this->_delimiter = ";";
     }
 
-    function setRow ($row)
-    {
+    function setRow($row) {
         $args = func_num_args();
 
-        for ($arg=1;$arg<$args;$arg++)
-        {
+        for ($arg = 1; $arg < $args; $arg++) {
             $ma = func_get_arg($arg);
             $this->setCell($row, $arg, $ma);
         }
     }
 
-    function setCell($row, $cell, $data)
-    {
-        $row     = cSecurity::escapeDB($row);
-        $cell     = cSecurity::escapeDB($cell);
-        $data     = cSecurity::escapeDB($data);
+    function setCell($row, $cell, $data) {
+        $row = cSecurity::escapeDB($row);
+        $cell = cSecurity::escapeDB($cell);
+        $data = cSecurity::escapeDB($data);
 
         $data = str_replace('"', '""', $data);
-        $this->_data[$row][$cell] = '"'.$data.'"';
+        $this->_data[$row][$cell] = '"' . $data . '"';
     }
 
-    function setDelimiter ($delimiter)
-    {
+    function setDelimiter($delimiter) {
         $this->_delimiter = $delimiter;
     }
 
-    function make ()
-    {
-        foreach ($this->_data as $row => $line)
-        {
+    function make() {
+        foreach ($this->_data as $row => $line) {
             $out .= implode($this->_delimiter, $line);
             $out .= "\r\n";
         }
 
         return $out;
     }
+
 }
+
 ?>

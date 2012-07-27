@@ -296,6 +296,7 @@ class cAjaxRequest {
     }
 
 }
+
 class Ajax extends cAjaxRequest {
 
     /**

@@ -29,8 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-class cHTMLValidator
-{
+class cHTMLValidator {
 
     var $doubleTags;
     var $htmlParser;
@@ -40,8 +39,7 @@ class cHTMLValidator
     var $nestingNodes;
     var $_existingTags;
 
-    function cHTMLValidator()
-    {
+    function cHTMLValidator() {
         $this->doubleTags = array("form", "head", "body", "html", "td", "tr", "table", "a", "tbody", "title", "container", "span", "div");
 
         $this->nestingLevel = array();
@@ -50,8 +48,7 @@ class cHTMLValidator
         $this->_existingTags = array();
     }
 
-    function cleanHTML($html)
-    {
+    function cleanHTML($html) {
         // remove all php code from layout
         $resultingHTML = preg_replace('/<\?(php)?((.)|(\s))*?\?>/i', '', $html);
 
@@ -62,8 +59,7 @@ class cHTMLValidator
         return $resultingHTML;
     }
 
-    function validate($html)
-    {
+    function validate($html) {
         $nestingLevel = 0;
 
         // Clean up HTML first from any PHP scripts, and clean up line breaks
@@ -86,7 +82,7 @@ class cHTMLValidator
                 // Check if it's a start tag
                 if ($htmlParser->iNodeType == NODE_TYPE_ELEMENT) {
                     // Push the current element to the stack, remember ID and Name, if possible
-                    $nestingLevel ++;
+                    $nestingLevel++;
 
                     $this->nestingNodes[$htmlParser->iNodeName][intval($this->nestingLevel[$htmlParser->iNodeName])]["name"] = $htmlParser->iNodeAttributes["name"];
                     $this->nestingNodes[$htmlParser->iNodeName][intval($this->nestingLevel[$htmlParser->iNodeName])]["id"] = $htmlParser->iNodeAttributes["id"];
@@ -119,7 +115,7 @@ class cHTMLValidator
             // One or more missing tags found
             if ($value > 0) {
                 // Step trough all missing tags
-                for ($i = 0; $i < $value; $i ++) {
+                for ($i = 0; $i < $value; $i++) {
                     $node = $this->nestingNodes[$key][$i];
 
                     list ($line, $char) = $this->getLineAndCharPos($node["char"]);
@@ -131,8 +127,7 @@ class cHTMLValidator
         }
     }
 
-    function tagExists($tag)
-    {
+    function tagExists($tag) {
         if (in_array($tag, $this->_existingTags)) {
             return true;
         } else {
@@ -140,22 +135,21 @@ class cHTMLValidator
         }
     }
 
-    function returnErrorMap()
-    {
+    function returnErrorMap() {
         $html .= "<pre>";
 
         $chunks = explode("\n", $this->html);
 
         foreach ($chunks as $key => $value) {
-            $html .= ($key +1)." ";
+            $html .= ($key + 1) . " ";
 
-            for ($i = 0; $i < strlen($value); $i ++) {
+            for ($i = 0; $i < strlen($value); $i++) {
                 $char = substr($value, $i, 1);
 
-                if (is_array($this->missingTags[$key +1])) {
+                if (is_array($this->missingTags[$key + 1])) {
                     //echo ($key+1) . " ". $i."<br>";
-                    if (array_key_exists($i +2, $this->missingTags[$key +1])) {
-                        $html .= "<u><b>".htmlspecialchars($char)."</b></u>";
+                    if (array_key_exists($i + 2, $this->missingTags[$key + 1])) {
+                        $html .= "<u><b>" . htmlspecialchars($char) . "</b></u>";
                     } else {
                         $html .= htmlspecialchars($char);
                     }
@@ -170,15 +164,15 @@ class cHTMLValidator
         return $html;
     }
 
-    function getLineAndCharPos($charpos)
-    {
+    function getLineAndCharPos($charpos) {
         $mangled = substr($this->html, 0, $charpos);
 
         $line = substr_count($mangled, "\n") + 1;
-        $char = $charpos -strrpos($mangled, "\n");
+        $char = $charpos - strrpos($mangled, "\n");
 
         return array($line, $char);
     }
 
 }
+
 ?>

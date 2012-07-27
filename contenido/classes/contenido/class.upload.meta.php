@@ -23,13 +23,13 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Upload meta collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
 class cApiUploadMetaCollection extends ItemCollection {
+
     public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['upl_meta'], 'id_uplmeta');
@@ -48,8 +48,7 @@ class cApiUploadMetaCollection extends ItemCollection {
      * @param string $sCopyright
      * @return cApiUpload
      */
-    public function create($iIdupl, $iIdlang, $sMedianame = '', $sDescription = '', $sKeywords = '', $sInternalNotice = '', $sCopyright = '')
-    {
+    public function create($iIdupl, $iIdlang, $sMedianame = '', $sDescription = '', $sKeywords = '', $sInternalNotice = '', $sCopyright = '') {
         global $auth;
 
         $oItem = parent::createNewItem();
@@ -68,8 +67,8 @@ class cApiUploadMetaCollection extends ItemCollection {
 
         return $oItem;
     }
-}
 
+}
 
 /**
  * Upload meta item
@@ -77,6 +76,7 @@ class cApiUploadMetaCollection extends ItemCollection {
  * @subpackage Model
  */
 class cApiUploadMeta extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
@@ -89,6 +89,7 @@ class cApiUploadMeta extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
+
 }
 
 ?>

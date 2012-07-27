@@ -28,19 +28,17 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Right collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiRightCollection extends ItemCollection
-{
+class cApiRightCollection extends ItemCollection {
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['rights'], 'idright');
         $this->_setItemClass('cApiRight');
@@ -58,8 +56,7 @@ class cApiRightCollection extends ItemCollection
      * @param int $type
      * @return cApiRight
      */
-    public function create($userId, $idarea, $idaction, $idcat, $idclient, $idlang, $type)
-    {
+    public function create($userId, $idarea, $idaction, $idcat, $idclient, $idlang, $type) {
         $oItem = parent::createNewItem();
 
         $oItem->set('user_id', $this->escape($userId));
@@ -82,13 +79,12 @@ class cApiRightCollection extends ItemCollection
      * @param string $userId
      * @return bool
      */
-    public function hasFrontendAccessByCatIdAndUserId($idcat, $userId)
-    {
+    public function hasFrontendAccessByCatIdAndUserId($idcat, $userId) {
         global $cfg;
 
         $sql = "SELECT :pk FROM `:rights` AS A, `:actions` AS B, `:area` AS C "
-             . "WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id = ':userid' AND "
-             . "A.idcat = :idcat AND A.idarea = C.idarea AND B.idaction = A.idaction LIMIT 1";
+                . "WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id = ':userid' AND "
+                . "A.idcat = :idcat AND A.idarea = C.idarea AND B.idaction = A.idaction LIMIT 1";
 
         $params = array(
             'pk' => $this->primaryKey,
@@ -111,29 +107,25 @@ class cApiRightCollection extends ItemCollection
      * @param  string  $userId
      * @return  bool
      */
-    public function deleteByUserId($userId)
-    {
+    public function deleteByUserId($userId) {
         $result = $this->deleteBy('user_id', $userId);
         return ($result > 0) ? true : false;
     }
 
 }
 
-
 /**
  * Right item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiRight extends Item
-{
+class cApiRight extends Item {
 
     /**
      * Constructor function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['rights'], 'idright');
         $this->setFilters(array(), array());
@@ -141,6 +133,7 @@ class cApiRight extends Item
             $this->loadByPrimaryKey($mId);
         }
     }
+
 }
 
 ?>

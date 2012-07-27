@@ -24,13 +24,8 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-06-30, Frederic Schneider, add security fix
- *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *   modified 2011-10-06, Murat Purc, removed in favor of normalizing the API
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

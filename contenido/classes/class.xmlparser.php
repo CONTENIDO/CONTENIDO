@@ -73,12 +73,11 @@ if (!defined('CON_FRAMEWORK')) {
  *     <bar>another text</bar>
  * </foo>';
  *
- * function myHandler($name, $attribs, $content)
- * {
+ * function myHandler($name, $attribs, $content) {
  *     echo "<b style='color:red'>HIT</b>: [ <b>$name</b> ] [ $content ]<br/>";
  * }
  *
- * $parser = new XmlParser; // Parser instance
+ * $parser = new XmlParser(); // Parser instance
  * $parser->setEventHandlers(array("/foo/bar"=>"myHandler")); // Define our handler
  * $parser->parse($xml); // Parse the XML string
  * </pre>
@@ -90,8 +89,8 @@ if (!defined('CON_FRAMEWORK')) {
  * @version 1.0
  * @package    CONTENIDO Backend Classes
  */
-class XmlParser
-{
+class XmlParser {
+
     /**
      * XML Parser autofree
      *
@@ -113,14 +112,14 @@ class XmlParser
      * @var string
      * @access private
      */
-     var $error = '';
+    var $error = '';
 
     /**
      * Element depth
      * @var int
      * @access private
      */
-     var $depth = -1;
+    var $depth = -1;
 
     /**
      * Element counter
@@ -178,8 +177,7 @@ class XmlParser
      * @param string    $sEncoding    Encoding used when parsing files (default: UTF-8, as in PHP5)
      * @return void
      */
-    function XmlParser($sEncoding = false)
-    {
+    function XmlParser($sEncoding = false) {
         if (!$sEncoding) {
             $sEncoding = "UTF-8";
         }
@@ -194,8 +192,7 @@ class XmlParser
      * @param string    $sEncoding    Encoding used when parsing files (default: UTF-8, as in PHP5)
      * @return void
      */
-    function _init($sEncoding = false)
-    {
+    function _init($sEncoding = false) {
         if (!$sEncoding) {
             $sEncoding = "UTF-8";
         }
@@ -221,9 +218,8 @@ class XmlParser
      * @return string XML Error message
      * @access private
      */
-    function _error()
-    {
-        $this->error = "XML error: ".xml_error_string(xml_get_error_code($this->parser))." at line ".xml_get_current_line_number($this->parser);
+    function _error() {
+        $this->error = "XML error: " . xml_error_string(xml_get_error_code($this->parser)) . " at line " . xml_get_current_line_number($this->parser);
         return $this->error;
     }
 
@@ -244,7 +240,7 @@ class XmlParser
      * i.e. "startElement"=>array(&$myObj, "myMethod") instead of "startelement"=>"myFunction"
      *
      * 2.) $parser->setEvents(array("/root/foo/bar"=>"myFunction"));
-      *
+     *
      * Valid array keys are: 'startElement', 'endElement', 'characterData', 'processingInstruction' and paths
      * folowing the scheme '/root/element'. The path MUST begin from the root element and MUST start with '/'.
      *
@@ -255,8 +251,7 @@ class XmlParser
      *
      * @return void
      */
-    function setEventHandlers($options = array(NULL))
-    {
+    function setEventHandlers($options = array(NULL)) {
         $options = $this->_changeKeyCase($options);
 
         if (array_key_exists('startelement', $options)) {
@@ -288,8 +283,7 @@ class XmlParser
      * @return void
      * @access private
      */
-    function _processingInstruction($parser, $target, $data)
-    {
+    function _processingInstruction($parser, $target, $data) {
         $handler = $this->_getEventHandler('processinginstruction');
 
         if ($handler) {
@@ -310,8 +304,7 @@ class XmlParser
      * @return array Array with lowercased keys
      * @access private
      */
-    function _changeKeyCase($options = array())
-    {
+    function _changeKeyCase($options = array()) {
         $tmp = array();
 
         foreach ($options as $key => $value) {
@@ -345,7 +338,7 @@ class XmlParser
     }
 
     /**
-      * Return all defined paths from the options
+     * Return all defined paths from the options
      * array and returns a new array containing
      * only the paths to function bindings
      *
@@ -354,8 +347,7 @@ class XmlParser
      * @return array Paths array
      * @access private
      */
-    function _getDefinedPaths($options)
-    {
+    function _getDefinedPaths($options) {
         $tmp = array();
 
         foreach ($options as $key => $value) {
@@ -368,31 +360,29 @@ class XmlParser
     }
 
     /**
-      * Add a path to the stack
+     * Add a path to the stack
      *
      * @param string Element node name
      * @access private
      * @return void
      */
-    function _addPath($depth, $name)
-    {
+    function _addPath($depth, $name) {
         $this->paths[$depth] = $name;
     }
 
     /**
-      * Returns the current active path
+     * Returns the current active path
      *
      * @access private
      */
-    function _getActivePath()
-    {
+    function _getActivePath() {
         $tmp = array();
 
-        for ($i=0; $i<=$this->depth; $i++) {
+        for ($i = 0; $i <= $this->depth; $i++) {
             $tmp[] = $this->paths[$i];
         }
 
-        $path =  '/' . join('/', $tmp);
+        $path = '/' . join('/', $tmp);
         return $path;
     }
 
@@ -406,17 +396,16 @@ class XmlParser
      * @return void
      * @access private
      */
-    function _startElement($parser, $name, $attribs)
-    {
+    function _startElement($parser, $name, $attribs) {
         // Increase depth
-        $this->depth ++;
+        $this->depth++;
 
         // Set active node
         $this->activenode = $name;
 
         // Increase element counter
         if ($this->activenode == $this->pathdata[$this->activepath][$this->count]['name']) {
-            $this->count ++;
+            $this->count++;
         } else {
             $this->count = 0;
         }
@@ -440,7 +429,7 @@ class XmlParser
         $this->activepath = $this->_getActivePath();
 
         // Save path data
-        $this->pathdata[$this->activepath][$this->count] = array('name'=>$name, 'attribs'=>$attribs);
+        $this->pathdata[$this->activepath][$this->count] = array('name' => $name, 'attribs' => $attribs);
     }
 
     /**
@@ -452,8 +441,7 @@ class XmlParser
      * @return void
      * @access private
      */
-    function _characterData($parser, $data)
-    {
+    function _characterData($parser, $data) {
         // Reset node count
         if ($this->activenode != $this->pathdata[$this->activepath][$this->count]['name']) {
             $this->count = 0;
@@ -484,8 +472,7 @@ class XmlParser
      * @return void
      * @access private
      */
-    function _endElement($parser, $name)
-    {
+    function _endElement($parser, $name) {
         // Get the handler for this event
         $handler = $this->_getEventHandler('endelement');
 
@@ -508,14 +495,10 @@ class XmlParser
         if ($handler) {
             if (is_array($handler)) {
                 // Handler is an object method
-                $handler[0]->$handler[1]($this->pathdata[$this->activepath][$this->count]['name'],
-                                         $this->pathdata[$this->activepath][$this->count]['attribs'],
-                                         $this->pathdata[$this->activepath][$this->count]['content']);
+                $handler[0]->$handler[1]($this->pathdata[$this->activepath][$this->count]['name'], $this->pathdata[$this->activepath][$this->count]['attribs'], $this->pathdata[$this->activepath][$this->count]['content']);
             } else {
                 // Handler is a function
-                $handler($this->pathdata[$this->activepath][$this->count]['name'],
-                         $this->pathdata[$this->activepath][$this->count]['attribs'],
-                         $this->pathdata[$this->activepath][$this->count]['content']);
+                $handler($this->pathdata[$this->activepath][$this->count]['name'], $this->pathdata[$this->activepath][$this->count]['attribs'], $this->pathdata[$this->activepath][$this->count]['content']);
             }
         }
 
@@ -531,8 +514,7 @@ class XmlParser
      * @return bool
      * @access public
      */
-    function parse($data, $final = false)
-    {
+    function parse($data, $final = false) {
         $success = xml_parse($this->parser, trim($data), $final);
 
         if ($final && $this->autofree) {
@@ -554,8 +536,7 @@ class XmlParser
      * @return bool
      * @access public
      */
-    function parseFile($file)
-    {
+    function parseFile($file) {
         $sData = cFileHandler::read($file);
         if (!xml_parse($this->parser, $sData)) {
             $this->_error();

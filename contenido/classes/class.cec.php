@@ -23,10 +23,10 @@
  * @link http://www.contenido.org
  * @since file available since CONTENIDO release <= 4.6
  *
- *        {@internal
- *        created unknown
- *        $Id$:
- *        }}
+ * {@internal
+ *    created unknown
+ *    $Id$:
+ * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -226,10 +226,7 @@ class cApiCecRegistry {
                 cWarning(__FILE__, __LINE__, "Method " . $method . " in class " . $class . " doesn't exist, can't add " . $sFunctionName . " to chain " . $sChainName);
                 return false;
             }
-            $call = array(
-                $class,
-                $method
-            );
+            $call = array($class, $method);
         } else {
             // chain function is a function
             if (!function_exists($sFunctionName)) {

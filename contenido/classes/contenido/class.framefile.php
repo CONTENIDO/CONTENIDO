@@ -28,33 +28,29 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Frame file collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiFrameFileCollection extends ItemCollection
-{
+class cApiFrameFileCollection extends ItemCollection {
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['framefiles'], 'idframefile');
         $this->_setItemClass('cApiFrameFile');
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiFrameFileCollection()
-    {
+    public function cApiFrameFileCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
-    public function create($area, $idframe, $idfile)
-    {
+    public function create($area, $idframe, $idfile) {
         $item = parent::createNewItem();
 
         if (is_string($area)) {
@@ -77,22 +73,21 @@ class cApiFrameFileCollection extends ItemCollection
 
         return ($item);
     }
-}
 
+}
 
 /**
  * Frame file item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiFrameFile extends Item
-{
+class cApiFrameFile extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['framefiles'], 'idframefile');
         $this->setFilters(array('addslashes'), array('stripslashes'));
@@ -102,11 +97,11 @@ class cApiFrameFile extends Item
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiFrameFile($mId = false)
-    {
+    public function cApiFrameFile($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
 }
 
 ?>

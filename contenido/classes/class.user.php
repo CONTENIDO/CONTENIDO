@@ -24,17 +24,8 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2009-05-18, Andreas Lindner, add method getGroupIDsByUserID to class User
- *   modified 2009-12-17, Dominik Ziegler, added support for username fallback
- *   modified 2010-05-20, Oliver Lohkemper, add param forceActive in User::getSystemAdmins()
- *   modified 2011-02-05, Murat Purc, Cleanup/formatting, documentation, standardize
- *                                    getUserProperties()
- *   modified 2011-02-05, Murat Purc, Manage properties related code thru cApiUser
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

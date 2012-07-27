@@ -22,11 +22,8 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-06-30, Dominik Ziegler, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -34,22 +31,21 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /** @deprecated [2012-03-29] This class is deprecated use cApiArticleLanguage() or cApiCategoryArticle() instead */
-class Art
-{
+class Art {
+
     /** @deprecated [2012-03-29] This class is deprecated use cApiArticleLanguage() or cApiCategoryArticle() instead */
-    public function __construct()
-    {
+    public function __construct() {
         cDeprecated("Use cApiArticleLanguage() or cApiCategoryArticle() instead");
     }
+
     /** @deprecated  [2011-09-03] Old constructor function for downwards compatibility */
-    public function Art()
-    {
+    public function Art() {
         cDeprecated("Use __construct()");
         $this->__construct();
     }
+
     /** @deprecated [2012-03-29] Use cApiArticleLanguage() instead */
-    public function getArtName($iArticleId, $iLangId)
-    {
+    public function getArtName($iArticleId, $iLangId) {
         cDeprecated("Use cApiArticleLanguage() instead");
         $oArticle = new cApiArticleLanguage();
         $oArticle->loadByArticleAndLanguageId((int) $iArticleId, (int) $iLangId);
@@ -59,6 +55,7 @@ class Art
         }
         return null;
     }
+
     /** @deprecated [2012-03-29] Use cApiCategoryArticle() instead */
     public function getArtIDForCatArt($iIdCatArt) {
         cDeprecated("Use cApiCategoryArticle() instead");
@@ -69,6 +66,7 @@ class Art
         }
         return null;
     }
+
 }
 
 ?>

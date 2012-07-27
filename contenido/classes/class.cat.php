@@ -31,8 +31,9 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 class Cat {
+
     function Cat() {
-       cDeprecated("Use class cApiCategoryLanguage instead.");
+        cDeprecated("Use class cApiCategoryLanguage instead.");
     }
 
     function getCatName($category, $idlang) {
@@ -42,22 +43,24 @@ class Cat {
 
         $db = cRegistry::getDb();
 
-        $idlang     = cSecurity::toInteger($idlang);
+        $idlang = cSecurity::toInteger($idlang);
 
-        $category     = cSecurity::toInteger($category);
+        $category = cSecurity::toInteger($category);
 
         $sql = "SELECT
                     name
                 FROM
-                ". $cfg["tab"]["cat_lang"] ."
+                " . $cfg["tab"]["cat_lang"] . "
                 WHERE
-                    idlang = '".$idlang."' AND
-                    idcat = '".$category."'";
+                    idlang = '" . $idlang . "' AND
+                    idcat = '" . $category . "'";
 
         $db->query($sql);
         $db->next_record();
 
         return ($db->f("name"));
     }
+
 }
+
 ?>

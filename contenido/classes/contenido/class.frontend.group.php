@@ -31,19 +31,17 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Frontend group collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiFrontendGroupCollection extends ItemCollection
-{
+class cApiFrontendGroupCollection extends ItemCollection {
+
     /**
      * Constructor Function
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['frontendgroups'], 'idfrontendgroup');
         $this->_setItemClass('cApiFrontendGroup');
@@ -54,8 +52,7 @@ class cApiFrontendGroupCollection extends ItemCollection
      * @param $groupname string Specifies the groupname
      * @param $password string Specifies the password (optional)
      */
-    public function create($groupname)
-    {
+    public function create($groupname) {
         global $client;
 
         $group = new cApiFrontendGroup();
@@ -66,7 +63,7 @@ class cApiFrontendGroupCollection extends ItemCollection
         $this->select("idclient = " . (int) $client . " AND groupname = '" . $mangledGroupName . "'");
 
         if ($obj = $this->next()) {
-            $groupname = $groupname. md5(rand());
+            $groupname = $groupname . md5(rand());
         }
 
         $item = parent::createNewItem();
@@ -84,8 +81,7 @@ class cApiFrontendGroupCollection extends ItemCollection
      *
      * @param $itemID int specifies the frontend user group
      */
-    public function delete($itemID)
-    {
+    public function delete($itemID) {
         $associations = new cApiFrontendGroupMemberCollection();
         $associations->select('idfrontendgroup = ' . (int) $itemID);
 
@@ -94,30 +90,29 @@ class cApiFrontendGroupCollection extends ItemCollection
         }
         parent::delete($itemID);
     }
-}
 
+}
 
 /**
  * Frontend group item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiFrontendGroup extends Item
-{
+class cApiFrontendGroup extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['frontendgroups'], 'idfrontendgroup');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
-}
 
+}
 
 ################################################################################
 # Old versions of frontend group item collection and frontend group item classes
@@ -126,42 +121,40 @@ class cApiFrontendGroup extends Item
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 
-
 /**
  * Frontend group collection
  * @deprecated  [2011-09-20] Use cApiFrontendGroupCollection instead of this class.
  */
-class FrontendGroupCollection extends cApiFrontendGroupCollection
-{
-    public function __construct()
-    {
+class FrontendGroupCollection extends cApiFrontendGroupCollection {
+
+    public function __construct() {
         cDeprecated("Use class cApiFrontendGroupCollection instead");
         parent::__construct();
     }
-    public function FrontendGroupCollection()
-    {
+
+    public function FrontendGroupCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
-}
 
+}
 
 /**
  * Single frontend group item
  * @deprecated  [2011-09-20] Use cApiFrontendGroup instead of this class.
  */
-class FrontendGroup extends cApiFrontendGroup
-{
-    public function __construct($mId = false)
-    {
+class FrontendGroup extends cApiFrontendGroup {
+
+    public function __construct($mId = false) {
         cDeprecated("Use class cApiFrontendGroup instead");
         parent::__construct($mId);
     }
-    public function FrontendGroup($mId = false)
-    {
+
+    public function FrontendGroup($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
 }
 
 ?>

@@ -79,7 +79,6 @@ class cRequestValidator {
     /**
      * Array with forbidden parameters. If any of these is set the request will be invalid
      *
-     *
      * @var array
      */
     protected $aBlacklist;
@@ -113,14 +112,14 @@ class cRequestValidator {
         $this->sMode = "";
 
         // check config and logging path
-        if (!empty($sConfigPath) && cFileHandler::exists($sConfigPath."/config.http_check.php")) {
+        if (!empty($sConfigPath) && cFileHandler::exists($sConfigPath . "/config.http_check.php")) {
             $this->sConfigPath = realpath($sConfigPath);
         } else {
-            die('Could not load cRequestValidator configuration! (invalid path) '.$sConfigPath);
+            die('Could not load cRequestValidator configuration! (invalid path) ' . $sConfigPath);
         }
 
         // include configuration
-        require($this->sConfigPath."/config.http_check.php");
+        require($this->sConfigPath . "/config.http_check.php");
 
         // if custom config exists, include it also here
         if (cFileHandler::exists(dirname($this->sConfigPath) . '/config.http_check.local.php')) {
@@ -146,7 +145,7 @@ class cRequestValidator {
 
             if ($this->sMode == 'stop') {
                 ob_end_clean();
-                die('Parameter check failed! (' . $this->sFailure . '='.$_GET[$this->sFailure].$_POST[$this->sFailure].')');
+                die('Parameter check failed! (' . $this->sFailure . '=' . $_GET[$this->sFailure] . $_POST[$this->sFailure] . ')');
             }
         }
     }
@@ -229,13 +228,13 @@ class cRequestValidator {
     protected function logHackTrial() {
         if ($this->bLog === true && !empty($this->sLogPath)) {
             $content = date('Y-m-d H:i:s') . '  ' .
-                       $_SERVER['REMOTE_ADDR'] . str_repeat(' ', 17 - strlen($_SERVER['REMOTE_ADDR'])) .
-                       $_SERVER['QUERY_STRING'] . "\n" .
-                       print_r($_POST, true) . "\n";
+                    $_SERVER['REMOTE_ADDR'] . str_repeat(' ', 17 - strlen($_SERVER['REMOTE_ADDR'])) .
+                    $_SERVER['QUERY_STRING'] . "\n" .
+                    print_r($_POST, true) . "\n";
             cFileHandler::write($this->sLogPath, $content);
         } elseif ($this->sMode == 'continue') {
             echo "\n<br />VIOLATION: URL contains invalid or undefined paramaters! URL: '" .
-                 htmlentities($_SERVER['QUERY_STRING']) . "' <br />\n";
+            htmlentities($_SERVER['QUERY_STRING']) . "' <br />\n";
         }
     }
 
@@ -260,4 +259,5 @@ class cRequestValidator {
 
         return $bResult;
     }
+
 }

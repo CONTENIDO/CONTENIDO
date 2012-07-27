@@ -17,7 +17,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  * @since file available since CONTENIDO release <CONTENIDO Version>
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -644,6 +643,7 @@ class cPermission {
     }
 
 }
+
 class Contenido_Perm extends cPermission {
 
     /**

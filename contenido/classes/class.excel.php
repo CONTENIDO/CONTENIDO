@@ -32,57 +32,50 @@ if (!defined('CON_FRAMEWORK')) {
 cInclude('pear', 'Spreadsheet/Excel/Writer.php');
 
 /** @deprecated 2012-03-05 This class is not supported any longer. */
-class ExcelWorksheet
-{
+class ExcelWorksheet {
+
     var $_data = array();
     var $_title;
     var $_filename;
 
-    function ExcelWorksheet ($title, $filename)
-    {
+    function ExcelWorksheet($title, $filename) {
         cDeprecated("This class is not supported any longer.");
-        $this->_title         = cSecurity::escapeDB($title, null);
-        $this->_filename     = cSecurity::escapeDB($filename, null);
+        $this->_title = cSecurity::escapeDB($title, null);
+        $this->_filename = cSecurity::escapeDB($filename, null);
     }
 
-    function setRow ($row)
-    {
+    function setRow($row) {
         $row = cSecurity::escapeDB($row, null);
         $args = func_num_args();
 
-        for ($arg=1;$arg<$args;$arg++)
-        {
+        for ($arg = 1; $arg < $args; $arg++) {
             $ma = func_get_arg($arg);
             $this->setCell($row, $arg, $ma);
         }
     }
 
-    function setCell($row, $cell, $data)
-    {
-        $row     = cSecurity::escapeDB($row, null);
-        $cell     = cSecurity::escapeDB($cell, null);
-        $data     = cSecurity::escapeDB($data, null);
+    function setCell($row, $cell, $data) {
+        $row = cSecurity::escapeDB($row, null);
+        $cell = cSecurity::escapeDB($cell, null);
+        $data = cSecurity::escapeDB($data, null);
         $this->_data[$row][$cell] = $data;
     }
 
-    function make ()
-    {
-
+    function make() {
         $workbook = new Spreadsheet_Excel_Writer();
         $workbook->send($this->_filename);
 
         $worksheet = & $workbook->addWorksheet($this->_title);
 
-        foreach ($this->_data as $row => $line)
-        {
-            foreach ($line as $col => $coldata)
-            {
-                $worksheet->writeString($row-1, $col-1, $coldata);
+        foreach ($this->_data as $row => $line) {
+            foreach ($line as $col => $coldata) {
+                $worksheet->writeString($row - 1, $col - 1, $coldata);
             }
-
         }
 
         $workbook->close();
     }
+
 }
+
 ?>

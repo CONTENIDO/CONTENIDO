@@ -21,22 +21,16 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
- *   modified 2011-11-18, Murat Purc, normalize E-Mail validation [#CON-448] an ported to PHP 5
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/* @deprecated [2011-03-10] This class is not longer supported. */
-class Form
-{
+/** @deprecated [2011-03-10] This class is not longer supported. */
+class Form {
 
     /**
      * counter
@@ -102,14 +96,12 @@ class Form
     /**
      * Constructor Function
      */
-    public function __construct()
-    {
+    public function __construct() {
         cDeprecated("This class is not longer supported.");
     }
 
     /** @deprecated  [2011-11-18] Old constructor function for downwards compatibility */
-    public function Form()
-    {
+    public function Form() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -118,10 +110,9 @@ class Form
      * Add a form element
      * @param  string  $name
      */
-    public function Add($name)
-    {
+    public function Add($name) {
         $name = cSecurity::escapeDB($name, null);
-        $this->counter ++;
+        $this->counter++;
         $this->fields[$this->counter]['name'] = $name;
     }
 
@@ -130,8 +121,7 @@ class Form
      * @param  string  $name
      * @param  string  $value
      */
-    public function SetDefault($name, $value)
-    {
+    public function SetDefault($name, $value) {
         $name = cSecurity::escapeDB($name, null);
         $value = cSecurity::escapeDB($value, null);
         $this->default[$name] = $value;
@@ -142,8 +132,7 @@ class Form
      * @param  string  $which  Which property to define
      * @param  string  $value  Values of the property
      */
-    public function Define($which, $value)
-    {
+    public function Define($which, $value) {
         $which = cSecurity::escapeDB($which, null);
         $value = cSecurity::escapeDB($value, null);
         if (0 == $this->counter) {
@@ -157,8 +146,7 @@ class Form
      * Checks if the form passed
      * @return bool TRUE: Form passed without errors, FALSE: Errors
      */
-    public function Passed()
-    {
+    public function Passed() {
         return $this->passed;
     }
 
@@ -166,8 +154,7 @@ class Form
      * Generates the form
      * @param  string  $template Path/Filename of the template to use
      */
-    public function Generate($template)
-    {
+    public function Generate($template) {
         $template = cSecurity::escapeDB($template);
 
         // get form values
@@ -191,14 +178,14 @@ class Form
             }
 
             // line numbers for the dynamic blocks
-            $tmp_template['line_nr']['start']   = 0;
-            $tmp_template['line_nr']['end']     = 0;
-            $tmp_template['line_nr']['max']     = count($tmp_template['complete']);
+            $tmp_template['line_nr']['start'] = 0;
+            $tmp_template['line_nr']['end'] = 0;
+            $tmp_template['line_nr']['max'] = count($tmp_template['complete']);
 
             // parts of the template
-            $tmp_template['start']  = '';
-            $tmp_template['block']  = '';
-            $tmp_template['end']    = '';
+            $tmp_template['start'] = '';
+            $tmp_template['block'] = '';
+            $tmp_template['end'] = '';
 
             // search the template for dynamic blocks
             foreach ($tmp_template['complete'] as $line => $content) {
@@ -214,17 +201,17 @@ class Form
             }
 
             // extract start part
-            for ($i=0; $i<$tmp_template['line_nr']['start']; $i++) {
+            for ($i = 0; $i < $tmp_template['line_nr']['start']; $i++) {
                 $tmp_template['start'] .= $tmp_template['complete'][$i];
             }
 
             // extract block
-            for ($i=$tmp_template['line_nr']['start']; $i<=$tmp_template['line_nr']['end']; $i++) {
+            for ($i = $tmp_template['line_nr']['start']; $i <= $tmp_template['line_nr']['end']; $i++) {
                 $tmp_template['block'] .= $tmp_template['complete'][$i];
             }
 
             // extract end part
-            for ($i=$tmp_template['line_nr']['end']+1; $i<=$tmp_template['line_nr']['max']; $i++) {
+            for ($i = $tmp_template['line_nr']['end'] + 1; $i <= $tmp_template['line_nr']['max']; $i++) {
                 $tmp_template['end'] .= $tmp_template['complete'][$i];
             }
 
@@ -250,7 +237,7 @@ class Form
             $tmp_needles[] = '{FIELD}';
             $tmp_needles[] = '{BGCOLOR}';
 
-            for ($i=1; $i<=$fieldcount; $i++) {
+            for ($i = 1; $i <= $fieldcount; $i++) {
 
                 // set default classerror style
                 if (!isset($this->fields[$i]['classerror'])) {
@@ -273,10 +260,10 @@ class Form
                 // set the correct caption class
                 if ($this->isSend && $this->fields[$i]['passed'] == false) {
                     // error
-                    $tmp_replacements[] = '<span class="'.$this->fields[$i]['classerror'].'">'.$this->fields[$i]['caption'].'</span>';
+                    $tmp_replacements[] = '<span class="' . $this->fields[$i]['classerror'] . '">' . $this->fields[$i]['caption'] . '</span>';
                 } else {
                     // passed
-                    $tmp_replacements[] = '<span class="'.$this->fields[$i]['classcaption'].'">'.$this->fields[$i]['caption'].'</span>';
+                    $tmp_replacements[] = '<span class="' . $this->fields[$i]['classcaption'] . '">' . $this->fields[$i]['caption'] . '</span>';
                 }
 
                 // FormField instance
@@ -287,7 +274,7 @@ class Form
 
                 // alternate between row background colors
                 if ($this->default['lightcolor'] != '' && $this->default['darkcolor'] != '') {
-                    $tmp_replacements[] = (is_int($i/2)) ? $this->default['lightcolor'] : $this->default['darkcolor'];
+                    $tmp_replacements[] = (is_int($i / 2)) ? $this->default['lightcolor'] : $this->default['darkcolor'];
                 } else {
                     $tmp_replacements[] = '';
                 }
@@ -304,11 +291,9 @@ class Form
 
             // debug info
             cDebug(print_r($this->fields, true));
-
         } else {
             // there are no errors
             // and the form passed
-
             // do nothing
         }
     }
@@ -316,8 +301,7 @@ class Form
     /**
      * Extract the Form Data from the $_POST or $_GET, stores them in fields property
      */
-    public function GetFormValues()
-    {
+    public function GetFormValues() {
         if (strtolower($this->method) == 'post') {
             // extract values from the $_POST global array
             foreach ($this->fields as $id => $element) {
@@ -346,8 +330,7 @@ class Form
     /**
      * Runs check on send form values
      */
-    public function CheckFormValues()
-    {
+    public function CheckFormValues() {
         $tmp_passed = true;
 
         foreach ($this->fields as $id => $element) {
@@ -407,13 +390,11 @@ class Form
                         $this->fields[$id]['passed'] = ('select' == $element['type']) ? $check->isNotEmpty($element['value']) : $check->isNotNull($element['value']);
                     }
                     break;
-
             }
 
             if ($this->fields[$id]['passed'] == false) {
                 $tmp_passed = false;
             }
-
         }
 
         $this->passed = $tmp_passed;
@@ -421,21 +402,19 @@ class Form
 
 }
 
-
 /* @deprecated 2011-03-10 This class is not longer supported. */
-class FormField
-{
+
+class FormField {
+
     /**
      * Constructor Function
      */
-    public function __construct()
-    {
+    public function __construct() {
         cDeprecated("This class is not longer supported.");
     }
 
     /** @deprecated  [2011-11-18] Old constructor function for downwards compatibility */
-    public function FormField()
-    {
+    public function FormField() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -445,12 +424,10 @@ class FormField
      * the type of form field selected.
      * @argument $item array All necessary formfield data
      */
-    public function GenerateCode($item)
-    {
+    public function GenerateCode($item) {
         if (!is_array($item)) {
             // no data
-            exit ('Argument is not an array!');
-
+            exit('Argument is not an array!');
         } else {
             // switch form type
             $tmp_ret_str = '';
@@ -459,42 +436,40 @@ class FormField
 
                 case 'caption':
                     // Feld ist nur eine Beschriftung, HTML ist für das Feld erlaubt.
-                    $tmp_ret_str = '<span class="'.$item['classcaption'].'">'.$item['value'].'</span>';
+                    $tmp_ret_str = '<span class="' . $item['classcaption'] . '">' . $item['value'] . '</span>';
                     break;
 
                 case 'hidden':
                     // Feld ist versteckt und dient nur zum Übermitteln von Daten.
-                    $tmp_ret_str = '<input type="hidden" name="'.$item['name'].'" value="'.$item['value'].'">';
+                    $tmp_ret_str = '<input type="hidden" name="' . $item['name'] . '" value="' . $item['value'] . '">';
                     break;
 
                 case 'text':
                     // Feld ist ein einzeiliges Text- Eingabefeld.
-                    $tmp_ret_str = '<input type="'.$item['type'].'" name="'.$item['name'].'" value="'.$item['value'].'" class="'.$item['classinput'].'">';
+                    $tmp_ret_str = '<input type="' . $item['type'] . '" name="' . $item['name'] . '" value="' . $item['value'] . '" class="' . $item['classinput'] . '">';
                     break;
 
                 case 'textarea':
                     // Feld ist ein mehrzeiliges Text-Eingabefeld.
-                    $tmp_ret_str = '<textarea name="'.$item['name'].'" class="'.$item['classinput'].'">'.$item['value'].'</textarea>';
+                    $tmp_ret_str = '<textarea name="' . $item['name'] . '" class="' . $item['classinput'] . '">' . $item['value'] . '</textarea>';
                     break;
 
                 case 'select':
                     // Feld ist ein Auswahlfeld.
-                    $tmp_ret_str = '<select name="'.$item['name'].'" class="'.$item['classinput'].'">';
+                    $tmp_ret_str = '<select name="' . $item['name'] . '" class="' . $item['classinput'] . '">';
 
                     if (!is_array($item['values'])) {
                         // no values
                         $tmp_ret_str .= '<option style="color:#FF0000">no values passed</option>';
-
                     } else {
                         // values array passed
                         foreach ($item['values'] as $key => $value) {
                             if ($item['value'] == $key) {
                                 // selected
-                                $tmp_ret_str .= '<option value="'.$key.'" selected="selected">'.$value.'</option>';
-
+                                $tmp_ret_str .= '<option value="' . $key . '" selected="selected">' . $value . '</option>';
                             } else {
                                 // unselected
-                                $tmp_ret_str .= '<option value="'.$key.'">'.$value.'</option>';
+                                $tmp_ret_str .= '<option value="' . $key . '">' . $value . '</option>';
                             }
                         }
                     }
@@ -508,26 +483,25 @@ class FormField
                     if (!is_array($item['values'])) {
                         // no values
                         $tmp_ret_str .= '<span style="color:#FF0000">no values passed</span>';
-
                     } else {
                         $tmp_ret_str .= '<table cellspacing="0" cellpadding="2" border="0">';
 
                         $first = true;
 
                         foreach ($item['values'] as $caption => $value) {
-                            $tmp_ret_str .=     '<tr>';
+                            $tmp_ret_str .= '<tr>';
 
                             if ($item['value'] == $value) {
-                                $tmp_ret_str .=     '<td class="'.$item['classcaption'].'">'.$caption.'</td><td><input type="radio" name="'.$item['name'].'" value="'.$value.'" checked="checked"></td>';
+                                $tmp_ret_str .= '<td class="' . $item['classcaption'] . '">' . $caption . '</td><td><input type="radio" name="' . $item['name'] . '" value="' . $value . '" checked="checked"></td>';
                             } else {
                                 if ($first) {
-                                    $tmp_ret_str .=     '<td class="'.$item['classcaption'].'">'.$caption.'</td><td><input type="radio" name="'.$item['name'].'" value="'.$value.'" checked="checked"></td>';
+                                    $tmp_ret_str .= '<td class="' . $item['classcaption'] . '">' . $caption . '</td><td><input type="radio" name="' . $item['name'] . '" value="' . $value . '" checked="checked"></td>';
                                 } else {
-                                    $tmp_ret_str .=     '<td class="'.$item['classcaption'].'">'.$caption.'</td><td><input type="radio" name="'.$item['name'].'" value="'.$value.'"></td>';
+                                    $tmp_ret_str .= '<td class="' . $item['classcaption'] . '">' . $caption . '</td><td><input type="radio" name="' . $item['name'] . '" value="' . $value . '"></td>';
                                 }
                             }
 
-                            $tmp_ret_str .=     '<tr>';
+                            $tmp_ret_str .= '<tr>';
                             $first = false;
                         }
 
@@ -537,10 +511,9 @@ class FormField
 
                 case 'checkbox':
                     if (isset($item['value'])) {
-                        $tmp_ret_str .= '<input type="checkbox" name="'.$item['name'].'" value="on" checked="checked">';
-
+                        $tmp_ret_str .= '<input type="checkbox" name="' . $item['name'] . '" value="on" checked="checked">';
                     } else {
-                        $tmp_ret_str .= '<input type="checkbox" name="'.$item['name'].'" value="on">';
+                        $tmp_ret_str .= '<input type="checkbox" name="' . $item['name'] . '" value="on">';
                     }
                     break;
 
@@ -548,17 +521,17 @@ class FormField
                     $tmp_ret_str .= '<table cellspacing="0" cellpadding="2" border="0">';
 
                     $tmp_ret_str .= '   <tr>';
-                    $tmp_ret_str .= '       <td><span class="'.$item['classcaption'].'">'.$item['values'][0].'</span></td>';
-                    $tmp_ret_str .= '       <td><input class="'.$item['classinput'].'" type="text" name="'.$item['name'].'[from][d]" value="'.$item['value']['from']['d'].'" size="2" maxlength="2"></td>';
-                    $tmp_ret_str .= '       <td><input class="'.$item['classinput'].'" type="text" name="'.$item['name'].'[from][m]" value="'.$item['value']['from']['m'].'" size="2" maxlength="2"></td>';
-                    $tmp_ret_str .= '       <td><input class="'.$item['classinput'].'" type="text" name="'.$item['name'].'[from][y]" value="'.$item['value']['from']['y'].'" size="4" maxlength="4"></td>';
+                    $tmp_ret_str .= '       <td><span class="' . $item['classcaption'] . '">' . $item['values'][0] . '</span></td>';
+                    $tmp_ret_str .= '       <td><input class="' . $item['classinput'] . '" type="text" name="' . $item['name'] . '[from][d]" value="' . $item['value']['from']['d'] . '" size="2" maxlength="2"></td>';
+                    $tmp_ret_str .= '       <td><input class="' . $item['classinput'] . '" type="text" name="' . $item['name'] . '[from][m]" value="' . $item['value']['from']['m'] . '" size="2" maxlength="2"></td>';
+                    $tmp_ret_str .= '       <td><input class="' . $item['classinput'] . '" type="text" name="' . $item['name'] . '[from][y]" value="' . $item['value']['from']['y'] . '" size="4" maxlength="4"></td>';
                     $tmp_ret_str .= '   <tr>';
 
                     $tmp_ret_str .= '   <tr>';
-                    $tmp_ret_str .= '       <td><span class="'.$item['classcaption'].'">'.$item['values'][1].'</span></td>';
-                    $tmp_ret_str .= '       <td><input class="'.$item['classinput'].'" type="text" name="'.$item['name'].'[to][d]" value="'.$item['value']['to']['d'].'" size="2" maxlength="2"></td>';
-                    $tmp_ret_str .= '       <td><input class="'.$item['classinput'].'" type="text" name="'.$item['name'].'[to][m]" value="'.$item['value']['to']['m'].'" size="2" maxlength="2"></td>';
-                    $tmp_ret_str .= '       <td><input class="'.$item['classinput'].'" type="text" name="'.$item['name'].'[to][y]" value="'.$item['value']['to']['y'].'" size="4" maxlength="4"></td>';
+                    $tmp_ret_str .= '       <td><span class="' . $item['classcaption'] . '">' . $item['values'][1] . '</span></td>';
+                    $tmp_ret_str .= '       <td><input class="' . $item['classinput'] . '" type="text" name="' . $item['name'] . '[to][d]" value="' . $item['value']['to']['d'] . '" size="2" maxlength="2"></td>';
+                    $tmp_ret_str .= '       <td><input class="' . $item['classinput'] . '" type="text" name="' . $item['name'] . '[to][m]" value="' . $item['value']['to']['m'] . '" size="2" maxlength="2"></td>';
+                    $tmp_ret_str .= '       <td><input class="' . $item['classinput'] . '" type="text" name="' . $item['name'] . '[to][y]" value="' . $item['value']['to']['y'] . '" size="4" maxlength="4"></td>';
                     $tmp_ret_str .= '   <tr>';
 
                     $tmp_ret_str .= '</table>';
@@ -567,42 +540,36 @@ class FormField
 
                 // TimeJob hardcoded dummy
                 case 'suche':
-                    $tmp_ret_str .= '<input type="text" class="'.$item['classinput'].'" value="'.$item['value'].'">&nbsp;<a href="#" onclick="popUp(\''.$item['values'][0].'\')"><img src="images/button_suchen.gif" border="0"></a>';
-                    $tmp_ret_str .= '&nbsp;&nbsp;<a href="#" onclick="popUp(\''.$item['values'][1].'\')"><img src="images/but_help.gif" border="0"></a>';
+                    $tmp_ret_str .= '<input type="text" class="' . $item['classinput'] . '" value="' . $item['value'] . '">&nbsp;<a href="#" onclick="popUp(\'' . $item['values'][0] . '\')"><img src="images/button_suchen.gif" border="0"></a>';
+                    $tmp_ret_str .= '&nbsp;&nbsp;<a href="#" onclick="popUp(\'' . $item['values'][1] . '\')"><img src="images/but_help.gif" border="0"></a>';
                     break;
 
                 case 'fromto':
-                    $tmp_ret_str .= '<input type="text" class="'.$item['classinput'].'" name="'.$item['name'].'[from]" value="'.$item['value']['from'].'">';
-                    $tmp_ret_str .= '&nbsp;<span class="'.$item['classcaption'].'">bis</a>&nbsp;';
-                    $tmp_ret_str .= '<input type="text" class="'.$item['classinput'].'" name="'.$item['name'].'[to]" value="'.$item['value']['to'].'">';
+                    $tmp_ret_str .= '<input type="text" class="' . $item['classinput'] . '" name="' . $item['name'] . '[from]" value="' . $item['value']['from'] . '">';
+                    $tmp_ret_str .= '&nbsp;<span class="' . $item['classcaption'] . '">bis</a>&nbsp;';
+                    $tmp_ret_str .= '<input type="text" class="' . $item['classinput'] . '" name="' . $item['name'] . '[to]" value="' . $item['value']['to'] . '">';
 
                     break;
-
             }
 
             return $tmp_ret_str;
         }
-
     }
 
 }
 
-
-/* @deprecated 2011-03-10 This class is not longer supported. */
-class FormCheck
-{
+/** @deprecated 2011-03-10 This class is not longer supported. */
+class FormCheck {
 
     /**
      * Constructor function
      */
-    public function __construct()
-    {
+    public function __construct() {
         cDeprecated("This class is not longer supported.");
     }
 
     /** @deprecated  [2011-11-18] Old constructor function for downwards compatibility */
-    public function FormCheck()
-    {
+    public function FormCheck() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -612,8 +579,7 @@ class FormCheck
      * @param  mixed  $value  Value to check
      * @return bool
      */
-    public function isNotEmpty($value)
-    {
+    public function isNotEmpty($value) {
         return ('' == $value || 0 == $value) ? false : true;
     }
 
@@ -622,8 +588,7 @@ class FormCheck
      * @param  mixed  $value  Value to check
      * @return bool
      */
-    public function isNotNull($value)
-    {
+    public function isNotNull($value) {
         return ($value) ? true : false;
     }
 
@@ -632,8 +597,7 @@ class FormCheck
      * @param  mixed  $value  Value to check
      * @return bool
      */
-    public function isNumeric($value)
-    {
+    public function isNumeric($value) {
         if ('' != $value) {
             return (!preg_match('/[^0-9]/', $value)) ? true : false;
         } else {
@@ -646,8 +610,7 @@ class FormCheck
      * @param  mixed  $value  Value to check
      * @return bool
      */
-    public function isAlphabetic($value)
-    {
+    public function isAlphabetic($value) {
         return (!preg_match('/[^a-zA-Z]/', $value)) ? true : false;
     }
 
@@ -656,8 +619,7 @@ class FormCheck
      * @param  mixed  $value  Value to check
      * @return bool
      */
-    public function isEmail($value)
-    {
+    public function isEmail($value) {
         $validator = cValidatorFactory::getInstance('email');
         return $validator->isValid($value);
     }

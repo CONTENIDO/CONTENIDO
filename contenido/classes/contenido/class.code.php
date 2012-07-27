@@ -28,19 +28,17 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Code collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiCodeCollection extends ItemCollection
-{
+class cApiCodeCollection extends ItemCollection {
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['code'], 'idcode');
         $this->_setItemClass('cApiCode');
@@ -54,8 +52,7 @@ class cApiCodeCollection extends ItemCollection
      * @param string $sCode
      * @return cApiCode
      */
-    public function create($iIdCatArt, $iIdLang, $iIdClient, $sCode)
-    {
+    public function create($iIdCatArt, $iIdLang, $iIdClient, $sCode) {
         $oItem = parent::createNewItem();
 
         $oItem->set('idcatart', (int) $iIdCatArt, false);
@@ -73,8 +70,7 @@ class cApiCodeCollection extends ItemCollection
      * @param int $iIdLang
      * @return cApiCode|null
      */
-    public function fetchByCatArtAndLang($iIdCatArt, $iIdLang)
-    {
+    public function fetchByCatArtAndLang($iIdCatArt, $iIdLang) {
         $this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);
         return $this->next();
     }
@@ -83,30 +79,27 @@ class cApiCodeCollection extends ItemCollection
      * Deletes code by category article.
      * @param int $iIdCatArt
      */
-    public function deleteByCatArt($iIdCatArt)
-    {
+    public function deleteByCatArt($iIdCatArt) {
         $this->select('idcatart=' . (int) $iIdCatArt);
         while ($oCode = $this->next()) {
             $this->delete($oCode->get('idcode'));
         }
     }
-}
 
+}
 
 /**
  * Code item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiCode extends Item
-{
+class cApiCode extends Item {
 
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['code'], 'idcode');
         $this->setFilters(array(), array());
@@ -120,11 +113,11 @@ class cApiCode extends Item
      * @param   string  $sCode
      * @return  bool
      */
-    public function updateCode($sCode)
-    {
+    public function updateCode($sCode) {
         $this->set('code', $this->escape($sCode), false);
         return $this->store();
     }
+
 }
 
 ?>

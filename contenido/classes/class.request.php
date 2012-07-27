@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Request class
  * @version $Id$
@@ -13,34 +12,31 @@
  * Example usage
  */
 /*
-Request :: getInstance()
-    ->register(request :: GET, 'myFirstPara', request :: TYPE_STRING | request :: TYPE_ARRAY, 2, 10)
-    ->register(request :: GET, 'mySecondPara', request :: TYPE_STRING, null, null, null, request :: TRANS_STRIP_HTML)
-    ->register(request :: GET, 'myThirdPara', request :: TYPE_INTEGER | request :: TYPE_ARRAY, 0, 100)
-    ->finish();
+  Request :: getInstance()
+  ->register(request :: GET, 'myFirstPara', request :: TYPE_STRING | request :: TYPE_ARRAY, 2, 10)
+  ->register(request :: GET, 'mySecondPara', request :: TYPE_STRING, null, null, null, request :: TRANS_STRIP_HTML)
+  ->register(request :: GET, 'myThirdPara', request :: TYPE_INTEGER | request :: TYPE_ARRAY, 0, 100)
+  ->finish();
 
-echo '<pre>';
-var_dump(Request :: get('myFirstPara')); // normal usage
-var_dump(Request :: get('mySecondPara')); // normal usage
-var_dump(Request :: request('myThirdPara', true)); // still has the ValidationError objects in case of errors.
-var_dump(Request :: hasValidationErrors(Request :: GET, array('myFirstPara', 'mySecondPara', 'myThirdPara')); // returns true, if a validation error occured.
-echo '</pre>';
-*/
+  echo '<pre>';
+  var_dump(Request :: get('myFirstPara')); // normal usage
+  var_dump(Request :: get('mySecondPara')); // normal usage
+  var_dump(Request :: request('myThirdPara', true)); // still has the ValidationError objects in case of errors.
+  var_dump(Request :: hasValidationErrors(Request :: GET, array('myFirstPara', 'mySecondPara', 'myThirdPara')); // returns true, if a validation error occured.
+  echo '</pre>';
+ */
 
 class Request {
 
     const POST = 'POST';
     const GET = 'GET';
     const COOKIE = 'COOKIE';
-
     const TYPE_INTEGER = 1;
     const TYPE_FLOAT = 2;
     const TYPE_STRING = 4;
     const TYPE_ARRAY = 8;
-
     const TRANS_STRIP_HTML = 1;
     const TRANS_STRIP_PHP = 2;
-
     const DATE_PATTERN_ISO = '/^\\d{4}\\-\\d{2}\\-\\d{2}$/';
     const DATE_PATTERN_DE = '/^\\d{2}\\.\\d{2}\\.(?:\\d{2}|\\d{4})$/';
     const DATETIME_PATTERN = '/^\\d{4}\\-\\d{2}\\-\\d{2}\\s\\d{2}\\:\\d{2}$/';
@@ -50,22 +46,17 @@ class Request {
     private $POST;
     private $GET;
     private $COOKIE;
-
     private $POSTcleared;
     private $GETcleared;
     private $COOKIEcleared;
-
     private $bHasValidationErrors;
 
     /**
      * Constructor.
-     * @access private
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      */
     private function __construct() {
-
         cDeprecated("This class was replaced by cRequestValidator");
-
         $this->POST = array();
         $this->COOKIE = array();
         $this->GET = array();
@@ -73,28 +64,21 @@ class Request {
 
     /**
      * Factory.
-     * @static
-     * @access public
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @return Object Reference to the current single instance of the class.
      */
     public static function getInstance() {
-
         cDeprecated("This class was replaced by cRequestValidator");
-
         static $oCurrentInstance;
-
-        if (!isset ($oCurrentInstance)) {
+        if (!isset($oCurrentInstance)) {
             $oCurrentInstance = new self();
         }
-
         return $oCurrentInstance;
     }
 
     /**
      * Registers a request variable with the request class.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @access public
      * @param String sRequestType Either POST, GET or COOKIE.
      * @param String sName Parameter name.
      * @param Integer iType Parameter type (either integer, float or string).
@@ -104,35 +88,28 @@ class Request {
      * @return Object Reference to the current instance to enable method chaining.
      */
     public function register($sRequestType, $sName, $iType, $iMin = null, $iMax = null, $sRegex = null, $iTransformation = null) {
-
         if ($sRequestType == self :: POST) {
             $mRequest = $_POST;
-        }
-        elseif ($sRequestType == self :: GET) {
+        } elseif ($sRequestType == self :: GET) {
             $mRequest = $_GET;
-        }
-        elseif ($sRequestType == self :: COOKIE) {
+        } elseif ($sRequestType == self :: COOKIE) {
             $mRequest = $_COOKIE;
         }
 
         if (!array_key_exists($sName, $mRequest) || (!is_array($mRequest[$sName]) && strlen($mRequest[$sName]) == 0)) {
-            /*
-             * The specified paramter does not exist.
-             */
-            $this-> {
-                $sRequestType }
-            [$sName] = null;
+            // The specified paramter does not exist.
+            $this->{
+                    $sRequestType }
+                    [$sName] = null;
             return $this;
         }
 
         if (is_array($mRequest[$sName]) && ($iType & self :: TYPE_ARRAY) != self :: TYPE_ARRAY) {
-            /*
-             * The parameter is of type array and array is
-             * not allowed according to the registration.
-             */
-            $this-> {
-                $sRequestType }
-            [$sName] = ValidationError :: set(ValidationError :: NOT_SCALAR, $mRequest[$sName], 'The given value is not scalar.');
+            // The parameter is of type array and array is
+            // not allowed according to the registration.
+            $this->{
+                    $sRequestType }
+                    [$sName] = ValidationError :: set(ValidationError :: NOT_SCALAR, $mRequest[$sName], 'The given value is not scalar.');
             return $this;
         }
 
@@ -140,22 +117,22 @@ class Request {
             array_walk_recursive($mRequest[$sName], array(
                 'self',
                 'validateArray'
-            ), array(
+                    ), array(
                 'iType' => $iType,
                 'iMin' => $iMin,
                 'iMax' => $iMax,
                 'sRegex' => $sRegex,
                 'iTransformation' => $iTransformation
             ));
-            $this-> {
-                $sRequestType }
-            [$sName] = $mRequest[$sName];
+            $this->{
+                    $sRequestType }
+                    [$sName] = $mRequest[$sName];
             return $this;
         }
 
-        $this-> {
-            $sRequestType }
-        [$sName] = $this->validateValue($mRequest[$sName], $iType, $iMin, $iMax, $sRegex, $iTransformation);
+        $this->{
+                $sRequestType }
+                [$sName] = $this->validateValue($mRequest[$sName], $iType, $iMin, $iMax, $sRegex, $iTransformation);
 
         return $this;
     }
@@ -163,29 +140,23 @@ class Request {
     /**
      * Callback function for validating items of arrays.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @static
-     * @access private
      * @param Reference mItem Reference to the item of the array to be validated.
      * @param Mixed mKey Key of the current item to be processed.
      * @param Array aParams Parameter array to be used in the validation process.
      * @return Void
      */
     private static function validateArray(& $mItem, $mKey, $aParams) {
-
         $mItem = self :: validateValue($mItem, $aParams['iType'], $aParams['iMin'], $aParams['iMax'], $aParams['sRegex'], $aParams['iTransformation']);
     }
 
     /**
      * Callback function to clear the resulting arrays from ValidationError objects.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @static
-     * @access private
      * @param Reference mItem Reference to the item of the array to be cleared.
      * @param Mixed mKey Key of the current item to be processed.
      * @return Void
      */
     private static function setErrorsToNull(& $mItem, $mKey) {
-
         if (is_object($mItem)) {
             $mItem = null;
         }
@@ -210,16 +181,13 @@ class Request {
      * @return Boolean True if no validation errors occured. False otherwise.
      */
     public static function hasValidationErrors($sRequestType, $aParams) {
-
         $oCurrentInstance = self :: getInstance();
 
         if ($sRequestType == self :: POST) {
             $mRequest = $oCurrentInstance->POST;
-        }
-        elseif ($sRequestType == self :: GET) {
+        } elseif ($sRequestType == self :: GET) {
             $mRequest = $oCurrentInstance->GET;
-        }
-        elseif ($sRequestType == self :: COOKIE) {
+        } elseif ($sRequestType == self :: COOKIE) {
             $mRequest = $oCurrentInstance->COOKIE;
         }
 
@@ -243,14 +211,11 @@ class Request {
      * Callback function to check whether a validation error
      * occured or not.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @static
-     * @access private
      * @param Reference mItem Reference to the current item.
      * @param Mixed mKey Current key.
      * @return Void
      */
     private static function hasError(& $mItem, $mKey) {
-
         echo '<pre>';
         var_dump($mItem);
         echo '</pre>';
@@ -267,7 +232,6 @@ class Request {
      * @return Object Reference to the current instance.
      */
     public function finish() {
-
         $this->POSTcleared = $this->POST;
         $this->GETcleared = $this->GET;
         $this->COOKIEcleared = $this->COOKIE;
@@ -293,8 +257,6 @@ class Request {
     /**
      * Validates the value against type, range, pattern, optionally after a transformation process.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @static
-     * @access private
      * @param Mixed mValue Value to be validated.
      * @param Integer iType Type (integer, float or string).
      * @param Integer iMin Minimum value (integer and float) or minimum length (string).
@@ -303,28 +265,21 @@ class Request {
      * @return Mixed Either the transformed and validated value or null.
      */
     private static function validateValue($mValue, $iType, $iMin, $iMax, $sRegex, $iTransformation) {
-
         $mValue = self :: transform($mValue, $iTransformation);
 
         if (($iType & self :: TYPE_INTEGER) == self :: TYPE_INTEGER && !self :: isInteger($mValue)) {
-            /*
-             * Type should be integer, is something else
-             */
+            // Type should be integer, is something else
             return ValidationError :: set(ValidationError :: NOT_INTEGER, $mValue, 'The given value is not of type integer.');
         }
 
         if (($iType & self :: TYPE_FLOAT) == self :: TYPE_FLOAT && !self :: isFloat($mValue)) {
-            /*
-             * Type should be float, is something else
-             */
+            // Type should be float, is something else
             return ValidationError :: set(ValidationError :: NOT_FLOAT, $mValue, 'The given value is not a number.');
         }
 
         if (($iType & self :: TYPE_INTEGER) == self :: TYPE_INTEGER || ($iType & self :: TYPE_FLOAT) == self :: TYPE_FLOAT) {
             if (($iMin != null && $mValue < $iMin) || ($iMax != null && $mValue > $iMax)) {
-                /*
-                 * Value is either lower than min or greater than max.
-                 */
+                // Value is either lower than min or greater than max.
                 if ($iMin != null && $mValue < $iMin) {
                     return ValidationError :: set(ValidationError :: TOO_SMALL, $mValue, 'The given value is too small.');
                 } else {
@@ -335,9 +290,7 @@ class Request {
 
         if (($iType & self :: TYPE_STRING) == self :: TYPE_STRING) {
             if (($iMin != null && strlen($mValue) < $iMin) || ($iMax != null && strlen($mValue) > $iMax)) {
-                /*
-                 * String length is either too short or too long.
-                 */
+                // String length is either too short or too long.
                 if ($iMin != null && strlen($mValue) < $iMin) {
                     return ValidationError :: set(ValidationError :: TOO_SHORT, $mValue, 'The given string is too short.');
                 } else {
@@ -347,9 +300,7 @@ class Request {
         }
 
         if ($sRegex != null && !preg_match($sRegex, $mValue)) {
-            /*
-             * Value does not match the given pattern.
-             */
+            // Value does not match the given pattern.
             return ValidationError :: set(ValidationError :: WRONG_PATTERN, $mValue, 'The given string does not match the given pattern.');
         }
 
@@ -359,14 +310,11 @@ class Request {
     /**
      * Transforms the value according to the given rules.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @static
-     * @access private
      * @param String sValue Value to be transformed.
      * @param Integer iRules Sum of the transformation rules to be applied.
      * @return String Transformed value.
      */
     private static function transform($sValue, $iRules) {
-
         if (($iRules & self :: TRANS_STRIP_HTML) == self :: TRANS_STRIP_HTML) {
             $sValue = strip_tags($sValue);
         }
@@ -381,13 +329,10 @@ class Request {
     /**
      * Checks whether or not the given value is an integer value.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @static
-     * @access private
      * @param Mixed mValue Value to be checked.
      * @return Boolean True if the value is an integer value.
      */
     private static function isInteger($mValue) {
-
         if (!is_numeric($mValue)) {
             return false;
         }
@@ -398,13 +343,10 @@ class Request {
     /**
      * Checks whether or not the given value is a double value.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @static
-     * @access private
      * @param Mixed mValue Value to be checked.
      * @return Boolean True if the value is a float or integer value.
      */
     private static function isFloat($mValue) {
-
         return is_numeric($mValue);
     }
 
@@ -412,14 +354,12 @@ class Request {
      * Returns the parameter specified by sName and the request type sRequestType.
      * The method throws an exception if the specified paramter has not yet been registered.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @access private
      * @param String sRequestType Request type (GET, POST or COOKIE).
      * @param String sName Name of the parameter.
      * @return Mixed Value of the specified parameter.
      */
     private function getVar($sRequestType, $sName, $bWithErrors = false) {
-
-        if (!array_key_exists($sName, $this-> $sRequestType)) {
+        if (!array_key_exists($sName, $this->$sRequestType)) {
             throw new Exception('Request variable ' . $sName . ' is not registered yet. Please register it first.');
         }
 
@@ -427,21 +367,19 @@ class Request {
             $sRequestType .= 'cleared';
         }
 
-        return $this-> {
-            $sRequestType }
-        [$sName];
+        return $this->{
+                $sRequestType }
+                [$sName];
     }
 
     private function isRegistered($sName, $sRequestType) {
-        return array_key_exists($sName, $this-> $sRequestType);
+        return array_key_exists($sName, $this->$sRequestType);
     }
 
     /**
      * Returns the GET value of the specified parameter. Null if it does
      * not exist or if it is not valid.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @static
-     * @access public
      * @param String sName Name of the parameter.
      * @return Mixed Value of the parameter or null.
      */
@@ -453,8 +391,6 @@ class Request {
      * Returns the POST value of the specified parameter. Null if it does
      * not exist or if it is not valid.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @static
-     * @access public
      * @param String sName Name of the parameter.
      * @return Mixed Value of the parameter or null.
      */
@@ -466,8 +402,6 @@ class Request {
      * Returns the COOKIE value of the specified parameter. Null if it does
      * not exist or if it is not valid.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @static
-     * @access public
      * @param String sName Name of the parameter.
      * @return Mixed Value of the parameter or null.
      */
@@ -479,13 +413,10 @@ class Request {
      * Returns the REQUEST value of the specified parameter. Null if it does
      * not exist or if it is not valid.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @static
-     * @access private
      * @param String sName Name of the parameter.
      * @return Mixed Value of the parameter or null.
      */
     public static function request($sName, $bWithErrors = false) {
-
         if (self :: getInstance()->isRegistered($sName, self :: GET) && self :: get($sName) != null) {
             return self :: get($sName, $bWithErrors);
         }
@@ -504,10 +435,10 @@ class Request {
 
         return null;
     }
+
 }
-/**
- * @deprecated [2012-07-03] This class was replaced by cRequestValidator
- */
+
+/** @deprecated [2012-07-03] This class was replaced by cRequestValidator */
 class ValidationError {
 
     const NOT_INTEGER = 1;
@@ -526,13 +457,11 @@ class ValidationError {
     /**
      * Constructor.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @access private
      * @param Integer iType Error type (see constants).
      * @param String sMessage Error message.
      * @param Mixed mTransValue Original and eventually transformed value.
      */
     private function __construct($iType, $sMessage, $mTransValue) {
-
         $this->iType = $iType;
         $this->sMessage = $sMessage;
         $this->mTransValue = $mTransValue;
@@ -541,7 +470,6 @@ class ValidationError {
     /**
      * Returns the error type.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @access public
      * @return Integer Error type.
      */
     public function getError() {
@@ -551,7 +479,6 @@ class ValidationError {
     /**
      * Returns the error message.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @access public
      * @return String Error message.
      */
     public function getMessage() {
@@ -561,7 +488,6 @@ class ValidationError {
     /**
      * Returns the eventually transformed value.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @access public
      * @return Mixed Transformed value.
      */
     public function getValue() {
@@ -572,17 +498,16 @@ class ValidationError {
      * Returns an object reference of the given type.
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @static
-     * @access public
      * @param Integer iType Error type.
      * @param Mixed mTransValue Original and eventually transformed value.
      * @param String sMessage Error message.
      * @return Object New validation error object.
      */
     public static function set($iType, $mTransValue, $sMessage = '') {
-
         $oCurrentInstance = new self($iType, $sMessage, $mTransValue);
         return $oCurrentInstance;
     }
+
 }
 
 ?>

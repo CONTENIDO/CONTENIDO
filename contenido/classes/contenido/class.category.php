@@ -28,21 +28,19 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Category collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiCategoryCollection extends ItemCollection
-{
+class cApiCategoryCollection extends ItemCollection {
+
     /**
      * Constructor function.
      *
      * @param  string  $select  Select statement (see ItemCollection::select())
      */
-    public function __construct($select = false)
-    {
+    public function __construct($select = false) {
         global $cfg;
         parent::__construct($cfg['tab']['cat'], 'idcat');
         $this->_setItemClass('cApiCategory');
@@ -52,8 +50,7 @@ class cApiCategoryCollection extends ItemCollection
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiCategoryCollection($select = false)
-    {
+    public function cApiCategoryCollection($select = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($select);
     }
@@ -71,8 +68,7 @@ class cApiCategoryCollection extends ItemCollection
      * @param  string  $lastmodified
      * @return cApiCategory
      */
-    public function create($idclient, $parentid = 0, $preid = 0, $postid = 0, $status = 0, $author = '', $created = '', $lastmodified = '')
-    {
+    public function create($idclient, $parentid = 0, $preid = 0, $postid = 0, $status = 0, $author = '', $created = '', $lastmodified = '') {
         global $auth;
 
         if (empty($author)) {
@@ -107,8 +103,7 @@ class cApiCategoryCollection extends ItemCollection
      * @param  int  $idclient
      * @return  cApiCategory|null
      */
-    public function fetchLastCategoryTree($idclient)
-    {
+    public function fetchLastCategoryTree($idclient) {
         $where = 'parentid=0 AND postid=0 AND idclient=' . (int) $idclient;
         $this->select($where);
         return $this->next();
@@ -119,8 +114,7 @@ class cApiCategoryCollection extends ItemCollection
      * @param  int  $idclient
      * @return  array
      */
-    public function getCategoryIdsByClient($idclient)
-    {
+    public function getCategoryIdsByClient($idclient) {
         $list = array();
         $sql = 'SELECT idcat FROM `%s` WHERE idclient=%d';
         $this->db->query($sql, $this->table, $idclient);
@@ -146,8 +140,7 @@ class cApiCategoryCollection extends ItemCollection
      * @param  int  $idcat
      * @return int
      */
-    public function getNextPostCategoryId($idcat)
-    {
+    public function getNextPostCategoryId($idcat) {
         $sql = "SELECT idcat FROM `%s` WHERE preid = %d";
         $this->db->query($sql, $this->table, $idcat);
         if ($this->db->next_record()) {
@@ -187,8 +180,7 @@ class cApiCategoryCollection extends ItemCollection
      * @param   int  $idcat  Category id
      * @return  int
      */
-    public function getParentsNextPostCategoryId($idcat)
-    {
+    public function getParentsNextPostCategoryId($idcat) {
         $sql = "SELECT parentid FROM `%s` WHERE idcat = %d";
         $this->db->query($sql, $this->table, $idcat);
         if ($this->db->next_record()) {
@@ -368,7 +360,7 @@ class cApiCategoryCollection extends ItemCollection
                 'cat' => $this->table,
                 'parentid' => (int) $actId,
                 'idclient' => (int) $idclient,
-            ));
+                    ));
             $this->db->query($sql);
 
             while ($this->db->next_record()) {
@@ -437,20 +429,18 @@ class cApiCategoryCollection extends ItemCollection
 
 }
 
-
 /**
  * Category item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiCategory extends Item
-{
+class cApiCategory extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['cat'], 'idcat');
         $this->setFilters(array(), array());
@@ -461,8 +451,7 @@ class cApiCategory extends Item
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiCategory($mId = false)
-    {
+    public function cApiCategory($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
@@ -472,8 +461,7 @@ class cApiCategory extends Item
      *
      * @return  bool
      */
-    public function store()
-    {
+    public function store() {
         $this->set('lastmodified', date('Y-m-d H:i:s'));
         return parent::store();
     }
@@ -505,7 +493,6 @@ class cApiCategory extends Item
 
 }
 
-
 ################################################################################
 # Old versions of category item collection and category item classes
 #
@@ -517,39 +504,37 @@ class cApiCategory extends Item
  * Category collection
  * @deprecated  [2011-11-15] Use cApiCategoryCollection instead of this class.
  */
-class CategoryCollection extends cApiCategoryCollection
-{
-    public function __construct()
-    {
+class CategoryCollection extends cApiCategoryCollection {
+
+    public function __construct() {
         cDeprecated("Use class cApiCategoryCollection instead");
         parent::__construct();
     }
-    public function CategoryCollection()
-    {
+
+    public function CategoryCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
-}
 
+}
 
 /**
  * Single category item
  * @deprecated  [2011-11-15] Use cApiCategory instead of this class.
  */
-class CategoryItem extends cApiCategory
-{
-    public function __construct($mId = false)
-    {
+class CategoryItem extends cApiCategory {
+
+    public function __construct($mId = false) {
         cDeprecated("Use class cApiCategory instead");
         parent::__construct($mId);
     }
-    public function CategoryItem($mId = false)
-    {
+
+    public function CategoryItem($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
-    public function loadByPrimaryKey($key)
-    {
+
+    public function loadByPrimaryKey($key) {
         if (parent::loadByPrimaryKey($key)) {
             // Load all child language items
             $catlangs = new cApiCategoryLanguageCollection();
@@ -561,6 +546,7 @@ class CategoryItem extends cApiCategory
         }
         return false;
     }
+
 }
 
 ?>

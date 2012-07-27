@@ -11,10 +11,9 @@
  * VersionModule
  * @deprecated  [2012-07-02] Use cVersionModule instead of this class.
  */
-class VersionModule extends cVersionModule
-{
-    public function __construct($iIdMod, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame)
-    {
+class VersionModule extends cVersionModule {
+
+    public function __construct($iIdMod, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
         cDeprecated("Use class cVersionModule instead");
         parent::__construct($iIdMod, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
     }

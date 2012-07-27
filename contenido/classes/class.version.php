@@ -11,10 +11,9 @@
  * Version
  * @deprecated  [2012-07-02] Use cVersion instead of this class.
  */
-class Version extends cVersion
-{
-    public function __construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame)
-    {
+class Version extends cVersion {
+
+    public function __construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
         cDeprecated("Use class cVersion instead");
         parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
     }

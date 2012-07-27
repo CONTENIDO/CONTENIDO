@@ -28,16 +28,14 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Container collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiContainerCollection extends ItemCollection
-{
-    public function __construct($select = false)
-    {
+class cApiContainerCollection extends ItemCollection {
+
+    public function __construct($select = false) {
         global $cfg;
         parent::__construct($cfg['tab']['container'], 'idcontainer');
         $this->_setItemClass('cApiContainer');
@@ -47,22 +45,19 @@ class cApiContainerCollection extends ItemCollection
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiContainerCollection($select = false)
-    {
+    public function cApiContainerCollection($select = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($select = false);
     }
 
-    public function clearAssignments($idtpl)
-    {
+    public function clearAssignments($idtpl) {
         $this->select('idtpl = ' . (int) $idtpl);
         while ($item = $this->next()) {
             $this->delete($item->get('idcontainer'));
         }
     }
 
-    public function assignModul($idtpl, $number, $idmod)
-    {
+    public function assignModul($idtpl, $number, $idmod) {
         $this->select('idtpl = ' . (int) $idtpl . ' AND number = ' . (int) $number);
         if ($item = $this->next()) {
             $item->set('idmod', (int) $idmod);
@@ -72,30 +67,28 @@ class cApiContainerCollection extends ItemCollection
         }
     }
 
-    public function create($idtpl, $number, $idmod)
-    {
+    public function create($idtpl, $number, $idmod) {
         $item = parent::createNewItem();
         $item->set('idtpl', (int) $idtpl);
         $item->set('number', (int) $number);
         $item->set('idmod', (int) $idmod);
         $item->store();
     }
-}
 
+}
 
 /**
  * Container item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiContainer extends Item
-{
+class cApiContainer extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['container'], 'idcontainer');
         $this->setFilters(array(), array());
@@ -105,11 +98,11 @@ class cApiContainer extends Item
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiContainer($mId = false)
-    {
+    public function cApiContainer($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
 }
 
 ?>

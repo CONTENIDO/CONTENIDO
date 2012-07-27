@@ -23,15 +23,8 @@
  *
  * {@internal
  *   created 2008-01-28
- *   modified 2008-02-08, Timo Trautmann, table config added
- *   modified 2008-02-12, Timo Trautmann, bugfix in getWebsiteName
- *   modified 2008-02-18, Timo Trautmann, special functions for mysql replaced
- *   modified 2008-06-30, Frederic Schneider, add security fix
- *   modified 2008-09-08, Timo Trautmann, fixed string concat bug at websitenames
- *
  *   $Id$;
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

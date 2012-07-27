@@ -45,14 +45,13 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * User property collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiUserPropertyCollection extends ItemCollection
-{
+class cApiUserPropertyCollection extends ItemCollection {
+
     /**
      * User id (usually the current logged in user)
      * @var string
@@ -75,16 +74,14 @@ class cApiUserPropertyCollection extends ItemCollection
      * Constructor
      * @param  string  $userId
      */
-    public function __construct($userId)
-    {
+    public function __construct($userId) {
         global $cfg;
         parent::__construct($cfg['tab']['user_prop'], 'iduserprop');
         $this->_setItemClass('cApiUserProperty');
 
         if (!isset(self::$_enableCache)) {
             if (isset($cfg['properties']) && isset($cfg['properties']['user_prop'])
-                && isset($cfg['properties']['user_prop']['enable_cache']))
-            {
+                    && isset($cfg['properties']['user_prop']['enable_cache'])) {
                 self::$_enableCache = (bool) $cfg['properties']['user_prop']['enable_cache'];
             } else {
                 self::$_enableCache = false;
@@ -97,8 +94,7 @@ class cApiUserPropertyCollection extends ItemCollection
     /**
      * Resets the states of static properties.
      */
-    public static function reset()
-    {
+    public static function reset() {
         unset(self::$_enableCache, self::$_entries);
     }
 
@@ -107,8 +103,7 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param  string  $userId
      * @throws  Exception  If passed user id is empty
      */
-    public function setUserId($userId)
-    {
+    public function setUserId($userId) {
         if (empty($userId)) {
             throw new Exception("Empty user id");
         }
@@ -126,8 +121,7 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param  int     $idcatlang
      * @return cApiUserProperty
      */
-    public function setValueByTypeName($type, $name, $value, $idcatlang = 0)
-    {
+    public function setValueByTypeName($type, $name, $value, $idcatlang = 0) {
         $item = $this->fetchByUserIdTypeName($type, $name);
         if ($item) {
             $item->set('value', $this->escape($value));
@@ -151,8 +145,7 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param  int     $idcatlang
      * @return cApiUserProperty
      */
-    public function create($type, $name, $value, $idcatlang = 0)
-    {
+    public function create($type, $name, $value, $idcatlang = 0) {
         $item = parent::createNewItem();
 
         $item->set('user_id', $this->escape($this->_userId));
@@ -173,13 +166,12 @@ class cApiUserPropertyCollection extends ItemCollection
      * Returns all user properties by userid.
      * @return cApiUserProperty[]
      */
-    public function fetchByUserId()
-    {
+    public function fetchByUserId() {
         if (self::$_enableCache) {
             return $this->_fetchByUserIdFromCache();
         }
 
-        $this->select("user_id='" . $this->escape($this->_userId) . "'");
+        $this->select("user_id = '" . $this->escape($this->_userId) . "'");
         $props = array();
         while ($property = $this->next()) {
             $props[] = clone $property;
@@ -194,9 +186,8 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param  string  $name
      * @return cApiUserProperty[]
      */
-    public function fetchByTypeName($type, $name)
-    {
-        $this->select("type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+    public function fetchByTypeName($type, $name) {
+        $this->select("typ e ='" . $this->escape($type) . "' AND name = '" . $this->escape($name) . "'");
         $props = array();
         while ($property = $this->next()) {
             $props[] = clone $property;
@@ -210,13 +201,12 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param  string  $name
      * @return cApiUserProperty|null
      */
-    public function fetchByUserIdTypeName($type, $name)
-    {
+    public function fetchByUserIdTypeName($type, $name) {
         if (self::$_enableCache) {
             return $this->_fetchByUserIdTypeNameFromCache($type, $name);
         }
 
-        $this->select("user_id='" . $this->escape($this->_userId) . "' AND type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+        $this->select("user_id = '" . $this->escape($this->_userId) . "' AND type = '" . $this->escape($type) . "' AND name = '" . $this->escape($name) . "'");
         if ($property = $this->next()) {
             return $property;
         }
@@ -228,13 +218,12 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param  string  $type
      * @return cApiUserProperty[]
      */
-    public function fetchByUserIdType($type)
-    {
+    public function fetchByUserIdType($type) {
         if (self::$_enableCache) {
             return $this->_fetchByUserIdTypeFromCache($type);
         }
 
-        $this->select("user_id='" . $this->escape($this->_userId) . "' AND type='" . $this->escape($type) . "'");
+        $this->select("user_id = '" . $this->escape($this->_userId) . "' AND type = '" . $this->escape($type) . "'");
         $props = array();
         while ($property = $this->next()) {
             $props[] = clone $property;
@@ -248,9 +237,8 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param  string  $name
      * @return bool
      */
-    public function deleteByUserIdTypeName($type, $name)
-    {
-        $this->select("user_id='" . $this->escape($this->_userId) . "' AND type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+    public function deleteByUserIdTypeName($type, $name) {
+        $this->select("user_id = '" . $this->escape($this->_userId) . "' AND type = '" . $this->escape($type) . "' AND name = '" . $this->escape($name) . "'");
         return $this->_deleteSelected();
     }
 
@@ -259,9 +247,8 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param  string  $type
      * @return bool
      */
-    public function deleteByUserIdType($type)
-    {
-        $this->select("user_id='" . $this->escape($this->_userId) . "' AND type='" . $this->escape($type) . "'");
+    public function deleteByUserIdType($type) {
+        $this->select("user_id = '" . $this->escape($this->_userId) . "' AND type = '" . $this->escape($type) . "'");
         return $this->_deleteSelected();
     }
 
@@ -269,9 +256,8 @@ class cApiUserPropertyCollection extends ItemCollection
      * Deletes all user properties by userid.
      * @return bool
      */
-    public function deleteByUserId()
-    {
-        $this->select("user_id='" . $this->escape($this->_userId) . "'");
+    public function deleteByUserId() {
+        $this->select("user_id = '" . $this->escape($this->_userId) . "'");
         return $this->_deleteSelected();
     }
 
@@ -279,8 +265,7 @@ class cApiUserPropertyCollection extends ItemCollection
      * Deletes selected user properties.
      * @return bool
      */
-    protected function _deleteSelected()
-    {
+    protected function _deleteSelected() {
         $result = false;
         while ($prop = $this->next()) {
             $id = $prop->get('iduserprop');
@@ -295,8 +280,7 @@ class cApiUserPropertyCollection extends ItemCollection
     /**
      * Loads/Caches all user properties.
      */
-    protected function _loadFromCache()
-    {
+    protected function _loadFromCache() {
         self::$_entries = array();
         $this->select("user_id='" . $this->escape($this->_userId) . "'");
         while ($property = $this->next()) {
@@ -309,8 +293,7 @@ class cApiUserPropertyCollection extends ItemCollection
      * Adds a entry to the cache.
      * @param  cApiUserProperty  $entry
      */
-    protected function _addToCache($entry)
-    {
+    protected function _addToCache($entry) {
         $data = $entry->toArray();
         self::$_entries[$data['iduserprop']] = $data;
     }
@@ -319,8 +302,7 @@ class cApiUserPropertyCollection extends ItemCollection
      * Fetches all user properties by userid from cache.
      * @return cApiUserProperty[]
      */
-    protected function _fetchByUserIdFromCache()
-    {
+    protected function _fetchByUserIdFromCache() {
         $props = array();
         $obj = new cApiUserProperty();
         foreach (self::$_entries as $entry) {
@@ -336,8 +318,7 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param  string  $name
      * @return cApiUserProperty|null
      */
-    public function _fetchByUserIdTypeNameFromCache($type, $name)
-    {
+    public function _fetchByUserIdTypeNameFromCache($type, $name) {
         $props = array();
         $obj = new cApiUserProperty();
         foreach (self::$_entries as $entry) {
@@ -354,8 +335,7 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param  string  $type
      * @return cApiUserProperty[]
      */
-    public function _fetchByUserIdTypeFromCache($type)
-    {
+    public function _fetchByUserIdTypeFromCache($type) {
         $props = array();
         $obj = new cApiUserProperty();
         foreach (self::$_entries as $entry) {
@@ -371,8 +351,7 @@ class cApiUserPropertyCollection extends ItemCollection
      * Removes a entry from cache.
      * @param   int  $id
      */
-    protected function _deleteFromCache($id)
-    {
+    protected function _deleteFromCache($id) {
         if (isset(self::$_entries[$id])) {
             unset(self::$_entries[$id]);
         }
@@ -380,20 +359,18 @@ class cApiUserPropertyCollection extends ItemCollection
 
 }
 
-
 /**
  * User property item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiUserProperty extends Item
-{
+class cApiUserProperty extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['user_prop'], 'iduserprop');
         $this->setFilters(array(), array());
@@ -407,11 +384,11 @@ class cApiUserProperty extends Item
      * @param   string  $value
      * @return  bool
      */
-    public function updateValue($value)
-    {
+    public function updateValue($value) {
         $this->set('value', $this->escape($value));
         return $this->store();
     }
+
 }
 
 ?>

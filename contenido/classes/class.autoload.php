@@ -46,12 +46,9 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
-class cAutoload
-{
+class cAutoload {
 
     const ERROR_FILE_NOT_FOUND = 'file_not_found';
-
     const ERROR_CLASS_EXISTS = 'class_exists';
 
     /**
@@ -59,21 +56,21 @@ class cAutoload
      *
      * @var string
      */
-     private static $_conRootPath = null;
+    private static $_conRootPath = null;
 
     /**
      * Array of interface/class names with related files to include
      *
      * @var array
      */
-     private static $_includeFiles = null;
+    private static $_includeFiles = null;
 
     /**
      * Flag containing initialized status
      *
      * @var bool
      */
-     private static $_initialized = null;
+    private static $_initialized = null;
 
     /**
      * Array to store loaded classnames and the paths to the class files.
@@ -91,7 +88,6 @@ class cAutoload
      */
     private static $_errors = array();
 
-
     /**
      * Initialization of CONTENIDO autoloader, is to call at least once.
      *
@@ -101,8 +97,7 @@ class cAutoload
      * @param   array  $cfg  The CONTENIDO cfg array
      * @return  void
      */
-    public static function initialize(array $cfg)
-    {
+    public static function initialize(array $cfg) {
         if (self::$_initialized == true) {
             return;
         }
@@ -141,8 +136,7 @@ class cAutoload
      * </pre>
      * @return  void
      */
-    public static function addClassmapConfig(array $config)
-    {
+    public static function addClassmapConfig(array $config) {
         self::$_includeFiles = array_merge(self::$_includeFiles, $config);
     }
 
@@ -164,8 +158,7 @@ class cAutoload
      * </pre>
      * @return  void
      */
-    public static function addClassmapConfigFile($configFile)
-    {
+    public static function addClassmapConfigFile($configFile) {
         if (is_file($configFile)) {
             if ($arr = include_once($configFile)) {
                 self::addClassmapConfig($arr);
@@ -181,8 +174,7 @@ class cAutoload
      * @return  void
      * @throws  Exception  If autoloader wasn't initialized before
      */
-    public static function autoload($className)
-    {
+    public static function autoload($className) {
         if (self::$_initialized !== true) {
             throw new Exception("Autoloader has to be initialized by calling method initialize()");
         }
@@ -210,8 +202,7 @@ class cAutoload
      *                        - contenido/classes/class.foobar.php
      * @return  bool
      */
-    public static function isAutoloadable($file)
-    {
+    public static function isAutoloadable($file) {
         foreach (self::$_includeFiles as $className => $includeFile) {
             if (strpos($includeFile, $file) !== false) {
                 return true;
@@ -225,8 +216,7 @@ class cAutoload
      *
      * @return  array
      */
-    public static function getLoadedClasses()
-    {
+    public static function getLoadedClasses() {
         return self::$_loadedClasses;
     }
 
@@ -235,8 +225,7 @@ class cAutoload
      *
      * @return  array
      */
-    public static function getErrors()
-    {
+    public static function getErrors() {
         return self::$_errors;
     }
 
@@ -246,8 +235,7 @@ class cAutoload
      * @param    string  $className
      * @return  (string|null)  Path and filename or null
      */
-    private static function _getContenidoClassFile($className)
-    {
+    private static function _getContenidoClassFile($className) {
         $file = isset(self::$_includeFiles[$className]) ? self::$_conRootPath . self::$_includeFiles[$className] : null;
         return self::_validateClassAndFile($className, $file);
     }
@@ -259,19 +247,18 @@ class cAutoload
      * @param   string  $filePathName
      * @return  (string|null)  The file if validation was successfull, otherwhise null
      */
-    private static function _validateClassAndFile($className, $filePathName)
-    {
+    private static function _validateClassAndFile($className, $filePathName) {
         if (class_exists($className)) {
             self::$_errors[] = array(
                 'class' => $className,
-                'file'  => str_replace(self::$_conRootPath, '', $filePathName),
+                'file' => str_replace(self::$_conRootPath, '', $filePathName),
                 'error' => self::ERROR_CLASS_EXISTS
             );
             return null;
         } elseif (!is_file($filePathName)) {
             self::$_errors[] = array(
                 'class' => $className,
-                'file'  => str_replace(self::$_conRootPath, '', $filePathName),
+                'file' => str_replace(self::$_conRootPath, '', $filePathName),
                 'error' => self::ERROR_FILE_NOT_FOUND
             );
             return null;
@@ -288,8 +275,7 @@ class cAutoload
      *                            the error control operator @
      * @return  void
      */
-    private static function _loadFile($filePathName, $beQuiet = false)
-    {
+    private static function _loadFile($filePathName, $beQuiet = false) {
         if ($beQuiet) {
             @require_once($filePathName);
         } else {

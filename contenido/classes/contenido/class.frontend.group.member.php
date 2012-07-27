@@ -31,20 +31,18 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Frontend group member collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiFrontendGroupMemberCollection extends ItemCollection
-{
+class cApiFrontendGroupMemberCollection extends ItemCollection {
+
     /**
      * Constructor Function
      * @param none
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['frontendgroupmembers'], 'idfrontendgroupmember');
         $this->_setJoinPartner('cApiFrontendGroupCollection');
@@ -58,8 +56,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
      * @param $idfrontenduser  int specifies the frontend user
      * @return  cApiFrontendGroupMember|bool
      */
-    public function create($idfrontendgroup, $idfrontenduser)
-    {
+    public function create($idfrontendgroup, $idfrontenduser) {
         $this->select('idfrontendgroup = ' . (int) $idfrontendgroup . ' AND idfrontenduser = ' . (int) $idfrontenduser);
 
         if ($this->next()) {
@@ -80,8 +77,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
      * @param  int  $idfrontendgroup  Specifies the frontend group
      * @param  int  $idfrontenduser  Specifies the frontend user
      */
-    public function remove($idfrontendgroup, $idfrontenduser)
-    {
+    public function remove($idfrontendgroup, $idfrontenduser) {
         $this->select('idfrontendgroup = ' . (int) $idfrontendgroup . ' AND idfrontenduser = ' . (int) $idfrontenduser);
 
         if ($item = $this->next()) {
@@ -95,8 +91,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
      * @param  bool  $asObjects  Specifies if the function should return objects
      * @return array List of frontend user ids or cApiFrontendUser items
      */
-    public function getUsersInGroup($idfrontendgroup, $asObjects = true)
-    {
+    public function getUsersInGroup($idfrontendgroup, $asObjects = true) {
         $this->select('idfrontendgroup = ' . (int) $idfrontendgroup);
 
         $objects = array();
@@ -113,30 +108,29 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
 
         return ($objects);
     }
-}
 
+}
 
 /**
  * Frontend group member item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiFrontendGroupMember extends Item
-{
+class cApiFrontendGroupMember extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['frontendgroupmembers'], 'idfrontendgroupmember');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
-}
 
+}
 
 ################################################################################
 # Old versions of frontend group member item collection and frontend group member
@@ -146,42 +140,40 @@ class cApiFrontendGroupMember extends Item
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 
-
 /**
  * Frontend group member collection
  * @deprecated  [2011-09-20] Use cApiFrontendGroupMemberCollection instead of this class.
  */
-class FrontendGroupMemberCollection extends cApiFrontendGroupMemberCollection
-{
-    public function __construct()
-    {
+class FrontendGroupMemberCollection extends cApiFrontendGroupMemberCollection {
+
+    public function __construct() {
         cDeprecated("Use class cApiFrontendGroupMemberCollection instead");
         parent::__construct();
     }
-    public function FrontendGroupMemberCollection()
-    {
+
+    public function FrontendGroupMemberCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
-}
 
+}
 
 /**
  * Single frontend group member item
  * @deprecated  [2011-09-20] Use cApiFrontendGroupMember instead of this class.
  */
-class FrontendGroupMember extends cApiFrontendGroupMember
-{
-    public function __construct($mId = false)
-    {
+class FrontendGroupMember extends cApiFrontendGroupMember {
+
+    public function __construct($mId = false) {
         cDeprecated("Use class cApiFrontendGroupMember instead");
         parent::__construct($mId);
     }
-    public function FrontendGroupMember($mId = false)
-    {
+
+    public function FrontendGroupMember($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
 }
 
 ?>

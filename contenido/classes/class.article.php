@@ -21,13 +21,8 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *   modified 2011-10-19, Murat Purc, moved Article implementation to cApiArticleLanguage in favor of normalizing the API
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -45,8 +40,8 @@ if (!defined('CON_FRAMEWORK')) {
  * $obj->loadByArticleAndLanguageId($idart, $lang);
  * </pre>
  */
-class Article extends cApiArticleLanguage
-{
+class Article extends cApiArticleLanguage {
+
     /**
      * Constructor. Wrapper for parent class, provides thee downwards compatible
      * interface for creation of the article object.
@@ -58,8 +53,7 @@ class Article extends cApiArticleLanguage
      *
      * @return void
      */
-    public function __construct($idart, $client, $lang, $idartlang = 0)
-    {
+    public function __construct($idart, $client, $lang, $idartlang = 0) {
         cDeprecated("Use cApiArticleLanguage class instead");
         $idart = (int) $idart;
         $client = (int) $client;
@@ -74,13 +68,12 @@ class Article extends cApiArticleLanguage
         $this->_getArticleContent();
     }
 
-    function Article($idart, $client, $lang, $idartlang = 0)
-    {
+    function Article($idart, $client, $lang, $idartlang = 0) {
         cDeprecated("Use __construct()");
         $this->__construct($idart, $client, $lang, $idartlang);
     }
-}
 
+}
 
 /**
  * CONTENIDO API - Article Object Collection.
@@ -126,8 +119,8 @@ class Article extends cApiArticleLanguage
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-class ArticleCollection
-{
+class ArticleCollection {
+
     /**
      * Database Object
      * @var object
@@ -239,8 +232,7 @@ class ArticleCollection
      *
      * @return void
      */
-    public function __construct($options)
-    {
+    public function __construct($options) {
         global $cfg;
 
         $this->tab = $cfg['tab'];
@@ -255,8 +247,7 @@ class ArticleCollection
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    function ArticleCollection($options)
-    {
+    function ArticleCollection($options) {
         cDeprecated("Use __construct()");
         $this->__construct($options);
     }
@@ -276,22 +267,21 @@ class ArticleCollection
      *
      * @return void
      */
-    private function _setObjectProperties($options)
-    {
+    private function _setObjectProperties($options) {
         global $client, $lang;
 
-        $lang   = cSecurity::toInteger($lang);
+        $lang = cSecurity::toInteger($lang);
         $client = cSecurity::toInteger($client);
 
-        $this->idcat     = $options['idcat'];
-        $this->lang      = (array_key_exists('lang',   $options))    ? $options['lang']      : $lang;
-        $this->client    = (array_key_exists('client', $options))    ? $options['client']    : $client;
-        $this->start     = (array_key_exists('start',  $options))    ? $options['start']     : false;
-        $this->offline   = (array_key_exists('offline',$options))    ? $options['offline']   : false;
-        $this->order     = (array_key_exists('order',  $options))    ? $options['order']     : 'created';
-        $this->artspecs  = (array_key_exists('artspecs', $options) AND is_array($options['artspecs']))  ? $options['artspecs']  : array();
+        $this->idcat = $options['idcat'];
+        $this->lang = (array_key_exists('lang', $options)) ? $options['lang'] : $lang;
+        $this->client = (array_key_exists('client', $options)) ? $options['client'] : $client;
+        $this->start = (array_key_exists('start', $options)) ? $options['start'] : false;
+        $this->offline = (array_key_exists('offline', $options)) ? $options['offline'] : false;
+        $this->order = (array_key_exists('order', $options)) ? $options['order'] : 'created';
+        $this->artspecs = (array_key_exists('artspecs', $options) AND is_array($options['artspecs'])) ? $options['artspecs'] : array();
         $this->direction = (array_key_exists('direction', $options)) ? $options['direction'] : 'DESC';
-        $this->limit = (array_key_exists('limit', $options)  AND is_numeric($options['limit'])) ? $options['limit'] : 0;
+        $this->limit = (array_key_exists('limit', $options) AND is_numeric($options['limit'])) ? $options['limit'] : 0;
     }
 
     /**
@@ -300,51 +290,50 @@ class ArticleCollection
      *
      * @param int Category Id
      */
-    private function _getArticlesByCatId($idcat)
-    {
+    private function _getArticlesByCatId($idcat) {
         global $cfg;
 
         $idcat = cSecurity::toInteger($idcat);
 
-        $sArtSpecs = (count($this->artspecs) > 0) ? " a.artspec IN ('".implode("','", $this->artspecs)."') AND " : '';
+        $sArtSpecs = (count($this->artspecs) > 0) ? " a.artspec IN ('" . implode("','", $this->artspecs) . "') AND " : '';
 
         $sql = 'SELECT
                     a.idart,
                     a.idartlang,
                     c.is_start
                   FROM
-                    '.$this->tab['art_lang'].' AS a,
-                    '.$this->tab['art'].' AS b,
-                    '.$this->tab['cat_art'].' AS c
+                    ' . $this->tab['art_lang'] . ' AS a,
+                    ' . $this->tab['art'] . ' AS b,
+                    ' . $this->tab['cat_art'] . ' AS c
                 WHERE
-                    c.idcat = '.$idcat.' AND
-                    b.idclient = '.$this->client.' AND
+                    c.idcat = ' . $idcat . ' AND
+                    b.idclient = ' . $this->client . ' AND
                     b.idart = c.idart AND
                     a.idart = b.idart AND
-                    '.$sArtSpecs.'
-                    a.idlang = '.$this->lang.'';
+                    ' . $sArtSpecs . '
+                    a.idlang = ' . $this->lang . '';
 
         if (!$this->offline) {
             $sql .= ' AND a.online = 1 ';
         }
 
-        $sql .= ' ORDER BY a.'.$this->order.' '.$this->direction.'';
+        $sql .= ' ORDER BY a.' . $this->order . ' ' . $this->direction . '';
 
         $this->db->query($sql);
 
         $db2 = cRegistry::getDb();
-        $sql = "SELECT startidartlang FROM ".$cfg['tab']['cat_lang']." WHERE idcat=".$idcat." AND idlang=".$this->lang;
+        $sql = "SELECT startidartlang FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat=" . $idcat . " AND idlang=" . $this->lang;
         $db2->query($sql);
         $db2->next_record();
 
         $startidartlang = $db2->f('startidartlang');
 
         if ($startidartlang != 0) {
-            $sql = "SELECT idart FROM ".$cfg['tab']['art_lang']." WHERE idartlang=".$startidartlang;
+            $sql = "SELECT idart FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang=" . $startidartlang;
             $db2->query($sql);
             $db2->next_record();
             $this->startId = $db2->f('idart');
-         }
+        }
 
         while ($this->db->next_record()) {
             if ($this->db->f('idart') == $this->startId) {
@@ -365,12 +354,11 @@ class ArticleCollection
      *
      * @return Article|false  CONTENIDO Article object or false
      */
-    public function nextArticle()
-    {
+    public function nextArticle() {
         $limit = true;
         if ($this->limit > 0) {
             if ($this->cnt >= $this->limit)
-            $limit = false;
+                $limit = false;
         }
         if ($this->cnt < count($this->articles) && $limit) {
             $idart = $this->articles[$this->cnt];
@@ -390,8 +378,7 @@ class ArticleCollection
      *
      * @return  Article  CONTENIDO Article Object
      */
-    public function startArticle()
-    {
+    public function startArticle() {
         $oArticle = new cApiArticleLanguage();
         $oArticle->loadByArticleAndLanguageId($this->startId, $this->lang);
         return $oArticle;
@@ -425,14 +412,13 @@ class ArticleCollection
      *
      * @param int $resPerPage
      */
-    public function setResultPerPage($resPerPage)
-    {
+    public function setResultPerPage($resPerPage) {
         $this->iResultPerPage = $resPerPage;
 
         if ($this->iResultPerPage > 0) {
             if (is_array($this->articles)) {
-                 $this->aPages = array_chunk($this->articles, $this->iResultPerPage);
-                 $this->iCountPages = count($this->aPages);
+                $this->aPages = array_chunk($this->articles, $this->iResultPerPage);
+                $this->iCountPages = count($this->aPages);
             } else {
                 $this->aPages = array();
                 $this->iCountPages = 0;
@@ -452,12 +438,12 @@ class ArticleCollection
      *
      * @param int $iPage The page of the article collection
      */
-    public function setPage($iPage)
-    {
+    public function setPage($iPage) {
         if (is_array($this->aPages[$iPage])) {
             $this->articles = $this->aPages[$iPage];
         }
     }
+
 }
 
 ?>

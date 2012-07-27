@@ -24,16 +24,8 @@
  *
  * {@internal
  *   created  2003-12-14
- *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2008-10-03, Oliver Lohkemper, modified UploadCollection::delete()
- *   modified 2008-10-03, Oliver Lohkemper, add CEC in UploadCollection::store()
- *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *   modified 2011-06-29, Murat Purc, added deleteByDirname() and basic properties handling,
- *                        formatted and documented code
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

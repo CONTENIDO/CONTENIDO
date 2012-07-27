@@ -74,8 +74,8 @@ class cApiCategoryTreeCollection extends ItemCollection {
         $aCatTree = array();
 
         $sql = 'SELECT * FROM `:cat_tree` AS A, `:cat` AS B, `:cat_lang` AS C '
-             . 'WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND C.idlang = :idlang AND idclient = :idclient '
-             . 'ORDER BY idtree';
+                . 'WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND C.idlang = :idlang AND idclient = :idclient '
+                . 'ORDER BY idtree';
 
         $sql = $this->db->prepare($sql, array(
             'cat_tree' => $this->table,
@@ -83,7 +83,7 @@ class cApiCategoryTreeCollection extends ItemCollection {
             'cat_lang' => $cfg['tab']['cat_lang'],
             'idlang' => (int) $lang,
             'idclient' => (int) $client,
-        ));
+                ));
         $this->db->query($sql);
 
         while ($this->db->next_record()) {

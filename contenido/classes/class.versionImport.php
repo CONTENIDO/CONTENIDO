@@ -11,10 +11,9 @@
  * VersionImport
  * @deprecated  [2012-07-02] Use cVersionImport instead of this class.
  */
-class VersionImport extends cVersionImport
-{
-    public function __construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame)
-    {
+class VersionImport extends cVersionImport {
+
+    public function __construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
         cDeprecated("Use class cVersionImport instead");
         parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
     }

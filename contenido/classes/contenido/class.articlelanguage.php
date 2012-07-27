@@ -81,11 +81,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
      * @param   int  $time_online_move
      * @return cApiArticleLanguage
      */
-    public function create($idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0,
-                           $created = '', $lastmodified = '', $author = '', $published = '',
-                           $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '',
-                           $external_redirect = 0, $artsort = 0, $timemgmt = 0, $datestart = '',
-                           $dateend = '', $status = 0, $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0) {
+    public function create($idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0, $created = '', $lastmodified = '', $author = '', $published = '', $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '', $external_redirect = 0, $artsort = 0, $timemgmt = 0, $datestart = '', $dateend = '', $status = 0, $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0) {
         global $auth;
 
         if (empty($author)) {

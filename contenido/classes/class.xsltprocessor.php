@@ -47,84 +47,92 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * @deprecated 2011-09-02 this class is not supported any longer
  */
-class XsltProcessor
-{
+class XsltProcessor {
+
     /**
      * XSML Processor auto-free
      * @var bool
      * @access private
      */
     var $autofree = true;
+
     /**
      * Error message string
      * @var string
      * @access private
      */
     var $error = "";
+
     /**
      * Error number
      * @var int
      * @access private
      */
     var $errno = 0;
+
     /**
      * The result of the XSLT Transformation
      * @var string
      * @access private
      */
     var $result = "";
+
     /**
      * The XML String for the Transformation
      * @var string
      * @access private
      */
     var $xml = "";
+
     /**
      * The XSLT String for the Transformation
      * @var string
      * @access private
      */
     var $xslt = "";
+
     /**
      * XSLT Processor
      * @var object
      * @access private
      */
     var $processor;
+
     /**
      * XSLT Process arguments array
      * @var array
      * @access private
      */
     var $arguments = array();
+
     /**
      * XSLT Process parameters array
      * @var array
      * @access private
      */
     var $parameters = array();
+
     /**
      * Constructor
      * @access private
      */
-    function XsltProcessor()
-    {
+    function XsltProcessor() {
         cDeprecated("This class is not supported any longer");
         $this->_init();
     }
+
     /**
      * Initialize the class
      * @access private
      * @return void
      */
-    function _init()
-    {
-        if (!function_exists("xslt_create"))
-        {
-            die ("Cannot instantiate XSLT Class \n XSLT not supported");
+    function _init() {
+        if (!function_exists("xslt_create")) {
+            die("Cannot instantiate XSLT Class \n XSLT not supported");
         }
         $this->processor = xslt_create();
     }
+
     /**
      * Translate literal to numeric entities to avoid
      * the 'undefined entity error' that a literal
@@ -136,13 +144,12 @@ class XsltProcessor
      */
     function literal2NumericEntities($stringXml) {
         $literal2NumericEntity = array();
-        if (empty($literal2NumericEntity))
-        {
+        if (empty($literal2NumericEntity)) {
             $transTbl = get_html_translation_table(HTML_ENTITIES);
-            foreach ($transTbl as $char => $entity)
-            {
-                if (strpos('&"<>', $char) !== FALSE) continue;
-                $literal2NumericEntity[$entity] = '&#'.ord($char).';';
+            foreach ($transTbl as $char => $entity) {
+                if (strpos('&"<>', $char) !== FALSE)
+                    continue;
+                $literal2NumericEntity[$entity] = '&#' . ord($char) . ';';
             }
         }
         return strtr($stringXml, $literal2NumericEntity);
@@ -154,60 +161,59 @@ class XsltProcessor
      * @return void
      * @access public
      */
-    function setXml($xml)
-    {
+    function setXml($xml) {
         $this->arguments["/_xml"] = $this->literal2NumericEntities($xml);
     }
+
     /**
      * Set the XSLT for the Transformation
      * @param string The XML String
      * @return void
      * @access public
      */
-    function setXsl($xsl)
-    {
+    function setXsl($xsl) {
         $this->arguments["/_xsl"] = $this->literal2NumericEntities($xsl);
     }
-     /**
+
+    /**
      * Set the XML-File to be Transformed
      * @param string Location of the XML file
      * @return void
      * @access public
      */
-    function setXmlFile($file)
-    {
+    function setXmlFile($file) {
         $xml = $this->readFromFile($file);
         $this->arguments["/_xml"] = $this->literal2NumericEntities($xml);
     }
+
     /**
      * Set the XSL-File for the Transformation
      * @param string Location of the XSL file
      * @return void
      * @access public
      */
-    function setXslFile($file)
-    {
+    function setXslFile($file) {
         $xsl = $this->readFromFile($file);
         $this->arguments["/_xsl"] = $this->literal2NumericEntities($xsl);
     }
+
     /**
      * Return the contents of a file if
      * the passed parameter is a file.
      *
      * @param string File location
      * @return string File contents
-      * @access private
+     * @access private
      */
-    function readFromFile($file)
-    {
-        if (cFileHandler::exists($file))
-        {
+    function readFromFile($file) {
+        if (cFileHandler::exists($file)) {
             $data = file($file);
             $data = join($data, "");
             return $data;
         }
-        die ("<span style=\"color: red\"><b>ERROR:</b></span> File not found: <b>$file</b>");
+        die("<span style=\"color: red\"><b>ERROR:</b></span> File not found: <b>$file</b>");
     }
+
     /**
      * Pass top level parameters to the XSLT processor.
      * The parameters can be accessed in XSL
@@ -217,10 +223,10 @@ class XsltProcessor
      * @param string Value
      * @return void
      */
-    function setParam($name, $value)
-    {
+    function setParam($name, $value) {
         $this->parameters[$name] = utf8_encode($value);
     }
+
     /**
      * Define external scheme handlers for the XSLT Processor.
      *
@@ -252,15 +258,15 @@ class XsltProcessor
      *
      * Schemename and parameter will be passed to the handler function as second and third parameter.
      * The return value of the function must be valid XML to access it using XPath.
-      *
+     *
      * @param array array("scheme"=>"schemeHandlerName");
      * @return void
      * @access public
      */
-    function setSchemeHandlers($aHandlers)
-    {
+    function setSchemeHandlers($aHandlers) {
         xslt_set_scheme_handlers($this->processor, $aHandlers);
     }
+
     /**
      * Transform the XML data using the XSL and
      * return the results of the transformation
@@ -268,17 +274,16 @@ class XsltProcessor
      * @return string Transformed data
      * @access public
      */
-    function process()
-    {
+    function process() {
         $this->result = xslt_process($this->processor, "arg:/_xml", "arg:/_xsl", NULL, $this->arguments, $this->parameters);
         $this->error = xslt_error($this->processor);
         $this->errno = xslt_errno($this->processor);
-        if ($this->autofree)
-        {
+        if ($this->autofree) {
             xslt_free($this->processor);
         }
         return $this->result;
     }
+
     /**
      * Prints the Error message and number
      * if an error occured
@@ -286,20 +291,18 @@ class XsltProcessor
      * @return void
      * @access public
      */
-    function printErrors()
-    {
-        if ($this->errno > 0)
-        {
-            echo "<b>Error Number: </b><span style=\"color:red\">".$this->errno."</span> ";
-            echo "<b>Error Message: </b><span style=\"color:red\">".$this->error."</span>";
+    function printErrors() {
+        if ($this->errno > 0) {
+            echo "<b>Error Number: </b><span style=\"color:red\">" . $this->errno . "</span> ";
+            echo "<b>Error Message: </b><span style=\"color:red\">" . $this->error . "</span>";
         }
     }
+
     /**
      * Manual free of the parser
      * @return void
      */
-    function free()
-    {
+    function free() {
         xslt_free($this->processor);
     }
 

@@ -28,27 +28,24 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Action collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiActionCollection extends ItemCollection
-{
+class cApiActionCollection extends ItemCollection {
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['actions'], 'idaction');
         $this->_setItemClass('cApiAction');
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiActionCollection()
-    {
+    public function cApiActionCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -64,8 +61,7 @@ class cApiActionCollection extends ItemCollection
      * @param  int  $relevant
      * @return  cApiAction
      */
-    public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1)
-    {
+    public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1) {
         $item = parent::createNewItem();
 
         if (is_string($area)) {
@@ -105,8 +101,7 @@ class cApiActionCollection extends ItemCollection
      * Returns all actions available in the system
      * @return array   Array with id and name entries
      */
-    public function getAvailableActions()
-    {
+    public function getAvailableActions() {
         global $cfg;
 
         $sql = "SELECT action.idaction, action.name, area.name AS areaname
@@ -133,8 +128,7 @@ class cApiActionCollection extends ItemCollection
      * @param  int  Id of action
      * @return string|null
      */
-    public function getActionName($action)
-    {
+    public function getActionName($action) {
         $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
         return ($this->db->next_record()) ? $this->db->f('name') : null;
     }
@@ -144,8 +138,7 @@ class cApiActionCollection extends ItemCollection
      * @param  string|int  Name or id of action
      * @return int|null   Integer with the area ID for the given action or null
      */
-    function getAreaForAction($action)
-    {
+    function getAreaForAction($action) {
         if (!is_numeric($action)) {
             $this->db->query("SELECT idarea FROM `%s` WHERE name = '%s'", $this->table, $action);
         } else {
@@ -157,14 +150,13 @@ class cApiActionCollection extends ItemCollection
 
 }
 
-
 /**
  * Action item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiAction extends Item
-{
+class cApiAction extends Item {
+
     /**
      * @var  bool
      */
@@ -174,8 +166,7 @@ class cApiAction extends Item
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         $this->_objectInvalid = false;
 
@@ -191,13 +182,12 @@ class cApiAction extends Item
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiAction($mId = false)
-    {
+    public function cApiAction($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
-}
 
+}
 
 ################################################################################
 # Old version of action class
@@ -210,18 +200,18 @@ class cApiAction extends Item
  * Action
  * @deprecated  [2012-03-01] Use cApiActionCollection instead of this class.
  */
-class Action extends cApiActionCollection
-{
-    public function __construct()
-    {
+class Action extends cApiActionCollection {
+
+    public function __construct() {
         cDeprecated("Use class cApiActionCollection instead");
         parent::__construct();
     }
-    public function Action()
-    {
+
+    public function Action() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
+
 }
 
 ?>

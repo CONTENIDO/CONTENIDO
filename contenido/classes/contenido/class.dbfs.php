@@ -38,13 +38,12 @@ cInclude('includes', 'functions.file.php');
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiDbfsCollection extends ItemCollection
-{
+class cApiDbfsCollection extends ItemCollection {
+
     /**
      * Constructor Function
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['dbfs'], 'iddbfs');
         $this->_setItemClass('cApiDbfs');
@@ -55,15 +54,14 @@ class cApiDbfsCollection extends ItemCollection
      *
      * @param string $path
      */
-    public function outputFile($path)
-    {
+    public function outputFile($path) {
         global $client, $auth;
 
-        $path   = cSecurity::escapeDB($path, null);
+        $path = cSecurity::escapeDB($path, null);
         $client = (int) $client;
-        $path   = cApiDbfs::stripPath($path);
-        $dir    = dirname($path);
-        $file   = basename($path);
+        $path = cApiDbfs::stripPath($path);
+        $dir = dirname($path);
+        $file = basename($path);
 
         if ($dir == '.') {
             $dir = '';
@@ -83,8 +81,8 @@ class cApiDbfsCollection extends ItemCollection
             }
             $mimetype = $item->get('mimetype');
 
-            header('Cache-Control: ');// leave blank to avoid IE errors
-            header('Pragma: ');// leave blank to avoid IE errors
+            header('Cache-Control: '); // leave blank to avoid IE errors
+            header('Pragma: '); // leave blank to avoid IE errors
             header("Content-Type: $mimetype");
             header('Etag: ' . md5(mt_rand()));
             // header("Content-Disposition: filename=$file");
@@ -99,10 +97,9 @@ class cApiDbfsCollection extends ItemCollection
      * @param  string  $localfile
      * @param  string $targetfile
      */
-    public function writeFromFile($localfile, $targetfile)
-    {
+    public function writeFromFile($localfile, $targetfile) {
         $targetfile = cApiDbfs::stripPath($targetfile);
-        $mimetype   = fileGetMimeContentType($localfile);
+        $mimetype = fileGetMimeContentType($localfile);
 
         $this->write($targetfile, cFileHandler::read($localfile), $mimetype);
     }
@@ -112,8 +109,7 @@ class cApiDbfsCollection extends ItemCollection
      * @param  string  $sourcefile
      * @param  string $localfile
      */
-    public function writeToFile($sourcefile, $localfile)
-    {
+    public function writeToFile($sourcefile, $localfile) {
         $sourcefile = cApiDbfs::stripPath($sourcefile);
 
         cFileHandler::write($localfile, $this->read($sourcefile));
@@ -125,8 +121,7 @@ class cApiDbfsCollection extends ItemCollection
      * @param  string $content
      * @param  string $mimetype
      */
-    public function write($file, $content = '', $mimetype = '')
-    {
+    public function write($file, $content = '', $mimetype = '') {
         $file = cApiDbfs::stripPath($file);
 
         if (!$this->file_exists($file)) {
@@ -141,11 +136,10 @@ class cApiDbfsCollection extends ItemCollection
      * @param  string  $path
      * @return bool
      */
-    public function hasFiles($path)
-    {
+    public function hasFiles($path) {
         global $client;
 
-        $path   = cApiDbfs::stripPath($path);
+        $path = cApiDbfs::stripPath($path);
         $client = (int) $client;
 
         // Are there any subdirs?
@@ -167,8 +161,7 @@ class cApiDbfsCollection extends ItemCollection
      * @param  string  $file
      * @return string
      */
-    public function read($file)
-    {
+    public function read($file) {
         return ($this->getContent($file));
     }
 
@@ -178,13 +171,12 @@ class cApiDbfsCollection extends ItemCollection
      * @param  string  $path
      * @return bool
      */
-    public function file_exists($path)
-    {
+    public function file_exists($path) {
         global $client;
 
-        $path  = cApiDbfs::stripPath($path);
-        $dir   = dirname($path);
-        $file  = basename($path);
+        $path = cApiDbfs::stripPath($path);
+        $dir = dirname($path);
+        $file = basename($path);
 
         if ($dir == '.') {
             $dir = '';
@@ -206,8 +198,7 @@ class cApiDbfsCollection extends ItemCollection
      * @param  string  $path
      * @return bool
      */
-    public function dir_exists($path)
-    {
+    public function dir_exists($path) {
         global $client;
 
         $path = cApiDbfs::stripPath($path);
@@ -226,21 +217,19 @@ class cApiDbfsCollection extends ItemCollection
         }
     }
 
-    public function parent_dir($path)
-    {
+    public function parent_dir($path) {
         $path = dirname($path);
 
         return $path;
     }
 
-    public function create($path, $mimetype = '', $content = '')
-    {
+    public function create($path, $mimetype = '', $content = '') {
         global $client, $auth;
 
         $client = (int) $client;
 
-        if (substr($path,0,1) == '/') {
-            $path = substr($path,1);
+        if (substr($path, 0, 1) == '/') {
+            $path = substr($path, 1);
         }
 
         $dir = dirname($path);
@@ -291,14 +280,13 @@ class cApiDbfsCollection extends ItemCollection
         return ($item);
     }
 
-    public function setContent($path, $content)
-    {
+    public function setContent($path, $content) {
         global $client;
 
-        $client    = (int) $client;
-        $path      = cApiDbfs::stripPath($path);
-        $dirname   = dirname($path);
-        $filename  = basename($path);
+        $client = (int) $client;
+        $path = cApiDbfs::stripPath($path);
+        $dirname = dirname($path);
+        $filename = basename($path);
 
         if ($dirname == '.') {
             $dirname = '';
@@ -312,13 +300,12 @@ class cApiDbfsCollection extends ItemCollection
         }
     }
 
-    public function getSize($path)
-    {
+    public function getSize($path) {
         global $client;
 
-        $client   = (int) $client;
-        $path     = cApiDbfs::stripPath($path);
-        $dirname  = dirname($path);
+        $client = (int) $client;
+        $path = cApiDbfs::stripPath($path);
+        $dirname = dirname($path);
         $filename = basename($path);
 
         if ($dirname == '.') {
@@ -331,31 +318,29 @@ class cApiDbfsCollection extends ItemCollection
         }
     }
 
-    public function getContent($path)
-    {
+    public function getContent($path) {
         global $client;
 
-        $client    = (int) $client;
-        $dirname   = dirname($path);
-        $filename  = basename($path);
+        $client = (int) $client;
+        $dirname = dirname($path);
+        $filename = basename($path);
 
         if ($dirname == '.') {
             $dirname = '';
         }
 
-        $this->select("dirname = '".$dirname."' AND filename = '".$filename."' AND idclient = " . $client . " LIMIT 1");
+        $this->select("dirname = '" . $dirname . "' AND filename = '" . $filename . "' AND idclient = " . $client . " LIMIT 1");
         if ($item = $this->next()) {
             return ($item->get("content"));
         }
     }
 
-    public function remove($path)
-    {
+    public function remove($path) {
         global $client;
 
-        $client   = (int) $client;
-        $path     = cApiDbfs::stripPath($path);
-        $dirname  = dirname($path);
+        $client = (int) $client;
+        $path = cApiDbfs::stripPath($path);
+        $dirname = dirname($path);
         $filename = basename($path);
 
         if ($dirname == ".") {
@@ -373,15 +358,14 @@ class cApiDbfsCollection extends ItemCollection
      * @param  string  $sPath
      * @return bool $bAvailable
      */
-    public function checkTimeManagement($sPath, $oProperties)
-    {
+    public function checkTimeManagement($sPath, $oProperties) {
         global $contenido;
         if ($contenido) {
             return true;
         }
-        $sPath      = cSecurity::toString($sPath);
+        $sPath = cSecurity::toString($sPath);
         $bAvailable = true;
-        $iTimeMng   = cSecurity::toInteger($oProperties->getValue('upload', $sPath, 'file', 'timemgmt'));
+        $iTimeMng = cSecurity::toInteger($oProperties->getValue('upload', $sPath, 'file', 'timemgmt'));
         if ($iTimeMng == 0) {
             return true;
         }
@@ -391,7 +375,7 @@ class cApiDbfsCollection extends ItemCollection
         $iNow = time();
 
         if ($iNow < $this->dateToTimestamp($sStartDate) ||
-            ($iNow > $this->dateToTimestamp($sEndDate) && (int)$this->dateToTimestamp($sEndDate) > 0)) {
+                ($iNow > $this->dateToTimestamp($sEndDate) && (int) $this->dateToTimestamp($sEndDate) > 0)) {
 
             return false;
         }
@@ -403,35 +387,32 @@ class cApiDbfsCollection extends ItemCollection
      * @param string $sDate
      * @return int $iTimestamp
      */
-    public function dateToTimestamp($sDate)
-    {
+    public function dateToTimestamp($sDate) {
         return strtotime($sDate);
     }
 
     /** @deprecated  [2012-06-20] Use cApiDbfs::stripPath() */
-    public function strip_path($path)
-    {
+    public function strip_path($path) {
         cDeprecated("Use cApiDbfs::stripPath()");
         return cApiDbfs::stripPath($path);
     }
 
 }
 
-
 /**
  * DBFS item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiDbfs extends Item
-{
+class cApiDbfs extends Item {
+
     const PROTOCOL_DBFS = 'dbfs:';
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['dbfs'], 'iddbfs');
         if ($mId !== false) {
@@ -439,8 +420,7 @@ class cApiDbfs extends Item
         }
     }
 
-    public function store()
-    {
+    public function store() {
         global $auth;
 
         $this->set('modified', date('Y-m-d H:i:s'), false);
@@ -449,8 +429,7 @@ class cApiDbfs extends Item
         return parent::store();
     }
 
-    public function setField($field, $value, $safe = true)
-    {
+    public function setField($field, $value, $safe = true) {
         if ($field == 'dirname' || $field == 'filename' || $field == 'mimetype') {
             // Don't do safe encoding
             $safe = false;
@@ -467,8 +446,7 @@ class cApiDbfs extends Item
      * @param   string  $path
      * @return  string
      */
-    public static function stripPath($path)
-    {
+    public static function stripPath($path) {
         $path = self::stripProtocol($path);
         if (substr($path, 0, 1) == '/') {
             $path = substr($path, 1);
@@ -481,8 +459,7 @@ class cApiDbfs extends Item
      * @param   string  $path
      * @return  string
      */
-    public static function stripProtocol($path)
-    {
+    public static function stripProtocol($path) {
         if (self::isDbfs($path)) {
             $path = substr($path, strlen(cApiDbfs::PROTOCOL_DBFS));
         }
@@ -494,12 +471,11 @@ class cApiDbfs extends Item
      * @param   string  $file
      * @return  bool
      */
-    public static function isDbfs($file)
-    {
+    public static function isDbfs($file) {
         return (substr($file, 0, 5) == self::PROTOCOL_DBFS);
     }
-}
 
+}
 
 ################################################################################
 # Old versions of dbfs item collection and dbfs item classes
@@ -508,43 +484,40 @@ class cApiDbfs extends Item
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 
-
 /**
  * DBFS item collection
  * @deprecated  [2011-09-19] Use  instead of this class.
  */
-class DBFSCollection extends cApiDbfsCollection
-{
-    public function __construct()
-    {
+class DBFSCollection extends cApiDbfsCollection {
+
+    public function __construct() {
         cDeprecated("Use class cApiDbfsCollection instead");
         parent::__construct();
     }
-    public function DBFSCollection()
-    {
+
+    public function DBFSCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
-}
 
+}
 
 /**
  * Single dbfs item
  * @deprecated  [2011-09-19] Use  instead of this class.
  */
-class DBFSItem extends cApiDbfs
-{
-    public function __construct($mId = false)
-    {
+class DBFSItem extends cApiDbfs {
+
+    public function __construct($mId = false) {
         cDeprecated("Use class cApiDbfs instead");
         parent::__construct($mId);
     }
-    public function DBFSItem($mId = false)
-    {
+
+    public function DBFSItem($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
-}
 
+}
 
 ?>

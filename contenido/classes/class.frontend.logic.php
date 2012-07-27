@@ -40,16 +40,15 @@ if (!defined('CON_FRAMEWORK')) {
  * same amount of actions. You can't have a different set of actions for
  * different objects of the same type.
  */
-class FrontendLogic
-{
+class FrontendLogic {
+
     /**
      * getFriendlyName: Returns the friendly (e.g. display) name of your
      * objects.
      *
      * @return string Name of the object
      */
-    function getFriendlyName ()
-    {
+    function getFriendlyName() {
         return "Inherited class *must* override getFriendlyName";
     }
 
@@ -60,8 +59,7 @@ class FrontendLogic
      *
      * @return array Array of all actions
      */
-    function listActions ()
-    {
+    function listActions() {
         return array("Inherited class *must* override listActions");
     }
 
@@ -72,8 +70,7 @@ class FrontendLogic
      *
      * @return array Array of items
      */
-    function listItems ()
-    {
+    function listItems() {
         return array("Inherited class *must* override listItems");
     }
 

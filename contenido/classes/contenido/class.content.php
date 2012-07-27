@@ -23,13 +23,13 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Content collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
 class cApiContentCollection extends ItemCollection {
+
     public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['content'], 'idcontent');
@@ -48,8 +48,7 @@ class cApiContentCollection extends ItemCollection {
      * @param  string  $lastmodified
      * @return cApiContent
      */
-    public function create($idArtLang, $idType, $typeId, $value, $version, $author = '', $created = '', $lastmodified = '')
-    {
+    public function create($idArtLang, $idType, $typeId, $value, $version, $author = '', $created = '', $lastmodified = '') {
         global $auth;
 
         if (empty($author)) {
@@ -80,13 +79,13 @@ class cApiContentCollection extends ItemCollection {
 
 }
 
-
 /**
  * Content item
  * @package    CONTENIDO API
  * @subpackage Model
  */
 class cApiContent extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
@@ -142,6 +141,7 @@ class cApiContent extends Item {
             return $this->_loadByWhereClause($where);
         }
     }
+
 }
 
 ?>

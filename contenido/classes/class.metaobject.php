@@ -45,11 +45,8 @@ if (!defined('CON_FRAMEWORK')) {
 define("CMETAOBJECT_BASE", 1);
 define("CMETAOBJECT_PLUGIN", 2);
 
-/**
- * @deprecated 2011-08-24 this class is not supported any longer
- */
-class cMetaObject
-{
+/** @deprecated 2011-08-24 this class is not supported any longer */
+class cMetaObject {
 
     /**
      * Type of this plugin
@@ -64,13 +61,10 @@ class cMetaObject
      * @access private
      */
     var $_iconFilename;
-
     var $_objectInvalid;
-
     var $_payloadObject;
 
-    function cMetaObject ($payload = false)
-    {
+    function cMetaObject($payload = false) {
         cDeprecated("This class is not longer supported and will be removed in further version.");
 
         $this->_actions = array();
@@ -88,11 +82,9 @@ class cMetaObject
      * @param int $type Constant with the object type
      *
      */
-    function setObjectType ($type)
-    {
+    function setObjectType($type) {
         if ($type != COBJECT_BASE &&
-            $type != COBJECT_PLUGIN)
-        {
+                $type != COBJECT_PLUGIN) {
             cDie(__FILE__, __LINE__, "When calling setObjectType, please use either COBJECT_BASE or COBJECT_PLUGIN");
         }
 
@@ -105,8 +97,7 @@ class cMetaObject
      * @param string $icon Icon path
      * @return none
      */
-    function setIcon ($icon = false)
-    {
+    function setIcon($icon = false) {
         $icon = cSecurity::escapeDB($icon, null);
         $this->_iconFilename = $icon;
     }
@@ -117,44 +108,36 @@ class cMetaObject
      * @param string $icon Icon path
      * @return none
      */
-    function getIcon ()
-    {
+    function getIcon() {
         return $this->_iconFilename;
     }
 
-    function setPayloadObject ($object)
-    {
-        if (is_object($object))
-        {
+    function setPayloadObject($object) {
+        if (is_object($object)) {
             $this->_payloadObject = $object;
             $this->defineActions();
         } else {
-            if (class_exists($object))
-            {
+            if (class_exists($object)) {
                 $this->_payloadObject = new $object;
                 $this->defineActions();
             }
         }
     }
 
-    function getName ()
-    {
+    function getName() {
         return;
     }
 
-    function getDescription ()
-    {
+    function getDescription() {
         return;
     }
 
-    function defineActions ()
-    {
+    function defineActions() {
+        
     }
 
-    function assignField ($field, $name, $editwidget, $parameters = array(), $group = "default", $readonly = false)
-    {
-        if (!array_key_exists("default", $parameters))
-        {
+    function assignField($field, $name, $editwidget, $parameters = array(), $group = "default", $readonly = false) {
+        if (!array_key_exists("default", $parameters)) {
             $parameters["default"] = $this->_payloadObject->get($field);
             $parameters["_payload"] = $this->_payloadObject;
         }
@@ -165,8 +148,7 @@ class cMetaObject
         $this->_fields[$group][$field]["parameters"] = $parameters;
     }
 
-    function setEditAction ($actionclass)
-    {
+    function setEditAction($actionclass) {
         $args = func_num_args();
 
         unset($this->_editAction);
@@ -174,14 +156,12 @@ class cMetaObject
         $this->_editAction = $actionclass;
         $this->_editParams = array();
 
-        for ($i=1; $i< $args; $i++)
-        {
+        for ($i = 1; $i < $args; $i++) {
             $this->_editParams[$i] = func_get_arg($i);
         }
     }
 
-    function setCreateAction ($actionclass)
-    {
+    function setCreateAction($actionclass) {
         $args = func_num_args();
 
         unset($this->_createAction);
@@ -189,103 +169,83 @@ class cMetaObject
         $this->_createAction = $actionclass;
         $this->_createParams = array();
 
-        for ($i=1; $i< $args; $i++)
-        {
+        for ($i = 1; $i < $args; $i++) {
             $this->_createParams[$i] = func_get_arg($i);
         }
     }
 
-
-    function addAction ($actionclass)
-    {
+    function addAction($actionclass) {
         $args = func_num_args();
 
         $this->_actions[$actionclass] = array();
 
-        for ($i=1; $i< $args; $i++)
-        {
+        for ($i = 1; $i < $args; $i++) {
             $this->_actions[$actionclass][$i] = func_get_arg($i);
         }
     }
 
-    function defineFields ()
-    {
+    function defineFields() {
+        
     }
 
-    function defineEditAction ()
-    {
+    function defineEditAction() {
+        
     }
 
-    function defineCreateAction ()
-    {
+    function defineCreateAction() {
+        
     }
 
-    function processActions ()
-    {
+    function processActions() {
         $reload = false;
 
         $actions = $this->getActions();
 
-        if (is_array($actions))
-        {
-            foreach ($actions as $action)
-            {
-                if ($_GET["action"] == $action->_namedAction)
-                {
+        if (is_array($actions)) {
+            foreach ($actions as $action) {
+                if ($_GET["action"] == $action->_namedAction) {
 
-                       /* Collect parameters */
-                    foreach ($action->_wantParameters as $parameter)
-                    {
+                    /* Collect parameters */
+                    foreach ($action->_wantParameters as $parameter) {
                         /* Mangle parameter */
-                        if (get_magic_quotes_gpc())
-                        {
+                        if (get_magic_quotes_gpc()) {
                             $parameters[$parameter] = stripslashes($_GET[$parameter]);
                         } else {
                             $parameters[$parameter] = $_GET[$parameter];
                         }
                     }
 
-                    foreach ($action->_parameters as $parameter => $value)
-                    {
-                        if (get_magic_quotes_gpc())
-                        {
+                    foreach ($action->_parameters as $parameter => $value) {
+                        if (get_magic_quotes_gpc()) {
                             $parameters[$parameter] = stripslashes($_GET[$parameter]);
                         } else {
                             $parameters[$parameter] = $_GET[$parameter];
                         }
                     }
 
-                    if ($action->process($parameters) == true)
-                    {
+                    if ($action->process($parameters) == true) {
                         $reload = true;
                     }
 
-                    if ($action->_objectInvalid)
-                    {
+                    if ($action->_objectInvalid) {
                         $this->_objectInvalid = true;
                     }
                 }
-
             }
         }
 
         return $reload;
     }
 
-    function processEdit ()
-    {
+    function processEdit() {
         $this->defineFields();
         $modified = false;
-        foreach ($this->_fields as $group)
-        {
+        foreach ($this->_fields as $group) {
 
-            foreach ($group as $field => $params)
-            {
-                $vname = get_class($this)."_".$field;
-                if (array_key_exists($vname, $_GET))
-                {
-                    if (get_magic_quotes_gpc())
-                    {
+            foreach ($group as $field => $params) {
+                $vname = get_class($this) . "_" . $field;
+                if (array_key_exists($vname, $_GET)) {
+                    if (get_magic_quotes_gpc()) {
                         $this->_payloadObject->set($field, stripslashes($_GET[$vname]));
                     } else {
                         $this->_payloadObject->set($field, $_GET[$vname]);
@@ -295,16 +255,13 @@ class cMetaObject
             }
         }
 
-        if ($modified == true)
-        {
+        if ($modified == true) {
             $this->_payloadObject->store();
         }
     }
 
-    function processCreate ()
-    {
-        if ($this->_actionsDefined == false)
-        {
+    function processCreate() {
+        if ($this->_actionsDefined == false) {
             $this->defineActions();
             $this->_actionsDefined = true;
         }
@@ -312,46 +269,35 @@ class cMetaObject
         /* Get create action */
         $createaction = $this->getAction($this->_createAction);
 
-        if ($createaction != false)
-        {
-            if ($_GET["action"] == $createaction->_namedAction)
-            {
+        if ($createaction != false) {
+            if ($_GET["action"] == $createaction->_namedAction) {
                 return $createaction->process();
             }
         }
-
     }
 
-    function getActions ()
-    {
-        if ($this->_actionsDefined == false)
-        {
+    function getActions() {
+        if ($this->_actionsDefined == false) {
             $this->defineActions();
             $this->_actionsDefined = true;
         }
 
-        foreach ($this->_actions as $action => $params)
-        {
+        foreach ($this->_actions as $action => $params) {
             $i = $this->getAction($action);
 
-            if ($i !== false)
-            {
+            if ($i !== false) {
                 $actions[] = $i;
             }
         }
         return ($actions);
     }
 
-    function getAction ($action)
-    {
-        if (!array_key_exists($action, $this->_actions))
-        {
-            if ($this->_editAction == $action)
-            {
+    function getAction($action) {
+        if (!array_key_exists($action, $this->_actions)) {
+            if ($this->_editAction == $action) {
                 $params = $this->_editParams;
             } else {
-                if ($this->_createAction == $action)
-                {
+                if ($this->_createAction == $action) {
                     $params = $this->_createParams;
                 } else {
                     return false;
@@ -362,30 +308,29 @@ class cMetaObject
         }
 
         $myparams = array();
-        if (!is_array($params))
-        {
+        if (!is_array($params)) {
             $params = array();
         }
 
-        foreach ($params as $param)
-        {
-            switch (gettype($param))
-            {
-                case "string" : $myparams[] = '"'.addslashes($param).'"'; break;
-                case "boolean": if ($param == true)
-                                {
-                                    $myparams[] = "true";
-                                } else {
-                                    $myparams[] = "false";
-                                }
-                                break;
-                default:        $myparams[] = $param;
+        foreach ($params as $param) {
+            switch (gettype($param)) {
+                case "string" : $myparams[] = '"' . addslashes($param) . '"';
+                    break;
+                case "boolean": if ($param == true) {
+                        $myparams[] = "true";
+                    } else {
+                        $myparams[] = "false";
+                    }
+                    break;
+                default: $myparams[] = $param;
             }
         }
-        $statement = '$action = new '.$action."(".implode(", ",$myparams).");";
+        $statement = '$action = new ' . $action . "(" . implode(", ", $myparams) . ");";
         eval($statement);
 
         return ($action);
     }
+
 }
+
 ?>

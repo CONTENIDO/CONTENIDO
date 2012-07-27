@@ -11,10 +11,9 @@
  * VersionFile
  * @deprecated  [2012-07-02] Use cVersionFile instead of this class.
  */
-class VersionFile extends cVersionFile
-{
-    public function __construct($iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = '')
-    {
+class VersionFile extends cVersionFile {
+
+    public function __construct($iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = '') {
         cDeprecated("Use class cVersionFile instead");
         parent::__construct($iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = '');
     }

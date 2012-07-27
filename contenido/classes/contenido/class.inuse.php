@@ -41,14 +41,13 @@ if (!defined('CON_FRAMEWORK')) {
  * @version    0.1
  * @copyright  four for business 2003
  */
-class cApiInUseCollection extends ItemCollection
-{
+class cApiInUseCollection extends ItemCollection {
+
     /**
      * Constructor Function
      * @param none
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['inuse'], 'idinuse');
         $this->_setItemClass('cApiInUse');
@@ -70,14 +69,13 @@ class cApiInUseCollection extends ItemCollection
      * @param  string  $user  Specifies the user which requested the in-use flag
      * @return cApiInUse|null
      */
-    public function  markInUse($type, $objectid, $session, $user)
-    {
-        $type     = $this->escape($type);
+    public function markInUse($type, $objectid, $session, $user) {
+        $type = $this->escape($type);
         $objectid = $this->escape($objectid);
-        $session  = $this->escape($session);
-        $user     = $this->escape($user);
+        $session = $this->escape($session);
+        $user = $this->escape($user);
 
-        $this->select("type='".$type."' AND objectid='".$objectid."'");
+        $this->select("type='" . $type . "' AND objectid='" . $objectid . "'");
 
         $newitem = null;
         if (!$this->next()) {
@@ -98,13 +96,12 @@ class cApiInUseCollection extends ItemCollection
      * @param  mixed  $objectid  Specifies the object ID
      * @param  string  $session  Specifies the session for which the "in use" mark is valid
      */
-    public function removeMark($type, $objectid, $session)
-    {
-        $type     = $this->escape($type);
+    public function removeMark($type, $objectid, $session) {
+        $type = $this->escape($type);
         $objectid = $this->escape($objectid);
-        $session  = $this->escape($session);
+        $session = $this->escape($session);
 
-        $this->select("type='".$type."' AND objectid='".$objectid."' AND session='".$session."'");
+        $this->select("type='" . $type . "' AND objectid='" . $objectid . "' AND session='" . $session . "'");
 
         if ($obj = $this->next()) {
             // Remove entry
@@ -119,12 +116,11 @@ class cApiInUseCollection extends ItemCollection
      * @param  string  $type  Specifies the type to de-mark.
      * @param  string  $session  Specifies the session for which the "in use" mark is valid
      */
-    public function removeTypeMarks($type, $session)
-    {
-        $type    = $this->escape($type);
+    public function removeTypeMarks($type, $session) {
+        $type = $this->escape($type);
         $session = $this->escape($session);
 
-        $this->select("type='".$type."' AND session='".$session."'");
+        $this->select("type='" . $type . "' AND session='" . $session . "'");
 
         while ($obj = $this->next()) {
             // Remove entry
@@ -139,12 +135,11 @@ class cApiInUseCollection extends ItemCollection
      * @param  string  $type  Specifies the type to de-mark.
      * @param  string  $itemid  Specifies the item
      */
-    public function removeItemMarks($type, $itemid)
-    {
-        $type   = $this->escape($type);
+    public function removeItemMarks($type, $itemid) {
+        $type = $this->escape($type);
         $itemid = $this->escape($itemid);
 
-        $this->select("type='".$type."' AND objectid='".$itemid."'");
+        $this->select("type='" . $type . "' AND objectid='" . $itemid . "'");
 
         while ($obj = $this->next()) {
             // Remove entry
@@ -158,10 +153,9 @@ class cApiInUseCollection extends ItemCollection
      *
      * @param  string  $session  Specifies the session for which the "in use" marks should be removed
      */
-    public function removeSessionMarks($session)
-    {
+    public function removeSessionMarks($session) {
         $session = $this->escape($session);
-        $this->select("session='".$session."'");
+        $this->select("session='" . $session . "'");
 
         while ($obj = $this->next()) {
             // Remove entry
@@ -177,12 +171,11 @@ class cApiInUseCollection extends ItemCollection
      * @param  mixed  $objectid  Specifies the object ID
      * @return cApiInUse|bool  Returns false if it's not in use or returns the object if it is.
      */
-    public function checkMark($type, $objectid)
-    {
-        $type     = $this->escape($type);
+    public function checkMark($type, $objectid) {
+        $type = $this->escape($type);
         $objectid = $this->escape($objectid);
 
-        $this->select("type='".$type."' AND objectid='".$objectid."'");
+        $this->select("type='" . $type . "' AND objectid='" . $objectid . "'");
 
         if ($obj = $this->next()) {
             return $obj;
@@ -210,11 +203,10 @@ class cApiInUseCollection extends ItemCollection
      * @return bool|array  If returnWarning is false, returns a boolean value wether the object is locked. If
      *                     returnWarning is true, returns a 2 item array (boolean inUse, string errormessage).
      */
-    public function checkAndMark($type, $objectid, $returnWarning = false, $warningTemplate = '', $allowOverride = false, $location = '')
-    {
+    public function checkAndMark($type, $objectid, $returnWarning = false, $warningTemplate = '', $allowOverride = false, $location = '') {
         global $sess, $auth, $notification, $area, $frame, $perm;
 
-        if ((($obj = $this->checkMark($type, $objectid)) === false)|| ($auth->auth['uid'] == $obj->get('userid'))) {
+        if ((($obj = $this->checkMark($type, $objectid)) === false) || ($auth->auth['uid'] == $obj->get('userid'))) {
             $this->markInUse($type, $objectid, $sess->id, $auth->auth['uid']);
             $inUse = false;
             $disabled = '';
@@ -230,11 +222,11 @@ class cApiInUseCollection extends ItemCollection
                 if ($allowOverride == true && ($auth->auth['uid'] == $obj->get('userid') || $perm->have_perm())) {
                     $alt = i18n("Click here if you want to override the lock");
 
-                    $link = $sess->url($location."&overridetype=".$type."&overrideid=".$objectid);
+                    $link = $sess->url($location . "&overridetype=" . $type . "&overrideid=" . $objectid);
 
                     $warnmessage = i18n("Do you really want to override the lock?");
-                    $script = "javascript:if (window.confirm('".$warnmessage."') == true) { window.location.href  = '".$link."';}";
-                    $override = '<br><br><a alt="'.$alt.'" title="'.$alt.'" href="'.$script.'" class="standard">['.i18n("Override lock").']</a> <a href="javascript://" class="standard" onclick="elem = document.getElementById(\'contenido_notification\'); elem.style.display=\'none\'">['.i18n("Hide notification").']</a>';
+                    $script = "javascript:if (window.confirm('" . $warnmessage . "') == true) { window.location.href  = '" . $link . "';}";
+                    $override = '<br><br><a alt="' . $alt . '" title="' . $alt . '" href="' . $script . '" class="standard">[' . i18n("Override lock") . ']</a> <a href="javascript://" class="standard" onclick="elem = document.getElementById(\'contenido_notification\'); elem.style.display=\'none\'">[' . i18n("Hide notification") . ']</a>';
                 } else {
                     $override = '';
                 }
@@ -243,7 +235,7 @@ class cApiInUseCollection extends ItemCollection
                     $notification = new cGuiNotification();
                 }
 
-                $noti = $notification->returnMessageBox('warning', $message.$override, 0);
+                $noti = $notification->returnMessageBox('warning', $message . $override, 0);
                 $inUse = true;
             }
         }
@@ -254,8 +246,8 @@ class cApiInUseCollection extends ItemCollection
             return $inUse;
         }
     }
-}
 
+}
 
 /**
  * Class cApiInUse
@@ -266,22 +258,21 @@ class cApiInUseCollection extends ItemCollection
  * @version    0.1
  * @copyright  four for business 2003
  */
-class cApiInUse extends Item
-{
+class cApiInUse extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['inuse'], 'idinuse');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
-}
 
+}
 
 ################################################################################
 # Old versions of inuse item collection and inuse item classes
@@ -290,42 +281,40 @@ class cApiInUse extends Item
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 
-
 /**
  * In use collection
  * @deprecated  [2011-10-06] Use cApiInUseCollection instead of this class.
  */
-class InUseCollection extends cApiInUseCollection
-{
-    public function __construct()
-    {
+class InUseCollection extends cApiInUseCollection {
+
+    public function __construct() {
         cDeprecated("Use class cApiInUseCollection instead");
         parent::__construct();
     }
-    public function InUseCollection()
-    {
+
+    public function InUseCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
-}
 
+}
 
 /**
  * Single in use item
  * @deprecated  [2011-10-06] Use cApiInUse instead of this class.
  */
-class InUseItem extends cApiInUse
-{
-    public function __construct($mId = false)
-    {
+class InUseItem extends cApiInUse {
+
+    public function __construct($mId = false) {
         cDeprecated("Use class cApiInUse instead");
         parent::__construct($mId);
     }
-    public function InUseItem($mId = false)
-    {
+
+    public function InUseItem($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
 }
 
 ?>

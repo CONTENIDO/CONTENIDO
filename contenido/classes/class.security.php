@@ -32,14 +32,13 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * CONTENIDO Security exception class
  *
  * @deprecated [2012-07-03] This class is no longer needed
  */
-class Contenido_Security_Exception extends Exception
-{
+class Contenido_Security_Exception extends Exception {
+
     /**
      * Logging flag. Set to true for logging invalid calls.
      * @var      boolean
@@ -50,8 +49,7 @@ class Contenido_Security_Exception extends Exception
      * @see Exception::__construct()
      * @deprecated [2012-07-03] This class is no longer needed
      */
-    public function __construct($sMessage, $sParamName)
-    {
+    public function __construct($sMessage, $sParamName) {
         global $cfg;
 
         cDeprecated("Contenido_Security_Exception is no longer needed");
@@ -74,13 +72,14 @@ class Contenido_Security_Exception extends Exception
         die($sMessage);
         exit;
     }
+
 }
 
 /**
  * CONTENIDO Security class
  */
-class cSecurity
-{
+class cSecurity {
+
     /**
      * Escapes string using CONTENIDO urlencoding method and escapes string for inserting
      *
@@ -88,8 +87,7 @@ class cSecurity
      * @param   DB_Contenido  $oDb      CONTENIDO database object
      * @return  string   Filtered string
      */
-    public static function filter($sString, $oDb)
-    {
+    public static function filter($sString, $oDb) {
         $sString = self::toString($sString);
         if (defined('CONTENIDO_STRIPSLASHES')) {
             $sString = stripslashes($sString);
@@ -103,8 +101,7 @@ class cSecurity
      * @param   string  $sString  Input string
      * @return  string  Unfiltered string
      */
-    public static function unFilter($sString)
-    {
+    public static function unFilter($sString) {
         $sString = self::toString($sString);
         return htmldecode(self::unEscapeDB($sString));
     }
@@ -115,9 +112,8 @@ class cSecurity
      * @param   string   $sVar  Input string
      * @return  boolean  Check state
      */
-    public static function isBoolean($sVar)
-    {
-        $sTempVar  = $sVar;
+    public static function isBoolean($sVar) {
+        $sTempVar = $sVar;
         $sTemp2Var = self::toBoolean($sVar);
         return ($sTempVar === $sTemp2Var);
     }
@@ -128,8 +124,7 @@ class cSecurity
      * @param   string   $sVar  Input string
      * @return  boolean  Check state
      */
-    public static function isInteger($sVar)
-    {
+    public static function isInteger($sVar) {
         return (preg_match('/^[0-9]+$/', $sVar));
     }
 
@@ -139,8 +134,7 @@ class cSecurity
      * @param   string   $sVar  Input string
      * @return  boolean  Check state
      */
-    public static function isString($sVar)
-    {
+    public static function isString($sVar) {
         return (is_string($sVar));
     }
 
@@ -150,8 +144,7 @@ class cSecurity
      * @param   string   $sString   Input string
      * @return  boolean  Type casted input string
      */
-    public static function toBoolean($sString)
-    {
+    public static function toBoolean($sString) {
         return (bool) $sString;
     }
 
@@ -161,8 +154,7 @@ class cSecurity
      * @param   string   $sString   Input string
      * @return  integer  Type casted input string
      */
-    public static function toInteger($sString)
-    {
+    public static function toInteger($sString) {
         return (int) $sString;
     }
 
@@ -174,8 +166,7 @@ class cSecurity
      * @param   string   $sAllowableTags  Allowable tags if $bHTML is true
      * @return  string  Converted string
      */
-    public static function toString($sString, $bHTML = false, $sAllowableTags = '')
-    {
+    public static function toString($sString, $bHTML = false, $sAllowableTags = '') {
         $sString = (string) $sString;
         if ($bHTML == true) {
             $sString = strip_tags(stripslashes($sString), $sAllowableTags);
@@ -191,8 +182,7 @@ class cSecurity
      * @param   boolean       $bUndoAddSlashes  Flag for undo addslashes (optional, default: true)
      * @return  string  Converted string
      */
-    public static function escapeDB($sString, $oDB, $bUndoAddSlashes = true)
-    {
+    public static function escapeDB($sString, $oDB, $bUndoAddSlashes = true) {
         if (!is_object($oDB)) {
             return self::escapeString($sString);
         } else {
@@ -209,8 +199,7 @@ class cSecurity
      * @param   string  $sString  Input string
      * @return  string  Converted string
      */
-    public static function escapeString($sString)
-    {
+    public static function escapeString($sString) {
         $sString = (string) $sString;
         if (defined('CONTENIDO_STRIPSLASHES')) {
             $sString = stripslashes($sString);
@@ -224,8 +213,7 @@ class cSecurity
      * @param   string  $sString  Input string
      * @return  string  Converted string
      */
-    public static function unescapeDB($sString)
-    {
+    public static function unescapeDB($sString) {
         return stripslashes($sString);
     }
 
@@ -238,8 +226,7 @@ class Contenido_Security extends cSecurity {
      * @deprecated [2012-07-02] This class was replaced by cRequestValidator
      * @return  array
      */
-    public static function getAcceptedBelangValues()
-    {
+    public static function getAcceptedBelangValues() {
         cDeprecated("Please use cSecurity instead");
         return array();
     }
@@ -249,8 +236,7 @@ class Contenido_Security extends cSecurity {
      * @deprecated [2012-07-02] This class was replaced by cRequestValidator
      * @return  array
      */
-    public static function getMustbeNumericParameters()
-    {
+    public static function getMustbeNumericParameters() {
         cDeprecated("Please use cSecurity instead");
         return array();
     }
@@ -260,8 +246,7 @@ class Contenido_Security extends cSecurity {
      * @deprecated [2012-07-02] This class was replaced by cRequestValidator
      * @return  array
      */
-    public static function getForbiddenParameters()
-    {
+    public static function getForbiddenParameters() {
         cDeprecated("Please use cSecurity instead");
         return array();
     }
@@ -272,8 +257,7 @@ class Contenido_Security extends cSecurity {
      * @deprecated [2012-07-02] This function is now executed by cRequestValidator
      * @return  bool|void  True on success otherwhise nothing.
      */
-    public static function checkRequests()
-    {
+    public static function checkRequests() {
         global $oRequestValidator;
 
         cDeprecated("Please use cSecurity instead");
@@ -286,8 +270,7 @@ class Contenido_Security extends cSecurity {
      * @deprecated [2012-07-02] This function is now executed by cRequestValidator
      * @return  bool|void  True on success otherwhise nothing.
      */
-    public static function checkRequestBelang()
-    {
+    public static function checkRequestBelang() {
         global $oRequestValidator;
 
         cDeprecated("Please use cSecurity instead");
@@ -300,8 +283,7 @@ class Contenido_Security extends cSecurity {
      * @deprecated [2012-07-02] This function is now executed by cRequestValidator
      * @return  bool|void  True on success otherwhise nothing.
      */
-    public static function checkRequestForbiddenParameter()
-    {
+    public static function checkRequestForbiddenParameter() {
         global $oRequestValidator;
 
         cDeprecated("Please use cSecurity instead");
@@ -317,8 +299,7 @@ class Contenido_Security extends cSecurity {
      * @deprecated [2012-07-02] This function is now executed by cRequestValidator
      * @return  bool  Just true
      */
-    public static function checkRequestMustbeNumericParameter()
-    {
+    public static function checkRequestMustbeNumericParameter() {
         global $oRequestValidator;
 
         cDeprecated("Please use cSecurity instead");
@@ -331,8 +312,7 @@ class Contenido_Security extends cSecurity {
      * @deprecated [2012-07-02] This function is now executed by cRequestValidator
      * @return  bool|void  True on success otherwhise nothing.
      */
-    public static function checkRequestSession()
-    {
+    public static function checkRequestSession() {
         global $oRequestValidator;
 
         cDeprecated("Please use cSecurity instead");
@@ -346,8 +326,7 @@ class Contenido_Security extends cSecurity {
      * @deprecated  Use checkRequestSession() instead due to better naming conventions
      * @TODO:  Should be removed, but later in few years...
      */
-    public static function checkSession()
-    {
+    public static function checkSession() {
         cDeprecated("Use checkRequestSession() instead");
 
         cDeprecated("Please use cSecurity instead");
@@ -362,8 +341,7 @@ class Contenido_Security extends cSecurity {
      * @param   DB_Contenido  $oDb      CONTENIDO database object
      * @return  string   Filtered string
      */
-    public static function filter($sString, $oDb)
-    {
+    public static function filter($sString, $oDb) {
         cDeprecated("Please use cSecurity instead");
 
         return parent::filter($sString, $oDb);
@@ -376,8 +354,7 @@ class Contenido_Security extends cSecurity {
      * @param   string  $sString  Input string
      * @return  string  Unfiltered string
      */
-    public static function unFilter($sString)
-    {
+    public static function unFilter($sString) {
         cDeprecated("Please use cSecurity instead");
 
         return parent::unFilter($sString);
@@ -390,8 +367,7 @@ class Contenido_Security extends cSecurity {
      * @param   string   $sVar  Input string
      * @return  boolean  Check state
      */
-    public static function isBoolean($sVar)
-    {
+    public static function isBoolean($sVar) {
         cDeprecated("Please use cSecurity instead");
 
         return parent::isBoolean($sVar);
@@ -404,8 +380,7 @@ class Contenido_Security extends cSecurity {
      * @param   string   $sVar  Input string
      * @return  boolean  Check state
      */
-    public static function isInteger($sVar)
-    {
+    public static function isInteger($sVar) {
         cDeprecated("Please use cSecurity instead");
 
         return parent::isInteger($sVar);
@@ -418,8 +393,7 @@ class Contenido_Security extends cSecurity {
      * @param   string   $sVar  Input string
      * @return  boolean  Check state
      */
-    public static function isString($sVar)
-    {
+    public static function isString($sVar) {
         cDeprecated("Please use cSecurity instead");
 
         return parent::isString($sVar);
@@ -432,8 +406,7 @@ class Contenido_Security extends cSecurity {
      * @param   string   $sString   Input string
      * @return  boolean  Type casted input string
      */
-    public static function toBoolean($sString)
-    {
+    public static function toBoolean($sString) {
         cDeprecated("Please use cSecurity instead");
 
         return parent::toBoolean($sString);
@@ -446,8 +419,7 @@ class Contenido_Security extends cSecurity {
      * @param   string   $sString   Input string
      * @return  integer  Type casted input string
      */
-    public static function toInteger($sString)
-    {
+    public static function toInteger($sString) {
         cDeprecated("Please use cSecurity instead");
 
         return parent::toInteger($sString);
@@ -462,8 +434,7 @@ class Contenido_Security extends cSecurity {
      * @param   string   $sAllowableTags  Allowable tags if $bHTML is true
      * @return  string  Converted string
      */
-    public static function toString($sString, $bHTML = false, $sAllowableTags = '')
-    {
+    public static function toString($sString, $bHTML = false, $sAllowableTags = '') {
         cDeprecated("Please use cSecurity instead");
 
         return parent::toString($sString, $bHTML, $sAllowableTags);
@@ -482,9 +453,10 @@ class Contenido_Security extends cSecurity {
      *
      * @return  void
      */
-    public static function checkFrontendGlobals()
-    {
+    public static function checkFrontendGlobals() {
         cDeprecated("This function was removed from cSecurity. The checks are performred by cRequestValidator now");
     }
+
 }
+
 ?>

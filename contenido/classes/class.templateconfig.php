@@ -56,8 +56,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-class TemplateConfig
-{
+class TemplateConfig {
+
     /**
      * stores configuration data
      * @var array
@@ -93,8 +93,7 @@ class TemplateConfig
      *
      * @return void
      */
-    function templateConfig($idart = 0)
-    {
+    function templateConfig($idart = 0) {
         global $cfg, $lang, $client;
 
         $this->db = cRegistry::getDb();
@@ -104,20 +103,18 @@ class TemplateConfig
         $this->client = &$client;
         $this->idart = $idart;
 
-        if ($idart != 0)
-        {
+        if ($idart != 0) {
             $idtplcfg = $this->_getTplCfgByArtId($idart);
             $this->data = $this->_getContainersByTplCfg($idtplcfg);
         }
     }
 
     /**
-    * reset data array
-    *
-    * @return void
-    */
-    function resetData()
-    {
+     * reset data array
+     *
+     * @return void
+     */
+    function resetData() {
         unset($this->data);
     }
 
@@ -129,13 +126,10 @@ class TemplateConfig
      *
      * @return array array with the settings for each cms_value of the specified container
      */
-    function getData ($idcontainer)
-    {
-        if ($this->data[$idcontainer])
-        {
-            $tmpVar = explode("&",trim($this->data[$idcontainer],"&"));
-            foreach ($tmpVar as $string)
-            {
+    function getData($idcontainer) {
+        if ($this->data[$idcontainer]) {
+            $tmpVar = explode("&", trim($this->data[$idcontainer], "&"));
+            foreach ($tmpVar as $string) {
                 $tmpData = explode("=", $string);
                 $tmpArray[$tmpData[0]] = $tmpData[1];
             }
@@ -147,8 +141,7 @@ class TemplateConfig
     /**
      * get data
      */
-    function getDataForIdcat ($idcat)
-    {
+    function getDataForIdcat($idcat) {
         $idtplcfg = $this->_getTplCfgByCatId($idcat);
         $this->data = $this->_getContainersByTplCfg($idtplcfg);
     }
@@ -162,29 +155,28 @@ class TemplateConfig
      *
      * @return array containing pre configuration values
      */
-
-    function getPreConfigurationValues ($idart,$containerid) {
+    function getPreConfigurationValues($idart, $containerid) {
 
         global $cfg;
 
         $idtplcfg = $this->_getTplCfgByArtId($idart);
-        if ((!$idtplcfg) || ($idtplcfg==0)) {
+        if ((!$idtplcfg) || ($idtplcfg == 0)) {
             $idcat = $this->_getIdCatByIdArt($idart);
             $idtplcfg = $this->_getTplCfgByCatId($idcat);
         }
 
         if ($idtplcfg) {
             #Article or cat is assigned to a template
-            $sql = "SELECT * FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".cSecurity::toInteger($idtplcfg)."'";
+            $sql = "SELECT * FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "'";
             $this->db->query($sql);
             if ($this->db->next_record()) {
                 $idtpl = $this->db->f("idtpl");
-                $sql = "SELECT * FROM ".$cfg["tab"]["tpl"]." WHERE idtpl = '".cSecurity::toInteger($idtpl)."'";
+                $sql = "SELECT * FROM " . $cfg["tab"]["tpl"] . " WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "'";
                 $this->db->query($sql);
                 if ($this->db->next_record()) {
                     $idtplcfg = $this->db->f("idtplcfg");
                     $this->_getContainersByTplCfg($idtplcfg);
-                    $arrData = $this->getData ($containerid);
+                    $arrData = $this->getData($containerid);
                     return $arrData;
                 } else {
                     return false;
@@ -198,47 +190,41 @@ class TemplateConfig
     }
 
     /**
-    * get template config id by article id
-    * returns false if the article has no configuration
-    *
-    * returns the template configuration for the current article
-    * if the article has not a template configuration it will return the configuration
-    * for the current category
-    *
-    * @param integer $idart id of the article which configuration should be get
-    *
-    * @return string returns the template configuration
-    */
-   function _getTplCfgByArtId($idart)
-   {
-      $sql = "
+     * get template config id by article id
+     * returns false if the article has no configuration
+     *
+     * returns the template configuration for the current article
+     * if the article has not a template configuration it will return the configuration
+     * for the current category
+     *
+     * @param integer $idart id of the article which configuration should be get
+     *
+     * @return string returns the template configuration
+     */
+    function _getTplCfgByArtId($idart) {
+        $sql = "
          SELECT
             idtplcfg
-         FROM ".$this->cfg['tab']['art_lang']."
+         FROM " . $this->cfg['tab']['art_lang'] . "
             WHERE
-                  idart='".cSecurity::toInteger($idart)."'
+                  idart='" . cSecurity::toInteger($idart) . "'
                AND
-                  idlang='".cSecurity::toInteger($this->lang)."'";
+                  idlang='" . cSecurity::toInteger($this->lang) . "'";
 
-      //query
-      $this->db->query($sql);
+        //query
+        $this->db->query($sql);
 
-      if (!$this->db->next_record())
-      {
-         return false;
-      }
+        if (!$this->db->next_record()) {
+            return false;
+        }
 
-      if ($this->db->f("idtplcfg") != 0)
-      {
-         return $this->db->f("idtplcfg");
-      }
-      else
-      {
-         $idcat = $this->_getIdCatByIdArt($idart);
-         return $this->_getTplCfgByCatId($idcat);
-      }
-
-   }
+        if ($this->db->f("idtplcfg") != 0) {
+            return $this->db->f("idtplcfg");
+        } else {
+            $idcat = $this->_getIdCatByIdArt($idart);
+            return $this->_getTplCfgByCatId($idcat);
+        }
+    }
 
     /**
      * get category id by article id
@@ -249,13 +235,10 @@ class TemplateConfig
      *
      * @return int returns the idcat for the current article
      */
-
-    function _getIdCatByIdArt($idart)
-    {
-        $sql = "SELECT idcat FROM ".$this->cfg['tab']['cat_art']." WHERE idart='".cSecurity::toInteger($idart)."' ORDER BY idcat ASC LIMIT 1";
+    function _getIdCatByIdArt($idart) {
+        $sql = "SELECT idcat FROM " . $this->cfg['tab']['cat_art'] . " WHERE idart='" . cSecurity::toInteger($idart) . "' ORDER BY idcat ASC LIMIT 1";
         $this->db->query($sql);
-        if ($this->db->next_record())
-        {
+        if ($this->db->next_record()) {
             return $this->db->f("idcat");
         }
         return false;
@@ -269,13 +252,11 @@ class TemplateConfig
      *
      * @return string template configuration for the selected category
      */
-    function _getTplCfgByCatId ($idcat)
-    {
-        $sql = "SELECT idtplcfg FROM ".$this->cfg['tab']['cat_lang']." WHERE idcat='".cSecurity::toInteger($idcat)."'
-                AND idlang='".cSecurity::toInteger($this->lang)."'";
+    function _getTplCfgByCatId($idcat) {
+        $sql = "SELECT idtplcfg FROM " . $this->cfg['tab']['cat_lang'] . " WHERE idcat='" . cSecurity::toInteger($idcat) . "'
+                AND idlang='" . cSecurity::toInteger($this->lang) . "'";
         $this->db->query($sql);
-        if ($this->db->next_record())
-        {
+        if ($this->db->next_record()) {
             return $this->db->f("idtplcfg");
         }
         return false;
@@ -289,26 +270,21 @@ class TemplateConfig
      *
      * @return array array with all containers and their values
      */
-    function _getContainersByTplCfg($idtplcfg)
-    {
+    function _getContainersByTplCfg($idtplcfg) {
         $sql = "
             SELECT
                 number, container
-            FROM ".$this->cfg['tab']['container_conf']."
-                WHERE idtplcfg='".cSecurity::toInteger($idtplcfg)."'
+            FROM " . $this->cfg['tab']['container_conf'] . "
+                WHERE idtplcfg='" . cSecurity::toInteger($idtplcfg) . "'
             ORDER BY
                 number ASC";
         $this->db->query($sql);
 
-        if ($this->db->nf() == 0)
-        { //nothing found
+        if ($this->db->nf() == 0) { //nothing found
             return false;
-        }
-        else
-        {
+        } else {
             //get all results
-            while ($this->db->next_record())
-            {
+            while ($this->db->next_record()) {
                 $this->data[$this->db->f("number")] = $this->db->f("container");
             }
 
@@ -316,6 +292,7 @@ class TemplateConfig
             return $this->data;
         }
     }
+
 }
 
 ?>

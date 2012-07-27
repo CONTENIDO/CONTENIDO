@@ -46,8 +46,8 @@ if (!defined('CON_FRAMEWORK')) {
  * @todo Add more stepping methods, as well as retrieving items
  *
  */
-class cIterator
-{
+class cIterator {
+
     /**
      * Holds the items which should be iterated
      * @var array
@@ -63,10 +63,8 @@ class cIterator
      * @param $aItems array Items to add
      * @return none
      */
-    function cIterator ($aItems)
-    {
-        if (is_array($aItems))
-        {
+    function cIterator($aItems) {
+        if (is_array($aItems)) {
             $this->_aIteratorItems = $aItems;
         } else {
             $this->_aIteratorItems = array();
@@ -82,8 +80,7 @@ class cIterator
      *
      * @return none
      */
-    function reset ()
-    {
+    function reset() {
         reset($this->_aIteratorItems);
     }
 
@@ -95,12 +92,10 @@ class cIterator
      *
      * @return mixed item or false if nothing was found
      */
-    function next ()
-    {
+    function next() {
         $item = each($this->_aIteratorItems);
 
-        if ($item === false)
-        {
+        if ($item === false) {
             return false;
         } else {
             return $item["value"];
@@ -112,9 +107,10 @@ class cIterator
      *
      * @return int Number of items
      */
-    function count ()
-    {
+    function count() {
         return count($this->_aIteratorItems);
     }
+
 }
+
 ?>

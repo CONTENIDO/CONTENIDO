@@ -61,7 +61,7 @@
  * $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.AllowEdit',
  * $lang, $idcat, $idart, $auth->auth['uid']);
  * if ($allow == false) {
- * die('You're not coming in!');
+ *     die('You're not coming in!');
  * }
  *
  * // another example of executing a cec with a break condition and default
@@ -72,7 +72,7 @@
  * cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.CategoryAccess',
  * $lang, $idcat, $auth->auth['uid']);
  * if ($allow == false) {
- * die('I said, you're not coming in!');
+ *     die('I said, you're not coming in!');
  * }
  * </code>
  *
@@ -320,7 +320,7 @@ class cApiCecHook {
     private static function _debug($var, $msg = '') {
         global $cfg;
 
-        $content = ($msg !== '')? $msg . ': ' : '';
+        $content = ($msg !== '') ? $msg . ': ' : '';
         if (is_object($var) || is_array($var)) {
             $content .= print_r($var, true);
         } else {
@@ -336,10 +336,7 @@ class cApiCecHook {
 }
 
 class CEC_Hook extends cApiCecHook {
-
-    /**
-     * @deprecated Class was renamed to cApiCecHook
-     */
+    /** @deprecated Class was renamed to cApiCecHook */
     public function __construct() {
         cDeprecated('Class was renamed to cApiCecHook');
     }

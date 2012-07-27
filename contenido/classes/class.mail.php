@@ -116,8 +116,8 @@ class cMail extends Swift_Mailer {
         }
 
         // get mailserver user and pass from system properties
-        $this->_mailUser = (getSystemProperty('system', 'mail_user'))? getSystemProperty('system', 'mail_user') : '';
-        $this->_mailPass = (getSystemProperty('system', 'mail_pass'))? getSystemProperty('system', 'mail_pass') : '';
+        $this->_mailUser = (getSystemProperty('system', 'mail_user')) ? getSystemProperty('system', 'mail_user') : '';
+        $this->_mailPass = (getSystemProperty('system', 'mail_pass')) ? getSystemProperty('system', 'mail_pass') : '';
 
         // get mailserver encryption from system properties
         $encryptions = array(
@@ -137,10 +137,10 @@ class cMail extends Swift_Mailer {
         $transport = Swift_SmtpTransport::newInstance($this->_mailHost, $this->_mailPort, $this->_mailEncryption);
         if (!empty($this->_mailUser)) {
             $authHandler = new Swift_Transport_Esmtp_AuthHandler(array(
-                new Swift_Transport_Esmtp_Auth_PlainAuthenticator(),
-                new Swift_Transport_Esmtp_Auth_LoginAuthenticator(),
-                new Swift_Transport_Esmtp_Auth_CramMd5Authenticator()
-            ));
+                        new Swift_Transport_Esmtp_Auth_PlainAuthenticator(),
+                        new Swift_Transport_Esmtp_Auth_LoginAuthenticator(),
+                        new Swift_Transport_Esmtp_Auth_CramMd5Authenticator()
+                    ));
             $authHandler->setUsername($this->_mailUser);
             if (!empty($this->_mailPass)) {
                 $authHandler->setPassword($this->_mailPass);

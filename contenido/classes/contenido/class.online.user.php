@@ -36,15 +36,14 @@ if (!defined('CON_FRAMEWORK')) {
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiOnlineUserCollection extends ItemCollection
-{
+class cApiOnlineUserCollection extends ItemCollection {
+
     /**
      * Constructor function.
      *
      * @param  string  $select  Select statement (see ItemCollection::select())
      */
-    public function __construct($select = false)
-    {
+    public function __construct($select = false) {
         global $cfg;
         parent::__construct($cfg['tab']['online_user'], 'user_id');
         $this->_setItemClass('cApiOnlineUser');
@@ -61,8 +60,7 @@ class cApiOnlineUserCollection extends ItemCollection
      *
      * @param  string  $userId  Id of user
      */
-    public function startUsersTracking($userId = null)
-    {
+    public function startUsersTracking($userId = null) {
         global $auth;
 
         $userId = (string) $userId;
@@ -89,8 +87,7 @@ class cApiOnlineUserCollection extends ItemCollection
      * @param  string  $userId  Id of user
      * @return  bool  Returns true if successful else false
      */
-    public function insertOnlineUser($userId)
-    {
+    public function insertOnlineUser($userId) {
         $oItem = parent::createNewItem((string) $userId);
         if ($oItem) {
             $created = date('Y-m-d H:i:s');
@@ -106,8 +103,7 @@ class cApiOnlineUserCollection extends ItemCollection
      * @param  string  $userId  Is the User-Id (get from auth object)
      * @return  bool  Returns true if this User is found, else false
      */
-    public function findUser($userId)
-    {
+    public function findUser($userId) {
         $oUser = new cApiOnlineUser((string) $userId);
         return (!$oUser->virgin);
     }
@@ -118,8 +114,7 @@ class cApiOnlineUserCollection extends ItemCollection
      *
      * @return  array  Returns array of user-information
      */
-    public function findAllUser()
-    {
+    public function findAllUser() {
         // todo use $perm
 
         $aAllUser = array();
@@ -189,8 +184,7 @@ class cApiOnlineUserCollection extends ItemCollection
      * @param  string  $userId  Is the User-Id (get from auth object)
      * @return  Returns true if successful, else false
      */
-    public function updateUser($userId)
-    {
+    public function updateUser($userId) {
         $oUser = new cApiOnlineUser((string) $userId);
         if (!$oUser->virgin) {
             $now = date('Y-m-d H:i:s');
@@ -206,8 +200,7 @@ class cApiOnlineUserCollection extends ItemCollection
      *
      * @return Returns true if successful else false
      */
-    public function deleteInactiveUser()
-    {
+    public function deleteInactiveUser() {
         global $cfg;
         include_once($cfg['path']['contenido_config'] . 'config.misc.php');
         $iSetTimeOut = (int) $cfg['backend']['timeout'];
@@ -227,8 +220,7 @@ class cApiOnlineUserCollection extends ItemCollection
      *
      * @return  int  Returns if exists a number of users
      */
-    public function getNumberOfUsers()
-    {
+    public function getNumberOfUsers() {
         $sql = 'SELECT COUNT(*) AS cnt FROM `%s`';
         $result = $this->db->query($sql, $this->table);
         $this->_lastSQL = $sql;
@@ -245,8 +237,7 @@ class cApiOnlineUserCollection extends ItemCollection
      * @param  string  $userId  Is the User-Id (get from auth object)
      * @return  Returns true if successful, else false
      */
-    public function deleteUser($userId)
-    {
+    public function deleteUser($userId) {
         return $this->delete((string) $userId);
     }
 
@@ -259,28 +250,26 @@ class cApiOnlineUserCollection extends ItemCollection
      * @return  string  Returns the name if successful
      * @deprecated  [2012-03-21] Retrieving client name by client id should not be responsibility of this class
      */
-    public function getWebsiteName($iIdClient)
-    {
+    public function getWebsiteName($iIdClient) {
         cDeprecated('Use cApiClientCollection->getClientname() instead');
         $oClientColl = new cApiClientCollection();
         return $oClientColl->getClientname((int) $iIdClient);
     }
-}
 
+}
 
 /**
  * Online user item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiOnlineUser extends Item
-{
+class cApiOnlineUser extends Item {
+
     /**
      * Constructor function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['online_user'], 'user_id');
         $this->setFilters(array(), array());
@@ -288,8 +277,8 @@ class cApiOnlineUser extends Item
             $this->loadByPrimaryKey($mId);
         }
     }
-}
 
+}
 
 ################################################################################
 # Old versions of active users class
@@ -298,23 +287,22 @@ class cApiOnlineUser extends Item
 #       future versions of CONTENIDO.
 #       Don't use it, it is still available due to downwards compatibility.
 
-
 /**
  * Active users
  * @deprecated  [2012-03-20] Use cApiOnlineUserCollection instead of this class.
  */
-class ActiveUsers extends cApiOnlineUserCollection
-{
-    public function __construct()
-    {
+class ActiveUsers extends cApiOnlineUserCollection {
+
+    public function __construct() {
         cDeprecated('Use class cApiOnlineUserCollection  instead');
         parent::__construct();
     }
-    public function ActiveUsers($oDb, $oCfg, $oAuth)
-    {
+
+    public function ActiveUsers($oDb, $oCfg, $oAuth) {
         cDeprecated('Use __construct() instead');
         $this->__construct();
     }
+
 }
 
 ?>

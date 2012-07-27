@@ -24,15 +24,8 @@
  *
  * {@internal
  *   created 2003-12-21
- *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2009-09-27, Dominik Ziegler, fixed wrong (un)escaping
- *   modified 2011-02-05, Murat Purc, cleanup, formatting and documentation.
- *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *   modified 2011-10-11, Murat Purc, removed in favor of normalizing the API
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

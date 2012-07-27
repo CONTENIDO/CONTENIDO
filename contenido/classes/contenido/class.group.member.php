@@ -23,15 +23,14 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Group member collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
 class cApiGroupMemberCollection extends ItemCollection {
-    public function __construct()
-    {
+
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['groupmembers'], 'idgroupuser');
         $this->_setItemClass('cApiGroupMember');
@@ -44,8 +43,7 @@ class cApiGroupMemberCollection extends ItemCollection {
      * @param  string  $groupId
      * @return cApiGroupMember
      */
-    public function create($userId, $groupId)
-    {
+    public function create($userId, $groupId) {
         $oItem = parent::createNewItem();
 
         $oItem->set('user_id', $this->escape($userId));
@@ -62,8 +60,7 @@ class cApiGroupMemberCollection extends ItemCollection {
      * @param  string  $userId
      * @return  bool
      */
-    public function deleteByUserId($userId)
-    {
+    public function deleteByUserId($userId) {
         $result = $this->deleteBy('user_id', $userId);
         return ($result > 0) ? true : false;
     }
@@ -74,8 +71,7 @@ class cApiGroupMemberCollection extends ItemCollection {
      * @param  string  $groupId
      * @return cApiGroupMember|null
      */
-    public function fetchByUserIdAndGroupId($userId, $groupId)
-    {
+    public function fetchByUserIdAndGroupId($userId, $groupId) {
         $where = "user_id = '" . $this->escape($userId) . "' AND group_id = '" . $this->escape($groupId) . "'";
         if ($this->select($where)) {
             return $this->next();
@@ -83,8 +79,8 @@ class cApiGroupMemberCollection extends ItemCollection {
             return null;
         }
     }
-}
 
+}
 
 /**
  * Group member item
@@ -92,12 +88,12 @@ class cApiGroupMemberCollection extends ItemCollection {
  * @subpackage Model
  */
 class cApiGroupMember extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['groupmembers'], 'idgroupuser');
         $this->setFilters(array(), array());
@@ -105,6 +101,7 @@ class cApiGroupMember extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
+
 }
 
 ?>

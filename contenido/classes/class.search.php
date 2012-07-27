@@ -123,34 +123,24 @@ abstract class cSearchBaseAbstract {
     }
 
 }
-abstract class SearchBaseAbstract extends cSearchBaseAbstract {
 
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cSearchBaseAbstract
-     */
+abstract class SearchBaseAbstract extends cSearchBaseAbstract {
+    /** @deprecated [2012-07-24] class was renamed to cSearchBaseAbstract */
     public function __construct($oDB = null, $bDebug = false) {
         cDeprecated('Class was renamed to cSearchBaseAbstract.');
         parent::__construct($oDB, $bDebug);
     }
-
 }
 
-/**
- *
- * @deprecated [2012-02-25] Use cSearchIndex instead.
- */
+/** @deprecated [2012-02-25] Use cSearchIndex instead. */
 class Index extends cSearchIndex {
-
     public function __construct($oDB = null) {
         cDeprecated('Use cSearchIndex instead.');
         parent::SearchIndex($oDB);
     }
-
     public function Index($oDB = null) {
         $this->__construct($oDB);
     }
-
 }
 
 /**
@@ -195,8 +185,8 @@ class Index extends cSearchIndex {
  * Index.
  * Consider character tables in relation 'con_chartable'.
  */
-
 cInclude('includes', 'functions.encoding.php');
+
 class cSearchIndex extends cSearchBaseAbstract {
 
     /**
@@ -375,12 +365,12 @@ class cSearchIndex extends cSearchBaseAbstract {
                         $code = str_ireplace(array(
                             '<br>',
                             '<br />'
-                        ), "\n", $code); // replace
-                                         // HTML
-                                         // line
-                                         // breaks
-                                         // with
-                                         // newlines
+                                ), "\n", $code); // replace
+                        // HTML
+                        // line
+                        // breaks
+                        // with
+                        // newlines
                         $code = strip_tags($code); // remove html tags
                         if (strlen($code) > 0) {
                             $code = html_entity_decode($code);
@@ -388,21 +378,21 @@ class cSearchIndex extends cSearchBaseAbstract {
                         $this->_debug('code', $code);
 
                         $tmp_keys = preg_split('/[\s,]+/', trim($code)); // split
-                                                                         // content
-                                                                         // by
-                                                                         // any
-                                                                         // number
-                                                                         // of
-                                                                         // commas
-                                                                         // or
-                                                                         // space
-                                                                         // characters
+                        // content
+                        // by
+                        // any
+                        // number
+                        // of
+                        // commas
+                        // or
+                        // space
+                        // characters
                         $this->_debug('tmp_keys', $tmp_keys);
 
                         foreach ($tmp_keys as $value) {
                             $value = strtolower($value); // index terms are
-                                                         // stored with lower
-                                                         // case
+                            // stored with lower
+                            // case
 
                             if (!in_array($value, $this->_stopwords)) {
                                 // eliminate stopwords
@@ -444,7 +434,6 @@ class cSearchIndex extends cSearchBaseAbstract {
 
             if (!array_key_exists($keyword, $this->_keywordsOld)) {
                 // if keyword is new, save index information
-
                 // $nextid = $this->db->nextid($this->cfg['tab']['keywords']);
 
                 $sql = "INSERT INTO " . $this->cfg['tab']['keywords'] . "
@@ -565,7 +554,7 @@ class cSearchIndex extends cSearchBaseAbstract {
 
         for ($i = 127; $i < 192; $i++) {
             array_push($aSpecialChars, chr($i)); // some other special
-                                                     // characters
+            // characters
         }
 
         // TODO: The transformation of accented characters must depend on the
@@ -693,7 +682,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      */
     public function checkCmsType($idtype) {
         $idtype = strtoupper($idtype);
-        return (in_array($idtype, $this->_cmsOptions))? false : true;
+        return (in_array($idtype, $this->_cmsOptions)) ? false : true;
     }
 
     /**
@@ -713,6 +702,7 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
 }
+
 class SearchIndex extends cSearchIndex {
 
     /**
@@ -995,12 +985,12 @@ class cSearch extends cSearchBaseAbstract {
         $this->_cmsType = $this->_index->cms_type;
         $this->_cmsTypeSuffix = $this->_index->cms_type_suffix;
 
-        $this->_searchOption = (array_key_exists('db', $options))? strtolower($options['db']) : 'regexp';
-        $this->_searchCombination = (array_key_exists('combine', $options))? strtolower($options['combine']) : 'or';
-        $this->_protected = (array_key_exists('protected', $options))? $options['protected'] : true;
-        $this->_dontshowofflinearticles = (array_key_exists('dontshowofflinearticles', $options))? $options['dontshowofflinearticles'] : false;
-        $this->_exclude = (array_key_exists('exclude', $options))? $options['exclude'] : true;
-        $this->_articleSpecs = (array_key_exists('artspecs', $options) && is_array($options['artspecs']))? $options['artspecs'] : array();
+        $this->_searchOption = (array_key_exists('db', $options)) ? strtolower($options['db']) : 'regexp';
+        $this->_searchCombination = (array_key_exists('combine', $options)) ? strtolower($options['combine']) : 'or';
+        $this->_protected = (array_key_exists('protected', $options)) ? $options['protected'] : true;
+        $this->_dontshowofflinearticles = (array_key_exists('dontshowofflinearticles', $options)) ? $options['dontshowofflinearticles'] : false;
+        $this->_exclude = (array_key_exists('exclude', $options)) ? $options['exclude'] : true;
+        $this->_articleSpecs = (array_key_exists('artspecs', $options) && is_array($options['artspecs'])) ? $options['artspecs'] : array();
         $this->_index->setCmsOptions($this->_cmsTypeSuffix);
 
         if (array_key_exists('searchable_articles', $options) && is_array($options['searchable_articles'])) {
@@ -1010,7 +1000,7 @@ class cSearch extends cSearchBaseAbstract {
         }
 
         $this->intMinimumSimilarity = 50; // minimum similarity between
-                                              // searchword and keyword in percent
+        // searchword and keyword in percent
     }
 
     /**
@@ -1096,11 +1086,11 @@ class cSearch extends cSearchBaseAbstract {
                     $similarity = 0;
                     foreach ($this->_searchWords as $word) {
                         similar_text($word, $keyword, $percent); // computes
-                                                                 // similarity
-                                                                 // between
-                                                                 // searchword
-                                                                 // and keyword
-                                                                 // in percent
+                        // similarity
+                        // between
+                        // searchword
+                        // and keyword
+                        // in percent
                         if ($percent > $similarity) {
                             $similarity = $percent;
                             $searchword = $word;
@@ -1187,11 +1177,11 @@ class cSearch extends cSearchBaseAbstract {
         $searchwords = strip_tags($searchwords); // remove html tags
 
         $tmp_words = preg_split('/[\s,]+/', trim($searchwords)); // split the
-                                                                 // phrase by
-                                                                 // any number
-                                                                 // of commas or
-                                                                 // space
-                                                                 // characters
+        // phrase by
+        // any number
+        // of commas or
+        // space
+        // characters
 
         $tmp_searchwords = array();
 
@@ -1396,6 +1386,7 @@ class cSearch extends cSearchBaseAbstract {
     }
 
 }
+
 class Search extends cSearch {
 
     /**
@@ -1639,8 +1630,8 @@ class cSearchResult extends cSearchBaseAbstract {
                             $pattern = $match[0];
                             $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
                             $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize
-                                                                                                        // located
-                                                                                                        // searchwords
+                            // located
+                            // searchwords
                         }
                     }
                 }
@@ -1658,8 +1649,8 @@ class cSearchResult extends cSearchBaseAbstract {
                                 $pattern = $match[0];
                                 $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
                                 $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize
-                                                                                                            // located
-                                                                                                            // searchwords
+                                // located
+                                // searchwords
                             }
                         }
                     }
@@ -1766,6 +1757,7 @@ class cSearchResult extends cSearchBaseAbstract {
     }
 
 }
+
 class SearchResult extends cSearchResult {
 
     /**

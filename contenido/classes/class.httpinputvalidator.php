@@ -72,7 +72,6 @@ class HttpInputValidator extends cRequestValidator {
      */
     function showPosts($bReturn = false) {
         cDeprecated("This class was replaced by cRequestValidator");
-
         return "dummy function";
     }
 
@@ -86,9 +85,9 @@ class HttpInputValidator extends cRequestValidator {
      */
     function isRegularPost($sKey) {
         cDeprecated("This class was replaced by cRequestValidator");
-
         return true;
     }
 
 }
+
 ?>

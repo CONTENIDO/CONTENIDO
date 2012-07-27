@@ -24,6 +24,7 @@
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
+
 class cUpdateNotifier {
 
     /**
@@ -745,7 +746,7 @@ class cUpdateNotifier {
             fclose($oSocket);
         }
 
-        return ($sVendorFile != "")? $sVendorFile : false;
+        return ($sVendorFile != "") ? $sVendorFile : false;
     }
 
     /**
@@ -786,6 +787,7 @@ class cUpdateNotifier {
     }
 
 }
+
 class Contenido_UpdateNotifier extends cUpdateNotifier {
 
     /**

@@ -218,9 +218,9 @@ class cHTML {
      */
     public function setAlt($alt) {
         return $this->updateAttributes(array(
-            'alt' => $alt,
-            'title' => $alt
-        ));
+                    'alt' => $alt,
+                    'title' => $alt
+                ));
     }
 
     /**
@@ -568,8 +568,8 @@ class cHTML {
      */
     public function updateAttribute($name, $value) {
         return $this->updateAttributes(array(
-            $name => $value
-        ));
+                    $name => $value
+                ));
     }
 
     /**
@@ -2735,9 +2735,7 @@ class cHTMLAlignmentTable extends cHTMLTable {
 class cHTMLForm extends cHTML {
 
     protected $_name;
-
     protected $_action;
-
     protected $_method;
 
     /**
@@ -2952,8 +2950,8 @@ class cHTMLListItem extends cHTML {
  * @subpackage Frontend
  */
 class cHTMLLink extends cHTML {
-
     /* Stores the link location */
+
     protected $_link;
 
     /* Stores the content */
@@ -2964,7 +2962,6 @@ class cHTMLLink extends cHTML {
 
     /* Stores the custom entries */
     protected $_custom;
-
     protected $_image;
 
     /**
@@ -3192,39 +3189,22 @@ class cHTMLLink extends cHTML {
 class Link extends cHTMLLink {
 
     public $link;
-
     public $title;
-
     public $targetarea;
-
     public $targetframe;
-
     public $targetaction;
-
     public $targetarea2;
-
     public $targetframe2;
-
     public $targetaction2;
-
     public $caption;
-
     public $javascripts;
-
     public $type;
-
     public $custom;
-
     public $content;
-
     public $attributes;
-
     public $img_width;
-
     public $img_height;
-
     public $img_type;
-
     public $img_attr;
 
     public function __construct() {

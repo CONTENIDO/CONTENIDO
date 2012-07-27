@@ -29,19 +29,17 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Language collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiLanguageCollection extends ItemCollection
-{
+class cApiLanguageCollection extends ItemCollection {
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['lang'], 'idlang');
         $this->_setItemClass('cApiLanguage');
@@ -49,8 +47,7 @@ class cApiLanguageCollection extends ItemCollection
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiLanguageCollection()
-    {
+    public function cApiLanguageCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -65,8 +62,7 @@ class cApiLanguageCollection extends ItemCollection
      * @param string $direction
      * @return cApiLanguage
      */
-    public function create($name, $active, $encoding, $direction)
-    {
+    public function create($name, $active, $encoding, $direction) {
         global $auth;
 
         $item = parent::createNewItem();
@@ -93,8 +89,7 @@ class cApiLanguageCollection extends ItemCollection
      *
      * @return  cApiLanguage|null
      */
-    public function nextAccessible()
-    {
+    public function nextAccessible() {
         global $perm, $cfg, $client, $lang;
 
         $item = parent::next();
@@ -112,8 +107,8 @@ class cApiLanguageCollection extends ItemCollection
 
         if ($item) {
             if ($perm->have_perm_client('lang[' . $item->get('idlang') . ']') ||
-                $perm->have_perm_client('admin[' . $client . ']') ||
-                $perm->have_perm_client()) {
+                    $perm->have_perm_client('admin[' . $client . ']') ||
+                    $perm->have_perm_client()) {
                 // Do nothing for now
             } else {
                 $item = $this->nextAccessible();
@@ -127,20 +122,18 @@ class cApiLanguageCollection extends ItemCollection
 
 }
 
-
 /**
  * Language item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiLanguage extends Item
-{
+class cApiLanguage extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['lang'], 'idlang');
         if ($mId !== false) {
@@ -149,8 +142,7 @@ class cApiLanguage extends Item
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiLanguage($mId = false)
-    {
+    public function cApiLanguage($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
@@ -160,14 +152,12 @@ class cApiLanguage extends Item
      *
      * @return bool
      */
-    public function store()
-    {
+    public function store() {
         $this->set('lastmodified', date('Y-m-d H:i:s'), false);
         return parent::store();
     }
 
 }
-
 
 ################################################################################
 # Old versions of language item collection and language item classes
@@ -176,42 +166,40 @@ class cApiLanguage extends Item
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 
-
 /**
  * Language collection
  * @deprecated  [2011-11-15] Use cApiLanguageCollection instead of this class.
  */
-class Languages extends cApiLanguageCollection
-{
-    public function __construct()
-    {
+class Languages extends cApiLanguageCollection {
+
+    public function __construct() {
         cDeprecated("Use class cApiLanguageCollection instead");
         parent::__construct();
     }
-    public function Languages()
-    {
+
+    public function Languages() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
-}
 
+}
 
 /**
  * Single language item
  * @deprecated  [2011-11-15] Use cApiLanguage instead of this class.
  */
-class Language extends cApiLanguage
-{
-    public function __construct($mId = false)
-    {
+class Language extends cApiLanguage {
+
+    public function __construct($mId = false) {
         cDeprecated("Use class cApiLanguage instead");
         parent::__construct($mId);
     }
-    public function Language($mId = false)
-    {
+
+    public function Language($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
 }
 
 ?>

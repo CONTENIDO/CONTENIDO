@@ -43,14 +43,13 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * System property collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiSystemPropertyCollection extends ItemCollection
-{
+class cApiSystemPropertyCollection extends ItemCollection {
+
     /**
      * List of cached entries
      * @var array
@@ -66,16 +65,14 @@ class cApiSystemPropertyCollection extends ItemCollection
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['system_prop'], 'idsystemprop');
         $this->_setItemClass('cApiSystemProperty');
 
         if (!isset(self::$_enableCache)) {
             if (isset($cfg['properties']) && isset($cfg['properties']['system_prop'])
-                && isset($cfg['properties']['system_prop']['enable_cache']))
-            {
+                    && isset($cfg['properties']['system_prop']['enable_cache'])) {
                 self::$_enableCache = (bool) $cfg['properties']['system_prop']['enable_cache'];
             } else {
                 self::$_enableCache = false;
@@ -90,8 +87,7 @@ class cApiSystemPropertyCollection extends ItemCollection
     /**
      * Resets the states of static properties.
      */
-    public static function reset()
-    {
+    public static function reset() {
         unset(self::$_enableCache, self::$_entries);
     }
 
@@ -103,8 +99,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param  int  $id
      * @return cApiSystemProperty|null
      */
-    public function setTypeNameValueById($type, $name, $value, $id)
-    {
+    public function setTypeNameValueById($type, $name, $value, $id) {
         $item = $this->fetchById($id);
         if (!$item) {
             return null;
@@ -129,8 +124,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param  string  $value
      * @return cApiSystemProperty
      */
-    public function setValueByTypeName($type, $name, $value)
-    {
+    public function setValueByTypeName($type, $name, $value) {
         $item = $this->fetchByTypeName($type, $name);
         if ($item) {
             $item->set('value', $this->escape($value));
@@ -153,8 +147,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param  string  $value
      * @return cApiSystemProperty
      */
-    public function create($type, $name, $value)
-    {
+    public function create($type, $name, $value) {
         $item = parent::createNewItem();
 
         $item->set('type', $this->escape($type));
@@ -174,8 +167,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param  string  $orderBy  Order by clause like "value ASC"
      * @return cApiSystemProperty[]
      */
-    public function fetchAll($orderBy = '')
-    {
+    public function fetchAll($orderBy = '') {
         if (self::$_enableCache) {
             // no order for cached results
             return $this->_fetchAllFromCache();
@@ -194,8 +186,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param  int  $id
      * @return cApiSystemProperty|null
      */
-    public function fetchById($id)
-    {
+    public function fetchById($id) {
         if (self::$_enableCache) {
             return $this->_fetchByIdFromCache($id);
         }
@@ -210,8 +201,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param  string  $name
      * @return cApiSystemProperty|null
      */
-    public function fetchByTypeName($type, $name)
-    {
+    public function fetchByTypeName($type, $name) {
         if (self::$_enableCache) {
             return $this->_fetchByTypeNameFromCache($type, $name);
         }
@@ -228,8 +218,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param  string  $type
      * @return cApiSystemProperty[]
      */
-    public function fetchByType($type)
-    {
+    public function fetchByType($type) {
         if (self::$_enableCache) {
             return $this->_fetchByTypeFromCache($type);
         }
@@ -248,8 +237,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param  string  $name
      * @return bool
      */
-    public function deleteByTypeName($type, $name)
-    {
+    public function deleteByTypeName($type, $name) {
         $this->select("type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
         return $this->_deleteSelected();
     }
@@ -259,8 +247,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param  string  $type
      * @return bool
      */
-    public function deleteByType($type)
-    {
+    public function deleteByType($type) {
         $this->select("type='" . $this->escape($type) . "'");
         return $this->_deleteSelected();
     }
@@ -269,8 +256,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * Deletes selected system properties.
      * @return bool
      */
-    protected function _deleteSelected()
-    {
+    protected function _deleteSelected() {
         $result = false;
         while ($system = $this->next()) {
             $id = $system->get('idsystemprop');
@@ -285,8 +271,7 @@ class cApiSystemPropertyCollection extends ItemCollection
     /**
      * Loads/Caches all system properties.
      */
-    protected function _loadFromCache()
-    {
+    protected function _loadFromCache() {
         self::$_entries = array();
         $this->select();
         while ($property = $this->next()) {
@@ -299,8 +284,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * Adds a entry to the cache.
      * @param  cApiSystemProperty  $entry
      */
-    protected function _addToCache($entry)
-    {
+    protected function _addToCache($entry) {
         $data = $entry->toArray();
         self::$_entries[$data['idsystemprop']] = $data;
     }
@@ -309,8 +293,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * Fetches all entries from cache.
      * @return  cApiSystemProperty[]
      */
-    protected function _fetchAllFromCache()
-    {
+    protected function _fetchAllFromCache() {
         $props = array();
         $obj = new cApiSystemProperty();
         foreach (self::$_entries as $entry) {
@@ -325,8 +308,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param   int  $id
      * @return  cApiSystemProperty|null
      */
-    protected function _fetchByIdFromCache($id)
-    {
+    protected function _fetchByIdFromCache($id) {
         $obj = new cApiSystemProperty();
         foreach (self::$_entries as $_id => $entry) {
             if ($_id == $id) {
@@ -343,8 +325,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param   string  $name
      * @return  cApiSystemProperty|null
      */
-    protected function _fetchByTypeNameFromCache($type, $name)
-    {
+    protected function _fetchByTypeNameFromCache($type, $name) {
         $obj = new cApiSystemProperty();
         foreach (self::$_entries as $entry) {
             if ($entry['type'] == $type && $entry['name'] == $name) {
@@ -360,8 +341,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param   string  $type
      * @return  cApiSystemProperty[]
      */
-    protected function _fetchByTypeFromCache($type)
-    {
+    protected function _fetchByTypeFromCache($type) {
         $props = array();
         $obj = new cApiSystemProperty();
         foreach (self::$_entries as $entry) {
@@ -377,8 +357,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * Removes a entry from cache.
      * @param   int  $id
      */
-    protected function _deleteFromCache($id)
-    {
+    protected function _deleteFromCache($id) {
         if (isset(self::$_entries[$id])) {
             unset(self::$_entries[$id]);
         }
@@ -386,20 +365,18 @@ class cApiSystemPropertyCollection extends ItemCollection
 
 }
 
-
 /**
  * System property item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiSystemProperty extends Item
-{
+class cApiSystemProperty extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['system_prop'], 'idsystemprop');
         $this->setFilters(array(), array());
@@ -413,11 +390,11 @@ class cApiSystemProperty extends Item
      * @param   string  $value
      * @return  bool
      */
-    public function updateValue($value)
-    {
+    public function updateValue($value) {
         $this->set('value', $this->escape($value));
         return $this->store();
     }
+
 }
 
 ?>

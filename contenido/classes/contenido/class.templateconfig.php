@@ -28,16 +28,14 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Template configuration collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiTemplateConfigurationCollection extends ItemCollection
-{
-    public function __construct($select = false)
-    {
+class cApiTemplateConfigurationCollection extends ItemCollection {
+
+    public function __construct($select = false) {
         global $cfg;
         parent::__construct($cfg['tab']['tpl_conf'], 'idtplcfg');
         $this->_setItemClass('cApiTemplateConfiguration');
@@ -47,8 +45,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiTemplateConfigurationCollection($select = false)
-    {
+    public function cApiTemplateConfigurationCollection($select = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($select);
     }
@@ -58,13 +55,12 @@ class cApiTemplateConfigurationCollection extends ItemCollection
      * @param  int  $idtplcfg
      * @return  bool
      */
-    public function delete($idtplcfg)
-    {
+    public function delete($idtplcfg) {
         $result = parent::delete($idtplcfg);
 
         // Delete also all container configurations
-        $oContainerConfColl = new cApiContainerConfigurationCollection('idtplcfg=' . (int) $idtplcfg);
-        $oContainerConfColl->deleteByWhereClause('idtplcfg=' . (int) $idtplcfg);
+        $oContainerConfColl = new cApiContainerConfigurationCollection('idtplcfg = ' . (int) $idtplcfg);
+        $oContainerConfColl->deleteByWhereClause('idtplcfg = ' . (int) $idtplcfg);
 
         return $result;
     }
@@ -79,8 +75,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
      * @param   string  $lastmodified
      * @return  cApiTemplateConfiguration
      */
-    public function create($idtpl, $status = 0, $author = '', $created = '', $lastmodified = '')
-    {
+    public function create($idtpl, $status = 0, $author = '', $created = '', $lastmodified = '') {
         global $auth;
 
         if (empty($author)) {
@@ -111,7 +106,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
      * @param  int  $idtplcfg
      */
     public function copyTemplatePreconfiguration($idtpl, $idtplcfg) {
-        $oTemplateColl = new cApiTemplateCollection('idtpl=' . (int) $idtpl);
+        $oTemplateColl = new cApiTemplateCollection('idtpl = ' . (int) $idtpl);
 
         if ($oTemplate = $oTemplateColl->next()) {
             if ($oTemplate->get('idtplcfg') > 0) {
@@ -127,22 +122,21 @@ class cApiTemplateConfigurationCollection extends ItemCollection
             }
         }
     }
-}
 
+}
 
 /**
  * Template configuration item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiTemplateConfiguration extends Item
-{
+class cApiTemplateConfiguration extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['tpl_conf'], 'idtplcfg');
         $this->setFilters(array(), array());
@@ -152,8 +146,7 @@ class cApiTemplateConfiguration extends Item
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiTemplateConfiguration($mId = false)
-    {
+    public function cApiTemplateConfiguration($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId = false);
     }

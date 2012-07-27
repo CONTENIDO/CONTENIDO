@@ -33,8 +33,8 @@ if (!defined('CON_FRAMEWORK')) {
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiPathresolveCacheHelper
-{
+class cApiPathresolveCacheHelper {
+
     /**
      * Flag to state state about created heap table.
      * @var  bool
@@ -45,8 +45,7 @@ class cApiPathresolveCacheHelper
      * Checks configuration of heap table creation, it's existance and creates it if needed.
      * @param  array  $cfg  Global CONTENIDO config array
      */
-    public static function setup($cfg)
-    {
+    public static function setup($cfg) {
         if (true === $cfg['pathresolve_heapcache'] && false === self::$_tableCreated) {
             $db = cRegistry::getDb();
             $tableName = $cfg['sql']['sqlprefix'] . '_pathresolve_cache';
@@ -71,6 +70,7 @@ class cApiPathresolveCacheHelper
             self::$_tableCreated = true;
         }
     }
+
 }
 
 /**
@@ -78,13 +78,12 @@ class cApiPathresolveCacheHelper
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiPathresolveCacheCollection extends ItemCollection
-{
+class cApiPathresolveCacheCollection extends ItemCollection {
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         cApiPathresolveCacheHelper::setup($cfg['sql']['sqlprefix'] . '_pathresolve_cache');
         parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
@@ -99,8 +98,7 @@ class cApiPathresolveCacheCollection extends ItemCollection
      * @param string $lastcached
      * @return cApiPathresolveCache
      */
-    public function create($path, $idcat, $idlang, $lastcached = '')
-    {
+    public function create($path, $idcat, $idlang, $lastcached = '') {
         $oItem = parent::createNewItem();
 
         if (empty($lastcached)) {
@@ -122,8 +120,7 @@ class cApiPathresolveCacheCollection extends ItemCollection
      * @param int $idlang
      * @return cApiPathresolveCache|null
      */
-    public function fetchLatestByPathAndLanguage($path, $idlang)
-    {
+    public function fetchLatestByPathAndLanguage($path, $idlang) {
         $this->select("path LIKE '" . $this->db->escape($path) . "' AND idlang=" . (int) $idlang, '', 'lastcached DESC', '1');
         return $this->next();
     }
@@ -133,29 +130,27 @@ class cApiPathresolveCacheCollection extends ItemCollection
      * @param int $idcat
      * @param int $idlang
      */
-    public function deleteByCategoryAndLanguage($idcat, $idlang)
-    {
+    public function deleteByCategoryAndLanguage($idcat, $idlang) {
         $this->select('idcat=' . (int) $idcat . ' AND idlang=' . (int) $idlang);
         while ($oCode = $this->next()) {
             $this->delete($oCode->get('idpathresolvecache'));
         }
     }
-}
 
+}
 
 /**
  * Pathresolve cache item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiPathresolveCache extends Item
-{
+class cApiPathresolveCache extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         cApiPathresolveCacheHelper::setup($cfg['sql']['sqlprefix'] . '_pathresolve_cache');
         parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
@@ -170,8 +165,7 @@ class cApiPathresolveCache extends Item
      * @return  bool
      * @throws Exception  If item was not loaded before
      */
-    public function isCacheTimeExpired()
-    {
+    public function isCacheTimeExpired() {
         global $cfg;
         if (!$this->isLoaded()) {
             throw new Exception('Item not loaded!');
@@ -179,6 +173,7 @@ class cApiPathresolveCache extends Item
         $cacheTime = (isset($cfg['pathresolve_heapcache_time'])) ? $cfg['pathresolve_heapcache_time'] : 60 * 60 * 24;
         return ($this->get('lastcached') + $cacheTime < time());
     }
+
 }
 
 ?>

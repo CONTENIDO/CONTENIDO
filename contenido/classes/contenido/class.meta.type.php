@@ -28,13 +28,13 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Metatype collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
 class cApiMetaTypeCollection extends ItemCollection {
+
     /**
      * Constructor
      */
@@ -65,7 +65,6 @@ class cApiMetaTypeCollection extends ItemCollection {
     }
 
 }
-
 
 /**
  * Metatype item

@@ -23,14 +23,8 @@
  *
  * {@internal
  *   created 2003
- *   modified 2008-06-30, Frederic Schneider, add security fix
- *   modified 2009-10-15, Dominik Ziegler, getAvailableActions() now also returns the areaname
- *   modified 2010-07-03, Ortwin Pinke, CON-318, only return actions marked as relevant in getAvailableActions()
- *                        also fixed doc-comment for getActionName()
- *
  *   $Id$;
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

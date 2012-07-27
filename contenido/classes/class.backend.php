@@ -23,6 +23,7 @@
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
+
 class cBackend {
 
     /**
@@ -287,12 +288,9 @@ class cBackend {
     }
 
 }
-class Contenido_Backend extends cBackend {
 
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cBackend
-     */
+class Contenido_Backend extends cBackend {
+    /** @deprecated [2012-07-24] class was renamed to cBackend */
     public function __construct() {
         cDeprecated('Class was renamed to cBackend.');
     }

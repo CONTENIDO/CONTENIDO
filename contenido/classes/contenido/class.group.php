@@ -23,16 +23,14 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Group collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiGroupCollection extends ItemCollection
-{
-    public function __construct()
-    {
+class cApiGroupCollection extends ItemCollection {
+
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['groups'], 'group_id');
         $this->_setItemClass('cApiGroup');
@@ -46,8 +44,7 @@ class cApiGroupCollection extends ItemCollection
      * @param  string  $description
      * @return cApiGroup|null
      */
-    public function create($groupname, $perms, $description)
-    {
+    public function create($groupname, $perms, $description) {
         $primaryKeyValue = md5($groupname);
 
         $item = parent::createNewItem($primaryKeyValue);
@@ -70,15 +67,14 @@ class cApiGroupCollection extends ItemCollection
      * @param   string    $userid
      * @return  cApiGroup[]  List of groups
      */
-    public function fetchByUserID($userid)
-    {
+    public function fetchByUserID($userid) {
         global $cfg;
 
         $aIds = array();
         $aGroups = array();
 
         $sql = "SELECT a.group_id FROM `%s` AS a, `%s` AS b "
-             . "WHERE (a.group_id  = b.group_id) AND (b.user_id = '%s')";
+                . "WHERE (a.group_id  = b.group_id) AND (b.user_id = '%s')";
 
         $this->db->query($sql, $this->table, $cfg['tab']['groupmembers'], $userid);
         $this->_lastSQL = $sql;
@@ -91,7 +87,7 @@ class cApiGroupCollection extends ItemCollection
             return $aGroups;
         }
 
-        $where = "group_id IN ('" . implode("', '", $aIds) .  "')";
+        $where = "group_id IN ('" . implode("', '", $aIds) . "')";
         $this->select($where);
         while ($oItem = $this->next()) {
             $aGroups[] = clone $oItem;
@@ -107,8 +103,7 @@ class cApiGroupCollection extends ItemCollection
      * @return  bool    True if the delete was successful
      * @deprecated  [2012-03-27]  Use cApiGroupCollection->delete() instead
      */
-    public function deleteGroupByID($groupid)
-    {
+    public function deleteGroupByID($groupid) {
         cDeprecated("Use cApiGroupCollection->delete() instead");
         return $this->delete($groupid);
     }
@@ -119,8 +114,7 @@ class cApiGroupCollection extends ItemCollection
      * @param   string  $groupname  Specifies the groupname
      * @return  bool    True if the delete was successful
      */
-    public function deleteGroupByGroupname($groupname)
-    {
+    public function deleteGroupByGroupname($groupname) {
         $groupname = cApiGroup::prefixedGroupName($groupname);
         $result = $this->deleteBy('groupname', $groupname);
         return ($result > 0) ? true : false;
@@ -132,8 +126,7 @@ class cApiGroupCollection extends ItemCollection
      * @param   array  $perms
      * @return  cApiGroup  Array of group objects
      */
-    public function fetchAccessibleGroups($perms)
-    {
+    public function fetchAccessibleGroups($perms) {
         $groups = array();
         $limit = array();
         $where = '';
@@ -173,8 +166,7 @@ class cApiGroupCollection extends ItemCollection
      * @return  array  Array of user like $arr[user_id][groupname], $arr[user_id][description]
      *                 Note: Value of $arr[user_id][groupname] is cleaned from prefix "grp_"
      */
-    public function getAccessibleGroups($perms)
-    {
+    public function getAccessibleGroups($perms) {
         $groups = array();
         $oGroups = $this->fetchAccessibleGroups($perms);
         foreach ($oGroups as $oItem) {
@@ -188,22 +180,20 @@ class cApiGroupCollection extends ItemCollection
 
 }
 
-
 /**
  * Group item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiGroup extends Item
-{
+class cApiGroup extends Item {
+
     const PREFIX = 'grp_';
 
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['groups'], 'group_id');
         $this->setFilters(array(), array());
@@ -218,8 +208,7 @@ class cApiGroup extends Item
      * @param   string  $groupId  Specifies the groupId
      * @return  bool    True if the load was successful
      */
-    public function loadGroupByGroupID($groupId)
-    {
+    public function loadGroupByGroupID($groupId) {
         return $this->loadByPrimaryKey($groupId);
     }
 
@@ -229,8 +218,7 @@ class cApiGroup extends Item
      * @param   string  $groupname  Specifies the groupname
      * @return  bool    True if the load was successful
      */
-    public function loadGroupByGroupname($groupname)
-    {
+    public function loadGroupByGroupname($groupname) {
         $groupname = cApiGroup::prefixedGroupName($groupname);
         return $this->loadBy('groupname', $groupname);
     }
@@ -242,8 +230,7 @@ class cApiGroup extends Item
      * @param  string  $mValue  Value to set
      * @param  bool    $bSafe   Flag to run defined inFilter on passed value
      */
-    public function setField($sField, $mValue, $bSafe = true)
-    {
+    public function setField($sField, $mValue, $bSafe = true) {
         if ('perms' === $sField) {
             if (is_array($mValue)) {
                 $mValue = implode(',', $mValue);
@@ -257,8 +244,7 @@ class cApiGroup extends Item
      * Returns list of group permissions.
      * @return array
      */
-    public function getPermsArray()
-    {
+    public function getPermsArray() {
         return explode(',', $this->get('perms'));
     }
 
@@ -266,8 +252,7 @@ class cApiGroup extends Item
      * Returns name of group.
      * @return  bool  $removePrefix Flag to remove "grp_" prefix from group name
      */
-    public function getGroupName($removePrefix = false)
-    {
+    public function getGroupName($removePrefix = false) {
         $groupname = $this->get('groupname');
         return (false === $removePrefix) ? $groupname : self::getUnprefixedGroupName($groupname);
     }
@@ -277,8 +262,7 @@ class cApiGroup extends Item
      * @param  string  $groupname
      * @return  string
      */
-    public static function getUnprefixedGroupName($groupname)
-    {
+    public static function getUnprefixedGroupName($groupname) {
         return substr($groupname, strlen(self::PREFIX));
     }
 
@@ -287,8 +271,7 @@ class cApiGroup extends Item
      * @param  string  $groupname
      * @return  string
      */
-    public static function prefixedGroupName($groupname)
-    {
+    public static function prefixedGroupName($groupname) {
         if (substr($groupname, 0, strlen(cApiGroup::PREFIX)) != cApiGroup::PREFIX) {
             return cApiGroup::PREFIX . $groupname;
         }
@@ -301,8 +284,7 @@ class cApiGroup extends Item
      * @param  string  $name
      * @return string|bool  Property value or false
      */
-    public function getGroupProperty($type, $name)
-    {
+    public function getGroupProperty($type, $name) {
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
         $groupProp = $groupPropColl->fetchByGroupIdTypeName($type, $name);
         return ($groupProp) ? $groupProp->get('value') : false;
@@ -316,16 +298,15 @@ class cApiGroup extends Item
      *                 - $arr[idgroupprop][type]
      *                 - $arr[idgroupprop][value]
      */
-    public function getGroupProperties()
-    {
+    public function getGroupProperties() {
         $props = array();
 
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
         $groupProps = $groupPropColl->fetchByGroupId();
         foreach ($groupProps as $groupProp) {
             $props[$groupProp->get('idgroupprop')] = array(
-                'name'  => $groupProp->get('name'),
-                'type'  => $groupProp->get('type'),
+                'name' => $groupProp->get('name'),
+                'type' => $groupProp->get('type'),
                 'value' => $groupProp->get('value'),
             );
         }
@@ -341,8 +322,7 @@ class cApiGroup extends Item
      * @param  string  $value  Value to insert
      * @return cApiGroupProperty
      */
-    public function setGroupProperty($type, $name, $value)
-    {
+    public function setGroupProperty($type, $name, $value) {
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
         return $groupPropColl->setValueByTypeName($type, $name, $value);
     }
@@ -353,14 +333,12 @@ class cApiGroup extends Item
      * @param  string  $type  Type (class, category etc) for the property to delete
      * @param  string  $name  Name of the property to delete
      */
-    public function deleteGroupProperty($type, $name)
-    {
+    public function deleteGroupProperty($type, $name) {
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
         return $groupPropColl->deleteByGroupIdTypeName($type, $name);
     }
 
 }
-
 
 ################################################################################
 # Old versions of group item collection and group item classes
@@ -369,67 +347,67 @@ class cApiGroup extends Item
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 
-
 /**
  * Group item collection
  * @deprecated  [[2012-03-27] Use cApiGroupCollection instead of this class.
  */
-class Groups
-{
+class Groups {
+
     var $table;
     var $db;
+
     /** @deprecated  [2012-03-27]  Use cApiGroupCollection() instead */
-    function Groups($table = '')
-    {
+    function Groups($table = '') {
         cDeprecated("Use cApiGroupCollection() instead");
         global $cfg;
         $this->table = ($table == '') ? $cfg['tab']['groups'] : $table;
         $this->db = cRegistry::getDb();
     }
+
     /** @deprecated  [2012-03-27]  Use cApiGroupCollection->delete() instead */
-    function deleteGroupByID($groupid)
-    {
+    function deleteGroupByID($groupid) {
         cDeprecated("Use cApiGroupCollection->delete() instead");
         $oGroupCol = new cApiGroupCollection();
         return $oGroupCol->delete($userid);
     }
+
     /** @deprecated  [2012-03-27]  Use cApiGroupCollection->deleteGroupByGroupname() instead */
-    function deleteGroupByGroupname($groupname)
-    {
+    function deleteGroupByGroupname($groupname) {
         cDeprecated("Use cApiGroupCollection->deleteGroupByGroupname() instead");
         $oGroupCol = new cApiGroupCollection();
         return $oGroupCol->deleteGroupByGroupname($groupname);
     }
+
     /** @deprecated  [2012-03-27]  Use cApiGroupCollection->getAccessibleGroups() instead */
-    function getAccessibleGroups($perms)
-    {
+    function getAccessibleGroups($perms) {
         cDeprecated("Use cApiGroupCollection->getAccessibleGroups() instead");
         $oGroupCol = new cApiGroupCollection();
         return $oGroupCol->getAccessibleGroups($perms);
     }
+
 }
 
 /**
  * Group item
  * @deprecated  [[2012-03-27] Use cApiGroup instead of this class.
  */
-class Group
-{
+class Group {
+
     var $table;
     var $db;
     var $values;
     var $modifiedValues;
+
     /** @deprecated  [2012-03-27]  Use cApiGroup() instead */
-    function Group($table = '')
-    {
+    function Group($table = '') {
         cDeprecated("Use cApiGroup() instead");
         global $cfg;
         $this->table = ($table == '') ? $cfg['tab']['groups'] : $table;
         $this->db = cRegistry::getDb();
     }
+
     /** @deprecated  [2012-03-27]  Use cApiGroup->loadGroupByGroupname() instead */
-    function loadGroupByGroupname($groupname)
-    {
+    function loadGroupByGroupname($groupname) {
         cDeprecated("Use cApiGroup->loadGroupByGroupname() instead");
         $oGroup = new cApiGroup();
         if (!$oGroup->loadGroupByGroupname($groupname)) {
@@ -438,9 +416,9 @@ class Group
         $this->values = $oGroup->toArray();
         return true;
     }
+
     /** @deprecated  [2012-03-27]  Use cApiGroup->loadByPrimaryKey() instead */
-    function loadGroupByGroupID($groupID)
-    {
+    function loadGroupByGroupID($groupID) {
         cDeprecated("Use cApiGroup->loadByPrimaryKey() instead");
         $oGroup = new cApiGroup();
         if (!$oGroup->loadByPrimaryKey($groupID)) {
@@ -449,22 +427,22 @@ class Group
         $this->values = $oGroup->toArray();
         return true;
     }
+
     /** @deprecated  [2012-03-27]  Use cApiGroup() instead */
-    function getField($field)
-    {
+    function getField($field) {
         cDeprecated("Use cApiGroup() instead");
         return ($this->values[$field]);
     }
+
     /** @deprecated  [2012-03-27]  Use cApiGroup() instead */
-    function setField($field, $value, $safe = true)
-    {
+    function setField($field, $value, $safe = true) {
         cDeprecated("Use cApiGroup() instead");
         $this->modifiedValues[$field] = true;
         $this->values[$field] = $value;
     }
+
     /** @deprecated  [2012-03-27]  Use cApiGroup() instead */
-    function store()
-    {
+    function store() {
         cDeprecated("Use cApiGroup() instead");
         $oGroup = new cApiGroup();
         $oGroup->loadByRecordSet($this->values);
@@ -473,51 +451,51 @@ class Group
         }
         return $oGroup->store();
     }
+
     /** @deprecated  [2012-03-27]  Use cApiGroupPropertyCollection->create() instead */
-    function insert()
-    {
+    function insert() {
         cDeprecated("Use cApiGroupPropertyCollection->create() instead");
-        $sql = "INSERT INTO " . $this->table ." SET ";
+        $sql = "INSERT INTO " . $this->table . " SET ";
         $first = true;
         foreach ($this->modifiedValues as $key => $value) {
             if ($first == true) {
-                $sql .= "$key = '" . $this->values[$key] ."'";
+                $sql .= "$key = '" . $this->values[$key] . "'";
             } else {
-                $sql .= ", $key = '" . $this->values[$key] ."'";
+                $sql .= ", $key = '" . $this->values[$key] . "'";
             }
             $first = false;
         }
         return ($this->db->query($sql));
     }
+
     /** @deprecated  [2012-03-27]  Use cApiGroup->getGroupProperty() instead */
-    function getGroupProperty($type, $name)
-    {
+    function getGroupProperty($type, $name) {
         cDeprecated("Use cApiGroup->getGroupProperty() instead");
         $oGroup = new cApiGroup($this->values['group_id']);
         return $oGroup->getGroupProperty($type, $name);
     }
+
     /** @deprecated  [2012-03-27]  Use cApiGroup->getGroupProperty() instead */
-    function getGroupProperties()
-    {
+    function getGroupProperties() {
         cDeprecated("Use cApiGroup->getGroupProperties() instead");
         $oGroup = new cApiGroup($this->values['group_id']);
         return $oGroup->getGroupProperties();
     }
+
     /** @deprecated  [2012-03-27]  Use cApiGroup->setGroupProperty() instead */
-    function setGroupProperty($type, $name, $value)
-    {
+    function setGroupProperty($type, $name, $value) {
         cDeprecated("Use cApiGroup->setGroupProperty() instead");
         $oGroup = new cApiGroup($this->values['group_id']);
         return $oGroup->setGroupProperty($type, $name, $value);
     }
+
     /** @deprecated  [2012-03-27]  Use cApiGroup->deleteGroupProperty() instead */
-    function deleteGroupProperty($type, $name)
-    {
+    function deleteGroupProperty($type, $name) {
         cDeprecated("Use cApiGroup->deleteGroupProperty() instead");
         $oGroup = new cApiGroup($this->values['group_id']);
         return $oGroup->deleteGroupProperty($type, $name);
     }
-}
 
+}
 
 ?>

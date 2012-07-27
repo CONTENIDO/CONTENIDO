@@ -38,16 +38,14 @@
  *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+class cEffectiveSetting {
 
-class cEffectiveSetting
-{
     /**
      * @var array
      */
@@ -73,7 +71,6 @@ class cEffectiveSetting
      */
     protected static $_language;
 
-
     /**
      * Returns effective setting for a property. The requested setting will be cached
      * at first time, the next time the cached value will be returned.
@@ -89,8 +86,7 @@ class cEffectiveSetting
      * @param   string  $default Optional default value
      * @return  string|bool  The setting value or false
      */
-    public static function get($type, $name, $default = '')
-    {
+    public static function get($type, $name, $default = '') {
         global $contenido;
 
         // if the config file does not exist, there is no DB, so just return
@@ -140,7 +136,6 @@ class cEffectiveSetting
         return $value;
     }
 
-
     /**
      * Returns effective setting for a type of properties. Caches also the
      * collected settings, but contrary to get() it returns never cached entries.
@@ -154,8 +149,7 @@ class cEffectiveSetting
      * @param   string  $type The type of the item
      * @return  array  Assoziative array like $arr[name] = value
      */
-    public static function getByType($type)
-    {
+    public static function getByType($type) {
         global $contenido;
 
         $settings = getSystemPropertiesByType($type);
@@ -180,7 +174,6 @@ class cEffectiveSetting
         return $settings;
     }
 
-
     /**
      * Sets a effective setting.
      *
@@ -191,12 +184,10 @@ class cEffectiveSetting
      * @param   string  $name The name of the item
      * @param   string  $value The value of the setting
      */
-    public static function set($type, $name, $value)
-    {
+    public static function set($type, $name, $value) {
         $key = self::_makeKey($type, $name);
         self::_set($key, $value);
     }
-
 
     /**
      * Deletes a effective setting.
@@ -207,8 +198,7 @@ class cEffectiveSetting
      * @param   string  $type The type of the item
      * @param   string  $name The name of the item
      */
-    public static function delete($type, $name)
-    {
+    public static function delete($type, $name) {
         $keySuffix = '_' . $type . '_' . $name;
         foreach (self::$_settings as $key => $value) {
             if (strpos($key, $keySuffix) !== false) {
@@ -217,25 +207,21 @@ class cEffectiveSetting
         }
     }
 
-
     /**
      * Resets all properties of the effective settings class.
      * Usable to start getting settings from scratch.
      */
-    public static function reset()
-    {
+    public static function reset() {
         self::$_settings = array();
         unset(self::$_user, self::$_client, self::$_clientLanguage);
     }
-
 
     /**
      * Returns the user object instance.
      *
      * @return  cApiUser
      */
-    protected static function _getUserInstance()
-    {
+    protected static function _getUserInstance() {
         global $auth;
 
         if (!isset(self::$_user)) {
@@ -244,14 +230,12 @@ class cEffectiveSetting
         return self::$_user;
     }
 
-
     /**
      * Returns the client language object instance.
      *
      * @return  cApiClientLanguage
      */
-    protected static function _getClientLanguageInstance()
-    {
+    protected static function _getClientLanguageInstance() {
         global $client, $lang;
 
         if (!isset(self::$_clientLanguage)) {
@@ -260,14 +244,12 @@ class cEffectiveSetting
         return self::$_clientLanguage;
     }
 
-
     /**
      * Returns the language object instance.
      *
      * @return  cApiLanguage
      */
-    protected static function _getLanguageInstance()
-    {
+    protected static function _getLanguageInstance() {
         global $lang;
 
         if (!isset(self::$_language)) {
@@ -276,14 +258,12 @@ class cEffectiveSetting
         return self::$_language;
     }
 
-
     /**
      * Returns the client language object instance.
      *
      * @return  cApiClient
      */
-    protected static function _getClientInstance()
-    {
+    protected static function _getClientInstance() {
         global $client;
 
         if (!isset(self::$_client)) {
@@ -292,18 +272,15 @@ class cEffectiveSetting
         return self::$_client;
     }
 
-
     /**
      * Setting getter.
      *
      * @param   string  $key  The setting key
      * @return  string|bool  The setting value or false
      */
-    protected static function _get($key)
-    {
+    protected static function _get($key) {
         return (isset(self::$_settings[$key])) ? self::$_settings[$key] : false;
     }
-
 
     /**
      * Setting setter.
@@ -312,11 +289,9 @@ class cEffectiveSetting
      * @param   string  $value  Value to store
      * @return  string|bool  The setting value or false
      */
-    protected static function _set($key, $value)
-    {
+    protected static function _set($key, $value) {
         self::$_settings[$key] = $value;
     }
-
 
     /**
      * Setting key getter.
@@ -325,8 +300,7 @@ class cEffectiveSetting
      * @param   string  $name Name of the item
      * @return  string  The setting key
      */
-    protected static function _makeKey($type, $name)
-    {
+    protected static function _makeKey($type, $name) {
         global $auth;
 
         if ($auth instanceof Contenido_Auth) {
@@ -342,8 +316,7 @@ class cEffectiveSetting
      *
      * @return  bool
      */
-    protected static function _isAuthenticated()
-    {
+    protected static function _isAuthenticated() {
         global $auth;
         return ($auth instanceof Contenido_Auth && $auth->is_authenticated() && !$auth->is_auth_form_uid());
     }

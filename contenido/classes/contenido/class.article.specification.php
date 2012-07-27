@@ -25,9 +25,7 @@
  *   created  2011-09-14
  *   $Id$:
  * }}
- *
  */
-
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
@@ -38,14 +36,13 @@ if (!defined('CON_FRAMEWORK')) {
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiArticleSpecificationCollection extends ItemCollection
-{
+class cApiArticleSpecificationCollection extends ItemCollection {
+
     /**
      * Constructor function
      * @param none
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['art_spec'], 'idartspec');
         $this->_setItemClass('cApiArticleSpecification');
@@ -58,8 +55,7 @@ class cApiArticleSpecificationCollection extends ItemCollection
      * @param  string  $orderby  Order statement, like "artspec ASC"
      * @return cApiGroupProperty[]
      */
-    public function fetchByClientLang($client, $lang, $orderBy = '')
-    {
+    public function fetchByClientLang($client, $lang, $orderBy = '') {
         $this->select("client=" . (int) $client . " AND lang=" . (int) $lang, '', $this->escape($orderBy));
         $entries = array();
         while ($entry = $this->next()) {
@@ -67,22 +63,21 @@ class cApiArticleSpecificationCollection extends ItemCollection
         }
         return $entries;
     }
-}
 
+}
 
 /**
  * Article specification item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiArticleSpecification extends Item
-{
+class cApiArticleSpecification extends Item {
+
     /**
      * Constructor function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['art_spec'], 'idartspec');
         $this->setFilters(array(), array());
@@ -90,8 +85,8 @@ class cApiArticleSpecification extends Item
             $this->loadByPrimaryKey($mId);
         }
     }
-}
 
+}
 
 ################################################################################
 # Old versions of article item collection and article item classes
@@ -100,42 +95,40 @@ class cApiArticleSpecification extends Item
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 
-
 /**
  * Article specification collection
  * @deprecated  [2011-09-19] Use  instead of this class.
  */
-class ArtSpecCollection extends cApiArticleSpecificationCollection
-{
-    public function __construct()
-    {
+class ArtSpecCollection extends cApiArticleSpecificationCollection {
+
+    public function __construct() {
         cDeprecated("Use class cApiArticleSpecificationCollection instead");
         parent::__construct();
     }
-    public function ArtSpecCollection()
-    {
+
+    public function ArtSpecCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
-}
 
+}
 
 /**
  * Article specification Item
  * @deprecated  [2011-09-19] Use cApiArticleSpecification instead of this class.
  */
-class ArtSpecItem extends cApiArticleSpecification
-{
-    public function __construct($mId = false)
-    {
+class ArtSpecItem extends cApiArticleSpecification {
+
+    public function __construct($mId = false) {
         cDeprecated("Use class cApiArticleSpecificationCollection instead");
         parent::__construct($mId);
     }
-    public function ArtSpecItem($mId = false)
-    {
+
+    public function ArtSpecItem($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
 }
 
 ?>

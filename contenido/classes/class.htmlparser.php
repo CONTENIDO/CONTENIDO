@@ -35,12 +35,12 @@ if (!defined('CON_FRAMEWORK')) {
  * website design and software consulting.
  */
 
-define("NODE_TYPE_START",0);
-define("NODE_TYPE_ELEMENT",1);
-define("NODE_TYPE_ENDELEMENT",2);
-define("NODE_TYPE_TEXT",3);
-define("NODE_TYPE_COMMENT",4);
-define("NODE_TYPE_DONE",5);
+define("NODE_TYPE_START", 0);
+define("NODE_TYPE_ELEMENT", 1);
+define("NODE_TYPE_ENDELEMENT", 2);
+define("NODE_TYPE_TEXT", 3);
+define("NODE_TYPE_COMMENT", 4);
+define("NODE_TYPE_DONE", 5);
 
 /**
  * Class HtmlParser.
@@ -75,14 +75,12 @@ class HtmlParser {
      * of the current node. Indexes are always lowercase.
      */
     var $iNodeAttributes;
-
     // The following fields should be
     // considered private:
 
     var $iHtmlText;
     var $iHtmlTextLength;
     var $iHtmlTextIndex = 0;
-
 
     /**
      * Constructor.
@@ -318,6 +316,7 @@ class HtmlParser {
         $this->iHtmlTextIndex = $top;
         return $retvalue;
     }
+
 }
 
 ?>

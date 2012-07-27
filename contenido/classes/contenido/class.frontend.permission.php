@@ -37,8 +37,8 @@ if (!defined('CON_FRAMEWORK')) {
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiFrontendPermissionCollection extends ItemCollection
-{
+class cApiFrontendPermissionCollection extends ItemCollection {
+
     /**
      * @var cApiFrontendPermission
      */
@@ -47,8 +47,7 @@ class cApiFrontendPermissionCollection extends ItemCollection
     /**
      * Constructor Function
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         $this->_frontendPermission = new cApiFrontendPermission();
 
@@ -65,8 +64,7 @@ class cApiFrontendPermissionCollection extends ItemCollection
      * @param  string  $item    Specifies the item
      * @return cApiFrontendPermission|null
      */
-    public function create($group, $plugin, $action, $item)
-    {
+    public function create($group, $plugin, $action, $item) {
         global $lang;
 
         $perm = null;
@@ -92,8 +90,7 @@ class cApiFrontendPermissionCollection extends ItemCollection
      * @param  string  $action  Specifies the action
      * @param  string  $item    Specifies the item
      */
-    public function setPerm($group, $plugin, $action, $item)
-    {
+    public function setPerm($group, $plugin, $action, $item) {
         $this->create($group, $plugin, $action, $item);
     }
 
@@ -110,25 +107,24 @@ class cApiFrontendPermissionCollection extends ItemCollection
      * @param  bool    $useLang  Flag to use language (Not used!)
      * @return bool
      */
-    public function checkPerm($group, $plugin, $action, $item, $useLang = false)
-    {
+    public function checkPerm($group, $plugin, $action, $item, $useLang = false) {
         global $lang;
 
         #$checklang = ($useLang !== false) ? $useLang : $lang;
 
-        $group  = (int) $group;
+        $group = (int) $group;
         $plugin = $this->_frontendPermission->_inFilter($plugin);
         $action = $this->_frontendPermission->_inFilter($action);
-        $item   = $this->_frontendPermission->_inFilter($item);
+        $item = $this->_frontendPermission->_inFilter($item);
 
         // Check for global permisson
-        $this->select("idlang=" . $lang . " AND idfrontendgroup=" . $group . " AND plugin='" . $plugin. "' AND action='" . $action . "' AND item='__GLOBAL__'");
+        $this->select("idlang=" . $lang . " AND idfrontendgroup=" . $group . " AND plugin='" . $plugin . "' AND action='" . $action . "' AND item='__GLOBAL__'");
         if ($this->next()) {
             return true;
         }
 
         // Check for item permisson
-        $this->select("idlang=" . $lang . " AND idfrontendgroup=" . $group . " AND plugin='" . $plugin. "' AND action='" . $action . "' AND item='" . $item . "'");
+        $this->select("idlang=" . $lang . " AND idfrontendgroup=" . $group . " AND plugin='" . $plugin . "' AND action='" . $action . "' AND item='" . $item . "'");
         return ($this->next()) ? true : false;
     }
 
@@ -142,45 +138,44 @@ class cApiFrontendPermissionCollection extends ItemCollection
      * @param  bool    $useLang  Flag to use language (Not used!)
      * @return bool
      */
-    public function removePerm($group, $plugin, $action, $item, $useLang = false)
-    {
+    public function removePerm($group, $plugin, $action, $item, $useLang = false) {
         global $lang;
 
         #$checklang = ($useLang !== false) ? $useLang : $lang;
 
-        $group  = (int) $group;
+        $group = (int) $group;
         $plugin = $this->_frontendPermission->_inFilter($plugin);
         $action = $this->_frontendPermission->_inFilter($action);
-        $item   = $this->_frontendPermission->_inFilter($item);
+        $item = $this->_frontendPermission->_inFilter($item);
 
-        $this->select("idlang=" . $lang . " AND idfrontendgroup=" . $group . " AND plugin='" . $plugin. "' AND action='" . $action . "' AND item='" . $item . "'");
+        $this->select("idlang=" . $lang . " AND idfrontendgroup=" . $group . " AND plugin='" . $plugin . "' AND action='" . $action . "' AND item='" . $item . "'");
         if ($myitem = $this->next()) {
             return $this->delete($myitem->get('idfrontendpermission'));
         }
         return false;
     }
-}
 
+}
 
 /**
  * Frontend permission item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiFrontendPermission extends Item
-{
+class cApiFrontendPermission extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['frontendpermissions'], 'idfrontendpermission');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
-   }
+    }
+
 }
 
 ################################################################################
@@ -191,42 +186,40 @@ class cApiFrontendPermission extends Item
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 
-
 /**
  * Frontend permission collection
  * @deprecated  [2011-10-06] Use cApiFrontendPermissionCollection instead of this class.
  */
-class FrontendPermissionCollection extends cApiFrontendPermissionCollection
-{
-    public function __construct()
-    {
+class FrontendPermissionCollection extends cApiFrontendPermissionCollection {
+
+    public function __construct() {
         cDeprecated("Use class cApiFrontendPermissionCollection instead");
         parent::__construct();
     }
-    public function FrontendPermissionCollection()
-    {
+
+    public function FrontendPermissionCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
-}
 
+}
 
 /**
  * Single frontend permission item
  * @deprecated  [2011-10-06] Use cApiFrontendPermission instead of this class.
  */
-class FrontendPermission extends cApiFrontendPermission
-{
-    public function __construct($mId = false)
-    {
+class FrontendPermission extends cApiFrontendPermission {
+
+    public function __construct($mId = false) {
         cDeprecated("Use class cApiFrontendPermission instead");
         parent::__construct($mId);
     }
-    public function FrontendPermission($mId = false)
-    {
+
+    public function FrontendPermission($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
 }
 
 ?>

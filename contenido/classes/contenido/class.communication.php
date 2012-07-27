@@ -31,19 +31,17 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Communication collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiCommunicationCollection extends ItemCollection
-{
+class cApiCommunicationCollection extends ItemCollection {
+
     /**
      * Constructor Function
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['communications'], 'idcommunication');
         $this->_setItemClass('cApiCommunication');
@@ -53,8 +51,7 @@ class cApiCommunicationCollection extends ItemCollection
      * Creates a new communication item.
      * @return cApiCommunication
      */
-    public function create()
-    {
+    public function create() {
         global $auth, $client;
         $item = parent::createNewItem();
 
@@ -64,22 +61,21 @@ class cApiCommunicationCollection extends ItemCollection
 
         return $item;
     }
-}
 
+}
 
 /**
  * Communication item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiCommunication extends Item
-{
+class cApiCommunication extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['communications'], 'idcommunication');
         if ($mId !== false) {
@@ -90,16 +86,15 @@ class cApiCommunication extends Item
     /**
      * Saves a communication item
      */
-    public function store()
-    {
+    public function store() {
         global $auth;
         $this->set('modifiedby', $auth->auth['uid']);
         $this->set('modified', date('Y-m-d H:i:s'), false);
 
         return parent::store();
     }
-}
 
+}
 
 ################################################################################
 # Old versions of communication item collection and communication item classes
@@ -108,42 +103,40 @@ class cApiCommunication extends Item
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 
-
 /**
  * Communication item collection
  * @deprecated  [2011-09-19] Use  instead of this class.
  */
-class CommunicationCollection extends cApiCommunicationCollection
-{
-    public function __construct()
-    {
+class CommunicationCollection extends cApiCommunicationCollection {
+
+    public function __construct() {
         cDeprecated("Use class cApiCommunicationCollection instead");
         parent::__construct();
     }
-    public function CommunicationCollection()
-    {
+
+    public function CommunicationCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
-}
 
+}
 
 /**
  * Single communication item
  * @deprecated  [2011-09-19] Use  instead of this class.
  */
-class CommunicationItem extends cApiCommunication
-{
-    public function __construct($mId = false)
-    {
+class CommunicationItem extends cApiCommunication {
+
+    public function __construct($mId = false) {
         cDeprecated("Use class cApiCommunication instead");
         parent::__construct($mId);
     }
-    public function CommunicationItem($mId = false)
-    {
+
+    public function CommunicationItem($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
 }
 
 ?>

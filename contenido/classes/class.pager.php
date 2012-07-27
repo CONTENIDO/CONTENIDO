@@ -20,11 +20,10 @@
  *
  * {@internal
  *   created 2005-05-11
- *
  *   $Id: class.pager.php 2379 2012-06-22 21:00:16Z xmurrix $
  * }}
- *
  */
+
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
@@ -35,8 +34,8 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cPager
-{
+class cPager {
+
     /**
      * Amount of items
      * @private integer
@@ -87,8 +86,7 @@ class cPager
      * @param $itemsPerPage int Items displayed per page
      * @param $currentPage    int Defines the current page
      */
-    public function __construct($items, $itemsPerPage, $currentPage)
-    {
+    public function __construct($items, $itemsPerPage, $currentPage) {
         $this->_items = $items;
         $this->_itemsPerPage = $itemsPerPage;
         $this->_currentPage = $currentPage;
@@ -138,7 +136,7 @@ class cPager
      * @return int Page count
      */
     public function getMaxPages() {
-        if ($this->_items == 0){
+        if ($this->_items == 0) {
             return 1;
         } else if ($this->_itemsPerPage == 0) {
             return 1;
@@ -167,27 +165,27 @@ class cPager
                 $items[$i] = $i;
             }
         } else {
-            for ($i = 1; $i < $this->_previousItems+1; $i++) {
+            for ($i = 1; $i < $this->_previousItems + 1; $i++) {
                 if ($i <= $maxPages && $i >= 1) {
                     $items[$i] = $i;
                 }
 
-                if ($i+1 <= $maxPages && $i >= 2) {
-                    $items[$i+1] = "|";
+                if ($i + 1 <= $maxPages && $i >= 2) {
+                    $items[$i + 1] = "|";
                 }
             }
 
-            for ($i = $this->_currentPage - $this->_itemPadding; $i< $this->_currentPage + $this->_itemPadding + 1; $i++) {
+            for ($i = $this->_currentPage - $this->_itemPadding; $i < $this->_currentPage + $this->_itemPadding + 1; $i++) {
                 if ($i <= $maxPages && $i >= 1) {
                     $items[$i] = $i;
                 }
 
-                if ($i+1 <= $maxPages && $i >= 2) {
-                    $items[$i+1] = "|";
+                if ($i + 1 <= $maxPages && $i >= 2) {
+                    $items[$i + 1] = "|";
                 }
             }
 
-            for ($i=($this->getMaxPages()-$this->_nextItems)+1; $i < $this->getMaxPages()+1; $i++) {
+            for ($i = ($this->getMaxPages() - $this->_nextItems) + 1; $i < $this->getMaxPages() + 1; $i++) {
                 if ($i <= $maxPages && $i >= 2) {
                     $items[$i] = $i;
                 }

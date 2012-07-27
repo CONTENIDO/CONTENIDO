@@ -45,14 +45,13 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Group property collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiGroupPropertyCollection extends ItemCollection
-{
+class cApiGroupPropertyCollection extends ItemCollection {
+
     /**
      * Groups id (usually the current logged in users group)
      * @var string
@@ -81,16 +80,14 @@ class cApiGroupPropertyCollection extends ItemCollection
      * Constructor
      * @param  string  $groupId
      */
-    public function __construct($groupId)
-    {
+    public function __construct($groupId) {
         global $cfg;
         parent::__construct($cfg['tab']['group_prop'], 'idgroupprop');
         $this->_setItemClass('cApiGroupProperty');
 
         if (!isset(self::$_enableCache)) {
             if (isset($cfg['properties']) && isset($cfg['properties']['group_prop'])
-                && isset($cfg['properties']['group_prop']['enable_cache']))
-            {
+                    && isset($cfg['properties']['group_prop']['enable_cache'])) {
                 self::$_enableCache = (bool) $cfg['properties']['group_prop']['enable_cache'];
 
                 if (isset($cfg['properties']['group_prop']['max_groups'])) {
@@ -111,8 +108,7 @@ class cApiGroupPropertyCollection extends ItemCollection
     /**
      * Resets the states of static properties.
      */
-    public static function reset()
-    {
+    public static function reset() {
         unset(self::$_enableCache, self::$_entries, self::$_maxGroups);
     }
 
@@ -121,8 +117,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * @param   string  $groupId
      * @throws  Exception  If passed group id is empty
      */
-    public function setGroupId($groupId)
-    {
+    public function setGroupId($groupId) {
         if (empty($groupId)) {
             throw new Exception("Empty group id");
         }
@@ -140,8 +135,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * @param  int     $idcatlang
      * @return cApiGroupProperty
      */
-    public function setValueByTypeName($type, $name, $value, $idcatlang = 0)
-    {
+    public function setValueByTypeName($type, $name, $value, $idcatlang = 0) {
         $item = $this->fetchByGroupIdTypeName($type, $name);
         if ($item) {
             $item->set('value', $this->escape($value));
@@ -165,8 +159,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * @param  int     $idcatlang
      * @return cApiGroupProperty
      */
-    public function create($type, $name, $value, $idcatlang = 0)
-    {
+    public function create($type, $name, $value, $idcatlang = 0) {
         $item = parent::createNewItem();
 
         $item->set('group_id', $this->escape($this->_groupId));
@@ -189,8 +182,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * @param  string  $name
      * @return cApiGroupProperty|null
      */
-    public function fetchByGroupIdTypeName($type, $name)
-    {
+    public function fetchByGroupIdTypeName($type, $name) {
         if (self::$_enableCache) {
             return $this->_fetchByGroupIdTypeNameFromCache($type, $name);
         }
@@ -207,8 +199,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * @param  string  $type
      * @return cApiGroupProperty[]
      */
-    public function fetchByGroupIdType($type)
-    {
+    public function fetchByGroupIdType($type) {
         if (self::$_enableCache) {
             return $this->_fetchByGroupIdTypeFromCache($type);
         }
@@ -225,8 +216,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * Returns all group properties by groupid.
      * @return cApiGroupProperty[]
      */
-    public function fetchByGroupId()
-    {
+    public function fetchByGroupId() {
         if (self::$_enableCache) {
             return $this->_fetchByGroupIdFromCache();
         }
@@ -245,8 +235,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * @param  string  $name
      * @return bool
      */
-    public function deleteByGroupIdTypeName($type, $name)
-    {
+    public function deleteByGroupIdTypeName($type, $name) {
         $this->select("group_id='" . $this->escape($this->_groupId) . "' AND type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
         return $this->_deleteSelected();
     }
@@ -256,8 +245,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * @param  string  $type
      * @return bool
      */
-    public function deleteByGroupIdType($type)
-    {
+    public function deleteByGroupIdType($type) {
         $this->select("group_id='" . $this->escape($this->_groupId) . "' AND type='" . $this->escape($type) . "'");
         return $this->_deleteSelected();
     }
@@ -266,8 +254,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * Deletes all group properties by groupid.
      * @return bool
      */
-    public function deleteByGroupId()
-    {
+    public function deleteByGroupId() {
         $this->select("group_id='" . $this->escape($this->_groupId) . "'");
         return $this->_deleteSelected();
     }
@@ -276,8 +263,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * Deletes selected group properties.
      * @return bool
      */
-    protected function _deleteSelected()
-    {
+    protected function _deleteSelected() {
         $result = false;
         while ($prop = $this->next()) {
             $id = $prop->get('idgroupprop');
@@ -292,8 +278,7 @@ class cApiGroupPropertyCollection extends ItemCollection
     /**
      * Loads/Caches all group properties.
      */
-    protected function _loadFromCache()
-    {
+    protected function _loadFromCache() {
         if (!isset(self::$_entries)) {
             self::$_entries = array();
         }
@@ -321,12 +306,10 @@ class cApiGroupPropertyCollection extends ItemCollection
      * Adds a entry to the cache.
      * @param  cApiGroupProperty  $entry
      */
-    protected function _addToCache($item)
-    {
+    protected function _addToCache($item) {
         $data = $item->toArray();
         self::$_entries[$this->_groupId][$data['idgroupprop']] = $data;
     }
-
 
     /**
      * Fetches group property by groupid, type and name from cache.
@@ -334,8 +317,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * @param  string  $name
      * @return cApiGroupProperty|null
      */
-    protected function _fetchByGroupIdTypeNameFromCache($type, $name)
-    {
+    protected function _fetchByGroupIdTypeNameFromCache($type, $name) {
         $props = array();
         $obj = new cApiGroupProperty();
         foreach (self::$_entries[$this->_groupId] as $entry) {
@@ -352,8 +334,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * @param  string  $type
      * @return cApiGroupProperty[]
      */
-    protected function _fetchByGroupIdTypeFromCache($type)
-    {
+    protected function _fetchByGroupIdTypeFromCache($type) {
         $props = array();
         $obj = new cApiGroupProperty();
         foreach (self::$_entries[$this->_groupId] as $entry) {
@@ -369,8 +350,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * Fetches all group properties by groupid from cache.
      * @return cApiGroupProperty[]
      */
-    protected function _fetchByGroupIdFromCache()
-    {
+    protected function _fetchByGroupIdFromCache() {
         $props = array();
         $obj = new cApiGroupProperty();
         foreach (self::$_entries[$this->_groupId] as $entry) {
@@ -384,8 +364,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * Removes a entry from cache.
      * @param   int  $id
      */
-    protected function _deleteFromCache($id)
-    {
+    protected function _deleteFromCache($id) {
         if (isset(self::$_entries[$this->_groupId][$id])) {
             unset(self::$_entries[$this->_groupId][$id]);
         }
@@ -393,20 +372,18 @@ class cApiGroupPropertyCollection extends ItemCollection
 
 }
 
-
 /**
  * Group property item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiGroupProperty extends Item
-{
+class cApiGroupProperty extends Item {
+
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['group_prop'], 'idgroupprop');
         $this->setFilters(array(), array());
@@ -420,11 +397,11 @@ class cApiGroupProperty extends Item
      * @param   string  $value
      * @return  bool
      */
-    public function updateValue($value)
-    {
+    public function updateValue($value) {
         $this->set('value', $this->escape($value));
         return $this->store();
     }
+
 }
 
 ?>

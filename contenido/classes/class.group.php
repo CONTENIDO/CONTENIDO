@@ -24,14 +24,8 @@
  *
  * {@internal
  *   created  2003-05-20
- *   modified 2008-07-02, Frederic Schneider, add security fix
- *   modified 2011-02-05, Murat Purc, Cleanup/formatting, documentation, standardize
- *                                    getGroupProperties() and new function insert()
- *   modified 2011-11-08, Murat Purc, Usage of cApiGroupProperty classes
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

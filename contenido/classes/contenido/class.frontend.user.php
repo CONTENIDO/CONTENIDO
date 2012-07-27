@@ -37,13 +37,12 @@ if (!defined('CON_FRAMEWORK')) {
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiFrontendUserCollection extends ItemCollection
-{
+class cApiFrontendUserCollection extends ItemCollection {
+
     /**
      * Constructor function
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['frontendusers'], 'idfrontenduser');
         $this->_setItemClass('cApiFrontendUser');
@@ -55,8 +54,7 @@ class cApiFrontendUserCollection extends ItemCollection
      * @param   string  $sUsername  specifies the username to search for
      * @return  bool
      */
-    public function userExists($sUsername)
-    {
+    public function userExists($sUsername) {
         global $client;
 
         $feUsers = new cApiFrontendUserCollection();
@@ -74,8 +72,7 @@ class cApiFrontendUserCollection extends ItemCollection
      * @param  string  $password  Specifies the password (optional)
      * @return  cApiFrontendUser
      */
-    public function create($username, $password = '')
-    {
+    public function create($username, $password = '') {
         global $client, $auth;
 
         // Check if the username already exists
@@ -118,8 +115,7 @@ class cApiFrontendUserCollection extends ItemCollection
      * @param   int  $itemId  specifies the frontend user
      * @return  bool
      */
-    public function delete($itemId)
-    {
+    public function delete($itemId) {
         // delete group memberships
         $feGroupMembers = new cApiFrontendGroupMemberCollection();
         $feGroupMembers->select('idfrontenduser=' . (int) $itemId);
@@ -130,22 +126,21 @@ class cApiFrontendUserCollection extends ItemCollection
         // delete user
         return parent::delete($itemId);
     }
-}
 
+}
 
 /**
  * Frontend user item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiFrontendUser extends Item
-{
+class cApiFrontendUser extends Item {
+
     /**
      * Constructor function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['frontendusers'], 'idfrontenduser');
         if ($mId !== false) {
@@ -162,8 +157,7 @@ class cApiFrontendUser extends Item
      * @param  bool    $safe  Flag to use defined inFilter
      * @return  bool
      */
-    public function setField($field, $value, $safe = true)
-    {
+    public function setField($field, $value, $safe = true) {
         if ($field == 'password') {
             return parent::setField($field, md5($value), $safe);
         } else {
@@ -177,8 +171,7 @@ class cApiFrontendUser extends Item
      * @param  string $password Raw password
      * @return  bool
      */
-    public function setRawPassword($password)
-    {
+    public function setRawPassword($password) {
         return parent::setField('password', $password);
     }
 
@@ -188,8 +181,7 @@ class cApiFrontendUser extends Item
      * @param   string  $password  Password to check
      * @return  bool  True if the password is correct, false otherwise
      */
-    public function checkPassword($password)
-    {
+    public function checkPassword($password) {
         return (md5($password) == $this->get('password'));
     }
 
@@ -198,8 +190,7 @@ class cApiFrontendUser extends Item
      *
      * @return  bool
      */
-    public function store()
-    {
+    public function store() {
         global $auth;
 
         $this->set('modified', date('Y-m-d H:i:s'), false);
@@ -212,8 +203,7 @@ class cApiFrontendUser extends Item
      *
      * @return  array  List of frontend group ids
      */
-    public function getGroupsForUser()
-    {
+    public function getGroupsForUser() {
         $feGroupMembers = new cApiFrontendGroupMemberCollection();
         $feGroupMembers->setWhere('idfrontenduser', $this->get('idfrontenduser'));
         $feGroupMembers->query();
@@ -224,8 +214,8 @@ class cApiFrontendUser extends Item
         }
         return $groups;
     }
-}
 
+}
 
 ################################################################################
 # Old versions of frontend user item collection and frontend user item classes
@@ -234,42 +224,40 @@ class cApiFrontendUser extends Item
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 
-
 /**
  * Frontend user collection
  * @deprecated  [2011-10-07] Use cApiFrontendUserCollection instead of this class.
  */
-class FrontendUserCollection extends cApiFrontendUserCollection
-{
-    public function __construct()
-    {
+class FrontendUserCollection extends cApiFrontendUserCollection {
+
+    public function __construct() {
         cDeprecated("Use class cApiFrontendUserCollection instead");
         parent::__construct();
     }
-    public function FrontendUserCollection()
-    {
+
+    public function FrontendUserCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
-}
 
+}
 
 /**
  * Single frontend user item
  * @deprecated  [2011-10-07] Use cApiFrontendUser instead of this class.
  */
-class FrontendUser extends cApiFrontendUser
-{
-    public function __construct($mId = false)
-    {
+class FrontendUser extends cApiFrontendUser {
+
+    public function __construct($mId = false) {
         cDeprecated("Use class cApiFrontendUser instead");
         parent::__construct($mId);
     }
-    public function FrontendUser($mId = false)
-    {
+
+    public function FrontendUser($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
 }
 
 ?>

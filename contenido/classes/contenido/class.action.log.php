@@ -29,19 +29,17 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Actionlog collection
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiActionlogCollection extends ItemCollection
-{
+class cApiActionlogCollection extends ItemCollection {
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['actionlog'], 'idlog');
         $this->_setItemClass('cApiActionlog');
@@ -58,8 +56,7 @@ class cApiActionlogCollection extends ItemCollection
      * @param  string  $logtimestamp
      * @return cApiActionlog
      */
-    public function create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp = '')
-    {
+    public function create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp = '') {
         $item = parent::createNewItem();
 
         if (empty($logtimestamp)) {
@@ -77,23 +74,21 @@ class cApiActionlogCollection extends ItemCollection
 
         return $item;
     }
-}
 
+}
 
 /**
  * Actionlog item
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiActionlog extends Item
-{
+class cApiActionlog extends Item {
 
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['actionlog'], 'idlog');
         $this->setFilters(array(), array());
@@ -101,6 +96,7 @@ class cApiActionlog extends Item
             $this->loadByPrimaryKey($mId);
         }
     }
+
 }
 
 ?>

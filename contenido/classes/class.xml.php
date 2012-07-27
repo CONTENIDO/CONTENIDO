@@ -31,6 +31,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 /** @deprecated 2011-03-03 Use cXmlReader instead */
 class XML_doc extends cXmlReader {
+
     /** @deprecated 2011-03-03 Use cXmlReader instead. */
     function XML_doc() {
         cDeprecated("Use cXmlReader instead.");
@@ -69,5 +70,7 @@ class XML_doc extends cXmlReader {
         cDeprecated("This function is not longer supported.");
         return false;
     }
+
 }
+
 ?>
