@@ -889,7 +889,7 @@ class cModuleHandler {
     /**
      * This method erase a directory recrusive.
      *
-     * @todo : comments in english
+     * @todo : comments in english and move recursive directory deletion to somewhere else
      *
      * @param string $path
      * @return 0 all right, -1 paht is not a direcrotry, -2 erro at erase, -3
