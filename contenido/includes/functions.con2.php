@@ -45,10 +45,10 @@ if (!defined('CON_FRAMEWORK')) {
  *                was found
  */
 function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true) {
-    global $frontend_debug;
+    global $cfg, $frontend_debug;
 
     // @todo make generator configurable
-    $codeGen = cCodeGeneratorFactory::getInstance('Standard');
+    $codeGen = cCodeGeneratorFactory::getInstance($cfg['code_generator']['name']);
     if (isset($frontend_debug) && is_array($frontend_debug)) {
         $codeGen->setFrontendDebugOptions($frontend_debug);
     }

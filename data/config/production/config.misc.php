@@ -338,4 +338,12 @@ $cfg['images']['image_magick']['use'] = true;
 //       to ImageMagick.
 $cfg['images']['image_magick']['path'] = '';
 
+
+/* Code generator settings
+ * -----------------------------------------------------------------------------
+ */
+
+// (string) Name of code generator to use (e. g. 'Standard' to use class cCodeGeneratorStandard)
+$cfg['code_generator']['name'] = 'Standard';
+
 ?>
