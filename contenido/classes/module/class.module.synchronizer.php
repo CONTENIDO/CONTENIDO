@@ -347,12 +347,9 @@ class cModuleSynchronizer extends cModuleHandler {
     }
 
 }
-class Contenido_Module_Synchronizer extends cModuleSynchronizer {
 
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cModuleSynchronizer
-     */
+class Contenido_Module_Synchronizer extends cModuleSynchronizer {
+    /** @deprecated [2012-07-24] class was renamed to cModuleSynchronizer */
     public function __construct() {
         cDeprecated('Class was renamed to cModuleSynchronizer.');
     }

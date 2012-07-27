@@ -514,11 +514,7 @@ class cModuleTemplateHandler extends cModuleHandler {
 }
 
 class Contenido_Module_Template_Handler extends cModuleTemplateHandler {
-
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cModuleTemplateHandler
-     */
+    /** @deprecated [2012-07-24] class was renamed to cModuleTemplateHandler */
     public function __construct($idmod) {
         cDeprecated('Class was renamed to cModuleTemplateHandler.');
         parent::__construct($idmod);

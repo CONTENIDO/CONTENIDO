@@ -966,12 +966,9 @@ class cModuleHandler {
     }
 
 }
-class Contenido_Module_Handler extends cModuleHandler {
 
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cModuleHandler
-     */
+class Contenido_Module_Handler extends cModuleHandler {
+    /** @deprecated [2012-07-24] class was renamed to cModuleHandler */
     public function __construct($idmod = NULL) {
         cDeprecated('Class was renamed to cModuleHandler.');
         parent::__construct($idmod);

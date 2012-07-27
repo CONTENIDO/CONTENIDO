@@ -25,17 +25,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-// @fixme: No need to inlude classes since we have autoloading!
-if (cFileHandler::exists(dirname(__FILE__) . '/class.module.handler.php')) {
-    include_once (dirname(__FILE__) . '/class.module.handler.php');
-}
-if (cFileHandler::exists(dirname(__FILE__) . '/../class.genericdb.php')) {
-    include_once (dirname(__FILE__) . '/../class.genericdb.php');
-}
-if (cFileHandler::exists(dirname(__FILE__) . '/../class.lang.php')) {
-    include_once (dirname(__FILE__) . '/../class.lang.php');
-}
-
 /**
  * This class save the translations from a modul in a file
  * and get it from file.
@@ -71,7 +60,6 @@ class cModuleFileTranslation extends cModuleHandler {
      * @var int
      */
     static $savedIdMod = NULL;
-
     static $originalTranslationDivider = '=';
 
     /**
@@ -93,17 +81,17 @@ class cModuleFileTranslation extends cModuleHandler {
 
         // dont open the translations file for each mi18n call
         if ($static == true) {
-            if (cModuleFileTranslation::$savedIdMod != $idmodul) {
+            if (self::$savedIdMod != $idmodul) {
                 // set filename lang_[language]_[Country].txt
                 $language = $this->_getValueFromProperties('language', 'code');
                 $country = $this->_getValueFromProperties('country', 'code');
                 self::$fileName = 'lang_' . $language . '_' . strtoupper($country) . '.txt';
 
-                cModuleFileTranslation::$langArray = $this->getTranslationArray();
-                cModuleFileTranslation::$savedIdMod = $idmodul;
+                self::$langArray = $this->getTranslationArray();
+                self::$savedIdMod = $idmodul;
             }
         } else {
-            cModuleFileTranslation::$savedIdMod = -1;
+            self::$savedIdMod = -1;
 
             // set filename lang_[language]_[Country].txt
             $language = $this->_getValueFromProperties('language', 'code');
@@ -133,7 +121,7 @@ class cModuleFileTranslation extends cModuleHandler {
      * @return array
      */
     public function getLangArray() {
-        return cModuleFileTranslation::$langArray;
+        return self::$langArray;
     }
 
     /**
@@ -143,8 +131,10 @@ class cModuleFileTranslation extends cModuleHandler {
      */
     public function saveTranslationsFromDbToFile() {
         $db = cRegistry::getDb();
-        $sql = sprintf('SELECT clang.idlang as idlang,client.idclient as idclient,modul.idmod as idmod FROM %s as clang , %s as modul, %s as client WHERE clang.idclient=client.idclient ', $this->_cfg['tab']['clients_lang'], $this->_cfg['tab']['mod'], $this->_cfg['tab']['clients']);
 
+        $sql = 'SELECT cl.idlang AS idlang, c.idclient AS idclient, m.idmod AS idmod'
+             . 'FROM `%s` AS cl, `%s` AS m, `%s` AS c WHERE cl.idclient = c.idclient';
+        $sql = $db->prepare($sql, $this->_cfg['tab']['clients_lang'], $this->_cfg['tab']['mod'], $this->_cfg['tab']['clients']);
         $db->query($sql);
 
         while ($db->next_record()) {
@@ -159,30 +149,19 @@ class cModuleFileTranslation extends cModuleHandler {
      */
     public function saveAllTranslations() {
         $db = cRegistry::getDb();
-        $sql = 'SELECT module.idmod,
-                        translation.idlang,
-                        translation.original,
-                        translation.translation
-                FROM     con_mod_translations AS translation ,
-                        con_mod AS module
-                WHERE      translation.idmod = module.idmod
-                ORDER BY module.idmod, translation.idlang';
 
+        $sql = 'SELECT m.idmod, mt.idlang, mt.original, mt.translation FROM `%s` AS mt, `%s` AS m '
+             . 'WHERE mt.idmod = m.idmod ORDER BY m.idmod, mt.idlang';
+        $sql = $db->prepare($sql, $this->_cfg['tab']['mod_translations'], $this->_cfg['tab']['mod']);
         $db->query($sql);
 
         $transArray = array();
         $saveModId = -1;
         $saveLangId = -1;
         while ($db->next_record()) {
-
             $transArray[cSecurity::unfilter($db->f('original'))] = cSecurity::unfilter($db->f('translation'));
-
             if ($saveLangId != $db->f('idlang') || $saveModId != $db->f('idmod')) {
-
                 if ($saveLangId != -1 && $saveModId != -1) {
-
-                    // save the translation
-
                     // reset translations array
                     $transArray = array();
                 }
@@ -198,17 +177,17 @@ class cModuleFileTranslation extends cModuleHandler {
      * For the upgrade/setup.
      */
     public function saveTranslations() {
-        $dbLanguage = cRegistry::getDb();
-        $sqlLanguage = sprintf('SELECT * FROM %s', $this->_cfg['tab']['lang']);
-        $dbLanguage->query($sqlLanguage);
+        $db = cRegistry::getDb();
 
-        while ($dbLanguage->next_record()) {
-            $db = cRegistry::getDb();
-            $sql = sprintf('SELECT * FROM %s WHERE idlang=%s AND idmod=%s', $this->_cfg['tab']['mod_translations'], $dbLanguage->f('idlang'), $this->_idmod);
-
+        $oLangColl = new cApiLanguageCollection();
+        $ids = $oLangColl->getAllIds();
+        foreach ($ids as $idlang) {
+            // @todo  Move to module translation model
+            $sql = 'SELECT * FROM `%s` WHERE idlang = %d AND idmod = %d';
+            $sql = $db->prepare($sql, $this->_cfg['tab']['mod_translations'], $idlang, $this->_idmod);
             $db->query($sql);
 
-            $this->_idlang = $dbLanguage->f('idlang');
+            $this->_idlang = $idlang;
             // set filename lang_[language]_[Country].txt
             $language = $this->_getValueFromProperties('language', 'code');
             $country = $this->_getValueFromProperties('country', 'code');
@@ -240,7 +219,7 @@ class cModuleFileTranslation extends cModuleHandler {
             $value = iconv($this->_encoding, $this->_fileEncoding, $value);
             $key = iconv($this->_encoding, $this->_fileEncoding, $key);
             // Originall String [Divider] Translation String
-            $retString .= $key . cModuleFileTranslation::$originalTranslationDivider . $value . "\r\n";
+            $retString .= $key . self::$originalTranslationDivider . $value . "\r\n";
         }
 
         return $retString;
@@ -262,7 +241,7 @@ class cModuleFileTranslation extends cModuleHandler {
         $words = preg_split('((\r\n)|(\r)|(\n))', $string);
 
         foreach ($words as $key => $value) {
-            $oriTrans = explode(cModuleFileTranslation::$originalTranslationDivider, $value);
+            $oriTrans = explode(self::$originalTranslationDivider, $value);
 
             if (!empty($oriTrans[0])) {
                 if (isset($oriTrans[1])) {
@@ -310,12 +289,10 @@ class cModuleFileTranslation extends cModuleHandler {
     }
 
 }
+
 class Contenido_Module_FileTranslation extends cModuleFileTranslation {
 
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cModuleFileTranslation
-     */
+    /** @deprecated [2012-07-24] class was renamed to cModuleFileTranslation */
     public function __construct($idmodul = null, $static = false) {
         cDeprecated('Class was renamed to cModuleFileTranslation.');
         parent::__construct($idmodul, $static);

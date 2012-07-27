@@ -1114,6 +1114,26 @@ abstract class ItemCollection extends cItemBaseAbstract {
     }
 
     /**
+     * Returns all ids of recordsets in the table.
+     *
+     * @return  array  List of ids
+     */
+    public function getAllIds() {
+        $oDb = $this->_getSecondDBInstance();
+
+        $aIds = array();
+
+        // get all ids
+        $sql = 'SELECT ' . $this->primaryKey . ' AS pk FROM `' . $this->table . '`';
+        $oDb->query($sql);
+        while ($oDb->next_record()) {
+            $aIds[] = $oDb->f('pk');
+        }
+
+        return $aIds;
+    }
+
+    /**
      * Deletes an item in the table.
      * Deletes also cached e entry and any existing properties.
      *
