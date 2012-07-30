@@ -6005,5 +6005,65 @@ msgstr ""
 msgid "Do you really want to create a new language?"
 msgstr "Möchten Sie wirklich eine neue Sprache erstellen?"
 
+#: include/include.tplcfg_edit_form.php 493,
+msgid "This article has no template. Therefore the categories template (%s) is used. You can set the article template below."
+msgstr "Dieser Artikel hat keine Template. Deshalb wird die Templatge von der Kategorie (%s) benutzt. Sie können für diesen Artikel eine Template einstellen."
 
+#: include/include.tplcfg_edit_form.php 495
+msgid "no template with this categories and/or article associated. You must be set a template."
+msgstr "Keine Template für diese Kategorie und/oder diesen Artikel assoziiert. Sie müssen eine Template einstellen."
 
+#: include/include.con_left_top.php legend
+msgid "start article"
+msgstr "Startartikel"
+
+#: include/include.con_left_top.php legend
+msgid "general article"
+msgstr "Normaler Artikel"
+
+#: include/include.con_left_top.php legend
+msgid "start referred article"
+msgstr "Weitergeleiterter Startartikel"
+
+#: include/include.con_left_top.php legend
+msgid "general referred article"
+msgstr "Weitergeleiterter Artikel"
+
+#: include/include.con_left_top.php legend
+msgid "article with time control online"
+msgstr "Artikel mit der Zeitsteuerung online"
+
+#: include/include.con_left_top.php legend
+msgid "article with time control offline"
+msgstr "Artikel mit der Zeitsteuerung offline"
+
+#: include/include.con_left_top.php legend
+msgid "general category"
+msgstr "Normale Kategorie"
+
+#: include/include.con_left_top.php legend
+msgid "category offline"
+msgstr "Kategorie offline"
+
+#: include/include.con_left_top.php legend
+msgid "category has no article or no start article or article offline"
+msgstr "Kategorie hat keinen Artikel oder keinen Startartikel oder einen Artikel offline"
+
+#: include/include.con_left_top.php legend
+msgid "locked category"
+msgstr "Abgeschlossene Kategorie"
+
+#: include/include.con_left_top.php legend
+msgid "locked category has no article or no startarticle or article offline"
+msgstr "Abgeschlossene Kategorie hat keinen Artikel oder keinen Startartikel oder einen Artikel offline"
+
+#: include/include.con_left_top.php legend
+msgid "synchronized category online"
+msgstr "Synchronisierte Kategorie online"
+
+#: include/include.con_left_top.php legend
+msgid "synchronized category offline"
+msgstr "Synchronisierte Kategorie offline"
+
+msgid "You are here"
+msgstr "Sie sind hier"
