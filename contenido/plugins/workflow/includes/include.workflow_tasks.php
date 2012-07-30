@@ -52,7 +52,7 @@ if (!$perm->have_perm_area_action($area, "workflow_task_user_select")) {
 }
 
 if ($action == "workflow_do_action") {
-    $selectedAction = "wfselect".$modidartlang;
+    $selectedAction = "wfselect" . $modidartlang;
     doWorkflowAction($modidartlang, $GLOBALS[$selectedAction]);
 }
 
@@ -85,7 +85,7 @@ if (is_array($userids)) {
 
         if ($user->loadByPrimaryKey($value) == false) {
             // Yes, it's a group. Let's try to load the group members!
-            $sql = "SELECT user_id FROM " . $cfg["tab"]["groupmembers"]." WHERE group_id = '".$value."'";
+            $sql = "SELECT user_id FROM " . $cfg["tab"]["groupmembers"] . " WHERE group_id = '" . $value . "'";
             $db2->query(cSecurity::escapeDB($sql, $db2));
 
             while ($db2->next_record()) {
@@ -118,15 +118,15 @@ if ($perm->have_perm_area_action($area, "workflow_task_user_select")) {
     $form->setEvent("submit", "setUsershow();");
     $form->setVar("frame", $frame);
     $form->setVar("action", "workflow_task_user_select");
-    $form->add(i18n("Show users").": ".getUsers("show",$usershow));
-    $form->add('<input style="vertical-align:middle;" type="image" src="'.$cfg["path"]["htmlpath"].$cfg["path"]["images"]."submit.gif".'">');
+    $form->add(i18n("Show users") . ": " . getUsers("show", $usershow));
+    $form->add('<input style="vertical-align:middle;" type="image" src="' . $cfg["path"]["htmlpath"] . $cfg["path"]["images"] . "submit.gif" . '">');
 
     $tpl->set('s', 'USERSELECT', $form->render(true));
 } else {
     $tpl->set('s', 'USERSELECT', '');
 }
 
-$pageTitle = i18n('Search results').' - '.i18n('Workflow tasks', 'workflow');
+$pageTitle = i18n('Search results') . ' - ' . i18n('Workflow tasks', 'workflow');
 $tpl->set('s', 'PAGE_TITLE', $pageTitle);
 
 $tpl->set('s', 'TH_START', i18n("Article"));
@@ -152,12 +152,12 @@ if (is_array($isCurrent)) {
             $sql = "SELECT B.idcat AS idcat, A.title AS title, A.created AS created, A.lastmodified AS changed,
                            A.idart as idart, E.name as tpl_name, A.idartlang as idartlang, F.idcatlang as idcatlang,
                            B.idcatart as idcatart, A.idlang as art_lang, F.startidartlang as startidartlang
-                    FROM (".$cfg["tab"]["art_lang"]." AS A,
-                         ".$cfg["tab"]["cat_art"]." AS B,
-                          ".$cfg["tab"]["art"]." AS C)
-                          LEFT JOIN ".$cfg['tab']['tpl_conf']." as D ON A.idtplcfg = D.idtplcfg
-                          LEFT JOIN ".$cfg['tab']['tpl']." as E ON D.idtpl = E.`idtpl`
-                          LEFT JOIN ".$cfg['tab']['cat_lang']." as F ON B.idcat = F.`idcat`
+                    FROM (" . $cfg["tab"]["art_lang"] . " AS A,
+                         " . $cfg["tab"]["cat_art"] . " AS B,
+                          " . $cfg["tab"]["art"] . " AS C)
+                          LEFT JOIN " . $cfg['tab']['tpl_conf'] . " as D ON A.idtplcfg = D.idtplcfg
+                          LEFT JOIN " . $cfg['tab']['tpl'] . " as E ON D.idtpl = E.`idtpl`
+                          LEFT JOIN " . $cfg['tab']['cat_lang'] . " as F ON B.idcat = F.`idcat`
                          WHERE A.idartlang = '$idartlang' AND
                                A.idart = B.idart AND
                                A.idart = C.idart AND
@@ -173,13 +173,9 @@ if (is_array($isCurrent)) {
                 $idart = $db->f("idart");
 
                 // Create javascript multilink
-                $tmp_mstr = '<a href="javascript://" onclick="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')"  title="idart: '.$db->f('idart').' idcatart: '.$db->f('idcatart').'" alt="idart: '.$db->f('idart').' idcatart: '.$db->f('idcatart').'">%s</a>';
+                $tmp_mstr = '<a href="javascript://" onclick="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')"  title="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '" alt="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '">%s</a>';
 
-                $mstr = sprintf($tmp_mstr, 'right_top',
-                        $sess->url("main.php?area=con&frame=3&idcat=$idcat&idtpl=$idtpl"),
-                        'right_bottom',
-                        $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idcat=$idcat&idtpl=$idtpl&idart=$idart"),
-                        $db->f("title")
+                $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=con&frame=3&idcat=$idcat&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idcat=$idcat&idtpl=$idtpl&idart=$idart"), $db->f("title")
                 );
 
                 $laststatus = getLastWorkflowStatus($idartlang);
@@ -191,7 +187,7 @@ if (is_array($isCurrent)) {
                 $step = $workflowItem->get("name");
                 $description = $workflowItem->get("description");
 
-                $sRowId = $db->f('idart').'-'.$db->f('idartlang').'-'.$db->f('idcat').'-'.$db->f('idcatlang').'-'.$db->f('idcatart').'-'.$db->f('art_lang');
+                $sRowId = $db->f('idart') . '-' . $db->f('idartlang') . '-' . $db->f('idcat') . '-' . $db->f('idcatlang') . '-' . $db->f('idcatart') . '-' . $db->f('art_lang');
 
                 if ($db->f('startidartlang') == $db->f('idartlang')) {
                     $makeStartarticle = "<img src=\"images/isstart1.gif\" border=\"0\" title=\"{$sFlagTitle}\" alt=\"{$sFlagTitle}\">";
@@ -232,7 +228,7 @@ if (is_array($isCurrent)) {
     }
 }
 
-if ($i > 0)     {
+if ($i > 0) {
     $tpl->set('s', 'NO_ARTICLES_ROW');
 } else {
     $sRow = '<tr><td colspan="8" class="bordercell">' . i18n("No article found.") . '</td></tr>';

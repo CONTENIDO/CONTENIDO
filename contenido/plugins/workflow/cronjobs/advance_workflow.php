@@ -60,7 +60,7 @@ while ($obj = $workflowartallocations->next()) {
         }
 
         // WTF ist this???
-        $starttime = strtotime (substr_replace (substr (substr ($starttime,0,2).chunk_split (substr ($starttime,2,6),2,"-").chunk_split (substr ($starttime,8),2,":"),0,19)," ",10,1));
+        $starttime = strtotime(substr_replace(substr(substr($starttime, 0, 2) . chunk_split(substr($starttime, 2, 6), 2, "-") . chunk_split(substr($starttime, 8), 2, ":"), 0, 19), " ", 10, 1));
         switch ($timeunit) {
             case "Seconds":
                 $maxtime = $starttime + $timelimit;
@@ -89,8 +89,7 @@ while ($obj = $workflowartallocations->next()) {
 
         if ($maxtime < time()) {
             $pos = $pos + 1;
-            $workflowusersequences->select("idworkflowitem = '$wfitem' AND position = '".cSecurity::escapeDB($pos, NULL)."'");
-
+            $workflowusersequences->select("idworkflowitem = '$wfitem' AND position = '" . cSecurity::escapeDB($pos, NULL) . "'");
             if ($wfobj = $workflowusersequences->next()) {
                 $obj->set("idusersequence", $wfobj->get("idusersequence"));
                 $obj->store();

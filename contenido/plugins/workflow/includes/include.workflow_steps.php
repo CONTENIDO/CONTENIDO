@@ -50,31 +50,31 @@ if (htmlentities($adduser, ENT_COMPAT, $sCurrentEncoding) == i18n("Add User", "w
 
 // Function: Move step up
 if ($action == "workflow_step_up") {
-    $workflowitems = new WorkflowItems;
-    $workflowitems->swap($idworkflow, $position, $position -1);
+    $workflowitems = new WorkflowItems();
+    $workflowitems->swap($idworkflow, $position, $position - 1);
 }
 
 // Function: Move step down
 if ($action == "workflow_step_down") {
-    $workflowitems = new WorkflowItems;
-    $workflowitems->swap($idworkflow, $position, $position +1);
+    $workflowitems = new WorkflowItems();
+    $workflowitems->swap($idworkflow, $position, $position + 1);
 }
 
 // Function: Move user up
 if ($action == "workflow_user_up") {
-    $workflowitems = new WorkflowUserSequences;
-    $workflowitems->swap($idworkflowitem, $position, $position -1);
+    $workflowitems = new WorkflowUserSequences();
+    $workflowitems->swap($idworkflowitem, $position, $position - 1);
 }
 
 // Function: Move step down
 if ($action == "workflow_user_down") {
-    $workflowitems = new WorkflowUserSequences;
-    $workflowitems->swap($idworkflowitem, $position, $position +1);
+    $workflowitems = new WorkflowUserSequences();
+    $workflowitems->swap($idworkflowitem, $position, $position + 1);
 }
 
 // Function: Create new step
 if ($action == "workflow_create_step") {
-    $workflowitems = new WorkflowItems;
+    $workflowitems = new WorkflowItems();
     $item = $workflowitems->create($idworkflow);
     $item->set("name", i18n("New Workflow Step", "workflow"));
     $item->store();
@@ -83,25 +83,25 @@ if ($action == "workflow_create_step") {
 
 // Function: Delete step
 if ($action == "workflow_step_delete") {
-    $workflowitems = new WorkflowItems;
+    $workflowitems = new WorkflowItems();
     $workflowitems->delete($idworkflowitem);
 }
 
 // Function: Add user
 if ($action == "workflow_create_user") {
-    $workflowusers = new WorkflowUserSequences;
+    $workflowusers = new WorkflowUserSequences();
     $new = $workflowusers->create($idworkflowitem);
 }
 
 // Function: Remove user
 if ($action == "workflow_user_delete") {
-    $workflowusers = new WorkflowUserSequences;
+    $workflowusers = new WorkflowUserSequences();
     $workflowusers->delete($idusersequence);
 }
 
 // Function: Save step
 if ($action == "workflow_save_step" || $action == "workflow_create_user") {
-    $workflowactions = new WorkflowActions;
+    $workflowactions = new WorkflowActions();
 
     foreach ($availableWorkflowActions as $key => $value) {
         if ($wfactions[$key] == 1) {
@@ -111,17 +111,17 @@ if ($action == "workflow_save_step" || $action == "workflow_create_user") {
         }
     }
 
-    $workflowitem = new WorkflowItem;
+    $workflowitem = new WorkflowItem();
     $workflowitem->loadByPrimaryKey($idworkflowitem);
     $workflowitem->setField('idtask', $wftaskselect);
     $workflowitem->setField('name', $wfstepname);
     $workflowitem->setField('description', $wfstepdescription);
     $workflowitem->store();
 
-    $usersequences = new WorkflowUserSequences;
+    $usersequences = new WorkflowUserSequences();
     $usersequences->select("idworkflowitem = '$idworkflowitem'");
 
-    while ($usersequence= $usersequences->next()) {
+    while ($usersequence = $usersequences->next()) {
         $wftime = "time" . $usersequence->get("idusersequence");
         $wfuser = "user" . $usersequence->get("idusersequence");
 
@@ -147,7 +147,7 @@ function getTimeUnitSelector($listid, $default) {
     $timeunits['Months'] = i18n("Months", "workflow");
     $timeunits['Years'] = i18n("Years", "workflow");
 
-    $tpl2 = new cTemplate;
+    $tpl2 = new cTemplate();
     $tpl2->set('s', 'NAME', 'time' . $listid);
     $tpl2->set('s', 'CLASS', 'text_small');
     $tpl2->set('s', 'OPTIONS', 'size=1');
@@ -166,14 +166,13 @@ function getTimeUnitSelector($listid, $default) {
     }
 
     return $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
-
 }
 
 function getWorkflowList() {
     global $idworkflow, $cfg;
 
-    $ui = new cGuiMenu;
-    $workflowitems = new WorkflowItems;
+    $ui = new cGuiMenu();
+    $workflowitems = new WorkflowItems();
 
     $workflowitems->select("idworkflow = '$idworkflow'", "", "position ASC");
 
@@ -242,7 +241,7 @@ function createNewWorkflow() {
     global $idworkflow, $cfg;
 
     $content = "";
-    $ui = new cGuiMenu;
+    $ui = new cGuiMenu();
     $rowmark = false;
 
     $createstep = new cHTMLLink();
@@ -253,7 +252,7 @@ function createNewWorkflow() {
     $ui->setTitle("create", i18n("Create new step", "workflow"));
     $ui->setImage("create", $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/workflow_step_new.gif");
     $ui->setLink("create", $createstep);
-    $ui->setRowmark ($rowmark);
+    $ui->setRowmark($rowmark);
 
     $content = $ui->render(false);
     return $content;
@@ -263,13 +262,13 @@ function editWorkflowStep($idworkflowitem) {
     global $area, $idworkflow, $idworkflowitem, $frame, $availableWorkflowActions;
     global $notification;
 
-    $workflowitem = new WorkflowItem;
+    $workflowitem = new WorkflowItem();
 
     if ($workflowitem->loadByPrimaryKey($idworkflowitem) == false) {
         return "&nbsp;";
     }
 
-    $workflowactions = new WorkflowActions;
+    $workflowactions = new WorkflowActions();
 
     $stepname = $workflowitem->get("name");
     $stepdescription = $workflowitem->get("description");
@@ -305,8 +304,8 @@ function editWorkflowStep($idworkflowitem) {
 function getWorkflowUsers($idworkflowitem) {
     global $idworkflow, $cfg;
 
-    $ui = new cGuiMenu;
-    $workflowusers = new WorkflowUserSequences;
+    $ui = new cGuiMenu();
+    $workflowusers = new WorkflowUserSequences();
 
     $workflowusers->select("idworkflowitem = '$idworkflowitem'", "", "position ASC");
 
@@ -355,10 +354,10 @@ function getWorkflowUsers($idworkflowitem) {
         $altnoti = i18n("Escalate to this user via E-Mail", "workflow");
 
         $oCheckbox = new cHTMLCheckbox("wfemailnoti[" . $id . "]", "1", "wfemailnoti[" . $id . "]1", $email);
-        $title .= $oCheckbox->toHTML(false).'<label for="wfemailnoti[' . $id . ']1"><img alt="' . $altmail . '" title="' . $altmail . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . 'workflow/images/workflow_email_noti.gif"/></label>';
+        $title .= $oCheckbox->toHTML(false) . '<label for="wfemailnoti[' . $id . ']1"><img alt="' . $altmail . '" title="' . $altmail . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . 'workflow/images/workflow_email_noti.gif"/></label>';
 
         $oCheckbox = new cHTMLCheckbox("wfescalnoti[" . $id . "]", "1", "wfescalnoti[" . $id . "]1", $escalation);
-        $title .= $oCheckbox->toHTML(false). '<label for="wfescalnoti[' . $id . ']1"><img alt="' . $altnoti . '" title="' . $altnoti . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . 'workflow/images/workflow_escal_noti.gif"/></label>';
+        $title .= $oCheckbox->toHTML(false) . '<label for="wfescalnoti[' . $id . ']1"><img alt="' . $altnoti . '" title="' . $altnoti . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . 'workflow/images/workflow_escal_noti.gif"/></label>';
 
         $ui->setTitle($id, $title);
         $ui->setLink($id, NULL);

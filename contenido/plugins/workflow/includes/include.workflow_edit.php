@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Project:
  * CONTENIDO Content Management System
@@ -22,11 +21,10 @@
  *
  * {@internal
  *   created 2003-05-20
- *
  *   $Id$
  * }}
- *
  */
+
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
@@ -37,7 +35,7 @@ plugin_include('workflow', 'classes/class.workflow.php');
 $page = new cGuiPage("workflow_edit", "workflow");
 
 $form = new cGuiTableForm("workflow_edit");
-$workflows = new Workflows;
+$workflows = new Workflows();
 
 $workflow = $workflows->loadItem($idworkflow);
 

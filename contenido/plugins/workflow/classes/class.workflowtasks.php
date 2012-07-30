@@ -29,7 +29,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Class WorkflowTasks
  * Class for workflow task collections
@@ -45,36 +44,32 @@ class WorkflowTasks extends ItemCollection {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-    function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg["tab"]["tasks"], "idtask");
         $this->_setItemClass("WorkflowTask");
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    function WorkflowTasks()
-    {
+    public function WorkflowTasks() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
-    function create ()
-    {
+    public function create() {
         $newitem = parent::createNewItem();
         return ($newitem);
     }
 
-    function select ($where = "", $group_by = "", $order_by = "", $limit = "")
-    {
+    public function select($where = "", $group_by = "", $order_by = "", $limit = "") {
         global $client;
 
-        if ($where != "")
-        {
-            $where = $where . " AND idclient = '".cSecurity::escapeDB($client, NULL)."'";
+        if ($where != "") {
+            $where = $where . " AND idclient = '" . cSecurity::escapeDB($client, NULL) . "'";
         }
         return parent::select($where, $group_by, $order_by, $limit);
     }
+
 }
 
 /**
@@ -92,18 +87,17 @@ class WorkflowTask extends Item {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-    function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg["tab"]["tasks"], "idtask");
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    function WorkflowTask()
-    {
+    public function WorkflowTask() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
+
 }
 
 ?>

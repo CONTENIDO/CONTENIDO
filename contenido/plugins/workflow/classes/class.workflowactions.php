@@ -44,23 +44,20 @@ class WorkflowActions extends ItemCollection {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-    function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg["tab"]["workflow_actions"], "idworkflowaction");
         $this->_setItemClass("WorkflowAction");
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    function WorkflowActions()
-    {
+    public function WorkflowActions() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
-    function get($idworkflowitem, $action)
-    {
-        $this->select("idworkflowitem = '".cSecurity::escapeDB($idworkflowitem, NULL)."' AND action = '".cSecurity::escapeDB($action, NULL)."'");
+    public function get($idworkflowitem, $action) {
+        $this->select("idworkflowitem = '" . cSecurity::escapeDB($idworkflowitem, NULL) . "' AND action = '" . cSecurity::escapeDB($action, NULL) . "'");
         if ($this->next()) {
             return true;
         } else {
@@ -68,8 +65,7 @@ class WorkflowActions extends ItemCollection {
         }
     }
 
-    function getAvailableWorkflowActions()
-    {
+    public function getAvailableWorkflowActions() {
         $availableWorkflowActions = array(
             "publish" => i18n("Publish article", "workflow"),
             "lock" => i18n("Lock article", "workflow"),
@@ -84,9 +80,8 @@ class WorkflowActions extends ItemCollection {
         return($availableWorkflowActions);
     }
 
-    function set($idworkflowitem, $action)
-    {
-        $this->select("idworkflowitem = '".cSecurity::escapeDB($idworkflowitem, NULL)."' AND action = '".cSecurity::escapeDB($action, NULL)."'");
+    public function set($idworkflowitem, $action) {
+        $this->select("idworkflowitem = '" . cSecurity::escapeDB($idworkflowitem, NULL) . "' AND action = '" . cSecurity::escapeDB($action, NULL) . "'");
         if (!$this->next()) {
             $newitem = parent::createNewItem();
             $newitem->setField("idworkflowitem", $idworkflowitem);
@@ -95,20 +90,19 @@ class WorkflowActions extends ItemCollection {
         }
     }
 
-    function remove($idworkflowitem, $action)
-    {
+    public function remove($idworkflowitem, $action) {
         $this->select("idworkflowitem = '$idworkflowitem' AND action = '$action'");
         if ($item = $this->next()) {
             $this->delete($item->getField("idworkflowaction"));
         }
     }
 
-    function select($where = "", $group_by = "", $order_by = "", $limit = "")
-    {
+    public function select($where = "", $group_by = "", $order_by = "", $limit = "") {
         global $client;
 
         return parent::select($where, $group_by, $order_by, $limit);
     }
+
 }
 
 /**
@@ -126,19 +120,18 @@ class WorkflowAction extends Item {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-    function __construct()
-    {
+    public function __construct() {
         global $cfg;
 
         parent::__construct($cfg["tab"]["workflow_actions"], "idworkflowaction");
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    function WorkflowAction()
-    {
+    public function WorkflowAction() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
+
 }
 
 ?>

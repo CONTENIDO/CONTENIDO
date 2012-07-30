@@ -21,11 +21,8 @@
  *
  * {@internal
  *   created  2003-05-20
- *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
- *
  *   $Id$
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -33,82 +30,76 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-    $nav = new cGuiNavigation;
+$nav = new cGuiNavigation();
 
-    $parentarea = getParentAreaID($area);
-    $sql = "SELECT
+$parentarea = getParentAreaID($area);
+$sql = "SELECT
                 idarea
             FROM
-                ".$cfg["tab"]["area"]." AS a
+                " . $cfg["tab"]["area"] . " AS a
             WHERE
-                a.name = '".cSecurity::escapeDB($parentarea, $db)."' OR
-                a.parent_id = '".cSecurity::escapeDB($parentarea, $db)."'
+                a.name = '" . cSecurity::escapeDB($parentarea, $db) . "' OR
+                a.parent_id = '" . cSecurity::escapeDB($parentarea, $db) . "'
             ORDER BY
                 idarea";
 
-    $db->query($sql);
+$db->query($sql);
 
-    $in_str = "";
+$in_str = "";
 
-    while ( $db->next_record() ) {
-        $in_str .= $db->f('idarea') . ',';
-    }
+while ($db->next_record()) {
+    $in_str .= $db->f('idarea') . ',';
+}
 
-    $len = strlen($in_str)-1;
-    $in_str = substr($in_str, 0, $len);
-    $in_str = '('.$in_str.')';
+$len = strlen($in_str) - 1;
+$in_str = substr($in_str, 0, $len);
+$in_str = '(' . $in_str . ')';
 
-    $sql = "SELECT
+$sql = "SELECT
                 b.location AS location,
                 a.name AS name
             FROM
-                ".$cfg["tab"]["area"]." AS a,
-                ".$cfg["tab"]["nav_sub"]." AS b
+                " . $cfg["tab"]["area"] . " AS a,
+                " . $cfg["tab"]["nav_sub"] . " AS b
             WHERE
-                b.idarea IN ".cSecurity::escapeDB($in_str, $db)." AND
+                b.idarea IN " . cSecurity::escapeDB($in_str, $db) . " AND
                 b.idarea = a.idarea AND
                 b.level = 1
             ORDER BY
                 b.idnavs";
 
-    $db->query($sql);
+$db->query($sql);
 
-    while ( $db->next_record() ) {
+while ($db->next_record()) {
 
-        # Extract caption from
-        # the xml language file
-        $caption = $nav->getName($db->f("location"));
+    // Extract caption from the xml language file
+    $caption = $nav->getName($db->f("location"));
 
-        $tmp_area = $db->f("name");
+    $tmp_area = $db->f("name");
 
-        # Set template data
-        $tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt);
-        $tpl->set("d", "CLASS",     '');
-        $tpl->set("d", "OPTIONS",   '');
-        $tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=$tmp_area&frame=4&idworkflow=$idworkflow").'">'.$caption.'</a>');
-        if ($area == $tmp_area)
-        {
-            $tpl->set('s', 'DEFAULT', markSubMenuItem($tpl->dyn_cnt,true));
-        }
-        $tpl->next();
-
+    // Set template data
+    $tpl->set("d", "ID", 'c_' . $tpl->dyn_cnt);
+    $tpl->set("d", "CLASS", '');
+    $tpl->set("d", "OPTIONS", '');
+    $tpl->set("d", "CAPTION", '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="' . $sess->url("main.php?area=$tmp_area&frame=4&idworkflow=$idworkflow") . '">' . $caption . '</a>');
+    if ($area == $tmp_area) {
+        $tpl->set('s', 'DEFAULT', markSubMenuItem($tpl->dyn_cnt, true));
     }
+    $tpl->next();
+}
 
-    $tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
-    $tpl->set('s', 'IDCAT', $idcat);
-    $tpl->set('s', 'SESSID', $sess->id);
-    $tpl->set('s', 'CLIENT', $client);
-    $tpl->set('s', 'LANG', $lang);
+$tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
+$tpl->set('s', 'IDCAT', $idcat);
+$tpl->set('s', 'SESSID', $sess->id);
+$tpl->set('s', 'CLIENT', $client);
+$tpl->set('s', 'LANG', $lang);
 
 
-    # Generate the third
-    # navigation layer
-    if ($idworkflow <= 0)
-    {
-        $tpl->generate($cfg["path"]["templates"].$cfg["templates"]["subnav_blank"]);
-    } else {
-        $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["subnav"]);
-    }
-
+// Generate the third navigation layer
+if ($idworkflow <= 0) {
+    $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["subnav_blank"]);
+} else {
+    $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["subnav"]);
+}
 
 ?>

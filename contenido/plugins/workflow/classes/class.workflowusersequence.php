@@ -29,7 +29,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Class WorkflowUserSequences
  * Class for workflow user sequence management
@@ -45,33 +44,29 @@ class WorkflowUserSequences extends ItemCollection {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-    function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg["tab"]["workflow_user_sequences"], "idusersequence");
         $this->_setItemClass("WorkflowUserSequence");
     }
 
-    function WorkflowUserSequences()
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    {
+    public function WorkflowUserSequences()
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */ {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
-    function delete($id)
-    {
+    public function delete($id) {
         global $cfg, $idworkflow;
 
-        $item = new WorkflowUserSequence;
+        $item = new WorkflowUserSequence();
         $item->loadByPrimaryKey($id);
 
         $pos = $item->get("position");
         $idworkflowitem = $item->get("idworkflowitem");
-        $this->select("position > $pos AND idworkflowitem = '".cSecurity::escapeDB($idworkflowitem, NULL)."'");
-        while ($obj = $this->next())
-        {
-            $pos = $obj->get("position") -1;
+        $this->select("position > $pos AND idworkflowitem = '" . cSecurity::escapeDB($idworkflowitem, NULL) . "'");
+        while ($obj = $this->next()) {
+            $pos = $obj->get("position") - 1;
             $obj->setPosition($pos);
             $obj->store();
         }
@@ -81,19 +76,18 @@ class WorkflowUserSequences extends ItemCollection {
         $this->updateArtAllocation($id);
     }
 
-    function updateArtAllocation($idusersequence)
-    {
+    public function updateArtAllocation($idusersequence) {
         global $idworkflow, $cfg;
         $oDb = cRegistry::getDb();
 
         $aIdArtLang = array();
-        $sSql = 'SELECT idartlang FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence = '.cSecurity::escapeDB($idusersequence, $oDb).';';
+        $sSql = 'SELECT idartlang FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence = ' . cSecurity::escapeDB($idusersequence, $oDb) . ';';
         $oDb->query($sSql);
         while ($oDb->next_record()) {
             array_push($aIdArtLang, $oDb->f('idartlang'));
         }
 
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence = '.cSecurity::escapeDB($idusersequence, $oDb).';';
+        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence = ' . cSecurity::escapeDB($idusersequence, $oDb) . ';';
         $oDb->query($sSql);
 
 
@@ -102,25 +96,22 @@ class WorkflowUserSequences extends ItemCollection {
         }
     }
 
-    function create($idworkflowitem)
-    {
+    public function create($idworkflowitem) {
         global $auth, $client, $idworkflow;
         $newitem = parent::createNewItem();
 
-        $workflowitems = new WorkflowItems;
-        if (!$workflowitems->exists($idworkflowitem))
-        {
+        $workflowitems = new WorkflowItems();
+        if (!$workflowitems->exists($idworkflowitem)) {
             $this->delete($newitem->getField("idusersequence"));
             $this->lasterror = i18n("Workflow item doesn't exist. Can't create entry.", "workflow");
             return false;
         }
 
-        $this->select("idworkflowitem = '".cSecurity::escapeDB($idworkflowitem, NULL)."'","","position DESC","1");
+        $this->select("idworkflowitem = '" . cSecurity::escapeDB($idworkflowitem, NULL) . "'", "", "position DESC", "1");
 
         $item = $this->next();
 
-        if ($item === false)
-        {
+        if ($item === false) {
             $lastPos = 1;
         } else {
             $lastPos = $item->getField("position") + 1;
@@ -130,23 +121,20 @@ class WorkflowUserSequences extends ItemCollection {
         $newitem->setPosition($lastPos);
         $newitem->store();
 
-        return ($newitem);
+        return $newitem;
     }
 
-    function swap($idworkflowitem, $pos1, $pos2)
-    {
-        $this->select("idworkflowitem = '$idworkflowitem' AND position = '".cSecurity::escapeDB($pos1, NULL)."'");
-        if (($item = $this->next()) === false)
-        {
+    public function swap($idworkflowitem, $pos1, $pos2) {
+        $this->select("idworkflowitem = '$idworkflowitem' AND position = '" . cSecurity::escapeDB($pos1, NULL) . "'");
+        if (($item = $this->next()) === false) {
             $this->lasterror = i18n("Swapping items failed: Item doesn't exist", "workflow");
             return false;
         }
 
         $pos1ID = $item->getField("idusersequence");
 
-        $this->select("idworkflowitem = '$idworkflowitem' AND position = '".cSecurity::escapeDB($pos2, NULL)."'");
-        if (($item = $this->next()) === false)
-        {
+        $this->select("idworkflowitem = '$idworkflowitem' AND position = '" . cSecurity::escapeDB($pos2, NULL) . "'");
+        if (($item = $this->next()) === false) {
             $this->lasterror(i18n("Swapping items failed: Item doesn't exist", "workflow"));
             return false;
         }
@@ -164,8 +152,9 @@ class WorkflowUserSequences extends ItemCollection {
         $this->updateArtAllocation($pos2ID);
         $this->updateArtAllocation($pos1ID);
 
-        return (true);
+        return true;
     }
+
 }
 
 /**
@@ -183,15 +172,13 @@ class WorkflowUserSequence extends Item {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-    function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg["tab"]["workflow_user_sequences"], "idusersequence");
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    function WorkflowUserSequence()
-    {
+    public function WorkflowUserSequence() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
@@ -203,12 +190,10 @@ class WorkflowUserSequence extends Item {
      * @param  string  $value Value to set
      * @param  bool  $safe
      */
-    function setField($field, $value, $safe = true)
-    {
+    public function setField($field, $value, $safe = true) {
         global $cfg;
 
-        switch ($field)
-        {
+        switch ($field) {
             case "idworkflowitem":
                 die("Please use create to modify idsequence. Direct modifications are not allowed");
             case "idusersequence":
@@ -216,33 +201,30 @@ class WorkflowUserSequence extends Item {
             case "position":
                 die("Please use create and swap to set the position. Direct modifications are not allowed");
             case "iduser":
-                if ($value != 0)
-                {
+                if ($value != 0) {
                     $db = cRegistry::getDb();
                     $sql = "SELECT user_id FROM " . $cfg["tab"]["phplib_auth_user_md5"] .
-                           " WHERE user_id = '".cSecurity::escapeDB($value, $db)."'";
+                            " WHERE user_id = '" . cSecurity::escapeDB($value, $db) . "'";
                     $db->query($sql);
 
-                    if (!$db->next_record())
-                    {
+                    if (!$db->next_record()) {
                         $sql = "SELECT group_id FROM " . $cfg["tab"]["groups"] .
-                               " WHERE group_id = '".cSecurity::escapeDB($value, $db)."'";
+                                " WHERE group_id = '" . cSecurity::escapeDB($value, $db) . "'";
 
                         $db->query($sql);
-                        if (!$db->next_record())
-                        {
+                        if (!$db->next_record()) {
                             $this->lasterror = i18n("Can't set user_id: User or group doesn't exist", "workflow");
                             return false;
                         }
                     }
                     $idusersquence = parent::getField('idusersequence');
                 }
-
         }
 
         parent::setField($field, $value, $safe);
         if ($idusersquence) {
-            WorkflowUserSequences::updateArtAllocation(0);
+            $workflowUserSequence = new WorkflowUserSequence();
+            $workflowUserSequence->updateArtAllocation(0);
         }
     }
 
@@ -250,11 +232,9 @@ class WorkflowUserSequence extends Item {
      * Returns the associated workflowItem for this user sequence
      * @param none
      */
-    function getWorkflowItem()
-    {
-        if (!$this->virgin)
-        {
-            $workflowItem = new WorkflowItem;
+    public function getWorkflowItem() {
+        if (!$this->virgin) {
+            $workflowItem = new WorkflowItem();
             $workflowItem->loadByPrimaryKey($this->values["idworkflowitem"]);
             return ($workflowItem);
         } else {
@@ -266,8 +246,7 @@ class WorkflowUserSequence extends Item {
      * Interface to set idworkflowitem. Should only be called by "create".
      * @param string $value The value to set
      */
-    function setWorkflowItem($value)
-    {
+    public function setWorkflowItem($value) {
         parent::setField("idworkflowitem", $value);
     }
 
@@ -275,9 +254,10 @@ class WorkflowUserSequence extends Item {
      * Interface to set idworkflowitem. Should only be called by "create".
      * @param string $value The value to set
      */
-    function setPosition($value)
-    {
+    public function setPosition($value) {
         parent::setField("position", $value);
     }
+
 }
+
 ?>

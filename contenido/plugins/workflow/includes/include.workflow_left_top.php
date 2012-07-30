@@ -21,10 +21,8 @@
  *
  * {@internal
  *   created 2003-07-18
- *
  *   $Id$
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -34,10 +32,10 @@ if (!defined('CON_FRAMEWORK')) {
 $page = new cGuiPage("workflow_left_top", "workflow");
 
 $create = new cHTMLLink();
-$create->setMultiLink("workflow","","workflow_common","workflow_create");
+$create->setMultiLink("workflow", "", "workflow_common", "workflow_create");
 //$create->setCLink("workflow_common",4,"workflow_create");
 $create->setContent(i18n("Create workflow", "workflow"));
-$create->setCustom("idworkflow","-1");
+$create->setCustom("idworkflow", "-1");
 
 $aAttributes = array();
 $aAttributes['class'] = "addfunction";

@@ -29,7 +29,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Class WorkflowArtAllocations
  * Class for workflow art allocation management
@@ -45,26 +44,23 @@ class WorkflowArtAllocations extends ItemCollection {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-    function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg["tab"]["workflow_art_allocation"], "idartallocation");
         $this->_setItemClass("WorkflowArtAllocation");
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    function WorkflowArtAllocations()
-    {
+    public function WorkflowArtAllocations() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
-    function create($idartlang)
-    {
+    public function create($idartlang) {
         global $cfg;
 
-        $sql = "SELECT idartlang FROM " .$cfg["tab"]["art_lang"].
-               " WHERE idartlang = '".cSecurity::escapeDB($idartlang, $this->db)."'";
+        $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] .
+                " WHERE idartlang = '" . cSecurity::escapeDB($idartlang, $this->db) . "'";
 
         $this->db->query($sql);
         if (!$this->db->next_record()) {
@@ -85,6 +81,7 @@ class WorkflowArtAllocations extends ItemCollection {
 
         return ($newitem);
     }
+
 }
 
 /**
@@ -102,23 +99,20 @@ class WorkflowArtAllocation extends Item {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-    function __construct()
-    {
+    public function __construct() {
         global $cfg;
 
         parent::__construct($cfg["tab"]["workflow_art_allocation"], "idartallocation");
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    function WorkflowArtAllocation()
-    {
+    public function WorkflowArtAllocation() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
-    function getWorkflowItem ()
-    {
-        $userSequence = new WorkflowUserSequence;
+    public function getWorkflowItem() {
+        $userSequence = new WorkflowUserSequence();
         $userSequence->loadByPrimaryKey($this->values["idusersequence"]);
 
         return ($userSequence->getWorkflowItem());
@@ -129,11 +123,10 @@ class WorkflowArtAllocation extends Item {
      * @param string $field Void field since we override the usual setField function
      * @param string $value Void field since we override the usual setField function
      */
-    function currentItemPosition()
-    {
+    public function currentItemPosition() {
         $idworkflowitem = $this->get("idworkflowitem");
 
-        $workflowItems = new WorkflowItems;
+        $workflowItems = new WorkflowItems();
         $workflowItems->select("idworkflowitem = '$idworkflowitem'");
 
         if ($item = $workflowItems->next()) {
@@ -146,8 +139,7 @@ class WorkflowArtAllocation extends Item {
      * @param string $field Void field since we override the usual setField function
      * @param string $value Void field since we override the usual setField function
      */
-    function currentUserPosition()
-    {
+    public function currentUserPosition() {
         return ($this->get("position"));
     }
 
@@ -155,8 +147,7 @@ class WorkflowArtAllocation extends Item {
      * Overriden store function to send mails
      * @param none
      */
-    function store()
-    {
+    public function store() {
         global $cfg;
 
         $sMailhost = getSystemProperty('system', 'mail_host');
@@ -171,7 +162,7 @@ class WorkflowArtAllocation extends Item {
         $oMail->IsMail();
 
         if (array_key_exists("idusersequence", $this->modifiedValues)) {
-            $usersequence = new WorkflowUserSequence;
+            $usersequence = new WorkflowUserSequence();
             $usersequence->loadByPrimaryKey($this->values["idusersequence"]);
 
             $email = $usersequence->get("emailnoti");
@@ -185,7 +176,7 @@ class WorkflowArtAllocation extends Item {
                 $timelimit = $usersequence->get("timelimit");
 
                 $db = cRegistry::getDb();
-                $sql = "SELECT author, title, idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang = '".cSecurity::escapeDB($idartlang, $db)."'";
+                $sql = "SELECT author, title, idart FROM " . $cfg["tab"]["art_lang"] . " WHERE idartlang = '" . cSecurity::escapeDB($idartlang, $db) . "'";
 
                 $db->query($sql);
 
@@ -196,14 +187,14 @@ class WorkflowArtAllocation extends Item {
                 }
 
                 // Extract category
-                $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".cSecurity::escapeDB($idart, $db)."'";
+                $sql = "SELECT idcat FROM " . $cfg["tab"]["cat_art"] . " WHERE idart = '" . cSecurity::escapeDB($idart, $db) . "'";
                 $db->query($sql);
 
                 if ($db->next_record()) {
                     $idcat = $db->f("idcat");
                 }
 
-                $sql = "SELECT name FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '".cSecurity::escapeDB($idcat, $db)."'";
+                $sql = "SELECT name FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = '" . cSecurity::escapeDB($idcat, $db) . "'";
                 $db->query($sql);
 
                 if ($db->next_record()) {
@@ -213,7 +204,7 @@ class WorkflowArtAllocation extends Item {
                 $starttime = $this->get("starttime");
 
                 // WTF ist this???
-                $starttime = strtotime (substr_replace (substr (substr ($starttime,0,2).chunk_split (substr ($starttime,2,6),2,"-").chunk_split (substr ($starttime,8),2,":"),0,19)," ",10,1));
+                $starttime = strtotime(substr_replace(substr(substr($starttime, 0, 2) . chunk_split(substr($starttime, 2, 6), 2, "-") . chunk_split(substr($starttime, 8), 2, ":"), 0, 19), " ", 10, 1));
 
                 switch ($timeunit) {
                     case "Seconds":
@@ -242,30 +233,22 @@ class WorkflowArtAllocation extends Item {
                 }
 
                 if ($email == 1) {
-                    $email = "Hello %s,\n\n".
-                             "you are assigned as the next editor for the Article %s.\n\n".
-                             "More informations:\n".
-                             "Article: %s\n".
-                             "Category: %s\n".
-                             "Editor: %s\n".
-                             "Author: %s\n".
-                             "Editable from: %s\n".
-                             "Editable to: %s\n";
+                    $email = "Hello %s,\n\n" .
+                            "you are assigned as the next editor for the Article %s.\n\n" .
+                            "More informations:\n" .
+                            "Article: %s\n" .
+                            "Category: %s\n" .
+                            "Editor: %s\n" .
+                            "Author: %s\n" .
+                            "Editable from: %s\n" .
+                            "Editable to: %s\n";
 
-                    $filledMail = sprintf($email,
-                                          $curEditor,
-                                          $title,
-                                          $title,
-                                          $catname,
-                                          $curEditor,
-                                          $author,
-                                          date("Y-m-d H:i:s", $starttime),
-                                          date("Y-m-d H:i:s", $maxtime));
+                    $filledMail = sprintf($email, $curEditor, $title, $title, $catname, $curEditor, $author, date("Y-m-d H:i:s", $starttime), date("Y-m-d H:i:s", $maxtime));
                     $user = new cApiUser();
 
                     if (isGroup($usersequence->get("iduser"))) {
-                        $sql = "select idgroupuser, user_id FROM ". $cfg["tab"]["groupmembers"] ." WHERE
-                                group_id = '".cSecurity::escapeDB($usersequence->get("iduser"), $db)."'";
+                        $sql = "select idgroupuser, user_id FROM " . $cfg["tab"]["groupmembers"] . " WHERE
+                                group_id = '" . cSecurity::escapeDB($usersequence->get("iduser"), $db) . "'";
                         $db->query($sql);
 
                         while ($db->next_record()) {
@@ -275,7 +258,6 @@ class WorkflowArtAllocation extends Item {
                             $oMail->Body = $filledMail;
                             $oMail->Send();
                         }
-
                     } else {
                         $user->loadByPrimaryKey($usersequence->get("iduser"));
                         $oMail->AddAddress($user->getField("email"), "");
@@ -283,48 +265,38 @@ class WorkflowArtAllocation extends Item {
                         $oMail->Body = $filledMail;
                         $oMail->Send();
                     }
-
                 } else {
-                    $email = "Hello %s,\n\n".
-                             "you are assigned as the escalator for the Article %s.\n\n".
-                             "More informations:\n".
-                             "Article: %s\n".
-                             "Category: %s\n".
-                             "Editor: %s\n".
-                             "Author: %s\n".
-                             "Editable from: %s\n".
-                             "Editable to: %s\n";
+                    $email = "Hello %s,\n\n" .
+                            "you are assigned as the escalator for the Article %s.\n\n" .
+                            "More informations:\n" .
+                            "Article: %s\n" .
+                            "Category: %s\n" .
+                            "Editor: %s\n" .
+                            "Author: %s\n" .
+                            "Editable from: %s\n" .
+                            "Editable to: %s\n";
 
-                    $filledMail = sprintf($email,
-                                          $curEditor,
-                                          $title,
-                                          $title,
-                                          $catname,
-                                          $curEditor,
-                                          $author,
-                                          date("Y-m-d H:i:s", $starttime),
-                                          date("Y-m-d H:i:s", $maxtime));
+                    $filledMail = sprintf($email, $curEditor, $title, $title, $catname, $curEditor, $author, date("Y-m-d H:i:s", $starttime), date("Y-m-d H:i:s", $maxtime));
 
                     $user = new cApiUser();
 
                     if (isGroup($usersequence->get("iduser"))) {
 
-                        $sql = "select idgroupuser, user_id FROM ". $cfg["tab"]["groupmembers"] ." WHERE
-                                group_id = '".cSecurity::escapeDB($usersequence->get("iduser"), $db)."'";
+                        $sql = "select idgroupuser, user_id FROM " . $cfg["tab"]["groupmembers"] . " WHERE
+                                group_id = '" . cSecurity::escapeDB($usersequence->get("iduser"), $db) . "'";
                         $db->query($sql);
 
                         while ($db->next_record()) {
                             $user->loadByPrimaryKey($db->f("user_id"));
-                            echo "mail to ".$user->getField("email")."<br>";
+                            echo "mail to " . $user->getField("email") . "<br>";
                             $oMail->AddAddress($user->getField("email"), "");
                             $oMail->Subject = stripslashes(i18n('Workflow escalation'));
                             $oMail->Body = $filledMail;
                             $oMail->Send();
                         }
-
                     } else {
                         $user->loadByPrimaryKey($usersequence->get("iduser"));
-                        echo "mail to ".$user->getField("email")."<br>";
+                        echo "mail to " . $user->getField("email") . "<br>";
                         $oMail->AddAddress($user->getField("email"), "");
                         $oMail->Subject = stripslashes(i18n('Workflow escalation'));
                         $oMail->Body = $filledMail;
@@ -335,12 +307,13 @@ class WorkflowArtAllocation extends Item {
         }
 
         if (parent::store()) {
-            $this->db->query("UPDATE ".$this->table." SET `starttime`=NOW() WHERE `".$this->primaryKey."`='".$this->get($this->primaryKey)."'");
+            $this->db->query("UPDATE " . $this->table . " SET `starttime`=NOW() WHERE `" . $this->primaryKey . "`='" . $this->get($this->primaryKey) . "'");
             return true;
         } else {
             return false;
         }
     }
+
 }
 
 ?>

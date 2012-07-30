@@ -21,10 +21,8 @@
  *
  * {@internal
  *   created 2006-01-13
- *
  *   $Id$
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -37,42 +35,40 @@ $iIdMarked = (int) $_GET['idworkflow'];
 plugin_include('workflow', 'classes/class.workflow.php');
 
 $page = new cGuiPage("workflow_list", "workflow");
-$workflows = new Workflows;
+$workflows = new Workflows();
 $sScript = '';
-if ($action == "workflow_delete")
-{
+if ($action == "workflow_delete") {
     $workflows->delete($idworkflow);
     $sScript = '<script type="text/javascript">
                     var right_top = top.content.frames["right"].frames["right_top"];
                     var right_bottom = top.content.frames["right"].frames["right_bottom"];
 
                     if (right_top) {
-                        right_top.location.href = "'.$sess->url('main.php?area=workflow&frame=3').'";
+                        right_top.location.href = "' . $sess->url('main.php?area=workflow&frame=3') . '";
                     }
                     if (right_bottom) {
-                        right_bottom.location.href = "'.$sess->url('main.php?area=workflow&frame=4').'";
+                        right_bottom.location.href = "' . $sess->url('main.php?area=workflow&frame=4') . '";
                     }
                 </script>';
 }
 
-$ui = new cGuiMenu;
+$ui = new cGuiMenu();
 $workflows->select("idclient = '$client' AND idlang = '$lang'");
 
-while ($workflow = $workflows->next())
-{
+while ($workflow = $workflows->next()) {
     $wfid = $workflow->getField("idworkflow");
     $wfname = $workflow->getField("name");
     $wfdescription = $workflow->getField("description");
 
     /* Create the link to show/edit the workflow */
     $link = new cHTMLLink();
-    $link->setMultiLink("workflow","","workflow_common","workflow_show");
+    $link->setMultiLink("workflow", "", "workflow_common", "workflow_show");
     $link->setAlt($wfdescription);
-    $link->setCustom("idworkflow",$wfid);
+    $link->setCustom("idworkflow", $wfid);
 
-     $delTitle = i18n("Delete workflow", "workflow");
-      $delDescr = sprintf(i18n("Do you really want to delete the following workflow:<br><br>%s<br>", "workflow"),$wfname);
-    $delete = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteWorkflow(\\\''.$wfid.'\\\')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
+    $delTitle = i18n("Delete workflow", "workflow");
+    $delDescr = sprintf(i18n("Do you really want to delete the following workflow:<br><br>%s<br>", "workflow"), $wfname);
+    $delete = '<a title="' . $delTitle . '" href="javascript://" onclick="box.confirm(\'' . $delTitle . '\', \'' . $delDescr . '\', \'deleteWorkflow(\\\'' . $wfid . '\\\')\')"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
 
     $ui->setTitle($wfid, $wfname);
     $ui->setLink($wfid, $link);
@@ -82,7 +78,6 @@ while ($workflow = $workflows->next())
     if ($wfid == $iIdMarked) {
         $ui->setMarked($wfid);
     }
-
 }
 
 $page->addScript('refresh', $sScript);
