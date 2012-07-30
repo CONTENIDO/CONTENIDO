@@ -239,7 +239,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
             foreach ($idcatart as $pos => $id) {
                 $idcatart[$pos] = (int) $id;
             }
-            $inSql = implode(', ', $idcatarts);
+            $inSql = implode(', ', $idcatart);
             $sql = "UPDATE `%s` SET createcode = %d WHERE idcatart IN (" . $inSql . ")";
             $sql = $this->db->prepare($sql, $this->table, $createcode);
         } else {
