@@ -37,7 +37,7 @@ if (isset($area) && $area == 'con_content_list') {
 } else {
     $tmp_area = "con_editcontent";
     $path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
-    $path2 = $cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&idartlang=$idartlang";
+    $path2 = $cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&idartlang=$idartlang&client=$client";
 }
 
 if ($doedit == "1") {

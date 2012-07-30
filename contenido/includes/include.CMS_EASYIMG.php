@@ -41,7 +41,7 @@ if(isset($area) && $area == 'con_content_list'){
     if ($action == "cancel") {
         $path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
     } else {
-        $path1 = $cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit";
+        $path1 = $cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
     }
 }
 
