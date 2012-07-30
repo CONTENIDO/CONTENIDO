@@ -118,6 +118,27 @@ class cApiCategoryLanguageCollection extends ItemCollection {
         return ($this->db->next_record()) ? $this->db->f('startidartlang') : 0;
     }
 
+    /**
+     * Checks if passed idartlang is a start article.
+     * @param  int  $idartlang
+     * @param  int  $idcat  Check category id additionally
+     * @param  int  $idlang  Check language id additionally
+     * @return  bool
+     */
+    public function isStartArticle($idartlang, $idcat = null, $idlang = null) {
+        $where = 'startidartlang = ' . (int) $idartlang;
+        if (is_numeric($idcat)) {
+            $where .= ' AND idcat = ' . $idcat;
+        }
+        if (is_numeric($idlang)) {
+            $where .= ' AND idlang = ' . $idlang;
+        }
+        $where .= ' AND startidartlang != 0';
+
+        $sql = "SELECT startidartlang FROM `" . $this->table . "` WHERE " . $where;
+        $this->db->query($sql);
+        return ($this->db->next_record() && $this->db->f('startidartlang') != 0);
+    }
 }
 
 /**
