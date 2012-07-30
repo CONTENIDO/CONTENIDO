@@ -1103,7 +1103,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         $aIds = array();
 
-        // get all ids
+        // Get all ids
         $sql = 'SELECT ' . $this->primaryKey . ' AS pk FROM `' . $this->table . '` WHERE ' . $sWhere;
         $oDb->query($sql);
         while ($oDb->next_record()) {
@@ -1111,6 +1111,41 @@ abstract class ItemCollection extends cItemBaseAbstract {
         }
 
         return $aIds;
+    }
+
+    /**
+     * Returns all specified fields of recordsets in the table matching the rules in the passed where clause.
+     *
+     * @param   array  $aFields  List of fields to get
+     * @param   string  $sWhere  The where clause of the SQL statement
+     * @return  array  List of entries with specified fields
+     */
+    public function getFieldsByWhereClause(array $aFields, $sWhere) {
+        $oDb = $this->_getSecondDBInstance();
+
+        $aEntries = array();
+
+        if (count($aFields) == 0) {
+            return $aEntries;
+        }
+
+        // Delete multiple db entries at once
+        $aEscapedFields = array_map(array($oDb, 'escape'), $aFields);
+
+        $fields = implode(', ', $aEscapedFields);
+
+        // Get all fields
+        $sql = 'SELECT ' . $fields . ' FROM `' . $this->table . '` WHERE ' . $sWhere;
+        $oDb->query($sql);
+        while ($oDb->next_record()) {
+            $data = array();
+            foreach ($aFields as $field) {
+                $data = $oDb->f($field);
+            }
+            $aEntries[] = $data;
+        }
+
+        return $aEntries;
     }
 
     /**
@@ -1123,7 +1158,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         $aIds = array();
 
-        // get all ids
+        // Get all ids
         $sql = 'SELECT ' . $this->primaryKey . ' AS pk FROM `' . $this->table . '`';
         $oDb->query($sql);
         while ($oDb->next_record()) {
