@@ -6067,3 +6067,6 @@ msgstr "Synchronisierte Kategorie offline"
 
 msgid "You are here"
 msgstr "Sie sind hier"
+
+msgid "open"
+msgstr "Öffnen"
