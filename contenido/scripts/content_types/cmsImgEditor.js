@@ -1,5 +1,5 @@
 /**
- * This file contains the cContentTypeImgEditor JS class.
+ * This file contains the cContentTypeImgeditor JS class.
  *
  * @package Core
  * @subpackage Content Type
@@ -13,7 +13,7 @@
  */
 
 /**
- * Creates a new cContentTypeImgEditor with the given properties.
+ * Creates a new cContentTypeImgeditor with the given properties.
  * You most probably want to call initialise() after creating a new object of this class.
  *
  * @constructor
@@ -28,7 +28,7 @@
  * @property {String} session The session ID of the admin user.
  * @property {Object|String} settings The settings of this content type.
  */
-function cContentTypeImgEditor(frameId, imageId, pathBackend, pathFrontend, idArtLang, id, fields, prefix, session, settings) {
+function cContentTypeImgeditor(frameId, imageId, pathBackend, pathFrontend, idArtLang, id, fields, prefix, session, settings) {
 
     // call the constructor of the parent class with the same arguments
     cContentTypeAbstractTabbed.apply(this, arguments);
@@ -43,16 +43,16 @@ function cContentTypeImgEditor(frameId, imageId, pathBackend, pathFrontend, idAr
 }
 
 // inherit from cContentTypeAbstractTabbed
-cContentTypeImgEditor.prototype = new cContentTypeAbstractTabbed();
+cContentTypeImgeditor.prototype = new cContentTypeAbstractTabbed();
 // correct the constructor function (it points to the cContentTypeAbstractTabbed constructor)
-cContentTypeImgEditor.prototype.constructor = cContentTypeImgEditor;
+cContentTypeImgeditor.prototype.constructor = cContentTypeImgeditor;
 
 /**
  * Initialises the content type by adding event handlers etc.
  *
  * @override
  */
-cContentTypeImgEditor.prototype.initialise = function() {
+cContentTypeImgeditor.prototype.initialise = function() {
     // call the function of the parent so that it is initialised correctly
     cContentTypeAbstractTabbed.prototype.initialise.call(this);
     // call custom functions that attach custom event handlers etc.
@@ -69,7 +69,7 @@ cContentTypeImgEditor.prototype.initialise = function() {
  *
  * @override
  */
-cContentTypeImgEditor.prototype.loadExternalFiles = function() {
+cContentTypeImgeditor.prototype.loadExternalFiles = function() {
     // call the function of the parent so that all general files are included
     cContentTypeAbstractTabbed.prototype.loadExternalFiles.call(this);
     if ($('#cms_imgeditor_styles').length === 0) {
@@ -84,7 +84,7 @@ cContentTypeImgEditor.prototype.loadExternalFiles = function() {
  *
  * @override
  */
-cContentTypeImgEditor.prototype.addTabbingEvents = function() {
+cContentTypeImgeditor.prototype.addTabbingEvents = function() {
     var self = this;
     // call the function of the parent so that the standard tab functionality works
     cContentTypeAbstractTabbed.prototype.addTabbingEvents.call(self);
@@ -102,7 +102,7 @@ cContentTypeImgEditor.prototype.addTabbingEvents = function() {
  * - adding possibility to expand and close directories
  * - updating the file list each time a new directory is selected
  */
-cContentTypeImgEditor.prototype.addNaviActions = function() {
+cContentTypeImgeditor.prototype.addNaviActions = function() {
     var self = this;
     $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').unbind('click');
     $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').click(function() {
@@ -161,7 +161,7 @@ cContentTypeImgEditor.prototype.addNaviActions = function() {
 /**
  * Updates the directory names in the upload tab.
  */
-cContentTypeImgEditor.prototype.showFolderPath = function() {
+cContentTypeImgeditor.prototype.showFolderPath = function() {
     var self = this;
     // if there are no directories, set the active class for the root upload folder
     var directories = [];
@@ -195,7 +195,7 @@ cContentTypeImgEditor.prototype.showFolderPath = function() {
 /**
  * Updates the image preview and the image's meta data each time a new image is selected.
  */
-cContentTypeImgEditor.prototype.addSelectAction = function() {
+cContentTypeImgeditor.prototype.addSelectAction = function() {
     var self = this;
     if ($('#image_filename_' + self.id).length > 0) {
         $(self.frameId + ' select[name="image_filename"]').change(function() {
@@ -244,7 +244,7 @@ cContentTypeImgEditor.prototype.addSelectAction = function() {
 /**
  * Creates a new directory and updates the directory list accordingly.
  */
-cContentTypeImgEditor.prototype.createMKDir = function() {
+cContentTypeImgeditor.prototype.createMKDir = function() {
     var self = this;
     $(self.frameId + ' #upload form[name="newdir"] input[type="image"]').unbind('click');
     $(self.frameId + ' #upload form[name="newdir"] input[type="image"]').click(function() {
@@ -305,7 +305,7 @@ cContentTypeImgEditor.prototype.createMKDir = function() {
 /**
  * Uploads an image.
  */
-cContentTypeImgEditor.prototype.imageFileUpload = function() {
+cContentTypeImgeditor.prototype.imageFileUpload = function() {
     var self = this;
     var dirname = '';
     if (self.selectedPath !== '' && self.selectedPath !== 'upload') {
@@ -339,7 +339,7 @@ cContentTypeImgEditor.prototype.imageFileUpload = function() {
 /**
  * Updates the filename in the meta tab.
  */
-cContentTypeImgEditor.prototype.showUrlforMeta = function() {
+cContentTypeImgeditor.prototype.showUrlforMeta = function() {
     var filename = $(this.frameId + ' select#image_filename_' + this.id + ' option:selected').val();
     $(this.frameId + ' #image_meta_url_' + this.id).html(filename);
 };
