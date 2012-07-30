@@ -231,9 +231,9 @@ class WorkflowItem extends Item {
     function getStepRights()
     {
         $idwfi = $this->values["idworkflowitem"];
-        $workflowActions = new WorkflowActions;
+        $workflowActions = new WorkflowActions();
 
-        $actions = WorkflowActions::getAvailableWorkflowActions();
+        $actions = $workflowActions->getAvailableWorkflowActions();
 
         foreach ($actions as $key => $value)
         {

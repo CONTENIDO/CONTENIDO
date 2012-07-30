@@ -149,7 +149,7 @@ function getActionSelect ($idartlang, $idusersequence)
 {
     global $cfg;
 
-    $workflowActions = new WorkflowActions;
+    $workflowActions = new WorkflowActions();
 
     $allActions = $workflowActions->getAvailableWorkflowActions();
 

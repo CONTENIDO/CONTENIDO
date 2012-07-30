@@ -38,7 +38,9 @@ $page = new cGuiPage("workflow_steps", "workflow");
 
 $iIdMarked = (int) $_GET['idworkflowitem'];
 
-$availableWorkflowActions = WorkflowActions::getAvailableWorkflowActions();
+$workflowActions = new WorkflowActions();
+
+$availableWorkflowActions = $workflowActions->getAvailableWorkflowActions();
 
 $sCurrentEncoding = getEncodingByLanguage($db, $lang, $cfg);
 
