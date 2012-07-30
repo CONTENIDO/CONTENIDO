@@ -838,7 +838,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         if ($cat_name_tmp != '') {
             $cat_name = '<div id="categorypath" class="categorypath">';
-            $cat_name .= i18n("Sie sind hier") . ": " . $cat_name_tmp . ' ' . htmlspecialchars($sFistArticleName);
+            $cat_name .= i18n("You are here") . ": " . $cat_name_tmp . ' ' . htmlspecialchars($sFistArticleName);
             $cat_name .= "</div>";
         } else {
             $cat_name = '';
