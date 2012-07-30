@@ -201,7 +201,7 @@ class cAjaxRequest {
 
                 $art = new cApiArticleLanguage($idArtLang, true);
                 $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
-                $image = new cContentTypeImgEditor($artReturn, $imageId, array());
+                $image = new cContentTypeImgeditor($artReturn, $imageId, array());
 
                 $string = $image->generateFileSelect($dirName);
                 break;
@@ -212,7 +212,7 @@ class cAjaxRequest {
 
                 $art = new cApiArticleLanguage($idArtLang, true);
                 $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
-                $image = new cContentTypeImgEditor($artReturn, $imageId, array());
+                $image = new cContentTypeImgeditor($artReturn, $imageId, array());
 
                 $filename = (string) basename($_REQUEST['filename']);
                 $dirname = (string) dirname($_REQUEST['filename']);
@@ -233,7 +233,7 @@ class cAjaxRequest {
 
                 $art = new cApiArticleLanguage($idArtLang, true);
                 $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
-                $image = new cContentTypeImgEditor($artReturn, $imageId, array());
+                $image = new cContentTypeImgeditor($artReturn, $imageId, array());
 
                 $string = $image->uplmkdir($path, $name);
                 break;
@@ -245,7 +245,7 @@ class cAjaxRequest {
 
                 $art = new cApiArticleLanguage($idArtLang, true);
                 $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
-                $image = new cContentTypeImgEditor($artReturn, $imageId, array());
+                $image = new cContentTypeImgeditor($artReturn, $imageId, array());
 
                 $string = $image->uplupload($path);
                 break;
