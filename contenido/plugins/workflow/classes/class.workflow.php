@@ -30,13 +30,13 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$cfg["tab"]["workflow"] = $cfg['sql']['sqlprefix']."_piwf_workflow";
-$cfg["tab"]["workflow_allocation"] = $cfg['sql']['sqlprefix']."_piwf_allocation";
-$cfg["tab"]["workflow_art_allocation"] = $cfg['sql']['sqlprefix']."_piwf_art_allocation";
-$cfg["tab"]["workflow_items"] = $cfg['sql']['sqlprefix']."_piwf_items";
-$cfg["tab"]["workflow_tasks"] = $cfg['sql']['sqlprefix']."_piwf_tasks";
-$cfg["tab"]["workflow_user_sequences"] = $cfg['sql']['sqlprefix']."_piwf_user_sequences";
-$cfg["tab"]["workflow_actions"] = $cfg['sql']['sqlprefix']."_piwf_actions";
+$cfg["tab"]["workflow"] = $cfg['sql']['sqlprefix'] . "_piwf_workflow";
+$cfg["tab"]["workflow_allocation"] = $cfg['sql']['sqlprefix'] . "_piwf_allocation";
+$cfg["tab"]["workflow_art_allocation"] = $cfg['sql']['sqlprefix'] . "_piwf_art_allocation";
+$cfg["tab"]["workflow_items"] = $cfg['sql']['sqlprefix'] . "_piwf_items";
+$cfg["tab"]["workflow_tasks"] = $cfg['sql']['sqlprefix'] . "_piwf_tasks";
+$cfg["tab"]["workflow_user_sequences"] = $cfg['sql']['sqlprefix'] . "_piwf_user_sequences";
+$cfg["tab"]["workflow_actions"] = $cfg['sql']['sqlprefix'] . "_piwf_actions";
 
 plugin_include('workflow', 'classes/class.workflowactions.php');
 plugin_include('workflow', 'classes/class.workflowallocation.php');
@@ -59,22 +59,19 @@ class Workflows extends ItemCollection {
      * Constructor Function
      * @param none
      */
-    function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg["tab"]["workflow"], "idworkflow");
         $this->_setItemClass("Workflow");
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    function Workflows()
-    {
+    public function Workflows() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
-    function create ()
-    {
+    public function create() {
         global $auth, $client, $lang;
         $newitem = parent::createNewItem();
         $newitem->setField("created", date("Y-m-d H-i-s"));
@@ -90,41 +87,42 @@ class Workflows extends ItemCollection {
      * Deletes all corresponding informations to this workflow and delegate call to parent
      * @param integer $idWorkflow - id of workflow to delete
      */
-    function delete($idWorkflow) {
+    public function delete($idWorkflow) {
         global $cfg;
         $oDb = cRegistry::getDb();
 
         $aItemIdsDelete = array();
-        $sSql = 'SELECT idworkflowitem FROM '.$cfg["tab"]["workflow_items"].' WHERE idworkflow = '. cSecurity::toInteger($idWorkflow) .';';
+        $sSql = 'SELECT idworkflowitem FROM ' . $cfg["tab"]["workflow_items"] . ' WHERE idworkflow = ' . cSecurity::toInteger($idWorkflow) . ';';
         $oDb->query($sSql);
         while ($oDb->next_record()) {
             array_push($aItemIdsDelete, cSecurity::escapeDB($oDb->f('idworkflowitem'), $oDb));
         }
 
         $aUserSequencesDelete = array();
-        $sSql = 'SELECT idusersequence FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem in ('.implode(',', $aItemIdsDelete).');';
+        $sSql = 'SELECT idusersequence FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
         $oDb->query($sSql);
         while ($oDb->next_record()) {
             array_push($aUserSequencesDelete, cSecurity::escapeDB($oDb->f('idusersequence'), $oDb));
         }
 
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem in ('.implode(',', $aItemIdsDelete).');';
+        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
         $oDb->query($sSql);
 
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_actions"].' WHERE idworkflowitem in ('.implode(',', $aItemIdsDelete).');';
+        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_actions"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
         $oDb->query($sSql);
 
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_items"].' WHERE idworkflow = '.cSecurity::toInteger($idWorkflow).';';
+        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_items"] . ' WHERE idworkflow = ' . cSecurity::toInteger($idWorkflow) . ';';
         $oDb->query($sSql);
 
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_allocation"].' WHERE idworkflow = '.cSecurity::toInteger($idWorkflow).';';
+        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_allocation"] . ' WHERE idworkflow = ' . cSecurity::toInteger($idWorkflow) . ';';
         $oDb->query($sSql);
 
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence in ('.implode(',', $aUserSequencesDelete).');';
+        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence in (' . implode(',', $aUserSequencesDelete) . ');';
         $oDb->query($sSql);
 
         parent::delete($idWorkflow);
     }
+
 }
 
 /**
@@ -142,66 +140,44 @@ class Workflow extends Item {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-    function __construct()
-    {
+    public function __construct() {
         global $cfg;
 
         parent::__construct($cfg["tab"]["workflow"], "idworkflow");
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    function Workflow()
-    {
+    public function Workflow() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
-}
 
+}
 
 /* Helper functions */
 
-function getWorkflowForCat ($idcat)
-{
-    global $lang, $cfg;
+function getWorkflowForCat($idcat) {
+    global $lang;
 
     $idcatlang = getCatLang($idcat, $lang);
-    $workflows = new WorkflowAllocations;
-    $workflows->select("idcatlang = '$idcatlang'");
-    if ($obj = $workflows->next())
-    {
-        /* Sanity: Check if the workflow still exists */
-        $workflow = new Workflow;
-
-        $res = $workflow->loadByPrimaryKey($obj->get("idworkflow"));
-
-        if ($res == false)
-        {
-            return 0;
-
-        } else {
-            return $obj->get("idworkflow");
-        }
+    if (!$idcatlang) {
+        return 0;
+    }
+    $workflows = new WorkflowAllocations();
+    $workflows->select('idcatlang = ' . (int) $idcatlang);
+    if ($obj = $workflows->next()) {
+        // Sanity: Check if the workflow still exists
+        $workflow = new Workflow();
+        $res = $workflow->loadByPrimaryKey($obj->get('idworkflow'));
+        return ($res == true) ? $obj->get('idworkflow') : 0;
     }
 }
 
-function getCatLang ($idcat, $idlang)
-{
-    global $lang, $cfg;
-    $db = cRegistry::getDb();
-
-    /* Get the idcatlang */
-    $sql = "SELECT idcatlang FROM "
-            .$cfg["tab"]["cat_lang"].
-           " WHERE idlang = '". cSecurity::escapeDB($idlang, $db)."' AND
-             idcat = '".cSecurity::escapeDB($idcat, $db)."'";
-
-   $db->query($sql);
-
-   if ($db->next_record())
-   {
-       return ($db->f("idcatlang"));
-   }
+function getCatLang($idcat, $idlang) {
+    // Get the idcatlang
+    $oCatLangColl = new cApiCategoryLanguageCollection();
+    $aIds = $oCatLangColl->getIdsByWhereClause('idlang = ' . (int) $idlang . ' AND idcat = ' . (int) $idcat);
+    return (count($aIds) > 0) ? $aIds[0] : 0;
 }
-
 
 ?>
