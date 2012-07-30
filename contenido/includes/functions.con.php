@@ -1537,49 +1537,28 @@ function conSyncArticle($idart, $srclang, $dstlang) {
  * @param  int  $idartlang
  * @param  int  $idcat
  * @param  int  $idlang
- * @param  DB_Contenido|null  $db
+ * @param  DB_Contenido|null  $db (NOT used)
  * @return bool
  */
 function isStartArticle($idartlang, $idcat, $idlang, $db = null) {
-    global $cfg;
-
-    if (!is_object($db)) {
-        $db = cRegistry::getDb();
-    }
-
-    $sql = "SELECT startidartlang FROM " . $cfg["tab"]["cat_lang"] . "
-            WHERE startidartlang=" . (int) $idartlang . " AND idcat=" . (int) $idcat . " AND idlang=" . (int) $idlang;
-    $db->query($sql);
-    if ($db->next_record()) {
-        return true;
-    } else {
-        return false;
-    }
+    $oCatLangColl = new cApiCategoryLanguageCollection();
+    return $oCatLangColl->isStartArticle($idartlang, $idcat, $idlang);
 }
 
 /**
  * Returns all categories in which the given article is in.
  *
  * @param   int  $idart  Article ID
- * @param   DB_Contenido|null  $db  If specified, uses the given db object
+ * @param   DB_Contenido|null  $db  If specified, uses the given db object (NOT used)
  * @return  array  Flat array which contains all category id's
  */
 function conGetCategoryAssignments($idart, $db = null) {
-    global $cfg;
-
-    if (!is_object($db)) {
-        $db = cRegistry::getDb();
-    }
-
     $categories = array();
-
-    $sql = "SELECT idcat FROM " . $cfg["tab"]["cat_art"] . " WHERE idart = " . (int) $idart;
-    $db->query($sql);
-
-    while ($db->next_record()) {
-        $categories[] = $db->f("idcat");
+    $oCatArtColl = new cApiCategoryArticleCollection();
+    $entries = $oCatArtColl->getFieldsByWhereClause(array('idcat'), 'idart = ' . (int) $idart);
+    foreach ($entries as $entry) {
+        $categories[] = $entries['idcat'];
     }
-
     return $categories;
 }
 
