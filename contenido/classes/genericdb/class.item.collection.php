@@ -1086,10 +1086,53 @@ abstract class ItemCollection extends cItemBaseAbstract {
         if ($oDb->affected_rows() == 0) {
             $this->_executeCallbacks(self::CREATE_FAILURE, $this->_itemClass, array());
         } else {
-            $this->_executeCallbacks(self::CREATE_SUCCESS, $this->_itemClass, array($mId));
+            $this->_executeCallbacks(self::CREATE_SUCCESS, $this->_itemClass, array($primaryKeyValue));
         }
 
         return $this->loadItem($primaryKeyValue);
+    }
+
+    /**
+     * Inserts a new item entry by using a existing item entry.
+     * @param  object  $srcItem  Source Item instance to copy
+     * @param  array  $fieldsToOverwrite  Assoziative list of fields to overwrite.
+     * @return  object|Item|null
+     * @throws  Exception  If Item class doesn't match the defined _itemClass property
+     *                     or passed Item instance has no loaded recordset
+     */
+    public function copyItem($srcItem, array $fieldsToOverwrite = array()) {
+        /* @var $srcItem Item */
+        if (get_class($srcItem) !== $this->_itemClass) {
+            throw new Exception("Item class doesn't match");
+        } elseif (!$srcItem->isLoaded()) {
+            throw new Exception("Item instance has no loaded recordset");
+        }
+
+        $destItem = self::createNewItem();
+        if (!is_object($destItem)) {
+            return null;
+        }
+
+        $rs = $srcItem->toArray();
+
+        foreach ($rs as $field => $value) {
+            if (is_numeric($field)) {
+                // Skip index based field
+                continue;
+            } elseif ($field == $this->primaryKey) {
+                // Skip primary key
+                continue;
+            }
+
+            if (isset($fieldsToOverwrite[$field])) {
+                $value = $fieldsToOverwrite[$field];
+            }
+
+            $destItem->set($field, $value);
+        }
+
+        $destItem->store();
+        return $destItem;
     }
 
     /**
