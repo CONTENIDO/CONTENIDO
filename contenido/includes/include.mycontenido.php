@@ -221,22 +221,23 @@ $iNumberOfUsers = $oActiveUsers->getNumberOfUsers();
 // Find all User who is online
 $aMemberList = $oActiveUsers->findAllUser();
 
-// Template for display current user
+// Template to display current user
 $sOutput = '';
 foreach ($aMemberList as $key) {
     $sRealName = $key['realname'] ? $key['realname'] : $key['username'];
     $aPerms['0'] = $key['perms'];
-    $li = '<li class="welcome">';
-    if ($sRealName !== '' && $aPerms['0'] !== '') {
-        $li .= $sRealName . ', ' . $aPerms['0'] . '</li>';
-    } else if ($sRealName === '' && $aPerms['0'] !== '') {
-        $li .= $aPerms['0'] . '</li>';
-    } else if ($sRealName !== '' && $aPerms['0'] === '') {
-        $li .= $sRealName . '</li>';
-    } else {
-        $li = '';
+    $li = '';
+    if ('' !== $sRealName) {
+        $li .= $sRealName;
     }
-    $sOutput .= $li;
+    if ('' !== $aPerms['0']) {
+        $li .= strlen($li) ? ', ' : '';
+        $li .= $aPerms['0'];
+    }
+    if (0 == strlen($li)) {
+        continue;
+    }
+    $sOutput .= '<li class="welcome">' . $li . '</li>';
 }
 
 // set template welcome
