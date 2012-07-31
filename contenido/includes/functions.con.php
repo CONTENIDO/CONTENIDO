@@ -80,6 +80,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
     // Table 'con_art_lang', one entry for every language
     foreach ($aLanguages as $curLang) {
         $lastmodified = ($lang == $curLang) ? $lastmodified : 0;
+        $modifiedby = '';
 
         if ($online == 1) {
             $published_value = date('Y-m-d H:i:s');
@@ -97,7 +98,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
         $oArtLangColl = new cApiArticleLanguageCollection();
         $oArtLang = $oArtLangColl->create(
                 $idart, $curLang, $title, $urlname, $page_title, $summary, $artspec, $created,
-                $lastmodified, $auth->auth['uname'], $published_value, $publishedby_value,
+                $auth->auth['uname'], $lastmodified, $modifiedby, $published_value, $publishedby_value,
                 $online, $redirect, $redirect_url, $external_redirect, $artsort, $timemgmt,
                 $datestart, $dateend, $status, $time_move_cat, $time_target_cat, $time_online_move
         );
@@ -1455,79 +1456,93 @@ function conGetTopmostCat($idcat, $minLevel = 0) {
     }
 }
 
+/**
+ * Synchronizes an article from source language to destination language.
+ * @param  int  $idart  Article id
+ * @param  int  $srclang  Source language id
+ * @param  int  $dstlang  Destination language id
+ * @return  void
+ */
 function conSyncArticle($idart, $srclang, $dstlang) {
-    global $cfg;
-
-    $db = cRegistry::getDb();
-    $db2 = cRegistry::getDb();
-
     // Check if article has already been synced to target language
-    $sql = "SELECT * FROM " . $cfg['tab']['art_lang'] . " WHERE idart = " . (int) $idart . " AND idlang = " . (int) $dstlang;
-    $db2->query($sql);
 
-    $sql = "SELECT * FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = " . (int) $idart . " AND idlang = " . (int) $srclang;
-    $db->query($sql);
+    $oDstArtLang = new cApiArticleLanguage();
+    $oDstArtLang->loadByArticleAndLanguageId($idart, $dstlang);
+    if ($oDstArtLang->isLoaded()) {
+        // Article already exists in detination language
+        return;
+    }
 
-    if ($db->next_record() && ($db2->num_rows() == 0)) {
-        $rsSrc = $db->toArray();
+    $oSrcArtLang = new cApiArticleLanguage();
+    $oSrcArtLang->loadByArticleAndLanguageId($idart, $srclang);
+    if ($oDstArtLang->isLoaded()) {
+        // Couldn't load article in source language
+        return;
+    }
 
-        if ($rsSrc["idtplcfg"] != 0) {
-            $newidtplcfg = tplcfgDuplicate($rsSrc["idtplcfg"]);
-        } else {
-            $newidtplcfg = 0;
-        }
+    if ($oSrcArtLang->get('idtplcfg') != 0) {
+        $newidtplcfg = tplcfgDuplicate($oSrcArtLang->get('idtplcfg'));
+    } else {
+        $newidtplcfg = 0;
+    }
 
-        // Build fields to insert. NOTE: We don't need to sync the whole record set
-        $aFields = array(
-            'idart' => $rsSrc['idart'],
-            'idlang' => (int) $dstlang,
-            'idtplcfg' => (int) $newidtplcfg,
-            'title' => $rsSrc['title'],
-            'urlname' => $rsSrc['urlname'],
-            'pagetitle' => $rsSrc['pagetitle'],
-            'summary' => $rsSrc['summary'],
-            'created' => $rsSrc['created'],
-            'lastmodified' => $rsSrc['lastmodified'],
-            'author' => $rsSrc['author'],
-            'modifiedby' => $rsSrc['modifiedby'],
-            'online' => $rsSrc['online'],
-            'redirect' => $rsSrc['redirect'],
-            'redirect_url' => $rsSrc['redirect_url'],
-            'artsort' => $rsSrc['artsort'],
-            'status' => $rsSrc['status'],
-            'external_redirect' => $rsSrc['external_redirect'],
-        );
+    $title = $oSrcArtLang->get('title');
+    $artspec = 0;
+    $urlname = $oSrcArtLang->get('urlname');
+    $pagetitle = $oSrcArtLang->get('pagetitle');
+    $summary = $oSrcArtLang->get('summary');
+    $created = $oSrcArtLang->get('created');
+    $author = $oSrcArtLang->get('author');
+    $lastmodified = $oSrcArtLang->get('lastmodified');
+    $modifiedby = $oSrcArtLang->get('modifiedby');
+    $online = $oSrcArtLang->get('online');
+    $redirect = $oSrcArtLang->get('redirect');
+    $redirect_url = $oSrcArtLang->get('redirect_url');
+    $artsort = $oSrcArtLang->get('artsort');
+    $status = $oSrcArtLang->get('status');
+    $external_redirect = $oSrcArtLang->get('external_redirect');
+    $published = '';
+    $publishedby = '';
+    $timemgmt = 0;
+    $datestart = '';
+    $dateend = '';
 
-        $sql = $db2->buildInsert($cfg["tab"]["art_lang"], $aFields);
-        $db2->query($sql);
-        $newidartlang = $db2->getLastInsertedId($cfg["tab"]["art_lang"]);
+    // Create an article language entry for destination language
+    $oArtLangColl = new cApiArticleLanguageCollection();
+    $oArtLang = $oArtLangColl->create(
+            $idart, $dstlang, $title, $urlname, $pagetitle, $summary, $artspec, $created,
+            $author, $lastmodified, $modifiedby, $published, $publishedby,
+            $online, $redirect, $redirect_url, $external_redirect, $artsort, $timemgmt,
+            $datestart, $dateend, $status
+    );
 
-        // execute CEC hook
-        $param = array();
-        $param['src_art_lang'] = $db->Record;
-        $param['dest_art_lang'] = $db2->Record;
-        $param['dest_art_lang']['idartlang'] = (int) $newidartlang;
-        $param['dest_art_lang']['idlang'] = (int) $dstlang;
-        $param['dest_art_lang']['idtplcfg'] = (int) $newidtplcfg;
-        cApiCecHook::execute('Contenido.Article.conSyncArticle_AfterInsert', $param);
+    $newidartlang = $oArtLang->get('idartlang');
 
-        // Copy content
-        $sql = "SELECT * FROM " . $cfg["tab"]["content"] . " WHERE idartlang = " . (int) $idartlang;
-        $db->query($sql);
-        while ($db->next_record()) {
-            $rs = $db->toArray();
-            $oContentColl = new cApiContentCollection();
-            $oContentColl->create((int) $newidartlang, $rs['idtype'], $rs['typeid'], $rs['value'], $rs['version'], $rs['author'], $rs['created'], $rs['lastmodified']);
-        }
+    // Execute CEC hook
+    $param = array();
+    $param['src_art_lang'] = $oSrcArtLang->toArray();
+    $param['dest_art_lang'] = $oDstArtLang->toArray();
+    $param['dest_art_lang']['idartlang'] = (int) $newidartlang;
+    $param['dest_art_lang']['idlang'] = (int) $dstlang;
+    $param['dest_art_lang']['idtplcfg'] = (int) $newidtplcfg;
+    cApiCecHook::execute('Contenido.Article.conSyncArticle_AfterInsert', $param);
 
-        // Copy meta tags
-        $sql = "SELECT idmetatype, metavalue FROM " . $cfg["tab"]["meta_tag"] . " WHERE idartlang = '$idartlang'";
-        $db->query($sql);
-        while ($db->next_record()) {
-            $rs = $db->toArray();
-            $oMetaTagColl = new cApiMetaTagCollection();
-            $oMetaTagColl->create((int) $newidartlang, $rs['idmetatype'], $rs['metavalue']);
-        }
+    // Copy content
+    $oContentColl = new cApiContentCollection();
+    $oContentColl->select('idartlang = ' . (int) $idartlang);
+    while ($oContent = $oContentColl->next()) {
+        $rs = $oContent->toArray();
+        $oNewContentColl = new cApiContentCollection();
+        $oNewContentColl->create((int) $newidartlang, $rs['idtype'], $rs['typeid'], $rs['value'], $rs['version'], $rs['author'], $rs['created'], $rs['lastmodified']);
+    }
+
+    // Copy meta tags
+    $oMetaTagColl = new cApiMetaTagCollection();
+    $oMetaTagColl->select('idartlang = ' . (int) $idartlang);
+    while ($oMetaTag = $oMetaTagColl->next()) {
+        $rs = $oMetaTag->toArray();
+        $oNewMetaTagColl = new cApiMetaTagCollection();
+        $oNewMetaTagColl->create((int) $newidartlang, $rs['idmetatype'], $rs['metavalue']);
     }
 }
 

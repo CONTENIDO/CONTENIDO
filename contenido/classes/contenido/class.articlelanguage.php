@@ -63,8 +63,9 @@ class cApiArticleLanguageCollection extends ItemCollection {
      * @param   string  $summary
      * @param   int  $artspec
      * @param   string  $created
-     * @param   string  $lastmodified
      * @param   string  $author
+     * @param   string  $lastmodified
+     * @param   string  $modifiedby
      * @param   string  $published
      * @param   string  $publishedby
      * @param   int  $online
@@ -81,7 +82,12 @@ class cApiArticleLanguageCollection extends ItemCollection {
      * @param   int  $time_online_move
      * @return cApiArticleLanguage
      */
-    public function create($idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0, $created = '', $lastmodified = '', $author = '', $published = '', $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '', $external_redirect = 0, $artsort = 0, $timemgmt = 0, $datestart = '', $dateend = '', $status = 0, $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0) {
+    public function create($idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0,
+        $created = '', $author = '', $lastmodified = '', $modifiedby = '', $published = '',
+        $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '', $external_redirect = 0,
+        $artsort = 0, $timemgmt = 0, $datestart = '', $dateend = '', $status = 0,
+        $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0) {
+
         global $auth;
 
         if (empty($author)) {
@@ -106,8 +112,9 @@ class cApiArticleLanguageCollection extends ItemCollection {
         $item->set('summary', $summary);
         $item->set('artspec', $artspec);
         $item->set('created', $created);
-        $item->set('lastmodified', $lastmodified);
         $item->set('author', $author);
+        $item->set('lastmodified', $lastmodified);
+        $item->set('modifiedby', $modifiedby);
         $item->set('published', $published);
         $item->set('publishedby', $publishedby);
         $item->set('online', $online);
