@@ -62,8 +62,9 @@ class cContentTypeImgdescr extends cContentTypeImgeditor {
             } else {
                 $rawSettings = $contentTypes['CMS_IMGEDITOR'][$id];
             }
-            parent::__construct($rawSettings, $id, $contentTypes);
         }
+		
+		parent::__construct($rawSettings, $id, $contentTypes);
     }
 
     /**

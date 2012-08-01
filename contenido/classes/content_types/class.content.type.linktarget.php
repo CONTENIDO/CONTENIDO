@@ -61,8 +61,9 @@ class cContentTypeLinktarget extends cContentTypeLinkeditor {
             } else {
                 $rawSettings = $contentTypes['CMS_LINKEDITOR'][$id];
             }
-            parent::__construct($rawSettings, $id, $contentTypes);
         }
+		
+		parent::__construct($rawSettings, $id, $contentTypes);
     }
 
     /**
