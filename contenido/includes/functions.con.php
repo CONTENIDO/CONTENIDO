@@ -246,7 +246,6 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
         }
     }
 
-
     if ($title == '') {
         $title = '--- ' . i18n('Default title') . ' ---';
     }
@@ -943,14 +942,10 @@ function conGenerateCodeForAllartsUsingLayout($idlay) {
  * @param int $idmod Module id
  */
 function conGenerateCodeForAllartsUsingMod($idmod) {
-    global $cfg;
-
-    $db = cRegistry::getDb();
-
-    $sql = "SELECT idtpl FROM " . $cfg["tab"]["container"] . " WHERE idmod = '" . cSecurity::toInteger($idmod) . "'";
-    $db->query($sql);
-    while ($db->next_record()) {
-        conGenerateCodeForAllArtsUsingTemplate($db->f("idtpl"));
+    $oContainerColl = new cApiContainerCollection();
+    $rsList = $oContainerColl->getFieldsByWhereClause(array('idtpl'), 'idmod = ' . (int) $idmod);
+    foreach ($rsList as $rs) {
+        conGenerateCodeForAllArtsUsingTemplate($rs['idtpl']);
     }
 }
 
@@ -960,31 +955,32 @@ function conGenerateCodeForAllartsUsingMod($idmod) {
  * @param int $idtpl Template-Id
  */
 function conGenerateCodeForAllArtsUsingTemplate($idtpl) {
-    global $cfg, $lang, $client;
+    global $cfg, $client;
 
     $db = cRegistry::getDb();
-    $db2 = cRegistry::getDb();
+
+    $oCatArtColl = new cApiCategoryArticleCollection();
 
     // Search all categories
     $sql = "SELECT
                 b.idcat
             FROM
-                " . $cfg["tab"]["tpl_conf"] . " AS a,
-                " . $cfg["tab"]["cat_lang"] . " AS b,
-                " . $cfg["tab"]["cat"] . " AS c
+                " . $cfg['tab']['tpl_conf'] . " AS a,
+                " . $cfg['tab']['cat_lang'] . " AS b,
+                " . $cfg['tab']['cat'] . " AS c
             WHERE
-                a.idtpl     = '" . cSecurity::toInteger($idtpl) . "' AND
+                a.idtpl     = " . (int) $idtpl . " AND
                 b.idtplcfg  = a.idtplcfg AND
-                c.idclient  = '" . cSecurity::toInteger($client) . "' AND
+                c.idclient  = " . (int) $client . " AND
                 b.idcat     = c.idcat";
 
     $db->query($sql);
 
     while ($db->next_record()) {
-        $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat='" . cSecurity::toInteger($db->f("idcat")) . "'";
-        $db2->query($sql);
-        while ($db2->next_record()) {
-            conSetCodeFlag($db2->f("idcatart"));
+        $oCatArtColl->resetQuery();
+        $ids = $oCatArtColl->getIdsByWhereClause('idcat = ' . (int) $db->f('idcat'));
+        foreach ($ids as $id) {
+            conSetCodeFlag($id);
         }
     }
 
@@ -992,23 +988,22 @@ function conGenerateCodeForAllArtsUsingTemplate($idtpl) {
     $sql = "SELECT
                 b.idart
             FROM
-                " . $cfg["tab"]["tpl_conf"] . " AS a,
-                " . $cfg["tab"]["art_lang"] . " AS b,
-                " . $cfg["tab"]["art"] . " AS c
+                " . $cfg['tab']['tpl_conf'] . " AS a,
+                " . $cfg['tab']['art_lang'] . " AS b,
+                " . $cfg['tab']['art'] . " AS c
             WHERE
-                a.idtpl     = '" . cSecurity::toInteger($idtpl) . "' AND
+                a.idtpl     = " . (int) $idtpl . " AND
                 b.idtplcfg  = a.idtplcfg AND
-                c.idclient  = '" . cSecurity::toInteger($client) . "' AND
+                c.idclient  = " . (int) $client . " AND
                 b.idart     = c.idart";
 
     $db->query($sql);
 
     while ($db->next_record()) {
-        $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idart='" . cSecurity::toInteger($db->f("idart")) . "'";
-        $db2->query($sql);
-
-        while ($db2->next_record()) {
-            conSetCodeFlag($db2->f("idcatart"));
+        $oCatArtColl->resetQuery();
+        $ids = $oCatArtColl->getIdsByWhereClause('idart = ' . (int) $db->f('idart'));
+        foreach ($ids as $id) {
+            conSetCodeFlag($id);
         }
     }
 }
@@ -1021,7 +1016,7 @@ function conGenerateCodeForAllArts() {
 
     $db = cRegistry::getDb();
 
-    $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"];
+    $sql = "SELECT idcatart FROM " . $cfg['tab']['cat_art'];
     $db->query($sql);
     while ($db->next_record()) {
         conSetCodeFlag($db->f("idcatart"));
@@ -1079,33 +1074,34 @@ function conFlagOnOffline() {
     global $cfg;
 
     $db = cRegistry::getDb();
-    $db2 = cRegistry::getDb();
+
+    $oArtLangColl = new cApiArticleLanguageCollection();
 
     // Set all articles which are before our starttime to offline
-    $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE NOW() < datestart AND datestart != '0000-00-00 00:00:00' AND datestart IS NOT NULL AND timemgmt = 1";
-    $db->query($sql);
-    while ($db->next_record()) {
-        $sql = "UPDATE " . $cfg["tab"]["art_lang"] . " SET online = 0 WHERE idartlang = '" . cSecurity::toInteger($db->f("idartlang")) . "'";
-        $db2->query($sql);
+    $where = "NOW() < datestart AND datestart != '0000-00-00 00:00:00' AND datestart IS NOT NULL AND timemgmt = 1";
+    $ids = $oArtLangColl->getIdsByWhereClause($where);
+    foreach ($ids as $id) {
+        $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET online = 0 WHERE idartlang = " . (int) $id;
+        $db->query($sql);
     }
 
     // Set all articles which are in between of our start/endtime to online
-    $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE NOW() > datestart AND (NOW() < dateend OR dateend = '0000-00-00 00:00:00') AND " .
-            "online = 0 AND timemgmt = 1";
-    $db->query($sql);
-    while ($db->next_record()) {
-        // modified 2007-11-14: Set publish date if article goes online
-        $sql = "UPDATE " . $cfg["tab"]["art_lang"] . " SET online = 1, published = datestart " .
-                "WHERE idartlang = " . cSecurity::toInteger($db->f("idartlang"));
-        $db2->query($sql);
+    $where = "NOW() > datestart AND (NOW() < dateend OR dateend = '0000-00-00 00:00:00') AND " .
+             "online = 0 AND timemgmt = 1";
+    $oArtLangColl->resetQuery();
+    $ids = $oArtLangColl->getIdsByWhereClause($where);
+    foreach ($ids as $id) {
+        $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET online = 1, published = datestart WHERE idartlang = " . (int) $id;
+        $db->query($sql);
     }
 
     // Set all articles after our endtime to offline
-    $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE NOW() > dateend AND dateend != '0000-00-00 00:00:00' AND timemgmt = 1";
-    $db->query($sql);
-    while ($db->next_record()) {
-        $sql = "UPDATE " . $cfg["tab"]["art_lang"] . " SET online = 0 WHERE idartlang = '" . cSecurity::toInteger($db->f("idartlang")) . "'";
-        $db2->query($sql);
+    $where = "NOW() > dateend AND dateend != '0000-00-00 00:00:00' AND timemgmt = 1";
+    $oArtLangColl->resetQuery();
+    $ids = $oArtLangColl->getIdsByWhereClause($where);
+    foreach ($ids as $id) {
+        $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET online = 0 WHERE idartlang = " . (int) $id;
+        $db->query($sql);
     }
 }
 
@@ -1116,34 +1112,27 @@ function conMoveArticles() {
     global $cfg;
 
     $db = cRegistry::getDb();
-    $db2 = cRegistry::getDb();
 
     // Perform after-end updates
-    $sql = "SELECT idartlang, idart, time_move_cat, time_target_cat, time_online_move FROM " . $cfg["tab"]["art_lang"] . " WHERE NOW() > dateend AND dateend != '0000-00-00 00:00:00' AND timemgmt = 1";
+    $fields = array('idartlang', 'idart', 'time_move_cat', 'time_target_cat', 'time_online_move');
+    $where = "NOW() > dateend AND dateend != '0000-00-00 00:00:00' AND timemgmt = 1 AND time_move_cat = 1";
+    $oArtLangColl = new cApiArticleLanguageCollection();
+    $rsList = $oArtLangColl->getFieldsByWhereClause($fields, $where);
 
-    $db->query($sql);
+    foreach ($rsList as $rs) {
+        $online = ($rs['time_online_move'] == '1') ? 1 : 0;
+        $sql = array();
+        $sql[] = 'UPDATE ' . $cfg['tab']['art_lang'] . ' SET timemgmt = 0, online = 0 WHERE idartlang = ' . (int) $rs['idartlang'] . ';';
+        $sql[] = 'UPDATE ' . $cfg['tab']['cat_art'] . ' SET idcat = ' . (int) $rs['time_target_cat'] . ', createcode = 1 WHERE idart = ' . (int) $rs['idart'] . ';';
+        $sql[] = 'UPDATE ' . $cfg['tab']['art_lang'] . ' SET online = ' . (int) $online . ' WHERE idart = ' . (int) $rs['idart'] . ';';
 
-    while ($db->next_record()) {
-        if ($db->f("time_move_cat") == "1") {
-            $sql = "UPDATE " . $cfg["tab"]["art_lang"] . " SET timemgmt = 0, online = 0 WHERE idartlang = '" . cSecurity::toInteger($db->f("idartlang")) . "'";
-            $db2->query($sql);
+        $sql = implode("\n", $sql);
+        $db->query($sql);
 
-            $sql = "UPDATE " . $cfg["tab"]["cat_art"] . " SET idcat = '" . cSecurity::toInteger($db->f("time_target_cat")) . "', createcode = '1' WHERE idart = '" . cSecurity::toInteger($db->f("idart")) . "'";
-            $db2->query($sql);
-
-            if ($db->f("time_online_move") == "1") {
-                $sql = "UPDATE " . $cfg["tab"]["art_lang"] . " SET online = 1 WHERE idart = '" . cSecurity::toInteger($db->f("idart")) . "'";
-            } else {
-                $sql = "UPDATE " . $cfg["tab"]["art_lang"] . " SET online = 0 WHERE idart = '" . cSecurity::toInteger($db->f("idart")) . "'";
-            }
-            $db2->query($sql);
-
-            // execute CEC hook
-            cApiCecHook::execute('Contenido.Article.conMoveArticles_Loop', $db->Record);
-        }
+        // Execute CEC hook
+        cApiCecHook::execute('Contenido.Article.conMoveArticles_Loop', $rs);
     }
 }
-
 
 /**
  * Copies template configuration entry from source template configuration.
@@ -1364,28 +1353,25 @@ function conGetTopmostCat($idcat, $minLevel = 0) {
 
     $db = cRegistry::getDb();
 
-    $sql = "SELECT
-                a.name AS name,
-                a.idcat AS idcat,
-                b.parentid AS parentid,
-                c.level AS level
-            FROM
-                " . $cfg["tab"]["cat_lang"] . " AS a,
-                " . $cfg["tab"]["cat"] . " AS b,
-                " . $cfg["tab"]["cat_tree"] . " AS c
-            WHERE
-                a.idlang    = " . (int) $lang . " AND
-                b.idclient  = " . (int) $client . " AND
-                b.idcat     = " . (int) $idcat . " AND
-                c.idcat     = b.idcat AND
-                a.idcat     = b.idcat";
+    $sql = "SELECT a.name AS name, a.idcat AS idcat, b.parentid AS parentid, c.level AS level
+            FROM `:cat_lang` AS a, `:cat` AS b, `:cat_tree` AS c
+            WHERE a.idlang = :idlang AND b.idclient = :idclient AND b.idcat = :idcat
+            AND c.idcat = b.idcat AND a.idcat = b.idcat";
 
+    $sql = $db->prepare($sql, array(
+        'cat_lang' => $cfg['tab']['cat_lang'],
+        'cat' => $cfg['tab']['cat'],
+        'cat_tree' => $cfg['tab']['cat_tree'],
+        'idlang' => (int) $lang,
+        'idclient' => (int) $client,
+        'idcat' => (int) $idcat,
+    ));
     $db->query($sql);
     $db->next_record();
 
-    $name = $db->f("name");
-    $parentid = $db->f("parentid");
-    $thislevel = $db->f("level");
+    $name = $db->f('name');
+    $parentid = $db->f('parentid');
+    $thislevel = $db->f('level');
 
     if ($parentid != 0 && $thislevel >= $minLevel) {
         return conGetTopmostCat($parentid, $minLevel);
