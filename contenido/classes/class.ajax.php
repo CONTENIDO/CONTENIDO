@@ -51,7 +51,7 @@ class cAjaxRequest {
 
                 $art = new cApiArticleLanguage($idArtLang, true);
                 $artReturn = $art->getContent('CMS_FILELIST', $fileListId);
-                $fileList = new cContentTypeFileList($artReturn, $fileListId, array());
+                $fileList = new cContentTypeFilelist($artReturn, $fileListId, array());
 
                 $string = $fileList->generateDirectoryList($fileList->buildDirectoryList($cfgClient[$client]['upl']['path'] . $dirName));
                 break;
@@ -63,7 +63,7 @@ class cAjaxRequest {
 
                 $art = new cApiArticleLanguage($idArtLang, true);
                 $artReturn = $art->getContent('CMS_FILELIST', $fileListId);
-                $fileList = new cContentTypeFileList($artReturn, $fileListId, array());
+                $fileList = new cContentTypeFilelist($artReturn, $fileListId, array());
 
                 $string = $fileList->generateFileSelect($dirName);
                 break;

@@ -399,7 +399,7 @@ if ($currentStep < $totalSteps) {
                 'CMS_EASYIMGEDIT' => 'cContentTypeEasyImgEdit',
                 'CMS_DATE' => 'cContentTypeDate',
                 'CMS_TEASER' => 'cContentTypeTeaser',
-                'CMS_FILELIST' => 'cContentTypeFileList',
+                'CMS_FILELIST' => 'cContentTypeFilelist',
                 'CMS_IMGEDITOR' => 'cContentTypeImgEditor',
                 'CMS_LINKEDITOR' => 'cContentTypeLinkEditor'
             );

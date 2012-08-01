@@ -19,6 +19,6 @@ INSERT INTO !PREFIX!_type VALUES (17, 'CMS_HTMLTEXT', '', 'Text / Standard', 0, 
 INSERT INTO !PREFIX!_type VALUES (18, 'CMS_EASYIMGEDIT', '', '', 0, '', '0000-00-00 00:00:00', '2012-02-14 00:40:32', 'cContentTypeEasyImgEdit');
 INSERT INTO !PREFIX!_type VALUES (19, 'CMS_DATE', '', 'Date', 0, '', '0000-00-00 00:00:00', '2012-02-14 00:40:32', 'cContentTypeDate');
 INSERT INTO !PREFIX!_type VALUES (20, 'CMS_TEASER', '', 'Teaser', 0, '', '2009-04-20 13:12:14', '2012-02-14 00:40:32', 'cContentTypeTeaser');
-INSERT INTO !PREFIX!_type VALUES (21, 'CMS_FILELIST', '', '', 0, '', '0000-00-00 00:00:00', '2012-02-14 00:40:32', 'cContentTypeFileList');
+INSERT INTO !PREFIX!_type VALUES (21, 'CMS_FILELIST', '', '', 0, '', '0000-00-00 00:00:00', '2012-02-14 00:40:32', 'cContentTypeFilelist');
 INSERT INTO !PREFIX!_type VALUES (22, 'CMS_IMGEDITOR', '', 'Image', 0, '', '0000-00-00 00:00:00', '2012-02-14 00:40:32', 'cContentTypeImgEditor');
 INSERT INTO !PREFIX!_type VALUES (24, 'CMS_LINKEDITOR', '', 'Link', 0, '', '0000-00-00 00:00:00', '2012-02-14 00:40:32', 'cContentTypeLinkEditor');
