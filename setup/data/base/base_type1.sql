@@ -3,7 +3,7 @@ INSERT INTO !PREFIX!_type VALUES (1, 'CMS_HTMLHEAD', '', 'Headline / HTML', 0, '
 INSERT INTO !PREFIX!_type VALUES (2, 'CMS_HTML', '', 'Text / HTML', 0, '', '2002-05-13 19:04:13', '2012-02-14 00:40:32', 'cContentTypeHtml');
 INSERT INTO !PREFIX!_type VALUES (3, 'CMS_TEXT', '', 'Text / Standard', 0, '', '2002-05-13 19:04:13', '2012-02-14 00:40:32', 'cContentTypeText');
 INSERT INTO !PREFIX!_type VALUES (4, 'CMS_IMG', '', 'Image', 0, '', '2002-05-13 19:04:21', '2012-02-14 00:40:32', 'cContentTypeImg');
-INSERT INTO !PREFIX!_type VALUES (5, 'CMS_IMGDESCR', '', 'Description', 0, '', '2002-05-13 19:04:28', '2012-02-14 00:40:32', 'cContentTypeHtmldescr');
+INSERT INTO !PREFIX!_type VALUES (5, 'CMS_IMGDESCR', '', 'Description', 0, '', '2002-05-13 19:04:28', '2012-02-14 00:40:32', 'cContentTypeImgdescr');
 INSERT INTO !PREFIX!_type VALUES (6, 'CMS_LINK', '', 'Link', 0, '', '2002-05-13 19:04:36', '2012-02-14 00:40:32', 'cContentTypeLink');
 INSERT INTO !PREFIX!_type VALUES (7, 'CMS_LINKTARGET', '', 'Frame', 0, '', '2002-05-13 19:04:43', '2012-02-14 00:40:32', 'cContentTypeLinktarget');
 INSERT INTO !PREFIX!_type VALUES (8, 'CMS_LINKDESCR', '', 'Description', 0, '', '2002-05-13 19:05:00', '2012-02-14 00:40:32', 'cContentTypeLinkdescr');

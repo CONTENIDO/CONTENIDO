@@ -383,7 +383,7 @@ if ($currentStep < $totalSteps) {
                 'CMS_HTML' => 'cContentTypeHtml',
                 'CMS_TEXT' => 'cContentTypeText',
                 'CMS_IMG' => 'cContentTypeImg',
-                'CMS_IMGDESCR' => 'cContentTypeHtmldescr',
+                'CMS_IMGDESCR' => 'cContentTypeImgdescr',
                 'CMS_LINK' => 'cContentTypeLink',
                 'CMS_LINKTARGET' => 'cContentTypeLinktarget',
                 'CMS_LINKDESCR' => 'cContentTypeLinkdescr',

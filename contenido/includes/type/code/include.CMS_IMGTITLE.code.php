@@ -35,7 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$imgDescr = new cContentTypeHtmldescr($a_content['CMS_IMGDESCR'][$val], $val, $a_content);
+$imgDescr = new cContentTypeImgdescr($a_content['CMS_IMGDESCR'][$val], $val, $a_content);
 
 if ($edit) {
     cDeprecated('Do not use CMS_IMGTITLE any more - use CMS_IMGDESCR instead!');
