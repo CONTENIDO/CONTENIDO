@@ -1146,255 +1146,187 @@ function conMoveArticles() {
     }
 }
 
+
+/**
+ * Copies template configuration entry from source template configuration.
+ * @param  int  $srcidtplcfg
+ * @param  int  $dstidtplcfg
+ */
 function conCopyTemplateConfiguration($srcidtplcfg) {
-    global $cfg;
-
-    $db = cRegistry::getDb();
-
-    $sql = "SELECT idtpl FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($srcidtplcfg) . "'";
-    $db->query($sql);
-    if (!$db->next_record()) {
-        return false;
+    $oTemplateConf = new cApiTemplateConfiguration((int) $srcidtplcfg);
+    if (!$oTemplateConf->isLoaded()) {
+        return null;
     }
 
-    $idtpl = $db->f("idtpl");
-    $created = date("Y-m-d H:i:s");
-
-    $sql = "INSERT INTO " . $cfg["tab"]["tpl_conf"] . " (idtpl, created) VALUES ('" . cSecurity::toInteger($idtpl) . "', '" . cSecurity::escapeDB($created, $db) . "')";
-    $db->query($sql);
-
-    return $db->getLastInsertedId(($cfg["tab"]["tpl_conf"]));
+    $oTemplateConfColl = new cApiTemplateConfigurationCollection();
+    $oNewTemplateConf = $oTemplateConfColl->create($oTemplateConf->get('idtpl'));
+    return (is_object($oNewTemplateConf)) ? $oNewTemplateConf->get('idtplcfg') : null;
 }
 
+/**
+ * Copies container configuration entries from source container configuration to destination container configuration.
+ * @param  int  $srcidtplcfg
+ * @param  int  $dstidtplcfg
+ */
 function conCopyContainerConf($srcidtplcfg, $dstidtplcfg) {
-    global $cfg;
-
-    $db = cRegistry::getDb();
-
-    $sql = "SELECT number, container FROM " . $cfg["tab"]["container_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($srcidtplcfg) . "'";
-    $db->query($sql);
-    $val = array();
-    while ($db->next_record()) {
-        $val[$db->f("number")] = $db->f("container");
+    $counter = 0;
+    $oContainerConfColl = new cApiContainerConfigurationCollection();
+    $oContainerConfColl->select('idtplcfg = ' . (int) $srcidtplcfg);
+    while ($oContainerConf = $oContainerConfColl->next()) {
+        $oNewContainerConfColl = new cApiContentCollection();
+        $oNewContainerConfColl->copyItem($oContainerConf, array('idtplcfg' => (int) $dstidtplcfg));
+        $counter++;
     }
-
-    if (count($val) == 0) {
-        return false;
-    }
-
-    foreach ($val as $key => $value) {
-        //$nextidcontainerc = $db->nextid($cfg["tab"]["container_conf"]);
-        $sql = "INSERT INTO " . $cfg["tab"]["container_conf"] . " (idtplcfg, number, container) VALUES ('" . cSecurity::toInteger($dstidtplcfg) . "',
-                '" . cSecurity::toInteger($key) . "', '" . cSecurity::escapeDB($value, $db) . "')";
-        $db->query($sql);
-    }
-
-    return true;
+    return ($counter > 0) ? true : false;
 }
 
+/**
+ * Copies content entries from source article language to destination article language.
+ * @param  int  $srcidartlang
+ * @param  int  $dstidartlang
+ */
 function conCopyContent($srcidartlang, $dstidartlang) {
-    global $cfg;
-
-    $db = cRegistry::getDb();
-
-    $sql = "SELECT idtype, typeid, value, version, author FROM " . $cfg["tab"]["content"] . " WHERE idartlang = '" . cSecurity::toInteger($srcidartlang) . "'";
-    $db->query($sql);
-    $id = 0;
-    $val = array();
-    while ($db->next_record()) {
-        $id++;
-        $val[$id]["idtype"] = $db->f("idtype");
-        $val[$id]["typeid"] = $db->f("typeid");
-        $val[$id]["value"] = $db->f("value");
-        $val[$id]["version"] = $db->f("version");
-        $val[$id]["author"] = $db->f("author");
-    }
-
-    if (count($val == 0)) {
-        return false;
-    }
-
-    foreach ($val as $key => $value) {
-        //$nextid = $db->nextid($cfg["tab"]["content"]);
-        $idtype = $value["idtype"];
-        $typeid = $value["typeid"];
-        $lvalue = $value["value"];
-        $version = $value["version"];
-        $author = $value["author"];
-        $created = date("Y-m-d H:i:s");
-
-        $sql = "INSERT INTO " . $cfg["tab"]["content"]
-                . " ( idartlang, idtype, typeid, value, version, author, created) " .
-                "VALUES ('" . cSecurity::toInteger($dstidartlang) . "', '" . cSecurity::toInteger($idtype) . "', '" . cSecurity::toInteger($typeid) . "',
-              '" . cSecurity::escapeDB($lvalue, $db) . "', '" . cSecurity::escapeDB($version, $db) . "', '" . cSecurity::escapeDB($author, $db) . "', '" . cSecurity::escapeDB($created, $db) . "')";
-
-        $db->query($sql);
+    $oContentColl = new cApiContentCollection();
+    $oContentColl->select('idartlang = ' . (int) $srcidartlang);
+    while ($oContent = $oContentColl->next()) {
+        $oNewContentColl = new cApiContentCollection();
+        $oNewContentColl->copyItem($oNewContentColl, array('idartlang' => (int) $dstidartlang));
     }
 }
 
-function conCopyArtLang($srcidart, $dstidart, $newtitle, $bUseCopyLabel = true) {
-    global $cfg, $lang;
-
-    $db = cRegistry::getDb();
-    $db2 = cRegistry::getDb();
-
-    $sql = "SELECT idartlang, idlang, idtplcfg, title, pagetitle, summary,
-            author, online, redirect, redirect, redirect_url,
-            artsort, timemgmt, datestart, dateend, status, free_use_01,
-            free_use_02, free_use_03, time_move_cat, time_target_cat,
-            time_online_move, external_redirect, locked FROM
-            " . $cfg["tab"]["art_lang"] . " WHERE idart = '" . cSecurity::toInteger($srcidart) . "' AND idlang='" . cSecurity::toInteger($lang) . "'";
-    $db->query($sql);
-
-    while ($db->next_record()) {
-        //$nextid = $db2->nextid($cfg["tab"]["art_lang"]);
-        /* Copy the template configuration */
-        if ($db->f("idtplcfg") != 0) {
-            $newidtplcfg = conCopyTemplateConfiguration($db->f("idtplcfg"));
-            conCopyContainerConf($db->f("idtplcfg"), $newidtplcfg);
-        }
-
-        $idartlang = $nextid;
-        $idart = $dstidart;
-        $idlang = $db->f("idlang");
-        $idtplcfg = $newidtplcfg;
-
-        if ($newtitle != "") {
-            $title = sprintf($newtitle, addslashes($db->f("title")));
-        } else {
-            if ($bUseCopyLabel == true) {
-                $title = sprintf(i18n("%s (Copy)"), addslashes($db->f("title")));
-            } else {
-                $title = addslashes($db->f("title"));
-            }
-        }
-        $pagetitle = addslashes($db->f("pagetitle"));
-        $summary = addslashes($db->f("summary"));
-        $created = date("Y-m-d H:i:s");
-        $author = $db->f("author");
-        $online = 0;
-        $redirect = $db->f("redirect");
-        $redirecturl = $db->f("redirect_url");
-        $artsort = $db->f("artsort");
-        $timemgmt = $db->f("timemgmt");
-        $datestart = $db->f("datestart");
-        $dateend = $db->f("dateend");
-        $status = $db->f("status");
-        $freeuse01 = $db->f("free_use_01");
-        $freeuse02 = $db->f("free_use_02");
-        $freeuse03 = $db->f("free_use_03");
-        $timemovecat = $db->f("time_move_cat");
-        $timetargetcat = $db->f("time_target_cat");
-        $timeonlinemove = $db->f("time_online_move");
-        $externalredirect = $db->f("external_redirect");
-        $locked = $db->f("locked");
-
-        $sql = "INSERT INTO " . $cfg["tab"]["art_lang"] . "
-                (idart, idlang, idtplcfg, title,
-                pagetitle, summary, created, lastmodified,
-                author, online, redirect, redirect_url,
-                artsort, timemgmt, datestart, dateend,
-                status, free_use_01, free_use_02, free_use_03,
-                time_move_cat, time_target_cat, time_online_move,
-                external_redirect, locked) VALUES (
-                '" . cSecurity::toInteger($idart) . "',
-                '" . cSecurity::toInteger($idlang) . "',
-                '" . cSecurity::toInteger($idtplcfg) . "',
-                '" . cSecurity::escapeDB($title, $db2) . "',
-                '" . cSecurity::escapeDB($pagetitle, $db2) . "',
-                '" . cSecurity::escapeDB($summary, $db2) . "',
-                '" . cSecurity::escapeDB($created, $db2) . "',
-                '" . cSecurity::escapeDB($created, $d2b) . "',
-                '" . cSecurity::escapeDB($author, $db2) . "',
-                '" . cSecurity::toInteger($online) . "',
-                '" . cSecurity::escapeDB($redirect, $db2) . "',
-                '" . cSecurity::escapeDB($redirecturl, $db2) . "',
-                '" . cSecurity::toInteger($artsort) . "',
-                '" . cSecurity::toInteger($timemgmt) . "',
-                '" . cSecurity::escapeDB($datestart, $db2) . "',
-                '" . cSecurity::escapeDB($dateend, $db2) . "',
-                '" . cSecurity::toInteger($status) . "',
-                '" . cSecurity::toInteger($freeuse01) . "',
-                '" . cSecurity::toInteger($freeuse02) . "',
-                '" . cSecurity::toInteger($freeuse03) . "',
-                '" . cSecurity::toInteger($timemovecat) . "',
-                '" . cSecurity::toInteger($timetargetcat) . "',
-                '" . cSecurity::toInteger($timeonlinemove) . "',
-                '" . cSecurity::escapeDB($externalredirect, $db) . "',
-                '" . cSecurity::toInteger($locked) . "')";
-
-        $db2->query($sql);
-
-        conCopyContent($db->f("idartlang"), $db->getLastInsertedId($cfg["tab"]["art_lang"]));
-
-        // execute CEC hook
-        cApiCecHook::execute('Contenido.Article.conCopyArtLang_AfterInsert', array(
-            'idartlang' => cSecurity::toInteger($idartlang),
-            'idart' => cSecurity::toInteger($idart),
-            'idlang' => cSecurity::toInteger($idlang),
-            'idtplcfg' => cSecurity::toInteger($idtplcfg),
-            'title' => cSecurity::escapeDB($title, $db2)
-        ));
-
-        // Copy meta tags
-        $sql = "SELECT idmetatype, metavalue FROM " . $cfg["tab"]["meta_tag"] . " WHERE idartlang = '" . cSecurity::toInteger($db->f("idartlang")) . "'";
-        $db->query($sql);
-
-        while ($db->next_record()) {
-            //$nextidmetatag = $db2->nextid($cfg["tab"]["meta_tag"]);
-            $metatype = $db->f("idmetatype");
-            $metavalue = $db->f("metavalue");
-            $sql = "INSERT INTO " . $cfg["tab"]["meta_tag"] . "
-                        (idartlang, idmetatype, metavalue)
-                        VALUES
-                        ('" . cSecurity::toInteger($idartlang) . "', '" . cSecurity::toInteger($metatype) . "', '" . cSecurity::escapeDB($metavalue, $db2) . "')";
-            $db2->query($sql);
-        }
-
-        // Update keyword list for new article
-        conMakeArticleIndex($idartlang, $idart);
+/**
+ * Copies meta tag entries from source article language to destination article language.
+ * @param  int  $srcidartlang
+ * @param  int  $dstidartlang
+ */
+function conCopyMetaTags($srcidartlang, $dstidartlang) {
+    $oMetaTagColl = new cApiMetaTagCollection();
+    $oMetaTagColl->select('idartlang = ' . (int) $srcidartlang);
+    while ($oMetaTag = $oMetaTagColl->next()) {
+        $oNewMetaTagColl = new cApiMetaTagCollection();
+        $oNewMetaTagColl->copyItem($oMetaTag, array('idartlang' => (int) $dstidartlang));
     }
 }
 
-function conCopyArticle($srcidart, $targetcat = 0, $newtitle = "", $bUseCopyLabel = true) {
-    global $cfg, $_cecRegistry;
+/**
+ * Copy article language entry.
+ * @global array $cfg
+ * @global int $lang
+ * @param  int  $srcidart
+ * @param  int  $dstidart
+ * @param  int  $newtitle
+ * @param  int  $useCopyLabel
+ */
+function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true) {
+    global $lang;
 
-    $db = cRegistry::getDb();
-    $db2 = cRegistry::getDb();
-
-    $sql = "SELECT idclient FROM " . $cfg["tab"]["art"] . " WHERE idart = '" . cSecurity::toInteger($srcidart) . "'";
-    $db->query($sql);
-    if (!$db->next_record()) {
-        return false;
+    $oSrcArtLang = new cApiArticleLanguage();
+    if (!$oSrcArtLang->loadByArticleAndLanguageId($srcidart, $lang)) {
+        return;
     }
 
-    $idclient = $db->f("idclient");
+    // Copy the template configuration
+    if ($oSrcArtLang->get('idtplcfg') != 0) {
+        $newidtplcfg = conCopyTemplateConfiguration($oSrcArtLang->get('idtplcfg'));
+        conCopyContainerConf($oSrcArtLang->get('idtplcfg'), $newidtplcfg);
+    }
 
-    $sql = "INSERT INTO " . $cfg["tab"]["art"] . " (idclient) VALUES ('" . cSecurity::toInteger($idclient) . "')";
-    $db->query($sql);
-    //$dstidart = $db->nextid($cfg["tab"]["art"]);
-    $dstidart = $db->getLastInsertedId($cfg["tab"]["art"]);
-    conCopyArtLang($srcidart, $dstidart, $newtitle, $bUseCopyLabel);
+    $idart = $dstidart;
+    $idlang = $oSrcArtLang->get('idlang');
+    $idtplcfg = $newidtplcfg;
 
-    // Update category relationship
-    $sql = "SELECT idcat, status FROM " . $cfg["tab"]["cat_art"] . " WHERE idart = '" . cSecurity::toInteger($srcidart) . "'";
-    $db->query($sql);
+    if ($newtitle != '') {
+        $title = sprintf($newtitle, $oSrcArtLang->get('title'));
+    } else if ($useCopyLabel == true) {
+        $title = sprintf(i18n('%s (Copy)'), $oSrcArtLang->get('title'));
+    } else {
+        $title = $oSrcArtLang->get('title');
+    }
 
-    while ($db->next_record()) {
-        //$nextid = $db2->nextid($cfg["tab"]["cat_art"]);
-        // These are the insert values
-        $aFields = array(
-            "idcat" => ($targetcat != 0) ? cSecurity::toInteger($targetcat) : cSecurity::toInteger($db->f("idcat")),
-            "idart" => cSecurity::toInteger($dstidart),
-            "is_start" => 0,
-            "status" => ($db->f("status") != '') ? cSecurity::toInteger($db->f("status")) : 0,
-            "createcode" => 1
+    // Create an article language entry
+    $oArtLangColl = new cApiArticleLanguageCollection();
+    $fieldsToOverwrite = array(
+        'idart' => $idart,
+        'idlang' => $idlang,
+        'online' => 0,
+        'title' => $title,
+        'created' => date('Y-m-d H:i:s'),
+        'lastmodified' => '',
+        'modifiedby' => '',
+        'published' => '',
+        'publishedby' => ''
+    );
+    $oNewArtLang = $oArtLangColl->copyItem($oSrcArtLang, $fieldsToOverwrite);
+
+    if (!is_object($oNewArtLang)) {
+        return;
+    }
+
+    // Copy content
+    conCopyContent($oSrcArtLang->get('idartlang'), $oNewArtLang->get('idartlang'));
+
+    // Copy meta tags
+    conCopyMetaTags($oSrcArtLang->get('idartlang'), $oNewArtLang->get('idartlang'));
+
+    // Execute CEC hook
+    cApiCecHook::execute('Contenido.Article.conCopyArtLang_AfterInsert', array(
+        'idartlang' => (int) $oNewArtLang->get('idartlang'),
+        'idart' => (int) $idart,
+        'idlang' => (int) $idlang,
+        'idtplcfg' => (int) $idtplcfg,
+        'title' => $title
+    ));
+
+    // Update keyword list for new article
+    conMakeArticleIndex($oNewArtLang->get('idartlang'), $idart);
+}
+
+/**
+ * Copy article entry.
+ * @global  object   $auth
+ * @param  int  $srcidart
+ * @param  int  $targetcat
+ * @param  string  $newtitle
+ * @param  bool  $useCopyLabel
+ * @return bool
+ */
+function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel = true) {
+    global $auth;
+
+    // Get source article
+    $oSrcArt = new cApiArticle((int) $srcidart);
+    if (!$oSrcArt->isLoaded()) {
+        return false;
+    }
+    $idclient = $oSrcArt->get('idclient');
+
+    // Create destination article
+    $oArtCollection = new cApiArticleCollection();
+    $oNewArt = $oArtCollection->create($idclient);
+    if (!is_object($oNewArt)) {
+        return false;
+    }
+    $dstidart = $oNewArt->get('idart');
+
+    conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel);
+
+    // Get source category article entries
+    $oCatArtColl = new cApiCategoryArticleCollection();
+    $oCatArtColl->select('idart = ' . (int) $srcidart);
+    while ($oCatArt = $oCatArtColl->next()) {
+        // Insert destination category article entry
+        $oCatArtColl2 = new cApiCategoryArticleCollection();
+        $fieldsToOverwrite = array(
+            'idcat' => ($targetcat != 0) ? $targetcat : $oCatArt->get('idcat'),
+            'idart' => $dstidart,
+            'status' => ($oCatArt->get('status') !== '') ? $oCatArt->get('status') : 0,
+            'createcode' => 1,
+            'is_start' => 0
         );
+        $oCatArtColl2->copyItem($oCatArt, $fieldsToOverwrite);
 
-        $sql = "INSERT INTO " . $cfg["tab"]["cat_art"] . " (" . implode(", ", array_keys($aFields)) . ") VALUES (" . implode(", ", array_values($aFields)) . ");";
-        $db2->query($sql);
-
-        if ($targetcat != 0) { // If true, exit while routine, only one category entry is needed
+        // If true, exit while routine, only one category entry is needed
+        if ($targetcat != 0) {
             break;
         }
     }
@@ -1413,7 +1345,8 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = "", $bUseCopyLabe
     # If function "AdditionalFunction1" is defined in file extension.php, it would be called via
     # $chainEntry->execute($srcidart, $dstidart);
 
-    $iterator = $_cecRegistry->getIterator("Contenido.Content.CopyArticle");
+    $_cecRegistry = cApiCecRegistry::getInstance();
+    $iterator = $_cecRegistry->getIterator('Contenido.Content.CopyArticle');
     while ($chainEntry = $iterator->next()) {
         $chainEntry->execute($srcidart, $dstidart);
     }
@@ -1421,6 +1354,15 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = "", $bUseCopyLabe
     return $dstidart;
 }
 
+/**
+ * @todo Returns something....
+ * @global array $cfg
+ * @global  int  $client
+ * @global  int  $lang
+ * @param  int  $idcat
+ * @param  int  $minLevel
+ * @return  int
+ */
 function conGetTopmostCat($idcat, $minLevel = 0) {
     global $cfg, $client, $lang;
 
@@ -1475,10 +1417,11 @@ function conSyncArticle($idart, $srclang, $dstlang) {
 
     $oSrcArtLang = new cApiArticleLanguage();
     $oSrcArtLang->loadByArticleAndLanguageId($idart, $srclang);
-    if ($oDstArtLang->isLoaded()) {
+    if ($oSrcArtLang->isLoaded()) {
         // Couldn't load article in source language
         return;
     }
+    $srcidartlang = $oSrcArtLang->get('idartlang');
 
     if ($oSrcArtLang->get('idtplcfg') != 0) {
         $newidtplcfg = tplcfgDuplicate($oSrcArtLang->get('idtplcfg'));
@@ -1486,35 +1429,33 @@ function conSyncArticle($idart, $srclang, $dstlang) {
         $newidtplcfg = 0;
     }
 
-    $title = $oSrcArtLang->get('title');
-    $artspec = 0;
-    $urlname = $oSrcArtLang->get('urlname');
-    $pagetitle = $oSrcArtLang->get('pagetitle');
-    $summary = $oSrcArtLang->get('summary');
-    $created = $oSrcArtLang->get('created');
-    $author = $oSrcArtLang->get('author');
-    $lastmodified = $oSrcArtLang->get('lastmodified');
-    $modifiedby = $oSrcArtLang->get('modifiedby');
-    $online = $oSrcArtLang->get('online');
-    $redirect = $oSrcArtLang->get('redirect');
-    $redirect_url = $oSrcArtLang->get('redirect_url');
-    $artsort = $oSrcArtLang->get('artsort');
-    $status = $oSrcArtLang->get('status');
-    $external_redirect = $oSrcArtLang->get('external_redirect');
-    $published = '';
-    $publishedby = '';
-    $timemgmt = 0;
-    $datestart = '';
-    $dateend = '';
-
     // Create an article language entry for destination language
     $oArtLangColl = new cApiArticleLanguageCollection();
-    $oArtLang = $oArtLangColl->create(
-            $idart, $dstlang, $title, $urlname, $pagetitle, $summary, $artspec, $created,
-            $author, $lastmodified, $modifiedby, $published, $publishedby,
-            $online, $redirect, $redirect_url, $external_redirect, $artsort, $timemgmt,
-            $datestart, $dateend, $status
+    $fieldsToOverwrite = array(
+        'idart' => $idart,
+        'idlang' => $dstlang,
+        'artspec' => 0,
+        'online' => 0,
+        'created' => date('Y-m-d H:i:s'),
+        'lastmodified' => '',
+        'modifiedby' => '',
+        'published' => '',
+        'publishedby' => '',
+        'timemgmt' => 0,
+        'datestart' => '',
+        'dateend' => '',
+        'status' => 0,
+        'time_move_cat' => 0,
+        'time_target_cat' => 0,
+        'time_online_move' => 0,
+        'free_use_01' => '',
+        'free_use_02' => '',
+        'free_use_03' => '',
     );
+    $oArtLang = $oArtLangColl->copyItem($oSrcArtLang, $fieldsToOverwrite);
+    if (!is_object($oArtLang)) {
+        return;
+    }
 
     $newidartlang = $oArtLang->get('idartlang');
 
@@ -1528,22 +1469,10 @@ function conSyncArticle($idart, $srclang, $dstlang) {
     cApiCecHook::execute('Contenido.Article.conSyncArticle_AfterInsert', $param);
 
     // Copy content
-    $oContentColl = new cApiContentCollection();
-    $oContentColl->select('idartlang = ' . (int) $idartlang);
-    while ($oContent = $oContentColl->next()) {
-        $rs = $oContent->toArray();
-        $oNewContentColl = new cApiContentCollection();
-        $oNewContentColl->create((int) $newidartlang, $rs['idtype'], $rs['typeid'], $rs['value'], $rs['version'], $rs['author'], $rs['created'], $rs['lastmodified']);
-    }
+    conCopyContent($srcidartlang, $newidartlang);
 
     // Copy meta tags
-    $oMetaTagColl = new cApiMetaTagCollection();
-    $oMetaTagColl->select('idartlang = ' . (int) $idartlang);
-    while ($oMetaTag = $oMetaTagColl->next()) {
-        $rs = $oMetaTag->toArray();
-        $oNewMetaTagColl = new cApiMetaTagCollection();
-        $oNewMetaTagColl->create((int) $newidartlang, $rs['idmetatype'], $rs['metavalue']);
-    }
+    conCopyMetaTags($srcidartlang, $newidartlang);
 }
 
 /**
@@ -1572,7 +1501,7 @@ function conGetCategoryAssignments($idart, $db = null) {
     $oCatArtColl = new cApiCategoryArticleCollection();
     $entries = $oCatArtColl->getFieldsByWhereClause(array('idcat'), 'idart = ' . (int) $idart);
     foreach ($entries as $entry) {
-        $categories[] = $entries['idcat'];
+        $categories[] = $entry['idcat'];
     }
     return $categories;
 }
