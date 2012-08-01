@@ -230,10 +230,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             $uploadMetaCollection = new cApiUploadMetaCollection();
             $uploadMetaCollection->create($this->_rawSettings, $this->_lang, $medianame, $description, $keywords, $internal_notice, $copyright);
         }
-		
-		// overwrite old entry with the new value
-		conSaveContentEntry($this->_idArtLang, 'CMS_IMG', $this->_id, $this->_rawSettings);
-		conSaveContentEntry($this->_idArtLang, 'CMS_IMGDESCR', $this->_id, $description);
+
+        // overwrite old entry with the new value
+        conSaveContentEntry($this->_idArtLang, 'CMS_IMG', $this->_id, $this->_rawSettings);
+        conSaveContentEntry($this->_idArtLang, 'CMS_IMGDESCR', $this->_id, $description);
     }
 
     /**

@@ -453,23 +453,23 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             // Uses Category Template
             if (0 == $idtplcfg) {
-            	$sql2 = "SELECT
-	                c.idtpl AS idtpl,
-	                c.name AS name,
-	                c.description,
-	                b.idtplcfg AS idtplcfg
-	            FROM
-	                " . $cfg['tab']['tpl_conf'] . " AS a,
-	                " . $cfg['tab']['cat_lang'] . " AS b,
-	                " . $cfg['tab']['tpl'] . " AS c
-	            WHERE
-	                b.idcat     = " . cSecurity::toInteger($idcat) . " AND
-	                b.idlang    = " . cSecurity::toInteger($lang) . " AND
-	                b.idtplcfg  = a.idtplcfg AND
-	                c.idtpl     = a.idtpl AND
-	                c.idclient  = " . cSecurity::toInteger($client);
-            	$db2->query($sql2);
-            	$db2->next_record();
+                $sql2 = "SELECT
+                    c.idtpl AS idtpl,
+                    c.name AS name,
+                    c.description,
+                    b.idtplcfg AS idtplcfg
+                FROM
+                    " . $cfg['tab']['tpl_conf'] . " AS a,
+                    " . $cfg['tab']['cat_lang'] . " AS b,
+                    " . $cfg['tab']['tpl'] . " AS c
+                WHERE
+                    b.idcat     = " . cSecurity::toInteger($idcat) . " AND
+                    b.idlang    = " . cSecurity::toInteger($lang) . " AND
+                    b.idtplcfg  = a.idtplcfg AND
+                    c.idtpl     = a.idtpl AND
+                    c.idclient  = " . cSecurity::toInteger($client);
+                $db2->query($sql2);
+                $db2->next_record();
                 $a_tplname = $db2->f("name") ? '<i>'.$db2->f("name").'</i>' : "--- " . i18n("None") . " ---";
             }
 
