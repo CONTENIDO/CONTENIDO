@@ -718,8 +718,6 @@ function conChangeTemplateForCat($idcat, $idtpl) {
  * @return array
  */
 function conFetchCategoryTree($client = false, $lang = false) {
-    global $db, $cfg;
-
     if ($client === false) {
         $client = $GLOBALS['client'];
     }
@@ -1291,8 +1289,6 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true) {
  * @return bool
  */
 function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel = true) {
-    global $auth;
-
     // Get source article
     $oSrcArt = new cApiArticle((int) $srcidart);
     if (!$oSrcArt->isLoaded()) {
