@@ -35,12 +35,12 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$imgDescr = new cContentTypeImgDescr($a_content['CMS_IMGDESCR'][$val], $val, $a_content);
+$imgDescr = new cContentTypeHtmldescr($a_content['CMS_IMGDESCR'][$val], $val, $a_content);
 
 if ($edit) {
     cDeprecated('Do not use CMS_IMGTITLE any more - use CMS_IMGDESCR instead!');
     $cNotification = new Contenido_Notification();
-    $notification = $cNotification->messageBox(Contenido_Notification::LEVEL_WARNING, 'Sie benutzen einen veralteten Content-Typen (CMS_IMGTITLE). Dieser Content-Typ wird in einer späteren Version von CONTENIDO nicht mehr unterstützt. Bitte wechseln Sie auf den neuen Content-Typen CMS_IMGDESCR.');
+    $notification = $cNotification->messageBox(Contenido_Notification::LEVEL_WARNING, 'Sie benutzen einen veralteten Content-Typen (CMS_IMGTITLE). Dieser Content-Typ wird in einer spï¿½teren Version von CONTENIDO nicht mehr unterstï¿½tzt. Bitte wechseln Sie auf den neuen Content-Typen CMS_IMGDESCR.');
     $notification = addslashes($notification);
     $notification = str_replace("\\'", "'", $notification);
     $notification = str_replace('\$', '\\$', $notification);

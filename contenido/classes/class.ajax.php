@@ -257,7 +257,7 @@ class cAjaxRequest {
 
                 $art = new cApiArticleLanguage($idArtLang, true);
                 $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
-                $linkEditor = new cContentTypeLinkEditor($artReturn, $id, array());
+                $linkEditor = new cContentTypeLinkeditor($artReturn, $id, array());
 
                 $string = $linkEditor->generateArticleSelect($idCat);
                 break;
@@ -270,7 +270,7 @@ class cAjaxRequest {
 
                 $art = new cApiArticleLanguage($idArtLang, true);
                 $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
-                $linkEditor = new cContentTypeLinkEditor($artReturn, $id, array());
+                $linkEditor = new cContentTypeLinkeditor($artReturn, $id, array());
 
                 $string = $linkEditor->getCategoryList($linkEditor->buildCategoryArray($levelId, $parentidcat));
                 break;
@@ -282,7 +282,7 @@ class cAjaxRequest {
 
                 $art = new cApiArticleLanguage($idArtLang, true);
                 $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
-                $linkEditor = new cContentTypeLinkEditor($artReturn, $id, array());
+                $linkEditor = new cContentTypeLinkeditor($artReturn, $id, array());
 
                 $string = $linkEditor->getUploadFileSelect($dirName);
                 break;

@@ -37,12 +37,12 @@ if (!defined('CON_FRAMEWORK')) {
 
 $tmp = '';
 
-$linkEditor = new cContentTypeLinkEditor($a_content['CMS_LINKEDITOR'][$val], $val, array());
+$linkEditor = new cContentTypeLinkeditor($a_content['CMS_LINKEDITOR'][$val], $val, array());
 
 if ($edit) {
     cDeprecated('Do not use CMS_SIMPLELINKEDIT any more - use CMS_LINKEDITOR instead!');
     $cNotification = new Contenido_Notification();
-    $notification = $cNotification->messageBox(Contenido_Notification::LEVEL_WARNING, 'Sie benutzen einen veralteten Content-Typen (CMS_SIMPLELINKEDIT). Dieser Content-Typ wird in einer späteren Version von CONTENIDO nicht mehr unterstützt. Bitte wechseln Sie auf den neuen Content-Typen CMS_LINKEDITOR.');
+    $notification = $cNotification->messageBox(Contenido_Notification::LEVEL_WARNING, 'Sie benutzen einen veralteten Content-Typen (CMS_SIMPLELINKEDIT). Dieser Content-Typ wird in einer spï¿½teren Version von CONTENIDO nicht mehr unterstï¿½tzt. Bitte wechseln Sie auf den neuen Content-Typen CMS_LINKEDITOR.');
     $notification = addslashes($notification);
     $notification = str_replace("\\'", "'", $notification);
     $notification = str_replace('\$', '\\$', $notification);

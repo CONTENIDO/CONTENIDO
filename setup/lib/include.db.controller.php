@@ -379,14 +379,14 @@ if ($currentStep < $totalSteps) {
             $sql = 'ALTER TABLE `' . $cfg['tab']['type'] . '` ADD COLUMN `class` varchar(255)';
             $db->query($sql);
             $classNames = array(
-                'CMS_HTMLHEAD' => 'cContentTypeHtmlHead',
+                'CMS_HTMLHEAD' => 'cContentTypeHtmlhead',
                 'CMS_HTML' => 'cContentTypeHtml',
                 'CMS_TEXT' => 'cContentTypeText',
                 'CMS_IMG' => 'cContentTypeImg',
-                'CMS_IMGDESCR' => 'cContentTypeImgDescr',
+                'CMS_IMGDESCR' => 'cContentTypeHtmldescr',
                 'CMS_LINK' => 'cContentTypeLink',
-                'CMS_LINKTARGET' => 'cContentTypeLinkTarget',
-                'CMS_LINKDESCR' => 'cContentTypeLinkDescr',
+                'CMS_LINKTARGET' => 'cContentTypeLinktarget',
+                'CMS_LINKDESCR' => 'cContentTypeLinkdescr',
                 'CMS_HEAD' => 'cContentTypeHead',
                 'CMS_SWF' => 'cContentTypeSwf',
                 'CMS_LINKTITLE' => 'cContentTypeLinkTitle',
@@ -400,8 +400,8 @@ if ($currentStep < $totalSteps) {
                 'CMS_DATE' => 'cContentTypeDate',
                 'CMS_TEASER' => 'cContentTypeTeaser',
                 'CMS_FILELIST' => 'cContentTypeFilelist',
-                'CMS_IMGEDITOR' => 'cContentTypeImgEditor',
-                'CMS_LINKEDITOR' => 'cContentTypeLinkEditor'
+                'CMS_IMGEDITOR' => 'cContentTypeImgeditor',
+                'CMS_LINKEDITOR' => 'cContentTypeLinkeditor'
             );
             foreach ($classNames as $type => $class) {
                 $sql = 'UPDATE `' . $cfg['tab']['type'] . '` SET `class`=\'' . $class . '\' WHERE `type`=\'' . $type . '\'';
