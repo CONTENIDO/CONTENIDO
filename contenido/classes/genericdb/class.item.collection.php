@@ -1183,7 +1183,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         while ($oDb->next_record()) {
             $data = array();
             foreach ($aFields as $field) {
-                $data = $oDb->f($field);
+                $data[$field] = $oDb->f($field);
             }
             $aEntries[] = $data;
         }
