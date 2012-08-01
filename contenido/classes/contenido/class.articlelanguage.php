@@ -80,13 +80,18 @@ class cApiArticleLanguageCollection extends ItemCollection {
      * @param   int  $time_move_cat
      * @param   int  $time_target_cat
      * @param   int  $time_online_move
+     * @param   int  $locked
+     * @param  mixed  $free_use_01
+     * @param  mixed  $free_use_02
+     * @param  mixed  $free_use_03
      * @return cApiArticleLanguage
      */
     public function create($idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0,
         $created = '', $author = '', $lastmodified = '', $modifiedby = '', $published = '',
         $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '', $external_redirect = 0,
         $artsort = 0, $timemgmt = 0, $datestart = '', $dateend = '', $status = 0,
-        $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0) {
+        $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0, $locked = 0,
+        $free_use_01 = '', $free_use_02 = '', $free_use_03 = '') {
 
         global $auth;
 
@@ -129,6 +134,10 @@ class cApiArticleLanguageCollection extends ItemCollection {
         $item->set('time_move_cat', $time_move_cat);
         $item->set('time_target_cat', $time_target_cat);
         $item->set('time_online_move', $time_online_move);
+        $item->set('locked', $locked);
+        $item->set('free_use_01', $free_use_01);
+        $item->set('free_use_02', $free_use_02);
+        $item->set('free_use_03', $free_use_03);
 
         $item->store();
 
@@ -405,6 +414,7 @@ class cApiArticleLanguage extends Item {
             case 'time_online_move':
             case 'redirect':
             case 'external_redirect':
+            case 'locked':
                 $value = ($value == 1) ? 1 : 0;
                 break;
             case 'idart':
