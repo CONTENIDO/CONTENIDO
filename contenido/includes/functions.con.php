@@ -1,31 +1,18 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * Defines the 'con' related functions in CONTENIDO
  *
- * Requirements:
- * @con_php_req 5.0
+ * @package Core
+ * @subpackage Con
+ * @version SVN Revision $Rev:$
+ * @version SVN Id $Id$
  *
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.1.8
- * @author     Olaf Niemann, Jan Lengowski
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * @todo: Rework code
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
- *
+ * @author Olaf Niemann, Jan Lengowski
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {

@@ -202,7 +202,7 @@ if ($_POST['action'] == "subscribe") {
     } else {
         $sMessage = mi18n("Sorry, the e-mail address was not found.");
     }
-} elseif (strlen($_GET['confirm']) == 30 && is_alphanumeric($_GET['confirm'])) {
+} elseif (strlen($_GET['confirm']) == 30 && isAlphanumeric($_GET['confirm'])) {
     $oRecipients->setWhere("idclient", $client);
     $oRecipients->setWhere("idlang", $lang);
     $oRecipients->setWhere("hash", $_GET['confirm']);
@@ -267,7 +267,7 @@ if ($_POST['action'] == "subscribe") {
     } else {
         $sMessage = mi18n("Sorry, there was a problem confirming your subscription. Please ask the webmaster for help.");
     }
-} elseif (strlen($_GET['stop']) == 30 && is_alphanumeric($_GET['stop'])) {
+} elseif (strlen($_GET['stop']) == 30 && isAlphanumeric($_GET['stop'])) {
     $oRecipients->setWhere("idclient", $client);
     $oRecipients->setWhere("idlang", $lang);
     $oRecipients->setWhere("hash", $_GET['stop']);
@@ -280,7 +280,7 @@ if ($_POST['action'] == "subscribe") {
     } else {
         $sMessage = mi18n("Sorry, there was a problem pausing your newsletter subscription. Please ask the webmaster for help.");
     }
-} elseif (strlen($_GET['goon']) == 30 && is_alphanumeric($_GET['goon'])) {
+} elseif (strlen($_GET['goon']) == 30 && isAlphanumeric($_GET['goon'])) {
     $oRecipients->setWhere("idclient", $client);
     $oRecipients->setWhere("idlang", $lang);
     $oRecipients->setWhere("hash", $_GET['goon']);
@@ -293,7 +293,7 @@ if ($_POST['action'] == "subscribe") {
     } else {
         $sMessage = mi18n("Sorry, there was a problem resuming your newsletter subscription. Please ask the webmaster for help.");
     }
-} elseif (strlen($_GET['unsubscribe']) == 30 && is_alphanumeric($_GET['unsubscribe'])) {
+} elseif (strlen($_GET['unsubscribe']) == 30 && isAlphanumeric($_GET['unsubscribe'])) {
     $oRecipients->setWhere("idclient", $client);
     $oRecipients->setWhere("idlang", $lang);
     $oRecipients->setWhere("hash", $_GET['unsubscribe']);

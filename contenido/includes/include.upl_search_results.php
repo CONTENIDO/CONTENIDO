@@ -51,7 +51,7 @@ class UploadList extends FrontendList {
             }
         }
         if ($field == 4) {
-            return human_readable_size($data);
+            return humanReadableSize($data);
         }
 
         if ($field == 3) {

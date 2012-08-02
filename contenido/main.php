@@ -217,8 +217,8 @@ $cfg['debug']['backend_exectime']['end'] = getmicrotime();
 
 cDebug('Building this page (excluding CONTENIDO includes) took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']).' seconds');
 cDebug('Building the complete page took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']).' seconds');
-cDebug('Include memory usage: '.human_readable_size(memory_get_usage()-$oldmemusage));
-cDebug('Complete memory usage: '.human_readable_size(memory_get_usage()));
+cDebug('Include memory usage: '.humanReadableSize(memory_get_usage()-$oldmemusage));
+cDebug('Complete memory usage: '.humanReadableSize(memory_get_usage()));
 cDebug("*****".$sFilename."*****");
 
 // Do user tracking (who is online)

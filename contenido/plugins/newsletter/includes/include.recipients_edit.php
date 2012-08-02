@@ -177,7 +177,7 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
     $oForm->add(i18n("Deactivated", 'newsletter'),  $oCkbDeactivated->toHTML(false));
     $oForm->add(i18n("Message type", 'newsletter'), $oSelNewsType->render());
 
-    $aPluginOrder = trim_array(explode(",",getSystemProperty("plugin", "recipients-pluginorder")));
+    $aPluginOrder = cArray::trim(explode(',', getSystemProperty('plugin', 'recipients-pluginorder')));
 
     // Check out if there are any plugins
     if (is_array($aPluginOrder)) {

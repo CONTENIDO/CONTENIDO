@@ -496,7 +496,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                     $netmask = substr($range, $slash + 1, strlen($range) - $slash - 1);
                 }
 
-                if (IP_match($network, $netmask, $_SERVER['REMOTE_ADDR'])) {
+                if (ipMatch($network, $netmask, $_SERVER['REMOTE_ADDR'])) {
                     $oRightColl = new cApiRightCollection();
                     if (true === $oRightColl->hasFrontendAccessByCatIdAndUserId($idcat, $user_id)) {
                         $auth->auth['uid'] = $user_id;
@@ -583,7 +583,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             $baseCode = '<base href="' . $baseHref . '">';
         }
 
-        $code = str_ireplace_once("<head>", "<head>\n" . $baseCode, $code);
+        $code = cString::iReplaceOnce("<head>", "<head>\n" . $baseCode, $code);
     }
 
     // Handle online (offline) articles

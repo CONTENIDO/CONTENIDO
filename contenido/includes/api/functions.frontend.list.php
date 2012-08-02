@@ -176,7 +176,7 @@ class FrontendList
      */
     function sort ($field, $order)
     {
-        $this->data = array_csort($this->data, "$field", $order);
+        $this->data = cArray::csort($this->data, "$field", $order);
     }
 
     /**

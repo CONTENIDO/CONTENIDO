@@ -302,7 +302,7 @@ class cGuiScrollList {
         $this->sortmode = $order;
 
         $field = $field + 1;
-        $this->data = array_csort($this->data, "$field", $order);
+        $this->data = cArray::csort($this->data, "$field", $order);
     }
 
     /**

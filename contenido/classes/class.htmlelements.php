@@ -793,7 +793,7 @@ class cHTMLFormElement extends cHTML {
      * @return cHTMLFormElement $this
      */
     public function setAccessKey($accesskey) {
-        if ((strlen($accesskey) == 1) && is_alphanumeric($accesskey)) {
+        if ((strlen($accesskey) == 1) && isAlphanumeric($accesskey)) {
             $this->updateAttribute('accesskey', $accesskey);
         } else {
             $this->removeAttribute('accesskey');

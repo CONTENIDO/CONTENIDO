@@ -344,9 +344,9 @@ if ($_REQUEST["sortorder"] == "desc") {
 }
 
 if ($_REQUEST["sortby"]) {
-    $aUserTable = array_csort($aUserTable, $_REQUEST["sortby"], $sortorder);
+    $aUserTable = cArray::csort($aUserTable, $_REQUEST["sortby"], $sortorder);
 } else {
-    $aUserTable = array_csort($aUserTable, "username", $sortorder);
+    $aUserTable = cArray::csort($aUserTable, "username", $sortorder);
 }
 
 $mlist = new cGuiMenu();

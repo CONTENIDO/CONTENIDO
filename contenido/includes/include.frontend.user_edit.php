@@ -186,7 +186,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
     $form->add(i18n("New password (again)"), $newpw2->render());
     $form->add(i18n("Active"), $active->toHTML(false));
 
-    $pluginOrder = trim_array(explode(",",getSystemProperty("plugin", "frontendusers-pluginorder")));
+    $pluginOrder = cArray::trim(explode(',', getSystemProperty('plugin', 'frontendusers-pluginorder')));
 
     // Check out if there are any plugins
     if (is_array($pluginOrder)) {

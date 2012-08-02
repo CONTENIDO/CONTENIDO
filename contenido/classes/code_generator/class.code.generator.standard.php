@@ -155,8 +155,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         // Add css files before closing head tag and js files before closing body tag
-        $this->_layoutCode = str_ireplace_once('</head>', $cssFile . '</head>', $this->_layoutCode);
-        $this->_layoutCode = str_ireplace_once('</body>', $jsFile . '</body>', $this->_layoutCode);
+        $this->_layoutCode = cString::iReplaceOnce('</head>', $cssFile . '</head>', $this->_layoutCode);
+        $this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
 
         // Save the generated code
         $this->_saveGeneratedCode($code, $idcatart);
@@ -203,7 +203,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             if (strstr($this->_layoutCode, '{TITLE}')) {
                 $this->_layoutCode = str_ireplace('{TITLE}', '<title>' . $this->_pageTitle . '</title>', $this->_layoutCode);
             } else {
-                $this->_layoutCode = str_ireplace_once('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $this->_layoutCode);
+                $this->_layoutCode = cString::iReplaceOnce('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $this->_layoutCode);
             }
         } else {
             $this->_layoutCode = str_replace('<title></title>', '', $this->_layoutCode);
@@ -301,7 +301,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         // Add meta tags
-        $this->_layoutCode = str_ireplace_once('</head>', $sMetatags . '</head>', $this->_layoutCode);
+        $this->_layoutCode = cString::iReplaceOnce('</head>', $sMetatags . '</head>', $this->_layoutCode);
     }
 
     /**

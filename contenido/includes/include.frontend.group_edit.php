@@ -217,7 +217,7 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
     $tpl->set('d', 'INPUT', $defaultgroup->toHTML(false));
     $tpl->next();
 
-    $pluginOrder = trim_array(explode(",",getSystemProperty("plugin", "frontendgroups-pluginorder")));
+    $pluginOrder = cArray::trim(explode(',', getSystemProperty('plugin', 'frontendgroups-pluginorder')));
 
     // Check out if there are any plugins
     if (is_array($pluginOrder)) {

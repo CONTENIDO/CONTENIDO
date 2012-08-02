@@ -126,7 +126,7 @@ class cI18n {
 
         // Emulator as fallback
         $ret = self::emulateGettext($string, $domain);
-        if (is_utf8($ret)) {
+        if (isUtf8($ret)) {
             $ret = utf8_decode($ret);
         }
         return $ret;

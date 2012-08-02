@@ -405,7 +405,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         }
 
         $template->set('d', 'FILENAME', $filename);
-        $template->set('d', 'FILESIZE', human_readable_size($filesize));
+        $template->set('d', 'FILESIZE', humanReadableSize($filesize));
         $template->set('d', 'FILEEXTENSION', $fileData['extension']);
         $template->set('d', 'FILECREATIONDATE', date('d.m.Y', $fileData['filecreationdate']));
         $template->set('d', 'FILEMODIFYDATE', date('d.m.Y', $fileData['filemodifydate']));

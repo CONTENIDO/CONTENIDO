@@ -1437,7 +1437,7 @@ function sendEncodingHeader($db, $cfg, $lang, $contentType = 'text/html') {
 }
 
 /**
- * IP_match
+ * IP match
  *
  * @param string $network
  * @param string $mask

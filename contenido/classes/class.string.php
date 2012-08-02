@@ -63,7 +63,7 @@ class cString {
      * @return string Processed string
      */
     public static function iReplaceOnceReverse($find, $replace, $subject) {
-        $start = str_rpos(strtolower($subject), strtolower($find));
+        $start = self::posReverse(strtolower($subject), strtolower($find));
 
         if ($start === false) {
             return $subject;
@@ -94,17 +94,16 @@ class cString {
 
         if ($tempPos === false) {
             if ($start == 0) {
-                //Needle not in string at all
+                // Needle not in string at all
                 return false;
             } else {
-                //No more occurances found
+                // No more occurances found
                 return $start - strlen($needle);
             }
         } else {
-            //Find the next occurance
-            return str_rpos($haystack, $needle, $tempPos + strlen($needle));
+            // Find the next occurance
+            return self::posReverse($haystack, $needle, $tempPos + strlen($needle));
         }
     }
 
 }
-

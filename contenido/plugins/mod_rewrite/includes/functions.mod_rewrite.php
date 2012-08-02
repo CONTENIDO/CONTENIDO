@@ -574,7 +574,7 @@ function mr_buildGeneratedCode($code)
     ModRewriteDebugger::add(($sseEndtime - $sseStarttime), 'mr_buildGeneratedCode() total spend time');
 
     if ($debug = mr_debugOutput(false)) {
-        $code = str_ireplace_once("</body>", $debug . "\n</body>", $code);
+        $code = cString::iReplaceOnce("</body>", $debug . "\n</body>", $code);
     }
 
     return $code;
