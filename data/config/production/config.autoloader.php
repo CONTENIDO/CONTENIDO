@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-07-27
+ *     created  2012-08-02
  * }}
  */
 
@@ -42,6 +42,7 @@ return array(
     'cOutputCacheHandler' => 'contenido/classes/cache/class.output.cache.php',
     'cAjaxRequest' => 'contenido/classes/class.ajax.php',
     'Ajax' => 'contenido/classes/class.ajax.php',
+    'cArray' => 'contenido/classes/class.array.php',
     'Art' => 'contenido/classes/class.art.php',
     'Article' => 'contenido/classes/class.article.php',
     'ArticleCollection' => 'contenido/classes/class.article.php',
@@ -137,6 +138,7 @@ return array(
     'Contenido_Security' => 'contenido/classes/class.security.php',
     'cSession' => 'contenido/classes/class.session.php',
     'cFrontendSession' => 'contenido/classes/class.session.php',
+    'cString' => 'contenido/classes/class.string.php',
     'Structure' => 'contenido/classes/class.structure.php',
     'SynchronizeLayouts' => 'contenido/classes/class.synchronizeLayouts.php',
     'Table' => 'contenido/classes/class.table.php',
