@@ -467,11 +467,11 @@ $aInformation = array('imgsrc', 'description');
 $aData = xmlFileToArray($cfg['path']['xml'] . "legend.xml", $aData, $aInformation);
 
 foreach ($aData as $key => $item) {
-	$editLegend .= '<table class=' . $key . '>';
-	foreach($item as $data){
-    	$editLegend .= '<tr><td><img src="' . (string) $data['imgsrc'] . '"/></td><td><span>' . i18n((string) $data['description']) . '</span></td></tr>';
-	}
-	$editLegend .= '</table>';
+    $editLegend .= '<table class=' . $key . '>';
+    foreach ($item as $data) {
+        $editLegend .= '<tr><td><img src="' . (string) $data['imgsrc'] . '"/></td><td><span>' . i18n((string) $data['description']) . '</span></td></tr>';
+    }
+    $editLegend .= '</table>';
 }
 $editLegend .= '</div>';
 $editCategory->setContentData($editLegend);
@@ -486,12 +486,12 @@ function xmlFileToArray($filename, $aData = array(), $aInformation) {
     $_dom = simplexml_load_file($filename);
     for ($i = 0, $size = count($_dom); $i < $size; $i++) {
         foreach ($aInformation as $sInfoName) {
-        	if($_dom->article[$i]->$sInfoName!=''){
-            	$aData['article'][$i][$sInfoName] = $_dom->article[$i]->$sInfoName;
-        	}
-        	if($_dom->category[$i]->$sInfoName!=''){
-            	$aData['category'][$i][$sInfoName] = $_dom->category[$i]->$sInfoName;
-        	}
+            if ($_dom->article[$i]->$sInfoName != '') {
+                $aData['article'][$i][$sInfoName] = $_dom->article[$i]->$sInfoName;
+            }
+            if ($_dom->category[$i]->$sInfoName != '') {
+                $aData['category'][$i][$sInfoName] = $_dom->category[$i]->$sInfoName;
+            }
         }
     }
     return $aData;
