@@ -29,9 +29,6 @@ cInclude('includes', 'functions.file.php');
  *
  * @param   int  $idartlang  Language specific ID of the arcticle
  * @return  void
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG
  */
 function getAvailableContentTypes($idartlang) {
     global $db, $cfg, $a_content, $a_description;
@@ -92,7 +89,7 @@ function isAlphanumeric($test, $umlauts = true) {
  * Returns wether a string is UTF-8 encoded or not
  *
  * @param string $input
- * @return boolean
+ * @return bool
  */
 function isUtf8($input) {
     $len = strlen($input);
@@ -353,10 +350,12 @@ function set_magic_quotes_gpc(&$code) {
  * Returns a list with all clients and languages.
  *
  * @return  array  Indexed array where the value is an assoziative array as follows:
- *                 - $arr[0]['idlang']
- *                 - $arr[0]['langname']
- *                 - $arr[0]['idclient']
- *                 - $arr[0]['clientname']
+ * <pre>
+ * - $arr[0]['idlang']
+ * - $arr[0]['langname']
+ * - $arr[0]['idclient']
+ * - $arr[0]['clientname']
+ * </pre>
  */
 function getAllClientsAndLanguages() {
     global $db, $cfg;
@@ -388,50 +387,10 @@ function getAllClientsAndLanguages() {
 }
 
 function getmicrotime() {
-    list ($usec, $sec) = explode(" ", microtime());
+    list ($usec, $sec) = explode(' ', microtime());
     return ((float) $usec + (float) $sec);
 }
 
-/**
- * Small hack to clean up unused sessions. As we are probably soon rewriting the
- * session management, this hack is OK.
- * @deprecated PHP will handle cleaning up sessions
- */
-function cleanupSessions() {
-    global $cfg;
-
-    cDeprecated("Sessions don't need to be cleaned up anymore");
-
-    $db = cRegistry::getDb();
-    $db2 = cRegistry::getDb();
-    $col = new cApiInUseCollection();
-    $auth = new Contenido_Challenge_Crypt_Auth();
-
-    $maxdate = date("YmdHis", time() - ($auth->lifetime * 60));
-
-    // Expire old sessions
-    $sql = "SELECT changed, sid FROM " . $cfg["tab"]["phplib_active_sessions"];
-    $db->query($sql);
-
-    while ($db->next_record()) {
-        if ($db->f("changed") < $maxdate) {
-            $sql = "DELETE FROM " . $cfg["tab"]["phplib_active_sessions"] . " WHERE sid = '" . $db2->escape($db->f("sid")) . "'";
-            $db2->query($sql);
-            $col->removeSessionMarks($db->f("sid"));
-        }
-    }
-
-    // Expire invalid InUse-Entries
-    $col->select();
-
-    while ($c = $col->next()) {
-        $sql = "SELECT sid FROM " . $cfg["tab"]["phplib_active_sessions"] . " WHERE sid = '" . $db2->escape($c->get("session")) . "'";
-        $db2->query($sql);
-        if (!$db2->next_record()) {
-            $col->delete($c->get("idinuse"));
-        }
-    }
-}
 
 function isGroup($uid) {
     $user = new cApiUser();
@@ -453,7 +412,7 @@ function getGroupOrUserName($uid) {
             return $group->getGroupName(true);
         }
     } else {
-        return $user->getField("realname");
+        return $user->getField('realname');
     }
 }
 
@@ -688,7 +647,7 @@ function getEffectiveSettingsByType($type) {
 function getArtspec() {
     global $db, $cfg, $lang, $client;
     $sql = "SELECT artspec, idartspec, online, artspecdefault FROM " . $cfg['tab']['art_spec'] . "
-            WHERE client=" . (int) $client . " AND lang=" . (int) $lang . " ORDER BY artspec ASC";
+            WHERE client = " . (int) $client . " AND lang = " . (int) $lang . " ORDER BY artspec ASC";
     $db->query($sql);
 
     $artspec = array();
@@ -754,7 +713,7 @@ function deleteArtspec($idartspec) {
  */
 function setArtspecOnline($idartspec, $online) {
     global $db, $cfg;
-    $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET online=" . (int) $online . " WHERE idartspec=" . (int) $idartspec;
+    $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET online = " . (int) $online . " WHERE idartspec = " . (int) $idartspec;
     $db->query($sql);
 }
 
@@ -768,10 +727,10 @@ function setArtspecOnline($idartspec, $online) {
  */
 function setArtspecDefault($idartspec) {
     global $db, $cfg, $lang, $client;
-    $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET artspecdefault=0 WHERE client=" . (int) $client . " AND lang=" . (int) $lang;
+    $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET artspecdefault=0 WHERE client = " . (int) $client . " AND lang = " . (int) $lang;
     $db->query($sql);
 
-    $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET artspecdefault=1 WHERE idartspec=" . (int) $idartspec;
+    $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET artspecdefault = 1 WHERE idartspec = " . (int) $idartspec;
     $db->query($sql);
 }
 
@@ -784,7 +743,8 @@ function setArtspecDefault($idartspec) {
  * @return string HTML
  */
 function buildArticleSelect($sName, $iIdCat, $sValue) {
-    global $cfg, $client, $lang, $idcat;
+    global $cfg, $lang;
+
     $db = cRegistry::getDb();
 
     $html = '';
@@ -822,7 +782,7 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
  * @return  string  HTML
  */
 function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = '') {
-    global $cfg, $client, $lang, $idcat;
+    global $cfg, $client, $lang;
 
     $db = cRegistry::getDb();
     $db2 = cRegistry::getDb();
@@ -1172,12 +1132,31 @@ function debugPrint() {
 /**
  * CONTENIDO warning
  *
- * @param   string  $file     File name   (use __FILE__)
- * @param   int     $line     Line number (use __LINE__)
- * @param   string  $message  Message to display
+ * Examples:
+ * <pre>
+ * // New version
+ * cWarning('Some warning message');
+ * // Old version
+ * cWarning(__FILE__, __LINE__, 'Some warning message');
+ * </pre>
+ *
+ * @param   Multiple parameters
  */
-function cWarning($file, $line, $message) {
+function cWarning() {
     global $cfg;
+
+    $args = func_get_args();
+    if (count($args) == 3) {
+        // Old version
+        $file = $args[0];
+        $line = $args[1];
+        $message = $args[2];
+    } else {
+        // New version
+        $file = '';
+        $line = '';
+        $message = $args[0];
+    }
 
     $msg = "[" . date("Y-m-d H:i:s") . "] ";
     $msg .= "Warning: \"" . $message . "\" at ";
@@ -1198,12 +1177,31 @@ function cWarning($file, $line, $message) {
 /**
  * CONTENIDO error
  *
- * @param   string  $file     File name   (use __FILE__)
- * @param   int     $line     Line number (use __LINE__)
- * @param   string  $message  Message to display
+ * Examples:
+ * <pre>
+ * // New version
+ * cWarning('Some error message');
+ * // Old version
+ * cWarning(__FILE__, __LINE__, 'Some error message');
+ * </pre>
+ *
+ * @param   Multiple parameters
  */
 function cError($file, $line, $message) {
     global $cfg;
+
+    $args = func_get_args();
+    if (count($args) == 3) {
+        // Old version
+        $file = $args[0];
+        $line = $args[1];
+        $message = $args[2];
+    } else {
+        // New version
+        $file = '';
+        $line = '';
+        $message = $args[0];
+    }
 
     $msg = "[" . date("Y-m-d H:i:s") . "] ";
     $msg .= "Error: \"" . $message . "\" at ";
@@ -1227,7 +1225,7 @@ function cError($file, $line, $message) {
  * @param  string  $amsg  Optional message (e.g. "Use function XYZ instead")
  * @return void
  */
-function cDeprecated($amsg = '') {
+function cDeprecated($message = '') {
     global $cfg;
 
     $e = new Exception();
@@ -1235,8 +1233,8 @@ function cDeprecated($amsg = '') {
     $function_name = $stack[1]['function'];
 
     $msg = "Deprecated call: " . $function_name . "() [" . basename($stack[0]['file']) . "(" . $stack[0]['line'] . ")]: ";
-    if ($amsg != '') {
-        $msg .= "\"" . $amsg . "\"" . "\n";
+    if ($message != '') {
+        $msg .= "\"" . $message . "\"" . "\n";
     } else {
         $msg .= "\n";
     }
@@ -1474,6 +1472,39 @@ function ipMatch($network, $mask, $ip) {
 }
 
 
+/**
+ * Small hack to clean up unused sessions. As we are probably soon rewriting the
+ * session management, this hack is OK.
+ * @deprecated  [2012-07-??] PHP will handle cleaning up sessions
+ */
+function cleanupSessions() {
+    global $cfg;
+    cDeprecated("Sessions don't need to be cleaned up anymore");
+    $db = cRegistry::getDb();
+    $db2 = cRegistry::getDb();
+    $col = new cApiInUseCollection();
+    $auth = new Contenido_Challenge_Crypt_Auth();
+    $maxdate = date("YmdHis", time() - ($auth->lifetime * 60));
+    // Expire old sessions
+    $sql = "SELECT changed, sid FROM " . $cfg["tab"]["phplib_active_sessions"];
+    $db->query($sql);
+    while ($db->next_record()) {
+        if ($db->f("changed") < $maxdate) {
+            $sql = "DELETE FROM " . $cfg["tab"]["phplib_active_sessions"] . " WHERE sid = '" . $db2->escape($db->f("sid")) . "'";
+            $db2->query($sql);
+            $col->removeSessionMarks($db->f("sid"));
+        }
+    }
+    // Expire invalid InUse-Entries
+    $col->select();
+    while ($c = $col->next()) {
+        $sql = "SELECT sid FROM " . $cfg["tab"]["phplib_active_sessions"] . " WHERE sid = '" . $db2->escape($c->get("session")) . "'";
+        $db2->query($sql);
+        if (!$db2->next_record()) {
+            $col->delete($c->get("idinuse"));
+        }
+    }
+}
 
 /** @deprecated  [2012-06-21]  Use capiIsImageMagickAvailable() from functions.api.images.php */
 function isImageMagickAvailable() {
