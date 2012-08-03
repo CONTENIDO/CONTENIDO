@@ -158,8 +158,8 @@ cContentTypeDate.prototype.addSaveEvent = function() {
         var date = $('#date_timestamp_' + self.id).datetimepicker('getDate');
         var timestamp = date.getTime() / 1000;
         var format = $(self.frameId + ' #date_format_select_' + self.id).val();
-        alert(date);
-        alert(format);
+//        alert(date);
+//        alert(format);
         self.appendFormField(self.prefix + '_timestamp', timestamp);
         self.appendFormField(self.prefix + '_format', format);
         self.appendFormField(self.prefix + '_action', 'store');
@@ -183,7 +183,7 @@ cContentTypeDate.prototype.appendFormField = function(name, value) {
         $('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').val(value);
     } else {
         // otherwise append a new field to the form
-        alert('<input type="hidden" value="' + value + '" name="' + name + '"/>');
+//        alert('<input type="hidden" value="' + value + '" name="' + name + '"/>');
         $('form[name="editcontent"]').append('<input type="hidden" value="' + value + '" name="' + name + '"/>');
     }
 };
