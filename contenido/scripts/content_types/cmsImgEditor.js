@@ -39,6 +39,13 @@ function cContentTypeImgeditor(frameId, imageId, pathBackend, pathFrontend, idAr
      * @type String
      */
     this.selectedPath = '';
+	
+	 /**
+     * Defines if needed js scripts were loaded
+     *
+     * @type Integer
+     */
+	this.scriptLoaded = 0;
 
 }
 
@@ -75,8 +82,18 @@ cContentTypeImgeditor.prototype.loadExternalFiles = function() {
     if ($('#cms_imgeditor_styles').length === 0) {
         $('head').append('<link rel="stylesheet" id="cms_imgeditor_styles" href="' + this.pathBackend + 'styles/content_types/cms_imgeditor.css" type="text/css" media="all" />');
     }
-    conLoadFile(this.pathBackend + 'scripts/jquery/ajaxupload.js');
+    conLoadFile(this.pathBackend + 'scripts/jquery/ajaxupload.js', cContentTypeImgeditor.prototype.initUpload, this);
 };
+
+/**
+ * Inits Upload action after needed scripts were loaded
+ *
+ */
+cContentTypeImgeditor.prototype.initUpload = function() {
+	var self = this;
+    self.imageFileUpload();
+	self.scriptLoaded = 1;
+}
 
 /**
  * Adds tabbing events to menubar of content type edit form. Lets the user
@@ -186,10 +203,11 @@ cContentTypeImgeditor.prototype.showFolderPath = function() {
     $(self.frameId + ' #caption2').text(selectedPath);
     $(self.frameId + ' form[name="newdir"] input[name="path"]').val(selectedPath);
     $(self.frameId + ' form[name="properties"] input[name="path"]').val(selectedPath);
-
-    setTimeout(function() {
-        self.imageFileUpload();
-    }, 1000);
+	
+	
+	if (self.scriptLoaded == 1) {
+		self.imageFileUpload();
+	}
 };
 
 /**
@@ -311,6 +329,9 @@ cContentTypeImgeditor.prototype.imageFileUpload = function() {
     if (self.selectedPath !== '' && self.selectedPath !== 'upload') {
         dirname = self.selectedPath + '/';
     }
+	
+	$('body > input[type=file]').remove();
+	$('#cms_image_m' + self.id).unbind();
 
     new AjaxUpload('#cms_image_m' + self.id, {
         action: self.pathBackend + 'ajaxmain.php?ajax=upl_upload&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&contenido=' + self.session,
@@ -325,11 +346,14 @@ cContentTypeImgeditor.prototype.imageFileUpload = function() {
             $.ajax({
                 type: 'POST',
                 url: self.pathBackend + 'ajaxmain.php',
-                data: 'ajax=imagelist&dir=' + self.selectedPath + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
+                data: 'ajax=imagelist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                 success: function(msg) {
                     $('img.loading').hide();
                     $(self.frameId + ' #directoryFile_' + self.id).html(msg);
                     self.addSelectAction();
+					if (self.scriptLoaded == 1) {
+						self.imageFileUpload();
+					}
                 }
             });
         }
