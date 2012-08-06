@@ -41,8 +41,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @param string  $sType - type of file (css, js or templates)
  * @param DB_Contenido  $oDb - CONTENIDO database object
  */
-function removeFileInformation($iIdClient, $sFilename, $sType, $oDb)
-{
+function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
     global $cfg;
 
     if (!isset($oDb) || !is_object($oDb)) {
@@ -53,7 +52,7 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb)
     $sFilename = cSecurity::filter((string) $sFilename, $oDb);
     $sType = cSecurity::filter((string) $sType, $oDb);
 
-    $sSql = "DELETE FROM `".$cfg["tab"]["file_information"]."` WHERE idclient=$iIdClient AND
+    $sSql = "DELETE FROM `" . $cfg["tab"]["file_information"] . "` WHERE idclient=$iIdClient AND
                                                             filename='$sFilename' AND
                                                             type='$sType';";
     $oDb->query($sSql);
@@ -77,8 +76,7 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb)
  *                           description - Description which was inserted for this file
  *
  */
-function getFileInformation($iIdClient, $sFilename, $sType, $oDb)
-{
+function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
     global $cfg;
 
     if (!isset($oDb) || !is_object($oDb)) {
@@ -90,7 +88,7 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb)
     $sType = cSecurity::filter((string) $sType, $oDb);
 
     $aFileInformation = array();
-    $sSql = "SELECT * FROM `".$cfg["tab"]["file_information"]."` WHERE idclient=$iIdClient AND
+    $sSql = "SELECT * FROM `" . $cfg["tab"]["file_information"] . "` WHERE idclient=$iIdClient AND
                                                             filename='$sFilename' AND
                                                             type='$sType';";
     $oDb->query($sSql);
@@ -122,8 +120,7 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb)
  * @param DB_Contenido  $oDb - CONTENIDO database object
  * @param string  $sFilenameNew - new filename if filename was changed (optional)
  */
-function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescription, $oDb, $sFilenameNew = '')
-{
+function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescription, $oDb, $sFilenameNew = '') {
     global $cfg;
 
     if (!isset($oDb) || !is_object($oDb)) {
@@ -140,13 +137,13 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
     $sDescription = cSecurity::filter((string) stripslashes($sDescription), $oDb);
     $sAuthor = cSecurity::filter((string) $sAuthor, $oDb);
 
-    $sSql = "SELECT * from `".$cfg["tab"]["file_information"]."` WHERE idclient=$iIdClient AND
+    $sSql = "SELECT * from `" . $cfg["tab"]["file_information"] . "` WHERE idclient=$iIdClient AND
                                                             filename='$sFilename' AND
                                                             type='$sType';";
     $oDb->query($sSql);
     if ($oDb->num_rows() == 0) {
-       // $iNextId = $oDb->nextid('con_style_file_information');
-        $sSql = "INSERT INTO `".$cfg["tab"]["file_information"]."` (
+        // $iNextId = $oDb->nextid('con_style_file_information');
+        $sSql = "INSERT INTO `" . $cfg["tab"]["file_information"] . "` (
                                                             `idclient` ,
                                                             `type` ,
                                                             `filename` ,
@@ -166,7 +163,7 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
                                                             '$sDescription'
                                                         );";
     } else {
-        $sSql = "UPDATE `".$cfg["tab"]["file_information"]."` SET `lastmodified` = NOW(),
+        $sSql = "UPDATE `" . $cfg["tab"]["file_information"] . "` SET `lastmodified` = NOW(),
                                                          `modifiedby` = '$sAuthor',
                                                          `description` = '$sDescription',
                                                          `filename` = '$sFilenameNew'
@@ -193,8 +190,7 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
  * @param   string  $path      Path to the file
  * @return  (string|void)      Either content of file o nothing
  */
-function fileEdit($filename, $sCode, $path)
-{
+function fileEdit($filename, $sCode, $path) {
     global $notification;
 
     cDeprecated("This function was replaced by cFileHandler");
@@ -207,10 +203,10 @@ function fileEdit($filename, $sCode, $path)
 
     fileValidateFilename($filename, true);
 
-    if (cFileHandler::write($path.$filename, $sCode)) {
-        return cFileHandler::read($path.$filename);
+    if (cFileHandler::write($path . $filename, $sCode)) {
+        return cFileHandler::read($path . $filename);
     } else {
-        $notification->displayNotification("error", sprintf(i18n("%s is not writable"), $path.$filename));
+        $notification->displayNotification("error", sprintf(i18n("%s is not writable"), $path . $filename));
         exit;
     }
 }
@@ -226,35 +222,30 @@ function fileEdit($filename, $sCode, $path)
  * @param   string  $path      Path to the file
  * @return  (string|void)      Either content of file o nothing
  */
-function getFileContent($filename, $path)
-{
+function getFileContent($filename, $path) {
     global $notification;
 
     cDeprecated("This function was replaced by cFileHandler");
 
     $ret = "";
-    if (($ret = cFileHandler::read($path.$filename)) === false) {
-       $notification->displayNotification("error", sprintf(i18n("Can not open file%s "), $path.$filename));
-       exit;
+    if (($ret = cFileHandler::read($path . $filename)) === false) {
+        $notification->displayNotification("error", sprintf(i18n("Can not open file%s "), $path . $filename));
+        exit;
     }
 
     return $ret;
 }
 
-
 /**
  * Returns the filetype (extension).
- *
  *
  * @param   string  $filename  The file to get the type
  * @return  string  Filetype
  */
-function getFileType($filename)
-{
+function getFileType($filename) {
     $aFileName = explode(".", $filename);
     return $aFileName[count($aFileName) - 1];
 }
-
 
 /**
  * Creates a file.
@@ -267,8 +258,7 @@ function getFileType($filename)
  * @param   string  $path      Path to the file
  * @return  (void|bool)  Either true on success or nothing
  */
-function createFile($filename, $path)
-{
+function createFile($filename, $path) {
     global $notification;
 
     cDeprecated("This function was replaced by cFileHandler");
@@ -276,16 +266,16 @@ function createFile($filename, $path)
     fileValidateFilename($filename, true);
 
     // create the file
-    if (cFileHandler::create($path.$filename)) {
+    if (cFileHandler::create($path . $filename)) {
         // change file access permission
-        if (cFileHandler::chmod($path.$filename, 0777)) {
+        if (cFileHandler::chmod($path . $filename, 0777)) {
             return true;
         } else {
-            $notification->displayNotification("error", $path.$filename." ".i18n("Unable to change file access permission."));
+            $notification->displayNotification("error", $path . $filename . " " . i18n("Unable to change file access permission."));
             exit;
         }
     } else {
-        $notification->displayNotification("error", sprintf(i18n("Unable to create file %s"), $path.$filename));
+        $notification->displayNotification("error", sprintf(i18n("Unable to create file %s"), $path . $filename));
         exit;
     }
 }
@@ -302,17 +292,16 @@ function createFile($filename, $path)
  * @param   string  $path      Path to the file
  * @return  (void|string)  Either new filename or nothing
  */
-function renameFile($sOldFile, $sNewFile, $path)
-{
+function renameFile($sOldFile, $sNewFile, $path) {
     global $notification;
 
     cDeprecated("This function was replaced by cFileHandler");
 
     fileValidateFilename($sNewFile, true);
-    if (cFileHandler::rename($path.$sOldFile, $sNewFile)) {
+    if (cFileHandler::rename($path . $sOldFile, $sNewFile)) {
         return $sNewFile;
     } else {
-        $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"),$path.$sOldFile));
+        $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $path . $sOldFile));
         exit;
     }
 }
@@ -327,8 +316,7 @@ function renameFile($sOldFile, $sNewFile, $path)
  *                                           execution, ifd validation fails
  * @return  (void|bool)  Either validation result or nothing (depends on second parameter)
  */
-function fileValidateFilename($filename, $notifyAndExitOnFailure = true)
-{
+function fileValidateFilename($filename, $notifyAndExitOnFailure = true) {
     global $notification;
 
     if (preg_match('/[^a-z0-9._-]/i', $filename)) {
@@ -351,8 +339,7 @@ function fileValidateFilename($filename, $notifyAndExitOnFailure = true)
  * @param  string  $file  Full path and name of file
  * @return string|null  MIME content-type on success, or null
  */
-function fileGetMimeContentType($file)
-{
+function fileGetMimeContentType($file) {
     cDeprecated("This function was replaced by cFileHandler");
 
     $ret = cFileHandler::info($file);
@@ -367,8 +354,7 @@ function fileGetMimeContentType($file)
  * @param bool true if all the subdirectories should be included in the calculation
  * @return bool|int Returns false in case of an error or the size
  */
-function getDirectorySize($sDirectory, $bRecursive = false)
-{
+function getDirectorySize($sDirectory, $bRecursive = false) {
     $ret = 0;
     $files = scanDirectory($sDirectory, $bRecursive);
     if ($files === false) {
@@ -390,8 +376,7 @@ function getDirectorySize($sDirectory, $bRecursive = false)
  * @param   bool    $bRecursive
  * @return  bool|array  List of found files (full path and name) or false
  */
-function scanDirectory($sDirectory, $bRecursive = false)
-{
+function scanDirectory($sDirectory, $bRecursive = false) {
     if (substr($sDirectory, strlen($sDirectory) - 1, 1) == '/') {
         $sDirectory = substr($sDirectory, 0, strlen($sDirectory) - 1);
     }
@@ -407,7 +392,7 @@ function scanDirectory($sDirectory, $bRecursive = false)
 
     while (count(($openDirs)) >= 1) {
         $sDirectory = array_pop($openDirs);
-            if ($hDirHandle = opendir($sDirectory)) {
+        if ($hDirHandle = opendir($sDirectory)) {
             while (($sFile = readdir($hDirHandle)) !== false) {
                 if ($sFile != '.' && $sFile != '..') {
                     $sFullpathFile = $sDirectory . '/' . $sFile;
@@ -434,8 +419,7 @@ function scanDirectory($sDirectory, $bRecursive = false)
  * @param  string  $destinationPath
  * @param  int     $mode  Octal representation of file mode (0644, 0750, etc.)
  */
-function recursiveCopy($sourcePath, $destinationPath, $mode = 0777)
-{
+function recursiveCopy($sourcePath, $destinationPath, $mode = 0777) {
     mkdir($destinationPath, 0777);
     $oldPath = getcwd();
 
