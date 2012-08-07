@@ -95,16 +95,18 @@ class cContentTypeDate extends cContentTypeAbstract {
         // if form is submitted, store the current date settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
+		//var_dump($_POST['date_format']);
         if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
             // convert the given date string into a valid timestamp, so that a
             // timestamp is stored
-            echo $_POST['date_timestamp'] . '<br />';
-            echo $_POST['date_format'] . '<br />' . '<br />';
-            $_POST['date_format'] = stripslashes($_POST['date_format']);
-            echo $_POST['date_timestamp'] . '<br />';
-            echo $_POST['date_format'];
+            //echo $_POST['date_timestamp'] . '<br />';
+            //echo $_POST['date_format'] . '<br />' . '<br />';
+            $_POST['date_format'] = stripslashes(base64_decode($_POST['date_format']));
+			//echo $_POST['date_format'];
+            //echo $_POST['date_timestamp'] . '<br />';
+            //echo $_POST['date_format'];
             if (empty($_POST['date_format'])) {
-                $_POST['date_format'] = 'd.m.yy';
+                $_POST['date_format'] = '{"dateFormat": "d.m.Y", "timeFormat": ""}';
             }
             $this->_storeSettings();
         }
@@ -210,6 +212,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      */
     public function generateViewCode() {
         $format = $this->_settings['date_format'];
+		//var_dump($this->_settings['date_format']);
         if (empty($format)) {
             $format = 'd.m.Y';
         }
@@ -280,7 +283,9 @@ class cContentTypeDate extends cContentTypeAbstract {
             'margin' => '2px 5px 5px'
         ));
         $formatSelect->autoFill($this->_dateFormatsJs);
-        $jsDateFormat = $this->_convertPhpToJqueryUiDateTimeFormat($this->_settings[$this->_prefix . '_format']);
+		var_dump($this->_dateFormatsJs);
+        $jsDateFormat = addslashes($this->_settings[$this->_prefix . '_format']);
+		var_dump($jsDateFormat);
         $formatSelect->setDefault($jsDateFormat);
 
         return $formatSelect->render();
