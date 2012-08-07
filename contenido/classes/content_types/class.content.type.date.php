@@ -283,9 +283,9 @@ class cContentTypeDate extends cContentTypeAbstract {
             'margin' => '2px 5px 5px'
         ));
         $formatSelect->autoFill($this->_dateFormatsJs);
-		var_dump($this->_dateFormatsJs);
+		//var_dump($this->_dateFormatsJs);
         $jsDateFormat = addslashes($this->_settings[$this->_prefix . '_format']);
-		var_dump($jsDateFormat);
+		//var_dump($jsDateFormat);
         $formatSelect->setDefault($jsDateFormat);
 
         return $formatSelect->render();
