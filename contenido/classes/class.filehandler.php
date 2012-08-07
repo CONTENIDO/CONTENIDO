@@ -306,6 +306,15 @@ class cFileHandler {
         return $ret;
     }
 
+    /**
+     * Returns the extension of passed filename
+     * @param  string  $basename
+     * @return  string
+     */
+    public static function getExtension($basename) {
+        $aFileName = explode('.', trim($basename, '.'));
+        return (count($aFileName) > 1) ? $aFileName[count($aFileName) - 1] : '';
+    }
 }
 
 ?>
