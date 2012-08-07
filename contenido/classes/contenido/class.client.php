@@ -52,6 +52,41 @@ class cApiClientCollection extends ItemCollection {
     }
 
     /**
+     * Creates a new client entry
+     * @global  object  $auth
+     * @param  string  $name
+     * @param  int  $errsite_cat
+     * @param  int  $errsite_art
+     * @param  string  $author
+     * @param  string  $created
+     * @param  string  $lastmodified
+     * @return  cApiClient
+     */
+    public function create($name, $errsite_cat = 0, $errsite_art = 0, $author = '', $created = '', $lastmodified = '') {
+        global $auth;
+
+        if (empty($author)) {
+            $author = $auth->auth['uname'];
+        }
+        if (empty($created)) {
+            $created = date('Y-m-d H:i:s');
+        }
+        if (empty($lastmodified)) {
+            $lastmodified = date('Y-m-d H:i:s');
+        }
+
+        $item = parent::createNewItem();
+        $item->set('name', $name);
+        $item->set('errsite_cat', $errsite_cat);
+        $item->set('errsite_art', $errsite_art);
+        $item->set('author', $author);
+        $item->set('created', $created);
+        $item->set('lastmodified', $lastmodified);
+        $item->store();
+        return ($item);
+    }
+
+    /**
      * Returns all clients available in the system
      *
      * @return  array   Array with id and name entries
@@ -293,6 +328,27 @@ class cApiClient extends Item {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Userdefined setter for client fields.
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'errsite_cat':
+            case 'errsite_art':
+                $value = (int) $value;
+                break;
+        }
+
+        if (is_string($value)) {
+            $value = $this->escape($value);
+        }
+
+        parent::setField($name, $value, $bSafe);
     }
 
     /**
