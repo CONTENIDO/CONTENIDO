@@ -54,16 +54,61 @@ class cApiModuleCollection extends ItemCollection {
 
     /**
      * Creates a new module item
+     *
+     * @global  int  $client
+     * @global  object  $auth
+     * @param  string  $name
+     * @param  int  $idclient
+     * @param  string  $alias
+     * @param  string  $type
+     * @param  string  $error
+     * @param  string  $description
+     * @param  int  $deletable
+     * @param  string  $template
+     * @param  int  $static
+     * @param  string  $package_guid
+     * @param  string  $package_data
+     * @param  string  $author
+     * @param  string  $created
+     * @param  string  $lastmodified
+     * @return cApiModule
      */
-    public function create($name) {
-        global $auth, $client;
+    public function create($name, $idclient = 0, $alias = '', $type = '', $error = 'none',
+            $description = '', $deletable = 0, $template = '', $static = 0,
+            $package_guid = '', $package_data = '', $author = '', $created = '', $lastmodified = '') {
+        global $client, $auth;
+
+        if (null === $idclient) {
+            $idclient = $client;
+        }
+
+        if (empty($author)) {
+            $author = $auth->auth['uname'];
+        }
+        if (empty($created)) {
+            $created = date('Y-m-d H:i:s');
+        }
+        if (empty($lastmodified)) {
+            $lastmodified = date('Y-m-d H:i:s');
+        }
+
 
         $item = parent::createNewItem();
 
-        $item->set('idclient', $client);
+        $item->set('idclient', $idclient);
         $item->set('name', $name);
-        $item->set('author', $auth->auth['uid']);
-        $item->set('created', date('Y-m-d H:i:s'), false);
+        $item->set('alias', $alias);
+        $item->set('type', $type);
+        $item->set('error', $error);
+        $item->set('description', $description);
+        $item->set('deletable', $deletable);
+        $item->set('template', $template);
+        $item->set('static', $static);
+        $item->set('package_guid', $package_guid);
+        $item->set('package_data', $package_data);
+        $item->set('author', $author);
+        $item->set('created', $created);
+        $item->set('lastmodified', $lastmodified);
         $item->store();
 
         return $item;
@@ -318,7 +363,7 @@ class cApiModule extends Item {
 
     /**
      * Checks if the module is in use
-     * @return bool    Specifies if the module is in use
+     * @return bool  Specifies if the module is in use
      */
     public function moduleInUse($module, $bSetData = false) {
         global $cfg;
@@ -364,7 +409,7 @@ class cApiModule extends Item {
 
     /**
      * Checks if the module is a pre-4.3 module
-     * @return boolean true if this module is an old one
+     * @return bool  true if this module is an old one
      */
     public function isOldModule() {
         // Keywords to scan
@@ -396,8 +441,6 @@ class cApiModule extends Item {
     }
 
     public function store($bJustStore = false) {
-        global $cfg;
-
         if ($bJustStore) {
             // Just store changes, e.g. if specifying the mod package
             $success = parent::store();
@@ -414,9 +457,8 @@ class cApiModule extends Item {
     /**
      * Parse import xml file and returns its values.
      *
-     * @param    string    $sFile    Filename including path of import xml file
-     *
-     * @return    array    Array with module data from XML file
+     * @param    string   $sFile   Filename including path of import xml file
+     * @return   array   Array with module data from XML file
      */
     private function _parseImportFile($sFile) {
         $oXmlReader = new cXmlReader();
@@ -436,10 +478,9 @@ class cApiModule extends Item {
     }
 
     /**
-     *
      * Save the modul properties (description,type...)
      *
-     * @param string $sFile weher is the modul info.xml file
+     * @param string $sFile  Where is the modul info.xml file
      */
     private function _getModuleProperties($sFile) {
         $ret = array();
@@ -458,11 +499,9 @@ class cApiModule extends Item {
     }
 
     /**
-     * import
-     * Imports the a module from a XML file
-     * Uses xmlparser and callbacks
+     * Imports the a module from a XML file, uses xmlparser and callbacks
      *
-     * @param string    $file     Filename of data file (full path)
+     * @param  string  $file  Filename of data file (full path)
      */
     function import($sFile, $tempName) {
         global $cfgClient, $db, $client, $cfg, $encoding, $lang;
@@ -473,7 +512,7 @@ class cApiModule extends Item {
         // @TODO: fetch file extension correctly
         $modulName = substr($sFile, 0, -4);
 
-        $sModulePath = $cfgClient[$client]['module_path'] . $modulName;
+        $sModulePath = $cfgClient[$client]['module']['path'] . $modulName;
 
         // exist the modul in directory
         if (is_dir($sModulePath)) {
@@ -510,11 +549,9 @@ class cApiModule extends Item {
     }
 
     /**
-     * importModuleFromXML
-     * Imports the a module from a XML file
-     * Uses xmlparser and callbacks
+     * Imports the a module from a XML file, uses xmlparser and callbacks
      *
-     * @param string    $file     Filename of data file (full path)
+     * @param  string  $file  Filename of data file (full path)
      */
     function importModuleFromXML($sFile) {
         global $db, $cfgClient, $client, $cfg, $encoding, $lang;
@@ -540,7 +577,7 @@ class cApiModule extends Item {
                 $this->set('alias', $moduleAlias);
             }
 
-            if (is_dir($cfgClient[$client]['module_path'] . $moduleAlias)) {
+            if (is_dir($cfgClient[$client]['module']['path'] . $moduleAlias)) {
                 $notification->displayNotification('error', i18n('Module exist!'));
                 return false;
             } else {
@@ -564,7 +601,6 @@ class cApiModule extends Item {
     }
 
     /**
-     *
      * Add recrusive folder to zip archive
      * @param string $dir direcotry name
      * @param string $zipArchive name of the archive
@@ -599,9 +635,7 @@ class cApiModule extends Item {
     }
 
     /**
-     * export
      * Exports the specified module  to a zip file
-     *
      */
     function export() {
         $notification = new cGuiNotification();
@@ -631,24 +665,42 @@ class cApiModule extends Item {
     }
 
     /**
-     * @deprecated 2012-02-29 This function is not longer supported.
+     * Userdefined setter for module fields.
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
      */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'deletable':
+            case 'static':
+                $value = ($value == 1) ? 1 : 0;
+                break;
+            case 'idclient':
+                $value = (int) $value;
+                break;
+        }
+
+        if (is_string($value)) {
+            $value = $this->escape($value);
+        }
+
+        parent::setField($name, $value, $bSafe);
+    }
+
+    /**  @deprecated  [2012-02-29]  This function is not longer supported. */
     public function getPackageOverview($sFile) {
         cDeprecated('This function is not longer supported.');
         return false;
     }
 
-    /**
-     * @deprecated 2012-02-29 This function is not longer supported.
-     */
+    /** @deprecated  [2012-02-29]  This function is not longer supported. */
     public function importPackage($sFile, $aOptions = array()) {
         cDeprecated('This function is not longer supported.');
         return false;
     }
 
-    /**
-     * @deprecated 2012-02-29 This function is not longer supported.
-     */
+    /** @deprecated  [2012-02-29]  This function is not longer supported. */
     public function exportPackage($sPackageFileName, $bReturn = false) {
         cDeprecated('This function is not longer supported.');
         return false;
