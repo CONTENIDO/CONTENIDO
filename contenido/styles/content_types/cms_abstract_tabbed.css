@@ -55,6 +55,10 @@
     width: 198px;
 }
 
+.cms_abstract input.file {
+    width: 300px;
+}
+
 .cms_abstract input[type="checkbox"] {
     width: 20px;
 }
