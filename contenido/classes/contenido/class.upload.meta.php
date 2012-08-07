@@ -39,30 +39,47 @@ class cApiUploadMetaCollection extends ItemCollection {
     /**
      * Creates a upload meta entry.
      * @global object $auth
-     * @param int $iIdupl
-     * @param int $iIdlang
-     * @param string $sMedianame
-     * @param string $sDescription
-     * @param string $sKeywords
-     * @param string $sInternalNotice
-     * @param string $sCopyright
-     * @return cApiUpload
+     * @param  int  $idupl
+     * @param  int  $idlang
+     * @param  string  $medianame
+     * @param  string  $description
+     * @param  string  $keywords
+     * @param  string  $internal_notice
+     * @param  string  $copyright
+     * @param  string  $author
+     * @param  string  $created
+     * @param  string  $modified
+     * @param  string  $modifiedby
+     * @return cApiUploadMeta
      */
-    public function create($iIdupl, $iIdlang, $sMedianame = '', $sDescription = '', $sKeywords = '', $sInternalNotice = '', $sCopyright = '') {
+    public function create($idupl, $idlang, $medianame = '', $description = '',
+            $keywords = '', $internal_notice = '', $copyright = '', $author = '', $created = '', $modified = '', $modifiedby = '') {
         global $auth;
+
+        if (empty($author)) {
+            $author = $auth->auth['uname'];
+        }
+        if (empty($created)) {
+            $created = date('Y-m-d H:i:s');
+        }
+        if (empty($modified)) {
+            $modified = date('Y-m-d H:i:s');
+        }
+
 
         $oItem = parent::createNewItem();
 
-        $oItem->set('idupl', $iIdupl);
-        $oItem->set('idlang', $iIdlang);
-        $oItem->set('medianame', $sMedianame, false);
-        $oItem->set('description', $sDescription, false);
-        $oItem->set('keywords', $sKeywords, false);
-        $oItem->set('internal_notice', $sInternalNotice, false);
-        $oItem->set('author', $auth->auth['uid']);
-        $oItem->set('created', date('Y-m-d H:i:s'), false);
-        $oItem->set('modified', date('Y-m-d H:i:s'), false);
-        $oItem->set('copyright', $sCopyright, false);
+        $oItem->set('idupl', $idupl);
+        $oItem->set('idlang', $idlang);
+        $oItem->set('medianame', $medianame);
+        $oItem->set('description', $description);
+        $oItem->set('keywords', $keywords);
+        $oItem->set('internal_notice', $internal_notice);
+        $oItem->set('author', $author);
+        $oItem->set('created', $created);
+        $oItem->set('modified', $modified);
+        $oItem->set('modifiedby', $modifiedby);
+        $oItem->set('copyright', $copyright);
         $oItem->store();
 
         return $oItem;
@@ -88,6 +105,46 @@ class cApiUploadMeta extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
+    }
+
+    /**
+     * Loads an upload meta entry by upload id and language id
+     * @param  int  $idupl
+     * @param  int  $idlang
+     * @return bool
+     */
+    public function loadByUploadIdAndLanguageId($idupl, $idlang) {
+        $aProps = array('idupl' => $idupl, 'idlang' => $idlang);
+        $aRecordSet = $this->_oCache->getItemByProperties($aProps);
+        if ($aRecordSet) {
+            // entry in cache found, load entry from cache
+            $this->loadByRecordSet($aRecordSet);
+            return true;
+        } else {
+            $where = $this->db->prepare('idupl = %d AND idlang = %d', $idupl, $idlang);
+            return $this->_loadByWhereClause($where);
+        }
+    }
+
+    /**
+     * Userdefined setter for upload meta fields.
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idupl':
+            case 'idlang':
+                $value = (int) $value;
+                break;
+        }
+
+        if (is_string($value)) {
+            $value = $this->escape($value);
+        }
+
+        parent::setField($name, $value, $bSafe);
     }
 
 }
