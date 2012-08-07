@@ -66,7 +66,7 @@ class cApiLayoutCollection extends ItemCollection {
         if (null === $idclient) {
             $idclient = $client;
         }
-        $deletable = ($deletable == 1) ? 1 : 0;
+
         if (empty($author)) {
             $author = $auth->auth['uname'];
         }
@@ -78,14 +78,14 @@ class cApiLayoutCollection extends ItemCollection {
         }
 
         $item = parent::createNewItem();
-        $item->set('idclient', (int) $idclient);
-        $item->set('name', $this->escape($name));
-        $item->set('alias', $this->escape($alias));
-        $item->set('description', $this->escape($description));
+        $item->set('idclient', $idclient);
+        $item->set('name', $name);
+        $item->set('alias', $alias);
+        $item->set('description', $description);
         $item->set('deletable', $deletable);
-        $item->set('author', $this->escape($author));
-        $item->set('created', $this->escape($created));
-        $item->set('lastmodified', $this->escape($lastmodified));
+        $item->set('author', $author);
+        $item->set('created', $created);
+        $item->set('lastmodified', $lastmodified);
         $item->store();
         return ($item);
     }
@@ -160,6 +160,29 @@ class cApiLayout extends Item {
      */
     public function getUsedTemplates() {
         return $this->_aUsedTemplates;
+    }
+
+    /**
+     * Userdefined setter for layout fields.
+     * @param  string  $name
+     * @param  mixed   $value
+     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'deletable':
+                $value = ($value == 1) ? 1 : 0;
+                break;
+            case 'idclient':
+                $value = (int) $value;
+                break;
+        }
+
+        if (is_string($value)) {
+            $value = $this->escape($value);
+        }
+
+        parent::setField($name, $value, $bSafe);
     }
 
 }
