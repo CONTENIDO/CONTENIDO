@@ -83,6 +83,23 @@ class cContentTypeDate extends cContentTypeAbstract {
             '{"dateFormat": "", "timeFormat": "h:i A"}' => $this->_formatDate('h:i A'),
             '{"dateFormat": "", "timeFormat": "h:i:s A"}' => $this->_formatDate('h:i:s A')
         );
+		
+		$this->_dateFormatMapping = array(
+            '{"dateFormat": "d.m.Y", "timeFormat": ""}' => 'd.m.Y',
+            '{"dateFormat": "D, d.m.Y", "timeFormat": ""}' => 'D, d.m.Y',
+            '{"dateFormat": "d. F Y", "timeFormat": ""}' => 'd. F Y',
+            '{"dateFormat": "Y-m-d", "timeFormat": ""}' => 'Y-m-d',
+            '{"dateFormat": "d/F/Y", "timeFormat": ""}' => 'd/F/Y',
+            '{"dateFormat": "d/m/y", "timeFormat": ""}' => 'd/m/y',
+            '{"dateFormat": "F y", "timeFormat": ""}' => 'F y',
+            '{"dateFormat": "F-y", "timeFormat": ""}' => 'F-y',
+            '{"dateFormat": "d.m.Y", "timeFormat": "H:i"}' => 'd.m.Y H:i',
+            '{"dateFormat": "m.d.Y", "timeFormat": "H:i:s"}' => 'm.d.Y H:i:s',
+            '{"dateFormat": "", "timeFormat": "H:i"}' => 'H:i',
+            '{"dateFormat": "", "timeFormat": "H:i:s"}' => 'H:i:s',
+            '{"dateFormat": "", "timeFormat": "h:i A"}' => 'h:i A',
+            '{"dateFormat": "", "timeFormat": "h:i:s A"}' => 'h:i:s A'
+        );
 
         // compute the JS date formats
         $this->_dateFormatsJs = array();
@@ -90,6 +107,14 @@ class cContentTypeDate extends cContentTypeAbstract {
             $newKey = $this->_convertPhpToJqueryUiDateTimeFormat($key);
             $newKey = addslashes($newKey);
             $this->_dateFormatsJs[$newKey] = $value;
+        }
+		
+		// compute the JS date formats
+        $this->_dateFormatsMapping = array();
+        foreach ($this->_dateFormatMapping as $key => $value) {
+            $newKey = $this->_convertPhpToJqueryUiDateTimeFormat($key);
+            $newKey = addslashes($newKey);
+            $this->_dateFormatsMapping[$newKey] = $value;
         }
 
         // if form is submitted, store the current date settings
@@ -212,7 +237,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      */
     public function generateViewCode() {
         $format = $this->_settings['date_format'];
-		//var_dump($this->_settings['date_format']);
+
         if (empty($format)) {
             $format = 'd.m.Y';
         }
@@ -221,7 +246,7 @@ class cContentTypeDate extends cContentTypeAbstract {
             return '';
         }
 
-        return $this->_formatDate($format, $this->_settings['date_timestamp']);
+        return $this->_formatDate($this->_dateFormatsMapping[addslashes($format)], $this->_settings['date_timestamp']);
     }
 
     /**
