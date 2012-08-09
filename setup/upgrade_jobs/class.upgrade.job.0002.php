@@ -79,6 +79,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
             $contenidoUpgradeJob->convertModulesToFile($this->_setupType);
 
             // Save layout from db-table to the file system
+            // @fixme  LayoutInFile uses global $client, we can't do this for all clients...
             $layoutInFile = new LayoutInFile(1, '', $cfg, 1, $this->_oDb);
             $layoutInFile->upgrade();
 
