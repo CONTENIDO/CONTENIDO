@@ -417,9 +417,17 @@ function scanDirectory($sDirectory, $bRecursive = false) {
  * @param  string  $sourcePath
  * @param  string  $destinationPath
  * @param  int     $mode  Octal representation of file mode (0644, 0750, etc.)
+ * @param  array  $options  Some additional options as follows
+ * <pre>
+ * $options['force_overwrite']  (bool)  Flag to overwrite existing destination file, default value is false
+ * </pre>
  */
-function recursiveCopy($sourcePath, $destinationPath, $mode = 0777) {
-    mkdir($destinationPath, $mode);
+function recursiveCopy($sourcePath, $destinationPath, $mode = 0777, array $options = array()) {
+    if (!is_dir($destinationPath)) {
+        mkdir($destinationPath, $mode);
+    }
+
+    $forceOverwrite = (isset($options['force_overwrite'])) ? (bool) $options['force_overwrite'] : false;
     $oldPath = getcwd();
 
     if (is_dir($sourcePath)) {
@@ -431,8 +439,14 @@ function recursiveCopy($sourcePath, $destinationPath, $mode = 0777) {
                 if (is_dir($file)) {
                     recursiveCopy($sourcePath . $file . '/', $destinationPath . $file . '/');
                     chdir($sourcePath);
-                } elseif (cFileHandler::exists($file)) {
-                    copy($sourcePath . $file, $destinationPath . $file);
+                } elseif (cFileHandler::exists($sourcePath. $file)) {
+                    if (cFileHandler::exists($destinationPath. $file)) {
+                        if ($forceOverwrite) {
+                            copy($sourcePath . $file, $destinationPath . $file);
+                        }
+                    } else {
+                        copy($sourcePath . $file, $destinationPath . $file);
+                    }
                 }
             }
         }
