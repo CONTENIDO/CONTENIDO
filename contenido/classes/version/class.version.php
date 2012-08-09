@@ -30,123 +30,123 @@ if (!defined('CON_FRAMEWORK')) {
 
 class cVersion {
 
-   /**
-    * Id of Type
-    * @access protected
-    */
+    /**
+     * Id of Type
+     * @var  string
+     */
     protected $sType;
 
-   /**
-    * md5 coded name of author
-    * @access protected
-    */
+    /**
+     * md5 coded name of author
+     * @var  string
+     */
     protected $sAuthor;
 
-   /**
-    * Time of created
-    * @access protected
-    */
+    /**
+     * Time of created
+     * @var  ???
+     */
     protected $dCreated;
 
-   /**
-    * Time of last modified
-    * @access protected
-    */
+    /**
+     * Time of last modified
+     * @var  ???
+     */
     protected $dLastModified;
 
-   /**
-    * Body data of xml file
-    * @access protected
-    */
+    /**
+     * Body data of xml file
+     * @var  string
+     */
     protected $aBodyData;
 
-   /**
-    * For init global variable
-    * @access protected
-    */
+    /**
+     * For init global variable
+     * @var  array
+     */
     protected $aCfg;
 
-   /**
-    * For init global variable $cfgClient
-    * @access protected
-    */
+    /**
+     * For init global variable $cfgClient
+     * @var  array
+     */
     protected $aCfgClient;
 
-   /**
-    * Database object
-    * @access protected
-    */
+    /**
+     * Database object
+     * @var  DB_Contenido
+     */
     protected $oDB;
 
-   /**
-    * For init global variable $client
-    * @access protected
-    */
+    /**
+     * For init global variable $client
+     * @var  int
+     */
     protected $iClient;
 
-   /**
-    * Revision files of current file
-    * @access public
-    */
+    /**
+     * Revision files of current file
+     * @var  array
+     */
     public $aRevisionFiles;
 
-   /**
-    * Number of Revision
-    * @access private
-    */
+    /**
+     * Number of Revision
+     * @var  int
+     */
     protected $iRevisionNumber;
 
-   /**
-    * Timestamp
-    * @access protected
-    */
+    /**
+     * Timestamp
+     * @var  ???
+     */
     protected $dTimestamp;
 
-   /**
-    * For init global variable $area
-    * @access protected
-    */
+    /**
+     * For init global variable $area
+     * @var  array
+     */
     protected $sArea;
 
-   /**
-    * For init global variable $frame
-    * @access protected
-    */
+    /**
+     * For init global variable $frame
+     * @var  int
+     */
     protected $iFrame;
 
-   /**
-    * For init variables
-    * @access protected
-    */
+    /**
+     * For init variables
+     * @var  array
+     */
     protected $aVarForm;
 
-   /**
-    * Identity the Id of Content Type
-    * @access protected
-    */
+    /**
+     * Identity the Id of Content Type
+     * @var  int
+     */
     protected $iIdentity;
 
-   /**
-    * To take control versioning is switched off
-    * @access private
-    */
+    /**
+     * To take control versioning is switched off
+     * @var  bool
+     */
     private $bVersioningActive;
 
-   /**
-    * Timestamp
-    * @access protected
-    */
+    /**
+     * Timestamp
+     * @var  ???
+     */
     protected $dActualTimestamp;
 
     /**
      * Alternative Path for save version files
-     * @access protected
+     * @var  string
      */
     protected $sAlternativePath;
 
     /**
      * Displays Notification only onetimes per object
-     *
+     * @var  int
      */
     public static $iDisplayNotification;
 
@@ -159,7 +159,6 @@ class cVersion {
      * @param integer $iClient
      * @param object $sArea
      * @param object $iFrame
-     *
      * @return void
      */
     public function __construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
@@ -196,16 +195,16 @@ class cVersion {
             $this->sAlternativePath = '';
         }
 
-        if ($this->bVersioningActive == false){
+        if ($this->bVersioningActive == false) {
             return;
         }
 
         if (is_dir($this->sAlternativePath) == false) {
             // Alternative Path is not true or is not exist, we use the frontendpath
-            if ($this->sAlternativePath != '' AND self::$iDisplayNotification < 2){
+            if ($this->sAlternativePath != '' AND self::$iDisplayNotification < 2) {
                 $oNotification = new cGuiNotification();
                 $sNotification = i18n('Alternative path %s does not exist. Version was saved in frondendpath.');
-                $oNotification->displayNotification('warning',  sprintf($sNotification, $this->sAlternativePath));
+                $oNotification->displayNotification('warning', sprintf($sNotification, $this->sAlternativePath));
             }
 
             $this->sAlternativePath = '';
@@ -245,15 +244,15 @@ class cVersion {
         $aPath = array('/', 'css/', 'js/', 'layout/', 'module/', 'templates/');
         $sFrontEndPath = '';
         if ($this->sAlternativePath == '') {
-            $sFrontEndPath = $this->aCfgClient[$this->iClient]['version_path'];
+            $sFrontEndPath = $this->aCfgClient[$this->iClient]['version']['path'];
         } else {
             $sFrontEndPath = $this->sAlternativePath . '/' . $this->iClient . '/';
         }
 
         foreach ($aPath as $sSubPath) {
-            if (!is_dir($sFrontEndPath.$sSubPath)) {
-                mkdir($sFrontEndPath.$sSubPath, 0777);
-                chmod($sFrontEndPath.$sSubPath, 0777);
+            if (!is_dir($sFrontEndPath . $sSubPath)) {
+                mkdir($sFrontEndPath . $sSubPath, 0777);
+                chmod($sFrontEndPath . $sSubPath, 0777);
             }
         }
     }
@@ -274,8 +273,7 @@ class cVersion {
      * This function creats an xml file. XML Writer helps for create this file.
      *
      * @param string $sFileName name of xml file to create
-     *
-     * @return boolean true if saving file was successful, otherwise false
+     * @return bool true if saving file was successful, otherwise false
      */
     public function createNewXml($sDirectory, $sFileName) {
         $oWriter = new cXmlWriter();
@@ -371,9 +369,9 @@ class cVersion {
         if (is_dir($sDir) AND $sFirstFile == '') {
             if ($dh = opendir($sDir)) {
                 while (($sFile = readdir($dh)) !== false) {
-                    if ($sFile != '.'  && $sFile != '..') {
+                    if ($sFile != '.' && $sFile != '..') {
                         // Delete the files
-                        $bDelete = unlink($sDir.$sFile);
+                        $bDelete = unlink($sDir . $sFile);
                     }
                 }
 //                  if the files be cleared, the delete the folder
@@ -382,7 +380,7 @@ class cVersion {
         } else if ($sFirstFile != '') {
             $bDelete = unlink($sDir . $sFirstFile);
         }
-        if ($bDelete){
+        if ($bDelete) {
             return true;
         } else {
             return false;
@@ -396,11 +394,11 @@ class cVersion {
      */
     public function getFilePath() {
         if ($this->sAlternativePath == '') {
-            $sFrontEndPath = $this->aCfgClient[$this->iClient]['version_path'];
+            $sFrontEndPath = $this->aCfgClient[$this->iClient]['version']['path'];
         } else {
             $sFrontEndPath = $this->sAlternativePath . '/' . $this->iClient . '/';
         }
-        return $sFrontEndPath . $this->sType.'/'. $this->iIdentity. '/';
+        return $sFrontEndPath . $this->sType . '/' . $this->iIdentity . '/';
     }
 
     /**
@@ -418,7 +416,7 @@ class cVersion {
      * @return integer returns number of Revison File
      */
     private function getRevision() {
-        $this->iVersion = ($this->iRevisionNumber +1 ).'_'.$this->dActualTimestamp;
+        $this->iVersion = ($this->iRevisionNumber + 1 ) . '_' . $this->dActualTimestamp;
         return $this->iVersion;
     }
 
@@ -483,7 +481,6 @@ class cVersion {
      * @param string  $sAddHeader The Header Label of SelectBox Widget
      * @param string  $sLabelOfSelectBox  The Label of SelectBox Widget
      * @param string  $sIdOfSelectBox  Id of Select Box
-     *
      * return string  if is exists Revision, then returns HTML Code of full SelectBox else returns empty string
      */
     public function buildSelectBox($sTableForm, $sAddHeader, $sLabelOfSelectBox, $sIdOfSelectBox) {
@@ -497,12 +494,12 @@ class cVersion {
             }
             $aMessage = $this->getMessages();
             $oForm->addHeader(i18n($sAddHeader));
-            $oForm->add(i18n($sLabelOfSelectBox),  $this->getSelectBox($this->getFormatTimestamp(), $sIdOfSelectBox));
+            $oForm->add(i18n($sLabelOfSelectBox), $this->getSelectBox($this->getFormatTimestamp(), $sIdOfSelectBox));
             $oForm->setActionButton('clearhistory', 'images/but_delete.gif', $aMessage['alt'], 'c', 'history_truncate');
             $oForm->setConfirm('clearhistory', $aMessage['alt'], $aMessage['popup']);
             $oForm->setActionButton('submit', 'images/but_refresh.gif', i18n('Refresh'), 's');
 
-            return "<div style='width: 1%'>".$oForm ->render().'</div><div style="margin-top:20px;"></div>';
+            return "<div style='width: 1%'>" . $oForm->render() . '</div><div style="margin-top:20px;"></div>';
         } else {
             return '';
         }
@@ -517,29 +514,28 @@ class cVersion {
         switch ($this->sType) {
             case 'layout':
                 $aMessage['alt'] = i18n('Clear layout history');
-                $aMessage['popup'] = i18n('Do you really want to clear layout history?').'<br><br>'.i18n('Note: This only affects the current layout.');
-            break;
+                $aMessage['popup'] = i18n('Do you really want to clear layout history?') . '<br><br>' . i18n('Note: This only affects the current layout.');
+                break;
             case 'module':
                 $aMessage['alt'] = i18n('Clear module history');
-                $aMessage['popup'] = i18n('Do you really want to clear module history?').'<br><br>'.i18n('Note: This only affects the current module.');
-            break;
+                $aMessage['popup'] = i18n('Do you really want to clear module history?') . '<br><br>' . i18n('Note: This only affects the current module.');
+                break;
             case 'css':
                 $aMessage['alt'] = i18n('Clear style history');
-                $aMessage['popup'] = i18n('Do you really want to clear style history?').'<br><br>'.i18n('Note: This only affects the current style.');
-            break;
+                $aMessage['popup'] = i18n('Do you really want to clear style history?') . '<br><br>' . i18n('Note: This only affects the current style.');
+                break;
             case 'js':
                 $aMessage['alt'] = i18n('Clear Java-Script history');
-                $aMessage['popup'] = i18n('Do you really want to clear Java-Script history?').'<br><br>'.i18n('Note: This only affects the current Java-Script.');
-            break;
+                $aMessage['popup'] = i18n('Do you really want to clear Java-Script history?') . '<br><br>' . i18n('Note: This only affects the current Java-Script.');
+                break;
             case 'templates':
                 $aMessage['alt'] = i18n('Clear HTML-Template history');
-                $aMessage['popup'] = i18n('Do you really want to clear HTML-Template history?').'<br><br>'.i18n('Note: This only the affects current HTML-Template.');
-            break;
-              default:
-                  $aMessage['alt'] = i18n('Clear history');
-                $aMessage['popup'] = i18n('Do you really want to clear history?').'<br><br>'.i18n('Note: This only affects the current history.');
-              break;
-
+                $aMessage['popup'] = i18n('Do you really want to clear HTML-Template history?') . '<br><br>' . i18n('Note: This only the affects current HTML-Template.');
+                break;
+            default:
+                $aMessage['alt'] = i18n('Clear history');
+                $aMessage['popup'] = i18n('Do you really want to clear history?') . '<br><br>' . i18n('Note: This only affects the current history.');
+                break;
         }
         return $aMessage;
     }
@@ -549,7 +545,6 @@ class cVersion {
      *
      * @param string  $sTableForm The name of Table_Form class
      * @param string  $sAddHeader The Header Label of SelectBox Widget
-     *
      * return string  returns select-box with filled files
      */
     private function getSelectBox($aTempVesions, $sIdOfSelectBox) {
@@ -569,9 +564,8 @@ class cVersion {
      *
      * @param string $sName The name of Textarea.
      * @param string $sValue The value of Input Textarea
-     * @param integer $iWidth width of Textarea
-     * @param integer $iHeight height of Textarea
-     *
+     * @param int $iWidth width of Textarea
+     * @param int $iHeight height of Textarea
      * @return string HTML Code of Textarea
      */
     public function getTextarea($sName, $sInitValue, $iWidth, $iHeight, $sId = '') {
@@ -592,8 +586,7 @@ class cVersion {
      *
      * @param string $sName The name of Input Textfield.
      * @param string $sValue The value of Input Textfield
-     * @param integer $iWidth width of Input Textfield
-     *
+     * @param int $iWidth width of Input Textfield
      * @return string HTML Code of Input Textfield
      */
     public function getTextBox($sName, $sInitValue, $iWidth, $bDisabled = false) {
@@ -608,7 +601,6 @@ class cVersion {
      * Displays your notification
      *
      * @param string $sOutPut
-     *
      * @return void
      */
     public function displayNotification($sOutPut) {
@@ -621,7 +613,6 @@ class cVersion {
      * Set new node for xml file of description
      *
      * @param string $sDesc Content of node
-     *
      */
     public function setBodyNodeDescription($sDesc) {
         if ($sDesc != '') {

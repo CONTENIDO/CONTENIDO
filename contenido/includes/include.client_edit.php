@@ -32,10 +32,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 $properties = new cApiPropertyCollection();
 
-$db2 = cRegistry::getDb();
-
 if ($action == "client_new") {
-   // $nextid = $db->nextid($cfg["tab"]["clients"]);
+    // $nextid = $db->nextid($cfg["tab"]["clients"]);
     // $idclient = $nextid;
     $new = true;
 }
@@ -55,28 +53,23 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
     if ($new == true) {
         $sLangNotification = i18n('Notice: In order to use this client, you must create a new language for it.');
         $sTarget = $sess->url('frameset.php?area=lang');
-        $sJsLink = "parent.parent.location.href='".$sTarget."';
+        $sJsLink = "parent.parent.location.href='" . $sTarget . "';
                     top.header.markActive(top.header.document.getElementById('sub_lang'));";
-        $sLangNotificationLink = sprintf(i18n('Please click %shere%s to create a new language.'), '<a href="javascript://" onclick="'.$sJsLink.'">', '</a>');
-        $sNewNotification = '<br>'.$sLangNotification.'<br>'.$sLangNotificationLink;
-        if (substr($frontendpath, strlen($frontendpath)-1) != "/") {
+        $sLangNotificationLink = sprintf(i18n('Please click %shere%s to create a new language.'), '<a href="javascript://" onclick="' . $sJsLink . '">', '</a>');
+        $sNewNotification = '<br>' . $sLangNotification . '<br>' . $sLangNotificationLink;
+        if (substr($frontendpath, strlen($frontendpath) - 1) != "/") {
             $frontendpath .= "/";
         }
 
-        if (substr($htmlpath, strlen($htmlpath)-1) != "/") {
+        if (substr($htmlpath, strlen($htmlpath) - 1) != "/") {
             $htmlpath .= "/";
         }
 
-        $sql = "INSERT INTO
-            ".$cfg["tab"]["clients"]."
-            SET
-                name = '".cSecurity::escapeDB($clientname, $db)."',
-                errsite_cat = '".cSecurity::toInteger($errsite_cat)."',
-                errsite_art = '".cSecurity::toInteger($errsite_art)."'";
+        // Create new client entry in clients table
+        $oClientColl = new cApiClientCollection();
+        $oClient = $oClientColl->create($clientname, $errsite_cat, $errsite_art);
 
-        $db->query($sql);
-
-        $idclient = $db->getLastInsertedId($cfg["tab"]["clients"]);
+        $idclient = $oClient->get('idclient');
         $properties->setValue("idclient", $idclient, "backend", "clientimage", $clientlogo);
 
         // Copy the client template to the real location
@@ -86,17 +79,17 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
         if ($copytemplate) {
             if (!cFileHandler::exists($destPath)) {
                 recursiveCopy($sourcePath, $destPath);
-                $buffer = cFileHandler::read($destPath."config.php");
+                $buffer = cFileHandler::read($destPath . "config.php");
                 $outbuf = str_replace("!CLIENT!", $idclient, $buffer);
                 $outbuf = str_replace("!PATH!", $cfg["path"]["contenido"], $outbuf);
-                if(!cFileHandler::write($destPath."config.php.new", $outbuf)) {
-                      $notification->displayNotification("error",i18n("Couldn't write the file config.php."));
+                if (!cFileHandler::write($destPath . "config.php.new", $outbuf)) {
+                    $notification->displayNotification("error", i18n("Couldn't write the file config.php."));
                 }
 
-                cFileHandler::remove($destPath."config.php");
-                cFileHandler::rename($destPath."config.php.new", "config.php");
+                cFileHandler::remove($destPath . "config.php");
+                cFileHandler::rename($destPath . "config.php.new", "config.php");
             } else {
-                $message = sprintf(i18n("The directory %s already exists. The client was created, but you have to copy the frontend-template yourself"),$destPath);
+                $message = sprintf(i18n("The directory %s already exists. The client was created, but you have to copy the frontend-template yourself"), $destPath);
                 $notification->displayNotification("warning", $message);
             }
         }
@@ -104,26 +97,25 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
         rereadClients();
     } else {
         $pathwithoutslash = $frontendpath;
-        if (substr($frontendpath, strlen($frontendpath)-1) != "/") {
-           $frontendpath .= "/";
+        if (substr($frontendpath, strlen($frontendpath) - 1) != "/") {
+            $frontendpath .= "/";
         }
 
-        if (substr($htmlpath, strlen($htmlpath)-1) != "/") {
-           $htmlpath .= "/";
+        if (substr($htmlpath, strlen($htmlpath) - 1) != "/") {
+            $htmlpath .= "/";
         }
 
         if (($oldpath != $frontendpath) && ($oldpath != $pathwithoutslash)) {
             $notification->displayNotification("warning", i18n("You changed the client path. You might need to copy the frontend to the new location"));
         }
-        $sql = "UPDATE
-                ".$cfg["tab"]["clients"]."
-                SET
-                    name = '".cSecurity::escapeDB($clientname, $db)."',
-                    errsite_cat = '".cSecurity::toInteger($errsite_cat)."',
-                    errsite_art = '".cSecurity::toInteger($errsite_art)."'
-                WHERE
-                    idclient = '".cSecurity::toInteger($idclient)."'";
-        $db->query($sql);
+
+        $oClient = new cApiClient((int) $idclient);
+        if ($oClient->isLoaded()) {
+            $oClient->set('name', $clientname);
+            $oClient->set('errsite_cat', $errsite_cat);
+            $oClient->set('errsite_art', $errsite_art);
+            $oClient->store();
+        }
     }
 
     $new = false;
@@ -134,10 +126,10 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
     $properties->setValue("idclient", $idclient, "backend", "clientimage", $clientlogo);
 
     // Clear the code cache
-    $mask = $cfgClient[$idclient]['cache_path'] . $idclient."*.php";
+    $mask = $cfgClient[$idclient]['cache']['path'] . $idclient . "*.php";
     array_map("unlink", glob($mask));
 
-    $notification->displayNotification("info", i18n("Changes saved").$sNewNotification);
+    $notification->displayNotification("info", i18n("Changes saved") . $sNewNotification);
 
     $cApiClient = new cApiClient;
     $cApiClient->loadByPrimaryKey($idclient);
@@ -159,32 +151,21 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
 
 $tpl->reset();
 
-$sql = "SELECT
-            idclient, name, errsite_cat, errsite_art
-        FROM
-            ".$cfg["tab"]["clients"]."
-        WHERE
-            idclient = '".cSecurity::toInteger($idclient)."'";
-
-$db->query($sql);
-
-$db->next_record();
-
 $htmlpath = "";
 $serverpath = "";
-if(isset($idclient)) {
+if (isset($idclient)) {
     $htmlpath = $cfgClient[$idclient]['path']['htmlpath'];
     $serverpath = $cfgClient[$idclient]['path']['frontend'];
 }
 
-$form = '<form name="client_properties" method="post" action="'.$sess->url("main.php?").'">
-             '.$sess->hidden_session().'
-             <input type="hidden" name="area" value="'.$area.'">
+$form = '<form name="client_properties" method="post" action="' . $sess->url("main.php?") . '">
+             ' . $sess->hidden_session() . '
+             <input type="hidden" name="area" value="' . $area . '">
              <input type="hidden" name="action" value="client_edit">
-             <input type="hidden" name="frame" value="'.$frame.'">
-             <input type="hidden" name="new" value="'.$new.'">
-             <input type="hidden" name="oldpath" value="'.$serverpath.'">
-             <input type="hidden" name="idclient" value="'.$idclient.'">';
+             <input type="hidden" name="frame" value="' . $frame . '">
+             <input type="hidden" name="new" value="' . $new . '">
+             <input type="hidden" name="oldpath" value="' . $serverpath . '">
+             <input type="hidden" name="idclient" value="' . $idclient . '">';
 
 $tpl->set('s', 'JAVASCRIPT', $javascript);
 $tpl->set('s', 'FORM', $form);
@@ -202,7 +183,7 @@ $tpl->set('d', 'BRDRT', 1);
 $tpl->set('d', 'BRDRB', 0);
 
 $tpl->set('d', 'CATNAME', i18n("Client name"));
-$oTxtClient = new cHTMLTextbox("clientname", htmlspecialchars($db->f("name")), 50, 255);
+$oTxtClient = new cHTMLTextbox("clientname", htmlspecialchars($oClient->get("name")), 50, 255);
 $tpl->set('d', 'CATFIELD', $oTxtClient->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
@@ -231,20 +212,20 @@ $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Error page category"));
-$oTxtErrorCat = new cHTMLTextbox("errsite_cat", $db->f("errsite_cat"), 10, 10);
+$oTxtErrorCat = new cHTMLTextbox("errsite_cat", $oClient->get("errsite_cat"), 10, 10);
 $tpl->set('d', 'CATFIELD', $oTxtErrorCat->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Error page article"));
-$oTxtErrorArt = new cHTMLTextbox("errsite_art", $db->f("errsite_art"), 10, 10);
+$oTxtErrorArt = new cHTMLTextbox("errsite_art", $oClient->get("errsite_art"), 10, 10);
 $tpl->set('d', 'CATFIELD', $oTxtErrorArt->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
-$clientLogo = $properties->getValue ("idclient", $idclient, "backend", "clientimage");
+$clientLogo = $properties->getValue("idclient", $idclient, "backend", "clientimage");
 $tpl->set('d', 'CATNAME', i18n("Client logo"));
 $oTxtLogo = new cHTMLTextbox("clientlogo", $clientLogo, 50, 255);
 $tpl->set('d', 'CATFIELD', $oTxtLogo->render());

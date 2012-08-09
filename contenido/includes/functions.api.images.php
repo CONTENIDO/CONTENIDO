@@ -113,7 +113,7 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
     $filetype  = substr($filename, strlen($filename) -4, 4);
     $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
-    $cacheFile = $cfgClient[$client]['cache_path'] . $cfileName;
+    $cacheFile = $cfgClient[$client]['cache']['path'] . $cfileName;
     $webFile   = $cfgClient[$client]['path']['htmlpath'] . 'cache/' . $cfileName;
 
     if (cApiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
@@ -219,7 +219,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
     $filetype  = substr($filename, strlen($filename) -4, 4);
     $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
-    $cacheFile = $cfgClient[$client]['cache_path'] . $cfileName;
+    $cacheFile = $cfgClient[$client]['cache']['path'] . $cfileName;
     $webFile   = $cfgClient[$client]['path']['htmlpath'] . 'cache/' . $cfileName;
 
     if (cApiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
@@ -333,7 +333,7 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
     $filetype  = substr($filename, strlen($filename) -4, 4);
     $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
-    $cacheFile = $cfgClient[$client]['cache_path'] . $cfileName;
+    $cacheFile = $cfgClient[$client]['cache']['path'] . $cfileName;
     $webFile   = $cfgClient[$client]['path']['htmlpath'] . 'cache/' . $cfileName;
 
     if (cApiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
@@ -445,9 +445,9 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false,
 
         $file = basename($sRelativeImg);
 
-        $dbfs->writeToFile($sRelativeImg, $cfgClient[$client]['cache_path'] . $file);
+        $dbfs->writeToFile($sRelativeImg, $cfgClient[$client]['cache']['path'] . $file);
 
-        $img = $cfgClient[$client]['cache_path'] . $file;
+        $img = $cfgClient[$client]['cache']['path'] . $file;
         $deleteAfter = true;
     } else if (!cFileHandler::exists($img)) {
         // Try with upload string

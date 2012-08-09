@@ -487,16 +487,18 @@ function rereadClients() {
         $cfgClient[$iClient]['js']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'js/';
         $cfgClient[$iClient]['tpl']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'templates/';
 
+        $cfgClient[$iClient]['cache']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'cache/';
+        $cfgClient[$iClient]['cache']['frontendpath'] = 'cache/';
+
 // @todo define a common data path
-        $cfgClient[$iClient]['cache_path'] = $cfgClient[$iClient]['path']['frontend'] . 'cache/';
-        $cfgClient[$iClient]['data_path'] = $cfgClient[$iClient]['path']['frontend'];
-        $cfgClient[$iClient]['code_path'] = $cfgClient[$iClient]['data_path'] . 'cache/code/';
-#        $cfgClient[$iClient]['config_path'] = $cfgClient[$iClient]['data_path'] . 'config/';
-        $cfgClient[$iClient]['layout_path'] = $cfgClient[$iClient]['data_path'] . 'layouts/';
-        $cfgClient[$iClient]['log_path'] = $cfgClient[$iClient]['data_path'] . 'logs/';
-        $cfgClient[$iClient]['module_path'] = $cfgClient[$iClient]['data_path'] . 'modules/';
-        $cfgClient[$iClient]['template_path'] = $cfgClient[$iClient]['data_path'] . 'templates/';
-        $cfgClient[$iClient]['version_path'] = $cfgClient[$iClient]['data_path'] . 'version/';
+        $cfgClient[$iClient]['data']['path'] = $cfgClient[$iClient]['path']['frontend'];
+        $cfgClient[$iClient]['code']['path'] = $cfgClient[$iClient]['data']['path'] . 'cache/code/';
+#        $cfgClient[$iClient]['config']['path'] = $cfgClient[$iClient]['data']['path'] . 'configs/';
+        $cfgClient[$iClient]['layout']['path'] = $cfgClient[$iClient]['data']['path'] . 'layouts/';
+        $cfgClient[$iClient]['log']['path'] = $cfgClient[$iClient]['data']['path'] . 'logs/';
+        $cfgClient[$iClient]['module']['path'] = $cfgClient[$iClient]['data']['path'] . 'modules/';
+        $cfgClient[$iClient]['template']['path'] = $cfgClient[$iClient]['data']['path'] . 'templates/';
+        $cfgClient[$iClient]['version']['path'] = $cfgClient[$iClient]['data']['path'] . 'version/';
     }
 }
 

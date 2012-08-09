@@ -130,7 +130,7 @@ class cModuleSynchronizer extends cModuleHandler {
         $retIdMod = 0;
 
         while ($db->next_record()) {
-            $modulePath = $cfgClient[$db->f('idclient')]['module_path'] . $db->f('alias') . '/' . $this->_directories['php'] . $db->f('alias');
+            $modulePath = $cfgClient[$db->f('idclient')]['module']['path'] . $db->f('alias') . '/' . $this->_directories['php'] . $db->f('alias');
 
             $lastmodified = $db->f('lastmodified');
 
@@ -229,7 +229,7 @@ class cModuleSynchronizer extends cModuleHandler {
         global $cfg, $cfgClient;
 
         // get the path to the modul dir from the client
-        $dir = $cfgClient[$this->_client]['module_path'];
+        $dir = $cfgClient[$this->_client]['module']['path'];
 
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
@@ -321,17 +321,17 @@ class cModuleSynchronizer extends cModuleHandler {
     /**
      * This method add a new Modul in the table $cfg['tab']['mod'].
      *
-     * @param string $name neme of the new modul
-     * @param int $idclient mandant of the modul
+     * @param string $name neme of the new module
+     * @param int $idclient mandant of the module
      */
     private function _addModul($name, $idclient) {
         // insert new modul in con_mod
-        $db = cRegistry::getDb();
-        $sql = sprintf(" INSERT INTO %s (name,alias,idclient) VALUES('%s','%s',%s) ", $this->_cfg['tab']['mod'], $name, $name, $idclient);
-        $db->query($sql);
-
-        // save the last id from modul
-        $this->_lastIdMod = $db->getLastInsertedId($this->_cfg['tab']['mod']);
+        $oModColl = new cApiModuleCollection();
+        $oMod = $oModColl->create($name, $idclient, $name);
+        if (is_object($oMod)) {
+            // save the last id from modul
+            $this->_lastIdMod = $oMod->get('idmod');
+        }
     }
 
     /**
@@ -341,9 +341,11 @@ class cModuleSynchronizer extends cModuleHandler {
      * @param int $idmod id of modul
      */
     public function setLastModified($timestamp, $idmod) {
-        $sql = sprintf("UPDATE %s SET lastmodified ='%s' WHERE idmod=%s ", $this->_cfg['tab']['mod'], date('Y-m-d H:i:s', $timestamp), $idmod);
-        $myDb = cRegistry::getDb();
-        $myDb->query($sql);
+        $oMod = new cApiModule((int) $idmod);
+        if ($oMod->isLoaded()) {
+            $oMod->set('lastmodified', date('Y-m-d H:i:s', $timestamp));
+            $oMod->store();
+        }
     }
 
 }

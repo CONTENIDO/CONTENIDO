@@ -102,7 +102,7 @@ class UploadList extends FrontendList {
                 case "wbmp" :
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
                     $sCacheName = substr($sCacheThumbnail, strrpos($sCacheThumbnail, "/") + 1, strlen($sCacheThumbnail) - (strrchr($sCacheThumbnail, '/') + 1));
-                    $sFullPath = $cfgClient[$client]['cache_path'] . $sCacheName;
+                    $sFullPath = $cfgClient[$client]['cache']['path'] . $sCacheName;
                     if (cFileHandler::exists($sFullPath)) {
                         $aDimensions = getimagesize($sFullPath);
                         $iWidth = $aDimensions[0];
@@ -114,7 +114,7 @@ class UploadList extends FrontendList {
 
                     if (cApiDbfs::isDbfs($data)) {
                         $retValue =
-                            '<a href="JavaScript:iZoom(\'' . $sess->url($cfgClient[$client]["path"]["htmlpath"] . "dbfs.php?file=" . $data) . '\');">
+                                '<a href="JavaScript:iZoom(\'' . $sess->url($cfgClient[$client]["path"]["htmlpath"] . "dbfs.php?file=" . $data) . '\');">
                                 <img class="hover" name="smallImage" src="' . $sCacheThumbnail . '">
                                 <img class="preview" name="prevImage" src="' . $sCacheThumbnail . '">
                             </a>';

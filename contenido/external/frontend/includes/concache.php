@@ -84,7 +84,7 @@ $cfgConCache['lifetime'] = 3600;
  * directory where cached content is 2 store.
  * @var string  $cfgConCache['cachedir']
  */
-$cfgConCache['cachedir'] = $cfgClient[$client]['cache_path'];
+$cfgConCache['cachedir'] = $cfgClient[$client]['cache']['path'];
 
 /**
  * cache group, will be a subdirectory inside cachedir

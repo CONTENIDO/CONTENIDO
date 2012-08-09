@@ -578,7 +578,7 @@ function conDeleteart($idart) {
     $oCatArtColl->select('idart = ' . (int) $idart);
     while ($oCatArtItem = $oCatArtColl->next()) {
         // Delete from code cache
-        $mask = $cfgClient[$client]['code_path'] . '*.' . $oCatArtItem->get('idcatart') . '.php';
+        $mask = $cfgClient[$client]['code']['path'] . '*.' . $oCatArtItem->get('idcatart') . '.php';
         array_map('unlink', glob($mask));
 
         // Delete from 'stat'-table
@@ -760,7 +760,7 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
     }
 
     $locationStringCache = cRegistry::getAppVar('locationStringCache');
-    $locationStringCacheFile = $cfgClient[$client]['cache_path'] . "locationstring-cache-$uselang.txt";
+    $locationStringCacheFile = $cfgClient[$client]['cache']['path'] . "locationstring-cache-$uselang.txt";
 
     if ($final == true && $usecache == true) {
         if (!is_array($locationStringCache)) {
@@ -824,7 +824,7 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
         $locationStringCache[$idcat]['name'] = $catStr;
         $locationStringCache[$idcat]['expires'] = time() + 3600;
 
-        if (is_writable($cfgClient[$client]['cache_path'])) {
+        if (is_writable($cfgClient[$client]['cache']['path'])) {
             cFileHandler::write($locationStringCacheFile, serialize($locationStringCache));
         }
         cRegistry::setAppVar('locationStringCache', $locationStringCache);
@@ -1023,7 +1023,7 @@ function conSetCodeFlag($idcatart) {
     $oCatArtColl->setCreateCodeFlag($idcatart);
 
     // Delete also generated code files from file system
-    $arr = glob($cfgClient[$client]['code_path'] . '*.*.' . $idcatart . '.php');
+    $arr = glob($cfgClient[$client]['code']['path'] . '*.*.' . $idcatart . '.php');
     foreach ($arr as $file) {
         cFileHandler::remove($file);
     }
@@ -1047,7 +1047,7 @@ function conSetCodeFlagBulkEditing(array $idcatarts) {
 
     // Delete also generated code files from file system
     foreach ($idcatarts as $pos => $id) {
-        $arr = glob($cfgClient[$client]['code_path'] . '*.*.' . $id . '.php');
+        $arr = glob($cfgClient[$client]['code']['path'] . '*.*.' . $id . '.php');
         foreach ($arr as $file) {
             cFileHandler::remove($file);
         }
@@ -1498,7 +1498,7 @@ function conRemoveOldCategoryArticle($idcat, $idart, $idartlang, $client, $lang)
 
     // Delete frome code cache and delete corresponding code
     // @todo: It's better to move this logic to a model class
-    $mask = $cfgClient[$client]['code_path'] . '*.' . $idcatart . '.php';
+    $mask = $cfgClient[$client]['code']['path'] . '*.' . $idcatart . '.php';
     array_map('unlink', glob($mask));
 
     // Delete statistics

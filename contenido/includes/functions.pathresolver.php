@@ -361,7 +361,7 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
 function prWriteCacheFileContent($data, $client, $lang) {
     global $cfgClient;
 
-    $path = $cfgClient[$client]['cache_path'];
+    $path = $cfgClient[$client]['cache']['path'];
     $filename = "locationstring-url-cache-$lang.txt";
 
     $res = false;
@@ -382,7 +382,7 @@ function prWriteCacheFileContent($data, $client, $lang) {
 function prGetCacheFileContent($client, $lang) {
     global $cfgClient;
 
-    $path = $cfgClient[$client]['cache_path'];
+    $path = $cfgClient[$client]['cache']['path'];
     $filename = "locationstring-url-cache-$lang.txt";
 
     if (cFileHandler::exists($path . $filename)) {
@@ -404,7 +404,7 @@ function prGetCacheFileContent($client, $lang) {
 function prDeleteCacheFileContent($client, $lang) {
     global $cfgClient;
 
-    $path = $cfgClient[$client]['cache_path'];
+    $path = $cfgClient[$client]['cache']['path'];
     $filename = "locationstring-url-cache-$lang.txt";
 
     $res = false;

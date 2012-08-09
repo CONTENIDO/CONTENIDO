@@ -316,13 +316,13 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         // Write code in the cache of the client. If the folder does not exist create one.
         if ($this->_layout == false && $this->_save == true) {
-            if (!is_dir($cfgClient[$this->_client]['code_path'])) {
-                mkdir($cfgClient[$this->_client]['code_path']);
-                chmod($cfgClient[$this->_client]['code_path'], 0777);
-                cFileHandler::write($cfgClient[$this->_client]['code_path'] . '.htaccess', "Order Deny,Allow\nDeny from all\n");
+            if (!is_dir($cfgClient[$this->_client]['code']['path'])) {
+                mkdir($cfgClient[$this->_client]['code']['path']);
+                chmod($cfgClient[$this->_client]['code']['path'], 0777);
+                cFileHandler::write($cfgClient[$this->_client]['code']['path'] . '.htaccess', "Order Deny,Allow\nDeny from all\n");
             }
             $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $this->_layoutCode;
-            cFileHandler::write($cfgClient[$this->_client]['code_path'] . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
+            cFileHandler::write($cfgClient[$this->_client]['code']['path'] . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
 
             // Update create code flag
             $oCatArtColl = new cApiCategoryArticleCollection();

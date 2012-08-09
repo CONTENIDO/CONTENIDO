@@ -200,11 +200,11 @@ class cModuleHandler {
         }
     }
 
-    static public function setEncoding($encoding) {
+    public static function setEncoding($encoding) {
         self::$_overrideEncoding = $encoding;
     }
 
-    static public function getEncoding() {
+    public static function getEncoding() {
         global $lang;
 
         if (self::$_overrideEncoding != '') {
@@ -226,7 +226,7 @@ class cModuleHandler {
      * @param array $cfgClient
      */
     public function modulePathExistsInDirectory($name) {
-        return is_dir($this->_cfgClient[$this->_client]['module_path'] . $name . '/');
+        return is_dir($this->_cfgClient[$this->_client]['module']['path'] . $name . '/');
     }
 
     /**
@@ -258,7 +258,7 @@ class cModuleHandler {
      * @param string $name, mod name
      * @param string $defaultChar, default character
      */
-    static function getCleanName($name, $defaultChar = '_') {
+    public static function getCleanName($name, $defaultChar = '_') {
         // the first character of modul/Layut name should be [a-zA-Z0-9]|_|-
         $name = cApiStrCleanURLCharacters($name);
         // get the first charcte
@@ -298,7 +298,7 @@ class cModuleHandler {
         if ($cApiModule->virgin == false) {
             $this->_moduleAlias = $cApiModule->get('alias');
             $this->_moduleName = $cApiModule->get('name');
-            $this->_path = $frontendPath . $this->_cfgClient[$this->_client]['module_path'];
+            $this->_path = $frontendPath . $this->_cfgClient[$this->_client]['module']['path'];
             $this->_modulePath = $this->_path . $this->_moduleAlias . '/';
 
             $this->_idmod = $idmod;
@@ -521,7 +521,7 @@ class cModuleHandler {
                 if (is_dir($frontendPath) == false) {
                     cWarning(__FILE__, __LINE__, 'Frontendpath was not found: ' . $frontendPath);
                 } else {
-                    $sModulePath = $aClient['module_path'];
+                    $sModulePath = $aClient['module']['path'];
                     if (!is_dir($sModulePath)) {
                         // could not make the modul directory in client
                         if (mkdir($sModulePath) == false) {
@@ -546,7 +546,7 @@ class cModuleHandler {
             return true;
         }
 
-        $sMainModuleDirectory = $this->_cfgClient[$this->_client]['module_path'];
+        $sMainModuleDirectory = $this->_cfgClient[$this->_client]['module']['path'];
 
         // make
         if (!is_dir($sMainModuleDirectory)) {
@@ -616,7 +616,7 @@ class cModuleHandler {
      * @return string Contents of the Module file (_input.php)
      */
     public function readInput() {
-        if (cFileHandler::exists($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_input.php') == FALSE) {
+        if (cFileHandler::exists($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_input.php') == false) {
             return false;
         }
 
@@ -631,7 +631,7 @@ class cModuleHandler {
      * @return string Contents of the Module file( _output.php)
      */
     public function readOutput() {
-        if (cFileHandler::exists($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_output.php') == FALSE) {
+        if (cFileHandler::exists($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_output.php') == false) {
             return false;
         }
 
@@ -701,7 +701,7 @@ class cModuleHandler {
 
         $fileOperation = cFileHandler::write($fileName, $output);
 
-        if ($fileOperation === FALSE) {
+        if ($fileOperation === false) {
             return false; // return false if file_put_contents dont work
         } else {
             chmod($fileName, 0666);
@@ -731,7 +731,7 @@ class cModuleHandler {
 
         $fileOperation = cFileHandler::write($fileName, $input);
 
-        if ($fileOperation === FALSE) {
+        if ($fileOperation === false) {
             return false; // return false if file_put_contents dont work
         } else {
             chmod($fileName, 0666);
@@ -799,7 +799,7 @@ class cModuleHandler {
             return true;
         }
 
-        if (mkdir($this->_modulePath) == FALSE) {
+        if (mkdir($this->_modulePath) == false) {
             return false;
         } else {
             chmod($this->_modulePath, 0777);
@@ -843,7 +843,7 @@ class cModuleHandler {
      */
     public function renameModul($old, $new) {
         // try to rename the dir
-        if (rename($this->_path . $old, $this->_path . $new) == FALSE) {
+        if (rename($this->_path . $old, $this->_path . $new) == false) {
             return false;
         } else {
             $retInput = true;

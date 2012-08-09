@@ -31,19 +31,19 @@ class Contenido_SmartyWrapper {
 
     /**
      * The smarty Object
-     * @access private
+     * @var Smarty
      */
     protected static $oSmarty;
 
     /**
      * static flag to simulate singleton behaviour
-     * @access public static
+     * @var bool
      */
     public static $bSmartyInstanciated = false;
 
     /**
      * static default paths
-     * @access private static
+     * @var array
      */
     protected static $aDefaultPaths = array();
 
@@ -52,30 +52,30 @@ class Contenido_SmartyWrapper {
      * @param  array  &$aCfg        contenido cfg array
      * @param  array  &$aClientCfg  contenido client cfg array of the specific client
      */
-     public function __construct(&$aCfg, &$aClientCfg, $bSanityCheck = false) {
+    public function __construct(&$aCfg, &$aClientCfg, $bSanityCheck = false) {
         // check if already instanciated
         if (isset(self::$bSmartyInstanciated) && self::$bSmartyInstanciated) {
             throw new Exception("Contenido_SmartyWrapper class is intended to be used as singleton. Do not instanciate multiple times.");
         }
 
         if (!is_array($aCfg)) {
-            throw new Exception( __CLASS__ . " " . __FUNCTION__ . " Parameter 1 invalid.");
+            throw new Exception(__CLASS__ . " " . __FUNCTION__ . " Parameter 1 invalid.");
         }
         if (!is_array($aClientCfg)) {
             return;
-            throw new Exception( __CLASS__ . " " . __FUNCTION__ . " Parameter 2 invalid.");
+            throw new Exception(__CLASS__ . " " . __FUNCTION__ . " Parameter 2 invalid.");
         }
 
         // Load smarty
         if (!defined('SMARTY_DIR')) {
-            define('SMARTY_DIR' , $aCfg['path']['contenido'].'plugins/smarty/smarty_source/');
+            define('SMARTY_DIR', $aCfg['path']['contenido'] . 'plugins/smarty/smarty_source/');
         }
         require_once(SMARTY_DIR . 'Smarty.class.php');
         self::$oSmarty = new Smarty();
         self::$aDefaultPaths = array(
-            'template_dir' => $aClientCfg['module_path'],
-            'cache_dir'    => $aClientCfg['cache_path'],
-            'compile_dir'  => $aClientCfg['cache_path'] . 'templates_c'
+            'template_dir' => $aClientCfg['module']['path'],
+            'cache_dir' => $aClientCfg['cache']['path'],
+            'compile_dir' => $aClientCfg['cache']['path'] . 'templates_c'
         );
 
         // check the template directory and create new one if it not exists
@@ -98,8 +98,8 @@ class Contenido_SmartyWrapper {
         }
 
         self::$oSmarty->template_dir = self::$aDefaultPaths['template_dir'];
-        self::$oSmarty->cache_dir    = self::$aDefaultPaths['cache_dir'];
-        self::$oSmarty->compile_dir  = self::$aDefaultPaths['compile_dir'];
+        self::$oSmarty->cache_dir = self::$aDefaultPaths['cache_dir'];
+        self::$oSmarty->compile_dir = self::$aDefaultPaths['compile_dir'];
 
         // config_dir not needed yet
         // Technical Note:  It is not recommended to put this directory under the web server document root.
@@ -119,7 +119,7 @@ class Contenido_SmartyWrapper {
      * destructor
      * set Contenido_SmartyWrapper::bSmartyInstanciated to false
      */
-     public function __destruct() {
+    public function __destruct() {
         self::$bSmartyInstanciated = false;
     }
 
@@ -146,9 +146,10 @@ class Contenido_SmartyWrapper {
      */
     public static function resetPaths() {
         self::$oSmarty->template_dir = self::$aDefaultPaths['template_dir'];
-        self::$oSmarty->cache_dir    = self::$aDefaultPaths['cache_dir'];
-        self::$oSmarty->compile_dir  = self::$aDefaultPaths['compile_dir'];
+        self::$oSmarty->cache_dir = self::$aDefaultPaths['cache_dir'];
+        self::$oSmarty->compile_dir = self::$aDefaultPaths['compile_dir'];
     }
+
 }
 
 ?>

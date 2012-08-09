@@ -41,13 +41,8 @@ cInclude('includes', 'functions.str.php');
  * @param  int  $active  Flag for active state, 1 or 0
  * @param  string  $direction
  * @return  bool
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @author Olaf Niemann <Olaf.Niemann@4fb.de>
- * @copyright four for business AG <www.4fb.de>
  */
-function langEditLanguage($idlang, $langname, $encoding, $active, $direction = 'ltr')
-{
+function langEditLanguage($idlang, $langname, $encoding, $active, $direction = 'ltr') {
     $oLang = new cApiLanguage();
     if ($oLang->loadByPrimaryKey((int) $idlang)) {
         $oLang->set('name', $oLang->escape($langname), false);
@@ -59,19 +54,13 @@ function langEditLanguage($idlang, $langname, $encoding, $active, $direction = '
     return false;
 }
 
-
 /**
  * Create a new language
  *
  * @param  string  $name  Name of the language
  * @param  int  $client  Id of client
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @author Olaf Niemann <Olaf.Niemann@4fb.de>
- * @copyright four for business AG <www.4fb.de>
  */
-function langNewLanguage($name, $client)
-{
+function langNewLanguage($name, $client) {
     global $cfgClient, $notification;
 
     // Add new language to database
@@ -94,12 +83,10 @@ function langNewLanguage($name, $client)
 
         cFileHandler::rename($destPath . 'config.php.new', 'config.php');
     } else {
-        $notification->displayNotification('error',
-            i18n("Could not set the language-ID in the file 'config.php'. Please set the language manually.")
+        $notification->displayNotification('error', i18n("Could not set the language-ID in the file 'config.php'. Please set the language manually.")
         );
     }
 }
-
 
 /**
  * Rename a language
@@ -107,13 +94,8 @@ function langNewLanguage($name, $client)
  * @param  int  $idlang  Id of the language
  * @param  string  $name  Name of the language
  * @return  bool
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @author Olaf Niemann <Olaf.Niemann@4fb.de>
- * @copyright four for business AG <www.4fb.de>
  */
-function langRenameLanguage($idlang, $name)
-{
+function langRenameLanguage($idlang, $name) {
     $oLang = new cApiLanguage();
     if ($oLang->loadByPrimaryKey((int) $idlang)) {
         $oLang->set('name', $oLang->escape($name), false);
@@ -122,28 +104,22 @@ function langRenameLanguage($idlang, $name)
     return false;
 }
 
-
 /**
  * Duplicate a language
  *
  * @param  int  $client  Id of the client
  * @param  int  $idlang  Id of the language
  *
- * @deprecated 2012-03-05 This function is not longer supported.
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @author Olaf Niemann <Olaf.Niemann@4fb.de>
- * @copyright four for business AG <www.4fb.de>
+ * @deprecated  [2012-03-05]  This function is not longer supported.
  */
-function langDuplicateFromFirstLanguage($client, $idlang)
-{
+function langDuplicateFromFirstLanguage($client, $idlang) {
     cDeprecated("This function is not longer supported.");
     global $db, $sess, $cfg, $auth;
 
     $client = (int) $client;
     $idlang = (int) $idlang;
 
-    $sql = "SELECT * FROM ".$cfg['tab']['clients_lang']." WHERE idclient=" . $client . " ORDER BY idlang ASC";
+    $sql = "SELECT * FROM " . $cfg['tab']['clients_lang'] . " WHERE idclient=" . $client . " ORDER BY idlang ASC";
 
     $db->query($sql);
     if ($db->next_record()) {
@@ -155,8 +131,8 @@ function langDuplicateFromFirstLanguage($client, $idlang)
         $firstlang = (int) $db->f('idlang');
 
         // duplicate entries in 'art_lang' table
-        $sql = "SELECT * FROM ".$cfg['tab']['art_lang']." AS A, ".$cfg['tab']['art']." AS B "
-             . "WHERE A.idart=B.idart AND B.idclient=" . $client . " AND idlang!=0 AND idlang=" . $firstlang;
+        $sql = "SELECT * FROM " . $cfg['tab']['art_lang'] . " AS A, " . $cfg['tab']['art'] . " AS B "
+                . "WHERE A.idart=B.idart AND B.idclient=" . $client . " AND idlang!=0 AND idlang=" . $firstlang;
         $db->query($sql);
 
         // Array storing the article->templatecfg allocations for later reallocation
@@ -180,7 +156,7 @@ function langDuplicateFromFirstLanguage($client, $idlang)
             $iIdartLangNew = $db2->getLastInsertedId($cfg['tab']['art_lang']);
 
             // duplicate entries in 'content' table
-            $sql = "SELECT * FROM ".$cfg['tab']['content']." WHERE idartlang=" . (int) $iIdartLangOld;
+            $sql = "SELECT * FROM " . $cfg['tab']['content'] . " WHERE idartlang=" . (int) $iIdartLangOld;
             $db2->query($sql);
             while ($db2->next_record()) {
                 $aRs = $db2->toArray();
@@ -193,8 +169,8 @@ function langDuplicateFromFirstLanguage($client, $idlang)
         fakeheader(time());
 
         // duplicate all entries in the 'cat_lang' table
-        $sql = "SELECT * FROM ".$cfg['tab']['cat_lang']." AS A, ".$cfg['tab']['cat']." AS B "
-             . "WHERE A.idcat=B.idcat AND B.idclient=" . $client . " AND idlang=" . $firstlang;
+        $sql = "SELECT * FROM " . $cfg['tab']['cat_lang'] . " AS A, " . $cfg['tab']['cat'] . " AS B "
+                . "WHERE A.idcat=B.idcat AND B.idclient=" . $client . " AND idlang=" . $firstlang;
         $db->query($sql);
 
         // Array storing the category->template allocations fot later reallocation
@@ -212,7 +188,7 @@ function langDuplicateFromFirstLanguage($client, $idlang)
         }
 
         // duplicate all entries in the 'stat' table
-        $sql = "SELECT * FROM ".$cfg['tab']['stat']." WHERE idclient=" . $client . " AND idlang=" . $firstlang;
+        $sql = "SELECT * FROM " . $cfg['tab']['stat'] . " WHERE idclient=" . $client . " AND idlang=" . $firstlang;
         $db->query($sql);
         while ($db->next_record()) {
             $aRs = $db->toArray();
@@ -225,14 +201,14 @@ function langDuplicateFromFirstLanguage($client, $idlang)
         fakeheader(time());
 
         // duplicate all entries in the 'tpl_conf' table
-        $sql = "SELECT * FROM ".$cfg['tab']['tpl_conf'];
+        $sql = "SELECT * FROM " . $cfg['tab']['tpl_conf'];
         $db->query($sql);
 
         // Array storing the category->template allocations fot later reallocation
         $aCfgOldNew = array();
 
         while ($db->next_record()) {
-           // $nextid = (int) $db2->nextid($cfg['tab']['tpl_conf']);
+            // $nextid = (int) $db2->nextid($cfg['tab']['tpl_conf']);
             $aRs = $db->toArray();
             $db2->insert($cfg['tab']['tpl_conf'], $aRs);
 
@@ -246,7 +222,7 @@ function langDuplicateFromFirstLanguage($client, $idlang)
             $newidtplcfg = $data['newidtplcfg'];
 
             $sql = "SELECT number, container FROM " . $cfg['tab']['container_conf']
-                 . " WHERE idtplcfg=" . $oldidtplcfg . " ORDER BY number ASC";
+                    . " WHERE idtplcfg=" . $oldidtplcfg . " ORDER BY number ASC";
             $db->query($sql);
 
             while ($db->next_record()) {
@@ -293,19 +269,13 @@ function langDuplicateFromFirstLanguage($client, $idlang)
     conGenerateCodeForAllarts();
 }
 
-
 /**
  * Delete a language
  *
  * @param  int  $iIdLang  Id of the language
  * @param  int  $iIdClient  Id of the client, uses global client id by default
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @author Olaf Niemann <Olaf.Niemann@4fb.de>
- * @copyright four for business AG <www.4fb.de>
  */
-function langDeleteLanguage($iIdLang, $iIdClient = 0)
-{
+function langDeleteLanguage($iIdLang, $iIdClient = 0) {
     global $db, $sess, $client, $cfg, $notification, $cfgClient;
 
     $deleteok = 1;
@@ -314,7 +284,6 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
 
     // Bugfix: New idclient parameter introduced, as Administration -> Languages
     // is used for different clients to delete the language
-
     // Use global client id, if idclient not specified (former behaviour)
     // Note, that this check also have been added for the action in the database
     // - just to be equal to langNewLanguage
@@ -323,31 +292,31 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
     }
 
     //************ check if there are still arts online
-    $sql = "SELECT * FROM ".$cfg['tab']['art_lang']." AS A, ".$cfg['tab']['art']." AS B "
-         . "WHERE A.idart=B.idart AND B.idclient=" . $iIdClient . " AND A.idlang=" . $iIdLang;
+    $sql = "SELECT * FROM " . $cfg['tab']['art_lang'] . " AS A, " . $cfg['tab']['art'] . " AS B "
+            . "WHERE A.idart=B.idart AND B.idclient=" . $iIdClient . " AND A.idlang=" . $iIdLang;
     $db->query($sql);
     if ($db->next_record()) {
         conDeleteArt($db->f('idart'));
     }
 
     //************ check if there are visible categories
-    $sql = "SELECT * FROM ".$cfg['tab']['cat_lang']." AS A, ".$cfg['tab']['cat']." AS B "
-         . "WHERE A.idcat=B.idcat AND B.idclient=" . $iIdClient . " AND A.idlang=" . $iIdLang;
+    $sql = "SELECT * FROM " . $cfg['tab']['cat_lang'] . " AS A, " . $cfg['tab']['cat'] . " AS B "
+            . "WHERE A.idcat=B.idcat AND B.idclient=" . $iIdClient . " AND A.idlang=" . $iIdLang;
     $db->query($sql);
     if ($db->next_record()) {
         strDeleteCategory($db->f('idcat'));
     }
 
     $aIdArtLang = array();
-    $aIdArt     = array();
+    $aIdArt = array();
     $aIdCatLang = array();
-    $aIdCat     = array();
-    $aIdTplCfg  = array();
+    $aIdCat = array();
+    $aIdTplCfg = array();
 
     if ($deleteok == 1) {
         //********* check if this is the clients last language to be deleted, if yes delete from art, cat, and cat_art as well
         $lastlanguage = 0;
-        $sql = "SELECT COUNT(*) FROM ".$cfg['tab']['clients_lang']." WHERE idclient=" . $iIdClient;
+        $sql = "SELECT COUNT(*) FROM " . $cfg['tab']['clients_lang'] . " WHERE idclient=" . $iIdClient;
         $db->query($sql);
         $db->next_record();
         if ($db->f(0) == 1) {
@@ -355,87 +324,86 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
         }
 
         //********** delete from 'art_lang'-table
-        $sql = "SELECT A.idtplcfg AS idtplcfg, idartlang, A.idart FROM ".$cfg['tab']['art_lang']." AS A, ".$cfg['tab']['art']." AS B WHERE A.idart=B.idart AND B.idclient=" . $iIdClient . "
+        $sql = "SELECT A.idtplcfg AS idtplcfg, idartlang, A.idart FROM " . $cfg['tab']['art_lang'] . " AS A, " . $cfg['tab']['art'] . " AS B WHERE A.idart=B.idart AND B.idclient=" . $iIdClient . "
                 AND idlang!=0 AND idlang=" . $iIdLang;
         $db->query($sql);
         while ($db->next_record()) {
             $aIdArtLang[] = $db->f('idartlang');
-            $aIdArt[]     = $db->f('idart');
-            $aIdTplCfg[]  = $db->f('idtplcfg');
+            $aIdArt[] = $db->f('idart');
+            $aIdTplCfg[] = $db->f('idtplcfg');
         }
         foreach ($aIdArtLang as $value) {
             $value = (int) $value;
-            $sql = "DELETE FROM ".$cfg['tab']['art_lang']." WHERE idartlang=" . $value;
+            $sql = "DELETE FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang=" . $value;
             $db->query($sql);
-            $sql = "DELETE FROM ".$cfg['tab']['content']." WHERE idartlang=" . $value;
+            $sql = "DELETE FROM " . $cfg['tab']['content'] . " WHERE idartlang=" . $value;
             $db->query($sql);
         }
 
         if ($lastlanguage == 1) {
             foreach ($aIdArt as $value) {
                 $value = (int) $value;
-                $sql = "DELETE FROM ".$cfg['tab']['art']." WHERE idart=" . $value;
+                $sql = "DELETE FROM " . $cfg['tab']['art'] . " WHERE idart=" . $value;
                 $db->query($sql);
-                $sql = "DELETE FROM ".$cfg['tab']['cat_art']." WHERE idart=" . $value;
+                $sql = "DELETE FROM " . $cfg['tab']['cat_art'] . " WHERE idart=" . $value;
                 $db->query($sql);
             }
         }
 
         //********** delete from 'cat_lang'-table
-        $sql = "SELECT A.idtplcfg AS idtplcfg, idcatlang, A.idcat FROM ".$cfg['tab']['cat_lang']." AS A, ".$cfg['tab']['cat']." AS B WHERE A.idcat=B.idcat AND B.idclient=". $iIdClient . "
+        $sql = "SELECT A.idtplcfg AS idtplcfg, idcatlang, A.idcat FROM " . $cfg['tab']['cat_lang'] . " AS A, " . $cfg['tab']['cat'] . " AS B WHERE A.idcat=B.idcat AND B.idclient=" . $iIdClient . "
                 AND idlang!=0 AND idlang=" . $iIdLang;
         $db->query($sql);
         while ($db->next_record()) {
             $aIdCatLang[] = $db->f('idcatlang');
-            $aIdCat[]     = $db->f('idcat');
-            $aIdTplCfg[]  = $db->f('idtplcfg'); // added
+            $aIdCat[] = $db->f('idcat');
+            $aIdTplCfg[] = $db->f('idtplcfg'); // added
         }
         foreach ($aIdCatLang as $value) {
-            $sql = "DELETE FROM ".$cfg['tab']['cat_lang']." WHERE idcatlang=" . (int) $value;
+            $sql = "DELETE FROM " . $cfg['tab']['cat_lang'] . " WHERE idcatlang=" . (int) $value;
             $db->query($sql);
         }
         if ($lastlanguage == 1) {
             foreach ($aIdCat as $value) {
                 $value = (int) $value;
-                $sql = "DELETE FROM ".$cfg['tab']['cat']." WHERE idcat=" . $value;
+                $sql = "DELETE FROM " . $cfg['tab']['cat'] . " WHERE idcat=" . $value;
                 $db->query($sql);
-                $sql = "DELETE FROM ".$cfg['tab']["cat_tree"]." WHERE idcat=" . $value;
+                $sql = "DELETE FROM " . $cfg['tab']["cat_tree"] . " WHERE idcat=" . $value;
                 $db->query($sql);
             }
         }
 
         //********** delete from 'stat'-table
-        $sql = "DELETE FROM ".$cfg['tab']['stat']." WHERE idlang=" . $iIdLang . " AND idclient=" . $iIdClient;
+        $sql = "DELETE FROM " . $cfg['tab']['stat'] . " WHERE idlang=" . $iIdLang . " AND idclient=" . $iIdClient;
         $db->query($sql);
 
         //********** delete from 'code'-cache
-        $mask = $cfgClient[$iIdClient]['code_path'].$iIdClient.".".$iIdLang.".*.php";
+        $mask = $cfgClient[$iIdClient]['code']['path'] . $iIdClient . "." . $iIdLang . ".*.php";
         array_map("unlink", glob($mask));
 
         foreach ($aIdTplCfg as $tplcfg) {
             $tplcfg = (int) $tplcfg;
             if ($tplcfg != 0) {
                 //********** delete from 'tpl_conf'-table
-                $sql = "DELETE FROM ".$cfg['tab']['tpl_conf']." WHERE idtplcfg=" . $tplcfg;
+                $sql = "DELETE FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtplcfg=" . $tplcfg;
                 $db->query($sql);
                 //********** delete from 'container_conf'-table
-                $sql = "DELETE FROM ".$cfg['tab']['container_conf']." WHERE idtplcfg=" . $tplcfg;
+                $sql = "DELETE FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg=" . $tplcfg;
                 $db->query($sql);
             }
         }
 
         //*********** delete from 'clients_lang'-table
-        $sql = "DELETE FROM ".$cfg['tab']['clients_lang']." WHERE idclient=" . $iIdClient . " AND idlang=" . $iIdLang;
+        $sql = "DELETE FROM " . $cfg['tab']['clients_lang'] . " WHERE idclient=" . $iIdClient . " AND idlang=" . $iIdLang;
         $db->query($sql);
 
         //*********** delete from 'lang'-table
-        $sql = "DELETE FROM ".$cfg['tab']['lang']." WHERE idlang=" . $iIdLang;
+        $sql = "DELETE FROM " . $cfg['tab']['lang'] . " WHERE idlang=" . $iIdLang;
         $db->query($sql);
     } else {
         return $notification->returnMessageBox('error', i18n("Could not delete language"), 0);
     }
 }
-
 
 /**
  * Deactivate a language
@@ -443,13 +411,8 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
  * @param  int  $idlang
  * @param  int  $active
  * @return  bool
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @author Olaf Niemann <Olaf.Niemann@4fb.de>
- * @copyright four for business AG <www.4fb.de>
  */
-function langActivateDeactivateLanguage($idlang, $active)
-{
+function langActivateDeactivateLanguage($idlang, $active) {
     $oLang = new cApiLanguage();
     if ($oLang->loadByPrimaryKey((int) $idlang)) {
         $oLang->set('active', (int) $active, false);
@@ -458,7 +421,6 @@ function langActivateDeactivateLanguage($idlang, $active)
     return false;
 }
 
-
 /**
  * Returns the base direction of text (ltr = left to right, rtl = right to left) by language id
  *
@@ -466,8 +428,7 @@ function langActivateDeactivateLanguage($idlang, $active)
  * @param  DB_Contenido  Is not in use
  * @return string  'ltr' or 'rtl'
  */
-function langGetTextDirection($idlang, $db = null)
-{
+function langGetTextDirection($idlang, $db = null) {
     static $oLang;
     if (!isset($oLang)) {
         $oLang = new cApiLanguage();

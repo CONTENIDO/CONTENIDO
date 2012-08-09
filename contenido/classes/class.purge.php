@@ -23,69 +23,57 @@ if (!defined('CON_FRAMEWORK')) {
 class cSystemPurge {
 
     /**
-     *
-     * @var $oDb
+     * @var DB_Contenido
      */
-    private $oDb;
+    private $_oDb;
 
     /**
-     *
-     * @var $cfg
+     * @var array
      */
-    private $cfg;
+    private $_cfg;
 
     /**
-     *
-     * @var $cfgClient
+     * @var array
      */
-    private $cfgClient;
+    private $_cfgClient;
 
     /**
-     *
-     * @var string $sDefaultCacheDir
+     * @var string
      */
-    private $sDefaultCacheDir = 'cache/';
+    private $_sDefaultCacheDir = 'cache/';
 
     /**
-     *
-     * @var string $sDefaultLogDir
+     * @var string
      */
-    private $sDefaultLogDir = 'logs/';
+    private $_sDefaultLogDir = 'logs/';
 
     /**
-     *
-     * @var string $sDefaultVersionDir
+     * @var string
      */
-    private $sDefaultVersionDir = 'version/';
+    private $_sDefaultVersionDir = 'version/';
 
     /**
-     *
-     * @var string $sDefaultCronjobDir
+     * @var string
      */
-    private $sDefaultCronjobDir = 'cronjobs/';
+    private $_sDefaultCronjobDir = 'cronjobs/';
 
     /**
-     *
-     * @var string $aDirsExcludedWithFiles
+     * @var array
      */
     private $aDirsExcludedWithFiles = array(
-        '.',
-        '..',
-        '.svn',
-        '.cvs'
+        '.', '..', '.svn', '.cvs'
     );
 
     /**
-     *
-     * @var array $aLogFileTypes
+     * @var array
      */
-    private $aLogFileTypes;
+    private $_aLogFileTypes = array();
 
     /**
      *
-     * @var array $aCronjobFileTypes
+     * @var array
      */
-    private $aCronjobFileTypes;
+    private $_aCronjobFileTypes = array();
 
     /**
      * Constructor of class
@@ -95,8 +83,8 @@ class cSystemPurge {
      * @param array $cfgClient
      */
     public function __construct(&$db, $cfg, $cfgClient) {
-        $this->oDb = $db;
-        $this->cfg = $cfg;
+        $this->_oDb = $db;
+        $this->_cfg = $cfg;
         $this->cfgClient = $cfgClient;
 
         $this->setLogFileTypes(array(
@@ -119,7 +107,7 @@ class cSystemPurge {
         global $perm, $currentuser;
 
         if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $mask = $this->cfgClient[$iClientId]['code_path'] . '*.php';
+            $mask = $this->_cfgClient[$iClientId]['code']['path'] . '*.php';
             $arr = glob($mask);
             foreach ($arr as $file) {
                 if (!unlink($file)) {
@@ -142,10 +130,10 @@ class cSystemPurge {
         global $perm, $currentuser;
 
         if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $sSql = " UPDATE " . $this->cfg['tab']['cat_art'] . " cca, " . $this->cfg['tab']['cat'] . " cc, " . $this->cfg['tab']['art'] . " ca " . " SET cca.createcode=1 " . " WHERE cc.idcat = cca.idcat " . " AND ca.idart = cca.idart " . " AND cc.idclient = " . (int) $iClientId . " AND ca.idclient = " . (int) $iClientId;
-            $this->oDb->query($sSql);
+            $sSql = " UPDATE " . $this->_cfg['tab']['cat_art'] . " cca, " . $this->_cfg['tab']['cat'] . " cc, " . $this->_cfg['tab']['art'] . " ca " . " SET cca.createcode=1 " . " WHERE cc.idcat = cca.idcat " . " AND ca.idart = cca.idart " . " AND cc.idclient = " . (int) $iClientId . " AND ca.idclient = " . (int) $iClientId;
+            $this->_oDb->query($sSql);
 
-            return ($this->oDb->Error == '') ? true : false;
+            return ($this->_oDb->Error == '') ? true : false;
         } else {
             return false;
         }
@@ -160,10 +148,10 @@ class cSystemPurge {
         global $perm, $currentuser;
 
         if ($perm->isSysadmin($currentuser)) {
-            $sSql = "DELETE FROM " . $this->cfg['tab']['inuse'];
-            $this->oDb->query($sSql);
+            $sSql = "DELETE FROM " . $this->_cfg['tab']['inuse'];
+            $this->_oDb->query($sSql);
 
-            return ($this->oDb->Error == '') ? true : false;
+            return ($this->_oDb->Error == '') ? true : false;
         } else {
             return false;
         }
@@ -178,10 +166,10 @@ class cSystemPurge {
         global $perm, $currentuser;
 
         if ($perm->isSysadmin($currentuser)) {
-            $sSql = "DELETE FROM " . $this->cfg['tab']['phplib_active_sessions'];
-            $this->oDb->query($sSql);
+            $sSql = "DELETE FROM " . $this->_cfg['tab']['phplib_active_sessions'];
+            $this->_oDb->query($sSql);
 
-            return ($this->oDb->Error == '') ? true : false;
+            return ($this->_oDb->Error == '') ? true : false;
         } else {
             return false;
         }
@@ -196,10 +184,10 @@ class cSystemPurge {
         global $perm, $currentuser;
 
         if ($perm->isSysadmin($currentuser)) {
-            $sSql = "DELETE FROM " . $this->cfg['tab']['inuse'];
-            $this->oDb->query($sSql);
+            $sSql = "DELETE FROM " . $this->_cfg['tab']['inuse'];
+            $this->_oDb->query($sSql);
 
-            return ($this->oDb->Error == '') ? true : false;
+            return ($this->_oDb->Error == '') ? true : false;
         } else {
             return false;
         }
@@ -216,9 +204,9 @@ class cSystemPurge {
 
         if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
             // $sClientDir = $this->getClientDir($iClientId);
-            $sClientDir = $this->cfgClient[$iClientId]['data_path'];
+            $sClientDir = $this->_cfgClient[$iClientId]['data']['path'];
 
-            $sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/') ? $this->sDefaultCacheDir : $sCacheDir;
+            $sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/') ? $this->_sDefaultCacheDir : $sCacheDir;
             if (is_dir($sClientDir . $sCacheDir)) {
                 $sCachePath = $sClientDir . $sCacheDir;
                 return ($this->clearDir($sCachePath, $sCachePath) ? true : false);
@@ -242,7 +230,7 @@ class cSystemPurge {
         if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
             $sClientDir = $this->getClientDir($iClientId);
 
-            $sCacheDir = (trim($sVersionDir) == '' || trim($sVersionDir) == '/') ? $this->sDefaultVersionDir : $sVersionDir;
+            $sCacheDir = (trim($sVersionDir) == '' || trim($sVersionDir) == '/') ? $this->_sDefaultVersionDir : $sVersionDir;
 
             if (is_dir($sClientDir . $sVersionDir)) {
                 $sVersionPath = $sClientDir . $sVersionDir;
@@ -287,10 +275,10 @@ class cSystemPurge {
         if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
             $sClientDir = $this->getClientDir($iClientId);
 
-            $sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/') ? $this->sDefaultLogDir : $sLogDir;
+            $sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/') ? $this->_sDefaultLogDir : $sLogDir;
 
             if (is_dir($sClientDir . $sLogDir)) {
-                return $this->emptyFile($sClientDir . $sLogDir, $this->aLogFileTypes);
+                return $this->emptyFile($sClientDir . $sLogDir, $this->_aLogFileTypes);
             }
 
             return false;
@@ -309,14 +297,14 @@ class cSystemPurge {
         global $perm, $currentuser;
 
         if ($sLogDir == "") {
-            $sLogDir = $this->cfg['path']['data'] . "logs/";
+            $sLogDir = $this->_cfg['path']['data'] . "logs/";
         }
 
         if ($perm->isSysadmin($currentuser)) {
-            $sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/') ? $this->sDefaultLogDir : $sLogDir;
+            $sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/') ? $this->_sDefaultLogDir : $sLogDir;
 
             if (is_dir($sLogDir)) {
-                return $this->emptyFile($sLogDir, $this->aLogFileTypes);
+                return $this->emptyFile($sLogDir, $this->_aLogFileTypes);
             }
 
             return false;
@@ -335,10 +323,10 @@ class cSystemPurge {
         global $perm, $currentuser;
 
         if ($perm->isSysadmin($currentuser)) {
-            $sCronjobDir = (trim($sCronjobDir) == '' || trim($sCronjobDir) == '/') ? $this->sDefaultCronjobDir : $sCronjobDir;
+            $sCronjobDir = (trim($sCronjobDir) == '' || trim($sCronjobDir) == '/') ? $this->_sDefaultCronjobDir : $sCronjobDir;
 
             if (is_dir($sCronjobDir)) {
-                return $this->emptyFile($sCronjobDir, $this->aCronjobFileTypes);
+                return $this->emptyFile($sCronjobDir, $this->_aCronjobFileTypes);
             }
 
             return false;
@@ -357,7 +345,7 @@ class cSystemPurge {
         global $perm, $currentuser;
 
         if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/') ? $this->sDefaultCacheDir : $sCacheDir;
+            $sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/') ? $this->_sDefaultCacheDir : $sCacheDir;
 
             if (is_dir($sCacheDir)) {
                 return ($this->clearDir($sCacheDir, $sCacheDir) ? true : false);
@@ -465,9 +453,9 @@ class cSystemPurge {
      * @return string $sClientDir
      */
     public function getClientDir($iClientId) {
-        // $sClientDir = str_replace($this->cfg['path']['frontend'], '..',
-        // $this->cfgClient[$iClientId]['path']['frontend']);
-        $sClientDir = $this->cfgClient[$iClientId]['path']['frontend'];
+        // $sClientDir = str_replace($this->_cfg['path']['frontend'], '..',
+        // $this->_cfgClient[$iClientId]['path']['frontend']);
+        $sClientDir = $this->_cfgClient[$iClientId]['path']['frontend'];
 
         return $sClientDir;
     }
@@ -480,7 +468,7 @@ class cSystemPurge {
     public function setLogFileTypes($aTypes) {
         if (count($aTypes) > 0) {
             foreach ($aTypes as $sType) {
-                $this->aLogFileTypes[] = $sType;
+                $this->_aLogFileTypes[] = $sType;
             }
         }
     }
@@ -494,7 +482,7 @@ class cSystemPurge {
     public function setCronjobFileTypes($aTypes) {
         if (count($aTypes) > 0) {
             foreach ($aTypes as $sType) {
-                $this->aCronjobFileTypes[] = $sType;
+                $this->_aCronjobFileTypes[] = $sType;
             }
         }
     }
@@ -518,6 +506,7 @@ class cSystemPurge {
 }
 
 class Purge extends cSystemPurge {
+
     /** @deprecated Class was renamed to cSystemPurge */
     public function __construct(&$db, $cfg, $cfgClient) {
         cDeprecated('Class was renamed to cSystemPurge');

@@ -73,18 +73,11 @@ class SynchronizeLayouts {
      * @param int $idclient id of client
      */
     private function _updateModulnameInDb($oldName, $newName, $idclient) {
-        $db = cRegistry::getDb();
-
-        //Select depending from idclient all moduls wiht the name $name
-        $sql = sprintf("SELECT * FROM %s WHERE alias='%s' AND idclient=%s", $this->_cfg["tab"]["lay"], $oldName, $idclient);
-
-        $db->query($sql);
-
-        //a record is found
-        if ($db->next_record()) {
-            $sqlUpdateName = sprintf("UPDATE %s SET alias='%s' WHERE idlay=%s", $this->_cfg["tab"]["lay"], $newName, $db->f('idlay'));
-            $db->query($sqlUpdateName);
-            return;
+        $oLayColl = new cApiLayoutCollection();
+        $oLayColl->select("alias='" . $oLayColl->escape($oldName) . "' AND idclient=" . (int) $idclient);
+        if ($oLay = $oLayColl->next()) {
+            $oLay->set('alias', $newName);
+            $oLay->store();
         }
     }
 
@@ -94,12 +87,8 @@ class SynchronizeLayouts {
      * @param int $idclient
      */
     private function _addLayout($name, $idclient) {
-        $db = cRegistry::getDb();
-        //get next id from $cfg["tab"]["mod"]
-        //  $nextId = $db->nextid($this->_cfg["tab"]["lay"]);
-        //insert new modul in con_mod
-        $sql = sprintf(" INSERT INTO %s (name, alias, idclient, lastmodified) VALUES('%s','%s',%s,'%s') ", $this->_cfg["tab"]["lay"], $name, $name, $idclient, date("Y-m-d H:i:s"));
-        $db->query($sql);
+        $oLayColl = new cApiLayoutCollection();
+        $oLayColl->create($name, $idclient);
     }
 
     /**
@@ -125,15 +114,10 @@ class SynchronizeLayouts {
      * @param int $idclient client id
      */
     private function _isExistInTable($alias, $idclient) {
-        $db = cRegistry::getDb();
-
         //Select depending from idclient all moduls wiht the name $name
-        $sql = sprintf("SELECT * FROM %s WHERE alias='%s' AND idclient=%s", $this->_cfg["tab"]["lay"], $alias, $idclient);
-
-        $db->query($sql);
-
-        //a record is found
-        return ($db->next_record()) ? true : false;
+        $oLayColl = new cApiLayoutCollection();
+        $ids = $oLayColl->getIdsByWhereClause("alias='" . $oLayColl->escape($alias) . "' AND idclient=" . (int) $idclient);
+        return (count($ids) > 0) ? true : false;
     }
 
     /**
@@ -155,9 +139,11 @@ class SynchronizeLayouts {
      * @param int $idmod id of modul
      */
     public function setLastModified($timestamp, $idlay) {
-        $sql = sprintf("UPDATE %s SET lastmodified ='%s' WHERE idlay=%s ", $this->_cfg["tab"]["lay"], date("Y-m-d H:i:s", $timestamp), $idlay);
-        $myDb = cRegistry::getDb();
-        $myDb->query($sql);
+        $oLay = new cApiLayout((int) $idlay);
+        if ($oLay->isLoaded()) {
+            $oLay->set('lastmodified', date('Y-m-d H:i:s', $timestamp));
+            $oLay->store();
+        }
     }
 
     /**
@@ -166,9 +152,9 @@ class SynchronizeLayouts {
      */
     private function _compareFileAndLayoutTimestamp() {
         //get all layouts from client
-        $sql = sprintf("SELECT UNIX_TIMESTAMP(lastmodified) AS lastmodified, alias,name,description, idlay FROM %s WHERE idclient=%s", $this->_cfg['tab']['lay'], $this->_client);
+        $sql = sprintf("SELECT UNIX_TIMESTAMP(lastmodified) AS lastmodified, alias, name, description, idlay FROM %s WHERE idclient=%s", $this->_cfg['tab']['lay'], $this->_client);
         $notification = new cGuiNotification();
-        $dir = $this->_cfgClient[$this->_client]['layout_path'];
+        $dir = $this->_cfgClient[$this->_client]['layout']['path'];
 
         $db = cRegistry::getDb();
         $db->query($sql);
@@ -178,7 +164,6 @@ class SynchronizeLayouts {
 
             //exist layout directory
             if (is_dir($dir . $db->f('alias') . '/')) {
-
                 if (cFileHandler::exists($dir . $db->f('alias') . '/' . $db->f('alias') . '.html')) {
                     $lastmodifiedLayout = filemtime($dir . $db->f('alias') . '/' . $db->f('alias') . '.html');
 
@@ -247,7 +232,7 @@ class SynchronizeLayouts {
         $this->_compareFileAndLayoutTimestamp();
 
         //get the path to cliets layouts
-        $dir = $this->_cfgClient[$this->_client]['layout_path'];
+        $dir = $this->_cfgClient[$this->_client]['layout']['path'];
 
         //is/exist directory
         if (!is_dir($dir)) {

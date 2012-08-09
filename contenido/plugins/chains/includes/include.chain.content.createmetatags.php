@@ -33,19 +33,18 @@ if (!defined('CON_FRAMEWORK')) {
 cInclude('plugins', 'repository/keyword_density.php');
 
 function cecCreateMetatags($metatags) {
-
     global $cfg, $lang, $idart, $client, $cfgClient, $idcat, $idartlang;
 
     // Basic settings
     $cachetime = 3600; // measured in seconds
-    $cachedir = $cfgClient[$client]['cache_path'];
+    $cachedir = $cfgClient[$client]['cache']['path'];
 
     if (!is_array($metatags)) {
         $metatags = array();
     }
 
-    $hash = 'metatag_'.md5($idart.'/'.$lang);
-    $cachefilename = $cachedir.$hash.'.tmp';
+    $hash = 'metatag_' . md5($idart . '/' . $lang);
+    $cachefilename = $cachedir . $hash . '.tmp';
 
     // Check if rebuilding of metatags is necessary
     $reload = true;
@@ -54,9 +53,7 @@ function cecCreateMetatags($metatags) {
 
     if (cFileHandler::exists($cachefilename)) {
         $fileexists = true;
-
-        $diff =  time() - filemtime($cachefilename);
-
+        $diff = time() - filemtime($cachefilename);
         if ($diff > $cachetime) {
             $reload = true;
         } else {
@@ -79,12 +76,12 @@ function cecCreateMetatags($metatags) {
         // Get idcat of homepage
         $sql = "SELECT a.idcat
             FROM
-                ".$cfg['tab']['cat_tree']." AS a,
-                ".$cfg['tab']['cat_lang']." AS b
+                " . $cfg['tab']['cat_tree'] . " AS a,
+                " . $cfg['tab']['cat_lang'] . " AS b
             WHERE
                 (a.idcat = b.idcat) AND
                 (b.visible = 1) AND
-                (b.idlang = ". (int) $lang .")
+                (b.idlang = " . (int) $lang . ")
             ORDER BY a.idtree LIMIT 1";
 
         $db->query($sql);
@@ -126,7 +123,7 @@ function cecCreateMetatags($metatags) {
         }
 
         $sHeadline = strip_tags($sHeadline);
-        $sHeadline = substr(str_replace(chr(13).chr(10),' ',$sHeadline),0,100);
+        $sHeadline = substr(str_replace(chr(13) . chr(10), ' ', $sHeadline), 0, 100);
 
         $arrText1 = $oArt->getContent('html');
         $arrText2 = $oArt->getContent('text');
@@ -149,19 +146,19 @@ function cecCreateMetatags($metatags) {
         }
 
         $sText = strip_tags(urldecode($sText));
-        $sText = keywordDensity ('', $sText);
+        $sText = keywordDensity('', $sText);
 
         // Get metatags for homeapge
         $arrHomepageMetaTags = array();
 
-        $sql = "SELECT startidartlang FROM ".$cfg['tab']['cat_lang']." WHERE (idcat=". (int) $idcat_homepage .") AND(idlang=". (int) $lang .")";
+        $sql = "SELECT startidartlang FROM " . $cfg['tab']['cat_lang'] . " WHERE (idcat=" . (int) $idcat_homepage . ") AND(idlang=" . (int) $lang . ")";
         $db->query($sql);
 
-        if($db->next_record()){
+        if ($db->next_record()) {
             $iIdArtLangHomepage = $db->f('startidartlang');
 
             // Get idart of homepage
-            $sql = "SELECT idart FROM ".$cfg['tab']['art_lang']." WHERE idartlang=". (int) $iIdArtLangHomepage;
+            $sql = "SELECT idart FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang=" . (int) $iIdArtLangHomepage;
             $db->query($sql);
             if ($db->next_record()) {
                 $iIdArtHomepage = $db->f('idart');
@@ -170,10 +167,10 @@ function cecCreateMetatags($metatags) {
             $t1 = $cfg['tab']['meta_tag'];
             $t2 = $cfg['tab']['meta_type'];
 
-            $sql = "SELECT ".$t1.".metavalue,".$t2.".metatype FROM ".$t1.
-                " INNER JOIN ".$t2." ON ".$t1.".idmetatype = ".$t2.".idmetatype WHERE ".
-                $t1.".idartlang =".$iIdArtLangHomepage.
-                " ORDER BY ".$t2.".metatype";
+            $sql = "SELECT " . $t1 . ".metavalue," . $t2 . ".metatype FROM " . $t1 .
+                    " INNER JOIN " . $t2 . " ON " . $t1 . ".idmetatype = " . $t2 . ".idmetatype WHERE " .
+                    $t1 . ".idartlang =" . $iIdArtLangHomepage .
+                    " ORDER BY " . $t2 . ".metatype";
 
             $db->query($sql);
 
@@ -248,7 +245,6 @@ function cecCreateMetatags($metatags) {
 
         // save metatags in cache file
         cFileHandler::write($cachefilename, serialize($metatags));
-
     } else {
         #Get metatags from file system cache
         $metatags = unserialize(cFileHandler::read($cachefilename));
@@ -256,7 +252,6 @@ function cecCreateMetatags($metatags) {
 
     return $metatags;
 }
-
 
 /**
  * Checks if the metatag allready exists inside the metatag list.
@@ -283,6 +278,5 @@ function CheckIfMetaTagExists($arrMetatags, $sCheckForMetaTag) {
     // metatag doesn't exists, return next position
     return count($arrMetatags);
 }
-
 
 ?>

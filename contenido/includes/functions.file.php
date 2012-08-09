@@ -229,7 +229,7 @@ function getFileContent($filename, $path) {
 
     $ret = "";
     if (($ret = cFileHandler::read($path . $filename)) === false) {
-        $notification->displayNotification("error", sprintf(i18n("Can not open file%s "), $path . $filename));
+        $notification->displayNotification("error", sprintf(i18n("Can not open file %s"), $path . $filename));
         exit;
     }
 
@@ -243,8 +243,7 @@ function getFileContent($filename, $path) {
  * @return  string  Filetype
  */
 function getFileType($filename) {
-    $aFileName = explode(".", $filename);
-    return $aFileName[count($aFileName) - 1];
+    return cFileHandler::getExtension($filename);
 }
 
 /**
@@ -420,7 +419,7 @@ function scanDirectory($sDirectory, $bRecursive = false) {
  * @param  int     $mode  Octal representation of file mode (0644, 0750, etc.)
  */
 function recursiveCopy($sourcePath, $destinationPath, $mode = 0777) {
-    mkdir($destinationPath, 0777);
+    mkdir($destinationPath, $mode);
     $oldPath = getcwd();
 
     if (is_dir($sourcePath)) {
