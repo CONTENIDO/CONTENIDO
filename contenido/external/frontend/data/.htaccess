@@ -1,0 +1,3 @@
+# Prevent access to this folder
+Order Deny,Allow
+Deny from all
