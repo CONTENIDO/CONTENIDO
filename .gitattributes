@@ -9,6 +9,8 @@ cms/config.php -text
 cms/css/contenido_sample.css -text
 cms/css/index.php -text
 cms/css/style_tiny.css -text
+cms/data/.htaccess -text
+cms/data/version/.htaccess -text
 cms/dbfs.php -text
 cms/favicon.ico -text
 cms/front_content.php -text
