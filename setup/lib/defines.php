@@ -20,16 +20,12 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *   modified 2011-02-23, Murat Purc, added constant for minimum required PHP version
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
+    die('Illegal call');
 }
 
 if (isset($_SESSION['setuptype'])) {
