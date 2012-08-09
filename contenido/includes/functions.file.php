@@ -437,9 +437,11 @@ function recursiveCopy($sourcePath, $destinationPath, $mode = 0777, array $optio
         while (($file = readdir($myhandle)) !== false) {
             if ($file != '.' && $file != '..') {
                 if (is_dir($file)) {
-                    recursiveCopy($sourcePath . $file . '/', $destinationPath . $file . '/');
+                    // Copy directory
+                    recursiveCopy($sourcePath . $file . '/', $destinationPath . $file . '/', $mode, $options);
                     chdir($sourcePath);
                 } elseif (cFileHandler::exists($sourcePath. $file)) {
+                    // Copy file
                     if (cFileHandler::exists($destinationPath. $file)) {
                         if ($forceOverwrite) {
                             copy($sourcePath . $file, $destinationPath . $file);
