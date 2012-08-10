@@ -10,6 +10,7 @@ cms/css/contenido_sample.css -text
 cms/css/index.php -text
 cms/css/style_tiny.css -text
 cms/data/.htaccess -text
+cms/data/layouts/standard/standard.html -text
 cms/data/modules/article_include/info.xml -text
 cms/data/modules/article_include/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/data/modules/article_include/php/article_include_input.php -text
@@ -170,8 +171,6 @@ cms/includes/functions.include.php -text
 cms/includes/functions.navigation.php -text
 cms/index.php -text
 cms/js/index.php -text
-cms/layouts/standard/standard.html -text
-cms/logs/index.php -text
 cms/robots.txt -text
 cms/templates/cms_filelist_style_default.html -text
 cms/templates/cms_teaser_style_block.html -text
@@ -217,7 +216,6 @@ cms/upload/bildergalerie/P1030817.jpg -text
 cms/upload/bildergalerie/P1040562.jpg -text
 cms/upload/bildergalerie/P1040563.jpg -text
 cms/upload/bildergalerie/P1080353.jpg -text
-cms/version/.htaccess -text
 conlib/auth.inc -text
 conlib/ct_file.inc -text
 conlib/ct_ldap.inc -text
