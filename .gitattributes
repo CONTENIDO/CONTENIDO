@@ -406,6 +406,7 @@ contenido/classes/datatypes/class.datatype.currency.php -text
 contenido/classes/datatypes/class.datatype.datetime.php -text
 contenido/classes/datatypes/class.datatype.number.php -text
 contenido/classes/datatypes/class.datatype.php -text
+contenido/classes/drivers/drivers.txt -text
 contenido/classes/exceptions/exception.conuser.php -text
 contenido/classes/genericdb/class.gdb.driver.php -text
 contenido/classes/genericdb/class.gdb.mysql.php -text

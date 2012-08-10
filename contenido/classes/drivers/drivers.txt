@@ -1,0 +1,7 @@
+
+This folder and it's content is deprecated.
+
+@deprecated [2012-08-10] Use class in contenido/classes/genericdb/class.gdb.driver.php
+                         - Use cGenericDbDriver
+@deprecated [2012-08-10] Use class in contenido/classes/genericdb/class.gdb.mysql.php
+                         - Use cGenericDbDriverMysql
