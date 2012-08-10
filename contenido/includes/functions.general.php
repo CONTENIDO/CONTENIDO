@@ -443,13 +443,15 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
     $aConfigFileContent = array();
     $aConfigFileContent[] = '<?php';
+    $aConfigFileContent[] = 'global $cfgClient;';
+    $aConfigFileContent[] = '';
 
     foreach ($cfgClient as $iIdClient => $aClient) {
         if ((int) $iIdClient > 0) {
-            $aConfigFileContent[] = '';
             $aConfigFileContent[] = '/* ' . $aClient['name'] . ' */';
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["htmlpath"] = "' . $aClient['path']['htmlpath'] . '";';
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["frontend"] = "' . $aClient['path']['frontend'] . '";';
+            $aConfigFileContent[] = '';
         }
     }
 
@@ -480,25 +482,42 @@ function rereadClients() {
         $cfgClient[$iClient]['upload'] = 'upload/';
 
         $cfgClient[$iClient]['htmlpath']['frontend'] = $cfgClient[$iClient]['path']['htmlpath'];
+
         $cfgClient[$iClient]['upl']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'upload/';
         $cfgClient[$iClient]['upl']['htmlpath'] = $cfgClient[$iClient]['htmlpath']['frontend'] . 'upload/';
         $cfgClient[$iClient]['upl']['frontendpath'] = 'upload/';
+
         $cfgClient[$iClient]['css']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'css/';
+
         $cfgClient[$iClient]['js']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'js/';
+
         $cfgClient[$iClient]['tpl']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'templates/';
 
         $cfgClient[$iClient]['cache']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'cache/';
         $cfgClient[$iClient]['cache']['frontendpath'] = 'cache/';
 
-// @todo define a common data path
-        $cfgClient[$iClient]['data']['path'] = $cfgClient[$iClient]['path']['frontend'];
-        $cfgClient[$iClient]['code']['path'] = $cfgClient[$iClient]['data']['path'] . 'cache/code/';
-#        $cfgClient[$iClient]['config']['path'] = $cfgClient[$iClient]['data']['path'] . 'configs/';
-        $cfgClient[$iClient]['layout']['path'] = $cfgClient[$iClient]['data']['path'] . 'layouts/';
-        $cfgClient[$iClient]['log']['path'] = $cfgClient[$iClient]['data']['path'] . 'logs/';
-        $cfgClient[$iClient]['module']['path'] = $cfgClient[$iClient]['data']['path'] . 'modules/';
-        $cfgClient[$iClient]['template']['path'] = $cfgClient[$iClient]['data']['path'] . 'templates/';
-        $cfgClient[$iClient]['version']['path'] = $cfgClient[$iClient]['data']['path'] . 'version/';
+        $cfgClient[$iClient]['code']['path'] = $cfgClient[$iClient]['data']['frontend'] . 'cache/code/';
+        $cfgClient[$iClient]['code']['frontendpath'] = 'cache/code/';
+
+        $cfgClient[$iClient]['template']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'templates/';
+        $cfgClient[$iClient]['template']['frontendpath'] = 'templates/';
+
+        $cfgClient[$iClient]['data']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/';
+
+        $cfgClient[$iClient]['module']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/modules/';
+        $cfgClient[$iClient]['module']['frontendpath'] = 'data/modules/';
+
+#        $cfgClient[$iClient]['config']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/configs/';
+#        $cfgClient[$iClient]['config']['frontendpath'] = 'data/configs/';
+
+        $cfgClient[$iClient]['layout']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/layouts/';
+        $cfgClient[$iClient]['layout']['frontendpath'] = 'data/layouts/';
+
+        $cfgClient[$iClient]['log']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/logs/';
+        $cfgClient[$iClient]['log']['frontendpath'] = 'data/logs/';
+
+        $cfgClient[$iClient]['version']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/version/';
+        $cfgClient[$iClient]['version']['frontendpath'] = 'data/version/';
     }
 }
 

@@ -550,20 +550,21 @@ class cSetupSystemtest extends cSetupMask
         if ($_SESSION["setuptype"] == "setup" || ($_SESSION["setuptype"] == "migration" && is_dir(C_FRONTEND_PATH . '/cms/') )) {
             // Setup mode or migration mode with a existing default client frontend path
             $this->logFilePrediction("cms/cache/", C_SEVERITY_WARNING);
+            $this->logFilePrediction("cms/cache/code/", C_SEVERITY_WARNING);
             $this->logFilePrediction("cms/css/", C_SEVERITY_WARNING);
+            $this->logFilePrediction("cms/data/layouts/", C_SEVERITY_WARNING);
+            $this->logFilePrediction("cms/data/logs/", C_SEVERITY_WARNING);
+            $this->logFilePrediction("cms/data/modules/", C_SEVERITY_WARNING);
+            $this->logFilePrediction("cms/data/version/", C_SEVERITY_WARNING);
+            $this->logFilePrediction("cms/data/version/css/", C_SEVERITY_WARNING);
+            $this->logFilePrediction("cms/data/version/js/", C_SEVERITY_WARNING);
+            $this->logFilePrediction("cms/data/version/layout/", C_SEVERITY_WARNING);
+            $this->logFilePrediction("cms/data/version/module/", C_SEVERITY_WARNING);
+            $this->logFilePrediction("cms/data/version/templates/", C_SEVERITY_WARNING);
             $this->logFilePrediction("cms/js/", C_SEVERITY_WARNING);
-            $this->logFilePrediction("cms/logs/", C_SEVERITY_WARNING);
             $this->logFilePrediction("cms/templates/", C_SEVERITY_WARNING);
             $this->logFilePrediction("cms/upload/", C_SEVERITY_WARNING);
-            $this->logFilePrediction("cms/version/", C_SEVERITY_WARNING);
-            $this->logFilePrediction("cms/version/css/", C_SEVERITY_WARNING);
-            $this->logFilePrediction("cms/version/js/", C_SEVERITY_WARNING);
-            $this->logFilePrediction("cms/version/layout/", C_SEVERITY_WARNING);
-            $this->logFilePrediction("cms/version/module/", C_SEVERITY_WARNING);
-            $this->logFilePrediction("cms/version/templates/", C_SEVERITY_WARNING);
             $this->logFilePrediction("cms/config.php", C_SEVERITY_WARNING);
-            $this->logFilePrediction("cms/modules/", C_SEVERITY_WARNING);
-            $this->logFilePrediction("cms/layouts/", C_SEVERITY_WARNING);
         }
 
         if ($_SESSION["configmode"] == "save") {

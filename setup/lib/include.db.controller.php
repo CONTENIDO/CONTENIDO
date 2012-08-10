@@ -35,7 +35,6 @@ checkAndInclude($cfg['path']['contenido'] . 'includes/functions.database.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
 
 $db = getSetupMySQLDBConnection(false);
-
 if (checkMySQLDatabaseCreation($db, $_SESSION['dbname'])) {
     $db = getSetupMySQLDBConnection();
 }
@@ -171,7 +170,7 @@ $percent = intval((100 / $totalSteps) * ($currentStep));
 echo '<script type="text/javascript">parent.updateProgressbar(' . $percent . ');</script>';
 
 if ($currentStep < $totalSteps) {
-
+    // Still processing database setup, output js code to run the next step
     printf('<script type="text/javascript">function nextStep() { window.location.href="index.php?c=db&step=%s"; };</script>', $currentStep + 1);
     if (!C_SETUP_DEBUG) {
         echo '<script type="text/javascript">window.setTimeout(nextStep, 10);</script>';
@@ -179,9 +178,14 @@ if ($currentStep < $totalSteps) {
         echo '<a href="javascript:nextStep();">Next step</a>';
     }
 } else {
+    // Databasse setup is done, now do remaining upgrade jobs
+
     // For import mod_history rows to versioning
     if ($_SESSION['setuptype'] == 'migration' || $_SESSION['setuptype'] == 'upgrade') {
         $cfgClient = array();
+        if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
+            require_once($cfg['path']['contenido_config'] . 'config.clients.php');
+        }
         rereadClients();
     }
 
@@ -194,11 +198,11 @@ if ($currentStep < $totalSteps) {
 
     echo '
         <script type="text/javascript">
-        parent.document.getElementById("installing").style.visibility="hidden";
-        parent.document.getElementById("installingdone").style.visibility="visible";
-        parent.document.getElementById("next").style.visibility="visible";
+        parent.document.getElementById("installing").style.visibility = "hidden";
+        parent.document.getElementById("installingdone").style.visibility = "visible";
+        parent.document.getElementById("next").style.visibility = "visible";
         function nextStep() {
-            window.location.href="index.php?c=config";
+            window.location.href = "index.php?c=config";
         };
         </script>
     ';
