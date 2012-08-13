@@ -44,6 +44,10 @@ if (!$perm->have_perm_area_action($area)) {
     return;
 }
 
+if (!empty($idclient) && is_numeric($idclient)) {
+    $oClient = new cApiClient(cSecurity::toInteger($idclient));
+}
+
 if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))) {
     $sNewNotification = '';
     if ($active != "1") {
@@ -109,7 +113,6 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
             $notification->displayNotification("warning", i18n("You changed the client path. You might need to copy the frontend to the new location"));
         }
 
-        $oClient = new cApiClient((int) $idclient);
         if ($oClient->isLoaded()) {
             $oClient->set('name', $clientname);
             $oClient->set('errsite_cat', $errsite_cat);
