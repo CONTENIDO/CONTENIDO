@@ -87,7 +87,7 @@ if ($result == false) {
 
     $oDiv = new cHTMLDiv();
     $oDiv->updateAttributes(array('style' => 'text-align:right;padding:5px;width:730px;border:1px #B3B3B3 solid;background-color:#FFF;'));
-    $oDiv->setContent('<input type="image" src="images/but_ok.gif" />');
+    $oDiv->setContent('<input type="image" src="images/but_ok.gif">');
     $tpl->set('s', 'DIV', '<br>' . $oDiv->render());
 
     $tpl->set('s', 'TREE', $result);

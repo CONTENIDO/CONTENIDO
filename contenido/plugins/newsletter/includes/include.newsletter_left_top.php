@@ -59,7 +59,7 @@ $sButtonRow = '';
 // News
 if ($perm->have_perm_area_action('news')) {
     $sButtonRow .= '<a href="javascript://" onclick="toggleContainer(\''.$sId.'\');reloadLeftBottomAndTransportFormVars(document.newsletter_listoptionsform);">';
-    $sButtonRow .= '<img onmouseover="hoverEffect(\''.$sId.'\', \'in\')" onmouseout="hoverEffect(\''.$sId.'\', \'out\')" alt="'.i18n("Newsletter", 'newsletter').'" title="'.i18n("Newsletter", 'newsletter').'" name="'.$sId.'" id="'.$sId.'" src="'.$cfg["path"]["images"].'newsletter_on.gif"/>';
+    $sButtonRow .= '<img onmouseover="hoverEffect(\''.$sId.'\', \'in\')" onmouseout="hoverEffect(\''.$sId.'\', \'out\')" alt="'.i18n("Newsletter", 'newsletter').'" title="'.i18n("Newsletter", 'newsletter').'" name="'.$sId.'" id="'.$sId.'" src="'.$cfg["path"]["images"].'newsletter_on.gif">';
     $sButtonRow .= '</a>';
 }
 
@@ -68,7 +68,7 @@ $sId = 'img_dispatch';
 $oTpl->set('s', 'IDISPATCH', $sId);
 if ($perm->have_perm_area_action('news_jobs')) {
     $sButtonRow .= '<a href="javascript://" onclick="toggleContainer(\''.$sId.'\');reloadLeftBottomAndTransportFormVars(document.dispatch_listoptionsform);">';
-    $sButtonRow .= '<img onmouseover="hoverEffect(\''.$sId.'\', \'in\')" onmouseout="hoverEffect(\''.$sId.'\', \'out\')" alt="'.i18n("Dispatch", 'newsletter').'" title="'.i18n("Dispatch", 'newsletter').'" name="'.$sId.'" id="'.$sId.'" src="'.$cfg["path"]["images"].'newsletter_dispatch_on.gif"/>';
+    $sButtonRow .= '<img onmouseover="hoverEffect(\''.$sId.'\', \'in\')" onmouseout="hoverEffect(\''.$sId.'\', \'out\')" alt="'.i18n("Dispatch", 'newsletter').'" title="'.i18n("Dispatch", 'newsletter').'" name="'.$sId.'" id="'.$sId.'" src="'.$cfg["path"]["images"].'newsletter_dispatch_on.gif">';
     $sButtonRow .= '</a>';
 }
 
@@ -77,7 +77,7 @@ $sId = 'img_recipient';
 $oTpl->set('s', 'IRECIPIENTS', $sId);
 if ($perm->have_perm_area_action('recipients')) {
     $sButtonRow .= '<a href="javascript://" onclick="toggleContainer(\''.$sId.'\');reloadLeftBottomAndTransportFormVars(document.recipients_listoptionsform);">';
-    $sButtonRow .= '<img onmouseover="hoverEffect(\''.$sId.'\', \'in\')" onmouseout="hoverEffect(\''.$sId.'\', \'out\')" alt="'.i18n("Recipients", 'newsletter').'" title="'.i18n("Recipients", 'newsletter').'" id="'.$sId.'" src="'.$cfg["path"]["images"].'newsletter_recipients_on.gif"/>';
+    $sButtonRow .= '<img onmouseover="hoverEffect(\''.$sId.'\', \'in\')" onmouseout="hoverEffect(\''.$sId.'\', \'out\')" alt="'.i18n("Recipients", 'newsletter').'" title="'.i18n("Recipients", 'newsletter').'" id="'.$sId.'" src="'.$cfg["path"]["images"].'newsletter_recipients_on.gif">';
     $sButtonRow .= '</a>';
 }
 
@@ -86,7 +86,7 @@ $sId = 'img_recipientgroup';
 $oTpl->set('s', 'IRECIPIENTGROUP', $sId);
 if ($perm->have_perm_area_action('recipientgroups')) {
     $sButtonRow .= '<a href="javascript://" onclick="toggleContainer(\''.$sId.'\');reloadLeftBottomAndTransportFormVars(groups_listoptionsform);">';
-    $sButtonRow .= '<img onmouseover="hoverEffect(\''.$sId.'\', \'in\')" onmouseout="hoverEffect(\''.$sId.'\', \'out\')" alt="'.i18n("Recipient groups", 'newsletter').'" title="'.i18n("Recipient groups", 'newsletter').'" id="'.$sId.'" src="'.$cfg["path"]["images"].'newsletter_recipientgroups_on.gif"/>';
+    $sButtonRow .= '<img onmouseover="hoverEffect(\''.$sId.'\', \'in\')" onmouseout="hoverEffect(\''.$sId.'\', \'out\')" alt="'.i18n("Recipient groups", 'newsletter').'" title="'.i18n("Recipient groups", 'newsletter').'" id="'.$sId.'" src="'.$cfg["path"]["images"].'newsletter_recipientgroups_on.gif">';
     $sButtonRow .= '</a>';
 }
 
@@ -254,13 +254,13 @@ $sContent = '
                 <td>'.$oCkbHTMLNewsletter->toHTML(false).' <label for="' . $oCkbHTMLNewsletter->getID() . '">'.i18n("Enable HTML newsletter", 'newsletter').'</label></td>
             </tr>
             <tr>
-                <td><label for="'.$oSelHTMLTemplateIDCat->getID().'">'.i18n("HTML template category:", 'newsletter').'</label><br /> '.$oSelHTMLTemplateIDCat->render().'</td>
+                <td><label for="'.$oSelHTMLTemplateIDCat->getID().'">'.i18n("HTML template category:", 'newsletter').'</label><br> '.$oSelHTMLTemplateIDCat->render().'</td>
             </tr>
             <tr>
-                <td><label for="'.$oSelHTMLNewsletterIDCat->getID().'">'.i18n("HTML newsletter category:", 'newsletter').'</label><br /> '.$oSelHTMLNewsletterIDCat->render().'</td>
+                <td><label for="'.$oSelHTMLNewsletterIDCat->getID().'">'.i18n("HTML newsletter category:", 'newsletter').'</label><br> '.$oSelHTMLNewsletterIDCat->render().'</td>
             </tr>
             <tr>
-                <td><label for="'.$oSelTestDestination->getID().'">'.i18n("Send test destination:", 'newsletter').'</label><br />'.$oSelTestDestination->render().'</td>
+                <td><label for="'.$oSelTestDestination->getID().'">'.i18n("Send test destination:", 'newsletter').'</label><br>'.$oSelTestDestination->render().'</td>
             </tr>
             <tr>
                 <td style="text-align:right;">'.$oBtnSave->render().'</td>
@@ -592,7 +592,7 @@ if ($perm->have_perm_area_action("recipients", "recipients_create")) {
     $oLink = new cHTMLLink();
     $oLink->setMultiLink("recipients","","recipients","recipients_create");
     $oLink->setContent('<img src="'.$cfg["path"]["images"] . 'folder_new.gif">'.i18n("Create recipient", 'newsletter').'</a>');
-    $sContent .= $oLink->render().'<br />'."\n";
+    $sContent .= $oLink->render().'<br>'."\n";
 }
 
 // Create a link to import recipients
@@ -600,7 +600,7 @@ if ($perm->have_perm_area_action("recipients", "recipients_create")) {
     $oLink = new cHTMLLink();
     $oLink->setMultiLink("recipients", "", "recipients_import", "recipients_import");
     $oLink->setContent('<img src="'.$cfg["path"]["images"] . 'importieren.gif">'.i18n("Import recipients", 'newsletter').'</a>');
-    $sContent .= $oLink->render().'<br />'."\n";
+    $sContent .= $oLink->render().'<br>'."\n";
 }
 
 // Create a link to purge subscribed but not confirmed recipients
@@ -842,7 +842,7 @@ if ($perm->have_perm_area_action("recipientgroups", "recipientgroup_create")) {
     $oLnk = new cHTMLLink();
     $oLnk->setMultiLink("recipientgroups","","recipientgroups","recipientgroup_create");
     $oLnk->setContent('<img src="'.$cfg["path"]["images"] . 'folder_new.gif" align="middle">'.i18n("Create group", 'newsletter').'</a>');
-    $sContent .= $oLnk->render().'<br />'."\n";
+    $sContent .= $oLnk->render().'<br>'."\n";
 }
 
 $sContent = '

@@ -137,31 +137,31 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
     $oForm->add(i18n("Subject", 'newsletter'), $oNewsletter->get("subject"));
 
     $sTagInfoText = '<a href="javascript:fncShowHide(\'idTagInfoText\');"><strong>'.i18n("Tag information", 'newsletter').'</strong></a>'.
-            '<div id="idTagInfoText" style="display: none"><br /><b>'. i18n("Special message tags (will be replaced when sending)", 'newsletter').':</b><br>'.
-            'MAIL_NAME: '.i18n("Name of the recipient", 'newsletter').'<br />'.
-            'MAIL_DATE: '.i18n("Date, when the mail has been sent", 'newsletter').'<br />'.
-            'MAIL_TIME: '.i18n("Time, when the mail has been sent", 'newsletter').'<br />'.
-            'MAIL_NUMBER: '.i18n("Number of recipients", 'newsletter').'<br />'.
-            #'MAIL_CHANGE: '.i18n("Link to change the e-mail address").'<br />'.
-            'MAIL_UNSUBSCRIBE: '.i18n("Link to unsubscribe", 'newsletter').'<br />'.
-            'MAIL_STOP: '.i18n("Link to pause the subscription", 'newsletter').'<br />'.
+            '<div id="idTagInfoText" style="display: none"><br><b>'. i18n("Special message tags (will be replaced when sending)", 'newsletter').':</b><br>'.
+            'MAIL_NAME: '.i18n("Name of the recipient", 'newsletter').'<br>'.
+            'MAIL_DATE: '.i18n("Date, when the mail has been sent", 'newsletter').'<br>'.
+            'MAIL_TIME: '.i18n("Time, when the mail has been sent", 'newsletter').'<br>'.
+            'MAIL_NUMBER: '.i18n("Number of recipients", 'newsletter').'<br>'.
+            #'MAIL_CHANGE: '.i18n("Link to change the e-mail address").'<br>'.
+            'MAIL_UNSUBSCRIBE: '.i18n("Link to unsubscribe", 'newsletter').'<br>'.
+            'MAIL_STOP: '.i18n("Link to pause the subscription", 'newsletter').'<br>'.
             'MAIL_GOON: '.i18n("Link to resume the subscription", 'newsletter');
 
     $sTagInfoHTML = '<a href="javascript:fncShowHide(\'idTagInfoHTML\');"><strong>'.i18n("Tag information", 'newsletter').'</strong></a>'.
-            '<div id="idTagInfoHTML" style="display: none"><br /><b>'.i18n("Special message tags (will be replaced when sending, {..} = optional)", 'newsletter').":</b><br />".
-            '[mail name="name" type="text"]{text}MAIL_NAME{text}[/mail]: '.i18n("Name of the recipient", 'newsletter')."<br />".
-            '[mail name="date" type="text"]{text}MAIL_DATE{text}[/mail]: '.i18n("Date, when the mail has been sent", 'newsletter')."<br />".
-            '[mail name="time" type="text"]{text}MAIL_TIME{text}[/mail]: '.i18n("Time, when the mail has been sent", 'newsletter')."<br />".
-            '[mail name="number" type="text"]{text}MAIL_NUMBER{text}[/mail]: '.i18n("Number of recipients", 'newsletter')."<br />".
-            #'[mail name="change" type="link" {text="'.i18n("Link text").'"}]{text}MAIL_CHANGE{text}[/mail]: '.i18n("Link to change the e-mail address")."<br />".
-            '[mail name="unsubscribe" type="link" {text="'.i18n("Link text", 'newsletter').'" }]{text}MAIL_UNSUBSCRIBE{text}[/mail]: '.i18n("Link to unsubscribe", 'newsletter')."<br />".
-            '[mail name="stop" type="link" {text="'.i18n("Link text", 'newsletter').'" }]{text}MAIL_STOP{text}[/mail]: '.i18n("Link to pause the subscription", 'newsletter')."<br />".
+            '<div id="idTagInfoHTML" style="display: none"><br><b>'.i18n("Special message tags (will be replaced when sending, {..} = optional)", 'newsletter').":</b><br>".
+            '[mail name="name" type="text"]{text}MAIL_NAME{text}[/mail]: '.i18n("Name of the recipient", 'newsletter')."<br>".
+            '[mail name="date" type="text"]{text}MAIL_DATE{text}[/mail]: '.i18n("Date, when the mail has been sent", 'newsletter')."<br>".
+            '[mail name="time" type="text"]{text}MAIL_TIME{text}[/mail]: '.i18n("Time, when the mail has been sent", 'newsletter')."<br>".
+            '[mail name="number" type="text"]{text}MAIL_NUMBER{text}[/mail]: '.i18n("Number of recipients", 'newsletter')."<br>".
+            #'[mail name="change" type="link" {text="'.i18n("Link text").'"}]{text}MAIL_CHANGE{text}[/mail]: '.i18n("Link to change the e-mail address")."<br>".
+            '[mail name="unsubscribe" type="link" {text="'.i18n("Link text", 'newsletter').'" }]{text}MAIL_UNSUBSCRIBE{text}[/mail]: '.i18n("Link to unsubscribe", 'newsletter')."<br>".
+            '[mail name="stop" type="link" {text="'.i18n("Link text", 'newsletter').'" }]{text}MAIL_STOP{text}[/mail]: '.i18n("Link to pause the subscription", 'newsletter')."<br>".
             '[mail name="goon" type="link" {text="'.i18n("Link text", 'newsletter').'" }]{text}MAIL_GOON{text}[/mail]: '.i18n("Link to resume the subscription", 'newsletter');
 
     // Mention plugin interface
     if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
-        $sTagInfoText .= "<br /><br /><strong>".i18n("Additional message tags from recipients plugins:", 'newsletter')."</strong><br />";
-        $sTagInfoHTML .= "<br /><br /><strong>".i18n("Additional message tags from recipients plugins:", 'newsletter')."</strong><br />";
+        $sTagInfoText .= "<br><br><strong>".i18n("Additional message tags from recipients plugins:", 'newsletter')."</strong><br>";
+        $sTagInfoHTML .= "<br><br><strong>".i18n("Additional message tags from recipients plugins:", 'newsletter')."</strong><br>";
 
         if (is_array($cfg['plugins']['recipients'])) {
             foreach ($cfg['plugins']['recipients'] as $plugin) {
@@ -171,8 +171,8 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
                     $aPluginVars = call_user_func("recipients_".$plugin."_wantedVariables");
 
                     foreach ($aPluginVars as $sPluginVar) {
-                        $sTagInfoText .= 'MAIL_'.strtoupper($sPluginVar).'<br />';
-                        $sTagInfoHTML .= '[mail name="'.strtolower($sPluginVar).'" type="text"][/mail]<br />';
+                        $sTagInfoText .= 'MAIL_'.strtoupper($sPluginVar).'<br>';
+                        $sTagInfoHTML .= '[mail name="'.strtolower($sPluginVar).'" type="text"][/mail]<br>';
                     }
                 }
             }
@@ -208,17 +208,17 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 
         if ($iTplIDArt != 0) {
             $sFrameSrc = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?changeview=edit&action=con_editart&idart=".$oNewsletter->get("idart")."&idcat=".$oClientLang->getProperty("newsletter", "html_newsletter_idcat")."&lang=".$lang."&contenido=".$sess->id;
-            $oForm->add(i18n("HTML Message", 'newsletter'), '<iframe width="100%" height="600" src="'.$sFrameSrc.'"></iframe><br />'.$sTagInfoHTML);
+            $oForm->add(i18n("HTML Message", 'newsletter'), '<iframe width="100%" height="600" src="'.$sFrameSrc.'"></iframe><br>'.$sTagInfoHTML);
         } else {
             // Add a real note, that a template has to be specified
-            $oPage->displayWarning(i18n("Newsletter type has been set to HTML/text, please remember to select an html template", 'newsletter')) . "<br />";
+            $oPage->displayWarning(i18n("Newsletter type has been set to HTML/text, please remember to select an html template", 'newsletter')) . "<br>";
 
             $oForm->add(i18n("HTML Message", 'newsletter'), i18n("Please choose a template first", 'newsletter'));
         }
     }
 
     $oTxtMessage = new cHTMLTextarea("txtMessage", $oNewsletter->get("message"), 80, 20);
-    $oForm->add(i18n("Text Message", 'newsletter'), $oTxtMessage->render()."<br />".$sTagInfoText);
+    $oForm->add(i18n("Text Message", 'newsletter'), $oTxtMessage->render()."<br>".$sTagInfoText);
 
     $sExecScript = '
     <script type="text/javascript">
@@ -248,7 +248,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
                     submitForm();
                 } else {
                     // You may loose information, warn!
-                    box.confirm("'.i18n("HTML newsletter template changed", 'newsletter').'", "'.i18n("HTML template has been changed. Do you like to save now to apply changes?<br /><br /><b>Note, that existing HTML newsletter content will get lost!</b>", 'newsletter').'", "submitForm()");
+                    box.confirm("'.i18n("HTML newsletter template changed", 'newsletter').'", "'.i18n("HTML template has been changed. Do you like to save now to apply changes?<br><br><b>Note, that existing HTML newsletter content will get lost!</b>", 'newsletter').'", "submitForm()");
                 }
             }
         }

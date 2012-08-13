@@ -78,7 +78,7 @@ class pApiContentAllocationComplexList extends pApiTree {
             // for wrapping purposes
             $item_tmp['name'] = str_replace('-', '- ', $item_tmp['name']);
 
-            $checkbox = '<input type="checkbox" name="allocation[]" onClick="addToList(this);" ' . $checked . '" id="e'.$item_tmp['idpica_alloc'].'" value="'.$item_tmp['idpica_alloc'].'" />';
+            $checkbox = '<input type="checkbox" name="allocation[]" onClick="addToList(this);" ' . $checked . '" id="e'.$item_tmp['idpica_alloc'].'" value="'.$item_tmp['idpica_alloc'].'">';
             $item = "\n<li style=\"border-bottom: 1px solid #B3B3B3\" baseClass=\"" . $bgcolor . "\" ".$li_closeElm.">" . $checkbox . " " . $item_tmp['name'];
 
             $result .= $item;

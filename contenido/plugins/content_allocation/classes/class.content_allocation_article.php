@@ -71,7 +71,7 @@ class pApiContentAllocationArticle extends pApiTree {
             if (in_array($item_tmp['idpica_alloc'], $this->load)) {
                 $checked = ' checked="checked"';
             }
-            $item['CHECKBOX'] = '<input type="checkbox" name="allocation[]" value="'.$item_tmp['idpica_alloc'].'" '.$checked.' />';
+            $item['CHECKBOX'] = '<input type="checkbox" name="allocation[]" value="'.$item_tmp['idpica_alloc'].'" '.$checked.'>';
 
             array_push($result, $item);
 

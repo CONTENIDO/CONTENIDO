@@ -64,7 +64,7 @@ if (isset($_REQUEST["txtPurgeTimeframe"]) && $_REQUEST["txtPurgeTimeframe"] > 0
     && $_REQUEST["txtPurgeTimeframe"] != $iTimeframe && $perm->have_perm_area_action($area, "recipients_delete"))
 {
     $oClient->setProperty("newsletter", "purgetimeframe", $_REQUEST["txtPurgeTimeframe"]);
-    //$sRefreshTop = '<script language="JavaScript">parent.left_top.purgetimeframe = '.$_REQUEST["txtPurgeTimeframe"].'</script>';
+    //$sRefreshTop = '<script type="text/javascript">parent.left_top.purgetimeframe = '.$_REQUEST["txtPurgeTimeframe"].'</script>';
 }
 
 ##################################

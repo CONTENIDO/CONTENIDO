@@ -334,8 +334,8 @@ msgid "HTML newsletter template changed"
 msgstr "Änderung der HTML-Newsletter-Vorlage"
 
 #: includes/include.newsletter_edit_message.php:251
-msgid "HTML template has been changed. Do you like to save now to apply changes?<br /><br /><b>Note, that existing HTML newsletter content will get lost!</b>"
-msgstr "Das HTML-Template wurde geändert. Möchten Sie jetzt speichern, um die Änderungen anzuwenden?<br /><br /><b>Bitte beachten Sie, dass der ggf. vorhandene Inhalt des HTML-Newsletters verloren geht!</b>"
+msgid "HTML template has been changed. Do you like to save now to apply changes?<br><br><b>Note, that existing HTML newsletter content will get lost!</b>"
+msgstr "Das HTML-Template wurde geändert. Möchten Sie jetzt speichern, um die Änderungen anzuwenden?<br><br><b>Bitte beachten Sie, dass der ggf. vorhandene Inhalt des HTML-Newsletters verloren geht!</b>"
 
 #: includes/include.newsletter_jobs_details.php:63
 #: includes/include.newsletter_jobs_details.php:74
@@ -977,24 +977,24 @@ msgid "Specify colum types:"
 msgstr "Spaltentypen definieren:"
 
 #: includes/include.recipients_import.php:373
-msgid "<br />The first line must contain the column names; this specifies the column order.<br />&lt;column name&gt;[delimiter]&lt;column name&gt;..."
-msgstr "<br />Die erste Zeile muss die Spaltennamen enthalten; dies definiert die Spaltenreihenfolge.<br />&lt;Spaltenname&gt;[Separator]&lt;Spaltenname&gt;..."
+msgid "<br>The first line must contain the column names; this specifies the column order.<br>&lt;column name&gt;[delimiter]&lt;column name&gt;..."
+msgstr "<br>Die erste Zeile muss die Spaltennamen enthalten; dies definiert die Spaltenreihenfolge.<br>&lt;Spaltenname&gt;[Separator]&lt;Spaltenname&gt;..."
 
 #: includes/include.recipients_import.php:374
 msgid "Data structure:"
 msgstr "Datenstruktur:"
 
 #: includes/include.recipients_import.php:375
-msgid "The recipients have to be entered using the following format:<br />&lt;data&gt;[Delimiter]&lt;data&gt;... - each recipient in a new line."
-msgstr "Die Empfänger müssen nach dem folgenden Format eingegeben werden: <br />&lt;data&gt;[Separator]&lt;data&gt;... - Jeder Empfänger in einer neuen Zeile."
+msgid "The recipients have to be entered using the following format:<br>&lt;data&gt;[Delimiter]&lt;data&gt;... - each recipient in a new line."
+msgstr "Die Empfänger müssen nach dem folgenden Format eingegeben werden: <br>&lt;data&gt;[Separator]&lt;data&gt;... - Jeder Empfänger in einer neuen Zeile."
 
 #: includes/include.recipients_import.php:376
 msgid "Example:"
 msgstr "Beispiel:"
 
 #: includes/include.recipients_import.php:377
-msgid "<br />name;mail;confirmed<br />Smith;jon.smith@example.org;1"
-msgstr "<br /><br />name;mail;bestätigt<br />Smith;jon.smith@example.org;1"
+msgid "<br>name;mail;confirmed<br>Smith;jon.smith@example.org;1"
+msgstr "<br><br>name;mail;bestätigt<br>Smith;jon.smith@example.org;1"
 
 #: includes/include.recipients_import.php:378
 msgid "The following column names will be recognized:"

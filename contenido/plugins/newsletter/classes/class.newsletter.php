@@ -958,7 +958,7 @@ class Newsletter extends Item
         }
 
         if (count($aMessages) > 0) {
-            $this->_sError = implode("<br />", $aMessages);
+            $this->_sError = implode("<br>", $aMessages);
             return false;
         } else {
             return true;

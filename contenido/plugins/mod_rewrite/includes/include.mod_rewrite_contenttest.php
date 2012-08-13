@@ -79,9 +79,9 @@ $oView->lng_result_item_tpl = i18n('{pref}<strong>{name}</strong>
 {pref}<span style="color:{color}">Resolved URL:  {url_res}</span>
 {pref}Resolved data: {data}', 'mod_rewrite');
 
-$oView->lng_result_message_tpl = i18n('Duration of test run: {time} seconds.<br />
-Number of processed URLs: {num_urls}<br />
-<span style="color:green">Successful resolved: {num_success}</span><br />
+$oView->lng_result_message_tpl = i18n('Duration of test run: {time} seconds.<br>
+Number of processed URLs: {num_urls}<br>
+<span style="color:green">Successful resolved: {num_success}</span><br>
 <span style="color:red">Errors during resolving: {num_fail}</span></strong>', 'mod_rewrite');
 
 

@@ -197,9 +197,9 @@ while ($oNewsletter = $oNewsletters->next()) {
         //         If you are able to add or change a newsletter, you should be able to test it
         // Usability: If no e-mail has been specified, you can't send a test newsletter
         if (isValidMail($oNewsletter->get("newsfrom")) && $lIDCatArt > 0) {
-            $sLnkSendTest = '<a title="'.$aMsg["SendTestTitle"].'" href="javascript://" onclick="showSendTestMsg('.$idnewsletter.')"><img src="'.$cfg['path']['images'].'newsletter_sendtest_16.gif" border="0" title="'.$aMsg["SendTestTitle"].'" alt="'.$aMsg["SendTestTitle"].'" /></a>';
+            $sLnkSendTest = '<a title="'.$aMsg["SendTestTitle"].'" href="javascript://" onclick="showSendTestMsg('.$idnewsletter.')"><img src="'.$cfg['path']['images'].'newsletter_sendtest_16.gif" border="0" title="'.$aMsg["SendTestTitle"].'" alt="'.$aMsg["SendTestTitle"].'"></a>';
         } else {
-            $sLnkSendTest = '<img src="'.$cfg['path']['images'].'newsletter_sendtest_16_off.gif" border="0" title="'.$aMsg["SendTestTitleOff"].'" alt="'.$aMsg["SendTestTitleOff"].'" />';
+            $sLnkSendTest = '<img src="'.$cfg['path']['images'].'newsletter_sendtest_16_off.gif" border="0" title="'.$aMsg["SendTestTitleOff"].'" alt="'.$aMsg["SendTestTitleOff"].'">';
         }
         $oMenu->setActions($iMenu, 'test', $sLnkSendTest);
     }
@@ -214,7 +214,7 @@ while ($oNewsletter = $oNewsletters->next()) {
 
             $sLnkAddJob = $oLnkAddJob->render();
         } else {
-            $sLnkAddJob = '<img src="'.$cfg['path']['images'].'newsletter_dispatch_16_off.gif" border="0" title="'.$aMsg["AddJobTitleOff"].'" alt="'.$aMsg["AddJobTitleOff"].'" />';
+            $sLnkAddJob = '<img src="'.$cfg['path']['images'].'newsletter_dispatch_16_off.gif" border="0" title="'.$aMsg["AddJobTitleOff"].'" alt="'.$aMsg["AddJobTitleOff"].'">';
         }
 
         $oMenu->setActions($iMenu, 'dispatch', $sLnkAddJob);

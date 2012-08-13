@@ -62,7 +62,7 @@ function frontendusers_valid_from_display()
                     <script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>';
     $sValidFrom .= $langscripts;
 
-    $sValidFrom .= '<input type="text" id="valid_from" name="valid_from" value="'.$currentValue.'" />';
+    $sValidFrom .= '<input type="text" id="valid_from" name="valid_from" value="'.$currentValue.'">';
     $sValidFrom .= '<script type="text/javascript">
 
      $(document).ready(function() {

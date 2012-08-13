@@ -1,201 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
-    <head>
-        <title>Linkchecker</title>
-        <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
-        <link rel="stylesheet" type="text/css" href="styles/tipsy.css" />
-        <script type="text/javascript" src="scripts/rowMark.js">
-        </script>
-        <script type="text/javascript" src="scripts/general.js">
-        </script>
-        <script type="text/javascript" src="scripts/browserCheck.js">
-        </script>
-        <script type="text/javascript" src="scripts/cfoldingrow.js">
-        </script>
-        <script type="text/javascript" src="scripts/jquery/jquery.js">
-        </script>
-        <script type="text/javascript" src="scripts/registerTipsy.js">
-        </script>
-        <script type="text/javascript">
-            function toggleTableBody(tableId){
+<head>
+    <title>Linkchecker</title>
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <link rel="stylesheet" type="text/css" href="styles/tipsy.css">
+    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/general.js"></script>
+    <script type="text/javascript" src="scripts/browserCheck.js"></script>
+    <script type="text/javascript" src="scripts/cfoldingrow.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    <script type="text/javascript" src="scripts/registerTipsy.js"></script>
+    <script type="text/javascript">
+        function toggleTableBody(tableId) {
+            var collapseButton = 'images/close_all.gif';
+            var expandButton = 'images/open_all.gif';
+            var curTable = document.getElementById(tableId);
+            var curButton = document.getElementById(tableId + '_img');
 
-                var collapseButton = 'images/close_all.gif';
-                var expandButton = 'images/open_all.gif';
-                var curTable = document.getElementById(tableId);
-                var curButton = document.getElementById(tableId + '_img');
-
-                if (curTable.style.display == "inline" || curTable.style.display == "") {
-                    curTable.style.display = "none";
-                    curButton.src = expandButton;
-                }
-                else
-                    if (curTable.style.display == "none") {
-                        curTable.style.display = "inline";
-                        curButton.src = collapseButton;
-                    }
+            if (curTable.style.display == "inline" || curTable.style.display == "") {
+                curTable.style.display = "none";
+                curButton.src = expandButton;
+            } else if (curTable.style.display == "none") {
+                curTable.style.display = "inline";
+                curButton.src = collapseButton;
             }
-        </script>
-    </head>
-    <body class="mg10">
-        <a href="javascript:location.reload()" accesskey="s"></a>
-        <table width="100%" class="borderB5" cellspacing="0" cellpadding="3" border="0">
-            <tr class="text_medium heightpx25 lheightpx25">
-                <td class="bgcE2" colspan="3">
-                    <a href="{INTERNS_HREF}" alt="{INTERNS_LABEL}" title="{INTERNS_LABEL}" class="mgl10">{INTERNS_LABEL}<img class="vgmiddle mgl5" src="images/submit.gif" border="0"></a><a href="{EXTERNS_HREF}" alt="{EXTERNS_LABEL}" title="{EXTERNS_LABEL}" class="mgl15">{EXTERNS_LABEL}<img class="vgmiddle mgl5" src="images/submit.gif" border="0"></a><a href="{INTERNS_EXTERNS_HREF}" alt="{INTERNS_EXTERNS_LABEL}" title="{INTERNS_EXTERNS_LABEL}" class="mgl15">{INTERNS_EXTERNS_LABEL}<img class="vgmiddle mgl5" src="images/submit.gif" border="0"></a>
-                </td>
-            </tr>
-        </table>
-        <div class="pdt10">
-        </div>
-        <table cellspacing="0" cellpadding="2" border="0">
-            <tr valign="middle">
-                <td>
-                    <h2>{TITLE}</h2>
-                </td>
-            </tr>
+        }
+    </script>
+</head>
+<body class="mg10">
+    <a href="javascript:location.reload()" accesskey="s"></a>
+    <table width="100%" class="borderB5" cellspacing="0" cellpadding="3" border="0">
+        <tr class="text_medium heightpx25 lheightpx25">
+            <td class="bgcE2" colspan="3">
+                <a href="{INTERNS_HREF}" alt="{INTERNS_LABEL}" title="{INTERNS_LABEL}" class="mgl10">{INTERNS_LABEL}<img class="vgmiddle mgl5" src="images/submit.gif" border="0"></a><a href="{EXTERNS_HREF}" alt="{EXTERNS_LABEL}" title="{EXTERNS_LABEL}" class="mgl15">{EXTERNS_LABEL}<img class="vgmiddle mgl5" src="images/submit.gif" border="0"></a><a href="{INTERNS_EXTERNS_HREF}" alt="{INTERNS_EXTERNS_LABEL}" title="{INTERNS_EXTERNS_LABEL}" class="mgl15">{INTERNS_EXTERNS_LABEL}<img class="vgmiddle mgl5" src="images/submit.gif" border="0"></a>
+            </td>
+        </tr>
+    </table>
+    <div class="pdt10">
+    </div>
+    <table cellspacing="0" cellpadding="2" border="0">
+        <tr valign="middle">
+            <td>
+                <h2>{TITLE}</h2>
+            </td>
+        </tr>
+        <tr>
+            <td class="pdt5 pdb15 vgmiddle">
+                <a href="{UPDATE_HREF}"><img src="images/but_refresh.gif" class="mgr3 vgmiddle" title="i18n('Refresh')" alt="i18n('Refresh')"></a><a href="{UPDATE_HREF}">i18n('Refresh')</a>
+            </td>
+        </tr>
+    </table>
+    <table width="100%" class="borderlB5" cellspacing="0" cellpadding="3" border="0">
+        <tr class="text_medium">
+            <td class="bgcCC borderB5 noborderl width20">
+                {ERRORS_HEADLINE}:
+            </td>
+            <td class="bgcE2 borderB5 noborderl noborderr width10">
+            {ERRORS_COUNT_CHECKED}
+            <td class="bgcE2 borderB5 noborderl width70">
+                {ERRORS_HELP_ERRORS}: <span class="colorF0">{ERRORS_COUNT_ERRORS} ({ERRORS_COUNT_ERRORS_PERCENT} %)</span>
+            </td>
+        </tr>
+    </table>
+    <div class="mgt20">
+    </div>
+    <table width="100%" class="borderlB5" cellspacing="0" cellpadding="3" border="0">
+        <tr class="text_medium bgcE2">
+            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
+                <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=nameart">{ERRORS_HEADLINE_ARTICLE}</a>
+                (ID)
+            </td>
+            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
+                <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=namecat">{ERRORS_HEADLINE_CATNAME}</a>
+                (ID)
+            </td>
+            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width40">
+                <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=wronglink">{ERRORS_HEADLINE_LINK}</a>
+            </td>
+            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width10">
+                <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=error_type">{ERRORS_HEADLINE_DESCRIPTION}</a>
+            </td>
+            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap tgcenter width10">
+                {ERRORS_HEADLINE_WHITELIST}
+            </td>
+        </tr>
+    </table>
+    <div class="mgt10">
+    </div>
+    <!-- ######################### --><!-- ### Links to Articles ### --><!-- ######################### -->
+    <div class="mgb10">
+        <!-- Table Head -->
+        <table width="100%" class="borderB5 bgcF1">
             <tr>
-                <td class="pdt5 pdb15 vgmiddle">
-                    <a href="{UPDATE_HREF}"><img src="images/but_refresh.gif" class="mgr3 vgmiddle" title="i18n('Refresh')" alt="i18n('Refresh')"></a><a href="{UPDATE_HREF}">i18n('Refresh')</a>
+                <td>
+                    <strong>{ERRORS_HEADLINE_LINKS_ARTICLES}</strong>
+                    ({ERRORS_COUNT_ERRORS_ART})
+                </td>
+                <td align="center" class="pd0 widthpx22">
+                    <a href="#" onclick="javascript:toggleTableBody('{ID_LINKS_ARTICLES}')" style="height:1em;line-height:1em;width:100%;height:100%;display:block;"><img class="pdt5" src="images/close_all.gif" id = "{ID_LINKS_ARTICLES}_img"></a>
                 </td>
             </tr>
-        </table>
-        <table width="100%" class="borderlB5" cellspacing="0" cellpadding="3" border="0">
-            <tr class="text_medium">
-                <td class="bgcCC borderB5 noborderl width20">
-                    {ERRORS_HEADLINE}:
+        </table><!-- Table Body -->
+        <div id="{ID_LINKS_ARTICLES}">
+            <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
+                {ERRORS_SHOW_ART}
+            </table>
+        </div>
+    </div>
+    <!-- ##################################### --><!-- ### Links to Documents and Images ### --><!-- ##################################### -->
+    <div class="mgb10">
+        <!-- Table Head -->
+        <table width="100%" class="borderB5 bgcF1">
+            <tr>
+                <td>
+                    <strong>{ERRORS_HEADLINE_LINKS_DOCIMAGES}</strong>
+                    ({ERRORS_COUNT_ERRORS_DOCIMAGES})
                 </td>
-                <td class="bgcE2 borderB5 noborderl noborderr width10">
-                {ERRORS_COUNT_CHECKED}
-                <td class="bgcE2 borderB5 noborderl width70">
-                    {ERRORS_HELP_ERRORS}: <span class="colorF0">{ERRORS_COUNT_ERRORS} ({ERRORS_COUNT_ERRORS_PERCENT} %)</span>
+                <td align="center" class="pd0 widthpx22">
+                    <a href="#" onclick="javascript:toggleTableBody('{ID_LINKS_DOCSIMGS}')" style="height:1em;line-height:1em;width:100%;height:100%;display:block;"><img class="pdt5" src="images/close_all.gif" id = "{ID_LINKS_DOCSIMGS}_img"></a>
                 </td>
             </tr>
-        </table>
-        <div class="mgt20">
+        </table><!-- Table Body -->
+        <div id="{ID_LINKS_DOCSIMGS}">
+            <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
+                {ERRORS_SHOW_DOCIMAGES}
+            </table>
         </div>
-        <table width="100%" class="borderlB5" cellspacing="0" cellpadding="3" border="0">
-            <tr class="text_medium bgcE2">
-                <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
-                    <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=nameart">{ERRORS_HEADLINE_ARTICLE}</a>
-                    (ID)
+    </div>
+    <!-- ############################### --><!-- ### Links to external sites ### --><!-- ############################### -->
+    <div class="mgb20">
+        <!-- Table Head -->
+        <table width="100%" class="borderB5 bgcF1">
+            <tr>
+                <td>
+                    <strong>{ERRORS_HEADLINE_OTHERS}</strong>
+                    ({ERRORS_COUNT_ERRORS_OTHERS})
                 </td>
-                <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
-                    <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=namecat">{ERRORS_HEADLINE_CATNAME}</a>
-                    (ID)
-                </td>
-                <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width40">
-                    <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=wronglink">{ERRORS_HEADLINE_LINK}</a>
-                </td>
-                <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width10">
-                    <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=error_type">{ERRORS_HEADLINE_DESCRIPTION}</a>
-                </td>
-                <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap tgcenter width10">
-                    {ERRORS_HEADLINE_WHITELIST}
+                <td align="center" class="pd0 widthpx22">
+                    <a href="#" onclick="javascript:toggleTableBody('{ID_LINKS_EXTERNAL}')" style="height:1em;line-height:1em;width:100%;height:100%;display:block;"><img class="pdt5" src="images/close_all.gif" id = "{ID_LINKS_EXTERNAL}_img"></a>
                 </td>
             </tr>
-        </table>
-        <div class="mgt10">
+        </table><!-- Table Body -->
+        <div id="{ID_LINKS_EXTERNAL}">
+            <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
+                {ERRORS_SHOW_OTHERS}
+            </table>
         </div>
-        <!-- ######################### --><!-- ### Links to Articles ### --><!-- ######################### -->
-        <div class="mgb10">
-            <!-- Table Head -->
-            <table width="100%" class="borderB5 bgcF1">
-                <tr>
-                    <td>
-                        <strong>{ERRORS_HEADLINE_LINKS_ARTICLES}</strong>
-                        ({ERRORS_COUNT_ERRORS_ART})
-                    </td>
-                    <td align="center" class="pd0 widthpx22">
-                        <a href="#" onclick="javascript:toggleTableBody('{ID_LINKS_ARTICLES}')" style="height:1em;line-height:1em;width:100%;height:100%;display:block;"><img class="pdt5" src="images/close_all.gif" id = "{ID_LINKS_ARTICLES}_img"></a>
-                    </td>
-                </tr>
-            </table><!-- Table Body -->
-            <div id="{ID_LINKS_ARTICLES}">
-                <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
-                    {ERRORS_SHOW_ART}
-                </table>
-            </div>
-        </div>
-        <!-- ##################################### --><!-- ### Links to Documents and Images ### --><!-- ##################################### -->
-        <div class="mgb10">
-            <!-- Table Head -->
-            <table width="100%" class="borderB5 bgcF1">
-                <tr>
-                    <td>
-                        <strong>{ERRORS_HEADLINE_LINKS_DOCIMAGES}</strong>
-                        ({ERRORS_COUNT_ERRORS_DOCIMAGES})
-                    </td>
-                    <td align="center" class="pd0 widthpx22">
-                        <a href="#" onclick="javascript:toggleTableBody('{ID_LINKS_DOCSIMGS}')" style="height:1em;line-height:1em;width:100%;height:100%;display:block;"><img class="pdt5" src="images/close_all.gif" id = "{ID_LINKS_DOCSIMGS}_img"></a>
-                    </td>
-                </tr>
-            </table><!-- Table Body -->
-            <div id="{ID_LINKS_DOCSIMGS}">
-                <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
-                    {ERRORS_SHOW_DOCIMAGES}
-                </table>
-            </div>
-        </div>
-        <!-- ############################### --><!-- ### Links to external sites ### --><!-- ############################### -->
-        <div class="mgb20">
-            <!-- Table Head -->
-            <table width="100%" class="borderB5 bgcF1">
-                <tr>
-                    <td>
-                        <strong>{ERRORS_HEADLINE_OTHERS}</strong>
-                        ({ERRORS_COUNT_ERRORS_OTHERS})
-                    </td>
-                    <td align="center" class="pd0 widthpx22">
-                        <a href="#" onclick="javascript:toggleTableBody('{ID_LINKS_EXTERNAL}')" style="height:1em;line-height:1em;width:100%;height:100%;display:block;"><img class="pdt5" src="images/close_all.gif" id = "{ID_LINKS_EXTERNAL}_img"></a>
-                    </td>
-                </tr>
-            </table><!-- Table Body -->
-            <div id="{ID_LINKS_EXTERNAL}">
-                <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
-                    {ERRORS_SHOW_OTHERS}
-                </table>
-            </div>
-        </div>
-        <table width="100%" class="borderlB5" cellspacing="0" cellpadding="3" border="0">
-            <tr class="text_medium bgcE2">
-                <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
-                    <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=namecat">{ERRORS_HEADLINE_CATNAME}</a>
-                    (ID)
+    </div>
+    <table width="100%" class="borderlB5" cellspacing="0" cellpadding="3" border="0">
+        <tr class="text_medium bgcE2">
+            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
+                <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=namecat">{ERRORS_HEADLINE_CATNAME}</a>
+                (ID)
+            </td>
+            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
+                <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=nameart">{ERRORS_HEADLINE_ARTICLE}</a>
+                (ID)
+            </td>
+            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width40">
+                <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=wronglink">{ERRORS_HEADLINE_LINK}</a>
+            </td>
+            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width10">
+                <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=error_type">{ERRORS_HEADLINE_DESCRIPTION}</a>
+            </td>
+            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap tgcenter width10">
+                {ERRORS_HEADLINE_WHITELIST}
+            </td>
+        </tr>
+    </table>
+    <!-- ########################### --><!-- ### Links to Categories ### --><!-- ########################### -->
+    <div class="mgt10 mgb10">
+        <!-- Table Head -->
+        <table width="100%" class="borderB5 bgcF1">
+            <tr>
+                <td>
+                    <strong>{ERRORS_HEADLINE_LINKS_CATEGORYS}</strong>
+                    ({ERRORS_COUNT_ERRORS_CAT})
                 </td>
-                <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
-                    <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=nameart">{ERRORS_HEADLINE_ARTICLE}</a>
-                    (ID)
-                </td>
-                <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width40">
-                    <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=wronglink">{ERRORS_HEADLINE_LINK}</a>
-                </td>
-                <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width10">
-                    <a class="color6" href="{URL}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&sort=error_type">{ERRORS_HEADLINE_DESCRIPTION}</a>
-                </td>
-                <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap tgcenter width10">
-                    {ERRORS_HEADLINE_WHITELIST}
+                <td align="center" class="pd0 widthpx22">
+                    <a href="#" onclick="javascript:toggleTableBody('{ID_LINKS_CATEGORIES}')" style="height:1em;line-height:1em;width:100%;height:100%;display:block;"><img class="pdt5" src="images/close_all.gif" id = "{ID_LINKS_CATEGORIES}_img"></a>
                 </td>
             </tr>
-        </table>
-        <!-- ########################### --><!-- ### Links to Categories ### --><!-- ########################### -->
-        <div class="mgt10 mgb10">
-            <!-- Table Head -->
-            <table width="100%" class="borderB5 bgcF1">
-                <tr>
-                    <td>
-                        <strong>{ERRORS_HEADLINE_LINKS_CATEGORYS}</strong>
-                        ({ERRORS_COUNT_ERRORS_CAT})
-                    </td>
-                    <td align="center" class="pd0 widthpx22">
-                        <a href="#" onclick="javascript:toggleTableBody('{ID_LINKS_CATEGORIES}')" style="height:1em;line-height:1em;width:100%;height:100%;display:block;"><img class="pdt5" src="images/close_all.gif" id = "{ID_LINKS_CATEGORIES}_img"></a>
-                    </td>
-                </tr>
-            </table><!-- Table Body -->
-            <div id="{ID_LINKS_CATEGORIES}">
-                <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
-                    {ERRORS_SHOW_CAT}
-                </table>
-            </div>
+        </table><!-- Table Body -->
+        <div id="{ID_LINKS_CATEGORIES}">
+            <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
+                {ERRORS_SHOW_CAT}
+            </table>
         </div>
-        <!-- Print Button --><a class="mgl3" href="javascript:print()"><img src="{URL}images/print.gif" alt="" border="0"></a>
-    </body>
+    </div>
+    <!-- Print Button --><a class="mgl3" href="javascript:print()"><img src="{URL}images/print.gif" alt="" border="0"></a>
+</body>
 </html>

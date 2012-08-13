@@ -346,7 +346,7 @@ msgstr ""
 #: includes/include.newsletter_edit_message.php:251
 msgid ""
 "HTML template has been changed. Do you like to save now to apply changes?"
-"<br /><br /><b>Note, that existing HTML newsletter content will get lost!</b>"
+"<br><br><b>Note, that existing HTML newsletter content will get lost!</b>"
 msgstr ""
 
 #: includes/include.newsletter_jobs_details.php:63
@@ -1009,8 +1009,8 @@ msgstr ""
 
 #: includes/include.recipients_import.php:373
 msgid ""
-"<br />The first line must contain the column names; this specifies the "
-"column order.<br />&lt;column name&gt;[delimiter]&lt;column name&gt;..."
+"<br>The first line must contain the column names; this specifies the "
+"column order.<br>&lt;column name&gt;[delimiter]&lt;column name&gt;..."
 msgstr ""
 
 #: includes/include.recipients_import.php:374
@@ -1019,7 +1019,7 @@ msgstr ""
 
 #: includes/include.recipients_import.php:375
 msgid ""
-"The recipients have to be entered using the following format:<br />&lt;"
+"The recipients have to be entered using the following format:<br>&lt;"
 "data&gt;[Delimiter]&lt;data&gt;... - each recipient in a new line."
 msgstr ""
 
@@ -1028,7 +1028,7 @@ msgid "Example:"
 msgstr ""
 
 #: includes/include.recipients_import.php:377
-msgid "<br />name;mail;confirmed<br />Smith;jon.smith@example.org;1"
+msgid "<br>name;mail;confirmed<br>Smith;jon.smith@example.org;1"
 msgstr ""
 
 #: includes/include.recipients_import.php:378

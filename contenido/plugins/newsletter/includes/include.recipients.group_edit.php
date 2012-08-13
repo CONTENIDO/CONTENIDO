@@ -547,7 +547,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     $oForm->add(i18n("Add recipients", 'newsletter'), '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.
                                         $oOutsiderListOptionRow->render().
                                         $oOutsiderPager->render().
-                                        '<tr><td>'.$oSelUser->render().'<br />'.i18n("Note: Hold &lt;Ctrl&gt; to<br>select multiple items.", 'newsletter').'</td></tr></table>');
+                                        '<tr><td>'.$oSelUser->render().'<br>'.i18n("Note: Hold &lt;Ctrl&gt; to<br>select multiple items.", 'newsletter').'</td></tr></table>');
     unset($oOutsiders);
     unset($oOutsiderListOptionRow);
     unset($oOutsiderPager);

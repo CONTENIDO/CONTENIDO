@@ -183,7 +183,7 @@ $sExecScript = '
     </script>';
 
 $oPage->addScript($sExecScript);
-//$oPage->addScript('cfoldingrow.js', '<script language="JavaScript" src="scripts/cfoldingrow.js"></script>');
+//$oPage->addScript('cfoldingrow.js', '<script type="text/javascript" src="scripts/cfoldingrow.js"></script>');
 $oPage->addScript('parameterCollector.js');
 
 // Generate current content for Object Pager

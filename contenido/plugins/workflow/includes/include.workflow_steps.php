@@ -354,10 +354,10 @@ function getWorkflowUsers($idworkflowitem) {
         $altnoti = i18n("Escalate to this user via E-Mail", "workflow");
 
         $oCheckbox = new cHTMLCheckbox("wfemailnoti[" . $id . "]", "1", "wfemailnoti[" . $id . "]1", $email);
-        $title .= $oCheckbox->toHTML(false) . '<label for="wfemailnoti[' . $id . ']1"><img alt="' . $altmail . '" title="' . $altmail . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . 'workflow/images/workflow_email_noti.gif"/></label>';
+        $title .= $oCheckbox->toHTML(false) . '<label for="wfemailnoti[' . $id . ']1"><img alt="' . $altmail . '" title="' . $altmail . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . 'workflow/images/workflow_email_noti.gif"></label>';
 
         $oCheckbox = new cHTMLCheckbox("wfescalnoti[" . $id . "]", "1", "wfescalnoti[" . $id . "]1", $escalation);
-        $title .= $oCheckbox->toHTML(false) . '<label for="wfescalnoti[' . $id . ']1"><img alt="' . $altnoti . '" title="' . $altnoti . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . 'workflow/images/workflow_escal_noti.gif"/></label>';
+        $title .= $oCheckbox->toHTML(false) . '<label for="wfescalnoti[' . $id . ']1"><img alt="' . $altnoti . '" title="' . $altnoti . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . 'workflow/images/workflow_escal_noti.gif"></label>';
 
         $ui->setTitle($id, $title);
         $ui->setLink($id, NULL);

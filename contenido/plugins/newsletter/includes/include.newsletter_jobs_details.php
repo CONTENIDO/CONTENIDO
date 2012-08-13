@@ -278,7 +278,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     </tr>
 </table>';
 
-    $oPage->setContent($oFrmOptions->render() . "<br />" . $oList->render() . $sBrowseHTML);
+    $oPage->setContent($oFrmOptions->render() . "<br>" . $oList->render() . $sBrowseHTML);
 } else {
     // Just show the job data
     $oJob = new NewsletterJob($_REQUEST["idnewsjob"]);
@@ -341,12 +341,12 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
             unset($aSendTo[0]);
             foreach ($aSendTo as $sGroup) {
-                $sSendToInfo .= "<br />" . $sGroup;
+                $sSendToInfo .= "<br>" . $sGroup;
             }
             break;
         case "single":
             $sSendToInfo = i18n("Send newsletter to single recipient:", 'newsletter');
-            $sSendToInfo .= "<br />" . $aSendTo[1] . " (" . $aSendTo[2] . ")";
+            $sSendToInfo .= "<br>" . $aSendTo[1] . " (" . $aSendTo[2] . ")";
             break;
         default:
     }
@@ -361,9 +361,9 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     }
 
     if ($oJob->get("dispatch")) {
-        $sOptionsInfo .= "<br />" . sprintf(i18n("Dispatch: Enabled (block size: %s, delay: %s sec.)", 'newsletter'), $oJob->get("dispatch_count"), $oJob->get("dispatch_delay"));
+        $sOptionsInfo .= "<br>" . sprintf(i18n("Dispatch: Enabled (block size: %s, delay: %s sec.)", 'newsletter'), $oJob->get("dispatch_count"), $oJob->get("dispatch_delay"));
     } else {
-        $sOptionsInfo .= "<br />" . i18n("Dispatch: Disabled", 'newsletter');
+        $sOptionsInfo .= "<br>" . i18n("Dispatch: Disabled", 'newsletter');
     }
 
     $oForm->add(i18n("Options", 'newsletter'), $sOptionsInfo);

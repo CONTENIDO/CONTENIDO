@@ -99,21 +99,21 @@ if ($_GET['step'] == 'createRoot') { // create new root item
     $form = '
         <table cellspacing="0" cellpaddin="0" border="0">
         <form name="create" action="main.php" method="POST" onsubmit="return fieldCheck();">
-        <input type="hidden" name="action" value="'.$action.'" />
-        <input type="hidden" name="frame" value="'.intval($frame).'" />
-        <input type="hidden" name="contenido" value="'.$sess->id.'" />
-        <input type="hidden" name="area" value="'.$area.'" />
-        <input type="hidden" name="step" value="store" />
-        <input type="hidden" name="treeItemPost[parentid]" value="root" />
+        <input type="hidden" name="action" value="'.$action.'">
+        <input type="hidden" name="frame" value="'.intval($frame).'">
+        <input type="hidden" name="contenido" value="'.$sess->id.'">
+        <input type="hidden" name="area" value="'.$area.'">
+        <input type="hidden" name="step" value="store">
+        <input type="hidden" name="treeItemPost[parentid]" value="root">
         <tr><td colspan="2" class="text_medium">'.i18n("Create new tree", 'content_allocation').'</td></tr>
         <tr>
             <td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value=""></td>
-            <td>&nbsp;<a href="main.php?action='.$action.'&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img src="images/but_cancel.gif" border="0" /></a>
-            <input type="image" src="images/but_ok.gif" /></td>
+            <td>&nbsp;<a href="main.php?action='.$action.'&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img src="images/but_cancel.gif" border="0"></a>
+            <input type="image" src="images/but_ok.gif"></td>
         </tr>
         </form>
         </table>
-        <script language="JavaScript">
+        <script type="text/javascript">
             controller = document.getElementById("itemname");
             controller.focus();
             function fieldCheck() {
@@ -140,7 +140,7 @@ if ($result === false) {
 $treeDiv->setContent($result);
 
 $js = '
-<script language="javascript">
+<script type="text/javascript">
 /* Function for deleting categories*/
 function deleteCategory(idpica_alloc) {
     var url = "main.php?area='.$area.'&action='.$action.'&step=deleteItem&idpica_alloc=" + idpica_alloc + "&frame='.$frame.'&contenido='.$sess->id.'";

@@ -51,7 +51,7 @@ function frontendusers_valid_to_display ()
     $currentValue = str_replace('00:00:00', '', $currentValue);
 
     // js-includes are defined in valid_from
-    $sValidFrom = '<input type="text" id="valid_to" name="valid_to" value="'.$currentValue.'" />';
+    $sValidFrom = '<input type="text" id="valid_to" name="valid_to" value="'.$currentValue.'">';
     $sValidFrom .= '<script type="text/javascript">
  $("#valid_to").datetimepicker({
              buttonImage: "'. $path_to_calender_pic .'",
