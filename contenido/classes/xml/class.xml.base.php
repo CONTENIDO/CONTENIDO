@@ -59,6 +59,15 @@ abstract class cXmlBase {
     }
 
     /**
+     *
+     * @param string $name
+     * @param string $value
+     */
+	public function registerXpathNamespace($name, $value) {
+        $this->_xpath->registerNamespace($name, $value);
+    }
+
+    /**
      * Initializes a new DOMXPath instance for DOMDocument.
      *
      * @access protected
