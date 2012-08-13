@@ -1,310 +1,311 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
-    <head>
-        <title></title>
-        <meta http-equiv="expires" content="0">
-        <meta http-equiv="cache-control" content="no-cache">
-        <meta http-equiv="pragma" content="no-cache">
-        <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-        <link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
-        <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
-        <script type="text/javascript" src="scripts/general.js"></script>
-        <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-        <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-        <script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>
-        <!-- get javascript files for language != en -->
-        {CAL_LANG}
-        <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
-        <script type="text/javascript">
-            var sid = "{SID}";
-            box = new messageBox("", "", "", 0, 0);
+<head>
+    <title></title>
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
+    <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
+    <script type="text/javascript" src="scripts/general.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    <script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>
+    <!-- get javascript files for language != en -->
+    {CAL_LANG}
+    <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
+    <script type="text/javascript">
+        var sid = "{SID}";
+        box = new messageBox("", "", "", 0, 0);
 
-            function removeAssignments(idart, idcat) {
-                url  = 'main.php?area=con_editart';
-                url += '&action=remove_assignments';
-                url += '&frame=4';
-                url += '&idart=' + idart;
-                url += '&idcat=' + idcat;
-                url += '&contenido=' + sid;
-                window.location.href = url;
+        function removeAssignments(idart, idcat) {
+            url  = 'main.php?area=con_editart';
+            url += '&action=remove_assignments';
+            url += '&frame=4';
+            url += '&idart=' + idart;
+            url += '&idcat=' + idcat;
+            url += '&contenido=' + sid;
+            window.location.href = url;
+        }
+
+        function disableFunctionsOnTimeControl() {
+            // Timecontrol enabled => disable Online and Startaticle
+            if (document.getElementById("timemgmt").checked == true) {
+                document.getElementById("is_start").checked = false;
+                document.getElementById("is_start").disabled = true;
+                if (document.getElementById("datestart").value != '') {
+                    document.getElementById("online").checked = false;
+                    document.getElementById("online").disabled = true;
+                }
+                $("#timemgmt").parent("td").parent("tr").nextAll("tr").css('display', '');
+            } else {
+                // Timecontrol disable => enable Online and Startarticle
+                document.getElementById("is_start").disabled = false;
+                document.getElementById("online").disabled = false;
+                $("#timemgmt").parent("td").parent("tr").nextAll("tr").css('display', 'none');
             }
 
-            function disableFunctionsOnTimeControl() {
-                // Timecontrol enabled => disable Online and Startaticle
-                if (document.getElementById("timemgmt").checked == true) {
-                    document.getElementById("is_start").checked = false;
-                    document.getElementById("is_start").disabled = true;
-                    if (document.getElementById("datestart").value != '') {
-                        document.getElementById("online").checked = false;
-                        document.getElementById("online").disabled = true;
-                    }
-                    $("#timemgmt").parent("td").parent("tr").nextAll("tr").css('display', '');
-                } else {
-                    // Timecontrol disable => enable Online and Startarticle
-                    document.getElementById("is_start").disabled = false;
-                    document.getElementById("online").disabled = false;
-                    $("#timemgmt").parent("td").parent("tr").nextAll("tr").css('display', 'none');
-                }
-
-                if (document.getElementById("datestart").value == '') {
-                    document.getElementById("online").disabled = false;
-                }
+            if (document.getElementById("datestart").value == '') {
+                document.getElementById("online").disabled = false;
             }
+        }
 
-            $(document).ready(function() {
-                $('#datestart').datetimepicker({
-                    buttonImage: '{PATH_TO_CALENDER_PIC}',
-                    buttonImageOnly: true,
-                    showOn: 'both',
-                    dateFormat: 'yy-mm-dd',
-                    disabled: {IS_DATETIMEPICKER_DISABLED},
-                    onClose: function(dateText, inst) {
-                        var endDateTextBox = $('#dateend');
-                        if (endDateTextBox.val() != '') {
-                            var testStartDate = new Date(dateText);
-                            var testEndDate = new Date(endDateTextBox.val());
-                            if (testStartDate > testEndDate) {
-                                endDateTextBox.val(dateText);
-                            }
-                        } else {
+        $(document).ready(function() {
+            $('#datestart').datetimepicker({
+                buttonImage: '{PATH_TO_CALENDER_PIC}',
+                buttonImageOnly: true,
+                showOn: 'both',
+                dateFormat: 'yy-mm-dd',
+                disabled: {IS_DATETIMEPICKER_DISABLED},
+                onClose: function(dateText, inst) {
+                    var endDateTextBox = $('#dateend');
+                    if (endDateTextBox.val() != '') {
+                        var testStartDate = new Date(dateText);
+                        var testEndDate = new Date(endDateTextBox.val());
+                        if (testStartDate > testEndDate) {
                             endDateTextBox.val(dateText);
                         }
-                    },
-                    onSelect: function(selectedDateTime){
-                        var start = $(this).datetimepicker('getDate');
-                        $('#dateend').datetimepicker('option', 'minDate', new Date(start.getTime()));
+                    } else {
+                        endDateTextBox.val(dateText);
                     }
-                });
+                },
+                onSelect: function(selectedDateTime){
+                    var start = $(this).datetimepicker('getDate');
+                    $('#dateend').datetimepicker('option', 'minDate', new Date(start.getTime()));
+                }
+            });
 
-                $('#dateend').datetimepicker({
-                    buttonImage: '{PATH_TO_CALENDER_PIC}',
-                    buttonImageOnly: true,
-                    showOn: 'both',
-                    dateFormat: 'yy-mm-dd',
-                    disabled:{IS_DATETIMEPICKER_DISABLED},
-                    onClose: function(dateText, inst) {
-                        var startDateTextBox = $('#datestart');
-                        if (startDateTextBox.val() != '') {
-                            var testStartDate = new Date(startDateTextBox.val());
-                            var testEndDate = new Date(dateText);
-                            if (testStartDate > testEndDate) {
-                                startDateTextBox.val(dateText);
-                            }
-                        } else {
+            $('#dateend').datetimepicker({
+                buttonImage: '{PATH_TO_CALENDER_PIC}',
+                buttonImageOnly: true,
+                showOn: 'both',
+                dateFormat: 'yy-mm-dd',
+                disabled:{IS_DATETIMEPICKER_DISABLED},
+                onClose: function(dateText, inst) {
+                    var startDateTextBox = $('#datestart');
+                    if (startDateTextBox.val() != '') {
+                        var testStartDate = new Date(startDateTextBox.val());
+                        var testEndDate = new Date(dateText);
+                        if (testStartDate > testEndDate) {
                             startDateTextBox.val(dateText);
                         }
-                    },
-                    onSelect: function(selectedDateTime){
-                        var end = $(this).datetimepicker('getDate');
-                        $('#datestart').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
+                    } else {
+                        startDateTextBox.val(dateText);
                     }
-                });
+                },
+                onSelect: function(selectedDateTime){
+                    var end = $(this).datetimepicker('getDate');
+                    $('#datestart').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
+                }
             });
-        </script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $("div#categorypath > a").click(function() {
-                    var url = $(this).attr('href');
-                    var sVal = url.split("idcat=");
-                    var aVal = sVal[1].split("&");
-                    var iIdcat = aVal[0];
-                    sVal = url.split("idtpl=");
-                    aVal = sVal[1].split("&");
-                    var iIdtpl = aVal[0];
-                    conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
-                    'right_bottom', url,
-                    'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido={SESSION}');
-                    return false;
-                });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("div#categorypath > a").click(function() {
+                var url = $(this).attr('href');
+                var sVal = url.split("idcat=");
+                var aVal = sVal[1].split("&");
+                var iIdcat = aVal[0];
+                sVal = url.split("idtpl=");
+                aVal = sVal[1].split("&");
+                var iIdtpl = aVal[0];
+                conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
+                'right_bottom', url,
+                'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido={SESSION}');
+                return false;
             });
-        </script>
-    </head>
-    <body style="margin: 10px" onload="disableFunctionsOnTimeControl()">
+        });
+    </script>
+</head>
+<body style="margin: 10px" onload="disableFunctionsOnTimeControl()">
 
-        <div id="categorypath" class="categorypath">{CATEGORY}</div>
+    <div id="categorypath" class="categorypath">{CATEGORY}</div>
 
-        <form method="post" name="art_props" action="{ACTION}">
+    <form method="post" name="art_props" action="{ACTION}">
 
-            <input type="hidden" name="action" value="con_saveart">
-            {HIDDENFIELDS}
-            <input type="hidden" name="tmp_firstedit" value="{TMP_FIRSTEDIT}">
-            <input type="hidden" name="idart" value="{IDART}">
-            <input type="hidden" name="idcat" value="{IDCAT}">
-            <input type="hidden" name="idartlang" value="{IDARTLANG}">
+        <input type="hidden" name="action" value="con_saveart">
+        {HIDDENFIELDS}
+        <input type="hidden" name="tmp_firstedit" value="{TMP_FIRSTEDIT}">
+        <input type="hidden" name="idart" value="{IDART}">
+        <input type="hidden" name="idcat" value="{IDCAT}">
+        <input type="hidden" name="idartlang" value="{IDARTLANG}">
 
-            <table cellspacing="0" cellpadding="2" border="0">
+        <table cellspacing="0" cellpadding="2" border="0">
 
-                {NOTIFICATION}
+            {NOTIFICATION}
 
-                <tr valign="top">
-                    <td class="text_medium" style="border: 1px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{TITEL}</td>
-                    <td colspan="3" class="text_medium" style="border: 1px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{TITEL-FIELD}</td>
-                </tr>
+            <tr valign="top">
+                <td class="text_medium" style="border: 1px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{TITEL}</td>
+                <td colspan="3" class="text_medium" style="border: 1px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{TITEL-FIELD}</td>
+            </tr>
 
-                <!-- plugin Advanced Mod Rewrite - edit by stese //-->
-                <tr valign="top">
-                    <td class="text_medium" style="border:1px; border-top:0px; border-color:#B3B3B3; border-style:solid; background-color:#fff">{URLNAME}</td>
-                    <td colspan="3" class="text_medium" style="border: 1px; border-top:0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color:#fff">{URLNAME-FIELD}</td>
-                </tr>
-                <!-- end plugin Advanced Mod Rewrite //-->
+            <!-- plugin Advanced Mod Rewrite - edit by stese //-->
+            <tr valign="top">
+                <td class="text_medium" style="border:1px; border-top:0px; border-color:#B3B3B3; border-style:solid; background-color:#fff">{URLNAME}</td>
+                <td colspan="3" class="text_medium" style="border: 1px; border-top:0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color:#fff">{URLNAME-FIELD}</td>
+            </tr>
+            <!-- end plugin Advanced Mod Rewrite //-->
 
-                <tr valign="top">
-                    <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{DIRECTLINKTEXT}</td>
-                    <td width="75%" colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{DIRECTLINK}</td>
-                </tr>
+            <tr valign="top">
+                <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{DIRECTLINKTEXT}</td>
+                <td width="75%" colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{DIRECTLINK}</td>
+            </tr>
 
-                <tr valign="top"{newArtStyle}>
-                    <td width="25%" class="text_medium" style="border: 1px;border-top: 0px;  border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ARTIKELART}</td>
-                    <td width="75%" colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ARTIKELARTSELECT}</td>
-                </tr>
+            <tr valign="top"{newArtStyle}>
+                <td width="25%" class="text_medium" style="border: 1px;border-top: 0px;  border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ARTIKELART}</td>
+                <td width="75%" colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ARTIKELARTSELECT}</td>
+            </tr>
 
-                <tr valign="top"{newArtStyle}>
-                    <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ARTIKELID}</td>
-                    <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ARTID}</td>
-                    <td width="25%" class="text_medium" style="border: 1px;border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ZUORDNUNGSID}</td>
-                    <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ALLOCID}</td>
-                </tr>
+            <tr valign="top"{newArtStyle}>
+                <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ARTIKELID}</td>
+                <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ARTID}</td>
+                <td width="25%" class="text_medium" style="border: 1px;border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ZUORDNUNGSID}</td>
+                <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ALLOCID}</td>
+            </tr>
 
-                <tr valign="top"{newArtStyle}>
-                    <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ERSTELLT}</td>
-                    <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ERSTELLUNGS-DATUM}</td>
-                    <td width="25%" class="text_medium" style="border: 1px;border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{AUTHOR_CREATOR}</td>
-                    <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{AUTOR-ERSTELLUNGS-NAME}</td>
-                </tr>
+            <tr valign="top"{newArtStyle}>
+                <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ERSTELLT}</td>
+                <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ERSTELLUNGS-DATUM}</td>
+                <td width="25%" class="text_medium" style="border: 1px;border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{AUTHOR_CREATOR}</td>
+                <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{AUTOR-ERSTELLUNGS-NAME}</td>
+            </tr>
 
-                <tr valign="top"{newArtStyle}>
-                    <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{LETZTE-AENDERUNG}</td>
-                    <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{AENDERUNGS-DATUM}</td>
-                    <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{AUTHOR_MODIFIER}</td>
-                    <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{AUTOR-AENDERUNG-NAME}</td>
-                </tr>
+            <tr valign="top"{newArtStyle}>
+                <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{LETZTE-AENDERUNG}</td>
+                <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{AENDERUNGS-DATUM}</td>
+                <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{AUTHOR_MODIFIER}</td>
+                <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{AUTOR-AENDERUNG-NAME}</td>
+            </tr>
 
-                <tr valign="top"{newArtStyle}>
-                    <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{PUBLISHING_DATE_LABEL}</td>
-                    <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{PUBLISHING_DATE}</td>
-                    <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{PUBLISHER}</td>
-                    <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{PUBLISHER_NAME}</td>
-                </tr>
+            <tr valign="top"{newArtStyle}>
+                <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{PUBLISHING_DATE_LABEL}</td>
+                <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{PUBLISHING_DATE}</td>
+                <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{PUBLISHER}</td>
+                <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{PUBLISHER_NAME}</td>
+            </tr>
 
-                <tr valign="top">
-                    <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{WEITERLEITUNG}</td>
-                    <td valign="bottom" colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">
-                        <table border="0" cellspacing="0" cellpadding="0">
-                            <tr>
-                                <td>{CHECKBOX}</td>
-                                <td>{URL}</td>
-                                <td>{CHECKBOX-NEWWINDOW}</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+            <tr valign="top">
+                <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{WEITERLEITUNG}</td>
+                <td valign="bottom" colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">
+                    <table border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>{CHECKBOX}</td>
+                            <td>{URL}</td>
+                            <td>{CHECKBOX-NEWWINDOW}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
 
-                <tr>
-                    <td class="text_medium" valign="top" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">i18n("Time control")</td>
-                    <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">
-                        <table border="0" cellspacing="0" cellpadding="0">
-                            <tr>
-                                <td valign="top"><input type="checkbox" onclick="javascript:disableFunctionsOnTimeControl();" name="timemgmt" id="timemgmt" value="1" {TIMEMGMTCHECKED}></td>
-                                <td style="width: 500px;" colspan="2" class="text_medium"><label for="timemgmt">i18n("Use time control")</label></td>
-                            </tr>
-                            <tr>
-                                <td valign="top">&nbsp;</td>
-                                <td class="text_medium">i18n("Start date"):</td>
-                                <td><input type="text" name="datestart"  id="datestart" onkeyup = "disableFunctionsOnTimeControl();" onchange = "disableFunctionsOnTimeControl();" value="{STARTDATE}" {SDOPTS} size="20" maxlength="40" class="text_medium">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td valign="top">&nbsp;</td>
-                                <td class="text_medium">i18n("End date"):</td>
-                                <td><input type="text" name="dateend" id="dateend" value="{ENDDATE}" {EDOPTS} size="20" maxlength="40" class="text_medium"></td>
-                            </tr>
-                            <tr>
-                                <td valign="top"><input type="checkbox" id="time_move_cat" name="time_move_cat" value="1" {MOVETOCATCHECKED}></td>
-                                <td class="text_medium"><label for="time_move_cat">i18n("When expired, move to category"):</label></td>
-                                <td>{MOVETOCATEGORYSELECT}</td>
-                            </tr>
-                            <tr>
-                                <td valign="top"><input type="checkbox" id="time_online_move" name="time_online_move" value="1" {ONLINEAFTERMOVECHECKED}></td>
-                                <td colspan="2" class="text_medium"><label for="time_online_move">i18n("Make online after move")</label></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+            <tr>
+                <td class="text_medium" valign="top" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">i18n("Time control")</td>
+                <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">
+                    <table border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td valign="top"><input type="checkbox" onclick="javascript:disableFunctionsOnTimeControl();" name="timemgmt" id="timemgmt" value="1" {TIMEMGMTCHECKED}></td>
+                            <td style="width: 500px;" colspan="2" class="text_medium"><label for="timemgmt">i18n("Use time control")</label></td>
+                        </tr>
+                        <tr>
+                            <td valign="top">&nbsp;</td>
+                            <td class="text_medium">i18n("Start date"):</td>
+                            <td><input type="text" name="datestart"  id="datestart" onkeyup = "disableFunctionsOnTimeControl();" onchange = "disableFunctionsOnTimeControl();" value="{STARTDATE}" {SDOPTS} size="20" maxlength="40" class="text_medium">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">&nbsp;</td>
+                            <td class="text_medium">i18n("End date"):</td>
+                            <td><input type="text" name="dateend" id="dateend" value="{ENDDATE}" {EDOPTS} size="20" maxlength="40" class="text_medium"></td>
+                        </tr>
+                        <tr>
+                            <td valign="top"><input type="checkbox" id="time_move_cat" name="time_move_cat" value="1" {MOVETOCATCHECKED}></td>
+                            <td class="text_medium"><label for="time_move_cat">i18n("When expired, move to category"):</label></td>
+                            <td>{MOVETOCATEGORYSELECT}</td>
+                        </tr>
+                        <tr>
+                            <td valign="top"><input type="checkbox" id="time_online_move" name="time_online_move" value="1" {ONLINEAFTERMOVECHECKED}></td>
+                            <td colspan="2" class="text_medium"><label for="time_online_move">i18n("Make online after move")</label></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
 
-                <tr valign="top">
-                    <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ONLINE}</td>
-                    <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ONLINE-CHECKBOX}</td>
-                    <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{STARTARTIKEL}</td>
-                    <td class="text_medium" style="border: 1px;border-top: 0px;  border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{STARTARTIKEL-CHECKBOX}</td>
-                </tr>
+            <tr valign="top">
+                <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ONLINE}</td>
+                <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ONLINE-CHECKBOX}</td>
+                <td class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{STARTARTIKEL}</td>
+                <td class="text_medium" style="border: 1px;border-top: 0px;  border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{STARTARTIKEL-CHECKBOX}</td>
+            </tr>
 
-                <tr valign="top">
-                    <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{SORTIERUNG}</td>
-                    <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{SORTIERUNG-FIELD}</td>
-                </tr>
+            <tr valign="top">
+                <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{SORTIERUNG}</td>
+                <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{SORTIERUNG-FIELD}</td>
+            </tr>
 
-                <tr valign="top">
-                    <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{STRUKTUR}</td>
-                    <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{STRUKTUR-FIELD}</td>
-                </tr>
+            <tr valign="top">
+                <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{STRUKTUR}</td>
+                <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{STRUKTUR-FIELD}</td>
+            </tr>
 
-                <tr valign="top">
-                    <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{SUMMARY}</td>
-                    <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{SUMMARY-INPUT}</td>
-                </tr>
+            <tr valign="top">
+                <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{SUMMARY}</td>
+                <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{SUMMARY-INPUT}</td>
+            </tr>
 
-                <!--tr>
-                    <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">i18n("Page title")</td>
-                    <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{TITLE-INPUT}</td>
-                </tr>
+            <!--tr>
+                <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">i18n("Page title")</td>
+                <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{TITLE-INPUT}</td>
+            </tr>
 
-                <tr>
-                    <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">i18n("Meta tags")</td>
-                    <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">&nbsp;</td>
-                </tr-->
+            <tr>
+                <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">i18n("Meta tags")</td>
+                <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">&nbsp;</td>
+            </tr-->
 
-                <!-- BEGIN:BLOCK -->
-                <!--tr>
-                    <td style="border: 1px; border-right: 0px; border-top:0px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">{METATITLE}</td>
-                    <td colspan="3" style="border: 1px; border-top:0px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">{METAFIELDTYPE}</td>
-                </tr-->
-                <!-- END:BLOCK -->
+            <!-- BEGIN:BLOCK -->
+            <!--tr>
+                <td style="border: 1px; border-right: 0px; border-top:0px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">{METATITLE}</td>
+                <td colspan="3" style="border: 1px; border-top:0px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">{METAFIELDTYPE}</td>
+            </tr-->
+            <!-- END:BLOCK -->
 
-                <!--tr>
-                    <td style="border: 1px; border-right: 0px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">&nbsp;</td>
-                    <td colspan="3" style="border: 1px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">&nbsp;</td>
-                </tr-->
+            <!--tr>
+                <td style="border: 1px; border-right: 0px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">&nbsp;</td>
+                <td colspan="3" style="border: 1px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">&nbsp;</td>
+            </tr-->
 
-                <tr><td colspan="4" class="text_medium" align="right"><input id="saveart" accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}"></td></tr>
+            <tr><td colspan="4" class="text_medium" align="right"><input id="saveart" accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}"></td></tr>
 
-            </table>
+        </table>
 
-        </form>
+    </form>
 
-        <script type="text/javascript">
-            var bNoArticle = {bNoArticle};
-            if(bNoArticle){
-                $("input#saveart").click(function() {
-                    conMultiLink('right_top', 'main.php?area=con&frame=3&idcat={iIdcat}&idtpl={iIdtpl}&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&action=saveart&bNoArticle='+{bNoArticle});
-                    if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1')) {
-                        menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1');
-                        parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
-                    }
-                    return true;
-                });
-            }
+    <script type="text/javascript">
+        var bNoArticle = {bNoArticle};
+        if(bNoArticle){
+            $("input#saveart").click(function() {
+                conMultiLink('right_top', 'main.php?area=con&frame=3&idcat={iIdcat}&idtpl={iIdtpl}&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&action=saveart&bNoArticle='+{bNoArticle});
+                if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1')) {
+                    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1');
+                    parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
+                }
+                return true;
+            });
+        }
 
-            /* Create a reference to the
-               Article Object in frame 'right_top' */
-            artObj = parent.parent.frames["left"].frames["left_top"].artObj;
+        /* Create a reference to the
+           Article Object in frame 'right_top' */
+        artObj = parent.parent.frames["left"].frames["left_top"].artObj;
 
-            if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1')) {
-                menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1');
-                parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
-            }
+        if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1')) {
+            menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1');
+            parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
+        }
 
-            {DATAPUSH}
-        </script>
-    </body>
+        {DATAPUSH}
+    </script>
+</body>
 </html>
 <!--
 template.con_edit_form
