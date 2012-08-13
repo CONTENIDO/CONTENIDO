@@ -20,29 +20,26 @@
 </script>
 
 <script type="text/javascript">
-        $(document).ready(function() {
-            $(".in_used_mod").live("click", function() {
-                var iId = $(this).attr("rel");
-
-                var modName = $(this).parents().filter('table:first').parent().prev().text();
-                if (iId) {
-                    $.post(
-                       "{CONTENIDO_FULLHTML}ajaxmain.php",
-                         { area: "mod", ajax: "inused_module", id: iId, contenido: sid },
-                         function(data) {
-                               var inUseTitle = "i18n("The module '%s' is used for following templates")";
-                              inUseTitle = inUseTitle.replace('%s', modName);
-                            box.notify(inUseTitle, data);
-                         }
-                      );
-                }
-            });
+    $(document).ready(function() {
+        $(".in_used_mod").live("click", function() {
+            var iId = $(this).attr("rel"),
+                modName = $(this).parents().filter('table:first').parent().prev().text();
+            if (iId) {
+                $.post("ajaxmain.php", { area: "mod", ajax: "inused_module", id: iId, contenido: sid },
+                    function(data) {
+                        var inUseTitle = "i18n("The module '%s' is used for following templates")";
+                        inUseTitle = inUseTitle.replace('%s', modName);
+                        box.notify(inUseTitle, data);
+                    }
+                );
+            }
         });
+    });
 </script>
 {FORM}
 
 <script language="javascript">
-                if (document.getElementById('marked')) {
-                    row.click(document.getElementById('marked'));
-                }
+    if (document.getElementById('marked')) {
+        row.click(document.getElementById('marked'));
+    }
 </script>
