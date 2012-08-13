@@ -274,20 +274,20 @@ $content .= '<ul class="artikel_search">';
 
 // Recently edited articles search - predefined, not deleteable
 $searchRecentlyEdited = "javascript:conMultiLink('right_bottom', 'backend_search.php?area=" . $area . "&frame=4&contenido=" . $sess->id . "&recentedit=true'); resetSearchForm();";
-$content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle; padding-left: 3px;" src="images/delete_inact.gif" /><a style="padding-left: 3px;" href="' . $searchRecentlyEdited . '">' . i18n("Recently edited articles") . '</a></li>';
+$content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle; padding-left: 3px;" src="images/delete_inact.gif"><a style="padding-left: 3px;" href="' . $searchRecentlyEdited . '">' . i18n("Recently edited articles") . '</a></li>';
 
 // My articles search - predefined, not deleteable
 $searchMyArticles = "javascript:conMultiLink('right_bottom', 'backend_search.php?area=" . $area . "&frame=4&contenido=" . $sess->id . "&myarticles=true'); resetSearchForm();";
-$content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle;padding-left: 3px;" src="images/delete_inact.gif" /><a style="padding-left: 3px;" href="' . $searchMyArticles . '">' . i18n("My articles") . '</a></li>';
+$content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle;padding-left: 3px;" src="images/delete_inact.gif"><a style="padding-left: 3px;" href="' . $searchMyArticles . '">' . i18n("My articles") . '</a></li>';
 
 //Lost and found - not deleteable
 $searchLostFound = "javascript:conMultiLink('right_bottom', 'backend_search.php?area=" . $area . "&frame=4&contenido=" . $sess->id . "&lostfound=true'); resetSearchForm();";
-$content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle;padding-left: 3px;" src="images/delete_inact.gif" /><a style="padding-left: 3px;" href="' . $searchLostFound . '">' . i18n("Lost and Found") . '</a></li>';
+$content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle;padding-left: 3px;" src="images/delete_inact.gif"><a style="padding-left: 3px;" href="' . $searchLostFound . '">' . i18n("Lost and Found") . '</a></li>';
 
 // Workflow
 $link = $sess->url("main.php?area=con_workflow&frame=4");
 $sWorflowLink = 'conMultiLink(\'right_bottom\', \'' . $link . '\'); resetSearchForm();';
-$content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle;padding-left: 3px;" src="images/delete_inact.gif" /><a style="padding-left: 3px;" href="javascript:' . $sWorflowLink . '">' . i18n("Workflow") . '</a></li>';
+$content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle;padding-left: 3px;" src="images/delete_inact.gif"><a style="padding-left: 3px;" href="javascript:' . $sWorflowLink . '">' . i18n("Workflow") . '</a></li>';
 
 foreach ($savedSearchList as $value) {
     if (($init_itemid != $value['itemid']) && ($init_itemtype != $value['itemtype'])) {
@@ -297,7 +297,7 @@ foreach ($savedSearchList as $value) {
         // Create delete icon
         $deleteSearch = "javascript:conMultiLink('left_top', 'main.php?area=" . $area . "&frame=1&delsavedsearch=true&contenido=" . $sess->id . "&itemid=" . $value['itemid'] . "&itemtype=" . $value['itemtype'] . "')";
         $content .= '<li style="margin-bottom: 3px;">';
-        $content .= '<a  href="' . $deleteSearch . '"><img style="padding-left: 3px; vertical-align:middle;" src="images/delete.gif" /></a>';
+        $content .= '<a  href="' . $deleteSearch . '"><img style="padding-left: 3px; vertical-align:middle;" src="images/delete.gif"></a>';
 
         // create new link
         $savedSearchLink = "javascript:conMultiLink('right_bottom', 'backend_search.php?area=" . $area . "&frame=4&contenido=" . $sess->id . "&itemid=" . $value['itemid'] . "&itemtype=" . $value['itemtype'] . "')";
@@ -356,10 +356,10 @@ while ($db->next_record()) {
 }
 // Template Dropdown
 $editCat = '<div style="height:110px;padding-top:5px; padding-left: 17px; margin-bottom:-1px; border-right:1px solid #B3B3B3">';
-$editCat .= i18n("Template:") . "<br />";
+$editCat .= i18n("Template:") . "<br>";
 $editCat .= '<div style="">';
 $editCat .= $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
-$editCat .='<a id="changetpl" href="#"><img style="vertical-align: middle;" src="images/submit.gif" border="0"></a><br />';
+$editCat .='<a id="changetpl" href="#"><img style="vertical-align: middle;" src="images/submit.gif" border="0"></a><br>';
 $editCat .= '</div>';
 // Category
 $editCat .= '<div style="margin: 5px 0 5px 0;">';
@@ -373,7 +373,7 @@ $editCat .= '<a href="#">' . i18n("Online / Offline") . '</a></div>';
 // Lock / Unlock
 $editCat .= '<div id="oLock_label"><a href="#"><img style="vertical-align: middle;" id="oLock" src="images/folder_lock.gif" vspace="2" hspace="2"  border="0" title="' . i18n("Lock / Unlock") . '" alt="' . i18n("Lock / Unlock") . '"></a>';
 $editCat .= '<a href="#">' . i18n("Lock / Unlock") . '</a></div>';
-$editCat .= '<br />';
+$editCat .= '<br>';
 $editCat .= '</div>';
 $editCat .= '</div>';
 
@@ -469,7 +469,7 @@ $aData = xmlFileToArray($cfg['path']['xml'] . "legend.xml", $aData, $aInformatio
 foreach ($aData as $key => $item) {
     $editLegend .= '<table class=' . $key . '>';
     foreach ($item as $data) {
-        $editLegend .= '<tr><td><img src="' . (string) $data['imgsrc'] . '"/></td><td><span>' . i18n((string) $data['description']) . '</span></td></tr>';
+        $editLegend .= '<tr><td><img src="' . (string) $data['imgsrc'] . '"></td><td><span>' . i18n((string) $data['description']) . '</span></td></tr>';
     }
     $editLegend .= '</table>';
 }

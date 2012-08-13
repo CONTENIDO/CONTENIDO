@@ -154,30 +154,31 @@ $contentform = '
     </form>
     ';
 
-$layoutcode = '<html>
-        <head>
-            <title></title>
-            <meta http-equiv="expires" content="0">
-            <meta http-equiv="cache-control" content="no-cache">
-            <meta http-equiv="pragma" content="no-cache">
-            <link rel="stylesheet" type="text/css" href="../contenido/styles/contenido.css">
-            <script type="text/javascript" src="../contenido/scripts/general.js"></script>
-            <script type="text/javascript" src="../contenido/scripts/jquery/jquery.js"></script>
-            <style>
-            .contypeList {
-                border: 1px solid #B3B3B3;
-                padding: 10px;
-                margin: 10px 0;
-            }
-            .noactive {
-                border: 1px solid red;
-            }
-            .contypeList div {
-                min-height: 13px;
-            }
-            </style>
-        </head>
-        <body style="margin: 10px">';
+$layoutcode = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <link rel="stylesheet" type="text/css" href="../contenido/styles/contenido.css">
+    <script type="text/javascript" src="../contenido/scripts/general.js"></script>
+    <script type="text/javascript" src="../contenido/scripts/jquery/jquery.js"></script>
+    <style>
+    .contypeList {
+        border: 1px solid #B3B3B3;
+        padding: 10px;
+        margin: 10px 0;
+    }
+    .noactive {
+        border: 1px solid red;
+    }
+    .contypeList div {
+        min-height: 13px;
+    }
+    </style>
+</head>
+<body style="margin: 10px">';
 //Show path of selected category to user
 $catString = '';
 prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');

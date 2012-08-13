@@ -892,7 +892,7 @@ if ($movesubtreeidcat != 0) {
         $sLimiter = "";
     }
     $sButtonDesc = sprintf(i18n('Cancel moving %s'), '"' . substr($sMoveSubtreeCatName, 0, 30) . $sLimiter . '"');
-    $tpl->set('s', 'CANCEL_MOVE_TREE', '<a class="black" id="cancel_move_tree_button" href="javascript:cancelMoveTree(\'' . $movesubtreeidcat . '\');"><img src="images/but_cancel.gif" alt="'.$sButtonDesc.'" />&nbsp;'.$sButtonDesc.'</a>');
+    $tpl->set('s', 'CANCEL_MOVE_TREE', '<a class="black" id="cancel_move_tree_button" href="javascript:cancelMoveTree(\'' . $movesubtreeidcat . '\');"><img src="images/but_cancel.gif" alt="'.$sButtonDesc.'">&nbsp;'.$sButtonDesc.'</a>');
 } else {
     $tpl->set('s', 'CANCEL_MOVE_TREE', '');
 }

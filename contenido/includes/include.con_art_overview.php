@@ -581,7 +581,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             foreach ($listColumns as $listColumn => $ctitle) {
                 switch ($listColumn) {
                     case "mark":
-                        $value = '<input type="checkbox" name="mark" value="' . $idart . '" class="mark_articles"/>';
+                        $value = '<input type="checkbox" name="mark" value="' . $idart . '" class="mark_articles">';
                         break;
                     case "start":
                         $value = $tmp_start.$usetime;
@@ -692,7 +692,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 // add the appropriate sorting image if necessary
                 if ($sortby == $sortColumns[$key]) {
                     $imageSrc = ($sortmode == 'asc') ? 'images/sort_up.gif' : 'images/sort_down.gif';
-                    $sortImage = '<img src="' . $imageSrc . '" />';
+                    $sortImage = '<img src="' . $imageSrc . '">';
                 } else {
                     $sortImage = '';
                 }

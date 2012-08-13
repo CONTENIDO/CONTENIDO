@@ -57,14 +57,14 @@ if ($db->f("idtplcfg") != 0) {
                     </tr>
 
                   </table>';
-    $code = '
-            <html>
-                <head>
-                    <title>Error</title>
-                    <link rel="stylesheet" type="text/css" href="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["styles"].'contenido.css"></link>
-                </head>
-                <body style="margin: 10px">'.$notification->returnNotification("error", $noti_html).'</body>
-            </html>';
+    $code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <title>Error</title>
+        <link rel="stylesheet" type="text/css" href="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["styles"].'contenido.css"></link>
+    </head>
+    <body style="margin: 10px">'.$notification->returnNotification("error", $noti_html).'</body>
+</html>';
 
     echo $code;
 }

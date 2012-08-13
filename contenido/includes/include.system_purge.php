@@ -82,7 +82,7 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
                         if (!$oPurge->resetClientConCode($iClientId)) {
                             $bError = true;
                             $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' .
-                                   sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['code']) . "<br />";
+                                   sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['code']) . "<br>";
                         }
                     }
 
@@ -90,7 +90,7 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
                         if (!$oPurge->resetClientConCatArt($iClientId)) {
                             $bError = true;
                             $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' .
-                                   sprintf(i18n("The %s is not updated!"), $cfg['tab']['cat_art']) . "<br />";
+                                   sprintf(i18n("The %s is not updated!"), $cfg['tab']['cat_art']) . "<br>";
                         }
                     }
 
@@ -98,7 +98,7 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
                         if (!$oPurge->clearClientCache($iClientId)) {
                             $bError = true;
                             $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' .
-                                   i18n("The cache is not deleted!") . "<br />";
+                                   i18n("The cache is not deleted!") . "<br>";
                         }
                     }
 
@@ -106,7 +106,7 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
                         if (!$oPurge->clearClientLog($iClientId)) {
                             $bError = true;
                             $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' .
-                                   i18n("The log is not deleted!") . "<br />";
+                                   i18n("The log is not deleted!") . "<br>";
                         }
                     }
 
@@ -115,12 +115,12 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
                         if (!$oPurge->clearClientHistory($iClientId, $bKeep, (int) $_POST['keepHistoryNumber'])) {
                             $bError = true;
                             $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' .
-                                   i18n("The history is not deleted!") . "<br />";
+                                   i18n("The history is not deleted!") . "<br>";
                         }
                     }
 
                     if ($sErrorMsg != '') {
-                        $sErrorMsg .= "<br />";
+                        $sErrorMsg .= "<br>";
                     }
 
                 }
@@ -132,7 +132,7 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
         if (isset($_POST['conInuse']) && $_POST['conInuse'] == 1) {
             if (!$oPurge->resetConInuse()) {
                 $bError = true;
-                $sErrorMsg .= sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['inuse']) . "<br />";
+                $sErrorMsg .= sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['inuse']) . "<br>";
             }
         }
 
@@ -140,35 +140,35 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
             if (!$oPurge->resetPHPLibActiveSession()) {
                 $bError = true;
                 $sErrorMsg .= sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['phplib_active_sessions']) .
-                     "<br />";
+                     "<br>";
             }
         }
 
         if (isset($_POST['conLog']) && $_POST['conLog'] == 1) {
             if (!$oPurge->clearConLog()) {
                 $bError = true;
-                $sErrorMsg .= i18n("The CONTENIDO log is not cleaned!") . "<br />";
+                $sErrorMsg .= i18n("The CONTENIDO log is not cleaned!") . "<br>";
             }
         }
 
         if (isset($_POST['conCache']) && $_POST['conCache'] == 1) {
             if (!$oPurge->clearConCache()) {
                 $bError = true;
-                $sErrorMsg .= i18n("The CONTENIDO cache is not deleted!") . "<br />";
+                $sErrorMsg .= i18n("The CONTENIDO cache is not deleted!") . "<br>";
             }
         }
 
         if (isset($_POST['conCronjobs']) && $_POST['conCronjobs'] == 1) {
             if (!$oPurge->clearConCronjob()) {
                 $bError = true;
-                $sErrorMsg .= i18n("The CONTENIDO cronjobs are not cleaned!") . "<br />";
+                $sErrorMsg .= i18n("The CONTENIDO cronjobs are not cleaned!") . "<br>";
             }
         }
 
         if ($bError === false || $sErrorMsg == '') {
             $sInfoMsg = $notification->returnNotification("info", i18n("The changes were successfully executed."));
         } else {
-            $sErrorComplete = i18n("The changes were not all successfully completed.") . "<br /><br />" . $sErrorMsg;
+            $sErrorComplete = i18n("The changes were not all successfully completed.") . "<br><br>" . $sErrorMsg;
             $sInfoMsg = $notification->returnNotification("error", $sErrorComplete);
         }
     }
@@ -209,7 +209,7 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
     $tpl->set('s', 'CON_CRONJOB', i18n("Reset cronjobs"));
 
     $tpl->set('s', 'BOX_TITLE', i18n("System purge"));
-    $tpl->set('s', 'BOX_MESSAGE', i18n("These changes can not be cancelled.") . '<br /> <br />' . i18n("Do you really want to complete it?"));
+    $tpl->set('s', 'BOX_MESSAGE', i18n("These changes can not be cancelled.") . '<br> <br>' . i18n("Do you really want to complete it?"));
 
     $tpl->set('s', 'INFO_MSG_BOX', $sInfoMsg);
     $tpl->set('s', 'ERR_MSG_BOX', $notification->returnNotification("error", ''));

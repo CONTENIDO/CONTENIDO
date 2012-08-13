@@ -233,7 +233,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
 
             asort($aMemberGroups);
 
-            $sTemp = implode('<br/>', $aMemberGroups);
+            $sTemp = implode('<br>', $aMemberGroups);
         } else {
             $sTemp = i18n("none");
         }

@@ -91,10 +91,10 @@ class View_MailLog {
                         case 'success':
                             $this->_tpl->set('d', 'NAME', $value);
                             if ($mailItem->get($key) == 1) {
-                                $this->_tpl->set('d', 'VALUE', '<img src="images/but_ok.gif" />');
+                                $this->_tpl->set('d', 'VALUE', '<img src="images/but_ok.gif">');
                                 $this->_tpl->set('s', 'RESEND_EMAIL_LINK', '');
                             } else {
-                                $this->_tpl->set('d', 'VALUE', '<img src="images/icon_fatalerror.gif" />');
+                                $this->_tpl->set('d', 'VALUE', '<img src="images/icon_fatalerror.gif">');
                                 $link = sprintf('<a  class="resend" onclick="resendEmail()" alt="%s"> <img src="images/but_refresh.gif">', i18n('Resend email'));
                                 $this->_tpl->set('s', 'RESEND_EMAIL_LINK', $link);
                             }
@@ -169,7 +169,7 @@ class View_MailLog {
                         $cells .= sprintf('<td class="bordercell"> <input class="mark_emails %s" type="checkbox" name="" value="%s"/ ></td>', 'id_' . $item->get('idmail'), $item->get('idmail'));
                         break;
                     case 'action':
-                        $cells .= sprintf('<td class="bordercell"> <a id="%s" class="get_info" href=""> <img src="images/info.gif" alt="" /> </a></td>', 'id_' . $item->get('idmail'));
+                        $cells .= sprintf('<td class="bordercell"> <a id="%s" class="get_info" href=""> <img src="images/info.gif" alt=""> </a></td>', 'id_' . $item->get('idmail'));
                         break;
                     case 'from':
                     case 'to':
@@ -201,7 +201,7 @@ class View_MailLog {
         $result = '';
         $addresses = json_decode($addresses, true);
         foreach ($addresses as $mail => $name) {
-            $result .= $name . ' &lt;' . $mail . '&gt;<br />';
+            $result .= $name . ' &lt;' . $mail . '&gt;<br>';
         }
         $result = substr($result, 0, strlen($result) - 6);
 

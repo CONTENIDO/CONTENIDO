@@ -195,7 +195,7 @@ foreach ($aPhpConfiguration as $sConfigName) {
 
 $extensions = get_loaded_extensions();
 sort($extensions);
-$oTpl2->set('s', 'ADDITIONAL', '<tr><td style="border:1px;border-top:0px;border-color:#B3B3B3;border-style:solid;" colspan="2"><b>' . i18n('Loaded extensions') . ':</b><br />' . implode(', ', $extensions) . '</td></tr>');
+$oTpl2->set('s', 'ADDITIONAL', '<tr><td style="border:1px;border-top:0px;border-color:#B3B3B3;border-style:solid;" colspan="2"><b>' . i18n('Loaded extensions') . ':</b><br>' . implode(', ', $extensions) . '</td></tr>');
 
 $sPhpConfig = $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['system_variables_block'], 1);
 $tpl->set('s', 'PHP_CONFIGURATION', $sPhpConfig);
@@ -247,7 +247,7 @@ while ($oItem = $oClientColl->next()) {
         $oTpl2->set('d', 'VALUE', $sLanguages);
         $oTpl2->next();
 
-        $sClients .= $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['system_variables_block'], 1) . '<br />';
+        $sClients .= $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['system_variables_block'], 1) . '<br>';
     }
 }
 

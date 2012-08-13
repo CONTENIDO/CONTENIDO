@@ -241,7 +241,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $select->appendOptionElement($option[3]);
     $select->appendOptionElement($option[4]);
 
-    $tpl->set('s', 'DIRECTLINK', $select->render() . '<br><br><input style="width:400px;" class="text_medium" type="text" id="linkhint" readonly="readonly"/> <input id="linkhintA" type="button" value="'.i18n("open").'" style="display: none;" onclick="window.open(document.getElementById(\'linkhint\').value);"/>');
+    $tpl->set('s', 'DIRECTLINK', $select->render() . '<br><br><input style="width:400px;" class="text_medium" type="text" id="linkhint" readonly="readonly"> <input id="linkhintA" type="button" value="'.i18n("open").'" style="display: none;" onclick="window.open(document.getElementById(\'linkhint\').value);">');
 
     $tpl->set('s', 'ZUORDNUNGSID', "idcatart");
     $tpl->set('s', 'ALLOCID', $tmp_cat_art ? $tmp_cat_art : '&nbsp;');

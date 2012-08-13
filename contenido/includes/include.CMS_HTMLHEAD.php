@@ -60,10 +60,11 @@ if ($doedit == "1") {
 header("Content-Type: text/html; charset={$encoding[$lang]}");
 
 ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="<?php echo $cfg["path"]["contenido_fullhtml"].$cfg["path"]["styles"] ?>contenido.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $cfg["path"]["contenido_fullhtml"].$cfg["path"]["styles"] ?>contenido.css">
     <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>">
 </head>
 
@@ -106,8 +107,8 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
     echo "          <tr valign=\"top\">\n";
     echo "            <td colspan=\"2\"><br>\n";
     echo "              <a href=\"".$sess->url($path2)."\"><img src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_cancel.gif\" border=\"0\" alt=\"".i18n("Cancel")."\" title=\"".i18n("Cancel")."\"></a>\n";
-    echo "              <input type=\"image\" name=\"save\" value=\"editcontent\" src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_refresh.gif\" border=\"0\" onclick=\"document.forms[0].doedit.value='2';document.forms[0].submit();\" alt=\"".i18n("Save without leaving the editor")."\" title=\"".i18n("Save without leaving the editor")."\" />\n";
-    echo "              <input type=\"image\" name=\"submit\" value=\"editcontent\" src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_ok.gif\" border=\"0\"  alt=\"".i18n("Save and close editor")."\" title=\"".i18n("Save and close editor")."\" />\n";
+    echo "              <input type=\"image\" name=\"save\" value=\"editcontent\" src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_refresh.gif\" border=\"0\" onclick=\"document.forms[0].doedit.value='2';document.forms[0].submit();\" alt=\"".i18n("Save without leaving the editor")."\" title=\"".i18n("Save without leaving the editor")."\">\n";
+    echo "              <input type=\"image\" name=\"submit\" value=\"editcontent\" src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_ok.gif\" border=\"0\"  alt=\"".i18n("Save and close editor")."\" title=\"".i18n("Save and close editor")."\">\n";
     echo "            </td>\n";
     echo "          </tr>\n";
     echo "        </table>\n";

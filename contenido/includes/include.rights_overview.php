@@ -61,6 +61,7 @@ if ($action == 'user_delete') {
 
     $sNotification = $notification->displayNotification("info", i18n("User deleted"));
     $sTemplate = '
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
     <title></title>
@@ -348,7 +349,7 @@ $tpl->next();
 $sCurrentValueFrom = str_replace('00:00:00', '', $oUser->getField('valid_from'));
 $sCurrentValueFrom = trim(str_replace('0000-00-00', '', $sCurrentValueFrom));
 
-$sInputValidFrom = '<input type="text" id="valid_from" name="valid_from" value="'.$sCurrentValueFrom.'" />';
+$sInputValidFrom = '<input type="text" id="valid_from" name="valid_from" value="'.$sCurrentValueFrom.'">';
 
 
 $tpl->set('d', 'CATNAME', i18n("Valid from"));
@@ -358,7 +359,7 @@ $tpl->next();
 $sCurrentValueTo = str_replace('00:00:00', '', $oUser->getField('valid_to'));
 $sCurrentValueTo = trim(str_replace('0000-00-00', '', $sCurrentValueTo));
 
-$sInputValidTo  = '<input type="text" id="valid_to" name="valid_to" value="'.$sCurrentValueTo.'" />';
+$sInputValidTo  = '<input type="text" id="valid_to" name="valid_to" value="'.$sCurrentValueTo.'">';
 
 
 $tpl->set('d', 'CATNAME', i18n("Valid to"));
@@ -393,7 +394,7 @@ $oUser2 = new cApiUser();
 $aGroups = $oUser2->getGroupNamesByUserID($userid);
 if (count($aGroups) > 0) {
     asort($aGroups);
-    $sGroups = implode("<br/>", $aGroups);
+    $sGroups = implode("<br>", $aGroups);
 } else {
     $sGroups = i18n("none");
 }

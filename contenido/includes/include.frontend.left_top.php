@@ -122,14 +122,14 @@ $imgUserId='img_user';
 $tpl->set('s', 'IUSER', $imgUserId);
 
 $buttonRow .= '<a style="margin-right:5px;" href="'.$userlink.'" onclick="toggleContainer(\''.$imgUserId.'\');">';
-$buttonRow .= '<img onmouseover="hoverEffect(\''.$imgUserId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgUserId.'\', \'out\')" alt="'.i18n("Frontend users").'" title="'.i18n("Frontend users").'" id="'.$imgUserId.'" src="'.$cfg["path"]["images"].'users.gif"/>';
+$buttonRow .= '<img onmouseover="hoverEffect(\''.$imgUserId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgUserId.'\', \'out\')" alt="'.i18n("Frontend users").'" title="'.i18n("Frontend users").'" id="'.$imgUserId.'" src="'.$cfg["path"]["images"].'users.gif">';
 $buttonRow .= '</a>';
 
 // Frontend Groups
 $imgGroupId='img_group';
 $tpl->set('s', 'IGROUP', $imgGroupId);
 $buttonRow .= '<a style="margin-right:5px;" href="'.$grouplink.'" onclick="toggleContainer(\''.$imgGroupId.'\');">';
-$buttonRow .= '<img onmouseover="hoverEffect(\''.$imgGroupId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgGroupId.'\', \'out\')" alt="'.i18n("Frontend groups").'" title="'.i18n("Frontend groups").'" id="'.$imgGroupId.'" src="'.$cfg["path"]["images"].'groups.gif"/>';
+$buttonRow .= '<img onmouseover="hoverEffect(\''.$imgGroupId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgGroupId.'\', \'out\')" alt="'.i18n("Frontend groups").'" title="'.i18n("Frontend groups").'" id="'.$imgGroupId.'" src="'.$cfg["path"]["images"].'groups.gif">';
 $buttonRow .= '</a>';
 
 $tpl->set('s', 'BUTTONROW', $buttonRow);

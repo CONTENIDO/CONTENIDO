@@ -93,17 +93,16 @@ $sFormAction = $oUrl->build($aUrl['params']);
 
 // set login input image, use button as fallback
 if (cFileHandler::exists($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif')) {
-    $sLoginButton = '<input type="image" title="Login" alt="Login" src="' . $sClientHtmlPath . 'images/but_ok.gif" />' . "\n";
+    $sLoginButton = '<input type="image" title="Login" alt="Login" src="' . $sClientHtmlPath . 'images/but_ok.gif">' . "\n";
 } else {
-    $sLoginButton = '<input id="login_button" type="submit" title="Login" value="Login" />' . "\n";
+    $sLoginButton = '<input id="login_button" type="submit" title="Login" value="Login">' . "\n";
 }
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>" />
+    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>">
     <title>:: :: :: :: CONTENIDO Login</title>
     <script type="text/javascript"><!--
     if (top != self) {
@@ -132,15 +131,15 @@ if (cFileHandler::exists($cfgClient[$client]['path']['frontend'] . 'images/but_o
 
 <div id="loginPageWrap">
     <form id="login" name="login" method="post" action="<?php echo $sFormAction; ?>">
-        <input type="hidden" name="vaction" value="login" />
-        <input type="hidden" name="formtimestamp" value="<?php echo time(); ?>" />
-        <input type="hidden" name="idcat" value="<?php echo (int) $idcat; ?>" />
+        <input type="hidden" name="vaction" value="login">
+        <input type="hidden" name="formtimestamp" value="<?php echo time(); ?>">
+        <input type="hidden" name="idcat" value="<?php echo (int) $idcat; ?>">
         <div class="formHeader">Login</div>
         <div class="formRow">
-            <label for="username">Username:</label><input type="text" class="text" name="username" id="username" size="20" maxlength="32" value="<?php echo (isset($this->auth['uname'])) ? $this->auth['uname'] : '' ?>" /><br class="clear" />
+            <label for="username">Username:</label><input type="text" class="text" name="username" id="username" size="20" maxlength="32" value="<?php echo (isset($this->auth['uname'])) ? $this->auth['uname'] : '' ?>"><br class="clear">
         </div>
         <div class="formRow">
-            <label for="password">Password:</label><input type="password" class="text" name="password" id="password" size="20" maxlength="32" /><br class="clear" />
+            <label for="password">Password:</label><input type="password" class="text" name="password" id="password" size="20" maxlength="32"><br class="clear">
         </div>
         <div class="formRow" style="text-align:right">
             <?php echo $sLoginButton ?>

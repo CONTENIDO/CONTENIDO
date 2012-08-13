@@ -350,7 +350,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
     while ($db->next_record()) {
         if ($db->f("Field") != 'idmetatype') {
             $tpl2->set('d', 'METATITLE', $db->f("Field"));
-            $tpl2->set('d', 'METAFIELDTYPE', '<input type="text" onblur="restoreOnBlur(this, \'' . $result[$db->f("Field")] . '\')" onfocus="clearOnFocus(this, \'' . $result[$db->f("Field")] . '\');" value="' . $result[$db->f("Field")] . '" maxlength="255" style="width:400px;" id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '" class="text_medium"/>');
+            $tpl2->set('d', 'METAFIELDTYPE', '<input type="text" onblur="restoreOnBlur(this, \'' . $result[$db->f("Field")] . '\')" onfocus="clearOnFocus(this, \'' . $result[$db->f("Field")] . '\');" value="' . $result[$db->f("Field")] . '" maxlength="255" style="width:400px;" id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '" class="text_medium">');
             $tpl2->next();
         }
     }

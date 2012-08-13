@@ -247,14 +247,14 @@ $oCheckbox = new cHTMLCheckbox('wysi', '1', 'wysi1', ((int) $wysi == 1));
 $tpl->set('d', 'CATFIELD', $oCheckbox->toHTML(false));
 $tpl->next();
 
-$sInputValidFrom = '<input type="text" id="valid_from" name="valid_from" value="' . $valid_from . '" />';
+$sInputValidFrom = '<input type="text" id="valid_from" name="valid_from" value="' . $valid_from . '">';
 
 
 $tpl->set('d', 'CATNAME', i18n("Valid from"));
 $tpl->set('d', 'CATFIELD', $sInputValidFrom);
 $tpl->next();
 
-$sInputValidTo  = '<input type="text" id="valid_to" name="valid_to" value="' . $valid_to . '" />';
+$sInputValidTo  = '<input type="text" id="valid_to" name="valid_to" value="' . $valid_to . '">';
 
 
 $tpl->set('d', 'CATNAME', i18n("Valid to"));
