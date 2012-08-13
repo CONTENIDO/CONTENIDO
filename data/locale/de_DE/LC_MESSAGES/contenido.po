@@ -634,7 +634,7 @@ msgstr "Quellkategorie"
 
 #includes/include.stat_overview.php:43
 msgid "Tracking was disabled for this client!"
-msgstr "Tracking worde für diesen Mandanten abgeschaltet!"
+msgstr "Tracking wurde für diesen Mandanten abgeschaltet!"
 
 #: classes/class.cms_teaser.php:579
 #: includes/include.stat_overview.php:91
@@ -5964,7 +5964,7 @@ msgstr "Alle Sprachen"
 
 #: includes/include.stat_overview.php: 49
 msgid "This client has been configured with Google Analytics account %s. Click %s to visit Google Analytics"
-msgstr "Dieser Mandant worde mit Google Analytics-Account %s konfiguriert. Drücken Sie bitte %s um Google Analytics zu besuchen."
+msgstr "Dieser Mandant wurde mit Google Analytics-Account %s konfiguriert. Drücken Sie bitte %s um Google Analytics zu besuchen."
 
 #: includes/include.stat_overview.php: 48, 55
 msgid "here"
@@ -5972,7 +5972,7 @@ msgstr "hier"
 
 #: includes/include.stat_overview.php: 56
 msgid "This client has bee configured with Piwik Site %s. Click %s to visit the Piwik installation."
-msgstr "Dieser Mandant worde mit Piwik Seite %s konfiguriert. Drücken Sie bitte %s um Piwik-URL zu öffnen."
+msgstr "Dieser Mandant wurde mit Piwik Seite %s konfiguriert. Drücken Sie bitte %s um Piwik-URL zu öffnen."
 
 #: templates/standard/template.con_art_overview.html 90, 140
 msgid "Apply to all selected articles"
@@ -6070,3 +6070,21 @@ msgstr "Sie sind hier"
 
 msgid "open"
 msgstr "Öffnen"
+
+msgid "Log mails"
+msgstr "Mails loggen"
+
+msgid "Mailserver user"
+msgstr "Mailserver Benutzername"
+
+msgid "Mailserver password"
+msgstr "Mailserver Passwort"
+
+msgid "Mailserver encryption"
+msgstr "Mailserver Verschlüsselung"
+
+msgid "Mailserver port"
+msgstr "Mailserver Port"
+
+msgid "Mail logging was disabled!"
+msgstr "Mail Logging wurde abgeschaltet!"

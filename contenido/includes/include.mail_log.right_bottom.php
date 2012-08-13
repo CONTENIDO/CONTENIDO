@@ -230,8 +230,8 @@ class View_MailLog {
      */
     public function display() {
         // show notification if mail logging is disabled
-        $log = cSecurity::toBoolean(getSystemProperty('system', 'mail_log'));
-        if (!$log) {
+        $log = getSystemProperty('system', 'mail_log');
+        if ($log === 'false') {
             $contenidoNotification = new cGuiNotification();
             $contenidoNotification->displayNotification('warning', i18n('Mail logging was disabled!'));
         } else if ($this->_area == 'mail_log_detail') {
