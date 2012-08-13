@@ -39,7 +39,8 @@ cRegistry::bootstrap(array('sess' => 'cSession',
                 'perm' => 'cPermission'));
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
-cRegistry::shutdown();
+// do not call cRegistry::shutdown(); here because
+// it will print <script> tags which result in errors
 ?>
 
 

@@ -40,7 +40,8 @@ cRegistry::bootstrap(array('sess' => 'cSession',
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 require($cfg['path']['contenido'].'includes/functions.includePluginConf.php');
-cRegistry::shutdown();
+// do not call cRegistry::shutdown(); here because
+// it will print <script> tags which result in errors
 
 
 /* Fetch chains */
