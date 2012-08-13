@@ -34,7 +34,9 @@ function insertTab(event, obj) {
                 obj.focus();
             } else if (obj.createTextRange) { // ie
                 document.selection.createRange().text = "\t";
-                setTimeout("document.getElementById(\'"+obj.id+"\').focus();",0);
+                setTimeout(function() {
+                    $("#" + obj.id).focus();
+                }, 5);
             } else {
                 // unsupported browsers
             }
@@ -51,18 +53,4 @@ function insertTab(event, obj) {
     }
 }
 //--></script>
-<script type="text/javascript"><!--
-function scrolltheother() {
-    var oICArea = document.mod_edit.input;
-    var oOCArea = document.mod_edit.output;
-    var oIRArea = document.mod_edit.txtInputRows;
-    var oORArea = document.mod_edit.txtOutputRows;
-
-    oIRArea.scrollTop = oICArea.scrollTop;
-    oORArea.scrollTop = oOCArea.scrollTop;
-
-    setTimeout("scrolltheother()", 10);
-}
-window.onload = scrolltheother;
-        //--></script>
 {FORM}
