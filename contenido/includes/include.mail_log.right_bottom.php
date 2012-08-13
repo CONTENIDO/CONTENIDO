@@ -229,7 +229,12 @@ class View_MailLog {
      * Displays the right content in dependency of $this->_area.
      */
     public function display() {
-        if ($this->_area == 'mail_log_detail') {
+        // show notification if mail logging is disabled
+        $log = cSecurity::toBoolean(getSystemProperty('system', 'mail_log'));
+        if (!$log) {
+            $contenidoNotification = new cGuiNotification();
+            $contenidoNotification->displayNotification('warning', i18n('Mail logging was disabled!'));
+        } else if ($this->_area == 'mail_log_detail') {
             if (is_numeric($_REQUEST['idmail'])) {
                 // execute action
                 $this->makeAction();

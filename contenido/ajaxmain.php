@@ -150,10 +150,10 @@ if (isset($action) && $action != '') {
 if (isset($action)) {
     $actionCodeFile = $cfg['path']['contenido'] . 'includes/type/action/include.' . $action . '.action.php';
     if (cFileHandler::exists($actionCodeFile)) {
-        cDebug("Including action file for " . $action);
+        cDebug('Including action file for ' . $action);
         include_once $actionCodeFile;
     } else {
-        cDebug("No action file found for " . $action);
+        cDebug('No action file found for ' . $action);
     }
 }
 
@@ -167,10 +167,10 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 
 $cfg['debug']['backend_exectime']['end'] = getmicrotime();
 
-cDebug("Building this page (excluding contenido includes) took: " . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . " seconds");
-cDebug("Building the complete page took: " . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . " seconds");
-cDebug("Include memory usage: " . humanReadableSize(memory_get_usage()-$oldmemusage));
-cDebug("Complete memory usage: " . humanReadableSize(memory_get_usage()));
+cDebug('Building this page (excluding contenido includes) took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . ' seconds');
+cDebug('Building the complete page took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . ' seconds');
+cDebug('Include memory usage: ' . humanReadableSize(memory_get_usage()-$oldmemusage));
+cDebug('Complete memory usage: ' . humanReadableSize(memory_get_usage()));
 
 // User Tracking (who is online)
 $oActiveUser = new cApiOnlineUserCollection();

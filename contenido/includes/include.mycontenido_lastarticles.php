@@ -79,9 +79,6 @@ $sql = "SELECT
                 logtimestamp DESC
         LIMIT 5";
 
-// Debug info
-cDebug($sql);
-
 $db->query($sql);
 
 // Reset Template

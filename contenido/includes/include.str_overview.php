@@ -299,9 +299,6 @@ $sql = "SELECT
         ORDER BY
             idtree";
 
-// Debug info
-cDebug($sql);
-
 $db->query($sql);
 
 $bIgnore = false;

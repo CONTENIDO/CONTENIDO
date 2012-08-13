@@ -328,7 +328,6 @@ class DB_Sql extends DB_Sql_Abstract {
      * {@inheritdoc}
      */
     public function disconnect() {
-        $this->_debug("Debug: Disconnecting $this->Link_ID...");
         // Destroy the PDO and PDOStatement object
         $this->_removeConnection($this->Link_ID);
         $this->Link_ID = null;

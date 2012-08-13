@@ -116,9 +116,6 @@ $sql = "SELECT
             area.parent_id ASC,
             navsub.idnavs ASC";
 
-// Debug
-cDebug($sql);
-
 $db->query($sql);
 
 

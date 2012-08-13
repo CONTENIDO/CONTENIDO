@@ -251,9 +251,6 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $iArticleCount = 0; // Will be used to "hide" the browsing area
         }
 
-        // Debug info
-        cDebug($sql);
-
         // Getting data
         $db->query($sql);
 

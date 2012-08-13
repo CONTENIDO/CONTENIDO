@@ -112,6 +112,7 @@ $aManagedProperties = array(
     array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => array('false', 'true'), 'label' => i18n('Use TinyMce as insight editor'), 'group' => i18n('Backend')),
     array('type' => 'backend', 'name' => 'preferred_idclient', 'value' => 'integer', 'label' => i18n('Default client (ID)'), 'group' => i18n('Backend')),
     array('type' => 'backend', 'name' => 'max_log_size', 'value' => 'label', 'label' => i18n('Maximum log size in MiB (0 = infinite)'), 'group' => i18n('Backend')),
+    array('type' => 'system', 'name' => 'mail_log', 'value' => array('false', 'true'), 'label' => i18n('Log mails'), 'group' => i18n('Mailserver')),
     array('type' => 'system', 'name' => 'mail_host', 'value' => '', 'label' => i18n('Mailserver host'), 'group' => i18n('Mailserver')),
     array('type' => 'system', 'name' => 'mail_user', 'value' => '', 'label' => i18n('Mailserver user'), 'group' => i18n('Mailserver')),
     array('type' => 'system', 'name' => 'mail_pass', 'value' => '', 'label' => i18n('Mailserver password'), 'group' => i18n('Mailserver')),

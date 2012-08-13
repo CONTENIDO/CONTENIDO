@@ -312,7 +312,6 @@ class DB_Sql extends DB_Sql_Abstract {
      * {@inheritdoc}
      */
     public function disconnect() {
-        $this->_debug("Debug: Disconnecting $this->Link_ID...");
         if (is_resource($this->Link_ID)) {
             mysql_close($this->Link_ID);
             $this->_removeConnection($this->Link_ID);

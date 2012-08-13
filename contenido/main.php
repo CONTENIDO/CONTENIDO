@@ -191,10 +191,10 @@ if (isset($action) && $action != '') {
 if (isset($action)) {
     $actionCodeFile = $cfg['path']['contenido'] . 'includes/type/action/include.' . $action . '.action.php';
     if (cFileHandler::exists($actionCodeFile)) {
-        cDebug("Including action file for " . $action);
+        cDebug('Including action file for ' . $action);
         include_once $actionCodeFile;
     } else {
-        cDebug("No action file found for " . $action);
+        cDebug('No action file found for ' . $action);
     }
 }
 

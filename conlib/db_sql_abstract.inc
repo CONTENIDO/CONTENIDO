@@ -405,8 +405,6 @@ abstract class DB_Sql_Abstract {
             $this->free();
         }
 
-        $this->_debug('query = "' . $sStatement . '"');
-
         if ($this->_bProfile) {
             $fStart = microtime(true);
         }
@@ -1033,8 +1031,10 @@ abstract class DB_Sql_Abstract {
      *
      * @param   string  $sMsg  The message to display
      * @return  void
+     * @deprecated 2012-08-13 Use cDebug instead!
      */
     protected function _debug($sMsg) {
+        cDeprecated('Use cDebug instead!');
         cDebug($sMsg);
     }
 

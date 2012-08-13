@@ -162,7 +162,6 @@ if (isset($idclient)) {
 }
 
 $form = '<form name="client_properties" method="post" action="' . $sess->url("main.php?") . '">
-             ' . $sess->hidden_session() . '
              <input type="hidden" name="area" value="' . $area . '">
              <input type="hidden" name="action" value="client_edit">
              <input type="hidden" name="frame" value="' . $frame . '">
