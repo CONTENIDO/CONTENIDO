@@ -119,7 +119,7 @@ abstract class cSearchBaseAbstract {
         } else {
             $dump .= $var;
         }
-        cDebug($dump);
+        cDebug::out($dump);
     }
 
 }

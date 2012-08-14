@@ -870,7 +870,7 @@ class Contenido_Category_Base {
         $this->oDb = $oDb;
         $this->aCfg = $aCfg;
         $this->bDbg = true;
-        $this->oDbg = getDebugger();
+        $this->oDbg = cDebug::getDebugger();
     }
 
     /**
@@ -882,7 +882,7 @@ class Contenido_Category_Base {
      * @return  void
      * @author Rudi Bieller
      */
-    public function setDebug($bDebug = true, $sDebugMode = 'visible') {
+    public function setDebug($bDebug = true, $sDebugMode = cDebug::DEBUGGER_VISIBLE) {
         cDeprecated("This function is no longer needed. \$oDbg gets chosen by the system settings.");
 
         if ($bDebug === false) {
@@ -890,13 +890,10 @@ class Contenido_Category_Base {
             $this->oDbg = null;
             $this->sDbgMode = 'hidden';
         } else {
-            if (!in_array($sDebugMode, array('visible', 'visible_adv', 'file', 'devnull', 'hidden'))) {
-                $sDebugMode = 'devnull';
-            }
             try {
                 $this->sDbgMode = $sDebugMode;
                 $this->bDbg = true;
-                $this->oDbg = cDebugFactory::getDebugger($sDebugMode);
+                $this->oDbg = cDebug::getDebugger($sDebugMode);
             } catch (InvalidArgumentException $e) {
                 throw $e;
             }

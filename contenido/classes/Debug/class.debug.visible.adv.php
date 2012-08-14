@@ -96,8 +96,6 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      * @return void
      */
     public function showAll() {
-        global $backend;
-
         $sHtml = "";
         if ($this->count() > 0) {
             $sHtml = '<script type="text/javascript">
@@ -131,7 +129,6 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
             <a href="javascript:void(0);" title="Toggle Debug Output" onclick="con_dbg_toggle(\'dbg_item_block\');">con dbg</a>
             <a id="conDbgClose" href="javascript:void(0);" title="Hide Debug Output" onclick="con_dbg_hide(\'conDbgBox\');">(x)</a>
             <div id="dbg_item_block" style="display:none;">';
-            $sBlocks = '';
             $i = 1;
             foreach ($this->_aItems as $oItem) {
                 $sItemName = strlen($oItem->getDescription()) > 0? $oItem->getDescription() : ('debug item #' . $i);
@@ -235,7 +232,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
         try {
-            $oDbgVisible = cDebugFactory::getDebugger('visible');
+            $oDbgVisible = cDebug::getDebugger(cDebug::DEBUGGER_VISIBLE);
         } catch (Exception $e) {
             // throw $e;
             echo $e->getMessage();

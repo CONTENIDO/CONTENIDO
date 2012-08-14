@@ -290,7 +290,7 @@ class Form {
             echo $tmp_template['complete'];
 
             // debug info
-            cDebug(print_r($this->fields, true));
+            cDebug::out(print_r($this->fields, true));
         } else {
             // there are no errors
             // and the form passed

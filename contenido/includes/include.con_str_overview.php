@@ -648,7 +648,7 @@ while ($db->next_record()) {
     }
 }
 
-cDebug(print_r($navigationTree, true));
+cDebug::out(print_r($navigationTree, true));
 
 if (count($navigationTree[0])) {
     $sCategories = showTree(0, $aWholelist);

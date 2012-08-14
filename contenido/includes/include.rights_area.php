@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 //notice $oTpl is filled and generated in file include.rights.php this file renders $oTpl to browser
 include_once($cfg['path']['CONTENIDO'] . 'includes/include.rights.php');
-$debug = (getDebugger() != cDebugFactory::getDebugger("devnull"));
+$debug = (cDebug::getDefaultDebuggerName() != cDebug::DEBUGGER_DEVNULL);
 
 //set the areas which are in use for selecting these
 

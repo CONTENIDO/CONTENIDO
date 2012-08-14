@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Project:
  * CONTENIDO Content Management System
@@ -22,15 +23,11 @@
  *
  * {@internal
  *   created  2011-04-11
- *
  *   $Id$:
  * }}
- *
  */
 
-
 defined('CON_FRAMEWORK') or die('Illegal call');
-
 
 /**
  * Mod rewrite debugger class.
@@ -39,53 +36,46 @@ defined('CON_FRAMEWORK') or die('Illegal call');
  * @package     CONTENIDO Plugins
  * @subpackage  ModRewrite
  */
-class ModRewriteDebugger
-{
+class ModRewriteDebugger {
+
     /**
      * Flag to enable debugger
-     *
      * @var  bool
      */
     protected static $_bEnabled = false;
-
 
     /**
      * Enable debugger setter.
      * @param  bool  $bEnabled
      */
-    public static function setEnabled($bEnabled)
-    {
+    public static function setEnabled($bEnabled) {
         self::$_bEnabled = (bool) $bEnabled;
     }
 
     /**
      * Adds variable to debugger.
-     * Wrapper for <code>cDebugFactory::getDebugger('visible_adv')</code>.
+     * Wrapper for <code>cDebug::getDebugger('visible_adv')</code>.
      *
      * @param  mixed   $mVar  The variable to dump
      * @param  string  $sLabel  Describtion for passed $mVar
      */
-    public static function add($mVar, $sLabel = '')
-    {
+    public static function add($mVar, $sLabel = '') {
         if (!self::$_bEnabled) {
             return;
         }
-        $oDebugger = getDebugger();
-        $oDebugger->add($mVar, $sLabel);
+        cDebug::getDebugger()->add($mVar, $sLabel);
     }
 
     /**
      * Returns output of all added variables to debug.
      * @return  string
      */
-    public static function getAll()
-    {
+    public static function getAll() {
         if (!self::$_bEnabled) {
             return '';
         }
-        $oDebugger = getDebugger();
         ob_start();
-        $oDebugger->showAll();
+        cDebug::getDebugger()->showAll();
         $sOutput = ob_get_contents();
         ob_end_clean();
         return $sOutput;
@@ -93,17 +83,16 @@ class ModRewriteDebugger
 
     /**
      * Logs variable to debugger.
-     * Wrapper for <code>cDebugFactory::getDebugger('file')</code>.
+     * Wrapper for <code>cDebug::getDebugger(cDebug::DEBUGGER_FILE)</code>.
      *
      * @param  mixed   $mVar  The variable to log the contents
      * @param  string  $sLabel  Describtion for passed $mVar
      */
-    public static function log($mVar, $sLabel = '')
-    {
+    public static function log($mVar, $sLabel = '') {
         if (!self::$_bEnabled) {
             return;
         }
-        $oDebugger = getDebugger();
-        $oDebugger->show($mVar, $sLabel);
+        cDebug::getDebugger(cDebug::DEBUGGER_FILE)->show($mVar, $sLabel);
     }
+
 }

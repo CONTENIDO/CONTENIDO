@@ -507,8 +507,8 @@ function rereadClients() {
         $cfgClient[$iClient]['module']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/modules/';
         $cfgClient[$iClient]['module']['frontendpath'] = 'data/modules/';
 
-#        $cfgClient[$iClient]['config']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/configs/';
-#        $cfgClient[$iClient]['config']['frontendpath'] = 'data/configs/';
+        $cfgClient[$iClient]['config']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/config/';
+        $cfgClient[$iClient]['config']['frontendpath'] = 'data/config/';
 
         $cfgClient[$iClient]['layout']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/layouts/';
         $cfgClient[$iClient]['layout']['frontendpath'] = 'data/layouts/';
@@ -1101,56 +1101,6 @@ function buildStackString($startlevel = 2) {
 }
 
 /**
- * Returns the debugger for the current system settings
- *
- * @return IDebug
- */
-function getDebugger() {
-    $debugger = cDebugFactory::getDebugger('devnull');
-    if (getSystemProperty('debug', 'debug_to_file') == 'true') {
-        $debugger = cDebugFactory::getDebugger('file');
-    } else if (getSystemProperty('debug', 'debug_to_screen') == 'true') {
-        $debugger = cDebugFactory::getDebugger('visible_adv');
-    }
-    if ((getSystemProperty('debug', 'debug_to_screen') == 'true') && (getSystemProperty('debug', 'debug_to_file') == 'true')) {
-        $debugger = cDebugFactory::getDebugger('vis_and_file');
-    }
-
-    return $debugger;
-}
-
-/**
- * Prints a debug message if the settings allow it. The debug messages will be
- * in a textrea in the header and in the file debuglog.txt. All messages are immediately
- * written to the filesystem but they will only show up when debugPrint() is called.
- *
- * @param  string  $message  Message to display. NOTE: You can use buildStackString to show stacktraces
- */
-function cDebug($message) {
-    $debugger = getDebugger();
-    $debugger->out($message);
-}
-
-/**
- * Adds a variable to the debugger. This variable will be watched.
- *
- * @param mixed $var A variable or an object
- * @param string $label An optional description for the variable
- */
-function debugAdd($var, $label = '') {
-    $debugger = getDebugger();
-    $debugger->add($var, $label);
-}
-
-/**
- * Prints the cached debug messages to the screen
- */
-function debugPrint() {
-    $debugger = getDebugger();
-    $debugger->showAll();
-}
-
-/**
  * CONTENIDO warning
  *
  * Examples:
@@ -1363,7 +1313,7 @@ function endAndLogTiming($uuid) {
 
     $parameterString = implode(', ', $myparams);
 
-    cDebug('calling function ' . $_timings[$uuid]['function'] . '(' . $parameterString . ') took ' . $timeSpent . ' seconds');
+    cDebug::out('calling function ' . $_timings[$uuid]['function'] . '(' . $parameterString . ') took ' . $timeSpent . ' seconds');
 }
 
 function notifyOnError($errortitle, $errormessage) {

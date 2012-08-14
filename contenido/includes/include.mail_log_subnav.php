@@ -88,7 +88,7 @@ foreach ($_GET as $sTempKey => $sTempValue) {
  */
 
 // Debug
-cDebug('Url-Params: ' . $sUrlParams);
+cDebug::out('Url-Params: ' . $sUrlParams);
 
 
 // Select NavSubItems from DB
@@ -165,7 +165,7 @@ if (!$bMenuless) {
 
     $sTpl = $tpl->generate($cfg["path"]["templates"] . $cfg['templates']['default_subnav'], true);
 
-    cDebug('sExectime: ' . substr($sExectime, 0, 7) . " sec");
+    cDebug::out('sExectime: ' . substr($sExectime, 0, 7) . " sec");
 
     echo $sTpl;
 } else {

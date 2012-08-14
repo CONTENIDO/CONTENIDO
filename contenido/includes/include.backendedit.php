@@ -123,8 +123,8 @@ include($cfg['path']['contenido'].$cfg['path']['includes'] . 'include.' . $type 
 
 $end = getmicrotime();
 
-cDebug('Rendering this page took: ' . ($end - $start) . ' seconds<br>');
-cDebug('Building the complete page took: ' . ($end - $fullstart) . ' seconds<br>');
+cDebug::out('Rendering this page took: ' . ($end - $start) . ' seconds<br>');
+cDebug::out('Building the complete page took: ' . ($end - $fullstart) . ' seconds<br>');
 
 cRegistry::shutdown();
 

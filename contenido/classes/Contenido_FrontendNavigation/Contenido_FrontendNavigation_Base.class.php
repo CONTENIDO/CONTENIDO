@@ -103,7 +103,7 @@ class Contenido_FrontendNavigation_Base {
         $this->_iCurrentLoadDepth = 1;
         $this->_aSubCategories = array();
         $this->bDbg = true;
-        $this->oDbg = getDebugger();
+        $this->oDbg = cDebug::getDebugger();
     }
 
     /**
@@ -141,16 +141,13 @@ class Contenido_FrontendNavigation_Base {
      * @return void
      * @author Rudi Bieller
      */
-    public function setDebug($bDebug = true, $sDebugMode = 'visible') {
+    public function setDebug($bDebug = true, $sDebugMode = cDebug::DEBUGGER_VISIBLE) {
         cDeprecated("This function is no longer needed. \$oDbg gets chosen by the system settings.");
 
-        if (!in_array($sDebugMode, array('visible', 'hidden'))) {
-            $sDebugMode = 'hidden';
-        }
         $this->sDbgMode = $sDebugMode;
         if ($bDebug === true) {
             $this->bDbg = true;
-            $this->oDbg = cDebugFactory::getDebugger($sDebugMode);
+            $this->oDbg = cDebug::getDebugger($sDebugMode);
         } else {
             $this->bDbg = false;
             $this->oDbg = null;

@@ -172,7 +172,7 @@ class cGuiNavigation {
         }
 
         // debugging information
-        cDebug(print_r($this->data, true));
+        cDebug::out(print_r($this->data, true));
     }
 
     /**

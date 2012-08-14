@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-08-14
+ *     created  2012-08-15
  * }}
  */
 
@@ -336,14 +336,14 @@ return array(
     'cDatatype' => 'contenido/classes/datatypes/class.datatype.php',
     'cDebugDevNull' => 'contenido/classes/Debug/class.debug.dev.null.php',
     'Debug_DevNull' => 'contenido/classes/Debug/class.debug.dev.null.php',
-    'cDebugFactory' => 'contenido/classes/Debug/class.debug.factory.php',
-    'DebuggerFactory' => 'contenido/classes/Debug/class.debug.factory.php',
     'cDebugFileAndVisAdv' => 'contenido/classes/Debug/class.debug.file.and.vis.adv.php',
     'Debug_FileAndVisAdv' => 'contenido/classes/Debug/class.debug.file.and.vis.adv.php',
     'cDebugFile' => 'contenido/classes/Debug/class.debug.file.php',
     'Debug_File' => 'contenido/classes/Debug/class.debug.file.php',
     'cDebugHidden' => 'contenido/classes/Debug/class.debug.hidden.php',
     'Debug_Hidden' => 'contenido/classes/Debug/class.debug.hidden.php',
+    'cDebug' => 'contenido/classes/Debug/class.debug.php',
+    'DebuggerFactory' => 'contenido/classes/Debug/class.debug.php',
     'cDebugVisibleAdv' => 'contenido/classes/Debug/class.debug.visible.adv.php',
     'Debug_VisibleAdv' => 'contenido/classes/Debug/class.debug.visible.adv.php',
     'cDebugVisibleAdvItem' => 'contenido/classes/Debug/class.debug.visible.adv.php',
@@ -567,6 +567,7 @@ return array(
     'cValidatorEmail' => 'contenido/classes/validator/class.validator.email.php',
     'cValidatorFactory' => 'contenido/classes/validator/class.validator.factory.php',
     'cValidatorRegex' => 'contenido/classes/validator/class.validator.regex.php',
+    'cValidatorUrl' => 'contenido/classes/validator/class.validator.url.php',
     'cVersionFile' => 'contenido/classes/version/class.version.file.php',
     'cVersionImport' => 'contenido/classes/version/class.version.import.php',
     'cVersionLayout' => 'contenido/classes/version/class.version.layout.php',

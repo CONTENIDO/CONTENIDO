@@ -35,7 +35,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $this->_jsData = '';
         $this->_tplName = '';
 
-        cDebug("conGenerateCode($this->_idcat, $this->_idart, $this->_lang, $this->_client, $this->_layout);<br>");
+        cDebug::out("conGenerateCode($this->_idcat, $this->_idart, $this->_lang, $this->_client, $this->_layout);<br>");
 
         // Set category article id
         $idcatart = conGetCategoryArticleId($this->_idcat, $this->_idart);
@@ -172,7 +172,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      */
     protected function _processNoConfigurationError() {
         // fixme
-        cDebug('Neither CAT or ART are configured!<br><br>');
+        cDebug::out('Neither CAT or ART are configured!<br><br>');
 
         $code = '<html><body>No code was created for this art in this category.</body><html>';
 

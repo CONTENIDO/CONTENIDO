@@ -407,7 +407,7 @@ class cRegistry {
      * @return    void
      */
     public final static function shutdown() {
-        debugPrint();
+        cDebug::showAll();
 
         $sess = self::_fetchGlobalVariable('sess');
         if (isset($sess)) {

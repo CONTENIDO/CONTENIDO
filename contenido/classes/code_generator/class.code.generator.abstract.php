@@ -233,13 +233,13 @@ abstract class cCodeGeneratorAbstract {
         $idtplcfg = conGetTemplateConfigurationIdForArticle($this->_idart, $this->_idcat, $this->_lang, $this->_client);
         if (is_numeric($idtplcfg) && $idtplcfg != 0) {
             // Article is configured
-            cDebug("configuration for article found: $idtplcfg<br><br>");
+            cDebug::out("configuration for article found: $idtplcfg<br><br>");
         } else {
             // Check whether category is configured
             $idtplcfg = conGetTemplateConfigurationIdForCategory($this->_idcat, $this->_lang, $this->_client);
             if (null !== $idtplcfg) {
                 // Category is configured
-                cDebug("configuration for category found: $idtplcfg<br><br>");
+                cDebug::out("configuration for category found: $idtplcfg<br><br>");
             }
         }
 
@@ -271,7 +271,7 @@ abstract class cCodeGeneratorAbstract {
 
         $idlay = $data['idlay'];
         $idtpl = $data['idtpl'];
-        cDebug("Using Layout: $idlay and Template: $idtpl for generation of code.<br><br>");
+        cDebug::out("Using Layout: $idlay and Template: $idtpl for generation of code.<br><br>");
 
         return $data;
     }
@@ -547,7 +547,7 @@ abstract class cCodeGeneratorAbstract {
      */
     protected function _debug($msg) {
         cDeprecated('Use cDebug instead!');
-        cDebug($msg);
+        cDebug::out($msg);
     }
 
 }

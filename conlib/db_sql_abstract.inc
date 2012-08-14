@@ -1035,7 +1035,7 @@ abstract class DB_Sql_Abstract {
      */
     protected function _debug($sMsg) {
         cDeprecated('Use cDebug instead!');
-        cDebug($sMsg);
+        cDebug::out($sMsg);
     }
 
 }

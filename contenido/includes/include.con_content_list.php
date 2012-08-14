@@ -245,7 +245,7 @@ if ($code == "0601") {
 }
 
 if ($cfg["debug"]["codeoutput"]) {
-    cDebug(htmlspecialchars($code));
+    cDebug::out(htmlspecialchars($code));
 }
 
 //show ContentTypeList

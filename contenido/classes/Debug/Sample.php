@@ -55,13 +55,13 @@ $fMyFloat = 5.12;
 $sMyString = 'my string looks like this';
 
 // print debug info to screen
-$oDbgVisible = cDebugFactory::getDebugger('visible');
+$oDbgVisible = cDebug::getDebugger(cDebug::DEBUGGER_VISIBLE);
 $oDbgVisible->show($oMyObj, 'some comments if needed');
 $oDbgVisible->show($aMyArray, 'some comments if needed');
 $oDbgVisible->show($fMyFloat, 'some comments if needed');
 
 // print debug info to screen inside a box that can be toggled and does not crash your layout
-$oDbgVisibleAdv = cDebugFactory::getDebugger('visible_adv');
+$oDbgVisibleAdv = cDebug::getDebugger(cDebug::DEBUGGER_VISIBLE_ADV);
 $oDbgVisibleAdv->add($oMyObj, 'some comments if needed');
 $oDbgVisibleAdv->add($aMyArray, 'some comments if needed');
 $oDbgVisibleAdv->add($fMyFloat, 'some comments if needed');
@@ -69,19 +69,19 @@ $oDbgVisibleAdv->showAll(); // prints out a small html box at left top of page
 $oDbgVisibleAdv->show($fMyFloat, 'some comments if needed'); // also possible here
 
 // print debug info to screen in html comments
-$oDbgHidden = cDebugFactory::getDebugger('hidden');
+$oDbgHidden = cDebug::getDebugger(cDebug::DEBUGGER_HIDDEN);
 $oDbgHidden->show($oMyObj, 'some comments if needed');
 $oDbgHidden->show($aMyArray, 'some comments if needed');
 $oDbgHidden->show($fMyFloat, 'some comments if needed');
 
 // print debug info to a logfile
-$oDbgFile = cDebugFactory::getDebugger('file');
+$oDbgFile = cDebug::getDebugger(cDebug::DEBUGGER_FILE);
 $oDbgFile->show($oMyObj, 'some comments if needed');
 $oDbgFile->show($aMyArray, 'some comments if needed');
 $oDbgFile->show($fMyFloat, 'some comments if needed');
 
 // send debug info to dev/null
-$oDbgDevnull = cDebugFactory::getDebugger('devnull');
+$oDbgDevnull = cDebug::getDebugger(cDebug::DEBUGGER_DEVNULL);
 $oDbgDevnull->show($oMyObj, 'some comments if needed');
 $oDbgDevnull->show($aMyArray, 'some comments if needed');
 $oDbgDevnull->show($fMyFloat, 'some comments if needed');

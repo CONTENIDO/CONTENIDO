@@ -330,7 +330,7 @@ class cApiCecHook {
         $sLogPathName = $cfg['path']['contenido_logs'] . 'cec_hook_debug.log';
         cFileHandler::write($sLogPathName, $content . "\n", true);
 
-        cDebug($content);
+        cDebug::out($content);
     }
 
 }
