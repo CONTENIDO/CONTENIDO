@@ -218,6 +218,8 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
             $oCatArt = $oCatArtColl->create($value, $idart);
             $curIdcatart = $oCatArt->get('idcatart');
 
+            $aLanguages = getLanguagesByClient($client);
+
             // New statistics entry for each language
             foreach ($aLanguages as $curLang) {
                 $oStatColl = new cApiStatCollection();
