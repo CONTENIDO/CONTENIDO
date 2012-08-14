@@ -1,17 +1,12 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * Static debugger factory.
  *
- * Description:
- * Static Debugger Factory
+ * @package Core
+ * @subpackage Debug
+ * @version SVN Revision $Rev:$
+ * @version SVN Id $Id$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.1
  * @author Rudi Bieller
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -22,33 +17,46 @@
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
+
+/**
+ * Debugger factory class
+ *
+ * @package Core
+ * @subpackage Debug
+ */
 class cDebugFactory {
 
-    public static function getDebugger($sType) {
+    protected static $_systemSettingDebugger;
+
+    /**
+     * Returns instance of debugger. If not defined, it returns the debugger from the current system settings.
+     * @param  string  $sType  The debugger to get, empty string to get debugger defined in system settings
+     * @return cDebugInterface
+     * @throws  InvalidArgumentException  If type of debugger is unknown
+     */
+    public static function getDebugger($sType = '') {
+        if (empty($sType)) {
+            $sType = self::_getSystemSettingDebugger();
+        }
+
         $oDebugger = null;
         switch ($sType) {
             case 'visible':
-                include_once ('class.debug.visible.php');
                 $oDebugger = cDebugVisible::getInstance();
                 break;
             case 'visible_adv':
-                include_once ('class.debug.visible.adv.php');
                 $oDebugger = cDebugVisibleAdv::getInstance();
                 break;
             case 'hidden':
-                include_once ('class.debug.hidden.php');
                 $oDebugger = cDebugHidden::getInstance();
                 break;
             case 'file':
-                include_once ('class.debug.file.php');
                 $oDebugger = cDebugFile::getInstance();
                 break;
             case 'vis_and_file':
-                include_once ('class.debug.file.and.vis.adv.php');
                 $oDebugger = cDebugFileAndVisAdv::getInstance();
                 break;
             case 'devnull':
-                include_once ('class.debug.dev.null.php');
                 $oDebugger = cDebugDevNull::getInstance();
                 break;
             default:
@@ -58,15 +66,33 @@ class cDebugFactory {
         return $oDebugger;
     }
 
-}
-class DebuggerFactory extends cDebugFactory {
-
     /**
-     *
-     * @deprecated Class was renamed to cDebugFactory
+     * Return the debugger defined in system settings.
+     * @return string
      */
-    public function __construct() {
-        cDeprecated('Class was renamed to cDebugFactory');
+    protected static function _getSystemSettingDebugger() {
+        if (isset(self::$_systemSettingDebugger)) {
+            return self::$_systemSettingDebugger;
+        }
+        self::$_systemSettingDebugger = 'devnull';
+        if (getSystemProperty('debug', 'debug_to_file') == 'true') {
+            self::$_systemSettingDebugger = 'file';
+        } else if (getSystemProperty('debug', 'debug_to_screen') == 'true') {
+            self::$_systemSettingDebugger = 'visible_adv';
+        }
+        if ((getSystemProperty('debug', 'debug_to_screen') == 'true') && (getSystemProperty('debug', 'debug_to_file') == 'true')) {
+            self::$_systemSettingDebugger = 'vis_and_file';
+        }
+        return self::$_systemSettingDebugger;
     }
 
+}
+
+/** @deprecated  [2012-07-24]  Class was renamed to cDebugFactory */
+class DebuggerFactory extends cDebugFactory {
+    /** @deprecated Class was renamed to cDebugFactory */
+    public static function getDebugger($sType) {
+        cDeprecated('Use cDebugFactory::getDebugger()');
+        return cDebugFactory::getDebugger($sType);
+    }
 }
