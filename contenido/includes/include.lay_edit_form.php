@@ -232,9 +232,9 @@ if (!$layout->virgin) {
                             }
                         </script>';
 
-    $page->set("s", "FORM", $form->render().$sScript);
-
-
+    $page->set('s', 'FORM', $form->render().$sScript);
+} else {
+    $page->set('s', 'FORM', '');
 }
 
 
