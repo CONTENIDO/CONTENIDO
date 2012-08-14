@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-08-13
+ *     created  2012-08-14
  * }}
  */
 
@@ -268,6 +268,10 @@ return array(
     'cApiModule' => 'contenido/classes/contenido/class.module.php',
     'cApiModuleTranslationCollection' => 'contenido/classes/contenido/class.module.php',
     'cApiModuleTranslation' => 'contenido/classes/contenido/class.module.php',
+    'cApiNavMainCollection' => 'contenido/classes/contenido/class.navmain.php',
+    'cApiNavMain' => 'contenido/classes/contenido/class.navmain.php',
+    'cApiNavSubCollection' => 'contenido/classes/contenido/class.navsub.php',
+    'cApiNavSub' => 'contenido/classes/contenido/class.navsub.php',
     'cApiOnlineUserCollection' => 'contenido/classes/contenido/class.online.user.php',
     'cApiOnlineUser' => 'contenido/classes/contenido/class.online.user.php',
     'ActiveUsers' => 'contenido/classes/contenido/class.online.user.php',

@@ -374,6 +374,8 @@ contenido/classes/contenido/class.maillogsuccess.php -text
 contenido/classes/contenido/class.meta.tag.php -text
 contenido/classes/contenido/class.meta.type.php -text
 contenido/classes/contenido/class.module.php -text
+contenido/classes/contenido/class.navmain.php -text
+contenido/classes/contenido/class.navsub.php -text
 contenido/classes/contenido/class.property.php -text
 contenido/classes/contenido/class.right.php -text
 contenido/classes/contenido/class.stat.php -text
