@@ -116,7 +116,10 @@ if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.local.php'))
 // Takeover configured PHP settings
 if ($cfg['php_settings'] && is_array($cfg['php_settings'])) {
     foreach ($cfg['php_settings'] as $settingName => $value) {
-        @ini_set($settingName, $value);
+        // date.timezone is handled separately
+        if ($settingName !== 'date.timezone') {
+            @ini_set($settingName, $value);
+        }
     }
 }
 error_reporting($cfg['php_error_reporting']);
