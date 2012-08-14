@@ -1,26 +1,17 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * Contains clients basic configuration.
  *
- * Description:
- * Basic client configuration
+ * @package Frontend
+ * @subpackage Configuration
+ * @version SVN Revision $Rev:$
+ * @version SVN Id $Id$
  *
- * Requirements:
- * @con_php_req 5
- *
- * @package    CONTENIDO Frontend Config
- * @version    0.1
- * @author     unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  unknown
- *   $Id$:
- * }}
+ * @author System
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
