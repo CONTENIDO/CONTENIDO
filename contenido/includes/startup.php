@@ -121,6 +121,16 @@ if ($cfg['php_settings'] && is_array($cfg['php_settings'])) {
 }
 error_reporting($cfg['php_error_reporting']);
 
+// force date.timezone setting
+$timezoneCfg = $cfg['php_settings']['date.timezone'];
+if (!empty($timezoneCfg) && ini_get('date.timezone') !== $timezoneCfg) {
+    // if the timezone setting from the cfg differs from the php.ini setting, set timezone from CFG
+    date_default_timezone_set($timezoneCfg);
+} else if (empty($timezoneCfg) && (ini_get('date.timezone') === '' || ini_get('date.timezone') === false)) {
+    // if there are no timezone settings, set UTC timezone
+    date_default_timezone_set('UTC');
+}
+
 // Various base API functions
 require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'api/functions.api.general.php');
 

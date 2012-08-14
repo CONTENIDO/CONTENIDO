@@ -140,6 +140,9 @@ $cfg['php_settings']['log_errors'] = true;
 // (string) Path to log file
 $cfg['php_settings']['error_log'] = $cfg['path']['contenido_logs'] . 'errorlog.txt';
 
+// (string) valid PHP timezone http://php.net/manual/en/timezones.php
+$cfg['php_settings']['date.timezone'] = '';
+
 // (int) PHP error reporting setting
 $cfg['php_error_reporting'] = E_ALL ^E_NOTICE;
 
