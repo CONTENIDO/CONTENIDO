@@ -86,8 +86,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         $this->setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css");
 
         $this->setSetting("theme", "advanced");
-        $this->setSetting("skin", "o2k7");
-        $this->setSetting("skin_variant", "black");
         $this->setSetting("theme_advanced_toolbar_location", "top");
         $this->setSetting("theme_advanced_path_location", "bottom");
         $this->setSetting("remove_script_host", false);
