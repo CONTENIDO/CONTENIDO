@@ -243,10 +243,10 @@ contenido/classes/Contenido_FrontendNavigation/Contenido_FrontendNavigation_Brea
 contenido/classes/Contenido_FrontendNavigation/Sample.php -text
 contenido/classes/Debug/Sample.php -text
 contenido/classes/Debug/class.debug.dev.null.php -text
-contenido/classes/Debug/class.debug.factory.php -text
 contenido/classes/Debug/class.debug.file.and.vis.adv.php -text
 contenido/classes/Debug/class.debug.file.php -text
 contenido/classes/Debug/class.debug.hidden.php -text
+contenido/classes/Debug/class.debug.php -text
 contenido/classes/Debug/class.debug.visible.adv.php -text
 contenido/classes/Debug/class.debug.visible.php -text
 contenido/classes/Debug/interface.debug.php -text
