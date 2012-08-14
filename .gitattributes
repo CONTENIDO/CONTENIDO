@@ -1872,9 +1872,9 @@ contenido/scripts/con_tiny.js -text
 contenido/scripts/contenidoConfig.js -text
 contenido/scripts/content_types/cmsAbstractTabbed.js -text svneol=unset#text/plain
 contenido/scripts/content_types/cmsDate.js -text svneol=unset#text/plain
-contenido/scripts/content_types/cmsFileList.js -text
-contenido/scripts/content_types/cmsImgEditor.js -text
-contenido/scripts/content_types/cmsLinkEditor.js -text
+contenido/scripts/content_types/cmsFilelist.js -text
+contenido/scripts/content_types/cmsImgeditor.js -text
+contenido/scripts/content_types/cmsLinkeditor.js -text
 contenido/scripts/content_types/cmsTeaser.js -text
 contenido/scripts/datetimepicker/jquery-ui-timepicker-addon.js -text svneol=unset#text/plain
 contenido/scripts/datetimepicker/jquery-ui-timepicker-de.js -text svneol=unset#text/plain

@@ -456,7 +456,6 @@
 "type";"author";"varchar(32)";"";"";"";"";""
 "type";"created";"datetime";"";"";"0000-00-00 00:00:00";"";""
 "type";"lastmodified";"datetime";"";"";"0000-00-00 00:00:00";"";""
-"type";"class";"varchar(255)";"";"";"";"";""
 "upl";"idupl";"int(10)";"";"PRI";"0";"";"1"
 "upl";"idclient";"int(10)";"";"MUL";"0";"";""
 "upl";"filename";"varchar(255)";"";"";"";"";""

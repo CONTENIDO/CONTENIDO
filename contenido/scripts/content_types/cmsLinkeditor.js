@@ -13,7 +13,7 @@
  */
 
 /**
- * Creates a new cContentTypeLinkEditor with the given properties.
+ * Creates a new cContentTypeLinkeditor with the given properties.
  * You most probably want to call initialise() after creating a new object of this class.
  *
  * @constructor
@@ -28,7 +28,7 @@
  * @property {String} session The session ID of the admin user.
  * @property {Object|String} settings The settings of this content type.
  */
-function cContentTypeLinkEditor(frameId, imageId, pathBackend, pathFrontend, idArtLang, id, fields, prefix, session, settings) {
+function cContentTypeLinkeditor(frameId, imageId, pathBackend, pathFrontend, idArtLang, id, fields, prefix, session, settings) {
 
     // call the constructor of the parent class with the same arguments
     cContentTypeAbstractTabbed.apply(this, arguments);
@@ -43,16 +43,16 @@ function cContentTypeLinkEditor(frameId, imageId, pathBackend, pathFrontend, idA
 }
 
 // inherit from cContentTypeAbstractTabbed
-cContentTypeLinkEditor.prototype = new cContentTypeAbstractTabbed();
+cContentTypeLinkeditor.prototype = new cContentTypeAbstractTabbed();
 // correct the constructor function (it points to the cContentTypeAbstractTabbed constructor)
-cContentTypeLinkEditor.prototype.constructor = cContentTypeLinkEditor;
+cContentTypeLinkeditor.prototype.constructor = cContentTypeLinkeditor;
 
 /**
  * Initialises the content type by adding event handlers etc.
  *
  * @override
  */
-cContentTypeLinkEditor.prototype.initialise = function() {
+cContentTypeLinkeditor.prototype.initialise = function() {
     // call the function of the parent so that it is initialised correctly
     cContentTypeAbstractTabbed.prototype.initialise.call(this);
     // call custom functions that attach custom event handlers etc.
@@ -65,7 +65,7 @@ cContentTypeLinkEditor.prototype.initialise = function() {
  *
  * @override
  */
-cContentTypeLinkEditor.prototype.loadExternalFiles = function() {
+cContentTypeLinkeditor.prototype.loadExternalFiles = function() {
     // call the function of the parent so that all general files are included
     cContentTypeAbstractTabbed.prototype.loadExternalFiles.call(this);
     if ($('#cms_linkeditor_styles').length === 0) {
@@ -80,7 +80,7 @@ cContentTypeLinkEditor.prototype.loadExternalFiles = function() {
  *
  * @override
  */
-cContentTypeLinkEditor.prototype.addTabbingEvents = function() {
+cContentTypeLinkeditor.prototype.addTabbingEvents = function() {
     var self = this;
     // call the function of the parent so that the standard tab functionality works
     cContentTypeAbstractTabbed.prototype.addTabbingEvents.call(self);
@@ -108,7 +108,7 @@ cContentTypeLinkEditor.prototype.addTabbingEvents = function() {
  * - adding possibility to expand and close directories
  * - updating the file list each time a new directory is selected
  */
-cContentTypeLinkEditor.prototype.addNaviActions = function() {
+cContentTypeLinkeditor.prototype.addNaviActions = function() {
     var self = this;
     $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').unbind('click');
     $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').click(function() {
@@ -216,7 +216,7 @@ cContentTypeLinkEditor.prototype.addNaviActions = function() {
  * Updates the divs in which the selected folder is displayed
  * every time a new folder is selected.
  */
-cContentTypeLinkEditor.prototype.showFolderPath = function() {
+cContentTypeLinkeditor.prototype.showFolderPath = function() {
     var self = this;
     // if there are no directories, set the active class for the root upload folder
     titles = Array();
@@ -249,7 +249,7 @@ cContentTypeLinkEditor.prototype.showFolderPath = function() {
 /**
  * Uploads an image.
  */
-cContentTypeLinkEditor.prototype.linkEditorFileUpload = function() {
+cContentTypeLinkeditor.prototype.linkEditorFileUpload = function() {
     var self = this;
     var dirname = '';
     if (self.selectedPath != '' && self.selectedPath != 'upload') {
@@ -282,7 +282,7 @@ cContentTypeLinkEditor.prototype.linkEditorFileUpload = function() {
 /**
  * Creates a new directory and updates the directory list accordingly.
  */
-cContentTypeLinkEditor.prototype.createMKDir = function() {
+cContentTypeLinkeditor.prototype.createMKDir = function() {
     var self = this;
     $(self.frameId + ' #upload form[name="newdir"] input[type="image"]').unbind('click');
     $(self.frameId + ' #upload form[name="newdir"] input[type="image"]').click(function() {
@@ -345,7 +345,7 @@ cContentTypeLinkEditor.prototype.createMKDir = function() {
  *
  * @override
  */
-cContentTypeLinkEditor.prototype.addSaveEvent = function() {
+cContentTypeLinkeditor.prototype.addSaveEvent = function() {
     var self = this;
     $(self.frameId + ' .save_settings').click(function() {
         // the link type is no form field, so add it to the editform manually

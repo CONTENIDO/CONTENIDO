@@ -1,5 +1,5 @@
 /**
- * This file contains the cContentTypeFileList JS class.
+ * This file contains the cContentTypeFilelist JS class.
  *
  * @package Core
  * @subpackage Content Type
@@ -13,7 +13,7 @@
  */
 
 /**
- * Creates a new cContentTypeFileList with the given properties.
+ * Creates a new cContentTypeFilelist with the given properties.
  * You most probably want to call initialise() after creating a new object of this class.
  *
  * @constructor
@@ -28,7 +28,7 @@
  * @property {String} session The session ID of the admin user.
  * @property {Object|String} settings The settings of this content type.
  */
-function cContentTypeFileList(frameId, imageId, pathBackend, pathFrontend, idArtLang, id, fields, prefix, session, settings) {
+function cContentTypeFilelist(frameId, imageId, pathBackend, pathFrontend, idArtLang, id, fields, prefix, session, settings) {
 
     // call the constructor of the parent class with the same arguments
     cContentTypeAbstractTabbed.apply(this, arguments);
@@ -36,16 +36,16 @@ function cContentTypeFileList(frameId, imageId, pathBackend, pathFrontend, idArt
 }
 
 //inherit from cContentTypeAbstractTabbed
-cContentTypeFileList.prototype = new cContentTypeAbstractTabbed();
+cContentTypeFilelist.prototype = new cContentTypeAbstractTabbed();
 //correct the constructor function (it points to the cContentTypeAbstractTabbed constructor)
-cContentTypeFileList.prototype.constructor = cContentTypeFileList;
+cContentTypeFilelist.prototype.constructor = cContentTypeFilelist;
 
 /**
  * Initialises the content type by adding event handlers etc.
  *
  * @override
  */
-cContentTypeFileList.prototype.initialise = function() {
+cContentTypeFilelist.prototype.initialise = function() {
     // call the function of the parent so that it is initialised correctly
     cContentTypeAbstractTabbed.prototype.initialise.call(this);
     // call custom functions that attach custom event handlers etc.
@@ -59,7 +59,7 @@ cContentTypeFileList.prototype.initialise = function() {
  *
  * @override
  */
-cContentTypeFileList.prototype.loadExternalFiles = function() {
+cContentTypeFilelist.prototype.loadExternalFiles = function() {
     // call the function of the parent so that all general files are included
     cContentTypeAbstractTabbed.prototype.loadExternalFiles.call(this);
     if ($('#cms_filelist_styles').length === 0) {
@@ -71,7 +71,7 @@ cContentTypeFileList.prototype.loadExternalFiles = function() {
  * Function adds event to add new article to multiple select box for articles
  * Function also checks if article is already in that list
  */
-cContentTypeFileList.prototype.addManualFileListEvent = function() {
+cContentTypeFilelist.prototype.addManualFileListEvent = function() {
     var self = this;
     $(self.frameId + ' #add_file').css('cursor', 'pointer').click(function() {
         self.addManualFileListEntry();
@@ -82,7 +82,7 @@ cContentTypeFileList.prototype.addManualFileListEvent = function() {
  * Function adds new article to multiple select box for articles
  * Function also checks if article is already in that list
  */
-cContentTypeFileList.prototype.addManualFileListEntry = function() {
+cContentTypeFilelist.prototype.addManualFileListEntry = function() {
     var filename = $(this.frameId + ' #filelist_filename_' + this.id).val();
     var name = '';
     var exists = false;
@@ -110,7 +110,7 @@ cContentTypeFileList.prototype.addManualFileListEntry = function() {
  * Function adds double click events to all current listed articles for manual FileList
  * in case of a double click this selected article is removed from list
  */
-cContentTypeFileList.prototype.addClickEvent = function() {
+cContentTypeFilelist.prototype.addClickEvent = function() {
     var self = this;
     self.addNaviActions();
     self.addExtensionActions();
@@ -151,7 +151,7 @@ cContentTypeFileList.prototype.addClickEvent = function() {
  * Adds possibility to select all file extensions at once and
  * disables file extension select if file extensions should be ignored.
  */
-cContentTypeFileList.prototype.addExtensionActions = function() {
+cContentTypeFilelist.prototype.addExtensionActions = function() {
     var self = this;
     // let the user select all file extensions at once
     $(self.frameId + ' #filelist_all_extensions').css('cursor', 'pointer');
@@ -193,7 +193,7 @@ cContentTypeFileList.prototype.addExtensionActions = function() {
  * - adding possibility to expand and close directories
  * - updating the file list each time a new directory is selected
  */
-cContentTypeFileList.prototype.addNaviActions = function() {
+cContentTypeFilelist.prototype.addNaviActions = function() {
     var self = this;
     $(self.frameId + ' #manual #directoryList_' + self.id + '_manual a[class="on"]').parent('div').unbind('click');
     $(self.frameId + ' #manual #directoryList_' + self.id + '_manual a[class="on"]').parent('div').click(function () {
@@ -257,7 +257,7 @@ cContentTypeFileList.prototype.addNaviActions = function() {
  *
  * @override
  */
-cContentTypeFileList.prototype.addSaveEvent = function() {
+cContentTypeFilelist.prototype.addSaveEvent = function() {
     var self = this;
     $(self.frameId + ' .save_settings').click(function() {
         // the chosen directory is no form field, so add it to the editform manually

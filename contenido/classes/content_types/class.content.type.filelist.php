@@ -488,7 +488,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $templateBottom->set('s', 'CONTENIDO', $_REQUEST['contenido']);
         $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $templateBottom->set('s', 'SETTINGS', json_encode($this->_settings));
-        $templateBottom->set('s', 'JS_CLASS_SCRIPT', $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsFileList.js');
+        $templateBottom->set('s', 'JS_CLASS_SCRIPT', $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsFilelist.js');
         $templateBottom->set('s', 'JS_CLASS_NAME', 'cContentTypeFilelist');
         $codeBottom = $templateBottom->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html', true);
 

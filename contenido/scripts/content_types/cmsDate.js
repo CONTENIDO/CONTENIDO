@@ -181,7 +181,6 @@ cContentTypeDate.prototype.appendFormField = function(name, value) {
         $('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').val(value);
     } else {
         // otherwise append a new field to the form
-//        alert('<input type="hidden" value="' + value + '" name="' + name + '"/>');
         $('form[name="editcontent"]').append('<input type="hidden" value="' + value + '" name="' + name + '"/>');
     }
 };
@@ -328,4 +327,4 @@ var Base64 = {
 		return string;
 	}
  
-}
+};

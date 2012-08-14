@@ -114,7 +114,6 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         // constructor
         $this->_type = 'CMS_IMGEDITOR';
         $this->_prefix = 'imgeditor';
-        // $this->_settingsType = self::SETTINGS_TYPE_XML;
         $this->_formFields = array(
             'image_filename',
             'image_medianame',
@@ -305,7 +304,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $templateBottom->set('s', 'CONTENIDO', $_REQUEST['contenido']);
         $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $templateBottom->set('s', 'SETTINGS', json_encode($this->_settings));
-        $templateBottom->set('s', 'JS_CLASS_SCRIPT', $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsImgEditor.js');
+        $templateBottom->set('s', 'JS_CLASS_SCRIPT', $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsImgeditor.js');
         $templateBottom->set('s', 'JS_CLASS_NAME', 'cContentTypeImgeditor');
         $codeBottom = $templateBottom->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html', true);
 

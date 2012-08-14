@@ -28,20 +28,30 @@ if (!defined('CON_FRAMEWORK')) {
 class cContentTypeDate extends cContentTypeAbstract {
 
     /**
-     * The possible JS date formats in which the selected dates can be
+     * The possible PHP date formats in which the selected date can be
      * displayed.
+     * Correspond to the JS date formats $_dateFormatsJs.
+     *
+     * @var array
+     */
+    private $_dateFormatsPhp;
+
+    /**
+     * The possible JS date formats in which the selected date can be
+     * displayed.
+     * Correspond to the PHP date formats $_dateFormatsPhp.
      *
      * @var array
      */
     private $_dateFormatsJs;
 
     /**
-     * The possible PHP date formats in which the selected dates can be
-     * displayed.
+     * Maps the JSON-encoded JS date formats to the raw PHP date format strings.
+     * Correspond to the PHP date formats $_dateFormatsPhp.
      *
      * @var array
      */
-    private $_dateFormatsPhp;
+    private $_dateFormatsJsonEncodedToPhp;
 
     /**
      * Initialises class attributes and handles store events.
@@ -68,38 +78,33 @@ class cContentTypeDate extends cContentTypeAbstract {
 
         // initialise the date formats
         $this->_dateFormatsPhp = array(
-            '{"dateFormat": "d.m.Y", "timeFormat": ""}' => $this->_formatDate('d.m.Y'),
-            '{"dateFormat": "D, d.m.Y", "timeFormat": ""}' => $this->_formatDate('D, d.m.Y'),
-            '{"dateFormat": "d. F Y", "timeFormat": ""}' => $this->_formatDate('d. F Y'),
-            '{"dateFormat": "Y-m-d", "timeFormat": ""}' => $this->_formatDate('Y-m-d'),
-            '{"dateFormat": "d/F/Y", "timeFormat": ""}' => $this->_formatDate('d/F/Y'),
-            '{"dateFormat": "d/m/y", "timeFormat": ""}' => $this->_formatDate('d/m/y'),
-            '{"dateFormat": "F y", "timeFormat": ""}' => $this->_formatDate('F y'),
-            '{"dateFormat": "F-y", "timeFormat": ""}' => $this->_formatDate('F-y'),
-            '{"dateFormat": "d.m.Y", "timeFormat": "H:i"}' => $this->_formatDate('d.m.Y H:i'),
-            '{"dateFormat": "m.d.Y", "timeFormat": "H:i:s"}' => $this->_formatDate('m.d.Y H:i:s'),
-            '{"dateFormat": "", "timeFormat": "H:i"}' => $this->_formatDate('H:i'),
-            '{"dateFormat": "", "timeFormat": "H:i:s"}' => $this->_formatDate('H:i:s'),
-            '{"dateFormat": "", "timeFormat": "h:i A"}' => $this->_formatDate('h:i A'),
-            '{"dateFormat": "", "timeFormat": "h:i:s A"}' => $this->_formatDate('h:i:s A')
+            '{"dateFormat":"d.m.Y","timeFormat":""}' => $this->_formatDate('d.m.Y'),
+            '{"dateFormat":"D, d.m.Y","timeFormat":""}' => $this->_formatDate('D, d.m.Y'),
+            '{"dateFormat":"d. F Y","timeFormat":""}' => $this->_formatDate('d. F Y'),
+            '{"dateFormat":"Y-m-d","timeFormat":""}' => $this->_formatDate('Y-m-d'),
+            '{"dateFormat":"d/F/Y","timeFormat":""}' => $this->_formatDate('d/F/Y'),
+            '{"dateFormat":"d/m/y","timeFormat":""}' => $this->_formatDate('d/m/y'),
+            '{"dateFormat":"F y","timeFormat":""}' => $this->_formatDate('F y'),
+            '{"dateFormat":"F-y","timeFormat":""}' => $this->_formatDate('F-y'),
+            '{"dateFormat":"d.m.Y","timeFormat":"H:i"}' => $this->_formatDate('d.m.Y H:i'),
+            '{"dateFormat":"m.d.Y","timeFormat":"H:i:s"}' => $this->_formatDate('m.d.Y H:i:s'),
+            '{"dateFormat":"","timeFormat":"H:i"}' => $this->_formatDate('H:i'),
+            '{"dateFormat":"","timeFormat":"H:i:s"}' => $this->_formatDate('H:i:s'),
+            '{"dateFormat":"","timeFormat":"h:i A"}' => $this->_formatDate('h:i A'),
+            '{"dateFormat":"","timeFormat":"h:i:s A"}' => $this->_formatDate('h:i:s A')
         );
-		
-		$this->_dateFormatMapping = array(
-            '{"dateFormat": "d.m.Y", "timeFormat": ""}' => 'd.m.Y',
-            '{"dateFormat": "D, d.m.Y", "timeFormat": ""}' => 'D, d.m.Y',
-            '{"dateFormat": "d. F Y", "timeFormat": ""}' => 'd. F Y',
-            '{"dateFormat": "Y-m-d", "timeFormat": ""}' => 'Y-m-d',
-            '{"dateFormat": "d/F/Y", "timeFormat": ""}' => 'd/F/Y',
-            '{"dateFormat": "d/m/y", "timeFormat": ""}' => 'd/m/y',
-            '{"dateFormat": "F y", "timeFormat": ""}' => 'F y',
-            '{"dateFormat": "F-y", "timeFormat": ""}' => 'F-y',
-            '{"dateFormat": "d.m.Y", "timeFormat": "H:i"}' => 'd.m.Y H:i',
-            '{"dateFormat": "m.d.Y", "timeFormat": "H:i:s"}' => 'm.d.Y H:i:s',
-            '{"dateFormat": "", "timeFormat": "H:i"}' => 'H:i',
-            '{"dateFormat": "", "timeFormat": "H:i:s"}' => 'H:i:s',
-            '{"dateFormat": "", "timeFormat": "h:i A"}' => 'h:i A',
-            '{"dateFormat": "", "timeFormat": "h:i:s A"}' => 'h:i:s A'
-        );
+
+        // add formats from client settings
+        $additionalFormats = getEffectiveSettingsByType('cms_date');
+        foreach ($additionalFormats as $dateFormat => $timeFormat) {
+            $formatArray = array(
+                'dateFormat' => $dateFormat,
+                'timeFormat' => $timeFormat
+            );
+            $key = json_encode($formatArray);
+            $value = implode(' ', $formatArray);
+            $this->_dateFormatsPhp[$key] = $value;
+        }
 
         // compute the JS date formats
         $this->_dateFormatsJs = array();
@@ -108,30 +113,30 @@ class cContentTypeDate extends cContentTypeAbstract {
             $newKey = addslashes($newKey);
             $this->_dateFormatsJs[$newKey] = $value;
         }
-		
-		// compute the JS date formats
-        $this->_dateFormatsMapping = array();
-        foreach ($this->_dateFormatMapping as $key => $value) {
-            $newKey = $this->_convertPhpToJqueryUiDateTimeFormat($key);
-            $newKey = addslashes($newKey);
-            $this->_dateFormatsMapping[$newKey] = $value;
+
+        // compute the mapping from JSON-encoded JS format strings to raw PHP
+        // format strings
+        $this->_dateFormatsJsonEncodedToPhp = array();
+        $dateFormatsPhpJsonEncoded = array_keys($this->_dateFormatsPhp);
+        for ($i = 0; $i < count($this->_dateFormatsPhp); $i++) {
+            $key = $this->_convertPhpToJqueryUiDateTimeFormat($dateFormatsPhpJsonEncoded[$i]);
+            $key = addslashes($key);
+            // construct the format string from the JSON structure
+            $format = json_decode($dateFormatsPhpJsonEncoded[$i], true);
+            $value = implode(' ', $format);
+            $this->_dateFormatsJsonEncodedToPhp[$key] = $value;
         }
 
         // if form is submitted, store the current date settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-		//var_dump($_POST['date_format']);
+        // var_dump($_POST['date_format']);
         if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
             // convert the given date string into a valid timestamp, so that a
             // timestamp is stored
-            //echo $_POST['date_timestamp'] . '<br />';
-            //echo $_POST['date_format'] . '<br />' . '<br />';
             $_POST['date_format'] = stripslashes(base64_decode($_POST['date_format']));
-			//echo $_POST['date_format'];
-            //echo $_POST['date_timestamp'] . '<br />';
-            //echo $_POST['date_format'];
             if (empty($_POST['date_format'])) {
-                $_POST['date_format'] = '{"dateFormat": "d.m.Y", "timeFormat": ""}';
+                $_POST['date_format'] = '{"dateFormat":"d.m.Y","timeFormat":""}';
             }
             $this->_storeSettings();
         }
@@ -246,7 +251,7 @@ class cContentTypeDate extends cContentTypeAbstract {
             return '';
         }
 
-        return $this->_formatDate($this->_dateFormatsMapping[addslashes($format)], $this->_settings['date_timestamp']);
+        return $this->_formatDate($this->_dateFormatsJsonEncodedToPhp[addslashes($format)], $this->_settings['date_timestamp']);
     }
 
     /**
@@ -308,9 +313,9 @@ class cContentTypeDate extends cContentTypeAbstract {
             'margin' => '2px 5px 5px'
         ));
         $formatSelect->autoFill($this->_dateFormatsJs);
-		//var_dump($this->_dateFormatsJs);
+        // var_dump($this->_dateFormatsJs);
         $jsDateFormat = addslashes($this->_settings[$this->_prefix . '_format']);
-		//var_dump($jsDateFormat);
+        // var_dump($jsDateFormat);
         $formatSelect->setDefault($jsDateFormat);
 
         return $formatSelect->render();
