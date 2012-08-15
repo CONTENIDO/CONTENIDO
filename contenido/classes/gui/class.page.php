@@ -317,7 +317,7 @@ class cGuiPage {
             $this->_pagetemplate->set("s", "META", '<meta http-equiv="Content-type" content="text/html;charset=' . $this->_encoding . '">' . "\n");
         }
 
-        $strscript = $this->_subnav . $this->_markscript;
+        $strscript = $this->_subnav . "\n" . $this->_markscript . "\n";
         foreach ($this->_scripts as $script) {
             if (strpos($script, "<script") === false) {
                 $strscript .= "<script type='text/javascript' src='scripts/" . $script . "'></script>\n";
