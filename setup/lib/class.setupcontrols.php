@@ -96,6 +96,7 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
         $this->_oIconImg = new cHTMLAlphaImage();
         $this->_oTitle = new cHTMLDiv();
         $this->_oMessage = new cHTMLDiv();
+        $this->_oMessage->advanceID();
 
         $alphaImage = new cHTMLAlphaImage();
         $alphaImage->setClass("closer");
