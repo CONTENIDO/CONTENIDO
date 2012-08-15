@@ -2835,7 +2835,7 @@ class cHTMLForm extends cHTML {
 
 /**
  * cHTMLScript class represents a script.
- *
+ * @todo  Should set attribute type="text/javascript" by default or depending on doctype!
  * @package Core
  * @subpackage Frontend
  */
