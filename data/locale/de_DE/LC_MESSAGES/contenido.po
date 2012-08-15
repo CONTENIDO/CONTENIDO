@@ -6042,8 +6042,8 @@ msgid "category"
 msgstr "Kategorie"
 
 #: include/include.con_left_top.php legend
-msgid "category offline"
-msgstr "Kategorie offline"
+msgid "inactive category"
+msgstr "Inaktive Kategorie"
 
 #: include/include.con_left_top.php legend
 msgid "category without any active start article"
