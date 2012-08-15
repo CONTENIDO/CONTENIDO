@@ -3,7 +3,7 @@
  * Project:
  * CONTENIDO Content Management System Backend
  *
- * Description: This file defines the CodeMirror editor integration class.    
+ * Description: This file defines the CodeMirror editor integration class.
  *
  * @package    CONTENIDO Backend
  * @version    1.0.0
@@ -33,7 +33,7 @@ class CodeMirror {
       * @access private
       */
     private $_aProperties = array();
-    
+
     /**
       * HTML-ID of textarea which is replaced by CodeMirror
       *
@@ -41,7 +41,7 @@ class CodeMirror {
       * @access private
       */
     private $_sTextareaId  = '';
-    
+
     /**
       * defines if textarea is used or not (by system/client/user property)
       *
@@ -49,7 +49,7 @@ class CodeMirror {
       * @access private
       */
     private $_bActivated = true;
-    
+
     /**
       * defines if js-script for CodeMirror is included on rendering process
       *
@@ -57,7 +57,7 @@ class CodeMirror {
       * @access private
       */
     private $_bAddScript = true;
-    
+
     /**
       * The CONTENIDO configuration array
       *
@@ -65,7 +65,7 @@ class CodeMirror {
       * @access private
       */
     private $_aCfg = array();
-	
+
 	/**
       * Language of CodeMirror
       *
@@ -73,7 +73,7 @@ class CodeMirror {
       * @access private
       */
     private $_sLanguage  = '';
-	
+
 	/**
       * Syntax of CodeMirror
       *
@@ -81,16 +81,16 @@ class CodeMirror {
       * @access private
       */
     private $_sSyntax  = '';
-    
+
     /*################################################################*/
-    
+
     /**
       * Constructor of CodeMirror initializes class variables
       *
       * @param  string $sId - The id of textarea which is replaced by editor
       * @param  string $sSyntax - Name of syntax highlighting which is used (html, css, js, php, ...)
       * @param  string $sLang - lang which is used into editor. Notice NOT CONTENIDO language id
-      *                         ex: de, en ... To get it from CONTENIDO language use: 
+      *                         ex: de, en ... To get it from CONTENIDO language use:
       *                         substr(strtolower($belang), 0, 2) in backend
       * @param  boolean $bAddScript - defines if CodeMirror script is included or not
       *                               interesting when there is more than only one editor on page
@@ -99,7 +99,7 @@ class CodeMirror {
       *
       * @access public
       */
-    public function __construct($sId, $sSyntax, $sLang, $bAddScript, $aCfg, $bEditable = true) {    
+    public function __construct($sId, $sSyntax, $sLang, $bAddScript, $aCfg, $bEditable = true) {
         //init class variables
         $this->_aProperties = array();
         $this->_aCfg = (array) $aCfg;
@@ -113,7 +113,7 @@ class CodeMirror {
         if ($bEditable == false) {
             $this->setProperty('readOnly', 'true', true);
         }
-        
+
 		$this->setProperty('lineNumbers', 'true', true);
 		$this->setProperty('matchBrackets', 'true', true);
 		$this->setProperty('indentUnit', 4, true);
@@ -125,7 +125,7 @@ class CodeMirror {
         //by user or sysadmin in systemproperties / client settings / user settings ...
         $this->_getSystemProperties();
     }
-    
+
     /**
       * Function gets properties from CONTENIDO for CodeMirror and stores it into
       * $this->setProperty so user is able to overwride standard settings or append
@@ -139,7 +139,7 @@ class CodeMirror {
         if (getEffectiveSetting("codemirror", "activated", "true") == "false") {
             $this->_bActivated = false;
         }
-        
+
         $aUserSettings = getEffectiveSettingsByType("codemirror");
         foreach ($aUserSettings as $sKey => $sValue) {
             if ($sKey != 'activated') {
@@ -151,7 +151,7 @@ class CodeMirror {
             }
         }
     }
-    
+
     /**
       * Function for setting a property for CodeMirror to $this->setProperty
       * existing properties were overwritten
@@ -169,44 +169,44 @@ class CodeMirror {
         $sName = (string) $sName;
         $sValue = (string) $sValue;
         $bIsNumeric = (boolean) $bIsNumeric;
-        
+
         //generate a new array for new property
         $aRecord = array();
         $aRecord['name'] = $sName;
         $aRecord['value'] = $sValue;
         $aRecord['is_numeric'] = $bIsNumeric;
-        
+
         //append it to class variable $this->aProperties
         //when key already exists, overwride it
         $this->_aProperties[$sName] = $aRecord;
     }
-	
+
 	private function _getSyntaxScripts() {
-		$sPath = $this->_aCfg['path']['contenido_fullhtml'] . '/external/codemirror';
-	
+		$sPath = $this->_aCfg['path']['contenido_fullhtml'] . 'external/codemirror';
+
 		$sJs = '';
 		$sJsTemplate = '<script type="text/javascript" src="%s/mode/%s/%s.js"></script>';
-		
+
 		$aModes = array();
-		
+
 		$sSyntax = $this->_sSyntax;
 		if ($sSyntax == 'js' || $sSyntax == 'html' || $sSyntax == 'php') {
 			$aModes[] = 'javascript';
 		}
-		
+
 		if ($sSyntax == 'css' || $sSyntax == 'html' || $sSyntax == 'php') {
 			$aModes[] = 'css';
 		}
-		
+
 		if ($sSyntax == 'html' || $sSyntax == 'php') {
 			$aModes[] = 'xml';
 		}
-		
+
 		if ($sSyntax == 'php') {
 			$aModes[] = 'php';
 			$aModes[] = 'clike';
 		}
-		
+
 		if ($sSyntax == 'html') {
 			$aModes[] = 'htmlmixed';
 		}
@@ -214,28 +214,28 @@ class CodeMirror {
 		foreach ($aModes as $sMode) {
 			$sJs .= sprintf($sJsTemplate, $sPath, $sMode, $sMode) . PHP_EOL;
 		}
-		
+
 		return $sJs;
 	}
-	
+
 	private function _getSyntaxName() {
 		if ($this->_sSyntax == 'php') {
 			return 'application/x-httpd-php';
 		}
-		
+
 		if ($this->_sSyntax == 'html') {
 			return 'text/html';
 		}
-		
+
 		if ($this->_sSyntax == 'css') {
 			return 'text/css';
 		}
-		
+
 		if ($this->_sSyntax == 'js') {
 			return 'text/javascript';
 		}
 	}
-    
+
     /**
       * Function renders js_script for inclusion into an header of a html file
       *
@@ -247,18 +247,18 @@ class CodeMirror {
         if ($this->_bActivated == false) {
             return '';
         }
-        
+
         //if external js file for editor should be included, do this here
         $sJs = '';
         if ($this->_bAddScript) {
 			$sConPath = $this->_aCfg['path']['contenido_fullhtml'];
             $sPath = $sConPath . 'external/codemirror/';
-			
+
 			$sLanguage = $this->_sLanguage;
 			if (!file_exists($this->_aCfg['path']['contenido'] . "external/codemirror/lib/lang/" . $sLanguage . ".js")) {
 				$sLanguage = 'en';
 			}
-			
+
 			$sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/lang/' . $sLanguage . '.js"></script>'. PHP_EOL;
             $sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/codemirror.js"></script>'. PHP_EOL;
 			$sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/util/foldcode.js"></script>'. PHP_EOL;
@@ -271,13 +271,13 @@ class CodeMirror {
             $sJs .= '<link rel="stylesheet" href="' . $sPath . 'lib/codemirror.css" />'. PHP_EOL;
 			$sJs .= '<link rel="stylesheet" href="' . $sPath . 'lib/util/dialog.css" />'. PHP_EOL;
         }
-        
+
         //define template for CodeMirror script
         $sJs .= "<script type=\"text/javascript\">
-					function toggleCodeMirrorFullscreen_{ID}() { 
+					function toggleCodeMirrorFullscreen_{ID}() {
 						toggleCodeMirrorFullscreenEditor('{ID}');
-                    }  		
-					
+                    }
+
 					properties_{ID} = {
 						extraKeys: {\"F11\": toggleCodeMirrorFullscreen_{ID}, \"Esc\": toggleCodeMirrorFullscreen_{ID}}
 						{PROPERTIES}
@@ -285,10 +285,10 @@ class CodeMirror {
 
 					window.setTimeout('initCodeMirror(\"{ID}\", properties_{ID})', 100);
                 </script>";
-				
+
 		$this->setProperty('mode', $this->_getSyntaxName(), false);
 		$this->setProperty('theme', 'default ' . $this->_sTextareaId, false);
-        
+
         //get all stored properties and convert it in order to insert it into CodeMirror js template
         $sProperties = '';
         foreach ($this->_aProperties as $aProperty) {
@@ -298,7 +298,7 @@ class CodeMirror {
                 $sProperties .= ', '.$aProperty['name'].': "'.$aProperty['value']."\"\n";
             }
         }
-        
+
         //fill js template
         $sTextareaId = $this->_sTextareaId;
 		$sJsResult = str_replace('{ID}', $sTextareaId, $sJs);
@@ -307,4 +307,3 @@ class CodeMirror {
         return $sJsResult;
     }
 }
-?>
