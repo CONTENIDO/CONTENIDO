@@ -293,12 +293,13 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
     $a_content = $contentList;
 
     // Select all cms_type entries
-    $sql = 'SELECT `idtype`, `type`, `code`, `class` FROM `' . $cfg['tab']['type'] . '`';
-    $db->query($sql);
     $_typeList = array();
-    while ($db->next_record()) {
-        $_typeList[] = $db->toObject();
+    $oTypeColl = new cApiTypeCollection();
+    $oTypeColl->select();
+    while ($oType = $oTypeColl->next()) {
+        $_typeList[] = $oType->toObject();
     }
+
     // Replace all CMS_TAGS[]
     foreach ($_typeList as $_typeItem) {
         $key = strtolower($_typeItem->type);
@@ -318,11 +319,13 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
 
             $typeCodeFile = $cfg['path']['contenido'] . 'includes/type/code/include.' . $type . '.code.php';
             $cTypeClassFile = $cfg['path']['contenido'] . 'classes/content_types/class.content.type.' . strtolower(str_replace('CMS_', '', $type)) . '.php';
+            // classname format: CMS_HTMLHEAD -> cContentTypeHtmlhead
+            $className = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
 
             foreach ($a_[$key] as $val) {
                 if (cFileHandler::exists($cTypeClassFile)) {
                     $tmp = $a_content[$_typeItem->type][$val];
-                    $cTypeObject = new $_typeItem->class($tmp, $val, $a_content);
+                    $cTypeObject = new $className($tmp, $val, $a_content);
                     if (cRegistry::isBackendEditMode()) {
                         $tmp = $cTypeObject->generateEditCode();
                     } else {
@@ -388,12 +391,13 @@ function getAktuellType($r, $aList) {
     global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
 
     // Select all cms_type entries
-    $sql = 'SELECT idtype, type, code FROM ' . $cfg['tab']['type'];
-    $db->query($sql);
     $_typeList = array();
-    while ($db->next_record()) {
-        $_typeList[] = $db->toObject();
+    $oTypeColl = new cApiTypeCollection();
+    $oTypeColl->select();
+    while ($oType = $oTypeColl->next()) {
+        $_typeList[] = $oType->toObject();
     }
+
     // generate code
     $code = conGenerateCode($idcat, $idart, $lang, $client, false, false, false);
     foreach ($_typeList as $_typeItem) {
