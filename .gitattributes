@@ -640,35 +640,7 @@ contenido/cronjobs/sequence.php -text
 contenido/cronjobs/session_cleanup.php -text
 contenido/cronjobs/setfrontenduserstate.php -text
 contenido/external/backendedit/front_content.php -text
-contenido/external/codemirror/LICENSE -text
-contenido/external/codemirror/README.md -text
 contenido/external/codemirror/class.codemirror.php -text
-contenido/external/codemirror/demo/activeline.html -text
-contenido/external/codemirror/demo/changemode.html -text
-contenido/external/codemirror/demo/complete.html -text
-contenido/external/codemirror/demo/emacs.html -text
-contenido/external/codemirror/demo/folding.html -text
-contenido/external/codemirror/demo/formatting.html -text
-contenido/external/codemirror/demo/fullscreen.html -text
-contenido/external/codemirror/demo/marker.html -text
-contenido/external/codemirror/demo/mustache.html -text
-contenido/external/codemirror/demo/preview.html -text
-contenido/external/codemirror/demo/resize.html -text
-contenido/external/codemirror/demo/runmode.html -text
-contenido/external/codemirror/demo/search.html -text
-contenido/external/codemirror/demo/theme.html -text
-contenido/external/codemirror/demo/vim.html -text
-contenido/external/codemirror/demo/visibletabs.html -text
-contenido/external/codemirror/doc/baboon.png -text
-contenido/external/codemirror/doc/baboon_vector.svg -text
-contenido/external/codemirror/doc/compress.html -text
-contenido/external/codemirror/doc/docs.css -text
-contenido/external/codemirror/doc/internals.html -text
-contenido/external/codemirror/doc/manual.html -text
-contenido/external/codemirror/doc/oldrelease.html -text
-contenido/external/codemirror/doc/reporting.html -text
-contenido/external/codemirror/doc/upgrade_v2.2.html -text
-contenido/external/codemirror/index.html -text
 contenido/external/codemirror/keymap/emacs.js -text
 contenido/external/codemirror/keymap/vim.js -text
 contenido/external/codemirror/lib/codemirror.css -text
@@ -676,49 +648,158 @@ contenido/external/codemirror/lib/codemirror.js -text
 contenido/external/codemirror/lib/contenido_integration.js -text
 contenido/external/codemirror/lib/lang/de.js -text
 contenido/external/codemirror/lib/lang/en.js -text
+contenido/external/codemirror/lib/util/closetag.js -text svneol=unset#text/plain
 contenido/external/codemirror/lib/util/dialog.css -text
 contenido/external/codemirror/lib/util/dialog.js -text
 contenido/external/codemirror/lib/util/foldcode.js -text
 contenido/external/codemirror/lib/util/formatting.js -text
 contenido/external/codemirror/lib/util/javascript-hint.js -text
+contenido/external/codemirror/lib/util/loadmode.js -text svneol=unset#text/plain
+contenido/external/codemirror/lib/util/match-highlighter.js -text svneol=unset#text/plain
+contenido/external/codemirror/lib/util/multiplex.js -text svneol=unset#text/plain
 contenido/external/codemirror/lib/util/overlay.js -text
+contenido/external/codemirror/lib/util/pig-hint.js -text svneol=unset#text/plain
 contenido/external/codemirror/lib/util/runmode.js -text
 contenido/external/codemirror/lib/util/search.js -text
 contenido/external/codemirror/lib/util/searchcursor.js -text
 contenido/external/codemirror/lib/util/simple-hint.css -text
 contenido/external/codemirror/lib/util/simple-hint.js -text
+contenido/external/codemirror/lib/util/xml-hint.js -text svneol=unset#text/plain
 contenido/external/codemirror/mode/clike/clike.js -text
 contenido/external/codemirror/mode/clike/index.html -text
+contenido/external/codemirror/mode/clike/scala.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/clojure/clojure.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/clojure/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/coffeescript/LICENSE -text
+contenido/external/codemirror/mode/coffeescript/coffeescript.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/coffeescript/index.html -text svneol=unset#text/plain
 contenido/external/codemirror/mode/css/css.js -text
 contenido/external/codemirror/mode/css/index.html -text
+contenido/external/codemirror/mode/diff/diff.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/diff/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/ecl/ecl.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/ecl/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/erlang/erlang.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/erlang/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/gfm/gfm.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/gfm/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/go/go.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/go/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/groovy/groovy.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/groovy/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/haskell/haskell.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/haskell/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/haxe/haxe.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/haxe/index.html -text svneol=unset#text/plain
 contenido/external/codemirror/mode/htmlembedded/htmlembedded.js -text
 contenido/external/codemirror/mode/htmlembedded/index.html -text
 contenido/external/codemirror/mode/htmlmixed/htmlmixed.js -text
 contenido/external/codemirror/mode/htmlmixed/index.html -text
 contenido/external/codemirror/mode/javascript/index.html -text
 contenido/external/codemirror/mode/javascript/javascript.js -text
+contenido/external/codemirror/mode/jinja2/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/jinja2/jinja2.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/less/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/less/less.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/lua/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/lua/lua.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/markdown/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/markdown/markdown.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/mysql/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/mysql/mysql.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/ntriples/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/ntriples/ntriples.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/ocaml/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/ocaml/ocaml.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/pascal/LICENSE -text
+contenido/external/codemirror/mode/pascal/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/pascal/pascal.js -text svneol=unset#text/plain
 contenido/external/codemirror/mode/perl/LICENSE -text
 contenido/external/codemirror/mode/perl/index.html -text
 contenido/external/codemirror/mode/perl/perl.js -text
 contenido/external/codemirror/mode/php/index.html -text
 contenido/external/codemirror/mode/php/php.js -text
+contenido/external/codemirror/mode/pig/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/pig/pig.js -text svneol=unset#text/plain
 contenido/external/codemirror/mode/plsql/index.html -text
 contenido/external/codemirror/mode/plsql/plsql.js -text
+contenido/external/codemirror/mode/properties/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/properties/properties.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/python/LICENSE.txt -text svneol=unset#text/plain
+contenido/external/codemirror/mode/python/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/python/python.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/r/LICENSE -text
+contenido/external/codemirror/mode/r/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/r/r.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/rpm/changes/changes.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/rpm/changes/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/rpm/spec/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/rpm/spec/spec.css -text svneol=unset#text/plain
+contenido/external/codemirror/mode/rpm/spec/spec.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/rst/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/rst/rst.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/ruby/LICENSE -text
+contenido/external/codemirror/mode/ruby/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/ruby/ruby.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/rust/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/rust/rust.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/scheme/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/scheme/scheme.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/shell/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/shell/shell.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/smalltalk/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/smalltalk/smalltalk.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/smarty/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/smarty/smarty.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/sparql/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/sparql/sparql.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/stex/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/stex/stex.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/stex/test.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/tiddlywiki/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/tiddlywiki/tiddlywiki.css -text svneol=unset#text/plain
+contenido/external/codemirror/mode/tiddlywiki/tiddlywiki.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/tiki/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/tiki/tiki.css -text svneol=unset#text/plain
+contenido/external/codemirror/mode/tiki/tiki.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/vb/LICENSE.txt -text svneol=unset#text/plain
+contenido/external/codemirror/mode/vb/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/vb/vb.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/vbscript/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/vbscript/vbscript.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/velocity/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/velocity/velocity.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/verilog/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/verilog/verilog.js -text svneol=unset#text/plain
 contenido/external/codemirror/mode/xml/index.html -text
 contenido/external/codemirror/mode/xml/xml.js -text
 contenido/external/codemirror/mode/xmlpure/index.html -text
 contenido/external/codemirror/mode/xmlpure/xmlpure.js -text
+contenido/external/codemirror/mode/xquery/LICENSE -text
+contenido/external/codemirror/mode/xquery/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/xquery/test/index.html -text svneol=unset#text/plain
+contenido/external/codemirror/mode/xquery/test/testBase.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/xquery/test/testEmptySequenceKeyword.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/xquery/test/testMultiAttr.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/xquery/test/testNamespaces.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/xquery/test/testProcessingInstructions.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/xquery/test/testQuotes.js -text svneol=unset#text/plain
+contenido/external/codemirror/mode/xquery/xquery.js -text svneol=unset#text/plain
 contenido/external/codemirror/mode/yaml/index.html -text
 contenido/external/codemirror/mode/yaml/yaml.js -text
-contenido/external/codemirror/test/index.html -text
-contenido/external/codemirror/test/test.js -text
+contenido/external/codemirror/theme/ambiance.css -text svneol=unset#text/plain
+contenido/external/codemirror/theme/blackboard.css -text svneol=unset#text/plain
 contenido/external/codemirror/theme/cobalt.css -text
 contenido/external/codemirror/theme/eclipse.css -text
 contenido/external/codemirror/theme/elegant.css -text
+contenido/external/codemirror/theme/erlang-dark.css -text svneol=unset#text/plain
+contenido/external/codemirror/theme/lesser-dark.css -text svneol=unset#text/plain
 contenido/external/codemirror/theme/monokai.css -text
 contenido/external/codemirror/theme/neat.css -text
 contenido/external/codemirror/theme/night.css -text
 contenido/external/codemirror/theme/rubyblue.css -text
+contenido/external/codemirror/theme/vibrant-ink.css -text svneol=unset#text/plain
+contenido/external/codemirror/theme/xq-dark.css -text svneol=unset#text/plain
 contenido/external/frontend/cache/index.php -text
 contenido/external/frontend/css/index.php -text
 contenido/external/frontend/css/style_tiny.css -text
