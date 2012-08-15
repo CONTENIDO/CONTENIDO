@@ -7,27 +7,27 @@
     </article>
     <article>
         <imgsrc>images/isstart0.gif</imgsrc>
-        <description>general article</description>
+        <description>normal article</description>
     </article>
     <article>
         <imgsrc>images/isstart1r.gif</imgsrc>
-        <description>start referred article</description>
+        <description>start article with redirection</description>
     </article>
     <article>
         <imgsrc>images/isstart0r.gif</imgsrc>
-        <description>general referred article</description>
+        <description>redirection</description>
     </article>
     <article>
         <imgsrc>images/but_time_2.gif</imgsrc>
-        <description>article with time control online</description>
+        <description>active article with time control</description>
     </article>
     <article>
         <imgsrc>images/but_time_1.gif</imgsrc>
-        <description>article with time control offline</description>
+        <description>inactive article with time control</description>
     </article>
     <category>
         <imgsrc>images/folder_on.gif</imgsrc>
-        <description>general category</description>
+        <description>category</description>
     </category>
     <category>
         <imgsrc>images/folder_off_error.gif</imgsrc>
@@ -35,22 +35,22 @@
     </category>
     <category>
         <imgsrc>images/folder_on_error.gif</imgsrc>
-        <description>category has no article or no start article or article offline</description>
+        <description>categories without any active start article</description>
     </category>
     <category>
         <imgsrc>images/folder_on_locked.gif</imgsrc>
-        <description>locked category</description>
+        <description>protected category</description>
     </category>
     <category>
         <imgsrc>images/folder_on_error_locked.gif</imgsrc>
-        <description>locked category has no article or no startarticle or article offline</description>
+        <description>protected category without any active start article</description>
     </category>
     <category>
         <imgsrc>images/but_sync_cat.gif</imgsrc>
-        <description>synchronized category online</description>
+        <description>active synchronized category</description>
     </category>
     <category>
         <imgsrc>images/but_sync_cat_off.gif</imgsrc>
-        <description>synchronized category offline</description>
+        <description>inactive synchronized category</description>
     </category>
 </legend>

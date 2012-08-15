@@ -1351,17 +1351,17 @@ msgstr "Umbenennen der Datei ist fehlgeschlagen!"
 
 #: classes/module/class.module.template.handler.php:278
 msgid "Renamed the template file successfully!"
-msgstr "Template wurde erfolgreich umbenannt!"
+msgstr "Vorlage wurde erfolgreich umbenannt!"
 
 # template section
 #: classes/module/class.module.template.handler.php:296
 #: classes/module/class.module.template.handler.php:299
 msgid "Created a new template file successfully!"
-msgstr "Neue Templatedatei wurde erfolgreich angelegt!"
+msgstr "Neue Vorlagendatei wurde erfolgreich angelegt!"
 
 #: classes/module/class.module.template.handler.php:317
 msgid "Deleted the template file successfully!"
-msgstr "Templatedatei wurde erfolgreich gelöscht!"
+msgstr "Vorlagendatei wurde erfolgreich gelöscht!"
 
 #: classes/module/class.module.template.handler.php:381
 #: classes/module/class.module.template.handler.php:390
@@ -1433,11 +1433,11 @@ msgstr "Datei bearbeiten"
 
 #: classes/module/class.module.template.handler.php:487
 msgid "Make new template file"
-msgstr "Neue Templatedatei erstellen"
+msgstr "Neue Vorlagendatei erstellen"
 
 #: classes/module/class.module.template.handler.php:501
 msgid "New template file"
-msgstr "Neue Templatedatei"
+msgstr "Neue Vorlagendatei"
 
 #: classes/module/class.module.template.handler.php:513
 #: classes/module/class.module.template.handler.php:514
@@ -1915,15 +1915,15 @@ msgstr "Script erstellen"
 
 #: includes/cfg_language_de.inc.php:162
 msgid "Modify HTML template"
-msgstr "HTML-Template verändern"
+msgstr "HTML-Vorlage verändern"
 
 #: includes/cfg_language_de.inc.php:163
 msgid "Create HTML template"
-msgstr "HTML-Template erstellen"
+msgstr "HTML-Vorlage erstellen"
 
 #: includes/cfg_language_de.inc.php:164
 msgid "Delete HTML template"
-msgstr "HTML-Template löschen"
+msgstr "HTML-Vorlage löschen"
 
 #: includes/cfg_language_de.inc.php:168
 msgid "Edit newsletter"
@@ -6007,7 +6007,7 @@ msgstr "Möchten Sie wirklich eine neue Sprache erstellen?"
 
 #: include/include.tplcfg_edit_form.php 493,
 msgid "This article has no template. Therefore the categories template (%s) is used. You can set the article template below."
-msgstr "Dieser Artikel hat keine Template. Deshalb wird die Templatge von der Kategorie (%s) benutzt. Sie können für diesen Artikel eine Template einstellen."
+msgstr "Dieser Artikel hat keine Vorlage. Deshalb wird die Vorlage von der Kategorie (%s) benutzt. Sie können für diesen Artikel unten eine Vorlage einstellen."
 
 #: include/include.tplcfg_edit_form.php 495
 msgid "no template with this categories and/or article associated. You must be set a template."
@@ -6018,52 +6018,52 @@ msgid "start article"
 msgstr "Startartikel"
 
 #: include/include.con_left_top.php legend
-msgid "general article"
+msgid "normal article"
 msgstr "Normaler Artikel"
 
 #: include/include.con_left_top.php legend
-msgid "start referred article"
-msgstr "Weitergeleiterter Startartikel"
+msgid "start article with redirection"
+msgstr "Startartikel mit Weiterleitung"
 
 #: include/include.con_left_top.php legend
-msgid "general referred article"
-msgstr "Weitergeleiterter Artikel"
+msgid "redirection"
+msgstr "Weiterleitung"
 
 #: include/include.con_left_top.php legend
-msgid "article with time control online"
-msgstr "Artikel mit der Zeitsteuerung online"
+msgid "active article with time control"
+msgstr "Aktiver Artikel mit Zeitsteuerung"
 
 #: include/include.con_left_top.php legend
-msgid "article with time control offline"
-msgstr "Artikel mit der Zeitsteuerung offline"
+msgid "inactive article with time control"
+msgstr "Inaktiver Artikel mit Zeitsteuerung"
 
 #: include/include.con_left_top.php legend
-msgid "general category"
-msgstr "Normale Kategorie"
+msgid "category"
+msgstr "Kategorie"
 
 #: include/include.con_left_top.php legend
 msgid "category offline"
 msgstr "Kategorie offline"
 
 #: include/include.con_left_top.php legend
-msgid "category has no article or no start article or article offline"
-msgstr "Kategorie hat keinen Artikel oder keinen Startartikel oder einen Artikel offline"
+msgid "categories without any active start article"
+msgstr "Kategorien ohne aktiven Startartikel"
 
 #: include/include.con_left_top.php legend
-msgid "locked category"
-msgstr "Abgeschlossene Kategorie"
+msgid "protected category"
+msgstr "Geschützte Kategorie"
 
 #: include/include.con_left_top.php legend
-msgid "locked category has no article or no startarticle or article offline"
-msgstr "Abgeschlossene Kategorie hat keinen Artikel oder keinen Startartikel oder einen Artikel offline"
+msgid "protected category without any active start article"
+msgstr "Geschützte Kategorie ohne aktiven Startartikel"
 
 #: include/include.con_left_top.php legend
-msgid "synchronized category online"
-msgstr "Synchronisierte Kategorie online"
+msgid "active synchronized category"
+msgstr "Aktive synchronisierte Kategorie"
 
 #: include/include.con_left_top.php legend
-msgid "synchronized category offline"
-msgstr "Synchronisierte Kategorie offline"
+msgid "inactive synchronized category"
+msgstr "Inktive synchronisierte Kategorie"
 
 msgid "You are here"
 msgstr "Sie sind hier"
@@ -6094,3 +6094,6 @@ msgstr "Such-/Indizierbar"
 
 msgid "Place tree here"
 msgstr "Baum hier einfügen"
+
+msgid "Legend"
+msgstr "Legende"
