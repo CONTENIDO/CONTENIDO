@@ -1974,3 +1974,8 @@ div#legend table * {
 div#legend table.article {
 	padding-bottom: 10px;
 }
+
+/* CodeMirror Styles */
+.CodeMirror-wrap pre {
+    line-height: 1.2em;
+}
