@@ -33,7 +33,7 @@
  *
  * @package    CONTENIDO Frontend
  * @version    4.9
- * @author     Olaf Niemann, Jan Lengowski, Timo A. Hummel et al.
+ * @author     Olaf Niemann, Jan Lengowski, Timo A. Hummel et al., Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -51,8 +51,8 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // Clients local configuration
-if (cFileHandler::exists(cRegistry::getAppVar('frontend_path') . 'data/config/config.local.php')) {
-    @include(cRegistry::getAppVar('frontend_path') . 'data/config/config.local.php');
+if (file_exists($frontend_path . 'data/config/config.local.php')) {
+    @include($frontend_path . 'data/config/config.local.php');
 }
 
 cInclude('includes', 'functions.con.php');
@@ -654,8 +654,8 @@ if ($cfg['cache']['disable'] != '1') {
 }
 
 // Configuration settings after the site is displayed.
-if (cFileHandler::exists(cRegistry::getAppVar('frontend_path') . 'data/config/config.after.php')) {
-    @include(cRegistry::getAppVar('frontend_path') . 'data/config/config.after.php');
+if (file_exists($cfgClient[$client]['config']['path'] . 'config.after.php')) {
+    @include($cfgClient[$client]['config']['path'] . 'config.after.php');
 }
 
 if (isset($savedlang)) {

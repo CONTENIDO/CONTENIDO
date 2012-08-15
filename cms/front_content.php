@@ -19,10 +19,10 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // Set path to current frontend
-cRegistry::setAppVar('frontend_path', str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/');
+$frontend_path = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/';
 
 // Include the config file of the frontend to initialize client and language id
-include_once(cRegistry::getAppVar('frontend_path') . 'data/config/config.php');
+include_once($frontend_path . 'data/config/config.php');
 
 // CONTENIDO startup process
 include_once($contenido_path . 'includes/startup.php');

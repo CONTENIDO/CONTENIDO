@@ -26,9 +26,6 @@ include_once('../../includes/startup.php');
 rereadClients();
 chdir($cfgClient[$client]['path']['frontend']);
 
-// Set path to current frontend
-cRegistry::setAppVar('frontend_path', $cfgClient[$client]['path']['frontend']);
-
 // Include the config file of the frontend to initialize client and language id
 include_once($cfgClient[$client]['config']['path'] . 'config.php');
 
