@@ -19,6 +19,8 @@
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
  *
+ * @fixme:  Remove inline CSS and JS!
+ *
  * {@internal
  *   created 2003-12-29
  *   $Id$:
@@ -333,21 +335,16 @@ class UploadList extends FrontendList {
                     }
 
                     if (cApiDbfs::isDbfs($data)) {
-                        $retValue =
-                            '<a class="jsZoom" href="' . $sess->url($cfgClient[$client]["path"]["htmlpath"] . "dbfs.php?file=" . $data) . '" style="display:inline-block;">
-                                <img class="hover" name="smallImage" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
-                                <img class="preview" name="prevImage" src="' . $sCacheThumbnail . '">
-                            </a>';
-                        return $retValue;
+                        $href = $sess->url($cfgClient[$client]["path"]["htmlpath"] . "dbfs.php?file=" . $data);
                     } else {
-                        $retValue =
-                            '<a class="jsZoom" href="' . $cfgClient[$client]["path"]["htmlpath"] . $cfgClient[$client]["upload"] . $data . '" style="display:inline-block;">
-                                <img class="hover" name="smallImage" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
-                                <img class="preview" name="prevImage" src="' . $sCacheThumbnail . '">
-                            </a>';
-//                        $retValue .= '<a href="javascript:iZoom(\'' . $cfgClient[$client]["path"]["htmlpath"] . $cfgClient[$client]["upload"] . $data . '\');"><img class="preview" name="prevImage" src="' . $sCacheThumbnail . '"></a>';
-                        return $retValue;
+                        $href = $cfgClient[$client]["path"]["htmlpath"] . $cfgClient[$client]["upload"] . $data;
                     }
+                    $retValue =
+                        '<a class="jsZoom" href="' . $href . '" style="display:inline-block;">
+                            <img class="hover" name="smallImage" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
+                            <img class="preview" name="prevImage" src="' . $sCacheThumbnail . '">
+                        </a>';
+                    return $retValue;
                     break;
                 default:
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
