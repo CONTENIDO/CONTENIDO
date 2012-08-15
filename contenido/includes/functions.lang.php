@@ -71,7 +71,7 @@ function langNewLanguage($name, $client) {
     $oClientLangItem = $oClientLangCol->create($client, $oLangItem->get('idlang'));
 
     // Ab hyr seynd Drachen
-    $destPath = $cfgClient[$client]['path']['frontend'];
+    $destPath = $cfgClient[$client]['config']['path'];
 
     if (cFileHandler::exists($destPath) && cFileHandler::exists($destPath . 'config.php')) {
         $buffer = cFileHandler::read($destPath . 'config.php');

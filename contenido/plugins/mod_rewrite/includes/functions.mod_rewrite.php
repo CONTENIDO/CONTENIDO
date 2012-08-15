@@ -595,7 +595,7 @@ function mr_setClientLanguageId($client)
         // there is nothing to do
         return;
     } elseif ($load_lang) {
-        // use the first language of this client, load_client is set in cms/config.php
+        // use the first language of this client, load_client is set in __FRONTEND_PATH__/data/config/config.php
         $lang = $load_lang;
         return;
     }

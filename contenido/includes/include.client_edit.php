@@ -31,16 +31,17 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 $properties = new cApiPropertyCollection();
+$oClient = new cApiClient();
 
-if ($action == "client_new") {
-    // $nextid = $db->nextid($cfg["tab"]["clients"]);
+if ($action == 'client_new') {
+    // $nextid = $db->nextid($cfg['tab']['clients']);
     // $idclient = $nextid;
     $new = true;
 }
 
 
 if (!$perm->have_perm_area_action($area)) {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n('Permission denied'));
     return;
 }
 
@@ -48,10 +49,10 @@ if (!empty($idclient) && is_numeric($idclient)) {
     $oClient = new cApiClient(cSecurity::toInteger($idclient));
 }
 
-if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))) {
+if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))) {
     $sNewNotification = '';
-    if ($active != "1") {
-        $active = "0";
+    if ($active != '1') {
+        $active = '0';
     }
 
     if ($new == true) {
@@ -61,56 +62,58 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
                     top.header.markActive(top.header.document.getElementById('sub_lang'));";
         $sLangNotificationLink = sprintf(i18n('Please click %shere%s to create a new language.'), '<a href="javascript://" onclick="' . $sJsLink . '">', '</a>');
         $sNewNotification = '<br>' . $sLangNotification . '<br>' . $sLangNotificationLink;
-        if (substr($frontendpath, strlen($frontendpath) - 1) != "/") {
-            $frontendpath .= "/";
+        if (substr($frontendpath, strlen($frontendpath) - 1) != '/') {
+            $frontendpath .= '/';
         }
 
-        if (substr($htmlpath, strlen($htmlpath) - 1) != "/") {
-            $htmlpath .= "/";
+        if (substr($htmlpath, strlen($htmlpath) - 1) != '/') {
+            $htmlpath .= '/';
         }
 
         // Create new client entry in clients table
         $oClientColl = new cApiClientCollection();
         $oClient = $oClientColl->create($clientname, $errsite_cat, $errsite_art);
 
+        rereadClients();
+
         $idclient = $oClient->get('idclient');
-        $properties->setValue("idclient", $idclient, "backend", "clientimage", $clientlogo);
+        $properties->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
 
         // Copy the client template to the real location
         $destPath = $frontendpath;
         $sourcePath = $cfg['path']['contenido'] . $cfg['path']['frontendtemplate'];
+        $dataPath = 'data/config/';
 
         if ($copytemplate) {
             if (!cFileHandler::exists($destPath)) {
                 recursiveCopy($sourcePath, $destPath);
-                $buffer = cFileHandler::read($destPath . "config.php");
-                $outbuf = str_replace("!CLIENT!", $idclient, $buffer);
-                $outbuf = str_replace("!PATH!", $cfg["path"]["contenido"], $outbuf);
-                if (!cFileHandler::write($destPath . "config.php.new", $outbuf)) {
-                    $notification->displayNotification("error", i18n("Couldn't write the file config.php."));
+                $buffer = cFileHandler::read($destPath . $dataPath . 'config.php');
+                $outbuf = str_replace('!CLIENT!', $idclient, $buffer);
+                $outbuf = str_replace('!PATH!', $cfg['path']['contenido'], $outbuf);
+                if (!cFileHandler::write($destPath . $dataPath . 'config.php.new', $outbuf)) {
+                    $notification->displayNotification('error', i18n("Couldn't write the file config.php."));
                 }
 
-                cFileHandler::remove($destPath . "config.php");
-                cFileHandler::rename($destPath . "config.php.new", "config.php");
+                cFileHandler::remove($destPath . $dataPath . 'config.php');
+                cFileHandler::rename($destPath . $dataPath . 'config.php.new', 'config.php');
             } else {
                 $message = sprintf(i18n("The directory %s already exists. The client was created, but you have to copy the frontend-template yourself"), $destPath);
-                $notification->displayNotification("warning", $message);
+                $notification->displayNotification('warning', $message);
             }
         }
 
-        rereadClients();
     } else {
         $pathwithoutslash = $frontendpath;
-        if (substr($frontendpath, strlen($frontendpath) - 1) != "/") {
-            $frontendpath .= "/";
+        if (substr($frontendpath, strlen($frontendpath) - 1) != '/') {
+            $frontendpath .= '/';
         }
 
-        if (substr($htmlpath, strlen($htmlpath) - 1) != "/") {
-            $htmlpath .= "/";
+        if (substr($htmlpath, strlen($htmlpath) - 1) != '/') {
+            $htmlpath .= '/';
         }
 
         if (($oldpath != $frontendpath) && ($oldpath != $pathwithoutslash)) {
-            $notification->displayNotification("warning", i18n("You changed the client path. You might need to copy the frontend to the new location"));
+            $notification->displayNotification('warning', i18n("You changed the client path. You might need to copy the frontend to the new location"));
         }
 
         if ($oClient->isLoaded()) {
@@ -126,36 +129,36 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
 
     updateClientCache($idclient, $htmlpath, $frontendpath);
 
-    $properties->setValue("idclient", $idclient, "backend", "clientimage", $clientlogo);
+    $properties->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
 
     // Clear the code cache
-    $mask = $cfgClient[$idclient]['cache']['path'] . $idclient . "*.php";
-    array_map("unlink", glob($mask));
+    $mask = $cfgClient[$idclient]['cache']['path'] . $idclient . '*.php';
+    array_map('unlink', glob($mask));
 
-    $notification->displayNotification("info", i18n("Changes saved") . $sNewNotification);
+    $notification->displayNotification('info', i18n("Changes saved") . $sNewNotification);
 
     $cApiClient = new cApiClient;
     $cApiClient->loadByPrimaryKey($idclient);
 
-    if ($_REQUEST["generate_xhtml"] == "no") {
-        $cApiClient->setProperty("generator", "xhtml", "false");
+    if ($_REQUEST['generate_xhtml'] == 'no') {
+        $cApiClient->setProperty('generator', 'xhtml', 'false');
     } else {
-        $cApiClient->setProperty("generator", "xhtml", "true");
+        $cApiClient->setProperty('generator', 'xhtml', 'true');
     }
 
     //Is statistc on/off
-    if ($_REQUEST["statistic"] == "on") {
-        $cApiClient->setProperty("stats", "tracking", "on");
+    if ($_REQUEST['statistic'] == 'on') {
+        $cApiClient->setProperty('stats', 'tracking', 'on');
     } else {
-        $cApiClient->setProperty("stats", "tracking", "off");
+        $cApiClient->setProperty('stats', 'tracking', 'off');
     }
 }
 
 
 $tpl->reset();
 
-$htmlpath = "";
-$serverpath = "";
+$htmlpath = '';
+$serverpath = '';
 if (isset($idclient)) {
     $htmlpath = $cfgClient[$idclient]['path']['htmlpath'];
     $serverpath = $cfgClient[$idclient]['path']['frontend'];
@@ -191,7 +194,7 @@ $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
-if ($serverpath == "") {
+if ($serverpath == '') {
     $serverpath = $cfg['path']['frontend'];
 }
 
@@ -202,8 +205,8 @@ $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
-if ($htmlpath == "") {
-    $htmlpath = "http://";
+if ($htmlpath == '') {
+    $htmlpath = 'http://';
 }
 
 $tpl->set('d', 'CATNAME', i18n("Web address"));
@@ -235,40 +238,40 @@ $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
-$aChoices = array("no" => i18n("No"), "yes" => i18n("Yes"));
+$aChoices = array('no' => i18n('No'), 'yes' => i18n('Yes'));
 
-$oXHTMLSelect = new cHTMLSelectElement("generate_xhtml");
+$oXHTMLSelect = new cHTMLSelectElement('generate_xhtml');
 $oXHTMLSelect->autoFill($aChoices);
 
 $cApiClient = new cApiClient;
 $cApiClient->loadByPrimaryKey($idclient);
-if ($cApiClient->getProperty("generator", "xhtml") == "true") {
-    $oXHTMLSelect->setDefault("yes");
+if ($cApiClient->getProperty('generator', 'xhtml') == 'true') {
+    $oXHTMLSelect->setDefault('yes');
 } else {
-    $oXHTMLSelect->setDefault("no");
+    $oXHTMLSelect->setDefault('no');
 }
 
-$tpl->set('d', 'CATNAME', i18n("Generate XHTML"));
+$tpl->set('d', 'CATNAME', i18n('Generate XHTML'));
 $tpl->set('d', 'CATFIELD', $oXHTMLSelect->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 
 $tpl->next();
 
-$aChoices = array("on" => i18n("On"), "off" => i18n("Off"));
+$aChoices = array('on' => i18n('On'), 'off' => i18n('Off'));
 
-$oXHTMLSelect = new cHTMLSelectElement("statistic");
+$oXHTMLSelect = new cHTMLSelectElement('statistic');
 $oXHTMLSelect->autoFill($aChoices);
 
 $cApiClient->loadByPrimaryKey($idclient);
-if ($cApiClient->getProperty("stats", "tracking") == "off") {
-    $oXHTMLSelect->setDefault("off");
+if ($cApiClient->getProperty('stats', 'tracking') == 'off') {
+    $oXHTMLSelect->setDefault('off');
 } else {
-    $oXHTMLSelect->setDefault("on");
+    $oXHTMLSelect->setDefault('on');
 }
 
 
-$tpl->set('d', 'CATNAME', i18n("Statistic"));
+$tpl->set('d', 'CATNAME', i18n('Statistic'));
 $tpl->set('d', 'CATFIELD', $oXHTMLSelect->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
@@ -276,8 +279,8 @@ $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
 if ($new == true) {
-    $tpl->set('d', 'CATNAME', i18n("Copy frontend template"));
-    $defaultform = new cHTMLCheckbox("copytemplate", "checked", "copytemplatechecked", true);
+    $tpl->set('d', 'CATNAME', i18n('Copy frontend template'));
+    $defaultform = new cHTMLCheckbox('copytemplate', 'checked', 'copytemplatechecked', true);
     $tpl->set('d', 'CATFIELD', $defaultform->toHTML(false));
     $tpl->next();
 }

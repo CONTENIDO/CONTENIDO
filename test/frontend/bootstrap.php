@@ -48,8 +48,11 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+// Set path to current frontend
+cRegistry::setAppVar('frontend_path', str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/');
+
 // Include the config file of the frontend to init the Client and Language Id
-include_once('config.php');
+include_once(cRegistry::getAppVar('frontend_path') . 'data/config/config.php');
 
 // Contenido startup process
 include_once($contenido_path.'includes/startup.php');
@@ -94,33 +97,29 @@ if ($cfgClient['set'] != 'set') {
     rereadClients();
 }
 
-$sql = 'SELECT idlang, encoding FROM '.$cfg['tab']['lang'];
-$db->query($sql);
-// Get encodings of all languages
-while ($db->next_record()) {
-    $encoding[$db->f('idlang')] = $db->f('encoding');
+// Initialize encodings
+if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
+    // Get encodings of all languages
+    $encoding = array();
+    $oLangColl = new cApiLanguageCollection();
+    $oLangColl->select('');
+    while ($oLang = $oLangColl->next()) {
+        $encoding[$oLang->get('idlang')] = $oLang->get('encoding');
+    }
 }
-
-// Check frontend globals
-// @TODO: Should be outsourced into startup process but requires a better detection (frontend or backend)
-cSecurity::checkFrontendGlobals();
 
 // update urlbuilder set http base path
 Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
 
 // Initialize language
 if (!isset($lang)) {
-    // if there is an entry load_lang in frontend/config.php use it, else use the first language of this client
+    // If there is an entry load_lang in __FRONTEND_PATH__/data/config/config.php use it, else use the first language of this client
     if (isset($load_lang)) {
-        // load_client is set in frontend/config.php
+        // load_client is set in __FRONTEND_PATH__/data/config/config.php
         $lang = $load_lang;
     } else {
-        $sql = "SELECT B.idlang FROM ".$cfg['tab']['clients_lang']." AS A, ".$cfg['tab']['lang']." AS B
-                WHERE A.idclient='".(int) $client ."' AND A.idlang = B.idlang
-                LIMIT 0,1";
-        $db->query($sql);
-        $db->next_record();
-        $lang = $db->f('idlang');
+        $oClientLang = new cApiClientLanguageCollection();
+        $lang = $oClientLang->getFirstLanguageIdByClient($client);
     }
 }
 

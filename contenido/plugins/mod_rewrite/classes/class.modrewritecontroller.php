@@ -464,7 +464,7 @@ class ModRewriteController extends ModRewriteBase
 
         if (!isset($lang) || (int) $lang <= 0) {
             if ((int) $load_lang > 0) {
-                // load_client is set in frontend/config.php
+                // load_client is set in __FRONTEND_PATH__/data/config/config.php
                 $lang = (int) $load_lang;
             } else {
                 // get client id from table

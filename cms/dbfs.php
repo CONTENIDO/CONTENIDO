@@ -1,33 +1,29 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * Database file system file output.
  *
- * Requirements:
- * @con_php_req 5
+ * @package Frontend
+ * @subpackage DBFS
+ * @version SVN Revision $Rev:$
+ * @version SVN Id $Id$
  *
- * @package    CONTENIDO Frontend
- * @author     unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  unknown
- *   $Id$:
- * }}
+ * @author unknown
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+// Set path to current frontend
+cRegistry::setAppVar('frontend_path', str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/');
+
 // Include the config file of the frontend to init the Client and Language Id
-include_once('config.php');
+include_once(cRegistry::getAppVar('frontend_path') . 'data/config/config.php');
 
 // CONTENIDO startup process
 include_once($contenido_path . 'includes/startup.php');

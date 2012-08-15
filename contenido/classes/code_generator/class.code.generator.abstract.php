@@ -34,7 +34,7 @@ abstract class cCodeGeneratorAbstract {
     protected $_db;
 
     /**
-     * Frontend debug options, see $frontend_debug in cms/config.php
+     * Frontend debug options, see $frontend_debug in __FRONTEND_PATH__/data/config/config.php
      *
      * @var array
      */
@@ -170,7 +170,7 @@ abstract class cCodeGeneratorAbstract {
     }
 
     /**
-     * Setter for frontend debug options (see $frontend_debug in config.php
+     * Setter for frontend debug options (see $frontend_debug in __FRONTEND_PATH__/data/config/config.php
      * located in clients frontend directory)
      *
      * @param bool $debug

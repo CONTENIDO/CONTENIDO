@@ -9,7 +9,7 @@
  * To handle the page we use the Database Abstraction Layer, the Session, Authentication and Permissions Handler of the
  * PHPLIB application development toolkit.
  *
- * The Client Id and the Language Id of an article will be determined depending on file __FRONTEND_PATH__/config.php where
+ * The Client Id and the Language Id of an article will be determined depending on file __FRONTEND_PATH__/data/config/config.php where
  * $load_lang and $load_client are defined.
  * Depending on http globals via e.g. front_content.php?idcat=41&idart=34
  * the most important CONTENIDO globals $idcat (Category Id), $idart (Article Id), $idcatart, $idartlang will be determined.
@@ -17,8 +17,8 @@
  * The article can be displayed and edited in the Backend or the Frontend.
  * The attributes of an article will be considered (an article can be online, offline or protected ...).
  *
- * It is possible to customize the behavior by including the file __FRONTEND_PATH__/config.local.php or
- * the file __FRONTEND_PATH__/config.after.php
+ * It is possible to customize the behavior by including the file __FRONTEND_PATH__/data/config/config.local.php or
+ * the file __FRONTEND_PATH__/data/config/config.after.php
  *
  * If you use 'Frontend User' for protected areas, the category access permission will by handled via the
  * CONTENIDO Extension Chainer.
@@ -51,8 +51,8 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // Clients local configuration
-if (cFileHandler::exists('config.local.php')) {
-    @include('config.local.php');
+if (cFileHandler::exists(cRegistry::getAppVar('frontend_path') . 'data/config/config.local.php')) {
+    @include(cRegistry::getAppVar('frontend_path') . 'data/config/config.local.php');
 }
 
 cInclude('includes', 'functions.con.php');
@@ -139,7 +139,7 @@ if (isset($changelang)) {
 
 // Initialize client
 if (!isset($client)) {
-    // load_client defined in {frontend_clientdir}/config.php
+    // load_client defined in __FRONTEND_PATH__/data/config/config.php
     $client = $load_client;
 }
 
@@ -148,9 +148,9 @@ Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$clien
 
 // Initialize language
 if (!isset($lang)) {
-    // If there is an entry load_lang in frontend/config.php use it, else use the first language of this client
+    // If there is an entry load_lang in __FRONTEND_PATH__/data/config/config.php use it, else use the first language of this client
     if (isset($load_lang)) {
-        // load_client is set in frontend/config.php
+        // load_client is set in __FRONTEND_PATH__/data/config/config.php
         $lang = $load_lang;
     } else {
         $oClientLang = new cApiClientLanguageCollection();
@@ -654,8 +654,8 @@ if ($cfg['cache']['disable'] != '1') {
 }
 
 // Configuration settings after the site is displayed.
-if (cFileHandler::exists('config.after.php')) {
-    @include('config.after.php');
+if (cFileHandler::exists(cRegistry::getAppVar('frontend_path') . 'data/config/config.after.php')) {
+    @include(cRegistry::getAppVar('frontend_path') . 'data/config/config.after.php');
 }
 
 if (isset($savedlang)) {

@@ -720,10 +720,10 @@ contenido/external/codemirror/theme/neat.css -text
 contenido/external/codemirror/theme/night.css -text
 contenido/external/codemirror/theme/rubyblue.css -text
 contenido/external/frontend/cache/index.php -text
-contenido/external/frontend/config.php -text
 contenido/external/frontend/css/index.php -text
 contenido/external/frontend/css/style_tiny.css -text
 contenido/external/frontend/data/.htaccess -text
+contenido/external/frontend/data/config/config.php -text
 contenido/external/frontend/data/version/.htaccess -text
 contenido/external/frontend/dbfs.php -text
 contenido/external/frontend/error.php -text
@@ -735,8 +735,6 @@ contenido/external/frontend/includes/concache.php -text
 contenido/external/frontend/includes/index.php -text
 contenido/external/frontend/index.php -text
 contenido/external/frontend/js/index.php -text
-contenido/external/frontend/logs/errorlog.txt -text
-contenido/external/frontend/logs/index.php -text
 contenido/external/frontend/robots.txt -text
 contenido/external/frontend/templates/error_page.html -text
 contenido/external/frontend/templates/index.php -text
