@@ -6046,8 +6046,8 @@ msgid "category offline"
 msgstr "Kategorie offline"
 
 #: include/include.con_left_top.php legend
-msgid "categories without any active start article"
-msgstr "Kategorien ohne aktiven Startartikel"
+msgid "category without any active start article"
+msgstr "Kategorie ohne aktiven Startartikel"
 
 #: include/include.con_left_top.php legend
 msgid "protected category"
@@ -6097,3 +6097,6 @@ msgstr "Baum hier einfügen"
 
 msgid "Legend"
 msgstr "Legende"
+
+msgid "New meta tag"
+msgstr "Neuer Meta-Tag"

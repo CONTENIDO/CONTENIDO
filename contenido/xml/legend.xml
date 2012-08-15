@@ -35,7 +35,7 @@
     </category>
     <category>
         <imgsrc>images/folder_on_error.gif</imgsrc>
-        <description>categories without any active start article</description>
+        <description>category without any active start article</description>
     </category>
     <category>
         <imgsrc>images/folder_on_locked.gif</imgsrc>
