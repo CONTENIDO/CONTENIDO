@@ -183,6 +183,7 @@ class cHTMLLanguageLink extends cHTMLDiv {
         parent::__construct();
 
         $linkImage = new cHTMLAlphaImage();
+        $linkImage->advanceID();
         $linkImage->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
         $linkImage->setMouseover(C_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
         $linkImage->setWidth(16);
@@ -216,6 +217,7 @@ class cHTMLButtonLink extends cHTMLDiv {
         parent::__construct();
 
         $linkImage = new cHTMLAlphaImage();
+        $linkImage->advanceID();
         $linkImage->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
         $linkImage->setMouseover(C_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
         $linkImage->setWidth(16);
