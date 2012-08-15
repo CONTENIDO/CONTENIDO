@@ -334,18 +334,18 @@ class UploadList extends FrontendList {
 
                     if (cApiDbfs::isDbfs($data)) {
                         $retValue =
-                                '<a href="javascript:iZoom(\'' . $sess->url($cfgClient[$client]["path"]["htmlpath"] . "dbfs.php?file=" . $data) . '\');">
-                                <img class="hover" name="smallImage" onmouseover="correctPosition(this, ' . $iWidth . ', ' . $iHeight . ');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="' . $sCacheThumbnail . '">
+                            '<a class="jsZoom" href="' . $sess->url($cfgClient[$client]["path"]["htmlpath"] . "dbfs.php?file=" . $data) . '" style="display:inline-block;">
+                                <img class="hover" name="smallImage" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
                                 <img class="preview" name="prevImage" src="' . $sCacheThumbnail . '">
                             </a>';
                         return $retValue;
                     } else {
                         $retValue =
-                                '<a href="javascript:iZoom(\'' . $cfgClient[$client]["path"]["htmlpath"] . $cfgClient[$client]["upload"] . $data . '\');">
-                                <img class="hover" name="smallImage" onmouseover="correctPosition(this, ' . $iWidth . ', ' . $iHeight . ');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="' . $sCacheThumbnail . '">
+                            '<a class="jsZoom" href="' . $cfgClient[$client]["path"]["htmlpath"] . $cfgClient[$client]["upload"] . $data . '" style="display:inline-block;">
+                                <img class="hover" name="smallImage" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
                                 <img class="preview" name="prevImage" src="' . $sCacheThumbnail . '">
                             </a>';
-                        $retValue .= '<a href="javascript:iZoom(\'' . $cfgClient[$client]["path"]["htmlpath"] . $cfgClient[$client]["upload"] . $data . '\');"><img class="preview" name="prevImage" src="' . $sCacheThumbnail . '"></a>';
+//                        $retValue .= '<a href="javascript:iZoom(\'' . $cfgClient[$client]["path"]["htmlpath"] . $cfgClient[$client]["upload"] . $data . '\');"><img class="preview" name="prevImage" src="' . $sCacheThumbnail . '"></a>';
                         return $retValue;
                     }
                     break;
@@ -684,7 +684,35 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1, $thumbnailmode) {
         $page->displayError(i18n("Directory not writable") . ' (' . $cfgClient[$client]["upl"]["path"] . $path . ')');
     }
 
-    $page->setContent(array($delform));
+    $jsScript = new cHTMLScript();
+    $jsScript->setAttribute('type', 'text/javascript');
+
+    $jsCode = '
+(function($) {
+    $(document).ready(function() {
+        var $cindyCrawford = $("body");
+
+        // Handler for clicked image anchors
+        $cindyCrawford.delegate("a.jsZoom", "click", function() {
+            iZoom($(this).attr("href"));
+            return false;
+        });
+
+        // Handler for mouseover/mouseout on images
+        $cindyCrawford.delegate("a.jsZoom img.hover", "mouseover", function() {
+            correctPosition(this, $(this).attr("data-width"), $(this).attr("data-height"));
+        });
+        $cindyCrawford.delegate("a.jsZoom img.hover", "mouseout", function() {
+            if (typeof(previewHideIe6) == "function") {
+                previewHideIe6(this);
+            };
+        });
+    });
+})(jQuery);
+';
+    $jsScript->setContent($jsCode);
+
+    $page->setContent(array($delform, $jsScript));
 
     $page->render();
 }
