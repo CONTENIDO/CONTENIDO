@@ -543,7 +543,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
     private function _initCmsTypes() {
         $this->_cmsTypes = array();
 
-        $sql = 'SELECT * from ' . $this->_cfg['tab']['type'] . ' ORDER BY type';
+        $sql = 'SELECT * FROM ' . $this->_cfg['tab']['type'] . ' ORDER BY type';
         $db = cRegistry::getDb();
         $db->query($sql);
         while ($db->next_record()) {
