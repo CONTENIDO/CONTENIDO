@@ -113,12 +113,6 @@
             <frontend>
                 <main>Frontend</main>
             </frontend>
-
-            <mail_log>
-                <main> E-Mail-Log</main>
-                <overview> overview </overview>
-                <detail> detail </detail>
-            </mail_log>
         </administration>
         <mycontenido>
             <main>My CONTENIDO</main>
