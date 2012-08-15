@@ -75,6 +75,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tmp_author = $db->f("author");
         $tmp_modifiedby = $db->f("modifiedby");
         $tmp_online = $db->f("online");
+        $tmp_searchable = $db->f("searchable");
         $tmp_published = $db->f("published");
         $tmp_publishedby = $db->f("publishedby");
         $tmp_datestart = $db->f("datestart");
@@ -140,6 +141,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tmp_publishedby = '';
         $tmp_author = '';
         $tmp_online = "0";
+        $tmp_searchable = "1";
         $tmp_datestart = "0000-00-00 00:00:00";
         $tmp_dateend = "0000-00-00 00:00:00";
         $tmp_keyart = '';
@@ -334,6 +336,11 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     }
     $tpl->set('s', 'STARTARTIKEL', i18n("Start article"));
     $tpl->set('s', 'STARTARTIKEL-CHECKBOX', $tmp_start);
+
+    // Searchable / Indexable
+    $tmp_searchable_checkbox = ($tmp_searchable != 1) ? '<input ' . $disabled . ' id="searchable" type="checkbox" name="searchable" value="1">' : '<input type="checkbox" ' . $disabled . ' id="searchable" name="searchable" value="1" checked="checked">';
+    $tpl->set('s', 'SEARCHABLE', i18n('Searchable/Indexable'));
+    $tpl->set('s', 'SEARCHABLE-CHECKBOX', $tmp_searchable_checkbox);
 
     // Sortierung
     $tpl->set('s', 'SORTIERUNG', i18n("Sort key"));

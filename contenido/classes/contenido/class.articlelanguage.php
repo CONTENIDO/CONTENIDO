@@ -84,6 +84,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
      * @param  mixed  $free_use_01
      * @param  mixed  $free_use_02
      * @param  mixed  $free_use_03
+     * @param  int  $searchable
      * @return cApiArticleLanguage
      */
     public function create($idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0,
@@ -91,7 +92,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
         $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '', $external_redirect = 0,
         $artsort = 0, $timemgmt = 0, $datestart = '', $dateend = '', $status = 0,
         $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0, $locked = 0,
-        $free_use_01 = '', $free_use_02 = '', $free_use_03 = '') {
+        $free_use_01 = '', $free_use_02 = '', $free_use_03 = '', $searchable = 1) {
 
         global $auth;
 
@@ -138,6 +139,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
         $item->set('free_use_01', $free_use_01);
         $item->set('free_use_02', $free_use_02);
         $item->set('free_use_03', $free_use_03);
+        $item->set('searchable', $searchable);
 
         $item->store();
 
@@ -200,6 +202,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
  * time_online_move  - Set article online after move
  * external_redirect - Open article in new window
  * locked            - Article is locked for editing
+ * searchable        - Whether article should be found via search
  *
  * You can extract article content with the
  * $obj->getContent(contype [, number]) method.
@@ -390,6 +393,7 @@ class cApiArticleLanguage extends Item {
      * time_online_move  - Set article online after move
      * external_redirect - Open article in new window
      * locked            - Article is locked for editing
+     * searchable        - Whether article should be found via search
      *
      * @param   string  $name
      * @return  string  Value of property
@@ -421,6 +425,7 @@ class cApiArticleLanguage extends Item {
             case 'idlang':
             case 'artspec':
             case 'online':
+            case 'searchable':
             case 'artsort':
             case 'status':
                 $value = (int) $value;

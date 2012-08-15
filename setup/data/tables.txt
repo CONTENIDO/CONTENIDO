@@ -36,6 +36,7 @@
 "art_lang";"published";"datetime";"";"";"0000-00-00 00:00:00";"";""
 "art_lang";"publishedby";"varchar(32)";"YES";"";"";"";""
 "art_lang";"online";"tinyint(1)";"";"";"0";"";""
+"art_lang";"searchable";"tinyint(1)";"";"";"1";"";""
 "art_lang";"redirect";"int(6)";"";"";"0";"";""
 "art_lang";"redirect_url";"varchar(255)";"";"";"";"";""
 "art_lang";"artsort";"int(10)";"";"";"0";"";""

@@ -42,7 +42,6 @@ $scripts = '';
 $cssData = '';
 $jsData = '';
 
-
 if ($action == 20 || $action == 10) {
 //     echo '<pre>' . print_r($data, true) . '</pre>';exit;
     if ($data != '') {

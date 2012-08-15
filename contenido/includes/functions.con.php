@@ -30,7 +30,7 @@ cInclude('includes', 'functions.con2.php');
  */
 function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang,
                           $title, $summary, $artspec, $created, $lastmodified, $author,
-                          $online, $datestart, $dateend, $artsort, $keyart = 0) {
+                          $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable) {
     global $client, $lang, $auth, $urlname, $page_title;
     //Some stuff for the redirect
     global $redirect, $redirect_url, $external_redirect;
@@ -87,7 +87,8 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
                 $idart, $curLang, $title, $urlname, $page_title, $summary, $artspec, $created,
                 $auth->auth['uname'], $lastmodified, $modifiedby, $published_value, $publishedby_value,
                 $online, $redirect, $redirect_url, $external_redirect, $artsort, $timemgmt,
-                $datestart, $dateend, $status, $time_move_cat, $time_target_cat, $time_online_move
+                $datestart, $dateend, $status, $time_move_cat, $time_target_cat, $time_online_move,
+                0, '', '', '', $searchable
         );
 
         conMakeStart($idcatart, 0);
@@ -154,6 +155,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
         $oArtLang->set('lastmodified', $curLastmodified);
         $oArtLang->set('modifiedby', $author);
         $oArtLang->set('online', $curOnline);
+        $oArtLang->set('searchable', $searchable);
         $oArtLang->set('redirect', $redirect);
         $oArtLang->set('redirect_url', $redirect_url);
         $oArtLang->set('external_redirect', $external_redirect);
@@ -174,7 +176,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
  */
 function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang,
                     $title, $summary, $artspec, $created, $lastmodified, $author,
-                    $online, $datestart, $dateend, $artsort, $keyart = 0) {
+                    $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable) {
     global $client, $lang, $redirect, $redirect_url, $external_redirect, $perm;
     global $urlname, $page_title;
     global $time_move_cat, $time_target_cat;
@@ -251,6 +253,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     $oArtLang->set('external_redirect', $external_redirect);
     $oArtLang->set('redirect_url', $redirect_url);
     $oArtLang->set('artsort', $artsort);
+    $oArtLang->set('searchable', $searchable);
 
     // If the user has right for makeonline, update some properties.
     if ($perm->have_perm_area_action('con', 'con_makeonline') ||
@@ -306,7 +309,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     $value = stripslashes($value);
 
     $iterator = $_cecRegistry->getIterator('Contenido.Content.SaveContentEntry');
-    while ($chainEntry = $iterator->next()) {
+    while (($chainEntry = $iterator->next()) !== false) {
         $value = $chainEntry->execute($idartlang, $type, $typeid, $value);
     }
 
@@ -578,7 +581,7 @@ function conDeleteart($idart) {
 
     $oCatArtColl = new cApiCategoryArticleCollection();
     $oCatArtColl->select('idart = ' . (int) $idart);
-    while ($oCatArtItem = $oCatArtColl->next()) {
+    while (($oCatArtItem = $oCatArtColl->next()) !== false) {
         // Delete from code cache
         $mask = $cfgClient[$client]['code']['path'] . '*.' . $oCatArtItem->get('idcatart') . '.php';
         array_map('unlink', glob($mask));
@@ -590,7 +593,7 @@ function conDeleteart($idart) {
 
     $oArtLangColl = new cApiArticleLanguageCollection();
     $oArtLangColl->select('idart = ' . (int) $idart);
-    while ($oArtLangColl = $oCatArtColl->next()) {
+    while (($oArtLangColl = $oCatArtColl->next()) !== false) {
         // Reset startidlang value of related entry in category language table
         $oCatLang = new cApiCategoryLanguage();
         if ($oCatLang->loadBy('startidartlang', (int) $oArtLangColl->get('idartlang'))) {
@@ -627,7 +630,7 @@ function conDeleteart($idart) {
     # $chainEntry->execute($idart);
 
     $iterator = $_cecRegistry->getIterator("Contenido.Content.DeleteArticle");
-    while ($chainEntry = $iterator->next()) {
+    while (($chainEntry = $iterator->next()) !== false) {
         $chainEntry->execute($idart);
     }
 }
@@ -1148,7 +1151,7 @@ function conCopyContainerConf($srcidtplcfg, $dstidtplcfg) {
     $counter = 0;
     $oContainerConfColl = new cApiContainerConfigurationCollection();
     $oContainerConfColl->select('idtplcfg = ' . (int) $srcidtplcfg);
-    while ($oContainerConf = $oContainerConfColl->next()) {
+    while (($oContainerConf = $oContainerConfColl->next()) !== false) {
         $oNewContainerConfColl = new cApiContentCollection();
         $oNewContainerConfColl->copyItem($oContainerConf, array('idtplcfg' => (int) $dstidtplcfg));
         $counter++;
@@ -1164,9 +1167,9 @@ function conCopyContainerConf($srcidtplcfg, $dstidtplcfg) {
 function conCopyContent($srcidartlang, $dstidartlang) {
     $oContentColl = new cApiContentCollection();
     $oContentColl->select('idartlang = ' . (int) $srcidartlang);
-    while ($oContent = $oContentColl->next()) {
+    while (($oContent = $oContentColl->next()) !== false) {
         $oNewContentColl = new cApiContentCollection();
-        $oNewContentColl->copyItem($oNewContentColl, array('idartlang' => (int) $dstidartlang));
+        $oNewContentColl->copyItem($oContent, array('idartlang' => (int) $dstidartlang));
     }
 }
 
@@ -1178,7 +1181,7 @@ function conCopyContent($srcidartlang, $dstidartlang) {
 function conCopyMetaTags($srcidartlang, $dstidartlang) {
     $oMetaTagColl = new cApiMetaTagCollection();
     $oMetaTagColl->select('idartlang = ' . (int) $srcidartlang);
-    while ($oMetaTag = $oMetaTagColl->next()) {
+    while (($oMetaTag = $oMetaTagColl->next()) !== false) {
         $oNewMetaTagColl = new cApiMetaTagCollection();
         $oNewMetaTagColl->copyItem($oMetaTag, array('idartlang' => (int) $dstidartlang));
     }
@@ -1287,7 +1290,7 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel
     // Get source category article entries
     $oCatArtColl = new cApiCategoryArticleCollection();
     $oCatArtColl->select('idart = ' . (int) $srcidart);
-    while ($oCatArt = $oCatArtColl->next()) {
+    while (($oCatArt = $oCatArtColl->next()) !== false) {
         // Insert destination category article entry
         $oCatArtColl2 = new cApiCategoryArticleCollection();
         $fieldsToOverwrite = array(
@@ -1321,7 +1324,7 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel
 
     $_cecRegistry = cApiCecRegistry::getInstance();
     $iterator = $_cecRegistry->getIterator('Contenido.Content.CopyArticle');
-    while ($chainEntry = $iterator->next()) {
+    while (($chainEntry = $iterator->next()) !== false) {
         $chainEntry->execute($srcidart, $dstidart);
     }
 

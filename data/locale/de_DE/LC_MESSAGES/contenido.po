@@ -6088,3 +6088,6 @@ msgstr "Mailserver Port"
 
 msgid "Mail logging was disabled!"
 msgstr "Mail Logging wurde abgeschaltet!"
+
+msgid "Searchable/Indexable"
+msgstr "Such-/Indizierbar"

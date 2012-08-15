@@ -1344,7 +1344,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
     public function fetchArray($sKey, $mFields) {
         $aResult = array();
 
-        while ($item = $this->next()) {
+        while (($item = $this->next()) !== false) {
             if (is_array($mFields)) {
                 foreach ($mFields as $value) {
                     $aResult[$item->get($sKey)][$value] = $item->get($value);
@@ -1358,5 +1358,3 @@ abstract class ItemCollection extends cItemBaseAbstract {
     }
 
 }
-
-?>

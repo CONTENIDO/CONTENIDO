@@ -35,9 +35,13 @@ if (!isset($online)) {
   $online = false;
 }
 
+if (!isset($searchable)) {
+  $searchable = false;
+}
+
 if (isset($title)) {
     if (1 == $tmp_firstedit) {
-        $idart = conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort);
+        $idart = conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, 0, $searchable);
         $tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));
 
         if (!isset($idartlang)) {
@@ -85,7 +89,7 @@ if (isset($title)) {
         }
 
     } else {
-        conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort);
+        conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, 0, $searchable);
 
         $tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));
 
@@ -153,6 +157,7 @@ cApiCecHook::execute("Contenido.Action.con_saveart.AfterCall", array(
     'lastmodified' => $lastmodified,
     'author'       => $author,
     'online'       => $online,
+    'searchable'   => $searchable,
     'datestart'    => $datestart,
     'dateend'      => $dateend,
     'artsort'      => $artsort
