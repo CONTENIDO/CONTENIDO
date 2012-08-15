@@ -159,18 +159,6 @@ HTMLObj.prototype.setMethods = function(type) {
 } // end function
 
 /**
- * Controls the actions of
- * the infoBox class
- *
- * @return void
- * @author Jan Lengowski <jan.lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- */
-function showAction() {
-    alert("this is the JS function showAction() located in the file HTMLObj.js.php. This should not have been called as it is old style CONTENIDO")
-}
-
-/**
  * Controls the execution of
  * the actions depending on
  * the cfg properties
@@ -299,16 +287,4 @@ function doAction() {
             }
         }
     }
-}
-
-/**
- * Show the default text
- * in the infoBox
- *
- * @return void
- * @author Jan Lengowski <jan.lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- */
-function hideAction() {
-    alert("this is the JS function hideAction() located in the file HTMLObj.js.php. This should not have been called as it is old style CONTENIDO")
 }
