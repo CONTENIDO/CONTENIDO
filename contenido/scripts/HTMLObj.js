@@ -111,9 +111,6 @@ HTMLObj.prototype.setMethods = function(type) {
 
             //Also make corresponding Labels clickable
             this.obj.parentNode.nextSibling.onclick        = doAction;
-            this.obj.parentNode.nextSibling.onmouseover    = showAction;
-            this.obj.parentNode.nextSibling.onmouseout     = hideAction;
-
 
             break;
 
