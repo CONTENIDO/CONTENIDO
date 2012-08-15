@@ -6091,3 +6091,6 @@ msgstr "Mail Logging wurde abgeschaltet!"
 
 msgid "Searchable/Indexable"
 msgstr "Such-/Indizierbar"
+
+msgid "Place tree here"
+msgstr "Baum hier einfügen"
