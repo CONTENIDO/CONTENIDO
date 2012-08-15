@@ -4,31 +4,31 @@ function showDelMsg(strElement, path, file, page) {
 
 // Function for deleting items
 function deleteFile(path, file, page) {
-    url  = \'main.php?area=upl\';
-    url += \'&action=upl_delete\';
-    url += \'&frame=4\';
-    url += \'&path=\' + path;
-    url += \'&file=\' + file;
-    url += \'&startpage=\' + page;
-    url += \'&contenido=\' + sid;
-    url += \'&appendparameters='.$appendparameters.'\';
+    url  = 'main.php?area=upl';
+    url += '&action=upl_delete';
+    url += '&frame=4';
+    url += '&path=' + path;
+    url += '&file=' + file;
+    url += '&startpage=' + page;
+    url += '&contenido=' + sid;
+    url += '&appendparameters='.$appendparameters;
 
     window.location.href = url;
 }
 
-function renameFile (oldname, path, page) {
+function renameFile(oldname, path, page) {
     var newname = prompt("{RENAME}", oldname),
         url;
 
     if (newname) {
-        url  = \'main.php?area=upl\';
-        url += \'&action=upl_renamefile\';
-        url += \'&frame=4\';
-        url += \'&newname=\' + newname;
-        url += \'&oldname=\' + oldname;
-        url += \'&startpage=\' + page;
-        url += \'&path=\' + path;
-        url += \'&contenido=\' + sid;
+        url  = 'main.php?area=upl';
+        url += '&action=upl_renamefile';
+        url += '&frame=4';
+        url += '&newname=' + newname;
+        url += '&oldname=' + oldname;
+        url += '&startpage=' + page;
+        url += '&path=' + path;
+        url += '&contenido=' + sid;
 
         window.location.href = url;
     }
@@ -86,7 +86,7 @@ function invertSelection() {
     }
 }
 
-if (parent.parent.frames["right"].frames["right_top"].document.getElementById(\'c_0\')) {
-    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById(\'c_0\');
+if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_0')) {
+    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_0');
     parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
 }
