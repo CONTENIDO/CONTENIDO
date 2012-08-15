@@ -1,7 +1,6 @@
 ./index.php
 ./lib/class.setupcontrols.php
 ./lib/class.setupmask.php
-./lib/class.template.php
 ./lib/defines.php
 ./lib/functions.environment.php
 ./lib/functions.filesystem.php
@@ -55,3 +54,11 @@
 ./steps/upgrade/step5.php
 ./steps/upgrade/step6.php
 ./steps/upgrade/step7.php
+./upgrade_jobs/class.upgrade.job.0001.php
+./upgrade_jobs/class.upgrade.job.0002.php
+./upgrade_jobs/class.upgrade.job.0003.php
+./upgrade_jobs/class.upgrade.job.0004.php
+./upgrade_jobs/class.upgrade.job.0005.php
+./upgrade_jobs/class.upgrade.job.0006.php
+./upgrade_jobs/class.upgrade.job.abstract.php
+./upgrade_jobs/class.upgrade.job.main.php

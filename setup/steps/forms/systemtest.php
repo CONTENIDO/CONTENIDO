@@ -68,9 +68,12 @@ class cSetupSystemtest extends cSetupMask
 
         $this->doFileSystemTests();
 
-        // Check if there is an old version of integrated plugins installed in upgrademode.
         if ($_SESSION["setuptype"] == 'upgrade') {
+            // Check if there is an old version of integrated plugins installed in upgrademode.
             $this->doExistingOldPluginTests();
+
+            // Check if user updates a system lower than 4.9
+            $this->doChangedDirsFilesTest();
         }
 
         $cHTMLFoldableErrorMessages = array();
@@ -154,6 +157,19 @@ class cSetupSystemtest extends cSetupMask
             $sMessage .= '<br>'.i18n('Please remove all old plugins before you continue. To transfer old plugin data, please copy the old plugin data tables into the new plugin data tables after the installation. The new plugintable names are the same, but contains the table prefix of CONTENIDO. Also delete the old plugin tables after data transfer.');
 
             $this->runTest(false, C_SEVERITY_WARNING, i18n("Old Plugins are still installed"), $sMessage);
+        }
+    }
+
+    function doChangedDirsFilesTest()
+    {
+        global $cfg;
+
+        // Display message about changed directories/files when user updates a system lower than 4.9
+        if (version_compare('4.9', $cfg['version']) > 0) {
+            $sMessage = i18n("You are updating a previous version of CONTENIDO to %s. Some directories/files have been moved to other sections in %s.\n\nPlease ensure to copy contenido/includes/config.php to data/config/production/config.php and also other configuration files within contenido/includes/ to data/config/production/.");
+            $sMessage = sprintf($sMessage, '4.9', '4.9');
+            $sMessage = nl2br($sMessage);
+            $this->runTest(false, C_SEVERITY_WARNING, i18n("Attention: Some directories/files have been moved"), $sMessage);
         }
     }
 
