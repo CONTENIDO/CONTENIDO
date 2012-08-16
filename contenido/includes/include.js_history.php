@@ -88,11 +88,17 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage'))
                     $sJScriptName = stripslashes($sJScriptName).".js";
                 }
 
-                renameFile($sFileName, $sJScriptName, $oVersionJScript->getPathFile());
+                cFileHandler::validateFilename($sJScriptName);
+                if (!cFileHandler::rename($oVersionJScript->getPathFile() . $sFileName, $sJScriptName)) {
+                    $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $oVersionJScript->getPathFile() . $sFileName));
+                    exit;
+                }
                 $oPage->addScript("reload", $oVersionJScript->renderReloadScript('js', $sJScriptName, $sess));
             }
 
-            if(fileEdit($sJScriptName, $sJScriptCode, $sPath)) {
+            cFileHandler::validateFilename($sJScriptName);
+            cFileHandler::write($sPath . $sJScriptName, $sJScriptCode);
+            if(cFileHandler::read($sPath . $sJScriptName)) {
         //        make new revision File
                 $oVersionJScript->createNewVersion();
 

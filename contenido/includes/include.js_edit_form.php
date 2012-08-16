@@ -61,7 +61,7 @@ if ($action == $sActionDelete) {
         if (cFileHandler::exists($path.$_REQUEST['delfile'])) {
             unlink($path.$_REQUEST['delfile']);
             removeFileInformation($client, $_REQUEST['delfile'], 'js', $db);
-            $apge->displayInfo(i18n("Deleted JS-File successfully!"));
+            $page->displayInfo(i18n("Deleted JS-File successfully!"));
         }
     }
 
@@ -106,8 +106,10 @@ if ($action == $sActionDelete) {
     // Create new file
     if ($_REQUEST['action'] == $sActionCreate && $_REQUEST['status'] == 'send') {
         $sTempFilename = $sFilename;
-        createFile($sFilename, $path);
-        $bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
+        // check filename and create new file
+        cFileHandler::validateFilename($sFilename);
+        cFileHandler::create($path . $sFilename, $_REQUEST['code']);
+        $bEdit = cFileHandler::read($path . $sFilename);
         updateFileInformation($client, $sFilename, 'js', $auth->auth['uid'], $_REQUEST['description'], $db);
         $sReloadScript .= "<script type=\"text/javascript\">
                  var right_top = top.content.right.right_top;
@@ -126,7 +128,13 @@ if ($action == $sActionDelete) {
         $sTempTempFilename = $sTempFilename;
 
         if ($sFilename != $sTempFilename) {
-            $sTempFilename = renameFile($sTempFilename, $sFilename, $path);
+            cFileHandler::validateFilename($sFilename);
+            if (cFileHandler::rename($path . $sTempFilename, $sFilename)) {
+                $sTempFilename = $sFilename;
+            } else {
+                $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
+                exit;
+            }
             $sReloadScript .= "<script type=\"text/javascript\">
                  var right_top = top.content.right.right_top;
                  if (right_top) {
@@ -152,7 +160,9 @@ if ($action == $sActionDelete) {
             $oVersion->createNewVersion();
         }
 
-        $bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
+        cFileHandler::validateFilename($sFilename);
+        cFileHandler::write($path . $sFilename, $_REQUEST['code']);
+        $bEdit = cFileHandler::read($path . $sFilename);
 
         if ($sFilename != $sTempTempFilename) {
             $page->displayInfo(i18n("Renamed the JS-File successfully!"));
@@ -168,7 +178,10 @@ if ($action == $sActionDelete) {
         $sAction = ($bEdit) ? $sActionEdit : $_REQUEST['action'];
 
         if ($_REQUEST['action'] == $sActionEdit) {
-            $sCode = getFileContent($sFilename, $path);
+            $sCode = cFileHandler::read($path . $sFilename);
+            if ($sCode === false) {
+                exit;
+            }
         } else {
             $sCode = stripslashes($_REQUEST['code']); # stripslashes is required here in case of creating a new file
         }

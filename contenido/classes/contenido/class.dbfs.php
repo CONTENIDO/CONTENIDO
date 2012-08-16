@@ -99,7 +99,8 @@ class cApiDbfsCollection extends ItemCollection {
      */
     public function writeFromFile($localfile, $targetfile) {
         $targetfile = cApiDbfs::stripPath($targetfile);
-        $mimetype = fileGetMimeContentType($localfile);
+        $stat = cFileHandler::info($localfile);
+        $mimetype = $stat['mime'];
 
         $this->write($targetfile, cFileHandler::read($localfile), $mimetype);
     }

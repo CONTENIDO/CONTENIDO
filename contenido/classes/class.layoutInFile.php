@@ -174,10 +174,15 @@ class LayoutInFile {
      */
     private function _makeDirectory($directory) {
         if (is_dir($directory)) {
-            return true;
+            $success = true;
+        } else {
+            $success = mkdir($directory);
+        }
+        if ($success) {
+            cFileHandler::setDefaultDirPerms($directory);
         }
 
-        return mkdir($directory);
+        return $success;
     }
 
     /**

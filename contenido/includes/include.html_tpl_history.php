@@ -93,11 +93,17 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
                 $sHTMLName = stripslashes($sHTMLName).".html";
             }
 
-            renameFile($sFileName, $sHTMLName, $oVersionHtmlTemp->getPathFile());
+            cFileHandler::validateFilename($sHTMLName);
+            if (!cFileHandler::rename($oVersionHtmlTemp->getPathFile() . $sFileName, $sHTMLName)) {
+                $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $oVersionHtmlTemp->getPathFile() . $sFileName));
+                exit;
+            }
             $oPage->addScript($oVersionHtmlTemp->renderReloadScript('htmltpl', $sHTMLName, $sess));
         }
 
-        if(fileEdit($sHTMLName, $sHTMLCode, $sPath)) {
+        cFileHandler::validateFilename($sHTMLName);
+        cFileHandler::write($sPath . $sHTMLName, $sHTMLCode);
+        if(cFileHandler::read($sPath . $sHTMLName)) {
             //        make new revision File
             $oVersionHtmlTemp->createNewVersion();
 

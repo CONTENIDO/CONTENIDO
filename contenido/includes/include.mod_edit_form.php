@@ -103,7 +103,7 @@ if ($action == "mod_new") {
     }
 
     $module = $modules->create(i18n("- Unnamed module -"));
-    $module->set("description", implode("\n", array(i18n("<your module description>"), "", i18n("Author: "), i18n("Version:"))));
+    $module->set("description", implode("\r\n", array(i18n("<your module description>"), "", i18n("Author: "), i18n("Version:"))));
 
     $module->set("alias",strtolower($alias));
 

@@ -82,11 +82,17 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
                 $sStyleName = stripslashes($sStyleName) . ".css";
             }
 
-            renameFile($sFileName, $sStyleName, $oVersionStyle->getPathFile());
+            cFileHandler::validateFilename($sStyleName);
+            if (!cFileHandler::rename($oVersionStyle->getPathFile() . $sFileName, $sStyleName)) {
+                $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $oVersionStyle->getPathFile() . $sFileName));
+                exit;
+            }
             $oPage->addScript($oVersionStyle->renderReloadScript('style', $sStyleName, $sess));
         }
 
-        if (fileEdit($sStyleName, $sStyleCode, $sPath)) {
+        cFileHandler::validateFilename($sStyleName);
+        cFileHandler::write($sPath . $sStyleName, $sStyleCode);
+        if (cFileHandler::read($sPath . $sStyleName)) {
             // make new revision File
             $oVersionStyle->createNewVersion();
 

@@ -191,24 +191,12 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
  * @return  (string|void)      Either content of file o nothing
  */
 function fileEdit($filename, $sCode, $path) {
-    global $notification;
-
     cDeprecated("This function was replaced by cFileHandler");
 
-    // FIXME: fileValidateFilename does also the validation but display another message!
-    if (strlen(trim($filename)) == 0) {
-        $notification->displayNotification("error", i18n("Please insert file name."));
-        return false;
-    }
+    cFileHandler::validateFilename($filename);
+    cFileHandler::write($path . $filename, $sCode);
 
-    fileValidateFilename($filename, true);
-
-    if (cFileHandler::write($path . $filename, $sCode)) {
-        return cFileHandler::read($path . $filename);
-    } else {
-        $notification->displayNotification("error", sprintf(i18n("%s is not writable"), $path . $filename));
-        exit;
-    }
+    return cFileHandler::read($path . $filename);
 }
 
 /**
@@ -229,7 +217,6 @@ function getFileContent($filename, $path) {
 
     $ret = "";
     if (($ret = cFileHandler::read($path . $filename)) === false) {
-        $notification->displayNotification("error", sprintf(i18n("Can not open file %s"), $path . $filename));
         exit;
     }
 
@@ -262,18 +249,10 @@ function createFile($filename, $path) {
 
     cDeprecated("This function was replaced by cFileHandler");
 
-    fileValidateFilename($filename, true);
+    cFileHandler::validateFilename($filename);
 
     // create the file
-    if (cFileHandler::create($path . $filename)) {
-        // change file access permission
-        if (cFileHandler::chmod($path . $filename, 0777)) {
-            return true;
-        } else {
-            $notification->displayNotification("error", $path . $filename . " " . i18n("Unable to change file access permission."));
-            exit;
-        }
-    } else {
+    if (!cFileHandler::create($path . $filename)) {
         $notification->displayNotification("error", sprintf(i18n("Unable to create file %s"), $path . $filename));
         exit;
     }
@@ -296,7 +275,8 @@ function renameFile($sOldFile, $sNewFile, $path) {
 
     cDeprecated("This function was replaced by cFileHandler");
 
-    fileValidateFilename($sNewFile, true);
+    cFileHandler::validateFilename($sNewFile);
+
     if (cFileHandler::rename($path . $sOldFile, $sNewFile)) {
         return $sNewFile;
     } else {
@@ -314,20 +294,12 @@ function renameFile($sOldFile, $sNewFile, $path) {
  * @param   bool    $notifyAndExitOnFailure  Flag to display notification and to exit further script
  *                                           execution, ifd validation fails
  * @return  (void|bool)  Either validation result or nothing (depends on second parameter)
+ * @deprecated 2012-08-16 Use cFileHandler::validateFilename instead
  */
 function fileValidateFilename($filename, $notifyAndExitOnFailure = true) {
-    global $notification;
+    cDeprecated('Use cFileHandler::validateFilename instead');
 
-    if (preg_match('/[^a-z0-9._-]/i', $filename)) {
-        // validation failure...
-        if ($notifyAndExitOnFailure == true) {
-            // display notification and exit
-            $notification->displayNotification('error', i18n('Wrong file name.'));
-            exit;
-        }
-        return false;
-    }
-    return true;
+    return cFileHandler::validateFilename($filename, $notifyAndExitOnFailure);
 }
 
 /**
@@ -457,5 +429,3 @@ function recursiveCopy($sourcePath, $destinationPath, $mode = 0777, array $optio
 
     chdir($oldPath);
 }
-
-?>

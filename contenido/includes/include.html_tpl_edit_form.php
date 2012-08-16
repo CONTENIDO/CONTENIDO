@@ -111,8 +111,10 @@ if ($action == $sActionDelete) {
     // Create new file
     if ($_REQUEST['action'] == $sActionCreate && $_REQUEST['status'] == 'send') {
         $sTempFilename = $sFilename;
-        $ret = createFile($sFilename, $path);
-        $bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
+        // check filename and create new file
+        cFileHandler::validateFilename($sFilename);
+        cFileHandler::create($path . $sFilename, $_REQUEST['code']);
+        $bEdit = cFileHandler::read($path . $sFilename);
         $sReloadScript .= "<script type=\"text/javascript\">
                  var right_top = top.content.right.right_top;
                  if (right_top) {
@@ -128,7 +130,13 @@ if ($action == $sActionDelete) {
     if ($_REQUEST['action'] == $sActionEdit && $_REQUEST['status'] == 'send') {
         $sTempTempFilename = $sTempFilename;
         if ($sFilename != $sTempFilename) {
-            $sTempFilename = renameFile($sTempFilename, $sFilename, $path);
+            cFileHandler::validateFilename($sFilename);
+            if (cFileHandler::rename($path . $sTempFilename, $sFilename)) {
+                $sTempFilename = $sFilename;
+            } else {
+                $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
+                exit;
+            }
             $sReloadScript .= "<script type=\"text/javascript\">
                  var right_top = top.content.right.right_top;
                  if (right_top) {
@@ -161,7 +169,9 @@ if ($action == $sActionDelete) {
             $oVersion->createNewVersion();
         }
 
-        $bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
+        cFileHandler::validateFilename($sFilename);
+        cFileHandler::write($path . $sFilename, $_REQUEST['code']);
+        $bEdit = cFileHandler::read($path . $sFilename);
     }
 
     // Generate edit form
@@ -169,7 +179,10 @@ if ($action == $sActionDelete) {
         $sAction = ($bEdit) ? $sActionEdit : $_REQUEST['action'];
 
         if ($_REQUEST['action'] == $sActionEdit) {
-            $sCode = getFileContent($sFilename, $path);
+            $sCode = cFileHandler::read($path . $sFilename);
+            if ($sCode === false) {
+                exit;
+            }
         } else {
             $sCode = stripslashes($_REQUEST['code']); # stripslashes is required here in case of creating a new file
         }

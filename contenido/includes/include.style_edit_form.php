@@ -99,8 +99,10 @@ if ($action == $sActionDelete) {
     // Create new file
     if ($_REQUEST['action'] == $sActionCreate && $_REQUEST['status'] == 'send') {
         $sTempFilename = $sFilename;
-        createFile($sFilename, $path);
-        $bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
+        // check filename and create new file
+        cFileHandler::validateFilename($sFilename);
+        cFileHandler::create($path . $sFilename, $_REQUEST['code']);
+        $bEdit = cFileHandler::read($path . $sFilename);
         updateFileInformation($client, $sFilename, 'css', $auth->auth['uid'], $_REQUEST['description'], $db);
         $sReloadScript .= "<script type=\"text/javascript\">
                      var right_top = top.content.right.right_top;
@@ -118,7 +120,13 @@ if ($action == $sActionDelete) {
     if ($_REQUEST['action'] == $sActionEdit && $_REQUEST['status'] == 'send') {
         $tempTemplate = $sTempFilename;
         if ($sFilename != $sTempFilename) {
-            $sTempFilename = renameFile($sTempFilename, $sFilename, $path);
+            cFileHandler::validateFilename($sFilename);
+            if (cFileHandler::rename($path . $sTempFilename, $sFilename)) {
+                $sTempFilename = $sFilename;
+            } else {
+                $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
+                exit;
+            }
             $sReloadScript .= "<script type=\"text/javascript\">
                      var right_top = top.content.right.right_top;
                      if (right_top) {
@@ -130,7 +138,9 @@ if ($action == $sActionDelete) {
             $sTempFilename = $sFilename;
         }
 
-        $bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
+        cFileHandler::validateFilename($sFilename);
+        cFileHandler::write($path . $sFilename, $_REQUEST['code']);
+        $bEdit = cFileHandler::read($path . $sFilename);
 
         // Show message
         if ($sFilename != $tempTemplate && $bEdit) {

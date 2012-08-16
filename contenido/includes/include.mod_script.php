@@ -105,9 +105,11 @@ $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 // Create new file
 if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
     $sTempFilename = $sFilename;
-    $ret = createFile($sFilename, $path);
+    $ret = cFileHandler::create($path . $sFilename);
     $tempCode = iconv(cModuleHandler::getEncoding(), $fileEncoding, $_REQUEST['code']);
-    $bEdit = fileEdit($sFilename, $tempCode , $path);
+    cFileHandler::validateFilename($sFilename);
+    cFileHandler::write($path . $sFilename, $tempCode);
+    $bEdit = cFileHandler::read($path . $sFilename);
 
     $sReloadScript .= "<script type=\"text/javascript\">
                      var right_top = top.content.right.right_top;
@@ -129,7 +131,13 @@ if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
 if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
 
     if ($sFilename != $sTempFilename) {
-        $sTempFilename = renameFile($sTempFilename, $sFilename, $path);
+        cFileHandler::validateFilename($sFilename);
+        if (cFileHandler::rename($path . $sTempFilename, $sFilename)) {
+            $sTempFilename = $sFilename;
+        } else {
+            $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
+            exit;
+        }
         $sReloadScript .= "<script type=\"text/javascript\">
                          var right_top = top.content.right.right_top;
                          if (right_top) {
@@ -143,7 +151,9 @@ if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
 
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
     $tempCode = iconv(cModuleHandler::getEncoding(), $fileEncoding, $_REQUEST['code']);
-    $bEdit = fileEdit($sFilename, $tempCode, $path);
+    cFileHandler::validateFilename($sFilename);
+    cFileHandler::write($path . $sFilename, $tempCode);
+    $bEdit = cFileHandler::read($path . $sFilename);
 
     // Show message for user
     if ($sFilename != $sTempFilename) {
@@ -159,7 +169,11 @@ if (isset($actionRequest)) {
     $sAction = ($bEdit) ? $sActionEdit : $actionRequest;
 
     if ($actionRequest == $sActionEdit) {
-        $sCode = iconv($fileEncoding, cModuleHandler::getEncoding(),getFileContent($sFilename, $path));
+        $sCode = cFileHandler::read($path . $sFilename);
+        if ($sCode === false) {
+            exit;
+        }
+        $sCode = iconv($fileEncoding, cModuleHandler::getEncoding(), $sCode);
     } else {
         $sCode = stripslashes($_REQUEST['code']); # stripslashes is required here in case of creating a new file
     }

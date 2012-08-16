@@ -123,12 +123,14 @@ $aFileInfo = getFileInformation($client, $sTempFilename, $sTypeContent, $db);
 // Create new file
 if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
     $sTempFilename = $sFilename;
-    $ret = createFile($sFilename, $path);
+    $ret = cFileHandler::create($path . $sFilename);
 
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 
     $tempCode = iconv(cModuleHandler::getEncoding(), $fileEncoding, $_REQUEST['code']);
-    $bEdit = fileEdit($sFilename, $tempCode, $path);
+    cFileHandler::validateFilename($sFilename);
+    cFileHandler::write($path . $sFilename, $tempCode);
+    $bEdit = cFileHandler::read($path . $sFilename);
 
     updateFileInformation($client, $sFilename, 'css', $auth->auth['uid'], $_REQUEST['description'], $db);
     $sReloadScript .= "<script type=\"text/javascript\">
@@ -149,7 +151,13 @@ if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
 // Edit selected file
 if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
     if ($sFilename != $sTempFilename) {
-        $sTempFilename = renameFile($sTempFilename, $sFilename, $path);
+        cFileHandler::validateFilename($sFilename);
+        if (cFileHandler::rename($path . $sTempFilename, $sFilename)) {
+            $sTempFilename = $sFilename;
+        } else {
+            $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
+            exit;
+        }
         $sReloadScript .= "<script type=\"text/javascript\">
                              var right_top = top.content.right.right_top;
                              if (right_top) {
@@ -165,7 +173,9 @@ if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
 
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
     $tempCode = iconv(cModuleHandler::getEncoding(), $fileEncoding, $_REQUEST['code']);
-    $bEdit = fileEdit($sFilename, $tempCode, $path);
+    cFileHandler::validateFilename($sFilename);
+    cFileHandler::write($path . $sFilename, $tempCode);
+    $bEdit = cFileHandler::read($path . $sFilename);
 
     if ($sFilename != $sTempFilename && $bEdit) {
         $page->displayInfo(i18n('Renamed and saved changes successfully!'));
@@ -184,7 +194,11 @@ if (isset($actionRequest)) {
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 
     if ($actionRequest == $sActionEdit) {
-        $sCode = iconv($fileEncoding, cModuleHandler::getEncoding(), getFileContent($sFilename, $path));
+        $sCode = cFileHandler::read($path . $sFilename);
+        if ($sCode === false) {
+            exit;
+        }
+        $sCode = iconv($fileEncoding, cModuleHandler::getEncoding(), $sCode);
     } else {
         $sCode = stripslashes($_REQUEST['code']); // stripslashes is required here in case of creating a new file
     }

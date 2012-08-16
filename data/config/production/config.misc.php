@@ -122,6 +122,12 @@ $cfg['contenido']['notifyonerror'] = '';
 // (int) Configure how often the notification email is sent, in minutes
 $cfg['contenido']['notifyinterval'] = 20;
 
+// (int) octal value (with a leading zero!) for use in chmod
+$cfg['default_perms']['file'] = 0664;
+
+// (int) octal value (with a leading zero!) for use in chmod
+$cfg['default_perms']['directory'] = 0775;
+
 
 /*
  * PHP settings
