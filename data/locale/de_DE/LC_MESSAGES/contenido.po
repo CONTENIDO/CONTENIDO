@@ -3934,8 +3934,8 @@ msgid "Deleted module successfully!"
 msgstr "Modul erfolgreich gelöscht!"
 
 #: includes/include.mod_edit_form.php:88
-msgid "Modul name exist in module directory, rename the module."
-msgstr "Modulname existiert in Modulverzeihnis, Modul umbenennen."
+msgid "The given module name already exists. Please enter another module name."
+msgstr "Der eingegebene Modulname existiert bereits. Bitte geben Sie einen anderen Modulnamen ein."
 
 #: includes/include.mod_edit_form.php:93
 msgid "<your module description>"

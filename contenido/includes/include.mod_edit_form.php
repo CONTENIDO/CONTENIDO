@@ -98,7 +98,7 @@ if ($action == "mod_new") {
     $alias = cApiStrCleanURLCharacters(i18n("- Unnamed module -"));
     $contenidoModuleHandler = new cModuleHandler();
     if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
-        $notification->displayNotification("error", i18n("Modul name exist in module directory, rename the module."));
+        $notification->displayNotification("error", i18n("The given module name already exists. Please enter another module name."));
         die();
     }
 
