@@ -5264,3 +5264,7 @@ msgstr ""
 #: xml/navigation.xml:133
 msgid "Mailing"
 msgstr ""
+
+#: xml/navigation.xml:15
+msgid "Articles"
+msgstr ""

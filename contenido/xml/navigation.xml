@@ -12,7 +12,7 @@ NOTE: Comments below with i18n() are used for translation purposes and the are
         <content>
             <main>Content</main><!-- i18n("Content") -->
             <article>
-                <main>Articles</main><!-- i18n("Content") -->
+                <main>Articles</main><!-- i18n("Articles") -->
                 <overview>Overview</overview><!-- i18n("Overview") -->
                 <editor>Editor</editor><!-- i18n("Editor") -->
                 <properties>Properties</properties><!-- i18n("Properties") -->

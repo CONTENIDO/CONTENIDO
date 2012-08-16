@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO 4.8.15\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-08-17 01:40+0200\n"
-"PO-Revision-Date: 2012-08-17 01:41+0100\n"
+"PO-Revision-Date: 2012-08-17 01:47+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -5494,6 +5494,10 @@ msgstr "Wiedervorlage"
 msgid "Mailing"
 msgstr "Mailing"
 
+#: xml/navigation.xml:15
+msgid "Articles"
+msgstr "Artikel"
+
 #~ msgid "htmlpath"
 #~ msgstr "HTML-Pfad"
 
@@ -5982,9 +5986,6 @@ msgstr "Mailing"
 
 #~ msgid "Rights type"
 #~ msgstr "Art der Rechte"
-
-#~ msgid "Articles"
-#~ msgstr "Artikel"
 
 #~ msgid "Upload Files"
 #~ msgstr "Upload"
