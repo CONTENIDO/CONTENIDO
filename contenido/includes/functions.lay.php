@@ -79,13 +79,9 @@ function layEditLayout($idlay, $name, $description, $code)
     $oVersion->createNewVersion();
 
     if (!$idlay) {
-        //$tmp_newid = $db->nextid($cfg['tab']['lay']);
-
-        $sql = "INSERT INTO ".$cfg["tab"]["lay"]." (name,alias, description, deletable, idclient, author, created, lastmodified) VALUES ('".cSecurity::escapeDB($name, $db)."',
-                '".cSecurity::escapeDB($layoutAlias, $db)."','".cSecurity::escapeDB($description, $db)."', '1', '".cSecurity::toInteger($client)."', '".cSecurity::escapeDB($author, $db)."',
-                '".cSecurity::escapeDB($date, $db)."', '".cSecurity::escapeDB($date, $db)."')";
-        $db->query($sql);
-        $idlay = $db->getLastInsertedId($cfg["tab"]["lay"]);
+        $layoutCollection = new cApiLayoutCollection();
+        $layout = $layoutCollection->create($name, $client, $alias, $description, '1', $author, $date, $date);
+        $idlay = $layout->get('idlay');
 
         if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
             $notification->displayNotification("error", i18n("Can't save layout in file"));
@@ -98,10 +94,7 @@ function layEditLayout($idlay, $name, $description, $code)
         createRightsForElement('lay', $idlay);
 
         return $idlay;
-
     } else {
-
-        $sql = '';
         // Save the layout in file system
         $layoutInFile = new LayoutInFile($idlay, stripslashes($code), $cfg, $lang);
         // Name changed
@@ -124,8 +117,13 @@ function layEditLayout($idlay, $name, $description, $code)
                     $notification->displayNotification("error", i18n("Can't save layout in file!"));
                 } else {
                     $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Renamed layout succsessfully!"));
-                     $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".cSecurity::escapeDB($name, $db)."', alias='".cSecurity::escapeDB($layoutAlias, $db)."' , description='".cSecurity::escapeDB($description, $db)."',
-                            author='".cSecurity::escapeDB($author, $db)."', lastmodified='".cSecurity::escapeDB($date, $db)."' WHERE idlay='".cSecurity::toInteger($idlay)."'";
+                    $layout = new cApiLayout(cSecurity::toInteger($idlay));
+                    $layout->set('name', $name);
+                    $layout->set('alias', $layoutAlias);
+                    $layout->set('description', $description);
+                    $layout->set('author', $author);
+                    $layout->set('lastmodified', $date);
+                    $layout->store();
                 }
             } else {
                 // Rename not successfully
@@ -140,14 +138,14 @@ function layEditLayout($idlay, $name, $description, $code)
                 $notification->displayNotification("error", i18n("Can't save layout in file!"));
             } else {
                 $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
-                $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".cSecurity::escapeDB($name, $db)."', alias='".cSecurity::escapeDB($layoutAlias, $db)."' , description='".cSecurity::escapeDB($description, $db)."',
-                    author='".cSecurity::escapeDB($author, $db)."', lastmodified='".cSecurity::escapeDB($date, $db)."' WHERE idlay='".cSecurity::toInteger($idlay)."'";
+                $layout = new cApiLayout(cSecurity::toInteger($idlay));
+                $layout->set('name', $name);
+                $layout->set('alias', $layoutAlias);
+                $layout->set('description', $description);
+                $layout->set('author', $author);
+                $layout->set('lastmodified', $date);
+                $layout->store();
             }
-        }
-
-        // Update if work on file successfully
-        if ($sql != '') {
-            $db->query($sql);
         }
 
         // Update CODE table
@@ -173,8 +171,8 @@ function layDeleteLayout($idlay)
         // Save the layout in file system
         $layoutInFile = new LayoutInFile($idlay, '', $cfg, 1);
         if ($layoutInFile->eraseLayout()) {
-            $sql = 'DELETE FROM '.$cfg['tab']['lay'].' WHERE idlay='.(int) $idlay;
-            $db->query($sql);
+            $layoutCollection = new cApiLayoutCollection();
+            $layoutCollection->delete($idlay);
         } else {
             $notification->displayNotification('error', i18n("Can't delete layout!"));
         }

@@ -6100,3 +6100,6 @@ msgstr "Legende"
 
 msgid "New meta tag"
 msgstr "Neuer Meta-Tag"
+
+msgid "Sitemap priority"
+msgstr "Sitemap-Priorität"

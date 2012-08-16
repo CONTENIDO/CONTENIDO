@@ -346,6 +346,9 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'SEARCHABLE', i18n('Searchable/Indexable'));
     $tpl->set('s', 'SEARCHABLE-CHECKBOX', $tmp_searchable_checkbox);
 
+    // TODO implement sitemap priority attribute
+    $tpl->set('s', 'SITEMAP-PRIORITY', i18n('Sitemap priority'));
+
     // Sortierung
     $tpl->set('s', 'SORTIERUNG', i18n("Sort key"));
     $tpl->set('s', 'SORTIERUNG-FIELD', '<input type="text" ' . $disabled . ' class="text_medium" name="artsort" style="width:400px;" value="' . $tmp_sort . '">');
