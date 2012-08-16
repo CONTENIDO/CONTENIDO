@@ -131,7 +131,7 @@ class cRequestValidator {
 
         if ($this->bLog === true) {
             if (empty($this->sLogPath) || !is_writeable(dirname($this->sLogPath))) {
-                die('Could not log into not existing or empty log path!');
+                die('Log path is empty or not writable!');
             }
         }
 
