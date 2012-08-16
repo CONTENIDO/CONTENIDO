@@ -49,7 +49,7 @@ $fegroup->loadByPrimaryKey($idfrontendgroup);
 $sRefreshRightTopLinkJs = "";
 
 if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $action)) {
-   $fegroup = $fegroups->create(" ".i18n("-- new group --"));
+   $fegroup = $fegroups->create(" ".i18n("-- New group --"));
    $idfrontendgroup = $fegroup->get("idfrontendgroup");
    $sRefreshRightTopLink = $sess->url('main.php?frame=3&area='.$area.'&idfrontendgroup='.$idfrontendgroup);
    $sRefreshRightTopLink = "conMultiLink('right_top', '".$sRefreshRightTopLink."')";

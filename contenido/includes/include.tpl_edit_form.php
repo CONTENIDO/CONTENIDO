@@ -49,7 +49,7 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
 
 
 if ($action == "tpl_new") {
-    $tplname = i18n("- New Template -");
+    $tplname = i18n("-- New template --");
 }
 
 $sql = "SELECT

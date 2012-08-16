@@ -216,11 +216,11 @@ while ($oItem = $oClientColl->next()) {
         $oTpl2->set('s', 'HEADLINE', i18n('Client') . ' ' . $oItem->get('name'));
         $oTpl2->set('s', 'ADDITIONAL', '');
 
-        $oTpl2->set('d', 'NAME', i18n("htmlpath"));
+        $oTpl2->set('d', 'NAME', i18n("HTML path"));
         $oTpl2->set('d', 'VALUE', $htmlpath);
         $oTpl2->next();
 
-        $oTpl2->set('d', 'NAME', i18n("frontendpath"));
+        $oTpl2->set('d', 'NAME', i18n("Frontend path"));
         $oTpl2->set('d', 'VALUE', $frontendpath);
         $oTpl2->next();
 

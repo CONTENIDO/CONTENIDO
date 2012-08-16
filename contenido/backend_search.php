@@ -322,7 +322,7 @@ if (sizeof($_GET) == 0 && isset($_POST['save_search'])) {
     $refreshScript .= 'top.content.left.left_top.location.href = top.content.left.left_top.location.href+"&save_search=true";';
 
     // Message for successfull saving
-    $saveSuccessfull = i18n("Thank you for saving this search from extinction !");
+    $saveSuccessfull = i18n("Thank you for saving this search from extinction!");
 
 } elseif (sizeof($_GET) > 0) {
     // STORED SEARCH HAS BEEN CALLED
@@ -810,14 +810,14 @@ if (sizeof($_GET) == 0 && isset($_POST) && !$bNoCriteria) {
     $searchForm .= '<input type="hidden" name="'.$save_date_to.'" id="'.$save_date_to.'" value="'.$sSearchStrDateTo.'">';
     $searchForm .= '<input type="hidden" name="'.$save_date_field.'" id="'.$save_date_field.'" value="'.$sDateFieldName.'">';
     $searchForm .= '<input type="hidden" name="'.$save_author.'" id="'.$save_author.'" value="'.$sSearchStrAuthor.'">';
-    $searchForm .= '<label for="save_searchname">'.i18n("Search Name").': </label>';
+    $searchForm .= '<label for="save_searchname">'.i18n("Search name").': </label>';
     $searchForm .= '<input type="text" class="text_medium" name="'.$save_name.'" id="'.$save_name.'" value="Die Suche" style="vertical-align:middle;">';
     $searchForm .= '<input type="image" style="margin-left: 5px; vertical-align: middle;" src="./images/but_ok.gif" alt="'.i18n('Store').'" title="'.i18n('Store').'" value="'.i18n('Store').'" name="submit">';
     $searchForm .= '</form>';
     $tpl->set('s', 'STORESEARCHFORM', $searchForm);
 
     // Title / Header for 'store the search' form
-    $tpl->set('s', 'STORESEARCHINFO', i18n("Save this Search"));
+    $tpl->set('s', 'STORESEARCHINFO', i18n("Save this search"));
 } else {
     $tpl->set('s', 'STORESEARCHINFO', '');
     $tpl->set('s', 'STORESEARCHFORM', '');

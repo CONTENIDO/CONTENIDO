@@ -143,7 +143,7 @@ $tpl->set('s', 'LOGIN', i18n('Login'));
 $tpl->set('s', 'USERNAME', (isset($this->auth["uname"])) ? htmlentities(strip_tags($this->auth["uname"])) : "");
 
 if (isset($username) && $username != '') {
-    $err = i18n('Invalid Login or Password!');
+    $err = i18n('Invalid login or password!');
 }
 $tpl->set('s', 'ERROR', $err);
 $tpl->set('s', 'PASSWORD', i18n('Password'));

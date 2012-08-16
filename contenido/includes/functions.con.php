@@ -756,7 +756,7 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
     global $cfg, $client, $cfgClient, $lang, $sess;
 
     if ($idcat == 0) {
-        $catStr = 'Lost and Found';
+        $catStr = i18n("Lost and found");
         return;
     }
 

@@ -261,7 +261,7 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
     }
 
     if ($idcat == 0) {
-        $cat_str = 'Lost and Found';
+        $cat_str = i18n("Lost and found");
         return;
     }
 

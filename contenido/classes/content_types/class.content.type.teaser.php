@@ -832,7 +832,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         } else {
             // check if the article really exists
             $artName = $this->_getArtName($this->_settings['teaser_manual_art']);
-            if ($artName != i18n('Unknown Article')) {
+            if ($artName != i18n('Unknown article')) {
                 $option = new cHTMLOptionElement($artName, $this->_settings['teaser_manual_art'], true);
                 $selectElement->addOptionElement(0, $option);
             }
@@ -868,7 +868,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         if ($article->isLoaded() && !empty($title)) {
             return $article->get('title');
         } else {
-            return i18n('Unknown Article');
+            return i18n('Unknown article');
         }
     }
 

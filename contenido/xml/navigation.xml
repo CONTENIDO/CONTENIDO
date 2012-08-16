@@ -19,10 +19,10 @@
                 <overview>Overview</overview>
             </structure>
             <upload>
-                <main>File Manager</main>
+                <main>File manager</main>
                 <overview>Overview</overview>
                 <edit>Edit</edit>
-                <fileupload>Upload Files</fileupload>
+                <fileupload>Upload files</fileupload>
             </upload>
         </content>
         <style>
@@ -50,17 +50,17 @@
                 <visual>Visual edit</visual>
             </templates>
             <styleeditor>
-                <main>CSS Editor</main>
+                <main>CSS editor</main>
                 <file>File</file>
                 <history>History</history>
             </styleeditor>
             <jseditor>
-                <main>Script Editor</main>
+                <main>Script editor</main>
                 <file>File</file>
                 <history>History</history>
             </jseditor>
             <tpleditor>
-                <main>Module Templates</main>
+                <main>Module templates</main>
                 <file>File</file>
                 <history>History</history>
             </tpleditor>
@@ -118,7 +118,7 @@
             <main>My CONTENIDO</main>
             <overview>Overview</overview>
             <recentarticles>Recently edited articles</recentarticles>
-            <todolist>Reminder List</todolist>
+            <todolist>Reminder list</todolist>
             <settings>Settings</settings>
         </mycontenido>
         <extra>

@@ -185,10 +185,10 @@ prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
 $sql = "SELECT * FROM " . $cfg["tab"]["art_lang"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
 $db->query($sql);
 $db->next_record();
-$layoutcode .= '<div id="categorypath" class="categorypath">' . i18n("You are here") . ": " . $catString . ' > ' . htmlspecialchars($db->f("title")) . '</div><p style="display:block;font-weight:bold;">' . i18n("Content Verwaltung") . '</p>';
+$layoutcode .= '<div id="categorypath" class="categorypath">' . i18n("You are here") . ": " . $catString . ' > ' . htmlspecialchars($db->f("title")) . '</div><p style="display:block;font-weight:bold;">' . i18n("Content administration") . '</p>';
 
 if (count($result) <= 0) {
-    $layoutcode .= '<div>--- ' . i18n("kein") . ' ---</div>';
+    $layoutcode .= '<div>--- ' . i18n("none") . ' ---</div>';
 } else {
     foreach ($aIdtype as $idtype) {
         foreach ($sortID as $name) {

@@ -47,14 +47,14 @@ if ($action == "lay_new") {
     if (!$perm->have_perm_area_action_anyitem($area, $action)) {
         $page->displayError(i18n("Permission denied"));
     } else {
-        $layoutAlias = strtolower(cApiStrCleanURLCharacters(i18n("-- New Layout --")));
+        $layoutAlias = strtolower(cApiStrCleanURLCharacters(i18n("-- New layout --")));
 
         if (LayoutInFile::existLayout($layoutAlias, $cfgClient, $client)) {
             $page->displayError(i18n("Layout name exist, rename the layout!"));
         } else {
             $layouts = new cApiLayoutCollection();
 
-            $layout = $layouts->create(i18n("-- New Layout --"));
+            $layout = $layouts->create(i18n("-- New layout --"));
 
             // save alias
             $layout->set("alias", $layoutAlias);

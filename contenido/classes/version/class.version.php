@@ -526,11 +526,11 @@ class cVersion {
                 break;
             case 'js':
                 $aMessage['alt'] = i18n('Clear Java-Script history');
-                $aMessage['popup'] = i18n('Do you really want to clear Java-Script history?') . '<br><br>' . i18n('Note: This only affects the current Java-Script.');
+                $aMessage['popup'] = i18n('Do you really want to clear Java-Script history?') . '<br><br>' . i18n('Note: This only affects the current JavaScript.');
                 break;
             case 'templates':
-                $aMessage['alt'] = i18n('Clear HTML-Template history');
-                $aMessage['popup'] = i18n('Do you really want to clear HTML-Template history?') . '<br><br>' . i18n('Note: This only the affects current HTML-Template.');
+                $aMessage['alt'] = i18n('Clear HTML template history');
+                $aMessage['popup'] = i18n('Do you really want to clear HTML template history?') . '<br><br>' . i18n('Note: This only the affects current HTML template.');
                 break;
             default:
                 $aMessage['alt'] = i18n('Clear history');
