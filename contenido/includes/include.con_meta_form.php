@@ -341,7 +341,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
         "fieldname" => "name"
     );
     $tpl2 = new cTemplate();
-    $tpl2->set('s', 'METATITLE', i18n("Neue Meta_Tag"));
+    $tpl2->set('s', 'METATITLE', i18n("New meta tag"));
 
     $sql = "SHOW FIELDS FROM `" . $cfg['tab']['meta_type'] . "`";
 
