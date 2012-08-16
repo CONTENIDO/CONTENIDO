@@ -108,7 +108,10 @@ class cI18n {
         // Is emulator to use?
         if (!$cfg['native_i18n']) {
             $ret = self::emulateGettext($string, $domain);
-            $ret = utf8_decode(htmlentities($ret, ENT_COMPAT, 'utf-8'));
+            // hopefully a proper replacement for
+            // mb_convert_encoding($string, 'HTML-ENTITIES', 'utf-8');
+            // see http://stackoverflow.com/q/11974008
+            $ret = htmlspecialchars_decode(utf8_decode(htmlentities($ret, ENT_COMPAT, 'utf-8', false)));
             return $ret;
         }
 
