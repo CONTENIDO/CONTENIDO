@@ -73,7 +73,7 @@ class cApiModuleCollection extends ItemCollection {
      * @param  string  $lastmodified
      * @return cApiModule
      */
-    public function create($name, $idclient = 0, $alias = '', $type = '', $error = 'none',
+    public function create($name, $idclient = null, $alias = '', $type = '', $error = 'none',
             $description = '', $deletable = 0, $template = '', $static = 0,
             $package_guid = '', $package_data = '', $author = '', $created = '', $lastmodified = '') {
         global $client, $auth;
