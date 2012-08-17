@@ -213,20 +213,16 @@ if (isset($actionRequest)) {
     $form->setVar('status', 'send');
     $form->setVar('tmp_file', $sTempFilename);
     $form->setVar('idmod', $idmod);
-    $tb_name = new  cHTMLLabel($sFilename, '');//new cHTMLTextbox('file', $sFilename, 60);
+    $tb_name = new  cHTMLLabel($sFilename, '');
+
     $ta_code = new cHTMLTextarea('code', htmlspecialchars($sCode), 100, 35, 'code');
-    //$descr     = new cHTMLTextarea('description', htmlspecialchars($aFileInfo['description']), 100, 5);
-
-
     $ta_code->setStyle('font-family: monospace;width: 100%;');
-    // $descr->setStyle('font-family: monospace;width: 100%;');
     $ta_code->updateAttributes(array('wrap' => getEffectiveSetting('style_editor', 'wrap', 'off')));
 
     $form->add(i18n('Name'), $tb_name);
-    //$form->add(i18n('Description'), $descr->render());
     $form->add(i18n('Code'), $ta_code);
 
-    $page->setContent(array($form));
+    $page->setContent($form);
 
     $oCodeMirror = new CodeMirror('code', 'css', substr(strtolower($belang), 0, 2), true, $cfg);
     $page->addScript($oCodeMirror->renderScript());

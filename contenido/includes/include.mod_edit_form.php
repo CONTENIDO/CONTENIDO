@@ -59,8 +59,19 @@ if ($action == "mod_delete") {
     if ($contenidoModuleHandler->eraseModule() == true) {
         $modules = new cApiModuleCollection;
         $modules->delete($idmod);
-        $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Deleted module successfully!"));
-
+        // show success message
+        $notificationClass = new cGuiNotification();
+        $notification = $notificationClass->returnNotification(cGuiNotification::LEVEL_INFO, i18n("Deleted module successfully!"));
+        $div = new cHTMLDiv($notification);
+        $page = new cGuiPage('generic_page');
+        // remove the navigation when module has been deleted
+        $script = new cHTMLScript();
+        $script->setContent('$(function() { console.log(parent.parent.right.right_top); $("#navlist", parent.parent.right.right_top.document).remove(); })');
+        $page->setContent(array($div, $script));
+        // setReload so that the modules overview on the left is refreshed
+        $page->setReload();
+        $page->render();
+        exit;
     }
 }
 
