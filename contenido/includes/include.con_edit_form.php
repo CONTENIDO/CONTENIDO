@@ -81,6 +81,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tmp_datestart = $db->f("datestart");
         $tmp_dateend = $db->f("dateend");
         $tmp_sort = $db->f("artsort");
+        $tmp_sitemapprio = $db->f("sitemapprio");
         $tmp_movetocat = $db->f("time_move_cat");
         $tmp_targetcat = $db->f("time_target_cat");
         $tmp_onlineaftermove = $db->f("time_online_move");
@@ -147,9 +148,10 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tmp_keyart = '';
         $tmp_keyautoart = '';
         $tmp_sort = '';
+        $tmp_sitemapprio = '0.5';
 
         if (!strHasStartArticle($idcat, $lang)) {
-            $tmp_is_start = 1;
+            $tmp_is_start = true;
         }
 
         $tmp_redirect_checked = '';
@@ -334,9 +336,9 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     // Startartikel
     if ($perm->have_perm_area_action("con", "con_makestart") ||
             $perm->have_perm_area_action_item("con", "con_makestart", $idcat)) {
-        $tmp_start = ($tmp_is_start == 0) ? '<input ' . $disabled . ' id="is_start" type="checkbox" name="is_start" value="1">' : '<input ' . $disabled . ' type="checkbox" name="is_start" id="is_start" value="1" checked="checked">';
+        $tmp_start = (!$tmp_is_start) ? '<input ' . $disabled . ' id="is_start" type="checkbox" name="is_start" value="1">' : '<input ' . $disabled . ' type="checkbox" name="is_start" id="is_start" value="1" checked="checked">';
     } else {
-        $tmp_start = ($tmp_is_start == 0) ? '<input disabled="disabled" type="checkbox" name="" value="1">' : '<input disabled="disabled" type="checkbox" name="" value="1" checked="checked">';
+        $tmp_start = (!$tmp_is_start) ? '<input disabled="disabled" type="checkbox" name="" value="1">' : '<input disabled="disabled" type="checkbox" name="" value="1" checked="checked">';
     }
     $tpl->set('s', 'STARTARTIKEL', i18n("Start article"));
     $tpl->set('s', 'STARTARTIKEL-CHECKBOX', $tmp_start);
@@ -346,12 +348,13 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'SEARCHABLE', i18n('Searchable/Indexable'));
     $tpl->set('s', 'SEARCHABLE-CHECKBOX', $tmp_searchable_checkbox);
 
-    // TODO implement sitemap priority attribute
-    $tpl->set('s', 'SITEMAP-PRIORITY', i18n('Sitemap priority'));
-
     // Sortierung
     $tpl->set('s', 'SORTIERUNG', i18n("Sort key"));
     $tpl->set('s', 'SORTIERUNG-FIELD', '<input type="text" ' . $disabled . ' class="text_medium" name="artsort" style="width:400px;" value="' . $tmp_sort . '">');
+
+    // TODO implement sitemap priority attribute
+    $tpl->set('s', 'SITEMAP-PRIORITY', i18n('Sitemap priority'));
+    $tpl->set('s', 'SITEMAP-PRIORITY-FIELD', '<input type="text" ' . $disabled . ' class="text_medium" name="sitemapprio" style="width:400px;" value="' . $tmp_sitemapprio . '">');
 
     // Category select
     // Fetch setting

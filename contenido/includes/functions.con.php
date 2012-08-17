@@ -30,7 +30,8 @@ cInclude('includes', 'functions.con2.php');
  */
 function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang,
                           $title, $summary, $artspec, $created, $lastmodified, $author,
-                          $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable) {
+                          $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable = 1,
+                          $sitemapprio = 0.5) {
     global $client, $lang, $auth, $urlname, $page_title;
     //Some stuff for the redirect
     global $redirect, $redirect_url, $external_redirect;
@@ -66,7 +67,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
 
     // Table 'con_art_lang', one entry for every language
     foreach ($aLanguages as $curLang) {
-        $lastmodified = ($lang == $curLang) ? $lastmodified : 0;
+        $lastmodified = ($lang == $curLang) ? $lastmodified : '';
         $modifiedby = '';
 
         if ($online == 1) {
@@ -88,10 +89,8 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
                 $auth->auth['uname'], $lastmodified, $modifiedby, $published_value, $publishedby_value,
                 $online, $redirect, $redirect_url, $external_redirect, $artsort, $timemgmt,
                 $datestart, $dateend, $status, $time_move_cat, $time_target_cat, $time_online_move,
-                0, '', '', '', $searchable
+                0, '', '', '', $searchable, $sitemapprio
         );
-
-        conMakeStart($idcatart, 0);
 
         $lastId = $oArtLang->get('idartlang');
         $availableTags = conGetAvailableMetaTagTypes();
@@ -138,7 +137,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
     // Update article language for all languages
     foreach ($aLanguages as $curLang) {
         $curOnline = ($lang == $curLang) ? $online : 0;
-        $curLastmodified = ($lang == $curLang) ? $lastmodified : 0;
+        $curLastmodified = ($lang == $curLang) ? $lastmodified : '';
 
         $oArtLang = new cApiArticleLanguage();
         $oArtLang->loadByArticleAndLanguageId($idart, $lang);
@@ -156,6 +155,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
         $oArtLang->set('modifiedby', $author);
         $oArtLang->set('online', $curOnline);
         $oArtLang->set('searchable', $searchable);
+        $oArtLang->set('sitemapprio', $sitemapprio);
         $oArtLang->set('redirect', $redirect);
         $oArtLang->set('redirect_url', $redirect_url);
         $oArtLang->set('external_redirect', $external_redirect);
@@ -176,7 +176,8 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
  */
 function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang,
                     $title, $summary, $artspec, $created, $lastmodified, $author,
-                    $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable) {
+                    $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable = 1,
+                    $sitemapprio = 0.5) {
     global $client, $lang, $redirect, $redirect_url, $external_redirect, $perm;
     global $urlname, $page_title;
     global $time_move_cat, $time_target_cat;
@@ -254,6 +255,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     $oArtLang->set('redirect_url', $redirect_url);
     $oArtLang->set('artsort', $artsort);
     $oArtLang->set('searchable', $searchable);
+    $oArtLang->set('sitemapprio', $sitemapprio);
 
     // If the user has right for makeonline, update some properties.
     if ($perm->have_perm_area_action('con', 'con_makeonline') ||

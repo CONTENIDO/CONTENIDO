@@ -85,6 +85,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
      * @param  mixed  $free_use_02
      * @param  mixed  $free_use_03
      * @param  int  $searchable
+     * @param  float  $sitemapprio
      * @return cApiArticleLanguage
      */
     public function create($idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0,
@@ -92,7 +93,8 @@ class cApiArticleLanguageCollection extends ItemCollection {
         $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '', $external_redirect = 0,
         $artsort = 0, $timemgmt = 0, $datestart = '', $dateend = '', $status = 0,
         $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0, $locked = 0,
-        $free_use_01 = '', $free_use_02 = '', $free_use_03 = '', $searchable = 1) {
+        $free_use_01 = '', $free_use_02 = '', $free_use_03 = '', $searchable = 1,
+        $sitemapprio = 0.5) {
 
         global $auth;
 
@@ -140,6 +142,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
         $item->set('free_use_02', $free_use_02);
         $item->set('free_use_03', $free_use_03);
         $item->set('searchable', $searchable);
+        $item->set('sitemapprio', $sitemapprio);
 
         $item->store();
 
@@ -203,6 +206,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
  * external_redirect - Open article in new window
  * locked            - Article is locked for editing
  * searchable        - Whether article should be found via search
+ * sitemapprio       - The priority for the sitemap
  *
  * You can extract article content with the
  * $obj->getContent(contype [, number]) method.
@@ -394,6 +398,7 @@ class cApiArticleLanguage extends Item {
      * external_redirect - Open article in new window
      * locked            - Article is locked for editing
      * searchable        - Whether article should be found via search
+     * sitemapprio       - The priority for the sitemap
      *
      * @param   string  $name
      * @return  string  Value of property
