@@ -164,8 +164,11 @@ class cSetupSystemtest extends cSetupMask
     {
         global $cfg;
 
+        $db = getSetupMySQLDBConnection(false);
+		$version = getContenidoVersion($db, $cfg['tab']['system_prop']);
+
         // Display message about changed directories/files when user updates a system lower than 4.9
-        if (version_compare('4.9', $cfg['version']) > 0) {
+        if ($version && version_compare('4.9', $version) > 0) {
             $sMessage = i18n("You are updating a previous version of CONTENIDO to %s. Some directories/files have been moved to other sections in %s.\n\nPlease ensure to copy contenido/includes/config.php to data/config/production/config.php and also other configuration files within contenido/includes/ to data/config/production/.");
             $sMessage = sprintf($sMessage, '4.9', '4.9');
             $sMessage = nl2br($sMessage);

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO Setup\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-08-16 01:16+0200\n"
-"PO-Revision-Date: 2012-08-16 01:17+0100\n"
+"PO-Revision-Date: 2012-08-17 23:28+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: CONTENIDO Development\n"
 "MIME-Version: 1.0\n"
@@ -395,9 +395,9 @@ msgid ""
 "\n"
 "Please ensure to copy contenido/includes/config.php to data/config/production/config.php and also other configuration files within contenido/includes/ to data/config/production/."
 msgstr ""
-"Sie aktualisieren von einer früheren CONTENIDO Version auf %s. In der Version %s wurden eine Verzeichnisse/Dateien in andere Bereiche ausgelagert.\n"
+"Sie aktualisieren von einer früheren CONTENIDO Version auf %s. In der Version %s wurden einige Verzeichnisse/Dateien in andere Bereiche ausgelagert.\n"
 "\n"
-"Bitte stellen Sie sicher, dass die Datei contenido/includes/config.php in data/config/production/config.php kopert wird. Das gillt auch  für andere Konfigurations-Dateien in contenido/includes/ die nach data/config/production/ kopiert werden sollten."
+"Bitte stellen Sie sicher, dass die Datei contenido/includes/config.php in data/config/production/config.php kopiert wird. Das gillt auch für andere Konfigurations-Dateien in contenido/includes/ die bei Bedarf nach data/config/production/ kopiert werden sollten."
 
 #: steps/forms/systemtest.php:174
 msgid "Attention: Some directories/files have been moved"
@@ -797,10 +797,8 @@ msgstr "Empfohlen für Projektumzüge zwischen Servern."
 
 #~ msgid "Client without examples"
 #~ msgstr "Mandant ohne Beispiele"
-
 #~ msgid "Unable to lock tables in the selected MySQL database"
 #~ msgstr "\"LOCK TABLES\" in der gewählten MySQL-Datenbank fehlgeschlagen"
-
 #~ msgid ""
 #~ "Setup tried to lock a test table in the database %s and failed. You can "
 #~ "continue, however, you should be aware of possible data losses due to "
@@ -812,19 +810,14 @@ msgstr "Empfohlen für Projektumzüge zwischen Servern."
 #~ "Sie können fortfahren, aber Sie sollten sich bewusst sein, daß es zu "
 #~ "Datenverlust kommen kann. Es wird ausdrücklich empfohlen, daß Sie das "
 #~ "Recht \"LOCK TABLES\" Ihrem Datenbankbenutzer zuweisen."
-
 #~ msgid "config.php"
 #~ msgstr "config.php"
-
 #~ msgid "CONTENIDO Newsletter"
 #~ msgstr "CONTENIDO Newsletter"
-
 #~ msgid "CONTENIDO Tagging"
 #~ msgstr "CONTENIDO Tagging"
-
 #~ msgid "PHP setting 'register_long_arrays' is off"
 #~ msgstr "Die PHP-Einstellung 'register_long_arrays' ist abgeschaltet"
-
 #~ msgid ""
 #~ "The directive 'register_long_arrays' is turned off and you are running "
 #~ "PHP5. Please turn the directive to 'on' in your php.ini file, otherwise "
@@ -833,22 +826,18 @@ msgstr "Empfohlen für Projektumzüge zwischen Servern."
 #~ "Die Direktive 'register_long_arrays' ist abgeschalten, und Ihr Webserver "
 #~ "verwendet PHP5. Bitte stellen Sie die Direktive in ihrer php.ini auf "
 #~ "'on' , andernfalls wird CONTENIDO nicht richtig funktionieren."
-
 #~ msgid ""
 #~ "Please enter a password for the user  'sysadmin' and don't forget it! The "
 #~ "password is required for your first login!"
 #~ msgstr ""
 #~ "Bitte geben Sie ein Passwort für den Systemadministrator ein. Dieses "
 #~ "Passwort benötigen Sie für Ihr erstes Login!"
-
 #~ msgid "sysadmin-Password"
 #~ msgstr "Password Systemadministrator"
-
 #~ msgid "sysadmin-Password (Confirmation)"
 #~ msgstr "Password Systemadministrator (Bestätigung)"
-
 #~ msgid "Passwords don't match"
 #~ msgstr "Passwörter stimmen nicht überein."
-
 #~ msgid "You need to enter a password!"
 #~ msgstr "Sie müssen ein Password eingeben."
+
