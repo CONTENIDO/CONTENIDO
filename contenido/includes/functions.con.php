@@ -140,7 +140,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
         $curLastmodified = ($lang == $curLang) ? $lastmodified : '';
 
         $oArtLang = new cApiArticleLanguage();
-        $oArtLang->loadByArticleAndLanguageId($idart, $lang);
+        $oArtLang->loadByArticleAndLanguageId($idart, $curLang);
         if (!$oArtLang->isLoaded()) {
             continue;
         }
