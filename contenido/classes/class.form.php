@@ -402,7 +402,7 @@ class Form {
 
 }
 
-/* @deprecated 2011-03-10 This class is not longer supported. */
+/** @deprecated 2011-03-10 This class is not longer supported. */
 
 class FormField {
 

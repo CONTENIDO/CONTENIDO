@@ -30,7 +30,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/* @deprecated 2012-03-10 This class is not longer supported. */
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cCalendarControl extends cHTMLTable
 {
     var $_oDate;

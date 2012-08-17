@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
 cInclude("plugins", "general/classes/class.datatype.number.php");
 cInclude("plugins", "general/classes/class.datatype.currency.php");
 
-/* @deprecated 2012-03-10 This class is not longer supported. */
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cNominalNumberField extends cHTMLTextbox
 {
     var $_oNumber;
@@ -78,7 +78,7 @@ class cNominalNumberField extends cHTMLTextbox
     }
 }
 
-/* @deprecated 2012-03-10 This class is not longer supported. */
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cNominalCurrencyField extends cNominalNumberField
 {
     var $_oNumber;

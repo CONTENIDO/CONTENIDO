@@ -331,7 +331,7 @@ class cPage extends cHTML
     }
 }
 
-/* @deprecated 2012-03-10 This class is not longer supported. */
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cPageLeftTop extends cPage
 {
 
@@ -379,7 +379,7 @@ class cPageLeftTop extends cPage
 }
 
 
-/* @deprecated 2012-03-10 This class is not longer supported. */
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cPageLeftTopMultiPane extends cPageLeftTop
 {
     /**
@@ -477,7 +477,7 @@ class cPageLeftTopMultiPane extends cPageLeftTop
     }
 }
 
-/* @deprecated 2012-03-10 This class is not longer supported. */
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cNewPageLeftTopMultiPane extends cPageLeftTopMultiPane
 {
     function cNewPageLeftTopMultiPane($items)

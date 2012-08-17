@@ -1,5 +1,5 @@
 <?php
-/* @deprecated 2012-03-10 This class is not longer supported. */
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cDataTextWidget extends cHTMLTextbox
 {
     /**
@@ -24,7 +24,7 @@ class cDataTextWidget extends cHTMLTextbox
     }
 }
 
-/* @deprecated 2012-03-10 This class is not longer supported. */
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cDataTextareaWidget extends cHTMLTextarea
 {
     /**
@@ -49,7 +49,7 @@ class cDataTextareaWidget extends cHTMLTextarea
     }
 }
 
-/* @deprecated 2012-03-10 This class is not longer supported. */
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cDataCodeTextareaWidget extends cHTMLTextarea
 {
     /**
@@ -90,7 +90,7 @@ class cDataCodeTextareaWidget extends cHTMLTextarea
     }
 }
 
-/* @deprecated 2012-03-10 This class is not longer supported. */
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cDataDropdownWidget extends cHTMLSelectElement
 {
     /**
@@ -118,7 +118,7 @@ class cDataDropdownWidget extends cHTMLSelectElement
     }
 }
 
-/* @deprecated 2012-03-10 This class is not longer supported. */
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cDataForeignTableDropdownWidget extends cHTMLSelectElement
 {
     /**
@@ -154,7 +154,7 @@ class cDataForeignTableDropdownWidget extends cHTMLSelectElement
     }
 }
 
-/* @deprecated 2012-03-10 This class is not longer supported. */
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cDataCheckboxWidget extends cHTMLCheckbox
 {
     /**
@@ -192,7 +192,7 @@ class cDataCheckboxWidget extends cHTMLCheckbox
     }
 }
 
-/* @deprecated 2012-03-10 This class is not longer supported. */
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cDataMultiTextboxWidget extends cHTMLTable
 {
     /**

@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-/* @deprecated 2012-03-10 This class is not longer supported. */
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cTableView
 {
     var $items;
