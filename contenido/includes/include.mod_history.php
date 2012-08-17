@@ -89,6 +89,7 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
 
     // Generate Form
     $oForm = new cGuiTableForm("mod_display");
+    $oForm->setTableid('mod_history');
     $oForm->addHeader(i18n("Edit module"));
     $oForm->setVar("area", "mod_history");
     $oForm->setVar("frame", $frame);

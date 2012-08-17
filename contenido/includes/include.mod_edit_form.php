@@ -170,6 +170,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
     $page = new cGuiPage("mod_edit_form");
     $form = new cGuiTableForm("mod_edit");
+    $form->setTableid('mod_edit');
     $form->setVar("area","mod_edit");
     $form->setVar("frame", $frame);
     $form->setVar("idmod", $idmod);

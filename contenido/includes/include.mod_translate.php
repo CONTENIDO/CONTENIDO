@@ -103,6 +103,7 @@ if (!isset($row)) {
 
 
 $form = new cGuiTableForm('translation');
+$form->setTableid('mod_translate');
 $form->addHeader(sprintf(i18n("Translate module '%s'"), $module->get('name')));
 $form->setVar('area', $area);
 $form->setVar('frame', $frame);

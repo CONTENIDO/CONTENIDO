@@ -179,6 +179,7 @@ if (isset($actionRequest)) {
     }
 
     $form = new cGuiTableForm('file_editor');
+    $form->setTableid('mod_javascript');
     $form->addHeader(i18n('Edit file'));
     $form->setVar('area', $area);
     $form->setVar('action', $sAction);

@@ -1979,3 +1979,7 @@ div#legend table.article {
 .CodeMirror-wrap pre {
     line-height: 1.2em;
 }
+
+#mod_edit, #mod_translate, #mod_template, #mod_style, #mod_javascript {
+    width: 99% !important;
+}

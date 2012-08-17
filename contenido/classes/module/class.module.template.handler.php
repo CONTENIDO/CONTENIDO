@@ -400,6 +400,7 @@ class cModuleTemplateHandler extends cModuleHandler {
 
     private function _makeFormular($belang) {
         $form = new cGuiTableForm('file_editor');
+        $form->setTableid('mod_template');
         $form->addHeader(i18n('Edit file'));
 
         $form->setVar('area', $this->_area);
