@@ -504,7 +504,7 @@ class cNewsletterJobCollection extends NewsletterJobCollection {
     public function __construct()
     {
         cDeprecated("Use NewsletterJobCollection instead");
-        $this->__construct();
+        parent::__construct();
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
@@ -521,7 +521,7 @@ class cNewsletterJob extends NewsletterJob {
     public function __construct()
     {
         cDeprecated("Use NewsletterJob instead");
-        $this->__construct();
+        parent::__construct();
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */

@@ -264,7 +264,7 @@ class cNewsletterLogCollection extends NewsletterLogCollection {
     public function __construct()
     {
         cDeprecated("Use NewsletterLogCollection instead");
-        $this->__construct();
+        parent::__construct();
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
@@ -281,7 +281,7 @@ class cNewsletterLog extends NewsletterLog {
     public function __construct()
     {
         cDeprecated("Use NewsletterLog instead");
-        $this->__construct();
+        parent::__construct();
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */

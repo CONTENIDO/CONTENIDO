@@ -276,7 +276,7 @@ class RecipientCollection extends NewsletterRecipientCollection {
     public function __construct()
     {
         cDeprecated("Use NewsletterRecipientCollection instead");
-        $this->__construct();
+        parent::__construct();
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
@@ -293,7 +293,7 @@ class Recipient extends NewsletterRecipient {
     public function __construct()
     {
         cDeprecated("Use NewsletterRecipient instead");
-        $this->__construct();
+        parent::__construct();
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
