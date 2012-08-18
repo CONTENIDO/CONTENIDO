@@ -1355,10 +1355,10 @@ class cHTMLSelectElement extends cHTMLFormElement {
             foreach ($stuff as $key => $row) {
                 if (is_array($row)) {
                     $option = new cHTMLOptionElement($row[1], $row[0]);
-                    $this->appendOptionElement($option);
+                    $this->addOptionElement($row[0], $option);
                 } else {
                     $option = new cHTMLOptionElement($row, $key);
-                    $this->appendOptionElement($option);
+                    $this->addOptionElement($key, $option);
                 }
             }
         }
