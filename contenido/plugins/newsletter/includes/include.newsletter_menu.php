@@ -344,7 +344,7 @@ $sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
 $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 
 // Send new object pager to left_top
-$oPage->addScript('etPager.js');
+$oPage->addScript('setPager.js');
 
 $sRefreshPager = '
     <script type="text/javascript">
