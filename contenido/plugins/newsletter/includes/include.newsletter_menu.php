@@ -346,17 +346,16 @@ $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 // Send new object pager to left_top
 $oPage->addScript('setPager.js');
 
+$oScript = new cHTMLScript();
+$oScript->setAttribute('type', 'text/javascript');
 $sRefreshPager = '
-    <script type="text/javascript">
-        var sNavigation = \''.$sPagerContent.'\';
+    var sNavigation = \''.$sPagerContent.'\',
+    // Activate time to refresh pager folding row in left top
+    oTimer = window.setInterval("fncSetPager(\'' . $sPagerId . '\',\'' . $_REQUEST["page"] . '\')", 200);
+';
+$oScript->setContent($jsCode);
 
-        // Activate time to refresh pager folding row in left top
-        var oTimer = window.setInterval("fncSetPager(\'' . $sPagerId . '\',\'' . $_REQUEST["page"] . '\')", 200);
-    </script>';
-
-$oPage->addScript('refreshpager', $sRefreshPager);
-
-$oPage->setContent($oMenu);
+$oPage->setContent(array($oMenu, $oScript));
 $oPage->render();
 
 ?>
