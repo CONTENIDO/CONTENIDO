@@ -46,9 +46,10 @@ class DB_Contenido extends DB_Sql {
      *                          - $options['haltBehavior']  (string)  Optional, halt behavior on occured errors
      *                          - $options['haltMsgPrefix']  (string)  Optional, Text to prepend to the halt message
      *                          - $options['enableProfiling']  (bool)  Optional, flag to enable profiling
+     * @param boolean $throwException only throw an exception if this is set to true
      * @return  void
      */
-    public function __construct(array $options = array()) {
+    public function __construct(array $options = array(), $throwException = false) {
         global $cachemeta;
         global $cfg;
 
@@ -67,6 +68,11 @@ class DB_Contenido extends DB_Sql {
 
             $errormessage = i18n('The MySQL Database for the installation %s is not reachable. Please check if this is a temporary problem or if it is a real fault.');
             $errormessage = sprintf($errormessage, $contenidoPath);
+
+            if ($throwException) {
+                throw new Exception($errormessage);
+                return;
+            }
 
             notifyOnError($errortitle, $errormessage);
 

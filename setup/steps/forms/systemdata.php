@@ -143,13 +143,13 @@ class cSetupSystemData extends cSetupMask
 
         if ($_SESSION["setuptype"] == "setup") {
             $checkScript = sprintf(
-                'var msg = ""; if (document.setupform.dbhost.value == "") { msg += "%s "; } if (document.setupform.dbname.value == "") { msg += "%s "; } if (document.setupform.dbuser.value == "") { msg += "%s "; } if (document.setupform.dbhost.value != "" && document.setupform.dbname.value != "" && document.setupform.dbuser.value != "") { document.setupform.submit(); } else { alert(msg); }',
+                "var msg = ''; if (document.setupform.dbhost.value == '') { msg += '%s '; } if (document.setupform.dbname.value == '') { msg += '%s '; } if (document.setupform.dbuser.value == '') { msg += '%s '; } if (document.setupform.dbhost.value != '' && document.setupform.dbname.value != '' && document.setupform.dbuser.value != '') { document.setupform.submit(); } else { alert(msg); }",
                 i18n("You need to enter a database host."),
                 i18n("You need to enter a database name."),
                 i18n("You need to enter a database user.")
             );
             $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_bNextstep."';");
-            $link->attachEventDefinition("submitAttach", "onclick", "$checkScript");
+            $link->attachEventDefinition("submitAttach", "onclick", $checkScript);
         } else {
             $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_bNextstep."'; document.setupform.submit();");
         }

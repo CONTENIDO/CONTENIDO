@@ -62,7 +62,11 @@ function doMySQLConnect($host, $username, $password)
             'password' => $password,
         ),
     );
-    $db = new DB_Contenido($aOptions);
+    try {
+        $db = new DB_Contenido($aOptions, true);
+    } catch (Exception $e) {
+        return array(null, false);
+    }
 
     if ($db->connect() == 0) {
         return array($db, false);

@@ -347,13 +347,11 @@ class cSetupSystemtest extends cSetupMask
             $_SESSION["dbhost"], $_SESSION["dbuser"], $sErrorMessage)
         );
 
-        $db = getSetupMySQLDBConnection(false);
-
-        $version = fetchMySQLVersion($db);
-
         if ($status == false) {
             return;
         }
+
+        $db = getSetupMySQLDBConnection(false);
 
         $this->runTest(
             !$this->isSqlModeStrict(), C_SEVERITY_ERROR, i18n('MySQL is running in strict mode'),
