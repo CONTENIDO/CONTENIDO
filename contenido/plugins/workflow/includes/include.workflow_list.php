@@ -80,7 +80,9 @@ while ($workflow = $workflows->next()) {
     }
 }
 
-$page->addScript('refresh', $sScript);
+if (!empty($sScript)) {
+    $page->addScript('refresh', $sScript);
+}
 $page->set("s", "FORM", $ui->render());
 $page->render();
 

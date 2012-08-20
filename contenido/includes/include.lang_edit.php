@@ -85,9 +85,13 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
     }
 
     if ($targetclient == $client) {
-        $page->addScript($newOption);
+        if (!empty($newOption)) {
+            $page->addScript($newOption);
+        }
     }
-    $page->addScript($sReload);
+    if (!empty($sReload)) {
+        $page->addScript($sReload);
+    }
     $page->render();
 } else {
     if ($action == "lang_edit") {
@@ -235,11 +239,15 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
             $page->setContent($form);
 
             if ($targetclient == $client) {
-                $page->addScript($newOption);
+                if (!empty($newOption)) {
+                    $page->addScript($newOption);
+                }
             }
 
             if ($_REQUEST['action'] != '') {
-                $page->addScript($sReload);
+                if (!empty($sReload)) {
+                    $page->addScript($sReload);
+                }
             }
 
             $page->render();

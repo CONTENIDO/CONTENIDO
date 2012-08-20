@@ -131,7 +131,9 @@ $form2->setVar("frame", $frame);
 $form2->setVar("idmod", $idmod);
 $form2->custom["submit"]["accesskey"] = '';
 
-$page->addScript($sScript);
+if (!empty($sScript)) {
+    $page->addScript($sScript);
+}
 $page->setContent(array($form2));
 
 
