@@ -603,7 +603,7 @@ class cHTML {
         }
 
         foreach ($attributes as $key => $value) {
-            $attrString .= ' ' . $key . '="' . htmlspecialchars($value, ENT_COMPAT) . '"';
+            $attrString .= ' ' . $key . '="' . $value . '"';
         }
 
         return $attrString;
