@@ -1983,3 +1983,7 @@ div#legend table.article {
 #mod_edit, #mod_translate, #mod_template, #mod_style, #mod_javascript {
     width: 99% !important;
 }
+
+#imgFormSubmit {
+    cursor: pointer;
+}
