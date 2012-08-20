@@ -136,14 +136,6 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
             }
         }
 
-        if (isset($_POST['conPHPLibActiveSession']) && $_POST['conPHPLibActiveSession'] == 1) {
-            if (!$oPurge->resetPHPLibActiveSession()) {
-                $bError = true;
-                $sErrorMsg .= sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['phplib_active_sessions']) .
-                     "<br>";
-            }
-        }
-
         if (isset($_POST['conLog']) && $_POST['conLog'] == 1) {
             if (!$oPurge->clearConLog()) {
                 $bError = true;
@@ -204,7 +196,6 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
 
     $tpl->set('s', 'GROUP_CONTENIDO', i18n("CONTENIDO"));
     $tpl->set('s', 'CON_LOG', i18n("Clear CONTENIDO log file"));
-    $tpl->set('s', 'CON_ACTIVE_SESSION', sprintf(i18n("Reset the table %s"), $cfg['tab']['phplib_active_sessions']));
     $tpl->set('s', 'CON_CACHE', i18n("Clear CONTENIDO cache"));
     $tpl->set('s', 'CON_CRONJOB', i18n("Reset cronjobs"));
 

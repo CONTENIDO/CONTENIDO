@@ -25,7 +25,7 @@ class cSystemPurge {
     /**
      * @var DB_Contenido
      */
-    private $_oDb;
+    private $_db;
 
     /**
      * @var array
@@ -38,42 +38,22 @@ class cSystemPurge {
     private $_cfgClient;
 
     /**
-     * @var string
-     */
-    private $_sDefaultCacheDir = 'cache/';
-
-    /**
-     * @var string
-     */
-    private $_sDefaultLogDir = 'logs/';
-
-    /**
-     * @var string
-     */
-    private $_sDefaultVersionDir = 'version/';
-
-    /**
-     * @var string
-     */
-    private $_sDefaultCronjobDir = 'cronjobs/';
-
-    /**
      * @var array
      */
-    private $aDirsExcludedWithFiles = array(
-        '.', '..', '.svn', '.cvs'
+    private $dirsExcludedWithFiles = array(
+        '.', '..', '.svn', '.cvs', '.htaccess'
     );
 
     /**
      * @var array
      */
-    private $_aLogFileTypes = array();
+    private $_logFileTypes = array();
 
     /**
      *
      * @var array
      */
-    private $_aCronjobFileTypes = array();
+    private $_cronjobFileTypes = array();
 
     /**
      * Constructor of class
@@ -83,9 +63,9 @@ class cSystemPurge {
      * @param array $cfgClient
      */
     public function __construct(&$db, $cfg, $cfgClient) {
-        $this->_oDb = $db;
+        $this->_db = $db;
         $this->_cfg = $cfg;
-        $this->cfgClient = $cfgClient;
+        $this->_cfgClient = $cfgClient;
 
         $this->setLogFileTypes(array(
             'txt'
@@ -98,16 +78,16 @@ class cSystemPurge {
     }
 
     /**
-     * Reset the table con_code for a client
+     * Deletes the PHP files in cms/cache/code
      *
-     * @param int $iClientId
+     * @param int $clientId
      * @return bool
      */
-    public function resetClientConCode($iClientId) {
+    public function resetClientConCode($clientId) {
         global $perm, $currentuser;
 
-        if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $mask = $this->_cfgClient[$iClientId]['code']['path'] . '*.php';
+        if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+            $mask = $this->_cfgClient[$clientId]['cache']['path'] . 'code/*.php';
             $arr = glob($mask);
             foreach ($arr as $file) {
                 if (!unlink($file)) {
@@ -123,17 +103,17 @@ class cSystemPurge {
     /**
      * Reset the table con_cat_art for a client
      *
-     * @param int $iClientId
+     * @param int $clientId
      * @return bool
      */
-    public function resetClientConCatArt($iClientId) {
+    public function resetClientConCatArt($clientId) {
         global $perm, $currentuser;
 
-        if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $sSql = " UPDATE " . $this->_cfg['tab']['cat_art'] . " cca, " . $this->_cfg['tab']['cat'] . " cc, " . $this->_cfg['tab']['art'] . " ca " . " SET cca.createcode=1 " . " WHERE cc.idcat = cca.idcat " . " AND ca.idart = cca.idart " . " AND cc.idclient = " . (int) $iClientId . " AND ca.idclient = " . (int) $iClientId;
-            $this->_oDb->query($sSql);
+        if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+            $sSql = ' UPDATE ' . $this->_cfg['tab']['cat_art'] . ' cca, ' . $this->_cfg['tab']['cat'] . ' cc, ' . $this->_cfg['tab']['art'] . ' ca ' . ' SET cca.createcode=1 ' . ' WHERE cc.idcat = cca.idcat ' . ' AND ca.idart = cca.idart ' . ' AND cc.idclient = ' . (int) $clientId . ' AND ca.idclient = ' . (int) $clientId;
+            $this->_db->query($sSql);
 
-            return ($this->_oDb->Error == '') ? true : false;
+            return ($this->_db->Error == '') ? true : false;
         } else {
             return false;
         }
@@ -148,46 +128,10 @@ class cSystemPurge {
         global $perm, $currentuser;
 
         if ($perm->isSysadmin($currentuser)) {
-            $sSql = "DELETE FROM " . $this->_cfg['tab']['inuse'];
-            $this->_oDb->query($sSql);
+            $sql = 'DELETE FROM ' . $this->_cfg['tab']['inuse'];
+            $this->_db->query($sql);
 
-            return ($this->_oDb->Error == '') ? true : false;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Reset the table con_phplib_active_sessions
-     *
-     * @return bool
-     */
-    public function resetPHPLibActiveSession() {
-        global $perm, $currentuser;
-
-        if ($perm->isSysadmin($currentuser)) {
-            $sSql = "DELETE FROM " . $this->_cfg['tab']['phplib_active_sessions'];
-            $this->_oDb->query($sSql);
-
-            return ($this->_oDb->Error == '') ? true : false;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Reset the table con_inuse
-     *
-     * @return bool
-     */
-    public function resetUnusedSession() {
-        global $perm, $currentuser;
-
-        if ($perm->isSysadmin($currentuser)) {
-            $sSql = "DELETE FROM " . $this->_cfg['tab']['inuse'];
-            $this->_oDb->query($sSql);
-
-            return ($this->_oDb->Error == '') ? true : false;
+            return ($this->_db->Error == '') ? true : false;
         } else {
             return false;
         }
@@ -199,19 +143,14 @@ class cSystemPurge {
      * @param int $sClientName
      * @return bool
      */
-    public function clearClientCache($iClientId, $sCacheDir = 'cache/') {
+    public function clearClientCache($clientId) {
         global $perm, $currentuser;
 
-        if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            // $sClientDir = $this->getClientDir($iClientId);
-            $sClientDir = $this->_cfgClient[$iClientId]['data']['path'];
-
-            $sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/') ? $this->_sDefaultCacheDir : $sCacheDir;
-            if (is_dir($sClientDir . $sCacheDir)) {
-                $sCachePath = $sClientDir . $sCacheDir;
-                return ($this->clearDir($sCachePath, $sCachePath) ? true : false);
+        if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+            $cacheDir = $this->_cfgClient[$clientId]['cache']['path'];
+            if (is_dir($cacheDir)) {
+                return ($this->clearDir($cacheDir, $cacheDir) ? true : false);
             }
-
             return false;
         } else {
             return false;
@@ -224,30 +163,26 @@ class cSystemPurge {
      * @param int $sClientName
      * @return bool
      */
-    public function clearClientHistory($iClientId, $bKeep, $iFileNumber, $sVersionDir = 'version/') {
+    public function clearClientHistory($clientId, $keep, $fileNumber) {
         global $perm, $currentuser;
 
-        if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $sClientDir = $this->getClientDir($iClientId);
-
-            $sCacheDir = (trim($sVersionDir) == '' || trim($sVersionDir) == '/') ? $this->_sDefaultVersionDir : $sVersionDir;
-
-            if (is_dir($sClientDir . $sVersionDir)) {
-                $sVersionPath = $sClientDir . $sVersionDir;
-                $aTmpFile = array();
-                $this->clearDir($sVersionPath, $sVersionPath, $bKeep, $aTmpFile);
-                if (count($aTmpFile) > 0) {
-                    foreach ($aTmpFile as $sKey => $aFiles) {
+        if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+            $versionDir = $this->_cfgClient[$clientId]['version']['path'];
+            if (is_dir($versionDir)) {
+                $tmpFile = array();
+                $this->clearDir($versionDir, $versionDir, $keep, $tmpFile);
+                if (count($tmpFile) > 0) {
+                    foreach ($tmpFile as $sKey => $aFiles) {
                         // sort the history files with filename
-                        array_multisort($aTmpFile[$sKey]);
+                        array_multisort($tmpFile[$sKey]);
 
-                        $iCount = count($aTmpFile[$sKey]);
+                        $count = count($tmpFile[$sKey]);
                         // find the total number to delete
-                        $iCountDelete = ($iCount <= $iFileNumber) ? 0 : ($iCount - $iFileNumber);
+                        $countDelete = ($count <= $fileNumber) ? 0 : ($count - $fileNumber);
                         // delete the files
-                        for ($i = 0; $i < $iCountDelete; $i++) {
-                            if (cFileHandler::exists($aTmpFile[$sKey][$i]) && is_writable($aTmpFile[$sKey][$i])) {
-                                unlink($aTmpFile[$sKey][$i]);
+                        for ($i = 0; $i < $countDelete; $i++) {
+                            if (cFileHandler::exists($tmpFile[$sKey][$i]) && is_writable($tmpFile[$sKey][$i])) {
+                                unlink($tmpFile[$sKey][$i]);
                             }
                         }
                     }
@@ -255,7 +190,6 @@ class cSystemPurge {
 
                 return true;
             }
-
             return false;
         } else {
             return false;
@@ -265,22 +199,18 @@ class cSystemPurge {
     /**
      * Clear client log file
      *
-     * @param int $iClientId
-     * @param string $sLogDir
+     * @param int $clientId
+     * @param string $logDir
      * @return bool
      */
-    public function clearClientLog($iClientId, $sLogDir = 'logs/') {
+    public function clearClientLog($clientId) {
         global $perm, $currentuser;
 
-        if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $sClientDir = $this->getClientDir($iClientId);
-
-            $sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/') ? $this->_sDefaultLogDir : $sLogDir;
-
-            if (is_dir($sClientDir . $sLogDir)) {
-                return $this->emptyFile($sClientDir . $sLogDir, $this->_aLogFileTypes);
+        if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+            $logDir = $this->_cfgClient[$clientId]['log']['path'];
+            if (is_dir($logDir)) {
+                return $this->emptyFile($logDir, $this->_logFileTypes);
             }
-
             return false;
         } else {
             return false;
@@ -293,20 +223,14 @@ class cSystemPurge {
      * @param string $sLogDir
      * @return bool
      */
-    public function clearConLog($sLogDir = '') {
+    public function clearConLog() {
         global $perm, $currentuser;
 
-        if ($sLogDir == "") {
-            $sLogDir = $this->_cfg['path']['data'] . "logs/";
-        }
-
+        $logDir = $this->_cfg['path']['contenido_logs'];
         if ($perm->isSysadmin($currentuser)) {
-            $sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/') ? $this->_sDefaultLogDir : $sLogDir;
-
-            if (is_dir($sLogDir)) {
-                return $this->emptyFile($sLogDir, $this->_aLogFileTypes);
+            if (is_dir($logDir)) {
+                return $this->emptyFile($logDir, $this->_logFileTypes);
             }
-
             return false;
         } else {
             return false;
@@ -319,16 +243,14 @@ class cSystemPurge {
      * @param string $sLogDir
      * @return bool
      */
-    public function clearConCronjob($sCronjobDir = 'cronjobs/') {
+    public function clearConCronjob() {
         global $perm, $currentuser;
 
+        $cronjobDir = $this->_cfg['path']['contenido_cronlog'];
         if ($perm->isSysadmin($currentuser)) {
-            $sCronjobDir = (trim($sCronjobDir) == '' || trim($sCronjobDir) == '/') ? $this->_sDefaultCronjobDir : $sCronjobDir;
-
-            if (is_dir($sCronjobDir)) {
-                return $this->emptyFile($sCronjobDir, $this->_aCronjobFileTypes);
+            if (is_dir($cronjobDir)) {
+                return $this->emptyFile($cronjobDir, $this->_cronjobFileTypes);
             }
-
             return false;
         } else {
             return false;
@@ -341,16 +263,14 @@ class cSystemPurge {
      * @param int $sClientName
      * @return bool
      */
-    public function clearConCache($sCacheDir = 'cache/') {
+    public function clearConCache() {
         global $perm, $currentuser;
 
-        if ($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/') ? $this->_sDefaultCacheDir : $sCacheDir;
-
-            if (is_dir($sCacheDir)) {
-                return ($this->clearDir($sCacheDir, $sCacheDir) ? true : false);
+        $cacheDir = $this->_cfg['path']['contenido_cache'];
+        if ($perm->isSysadmin($currentuser)) {
+            if (is_dir($cacheDir)) {
+                return ($this->clearDir($cacheDir, $cacheDir) ? true : false);
             }
-
             return false;
         } else {
             return false;
@@ -360,48 +280,48 @@ class cSystemPurge {
     /**
      * Delete all files and sub directories in a directory
      *
-     * @param string $sDirPath
-     * @param string $sTmpDirPath - root directory not deleted
-     * @param bool $bKeep
-     * @param array $aTmpFileList - files are temporarily saved
+     * @param string $dirPath
+     * @param string $tmpDirPath - root directory not deleted
+     * @param bool $keep
+     * @param array $tmpFileList - files are temporarily saved
      * @return bool
      */
-    public function clearDir($sDirPath, $sTmpDirPath, $bKeep = false, &$aTmpFileList = array()) {
-        if (is_dir($sDirPath) && ($handle = opendir($sDirPath))) {
-            $sTmp = str_replace(array(
+    public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = array()) {
+        if (is_dir($dirPath) && ($handle = opendir($dirPath))) {
+            $tmp = str_replace(array(
                 '/',
                 '..'
-                    ), '', $sDirPath);
+                    ), '', $dirPath);
             while (false !== ($file = readdir($handle))) {
-                if (!in_array($file, $this->aDirsExcludedWithFiles)) {
-                    $sFilePath = $sDirPath . '/' . $file;
-                    $sFilePath = str_replace('//', '/', $sFilePath);
-                    if (is_dir($sFilePath)) {
-                        $this->clearDir($sFilePath, $sTmpDirPath, $bKeep, $aTmpFileList);
+                if (!in_array($file, $this->dirsExcludedWithFiles)) {
+                    $filePath = $dirPath . '/' . $file;
+                    $filePath = str_replace('//', '/', $filePath);
+                    if (is_dir($filePath)) {
+                        $this->clearDir($filePath, $tmpDirPath, $keep, $tmpFileList);
                     } else {
-                        if ($bKeep === false) {
-                            unlink($sFilePath);
+                        if ($keep === false) {
+                            unlink($filePath);
                         } else {
-                            $aTmpFileList[$sTmp][] = $sFilePath;
+                            $tmpFileList[$tmp][] = $filePath;
                         }
                     }
                 }
             }
 
-            $aDirs = explode('/', $sDirPath);
-            if (end($aDirs) == '') {
-                array_pop($aDirs);
+            $dirs = explode('/', $dirPath);
+            if (end($dirs) == '') {
+                array_pop($dirs);
             }
-            $sDirName = end($aDirs);
+            $dirName = end($dirs);
 
             if (str_replace(array(
                         '/',
                         '..'
-                            ), '', $sDirPath) != str_replace(array(
+                            ), '', $dirPath) != str_replace(array(
                         '/',
                         '..'
-                            ), '', $sTmpDirPath) && $bKeep === false && !in_array($sDirName, $this->aDirsExcludedWithFiles)) {
-                rmdir($sDirPath);
+                            ), '', $tmpDirPath) && $keep === false && !in_array($dirName, $this->dirsExcludedWithFiles)) {
+                rmdir($dirPath);
             }
 
             closedir($handle);
@@ -415,32 +335,31 @@ class cSystemPurge {
     /**
      * Empty a file content
      *
-     * @param string $sFilePath
+     * @param string $filePath
      * @return bool
      */
-    public function emptyFile($sDirPath, $aTypes) {
-        $iCount = 0;
-        $iCountCleared = 0;
-        if (is_dir($sDirPath) && ($handle = opendir($sDirPath))) {
+    public function emptyFile($dirPath, $types) {
+        $count = 0;
+        $countCleared = 0;
+        if (is_dir($dirPath) && ($handle = opendir($dirPath))) {
             while (false !== ($file = readdir($handle))) {
-                $sFileExt = trim(end(explode('.', $file)));
+                $fileExt = trim(end(explode('.', $file)));
 
-                if ($file != "." && $file != ".." && in_array($sFileExt, $aTypes)) {
-                    $sFilePath = $sDirPath . '/' . $file;
+                if ($file != '.' && $file != '..' && in_array($fileExt, $types)) {
+                    $filePath = $dirPath . '/' . $file;
 
-                    if (cFileHandler::exists($sFilePath) && is_writable($sFilePath)) {
-                        $iCount++;
+                    if (cFileHandler::exists($filePath) && is_writable($filePath)) {
+                        $count++;
 
-                        // chmod($sFilePath, 0777);
-                        if (cFileHandler::truncate($sFilePath)) {
-                            $iCountCleared++;
+                        if (cFileHandler::truncate($filePath)) {
+                            $countCleared++;
                         }
                     }
                 }
             }
 
             // true if all files are cleaned
-            return ($iCount == $iCountCleared) ? true : false;
+            return ($count == $countCleared) ? true : false;
         }
 
         return false;
@@ -449,26 +368,22 @@ class cSystemPurge {
     /**
      * Get frontend directory name for a client
      *
-     * @param int $iClientId
+     * @param int $clientId
      * @return string $sClientDir
      */
-    public function getClientDir($iClientId) {
-        // $sClientDir = str_replace($this->_cfg['path']['frontend'], '..',
-        // $this->_cfgClient[$iClientId]['path']['frontend']);
-        $sClientDir = $this->_cfgClient[$iClientId]['path']['frontend'];
-
-        return $sClientDir;
+    public function getClientDir($clientId) {
+        return $this->_cfgClient[$clientId]['path']['frontend'];
     }
 
     /**
      * Set log file types
      *
-     * @param array $aTypes
+     * @param array $types
      */
-    public function setLogFileTypes($aTypes) {
-        if (count($aTypes) > 0) {
-            foreach ($aTypes as $sType) {
-                $this->_aLogFileTypes[] = $sType;
+    public function setLogFileTypes($types) {
+        if (count($types) > 0) {
+            foreach ($types as $type) {
+                $this->_logFileTypes[] = $type;
             }
         }
     }
@@ -476,13 +391,13 @@ class cSystemPurge {
     /**
      * Set cronjob file types
      *
-     * @param array $aTypes
+     * @param array $types
      * @return void
      */
-    public function setCronjobFileTypes($aTypes) {
-        if (count($aTypes) > 0) {
-            foreach ($aTypes as $sType) {
-                $this->_aCronjobFileTypes[] = $sType;
+    public function setCronjobFileTypes($types) {
+        if (count($types) > 0) {
+            foreach ($types as $type) {
+                $this->_cronjobFileTypes[] = $type;
             }
         }
     }
@@ -493,14 +408,14 @@ class cSystemPurge {
      * @return void
      */
     private function _setSystemDirectory() {
-        $sDirsToExcludeWithFiles = getSystemProperty('system', 'purge-dirstoexclude-withfiles');
-        $aDirsToExcludeWithFiles = array_map('trim', explode(',', $sDirsToExcludeWithFiles));
+        $dirsToExcludeWithFiles = getSystemProperty('system', 'purge-dirstoexclude-withfiles');
+        $aDirsToExcludeWithFiles = array_map('trim', explode(',', $dirsToExcludeWithFiles));
         if (count($aDirsToExcludeWithFiles) < 1 || empty($aDirsToExcludeWithFiles[0])) {
-            $aDirsToExcludeWithFiles = $this->aDirsExcludedWithFiles;
+            $aDirsToExcludeWithFiles = $this->dirsExcludedWithFiles;
             setSystemProperty('system', 'purge-dirstoexclude-withfiles', implode(',', $aDirsToExcludeWithFiles));
         }
 
-        $this->aDirsExcludedWithFiles = $aDirsToExcludeWithFiles;
+        $this->dirsExcludedWithFiles = $aDirsToExcludeWithFiles;
     }
 
 }
