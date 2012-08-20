@@ -1068,13 +1068,27 @@ abstract class ItemCollection extends cItemBaseAbstract {
     /**
      * Creates a new item in the table and loads it afterwards.
      *
-     * @param  string  $primaryKeyValue  Optional parameter for direct input of primary key value
-     * @return  Item  The newly created object
+     * @param string|array $data optional parameter for direct input of
+     *        primary key value (string) or multiple column name - value pairs
+     * @return Item The newly created object
      */
-    public function createNewItem($primaryKeyValue = null) {
+    public function createNewItem($data = null) {
         $this->_executeCallbacks(self::CREATE_BEFORE, get_class($this), array());
 
         $oDb = $this->_getSecondDBInstance();
+
+        if (is_array($data)) {
+            // if primary key has been given in the array, use it
+            if (array_key_exists($this->primaryKey, $data)) {
+                $primaryKeyValue = $data[$this->primaryKey];
+                // unset the PK so that it is not set again
+                unset($data[$this->primaryKey]);
+            } else {
+                $primaryKeyValue = null;
+            }
+        } else {
+            $primaryKeyValue = $data;
+        }
 
         $sql = 'INSERT INTO `%s` (%s) VALUES ("%s")';
         $oDb->query($sql, $this->table, $this->primaryKey, $primaryKeyValue);
@@ -1083,13 +1097,25 @@ abstract class ItemCollection extends cItemBaseAbstract {
             $primaryKeyValue = $oDb->getLastInsertedId($this->table);
         }
 
+        $item = $this->loadItem($primaryKeyValue);
+
+        // insert data into newly created item if data has been given
+        if (is_array($data) && count($data) > 0) {
+            foreach ($data as $key => $value) {
+                $item->set($key, $value);
+            }
+            $item->store();
+        }
+
         if ($oDb->affected_rows() == 0) {
             $this->_executeCallbacks(self::CREATE_FAILURE, $this->_itemClass, array());
         } else {
-            $this->_executeCallbacks(self::CREATE_SUCCESS, $this->_itemClass, array($primaryKeyValue));
+            $this->_executeCallbacks(self::CREATE_SUCCESS, $this->_itemClass, array(
+                $primaryKeyValue
+            ));
         }
 
-        return $this->loadItem($primaryKeyValue);
+        return $item;
     }
 
     /**
