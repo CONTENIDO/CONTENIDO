@@ -33,17 +33,16 @@ cInclude("includes", "functions.upl.php");
 
 $page = new cGuiPage("upl_edit");
 
+$page->addStyle("datetimepicker/jquery-ui-timepicker-addon.css");
+$page->addStyle("smoothness/jquery-ui-1.8.20.custom.css");
+$page->addScript("datetimepicker/jquery-ui-timepicker-addon.js");
 
 //get language js files
-if(($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
-
+if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
     $page->addScript("datetimepicker/jquery-ui-timepicker-".$lang_short.".js");
     $page->addScript("jquery/jquery.ui.datepicker-".$lang_short.".js");
 }
 
-$page->addStyle("datetimepicker/jquery-ui-timepicker-addon.css");
-$page->addStyle("smoothness/jquery-ui-1.8.20.custom.css");
-$page->addScript("datetimepicker/jquery-ui-timepicker-addon.js");
 $page->addScript("jquery.tipsy.js");
 $page->addScript("registerTipsy.js");
 
