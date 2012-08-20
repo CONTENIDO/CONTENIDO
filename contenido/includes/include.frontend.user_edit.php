@@ -94,13 +94,17 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
 
     $idfrontenduser = 0;
     $feuser = new cApiFrontendUser();
-    $page->addScript($sReloadScript);
+    if (!empty($sReloadScript)) {
+        $page->addScript($sReloadScript);
+    }
     $page->displayInfo(i18n("Delteted user successfully!"));
 }
 
 if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
     if ($action == "frontend_save_user") {
-        $page->addScript($sReloadScript);
+        if (!empty($sReloadScript)) {
+            $page->addScript($sReloadScript);
+        }
         $messages = array();
 
         if ($feuser->get("username") != stripslashes($username)) {
@@ -246,7 +250,9 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
         $form->add(i18n("Last modified by"), $oUser2->get('username') . " (". displayDatetime($feuser->get("modified")).")" );
     }
     $page->setContent($form);
-    $page->addScript($sReloadScript);
+    if (!empty($sReloadScript)) {
+        $page->addScript($sReloadScript);
+    }
 }
 
 $page->render();

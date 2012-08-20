@@ -246,7 +246,9 @@ if ($action == $sActionDelete) {
         $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
         $page->addScript($oCodeMirror->renderScript());
 
-        $page->addScript($sReloadScript);
+        if (!empty($sReloadScript)) {
+            $page->addScript($sReloadScript);
+        }
         $page->render();
     }
 }

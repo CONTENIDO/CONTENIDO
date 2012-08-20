@@ -102,7 +102,9 @@ $form->add(i18n("Author", "workflow"), $author);
 $form->add(i18n("Created", "workflow"), $created);
 
 $page->setContent($form);
-$page->addScript($sReloadScript);
+if (!empty($sReloadScript)) {
+    $page->addScript($sReloadScript);
+}
 
 $page->render();
 
