@@ -77,7 +77,7 @@ function isArtInMultipleUse($idart) {
  */
 function isAlphanumeric($test, $umlauts = true) {
     if ($umlauts == true) {
-        $match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
+        $match = "/^[a-z0-9ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ]+$/i";
     } else {
         $match = "/^[a-z0-9 ]+$/i";
     }
@@ -496,7 +496,7 @@ function rereadClients() {
         $cfgClient[$iClient]['cache']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'cache/';
         $cfgClient[$iClient]['cache']['frontendpath'] = 'cache/';
 
-        $cfgClient[$iClient]['code']['path'] = $cfgClient[$iClient]['data']['frontend'] . 'cache/code/';
+        $cfgClient[$iClient]['code']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'cache/code/';
         $cfgClient[$iClient]['code']['frontendpath'] = 'cache/code/';
 
         $cfgClient[$iClient]['template']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'templates/';
@@ -1393,7 +1393,7 @@ function sendEncodingHeader($db, $cfg, $lang, $contentType = 'text/html') {
 
         $oLangColl = new cApiLanguageCollection();
         $oLangColl->select();
-        while ($oItem = $oLangColl->next()) {
+        while (($oItem = $oLangColl->next()) !== false) {
             $aLanguageEncodings[$oItem->get('idlang')] = $oItem->get('encoding');
         }
 
@@ -1468,7 +1468,7 @@ function cleanupSessions() {
     }
     // Expire invalid InUse-Entries
     $col->select();
-    while ($c = $col->next()) {
+    while (($c = $col->next()) !== false) {
         $sql = "SELECT sid FROM " . $cfg["tab"]["phplib_active_sessions"] . " WHERE sid = '" . $db2->escape($c->get("session")) . "'";
         $db2->query($sql);
         if (!$db2->next_record()) {
