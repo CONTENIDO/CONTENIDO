@@ -177,9 +177,9 @@ class LayoutInFile {
             $success = true;
         } else {
             $success = mkdir($directory);
-        }
-        if ($success) {
-            cFileHandler::setDefaultDirPerms($directory);
+            if ($success) {
+                cFileHandler::setDefaultDirPerms($directory);
+            }
         }
 
         return $success;
