@@ -6090,3 +6090,6 @@ msgstr "Artikel"
 #~ msgid "No recipient with specified recipient/group id %s/%s found"
 #~ msgstr ""
 #~ "Keine Empfänger mit der angegebenen Empfänger-/Gruppen-ID %s/%s gefunden"
+
+msgid "The given client\'s frontend directory (%s) is not a directory."
+msgstr "Das eingegebene Frontend Verzeichnis des Mandanten (%s) ist kein Verzeichnis."

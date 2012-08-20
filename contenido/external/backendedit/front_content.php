@@ -24,6 +24,12 @@ include_once('../../includes/startup.php');
 
 // Load base clients settings and change to current clients frontend directory
 rereadClients();
+// if directory does not exist, show error message
+if (!is_dir($cfgClient[$client]['path']['frontend'])) {
+    $notification = new cGuiNotification();
+    $notification->displayMessageBox(cGuiNotification::LEVEL_ERROR, i18n('The given client\'s frontend directory (%s) is not a directory.', $cfgClient[$client]['path']['frontend']));
+    exit;
+}
 chdir($cfgClient[$client]['path']['frontend']);
 
 // Include the config file of the frontend to initialize client and language id
