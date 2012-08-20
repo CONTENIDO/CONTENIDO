@@ -295,6 +295,11 @@ class cSetupSystemtest extends cSetupMask
                 break;
         }
 
+        $this->runTest(
+            function_exists("iconv"), C_SEVERITY_ERROR, i18n("PHP iconv functions are not available."),
+            i18n("PHP has been compiled with the --without-iconv directive. CONTENIDO won't work without the iconv functions.")
+        );
+
         // @todo: Check if ini_set can be used
     }
 

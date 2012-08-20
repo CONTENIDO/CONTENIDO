@@ -841,3 +841,9 @@ msgstr "Empfohlen für Projektumzüge zwischen Servern."
 #~ msgid "You need to enter a password!"
 #~ msgstr "Sie müssen ein Password eingeben."
 
+
+msgid "PHP iconv functions are not available."
+msgstr "Die PHP iconv Funktionen sind nicht verfügbar."
+
+msgid "PHP has been compiled with the --without-iconv directive. CONTENIDO won't work without the iconv functions."
+msgstr "PHP wurde mit der --without-iconv Direktive kompiliert. CONTENIDO wird ohne die iconv Funktionen nicht funktionieren."
