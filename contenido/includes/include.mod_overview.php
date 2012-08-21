@@ -222,7 +222,6 @@ $sRefreshPager = '
     (function(){
         var sNavigation = \'' . $sPagerContent . '\',
             left_top = parent.left_top, oPager, oInsert;
-        console.log("left_top.document", left_top.document);
         if (left_top.document) {
             oPager = left_top.document.getElementById(\'02420d6b-a77e-4a97-9395-7f6be480f497\');
             if (oPager) {
