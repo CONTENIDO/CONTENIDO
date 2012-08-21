@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created 2004-07-14
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2008-08-14, Timo Trautmann, Bilal Arslan - Functions for versionning and storing file meta data added
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -40,7 +36,7 @@ $sFileType = "html";
 $sActionCreate = 'htmltpl_create';
 $sActionEdit = 'htmltpl_edit';
 
-$fileRequest =    $_REQUEST['file'];
+$fileRequest = $_REQUEST['file'];
 $TmpFileRequest = $_REQUEST['tmp_file'];
 
 
@@ -58,7 +54,7 @@ if (!is_object($notification)) {
 if (!$perm->have_perm_area_action($area, $action)) {
     $page->displayCriticalError(i18n("Permission denied"));
 } else if (!(int) $client > 0) {
-  #if there is no client selected, display empty page
+    #if there is no client selected, display empty page
 } else {
     $contenidoModulTemplateHandler = new cModuleTemplateHandler($idmod);
     $contenidoModulTemplateHandler->setAction($action);
@@ -70,5 +66,7 @@ if (!$perm->have_perm_area_action($area, $action)) {
     $contenidoModulTemplateHandler->setStatus($_REQUEST['status']);
     $contenidoModulTemplateHandler->display($perm, $notification, $belang);
 }
-  $page->render();
+
+$page->render();
+
 ?>

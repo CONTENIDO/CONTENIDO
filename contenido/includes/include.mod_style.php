@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Project:
  * CONTENIDO Content Management System
@@ -61,7 +62,7 @@ if (!$contenidoModulHandler->existFile('css', $contenidoModulHandler->getCssFile
 }
 
 
-if (!$perm->have_perm_area_action('style', $actionRequest)|| $premCreate) {
+if (!$perm->have_perm_area_action('style', $actionRequest) || $premCreate) {
     $page->displayCriticalError(i18n('Permission denied'));
     $page->render();
     return;
@@ -73,7 +74,7 @@ if (!(int) $client > 0) {
     return;
 }
 
-$path = $contenidoModulHandler->getCssPath();// $cfgClient[$client]['css']['path'];
+$path = $contenidoModulHandler->getCssPath(); // $cfgClient[$client]['css']['path'];
 // Make automatic a new css file
 if (!$contenidoModulHandler->createModuleFile('css')) {
     $page->displayCriticalError(i18n('Could not create a new css file!'));
@@ -87,7 +88,7 @@ if (stripslashes($file)) {
                          if (left_bottom) {
                              var href = left_bottom.location.href;
                              href = href.replace(/&file.*/, '');
-                             left_bottom.location.href = href+'&file='+'".$file."';
+                             left_bottom.location.href = href+'&file='+'" . $file . "';
                          }
                      </script>";
 } else {
@@ -109,7 +110,7 @@ if (stripslashes($file)) {
                          if (left_bottom) {
                              var href = left_bottom.location.href;
                              href = href.replace(/&file[^&]*/, '');
-                             left_bottom.location.href = href+'&file='+'".$sFilename."';
+                             left_bottom.location.href = href+'&file='+'" . $sFilename . "';
                          }
                      </script>";
 } else {
@@ -136,7 +137,7 @@ if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
     $sReloadScript .= "<script type=\"text/javascript\">
                  var right_top = top.content.right.right_top;
                  if (right_top) {
-                     var href = '".$sess->url("main.php?area=$area&frame=3&file=$sTempFilename")."';
+                     var href = '" . $sess->url("main.php?area=$area&frame=3&file=$sTempFilename") . "';
                      right_top.location.href = href;
                  }
                  </script>";
@@ -161,7 +162,7 @@ if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
         $sReloadScript .= "<script type=\"text/javascript\">
                              var right_top = top.content.right.right_top;
                              if (right_top) {
-                                 var href = '".$sess->url("main.php?area=$area&frame=3&file=$sTempFilename")."';
+                                 var href = '" . $sess->url("main.php?area=$area&frame=3&file=$sTempFilename") . "';
                                  right_top.location.href = href;
                              }
                              </script>";
@@ -214,7 +215,7 @@ if (isset($actionRequest)) {
     $form->setVar('status', 'send');
     $form->setVar('tmp_file', $sTempFilename);
     $form->setVar('idmod', $idmod);
-    $tb_name = new  cHTMLLabel($sFilename, '');
+    $tb_name = new cHTMLLabel($sFilename, '');
 
     $ta_code = new cHTMLTextarea('code', htmlspecialchars($sCode), 100, 35, 'code');
     $ta_code->setStyle('font-family: monospace;width: 100%;');

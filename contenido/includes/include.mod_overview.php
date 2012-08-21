@@ -36,12 +36,10 @@ if (!(int) $client > 0) {
     return;
 }
 
-############################
-# Now build bottom with list
-############################
+// Now build bottom with list
 $cApiModuleCollection = new cApiModuleCollection();
-$classmodule          = new cApiModule();
-$oPage                = new cGuiPage("mod_overview");
+$classmodule = new cApiModule();
+$oPage = new cGuiPage("mod_overview");
 $searchOptions = array();
 
 // no value found in request for items per page -> get form db or set default
@@ -64,10 +62,10 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
 
 
 // Build list for left_bottom considering filter values
-$mlist              = new cGuiMenu();
+$mlist = new cGuiMenu();
 $sOptionModuleCheck = getSystemProperty("system", "modulecheck");
-$sOptionForceCheck  = getEffectiveSetting("modules", "force-menu-check", "false");
-$iMenu              = 0;
+$sOptionForceCheck = getEffectiveSetting("modules", "force-menu-check", "false");
+$iMenu = 0;
 
 $searchOptions['elementPerPage'] = $_REQUEST['elemperpage'];
 
@@ -94,7 +92,7 @@ $searchOptions['filter'] = cSecurity::escapeDB($_REQUEST['filter'], $db);
 
 //search in
 $searchOptions['searchIn'] = 'all';
-if ($_REQUEST['searchin']== 'name' || $_REQUEST['searchin'] == 'description' || $_REQUEST['searchin']== 'type' || $_REQUEST['searchin']== 'input' || $_REQUEST['searchin']== 'output') {
+if ($_REQUEST['searchin'] == 'name' || $_REQUEST['searchin'] == 'description' || $_REQUEST['searchin'] == 'type' || $_REQUEST['searchin'] == 'input' || $_REQUEST['searchin'] == 'output') {
     $searchOptions['searchIn'] = $_REQUEST['searchin'];
 }
 
@@ -113,8 +111,7 @@ if ($_REQUEST["elemperpage"] > 0) {
 foreach ($allModules as $idmod => $module) {
     //$cApiModule = $cApiModuleCollection->next())
 
-    if ($perm->have_perm_item($area, $idmod) || $perm->have_perm_area_action("mod_translate", "mod_translation_save") || $perm->have_perm_area_action_item("mod_translate", "mod_translation_save", $idmod))
-    {
+    if ($perm->have_perm_item($area, $idmod) || $perm->have_perm_area_action("mod_translate", "mod_translation_save") || $perm->have_perm_area_action_item("mod_translate", "mod_translation_save", $idmod)) {
         //$idmod = $cApiModule->get("idmod");
 
         $link = new cHTMLLink;
@@ -124,30 +121,30 @@ foreach ($allModules as $idmod => $module) {
         $link->updateAttributes(array("title" => $module['description']));
         $link->updateAttributes(array("style" => "margin-left:5px"));
 
-        $sName = $module ['name'];//$cApiModule->get("name");
+        $sName = $module ['name']; //$cApiModule->get("name");
 
         if ($sOptionModuleCheck !== "false" && $sOptionForceCheck !== "false") {
             // Check module and force check has been enabled - check module (surprisingly...)
-            $inputok = modTestModule($module['input'], $idmod."i", false);
-            $outputok = modTestModule($module['output'], $idmod."o", true);
+            $inputok = modTestModule($module['input'], $idmod . "i", false);
+            $outputok = modTestModule($module['output'], $idmod . "o", true);
 
             if ($inputok && $outputok) {        // Everything ok
                 $colName = $sName;            // The set default color: none :)
             } else if ($inputok || $outputok) {   // Input or output has a problem
-                $colName = '<font color="#B1AC58">'.$sName.'</font>';
+                $colName = '<span style="color:#B1AC58">' . $sName . '</span>';
             } else {                           // Input >and< output has a problem
-                $colName = '<font color="red">'.$sName.'</font>';
+                $colName = '<span style="color:red">' . $sName . '</span>';
             }
         } else {
             // Do not check modules (or don't force it) - so, let's take a look into the database
-            $sModuleError = $module['error'];//$cApiModule->get("error");
+            $sModuleError = $module['error']; //$cApiModule->get("error");
 
             if ($sModuleError == "none") {
                 $colName = $sName;
             } else if ($sModuleError == "input" || $sModuleError == "output") {
-                $colName = '<font color="#B1AC58">'.$sName.'</font>';
+                $colName = '<span style="color:#B1AC58">' . $sName . '</span>';
             } else {
-                $colName = '<font color="red">'.$sName.'</font>';
+                $colName = '<span style="color:red">' . $sName . '</span>';
             }
         }
 
@@ -164,14 +161,14 @@ foreach ($allModules as $idmod => $module) {
 
         if ($inUse) {
             $inUseString = i18n("Click for more information about usage");
-            $mlist->setActions($iMenu, 'inuse', '<a href="javascript:;" rel="' . $idmod . '" class="in_used_mod"><img src="'.$cfg['path']['images'].'exclamation.gif" border="0" title="'.$inUseString.'" alt="'.$inUseString.'"></a>');
+            $mlist->setActions($iMenu, 'inuse', '<a href="javascript:;" rel="' . $idmod . '" class="in_used_mod"><img src="' . $cfg['path']['images'] . 'exclamation.gif" border="0" title="' . $inUseString . '" alt="' . $inUseString . '"></a>');
             $delDescription = i18n("Module in use, cannot delete");
         } else {
             $mlist->setActions($iMenu, 'inuse', '<img src="./images/spacer.gif" border="0" width="16">');
             if ($perm->have_perm_area_action_item("mod", "mod_delete", $idmod)) {
                 $delTitle = i18n("Delete module");
                 $delDescr = sprintf(i18n("Do you really want to delete the following module:<br><br>%s<br>"), $sName);
-                $deletebutton = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteModule('.$idmod.')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
+                $deletebutton = '<a title="' . $delTitle . '" href="javascript://" onclick="box.confirm(\'' . $delTitle . '\', \'' . $delDescr . '\', \'deleteModule(' . $idmod . ')\')"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
             } else {
                 $delDescription = i18n("No permission");
             }
@@ -179,7 +176,7 @@ foreach ($allModules as $idmod => $module) {
 
         if ($deletebutton == "") {
             //$deletebutton = '<img src="images/spacer.gif" width="16" height="16">';
-            $deletebutton = '<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$delDescription.'" alt="'.$delDescription.'">';
+            $deletebutton = '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . $delDescription . '" alt="' . $delDescription . '">';
         }
 
         $todo = new TODOLink("idmod", $idmod, "Module: $sName", "");
@@ -201,7 +198,7 @@ $oPage->set("s", "FORM", $mlist->render(false));
 
 //generate current content for Object Pager
 $oPagerLink = new cHTMLLink;
-$pagerl="pagerlink";
+$pagerl = "pagerlink";
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setLink("main.php");
 $oPagerLink->setCustom("elemperpage", $elemperpage);
@@ -222,19 +219,23 @@ $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 //send new object pager to left_top
 $sRefreshPager = '
     <script type="text/javascript">
-        var sNavigation = \''.$sPagerContent.'\';
-        var left_top = parent.left_top;
+    (function(){
+        var sNavigation = \'' . $sPagerContent . '\',
+            left_top = parent.left_top, oPager, oInsert;
+        console.log("left_top.document", left_top.document);
         if (left_top.document) {
-            var oPager = left_top.document.getElementById(\'02420d6b-a77e-4a97-9395-7f6be480f497\');
+            oPager = left_top.document.getElementById(\'02420d6b-a77e-4a97-9395-7f6be480f497\');
             if (oPager) {
                 oInsert = oPager.firstChild;
                 oInsert.innerHTML = sNavigation;
                 left_top.toggle_pager(\'02420d6b-a77e-4a97-9395-7f6be480f497\');
             }
         }
+    })();
     </script>';
 
 $oPage->addScript($sRefreshPager);
 
 $oPage->render();
+
 ?>

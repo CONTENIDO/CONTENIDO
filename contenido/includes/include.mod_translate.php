@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 $langobj = new cApiLanguage($lang);
 
-$langstring = $langobj->get('name') . ' ('.$lang.')';
+$langstring = $langobj->get('name') . ' (' . $lang . ')';
 
 $page = new cGuiPage("mod_translate");
 
@@ -80,12 +80,12 @@ foreach ($strings as $string) {
 }
 
 // If changed save in file
-if (count(array_diff_assoc($myTrans, $transaltionArray)) > 0 || count(array_diff_assoc($transaltionArray,$myTrans)) > 0) {
+if (count(array_diff_assoc($myTrans, $transaltionArray)) > 0 || count(array_diff_assoc($transaltionArray, $myTrans)) > 0) {
     $contenidoTranslateFromFile->saveTranslationArray($myTrans);
 }
 
 if (!isset($row)) {
-    $row = count($strings)-1; //last string
+    $row = count($strings) - 1; //last string
     $lastString = end($strings);
     $lastUebersetzung = $myTrans[$lastString];
 } else {
@@ -112,7 +112,7 @@ $form->setVar('idmod', $idmod);
 $form->setVar('row', $row);
 $form->setVar('action', 'mod_translation_save');
 
-$transmodname = new cHTMLTextbox('translatedname', $module->getTranslatedName(),60);
+$transmodname = new cHTMLTextbox('translatedname', $module->getTranslatedName(), 60);
 
 $form->add(i18n('Translated name'), $transmodname);
 
@@ -121,25 +121,26 @@ $ilink->setCLink('mod_translate', 5, '');
 $ilink->setCustom('idmod', $idmod);
 $ilink->setCustom('row', $row);
 //$ilink->setCustom('idmodtranslation', $mtrans->get('idmodtranslation'));
-$ilink->setAnchor($row);//$mtrans->get('idmodtranslation'));
+$ilink->setAnchor($row); //$mtrans->get('idmodtranslation'));
 
-$iframe = '<iframe frameborder="0" style="border:1px solid black;" width="620" src="'.$ilink->getHREF().'"></iframe>';
+$iframe = '<iframe frameborder="0" style="border:1px solid black;" width="620" src="' . $ilink->getHREF() . '"></iframe>';
 
-$table = '<table border="0" width="600" border="0"><tr><td width="50%">'.i18n("Original module string").'</td><td width="50%">'.sprintf(i18n("Translation for %s"), $langstring).'</td><td width="20">&nbsp;</td></tr><tr><td colspan="3">'.$iframe.'</td></tr>';
+$table = '<table border="0" width="600" border="0"><tr><td width="50%">' . i18n("Original module string") . '</td><td width="50%">' . sprintf(i18n("Translation for %s"), $langstring) . '</td><td width="20">&nbsp;</td></tr><tr><td colspan="3">' . $iframe . '</td></tr>';
 
-$original = new cHTMLTextarea('t_orig', htmlspecialchars($lastString));////$mtrans->get('original')));
+$original = new cHTMLTextarea('t_orig', htmlspecialchars($lastString)); ////$mtrans->get('original')));
 $original->setStyle('width:300px;');
 
-$translated = new cHTMLTextarea('t_trans', htmlspecialchars($lastUebersetzung));//$mtrans->get('translation')));
+$translated = new cHTMLTextarea('t_trans', htmlspecialchars($lastUebersetzung)); //$mtrans->get('translation')));
 $translated->setStyle('width:300px;');
 
-$table .= '<tr><td>'.$original->render().'</td><td>'.$translated->render().'</td><td width="20">&nbsp;</td></tr></table>';
+$table .= '<tr><td>' . $original->render() . '</td><td>' . $translated->render() . '</td><td width="20">&nbsp;</td></tr></table>';
 $table .= i18n("Hint: Hit ALT+SHIFT+S to save the translated entry and advance to the next string.");
 $form->add(i18n("String list"), $table);
 
 $page->set("s", "FORM", $form->render());
 $page->setMarkScript(2);
 $page->setEncoding($langobj->get('encoding'));
+
 $page->render();
 
 ?>

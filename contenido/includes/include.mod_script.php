@@ -72,8 +72,7 @@ if (!(int) $client > 0) {
     return;
 }
 
-$path = $contenidoModulHandler->getJsPath();// $cfgClient[$client]['js']['path'];
-
+$path = $contenidoModulHandler->getJsPath(); // $cfgClient[$client]['js']['path'];
 // Make automatic a new js file
 $contenidoModulHandler->createModuleFile('js');
 
@@ -93,7 +92,7 @@ if (stripslashes($file)) {
                          if (left_bottom) {
                              var href = left_bottom.location.href;
                              href = href.replace(/&file[^&]*/, '');
-                             left_bottom.location.href = href+'&file='+'".$sFilename."';
+                             left_bottom.location.href = href+'&file='+'" . $sFilename . "';
                          }
                      </script>";
 } else {
@@ -114,7 +113,7 @@ if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
     $sReloadScript .= "<script type=\"text/javascript\">
                      var right_top = top.content.right.right_top;
                      if (right_top) {
-                         var href = '".$sess->url("main.php?area=$area&frame=3&file=$sTempFilename")."';
+                         var href = '" . $sess->url("main.php?area=$area&frame=3&file=$sTempFilename") . "';
                          right_top.location.href = href;
                      }
                      </script>";
@@ -141,7 +140,7 @@ if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
         $sReloadScript .= "<script type=\"text/javascript\">
                          var right_top = top.content.right.right_top;
                          if (right_top) {
-                             var href = '".$sess->url("main.php?area=$area&frame=3&file=$sTempFilename")."';
+                             var href = '" . $sess->url("main.php?area=$area&frame=3&file=$sTempFilename") . "';
                              right_top.location.href = href;
                          }
                          </script>";
@@ -187,7 +186,7 @@ if (isset($actionRequest)) {
     $form->setVar('status', 'send');
     $form->setVar('tmp_file', $sTempFilename);
     $form->setVar('idmod', $idmod);
-    $tb_name = new cHTMLLabel($sFilename,'');// new cHTMLTextbox('file', $sFilename, 60);
+    $tb_name = new cHTMLLabel($sFilename, ''); // new cHTMLTextbox('file', $sFilename, 60);
     $ta_code = new cHTMLTextarea('code', htmlspecialchars($sCode), 100, 35, 'code');
     //$descr     = new cHTMLTextarea('description', htmlspecialchars($aFileInfo['description']), 100, 5);
 

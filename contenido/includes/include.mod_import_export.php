@@ -19,7 +19,10 @@
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release >=4.9
  *
- *
+ * {@internal
+ *   created 2011-09-16
+ *   $Id$
+ * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -33,6 +36,7 @@ $module->loadByPrimaryKey($idmod);
 $notification = new cGuiNotification();
 
 $sScript = '';
+
 if ($action == "mod_importexport_module") {
 
     switch ($mode) {
@@ -45,8 +49,8 @@ if ($action == "mod_importexport_module") {
             break;
         case 'import':
             if (cFileHandler::exists($_FILES["upload"]["tmp_name"])) {
-                if (!$module->import($_FILES['upload']['name'] , $_FILES["upload"]["tmp_name"])) {
-                    $notification-> displayNotification('error',i18n("Could not import module!"));
+                if (!$module->import($_FILES['upload']['name'], $_FILES["upload"]["tmp_name"])) {
+                    $notification->displayNotification('error', i18n("Could not import module!"));
                 } else {
                     $notification->displayNotification('info', i18n("Module import successfully!"));
                     $idmod = $module->get('idmod');
@@ -55,12 +59,12 @@ if ($action == "mod_importexport_module") {
                                          if (left_bottom) {
                                              var href = left_bottom.location.href;
                                              href = href.replace(/&idmod[^&]*/, '');
-                                             left_bottom.location.href = href+'&idmod='+'".$idmod."';
+                                             left_bottom.location.href = href+'&idmod='+'" . $idmod . "';
                                          }
                                 </script>";
                 }
             } else {
-                $notification-> displayNotification('error',i18n("No file uploaded!"));
+                $notification->displayNotification('error', i18n("No file uploaded!"));
             }
             break;
         case 'import_xml':
@@ -72,7 +76,7 @@ if ($action == "mod_importexport_module") {
 
                 $module = $modules->create($modulName);
                 if (!$module->importModuleFromXML($_FILES["upload"]["tmp_name"])) {
-                    $notification-> displayNotification('error',i18n("Could not import module!"));
+                    $notification->displayNotification('error', i18n("Could not import module!"));
                 } else {
                     $notification->displayNotification('info', i18n("Module import successfully!"));
                     $idmod = $module->get('idmod');
@@ -81,12 +85,12 @@ if ($action == "mod_importexport_module") {
                                          if (left_bottom) {
                                              var href = left_bottom.location.href;
                                              href = href.replace(/&idmod[^&]*/, '');
-                                             left_bottom.location.href = href+'&idmod='+'".$idmod."';
+                                             left_bottom.location.href = href+'&idmod='+'" . $idmod . "';
                                          }
                                 </script>";
                 }
             } else {
-                $notification-> displayNotification('error',i18n("No file uploaded!"));
+                $notification->displayNotification('error', i18n("No file uploaded!"));
             }
             break;
     }
@@ -116,7 +120,7 @@ $form2 = new cGuiTableForm("export");
 $form2->setVar("action", "mod_importexport_module");
 $form2->setVar("use_encoding", "false");
 $form2->addHeader("Import/Export");
-$form2->add(i18n("Mode"), array($export, "<br>", $import,'<br>',$importXML));
+$form2->add(i18n("Mode"), array($export, "<br>", $import, '<br>', $importXML));
 
 
 if ($inputChecked != "" && $outputChecked != "") {
@@ -135,7 +139,6 @@ if (!empty($sScript)) {
     $page->addScript($sScript);
 }
 $page->setContent(array($form2));
-
 
 $page->render();
 

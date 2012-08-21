@@ -21,11 +21,8 @@
  *
  * {@internal
  *   created 2003-03-21
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2011-01-11, Rusmir Jusufovic, add snyc-button
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -34,36 +31,31 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 $oUser = new cApiUser($auth->auth["uid"]);
-if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] < 0)
-{
+if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] < 0) {
     $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
 }
 
 $tpl->reset();
 
-#################
-# New Module Link
-#################
+// New module link
 $str = '';
 if ((int) $client > 0) {
-    $str = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;line-height:100px;"><a style="margin-top:5px;" class="addfunction" target="right_bottom" href="'.$sess->url("main.php?area=mod_edit&frame=4&action=mod_new").'">'.i18n("New module").'</a> </div>';
-    $strSync = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;line-height:100px;"><a style="margin-top:5px;" class="syncronizefunction" target="right_bottom" href="'.$sess->url("main.php?area=mod_edit&frame=4&action=mod_sync").'">'.i18n("Synchronize modules").'</a></div>';
+    $str = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;line-height:100px;"><a style="margin-top:5px;" class="addfunction" target="right_bottom" href="' . $sess->url("main.php?area=mod_edit&frame=4&action=mod_new") . '">' . i18n("New module") . '</a> </div>';
+    $strSync = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;line-height:100px;"><a style="margin-top:5px;" class="syncronizefunction" target="right_bottom" href="' . $sess->url("main.php?area=mod_edit&frame=4&action=mod_sync") . '">' . i18n("Synchronize modules") . '</a></div>';
 } else {
-    $str = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;">'.i18n('No client selected').'</div>';
+    $str = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;">' . i18n('No client selected') . '</div>';
 }
 
-#only show other options, if there is a active client
+// Only show other options, if there is a active client
 if ((int) $client > 0) {
-    ###############
-    # List Options
-    ###############
-    $aSortByOptions            = array("name" => i18n("Name"), "type" => i18n("Type"));
-    $aSortOrderOptions      = array("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
-    $listoplink="listoptions";
+    // List Options
+    $aSortByOptions = array("name" => i18n("Name"), "type" => i18n("Type"));
+    $aSortOrderOptions = array("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
+    $listoplink = "listoptions";
     $oListOptionRow = new cGuiFoldingRow("e9ddf415-4b2d-4a75-8060-c3cd88b6ff98", i18n("List options"), $listoplink);
     $tpl->set('s', 'LISTOPLINK', $listoplink);
     $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
-    $oSelectItemsPerPage->autoFill(array(0 => i18n("-- All --"),5=>5, 25 => 25, 50 => 50, 75 => 75, 100 => 100));
+    $oSelectItemsPerPage->autoFill(array(0 => i18n("-- All --"), 5 => 5, 25 => 25, 50 => 50, 75 => 75, 100 => 100));
     $oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
     $oSelectSortBy = new cHTMLSelectElement("sortby");
     $oSelectSortBy->autoFill($aSortByOptions);
@@ -74,11 +66,11 @@ if ((int) $client > 0) {
 
     $oSelectSearchIn = new cHTMLSelectElement("searchin");
     $oSelectSearchIn->autoFill(array('' => i18n("-- All --"),
-                                     'name' => i18n("Module name"),
-                                     'description' => i18n("Description"),
-                                     'type' => i18n("Type"),
-                                     'input' => i18n("Input"),
-                                     'output' => i18n("Output")));
+        'name' => i18n("Module name"),
+        'description' => i18n("Description"),
+        'type' => i18n("Type"),
+        'input' => i18n("Input"),
+        'output' => i18n("Output")));
 
     $oSelectSearchIn->setDefault($_REQUEST["searchin"]);
 
@@ -86,9 +78,9 @@ if ((int) $client > 0) {
     $sql = "SELECT
                type
             FROM
-               ".$cfg["tab"]["mod"]."
+               " . $cfg["tab"]["mod"] . "
             WHERE
-               idclient = '".cSecurity::toInteger($client)."'
+               idclient = '" . cSecurity::toInteger($client) . "'
             GROUP BY type";
 
     $db->query($sql);
@@ -96,10 +88,8 @@ if ((int) $client > 0) {
     $aFilterType["--all--"] = i18n("-- All --");
     $aFilterType["--wotype--"] = i18n("-- Without type --");
 
-    while ($db->next_record())
-    {
-        if (trim($db->f("type")) != "")
-        {
+    while ($db->next_record()) {
+        if (trim($db->f("type")) != "") {
             $aFilterType[$db->f("type")] = $db->f("type");
         }
     }
@@ -110,56 +100,54 @@ if ((int) $client > 0) {
     $oTextboxFilter = new cHTMLTextbox("filter", stripslashes($_REQUEST["filter"]), 15);
     $content .= '<div style="border: 1px solid #B3B3B3;border-left:none;border-top:none;margin-bottom:1px;">';
     // Ye stuff will be done in javascript on apply button
-    $content .= '<form action="javascript:execFilter(\''.$sess->id.'\');" id="filter" name="filter" method="get">';
+    $content .= '<form action="javascript:execFilter(\'' . $sess->id . '\');" id="filter" name="filter" method="get">';
     $content .= '<table class="borderless">';
     $content .= '<input type="hidden" name="area" value="mod">';
     $content .= '<input type="hidden" name="frame" value="1">';
-    $content .= '<input type="hidden" name="contenido" value="'.$sess->id.'">';
-    $content .= '<input type="hidden" name="'.$formcall.'" value="'.$formcall.'">';
-    $content .= '<input type="hidden" name="page" value="'.$_REQUEST["page"].'">';
+    $content .= '<input type="hidden" name="contenido" value="' . $sess->id . '">';
+    $content .= '<input type="hidden" name="' . $formcall . '" value="' . $formcall . '">';
+    $content .= '<input type="hidden" name="page" value="' . $_REQUEST["page"] . '">';
     $content .= '<tr">';
-    $content .= '<td style="padding-left:15px;" nowrap>'.i18n("Items / page").'</td>';
-    $content .= '<td>'.$oSelectItemsPerPage->render().'</td>';
+    $content .= '<td style="padding-left:15px;" nowrap>' . i18n("Items / page") . '</td>';
+    $content .= '<td>' . $oSelectItemsPerPage->render() . '</td>';
     $content .= '</tr>';
     $content .= '<tr>';
-    $content .= '<td style="padding-left:15px;">'.i18n("Sort by").'</td>';
-    $content .= '<td>'.$oSelectSortBy->render().'</td>';
+    $content .= '<td style="padding-left:15px;">' . i18n("Sort by") . '</td>';
+    $content .= '<td>' . $oSelectSortBy->render() . '</td>';
     $content .= '</tr>';
     $content .= '<tr>';
-    $content .= '<td style="padding-left:15px;">'.i18n("Sort order").'</td>';
-    $content .= '<td>'.$oSelectSortOrder->render().'</td>';
+    $content .= '<td style="padding-left:15px;">' . i18n("Sort order") . '</td>';
+    $content .= '<td>' . $oSelectSortOrder->render() . '</td>';
     $content .= '</tr>';
     $content .= '<tr>';
-    $content .= '<td style="padding-left:15px;">'.i18n("Type filter").'</td>';
-    $content .= '<td>'.$oSelectTypeFilter->render().'</td>';
+    $content .= '<td style="padding-left:15px;">' . i18n("Type filter") . '</td>';
+    $content .= '<td>' . $oSelectTypeFilter->render() . '</td>';
     $content .= '</tr>';
     $content .= '<tr>';
-    $content .= '<td style="padding-left:15px;">'.i18n("Search for").'</td>';
-    $content .= '<td>'.$oTextboxFilter->render().'</td>';
+    $content .= '<td style="padding-left:15px;">' . i18n("Search for") . '</td>';
+    $content .= '<td>' . $oTextboxFilter->render() . '</td>';
     $content .= '</tr>';
-    $content .= '<td style="padding-left:15px;">'.i18n("Search in").'</td>';
-    $content .= '<td>'.$oSelectSearchIn->render().'</td>';
+    $content .= '<td style="padding-left:15px;">' . i18n("Search in") . '</td>';
+    $content .= '<td>' . $oSelectSearchIn->render() . '</td>';
     $content .= '</tr>';
     $content .= '<tr>';
     $content .= '<td style="padding-left:15px;">&nbsp;</td>';
-    $content .= '<td><input type="submit" value="'.i18n("Apply").'"></td>';
+    $content .= '<td><input type="submit" value="' . i18n("Apply") . '"></td>';
     $content .= '</tr>';
     $content .= '</table>';
     $content .= '</form>';
     $content .= '</div>';
     $oListOptionRow->setContentData($content);
 
-    #######
-    # Pager
-    #######
-    $cApiModuleCollection    = new cApiModuleCollection;
+    // Pager
+    $cApiModuleCollection = new cApiModuleCollection;
     $cApiModuleCollection->setWhere("idclient", $client);
 
     $cApiModuleCollection->query();
     $iItemCount = $cApiModuleCollection->count();
 
     $oPagerLink = new cHTMLLink;
-    $pagerl="pagerlink";
+    $pagerl = "pagerlink";
     $oPagerLink->setTargetFrame('left_bottom');
     $oPagerLink->setLink("main.php");
     $oPagerLink->setCustom("elemperpage", $elemperpage);
@@ -174,17 +162,15 @@ if ((int) $client > 0) {
 
     $tpl->set('s', 'PAGINGLINK', $pagerl);
 
-
-    $tpl->set('s', 'ACTION', $str.$strSync.'<table class="generic" style="margin-top:1px" border="0" cellspacing="0" cellpadding="0" width="100%">'.$oListOptionRow->render().$oPager ->render().'</table>');
-     //$tpl->set('s', 'ACTION2', $str.'<table style="margin-top:1px" border="0" cellspacing="0" cellpadding="0" width="100%">'.$oListOptionRow->render().$oPager ->render().'</table>');
+    $tpl->set('s', 'ACTION', $str . $strSync . '<table class="generic" style="margin-top:1px" border="0" cellspacing="0" cellpadding="0" width="100%">' . $oListOptionRow->render() . $oPager->render() . '</table>');
+    //$tpl->set('s', 'ACTION2', $str.'<table style="margin-top:1px" border="0" cellspacing="0" cellpadding="0" width="100%">'.$oListOptionRow->render().$oPager ->render().'</table>');
 } else {
     $tpl->set('s', 'PAGINGLINK', '');
     $tpl->set('s', 'ACTION', $str);
     $tpl->set('s', 'LISTOPLINK', '');
 }
 
-############################
-# generate template
-############################
+// generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['mod_left_top']);
+
 ?>

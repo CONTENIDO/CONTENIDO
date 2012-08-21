@@ -21,18 +21,8 @@
  *
  * {@internal
  *   created 2003-01-21
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2011-02-07, Dominik Ziegler, removed integration of not supported java module editor
- *   modified 2011-01-11, Rusmir Jusufovic
- *       - save and load input/output of moduls from files
- *       - mod_sync synchronize moduls from file and moduls from db
- *
- *   modified 2011-06-22, Rusmir Jusufovic , the name of the moduls come from field alias
- *                   differnet updates (error display ...)
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -42,19 +32,20 @@ if (!defined('CON_FRAMEWORK')) {
 cInclude("includes", "functions.upl.php");
 cInclude("external", "codemirror/class.codemirror.php");
 
-$noti             = "";
+$noti = "";
 $sOptionDebugRows = getEffectiveSetting("modules", "show-debug-rows", "never");
 
-if (!isset($idmod)) $idmod = 0;
+if (!isset($idmod)) {
+    $idmod = 0;
+}
 
-$contenidoModuleHandler = new cModuleHandler($idmod );
+$contenidoModuleHandler = new cModuleHandler($idmod);
 if (($action == "mod_delete") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
     $notification->displayNotification("error", i18n("No permission"));
     return;
 }
 
 if ($action == "mod_delete") {
-
     // if erase had been successfully
     if ($contenidoModuleHandler->eraseModule() == true) {
         $modules = new cApiModuleCollection;
@@ -89,13 +80,12 @@ if ($action == "mod_sync") {
     // if a module is deleted in filesystem but not in db make an update
     #$idmodUpdate = $contenidoModuleSynchronizer->updateDirFromModuls();
     #we need the idmod for refresh all frames
-    if ($idmod == 0 &&$idmodUpdate != 0) {
+    if ($idmod == 0 && $idmodUpdate != 0) {
         $idmod = $idmodUpdate;
     }
 
     // the actuly Modul is the last Modul from synchronize
     $contenidoModuleHandler = new cModuleHandler($idmod);
-
 }
 
 if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
@@ -114,18 +104,18 @@ if ($action == "mod_new") {
     }
 
     $module = $modules->create(i18n("- Unnamed module -"));
-    $module->set("alias",strtolower($alias));
+    $module->set("alias", strtolower($alias));
 
     $module->store();
     // save into the file
     $contenidoModuleHandler = new cModuleHandler($module->get("idmod"));
 
     if ($contenidoModuleHandler->createModule() == false) {
-         // logg error
-         $notification->displayNotification("error", i18n("Cant make a new modul!"));
-         die();
+        // logg error
+        $notification->displayNotification("error", i18n("Cant make a new modul!"));
+        die();
     } else {
-         $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Created new module successfuly!"));
+        $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Created new module successfuly!"));
     }
 } else {
     $module = new cApiModule();
@@ -143,7 +133,7 @@ if ($action == "mod_importexport_module") {
             } else {
                 // Load the item again (clearing slashes from import)
                 $module->loadByPrimaryKey($module->get($module->primaryKey));
-                $contenidoModuleHandler  = new cModuleHandler($module->get('idmod'));
+                $contenidoModuleHandler = new cModuleHandler($module->get('idmod'));
             }
         }
     }
@@ -155,7 +145,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $link = new cHTMLLink();
     $link->setCLink("mod_translate", 4, "");
     $link->setCustom("idmod", $idmod);
-    header("Location: ".$link->getHREF());
+    header("Location: " . $link->getHREF());
 } else {
     $oInUse = new cApiInUseCollection();
     list($bInUse, $message) = $oInUse->checkAndMark("idmod", $idmod, true, i18n("Module is in use by %s (%s)"), true, "main.php?area=$area&frame=$frame&idmod=$idmod");
@@ -171,21 +161,21 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $page = new cGuiPage("mod_edit_form");
     $form = new cGuiTableForm("mod_edit");
     $form->setTableid('mod_edit');
-    $form->setVar("area","mod_edit");
+    $form->setVar("area", "mod_edit");
     $form->setVar("frame", $frame);
     $form->setVar("idmod", $idmod);
-    $page->setSubnav('action='+$action);
+    $page->setSubnav('action=' + $action);
     if (!$bInUse) {
         $form->setVar("action", "mod_edit");
     }
 
     $form->addHeader(i18n("Edit module"));
 
-    $name  = new cHTMLTextbox("name", $module->get("name"),60);
+    $name = new cHTMLTextbox("name", $module->get("name"), 60);
     $descr = new cHTMLTextarea("descr", htmlspecialchars($module->get("description")), 100, 5);
 
     // Get input and output code; if specified, prepare row fields
-    $sInputData  = "";
+    $sInputData = "";
     $sOutputData = "";
 
     // Read the input and output for the editing in Backend from file
@@ -195,9 +185,8 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     }
 
     if ($sOptionDebugRows !== "never") {
-        $iInputNewLines  = substr_count($sInputData,  "\n") + 2; // +2: Just sanity, to have at least two more lines than the code
+        $iInputNewLines = substr_count($sInputData, "\n") + 2; // +2: Just sanity, to have at least two more lines than the code
         $iOutputNewLines = substr_count($sOutputData, "\n") + 2; // +2: Just sanity, to have at least two more lines than the code
-
         // Have at least 15 + 2 lines (15 = code textarea lines count)
         if ($iInputNewLines < 21) {
             $iInputNewLines = 21;
@@ -207,7 +196,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         }
 
         // Calculate how many characters are needed (e.g. 2 for lines ip to 99)
-        $iInputNewLineChars  = strlen($iInputNewLines);
+        $iInputNewLineChars = strlen($iInputNewLines);
         $iOutputNewLineChars = strlen($iOutputNewLines);
         if ($iInputNewLineChars > $iOutputNewLineChars) {
             $iChars = $iInputNewLineChars;
@@ -221,7 +210,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
             if ($sRows) {
                 $sRows .= "\r\n"; // why windows line feed???
             }
-            $sRows .= sprintf("%0".$iChars."d", $i);
+            $sRows .= sprintf("%0" . $iChars . "d", $i);
         }
         $oInputRows = new cHTMLTextarea("txtInputRows", $sRows, $iChars, 20);
 
@@ -230,7 +219,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
             if ($sRows) {
                 $sRows .= "\r\n"; // why windows line feed???
             }
-            $sRows .= sprintf("%0".$iChars."d", $i);
+            $sRows .= sprintf("%0" . $iChars . "d", $i);
         }
         $oOutputRows = new cHTMLTextarea("txtOutputRows", $sRows, $iChars, 20);
 
@@ -245,7 +234,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         $oOutputRows->setStyle("font-family: monospace;");
     }
 
-    $input  = new cHTMLTextarea("input",  $sInputData, 100, 20, 'input');
+    $input = new cHTMLTextarea("input", $sInputData, 100, 20, 'input');
     $output = new cHTMLTextarea("output", $sOutputData, 100, 20, 'output');
 
     // Style the fields
@@ -271,7 +260,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $typeselect = new cHTMLSelectElement("type");
 
     $db2 = cRegistry::getDb();
-    $sql = "SELECT type FROM ".$cfg["tab"]["mod"]." WHERE idclient=" . (int) $client . " GROUP BY type"; // This query can't be designed using GenericDB...
+    $sql = "SELECT type FROM " . $cfg["tab"]["mod"] . " WHERE idclient=" . (int) $client . " GROUP BY type"; // This query can't be designed using GenericDB...
     $db2->query($sql);
 
     $aTypes = array();
@@ -298,9 +287,9 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
     if (is_array($typearray)) {
         asort($typearray);
-        $typeselect->autoFill(array_merge(array("" => "-- ".i18n("Custom")." --"), $typearray));
+        $typeselect->autoFill(array_merge(array("" => "-- " . i18n("Custom") . " --"), $typearray));
     } else {
-        $typeselect->autoFill(array("" => "-- ".i18n("Custom")." --"));
+        $typeselect->autoFill(array("" => "-- " . i18n("Custom") . " --"));
     }
 
     $typeselect->setEvent("change", 'if (document.forms["mod_edit"].elements["type"].value == 0) { document.forms["mod_edit"].elements["customtype"].disabled=0;} else {document.forms["mod_edit"].elements["customtype"].disabled=1;}');
@@ -318,7 +307,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
     $modulecheck = getSystemProperty("system", "modulecheck");
 
-    $inputok  = true;
+    $inputok = true;
     $outputok = true;
 
     $inputModTest = "";
@@ -335,20 +324,20 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     if ($modulecheck !== "false") {
         $outputok = modTestModule($outputModTest, $module->get("idmod") . "o", true);
         if (!$outputok) {
-            $errorMessage = sprintf(i18n("Error in module. Error location: %s"),$modErrorMessage);
-            $outled = '<img align="right" src="images/but_online_no.gif" alt="'.$errorMessage.'" title="'.$errorMessage.'">';
+            $errorMessage = sprintf(i18n("Error in module. Error location: %s"), $modErrorMessage);
+            $outled = '<img align="right" src="images/but_online_no.gif" alt="' . $errorMessage . '" title="' . $errorMessage . '">';
         } else {
             $okMessage = i18n("Module successfully compiled");
-            $outled = '<img align="right" src="images/but_online.gif" alt="'.$okMessage.'" title="'.$okMessage.'">';
+            $outled = '<img align="right" src="images/but_online.gif" alt="' . $okMessage . '" title="' . $okMessage . '">';
         }
 
-        $inputok = modTestModule($inputModTest, $module->get("idmod"). "i");
+        $inputok = modTestModule($inputModTest, $module->get("idmod") . "i");
         if (!$inputok) {
-            $errorMessage = sprintf(i18n("Error in module. Error location: %s"),$modErrorMessage);
-            $inled = '<img align="right" src="images/but_online_no.gif" alt="'.$errorMessage.'" title="'.$errorMessage.'">';
+            $errorMessage = sprintf(i18n("Error in module. Error location: %s"), $modErrorMessage);
+            $inled = '<img align="right" src="images/but_online_no.gif" alt="' . $errorMessage . '" title="' . $errorMessage . '">';
         } else {
             $okMessage = i18n("Module successfully compiled");
-            $inled = '<img align="right" src="images/but_online.gif" alt="'.$okMessage.'" title="'.$okMessage.'">';
+            $inled = '<img align="right" src="images/but_online.gif" alt="' . $okMessage . '" title="' . $okMessage . '">';
         }
 
         // Store error information in the database (to avoid re-eval for module overview/menu)
@@ -372,16 +361,15 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     }
 
     $form->add(i18n("Name"), $name->render());
-    $form->add(i18n("Type"), $typeselect->render().$custom->render());
+    $form->add(i18n("Type"), $typeselect->render() . $custom->render());
     $form->add(i18n("Description"), $descr->render());
 
-    if ($sOptionDebugRows == "always" || ($sOptionDebugRows == "onerror" && (!$inputok || !$outputok)))
-    {
-        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oInputRows->render().'</td></tr></table>', $input->render());
-        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oOutputRows->render().'</td></tr></table>', $output->render());
+    if ($sOptionDebugRows == "always" || ($sOptionDebugRows == "onerror" && (!$inputok || !$outputok))) {
+        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">' . i18n("Input") . '</td><td style="vertical-align: top;">' . $inled . '</td><td style="padding-left: 5px; vertical-align: top;">' . $oInputRows->render() . '</td></tr></table>', $input->render());
+        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">' . i18n("Output") . '</td><td style="vertical-align: top;">' . $outled . '</td><td style="padding-left: 5px; vertical-align: top;">' . $oOutputRows->render() . '</td></tr></table>', $output->render());
     } else {
-        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td></tr></table>', $input->render());
-        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td></tr></table>', $output->render());
+        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">' . i18n("Input") . '</td><td style="vertical-align: top;">' . $inled . '</td></tr></table>', $input->render());
+        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">' . i18n("Output") . '</td><td style="vertical-align: top;">' . $outled . '</td></tr></table>', $output->render());
     }
 
     if ($module->isOldModule()) {
@@ -404,8 +392,8 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         $outputChecked = "";
 
         if ($contenidoModuleHandler->modulePathExists() == true) {
-             $inputChecked = $contenidoModuleHandler->readInput();
-             $outputChecked = $contenidoModuleHandler->readOutput();
+            $inputChecked = $contenidoModuleHandler->readInput();
+            $outputChecked = $contenidoModuleHandler->readOutput();
         }
 
         if ($inputChecked != "" && $outputChecked != "") {
@@ -443,7 +431,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         if ($action == "mod_sync" || $action == "mod_delete") {
             $page->abortRendering();
         } else {
-            $page->set("s", "FORM", $message.$form->render()."<br>");
+            $page->set("s", "FORM", $message . $form->render() . "<br>");
         }
     }
 
@@ -457,17 +445,15 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         $oCodeMirrorInput = new CodeMirror('input', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
         $oCodeMirrorOutput = new CodeMirror('output', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
 
-        $page->addScript($oCodeMirrorInput->renderScript().$oCodeMirrorOutput->renderScript());
+        $page->addScript($oCodeMirrorInput->renderScript() . $oCodeMirrorOutput->renderScript());
 
         //dont print meneu
-        if($action == "mod_sync") {
-            $page->setSubnav("idmod=".$idmod."&dont_print_subnav=1");
-        }
-        else {
-            $page->setSubnav("idmod=".$idmod, "mod");
+        if ($action == "mod_sync") {
+            $page->setSubnav("idmod=" . $idmod . "&dont_print_subnav=1");
+        } else {
+            $page->setSubnav("idmod=" . $idmod, "mod");
         }
         $page->render();
     }
 }
-
 ?>
