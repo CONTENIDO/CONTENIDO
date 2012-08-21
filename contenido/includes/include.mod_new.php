@@ -75,22 +75,15 @@ if ((int) $client > 0) {
     $oSelectSearchIn->setDefault($_REQUEST["searchin"]);
 
     // build list with filter types
-    $sql = "SELECT
-               type
-            FROM
-               " . $cfg["tab"]["mod"] . "
-            WHERE
-               idclient = '" . cSecurity::toInteger($client) . "'
-            GROUP BY type";
-
-    $db->query($sql);
     $aFilterType = array();
     $aFilterType["--all--"] = i18n("-- All --");
     $aFilterType["--wotype--"] = i18n("-- Without type --");
 
-    while ($db->next_record()) {
-        if (trim($db->f("type")) != "") {
-            $aFilterType[$db->f("type")] = $db->f("type");
+    $oModuleColl = new cApiModuleCollection();
+    $aTypes = $oModuleColl->getAllTypesByIdclient($client);
+    foreach ($aTypes as $type) {
+        if (trim($type) != "") {
+            $aFilterType[$type] = $type;
         }
     }
 

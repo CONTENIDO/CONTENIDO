@@ -114,6 +114,23 @@ class cApiModuleCollection extends ItemCollection {
         return $item;
     }
 
+    /**
+     * Returns list of all types by client id
+     * @param  int  $idclient 
+     * @return  array
+     */
+    public function getAllTypesByIdclient($idclient) {
+        $types = array();
+
+        $sql = "SELECT type FROM `%s` WHERE idclient = %d GROUP BY type";
+        $sql = $this->db->prepare($sql, $this->table, $idclient);
+        $this->db->query($sql);
+        while ($this->db->next_record()) {
+            $types[] = $this->db->f('type');
+        }
+
+        return $types;
+    }
 }
 
 /**

@@ -259,16 +259,8 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     // Prepare type select box
     $typeselect = new cHTMLSelectElement("type");
 
-    $db2 = cRegistry::getDb();
-    $sql = "SELECT type FROM " . $cfg["tab"]["mod"] . " WHERE idclient=" . (int) $client . " GROUP BY type"; // This query can't be designed using GenericDB...
-    $db2->query($sql);
-
-    $aTypes = array();
-    while ($db2->next_record()) {
-        if ($db2->f("type") != "") {
-            $aTypes[] = $db2->f("type");
-        }
-    }
+    $oModuleColl = new cApiModuleCollection();
+    $aTypes = $oModuleColl->getAllTypesByIdclient($client);
 
     // Read existing layouts
     $oLayouts = new cApiLayoutCollection();
