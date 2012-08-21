@@ -48,11 +48,11 @@ data/
 
 cms/cache/
 cms/css/
+cms/data/
 cms/js/
-cms/logs/
 cms/templates/
 cms/upload/
-cms/version/
+
 
 auf rwxrwxrwx. (z.B.: chmod 777 cms/upload/)
 
