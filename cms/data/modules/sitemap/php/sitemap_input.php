@@ -53,8 +53,8 @@ $sHtmlTable = '<table border="0" cellpadding="10" cellspacing="0">
     <td>'.mi18n("HTML Ausgabe:").'</td>
     <td>
         <select name="' . "CMS_VAR[3]" . '">
-            <option value="0"'.$sSelectedHtmlStyle0.'>&lt;ul&gt;&lt;li&gt;Alle Kategorien in einer Liste&lt;/li&gt;&lt;/ul&gt;</option>
-            <option value="1"'.$sSelectedHtmlStyle1.'>&lt;ul&gt;&lt;li&gt;Alle Hauptkategorien in einer eigenen ul&lt;/li&gt;&lt;/ul&gt;</option>
+            <option value="0"'.$sSelectedHtmlStyle0.'>Alle Kategorien in einer Liste</option>
+            <option value="1"'.$sSelectedHtmlStyle1.'>Alle Hauptkategorien in einer eigenen Liste</option>
         </select>
     </td>
 </tr>
