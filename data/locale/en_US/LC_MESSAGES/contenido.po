@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-20 22:38+0200\n"
-"PO-Revision-Date: 2012-08-20 23:05+0100\n"
+"POT-Creation-Date: 2012-08-22 02:22+0200\n"
+"PO-Revision-Date: 2012-08-22 02:23+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -46,7 +46,7 @@ msgstr ""
 #: classes/content_types/class.content.type.teaser.php:706
 #: includes/include.con_art_overview.php:73
 #: includes/include.frontend.left_top.php:240
-#: includes/include.mod_new.php:129
+#: includes/include.mod_new.php:112
 #: includes/include.rights_left_top.php:155
 #: includes/include.upl_artlist.php:80
 msgid "Sort order"
@@ -246,11 +246,11 @@ msgstr ""
 #: includes/include.js_history.php:158
 #: includes/include.lay_edit_form.php:218
 #: includes/include.lay_history.php:117
-#: includes/include.mod_edit_form.php:374
-#: includes/include.mod_history.php:130
-#: includes/include.mod_new.php:60
-#: includes/include.mod_script.php:198
-#: includes/include.mod_style.php:223
+#: includes/include.mod_edit_form.php:355
+#: includes/include.mod_history.php:125
+#: includes/include.mod_new.php:52
+#: includes/include.mod_script.php:197
+#: includes/include.mod_style.php:224
 #: includes/include.mycontenido_settings.php:128
 #: includes/include.rights_create.php:130
 #: includes/include.rights_left_top.php:116
@@ -490,40 +490,40 @@ msgstr ""
 msgid "Hide notification"
 msgstr ""
 
-#: classes/contenido/class.module.php:437
-#: includes/include.mod_edit_form.php:109
-#: includes/include.mod_edit_form.php:116
+#: classes/contenido/class.module.php:454
+#: includes/include.mod_edit_form.php:99
+#: includes/include.mod_edit_form.php:106
 msgid "- Unnamed module -"
 msgstr ""
 
-#: classes/contenido/class.module.php:519
-#: classes/contenido/class.module.php:581
+#: classes/contenido/class.module.php:536
+#: classes/contenido/class.module.php:598
 msgid "Module exist!"
 msgstr ""
 
-#: classes/contenido/class.module.php:540
+#: classes/contenido/class.module.php:557
 msgid "Import failed, could not extract zip file!"
 msgstr ""
 
-#: classes/contenido/class.module.php:544
-#: classes/contenido/class.module.php:660
+#: classes/contenido/class.module.php:561
+#: classes/contenido/class.module.php:677
 msgid "Could not open the zip file!"
 msgstr ""
 
-#: classes/contenido/class.module.php:588
+#: classes/contenido/class.module.php:605
 msgid "Could not make a module!"
 msgstr ""
 
-#: classes/contenido/class.module.php:596
+#: classes/contenido/class.module.php:613
 msgid "Could not parse xml file!"
 msgstr ""
 
-#: classes/contenido/class.module.php:629
+#: classes/contenido/class.module.php:646
 #, php-format
 msgid "Could not add file %s to zip!"
 msgstr ""
 
-#: classes/contenido/class.module.php:663
+#: classes/contenido/class.module.php:680
 msgid "Module don't exist on file system!"
 msgstr ""
 
@@ -614,7 +614,7 @@ msgid "Default style"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:593
-#: includes/include.upl_edit.php:83
+#: includes/include.upl_edit.php:82
 msgid "File name"
 msgstr ""
 
@@ -637,7 +637,7 @@ msgstr ""
 #: classes/content_types/class.content.type.teaser.php:770
 #: includes/include.frontend.left_top.php:106
 #: includes/include.frontend.user_menu.php:104
-#: includes/include.mod_new.php:61
+#: includes/include.mod_new.php:53
 #: includes/include.rights_left_top.php:118
 msgid "Ascending"
 msgstr ""
@@ -646,7 +646,7 @@ msgstr ""
 #: classes/content_types/class.content.type.teaser.php:773
 #: includes/include.frontend.left_top.php:106
 #: includes/include.frontend.user_menu.php:104
-#: includes/include.mod_new.php:61
+#: includes/include.mod_new.php:53
 #: includes/include.rights_left_top.php:119
 msgid "Descending"
 msgstr ""
@@ -705,10 +705,10 @@ msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:803
 #: classes/module/class.module.template.handler.php:459
-#: includes/include.mod_edit_form.php:424
-#: includes/include.mod_edit_form.php:426
-#: includes/include.mod_import_export.php:123
-#: includes/include.mod_import_export.php:125
+#: includes/include.mod_edit_form.php:404
+#: includes/include.mod_edit_form.php:406
+#: includes/include.mod_import_export.php:127
+#: includes/include.mod_import_export.php:129
 #: xml/navigation.xml:61
 #: xml/navigation.xml:66
 #: xml/navigation.xml:71
@@ -758,9 +758,9 @@ msgstr ""
 #: includes/include.js_history.php:159
 #: includes/include.lay_edit_form.php:219
 #: includes/include.lay_history.php:118
-#: includes/include.mod_edit_form.php:376
-#: includes/include.mod_history.php:131
-#: includes/include.mod_new.php:78
+#: includes/include.mod_edit_form.php:357
+#: includes/include.mod_history.php:126
+#: includes/include.mod_new.php:70
 #: includes/include.mycontenido.tasks.edit.php:64
 #: includes/include.pretplcfg_edit_form.php:156
 #: includes/include.style_edit_form.php:201
@@ -768,7 +768,7 @@ msgstr ""
 #: includes/include.todo.popup.php:65
 #: includes/include.tplcfg_edit_form.php:450
 #: includes/include.tpl_edit_form.php:164
-#: includes/include.upl_edit.php:87
+#: includes/include.upl_edit.php:86
 #: scripts/langref.php:28
 #: templates/standard/template.tpl_edit_form.html:29
 #: templates/standard/template.upl_files_overview.html:168
@@ -776,17 +776,17 @@ msgid "Description"
 msgstr ""
 
 #: classes/content_types/class.content.type.imgeditor.php:396
-#: includes/include.upl_edit.php:88
+#: includes/include.upl_edit.php:87
 msgid "Keywords"
 msgstr ""
 
 #: classes/content_types/class.content.type.imgeditor.php:398
-#: includes/include.upl_edit.php:89
+#: includes/include.upl_edit.php:88
 msgid "Internal notes"
 msgstr ""
 
 #: classes/content_types/class.content.type.imgeditor.php:400
-#: includes/include.upl_edit.php:90
+#: includes/include.upl_edit.php:89
 msgid "Copyright"
 msgstr ""
 
@@ -803,7 +803,7 @@ msgstr ""
 #: includes/functions.stat.php:692
 #: includes/functions.stat.php:787
 #: includes/functions.stat.php:875
-#: includes/include.upl_edit.php:84
+#: includes/include.upl_edit.php:83
 #: includes/include.upl_search_results.php:169
 #: includes/include.upl_search_results.php:172
 #: includes/include.upl_search_results.php:174
@@ -1200,11 +1200,11 @@ msgstr ""
 #: includes/include.frontend.group_edit.php:120
 #: includes/include.frontend.group_edit.php:160
 #: includes/include.frontend.group_rights.php:86
-#: includes/include.frontend.user_edit.php:162
+#: includes/include.frontend.user_edit.php:166
 #: includes/include.html_tpl_edit_form.php:154
 #: includes/include.js_edit_form.php:170
-#: includes/include.mod_script.php:162
-#: includes/include.mod_style.php:185
+#: includes/include.mod_script.php:161
+#: includes/include.mod_style.php:186
 #: includes/include.pretplcfg_edit.php:106
 #: includes/include.style_edit_form.php:149
 #: includes/include.systemsettings.php:49
@@ -1254,16 +1254,16 @@ msgstr ""
 #: includes/include.html_tpl_history.php:57
 #: includes/include.js_edit_form.php:46
 #: includes/include.js_history.php:53
-#: includes/include.lang_edit.php:118
+#: includes/include.lang_edit.php:122
 #: includes/include.lay_edit_form.php:48
 #: includes/include.lay_edit_form.php:75
 #: includes/include.lay_edit_form.php:84
 #: includes/include.lay_history.php:44
 #: includes/include.logs.php:40
-#: includes/include.mod_history.php:50
+#: includes/include.mod_history.php:44
 #: includes/include.mod_script.php:65
-#: includes/include.mod_style.php:65
-#: includes/include.mod_template.php:59
+#: includes/include.mod_style.php:66
+#: includes/include.mod_template.php:55
 #: includes/include.rights_area.php:51
 #: includes/include.rights_con.php:49
 #: includes/include.rights_create.php:35
@@ -1293,8 +1293,8 @@ msgstr ""
 #: classes/module/class.module.template.handler.php:404
 #: includes/include.html_tpl_edit_form.php:225
 #: includes/include.js_edit_form.php:190
-#: includes/include.mod_script.php:183
-#: includes/include.mod_style.php:210
+#: includes/include.mod_script.php:182
+#: includes/include.mod_style.php:211
 #: includes/include.style_edit_form.php:184
 msgid "Edit file"
 msgstr ""
@@ -1312,6 +1312,8 @@ msgstr ""
 #: includes/include.logs.php:282
 #: includes/include.mail_log.right_bottom.php:32
 #: templates/standard/template.log_main.html:35
+#: templates/standard/template.mail_log.detail.html:52
+#: templates/standard/template.mail_log.detail.html:97
 msgid "Action"
 msgstr ""
 
@@ -1322,8 +1324,8 @@ msgstr ""
 #: includes/include.js_history.php:160
 #: includes/include.lay_edit_form.php:220
 #: includes/include.lay_history.php:119
-#: includes/include.mod_script.php:199
-#: includes/include.mod_style.php:224
+#: includes/include.mod_script.php:198
+#: includes/include.mod_style.php:225
 #: includes/include.style_edit_form.php:202
 #: includes/include.style_history.php:155
 msgid "Code"
@@ -1481,8 +1483,8 @@ msgstr ""
 #: includes/include.html_tpl_history.php:98
 #: includes/include.js_edit_form.php:135
 #: includes/include.js_history.php:93
-#: includes/include.mod_script.php:138
-#: includes/include.mod_style.php:158
+#: includes/include.mod_script.php:137
+#: includes/include.mod_style.php:159
 #: includes/include.style_edit_form.php:127
 #: includes/include.style_history.php:87
 #, php-format
@@ -1876,9 +1878,9 @@ msgstr ""
 
 #: includes/include.clientsettings.php:92
 #: includes/include.clientsettings.php:165
-#: includes/include.mod_edit_form.php:375
-#: includes/include.mod_new.php:60
-#: includes/include.mod_new.php:79
+#: includes/include.mod_edit_form.php:356
+#: includes/include.mod_new.php:52
+#: includes/include.mod_new.php:71
 #: includes/include.systemsettings.php:71
 #: includes/include.systemsettings.php:168
 #: includes/include.upl_files_overview.php:396
@@ -1919,7 +1921,7 @@ msgstr ""
 #: includes/include.client_artspec.php:75
 #: includes/include.systemsettings.php:83
 #: includes/include.systemsettings.php:86
-#: includes/include.upl_edit.php:60
+#: includes/include.upl_edit.php:59
 #: xml/navigation.xml:31
 #: xml/navigation.xml:38
 #: xml/navigation.xml:39
@@ -2000,7 +2002,7 @@ msgstr ""
 #: includes/include.client_edit.php:138
 #: includes/include.grouprights.php:308
 #: includes/include.grouprights_overview.php:75
-#: includes/include.lang_edit.php:125
+#: includes/include.lang_edit.php:129
 #: includes/include.mycontenido_settings.php:67
 #: includes/include.mycontenido_settings.php:105
 #: includes/include.rights.php:340
@@ -2131,7 +2133,7 @@ msgid "Directory / File"
 msgstr ""
 
 #: includes/include.CMS_IMG.php:219
-#: includes/include.upl_edit.php:93
+#: includes/include.upl_edit.php:92
 #: includes/include.upl_files_overview.php:455
 #: includes/include.upl_search_results.php:236
 #: xml/navigation.xml:20
@@ -2318,7 +2320,7 @@ msgstr ""
 
 #: includes/include.con_content_list.php:191
 #: includes/include.con_left_top.php:339
-#: includes/include.frontend.user_edit.php:238
+#: includes/include.frontend.user_edit.php:242
 #: includes/include.rights_overview.php:399
 #: includes/include.str_overview.php:162
 #: includes/include.str_overview.php:581
@@ -2482,8 +2484,8 @@ msgid "Date to"
 msgstr ""
 
 #: includes/include.con_left_top.php:252
-#: includes/include.frontend.user_edit.php:244
-#: includes/include.upl_edit.php:94
+#: includes/include.frontend.user_edit.php:248
+#: includes/include.upl_edit.php:93
 msgid "Author"
 msgstr ""
 
@@ -2726,7 +2728,7 @@ msgid "No Client selected"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:177
-#: includes/include.mod_new.php:63
+#: includes/include.mod_new.php:55
 #: includes/include.rights_left_top.php:123
 msgid "List options"
 msgstr ""
@@ -2737,13 +2739,13 @@ msgid "-- All Groups --"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:232
-#: includes/include.mod_new.php:121
+#: includes/include.mod_new.php:104
 #: includes/include.rights_left_top.php:147
 msgid "Items / page"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:236
-#: includes/include.mod_new.php:125
+#: includes/include.mod_new.php:108
 #: includes/include.rights_left_top.php:151
 msgid "Sort by"
 msgstr ""
@@ -2753,19 +2755,19 @@ msgid "Show group"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:248
-#: includes/include.mod_new.php:137
+#: includes/include.mod_new.php:120
 #: includes/include.rights_left_top.php:159
 #: includes/include.upl_left_top.php:69
 msgid "Search for"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:252
-#: includes/include.mod_new.php:140
+#: includes/include.mod_new.php:123
 msgid "Search in"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:257
-#: includes/include.mod_new.php:145
+#: includes/include.mod_new.php:128
 #: includes/include.rights_left_top.php:164
 msgid "Apply"
 msgstr ""
@@ -2798,60 +2800,60 @@ msgstr ""
 msgid "Created new user successfully!"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:98
+#: includes/include.frontend.user_edit.php:100
 msgid "Delteted user successfully!"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:109
+#: includes/include.frontend.user_edit.php:113
 msgid "Could not set new username: Username already exists"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:116
+#: includes/include.frontend.user_edit.php:120
 msgid "Could not set new password: Passwords don't match"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:176
+#: includes/include.frontend.user_edit.php:180
 #: ../data/config/production/cfg_actions.inc.php:117
 msgid "Edit user"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:184
+#: includes/include.frontend.user_edit.php:188
 #: includes/include.rights_left_top.php:115
 msgid "User name"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:185
+#: includes/include.frontend.user_edit.php:189
 #: includes/include.mycontenido_settings.php:137
 #: includes/include.rights_create.php:135
 #: includes/include.rights_overview.php:186
 msgid "New password"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:186
+#: includes/include.frontend.user_edit.php:190
 msgid "New password (again)"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:187
-#: includes/include.lang_edit.php:222
+#: includes/include.frontend.user_edit.php:191
+#: includes/include.lang_edit.php:226
 msgid "Active"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:215
+#: includes/include.frontend.user_edit.php:219
 msgid "WARNING"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:215
+#: includes/include.frontend.user_edit.php:219
 #, php-format
 msgid "The plugin %s delivered an array for the displayed titles, but did not return an array for the contents."
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:241
+#: includes/include.frontend.user_edit.php:245
 #: includes/include.rights_overview.php:402
 msgid "Group membership"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:246
-#: includes/include.upl_edit.php:95
+#: includes/include.frontend.user_edit.php:250
+#: includes/include.upl_edit.php:94
 msgid "Last modified by"
 msgstr ""
 
@@ -3001,7 +3003,7 @@ msgid "Do you really want to delete the following group:<br><br>%s<br>"
 msgstr ""
 
 #: includes/include.grouprights_mod.php:80
-#: includes/include.mod_new.php:77
+#: includes/include.mod_new.php:69
 #: includes/include.rights_mod.php:79
 msgid "Module name"
 msgstr ""
@@ -3069,7 +3071,7 @@ msgstr ""
 #: includes/include.html_tpl_history.php:62
 #: includes/include.js_history.php:58
 #: includes/include.lay_history.php:49
-#: includes/include.mod_history.php:55
+#: includes/include.mod_history.php:51
 #: includes/include.style_history.php:54
 msgid "Versioning is not activated"
 msgstr ""
@@ -3082,7 +3084,7 @@ msgstr ""
 #: includes/include.html_tpl_history.php:169
 #: includes/include.js_history.php:161
 #: includes/include.lay_history.php:120
-#: includes/include.mod_history.php:134
+#: includes/include.mod_history.php:129
 #: includes/include.style_history.php:156
 msgid "Copy to current"
 msgstr ""
@@ -3095,7 +3097,7 @@ msgstr ""
 #: includes/include.html_tpl_history.php:189
 #: includes/include.js_history.php:181
 #: includes/include.lay_history.php:134
-#: includes/include.mod_history.php:147
+#: includes/include.mod_history.php:141
 #: includes/include.style_history.php:172
 msgid "Version history was cleared"
 msgstr ""
@@ -3149,58 +3151,58 @@ msgstr ""
 msgid "Created new language successfully!"
 msgstr ""
 
-#: includes/include.lang_edit.php:208
+#: includes/include.lang_edit.php:212
 msgid "Left to right"
 msgstr ""
 
-#: includes/include.lang_edit.php:208
+#: includes/include.lang_edit.php:212
 msgid "Right to left"
 msgstr ""
 
-#: includes/include.lang_edit.php:218
+#: includes/include.lang_edit.php:222
 #: ../data/config/production/cfg_actions.inc.php:132
 msgid "Edit language"
 msgstr ""
 
-#: includes/include.lang_edit.php:220
+#: includes/include.lang_edit.php:224
 msgid "Language name"
 msgstr ""
 
-#: includes/include.lang_edit.php:224
-#: includes/include.lang_edit.php:226
+#: includes/include.lang_edit.php:228
+#: includes/include.lang_edit.php:230
 #: includes/include.logs.php:279
 #: main.loginform.php:140
 #: templates/standard/template.log_main.html:27
 msgid "Language"
 msgstr ""
 
-#: includes/include.lang_edit.php:225
+#: includes/include.lang_edit.php:229
 msgid "Encoding"
 msgstr ""
 
-#: includes/include.lang_edit.php:227
+#: includes/include.lang_edit.php:231
 #: includes/include.mycontenido_settings.php:157
 #: includes/include.rights_create.php:170
 #: includes/include.rights_overview.php:222
 msgid "Country"
 msgstr ""
 
-#: includes/include.lang_edit.php:228
+#: includes/include.lang_edit.php:232
 msgid "Text direction"
 msgstr ""
 
-#: includes/include.lang_edit.php:230
-#: includes/include.lang_edit.php:233
+#: includes/include.lang_edit.php:234
+#: includes/include.lang_edit.php:237
 #: includes/include.mycontenido_settings.php:179
 msgid "Time format"
 msgstr ""
 
-#: includes/include.lang_edit.php:231
+#: includes/include.lang_edit.php:235
 #: includes/include.mycontenido_settings.php:177
 msgid "Date/Time format"
 msgstr ""
 
-#: includes/include.lang_edit.php:232
+#: includes/include.lang_edit.php:236
 #: includes/include.mycontenido_settings.php:178
 msgid "Date format"
 msgstr ""
@@ -3290,10 +3292,10 @@ msgid "Synchronize layouts"
 msgstr ""
 
 #: includes/include.lay_overview.php:77
-#: includes/include.mod_edit_form.php:52
-#: includes/include.mod_edit_form.php:79
-#: includes/include.mod_edit_form.php:102
-#: includes/include.mod_overview.php:176
+#: includes/include.mod_edit_form.php:44
+#: includes/include.mod_edit_form.php:70
+#: includes/include.mod_edit_form.php:92
+#: includes/include.mod_overview.php:173
 #: includes/include.str_overview.php:663
 msgid "No permission"
 msgstr ""
@@ -3303,7 +3305,7 @@ msgid "Layout is in use, cannot delete"
 msgstr ""
 
 #: includes/include.lay_overview.php:82
-#: includes/include.mod_overview.php:166
+#: includes/include.mod_overview.php:163
 #: includes/include.tpl_overview.php:93
 msgid "Click for more information about usage"
 msgstr ""
@@ -3403,6 +3405,7 @@ msgid "To"
 msgstr ""
 
 #: includes/include.mail_log.right_bottom.php:38
+#: templates/standard/template.mail_log.detail.html:98
 msgid "Delete email log"
 msgstr ""
 
@@ -3449,186 +3452,186 @@ msgstr ""
 msgid "No item selected!"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:64
+#: includes/include.mod_edit_form.php:55
 msgid "Deleted module successfully!"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:112
+#: includes/include.mod_edit_form.php:102
 msgid "The given module name already exists. Please enter another module name."
 msgstr ""
 
-#: includes/include.mod_edit_form.php:125
+#: includes/include.mod_edit_form.php:115
 msgid "Cant make a new modul!"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:128
+#: includes/include.mod_edit_form.php:118
 msgid "Created new module successfuly!"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:142
+#: includes/include.mod_edit_form.php:132
 msgid "Culd not import modul:"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:161
+#: includes/include.mod_edit_form.php:151
 #, php-format
 msgid "Module is in use by %s (%s)"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:182
-#: includes/include.mod_history.php:93
+#: includes/include.mod_edit_form.php:172
+#: includes/include.mod_history.php:90
 #: ../data/config/production/cfg_actions.inc.php:97
 msgid "Edit module"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:301
-#: includes/include.mod_edit_form.php:303
+#: includes/include.mod_edit_form.php:282
+#: includes/include.mod_edit_form.php:284
 msgid "Custom"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:338
-#: includes/include.mod_edit_form.php:347
+#: includes/include.mod_edit_form.php:319
+#: includes/include.mod_edit_form.php:328
 #, php-format
 msgid "Error in module. Error location: %s"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:341
-#: includes/include.mod_edit_form.php:350
+#: includes/include.mod_edit_form.php:322
+#: includes/include.mod_edit_form.php:331
 msgid "Module successfully compiled"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:380
-#: includes/include.mod_edit_form.php:383
-#: includes/include.mod_new.php:80
+#: includes/include.mod_edit_form.php:360
+#: includes/include.mod_edit_form.php:363
+#: includes/include.mod_new.php:72
 msgid "Input"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:381
-#: includes/include.mod_edit_form.php:384
-#: includes/include.mod_new.php:81
+#: includes/include.mod_edit_form.php:361
+#: includes/include.mod_edit_form.php:364
+#: includes/include.mod_new.php:73
 msgid "Output"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:388
+#: includes/include.mod_edit_form.php:368
 msgid "This module uses variables and/or functions which are probably not available in this CONTENIDO version. Please make sure that you use up-to-date modules."
 msgstr ""
 
-#: includes/include.mod_edit_form.php:395
+#: includes/include.mod_edit_form.php:375
 msgid "Import from file"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:396
-#: includes/include.mod_import_export.php:102
+#: includes/include.mod_edit_form.php:376
+#: includes/include.mod_import_export.php:106
 msgid "Export to file"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:421
-#: includes/include.mod_import_export.php:119
+#: includes/include.mod_edit_form.php:401
+#: includes/include.mod_import_export.php:123
 msgid "Mode"
 msgstr ""
 
-#: includes/include.mod_history.php:132
+#: includes/include.mod_history.php:127
 msgid "Code input"
 msgstr ""
 
-#: includes/include.mod_history.php:133
+#: includes/include.mod_history.php:128
 msgid "Code output"
 msgstr ""
 
-#: includes/include.mod_history.php:150
+#: includes/include.mod_history.php:144
 msgid "No module history available"
 msgstr ""
 
-#: includes/include.mod_import_export.php:43
+#: includes/include.mod_import_export.php:47
 msgid "Could not export module!"
 msgstr ""
 
-#: includes/include.mod_import_export.php:49
-#: includes/include.mod_import_export.php:75
+#: includes/include.mod_import_export.php:53
+#: includes/include.mod_import_export.php:79
 msgid "Could not import module!"
 msgstr ""
 
-#: includes/include.mod_import_export.php:51
-#: includes/include.mod_import_export.php:77
+#: includes/include.mod_import_export.php:55
+#: includes/include.mod_import_export.php:81
 msgid "Module import successfully!"
 msgstr ""
 
-#: includes/include.mod_import_export.php:63
-#: includes/include.mod_import_export.php:89
+#: includes/include.mod_import_export.php:67
+#: includes/include.mod_import_export.php:93
 msgid "No file uploaded!"
 msgstr ""
 
-#: includes/include.mod_import_export.php:100
+#: includes/include.mod_import_export.php:104
 msgid "Import from zip-file"
 msgstr ""
 
-#: includes/include.mod_import_export.php:101
+#: includes/include.mod_import_export.php:105
 msgid "Import from xml-file"
 msgstr ""
 
-#: includes/include.mod_new.php:49
+#: includes/include.mod_new.php:43
 msgid "New module"
 msgstr ""
 
-#: includes/include.mod_new.php:50
+#: includes/include.mod_new.php:44
 #: ../data/config/production/cfg_actions.inc.php:99
 msgid "Synchronize modules"
 msgstr ""
 
-#: includes/include.mod_new.php:52
+#: includes/include.mod_new.php:46
 msgid "No client selected"
 msgstr ""
 
-#: includes/include.mod_new.php:66
-#: includes/include.mod_new.php:76
-#: includes/include.mod_new.php:96
+#: includes/include.mod_new.php:58
+#: includes/include.mod_new.php:68
+#: includes/include.mod_new.php:79
 msgid "-- All --"
 msgstr ""
 
-#: includes/include.mod_new.php:97
+#: includes/include.mod_new.php:80
 msgid "-- Without type --"
 msgstr ""
 
-#: includes/include.mod_new.php:133
+#: includes/include.mod_new.php:116
 msgid "Type filter"
 msgstr ""
 
-#: includes/include.mod_overview.php:168
+#: includes/include.mod_overview.php:165
 msgid "Module in use, cannot delete"
 msgstr ""
 
-#: includes/include.mod_overview.php:172
+#: includes/include.mod_overview.php:169
 #: ../data/config/production/cfg_actions.inc.php:94
 msgid "Delete module"
 msgstr ""
 
-#: includes/include.mod_overview.php:173
+#: includes/include.mod_overview.php:170
 #, php-format
 msgid "Do you really want to delete the following module:<br><br>%s<br>"
 msgstr ""
 
-#: includes/include.mod_script.php:124
+#: includes/include.mod_script.php:123
 msgid "Created new js file successfully"
 msgstr ""
 
-#: includes/include.mod_script.php:126
+#: includes/include.mod_script.php:125
 msgid "Could not create a new js file."
 msgstr ""
 
-#: includes/include.mod_script.php:160
-#: includes/include.mod_style.php:181
+#: includes/include.mod_script.php:159
+#: includes/include.mod_style.php:182
 msgid "Renamed and saved changes successfully!"
 msgstr ""
 
-#: includes/include.mod_style.php:79
-#: includes/include.mod_style.php:147
+#: includes/include.mod_style.php:80
+#: includes/include.mod_style.php:148
 msgid "Could not create a new css file!"
 msgstr ""
 
-#: includes/include.mod_style.php:145
+#: includes/include.mod_style.php:146
 msgid "Created new css file successfully"
 msgstr ""
 
-#: includes/include.mod_style.php:183
+#: includes/include.mod_style.php:184
 #: includes/include.style_edit_form.php:151
 msgid "Can't save file!"
 msgstr ""
@@ -3735,7 +3738,7 @@ msgstr ""
 
 #: includes/include.mycontenido.tasks.edit.php:68
 #: includes/include.todo.popup.php:72
-#: includes/include.upl_edit.php:232
+#: includes/include.upl_edit.php:231
 #: templates/standard/template.con_edit_form.html:218
 #: templates/standard/template.log_main.html:43
 msgid "End date"
@@ -4710,45 +4713,45 @@ msgstr ""
 msgid "Database file system"
 msgstr ""
 
-#: includes/include.upl_edit.php:85
+#: includes/include.upl_edit.php:84
 msgid "Replace file"
 msgstr ""
 
-#: includes/include.upl_edit.php:86
+#: includes/include.upl_edit.php:85
 msgid "Media name"
 msgstr ""
 
-#: includes/include.upl_edit.php:91
+#: includes/include.upl_edit.php:90
 msgid "Protection"
 msgstr ""
 
-#: includes/include.upl_edit.php:92
+#: includes/include.upl_edit.php:91
 #: templates/standard/template.con_edit_form.html:203
 msgid "Time control"
 msgstr ""
 
-#: includes/include.upl_edit.php:215
+#: includes/include.upl_edit.php:214
 msgid "Protected for non-logged in users"
 msgstr ""
 
-#: includes/include.upl_edit.php:224
+#: includes/include.upl_edit.php:223
 #: templates/standard/template.con_edit_form.html:208
 msgid "Use time control"
 msgstr ""
 
-#: includes/include.upl_edit.php:229
+#: includes/include.upl_edit.php:228
 #: templates/standard/template.con_edit_form.html:212
 #: templates/standard/template.log_main.html:39
 msgid "Start date"
 msgstr ""
 
-#: includes/include.upl_edit.php:292
+#: includes/include.upl_edit.php:291
 #: includes/include.upl_files_overview.php:681
 #: includes/include.upl_files_upload.php:47
 msgid "Directory not writable"
 msgstr ""
 
-#: includes/include.upl_edit.php:297
+#: includes/include.upl_edit.php:296
 #, php-format
 msgid "Could not load file %s"
 msgstr ""
@@ -4789,9 +4792,10 @@ msgid "Delete selected files"
 msgstr ""
 
 #: includes/include.upl_files_overview.php:424
-#: templates/standard/template.con_art_overview.html:168
+#: templates/standard/template.con_art_overview.html:172
 #: templates/standard/template.mail_log.right_bottom.html:54
 #: templates/standard/template.mail_log.right_bottom.html:87
+#: templates/standard/template.mail_log.right_bottom.html:179
 msgid "Flip Selection"
 msgstr ""
 
@@ -4975,12 +4979,35 @@ msgid "Frame"
 msgstr ""
 
 #: templates/standard/template.con_art_overview.html:135
+#: templates/standard/template.con_art_overview.html:366
 msgid "Flip selection"
 msgstr ""
 
 #: templates/standard/template.con_art_overview.html:137
-#: templates/standard/template.con_art_overview.html:170
+#: templates/standard/template.con_art_overview.html:174
+#: templates/standard/template.con_art_overview.html:367
 msgid "Apply to all selected articles"
+msgstr ""
+
+#: templates/standard/template.con_art_overview.html:368
+msgid "Set articles online"
+msgstr ""
+
+#: templates/standard/template.con_art_overview.html:369
+msgid "Set articles offline"
+msgstr ""
+
+#: templates/standard/template.con_art_overview.html:370
+msgid "Freeze articles"
+msgstr ""
+
+#: templates/standard/template.con_art_overview.html:371
+msgid "Unfreeze articles"
+msgstr ""
+
+#: templates/standard/template.con_art_overview.html:372
+#: templates/standard/template.mail_log.right_bottom.html:178
+msgid "Delete articles"
 msgstr ""
 
 #: templates/standard/template.con_edit_form.html:223
@@ -5018,6 +5045,7 @@ msgstr ""
 
 #: templates/standard/template.mail_log.right_bottom.html:50
 #: templates/standard/template.mail_log.right_bottom.html:83
+#: templates/standard/template.mail_log.right_bottom.html:177
 msgid "Apply to all selected emails"
 msgstr ""
 
