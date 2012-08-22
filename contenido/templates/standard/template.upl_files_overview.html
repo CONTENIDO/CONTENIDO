@@ -1,3 +1,4 @@
+
 <style type="text/css">
 select {
     vertical-align:middle;
@@ -43,7 +44,7 @@ a.invert_hover:hover {
     }
 
     function showDelMsg(strElement, path, file, page) {
-        box.confirm("i18n("Delete file")", "i18n("Do you really want to delete the following file:<br>")<b>" + strElement + "</b>", "deleteFile('" + path + "', '" + file + "', " + page + ")");
+        box.confirm("i18n("Delete file")", "i18n("Do you really want to delete the following file"):<br><b>" + strElement + "</b>", "deleteFile('" + path + "', '" + file + "', " + page + ")");
     }
 
     // Function for deleting items
@@ -179,4 +180,18 @@ a.invert_hover:hover {
     {ENDTD}
 
 </table>
+<!--
+template.upl_file.overview
 
+i18n("Click to close")
+i18n("Close")
+i18n("Delete file")
+i18n("Do you really want to delete the following file")
+i18n("Enter new filename")
+i18n("Sort files")
+i18n("Filename")
+i18n("Description")
+i18n("File size")
+i18n("Image size")
+
+-->

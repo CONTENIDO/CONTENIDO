@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- CONTENIDO XML language file -->
+<!--
+CONTENIDO XML language file
+
+gettext:
+i18n("start article")
+i18n("normal article")
+i18n("start article with redirection")
+i18n("redirection")
+i18n("active article with time control")
+i18n("inactive article with time control")
+i18n("category")
+i18n("inactive category")
+i18n("category without any active start article")
+i18n("protected category")
+i18n("protected category without any active start article")
+i18n("active synchronized category")
+i18n("inactive synchronized category")
+
+-->
 <legend>
     <article>
         <imgsrc>images/isstart1.gif</imgsrc>

@@ -279,28 +279,61 @@
     <!-- END:BLOCK -->
 </table>
 <script type="text/javascript">
-    var dataArray = new Array();
+    var dataArray = [],
+        tmpObject;
+
     {JS_DATA}
 
-    aTranslations = new Object();
-    aTranslations['but_todo.gif'] = 'i18n("Edit category")';
-    aTranslations['online.gif'] = 'i18n("Make offline")';
-    aTranslations['offline.gif'] = 'i18n("Make online")';
-    aTranslations['folder_delock.gif'] = 'i18n("Protect category")';
-    aTranslations['folder_lock.gif'] = 'i18n("Unprotect category")';
-    aTranslations['delete.gif'] = 'i18n("Delete category")';
-    aTranslations['folder_moveup.gif'] = 'i18n("Move category up")';
-    aTranslations['folder_movedown.gif'] = 'i18n("Move category down")';
-    aTranslations['but_move_subtree_main.gif'] = 'i18n("Move tree")';
-    aTranslations['but_move_subtree_target.gif'] = 'i18n("Place tree here")';
-    aTranslations['but_move_subtree.gif'] = 'i18n("Move tree")';
-    aTranslations['delete_inact.gif'] = 'i18n("One or more subtrees and one or more articles are existing, unable to delete.")';
-    aTranslations['delete_inact_h.gif'] = 'i18n("One or more subtrees are existing, unable to delete.")';
-    aTranslations['delete_inact_g.gif'] = 'i18n("One or more articles are existing, unable to delete.")';
-    aTranslations['folder_duplicate.gif'] = 'i18n("Duplicate category")';
-    aTranslations['pfeil_runter.gif'] = '{PLUGIN_WORKFLOW_TRANSLATION}';
+    var aTranslations = {
+        'but_todo.gif': 'i18n("Edit category")',
+        'online.gif': 'i18n("Make offline")',
+        'offline.gif': 'i18n("Make online")',
+        'folder_delock.gif': 'i18n("Protect category")',
+        'folder_lock.gif': 'i18n("Unprotect category")',
+        'delete.gif': 'i18n("Delete category")',
+        'folder_moveup.gif': 'i18n("Move category up")',
+        'folder_movedown.gif': 'i18n("Move category down")',
+        'but_move_subtree_main.gif': 'i18n("Move tree")',
+        'but_move_subtree_target.gif': 'i18n("Place tree here")',
+        'but_move_subtree.gif': 'i18n("Move tree")',
+        'delete_inact.gif': 'i18n("One or more subtrees and one or more articles are existing, unable to delete.")',
+        'delete_inact_h.gif': 'i18n("One or more subtrees are existing, unable to delete.")',
+        'delete_inact_g.gif': 'i18n("One or more articles are existing, unable to delete.")',
+        'folder_duplicate.gif': 'i18n("Duplicate category")',
+        'pfeil_runter.gif': '{PLUGIN_WORKFLOW_TRANSLATION}'
+    };
 
     setImageTags(aTranslations);
 </script>
 </body>
 </html>
+<!--
+template.str_overview
+
+i18n("Edit category")
+i18n("Actions")
+i18n("Alias")
+i18n("Category is a tree")
+i18n("Category")
+i18n("Categoryname")
+i18n("Configure category")
+i18n("Delete category")
+i18n("Duplicate category")
+i18n("Field category name is empty")
+i18n("Form error")
+i18n("Make offline")
+i18n("Make online")
+i18n("Move category down")
+i18n("Move category up")
+i18n("Move tree")
+i18n("One or more articles are existing, unable to delete.")
+i18n("One or more subtrees and one or more articles are existing, unable to delete.")
+i18n("One or more subtrees are existing, unable to delete.")
+i18n("Place tree here")
+i18n("Please select a new position for new category")
+i18n("Position of category")
+i18n("Protect category")
+i18n("Template")
+i18n("Unprotect category")
+
+-->
