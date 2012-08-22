@@ -11,6 +11,7 @@ cms/css/style_tiny.css -text
 cms/data/.htaccess -text
 cms/data/config/config.php -text
 cms/data/layouts/standard/standard.html -text
+cms/data/layouts/xml-layout/xml-layout.html -text svneol=unset#text/plain
 cms/data/modules/article_include/info.xml -text
 cms/data/modules/article_include/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/data/modules/article_include/php/article_include_input.php -text
@@ -137,6 +138,11 @@ cms/data/modules/xing/php/xing_input.php -text
 cms/data/modules/xing/php/xing_output.php -text
 cms/data/modules/xing/template/xing_big.html -text
 cms/data/modules/xing/template/xing_small.html -text
+cms/data/modules/xml_sitemap/info.xml -text svneol=unset#text/plain
+cms/data/modules/xml_sitemap/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/data/modules/xml_sitemap/lang/lang_en_US.txt -text svneol=unset#text/plain
+cms/data/modules/xml_sitemap/php/xml_sitemap_input.php -text
+cms/data/modules/xml_sitemap/php/xml_sitemap_output.php -text
 cms/data/version/.htaccess -text
 cms/dbfs.php -text
 cms/favicon.ico -text

@@ -53,6 +53,7 @@
 "art_lang";"locked";"int(1)";"";"";"0";"";""
 "art_lang";"searchable";"tinyint(1)";"";"";"1";"";""
 "art_lang";"sitemapprio";"float(2)";"";"";"0.5";"";""
+"art_lang";"changefreq";"varchar(12)";"";"";"";"";""
 "art_spec";"idartspec";"int(10)";"";"PRI";"0";"";"1"
 "art_spec";"client";"int(10)";"";"MUL";"0";"";""
 "art_spec";"lang";"int(10)";"";"MUL";"0";"";""

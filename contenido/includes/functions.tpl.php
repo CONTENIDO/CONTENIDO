@@ -49,7 +49,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         global $perm;
 
         $db2= cRegistry::getDb();
-        $date = date("YmdHis");
+        $date = date("Y-m-d H:i:s");
         $author = "".$auth->auth["uname"]."";
 
         //******** entry in 'tpl'-table ***************
@@ -84,7 +84,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
             $idtplcfg = $db->getLastInsertedId($cfg["tab"]["tpl_conf"]);
 
             /* Update new idtplconf*/
-            $sql = "UPDATE ".$cfg["tab"]["tpl_conf"]." SET idtplcfg='".cSecurity::toInteger($idtplcfg)."'
+            $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET idtplcfg='".cSecurity::toInteger($idtplcfg)."'
             WHERE idtpl='".cSecurity::toInteger($idtpl)."'";
             $db->query($sql);
 

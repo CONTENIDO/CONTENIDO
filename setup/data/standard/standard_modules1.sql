@@ -28,3 +28,4 @@ INSERT INTO !PREFIX!_mod VALUES (27, 1, 'Xing', 'xing', 'Content', 'none', 'Xing
 
 INSERT INTO !PREFIX!_mod VALUES (28, 1, 'GoogleAnalytics', 'googleanalytics', 'Content', 'none', 'GoogleAnalytics module', NULL, '', '', '', 0, NULL, NULL, '48a365b4ce1e322a55ae9017f3daf0c0', '2012-02-06 09:54:15', '0000-00-00 00:00:00');
 INSERT INTO !PREFIX!_mod VALUES (29, 1, 'Piwik', 'piwik', 'Content', 'none', 'Piwik module', NULL, '', '', '', 0, NULL, NULL, '48a365b4ce1e322a55ae9017f3daf0c0', '2012-02-06 09:54:15', '0000-00-00 00:00:00');
+INSERT INTO !PREFIX!_mod VALUES (30, 1, 'XML_Sitemap', 'xml_sitemap', 'Content', 'none', '', NULL, '', '', '', 0, NULL, NULL, '48a365b4ce1e322a55ae9017f3daf0c0', '2012-02-06 09:54:15', '0000-00-00 00:00:00');

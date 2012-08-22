@@ -783,4 +783,19 @@ $_cecRegistry->registerChain("Contenido.Frontend.PostprocessUrlBuilding", "strin
  */
 $_cecRegistry->registerChain("Contenido.Content.conGenerateCode", "string");
 
+/**
+ * Chain Contenido.Content.XmlSitemapCreate
+ * This chain is called in the XML sitemap module output.
+ * You can alter the sitemap contents with it
+ *
+ * Parameters & order:
+ * SimpleXMLElement   the SimpleXMLElement which will be output,
+ *                    you can delete or add sitemap items here,
+ *                    have a look at the module code
+ *
+ * Returns:
+ * SimpleXMLElement     the altered SimpleXMLElement
+ */
+$_cecRegistry->registerChain("Contenido.Content.XmlSitemapCreate", "SimpleXMLElement");
+
 ?>

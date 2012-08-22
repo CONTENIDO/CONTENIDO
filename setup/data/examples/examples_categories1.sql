@@ -31,7 +31,8 @@ INSERT INTO !PREFIX!_cat VALUES (30, 1, 0, 22, 0, 0, 'sysadmin', '2008-04-14 16:
 INSERT INTO !PREFIX!_cat VALUES (31, 1, 30, 0, 32, 0, 'sysadmin', '2008-04-14 16:20:52', '2008-04-14 16:21:01');
 INSERT INTO !PREFIX!_cat VALUES (32, 1, 30, 31, 33, 0, 'sysadmin', '2008-04-14 16:21:01', '2008-04-14 16:21:27');
 INSERT INTO !PREFIX!_cat VALUES (33, 1, 30, 32, 34, 0, 'sysadmin', '2008-04-14 16:21:27', '2008-04-14 16:21:37');
-INSERT INTO !PREFIX!_cat VALUES (34, 1, 30, 33, 0, 0, 'sysadmin', '2008-04-14 16:21:37', '2008-04-14 16:21:37');
+INSERT INTO !PREFIX!_cat VALUES (34, 1, 30, 33, 35, 0, 'sysadmin', '2008-04-14 16:21:37', '2008-04-14 16:21:37');
+INSERT INTO !PREFIX!_cat VALUES (35, 1, 30, 34, 0, 0, 'sysadmin', '2012-08-22 13:42:37', '2012-08-22 13:42:37');
 INSERT INTO !PREFIX!_cat_art VALUES (1, 1, 1, 0, 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0);
 INSERT INTO !PREFIX!_cat_art VALUES (2, 2, 2, 0, 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0);
 INSERT INTO !PREFIX!_cat_art VALUES (3, 2, 3, 0, 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0);
@@ -70,6 +71,7 @@ INSERT INTO !PREFIX!_cat_art VALUES (35, 29, 35, 0, 0, '', '0000-00-00 00:00:00'
 INSERT INTO !PREFIX!_cat_art VALUES (36, 31, 36, 0, 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1);
 INSERT INTO !PREFIX!_cat_art VALUES (37, 32, 37, 0, 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0);
 INSERT INTO !PREFIX!_cat_art VALUES (38, 2, 38, 0, 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0);
+INSERT INTO !PREFIX!_cat_art VALUES (39, 35, 39, 0, 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0);
 INSERT INTO !PREFIX!_cat_lang VALUES (1, 1, 1, 9, 'Hauptnavigation', 1, 1, 0, 'sysadmin', '2008-04-14 16:12:50', '2008-04-14 16:12:50', 1, 'Hauptnavigation', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (2, 2, 1, 10, 'Was ist CONTENIDO', 1, 1, 0, 'sysadmin', '2008-04-14 16:13:02', '2008-04-14 16:13:02', 3, 'Was-ist-CONTENIDO', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (3, 3, 1, 11, 'Erste Schritte', 1, 1, 0, 'sysadmin', '2008-04-14 16:13:34', '2008-04-14 16:13:34', 5, 'Erste-Schritte', '');
@@ -120,6 +122,7 @@ INSERT INTO !PREFIX!_cat_lang VALUES (47, 31, 2, 55, 'Error page', 1, 1, 0, 'sys
 INSERT INTO !PREFIX!_cat_lang VALUES (48, 32, 2, 56, 'Search results', 1, 1, 0, 'sysadmin', '2008-04-14 16:21:01', '2008-04-14 16:25:26', 48, 'Search-results', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (49, 33, 2, 57, 'HTML-Newsletter Templates', 1, 1, 0, 'sysadmin', '2008-04-14 16:21:27', '2008-04-14 16:25:26', 0, 'HTML-Newsletter-Templates', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (50, 34, 2, 58, 'HTML-Newsletter', 1, 1, 0, 'sysadmin', '2008-04-14 16:21:37', '2008-04-14 16:25:26', 0, 'HTML-Newsletter', '');
+INSERT INTO !PREFIX!_cat_lang VALUES (51, 35, 1, 62, 'XML Sitemap', 1, 1, 0, 'sysadmin', '2012-08-22 13:44:37', '2012-08-22 13:44:26', 50, 'XML-Sitemap', '');
 INSERT INTO !PREFIX!_cat_tree VALUES (562, 1, 0);
 INSERT INTO !PREFIX!_cat_tree VALUES (563, 2, 1);
 INSERT INTO !PREFIX!_cat_tree VALUES (564, 3, 1);
@@ -154,3 +157,4 @@ INSERT INTO !PREFIX!_cat_tree VALUES (592, 31, 1);
 INSERT INTO !PREFIX!_cat_tree VALUES (593, 32, 1);
 INSERT INTO !PREFIX!_cat_tree VALUES (594, 33, 1);
 INSERT INTO !PREFIX!_cat_tree VALUES (595, 34, 1);
+INSERT INTO !PREFIX!_cat_tree VALUES (596, 35, 1);

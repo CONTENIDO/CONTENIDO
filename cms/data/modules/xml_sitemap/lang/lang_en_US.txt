@@ -1,0 +1,5 @@
+Choose tree:=Choose tree:
+Enter filename (optional):=Enter filename (optional):
+XML sitemap successfully written to %s=XML sitemap successfully written to %s
+XML sitemap could not be written to %s=XML sitemap could not be written to %s
+Folders are not allowed. Please only enter a filename.=Folders are not allowed. Please only enter a filename.

@@ -82,6 +82,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tmp_dateend = $db->f("dateend");
         $tmp_sort = $db->f("artsort");
         $tmp_sitemapprio = $db->f("sitemapprio");
+        $tmp_changefreq = $db->f("changefreq");
         $tmp_movetocat = $db->f("time_move_cat");
         $tmp_targetcat = $db->f("time_target_cat");
         $tmp_onlineaftermove = $db->f("time_online_move");
@@ -149,6 +150,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tmp_keyautoart = '';
         $tmp_sort = '';
         $tmp_sitemapprio = '0.5';
+        $tmp_changefreq = '';
 
         if (!strHasStartArticle($idcat, $lang)) {
             $tmp_is_start = true;
@@ -352,9 +354,34 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'SORTIERUNG', i18n("Sort key"));
     $tpl->set('s', 'SORTIERUNG-FIELD', '<input type="text" ' . $disabled . ' class="text_medium" name="artsort" style="width:400px;" value="' . $tmp_sort . '">');
 
-    // TODO implement sitemap priority attribute
+    // sitemap priority
     $tpl->set('s', 'SITEMAP-PRIORITY', i18n('Sitemap priority'));
-    $tpl->set('s', 'SITEMAP-PRIORITY-FIELD', '<input type="text" ' . $disabled . ' class="text_medium" name="sitemapprio" style="width:400px;" value="' . $tmp_sitemapprio . '">');
+    $tpl->set('s', 'SITEMAP-PRIORITY-FIELD', '<input type="text" ' . $disabled . ' class="text_medium" name="sitemapprio" value="' . $tmp_sitemapprio . '">');
+
+    // sitemap change frequency
+    $select = new cHTMLSelectElement('changefreq');
+    $changefreqs = array(
+        '',
+        'always',
+        'hourly',
+        'daily',
+        'weekly',
+        'monthly',
+        'yearly',
+        'never'
+    );
+    foreach ($changefreqs as $changefreq) {
+        $option = new cHTMLOptionElement($changefreq, $changefreq);
+        if ($changefreq == $tmp_changefreq) {
+            $option->setSelected(true);
+        }
+        $select->appendOptionElement($option);
+    }
+    if (strpos($disabled, 'disabled') !== false) {
+        $select->setDisabled('disabled');
+    }
+    $tpl->set('s', 'SITEMAP-CHANGEFREQ', i18n('Sitemap change frequency'));
+    $tpl->set('s', 'SITEMAP-CHANGEFREQ-FIELD', $select->render());
 
     // Category select
     // Fetch setting
