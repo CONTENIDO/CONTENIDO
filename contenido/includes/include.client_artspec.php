@@ -10,19 +10,19 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.0
- * @author     unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @package CONTENIDO Backend Includes
+ * @version 1.0.0
+ * @author unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
+ *        {@internal
+ *        created unknown
+ *        $Id$:
+ *        }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -63,83 +63,96 @@ if ($action == "client_artspec_default") {
     }
 }
 
-$list = new cGuiList();
+$artspecvalues = getArtspec();
+$numberOfElements = count($artspecvalues);
 
-$list->setCell(1, 1, i18n("Article specification"));
-$list->setCell(1, 2, i18n("Options"));
+    if (empty($artspecvalues) == false) {
 
-$count = 2;
+    $list = new cGuiList();
 
-$link = new cHTMLLink();
-$link->setCLink($area, $frame, "client_artspec_edit");
-$link->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n('Edit') . '" title="' . i18n('Edit') . '">');
+    $list->setCell(1, 1, i18n("Article specification"));
+    $list->setCell(1, 2, i18n("Options"));
 
-$dlink = new cHTMLLink();
-$dlink->setCLink($area, $frame, "client_artspec_delete");
-$dlink->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'delete.gif" alt="' . i18n('Delete') . '" title="' . i18n('Delete') . '">');
+    $count = 2;
 
-$olink = new cHTMLLink();
-$olink->setCLink($area, $frame, "client_artspec_online");
+    $link = new cHTMLLink();
+    $link->setCLink($area, $frame, "client_artspec_edit");
+    $link->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n('Edit') . '" title="' . i18n('Edit') . '">');
 
-$defLink = new cHTMLLink();
-$defLink->setCLink($area, $frame, "client_artspec_default");
+    $dlink = new cHTMLLink();
+    $dlink->setCLink($area, $frame, "client_artspec_delete");
+    $dlink->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'delete.gif" alt="' . i18n('Delete') . '" title="' . i18n('Delete') . '">');
 
-$artspec = getArtspec();
+    $olink = new cHTMLLink();
+    $olink->setCLink($area, $frame, "client_artspec_online");
 
-if (is_array($artspec)) {
-    foreach ($artspec as $id => $tmp_artspec) {
-        $link->setCustom("idartspec", $id);
-        $link->updateAttributes(array('style' => 'padding:3'));
+    $defLink = new cHTMLLink();
+    $defLink->setCLink($area, $frame, "client_artspec_default");
 
-        $dlink->setCustom("idartspec", $id);
-        $dlink->updateAttributes(array('style' => 'padding:3'));
+    $artspec = getArtspec();
 
-        $olink->setCustom("idartspec", $id);
-        $olink->updateAttributes(array('style' => 'padding:3'));
+    if (is_array($artspec)) {
+        foreach ($artspec as $id => $tmp_artspec) {
+            $link->setCustom("idartspec", $id);
+            $link->updateAttributes(array(
+                'style' => 'padding:3'
+            ));
 
-        $defLink->setCustom("idartspec", $id);
-        $defLink->updateAttributes(array('style' => 'padding:3'));
+            $dlink->setCustom("idartspec", $id);
+            $dlink->updateAttributes(array(
+                'style' => 'padding:3'
+            ));
 
-        if (($action == "client_artspec_edit") && ($idartspec == $id)) {
-            $form = new cHTMLForm("artspec");
-            $form->setVar("area", $area);
-            $form->setVar("frame", $frame);
-            $form->setVar("idartspec", $id);
-            $form->setVar("action", "client_artspec_save");
-            $form->setVar("online", $artspec[$id]['online']);
-            $inputbox = new cHTMLTextbox("artspectext", $artspec[$id]['artspec']);
-            $form->add($inputbox->render());
-            $form->add('<input type="image" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif" alt="' . i18n('Save') . '" title="' . i18n('Save') . '">');
+            $olink->setCustom("idartspec", $id);
+            $olink->updateAttributes(array(
+                'style' => 'padding:3'
+            ));
 
-            $list->setCell($count, 1, $form->render(true));
-        } else {
-            $list->setCell($count, 1, $artspec[$id]['artspec']);
+            $defLink->setCustom("idartspec", $id);
+            $defLink->updateAttributes(array(
+                'style' => 'padding:3'
+            ));
+
+            if (($action == "client_artspec_edit") && ($idartspec == $id)) {
+                $form = new cHTMLForm("artspec");
+                $form->setVar("area", $area);
+                $form->setVar("frame", $frame);
+                $form->setVar("idartspec", $id);
+                $form->setVar("action", "client_artspec_save");
+                $form->setVar("online", $artspec[$id]['online']);
+                $inputbox = new cHTMLTextbox("artspectext", $artspec[$id]['artspec']);
+                $form->add($inputbox->render());
+                $form->add('<input type="image" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif" alt="' . i18n('Save') . '" title="' . i18n('Save') . '">');
+
+                $list->setCell($count, 1, $form->render(true));
+            } else {
+                $list->setCell($count, 1, $artspec[$id]['artspec']);
+            }
+
+            if ($artspec[$id]['online'] == 0) {
+                // it is offline (std!)
+                $olink->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'offline.gif" alt="' . i18n('Make online') . '" title="' . i18n('Make online') . '">');
+                $olink->setCustom("online", 1);
+            } else {
+                $olink->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'online.gif" alt="' . i18n('Make offline') . '" title="' . i18n('Make offline') . '">');
+                $olink->setCustom("online", 0);
+            }
+
+            if ($artspec[$id]['default'] == 0) {
+                $defLink->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'artikel_spez_inakt.gif" title="' . i18n("Make this article specification default") . '">');
+                $list->setCell($count, 2, $link->render() . $dlink->render() . $olink->render() . $defLink->render());
+            } else {
+                $defLinkText = '<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'artikel_spez_akt.gif" title="' . i18n("This article specification is default") . '" style="padding-left:3px;">';
+                $list->setCell($count, 2, $link->render() . $dlink->render() . $olink->render() . $defLinkText);
+            }
+
+            $count++;
         }
-
-        if ($artspec[$id]['online'] == 0) {
-            //it is offline (std!)
-            $olink->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'offline.gif" alt="' . i18n('Make online') . '" title="' . i18n('Make online') . '">');
-            $olink->setCustom("online", 1);
-        } else {
-            $olink->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'online.gif" alt="' . i18n('Make offline') . '" title="' . i18n('Make offline') . '">');
-            $olink->setCustom("online", 0);
-        }
-
-        if ($artspec[$id]['default'] == 0) {
-            $defLink->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'artikel_spez_inakt.gif" title="' . i18n("Make this article specification default") . '">');
-            $list->setCell($count, 2, $link->render() . $dlink->render() . $olink->render() . $defLink->render());
-        } else {
-            $defLinkText = '<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'artikel_spez_akt.gif" title="' . i18n("This article specification is default") . '" style="padding-left:3px;">';
-            $list->setCell($count, 2, $link->render() . $dlink->render() . $olink->render() . $defLinkText);
-        }
-
-        $count++;
+    } else {
+        $list->setCell($count, 1, i18n("No article specifications found!"));
+        $list->setCell($count, 2, '');
     }
-} else {
-    $list->setCell($count, 1, i18n("No article specifications found!"));
-    $list->setCell($count, 2, '');
 }
-
 unset($form);
 
 $form = new cGuiTableForm("artspec");
@@ -154,7 +167,12 @@ $spacer = new cHTMLDiv();
 $spacer->setStyle("width: 1%");
 $spacer->setContent("<br>" . $form->render());
 
-$page->setContent(array($list, $spacer));
+
+$page->setContent(array(
+    $list,
+    $spacer
+));
+
 $page->render();
 
 ?>
