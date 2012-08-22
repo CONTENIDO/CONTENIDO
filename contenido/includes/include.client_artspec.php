@@ -18,11 +18,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  * @since file available since CONTENIDO release <= 4.6
- *
- *        {@internal
- *        created unknown
- *        $Id$:
- *        }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -66,7 +61,7 @@ if ($action == "client_artspec_default") {
 $artspecvalues = getArtspec();
 $numberOfElements = count($artspecvalues);
 
-    if (empty($artspecvalues) == false) {
+if (empty($artspecvalues) == false) {
 
     $list = new cGuiList();
 
@@ -166,7 +161,6 @@ $form->add(i18n("Specification name"), $inputbox->render());
 $spacer = new cHTMLDiv();
 $spacer->setStyle("width: 1%");
 $spacer->setContent("<br>" . $form->render());
-
 
 $page->setContent(array(
     $list,
