@@ -1201,7 +1201,7 @@ function conCopyMetaTags($srcidartlang, $dstidartlang) {
  * @param  int  $useCopyLabel
  */
 function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true) {
-    global $lang;
+    global $auth, $lang;
 
     $oSrcArtLang = new cApiArticleLanguage();
     if (!$oSrcArtLang->loadByArticleAndLanguageId($srcidart, $lang)) {
@@ -1234,8 +1234,8 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true) {
         'online' => 0,
         'title' => $title,
         'created' => date('Y-m-d H:i:s'),
-        'lastmodified' => '',
-        'modifiedby' => '',
+        'lastmodified' => date('Y-m-d H:i:s'),
+        'modifiedby' => $auth->auth['uname'],
         'published' => '',
         'publishedby' => ''
     );
