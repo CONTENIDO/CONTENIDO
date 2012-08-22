@@ -49,10 +49,10 @@
 	    </tr>
 	    <!-- END:BLOCK -->
 	    <tr id="{ROWID}" {CSS_CLASS} class="con_sync" style="background-color: {BGCOLOR};" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
-            <td class="bordercell">i18n('Action')</td>
+            <td class="bordercell">i18n("Action")</td>
 	        <td class="bordercell">
 	            &nbsp;
-                <a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteEmails()');" > <img src="images/delete.gif" title="i18n('Delete email log')" alt="i18n('Delete email log')" border="0" ></a>
+                <a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteEmails()');" > <img src="images/delete.gif" title="i18n("Delete email log")" alt="i18n("Delete email log")" border="0" ></a>
 	            {RESEND_EMAIL_LINK}
 	        </td>
 	    </tr>
@@ -92,7 +92,9 @@ $(document).ready(function (){
 </body>
 </html>
 <!--
+template.mail_log.detail
 
-i18n('Action')
-i18n('Delete email log')
+i18n("Action")
+i18n("Delete email log")
+
 -->
