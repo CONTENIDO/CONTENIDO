@@ -1,16 +1,17 @@
-/*****************************************
-*
-* $Id$
-*
-* File      :   $RCSfile: str_overview.js,v $
-* Project   : CONTENIDO
-* Descr     : File contains functions for handling Content->Category forms and layers
-*
-* Author    :   $Author: timo.trautmann$
-* Modified  :   $Date: 2008/02/15 13:41:52 $
-*
-* © four for business AG, www.4fb.de
-******************************************/
+/**
+ * File contains functions for handling Content->Category forms and layers
+ *
+ * @package Core
+ * @subpackage Category
+ * @version SVN Revision $Rev:$
+ * @id SVN Id $Id$
+ *
+ * @author Timo Trautmann
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ */
 
 //Defining vars for translations and CONTENIDO imagepath
 var bMsie = (document.all) ? true : false;
@@ -34,7 +35,6 @@ var oldHrefTplcfg = '';
  * @param string sTransFormError - Errorheadline
  * @param string sTransEmptyCatname - Errorstring, if there is no catname
  * @param string sTransEmptyCatSourcename - Errorstring if there is no cat source name
- *
  */
 function initStrOverview(sImagePath, sTransMakeOnline, sTransMakeOffline, sTransProtectCategory,
                           sTransUnprotectCategory, sTransFormError, sTransEmptyCatname, sTransEmptyCatSourcename) {
@@ -54,7 +54,6 @@ function initStrOverview(sImagePath, sTransMakeOnline, sTransMakeOffline, sTrans
  * to the needed position, before it is displayed
  *
  * @param int iCatId - id of category, which should be edited
- *
  */
 function handleInlineEdit(iCatId) {
     //Each form layer has the id syntax cat_<idcat>_layer
@@ -92,23 +91,23 @@ function handleInlineEdit(iCatId) {
                 }
                 document.getElementById('cat_'+iCatId+'_image').src= con_images+'but_todo_off.gif';
 
-                //Get needed informations from dataArray and fill editform, also check perms
+                // Get needed informations from strDataObj and fill editform, also check perms
                 document.renamecategory.idcat.value = iCatId;
-                document.renamecategory.newcategoryalias.value = dataArray[iCatId]['alias'];
+                document.renamecategory.newcategoryalias.value = strDataObj[iCatId]['alias'];
 
-                if(dataArray[iCatId]['pName'] == 1) {
+                if (strDataObj[iCatId]['pName'] == 1) {
                     document.getElementById('cat_name').style.display = 'inline';
-                    document.renamecategory.newcategoryname.value = dataArray[iCatId]['catn'];
+                    document.renamecategory.newcategoryname.value = strDataObj[iCatId]['catn'];
                 } else {
                     document.getElementById('cat_name').style.display = 'none';
                 }
 
-                if(dataArray[iCatId]['pTplcfg'] == 1) {
+                if (strDataObj[iCatId]['pTplcfg'] == 1) {
                     document.getElementById('tpl_cfg').style.display = 'inline';
                     if (oldHrefTplcfg == '') {
                         oldHrefTplcfg = document.getElementById('tplcfg_href').href;
                     }
-                    document.getElementById('tplcfg_href').href = oldHrefTplcfg+'&idcat='+iCatId+'&idtpl='+dataArray[iCatId]['idtplcfg'];
+                    document.getElementById('tplcfg_href').href = oldHrefTplcfg+'&idcat='+iCatId+'&idtpl='+strDataObj[iCatId]['idtplcfg'];
                 } else {
                     document.getElementById('tpl_cfg').style.display = 'none';
                     document.getElementById('tplcfg_href').href = oldHrefTplcfg;
@@ -123,18 +122,17 @@ function handleInlineEdit(iCatId) {
 
 /**
  * Function shows Layer for generating a new Category
- *
  */
 function showNewForm() {
     //get Layer objects and get position of cat_navbar. On this basis, the layer is displayed.  We need a hidelayer to inactivate input elements.
     //this is important, when template Layer is displayed.
-    var oHideEditLayer = document.getElementById('cat_new_layer_disable');
-    var oHideEditLayerImage = document.getElementById('cat_new_layer_disable_image');
-    var oEditLayer = document.getElementById('cat_edit');
-    var pos = getElementPostion( document.getElementById('cat_navbar') );
-    var select = document.getElementById('new_idcat');
-    document.getElementById('new_tree_button').style.color = '#0060B1';
+    var oHideEditLayer = document.getElementById('cat_new_layer_disable'),
+        oHideEditLayerImage = document.getElementById('cat_new_layer_disable_image'),
+        oEditLayer = document.getElementById('cat_edit'),
+        pos = getElementPostion(document.getElementById('cat_navbar')),
+        select = document.getElementById('new_idcat');
 
+    document.getElementById('new_tree_button').style.color = '#0060B1';
 
     oEditLayer.style.left = pos[0]+10;
     oEditLayer.style.top = parseInt(pos[1])+parseInt(pos[2])-1;
@@ -150,7 +148,6 @@ function showNewForm() {
     //get with of contained select element and calculate layer with.
     if (select) {
         var iWidth = 85+select.offsetWidth+15;
-
         if (iWidth > 477) {
             oEditLayer.style.width = iWidth+'px';
             oHideEditLayer.style.width = iWidth+'px';
@@ -174,12 +171,11 @@ function showNewForm() {
  * Function gets currently selected categroy row an set it as default in select box for base category
  * (selectbox in category new layer) Function is also called by row instance 'str', when selected row
  * changes
- *
  */
 function refreshSelectedBaseCategory() {
-    var select = document.getElementById('new_idcat');
+    var select = document.getElementById('new_idcat'),
+        iCatId = 0;
 
-    var iCatId = 0;
     if (str.markedRow) {
         if (str.markedRow.id.match(/^cat_(\d+)_row$/g)) {
             iCatId = parseInt(RegExp.$1);
@@ -202,7 +198,6 @@ function refreshSelectedBaseCategory() {
 
 /**
  * Function hides Layer for generating a new Category
- *
  */
 function hideNewForm() {
     //If Template layer is displayed, also hide
@@ -214,17 +209,19 @@ function hideNewForm() {
 }
 
 /**
-* Function returns offset left, top, width and heigth of a given htnmlelement as array
-*
-* @param object oElement - Object which should be analyzed
-* @return array - containing dimension information
-*/
-var getElementPostion = function (oElement) {
-    var iHeigth = oElement.offsetHeight;
-    var iWidth = oElement.offsetWidth;
-    var iTop = 0, iLeft = 0;
+ * Function returns offset left, top, width and heigth of a given htnmlelement as array
+ *
+ * @param object oElement - Object which should be analyzed
+ * @return array - containing dimension information
+ * @deprecated  Use jQuery .position()
+ * @fixme  Redundant code, see rowMark.js
+ */
+function getElementPostion(oElement) {
+    var iHeigth = oElement.offsetHeight,
+        iWidth = oElement.offsetWidth,
+        iTop = 0, iLeft = 0;
     while (oElement) {
-        iTop += oElement.offsetTop  || 0;
+        iTop += oElement.offsetTop|| 0;
         iLeft += oElement.offsetLeft || 0;
         oElement = oElement.offsetParent;
     };
@@ -232,14 +229,14 @@ var getElementPostion = function (oElement) {
 }
 
 /**
-* Function toggles image and label for online status input, when user clicks on it
-* function also sets status value in hidden input visible_input
-*
-*/
+ * Function toggles image and label for online status input, when user clicks on it
+ * function also sets status value in hidden input visible_input
+ *
+ */
 function changeVisible() {
-    var image = document.getElementById('visible_image');
-    var label = document.getElementById('visible_label');
-    var input = document.getElementById('visible_input');
+    var image = document.getElementById('visible_image'),
+        label = document.getElementById('visible_label'),
+        input = document.getElementById('visible_input');
 
     if (input.value == '0') {
         label.innerHTML = sMakeOffline;
@@ -257,14 +254,13 @@ function changeVisible() {
 }
 
 /**
-* Function toggles image and label for public status input, when user clicks on it
-* function also sets status value in hidden input visible_input
-*
-*/
+ * Function toggles image and label for public status input, when user clicks on it
+ * function also sets status value in hidden input visible_input
+ */
 function changePublic() {
-    var image = document.getElementById('public_image');
-    var label = document.getElementById('public_label');
-    var input = document.getElementById('public_input');
+    var image = document.getElementById('public_image'),
+        label = document.getElementById('public_label'),
+        input = document.getElementById('public_input');
 
     if (input.value == '1') {
         label.innerHTML = sUnprotectCategory;
@@ -282,15 +278,15 @@ function changePublic() {
 }
 
 /**
-* Function is called when user changes target category or checks checkbox, that new category is a tree
-* Corresponding to setted values, this function enables or disables form fields
-*
-*/
+ * Function is called when user changes target category or checks checkbox, that new category is a tree
+ * Corresponding to setted values, this function enables or disables form fields
+ */
 function refreshStatus(bCaller) {
-    var input = document.getElementById('new_idcat');
-    var checkbox = document.getElementById('is_tree');
-    var conAction = document.getElementById('cat_new_action');
-    //if user selects no target category, deactivate select and mark new category as tree
+    var input = document.getElementById('new_idcat'),
+        checkbox = document.getElementById('is_tree'),
+        conAction = document.getElementById('cat_new_action');
+
+    // If user selects no target category, deactivate select and mark new category as tree
     if (bCaller == 1) {
         if (!input.value) {
            checkbox.checked = 'true';
@@ -315,21 +311,20 @@ function refreshStatus(bCaller) {
 }
 
 /**
-* On submitting form, this function checks form values for mistakes
-*
-*/
+ * On submitting form, this function checks form values for mistakes
+ */
 function checkForm() {
-    var input = document.getElementById('new_idcat');
-    var checkbox = document.getElementById('is_tree');
-    var category = document.getElementById('cat_categoryname').value;
+    var input = document.getElementById('new_idcat'),
+        checkbox = document.getElementById('is_tree'),
+        category = document.getElementById('cat_categoryname').value;
 
-    //Categoryname is a required field
+    // Categoryname is a required field
     if (category == '') {
         box.notify(sFormError, sEmptyCatname);
         return false;
     }
 
-    //if Category is no tree, a target category must be selected
+    // If Category is no tree, a target category must be selected
     if (!checkbox.checked && input.value == '') {
         box.notify(sFormError, sEmptyCatSourcename);
         return false;
@@ -337,11 +332,10 @@ function checkForm() {
 }
 
 /**
-* On creating a new category this function enables a sencod layer, which allows to select a templat for this new category.
-* In this step it is not possible to configure template. It is only allowed to selet a template.
-* This function also disables serveral inputs in the new category layer and switches submitbuttons to grey
-*
-*/
+ * On creating a new category this function enables a sencod layer, which allows to select a templat for this new category.
+ * In this step it is not possible to configure template. It is only allowed to selet a template.
+ * This function also disables serveral inputs in the new category layer and switches submitbuttons to grey
+ */
 function showTemplateSelect() {
     document.getElementById('cat_new_layer_disable').style.display = 'block';
     document.getElementById('new_idcat').disabled = true;
@@ -364,7 +358,6 @@ function showTemplateSelect() {
     //get with of contained select element and calculate layer with.
     if (select) {
         var iWidth = 95+select.offsetWidth+15;
-
         if (iWidth > 252) {
             oCategoryLayer.style.width = iWidth+'px';
         }
@@ -374,10 +367,9 @@ function showTemplateSelect() {
 }
 
 /**
-* This function hides template layer an activates inputs in the new category layer which were disabled by
-* showTemplateSelect();
-*
-*/
+ * This function hides template layer an activates inputs in the new category layer which were disabled by
+ * showTemplateSelect();
+ */
 function hideTemplateSelect(bSave) {
     document.getElementById('cat_new_layer_disable').style.display = 'none';
     if (!document.getElementById('is_tree').checked) {
@@ -393,6 +385,5 @@ function hideTemplateSelect(bSave) {
 
     if (bSave) {
         document.getElementById('idtplcfg_input').value = document.getElementById('cat_template_select').value;
-
     }
 }

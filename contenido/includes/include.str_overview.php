@@ -23,7 +23,6 @@
  *   created 2003-03-28
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -35,9 +34,7 @@ strRemakeTreeTable();
 $tmp_area = 'str';
 
 // Duplicate category
-if ($action == 'str_duplicate' &&
-    ($perm->have_perm_area_action('str', 'str_duplicate') || $perm->have_perm_area_action_item('str', 'str_duplicate', $idcat)))
-{
+if ($action == 'str_duplicate' && ($perm->have_perm_area_action('str', 'str_duplicate') || $perm->have_perm_area_action_item('str', 'str_duplicate', $idcat))) {
     strCopyTree($idcat, $parentid);
 }
 
@@ -56,8 +53,7 @@ $oDirectionDb = cRegistry::getDb();
  *
  * @return string HTML
  */
-function buildCategorySelectRights()
-{
+function buildCategorySelectRights() {
     global $cfg, $client, $lang, $idcat, $perm, $tmp_area;
 
     $db = cRegistry::getDb();
@@ -68,9 +64,9 @@ function buildCategorySelectRights()
     $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
 
     $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
-           ".$cfg["tab"]["cat"]." AS a, ".$cfg["tab"]["cat_lang"]." AS b,
-           ".$cfg["tab"]["cat_tree"]." AS c WHERE a.idclient = '".cSecurity::toInteger($client)."'
-            AND b.idlang = '".cSecurity::toInteger($lang)."' AND b.idcat = a.idcat AND c.idcat = a.idcat
+           " . $cfg["tab"]["cat"] . " AS a, " . $cfg["tab"]["cat_lang"] . " AS b,
+           " . $cfg["tab"]["cat_tree"] . " AS c WHERE a.idclient = '" . cSecurity::toInteger($client) . "'
+            AND b.idlang = '" . cSecurity::toInteger($lang) . "' AND b.idcat = a.idcat AND c.idcat = a.idcat
             ORDER BY c.idtree";
 
     $db->query($sql);
@@ -105,21 +101,20 @@ function buildCategorySelectRights()
 
     foreach ($categories as $tmpidcat => $props) {
         $spaces = '&nbsp;&nbsp;';
-        for ($i = 0; $i < $props['level']; $i ++) {
+        for ($i = 0; $i < $props['level']; $i++) {
             $spaces .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         }
 
         $sCategoryname = $props['name'];
         $sCategoryname = cApiStrTrimHard($sCategoryname, 30);
-        $oHtmlSelectOption = new cHTMLOptionElement($spaces.">".$sCategoryname, $tmpidcat, false, !$props['perm']);
+        $oHtmlSelectOption = new cHTMLOptionElement($spaces . ">" . $sCategoryname, $tmpidcat, false, !$props['perm']);
         $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
     }
 
     return $oHtmlSelect->toHtml();
 }
 
-function getExpandCollapseButton($item, $catName)
-{
+function getExpandCollapseButton($item, $catName) {
     global $sess, $frame, $area;
     $selflink = 'main.php';
 
@@ -141,29 +136,28 @@ function getExpandCollapseButton($item, $catName)
             $expandlink = $sess->url($selflink . "?area=$area&frame=$frame&expand=" . $item->id);
             $img->setSrc($item->collapsed_icon);
             $img->setAlt(i18n("Open category"));
-            return '<a href="'.$expandlink.'">'.$img->render().'</a>&nbsp;'.'<a href="'.$expandlink.'"'.$title.'>' . $catName . '</a>';
+            return '<a href="' . $expandlink . '">' . $img->render() . '</a>&nbsp;' . '<a href="' . $expandlink . '"' . $title . '>' . $catName . '</a>';
         } else {
             $collapselink = $sess->url($selflink . "?area=$area&frame=$frame&collapse=" . $item->id);
             $img->setSrc($item->expanded_icon);
             $img->setAlt(i18n("Close category"));
-            return '<a href="'.$collapselink.'">'.$img->render().'</a>&nbsp;'.'<a href="'.$collapselink.'"'.$title.'>' . $catName . '</a>';
+            return '<a href="' . $collapselink . '">' . $img->render() . '</a>&nbsp;' . '<a href="' . $collapselink . '"' . $title . '>' . $catName . '</a>';
         }
     } else {
-        return '<img src="images/spacer.gif" style="padding:4px;" width="7" height="7">&nbsp;<span'.$title.'>' . $catName . '</span>';
+        return '<img src="images/spacer.gif" style="padding:4px;" width="7" height="7">&nbsp;<span' . $title . '>' . $catName . '</span>';
     }
 }
 
-function getTemplateSelect()
-{
+function getTemplateSelect() {
     global $client, $cfg, $db;
 
     $oHtmlSelect = new cHTMLSelectElement('cat_template_select', '', 'cat_template_select');
 
-    $oHtmlSelectOption = new cHTMLOptionElement('--- '.i18n("none"). ' ---', 0, false);
+    $oHtmlSelectOption = new cHTMLOptionElement('--- ' . i18n("none") . ' ---', 0, false);
     $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
 
-    $sql = "SELECT idtpl, name, defaulttemplate FROM ".$cfg['tab']['tpl']
-         . " WHERE idclient = '".$client."' ORDER BY name";
+    $sql = "SELECT idtpl, name, defaulttemplate FROM " . $cfg['tab']['tpl']
+            . " WHERE idclient = '" . $client . "' ORDER BY name";
 
     if ($db->query($sql)) {
         while ($db->next_record()) {
@@ -208,8 +202,7 @@ if (!isset($action)) {
     $action = 0;
 }
 
-function buildTree(&$rootItem, &$items)
-{
+function buildTree(&$rootItem, &$items) {
     global $nextItem, $perm, $tmp_area;
 
     while ($item_list = each($items)) {
@@ -218,17 +211,39 @@ function buildTree(&$rootItem, &$items)
         unset($newItem);
 
         $bCheck = false;
-        if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_newtree'); }
-        if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_newcat'); }
-        if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_makevisible');}
-        if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_makepublic');}
-        if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_deletecat');}
-        if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_moveupcat');}
-        if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_movedowncat');}
-        if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_movesubtree');}
-        if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_renamecat');}
-        if (!$bCheck) { $bCheck = $perm->have_perm_area_action('str_tplcfg', 'str_tplcfg');}
-        if (!$bCheck) { $bCheck = $perm->have_perm_item($tmp_area, $item['idcat']);}
+        if (!$bCheck) {
+            $bCheck = $perm->have_perm_area_action($tmp_area, 'str_newtree');
+        }
+        if (!$bCheck) {
+            $bCheck = $perm->have_perm_area_action($tmp_area, 'str_newcat');
+        }
+        if (!$bCheck) {
+            $bCheck = $perm->have_perm_area_action($tmp_area, 'str_makevisible');
+        }
+        if (!$bCheck) {
+            $bCheck = $perm->have_perm_area_action($tmp_area, 'str_makepublic');
+        }
+        if (!$bCheck) {
+            $bCheck = $perm->have_perm_area_action($tmp_area, 'str_deletecat');
+        }
+        if (!$bCheck) {
+            $bCheck = $perm->have_perm_area_action($tmp_area, 'str_moveupcat');
+        }
+        if (!$bCheck) {
+            $bCheck = $perm->have_perm_area_action($tmp_area, 'str_movedowncat');
+        }
+        if (!$bCheck) {
+            $bCheck = $perm->have_perm_area_action($tmp_area, 'str_movesubtree');
+        }
+        if (!$bCheck) {
+            $bCheck = $perm->have_perm_area_action($tmp_area, 'str_renamecat');
+        }
+        if (!$bCheck) {
+            $bCheck = $perm->have_perm_area_action('str_tplcfg', 'str_tplcfg');
+        }
+        if (!$bCheck) {
+            $bCheck = $perm->have_perm_item($tmp_area, $item['idcat']);
+        }
 
         if ($bCheck) {
             $newItem = new TreeItem($item['name'], $item['idcat'], true);
@@ -254,14 +269,14 @@ function buildTree(&$rootItem, &$items)
             $newItem->custom['forcedisplay'] = 1;
         }
 
-        if (array_key_exists($key+1, $items)) {
-            $nextItem = $items[$key+1];
+        if (array_key_exists($key + 1, $items)) {
+            $nextItem = $items[$key + 1];
         } else {
             $nextItem = 0;
         }
 
-        if (array_key_exists($key-1, $items)) {
-            $lastItem = $items[$key-1];
+        if (array_key_exists($key - 1, $items)) {
+            $lastItem = $items[$key - 1];
         } else {
             $lastItem = 0;
         }
@@ -280,7 +295,6 @@ function buildTree(&$rootItem, &$items)
     }
 }
 
-
 if (!$perm->have_perm_area_action($area)) {
     return;
 }
@@ -288,14 +302,14 @@ if (!$perm->have_perm_area_action($area)) {
 $sql = "SELECT
             idtree, A.idcat, level, name, parentid, preid, postid, visible, public, idtplcfg, C.urlname as alias
         FROM
-            ".$cfg["tab"]["cat_tree"]." AS A,
-            ".$cfg["tab"]["cat"]." AS B,
-            ".$cfg["tab"]["cat_lang"]." AS C
+            " . $cfg["tab"]["cat_tree"] . " AS A,
+            " . $cfg["tab"]["cat"] . " AS B,
+            " . $cfg["tab"]["cat_lang"] . " AS C
         WHERE
             A.idcat     = B.idcat AND
             B.idcat     = C.idcat AND
-            C.idlang    = '".cSecurity::toInteger($lang)."' AND
-            B.idclient  = '".cSecurity::toInteger($client)."'
+            C.idlang    = '" . cSecurity::toInteger($lang) . "' AND
+            B.idclient  = '" . cSecurity::toInteger($client) . "'
         ORDER BY
             idtree";
 
@@ -345,7 +359,7 @@ while ($db->next_record()) {
     }
 }
 
-$rootStrItem = new TreeItem('root',-1);
+$rootStrItem = new TreeItem('root', -1);
 $rootStrItem->collapsed_icon = 'images/open_all.gif';
 $rootStrItem->expanded_icon = 'images/close_all.gif';
 
@@ -404,7 +418,7 @@ if ($_cecIterator->count() > 0) {
 
     foreach ($listColumns as $content) {
         // Header for additional columns
-        $additionalheaders[] = '<td class="header" nowrap="nowrap">'.$content.'</td>';
+        $additionalheaders[] = '<td class="header" nowrap="nowrap">' . $content . '</td>';
     }
 
     $additionalheader = implode('', $additionalheaders);
@@ -421,19 +435,19 @@ $selflink = 'main.php';
 $expandlink = $sess->url($selflink . "?area=$area&frame=$frame&expand=all&syncoptions=$syncoptions");
 $collapselink = $sess->url($selflink . "?area=$area&frame=$frame&collapse=all&syncoptions=$syncoptions");
 $collapseimg =
-      '<a class="black" href="'.
-        $collapselink.
-        '" alt="'.i18n("Close all categories").
-        '" title="'.i18n("Close all categories").'">
-        <img src="images/close_all.gif">&nbsp;'.i18n("Close all categories").
-      '</a>';
+        '<a class="black" href="' .
+        $collapselink .
+        '" alt="' . i18n("Close all categories") .
+        '" title="' . i18n("Close all categories") . '">
+        <img src="images/close_all.gif">&nbsp;' . i18n("Close all categories") .
+        '</a>';
 $expandimg =
-      '<a class="black" href="'.
-        $expandlink.
-        '" alt="'.i18n("Open all categories").
-        '" title="'.i18n("Open all categories").'">
-        <img src="images/open_all.gif">&nbsp;'.i18n("Open all categories").
-      '</a>';
+        '<a class="black" href="' .
+        $expandlink .
+        '" alt="' . i18n("Open all categories") .
+        '" title="' . i18n("Open all categories") . '">
+        <img src="images/open_all.gif">&nbsp;' . i18n("Open all categories") .
+        '</a>';
 
 
 $tpl->set('s', 'COLLAPSE_ALL', $collapseimg);
@@ -441,10 +455,10 @@ $tpl->set('s', 'EXPAND_ALL', $expandimg);
 $sMouseover = 'onmouseover="str.over(this)" onmouseout="str.out(this)" onclick="str.click(this)"';
 
 //Fill inline edit table row
-$tpl->set('s', 'SUM_COLUMNS_EDIT', 14+count($listColumns));
+$tpl->set('s', 'SUM_COLUMNS_EDIT', 14 + count($listColumns));
 $tpl->set('s', 'ACTION_EDIT_URL', $sess->url("main.php?frame=$frame"));
-$tpl->set('s', 'SRC_CANCEL', $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_cancel.gif');
-$tpl->set('s', 'SRC_OK', $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_ok.gif');
+$tpl->set('s', 'SRC_CANCEL', $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["images"] . 'but_cancel.gif');
+$tpl->set('s', 'SRC_OK', $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["images"] . 'but_ok.gif');
 $tpl->set('s', 'HREF_CANCEL', "javascript:handleInlineEdit(0)");
 $tpl->set('s', 'LABEL_ALIAS_NAME', i18n('Alias'));
 $tpl->set('s', 'TEMPLATE_URL', $sess->url("main.php?area=str_tplcfg&frame=$frame"));
@@ -456,38 +470,62 @@ $bAreaAddNewCategory = false;
 
 $aInlineEditData = array();
 
-$sql = "SELECT idtplcfg, idtpl FROM ".$cfg["tab"]["tpl_conf"];
+$sql = "SELECT idtplcfg, idtpl FROM " . $cfg["tab"]["tpl_conf"];
 $db->query($sql);
 $aTplconfigs = array();
 while ($db->next_record()) {
     $aTplconfigs[$db->f('idtplcfg')] = $db->f('idtpl');
 }
 
-$sql = "SELECT name, description, idtpl FROM ".$cfg["tab"]["tpl"];
+$sql = "SELECT name, description, idtpl FROM " . $cfg["tab"]["tpl"];
 $db->query($sql);
 $aTemplates = array();
 while ($db->next_record()) {
     $aTemplates[$db->f('idtpl')] = array(
-      'name' => $db->f('name'),
-      'description' => $db->f('description')
+        'name' => $db->f('name'),
+        'description' => $db->f('description')
     );
 }
 
 foreach ($objects as $key => $value) {
     // check if there area any permission for this $idcat in the mainarea 6 (=str) and there subareas
     $bCheck = false;
-    if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_newtree'); }
-    if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_newcat') ; }
-    if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_makevisible'); }
-    if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_makepublic') ; }
-    if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_deletecat') ; }
-    if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_moveupcat') ; }
-    if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_movedowncat') ; }
-    if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_movesubtree') ; }
-    if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, 'str_renamecat') ; }
-    if (!$bCheck) { $bCheck = $perm->have_perm_area_action('str_tplcfg', 'str_tplcfg') ; }
-    if (!$bCheck) { $bCheck = $perm->have_perm_item($tmp_area, $value->id) ; }
-    if (!$bCheck) { $bCheck = $value->isCustomAttributeSet("forcedisplay") ; }
+    if (!$bCheck) {
+        $bCheck = $perm->have_perm_area_action($tmp_area, 'str_newtree');
+    }
+    if (!$bCheck) {
+        $bCheck = $perm->have_perm_area_action($tmp_area, 'str_newcat');
+    }
+    if (!$bCheck) {
+        $bCheck = $perm->have_perm_area_action($tmp_area, 'str_makevisible');
+    }
+    if (!$bCheck) {
+        $bCheck = $perm->have_perm_area_action($tmp_area, 'str_makepublic');
+    }
+    if (!$bCheck) {
+        $bCheck = $perm->have_perm_area_action($tmp_area, 'str_deletecat');
+    }
+    if (!$bCheck) {
+        $bCheck = $perm->have_perm_area_action($tmp_area, 'str_moveupcat');
+    }
+    if (!$bCheck) {
+        $bCheck = $perm->have_perm_area_action($tmp_area, 'str_movedowncat');
+    }
+    if (!$bCheck) {
+        $bCheck = $perm->have_perm_area_action($tmp_area, 'str_movesubtree');
+    }
+    if (!$bCheck) {
+        $bCheck = $perm->have_perm_area_action($tmp_area, 'str_renamecat');
+    }
+    if (!$bCheck) {
+        $bCheck = $perm->have_perm_area_action('str_tplcfg', 'str_tplcfg');
+    }
+    if (!$bCheck) {
+        $bCheck = $perm->have_perm_item($tmp_area, $value->id);
+    }
+    if (!$bCheck) {
+        $bCheck = $value->isCustomAttributeSet("forcedisplay");
+    }
 
     if ($bCheck) {
 
@@ -515,7 +553,7 @@ foreach ($objects as $key => $value) {
             $tpl->set('d', 'DUPLICATEBUTTON', '&nbsp;');
             $tpl->set('d', 'TEMPLATEBUTTON', '&nbsp;');
             $tpl->set('d', 'MOUSEOVER', '');
-            $tpl->set('d', 'SUM_COLUMNS_EDIT', 14+count($listColumns));
+            $tpl->set('d', 'SUM_COLUMNS_EDIT', 14 + count($listColumns));
             $tpl->set('d', 'CATID', '');
             $tpl->set('d', 'ACTION_EDIT_URL', '');
             $tpl->set('d', 'INPUT_CATEGORY', '');
@@ -550,7 +588,7 @@ foreach ($objects as $key => $value) {
 
         //$tpl->set('d', 'CATEGORY', $sCategoryname);
         if (strlen($value->name) > 30) {
-            $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', 'title="'.$value->name.'" class="tooltip"');
+            $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', 'title="' . $value->name . '" class="tooltip"');
         } else {
             $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', '');
         }
@@ -563,13 +601,13 @@ foreach ($objects as $key => $value) {
             }
             $tpl->set('d', 'ALIAS', $sCategoryalias);
             if (strlen($value->custom['alias']) > 30) {
-                $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', 'title="'.$value->custom['alias'].'"');
+                $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', 'title="' . $value->custom['alias'] . '"');
             } else {
                 $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', '');
             }
         } else {
-             $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', '');
-             $tpl->set('d', 'ALIAS', '&nbsp;');
+            $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', '');
+            $tpl->set('d', 'ALIAS', '&nbsp;');
         }
 
         $template = $aTemplates[$aTplconfigs[$value->custom['idtplcfg']]]['name'];
@@ -578,14 +616,14 @@ foreach ($objects as $key => $value) {
         $descString = '';
 
         if ($template == "") {
-            $template = '--- '.i18n("none").' ---';
+            $template = '--- ' . i18n("none") . ' ---';
         }
 
         // Description for hover effect
-        $descString = '<b>'.$template.'</b>';
+        $descString = '<b>' . $template . '</b>';
 
-        if(sizeof($templateDescription) > 0) {
-            $descString .= '<br>'.$templateDescription;
+        if (sizeof($templateDescription) > 0) {
+            $descString .= '<br>' . $templateDescription;
         }
 
         $sTemplatename = $template;
@@ -619,11 +657,11 @@ foreach ($objects as $key => $value) {
         $aRecord['pTplcfg'] = $bPermTplcfg;
         $aInlineEditData[$value->id] = $aRecord;
 
-        $tpl->set('d', 'RENAMEBUTTON', "<a class=\"action\" href=\"javascript:handleInlineEdit(".$value->id.");\"><img src=\"".$cfg["path"]["images"]."but_todo.gif\" id=\"cat_".$value->id."_image\"></a>");
+        $tpl->set('d', 'RENAMEBUTTON', "<a class=\"action\" href=\"javascript:handleInlineEdit(" . $value->id . ");\"><img src=\"" . $cfg["path"]["images"] . "but_todo.gif\" id=\"cat_" . $value->id . "_image\"></a>");
         $tpl->set('d', 'CATID', $value->id);
 
         if (strlen($template) > 20) {
-            $tpl->set('d', 'SHOW_MOUSEOVER', 'title="'.$descString.'"');
+            $tpl->set('d', 'SHOW_MOUSEOVER', 'title="' . $descString . '"');
         } else {
             $tpl->set('d', 'SHOW_MOUSEOVER', '');
         }
@@ -631,14 +669,14 @@ foreach ($objects as $key => $value) {
         $tpl->set('d', 'MOUSEOVER', $sMouseover);
 
         if ($perm->have_perm_area_action($tmp_area, 'str_newcat') || $perm->have_perm_area_action_item($tmp_area, 'str_newcat', $value->id)) {
-           $bAreaAddNewCategory = true;
+            $bAreaAddNewCategory = true;
         }
 
         if ($perm->have_perm_area_action($tmp_area, 'str_makevisible') || $perm->have_perm_area_action_item($tmp_area, 'str_makevisible', $value->id)) {
             if ($value->custom['visible'] == 1) {
-                $tpl->set('d', 'VISIBLEBUTTON', "<a href=\"".$sess->url("main.php?area=$area&action=str_makevisible&frame=$frame&idcat=".$value->id."&visible=".$value->custom['visible'])."#clickedhere\"><img src=\"images/online.gif\"></a>");
+                $tpl->set('d', 'VISIBLEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_makevisible&frame=$frame&idcat=" . $value->id . "&visible=" . $value->custom['visible']) . "#clickedhere\"><img src=\"images/online.gif\"></a>");
             } else {
-                $tpl->set('d', 'VISIBLEBUTTON', "<a href=\"".$sess->url("main.php?area=$area&action=str_makevisible&frame=$frame&idcat=".$value->id."&visible=".$value->custom['visible'])."#clickedhere\"><img src=\"images/offline.gif\"></a>");
+                $tpl->set('d', 'VISIBLEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_makevisible&frame=$frame&idcat=" . $value->id . "&visible=" . $value->custom['visible']) . "#clickedhere\"><img src=\"images/offline.gif\"></a>");
             }
         } else {
             $tpl->set('d', 'VISIBLEBUTTON', '&nbsp;');
@@ -646,9 +684,9 @@ foreach ($objects as $key => $value) {
 
         if ($perm->have_perm_area_action($tmp_area, 'str_makepublic') || $perm->have_perm_area_action_item($tmp_area, 'str_makepublic', $value->id)) {
             if ($value->custom['public'] == 1) {
-                $tpl->set('d', 'PUBLICBUTTON', "<a href=\"".$sess->url("main.php?area=$area&action=str_makepublic&frame=$frame&idcat=".$value->id."&public=".$value->custom['public'])."#clickedhere\"><img src=\"images/folder_delock.gif\"></a>");
+                $tpl->set('d', 'PUBLICBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_makepublic&frame=$frame&idcat=" . $value->id . "&public=" . $value->custom['public']) . "#clickedhere\"><img src=\"images/folder_delock.gif\"></a>");
             } else {
-                $tpl->set('d', 'PUBLICBUTTON', "<a href=\"".$sess->url("main.php?area=$area&action=str_makepublic&frame=$frame&idcat=".$value->id."&public=".$value->custom['public'])."#clickedhere\"><img src=\"images/folder_lock.gif\"></a>");
+                $tpl->set('d', 'PUBLICBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_makepublic&frame=$frame&idcat=" . $value->id . "&public=" . $value->custom['public']) . "#clickedhere\"><img src=\"images/folder_lock.gif\"></a>");
             }
         } else {
             $tpl->set('d', 'PUBLICBUTTON', '&nbsp;');
@@ -657,7 +695,7 @@ foreach ($objects as $key => $value) {
         $hasChildren = strNextDeeper($value->id);
         $hasArticles = strHasArticles($value->id);
         if (($hasChildren == 0) && ($hasArticles == false) && ($perm->have_perm_area_action($tmp_area, 'str_deletecat') || $perm->have_perm_area_action_item($tmp_area, 'str_deletecat', $value->id))) {
-            $delete = '<a href="javascript://" onclick="confDel('.$value->id.','.$value->custom['parentid'].', \''.htmlspecialchars($value->name).'\')">'."<img src=\"".$cfg["path"]["images"]."delete.gif\"></a>";
+            $delete = '<a href="javascript://" onclick="confDel(' . $value->id . ',' . $value->custom['parentid'] . ', \'' . htmlspecialchars($value->name) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "delete.gif\"></a>";
             $tpl->set('d', 'DELETEBUTTON', $delete);
         } else {
             $message = i18n("No permission");
@@ -673,7 +711,7 @@ foreach ($objects as $key => $value) {
                 $button = 'delete_inact.gif';
             }
 
-            $tpl->set('d', 'DELETEBUTTON', '<img src="'.$cfg["path"]["images"].$button.'">');
+            $tpl->set('d', 'DELETEBUTTON', '<img src="' . $cfg["path"]["images"] . $button . '">');
         }
 
         if ($perm->have_perm_area_action($tmp_area, 'str_moveupcat') || $perm->have_perm_area_action_item($tmp_area, 'str_moveupcat', $value->id)) {
@@ -682,7 +720,7 @@ foreach ($objects as $key => $value) {
                 $tpl->set('d', 'UPBUTTON', '<img src="images/folder_moveup_inact.gif">');
             } else {
                 if ($value->custom['preid'] != 0) {
-                    $tpl->set('d', 'UPBUTTON', "<a href=\"".$sess->url("main.php?area=$area&action=str_moveupcat&frame=$frame&idcat=".$value->id."&rand=$rand")."#clickedhere\"><img src=\"images/folder_moveup.gif\"></a>");
+                    $tpl->set('d', 'UPBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_moveupcat&frame=$frame&idcat=" . $value->id . "&rand=$rand") . "#clickedhere\"><img src=\"images/folder_moveup.gif\"></a>");
                 } else {
                     $tpl->set('d', 'UPBUTTON', '<img src="images/folder_moveup_inact.gif">');
                 }
@@ -693,10 +731,10 @@ foreach ($objects as $key => $value) {
 
         if ($perm->have_perm_area_action($tmp_area, 'str_movedowncat') || $perm->have_perm_area_action_item($tmp_area, 'str_movedowncat', $value->id)) {
             $rand = rand();
-            if ($value->custom['postid']==0) {
+            if ($value->custom['postid'] == 0) {
                 $tpl->set('d', 'DOWNBUTTON', '<img src="images/folder_movedown_inact.gif">');
             } else {
-                $tpl->set('d', 'DOWNBUTTON', "<a href=\"".$sess->url("main.php?area=$area&action=str_movedowncat&frame=$frame&idcat=".$value->id."&rand=$rand")."#clickedhere\"><img src=\"images/folder_movedown.gif\"></a>");
+                $tpl->set('d', 'DOWNBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movedowncat&frame=$frame&idcat=" . $value->id . "&rand=$rand") . "#clickedhere\"><img src=\"images/folder_movedown.gif\"></a>");
             }
         } else {
             $tpl->set('d', 'DOWNBUTTON', '<img src="images/folder_movedown_inact.gif">');
@@ -705,13 +743,13 @@ foreach ($objects as $key => $value) {
         if (($action === 'str_movesubtree') && (!isset($parentid_new))) {
             if ($perm->have_perm_area_action($tmp_area, 'str_movesubtree') || $perm->have_perm_area_action_item($tmp_area, 'str_movesubtree', $value->id)) {
                 if ($value->id == $idcat) {
-                    $tpl->set('d', 'MOVEBUTTON', "<a name=#movesubtreehere><a href=\"".$sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=0")."\"><img src=\"".$cfg["path"]["images"]."but_move_subtree_main.gif\"></a>");
+                    $tpl->set('d', 'MOVEBUTTON', "<a name=#movesubtreehere><a href=\"" . $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=0") . "\"><img src=\"" . $cfg["path"]["images"] . "but_move_subtree_main.gif\"></a>");
                 } else {
                     $allowed = strMoveCatTargetallowed($value->id, $idcat);
                     if ($allowed == 1) {
-                       $tpl->set('d', 'MOVEBUTTON', "<a href=\"".$sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=".$value->id)."\"><img src=\"".$cfg["path"]["images"]."but_move_subtree_target.gif\"></a>");
+                        $tpl->set('d', 'MOVEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=" . $value->id) . "\"><img src=\"" . $cfg["path"]["images"] . "but_move_subtree_target.gif\"></a>");
                     } else {
-                       $tpl->set('d', 'MOVEBUTTON', '&nbsp;');
+                        $tpl->set('d', 'MOVEBUTTON', '&nbsp;');
                     }
                 }
             } else {
@@ -719,14 +757,14 @@ foreach ($objects as $key => $value) {
             }
         } else {
             if ($perm->have_perm_area_action($tmp_area, 'str_movesubtree') || $perm->have_perm_area_action_item($tmp_area, 'str_movesubtree', $value->id)) {
-                $tpl->set('d', 'MOVEBUTTON', "<a href=\"".$sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=".$value->id)."#movesubtreehere\"><img src=\"".$cfg["path"]["images"]."but_move_subtree.gif\"></a>");
+                $tpl->set('d', 'MOVEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=" . $value->id) . "#movesubtreehere\"><img src=\"" . $cfg["path"]["images"] . "but_move_subtree.gif\"></a>");
             } else {
                 $tpl->set('d', 'MOVEBUTTON', '&nbsp;');
             }
         }
 
         if ($perm->have_perm_area_action('str', 'str_duplicate') || $perm->have_perm_area_action_item('str', 'str_duplicate', $value->id)) {
-            $duplicate = '<a href="javascript://" onclick="confDupl('.$value->id.','.$value->custom['parentid'].', \''.htmlspecialchars($value->name).'\')">'."<img src=\"".$cfg["path"]["images"]."folder_duplicate.gif\"></a>";
+            $duplicate = '<a href="javascript://" onclick="confDupl(' . $value->id . ',' . $value->custom['parentid'] . ', \'' . htmlspecialchars($value->name) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "folder_duplicate.gif\"></a>";
             $tpl->set('d', 'DUPLICATEBUTTON', $duplicate);
         } else {
             $tpl->set('d', 'DUPLICATEBUTTON', '&nbsp;');
@@ -743,12 +781,12 @@ foreach ($objects as $key => $value) {
             $_cecIterator = $_cecRegistry->getIterator('Contenido.CategoryList.RenderColumn');
             if ($_cecIterator->count() > 0) {
                 while ($chainEntry = $_cecIterator->next()) {
-                    $columnContents[]  = $chainEntry->execute($value->id, $key);
+                    $columnContents[] = $chainEntry->execute($value->id, $key);
                 }
             } else {
                 $columnContents[] = '';
             }
-            $columns[] = '<td class="str-style-c">'.implode("", $columnContents).'</td>';
+            $columns[] = '<td class="str-style-c">' . implode("", $columnContents) . '</td>';
         }
 
         $tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $columns));
@@ -760,12 +798,10 @@ $jsDataArray = "";
 foreach ($aInlineEditData as $iIdCat => $aData) {
     $aTmp = array();
     foreach ($aData as $aKey => $aValue) {
-        array_push($aTmp, $aKey."':'".$aValue);
+        $aTmp[] = $aKey . "':'" . $aValue;
     }
-    $jsDataArray.= "tmpObject = new Object();
-                    tmpObject = {'".implode("', '", $aTmp)."'};
-                    dataArray[$iIdCat] = tmpObject;
-                    ";
+    $jsDataArray.= "
+    strDataObj[$iIdCat] = {'" . implode("', '", $aTmp) . "'};";
 }
 
 $tpl->set('s', 'JS_DATA', $jsDataArray);
@@ -774,9 +810,9 @@ $string = markSubMenuItem(0, true);
 
 // Set DHTML generic Values
 $sImagepath = $cfg["path"]["images"];
-$tpl->set('s', 'SUM_COLUMNS', 14+count($listColumns));
+$tpl->set('s', 'SUM_COLUMNS', 14 + count($listColumns));
 $tpl->set('s', 'HREF_ACTION', $sess->url("main.php?frame=$frame"));
-$tpl->set('s', 'CON_IMAGES', $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]);
+$tpl->set('s', 'CON_IMAGES', $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["images"]);
 
 // Generate input fields for category new layer and category edit layer
 $oSession = new cHTMLHiddenField($sess->name, $sess->id);
@@ -815,9 +851,9 @@ $sCategorySelect = buildCategorySelectRights('idcat', '');
 
 // Show Layerbutton for adding new Cateogries and set options according to Permisssions
 if (($perm->have_perm_area_action($tmp_area, 'str_newtree') ||
-    $perm->have_perm_area_action($tmp_area, 'str_newcat') ||
-    $bAreaAddNewCategory)
-    && (int) $client > 0 && (int) $lang > 0) {
+        $perm->have_perm_area_action($tmp_area, 'str_newcat') ||
+        $bAreaAddNewCategory)
+        && (int) $client > 0 && (int) $lang > 0) {
     $tpl->set('s', 'NEWCAT', $string . '<a class="black" id="new_tree_button" href="javascript:showNewForm();"><img src="images/folder_new.gif">&nbsp;' . i18n('Create new category') . '</a>');
     if ($perm->have_perm_area_action($tmp_area, 'str_newtree')) {
         if ($perm->have_perm_area_action($tmp_area, 'str_newcat') || $bAreaAddNewCategory) {
@@ -829,7 +865,6 @@ if (($perm->have_perm_area_action($tmp_area, 'str_newtree') ||
         }
         $tpl->set('s', 'INPUT_ACTION_NEW', $oActionNew->render());
         $tpl->set('s', 'PERMISSION_NEWTREE_DISPLAY', 'block');
-
     } else {
         $oActionNew = new cHTMLHiddenField('action', 'str_newcat', 'cat_new_action');
         $tpl->set('s', 'PERMISSION_NEWTREE', 'disabled');
@@ -847,23 +882,23 @@ if (($perm->have_perm_area_action($tmp_area, 'str_newtree') ||
     }
 
     if ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg')) {
-        $tpl->set('s', 'TEMPLATE_BUTTON_NEW', '<a href="javascript:showTemplateSelect();"><img src="'.$sImagepath.'template_properties.gif" id="cat_category_select_button" title="'.i18n('Configure category').'" alt="'.i18n('Configure category').'"></a>');
+        $tpl->set('s', 'TEMPLATE_BUTTON_NEW', '<a href="javascript:showTemplateSelect();"><img src="' . $sImagepath . 'template_properties.gif" id="cat_category_select_button" title="' . i18n('Configure category') . '" alt="' . i18n('Configure category') . '"></a>');
         $tpl->set('s', 'SELECT_TEMPLATE', getTemplateSelect());
     } else {
-        $tpl->set('s', 'TEMPLATE_BUTTON_NEW', '<img src="'.$sImagepath.'template_properties_off.gif" id="cat_category_select_button" title="'.i18n('Configure category').'" alt="'.i18n('Configure category').'">');
+        $tpl->set('s', 'TEMPLATE_BUTTON_NEW', '<img src="' . $sImagepath . 'template_properties_off.gif" id="cat_category_select_button" title="' . i18n('Configure category') . '" alt="' . i18n('Configure category') . '">');
         $tpl->set('s', 'SELECT_TEMPLATE', '');
     }
 
     if ($perm->have_perm_area_action($tmp_area, 'str_makevisible')) {
-        $tpl->set('s', 'MAKEVISIBLE_BUTTON_NEW', '<a href="javascript:changeVisible();"><img src="'.$sImagepath.'offline.gif" id="visible_image" title="'.i18n('Make online').'" alt="'.i18n('Make online').'"></a>');
+        $tpl->set('s', 'MAKEVISIBLE_BUTTON_NEW', '<a href="javascript:changeVisible();"><img src="' . $sImagepath . 'offline.gif" id="visible_image" title="' . i18n('Make online') . '" alt="' . i18n('Make online') . '"></a>');
     } else {
-        $tpl->set('s', 'MAKEVISIBLE_BUTTON_NEW', '<img src="'.$sImagepath.'offline_off.gif" id="visible_image" title="'.i18n('Make online').'" alt="'.i18n('Make online').'">');
+        $tpl->set('s', 'MAKEVISIBLE_BUTTON_NEW', '<img src="' . $sImagepath . 'offline_off.gif" id="visible_image" title="' . i18n('Make online') . '" alt="' . i18n('Make online') . '">');
     }
 
     if ($perm->have_perm_area_action($tmp_area, 'str_makepublic')) {
-        $tpl->set('s', 'MAKEPUBLIC_BUTTON_NEW', '<a href="javascript:changePublic();"><img src="'.$sImagepath.'folder_delock.gif" id="public_image" title="'.i18n('Protect category').'" alt="'.i18n('Protect category').'"></a>');
+        $tpl->set('s', 'MAKEPUBLIC_BUTTON_NEW', '<a href="javascript:changePublic();"><img src="' . $sImagepath . 'folder_delock.gif" id="public_image" title="' . i18n('Protect category') . '" alt="' . i18n('Protect category') . '"></a>');
     } else {
-        $tpl->set('s', 'MAKEPUBLIC_BUTTON_NEW', '<img src="'.$sImagepath.'folder_delocked.gif" id="public_image" title="'.i18n('Protect category').'" alt="'.i18n('Protect category').'">');
+        $tpl->set('s', 'MAKEPUBLIC_BUTTON_NEW', '<img src="' . $sImagepath . 'folder_delocked.gif" id="public_image" title="' . i18n('Protect category') . '" alt="' . i18n('Protect category') . '">');
     }
 } else {
     $tpl->set('s', 'NEWCAT', $string);
@@ -892,7 +927,7 @@ if ($movesubtreeidcat != 0) {
         $sLimiter = "";
     }
     $sButtonDesc = sprintf(i18n('Cancel moving %s'), '"' . substr($sMoveSubtreeCatName, 0, 30) . $sLimiter . '"');
-    $tpl->set('s', 'CANCEL_MOVE_TREE', '<a class="black" id="cancel_move_tree_button" href="javascript:cancelMoveTree(\'' . $movesubtreeidcat . '\');"><img src="images/but_cancel.gif" alt="'.$sButtonDesc.'">&nbsp;'.$sButtonDesc.'</a>');
+    $tpl->set('s', 'CANCEL_MOVE_TREE', '<a class="black" id="cancel_move_tree_button" href="javascript:cancelMoveTree(\'' . $movesubtreeidcat . '\');"><img src="images/but_cancel.gif" alt="' . $sButtonDesc . '">&nbsp;' . $sButtonDesc . '</a>');
 } else {
     $tpl->set('s', 'CANCEL_MOVE_TREE', '');
 }
