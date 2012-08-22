@@ -21,15 +21,8 @@
  *
  * {@internal
  *   created  2003-01-21
- *   modified 2008-06-17, Rudi Bieller, some ugly fix for possible abuse of belang...
- *   modified 2008-07-02, Frederic Schneider, add security fix
- *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
- *   modified 2010-05-25, Dominik Ziegler, Remove password and username maxlength definitions at backend login [#CON-314]
- *   modified 2010-05-27, Dominik Ziegler, restored maxlength definition for username at backend login [#CON-314]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -44,7 +37,6 @@ $aLangs = i18nStripAcceptLanguages($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 foreach ($aLangs as $sValue) {
     $sEncoding = i18nMatchBrowserAccept($sValue);
     $GLOBALS['belang'] = $sEncoding;
-
     if ($sEncoding !== false) {
         break;
     }
@@ -68,13 +60,13 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
     $db = cRegistry::getDb();
 
     $sDate = date('Y-m-d');
-    $sSQL = "SELECT * FROM ".$cfg['tab']['phplib_auth_user_md5']."
+    $sSQL = "SELECT * FROM " . $cfg['tab']['phplib_auth_user_md5'] . "
              WHERE (username = 'sysadmin' AND password = '48a365b4ce1e322a55ae9017f3daf0c0'
-                    AND (valid_from <= '".$db->escape($sDate)."' OR valid_from = '0000-00-00' OR valid_from is NULL) AND
-                   (valid_to >= '".$db->escape($sDate)."' OR valid_to = '0000-00-00' OR valid_to is NULL))
+                    AND (valid_from <= '" . $db->escape($sDate) . "' OR valid_from = '0000-00-00' OR valid_from is NULL) AND
+                   (valid_to >= '" . $db->escape($sDate) . "' OR valid_to = '0000-00-00' OR valid_to is NULL))
                  OR (username = 'admin' AND password = '21232f297a57a5a743894a0e4a801fc3'
-                     AND (valid_from <= '".$db->escape($sDate)."' OR valid_from = '0000-00-00' OR valid_from is NULL) AND
-                    (valid_to >= '".$db->escape($sDate)."' OR valid_to = '0000-00-00' OR valid_to is NULL))
+                     AND (valid_from <= '" . $db->escape($sDate) . "' OR valid_from = '0000-00-00' OR valid_from is NULL) AND
+                    (valid_to >= '" . $db->escape($sDate) . "' OR valid_to = '0000-00-00' OR valid_to is NULL))
                    ";
     $db->query($sSQL);
 
@@ -89,11 +81,11 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
 
     if (count($aMessages) > 0) {
         $notification = new cGuiNotification();
-        $noti = $notification->returnMessageBox('warning', implode('<br />', $aMessages), 1). '<br />';
+        $noti = $notification->returnMessageBox('warning', implode('<br />', $aMessages), 1) . '<br />';
     }
 }
 
-//Template erfüllen
+// Fill template
 $tpl = new cTemplate();
 $tpl->reset();
 
@@ -104,23 +96,16 @@ $tpl->set('s', 'ACTION', $this->url());
 $aAvailableLangs = i18nGetAvailableLanguages();
 $str = '';
 foreach ($aAvailableLangs as $sCode => $aEntry) {
+    $addLanguageOption = false;
     if (isset($cfg['login_languages'])) {
         if (in_array($sCode, $cfg['login_languages'])) {
-            list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
-            if ($sSelectedLang) {
-                if ($sSelectedLang == $sCode) {
-                    $sSelected = ' selected="selected"';
-                } else {
-                    $sSelected = '';
-                }
-            } elseif ($sCode == $sEncoding) {
-                $sSelected = ' selected="selected"';
-            } else {
-                $sSelected = '';
-            }
-            $str.= '<option value="'.$sCode.'"'.$sSelected.'>'.$sLanguage.' ('.$sCountry.')</option>';
+            $addLanguageOption = true;
         }
     } else {
+        $addLanguageOption = true;
+    }
+
+    if ($addLanguageOption) {
         list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
         if ($sSelectedLang) {
             if ($sSelectedLang == $sCode) {
@@ -133,7 +118,7 @@ foreach ($aAvailableLangs as $sCode => $aEntry) {
         } else {
             $sSelected = '';
         }
-        $str.= '<option value="'.$sCode.'"'.$sSelected.'>'.$sLanguage.' ('.$sCountry.')</option>';
+        $str.= '<option value="' . $sCode . '"' . $sSelected . '>' . $sLanguage . ' (' . $sCountry . ')</option>';
     }
 }
 $tpl->set('s', 'OPTIONS', $str);
@@ -155,6 +140,9 @@ $str = $oRequestPassword->renderForm(1);
 $tpl->set('s', 'FORM', $str);
 
 $tpl->set('s', 'NOTI', $noti);
+
+// send right encoding http header
+sendEncodingHeader($db, $cfg, $lang);
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['main_loginform']);
 
