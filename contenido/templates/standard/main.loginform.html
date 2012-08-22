@@ -5,14 +5,14 @@
     <title>{TITEL}</title>
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <link rel="shortcut icon" href="{BASEPATH}favicon.ico">
-    <script type="text/javascript" src="scripts/str_overview.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript">
         if (top != self) {
             top.location = "index.php";
         }
     </script>
     <style type="text/css">
-        #page {border-top:1px solid #0060b1;height:110px;overflow:hidden;}
+        #page {border-top:1px solid #0060b1;height:110px;/*overflow:hidden;*/}
         #lblusername {width:75px; display:block; float:left;}
         #lblpasswd {width:75px; display:block; float:left;}
         #navcontainer {border-top:1px solid #666; clear: left;}
@@ -28,9 +28,9 @@
             <div id="head_info" class="left_dist">
                 &nbsp;
             </div>
-            <form name="login" method="post" action="{ACTION}">
+            <form id="login" name="login" method="post" action="{ACTION}">
                 <div id="head_nav1" class="left_dist head_nav_login">
-                    <select id="lang" name="belang" tabindex="3" class="text_medium" onchange="document.login.submit();">
+                    <select id="lang" name="belang" tabindex="3" class="text_medium">
                         {OPTIONS}
                     </select>
                     <label id="lbllang" for="lang">{LANGUAGE}</label>
@@ -52,16 +52,24 @@
         </div>
         <div id="navcontainer">{FORM}</div>
     </div>
-	<div style="background-color: #F1F1F1;height:80px;"></div>
-	<div id="navcontainer" style="clear: none;border-top: 1px solid #666666;"></div>
+    <div style="background-color: #F1F1F1;height:80px;"></div>
+    <div id="navcontainer" style="clear:none;border-top:1px solid #666;"></div>
 </div>
 <div id="alertbox">{NOTI}</div>
+
 <script type="text/javascript">
-    if (document.login.username.value == '') {
-        document.login.username.focus();
+$(document).ready(function() {
+    $("#lang").change(function() {
+        $("#login").submit();
+    });
+
+    if ("" === $("#username").val()) {
+        $("#username").focus();
     } else {
-        document.login.password.focus();
+        $("#passwd").focus();
     }
+});
 </script>
+
 </body>
 </html>
