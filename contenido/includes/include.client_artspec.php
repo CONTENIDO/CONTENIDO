@@ -58,10 +58,9 @@ if ($action == "client_artspec_default") {
     }
 }
 
-$artspecvalues = getArtspec();
-$numberOfElements = count($artspecvalues);
+$artspec = getArtspec();
 
-if (empty($artspecvalues) == false) {
+if (!empty($artspec)) {
 
     $list = new cGuiList();
 
@@ -162,10 +161,12 @@ $spacer = new cHTMLDiv();
 $spacer->setStyle("width: 1%");
 $spacer->setContent("<br>" . $form->render());
 
-$page->setContent(array(
-    $list,
-    $spacer
-));
+$content = array();
+if (!empty($list)) {
+    $content[] = $list;
+}
+$content[] = $spacer;
+$page->setContent($content);
 
 $page->render();
 
