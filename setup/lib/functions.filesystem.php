@@ -8,56 +8,49 @@
  * Requirements:
  * @con_php_req 5
  *
- * @package    CONTENIDO setup
- * @version    0.2
- * @author     unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- *
- * {@internal
- *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *
- *   $Id$:
- * }}
+ * @package CONTENIDO setup
+ * @version 0.2
+ * @author unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  *
  */
 
-
 if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
+    die('Illegal call');
 }
 
+define("C_PREDICT_SUFFICIENT", 1);
+define("C_PREDICT_NOTPREDICTABLE", 2);
+define("C_PREDICT_CHANGEPERM_SAMEOWNER", 3);
+define("C_PREDICT_CHANGEPERM_SAMEGROUP", 4);
+define("C_PREDICT_CHANGEPERM_OTHERS", 5);
+define("C_PREDICT_CHANGEUSER", 6);
+define("C_PREDICT_CHANGEGROUP", 7);
+define("C_PREDICT_WINDOWS", 8);
 
-define("C_PREDICT_SUFFICIENT",            1);
-define("C_PREDICT_NOTPREDICTABLE",        2);
-define("C_PREDICT_CHANGEPERM_SAMEOWNER",  3);
-define("C_PREDICT_CHANGEPERM_SAMEGROUP",  4);
-define("C_PREDICT_CHANGEPERM_OTHERS",     5);
-define("C_PREDICT_CHANGEUSER",            6);
-define("C_PREDICT_CHANGEGROUP",           7);
-define("C_PREDICT_WINDOWS",               8);
-
-define("E_BASEDIR_NORESTRICTION",         1);
-define("E_BASEDIR_DOTRESTRICTION",        2);
+define("E_BASEDIR_NORESTRICTION", 1);
+define("E_BASEDIR_DOTRESTRICTION", 2);
 define("E_BASEDIR_RESTRICTIONSUFFICIENT", 3);
-define("E_BASEDIR_INCOMPATIBLE",          4);
+define("E_BASEDIR_INCOMPATIBLE", 4);
 
-function canWriteFile($filename)
-{
+function canWriteFile($filename) {
     clearstatcache();
-    if (is_file($filename) && !file_exists($filename)) {
+    if (is_file($filename)) {
+        return is_writable($filename);
+    } else {
         return is_writable(dirname($filename));
     }
-
-    return is_writable($filename);
 }
 
-function getFileInfo($sFilename)
-{
+function canWriteDir($dirname) {
+    clearstatcache();
+    return is_dir($dirname) && is_writable($dirname);
+}
+
+function getFileInfo($sFilename) {
     if (!cFileHandler::exists($sFilename)) {
         return false;
     }
@@ -105,19 +98,18 @@ function getFileInfo($sFilename)
     $aFileinfo = array();
     $aFileinfo["info"] = $info;
     $aFileinfo["type"] = $type;
-    $aFileinfo["owner"]["read"]   = ($oiFilePermissions & 0x0100) ? true : false;
-    $aFileinfo["owner"]["write"]  = ($oiFilePermissions & 0x0080) ? true : false;
-    $aFileinfo["group"]["read"]   = ($oiFilePermissions & 0x0020) ? true : false;
-    $aFileinfo["group"]["write"]  = ($oiFilePermissions & 0x0010) ? true : false;
-    $aFileinfo["others"]["read"]  = ($oiFilePermissions & 0x0004) ? true : false;
-    $aFileinfo["others"]["write"] = ($oiFilePermissions & 0x0002) ? true : false;
-    $aFileinfo["owner"]["id"]     = fileowner($sFilename);
-    $aFileinfo["group"]["id"]     = filegroup($sFilename);
+    $aFileinfo["owner"]["read"] = ($oiFilePermissions & 0x0100)? true : false;
+    $aFileinfo["owner"]["write"] = ($oiFilePermissions & 0x0080)? true : false;
+    $aFileinfo["group"]["read"] = ($oiFilePermissions & 0x0020)? true : false;
+    $aFileinfo["group"]["write"] = ($oiFilePermissions & 0x0010)? true : false;
+    $aFileinfo["others"]["read"] = ($oiFilePermissions & 0x0004)? true : false;
+    $aFileinfo["others"]["write"] = ($oiFilePermissions & 0x0002)? true : false;
+    $aFileinfo["owner"]["id"] = fileowner($sFilename);
+    $aFileinfo["group"]["id"] = filegroup($sFilename);
     return ($aFileinfo);
 }
 
-function checkOpenBasedirCompatibility()
-{
+function checkOpenBasedirCompatibility() {
     $value = getPHPIniSetting("open_basedir");
 
     if (isWindows()) {
@@ -145,24 +137,28 @@ function checkOpenBasedirCompatibility()
     return E_BASEDIR_INCOMPATIBLE;
 }
 
-function predictCorrectFilepermissions ($file) {
-    // Check if the system is a windows system. If yes, we can't predict anything.
+function predictCorrectFilepermissions($file) {
+    // Check if the system is a windows system. If yes, we can't predict
+    // anything.
     if (isWindows()) {
         return C_PREDICT_WINDOWS;
     }
 
-    // Check if the file is read- and writeable. If yes, we don't need to do any further checks.
+    // Check if the file is read- and writeable. If yes, we don't need to do any
+    // further checks.
     if (is_writable($file) && is_readable($file)) {
         return C_PREDICT_SUFFICIENT;
     }
 
-    // If we can't find out the web server UID, we cannot predict the correct mask.
+    // If we can't find out the web server UID, we cannot predict the correct
+    // mask.
     $iServerUID = getServerUID();
     if ($iServerUID === false) {
         return C_PREDICT_NOTPREDICTABLE;
     }
 
-    // If we can't find out the web server GID, we cannot predict the correct mask.
+    // If we can't find out the web server GID, we cannot predict the correct
+    // mask.
     $iServerGID = getServerGID();
     if ($iServerGID === false) {
         return C_PREDICT_NOTPREDICTABLE;
@@ -184,7 +180,6 @@ function predictCorrectFilepermissions ($file) {
 
             return C_PREDICT_CHANGEGROUP;
         }
-
     } else {
         // Regular checks
         if ($iServerUID == $aFilePermissions["owner"]["id"]) {
@@ -198,5 +193,3 @@ function predictCorrectFilepermissions ($file) {
         return C_PREDICT_CHANGEPERM_OTHERS;
     }
 }
-
-?>
