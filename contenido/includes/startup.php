@@ -113,7 +113,6 @@ if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.local.php'))
     require_once($cfg['path']['contenido_config'] . 'config.local.php');
 }
 
-
 // Takeover configured PHP settings
 if ($cfg['php_settings'] && is_array($cfg['php_settings'])) {
     foreach ($cfg['php_settings'] as $settingName => $value) {

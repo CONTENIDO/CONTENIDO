@@ -159,6 +159,27 @@ checkAndInclude($cfg['path']['contenido_config'] . 'config.path.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'config.misc.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
 
+// Takeover configured PHP settings
+if ($cfg['php_settings'] && is_array($cfg['php_settings'])) {
+    foreach ($cfg['php_settings'] as $settingName => $value) {
+        // date.timezone is handled separately
+        if ($settingName !== 'date.timezone') {
+            @ini_set($settingName, $value);
+        }
+    }
+}
+error_reporting($cfg['php_error_reporting']);
+
+// force date.timezone setting
+$timezoneCfg = $cfg['php_settings']['date.timezone'];
+if (!empty($timezoneCfg) && ini_get('date.timezone') !== $timezoneCfg) {
+    // if the timezone setting from the cfg differs from the php.ini setting, set timezone from CFG
+    date_default_timezone_set($timezoneCfg);
+} else if (empty($timezoneCfg) && (ini_get('date.timezone') === '' || ini_get('date.timezone') === false)) {
+    // if there are no timezone settings, set UTC timezone
+    date_default_timezone_set('UTC');
+}
+
 // Initialization of autoloader
 checkAndInclude($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');
 cAutoload::initialize($cfg);
