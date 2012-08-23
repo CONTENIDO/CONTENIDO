@@ -48,6 +48,7 @@ define("E_BASEDIR_INCOMPATIBLE",          4);
 
 function canWriteFile($filename)
 {
+    clearstatcache();
     if (is_file($filename) && !file_exists($filename)) {
         return is_writable(dirname($filename));
     }
