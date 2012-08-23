@@ -46,118 +46,13 @@ define("E_BASEDIR_DOTRESTRICTION",        2);
 define("E_BASEDIR_RESTRICTIONSUFFICIENT", 3);
 define("E_BASEDIR_INCOMPATIBLE",          4);
 
-/**
- * Checks if a specific file is writeable. Includes a PHP 4.0.4
- * workaround where is_writable doesn't return a value of type
- * boolean. Also clears the stat cache and checks if the file
- * exists.
- *
- * @param $file string    Path to the file, accepts absolute and relative files
- * @return boolean true if the file exists and is writeable, false otherwise
- */
-function isWriteable($file)
+function canWriteFile($filename)
 {
-    clearstatcache();
-    if (!cFileHandler::exists($file)) {
-        return false;
+    if (is_file($filename) && !file_exists($filename)) {
+        return is_writable(dirname($filename));
     }
 
-    $bStatus = is_writable($file);
-    // PHP 4.0.4 workaround
-    settype($bStatus, "boolean");
-
-    return $bStatus;
-}
-
-/**
- * Checks if a file is readable.
- *
- * @param $file string Path to the file, accepts absolute and relative files
- * @return boolean true if the file exists and is readable, false otherwise
- */
-function isReadable($file)
-{
-    return is_readable($file);
-}
-
-function canReadFile($sFilename)
-{
-    if (isReadable(dirname($sFilename))) {
-        if (isReadable($sFilename)) {
-            return (bool) cFileHandler::read($sFilename);
-        }
-    }
-    return false;
-}
-
-function canWriteFile($sFilename)
-{
-    // Check dir perms, create a new file read it and delete it
-    if (is_dir($sFilename)) {
-
-        $sRandFilenamePath = $sFilename;
-        $i = 0;
-
-        // Try to find a random filename for write test, which does not exist
-        while (cFileHandler::exists($sRandFilenamePath) &&  $i < 100) {
-            $sRandFilename = 'con_test'.rand(0,1000000000).'con_test';
-            $sRandFilenamePath = '';
-
-            if ($sFilename{strlen($sFilename)-1} == '/') {
-                $sRandFilenamePath = $sFilename.$sRandFilename;
-            } else {
-                $sRandFilenamePath = $sFilename.'/'.$sRandFilename;
-            }
-
-            $i++;
-        }
-
-        // Tthere is no file name which does not exist, exit after 100 trials
-        if ($i == 100) {
-            return false;
-        }
-
-        // Ignore errors in case isWriteable() returns a wrong information
-        cFileHandler::create($sRandFilenamePath, "test");
-        return cFileHandler::remove($sRandFilenamePath);
-    }
-
-    if (isWriteable(dirname($sFilename))) {
-        if (cFileHandler::exists($sFilename)) {
-            if (!isWriteable($sFilename)) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        // Ignore errors in case isWriteable() returns a wrong information
-        cFileHandler::create($sFilename, "test");
-        return cFileHandler::remove($sFilename);
-    } else {
-        if (cFileHandler::exists($sFilename)) {
-            if (!isWriteable($sFilename)) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-    }
-}
-
-function canDeleteFile($sFilename)
-{
-    if (isWriteable($sFilename)) {
-        unlink($sFilename);
-
-        if (cFileHandler::exists($sFilename)) {
-            return false;
-        } else {
-            return true;
-        }
-    } else {
-        return false;
-    }
+    return is_writable($filename);
 }
 
 function getFileInfo($sFilename)
@@ -256,7 +151,7 @@ function predictCorrectFilepermissions ($file) {
     }
 
     // Check if the file is read- and writeable. If yes, we don't need to do any further checks.
-    if (isWriteable($file) && isReadable($file)) {
+    if (is_writable($file) && is_readable($file)) {
         return C_PREDICT_SUFFICIENT;
     }
 

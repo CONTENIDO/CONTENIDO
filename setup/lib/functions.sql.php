@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 function injectSQL($db, $prefix, $file, $replacements = array()) {
     $file = trim($file);
 
-    if (!isReadable($file)) {
+    if (!is_readable($file)) {
         return false;
     }
 
