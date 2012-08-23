@@ -137,7 +137,7 @@ $oSelectSortOrder->setDefault($_REQUEST["sortorder"]);
 $oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 20);
 $oTextboxFilter->setStyle('width:114px;');
 
-$content = '<div style="padding-left: 17px;>';
+$content = '<div style="padding-left: 17px;">';
 $content .= '<form action="javascript:execFilter(\''.$sess->id.'\');" id="filter" name="filter" method="get">';
 $content .= '<table class="borderless">';
 $content .= '<input type="hidden" name="area" value="'.$area.'">';
