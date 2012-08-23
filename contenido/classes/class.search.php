@@ -1315,6 +1315,7 @@ class cSearch extends cSearchBaseAbstract {
                     B.idlang = '" . cSecurity::toInteger($this->lang) . "' AND
                     C.idlang = '" . cSecurity::toInteger($this->lang) . "' AND
                     A.idart = B.idart AND
+                    B.searchable = 1  AND
                     A.idcat = C.idcat AND
                     " . $sArtSpecs . "
                     " . $protected . " ";
