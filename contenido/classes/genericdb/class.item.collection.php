@@ -1075,39 +1075,29 @@ abstract class ItemCollection extends cItemBaseAbstract {
     public function createNewItem($data = null) {
         $this->_executeCallbacks(self::CREATE_BEFORE, get_class($this), array());
 
-        $oDb = $this->_getSecondDBInstance();
+        $db = $this->_getSecondDBInstance();
 
+        $primaryKeyValue = null;
+        // prepare the primary key value and the data depending on the type of $data
         if (is_array($data)) {
-            // if primary key has been given in the array, use it
             if (array_key_exists($this->primaryKey, $data)) {
                 $primaryKeyValue = $data[$this->primaryKey];
-                // unset the PK so that it is not set again
-                unset($data[$this->primaryKey]);
-            } else {
-                $primaryKeyValue = null;
             }
         } else {
+            // data is the primary key
             $primaryKeyValue = $data;
+            $data = array($this->primaryKey => $data);
         }
 
-        $sql = 'INSERT INTO `%s` (%s) VALUES ("%s")';
-        $oDb->query($sql, $this->table, $this->primaryKey, $primaryKeyValue);
+        // build the insert statement and execute it
+        $sql = $db->buildInsert($this->table, $data);
+        $db->query($sql);
 
         if ($primaryKeyValue === null) {
-            $primaryKeyValue = $oDb->getLastInsertedId($this->table);
+            $primaryKeyValue = $db->getLastInsertedId($this->table);
         }
 
-        $item = $this->loadItem($primaryKeyValue);
-
-        // insert data into newly created item if data has been given
-        if (is_array($data) && count($data) > 0) {
-            foreach ($data as $key => $value) {
-                $item->set($key, $value);
-            }
-            $item->store();
-        }
-
-        if ($oDb->affected_rows() == 0) {
+        if ($db->affected_rows() == 0) {
             $this->_executeCallbacks(self::CREATE_FAILURE, $this->_itemClass, array());
         } else {
             $this->_executeCallbacks(self::CREATE_SUCCESS, $this->_itemClass, array(
@@ -1115,7 +1105,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
             ));
         }
 
-        return $item;
+        return $this->loadItem($primaryKeyValue);
     }
 
     /**
