@@ -657,7 +657,7 @@ foreach ($objects as $key => $value) {
         $aRecord['pTplcfg'] = $bPermTplcfg;
         $aInlineEditData[$value->id] = $aRecord;
 
-        $tpl->set('d', 'RENAMEBUTTON', "<a class=\"action\" href=\"javascript:handleInlineEdit(" . $value->id . ");\"><img src=\"" . $cfg["path"]["images"] . "but_todo.gif\" id=\"cat_" . $value->id . "_image\"></a>");
+        $tpl->set('d', 'RENAMEBUTTON', "<a class=\"action\" href=\"javascript:handleInlineEdit(" . $value->id . ");\"><img src=\"" . $cfg["path"]["images"] . "but_todo.gif\" id=\"cat_" . $value->id . "_image\" alt=\"" . i18n("Edit category") . "\" title=\"" . i18n("Edit category") . "\"></a>");
         $tpl->set('d', 'CATID', $value->id);
 
         if (strlen($template) > 20) {
@@ -674,9 +674,9 @@ foreach ($objects as $key => $value) {
 
         if ($perm->have_perm_area_action($tmp_area, 'str_makevisible') || $perm->have_perm_area_action_item($tmp_area, 'str_makevisible', $value->id)) {
             if ($value->custom['visible'] == 1) {
-                $tpl->set('d', 'VISIBLEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_makevisible&frame=$frame&idcat=" . $value->id . "&visible=" . $value->custom['visible']) . "#clickedhere\"><img src=\"images/online.gif\"></a>");
+                $tpl->set('d', 'VISIBLEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_makevisible&frame=$frame&idcat=" . $value->id . "&visible=" . $value->custom['visible']) . "#clickedhere\"><img src=\"images/online.gif\" alt=\"" . i18n("Make offline") . "\" title=\"" . i18n("Make offline") . "\"></a>");
             } else {
-                $tpl->set('d', 'VISIBLEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_makevisible&frame=$frame&idcat=" . $value->id . "&visible=" . $value->custom['visible']) . "#clickedhere\"><img src=\"images/offline.gif\"></a>");
+                $tpl->set('d', 'VISIBLEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_makevisible&frame=$frame&idcat=" . $value->id . "&visible=" . $value->custom['visible']) . "#clickedhere\"><img src=\"images/offline.gif\" alt=\"" . i18n("Make online") . "\" title=\"" . i18n("Make online") . "\"></a>");
             }
         } else {
             $tpl->set('d', 'VISIBLEBUTTON', '&nbsp;');
@@ -684,9 +684,9 @@ foreach ($objects as $key => $value) {
 
         if ($perm->have_perm_area_action($tmp_area, 'str_makepublic') || $perm->have_perm_area_action_item($tmp_area, 'str_makepublic', $value->id)) {
             if ($value->custom['public'] == 1) {
-                $tpl->set('d', 'PUBLICBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_makepublic&frame=$frame&idcat=" . $value->id . "&public=" . $value->custom['public']) . "#clickedhere\"><img src=\"images/folder_delock.gif\"></a>");
+                $tpl->set('d', 'PUBLICBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_makepublic&frame=$frame&idcat=" . $value->id . "&public=" . $value->custom['public']) . "#clickedhere\"><img src=\"images/folder_delock.gif\" alt=\"" . i18n("Protect category") . "\" title=\"" . i18n("Protect category") . "\"></a>");
             } else {
-                $tpl->set('d', 'PUBLICBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_makepublic&frame=$frame&idcat=" . $value->id . "&public=" . $value->custom['public']) . "#clickedhere\"><img src=\"images/folder_lock.gif\"></a>");
+                $tpl->set('d', 'PUBLICBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_makepublic&frame=$frame&idcat=" . $value->id . "&public=" . $value->custom['public']) . "#clickedhere\"><img src=\"images/folder_lock.gif\" alt=\"" . i18n("Unprotect category") . "\" title=\"" . i18n("Unprotect category") . "\"></a>");
             }
         } else {
             $tpl->set('d', 'PUBLICBUTTON', '&nbsp;');
@@ -695,23 +695,26 @@ foreach ($objects as $key => $value) {
         $hasChildren = strNextDeeper($value->id);
         $hasArticles = strHasArticles($value->id);
         if (($hasChildren == 0) && ($hasArticles == false) && ($perm->have_perm_area_action($tmp_area, 'str_deletecat') || $perm->have_perm_area_action_item($tmp_area, 'str_deletecat', $value->id))) {
-            $delete = '<a href="javascript://" onclick="confDel(' . $value->id . ',' . $value->custom['parentid'] . ', \'' . htmlspecialchars($value->name) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "delete.gif\"></a>";
+            $delete = '<a href="javascript://" onclick="confDel(' . $value->id . ',' . $value->custom['parentid'] . ', \'' . htmlspecialchars($value->name) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "delete.gif\" alt=\"" . i18n("Delete category") . "\" title=\"" . i18n("Delete category") . "\"></a>";
             $tpl->set('d', 'DELETEBUTTON', $delete);
         } else {
             $message = i18n("No permission");
 
             if ($hasChildren) {
                 $button = 'delete_inact_h.gif';
+                $alt = i18n("One or more subtrees and one or more articles are existing, unable to delete.");
             }
 
             if ($hasArticles) {
                 $button = 'delete_inact_g.gif';
+                $alt = i18n("One or more articles are existing, unable to delete.");
             }
             if ($hasChildren && $hasArticles) {
                 $button = 'delete_inact.gif';
+                $alt = i18n("One or more articles are existing, unable to delete.");
             }
 
-            $tpl->set('d', 'DELETEBUTTON', '<img src="' . $cfg["path"]["images"] . $button . '">');
+            $tpl->set('d', 'DELETEBUTTON', '<img src="' . $cfg["path"]["images"] . $button . '" alt="' . $alt . '" title="' . $alt . '">');
         }
 
         if ($perm->have_perm_area_action($tmp_area, 'str_moveupcat') || $perm->have_perm_area_action_item($tmp_area, 'str_moveupcat', $value->id)) {
@@ -720,7 +723,7 @@ foreach ($objects as $key => $value) {
                 $tpl->set('d', 'UPBUTTON', '<img src="images/folder_moveup_inact.gif">');
             } else {
                 if ($value->custom['preid'] != 0) {
-                    $tpl->set('d', 'UPBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_moveupcat&frame=$frame&idcat=" . $value->id . "&rand=$rand") . "#clickedhere\"><img src=\"images/folder_moveup.gif\"></a>");
+                    $tpl->set('d', 'UPBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_moveupcat&frame=$frame&idcat=" . $value->id . "&rand=$rand") . "#clickedhere\"><img src=\"images/folder_moveup.gif\" alt=\"" . i18n("Move category up") . "\" title=\"" . i18n("Move category up") . "\"></a>");
                 } else {
                     $tpl->set('d', 'UPBUTTON', '<img src="images/folder_moveup_inact.gif">');
                 }
@@ -734,7 +737,7 @@ foreach ($objects as $key => $value) {
             if ($value->custom['postid'] == 0) {
                 $tpl->set('d', 'DOWNBUTTON', '<img src="images/folder_movedown_inact.gif">');
             } else {
-                $tpl->set('d', 'DOWNBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movedowncat&frame=$frame&idcat=" . $value->id . "&rand=$rand") . "#clickedhere\"><img src=\"images/folder_movedown.gif\"></a>");
+                $tpl->set('d', 'DOWNBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movedowncat&frame=$frame&idcat=" . $value->id . "&rand=$rand") . "#clickedhere\"><img src=\"images/folder_movedown.gif\" alt=\"" . i18n("Move category down") . "\" title=\"" . i18n("Move category down") . "\"></a>");
             }
         } else {
             $tpl->set('d', 'DOWNBUTTON', '<img src="images/folder_movedown_inact.gif">');
@@ -743,11 +746,11 @@ foreach ($objects as $key => $value) {
         if (($action === 'str_movesubtree') && (!isset($parentid_new))) {
             if ($perm->have_perm_area_action($tmp_area, 'str_movesubtree') || $perm->have_perm_area_action_item($tmp_area, 'str_movesubtree', $value->id)) {
                 if ($value->id == $idcat) {
-                    $tpl->set('d', 'MOVEBUTTON', "<a name=#movesubtreehere><a href=\"" . $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=0") . "\"><img src=\"" . $cfg["path"]["images"] . "but_move_subtree_main.gif\"></a>");
+                    $tpl->set('d', 'MOVEBUTTON', "<a name=#movesubtreehere><a href=\"" . $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=0") . "\"><img src=\"" . $cfg["path"]["images"] . "but_move_subtree_main.gif\" alt=\"" . i18n("Move tree") . "\" title=\"" . i18n("Move tree") . "\"></a>");
                 } else {
                     $allowed = strMoveCatTargetallowed($value->id, $idcat);
                     if ($allowed == 1) {
-                        $tpl->set('d', 'MOVEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=" . $value->id) . "\"><img src=\"" . $cfg["path"]["images"] . "but_move_subtree_target.gif\"></a>");
+                        $tpl->set('d', 'MOVEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=" . $value->id) . "\"><img src=\"" . $cfg["path"]["images"] . "but_move_subtree_target.gif\" alt=\"" . i18n("Place tree here") . "\" title=\"" . i18n("Place tree here") . "\"></a>");
                     } else {
                         $tpl->set('d', 'MOVEBUTTON', '&nbsp;');
                     }
@@ -757,14 +760,14 @@ foreach ($objects as $key => $value) {
             }
         } else {
             if ($perm->have_perm_area_action($tmp_area, 'str_movesubtree') || $perm->have_perm_area_action_item($tmp_area, 'str_movesubtree', $value->id)) {
-                $tpl->set('d', 'MOVEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=" . $value->id) . "#movesubtreehere\"><img src=\"" . $cfg["path"]["images"] . "but_move_subtree.gif\"></a>");
+                $tpl->set('d', 'MOVEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=" . $value->id) . "#movesubtreehere\"><img src=\"" . $cfg["path"]["images"] . "but_move_subtree.gif\" alt=\"" . i18n("Move tree") . "\" title=\"" . i18n("Move tree") . "\"></a>");
             } else {
                 $tpl->set('d', 'MOVEBUTTON', '&nbsp;');
             }
         }
 
         if ($perm->have_perm_area_action('str', 'str_duplicate') || $perm->have_perm_area_action_item('str', 'str_duplicate', $value->id)) {
-            $duplicate = '<a href="javascript://" onclick="confDupl(' . $value->id . ',' . $value->custom['parentid'] . ', \'' . htmlspecialchars($value->name) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "folder_duplicate.gif\"></a>";
+            $duplicate = '<a href="javascript://" onclick="confDupl(' . $value->id . ',' . $value->custom['parentid'] . ', \'' . htmlspecialchars($value->name) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "folder_duplicate.gif\" alt=\"" . i18n("Duplicate category") . "\" title=\"" . i18n("Duplicate category") . "\"></a>";
             $tpl->set('d', 'DUPLICATEBUTTON', $duplicate);
         } else {
             $tpl->set('d', 'DUPLICATEBUTTON', '&nbsp;');

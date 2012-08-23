@@ -54,7 +54,6 @@ $sJsAfter = '';
 $sJsExternal = '';
 $sTable = '';
 
-$sJsExternal .= '<script type="text/javascript" src="scripts/addImageTags.js"></script>' . "\n";
 $sJsExternal .= '<script type="text/javascript" src="scripts/expandCollapse.js"></script>' . "\n";
 
 // declare new javascript variables;
@@ -212,7 +211,7 @@ while ($db->next_record()) {
         $objItem->advanceID();
 
         $objItem->updateAttributes(array("class" => "td_rights0"));
-        $objItem->setContent("<a href=\"javascript:rightsInheritanceUp('$parentid','$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\"></a> <a href=\"javascript:rightsInheritanceDown('" . $db->f("idcat") . "')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\"></a>");
+        $objItem->setContent("<a href=\"javascript:rightsInheritanceUp('$parentid','$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\" alt=\"" . i18n("Apply rights for this category to all categories on the same level or above") . "\" title=\"" . i18n("Apply rights for this category to all categories on the same level or above") . "\"></a> <a href=\"javascript:rightsInheritanceDown('" . $db->f("idcat") . "')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\" alt=\"" . i18n("Apply rights for this category to all categories below the current category") . "\" title=\"" . i18n("Apply rights for this category to all categories below the current category") . "\"></a>");
         $items .= $objItem->render();
         $objItem->advanceID();
         // look for possible actions in mainarea[]
@@ -268,13 +267,7 @@ $oTable->setContent($headeroutput . $output . $footeroutput);
 $sTable = stripslashes($oTable->render());
 //Table end
 
-$sJsAfter .= "
-    aTranslations = new Object();
-    aTranslations['pfeil_links.gif'] = '" . i18n("Apply rights for this category to all categories on the same level or above") . "';
-    aTranslations['pfeil_runter.gif'] = '" . i18n("Apply rights for this category to all categories below the current category") . "';
-    setImageTags(aTranslations);
-
-    init('" . i18n("Open category") . "', '" . i18n("Close category") . "');\n";
+$sJsAfter .= "init('" . i18n("Open category") . "', '" . i18n("Close category") . "');\n";
 
 $oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
 $oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);

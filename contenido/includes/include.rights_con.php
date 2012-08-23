@@ -55,7 +55,6 @@ $sJsAfter = '';
 $sJsExternal = '';
 $sTable = '';
 
-$sJsExternal .= '<script type="text/javascript" src="scripts/addImageTags.js"></script>' . "\n";
 $sJsExternal .= '<script type="text/javascript" src="scripts/expandCollapse.js"></script>';
 // declare new javascript variables;
 $sJsBefore .= "var itemids = new Array();
@@ -207,7 +206,7 @@ while ($db->next_record()) {
         $objItem->advanceID();
 
         $objItem->updateAttributes(array("class" => "td_rights1"));
-        $objItem->setContent("<a href=\"javascript:rightsInheritanceUp('$parentid','$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\"></a><img src=\"images/spacer.gif\" width=\"3\"><a href=\"javascript:rightsInheritanceDown('" . $db->f("idcat") . "')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\"></a>");
+        $objItem->setContent("<a href=\"javascript:rightsInheritanceUp('$parentid','$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\" alt=\"" . i18n("Apply rights for this category to all categories on the same level or above") . "\" title=\"" . i18n("Apply rights for this category to all categories on the same level or above") . "\"></a><img src=\"images/spacer.gif\" width=\"3\"><a href=\"javascript:rightsInheritanceDown('" . $db->f("idcat") . "')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\" alt=\"" . i18n("Apply rights for this category to all categories below the current category") . "\" title=\"" . i18n("Apply rights for this category to all categories below the current category") . "\"></a>");
         $items .= $objItem->render();
         $objItem->advanceID();
 
@@ -267,13 +266,7 @@ $oTable->setContent($headeroutput . $output . $footeroutput);
 $sTable = stripslashes($oTable->render());
 //Table end
 
-$sJsAfter .= "
-    aTranslations = new Object();
-    aTranslations['pfeil_links.gif'] = '" . i18n("Apply rights for this category to all categories on the same level or above") . "';
-    aTranslations['pfeil_runter.gif'] = '" . i18n("Apply rights for this category to all categories below the current category") . "';
-    setImageTags(aTranslations);
-
-    init('" . i18n("Open category") . "', '" . i18n("Close category") . "');\n";
+$sJsAfter .= "init('" . i18n("Open category") . "', '" . i18n("Close category") . "');\n";
 
 $oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
 $oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);

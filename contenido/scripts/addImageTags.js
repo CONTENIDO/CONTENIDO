@@ -10,7 +10,7 @@
 * Author    :   $Author: timo.trautmann$
 * Modified  :   $Date: 2008/02/25 13:41:52 $
 *
-* © four for business AG, www.4fb.de
+* ï¿½ four for business AG, www.4fb.de
 ******************************************/
 
 /**
@@ -18,7 +18,7 @@
  *
  * @param object oImg - reference to corresponding image tag
  * @param string sName - labeltext to append
- *
+ * @deprecated 2012-08-23 set the image tags directly in the template / include file!
  */
 function setImgAltTitle (oImg, sName) {
     if (!oImg.title) {
@@ -35,7 +35,7 @@ function setImgAltTitle (oImg, sName) {
  *
  * @param array aImageTitles - assocaiative array, which contains a label for image
                                                     aImageTitles['test.gif'] = 'This is a test'
- *
+ * @deprecated 2012-08-23 set the image tags directly in the template / include file!
  */
 function setImageTags (aImageTitles) {
     //get all images
