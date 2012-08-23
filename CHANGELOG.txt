@@ -4,7 +4,32 @@ $RCSfile: CHANGELOG.txt,v $
 CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------
-$Id$:
+$Id$:´
+
+
+Release 4.9.0 Alpha 3
+----------------------------------------------------------------------
+** Bug
+    * [CON-651] - Check setup process for database host reachability check
+    * [CON-667] - Updated layout code is not shown
+    * [CON-668] - Image titles show HTML entities
+    * [CON-673] - Usage of htmlentities() with wrong encoding
+    * [CON-674] - Some translations are missing
+    * [CON-676] - Single table head of article specifications
+    * [CON-688] - Content editor does not work any longer
+    * [CON-691] - Setup does not check write permissions properly
+    * [CON-706] - Uploads ignoring current directory
+
+** Improvement
+    * [CON-650] - Extend createNewItem for array with insert data
+    * [CON-663] - Error message for external backend front_content.php if frontend path is not valid
+    * [CON-670] - Add check for availability of function "iconv" in setup process
+    * [CON-677] - Page navigation for Content - Articles also on top of article list
+
+** New Feature
+    * [CON-669] - Search should respect searchable/indexable field
+    * [CON-672] - Implement new default xml sitemap generation
+
 
 Release 4.9.0 Alpha 2
 ----------------------------------------------------------------------
