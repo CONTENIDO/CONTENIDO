@@ -113,19 +113,6 @@ if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.local.php'))
     require_once($cfg['path']['contenido_config'] . 'config.local.php');
 }
 
-/*
- * Constants with paths after the last possible place changing via configuration file.
- * The frontend path point to the current client
- */
-define('CON_PATH_BACKEND' , $cfg['path']['contenido']);
-define('CON_PATH_FRONTEND' , $cfgClient[$client]['path']['frontend']);
-
-/*
- * Constants with URL after the last possible place changing via configuration file.
- * The frontend path point to the current client
- */
-define('CON_URL_BACKEND' , $cfg['path']['contenido_fullhtml']);
-define('CON_URL_FRONTEND' , $cfgClient[$client]['path']['htmlpath']);
 
 // Takeover configured PHP settings
 if ($cfg['php_settings'] && is_array($cfg['php_settings'])) {
