@@ -30,10 +30,6 @@ if (!is_object($tpl)) {
 }
 $tpl->reset();
 
-// Settings
-$oArticleProp = new Article_Property($db, $cfg);
-$iArtspecReference = 2;
-
 $cApiClient = new cApiClient($client);
 $sSearchRange = $cApiClient->getProperty('searchrange', 'include');
 $aSearchRange = explode(',', $sSearchRange);
@@ -237,7 +233,6 @@ if (strlen(trim($searchterm)) > 0) {
                 }
 
                 // Get text and headline of current article
-                $iCurrentArtSpec = $oArticleProp->getArticleSpecification($key, $lang);
                 $aHeadline = $oSearchResults->getSearchContent($key, 'HTMLHEAD', 1);
                 $aSubheadline = $oSearchResults->getSearchContent($key, 'HTMLHEAD', 2);
                 $text = $oSearchResults->getSearchContent($key, 'HTML', 1);
@@ -298,6 +293,9 @@ if (strlen(trim($searchterm)) > 0) {
     echo '</div>';
 }
 
+/**
+ * @deprecated 2012-08-24 Use cApiArticleConfiguration instead
+ */
 class Article_Property {
     var $globalConfig;
     var $oDBInstance;
@@ -307,8 +305,10 @@ class Article_Property {
      * Hint: Call constructor with Article_Property($db, $cfg);
      * @param  oDBInstance instance of class DB_Contenido
      * @param  globalConfig
+     * @deprecated 2012-08-24 Use cApiArticleConfiguration instead
      */
     function Article_Property($oDBInstance, $globalConfig) {
+        cDeprecated('Use cApiArticleConfiguration instead');
         $this->globalConfig = $globalConfig;
         $this->oDBInstance = $oDBInstance;
     }
@@ -318,8 +318,10 @@ class Article_Property {
      *
      * @param   $iArticleId
      * @return  id of article specification
+     * @deprecated 2012-08-24 Use cApiArticleConfiguration instead
      */
     function getArticleSpecification($iArticleId, $iLangId) {
+        cDeprecated('Use cApiArticleConfiguration instead');
         $sql = "SELECT artspec FROM " . $this->globalConfig['tab']['art_lang'] . " WHERE "
              . "idart=" . (int) $iArticleId . " AND idlang=" . (int) $iLangId;
 
