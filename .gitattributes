@@ -1950,7 +1950,6 @@ contenido/plugins/workflow/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/scripts/HTMLObj.js -text
 contenido/scripts/addImageTags.js -text
 contenido/scripts/articleObject.js.php -text
-contenido/scripts/boxes.upl_files_overview.js -text
 contenido/scripts/browserCheck.js -text
 contenido/scripts/calendar.mycontenido.tasks.edit.js -text
 contenido/scripts/cfoldingrow.js -text
