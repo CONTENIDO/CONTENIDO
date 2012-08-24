@@ -1156,7 +1156,7 @@ function conCopyContainerConf($srcidtplcfg, $dstidtplcfg) {
     $oContainerConfColl = new cApiContainerConfigurationCollection();
     $oContainerConfColl->select('idtplcfg = ' . (int) $srcidtplcfg);
     while (($oContainerConf = $oContainerConfColl->next()) !== false) {
-        $oNewContainerConfColl = new cApiContentCollection();
+        $oNewContainerConfColl = new cApiContainerConfigurationCollection();
         $oNewContainerConfColl->copyItem($oContainerConf, array('idtplcfg' => (int) $dstidtplcfg));
         $counter++;
     }
