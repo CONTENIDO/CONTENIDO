@@ -4,7 +4,7 @@ $RCSfile: CHANGELOG.txt,v $
 CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------
-$Id$:�
+$Id$:
 
 
 Release 4.9.0 Alpha 3
@@ -312,7 +312,7 @@ Release 4.8.13
 ** Bug
     * [CON-249] - Bug in Contenido_FrontendNavigation::isActiveChild
     * [CON-250] - Changing template to none not working right under Artikel->Kategorie bearbeiten
-    * [CON-252] - Missing german umlaut � in function cApiStrReplaceDiacritics
+    * [CON-252] - Missing german umlaut ü in function cApiStrReplaceDiacritics
     * [CON-254] - Tinymce does not support ancor links
     * [CON-255] - Tiny does not store content, which cointains plain "|" character
     * [CON-256] - The usage of CEC_Hook::execute brings more problems as advantages
@@ -384,7 +384,7 @@ Release 4.8.12
 ----------------------------------------------------------------------
 ** Bug
 
-    * [CON-240] - Rightsmanagement: Dateiverwaltung is called �bersicht instead of Dateiverwaltung
+    * [CON-240] - Rightsmanagement: Dateiverwaltung is called Übersicht instead of Dateiverwaltung
     * [CON-245] - Height of categories in "Content -> Articles" in Internet Explorer 8
     * [CON-247] - parse error bug in demomodule gallery
 
@@ -448,7 +448,7 @@ Release 4.8.9
 ----------------------------------------------------------------------
 ** Bug
 
-    * [CON-102] - XHTML Bug im Backend <cx /> / werden bei der Speicherung gel�scht
+    * [CON-102] - XHTML Bug im Backend <cx /> / werden bei der Speicherung gelöscht
     * [CON-204] - Can't insert Layouts from Modul-Package
     * [CON-205] - Articel-left-top does not change the Cache on Category-Template change
     * [CON-206] - Preview at protected areas don't work
@@ -489,7 +489,7 @@ Release 4.8.8
 
 ** Improvement
 
-    * [CON-15] - Newsletter Empf�nger-Icon und Empf�nger-Gruppen-Icon �ndern
+    * [CON-15] - Newsletter Empfänger-Icon und Empfänger-Gruppen-Icon ändern
     * [CON-67] - contenido mandant auf mehreren domains
     * [CON-193] - class.update.notifier.php tries to generate cache folder in contenido folder and may fail on certain server configurations
     * [CON-197] - Usability Client Settings
@@ -502,13 +502,13 @@ Release 4.8.8
 ** Task
 
     * [CON-171] - documentation of new security functions for plugin-developer
-    * [CON-185] - New CEC f�r Upl-Detail
+    * [CON-185] - New CEC für Upl-Detail
 
 
 Release 4.8.7
 ----------------------------------------------------------------------
 ** Bug
-    * [CON-139] - Link f�r Handbuch im cfg-array
+    * [CON-139] - Link für Handbuch im cfg-array
     * [CON-144] - plugin createmetatags entfernt akzentuierte Zeichen
                   aus den keywords
     * [CON-154] - Creating inactive user by using a date in history
@@ -533,18 +533,18 @@ Release 4.8.7
     * [CON-169] - Missing descriptions for some log actions
     * [CON-170] - Missing username in backenduser delete-confirm-box
     * [CON-172] - Setup hangs between step 7 and 8
-    * [CON-173] - Im Firefox 3: Artikel�bersicht/Kategorie l�sst sich
-                  nicht sch�tzen
+    * [CON-173] - Im Firefox 3: Artikelübersicht/Kategorie lässt sich
+                  nicht schützen
     * [CON-174] - Fehlender Eintrag in der config.misc.php
 
 ** Improvement
     * [CON-XXX] - Added new Debug object Debug_VisibleAdv.class.php
-    * [CON-60] - Umlaute im Backend defekt -> Problem gel�st->bitte integrieren!
+    * [CON-60] - Umlaute im Backend defekt -> Problem gelöst->bitte integrieren!
     * [CON-70] - feature request: meta tags vordefinition
-    * [CON-99] - Backend Hauptmen� Javascriptsteuerung
+    * [CON-99] - Backend Hauptmenü Javascriptsteuerung
     * [CON-115] - Move con_cache activation to config file
     * [CON-119] - Caching
-    * [CON-142] - Linkchecker h�ngt nach Migration eines gro�en Portals
+    * [CON-142] - Linkchecker hängt nach Migration eines großen Portals
     * [CON-143] - php-Funktion mail() vermeiden, class.phpmailer.php verwenden
     * [CON-176] - Contenido Security Class
     * [CON-XXX] - Some XSS/RFI Bugfixes
@@ -552,7 +552,7 @@ Release 4.8.7
 ** Task
     * [CON-6] - Lock/ Unlock (neues Icon finden und umbenennen)
     * [CON-140] - class.ui.php Funktion setCellExtra
-    * [CON-146] - neue Adresse von 4fb im Impressum �ndern
+    * [CON-146] - neue Adresse von 4fb im Impressum ändern
     * [CON-148] - "docs\techref\backend\backend.customizing.html" auf den aktuellen Stand bringen
     * [CON-XXX] - Removed Java Applets
     * [CON-XXX] - Removed SPAW editor
@@ -580,9 +580,9 @@ Release 4.8.4
 ----------------------------------------------------------------------
 ** Bug
     * [CON-127] - release.php/release.xml aktualisieren - manuelle
-                  �nderungen in setup/data/base ung�nstig -
+                  Änderungen in setup/data/base ungünstig -
                   conAlloc-Primary Key-Definition - Plugins
-                  ber�cksichtigen
+                  berücksichtigen
     * [CON-128] - Idlang for new languages skips ids example: 4 6 8 10
                   for new language ids
     * [CON-129] - todo mails were not send to user
@@ -591,7 +591,7 @@ Release 4.8.4
     * [CON-133] - Logo for clients crashes back end
     * [CON-135] - Dateiverwaltung: It is not possible to come back to
                   root directory
-    * [CON-136] - Eingabe von Templatenamen l�nger 30 Zeichen unm�glich
+    * [CON-136] - Eingabe von Templatenamen länger 30 Zeichen unmöglich
     * [CON-137] - Klasse UI_Table_Form setzt Template-Variablen nicht.
     * [CON-138] - Artikelsperrung wird aufgehoben durch Linkwahldialog
 
@@ -600,7 +600,7 @@ Release 4.8.4
                   already defined in layout
     * [CON-134] - Unterschiedliches Verhalten von "Administration ->
                   Benutzer -> Bereiche" und "Administration ->
-                  Gruppen -> Bereiche", wenn keine �bersetzungen der
+                  Gruppen -> Bereiche", wenn keine Übersetzungen der
                   Actions vorhanden sind
 
 ** New feature
@@ -627,7 +627,7 @@ Release 4.8.3
     * [CON-110] - Content Allocation: Translation logic changed/Bugfix
     * [CON-111] - Artikel wird bei setzen eines Endzeitpunkts und ohne
                   Angabe des Startzeitpunkts immer offline gesetzt wird
-    * [CON-112] - sicherheitsl�cken
+    * [CON-112] - sicherheitslücken
     * [CON-116] - File functions.general.php has UTF-8 Encoding
     * [CON-118] - Many modules / plugins working with PEAR::CACHE
                   references the wrong location
@@ -638,7 +638,7 @@ Release 4.8.3
     * [CON-122] - Fehlende globale Variablen in strRenameCategory()
                   (functions.str.php) $cfgClient und $client nicht
                   global definiert
-    * [CON-123] - Fehlende �berpr�fung ob $tpl instanziiert ist in
+    * [CON-123] - Fehlende Überprüfung ob $tpl instanziiert ist in
                   Modulen
     * [CON-124] - Contenido adds double slashes to client paths when
                   a new client is created
@@ -659,14 +659,14 @@ Release 4.8.2
 ** Bug
     * [CON-64]  - conMakeStart bei start_compatible = true fehlerhaft
     * [CON-80]  - Bugs in Content Allocation und conlib/mysql.inc
-    * [CON-82]  - demo mandant unsch�nheiten
+    * [CON-82]  - demo mandant unschönheiten
     * [CON-90]  - Update auf leere DB
     * [CON-91]  - Fehler im Dateimanager bei Install ohne Mandant
     * [CON-93]  - Frontenduser im Mustermandanten fehlt
     * [CON-96]  - Installation Error: MySQL-Error 1292 - Fehlende
-                  Standardwerte in INSERT STATEMENTS f�r sysadmin und
+                  Standardwerte in INSERT STATEMENTS für sysadmin und
                   admin
-    * [CON-97]  - Markieren des Modulcodes nicht m�glich in IE7
+    * [CON-97]  - Markieren des Modulcodes nicht möglich in IE7
     * [CON-98]  - short_open_tag direktive
     * [CON-101] - Beispielmandant login
 
@@ -682,7 +682,7 @@ Release 4.8.1
 ----------------------------------------------------------------------
 ** Bug
     * [CON-77] - Reiter in der Dateiverwaltung wechselt nach Upload
-                 nicht in �bersichtsseite
+                 nicht in Übersichtsseite
     * [CON-78] - strip_tags() im Modul "Suchausgabe"
 
 ** Improvement
@@ -691,29 +691,29 @@ Release 4.8.1
 
 4.8
 ----------------------------------------------------------------------
-- Bug in Backendsearch bei eingeschr�nkten Berechtigungen entfernt
-- Bug in functions con - �berfl�ssiges SQL Statement entfernt und
+- Bug in Backendsearch bei eingeschränkten Berechtigungen entfernt
+- Bug in functions con - überflüssiges SQL Statement entfernt und
   Kommentierung angepasst
-- Vereinheitlichung der Contenidohinweisboxen und Einf�hrung dreier
-  globaler Farben f�r Hinweis, Error und Information/Erfolg
+- Vereinheitlichung der Contenidohinweisboxen und Einführung dreier
+  globaler Farben für Hinweis, Error und Information/Erfolg
 - Fehler in perm.inc behoben:
   Siehe http://contenido.org/forum/viewtopic.php?t=16227
-- Platzhalter f�r Templateselectboxen damit diese in CSS-Layouts
-  weniger �berlagert sind. K�rzung von langen Templatenamen
-- Contenido FrontendNavigation-Klassen �berarbeitet
+- Platzhalter für Templateselectboxen damit diese in CSS-Layouts
+  weniger überlagert sind. Kürzung von langen Templatenamen
+- Contenido FrontendNavigation-Klassen überarbeitet
 - Diverse Fixes an der Seitennavigation des Backends in allen
   Seitennavigationen. Refresh mit JavaScript
 - "Warning: Call-time pass-by-reference has been deprecated;" in
   Modul Suchausgabe fixxed
-- Setup: Integration eines Layers der Details �ber optional zu
+- Setup: Integration eines Layers der Details über optional zu
   installierende Plugins beinhaltet.
 - Modulfilter, Angabe von Bereich in dem Gesucht werden soll
   (Kommentar, Input, Output, Name)
-- Sprachenname im Header wird gek�rzt damit Header bei langen
+- Sprachenname im Header wird gekürzt damit Header bei langen
   Bezeichnungen nicht umbricht.
-- L�schenicons in Administration->System, Bugentfernung in den neuen
-  Debugklassen unter contenido/classes/debug, Einf�gen fehlender
-  �bersetzungen in die deutsche Sprache.
+- Löschenicons in Administration->System, Bugentfernung in den neuen
+  Debugklassen unter contenido/classes/debug, Einfügen fehlender
+  Übersetzungen in die deutsche Sprache.
 - Newsletterbugfix des left_top Frames, kleinere weitere Fixes
 - Kleinere Bugfixxes bei Passwort vergessen, Administration->Frontend,
   Erkennung von Installierten Plugins bei Update
@@ -721,15 +721,15 @@ Release 4.8.1
   hinterlegt hat (kann unter Administration->System->
   Systemeinstellungen konfiguriert und auch abgeschaltet werden).
 - Rechtezuweisung in Content nun durch Typisierung und Auswahl
-  �bersichtlicher, Rechte�bersetzungen, Anpassungen, Fixing,
+  übersichtlicher, Rechteübersetzungen, Anpassungen, Fixing,
   Darstellungsbugs
-- Administration -> Frontend: �berarbeitetes Interface zur Zuweisung
+- Administration -> Frontend: überarbeitetes Interface zur Zuweisung
   von Benutzern zu Gruppen
-- Tabellenpraefixe wurden den Plugintabellen hinzugef�gt. Bitte bei
+- Tabellenpraefixe wurden den Plugintabellen hinzugefügt. Bitte bei
   einer Aktualisierung diese Praefixe manuell nachtragen oder neu
   installieren. Das Setup wurde angepasst, Update an dieser Stelle
-  nicht m�glich.
-- Auf der Login Seite k�nnen sich Benutzer des Systems ihr Passwort
+  nicht möglich.
+- Auf der Login Seite können sich Benutzer des Systems ihr Passwort
   zusenden lassen.
-- Bei der Sprachsynchronisation ist es jetzt m�glich, neben einzelnen
+- Bei der Sprachsynchronisation ist es jetzt möglich, neben einzelnen
   Kategorien, auch alle Unterkateggorien mit zu kopieren.

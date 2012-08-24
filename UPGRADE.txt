@@ -1,28 +1,28 @@
 -------------------------------------------------------------------
 I:       Deutsche Version README
 -------------------------------------------------------------------
-1) Voraussetzungen für Upgrades
+1) Voraussetzungen fÃ¼r Upgrades
 -------------------------------------------------------------------
 
 - Ein Upgrade von CONTENIDO 4.3.x auf 4.4.0 ist derzeit ohne
-  Probleme möglich (Anpassungen sind jedoch nicht ausgeschlossen).
-- Ein Upgrade von CONTENIDO 4.2 auf 4.4.0 ist derzeit nicht möglich.
+  Probleme mÃ¶glich (Anpassungen sind jedoch nicht ausgeschlossen).
+- Ein Upgrade von CONTENIDO 4.2 auf 4.4.0 ist derzeit nicht mÃ¶glich.
 
 - HINWEIS: Vor dem Upgrade sollte auf _jeden_ Fall eine Daten-
-  sicherung vorgenommen werden. Es besteht keine Gewährleistung
-  für die Funktion des Upgrades.
+  sicherung vorgenommen werden. Es besteht keine GewÃ¤hrleistung
+  fÃ¼r die Funktion des Upgrades.
 
-- HINWEIS: Damit Dateien, die in neuen Versionen nicht mehr benötigt
-  werden (und die u.U. Sicherheitslücken darstellen können), aus Ihrer
+- HINWEIS: Damit Dateien, die in neuen Versionen nicht mehr benÃ¶tigt
+  werden (und die u.U. SicherheitslÃ¼cken darstellen kÃ¶nnen), aus Ihrer
   Installation entfernt werden, sollten Sie bei einem Upgrade
-  folgende Schritte durchführen:
+  folgende Schritte durchfÃ¼hren:
   - Benennen Sie die vorhandenen CONTENIDO-Verzeichnisse
     (conlib, contenido, pear) um
   - Kopieren Sie die config.php-Datei aus
     <altes contenido-Verzeichnis>/includes in das contenido/includes-
     -Verzeichnis der neuen Installation
-  - Nach erfolgreichem Setup und Test der Installation können Sie
-    alten CONTENIDO-Verzeichnisse löschen.
+  - Nach erfolgreichem Setup und Test der Installation kÃ¶nnen Sie
+    alten CONTENIDO-Verzeichnisse lÃ¶schen.
 
 -------------------------------------------------------------------
 2) Upgrade
@@ -35,17 +35,17 @@ HINWEIS: Nehmen Sie eine Sicherung Ihrer Daten vor, bevor Sie das
 Upgrade vornehmen!!!
 
 1.
-Entpacken Sie die ZIP-Datei der entsprechenden Version und überschreiben
+Entpacken Sie die ZIP-Datei der entsprechenden Version und Ã¼berschreiben
 Sie die alten Dateien mit den neuen Dateien.
 
 2.
-Rufen Sie die Datei "setup/index.php" auf, wählen Sie 'Upgrade' und
+Rufen Sie die Datei "setup/index.php" auf, wÃ¤hlen Sie 'Upgrade' und
 folgen Sie der Anleitung. Im Rahmen des Upgrades werden einige
-Tabellen ergänzt und modifiziert und einige Tabellen neu angelegt. Weiterhin
+Tabellen ergÃ¤nzt und modifiziert und einige Tabellen neu angelegt. Weiterhin
 werden notwendige Anpassungen am System automatisch erledigt.
 
 3.
-Nach dem Upgrade sollte der Ordner 'setup' gelöscht werden.
+Nach dem Upgrade sollte der Ordner 'setup' gelÃ¶scht werden.
 
 
 2.1) Upgrade von CONTENIDO 4.4.x -> CONTENIDO 4.6.x
@@ -55,27 +55,27 @@ HINWEIS: Nehmen Sie eine Sicherung Ihrer Daten vor, bevor Sie das
 Upgrade vornehmen!!!
 
 1.
-Entpacken Sie die ZIP-Datei der entsprechenden Version und überschreiben
+Entpacken Sie die ZIP-Datei der entsprechenden Version und Ã¼berschreiben
 Sie die alten Dateien mit den neuen Dateien.
 
 2.
-Rufen Sie die Datei "setup/index.php" auf, wählen Sie 'Upgrade' und
+Rufen Sie die Datei "setup/index.php" auf, wÃ¤hlen Sie 'Upgrade' und
 folgen Sie der Anleitung. Im Rahmen des Upgrades werden einige
-Tabellen ergänzt und modifiziert und einige Tabellen neu angelegt. Weiterhin
+Tabellen ergÃ¤nzt und modifiziert und einige Tabellen neu angelegt. Weiterhin
 werden notwendige Anpassungen am System automatisch erledigt.
 
 3.
-Die Startartikel-Funktionalität wurde von der 4.4-Serie auf die 4.5-Serie
-geändert. Standardmäßig wird bei einem Setup die neue Funktionsweise verwendet
+Die Startartikel-FunktionalitÃ¤t wurde von der 4.4-Serie auf die 4.5-Serie
+geÃ¤ndert. StandardmÃ¤ÃŸig wird bei einem Setup die neue Funktionsweise verwendet
 - soll jedoch die alte Funktionsweise weiter bestehen bleiben, so ist
 die Direktive $cfg["is_start_compatible"] in der config.php
-auf "true" zu setzen. Soll die neue Funktionalität in CONTENIDO
-verwendet werden, so können alte Startartikel mit dem Script
+auf "true" zu setzen. Soll die neue FunktionalitÃ¤t in CONTENIDO
+verwendet werden, so kÃ¶nnen alte Startartikel mit dem Script
 "convert_startarticles.php" konvertiert werden. Insbesondere beim Einsatz
-älterer Module sollte die Kompatibilitätsoption gesetzt werden.
+Ã¤lterer Module sollte die KompatibilitÃ¤tsoption gesetzt werden.
 
 4.
-Nach dem Upgrade sollte der Ordner 'setup' gelöscht werden.
+Nach dem Upgrade sollte der Ordner 'setup' gelÃ¶scht werden.
 
 
 2.2) Upgrade von CONTENIDO 4.3.x -> CONTENIDO 4.4.0
@@ -85,22 +85,22 @@ HINWEIS: Nehmen Sie eine Sicherung Ihrer Daten vor, bevor Sie das
 Upgrade vornehmen!!!
 
 1.
-Entpacken Sie die ZIP-Datei der entsprechenden Version und überschreiben
+Entpacken Sie die ZIP-Datei der entsprechenden Version und Ã¼berschreiben
 Sie die alten Dateien mit den neuen Dateien.
 
 2.
-Rufen Sie die Datei "setup/index.php" auf, wählen Sie 'Upgrade' und
+Rufen Sie die Datei "setup/index.php" auf, wÃ¤hlen Sie 'Upgrade' und
 folgen Sie der Anleitung. Im Rahmen des Upgrades werden einige
-Tabellen ergänzt und modifiziert und einige Tabellen neu angelegt.
+Tabellen ergÃ¤nzt und modifiziert und einige Tabellen neu angelegt.
 
 3.
-Nach dem Upgrade sollte der Ordner 'setup' gelöscht werden.
+Nach dem Upgrade sollte der Ordner 'setup' gelÃ¶scht werden.
 
 
 2.3) Upgrade von CONTENIDO 4.2 -> CONTENIDO 4.4.0
 -------------------------------------------------------------------
 
-Ein Upgrade von CONTENIDO 4.2 ist leider derzeit noch nicht möglich.
+Ein Upgrade von CONTENIDO 4.2 ist leider derzeit noch nicht mÃ¶glich.
 
 
 -------------------------------------------------------------------

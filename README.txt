@@ -5,11 +5,11 @@ Informationen: http://www.contenido.org
 
 <take care>
 WARNUNG: Versionen, die mit Alpha, Beta oder RC markiert sind,
-sind definitiv nicht f¸r den produktiven Einsatz gedacht!
+sind definitiv nicht f√ºr den produktiven Einsatz gedacht!
 </take care>
 
-Keine Haftung und Gew‰hrleistung f¸r mittelbare und unmittelbare
-Sch‰den. Weitere Infos finden Sie in der GPL-Lizenz.
+Keine Haftung und Gew√§hrleistung f√ºr mittelbare und unmittelbare
+Sch√§den. Weitere Infos finden Sie in der GPL-Lizenz.
 
 <take care>
 WARNING: Please do not use versions marked as alpha, beta
@@ -58,7 +58,7 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
 
 -------------------------------------------------------------------
 
-Alle Informationen zu Gew‰hrleistung, Garantie und
+Alle Informationen zu Gew√§hrleistung, Garantie und
 Lizenzbestimmungen finden Sie unter www.contenido.org.
 
 All information about warranty, guarantee and licence is
