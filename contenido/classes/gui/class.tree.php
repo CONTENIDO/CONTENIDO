@@ -85,7 +85,7 @@ class cGuiTree extends cTree {
     public function __construct($uuid, $treename = false) {
         global $cfg, $auth;
 
-        cTree::cTree();
+        parent::__construct();
 
         $this->_uuid = $uuid;
         //$this->setGridlineMode(TREEVIEW_GRIDLINE_DOTTED);

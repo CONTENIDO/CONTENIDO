@@ -72,7 +72,7 @@ switch ($type) {
 }
 
 if ($editor_height !== false) {
-    $cTinyMCEEditor->setSetting('height', $editor_height, true);
+    $cTinyMCEEditor->_setSetting('height', $editor_height, true);
 }
 
 /*
@@ -86,8 +86,8 @@ TODO:
 $currentuser = new cApiUser($auth->auth['uid']);
 
 if ($currentuser->getField('wysi') == 1) {
-    echo $cTinyMCEEditor->getScripts();
-    echo $cTinyMCEEditor->getEditor();
+    echo $cTinyMCEEditor->_getScripts();
+    echo $cTinyMCEEditor->_getEditor();
 } else {
     $oTextarea = new cHTMLTextarea($editor_name, $editor_content);
     $oTextarea->setId($editor_name);

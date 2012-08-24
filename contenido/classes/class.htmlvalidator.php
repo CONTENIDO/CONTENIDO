@@ -10,94 +10,101 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.6.1
- * @author     unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
+ * @package CONTENIDO Backend Classes
+ * @version 1.6.1
+ * @author unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-
 class cHTMLValidator {
 
-    var $doubleTags;
-    var $htmlParser;
-    var $html;
-    var $nestingLevel;
-    var $iNodeName;
-    var $nestingNodes;
-    var $_existingTags;
+    protected $_doubleTags = array(
+        "form",
+        "head",
+        "body",
+        "html",
+        "td",
+        "tr",
+        "table",
+        "a",
+        "tbody",
+        "title",
+        "container",
+        "span",
+        "div"
+    );
 
-    function cHTMLValidator() {
-        $this->doubleTags = array("form", "head", "body", "html", "td", "tr", "table", "a", "tbody", "title", "container", "span", "div");
+    protected $_html;
 
-        $this->nestingLevel = array();
-        $this->missingNodes = array();
-        $this->nestingNodes = array();
-        $this->_existingTags = array();
-    }
+    protected $_nestingLevel = array();
 
-    function cleanHTML($html) {
+    public $missingNodes = array();
+
+    public $iNodeName;
+
+    protected $_nestingNodes = array();
+
+    protected $_existingTags = array();
+
+    protected function _cleanHTML($html) {
         // remove all php code from layout
         $resultingHTML = preg_replace('/<\?(php)?((.)|(\s))*?\?>/i', '', $html);
 
-        // We respect only \n, but we need to take care of windows (\n\r) and other systems (\r)
+        // We respect only \n, but we need to take care of windows (\n\r) and
+        // other systems (\r)
         $resultingHTML = str_replace("\r\n", "\n", $resultingHTML);
         $resultingHTML = str_replace("\r", "\n", $resultingHTML);
 
         return $resultingHTML;
     }
 
-    function validate($html) {
+    public function validate($html) {
         $nestingLevel = 0;
 
         // Clean up HTML first from any PHP scripts, and clean up line breaks
-        $this->html = $this->cleanHTML($html);
+        $this->_html = $this->_cleanHTML($html);
 
-        $htmlParser = new HtmlParser($this->html);
+        $htmlParser = new HtmlParser($this->_html);
 
         while ($htmlParser->parse()) {
             $this->_existingTags[] = $htmlParser->iNodeName;
             // Check if we found a double tag
-            if (in_array($htmlParser->iNodeName, $this->doubleTags)) {
-                if (!array_key_exists($htmlParser->iNodeName, $this->nestingLevel)) {
-                    $this->nestingLevel[$htmlParser->iNodeName] = 0;
+            if (in_array($htmlParser->iNodeName, $this->_doubleTags)) {
+                if (!array_key_exists($htmlParser->iNodeName, $this->_nestingLevel)) {
+                    $this->_nestingLevel[$htmlParser->iNodeName] = 0;
                 }
 
-                if (!array_key_exists($htmlParser->iNodeName, $this->nestingNodes)) {
-                    $this->nestingNodes[$htmlParser->iNodeName][intval($this->nestingLevel[$htmlParser->iNodeName])] = array();
+                if (!array_key_exists($htmlParser->iNodeName, $this->_nestingNodes)) {
+                    $this->_nestingNodes[$htmlParser->iNodeName][intval($this->_nestingLevel[$htmlParser->iNodeName])] = array();
                 }
 
                 // Check if it's a start tag
                 if ($htmlParser->iNodeType == NODE_TYPE_ELEMENT) {
-                    // Push the current element to the stack, remember ID and Name, if possible
+                    // Push the current element to the stack, remember ID and
+                    // Name, if possible
                     $nestingLevel++;
 
-                    $this->nestingNodes[$htmlParser->iNodeName][intval($this->nestingLevel[$htmlParser->iNodeName])]["name"] = $htmlParser->iNodeAttributes["name"];
-                    $this->nestingNodes[$htmlParser->iNodeName][intval($this->nestingLevel[$htmlParser->iNodeName])]["id"] = $htmlParser->iNodeAttributes["id"];
-                    $this->nestingNodes[$htmlParser->iNodeName][intval($this->nestingLevel[$htmlParser->iNodeName])]["level"] = $nestingLevel;
-                    $this->nestingNodes[$htmlParser->iNodeName][intval($this->nestingLevel[$htmlParser->iNodeName])]["char"] = $htmlParser->iHtmlTextIndex;
-                    $this->nestingLevel[$htmlParser->iNodeName]++;
+                    $this->_nestingNodes[$htmlParser->iNodeName][intval($this->_nestingLevel[$htmlParser->iNodeName])]["name"] = $htmlParser->iNodeAttributes["name"];
+                    $this->_nestingNodes[$htmlParser->iNodeName][intval($this->_nestingLevel[$htmlParser->iNodeName])]["id"] = $htmlParser->iNodeAttributes["id"];
+                    $this->_nestingNodes[$htmlParser->iNodeName][intval($this->_nestingLevel[$htmlParser->iNodeName])]["level"] = $nestingLevel;
+                    $this->_nestingNodes[$htmlParser->iNodeName][intval($this->_nestingLevel[$htmlParser->iNodeName])]["char"] = $htmlParser->iHtmlTextIndex;
+                    $this->_nestingLevel[$htmlParser->iNodeName]++;
                 }
 
                 if ($htmlParser->iNodeType == NODE_TYPE_ENDELEMENT) {
                     // Check if we've an element of this type on the stack
-                    if ($this->nestingLevel[$htmlParser->iNodeName] > 0) {
-                        unset($this->nestingNodes[$htmlParser->iNodeName][$this->nestingLevel[$htmlParser->iNodeName]]);
-                        $this->nestingLevel[$htmlParser->iNodeName]--;
+                    if ($this->_nestingLevel[$htmlParser->iNodeName] > 0) {
+                        unset($this->_nestingNodes[$htmlParser->iNodeName][$this->_nestingLevel[$htmlParser->iNodeName]]);
+                        $this->_nestingLevel[$htmlParser->iNodeName]--;
 
-                        if ($this->nestingNodes[$htmlParser->iNodeName][intval($this->nestingLevel[$htmlParser->iNodeName])]["level"] != $nestingLevel) {
+                        if ($this->_nestingNodes[$htmlParser->iNodeName][intval($this->_nestingLevel[$htmlParser->iNodeName])]["level"] != $nestingLevel) {
                             // Todo: Check for the wrong nesting level
                         }
 
@@ -111,15 +118,21 @@ class cHTMLValidator {
         $this->missingNodes = array();
 
         // Collect all missing nodes
-        foreach ($this->nestingLevel as $key => $value) {
+        foreach ($this->_nestingLevel as $key => $value) {
             // One or more missing tags found
             if ($value > 0) {
                 // Step trough all missing tags
                 for ($i = 0; $i < $value; $i++) {
-                    $node = $this->nestingNodes[$key][$i];
+                    $node = $this->_nestingNodes[$key][$i];
 
-                    list ($line, $char) = $this->getLineAndCharPos($node["char"]);
-                    $this->missingNodes[] = array("tag" => $key, "id" => $node["id"], "name" => $node["name"], "line" => $line, "char" => $char);
+                    list($line, $char) = $this->_getLineAndCharPos($node["char"]);
+                    $this->missingNodes[] = array(
+                        "tag" => $key,
+                        "id" => $node["id"],
+                        "name" => $node["name"],
+                        "line" => $line,
+                        "char" => $char
+                    );
 
                     $this->missingTags[$line][$char] = true;
                 }
@@ -127,7 +140,7 @@ class cHTMLValidator {
         }
     }
 
-    function tagExists($tag) {
+    public function tagExists($tag) {
         if (in_array($tag, $this->_existingTags)) {
             return true;
         } else {
@@ -135,10 +148,10 @@ class cHTMLValidator {
         }
     }
 
-    function returnErrorMap() {
+    protected function _returnErrorMap() {
         $html .= "<pre>";
 
-        $chunks = explode("\n", $this->html);
+        $chunks = explode("\n", $this->_html);
 
         foreach ($chunks as $key => $value) {
             $html .= ($key + 1) . " ";
@@ -147,7 +160,7 @@ class cHTMLValidator {
                 $char = substr($value, $i, 1);
 
                 if (is_array($this->missingTags[$key + 1])) {
-                    //echo ($key+1) . " ". $i."<br>";
+                    // echo ($key+1) . " ". $i."<br>";
                     if (array_key_exists($i + 2, $this->missingTags[$key + 1])) {
                         $html .= "<u><b>" . htmlspecialchars($char) . "</b></u>";
                     } else {
@@ -164,15 +177,16 @@ class cHTMLValidator {
         return $html;
     }
 
-    function getLineAndCharPos($charpos) {
-        $mangled = substr($this->html, 0, $charpos);
+    protected function _getLineAndCharPos($charpos) {
+        $mangled = substr($this->_html, 0, $charpos);
 
         $line = substr_count($mangled, "\n") + 1;
         $char = $charpos - strrpos($mangled, "\n");
 
-        return array($line, $char);
+        return array(
+            $line,
+            $char
+        );
     }
 
 }
-
-?>

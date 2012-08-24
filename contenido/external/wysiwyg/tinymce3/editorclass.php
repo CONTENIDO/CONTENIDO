@@ -69,7 +69,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
     {
         global $belang, $cfg, $cfgClient, $client, $lang, $idart;
 
-        cWYSIWYGEditor::cWYSIWYGEditor($sEditorName, $sEditorContent);
+        parent::__construct($sEditorName, $sEditorContent);
         $this->_setEditor("tinymce3");
 
         // Retrieve all settings for tinymce
@@ -78,36 +78,36 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         // For compatibility, read settings in previous syntax also (< V4.7, type "wysiwyg" vs. "tinymce")
         $this->_aSettings = array_merge(getEffectiveSettingsByType("wysiwyg"), $this->_aSettings);
 
-        $this->setSetting("article_url_suffix", 'front_content.php?idart='.$idart, true); # modified 23.10.2006
+        $this->_setSetting("article_url_suffix", 'front_content.php?idart='.$idart, true); # modified 23.10.2006
 
         // Default values
-        $this->setSetting("mode", "exact");
+        $this->_setSetting("mode", "exact");
         $aPathFragments = explode('/', $cfgClient[$client]["path"]["htmlpath"]);
-        $this->setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css");
+        $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css");
 
-        $this->setSetting("theme", "advanced");
-        $this->setSetting("theme_advanced_toolbar_location", "top");
-        $this->setSetting("theme_advanced_path_location", "bottom");
-        $this->setSetting("remove_script_host", false);
-        $this->setSetting("file_browser_callback", "myCustomFileBrowser", true);
-        $this->setSetting("urlconverter_callback", "CustomURLConverter");
+        $this->_setSetting("theme", "advanced");
+        $this->_setSetting("theme_advanced_toolbar_location", "top");
+        $this->_setSetting("theme_advanced_path_location", "bottom");
+        $this->_setSetting("remove_script_host", false);
+        $this->_setSetting("file_browser_callback", "myCustomFileBrowser", true);
+        $this->_setSetting("urlconverter_callback", "CustomURLConverter");
         // New in V3.x
-        $this->setSetting("theme_advanced_resizing", true);
-        $this->setSetting("pagebreak_separator", "<!-- my page break -->"); // needs pagebreak plugin
+        $this->_setSetting("theme_advanced_resizing", true);
+        $this->_setSetting("pagebreak_separator", "<!-- my page break -->"); // needs pagebreak plugin
         // Source formatting (ugh!)
-        $this->setSetting("apply_source_formatting", true);
-        $this->setSetting("remove_linebreaks", false); // Remove linebreaks - GREAT idea...
+        $this->_setSetting("apply_source_formatting", true);
+        $this->_setSetting("remove_linebreaks", false); // Remove linebreaks - GREAT idea...
 
         // Convert URLs and Relative URLs default
-        $this->setSetting("convert_urls", true);
-        $this->setSetting("relative_urls", true);
+        $this->_setSetting("convert_urls", true);
+        $this->_setSetting("relative_urls", true);
 
         // Editor name (a comma spearated list of instances)
-        $this->setSetting("elements", $sEditorName);
+        $this->_setSetting("elements", $sEditorName);
 
         // Editor language
         $aLangs = i18nGetAvailableLanguages();
-        $this->setSetting("language", $aLangs[$belang][4]);
+        $this->_setSetting("language", $aLangs[$belang][4]);
         unset($aLangs);
 
         // Set document base URL
@@ -115,7 +115,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
         // The following "base URL" is the URL used to reference JS script files
         // - it is not the base href value
-        $this->setBaseURL(preg_replace('/^https?:\/\/[^\/]+(.*)$/', '$1', $this->getEditorPath()));
+        $this->setBaseURL(preg_replace('/^https?:\/\/[^\/]+(.*)$/', '$1', $this->_getEditorPath()));
 
         // XHTML
         if (getEffectiveSetting("generator", "xhtml", false) == "true") {
@@ -133,7 +133,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
         // Stylesheet file, for compatibility
         if (!array_key_exists("content_css", $this->_aSettings) && array_key_exists("tinymce-stylesheet-file", $this->_aSettings)) {
-            $this->setSetting("content_css", $this->_aSettings["tinymce-stylesheet-file"], true);
+            $this->_setSetting("content_css", $this->_aSettings["tinymce-stylesheet-file"], true);
         }
 
         // Set lists (for links, images and flash elements)
@@ -143,22 +143,22 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         $this->setUserDefinedStyles();
 
         // Width and height
-        $this->setSetting("width", "100%");
-        $this->setSetting("height", "480px");
+        $this->_setSetting("width", "100%");
+        $this->_setSetting("height", "480px");
 
         // Text direction (rtl = right to left)
         $sDirection = langGetTextDirection($lang);
-        $this->setSetting("directionality", $sDirection);
+        $this->_setSetting("directionality", $sDirection);
 
         if ($sDirection == "rtl") {
-            $this->setSetting("theme_advanced_toolbar_align", "right", true);
+            $this->_setSetting("theme_advanced_toolbar_align", "right", true);
         } else {
-            $this->setSetting("theme_advanced_toolbar_align", "left", true);
+            $this->_setSetting("theme_advanced_toolbar_align", "left", true);
         }
 
         // Date and time formats
-        $this->setSetting("plugin_insertdate_dateFormat", $this->convertFormat(getEffectiveSetting("dateformat", "date", "Y-m-d")));
-        $this->setSetting("plugin_insertdate_timeFormat", $this->convertFormat(getEffectiveSetting("dateformat", "time", "H:i:s")));
+        $this->_setSetting("plugin_insertdate_dateFormat", $this->convertFormat(getEffectiveSetting("dateformat", "date", "Y-m-d")));
+        $this->_setSetting("plugin_insertdate_timeFormat", $this->convertFormat(getEffectiveSetting("dateformat", "time", "H:i:s")));
 
         // Setting the toolbar (toolbar_mode and tinymce-toolbar-mode accepted)
         $sMode = "full";
@@ -174,24 +174,24 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         if (!array_key_exists("valid_elements", $this->_aSettings) &&
              array_key_exists("tinymce-valid-elements", $this->_aSettings))
         {
-            $this->setSetting("valid_elements", $this->_aSettings["tinymce-valid-elements"], true);
+            $this->_setSetting("valid_elements", $this->_aSettings["tinymce-valid-elements"], true);
         }
-        $this->setSetting("valid_elements", "+a[name|href|target|title],strong/b[class],em/i[class],strike[class],u[class],p[dir|class|align],ol,ul,li,br,img[class|src|border=0|alt|title|hspace|vspace|width|height|align],sub,sup,blockquote[dir|style],table[border=0|cellspacing|cellpadding|width|height|class|align|style],tr[class|rowspan|width|height|align|valign|style],td[dir|class|colspan|rowspan|width|height|align|valign|style],div[dir|class|align],span[class|align],pre[class|align],address[class|align],h1[dir|class|align],h2[dir|class|align],h3[dir|class|align],h4[dir|class|align],h5[dir|class|align],h6[dir|class|align],hr");
+        $this->_setSetting("valid_elements", "+a[name|href|target|title],strong/b[class],em/i[class],strike[class],u[class],p[dir|class|align],ol,ul,li,br,img[class|src|border=0|alt|title|hspace|vspace|width|height|align],sub,sup,blockquote[dir|style],table[border=0|cellspacing|cellpadding|width|height|class|align|style],tr[class|rowspan|width|height|align|valign|style],td[dir|class|colspan|rowspan|width|height|align|valign|style],div[dir|class|align],span[class|align],pre[class|align],address[class|align],h1[dir|class|align],h2[dir|class|align],h3[dir|class|align],h4[dir|class|align],h5[dir|class|align],h6[dir|class|align],hr");
 
         // Extended valid elements, for compatibility also accepts "tinymce-extended-valid-elements"
         if (!array_key_exists("extended_valid_elements", $this->_aSettings) &&
              array_key_exists("tinymce-extended-valid-elements", $this->_aSettings))
         {
-            $this->setSetting("extended_valid_elements", $this->_aSettings["tinymce-extended-valid-elements"]);
+            $this->_setSetting("extended_valid_elements", $this->_aSettings["tinymce-extended-valid-elements"]);
         }
-        $this->setSetting("extended_valid_elements", "form[name|action|method],textarea[name|style|cols|rows],input[type|name|value|style|onclick],a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]");
+        $this->_setSetting("extended_valid_elements", "form[name|action|method],textarea[name|style|cols|rows],input[type|name|value|style|onclick],a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]");
 
         // Background color
         if (!array_key_exists("contenido_background_color", $this->_aSettings)) {
             if (array_key_exists("tinymce-backgroundcolor", $this->_aSettings)) {
-                $this->setSetting("contenido_background_color", $this->_aSettings["tinymce-backgroundcolor"], true);
+                $this->_setSetting("contenido_background_color", $this->_aSettings["tinymce-backgroundcolor"], true);
             } else {
-                $this->setSetting("contenido_background_color", "white", true);
+                $this->_setSetting("contenido_background_color", "white", true);
             }
         }
 
@@ -252,7 +252,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         }
 
         if ($sStyles) {
-            $this->setSetting("theme_advanced_styles", preg_replace('/;$/i', '', str_replace("|","=", trim($sStyles))), true);
+            $this->_setSetting("theme_advanced_styles", preg_replace('/;$/i', '', str_replace("|","=", trim($sStyles))), true);
         }
     }
 
@@ -276,25 +276,25 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         $aLists = explode(",", strtolower(str_replace(" ", "", $sLists)));
 
         if (in_array("link", $aLists)) {
-            $this->setSetting("external_link_list_url", $this->_sBaseURL."list.php?mode=link&lang=".$lang."&client=".$client."#", true);
+            $this->_setSetting("external_link_list_url", $this->_sBaseURL."list.php?mode=link&lang=".$lang."&client=".$client."#", true);
         }
         if(in_array("image", $aLists)) {
-            $this->setSetting("external_image_list_url", $this->_sBaseURL."list.php?mode=image&lang=".$lang."&client=".$client."#", true);
+            $this->_setSetting("external_image_list_url", $this->_sBaseURL."list.php?mode=image&lang=".$lang."&client=".$client."#", true);
         }
         if (in_array("flash", $aLists)) {
-            $this->setSetting("flash_external_list_url", $this->_sBaseURL."list.php?mode=flash&lang=".$lang."&client=".$client."#", true);
+            $this->_setSetting("flash_external_list_url", $this->_sBaseURL."list.php?mode=flash&lang=".$lang."&client=".$client."#", true);
         }
         if (in_array("media", $aLists)) {
-            $this->setSetting("media_external_list_url", $this->_sBaseURL."list.php?mode=media&lang=".$lang."&client=".$client."#", true);
+            $this->_setSetting("media_external_list_url", $this->_sBaseURL."list.php?mode=media&lang=".$lang."&client=".$client."#", true);
         }
     }
 
     function setXHTMLMode($bEnabled = true)
     {
         if ($bEnabled) {
-            $this->setSetting("cleanup_callback", "", true);
+            $this->_setSetting("cleanup_callback", "", true);
         } else {
-            $this->setSetting("cleanup_callback", "CustomCleanupContent", true);
+            $this->_setSetting("cleanup_callback", "CustomCleanupContent", true);
         }
     }
 
@@ -316,56 +316,56 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
         switch ($sMode) {
             case "full": // Show all options
-                $this->setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,visualchars,nonbreaking,template,pagebreak,|,help,|,fullscreen", true);
-                $this->setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,advhr,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
-                $this->setSetting("theme_advanced_buttons3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
+                $this->_setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,visualchars,nonbreaking,template,pagebreak,|,help,|,fullscreen", true);
+                $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,advhr,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
+                $this->_setSetting("theme_advanced_buttons3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
                 //safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template
-                $this->setSetting("plugins", "safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups", true);
-                $this->setSetting("theme_advanced_toolbar_align", "left", true);
+                $this->_setSetting("plugins", "safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups", true);
+                $this->_setSetting("theme_advanced_toolbar_align", "left", true);
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce");
                 foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->setSetting($sKey, $sValue, true);
+                    $this->_setSetting($sKey, $sValue, true);
                 }
 
                 break;
 
             case "fullscreen": // Show all options
-                $this->setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,visualchars,nonbreaking,template,pagebreak,|,help,|,fullscreen", true);
-                $this->setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,advhr,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
-                $this->setSetting("theme_advanced_buttons3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
+                $this->_setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,visualchars,nonbreaking,template,pagebreak,|,help,|,fullscreen", true);
+                $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,advhr,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
+                $this->_setSetting("theme_advanced_buttons3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
                 //safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template
-                $this->setSetting("plugins", "safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups", true);
-                $this->setSetting("theme_advanced_toolbar_align", "left", true);
+                $this->_setSetting("plugins", "safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups", true);
+                $this->_setSetting("theme_advanced_toolbar_align", "left", true);
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce_fullscreen");
                 foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->setSetting($sKey, $sValue, true);
+                    $this->_setSetting($sKey, $sValue, true);
                 }
 
                 break;
 
             case "simple": // Does not show font and table options
-                $this->setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect", true);
-                $this->setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,flash,advhr,|,bullist,numlist,|,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
-                $this->setSetting("theme_advanced_buttons3", "", true);
-                $this->setSetting("plugins", "advhr,advimage,advlink,insertdatetime,preview,flash,searchreplace,print,contextmenu,paste,directionality", true);
+                $this->_setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect", true);
+                $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,flash,advhr,|,bullist,numlist,|,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
+                $this->_setSetting("theme_advanced_buttons3", "", true);
+                $this->_setSetting("plugins", "advhr,advimage,advlink,insertdatetime,preview,flash,searchreplace,print,contextmenu,paste,directionality", true);
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce_simple");
                 foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->setSetting($sKey, $sValue, true);
+                    $this->_setSetting($sKey, $sValue, true);
                 }
 
                 break;
 
             case "mini": // Minimal toolbar
-                $this->setSetting("theme_advanced_buttons1", "undo,redo,|,bold,italic,underline,strikethrough,|,link", true);
-                $this->setSetting("theme_advanced_buttons2", "", true);
-                $this->setSetting("theme_advanced_buttons3", "", true);
+                $this->_setSetting("theme_advanced_buttons1", "undo,redo,|,bold,italic,underline,strikethrough,|,link", true);
+                $this->_setSetting("theme_advanced_buttons2", "", true);
+                $this->_setSetting("theme_advanced_buttons3", "", true);
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce_mini");
                 foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->setSetting($sKey, $sValue, true);
+                    $this->_setSetting($sKey, $sValue, true);
                 }
 
                 break;
@@ -374,67 +374,67 @@ class cTinyMCEEditor extends cWYSIWYGEditor
                 // tinymce-toolbar1/2/3 and tinymce-plugins are only mentioned for compatibility
                 // They are ignored, if theme_advanced_buttons1/2/3 and plugins have been already
                 // specified
-                $this->setSetting("theme_advanced_buttons1", $this->_aSettings["tinymce-toolbar1"]);
-                $this->setSetting("theme_advanced_buttons2", $this->_aSettings["tinymce-toolbar2"]);
-                $this->setSetting("theme_advanced_buttons3", $this->_aSettings["tinymce-toolbar3"]);
-                $this->setSetting("plugins", $this->_aSettings["tinymce-plugins"]);
-                $this->setSetting("theme_advanced_toolbar_location", "bottom");
+                $this->_setSetting("theme_advanced_buttons1", $this->_aSettings["tinymce-toolbar1"]);
+                $this->_setSetting("theme_advanced_buttons2", $this->_aSettings["tinymce-toolbar2"]);
+                $this->_setSetting("theme_advanced_buttons3", $this->_aSettings["tinymce-toolbar3"]);
+                $this->_setSetting("plugins", $this->_aSettings["tinymce-plugins"]);
+                $this->_setSetting("theme_advanced_toolbar_location", "bottom");
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce_custom");
                 foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->setSetting($sKey, $sValue, true);
+                    $this->_setSetting($sKey, $sValue, true);
                 }
 
                 break;
 
             case "inline_edit":
-                $this->setSetting("theme_advanced_buttons1", "bold,italic,underline,strikethrough,separator,undo,separator,bullist,numlist,separator,forecolor,backcolor,separator,justifyleft,justifycenter,justifyright,separator,fullscreen,separator,save,close", true);
-                $this->setSetting("theme_advanced_buttons2", "", true);
-                $this->setSetting("theme_advanced_buttons3", "", true);
+                $this->_setSetting("theme_advanced_buttons1", "bold,italic,underline,strikethrough,separator,undo,separator,bullist,numlist,separator,forecolor,backcolor,separator,justifyleft,justifycenter,justifyright,separator,fullscreen,separator,save,close", true);
+                $this->_setSetting("theme_advanced_buttons2", "", true);
+                $this->_setSetting("theme_advanced_buttons3", "", true);
 
-                $this->setSetting("setupcontent_callback", "myCustomSetupContent", true);
+                $this->_setSetting("setupcontent_callback", "myCustomSetupContent", true);
 
-                $this->unsetSetting("width");
-                $this->unsetSetting("theme_advanced_toolbar_location");
-                $this->setSetting("theme_advanced_toolbar_location", "external");
-                $this->setSetting("height", "210px", true);
-                $this->setSetting("plugins", "table,inlinepopups,fullscreen,-close", true);
-                $this->setSetting("mode", "exact", true);
-                $this->setSetting("elements", "*", true);
-                $this->setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css", true);
+                $this->_unsetSetting("width");
+                $this->_unsetSetting("theme_advanced_toolbar_location");
+                $this->_setSetting("theme_advanced_toolbar_location", "external");
+                $this->_setSetting("height", "210px", true);
+                $this->_setSetting("plugins", "table,inlinepopups,fullscreen,-close", true);
+                $this->_setSetting("mode", "exact", true);
+                $this->_setSetting("elements", "*", true);
+                $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css", true);
 
                 if (!array_key_exists("auto_resize", $this->_aSettings)) {
-                    $this->setSetting("auto_resize", "false", true);
+                    $this->_setSetting("auto_resize", "false", true);
                 }
 
                 if (!array_key_exists("theme_advanced_toolbar_location", $this->_aSettings)) {
-                    $this->setSetting("theme_advanced_toolbar_location", "top", true);
+                    $this->_setSetting("theme_advanced_toolbar_location", "top", true);
                 }
 
                 if (!array_key_exists("theme_advanced_resizing_use_cookie", $this->_aSettings)) {
-                    $this->setSetting("theme_advanced_resizing_use_cookie", "false", true);
+                    $this->_setSetting("theme_advanced_resizing_use_cookie", "false", true);
                 }
 
                 if (!array_key_exists("theme_advanced_toolbar_align", $this->_aSettings)) {
-                    $this->setSetting("theme_advanced_toolbar_align", "center", true);
+                    $this->_setSetting("theme_advanced_toolbar_align", "center", true);
                 }
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce_inline");
                 foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->setSetting($sKey, $sValue, true);
+                    $this->_setSetting($sKey, $sValue, true);
                 }
 
                 break;
 
             default: // Default options
-                $this->setSetting("theme_advanced_buttons1", "undo,redo,|,bold,italic,underline,strikethrough,|,link,unlink,anchor,image,flash,advhr,|,tablecontrols", true);
-                $this->setSetting("theme_advanced_buttons2", "styleselect,|,bullist,numlist,|,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,sub,sup,|,code", true);
-                $this->setSetting("theme_advanced_buttons3", "", true);
-                $this->setSetting("plugins", "table,advhr,advimage,advlink,flash,searchreplace,contextmenu,paste", true);
+                $this->_setSetting("theme_advanced_buttons1", "undo,redo,|,bold,italic,underline,strikethrough,|,link,unlink,anchor,image,flash,advhr,|,tablecontrols", true);
+                $this->_setSetting("theme_advanced_buttons2", "styleselect,|,bullist,numlist,|,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,sub,sup,|,code", true);
+                $this->_setSetting("theme_advanced_buttons3", "", true);
+                $this->_setSetting("plugins", "table,advhr,advimage,advlink,flash,searchreplace,contextmenu,paste", true);
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce_default");
                 foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->setSetting($sKey, $sValue, true);
+                    $this->_setSetting($sKey, $sValue, true);
                 }
         }
     }
@@ -458,7 +458,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
         foreach ($aParameters as $sParameter) {
             if (array_key_exists($sParameter, $this->_aSettings)) {
-                $this->setSetting($sParameter, $this->addPath($this->_aSettings[$sParameter]), true);
+                $this->_setSetting($sParameter, $this->addPath($this->_aSettings[$sParameter]), true);
             }
         }
 
@@ -472,7 +472,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
             if (array_key_exists($sParameter, $this->_aSettings) &&
                 preg_match('/\\.php$/i', $this->_aSettings[$sParameter]))
             {
-                $this->setSetting($sParameter, $this->_aSettings[$sParameter].'?contenido='.$sess->id, true);
+                $this->_setSetting($sParameter, $this->_aSettings[$sParameter].'?contenido='.$sess->id, true);
             }
         }
     }
@@ -498,7 +498,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         $this->_sBaseURL = $sBaseUrl;
     }
 
-    function getScripts()
+    function _getScripts()
     {
         if ($this->_bUseGZIP) {
             $sReturn = "\n<!-- tinyMCE -->\n".'<script language="javascript" type="text/javascript" src="'.$this->_sBaseURL.'jscripts/tiny_mce/tiny_mce_gzip.js"></script>';
@@ -509,7 +509,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         return $sReturn;
     }
 
-    function getEditor()
+    function _getEditor()
     {
         global $sess, $cfg, $lang, $client, $idart, $cfgClient;
 
@@ -518,8 +518,8 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         $sess->register("browserparameters");
 
         // Contenido-specific: Set article_url_suffix setting as it is used in plugins/advlink/jscripts/functions.js on anchor tags
-        $this->setSetting("setupcontent_callback", 'myCustomSetupContent', true);
-        $this->setSetting("save_callback", 'cutFullpath', true);
+        $this->_setSetting("setupcontent_callback", 'myCustomSetupContent', true);
+        $this->_setSetting("save_callback", 'cutFullpath', true);
 
         // Set browser windows
         // Difference between file and image browser is with (file) or without categories/articles (image)

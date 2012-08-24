@@ -10,18 +10,13 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.13
- * @author     Bjoern Behrens
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2006-10-05
- *   $Id$
- * }}
+ * @package CONTENIDO Backend Classes
+ * @version 1.13
+ * @author Bjoern Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -35,98 +30,116 @@ class cTreeItem {
 
     /**
      * Sub Items for this tree item
+     *
      * @var array
      */
-    var $_subitems;
+    var $_subitems = array();
 
     /**
      * Determinates if this tree item is collapsed
+     *
      * @var boolean
      */
     var $_collapsed;
 
     /**
      * ID for this item
+     *
      * @var string
      */
     var $_id;
 
     /**
      * Name for this item
+     *
      * @var string
      */
     var $_name;
 
     /**
      * Contains the level of this item
+     *
      * @var integer
      */
     var $_level;
 
     /**
      * Contains custom entries
+     *
      * @var array
      */
-    var $_attributes;
+    var $_attributes = array();
 
     /**
      * Contains the parent of this item
+     *
      * @var array
      */
-    var $_parent;
+    var $_parent = false;
 
     /**
      * Contains the next item
+     *
      * @var array
      */
-    var $_next;
+    var $_next = false;
 
     /**
      * Contains the previous item
+     *
      * @var array
      */
-    var $_previous;
+    var $_previous = false;
 
-    function cTreeItem($id = "", $name = "", $collapsed = false) {
+    public function __construct($id = "", $name = "", $collapsed = false) {
         $this->_id = $id;
         $this->_name = $name;
         $this->_collapsed = $collapsed;
-        $this->_subitems = array();
-        $this->_parent = false;
-        $this->_next = false;
-        $this->_previous = false;
-        $this->_attributes = array();
+    }
+
+    /**
+     *
+     * @deprecated 2012-08-24 Use __construct()
+     */
+    function cTreeItem($id = "", $name = "", $collapsed = false) {
+        cDeprecated('Use __construct()');
+        $this->__construct($id, $name, $collapsed);
     }
 
     /**
      * Id getter
-     * @return  string
+     *
+     * @return string
      */
-    function getId() {
+    public function getId() {
         return $this->_id;
     }
 
     /**
      * Name getter
-     * @return  string
+     *
+     * @return string
      */
-    function getName() {
+    public function getName() {
         return $this->_name;
     }
 
     /**
      * Collapsed state getter
-     * @return  bool
+     *
+     * @return bool
      */
-    function getCollapsed() {
+    public function getCollapsed() {
         return $this->_collapsed;
     }
 
     /**
-     * Imports a table from an array of arrays.  Array format:
+     * Imports a table from an array of arrays.
+     * Array format:
      * array(
-     *        array("id" => "Item ID", "name" => "Item name", "level" => 1, "collapsed" => true|false, "attributes" => array("attr_name" => "attr_value"))
-     *     );
+     * array("id" => "Item ID", "name" => "Item name", "level" => 1, "collapsed"
+     * => true|false, "attributes" => array("attr_name" => "attr_value"))
+     * );
      *
      * The entries "collapsed" and "attributes" are optional!
      *
@@ -134,7 +147,7 @@ class cTreeItem {
      * @return void
      * @access public
      */
-    function importTable($flat_array) {
+    public function importTable($flat_array) {
         $lastobj[0] = $this->_id;
         $currentlevel = 1;
 
@@ -176,7 +189,7 @@ class cTreeItem {
         }
     }
 
-    function importStructuredArray($array) {
+    public function importStructuredArray($array) {
         $i = array();
 
         $lastid = 1;
@@ -187,7 +200,7 @@ class cTreeItem {
         $this->importTable($i);
     }
 
-    function _flattenArray($sourcearray, &$destarray, &$lastid, &$level) {
+    protected function _flattenArray($sourcearray, &$destarray, &$lastid, &$level) {
         if ($lastid == false) {
             $lastid = 1;
         }
@@ -223,19 +236,22 @@ class cTreeItem {
     }
 
     /**
-     * Exports a tree as an array of arrays.  Array format:
+     * Exports a tree as an array of arrays.
+     * Array format:
      * array(
-     *        array("id" => "Item ID", "name" => "Item name", "level" => 1, "attributes" => array("attr_name" => "attr_value"))
-     *     );
+     * array("id" => "Item ID", "name" => "Item name", "level" => 1,
+     * "attributes" => array("attr_name" => "attr_value"))
+     * );
      *
      * @return array
      * @access public
      * @deprecated 2011-08-22
      */
-    function exportTree() {
+    public function exportTree() {
         cDeprecated("This function never worked");
-        /* TODO: Function can't work... work in progress...
-          $myobj->traverse($objlist);
+        /*
+         * TODO: Function can't work... work in progress...
+         * $myobj->traverse($objlist);
          */
     }
 
@@ -246,9 +262,9 @@ class cTreeItem {
      * @return void
      * @access public
      */
-    function addItem(&$item) {
+    public function addItem(&$item) {
         // Update last item
-        if ($lastitem = end($this->_subitems) !== false) {
+        if (($lastitem = end($this->_subitems)) !== false) {
             $this->_subitems[key($this->_subitems)]->_next = $item->_id;
         }
 
@@ -265,7 +281,7 @@ class cTreeItem {
      * @return void
      * @access public
      */
-    function addItemToID($id, &$item) {
+    public function addItemToID($id, &$item) {
         if ($this->_id == $id) {
             // Update last item
             if ($lastitem = end($this->_subitems) !== false) {
@@ -296,8 +312,7 @@ class cTreeItem {
      * @return void
      * @access public
      */
-    function moveItem($targetItem, $itemToMove) {
-
+    public function moveItem($targetItem, $itemToMove) {
     }
 
     /**
@@ -307,7 +322,7 @@ class cTreeItem {
      * @return deleted object
      * @access public
      */
-    function deleteItem($id) {
+    public function deleteItem($id) {
         foreach (array_keys($this->_subitems) as $key) {
             if ($this->_subitems[$key]->_id == $id) {
                 // Fetch next item, reset to current item
@@ -342,14 +357,15 @@ class cTreeItem {
     }
 
     /**
-     * Retrieves a specific item by its ID. Note that this
+     * Retrieves a specific item by its ID.
+     * Note that this
      * function traverses all subitems to find the correct item.
      *
      * @param string id ID to retrieve
      * @return cTreeItem
      * @access public
      */
-    function &getItemByID($id) {
+    public function &getItemByID($id) {
         if ($this->_id == $id) {
             return $this;
         } else {
@@ -372,7 +388,7 @@ class cTreeItem {
      * @return void
      * @access public
      */
-    function setAttribute($attributeName, $attributeValue) {
+    public function setAttribute($attributeName, $attributeValue) {
         $this->_attributes[$attributeName] = $attributeValue;
     }
 
@@ -384,7 +400,7 @@ class cTreeItem {
      * @return void
      * @access public
      */
-    function setAttributes($aAttributeArray) {
+    public function setAttributes($aAttributeArray) {
         $this->_attributes = array_merge($aAttributeArray, $this->_attributes);
     }
 
@@ -395,7 +411,7 @@ class cTreeItem {
      * @return mixed
      * @access public
      */
-    function getAttribute($attributeName) {
+    public function getAttribute($attributeName) {
         if (array_key_exists($attributeName, $this->_attributes)) {
             return ($this->_attributes[$attributeName]);
         } else {
@@ -410,7 +426,7 @@ class cTreeItem {
      * @return void
      * @access public
      */
-    function deleteAttribute($attributeName) {
+    public function deleteAttribute($attributeName) {
         if (array_key_exists($attributeName, $this->_attributes)) {
             unset($this->_attributes[$attributeName]);
             return true;
@@ -419,7 +435,7 @@ class cTreeItem {
         }
     }
 
-    function hasAttribute($attributeName, $bRecursive = false) {
+    public function hasAttribute($attributeName, $bRecursive = false) {
         if (array_key_exists($attributeName, $this->_attributes)) {
             return true;
         } else {
@@ -446,7 +462,7 @@ class cTreeItem {
      * @return void
      * @access public
      */
-    function setExpanded($id) {
+    public function setExpanded($id) {
         if (is_array($id)) {
             if (in_array($this->_id, $id, true)) {
                 $this->_collapsed = false;
@@ -468,11 +484,12 @@ class cTreeItem {
     }
 
     /**
+     *
      * @param mixed collapse ID to collapse or an array with items to collapse
      * @return void
      * @access public
      */
-    function setCollapsed($id) {
+    public function setCollapsed($id) {
         if (is_array($id)) {
             if (in_array($this->_id, $id, true)) {
                 $this->_collapsed = true;
@@ -494,11 +511,13 @@ class cTreeItem {
     }
 
     /**
-     * @param int leveloffset Level offset. Ignores all expand operations below the offset.
+     *
+     * @param int leveloffset Level offset. Ignores all expand operations below
+     *        the offset.
      * @return void
      * @access public
      */
-    function expandBelowLevel($leveloffset) {
+    protected function _expandBelowLevel($leveloffset) {
         if ($leveloffset > 0) {
             $leveloffset--;
         } else {
@@ -511,11 +530,13 @@ class cTreeItem {
     }
 
     /**
-     * @param int leveloffset Level offset. Ignores all expand operations below the offset.
+     *
+     * @param int leveloffset Level offset. Ignores all expand operations below
+     *        the offset.
      * @return void
      * @access public
      */
-    function collapseBelowLevel($leveloffset) {
+    protected function _collapseBelowLevel($leveloffset) {
         if ($leveloffset > 0) {
             $leveloffset--;
         } else {
@@ -528,11 +549,13 @@ class cTreeItem {
     }
 
     /**
-     * @param int leveloffset Level offset. Ignores all expand operations below the offset.
+     *
+     * @param int leveloffset Level offset. Ignores all expand operations below
+     *        the offset.
      * @return void
      * @access public
      */
-    function expandBelowID($id, $found = false) {
+    protected function _expandBelowID($id, $found = false) {
         if ($found === true) {
             $this->_collapsed = false;
         }
@@ -548,11 +571,13 @@ class cTreeItem {
     }
 
     /**
-     * @param int leveloffset Level offset. Ignores all expand operations below the offset.
+     *
+     * @param int leveloffset Level offset. Ignores all expand operations below
+     *        the offset.
      * @return void
      * @access public
      */
-    function collapseBelowID($id, $found = false) {
+    protected function _collapseBelowID($id, $found = false) {
         if ($found === true) {
             $this->_collapsed = true;
         }
@@ -570,9 +595,10 @@ class cTreeItem {
     /**
      * getCollapsedList
      * Returns all items (as ID array) which are collapsed.
+     *
      * @param array $list Contains the list with all collapsed items
      */
-    function getCollapsedList(&$list) {
+    public function getCollapsedList(&$list) {
         if (!is_array($list)) {
             $list = array();
         }
@@ -589,9 +615,10 @@ class cTreeItem {
     /**
      * getExpandedList
      * Returns all items (as ID array) which are expanded.
+     *
      * @param array $list Contains the list with all expanded items
      */
-    function getExpandedList(&$list) {
+    public function getExpandedList(&$list) {
         if (!is_array($list)) {
             $list = array();
         }
@@ -612,7 +639,7 @@ class cTreeItem {
      * @return void
      * @access public
      */
-    function setPayloadObject($payload) {
+    public function setPayloadObject($payload) {
         $this->payload = $payload;
     }
 
@@ -622,18 +649,18 @@ class cTreeItem {
      * @return object
      * @access public
      */
-    function unsetPayloadObject() {
-
+    public function unsetPayloadObject() {
     }
 
     /**
      * traverse
      * traverses the tree starting from this item, and returning
      * all objects as $objects in a nested array.
+     *
      * @param object $objects all found objects
      * @param integer $level Level to start on
      */
-    function traverse(&$objects, $level = 0) {
+    public function traverse(&$objects, $level = 0) {
         $objects[count($objects)] = &$this;
         $this->_level = $level;
 
@@ -648,10 +675,11 @@ class cTreeItem {
      * flatTraverse
      * traverses the tree starting from this item, and returning
      * all objects as $objects in a flat array.
+     *
      * @param object $objects all found objects
      * @param integer $level Level to start on
      */
-    function flatTraverse($level = 0) {
+    public function flatTraverse($level = 0) {
         $objects[] = &$this;
         $this->_level = $level;
 
@@ -667,13 +695,12 @@ class cTreeItem {
     /**
      * setName
      * sets the Name for this item.
+     *
      * @param string $name New name for this item
      * @return none
      */
-    function setName($name) {
+    public function setName($name) {
         $this->_name = $name;
     }
 
 }
-
-?>

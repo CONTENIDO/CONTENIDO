@@ -10,19 +10,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.0
- * @author     unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
+ * @package CONTENIDO Backend Classes
+ * @version 1.0.0
+ * @author unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -38,29 +33,38 @@ if (!defined('CON_FRAMEWORK')) {
  * the keyboard mapping doesn't support them, or they are looking to similar
  * to other characters). Examples for conversions:
  *
- * German diacritic char ü maps to u and ue.
+ * German diacritic char ï¿½ maps to u and ue.
  *
  * Developers can use the diacritic search implemented in the GenericDB to
  * automatically handle diacritic search conversion.
  */
 class cCharacterConverter {
 
-    var $_oDB;
-    var $_aAliasCache;
-    var $_aCharCache;
+    protected $_oDB;
 
-    function cCharacterConverter() {
+    protected $_aAliasCache = array();
+
+    protected $_aCharCache = array();
+
+    public function __construct() {
         $this->_oDB = cRegistry::getDb();
-        $this->_aAliasCache = array();
-        $this->_aCharCache = array();
     }
 
-    function fetchDiacriticCharactersForNormalizedChar($sEncoding, $cNormalizedChar) {
+    /**
+     *
+     * @deprecated 2012-08-24 Use __construct()
+     */
+    function cCharacterConverter() {
+        cDeprecated('Use __construct()');
+        $this->__construct();
+    }
+
+    public function fetchDiacriticCharactersForNormalizedChar($sEncoding, $cNormalizedChar) {
         global $cfg;
 
         $cNormalizedChar = cSecurity::escapeDB($cNormalizedChar, $this->_oDB);
         $sEncoding = cSecurity::escapeDB($sEncoding, $this->_oDB);
-        $sEncoding = $this->correctEncoding($sEncoding);
+        $sEncoding = $this->_correctEncoding($sEncoding);
 
         if (!array_key_exists($sEncoding, $this->_aCharCache)) {
             $this->_aCharCache[$sEncoding] = array();
@@ -85,12 +89,12 @@ class cCharacterConverter {
         return ($aChars);
     }
 
-    function fetchNormalizedCharsForDiacriticCharacter($sEncoding, $cCharacter) {
+    public function fetchNormalizedCharsForDiacriticCharacter($sEncoding, $cCharacter) {
         global $cfg;
 
         $cCharacter = cSecurity::escapeDB($cCharacter, $this->_oDB);
         $sEncoding = cSecurity::escapeDB($sEncoding, $this->_oDB);
-        $sEncoding = $this->correctEncoding($sEncoding);
+        $sEncoding = $this->_correctEncoding($sEncoding);
 
         if (strlen($cCharacter) > 1) {
             cError(__FILE__, __LINE__, "cCharacter is longer than 1 character");
@@ -119,16 +123,49 @@ class cCharacterConverter {
         return ($aAliases);
     }
 
-    function correctEncoding($sEncoding) {
+    protected function _correctEncoding($sEncoding) {
         $encodingAliases = array(
-            "win-1250" => array("windows-1250", "windows1250", "win-1250"),
-            "win-1251" => array("windows-1251", "windows1251", "win-1251"),
-            "win-1252" => array("windows-1252", "windows1252", "win-1252"),
-            "win-1253" => array("windows-1253", "windows1253", "win-1253"),
-            "win-1254" => array("windows-1254", "windows1254", "win-1254"),
-            "win-1256" => array("windows-1256", "windows1256", "win-1256"),
-            "win-1257" => array("windows-1257", "windows1257", "win-1257"),
-            "win-1258" => array("windows-1258", "windows1258", "win-1258"));
+            "win-1250" => array(
+                "windows-1250",
+                "windows1250",
+                "win-1250"
+            ),
+            "win-1251" => array(
+                "windows-1251",
+                "windows1251",
+                "win-1251"
+            ),
+            "win-1252" => array(
+                "windows-1252",
+                "windows1252",
+                "win-1252"
+            ),
+            "win-1253" => array(
+                "windows-1253",
+                "windows1253",
+                "win-1253"
+            ),
+            "win-1254" => array(
+                "windows-1254",
+                "windows1254",
+                "win-1254"
+            ),
+            "win-1256" => array(
+                "windows-1256",
+                "windows1256",
+                "win-1256"
+            ),
+            "win-1257" => array(
+                "windows-1257",
+                "windows1257",
+                "win-1257"
+            ),
+            "win-1258" => array(
+                "windows-1258",
+                "windows1258",
+                "win-1258"
+            )
+        );
 
         foreach ($encodingAliases as $correctAlias => $encodingAlias) {
             if (in_array($sEncoding, $encodingAlias)) {
@@ -140,5 +177,3 @@ class cCharacterConverter {
     }
 
 }
-
-?>

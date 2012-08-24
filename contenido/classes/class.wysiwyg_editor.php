@@ -10,46 +10,53 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.6
- * @author     Timo A. Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2005-06-27
- *   $Id$:
- * }}
+ * @package CONTENIDO Backend Classes
+ * @version 1.0.6
+ * @author Timo A. Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-
 class cWYSIWYGEditor {
 
-    var $_sPath;
-    var $_sEditor;
-    var $_sEditorName;
-    var $_sEditorContent;
-    var $_aSettings;
+    protected $_sPath;
 
-    function cWYSIWYGEditor($sEditorName, $sEditorContent) {
-        global $cfg;
+    protected $_sEditor;
+
+    protected $_sEditorName;
+
+    protected $_sEditorContent;
+
+    protected $_aSettings;
+
+    public function __construct($sEditorName, $sEditorContent) {
+        $cfg = cRegistry::getConfig();
 
         $this->_sPath = $cfg['path']['all_wysiwyg_html'];
-        $this->setEditorName($sEditorName);
-        $this->setEditorContent($sEditorContent);
+        $this->_setEditorName($sEditorName);
+        $this->_setEditorContent($sEditorContent);
     }
 
-    function setEditorContent($sContent) {
+    /**
+     *
+     * @deprecated 2012-08-24 Use __construct
+     */
+    function cWYSIWYGEditor($sEditorName, $sEditorContent) {
+        cDeprecated('Use __construct');
+        $this->__construct($sEditorName, $sEditorContent);
+    }
+
+    protected function _setEditorContent($sContent) {
         $this->_sEditorContent = $sContent;
     }
 
-    function _setEditor($sEditor) {
+    protected function _setEditor($sEditor) {
         global $cfg;
 
         if (is_dir($cfg['path']['all_wysiwyg'] . $sEditor)) {
@@ -61,7 +68,7 @@ class cWYSIWYGEditor {
         }
     }
 
-    function setSetting($sKey, $sValue, $bForceSetting = false) {
+    protected function _setSetting($sKey, $sValue, $bForceSetting = false) {
         if ($bForceSetting) {
             $this->_aSettings[$sKey] = $sValue;
         } else if (!array_key_exists($sKey, $this->_aSettings)) {
@@ -69,26 +76,24 @@ class cWYSIWYGEditor {
         }
     }
 
-    function unsetSetting($sKey) {
+    protected function _unsetSetting($sKey) {
         unset($this->_aSettings[$sKey]);
     }
 
-    function getEditorPath() {
+    protected function _getEditorPath() {
         return ($this->_sPath . $this->_sEditor);
     }
 
-    function setEditorName($sEditorName) {
+    protected function _setEditorName($sEditorName) {
         $this->_sEditorName = $sEditorName;
     }
 
-    function getScripts() {
+    protected function _getScripts() {
         cError(__FILE__, __LINE__, "You need to override the method getScripts");
     }
 
-    function getEditor() {
+    protected function _getEditor() {
         cError(__FILE__, __LINE__, "You need to override the method getEditor");
     }
 
 }
-
-?>
