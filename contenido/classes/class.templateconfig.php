@@ -18,12 +18,11 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
 
 /**
  * Object of a CONTENIDO template configuration
@@ -50,12 +49,8 @@
  * @version 1.0
  * @copyright four for business 2003
  * @package Contenido_API
+ * @deprecated 2012-08-24 Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
 class TemplateConfig {
 
     /**
@@ -92,8 +87,10 @@ class TemplateConfig {
      * constructor
      *
      * @return void
+     * @deprecated 2012-08-24 Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead
      */
     function templateConfig($idart = 0) {
+        cDeprecated('Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead');
         global $cfg, $lang, $client;
 
         $this->db = cRegistry::getDb();
@@ -113,8 +110,10 @@ class TemplateConfig {
      * reset data array
      *
      * @return void
+     * @deprecated 2012-08-24 Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead
      */
     function resetData() {
+        cDeprecated('Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead');
         unset($this->data);
     }
 
@@ -125,8 +124,10 @@ class TemplateConfig {
      * @param integer $idcontainer id for the container which settings should be returned
      *
      * @return array array with the settings for each cms_value of the specified container
+     * @deprecated 2012-08-24 Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead
      */
     function getData($idcontainer) {
+        cDeprecated('Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead');
         if ($this->data[$idcontainer]) {
             $tmpVar = explode("&", trim($this->data[$idcontainer], "&"));
             foreach ($tmpVar as $string) {
@@ -140,8 +141,10 @@ class TemplateConfig {
 
     /**
      * get data
+     * @deprecated 2012-08-24 Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead
      */
     function getDataForIdcat($idcat) {
+        cDeprecated('Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead');
         $idtplcfg = $this->_getTplCfgByCatId($idcat);
         $this->data = $this->_getContainersByTplCfg($idtplcfg);
     }
@@ -154,8 +157,10 @@ class TemplateConfig {
      * @param integer $containerid id for the container of which the settings should be returned
      *
      * @return array containing pre configuration values
+     * @deprecated 2012-08-24 Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead
      */
     function getPreConfigurationValues($idart, $containerid) {
+        cDeprecated('Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead');
 
         global $cfg;
 
@@ -200,8 +205,10 @@ class TemplateConfig {
      * @param integer $idart id of the article which configuration should be get
      *
      * @return string returns the template configuration
+     * @deprecated 2012-08-24 Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead
      */
     function _getTplCfgByArtId($idart) {
+        cDeprecated('Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead');
         $sql = "
          SELECT
             idtplcfg
@@ -234,8 +241,10 @@ class TemplateConfig {
      * @param integer $idart id of the current article
      *
      * @return int returns the idcat for the current article
+     * @deprecated 2012-08-24 Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead
      */
     function _getIdCatByIdArt($idart) {
+        cDeprecated('Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead');
         $sql = "SELECT idcat FROM " . $this->cfg['tab']['cat_art'] . " WHERE idart='" . cSecurity::toInteger($idart) . "' ORDER BY idcat ASC LIMIT 1";
         $this->db->query($sql);
         if ($this->db->next_record()) {
@@ -251,8 +260,10 @@ class TemplateConfig {
      * @param integer $idcat id of the category which template config should be read out
      *
      * @return string template configuration for the selected category
+     * @deprecated 2012-08-24 Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead
      */
     function _getTplCfgByCatId($idcat) {
+        cDeprecated('Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead');
         $sql = "SELECT idtplcfg FROM " . $this->cfg['tab']['cat_lang'] . " WHERE idcat='" . cSecurity::toInteger($idcat) . "'
                 AND idlang='" . cSecurity::toInteger($this->lang) . "'";
         $this->db->query($sql);
@@ -269,8 +280,10 @@ class TemplateConfig {
      * @param integer $idtplcfg id of the template
      *
      * @return array array with all containers and their values
+     * @deprecated 2012-08-24 Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead
      */
     function _getContainersByTplCfg($idtplcfg) {
+        cDeprecated('Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead');
         $sql = "
             SELECT
                 number, container

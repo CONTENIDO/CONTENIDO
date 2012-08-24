@@ -88,6 +88,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @copyright four for business AG <www.4fb.de>
  * @version 1.0
  * @package    CONTENIDO Backend Classes
+ * @deprecated 2012-08-24 Use cXmlReader instead
  */
 class XmlParser {
 
@@ -176,8 +177,10 @@ class XmlParser {
      * @access private
      * @param string    $sEncoding    Encoding used when parsing files (default: UTF-8, as in PHP5)
      * @return void
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function XmlParser($sEncoding = false) {
+        cDeprecated('Use cXmlReader instead');
         if (!$sEncoding) {
             $sEncoding = "UTF-8";
         }
@@ -191,8 +194,10 @@ class XmlParser {
      * @access private
      * @param string    $sEncoding    Encoding used when parsing files (default: UTF-8, as in PHP5)
      * @return void
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function _init($sEncoding = false) {
+        cDeprecated('Use cXmlReader instead');
         if (!$sEncoding) {
             $sEncoding = "UTF-8";
         }
@@ -217,8 +222,10 @@ class XmlParser {
      *
      * @return string XML Error message
      * @access private
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function _error() {
+        cDeprecated('Use cXmlReader instead');
         $this->error = "XML error: " . xml_error_string(xml_get_error_code($this->parser)) . " at line " . xml_get_current_line_number($this->parser);
         return $this->error;
     }
@@ -250,8 +257,10 @@ class XmlParser {
      * @param array Options array, valid keys are 'startElement', 'endElement', 'characterData', 'processingInstruction', or a path
      *
      * @return void
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function setEventHandlers($options = array(NULL)) {
+        cDeprecated('Use cXmlReader instead');
         $options = $this->_changeKeyCase($options);
 
         if (array_key_exists('startelement', $options)) {
@@ -282,8 +291,10 @@ class XmlParser {
      *
      * @return void
      * @access private
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function _processingInstruction($parser, $target, $data) {
+        cDeprecated('Use cXmlReader instead');
         $handler = $this->_getEventHandler('processinginstruction');
 
         if ($handler) {
@@ -303,8 +314,10 @@ class XmlParser {
      *
      * @return array Array with lowercased keys
      * @access private
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function _changeKeyCase($options = array()) {
+        cDeprecated('Use cXmlReader instead');
         $tmp = array();
 
         foreach ($options as $key => $value) {
@@ -321,8 +334,10 @@ class XmlParser {
      *
      * @return sring Event handler name
      * @access private
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function _getEventHandler($event) {
+        cDeprecated('Use cXmlReader instead');
         // Standard events
         if (array_key_exists($event, $this->events)) {
             return $this->events[$event];
@@ -346,8 +361,10 @@ class XmlParser {
      *
      * @return array Paths array
      * @access private
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function _getDefinedPaths($options) {
+        cDeprecated('Use cXmlReader instead');
         $tmp = array();
 
         foreach ($options as $key => $value) {
@@ -365,8 +382,10 @@ class XmlParser {
      * @param string Element node name
      * @access private
      * @return void
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function _addPath($depth, $name) {
+        cDeprecated('Use cXmlReader instead');
         $this->paths[$depth] = $name;
     }
 
@@ -374,8 +393,10 @@ class XmlParser {
      * Returns the current active path
      *
      * @access private
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function _getActivePath() {
+        cDeprecated('Use cXmlReader instead');
         $tmp = array();
 
         for ($i = 0; $i <= $this->depth; $i++) {
@@ -395,8 +416,10 @@ class XmlParser {
      *
      * @return void
      * @access private
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function _startElement($parser, $name, $attribs) {
+        cDeprecated('Use cXmlReader instead');
         // Increase depth
         $this->depth++;
 
@@ -440,8 +463,10 @@ class XmlParser {
      *
      * @return void
      * @access private
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function _characterData($parser, $data) {
+        cDeprecated('Use cXmlReader instead');
         // Reset node count
         if ($this->activenode != $this->pathdata[$this->activepath][$this->count]['name']) {
             $this->count = 0;
@@ -471,8 +496,10 @@ class XmlParser {
      *
      * @return void
      * @access private
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function _endElement($parser, $name) {
+        cDeprecated('Use cXmlReader instead');
         // Get the handler for this event
         $handler = $this->_getEventHandler('endelement');
 
@@ -513,8 +540,10 @@ class XmlParser {
      *
      * @return bool
      * @access public
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function parse($data, $final = false) {
+        cDeprecated('Use cXmlReader instead');
         $success = xml_parse($this->parser, trim($data), $final);
 
         if ($final && $this->autofree) {
@@ -535,8 +564,10 @@ class XmlParser {
      *
      * @return bool
      * @access public
+     * @deprecated 2012-08-24 Use cXmlReader instead
      */
     function parseFile($file) {
+        cDeprecated('Use cXmlReader instead');
         $sData = cFileHandler::read($file);
         if (!xml_parse($this->parser, $sData)) {
             $this->_error();

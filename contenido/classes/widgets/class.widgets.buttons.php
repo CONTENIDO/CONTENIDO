@@ -35,6 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
  * Regular push button with hover and push effect
  *
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
+ * @deprecated 2012-08-24 Use cHTMLButton instead
  */
 class cWidgetButton extends cHTMLSpan
 {
@@ -59,9 +60,11 @@ class cWidgetButton extends cHTMLSpan
      * @param $img string    Image location
      * @param $alt string    Alternative text
      * @param $link string    Link
+     * @deprecated 2012-08-24 Use cHTMLButton instead
      */
     function cWidgetButton($img, $alt, $link)
     {
+        cDeprecated('Use cHTMLButton instead');
         cHTMLSpan::cHTMLSpan();
 
         $this->_img = new cHTMLImage($img);
@@ -75,9 +78,11 @@ class cWidgetButton extends cHTMLSpan
      * Sets wether the button should be indented when clicking
      *
      * @param $indent boolean True if indenting should be used
+     * @deprecated 2012-08-24 Use cHTMLButton instead
      */
     function setIndent($indent)
     {
+        cDeprecated('Use cHTMLButton instead');
         $this->_indent = $indent;
     }
 
@@ -85,9 +90,11 @@ class cWidgetButton extends cHTMLSpan
      * Sets wether the button should be hovered
      *
      * @param $hover boolean True if hovering should be used
+     * @deprecated 2012-08-24 Use cHTMLButton instead
      */
     function setHover($hover)
     {
+        cDeprecated('Use cHTMLButton instead');
         $this->_hover = $hover;
     }
 
@@ -95,9 +102,11 @@ class cWidgetButton extends cHTMLSpan
      * Render method
      *
      * @param none
+     * @deprecated 2012-08-24 Use cHTMLButton instead
      */
     function render()
     {
+        cDeprecated('Use cHTMLButton instead');
         $regularState  = "this.style.backgroundColor='#F1F1F1';";
         $regularState .= "this.style.borderColor = '#999999 #B3B3B3 #B3B3B3 #E8E8EE';";
 
@@ -129,9 +138,11 @@ class cWidgetButton extends cHTMLSpan
      * sets the border width
      *
      * @param $border integer border size
+     * @deprecated 2012-08-24 Use cHTMLButton instead
      */
     function setBorder($border)
     {
+        cDeprecated('Use cHTMLButton instead');
         if ($border == 0) {
             $this->_img->setStyleDefinition("margin", "0px");
             $this->_img->setStyleDefinition("padding", "0px");
@@ -150,6 +161,7 @@ class cWidgetButton extends cHTMLSpan
  * Toggle button (on/off) with two different links
  *
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
+ * @deprecated 2012-08-24 Use cHTMLButton instead
  */
 class cWidgetToggleButton extends cWidgetButton
 {
@@ -161,9 +173,11 @@ class cWidgetToggleButton extends cWidgetButton
      * @param $alt string    Alternative text
      * @param $uplink string Link when the button is turned off (=up)
      * @param $downlink string Link when the button is turned on (=down)
+     * @deprecated 2012-08-24 Use cHTMLButton instead
      */
     function cWidgetToggleButton($img, $alt, $uplink, $downlink)
     {
+        cDeprecated('Use cHTMLButton instead');
         cHTMLSpan::cHTMLSpan();
 
         $this->_img = new cHTMLImage($img);
@@ -176,9 +190,11 @@ class cWidgetToggleButton extends cWidgetButton
      * Render method
      *
      * @param none
+     * @deprecated 2012-08-24 Use cHTMLButton instead
      */
     function render()
     {
+        cDeprecated('Use cHTMLButton instead');
         $regularState  = "this.style.backgroundColor='#C6C6D5';";
         $regularState .= "this.style.borderColor = '#E8E8EE #747488 #747488 #E8E8EE';";
 
@@ -220,6 +236,7 @@ class cWidgetToggleButton extends cWidgetButton
  * Toggle buttons for creating a grouped set of buttons
  *
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
+ * @deprecated 2012-08-24 Use cHTMLButton instead
  */
 class cWidgetMultiToggleButton extends cWidgetButton
 {
@@ -229,9 +246,11 @@ class cWidgetMultiToggleButton extends cWidgetButton
      * @param $img string    Image location
      * @param $alt string    Alternative text
      * @param $lnik string  Link to call when the button is clicked
+     * @deprecated 2012-08-24 Use cHTMLButton instead
      */
     function cWidgetMultiToggleButton($img, $alt, $link)
     {
+        cDeprecated('Use cHTMLButton instead');
         cHTMLSpan::cHTMLSpan();
 
         $this->_img = new cHTMLImage($img);
@@ -247,9 +266,11 @@ class cWidgetMultiToggleButton extends cWidgetButton
      * for automatically updating other buttons.
      *
      * @param $item mixed Either another cWidgetMultiToggleButton (or derivates) or the ID of the target button.
+     * @deprecated 2012-08-24 Use cHTMLButton instead
      */
     function addLinkedItem($item)
     {
+        cDeprecated('Use cHTMLButton instead');
         if (is_object($item)) {
             if (is_a($item, "cWidgetMultiToggleButton")) {
                 $id = $item->_img->getID();
@@ -267,9 +288,11 @@ class cWidgetMultiToggleButton extends cWidgetButton
      * Warning: This method doesn't update other buttons.
      *
      * @param $default boolean If true, this button is a default (e.g. pushed) button.
+     * @deprecated 2012-08-24 Use cHTMLButton instead
      */
     function setDefault($default = true)
     {
+        cDeprecated('Use cHTMLButton instead');
         $this->_default = $default;
     }
 
@@ -278,9 +301,11 @@ class cWidgetMultiToggleButton extends cWidgetButton
      *
      * @param $object string ID of the object which receives the hint
      * @param $hint   string Text to display
+     * @deprecated 2012-08-24 Use cHTMLButton instead
      */
     function setHint($object, $hint)
     {
+        cDeprecated('Use cHTMLButton instead');
         $this->_hinttext = $hint;
         $this->_hintobject= $object;
     }
@@ -289,9 +314,11 @@ class cWidgetMultiToggleButton extends cWidgetButton
      * Render method
      *
      * @param none
+     * @deprecated 2012-08-24 Use cHTMLButton instead
      */
     function render()
     {
+        cDeprecated('Use cHTMLButton instead');
         // Retrieve the image id for this button
         $imgid = $this->_img->getID();
 
