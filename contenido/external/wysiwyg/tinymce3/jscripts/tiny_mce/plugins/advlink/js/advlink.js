@@ -374,7 +374,7 @@ function setAttrib(elm, attrib, value) {
 function getAnchorListHTML(id, target) {
 	var ed = tinyMCEPopup.editor, nodes = ed.dom.select('a'), name, i, len, html = "";
 	
-	ffor (i=0, len=nodes.length; i<len; i++) {
+	for (i=0, len=nodes.length; i<len; i++) {
 		// CONTENIDO MODIFICATION 24.10.2006 Willi Man
 		if ((name = ed.dom.getAttrib(nodes[i], "name")) != "")
 			html += '<option value="' + tinyMCE.settings['article_url_suffix'] + '#' + name + '">' + name + '</option>';
