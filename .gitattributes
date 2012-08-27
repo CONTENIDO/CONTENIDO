@@ -852,6 +852,13 @@ contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/advimage/img/sampl
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/advimage/js/image.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/advimage/langs/de_dlg.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/advimage/langs/en_dlg.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/advlink/css/advlink.css -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/advlink/editor_plugin.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/advlink/editor_plugin_src.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/advlink/js/advlink.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/advlink/langs/de_dlg.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/advlink/langs/en_dlg.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/advlink/link.htm -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/advanced/about.htm -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/advanced/anchor.htm -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/advanced/charmap.htm -text
