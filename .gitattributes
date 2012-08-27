@@ -837,6 +837,15 @@ contenido/external/wysiwyg/tinymce3/editorclass.php -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/langs/de.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/langs/en.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/license.txt -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/simple/editor_template.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/simple/editor_template_src.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/simple/langs/de.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/simple/langs/en.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/simple/skins/default/content.css -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/simple/skins/default/ui.css -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/simple/skins/o2k7/content.css -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/simple/skins/o2k7/img/button_bg.png -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/simple/skins/o2k7/ui.css -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce_popup.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce_src.js -text
