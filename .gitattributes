@@ -872,6 +872,15 @@ contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/bbcode/editor_plug
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/bbcode/editor_plugin_src.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/contextmenu/editor_plugin.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/contextmenu/editor_plugin_src.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/directionality/editor_plugin.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/directionality/editor_plugin_src.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/example/dialog.htm -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/example/editor_plugin.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/example/editor_plugin_src.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/example/img/example.gif -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/example/js/dialog.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/example/langs/en.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/example/langs/en_dlg.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/advanced/about.htm -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/advanced/anchor.htm -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/advanced/charmap.htm -text
