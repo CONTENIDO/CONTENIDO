@@ -879,6 +879,13 @@ contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/emotions/editor_pl
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/emotions/emotions.htm -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/emotions/img/smiley-cool.gif -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/emotions/img/smiley-cry.gif -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/emotions/img/smiley-embarassed.gif -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/emotions/img/smiley-foot-in-mouth.gif -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/emotions/img/smiley-frown.gif -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/emotions/img/smiley-innocent.gif -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/emotions/img/smiley-kiss.gif -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/emotions/img/smiley-laughing.gif -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/emotions/img/smiley-money-mouth.gif -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/emotions/img/smiley-sealed.gif -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/emotions/img/smiley-smile.gif -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/emotions/img/smiley-surprised.gif -text
@@ -896,6 +903,8 @@ contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/example/img/exampl
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/example/js/dialog.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/example/langs/en.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/example/langs/en_dlg.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/example_dependency/editor_plugin.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/example_dependency/editor_plugin_src.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/advanced/about.htm -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/advanced/anchor.htm -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/advanced/charmap.htm -text
