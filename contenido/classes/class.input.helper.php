@@ -51,7 +51,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      *
      */
     public function __construct($sName, $iWidth = "", $sID = "", $bDisabled = false, $iTabIndex = null, $sAccessKey = "") {
-        cHTMLSelectElement::cHTMLSelectElement($sName, $iWidth, $sID, $bDisabled, $iTabIndex, $sAccessKey);
+        parent::__construct($sName, $iWidth, $sID, $bDisabled, $iTabIndex, $sAccessKey);
     }
 
     /**
