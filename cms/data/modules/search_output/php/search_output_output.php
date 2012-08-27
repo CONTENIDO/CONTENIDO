@@ -294,7 +294,7 @@ if (strlen(trim($searchterm)) > 0) {
 }
 
 /**
- * @deprecated 2012-08-24 Use cApiArticleConfiguration instead
+ * @deprecated 2012-08-24 Use cApiArticleSpecificationCollection instead
  */
 class Article_Property {
     var $globalConfig;
@@ -305,7 +305,7 @@ class Article_Property {
      * Hint: Call constructor with Article_Property($db, $cfg);
      * @param  oDBInstance instance of class DB_Contenido
      * @param  globalConfig
-     * @deprecated 2012-08-24 Use cApiArticleConfiguration instead
+     * @deprecated 2012-08-24 Use cApiArticleSpecificationCollection instead
      */
     function Article_Property($oDBInstance, $globalConfig) {
         cDeprecated('Use cApiArticleConfiguration instead');
@@ -318,10 +318,10 @@ class Article_Property {
      *
      * @param   $iArticleId
      * @return  id of article specification
-     * @deprecated 2012-08-24 Use cApiArticleConfiguration instead
+     * @deprecated 2012-08-24 Use cApiArticleSpecificationCollection instead
      */
     function getArticleSpecification($iArticleId, $iLangId) {
-        cDeprecated('Use cApiArticleConfiguration instead');
+        cDeprecated('Use cApiArticleSpecificationCollection instead');
         $sql = "SELECT artspec FROM " . $this->globalConfig['tab']['art_lang'] . " WHERE "
              . "idart=" . (int) $iArticleId . " AND idlang=" . (int) $iLangId;
 
