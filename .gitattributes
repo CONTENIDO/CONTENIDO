@@ -834,6 +834,10 @@ contenido/external/wysiwyg/tinymce3/compressor_changelog.txt -text
 contenido/external/wysiwyg/tinymce3/config.php -text
 contenido/external/wysiwyg/tinymce3/editor.php -text
 contenido/external/wysiwyg/tinymce3/editorclass.php -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/utils/editable_selects.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/utils/form_utils.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/utils/mctabs.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/utils/validate.js -text
 contenido/external/wysiwyg/tinymce3/list.php -text
 contenido/external/wysiwyg/tinymce3/readme -text
 contenido/external/wysiwyg/tinymce3/readme.txt -text
