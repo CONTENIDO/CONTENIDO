@@ -1012,6 +1012,11 @@ contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/template/js/templa
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/template/langs/de_dlg.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/template/langs/en_dlg.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/template/template.htm -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/visualblocks/css/visualblocks.css -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/visualblocks/editor_plugin.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/visualblocks/editor_plugin_src.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/visualchars/editor_plugin.js -text
+contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/visualchars/editor_plugin_src.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/advanced/about.htm -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/advanced/anchor.htm -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/advanced/charmap.htm -text
