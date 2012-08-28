@@ -148,7 +148,7 @@ function getActionSelect($idartlang, $idusersequence) {
     $artAllocation = new WorkflowArtAllocations();
     $artAllocation->select("idartlang = '$idartlang'");
 
-    if ($obj = $artAllocation->next()) {
+    if (($obj = $artAllocation->next()) !== false) {
         $laststep = $obj->get("lastusersequence");
     }
 
@@ -199,7 +199,7 @@ function setUserSequence($idartlang, $defaultidworkflow) {
     $wfaa->select("idartlang = '$idartlang'");
     $idusersequence = 0;
 
-    if ($associatedUserSequence = $wfaa->next()) {
+    if (($associatedUserSequence = $wfaa->next()) !== false) {
         $idartallocation = $associatedUserSequence->get("idartallocation");
         $wfaa->delete($idartallocation);
     }
@@ -219,14 +219,14 @@ function setUserSequence($idartlang, $defaultidworkflow) {
         $workflowItems = new WorkflowItems();
         $workflowItems->select("idworkflow = '$defaultidworkflow' AND position = '1'");
 
-        if ($obj = $workflowItems->next()) {
+        if (($obj = $workflowItems->next()) !== false) {
             $firstitem = $obj->get("idworkflowitem");
         }
 
         $workflowUserSequences = new WorkflowUserSequences();
         $workflowUserSequences->select("idworkflowitem = '$firstitem' AND position = '1'");
 
-        if ($obj = $workflowUserSequences->next()) {
+        if (($obj = $workflowUserSequences->next()) !== false) {
             $firstIDUserSequence = $obj->get("idusersequence");
         }
 
@@ -251,7 +251,7 @@ function getCurrentUserSequence($idartlang, $defaultidworkflow) {
     $wfaa->select("idartlang = '$idartlang'");
     $idusersequence = 0;
 
-    if ($associatedUserSequence = $wfaa->next()) {
+    if (($associatedUserSequence = $wfaa->next()) !== false) {
         $idusersequence = $associatedUserSequence->get("idusersequence");
     }
 
@@ -274,14 +274,14 @@ function getCurrentUserSequence($idartlang, $defaultidworkflow) {
         $workflowItems = new WorkflowItems();
         $workflowItems->select("idworkflow = '$defaultidworkflow' AND position = '1'");
 
-        if ($obj = $workflowItems->next()) {
+        if (($obj = $workflowItems->next()) !== false) {
             $firstitem = $obj->get("idworkflowitem");
         }
 
         $workflowUserSequences = new WorkflowUserSequences();
         $workflowUserSequences->select("idworkflowitem = '$firstitem' AND position = '1'");
 
-        if ($obj = $workflowUserSequences->next()) {
+        if (($obj = $workflowUserSequences->next()) !== false) {
             $firstIDUserSequence = $obj->get("idusersequence");
         }
 
@@ -300,7 +300,7 @@ function getLastWorkflowStatus($idartlang) {
 
     $wfaa->select("idartlang = '$idartlang'");
 
-    if ($associatedUserSequence = $wfaa->next()) {
+    if (($associatedUserSequence = $wfaa->next()) !== false) {
         $laststatus = $associatedUserSequence->get("laststatus");
     } else {
         return false;
@@ -334,7 +334,7 @@ function doWorkflowAction($idartlang, $action) {
             $artAllocations = new WorkflowArtAllocations();
             $artAllocations->select("idartlang = '$idartlang'");
 
-            if ($obj = $artAllocations->next()) {
+            if (($obj = $artAllocations->next()) !== false) {
                 $usersequence = new WorkflowUserSequence();
                 $usersequence->loadByPrimaryKey($obj->get("idusersequence"));
 
@@ -350,12 +350,12 @@ function doWorkflowAction($idartlang, $action) {
                 $workflowitems = new WorkflowItems();
                 $workflowitems->select("idworkflow = '$idworkflow' AND position = '" . cSecurity::escapeDB($newpos, NULL) . "'");
 
-                if ($nextObj = $workflowitems->next()) {
+                if (($nextObj = $workflowitems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
                     $idworkflowitem = $nextObj->get("idworkflowitem");
                     $userSequences->select("idworkflowitem = '$idworkflowitem'");
 
-                    if ($nextSeqObj = $userSequences->next()) {
+                    if (($nextSeqObj = $userSequences->next()) !== false) {
                         $obj->set("lastusersequence", $obj->get("idusersequence"));
                         $obj->set("idusersequence", $nextSeqObj->get("idusersequence"));
                         $obj->set("laststatus", "last");
@@ -368,7 +368,7 @@ function doWorkflowAction($idartlang, $action) {
             $artAllocations = new WorkflowArtAllocations();
             $artAllocations->select("idartlang = '$idartlang'");
 
-            if ($obj = $artAllocations->next()) {
+            if (($obj = $artAllocations->next()) !== false) {
                 $usersequence = new WorkflowUserSequence();
                 $usersequence->loadByPrimaryKey($obj->get("idusersequence"));
 
@@ -380,12 +380,12 @@ function doWorkflowAction($idartlang, $action) {
                 $workflowitems = new WorkflowItems();
                 $workflowitems->select("idworkflow = '$idworkflow' AND position = '" . cSecurity::escapeDB($newpos, NULL) . "'");
 
-                if ($nextObj = $workflowitems->next()) {
+                if (($nextObj = $workflowitems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
                     $idworkflowitem = $nextObj->get("idworkflowitem");
                     $userSequences->select("idworkflowitem = '$idworkflowitem'");
 
-                    if ($nextSeqObj = $userSequences->next()) {
+                    if (($nextSeqObj = $userSequences->next()) !== false) {
                         $obj->set("lastusersequence", '10');
                         $obj->set("idusersequence", $nextSeqObj->get("idusersequence"));
                         $obj->set("laststatus", "confirm");
@@ -393,12 +393,12 @@ function doWorkflowAction($idartlang, $action) {
                     }
                 } else {
                     $workflowitems->select("idworkflow = '$idworkflow' AND position = '" . cSecurity::escapeDB($workflowitem->get("position"), NULL) . "'");
-                    if ($nextObj = $workflowitems->next()) {
+                    if (($nextObj = $workflowitems->next()) !== false) {
                         $userSequences = new WorkflowUserSequences();
                         $idworkflowitem = $nextObj->get("idworkflowitem");
                         $userSequences->select("idworkflowitem = '$idworkflowitem'");
 
-                        if ($nextSeqObj = $userSequences->next()) {
+                        if (($nextSeqObj = $userSequences->next()) !== false) {
                             $obj->set("lastusersequence", $obj->get("idusersequence"));
                             $obj->set("idusersequence", $nextSeqObj->get("idusersequence"));
                             $obj->set("laststatus", "confirm");
@@ -412,7 +412,7 @@ function doWorkflowAction($idartlang, $action) {
             $artAllocations = new WorkflowArtAllocations();
             $artAllocations->select("idartlang = '$idartlang'");
 
-            if ($obj = $artAllocations->next()) {
+            if (($obj = $artAllocations->next()) !== false) {
                 $usersequence = new WorkflowUserSequence();
                 $usersequence->loadByPrimaryKey($obj->get("idusersequence"));
 
@@ -424,12 +424,12 @@ function doWorkflowAction($idartlang, $action) {
                 $workflowitems = new WorkflowItems();
                 $workflowitems->select("idworkflow = '$idworkflow' AND position = '" . cSecurity::escapeDB($newpos, NULL) . "'");
 
-                if ($nextObj = $workflowitems->next()) {
+                if (($nextObj = $workflowitems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
                     $idworkflowitem = $nextObj->get("idworkflowitem");
                     $userSequences->select("idworkflowitem = '$idworkflowitem'");
 
-                    if ($nextSeqObj = $userSequences->next()) {
+                    if (($nextSeqObj = $userSequences->next()) !== false) {
                         $obj->set("lastusersequence", $obj->get("idusersequence"));
                         $obj->set("idusersequence", $nextSeqObj->get("idusersequence"));
                         $obj->set("laststatus", "reject");
@@ -459,14 +459,14 @@ function getWorkflowForUserSequence($usersequence) {
     $workflowitems = new WorkflowItems();
     $usersequences->select("idusersequence = '$usersequence'");
 
-    if ($obj = $usersequences->next()) {
+    if (($obj = $usersequences->next()) !== false) {
         $idworkflowitem = $obj->get("idworkflowitem");
     } else {
         return false;
     }
 
     $workflowitems->select("idworkflowitem = '$idworkflowitem'");
-    if ($obj = $workflowitems->next()) {
+    if (($obj = $workflowitems->next()) !== false) {
         return $obj->get("idworkflow");
     } else {
         return false;

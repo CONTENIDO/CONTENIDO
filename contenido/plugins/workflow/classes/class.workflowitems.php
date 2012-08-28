@@ -65,7 +65,7 @@ class WorkflowItems extends ItemCollection {
         $oDb = cRegistry::getDb();
 
         $this->select("position > $pos AND idworkflow = '" . cSecurity::escapeDB($idworkflow, $oDb) . "'");
-        while ($obj = $this->next()) {
+        while (($obj = $this->next()) !== false) {
             $obj->setPosition($obj->get("position") - 1);
             $obj->store();
         }

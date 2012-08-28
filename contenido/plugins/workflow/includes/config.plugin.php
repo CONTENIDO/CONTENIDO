@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
 plugin_include('workflow', 'classes/class.workflow.php');
 plugin_include('workflow', 'includes/functions.workflow.php');
 
-global $lngAct, $modidartlang;
+global $_cecRegistry, $lngAct, $modidartlang;
 
 $lngAct["workflow"]["workflow_delete"] = i18n("Delete workflow", "workflow");
 $lngAct["con_workflow"]["workflow_task_user_select"] = i18n("Select workflow task", "workflow");
@@ -81,25 +81,25 @@ function prepareWorkflowItems() {
             if ($asworkflow == 0) {
                 $wfa->select("idcatlang = '$idcatlang'");
 
-                if ($item = $wfa->next()) {
+                if (($item = $wfa->next()) !== false) {
                     $wfa->delete($item->get("idallocation"));
                     // delete user sequences for listing in tasklist for each included article
                     $oArticles = new ArticleCollection(array('idcat' => $idcatlang, 'start' => true, 'offline' => true));
-                    while ($oArticle = $oArticles->nextArticle()) {
+                    while (($oArticle = $oArticles->nextArticle()) !== false) {
                         setUserSequence($oArticle->getField('idartlang'), -1);
                     }
                 }
             } else {
                 $wfa->select("idcatlang = '$idcatlang'");
 
-                if ($item = $wfa->next()) {
+                if (($item = $wfa->next()) !== false) {
                     $item->setWorkflow($asworkflow);
                     $item->store();
                 } else {
                     $wfa->create($asworkflow, $idcatlang);
                     // generate user sequences for listing in tasklist for each included article
                     $oArticles = new ArticleCollection(array('idcat' => $tmp_cat, 'start' => true, 'offline' => true));
-                    while ($oArticle = $oArticles->nextArticle()) {
+                    while (($oArticle = $oArticles->nextArticle()) !== false) {
                         setUserSequence($oArticle->getField('idartlang'), $asworkflow);
                     }
                 }
@@ -116,7 +116,7 @@ function prepareWorkflowItems() {
         // associate workflow with category
         if ($GLOBALS[$seltpl] != 0) {
             $wfa->select("idcatlang = '$idcatlang'");
-            if ($item = $wfa->next()) {
+            if (($item = $wfa->next()) !== false) {
                 $item->setWorkflow($GLOBALS[$seltpl]);
                 $item->store();
             } else {
@@ -125,21 +125,21 @@ function prepareWorkflowItems() {
 
             // generate user sequences for listing in tasklist for each included article
             $oArticles = new ArticleCollection(array('idcat' => $modidcat, 'start' => true, 'offline' => true));
-            while ($oArticle = $oArticles->nextArticle()) {
+            while (($oArticle = $oArticles->nextArticle()) !== false) {
                 setUserSequence($oArticle->getField('idartlang'), $GLOBALS[$seltpl]);
             }
         } else {
             // unlink workflow with category
             $wfa->select("idcatlang = '$idcatlang'");
 
-            if ($item = $wfa->next()) {
+            if (($item = $wfa->next()) !== false) {
                 $alloc = $item->get("idallocation");
             }
             $wfa->delete($alloc);
 
             // delete user sequences for listing in tasklist for each included article
             $oArticles = new ArticleCollection(array('idcat' => $modidcat, 'start' => true, 'offline' => true));
-            while ($oArticle = $oArticles->nextArticle()) {
+            while (($oArticle = $oArticles->nextArticle()) !== false) {
                 setUserSequence($oArticle->getField('idartlang'), -1);
             }
         }
@@ -152,7 +152,7 @@ function prepareWorkflowItems() {
     $workflowOption = new cHTMLOptionElement("--- " . i18n("None", "workflow") . " ---", 0);
     $workflowSelectBox->addOptionElement(0, $workflowOption);
 
-    while ($workflow = $workflowworkflows->next()) {
+    while (($workflow = $workflowworkflows->next()) !== false) {
         $workflowOption = new cHTMLOptionElement($workflow->get("name"), $workflow->get("idworkflow"));
         $workflowSelectBox->addOptionElement($workflow->get("idworkflow"), $workflowOption);
     }

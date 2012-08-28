@@ -42,7 +42,7 @@ $workflowusersequences = new WorkflowUserSequences();
 
 $workflowartallocations->select();
 
-while ($obj = $workflowartallocations->next()) {
+while (($obj = $workflowartallocations->next()) !== false) {
     $starttime = $obj->get("starttime");
     $idartlang = $obj->get("idartlang");
     $lastidusersequence = $obj->get("lastusersequence");
@@ -52,7 +52,7 @@ while ($obj = $workflowartallocations->next()) {
     if ($usersequence != $lastidusersequence) {
         $workflowusersequences->select("idusersequence = '$usersequence'");
 
-        if ($wfobj = $workflowusersequences->next()) {
+        if (($wfobj = $workflowusersequences->next()) !== false) {
             $wfitem = $wfobj->get("idworkflowitem");
             $pos = $wfobj->get("position");
             $timeunit = $wfobj->get("timeunit");
@@ -90,7 +90,7 @@ while ($obj = $workflowartallocations->next()) {
         if ($maxtime < time()) {
             $pos = $pos + 1;
             $workflowusersequences->select("idworkflowitem = '$wfitem' AND position = '" . cSecurity::escapeDB($pos, NULL) . "'");
-            if ($wfobj = $workflowusersequences->next()) {
+            if (($wfobj = $workflowusersequences->next()) !== false) {
                 $obj->set("idusersequence", $wfobj->get("idusersequence"));
                 $obj->store();
             }

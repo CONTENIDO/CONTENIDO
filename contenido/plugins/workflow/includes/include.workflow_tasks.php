@@ -58,7 +58,7 @@ if ($action == "workflow_do_action") {
 
 $wfa->select();
 
-while ($wfaitem = $wfa->next()) {
+while (($wfaitem = $wfa->next()) !== false) {
     $wfaid = $wfaitem->get("idartallocation");
     $usersequence[$wfaid] = $wfaitem->get("idusersequence");
     $lastusersequence[$wfaid] = $wfaitem->get("lastusersequence");
@@ -69,7 +69,7 @@ while ($wfaitem = $wfa->next()) {
 if (is_array($usersequence)) {
     foreach ($usersequence as $key => $value) {
         $wfu->select("idusersequence = '$value'");
-        if ($obj = $wfu->next()) {
+        if (($obj = $wfu->next()) !== false) {
             $userids[$key] = $obj->get("iduser");
         }
     }

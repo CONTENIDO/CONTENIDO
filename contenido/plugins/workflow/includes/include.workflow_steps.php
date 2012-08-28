@@ -122,7 +122,7 @@ if ($action == "workflow_save_step" || $action == "workflow_create_user") {
     $usersequences = new WorkflowUserSequences();
     $usersequences->select("idworkflowitem = '$idworkflowitem'");
 
-    while ($usersequence = $usersequences->next()) {
+    while (($usersequence = $usersequences->next()) !== false) {
         $wftime = "time" . $usersequence->get("idusersequence");
         $wfuser = "user" . $usersequence->get("idusersequence");
 
@@ -179,7 +179,7 @@ function getWorkflowList() {
 
     $workflowitems->select("idworkflow = '$idworkflow'", "", "position ASC");
 
-    while ($workflowitem = $workflowitems->next()) {
+    while (($workflowitem = $workflowitems->next()) !== false) {
         $pos = $workflowitem->get("position");
         $name = $workflowitem->get("name");
         $id = $workflowitem->get("idworkflowitem");
@@ -316,7 +316,7 @@ function getWorkflowUsers($idworkflowitem) {
 
     $workflowusers->select("idworkflowitem = '$idworkflowitem'", "", "position ASC");
 
-    while ($workflowitem = $workflowusers->next()) {
+    while (($workflowitem = $workflowusers->next()) !== false) {
         $pos = $workflowitem->get("position");
         $iduser = $workflowitem->get("iduser");
         $timelimit = $workflowitem->get("timelimit");
@@ -397,12 +397,13 @@ function getWorkflowUsers($idworkflowitem) {
     $ui->setLink("create", NULL);
     $content = $ui->render(false);
 
-    return ($content);
+    return $content;
 }
 
 $page->set('s', 'NEW', createNewWorkflow());
 $page->set('s', 'STEPS', getWorkflowList());
 $page->set('s', 'EDITSTEP', editWorkflowStep($idworkflowitem));
+$page->set('s', 'WARNING', i18n('Warning: Changes will reset active Workflows', 'workflow'));
 
 $page->render();
 

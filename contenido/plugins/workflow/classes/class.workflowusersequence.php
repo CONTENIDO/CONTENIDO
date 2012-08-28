@@ -65,7 +65,7 @@ class WorkflowUserSequences extends ItemCollection {
         $pos = $item->get("position");
         $idworkflowitem = $item->get("idworkflowitem");
         $this->select("position > $pos AND idworkflowitem = '" . cSecurity::escapeDB($idworkflowitem, NULL) . "'");
-        while ($obj = $this->next()) {
+        while (($obj = $this->next()) !== false) {
             $pos = $obj->get("position") - 1;
             $obj->setPosition($pos);
             $obj->store();
@@ -98,11 +98,9 @@ class WorkflowUserSequences extends ItemCollection {
 
     public function create($idworkflowitem) {
         global $auth, $client, $idworkflow;
-        $newitem = parent::createNewItem();
 
         $workflowitems = new WorkflowItems();
         if (!$workflowitems->exists($idworkflowitem)) {
-            $this->delete($newitem->getField("idusersequence"));
             $this->lasterror = i18n("Workflow item doesn't exist. Can't create entry.", "workflow");
             return false;
         }
@@ -117,6 +115,7 @@ class WorkflowUserSequences extends ItemCollection {
             $lastPos = $item->getField("position") + 1;
         }
 
+        $newitem = parent::createNewItem();
         $newitem->setWorkflowItem($idworkflowitem);
         $newitem->setPosition($lastPos);
         $newitem->store();
@@ -223,8 +222,8 @@ class WorkflowUserSequence extends Item {
 
         parent::setField($field, $value, $safe);
         if ($idusersquence) {
-            $workflowUserSequence = new WorkflowUserSequence();
-            $workflowUserSequence->updateArtAllocation(0);
+            $workflowUserSequences = new WorkflowUserSequences();
+            $workflowUserSequences->updateArtAllocation(0);
         }
     }
 

@@ -129,7 +129,7 @@ class WorkflowArtAllocation extends Item {
         $workflowItems = new WorkflowItems();
         $workflowItems->select("idworkflowitem = '$idworkflowitem'");
 
-        if ($item = $workflowItems->next()) {
+        if (($item = $workflowItems->next()) !== false) {
             return ($item->get("position"));
         }
     }

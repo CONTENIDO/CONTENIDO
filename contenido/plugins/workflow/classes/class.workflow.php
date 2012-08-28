@@ -74,13 +74,13 @@ class Workflows extends ItemCollection {
     public function create() {
         global $auth, $client, $lang;
         $newitem = parent::createNewItem();
-        $newitem->setField("created", date("Y-m-d H-i-s"));
+        $newitem->setField("created", date("Y-m-d H:i:s"));
         $newitem->setField("idauthor", $auth->auth["uid"]);
         $newitem->setField("idclient", $client);
         $newitem->setField("idlang", $lang);
         $newitem->store();
 
-        return ($newitem);
+        return $newitem;
     }
 
     /**
@@ -95,29 +95,33 @@ class Workflows extends ItemCollection {
         $sSql = 'SELECT idworkflowitem FROM ' . $cfg["tab"]["workflow_items"] . ' WHERE idworkflow = ' . cSecurity::toInteger($idWorkflow) . ';';
         $oDb->query($sSql);
         while ($oDb->next_record()) {
-            array_push($aItemIdsDelete, cSecurity::escapeDB($oDb->f('idworkflowitem'), $oDb));
+            $aItemIdsDelete[] = cSecurity::escapeDB($oDb->f('idworkflowitem'), $oDb);
         }
 
-        $aUserSequencesDelete = array();
-        $sSql = 'SELECT idusersequence FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
-        $oDb->query($sSql);
-        while ($oDb->next_record()) {
-            array_push($aUserSequencesDelete, cSecurity::escapeDB($oDb->f('idusersequence'), $oDb));
+        if (!empty($aItemIdsDelete)) {
+            $aUserSequencesDelete = array();
+            $sSql = 'SELECT idusersequence FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
+            $oDb->query($sSql);
+            while ($oDb->next_record()) {
+                $aUserSequencesDelete[] = cSecurity::escapeDB($oDb->f('idusersequence'), $oDb);
+            }
+
+            $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
+            $oDb->query($sSql);
+
+            $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_actions"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
+            $oDb->query($sSql);
         }
 
-        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
-        $oDb->query($sSql);
-
-        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_actions"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
-        $oDb->query($sSql);
+        if (!empty($aUserSequencesDelete)) {
+            $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence in (' . implode(',', $aUserSequencesDelete) . ');';
+            $oDb->query($sSql);
+        }
 
         $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_items"] . ' WHERE idworkflow = ' . cSecurity::toInteger($idWorkflow) . ';';
         $oDb->query($sSql);
 
         $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_allocation"] . ' WHERE idworkflow = ' . cSecurity::toInteger($idWorkflow) . ';';
-        $oDb->query($sSql);
-
-        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence in (' . implode(',', $aUserSequencesDelete) . ');';
         $oDb->query($sSql);
 
         parent::delete($idWorkflow);
@@ -165,7 +169,7 @@ function getWorkflowForCat($idcat) {
     }
     $workflows = new WorkflowAllocations();
     $workflows->select('idcatlang = ' . (int) $idcatlang);
-    if ($obj = $workflows->next()) {
+    if (($obj = $workflows->next()) !== false) {
         // Sanity: Check if the workflow still exists
         $workflow = new Workflow();
         $res = $workflow->loadByPrimaryKey($obj->get('idworkflow'));

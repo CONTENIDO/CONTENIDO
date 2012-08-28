@@ -92,7 +92,7 @@ class WorkflowActions extends ItemCollection {
 
     public function remove($idworkflowitem, $action) {
         $this->select("idworkflowitem = '$idworkflowitem' AND action = '$action'");
-        if ($item = $this->next()) {
+        if (($item = $this->next()) !== false) {
             $this->delete($item->getField("idworkflowaction"));
         }
     }

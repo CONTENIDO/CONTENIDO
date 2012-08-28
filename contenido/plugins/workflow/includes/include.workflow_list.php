@@ -47,7 +47,7 @@ if ($action == "workflow_delete") {
                         right_top.location.href = "' . $sess->url('main.php?area=workflow&frame=3') . '";
                     }
                     if (right_bottom) {
-                        right_bottom.location.href = "' . $sess->url('main.php?area=workflow&frame=4') . '";
+                        right_bottom.location.href = "' . $sess->url('main.php?area=workflow_common&frame=4&action=workflow_delete') . '";
                     }
                 </script>';
 }
@@ -55,7 +55,7 @@ if ($action == "workflow_delete") {
 $ui = new cGuiMenu();
 $workflows->select("idclient = '$client' AND idlang = '$lang'");
 
-while ($workflow = $workflows->next()) {
+while (($workflow = $workflows->next()) !== false) {
     $wfid = $workflow->getField("idworkflow");
     $wfname = $workflow->getField("name");
     $wfdescription = $workflow->getField("description");
@@ -81,7 +81,7 @@ while ($workflow = $workflows->next()) {
 }
 
 if (!empty($sScript)) {
-    $page->addScript('refresh', $sScript);
+    $page->addScript($sScript);
 }
 $page->set("s", "FORM", $ui->render());
 $page->render();

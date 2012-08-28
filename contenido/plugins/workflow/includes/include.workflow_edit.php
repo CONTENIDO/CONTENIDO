@@ -34,6 +34,12 @@ plugin_include('workflow', 'classes/class.workflow.php');
 
 $page = new cGuiPage("workflow_edit", "workflow");
 
+if ($action == "workflow_delete") {
+    $page->displayInfo(i18n('Deleted workflow successfully!', 'workflow'));
+    $page->render();
+    exit;
+}
+
 $form = new cGuiTableForm("workflow_edit");
 $workflows = new Workflows();
 
@@ -42,9 +48,9 @@ $workflow = $workflows->loadItem($idworkflow);
 if ($action == "workflow_save") {
     if ($idworkflow == "-1") {
         $workflow = $workflows->create();
-        $page->displayInfo(i18n("Created new workflow successfully!"));
+        $page->displayInfo(i18n("Created new workflow successfully!", 'workflow'));
     } elseif ($idworkflow > 0) {
-        $page->displayInfo(i18n("Saved changes successfully!"));
+        $page->displayInfo(i18n("Saved changes successfully!", 'workflow'));
     }
 
     $workflow->set("name", htmlspecialchars($wfname));
@@ -98,8 +104,12 @@ $oTxtWFName = new cHTMLTextbox("wfname", $name, 40, 255);
 $form->add(i18n("Workflow name", "workflow"), $oTxtWFName->render());
 $oTxtWFDesc = new cHTMLTextarea("wfdescription", $description, 50, 10);
 $form->add(i18n("Description", "workflow"), $oTxtWFDesc->render());
-$form->add(i18n("Author", "workflow"), $author);
-$form->add(i18n("Created", "workflow"), $created);
+if (!empty($author)) {
+    $form->add(i18n("Author", "workflow"), $author);
+}
+if (!empty($created)) {
+    $form->add(i18n("Created", "workflow"), $created);
+}
 
 $page->setContent($form);
 if (!empty($sReloadScript)) {
