@@ -36,13 +36,17 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+
+
 // CONTENIDO path
 $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
-include_once($cfg['path']['contenido'] . 'plugins/linkchecker/includes/config.plugin.php');
+include_once($backendPath . 'plugins/linkchecker/includes/config.plugin.php');
+
+$backendPath = cRegistry::getBackendPath();
 
 global $cfg;
 
@@ -63,7 +67,7 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
         $langart = $db->f('idlang');
     }
 
-    include_once($cfg['path']['contenido'] . 'plugins/linkchecker/includes/include.linkchecker.php');
+    include_once($backendPath . 'plugins/linkchecker/includes/include.linkchecker.php');
 }
 
 ?>

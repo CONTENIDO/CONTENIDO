@@ -109,7 +109,7 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
                     $message = i18n("Hello %s,\n\nyou've got a new reminder for the client '%s' at\n%s:\n\n%s");
 
-                    $path = $cfg['path']['contenido_fullhtml'];
+                    $path = cRegistry::getBackendUrl();
 
                     $message = sprintf($message, $realname, $clientname, $path, $todoitem->get('message'));
                     $oMail->Body = $message;

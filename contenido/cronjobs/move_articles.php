@@ -42,7 +42,7 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
-include_once($cfg['path']['contenido'].$cfg['path']['includes'] . 'functions.con.php');
+include_once(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'functions.con.php');
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $db = cRegistry::getDb();
