@@ -260,7 +260,11 @@ $oArticle->loadByArticleAndLanguageId($idart, $lang);
 $sArticleTitle = $oArticle->getField('title');
 $catString = '';
 prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
-$tpl->set('s', 'CATEGORY', i18n("You are here") . ": " . $catString . ' > ' . $sArticleTitle);
+$category = i18n("You are here") . ": " . $catString;
+if (!empty($sArticleTitle)) {
+    $category .= ' > ' . $sArticleTitle;
+}
+$tpl->set('s', 'CATEGORY', $category);
 
 //SELECT Box for Templates
 

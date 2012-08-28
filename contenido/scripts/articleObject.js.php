@@ -482,6 +482,8 @@ articleObject.prototype.disable = function()
     oRef[3] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_3" );
     oRef[4] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_4" );
     oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_5" );
+    oRef[6] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_6" );
+    oRef[7] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_7" );
 
     if (this.vis == 1)
     {
