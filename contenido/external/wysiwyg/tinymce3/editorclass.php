@@ -559,7 +559,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
             }
 
             if ($sValue == "true" || $sValue == "false" ||
-                $sKey == "oninit" || $sKey == "onpageload")
+                $sKey == "oninit" || $sKey == "onpageload" || $sKey == 'style_formats')
             {
                 $sConfig .= "'$sKey': ".$sValue;
             } else {
@@ -599,7 +599,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
             }
 
             if ($sValue == "true" || $sValue == "false" ||
-                $sKey == "oninit" || $sKey == "onpageload")
+                $sKey == "oninit" || $sKey == "onpageload" || $sKey == 'style_formats')
             {
                 $sConfig .= "'$sKey': ".$sValue;
             } else {
