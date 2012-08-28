@@ -37,6 +37,7 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
@@ -58,6 +59,8 @@ $tpl = new cTemplate();
 // Build the CONTENIDO content area frameset
 $tpl->reset();
 
+$backendUrl = cRegistry::getBackendUrl();
+
 if (isset($_GET['appendparameters'])) {
     $tpl->set('s', 'LEFT', str_replace('&', '&amp;', $sess->url("frameset_left.php?area=$area&appendparameters=" . $_GET['appendparameters'])));
     $tpl->set('s', 'RIGHT', str_replace('&', '&amp;', $sess->url("frameset_right.php?area=$area&appendparameters=" . $_GET['appendparameters'])));
@@ -69,7 +72,7 @@ if (isset($_GET['appendparameters'])) {
 }
 
 $tpl->set('s', 'VERSION',  $cfg['version']);
-$tpl->set('s', 'LOCATION', $cfg['path']['contenido_fullhtml']);
+$tpl->set('s', 'LOCATION', $backendUrl);
 
 // Hide menu-frame for some areas
 
@@ -113,7 +116,8 @@ if (in_array($area, $aMenulessAreas) || (isset($menuless) && $menuless == 1)) {
         $tpl->set('s', 'FRAME[4]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=4")));
     }
 }
-$tpl->set('s', 'CONTENIDOPATH', $cfg['path']['contenido_fullhtml'] . 'favicon.ico');
+
+$tpl->set('s', 'CONTENIDOPATH', cRegistry::getBackendUrl() . 'favicon.ico');
 
 if ((isset($menuless) && $menuless == 1)) {
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset_menuless_content']);
