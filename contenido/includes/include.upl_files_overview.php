@@ -501,6 +501,7 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1, $thumbnailmode) {
         }
     }
 
+
     switch ($thumbnailmode) {
     	case 10: $numpics = 10;
     	    break;
