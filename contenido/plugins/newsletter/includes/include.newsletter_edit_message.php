@@ -207,7 +207,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
         $oForm->add(i18n("HTML Template", 'newsletter'), $oSelTemplate->render()."&nbsp;".i18n("Note, that changing the template discards the current html message content", 'newsletter'));
 
         if ($iTplIDArt != 0) {
-            $sFrameSrc = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?changeview=edit&action=con_editart&idart=".$oNewsletter->get("idart")."&idcat=".$oClientLang->getProperty("newsletter", "html_newsletter_idcat")."&lang=".$lang."&contenido=".$sess->id;
+            $sFrameSrc = cRegistry::getFrontendUrl() . "front_content.php?changeview=edit&action=con_editart&idart=".$oNewsletter->get("idart")."&idcat=".$oClientLang->getProperty("newsletter", "html_newsletter_idcat")."&lang=".$lang."&contenido=".$sess->id;
             $oForm->add(i18n("HTML Message", 'newsletter'), '<iframe width="100%" height="600" src="'.$sFrameSrc.'"></iframe><br>'.$sTagInfoHTML);
         } else {
             // Add a real note, that a template has to be specified

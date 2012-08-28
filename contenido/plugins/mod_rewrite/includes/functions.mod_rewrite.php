@@ -43,6 +43,9 @@ defined('CON_FRAMEWORK') or die('Illegal call');
  * @param   array  $data  Assoziative array with some values
  * @return  array  Passed parameter
  */
+
+
+
 function mr_strNewTree(array $data)
 {
     global $lang;
@@ -520,7 +523,7 @@ function mr_buildGeneratedCode($code)
         $code = str_replace("&#39;", "'", $code);
 
         // get base uri
-        $sBaseUri = $cfgClient[$client]['path']['htmlpath'];
+        $sBaseUri = cRegistry::getFrontendUrl();
         $sBaseUri = cApiCecHook::execute("Contenido.Frontend.BaseHrefGeneration", $sBaseUri);
 
         // IE hack with wrong base href interpretation
@@ -614,6 +617,8 @@ function mr_setClientLanguageId($client)
 }
 
 
+
+
 /**
  * Loads Advanced Mod Rewrite configuration for passed client using serialized
  * file containing the settings.
@@ -644,7 +649,8 @@ function mr_loadConfiguration($clientId, $forceReload = false)
         $cfg = array_merge($cfg, $mrConfig);
     } else {
         // couldn't load configuration, set defaults
-        include_once($cfg['path']['contenido'] . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_default.php');
+        $backendPath = cRegistry::getBackendPath();
+        include_once($backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_default.php');
     }
 
     $aLoaded[$clientId] = true;
@@ -664,7 +670,9 @@ function mr_getConfiguration($clientId)
 {
     global $cfg;
 
-    $file = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
+    $backendPath = cRegistry::getBackendPath();
+
+    $file = $backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
     if (!is_file($file) || !is_readable($file)) {
         return null;
     }
@@ -690,7 +698,9 @@ function mr_setConfiguration($clientId, array $config)
 {
     global $cfg;
 
-    $file = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
+    $backendPath = cRegistry::getBackendPath();
+
+    $file = $backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
     $result = cFileHandler::write($file, serialize($config));
     return ($result) ? true : false;
 }
@@ -854,6 +864,9 @@ function mr_arrayValue($array, $key, $default = null)
  *
  * @return  mixed  Cleaned data
  */
+
+
+
 function mr_requestCleanup(&$data, $options = null)
 {
     if (!mr_arrayValue($options, 'filter')) {

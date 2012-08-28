@@ -162,6 +162,6 @@ if ($action == 'index') {
 ##### Output
 
 $oMrController->render(
-    $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'mod_rewrite/templates/contentexpert.html'
+    cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'mod_rewrite/templates/contentexpert.html'
 );
 

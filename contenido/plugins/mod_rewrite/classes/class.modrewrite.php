@@ -810,9 +810,9 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getClientFullUrlParts($url)
     {
-        global $cfg, $cfgClient;
 
-        $clientPath = $cfgClient[$client]['path']['htmlpath'];
+
+        $clientPath = cRegistry::getFrontendUrl();
 
         if (stristr($url, $clientPath) !== false) {
             // url includes full html path (scheme host path, etc.)
@@ -1011,11 +1011,10 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getHtaccessInfo()
     {
-        global $cfg, $client, $cfgClient;
 
         $arr = array(
-            'contenido_full_path' => str_replace('\\', '/', realpath($cfg['path']['contenido'] . '../') . '/'),
-            'client_full_path'    => $cfgClient[$client]['path']['frontend'],
+            'contenido_full_path' => str_replace('\\', '/', realpath(cRegistry::getBackendPath() . '../') . '/'),
+            'client_full_path'    => cRegistry::getFrontendPath(),
         );
         $arr['in_contenido_path'] = is_file($arr['contenido_full_path'] . '.htaccess');
         $arr['in_client_path']    = is_file($arr['client_full_path'] . '.htaccess');

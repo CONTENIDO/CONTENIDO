@@ -102,5 +102,5 @@ $oView->content .= mr_debugOutput(false);
 ##### Output
 
 $oMrTestController->render(
-    $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'mod_rewrite/templates/contenttest.html'
+   cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'mod_rewrite/templates/contenttest.html'
 );

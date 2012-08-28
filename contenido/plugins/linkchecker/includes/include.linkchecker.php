@@ -68,7 +68,7 @@ $aSearchIDInfosCatArt = array();
 $aSearchIDInfosNonID = array();
 $iWhitelist_timeout = 2592000; // 30 days
 // Var initialization
-$aUrl = array('cms' => $cfgClient[$client]['path']['htmlpath'], 'contenido' => $cfg['path']['contenido_fullhtml']);
+$aUrl = array('cms' => cRegistry::getFrontendUrl(), 'contenido' => cRegistry::getBackendUrl());
 
 // Template- and languagevars
 if ($cronjob != true) {

@@ -54,7 +54,7 @@ if (isset($_GET['idnewsletter']) && (int) $_GET['idnewsletter'] > 0) {
     // Generate the third navigation layer
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['subnav']);
 } else {
-    include($cfg['path']['contenido'].$cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
+    include(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
 }
 
 ?>

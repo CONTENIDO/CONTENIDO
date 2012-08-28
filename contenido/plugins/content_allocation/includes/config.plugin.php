@@ -33,6 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+$backendPath = cRegistry::getBackendPath();
 
 // plugin includes
 plugin_include('content_allocation', 'classes/class.content_allocation_tree.php');
@@ -46,14 +47,16 @@ $cfg['tab']['pica_alloc'] = $cfg['sql']['sqlprefix'].'_pica_alloc';
 $cfg['tab']['pica_alloc_con'] = $cfg['sql']['sqlprefix'].'_pica_alloc_con';
 $cfg['tab']['pica_lang'] = $cfg['sql']['sqlprefix'].'_pica_lang';
 
-$cfg['pica']['logpath'] = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'repository/log/data/';
+$cfg['pica']['logpath'] = $backendPath . $cfg['path']['plugins'] . 'repository/log/data/';
 $cfg['pica']['loglevel'] = 'warn';
-$cfg['pica']['treetemplate'] = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'content_allocation/templates/template.tree_structure.html';
-$cfg['pica']['treetemplate_article'] = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'content_allocation/templates/template.tree_article.html';
-$cfg['pica']['treetemplate_complexlist'] = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'content_allocation/templates/template.tree_complexlist.html';
+$cfg['pica']['treetemplate'] = $backendPath . $cfg['path']['plugins'] . 'content_allocation/templates/template.tree_structure.html';
+$cfg['pica']['treetemplate_article'] = $backendPath . $cfg['path']['plugins'] . 'content_allocation/templates/template.tree_article.html';
+$cfg['pica']['treetemplate_complexlist'] = $backendPath . $cfg['path']['plugins'] . 'content_allocation/templates/template.tree_complexlist.html';
 
-$cfg['pica']['style_complexlist'] = $cfg['path']['contenido_fullhtml'] . $cfg['path']['plugins'] . 'content_allocation/style/complexlist.css';
-$cfg['pica']['script_complexlist'] = $cfg['path']['contenido_fullhtml'] . $cfg['path']['plugins'] . 'content_allocation/scripts/complexlist.js';
+$backendUrl = cRegistry::getBackendUrl();
+
+$cfg['pica']['style_complexlist'] = $backendUrl . $cfg['path']['plugins'] . 'content_allocation/style/complexlist.css';
+$cfg['pica']['script_complexlist'] = $backendUrl . $cfg['path']['plugins'] . 'content_allocation/scripts/complexlist.js';
 
 // administration > users > area translations
 global $lngAct, $_cecRegistry;

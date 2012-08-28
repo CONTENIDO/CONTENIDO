@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 $plugin_name = "linkchecker";
-$cfg['plugins']['linkchecker'] = $cfg['path']['contenido'] . "plugins/" . $plugin_name . "/";
+$cfg['plugins']['linkchecker'] = cRegistry::getBackendPath() . "plugins/" . $plugin_name . "/";
 $cfg['tab']['whitelist'] = $cfg['sql']['sqlprefix'] . '_pi_linkwhitelist';
 
 // Templates

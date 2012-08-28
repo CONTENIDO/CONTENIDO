@@ -42,8 +42,10 @@ if(!$perm->have_perm_area_action($plugin_name, $plugin_name)) {
     exit;
 }
 
+$backendUrl = cRegistry::getBackendUrl();
+
 // Template-definition
-$tpl->set('s', 'CONTENIDO_URL', $cfg['path']['contenido_fullhtml']);
+$tpl->set('s', 'CONTENIDO_URL', $backendUrl);
 $tpl->set('s', 'SID', $sess->id);
 
 /* Whitelist: Delete */
@@ -62,7 +64,7 @@ while ($db->next_record()) {
     $tpl2 = new cTemplate;
     $tpl2->reset();
 
-    $tpl2->set('s', 'CONTENIDO_URL', $cfg['path']['contenido_fullhtml']);
+    $tpl2->set('s', 'CONTENIDO_URL', $backendUrl);
     $tpl2->set('s', 'SID', $sess->id);
     $tpl2->set('s', 'URL', $db->f("url"));
     $tpl2->set('s', 'URL_ENCODE', base64_encode($db->f("url")));

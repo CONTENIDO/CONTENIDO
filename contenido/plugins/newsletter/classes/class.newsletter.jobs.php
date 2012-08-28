@@ -92,7 +92,7 @@ class NewsletterJobCollection extends ItemCollection
             $oItem->set("subject", $oNewsletter->get("subject"));
 
             // Precompile messages
-            $sPath = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?changelang=".$lang."&idcatart=".$iIDCatArt."&";
+            $sPath = cRegistry::getFrontendUrl() . "front_content.php?changelang=".$lang."&idcatart=".$iIDCatArt."&";
 
             $sMessageText = $oNewsletter->get("message");
 

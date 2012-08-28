@@ -317,6 +317,6 @@ if ($action == 'index') {
 ##### Output
 
 $oMrController->render(
-    $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'mod_rewrite/templates/content.html'
+   cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'mod_rewrite/templates/content.html'
 );
 

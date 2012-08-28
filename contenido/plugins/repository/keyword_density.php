@@ -122,7 +122,7 @@ function keywordDensity ($headline, $text) {
     $text = preg_replace($patterns, $replaces, $text);
 
     #$path = cms_getUrlPath($idcat);
-    #$path = str_replace($cfgClient[$client]['path']['htmlpath'], '', $path);
+    #$path = str_replace(cRegistry::getFrontendUrl();, '', $path);
     #$path = substr($path, 0, strlen($path) - 1);
     #$path = str_replace('/', ' ', $path);
 

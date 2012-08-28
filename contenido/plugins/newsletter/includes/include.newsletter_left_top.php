@@ -985,7 +985,7 @@ $oTpl->set('s', 'ID_CRECIPIENTGROUP', $sContainerId);
 $oTpl->set('s', 'SESSID', $sess->id);
 
 $oTpl->generate(
-    $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.newsletter_left_top.html'
+   cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.newsletter_left_top.html'
 );
 
 ?>

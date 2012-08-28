@@ -33,6 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+$backendUrl = cRegistry::getBackendUrl();
 
 // Initialization
 $oPage = new cGuiPage("newsletter_job_details", "newsletter");
@@ -67,8 +68,8 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
             $oForm->add("", sprintf(i18n("Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)",'newsletter'),
                                     $iChunk, $iChunks, $oJob->get("rcpcount"), $oJob->get("sendcount")));
 
-            $oForm->setActionButton("cancel", $cfg['path']['contenido_fullhtml']."images/but_cancel.gif", i18n("Stop sending", 'newsletter'), "c");
-            $oForm->setActionButton("submit", $cfg['path']['contenido_fullhtml']."images/but_ok.gif", i18n("Send next chunk", 'newsletter'), "s", "news_job_run");
+            $oForm->setActionButton("cancel", $backendUrl . "images/but_cancel.gif", i18n("Stop sending", 'newsletter'), "c");
+            $oForm->setActionButton("submit", $backendUrl . "images/but_ok.gif", i18n("Send next chunk", 'newsletter'), "s", "news_job_run");
         } else {
             // Send automatically
             $oForm = new cGuiTableForm("properties");
@@ -80,7 +81,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
             $oPage->addScript("Refresh", '<meta http-equiv="refresh" content="'.$oJob->get("dispatch_delay").'; URL='.$sPathNext.'">');
             $oForm->unsetActionButton("submit");
-            $oForm->setActionButton("cancel", $cfg['path']['contenido_fullhtml']."images/but_cancel.gif", i18n("Stop sending", 'newsletter'), "c");
+            $oForm->setActionButton("cancel", $backendUrl . "images/but_cancel.gif", i18n("Stop sending", 'newsletter'), "c");
         }
     } else {
         // All newsletters should have been sent
@@ -371,7 +372,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oForm->add(i18n("Created", 'newsletter'), $oJob->get("created"));
 
     // Just remove the "save changes" message (as it is not possible to remove the image completely in ui_table_form)
-    $oForm->setActionButton("submit", $cfg['path']['contenido_fullhtml']."images/but_ok.gif", "", "s");
+    $oForm->setActionButton("submit", $backendUrl . "images/but_ok.gif", "", "s");
 
     $oPage->setContent($oForm->render(true));
 }

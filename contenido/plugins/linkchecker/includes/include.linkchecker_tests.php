@@ -163,12 +163,13 @@ function checkLinks() {
             $iAdmin = true;
         }
 
+        $frontendPath = cRegistry::getFrontendPath();
         for($i = 0; $i < count($aSearchIDInfosNonID); $i++) {
 
             if(url_is_uri($aSearchIDInfosNonID[$i]['url'])) {
-
-                if(substr($aSearchIDInfosNonID[$i]['url'], 0, strlen($aSearchIDInfosNonID[$i]['url'])) == $cfgClient[$client]['path']['htmlpath']) {
-                    $iPing = @cFileHandler::exists(str_replace($cfgClient[$client]['path']['htmlpath'], $cfgClient[$client]['path']['frontend'], $aSearchIDInfosNonID[$i]['url']));
+                $frontendURL = cRegistry::getFrontendUrl();
+                if(substr($aSearchIDInfosNonID[$i]['url'], 0, strlen($aSearchIDInfosNonID[$i]['url'])) == $frontendURL) {
+                    $iPing = @cFileHandler::exists(str_replace($frontendURL, $frontendPath, $aSearchIDInfosNonID[$i]['url']));
                 } else {
                     $iPing = @fopen($aSearchIDInfosNonID[$i]['url'], 'r');
                 }
@@ -185,7 +186,7 @@ function checkLinks() {
 
             } elseif(substr($aSearchIDInfosNonID[$i]['url'], strlen($aSearchIDInfosNonID[$i]['url'])-5, 5) == ".html") {
 
-                $iPing = @cFileHandler::exists($cfgClient[$client]['path']['htmlpath'] . $aSearchIDInfosNonID[$i]['url']);
+                $iPing = @cFileHandler::exists($frontendURL . $aSearchIDInfosNonID[$i]['url']);
 
                 if(!$iPing) {
                     $aErrors['art'][] = array_merge($aSearchIDInfosNonID[$i], array("error_type" => "unknown"));
@@ -209,7 +210,7 @@ function checkLinks() {
 
             } else {
 
-                if(!cFileHandler::exists($cfgClient[$client]['path']['frontend'] . $aSearchIDInfosNonID[$i]['url'])) {
+                if(!cFileHandler::exists($frontendPath . $aSearchIDInfosNonID[$i]['url'])) {
 
                     if(url_is_image($aSearchIDInfosNonID[$i]['url'])) {
                         $aErrors['docimages'][] = array_merge($aSearchIDInfosNonID[$i], array("error_type" => "unknown"));

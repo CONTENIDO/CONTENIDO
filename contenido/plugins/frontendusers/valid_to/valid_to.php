@@ -39,7 +39,7 @@ function frontendusers_valid_to_display ()
     $langscripts = '';
 
 
-    $path_to_calender_pic =  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif';
+    $path_to_calender_pic =  cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
 
     $template  = '%s';
 

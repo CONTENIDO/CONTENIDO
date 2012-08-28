@@ -400,7 +400,7 @@ function piworkflowCreateTasksFolder() {
 
     $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=con_workflow&frame=4"), 'right_top', $sess->url("main.php?area=con_workflow&frame=3"), 'Workflow / Todo');
 
-    $item["image"] = '<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . 'workflow/images/workflow_erstellen.gif">';
+    $item["image"] = '<img src="' . cRegistry::getBackendUrl() . $cfg["path"]["plugins"] . 'workflow/images/workflow_erstellen.gif">';
     $item["title"] = $mstr;
 
     return ($item);

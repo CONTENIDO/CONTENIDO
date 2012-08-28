@@ -29,7 +29,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Newsletter management class
  */
@@ -422,7 +421,8 @@ class Newsletter extends Item
      */
     public function getHTMLMessage()
     {
-        global $lang, $client, $cfgClient, $contenido;
+        global $lang, $client, $contenido;
+        $frontendURL = cRegistry::getFrontendUrl();
 
         if ($this->get("type") == "html" && $this->get("idart") > 0 && $this->htmlArticleExists()) {
 
@@ -460,7 +460,7 @@ class Newsletter extends Item
                 unset($oArticles);
 
                 $sFile = "front_content.php?client=$client&lang=$lang&idcat=$iIDCat&idart=$iIDArt&noex=1&send=1";
-                $aURL  = parse_url($cfgClient[$client]['path']['htmlpath']);
+                $aURL  = parse_url($frontendURL);
 
                 // TODO: Other schemes than http should be tested before use!
                 if ($aURL["scheme"] == "https") {
@@ -520,12 +520,12 @@ class Newsletter extends Item
 
                         // Fix source path
                         // TODO: Test any URL specification that may exist under the sun...
-                        $sHTML = preg_replace('/[sS[rR][cC][ ]*=[ ]*"([^h][^t][^t][^p][^:].*)"/', 'rc="'.$cfgClient[$client]['path']['htmlpath'].'$1"', $sHTML);
-                        $sHTML = preg_replace('/[hH][rR][eE][fF][ ]*=[ ]*"([^h][^t][^t][^p][^:][A-Za-z0-9#\.?\-=_&]*)"/', 'href="'.$cfgClient[$client]['path']['htmlpath'].'$1"', $sHTML);
-                        $sHTML = preg_replace('/url\((.*)\)/', 'url('.$cfgClient[$client]['path']['htmlpath'].'$1)', $sHTML);
+                        $sHTML = preg_replace('/[sS[rR][cC][ ]*=[ ]*"([^h][^t][^t][^p][^:].*)"/', 'rc="'.$frontendURL.'$1"', $sHTML);
+                        $sHTML = preg_replace('/[hH][rR][eE][fF][ ]*=[ ]*"([^h][^t][^t][^p][^:][A-Za-z0-9#\.?\-=_&]*)"/', 'href="'.$frontendURL.'$1"', $sHTML);
+                        $sHTML = preg_replace('/url\((.*)\)/', 'url('. $frontendURL.'$1)', $sHTML);
 
                         // Now replace anchor tags to the newsletter article itself just by the anchor
-                        $sHTML = str_replace($cfgClient[$client]['path']['htmlpath']."front_content.php?idart=".$iIDArt."#", "#", $sHTML);
+                        $sHTML = str_replace($frontendURL . "front_content.php?idart=".$iIDArt."#", "#", $sHTML);
                     }
 
                     $sReturn = $sHTML;
@@ -656,7 +656,7 @@ class Newsletter extends Item
 
         // Simulate key, an alphanumeric string of 30 characters
         $sKey    = str_repeat("key", 10);
-        $sPath    = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?changelang=".$lang."&idcatart=".$iIDCatArt."&";
+        $sPath    = cRegistry::getFrontendUrl() . "front_content.php?changelang=".$lang."&idcatart=".$iIDCatArt."&";
 
         // Replace message tags (text message)
         $this->_replaceTag($sMessageText, false, "name", $sName);
@@ -775,7 +775,7 @@ class Newsletter extends Item
             $sFormatTime = "%H:%M";
         }
 
-        $sPath = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?changelang=".$lang."&idcatart=".$iIDCatArt."&";
+        $sPath = cRegistry::getFrontendUrl() . "front_content.php?changelang=".$lang."&idcatart=".$iIDCatArt."&";
 
         // Get newsletter data
         $sFrom     = $this->get("newsfrom");

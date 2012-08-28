@@ -11,7 +11,7 @@ $tpl = new cTemplate();
 $contenidoVars = array('cfg' => $cfg);
 $cronjobs = new Cronjobs($contenidoVars);
 
-//include($cfg['path']['contenido'].$cfg['path']['templates'].'template.left_top_blank.html');
+//include(cRegistry::getBackendPath() . $cfg['path']['templates'] . 'template.left_top_blank.html');
 foreach ($cronjobs->getAllCronjobs() as $row) {
     $tpl->set('d','FILE', $row);
     $file = urlencode($row);
