@@ -9,7 +9,7 @@
 * Author    :   $Author: timo.trautmann$
 * Modified  :   $Date: 2008/02/25 13:41:52 $
 *
-* © four for business AG, www.4fb.de
+* ï¿½ four for business AG, www.4fb.de
 ******************************************/
 
 /* general initilization */
@@ -87,6 +87,10 @@ img.spaced {
     border-style: solid;
     background-color: #E2E2E2;
     padding-left:5px;
+}
+
+#category_list tr.text_medium {
+    cursor: move;
 }
 
 /* Classes for category new layer*/
