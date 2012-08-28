@@ -29,8 +29,15 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+
 // CONTENIDO startup process
 include_once('./includes/startup.php');
+
+// $teststring = mi18n('My string : %s', 'some string');
+// echo $teststring;
+// exit;
+
+$backendPath = cRegistry::getBackendPath();
 
 $cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
 
@@ -45,7 +52,7 @@ cRegistry::bootstrap(array(
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
-require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php');
+require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
@@ -56,7 +63,7 @@ if ($cfg['use_pseudocron'] == true) {
 
         $oldpwd = getcwd();
 
-        chdir($cfg['path']['contenido'] . $cfg['path']['cronjobs']);
+        chdir($backendPath . $cfg['path']['cronjobs']);
         cInclude('includes', 'pseudo-cron.inc.php');
         chdir($oldpwd);
 
@@ -174,7 +181,7 @@ $cfg['debug']['backend_exectime']['start'] = getmicrotime();
 // one file is required.
 if (is_array($backend->getFile('inc'))) {
     foreach ($backend->getFile('inc') as $filename) {
-        include_once($cfg['path']['contenido'].$filename);
+        include_once($backendPath . $filename);
     }
 }
 
@@ -187,9 +194,8 @@ if (isset($action) && $action != '') {
     $backend->log($idcat, $idart, $client, $lang, $action);
 }
 
-
 if (isset($action)) {
-    $actionCodeFile = $cfg['path']['contenido'] . 'includes/type/action/include.' . $action . '.action.php';
+    $actionCodeFile = $backendPath . 'includes/type/action/include.' . $action . '.action.php';
     if (cFileHandler::exists($actionCodeFile)) {
         cDebug::out('Including action file for ' . $action);
         include_once $actionCodeFile;
@@ -203,13 +209,13 @@ $sFilename = "";
 if (is_array($backend->getFile('main'))) {
     foreach ($backend->getFile('main') as $id => $filename) {
         $sFilename = $filename;
-        include_once($cfg['path']['contenido'].$filename);
+        include_once($backendPath . $filename);
     }
 } elseif ($frame == 3) {
-    include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'include.default_subnav.php');
+    include_once($backendPath . $cfg['path']['includes'] . 'include.default_subnav.php');
     $sFilename = "include.default_subnav.php";
 } else {
-    include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'include.blank.php');
+    include_once($backendPath . $cfg['path']['includes'] . 'include.blank.php');
     $sFilename = "include.blank.php";
 }
 
