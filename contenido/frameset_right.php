@@ -65,7 +65,7 @@ if (isset($_GET['appendparameters'])) {
 }
 
 $tpl->set('s', 'VERSION', $cfg['version']);
-$tpl->set('s', 'CONTENIDOPATH', $cfg['path']['contenido_fullhtml'].'favicon.ico');
+$tpl->set('s', 'CONTENIDOPATH', cRegistry::getBackendUrl() . 'favicon.ico');
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset_right']);
 
