@@ -29,8 +29,12 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+
+
 // CONTENIDO startup process
 include_once('./includes/startup.php');
+
+$backendPath = cRegistry::getBackendPath();
 
 $cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
 
@@ -45,7 +49,7 @@ cRegistry::bootstrap(array(
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
-require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php');
+require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
@@ -148,7 +152,7 @@ if (isset($action) && $action != '') {
 
 
 if (isset($action)) {
-    $actionCodeFile = $cfg['path']['contenido'] . 'includes/type/action/include.' . $action . '.action.php';
+    $actionCodeFile = $backendPath . 'includes/type/action/include.' . $action . '.action.php';
     if (cFileHandler::exists($actionCodeFile)) {
         cDebug::out('Including action file for ' . $action);
         include_once $actionCodeFile;
@@ -162,7 +166,7 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
     $sReturn = $oAjax->handle($_REQUEST['ajax']);
     echo $sReturn;
 } else {
-    include_once($cfg['path']['contenido'].$cfg['path']['includes'] . 'ajax/include.ajax.' . $area . '.php');
+    include_once($backendPath . $cfg['path']['includes'] . 'ajax/include.ajax.' . $area . '.php');
 }
 
 $cfg['debug']['backend_exectime']['end'] = getmicrotime();
