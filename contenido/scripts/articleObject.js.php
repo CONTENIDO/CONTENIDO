@@ -39,7 +39,7 @@ cRegistry::bootstrap(array('sess' => 'cSession',
                 'perm' => 'cPermission'));
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
-require($cfg['path']['contenido'].'includes/functions.includePluginConf.php');
+require(cRegistry::getBackendPath() . 'includes/functions.includePluginConf.php');
 // do not call cRegistry::shutdown(); here because
 // it will print <script> tags which result in errors
 
@@ -487,7 +487,7 @@ articleObject.prototype.disable = function()
 
     if (this.vis == 1)
     {
-        for (i=1; i<oRef.length; i++)
+        for (i=1; i < oRef.length; i++)
         {
             links = oRef[i].getElementsByTagName("a");
             links[0].style.visibility = "hidden";
@@ -522,7 +522,7 @@ articleObject.prototype.enable = function()
 
     if ( this.vis == 0 )
     {
-        for (i=0; i<oRef.length; i++)
+        for (i=0; i < oRef.length; i++)
         {
             links = oRef[i].getElementsByTagName("a");
             links[0].style.visibility = "visible";
