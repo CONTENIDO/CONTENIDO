@@ -22,20 +22,22 @@ if (!defined('CON_FRAMEWORK')) {
 // CONTENIDO startup process
 include_once('../../includes/startup.php');
 
+$frontendPath = cRegistry::getFrontendPath();
+
 // Load base clients settings and change to current clients frontend directory
 rereadClients();
 // if directory does not exist, show error message
-if (!is_dir($cfgClient[$client]['path']['frontend'])) {
+if (!is_dir($frontendPath)) {
     $notification = new cGuiNotification();
-    $notification->displayMessageBox(cGuiNotification::LEVEL_ERROR, i18n('The given client\'s frontend directory (%s) is not a directory.', $cfgClient[$client]['path']['frontend']));
+    $notification->displayMessageBox(cGuiNotification::LEVEL_ERROR, i18n('The given client\'s frontend directory (%s) is not a directory.', $frontendPath));
     exit;
 }
-chdir($cfgClient[$client]['path']['frontend']);
+chdir($frontendPath);
 
 // Include the config file of the frontend to initialize client and language id
 include_once($cfgClient[$client]['config']['path'] . 'config.php');
 
 // Include article view handler
-include($cfg['path']['contenido'] . $cfg['path']['includes'] . '/frontend/include.front_content.php');
+include( cRegistry::getBackendPath() . $cfg['path']['includes'] . '/frontend/include.front_content.php');
 
 ?>

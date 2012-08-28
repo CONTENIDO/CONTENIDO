@@ -30,6 +30,6 @@ if (!defined('CON_FRAMEWORK')) {
 global $cfg;
 
 // Include clients login form handler
-include($cfg['path']['contenido'] . $cfg['path']['includes'] . '/frontend/include.front_crcloginform.inc.php');
+include(cRegistry::getBackendPath() . $cfg['path']['includes'] . '/frontend/include.front_crcloginform.inc.php');
 
 ?>

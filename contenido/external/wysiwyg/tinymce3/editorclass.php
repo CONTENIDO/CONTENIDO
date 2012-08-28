@@ -53,6 +53,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 cInclude("includes", "functions.lang.php");
 
+
+
 class cTinyMCEEditor extends cWYSIWYGEditor
 {
     /** Stores base url of page
@@ -82,8 +84,9 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
         // Default values
         $this->_setSetting("mode", "exact");
-        $aPathFragments = explode('/', $cfgClient[$client]["path"]["htmlpath"]);
-        $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css");
+
+        $aPathFragments = explode('/', cRegistry::getFrontendUrl());
+        $this->setSetting("content_css", cRegistry::getFrontendUrl() . "css/style_tiny.css");
 
         $this->_setSetting("theme", "advanced");
         $this->_setSetting("theme_advanced_toolbar_location", "top");
@@ -111,7 +114,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         unset($aLangs);
 
         // Set document base URL
-        //$this->setSetting("document_base_url", $cfgClient[$client]["path"]["htmlpath"], true);
+        //$this->setSetting("document_base_url", cRegistry::getFrontendUrl(), true);
 
         // The following "base URL" is the URL used to reference JS script files
         // - it is not the base href value
@@ -394,14 +397,15 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
                 $this->_setSetting("setupcontent_callback", "myCustomSetupContent", true);
 
-                $this->_unsetSetting("width");
-                $this->_unsetSetting("theme_advanced_toolbar_location");
-                $this->_setSetting("theme_advanced_toolbar_location", "external");
-                $this->_setSetting("height", "210px", true);
-                $this->_setSetting("plugins", "table,inlinepopups,fullscreen,-close", true);
-                $this->_setSetting("mode", "exact", true);
-                $this->_setSetting("elements", "*", true);
-                $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css", true);
+
+                $this->unsetSetting("width");
+                $this->unsetSetting("theme_advanced_toolbar_location");
+                $this->setSetting("theme_advanced_toolbar_location", "external");
+                $this->setSetting("height", "210px", true);
+                $this->setSetting("plugins", "table,inlinepopups,fullscreen,-close", true);
+                $this->setSetting("mode", "exact", true);
+                $this->setSetting("elements", "*", true);
+                $this->setSetting("content_css", cRegistry::getFrontendUrl() . "css/style_tiny.css", true);
 
                 if (!array_key_exists("auto_resize", $this->_aSettings)) {
                     $this->_setSetting("auto_resize", "false", true);
@@ -521,14 +525,16 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         $this->_setSetting("setupcontent_callback", 'myCustomSetupContent', true);
         $this->_setSetting("save_callback", 'cutFullpath', true);
 
+        $backendUrl = cRegistry::getBackendUrl();
+
         // Set browser windows
         // Difference between file and image browser is with (file) or without categories/articles (image)
         $oTemplate = new cTemplate;
-        $oTemplate->set('s', 'IMAGEBROWSER', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
-        $oTemplate->set('s', 'FILEBROWSER', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=filebrowser');
-        $oTemplate->set('s', 'FLASHBROWSER', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
-        $oTemplate->set('s', 'MEDIABROWSER', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
-        $oTemplate->set('s', 'FRONTEND_PATH', $cfgClient[$client]["path"]["htmlpath"]);
+        $oTemplate->set('s', 'IMAGEBROWSER', $backendUrl .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
+        $oTemplate->set('s', 'FILEBROWSER', $backendUrl .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=filebrowser');
+        $oTemplate->set('s', 'FLASHBROWSER', $backendUrl .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
+        $oTemplate->set('s', 'MEDIABROWSER', $backendUrl .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
+        $oTemplate->set('s', 'FRONTEND_PATH', cRegistry::getFrontendUrl());
 
         // GZIP support options
         if ($this->_bUseGZIP) {

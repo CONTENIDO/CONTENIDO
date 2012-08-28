@@ -28,6 +28,6 @@ include_once($frontend_path . 'data/config/config.php');
 include_once($contenido_path . 'includes/startup.php');
 
 // Include article view handler
-include($cfg['path']['contenido'] . $cfg['path']['includes'] . '/frontend/include.front_content.php');
+include(cRegistry::getBackendPath() . $cfg['path']['includes'] . '/frontend/include.front_content.php');
 
 ?>
