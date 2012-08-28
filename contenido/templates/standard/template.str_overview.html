@@ -11,17 +11,108 @@
     <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
     <link rel="stylesheet" type="text/css" href="styles/tipsy.css">
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
     <script type="text/javascript" src="scripts/jquery.tipsy.js"></script>
     <script type="text/javascript" src="scripts/registerTipsy.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/str_overview.css">
     <script type="text/javascript">
-        /* Session-ID */
-        var sid = "{SID}";
-        var area = "{AREA}";
-        var frame = "{FRAME}";
-
-        /* Create messageBox instance */
-        box = new messageBox("", "", "", 0, 0);
+	    /* Session-ID */
+	    var sid = "{SID}";
+	    var area = "{AREA}";
+	    var frame = "{FRAME}";
+	
+	    /* Create messageBox instance */
+	    box = new messageBox("", "", "", 0, 0);
+    
+        $(function() {
+        	// allow to drag and drop the table rows
+            $('#category_list tbody').sortable({
+            	// only allow to drag&drop rows that do not have the 'fixed' class
+            	items: '> tr:not(.fixed)',
+            	start: function(event, ui) {
+            		// save the old index of the dragged element
+            		$(this).data('oldIndex', ui.item.index());
+            	},
+            	stop: function(event, ui) {
+                    // get the old index of the dropped element
+                    var oldIndex = $(this).data('oldIndex');
+                    $(this).removeData('oldIndex');
+                    // do nothing if element has been dropped at the old position
+                    if (oldIndex == ui.item.index()) {
+                    	return;
+                    }
+                    // otherwise ask the user if he really wants to move the category
+                    if (window.confirm('{MOVE_CONFIRMATION}')) {
+                    	// user wants to move the category, so send the request
+                        var idcat = ui.item.data('idcat');
+                        var prevItem = ui.item.prev();
+                        var nextItem = ui.item.next();
+                        // compute newParentId, newPreId, newPostId depending on where the category has been dropped
+                        if ((typeof prevItem.data('idcat') == 'undefined' || prevItem.data('idcat') == '') && nextItem.data('idcat') != '') {
+                        	// case: category moved to top level after empty row or to the very top
+                        	var newParentId = 0;
+                        	if (typeof prevItem.prev().data('idcat') != 'undefined') {
+                        		// case: category moved to top level after empty row, so search for the next level-0 category
+                        		var tempPrevItem  = prevItem;
+                                while (tempPrevItem.data('level') != 0) {
+                                    tempPrevItem = tempPrevItem.prev();
+                                }
+                                var newPreId = tempPrevItem.data('idcat');
+                        	} else {
+                        		// case: category moved to the very top
+                        		var newPreId = 0;
+                        	}
+                        	var newPostId = nextItem.data('idcat');
+                        } else if (typeof prevItem.data('idcat') != 'undefined' && prevItem.data('idcat') != '' && (typeof nextItem.data('idcat') == 'undefined' || nextItem.data('idcat') == '')) {
+                        	// case: category moved to bottom of a top level category
+                        	var tempPrevItem  = prevItem;
+                        	while (tempPrevItem.data('level') != 0) {
+                        		tempPrevItem = tempPrevItem.prev();
+                        	}
+                        	var newParentId = tempPrevItem.data('idcat');
+                        	if ($('#category_list tbody tr[data-parentid=' + newParentId + ']').size() > 0) {
+                        	    // case: there already are child categories with this parentid
+                        		var newPreId = prevItem.data('idcat');
+                        	} else {
+                                // case: there is no child category yet
+                        		var newPreId = 0;
+                        	}
+                        	var newPostId = 0;
+                        } else {
+                        	// there is a prev and a post category
+                        	if (prevItem.data('level') >= nextItem.data('level')) {
+                        		var newParentId = prevItem.data('parentid');
+                        	} else if (prevItem.data('level') <= nextItem.data('level')) {
+                        		var newParentId = nextItem.data('parentid');
+                        	}
+                        	if (prevItem.data('level') >= nextItem.data('level')) {
+                        		var newPreId = prevItem.data('idcat');
+                        	} else {
+                        		var newPreId = 0;
+                        	}
+                        	if (prevItem.data('level') <= nextItem.data('level')) {
+                        		var newPostId = nextItem.data('idcat');
+                        	} else {
+                        		var newPostId = 0;
+                        	}
+                        }
+                        // construct the URL and point the browser to it
+                    	var url  = 'main.php?area=' + area;
+                        url += '&action=str_movesubtree';
+                        url += '&frame=' + frame;
+                        url += '&idcat=' + idcat;
+                        url += '&parentid_new=' + newParentId;
+                        url += '&preid_new=' + newPreId;
+                        url += '&postid_new=' + newPostId;
+                        url += '&contenido=' + sid;
+                    	window.location.href = url;
+                    } else {
+                    	// user does not want to move the category, so cancel
+                    	$(this).sortable('cancel');
+                    }
+            	}
+            });
+        });
 
         /* Function for setting Workflow */
         function setWorkflow(idcat, idSelect) {
@@ -205,7 +296,7 @@
 
 <!-- Begin listing of existing categories -->
 <table class="generic" cellspacing="0" id="category_list">
-     <tr>
+     <tr class="fixed">
         <th colspan="{SUM_COLUMNS}" id="cat_navbar">
             {NEWCAT}
             <span style="padding-left:15px;">&nbsp;</span>
@@ -217,10 +308,10 @@
             <span style="padding-left:5px;">&nbsp;</span>
         </th>
      </tr>
-     <tr>
+     <tr class="fixed">
         <td style="border-width: 0px;" height="10" colspan="{SUM_COLUMNS}"></td>
      </tr>
-     <tr>
+     <tr class="fixed">
         <th colspan="2" style="border-left: 1px solid #B3B3B3">
                     <span class="overview_dist_left">i18n("Category")</span>
         </th>
@@ -236,7 +327,7 @@
         {ADDITIONALHEADERS}
     </tr>
     <!-- layer for inline editing of existing categories -->
-    <tr id="cat_inline_layer">
+    <tr id="cat_inline_layer" class="fixed">
         <form name="renamecategory" method="post" action="{ACTION_EDIT_URL}">
             {INPUT_ACTION_EDIT}
             {INPUT_IDCAT}
@@ -260,7 +351,7 @@
         </form>
     </tr>
     <!-- BEGIN:BLOCK -->
-    <tr id="cat_{CATID}_row" class="text_medium" style="background-color: {BGCOLOR};{HEIGTH}" {MOUSEOVER}>
+    <tr id="cat_{CATID}_row" class="text_medium draggable" style="background-color: {BGCOLOR};{HEIGHT}" data-idcat="{CATID}" data-parentid="{PARENTID}" data-level="{LEVEL}" {MOUSEOVER}>
          <td width="3" class="str-style-a" valign="middle">&nbsp;</td>
         <td {DIRECTION} class="{BORDER_CLASS}" style="padding-left:{INDENT};" valign="middle" {SHOW_MOUSEOVER_CATEGORY}>{COLLAPSE_CATEGORY_NAME}</td>
         <td class="{BORDER_CLASS}" valign="middle" {SHOW_MOUSEOVER_ALIAS}>{ALIAS}</td>

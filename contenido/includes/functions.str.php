@@ -779,79 +779,77 @@ function strMoveDownCategory($idcat) {
  * Moves a subtree to another destination.
  *
  * @param   int  $idcat  Id of category
- * @param   int  $parentId  Id of destination parent category
+ * @param   int  $newParentId  Id of destination parent category
+ * @param   int  $newPreId  Id of new previous category
+ * @param   int  $newPostId  Id of new post category
  * @return  void
  */
-function strMoveSubtree($idcat, $parentId) {
+function strMoveSubtree($idcat, $newParentId, $newPreId = null, $newPostId = null) {
     global $movesubtreeidcat;
 
-    // Flag to rebuild the category table
+    // flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
 
     $remakeCatTable = true;
     $remakeStrTable = true;
 
-    $idcat = (int) $idcat;
-    $newParentId = (int) $parentId;
+    // check the post ID parameter
+    if (is_null($newPostId)) {
+        $newPostId = 0;
+    }
 
-    // Check if new parent id is 0 and the unescaped value is not null
-    if ($newParentId == 0 && !is_null($parentId)) {
+    // check if new parent id is -1 and the unescaped value is not null
+    if ($newParentId == -1 && !is_null($newParentId)) {
         $movesubtreeidcat = 0;
-    } elseif ($newParentId != 0) {
-        $oCat = new cApiCategory((int) $idcat);
-        $preid = $oCat->get('preid');
-        $postid = $oCat->get('postid');
+    } elseif ($newParentId >= 0) {
+        // move the category with the ID idcat to the category newParentId
+        $category = new cApiCategory($idcat);
+        $oldPreId = $category->get('preid');
+        $oldPostId = $category->get('postid');
 
-        // Update predecessor (pre)
-        if ($preid != 0) {
-            $oPreCat = new cApiCategory($preid);
-            $oPreCat->set('postid', $postid);
-            $oPreCat->store();
+        // update old predecessor (pre) category
+        if ($oldPreId != 0) {
+            $oldPreCategory = new cApiCategory($oldPreId);
+            $oldPreCategory->set('postid', $oldPostId);
+            $oldPreCategory->store();
         }
 
-        // Update follower (post)
-        if ($postid != 0) {
-            $oPostCat = new cApiCategory($postid);
-            $oPostCat->set('preid', $preid);
-            $oPostCat->store();
+        // update old follower (post) category
+        if ($oldPostId != 0) {
+            $oldPostCategory = new cApiCategory($oldPostId);
+            $oldPostCategory->set('preid', $oldPreId);
+            $oldPostCategory->store();
         }
 
-        // Find new pre
-        $oCatColl = new cApiCategoryCollection();
-        $oCatColl->select("parentid = " . $newParentId . " AND postid = 0");
-        if ($oNewPreCat = $oCatColl->next()) {
-            $newPreId = $oNewPreCat->get('idcat');
-            $newPrePreId = $oNewPreCat->get('preid');
-            if ($newPreId != $idcat) {
-                // Update new pre, set post
-                $oPreCat = new cApiCategory($newPreId);
-                if ($oPreCat->isLoaded()) {
-                    $oPreCat->set('postid', $idcat);
-                    $oPreCat->store();
-                }
-            } else {
-                $oPreCat = new cApiCategory($newPrePreId);
-                if ($oPreCat->isLoaded()) {
-                    // Update new pre, set post
-                    $newPreId = $oPreCat->get('idcat');
-                    $oPreCat2 = new cApiCategory($newPreId);
-                    if ($oPreCat2->isLoaded()) {
-                        $oPreCat2->set('postid', $idcat);
-                        $oPreCat2->store();
-                    }
-                } else {
-                    $newPreId = 0;
-                }
-            }
+        // update new predecessor (pre) category
+        if (is_null($newPreId)) {
+            // if no new pre ID has been given, use the last category in the given parent category
+            $categoryCollection = new cApiCategoryCollection();
+            $categoryCollection->select("parentid = " . $newParentId . " AND postid = 0");
+            $newPreCategory = $categoryCollection->next();
+        } else {
+            $newPreCategory = new cApiCategory($newPreId);
+        }
+        if ($newPreCategory) {
+            $newPreCategory->set('postid', $idcat);
+            $newPreCategory->store();
+            $newPreId = $newPreCategory->get('idcat');
         } else {
             $newPreId = 0;
         }
 
+        // update new follower (post) category
+        if ($newPostId != 0) {
+            $newPostCategory = new cApiCategory($newPostId);
+            $newPostCategory->set('preid', $idcat);
+            $newPostCategory->store();
+        }
+
         // Update current category
-        $oCat->set('parentid', $newParentId);
-        $oCat->set('preid', $newPreId);
-        $oCat->set('postid', 0);
-        $oCat->store();
+        $category->set('parentid', $newParentId);
+        $category->set('preid', $newPreId);
+        $category->set('postid', $newPostId);
+        $category->store();
 
         $movesubtreeidcat = 0;
     } else {

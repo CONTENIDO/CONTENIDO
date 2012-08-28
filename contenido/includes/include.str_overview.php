@@ -465,6 +465,7 @@ $tpl->set('s', 'TEMPLATE_URL', $sess->url("main.php?area=str_tplcfg&frame=$frame
 $message = addslashes(i18n("Do you really want to duplicate the following category:<br><br><b>%s</b><br><br>Notice: The duplicate process can take up to several minutes, depending on how many subitems and articles you've got."));
 $tpl->set('s', 'DUPLICATE_MESSAGE', $message);
 $tpl->set('s', 'DELETE_MESSAGE', i18n("Do you really want to delete the following category:<br><br><b>%s</b>"));
+$tpl->set('s', 'MOVE_CONFIRMATION', i18n('Do you really want to move the category?'));
 
 $bAreaAddNewCategory = false;
 
@@ -563,7 +564,7 @@ foreach ($objects as $key => $value) {
             $tpl->set('d', 'DIRECTION', '');
             $tpl->set('d', 'SRC_OK', '');
             $tpl->set('d', 'VALUE_ALIAS_NAME', '');
-            $tpl->set('d', 'HEIGTH', 'height:5px;');
+            $tpl->set('d', 'HEIGHT', 'height:5px;');
             $tpl->set('d', 'BORDER_CLASS', 'str-style-b');
 
             $additionalColumns = array();
@@ -577,7 +578,7 @@ foreach ($objects as $key => $value) {
 
         $tpl->set('d', 'BGCOLOR', $bgcolor);
         $tpl->set('d', 'BGCOLOR_EDIT', '#F1F1F1');
-        $tpl->set('d', 'HEIGTH', 'height:25px');
+        $tpl->set('d', 'HEIGHT', 'height:25px');
         $tpl->set('d', 'BORDER_CLASS', 'str-style-c tooltip');
 
         $tpl->set('d', 'INDENT', ($value->custom['level'] * 16) . "px");
@@ -659,6 +660,8 @@ foreach ($objects as $key => $value) {
 
         $tpl->set('d', 'RENAMEBUTTON', "<a class=\"action\" href=\"javascript:handleInlineEdit(" . $value->id . ");\"><img src=\"" . $cfg["path"]["images"] . "but_todo.gif\" id=\"cat_" . $value->id . "_image\" alt=\"" . i18n("Edit category") . "\" title=\"" . i18n("Edit category") . "\"></a>");
         $tpl->set('d', 'CATID', $value->id);
+        $tpl->set('d', 'PARENTID', $value->custom['parentid']);
+        $tpl->set('d', 'LEVEL', $value->custom['level']);
 
         if (strlen($template) > 20) {
             $tpl->set('d', 'SHOW_MOUSEOVER', 'title="' . $descString . '"');
