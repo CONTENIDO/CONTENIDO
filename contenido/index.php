@@ -40,7 +40,7 @@ cRegistry::bootstrap(array(
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
-require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php');
+require_once(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 cInclude('includes', 'functions.forms.php');
@@ -115,13 +115,15 @@ if (isset($area)) {
     $area = (isset($sess_area)) ? $sess_area : 'login';
 }
 
+$backendUrl = cRegistry::getBackendUrl();
+
 $tpl->reset();
 
 $tpl->set('s', 'HEADER', str_replace('&', '&amp;', $sess->url('header.php?changelang='.$lang.'&changeclient='.$client)));
 $tpl->set('s', 'CONTENT', str_replace('&', '&amp;', $sess->url('frameset.php?area=mycontenido&frame=1&menuless=1&changelang='.$changelang.'&lang='.$lang.'&client='.$client)));
 $tpl->set('s', 'VERSION', $cfg['version']);
-$tpl->set('s', 'LOCATION', $cfg['path']['contenido_fullhtml']);
-$tpl->set('s', 'CONTENIDOPATH', $cfg['path']['contenido_fullhtml'] . 'favicon.ico');
+$tpl->set('s', 'LOCATION', $backendUrl);
+$tpl->set('s', 'CONTENIDOPATH', $backendUrl . 'favicon.ico');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset']);
 
 cRegistry::shutdown();
