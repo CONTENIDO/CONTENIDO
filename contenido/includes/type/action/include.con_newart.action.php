@@ -61,7 +61,7 @@ if ($db->f("idtplcfg") != 0) {
 <html>
     <head>
         <title>Error</title>
-        <link rel="stylesheet" type="text/css" href="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["styles"].'contenido.css"></link>
+        <link rel="stylesheet" type="text/css" href="'. cRegistry::getBackendUrl() .$cfg["path"]["styles"].'contenido.css"></link>
     </head>
     <body style="margin: 10px">'.$notification->returnNotification("error", $noti_html).'</body>
 </html>';

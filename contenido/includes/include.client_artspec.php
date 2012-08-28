@@ -62,6 +62,8 @@ $artspec = getArtspec();
 
 if (!empty($artspec)) {
 
+    $backendUrl = cRegistry::getBackendUrl();
+
     $list = new cGuiList();
 
     $list->setCell(1, 1, i18n("Article specification"));
@@ -71,11 +73,11 @@ if (!empty($artspec)) {
 
     $link = new cHTMLLink();
     $link->setCLink($area, $frame, "client_artspec_edit");
-    $link->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n('Edit') . '" title="' . i18n('Edit') . '">');
+    $link->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n('Edit') . '" title="' . i18n('Edit') . '">');
 
     $dlink = new cHTMLLink();
     $dlink->setCLink($area, $frame, "client_artspec_delete");
-    $dlink->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'delete.gif" alt="' . i18n('Delete') . '" title="' . i18n('Delete') . '">');
+    $dlink->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'delete.gif" alt="' . i18n('Delete') . '" title="' . i18n('Delete') . '">');
 
     $olink = new cHTMLLink();
     $olink->setCLink($area, $frame, "client_artspec_online");
@@ -116,7 +118,7 @@ if (!empty($artspec)) {
                 $form->setVar("online", $artspec[$id]['online']);
                 $inputbox = new cHTMLTextbox("artspectext", $artspec[$id]['artspec']);
                 $form->add($inputbox->render());
-                $form->add('<input type="image" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif" alt="' . i18n('Save') . '" title="' . i18n('Save') . '">');
+                $form->add('<input type="image" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif" alt="' . i18n('Save') . '" title="' . i18n('Save') . '">');
 
                 $list->setCell($count, 1, $form->render(true));
             } else {
@@ -125,18 +127,18 @@ if (!empty($artspec)) {
 
             if ($artspec[$id]['online'] == 0) {
                 // it is offline (std!)
-                $olink->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'offline.gif" alt="' . i18n('Make online') . '" title="' . i18n('Make online') . '">');
+                $olink->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'offline.gif" alt="' . i18n('Make online') . '" title="' . i18n('Make online') . '">');
                 $olink->setCustom("online", 1);
             } else {
-                $olink->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'online.gif" alt="' . i18n('Make offline') . '" title="' . i18n('Make offline') . '">');
+                $olink->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'online.gif" alt="' . i18n('Make offline') . '" title="' . i18n('Make offline') . '">');
                 $olink->setCustom("online", 0);
             }
 
             if ($artspec[$id]['default'] == 0) {
-                $defLink->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'artikel_spez_inakt.gif" title="' . i18n("Make this article specification default") . '">');
+                $defLink->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'artikel_spez_inakt.gif" title="' . i18n("Make this article specification default") . '">');
                 $list->setCell($count, 2, $link->render() . $dlink->render() . $olink->render() . $defLink->render());
             } else {
-                $defLinkText = '<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'artikel_spez_akt.gif" title="' . i18n("This article specification is default") . '" style="padding-left:3px;">';
+                $defLinkText = '<img src="' . $backendUrl . $cfg['path']['images'] . 'artikel_spez_akt.gif" title="' . i18n("This article specification is default") . '" style="padding-left:3px;">';
                 $list->setCell($count, 2, $link->render() . $dlink->render() . $olink->render() . $defLinkText);
             }
 

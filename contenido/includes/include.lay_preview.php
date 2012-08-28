@@ -40,7 +40,7 @@ if (($code = $layoutInFile->getLayoutCode()) == false) {
 }
 
 // Insert base href
-$base = '<base href="' . $cfgClient[$client]["path"]["htmlpath"] . '">';
+$base = '<base href="' . cRegistry::getFrontendUrl() . '">';
 $tags = $base;
 
 $code = str_replace("<head>", "<head>\n".$tags, $code);

@@ -29,6 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+
 cInclude("includes", "functions.database.php");
 
 /**
@@ -163,9 +164,9 @@ function statsOverviewAll($yearmonth) {
 
     $aRowname = array();
     $iLevel = 0;
-
-    $tpl->set('s', 'IMG_EXPAND', $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'open_all.gif');
-    $tpl->set('s', 'IMG_COLLAPSE', $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'close_all.gif');
+    $backendUrl = cRegistry::getBackendUrl();
+    $tpl->set('s', 'IMG_EXPAND', $backendUrl . $cfg['path']['images'] . 'open_all.gif');
+    $tpl->set('s', 'IMG_COLLAPSE', $backendUrl . $cfg['path']['images'] . 'close_all.gif');
 
     while ($db->next_record()) {
         if ($db->f("level") == 0 && $db->f("preid") != 0) {
@@ -306,10 +307,11 @@ function statsOverviewAll($yearmonth) {
         } else {
             $tpl->set('d', 'DISPLAY_ROW', $sDisplay);
         }
+        $frontendURL = cRegistry::getFrontendUrl();
         $cat_name = "";
         statCreateLocationString($db->f('idcat'), "&nbsp;/&nbsp;", $cat_name);
         $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
-        $tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'] . 'front_content.php?idcat=' . $db->f('idcat'));
+        $tpl->set('d', 'ULR_TO_PAGE', $frontendURL . 'front_content.php?idcat=' . $db->f('idcat'));
 
         $tpl->next();
         $currentRow++;
@@ -399,7 +401,7 @@ function statsOverviewAll($yearmonth) {
             $cat_name = "";
             statCreateLocationString($db3->f('idart'), "&nbsp;/&nbsp;", $cat_name);
             $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
-            $tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'] . 'front_content.php?idart=' . $db3->f('idart'));
+            $tpl->set('d', 'ULR_TO_PAGE', $frontendURL . 'front_content.php?idart=' . $db3->f('idart'));
             $tpl->next();
             $currentRow++;
 
@@ -497,9 +499,9 @@ function statsOverviewYear($year) {
 
     $aRowname = array();
     $iLevel = 0;
-
-    $tpl->set('s', 'IMG_EXPAND', $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'open_all.gif');
-    $tpl->set('s', 'IMG_COLLAPSE', $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'close_all.gif');
+    $backendUrl = cRegistry::getBackendUrl();
+    $tpl->set('s', 'IMG_EXPAND', $backendUrl . $cfg['path']['images'] . 'open_all.gif');
+    $tpl->set('s', 'IMG_COLLAPSE', $backendUrl . $cfg['path']['images'] . 'close_all.gif');
 
     while ($db->next_record()) {
         if ($db->f("level") == 0 && $db->f("preid") != 0) {
@@ -618,10 +620,11 @@ function statsOverviewYear($year) {
         } else {
             $tpl->set('d', 'DISPLAY_ROW', $sDisplay);
         }
+        $frontendURL = cRegistry::getFrontendUrl();
         $cat_name = "";
         statCreateLocationString($db->f('idcat'), "&nbsp;/&nbsp;", $cat_name);
         $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
-        $tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'] . 'front_content.php?idcat=' . $db->f('idcat'));
+        $tpl->set('d', 'ULR_TO_PAGE', $frontendURL . 'front_content.php?idcat=' . $db->f('idcat'));
 
         $tpl->next();
         $currentRow++;
@@ -690,7 +693,7 @@ function statsOverviewYear($year) {
             $cat_name = "";
             statCreateLocationString($idart, "&nbsp;/&nbsp;", $cat_name);
         	$tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
-        	$tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'] . 'front_content.php?idart=' . $idart);
+        	$tpl->set('d', 'ULR_TO_PAGE', $frontendURL . 'front_content.php?idart=' . $idart);
 
             $tpl->next();
             $currentRow++;
@@ -780,6 +783,7 @@ function statsOverviewTop($yearmonth, $top) {
 
     $db->query($sql);
 
+    $frontendURL = cRegistry::getFrontendUrl();
     while ($db->next_record()) {
         $cat_name = "";
         statCreateLocationString($db->f(2), "&nbsp;/&nbsp;", $cat_name);
@@ -787,7 +791,7 @@ function statsOverviewTop($yearmonth, $top) {
         $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
         $tpl->set('d', 'TEXT', $db->f(0).' (idart: '.cSecurity::toInteger($db->f('idart')).')');
         $tpl->set('d', 'TOTAL', $db->f(1));
-        $tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'] . 'front_content.php?idart=' . $db->f('idart'));
+        $tpl->set('d', 'ULR_TO_PAGE', $frontendURL . 'front_content.php?idart=' . $db->f('idart'));
         $tpl->next();
     }
 }
@@ -867,6 +871,7 @@ function statsOverviewTopYear($year, $top) {
             LIMIT " . $db->escape($top);
 
     $db->query($sql);
+    $frontendURL = cRegistry::getFrontendUrl();
     while ($db->next_record()) {
         $cat_name = '';
         statCreateLocationString($db->f('idcat'), "&nbsp;/&nbsp;", $cat_name);
@@ -875,7 +880,7 @@ function statsOverviewTopYear($year, $top) {
         $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
         $tpl->set('d', 'TEXT', $db->f(0).' (idart: '.cSecurity::toInteger($db->f('idart')).')');
         $tpl->set('d', 'TOTAL', $db->f(1));
-        $tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'] . 'front_content.php?idart=' . $db->f('idart'));
+        $tpl->set('d', 'ULR_TO_PAGE', $frontendURL . 'front_content.php?idart=' . $db->f('idart'));
         $tpl->next();
     }
 }

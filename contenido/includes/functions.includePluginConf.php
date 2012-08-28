@@ -33,7 +33,7 @@ $pluginorder = getSystemProperty("system", "plugin-order");
 
 $plugins = explode(",", $pluginorder);
 
-$ipc_conpluginpath = $cfg["path"]["contenido"] . $cfg["path"]["plugins"];
+$ipc_conpluginpath = cRegistry::getBackendPath() . $cfg["path"]["plugins"];
 
 // Scan and save only by the BE
 if ($contenido) {

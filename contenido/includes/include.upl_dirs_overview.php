@@ -317,7 +317,7 @@ if ($appendparameters == "filebrowser")
     $tpl->set('s', 'APPENDPARAMETERS', 'url += \'&appendparameters='.$appendparameters.'\'');
 }
 
-chdir($cfg['path']['contenido']);
+chdir(cRegistry::getBackendPath());
 
 $tpl->set('s', 'SID', $sess->id);
 
@@ -554,7 +554,7 @@ if (is_array($objects))
 }
 
 $tpl->set('s', 'ID_PATH', $path);
-chdir($cfg["path"]["contenido"]);
+chdir(cRegistry::getBackendPath());
 $tpl->generate($cfg['path']['templates'].$cfg['templates']['upl_dirs_overview']);
 
 ?>

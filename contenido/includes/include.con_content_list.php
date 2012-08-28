@@ -30,6 +30,9 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+$backendPath = cRegistry::getBackendPath();
+$backendUrl = cRegistry::getBackendUrl();
+
 cInclude('includes', 'functions.str.php');
 cInclude('includes', 'functions.pathresolver.php');
 
@@ -109,7 +112,7 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
 $markSubItem = markSubMenuItem(5, true);
 
 //Include tiny class
-include($cfg['path']['contenido'] . 'external/wysiwyg/tinymce3/editorclass.php');
+include($backendPath . 'external/wysiwyg/tinymce3/editorclass.php');
 $oEditor = new cTinyMCEEditor('', '');
 $oEditor->setToolbar('inline_edit');
 
@@ -121,20 +124,20 @@ $sConfigFullscreen = $oEditor->getConfigFullscreen();
 //Replace vars in Script
 $oScriptTpl = new cTemplate();
 
-$oScriptTpl->set('s', 'CONTENIDO_FULLHTML', $cfg['path']['contenido_fullhtml']);
+$oScriptTpl->set('s', 'CONTENIDO_FULLHTML', $backendUrl);
 
 //Set urls to file browsers
-$oScriptTpl->set('s', 'IMAGE', $cfg['path']['contenido_fullhtml'] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
-$oScriptTpl->set('s', 'FILE', $cfg['path']['contenido_fullhtml'] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
-$oScriptTpl->set('s', 'FLASH', $cfg['path']['contenido_fullhtml'] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
-$oScriptTpl->set('s', 'MEDIA', $cfg['path']['contenido_fullhtml'] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
-$oScriptTpl->set('s', 'FRONTEND', $cfgClient[$client]['path']['htmlpath']);
+$oScriptTpl->set('s', 'IMAGE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
+$oScriptTpl->set('s', 'FILE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
+$oScriptTpl->set('s', 'FLASH', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
+$oScriptTpl->set('s', 'MEDIA', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
+$oScriptTpl->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 
 //Add tiny options and fill function leave_check()
 $oScriptTpl->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
 $oScriptTpl->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
 $oScriptTpl->set('s', 'IDARTLANG', $idartlang);
-$oScriptTpl->set('s', 'CON_PATH', $cfg['path']['contenido_fullhtml']);
+$oScriptTpl->set('s', 'CON_PATH', $backendUrl);
 $oScriptTpl->set('s', 'CLOSE', i18n('Close editor'));
 $oScriptTpl->set('s', 'SAVE', i18n('Close editor and save changes'));
 $oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
@@ -145,10 +148,10 @@ if (getEffectiveSetting('system', 'insight_editing_activated', 'true') == 'false
     $oScriptTpl->set('s', 'USE_TINY', 'swapTiny(this);');
 }
 
-$scripts = $oScriptTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['con_editcontent'], 1);
+$scripts = $oScriptTpl->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['con_editcontent'], 1);
 
 $contentform = '
-    <form name="editcontent" method="post" action="' . $sess->url($cfg['path']['contenido_fullhtml'] . "main.php?area=con_content_list&action=savecontype&idart=$idart&idcat=$idcat&lang=$lang&idartlang=$idartlang&frame=4&client=$client") . '">
+    <form name="editcontent" method="post" action="' . $sess->url($backendUrl . "main.php?area=con_content_list&action=savecontype&idart=$idart&idcat=$idcat&lang=$lang&idartlang=$idartlang&frame=4&client=$client") . '">
         <input type="hidden" name="changeview" value="edit">
         <input type="hidden" name="data" value="">
     </form>
@@ -236,12 +239,12 @@ $code = _processCmsTags($aList, $result, true, $layoutcode);
 
 if ($code == "0601") {
     markSubMenuItem("1");
-    $code = "<script type='text/javascript'>location.href = '" . $cfg['path']['contenido_fullhtml'] . "main.php?frame=4&area=con_content_list&action=con_content&idart=" . $idart . "&idcat=" . $idcat . "&contenido=" . $contenido . "'; console.log(location.href);</script>";
+    $code = "<script type='text/javascript'>location.href = '" . $backendUrl . "main.php?frame=4&area=con_content_list&action=con_content&idart=" . $idart . "&idcat=" . $idcat . "&contenido=" . $contenido . "'; console.log(location.href);</script>";
 } else {
     // inject some additional markup
     $code = cString::iReplaceOnce("</head>", "$markSubItem $scripts\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=$encoding[$lang]\"></head>", $code);
     $code = cString::iReplaceOnceReverse("</body>", "$contentform</body>", $code);
-    $code = cString::iReplaceOnce("<head>", "<head>\n" . '<base href="' . $cfgClient[$client]["path"]["htmlpath"] . '">', $code);
+    $code = cString::iReplaceOnce("<head>", "<head>\n" . '<base href="' . cRegistry::getFrontendUrl() . '">', $code);
 }
 
 if ($cfg["debug"]["codeoutput"]) {
@@ -249,7 +252,7 @@ if ($cfg["debug"]["codeoutput"]) {
 }
 
 //show ContentTypeList
-chdir($cfgClient[$client]["path"]["frontend"]);
+chdir(cRegistry::getFrontendPath());
 eval("?>\n" . $code . "\n<?php\n");
 //}
 
@@ -317,8 +320,10 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
             $search = array();
             $replacements = array();
 
-            $typeCodeFile = $cfg['path']['contenido'] . 'includes/type/code/include.' . $type . '.code.php';
-            $cTypeClassFile = $cfg['path']['contenido'] . 'classes/content_types/class.content.type.' . strtolower(str_replace('CMS_', '', $type)) . '.php';
+            $backendPath = cRegistry::getBackendPath();
+
+            $typeCodeFile = $backendPath . 'includes/type/code/include.' . $type . '.code.php';
+            $cTypeClassFile = $backendPath . 'classes/content_types/class.content.type.' . strtolower(str_replace('CMS_', '', $type)) . '.php';
             // classname format: CMS_HTMLHEAD -> cContentTypeHtmlhead
             $className = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
 
@@ -348,8 +353,10 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
                 while ($db->next_record()) {
                     $idcontent = $db->f("idcontent");
                 }
+                $backendUrl = cRegistry::getBackendUrl();
+
                 $search[$val] = sprintf('%s[%s]', $type, $val);
-                $path = $cfg['path']['contenido_fullhtml'] . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang .
+                $path = $backendUrl . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang .
                         '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=' . $idcontent;
                 if ($_typeItem->idtype == 20 || $_typeItem->idtype == 21) {
                     $tmp = str_replace('";?>', '', $tmp);
@@ -358,11 +365,11 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
                 }
                 $replacements[$val] = $tmp .
                         '<a style="text-decoration:none;" href="javascript:setcontent(\'1\',\'' . $path . '\');">
-                <img border="0" src="' . $cfg['path']['contenido_fullhtml'] . 'images/delete.gif">
+                <img border="0" src="' . $backendUrl . 'images/delete.gif">
                 </a>';
                 $keycode[$type][$val] = $tmp .
                         '<a style="text-decoration:none;" href="javascript:setcontent(\'1\',\'' . $path . '\');">
-                <img border="0" src="' . $cfg['path']['contenido_fullhtml'] . 'images/delete.gif">
+                <img border="0" src="' . $backendUrl . 'images/delete.gif">
                 </a>';
             }
 

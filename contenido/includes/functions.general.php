@@ -936,7 +936,7 @@ function scanPlugins($entity) {
         }
     }
 
-    $basedir = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $entity . '/';
+    $basedir = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $entity . '/';
 
     // Don't scan all the time, but each 60 seconds
     if ($lastscantime + 60 < time()) {

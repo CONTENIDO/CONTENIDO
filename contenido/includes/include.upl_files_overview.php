@@ -31,6 +31,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+$backendPath = cRegistry::getBackendPath();
 
 cInclude('includes', 'api/functions.frontend.list.php');
 cInclude('includes', 'functions.file.php');
@@ -98,8 +99,8 @@ if ($action == "upl_modify_file") {
 
             if ($_cecIterator->count() > 0) {
                 // Copy file to a temporary location
-                move_uploaded_file($tmp_name, $cfg["path"]["contenido"] . $cfg["path"]["temp"] . $file);
-                $tmp_name = $cfg["path"]["contenido"] . $cfg["path"]["temp"] . $file;
+                move_uploaded_file($tmp_name, $backendPath . $cfg["path"]["temp"] . $file);
+                $tmp_name = $backendPath . $cfg["path"]["temp"] . $file;
 
                 while ($chainEntry = $_cecIterator->next()) {
                     if (cApiDbfs::isDbfs($path)) {
@@ -232,8 +233,8 @@ if ($action == "upl_upload" && $bDirectoryIsWritable == true) {
 
                 if ($_cecIterator->count() > 0) {
                     // Copy file to a temporary location
-                    move_uploaded_file($tmp_name, $cfg["path"]["contenido"] . $cfg["path"]["temp"] . $_FILES['file']['name'][$key]);
-                    $tmp_name = $cfg["path"]["contenido"] . $cfg["path"]["temp"] . $_FILES['file']['name'][$key];
+                    move_uploaded_file($tmp_name, $backendPath . $cfg["path"]["temp"] . $_FILES['file']['name'][$key]);
+                    $tmp_name = $backendPath . $cfg["path"]["temp"] . $_FILES['file']['name'][$key];
 
                     while ($chainEntry = $_cecIterator->next()) {
                         if (cApiDbfs::isDbfs($path)) {
@@ -286,6 +287,8 @@ class UploadList extends FrontendList {
     function convert($field, $data) {
         global $cfg, $path, $sess, $cfgClient, $client, $appendparameters;
 
+        $backendUrl = cRegistry::getBackendUrl();
+
         if ($field == 4) {
             return humanReadableSize($data);
         }
@@ -293,9 +296,9 @@ class UploadList extends FrontendList {
         if ($field == 3) {
             if ($appendparameters == "imagebrowser" || $appendparameters == "filebrowser") {
                 if (cApiDbfs::isDbfs($path . '/' . $data)) {
-                    $mstr = '<a href="javascript://" onclick="javascript:parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]['htmlpath']['frontend'] . 'dbfs.php?file=' . $path . '/' . $data . '\'; window.returnValue=\'' . $cfgClient[$client]['htmlpath']['frontend'] . 'dbfs.php?file=' . $path . '/' . $data . '\'; window.close();"><img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["images"] . 'but_ok.gif" title="' . i18n("Use file") . '">&nbsp;' . $data . '</a>';
+                    $mstr = '<a href="javascript://" onclick="javascript:parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]['htmlpath']['frontend'] . 'dbfs.php?file=' . $path . '/' . $data . '\'; window.returnValue=\'' . $cfgClient[$client]['htmlpath']['frontend'] . 'dbfs.php?file=' . $path . '/' . $data . '\'; window.close();"><img src="' .$backendUrl . $cfg["path"]["images"] . 'but_ok.gif" title="' . i18n("Use file") . '">&nbsp;' . $data . '</a>';
                 } else {
-                    $mstr = '<a href="javascript://" onclick="javascript:parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]['htmlpath']['frontend'] . $cfgClient[$client]["upl"]["frontendpath"] . $path . $data . '\'; window.returnValue=\'' . $cfgClient[$client]['htmlpath']['frontend'] . $cfgClient[$client]["upl"]["frontendpath"] . $path . $data . '\'; window.close();"><img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["images"] . 'but_ok.gif" title="' . i18n("Use file") . '">&nbsp;' . $data . '</a>';
+                    $mstr = '<a href="javascript://" onclick="javascript:parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]['htmlpath']['frontend'] . $cfgClient[$client]["upl"]["frontendpath"] . $path . $data . '\'; window.returnValue=\'' . $cfgClient[$client]['htmlpath']['frontend'] . $cfgClient[$client]["upl"]["frontendpath"] . $path . $data . '\'; window.close();"><img src="' . $backendUrl . $cfg["path"]["images"] . 'but_ok.gif" title="' . i18n("Use file") . '">&nbsp;' . $data . '</a>';
                 }
             } else {
                 $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
@@ -322,6 +325,8 @@ class UploadList extends FrontendList {
                 case "iff":
                 case "xbm":
                 case "wbmp":
+                    $frontendURL = cRegistry::getFrontendUrl();
+
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
                     $sCacheName = substr($sCacheThumbnail, strrpos($sCacheThumbnail, "/") + 1, strlen($sCacheThumbnail) - (strrchr($sCacheThumbnail, '/') + 1));
                     $sFullPath = $cfgClient[$client]['cache']['path'] . $sCacheName;
@@ -335,9 +340,9 @@ class UploadList extends FrontendList {
                     }
 
                     if (cApiDbfs::isDbfs($data)) {
-                        $href = $sess->url($cfgClient[$client]["path"]["htmlpath"] . "dbfs.php?file=" . $data);
+                        $href = $sess->url($frontendURL . "dbfs.php?file=" . $data);
                     } else {
-                        $href = $cfgClient[$client]["path"]["htmlpath"] . $cfgClient[$client]["upload"] . $data;
+                        $href = $frontendURL . $cfgClient[$client]["upload"] . $data;
                     }
                     $retValue =
                         '<a class="jsZoom" href="' . $href . '" style="display:inline-block;">
@@ -497,6 +502,8 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1, $thumbnailmode) {
     }
 
     switch ($thumbnailmode) {
+    	case 10: $numpics = 10;
+    	    break;
         case 25: $numpics = 25;
             break;
         case 50: $numpics = 50;
@@ -579,6 +586,9 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1, $thumbnailmode) {
     }
 
     if ($rownum == 0) {
+
+        header('Location: ' . cRegistry::getBackendUrl() . 'main.php?area=upl_upload&frame=4&path='.$path.'&contenido='.$contenido);
+
         $page->displayWarning(i18n("No files found"));
         $page->abortRendering();
         $page->render();
@@ -650,7 +660,7 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1, $thumbnailmode) {
 
     $select = new cHTMLSelectElement("thumbnailmode_input");
 
-    $values = array(25 => "25", 50 => "50", 100 => "100", 200 => "200");
+    $values = array(10 => "10",25 => "25", 50 => "50", 100 => "100", 200 => "200");
 
     $select->autoFill($values);
 

@@ -69,6 +69,7 @@ function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand) {
     return $sMD5;
 }
 
+
 /**
  * Scales (or crops) an image.
  * If scaling, the aspect ratio is maintained.
@@ -110,11 +111,12 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
         $quality = 75;
     }
 
+    $frontendURL = cRegistry::getFrontendUrl();
     $filetype  = substr($filename, strlen($filename) -4, 4);
     $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache']['path'] . $cfileName;
-    $webFile   = $cfgClient[$client]['path']['htmlpath'] . 'cache/' . $cfileName;
+    $webFile   = $frontendURL . 'cache/' . $cfileName;
 
     if (cApiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
         return $webFile;
@@ -216,11 +218,12 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
         $quality = 75;
     }
 
+    $frontendURL = cRegistry::getFrontendUrl();
     $filetype  = substr($filename, strlen($filename) -4, 4);
     $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache']['path'] . $cfileName;
-    $webFile   = $cfgClient[$client]['path']['htmlpath'] . 'cache/' . $cfileName;
+    $webFile   = $frontendURL . 'cache/' . $cfileName;
 
     if (cApiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
         return $webFile;
@@ -311,6 +314,8 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
  * @param   bool    $keepType   If true and a png file is source, output file is also png
  * @return  string  Url to the resulting image (http://...)
  */
+
+
 function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = false,
                                   $cacheTime = 10, $quality = 75, $keepType = false)
 {
@@ -330,11 +335,12 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
         $quality = 75;
     }
 
+    $frontendURL = cRegistry::getFrontendUrl();
     $filetype  = substr($filename, strlen($filename) -4, 4);
     $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache']['path'] . $cfileName;
-    $webFile   = $cfgClient[$client]['path']['htmlpath'] . 'cache/' . $cfileName;
+    $webFile   =$frontendURL . 'cache/' . $cfileName;
 
     if (cApiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
         return $webFile;
@@ -498,7 +504,8 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false,
             $return = cApiImgScaleImageMagick($img, $maxX, $maxY, $crop, $expand, $cacheTime, $quality, $keepType);
             break;
         case 'failure':
-            $return = str_replace($cfgClient[$client]['path']['frontend'], $cfgClient[$client]['path']['htmlpath'], $img);
+            $frontendURL = cRegistry::getFrontendUrl();
+            $return = str_replace(cRegistry::getFrontendPath(), $frontendURL, $img);
             break;
     }
 

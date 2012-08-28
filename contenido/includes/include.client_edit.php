@@ -29,7 +29,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 $properties = new cApiPropertyCollection();
 $oClient = new cApiClient();
 
@@ -79,9 +78,11 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
         $idclient = $oClient->get('idclient');
         $properties->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
 
+        $backendPath = cRegistry::getBackendPath();
+
         // Copy the client template to the real location
         $destPath = $frontendpath;
-        $sourcePath = $cfg['path']['contenido'] . $cfg['path']['frontendtemplate'];
+        $sourcePath = $backendPath . $cfg['path']['frontendtemplate'];
         $dataPath = 'data/config/';
 
         if ($copytemplate) {
@@ -89,7 +90,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
                 recursiveCopy($sourcePath, $destPath);
                 $buffer = cFileHandler::read($destPath . $dataPath . 'config.php');
                 $outbuf = str_replace('!CLIENT!', $idclient, $buffer);
-                $outbuf = str_replace('!PATH!', $cfg['path']['contenido'], $outbuf);
+                $outbuf = str_replace('!PATH!', $backendPath, $outbuf);
                 if (!cFileHandler::write($destPath . $dataPath . 'config.php.new', $outbuf)) {
                     $notification->displayNotification('error', i18n("Couldn't write the file config.php."));
                 }

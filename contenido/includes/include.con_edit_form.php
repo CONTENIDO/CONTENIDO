@@ -237,7 +237,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $select = new cHTMLSelectElement("directlink");
     $select->setEvent("change", "var sVal=this.form.directlink.options[this.form.directlink.options.selectedIndex].value; document.getElementById('linkhint').value = sVal; if(sVal)document.getElementById('linkhintA').style.display='inline-block'; else document.getElementById('linkhintA').style.display='none';");
 
-    $baselink = $cfgClient[$client]["path"]["htmlpath"] . "front_content.php?idart=$idart";
+    $baselink = cRegistry::getFrontendUrl() . "front_content.php?idart=$idart";
 
     $option[0] = new cHTMLOptionElement(i18n("Select an entry to display link"), '');
     $option[1] = new cHTMLOptionElement(i18n("Article only"), $baselink);
@@ -526,7 +526,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tpl->set('s', 'NOTIFICATION', '');
     }
 
-    $tpl->set('s', 'PATH_TO_CALENDER_PIC', $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'calendar.gif');
+    $tpl->set('s', 'PATH_TO_CALENDER_PIC', cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif');
 
     if (($perm->have_perm_area_action("con", "con_makeonline") ||
             $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) && $inUse == false) {

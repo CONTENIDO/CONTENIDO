@@ -38,6 +38,8 @@ if (!isset($sortmode)) {
     $sortby   = $currentuser->getUserProperty("system","tasks_sortby");
 }
 
+
+
 $dateformat = getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s");
 
 if (isset($_REQUEST["listsubmit"])) {
@@ -115,7 +117,10 @@ class TODOBackendList extends cGuiScrollList
             if (!array_key_exists($value, $this->statustypes)) {
                 return i18n("No status type set");
             }
-            $image = new cHTMLImage($cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."reminder/".$img);
+
+            $backendUrl = cRegistry::getBackendUrl();
+
+            $image = new cHTMLImage($backendUrl . $cfg["path"]["images"]."reminder/".$img);
             $image->setAlt($this->statustypes[$value]);
 
             //Do not display statuicon, only show statustext
@@ -136,7 +141,7 @@ class TODOBackendList extends cGuiScrollList
 
             $amount = round($amount);
 
-            $image = new cHTMLImage($cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."reminder/progress.gif");
+            $image = new cHTMLImage($backendUrl . $cfg["path"]["images"]."reminder/progress.gif");
             $image->setAlt(sprintf(i18n("%d %% complete"), $value));
             $ret = "";
 
@@ -169,7 +174,7 @@ class TODOBackendList extends cGuiScrollList
                     break;
             }
 
-            $image = new cHTMLImage($cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."reminder/".$img);
+            $image = new cHTMLImage($backendUrl . $cfg["path"]["images"]."reminder/".$img);
             $image->setAlt($this->prioritytypes[$p]);
             return $image->render();
         }

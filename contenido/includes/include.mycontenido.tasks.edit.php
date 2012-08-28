@@ -81,7 +81,7 @@ if ($remindertimestamp != 0) {
     $mydate = "";
 }
 
-$path_to_calender_pic =  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif';
+$path_to_calender_pic =   cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
 
 
 $reminderdate = new cHTMLTextbox("reminderdate", $mydate, '', '', "reminderdate");

@@ -65,19 +65,21 @@ if ($edit) {
     $div->updateAttributes(array('contentEditable' => 'true'));
     $div->appendStyleDefinition('direction', langGetTextDirection($lang));
 
+    $backendUrl = cRegistry::getBackendUrl();
+
     $editlink = new cHTMLLink();
     $editlink->setClass('CMS_HTMLTEXT_' . $val . '_EDIT CMS_LINK_EDIT');
-    $editlink->setLink($sess->url($cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?action=10&idcat=$idcat&idart=$idart&idartlang=$idartlang&type=CMS_HTMLTEXT&typenr=$val&lang=$lang"));
+    $editlink->setLink($sess->url($backendUrl . 'external/backendedit/' . "front_content.php?action=10&idcat=$idcat&idart=$idart&idartlang=$idartlang&type=CMS_HTMLTEXT&typenr=$val&lang=$lang"));
 
     $editimg = new cHTMLImage();
-    $editimg->setSrc($cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_edittext.gif');
+    $editimg->setSrc($backendUrl . $cfg['path']['images'] . 'but_edittext.gif');
 
     $savelink = new cHTMLLink();
     $savelink->setClass('CMS_HTMLTEXT_' . $val . '_SAVE  CMS_LINK_SAVE');
     $savelink->setLink("javascript:setcontent('$idartlang','0')");
 
     $saveimg = new cHTMLImage();
-    $saveimg->setSrc($cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_ok.gif');
+    $saveimg->setSrc($backendUrl . $cfg['path']['images'] . 'but_ok.gif');
 
     $savelink->setContent($saveimg);
 

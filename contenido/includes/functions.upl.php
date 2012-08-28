@@ -490,7 +490,7 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
  */
 function uplGetThumbnail($sFile, $iMaxSize)
 {
-    global $client, $cfgClient, $cfg;
+    global $client, $cfgClient;
 
     if ($iMaxSize == -1) {
         return uplGetFileIcon($sFile);
@@ -514,7 +514,7 @@ function uplGetThumbnail($sFile, $iMaxSize)
             if ($img !== false) {
                 return $img;
             }
-            $img = cApiImgScale($cfg['path']['contenido'] . 'images/unknown.jpg', $iMaxSize, $iMaxSize, false, false, 50);
+            $img = cApiImgScale(cRegistry::getBackendPath() . 'images/unknown.jpg', $iMaxSize, $iMaxSize, false, false, 50);
             if ($img !== false) {
                 return $img;
             } else {
@@ -538,7 +538,7 @@ function uplGetFileIcon($sFile)
 {
     global $cfg;
 
-    $sPathFiletypes = $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'filetypes/';
+    $sPathFiletypes = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'filetypes/';
     $sFileType = strtolower(getFileType($sFile));
 
     switch ($sFileType) {

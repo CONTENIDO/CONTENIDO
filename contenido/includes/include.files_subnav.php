@@ -33,7 +33,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 if (isset($_GET['file'])) {
 
     $area = $_GET['area'];
@@ -109,7 +108,7 @@ if (isset($_GET['file'])) {
     // Generate the third navigation layer
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['file_subnav']);
 } else {
-    include($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
+    include(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
 }
 
 ?>

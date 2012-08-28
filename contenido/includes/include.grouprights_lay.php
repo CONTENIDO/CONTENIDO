@@ -31,7 +31,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 // Notice $oTpl is filled and generated in file include.rights.php this file renders $oTpl to browser
-include_once($cfg['path']['contenido'] . 'includes/include.grouprights.php');
+include_once(cRegistry::getBackendPath() . 'includes/include.grouprights.php');
 
 // Set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("lay")]) . "'";

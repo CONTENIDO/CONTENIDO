@@ -35,6 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+
 $tmp = '';
 
 if ($edit) {
@@ -47,15 +48,17 @@ if ($edit) {
     $notification = str_replace('\$', '\\$', $notification);
     $tmp .= $notification;
 
+    $backendUrl = cRegistry::getBackendUrl();
+
     // Edit anchor and image
-    $editLink = $sess->url($cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?action=10&idcat=$idcat&idart=$idart&idartlang=$idartlang&type=CMS_EASYIMG&typenr=$val&lang=$lang");
+    $editLink = $sess->url($backendUrl . 'external/backendedit/' . "front_content.php?action=10&idcat=$idcat&idart=$idart&idartlang=$idartlang&type=CMS_EASYIMG&typenr=$val&lang=$lang");
     $editAnchor = new cHTMLLink();
     $editAnchor->setClass('CMS_EASYIMGEDIT_' . $val . '_EDIT CMS_LINK_EDIT');
     $editAnchor->setLink("javascript:setcontent('$idartlang','".$editLink."');");
 
     // Save all content
     $editButton = new cHTMLImage();
-    $editButton->setSrc($cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_editimage.gif');
+    $editButton->setSrc($backendUrl . $cfg['path']['images'] . 'but_editimage.gif');
     $editButton->setBorder(0);
 
     $editAnchor->setContent($editButton);

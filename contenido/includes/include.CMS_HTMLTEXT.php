@@ -29,15 +29,18 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+
+$backendUrl = cRegistry::getBackendUrl();
+
 if (isset($area) && $area == 'con_content_list') {
     $tmp_area = $area;
-    $path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
+    $path1 = $backendUrl . 'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
             '&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
     $path2 = $path1;
 } else {
     $tmp_area = "con_editcontent";
-    $path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&changeview=edit&client=$client";
-    $path2 = $cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&client=$client";
+    $path1 = $backendUrl . "external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&changeview=edit&client=$client";
+    $path2 = $backendUrl . 'external/backendedit/' . "front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&client=$client";
 }
 
 if ($doedit == "1") {
@@ -63,9 +66,9 @@ $cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie be
 ?>
 <table width="100%"  border=0 cellspacing="0" cellpadding="0" bgcolor="#ffffff">
   <tr>
-    <td width="10" rowspan="4"><img src="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
-    <td width="100%"><img src="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
-    <td width="10" rowspan="4"><img src="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
+    <td width="10" rowspan="4"><img src="<?php print $backendUrl . $cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
+    <td width="100%"><img src="<?php print $backendUrl . $cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
+    <td width="10" rowspan="4"><img src="<?php print $backendUrl . $cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
   </tr>
   <tr>
     <td>
@@ -73,7 +76,7 @@ $cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie be
 <?php
    getAvailableContentTypes($idartlang);
 
-    echo "  <form name=\"editcontent\" method=\"post\" action=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php\">";
+    echo "  <form name=\"editcontent\" method=\"post\" action=\"". $backendUrl .$cfg["path"]["includes"]."include.backendedit.php\">";
     $sess->hidden_session();
     echo "  <input type=hidden name=lang value=\"$lang\">";
 //        echo "  <input type=hidden name=submit value=\"editcontent\">";
@@ -91,8 +94,8 @@ $cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie be
     echo "  <textarea name=CMS_HTMLTEXT rows=15 cols=90>".strip_tags($a_content[$type][$typenr])."</textarea>";
     echo "  </td></tr>";
     echo "  <tr valign=top><td colspan=2><br>
-                  <a href=".$sess->url($path2)."><img src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_cancel.gif\" border=0></a>
-                  <input type=image name=submit value=editcontent src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_ok.gif\" border=0>
+                  <a href=".$sess->url($path2)."><img src=\"". $backendUrl .$cfg["path"]["images"]."but_cancel.gif\" border=0></a>
+                  <input type=image name=submit value=editcontent src=\"". $backendUrl .$cfg["path"]["images"]."but_ok.gif\" border=0>
                   </td></tr>";
 
     echo "  </table>

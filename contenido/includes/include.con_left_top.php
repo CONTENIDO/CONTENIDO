@@ -424,7 +424,7 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
     $sJsLink = 'conMultiLink(\'left_bottom\', \'' . $link . '\'+document.getElementsByName(\'syncoptions\')[0].value+\'&refresh_syncoptions=true\');';
     $tpl->set('s', 'UPDATE_SYNC_REFRESH_FRAMES', $sJsLink);
 
-    $form->add('<img style="vertical-align:middle; margin-left:5px;" onMouseover="this.style.cursor=\'pointer\'" onclick="updateCurLanguageSync();" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif">');
+    $form->add('<img style="vertical-align:middle; margin-left:5px;" onMouseover="this.style.cursor=\'pointer\'" onclick="updateCurLanguageSync();" src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'submit.gif">');
 
     $sSyncButton = '<div id="sync_cat_single" style="display:none;"><a href="javascript:generateSyncAction(0);"><img style="vertical-align: middle;" src="images/but_sync_cat.gif" vspace="2" hspace="2" border="0" title="' . i18n("Copy to current language") . '" alt="' . i18n("Copy to current language") . '"></a>';
     $sSyncButton .= '<a href="javascript:generateSyncAction(0);">' . i18n("Copy to current language") . '</a></div>';
@@ -455,7 +455,7 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
 // necessary for expanding/collapsing of navigation tree per javascript/AJAX (I. van Peeren)
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'SESSION', $contenido);
-$tpl->set('s', 'AJAXURL', $cfg['path']['contenido_fullhtml'] . 'ajaxmain.php');
+$tpl->set('s', 'AJAXURL', cRegistry::getBackendUrl() . 'ajaxmain.php');
 
 // LEGEND
 $legendlink = 'legend';

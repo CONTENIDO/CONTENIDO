@@ -23,7 +23,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$path = $cfg["path"]["contenido_fullhtml"] . "external/backendedit/";
+$path = cRegistry::getBackendUrl() . "external/backendedit/";
 
 if ($tmpchangelang != $lang) {
     $url = $sess->url("front_content.php?changeview=$changeview&client=$client&lang=$lang&action=$action&idartlang=$idartlang&idart=$idart&idcat=$idcat&tmpchangelang=$tmpchangelang");

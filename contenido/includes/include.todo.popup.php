@@ -29,7 +29,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 $cpage = new cGuiPage("todo.popup");
 
 if ($action == 'todo_save_item') {
@@ -79,7 +78,7 @@ if ($action == 'todo_save_item') {
         <script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
     }
 
-    $path_to_calender_pic =  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif';
+    $path_to_calender_pic =   cRegistry::getBackendUrl(). $cfg['path']['images'] . 'calendar.gif';
 
 
     $ui->add(i18n('Reminder options'), $notiemail->toHTML());

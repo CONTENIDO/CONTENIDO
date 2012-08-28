@@ -50,6 +50,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+
+
 // Clients local configuration
 if (file_exists($frontend_path . 'data/config/config.local.php')) {
     @include($frontend_path . 'data/config/config.local.php');
@@ -60,10 +62,13 @@ cInclude('includes', 'functions.con2.php');
 cInclude('includes', 'functions.api.php');
 cInclude('includes', 'functions.pathresolver.php');
 
+$backendPath = cRegistry::getBackendPath();
+$backendUrl = cRegistry::getBackendUrl();
+
 if ($cfg['use_pseudocron'] == true) {
     // Include cronjob-Emulator
     $oldpwd = getcwd();
-    chdir($cfg['path']['contenido'] . $cfg['path']['cronjobs']);
+    chdir($backendPath . $cfg['path']['cronjobs']);
     cInclude('includes', 'pseudo-cron.inc.php');
     chdir($oldpwd);
 }
@@ -89,7 +94,7 @@ if ($contenido) {
 }
 
 // Include plugins
-require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php');
+require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
 // Call hook after plugins are loaded
 cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
@@ -303,10 +308,10 @@ if ($idartlang === false) {
         //show only if $idart > 0
         if ($idart > 0) {
             $tpl = new cTemplate();
-            $tpl->set('s', 'CONTENIDO_PATH', $cfg['path']['contenido_fullhtml']);
+            $tpl->set('s', 'CONTENIDO_PATH', $backendUrl);
             $tpl->set('s', 'ERROR_TITLE', i18n('Error page'));
             $tpl->set('s', 'ERROR_TEXT', i18n('Error article/category not found!'));
-            $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . 'template.error_page.html');
+            $tpl->generate($backendPath . $cfg['path']['templates'] . 'template.error_page.html');
         }
         exit;
     } else {
@@ -353,14 +358,14 @@ if ($contenido) {
     $col->removeSessionMarks($sess->id);
     // If the override flag is set, override a specific cApiInUse
 
-    $inUseUrl = $cfg['path']['contenido_fullhtml'] . "external/backendedit/front_content.php?changeview=edit&action=con_editart&idartlang=$idartlang&type=$type&typenr=$typenr&idart=$idart&idcat=$idcat&idcatart=$idcatart&client=$client&lang=$lang";
+    $inUseUrl = $backendUrl . "external/backendedit/front_content.php?changeview=edit&action=con_editart&idartlang=$idartlang&type=$type&typenr=$typenr&idart=$idart&idcat=$idcat&idcatart=$idcatart&client=$client&lang=$lang";
     list($inUse, $message) = $col->checkAndMark('article', $idartlang, true, i18n('Article is in use by %s (%s)'), true, $inUseUrl);
 
     $sHtmlInUse = '';
     $sHtmlInUseMessage = '';
     if ($inUse == true) {
         $disabled = 'disabled="disabled"';
-        $sHtmlInUseCss = '<link rel="stylesheet" type="text/css" href="' . $cfg['path']['contenido_fullhtml'] . 'styles/inuse.css" />';
+        $sHtmlInUseCss = '<link rel="stylesheet" type="text/css" href="' . $backendUrl . 'styles/inuse.css" />';
         $sHtmlInUseMessage = $message;
     }
 
@@ -387,7 +392,7 @@ if ($contenido) {
         if ($view == 'edit') {
             $edit_preview = '<tr>
                                 <td width="18">
-                                    <a title="Preview" style="font-family:verdana;font-size:10px;color:#000;text-decoration:none" href="' . $sess->url("front_content.php?changeview=prev&idcat=$idcat&idart=$idart") . '"><img src="' . $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_preview.gif" alt="Preview" title="Preview" border="0"></a>
+                                    <a title="Preview" style="font-family:verdana;font-size:10px;color:#000;text-decoration:none" href="' . $sess->url("front_content.php?changeview=prev&idcat=$idcat&idart=$idart") . '"><img src="' . $backendUrl . $cfg['path']['images'] . 'but_preview.gif" alt="Preview" title="Preview" border="0"></a>
                                 </td>
                                 <td width="18">
                                     <a title="Preview" style="font-family:verdana;font-size:10px;color:#000;text-decoration:none" href="' . $sess->url("front_content.php?changeview=prev&idcat=$idcat&idart=$idart") . '">Preview</a>
@@ -396,7 +401,7 @@ if ($contenido) {
         } else {
             $edit_preview = '<tr>
                                 <td width="18">
-                                    <a title="Preview" style="font-family:verdana;font-size:10px;color:#000;text-decoration:none" href="' . $sess->url("front_content.php?changeview=edit&idcat=$idcat&idart=$idart") . '"><img src="' . $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_edit.gif" alt="Preview" title="Preview" border="0"></a>
+                                    <a title="Preview" style="font-family:verdana;font-size:10px;color:#000;text-decoration:none" href="' . $sess->url("front_content.php?changeview=edit&idcat=$idcat&idart=$idart") . '"><img src="' . $backendUrl . $cfg['path']['images'] . 'but_edit.gif" alt="Preview" title="Preview" border="0"></a>
                                 </td>
                                 <td width="18">
                                     <a title="Preview" style="font-family:verdana;font-size:10px;color:#000;text-decoration:none" href="' . $sess->url("front_content.php?changeview=edit&idcat=$idcat&idart=$idart") . '">Edit</a>
@@ -435,7 +440,7 @@ if ($contenido) {
 // If mode is 'edit' and user has permission to edit articles in the current category
 if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat))) {
     cInclude('includes', 'functions.tpl.php');
-    include($cfg['path']['contenido'] . $cfg['path']['includes'] . 'include.con_editcontent.php');
+    include($backendPath . $cfg['path']['includes'] . 'include.con_editcontent.php');
 } else {
 
     // Frontend view
@@ -571,7 +576,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Generate base url
     $insertBaseHref = getEffectiveSetting('generator', 'basehref', 'true');
     if ($insertBaseHref == 'true') {
-        $baseHref = $cfgClient[$client]['path']['htmlpath'];
+        $baseHref = cRegistry::getFrontendUrl();
 
         // CEC for base href generation
         $baseHref = cApiCecHook::executeAndReturn('Contenido.Frontend.BaseHrefGeneration', $baseHref);

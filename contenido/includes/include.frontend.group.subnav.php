@@ -68,7 +68,7 @@ if (isset($_GET['idfrontendgroup'])) {
     $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["subnav"]);
 
 } else {
-    include($cfg["path"]["contenido"].$cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
+    include(cRegistry::getBackendPath() . $cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
 }
 
 ?>

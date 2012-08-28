@@ -46,7 +46,7 @@ global $cfg;
  * NOTE: They will be overwritten below...
  */
 // Don't display errors
-@ini_set('display_errors', false);
+@ini_set('display_errors', true);
 
 // Log errors to a file
 @ini_set('log_errors', true);
@@ -78,6 +78,7 @@ if (!defined('CONTENIDO_ENVIRONMENT')) {
 $cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/config/' . CONTENIDO_ENVIRONMENT . '/';
 
 // Security check: Include security class and invoke basic request checks
+require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.registry.php');
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.security.php');
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.requestvalidator.php');
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.filehandler.php');
@@ -134,11 +135,13 @@ if (!empty($timezoneCfg) && ini_get('date.timezone') !== $timezoneCfg) {
     date_default_timezone_set('UTC');
 }
 
+$backendPath = cRegistry::getBackendPath();
+
 // Various base API functions
-require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'api/functions.api.general.php');
+require_once($backendPath . $cfg['path']['includes'] . 'api/functions.api.general.php');
 
 // Initialization of autoloader
-require_once($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');
+require_once($backendPath . $cfg['path']['classes'] . 'class.autoload.php');
 cAutoload::initialize($cfg);
 
 // Generate arrays for available login languages
@@ -169,4 +172,5 @@ DB_Contenido::setDefaultConfiguration($cfg['db']);
 
 // Initialize UrlBuilder, configuration is set in data/config/{environment}/config.misc.php
 Contenido_UrlBuilderConfig::setConfig($cfg['url_builder']);
+
 ?>

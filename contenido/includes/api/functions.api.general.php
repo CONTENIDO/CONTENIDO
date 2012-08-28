@@ -68,9 +68,13 @@ if (!defined('CON_FRAMEWORK')) {
  * @param   string  $bReturnPath  Flag to return the path instead of including the file
  * @return  void
  */
+
+
+
 function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = false)
 {
-   global $client, $cfg, $cfgClient, $cCurrentModule;
+    $backendPath = cRegistry::getBackendPath();
+    global $client, $cfg, $cfgClient, $cCurrentModule;
 
     // Sanity check for $sWhat
     $sWhat  = trim($sWhat);
@@ -83,7 +87,7 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
                $sInclude = $handler->getPhpPath() . $sWhat;
             break;
         case 'frontend':
-            $sInclude = $cfgClient[$client]['path']['frontend'] . $sWhat;
+            $sInclude = cRegistry::getFrontendPath() . $sWhat;
             break;
         case 'wysiwyg':
             $sInclude = $cfg['path']['wysiwyg'] . $sWhat;
@@ -100,7 +104,7 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
                 // The class file will be loaded automatically by the autoloader - get out here
                 return;
             }
-            $sInclude = $cfg['path']['contenido'] . $cfg['path'][$sWhere] . $sWhat;
+            $sInclude = $backendPath  . $cfg['path'][$sWhere] . $sWhat;
             break;
         case 'pear':
             $sInclude = $sWhat;
@@ -128,7 +132,7 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
             }
             break;
         default:
-            $sInclude = $cfg['path']['contenido'] . $cfg['path'][$sWhere] . $sWhat;
+            $sInclude = $backendPath  . $cfg['path'][$sWhere] . $sWhat;
             break;
     }
 
@@ -211,7 +215,7 @@ function plugin_include($sWhere, $sWhat)
 {
     global $cfg;
 
-    $sInclude = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $sWhere. '/' . $sWhat;
+    $sInclude = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $sWhere. '/' . $sWhat;
 
     include_once($sInclude);
 }

@@ -28,6 +28,8 @@ cInclude('includes', 'functions.con2.php');
  * @param mixed many
  * @return int Id of the new article
  */
+
+
 function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang,
                           $title, $summary, $artspec, $created, $lastmodified, $author,
                           $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable = 1,
@@ -309,7 +311,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
 
     $date = date('Y-m-d H:i:s');
     $author = $auth->auth['uname'];
-    $value = str_replace($cfgClient[$client]['path']['htmlpath'], '', $value);
+    $value = str_replace(cRegistry::getFrontendUrl(), '', $value);
     $value = stripslashes($value);
 
     $iterator = $_cecRegistry->getIterator('Contenido.Content.SaveContentEntry');

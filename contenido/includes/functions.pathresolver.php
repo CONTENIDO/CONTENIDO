@@ -325,7 +325,7 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
         //create link
 
         if ($makeLink == true) {
-            $linkUrl = $sess->url($cfg["path"]["contenido_fullhtml"] . "main.php?area=con&frame=4&idcat=$idcat&idtpl=$idtpl&syncoptions=$syncoptions&contenido=1");
+            $linkUrl = $sess->url(cRegistry::getBackendUrl() . "main.php?area=con&frame=4&idcat=$idcat&idtpl=$idtpl&syncoptions=$syncoptions&contenido=1");
             $name = '<a href="' . $linkUrl . '" class="' . $linkClass . '">' . $name . '</a>';
         }
 

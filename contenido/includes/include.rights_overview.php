@@ -224,7 +224,7 @@ $oTxtLand= new cHTMLTextbox('address_country', $oUser->getField('address_country
 $tpl->set('d', 'CATFIELD', $oTxtLand->render());
 $tpl->next();
 
-$tpl->set('s', 'PATH_TO_CALENDER_PIC',  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif');
+$tpl->set('s', 'PATH_TO_CALENDER_PIC',   cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif');
 
 
 if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {

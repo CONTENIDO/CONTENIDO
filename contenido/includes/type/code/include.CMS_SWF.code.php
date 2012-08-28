@@ -41,10 +41,11 @@ if ($tmp == '' || $tmp == '0') {
     if (is_numeric($tmp)) {
         $oUplItem = new cApiUpload((int) $tmp);
         if (false !== $oUplItem->get('dirname') && $oUplItem->get('filetype') == 'swf') {
+            $frontendURL = cRegistry::getFrontendUrl();
             if (cApiDbfs::isDbfs($oUplItem->get('dirname'))) {
-                $tmp_swf = $cfgClient[$client]['path']['htmlpath'] . 'dbfs.php?file=' . urlencode($oUplItem->get('dirname') . $oUplItem->get('filename'));
+                $tmp_swf = $frontendURL . 'dbfs.php?file=' . urlencode($oUplItem->get('dirname') . $oUplItem->get('filename'));
             } else {
-                $tmp_swf = $cfgClient[$client]['path']['htmlpath'] . $cfgClient[$client]['upload'] . $oUplItem->get('dirname') . $oUplItem->get('filename');
+                $tmp_swf = $frontendURL . $cfgClient[$client]['upload'] . $oUplItem->get('dirname') . $oUplItem->get('filename');
             }
 
             $aImgSize = @getimagesize($tmp_swf);
@@ -65,15 +66,18 @@ if ($tmp == '' || $tmp == '0') {
 }
 
 if ($edit) {
+
+    $backendUrl = cRegistry::getBackendUrl();
+
     // Edit anchor and image
-    $editLink = $sess->url($cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?action=10&idcat=$idcat&idart=$idart&idartlang=$idartlang&type=CMS_SWF&typenr=$val");
+    $editLink = $sess->url($backendUrl . 'external/backendedit/' . "front_content.php?action=10&idcat=$idcat&idart=$idart&idartlang=$idartlang&type=CMS_SWF&typenr=$val");
     $editAnchor = new cHTMLLink();
     $editAnchor->setClass('CMS_SWF_' . $val . '_EDIT CMS_LINK_EDIT');
     $editAnchor->setLink("javascript:setcontent('$idartlang','".$editLink."');");
 
     // Save all content
     $editButton = new cHTMLImage();
-    $editButton->setSrc($cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_editswf.gif');
+    $editButton->setSrc($backendUrl . $cfg['path']['images'] . 'but_editswf.gif');
     $editButton->setBorder(0);
 
     $editAnchor->setContent($editButton);

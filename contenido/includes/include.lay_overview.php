@@ -113,7 +113,7 @@ while ($layout = $oLayouts->next()) {
 //datas for show of used info per ajax
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'SESSION', $contenido);
-$tpl->set('s', 'AJAXURL', $cfg['path']['contenido_fullhtml'].'ajaxmain.php');
+$tpl->set('s', 'AJAXURL',  cRegistry::getBackendUrl() . 'ajaxmain.php');
 $tpl->set('s', 'BOX_TITLE', i18n("The layout '%s' is used for following templates") . ":");
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lay_overview']);

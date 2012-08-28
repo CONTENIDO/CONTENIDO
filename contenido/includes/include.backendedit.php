@@ -119,7 +119,7 @@ if ($cfgClient['set'] != 'set') {
 
 $start = getmicrotime();
 
-include($cfg['path']['contenido'].$cfg['path']['includes'] . 'include.' . $type . '.php');
+include(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'include.' . $type . '.php');
 
 $end = getmicrotime();
 

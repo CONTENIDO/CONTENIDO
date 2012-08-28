@@ -166,7 +166,7 @@ $oForm->setVar("frame", $frame);
 $oForm->setVar("action", 'edit_sysconf');
 
 if (strpos($auth->auth["perm"], "sysadmin") === false) {
-    $oForm->setActionButton("submit", $cfg['path']['contenido_fullhtml'] . "images/but_ok_off.gif", i18n("Save changes"), "s");
+    $oForm->setActionButton("submit",  cRegistry::getBackendUrl() . "images/but_ok_off.gif", i18n("Save changes"), "s");
 }
 
 $sCurGroup = '';

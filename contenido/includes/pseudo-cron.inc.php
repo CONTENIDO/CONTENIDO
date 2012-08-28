@@ -131,7 +131,7 @@ $PC_writeDir = $cfg['path']['contenido_cronlog'];
 
 // the directory where the script can store information on completed jobs and its log file
 // include trailing slash
-$PC_jobDir = $cfg["path"]["contenido"].$cfg['path']['cronjobs'];
+$PC_jobDir = cRegistry::getBackendPath() . $cfg['path']['cronjobs'];
 
 // store directory information
 $PC_reqDir = getcwd();

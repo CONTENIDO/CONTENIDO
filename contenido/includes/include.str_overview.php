@@ -29,6 +29,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+$backendUrl = cRegistry::getBackendUrl();
+
 strRemakeTreeTable();
 
 $tmp_area = 'str';
@@ -457,8 +459,8 @@ $sMouseover = 'onmouseover="str.over(this)" onmouseout="str.out(this)" onclick="
 //Fill inline edit table row
 $tpl->set('s', 'SUM_COLUMNS_EDIT', 14 + count($listColumns));
 $tpl->set('s', 'ACTION_EDIT_URL', $sess->url("main.php?frame=$frame"));
-$tpl->set('s', 'SRC_CANCEL', $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["images"] . 'but_cancel.gif');
-$tpl->set('s', 'SRC_OK', $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["images"] . 'but_ok.gif');
+$tpl->set('s', 'SRC_CANCEL', $backendUrl . $cfg["path"]["images"] . 'but_cancel.gif');
+$tpl->set('s', 'SRC_OK', $backendUrl . $cfg["path"]["images"] . 'but_ok.gif');
 $tpl->set('s', 'HREF_CANCEL', "javascript:handleInlineEdit(0)");
 $tpl->set('s', 'LABEL_ALIAS_NAME', i18n('Alias'));
 $tpl->set('s', 'TEMPLATE_URL', $sess->url("main.php?area=str_tplcfg&frame=$frame"));
@@ -818,7 +820,7 @@ $string = markSubMenuItem(0, true);
 $sImagepath = $cfg["path"]["images"];
 $tpl->set('s', 'SUM_COLUMNS', 14 + count($listColumns));
 $tpl->set('s', 'HREF_ACTION', $sess->url("main.php?frame=$frame"));
-$tpl->set('s', 'CON_IMAGES', $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["images"]);
+$tpl->set('s', 'CON_IMAGES', $backendUrl . $cfg["path"]["images"]);
 
 // Generate input fields for category new layer and category edit layer
 $oSession = new cHTMLHiddenField($sess->name, $sess->id);

@@ -29,6 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+
 cInclude('includes', 'functions.tpl.php');
 cInclude('includes', 'functions.str.php');
 cInclude('includes', 'functions.pathresolver.php');
@@ -123,7 +124,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
     } else {
         $elemperpage = $currentuser->getUserProperty("system", "elemperpage-idlang-$lang-idcat-$idcat");
         if (!is_numeric($elemperpage)) {
-            $elemperpage = 25;
+            $elemperpage = 10;
         }
     }
 
@@ -716,7 +717,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     $sBrowseLinks .= $i . "\n"; // I'm on the current page, no link
                 } else {
                     $tmp_alink = $sess->url("main.php?area=con&frame=$frame&idcat=$idcat&next=$iNext");
-                    $sBrowseLinks .= '<a href="' . $tmp_alink . '">' . $i . '</a>' . "\n";
+                   $sBrowseLinks .= '<a href="' . $tmp_alink . '">' . $i . '</a>' . "\n";
                 }
             }
             $tpl->set('s', 'NEXT', $next);
@@ -773,6 +774,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         // Elements per Page select
         $aElemPerPage = array(
             0 => i18n("All"),
+            10 => "10",
             25 => "25",
             50 => "50",
             75 => "75",

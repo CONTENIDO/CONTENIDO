@@ -32,22 +32,24 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+$backendUrl = cRegistry::getBackendUrl();
+
 if(isset($area) && $area == 'con_content_list'){
     $tmp_area = $area;
-    $path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
+    $path1 = $backendUrl.'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
             '&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
 } else {
     $tmp_area = "con_editcontent";
     if ($action == "cancel") {
-        $path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
+        $path1 = $backendUrl."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
     } else {
-        $path1 = $cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
+        $path1 = $backendUrl . 'external/backendedit/' . "front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
     }
 }
 
 if ($doedit == "1") {
     cInclude("includes","functions.upl.php");
-    $rootpath = $cfgClient[$client]["path"]["htmlpath"] . $cfgClient[$client]["upload"];
+    $rootpath = cRegistry::getFrontendUrl() . $cfgClient[$client]["upload"];
 
     if ($action == "cancel")
     {
@@ -89,7 +91,7 @@ if ($doedit == "1") {
 <html>
 <head>
 <title>CONTENIDO</title>
-<link rel="stylesheet" type="text/css" href="<?php print $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["styles"] ?>contenido.css">
+<link rel="stylesheet" type="text/css" href="<?php print $backendUrl . $cfg["path"]["styles"] ?>contenido.css">
 </HEAD>
 <script>
         function disp_preview() {
@@ -116,9 +118,9 @@ $cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie be
 ?>
 <table width="100%"  border=0 cellspacing="0" cellpadding="0" bgcolor="#ffffff">
   <tr>
-    <td width="10" rowspan="4"><img src="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
-    <td width="100%"><img src="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
-    <td width="10" rowspan="4"><img src="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
+    <td width="10" rowspan="4"><img src="<?php print $backendUrl . $cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
+    <td width="100%"><img src="<?php print $backendUrl . $cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
+    <td width="10" rowspan="4"><img src="<?php print $backendUrl . $cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
   </tr>
   <tr>
     <td>
@@ -148,7 +150,7 @@ $cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie be
 
 
     // COLLECT DATA
-    $form = new cGuiTableForm("editcontent", $cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php");
+    $form = new cGuiTableForm("editcontent", $backendUrl . $cfg["path"]["includes"]."include.backendedit.php");
     $form->setVar("lang",$lang);
     $form->setVar("typenr",$typenr);
     $form->setVar("idart",$idart);
@@ -172,8 +174,8 @@ $cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie be
 
     $form->unsetActionButton("submit");
 
-    $form->setActionButton("cancel", $cfg["path"]["contenido_fullhtml"]."images/but_cancel.gif", i18n("Discard changes"), "c", "cancel");
-    $form->setActionButton("submit", $cfg['path']['contenido_fullhtml']."images/but_ok.gif", i18n("Save changes"), "s");
+    $form->setActionButton("cancel", $backendUrl."images/but_cancel.gif", i18n("Discard changes"), "c", "cancel");
+    $form->setActionButton("submit", $backendUrl."images/but_ok.gif", i18n("Save changes"), "s");
     echo $form->render();
 ?>
 </td></tr></table>

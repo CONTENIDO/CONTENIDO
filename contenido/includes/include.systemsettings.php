@@ -73,6 +73,8 @@ $list->setCell(1, 2, i18n("Name"));
 $list->setCell(1, 3, i18n("Value"));
 $list->setCell(1, 4, "&nbsp;");
 
+$backendUrl = cRegistry::getBackendUrl();
+
 $count = 2;
 
 $oLinkEdit = new cHTMLLink();
@@ -80,11 +82,11 @@ $oLinkEdit->setCLink($area, $frame, "systemsettings_edit_item");
 $oLinkDelete = new cHTMLLink();
 $oLinkDelete->setCLink($area, $frame, "systemsettings_delete_item");
 if (strpos($auth->auth["perm"], "sysadmin") === false) {
-    $oLinkEdit->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'editieren_off.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
-    $oLinkDelete->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'delete_inact.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
+    $oLinkEdit->setContent('<img src="' .$backendUrl . $cfg['path']['images'] . 'editieren_off.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
+    $oLinkDelete->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'delete_inact.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
 } else {
-    $oLinkEdit->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
-    $oLinkDelete->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'delete.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
+    $oLinkEdit->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
+    $oLinkDelete->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'delete.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
 }
 
 $spacer = new cHTMLImage();
@@ -113,7 +115,7 @@ if (is_array($settings)) {
                 $oInputboxType->setWidth(10);
 
                 $hidden = '<input type="hidden" name="csidsystemprop" value="' . $value['idsystemprop'] . '">';
-                $sSubmit = '<input type="image" style="vertical-align:top;" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif">';
+                $sSubmit = '<input type="image" style="vertical-align:top;" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
 
                 $list->setCell($count, 1, $oInputboxType->render(true));
                 $list->setCell($count, 2, $oInputboxName->render(true));

@@ -86,7 +86,7 @@ while ($db->next_record()) {
     $is_XHTML = getEffectiveSetting('generator', 'xhtml', 'false');
     $sElemClosing = ($is_XHTML == 'true') ? ' /' : '';
 
-    $base = '<base href="' . $cfgClient[$client]['path']['htmlpath'] . '"' . $sElemClosing . '>';
+    $base = '<base href="' . cRegistry::getFrontendUrl() . '"' . $sElemClosing . '>';
     $tags = $base;
     $tags .= '
 <style type="text/css">
@@ -204,8 +204,10 @@ while ($db->next_record()) {
     $code = preg_replace("/<form(.*)>/i", '', $code);
     $code = preg_replace("/<\/form(.*)>/i", '', $code);
 
+    $backendUrl = cRegistry::getBackendUrl();
+
     $form = '
-    <form id="tpl_visedit" name="tpl_visedit" action="'.$cfg['path']['contenido_fullhtml'].'main.php">
+    <form id="tpl_visedit" name="tpl_visedit" action="'. $backendUrl .'main.php">
     <input type="hidden" name="' . $sess->name . '" value="' . $sess->id . '"' . $sElemClosing . '>
     <input type="hidden" name="idtpl" value="'.$idtpl.'"' . $sElemClosing . '>
     <input type="hidden" name="frame" value="'.$frame.'"' . $sElemClosing . '>
@@ -217,7 +219,7 @@ while ($db->next_record()) {
     <input type="hidden" name="action" value="tpl_visedit"' . $sElemClosing . '>';
     $form .= $sContainerInHead;
 
-    $sInput = '<input type="image" src="' . $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_ok.gif' . '"' . $sElemClosing . '>';
+    $sInput = '<input type="image" src="' . $backendUrl . $cfg['path']['images'] . 'but_ok.gif' . '"' . $sElemClosing . '>';
     $button = '<table border="0" width="100%"><tr><td align="right">' . $sInput . '</td></tr></table>';
     $code = preg_replace("/<body(.*)>/i", "<body\\1>" . $form . $button, $code);
     $code = preg_replace("/<\/body(.*)>/i", '</form></body>', $code);

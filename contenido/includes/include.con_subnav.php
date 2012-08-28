@@ -29,6 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+
 //Get sync options
 if (isset($syncoptions)) {
     $syncfrom = $syncoptions;
@@ -95,6 +96,7 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
 
     $db->query($sql);
     $num = 0;
+
     while ($db->next_record()) {
         if ($iArticleCount > 0 || ($iArticleCount <= 0 && $tpl->dyn_cnt == 0) ||
                 ($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $bNoArticle == 'true') ||
@@ -125,6 +127,8 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
 
         $tpl->next();
     }
+
+
     $tpl->set("s", "iID", 'c_' . $num);
 
     $tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
@@ -136,7 +140,7 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
     // Generate the third navigation layer
     $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["con_subnav"]);
 } else {
-    include($cfg["path"]["contenido"] . $cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
+    include(cRegistry::getBackendPath() . $cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
 }
 
 ?>

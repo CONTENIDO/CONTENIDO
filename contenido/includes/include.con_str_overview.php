@@ -661,7 +661,7 @@ $tpl->set('s', 'SESSION', $contenido);
 $tpl->set('s', 'DIRECTION', 'dir="' . langGetTextDirection($lang) . '"');
 $tpl->set('s', 'SYNCOPTIONS', $syncoptions);
 
-$tpl->set('s', 'AJAXURL', $cfg['path']['contenido_fullhtml'] . 'ajaxmain.php');
+$tpl->set('s', 'AJAXURL',  cRegistry::getBackendUrl() . 'ajaxmain.php');
 $tpl->set('s', 'WHOLELIST', implode(', ', $aWholelist));
 $tpl->set('s', 'EXPANDEDLIST', implode(', ', $conexpandedList));
 

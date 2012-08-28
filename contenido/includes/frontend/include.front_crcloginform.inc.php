@@ -38,7 +38,7 @@ $err_art    = trim(getEffectiveSetting('login_error_page', 'idart', ''));
 
 $oUrl = Contenido_Url::getInstance();
 
-$sClientHtmlPath = $cfgClient[$client]['path']['htmlpath'];
+$sClientHtmlPath = cRegistry::getFrontendUrl();
 
 $sUrl = $sClientHtmlPath . 'front_content.php';
 
@@ -92,7 +92,7 @@ $aUrl = $oUrl->parse($sFormAction);
 $sFormAction = $oUrl->build($aUrl['params']);
 
 // set login input image, use button as fallback
-if (cFileHandler::exists($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif')) {
+if (cFileHandler::exists(cRegistry::getFrontendPath() . 'images/but_ok.gif')) {
     $sLoginButton = '<input type="image" title="Login" alt="Login" src="' . $sClientHtmlPath . 'images/but_ok.gif">' . "\n";
 } else {
     $sLoginButton = '<input id="login_button" type="submit" title="Login" value="Login">' . "\n";

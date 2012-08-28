@@ -29,6 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+$backendUrl = cRegistry::getBackendUrl();
 
 $oPage = new cGuiPage("clientsettings");
 $oList = new cGuiScrollList;
@@ -98,13 +99,13 @@ $aItems = $oClient->getProperties();
 if ($aItems !== false) {
     $oLnkDelete = new cHTMLLink();
     $oLnkDelete->setCLink($area, $frame, "clientsettings_delete_item");
-    $oLnkDelete->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'delete.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
+    $oLnkDelete->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'delete.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
     $oLnkDelete->setCustom("idclient", $idclient);
     $oLnkDelete->setCustom("idclientslang", $_REQUEST["idclientslang"]);
 
     $oLnkEdit = new cHTMLLink();
     $oLnkEdit->setCLink($area, $frame, "clientsettings_edit_item");
-    $oLnkEdit->setContent('<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
+    $oLnkEdit->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
     $oLnkEdit->setCustom("idclient", $idclient);
     $oLnkEdit->setCustom("idclientslang", $_REQUEST["idclientslang"]);
 
@@ -122,7 +123,7 @@ if ($aItems !== false) {
             $oInputboxType->setWidth(15);
 
             $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
-            $sSubmit = ' <input type="image" style="vertical-align:top;" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif">';
+            $sSubmit = ' <input type="image" style="vertical-align:top;" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
 
             $oList->setData($iCounter, $oInputboxType->render(), $oInputboxName->render(), $oInputboxValue->render() . $hidden . $sSubmit, $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
         } else {

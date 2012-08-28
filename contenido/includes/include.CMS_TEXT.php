@@ -29,18 +29,21 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+
+$backendUrl = cRegistry::getBackendUrl();
+
 if (isset($area) && $area == 'con_content_list') {
     $tmp_area = $area;
     $href = "&action=10&idartlang=".$idartlang."&frame=4"."&lang=".$lang;
-    $path1 = $cfg['path']['contenido_fullhtml']."main.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client".$href;
+    $path1 = $backendUrl . "main.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client".$href;
     $path2 = $path1;
     $inputHTML = "    <input type=hidden name=area value=\"$area\">\n".
                  "    <input type=hidden name=frame value=\"4\">\n".
                  "    <input type=hidden name=client value=\"$client\">\n";
 } else {
     $tmp_area = 'con_editcontent';
-    $path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
-    $path2 = $cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . "front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&client=$client";
+    $path1 = $backendUrl . "external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
+    $path2 = $backendUrl . 'external/backendedit/' . "front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&client=$client";
     $inputHTML = "";
 }
 

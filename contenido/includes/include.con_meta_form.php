@@ -218,7 +218,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
         $tpl->set('s', 'CAL_LANG', '');
     }
 
-    $tpl->set('s', 'PATH_TO_CALENDER_PIC', $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'calendar.gif');
+    $tpl->set('s', 'PATH_TO_CALENDER_PIC', cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif');
 
     // Meta-Tags
     $availableTags = conGetAvailableMetaTagTypes();

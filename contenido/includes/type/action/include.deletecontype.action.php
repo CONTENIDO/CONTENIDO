@@ -24,5 +24,5 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 cInclude("includes", "functions.tpl.php");
-include($cfg["path"]["contenido"] . $cfg["path"]["includes"] . "include.con_content_list.php");
+include(cRegistry::getBackendPath() . $cfg["path"]["includes"] . "include.con_content_list.php");
 ?>

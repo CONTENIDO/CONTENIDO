@@ -64,9 +64,9 @@ $tpl->set('s', 'LOGEMPTYURL', htmlentities($sess->url("main.php?area=$area&frame
 // server configuration
 $aChecks = array(
     1 => $cfg['path']['frontend'],
-    2 => $cfg['path']['contenido'],
+    2 => cRegistry::getBackendPath(),
     3 => $cfg['path']['all_wysiwyg'],
-    4 => $cfg['path']['contenido_fullhtml'],
+    4 =>  cRegistry::getBackendUrl(),
     5 => $cfg['path']['all_wysiwyg_html']
 );
 
@@ -76,10 +76,10 @@ $aServerConfiguration = array(
     array(i18n('CONTENIDO server path'), $cfg['path']['frontend'], 0),
     array(i18n('CONTENIDO PEAR path'), $cfg['path']['pear'], 1),
     array(i18n('CONTENIDO PHPLIB path'), $cfg['path']['phplib'], 1),
-    array(i18n('CONTENIDO backend path'), $cfg['path']['contenido'], 1),
+    array(i18n('CONTENIDO backend path'), cRegistry::getBackendPath(), 1),
     array(i18n('CONTENIDO WYSIWYG repository path'), $cfg['path']['all_wysiwyg'], 2),
     array(i18n('CONTENIDO WYSIWYG editor path'), $cfg['path']['wysiwyg'], 3),
-    array(i18n('CONTENIDO backend URL'), $cfg['path']['contenido_fullhtml'], 0),
+    array(i18n('CONTENIDO backend URL'),  cRegistry::getBackendUrl(), 0),
     array(i18n('CONTENIDO WYSIWYG repository URL'), $cfg['path']['all_wysiwyg_html'], 4),
     array(i18n('CONTENIDO WYSIWYG editor URL'), $cfg['path']['wysiwyg_html'], 5),
 );
