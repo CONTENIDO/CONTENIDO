@@ -490,7 +490,7 @@ if (!empty($sSession)) {
 }
 
 // Include Template Class
-include_once($cfg["path"]["contenido"] . 'classes/class.template.php');
+include_once(cRegistry::getBackendPath() . 'classes/class.template.php');
 
 $tableHeaders = array();
 foreach ($sortbyValues as $value) {
