@@ -71,24 +71,6 @@ function updateImageFilebrowser ()
     }
 }
 
-/**
- * Function converts a givenn url for use in CONTENIDO (callback of tiny)
- *
- * @param string url - url which should be converted
- * @param object node - corresponding node object
- * @param object on_save - event handler
- *
- * @return string - converted url
- */
-function CustomURLConverter(url, node, on_save) {
-        var src = url;
-
-        if (!src.match(/^https?:\/\//g)) {
-            url = frontend_path+src;
-        }
-
-        return url;
-}
 
 /**
  * Function converts a given content string (callback of tiny)

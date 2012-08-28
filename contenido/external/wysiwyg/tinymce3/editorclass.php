@@ -90,7 +90,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         $this->_setSetting("theme_advanced_path_location", "bottom");
         $this->_setSetting("remove_script_host", false);
         $this->_setSetting("file_browser_callback", "myCustomFileBrowser", true);
-        $this->_setSetting("urlconverter_callback", "CustomURLConverter");
+        //$this->_setSetting("urlconverter_callback", "CustomURLConverter");
         // New in V3.x
         $this->_setSetting("theme_advanced_resizing", true);
         $this->_setSetting("pagebreak_separator", "<!-- my page break -->"); // needs pagebreak plugin

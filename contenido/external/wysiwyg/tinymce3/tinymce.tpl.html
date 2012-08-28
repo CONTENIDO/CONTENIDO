@@ -84,16 +84,6 @@
                 alert("Filebrowser callback: " + field_name + "," + url + "," + type);
         }
 
-        function CustomURLConverter(url, node, on_save) {
-            var src = url;
-
-            if (!src.match(/^https?:\/\//g)) {
-                url = frontend_path+src;
-            }
-
-            return url;
-        }
-
         function CustomCleanupContent(type, value) {
                 switch (type) {
                         case "get_from_editor":
