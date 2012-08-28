@@ -60,8 +60,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
         createRightsForElement('mod', $idmod);
         $contenidoModuleHandler = new cModuleHandler($idmod);
     } else {
-        $cApiModule = new cApiModule();
-        $cApiModule->loadByPrimaryKey($idmod);
+        $cApiModule = new cApiModule($idmod);
         $contenidoModuleHandler = new cModuleHandler($idmod);
     }
 

@@ -83,8 +83,8 @@ if (!defined('CON_FRAMEWORK')) {
 
         // retrieve module code from files
         $oModuleHandler = new cModuleHandler($iIdMod);
-        $this->setData('CodeOutput', $oModuleHandler->readOutput());
-        $this->setData('CodeInput', $oModuleHandler->readInput());
+        $this->setData('CodeOutput', htmlspecialchars($oModuleHandler->readOutput()));
+        $this->setData('CodeInput', htmlspecialchars($oModuleHandler->readInput()));
     }
 
    /**
@@ -105,8 +105,8 @@ if (!defined('CON_FRAMEWORK')) {
                     //    if choose xml file read value an set it
                     $aResult['name'] = $oBodyValues->Name;
                     $aResult['desc'] = $oBodyValues->Description;
-                    $aResult['code_input'] = $oBodyValues->CodeInput;
-                    $aResult['code_output'] = $oBodyValues->CodeOutput;
+                    $aResult['code_input'] = htmlspecialchars_decode($oBodyValues->CodeInput);
+                    $aResult['code_output'] = htmlspecialchars_decode($oBodyValues->CodeOutput);
                 }
 
             }

@@ -82,7 +82,7 @@ $oVersion->setVarForm("frame", $frame);
 $oVersion->setVarForm("idmod", $idmod);
 
 // create and output the select box, for params please look class.version.php
-$sSelectBox = $oVersion->buildSelectBox("mod_history", "Mod History", "Show History Entry", "idmodhistory");
+$sSelectBox = $oVersion->buildSelectBox("mod_history", i18n("Module History"), i18n("Show history entry"), "idmodhistory");
 
 // Generate Form
 $oForm = new cGuiTableForm("mod_display");

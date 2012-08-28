@@ -118,8 +118,7 @@ if ($action == "mod_new") {
         $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Created new module successfuly!"));
     }
 } else {
-    $module = new cApiModule();
-    $module->loadByPrimaryKey($idmod);
+    $module = new cApiModule($idmod);
 }
 
 if ($action == "mod_importexport_module") {
