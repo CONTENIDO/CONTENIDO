@@ -32,6 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @package    CONTENIDO Core
  * @subpackage Database
  */
+
 class DB_Contenido extends DB_Sql {
 
     /**
@@ -62,7 +63,8 @@ class DB_Contenido extends DB_Sql {
         // @FIXME: Database class should throw a error. Redirecting to the error page is not a good idea.
         //         What if the db connection within a cli script fails???
         if ($this->Errno == 1) {
-            $contenidoPath = (empty($cfg['path']['contenido_fullhtml']))? $cfg['path']['frontend'] : $cfg['path']['contenido_fullhtml'];
+            $backendUrl = cRegistry::getBackendUrl();
+            $contenidoPath = (empty($backendUrl))? $cfg['path']['frontend'] : $backendUrl;
             $errortitle = i18n('MySQL Database not reachable for installation %s');
             $errortitle = sprintf($errortitle, $contenidoPath);
 
@@ -434,12 +436,12 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
     }
 
     public function auth_loginform() {
-        global $sess, $challenge, $_PHPLIB, $cfg;
+        global $sess, $challenge, $_PHPLIB;
 
         $challenge = md5(uniqid($this->magic));
         $sess->register('challenge');
 
-        include($cfg['path']['contenido'] . 'main.loginform.php');
+        include(cRegistry::getBackendPath() . 'main.loginform.php');
     }
 
     public function auth_loglogin($uid) {
@@ -636,12 +638,12 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth {
     }
 
     public function auth_loginform() {
-        global $sess, $challenge, $_PHPLIB, $client, $cfgClient;
+        global $sess, $challenge, $_PHPLIB, $client;
 
         $challenge = md5(uniqid($this->magic));
         $sess->register('challenge');
 
-        include($cfgClient[$client]['path']['frontend'] . 'front_crcloginform.inc.php');
+        include(cRegistry::getFrontendPath() . 'front_crcloginform.inc.php');
     }
 
     public function auth_validatelogin() {
