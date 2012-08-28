@@ -29,7 +29,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 global $cfg, $username;
 
 $aLangs = i18nStripAcceptLanguages($_SERVER['HTTP_ACCEPT_LANGUAGE']);
@@ -89,7 +88,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
 $tpl = new cTemplate();
 $tpl->reset();
 
-$tpl->set('s', 'BASEPATH', $cfg['path']['contenido_fullhtml']);
+$tpl->set('s', 'BASEPATH', cRegistry::getBackendUrl());
 $tpl->set('s', 'TITEL', ':: :: :: :: CONTENIDO Login');
 $tpl->set('s', 'ACTION', $this->url());
 
