@@ -938,4 +938,5 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
     $tpl->set('s', 'CONTENTS', '');
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['blank']);
 }
+
 ?>
