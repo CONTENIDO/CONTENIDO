@@ -589,11 +589,6 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1, $thumbnailmode) {
     if ($rownum == 0) {
 
         header('Location: ' . cRegistry::getBackendUrl() . 'main.php?area=upl_upload&frame=4&path='.$path.'&contenido='.$contenido);
-
-        $page->displayWarning(i18n("No files found"));
-        $page->abortRendering();
-        $page->render();
-        return;
     }
 
     if ($sortmode == "ASC") {
