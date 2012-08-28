@@ -35,7 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
 try {
     $aParams = array('idcat' => 1, 'idart' => 5);
     $oUrlBuilder = Contenido_UrlBuilderFactory::getUrlBuilder('front_content');
-    $oUrlBuilder->setHttpBasePath($cfgClient[$client]['path']['htmlpath']); // needed if you need an absolute url
+    $oUrlBuilder->setHttpBasePath(cRegistry::getFrontendUrl()); // needed if you need an absolute url
     $oUrlBuilder->buildUrl($aParams, true);
     echo $oUrlBuilder->getUrl();
 } catch (InvalidArgumentException $e) {

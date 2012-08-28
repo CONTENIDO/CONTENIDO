@@ -43,6 +43,8 @@ class cGuiList {
     public function render($print = false) {
         global $cfg;
 
+        $backendPath = cRegistry::getBackendPath();
+
         $tpl = new cTemplate();
         $tpl2 = new cTemplate();
 
@@ -64,9 +66,9 @@ class cGuiList {
 
                     $tpl2->set('s', 'CONTENT', $value);
                     if ($colcount == 1) {
-                        $content .= $tpl2->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list_head'], true);
+                        $content .= $tpl2->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['generic_list_head'], true);
                     } else {
-                        $content .= $tpl2->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list_row'], true);
+                        $content .= $tpl2->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['generic_list_row'], true);
                     }
                 }
 
@@ -75,7 +77,7 @@ class cGuiList {
             }
         }
 
-        $rendered = $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list'], true);
+        $rendered = $tpl->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['generic_list'], true);
 
         if ($print == true) {
             echo $rendered;

@@ -21,8 +21,54 @@
  */
 class cRegistry {
 
+
     /**
-     * Container for application variables. Meant to set and get application wide 
+     * Function wich returns path after the last possible place
+     * changing via configuration file.
+    * @return path
+    */
+    public static function getBackendPath()  {
+        $cfg = self::getConfig();
+    	return  $cfg['path']['contenido'];
+    }
+
+    /**
+     * Function wich returns path after the last possible place
+     * changing via configuration file.
+     * The path point to the current client
+     * @return path
+     */
+    public static function getFrontendPath()  {
+        $cfgClient = self::getClientConfig();
+        $client = self::getClientId();
+        return $cfgClient[$client]['path']['frontend'];
+    }
+
+    /**
+     * Function wich returns the backend URL after the last possible
+     * place changing via configuration file.
+     * @return URL
+     */
+    public static function getBackendUrl()  {
+        $cfg = self::getConfig();
+        return  $cfg['path']['contenido_fullhtml'];
+    }
+
+    /**
+     * Function wich returns URL after the last possible place
+     * changing via configuration file.
+     * The path point to the current client
+     * @return URL
+     */
+    public static function getFrontendUrl() {
+        $cfgClient = self::getClientConfig();
+        $client = self::getClientId();
+        return  $cfgClient[$client]['path']['htmlpath'];
+    }
+
+
+     /**
+     * Container for application variables. Meant to set and get application wide
      * variables as an alternative to store them in global scope.
      *
      * @var array

@@ -80,7 +80,7 @@ class cGuiNotification {
      */
     public function __construct() {
         global $cfg;
-        $this->_sPathImages = $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'];
+        $this->_sPathImages = cRegistry::getBackendUrl() . $cfg['path']['images'];
     }
 
     /** @deprecated  [2011-05-19] Old constructor function for downwards compatibility */

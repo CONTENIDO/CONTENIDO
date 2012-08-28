@@ -164,6 +164,7 @@ class cTableView
 
     function render($return = true)
     {
+        $backendUrl = cRegistry::getBackendUrl();
         global $sess, $cfg;
 
         $tpl = new cTemplate;
@@ -208,10 +209,10 @@ class cTableView
             }
         }
 
-        $tpl->set('s', 'CONTENIDOPATH',$cfg["path"]["contenido_fullhtml"]);
+        $tpl->set('s', 'CONTENIDOPATH',$backendUrl);
 
         if ($this->cancelLink != "") {
-            $img = '<img src="'.$cfg["path"]["contenido_fullhtml"].'images/but_cancel.gif" border="0">';
+            $img = '<img src="'.$backendUrl.'images/but_cancel.gif" border="0">';
             $tpl->set('s', 'CANCELLINK', '<a href="'.$this->cancelLink.'">'.$img.'</a>');
         } else {
             $tpl->set('s', 'CANCELLINK','');
@@ -252,7 +253,7 @@ class cTableView
 
         $tpl->set('s', 'EXTRABUTTONS', $custombuttons);
 
-        $rendered = $tpl->generate($cfg["path"]["contenido"].$cfg['path']['templates'] . $cfg['templates']['generic_table_form'],true);
+        $rendered = $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['generic_table_form'],true);
 
         if ($return == true) {
             return ($rendered);

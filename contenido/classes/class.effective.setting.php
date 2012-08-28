@@ -92,7 +92,7 @@ class cEffectiveSetting {
         // if the config file does not exist, there is no DB, so just return
         // the default value in order to avoid PHP notices
         $cfg = cRegistry::getConfig();
-        if (!file_exists($cfg['path']['contenido'] . '../data/config/' . CONTENIDO_ENVIRONMENT . '/config.php')) {
+        if (!file_exists(cRegistry::getBackendPath() . '../data/config/' . CONTENIDO_ENVIRONMENT . '/config.php')) {
             return $default;
         }
 

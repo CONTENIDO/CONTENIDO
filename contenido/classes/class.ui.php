@@ -29,6 +29,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+
+
 /** @deprecated This class shouldn't be used anymore. Please use templates instead. */
 class UI_Left_Top {
 
@@ -49,6 +51,8 @@ class UI_Left_Top {
 
     function render() {
         global $sess, $cfg;
+
+        $backendPath = cRegistry::getBackendPath();
 
         $tpl = new cTemplate;
 
@@ -71,7 +75,7 @@ class UI_Left_Top {
 
         $tpl->set('s', 'JAVASCRIPTS', $scripts);
         $tpl->set('s', 'CAPTION', $this->caption);
-        $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_left_top']);
+        $tpl->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['generic_left_top']);
     }
 
     function setAdditionalContent($content) {
@@ -132,6 +136,8 @@ class UI_Form {
     function render($return = true) {
         global $sess, $cfg;
 
+        $backendPath = cRegistry::getBackendPath();
+
         $content = "";
 
         $tpl = new cTemplate;
@@ -155,7 +161,7 @@ class UI_Form {
 
         $tpl->set('s', 'CONTENT', $content);
 
-        $rendered = $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_form'], true);
+        $rendered = $tpl->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['generic_form'], true);
 
         if ($return == true) {
             return ($rendered);
@@ -215,6 +221,8 @@ class UI_Page {
     function render($print = true) {
         global $sess, $cfg;
 
+        $backendPath = cRegistry::getBackendPath();
+
         $tpl = new cTemplate;
 
         $scripts = "";
@@ -231,7 +239,7 @@ class UI_Page {
         $tpl->set('s', 'MARGIN', $this->margin);
         $tpl->set('s', 'EXTRA', '');
 
-        $rendered = $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_page'], false);
+        $rendered = $tpl->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['generic_page'], false);
 
         if ($print == true) {
             echo $rendered;

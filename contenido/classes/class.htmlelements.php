@@ -2207,10 +2207,9 @@ class cHTMLImage extends cHTML {
      * Apply dimensions from the source image
      */
     public function applyDimensions() {
-        global $cfg;
 
         // Try to open the image
-        list($width, $height) = @getimagesize($cfg['path']['contenido'] . $this->_src);
+        list($width, $height) = @getimagesize(cRegistry::getBackendPath() . $this->_src);
 
         if (!empty($width) && !empty($height)) {
             $this->setWidth($width);

@@ -337,12 +337,13 @@ class UI_Config_Table {
 
     function UI_Config_Table() {
         global $cfg;
+        $backendPath = cRegistry::getBackendPath();
 
         $this->_sPadding = 2;
         $this->_sBorder = 0;
         $this->_sTplCellCode = '        <td align="{ALIGN}" valign="{VALIGN}" class="{CLASS}" colspan="{COLSPAN}" style="{EXTRA}white-space:nowrap;" nowrap="nowrap">{CONTENT}</td>' . "\n";
-        $this->_sTplTableFile = $cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['input_helper'];
-        $this->_sTplCellCode = $cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['input_helper_row'];
+        $this->_sTplTableFile = $backendPath . $cfg['path']['templates'] . $cfg['templates']['input_helper'];
+        $this->_sTplCellCode =  $backendPath . $cfg['path']['templates'] . $cfg['templates']['input_helper_row'];
     }
 
     function setCellTemplate($sCode) {

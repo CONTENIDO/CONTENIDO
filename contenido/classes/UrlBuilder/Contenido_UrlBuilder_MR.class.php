@@ -136,6 +136,7 @@ class Contenido_UrlBuilder_MR extends Contenido_UrlBuilder
      */
     public function buildUrl(array $params, $bUseAbsolutePath = false)
     {
+
         global $cfgClient, $client;
 
         ModRewriteDebugger::add($params, 'Contenido_UrlBuilder_MR::buildUrl() $params');
@@ -146,7 +147,7 @@ class Contenido_UrlBuilder_MR extends Contenido_UrlBuilder
 
         $urlPrefix = '';
         if ($bUseAbsolutePath) {
-            $hmlPath = $cfgClient[$client]['path']['htmlpath'];
+            $hmlPath = cRegistry::getFrontendUrl();
             $aComp   = parse_url($hmlPath);
             $urlPrefix = $aComp['scheme'] . '://' . $aComp['host'];
             if (mr_arrayValue($aComp, 'port', '') !== '') {

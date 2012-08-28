@@ -218,7 +218,7 @@ class cBackend {
      * @return $action String Code for selected Action
      */
     public function getCode($action) {
-        $actionCodeFile = $cfg['path']['contenido'] . 'includes/type/action/include.' . $action . '.action.php';
+        $actionCodeFile = cRegistry::getBackendPath() . 'includes/type/action/include.' . $action . '.action.php';
         if (cFileHandler::exists($actionCodeFile)) {
             return cFileHandler::read($actionCodeFile);
         }

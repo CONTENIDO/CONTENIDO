@@ -49,7 +49,7 @@
  *
  * // example of executing a cec with a parameter and a return value
  * // (usually the modified version of passed parameter)
- * $baseHref = $cfgClient[$client]['path']['htmlpath'];
+ * $baseHref = cRegistry::getFrontendUrl();
  * $newBaseHref =
  * cApiCecHook::executeAndReturn('Contenido.Frontend.BaseHrefGeneration',
  * $baseHref);

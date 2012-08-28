@@ -23,6 +23,9 @@
 /**
  * Class for outputting some content for Ajax use
  */
+
+
+
 class cAjaxRequest {
 
     /**
@@ -31,7 +34,12 @@ class cAjaxRequest {
      * @param string $action - name of requested ajax action
      */
     public function handle($action) {
+        $backendPath = cRegistry::getBackendPath();
         $string = '';
+
+        $frontendURL = cRegistry::getFrontendUrl();
+        $frontendPath = cRegistry::getFrontendPath();
+
         switch ($action) {
             // case to get an article select box param name value and idcat were
             // neded (name= name of select box value=selected item)
@@ -84,7 +92,7 @@ class cAjaxRequest {
                             }
 
                             $template->set('s', 'HEAD_NAME', i18n('Template name'));
-                            $string = '<div class="inuse_info" >' . $template->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['inuse_lay_mod'], true) . '</div>';
+                            $string = '<div class="inuse_info" >' . $template->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['inuse_lay_mod'], true) . '</div>';
                         } else {
                             $string = i18n('No data found!');
                         }
@@ -106,7 +114,7 @@ class cAjaxRequest {
                         }
 
                         $template->set('s', 'HEAD_NAME', i18n('Template name'));
-                        $string = '<div class="inuse_info" >' . $template->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['inuse_lay_mod'], true) . '</div>';
+                        $string = '<div class="inuse_info" >' . $template->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['inuse_lay_mod'], true) . '</div>';
                     } else {
                         $string = i18n('No data found!');
                     }
@@ -134,7 +142,7 @@ class cAjaxRequest {
                         $template->set('s', 'HEAD_ID', i18n('idcat'));
                         $template->set('s', 'HEAD_LANG', i18n('idlang'));
                         $template->set('s', 'HEAD_NAME', i18n('Name'));
-                        $response = $template->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['inuse_tpl'], true);
+                        $response = $template->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['inuse_tpl'], true);
                     }
 
                     $template->reset();
@@ -150,7 +158,7 @@ class cAjaxRequest {
                         $template->set('s', 'HEAD_ID', i18n('idart'));
                         $template->set('s', 'HEAD_LANG', i18n('idlang'));
                         $template->set('s', 'HEAD_NAME', i18n('Name'));
-                        $response .= $template->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['inuse_tpl'], true);
+                        $response .= $template->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['inuse_tpl'], true);
                     }
 
                     $string = '<div class="inuse_info" >' . $response . '</div>';
@@ -161,9 +169,8 @@ class cAjaxRequest {
                 break;
 
             case 'scaleImage':
-                global $cfgClient, $client;
                 $filename = $_REQUEST['url'];
-                $filename = str_replace($cfgClient[$client]['path']['htmlpath'], $cfgClient[$client]['path']['frontend'], $filename);
+                $filename = str_replace($frontendURL, $frontendURL, $filename);
                 // $filename muss not url path(http://) sondern globale PC
                 // Path(c:/) sein.
                 $filetype = substr($filename, strlen($filename) - 4, 4);
@@ -187,7 +194,7 @@ class cAjaxRequest {
                 // if can not scale, so $sString is null, then show the original
                 // image.
                 if ($string == '') {
-                    $filename = str_replace($cfgClient[$client]['path']['frontend'], $cfgClient[$client]['path']['htmlpath'], $_REQUEST['sUrl']);
+                    $filename = str_replace($frontendURL,$frontendURL, $_REQUEST['sUrl']);
                     $string = $filename;
                 }
                 break;

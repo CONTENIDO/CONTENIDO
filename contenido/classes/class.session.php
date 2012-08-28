@@ -31,6 +31,7 @@ if (!defined('CON_FRAMEWORK')) {
 /**
  * Handles the backend session
  */
+
 class cSession {
 
     /**
@@ -61,6 +62,8 @@ class cSession {
      * Starts the session
      * @param string The prefix for the session variables
      */
+
+
     public function __construct($prefix = 'backend') {
         $this->_pt = array();
         $this->_prefix = $prefix;
@@ -70,11 +73,11 @@ class cSession {
         if (!isset($_SESSION)) {
             if ($prefix === 'backend') {
                 $cfg = cRegistry::getConfig();
-                $url = $cfg['path']['contenido_fullhtml'];
+                $url = cRegistry::getBackendUrl();
             } else {
                 $client = cRegistry::getClientId();
                 $cfgClient = cRegistry::getClientConfig($client);
-                $url = $cfgClient[$client]['path']['htmlpath'];
+                $url = cRegistry::getFrontendUrl();
             }
             $url = parse_url($url);
             session_set_cookie_params(0, $url['path']);

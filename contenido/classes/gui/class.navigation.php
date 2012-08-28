@@ -251,12 +251,14 @@ class cGuiNavigation {
 
         $main->set('s', 'SUBMENUS', $t_sub);
 
+        $backendUrl = cRegistry::getBackendUrl();
+
         // my CONTENIDO link
         $link = new cHTMLLink();
         $link->setClass('main');
         $link->setTargetFrame('content');
         $link->setLink($sess->url("frameset.php?area=mycontenido&frame=4"));
-        $link->setContent('<img src="' . $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'my_contenido.gif" border="0" alt="My CONTENIDO" id="imgMyContenido" title="' . i18n("My CONTENIDO") . '">');
+        $link->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'my_contenido.gif" border="0" alt="My CONTENIDO" id="imgMyContenido" title="' . i18n("My CONTENIDO") . '">');
         $main->set('s', 'MYCONTENIDO', $link->render());
 
         // info link
@@ -264,7 +266,7 @@ class cGuiNavigation {
         $link->setClass('main');
         $link->setTargetFrame('content');
         $link->setLink($sess->url('frameset.php?area=info&frame=4'));
-        $link->setContent('<img src="' . $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'info.gif" border="0" alt="Info" title="Info" id="imgInfo">');
+        $link->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'info.gif" border="0" alt="Info" title="Info" id="imgInfo">');
         $main->set('s', 'INFO', $link->render());
 
         $main->set('s', 'LOGOUT', $sess->url('logout.php'));
@@ -276,7 +278,7 @@ class cGuiNavigation {
             $link->setClass('main');
             $link->setLink('javascript://');
             $link->setEvent('click', 'callHelp($(\'#help\').attr(\'data\'));');
-            $link->setContent('<img src="' . $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_help.gif" border="0" alt="Hilfe" title="Hilfe">');
+            $link->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'but_help.gif" border="0" alt="Hilfe" title="Hilfe">');
             $main->set('s', 'HELP', $link->render());
         } else {
             $main->set('s', 'HELP', '');
@@ -314,12 +316,14 @@ class cGuiNavigation {
             $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
 
             $sClientName = $classclient->getClientName($client) . ' (' . $client . ')';
-            $sClientUrl = $cfgClient[$client]["path"]["htmlpath"];
+            $sClientUrl = cRegistry::getFrontendUrl();
 
-            if ($clientImage !== false && $clientImage != "" && cFileHandler::exists($cfgClient[$client]['path']['frontend'] . $clientImage)) {
+            $frontendPath = cRegistry::getFrontendPath();
+
+            if ($clientImage !== false && $clientImage != "" && cFileHandler::exists( $frontendPath . $clientImage)) {
                 $sClientImageTemplate = '<img src="%s" alt="%s" title="%s" />';
 
-                $sThumbnailPath = cApiImgScale($cfgClient[$client]['path']['frontend'] . $clientImage, 80, 25, 0, 1);
+                $sThumbnailPath = cApiImgScale( $frontendPath . $clientImage, 80, 25, 0, 1);
                 $sClientImageTag = sprintf($sClientImageTemplate, $sThumbnailPath, $sClientName, $sClientName);
 
                 $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientImageTag));

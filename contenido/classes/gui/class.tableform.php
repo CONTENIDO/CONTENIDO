@@ -44,7 +44,7 @@ class cGuiTableForm {
     public $submitjs;
 
     public function __construct($name, $action = "", $method = "post") {
-        global $sess, $cfg;
+        global $sess;
         $this->formname = $name;
 
         if ($action == "") {
@@ -58,7 +58,7 @@ class cGuiTableForm {
         $this->tableid = "";
         $this->custom = array();
 
-        $this->setActionButton("submit", $cfg['path']['contenido_fullhtml'] . "images/but_ok.gif", i18n("Save changes"), "s");
+        $this->setActionButton("submit", cRegistry::getBackendUrl() . "images/but_ok.gif", i18n("Save changes"), "s");
     }
 
     public function setVar($name, $value) {
@@ -217,7 +217,7 @@ class cGuiTableForm {
         }
 
         if ($this->cancelLink != "") {
-            $image = new cHTMLImage($cfg["path"]["contenido_fullhtml"] . 'images/but_cancel.gif');
+            $image = new cHTMLImage(cRegistry::getBackendUrl() . 'images/but_cancel.gif');
             $link = new cHTMLLink($this->cancelLink);
             $link->setContent($image);
 
@@ -268,7 +268,7 @@ class cGuiTableForm {
 
         $tpl->set('s', 'ROWNAME', $this->id);
 
-        $rendered = $tpl->generate($cfg["path"]["contenido"] . $cfg['path']['templates'] . $cfg['templates']['generic_table_form'], true);
+        $rendered = $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['generic_table_form'], true);
 
         if ($return == true) {
             return ($rendered);

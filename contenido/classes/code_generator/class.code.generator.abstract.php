@@ -24,6 +24,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @package Core
  * @subpackage Content Type
  */
+
 abstract class cCodeGeneratorAbstract {
 
     /**
@@ -427,7 +428,6 @@ abstract class cCodeGeneratorAbstract {
      *        (container code)
      */
     protected function _processFrontendDebug($containerId, array $module) {
-        global $cfg;
 
         if (empty($this->_feDebugOptions)) {
             return;
@@ -449,7 +449,7 @@ abstract class cCodeGeneratorAbstract {
         }
 
         if ($sFeDebug != '') {
-            $this->_modulePrefix[] = 'echo \'<img onclick="javascript:showmod' . $containerId . '();" src="' . $cfg['path']['contenido_fullhtml'] . 'images/but_preview.gif"><br>\';';
+            $this->_modulePrefix[] = 'echo \'<img onclick="javascript:showmod' . $containerId . '();" src="' . cRegistry::getBackendUrl() . 'images/but_preview.gif"><br>\';';
         }
 
         if ($this->_feDebugOptions['module_timing_summary'] == true) {
@@ -535,7 +535,7 @@ abstract class cCodeGeneratorAbstract {
      */
     protected function _getContentTypeCodeFilePathName($type) {
         global $cfg;
-        $typeCodeFile = $cfg['path']['contenido'] . $cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
+        $typeCodeFile = cRegistry::getBackendPath() . $cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
         return $typeCodeFile;
     }
 

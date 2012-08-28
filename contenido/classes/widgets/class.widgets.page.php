@@ -29,6 +29,9 @@ if (!defined('CON_FRAMEWORK')) {
  * @deprecated This class was replaced by cGuiPage
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
  */
+
+
+
 class cPage extends cHTML
 {
 
@@ -321,7 +324,9 @@ class cPage extends cHTML
             $tplRender = true;
         }
 
-        $rendered = $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_page'],$tplRender, false);
+        $backendPath = cRegistry::getBackendPath();
+
+        $rendered = $tpl->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['generic_page'],$tplRender, false);
 
         if ($print == true) {
             echo $rendered;
@@ -369,9 +374,11 @@ class cPageLeftTop extends cPage
     {
         global $cfg;
 
+        $backendPath = cRegistry::getBackendPath();
+
         $tpl = new cTemplate();
         $tpl->set('s', 'CONTENT', $content);
-        $this->setContent($tpl->generate($cfg['path']['contenido']
+        $this->setContent($tpl->generate($backendPath
                 .$cfg['path']['templates'].$cfg['templates']['widgets']['left_top'],true));
 
         parent::render($print);

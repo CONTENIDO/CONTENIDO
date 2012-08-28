@@ -107,7 +107,7 @@ class NoteCollection extends cApiCommunicationCollection {
 }
 
 class NoteItem extends cApiCommunication {
-    
+
 }
 
 class NoteView extends cHTMLIFrame {
@@ -185,6 +185,8 @@ class NoteList extends cHTMLDiv {
 
 class NoteListItem extends cHTMLDiv {
 
+
+
     public function NoteListItem($sItemType, $sItemId, $iDeleteItem) {
         cHTMLDiv::cHTMLDiv();
         $this->appendStyleDefinition('padding', '2px');
@@ -230,7 +232,6 @@ class NoteListItem extends cHTMLDiv {
     }
 
     public function render() {
-        global $cfg, $sess;
 
         $itemtype = $this->_sItemType;
         $itemid = $this->_sItemId;
@@ -243,7 +244,7 @@ class NoteListItem extends cHTMLDiv {
 
         if ($this->_bDeleteable == true) {
             $oDeleteable = new cHTMLLink();
-            $oDeletePic = new cHTMLImage($cfg['path']['contenido_fullhtml'] . '/images/delete.gif');
+            $oDeletePic = new cHTMLImage(cRegistry::getBackendUrl() . '/images/delete.gif');
             $oDeleteable->setContent($oDeletePic);
             $oDeleteable->setLink($sess->url("main.php?frame=2&area=note&itemtype=$itemtype&itemid=$itemid&action=note_delete&deleteitem=$deleteitem"));
 

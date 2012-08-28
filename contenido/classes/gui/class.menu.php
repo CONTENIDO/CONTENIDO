@@ -137,7 +137,7 @@ class cGuiMenu {
                 $tpl->next();
             }
         }
-        $rendered = $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_menu'], true);
+        $rendered = $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['generic_menu'], true);
 
         if ($print == true) {
             echo $rendered;
