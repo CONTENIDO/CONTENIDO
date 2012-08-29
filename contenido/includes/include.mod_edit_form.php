@@ -283,7 +283,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         $typeselect->autoFill(array("" => "-- " . i18n("Custom") . " --"));
     }
 
-    $typeselect->setEvent("change", 'if (document.forms["mod_edit"].elements["type"].value == 0) { document.forms["mod_edit"].elements["customtype"].disabled=0;} else {document.forms["mod_edit"].elements["customtype"].disabled=1;}');
+    $typeselect->setEvent("change", "if (document.forms['mod_edit'].elements['type'].value == 0) { document.forms['mod_edit'].elements['customtype'].disabled=0;} else {document.forms['mod_edit'].elements['customtype'].disabled=1;}");
     $typeselect->setDisabled($disabled);
 
     $custom = new cHTMLTextbox("customtype", "");
