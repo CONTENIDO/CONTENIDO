@@ -124,7 +124,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage'))
         $oVersionJScript->setVarForm("action", '');
 
         // create and output the select box, for params please look class.version.php
-        $sSelectBox = $oVersionJScript->buildSelectBox("jscript_history", "JScript History", "Show History Entry", "idjscripthistory");
+        $sSelectBox = $oVersionJScript->buildSelectBox("jscript_history", "JScript History", i18n("Show history entry"), "idjscripthistory");
 
         // Generate Form
         $oForm = new cGuiTableForm("jscript_display");

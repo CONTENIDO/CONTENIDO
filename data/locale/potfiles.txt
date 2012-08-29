@@ -379,7 +379,6 @@
 ./classes/validator/class.validator.email.php
 ./classes/validator/class.validator.factory.php
 ./classes/validator/class.validator.regex.php
-./classes/validator/class.validator.url.php
 ./classes/version/class.version.file.php
 ./classes/version/class.version.import.php
 ./classes/version/class.version.layout.php
@@ -833,7 +832,6 @@
 ../data/config/production/config.clients.php
 ../data/config/production/config.colors.php
 ../data/config/production/config.http_check.php
-../data/config/production/config.local.php
 ../data/config/production/config.misc.php
 ../data/config/production/config.path.php
 ../data/config/production/config.php

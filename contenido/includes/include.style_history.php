@@ -117,7 +117,7 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
         $oVersionStyle->setVarForm("action", '');
 
         // create and output the select box, for params please look class.version.php
-        $sSelectBox = $oVersionStyle->buildSelectBox("style_history", "Style History", "Show History Entry", "idstylehistory");
+        $sSelectBox = $oVersionStyle->buildSelectBox("style_history", "Style History", i18n("Show history entry"), "idstylehistory");
 
         // Generate Form
         $oForm = new cGuiTableForm("style_display");

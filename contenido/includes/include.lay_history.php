@@ -80,7 +80,7 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
     $oVersion->setVarForm("action", '');
 
     // create and output the select box, for params please look class.version.php
-    $sSelectBox = $oVersion->buildSelectBox("mod_history", "Layout History", "Show History Entry", "idlayhistory");
+    $sSelectBox = $oVersion->buildSelectBox("mod_history", "Layout History", i18n("Show history entry"), "idlayhistory");
 
     // Generate Form
     $oForm = new cGuiTableForm("lay_display");
