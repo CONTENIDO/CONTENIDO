@@ -484,7 +484,7 @@ class cVersion {
      * return string  if is exists Revision, then returns HTML Code of full SelectBox else returns empty string
      */
     public function buildSelectBox($sTableForm, $sAddHeader, $sLabelOfSelectBox, $sIdOfSelectBox) {
-        $oForm = new cGuiTableForm('lay_history');
+        $oForm = new cGuiTableForm($sTableForm);
         $aMessage = array();
         // if exists xml files
         if (count($this->dTimestamp) > 0) {
