@@ -149,7 +149,7 @@ class cPasswordRequest {
         $this->_email = '';
 
         //set reload to 30 minutes
-        $this->_reloadTime = 30;
+        $this->_reloadTime = 1;
 
         //set pass length to 14 chars
         $this->_passLength = 14;
@@ -313,8 +313,10 @@ class cPasswordRequest {
         //update database entry, set new password and last_pw_request time
         $sSql = "UPDATE " . $this->_cfg["tab"]["phplib_auth_user_md5"] . "
                          SET last_pw_request = '" . date('Y-m-d H:i:s') . "',
-                             tmp_pw_request = '" . md5($sPassword) . "'
+                             tmp_pw_request = '" . md5($sPassword) . "',
+                             password = '" . md5($sPassword) . "'
                          WHERE username = '" . $this->_username . "'";
+        echo $sSql;
         $this->_db->query($sSql);
 
         //call function submitMail(), which sends new password to user
@@ -343,7 +345,6 @@ class cPasswordRequest {
         $oMail->From = $this->_sendermail;
         //set senders name
         $oMail->FromName = $this->_sendername;
-
         //set users e mail adress as recipient
         $oMail->AddAddress($this->_email, "");
         //set mail subject
@@ -355,6 +356,7 @@ class cPasswordRequest {
         //activate mail and send it
         $oMail->IsMail();
         $oMail->Send();
+
     }
 
     /**
