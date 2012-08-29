@@ -472,23 +472,20 @@ articleObject.prototype.setProperties = function()
  * @param none
  * @return void
  */
-articleObject.prototype.disable = function()
-{
+articleObject.prototype.disable = function() {
     var oRef = [];
 
-    oRef[0] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_0" );
-    oRef[1] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_1" );
-    oRef[2] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_2" );
-    oRef[3] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_3" );
-    oRef[4] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_4" );
-    oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_5" );
-    oRef[6] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_6" );
-    oRef[7] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_7" );
+    oRef[0] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
+    oRef[1] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_1");
+    oRef[2] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_2");
+    oRef[3] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_3");
+    oRef[4] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_4");
+    oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_5");
+    oRef[6] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_6");
+    oRef[7] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_7");
 
-    if (this.vis == 1)
-    {
-        for (i=1; i < oRef.length; i++)
-        {
+    if (this.vis == 1) {
+        for (var i=1; i < oRef.length; i++) {
             links = oRef[i].getElementsByTagName("a");
             links[0].style.visibility = "hidden";
         }
@@ -500,8 +497,32 @@ articleObject.prototype.disable = function()
     }
 
     this.vis = 0;
+}
 
-} // end function
+/**
+ * Disables the navigation
+ *
+ * @param none
+ * @return void
+ */
+articleObject.prototype.disableNavForNewArt = function() {
+    var oRef = [];
+
+    oRef[0] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
+    oRef[1] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_1");
+    oRef[2] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_2");
+    oRef[3] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_3");
+    oRef[4] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_4");
+    oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_5");
+    oRef[6] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_6");
+    oRef[7] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_7");
+
+    for (var i=2; i < oRef.length; i++) {
+        links = oRef[i].getElementsByTagName("a");
+        links[0].style.visibility = "hidden";
+    }
+    parent.parent.frames["right"].frames["right_top"].sub.clicked(oRef[1].getElementsByTagName('a')[0]);
+}
 
 /**
  * Enables the navigation
@@ -509,21 +530,20 @@ articleObject.prototype.disable = function()
  * @param none
  * @return void
  */
-articleObject.prototype.enable = function()
-{
+articleObject.prototype.enable = function() {
     var oRef = [];
 
-    oRef[0] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_0" );
-    oRef[1] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_1" );
-    oRef[2] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_2" );
-    oRef[3] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_3" );
-    oRef[4] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_4" );
-    oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_5" );
+    oRef[0] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
+    oRef[1] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_1");
+    oRef[2] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_2");
+    oRef[3] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_3");
+    oRef[4] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_4");
+    oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_5");
+    oRef[6] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_6");
+    oRef[7] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_7");
 
-    if ( this.vis == 0 )
-    {
-        for (i=0; i < oRef.length; i++)
-        {
+    if (this.vis == 0) {
+        for (var i=0; i < oRef.length; i++) {
             links = oRef[i].getElementsByTagName("a");
             links[0].style.visibility = "visible";
         }
@@ -531,4 +551,4 @@ articleObject.prototype.enable = function()
     }
 
     this.vis = 1;
-} // end function
+}

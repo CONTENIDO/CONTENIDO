@@ -665,10 +665,14 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         }
     }
 
+    $script = '';
+    if ($newart) {
+        $script = 'artObj.disableNavForNewArt();';
+    }
     if (0 != $idart && 0 != $midcat) {
-        $script = 'artObj.setProperties("' . $idart . '", "' . $idartlang . '", "' . $midcat . '", "' . $idcatlang . '", "' . $idcatart . '", "' . $lang . '");';
+        $script .= 'artObj.setProperties("' . $idart . '", "' . $idartlang . '", "' . $midcat . '", "' . $idcatlang . '", "' . $idcatart . '", "' . $lang . '");';
     } else {
-        $script = 'artObj.reset();';
+        $script .= 'artObj.reset();';
     }
 
     $tpl->set('s', 'DATAPUSH', $script);
