@@ -70,12 +70,11 @@ if ($action == 'todo_save_item') {
     $reminderdue = new cHTMLTextbox('enddate', '', '', '', 'enddate');
     $ui->add(i18n('End date'),$reminderdue->render());
     $notiemail = new cHTMLCheckbox('notiemail', i18n('E-mail notification'));
-    $langscripts = '';
+    $langscripts = array();
 
     if(($lang_short = substr(strtolower($belang), 0, 2)) != 'en') {
-
-        $langscripts=  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
-        <script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
+        $langscripts[] = 'datetimepicker/jquery-ui-timepicker-' . $lang_short . '.js';
+        $langscripts[] = 'jquery/jquery.ui.datepicker-' . $lang_short . '.js';
     }
 
     $path_to_calender_pic =   cRegistry::getBackendUrl(). $cfg['path']['images'] . 'calendar.gif';
@@ -147,13 +146,15 @@ $(document).ready(function() {
     $userselect->setSize(5);
 
     $ui->add(i18n("Assigned to"), $userselect->render());
+
+    $cpage->addStyle('datetimepicker/jquery-ui-timepicker-addon.css');
+    $cpage->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
+    $cpage->addScript('datetimepicker/jquery-ui-timepicker-addon.js');
+    foreach ($langscripts as $langscript) {
+        $cpage->addScript($langscript);
+    }
     $cpage->addScript($calscript);
     $cpage->setcontent($ui);
-
-    $cpage->addScript('<link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
-                    <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
-                    <script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>'
-                    . $langscripts);
 }
 $cpage->render();
 

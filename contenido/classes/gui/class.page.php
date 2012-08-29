@@ -70,12 +70,6 @@ class cGuiPage {
     protected $_styles;
 
     /**
-     * The encoding meta tag.
-     * @var string
-     */
-    protected $_encoding;
-
-    /**
      * The script to set the subnavigation. This will be included in the final page.
      * @var string
      */
@@ -118,6 +112,13 @@ class cGuiPage {
     protected $_objects;
 
     /**
+     * Array of arrays where each array contains information about a meta tag.
+     *
+     * @var array
+     */
+    protected $_metaTags;
+
+    /**
      * The constructor initializes the class and tries to get the encoding from the currently selected language.
      * It will also add every script in the form of /scripts/*.PAGENAME.js and every stylesheet in the form
      * of/styles/*.PAGENAME.css to the page as well as /scripts/PAGENAME.js and /styles/PAGENAME.css.
@@ -135,7 +136,6 @@ class cGuiPage {
         $this->_contenttemplate = new cTemplate();
         $this->_scripts = array();
         $this->_styles = array();
-        $this->_encoding = "";
         $this->_subnav = "";
         $this->_markscript = "";
         $this->_error = "";
@@ -143,6 +143,7 @@ class cGuiPage {
         $this->_info = "";
         $this->_abort = false;
         $this->_objects = array();
+        $this->_metaTags = array();
 
         // Try to extract the current CONTENIDO language
         $clang = new cApiLanguage($lang);
@@ -195,6 +196,27 @@ class cGuiPage {
     }
 
     /**
+     * Adds a meta tag to the website.
+     * @param array $meta Associative array with the meta tag attributes
+     */
+    public function addMeta(array $meta) {
+        $allowedAttributes = array(
+            'charset',
+            'content',
+            'http-equiv',
+            'name',
+            'itemprop'
+        );
+        foreach ($meta as $key => $value) {
+            if (!in_array($key, $allowedAttributes)) {
+                cWarning('Unallowed attribute for meta tag given - meta tag will be ignored!');
+                return;
+            }
+        }
+        $this->_metaTags[] = $meta;
+    }
+
+    /**
      * Loads the subnavigation of the current area upon rendering.
      * @param string $additional Additional parameters the subnavigation might need. These have to look like "key=value&key2=value2..."
      * @param string $aarea The area of the subnavigation. If none is given the current area will be loaded
@@ -232,7 +254,13 @@ class cGuiPage {
      * @param string $encoding An encoding which should be valid to use in the meta tag
      */
     public function setEncoding($encoding) {
-        $this->_encoding = $encoding;
+        if (empty($encoding)) {
+            return;
+        }
+        $this->_metaTags[] = array(
+            'http-equiv' => 'Content-type',
+            'content' => 'text/html;charset=' . $encoding
+        );
     }
 
     /**
@@ -313,8 +341,22 @@ class cGuiPage {
             $template = $this->_contenttemplate;
         }
 
-        if ($this->_encoding != "") {
-            $this->_pagetemplate->set("s", "META", '<meta http-equiv="Content-type" content="text/html;charset=' . $this->_encoding . '">' . "\n");
+        // render the meta tags
+        $produceXhtml = getEffectiveSetting('generator', 'xhtml', 'false');
+        $meta = '';
+        foreach ($this->_metaTags as $metaTag) {
+            $tag = '<meta';
+            foreach ($metaTag as $key => $value) {
+                $tag .= ' ' . $key . '="' . $value . '"';
+            }
+            if ($produceXhtml) {
+                $tag .= ' /';
+            }
+            $tag .= ">\n";
+            $meta .= $tag;
+        }
+        if (!empty($meta)) {
+            $this->_pagetemplate->set('s', 'META', $meta);
         }
 
         $strscript = $this->_subnav . "\n" . $this->_markscript . "\n";

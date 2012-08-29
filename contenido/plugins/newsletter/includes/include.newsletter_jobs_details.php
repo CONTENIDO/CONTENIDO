@@ -79,7 +79,10 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
             $oForm->add("", sprintf(i18n("Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)", 'newsletter'),
                                     $iChunk, $iChunks, $oJob->get("rcpcount"), $oJob->get("sendcount")));
 
-            $oPage->addScript("Refresh", '<meta http-equiv="refresh" content="'.$oJob->get("dispatch_delay").'; URL='.$sPathNext.'">');
+            $oPage->addMeta(array(
+                'http-equiv' => 'refresh',
+                'content' => $oJob->get("dispatch_delay").'; URL='.$sPathNext
+            ));
             $oForm->unsetActionButton("submit");
             $oForm->setActionButton("cancel", $backendUrl . "images/but_cancel.gif", i18n("Stop sending", 'newsletter'), "c");
         }
