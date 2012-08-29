@@ -113,6 +113,8 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
         $oVersionStyle->setVarForm("frame", $frame);
         $oVersionStyle->setVarForm("idstyle", $sFileName);
         $oVersionStyle->setVarForm("file", $sFileName);
+        // needed - otherwise history can not be deleted!
+        $oVersionStyle->setVarForm("action", '');
 
         // create and output the select box, for params please look class.version.php
         $sSelectBox = $oVersionStyle->buildSelectBox("style_history", "Style History", "Show History Entry", "idstylehistory");

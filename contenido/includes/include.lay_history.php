@@ -76,6 +76,8 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
     $oVersion->setVarForm("area",  $area);
     $oVersion->setVarForm("frame", $frame);
     $oVersion->setVarForm("idlay", $idlay);
+        // needed - otherwise history can not be deleted!
+    $oVersion->setVarForm("action", '');
 
     // create and output the select box, for params please look class.version.php
     $sSelectBox = $oVersion->buildSelectBox("mod_history", "Layout History", "Show History Entry", "idlayhistory");

@@ -120,6 +120,8 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage'))
         $oVersionJScript->setVarForm("frame", $frame);
         $oVersionJScript->setVarForm("idjscript", $sFileName);
         $oVersionJScript->setVarForm("file", $sFileName);
+        // needed - otherwise history can not be deleted!
+        $oVersionJScript->setVarForm("action", '');
 
         // create and output the select box, for params please look class.version.php
         $sSelectBox = $oVersionJScript->buildSelectBox("jscript_history", "JScript History", "Show History Entry", "idjscripthistory");

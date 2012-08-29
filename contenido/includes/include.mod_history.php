@@ -80,7 +80,8 @@ $sSelectBox = "";
 $oVersion->setVarForm("area", $area);
 $oVersion->setVarForm("frame", $frame);
 $oVersion->setVarForm("idmod", $idmod);
-$oVersion->setVarForm("action", $action);
+// needed - otherwise history can not be deleted!
+$oVersion->setVarForm("action", '');
 
 // create and output the select box, for params please look class.version.php
 $sSelectBox = $oVersion->buildSelectBox("mod_history", i18n("Module History"), i18n("Show history entry"), "idmodhistory");
