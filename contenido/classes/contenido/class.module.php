@@ -116,7 +116,7 @@ class cApiModuleCollection extends ItemCollection {
 
     /**
      * Returns list of all types by client id
-     * @param  int  $idclient 
+     * @param  int  $idclient
      * @return  array
      */
     public function getAllTypesByIdclient($idclient) {
@@ -305,6 +305,8 @@ class cApiModule extends Item {
      * @return array Found strings for this module
      */
     public function parseModuleForStrings() {
+        $cfg = cRegistry::getConfig();
+
         if ($this->virgin == true) {
             return false;
         }
@@ -625,7 +627,7 @@ class cApiModule extends Item {
      */
     private function _addFolderToZip($dir, $zipArchive, $zipdir = '') {
         if (is_dir($dir)) {
-            if ($dh = opendir($dir)) {
+            if (($dh = opendir($dir)) !== false) {
                 //Add the directory
                 if (!empty($zipdir)) {
                     $zipArchive->addEmptyDir($zipdir);
@@ -750,7 +752,7 @@ class cApiModuleTranslationCollection extends ItemCollection {
 
         $this->select("idmod = '$idmod' AND idlang = '$idlang' AND original = '$sorg'");
 
-        if ($item = $this->next()) {
+        if (($item = $this->next()) !== false) {
             if ($translation !== false) {
                 $item->set('translation', $translation);
                 $item->store();
@@ -786,7 +788,7 @@ class cApiModuleTranslationCollection extends ItemCollection {
         // Look up
         $this->select("idmod = '$module' AND idlang='$lang' AND original = '$sorg'");
 
-        if ($t = $this->next()) {
+        if (($t = $this->next()) !== false) {
             $translation = $t->get('translation');
 
             if ($translation != '') {
