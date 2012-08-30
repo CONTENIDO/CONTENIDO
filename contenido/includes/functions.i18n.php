@@ -428,7 +428,17 @@ function i18nGetAvailableLanguages() {
     return $aLanguages;
 }
 
-function mi18n() {
+/**
+ *
+ * Now the function supports formated strings like %s.
+ * e.g. echo mi18n('May the %s be with %s', 'force', 'you'); output
+ * May the force be with you
+ *
+ *
+ * @param unknown_type $string
+ * @return mixed
+ */
+function mi18n($string) {
     global $cCurrentModule;
 
     // dont workd by setup/upgrade
