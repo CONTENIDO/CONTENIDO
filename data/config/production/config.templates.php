@@ -98,7 +98,6 @@ $cfg['templates']['stat_menu']            = 'template.stat_menu.html';
 $cfg['templates']['rights_left_top']      = 'template.rights_left_top.html';
 $cfg['templates']['rights_menu']          = 'template.rights_menu.html';
 $cfg['templates']['rights_overview']      = 'template.rights_overview.html';
-$cfg['templates']['rights_details']       = 'template.rights_details.html';
 $cfg['templates']['rights_create']        = 'template.rights_create.html';
 $cfg['templates']['include.rights']       = 'template.rights.html';
 

@@ -1392,7 +1392,6 @@ contenido/includes/include.grouprights.php -text
 contenido/includes/include.grouprights_area.php -text
 contenido/includes/include.grouprights_con.php -text
 contenido/includes/include.grouprights_create.php -text
-contenido/includes/include.grouprights_details.php -text
 contenido/includes/include.grouprights_external.php -text
 contenido/includes/include.grouprights_lay.php -text
 contenido/includes/include.grouprights_left_top.php -text
@@ -2071,7 +2070,6 @@ contenido/templates/standard/template.request_password.html -text svneol=unset#t
 contenido/templates/standard/template.right_top_blank.html -text
 contenido/templates/standard/template.rights.html -text
 contenido/templates/standard/template.rights_create.html -text
-contenido/templates/standard/template.rights_details.html -text
 contenido/templates/standard/template.rights_left_top.html -text
 contenido/templates/standard/template.rights_menu.html -text
 contenido/templates/standard/template.rights_overview.html -text

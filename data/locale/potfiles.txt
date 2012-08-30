@@ -513,7 +513,6 @@
 ./includes/include.grouprights_area.php
 ./includes/include.grouprights_con.php
 ./includes/include.grouprights_create.php
-./includes/include.grouprights_details.php
 ./includes/include.grouprights_external.php
 ./includes/include.grouprights_lay.php
 ./includes/include.grouprights_left_top.php
@@ -771,7 +770,6 @@
 ./templates/standard/template.request_password.html
 ./templates/standard/template.rights.html
 ./templates/standard/template.rights_create.html
-./templates/standard/template.rights_details.html
 ./templates/standard/template.rights_left_top.html
 ./templates/standard/template.rights_menu.html
 ./templates/standard/template.rights_overview.html
