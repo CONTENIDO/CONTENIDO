@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-29 15:36+0200\n"
+"POT-Creation-Date: 2012-08-30 09:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1191,7 +1191,7 @@ msgstr ""
 #: includes/include.client_artspec.php:47
 #: includes/include.client_artspec.php:55 includes/include.client_edit.php:43
 #: includes/include.con_art_overview.php:934
-#: includes/include.con_edit_form.php:715
+#: includes/include.con_edit_form.php:719
 #: includes/include.con_meta_form.php:380
 #: includes/include.grouprights_area.php:58
 #: includes/include.grouprights_con.php:49
@@ -2347,7 +2347,7 @@ msgstr ""
 msgid "Summary"
 msgstr ""
 
-#: includes/include.con_edit_form.php:694
+#: includes/include.con_edit_form.php:698
 #: includes/include.con_meta_form.php:330
 msgid "Please fill in the start date and/or the end date!"
 msgstr ""

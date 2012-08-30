@@ -403,6 +403,15 @@ contenido/classes/datatypes/class.datatype.currency.php -text
 contenido/classes/datatypes/class.datatype.datetime.php -text
 contenido/classes/datatypes/class.datatype.number.php -text
 contenido/classes/datatypes/class.datatype.php -text
+contenido/classes/debug/Sample.php -text
+contenido/classes/debug/class.debug.dev.null.php -text
+contenido/classes/debug/class.debug.file.and.vis.adv.php -text
+contenido/classes/debug/class.debug.file.php -text
+contenido/classes/debug/class.debug.hidden.php -text
+contenido/classes/debug/class.debug.php -text
+contenido/classes/debug/class.debug.visible.adv.php -text
+contenido/classes/debug/class.debug.visible.php -text
+contenido/classes/debug/interface.debug.php -text
 contenido/classes/drivers/drivers.txt -text
 contenido/classes/exceptions/exception.conuser.php -text
 contenido/classes/genericdb/class.gdb.driver.php -text
