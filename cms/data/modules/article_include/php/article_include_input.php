@@ -62,4 +62,4 @@ echo '</select>&nbsp;<input type="image" src="images/submit.gif">
 </tr>
 </table>';
 
-?>
+?><?php
