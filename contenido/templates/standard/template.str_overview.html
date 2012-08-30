@@ -127,13 +127,13 @@
         }
 
         /* Function for cancel moving a tree */
-        function cancelMoveTree( idcat ) {
-            if ( idcat > 0 ) {
-                url  = 'main.php?area='+area+'';
+        function cancelMoveTree(idcat) {
+            if (idcat > 0) {
+                url  = 'main.php?area=' + area + '';
                 url += '&action=str_movesubtree';
-                url += '&frame='+frame;
+                url += '&frame=' + frame;
                 url += '&idcat=' + idcat;
-                url += '&parentid_new=0';
+                url += '&parentid_new=-1';
                 url += '&contenido=' + sid;
 
                 window.location.href = url;

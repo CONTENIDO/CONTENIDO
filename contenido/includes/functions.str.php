@@ -798,10 +798,13 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = null, $newPostId = nul
         $newPostId = 0;
     }
 
-    // check if new parent id is -1 and the unescaped value is not null
-    if ($newParentId == -1 && !is_null($newParentId)) {
+    if ($newParentId == -1) {
+        // stop moving the category without actually moving it
         $movesubtreeidcat = 0;
-    } elseif ($newParentId >= 0) {
+    } else if (is_null($newParentId)) {
+        // start moving the category withour moving it yet
+        $movesubtreeidcat = $idcat;
+    } else {
         // move the category with the ID idcat to the category newParentId
         $category = new cApiCategory($idcat);
         $oldPreId = $category->get('preid');
@@ -852,11 +855,6 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = null, $newPostId = nul
         $category->store();
 
         $movesubtreeidcat = 0;
-    } else {
-        // We recoded this function to prevent crashing the cat tree
-        // when a user copies a tree and forget to set the target category
-        // Copy transaction now is only performed by setting the target
-        $movesubtreeidcat = $idcat;
     }
 
     $sess = cRegistry::getSession();
