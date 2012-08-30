@@ -10,33 +10,29 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend
- * @version    1.0.7
- * @author     Olaf Niemann, Jan Lengowski
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @package CONTENIDO Backend
+ * @version 1.0.7
+ * @author Olaf Niemann, Jan Lengowski
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  *
- * {@internal
- *   created  2003-01-20
- *   $Id$:
- * }}
+ *        {@internal
+ *        created 2003-01-20
+ *        $Id$:
+ *        }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
-
 // CONTENIDO startup process
-include_once('./includes/startup.php');
+include_once ('./includes/startup.php');
 
-// $teststring = mi18n('My string : %s', 'some string');
-// echo $teststring;
-// exit;
-
+//includes the backendpath
 $backendPath = cRegistry::getBackendPath();
 
 $cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
@@ -52,9 +48,9 @@ cRegistry::bootstrap(array(
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
-require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
+require_once ($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
-require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
+require_once ($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
 if ($cfg['use_pseudocron'] == true) {
     // Include cronjob-Emulator, but only for frame 1
@@ -75,7 +71,8 @@ if ($cfg['use_pseudocron'] == true) {
     }
 }
 
-// Remove all own marks, only for frame 1 and 4  if $_REQUEST['appendparameters'] == 'filebrowser'
+// Remove all own marks, only for frame 1 and 4 if $_REQUEST['appendparameters']
+// == 'filebrowser'
 // filebrowser is used in tiny in this case also do not remove session marks
 if (($frame == 1 || $frame == 4) && $_REQUEST['appendparameters'] != 'filebrowser') {
     $col = new cApiInUseCollection();
@@ -95,7 +92,10 @@ $notification = new cGuiNotification();
 $classarea = new cApiAreaCollection();
 $classlayout = new cApiLayout();
 $classclient = new cApiClientCollection();
-/** @deprecated [2012-03-27] Uninitialized global cApiUser instance is no more needed */
+/**
+ * @deprecated [2012-03-27] Uninitialized global cApiUser instance is no more
+ * needed
+ */
 $classuser = new cApiUser();
 
 $currentuser = new cApiUser($auth->auth['uid']);
@@ -113,10 +113,7 @@ if (isset($changelang) && is_numeric($changelang)) {
     $lang = $changelang;
 }
 
-if (!is_numeric($client) ||
-    (!$perm->have_perm_client('client['.$client.']') &&
-    !$perm->have_perm_client('admin['.$client.']')))
-{
+if (!is_numeric($client) || (!$perm->have_perm_client('client[' . $client . ']') && !$perm->have_perm_client('admin[' . $client . ']'))) {
     // use first client which is accessible
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
@@ -131,7 +128,7 @@ if (!is_numeric($client) ||
 if (!is_numeric($lang) || $lang == '') {
     $sess->register('lang');
     // search for the first language of this client
-    $sql = "SELECT * FROM ".$cfg['tab']['lang']." AS A, ".$cfg['tab']['clients_lang']." AS B WHERE A.idlang=B.idlang AND idclient=".cSecurity::toInteger($client)." ORDER BY A.idlang ASC";
+    $sql = "SELECT * FROM " . $cfg['tab']['lang'] . " AS A, " . $cfg['tab']['clients_lang'] . " AS B WHERE A.idlang=B.idlang AND idclient=" . cSecurity::toInteger($client) . " ORDER BY A.idlang ASC";
     $db->query($sql);
     $db->next_record();
     $lang = $db->f('idlang');
@@ -154,7 +151,7 @@ $sess->register('sess_area');
 if (isset($area)) {
     $sess_area = $area;
 } else {
-    $area = (isset($sess_area) && $sess_area != '') ? $sess_area : 'login';
+    $area = (isset($sess_area) && $sess_area != '')? $sess_area : 'login';
 }
 
 $sess->register('cfgClient');
@@ -162,7 +159,7 @@ $sess->register('errsite_idcat');
 $sess->register('errsite_idart');
 
 if ($cfgClient['set'] != 'set') {
-     rereadClients();
+    rereadClients();
 }
 
 // Initialize CONTENIDO_Backend.
@@ -181,7 +178,7 @@ $cfg['debug']['backend_exectime']['start'] = getmicrotime();
 // one file is required.
 if (is_array($backend->getFile('inc'))) {
     foreach ($backend->getFile('inc') as $filename) {
-        include_once($backendPath . $filename);
+        include_once ($backendPath . $filename);
     }
 }
 
@@ -204,29 +201,30 @@ if (isset($action)) {
     }
 }
 
-// Include the 'main' file for the selected area. Usually there is only one main file
+// Include the 'main' file for the selected area. Usually there is only one main
+// file
 $sFilename = "";
 if (is_array($backend->getFile('main'))) {
     foreach ($backend->getFile('main') as $id => $filename) {
         $sFilename = $filename;
-        include_once($backendPath . $filename);
+        include_once ($backendPath . $filename);
     }
 } elseif ($frame == 3) {
-    include_once($backendPath . $cfg['path']['includes'] . 'include.default_subnav.php');
+    include_once ($backendPath . $cfg['path']['includes'] . 'include.default_subnav.php');
     $sFilename = "include.default_subnav.php";
 } else {
-    include_once($backendPath . $cfg['path']['includes'] . 'include.blank.php');
+    include_once ($backendPath . $cfg['path']['includes'] . 'include.blank.php');
     $sFilename = "include.blank.php";
 }
 
 $cfg['debug']['backend_exectime']['end'] = getmicrotime();
 
 $debugInfo = array(
-    'Building this page (excluding CONTENIDO includes) took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']).' seconds',
-    'Building the complete page took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']).' seconds',
-    'Include memory usage: '.humanReadableSize(memory_get_usage()-$oldmemusage),
-    'Complete memory usage: '.humanReadableSize(memory_get_usage()),
-    "*****".$sFilename."*****"
+    'Building this page (excluding CONTENIDO includes) took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . ' seconds',
+    'Building the complete page took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . ' seconds',
+    'Include memory usage: ' . humanReadableSize(memory_get_usage() - $oldmemusage),
+    'Complete memory usage: ' . humanReadableSize(memory_get_usage()),
+    "*****" . $sFilename . "*****"
 );
 cDebug::out(implode("\n", $debugInfo));
 
