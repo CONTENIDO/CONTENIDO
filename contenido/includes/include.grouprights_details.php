@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-04-30
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -105,7 +100,7 @@ if (!isset($useridas)) {
     $tpl->set('s', 'FORM', $form);
     $tpl->set('s', 'BORDERCOLOR', $cfg["color"]["table_border"]);
     $tpl->set('s', 'BGCOLOR', $cfg["color"]["table_light"]);
-    $tpl->set('s', 'SUBMITTEXT', "Änderungen &uuml;bernehmen");
+    $tpl->set('s', 'SUBMITTEXT', "ï¿½nderungen &uuml;bernehmen");
     if ($error) {
         echo $error;
     }
@@ -121,7 +116,7 @@ if (!isset($useridas)) {
     $tpl->set('d', 'CATFIELD', $oTxtPass->render());
     $tpl->next();
 
-    $tpl->set('d', 'CATNAME', "Neues Passwort (Bestätigung)");
+    $tpl->set('d', 'CATNAME', "Neues Passwort (Bestï¿½tigung)");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $oTxtWord = new cHTMLPasswordbox("passwordagain", "", 40, 255);
     $tpl->set('d', 'CATFIELD', $oTxtWord->render());

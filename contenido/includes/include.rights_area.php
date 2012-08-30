@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -40,7 +35,7 @@ $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"
 $db->query($sql);
 
 $rights_list_old = array();
-while ($db->next_record()) { //set a new rights list fore this user
+while ($db->next_record()) { //set a new rights list for this user
     $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f("idcat")] = "x";
 }
 
@@ -52,6 +47,7 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit")) 
     }
 }
 
+// declare new template variables
 $sJsBefore = '';
 $sJsAfter = '';
 $sJsExternal = '';
@@ -123,7 +119,6 @@ foreach ($right_list as $key => $value) {
                 $locationString = $main;
             }
 
-            //table tr erf�llen start
             $objItem->updateAttributes(array("class" => "td_rights1"));
             $objItem->setContent($locationString);
             $items .= $objItem->render();
@@ -143,7 +138,6 @@ foreach ($right_list as $key => $value) {
             $items = "";
             $output .= $objRow->render();
             $objRow->advanceID();
-            // table tr erf�llen end
             //set javscript array for areatree
             $sJsBefore .= "areatree[\"$key\"] = new Array();
                            areatree[\"$key\"][\"" . $value2["perm"] . "0\"] = \"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\"\n";
@@ -172,7 +166,6 @@ foreach ($right_list as $key => $value) {
                     }
                 }
 
-                //table tr erf�llen start
                 $objItem->updateAttributes(array("class" => "td_rights1"));
                 $objItem->setContent($sCellContent);
                 $items .= $objItem->render();
@@ -192,13 +185,11 @@ foreach ($right_list as $key => $value) {
                 $items = "";
                 $output .= $objRow->render();
                 $objRow->advanceID();
-                // table tr erf�llen end
                 //set javscript array for areatree
-                $sJsBefore .= "areatree[\"$key\"][\"" . $value2["perm"] . "$value3\"]=\"rights_list[" . $value2["perm"] . "|$value3|0]\"\n";
+                $sJsBefore .= "areatree[\"$key\"][\"" . $value2["perm"] . "$value3\"]=\"rights_list[" . $value2["perm"] . "|$value3|0]\";\n";
             }
         }
     }
-    //checkbox for checking all actions fore this itemid
 }
 
 //table footer
@@ -222,5 +213,3 @@ $oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
 $oTpl->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
 
 $oTpl->generate('templates/standard/' . $cfg['templates']['include.rights']);
-
-?>

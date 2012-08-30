@@ -18,14 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-04-29
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -91,4 +83,3 @@ $mstr = sprintf($tmp_mstr, 'right_top',
 $tpl->set('s', 'NEWGROUP', $mstr);
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_left_top']);
-?>

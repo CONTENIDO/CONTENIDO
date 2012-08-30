@@ -58,11 +58,11 @@ if ($_POST["mod_send"] == true && ($_POST["CodeOut"] != "" || $_POST["CodeIn"] !
     $sName = $_POST["modname"];
     $sCodeInput = $_POST["CodeIn"];
     $sCodeOutput = $_POST["CodeOut"];
-    $sDescription = $_POST["moddesc"];
+    $description = $_POST["moddesc"];
 
     //    save and mak new revision
     $oPage->addScript($oVersion->renderReloadScript('mod', $idmod, $sess));
-    modEditModule($idmod, $sName, $sDescription, $sCodeInput, $sCodeOutput, $oVersion->sTemplate, $oVersion->sModType);
+    modEditModule($idmod, $sName, $description, $sCodeInput, $sCodeOutput, $oVersion->sTemplate, $oVersion->sModType);
     unset($oVersion);
 }
 
@@ -116,7 +116,7 @@ if ($sRevision != '' && $_POST["action"] != "history_truncate") {
 
         //    if choose xml file read value an set it
         $sName = $oVersion->getTextBox("modname", $aNodes["name"], 60);
-        $sDescription = $oVersion->getTextarea("moddesc", $aNodes["desc"], 100, 10);
+        $description = $oVersion->getTextarea("moddesc", $aNodes["desc"], 100, 10);
         $sCodeInput = $oVersion->getTextarea("CodeIn", $aNodes["code_input"], 100, 30, "IdCodeIn");
         $sCodeOutput = $oVersion->getTextarea("CodeOut", $aNodes["code_output"], 100, 30, "IdCodeOut");
     }
@@ -125,7 +125,7 @@ if ($sRevision != '' && $_POST["action"] != "history_truncate") {
 if ($sSelectBox != "") {
     // Add new Elements of Form
     $oForm->add(i18n("Name"), $sName);
-    $oForm->add(i18n("Description"), $sDescription);
+    $oForm->add(i18n("Description"), $description);
     $oForm->add(i18n("Code input"), $sCodeInput);
     $oForm->add(i18n("Code output"), $sCodeOutput);
     $oForm->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c"/* , "mod_history_takeover" */); //modified it

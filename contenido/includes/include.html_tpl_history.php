@@ -155,7 +155,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
             if (count($aNodes) > 1) {
                 //    if choose xml file read value an set it
                 $sName = $oVersionHtmlTemp->getTextBox("html_tpl_name", $aNodes["name"], 60);
-                $sDescription = $oVersionHtmlTemp->getTextarea("html_tpl_desc", $aNodes["desc"], 100, 10);
+                $description = $oVersionHtmlTemp->getTextarea("html_tpl_desc", $aNodes["desc"], 100, 10);
                 $sCode = $oVersionHtmlTemp->getTextarea("html_tpl_code", $aNodes["code"], 100, 30, "IdLaycode");
 
             }
@@ -164,7 +164,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
 
         // Add new Elements of Form
         $oForm->add(i18n("Name"), $sName);
-        $oForm->add(i18n("Description"), $sDescription);
+        $oForm->add(i18n("Description"), $description);
         $oForm->add(i18n("Code"), $sCode);
         $oForm->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c"/*, "mod_history_takeover"*/); //modified it
         $oForm->unsetActionButton("submit");

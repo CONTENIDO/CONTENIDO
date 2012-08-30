@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-04-30
- *   $Id$:
- * }}
  * TODO error handling!!!
  * TODO export functions to new cApiUser object!
  */
@@ -405,5 +400,3 @@ $tpl->next();
 
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['rights_overview']);
-
-?>

@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -35,7 +30,7 @@ include_once(cRegistry::getBackendPath() . 'includes/include.grouprights.php');
 
 //set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("con")]) . "'";
-$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C WHERE user_id='" . cSecurity::escapeDB($groupid, $db) . "' AND idclient='" . cSecurity::toInteger($rights_client) . "' AND A.type = 1 AND idlang='" . cSecurity::toInteger($rights_lang) . "' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C WHERE user_id='" . cSecurity::toInteger($groupid) . "' AND idclient='" . cSecurity::toInteger($rights_client) . "' AND A.type = 1 AND idlang='" . cSecurity::toInteger($rights_lang) . "' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
 $rights_list_old = array();
 while ($db->next_record()) { //set a new rights list fore this user
@@ -56,14 +51,9 @@ $sJsExternal = '';
 $sTable = '';
 
 $sJsExternal .= '<script type="text/javascript" src="scripts/expandCollapse.js"></script>';
-
 // declare new javascript variables;
-$sJsBefore .= " var itemids = new Array();
-                var actareaids = new Array();";
-$colspan = 0;
-
-$possible_areas = array();
-$aSecondHeaderRow = array();
+$sJsBefore .= "var itemids = new Array();\n
+               var actareaids = new Array();\n";
 
 //Init Table
 $oTable = new cHTMLTable;
@@ -87,6 +77,9 @@ $objHeaderItem->setContent("&nbsp;");
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
 
+$possible_areas = array();
+$aSecondHeaderRow = array();
+
 // look for possible actions   in mainarea []   in str and con
 foreach ($right_list["con"] as $value2) {
     // if there are some actions
@@ -98,16 +91,14 @@ foreach ($right_list["con"] as $value2) {
                 //set the areas that are in use
                 $possible_areas[$value2["perm"]] = "";
 
-                $colspan++;
                 //set  the possible areas and actions for this areas
                 //checkbox for the whole action
                 $objHeaderItem->updateAttributes(array("class" => "center", "valign" => "top", "align" => "center"));
                 $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
                 $items .= $objHeaderItem->render();
                 $objHeaderItem->advanceID();
-                //JsCode
                 $sJsBefore .= "actareaids[\"$value3|" . $value2["perm"] . "\"]=\"x\";\n";
-                array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "','$value3','')\">");
+                $aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "','$value3','')\">";
             }
         }
     }
@@ -117,8 +108,7 @@ foreach ($right_list["con"] as $value2) {
 $objHeaderItem->setContent(i18n("Check all"));
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
-array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
-$colspan++;
+$aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">";
 
 $objHeaderRow->updateAttributes(array("class" => "textw_medium"));
 $objHeaderRow->setContent($items);
@@ -153,7 +143,6 @@ $sql = "SELECT A.idcat, level, name,parentid FROM " . $cfg["tab"]["cat_tree"] . 
 $db->query($sql);
 $counter = array();
 $parentid = "leer";
-$sScript = '';
 
 $aRowname = array();
 $iLevel = 0;
@@ -180,7 +169,7 @@ while ($db->next_record()) {
             } else {
                 $iLevel = $db->f("level");
             }
-            array_push($aRowname, $db->f("idcat"));
+            $aRowname[] = $db->f("idcat");
         }
 
         //find out parentid for inheritance
@@ -250,8 +239,6 @@ while ($db->next_record()) {
     $objRow->advanceID();
 }
 
-$colspan = $colspan + 2;
-
 //table footer
 $footeroutput = "";
 $objItem->updateAttributes(array("class" => "", "valign" => "", "align" => "center", "colspan" => "22"));
@@ -267,12 +254,10 @@ $oTable->setContent($headeroutput . $output . $footeroutput);
 $sTable = stripslashes($oTable->render());
 //Table end
 
-$sJsAfter .= "init('" . i18n("Open category") . "', '" . i18n("Close category") . "'); \n";
+$sJsAfter .= "init('" . i18n("Open category") . "', '" . i18n("Close category") . "');\n";
 
 $oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
 $oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
 $oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
 $oTpl->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
 $oTpl->generate('templates/standard/' . $cfg['templates']['include.rights']);
-
-?>

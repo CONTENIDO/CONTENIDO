@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -33,21 +28,13 @@ if (!defined('CON_FRAMEWORK')) {
 //notice $oTpl is filled and generated in file include.rights.php this file renders $oTpl to browser
 include_once(cRegistry::getBackendPath() . 'includes/include.grouprights.php');
 $debug = (cDebug::getDefaultDebuggerName() != cDebug::DEBUGGER_DEVNULL);
-// declare new Template variables
-$sJsBefore = '';
-$sJsAfter = '';
-$sJsExternal = '';
-$sTable = '';
 
-// declare new javascript variables;
-$sJsBefore .= "var areatree = new Array();\n";
-
-//set the areas which are in use fore selecting these
+//set the areas which are in use for selecting these
 
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C WHERE user_id='" . cSecurity::escapeDB($groupid, $db) . "' AND idclient='" . cSecurity::toInteger($rights_client) . "' AND idlang='" . cSecurity::toInteger($rights_lang) . "' AND idcat='0' AND A.idaction = C.idaction AND A.idarea = B.idarea";
 $db->query($sql);
 $rights_list_old = array();
-while ($db->next_record()) { //set a new rights list fore this user
+while ($db->next_record()) { //set a new rights list for this user
     $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f("idcat")] = "x";
 }
 
@@ -58,6 +45,14 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
         $notification->displayNotification("error", i18n("Permission denied"));
     }
 }
+
+// declare new template variables
+$sJsBefore = '';
+$sJsAfter = '';
+$sJsExternal = '';
+$sTable = '';
+
+$sJsBefore .= "var areatree = new Array();\n";
 
 if (!isset($rights_perms) || $action == "" || !isset($action)) {
     //search for the permissions of this user
@@ -102,7 +97,6 @@ foreach ($aTh as $i => $tr) {
 //table content
 $output = "";
 $nav = new cGuiNavigation;
-
 foreach ($right_list as $key => $value) {
     // look for possible actions in mainarea
     foreach ($value as $key2 => $value2) {
@@ -117,13 +111,13 @@ foreach ($right_list as $key => $value) {
 
             // Extract names from the XML document.
             $main = $nav->getName(str_replace('/overview', '/main', $value2['location']));
+
             if ($debug) {
                 $locationString = $value2["location"] . " " . $value2["perm"] . "-->" . $main;
             } else {
                 $locationString = $main;
             }
 
-            //table tr erf�llen start
             $objItem->updateAttributes(array("class" => "td_rights1"));
             $objItem->setContent($locationString);
             $items .= $objItem->render();
@@ -143,11 +137,9 @@ foreach ($right_list as $key => $value) {
             $items = "";
             $output .= $objRow->render();
             $objRow->advanceID();
-            // table tr erf�llen end
             //set javscript array for areatree
-            $sJsBefore .= "
-            areatree[\"$key\"]=new Array();
-            areatree[\"$key\"][\"" . $value2["perm"] . "0\"]=\"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\";\n";
+            $sJsBefore .= "areatree[\"$key\"] = new Array();
+                           areatree[\"$key\"][\"" . $value2["perm"] . "0\"] = \"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\";\n";
         }
 
         //if there area some
@@ -160,6 +152,7 @@ foreach ($right_list as $key => $value) {
                 } else {
                     $checked = "";
                 }
+
                 //set the checkbox the name consits of areait+actionid+itemid
                 $sCellContent = '';
                 if ($debug) {
@@ -172,7 +165,6 @@ foreach ($right_list as $key => $value) {
                     }
                 }
 
-                //table tr erf�llen start
                 $objItem->updateAttributes(array("class" => "td_rights1"));
                 $objItem->setContent($sCellContent);
                 $items .= $objItem->render();
@@ -192,9 +184,8 @@ foreach ($right_list as $key => $value) {
                 $items = "";
                 $output .= $objRow->render();
                 $objRow->advanceID();
-                // table tr erf�llen end
                 //set javscript array for areatree
-                $sJsBefore .= "areatree[\"$key\"][\"" . $value2["perm"] . "$value3\"]=\"rights_list[" . $value2["perm"] . "|$value3|0]\";";
+                $sJsBefore .= "areatree[\"$key\"][\"" . $value2["perm"] . "$value3\"]=\"rights_list[" . $value2["perm"] . "|$value3|0]\";\n";
             }
         }
     }
@@ -219,6 +210,5 @@ $oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
 $oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
 $oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
 $oTpl->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
-$oTpl->generate('templates/standard/' . $cfg['templates']['include.rights']);
 
-?>
+$oTpl->generate('templates/standard/' . $cfg['templates']['include.rights']);

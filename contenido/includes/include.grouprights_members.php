@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-06-03
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -38,7 +33,6 @@ if (!$perm->have_perm_area_action($area, $action)) {
 } elseif (!isset($groupid)) {
     return;
 }
-
 
 if (($action == "group_deletemember") && ($perm->have_perm_area_action($area, $action))) {
     $aDeleteMembers = array();
@@ -175,5 +169,3 @@ $tpl3->set('s', 'RELOADSCRIPT', '');
 $tpl3gen = $tpl3->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_memberselect'], true);
 
 echo $tpl3gen;
-
-?>

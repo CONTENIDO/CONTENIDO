@@ -11,18 +11,13 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.1
+ * @version    1.0.0
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -33,8 +28,8 @@ if (!defined('CON_FRAMEWORK')) {
 include_once(cRegistry::getBackendPath() . 'includes/include.rights.php');
 //set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("str")]) . "'";
-$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C WHERE user_id='" . cSecurity::escapeDB($userid, $db) . "'
-        AND idclient='" . cSecurity::escapeDB($rights_client, $db) . "' AND A.type = 0 AND idlang='" . cSecurity::escapeDB($rights_lang, $db) . "' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C WHERE user_id='" . cSecurity::toInteger($userid) . "'
+        AND idclient='" . cSecurity::toInteger($rights_client) . "' AND A.type = 0 AND idlang='" . cSecurity::toInteger($rights_lang) . "' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
 
 $rights_list_old = array();
@@ -57,10 +52,8 @@ $sTable = '';
 $sJsExternal .= '<script type="text/javascript" src="scripts/expandCollapse.js"></script>' . "\n";
 
 // declare new javascript variables;
-$sJsBefore .= "var itemids = new Array(); \n
-               var actareaids = new Array(); \n";
-
-$colspan = 0;
+$sJsBefore .= "var itemids = new Array();\n
+               var actareaids = new Array();\n";
 
 //Init Table
 $oTable = new cHTMLTable;
@@ -89,15 +82,13 @@ $aSecondHeaderRow = array();
 
 // look for possible actions in mainarea [] in str and con
 foreach ($right_list["str"] as $value2) {
-    //if there are some actions
+    // if there are some actions
     if (is_array($value2["action"])) {
         foreach ($value2["action"] as $key3 => $value3) {
             //set the areas that are in use
-            # HACK!
             if ($value3 != "str_newtree") {
                 $possible_areas[$value2["perm"]] = "";
 
-                $colspan++;
                 //set  the possible areas and actions for this areas
                 $sJsBefore .= "actareaids[\"$value3|" . $value2["perm"] . "\"]=\"x\";\n";
 
@@ -106,7 +97,7 @@ foreach ($right_list["str"] as $value2) {
                 $items .= $objHeaderItem->render();
                 $objHeaderItem->advanceID();
 
-                array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "','$value3','')\">");
+                $aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "','$value3','')\">";
             }
         }
     }
@@ -116,8 +107,7 @@ foreach ($right_list["str"] as $value2) {
 $objHeaderItem->setContent(i18n("Check all"));
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
-array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
-$colspan++;
+$aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">";
 
 $objHeaderRow->updateAttributes(array("class" => "textw_medium"));
 $objHeaderRow->setContent($items);
@@ -133,6 +123,7 @@ $objHeaderItem->advanceID();
 $objHeaderItem->setContent("&nbsp;");
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
+
 foreach ($aSecondHeaderRow as $value) {
     $objHeaderItem->setContent($value);
     $items .= $objHeaderItem->render();
@@ -153,7 +144,6 @@ $db->query($sql);
 
 $counter = array();
 $parentid = "leer";
-
 $aRowname = array();
 $iLevel = 0;
 
@@ -183,7 +173,7 @@ while ($db->next_record()) {
             } else {
                 $iLevel = $db->f("level");
             }
-            array_push($aRowname, $db->f("idcat"));
+            $aRowname[] = $db->f("idcat");
         }
 
         //find out parentid for inheritance

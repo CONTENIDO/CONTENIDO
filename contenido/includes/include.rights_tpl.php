@@ -11,18 +11,13 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.1
+ * @version    1.0.0
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -33,8 +28,8 @@ if (!defined('CON_FRAMEWORK')) {
 include_once(cRegistry::getBackendPath() . 'includes/include.rights.php');
 //set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("tpl")]) . "'";
-$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C WHERE user_id='" . cSecurity::escapeDB($userid, $db) . "'
-        AND idclient='" . cSecurity::escapeDB($rights_client, $db) . "' AND A.type = 0 AND idlang='" . cSecurity::escapeDB($rights_lang, $db) . "' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C WHERE user_id='" . cSecurity::toInteger($userid) . "'
+        AND idclient='" . cSecurity::toInteger($rights_client) . "' AND A.type = 0 AND idlang='" . cSecurity::toInteger($rights_lang) . "' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
 
 $rights_list_old = array();
@@ -56,9 +51,6 @@ $sTable = '';
 
 $sJsBefore .= "var itemids = new Array();\n
                var actareaids = new Array();\n";
-
-// declare new javascript variables;
-$colspan = 0;
 
 //Init Table
 $oTable = new cHTMLTable;
@@ -90,9 +82,7 @@ foreach ($right_list["tpl"] as $value2) {
             //set the areas that are in use
             $possible_areas[$value2["perm"]] = "";
 
-            $colspan++;
             //set  the possible areas and actions for this areas
-
             $sJsBefore .= "actareaids[\"$value3|" . $value2["perm"] . "\"]=\"x\"\n";
 
             //checkbox for the whole action
@@ -100,7 +90,7 @@ foreach ($right_list["tpl"] as $value2) {
             $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
             $items .= $objHeaderItem->render();
             $objHeaderItem->advanceID();
-            array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "','$value3','')\">");
+            $aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "','$value3','')\">";
         }
     }
 }
@@ -109,9 +99,7 @@ foreach ($right_list["tpl"] as $value2) {
 $objHeaderItem->setContent(i18n("Check all"));
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
-array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
-
-$colspan++;
+$aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">";
 
 $objHeaderRow->updateAttributes(array("class" => "textw_medium"));
 $objHeaderRow->setContent($items);
@@ -137,8 +125,7 @@ $objHeaderRow->advanceID();
 
 //table content
 $output = "";
-
-//Select the itemid�s
+//Select the itemids
 $sql = "SELECT * FROM " . $cfg["tab"]["tpl"] . " WHERE idclient='" . cSecurity::toInteger($rights_client) . "' ORDER BY name";
 $db->query($sql);
 
@@ -153,7 +140,7 @@ while ($db->next_record()) {
     $objItem->advanceID();
 
     //set javscript array for itemids
-    $sJsAfter.="itemids[\"" . $db->f("idtpl") . "\"]=\"x\";\n";
+    $sJsAfter .= "itemids[\"" . $db->f("idtpl") . "\"]=\"x\";\n";
 
     // look for possible actions in mainarea[]
     foreach ($right_list["tpl"] as $value2) {
@@ -209,5 +196,3 @@ $oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
 $oTpl->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
 
 $oTpl->generate('templates/standard/' . $cfg['templates']['include.rights']);
-
-?>

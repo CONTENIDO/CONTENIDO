@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  2003-05-30
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -31,13 +26,11 @@ if (!defined('CON_FRAMEWORK')) {
 
 cInclude('includes', 'functions.rights.php');
 
-
 if (!$perm->have_perm_area_action($area, $action)) {
     // access denied
     $notification->displayNotification('error', i18n('Permission denied'));
     return;
 }
-
 
 // create group instance
 $bError        = false;
@@ -162,5 +155,3 @@ $tpl->next();
 
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_create']);
-
-?>

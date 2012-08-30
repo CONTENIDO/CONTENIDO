@@ -19,15 +19,6 @@
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
  *
- * {@internal
- *   created  unknown
- *   modified 2008-06-16, Holger Librenz, Hotifc: added check for invalid calls
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -41,19 +32,15 @@ if (isset($_REQUEST['sAreaFilename'])) {
 
 $_cecIterator = $_cecRegistry->getIterator("Contenido.Permissions.Group.GetAreaEditFilename");
 
-while ($chainEntry = $_cecIterator->next())
-{
+while (($chainEntry = $_cecIterator->next()) !== false) {
     // @TODO: This has to be refactored because this could cause SQL-Injection, Remote-File-Inclusion ....
     $aInfo = $chainEntry->execute($_REQUEST["external_area"]);
-    if ($aInfo !== false)
-    {
+    if ($aInfo !== false) {
         $sAreaFilename = $aInfo;
         break;
     }
 }
 
-if ($sAreaFilename !== false)
-{
+if ($sAreaFilename !== false) {
     include($sAreaFilename);
 }
-?>

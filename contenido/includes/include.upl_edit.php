@@ -159,13 +159,13 @@ if ($upload = $uploads->next()) {
             case "description":
                 if ($db->f('description')) {
 
-                    $sDescription = cSecurity::unFilter($db->f('description'));
+                    $description = cSecurity::unFilter($db->f('description'));
                 } else {
 
-                    $sDescription = "";
+                    $description = "";
                 }
 
-                $dsedit = new cHTMLTextarea("description", $sDescription);
+                $dsedit = new cHTMLTextarea("description", $description);
                 $sCell = $dsedit->render();
                 break;
 

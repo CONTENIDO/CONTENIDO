@@ -18,15 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-04-23
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -244,5 +235,3 @@ $sRefreshPager = '
 $oPage->addScript($sRefreshPager);
 
 $oPage->render();
-
-?>

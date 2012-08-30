@@ -151,14 +151,14 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage'))
 
             if (count($aNodes) > 1) {
                 $sName = $oVersionJScript->getTextBox("jscriptname", $aNodes["name"], 60);
-                $sDescription = $oVersionJScript->getTextarea("jscriptdesc",  $aNodes["desc"], 100, 10);
+                $description = $oVersionJScript->getTextarea("jscriptdesc",  $aNodes["desc"], 100, 10);
                 $sCode = $oVersionJScript->getTextarea("jscriptcode", $aNodes["code"], 100, 30, "IdLaycode");
             }
         }
 
         // Add new Elements of Form
         $oForm->add(i18n("Name"), $sName);
-        $oForm->add(i18n("Description"), $sDescription);
+        $oForm->add(i18n("Description"), $description);
         $oForm->add(i18n("Code"), $sCode);
         $oForm->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c"/*, "mod_history_takeover"*/); //modified it
         $oForm->unsetActionButton("submit");

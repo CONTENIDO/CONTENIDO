@@ -18,24 +18,19 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-//notice $oTpl is filled and generated in file include.rights.php this file renders $oTpl to browser
+// notice $oTpl is filled and generated in file include.rights.php this file renders $oTpl to browser
 include_once(cRegistry::getBackendPath() . 'includes/include.rights.php');
-// declare new javascript variables;
-//set the areas which are in use fore selecting these
+
+// set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas('lay')]) . "'";
-$sql = 'SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ' . $cfg['tab']['rights'] . ' AS A, ' . $cfg['tab']['area'] . ' AS B, ' . $cfg['tab']['actions'] . " AS C WHERE user_id='" . cSecurity::escapeDB($userid, $db) . "'
-        AND idclient='" . cSecurity::escapeDB($rights_client, $db) . "' AND A.type = 0 AND idlang='" . cSecurity::escapeDB($rights_lang, $db) . "' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+$sql = 'SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ' . $cfg['tab']['rights'] . ' AS A, ' . $cfg['tab']['area'] . ' AS B, ' . $cfg['tab']['actions'] . " AS C WHERE user_id='" . cSecurity::toInteger($userid) . "'
+        AND idclient='" . cSecurity::toInteger($rights_client) . "' AND A.type = 0 AND idlang='" . cSecurity::toInteger($rights_lang) . "' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
 
 $rights_list_old = array();
@@ -56,10 +51,8 @@ $sJsAfter = '';
 $sJsExternal = '';
 $sTable = '';
 
-$sJsBefore .= "var itemids = new Array();
+$sJsBefore .= "var itemids = new Array();\n
                var actareaids = new Array();\n";
-
-$colspan = 0;
 
 $possible_areas = array();
 $sCheckboxesRow = '';
@@ -88,10 +81,9 @@ $objHeaderItem->advanceID();
 foreach ($right_list['lay'] as $value2) {
     //if there are some actions
     if (is_array($value2['action'])) {
+        // set the areas that are in use
         foreach ($value2['action'] as $key3 => $value3) {   //set the areas that are in use
             $possible_areas[$value2['perm']] = '';
-
-            $colspan++;
             //set  the possible areas and actions for this areas
             $sJsBefore .= 'actareaids["' . $value3 . '|' . $value2['perm'] . "\"]=\"x\";\n";
 
@@ -99,7 +91,7 @@ foreach ($right_list['lay'] as $value2) {
             $objHeaderItem->setContent($lngAct[$value2['perm']][$value3] ? $lngAct[$value2['perm']][$value3] : '&nbsp;');
             $items .= $objHeaderItem->render();
             $objHeaderItem->advanceID();
-            array_push($aSecondHeaderRow, '<input type="checkbox" name="checkall_' . $value2['perm'] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2['perm'] . "','$value3','')\">");
+            $aSecondHeaderRow[] = '<input type="checkbox" name="checkall_' . $value2['perm'] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2['perm'] . "','$value3','')\">";
         }
     }
 }
@@ -109,14 +101,13 @@ $objHeaderItem->setContent(i18n('Check all'));
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
 
-$objHeaderRow->updateAttributes(array('class' => 'textw_medium'));
+$objHeaderRow->updateAttributes(array('class' => 'text_medium'));
 $objHeaderRow->setContent($items);
 $items = '';
 $headeroutput .= $objHeaderRow->render();
 $objHeaderRow->advanceID();
 
-array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
-$colspan++;
+$aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">";
 
 //2. zeile
 $objHeaderItem->updateAttributes(array('class' => 'center', 'valign' => '', 'align' => 'center', 'style' => 'border-top-width: 0px;'));
@@ -128,7 +119,7 @@ foreach ($aSecondHeaderRow as $value) {
     $items .= $objHeaderItem->render();
     $objHeaderItem->advanceID();
 }
-$objHeaderRow->updateAttributes(array('class' => 'textw_medium'));
+$objHeaderRow->updateAttributes(array('class' => 'text_medium'));
 $objHeaderRow->setContent($items);
 $items = '';
 $headeroutput .= $objHeaderRow->render();
@@ -136,7 +127,7 @@ $objHeaderRow->advanceID();
 
 //table content
 $output = '';
-//Select the itemid�s
+//Select the itemids
 $sql = 'SELECT * FROM ' . $cfg['tab']['lay'] . " WHERE idclient='" . cSecurity::toInteger($rights_client) . "' ORDER BY name";
 $db->query($sql);
 
@@ -153,18 +144,19 @@ while ($db->next_record()) {
     $darkrow = !$darkrow;
 
     //set javscript array for itemids
-    $sJsBefore .= "itemids[\"" . $db->f('idlay') . "\"]=\"x\"\n";
+    $sJsBefore .= 'itemids["' . $db->f('idlay') . "\"]=\"x\"\n";
 
     // look for possible actions in mainarea[]
     foreach ($right_list['lay'] as $value2) {
-        //if there area some
+        // if there area some
         if (is_array($value2['action'])) {
             foreach ($value2['action'] as $key3 => $value3) {
-                //does the user have the right
-                if (in_array($value2['perm'] . "|$value3|" . $db->f('idlay'), array_keys($rights_list_old)))
-                    $checked = "checked=\"checked\"";
-                else
+                // does the user have the right
+                if (in_array($value2['perm'] . "|$value3|" . $db->f('idlay'), array_keys($rights_list_old))) {
+                    $checked = 'checked="checked"';
+                } else {
                     $checked = '';
+                }
 
                 $objItem->updateAttributes(array('class' => 'td_rights3', 'style' => ''));
                 $objItem->setContent("<input type=\"checkbox\"  name=\"rights_list[" . $value2["perm"] . "|$value3|" . $db->f("idlay") . "]\" value=\"x\" $checked>");
@@ -174,7 +166,7 @@ while ($db->next_record()) {
         }
     }
 
-    //checkbox for checking all actions fore this itemid
+    // checkbox for checking all actions fore this itemid
     $objItem->updateAttributes(array("class" => "td_rights3", "style" => ""));
     $objItem->setContent("<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_" . $value3 . "_" . $db->f("idlay") . "\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "','$value3','" . $db->f("idlay") . "')\">");
     $items .= $objItem->render();
@@ -207,5 +199,3 @@ $oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
 $oTpl->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
 
 $oTpl->generate('templates/standard/' . $cfg['templates']['include.rights']);
-
-?>

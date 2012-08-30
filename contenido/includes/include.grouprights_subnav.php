@@ -18,17 +18,11 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  2003-01-25
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-
 
 if (isset($_GET['groupid'])) {
     $area = $_GET['area'];
@@ -91,13 +85,13 @@ if (isset($_GET['groupid'])) {
     $_cecIterator = $_cecRegistry->getIterator("Contenido.Permissions.Group.Areas");
 
     if ($_cecIterator->count() > 0) {
-        while ($chainEntry = $_cecIterator->next()) {
+        while (($chainEntry = $_cecIterator->next()) !== false) {
             $aInfo = $chainEntry->execute();
 
             foreach ($aInfo as $key => $sAreaID) {
                 $sAreaName = false;
                 $_cecIterator2 = $_cecRegistry->getIterator("Contenido.Permissions.Group.GetAreaName");
-                while ($chainEntry2 = $_cecIterator2->next()) {
+                while (($chainEntry2 = $_cecIterator2->next()) !== false) {
                     $aInfo2 = $chainEntry2->execute($sAreaID);
                     if ($aInfo2 !== false) {
                         $sAreaName = $aInfo2;
@@ -124,5 +118,3 @@ if (isset($_GET['groupid'])) {
 } else {
     include(cRegistry::getBackendPath() . $cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
 }
-
-?>

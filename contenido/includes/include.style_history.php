@@ -146,14 +146,14 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
             if (count($aNodes) > 1) {
                 // If choose xml file read value an set it
                 $sName = $oVersionStyle->getTextBox("stylename", $aNodes["name"], 60);
-                $sDescription = $oVersionStyle->getTextarea("styledesc", $aNodes["desc"], 100, 10);
+                $description = $oVersionStyle->getTextarea("styledesc", $aNodes["desc"], 100, 10);
                 $sCode = $oVersionStyle->getTextarea("stylecode", $aNodes["code"], 100, 30, "IdLaycode");
             }
         }
 
         // Add new Elements of Form
         $oForm->add(i18n("Name"), $sName);
-        $oForm->add(i18n("Description"), $sDescription);
+        $oForm->add(i18n("Description"), $description);
         $oForm->add(i18n("Code"), $sCode);
         $oForm->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c" /* , "mod_history_takeover" */); //modified it
         $oForm->unsetActionButton("submit");

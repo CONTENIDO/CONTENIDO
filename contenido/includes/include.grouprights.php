@@ -18,17 +18,11 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-
 
 if (!isset($actionarea)) {
     $actionarea = 'area';
@@ -307,5 +301,3 @@ function saverights()
     $rights_list_old = $rights_list;
     $notification->displayNotification('info', i18n('Changes saved'));
 }
-
-?>

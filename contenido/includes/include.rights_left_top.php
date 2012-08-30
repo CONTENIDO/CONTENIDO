@@ -18,20 +18,11 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-04-29
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-
 
 $oUser = new cApiUser($auth->auth["uid"]);
 if (!isset($elemperpage) || !is_numeric($elemperpage) || $elemperpage < 0)
@@ -196,4 +187,3 @@ $tpl->set('s', 'PAGING', $oPager->render());
 
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['rights_left_top']);
-?>
