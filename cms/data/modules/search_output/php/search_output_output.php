@@ -323,7 +323,7 @@ class Article_Property {
     function getArticleSpecification($iArticleId, $iLangId) {
         cDeprecated('Use cApiArticleSpecificationCollection instead');
         $sql = "SELECT artspec FROM " . $this->globalConfig['tab']['art_lang'] . " WHERE "
-             . "idart=" . (int) $iArticleId . " AND idlang=" . (int) $iLangId;
+             . "idart=" . (int) $iArticleId . " AND idlang=" . (int) $iLangId." AND searchable = 1";
 
         #echo "<pre>$sql</pre>";
         $this->oDBInstance->query($sql);
