@@ -23,7 +23,7 @@ $bDebug = false;
 echo buildCategorySelect($name, $cms_idcat);
 
 if ($bDebug) {
-    echo "<pre>cat $cms_idcat catart $cms_idcatart client $client lang $lang <br>webpath ".$cfgClient[$client]['path']['htmlpath']."</pre>";
+    echo "<pre>cat $cms_idcat catart $cms_idcatart client $client lang $lang <br>webpath ".cRegistry::getFrontendUrl()."</pre>";
 }
 
 echo '<table cellpadding="0" cellspacing="0" border="0">';
@@ -62,4 +62,4 @@ echo '</select>&nbsp;<input type="image" src="images/submit.gif">
 </tr>
 </table>';
 
-?><?php
+?>

@@ -19,6 +19,8 @@ $oRecipients = new NewsletterRecipientCollection;
 $sMessage = "&nbsp;";
 unset($recipient); // Unset any existing recipient objects - note, that it must be $recipient for the plugins...
 
+$frontendURL = cRegistry::getFrontendUrl();
+
 /*
  *  Used variables:
  *  JoinSel:         Selection, which group will be joined (Default, Selected, User specified)
@@ -137,7 +139,7 @@ if ($_POST['action'] == "subscribe") {
             // Form module (-> there has to be a field with this name)
             // Note: You should check the values you get (safety)!!!
 
-            $sBody = mi18n("txtMailSubscribe")."\n".$cfgClient[$client]['path']['htmlpath']."front_content.php?changelang=".$lang."&idcatart=".$aSettings['HandlerID']."&confirm=".$recipient->get("hash")."\n\n";
+            $sBody = mi18n("txtMailSubscribe")."\n".$frontendURL."front_content.php?changelang=".$lang."&idcatart=".$aSettings['HandlerID']."&confirm=".$recipient->get("hash")."\n\n";
 
             $oMail = new PHPMailer();
             $oMail->From     = $aSettings['SenderEMail'];
@@ -184,7 +186,7 @@ if ($_POST['action'] == "subscribe") {
     } elseif (!isValidMail($_POST['email']) || strpos($_POST['email'], ",") != false || strpos($_POST['email'], ";") != false) {
         $sMessage = mi18n("Please specify a valid e-mail address.");
     } elseif ($recipient = $oRecipients->emailExists($_POST['email'])) {
-        $sBody = mi18n("txtMailDelete")."\n".$cfgClient[$client]['path']['htmlpath']."front_content.php?changelang=".$lang."&idcatart=".$aSettings['HandlerID']."&unsubscribe=".$recipient->get("hash")."\n\n";
+        $sBody = mi18n("txtMailDelete")."\n" . $frontendURL . "front_content.php?changelang=".$lang."&idcatart=".$aSettings['HandlerID']."&unsubscribe=".$recipient->get("hash")."\n\n";
 
         $oMail = new PHPMailer();
         $oMail->From     = $aSettings['SenderEMail'];
@@ -245,7 +247,7 @@ if ($_POST['action'] == "subscribe") {
                 $sMessage .= mi18n("<br><br>Additionally, your website account has been activated. You can now use the following username and password to log in to access special areas on our website:<br>");
                 $sMessage .= mi18n("Username: ").$sEMail.mi18n("<br>Password: ").$sPassword;
 
-                $sBody = mi18n("txtMailPassword")."\n\n".mi18n("Username: ").$sEMail."\n".mi18n("Password: ").$sPassword."\n\n".mi18n("Click here to login: ").$cfgClient[$client]['path']['htmlpath']."front_content.php?changelang=".$lang;
+                $sBody = mi18n("txtMailPassword")."\n\n".mi18n("Username: ").$sEMail."\n".mi18n("Password: ").$sPassword."\n\n".mi18n("Click here to login: "). $frontendURL ."front_content.php?changelang=".$lang;
 
                 $oMail           = new PHPMailer();
                 $oMail->From     = $aSettings['SenderEMail'];

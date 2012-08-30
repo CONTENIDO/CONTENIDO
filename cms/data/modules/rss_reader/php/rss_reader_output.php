@@ -59,6 +59,6 @@ foreach ($rss->getItems() as $item) {
     $i++;
 }
 
-$tpl->generate($cfgClient[$client]["path"]["frontend"] . "templates/" . "CMS_VALUE[1]");
+$tpl->generate(cRegistry::getFrontendPath() . "templates/" . "CMS_VALUE[1]");
 
 ?>

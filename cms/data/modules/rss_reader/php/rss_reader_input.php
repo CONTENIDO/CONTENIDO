@@ -25,7 +25,7 @@
             <select name="<?php echo  "CMS_VAR[1]"; ?>" size="1" style="width:320px">
                 <option value=""><?php echo mi18n("Nichts ausgewählt"); ?></option>
                 <?php
-                $strPath_fs = $cfgClient[$client]['path']['frontend'] . 'templates/';
+                $strPath_fs = cRegistry::getFrontendPath() . 'templates/';
                 $handle = opendir($strPath_fs);
                 while ($entryName = readdir($handle)) {
                     if (is_file($strPath_fs.$entryName)) {

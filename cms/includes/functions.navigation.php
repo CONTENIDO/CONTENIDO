@@ -212,9 +212,9 @@ function getLocationString($iStartCat, $level, $seperator, $sLinkStyleClass, $sT
                 }
             } else {
                 if ($mod_rewrite == true) {
-                    $linkUrl = $sess->url($cfgClient[$client]["path"]["htmlpath"] . "index-a-$value.html");
+                    $linkUrl = $sess->url(cRegistry::getFrontendUrl() . "index-a-$value.html");
                 } else {
-                    $linkUrl = $sess->url($cfgClient[$client]["path"]["htmlpath"] . "front_content.php?idcat=$value");
+                    $linkUrl = $sess->url(cRegistry::getFrontendUrl() . "front_content.php?idcat=$value");
                 }
             }
             $name = getCategoryName($value, $db);
