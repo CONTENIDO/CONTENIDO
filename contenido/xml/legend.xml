@@ -1,6 +1,9 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 CONTENIDO XML language file
+
+NOTE: Comments below with i18n() are used for translation purposes and the are
+      required for the parser to detect/extract text to translate.
 
 gettext:
 i18n("start article")

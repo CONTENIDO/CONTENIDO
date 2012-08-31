@@ -4,210 +4,210 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * File provides a user friendly way for setting general system properties instead of using
+ * File provides a user friendly way for setting general system properties
+ * instead of using
  * Systemproperties
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @version    1.0.1
- * @author     Timo Trautmann
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.8.8
- *
- * {@internal
- *   created 2008-08-19
- * }}
+ * @version 1.0.1
+ * @author Timo Trautmann
+ * @author Simon Sprankel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release 4.8.8
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-function renderBooleanProperty($sName, $aPossValues, $sValue, $sLabel) {
+/**
+ * Renders a select element with a label.
+ * If there are only two possible values which are called true/false,
+ * enabled/disabled or 0/1, a checkbox is rendered.
+ * Returns an associative array with the label and the input field.
+ *
+ * @param string $name the name of the form element
+ * @param array $possibleValues the possible values
+ * @param string $value the value which should be selected
+ * @param string $label the label text which should be rendered
+ * @return array associative array with the label and the input field
+ */
+function renderSelectProperty($name, $possibleValues, $value, $label) {
     global $auth;
 
-    $aReturn = array();
-
-    if ($aPossValues[0] == $sValue || $sValue == '') {
-        $bChecked = false;
+    if (count($possibleValues) === 2 && (in_array('true', $possibleValues) && in_array('false', $possibleValues) || in_array('enabled', $possibleValues) && in_array('disabled', $possibleValues) || in_array('0', $possibleValues) && in_array('1', $possibleValues))) {
+        // render a checkbox if there are only the values true and false
+        $checked = $value == 'true' || $value == '1' || $value == 'enabled';
+        $html = new cHTMLCheckbox($name, 'true', $name, $checked);
+        $html->setLabelText($label);
     } else {
-        $bChecked = true;
-    }
-
-    $oCheckbox = new cHTMLCheckbox($sName, $aPossValues[1], $sName, $bChecked);
-    $oCheckbox->setLabelText('&nbsp;&nbsp;' . $sLabel);
-    $oCheckbox->setStyle('margin:0; padding:0px;margin-left:3px;');
-    if (strpos($auth->auth["perm"], "sysadmin") === false) {
-        $oCheckbox->updateAttributes(array('disabled' => 'true'));
-    }
-
-    $aReturn['input'] = $oCheckbox->render();
-    $aReturn['label'] = '';
-
-    return $aReturn;
-}
-
-function renderLabel($sLabel, $sName, $iWidth = 250, $sSeperator = ':') {
-    $oLabel = new cHTMLLabel($sLabel . $sSeperator, $sName);
-    $oLabel->setStyle('padding:3px;display:block;float:left;width:' . $iWidth . 'px;');
-    return $oLabel->render();
-}
-
-function renderTextProperty($sName, $sValue, $sLabel) {
-    global $auth;
-
-    $oTextbox = new cHTMLTextbox($sName, $sValue, "50", "96");
-    $oTextbox->setStyle('width:320px;');
-    if (strpos($auth->auth["perm"], "sysadmin") === false) {
-        $oTextbox->updateAttributes(array('disabled' => 'true'));
-    }
-    $aReturn['input'] = $oTextbox->render();
-    $aReturn['label'] = renderLabel($sLabel, $sName);
-    return $aReturn;
-}
-
-function getPostValue($aProperty) {
-    $sName = $aProperty['type'] . '{_}' . $aProperty['name'];
-    if (isset($_POST[$sName])) {
-        if (is_array($aProperty['value'])) {
-            if (in_array($_POST[$sName], $aProperty['value'])) {
-                return $_POST[$sName];
-            } else {
-                return $aProperty['value'][0];
+        // otherwise render a select box with the possible values
+        $html = new cHTMLSelectElement('');
+        foreach ($possibleValues as $possibleValue) {
+            $element = new cHTMLOptionElement($possibleValue, $possibleValue);
+            if ($possibleValue == $value) {
+                $element->setSelected(true);
             }
-        } else {
-            if ($aProperty['value'] == 'integer') {
-                return (int) $_POST[$sName];
-            } else {
-                return $_POST[$sName];
-            }
+            $html->appendOptionElement($element);
         }
     }
 
-    if (is_array($aProperty['value'])) {
-        return $aProperty['value'][0];
-    } else {
-        return '';
+    // disable the HTML element if user is not a sysadmin
+    if (strpos($auth->auth['perm'], 'sysadmin') === false) {
+        $html->updateAttribute('disabled', 'true');
     }
+
+    $return = array();
+    $return['input'] = $html->render();
+    $return['label'] = '';
+
+    return $return;
 }
 
-$oPage = new cGuiPage("system_configuration", "", "1");
+/**
+ * Renders a cHTMLLabel.
+ *
+ * @param string $text the label text
+ * @param string $name the name of the corresponding input element
+ * @param string $width the width in pixel
+ * @param string $seperator the seperator which is written at the end of the
+ *            label
+ * @return string the rendered cHTMLLabel element
+ */
+function renderLabel($text, $name, $width = 250, $seperator = ':') {
+    $label = new cHTMLLabel($text . $seperator, $name);
+    $label->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');
 
-$aManagedProperties = array(
-    array('type' => 'versioning', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Versioning activated'), 'group' => i18n('Versioning')),
-    array('type' => 'versioning', 'name' => 'path', 'value' => '', 'label' => i18n('Serverpath to version files'), 'group' => i18n('Versioning')),
-    array('type' => 'versioning', 'name' => 'prune_limit', 'value' => 'integer', 'label' => i18n('Maximum number of stored versions'), 'group' => i18n('Versioning')),
-    array('type' => 'update', 'name' => 'check', 'value' => array('false', 'true'), 'label' => i18n('Check for updates'), 'group' => i18n('Update notifier')),
-    array('type' => 'update', 'name' => 'news_feed', 'value' => array('false', 'true'), 'label' => i18n('Get news from contenido.org'), 'group' => i18n('Update notifier')),
-    array('type' => 'update', 'name' => 'check_period', 'value' => 'integer', 'label' => i18n('Update check period (minutes)'), 'group' => i18n('Update notifier')),
-    array('type' => 'system', 'name' => 'clickmenu', 'value' => array('false', 'true'), 'label' => i18n('Clickable menu in backend'), 'group' => i18n('Backend')),
-    array('type' => 'pw_request', 'name' => 'enable', 'value' => array('false', 'true'), 'label' => i18n('Use passwordrequest in Backend'), 'group' => i18n('Backend')),
-    array('type' => 'maintenance', 'name' => 'mode', 'value' => array('disabled', 'enabled'), 'label' => i18n('Activate maintenance mode'), 'group' => i18n('Backend')),
-    array('type' => 'codemirror', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Use CodeMirror for code highlighting'), 'group' => i18n('Backend')),
-    array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => array('false', 'true'), 'label' => i18n('Use TinyMce as insight editor'), 'group' => i18n('Backend')),
-    array('type' => 'backend', 'name' => 'preferred_idclient', 'value' => 'integer', 'label' => i18n('Default client (ID)'), 'group' => i18n('Backend')),
-    array('type' => 'backend', 'name' => 'max_log_size', 'value' => 'label', 'label' => i18n('Maximum log size in MiB (0 = infinite)'), 'group' => i18n('Backend')),
-    array('type' => 'system', 'name' => 'mail_log', 'value' => array('false', 'true'), 'label' => i18n('Log mails'), 'group' => i18n('Mailserver')),
-    array('type' => 'system', 'name' => 'mail_host', 'value' => '', 'label' => i18n('Mailserver host'), 'group' => i18n('Mailserver')),
-    array('type' => 'system', 'name' => 'mail_user', 'value' => '', 'label' => i18n('Mailserver user'), 'group' => i18n('Mailserver')),
-    array('type' => 'system', 'name' => 'mail_pass', 'value' => '', 'label' => i18n('Mailserver password'), 'group' => i18n('Mailserver')),
-    array('type' => 'system', 'name' => 'mail_encryption', 'value' => array('false', 'true'), 'label' => i18n('Mailserver encryption'), 'group' => i18n('Mailserver')),
-    array('type' => 'system', 'name' => 'mail_port', 'value' => '', 'label' => i18n('Mailserver port'), 'group' => i18n('Mailserver')),
-    array('type' => 'system', 'name' => 'mail_sender', 'value' => '', 'label' => i18n('Mailserver sender mail'), 'group' => i18n('Mailserver')),
-    array('type' => 'system', 'name' => 'mail_sender_name', 'value' => '', 'label' => i18n('Mailserver sender name'), 'group' => i18n('Mailserver')),
-    array('type' => 'generator', 'name' => 'xhtml', 'value' => array('false', 'true'), 'label' => i18n('Generate XHTML'), 'group' => i18n('Development')),
-    array('type' => 'generator', 'name' => 'basehref', 'value' => array('false', 'true'), 'label' => i18n('Generate basehref'), 'group' => i18n('Development')),
-    array('type' => 'imagemagick', 'name' => 'available', 'value' => array('0', '1'), 'label' => i18n('Use image magic (if available)'), 'group' => i18n('Development')),
-    array('type' => 'debug', 'name' => 'debug_to_file', 'value' => array("false", "true"), 'label' => i18n('Debug to file'), 'group' => i18n('Debug')),
-    array('type' => 'debug', 'name' => 'debug_to_screen', 'value' => array("false", "true"), 'label' => i18n('Visible debug'), 'group' => i18n('Debug'))
-);
+    return $label->render();
+}
 
-$aSettings = getSystemProperties(1);
+/**
+ * Renders a cHTMLTextbox.
+ * Returns an associative array with the label and the input field.
+ *
+ * @param string $name the name of the form element
+ * @param string $value the value of the text field
+ * @param string $label the label text
+ * @return array associative array with the label and the input field
+ */
+function renderTextProperty($name, $value, $label) {
+    global $auth;
 
+    $textbox = new cHTMLTextbox($name, $value, '50', '96');
+    // disable the textbox if user is not a sysadmin
+    if (strpos($auth->auth['perm'], 'sysadmin') === false) {
+        $textbox->updateAttribute('disabled', 'true');
+    }
+    $return = array();
+    $return['input'] = $textbox->render();
+    $return['label'] = renderLabel($label, $name);
+
+    return $return;
+}
+
+$page = new cGuiPage('system_configuration', '', '1');
+
+// read the properties from the XML file
+$propertyTypes = cXmlReader::xmlStringToArray(cFileHandler::read($cfg['path']['xml'] . 'system.xml'));
+$propertyTypes = $propertyTypes['properties'];
+
+// get the stored settings
+$settings = getSystemProperties();
+
+// store the system properties
 if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have_perm_area_action($area, 'edit_sysconf')) {
-    if (strpos($auth->auth["perm"], "sysadmin") === false) {
-        $oPage->displayError(i18n("You don't have the permission to make changes here."));
+    if (strpos($auth->auth['perm'], 'sysadmin') === false) {
+        $page->displayError(i18n('You don\'t have the permission to make changes here.'));
     } else {
-        $bStored = false;
-        foreach ($aManagedProperties as $aProperty) {
-            $sValue = getPostValue($aProperty);
-            $sStoredValue = $aSettings[$aProperty['type']][$aProperty['name']]['value'];
-
-            if ($sStoredValue != $sValue && (is_array($aProperty['value']) && $sValue != '' || !is_array($aProperty['value']))) {
-                if ($aProperty['type'] == 'update' && $aProperty['name'] == 'check_period' && (int) $sValue < 60) {
-                    $oPage->displayError(i18n("Update check period must be at least 60 minutes."));
-                    $bStored = false;
-                    break;
+        $stored = false;
+        foreach ($propertyTypes as $type => $properties) {
+            foreach ($properties as $name => $infos) {
+                // get the posted value
+                $fieldName = $type . '{_}' . $name;
+                if (isset($_POST[$fieldName])) {
+                    $value = $_POST[$fieldName];
                 } else {
-                    setSystemProperty($aProperty['type'], $aProperty['name'], $sValue);
-                    $bStored = true;
+                    $value = 'false';
+                }
+                $storedValue = $settings[$type][$name];
+                if ($storedValue != $value && (is_array($infos['values']) && $value != '' || !is_array($infos['values']))) {
+                    if ($type == 'update' && $name == 'check_period' && $value < 60) {
+                        $page->displayError(i18n('Update check period must be at least 60 minutes.'));
+                        $stored = false;
+                        // break out of both loops
+                        break 2;
+                    } else {
+                        setSystemProperty($type, $name, $value);
+                        // also update the settings array because it is used below
+                        $settings[$type][$name] = $value;
+                        $stored = true;
+                    }
                 }
             }
         }
-        if ($bStored) {
-            $oPage->displayInfo(i18n("Changes saved"));
+        if ($stored) {
+            $page->displayInfo(i18n('Changes saved'));
         }
     }
 }
 
+// generate the table for changing the system properties
+$form = new cGuiTableForm('system_configuration');
+$form->addHeader(i18n('System Configuration'));
+$form->setVar('area', $area);
+$form->setVar('frame', $frame);
+$form->setVar('action', 'edit_sysconf');
 
-
-$aSettings = getSystemProperties(1);
-
-$oForm = new cGuiTableForm("system_configuration");
-$oForm->addHeader(i18n("System Configuration"));
-$oForm->setVar("area", $area);
-$oForm->setVar("frame", $frame);
-$oForm->setVar("action", 'edit_sysconf');
-
-if (strpos($auth->auth["perm"], "sysadmin") === false) {
-    $oForm->setActionButton("submit",  cRegistry::getBackendUrl() . "images/but_ok_off.gif", i18n("Save changes"), "s");
+// show a disabled OK button if user is not a sysadmin
+if (strpos($auth->auth['perm'], 'sysadmin') === false) {
+    $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Save changes'), 's');
 }
 
-$sCurGroup = '';
-$sLeftContent = '';
-
-$sRowTemplate = '<p style="margin:0; padding:3px;">%s</p>';
-
-foreach ($aManagedProperties as $aProperty) {
-    $sName = $aProperty['type'] . '{_}' . $aProperty['name'];
-    if (isset($aSettings[$aProperty['type']][$aProperty['name']]['value'])) {
-        $sValue = $aSettings[$aProperty['type']][$aProperty['name']]['value'];
-    } else {
-        $sValue = '';
-    }
-
-    if (is_array($aProperty['value'])) {
-        $aHtmlElement = renderBooleanProperty($sName, $aProperty['value'], $sValue, $aProperty['label']);
-    } else {
-        $aHtmlElement = renderTextProperty($sName, $sValue, $aProperty['label']);
-    }
-
-    if ($sCurGroup == '' || $sCurGroup == $aProperty['group']) {
-        if ($sCurGroup == '') {
-            $sCurGroup = $aProperty['group'];
+$groups = array();
+$currentGroup = '';
+$leftContent = '';
+$rowTemplate = '<p style="margin:0; padding:3px;">%s</p>';
+// iterate over all property types
+foreach ($propertyTypes as $type => $properties) {
+    foreach ($properties as $name => $infos) {
+        // $infos is an array with the keys "values", "label" and "group"
+        // extend the groups array if it is a new group
+        if (!isset($groups[$infos['group']])) {
+            $groups[$infos['group']] = '';
         }
-        $sLeftContent .= sprintf($sRowTemplate, $aHtmlElement['label'] . $aHtmlElement['input']);
-    } else {
-        $oForm->add(renderLabel($sCurGroup, '', 150, ''), $sLeftContent);
-        $sCurGroup = $aProperty['group'];
-        $sLeftContent = sprintf($sRowTemplate, $aHtmlElement['label'] . $aHtmlElement['input']);
+
+        // get the currently stored value
+        if (isset($settings[$type][$name])) {
+            $value = $settings[$type][$name];
+        } else {
+            $value = '';
+        }
+
+        // render the HTML and add it to the groups array
+        $fieldName = $type . '{_}' . $name;
+        if (is_array($infos['values'])) {
+            $htmlElement = renderSelectProperty($fieldName, $infos['values'], $value, i18n($infos['label']));
+        } else {
+            $htmlElement = renderTextProperty($fieldName, $value, i18n($infos['label']));
+        }
+
+        $groups[$infos['group']] .= sprintf($rowTemplate, $htmlElement['label'] . $htmlElement['input']);
     }
 }
 
-$oForm->add(renderLabel($sCurGroup, '', 150, ''), $sLeftContent);
+// render the group names and the corresponding settings
+foreach ($groups as $groupName => $groupSettings) {
+    $groupName = i18n($groupName);
+    $form->add(renderLabel($groupName, '', 150, ''), $groupSettings);
+}
 
+// show error if user is not allowed to see the page
 if ($perm->have_perm_area_action($area, 'edit_sysconf')) {
-    $oPage->set("s", "FORM", $oForm->render());
+    $page->set('s', 'FORM', $form->render());
 } else {
-    $oPage->displayCriticalError(i18n('Access denied'));
+    $page->displayCriticalError(i18n('Access denied'));
 }
 
-$oPage->render();
-
-?>
+$page->render();

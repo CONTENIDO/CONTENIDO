@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CONTENIDO XML language file
+
+NOTE: Comments below with i18n() are used for translation purposes and the are
+      required for the parser to detect/extract text to translate.
+
+gettext:
+i18n("Versioning activated")
+i18n("Versioning")
+i18n("Serverpath to version files")
+i18n("Maximum number of stored versions")
+i18n("Check for updates")
+i18n("Update notifier")
+i18n("Get news from contenido.org")
+i18n("Update check period (minutes)")
+i18n("Clickable menu in backend")
+i18n("Backend")
+i18n("Use TinyMce as insight editor")
+i18n("Log mails")
+i18n("Mailserver")
+i18n("Mailserver host")
+i18n("Mailserver user")
+i18n("Mailserver password")
+i18n("Mailserver encryption")
+i18n("Mailserver port")
+i18n("Mailserver sender mail")
+i18n("Mailserver sender name")
+i18n("Use passwordrequest in Backend")
+i18n("Activate maintenance mode")
+i18n("Use CodeMirror for code highlighting")
+i18n("Default client (ID)")
+i18n("Maximum log size in MiB (0 = infinite)")
+i18n("Generate XHTML")
+i18n("Development")
+i18n("Use image magic (if available)")
+i18n("Debug to file")
+i18n("Visible debug")
+
+-->
+
+<system>
+    <properties>
+        <versioning>
+            <activated>
+                <values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Versioning activated</label>
+                <group>Versioning</group>
+            </activated>
+            <path>
+                <values/>
+                <label>Serverpath to version files</label>
+                <group>Versioning</group>
+            </path>
+            <prune_limit>
+                <values>integer</values>
+                <label>Maximum number of stored versions</label>
+                <group>Versioning</group>
+            </prune_limit>
+        </versioning>
+        <update>
+            <check>
+                <values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Check for updates</label>
+                <group>Update notifier</group>
+            </check>
+            <news_feed>
+                <values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Get news from contenido.org</label>
+                <group>Update notifier</group>
+            </news_feed>
+            <check_period>
+                <values>integer</values>
+                <label>Update check period (minutes)</label>
+                <group>Update notifier</group>
+            </check_period>
+        </update>
+        <system>
+            <clickmenu>
+                <values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Clickable menu in backend</label>
+                <group>Backend</group>
+            </clickmenu>
+            <insight_editing_activated>
+                <values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Use TinyMce as insight editor</label>
+                <group>Backend</group>
+            </insight_editing_activated>
+            <mail_log>
+                <values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Log mails</label>
+                <group>Mailserver</group>
+            </mail_log>
+            <mail_host>
+                <values/>
+                <label>Mailserver host</label>
+                <group>Mailserver</group>
+            </mail_host>
+            <mail_user>
+                <values/>
+                <label>Mailserver user</label>
+                <group>Mailserver</group>
+            </mail_user>
+            <mail_pass>
+                <values/>
+                <label>Mailserver password</label>
+                <group>Mailserver</group>
+            </mail_pass>
+            <mail_encryption>
+                <values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Mailserver encryption</label>
+                <group>Mailserver</group>
+            </mail_encryption>
+            <mail_port>
+                <values/>
+                <label>Mailserver port</label>
+                <group>Mailserver</group>
+            </mail_port>
+            <mail_sender>
+                <values/>
+                <label>Mailserver sender mail</label>
+                <group>Mailserver</group>
+            </mail_sender>
+            <mail_sender_name>
+                <values/>
+                <label>Mailserver sender name</label>
+                <group>Mailserver</group>
+            </mail_sender_name>
+        </system>
+        <pw_request>
+            <enable>
+                <values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Use passwordrequest in Backend</label>
+                <group>Backend</group>
+            </enable>
+        </pw_request>
+        <maintenance>
+            <mode>
+                <values>
+                    <array_value>enabled</array_value>
+                    <array_value>disabled</array_value>
+                </values>
+                <label>Activate maintenance mode</label>
+                <group>Backend</group>
+            </mode>
+        </maintenance>
+        <codemirror>
+            <activated>
+                <values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Use CodeMirror for code highlighting</label>
+                <group>Backend</group>
+            </activated>
+        </codemirror>
+        <backend>
+            <preferred_idclient>
+                <values>integer</values>
+                <label>Default client (ID)</label>
+                <group>Backend</group>
+            </preferred_idclient>
+            <max_log_size>
+                <values>label</values>
+                <label>Maximum log size in MiB (0 = infinite)</label>
+                <group>Backend</group>
+            </max_log_size>
+        </backend>
+        <generator>
+            <xhtml>
+                <values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Generate XHTML</label>
+                <group>Development</group>
+            </xhtml>
+            <basehref>
+                <values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Generate basehref</label>
+                <group>Development</group>
+            </basehref>
+        </generator>
+        <imagemagick>
+            <available>
+                <values>
+                    <array_value>0</array_value>
+                    <array_value>1</array_value>
+                </values>
+                <label>Use image magic (if available)</label>
+                <group>Development</group>
+            </available>
+        </imagemagick>
+        <debug>
+            <debug_to_file>
+                <values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Debug to file</label>
+                <group>Development</group>
+            </debug_to_file>
+            <debug_to_screen>
+                <values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Visible debug</label>
+                <group>Development</group>
+            </debug_to_screen>
+        </debug>
+    </properties>
+</system>
