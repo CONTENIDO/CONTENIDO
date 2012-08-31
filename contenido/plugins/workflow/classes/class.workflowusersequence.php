@@ -50,7 +50,7 @@ class WorkflowUserSequences extends ItemCollection {
         $this->_setItemClass("WorkflowUserSequence");
     }
 
-	/** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function WorkflowUserSequences() {
         cDeprecated("Use __construct() instead");
         $this->__construct();

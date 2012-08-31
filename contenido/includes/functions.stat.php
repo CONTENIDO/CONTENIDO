@@ -692,8 +692,8 @@ function statsOverviewYear($year) {
             $tpl->set('d', 'DISPLAY_ROW', 'none');
             $cat_name = "";
             statCreateLocationString($idart, "&nbsp;/&nbsp;", $cat_name);
-        	$tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
-        	$tpl->set('d', 'ULR_TO_PAGE', $frontendURL . 'front_content.php?idart=' . $idart);
+            $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
+            $tpl->set('d', 'ULR_TO_PAGE', $frontendURL . 'front_content.php?idart=' . $idart);
 
             $tpl->next();
             $currentRow++;

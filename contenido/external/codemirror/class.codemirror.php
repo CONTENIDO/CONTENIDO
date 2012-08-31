@@ -278,16 +278,16 @@ class CodeMirror {
 
         // define template for CodeMirror script
         $js .= "<script type=\"text/javascript\">
-					function toggleCodeMirrorFullscreen_{ID}() {
-						toggleCodeMirrorFullscreenEditor('{ID}');
+                    function toggleCodeMirrorFullscreen_{ID}() {
+                        toggleCodeMirrorFullscreenEditor('{ID}');
                     }
 
-					properties_{ID} = {
-						extraKeys: {\"F11\": toggleCodeMirrorFullscreen_{ID}, \"Esc\": toggleCodeMirrorFullscreen_{ID}}
-						{PROPERTIES}
-					};
+                    properties_{ID} = {
+                        extraKeys: {\"F11\": toggleCodeMirrorFullscreen_{ID}, \"Esc\": toggleCodeMirrorFullscreen_{ID}}
+                        {PROPERTIES}
+                    };
 
-					window.setTimeout('initCodeMirror(\"{ID}\", properties_{ID})', 100);
+                    window.setTimeout('initCodeMirror(\"{ID}\", properties_{ID})', 100);
                 </script>";
 
         $this->setProperty('mode', $this->_getSyntaxName(), false);

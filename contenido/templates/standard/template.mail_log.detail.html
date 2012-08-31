@@ -31,32 +31,32 @@
 </head>
 <body>
 <form action="" method="post" class="bulk_editing_form" >
-	<input type="hidden" name="contenido" value="{SID}">
-	<input type="hidden" name="action" value="">
-	<input type="hidden" name="idmails" value="[{IDMAIL}]">
-	<input type="hidden" name="idmail" value="{IDMAIL}">
-	<input type="hidden" name="area" value="mail_log_overview">
-	<input type="hidden" name="frame" value="4">
-	<input type="submit" name="submit" value="submit" style="display:none">
-	<table class="bordered" width="100%" border="0" cellspacing="0" cellpadding="2">
-	    <tr>
-	        <td colspan="2" class="bordercell">{HEADER_TEXT}</td>
-	    </tr>
-	    <!-- BEGIN:BLOCK -->
-	    <tr id="{ROWID}" {CSS_CLASS} class="con_sync" style="background-color: {BGCOLOR};" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
-	       <td class="bordercell">{NAME} &nbsp;</td>
-	        <td class="bordercell">{VALUE} &nbsp;</td>
-	    </tr>
-	    <!-- END:BLOCK -->
-	    <tr id="{ROWID}" {CSS_CLASS} class="con_sync" style="background-color: {BGCOLOR};" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
+    <input type="hidden" name="contenido" value="{SID}">
+    <input type="hidden" name="action" value="">
+    <input type="hidden" name="idmails" value="[{IDMAIL}]">
+    <input type="hidden" name="idmail" value="{IDMAIL}">
+    <input type="hidden" name="area" value="mail_log_overview">
+    <input type="hidden" name="frame" value="4">
+    <input type="submit" name="submit" value="submit" style="display:none">
+    <table class="bordered" width="100%" border="0" cellspacing="0" cellpadding="2">
+        <tr>
+            <td colspan="2" class="bordercell">{HEADER_TEXT}</td>
+        </tr>
+        <!-- BEGIN:BLOCK -->
+        <tr id="{ROWID}" {CSS_CLASS} class="con_sync" style="background-color: {BGCOLOR};" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
+           <td class="bordercell">{NAME} &nbsp;</td>
+            <td class="bordercell">{VALUE} &nbsp;</td>
+        </tr>
+        <!-- END:BLOCK -->
+        <tr id="{ROWID}" {CSS_CLASS} class="con_sync" style="background-color: {BGCOLOR};" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
             <td class="bordercell">i18n("Action")</td>
-	        <td class="bordercell">
-	            &nbsp;
+            <td class="bordercell">
+                &nbsp;
                 <a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteEmails()');" > <img src="images/delete.gif" title="i18n("Delete email log")" alt="i18n("Delete email log")" border="0" ></a>
-	            {RESEND_EMAIL_LINK}
-	        </td>
-	    </tr>
-	</table>
+                {RESEND_EMAIL_LINK}
+            </td>
+        </tr>
+    </table>
 </form>
 
 <script type="text/javascript">
@@ -75,7 +75,7 @@ function resendEmail() {
     $('form.bulk_editing_form input[name="submit"]').click();
 }
 
-$(document).ready(function (){
+$(document).ready(function() {
     // Mark the first submenu item i.e. 'Overview' or other item
     if (parent.parent.frames['right'].frames['right_top'].document.getElementById('navlist')) {
         menuItem = parent.parent.frames['right'].frames['right_top'].document.getElementById('navlist');

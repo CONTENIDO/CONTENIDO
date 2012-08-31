@@ -21,15 +21,22 @@
  */
 class cRegistry {
 
+    /**
+     * Container for application variables. Meant to set and get application wide
+     * variables as an alternative to store them in global scope.
+     *
+     * @var array
+     */
+    protected static $_appVars = array();
 
     /**
      * Function wich returns path after the last possible place
      * changing via configuration file.
-    * @return path
-    */
-    public static function getBackendPath()  {
+     * @return path
+     */
+    public static function getBackendPath() {
         $cfg = self::getConfig();
-    	return  $cfg['path']['contenido'];
+        return  $cfg['path']['contenido'];
     }
 
     /**
@@ -38,7 +45,7 @@ class cRegistry {
      * The path point to the current client
      * @return path
      */
-    public static function getFrontendPath()  {
+    public static function getFrontendPath() {
         $cfgClient = self::getClientConfig();
         $client = self::getClientId();
         return $cfgClient[$client]['path']['frontend'];
@@ -49,7 +56,7 @@ class cRegistry {
      * place changing via configuration file.
      * @return URL
      */
-    public static function getBackendUrl()  {
+    public static function getBackendUrl() {
         $cfg = self::getConfig();
         return  $cfg['path']['contenido_fullhtml'];
     }
@@ -65,15 +72,6 @@ class cRegistry {
         $client = self::getClientId();
         return  $cfgClient[$client]['path']['htmlpath'];
     }
-
-
-     /**
-     * Container for application variables. Meant to set and get application wide
-     * variables as an alternative to store them in global scope.
-     *
-     * @var array
-     */
-    protected static $_appVars = array();
 
     /**
      * Returns the CONTENIDO Session ID stored in the global variable "contenido"
@@ -450,7 +448,7 @@ class cRegistry {
 
     /**
      * Shutdowns the CONTENIDO framework on page close.
-     * @return    void
+     * @return  void
      */
     public final static function shutdown() {
         cDebug::showAll();

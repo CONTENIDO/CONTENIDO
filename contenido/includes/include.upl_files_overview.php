@@ -503,8 +503,8 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1, $thumbnailmode) {
 
 
     switch ($thumbnailmode) {
-    	case 10: $numpics = 10;
-    	    break;
+        case 10: $numpics = 10;
+            break;
         case 25: $numpics = 25;
             break;
         case 50: $numpics = 50;

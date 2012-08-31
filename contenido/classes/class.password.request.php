@@ -344,7 +344,7 @@ class cPasswordRequest {
         $oMail->From = $this->_sendermail;
         //set senders name
         $oMail->FromName = $this->_sendername;
-        
+
         //set users e mail adress as recipient
         $oMail->AddAddress($this->_email, "");
         //set mail subject
