@@ -55,7 +55,7 @@ $cfg['pica']['treetemplate_complexlist'] = $backendPath . $cfg['path']['plugins'
 
 $backendUrl = cRegistry::getBackendUrl();
 
-$cfg['pica']['style_complexlist'] = $backendUrl . $cfg['path']['plugins'] . 'content_allocation/style/complexlist.css';
+$cfg['pica']['style_complexlist'] = $backendUrl . $cfg['path']['plugins'] . 'content_allocation/styles/complexlist.css';
 $cfg['pica']['script_complexlist'] = $backendUrl . $cfg['path']['plugins'] . 'content_allocation/scripts/complexlist.js';
 
 // administration > users > area translations

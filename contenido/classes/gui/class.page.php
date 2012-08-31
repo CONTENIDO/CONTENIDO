@@ -207,57 +207,59 @@ class cGuiPage {
     }
 
     /**
-     * Adds a script to the website.
+     * Adds a script to the website - path can be absolute, relative to the
+     * plugin scripts folder and relative to the CONTENIDO scripts folder.
      * NOTE: This function will also add inline JavaScript in the form of
      * "<script...". However this shouldn't be used.
      *
      * @param string $script The filename of the script. It has to reside in
-     *            /scripts/ in order to be found.
+     *        /scripts/ in order to be found.
      */
     public function addScript($script) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         $backendUrl = cRegistry::getBackendUrl();
         $backendPath = cRegistry::getBackendPath();
-        if (strpos($script, 'http') === 0 || strpos($script, "<script") === 0 || strpos($script, '//') === 0) {
+
+        if (strpos($script, 'http') === 0 || strpos($script, '<script') === 0 || strpos($script, '//') === 0) {
+            // the given script path is absolute
             $this->_scripts[] = $script;
-        } else {
-            if (cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . '/scripts/' . $script)) {
-                $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginname . '/scripts/' . $script;
-                $this->_scripts[] = $fullpath;
-            } else {
-                if (cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $script)) {
-                    $fullpath = $backendUrl . $cfg['path']['scripts'] . $script;
-                    $this->_scripts[] = $fullpath;
-                }
-            }
+        } else if (cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . $cfg['path']['scripts'] . $script)) {
+            // the given script path is relative to the plugin scripts folder
+            $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginname . $cfg['path']['scripts'] . $script;
+            $this->_scripts[] = $fullpath;
+        } else if (cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $script)) {
+            // the given script path is relative to the CONTENIDO scripts folder
+            $fullpath = $backendUrl . $cfg['path']['scripts'] . $script;
+            $this->_scripts[] = $fullpath;
         }
     }
 
     /**
-     * Adds a stylesheet to the website.
+     * Adds a stylesheet to the website - path can be absolute, relative to the
+     * plugin stylesheets folder and relative to the CONTENIDO stylesheets
+     * folder.
      *
      * @param string $stylesheet The filename of the stylesheet. It has to
      *        reside in /styles/ in order to be found.
      */
     public function addStyle($stylesheet) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         $backendUrl = cRegistry::getBackendUrl();
         $backendPath = cRegistry::getBackendPath();
+
         if (strpos($stylesheet, 'http') === 0 || strpos($stylesheet, '//') === 0) {
+            // the given stylesheet path is absolute
             $this->_styles[] = $stylesheet;
-        } else {
-            if (cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . $cfg['path']['styles'] . $stylesheet)) {
-                $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginname . $cfg['path']['styles'] . $stylesheet;
-                $this->_styles[] = $fullpath;
-            } else {
-                if (cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . '/style/' . $stylesheet)) {
-                    $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginname . '/style/' . $stylesheet;
-                    $this->_styles[] = $fullpath;
-                } else if (cFileHandler::exists($backendPath . $cfg['path']['styles'] . $stylesheet)) {
-                    $fullpath = $backendUrl . $cfg['path']['styles'] . $stylesheet;
-                    $this->_styles[] = $fullpath;
-                }
-            }
+        } else if (cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . $cfg['path']['styles'] . $stylesheet)) {
+            // the given stylesheet path is relative to the plugin stylesheets
+            // folder
+            $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginname . $cfg['path']['styles'] . $stylesheet;
+            $this->_styles[] = $fullpath;
+        } else if (cFileHandler::exists($backendPath . $cfg['path']['styles'] . $stylesheet)) {
+            // the given stylesheet path is relative to the CONTENIDO
+            // stylesheets folder
+            $fullpath = $backendUrl . $cfg['path']['styles'] . $stylesheet;
+            $this->_styles[] = $fullpath;
         }
     }
 
