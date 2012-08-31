@@ -110,7 +110,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         $this->_dateFormatsJs = array();
         foreach ($this->_dateFormatsPhp as $key => $value) {
             $newKey = $this->_convertPhpToJqueryUiDateTimeFormat($key);
-            $newKey = addslashes($newKey);
+            $newKey = htmlspecialchars($newKey);
             $this->_dateFormatsJs[$newKey] = $value;
         }
 
@@ -120,7 +120,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         $dateFormatsPhpJsonEncoded = array_keys($this->_dateFormatsPhp);
         for ($i = 0; $i < count($this->_dateFormatsPhp); $i++) {
             $key = $this->_convertPhpToJqueryUiDateTimeFormat($dateFormatsPhpJsonEncoded[$i]);
-            $key = addslashes($key);
+            $key = htmlspecialchars($key);
             // construct the format string from the JSON structure
             $format = json_decode($dateFormatsPhpJsonEncoded[$i], true);
             $value = implode(' ', $format);
@@ -130,7 +130,6 @@ class cContentTypeDate extends cContentTypeAbstract {
         // if form is submitted, store the current date settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        // var_dump($_POST['date_format']);
         if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
             // convert the given date string into a valid timestamp, so that a
             // timestamp is stored
@@ -251,7 +250,7 @@ class cContentTypeDate extends cContentTypeAbstract {
             return '';
         }
 
-        return $this->_formatDate($this->_dateFormatsJsonEncodedToPhp[addslashes($format)], $this->_settings['date_timestamp']);
+        return $this->_formatDate($this->_dateFormatsJsonEncodedToPhp[htmlspecialchars($format)], $this->_settings['date_timestamp']);
     }
 
     /**
@@ -313,9 +312,7 @@ class cContentTypeDate extends cContentTypeAbstract {
             'margin' => '2px 5px 5px'
         ));
         $formatSelect->autoFill($this->_dateFormatsJs);
-        // var_dump($this->_dateFormatsJs);
-        $jsDateFormat = addslashes($this->_settings[$this->_prefix . '_format']);
-        // var_dump($jsDateFormat);
+        $jsDateFormat = htmlspecialchars($this->_settings[$this->_prefix . '_format']);
         $formatSelect->setDefault($jsDateFormat);
 
         return $formatSelect->render();
