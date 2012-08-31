@@ -134,7 +134,6 @@ cContentTypeDate.prototype.jQueryUiTimepickerCallback = function(calendarPic) {
         // change the format when a new format is selected
         $('#date_format_select_' + self.id).change(function() {
             var format = $(this).val();
-            format = format.replace(/\\"/g, '\"');
             format = $.parseJSON(format);
             $('#date_timestamp_' + self.id).datetimepicker('option', 'dateFormat', format.dateFormat);
             $('#date_timestamp_' + self.id).datetimepicker('option', 'timeFormat', format.timeFormat);

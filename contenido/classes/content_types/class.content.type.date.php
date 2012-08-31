@@ -96,14 +96,15 @@ class cContentTypeDate extends cContentTypeAbstract {
 
         // add formats from client settings
         $additionalFormats = getEffectiveSettingsByType('cms_date');
-        foreach ($additionalFormats as $dateFormat => $timeFormat) {
-            $formatArray = array(
-                'dateFormat' => $dateFormat,
-                'timeFormat' => $timeFormat
-            );
-            $key = json_encode($formatArray);
+        foreach ($additionalFormats as $format) {
+            $formatArray = json_decode($format, true);
+            // ignore invalid formats
+            if (empty($formatArray) || count($formatArray) != 2 || !array_key_exists('dateFormat', $formatArray) || !array_key_exists('timeFormat', $formatArray)) {
+                cWarning('An invalid date-time-format has been entered in the client settings.');
+                continue;
+            }
             $value = implode(' ', $formatArray);
-            $this->_dateFormatsPhp[$key] = $value;
+            $this->_dateFormatsPhp[$format] = $this->_formatDate($value);
         }
 
         // compute the JS date formats
