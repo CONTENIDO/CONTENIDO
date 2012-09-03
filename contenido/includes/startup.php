@@ -46,7 +46,7 @@ global $cfg;
  * NOTE: They will be overwritten below...
  */
 // Don't display errors
-@ini_set('display_errors', true);
+@ini_set('display_errors', false);
 
 // Log errors to a file
 @ini_set('log_errors', true);
