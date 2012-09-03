@@ -15,6 +15,7 @@
     <script type="text/javascript" src="scripts/jquery.tipsy.js"></script>
     <script type="text/javascript" src="scripts/registerTipsy.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/str_overview.css">
+    <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
     <script type="text/javascript">
         /* Session-ID */
         var sid = "{SID}";
@@ -34,82 +35,92 @@
                     $(this).data('oldIndex', ui.item.index());
                 },
                 stop: function(event, ui) {
+                	var self = this;
                     // get the old index of the dropped element
-                    var oldIndex = $(this).data('oldIndex');
-                    $(this).removeData('oldIndex');
+                    var oldIndex = $(self).data('oldIndex');
+                    $(self).removeData('oldIndex');
                     // do nothing if element has been dropped at the old position
                     if (oldIndex == ui.item.index()) {
                         return;
                     }
-                    // otherwise ask the user if he really wants to move the category
-                    if (window.confirm('{MOVE_CONFIRMATION}')) {
-                        // user wants to move the category, so send the request
-                        var idcat = ui.item.data('idcat');
-                        var prevItem = ui.item.prev();
-                        var nextItem = ui.item.next();
-                        // compute newParentId, newPreId, newPostId depending on where the category has been dropped
-                        if ((typeof prevItem.data('idcat') == 'undefined' || prevItem.data('idcat') == '') && nextItem.data('idcat') != '') {
-                            // case: category moved to top level after empty row or to the very top
-                            var newParentId = 0;
-                            if (typeof prevItem.prev().data('idcat') != 'undefined') {
-                                // case: category moved to top level after empty row, so search for the next level-0 category
-                                var tempPrevItem  = prevItem;
-                                while (tempPrevItem.data('level') != 0) {
-                                    tempPrevItem = tempPrevItem.prev();
+
+                    $('#confirmation-dialog').dialog({
+                    	buttons: {
+                    		'OK': function() {
+                    			// user wants to move the category, so send the request
+                                var idcat = ui.item.data('idcat');
+                                var prevItem = ui.item.prev();
+                                var nextItem = ui.item.next();
+                                // compute newParentId, newPreId, newPostId depending on where the category has been dropped
+                                if ((typeof prevItem.data('idcat') == 'undefined' || prevItem.data('idcat') == '') && nextItem.data('idcat') != '') {
+                                    // case: category moved to top level after empty row or to the very top
+                                    var newParentId = 0;
+                                    if (typeof prevItem.prev().data('idcat') != 'undefined') {
+                                        // case: category moved to top level after empty row, so search for the next level-0 category
+                                        var tempPrevItem  = prevItem;
+                                        while (tempPrevItem.data('level') != 0) {
+                                            tempPrevItem = tempPrevItem.prev();
+                                        }
+                                        var newPreId = tempPrevItem.data('idcat');
+                                    } else {
+                                        // case: category moved to the very top
+                                        var newPreId = 0;
+                                    }
+                                    var newPostId = nextItem.data('idcat');
+                                } else if (typeof prevItem.data('idcat') != 'undefined' && prevItem.data('idcat') != '' && (typeof nextItem.data('idcat') == 'undefined' || nextItem.data('idcat') == '')) {
+                                    // case: category moved to bottom of a top level category
+                                    var tempPrevItem  = prevItem;
+                                    while (tempPrevItem.data('level') != 0) {
+                                        tempPrevItem = tempPrevItem.prev();
+                                    }
+                                    var newParentId = tempPrevItem.data('idcat');
+                                    if ($('#category_list tbody tr[data-parentid=' + newParentId + ']').size() > 0) {
+                                        // case: there already are child categories with this parentid
+                                        var newPreId = prevItem.data('idcat');
+                                    } else {
+                                        // case: there is no child category yet
+                                        var newPreId = 0;
+                                    }
+                                    var newPostId = 0;
+                                } else {
+                                    // there is a prev and a post category
+                                    if (prevItem.data('level') >= nextItem.data('level')) {
+                                        var newParentId = prevItem.data('parentid');
+                                    } else if (prevItem.data('level') <= nextItem.data('level')) {
+                                        var newParentId = nextItem.data('parentid');
+                                    }
+                                    if (prevItem.data('level') >= nextItem.data('level')) {
+                                        var newPreId = prevItem.data('idcat');
+                                    } else {
+                                        var newPreId = 0;
+                                    }
+                                    if (prevItem.data('level') <= nextItem.data('level')) {
+                                        var newPostId = nextItem.data('idcat');
+                                    } else {
+                                        var newPostId = 0;
+                                    }
                                 }
-                                var newPreId = tempPrevItem.data('idcat');
-                            } else {
-                                // case: category moved to the very top
-                                var newPreId = 0;
-                            }
-                            var newPostId = nextItem.data('idcat');
-                        } else if (typeof prevItem.data('idcat') != 'undefined' && prevItem.data('idcat') != '' && (typeof nextItem.data('idcat') == 'undefined' || nextItem.data('idcat') == '')) {
-                            // case: category moved to bottom of a top level category
-                            var tempPrevItem  = prevItem;
-                            while (tempPrevItem.data('level') != 0) {
-                                tempPrevItem = tempPrevItem.prev();
-                            }
-                            var newParentId = tempPrevItem.data('idcat');
-                            if ($('#category_list tbody tr[data-parentid=' + newParentId + ']').size() > 0) {
-                                // case: there already are child categories with this parentid
-                                var newPreId = prevItem.data('idcat');
-                            } else {
-                                // case: there is no child category yet
-                                var newPreId = 0;
-                            }
-                            var newPostId = 0;
-                        } else {
-                            // there is a prev and a post category
-                            if (prevItem.data('level') >= nextItem.data('level')) {
-                                var newParentId = prevItem.data('parentid');
-                            } else if (prevItem.data('level') <= nextItem.data('level')) {
-                                var newParentId = nextItem.data('parentid');
-                            }
-                            if (prevItem.data('level') >= nextItem.data('level')) {
-                                var newPreId = prevItem.data('idcat');
-                            } else {
-                                var newPreId = 0;
-                            }
-                            if (prevItem.data('level') <= nextItem.data('level')) {
-                                var newPostId = nextItem.data('idcat');
-                            } else {
-                                var newPostId = 0;
-                            }
-                        }
-                        // construct the URL and point the browser to it
-                        var url  = 'main.php?area=' + area;
-                        url += '&action=str_movesubtree';
-                        url += '&frame=' + frame;
-                        url += '&idcat=' + idcat;
-                        url += '&parentid_new=' + newParentId;
-                        url += '&preid_new=' + newPreId;
-                        url += '&postid_new=' + newPostId;
-                        url += '&contenido=' + sid;
-                        window.location.href = url;
-                    } else {
-                        // user does not want to move the category, so cancel
-                        $(this).sortable('cancel');
-                    }
+                                // construct the URL and point the browser to it
+                                var url  = 'main.php?area=' + area;
+                                url += '&action=str_movesubtree';
+                                url += '&frame=' + frame;
+                                url += '&idcat=' + idcat;
+                                url += '&parentid_new=' + newParentId;
+                                url += '&preid_new=' + newPreId;
+                                url += '&postid_new=' + newPostId;
+                                url += '&contenido=' + sid;
+                                window.location.href = url;
+                    			$(this).dialog('close');
+                    		},
+                    		'{CANCEL}': function() {
+                    			// user does not want to move the category, so cancel
+                                $(self).sortable('cancel');
+                                $(this).dialog('close');
+                    		}
+                    	},
+                    	modal: true,
+                    	resizable: false
+                 	});
                 }
             });
         });
@@ -368,6 +379,7 @@
     </tr>
     <!-- END:BLOCK -->
 </table>
+<div id="confirmation-dialog" class="dialog" style="display: none;">{MOVE_CONFIRMATION}</div>
 <script type="text/javascript">
     var strDataObj = {},
         tmpObject;

@@ -467,6 +467,7 @@ $tpl->set('s', 'TEMPLATE_URL', $sess->url("main.php?area=str_tplcfg&frame=$frame
 $message = addslashes(i18n("Do you really want to duplicate the following category:<br><br><b>%s</b><br><br>Notice: The duplicate process can take up to several minutes, depending on how many subitems and articles you've got."));
 $tpl->set('s', 'DUPLICATE_MESSAGE', $message);
 $tpl->set('s', 'DELETE_MESSAGE', i18n("Do you really want to delete the following category:<br><br><b>%s</b>"));
+$tpl->set('s', 'CANCEL', i18n('Cancel'));
 $tpl->set('s', 'MOVE_CONFIRMATION', i18n('Do you really want to move the category?'));
 
 $bAreaAddNewCategory = false;
