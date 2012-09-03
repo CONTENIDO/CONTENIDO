@@ -102,6 +102,7 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
         $language->setProperty("dateformat", "full", stripslashes($datetimeformat));
         $language->setProperty("dateformat", "date", stripslashes($dateformat));
         $language->setProperty("dateformat", "time", stripslashes($timeformat));
+        $language->setProperty("dateformat", "locale", stripslashes($datetimelocale));
 
         $language->setProperty("language", "code", stripslashes($languagecode));
         $language->setProperty("country", "code", stripslashes($countrycode));
@@ -219,6 +220,8 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
 
             $timeformat = new cHTMLTextbox("timeformat", $clang->getProperty("dateformat", "time"), 40);
 
+            $dateLocale = new cHTMLTextbox("datetimelocale", $clang->getProperty("dateformat", "locale"), 40);
+
             $form->addHeader(i18n("Edit language"));
             $oTxtLang = new cHTMLTextBox("langname", htmlspecialchars($db->f("name")), 40, 255);
             $form->add(i18n("Language name"), $oTxtLang->render());
@@ -235,6 +238,7 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
             $form->add(i18n("Date/Time format"), $fulldateformat->render());
             $form->add(i18n("Date format"), $dateformat->render());
             $form->add(i18n("Time format"), $timeformat->render());
+            $form->add(i18n("Date/Time locale"), $dateLocale->render());
 
             $page->setContent($form);
 

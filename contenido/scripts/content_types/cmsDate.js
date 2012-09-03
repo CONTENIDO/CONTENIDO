@@ -22,8 +22,9 @@
  * @property {String} pathBackend The path to the CONTENIDO backend.
  * @property {String} lang The language which is used (de or en).
  * @property {Object|String} settings The settings of this content type.
+ * @property {String} belang The backend language (e.g. de_DE).
  */
-function cContentTypeDate(frameId, prefix, id, idArtLang, pathBackend, lang, settings) {
+function cContentTypeDate(frameId, prefix, id, idArtLang, pathBackend, lang, settings, belang) {
 
     /**
      * ID of the frame in which all settings are made.
@@ -74,6 +75,13 @@ function cContentTypeDate(frameId, prefix, id, idArtLang, pathBackend, lang, set
      */
     this.settings = settings;
 
+    /**
+     * The backend language.
+     *
+     * @type String
+     */
+    this.belang = belang;
+
 }
 
 /**
@@ -114,9 +122,9 @@ cContentTypeDate.prototype.jQueryUiTimepickerCallback = function(calendarPic) {
     var self = this;
     // initialise the datepicker
     $('#date_timestamp_' + self.id).datetimepicker({
-        alwaysSetTime: false,
         buttonImage: calendarPic,
         buttonImageOnly: true,
+        changeYear: true,
         showOn: 'both'
     });
     $(function() {
@@ -126,18 +134,15 @@ cContentTypeDate.prototype.jQueryUiTimepickerCallback = function(calendarPic) {
             date = new Date(self.settings.date_timestamp * 1000);
         }
         $('#date_timestamp_' + self.id).datetimepicker('setDate', date);
-        // set the initial format
-        var format = $('#date_format_select_' + self.id).val();
-        format = $.parseJSON(format);
-        $('#date_timestamp_' + self.id).datetimepicker('option', 'dateFormat', format.dateFormat);
-        $('#date_timestamp_' + self.id).datetimepicker('option', 'timeFormat', format.timeFormat);
-        // change the format when a new format is selected
-        $('#date_format_select_' + self.id).change(function() {
-            var format = $(this).val();
-            format = $.parseJSON(format);
-            $('#date_timestamp_' + self.id).datetimepicker('option', 'dateFormat', format.dateFormat);
-            $('#date_timestamp_' + self.id).datetimepicker('option', 'timeFormat', format.timeFormat);
-        });
+        // set the format
+        var dateFormat = 'yy-mm-dd';
+    	var timeFormat = 'hh:mm:ssTT';
+        if (self.belang == 'de_DE') {
+        	dateFormat = 'dd.mm.yy';
+        	timeFormat = 'hh:mm:ss';
+        }
+        $('#date_timestamp_' + self.id).datetimepicker('option', 'dateFormat', dateFormat);
+        $('#date_timestamp_' + self.id).datetimepicker('option', 'timeFormat', timeFormat);
     });
     // only load the localisation file if the language is not english
     if (self.lang !== 'en') {
@@ -153,8 +158,8 @@ cContentTypeDate.prototype.addSaveEvent = function() {
     var self = this;
     $(self.frameId + ' .save_settings').css('cursor', 'pointer');
     $(self.frameId + ' .save_settings').click(function() {
-        var date = $('#date_timestamp_' + self.id).datetimepicker('getDate');
-        var timestamp = date.getTime() / 1000;
+        var date = $('#date_timestamp_' + self.id).datetimepicker('getDate') || $('#date_timestamp_' + self.id).datepicker('getDate') || $('#date_timestamp_' + self.id).timepicker('getDate');
+        var timestamp = Math.floor(date.getTime() / 1000);
         var format = $(self.frameId + ' #date_format_select_' + self.id).val();
         format = Base64.encode(format);
         self.appendFormField(self.prefix + '_timestamp', timestamp);

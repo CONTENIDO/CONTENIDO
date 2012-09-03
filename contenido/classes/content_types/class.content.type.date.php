@@ -30,28 +30,10 @@ class cContentTypeDate extends cContentTypeAbstract {
     /**
      * The possible PHP date formats in which the selected date can be
      * displayed.
-     * Correspond to the JS date formats $_dateFormatsJs.
      *
      * @var array
      */
     private $_dateFormatsPhp;
-
-    /**
-     * The possible JS date formats in which the selected date can be
-     * displayed.
-     * Correspond to the PHP date formats $_dateFormatsPhp.
-     *
-     * @var array
-     */
-    private $_dateFormatsJs;
-
-    /**
-     * Maps the JSON-encoded JS date formats to the raw PHP date format strings.
-     * Correspond to the PHP date formats $_dateFormatsPhp.
-     *
-     * @var array
-     */
-    private $_dateFormatsJsonEncodedToPhp;
 
     /**
      * Initialises class attributes and handles store events.
@@ -76,22 +58,34 @@ class cContentTypeDate extends cContentTypeAbstract {
         );
         parent::__construct($rawSettings, $id, $contentTypes);
 
+        // set the locale
+        $belang = cRegistry::getBackendLanguage();
+        if (empty($belang)) {
+            $language = new cApiLanguage(cRegistry::getLanguageId());
+            $locale = $language->getProperty('dateformat', 'locale');
+            if (!empty($locale)) {
+                setlocale(LC_TIME, $locale);
+            }
+        } else {
+            setlocale(LC_TIME, $belang);
+        }
+
         // initialise the date formats
         $this->_dateFormatsPhp = array(
-            '{"dateFormat":"d.m.Y","timeFormat":""}' => $this->_formatDate('d.m.Y'),
-            '{"dateFormat":"D, d.m.Y","timeFormat":""}' => $this->_formatDate('D, d.m.Y'),
-            '{"dateFormat":"d. F Y","timeFormat":""}' => $this->_formatDate('d. F Y'),
-            '{"dateFormat":"Y-m-d","timeFormat":""}' => $this->_formatDate('Y-m-d'),
-            '{"dateFormat":"d/F/Y","timeFormat":""}' => $this->_formatDate('d/F/Y'),
-            '{"dateFormat":"d/m/y","timeFormat":""}' => $this->_formatDate('d/m/y'),
-            '{"dateFormat":"F y","timeFormat":""}' => $this->_formatDate('F y'),
-            '{"dateFormat":"F-y","timeFormat":""}' => $this->_formatDate('F-y'),
-            '{"dateFormat":"d.m.Y","timeFormat":"H:i"}' => $this->_formatDate('d.m.Y H:i'),
-            '{"dateFormat":"m.d.Y","timeFormat":"H:i:s"}' => $this->_formatDate('m.d.Y H:i:s'),
-            '{"dateFormat":"","timeFormat":"H:i"}' => $this->_formatDate('H:i'),
-            '{"dateFormat":"","timeFormat":"H:i:s"}' => $this->_formatDate('H:i:s'),
-            '{"dateFormat":"","timeFormat":"h:i A"}' => $this->_formatDate('h:i A'),
-            '{"dateFormat":"","timeFormat":"h:i:s A"}' => $this->_formatDate('h:i:s A')
+            htmlspecialchars('{"dateFormat":"d.m.Y","timeFormat":""}') => $this->_formatDate('d.m.Y'),
+            htmlspecialchars('{"dateFormat":"D, d.m.Y","timeFormat":""}') => $this->_formatDate('D, d.m.Y'),
+            htmlspecialchars('{"dateFormat":"d. F Y","timeFormat":""}') => $this->_formatDate('d. F Y'),
+            htmlspecialchars('{"dateFormat":"Y-m-d","timeFormat":""}') => $this->_formatDate('Y-m-d'),
+            htmlspecialchars('{"dateFormat":"d/F/Y","timeFormat":""}') => $this->_formatDate('d/F/Y'),
+            htmlspecialchars('{"dateFormat":"d/m/y","timeFormat":""}') => $this->_formatDate('d/m/y'),
+            htmlspecialchars('{"dateFormat":"F y","timeFormat":""}') => $this->_formatDate('F y'),
+            htmlspecialchars('{"dateFormat":"F-y","timeFormat":""}') => $this->_formatDate('F-y'),
+            htmlspecialchars('{"dateFormat":"d.m.Y","timeFormat":"H:i"}') => $this->_formatDate('d.m.Y H:i'),
+            htmlspecialchars('{"dateFormat":"m.d.Y","timeFormat":"H:i:s"}') => $this->_formatDate('m.d.Y H:i:s'),
+            htmlspecialchars('{"dateFormat":"","timeFormat":"H:i"}') => $this->_formatDate('H:i'),
+            htmlspecialchars('{"dateFormat":"","timeFormat":"H:i:s"}') => $this->_formatDate('H:i:s'),
+            htmlspecialchars('{"dateFormat":"","timeFormat":"h:i A"}') => $this->_formatDate('h:i A'),
+            htmlspecialchars('{"dateFormat":"","timeFormat":"h:i:s A"}') => $this->_formatDate('h:i:s A')
         );
 
         // add formats from client settings
@@ -103,29 +97,9 @@ class cContentTypeDate extends cContentTypeAbstract {
                 cWarning('An invalid date-time-format has been entered in the client settings.');
                 continue;
             }
+            $key = htmlspecialchars($format);
             $value = implode(' ', $formatArray);
-            $this->_dateFormatsPhp[$format] = $this->_formatDate($value);
-        }
-
-        // compute the JS date formats
-        $this->_dateFormatsJs = array();
-        foreach ($this->_dateFormatsPhp as $key => $value) {
-            $newKey = $this->_convertPhpToJqueryUiDateTimeFormat($key);
-            $newKey = htmlspecialchars($newKey);
-            $this->_dateFormatsJs[$newKey] = $value;
-        }
-
-        // compute the mapping from JSON-encoded JS format strings to raw PHP
-        // format strings
-        $this->_dateFormatsJsonEncodedToPhp = array();
-        $dateFormatsPhpJsonEncoded = array_keys($this->_dateFormatsPhp);
-        for ($i = 0; $i < count($this->_dateFormatsPhp); $i++) {
-            $key = $this->_convertPhpToJqueryUiDateTimeFormat($dateFormatsPhpJsonEncoded[$i]);
-            $key = htmlspecialchars($key);
-            // construct the format string from the JSON structure
-            $format = json_decode($dateFormatsPhpJsonEncoded[$i], true);
-            $value = implode(' ', $format);
-            $this->_dateFormatsJsonEncodedToPhp[$key] = $value;
+            $this->_dateFormatsPhp[$key] = $this->_formatDate($value);
         }
 
         // if form is submitted, store the current date settings
@@ -200,22 +174,16 @@ class cContentTypeDate extends cContentTypeAbstract {
                 // replace the format chars with localised values
                 switch ($char) {
                     case 'D':
-                        $dayName = getCanonicalDay(date('w', $timestamp));
-                        $dayName = substr($dayName, 0, 3);
-                        $result .= $dayName;
+                        $result .= strftime('%a', $timestamp);
                         break;
                     case 'l':
-                        $dayName = getCanonicalDay(date('w', $timestamp));
-                        $result .= $dayName;
+                        $result .= strftime('%A', $timestamp);
                         break;
                     case 'F':
-                        $monthName = getCanonicalMonth(date('m', $timestamp));
-                        $result .= $monthName;
+                        $result .= strftime('%B', $timestamp);
                         break;
                     case 'M':
-                        $monthName = getCanonicalMonth(date('m', $timestamp));
-                        $monthName = substr($monthName, 0, 3);
-                        $result .= $monthName;
+                        $result .= strftime('%b', $timestamp);
                         break;
                     default:
                         // use the default date() format if no localisation is
@@ -245,13 +213,15 @@ class cContentTypeDate extends cContentTypeAbstract {
 
         if (empty($format)) {
             $format = 'd.m.Y';
+        } else {
+            $format = implode(' ', json_decode($format, true));
         }
         $timestamp = $this->_settings['date_timestamp'];
         if (empty($timestamp)) {
             return '';
         }
 
-        return $this->_formatDate($this->_dateFormatsJsonEncodedToPhp[htmlspecialchars($format)], $this->_settings['date_timestamp']);
+        return $this->_formatDate($format, $timestamp);
     }
 
     /**
@@ -286,6 +256,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         $template->set('s', 'LANG', substr(cRegistry::getBackendLanguage(), 0, 2));
         $template->set('s', 'PATH_TO_CALENDAR_PIC', $pathBackend . $this->_cfg['path']['images'] . 'calendar.gif');
         $template->set('s', 'SETTINGS', json_encode($this->_settings));
+        $template->set('s', 'BELANG', cRegistry::getBackendLanguage());
 
         return $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_date.html', true);
     }
@@ -312,117 +283,11 @@ class cContentTypeDate extends cContentTypeAbstract {
             'border' => '1px solid #ccc',
             'margin' => '2px 5px 5px'
         ));
-        $formatSelect->autoFill($this->_dateFormatsJs);
-        $jsDateFormat = htmlspecialchars($this->_settings[$this->_prefix . '_format']);
-        $formatSelect->setDefault($jsDateFormat);
+        $formatSelect->autoFill($this->_dateFormatsPhp);
+        $phpDateFormat = htmlspecialchars($this->_settings[$this->_prefix . '_format']);
+        $formatSelect->setDefault($phpDateFormat);
 
         return $formatSelect->render();
-    }
-
-    /**
-     * Converts the date and time format in the PHP format to the jQuery UI
-     * format.
-     * The format strings are given as a JSON encoded object.
-     *
-     * @param string $dateTimeFormat JSON encoded object containing the date and
-     *        the time format
-     * @return string the corresponding jQuery UI date time format
-     */
-    private function _convertPhpToJqueryUiDateTimeFormat($dateTimeFormat) {
-        $dateTimeFormatObj = json_decode($dateTimeFormat);
-        $dateTimeFormatObj->dateFormat = $this->_convertPhpToJqueryUiDateFormat($dateTimeFormatObj->dateFormat);
-        $dateTimeFormatObj->timeFormat = $this->_convertPhpToJqueryUiTimeFormat($dateTimeFormatObj->timeFormat);
-
-        return stripslashes(json_encode($dateTimeFormatObj));
-    }
-
-    /**
-     * Converts the given date format string in the PHP format
-     * (http://de.php.net/manual/en/function.date.php) to the jQuery UI format
-     * (http://docs.jquery.com/UI/Datepicker/formatDate).
-     *
-     * @param string $dateFormat the PHP date format string
-     * @return string the corresponding jQuery UI date format string
-     */
-    private function _convertPhpToJqueryUiDateFormat($dateFormat) {
-        // descriptions from http://de.php.net/manual/en/function.date.php
-        $pattern = array(
-            'd', // Day of the month, 2 digits with leading zeros
-            'D', // A textual representation of a day, three letters
-            'j', // Day of the month without leading zeros
-            'l', // A full textual representation of the day of the week
-            'z', // The day of the year (starting from 0)
-            'F', // A full textual representation of a month, such as January or
-                 // March
-            'm', // Numeric representation of a month, with leading zeros
-            'M', // A short textual representation of a month, three letters
-            'n', // Numeric representation of a month, without leading zeros
-            'Y', // A full numeric representation of a year, 4 digits
-                 // A two digit representation of a year
-            'y'
-        );
-        // descriptions from http://docs.jquery.com/UI/Datepicker/formatDate
-        $replace = array(
-            'dd', // day of month (two digit)
-            'D', // day name short
-            'd', // day of month (no leading zero)
-            'DD', // day name long
-            'o', // day of the year (no leading zeros)
-            'MM', // month name long
-            'mm', // month of year (two digit)
-            'M', // month name short
-            'm', // month of year (no leading zero)
-            'yy', // year (four digit)
-                  // year (two digit)
-            'y'
-        );
-        foreach ($pattern as &$p) {
-            $p = '/' . $p . '/';
-        }
-
-        return preg_replace($pattern, $replace, $dateFormat);
-    }
-
-    /**
-     * Converts the given time format string in the PHP format
-     * (http://de.php.net/manual/en/function.date.php) to the jQuery UI format
-     * (http://trentrichardson.com/examples/timepicker/).
-     *
-     * @param string $timeFormat
-     * @return mixed
-     */
-    private function _convertPhpToJqueryUiTimeFormat($timeFormat) {
-        // descriptions from http://de.php.net/manual/en/function.date.php
-        $pattern = array(
-            'a', // Lowercase Ante meridiem and Post meridiem
-            'A', // Uppercase Ante meridiem and Post meridiem
-            'g', // 12-hour format of an hour without leading zeros
-            'G', // 24-hour format of an hour without leading zeros
-            'h', // 12-hour format of an hour with leading zeros
-            'H', // 24-hour format of an hour with leading zeros
-            'i', // Minutes with leading zeros
-            's', // Seconds, with leading zeros
-                 // Microseconds
-            'u'
-        );
-        // descriptions from http://trentrichardson.com/examples/timepicker/
-        $replace = array(
-            'tt', // am or pm for AM/PM
-            'TT', // AM or PM for AM/PM
-            'h', // Hour with no leading 0
-            'h', // Hour with no leading 0
-            'hh', // Hour with leading 0
-            'hh', // Hour with leading 0
-            'mm', // Minute with leading 0
-            'ss', // Second with leading 0
-                  // Milliseconds always with leading 0
-            'l'
-        );
-        foreach ($pattern as &$p) {
-            $p = '/' . $p . '/';
-        }
-
-        return preg_replace($pattern, $replace, $timeFormat);
     }
 
 }

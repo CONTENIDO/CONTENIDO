@@ -4,7 +4,7 @@
 conLoadFile('{PATH_BACKEND}scripts/content_types/cmsDate.js', '{PREFIX}{ID}ClassLoaded();');
 
 function {PREFIX}{ID}ClassLoaded() {
-    var contentTypeInstance = new cContentTypeDate('#cms_{PREFIX}_{ID}_settings', '{PREFIX}', {ID}, '{IDARTLANG}', '{PATH_BACKEND}', '{LANG}', {SETTINGS});
+    var contentTypeInstance = new cContentTypeDate('#cms_{PREFIX}_{ID}_settings', '{PREFIX}', {ID}, '{IDARTLANG}', '{PATH_BACKEND}', '{LANG}', {SETTINGS}, '{BELANG}');
     contentTypeInstance.initialise('{PATH_TO_CALENDAR_PIC}');
 }
 
