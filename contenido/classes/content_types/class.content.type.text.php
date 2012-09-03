@@ -71,8 +71,7 @@ class cContentTypeText extends cContentTypeAbstract {
         $editButton->setID($this->_prefix . '_editbutton_' . $this->_id);
         $editButton->appendStyleDefinitions(array(
             'margin-left' => '5px',
-            'cursor',
-            'pointer'
+            'cursor' => 'pointer'
         ));
 
         return $this->_encodeForOutput($script . $div->render() . $editButton->render());
@@ -90,7 +89,7 @@ class cContentTypeText extends cContentTypeAbstract {
         $saveButton->setID($this->_prefix . '_savebutton_' . $this->_id);
         $saveButton->appendStyleDefinitions(array(
             'margin-left' => '5px',
-            'cursor', 'pointer'
+            'cursor' => 'pointer'
         ));
 
         $template = new cTemplate();
