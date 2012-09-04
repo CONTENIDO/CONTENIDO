@@ -27,7 +27,7 @@ $td = new cHTMLTableData();
 $td->setContent(mi18n('Choose tree:'));
 $tds[] = $td;
 $td = new cHTMLTableData();
-$select = new cHTMLInputSelectElement("CMS_VAR[1]");
+$select = new cHTMLSelectElement("CMS_VAR[1]");
 foreach ($categories as $key => $value) {
     $option = new cHTMLOptionElement($value['name_indented'], $value['idcat']);
     if ($selected == $value['idcat']) {
