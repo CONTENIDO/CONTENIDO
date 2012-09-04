@@ -50,7 +50,7 @@ class Cronjobs {
             $this->_fileName = substr($phpFile,0,-4);
 
         $this->_cfg = $this->_conVars['cfg'];
-        $this->_cronjobDirectory = $this->_cfg['path']['contenido'] . '/' .$this->_cfg['path']['cronjobs'];
+        $this->_cronjobDirectory = $this->_cfg['path']['contenido'] . $this->_cfg['path']['cronjobs'];
         $this->_cronlogDirectory = $this->_cfg['path']['contenido_cronlog'];
     }
 
