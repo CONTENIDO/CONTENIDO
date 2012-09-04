@@ -657,14 +657,11 @@ class cHTML {
             $this->setAttribute($eventName, $this->getAttribute($eventName) . implode(' ', $fullCode));
         }
 
-        if ($this->_content !== '' || $this->_contentlessTag === false) {
-            $attributes = $this->getAttributes(true);
-
+        $attributes = $this->getAttributes(true);
+        if (!empty($this->_content) || $this->_contentlessTag === false) {
             return $this->fillSkeleton($attributes) . $this->_content . $this->fillCloseSkeleton();
         } else {
             // This is a single style tag
-            $attributes = $this->getAttributes(true);
-
             return $this->fillSkeleton($attributes);
         }
     }
