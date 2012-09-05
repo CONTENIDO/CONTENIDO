@@ -148,8 +148,8 @@ if (!isset($client)) {
     $client = $load_client;
 }
 
-// Update urlbuilder, set http base path
-Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
+// Update UriBuilder, set http base path
+cUri::getInstance()->getUriBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
 
 // Initialize language
 if (!isset($lang)) {
@@ -205,7 +205,7 @@ $aParams = array(
     'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client],
     'lang' => $lang, 'error' => '1'
 );
-$errsite = 'Location: ' . Contenido_Url::getInstance()->buildRedirect($aParams);
+$errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
 
 if ($error == 1) {
     header("HTTP/1.0 404 Not found");
@@ -596,7 +596,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         if ($redirect == '1' && $redirect_url != '') {
             cRegistry::shutdown();
             // Redirect to the URL defined in article properties
-            $oUrl = Contenido_Url::getInstance();
+            $oUrl = cUri::getInstance();
             if ($oUrl->isIdentifiableFrontContentUrl($redirect_url)) {
                 // Perform urlbuilding only for identified internal urls
                 $aUrl = $oUrl->parse($redirect_url);
@@ -631,6 +631,8 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 
                 // Print output
                 echo $htmlCode;
+                echo "hier ";
+                exit;
             }
         }
     } else {

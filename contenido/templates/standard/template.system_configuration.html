@@ -1,17 +1,30 @@
 <script type="text/javascript">
-    function cls() {
-        parent.parent.header.document.getElementById('debug_msg').innerHTML = '';
-    }
+	$(function() {
+		$('input[name="debug{_}debug_to_screen"]').click(function() {
+			console.log(parent.parent.parent.aheader.document);
+			$('#debug_msg', parent.parent.header.document).toggle();
+		});
+	});
 
-    function assignEvent() {
-        var obj = document.getElementById('debug{_}debug_to_screen');
-        if (obj == null) {
-            window.setTimeout('assignEvent()', 50);
-            return;
-        }
-        obj.onchange = cls;
-    }
-    assignEvent();
+//     function cls() {
+//         parent.parent.header.document.getElementById('debug_msg').innerHTML = '';
+       
+//     }
+
+//     function assignEvent() {
+//         var obj = document.getElementById('debug{_}debug_to_screen');
+    
+//         if (obj == null) {
+//             window.setTimeout('assignEvent()', 50);
+            
+//             return;
+//         }
+        
+//         obj.onchange = cls;
+//        alert("Hallo");
+//     }
+    
+//     assignEvent();
 
 </script>
 {FORM}

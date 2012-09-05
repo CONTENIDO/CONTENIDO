@@ -146,7 +146,7 @@ if (ModRewrite::isEnabled()) {
         // overwrite url builder configuration with own url builder
         $cfg['url_builder']['name'] = 'MR';
         $cfg['config']              = array();
-        Contenido_UrlBuilderConfig::setConfig($cfg['url_builder']);
+        cUriBuilderConfig::setConfig($cfg['url_builder']);
 
         if ($aMrCfg['rewrite_urls_at_congeneratecode'] == 1) {
             // Add url rewriting at code generation to CONTENIDO Extension Chainer
@@ -166,7 +166,7 @@ if (isset($contenido) && isset($area) && $area == 'mod_rewrite_test') {
     // configure url builder to enable it on test page
     $cfg['url_builder']['name'] = 'MR';
     $cfg['config']              = array();
-    Contenido_UrlBuilderConfig::setConfig($cfg['url_builder']);
+    cUriBuilderConfig::setConfig($cfg['url_builder']);
     ModRewrite::setEnabled(true);
 }
 

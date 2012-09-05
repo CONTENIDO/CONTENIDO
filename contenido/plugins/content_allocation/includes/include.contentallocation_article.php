@@ -38,7 +38,7 @@ $db->query($sql);
 $db->next_record();
 $this_idartlang = $db->f('idartlang');
 
-$oPage = new cGuiPage("contentallocation_article", "content_allocataion", "7");
+$oPage = new cGuiPage("contentallocation_article", "content_allocation", "7");
 
 $oTree = new pApiContentAllocationComplexList('06bd456d-fe76-40cb-b041-b9ba90dc400a');
 $oAlloc = new pApiContentAllocation;
@@ -99,6 +99,7 @@ if ($result == false) {
 
     $oPage->addStyle($cfg['pica']['style_complexlist']);
     $oPage->addScript($cfg['pica']['script_complexlist']);
+
 }
 //breadcrumb onclick
 if (!isset($syncfrom)) {

@@ -119,3 +119,11 @@ var sub = {
         return;
     }
 };
+
+//function redirectionFromUpload
+function test(){
+alert('Hallo');
+var oRef = parent.parent.frames['right'].frames['right_top'].document.getElementById('c_1');
+parent.parent.frames['right'].frames['right_top'].sub.clicked(oRef.getElementsByTagName('a')[0]);
+}
+//}

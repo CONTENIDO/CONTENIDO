@@ -211,3 +211,4 @@ if ($perm->have_perm_area_action($area, 'edit_sysconf')) {
 }
 
 $page->render();
+

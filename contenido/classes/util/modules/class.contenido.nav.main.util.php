@@ -72,7 +72,7 @@ class Contenido_NavMain_Util {
         $oTpl->set('d', 'css_last_item', ($aLevelInfo[$oCategory->getIdParent()]['last_child_item'] == $oCategory->getIdCat() ? ' last' : ''));
         $oTpl->set('d', 'css_active_item', ($bMarkActive === true ? ' active' : ''));
         try {
-           $oTpl->set('d', 'url', Contenido_Url::getInstance()->build($aParams));
+           $oTpl->set('d', 'url', cUri::getInstance()->build($aParams));
         } catch (InvalidArgumentException $e) {
             $oTpl->set('d', 'url', '#');
         }

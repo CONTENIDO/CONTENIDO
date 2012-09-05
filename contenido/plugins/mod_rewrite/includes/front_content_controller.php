@@ -67,7 +67,7 @@ if ($oMRController->errorOccured()) {
             'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client],
             'lang' => $lang, 'error'=> '1'
         );
-        $errsite = 'Location: ' . Contenido_Url::getInstance()->buildRedirect($aParams);
+        $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
         mr_header($errsite);
         exit();
     }

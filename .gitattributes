@@ -605,6 +605,15 @@ contenido/classes/swiftmailer/lib/swift_required.php -text
 contenido/classes/swiftmailer/lib/swift_required_pear.php -text
 contenido/classes/tree/class.ctree.php -text
 contenido/classes/tree/class.ctreeitem.php -text
+contenido/classes/uri/Sample.php -text
+contenido/classes/uri/class.uri.php -text
+contenido/classes/uri/class.uribuilder.config.php -text
+contenido/classes/uri/class.uribuilder.custom.php -text
+contenido/classes/uri/class.uribuilder.custompath.php -text
+contenido/classes/uri/class.uribuilder.factory.php -text
+contenido/classes/uri/class.uribuilder.frontcontent.php -text
+contenido/classes/uri/class.uribuilder.mr.php -text
+contenido/classes/uri/class.uribuilder.php -text
 contenido/classes/util/modules/class.contenido.nav.main.util.php -text
 contenido/classes/util/modules/class.contenido.sitemap.util.php -text
 contenido/classes/validator/class.validator.abstract.php -text

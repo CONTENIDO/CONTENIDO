@@ -36,7 +36,7 @@ $err_catart = trim(getEffectiveSetting('login_error_page', 'idcatart', ''));
 $err_cat    = trim(getEffectiveSetting('login_error_page', 'idcat', ''));
 $err_art    = trim(getEffectiveSetting('login_error_page', 'idart', ''));
 
-$oUrl = Contenido_Url::getInstance();
+$oUrl = cUri::getInstance();
 
 $sClientHtmlPath = cRegistry::getFrontendUrl();
 

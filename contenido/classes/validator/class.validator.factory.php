@@ -71,7 +71,7 @@ class cValidatorFactory {
 
             require_once($path . $fileName);
             if (!class_exists($className)) {
-                throw new InvalidArgumentException("The class of Contenido_Validator couldn't included by Contenido_UrlBuilderFactory: " . $validator . "!");
+                throw new InvalidArgumentException("The class of Contenido_Validator couldn't included by uriBuilderFactory: " . $validator . "!");
             }
 
             $obj = new $className();

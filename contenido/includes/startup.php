@@ -13,7 +13,7 @@
  * - Initializes CEC
  * - Includes userdefined configuration
  * - Sets/Checks DB connection
- * - Initializes UrlBuilder
+ * - Initializes UriBuilder
  *
  * @TODO: Collect all startup (bootstrap) related jobs into this file...
  *
@@ -170,7 +170,7 @@ require_once($cfg['path']['contenido_config'] . 'config.chains.php');
 // Set default database connection parameterecho '<pre>';
 DB_Contenido::setDefaultConfiguration($cfg['db']);
 
-// Initialize UrlBuilder, configuration is set in data/config/{environment}/config.misc.php
-Contenido_UrlBuilderConfig::setConfig($cfg['url_builder']);
+// Initialize UriBuilder, configuration is set in data/config/{environment}/config.misc.php
+cUriBuilderConfig::setConfig($cfg['url_builder']);
 
 ?>

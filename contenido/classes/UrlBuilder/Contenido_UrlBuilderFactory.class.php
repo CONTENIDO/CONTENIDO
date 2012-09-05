@@ -1,83 +1,30 @@
 <?php
+
+// ##############################################################################
+// Old version of VersionImport class
+//
+// NOTE: Class implemetation below is deprecated and the will be removed in
+// future versions of contenido.
+// Don't use it, it's still available due to downwards compatibility.
+
 /**
- * Project:
- * CONTENIDO Content Management System
+ * VersionImport
  *
- * Description:
- * Factory for retrieving required Contenido_UrlBuilder object
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.1.0
- * @author     Rudi Bieller
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2008-02-18
- *   modified 2008-09-29, Murat Purc, add instantiation of userdefined UrlBuilder
- *   modified 2008-12-22, Murat Purc, fixed file exists check of userdefined UrlBuilder
- *   modified 2009-01-01, Murat Purc, changed call of call_user_func to support php previous to 5.2.3
- *
- *   $Id$:
- * }}
- *
+ * @deprecated [2012-09-04] Use cUriBuilderFactory instead of this class.
  */
+class Contenido_UrlBuilderFactory extends cUriBuilderFactory{
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-
-class Contenido_UrlBuilderFactory
-{
     /**
-     * Returns desired UrlBuilder object.
      *
-     * @param   string  $sBuilder For now, those are valid: front_content, custom, custom_path or a
-     *                            Userdefined UrlBuilder name. The name must be a subpart of the
-     *                            UrlBuilder class, e. g. 'MyUrlBuilder' for Contenido_UrlBuilder_MyUrlBuilder.
-     *                            The classfile must be named like Contenido_UrlBuilder_MyUrlBuilder.class.php
-     *                            and it must be reside in /contenido/classes/UrlBuilder/ folder.
-     * @return  Contenido_UrlBuilder
-     * @throws  InvalidArgumentException In case unknown type of builder is requested you'll get an Exception
+     * @deprecated 2012-09-04 this function is not supported any longer
+     *             use function located in cUriBuilderFactory instead of this
+     *             function
      */
-    public static function getUrlBuilder($sBuilder)
-    {
-        switch ($sBuilder) {
-            case 'front_content':
-                return Contenido_UrlBuilder_Frontcontent::getInstance();
-                break;
-            case 'custom':
-                return Contenido_UrlBuilder_Custom::getInstance();
-                break;
-            case 'custom_path':
-                return Contenido_UrlBuilder_CustomPath::getInstance();
-                break;
-            default:
-                if ((string) $sBuilder !== '') {
-                    $sClassName = 'Contenido_UrlBuilder_' . $sBuilder;
-                    $sFileName  = 'Contenido_UrlBuilder_' . $sBuilder . '.class.php';
-                    $sPath      = str_replace('\\', '/', dirname(__FILE__)) . '/';
-                    if (!cFileHandler::exists($sPath . $sFileName)) {
-                        throw new InvalidArgumentException('The classfile of Contenido_UrlBuilder couldn\'t included by Contenido_UrlBuilderFactory: '.$sBuilder.'!');
-                    }
-                    cInclude('classes', 'UrlBuilder/' . $sFileName);
-                    if (!class_exists($sClassName)) {
-                        throw new InvalidArgumentException('The classfile of Contenido_UrlBuilder couldn\'t included by Contenido_UrlBuilderFactory: '.$sBuilder.'!');
-                    }
-                    return call_user_func(array($sClassName, 'getInstance'));
-                }
-
-                throw new InvalidArgumentException('Invalid/Empty Contenido_UrlBuilder passed to Contenido_UrlBuilderFactory: '.$sBuilder.'!');
-                break;
-        }
+    public static function getUrlBuilder($sBuilder) {
+        cDeprecated("This function is not supported any longer");
+        cUriBuilderFactory::getUriBuilder($sBuilder);
     }
+
 }
 
 ?>

@@ -1,122 +1,63 @@
 <?php
-/**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * Configure UrlBuilder URL style. Per default, configures for style index-a-1.html.
- * If you need another style, extend this class to your needs and pass it to desired UrlBuilder.
- *
- * Requirements:
- * @con_php_req 5.0
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.1.0
- * @author     Rudi Bieller
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2008-02-28
- *   modified 2008-09-29, Murat Purc, added features to set and get configuration
- *   $Id$:
- * }}
- *
- */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-if (!class_exists('NotInitializedException')) {
-    class NotInitializedException extends Exception {}
-}
-
+// ##############################################################################
+// Old version of VersionImport class
+//
+// NOTE: Class implemetation below is deprecated and the will be removed in
+// future versions of contenido.
+// Don't use it, it's still available due to downwards compatibility.
 
 /**
- * Class to manage UrlBuilder configuration.
+ * VersionImport
  *
- * The Contenido_UrlBuilderConfig::setConfig() must be called at least once to initialize the desired
- * UrlBuilder.
- *
- * Usage:
- * ------
- * <code>
- * // Example for default front_content UrlBuilder
- * $myCfg['name']   = 'front_content';
- * $myCfg['config'] = array();
- * Contenido_UrlBuilderConfig::setConfig($myCfg);
- *
- * // Example for CustomPath UrlBuilder
- * $myCfg['name']   = 'custom_path';
- * $myCfg['config'] = array('prefix' => 'rocknroll', 'suffix' => '.4fb', 'separator' => ',');
- * Contenido_UrlBuilderConfig::setConfig($myCfg);
- * </code>
- *
+ * @deprecated [2012-09-04] Use cUriBuilderConfig instead of this class.
  */
-class Contenido_UrlBuilderConfig
-{
+class Contenido_UrlBuilderConfig extends cUriBuilderConfig {
 
     /**
-     * UrlBuilder configuration array
-     * @var array
-     */
-    private static $_aUrlBuilderCfg = array(
-        'config' => array('prefix' => 'index', 'suffix' => '.html', 'separator' => '-')
-    );
-
-    /**
-     * Set UlrBuilder configuration
      *
-     * @param  array  $cfg  Assoziative configuration array as follows:
-     *                      - $cfg['name']   = Name of UrlBuilder class to use
-     *                      - $cfg['config'] = UrlBuilder configuration
-     * @throws  InvalidArgumentException  If $cfg ist empty, $cfg['name'] is missing or $cfg['config']
-     *                                    exists but is not a array
+     * @deprecated 2012-09-04 this function is not supported any longer
+     *             use function located in cUriBuilderConfig instead of this
+     *             function
      */
-    public static function setConfig(array $cfg)
-    {
-        if (count($cfg) == 0) {
-            throw new InvalidArgumentException('Contenido_UrlBuilderConfig: Empty configuration');
-        } elseif (!isset($cfg['name']) || (string) $cfg['name'] === '') {
-            throw new InvalidArgumentException('Contenido_UrlBuilderConfig: Missing UrlBuilder name');
-        } elseif (isset($cfg['config']) && !is_array($cfg['config'])) {
-            throw new InvalidArgumentException('Contenido_UrlBuilderConfig: Invalid UrlBuilder configuration');
-        }
-
-        self::$_aUrlBuilderCfg = $cfg;
+    private function __construct() {
+        cDeprecated("Use class cVersionImport instead");
+        parent::__construct();
     }
 
     /**
-     * Returns UrlBuilder name
      *
-     * @return  string  UrlBuilder name
-     * @throws  NotInitializedException If UrlBuilder configuration wasn't initialized before
+     * @deprecated 2012-09-04 this function is not supported any longer
+     *             use function located in cUriBuilderConfig instead of this
+     *             function
      */
-    public static function getUrlBuilderName()
-    {
-        if (!is_array(self::$_aUrlBuilderCfg) || !isset(self::$_aUrlBuilderCfg['name'])) {
-            throw new NotInitializedException('Contenido_UrlBuilderConfig: Configuration is not set');
-        }
-
-        return self::$_aUrlBuilderCfg['name'];
+    public static function setConfig(array $cfg) {
+        cDeprecated("This function is not supported any longer");
+        return cUriBuilderConfig::setConfig($cfg);
     }
 
     /**
-     * Returns UrlBuilder configuration
      *
-     * @return  array  UrlBuilder configuration
-     * @throws  NotInitializedException If UrlBuilder configuration wasn't initialized before
+     * @deprecated 2012-09-04 this function is not supported any longer
+     *             use function located in cUriBuilderConfig instead of this
+     *             function
      */
-    public static function getConfig()
-    {
-        if (!is_array(self::$_aUrlBuilderCfg)) {
-            throw new NotInitializedException('Contenido_UrlBuilderConfig: Configuration is not set');
-        }
+    public static function getUrlBuilderName() {
+        cDeprecated("This function is not supported any longer");
+        return cUriBuilderConfig::getUriBuilderName();
+    }
 
-        return self::$_aUrlBuilderCfg['config'];
+    /**
+     *
+     * @deprecated 2012-09-04 this function is not supported any longer
+     *             use function located in cUriBuilderConfig instead of this
+     *             function
+     */
+    public static function getConfig() {
+        cDeprecated("This function is not supported any longer");
+        return cUriBuilderConfig::getConfig();
     }
 
 }
+
+?>

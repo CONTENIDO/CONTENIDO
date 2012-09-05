@@ -1,104 +1,41 @@
 <?php
+
+// ##############################################################################
+// Old version of VersionImport class
+//
+// NOTE: Class implemetation below is deprecated and the will be removed in
+// future versions of contenido.
+// Don't use it, it's still available due to downwards compatibility.
+
 /**
- * Project:
- * CONTENIDO Content Management System
+ * Contenido_UrlBuilder_Custom
  *
- * Description:
- * Implementation of IContenido_Frontend_Navigation_UrlBuilder to build URL in style index-a-1.html without category path.
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.1
- * @author     Rudi Bieller
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2008-02-20
- *   $Id$:
- * }}
+ * @deprecated [2012-09-04] Use cUriBuilderCustom instead of this class.
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-
-include_once('Contenido_UrlBuilder.class.php');
-
-class Contenido_UrlBuilder_Custom extends Contenido_UrlBuilder
-{
-    /**
-     * Self instance
-     * @var  Contenido_UrlBuilder_Custom
-     */
-    static private $_instance;
+class Contenido_UrlBuilder_Custom extends cUriBuilderCustom {
 
     /**
-     * Configuration
-     * @var array
-     */
-    private $aConfig;
-
-    /**
-     * Constructor
-     * @return void
-     */
-    private function __construct()
-    {
-        $this->sHttpBasePath = '';
-    }
-
-    /**
-     * Get instance of self
-     * @return Contenido_UrlBuilder_Custom
-     */
-    public static function getInstance()
-    {
-        if (self::$_instance == null) {
-            self::$_instance = new self();
-        }
-        return self::$_instance;
-    }
-
-    /**
-     * Builds a URL in index-a-1.html style.
-     * Index keys of $aParams will be used as "a", corresponding values as "1" in this sample.
      *
-     * @param  array  $aParams
-     * @param  bool   $bUseAbsolutePath
-     * @param  array  $aConfig  If not set, will use UrlBuilderConfig::getConfig()
-     * @return void
-     * @throws InvalidArgumentException
+     * @deprecated 2012-09-04 this function is not supported any longer
+     *             use function located in cUriBuilderCustom instead of this
+     *             function
      */
-    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array())
-    {
-        if (sizeof($aParams) == 0) {
-            throw new InvalidArgumentException('$aParams must have at least one entry!');
-        }
-        // if no config passed or not all parameters available, use default config
-        if (sizeof($aConfig) == 0 || !isset($aConfig['prefix']) || !isset($aConfig['suffix']) || !isset($aConfig['separator'])) {
-            include_once('Contenido_UrlBuilderConfig.class.php');
-            $aConfig = Contenido_UrlBuilderConfig::getConfig();
-        }
-        $this->aConfig = $aConfig;
-
-        $this->sUrl = $bUseAbsolutePath === true ? $this->sHttpBasePath : '';
-        $this->sUrl .= $this->aConfig['prefix'];
-        foreach ($aParams as $sKey => $mVal) {
-            $sVal = $mVal; // assuming mVal is a string and thus a single value
-            if (is_array($mVal)) { // mVal has more than one value, e.g. index-b-1-2.html
-                $sVal = implode($this->aConfig['separator'], $mVal);
-            }
-            $this->sUrl .= $this->aConfig['separator'] . strval($sKey) . $this->aConfig['separator'] . strval($sVal);
-        }
-        $this->sUrl .= $this->aConfig['suffix'];
+    private function __construct() {
+        cDeprecated("Use class cVersionImport instead");
+        parent::__construct();
     }
+
+    /**
+     *
+     * @deprecated 2012-09-04 this function is not supported any longer
+     *             use function located in cUriBuilderCustom instead of this
+     *             function
+     */
+    public static function getInstance() {
+        cDeprecated("This function is not supported any longer");
+        return cUriBuilderCustom::getInstance();
+    }
+
 }
 
 ?>

@@ -469,7 +469,7 @@ function mr_buildNewUrl($url)
 
     ModRewriteDebugger::add($url, 'mr_buildNewUrl() in -> $url');
 
-    $oUrl = Contenido_Url::getInstance();
+    $oUrl = cUri::getInstance();
     $aUrl = $oUrl->parse($url);
 
     // add language, if not exists
