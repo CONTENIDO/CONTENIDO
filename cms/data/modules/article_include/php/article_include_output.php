@@ -108,8 +108,8 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
             conGenerateCode($iIDCat, $iIDArt, $lang, $client);
         }
 
-        if (cFileHandler::exists($cfgClient[$client]['code']['path'].$client.".".$lang.".".$iIDCatArt.".php")) {
-            $sCode = stripslashes(cFileHandler::read($cfgClient[$client]['code']['path'].$client.".".$lang.".".$iIDCatArt.".php"));
+        if (cFileHandler::exists($cfgClient[$client]['code']['path'] . $client . "." . $lang . "." . $iIDCatArt . ".php")) {
+            $sCode = stripslashes(cFileHandler::read($cfgClient[$client]['code']['path'] . $client . "." . $lang . "." . $iIDCatArt . ".php"));
             ob_start();
             eval("?>\n" . $sCode . "\n<?php\n");
             $sCode = ob_get_contents();
