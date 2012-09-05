@@ -29,7 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$cpage = new cGuiPage("mycontenido_settings", "", "3");
+$cpage = new cGuiPage("mycontenido_settings", "", "2");
 
 $user = new cApiUser($auth->auth["uid"]);
 
@@ -180,4 +180,3 @@ $form->add(i18n("Time format"), array($format3));
 
 $cpage->setContent(array($form));
 $cpage->render();
-?>

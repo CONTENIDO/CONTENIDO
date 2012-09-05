@@ -174,8 +174,8 @@ if ($todoitems->count() == 1) {
 
 $mycontenido_overview = '<a class="blue" href="' . $sess->url("main.php?area=mycontenido&frame=4") . '">' . i18n('Overview') . '</a>';
 $mycontenido_lastarticles = '<a class="blue" href="' . $sess->url("main.php?area=mycontenido_recent&frame=4") . '">' . i18n('Recently edited articles') . '</a>';
-$mycontenido_tasks = '<a class="blue" onclick="sub.highlightById(\'c_1\', top.content.right_top)" href="' . $sess->url("main.php?area=mycontenido_tasks&frame=4") . '">' . sprintf($sTaskTranslation, $todoitems->count()) . '</a>';
-$mycontenido_settings = '<a class="blue" onclick="sub.highlightById(\'c_2\', top.content.right_top)" href="' . $sess->url("main.php?area=mycontenido_settings&frame=4") . '">' . i18n('Settings') . '</a>';
+$mycontenido_tasks = '<a class="blue" href="' . $sess->url("main.php?area=mycontenido_tasks&frame=4") . '">' . sprintf($sTaskTranslation, $todoitems->count()) . '</a>';
+$mycontenido_settings = '<a class="blue" href="' . $sess->url("main.php?area=mycontenido_settings&frame=4") . '">' . i18n('Settings') . '</a>';
 
 $page->set('s', 'MYCONTENIDO_OVERVIEW', $mycontenido_overview);
 $page->set('s', 'MYCONTENIDO_LASTARTICLES', $mycontenido_lastarticles);
@@ -250,5 +250,3 @@ $sUpdateNotifierOutput = $oUpdateNotifier->displayOutput();
 $page->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
 
 $page->render();
-
-?>
