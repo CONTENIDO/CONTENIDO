@@ -42,7 +42,7 @@ try {
                 ); // needed to build category path
             }
             try {
-                $tpl->set('d', 'url', Contenido_Url::getInstance()->build($aParams));
+                $tpl->set('d', 'url', cUri::getInstance()->build($aParams));
             } catch (InvalidArgumentException $e) {
                 $tpl->set('d', 'url', 'front_content.php?idcat='.$oContenidoCategory->getIdCat());
             }

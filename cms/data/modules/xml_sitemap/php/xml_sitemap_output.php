@@ -53,7 +53,7 @@ while ($db->next_record()) {
         'idart' => $db->f('idart'),
         'lang' => $lang
     );
-    $link = Contenido_Url::getInstance()->build($params, true);
+    $link = cUri::getInstance()->build($params, true);
 
     // construct the last modified date in ISO 8601
     if ($db->f('lastmodified') == '0000-00-00 00:00:00' || $db->f('lastmodified') == '') {

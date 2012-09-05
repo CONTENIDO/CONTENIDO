@@ -137,7 +137,7 @@ if (strlen(trim($searchterm)) > 0) {
                 );
             }
             try {
-                $nextlink = Contenido_Url::getInstance()->build($aParams);
+                $nextlink = cUri::getInstance()->build($aParams);
             } catch (InvalidArgumentException $e) {
                 $nextlink = $sess->url('front_content.php?idcat='.$idcat.'&amp;idart='.$idart.'&amp;searchterm='.$searchterm_display.'&amp;page='.$i.$sArtSpecs);
             }
@@ -168,7 +168,7 @@ if (strlen(trim($searchterm)) > 0) {
                 );
             }
             try {
-                $next = Contenido_Url::getInstance()->build($aParams);
+                $next = cUri::getInstance()->build($aParams);
             } catch (InvalidArgumentException $e) {
                 $next = $sess->url('front_content.php?idcat='.$idcat.'&amp;idart='.$idart.'&amp;searchterm='.$searchterm.'&amp;page='.$n.$sArtSpecs);
             }
@@ -197,7 +197,7 @@ if (strlen(trim($searchterm)) > 0) {
                 );
             }
             try {
-                $pre = Contenido_Url::getInstance()->build($aParams);
+                $pre = cUri::getInstance()->build($aParams);
             } catch (InvalidArgumentException $e) {
                 $pre = $sess->url('front_content.php?idcat='.$idcat.'&amp;idart='.$idart.'&amp;searchterm='.$searchterm.'&amp;page='.$p.$sArtSpecs);
             }
@@ -258,7 +258,7 @@ if (strlen(trim($searchterm)) > 0) {
                     );
                 }
                 try {
-                    $href = Contenido_Url::getInstance()->build($aParams);
+                    $href = cUri::getInstance()->build($aParams);
                 } catch (InvalidArgumentException $e) {
                     $href = $sess->url("front_content.php?idcat=$cat_id&amp;idart=$key");
                 }
