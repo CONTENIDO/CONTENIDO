@@ -38,11 +38,11 @@ class cSetupSystemData extends cSetupMask
 
         list($rootPath, $rootHttpPath) = getSystemDirectories();
 
-        cInitializeArrayKey($_SESSION, "dbprefix", "");
-        cInitializeArrayKey($_SESSION, "dbhost", "");
-        cInitializeArrayKey($_SESSION, "dbuser", "");
-        cInitializeArrayKey($_SESSION, "dbname", "");
-        cInitializeArrayKey($_SESSION, "dbpass", "");
+        cArray::initializeKey($_SESSION, "dbprefix", "");
+        cArray::initializeKey($_SESSION, "dbhost", "");
+        cArray::initializeKey($_SESSION, "dbuser", "");
+        cArray::initializeKey($_SESSION, "dbname", "");
+        cArray::initializeKey($_SESSION, "dbpass", "");
 
         if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
             $contenido_host     = ""; // Just define the variables to avoid warnings in IDE

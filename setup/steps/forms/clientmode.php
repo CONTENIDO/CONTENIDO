@@ -40,7 +40,7 @@ class cSetupClientMode extends cSetupMask
         $this->_oStepTemplate->set("s", "TITLE", i18n("Example Client"));
         $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("If you are new to CONTENIDO, you should create an example client to start working with."));
 
-        cInitializeArrayKey($_SESSION, "clientmode", "");
+        cArray::initializeKey($_SESSION, "clientmode", "");
 
         $aChoices = array(
             "CLIENTEXAMPLES" => i18n("Client with example modules and example content"),

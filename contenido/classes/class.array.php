@@ -140,5 +140,18 @@ class cArray {
         return $marray;
     }
 
+    public static function initializeKey(&$aArray, $sKey, $mDefault = '') {
+        if (!is_array($aArray)) {
+            if (isset($aArray)) {
+                return false;
+            }
+            $aArray = array();
+        }
+
+        if (!array_key_exists($sKey, $aArray)) {
+            $aArray[$sKey] = $mDefault;
+        }
+    }
+
 }
 
