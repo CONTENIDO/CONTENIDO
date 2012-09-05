@@ -712,11 +712,13 @@ class cApiProperty extends Item {
      * @param  string  $field
      * @param  string  $value
      * @param  bool    $safe  Flag to run filter on passed value
+     * @throws cInvalidArgumentException if the field is too small for the given value
+     * @return void
      */
     public function setField($field, $value, $safe = true) {
         if (array_key_exists($field, $this->maximumLength)) {
             if (strlen($value) > $this->maximumLength[$field]) {
-                cWarning(__FILE__, __LINE__, "Tried to set field $field to value $value, but the field is too small. Truncated.");
+                throw new cInvalidArgumentException("Tried to set field $field to value $value, but the field is too small. Truncated.");
             }
         }
 
@@ -762,7 +764,7 @@ class PropertyItem extends cApiProperty {
     }
 
     public function PropertyItem($mId = false) {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated('Deprecated method call, use __construct()');
         $this->__construct($mId);
     }
 

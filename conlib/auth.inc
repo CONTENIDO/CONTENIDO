@@ -117,11 +117,7 @@ class Auth {
             $this->in = true;
         }
 
-        // back compatibility: if d_c is set, create db object
-        if (isset($this->database_class)) {
-            $class = $this->database_class;
-            $this->db = new $class;
-        }
+        $this->db = cRegistry::getDb();
 
         /*
          * Check current auth state. Should be one of

@@ -56,7 +56,7 @@ class Contenido_Sitemap_Util {
         $oTpl->set('d', 'css_level', $iItemLevel);
         try {
            $oTpl->set('d', 'url', cUri::getInstance()->build($aParams));
-        } catch (InvalidArgumentException $e) {
+        } catch (cInvalidArgumentException $e) {
             $oTpl->set('d', 'url', '#');
         }
         $oTpl->next();

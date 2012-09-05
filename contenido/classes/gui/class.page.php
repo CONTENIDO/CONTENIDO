@@ -267,6 +267,8 @@ class cGuiPage {
      * Adds a meta tag to the website.
      *
      * @param array $meta Associative array with the meta tag attributes
+     * @throws cInvalidArgumentException if an invalid attribute for the meta tag has been given
+     * @return void
      */
     public function addMeta(array $meta) {
         $allowedAttributes = array(
@@ -278,8 +280,7 @@ class cGuiPage {
         );
         foreach ($meta as $key => $value) {
             if (!in_array($key, $allowedAttributes)) {
-                cWarning('Unallowed attribute for meta tag given - meta tag will be ignored!');
-                return;
+                throw new cInvalidArgumentException('Unallowed attribute for meta tag given - meta tag will be ignored!');
             }
         }
         $this->_metaTags[] = $meta;

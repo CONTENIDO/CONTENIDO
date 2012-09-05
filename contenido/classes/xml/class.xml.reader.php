@@ -20,7 +20,7 @@ class cXmlReader extends cXmlBase {
      * instance.
      *
      * @param string $filename path to the XML document
-     * @throws Exception if file could not be loaded
+     * @throws cException if file could not be loaded
      * @return boolean load state (true = successfully loaded, false = not found
      *         or loaded)
      */
@@ -32,7 +32,7 @@ class cXmlReader extends cXmlBase {
         // Load document via object method to avoid warning in PHP strict mode.
         $doc = new DOMDocument();
         if (false === $doc->load($filename)) {
-            throw new Exception('could not load file "' . $filename . '"');
+            throw new cException('could not load file "' . $filename . '"');
         }
 
         $this->_dom = $doc;
@@ -46,7 +46,7 @@ class cXmlReader extends cXmlBase {
      * instance.
      *
      * @param string $sFilename path to the XML document
-     * @throws Exception if XML could not be loaded
+     * @throws cException if XML could not be loaded
      * @return boolean load state (true = successfully loaded, false = not found
      *         or loaded)
      */
@@ -54,7 +54,7 @@ class cXmlReader extends cXmlBase {
         // Load document via object method to avoid warning in PHP strict mode.
         $oDoc = new DOMDocument();
         if (false === $oDoc->loadXML($sXml)) {
-            throw new Exception('could not load XML');
+            throw new cException('could not load XML');
         }
 
         $this->_dom = $oDoc;
@@ -67,12 +67,12 @@ class cXmlReader extends cXmlBase {
      * Returns a DOMNodeList for a given XPath expression.
      *
      * @param string $path xpath string
+     * @throws cException if there is no xpath
      * @return DOMNodeList
      */
     public function getXpathNodeList($path) {
         if ($this->_xpath === NULL) {
-            cWarning(__FILE__, __LINE__, 'Can not execute XPath string: DOMXpath instance not found.');
-            return new DOMNodeList();
+            throw new cException('Can not execute XPath string: DOMXpath instance not found.');
         }
 
         return $this->_xpath->query(parent::resolvePath($path));

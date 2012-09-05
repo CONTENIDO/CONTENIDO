@@ -17,13 +17,6 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2008-02-19
- *
- *   $Id: Sample.php 3072 2012-08-28 12:36:11Z konstantinos.katikak $:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -38,7 +31,7 @@ try {
     $oUriBuilder->setHttpBasePath(cRegistry::getFrontendUrl()); // needed if you need an absolute url
     $oUriBuilder->buildUrl($aParams, true);
     echo $oUriBuilder->getUrl();
-} catch (InvalidArgumentException $e) {
+} catch (cInvalidArgumentException $e) {
     throw $e;
 }
 
@@ -48,7 +41,7 @@ try {
     $oUriBuilder = cUriBuilderFactory::getUriBuilder('custom_path');
     $oUriBuilder->buildUrl($aParams);
     echo $oUriBuilder->getUrl();
-} catch (InvalidArgumentException $e) {
+} catch (cInvalidArgumentException $e) {
     throw $e;
 }
 
@@ -59,8 +52,6 @@ try {
     $oUriBuilder = cUriBuilderFactory::getUriBuilder('custom_path');
     $oUriBuilder->buildUrl($aParams, false, $aConfig);
     echo $oUriBuilder->getUrl();
-} catch (InvalidArgumentException $e) {
+} catch (cInvalidArgumentException $e) {
     throw $e;
 }
-
-?>

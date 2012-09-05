@@ -30,9 +30,9 @@ class cCodeGeneratorFactory {
      *
      * @param  string  $name  The generator name, e. g. 'Standard' to retrieve instance of
      *                        cCodeGeneratorStandard
-     * @return cCodeGeneratorAbstract
-     * @throws InvalidArgumentException  If name is invalid, class file is missing or
+     * @throws cInvalidArgumentException If name is invalid, class file is missing or
      *                                   class isn't available
+     * @return cCodeGeneratorAbstract
      */
     public static function getInstance($name = '') {
         global $cfg;
@@ -42,7 +42,7 @@ class cCodeGeneratorFactory {
         }
 
         if ($name == 'Factory' || $name == 'Abstract') {
-            throw new InvalidArgumentException('Invalid name passed to cCodeGeneratorFactory: ' . $name . '!');
+            throw new cInvalidArgumentException('Invalid name passed to cCodeGeneratorFactory: ' . $name . '!');
         }
 
         $className = 'cCodeGenerator' . $name;
@@ -50,12 +50,12 @@ class cCodeGeneratorFactory {
             $fileName = $name . '.class.php';
             $path = str_replace('\\', '/', dirname(__FILE__)) . '/';
             if (!cFileHandler::exists($path . $fileName)) {
-                throw new InvalidArgumentException('The classfile couldn\'t included by cCodeGeneratorFactory: ' . $name . '!');
+                throw new cInvalidArgumentException('The classfile couldn\'t included by cCodeGeneratorFactory: ' . $name . '!');
             }
 
             include_once($path . $fileName);
             if (!class_exists($className)) {
-                throw new InvalidArgumentException('The class isn\'t available for cCodeGeneratorFactory: ' . $name . '!');
+                throw new cInvalidArgumentException('The class isn\'t available for cCodeGeneratorFactory: ' . $name . '!');
             }
         }
         return new $className();

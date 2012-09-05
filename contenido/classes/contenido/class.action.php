@@ -51,7 +51,7 @@ class cApiActionCollection extends ItemCollection {
     }
 
     /**
-     * Creates a action entry
+     * Creates an action entry
      *
      * @param  string|int  $area
      * @param  string|int  $name

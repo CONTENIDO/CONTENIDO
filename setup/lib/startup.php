@@ -89,7 +89,11 @@ function checkAndInclude($filename) {
 // Include security class and check request variables
 checkAndInclude(C_FRONTEND_PATH . '/contenido/classes/class.filehandler.php');
 checkAndInclude(C_FRONTEND_PATH . '/contenido/classes/class.requestvalidator.php');
-$oRequestValidator = new cRequestValidator(C_FRONTEND_PATH . '/data/config/' . CONTENIDO_ENVIRONMENT);
+try {
+    $oRequestValidator = new cRequestValidator(C_FRONTEND_PATH . '/data/config/' . CONTENIDO_ENVIRONMENT);
+} catch (cFileNotFoundException $e) {
+    die($e->getMessage());
+}
 
 session_start();
 

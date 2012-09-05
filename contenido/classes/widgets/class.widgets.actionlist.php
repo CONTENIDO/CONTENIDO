@@ -17,13 +17,6 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -39,7 +32,7 @@ class cWidgetMenuActionList extends cGuiFoldingRow
         global $cfg;
 
         if (!class_exists($dataClassName)) {
-            cWarning(__FILE__, __LINE__, "Could not instanciate class [$dataClassName] for use in class ".get_class($this));
+            cWarning(__FILE__, __LINE__, "Could not instantiate class [$dataClassName] for use in class ".get_class($this));
             return false;
         } else {
             $dataClass = new $dataClassName;

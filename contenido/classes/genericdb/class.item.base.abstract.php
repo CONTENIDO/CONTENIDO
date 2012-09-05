@@ -48,8 +48,17 @@ if (cFileHandler::exists($driver_filename)) {
  * @author     Murat Purc <murat@purc.de>
  * @version    0.1
  * @copyright  four for business AG <www.4fb.de>
+ * @deprecated 2012-09-04 Use one of the cException subclasses instead
  */
-class cItemException extends Exception {
+class cItemException extends cException {
+
+    /**
+     * @deprecated 2012-09-04 Use one of the cException subclasses instead
+     */
+    public function __construct($message, $code, $previous) {
+        cDeprecated('Use one of the cException subclasses instead');
+        parent::__construct($message, $code, $previous);
+    }
 
 }
 
@@ -144,7 +153,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @param  string  $sPrimaryKey  Primary key of table
      * @param  string  $sClassName   Name of parent class
      * @param  int     $iLifetime    Lifetime of the object in seconds (NOT USED!)
-     * @throws  cItemException  If table name or primary key is not set
+     * @throws cInvalidArgumentException If table name or primary key is not set
+     * @return void
      */
     protected function __construct($sTable, $sPrimaryKey, $sClassName, $iLifetime = 10) {
         global $cfg;
@@ -153,15 +163,15 @@ abstract class cItemBaseAbstract extends cGenericDb {
 
         if ($sTable == '') {
             $sMsg = "$sClassName: No table specified. Inherited classes *need* to set a table";
-            throw new cItemException($sMsg);
+            throw new cInvalidArgumentException($sMsg);
         } elseif ($sPrimaryKey == '') {
             $sMsg = "No primary key specified. Inherited classes *need* to set a primary key";
-            throw new cItemException($sMsg);
+            throw new cInvalidArgumentException($sMsg);
         }
 
         $this->_settings = $cfg['sql'];
 
-        // instanciate caching
+        // instantiate caching
         $aCacheOpt = (isset($this->_settings['cache'])) ? $this->_settings['cache'] : array();
         $this->_oCache = cItemCache::getInstance($sTable, $aCacheOpt);
 

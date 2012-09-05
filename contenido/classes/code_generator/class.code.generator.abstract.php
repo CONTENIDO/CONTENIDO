@@ -190,6 +190,7 @@ abstract class cCodeGeneratorAbstract {
      * @param int $client
      * @param bool $layout
      * @param bool $save Flag to persist generated code
+     * @throws cInvalidArgumentException if an article with the given idart and idlang can not be loaded
      * @return string Generated code or error code '0601' if no template
      *         configuration was found for category or article.
      */
@@ -204,9 +205,7 @@ abstract class cCodeGeneratorAbstract {
         $oArtLang = new cApiArticleLanguage();
         $oArtLang->loadByArticleAndLanguageId($idart, $lang);
         if (!$oArtLang->isLoaded()) {
-            $msg = "Couldn't load article language for idart=" . (int) $idart . " AND idlang=" . (int) $lang;
-            cWarning(__FILE__, __LINE__, $msg);
-            return $msg;
+            throw new cInvalidArgumentException('Couldn\'t load article language for idart=' . $idart . 'AND idlang=' . $lang);
         }
 
         $this->_idartlang = $oArtLang->get('idartlang');

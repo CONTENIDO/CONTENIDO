@@ -88,12 +88,18 @@ class cWYSIWYGEditor {
         $this->_sEditorName = $sEditorName;
     }
 
+    /**
+     * @throws cBadMethodCallException if this method is not overridden in the subclass
+     */
     protected function _getScripts() {
-        cError(__FILE__, __LINE__, "You need to override the method getScripts");
+        throw new cBadMethodCallException('You need to override the method _getScripts');
     }
 
+    /**
+     * @throws cBadMethodCallException if this method is not overridden in the subclass
+     */
     protected function _getEditor() {
-        cError(__FILE__, __LINE__, "You need to override the method getEditor");
+        throw new cBadMethodCallException('You need to override the method _getEditor');
     }
 
 }

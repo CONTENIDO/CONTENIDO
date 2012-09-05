@@ -308,7 +308,13 @@ class cRegistry {
      * @return DB_Contenido
      */
     public static function getDb() {
-        return new DB_Contenido();
+        try {
+            $db = new DB_Contenido();
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+
+        return $db;
     }
 
     /**
@@ -383,22 +389,22 @@ class cRegistry {
     }
 
     /**
-     * Fetches the corresponding Item object for the specific class name and its primary key value.
+     * Fetches the corresponding Item object for the specific class name and its
+     * primary key value.
      *
-     * @param    string    $apiClassName    name of the api class
-     * @param    integer    $objectId        primary key value
-     *
-     * @throws    UnexpectedValueException
-     *
-     * @return    Item
+     * @param string $apiClassName name of the api class
+     * @param integer $objectId primary key value
+     * @throws cInvalidArgumentException if the given objectId is not greater
+     *         than 0 or the given class does not exist
+     * @return Item
      */
     protected final static function _fetchItemObject($apiClassName, $objectId) {
         if ((int) $objectId <= 0) {
-            throw new UnexpectedValueException('Object ID must be greater than 0.');
+            throw new cInvalidArgumentException('Object ID must be greater than 0.');
         }
 
         if (!class_exists($apiClassName)) {
-            throw new UnexpectedValueException('Requested API object was not found: \'' . $apiClassName . '\'');
+            throw new cInvalidArgumentException('Requested API object was not found: \'' . $apiClassName . '\'');
         }
 
         return new $apiClassName($objectId);

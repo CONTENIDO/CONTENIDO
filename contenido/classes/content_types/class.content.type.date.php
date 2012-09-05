@@ -72,6 +72,7 @@ class cContentTypeDate extends cContentTypeAbstract {
 
         // initialise the date formats
         $this->_dateFormatsPhp = array(
+            htmlspecialchars('{"dateFormat":"","timeFormat":""}') => '',
             htmlspecialchars('{"dateFormat":"d.m.Y","timeFormat":""}') => $this->_formatDate('d.m.Y'),
             htmlspecialchars('{"dateFormat":"D, d.m.Y","timeFormat":""}') => $this->_formatDate('D, d.m.Y'),
             htmlspecialchars('{"dateFormat":"d. F Y","timeFormat":""}') => $this->_formatDate('d. F Y'),
@@ -110,7 +111,7 @@ class cContentTypeDate extends cContentTypeAbstract {
             // timestamp is stored
             $_POST['date_format'] = stripslashes(base64_decode($_POST['date_format']));
             if (empty($_POST['date_format'])) {
-                $_POST['date_format'] = '{"dateFormat":"d.m.Y","timeFormat":""}';
+                $_POST['date_format'] = '{"dateFormat":"","timeFormat":""}';
             }
             $this->_storeSettings();
         }
@@ -212,7 +213,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         $format = $this->_settings['date_format'];
 
         if (empty($format)) {
-            $format = 'd.m.Y';
+            $format = '';
         } else {
             $format = implode(' ', json_decode($format, true));
         }
@@ -231,7 +232,13 @@ class cContentTypeDate extends cContentTypeAbstract {
      *         edited
      */
     public function generateEditCode() {
-        $code = new cHTMLTextbox('date_timestamp_' . $this->_id, '', '', '', 'date_timestamp_' . $this->_id, true, '', '', 'date_timestamp');
+        $belang = cRegistry::getBackendLanguage();
+        $format = 'Y-m-d h:i:sA';
+        if ($belang == 'de_DE') {
+            $format = 'd.m.Y H:i:s';
+        }
+        $value = date($format, $this->_settings['date_timestamp']);
+        $code = new cHTMLTextbox('date_timestamp_' . $this->_id, $value, '', '', 'date_timestamp_' . $this->_id, true, '', '', 'date_timestamp');
         $code .= $this->_generateJavaScript();
         $code .= $this->_generateFormatSelect();
         $code .= $this->_generateStoreButton();

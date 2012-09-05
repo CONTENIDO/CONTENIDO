@@ -114,12 +114,14 @@ class cApiGroupPropertyCollection extends ItemCollection {
 
     /**
      * Group id setter
-     * @param   string  $groupId
-     * @throws  Exception  If passed group id is empty
+     *
+     * @param string  $groupId
+     * @throws cInvalidArgumentException If passed group id is empty
+     * @return void
      */
     public function setGroupId($groupId) {
         if (empty($groupId)) {
-            throw new Exception("Empty group id");
+            throw new cInvalidArgumentException("Empty group id");
         }
         $this->_groupId = $groupId;
         if (self::$_enableCache) {

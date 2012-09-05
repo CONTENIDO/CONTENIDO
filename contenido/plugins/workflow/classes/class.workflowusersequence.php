@@ -188,17 +188,19 @@ class WorkflowUserSequence extends Item {
      * @param  string  $field Field to set
      * @param  string  $value Value to set
      * @param  bool  $safe
+     * @throws cInvalidArgumentException if the field is idworkflowitem, idusersequence or position
+     * @return void
      */
     public function setField($field, $value, $safe = true) {
         global $cfg;
 
         switch ($field) {
             case "idworkflowitem":
-                die("Please use create to modify idsequence. Direct modifications are not allowed");
+                throw new cInvalidArgumentException("Please use create to modify idsequence. Direct modifications are not allowed");
             case "idusersequence":
-                die("Please use create to modify idsequence. Direct modifications are not allowed");
+                throw new cInvalidArgumentException("Please use create to modify idsequence. Direct modifications are not allowed");
             case "position":
-                die("Please use create and swap to set the position. Direct modifications are not allowed");
+                throw new cInvalidArgumentException("Please use create and swap to set the position. Direct modifications are not allowed");
             case "iduser":
                 if ($value != 0) {
                     $db = cRegistry::getDb();

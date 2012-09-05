@@ -100,12 +100,14 @@ class cApiUserPropertyCollection extends ItemCollection {
 
     /**
      * User id setter
-     * @param  string  $userId
-     * @throws  Exception  If passed user id is empty
+     *
+     * @param string $userId
+     * @throws cInvalidArgumentException If passed user id is empty
+     * @return void
      */
     public function setUserId($userId) {
         if (empty($userId)) {
-            throw new Exception("Empty user id");
+            throw new cInvalidArgumentException("Empty user id");
         }
         $this->_userId = $userId;
         if (self::$_enableCache && !isset(self::$_entries)) {

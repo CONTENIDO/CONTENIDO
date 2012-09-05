@@ -508,11 +508,12 @@ class cApiArticleLanguage extends Item {
     /**
      * Returns all available content types
      *
+     * @throws cException if no content has been loaded
      * @return array
      */
     public function getContentTypes() {
         if (empty($this->content)) {
-            throw new Exception('getContentTypes() No content loaded');
+            throw new cException('getContentTypes() No content loaded');
         }
         return array_keys($this->content);
     }

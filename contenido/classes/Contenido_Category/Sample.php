@@ -59,7 +59,7 @@ try {
     foreach ($oConCats as $oConCat) {
         echo $oConCat->getIdCat().' :'.$oConCat->getCategoryLanguage()->getName().'<br />';
     }
-} catch (InvalidArgumentException $eI) {
+} catch (cInvalidArgumentException $eI) {
     echo 'Some error occured: ' . $eI->getMessage() . ': ' . $eI->getFile() . ' at line '.$eI->getLine() . ' ('.$eI->getTraceAsString().')';
 } catch (Exception $e) {
     echo 'Some error occured: ' . $e->getMessage() . ': ' . $e->getFile() . ' at line '.$e->getLine() . ' ('.$e->getTraceAsString().')';

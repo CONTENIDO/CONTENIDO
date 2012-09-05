@@ -17,13 +17,6 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -342,6 +335,9 @@ class cDatatypeDateTime extends cDatatype
         }
     }
 
+    /**
+     * @throws cInvalidArgumentException if the given format is not supported yet
+     */
     public function get($iOverrideFormat = false)
     {
         if ($iOverrideFormat !== false) {
@@ -367,7 +363,7 @@ class cDatatypeDateTime extends cDatatype
                 return date("YmdHis", $sTemporaryTimestamp);
                 break;
             default:
-                cError(__FILE__, __LINE__, "Not supported yet");
+                throw new cInvalidArgumentException('The given format is not supported yet');
                 break;
         }
     }

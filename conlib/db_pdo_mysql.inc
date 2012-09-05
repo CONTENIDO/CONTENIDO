@@ -217,7 +217,7 @@ class DB_Sql extends DB_Sql_Abstract {
      * {@inheritdoc}
      */
     public function seek($pos = 0) {
-        throw new Exception('seek not supported');
+        throw new cBadMethodCallException('seek is not supported');
     }
 
     /**

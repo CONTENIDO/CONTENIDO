@@ -66,8 +66,7 @@ class Contenido_Security_Exception extends Exception {
         }
 
         // strictly die here
-        die($sMessage);
-        exit;
+        exit($sMessage);
     }
 
 }

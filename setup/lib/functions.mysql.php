@@ -63,9 +63,9 @@ function doMySQLConnect($host, $username, $password)
         ),
     );
     try {
-        $db = new DB_Contenido($aOptions, true);
+        $db = new DB_Contenido($aOptions);
     } catch (Exception $e) {
-        return array(null, false);
+        return array($db, false);
     }
 
     if ($db->connect() == 0) {

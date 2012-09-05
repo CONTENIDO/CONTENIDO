@@ -66,14 +66,13 @@ class cModuleLog extends cLog {
      * assist the developer in debugging his modules.
      *
      * @param int idmod The module ID to use
-     *
+     * @throws cException if the module with the given idmod could not be loaded
      * @return void
      */
     public function setModule($idmod) {
         $this->_module = new cApiModule($idmod);
         if ($this->_module->isLoaded() == false) {
-            cWarning(__FILE__, __LINE__, "Could not load module information.");
-            return false;
+            throw new cException('Could not load module information.');
         }
     }
 

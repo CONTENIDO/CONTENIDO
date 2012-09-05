@@ -17,11 +17,6 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2009-09-29
- *   $Id: cUriBuilder.class.php 2755 2012-07-25 20:10:28Z xmurrix $:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -79,6 +74,7 @@ final class cUri {
      *                            Required values depend on used UriBuilder, but a must have is 'lang'.
      * @param   boolean  $bUseAbsolutePath  Flag to create absolute Urls
      * @param   array    $aConfig  If not set, UriBuilderConfig::getConfig() will be used by the UriBuilder
+     * @throws cInvalidArgumentException if the given params do not contain the lang
      * @return  string   The Url build by UriBuilder
      */
     public function build($param, $bUseAbsolutePath = false, array $aConfig = array()) {
@@ -114,7 +110,7 @@ final class cUri {
 
         if (!isset($param['lang'])) {
             // another downwards compatibility to cUriBuilderCustomPath
-            throw new InvalidArgumentException('$param[lang] must be set!');
+            throw new cInvalidArgumentException('$param[lang] must be set!');
         }
 
         if ($this->_sUriBuilderName == 'custom_path' && count($param) <= 3) {

@@ -138,17 +138,16 @@ class Contenido_Category extends Contenido_Category_Base {
      * @param boolean $bIncludeLanguage If set to true, also creates Contenido_Category_Language object
      * @param int $iIdlang If $bIncludeLanguage is set to true, you must set this value, too or use setIdLang() before!
      * @return boolean
-     * @throws InvalidArgumentException
-     * @throws Exception TODO
+     * @throws cInvalidArgumentException if the given idcat or idlang is invalid
      * @author Rudi Bieller
      */
     public function load($iIdCat, $bIncludeLanguage = false, $iIdlang = -1) {
         if (intval($iIdCat) <= 0) {
-            throw new InvalidArgumentException('Idcat to load must be greater than 0!');
+            throw new cInvalidArgumentException('Idcat to load must be greater than 0!');
         }
         $this->setIdLang($iIdlang);
         if ($bIncludeLanguage === true && $this->getIdLang() == -1) {
-            throw new InvalidArgumentException('When setting $bIncludeLanguage to true you must provide an $iIdlang!');
+            throw new cInvalidArgumentException('When setting $bIncludeLanguage to true you must provide an $iIdlang!');
         }
         $sSql = 'SELECT
                     idclient, parentid, preid, postid, status, author, created, lastmodified
@@ -192,19 +191,19 @@ class Contenido_Category extends Contenido_Category_Base {
 
     /**
      * Loads SubCategories depending on values for $this->bLoadSubCategories and $this->iSubCategoriesLoadDepth
-     * @access private
+     *
      * @param int $iIdcat
      * @param boolean $bIncludeLanguage If set to true, also creates Contenido_Category_Language object
      * @param int $iIdlang If $bIncludeLanguage is set to true, you must set this value, too or use setIdLang() before!
+     * @throws cInvalidArgumentException if the given idcat or idlang is invalid
      * @return Contenido_Categories
-     * @author Rudi Bieller
      */
     private function _getSubCategories($iIdcat, $bIncludeLanguage = false, $iIdlang = -1) {
         if (intval($iIdcat) <= 0) {
-            throw new InvalidArgumentException('Idcat to load must be greater than 0!');
+            throw new cInvalidArgumentException('Idcat to load must be greater than 0!');
         }
         if ($bIncludeLanguage === true && $this->getIdLang() == -1) {
-            throw new InvalidArgumentException('When setting $bIncludeLanguage to true you must provide an $iIdlang!');
+            throw new cInvalidArgumentException('When setting $bIncludeLanguage to true you must provide an $iIdlang!');
         }
         // if we don't have a Contenido_Categories object created yet, do it now
         if (is_null($this->oSubCategories)) {
@@ -222,7 +221,7 @@ class Contenido_Category extends Contenido_Category_Base {
                 }
                 $oCategory->load($iIdcatCurrent, $bIncludeLanguage, $iIdlang);
                 $this->oSubCategories->add($oCategory);
-            } catch (InvalidArgumentException $e) {
+            } catch (cInvalidArgumentException $e) {
                 throw $e;
             }
         }
@@ -230,14 +229,14 @@ class Contenido_Category extends Contenido_Category_Base {
 
     /**
      * Return array with idcats of subcategories of given idcat
-     * @access private
+     *
      * @param int $iIdcat
+     * @throws cInvalidArgumentException if the given idcat is invalid
      * @return array
-     * @author Rudi Bieller
      */
     private function _getSubCategoriesAsArray($iIdcat) {
         if (intval($iIdcat) <= 0) {
-            throw new InvalidArgumentException('Idcat to load must be greater than 0!');
+            throw new cInvalidArgumentException('Idcat to load must be greater than 0!');
         }
         $aSubCats = array();
         $sSql = 'SELECT
@@ -313,11 +312,15 @@ class Contenido_Category extends Contenido_Category_Base {
     public function setIdPost($iIdcatPost) {
         $this->iIdPost = (int) $iIdcatPost;
     }
+
+    /**
+     * @throws cInvalidArgumentException if the given status is invalid
+     */
     public function setStatus($iStatus) {
         $iStatus = (int) $iStatus;
         $aValid = array(0, 1);
         if (!in_array($iStatus, $aValid)) {
-            throw new InvalidArgumentException('Status must be either 0 or 1');
+            throw new cInvalidArgumentException('Status must be either 0 or 1');
         }
         $this->iStatus = $iStatus;
     }
@@ -667,14 +670,14 @@ class Contenido_Category_Language extends Contenido_Category_Base {
 
     /**
      * Load cat_lang for a given idcat.
-     * @access public
+     *
      * @param int $iIdCatLang
+     * @throws cException if the idcat or the idlang have not been set
      * @return boolean
-     * @author Rudi Bieller
      */
     public function load($iIdCatLang = null) {
         if ($this->getIdCat() == -1 || $this->getIdLang() == -1) {
-            throw new Exception('idcat and idlang must be set in order to load from con_cat_lang!');
+            throw new cException('idcat and idlang must be set in order to load from con_cat_lang!');
         }
         if (is_null($iIdCatLang)) {
             $sSql = 'SELECT
@@ -734,27 +737,39 @@ class Contenido_Category_Language extends Contenido_Category_Base {
     public function setAlias($sAlias) {
         $this->sAlias = (string) $sAlias;
     }
+
+    /**
+     * @throws cInvalidArgumentException if the given visibility is invalid
+     */
     public function setVisible($iVisible) {
         $iVisible = (int) $iVisible;
         $aValid = array(0,1);
         if (!in_array($iVisible, $aValid)) {
-            throw new InvalidArgumentException('Visible must be either 0 or 1');
+            throw new cInvalidArgumentException('Visible must be either 0 or 1');
         }
         $this->iVisible = $iVisible;
     }
+
+    /**
+     * @throws cInvalidArgumentException if the given public flag is invalid
+     */
     public function setPublic($iPublic) {
         $iPublic = (int) $iPublic;
         $aValid = array(0,1);
         if (!in_array($iPublic, $aValid)) {
-            throw new InvalidArgumentException('Public must be either 0 or 1');
+            throw new cInvalidArgumentException('Public must be either 0 or 1');
         }
         $this->iPublic = $iPublic;
     }
+
+    /**
+     * @throws cInvalidArgumentException if the given status is invalid
+     */
     public function setStatus($iStatus) {
         $iStatus = (int) $iStatus;
         $aValid = array(0,1);
         if (!in_array($iStatus, $aValid)) {
-            throw new InvalidArgumentException('Status must be either 0 or 1');
+            throw new cInvalidArgumentException('Status must be either 0 or 1');
         }
         $this->iStatus = $iStatus;
     }
@@ -894,7 +909,7 @@ class Contenido_Category_Base {
                 $this->sDbgMode = $sDebugMode;
                 $this->bDbg = true;
                 $this->oDbg = cDebug::getDebugger($sDebugMode);
-            } catch (InvalidArgumentException $e) {
+            } catch (cInvalidArgumentException $e) {
                 throw $e;
             }
         }

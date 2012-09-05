@@ -239,7 +239,7 @@ class LayoutInFile {
     }
 
     /**
-     * Save the layout only if layout dont exist in filesystem!
+     * Save the layout only if layout doesn't exist in filesystem!
      * Use it for upgrade!
      *
      * @param string $layoutCode
@@ -413,29 +413,27 @@ class LayoutInFile {
     /**
      * Save all layout in file system.
      * Use it for upgrade.
+     *
+     * @throws cException if the layout could not be saved
+     * @return void
      */
     public function upgrade() {
         // get name of layout and frontendpath
         $sql = sprintf("SELECT alias, idlay, code FROM %s", $this->_cfg["tab"]["lay"]);
         $db = clone $this->_db;
         $db->query($sql);
-        $isError = false;
 
         while ($db->next_record()) {
             // init class var for save
             $this->initWithDbObject($db);
             if ($this->saveLayoutByUpgrade($db->f("code")) == false) {
-                cWarning(__FILE__, __LINE__, "Can not save layout name: " . $this->_layoutName);
-                $isError = true;
+                throw new cException('Can not save layout name: ' . $this->_layoutName);
             }
         }
 
-        // all layouts are saved
-        if (!$isError) {
-            // remove the code field from _lay
-            $sql = sprintf("ALTER TABLE %s DROP code", $this->_cfg["tab"]["lay"]);
-            $db->query($sql);
-        }
+        // all layouts are saved, so remove the code field from _lay
+        $sql = sprintf("ALTER TABLE %s DROP code", $this->_cfg["tab"]["lay"]);
+        $db->query($sql);
     }
 
 }

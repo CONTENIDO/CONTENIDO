@@ -35,7 +35,9 @@
 
 
 // allow execution only thru cli mode
-(substr(PHP_SAPI, 0, 3) == 'cli') or die('Illegal call');
+if (substr(PHP_SAPI, 0, 3) != 'cli') {
+    die('Illegal call');
+}
 
 if (!defined('CONTENIDO_ENVIRONMENT')) {
     define('CONTENIDO_ENVIRONMENT', getenv('CONTENIDO_ENVIRONMENT') ? getenv('CONTENIDO_ENVIRONMENT') : 'production');

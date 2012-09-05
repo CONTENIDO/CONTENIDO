@@ -4,62 +4,58 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Implementation of IContenido_Frontend_Navigation_UriBuilder to build URL in style index-a-1.html without category path.
+ * Implementation of IContenido_Frontend_Navigation_UriBuilder to build URL in
+ * style index-a-1.html without category path.
  *
  * Requirements:
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.1
- * @author     Rudi Bieller
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2008-02-20
- *   $Id: cUriBuilderCustom.class.php 2755 2012-07-25 20:10:28Z xmurrix $:
- * }}
+ * @package CONTENIDO Backend Classes
+ * @version 1.0.1
+ * @author Rudi Bieller
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+include_once ('class.uribuilder.php');
+class cUriBuilderCustom extends cUriBuilder {
 
-include_once('class.uribuilder.php');
-
-class cUriBuilderCustom extends cUriBuilder
-{
     /**
      * Self instance
-     * @var  cUriBuilderCustom
+     *
+     * @var cUriBuilderCustom
      */
-    static private $_instance;
+    private static $_instance;
 
     /**
      * Configuration
+     *
      * @var array
      */
     private $aConfig;
 
     /**
      * Constructor
+     *
      * @return void
      */
-    private function __construct()
-    {
+    private function __construct() {
         $this->sHttpBasePath = '';
     }
 
     /**
      * Get instance of self
+     *
      * @return cUriBuilderCustom
      */
-    public static function getInstance()
-    {
+    public static function getInstance() {
         if (self::$_instance == null) {
             self::$_instance = new self();
         }
@@ -68,37 +64,38 @@ class cUriBuilderCustom extends cUriBuilder
 
     /**
      * Builds a URL in index-a-1.html style.
-     * Index keys of $aParams will be used as "a", corresponding values as "1" in this sample.
+     * Index keys of $aParams will be used as "a", corresponding values as "1"
+     * in this sample.
      *
-     * @param  array  $aParams
-     * @param  bool   $bUseAbsolutePath
-     * @param  array  $aConfig  If not set, will use UriBuilderConfig::getConfig()
+     * @param array $aParams
+     * @param bool $bUseAbsolutePath
+     * @param array $aConfig If not set, will use UriBuilderConfig::getConfig()
      * @return void
-     * @throws InvalidArgumentException
+     * @throws cInvalidArgumentException
      */
-    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array())
-    {
+    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {
         if (sizeof($aParams) == 0) {
-            throw new InvalidArgumentException('$aParams must have at least one entry!');
+            throw new cInvalidArgumentException('$aParams must have at least one entry!');
         }
-        // if no config passed or not all parameters available, use default config
+        // if no config passed or not all parameters available, use default
+        // config
         if (sizeof($aConfig) == 0 || !isset($aConfig['prefix']) || !isset($aConfig['suffix']) || !isset($aConfig['separator'])) {
-            include_once('class.uribuilder.config.php');
+            include_once ('class.uribuilder.config.php');
             $aConfig = cUriBuilderConfig::getConfig();
         }
         $this->aConfig = $aConfig;
 
-        $this->sUrl = $bUseAbsolutePath === true ? $this->sHttpBasePath : '';
+        $this->sUrl = $bUseAbsolutePath === true? $this->sHttpBasePath : '';
         $this->sUrl .= $this->aConfig['prefix'];
         foreach ($aParams as $sKey => $mVal) {
             $sVal = $mVal; // assuming mVal is a string and thus a single value
-            if (is_array($mVal)) { // mVal has more than one value, e.g. index-b-1-2.html
+            if (is_array($mVal)) { // mVal has more than one value, e.g.
+                                   // index-b-1-2.html
                 $sVal = implode($this->aConfig['separator'], $mVal);
             }
             $this->sUrl .= $this->aConfig['separator'] . strval($sKey) . $this->aConfig['separator'] . strval($sVal);
         }
         $this->sUrl .= $this->aConfig['suffix'];
     }
-}
 
-?>
+}

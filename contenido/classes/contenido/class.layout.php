@@ -126,13 +126,13 @@ class cApiLayout extends Item {
 
     /**
      * Checks if the layout is in use in any templates.
-     * @param   bool  $setData  Flag to set used templates data structure
-     * @return  bool
-     * @throws  Exception  If layout item was not loaded before
+     * @param bool $setData  Flag to set used templates data structure
+     * @throws cException If layout item has not been loaded before
+     * @return bool
      */
     public function isInUse($setData = false) {
         if ($this->virgin) {
-            throw new Exception('Layout item not loaded!');
+            throw new cException('Layout item not loaded!');
         }
 
         $oTplColl = new cApiTemplateCollection();

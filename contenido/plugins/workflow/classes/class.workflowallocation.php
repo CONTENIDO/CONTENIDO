@@ -166,9 +166,11 @@ class WorkflowAllocation extends Item {
      * Overridden setField function. Users should only use setWorkflow.
      * @param string $field Void field since we override the usual setField function
      * @param string $value Void field since we override the usual setField function
+     * @throws cBadMethodCallException if this function is called
+     * @return void
      */
     public function setField($field, $value, $safe = true) {
-        die("Don't use setField for WorkflowAllocation items! Use setWorkflow instead!");
+        throw new cBadMethodCallException("Don't use setField for WorkflowAllocation items! Use setWorkflow instead!");
     }
 
     /**

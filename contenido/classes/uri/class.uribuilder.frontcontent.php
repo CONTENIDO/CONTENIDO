@@ -4,69 +4,58 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Implementation of IContenido_Frontend_Navigation_UriBuilder to build front_content.php URL
+ * Implementation of IContenido_Frontend_Navigation_UriBuilder to build
+ * front_content.php URL
  *
  * Requirements:
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.3
- * @author     Rudi Bieller
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2008-02-19
- *   modified 2008-09-09 Fix of parameter checking in method buildUrl()
- *   modified 2008-09-29, Murat Purc, fix parameter check and third argument for buildUrl()
- *   modified 2008-12-26, Murat Purc, added handling of additional parameter to buildUrl()
- *   modified 2009-01-19 Rudi Bieller Bugfix in buildUrl() for idart (had idcat as param name...)
- *   @todo: add switch for & vs. &amp;
- *
- *   $Id: class.UriBuilder.Frontcontent.php 2755 2012-07-25 20:10:28Z xmurrix $:
- * }}
- *
+ * @package CONTENIDO Backend Classes
+ * @version 1.0.3
+ * @author Rudi Bieller
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-include_once('class.uribuilder.php');
-
-class cUriBuilderFrontcontent extends cUriBuilder
-{
+include_once ('class.uribuilder.php');
+class cUriBuilderFrontcontent extends cUriBuilder {
 
     /**
      * Self instance
-     * @var  cUriBuilderFrontcontent
+     *
+     * @var cUriBuilderFrontcontent
      */
-    static private $_instance;
+    private static $_instance;
 
     /**
      * XHTML compliant parameter composition delemiter
-     * @var  string
+     *
+     * @var string
      */
     private $_sAmp = '&amp;';
 
     /**
      * Constructor
+     *
      * @return void
      */
-    private function __construct()
-    {
+    private function __construct() {
         $this->sHttpBasePath = '';
     }
 
     /**
      * Get instance of self
+     *
      * @return cUriBuilderFrontcontent
      */
-    public static function getInstance()
-    {
+    public static function getInstance() {
         if (self::$_instance == null) {
             self::$_instance = new self();
         }
@@ -75,7 +64,8 @@ class cUriBuilderFrontcontent extends cUriBuilder
 
     /**
      * Builds a URL in front_content.php style.
-     * Depending on which array keys of $aParams are set, the URL is built differently.
+     * Depending on which array keys of $aParams are set, the URL is built
+     * differently.
      * Valid array keys are: idcat, idart and idcatart.
      * Additional array keys will also be added to the generated url.
      * Internally, the method first tries to create URLs in this order:
@@ -84,36 +74,35 @@ class cUriBuilderFrontcontent extends cUriBuilder
      * front_content.php?idart=1
      * front_content.php?idcatart=1
      *
-     * @param  array  $aParams
-     * @param  bool   $bUseAbsolutePath
-     * @param  array  $aConfig  Is not used at the moment
+     * @param array $aParams
+     * @param bool $bUseAbsolutePath
+     * @param array $aConfig Is not used at the moment
+     * @throws cInvalidArgumentException
+     * @throws cException
      * @return void
-     * @throws InvalidArgumentException
-     * @throws Exception
      */
-    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array())
-    {
+    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {
         $bIdcatSet = isset($aParams['idcat']);
         $bIdartSet = isset($aParams['idart']);
         $bIdcatArtSet = isset($aParams['idcatart']);
         if ($bIdcatSet === false && $bIdartSet === false && $bIdcatArtSet === false) {
-            throw new InvalidArgumentException('$aParams must have at least one of the following values set: $aParams[idcat], $aParams[idart] or $aParams[idcatart]!');
+            throw new cInvalidArgumentException('$aParams must have at least one of the following values set: $aParams[idcat], $aParams[idart] or $aParams[idcatart]!');
         }
-        $sHttpBasePath = $bUseAbsolutePath === true ? $this->sHttpBasePath : '';
+        $sHttpBasePath = $bUseAbsolutePath === true? $this->sHttpBasePath : '';
         if ($bIdcatSet === true) {
             if ($bIdartSet === true) {
-                $this->sUrl = $sHttpBasePath . 'front_content.php?idcat='.strval($aParams['idcat']).$this->_sAmp.'idart='.strval($aParams['idart']);
+                $this->sUrl = $sHttpBasePath . 'front_content.php?idcat=' . strval($aParams['idcat']) . $this->_sAmp . 'idart=' . strval($aParams['idart']);
             } else {
-                $this->sUrl = $sHttpBasePath . 'front_content.php?idcat='.strval($aParams['idcat']);
+                $this->sUrl = $sHttpBasePath . 'front_content.php?idcat=' . strval($aParams['idcat']);
             }
         } else {
             if ($bIdartSet === true) {
-                $this->sUrl = $sHttpBasePath . 'front_content.php?idart='.strval($aParams['idart']);
+                $this->sUrl = $sHttpBasePath . 'front_content.php?idart=' . strval($aParams['idart']);
             } else {
                 if ($bIdcatArtSet === true) {
-                    $this->sUrl = $sHttpBasePath . 'front_content.php?idcatart='.strval($aParams['idcatart']);
+                    $this->sUrl = $sHttpBasePath . 'front_content.php?idcatart=' . strval($aParams['idcatart']);
                 } else {
-                    throw new Exception('Cannot build URL because of missing parameters!');
+                    throw new cException('Cannot build URL because of missing parameters!');
                 }
             }
         }
@@ -123,9 +112,8 @@ class cUriBuilderFrontcontent extends cUriBuilder
             if ($param == 'idcat' || $param == 'idart' || $param == 'idcatart') {
                 continue;
             }
-            $this->sUrl .= $this->_sAmp . $param .'=' . urlencode(urldecode((string) $value));
+            $this->sUrl .= $this->_sAmp . $param . '=' . urlencode(urldecode((string) $value));
         }
     }
-}
 
-?>
+}

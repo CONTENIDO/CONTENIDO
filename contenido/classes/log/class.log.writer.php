@@ -40,22 +40,21 @@ abstract class cLogWriter {
     /**
      * Factory method for a new writer instance.
      *
-     * @param    string    $writerName        Name of the writer
-     * @param    array    $writerOptions    Options array for the writer instance
-     *
-     * @return    cLogWriter    Log writer instance
+     * @param string $writerName Name of the writer
+     * @param array $writerOptions Options array for the writer instance
+     * @throws cInvalidArgumentException if the writer class with the given name
+     *         does not exist or is not an instance of clogWriter
+     * @return cLogWriter Log writer instance
      */
     public static function factory($writerName, array $writerOptions) {
         $logWriterClassName = 'cLogWriter' . ucfirst($writerName);
         if (!class_exists($logWriterClassName)) {
-            cWarning(__FILE__, __LINE__, "Unknown writer class: " . $writerName);
-            return false;
+            throw new cInvalidArgumentException('Unknown writer class: ' . $writerName);
         }
 
         $writer = new $logWriterClassName($writerOptions);
         if (($writer instanceof cLogWriter) == false) {
-            cWarning(__FILE__, __LINE__, "Provided class is not an instance of cLogWriter");
-            return false;
+            throw new cInvalidArgumentException('Provided class is not an instance of cLogWriter');
         }
 
         return $writer;

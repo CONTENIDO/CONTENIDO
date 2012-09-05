@@ -360,7 +360,7 @@ class Request {
      */
     private function getVar($sRequestType, $sName, $bWithErrors = false) {
         if (!array_key_exists($sName, $this->$sRequestType)) {
-            throw new Exception('Request variable ' . $sName . ' is not registered yet. Please register it first.');
+            throw new cInvalidArgumentException('Request variable ' . $sName . ' is not registered yet. Please register it first.');
         }
 
         if (!$bWithErrors) {
@@ -417,20 +417,20 @@ class Request {
      * @return Mixed Value of the parameter or null.
      */
     public static function request($sName, $bWithErrors = false) {
-        if (self :: getInstance()->isRegistered($sName, self :: GET) && self :: get($sName) != null) {
-            return self :: get($sName, $bWithErrors);
+        if (self::getInstance()->isRegistered($sName, self::GET) && self::get($sName) != null) {
+            return self::get($sName, $bWithErrors);
         }
 
-        if (self :: getInstance()->isRegistered($sName, self :: POST) && self :: post($sName) != null) {
-            return self :: post($sName, $bWithErrors);
+        if (self::getInstance()->isRegistered($sName, self::POST) && self::post($sName) != null) {
+            return self::post($sName, $bWithErrors);
         }
 
-        if (self :: getInstance()->isRegistered($sName, self :: COOKIE) && self :: cookie($sName) != null) {
-            return self :: cookie($sName, $bWithErrors);
+        if (self::getInstance()->isRegistered($sName, self::COOKIE) && self::cookie($sName) != null) {
+            return self::cookie($sName, $bWithErrors);
         }
 
-        if (!self :: getInstance()->isRegistered($sName, self :: GET) && !self :: getInstance()->isRegistered($sName, self :: POST) && !self :: getInstance()->isRegistered($sName, self :: COOKIE)) {
-            throw new Exception('Request variable ' . $sName . ' is not registered yet. Please register it first.');
+        if (!self::getInstance()->isRegistered($sName, self::GET) && !self::getInstance()->isRegistered($sName, self::POST) && !self::getInstance()->isRegistered($sName, self::COOKIE)) {
+            throw new cInvalidArgumentException('Request variable ' . $sName . ' is not registered yet. Please register it first.');
         }
 
         return null;

@@ -53,8 +53,8 @@ class cValidatorFactory {
      * @param   string $validator  Validator to get
      * @param   array  $options  Options to use for the validator. Any passed option
      *                           overwrites the related option in global validator configuration.
+     * @throws cInvalidArgumentException If type of validator is unknown or not available
      * @return  cValidatorAbstract
-     * @throws  InvalidArgumentException If type of validator is unknown or not available
      */
     public static function getInstance($validator, array $options = array()) {
         global $cfg;
@@ -66,12 +66,12 @@ class cValidatorFactory {
         } else {
             $path = str_replace('\\', '/', dirname(__FILE__)) . '/';
             if (!cFileHandler::exists($path . $fileName)) {
-                throw new InvalidArgumentException("The class file of Contenido_Validator couldn't included by cValidatorFactory: " . $validator . "!");
+                throw new cInvalidArgumentException("The class file of Contenido_Validator couldn't included by cValidatorFactory: " . $validator . "!");
             }
 
             require_once($path . $fileName);
             if (!class_exists($className)) {
-                throw new InvalidArgumentException("The class of Contenido_Validator couldn't included by uriBuilderFactory: " . $validator . "!");
+                throw new cInvalidArgumentException("The class of Contenido_Validator couldn't included by uriBuilderFactory: " . $validator . "!");
             }
 
             $obj = new $className();

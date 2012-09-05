@@ -20,11 +20,6 @@
  * @since      file available since CONTENIDO release <= 4.6
  *
  * @todo replace code generation by Contenido_CodeGenerator (see contenido/classes/CodeGenerator)
- *
- * {@internal
- *   created  2003
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -46,7 +41,6 @@ $cssData = '';
 $jsData = '';
 
 if ($action == 20 || $action == 10) {
-//     echo '<pre>' . print_r($data, true) . '</pre>';exit;
     if ($data != '') {
         $data = explode('||', substr($data, 0, -2));
 

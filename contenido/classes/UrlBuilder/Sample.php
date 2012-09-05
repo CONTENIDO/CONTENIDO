@@ -38,7 +38,7 @@ try {
     $oUrlBuilder->setHttpBasePath(cRegistry::getFrontendUrl()); // needed if you need an absolute url
     $oUrlBuilder->buildUrl($aParams, true);
     echo $oUrlBuilder->getUrl();
-} catch (InvalidArgumentException $e) {
+} catch (cInvalidArgumentException $e) {
     throw $e;
 }
 
@@ -48,7 +48,7 @@ try {
     $oUrlBuilder = Contenido_UrlBuilderFactory::getUrlBuilder('custom_path');
     $oUrlBuilder->buildUrl($aParams);
     echo $oUrlBuilder->getUrl();
-} catch (InvalidArgumentException $e) {
+} catch (cInvalidArgumentException $e) {
     throw $e;
 }
 
@@ -59,7 +59,7 @@ try {
     $oUrlBuilder = Contenido_UrlBuilderFactory::getUrlBuilder('custom_path');
     $oUrlBuilder->buildUrl($aParams, false, $aConfig);
     echo $oUrlBuilder->getUrl();
-} catch (InvalidArgumentException $e) {
+} catch (cInvalidArgumentException $e) {
     throw $e;
 }
 

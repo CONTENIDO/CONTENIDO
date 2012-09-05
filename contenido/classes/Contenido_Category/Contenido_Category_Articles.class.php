@@ -78,8 +78,8 @@ class Contenido_Category_Articles extends Contenido_Category_Base
      * @param string $sOrder
      * @param boolean $bArticleIdAsKey
      * @param int $iOnlineStatus 0-offline, 1-online, 2-both
+     * @throws cException In case of a sql query that crashes
      * @return array An array with Article objects
-     * @throws Exception In case of a sql query that crashes
      */
     public function getArticlesInCategory($iCategoryId, $sOrderBy = 'creationdate', $sOrder = 'ASC', $bArticleIdAsKey = false, $iOnlineStatus = 2)
     {
@@ -104,7 +104,7 @@ class Contenido_Category_Articles extends Contenido_Category_Base
             }
         }
         if ($bHasErrors === true) {
-            throw new Exception('Error in SQL-Query! Errno: '.$this->oDb->Errno.', Error: '.$this->oDb->Error.', SQL: '.$sSql);
+            throw new cException('Error in SQL-Query! Errno: '.$this->oDb->Errno.', Error: '.$this->oDb->Error.', SQL: '.$sSql);
         }
         return $aReturn;
     }
@@ -117,7 +117,7 @@ class Contenido_Category_Articles extends Contenido_Category_Base
      * @param boolean $bArticleIdAsKey
      * @param int $iOnlineStatus 0-offline, 1-online, 2-both
      * @return array An array with Article objects
-     * @throws Exception In case of a sql query that crashes
+     * @throws cException In case of a sql query that crashes
      */
     public function getOnlineArticlesInCategory($iCategoryId, $sOrderBy = 'creationdate', $sOrder = 'ASC', $bArticleIdAsKey = false)
     {
@@ -135,8 +135,8 @@ class Contenido_Category_Articles extends Contenido_Category_Base
      * @param string $sOrder
      * @param boolean $bArticleIdAsKey
      * @param int $iOnlineStatus 0-offline, 1-online, 2-both
+     * @throws cException In case of a sql query that crashes
      * @return array An array with Article objects
-     * @throws Exception In case of a sql query that crashes
      */
     public function getOfflineArticlesInCategory($iCategoryId, $sOrderBy = 'creationdate', $sOrder = 'ASC', $bArticleIdAsKey = false)
     {
@@ -149,13 +149,15 @@ class Contenido_Category_Articles extends Contenido_Category_Base
 
     /**
      * Return array with article-objects of a category range.
+     *
      * @param array $aCategoryIds
      * @param string $sOrderBy
      * @param string $sOrder
      * @param boolean $bArticleIdAsKey
      * @param int $iOnlineStatus 0-offline, 1-online, 2-both
+     * @throws cInvalidArgumentException If given category IDs are empty
+     * @throws cException In case of a sql query that crashes or wrong parameters
      * @return array An array with Article objects
-     * @throws Exception In case of a sql query that crashes or wrong parameters
      */
     public function getArticlesInCategoryRange(array $aCategoryIds, $sOrderBy = 'creationdate', $sOrder = 'ASC', $bArticleIdAsKey = false, $iOnlineStatus = 2)
     {
@@ -166,7 +168,7 @@ class Contenido_Category_Articles extends Contenido_Category_Base
                 $aSqlIn[] = (int) $iId;
             }
         } else {
-            throw new Exception('$aCategoryIds must contain at least one item!');
+            throw new cInvalidArgumentException('$aCategoryIds must contain at least one item!');
         }
         $sSql = $this->_buildQuery('idcat IN('.implode(', ', $aSqlIn).')', $sOrderBy, $sOrder, $iOnlineStatus);
         if ($this->bDbg === true) {
@@ -186,7 +188,7 @@ class Contenido_Category_Articles extends Contenido_Category_Base
             }
         }
         if ($bHasErrors === true) {
-            throw new Exception('Error in SQL-Query! Errno: '.$this->oDb->Errno.', Error: '.$this->oDb->Error.', SQL: '.$sSql);
+            throw new cException('Error in SQL-Query! Errno: '.$this->oDb->Errno.', Error: '.$this->oDb->Error.', SQL: '.$sSql);
         }
         return $aReturn;
     }
@@ -198,8 +200,8 @@ class Contenido_Category_Articles extends Contenido_Category_Base
      * @param string $sOrder
      * @param boolean $bArticleIdAsKey
      * @param int $iOnlineStatus 0-offline, 1-online, 2-both
+     * @throws cException In case of a sql query that crashes
      * @return array An array with Article objects
-     * @throws Exception In case of a sql query that crashes
      */
     public function getOnlineArticlesInCategoryRange(array $aCategoryIds, $sOrderBy = 'creationdate', $sOrder = 'ASC', $bArticleIdAsKey = false)
     {
@@ -217,8 +219,8 @@ class Contenido_Category_Articles extends Contenido_Category_Base
      * @param string $sOrder
      * @param boolean $bArticleIdAsKey
      * @param int $iOnlineStatus 0-offline, 1-online, 2-both
+     * @throws cException In case of a sql query that crashes
      * @return array An array with Article objects
-     * @throws Exception In case of a sql query that crashes
      */
     public function getOfflineArticlesInCategoryRange(array $aCategoryIds, $sOrderBy = 'creationdate', $sOrder = 'ASC', $bArticleIdAsKey = false)
     {
@@ -340,12 +342,13 @@ class Contenido_Category_Articles extends Contenido_Category_Base
      * @param string $sOrderBy Valid are fields of tbl. con_art_lang
      * @param string $sOrderDirection
      * @param boolean $bArticleIdAsKey
+     * @throws cBadMethodCallException Because method has not been implemented yet
      * @return array An array with Article objects if any were found
      * TODO: must be fixed so order by condition is working correctly (works now just by category, not overall)
      */
     public function getNonStartArticlesInCategoryRange(array $aCategoryIds, $sOrderBy = 'created', $sOrderDirection = 'DESC', $bArticleIdAsKey = false)
     {
-        throw new Exception('Method not implemented yet!');
+        throw new cBadMethodCallException('Method not implemented yet!');
         if (!in_array(strtolower($sOrderDirection), array('asc', 'desc'))) {
             $sOrderDirection = 'DESC';
         }
@@ -372,9 +375,13 @@ class Contenido_Category_Articles extends Contenido_Category_Base
         return $aReturn;
     }
 
+    /**
+     *
+     * @throws cBadMethodCallException Because method has not been implemented yet
+     */
     public function getCategoryByArticleId($iArticleId)
     {
-        throw new Exception('Method not implemented yet!');
+        throw new cBadMethodCallException('Method not implemented yet!');
     }
 
     // Getter/Setter

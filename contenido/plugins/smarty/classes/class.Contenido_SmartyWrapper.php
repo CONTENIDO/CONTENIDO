@@ -51,19 +51,21 @@ class Contenido_SmartyWrapper {
      * constructor
      * @param  array  &$aCfg        contenido cfg array
      * @param  array  &$aClientCfg  contenido client cfg array of the specific client
+     * @throws cException
+     * @throws cInvalidArgumentException if the given configurations are not an array
      */
     public function __construct(&$aCfg, &$aClientCfg, $bSanityCheck = false) {
         // check if already instanciated
         if (isset(self::$bSmartyInstanciated) && self::$bSmartyInstanciated) {
-            throw new Exception("Contenido_SmartyWrapper class is intended to be used as singleton. Do not instanciate multiple times.");
+            throw new cException("Contenido_SmartyWrapper class is intended to be used as singleton. Do not instanciate multiple times.");
         }
 
         if (!is_array($aCfg)) {
-            throw new Exception(__CLASS__ . " " . __FUNCTION__ . " Parameter 1 invalid.");
+            throw new cInvalidArgumentException(__CLASS__ . " " . __FUNCTION__ . " Parameter 1 invalid.");
         }
         if (!is_array($aClientCfg)) {
             return;
-            throw new Exception(__CLASS__ . " " . __FUNCTION__ . " Parameter 2 invalid.");
+            throw new cInvalidArgumentException(__CLASS__ . " " . __FUNCTION__ . " Parameter 2 invalid.");
         }
 
         // Load smarty
@@ -87,11 +89,11 @@ class Contenido_SmartyWrapper {
         if ($bSanityCheck) {
             foreach (self::$aDefaultPaths as $key => $value) {
                 if (!file_exists($value)) {
-                    throw new Exception(sprintf("Class %s Error: Folder %s does not exist. Please create.", __CLASS__, $value));
+                    throw new cException(sprintf("Class %s Error: Folder %s does not exist. Please create.", __CLASS__, $value));
                 }
                 if ($key == 'cache' || $key == 'compile_dir') {
                     if (!is_writable($value)) {
-                        throw new Exception(sprintf("Class %s Error: Folder %s is not writable. Please check for sufficient rights.", __CLASS__, $value));
+                        throw new cException(sprintf("Class %s Error: Folder %s is not writable. Please check for sufficient rights.", __CLASS__, $value));
                     }
                 }
             }
@@ -110,9 +112,11 @@ class Contenido_SmartyWrapper {
 
     /**
      * prevent users from cloning instance
+     *
+     * @throws cException if this function is called
      */
     public function __clone() {
-        throw new Exception("Contenido_SmartyWrapper class is intended to be used as singleton. Do not clone.");
+        throw new cException("Contenido_SmartyWrapper class is intended to be used as singleton. Do not clone.");
     }
 
     /**
@@ -125,14 +129,15 @@ class Contenido_SmartyWrapper {
 
     /**
      * static function to provide the smart object
-     * @access public static
+     *
      * @param boolean bResetTemplate     true if the template values shall all be resetted
+     * @throws cException if singleton has not been instantiated yet
      * @return smarty
      */
     public static function getInstance($bResetTemplate = false) {
         if (!isset(self::$oSmarty)) {
             // @TODO  find a smart way to instanciate smarty object on demand
-            throw new Exception("Smarty singleton not instanciated yet.");
+            throw new cException("Smarty singleton not instantiated yet.");
         }
         if ($bResetTemplate) {
             self::$oSmarty = new Smarty();

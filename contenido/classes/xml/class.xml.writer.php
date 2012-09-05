@@ -95,14 +95,13 @@ class cXmlWriter extends cXmlBase {
      *
      * @param string $directory path to destination directory
      * @param string $fileName name of the written file
-     *
+     * @throws cException if the directory is not writable
      * @return boolean state of saving process (true if file was created, false
      *         otherwise)
      */
     public function saveToFile($directory, $fileName) {
         if (is_writable($directory) === false) {
-            cWarning(__FILE__, __LINE__, 'Can not write XML file: Directory is not writable.');
-            return false;
+            throw new cException('Can not write XML file: Directory is not writable.');
         }
 
         if (substr($directory, 0, -1) != '/') {

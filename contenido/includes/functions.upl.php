@@ -326,6 +326,8 @@ function uplmkdir($sPath, $sName)
  * @param  string  $sOldName
  * @param  string  $sNewName
  * @param  string  $sParent
+ * @throws cException if the upload path can not be renamed
+ * @return void
  */
 function uplRenameDirectory($sOldName, $sNewName, $sParent)
 {
@@ -335,14 +337,13 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent)
     $sOldUplPath = $cfgClient[$client]['upl']['path'] . $sParent  . $sOldName;
     $sNewUplPath = $cfgClient[$client]['upl']['path'] . $sParent  . $sNewName . '/';
     if (!$bResult = rename($sOldUplPath, $sNewUplPath)) {
-        cWarning(__FILE__, __LINE__, "Couldn't rename upload path {$sOldUplPath} to {$sNewUplPath}");
-        return;
+        throw new cException("Couldn't rename upload path {$sOldUplPath} to {$sNewUplPath}");
     }
 
     // fetch all directory strings starting with the old path, and replace them with the new path
     $oUploadColl = new cApiUploadCollection();
     $oUploadColl->select("idclient=" . (int) $client . " AND dirname LIKE '" . $oUploadColl->escape($sParent . $sOldName) . "%'");
-    while ($oUpload = $oUploadColl->next()) {
+    while (($oUpload = $oUploadColl->next()) !== false) {
         $sDirName = $oUpload->get('dirname');
         $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
         $sNewName2 = $sParent . $sNewName . $sJunk;
@@ -353,7 +354,7 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent)
     // update all upload item properties starting with the old path, replace itemid with the new path
     $oPropertyColl = new cApiPropertyCollection();
     $oPropertyColl->select("idclient=" . (int) $client . " AND itemtype='upload' AND type='file' AND itemid LIKE '". $oPropertyColl->escape($sParent . $sOldName) . "%'");
-    while ($oProperty = $oPropertyColl->next()) {
+    while (($oProperty = $oPropertyColl->next()) !== false) {
         $sDirName = $oProperty->get('itemid');
         $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
         $sNewName2 = $sParent . $sNewName . $sJunk;

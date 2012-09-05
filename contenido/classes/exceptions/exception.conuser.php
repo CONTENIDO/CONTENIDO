@@ -24,7 +24,7 @@
  * @author Holger Librenz
  * @copyright four for business AG
  *
- * @deprecated Please use cApiUser instead [2012-02-23]
+ * @deprecated Please use cException instead [2012-02-23]
  */
 class ConUserException extends Exception
 {
@@ -32,7 +32,7 @@ class ConUserException extends Exception
     {
         parent::__construct();
 
-        cDeprecated("Deprecated class. Please use cApiUser instead");
+        cDeprecated("Deprecated class. Please use cException instead");
     }
 }
 

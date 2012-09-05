@@ -45,7 +45,7 @@ try {
             echo '<p>'.$oContenidoCategory->getIdCat().' | '.$oContenidoCategory->getCategoryLanguage()->getName().'</p>';
         }
     }
-} catch (InvalidArgumentException $eI) {
+} catch (cInvalidArgumentException $eI) {
     echo 'Some error occured: ' . $eI->getMessage() . ': ' . $eI->getFile() . ' at line '.$eI->getLine() . ' ('.$eI->getTraceAsString().')';
 } catch (Exception $e) {
     echo 'Some error occured: ' . $e->getMessage() . ': ' . $e->getFile() . ' at line '.$e->getLine() . ' ('.$e->getTraceAsString().')';
@@ -63,7 +63,7 @@ try {
     foreach ($oBreadCategories as $oBreadCategory) {
         echo '<p>Bread '.$oBreadCategory->getIdCat().', '.$oBreadCategory->getCategoryLanguage()->getName().'</p>';
     }
-} catch (InvalidArgumentException $eI) {
+} catch (cInvalidArgumentException $eI) {
     echo 'Some error occured: ' . $eI->getMessage() . ': ' . $eI->getFile() . ' at line '.$eI->getLine() . ' ('.$eI->getTraceAsString().')';
 } catch (Exception $e) {
     echo 'Some error occured: ' . $e->getMessage() . ': ' . $e->getFile() . ' at line '.$e->getLine() . ' ('.$e->getTraceAsString().')';
@@ -116,7 +116,7 @@ try {
                     'URL: '.$sUrl1.' - '.$sUrl2.' - '.$sUrl3.' - '.$sUrl4.' - '.$sUrl5.'</strong></p>';
         }
     }
-} catch (InvalidArgumentException $eI) {
+} catch (cInvalidArgumentException $eI) {
     echo 'Some error occured: ' . $eI->getMessage() . ': ' . $eI->getFile() . ' at line '.$eI->getLine() . ' ('.$eI->getTraceAsString().')';
 } catch (Exception $e) {
     echo 'Some error occured: ' . $e->getMessage() . ': ' . $e->getFile() . ' at line '.$e->getLine() . ' ('.$e->getTraceAsString().')';

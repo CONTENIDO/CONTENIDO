@@ -186,6 +186,7 @@ class cModuleTemplateHandler extends cModuleHandler {
      * The method decide what action is send from
      * user (form).
      *
+     * @throws cException if one of the filenames is not set
      * @return string [new, delete,empty,save,rename, default]
      */
     private function _getAction() {
@@ -215,7 +216,7 @@ class cModuleTemplateHandler extends cModuleHandler {
                 }
             } else {
                 // one of files (file or tmp_file) is not set
-                throw new Exception(i18n('Field of the file name is empty!'));
+                throw new cException(i18n('Field of the file name is empty!'));
             }
         } else {
             return 'default';
@@ -255,11 +256,12 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * rename a file in template directory
      *
-     * @throws Exception if rename not success
+     * @throws cException if rename was not successfull
+     * @return void
      */
     private function _rename() {
         if ($this->renameModuleFile('template', $this->_tmp_file, $this->_file) == false) {
-            throw new Exception(i18n('Rename of the file failed!'));
+            throw new cException(i18n('Rename of the file failed!'));
         } else {
             $this->createModuleFile('template', $this->_file, $this->_code);
             $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Renamed the template file successfully!'));

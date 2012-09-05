@@ -157,6 +157,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *            Define all links in the constructor of your object.
      *
      * @param   string  $sForeignCollectionClass  Specifies the foreign class to use
+     * @throws cInvalidArgumentException if the given foreign class can not be instantiated
      * @return  void
      */
     protected function _setJoinPartner($sForeignCollectionClass) {
@@ -166,9 +167,9 @@ abstract class ItemCollection extends cItemBaseAbstract {
                 $this->_JoinPartners[] = strtolower($sForeignCollectionClass);
             }
         } else {
-            $sMsg = "Could not instanciate class [$sForeignCollectionClass] for use "
+            $msg = "Could not instantiate class [$sForeignCollectionClass] for use "
                     . "with _setJoinPartner in class " . get_class($this);
-            cWarning(__FILE__, __LINE__, $sMsg);
+            throw new cInvalidArgumentException($msg);
         }
     }
 
@@ -176,6 +177,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * Method to set the accompanying item object.
      *
      * @param   string  $sClassName  Specifies the classname of item
+     * @throws cInvalidArgumentException if the given class can not be instantiated
      * @return  void
      */
     protected function _setItemClass($sClassName) {
@@ -188,9 +190,9 @@ abstract class ItemCollection extends cItemBaseAbstract {
             $this->_initializeDriver();
             $this->_driver->setItemClassInstance($this->_itemClassInstance);
         } else {
-            $sMsg = "Could not instanciate class [$sClassName] for use with "
+            $msg = "Could not instantiate class [$sClassName] for use with "
                     . "_setItemClass in class " . get_class($this);
-            cWarning(__FILE__, __LINE__, $sMsg);
+            throw new cInvalidArgumentException($msg);
         }
     }
 
@@ -217,14 +219,16 @@ abstract class ItemCollection extends cItemBaseAbstract {
     /**
      * Sets the query to use foreign tables in the resultset
      * @param  string  $sForeignClass  The class of foreign table to use
+     * @throws cInvalidArgumentException if the given foreign class does not exist
+     * @return void
      */
     public function link($sForeignClass) {
         if (class_exists($sForeignClass)) {
             $this->_links[$sForeignClass] = new $sForeignClass;
         } else {
-            $sMsg = "Could not find class [$sForeignClass] for use with link in class "
+            $msg = "Could not find class [$sForeignClass] for use with link in class "
                     . get_class($this);
-            cWarning(__FILE__, __LINE__, $sMsg);
+            throw new cInvalidArgumentException($msg);
         }
     }
 
@@ -418,6 +422,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @todo  Reduce complexity of this function, to much code...
      *
      * @param   ???    $ignoreRoot
+     * @throws cException if no join partner could be found
      * @return  array  Array structure, see above
      */
     protected function _fetchJoinTables($ignoreRoot) {
@@ -541,9 +546,9 @@ abstract class ItemCollection extends cItemBaseAbstract {
                                 $aWheres = array_merge($aIntersectParameters['wheres'], $aWheres);
                             }
                         } else {
-                            $sMsg = "Could not find join partner for class [$link] in class "
+                            $msg = "Could not find join partner for class [$link] in class "
                                     . get_class($this) . " in neither forward nor reverse direction.";
-                            cWarning(__FILE__, __LINE__, $sMsg);
+                            throw new cException($msg);
                         }
                     }
                 }
@@ -604,13 +609,12 @@ abstract class ItemCollection extends cItemBaseAbstract {
     /**
      * Builds and runs the query
      *
+     * @throws cException if no item class has been set
      * @return  bool
      */
     public function query() {
         if (!isset($this->_itemClassInstance)) {
-            $sMsg = "GenericDB can't use query() if no item class is set via setItemClass";
-            cWarning(__FILE__, __LINE__, $sMsg);
-            return false;
+            throw new cException('GenericDB can\'t use query() if no item class is set via setItemClass');
         }
 
         $aGroupWhereStatements = $this->_buildGroupWhereStatements();
@@ -1026,14 +1030,14 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @param   mixed   $mItem  The primary key of the item to load or a recordset
      *                          with itemdata (array) to inject to the item object.
+     * @throws cException If item class is not set
      * @return  Item  The newly created object
-     * @throws  cItemException  If item class is not set
      */
     public function loadItem($mItem) {
         if (empty($this->_itemClass)) {
             $sMsg = "ItemClass has to be set in the constructor of class "
                     . get_class($this) . ")";
-            throw new cItemException($sMsg);
+            throw new cException($sMsg);
         }
 
         if (!is_object($this->_iteratorItem)) {
@@ -1112,9 +1116,9 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * Inserts a new item entry by using a existing item entry.
      * @param  object  $srcItem  Source Item instance to copy
      * @param  array  $fieldsToOverwrite  Assoziative list of fields to overwrite.
-     * @return  object|Item|null
-     * @throws  Exception  If Item class doesn't match the defined _itemClass property
+     * @throws cInvalidArgumentException If Item class doesn't match the defined _itemClass property
      *                     or passed Item instance has no loaded recordset
+     * @return  object|Item|null
      */
     public function copyItem($srcItem, array $fieldsToOverwrite = array()) {
         /* @var $srcItem Item */
@@ -1122,9 +1126,9 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $tmp2 = $this->_itemClass;
 
         if (get_class($srcItem) !== $this->_itemClass) {
-            throw new Exception("Item class doesn't match");
+            throw new cInvalidArgumentException("Item class doesn't match");
         } elseif (!$srcItem->isLoaded()) {
-            throw new Exception("Item instance has no loaded recordset");
+            throw new cInvalidArgumentException("Item instance has no loaded recordset");
         }
 
         $destItem = self::createNewItem();

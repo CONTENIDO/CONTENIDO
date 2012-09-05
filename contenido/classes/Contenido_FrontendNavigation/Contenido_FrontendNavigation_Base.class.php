@@ -140,7 +140,7 @@ class Contenido_FrontendNavigation_Base {
      * @param boolean $bUseAbsolutePath If true, will use absolute
      *            http://www.xy.com/ as "prefix"
      * @return void
-     * @throws InvalidArgumentException
+     * @throws cInvalidArgumentException
      * @see appropriate cUriBuilder for details on needed params
      * @todo Apply other styles as soon as they are available
      */
@@ -152,7 +152,7 @@ class Contenido_FrontendNavigation_Base {
             }
             $oUriBuilder->buildUrl($aParams, $bUseAbsolutePath, $aConfig);
             return $oUriBuilder->getUrl();
-        } catch (InvalidArgumentException $e) {
+        } catch (cInvalidArgumentException $e) {
             throw $e;
         }
     }

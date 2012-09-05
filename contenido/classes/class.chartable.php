@@ -89,6 +89,13 @@ class cCharacterConverter {
         return ($aChars);
     }
 
+    /**
+     *
+     * @param unknown_type $sEncoding
+     * @param unknown_type $cCharacter
+     * @throws cInvalidArgumentException if the given character is longer than one char
+     * @return multitype:NULL
+     */
     public function fetchNormalizedCharsForDiacriticCharacter($sEncoding, $cCharacter) {
         global $cfg;
 
@@ -97,7 +104,7 @@ class cCharacterConverter {
         $sEncoding = $this->_correctEncoding($sEncoding);
 
         if (strlen($cCharacter) > 1) {
-            cError(__FILE__, __LINE__, "cCharacter is longer than 1 character");
+            throw new cInvalidArgumentException('cCharacter is longer than 1 character');
         }
 
         if (!array_key_exists($sEncoding, $this->_aAliasCache)) {

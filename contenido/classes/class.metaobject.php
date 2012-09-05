@@ -80,12 +80,12 @@ class cMetaObject {
      * Sets the object type (either COBJECT_BASE or COBJECT_PLUGIN).
      *
      * @param int $type Constant with the object type
-     *
+     * @throws cInvalidArgumentException if the given type is invalid
+     * @return void
      */
     function setObjectType($type) {
-        if ($type != COBJECT_BASE &&
-                $type != COBJECT_PLUGIN) {
-            cDie(__FILE__, __LINE__, "When calling setObjectType, please use either COBJECT_BASE or COBJECT_PLUGIN");
+        if ($type != COBJECT_BASE && $type != COBJECT_PLUGIN) {
+            throw new cInvalidArgumentException('When calling setObjectType, please use either COBJECT_BASE or COBJECT_PLUGIN');
         }
 
         $this->_objectType = $type;
@@ -133,7 +133,7 @@ class cMetaObject {
     }
 
     function defineActions() {
-        
+
     }
 
     function assignField($field, $name, $editwidget, $parameters = array(), $group = "default", $readonly = false) {
@@ -185,15 +185,15 @@ class cMetaObject {
     }
 
     function defineFields() {
-        
+
     }
 
     function defineEditAction() {
-        
+
     }
 
     function defineCreateAction() {
-        
+
     }
 
     function processActions() {

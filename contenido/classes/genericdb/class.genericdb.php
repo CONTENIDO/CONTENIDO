@@ -109,20 +109,20 @@ class cGenericDb {
      * @param    string    $event        Callback event, must be a valid value of a cGenericDb event constant
      * @param    mixed    $callback    Callback to register
      * @param    mixed    $class        Class name for registering callback (can be string of array with names of the concrete Item classes)
-     *
+     * @throws cInvalidArgumentException if event or class are not set or the callback is not callable
      * @return    void
      */
     public static function register($event, $callback, $class) {
         if (isset($event) === false) {
-            throw new cItemException("No callback event for execution was given");
+            throw new cInvalidArgumentException("No callback event for execution was given");
         }
 
         if (is_callable($callback) === false) {
-            throw new cItemException("Given callback is not callable.");
+            throw new cInvalidArgumentException("Given callback is not callable.");
         }
 
         if (isset($class) === false) {
-            throw new cItemException("No class for registering callback was given.");
+            throw new cInvalidArgumentException("No class for registering callback was given.");
         }
 
         if (is_array($class)) {
@@ -142,16 +142,16 @@ class cGenericDb {
      *
      * @param    string    $event    Callback event, must be a valid value of a cGenericDb event constant
      * @param    mixed    $class    Class name for unregistering callback (can be string of array with names of the concrete Item classes)
-     *
+     * @throws cInvalidArgumentException if the event or the class are not set
      * @return    void
      */
     public static function unregister($event, $class) {
         if (isset($event) === false) {
-            throw new cItemException("No callback event for execution was given");
+            throw new cInvalidArgumentException("No callback event for execution was given");
         }
 
         if (isset($class) === false) {
-            throw new cItemException("No class for unregistering callbacks was given.");
+            throw new cInvalidArgumentException("No class for unregistering callbacks was given.");
         }
 
         if (is_array($class)) {
@@ -169,16 +169,16 @@ class cGenericDb {
      * @param    string    $event        Callback event, must be a valid value of a cGenericDb event constant
      * @param    string    $class        Class name for executing callback
      * @param     array    $arguments    Arguments to pass to the callback function
-     *
+     * @throws cInvalidArgumentException if the event or class is not set
      * @return    void
      */
     protected final function _executeCallbacks($event, $class, $arguments = array()) {
         if (isset($event) === false) {
-            throw new cItemException("No callback event for execution was given");
+            throw new cInvalidArgumentException("No callback event for execution was given");
         }
 
         if (isset($class) === false) {
-            throw new cItemException("No class for executing callbacks was given.");
+            throw new cInvalidArgumentException("No class for executing callbacks was given.");
         }
 
         if (!isset(self::$_callbacks[$class])) {

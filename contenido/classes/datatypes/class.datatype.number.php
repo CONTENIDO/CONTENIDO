@@ -10,34 +10,37 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.0
+ * @package CONTENIDO Backend Classes
+ * @version 1.0
  * @author
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
  *
- * {@internal
- *   created
  *
- *   $Id$:
- * }}
+ *
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ *
+ *       {@internal
+ *       created
+ *
+ *       $Id$:
+ *       }}
  *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
+class cDatatypeNumber extends cDatatype {
 
-class cDatatypeNumber extends cDatatype
-{
     protected $_iPrecision;
+
     protected $_sThousandSeparatorCharacter;
+
     protected $_sDecimalPointCharacter;
 
-    public function __construct()
-    {
+    public function __construct() {
         $language = cI18n::getLanguage();
 
         // Try to find out the current locale settings
@@ -50,54 +53,50 @@ class cDatatypeNumber extends cDatatype
     }
 
     /**
+     *
      * @deprecated [2012-01-19] use __construct instead
      */
-    public function cDatatypeNumber()
-    {
+    public function cDatatypeNumber() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
-    public function set($value)
-    {
+    public function set($value) {
         $this->_mValue = floatval($value);
     }
 
-    public function get()
-    {
+    public function get() {
         return $this->_mValue;
     }
 
-    public function setPrecision($iPrecision)
-    {
+    public function setPrecision($iPrecision) {
         $this->_iPrecision = $iPrecision;
     }
 
-    public function setDecimalPointCharacter($sCharacter)
-    {
+    public function setDecimalPointCharacter($sCharacter) {
         $this->_sDecimalPointCharacter = $sCharacter;
     }
 
-    public function getDecimalPointCharacter()
-    {
+    public function getDecimalPointCharacter() {
         return ($this->_sDecimalPointCharacter);
     }
 
-    public function setThousandSeparatorCharacter($sCharacter)
-    {
+    public function setThousandSeparatorCharacter($sCharacter) {
         $this->_sThousandSeparatorCharacter = $sCharacter;
     }
 
-    public function getThousandSeparatorCharacter()
-    {
-        return($this->_sThousandSeparatorCharacter);
+    public function getThousandSeparatorCharacter() {
+        return ($this->_sThousandSeparatorCharacter);
     }
 
-    public function parse($value)
-    {
+    /**
+     *
+     * @throws cException if the decimal separator character and the thousand
+     *         separator character are equal
+     */
+    public function parse($value) {
         if ($this->_sDecimalPointCharacter == $this->_sThousandSeparatorCharacter) {
-            cWarning(__FILE__, __LINE__, "Decimal point character cannot be the same as the thousand separator character. Current decimal point character is '{$this->_sDecimalPointCharacter}', current thousand separator character is '{$this->_sThousandSeparatorCharacter}'");
-            return;
+            throw new cException("Decimal point character cannot be the same as the thousand separator character. Current decimal point character is '{$this->_sDecimalPointCharacter}', current thousand separator character is '{$this->_sThousandSeparatorCharacter}'");
         }
 
         // Convert to standard english format
@@ -107,10 +106,10 @@ class cDatatypeNumber extends cDatatype
         $this->_mValue = floatval($value);
     }
 
-    public function render()
-    {
+    public function render() {
         return number_format($this->_mValue, $this->_iPrecision, $this->_sDecimalPointCharacter, $this->_sThousandSeparatorCharacter);
     }
+
 }
 
 ?>

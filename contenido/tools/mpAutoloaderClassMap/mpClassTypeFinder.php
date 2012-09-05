@@ -252,12 +252,13 @@ class mpClassTypeFinder
      * @param   string  $delemiter  Delemiter between each message
      * @param   string  $wrap       String with %s type specifier used to wrap all
      *                              messages
+     * @throws cInvalidArgumentException if the given wrap does not contain %s
      * @return  string  Formatted string
      */
     public function getFormattedDebugMessages($delemiter="\n", $wrap='%s')
     {
         if (strpos($wrap, '%s') === false) {
-            throw new Exception('Missing type specifier %s in parameter wrap!');
+            throw new cInvalidArgumentException('Missing type specifier %s in parameter wrap!');
         }
         $messages = implode($delemiter, $this->_debugMessages);
         return sprintf($wrap, $messages);

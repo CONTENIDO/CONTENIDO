@@ -451,12 +451,12 @@ abstract class DB_Sql_Abstract {
     public function prepare($sStatement) {
         // No empty queries
         if (empty($sStatement)) {
-            throw new Exception('Empty statement!');
+            throw new cInvalidArgumentException('Empty statement!');
         }
 
         $aArgs = func_get_args();
         if (count($aArgs) <= 1) {
-            throw new Exception('Wrong number of parameter!');
+            throw new cInvalidArgumentException('Wrong number of parameter!');
         }
 
         array_shift($aArgs);

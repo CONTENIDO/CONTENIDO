@@ -15,7 +15,7 @@
  * @version     0.1
  * @author      Stefan Seifarth / stese
  * @author      Murat Purc <murat@purc.de>
- * @copyright   © www.polycoder.de
+ * @copyright   ï¿½ www.polycoder.de
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
@@ -28,8 +28,9 @@
  * }}
  */
 
-
-defined('CON_FRAMEWORK') or die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
 
 
 /**

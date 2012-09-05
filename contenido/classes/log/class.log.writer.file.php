@@ -37,18 +37,19 @@ class cLogWriterFile extends cLogWriter {
 
     /**
      * Checks destination and creates the handle for the write process.
+     *
+     * @throws cException if not destination is specified
+     * @throws cFileNotFoundException if the destination file could not be read
      * @return    void
      */
     protected function _createHandle() {
         $destination = $this->getOption('destination');
         if ($destination == '') {
-            cWarning(__FILE__, __LINE__, "No destination was specified.");
-            return false;
+            throw new cException('No destination was specified.');
         }
 
-        if (!$this->_handle = fopen($destination, 'a')) {
-            cWarning(__FILE__, __LINE__, "Destination handle could not be created.");
-            return false;
+        if (($this->_handle = fopen($destination, 'a')) === false) {
+            throw new cFileNotFoundException('Destination handle could not be created.');
         }
     }
 
@@ -57,16 +58,9 @@ class cLogWriterFile extends cLogWriter {
      *
      * @param    string    $message    Message to write
      * @param    int        $priority    Priority of the log entry
-     *
      * @return    boolean    State of the write process
      */
     public function write($message, $priority) {
-        if (fwrite($this->_handle, $message) == false) {
-            cWarning(__FILE__, __LINE__, "Message could not be logged to destination.");
-            return false;
-        }
-
-        return true;
+        return (fwrite($this->_handle, $message) != false);
     }
 }
-?>

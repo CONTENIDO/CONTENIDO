@@ -28,8 +28,9 @@
  * }}
  */
 
-
-defined('CON_FRAMEWORK') or die('Illegal call');
+if (!defined('CON_FRAMEWORK') {
+    die('Illegal call');
+}
 
 
 global $cfg;

@@ -138,7 +138,7 @@ if (strlen(trim($searchterm)) > 0) {
             }
             try {
                 $nextlink = cUri::getInstance()->build($aParams);
-            } catch (InvalidArgumentException $e) {
+            } catch (cInvalidArgumentException $e) {
                 $nextlink = $sess->url('front_content.php?idcat='.$idcat.'&amp;idart='.$idart.'&amp;searchterm='.$searchterm_display.'&amp;page='.$i.$sArtSpecs);
             }
             if ($i == $page) {
@@ -169,7 +169,7 @@ if (strlen(trim($searchterm)) > 0) {
             }
             try {
                 $next = cUri::getInstance()->build($aParams);
-            } catch (InvalidArgumentException $e) {
+            } catch (cInvalidArgumentException $e) {
                 $next = $sess->url('front_content.php?idcat='.$idcat.'&amp;idart='.$idart.'&amp;searchterm='.$searchterm.'&amp;page='.$n.$sArtSpecs);
             }
             $nextpage .= '&nbsp;<a href="'.$next.'" title="'.mi18n("nächste Ergebnisseite anzeigen").'">'.mi18n("vor").'&nbsp;&nbsp;<img src="images/link_pfeil_klein.gif" alt="" /></a>';
@@ -198,7 +198,7 @@ if (strlen(trim($searchterm)) > 0) {
             }
             try {
                 $pre = cUri::getInstance()->build($aParams);
-            } catch (InvalidArgumentException $e) {
+            } catch (cInvalidArgumentException $e) {
                 $pre = $sess->url('front_content.php?idcat='.$idcat.'&amp;idart='.$idart.'&amp;searchterm='.$searchterm.'&amp;page='.$p.$sArtSpecs);
             }
             $prevpage .= '<a href="'.$pre.'" title="'.mi18n("vorherige Ergebnisseite anzeigen").'"><img src="images/link_pfeil_klein_links.gif" alt="" />&nbsp;&nbsp;'.mi18n("zurück").'</a>&nbsp;';
@@ -259,7 +259,7 @@ if (strlen(trim($searchterm)) > 0) {
                 }
                 try {
                     $href = cUri::getInstance()->build($aParams);
-                } catch (InvalidArgumentException $e) {
+                } catch (cInvalidArgumentException $e) {
                     $href = $sess->url("front_content.php?idcat=$cat_id&amp;idart=$key");
                 }
                 $tpl->set('d', 'more', $sMore);

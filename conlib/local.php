@@ -38,7 +38,7 @@ class DB_Contenido extends DB_Sql {
     /**
      * Constructor of database class.
      *
-     * @param  array  $options  Optional assoziative options. The value depends
+     * @param array  $options  Optional assoziative options. The value depends
      *                          on used DBMS, but is generally as follows:
      *                          - $options['connection']['host']  (string) Hostname  or ip
      *                          - $options['connection']['database']  (string) Database name
@@ -47,10 +47,10 @@ class DB_Contenido extends DB_Sql {
      *                          - $options['haltBehavior']  (string)  Optional, halt behavior on occured errors
      *                          - $options['haltMsgPrefix']  (string)  Optional, Text to prepend to the halt message
      *                          - $options['enableProfiling']  (bool)  Optional, flag to enable profiling
-     * @param boolean $throwException only throw an exception if this is set to true
-     * @return  void
+     * @throws cException if the database connection could not be established
+     * @return void
      */
-    public function __construct(array $options = array(), $throwException = false) {
+    public function __construct(array $options = array()) {
         global $cachemeta;
         global $cfg;
 
@@ -60,38 +60,15 @@ class DB_Contenido extends DB_Sql {
             $cachemeta = array();
         }
 
-        // @FIXME: Database class should throw a error. Redirecting to the error page is not a good idea.
-        //         What if the db connection within a cli script fails???
         if ($this->Errno == 1) {
             $backendUrl = cRegistry::getBackendUrl();
             $contenidoPath = (empty($backendUrl))? $cfg['path']['frontend'] : $backendUrl;
-            $errortitle = i18n('MySQL Database not reachable for installation %s');
-            $errortitle = sprintf($errortitle, $contenidoPath);
 
             $errormessage = i18n('The MySQL Database for the installation %s is not reachable. Please check if this is a temporary problem or if it is a real fault.');
             $errormessage = sprintf($errormessage, $contenidoPath);
 
-            if ($throwException) {
-                throw new Exception($errormessage);
-                return;
-            }
-
-            notifyOnError($errortitle, $errormessage);
-
-            if ($cfg['contenido']['errorpage'] != '') {
-                header('Location: ' . $cfg['contenido']['errorpage']);
-            } else {
-                //The script should not die if we are in the setup process. The setup has to make sure the connection works
-                if (strrpos(C_SETUP_PATH, 'setup') != (strlen(C_SETUP_PATH) - strlen('setup'))) {
-                    die('Could not connect to database wtih this configuration');
-                }
-            }
+            throw new cException($errormessage);
         }
-
-        // TODO check this out
-        // HerrB: Checked and disabled. Kills umlauts, if tables are latin1_general.
-        // try to use the new connection and get the needed encryption
-        //$this->query("SET NAMES 'utf8'");
     }
 
     /**
@@ -179,12 +156,6 @@ class DB_Contenido extends DB_Sql {
  * @subpackage Session
  */
 class Contenido_CT_Sql extends CT_Sql {
-
-    /**
-     * Database class name
-     * @var  string
-     */
-    public $database_class = 'DB_Contenido';
 
     /**
      * And find our session data in this table.
@@ -418,7 +389,6 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
     public $classname = 'Contenido_Challenge_Crypt_Auth';
     public $lifetime = 15;
     public $magic = 'Frrobo123xxica';  ## Challenge seed
-    public $database_class = 'DB_Contenido';
     public $database_table = '';
     public $group_table = '';
     public $member_table = '';
@@ -610,7 +580,6 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth {
     public $classname = 'Contenido_Frontend_Challenge_Crypt_Auth';
     public $lifetime = 15;
     public $magic = 'Frrobo123xxica';  ## Challenge seed
-    public $database_class = 'DB_Contenido';
     public $database_table = '';
     public $fe_database_table = '';
     public $group_table = '';

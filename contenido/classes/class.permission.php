@@ -455,10 +455,10 @@ class cPermission {
      * Checks if the given object is a user object.
      *
      * If oUser is false, initialize the object from the currently logged in
-     * user. If oUser is not
-     * a object of the class User, issue a warning.
+     * user. If oUser is not an object of the class cApiUser, throw an exception.
      *
      * @param object $oUser User object
+     * @throws cInvalidArgumentException if the given or constructed user is not a cApiUser object
      * @return object
      */
     private function _checkUserObject($oUser) {
@@ -473,7 +473,7 @@ class cPermission {
         }
 
         if (get_class($oUser) != 'cApiUser') {
-            cWarning(__FILE__, __LINE__, 'oUser parameter is not of type User');
+            throw new cInvalidArgumentException('oUser parameter is not of type User');
         }
 
         return $oUser;

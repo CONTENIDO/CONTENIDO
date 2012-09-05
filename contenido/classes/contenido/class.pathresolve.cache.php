@@ -162,13 +162,14 @@ class cApiPathresolveCache extends Item {
 
     /**
      * Checks if item's cache time has expired.
-     * @return  bool
-     * @throws Exception  If item was not loaded before
+     *
+     * @throws cException If item has not been loaded before
+     * @return bool
      */
     public function isCacheTimeExpired() {
         global $cfg;
         if (!$this->isLoaded()) {
-            throw new Exception('Item not loaded!');
+            throw new cException('Item not loaded!');
         }
         $cacheTime = (isset($cfg['pathresolve_heapcache_time'])) ? $cfg['pathresolve_heapcache_time'] : 60 * 60 * 24;
         return ($this->get('lastcached') + $cacheTime < time());

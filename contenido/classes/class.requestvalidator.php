@@ -101,6 +101,8 @@ class cRequestValidator {
      * The constructor will check if every parameter defined in the $sConfigPath."/config.http_check.php" is valid. If not it will stop the execution.
      *
      * @param string The path to config.http_check.php and config.http_check.local.php
+     * @throws cFileNotFoundException if the configuration can not be loaded
+     * @return void
      */
     public function __construct($sConfigPath) {
 
@@ -115,7 +117,7 @@ class cRequestValidator {
         if (!empty($sConfigPath) && cFileHandler::exists($sConfigPath . "/config.http_check.php")) {
             $this->sConfigPath = realpath($sConfigPath);
         } else {
-            die('Could not load cRequestValidator configuration! (invalid path) ' . $sConfigPath);
+            throw new cFileNotFoundException('Could not load cRequestValidator configuration! (invalid path) ' . $sConfigPath);
         }
 
         // include configuration

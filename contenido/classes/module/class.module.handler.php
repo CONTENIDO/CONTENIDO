@@ -179,6 +179,8 @@ class cModuleHandler {
      * [Modulname]_input.php , [Modulname]_output.php
      *
      * @param int $idmod the id of the modul
+     * @throws cException if the module directory can not be created
+     * @return void
      */
     public function __construct($idmod = NULL) {
         global $cfg, $cfgClient, $lang, $client;
@@ -196,7 +198,7 @@ class cModuleHandler {
         $this->_initByModule($idmod);
 
         if ($this->_makeModuleDirectory() == false) {
-            cWarning(__FILE__, __LINE__, 'Can not create main module directory.');
+            throw new cException('Can not create main module directory.');
         }
     }
 
@@ -510,6 +512,10 @@ class cModuleHandler {
 
     /**
      * Make in all clients the module directory
+     *
+     * @throws cException if the frontend path can not be found or the module
+     *         directory cann ot be created
+     * @return void
      */
     public function createAllMainDirectories() {
         global $cfg, $cfgClient;
@@ -519,13 +525,13 @@ class cModuleHandler {
                 $frontendPath = $aClient['path']['frontend'];
                 // test if frontendpath exists
                 if (is_dir($frontendPath) == false) {
-                    cWarning(__FILE__, __LINE__, 'Frontendpath was not found: ' . $frontendPath);
+                    throw new cException('Frontendpath was not found: ' . $frontendPath);
                 } else {
                     $sModulePath = $aClient['module']['path'];
                     if (!is_dir($sModulePath)) {
                         // could not make the modul directory in client
                         if (mkdir($sModulePath) == false) {
-                            cWarning(__FILE__, __LINE__, 'Module directory could not be created: ' . $frontendPath);
+                            throw new cException('Module directory could not be created: ' . $sModulePath);
                         } else {
                             cFileHandler::setDefaultDirPerms($sModulePath);
                         }

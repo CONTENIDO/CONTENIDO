@@ -54,6 +54,9 @@ class cGuiNavigation {
 
     /**
      * Constructor. Loads the XML language file using cXmlReader.
+     *
+     * @throws cException if XML language files could not be loaded
+     * @return void
      */
     public function __construct() {
         global $cfg;
@@ -63,7 +66,7 @@ class cGuiNavigation {
 
         // Load language file
         if ($this->xml->load($cfg['path']['xml'] . "navigation.xml") == false) {
-            die('Unable to load any XML language file');
+            throw new cException('Unable to load any XML language file');
         }
     }
 
@@ -75,6 +78,7 @@ class cGuiNavigation {
      *                                                       separated by semicolon. This type is used
      *                                                       to extract caption from a plugin XML file.
      *                            - "{XPath}": XPath value to extract caption from CONTENIDO XML file
+     * @throws cException if XML language files could not be loaded
      * @return  string  The found caption
      */
     public function getName($location) {
@@ -110,7 +114,7 @@ class cGuiNavigation {
                     $filename = 'lang_en_US.xml';
                 }
                 if ($this->plugxml->load($cfg['path']['plugins'] . $filepath . $filename) == false) {
-                    die("Unable to load $filepath XML language file");
+                    throw new cException("Unable to load $filepath XML language file");
                 }
             }
             $caption = $this->plugxml->getXpathValue('/language/' . $xpath);

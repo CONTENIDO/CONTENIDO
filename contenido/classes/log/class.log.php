@@ -139,15 +139,15 @@ class cLog {
      * Each shortcut handler receives an array with the
      * message and the priority of the entry.
      *
-     * @param  string  $shortcut    Shortcut name
-     * @param  string  $handler        Name of the function to call
-     *
-     * @return    bool    True if setting was successful
+     * @param string $shortcut Shortcut name
+     * @param string $handler Name of the function to call
+     * @throws cInvalidArgumentException if the given shortcut is empty or
+     *         already in use or if the handler is not callable
+     * @return bool True if setting was successful
      */
     public function setShortcutHandler($shortcut, $handler) {
         if ($shortcut == '') {
-            cWarning(__FILE__, __LINE__, "The shortcut name must not be empty.");
-            return false;
+            throw new cInvalidArgumentException('The shortcut name must not be empty.');
         }
 
         if (substr($shortcut, 0, 1) == "%") {
@@ -155,13 +155,11 @@ class cLog {
         }
 
         if (is_callable($handler) == false) {
-            cWarning(__FILE__, __LINE__, "The specified shortcut handler does not exist.");
-            return false;
+            throw new cInvalidArgumentException('The specified shortcut handler does not exist.');
         }
 
         if (array_key_exists($shortcut, $this->_shortcutHandlers)) {
-            cWarning(__FILE__, __LINE__, "The shortcut " . $shortcut . " is already in use!");
-            return false;
+            throw new cInvalidArgumentException('The shortcut ' . $shortcut . ' is already in use!');
         }
 
         $this->_shortcutHandlers[$shortcut] = $handler;
@@ -172,14 +170,14 @@ class cLog {
     /**
      * Unsets a specific shortcut handler.
      *
-     * @param    string    $shortcut    Name of the shortcut
-     *
-     * @return    boolean
+     * @param string $shortcut Name of the shortcut
+     * @throws cInvalidArgumentException if the given shortcut handler does not
+     *         exist
+     * @return boolean
      */
     public function unsetShortcutHandler($shortcut) {
         if (!in_array($shortcut, $this->_shortcutHandlers)) {
-            cWarning(__FILE__, __LINE__, "The specified shortcut handler does not exist.");
-            return false;
+            throw new cInvalidArgumentException('The specified shortcut handler does not exist.');
         }
 
         unset($this->_shortcutHandlers[$shortcut]);
@@ -269,51 +267,48 @@ class cLog {
     /**
      * Adds a new priority to the log.
      *
-     * @param    string    $name    Name of the log priority
-     * @param    int        $value    Index value of the log priority
-     *
-     * @return    void
+     * @param string $name Name of the log priority
+     * @param int $value Index value of the log priority
+     * @throws cInvalidArgumentException if the given name is empty, already
+     *         exists or the value already exists
+     * @return void
      */
     public function addPriority($name, $value) {
         if ($name == '') {
-            cWarning(__FILE__, __LINE__, "Priority name must be not empty.");
-            return false;
+            throw new cInvalidArgumentException('Priority name must not be empty.');
         }
 
         if (in_array($name, $this->_priorities)) {
-            cWarning(__FILE__, __LINE__, "The given priority name still exists.");
-            return false;
+            throw new cInvalidArgumentException('The given priority name already exists.');
         }
 
         if (array_key_exists($value, $this->_priorities)) {
-            cWarning(__FILE__, __LINE__, "The priority value still exists.");
-            return false;
+            throw new cInvalidArgumentException('The priority value already exists.');
         }
 
         $this->_priorities[$value] = $name;
     }
 
     /**
-     * Removes a priority from log. Default properties can not be removed.
+     * Removes a priority from log.
+     * Default properties can not be removed.
      *
-     * @param    string    $name    Name of the log priority to remove
-     *
-     * @return    void
+     * @param string $name Name of the log priority to remove
+     * @throws cInvalidArgumentException if the given name is empty, does not
+     *         exist or is a default priority
+     * @return void
      */
     public function removePriority($name) {
         if ($name == '') {
-            cWarning(__FILE__, __LINE__, "Priority name must be not empty.");
-            return false;
+            throw new cInvalidArgumentException('Priority name must not be empty.');
         }
 
         if (in_array($name, $this->_priorities) == false) {
-            cWarning(__FILE__, __LINE__, "Priority name does not exist.");
-            return false;
+            throw new cInvalidArgumentException('Priority name does not exist.');
         }
 
         if (in_array($name, $this->_defaultPriorities) == true) {
-            cWarning(__FILE__, __LINE__, "Removing default priorities is not allowed.");
-            return false;
+            throw new cInvalidArgumentException('Removing default priorities is not allowed.');
         }
 
         $priorityIndex = array_search($name, $this->_priorities);
@@ -326,15 +321,14 @@ class cLog {
      *
      * @param    string    $method        Name of the method
      * @param    array    $arguments    Array with the method arguments
-     *
+     * @throws cInvalidArgumentException if the given priority is not supported
      * @return    void
      */
     public function __call($method, $arguments) {
         $priorityName = strtoupper($method);
 
         if (in_array($priorityName, $this->_priorities) == false) {
-            cWarning(__FILE__, __LINE__, "The given priority " . $priorityName . " is not supported.");
-            return false;
+            throw new cInvalidArgumentException('The given priority ' . $priorityName . ' is not supported.');
         }
 
         $priorityIndex = array_search($priorityName, $this->_priorities);

@@ -175,6 +175,9 @@ class cModuleFileTranslation extends cModuleHandler {
     /**
      * Save the hole translations for a idmod and lang.
      * For the upgrade/setup.
+     *
+     * @throws cException if the translation array can not be saved
+     * @return void
      */
     public function saveTranslations() {
         $db = cRegistry::getDb();
@@ -200,7 +203,7 @@ class cModuleFileTranslation extends cModuleHandler {
 
             if (count($translations) != 0) {
                 if ($this->saveTranslationArray($translations) == false) {
-                    cWarning(__FILE__, __LINE__, 'Could not save translate idmod=' . $this->_idmod . ' !');
+                    throw new cException('Could not save translate idmod=' . $this->_idmod . ' !');
                 }
             }
         }

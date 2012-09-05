@@ -82,7 +82,11 @@ require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/cla
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.security.php');
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.requestvalidator.php');
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.filehandler.php');
-$oRequestValidator = new cRequestValidator(realpath(dirname(__FILE__) . '/../..') . '/data/config/' . CONTENIDO_ENVIRONMENT);
+try {
+    $oRequestValidator = new cRequestValidator(realpath(dirname(__FILE__) . '/../..') . '/data/config/' . CONTENIDO_ENVIRONMENT);
+} catch (cFileNotFoundException $e) {
+    die($e->getMessage());
+}
 
 // "Workaround" for register_globals=off settings.
 require_once(dirname(__FILE__) . '/globals_off.inc.php');

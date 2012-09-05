@@ -132,11 +132,12 @@ class cApiCecHook {
      * Temporaly setting of position in argument to return.
      *
      * @param int $pos Position, feasible value greater 0
+     * @throws cInvalidArgumentException if the given position is less than 1
      * @return void
      */
     public static function setReturnArgumentPos($pos) {
         if ((int) $pos < 1) {
-            throw new Exception('Invalid return position');
+            throw new cInvalidArgumentException('Return position has to be greater or equal than 1.');
         }
         self::$_returnArgumentPos = (int) $pos;
     }

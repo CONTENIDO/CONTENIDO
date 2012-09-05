@@ -171,12 +171,12 @@ class cAutoload {
      * Tries to include the file of passed classname.
      *
      * @param   string  $className  The classname
+     * @throws  cBadMethodCallException If autoloader wasn't initialized before
      * @return  void
-     * @throws  Exception  If autoloader wasn't initialized before
      */
     public static function autoload($className) {
         if (self::$_initialized !== true) {
-            throw new Exception("Autoloader has to be initialized by calling method initialize()");
+            throw new cBadMethodCallException("Autoloader has to be initialized by calling method initialize()");
         }
 
         if (isset(self::$_loadedClasses[$className])) {

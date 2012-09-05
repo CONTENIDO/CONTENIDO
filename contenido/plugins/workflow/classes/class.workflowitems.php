@@ -230,6 +230,8 @@ class WorkflowItem extends Item {
      * Overridden setField function.
      * @param string $field Void field since we override the usual setField function
      * @param string $value Void field since we override the usual setField function
+     * @throws cInvalidArgumentException if the field is idsequence, idworkflow or position
+     * @return void
      */
     public function setField($field, $value, $safe = true) {
         if ($this->virgin == true) {
@@ -238,15 +240,15 @@ class WorkflowItem extends Item {
         }
 
         if ($field == "idsequence") {
-            die("You can't set the idsequence field using this method. Use 'create' in the WorkflowItems class.");
+            throw new cInvalidArgumentException("You can't set the idsequence field using this method. Use 'create' in the WorkflowItems class.");
         }
 
         if ($field == "idworkflow") {
-            die("You can't set the workflow ID using this method. Use 'create' in the WorkflowItems class!");
+            throw new cInvalidArgumentException("You can't set the workflow ID using this method. Use 'create' in the WorkflowItems class!");
         }
 
         if ($field == "position") {
-            die("You can't set the position ID using this method. Use 'create' or 'swap' to create or move items!");
+            throw new cInvalidArgumentException("You can't set the position ID using this method. Use 'create' or 'swap' to create or move items!");
         }
 
         if ($field == "idtask" && $value != 0) {

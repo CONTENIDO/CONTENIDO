@@ -43,8 +43,8 @@ class cDebug {
     /**
      * Returns instance of debugger. If not defined, it returns the debugger from the current system settings.
      * @param  string  $sType  The debugger to get, empty string to get debugger defined in system settings
+     * @throws cInvalidArgumentException If type of debugger is unknown
      * @return cDebugInterface
-     * @throws  InvalidArgumentException  If type of debugger is unknown
      */
     public static function getDebugger($sType = '') {
         if (empty($sType)) {
@@ -72,7 +72,7 @@ class cDebug {
                 $oDebugger = cDebugDevNull::getInstance();
                 break;
             default:
-                throw new InvalidArgumentException('This type of debugger is unknown to cDebug: ' . $sType);
+                throw new cInvalidArgumentException('This type of debugger is unknown to cDebug: ' . $sType);
                 break;
         }
         return $oDebugger;

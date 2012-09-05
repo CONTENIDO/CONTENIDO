@@ -43,7 +43,7 @@ try {
     $tpl->set('s', 'title', mi18n("Zur CONTENIDO Homepage"));
     $tpl->set('s', 'headline', $sHeadline);
     $tpl->generate('templates/header.html');
-} catch (InvalidArgumentException $eI) {
+} catch (cInvalidArgumentException $eI) {
     echo 'Some error occured: ' . $eI->getMessage() . ': ' . $eI->getFile() . ' at line ' . $eI->getLine() . ' (' . $eI->getTraceAsString() . ')';
 } catch (Exception $e) {
     echo 'Some error occured: ' . $e->getMessage() . ': ' . $e->getFile() . ' at line ' . $e->getLine() . ' (' . $e->getTraceAsString() . ')';

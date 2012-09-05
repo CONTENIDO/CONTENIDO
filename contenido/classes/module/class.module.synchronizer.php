@@ -102,7 +102,6 @@ class cModuleSynchronizer extends cModuleHandler {
      * @param string $dirNameNew new dir name
      * @param int $client idclient
      * @return boolean true if succes (rename file and directories)
-     * @throws Exception if we could not rename the old dir name
      */
     private function _renameFileAndDir($dir, $dirNameOld, $dirNameNew, $client) {
         if (rename($dir . $dirNameOld, $dir . $dirNameNew) == FALSE) {

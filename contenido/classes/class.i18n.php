@@ -83,6 +83,7 @@ class cI18n {
      *
      * @param  string  $string  The string to translate
      * @param  string  $domain  The domain to look up
+     * @throws cException if this is the backend mode and the $belang is not set
      * @return string  Returns the translation
      */
     public static function translate($string, $domain = 'contenido') {
@@ -92,14 +93,10 @@ class cI18n {
         if (!self::$_i18nData['language']) {
             if (!isset($belang)) {
                 if ($contenido) {
-                    // This is backend, we should trigger an error message here
-                    $stack = @debug_backtrace();
-                    $file = $stack[0]['file'];
-                    $line = $stack[0]['line'];
-                    cWarning($file, $line, 'init $belang is not set');
+                    throw new cException('init $belang is not set');
                 }
-
-                $belang = false; // Needed - otherwise this won't work
+                // Needed - otherwise this won't work
+                $belang = false;
             }
 
             self::init($cfg['path']['contenido_locale'], $belang);

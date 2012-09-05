@@ -18,11 +18,6 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2008-02-19
- *   $Id: cUriBuilderCustomPath.class.php 2755 2012-07-25 20:10:28Z xmurrix $:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -78,24 +73,23 @@ class cUriBuilderCustomPath extends cUriBuilder
      * @param  bool  $bUseAbsolutePath
      * @param  array  $aConfig  If not set, will use UriBuilderConfig::getConfig()
      * @return void
-     * @throws InvalidArgumentException
-     * @throws Exception
+     * @throws cInvalidArgumentException
      * @todo Somehow get around using prCreateURLNameLocationString()
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array())
     {
         if (!isset($aParams['idcat'])) {
-            throw new InvalidArgumentException('$aParams[idcat] must be set!');
+            throw new cInvalidArgumentException('$aParams[idcat] must be set!');
         }
         if (!isset($aParams['level'])) {
-            //throw new InvalidArgumentException('$aParams[level] must be set! Setting it to 0 will create complete path.');
+            //throw new cInvalidArgumentException('$aParams[level] must be set! Setting it to 0 will create complete path.');
             $aParams['level'] = '1';
         }
         if (!isset($aParams['lang'])) {
-            throw new InvalidArgumentException('$aParams[lang] must be set!');
+            throw new cInvalidArgumentException('$aParams[lang] must be set!');
         }
         if (sizeof($aParams) <= 3) {
-            throw new InvalidArgumentException('$aParams must have at least one custom entry!');
+            throw new cInvalidArgumentException('$aParams must have at least one custom entry!');
         }
         // if no config passed or not all parameters available, use default config
         if (sizeof($aConfig) == 0 || !isset($aConfig['prefix']) || !isset($aConfig['suffix']) || !isset($aConfig['separator'])) {
@@ -132,5 +126,3 @@ class cUriBuilderCustomPath extends cUriBuilder
         $this->sUrl .= $this->aConfig['suffix'];
     }
 }
-
-?>

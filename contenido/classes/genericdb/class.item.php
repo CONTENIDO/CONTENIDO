@@ -101,6 +101,7 @@ abstract class Item extends cItemBaseAbstract {
      * @param   string  $sField  Specifies the field
      * @param   mixed   $mValue  Specifies the value
      * @param   bool    $bSafe   Use inFilter or not
+     * @throws cException if more than one item has been found matching the given arguments
      * @return  bool    True if the load was successful
      */
     public function loadBy($sField, $mValue, $bSafe = true) {
@@ -132,9 +133,9 @@ abstract class Item extends cItemBaseAbstract {
         $this->_lastSQL = $sql;
 
         if ($this->db->num_rows() > 1) {
-            $sMsg = "Tried to load a single line with field $sField and value $mValue from "
+            $msg = "Tried to load a single line with field $sField and value $mValue from "
                     . $this->table . " but found more than one row";
-            cWarning(__FILE__, __LINE__, $sMsg);
+            throw new cException($msg);
         }
 
         // Advance to the next record, return false if nothing found
@@ -151,6 +152,7 @@ abstract class Item extends cItemBaseAbstract {
      *
      * @param array $aAttributes associative array with field / value pairs
      * @param bool $bSafe Use inFilter or not
+     * @throws cException if more than one item could be found matching the given arguments
      * @return bool True if the load was successful
      */
     public function loadByMany(array $aAttributes, $bSafe = true) {
@@ -194,8 +196,8 @@ abstract class Item extends cItemBaseAbstract {
         $this->_lastSQL = $sql;
 
         if ($this->db->num_rows() > 1) {
-            $sMsg = 'Tried to load a single line with fields ' . print_r(array_keys($aAttributes), true) . ' and values ' . print_r(array_values($aAttributes), true) . ' from ' . $this->table . ' but found more than one row';
-            cWarning(__FILE__, __LINE__, $sMsg);
+            $msg = 'Tried to load a single line with fields ' . print_r(array_keys($aAttributes), true) . ' and values ' . print_r(array_values($aAttributes), true) . ' from ' . $this->table . ' but found more than one row';
+            throw new cException($msg);
         }
 
         // Advance to the next record, return false if nothing found
@@ -214,6 +216,7 @@ abstract class Item extends cItemBaseAbstract {
      * NOTE: Passed value has to be escaped before. This will not be done by this function.
      *
      * @param   string  $sWhere  The where clause like 'idart = 123 AND idlang = 1'
+     * @throws cException if more than one item could be found matching the given where clause
      * @return  bool    True if the load was successful
      */
     protected function _loadByWhereClause($sWhere) {
@@ -227,9 +230,9 @@ abstract class Item extends cItemBaseAbstract {
         $this->_lastSQL = $sql;
 
         if ($this->db->num_rows() > 1) {
-            $sMsg = "Tried to load a single line with where clause '" . $sWhere . "' from "
+            $msg = "Tried to load a single line with where clause '" . $sWhere . "' from "
                     . $this->table . " but found more than one row";
-            cWarning(__FILE__, __LINE__, $sMsg);
+            throw new cException($msg);
         }
 
         // Advance to the next record, return false if nothing found

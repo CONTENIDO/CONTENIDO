@@ -318,7 +318,7 @@ class cVersion {
         $bCreate = $this->createNewXml($this->getFilePath(), $sRevisionName . '.xml');
 
         if ($bCreate == false) {
-            cError(__FILE__, __LINE__, 'Could not create new version.');
+            throw new cException('Could not create new version.');
         }
 
         return $bCreate;

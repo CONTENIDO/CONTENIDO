@@ -56,8 +56,7 @@ class CT_Sql {
     public $db;
 
     public function ac_start() {
-        $name = $this->database_class;
-        $this->db = new $name;
+        $this->db = cRegistry::getDb();
     }
 
     public function ac_get_lock() {

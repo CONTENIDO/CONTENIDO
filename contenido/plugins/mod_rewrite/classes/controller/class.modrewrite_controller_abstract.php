@@ -28,8 +28,9 @@
  *
  */
 
-
-defined('CON_FRAMEWORK') or die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
 
 
 /**
@@ -204,6 +205,7 @@ abstract class ModRewrite_ControllerAbstract
      * Renders template by replacing all view variables in template.
      * @param   string  Either full path and name of template file or a template string.
      *                  If not passed, previous set template will be used.
+     * @throws cException if no template is set
      * @return  string
      */
     public function render($template = null)
@@ -213,7 +215,7 @@ abstract class ModRewrite_ControllerAbstract
         }
 
         if ($template == null) {
-            throw new Exception('Missing template to render.');
+            throw new cException('Missing template to render.');
         }
 
         $oTpl = new cTemplate();

@@ -11,19 +11,7 @@
  * @version 1.0.0
  * @author Holger Librenz
  * @copyright four for business AG
- *
- * {@internal
- *  created 2008-11-16
- *
- * $Id$
- * }}
  */
-
-// include interface...
-cInclude('interfaces', 'interface.conuser.php');
-
-// include exception
-cInclude('exceptions', 'exception.conuser.php');
 
 /**
  * This abstract class implements interface iConUser and should

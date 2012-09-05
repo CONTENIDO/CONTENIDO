@@ -43,7 +43,7 @@ try {
             }
             try {
                 $tpl->set('d', 'url', cUri::getInstance()->build($aParams));
-            } catch (InvalidArgumentException $e) {
+            } catch (cInvalidArgumentException $e) {
                 $tpl->set('d', 'url', 'front_content.php?idcat='.$oContenidoCategory->getIdCat());
             }
             $tpl->set('d', 'title', $oContenidoCategory->getCategoryLanguage()->getName());

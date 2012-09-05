@@ -1319,8 +1319,13 @@ function endAndLogTiming($uuid) {
     cDebug::out('calling function ' . $_timings[$uuid]['function'] . '(' . $parameterString . ') took ' . $timeSpent . ' seconds');
 }
 
+/**
+ * @deprecated 2012-09-04 Use cWarning or the like.
+ */
 function notifyOnError($errortitle, $errormessage) {
     global $cfg;
+
+    cDeprecated('Use cWarning or the like.');
 
     $notifyFile = $cfg['path']['contenido_logs'] . 'notify.txt';
 

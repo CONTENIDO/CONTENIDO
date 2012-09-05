@@ -29,7 +29,9 @@
  */
 
 
-defined('CON_FRAMEWORK') or die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
 
 
 plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_controller_abstract.php');

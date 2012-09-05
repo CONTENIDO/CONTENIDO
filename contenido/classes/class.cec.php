@@ -22,11 +22,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  * @since file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *    created unknown
- *    $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -126,13 +121,13 @@ class cApiCecRegistry {
      * Unregisters a chain
      *
      * @param string $sChainName
+     * @throws cInvalidArgumentException if the given chain does not exist
      * @return void
      */
     public function unregisterChain($sChainName) {
         // Check if the chain exists
         if (!$this->isChainRegistered($sChainName)) {
-            cWarning(__FILE__, __LINE__, "Chain " . $sChainName . " doesn't exist.");
-            return false;
+            throw new cInvalidArgumentException('Chain ' . $sChainName . ' doesn\'t exist.');
         }
 
         $functions = array();
@@ -193,24 +188,22 @@ class cApiCecRegistry {
      *        - "FunctionName" to invoke a function.
      *        NOTE: Necessary files must be manually included before or by
      *        defined autoloader.
+     * @throws cInvalidArgumentException if the given chain is not registered or the given callback is not callable
      * @return bool True on success, otherwhise false
      */
     public function addChainFunction($sChainName, $sFunctionName) {
         // Check if the chain exists
         if (!$this->isChainRegistered($sChainName)) {
-            cWarning(__FILE__, __LINE__, "Chain " . $sChainName . " doesn't exist.");
-            return false;
+            throw new cInvalidArgumentException('Chain ' . $sChainName . ' doesn\'t exist.');
         }
 
         if (strpos($sFunctionName, '->') > 0) {
             // chain function is a method of a object instance
             list($class, $method) = explode('->', $sFunctionName);
             if (!class_exists($class)) {
-                cWarning(__FILE__, __LINE__, "Class " . $class . " doesn't exist, can't add " . $sFunctionName . " to chain " . $sChainName);
-                return false;
+                throw new cInvalidArgumentException('Class ' . $class . ' doesn\'t exist, can\'t add ' . $sFunctionName . ' to chain ' . $sChainName);
             } elseif (!method_exists($class, $method)) {
-                cWarning(__FILE__, __LINE__, "Method " . $method . " in class " . $class . " doesn't exist, can't add " . $sFunctionName . " to chain " . $sChainName);
-                return false;
+                throw new cInvalidArgumentException('Method ' . $method . ' in class ' . $class . ' doesn\'t exist, can\'t add ' . $sFunctionName . ' to chain ' . $sChainName);
             }
             $call = array(
                 new $class(),
@@ -220,31 +213,27 @@ class cApiCecRegistry {
             // chain function is static method of a object
             list($class, $method) = explode('::', $sFunctionName);
             if (!class_exists($class)) {
-                cWarning(__FILE__, __LINE__, "Class " . $class . " doesn't exist, can't add " . $sFunctionName . " to chain " . $sChainName);
-                return false;
+                throw new cInvalidArgumentException('Class ' . $class . ' doesn\'t exist, can\'t add ' . $sFunctionName . ' to chain ' . $sChainName);
             } elseif (!method_exists($class, $method)) {
-                cWarning(__FILE__, __LINE__, "Method " . $method . " in class " . $class . " doesn't exist, can't add " . $sFunctionName . " to chain " . $sChainName);
-                return false;
+                throw new cInvalidArgumentException('Method ' . $method . ' in class ' . $class . ' doesn\'t exist, can\'t add ' . $sFunctionName . ' to chain ' . $sChainName);
             }
             $call = array($class, $method);
         } else {
             // chain function is a function
             if (!function_exists($sFunctionName)) {
-                cWarning(__FILE__, __LINE__, "Function " . $sFunctionName . " doesn't exist, can't add to chain " . $sChainName);
-                return false;
+                throw new cInvalidArgumentException('Function ' . $sFunctionName . ' doesn\'t exist, can\'t add to chain ' . $sChainName);
             }
             $call = $sFunctionName;
         }
 
         // Last check if the callback is callable
         if (!is_callable($call)) {
-            cWarning(__FILE__, __LINE__, "Function " . $sFunctionName . " isn't callable, can't add to chain " . $sChainName);
-            return false;
+            throw new cInvalidArgumentException('Function ' . $sFunctionName . ' isn\'t callable, can\'t add to chain ' . $sChainName);
         }
 
         $oChainItem = new cApiCecChainItem($sChainName, $sFunctionName, $this->_aChains[$sChainName]['parameters']);
         $oChainItem->setCallback($call);
-        array_push($this->_aChains[$sChainName]['functions'], $oChainItem);
+        $this->_aChains[$sChainName]['functions'][] = $oChainItem;
 
         return true;
     }
@@ -456,13 +445,14 @@ class cApiCecChainItem {
     /**
      * Sets the callback
      *
+     * @throws cInvalidArgumentException if the given callback is not a string or an array
      * @return string array
      */
     public function setCallback($callback) {
         if (is_string($callback) || is_array($callback)) {
             $this->_mCallback = $callback;
         } else {
-            throw new Exception("Passed argument isn't as expected");
+            throw new cInvalidArgumentException("Callback has to be a string or an array.");
         }
     }
 

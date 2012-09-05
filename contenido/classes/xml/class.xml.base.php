@@ -47,12 +47,12 @@ abstract class cXmlBase {
     /**
      * Returns the encoding of the XML document.
      *
+     * @throws cException if there is no DOM document
      * @return string encoding
      */
     public function getEncoding() {
         if ($this->_dom === NULL) {
-            cWarning(__FILE__, __LINE__, 'Can not determine encoding: DOMDocument not found.');
-            return false;
+            throw new cException('Can not determine encoding: DOMDocument not found.');
         }
 
         return $this->_dom->xmlEncoding;
@@ -70,13 +70,12 @@ abstract class cXmlBase {
     /**
      * Initializes a new DOMXPath instance for DOMDocument.
      *
-     * @access protected
+     * @throws cException if there is no valid DOM document
      * @return void
      */
     protected function _initXpathInstance() {
         if (!($this->_dom instanceof DOMDocument)) {
-            cWarning(__FILE__, __LINE__, 'Can not initialize XPath instance: DOMDocument not found.');
-            return;
+            throw new cException('Can not initialize XPath instance: DOMDocument not found.');
         }
 
         $this->_xpath = new DOMXpath($this->_dom);
