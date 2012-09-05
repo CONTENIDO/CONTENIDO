@@ -1700,8 +1700,6 @@ contenido/plugins/linkchecker/templates/standard/template.linkchecker_test_error
 contenido/plugins/linkchecker/templates/standard/template.linkchecker_test_nothing.html -text
 contenido/plugins/linkchecker/templates/standard/template.linkchecker_whitelist.html -text
 contenido/plugins/linkchecker/templates/standard/template.linkchecker_whitelist_urls.html -text
-contenido/plugins/linkchecker/xml/._lang_de_DE.xml -text
-contenido/plugins/linkchecker/xml/._lang_en_EN.xml -text
 contenido/plugins/linkchecker/xml/lang_de_DE.xml -text
 contenido/plugins/linkchecker/xml/lang_en_EN.xml -text
 contenido/plugins/linkchecker/xml/lang_en_US.xml -text svneol=unset#text/plain
