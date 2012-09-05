@@ -8,102 +8,107 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-18 10:55+0200\n"
+"POT-Creation-Date: 2012-09-05 15:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: includes/config.plugin.php:59
+#: classes/class.content_allocation_article.php:112
+#: classes/class.content_allocation_treeview.php:226
+msgid "Category"
+msgstr ""
+
+#: classes/class.content_allocation_treeview.php:102
+#: classes/class.content_allocation_treeview.php:179
+msgid "Please enter a category name"
+msgstr ""
+
+#: classes/class.content_allocation_treeview.php:126
+msgid "New category"
+msgstr ""
+
+#: classes/class.content_allocation_treeview.php:128
+msgid "Rename category"
+msgstr ""
+
+#: classes/class.content_allocation_treeview.php:129
+msgid "Move category up"
+msgstr ""
+
+#: classes/class.content_allocation_treeview.php:130
+msgid "Move category down"
+msgstr ""
+
+#: classes/class.content_allocation_treeview.php:134
+msgid "Set category offline"
+msgstr ""
+
+#: classes/class.content_allocation_treeview.php:136
+msgid "Set category online"
+msgstr ""
+
+#: classes/class.content_allocation_treeview.php:140
+msgid "One or more subcategories exist, unable to delete"
+msgstr ""
+
+#: classes/class.content_allocation_treeview.php:143
+msgid "Delete category"
+msgstr ""
+
+#: classes/class.content_allocation_treeview.php:143
+msgid "Are you sure to delete the following category"
+msgstr ""
+
+#: classes/class.content_allocation_treeview.php:227
+msgid "Actions"
+msgstr ""
+
+#: includes/config.plugin.php:63
 msgid "Store tagging"
 msgstr ""
 
-#: includes/include.tagging_article.php:86
+#: includes/functions.chains.php:62
+msgid "Tagging"
+msgstr ""
+
+#: includes/include.contentallocation_article.php:60
+msgid "You are here"
+msgstr ""
+
+#: includes/include.contentallocation_article.php:69
 msgid "There is no tagging tree."
 msgstr ""
 
-#: includes/include.tagging_article.php:111
+#: includes/include.contentallocation_article.php:95
 msgid "Remove all"
 msgstr ""
 
-#: includes/include.tagging_article.php:112
+#: includes/include.contentallocation_article.php:96
 msgid "Remove"
 msgstr ""
 
-#: includes/include.right_bottom.php:70
+#: includes/include.right_bottom.php:69
 #, php-format
 msgid "New Category %s successfully stored!"
 msgstr ""
 
-#: includes/include.right_bottom.php:78
+#: includes/include.right_bottom.php:74
 #, php-format
 msgid "Category %s successfully renamed!"
 msgstr ""
 
-#: includes/include.right_bottom.php:90
+#: includes/include.right_bottom.php:82
 msgid "Category successfully deleted!"
 msgstr ""
 
-#: includes/include.right_bottom.php:119 includes/include.right_bottom.php:142
+#: includes/include.right_bottom.php:108 includes/include.right_bottom.php:131
 msgid "Create new tree"
 msgstr ""
 
-#: includes/include.right_bottom.php:132
+#: includes/include.right_bottom.php:121
 msgid "Please enter a category name."
-msgstr ""
-
-#: includes/functions.chains.php:61
-msgid "Tagging"
-msgstr ""
-
-#: classes/class.tagging_treeview.php:100
-#: classes/class.tagging_treeview.php:176
-msgid "Please enter a category name"
-msgstr ""
-
-#: classes/class.tagging_treeview.php:124
-msgid "New category"
-msgstr ""
-
-#: classes/class.tagging_treeview.php:126
-msgid "Rename category"
-msgstr ""
-
-#: classes/class.tagging_treeview.php:127
-msgid "Move category up"
-msgstr ""
-
-#: classes/class.tagging_treeview.php:128
-msgid "Move category down"
-msgstr ""
-
-#: classes/class.tagging_treeview.php:132
-msgid "Set category offline"
-msgstr ""
-
-#: classes/class.tagging_treeview.php:134
-msgid "Set category online"
-msgstr ""
-
-#: classes/class.tagging_treeview.php:138
-msgid "One or more subcategories exist, unable to delete"
-msgstr ""
-
-#: classes/class.tagging_treeview.php:140
-msgid "Delete category"
-msgstr ""
-
-#: classes/class.tagging_treeview.php:140
-msgid "Are you sure to delete the following category"
-msgstr ""
-
-#: classes/class.tagging_treeview.php:223
-#: classes/class.tagging_article.php:107
-msgid "Category"
-msgstr ""
-
-#: classes/class.tagging_treeview.php:224
-msgid "Actions"
 msgstr ""

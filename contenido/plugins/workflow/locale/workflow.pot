@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-28 16:44+0200\n"
+"POT-Creation-Date: 2012-09-05 15:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,17 +50,17 @@ msgid "Revise article"
 msgstr ""
 
 #: classes/class.workflowallocation.php:107
-#: classes/class.workflowallocation.php:206
+#: classes/class.workflowallocation.php:208
 msgid "Category already has a workflow assigned"
 msgstr ""
 
 #: classes/class.workflowallocation.php:115
-#: classes/class.workflowallocation.php:184
-#: classes/class.workflowitems.php:277
+#: classes/class.workflowallocation.php:186
+#: classes/class.workflowitems.php:279
 msgid "Workflow doesn't exist"
 msgstr ""
 
-#: classes/class.workflowallocation.php:215
+#: classes/class.workflowallocation.php:217
 msgid "Category doesn't exist, assignment failed"
 msgstr ""
 
@@ -92,15 +92,15 @@ msgstr ""
 msgid "Can't add item to workflow: Workflow doesn't exist"
 msgstr ""
 
-#: classes/class.workflowitems.php:236
+#: classes/class.workflowitems.php:238
 msgid "No item loaded"
 msgstr ""
 
-#: classes/class.workflowitems.php:256
+#: classes/class.workflowitems.php:258
 msgid "Requested task doesn't exist, can't assign"
 msgstr ""
 
-#: classes/class.workflowitems.php:284
+#: classes/class.workflowitems.php:286
 msgid "Position in this workflow already exists."
 msgstr ""
 
@@ -108,7 +108,7 @@ msgstr ""
 msgid "Workflow item doesn't exist. Can't create entry."
 msgstr ""
 
-#: classes/class.workflowusersequence.php:215
+#: classes/class.workflowusersequence.php:217
 msgid "Can't set user_id: User or group doesn't exist"
 msgstr ""
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-30 13:26+0200\n"
-"PO-Revision-Date: 2012-08-30 13:26+0100\n"
+"POT-Creation-Date: 2012-09-05 17:37+0200\n"
+"PO-Revision-Date: 2012-09-05 17:38+0100\n"
 "Last-Translator: \n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -73,9 +73,9 @@ msgstr ""
 #: includes/include.pretplcfg_edit_form.php:70
 #: includes/include.tplcfg_edit_form.php:271
 #: templates/standard/template.mycontenido_lastarticles.html:67
-#: templates/standard/template.str_overview.html:322
-#: templates/standard/template.str_overview.html:405
-#: xml/navigation.xml:48
+#: templates/standard/template.str_overview.html:333
+#: templates/standard/template.str_overview.html:417
+#: xml/navigation.xml:33
 msgid "Template"
 msgstr ""
 
@@ -84,8 +84,8 @@ msgstr ""
 #: includes/include.frontend.left_top.php:149
 #: includes/include.mycontenido.tasks.php:256
 #: includes/include.upl_files_overview.php:464
-#: templates/standard/template.str_overview.html:325
-#: templates/standard/template.str_overview.html:383
+#: templates/standard/template.str_overview.html:336
+#: templates/standard/template.str_overview.html:395
 msgid "Actions"
 msgstr ""
 
@@ -111,20 +111,20 @@ msgstr ""
 #: backend_search.php:695
 #: includes/include.client_artspec.php:133
 #: includes/include.con_art_overview.php:536
-#: includes/include.str_overview.php:682
+#: includes/include.str_overview.php:683
 #: scripts/langref.php:8
-#: templates/standard/template.str_overview.html:393
+#: templates/standard/template.str_overview.html:405
 msgid "Make offline"
 msgstr ""
 
 #: backend_search.php:699
 #: includes/include.client_artspec.php:130
 #: includes/include.con_art_overview.php:543
-#: includes/include.str_overview.php:684
-#: includes/include.str_overview.php:901
-#: includes/include.str_overview.php:903
+#: includes/include.str_overview.php:685
+#: includes/include.str_overview.php:902
+#: includes/include.str_overview.php:904
 #: scripts/langref.php:9
-#: templates/standard/template.str_overview.html:394
+#: templates/standard/template.str_overview.html:406
 msgid "Make online"
 msgstr ""
 
@@ -225,12 +225,12 @@ msgstr ""
 #: includes/include.rights_con.php:73
 #: includes/include.rights_str.php:73
 #: templates/standard/template.mycontenido_lastarticles.html:64
-#: templates/standard/template.str_overview.html:216
-#: templates/standard/template.str_overview.html:316
-#: templates/standard/template.str_overview.html:386
+#: templates/standard/template.str_overview.html:227
+#: templates/standard/template.str_overview.html:327
+#: templates/standard/template.str_overview.html:398
 #: templates/standard/template.symbolhelp.html:21
 #: templates/standard/template.symbolhelp.html:166
-#: xml/navigation.xml:25
+#: xml/navigation.xml:18
 msgid "Category"
 msgstr ""
 
@@ -245,7 +245,7 @@ msgstr ""
 
 #: classes/class.ajax.php:144
 #: classes/class.ajax.php:160
-#: classes/module/class.module.template.handler.php:460
+#: classes/module/class.module.template.handler.php:462
 #: includes/include.clientsettings.php:93
 #: includes/include.clientsettings.php:170
 #: includes/include.html_tpl_edit_form.php:240
@@ -276,11 +276,11 @@ msgstr ""
 msgid "idart"
 msgstr ""
 
-#: classes/class.filehandler.php:414
+#: classes/class.filehandler.php:422
 msgid "Wrong file name."
 msgstr ""
 
-#: classes/class.filehandler.php:427
+#: classes/class.filehandler.php:435
 msgid "Please insert file name."
 msgstr ""
 
@@ -715,14 +715,14 @@ msgid "Directory"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:803
-#: classes/module/class.module.template.handler.php:459
+#: classes/module/class.module.template.handler.php:461
 #: includes/include.mod_edit_form.php:403
 #: includes/include.mod_edit_form.php:405
 #: includes/include.mod_import_export.php:127
 #: includes/include.mod_import_export.php:129
-#: xml/navigation.xml:61
-#: xml/navigation.xml:66
-#: xml/navigation.xml:71
+#: xml/navigation.xml:42
+#: xml/navigation.xml:45
+#: xml/navigation.xml:48
 msgid "File"
 msgstr ""
 
@@ -741,7 +741,7 @@ msgid "Image settings"
 msgstr ""
 
 #: classes/content_types/class.content.type.imgeditor.php:270
-#: xml/navigation.xml:21
+#: xml/navigation.xml:16
 msgid "Meta"
 msgstr ""
 
@@ -818,8 +818,8 @@ msgstr ""
 #: includes/include.upl_search_results.php:171
 #: includes/include.upl_search_results.php:174
 #: includes/include.upl_search_results.php:176
-#: templates/standard/template.upl_files_upload.html:30
-#: templates/standard/template.upl_files_upload.html:67
+#: templates/standard/template.upl_files_upload.html:36
+#: templates/standard/template.upl_files_upload.html:79
 msgid "Path"
 msgstr ""
 
@@ -905,8 +905,8 @@ msgstr ""
 #: classes/content_types/class.content.type.teaser.php:734
 #: classes/content_types/class.content.type.teaser.php:766
 #: classes/content_types/class.content.type.teaser.php:791
-#: includes/functions.general.php:776
-#: includes/functions.general.php:816
+#: includes/functions.general.php:793
+#: includes/functions.general.php:833
 #: includes/include.CMS_LINK.php:221
 #: includes/include.CMS_LINK.php:243
 #: includes/include.CMS_LINK.php:264
@@ -1006,109 +1006,109 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:148
-#: includes/functions.general.php:133
+#: classes/datatypes/class.datatype.datetime.php:141
+#: includes/functions.general.php:136
 msgid "January"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:149
-#: includes/functions.general.php:136
+#: classes/datatypes/class.datatype.datetime.php:142
+#: includes/functions.general.php:139
 msgid "February"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:150
-#: includes/functions.general.php:139
+#: classes/datatypes/class.datatype.datetime.php:143
+#: includes/functions.general.php:142
 msgid "March"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:151
-#: includes/functions.general.php:142
+#: classes/datatypes/class.datatype.datetime.php:144
+#: includes/functions.general.php:145
 msgid "April"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:152
-#: includes/functions.general.php:145
+#: classes/datatypes/class.datatype.datetime.php:145
+#: includes/functions.general.php:148
 msgid "May"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:153
-#: includes/functions.general.php:148
+#: classes/datatypes/class.datatype.datetime.php:146
+#: includes/functions.general.php:151
 msgid "June"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:154
-#: includes/functions.general.php:151
+#: classes/datatypes/class.datatype.datetime.php:147
+#: includes/functions.general.php:154
 msgid "July"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:155
-#: includes/functions.general.php:154
+#: classes/datatypes/class.datatype.datetime.php:148
+#: includes/functions.general.php:157
 msgid "August"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:156
-#: includes/functions.general.php:157
+#: classes/datatypes/class.datatype.datetime.php:149
+#: includes/functions.general.php:160
 msgid "September"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:157
-#: includes/functions.general.php:160
+#: classes/datatypes/class.datatype.datetime.php:150
+#: includes/functions.general.php:163
 msgid "October"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:158
-#: includes/functions.general.php:163
+#: classes/datatypes/class.datatype.datetime.php:151
+#: includes/functions.general.php:166
 msgid "November"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:159
-#: includes/functions.general.php:166
+#: classes/datatypes/class.datatype.datetime.php:152
+#: includes/functions.general.php:169
 msgid "December"
 msgstr ""
 
+#: classes/datatypes/class.datatype.datetime.php:159
 #: classes/datatypes/class.datatype.datetime.php:166
-#: classes/datatypes/class.datatype.datetime.php:173
-#: includes/functions.general.php:198
+#: includes/functions.general.php:201
 msgid "Sunday"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:167
-#: includes/functions.general.php:180
+#: classes/datatypes/class.datatype.datetime.php:160
+#: includes/functions.general.php:183
 msgid "Monday"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:168
-#: includes/functions.general.php:183
+#: classes/datatypes/class.datatype.datetime.php:161
+#: includes/functions.general.php:186
 msgid "Tuesday"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:169
-#: includes/functions.general.php:186
+#: classes/datatypes/class.datatype.datetime.php:162
+#: includes/functions.general.php:189
 msgid "Wednesday"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:170
-#: includes/functions.general.php:189
+#: classes/datatypes/class.datatype.datetime.php:163
+#: includes/functions.general.php:192
 msgid "Thursday"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:171
-#: includes/functions.general.php:192
+#: classes/datatypes/class.datatype.datetime.php:164
+#: includes/functions.general.php:195
 msgid "Friday"
 msgstr ""
 
-#: classes/datatypes/class.datatype.datetime.php:172
-#: includes/functions.general.php:195
+#: classes/datatypes/class.datatype.datetime.php:165
+#: includes/functions.general.php:198
 msgid "Saturday"
 msgstr ""
 
-#: classes/gui/class.navigation.php:261
-#: xml/navigation.xml:125
+#: classes/gui/class.navigation.php:265
+#: xml/navigation.xml:85
 msgid "My CONTENIDO"
 msgstr ""
 
-#: classes/gui/class.navigation.php:313
-#: classes/gui/class.navigation.php:316
+#: classes/gui/class.navigation.php:317
+#: classes/gui/class.navigation.php:320
 #: includes/include.logs.php:278
 #: includes/include.mail_log.left_bottom.php:31
 #: includes/include.system_purge.php:185
@@ -1117,14 +1117,14 @@ msgstr ""
 msgid "Client"
 msgstr ""
 
-#: classes/gui/class.navigation.php:335
+#: classes/gui/class.navigation.php:339
 #: includes/include.logs.php:281
 #: templates/standard/template.log_main.html:31
 #: templates/standard/template.symbolhelp.html:612
 msgid "User"
 msgstr ""
 
-#: classes/gui/class.navigation.php:406
+#: classes/gui/class.navigation.php:410
 msgid "-- No Language available --"
 msgstr ""
 
@@ -1141,7 +1141,7 @@ msgstr ""
 
 #: classes/gui/class.notification.php:111
 #: templates/standard/template.mycontenido_lastarticles.html:68
-#: xml/navigation.xml:135
+#: xml/navigation.xml:92
 msgid "Info"
 msgstr ""
 
@@ -1149,29 +1149,29 @@ msgstr ""
 msgid "Notification"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:42
-#: classes/gui/class.objectpager.php:44
+#: classes/gui/class.objectpager.php:45
+#: classes/gui/class.objectpager.php:47
 msgid "Paging"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:69
+#: classes/gui/class.objectpager.php:72
 msgid "First page"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:76
+#: classes/gui/class.objectpager.php:79
 msgid "Previous page"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:90
+#: classes/gui/class.objectpager.php:93
 #, php-format
 msgid "Page %s"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:106
+#: classes/gui/class.objectpager.php:109
 msgid "Next page"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:116
+#: classes/gui/class.objectpager.php:119
 msgid "Last page"
 msgstr ""
 
@@ -1184,33 +1184,33 @@ msgstr ""
 #: includes/include.grouprights_overview.php:106
 #: includes/include.rights_create.php:116
 #: includes/include.rights_overview.php:164
-#: includes/include.system_configuration.php:169
+#: includes/include.system_configuration.php:165
 #: templates/standard/template.grouprights_memberselect.html:93
-#: templates/standard/template.upl_files_upload.html:68
+#: templates/standard/template.upl_files_upload.html:80
 msgid "Save changes"
 msgstr ""
 
-#: classes/module/class.module.handler.php:441
-#: classes/module/class.module.handler.php:451
+#: classes/module/class.module.handler.php:443
+#: classes/module/class.module.handler.php:453
 msgid "Can't make file: "
 msgstr ""
 
 #: classes/module/class.module.synchronizer.php:63
-#: classes/module/class.module.synchronizer.php:153
-#: classes/module/class.module.synchronizer.php:161
+#: classes/module/class.module.synchronizer.php:152
+#: classes/module/class.module.synchronizer.php:160
 #, php-format
 msgid "Module %s successfull synchronized"
 msgstr ""
 
-#: classes/module/class.module.synchronizer.php:194
+#: classes/module/class.module.synchronizer.php:193
 msgid "Can't make module: "
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:218
+#: classes/module/class.module.template.handler.php:219
 msgid "Field of the file name is empty!"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:246
+#: classes/module/class.module.template.handler.php:247
 #: includes/include.frontend.group_edit.php:120
 #: includes/include.frontend.group_edit.php:160
 #: includes/include.frontend.group_rights.php:86
@@ -1226,26 +1226,26 @@ msgstr ""
 msgid "Saved changes successfully!"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:262
+#: classes/module/class.module.template.handler.php:264
 msgid "Rename of the file failed!"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:265
+#: classes/module/class.module.template.handler.php:267
 msgid "Renamed the template file successfully!"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:278
-#: classes/module/class.module.template.handler.php:281
+#: classes/module/class.module.template.handler.php:280
+#: classes/module/class.module.template.handler.php:283
 msgid "Created a new template file successfully!"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:295
+#: classes/module/class.module.template.handler.php:297
 msgid "Deleted the template file successfully!"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:340
-#: classes/module/class.module.template.handler.php:347
-#: classes/module/class.module.template.handler.php:353
+#: classes/module/class.module.template.handler.php:342
+#: classes/module/class.module.template.handler.php:349
+#: classes/module/class.module.template.handler.php:355
 #: includes/include.client_artspec.php:31
 #: includes/include.client_artspec.php:39
 #: includes/include.client_artspec.php:47
@@ -1267,7 +1267,7 @@ msgstr ""
 #: includes/include.html_tpl_history.php:57
 #: includes/include.js_edit_form.php:46
 #: includes/include.js_history.php:53
-#: includes/include.lang_edit.php:122
+#: includes/include.lang_edit.php:123
 #: includes/include.lay_edit_form.php:48
 #: includes/include.lay_edit_form.php:75
 #: includes/include.lay_edit_form.php:84
@@ -1296,14 +1296,14 @@ msgstr ""
 msgid "Permission denied"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:392
+#: classes/module/class.module.template.handler.php:394
 #: includes/include.html_tpl_edit_form.php:214
 #: includes/include.lay_edit_form.php:191
 #, php-format
 msgid "Tag '%s' %s has no end tag (start tag is on line %s char %s)"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:404
+#: classes/module/class.module.template.handler.php:406
 #: includes/include.html_tpl_edit_form.php:225
 #: includes/include.js_edit_form.php:190
 #: includes/include.mod_script.php:182
@@ -1312,16 +1312,16 @@ msgstr ""
 msgid "Edit file"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:430
+#: classes/module/class.module.template.handler.php:432
 msgid "Make new template file"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:444
+#: classes/module/class.module.template.handler.php:446
 msgid "New template file"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:457
-#: classes/module/class.module.template.handler.php:458
+#: classes/module/class.module.template.handler.php:459
+#: classes/module/class.module.template.handler.php:460
 #: includes/include.logs.php:282
 #: includes/include.mail_log.right_bottom.php:32
 #: templates/standard/template.log_main.html:35
@@ -1330,7 +1330,7 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:461
+#: classes/module/class.module.template.handler.php:463
 #: includes/include.html_tpl_edit_form.php:242
 #: includes/include.html_tpl_history.php:168
 #: includes/include.js_edit_form.php:207
@@ -1480,7 +1480,7 @@ msgid "Lost and found"
 msgstr ""
 
 #: includes/functions.con.php:1226
-#: includes/functions.str.php:983
+#: includes/functions.str.php:981
 #: includes/functions.tpl.php:429
 #, php-format
 msgid "%s (Copy)"
@@ -1677,194 +1677,194 @@ msgstr ""
 msgid "Error log successfully cleared!"
 msgstr ""
 
-#: includes/functions.upl.php:682
+#: includes/functions.upl.php:683
 msgid "OpenOffice.org Presentation"
 msgstr ""
 
-#: includes/functions.upl.php:683
+#: includes/functions.upl.php:684
 msgid "OpenOffice.org Presentation Template"
 msgstr ""
 
-#: includes/functions.upl.php:684
+#: includes/functions.upl.php:685
 msgid "Microsoft PowerPoint Screen Presentation"
 msgstr ""
 
-#: includes/functions.upl.php:685
-#: includes/functions.upl.php:687
+#: includes/functions.upl.php:686
+#: includes/functions.upl.php:688
 msgid "Microsoft PowerPoint Presentation Template"
 msgstr ""
 
-#: includes/functions.upl.php:686
+#: includes/functions.upl.php:687
 msgid "KDE KPresenter Document"
 msgstr ""
 
-#: includes/functions.upl.php:690
+#: includes/functions.upl.php:691
 msgid "Microsoft Word Document or regular text file"
 msgstr ""
 
-#: includes/functions.upl.php:691
+#: includes/functions.upl.php:692
 msgid "Microsoft Word Template"
 msgstr ""
 
-#: includes/functions.upl.php:692
+#: includes/functions.upl.php:693
 msgid "OpenOffice.org Text Document"
 msgstr ""
 
-#: includes/functions.upl.php:693
+#: includes/functions.upl.php:694
 msgid "OpenOffice.org Text Document Template"
 msgstr ""
 
-#: includes/functions.upl.php:694
+#: includes/functions.upl.php:695
 msgid "StarOffice 5.0 Text Document"
 msgstr ""
 
-#: includes/functions.upl.php:695
+#: includes/functions.upl.php:696
 msgid "KDE KWord Document"
 msgstr ""
 
-#: includes/functions.upl.php:698
+#: includes/functions.upl.php:699
 msgid "Microsoft Excel Worksheet"
 msgstr ""
 
-#: includes/functions.upl.php:699
+#: includes/functions.upl.php:700
 msgid "OpenOffice.org Table"
 msgstr ""
 
-#: includes/functions.upl.php:700
+#: includes/functions.upl.php:701
 msgid "OpenOffice.org Table Template"
 msgstr ""
 
-#: includes/functions.upl.php:701
+#: includes/functions.upl.php:702
 msgid "Microsoft Excel File"
 msgstr ""
 
-#: includes/functions.upl.php:702
+#: includes/functions.upl.php:703
 msgid "Microsoft Excel Template"
 msgstr ""
 
-#: includes/functions.upl.php:703
+#: includes/functions.upl.php:704
 msgid "Comma Seperated Value File"
 msgstr ""
 
-#: includes/functions.upl.php:704
+#: includes/functions.upl.php:705
 msgid "KDE KSpread Document"
 msgstr ""
 
-#: includes/functions.upl.php:705
+#: includes/functions.upl.php:706
 msgid "StarOffice 5.0 Table"
 msgstr ""
 
-#: includes/functions.upl.php:708
+#: includes/functions.upl.php:709
 msgid "Plain Text"
 msgstr ""
 
-#: includes/functions.upl.php:709
+#: includes/functions.upl.php:710
 msgid "Rich Text Format"
 msgstr ""
 
-#: includes/functions.upl.php:712
+#: includes/functions.upl.php:713
 msgid "GIF Image"
 msgstr ""
 
-#: includes/functions.upl.php:713
+#: includes/functions.upl.php:714
 msgid "PNG Image"
 msgstr ""
 
-#: includes/functions.upl.php:714
 #: includes/functions.upl.php:715
+#: includes/functions.upl.php:716
 msgid "JPEG Image"
 msgstr ""
 
-#: includes/functions.upl.php:716
+#: includes/functions.upl.php:717
 msgid "TIFF Image"
 msgstr ""
 
-#: includes/functions.upl.php:717
+#: includes/functions.upl.php:718
 msgid "Adobe Photoshop Image"
 msgstr ""
 
-#: includes/functions.upl.php:720
 #: includes/functions.upl.php:721
+#: includes/functions.upl.php:722
 msgid "Hypertext Markup Language Document"
 msgstr ""
 
-#: includes/functions.upl.php:722
+#: includes/functions.upl.php:723
 msgid "Cascading Style Sheets"
 msgstr ""
 
-#: includes/functions.upl.php:725
+#: includes/functions.upl.php:726
 msgid "LHA Archive"
 msgstr ""
 
-#: includes/functions.upl.php:726
+#: includes/functions.upl.php:727
 msgid "RAR Archive"
 msgstr ""
 
-#: includes/functions.upl.php:727
+#: includes/functions.upl.php:728
 msgid "ARJ Archive"
 msgstr ""
 
-#: includes/functions.upl.php:728
+#: includes/functions.upl.php:729
 msgid "bz2-compressed File"
 msgstr ""
 
-#: includes/functions.upl.php:729
+#: includes/functions.upl.php:730
 msgid "bzip-compressed File"
 msgstr ""
 
-#: includes/functions.upl.php:730
+#: includes/functions.upl.php:731
 msgid "ZIP Archive"
 msgstr ""
 
-#: includes/functions.upl.php:731
+#: includes/functions.upl.php:732
 msgid "TAR Archive"
 msgstr ""
 
-#: includes/functions.upl.php:732
+#: includes/functions.upl.php:733
 msgid "GZ Compressed File"
 msgstr ""
 
-#: includes/functions.upl.php:735
+#: includes/functions.upl.php:736
 msgid "C Program Code"
 msgstr ""
 
-#: includes/functions.upl.php:738
+#: includes/functions.upl.php:739
 msgid "C++ Program Code"
 msgstr ""
 
-#: includes/functions.upl.php:740
+#: includes/functions.upl.php:741
 msgid "C or C++ Program Header"
 msgstr ""
 
-#: includes/functions.upl.php:743
+#: includes/functions.upl.php:744
 msgid "PHP Program Code"
 msgstr ""
 
-#: includes/functions.upl.php:744
+#: includes/functions.upl.php:745
 msgid "PHP Source File"
 msgstr ""
 
-#: includes/functions.upl.php:746
+#: includes/functions.upl.php:747
 msgid "Adobe Acrobat Portable Document"
 msgstr ""
 
-#: includes/functions.upl.php:749
+#: includes/functions.upl.php:750
 msgid "QuickTime Movie"
 msgstr ""
 
-#: includes/functions.upl.php:750
+#: includes/functions.upl.php:751
 msgid "avi Movie"
 msgstr ""
 
-#: includes/functions.upl.php:752
+#: includes/functions.upl.php:753
 msgid "MPEG Movie"
 msgstr ""
 
-#: includes/functions.upl.php:753
+#: includes/functions.upl.php:754
 msgid "Windows Media Video"
 msgstr ""
 
-#: includes/functions.upl.php:755
+#: includes/functions.upl.php:756
 msgid "-File"
 msgstr ""
 
@@ -1935,11 +1935,10 @@ msgstr ""
 #: includes/include.systemsettings.php:85
 #: includes/include.systemsettings.php:88
 #: includes/include.upl_edit.php:60
-#: xml/navigation.xml:31
+#: xml/navigation.xml:22
+#: xml/navigation.xml:26
+#: xml/navigation.xml:30
 #: xml/navigation.xml:38
-#: xml/navigation.xml:39
-#: xml/navigation.xml:45
-#: xml/navigation.xml:55
 msgid "Edit"
 msgstr ""
 
@@ -2015,12 +2014,12 @@ msgstr ""
 #: includes/include.client_edit.php:139
 #: includes/include.grouprights.php:302
 #: includes/include.grouprights_overview.php:70
-#: includes/include.lang_edit.php:129
+#: includes/include.lang_edit.php:130
 #: includes/include.mycontenido_settings.php:67
 #: includes/include.mycontenido_settings.php:105
 #: includes/include.rights.php:334
 #: includes/include.rights_overview.php:124
-#: includes/include.system_configuration.php:153
+#: includes/include.system_configuration.php:151
 #: includes/type/action/include.con_meta_saveart.action.php:35
 #: includes/type/action/include.con_saveart.action.php:45
 #: includes/type/action/include.con_saveart.action.php:94
@@ -2079,7 +2078,7 @@ msgid "Yes"
 msgstr ""
 
 #: includes/include.client_edit.php:255
-#: includes/include.system_configuration.php:123
+#: xml/system.xml:34
 msgid "Generate XHTML"
 msgstr ""
 
@@ -2100,7 +2099,7 @@ msgid "Copy frontend template"
 msgstr ""
 
 #: includes/include.client_left_top.php:47
-#: ../data/config/production/cfg_actions.inc.php:184
+#: ../data/config/production/cfg_actions.inc.php:187
 msgid "Create client"
 msgstr ""
 
@@ -2125,10 +2124,11 @@ msgstr ""
 
 #: includes/include.CMS_HTML.php:108
 #: includes/include.CMS_HTMLHEAD.php:114
+#: includes/include.str_overview.php:470
 #: scripts/langref.php:21
 #: scripts/messageBox.js.php:75
 #: templates/standard/template.symbolhelp.html:68
-#: templates/standard/template.upl_files_upload.html:63
+#: templates/standard/template.upl_files_upload.html:75
 msgid "Cancel"
 msgstr ""
 
@@ -2150,8 +2150,8 @@ msgstr ""
 #: includes/include.upl_edit.php:93
 #: includes/include.upl_files_overview.php:460
 #: includes/include.upl_search_results.php:238
-#: xml/navigation.xml:20
-#: xml/navigation.xml:40
+#: xml/navigation.xml:15
+#: xml/navigation.xml:27
 msgid "Preview"
 msgstr ""
 
@@ -2314,17 +2314,17 @@ msgid "Create new article"
 msgstr ""
 
 #: includes/include.con_content_list.php:141
-#: includes/include.con_editcontent.php:114
+#: includes/include.con_editcontent.php:108
 msgid "Close editor"
 msgstr ""
 
 #: includes/include.con_content_list.php:142
-#: includes/include.con_editcontent.php:115
+#: includes/include.con_editcontent.php:109
 msgid "Close editor and save changes"
 msgstr ""
 
 #: includes/include.con_content_list.php:143
-#: includes/include.con_editcontent.php:116
+#: includes/include.con_editcontent.php:110
 msgid "Do you want to save changes?"
 msgstr ""
 
@@ -2337,7 +2337,7 @@ msgstr ""
 #: includes/include.frontend.user_edit.php:242
 #: includes/include.rights_overview.php:394
 #: includes/include.str_overview.php:158
-#: includes/include.str_overview.php:622
+#: includes/include.str_overview.php:623
 #: includes/include.tplcfg_edit_form.php:287
 #: includes/include.tpl_edit_form.php:95
 #: includes/include.tpl_edit_form.php:100
@@ -2348,9 +2348,9 @@ msgstr ""
 
 #: includes/include.con_edit_form.php:198
 #: includes/include.str_overview.php:465
-#: templates/standard/template.str_overview.html:225
-#: templates/standard/template.str_overview.html:319
-#: templates/standard/template.str_overview.html:384
+#: templates/standard/template.str_overview.html:236
+#: templates/standard/template.str_overview.html:330
+#: templates/standard/template.str_overview.html:396
 msgid "Alias"
 msgstr ""
 
@@ -2515,7 +2515,7 @@ msgstr ""
 #: includes/include.con_left_top.php:277
 #: includes/include.mycontenido.php:176
 #: includes/include.mycontenido_lastarticles.php:90
-#: xml/navigation.xml:127
+#: xml/navigation.xml:87
 msgid "Recently edited articles"
 msgstr ""
 
@@ -2533,9 +2533,9 @@ msgid "Choose template"
 msgstr ""
 
 #: includes/include.con_left_top.php:344
-#: includes/include.str_overview.php:663
-#: templates/standard/template.str_overview.html:382
-#: ../data/config/production/cfg_actions.inc.php:72
+#: includes/include.str_overview.php:664
+#: templates/standard/template.str_overview.html:394
+#: ../data/config/production/cfg_actions.inc.php:75
 msgid "Edit category"
 msgstr ""
 
@@ -2545,13 +2545,13 @@ msgstr ""
 
 #: includes/include.con_left_top.php:368
 #: includes/include.con_left_top.php:369
-#: includes/include.str_overview.php:893
-#: includes/include.str_overview.php:896
-#: templates/standard/template.str_overview.html:240
-#: templates/standard/template.str_overview.html:388
+#: includes/include.str_overview.php:894
+#: includes/include.str_overview.php:897
+#: templates/standard/template.str_overview.html:251
+#: templates/standard/template.str_overview.html:400
 #: templates/standard/template.symbolhelp.html:112
 #: templates/standard/template.symbolhelp.html:177
-#: ../data/config/production/cfg_actions.inc.php:71
+#: ../data/config/production/cfg_actions.inc.php:74
 msgid "Configure category"
 msgstr ""
 
@@ -2623,10 +2623,10 @@ msgstr ""
 
 #: includes/include.frontend.group.subnav.php:34
 #: includes/include.mycontenido.php:175
-#: xml/navigation.xml:16
-#: xml/navigation.xml:26
-#: xml/navigation.xml:30
-#: xml/navigation.xml:126
+#: xml/navigation.xml:11
+#: xml/navigation.xml:19
+#: xml/navigation.xml:21
+#: xml/navigation.xml:86
 msgid "Overview"
 msgstr ""
 
@@ -2665,12 +2665,12 @@ msgid "Default group"
 msgstr ""
 
 #: includes/include.frontend.group_edit.php:253
-#: ../data/config/production/cfg_actions.inc.php:121
+#: ../data/config/production/cfg_actions.inc.php:124
 msgid "Edit group"
 msgstr ""
 
 #: includes/include.frontend.group_menu.php:51
-#: ../data/config/production/cfg_actions.inc.php:199
+#: ../data/config/production/cfg_actions.inc.php:202
 msgid "Delete frontend group"
 msgstr ""
 
@@ -2732,8 +2732,8 @@ msgstr ""
 #: includes/include.frontend.left_top.php:162
 #: includes/include.rights_left_top.php:94
 #: templates/standard/template.symbolhelp.html:616
-#: ../data/config/production/cfg_actions.inc.php:112
 #: ../data/config/production/cfg_actions.inc.php:115
+#: ../data/config/production/cfg_actions.inc.php:118
 msgid "Create user"
 msgstr ""
 
@@ -2804,13 +2804,13 @@ msgstr ""
 #: includes/include.frontend.left_top.php:369
 #: includes/include.frontend.user_menu.php:254
 #: includes/include.rights_menu.php:125
-#: ../data/config/production/cfg_actions.inc.php:113
+#: ../data/config/production/cfg_actions.inc.php:116
 msgid "Delete user"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:413
 #: includes/include.grouprights_left_top.php:82
-#: ../data/config/production/cfg_actions.inc.php:122
+#: ../data/config/production/cfg_actions.inc.php:125
 msgid "Create group"
 msgstr ""
 
@@ -2835,7 +2835,7 @@ msgid "Could not set new password: Passwords don't match"
 msgstr ""
 
 #: includes/include.frontend.user_edit.php:180
-#: ../data/config/production/cfg_actions.inc.php:117
+#: ../data/config/production/cfg_actions.inc.php:120
 msgid "Edit user"
 msgstr ""
 
@@ -2856,7 +2856,7 @@ msgid "New password (again)"
 msgstr ""
 
 #: includes/include.frontend.user_edit.php:191
-#: includes/include.lang_edit.php:226
+#: includes/include.lang_edit.php:229
 msgid "Active"
 msgstr ""
 
@@ -3015,7 +3015,7 @@ msgstr ""
 
 #: includes/include.grouprights_menu.php:163
 #: includes/include.grouprights_menu.php:178
-#: ../data/config/production/cfg_actions.inc.php:123
+#: ../data/config/production/cfg_actions.inc.php:126
 msgid "Delete group"
 msgstr ""
 
@@ -3163,7 +3163,7 @@ msgid "No style history available"
 msgstr ""
 
 #: includes/include.js_left_top.php:50
-#: ../data/config/production/cfg_actions.inc.php:147
+#: ../data/config/production/cfg_actions.inc.php:150
 msgid "Create script"
 msgstr ""
 
@@ -3181,60 +3181,64 @@ msgstr ""
 msgid "Created new language successfully!"
 msgstr ""
 
-#: includes/include.lang_edit.php:212
+#: includes/include.lang_edit.php:213
 msgid "Left to right"
 msgstr ""
 
-#: includes/include.lang_edit.php:212
+#: includes/include.lang_edit.php:213
 msgid "Right to left"
 msgstr ""
 
-#: includes/include.lang_edit.php:222
-#: ../data/config/production/cfg_actions.inc.php:132
+#: includes/include.lang_edit.php:225
+#: ../data/config/production/cfg_actions.inc.php:135
 msgid "Edit language"
 msgstr ""
 
-#: includes/include.lang_edit.php:224
+#: includes/include.lang_edit.php:227
 msgid "Language name"
 msgstr ""
 
-#: includes/include.lang_edit.php:228
-#: includes/include.lang_edit.php:230
+#: includes/include.lang_edit.php:231
+#: includes/include.lang_edit.php:233
 #: includes/include.logs.php:279
 #: main.loginform.php:124
 #: templates/standard/template.log_main.html:27
 msgid "Language"
 msgstr ""
 
-#: includes/include.lang_edit.php:229
+#: includes/include.lang_edit.php:232
 msgid "Encoding"
 msgstr ""
 
-#: includes/include.lang_edit.php:231
+#: includes/include.lang_edit.php:234
 #: includes/include.mycontenido_settings.php:157
 #: includes/include.rights_create.php:165
 #: includes/include.rights_overview.php:217
 msgid "Country"
 msgstr ""
 
-#: includes/include.lang_edit.php:232
+#: includes/include.lang_edit.php:235
 msgid "Text direction"
 msgstr ""
 
-#: includes/include.lang_edit.php:234
 #: includes/include.lang_edit.php:237
+#: includes/include.lang_edit.php:240
 #: includes/include.mycontenido_settings.php:179
 msgid "Time format"
 msgstr ""
 
-#: includes/include.lang_edit.php:235
+#: includes/include.lang_edit.php:238
 #: includes/include.mycontenido_settings.php:177
 msgid "Date/Time format"
 msgstr ""
 
-#: includes/include.lang_edit.php:236
+#: includes/include.lang_edit.php:239
 #: includes/include.mycontenido_settings.php:178
 msgid "Date format"
+msgstr ""
+
+#: includes/include.lang_edit.php:241
+msgid "Date/Time locale"
 msgstr ""
 
 #: includes/include.lang_left_top.php:80
@@ -3243,12 +3247,12 @@ msgid "Create language for"
 msgstr ""
 
 #: includes/include.lang_overview.php:68
-#: ../data/config/production/cfg_actions.inc.php:127
+#: ../data/config/production/cfg_actions.inc.php:130
 msgid "Activate language"
 msgstr ""
 
 #: includes/include.lang_overview.php:72
-#: ../data/config/production/cfg_actions.inc.php:128
+#: ../data/config/production/cfg_actions.inc.php:131
 msgid "Deactivate language"
 msgstr ""
 
@@ -3258,7 +3262,7 @@ msgid "Do you really want to delete the language %s?"
 msgstr ""
 
 #: includes/include.lang_overview.php:78
-#: ../data/config/production/cfg_actions.inc.php:131
+#: ../data/config/production/cfg_actions.inc.php:134
 msgid "Delete language"
 msgstr ""
 
@@ -3318,7 +3322,7 @@ msgid "New Layout"
 msgstr ""
 
 #: includes/include.lay_new.php:41
-#: ../data/config/production/cfg_actions.inc.php:89
+#: ../data/config/production/cfg_actions.inc.php:92
 msgid "Synchronize layouts"
 msgstr ""
 
@@ -3327,7 +3331,7 @@ msgstr ""
 #: includes/include.mod_edit_form.php:70
 #: includes/include.mod_edit_form.php:92
 #: includes/include.mod_overview.php:173
-#: includes/include.str_overview.php:706
+#: includes/include.str_overview.php:707
 msgid "No permission"
 msgstr ""
 
@@ -3342,7 +3346,7 @@ msgid "Click for more information about usage"
 msgstr ""
 
 #: includes/include.lay_overview.php:91
-#: ../data/config/production/cfg_actions.inc.php:86
+#: ../data/config/production/cfg_actions.inc.php:89
 msgid "Delete layout"
 msgstr ""
 
@@ -3510,7 +3514,7 @@ msgstr ""
 
 #: includes/include.mod_edit_form.php:171
 #: includes/include.mod_history.php:92
-#: ../data/config/production/cfg_actions.inc.php:97
+#: ../data/config/production/cfg_actions.inc.php:100
 msgid "Edit module"
 msgstr ""
 
@@ -3608,7 +3612,7 @@ msgid "New module"
 msgstr ""
 
 #: includes/include.mod_new.php:44
-#: ../data/config/production/cfg_actions.inc.php:99
+#: ../data/config/production/cfg_actions.inc.php:102
 msgid "Synchronize modules"
 msgstr ""
 
@@ -3635,7 +3639,7 @@ msgid "Module in use, cannot delete"
 msgstr ""
 
 #: includes/include.mod_overview.php:169
-#: ../data/config/production/cfg_actions.inc.php:94
+#: ../data/config/production/cfg_actions.inc.php:97
 msgid "Delete module"
 msgstr ""
 
@@ -3758,7 +3762,7 @@ msgid "Reminder list: %d Tasks open"
 msgstr ""
 
 #: includes/include.mycontenido.php:178
-#: xml/navigation.xml:129
+#: xml/navigation.xml:89
 msgid "Settings"
 msgstr ""
 
@@ -4073,7 +4077,7 @@ msgstr ""
 #: includes/include.stat_overview.php:104
 #: templates/standard/template.symbolhelp.html:37
 #: templates/standard/template.symbolhelp.html:497
-#: xml/navigation.xml:77
+#: xml/navigation.xml:51
 msgid "Hits"
 msgstr ""
 
@@ -4091,77 +4095,77 @@ msgstr ""
 msgid "Do you really want to delete the following category:<br><br><b>%s</b>"
 msgstr ""
 
-#: includes/include.str_overview.php:470
+#: includes/include.str_overview.php:471
 msgid "Do you really want to move the category?"
 msgstr ""
 
-#: includes/include.str_overview.php:692
-#: includes/include.str_overview.php:907
-#: includes/include.str_overview.php:909
-#: templates/standard/template.str_overview.html:231
-#: templates/standard/template.str_overview.html:404
+#: includes/include.str_overview.php:693
+#: includes/include.str_overview.php:908
+#: includes/include.str_overview.php:910
+#: templates/standard/template.str_overview.html:242
+#: templates/standard/template.str_overview.html:416
 #: ../data/config/production/cfg_actions.inc.php:44
-#: ../data/config/production/cfg_actions.inc.php:63
+#: ../data/config/production/cfg_actions.inc.php:66
 msgid "Protect category"
 msgstr ""
 
-#: includes/include.str_overview.php:694
-#: templates/standard/template.str_overview.html:406
+#: includes/include.str_overview.php:695
+#: templates/standard/template.str_overview.html:418
 msgid "Unprotect category"
 msgstr ""
 
-#: includes/include.str_overview.php:703
-#: templates/standard/template.str_overview.html:389
-#: ../data/config/production/cfg_actions.inc.php:65
+#: includes/include.str_overview.php:704
+#: templates/standard/template.str_overview.html:401
+#: ../data/config/production/cfg_actions.inc.php:68
 msgid "Delete category"
 msgstr ""
 
-#: includes/include.str_overview.php:710
-#: templates/standard/template.str_overview.html:399
+#: includes/include.str_overview.php:711
+#: templates/standard/template.str_overview.html:411
 msgid "One or more subtrees and one or more articles are existing, unable to delete."
 msgstr ""
 
-#: includes/include.str_overview.php:715
-#: includes/include.str_overview.php:719
-#: templates/standard/template.str_overview.html:398
+#: includes/include.str_overview.php:716
+#: includes/include.str_overview.php:720
+#: templates/standard/template.str_overview.html:410
 msgid "One or more articles are existing, unable to delete."
 msgstr ""
 
-#: includes/include.str_overview.php:731
-#: templates/standard/template.str_overview.html:396
-#: ../data/config/production/cfg_actions.inc.php:66
+#: includes/include.str_overview.php:732
+#: templates/standard/template.str_overview.html:408
+#: ../data/config/production/cfg_actions.inc.php:69
 msgid "Move category up"
 msgstr ""
 
-#: includes/include.str_overview.php:745
-#: templates/standard/template.str_overview.html:395
-#: ../data/config/production/cfg_actions.inc.php:67
+#: includes/include.str_overview.php:746
+#: templates/standard/template.str_overview.html:407
+#: ../data/config/production/cfg_actions.inc.php:70
 msgid "Move category down"
 msgstr ""
 
-#: includes/include.str_overview.php:754
-#: includes/include.str_overview.php:768
-#: templates/standard/template.str_overview.html:397
+#: includes/include.str_overview.php:755
+#: includes/include.str_overview.php:769
+#: templates/standard/template.str_overview.html:409
 msgid "Move tree"
 msgstr ""
 
-#: includes/include.str_overview.php:758
-#: templates/standard/template.str_overview.html:401
+#: includes/include.str_overview.php:759
+#: templates/standard/template.str_overview.html:413
 msgid "Place tree here"
 msgstr ""
 
-#: includes/include.str_overview.php:775
-#: templates/standard/template.str_overview.html:390
+#: includes/include.str_overview.php:776
+#: templates/standard/template.str_overview.html:402
 #: templates/standard/template.symbolhelp.html:242
-#: ../data/config/production/cfg_actions.inc.php:70
+#: ../data/config/production/cfg_actions.inc.php:73
 msgid "Duplicate category"
 msgstr ""
 
-#: includes/include.str_overview.php:865
+#: includes/include.str_overview.php:866
 msgid "Create new category"
 msgstr ""
 
-#: includes/include.str_overview.php:937
+#: includes/include.str_overview.php:938
 #, php-format
 msgid "Cancel moving %s"
 msgstr ""
@@ -4189,7 +4193,7 @@ msgstr ""
 #: includes/include.systemsettings.php:44
 #: includes/include.systemsettings.php:61
 #: includes/include.systemsettings.php:187
-#: includes/include.system_configuration.php:134
+#: includes/include.system_configuration.php:122
 msgid "You don't have the permission to make changes here."
 msgstr ""
 
@@ -4201,160 +4205,15 @@ msgstr ""
 msgid "Please set this property in systemsettings directly"
 msgstr ""
 
-#: includes/include.system_configuration.php:102
-msgid "Versioning activated"
-msgstr ""
-
-#: includes/include.system_configuration.php:102
-#: includes/include.system_configuration.php:103
-#: includes/include.system_configuration.php:104
-msgid "Versioning"
-msgstr ""
-
-#: includes/include.system_configuration.php:103
-msgid "Serverpath to version files"
-msgstr ""
-
-#: includes/include.system_configuration.php:104
-msgid "Maximum number of stored versions"
-msgstr ""
-
-#: includes/include.system_configuration.php:105
-msgid "Check for updates"
-msgstr ""
-
-#: includes/include.system_configuration.php:105
-#: includes/include.system_configuration.php:106
-#: includes/include.system_configuration.php:107
-msgid "Update notifier"
-msgstr ""
-
-#: includes/include.system_configuration.php:106
-msgid "Get news from contenido.org"
-msgstr ""
-
-#: includes/include.system_configuration.php:107
-msgid "Update check period (minutes)"
-msgstr ""
-
-#: includes/include.system_configuration.php:108
-msgid "Clickable menu in backend"
-msgstr ""
-
-#: includes/include.system_configuration.php:108
-#: includes/include.system_configuration.php:109
-#: includes/include.system_configuration.php:110
-#: includes/include.system_configuration.php:111
-#: includes/include.system_configuration.php:112
-#: includes/include.system_configuration.php:113
-#: includes/include.system_configuration.php:114
-msgid "Backend"
-msgstr ""
-
-#: includes/include.system_configuration.php:109
-msgid "Use passwordrequest in Backend"
-msgstr ""
-
-#: includes/include.system_configuration.php:110
-msgid "Activate maintenance mode"
-msgstr ""
-
-#: includes/include.system_configuration.php:111
-msgid "Use CodeMirror for code highlighting"
-msgstr ""
-
-#: includes/include.system_configuration.php:112
-msgid "Use TinyMce as insight editor"
-msgstr ""
-
-#: includes/include.system_configuration.php:113
-msgid "Default client (ID)"
-msgstr ""
-
-#: includes/include.system_configuration.php:114
-msgid "Maximum log size in MiB (0 = infinite)"
-msgstr ""
-
-#: includes/include.system_configuration.php:115
-msgid "Log mails"
-msgstr ""
-
-#: includes/include.system_configuration.php:115
-#: includes/include.system_configuration.php:116
-#: includes/include.system_configuration.php:117
-#: includes/include.system_configuration.php:118
-#: includes/include.system_configuration.php:119
-#: includes/include.system_configuration.php:120
-#: includes/include.system_configuration.php:121
-#: includes/include.system_configuration.php:122
-msgid "Mailserver"
-msgstr ""
-
-#: includes/include.system_configuration.php:116
-msgid "Mailserver host"
-msgstr ""
-
-#: includes/include.system_configuration.php:117
-msgid "Mailserver user"
-msgstr ""
-
-#: includes/include.system_configuration.php:118
-msgid "Mailserver password"
-msgstr ""
-
-#: includes/include.system_configuration.php:119
-msgid "Mailserver encryption"
-msgstr ""
-
-#: includes/include.system_configuration.php:120
-msgid "Mailserver port"
-msgstr ""
-
-#: includes/include.system_configuration.php:121
-msgid "Mailserver sender mail"
-msgstr ""
-
-#: includes/include.system_configuration.php:122
-msgid "Mailserver sender name"
-msgstr ""
-
-#: includes/include.system_configuration.php:123
-#: includes/include.system_configuration.php:124
-#: includes/include.system_configuration.php:125
-msgid "Development"
-msgstr ""
-
-#: includes/include.system_configuration.php:124
-msgid "Generate basehref"
-msgstr ""
-
-#: includes/include.system_configuration.php:125
-msgid "Use image magic (if available)"
-msgstr ""
-
-#: includes/include.system_configuration.php:126
-msgid "Debug to file"
-msgstr ""
-
-#: includes/include.system_configuration.php:126
-#: includes/include.system_configuration.php:127
-#: xml/navigation.xml:111
-msgid "Debug"
-msgstr ""
-
-#: includes/include.system_configuration.php:127
-msgid "Visible debug"
-msgstr ""
-
-#: includes/include.system_configuration.php:143
+#: includes/include.system_configuration.php:137
 msgid "Update check period must be at least 60 minutes."
 msgstr ""
 
-#: includes/include.system_configuration.php:163
+#: includes/include.system_configuration.php:158
 msgid "System Configuration"
 msgstr ""
 
-#: includes/include.system_configuration.php:208
+#: includes/include.system_configuration.php:210
 msgid "Access denied"
 msgstr ""
 
@@ -4698,7 +4557,7 @@ msgid "-- New template --"
 msgstr ""
 
 #: includes/include.tpl_edit_form.php:158
-#: ../data/config/production/cfg_actions.inc.php:106
+#: ../data/config/production/cfg_actions.inc.php:109
 msgid "Edit template"
 msgstr ""
 
@@ -4721,7 +4580,7 @@ msgid "New template"
 msgstr ""
 
 #: includes/include.tpl_overview.php:96
-#: ../data/config/production/cfg_actions.inc.php:105
+#: ../data/config/production/cfg_actions.inc.php:108
 msgid "Delete template"
 msgstr ""
 
@@ -4736,8 +4595,8 @@ msgstr ""
 
 #: includes/include.tpl_overview.php:108
 #: templates/standard/template.symbolhelp.html:346
-#: ../data/config/production/cfg_actions.inc.php:108
-#: ../data/config/production/cfg_actions.inc.php:109
+#: ../data/config/production/cfg_actions.inc.php:111
+#: ../data/config/production/cfg_actions.inc.php:112
 msgid "Duplicate template"
 msgstr ""
 
@@ -4781,8 +4640,8 @@ msgid "Please click here in order to rename automatically."
 msgstr ""
 
 #: includes/include.upl_dirs_overview.php:295
-#: xml/navigation.xml:89
-#: xml/navigation.xml:100
+#: xml/navigation.xml:60
+#: xml/navigation.xml:69
 msgid "Categories"
 msgstr ""
 
@@ -4950,8 +4809,8 @@ msgid "CONTENIDO Backend"
 msgstr ""
 
 #: main.loginform.php:126
-#: xml/navigation.xml:136
-#: ../data/config/production/cfg_actions.inc.php:217
+#: xml/navigation.xml:93
+#: ../data/config/production/cfg_actions.inc.php:220
 msgid "Login"
 msgstr ""
 
@@ -5206,33 +5065,33 @@ msgstr ""
 msgid "Rights type"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:249
-#: templates/standard/template.str_overview.html:385
+#: templates/standard/template.str_overview.html:260
+#: templates/standard/template.str_overview.html:397
 msgid "Category is a tree"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:256
-#: templates/standard/template.str_overview.html:403
+#: templates/standard/template.str_overview.html:267
+#: templates/standard/template.str_overview.html:415
 msgid "Position of category"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:387
+#: templates/standard/template.str_overview.html:399
 msgid "Categoryname"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:391
+#: templates/standard/template.str_overview.html:403
 msgid "Field category name is empty"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:392
+#: templates/standard/template.str_overview.html:404
 msgid "Form error"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:400
+#: templates/standard/template.str_overview.html:412
 msgid "One or more subtrees are existing, unable to delete."
 msgstr ""
 
-#: templates/standard/template.str_overview.html:402
+#: templates/standard/template.str_overview.html:414
 msgid "Please select a new position for new category"
 msgstr ""
 
@@ -5247,10 +5106,10 @@ msgstr ""
 
 #: templates/standard/template.symbolhelp.html:19
 #: templates/standard/template.symbolhelp.html:100
-#: xml/navigation.xml:13
-#: xml/navigation.xml:22
-#: xml/navigation.xml:86
-#: xml/navigation.xml:97
+#: xml/navigation.xml:9
+#: xml/navigation.xml:17
+#: xml/navigation.xml:57
+#: xml/navigation.xml:66
 msgid "Content"
 msgstr ""
 
@@ -5261,36 +5120,37 @@ msgstr ""
 
 #: templates/standard/template.symbolhelp.html:24
 #: templates/standard/template.symbolhelp.html:280
-#: xml/navigation.xml:36
+#: xml/navigation.xml:24
 msgid "Style"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:25
 #: templates/standard/template.symbolhelp.html:282
-#: xml/navigation.xml:85
-#: xml/navigation.xml:96
+#: xml/navigation.xml:25
+#: xml/navigation.xml:56
+#: xml/navigation.xml:65
 msgid "Layouts"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:26
 #: templates/standard/template.symbolhelp.html:309
-#: xml/navigation.xml:44
-#: xml/navigation.xml:87
-#: xml/navigation.xml:98
+#: xml/navigation.xml:29
+#: xml/navigation.xml:58
+#: xml/navigation.xml:67
 msgid "Modules"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:27
 #: templates/standard/template.symbolhelp.html:336
-#: xml/navigation.xml:54
-#: xml/navigation.xml:88
-#: xml/navigation.xml:99
+#: xml/navigation.xml:37
+#: xml/navigation.xml:59
+#: xml/navigation.xml:68
 msgid "Templates"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:28
 #: templates/standard/template.symbolhelp.html:359
-#: xml/navigation.xml:60
+#: xml/navigation.xml:41
 msgid "CSS editor"
 msgstr ""
 
@@ -5301,13 +5161,13 @@ msgstr ""
 
 #: templates/standard/template.symbolhelp.html:30
 #: templates/standard/template.symbolhelp.html:395
-#: xml/navigation.xml:70
+#: xml/navigation.xml:47
 msgid "Module templates"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:32
 #: templates/standard/template.symbolhelp.html:421
-#: xml/navigation.xml:132
+#: xml/navigation.xml:90
 msgid "Extras"
 msgstr ""
 
@@ -5322,37 +5182,37 @@ msgstr ""
 
 #: templates/standard/template.symbolhelp.html:36
 #: templates/standard/template.symbolhelp.html:495
-#: xml/navigation.xml:76
+#: xml/navigation.xml:50
 msgid "Statistics"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:39
 #: templates/standard/template.symbolhelp.html:522
-#: xml/navigation.xml:80
+#: xml/navigation.xml:52
 msgid "Administration"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:40
 #: templates/standard/template.symbolhelp.html:524
-#: xml/navigation.xml:82
+#: xml/navigation.xml:53
 msgid "Users"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:41
 #: templates/standard/template.symbolhelp.html:542
-#: xml/navigation.xml:92
+#: xml/navigation.xml:61
 msgid "Groups"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:42
 #: templates/standard/template.symbolhelp.html:560
-#: xml/navigation.xml:102
+#: xml/navigation.xml:70
 msgid "Languages"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:43
 #: templates/standard/template.symbolhelp.html:583
-#: xml/navigation.xml:105
+#: xml/navigation.xml:72
 msgid "Clients"
 msgstr ""
 
@@ -5407,7 +5267,7 @@ msgid "Set folder offline / online (change through click)"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:183
-#: ../data/config/production/cfg_actions.inc.php:59
+#: ../data/config/production/cfg_actions.inc.php:62
 msgid "Rename category"
 msgstr ""
 
@@ -5440,7 +5300,7 @@ msgid "Move up one category"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:230
-#: ../data/config/production/cfg_actions.inc.php:68
+#: ../data/config/production/cfg_actions.inc.php:71
 msgid "Move category"
 msgstr ""
 
@@ -5482,7 +5342,7 @@ msgid "Module in use"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:433
-#: ../data/config/production/cfg_actions.inc.php:158
+#: ../data/config/production/cfg_actions.inc.php:161
 msgid "Create newsletter"
 msgstr ""
 
@@ -5496,7 +5356,7 @@ msgid "Recipient"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:464
-#: ../data/config/production/cfg_actions.inc.php:170
+#: ../data/config/production/cfg_actions.inc.php:173
 msgid "Create recipient"
 msgstr ""
 
@@ -5509,7 +5369,7 @@ msgid "Recipient group"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:476
-#: ../data/config/production/cfg_actions.inc.php:176
+#: ../data/config/production/cfg_actions.inc.php:179
 msgid "Create recipient group"
 msgstr ""
 
@@ -5559,7 +5419,7 @@ msgstr ""
 
 #: templates/standard/template.upl_files_overview.html:188
 #: templates/standard/template.upl_search_results.html:149
-#: ../data/config/production/cfg_actions.inc.php:82
+#: ../data/config/production/cfg_actions.inc.php:85
 msgid "Delete file"
 msgstr ""
 
@@ -5574,214 +5434,334 @@ msgid "Enter new filename"
 msgstr ""
 
 #: templates/standard/template.upl_files_upload.html:15
-#: templates/standard/template.upl_files_upload.html:65
+#: templates/standard/template.upl_files_upload.html:77
 msgid "Drop your files here"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:28
-#: templates/standard/template.upl_files_upload.html:34
-#: templates/standard/template.upl_files_upload.html:70
-#: xml/navigation.xml:32
-#: ../data/config/production/cfg_actions.inc.php:75
-#: ../data/config/production/cfg_actions.inc.php:83
+#: templates/standard/template.upl_files_upload.html:31
+#: templates/standard/template.upl_files_upload.html:41
+#: templates/standard/template.upl_files_upload.html:82
+#: xml/navigation.xml:23
+#: ../data/config/production/cfg_actions.inc.php:78
+#: ../data/config/production/cfg_actions.inc.php:86
 msgid "Upload files"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:62
+#: templates/standard/template.upl_files_upload.html:74
 msgid "Cancelling..."
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:64
+#: templates/standard/template.upl_files_upload.html:76
 msgid "Cancelled"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:66
+#: templates/standard/template.upl_files_upload.html:78
 msgid "Finished!"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:69
+#: templates/standard/template.upl_files_upload.html:81
 msgid "Upload failed!"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:71
+#: templates/standard/template.upl_files_upload.html:83
 msgid "Uploading..."
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:72
+#: templates/standard/template.upl_files_upload.html:84
 msgid "Waiting..."
 msgstr ""
 
-#: xml/legend.xml:6
+#: xml/legend.xml:9
 msgid "start article"
 msgstr ""
 
-#: xml/legend.xml:7
+#: xml/legend.xml:10
 msgid "normal article"
 msgstr ""
 
-#: xml/legend.xml:8
+#: xml/legend.xml:11
 msgid "start article with redirection"
 msgstr ""
 
-#: xml/legend.xml:9
+#: xml/legend.xml:12
 msgid "redirection"
 msgstr ""
 
-#: xml/legend.xml:10
+#: xml/legend.xml:13
 msgid "active article with time control"
 msgstr ""
 
-#: xml/legend.xml:11
+#: xml/legend.xml:14
 msgid "inactive article with time control"
 msgstr ""
 
-#: xml/legend.xml:12
+#: xml/legend.xml:15
 msgid "category"
 msgstr ""
 
-#: xml/legend.xml:13
+#: xml/legend.xml:16
 msgid "inactive category"
 msgstr ""
 
-#: xml/legend.xml:14
+#: xml/legend.xml:17
 msgid "category without any active start article"
 msgstr ""
 
-#: xml/legend.xml:15
+#: xml/legend.xml:18
 msgid "protected category"
 msgstr ""
 
-#: xml/legend.xml:16
+#: xml/legend.xml:19
 msgid "protected category without any active start article"
 msgstr ""
 
-#: xml/legend.xml:17
+#: xml/legend.xml:20
 msgid "active synchronized category"
 msgstr ""
 
-#: xml/legend.xml:18
+#: xml/legend.xml:21
 msgid "inactive synchronized category"
 msgstr ""
 
-#: xml/navigation.xml:15
+#: xml/navigation.xml:10
 msgid "Articles"
 msgstr ""
 
-#: xml/navigation.xml:17
+#: xml/navigation.xml:12
 msgid "Editor"
 msgstr ""
 
-#: xml/navigation.xml:18
-#: xml/navigation.xml:83
-#: xml/navigation.xml:94
-#: xml/navigation.xml:106
+#: xml/navigation.xml:13
+#: xml/navigation.xml:54
+#: xml/navigation.xml:63
+#: xml/navigation.xml:73
 msgid "Properties"
 msgstr ""
 
-#: xml/navigation.xml:19
+#: xml/navigation.xml:14
 msgid "Configuration"
 msgstr ""
 
-#: xml/navigation.xml:29
+#: xml/navigation.xml:20
 msgid "File manager"
 msgstr ""
 
-#: xml/navigation.xml:41
+#: xml/navigation.xml:28
+#: xml/navigation.xml:31
+#: xml/navigation.xml:43
 #: xml/navigation.xml:46
-#: xml/navigation.xml:62
-#: xml/navigation.xml:67
-#: xml/navigation.xml:72
+#: xml/navigation.xml:49
 msgid "History"
 msgstr ""
 
-#: xml/navigation.xml:47
+#: xml/navigation.xml:32
 msgid "Translation"
 msgstr ""
 
-#: xml/navigation.xml:49
+#: xml/navigation.xml:34
 msgid "CSS"
 msgstr ""
 
-#: xml/navigation.xml:50
+#: xml/navigation.xml:35
 msgid "JavaScript"
 msgstr ""
 
-#: xml/navigation.xml:51
+#: xml/navigation.xml:36
 msgid "Import/Export"
 msgstr ""
 
-#: xml/navigation.xml:56
+#: xml/navigation.xml:39
 msgid "Preconfiguration"
 msgstr ""
 
-#: xml/navigation.xml:57
-#: ../data/config/production/cfg_actions.inc.php:110
+#: xml/navigation.xml:40
+#: ../data/config/production/cfg_actions.inc.php:113
 msgid "Visual edit"
 msgstr ""
 
-#: xml/navigation.xml:65
+#: xml/navigation.xml:44
 msgid "JavaScript editor"
 msgstr ""
 
-#: xml/navigation.xml:84
-#: xml/navigation.xml:95
+#: xml/navigation.xml:55
+#: xml/navigation.xml:64
 msgid "Areas"
 msgstr ""
 
-#: xml/navigation.xml:93
+#: xml/navigation.xml:62
 msgid "Members"
 msgstr ""
 
-#: xml/navigation.xml:103
+#: xml/navigation.xml:71
 msgid "Plugins"
 msgstr ""
 
-#: xml/navigation.xml:107
+#: xml/navigation.xml:74
 msgid "Article specifications"
 msgstr ""
 
-#: xml/navigation.xml:108
+#: xml/navigation.xml:75
 msgid "Client settings"
 msgstr ""
 
-#: xml/navigation.xml:110
+#: xml/navigation.xml:76
 msgid "Logs"
 msgstr ""
 
-#: xml/navigation.xml:113
+#: xml/navigation.xml:77
+msgid "Debug"
+msgstr ""
+
+#: xml/navigation.xml:78
 msgid "System"
 msgstr ""
 
-#: xml/navigation.xml:114
+#: xml/navigation.xml:79
 msgid "Expert settings"
 msgstr ""
 
-#: xml/navigation.xml:115
+#: xml/navigation.xml:80
 msgid "System variables"
 msgstr ""
 
-#: xml/navigation.xml:116
+#: xml/navigation.xml:81
 msgid "System settings"
 msgstr ""
 
-#: xml/navigation.xml:117
+#: xml/navigation.xml:82
 msgid "Purge"
 msgstr ""
 
-#: xml/navigation.xml:118
+#: xml/navigation.xml:83
 msgid "Error report"
 msgstr ""
 
-#: xml/navigation.xml:121
+#: xml/navigation.xml:84
 msgid "Frontend"
 msgstr ""
 
-#: xml/navigation.xml:128
+#: xml/navigation.xml:88
 msgid "Reminder list"
 msgstr ""
 
-#: xml/navigation.xml:133
+#: xml/navigation.xml:91
 msgid "Mailing"
+msgstr ""
+
+#: xml/system.xml:9
+msgid "Versioning activated"
+msgstr ""
+
+#: xml/system.xml:10
+msgid "Versioning"
+msgstr ""
+
+#: xml/system.xml:11
+msgid "Serverpath to version files"
+msgstr ""
+
+#: xml/system.xml:12
+msgid "Maximum number of stored versions"
+msgstr ""
+
+#: xml/system.xml:13
+msgid "Check for updates"
+msgstr ""
+
+#: xml/system.xml:14
+msgid "Update notifier"
+msgstr ""
+
+#: xml/system.xml:15
+msgid "Get news from contenido.org"
+msgstr ""
+
+#: xml/system.xml:16
+msgid "Update check period (minutes)"
+msgstr ""
+
+#: xml/system.xml:17
+msgid "Clickable menu in backend"
+msgstr ""
+
+#: xml/system.xml:18
+msgid "Backend"
+msgstr ""
+
+#: xml/system.xml:19
+msgid "Use TinyMce as insight editor"
+msgstr ""
+
+#: xml/system.xml:20
+msgid "Log mails"
+msgstr ""
+
+#: xml/system.xml:21
+msgid "Mailserver"
+msgstr ""
+
+#: xml/system.xml:22
+msgid "Mailserver host"
+msgstr ""
+
+#: xml/system.xml:23
+msgid "Mailserver user"
+msgstr ""
+
+#: xml/system.xml:24
+msgid "Mailserver password"
+msgstr ""
+
+#: xml/system.xml:25
+msgid "Mailserver encryption"
+msgstr ""
+
+#: xml/system.xml:26
+msgid "Mailserver port"
+msgstr ""
+
+#: xml/system.xml:27
+msgid "Mailserver sender mail"
+msgstr ""
+
+#: xml/system.xml:28
+msgid "Mailserver sender name"
+msgstr ""
+
+#: xml/system.xml:29
+msgid "Use passwordrequest in Backend"
+msgstr ""
+
+#: xml/system.xml:30
+msgid "Activate maintenance mode"
+msgstr ""
+
+#: xml/system.xml:31
+msgid "Use CodeMirror for code highlighting"
+msgstr ""
+
+#: xml/system.xml:32
+msgid "Default client (ID)"
+msgstr ""
+
+#: xml/system.xml:33
+msgid "Maximum log size in MiB (0 = infinite)"
+msgstr ""
+
+#: xml/system.xml:35
+msgid "Development"
+msgstr ""
+
+#: xml/system.xml:36
+msgid "Use image magic (if available)"
+msgstr ""
+
+#: xml/system.xml:37
+msgid "Debug to file"
+msgstr ""
+
+#: xml/system.xml:38
+msgid "Visible debug"
 msgstr ""
 
 #: ../data/config/production/cfg_actions.inc.php:38
@@ -5825,386 +5805,398 @@ msgid "Save article"
 msgstr ""
 
 #: ../data/config/production/cfg_actions.inc.php:54
-#: ../data/config/production/cfg_actions.inc.php:56
-msgid "Edit article"
+msgid "Edit article properties"
 msgstr ""
 
 #: ../data/config/production/cfg_actions.inc.php:55
-msgid "Edit article properties"
+#: ../data/config/production/cfg_actions.inc.php:56
+msgid "Edit article"
 msgstr ""
 
 #: ../data/config/production/cfg_actions.inc.php:57
 msgid "Help"
 msgstr ""
 
+#: ../data/config/production/cfg_actions.inc.php:58
+msgid "con_content_list con_content ???"
+msgstr ""
+
+#: ../data/config/production/cfg_actions.inc.php:59
+msgid "con_content_list savecontype ???"
+msgstr ""
+
 #: ../data/config/production/cfg_actions.inc.php:60
+msgid "con_content_list deletecontype ???"
+msgstr ""
+
+#: ../data/config/production/cfg_actions.inc.php:63
 msgid "New category"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:61
+#: ../data/config/production/cfg_actions.inc.php:64
 msgid "Set category on- or offline"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:62
+#: ../data/config/production/cfg_actions.inc.php:65
 msgid "Disable category"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:64
+#: ../data/config/production/cfg_actions.inc.php:67
 msgid "Frontend access"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:69
+#: ../data/config/production/cfg_actions.inc.php:72
 msgid "Create new tree"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:74
-#: ../data/config/production/cfg_actions.inc.php:84
+#: ../data/config/production/cfg_actions.inc.php:77
+#: ../data/config/production/cfg_actions.inc.php:87
 msgid "Create directory"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:76
+#: ../data/config/production/cfg_actions.inc.php:79
 msgid "Delete files"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:77
+#: ../data/config/production/cfg_actions.inc.php:80
 msgid "Remove directory"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:78
+#: ../data/config/production/cfg_actions.inc.php:81
 msgid "Rename directory"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:79
+#: ../data/config/production/cfg_actions.inc.php:82
 msgid "Modify file"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:80
+#: ../data/config/production/cfg_actions.inc.php:83
 msgid "Rename file"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:81
+#: ../data/config/production/cfg_actions.inc.php:84
 msgid "Multidelete files"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:87
+#: ../data/config/production/cfg_actions.inc.php:90
 msgid "Modify layout"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:88
+#: ../data/config/production/cfg_actions.inc.php:91
 msgid "Create layout"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:90
-#: ../data/config/production/cfg_actions.inc.php:95
-#: ../data/config/production/cfg_actions.inc.php:142
-#: ../data/config/production/cfg_actions.inc.php:148
-#: ../data/config/production/cfg_actions.inc.php:154
+#: ../data/config/production/cfg_actions.inc.php:93
+#: ../data/config/production/cfg_actions.inc.php:98
+#: ../data/config/production/cfg_actions.inc.php:145
+#: ../data/config/production/cfg_actions.inc.php:151
+#: ../data/config/production/cfg_actions.inc.php:157
 msgid "Manage history"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:91
-#: ../data/config/production/cfg_actions.inc.php:96
-#: ../data/config/production/cfg_actions.inc.php:143
-#: ../data/config/production/cfg_actions.inc.php:149
-#: ../data/config/production/cfg_actions.inc.php:155
+#: ../data/config/production/cfg_actions.inc.php:94
+#: ../data/config/production/cfg_actions.inc.php:99
+#: ../data/config/production/cfg_actions.inc.php:146
+#: ../data/config/production/cfg_actions.inc.php:152
+#: ../data/config/production/cfg_actions.inc.php:158
 msgid "Truncate history"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:98
+#: ../data/config/production/cfg_actions.inc.php:101
 msgid "Create module"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:100
+#: ../data/config/production/cfg_actions.inc.php:103
 msgid "Import/Export module"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:101
+#: ../data/config/production/cfg_actions.inc.php:104
 msgid "Translate modules"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:102
+#: ../data/config/production/cfg_actions.inc.php:105
 msgid "Translation import/export"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:103
+#: ../data/config/production/cfg_actions.inc.php:106
 msgid "Import/Export package"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:107
+#: ../data/config/production/cfg_actions.inc.php:110
 msgid "Create template"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:114
+#: ../data/config/production/cfg_actions.inc.php:117
 msgid "Save user area rights"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:116
+#: ../data/config/production/cfg_actions.inc.php:119
 msgid "Edit rights"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:119
+#: ../data/config/production/cfg_actions.inc.php:122
 msgid "Delete group members"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:120
+#: ../data/config/production/cfg_actions.inc.php:123
 msgid "Add group members"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:125
+#: ../data/config/production/cfg_actions.inc.php:128
 msgid "Show statistics"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:129
+#: ../data/config/production/cfg_actions.inc.php:132
 msgid "Rename language"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:130
+#: ../data/config/production/cfg_actions.inc.php:133
 msgid "Create language"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:134
+#: ../data/config/production/cfg_actions.inc.php:137
 msgid "Linkchecker"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:135
+#: ../data/config/production/cfg_actions.inc.php:138
 msgid "Linkchecker Whitelist"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:137
+#: ../data/config/production/cfg_actions.inc.php:140
 msgid "Install/Remove plugins"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:139
+#: ../data/config/production/cfg_actions.inc.php:142
 msgid "Modify CSS"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:140
+#: ../data/config/production/cfg_actions.inc.php:143
 msgid "Create CSS"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:141
+#: ../data/config/production/cfg_actions.inc.php:144
 msgid "Delete CSS"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:145
+#: ../data/config/production/cfg_actions.inc.php:148
 msgid "Edit script"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:146
+#: ../data/config/production/cfg_actions.inc.php:149
 msgid "Delete script"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:151
+#: ../data/config/production/cfg_actions.inc.php:154
 msgid "Modify HTML template"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:152
+#: ../data/config/production/cfg_actions.inc.php:155
 msgid "Create HTML template"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:153
+#: ../data/config/production/cfg_actions.inc.php:156
 msgid "Delete HTML template"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:157
+#: ../data/config/production/cfg_actions.inc.php:160
 msgid "Edit newsletter"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:159
+#: ../data/config/production/cfg_actions.inc.php:162
 msgid "Delete newsletter"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:160
+#: ../data/config/production/cfg_actions.inc.php:163
 msgid "Duplicate newsletter"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:161
+#: ../data/config/production/cfg_actions.inc.php:164
 msgid "Add newsletter dispatch job"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:162
+#: ../data/config/production/cfg_actions.inc.php:165
 msgid "Change global HTML newsletter settings"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:163
+#: ../data/config/production/cfg_actions.inc.php:166
 msgid "Send test newsletter (to groups)"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:164
+#: ../data/config/production/cfg_actions.inc.php:167
 msgid "Delete dispatch job"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:165
+#: ../data/config/production/cfg_actions.inc.php:168
 msgid "Remove recipient from dispatch job"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:166
+#: ../data/config/production/cfg_actions.inc.php:169
 msgid "Run job"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:167
+#: ../data/config/production/cfg_actions.inc.php:170
 msgid "View dispatch job details"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:169
+#: ../data/config/production/cfg_actions.inc.php:172
 msgid "Edit recipient"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:171
+#: ../data/config/production/cfg_actions.inc.php:174
 msgid "Delete recipient"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:172
+#: ../data/config/production/cfg_actions.inc.php:175
 msgid "Purge recipients"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:173
+#: ../data/config/production/cfg_actions.inc.php:176
 msgid "Import recipients"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:174
+#: ../data/config/production/cfg_actions.inc.php:177
 msgid "Execute recipients import"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:175
+#: ../data/config/production/cfg_actions.inc.php:178
 msgid "Delete recipient group"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:177
+#: ../data/config/production/cfg_actions.inc.php:180
 msgid "Delete recipient from group"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:178
+#: ../data/config/production/cfg_actions.inc.php:181
 msgid "Save recipient group"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:180
+#: ../data/config/production/cfg_actions.inc.php:183
 msgid "Edit own MyContenido settings"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:181
+#: ../data/config/production/cfg_actions.inc.php:184
 msgid "Delete reminder item"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:182
+#: ../data/config/production/cfg_actions.inc.php:185
 msgid "Save todo item"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:185
+#: ../data/config/production/cfg_actions.inc.php:188
 msgid "Edit client"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:186
+#: ../data/config/production/cfg_actions.inc.php:189
 msgid "Remove client"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:187
+#: ../data/config/production/cfg_actions.inc.php:190
 msgid "Delete client setting"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:188
+#: ../data/config/production/cfg_actions.inc.php:191
 msgid "Edit client setting"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:189
+#: ../data/config/production/cfg_actions.inc.php:192
 msgid "Save client setting"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:190
+#: ../data/config/production/cfg_actions.inc.php:193
 msgid "Create/Edit article specifications"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:191
+#: ../data/config/production/cfg_actions.inc.php:194
 msgid "Delete article specifications"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:192
+#: ../data/config/production/cfg_actions.inc.php:195
 msgid "Define default article specification"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:193
+#: ../data/config/production/cfg_actions.inc.php:196
 msgid "Edit article specifications"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:194
+#: ../data/config/production/cfg_actions.inc.php:197
 msgid "Make article specifications online"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:196
+#: ../data/config/production/cfg_actions.inc.php:199
 msgid "Save frontend user"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:197
+#: ../data/config/production/cfg_actions.inc.php:200
 msgid "Create frontend user"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:198
-#: ../data/config/production/cfg_actions.inc.php:204
+#: ../data/config/production/cfg_actions.inc.php:201
+#: ../data/config/production/cfg_actions.inc.php:207
 msgid "Delete frontend user"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:200
+#: ../data/config/production/cfg_actions.inc.php:203
 msgid "Save frontend group"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:201
-#: ../data/config/production/cfg_actions.inc.php:202
+#: ../data/config/production/cfg_actions.inc.php:204
+#: ../data/config/production/cfg_actions.inc.php:205
 msgid "Create frontend group"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:203
+#: ../data/config/production/cfg_actions.inc.php:206
 msgid "Add frontend users"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:205
+#: ../data/config/production/cfg_actions.inc.php:208
 msgid "Save frontend group permissions"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:207
+#: ../data/config/production/cfg_actions.inc.php:210
 msgid "Delete system property"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:208
+#: ../data/config/production/cfg_actions.inc.php:211
 msgid "Edit system property"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:209
+#: ../data/config/production/cfg_actions.inc.php:212
 msgid "Save system property"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:211
+#: ../data/config/production/cfg_actions.inc.php:214
 msgid "Empty log"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:212
+#: ../data/config/production/cfg_actions.inc.php:215
 msgid "Edit system configration"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:213
+#: ../data/config/production/cfg_actions.inc.php:216
 msgid "Do system purge"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:215
+#: ../data/config/production/cfg_actions.inc.php:218
 msgid "Show log"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:218
+#: ../data/config/production/cfg_actions.inc.php:221
 msgid "Request password?"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:220
+#: ../data/config/production/cfg_actions.inc.php:223
 msgid "Delete note"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:221
+#: ../data/config/production/cfg_actions.inc.php:224
 msgid "Save note"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:223
+#: ../data/config/production/cfg_actions.inc.php:226
 msgid "Send mail"
 msgstr ""
 
-#: ../data/config/production/cfg_actions.inc.php:224
+#: ../data/config/production/cfg_actions.inc.php:227
 msgid "Fake permissions"
 msgstr ""
 

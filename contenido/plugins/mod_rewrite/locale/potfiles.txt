@@ -20,3 +20,5 @@
 ./templates/content.html
 ./templates/contentexpert.html
 ./templates/contenttest.html
+./xml/lang_de_DE.xml
+./xml/lang_en_US.xml

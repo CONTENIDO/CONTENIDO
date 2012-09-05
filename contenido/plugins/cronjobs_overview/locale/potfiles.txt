@@ -1,0 +1,13 @@
+./classes/class.cronjobs.php
+./includes/config.plugin.php
+./includes/include.left_bottom.php
+./includes/include.left_top.php
+./includes/include.right_bottom.php
+./includes/include.right_top.php
+./templates/left_bottom.html
+./templates/left_top.html
+./templates/right_bottom_crontab_edit.html
+./templates/right_bottom_overview.html
+./xml/cronjobs_overview.xml
+./xml/lang_de_DE.xml
+./xml/lang_en_EN.xml

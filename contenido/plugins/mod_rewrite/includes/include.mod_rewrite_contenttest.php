@@ -26,14 +26,6 @@
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
  * @since       file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created   2011-04-11
- *   modified  2011-05-17  Murat Purc, added check for available client id
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -74,16 +66,9 @@ $oView->lng_form_label = i18n('Parameter to use', 'mod_rewrite');
 $oView->lng_maxitems_lbl = i18n('Number of URLs to generate', 'mod_rewrite');
 $oView->lng_run_test = i18n('Run test', 'mod_rewrite');
 
-$oView->lng_result_item_tpl = i18n('{pref}<strong>{name}</strong>
-{pref}Builder in:    {url_in}
-{pref}Builder out:   {url_out}
-{pref}<span style="color:{color}">Resolved URL:  {url_res}</span>
-{pref}Resolved data: {data}', 'mod_rewrite');
+$oView->lng_result_item_tpl = i18n('{pref}<strong>{name}</strong><br>{pref}Builder in:    {url_in}<br>{pref}Builder out:   {url_out}<br>{pref}<span style="color:{color}">Resolved URL:  {url_res}</span><br>{pref}Resolved data: {data}', 'mod_rewrite');
 
-$oView->lng_result_message_tpl = i18n('Duration of test run: {time} seconds.<br>
-Number of processed URLs: {num_urls}<br>
-<span style="color:green">Successful resolved: {num_success}</span><br>
-<span style="color:red">Errors during resolving: {num_fail}</span></strong>', 'mod_rewrite');
+$oView->lng_result_message_tpl = i18n('Duration of test run: {time} seconds.<br>Number of processed URLs: {num_urls}<br><span style="color:green">Successful resolved: {num_success}</span><br><span style="color:red">Errors during resolving: {num_fail}</span></strong>', 'mod_rewrite');
 
 
 ################################################################################

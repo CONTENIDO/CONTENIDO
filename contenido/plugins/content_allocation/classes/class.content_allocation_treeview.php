@@ -123,7 +123,7 @@ class pApiContentAllocationTreeView extends pApiTree {
             }
 
             $item['ITEMINDENT'] = $item_tmp['level'] * 15 + 3;
-            $item['ACTION_CREATE'] = '<a href="main.php?contenido='.$sess->id.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=add&parentid='.$item_tmp['idpica_alloc'].'"><img src="images/folder_new.gif" border="0" title="'.i18n("New category", 'content_allocation').'" alt="'.i18n("New category", 'ContentAllocation').'"></a>';
+            $item['ACTION_CREATE'] = '<a href="main.php?contenido='.$sess->id.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=add&parentid='.$item_tmp['idpica_alloc'].'"><img src="images/folder_new.gif" border="0" title="'.i18n("New category", 'content_allocation').'" alt="'.i18n("New category", 'content_allocation').'"></a>';
 
             $item['ACTION_RENAME'] = '<a href="main.php?contenido='.$sess->id.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=rename&idpica_alloc='.$item_tmp['idpica_alloc'].'"><img src="images/but_todo.gif" width="16" height="16" border="0" alt="'.i18n("Rename category", 'content_allocation').'" title="'.i18n("Rename category", 'content_allocation').'"></a>';
             $item['ACTION_MOVE_UP'] = (count($result) >= 1) ? '<a href="main.php?contenido='.$sess->id.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=moveup&idpica_alloc='.$item_tmp['idpica_alloc'].'"><img src="images/folder_moveup.gif" border="0" alt="'.i18n("Move category up", 'content_allocation').'" title="'.i18n("Move category up", 'content_allocation').'"></a>' : '<img src="images/spacer.gif" width="16" height="16"></a>';

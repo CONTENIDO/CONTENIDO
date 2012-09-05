@@ -14,7 +14,11 @@
 ./includes/include.workflow_steps.php
 ./includes/include.workflow_subnav.php
 ./includes/include.workflow_tasks.php
+./plugin_workflow.xml
 ./templates/template.workflow_left_top.html
 ./templates/template.workflow_list.html
 ./templates/template.workflow_steps.html
 ./templates/template.workflow_tasks.html
+./xml/lang_de_DE.xml
+./xml/lang_en_EN.xml
+./xml/lang_en_US.xml

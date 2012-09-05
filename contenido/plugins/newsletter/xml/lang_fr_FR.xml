@@ -1,21 +1,10 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <language>
     <navigation>
-
         <extra>
             <newsletter>Lettre d'information</newsletter>
             <recipients>Destinataires</recipients>
             <recipientgroups>Groupes de destinataires</recipientgroups>
         </extra>
-
     </navigation>
 </language>
-
-
-
-
-
-
-
-
-

@@ -1,15 +1,10 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <language>
     <navigation>
-
         <extra>
             <newsletter>Bollettino E-Mail</newsletter>
             <recipients>Destinatori</recipients>
             <recipientgroups>Gruppo Destinatori</recipientgroups>
         </extra>
-
     </navigation>
 </language>
-
-
-

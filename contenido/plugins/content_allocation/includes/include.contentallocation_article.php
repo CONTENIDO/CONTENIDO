@@ -57,7 +57,7 @@ $oArticle = new cApiArticleLanguage();
 $oArticle->loadByArticleAndLanguageId($idart, $lang);
 $sArticleTitle = $oArticle->getField('title');
 
-$sLocationString = '<div id="categorypath" class="categorypath">' . i18n("You are here") . ": " . $catString . ' > ' . htmlspecialchars($sArticleTitle) . '</div>';
+$sLocationString = '<div id="categorypath" class="categorypath">' . i18n('You are here', 'content_allocation') . ": " . $catString . ' > ' . htmlspecialchars($sArticleTitle) . '</div>';
 
 // load allocations
 $loadedAllocations = $oAlloc->loadAllocations($this_idartlang);

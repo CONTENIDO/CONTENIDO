@@ -51,10 +51,13 @@ $lngAct['con_editart']['con_newart']                = i18n('Create article');
 $lngAct['con_editart']['35']                        = i18n('Configure article');
 $lngAct['con_editart']['con_saveart']               = i18n('Save article');
 $lngAct['con_editart']['remove_assignments']        = i18n('Remove assignments');
-$lngAct['con_editcontent']['15']                    = i18n('Edit article');
 $lngAct['con_editart']['con_edit']                  = i18n('Edit article properties');
+$lngAct['con_editcontent']['15']                    = i18n('Edit article');
 $lngAct['con_editcontent']['con_editart']           = i18n('Edit article');
 $lngAct['con_tplcfg']['con_edddittemplate']         = i18n('Help');
+$lngAct['con_content_list']['con_content']          = i18n('con_content_list con_content ???');
+$lngAct['con_content_list']['savecontype']          = i18n('con_content_list savecontype ???');
+$lngAct['con_content_list']['deletecontype']        = i18n('con_content_list deletecontype ???');
 
 $lngAct['str']['str_renamecat']                     = i18n('Rename category');
 $lngAct['str']['str_newcat']                        = i18n('New category');

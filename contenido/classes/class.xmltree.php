@@ -40,12 +40,12 @@ if (!defined('CON_FRAMEWORK')) {
  * !! Attention, using '=&' is deprecated in PHP >= 5.3 and causes a deprecated runtime error
  * don't use it any more (Ortwin Pinke, 2010-07-03
  *
- * $tree  = new XmlTree('1.0', 'ISO-8859-1');
+ * $tree  = new XmlTree('1.0', 'UTF-8');
  * $root =& $tree->addRoot('rootname', 'some content', array('foo'=>'bar'));
  *
  * This genererates following XML:
  *
- * <?xml version="1.0" encoding="ISO-8859-1"?>
+ * <?xml version="1.0" encoding="UTF-8"?>
  * <rootname foo="bar">some content</rootname>
  *
  * $root now references the 'rootname' node object.
@@ -56,7 +56,7 @@ if (!defined('CON_FRAMEWORK')) {
  * Note: From version 1.1 you can use the $obj->add() method
  * as shortcut to appendchild
  *
- * <?xml version="1.0" encoding="ISO-8859-1"?>
+ * <?xml version="1.0" encoding="UTF-8"?>
  * <rootname foo="bar">some content<foo>bar</foo></rootname>
  *
  * @deprecated 2012-03-03 Use cXmlWriter instead

@@ -1,0 +1,76 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-05 16:18+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: includes/config.plugin.php:13
+msgid "Cronjob overview"
+msgstr ""
+
+#: includes/config.plugin.php:14 includes/include.left_top.php:13
+msgid "Edit cronjob"
+msgstr ""
+
+#: includes/config.plugin.php:15 includes/include.right_bottom.php:27
+msgid "Execute cronjob"
+msgstr ""
+
+#: includes/include.left_bottom.php:4 includes/include.left_top.php:6
+#: includes/include.right_bottom.php:13 includes/include.right_bottom.php:35
+#: includes/include.right_bottom.php:55
+msgid "Permission denied"
+msgstr ""
+
+#: includes/include.right_bottom.php:18
+msgid "Cronjob overview: "
+msgstr ""
+
+#: includes/include.right_bottom.php:19
+msgid "Location"
+msgstr ""
+
+#: includes/include.right_bottom.php:21
+msgid "Last time executed: "
+msgstr ""
+
+#: includes/include.right_bottom.php:22
+msgid "Log"
+msgstr ""
+
+#: includes/include.right_bottom.php:26
+msgid "Execute cronjob:"
+msgstr ""
+
+#: includes/include.right_bottom.php:41
+msgid "Could not be saved!"
+msgstr ""
+
+#: includes/include.right_bottom.php:43
+msgid "Successfully saved!"
+msgstr ""
+
+#: includes/include.right_bottom.php:46
+msgid "Edit cronjob: "
+msgstr ""
+
+#: includes/include.right_bottom.php:49
+msgid "Save changes"
+msgstr ""
+
+#: includes/include.right_bottom.php:64
+msgid "File has been included!"
+msgstr ""

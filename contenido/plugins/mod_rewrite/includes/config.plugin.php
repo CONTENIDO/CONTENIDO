@@ -80,6 +80,13 @@ plugin_include('mod_rewrite', 'classes/class.modrewriteurlutil.php');
 plugin_include('mod_rewrite', 'includes/functions.mod_rewrite.php');
 
 
+global $lngAct;
+
+$lngAct['mod_rewrite']['mod_rewrite'] = i18n('Advanced Mod Rewrite', 'mod_rewrite');
+$lngAct['mod_rewrite']['mod_rewrite_expert'] = i18n('Advanced Mod Rewrite functions', 'mod_rewrite');
+$lngAct['mod_rewrite']['mod_rewrite_test'] = i18n('Advanced Mod Rewrite test', 'mod_rewrite');
+
+
 // set debug configuration
 if (isset($contenido)) {
     ModRewriteDebugger::setEnabled(true);

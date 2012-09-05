@@ -60,7 +60,7 @@ $cfg['pica']['script_complexlist'] = $backendUrl . $cfg['path']['plugins'] . 'co
 
 // administration > users > area translations
 global $lngAct, $_cecRegistry;
-$lngAct['con_contentallocation']['storeallocation'] = i18n("Store tagging");
+$lngAct['con_contentallocation']['storeallocation'] = i18n('Store tagging', 'content_allocation');
 
 plugin_include('content_allocation', 'includes/functions.chains.php');
 
