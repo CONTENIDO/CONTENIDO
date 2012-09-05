@@ -1,30 +1,9 @@
 <script type="text/javascript">
 	$(function() {
-		$('input[name="debug{_}debug_to_screen"]').click(function() {
-			console.log(parent.parent.parent.aheader.document);
-			$('#debug_msg', parent.parent.header.document).toggle();
+		$('input[name="debug{_}debug_to_screen"]').change(function() {
+			$('#debug_msg', parent.parent.frames['header'].window.document).toggle();
 		});
+		parent.parent.frames['header'].location.reload();
 	});
-
-//     function cls() {
-//         parent.parent.header.document.getElementById('debug_msg').innerHTML = '';
-       
-//     }
-
-//     function assignEvent() {
-//         var obj = document.getElementById('debug{_}debug_to_screen');
-    
-//         if (obj == null) {
-//             window.setTimeout('assignEvent()', 50);
-            
-//             return;
-//         }
-        
-//         obj.onchange = cls;
-//        alert("Hallo");
-//     }
-    
-//     assignEvent();
-
 </script>
 {FORM}
