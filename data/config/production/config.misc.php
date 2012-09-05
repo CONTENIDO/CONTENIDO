@@ -220,30 +220,30 @@ $cfg['sql']['cache']['enable'] = true;
 $cfg['sql']['select_all_mode'] = true;
 
 
-/* UrlBuilder settings
+/* UriBuilder settings
  * -----------------------------------------------------------------------------
- * Configuration of UrlBuilder to use.
+ * Configuration of UriBuilder to use.
  *
- * Example setting for UrlBuilder 'front_content' (generates URLs like '/cms/front_content.php?idcat=2&lang=1'):
+ * Example setting for UriBuilder 'front_content' (generates URLs like '/cms/front_content.php?idcat=2&lang=1'):
  * $cfg['url_builder']['name']   = 'front_content';
  * $cfg['url_builder']['config'] = array();
  *
- * Example setting for UrlBuilder 'custom_path' (generates URLs like '/cms/Was-ist-Contenido/rocknroll,a,2.4fb'):
+ * Example setting for UriBuilder 'custom_path' (generates URLs like '/cms/Was-ist-Contenido/rocknroll,a,2.4fb'):
  * $cfg['url_builder']['name']   = 'custom_path';
  * $cfg['url_builder']['config'] = array('prefix' => 'rocknroll', 'suffix' => '.4fb', 'separator' => ',');
  *
  * See also http://forum.contenido.org/viewtopic.php?f=64&t=23280
  */
-// (string)  Name of UrlBuilder to use.
+// (string)  Name of UriBuilder to use.
 //           Feasible values are 'front_content', 'custom', 'custom_path' or a user defined name.
-//           Check out Contenido_UrlBuilderFactory::getUrlBuilder() in
-//           contenido/classes/UrlBuilder/Contenido_UrlBuilderFactory.class.php for more details
+//           Check out cUriBuilderFactory::getUriBuilder() in
+//           contenido/classes/uri/class.uriBuilder.factory.php for more details
 //           about this setting.
 $cfg['url_builder']['name']   = 'front_content';
 
-// (array)  Default UrlBuilder configuration.
-//          An associative configuration array which will be passed to the UrlBuilder instance.
-//          Values depend on used UrlBuilder.
+// (array)  Default UriBuilder configuration.
+//          An associative configuration array which will be passed to the UriBuilder instance.
+//          Values depend on used UriBuilder.
 $cfg['url_builder']['config'] = array();
 
 

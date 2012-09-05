@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-08-30
+ *     created  2012-09-05
  * }}
  */
 
@@ -552,9 +552,17 @@ return array(
     'Swift' => 'contenido/classes/swiftmailer/lib/classes/Swift.php',
     'cTree' => 'contenido/classes/tree/class.ctree.php',
     'cTreeItem' => 'contenido/classes/tree/class.ctreeitem.php',
+    'cUri' => 'contenido/classes/uri/class.uri.php',
+    'NotInitializedException' => 'contenido/classes/uri/class.uribuilder.config.php',
+    'cUriBuilderConfig' => 'contenido/classes/uri/class.uribuilder.config.php',
+    'cUriBuilderCustom' => 'contenido/classes/uri/class.uribuilder.custom.php',
+    'cUriBuilderCustomPath' => 'contenido/classes/uri/class.uribuilder.custompath.php',
+    'cUriBuilderFactory' => 'contenido/classes/uri/class.uribuilder.factory.php',
+    'cUriBuilderFrontcontent' => 'contenido/classes/uri/class.uribuilder.frontcontent.php',
+    'cUriBuilderMR' => 'contenido/classes/uri/class.uribuilder.mr.php',
+    'cUriBuilder' => 'contenido/classes/uri/class.uribuilder.php',
     'Contenido_Url' => 'contenido/classes/Url/Contenido_Url.class.php',
     'Contenido_UrlBuilder' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder.class.php',
-    'NotInitializedException' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilderConfig.class.php',
     'Contenido_UrlBuilderConfig' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilderConfig.class.php',
     'Contenido_UrlBuilderFactory' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilderFactory.class.php',
     'Contenido_UrlBuilder_Custom' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_Custom.class.php',
