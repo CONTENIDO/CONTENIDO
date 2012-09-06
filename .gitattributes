@@ -1972,6 +1972,7 @@ contenido/scripts/rowMark.js -text
 contenido/scripts/setPager.js -text
 contenido/scripts/str_overview.js -text
 contenido/scripts/subnav.js -text
+contenido/scripts/upl_files_overview.js -text svneol=unset#text/plain
 contenido/styles/contenido.css -text
 contenido/styles/content_types/cms_abstract_tabbed.css -text svneol=unset#text/plain
 contenido/styles/content_types/cms_date.css -text svneol=unset#text/plain
