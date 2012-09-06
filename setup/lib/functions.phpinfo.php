@@ -8,42 +8,43 @@
  * Requirements:
  * @con_php_req 5
  *
- * @package    CONTENIDO setup
- * @version    0.3
- * @author     unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- *
- * {@internal
- *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as CONTENIDO now requires at least PHP 5
- *
- *   $Id$:
- * }}
- *
+ * @package CONTENIDO setup
+ * @version 0.3
+ * @author unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
+    die('Illegal call');
 }
 
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_EXTENSION_AVAILABLE
+ */
+define('E_EXTENSION_AVAILABLE', 1);
+define('CON_EXTENSION_AVAILABLE', 1);
 
-define('E_EXTENSION_AVAILABLE',   1);
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_EXTENSION_UNAVAILABLE
+ */
 define('E_EXTENSION_UNAVAILABLE', 2);
-define('E_EXTENSION_CANTCHECK',   3);
+define('CON_EXTENSION_UNAVAILABLE', 2);
 
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_EXTENSION_CANTCHECK
+ */
+define('E_EXTENSION_CANTCHECK', 3);
+define('CON_EXTENSION_CANTCHECK', 3);
 
 /**
  * Retrieves the setting $setting from the PHP setup.
  * Wrapper to avoid warnings if ini_get is in the
  * disable_functions directive.
  */
-function getPHPIniSetting($setting)
-{
+function getPHPIniSetting($setting) {
     // Avoid errors if ini_get is in the disable_functions directive
     $value = @ini_get($setting);
 
@@ -53,19 +54,19 @@ function getPHPIniSetting($setting)
 /**
  * Checks if PHP is able to use allow_url_fopen.
  */
-function canPHPurlfopen()
-{
+function canPHPurlfopen() {
     return getPHPIniSetting('allow_url_fopen');
 }
 
 /**
- * Checks if the ini_get function is available and not disabled. Returns true if the
+ * Checks if the ini_get function is available and not disabled.
+ * Returns true if the
  * function is available.
  *
- * Uses the PHP configuration value y2k_compilance which is available in all PHP4 versions.
+ * Uses the PHP configuration value y2k_compilance which is available in all
+ * PHP4 versions.
  */
-function checkPHPiniget()
-{
+function checkPHPiniget() {
     $value = @ini_get('y2k_compliance');
 
     if ($value === NULL) {
@@ -75,59 +76,48 @@ function checkPHPiniget()
     }
 }
 
-function getPHPDisplayErrorSetting()
-{
+function getPHPDisplayErrorSetting() {
     return getPHPIniSetting('display_errors');
 }
 
-function getPHPFileUploadSetting()
-{
+function getPHPFileUploadSetting() {
     return getPHPIniSetting('file_uploads');
 }
 
-function getPHPGPCOrder()
-{
+function getPHPGPCOrder() {
     return getPHPIniSetting('gpc_order');
 }
 
-function getPHPMagicQuotesGPC()
-{
+function getPHPMagicQuotesGPC() {
     return getPHPIniSetting('magic_quotes_gpc');
 }
 
-function getPHPMagicQuotesRuntime()
-{
+function getPHPMagicQuotesRuntime() {
     return getPHPIniSetting('magic_quotes_runtime');
 }
 
-// @todo  Check if sybase still needed
-function getPHPMagicQuotesSybase()
-{
+// @todo Check if sybase still needed
+function getPHPMagicQuotesSybase() {
     return getPHPIniSetting('magic_quotes_sybase');
 }
 
-function getPHPMaxExecutionTime()
-{
+function getPHPMaxExecutionTime() {
     return getPHPIniSetting('max_execution_time');
 }
 
-function getPHPOpenBasedirSetting()
-{
+function getPHPOpenBasedirSetting() {
     return getPHPIniSetting('open_basedir');
 }
 
-function getPHPMaxPostSize()
-{
+function getPHPMaxPostSize() {
     return getPHPIniSetting('post_max_size');
 }
 
-function checkPHPSQLSafeMode()
-{
+function checkPHPSQLSafeMode() {
     return getPHPIniSetting('sql.safe_mode');
 }
 
-function checkPHPUploadMaxFilesize()
-{
+function checkPHPUploadMaxFilesize() {
     return getPHPIniSetting('upload_max_filesize');
 }
 
@@ -136,7 +126,7 @@ function getAsBytes($val) {
         return 0;
     }
     $val = trim($val);
-    $last = $val{strlen($val)-1};
+    $last = $val{strlen($val) - 1};
     switch ($last) {
         case 'k':
         case 'K':
@@ -151,25 +141,23 @@ function getAsBytes($val) {
     }
 }
 
-function isPHPExtensionLoaded($extension)
-{
+function isPHPExtensionLoaded($extension) {
     $value = extension_loaded($extension);
 
     if ($value === NULL) {
-        return E_EXTENSION_CANTCHECK;
+        return CON_EXTENSION_CANTCHECK;
     }
 
     if ($value === true) {
-        return E_EXTENSION_AVAILABLE;
+        return CON_EXTENSION_AVAILABLE;
     }
 
     if ($value === false) {
-        return E_EXTENSION_UNAVAILABLE;
+        return CON_EXTENSION_UNAVAILABLE;
     }
 }
 
-function isRegisterLongArraysActive()
-{
+function isRegisterLongArraysActive() {
     if (getPHPIniSetting('register_long_arrays') == false) {
         return false;
     }
@@ -177,9 +165,8 @@ function isRegisterLongArraysActive()
     return true;
 }
 
-function isPHPCompatible()
-{
-    if (version_compare(phpversion(), C_SETUP_MIN_PHP_VERSION, '>=') == true) {
+function isPHPCompatible() {
+    if (version_compare(phpversion(), CON_SETUP_MIN_PHP_VERSION, '>=') == true) {
         return true;
     } else {
         return false;

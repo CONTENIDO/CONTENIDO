@@ -194,7 +194,7 @@ class cSetupSystemtest extends cSetupMask {
     }
 
     function doPHPTests() {
-        $this->runTest(isPHPCompatible(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), C_SETUP_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), C_SETUP_MIN_PHP_VERSION));
+        $this->runTest(isPHPCompatible(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), CON_SETUP_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), CON_SETUP_MIN_PHP_VERSION));
 
         $this->runTest(getPHPFileUploadSetting(), self::C_SEVERITY_WARNING, i18n("File uploads disabled"), sprintf(i18n("Your PHP version is not configured for file uploads. You can't upload files using CONTENIDO's file manager unless you configure PHP for file uploads. See %s for more information"), '<a target="_blank" href="http://www.php.net/manual/en/ini.core.php#ini.file-uploads">http://www.php.net/manual/en/ini.core.php#ini.file-uploads</a>'));
 
@@ -208,16 +208,16 @@ class cSetupSystemtest extends cSetupMask {
 
         $result = checkOpenBasedirCompatibility();
         switch ($result) {
-            case E_BASEDIR_NORESTRICTION:
+            case CON_BASEDIR_NORESTRICTION:
                 $this->runTest(false, self::C_SEVERITY_NONE);
                 break;
-            case E_BASEDIR_DOTRESTRICTION:
+            case CON_BASEDIR_DOTRESTRICTION:
                 $this->runTest(false, self::C_SEVERITY_ERROR, i18n("open_basedir directive set to '.'"), i18n("The directive open_basedir is set to '.' (e.g. current directory). This means that CONTENIDO is unable to access files in a logical upper level in the filesystem. This will cause problems managing the CONTENIDO frontends. Either add the full path of this CONTENIDO installation to the open_basedir directive, or turn it off completely."));
                 break;
-            case E_BASEDIR_RESTRICTIONSUFFICIENT:
+            case CON_BASEDIR_RESTRICTIONSUFFICIENT:
                 $this->runTest(false, self::C_SEVERITY_INFO, i18n("open_basedir setting might be insufficient"), i18n("Setup believes that the PHP directive open_basedir is configured sufficient, however, if you encounter errors like 'open_basedir restriction in effect. File <filename> is not within the allowed path(s): <path>', you have to adjust the open_basedir directive"));
                 break;
-            case E_BASEDIR_INCOMPATIBLE:
+            case CON_BASEDIR_INCOMPATIBLE:
                 $this->runTest(false, self::C_SEVERITY_ERROR, i18n("open_basedir directive incompatible"), i18n("Setup has checked your PHP open_basedir directive and reckons that it is not sufficient. Please change the directive to include the CONTENIDO installation or turn it off completely."));
                 break;
         }
@@ -241,10 +241,10 @@ class cSetupSystemtest extends cSetupMask {
 
         $result = checkImageResizer();
         switch ($result) {
-            case E_IMAGERESIZE_CANTCHECK:
+            case CON_IMAGERESIZE_CANTCHECK:
                 $this->runTest(false, self::C_SEVERITY_WARNING, i18n("Unable to check for a suitable image resizer"), i18n("Setup has tried to check for a suitable image resizer (which is, for exampl, required for thumbnail creation), but was not able to clearly identify one. If thumbnails won't work, make sure you've got either the GD-extension or ImageMagick available."));
                 break;
-            case E_IMAGERESIZE_NOTHINGAVAILABLE:
+            case CON_IMAGERESIZE_NOTHINGAVAILABLE:
                 $this->runTest(false, self::C_SEVERITY_ERROR, i18n("No suitable image resizer available"), i18n("Setup checked your image resizing support, however, it was unable to find a suitable image resizer. Thumbnails won't work correctly or won't be looking good. Install the GD-Extension or ImageMagick"));
                 break;
         }
@@ -435,7 +435,7 @@ class cSetupSystemtest extends cSetupMask {
         $this->logFilePrediction($cfg['path']['contenido_cache'], self::C_SEVERITY_WARNING, self::C_FILETYPE_DIR);
         $this->logFilePrediction($cfg['path']['contenido_temp'], self::C_SEVERITY_WARNING, self::C_FILETYPE_DIR);
 
-        if ($_SESSION["setuptype"] == "setup" || ($_SESSION["setuptype"] == "migration" && is_dir(C_FRONTEND_PATH . '/cms/'))) {
+        if ($_SESSION["setuptype"] == "setup" || ($_SESSION["setuptype"] == "migration" && is_dir(CON_FRONTEND_PATH . '/cms/'))) {
             // Setup mode or migration mode with a existing default client
             // frontend path
             $this->logFilePrediction($cfg['path']['frontend'] . "/cms/cache/", self::C_SEVERITY_WARNING, self::C_FILETYPE_DIR);
@@ -461,8 +461,8 @@ class cSetupSystemtest extends cSetupMask {
     }
 
     function logFilePrediction($file, $severity, $filetype) {
-        if (strpos($file, C_FRONTEND_PATH) === 0) {
-            $shortFilename = substr($file, strlen(C_FRONTEND_PATH));
+        if (strpos($file, CON_FRONTEND_PATH) === 0) {
+            $shortFilename = substr($file, strlen(CON_FRONTEND_PATH));
         }
 
         if ($filetype == self::C_FILETYPE_FILE) {
@@ -479,23 +479,23 @@ class cSetupSystemtest extends cSetupMask {
                 $perm = predictCorrectFilepermissions($file);
 
                 switch ($perm) {
-                    case C_PREDICT_WINDOWS:
+                    case CON_PREDICT_WINDOWS:
                         $predictMessage = i18n("Your Server runs Windows. Due to that, Setup can't recommend any file permissions.");
                         break;
-                    case C_PREDICT_NOTPREDICTABLE:
+                    case CON_PREDICT_NOTPREDICTABLE:
                         $predictMessage = sprintf(i18n("Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file %s, especially in environments where ACL (Access Control Lists) are used."), $shortFilename);
                         break;
-                    case C_PREDICT_CHANGEPERM_SAMEOWNER:
+                    case CON_PREDICT_CHANGEPERM_SAMEOWNER:
                         $mfileperms = substr(sprintf("%o", fileperms($file)), -3);
                         $mfileperms{0} = intval($mfileperms{0}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server and the owner of your files are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the file mask to %s or set the owner to allow writing the file."), $shortFilename, $mfileperms);
                         break;
-                    case C_PREDICT_CHANGEPERM_SAMEGROUP:
+                    case CON_PREDICT_CHANGEPERM_SAMEGROUP:
                         $mfileperms = substr(sprintf("%o", fileperms($file)), -3);
                         $mfileperms{1} = intval($mfileperms{1}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server's group and the group of your files are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the file mask to %s or set the group to allow writing the file."), $shortFilename, $mfileperms);
                         break;
-                    case C_PREDICT_CHANGEPERM_OTHERS:
+                    case CON_PREDICT_CHANGEPERM_OTHERS:
                         $mfileperms = substr(sprintf("%o", fileperms($file)), -3);
                         $mfileperms{2} = intval($mfileperms{2}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server is not equal to the file owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the files. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the file mask to %s or set the others to allow writing the file."), $shortFilename, $mfileperms);
@@ -507,23 +507,23 @@ class cSetupSystemtest extends cSetupMask {
                 $perm = predictCorrectFilepermissions($target);
 
                 switch ($perm) {
-                    case C_PREDICT_WINDOWS:
+                    case CON_PREDICT_WINDOWS:
                         $predictMessage = i18n("Your Server runs Windows. Due to that, Setup can't recommend any directory permissions.");
                         break;
-                    case C_PREDICT_NOTPREDICTABLE:
+                    case CON_PREDICT_NOTPREDICTABLE:
                         $predictMessage = sprintf(i18n("Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file or directory %s, especially in environments where ACL (Access Control Lists) are used."), dirname($shortFilename));
                         break;
-                    case C_PREDICT_CHANGEPERM_SAMEOWNER:
+                    case CON_PREDICT_CHANGEPERM_SAMEOWNER:
                         $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
                         $mfileperms{0} = intval($mfileperms{0}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server and the owner of your directory are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the directory mask to %s or set the owner to allow writing the directory."), dirname($shortFilename), $mfileperms);
                         break;
-                    case C_PREDICT_CHANGEPERM_SAMEGROUP:
+                    case CON_PREDICT_CHANGEPERM_SAMEGROUP:
                         $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
                         $mfileperms{1} = intval($mfileperms{1}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server's group and the group of your directory are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the directory mask to %s or set the group to allow writing the directory."), dirname($shortFilename), $mfileperms);
                         break;
-                    case C_PREDICT_CHANGEPERM_OTHERS:
+                    case CON_PREDICT_CHANGEPERM_OTHERS:
                         $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
                         $mfileperms{2} = intval($mfileperms{2}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."), dirname($shortFilename), $mfileperms);

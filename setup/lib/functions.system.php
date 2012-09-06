@@ -215,7 +215,7 @@ function stripLastSlash($sInput) {
 
 // @FIXME: Comment me plz!
 function getSystemDirectories($bOriginalPath = false) {
-    $root_path = stripLastSlash(C_FRONTEND_PATH);
+    $root_path = stripLastSlash(CON_FRONTEND_PATH);
 
     $root_http_path = dirname(dirname($_SERVER["PHP_SELF"]));
     $root_http_path = str_replace("\\", "/", $root_http_path);

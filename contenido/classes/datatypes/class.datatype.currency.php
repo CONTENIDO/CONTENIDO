@@ -30,18 +30,30 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-define("cDatatypeCurrency_Left", 1);
-define("cDatatypeCurrency_Right", 2);
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cDatatypeCurrency::LEFT
+ */
+define('cDatatypeCurrency_Left', 1);
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cDatatypeCurrency::RIGHT
+ */
+define('cDatatypeCurrency_Right', 2);
+
 class cDatatypeCurrency extends cDatatypeNumber {
 
     protected $_cCurrencyLocation;
 
     protected $_sCurrencySymbol;
 
+    const LEFT = 1;
+
+    const RIGHT = 2;
+
     public function __construct() {
         parent::__construct();
 
-        $this->setCurrencySymbolLocation(cDatatypeCurrency_Right);
+        $this->setCurrencySymbolLocation(self::RIGHT);
         $this->setCurrencySymbol("�");
     }
 
@@ -63,16 +75,16 @@ class cDatatypeCurrency extends cDatatypeNumber {
     }
 
     /**
-     * @throws cInvalidArgumentException if the given location is not one of the constants cDatatypeCurrency_Left and cDatatypeCurrency_Right
+     * @throws cInvalidArgumentException if the given location is not one of the constants cDatatypeCurrency::LEFT and cDatatypeCurrency::RIGHT
      */
     public function setCurrencySymbolLocation($cLocation) {
         switch ($cLocation) {
-            case cDatatypeCurrency_Left:
-            case cDatatypeCurrency_Right:
+            case self::LEFT:
+            case self::RIGHT:
                 $this->_cCurrencyLocation = $cLocation;
                 break;
             default:
-                throw new cInvalidArgumentException('Warning: No valid cDatatypeCurrency_* Constant given. Available values: cDatatypeCurrency_Left, cDatatypeCurrency_Right');
+                throw new cInvalidArgumentException('Warning: No valid cDatatypeCurrency::* Constant given. Available values: cDatatypeCurrency::LEFT, cDatatypeCurrency::RIGHT');
         }
     }
 
@@ -80,10 +92,10 @@ class cDatatypeCurrency extends cDatatypeNumber {
         $value = parent::render();
 
         switch ($this->_cCurrencyLocation) {
-            case cDatatypeCurrency_Left:
+            case self::LEFT:
                 return sprintf("%s %s", $this->_sCurrencySymbol, $value);
                 break;
-            case cDatatypeCurrency_Right:
+            case self::RIGHT:
                 return sprintf("%s %s", $value, $this->_sCurrencySymbol);
                 break;
         }

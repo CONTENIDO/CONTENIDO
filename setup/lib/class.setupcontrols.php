@@ -101,9 +101,9 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
         $alphaImage = new cHTMLAlphaImage();
         $alphaImage->setClass("closer");
         $alphaImage->setStyle('margin-top:4px;');
-        $alphaImage->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/open_all.gif");
-        $alphaImage->setMouseover(C_SETUP_CONTENIDO_HTML_PATH . "images/open_all.gif");
-        $alphaImage->setSwapOnClick(C_SETUP_CONTENIDO_HTML_PATH . "images/close_all.gif", C_SETUP_CONTENIDO_HTML_PATH . "images/close_all.gif");
+        $alphaImage->setSrc(CON_SETUP_CONTENIDO_HTML_PATH . "images/open_all.gif");
+        $alphaImage->setMouseover(CON_SETUP_CONTENIDO_HTML_PATH . "images/open_all.gif");
+        $alphaImage->setSwapOnClick(CON_SETUP_CONTENIDO_HTML_PATH . "images/close_all.gif", CON_SETUP_CONTENIDO_HTML_PATH . "images/close_all.gif");
         $alphaImage->attachEventDefinition("showhide", "onclick", "aldiv = document.getElementById('" . $this->_oMessage->getId() . "');  showHideMessage(this, aldiv);");
 
         $this->_oTitle->setContent($sTitle);
@@ -184,8 +184,8 @@ class cHTMLLanguageLink extends cHTMLDiv {
 
         $linkImage = new cHTMLAlphaImage();
         $linkImage->advanceID();
-        $linkImage->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
-        $linkImage->setMouseover(C_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
+        $linkImage->setSrc(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
+        $linkImage->setMouseover(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
         $linkImage->setWidth(16);
         $linkImage->setHeight(16);
 
@@ -218,8 +218,8 @@ class cHTMLButtonLink extends cHTMLDiv {
 
         $linkImage = new cHTMLAlphaImage();
         $linkImage->advanceID();
-        $linkImage->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
-        $linkImage->setMouseover(C_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
+        $linkImage->setSrc(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
+        $linkImage->setMouseover(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
         $linkImage->setWidth(16);
         $linkImage->setHeight(16);
 

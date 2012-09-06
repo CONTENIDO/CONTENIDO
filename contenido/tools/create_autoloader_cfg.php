@@ -39,8 +39,15 @@ if (substr(PHP_SAPI, 0, 3) != 'cli') {
     die('Illegal call');
 }
 
-if (!defined('CONTENIDO_ENVIRONMENT')) {
-    define('CONTENIDO_ENVIRONMENT', getenv('CONTENIDO_ENVIRONMENT') ? getenv('CONTENIDO_ENVIRONMENT') : 'production');
+if (!defined('CON_ENVIRONMENT')) {
+    if (getenv('CONTENIDO_ENVIRONMENT')) {
+        $environment = getenv('CONTENIDO_ENVIRONMENT');
+    } else if(getenv('CON_ENVIRONMENT')) {
+        $environment = getenv('CON_ENVIRONMENT');
+    } else {
+        $environment = 'production';
+    }
+    define('CON_ENVIRONMENT', $environment);
 }
 
 
@@ -57,7 +64,7 @@ $context->currentPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')
 $context->contenidoInstallPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../../')) . '/';
 
 // the destination file where the class map configuration should be written in
-$context->destinationFile = $context->contenidoInstallPath . '/data/config/' . CONTENIDO_ENVIRONMENT . '/config.autoloader.php';
+$context->destinationFile = $context->contenidoInstallPath . '/data/config/' . CON_ENVIRONMENT . '/config.autoloader.php';
 
 // list of paths from where all class/interface names should be found
 $context->pathsToParse = array(

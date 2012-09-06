@@ -70,7 +70,7 @@ class cSetupAdditionalPlugins extends cSetupMask
                                      <input type="checkbox" class="plugin_checkbox" id="'.$sInternalName.'" name="'.$sInternalName.'" value="true"'.$sChecked.'>
                                      <label for="'.$sInternalName.'">'.$aPluginData['label'].'</label>
                                      <a href="javascript://" onclick="showPluginInfo(\''.$aPluginData['label'].'\', \''.$aPluginData['desc'].'\');">
-                                         <img src="' . C_SETUP_CONTENIDO_HTML_PATH . 'images/info.gif" alt="'.i18n('More information').'" title="'.i18n('More information').'" class="plugin_info">
+                                         <img src="' . CON_SETUP_CONTENIDO_HTML_PATH . 'images/info.gif" alt="'.i18n('More information').'" title="'.i18n('More information').'" class="plugin_info">
                                      </a>
                                  </p>';
             }

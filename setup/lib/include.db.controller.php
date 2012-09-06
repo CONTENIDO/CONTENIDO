@@ -52,7 +52,7 @@ $fullCount = 0;
 $file = fopen('data/tables.txt', 'r');
 $step = 1;
 while (($data = fgetcsv($file, 4000, ';')) !== false) {
-    if ($count == C_SETUP_MAX_CHUNKS_PER_STEP) {
+    if ($count == CON_SETUP_MAX_CHUNKS_PER_STEP) {
         $count = 1;
         $step++;
     }
@@ -78,7 +78,7 @@ while (($data = fgetcsv($file, 4000, ';')) !== false) {
 $file = fopen('data/tables_pi.txt', 'r');
 $step = 1;
 while (($data = fgetcsv($file, 4000, ';')) !== false) {
-    if ($count == C_SETUP_MAX_CHUNKS_PER_STEP) {
+    if ($count == CON_SETUP_MAX_CHUNKS_PER_STEP) {
         $count = 1;
         $step++;
     }
@@ -152,7 +152,7 @@ if ($_SESSION['setuptype'] == 'setup') {
 
 $fullChunks = array_merge($fullChunks, $pluginChunks);
 
-$totalSteps = ceil($fullCount / C_SETUP_MAX_CHUNKS_PER_STEP) + count($fullChunks) + 1;
+$totalSteps = ceil($fullCount / CON_SETUP_MAX_CHUNKS_PER_STEP) + count($fullChunks) + 1;
 foreach ($fullChunks as $fullChunk) {
     $step++;
     if ($step == $currentStep) {
@@ -172,7 +172,7 @@ echo '<script type="text/javascript">parent.updateProgressbar(' . $percent . ');
 if ($currentStep < $totalSteps) {
     // Still processing database setup, output js code to run the next step
     printf('<script type="text/javascript">function nextStep() { window.location.href="index.php?c=db&step=%s"; };</script>', $currentStep + 1);
-    if (!C_SETUP_DEBUG) {
+    if (!CON_SETUP_DEBUG) {
         echo '<script type="text/javascript">window.setTimeout(nextStep, 10);</script>';
     } else {
         echo '<a href="javascript:nextStep();">Next step</a>';
@@ -189,8 +189,8 @@ if ($currentStep < $totalSteps) {
         rereadClients();
     }
 
-    require_once(C_SETUP_PATH . '/upgrade_jobs/class.upgrade.job.abstract.php');
-    require_once(C_SETUP_PATH . '/upgrade_jobs/class.upgrade.job.main.php');
+    require_once(CON_SETUP_PATH . '/upgrade_jobs/class.upgrade.job.abstract.php');
+    require_once(CON_SETUP_PATH . '/upgrade_jobs/class.upgrade.job.main.php');
 
     // Execute upgrade jobs
     $oUpgradeMain = new cUpgradeJobMain($db, $cfg, $cfgClient);
@@ -207,7 +207,7 @@ if ($currentStep < $totalSteps) {
         </script>
     ';
 
-    if (!C_SETUP_DEBUG) {
+    if (!CON_SETUP_DEBUG) {
         echo '<script type="text/javascript">window.setTimeout(nextStep, 10);</script>';
     } else {
         echo '<a href="javascript:nextStep();">Last step</a>';

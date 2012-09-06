@@ -60,22 +60,29 @@ error_reporting(E_ALL ^E_NOTICE);
  * If you want to set a different enviroment value please define it in your .htaccess file
  * or in the server configuration.
  *
- * SetEnv CONTENIDO_ENVIRONMENT development
+ * SetEnv CON_ENVIRONMENT development
  */
-if (!defined('CONTENIDO_ENVIRONMENT')) {
+if (!defined('CON_ENVIRONMENT')) {
     if (getenv('CONTENIDO_ENVIRONMENT')) {
         $sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
+    } else if(getenv('CON_ENVIRONMENT')) {
+        $sEnvironment = getenv('CON_ENVIRONMENT');
     } else {
         // @TODO: provide a possibility to set the environment value via file
         $sEnvironment = 'production';
     }
 
+    /**
+     * @deprecated 2012-09-06 Constant has been renamed to CON_ENVIRONMENT
+     */
     define('CONTENIDO_ENVIRONMENT', $sEnvironment);
+
+    define('CON_ENVIRONMENT', $sEnvironment);
 }
 
 // (string) Path to folder containing all contenido configuration files
 //          Use environment setting!
-$cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/config/' . CONTENIDO_ENVIRONMENT . '/';
+$cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/config/' . CON_ENVIRONMENT . '/';
 
 // Security check: Include security class and invoke basic request checks
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.registry.php');
@@ -83,7 +90,7 @@ require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/cla
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.requestvalidator.php');
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.filehandler.php');
 try {
-    $oRequestValidator = new cRequestValidator(realpath(dirname(__FILE__) . '/../..') . '/data/config/' . CONTENIDO_ENVIRONMENT);
+    $oRequestValidator = new cRequestValidator(realpath(dirname(__FILE__) . '/../..') . '/data/config/' . CON_ENVIRONMENT);
 } catch (cFileNotFoundException $e) {
     die($e->getMessage());
 }

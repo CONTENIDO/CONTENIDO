@@ -71,7 +71,7 @@ $aChecks = array(
 );
 
 $aServerConfiguration = array(
-    array(i18n('System environment'), CONTENIDO_ENVIRONMENT),
+    array(i18n('System environment'), CON_ENVIRONMENT),
     array(i18n('Host name'), $_SERVER['HTTP_HOST'], 0),
     array(i18n('CONTENIDO server path'), $cfg['path']['frontend'], 0),
     array(i18n('CONTENIDO PEAR path'), $cfg['path']['pear'], 1),

@@ -28,6 +28,7 @@
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
+
 /* Introduction to metaobjects
  *
  * A metaobject is an object which combines pure API objects with presentation logic.
@@ -42,8 +43,15 @@ if (!defined('CON_FRAMEWORK')) {
  *
  */
 
-define("CMETAOBJECT_BASE", 1);
-define("CMETAOBJECT_PLUGIN", 2);
+/**
+ * @deprecated 2012-09-06 Unused in CONTENIDO core - should not be used any longer
+ */
+define('CMETAOBJECT_BASE', 1);
+
+/**
+ * @deprecated 2012-09-06 Unused in CONTENIDO core - should not be used any longer
+ */
+define('CMETAOBJECT_PLUGIN', 2);
 
 /** @deprecated 2011-08-24 this class is not supported any longer */
 class cMetaObject {

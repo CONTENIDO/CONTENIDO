@@ -44,7 +44,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
     protected function _executeInitialJobs() {
         global $cfg;
 
-        updateContenidoVersion($this->_oDb, $cfg['tab']['system_prop'], C_SETUP_VERSION);
+        updateContenidoVersion($this->_oDb, $cfg['tab']['system_prop'], CON_SETUP_VERSION);
 
         if (isset($_SESSION['sysadminpass']) && $_SESSION['sysadminpass'] != '') {
             updateSysadminPassword($this->_oDb, $cfg['tab']['phplib_auth_user_md5'], 'sysadmin');
@@ -105,8 +105,8 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
      */
     protected function _getUpgradeJobFiles() {
         $files = array();
-        $dir = C_SETUP_PATH . '/upgrade_jobs/';
-        if ($hDir = opendir($dir)) {
+        $dir = CON_SETUP_PATH . '/upgrade_jobs/';
+        if (($hDir = opendir($dir)) !== false) {
             while (false !== ($file = readdir($hDir))) {
                 if ($file != '.' && $file != '..' && is_file($dir . $file)) {
                     if (preg_match('/^class\.upgrade\.job\.(\d{4})\.php$/', $file, $match)) {
@@ -127,7 +127,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
      */
     protected function _processUpgradeJobs(array $upgradeJobs) {
         foreach ($upgradeJobs as $index => $file) {
-            require_once(C_SETUP_PATH . '/upgrade_jobs/' . $file);
+            require_once(CON_SETUP_PATH . '/upgrade_jobs/' . $file);
             $className = 'cUpgradeJob_' . $index;
             if (!class_exists($className)) {
                 continue;;

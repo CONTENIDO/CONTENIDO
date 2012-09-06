@@ -376,7 +376,7 @@ function tplPreparseLayout ($idlay)
             $bIsBody = true;
         }
 
-        if ($parser->iNodeName == "container" && $parser->iNodeType == NODE_TYPE_ELEMENT)
+        if ($parser->iNodeName == "container" && $parser->iNodeType == HtmlParser::NODE_TYPE_ELEMENT)
         {
             $idcontainer = $parser->iNodeAttributes["id"];
 

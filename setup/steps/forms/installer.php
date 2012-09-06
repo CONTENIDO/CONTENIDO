@@ -39,7 +39,7 @@ class cSetupInstaller extends cSetupMask
         $this->_oStepTemplate->set("s", "TITLE", i18n("System Installation"));
         $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("CONTENIDO will be installed, please wait ..."));
 
-        $this->_oStepTemplate->set("s", "IFRAMEVISIBILITY", (C_SETUP_DEBUG) ? 'visible' : 'hidden');
+        $this->_oStepTemplate->set("s", "IFRAMEVISIBILITY", (CON_SETUP_DEBUG) ? 'visible' : 'hidden');
         $this->_oStepTemplate->set("s", "DBUPDATESCRIPT", "index.php?c=db");
 
         switch ($_SESSION["setuptype"]) {

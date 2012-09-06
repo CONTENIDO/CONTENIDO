@@ -37,7 +37,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 function hasMySQLExtension()
 {
-    if (isPHPExtensionLoaded("mysql") == E_EXTENSION_AVAILABLE) {
+    if (isPHPExtensionLoaded("mysql") == CON_EXTENSION_AVAILABLE) {
         return true;
     } else {
         return false;
@@ -46,7 +46,7 @@ function hasMySQLExtension()
 
 function hasMySQLiExtension()
 {
-    if (isPHPExtensionLoaded("mysqli") == E_EXTENSION_AVAILABLE) {
+    if (isPHPExtensionLoaded("mysqli") == CON_EXTENSION_AVAILABLE) {
         return true;
     } else {
         return false;

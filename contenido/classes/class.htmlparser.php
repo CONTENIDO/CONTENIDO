@@ -35,12 +35,35 @@ if (!defined('CON_FRAMEWORK')) {
  * website design and software consulting.
  */
 
-define("NODE_TYPE_START", 0);
-define("NODE_TYPE_ELEMENT", 1);
-define("NODE_TYPE_ENDELEMENT", 2);
-define("NODE_TYPE_TEXT", 3);
-define("NODE_TYPE_COMMENT", 4);
-define("NODE_TYPE_DONE", 5);
+/**
+ * @deprecated 2012-09-06 Unused in CONTENIDO core - should not be used any longer
+ */
+define('NODE_TYPE_START', 0);
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant HtmlParser::NODE_TYPE_ELEMENT
+ */
+define('NODE_TYPE_ELEMENT', 1);
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant HtmlParser::NODE_TYPE_ENDELEMENT
+ */
+define('NODE_TYPE_ENDELEMENT', 2);
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant HtmlParser::NODE_TYPE_TEXT
+ */
+define('NODE_TYPE_TEXT', 3);
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant HtmlParser::NODE_TYPE_COMMENT
+ */
+define('NODE_TYPE_COMMENT', 4);
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant HtmlParser::NODE_TYPE_DONE
+ */
+define('NODE_TYPE_DONE', 5);
 
 /**
  * Class HtmlParser.
@@ -82,6 +105,16 @@ class HtmlParser {
     var $iHtmlTextLength;
     var $iHtmlTextIndex = 0;
 
+    const NODE_TYPE_ELEMENT = 1;
+
+    const NODE_TYPE_ENDELEMENT = 2;
+
+    const NODE_TYPE_TEXT = 3;
+
+    const NODE_TYPE_COMMENT = 4;
+
+    const NODE_TYPE_DONE = 5;
+
     /**
      * Constructor.
      * Constructs an HtmlParser instance with
@@ -101,7 +134,7 @@ class HtmlParser {
     function parse() {
         $text = $this->skipToElement();
         if ($text != "") {
-            $this->iNodeType = NODE_TYPE_TEXT;
+            $this->iNodeType = self::NODE_TYPE_TEXT;
             $this->iNodeName = "Text";
             $this->iNodeValue = $text;
             return true;
@@ -115,7 +148,7 @@ class HtmlParser {
 
     function readTag() {
         if ($this->currentChar() != "<") {
-            $this->iNodeType = NODE_TYPE_DONE;
+            $this->iNodeType = self::NODE_TYPE_DONE;
             return false;
         }
 
@@ -125,7 +158,7 @@ class HtmlParser {
         $pos = strpos($name, "/");
 
         if ($pos === 0) {
-            $this->iNodeType = NODE_TYPE_ENDELEMENT;
+            $this->iNodeType = self::NODE_TYPE_ENDELEMENT;
             $this->iNodeName = substr($name, 1);
             $this->iNodeValue = "";
         } else {
@@ -134,20 +167,20 @@ class HtmlParser {
                 if ($name == "!--") {
                     $rest = $this->skipToStringInTag("-->");
                     if ($rest != "") {
-                        $this->iNodeType = NODE_TYPE_COMMENT;
+                        $this->iNodeType = self::NODE_TYPE_COMMENT;
                         $this->iNodeName = "Comment";
                         $this->iNodeValue = "<" . $name . $rest;
                         $comment = true;
                     }
                 }
                 if (!$comment) {
-                    $this->iNodeType = NODE_TYPE_TEXT;
+                    $this->iNodeType = self::NODE_TYPE_TEXT;
                     $this->iNodeName = "Text";
                     $this->iNodeValue = "<" . $name;
                 }
                 return true;
             } else {
-                $this->iNodeType = NODE_TYPE_ELEMENT;
+                $this->iNodeType = self::NODE_TYPE_ELEMENT;
                 $this->iNodeValue = "";
                 $nameLength = strlen($name);
                 if ($nameLength > 0 && substr($name, $nameLength - 1, 1) == "/") {

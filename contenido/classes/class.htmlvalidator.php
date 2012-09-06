@@ -86,7 +86,7 @@ class cHTMLValidator {
                 }
 
                 // Check if it's a start tag
-                if ($htmlParser->iNodeType == NODE_TYPE_ELEMENT) {
+                if ($htmlParser->iNodeType == HtmlParser::NODE_TYPE_ELEMENT) {
                     // Push the current element to the stack, remember ID and
                     // Name, if possible
                     $nestingLevel++;
@@ -98,7 +98,7 @@ class cHTMLValidator {
                     $this->_nestingLevel[$htmlParser->iNodeName]++;
                 }
 
-                if ($htmlParser->iNodeType == NODE_TYPE_ENDELEMENT) {
+                if ($htmlParser->iNodeType == HtmlParser::NODE_TYPE_ENDELEMENT) {
                     // Check if we've an element of this type on the stack
                     if ($this->_nestingLevel[$htmlParser->iNodeName] > 0) {
                         unset($this->_nestingNodes[$htmlParser->iNodeName][$this->_nestingLevel[$htmlParser->iNodeName]]);

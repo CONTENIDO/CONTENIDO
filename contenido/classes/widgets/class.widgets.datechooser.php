@@ -43,8 +43,8 @@ class cDateChooser extends cDatefield
         $this->_oImage->setSrc("images/pfeil_runter.gif");
         $this->_oImage->setStyle("margin-left: 2px; cursor: pointer;");
         $this->_oCalendar = new cCalendarControl;
-        $this->_oDate->setSourceFormat(cDateTime_ISO);
-        $this->_oDate->setTargetFormat(cDateTime_Locale_DateOnly);
+        $this->_oDate->setSourceFormat(cDatatypeDateTime::FORMAT_ISO);
+        $this->_oDate->setTargetFormat(cDatatypeDateTime::FORMAT_LOCALE_DATEONLY);
         if ($initValue === false) {
             $this->_oDate->set(date("Y-m-d H:i:s"));
         } else {

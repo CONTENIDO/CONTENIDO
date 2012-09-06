@@ -22,19 +22,77 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-define("C_PREDICT_SUFFICIENT", 1);
-define("C_PREDICT_NOTPREDICTABLE", 2);
-define("C_PREDICT_CHANGEPERM_SAMEOWNER", 3);
-define("C_PREDICT_CHANGEPERM_SAMEGROUP", 4);
-define("C_PREDICT_CHANGEPERM_OTHERS", 5);
-define("C_PREDICT_CHANGEUSER", 6);
-define("C_PREDICT_CHANGEGROUP", 7);
-define("C_PREDICT_WINDOWS", 8);
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_SUFFICIENT
+ */
+define('C_PREDICT_SUFFICIENT', 1);
+define('CON_PREDICT_SUFFICIENT', 1);
 
-define("E_BASEDIR_NORESTRICTION", 1);
-define("E_BASEDIR_DOTRESTRICTION", 2);
-define("E_BASEDIR_RESTRICTIONSUFFICIENT", 3);
-define("E_BASEDIR_INCOMPATIBLE", 4);
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_NOTPREDICTABLE
+ */
+define('C_PREDICT_NOTPREDICTABLE', 2);
+define('CON_PREDICT_NOTPREDICTABLE', 2);
+
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_CHANGEPERM_SAMEOWNER
+ */
+define('C_PREDICT_CHANGEPERM_SAMEOWNER', 3);
+define('CON_PREDICT_CHANGEPERM_SAMEOWNER', 3);
+
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_CHANGEPERM_SAMEGROUP
+ */
+define('C_PREDICT_CHANGEPERM_SAMEGROUP', 4);
+define('CON_PREDICT_CHANGEPERM_SAMEGROUP', 4);
+
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_CHANGEPERM_OTHERS
+ */
+define('C_PREDICT_CHANGEPERM_OTHERS', 5);
+define('CON_PREDICT_CHANGEPERM_OTHERS', 5);
+
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_CHANGEUSER
+ */
+define('C_PREDICT_CHANGEUSER', 6);
+define('CON_PREDICT_CHANGEUSER', 6);
+
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_CHANGEGROUP
+ */
+define('C_PREDICT_CHANGEGROUP', 7);
+define('CON_PREDICT_CHANGEGROUP', 7);
+
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_WINDOWS
+ */
+define('C_PREDICT_WINDOWS', 8);
+define('CON_PREDICT_WINDOWS', 8);
+
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_BASEDIR_NORESTRICTION
+ */
+define('E_BASEDIR_NORESTRICTION', 1);
+define('CON_BASEDIR_NORESTRICTION', 1);
+
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_BASEDIR_DOTRESTRICTION
+ */
+define('E_BASEDIR_DOTRESTRICTION', 2);
+define('CON_BASEDIR_DOTRESTRICTION', 2);
+
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_BASEDIR_RESTRICTIONSUFFICIENT
+ */
+define('E_BASEDIR_RESTRICTIONSUFFICIENT', 3);
+define('CON_BASEDIR_RESTRICTIONSUFFICIENT', 3);
+
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_BASEDIR_INCOMPATIBLE
+ */
+define('E_BASEDIR_INCOMPATIBLE', 4);
+define('CON_BASEDIR_INCOMPATIBLE', 4);
 
 function canWriteFile($filename) {
     clearstatcache();
@@ -119,49 +177,49 @@ function checkOpenBasedirCompatibility() {
     }
 
     if (count($aBasedirEntries) == 1 && $aBasedirEntries[0] == $value) {
-        return E_BASEDIR_NORESTRICTION;
+        return CON_BASEDIR_NORESTRICTION;
     }
 
     if (in_array(".", $aBasedirEntries) && count($aBasedirEntries) == 1) {
-        return E_BASEDIR_DOTRESTRICTION;
+        return CON_BASEDIR_DOTRESTRICTION;
     }
 
     $sCurrentDirectory = getcwd();
 
     foreach ($aBasedirEntries as $entry) {
         if (stristr($sCurrentDirectory, $entry)) {
-            return E_BASEDIR_RESTRICTIONSUFFICIENT;
+            return CON_BASEDIR_RESTRICTIONSUFFICIENT;
         }
     }
 
-    return E_BASEDIR_INCOMPATIBLE;
+    return CON_BASEDIR_INCOMPATIBLE;
 }
 
 function predictCorrectFilepermissions($file) {
     // Check if the system is a windows system. If yes, we can't predict
     // anything.
     if (isWindows()) {
-        return C_PREDICT_WINDOWS;
+        return CON_PREDICT_WINDOWS;
     }
 
     // Check if the file is read- and writeable. If yes, we don't need to do any
     // further checks.
     if (is_writable($file) && is_readable($file)) {
-        return C_PREDICT_SUFFICIENT;
+        return CON_PREDICT_SUFFICIENT;
     }
 
     // If we can't find out the web server UID, we cannot predict the correct
     // mask.
     $iServerUID = getServerUID();
     if ($iServerUID === false) {
-        return C_PREDICT_NOTPREDICTABLE;
+        return CON_PREDICT_NOTPREDICTABLE;
     }
 
     // If we can't find out the web server GID, we cannot predict the correct
     // mask.
     $iServerGID = getServerGID();
     if ($iServerGID === false) {
-        return C_PREDICT_NOTPREDICTABLE;
+        return CON_PREDICT_NOTPREDICTABLE;
     }
 
     $aFilePermissions = getFileInfo($file);
@@ -169,27 +227,27 @@ function predictCorrectFilepermissions($file) {
     if (getSafeModeStatus()) {
         // SAFE-Mode related checks
         if ($iServerUID == $aFilePermissions["owner"]["id"]) {
-            return C_PREDICT_CHANGEPERM_SAMEOWNER;
+            return CON_PREDICT_CHANGEPERM_SAMEOWNER;
         }
 
         if (getSafeModeGidStatus()) {
             // SAFE-Mode GID related checks
             if ($iServerGID == $aFilePermissions["group"]["id"]) {
-                return C_PREDICT_CHANGEPERM_SAMEGROUP;
+                return CON_PREDICT_CHANGEPERM_SAMEGROUP;
             }
 
-            return C_PREDICT_CHANGEGROUP;
+            return CON_PREDICT_CHANGEGROUP;
         }
     } else {
         // Regular checks
         if ($iServerUID == $aFilePermissions["owner"]["id"]) {
-            return C_PREDICT_CHANGEPERM_SAMEOWNER;
+            return CON_PREDICT_CHANGEPERM_SAMEOWNER;
         }
 
         if ($iServerGID == $aFilePermissions["group"]["id"]) {
-            return C_PREDICT_CHANGEPERM_SAMEGROUP;
+            return CON_PREDICT_CHANGEPERM_SAMEGROUP;
         }
 
-        return C_PREDICT_CHANGEPERM_OTHERS;
+        return CON_PREDICT_CHANGEPERM_OTHERS;
     }
 }

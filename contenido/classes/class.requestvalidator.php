@@ -29,13 +29,39 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-#### FORMAT CONSTANTS ####
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cRequestValidator::CHECK_INTEGER
+ */
 define('CON_CHECK_INTEGER', '/^[0-9]*$/'); // integer value
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cRequestValidator::CHECK_PRIMITIVESTRING
+ */
 define('CON_CHECK_PRIMITIVESTRING', '/^[a-zA-Z0-9 -_]*$/'); // simple string
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cRequestValidator::CHECK_STRING
+ */
 define('CON_CHECK_STRING', '/^[\w0-9 -_]*$/'); // more complex string
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cRequestValidator::CHECK_HASH32
+ */
 define('CON_CHECK_HASH32', '/^[a-zA-Z0-9]{32}$/'); // 32-character hash
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cRequestValidator::CHECK_BELANG
+ */
 define('CON_CHECK_BELANG', '/^de_DE|en_US|fr_FR|it_IT|nl_NL$/'); //valid values for belang
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cRequestValidator::CHECK_AREASTRING
+ */
 define('CON_CHECK_AREASTRING', '/^[a-zA-Z_]*$/'); //checks for string consisting of letters and "_" only
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cRequestValidator::CHECK_CHECK_PATHSTRING
+ */
 define('CON_CHECK_PATHSTRING', '!([*]*\/)|(dbfs:\/[*]*)|(dbfs:)|(^)$!'); //validates file paths for file uploading (matches "folder/", "", "dbfs:" and "dbfs:/*")
 
 class cRequestValidator {
@@ -96,6 +122,55 @@ class cRequestValidator {
      * @var string
      */
     protected $sMode;
+
+    /**
+     * Regexp for integers.
+     *
+     * @var string
+     */
+    const CHECK_INTEGER = '/^[0-9]*$/';
+
+    /**
+     * Regexp for primitive strings.
+     *
+     * @var string
+     */
+    const CHECK_PRIMITIVESTRING = '/^[a-zA-Z0-9 -_]*$/';
+
+    /**
+     * Regexp for strings.
+     *
+     * @var string
+     */
+    const CHECK_STRING = '/^[\w0-9 -_]*$/';
+
+    /**
+     * Regexp for 32 character hash.
+     *
+     * @var string
+     */
+    const CHECK_HASH32 = '/^[a-zA-Z0-9]{32}$/';
+
+    /**
+     * Regexp for valid belang values.
+     *
+     * @var string
+     */
+    const CHECK_BELANG = '/^de_DE|en_US|fr_FR|it_IT|nl_NL$/';
+
+    /**
+     * Regexp for valid area values.
+     *
+     * @var string
+     */
+    const CHECK_AREASTRING = '/^[a-zA-Z_]*$/';
+
+    /**
+     * Regexp for validating file upload paths.
+     *
+     * @var string
+     */
+    const CHECK_PATHSTRING = '!([*]*\/)|(dbfs:\/[*]*)|(dbfs:)|(^)$!';
 
     /**
      * The constructor will check if every parameter defined in the $sConfigPath."/config.http_check.php" is valid. If not it will stop the execution.

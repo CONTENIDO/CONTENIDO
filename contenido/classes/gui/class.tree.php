@@ -17,27 +17,51 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2012-07-12
- *   $Id: class.tree.php 2629 2012-07-12 12:14:35Z mischa.holz $
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-define("TREEVIEW_GRIDLINE_SOLID", "solid");
-define("TREEVIEW_GRIDLINE_DASHED", "dashed");
-define("TREEVIEW_GRIDLINE_DOTTED", "dotted");
-define("TREEVIEW_GRIDLINE_NONE", "none");
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_GRIDLINE_SOLID
+ */
+define('TREEVIEW_GRIDLINE_SOLID', 'solid');
 
-define("TREEVIEW_BACKGROUND_NONE", "none");
-define("TREEVIEW_BACKGROUND_SHADED", "shaded");
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_GRIDLINE_DASHED
+ */
+define('TREEVIEW_GRIDLINE_DASHED', 'dashed');
 
-define("TREEVIEW_MOUSEOVER_NONE", "none");
-define("TREEVIEW_MOUSEOVER_MARK", "mark");
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_GRIDLINE_DOTTED
+ */
+define('TREEVIEW_GRIDLINE_DOTTED', 'dotted');
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_GRIDLINE_NONE
+ */
+define('TREEVIEW_GRIDLINE_NONE', 'none');
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_BACKGROUND_NONE
+ */
+define('TREEVIEW_BACKGROUND_NONE', 'none');
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_BACKGROUND_SHADED
+ */
+define('TREEVIEW_BACKGROUND_SHADED', 'shaded');
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_MOUSEOVER_NONE
+ */
+define('TREEVIEW_MOUSEOVER_NONE', 'none');
+
+/**
+ * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_MOUSEOVER_MARK
+ */
+define('TREEVIEW_MOUSEOVER_MARK', 'mark');
 
 /**
  * class cGuiTree
@@ -82,13 +106,29 @@ class cGuiTree extends cTree {
      */
     private $_baseLink;
 
+    const TREEVIEW_GRIDLINE_SOLID = 'solid';
+
+    const TREEVIEW_GRIDLINE_DASHED = 'dashed';
+
+    const TREEVIEW_GRIDLINE_DOTTED = 'dotted';
+
+    const TREEVIEW_GRIDLINE_NONE = 'none';
+
+    const TREEVIEW_BACKGROUND_NONE = 'none';
+
+    const TREEVIEW_BACKGROUND_SHADED = 'shaded';
+
+    const TREEVIEW_MOUSEOVER_NONE = 'none';
+
+    const TREEVIEW_MOUSEOVER_MARK = 'mark';
+
     public function __construct($uuid, $treename = false) {
         global $cfg, $auth;
 
         parent::__construct();
 
         $this->_uuid = $uuid;
-        //$this->setGridlineMode(TREEVIEW_GRIDLINE_DOTTED);
+        //$this->setGridlineMode(self::TREEVIEW_GRIDLINE_DOTTED);
 
         if ($treename != false) {
             $this->setTreeName($treename);
@@ -242,10 +282,10 @@ class cGuiTree extends cTree {
 
     /**
      * @param int mode Sets the gridline mode to one of the following values:
-     * TREEVIEW_GRIDLINE_SOLID
-     * TREEVIEW_GRIDLINE_DASHED
-     * TREEVIEW_GRIDLINE_DOTTED
-     * TREEVIEW_GRIDLINE_NONE
+     * cGuiTree::TREEVIEW_GRIDLINE_SOLID
+     * cGuiTree::TREEVIEW_GRIDLINE_DASHED
+     * cGuiTree::TREEVIEW_GRIDLINE_DOTTED
+     * cGuiTree::TREEVIEW_GRIDLINE_NONE
      *
      * @return void
      * @access public
@@ -496,5 +536,3 @@ class cWidgetTreeView extends cGuiTree {
     }
 
 }
-
-?>

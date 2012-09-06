@@ -37,11 +37,11 @@ if (!defined('CON_FRAMEWORK')) {
  */
 function cGenerateSetupStepsDisplay($iCurrentStep)
 {
-    if (!defined('C_SETUP_STEPS')) {
+    if (!defined('CON_SETUP_STEPS')) {
         return '';
     }
     $sStepsPath = '';
-    for ($i=1; $i < C_SETUP_STEPS + 1; $i++) {
+    for ($i=1; $i < CON_SETUP_STEPS + 1; $i++) {
         $sCssActive = '';
         if ($iCurrentStep == $i) {
             $sCssActive = 'background-color:#fff;color:#0060B1;';

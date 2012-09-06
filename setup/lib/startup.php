@@ -58,15 +58,22 @@ if (version_compare(PHP_VERSION, '6.0.0', '>=')) {
  *
  * SetEnv CONTENIDO_ENVIRONMENT development
  */
-if (!defined('CONTENIDO_ENVIRONMENT')) {
+if (!defined('CON_ENVIRONMENT')) {
     if (getenv('CONTENIDO_ENVIRONMENT')) {
         $sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
+    } else if(getenv('CON_ENVIRONMENT')) {
+        $sEnvironment = getenv('CON_ENVIRONMENT');
     } else {
         // @TODO: provide a possibility to set the environment value via file
         $sEnvironment = 'production';
     }
 
+    /**
+     * @deprecated 2012-09-06 Constant has been renamed to CON_ENVIRONMENT
+     */
     define('CONTENIDO_ENVIRONMENT', $sEnvironment);
+
+    define('CON_ENVIRONMENT', $sEnvironment);
 }
 
 /**
@@ -87,10 +94,10 @@ function checkAndInclude($filename) {
 }
 
 // Include security class and check request variables
-checkAndInclude(C_FRONTEND_PATH . '/contenido/classes/class.filehandler.php');
-checkAndInclude(C_FRONTEND_PATH . '/contenido/classes/class.requestvalidator.php');
+checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.filehandler.php');
+checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.requestvalidator.php');
 try {
-    $oRequestValidator = new cRequestValidator(C_FRONTEND_PATH . '/data/config/' . CONTENIDO_ENVIRONMENT);
+    $oRequestValidator = new cRequestValidator(CON_FRONTEND_PATH . '/data/config/' . CONTENIDO_ENVIRONMENT);
 } catch (cFileNotFoundException $e) {
     die($e->getMessage());
 }
@@ -139,11 +146,11 @@ if (is_array($_REQUEST)) {
 // Some basic configuration
 global $cfg;
 
-$cfg['path']['frontend'] = C_FRONTEND_PATH;
+$cfg['path']['frontend'] = CON_FRONTEND_PATH;
 $cfg['path']['contenido'] = $cfg['path']['frontend'] . '/contenido/';
 $cfg['path']['phplib'] = $cfg['path']['frontend'] . '/conlib/';
 $cfg['path']['pear'] = $cfg['path']['frontend'] . '/pear/';
-$cfg['path']['contenido_config'] = C_FRONTEND_PATH . '/data/config/' . CONTENIDO_ENVIRONMENT . '/';
+$cfg['path']['contenido_config'] = CON_FRONTEND_PATH . '/data/config/' . CONTENIDO_ENVIRONMENT . '/';
 
 // DB related settings
 $cfg['sql']['sqlprefix'] = (isset($_SESSION['dbprefix'])) ? $_SESSION['dbprefix'] : 'con';
@@ -190,33 +197,33 @@ cAutoload::initialize($cfg);
 
 
 // Common includes
-checkAndInclude(C_SETUP_PATH . '/lib/defines.php');
+checkAndInclude(CON_SETUP_PATH . '/lib/defines.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.i18n.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/api/functions.api.general.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
 checkAndInclude($cfg['path']['contenido'] . 'classes/class.template.php');
-checkAndInclude(C_SETUP_PATH . '/lib/class.setupcontrols.php');
-checkAndInclude(C_SETUP_PATH . '/lib/functions.filesystem.php');
-checkAndInclude(C_SETUP_PATH . '/lib/functions.environment.php');
-checkAndInclude(C_SETUP_PATH . '/lib/functions.safe_mode.php');
-checkAndInclude(C_SETUP_PATH . '/lib/functions.mysql.php');
-checkAndInclude(C_SETUP_PATH . '/lib/functions.phpinfo.php');
-checkAndInclude(C_SETUP_PATH . '/lib/functions.libraries.php');
-checkAndInclude(C_SETUP_PATH . '/lib/functions.system.php');
-checkAndInclude(C_SETUP_PATH . '/lib/functions.sql.php');
-checkAndInclude(C_SETUP_PATH . '/lib/functions.setup.php');
-checkAndInclude(C_SETUP_PATH . '/lib/class.setupmask.php');
+checkAndInclude(CON_SETUP_PATH . '/lib/class.setupcontrols.php');
+checkAndInclude(CON_SETUP_PATH . '/lib/functions.filesystem.php');
+checkAndInclude(CON_SETUP_PATH . '/lib/functions.environment.php');
+checkAndInclude(CON_SETUP_PATH . '/lib/functions.safe_mode.php');
+checkAndInclude(CON_SETUP_PATH . '/lib/functions.mysql.php');
+checkAndInclude(CON_SETUP_PATH . '/lib/functions.phpinfo.php');
+checkAndInclude(CON_SETUP_PATH . '/lib/functions.libraries.php');
+checkAndInclude(CON_SETUP_PATH . '/lib/functions.system.php');
+checkAndInclude(CON_SETUP_PATH . '/lib/functions.sql.php');
+checkAndInclude(CON_SETUP_PATH . '/lib/functions.setup.php');
+checkAndInclude(CON_SETUP_PATH . '/lib/class.setupmask.php');
 
 // PHP verion check
-if (phpversion() < C_SETUP_MIN_PHP_VERSION) {
+if (phpversion() < CON_SETUP_MIN_PHP_VERSION) {
     $sNotInstallableReason = 'php_version';
-    checkAndInclude(C_SETUP_PATH . '/steps/notinstallable.php');
+    checkAndInclude(CON_SETUP_PATH . '/steps/notinstallable.php');
 }
 
 // PHP ini session check
 if (getPHPIniSetting('session.use_cookies') == 0) {
     $sNotInstallableReason = 'session_use_cookies';
-    checkAndInclude(C_SETUP_PATH . '/steps/notinstallable.php');
+    checkAndInclude(CON_SETUP_PATH . '/steps/notinstallable.php');
 }
 
 // PHP database extension check
@@ -228,7 +235,7 @@ if (hasMySQLiExtension() && !hasMySQLExtension()) {
     $cfg['database_extension'] = 'mysql';
 } else {
     $sNotInstallableReason = 'database_extension';
-    checkAndInclude(C_SETUP_PATH . '/steps/notinstallable.php');
+    checkAndInclude(CON_SETUP_PATH . '/steps/notinstallable.php');
 }
 
 checkAndInclude($cfg['path']['phplib'] . 'prepend.php');

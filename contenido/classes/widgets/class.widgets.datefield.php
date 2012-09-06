@@ -46,11 +46,11 @@ class cDatefield extends cHTMLTextbox
 
     function render()
     {
-        if ($this->_oDate->get(cDateTime_ISO) != "1970-01-01") {
-            if ($this->_oDate->_cTargetFormat == cDateTime_Custom) {
+        if ($this->_oDate->get(cDatatypeDateTime::FORMAT_ISO) != "1970-01-01") {
+            if ($this->_oDate->_cTargetFormat == cDatatypeDateTime::FORMAT_CUSTOM) {
                 parent::setValue($this->_oDate->render());
             } else {
-                parent::setValue($this->_oDate->render(cDateTime_Locale_DateOnly));
+                parent::setValue($this->_oDate->render(cDatatypeDateTime::FORMAT_LOCALE_DATEONLY));
             }
         }
         return parent::render();

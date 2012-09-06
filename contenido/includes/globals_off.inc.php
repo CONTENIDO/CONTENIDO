@@ -18,34 +18,32 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unkown
- *   modified 2008-06-25, Frederic Schneider, add stripslashes_deep and contenido_stripslashes constant
- *   modified 2008-06-26 Removed $_SERVER and $_ENV because this global vars are read only
- *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready) and removed code for PHP older than 4.1.0
- *   modified 2011-02-04, Murat Purc, fixed potential attac by manipulated request variables (see http://forum.contenido.org/viewtopic.php?f=11&t=30812)
- *   $Id$:
- * }}
- *
  */
 
-
-// set constant value depending on get_magic_quotes_gpc status
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_STRIPSLASHES
+ */
 define('CONTENIDO_STRIPSLASHES', (get_magic_quotes_gpc() == 0));
 
+/**
+ * set constant value depending on get_magic_quotes_gpc status
+ *
+ * @var boolean
+ */
+define('CON_STRIPSLASHES', (get_magic_quotes_gpc() == 0));
+
 // simulate get_magic_quotes_gpc on if turned off
-if (CONTENIDO_STRIPSLASHES) {
+if (CON_STRIPSLASHES) {
 
     /**
      * Adds slashes to passed variable
      *
-     * @param   mixed  $value  Either a string or a multi-dimensional array of values
-     * @return  array
+     * @param mixed $value Either a string or a multi-dimensional array of
+     *            values
+     * @return array
      */
-    function addslashes_deep($value)
-    {
-        $value = is_array($value) ? array_map('addslashes_deep', $value) : addslashes($value);
+    function addslashes_deep($value) {
+        $value = is_array($value)? array_map('addslashes_deep', $value) : addslashes($value);
 
         return $value;
     }
@@ -53,18 +51,18 @@ if (CONTENIDO_STRIPSLASHES) {
     /**
      * Removes slashes from passed variable.
      *
-     * @param   mixed  $value  Either a string or a multi-dimensional array of values
-     * @return  array
+     * @param mixed $value Either a string or a multi-dimensional array of
+     *            values
+     * @return array
      */
-    function stripslashes_deep($value)
-    {
-        $value = is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value);
+    function stripslashes_deep($value) {
+        $value = is_array($value)? array_map('stripslashes_deep', $value) : stripslashes($value);
 
         return $value;
     }
 
-    $_POST   = array_map('addslashes_deep', $_POST);
-    $_GET    = array_map('addslashes_deep', $_GET);
+    $_POST = array_map('addslashes_deep', $_POST);
+    $_GET = array_map('addslashes_deep', $_GET);
     $_COOKIE = array_map('addslashes_deep', $_COOKIE);
 
     $cfg['simulate_magic_quotes'] = true;
@@ -73,7 +71,7 @@ if (CONTENIDO_STRIPSLASHES) {
 }
 
 // this should be the default setting, but only for PHP older than 5.3.0
-if (!CONTENIDO_STRIPSLASHES && (version_compare(PHP_VERSION, '5.3.0', '<'))) {
+if (!CON_STRIPSLASHES && (version_compare(PHP_VERSION, '5.3.0', '<'))) {
     @set_magic_quotes_runtime(0);
 }
 
@@ -95,4 +93,3 @@ foreach ($types_to_register as $global_type) {
 }
 // save memory
 unset($types_to_register, $global_type, $arr);
-?>

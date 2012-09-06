@@ -44,7 +44,7 @@ class cCalendarControl extends cHTMLTable
         $this->_oDate = new cDatatypeDateTime();
 
         // Development: Set today's date
-        $this->_oDate->setSourceFormat(cDateTime_ISO);
+        $this->_oDate->setSourceFormat(cDatatypeDateTime::FORMAT_ISO);
 
         if ($initDate === false) {
             $this->_oDate->set(date("Y-m-d H:i:s"));
@@ -114,7 +114,7 @@ class cCalendarControl extends cHTMLTable
 
     function _renderJS()
     {
-        $this->_oDate->setSourceFormat(cDateTime_UNIX);
+        $this->_oDate->setSourceFormat(cDatatypeDateTime::FORMAT_UNIX);
 
         $oScript = new cHTMLScript();
         $sScript = '

@@ -21,7 +21,7 @@ class TestSuiteHelper
      */
     public static function loadFeSuite($name)
     {
-        self::_loadSuite(CONTENIDO_TEST_PATH . '/frontend/' . $name . '/');
+        self::_loadSuite(CON_TEST_PATH . '/frontend/' . $name . '/');
     }
 
 

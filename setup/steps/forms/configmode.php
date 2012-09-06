@@ -80,8 +80,8 @@ class cSetupConfigMode extends cSetupMask
         $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_bNextstep."'; document.setupform.submit();");
 
         $nextSetup = new cHTMLAlphaImage();
-        $nextSetup->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
-        $nextSetup->setMouseOver(C_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
+        $nextSetup->setSrc(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
+        $nextSetup->setMouseOver(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
         $nextSetup->setClass("button");
 
         $link->setContent($nextSetup);

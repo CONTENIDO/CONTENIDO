@@ -302,7 +302,7 @@ if ($appendparameters == "filebrowser")
 
     $mtree->setBaseLink($baselink);
     $mtree->setBackgroundMode(TREEVIEW_BACKGROUND_SHADED);
-    $mtree->setMouseoverMode(TREEVIEW_MOUSEOVER_NONE);
+    $mtree->setMouseoverMode(cGuiTree::TREEVIEW_MOUSEOVER_NONE);
     $mtree->setCollapsed($collapsed);
     $mtree->processParameters();
 

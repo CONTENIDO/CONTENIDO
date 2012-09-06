@@ -40,20 +40,20 @@ class cSetupTypeChooser extends cSetupMask
         cSetupMask::cSetupMask("templates/setuptype.tpl");
         $this->setHeader(i18n("Please choose your setup type"));
         $this->_oStepTemplate->set("s", "TITLE_SETUP", i18n("Install new CONTENIDO version"));
-        $this->_oStepTemplate->set("s", "VERSION_SETUP", sprintf(i18n("Version %s"), C_SETUP_VERSION));
-        $this->_oStepTemplate->set("s", "DESCRIPTION_SETUP", sprintf(i18n("This setup type will install CONTENIDO %s."), C_SETUP_VERSION)."<br><br>".i18n("Please choose this type if you want to start with an empty or an example installation.")."<br><br>".i18n("Recommended for new projects."));
+        $this->_oStepTemplate->set("s", "VERSION_SETUP", sprintf(i18n("Version %s"), CON_SETUP_VERSION));
+        $this->_oStepTemplate->set("s", "DESCRIPTION_SETUP", sprintf(i18n("This setup type will install CONTENIDO %s."), CON_SETUP_VERSION)."<br><br>".i18n("Please choose this type if you want to start with an empty or an example installation.")."<br><br>".i18n("Recommended for new projects."));
 
         $this->_oStepTemplate->set("s", "TITLE_UPGRADE", i18n("Upgrade existing installation"));
-        $this->_oStepTemplate->set("s", "VERSION_UPGRADE", sprintf(i18n("Upgrade to %s"), C_SETUP_VERSION));
+        $this->_oStepTemplate->set("s", "VERSION_UPGRADE", sprintf(i18n("Upgrade to %s"), CON_SETUP_VERSION));
         $this->_oStepTemplate->set("s", "DESCRIPTION_UPGRADE", i18n("This setup type will upgrade your existing installation (CONTENIDO 4.6.x or later required).")."<br><br>".i18n("Recommended for existing projects."));
 
         $this->_oStepTemplate->set("s", "TITLE_MIGRATION", i18n("Migrate existing installation"));
-        $this->_oStepTemplate->set("s", "VERSION_MIGRATION", sprintf(i18n("Migrate (Version %s)"), C_SETUP_VERSION));
+        $this->_oStepTemplate->set("s", "VERSION_MIGRATION", sprintf(i18n("Migrate (Version %s)"), CON_SETUP_VERSION));
         $this->_oStepTemplate->set("s", "DESCRIPTION_MIGRATION", i18n("This setup type will help you migrating an existing installation to another server.")."<br><br>".i18n("Recommended for moving projects across servers."));
 
         $nextSetup = new cHTMLAlphaImage();
-        $nextSetup->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
-        $nextSetup->setMouseOver(C_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
+        $nextSetup->setSrc(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
+        $nextSetup->setMouseOver(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
         $nextSetup->setClass("button");
 
         $link = new cHTMLLink("#");
@@ -65,8 +65,8 @@ class cSetupTypeChooser extends cSetupMask
         $this->_oStepTemplate->set("s", "NEXT_SETUP", $link->render());
 
         $nextSetup = new cHTMLAlphaImage();
-        $nextSetup->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
-        $nextSetup->setMouseOver(C_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
+        $nextSetup->setSrc(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
+        $nextSetup->setMouseOver(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
         $nextSetup->setClass("button");
 
         $link = new cHTMLLink("#");
@@ -77,8 +77,8 @@ class cSetupTypeChooser extends cSetupMask
         $this->_oStepTemplate->set("s", "NEXT_UPGRADE", $link->render());
 
         $nextSetup = new cHTMLAlphaImage;
-        $nextSetup->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
-        $nextSetup->setMouseOver(C_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
+        $nextSetup->setSrc(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
+        $nextSetup->setMouseOver(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
         $nextSetup->setClass("button");
 
         $link = new cHTMLLink("#");

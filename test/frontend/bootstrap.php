@@ -16,25 +16,33 @@
 ################################################################################
 # UnitTest Framework initialization
 
-// set dir to PHPUnit location
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_UNITTEST_LIB_DIR
+ */
 define('UNITTEST_LIB_DIR', '');
+// set dir to PHPUnit location
+define('CON_UNITTEST_LIB_DIR', '');
 
-// set dir to CONTENIDO test location
+/**
+ * @deprecated 2012-09-06 Constant has been renamed to CON_TEST_PATH
+ */
 define('CONTENIDO_TEST_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')));
+// set dir to CONTENIDO test location
+define('CON_TEST_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')));
 
 // UnitTest sources
-require_once(UNITTEST_LIB_DIR . 'PHPUnit/Framework/TestCase.php');
+require_once(CON_UNITTEST_LIB_DIR . 'PHPUnit/Framework/TestCase.php');
 
 // CONTENIDO test related classes
-require_once(CONTENIDO_TEST_PATH . '/lib/TestSuiteHelper.php');
-require_once(CONTENIDO_TEST_PATH . '/lib/ContenidoTestHelper.php');
+require_once(CON_TEST_PATH . '/lib/TestSuiteHelper.php');
+require_once(CON_TEST_PATH . '/lib/ContenidoTestHelper.php');
 
 
 ################################################################################
 # CONTENIDO frontend initialization
 
 $currentWorkingDir = getcwd();
-chdir(realpath(CONTENIDO_TEST_PATH . '/../cms'));
+chdir(realpath(CON_TEST_PATH . '/../cms'));
 
 global $contenido_host, $contenido_database, $contenido_user, $contenido_password;
 global $contenido, $db, $auth, $sess, $perm, $lngAct, $_cecRegistry;
