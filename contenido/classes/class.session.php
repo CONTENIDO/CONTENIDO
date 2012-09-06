@@ -62,8 +62,6 @@ class cSession {
      * Starts the session
      * @param string The prefix for the session variables
      */
-
-
     public function __construct($prefix = 'backend') {
         $this->_pt = array();
         $this->_prefix = $prefix;
@@ -72,11 +70,8 @@ class cSession {
 
         if (!isset($_SESSION)) {
             if ($prefix === 'backend') {
-                $cfg = cRegistry::getConfig();
                 $url = cRegistry::getBackendUrl();
             } else {
-                $client = cRegistry::getClientId();
-                $cfgClient = cRegistry::getClientConfig($client);
                 $url = cRegistry::getFrontendUrl();
             }
             $url = parse_url($url);

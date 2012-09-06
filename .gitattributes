@@ -223,10 +223,6 @@ cms/upload/bildergalerie/P1040562.jpg -text
 cms/upload/bildergalerie/P1040563.jpg -text
 cms/upload/bildergalerie/P1080353.jpg -text
 conlib/auth.inc -text
-conlib/ct_file.inc -text
-conlib/ct_ldap.inc -text
-conlib/ct_session.inc -text
-conlib/ct_sql.inc -text
 conlib/db_mysql.inc -text
 conlib/db_mysqli.inc -text
 conlib/db_pdo_mysql.inc -text
@@ -234,7 +230,6 @@ conlib/db_sql_abstract.inc -text
 conlib/index.php -text
 conlib/local.php -text
 conlib/page.inc -text
-conlib/perm.inc -text
 conlib/prepend.php -text
 conlib/session.inc -text
 contenido/.htaccess_recommended -text

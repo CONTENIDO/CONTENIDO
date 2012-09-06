@@ -78,10 +78,8 @@ class DB_Contenido extends DB_Sql {
      */
     public function next_record() {
         global $cCurrentModule;
-        // FIXME  For what reason is NoRecord used???
-        $this->NoRecord = false;
+
         if (!$this->Query_ID) {
-            $this->NoRecord = true;
             if ($cCurrentModule > 0) {
                 $this->halt('next_record called with no query pending in Module ID ' . $cCurrentModule . '.');
             } else {
@@ -152,143 +150,36 @@ class DB_Contenido extends DB_Sql {
 }
 
 /**
- * @package    CONTENIDO Core
- * @subpackage Session
+ * @deprecated 2012-09-06 This class is not supported any longer.
  */
-class Contenido_CT_Sql extends CT_Sql {
-
-    /**
-     * And find our session data in this table.
-     * @var  string
-     */
-    public $database_table = '';
-
+class Contenido_CT_Sql {
     public function __construct() {
-        global $cfg;
-        $this->database_table = $cfg['tab']['phplib_active_sessions'];
+        cDeprecated("This class is not supported any longer.");
     }
-
-    /**
-     * Stores the session data in database table.
-     *
-     * Overwrites parents and uses MySQLs REPLACE statement, to prevent race
-     * conditions while executing INSERT statements by multiple frames in backend.
-     *
-     * - Existing entry will be overwritten
-     * - Non existing entry will be added
-     *
-     * @param   string  $id    The session id (hash)
-     * @param   string  $name  Name of the session
-     * @param   string  $str   The value to store
-     * @return  bool
-     */
-    public function ac_store($id, $name, $str) {
-        switch ($this->encoding_mode) {
-            case 'slashes':
-                $str = addslashes($name . ':' . $str);
-                break;
-            case 'base64':
-            default:
-                $str = base64_encode($name . ':' . $str);
-        }
-
-        $name = addslashes($name);
-        $now = date('YmdHis', time());
-
-        $iquery = sprintf(
-                "REPLACE INTO %s (sid, name, val, changed) VALUES ('%s', '%s', '%s', '%s')", $this->database_table, $id, $name, $str, $now
-        );
-
-        return ($this->db->query($iquery)) ? true : false;
-    }
-
 }
 
 /**
- * Implements the interface class for storing session data to disk using file
- * session container of phplib.
- * @package    CONTENIDO Core
- * @subpackage Session
+ * @deprecated 2012-09-06 This class is not supported any longer.
  */
-class Contenido_CT_File extends CT_File {
-
-    /**
-     * The maximum length for one line in session file.
-     * @var int
-     */
-    public $iLineLength = 999999;
-
-    /**
-     * Overrides standard constructor for setting up file path to the one which is
-     * configured in php.ini
-     *
-     * @return Contenido_CT_File
-     *
-     * @author Holger Librenz <holger.librenz@4fb.de>
-     */
+class Contenido_CT_File {
     public function __construct() {
-        global $cfg;
-
-        if (isset($cfg['session_line_length']) && !empty($cfg['session_line_length'])) {
-            $this->iLineLength = (int) $cfg['session_line_length'];
-        }
-
-        // get php.ini value for session path
-        $this->file_path = session_save_path() . '/';
+        cDeprecated("This class is not supported any longer.");
     }
-
-    /**
-     * Overrides get method, because standard byte count is not really senseful for
-     * CONTENIDO!
-     *
-     * @param   string  $sId
-     * @param   string  $sName
-     * @return  mixed
-     */
-    public function ac_get_value($sId, $sName) {
-        if (cFileHandler::exists($this->file_path . $sId . $sName)) {
-
-            $s = cFileHandler::readLine($this->file_path . $sId . $sName);
-            return urldecode($s);
-        } else {
-            return '';
-        }
-    }
-
 }
 
 /**
- * CONTENIDO session container, uses PHP's session implementation.
- *
- * NOTE: Is experimental, so don't use this in a production environment.
- *
- * To use this, set session container in data/config/{environment}/config.misc.php to
- * $cfg['session_container'] = 'session';
- *
- * @todo  Make session container configurable
- *
- * @package    CONTENIDO Core
- * @subpackage Session
- * @author     Murat Purc <murat@purc.de>
+ * @deprecated 2012-09-06 This class is not supported any longer.
  */
-class Contenido_CT_Session extends CT_Session {
-
+class Contenido_CT_Session {
     public function __construct() {
-        $this->ac_start(array(
-            'namespace' => 'contenido_ct_session_ns',
-            'session.hash_function' => '1', // use sha-1 function
-            'session.hash_bits_per_character' => '5', // and set 5 character to achieve 32 chars
-#            'session.save_path'                => 'your path',
-#            'session.name'                     => 'your session name',
-#            'session.gc_maxlifetime'           => 'your lifetime in seconds',
-        ));
+        cDeprecated("This class is not supported any longer.");
     }
-
 }
 
 /**
  * @package    CONTENIDO Core
  * @subpackage Session
+ * @deprecated This class was replaced by cSession. Please use that instead
  */
 class Contenido_Session extends Session {
 
@@ -303,6 +194,8 @@ class Contenido_Session extends Session {
 
     public function __construct() {
         global $cfg;
+		
+		cDeprecated('This class was replaced by cSession. Please use it instead.');
 
         $sFallback = 'sql';
         $sClassPrefix = 'Contenido_CT_';

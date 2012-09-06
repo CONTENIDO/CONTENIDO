@@ -45,10 +45,6 @@ if (is_file($_PHPLIB['libdir'] . $dbDriverFileName)) {
 }
 unset($dbDriverFileName);
 
-require_once($_PHPLIB['libdir'] . 'ct_sql.inc');    // Data storage container: database
-require_once($_PHPLIB['libdir'] . 'ct_file.inc');   // Data storage container: file
-require_once($_PHPLIB['libdir'] . 'ct_session.inc'); // Data storage container: session
-
 require_once($_PHPLIB['libdir'] . 'session.inc');   // Session management
 require_once($_PHPLIB['libdir'] . 'auth.inc');      // Authorization management
 // Additional require statements go before this line
