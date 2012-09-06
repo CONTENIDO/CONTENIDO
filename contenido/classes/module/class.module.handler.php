@@ -246,6 +246,8 @@ class cModuleHandler {
             return false;
         }
 
+        $templateName = str_replace(' ', '_', $templateName);
+        $templateName = strtolower($templateName);
         $fileOperation = cFileHandler::write($sSaveDirectory . $templateName . '.' . $fileType, $fileContent);
         if ($fileOperation === false) {
             return false;

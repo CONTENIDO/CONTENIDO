@@ -80,7 +80,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 $oModule = new cApiModule($a_d[$value]);
                 $module = $oModule->toArray();
                 if (false === $module) {
-#                    continue;
                     $module = array();
                 }
 
@@ -143,7 +142,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $cssFile = '';
         if (strlen($this->_cssData) > 0) {
             if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, 'css', $this->_cssData))) {
-                $cssFile = '<link rel="stylesheet" type="text/css" href="' . $myFileCss . '"/>';
+                $cssFile = '<link rel="stylesheet" type="text/css" href="' . $myFileCss . '" />';
             }
         }
 
@@ -154,9 +153,25 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             }
         }
 
-        // Add css files before closing head tag and js files before closing body tag
-        $this->_layoutCode = cString::iReplaceOnce('</head>', $cssFile . '</head>', $this->_layoutCode);
-        $this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
+        // add module CSS at {CSS} position, after title or after opening head tag
+        if (!empty($cssFile)) {
+            if (strpos($this->_layoutCode, '{CSS}') !== false) {
+                $this->_layoutCode = cString::iReplaceOnce('{CSS}', $cssFile, $this->_layoutCode);
+            } else if (strpos($this->_layoutCode, '</title>') !== false) {
+                $this->_layoutCode = cString::iReplaceOnce('</title>', '</title>' . $cssFile, $this->_layoutCode);
+            } else {
+                $this->_layoutCode = cString::iReplaceOnce('<head>', '<head>' . $cssFile, $this->_layoutCode);
+            }
+        }
+
+        // add module JS at {JS} position or before closing body tag if there is no {JS}
+        if (!empty($jsFile)) {
+            if (strpos($this->_layoutCode, '{JS}') !== false) {
+                $this->_layoutCode = cString::iReplaceOnce('{CSS}', $jsFile, $this->_layoutCode);
+            } else {
+                $this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
+            }
+        }
 
         // Save the generated code
         $this->_saveGeneratedCode($code, $idcatart);
