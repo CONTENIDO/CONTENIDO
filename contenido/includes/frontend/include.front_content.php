@@ -612,15 +612,17 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                 echo '<textarea>' . htmlspecialchars($code) . '</textarea>';
             }
 
-            // That's it! The code of an article will be evaluated.
-            // The code of an article is basically a PHP script which is cached in the database.
-            // Layout and Modules are merged depending on the Container definitions of the Template.
-
+                // That's it! The code of an article will be evaluated.
+                // The code of an article is basically a PHP script which is
+            // cached in the database.
+                // Layout and Modules are merged depending on the Container
+            // definitions of the Template.
             $aExclude = explode(',', getEffectiveSetting('frontend.no_outputbuffer', 'idart', ''));
             if (in_array(cSecurity::toInteger($idart), $aExclude)) {
                 eval("?>\n" . $code . "\n<?php\n");
             } else {
-                // Write html output into output buffer and assign it to an variable
+                // Write html output into output buffer and assign it to an
+                // variable
                 ob_start();
                 eval("?>\n" . $code . "\n<?php\n");
                 $htmlCode = ob_get_contents();
@@ -631,8 +633,6 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 
                 // Print output
                 echo $htmlCode;
-                echo "hier ";
-                exit;
             }
         }
     } else {
