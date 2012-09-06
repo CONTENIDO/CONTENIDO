@@ -153,21 +153,9 @@ $cfg['php_settings']['date.timezone'] = '';
 $cfg['php_error_reporting'] = E_ALL ^E_NOTICE;
 
 
-/* Session data storage container (PHPLIB)
- * -----------------------------------------------------------------------------
- * Different session data storage containers are available.
- * file = session data will be stored in a file on the file system
- * sql  = session data will be stored in a database table - as it is
- */
-
-// (string) Default container is sql
-$cfg['session_container'] = 'sql';
 
 // (bool) Use heap table to accelerate statitics (off by default)
 $cfg['statistics_heap_table'] = false;
-
-// (int) Max file size for one session file (for file session container)
-$cfg['session_line_length'] = 99999;
 
 
 /* HTTP parameter check
@@ -252,7 +240,7 @@ $cfg['url_builder']['config'] = array();
  * For more comments please look in class.user.php file
  */
 // (bool) Enable or disable checking password
-$cfg['password']['check_password_mask'] = false;
+$cfg['password']['check_password_mask'] = true;
 
 // (int) Minimum length of password (num characters). Default is 6.
 $cfg['password']['min_length'] = 6;
