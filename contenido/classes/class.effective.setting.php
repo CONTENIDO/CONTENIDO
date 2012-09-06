@@ -89,10 +89,11 @@ class cEffectiveSetting {
     public static function get($type, $name, $default = '') {
         global $contenido;
 
-        // if the config file does not exist, there is no DB, so just return
+        // if the DB connection is not possible, just return
         // the default value in order to avoid PHP notices
-        $cfg = cRegistry::getConfig();
-        if (!file_exists(cRegistry::getBackendPath() . '../data/config/' . CONTENIDO_ENVIRONMENT . '/config.php')) {
+        try {
+            $db = new DB_Contenido();
+        } catch (cException $e) {
             return $default;
         }
 
