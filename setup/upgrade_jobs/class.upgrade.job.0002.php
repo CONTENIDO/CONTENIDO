@@ -69,11 +69,6 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
 
             cModuleHandler::setEncoding('ISO-8859-1');
 
-            //set default configuration for connection,
-            //for all db objects in Contenido_UpgradeJob
-
-            DB_Contenido::setDefaultConfiguration($cfg['db']);
-
             // Save all modules from db-table to the filesystem
             $contenidoUpgradeJob = new Contenido_UpgradeJob($this->_oDb);
             $contenidoUpgradeJob->convertModulesToFile($this->_setupType);

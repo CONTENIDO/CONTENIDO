@@ -41,6 +41,8 @@ abstract class cUpgradeJobAbstract {
         $this->_aCfg = (is_array($cfg)) ? $cfg : $GLOBALS['cfg'];
         $this->_aCfgClient = (is_array($cfgClient)) ? $cfg : $GLOBALS['cfgClient'];
         $this->_setupType = $_SESSION['setuptype'];
+        // set default configuration for DB connection
+        DB_Contenido::setDefaultConfiguration($cfg['db']);
 
         if (!isset(self::$_rootPath)) {
             list($rootPath, $rootHttpPath) = getSystemDirectories();
@@ -62,7 +64,7 @@ abstract class cUpgradeJobAbstract {
         $aClients = array();
         $oClientColl = new cApiClientCollection();
         $oClientColl->select();
-        while ($oClient = $oClientColl->next()) {
+        while (($oClient = $oClientColl->next()) !== false) {
             $obj = clone $oClient;
             $aClients[$obj->get('idclient')] = $obj;
         }
@@ -73,7 +75,7 @@ abstract class cUpgradeJobAbstract {
         $aLanguages = array();
         $oLanguageColl = new cApiLanguageCollection();
         $oLanguageColl->select();
-        while ($oLang = $oLanguageColl->next()) {
+        while (($oLang = $oLanguageColl->next()) !== false) {
             $obj = clone $oLang;
             $aLanguages[$obj->get('idlang')] = $obj;
         }
