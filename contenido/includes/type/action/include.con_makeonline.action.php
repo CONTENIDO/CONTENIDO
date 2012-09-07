@@ -25,9 +25,9 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 if (isset($_POST['idarts'])) {
-    $idarts = explode('+', $_POST['idarts']);
+    $idarts = json_decode($_POST['idarts'], true);
     $online = $_POST['invert'] == 1 ? 0 : 1;
-    conMakeOnlineBulkEditing($idarts, $_POST['idlang'], $online);
+    conMakeOnlineBulkEditing($idarts, $lang, $online);
 } else {
     conMakeOnline($idart, $lang);
 }

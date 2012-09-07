@@ -25,7 +25,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 if (isset($_POST['idarts'])) {
     //delete articles (bulk editing)
-    $idarts = explode('+', $_POST['idarts']);
+    $idarts = json_decode($_POST['idarts'], true);
     foreach ($idarts as $article) {
         conDeleteArt($article);
     }

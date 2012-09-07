@@ -75,7 +75,7 @@
 
         .bulk_editing_functions a img, a.flip_mark img {
             vertical-align: middle;
-            margin-right: 3px;
+            margin-right: 6px;
         }
     </style>
 </head>
@@ -89,9 +89,8 @@
         <input type="hidden" name="idarts" value="">
         <input type="hidden" name="invert" value="">
         <input type="hidden" name="next" value="{NEXT}">
-        <input type="hidden" name="idlang" value="{IDLANG}">
+        <input type="hidden" name="sourcelanguage" value="{SOURCELANGUAGE}">
         <input type="hidden" name="syncoptions" value="{SYNCOPTIONS}">
-        <input type="submit" name="submit" value="senden" style="display:none;">
     </form>
     <table width="100%" cellspacing="0" cellpadding="2" border="0">
         <div class="text_large">
@@ -136,11 +135,7 @@
                     <a style="float:left;" onmouseover="this.style.cursor='pointer'" class="flip_mark"><img onmouseover="this.style.cursor='pointer'" alt="i18n('Flip selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif" style="margin-right:0px; vertical-align:middle;"> i18n("Flip selection")</a>
                     <div class="bulk_editing_functions" style="float:left;margin-left:25px;height:16px;display:none;">
                         <span>i18n("Apply to all selected articles"):</span>
-                        <a class="con_makeonline"><img src="images/online.gif" title="i18n('Set articles online')" alt="i18n('Set articles online')" border="0" style=""></a>
-                        <a class="con_makeonline invert"><img src="images/offline.gif" title="i18n('Set articles offline')" alt="i18n('Set articles offline')" border="0"></a>
-                        <a class="con_lock"><img src="images/article_unlocked.gif" title="i18n('Freeze articles')" alt="i18n('Freeze articles')" border="0"></a>
-                        <a class="con_lock invert"><img src="images/article_locked.gif" title="i18n('Unfreeze articles')" alt="i18n('Unfreeze articles')" border="0"></a>
-                        <a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteArticels()');"><img src="images/delete.gif" title="i18n('Delete articles')" alt="i18n('Delete articles')" border="0"></a><span style="padding-left:15px;">&nbsp;</span>
+                        {BULK_EDITING_FUNCTIONS}
                     </div>
                 </div>
                 <div style="clear:both;">
@@ -173,7 +168,7 @@
                 <a style="float:left;" onmouseover="this.style.cursor='pointer'" class="flip_mark"><img onmouseover="this.style.cursor='pointer'" alt="i18n('Flip Selection')" title="Markierung umkehren" src="images/but_invert_selection.gif" style="margin-right:0px; vertical-align:middle;"> i18n("Flip Selection")</a>
                 <div class="bulk_editing_functions" style="float:left;margin-left:25px;height:16px;display:none;">
                     <span>i18n("Apply to all selected articles"):</span>
-                    <a class="con_makeonline"><img src="images/online.gif" title="i18n('Set articles online')" alt="i18n('Set articles online')" border="0" style=""></a><a class="con_makeonline invert"><img src="images/offline.gif" title="i18n('Set articles offline')" alt="i18n('Set articles offline')" border="0"></a><a class="con_lock"><img src="images/article_unlocked.gif" title="i18n('Freeze articles')" alt="i18n('Freeze articles')" border="0"></a><a class="con_lock invert"><img src="images/article_locked.gif" title="i18n('Unfreeze articles')" alt="i18n('Unfreeze articles')" border="0"></a><a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteArticels()');"><img src="images/delete.gif" title="i18n('Delete articles')" alt="i18n('Delete articles')" border="0"></a><span style="padding-left:15px;">&nbsp;</span>
+                    {BULK_EDITING_FUNCTIONS}
                 </div>
             </div>
             <div style="clear:both;">
@@ -293,44 +288,45 @@
 
     {ROWMARKSCRIPT};
 
-    //show mark function or hidde
+    // show mark function or hide
     $('input.mark_articles').click(function() {
-        $('div.bulk_editing_functions').css('display', 'none');
-        if ($(this).attr('checked') == "checked") {
-            $('div.bulk_editing_functions').css('display', 'block');
-        } else {
-            if( $('input.mark_articles:checked').length > 0) {
-                $('div.bulk_editing_functions').css('display', 'block');
-            }
+        $('div.bulk_editing_functions').hide();
+        if ($(this).prop('checked') == 'checked') {
+            $('div.bulk_editing_functions').show();
+        } else if($('input.mark_articles:checked').length > 0) {
+            $('div.bulk_editing_functions').show();
         }
     });
 
     //flip mark
     $('a.flip_mark').click(function() {
-        $('div.bulk_editing_functions').css('display', 'none');
+        $('div.bulk_editing_functions').hide();
         $('input.mark_articles').each(function(index, value) {
-            if ($(this).attr('checked') == "checked") {
-                $(this).removeAttr('checked');
+            if ($(this).prop('checked') == 'checked') {
+                $(this).removeProp('checked');
             } else {
-                $('div.bulk_editing_functions').css('display', 'block');
-                $(this).attr('checked', 'checked');
+                $('div.bulk_editing_functions').show();
+                $(this).prop('checked', 'checked');
             }
         });
     });
 
-    //execute the action
-    $('div.bulk_editing_functions a:not(a.con_deleteart)').click(function() {
-        doAction($(this));
+    // execute the action
+    $('div.bulk_editing_functions a').click(function() {
+    	// action delete article has a security prompt, so do nothing here
+    	if (!$(this).hasClass('con_deleteart')) {
+    	    doAction($(this));
+    	}
+        return false;
     });
 
-    //execute the delete action
-    function deleteArticels() {
+    // execute the delete action
+    function deleteArticles() {
         doAction($('div.bulk_editing_functions a.con_deleteart'));
     }
 
     function doAction(thisObject) {
         var action = '';
-        var selectedIdArts = '';
         if (thisObject.hasClass('invert')) {
             $('form.bulk_editing_form input[name="invert"]').val('1');
             if (thisObject.hasClass('con_makeonline')) {
@@ -348,14 +344,18 @@
         $('form.bulk_editing_form input[name="action"]').val(action);
 
         //collect all selected idarts
+        var selectedIdArts = '[';
         $('input.mark_articles:checked').each(function(index, value) {
-            selectedIdArts += '+'+$(this).val();
+            selectedIdArts += $(this).val() + ',';
         });
+        selectedIdArts = selectedIdArts.substring(0, selectedIdArts.length - 1);
+        selectedIdArts += ']'
 
         //set all selected idarts
         $('form.bulk_editing_form input[name="idarts"]').val(selectedIdArts);
+
         //send form
-        $('form.bulk_editing_form input[name="submit"]').click();
+        $('form.bulk_editing_form').submit();
     }
 
 </script>
@@ -370,7 +370,7 @@ i18n("Set articles online")
 i18n("Set articles offline")
 i18n("Freeze articles")
 i18n("Unfreeze articles")
+i18n("Copy article to the current language")
 i18n("Delete articles")
 
 -->
-

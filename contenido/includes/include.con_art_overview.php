@@ -54,13 +54,19 @@ if ($action == 'con_duplicate') {
 }
 
 if ($action == 'con_syncarticle') {
-    // Verify that the category is available in this language
-    $oCatLang = new cApiCategoryLanguage();
-    if ($oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
-        conSyncArticle($syncarticle, $sourcelanguage, $lang);
+    if ($_POST['idarts']) {
+        $idarts = json_decode($_POST['idarts'], true);
     } else {
-        strSyncCategory($idcat, $sourcelanguage, $lang);
-        conSyncArticle($syncarticle, $sourcelanguage, $lang);
+        $idarts = array($idart);
+    }
+
+    // Verify that the category is available in this language
+    $catLang = new cApiCategoryLanguage();
+    foreach ($idarts as $idart) {
+        if (!$catLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
+            strSyncCategory($idcat, $sourcelanguage, $lang);
+        }
+        conSyncArticle($idart, $sourcelanguage, $lang);
     }
 }
 
@@ -289,9 +295,13 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         }
 
         $artlist = array();
+        $articlesOnline = 0;
+        $articlesOffline = 0;
+        $articlesLocked = 0;
+        $articlesUnlocked = 0;
+        $articlesToSync = 0;
 
         foreach ($aArticles as $sart) {
-            $dyn_cnt++;
             $idart = $sart["idart"];
             $idlang = $sart["idlang"];
 
@@ -320,6 +330,20 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $created = date($dateformat, strtotime($created));
             $modified = date($dateformat, strtotime($modified));
             $alttitle = "idart" . '&#58; ' . $idart . ' ' . "idcatart" . '&#58; ' . $idcatart . ' ' . "idartlang" . '&#58; ' . $idartlang;
+
+            if ($online == 1) {
+                $articlesOnline++;
+            } else {
+                $articlesOffline++;
+            }
+            if ($locked == 1) {
+                $articlesLocked++;
+            } else {
+                $articlesUnlocked++;
+            }
+            if ($idlang != $lang) {
+                $articlesToSync++;
+            }
 
             if ((($obj = $col->checkMark("article", $idartlang)) === false) || $obj->get("userid") == $auth->auth['uid']) {
                 $inUse = false;
@@ -420,7 +444,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $sql = "SELECT idcatlang FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat='" . cSecurity::toInteger($idcat) . "' AND idlang='" . cSecurity::toInteger($lang) . "'";
                 $db->query($sql);
                 if ($db->next_record()) {
-                    $tmp_sync = '<a href="' . $sess->url("main.php?area=con&action=con_syncarticle&syncarticle=$idart&sourcelanguage=$idlang&frame=4&idcat=$idcat&next=$next") . '" title="' . i18n("Copy article to the current language") . '"><img src="' . $cfg["path"]["images"] . 'but_sync_art.gif" alt="' . i18n("Copy article to the current language") . '" title="' . i18n("Copy article to the current language") . '" border="0" style="margin-left:3px;"></a>';
+                    $tmp_sync = '<a href="' . $sess->url("main.php?area=con&action=con_syncarticle&idart=$idart&sourcelanguage=$idlang&frame=4&idcat=$idcat&next=$next") . '" title="' . i18n("Copy article to the current language") . '"><img src="' . $cfg["path"]["images"] . 'but_sync_art.gif" alt="' . i18n("Copy article to the current language") . '" title="' . i18n("Copy article to the current language") . '" border="0" style="margin-left:3px;"></a>';
                 } else {
                     $tmp_sync = '';
                 }
@@ -728,6 +752,26 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         }
         $tpl->set('s', 'CLICK_ROW_NOTIFICATION', i18n("with click select line for further treatment"));
 
+        // construct the bulk editing functions
+        $bulkEditingFunctions = '';
+        if ($articlesOffline > 0) {
+            $bulkEditingFunctions .= createBulkEditingFunction('con_makeonline', 'images/online.gif', i18n('Set articles online'));
+        }
+        if ($articlesOnline > 0) {
+            $bulkEditingFunctions .= createBulkEditingFunction('con_makeonline invert', 'images/offline.gif', i18n('Set articles offline'));
+        }
+        if ($articlesUnlocked > 0) {
+            $bulkEditingFunctions .= createBulkEditingFunction('con_lock', 'images/article_unlocked.gif', i18n('Freeze articles'));
+        }
+        if ($articlesLocked > 0) {
+            $bulkEditingFunctions .= createBulkEditingFunction('con_lock invert', 'images/article_locked.gif', i18n('Unfreeze articles'));
+        }
+        if ($articlesToSync > 0) {
+            $bulkEditingFunctions .= createBulkEditingFunction('con_syncarticle', 'images/but_sync_art.gif', i18n('Copy article to the current language'));
+        }
+        $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), "box.confirm('" . i18n('Delete marked articles') . "', '" . i18n('Are you sure to delete the selected articles') . "','deleteArticles()');");
+        $tpl->set('s', 'BULK_EDITING_FUNCTIONS', $bulkEditingFunctions);
+
         if (count($artlist) > 0) {
             foreach ($artlist as $key2 => $artitem) {
                 if ($firstMark == false) {
@@ -801,10 +845,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $tpl->set('s', 'ELEMPERPAGE', $select);
 
         $tpl->set('s', 'IDCAT', $idcat);
-        $tpl->set('s', 'IDLANG', $idlang);
-
-        $tpl->set('s', 'DELETE_TITLE', i18n('Delete marked articles'));
-        $tpl->set('s', 'DELETE_TEXT', i18n('Are you sure to delete the selected articles'));
+        $tpl->set('s', 'SOURCELANGUAGE', $idlang);
 
         // Extract Category and Catcfg
         $sql = "SELECT
@@ -939,4 +980,24 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['blank']);
 }
 
-?>
+/**
+ * Creates HTML code for the bulk editing functions in the article overview.
+ *
+ * @param string $class the class for the link
+ * @param string $imageSrc the path to the image
+ * @param string $alt the alt tag for the image
+ * @param string $onclick [optional] the onlick attribute for the link
+ * @return string rendered HTML code
+ */
+function createBulkEditingFunction($class, $imageSrc, $alt, $onclick = '') {
+    $function = new cHTMLLink();
+    $function->setClass($class);
+    if ($onclick !== '') {
+        $function->setEvent('click', $onclick);
+    }
+    $image = new cHTMLImage($imageSrc);
+    $image->setAlt($alt);
+    $function->setContent($image);
+
+    return $function->render();
+}

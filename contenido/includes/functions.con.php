@@ -376,54 +376,52 @@ function conMakeArticleIndex($idartlang, $idart) {
  * @param ing $lang Language Id
  */
 function conMakeOnline($idart, $lang) {
-    global $auth;
+    $auth = cRegistry::getAuth();
 
-    $oArtLang = new cApiArticleLanguage();
-    if (!$oArtLang->loadByArticleAndLanguageId($idart, $lang)) {
+    $artLang = new cApiArticleLanguage();
+    if (!$artLang->loadByArticleAndLanguageId($idart, $lang)) {
         return;
     }
 
     // Reverse current value
-    $online = ($oArtLang->get('online') == 0) ? 1 : 0;
+    $online = ($artLang->get('online') == 0) ? 1 : 0;
 
-    $oArtLang->set('online', $online);
+    $artLang->set('online', $online);
 
     if ($online == 1) {
         // Update published date and publisher
-        $oArtLang->set('published', date('Y-m-d H:i:s'));
-        $oArtLang->set('publishedby', $auth->auth['uname']);
+        $artLang->set('published', date('Y-m-d H:i:s'));
+        $artLang->set('publishedby', $auth->auth['uname']);
     }
 
-    $oArtLang->store();
+    $artLang->store();
 }
 
 /**
  * Set the status from articles to online or offline.
- *
- * @todo  Should we not use cApiArticleLanguage, even if it is not performant?
  *
  * @param  array  $idarts  All articles
  * @param  int  $idlang
  * @param  bool  $online
  */
 function conMakeOnlineBulkEditing($idarts, $idlang, $online) {
-    global $db, $cfg, $auth;
+    $auth = cRegistry::getAuth();
 
-    $where = '1=2';
-    if ($online == 1) {
-        $publisher_info = "published = '" . date("Y-m-d H:i:s") . "', publishedby='" . $auth->auth["uname"] . "',";
-    } else {
-        $online = 0;
-        $publisher_info = '';
+    // get all articles with the given idart and idlang
+    $idartString = implode("','", $idarts);
+    $artLangCollection = new cApiArticleLanguageCollection();
+    $artLangCollection->select("`idart` IN ('" . $idartString . "') AND `idlang`='" . cSecurity::toInteger($idlang) . "'");
+
+    // iterate over articles and set online flag
+    while (($artLang = $artLangCollection->next()) !== false) {
+        $artLang->set('online', $online);
+        if ($online == 1) {
+            // update published date and publisher
+            $artLang->set('published', date('Y-m-d H:i:s'));
+            $artLang->set('publishedby', $auth->auth['uname']);
+        }
+        $artLang->store();
     }
-
-    foreach ($idarts as $idart) {
-        $where .= " OR idart='" . cSecurity::toInteger($idart) . "'";
-    }
-
-    $sql = "UPDATE " . $cfg["tab"]["art_lang"] . "  SET " . $publisher_info . " online = '" . $online . "' WHERE ($where)
-        AND idlang = '" . cSecurity::toInteger($idlang) . "'";
-    $db->query($sql);
 }
 
 /**
@@ -433,40 +431,35 @@ function conMakeOnlineBulkEditing($idarts, $idlang, $online) {
  * @param ing $lang Language Id
  */
 function conLock($idart, $lang) {
-    $oArtLang = new cApiArticleLanguage();
-    if (!$oArtLang->loadByArticleAndLanguageId($idart, $lang)) {
+    $artLang = new cApiArticleLanguage();
+    if (!$artLang->loadByArticleAndLanguageId($idart, $lang)) {
         return;
     }
 
-    $locked = ($oArtLang->get('locked') == 0) ? 1 : 0;
+    $locked = ($artLang->get('locked') == 0) ? 1 : 0;
 
-    $oArtLang->set('locked', $locked);
-    $oArtLang->store();
+    $artLang->set('locked', $locked);
+    $artLang->store();
 }
 
 /**
  * Freeze/Lock more articles.
- *
- * @todo  Should we not use cApiArticleLanguage, even if it is not performant?
  *
  * @param  array  $idarts  All articles
  * @param  int  $idlang
  * @param  bool $lock
  */
 function conLockBulkEditing($idarts, $idlang, $lock) {
-    global $db, $cfg;
+    // get all articles with the given idart and idlang
+    $idartString = implode("','", $idarts);
+    $artLangCollection = new cApiArticleLanguageCollection();
+    $artLangCollection->select("`idart` IN ('" . $idartString . "') AND `idlang`='" . cSecurity::toInteger($idlang) . "'");
 
-    $where = '1=2';
-    if ($lock != 1) {
-        $lock = 0;
+    // iterate over articles and set online flag
+    while (($artLang = $artLangCollection->next()) !== false) {
+        $artLang->set('locked', $lock);
+        $artLang->store();
     }
-
-    foreach ($idarts as $idart) {
-        $where .= " OR idart='" . cSecurity::toInteger($idart) . "'";
-    }
-
-    $sql = "UPDATE " . $cfg["tab"]["art_lang"] . " SET locked = '" . cSecurity::toInteger($lock) . "' WHERE ($where) AND idlang = '" . cSecurity::toInteger($idlang) . "'";
-    $db->query($sql);
 }
 
 /**
@@ -477,11 +470,11 @@ function conLockBulkEditing($idarts, $idlang, $lock) {
  * @return  bool
  */
 function conIsLocked($idart, $lang) {
-    $oArtLang = new cApiArticleLanguage();
-    if (!$oArtLang->loadByArticleAndLanguageId($idart, $lang)) {
+    $artLang = new cApiArticleLanguage();
+    if (!$artLang->loadByArticleAndLanguageId($idart, $lang)) {
         return false;
     }
-    return (1 == $oArtLang->get('locked'));
+    return (1 == $artLang->get('locked'));
 }
 
 /**
@@ -494,16 +487,16 @@ function conIsLocked($idart, $lang) {
 function conMakeCatOnline($idcat, $lang, $status) {
     global $cfg;
 
-    $oCatLang = new cApiCategoryLanguage();
-    if (!$oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
+    $catLang = new cApiCategoryLanguage();
+    if (!$catLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
         return;
     }
 
     $status = (1 == $status) ? 1 : 0;
 
-    $oCatLang->set('visible', $status);
-    $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
-    $oCatLang->store();
+    $catLang->set('visible', $status);
+    $catLang->set('lastmodified', date('Y-m-d H:i:s'));
+    $catLang->store();
 
     if ($cfg['pathresolve_heapcache'] == true && !$status = 0) {
         $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
@@ -522,16 +515,16 @@ function conMakeCatOnline($idcat, $lang, $status) {
  * @param  bool  $public  Public status of the Article
  */
 function conMakePublic($idcat, $lang, $public) {
-    $oCatLang = new cApiCategoryLanguage();
-    if (!$oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
+    $catLang = new cApiCategoryLanguage();
+    if (!$catLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
         return;
     }
 
     $public = (1 == $public) ? 1 : 0;
 
-    $oCatLang->set('public', $public);
-    $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
-    $oCatLang->store();
+    $catLang->set('public', $public);
+    $catLang->set('lastmodified', date('Y-m-d H:i:s'));
+    $catLang->store();
 }
 
 /**
@@ -543,80 +536,80 @@ function conDeleteart($idart) {
     global $lang, $_cecRegistry, $cfgClient, $client;
 
     // Get article language
-    $oArtLang = new cApiArticleLanguage();
-    if (!$oArtLang->loadByArticleAndLanguageId($idart, $lang)) {
+    $artLang = new cApiArticleLanguage();
+    if (!$artLang->loadByArticleAndLanguageId($idart, $lang)) {
         return;
     }
 
-    $idartlang = $oArtLang->get('idartlang');
-    $idtplcfg = $oArtLang->get('idtplcfg');
+    $idartlang = $artLang->get('idartlang');
+    $idtplcfg = $artLang->get('idtplcfg');
 
     // Fetch idcat
-    $oCatArt = new cApiCategoryArticle();
-    $oCatArt->loadBy('idart', (int) $idart);
-    $idcat = $oCatArt->get('idcat');
+    $catArt = new cApiCategoryArticle();
+    $catArt->loadBy('idart', (int) $idart);
+    $idcat = $catArt->get('idcat');
 
     // Reset startidartlang
     if (isStartArticle($idartlang, $idcat, $lang)) {
-        $oCatLang = new cApiCategoryLanguage();
-        $oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang);
-        $oCatLang->set('startidartlang', 0);
-        $oCatLang->store();
+        $catLang = new cApiCategoryLanguage();
+        $catLang->loadByCategoryIdAndLanguageId($idcat, $lang);
+        $catLang->set('startidartlang', 0);
+        $catLang->store();
     }
 
-    $oContentColl = new cApiContentCollection();
-    $oContentColl->deleteBy('idartlang', (int) $idartlang);
+    $contentColl = new cApiContentCollection();
+    $contentColl->deleteBy('idartlang', (int) $idartlang);
 
-    $oArtLangColl = new cApiArticleLanguageCollection();
-    $oArtLangColl->delete((int) $idartlang);
+    $artLangColl = new cApiArticleLanguageCollection();
+    $artLangColl->delete((int) $idartlang);
 
     if ($idtplcfg != 0) {
-        $oContainerConfColl = new cApiContainerConfigurationCollection();
-        $oContainerConfColl->deleteBy('idtplcfg', (int) $idtplcfg);
+        $containerConfColl = new cApiContainerConfigurationCollection();
+        $containerConfColl->deleteBy('idtplcfg', (int) $idtplcfg);
 
-        $oTplConfColl = new cApiTemplateConfigurationCollection();
-        $oTplConfColl->delete('idtplcfg', $idtplcfg);
+        $tplConfColl = new cApiTemplateConfigurationCollection();
+        $tplConfColl->delete('idtplcfg', $idtplcfg);
     }
 
     // Check if there are remaining languages
-    $oArtLangColl = new cApiArticleLanguageCollection();
-    $oArtLangColl->select('idart = ' . (int) $idart);
-    if (!$oArtLangColl->next()) {
+    $artLangColl = new cApiArticleLanguageCollection();
+    $artLangColl->select('idart = ' . (int) $idart);
+    if (!$artLangColl->next()) {
         return;
     }
 
-    $oCatArtColl = new cApiCategoryArticleCollection();
-    $oCatArtColl->select('idart = ' . (int) $idart);
-    while (($oCatArtItem = $oCatArtColl->next()) !== false) {
+    $catArtColl = new cApiCategoryArticleCollection();
+    $catArtColl->select('idart = ' . (int) $idart);
+    while (($oCatArtItem = $catArtColl->next()) !== false) {
         // Delete from code cache
         $mask = $cfgClient[$client]['code']['path'] . '*.' . $oCatArtItem->get('idcatart') . '.php';
         array_map('unlink', glob($mask));
 
         // Delete from 'stat'-table
-        $oStatColl = new cApiStatCollection();
-        $oStatColl->deleteBy('idcatart', (int) $oCatArtItem->get('idcatart'));
+        $statColl = new cApiStatCollection();
+        $statColl->deleteBy('idcatart', (int) $oCatArtItem->get('idcatart'));
     }
 
-    $oArtLangColl = new cApiArticleLanguageCollection();
-    $oArtLangColl->select('idart = ' . (int) $idart);
-    while (($oArtLangColl = $oCatArtColl->next()) !== false) {
+    $artLangColl = new cApiArticleLanguageCollection();
+    $artLangColl->select('idart = ' . (int) $idart);
+    while (($artLangColl = $catArtColl->next()) !== false) {
         // Reset startidlang value of related entry in category language table
-        $oCatLang = new cApiCategoryLanguage();
-        if ($oCatLang->loadBy('startidartlang', (int) $oArtLangColl->get('idartlang'))) {
-            $oCatLang->set('startidartlang', 0);
-            $oCatLang->store();
+        $catLang = new cApiCategoryLanguage();
+        if ($catLang->loadBy('startidartlang', (int) $artLangColl->get('idartlang'))) {
+            $catLang->set('startidartlang', 0);
+            $catLang->store();
         }
 
         // Delete entries from content table
-        $oContentColl = new cApiContentCollection();
-        $oContentColl->deleteBy('idartlang', (int) $oArtLangColl->get('idartlang'));
+        $contentColl = new cApiContentCollection();
+        $contentColl->deleteBy('idartlang', (int) $artLangColl->get('idartlang'));
     }
 
-    $oCatArtColl = new cApiCategoryArticleCollection();
-    $oCatArtColl->deleteBy('idart', (int) $idart);
+    $catArtColl = new cApiCategoryArticleCollection();
+    $catArtColl->deleteBy('idart', (int) $idart);
 
-    $oArtLangColl = new cApiArticleLanguageCollection();
-    $oArtLangColl->deleteBy('idart', (int) $idart);
+    $artLangColl = new cApiArticleLanguageCollection();
+    $artLangColl->deleteBy('idart', (int) $idart);
 
     $oArtColl = new cApiArticleCollection();
     $oArtColl->delete((int) $idart);
@@ -1386,39 +1379,40 @@ function conGetTopmostCat($idcat, $minLevel = 0) {
  * @return  void
  */
 function conSyncArticle($idart, $srclang, $dstlang) {
-    // Check if article has already been synced to target language
+    $auth = cRegistry::getAuth();
 
-    $oDstArtLang = new cApiArticleLanguage();
-    $oDstArtLang->loadByArticleAndLanguageId($idart, $dstlang);
-    if ($oDstArtLang->isLoaded()) {
+    // Check if article has already been synced to target language
+    $dstArtLang = new cApiArticleLanguage();
+    $dstArtLang->loadByArticleAndLanguageId($idart, $dstlang);
+    if ($dstArtLang->isLoaded()) {
         // Article already exists in detination language
         return;
     }
 
-    $oSrcArtLang = new cApiArticleLanguage();
-    $oSrcArtLang->loadByArticleAndLanguageId($idart, $srclang);
-    if ($oSrcArtLang->isLoaded()) {
+    $srcArtLang = new cApiArticleLanguage();
+    $srcArtLang->loadByArticleAndLanguageId($idart, $srclang);
+    if (!$srcArtLang->isLoaded()) {
         // Couldn't load article in source language
         return;
     }
-    $srcidartlang = $oSrcArtLang->get('idartlang');
+    $srcidartlang = $srcArtLang->get('idartlang');
 
-    if ($oSrcArtLang->get('idtplcfg') != 0) {
-        $newidtplcfg = tplcfgDuplicate($oSrcArtLang->get('idtplcfg'));
+    if ($srcArtLang->get('idtplcfg') != 0) {
+        $newidtplcfg = tplcfgDuplicate($srcArtLang->get('idtplcfg'));
     } else {
         $newidtplcfg = 0;
     }
 
     // Create an article language entry for destination language
-    $oArtLangColl = new cApiArticleLanguageCollection();
+    $artLangColl = new cApiArticleLanguageCollection();
     $fieldsToOverwrite = array(
         'idart' => $idart,
         'idlang' => $dstlang,
         'artspec' => 0,
         'online' => 0,
         'created' => date('Y-m-d H:i:s'),
-        'lastmodified' => '',
-        'modifiedby' => '',
+        'lastmodified' => date('Y-m-d H:i:s'),
+        'modifiedby' => $auth->auth['uname'],
         'published' => '',
         'publishedby' => '',
         'timemgmt' => 0,
@@ -1432,17 +1426,17 @@ function conSyncArticle($idart, $srclang, $dstlang) {
         'free_use_02' => '',
         'free_use_03' => '',
     );
-    $oArtLang = $oArtLangColl->copyItem($oSrcArtLang, $fieldsToOverwrite);
-    if (!is_object($oArtLang)) {
+    $artLang = $artLangColl->copyItem($srcArtLang, $fieldsToOverwrite);
+    if (!is_object($artLang)) {
         return;
     }
 
-    $newidartlang = $oArtLang->get('idartlang');
+    $newidartlang = $artLang->get('idartlang');
 
     // Execute CEC hook
     $param = array();
-    $param['src_art_lang'] = $oSrcArtLang->toArray();
-    $param['dest_art_lang'] = $oDstArtLang->toArray();
+    $param['src_art_lang'] = $srcArtLang->toArray();
+    $param['dest_art_lang'] = $dstArtLang->toArray();
     $param['dest_art_lang']['idartlang'] = (int) $newidartlang;
     $param['dest_art_lang']['idlang'] = (int) $dstlang;
     $param['dest_art_lang']['idtplcfg'] = (int) $newidtplcfg;
