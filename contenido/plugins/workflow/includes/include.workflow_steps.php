@@ -43,7 +43,7 @@ $workflowActions = new WorkflowActions();
 
 $availableWorkflowActions = $workflowActions->getAvailableWorkflowActions();
 
-$sCurrentEncoding = getEncodingByLanguage($db, $lang, $cfg);
+$sCurrentEncoding = getEncodingByLanguage($db, $lang);
 
 if (htmlentities($adduser, ENT_COMPAT, $sCurrentEncoding) == i18n("Add User", "workflow")) {
     $action = "workflow_create_user";

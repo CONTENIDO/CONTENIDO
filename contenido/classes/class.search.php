@@ -563,7 +563,7 @@ class cSearchIndex extends cSearchBaseAbstract {
         // modified 2007-10-01, H. Librenz - added as hotfix for encoding
         // problems (doesn't find any words with
         // umlaut vowels in it since you turn on UTF-8 as language encoding)
-        $sEncoding = getEncodingByLanguage($this->db, $this->lang, $this->cfg);
+        $sEncoding = getEncodingByLanguage($this->db, $this->lang);
 
         if (strtolower($sEncoding) != 'iso-8859-2') {
             $key = htmlentities($key, NULL, $sEncoding);
@@ -601,7 +601,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @return $key
      */
     public function addSpecialUmlauts($key) {
-        $key = htmlentities($key, null, getEncodingByLanguage($this->db, $this->lang, $this->cfg));
+        $key = htmlentities($key, null, getEncodingByLanguage($this->db, $this->lang));
         $aUmlautMap = array(
             'ue' => '&Uuml;',
             'ue' => '&uuml;',

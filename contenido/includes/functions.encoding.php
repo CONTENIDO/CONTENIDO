@@ -38,20 +38,16 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * @param DB_Contenido $db not used any more!
  * @param int $lang
- * @param array $cfg
  * @return string
  */
-function getEncodingByLanguage($db, $lang, $cfg) {
+function getEncodingByLanguage($db, $lang) {
     // check parameters and use cRegistry values if they are invalid
     if (!is_numeric($lang)) {
         $lang = cRegistry::getLanguageId();
     }
-    if (!is_array($cfg)) {
-        $cfg = cRegistry::getConfig();
-    }
 
     $lang = cSecurity::toInteger($lang);
-    if ($lang > 0 && is_array($cfg) && is_array($cfg['tab'])) {
+    if ($lang > 0) {
         // load the language object with the given ID and return the encoding
         $apiLanguage = new cApiLanguage($lang);
         if ($apiLanguage->isLoaded()) {
