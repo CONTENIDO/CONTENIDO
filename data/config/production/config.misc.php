@@ -330,6 +330,7 @@ $cfg['images']['image_magick']['use'] = true;
 
 // (string) Optional, path to ImageMagick binary directory, with ending slash
 //          e. g. C:/Program Files/ImageMagick/
+//          IMPORTANT: use slashes - not backslashes!
 // NOTE: You should set this on a windows os, otherwhise the system could execute
 //       the "convert.exe" from system32 folder. This executable does not belongs
 //       to ImageMagick.

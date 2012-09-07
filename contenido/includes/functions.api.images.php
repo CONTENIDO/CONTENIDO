@@ -657,27 +657,31 @@ function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
 /**
  * Checks if ImageMagick is available
  *
- * @return bool  true if ImageMagick is available
+ * @return bool true if ImageMagick is available
  */
-function cApiIsImageMagickAvailable()
-{
+function cApiIsImageMagickAvailable() {
     global $cfg;
-    static $imagemagickAvailable;
+    static $imagemagickAvailable = null;
 
-    if (isset($imagemagickAvailable)) {
+    // if the check has already been executed, just return the result
+    if (is_bool($imagemagickAvailable)) {
         return $imagemagickAvailable;
     }
 
+    // otherwise execute the IM check
     $output = array();
     $retval = 0;
     $imPath = $cfg['images']['image_magick']['path'];
-    $program = escapeshellarg($imPath . 'convert');
+    $program = '"' . escapeshellcmd($imPath . 'convert') . '" -version';
 
     @exec($program, $output, $retval);
 
     if (!is_array($output) || count($output) == 0) {
-        $imagemagickAvailable = true;
+        // exec is probably disabled, so we assume IM to be unavailable
+        $imagemagickAvailable = false;
     } else {
+        // otherwise output contains the output of the command "convert version"
+        // if IM is available, it contains the string "ImageMagick"
         if (strpos($output[0], 'ImageMagick') !== false) {
             $imagemagickAvailable = true;
         } else {
