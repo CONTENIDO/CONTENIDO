@@ -149,7 +149,7 @@ if (!isset($client)) {
 }
 
 // Update UriBuilder, set http base path
-cUri::getInstance()->getUriBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
+cUri::getInstance()->getUriBuilder()->setHttpBasePath(cRegistry::getFrontendUrl());
 
 // Initialize language
 if (!isset($lang)) {
