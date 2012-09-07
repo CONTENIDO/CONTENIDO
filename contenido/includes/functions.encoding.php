@@ -36,16 +36,13 @@ if (!defined('CON_FRAMEWORK')) {
  * modified 18.03.2008 - Removed special mySQl behaviour (using db object
  * instead) Timo Trautmann
  *
- * @param DB_Contenido $db
+ * @param DB_Contenido $db not used any more!
  * @param int $lang
  * @param array $cfg
  * @return string
  */
-function getEncodingByLanguage(&$db, $lang, $cfg) {
+function getEncodingByLanguage($db, $lang, $cfg) {
     // check parameters and use cRegistry values if they are invalid
-    if (!is_object($db)) {
-        $db = cRegistry::getDb();
-    }
     if (!is_numeric($lang)) {
         $lang = cRegistry::getLanguageId();
     }
