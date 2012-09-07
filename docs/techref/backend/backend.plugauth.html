@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Contenido - Pluggable Authentification for the Contenido
+Backend</title>
+  <style type="text/css">
+body            {
+                    background-color: #ffffff;
+                    scrollbar-face-color:#C6C6D5;
+                    scrollbar-highlight-color:#FFFFFF;
+                    scrollbar-3dlight-color:#747488;
+                    scrollbar-darkshadow-color:#000000;
+                    scrollbar-shadow-color:#334F77;
+                    scrollbar-arrow-color:#334F77;
+                    scrollbar-track-color:#C7C7D6;
+		    font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px; color: #000000;
+                }
+
+h1 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 20px; color: #000000;
+ margin-top: 0px;
+}
+
+h2 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 15px; color: #000000;
+}
+
+  </style>
+</head>
+<body alink="#000099" vlink="#990099" link="#000099"
+ style="color: rgb(0, 0, 0); background-color: #F1F1F1;">
+ 
+<div style="width:998px;">
+	<img src="conlogo.gif" alt="Contenido Logo" style="display:block;float:left;margin:0 30px 0 0;" />
+	<h1 style="float:left;line-height:80px;padding:0;margin:0;">Pluggable Authentification for the Contenido Backend (V. 4.8.x)</h1>
+</div>
+<br style="clear:both;" />
+
+<h2>Introduction</h2>
+Contenido introduces a new system to authenticate against external
+sources (LDAP directories, for example).<br>
+<br>
+<h2>What does it do?</h2>
+Contenido Pluggable Authentification Modules (don't swap them around
+with Linux PAM) makes it possible to authenticate via external sources
+- and just authentification. <br>
+<h2>How it works (authentification handler)<br>
+</h2>
+To write your own authentification handler, you have to write a single
+function which looks like this:<br>
+<br>
+<pre>function active_directory_auth ($username, $password)<br>{<br>	global $cfg;<br>	<br>	if ($cfg['ldap']['server'] != "")<br>	{<br>    	$ad = ldap_connect($cfg['ldap']['server']);<br>    	if ($ad)<br>    	{<br>    		ldap_set_option($ad, LDAP_OPT_PROTOCOL_VERSION, 3);<br>    		$bd = ldap_bind($ad, $username . $cfg['ldap']['suffix'], $password);<br>    		<br>    		if (!$bd)<br>    		{<br>    			return false;<br>    		}<br>    	}<br>	}<br>	<br>	return true;<br>}</pre>
+<br>
+If that function returns true, the mechanism knows that the login was
+successful. After that, you have to register the function:<br>
+<br>
+<pre>register_auth_handler("active_directory_auth");<br><br></pre>
+By registering the function, the login mechanism knows that it should
+call "active_directory_auth" for certain users. Finally, you have to
+include your new handler file (the recommended place is
+config.local.php).<br>
+<br>
+The login mechanism knows that you want to use a registered auth
+handler if the entry in the password field of the user equals a
+registered auth handler; e.g. the user "test" has
+"active_directory_auth" in his password field, thus the login mechanism
+would use the "active_directory_auth" function to validate. The
+password field has to be set using the sync script.<br>
+<br>
+<h2>Syncing with a remote source</h2>
+To make the authentification handler working, you have to "sync" your
+users to Contenido. This means that each user needs to be created
+and/or updated by a sync script (it's preferred to automate this using
+a cronjob to ensure regular updates). The active directory example has
+a sync script; you can modify it to fit your own needs.<br>
+<br>
+Remember that if you want your permissions syncronized using the sync
+script, you are on your own - we recommend that you only sync users,
+user-to-group relationships and groups and apply all rights to groups
+to keep it simple.<br>
+<br>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>Contenido - Writing modules for use with Contenido</title>
+  <style type="text/css">
+body            {
+                    background-color: #ffffff;
+                    scrollbar-face-color:#C6C6D5;
+                    scrollbar-highlight-color:#FFFFFF;
+                    scrollbar-3dlight-color:#747488;
+                    scrollbar-darkshadow-color:#000000;
+                    scrollbar-shadow-color:#334F77;
+                    scrollbar-arrow-color:#334F77;
+                    scrollbar-track-color:#C7C7D6;
+		    font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px; color: #000000;
+                }
+
+h1 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 20px; color: #000000;
+ margin-top: 0px;
+}
+
+h2 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 15px; color: #000000;
+}
+
+  </style>
+</head>
+<body style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);"
+ link="#000099" vlink="#990099" alink="#000099">
+<table cellpadding="2" cellspacing="2" border="0"
+ style="border-bottom: 1px solid; text-align: left; background-color: rgb(255, 255, 255); width: 100%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><img src="conlogo.gif"
+ alt="Contenido" align="left"
+ style="width: 190px; height: 112px; padding-right: 20px;">
+      <h1>Writing modules for use with Contenido<br>
+      </h1>
+      <table cellpadding="2" cellspacing="2" border="0"
+ style="text-align: left;">
+        <tbody>
+          <tr>
+            <td style="vertical-align: top;">Author</td>
+            <td style="vertical-align: top;">Timo A. Hummel</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Created</td>
+            <td style="vertical-align: top;">3rd November 2003</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Audience<br>
+            </td>
+            <td style="vertical-align: top;">Module Developers<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Applies to<br>
+            </td>
+            <td style="vertical-align: top;">Contenido 4.4 or later<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Introduction</h2>
+Writing modules with Contenido is as easy as writing regular PHP code.
+You don't get a stripped-down development environment, but rather you
+get a combination of Contenido's CMS features combined with your own
+code.<br>
+<br>
+<h2>What's input, what's output, what's a module anyways?<br>
+</h2>
+A module is nothing more than a piece of code which gets combined using
+a template:<br>
+<br>
+<img src="output-gen.jpg" alt="" style="width: 427px; height: 176px;"><br>
+<br>
+As you already know, a layout contains placeholders for modules. The
+PHP-Code from the module's output sections are inserted into the
+correct positions in the layout. The input section is not relevant for
+the output, but the input section is relevant for configuring the
+modules.<br>
+<br>
+<h2>Configuration magic</h2>
+To make modules more "modular", you can configure them. You might have
+seen this in the predefined modules - but how does it work?<br>
+<br>
+The configuration data is stored transparently, so you don't need to
+worry to get your configuration data from the input section to the
+output section. Storing configuration data is pretty easy. Take a look
+at this simple example of an input section:<br>
+<br>
+<pre style="border-style: solid; border-width: 1px;">echo " &lt;table&gt;<br>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td&gt;Test&lt;/td&gt;<br>&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td&gt;&lt;input type=\"text\" name=\"CMS_VAR[1]\" value=\"CMS_VALUE[1]\"&gt;&lt;/td&gt;<br>&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp; &lt;/tr&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/table&gt;";<span
+ style="font-family: sans-serif;"><br></span></pre>
+CMS_VAR[x] is the variable (which is set using "magic" :)) to "receive"
+the desired value, and CMS_VALUE[x] is the current value. The same
+story goes for the output area:<br>
+<pre style="border-style: solid; border-width: 1px;">echo "CMS_VALUE[1]";<span
+ style="font-family: sans-serif;"><br></span></pre>
+To avoid problems, you should always take care of the following things:<br>
+<ul>
+  <li>Always store your configuration into local variables (e.g. $foo =
+"CMS_VALUE[1]";)</li>
+  <li>Always use quotes around CMS_VALUE, as CMS_VALUE is text.</li>
+  <li>PHP allows transparent type switching, so the following code will
+also work:<br>
+    <pre>$foo = "CMS_VALUE[1]";<br><br>    if ($foo == 1)<br>{<br>&nbsp;&nbsp;&nbsp; echo "Worked";<br>}</pre>
+  </li>
+</ul>
+<h2>Important System stuff</h2>
+If you want to write advanced modules, you might want to interact with
+Contenido. Here are a few objects and functions you can use with your
+modules.<br>
+<br>
+<table style="text-align: left; width: 100%;" border="1" cellspacing="2"
+ cellpadding="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">DB_Contenido<br>
+      </td>
+      <td style="vertical-align: top;">The well-known PHPLib DB-Object.
+      <br>
+      <br>
+Example:<br>
+      <br>
+$mydb = new DB_Contenido;<br>
+$mydb-&gt;query("SELECT * FROM test");<br>
+      <br>
+Reference:<br>
+See
+http://www.sanisoft.com/phplib/manual/DB_SqlMethods.php#DB_SqlMethodsInt<br>
+      <br>
+You should always use $cfg["tab"][*] to access Contenido tables.<br>
+      <br>
+Warning: You should never ever use $db in your modules. Always use your
+own variables.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">$sess<br>
+      </td>
+      <td style="vertical-align: top;">The current session. Useful
+variables:<br>
+      <br>
+$sess-&gt;id (current session ID)<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">$auth<br>
+      </td>
+      <td style="vertical-align: top;">Authentification information.
+Useful variables:<br>
+      <br>
+$auth-&gt;auth["uid"] (current user ID)<br>
+$auth-&gt;auth["uname"] (current user name)<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+<br>
+</body>
+</html>

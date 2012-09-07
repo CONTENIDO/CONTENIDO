@@ -1,0 +1,122 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Contenido Linkchecker\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2008-02-27 10:16+0100\n"
+"Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
+"Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-Basepath: H:\\frederic.schneider\\\n"
+"X-Poedit-KeywordsList: i18n\n"
+"X-Poedit-SearchPath-0: H:\\frederic.schneider\\contenido\\plugins\\linkchecker\\includes\n"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:196
+#, fuzzy
+msgid "Link analysis from "
+msgstr "Link-Analyse vom "
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:196
+msgid "%Y-%m-%d"
+msgstr "%d.%m.%Y"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:42
+msgid "<strong>No errors</strong> were found."
+msgstr "Es wurden <strong>keine Fehler</strong> gefunden."
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:227
+#, fuzzy
+msgid "Total checked links"
+msgstr "Insgesamt gepr&uuml;fte Links"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:24
+msgid "idart"
+msgstr "idart"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:30
+msgid "Article"
+msgstr "Artikel"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:26
+msgid "idcat"
+msgstr "idcat"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:31
+msgid "Category"
+msgstr "Kategorie"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:47
+msgid "Description"
+msgstr "Beschreibung"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:31
+msgid "Linkerror"
+msgstr "Linkfehler"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:40
+msgid "Links to articles"
+msgstr "Links auf Artikel"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:40
+msgid "Links to categories"
+msgstr "Links auf Kategorien"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:51
+msgid "Links to documents and images"
+msgstr "Links auf Bilder und Dokumente"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:237
+#, fuzzy
+msgid "Links to extern sites and not defined links"
+msgstr "Links auf externe Quellen und nicht zugewiesene Links"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:46
+msgid "Wrong links"
+msgstr "Fehlerhafte Links"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:271
+msgid "Unknown: articles, documents etc. do not exist."
+msgstr "Unknown: Artikel, Dokumente et cetera existieren nicht."
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:273
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:275
+msgid "Offline: article or category is offline."
+msgstr "Offline: Artikel oder Kategorie ist offline."
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:277
+msgid "dbfs: no matches found in the dbfs database."
+msgstr "dbfs: In der dbfs-Datenbank ist die gesuchte Datei nicht vorhanden."
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:67
+msgid "No errors for this type."
+msgstr "Es wurden f&uuml;r diesen Linktyp keine Fehler gefunden."
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:196
+msgid "%Y-%m-%d, %I:%M%S %p"
+msgstr "%d.%m.%Y, %H:%M:%S"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:40
+msgid "Links at whitelist"
+msgstr "Links auf der wei&szlig;en Liste"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:41
+msgid "Delete"
+msgstr "Entfernen"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:42
+msgid "Entry"
+msgstr "Eintragung"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:43
+msgid "URLs"
+msgstr "Links"
+
+# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:45
+msgid "This links are on the whitelist. Whitelist-links won't be check at linkchecker."
+msgstr "Diese Links befinden sich auf der wei&szlig;en Liste und werden nicht vom Linkchecker &uuml;berpr&uuml;ft."
+
+msgid "View whitelist"
+msgstr "Whitelist anzeigen"

@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>Contenido - Making plugins translatable</title>
+  <style type="text/css">
+body            {
+                    background-color: #ffffff;
+                    scrollbar-face-color:#C6C6D5;
+                    scrollbar-highlight-color:#FFFFFF;
+                    scrollbar-3dlight-color:#747488;
+                    scrollbar-darkshadow-color:#000000;
+                    scrollbar-shadow-color:#334F77;
+                    scrollbar-arrow-color:#334F77;
+                    scrollbar-track-color:#C7C7D6;
+		    font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px; color: #000000;
+                }
+
+h1 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 20px; color: #000000;
+ margin-top: 0px;
+}
+
+h2 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 15px; color: #000000;
+}
+
+  </style>
+</head>
+<body style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);"
+ link="#000099" vlink="#990099" alink="#000099">
+<table cellpadding="2" cellspacing="2" border="0"
+ style="border-bottom: 1px solid; text-align: left; background-color: rgb(255, 255, 255); width: 100%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><img src="conlogo.gif"
+ alt="Contenido" align="left"
+ style="width: 190px; height: 112px; padding-right: 20px;">
+      <h1>Making plugins translatable<br>
+      </h1>
+      <table cellpadding="2" cellspacing="2" border="0"
+ style="text-align: left;">
+        <tbody>
+          <tr>
+            <td style="vertical-align: top;">Author</td>
+            <td style="vertical-align: top;">Timo A. Hummel</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Created</td>
+            <td style="vertical-align: top;">5th November 2003</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Audience<br>
+            </td>
+            <td style="vertical-align: top;">Plugin Developers<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Applies to<br>
+            </td>
+            <td style="vertical-align: top;">Contenido 4.4 or later<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>The plugin's configuration<br>
+</h2>
+If your plugin has actions which needs to be translatable (of course
+:)), you need a plugin configuration file.<br>
+<br>
+This file<span style="font-weight: bold;"> needs </span>to be placed
+in the "includes"-Directory of your plugin and needs to be named <span
+ style="font-weight: bold;">config.plugin.php</span>.<br>
+<br>
+Example:<br>
+<br>
+&lt;?php<br>
+<br>
+/* Config file for the TEST plugin */<br>
+$lngAct["test_dosomething"] = i18n("Does something useful", "test");<br>
+<br>
+?&gt;<br>
+<br>
+Note that the plugin developer doesn't need to take care of the i18n
+domain binding; all that is done during initialisation.<br>
+<br>
+<h2>Letting Contenido know about foreign "domains"<br>
+</h2>
+A "domain" in terms of the GNU gettext library defines in which path a
+specific translation can be found. For plugins, the domain is
+automatically set to the plugin's directory. All you need to do is to
+create a directory structure similar to Contenido's locale directory,
+and place .po files in it (note: The .po-Files need to be named like
+your plugin's name and plugin directory, e.g. the plugin "test" should
+reside in the directory "test" and the .po-Files have to be named
+"test.po").<br>
+<h2>Translating plugins<br>
+</h2>
+To create a translated string in the plugin itself, you need to use <span
+ style="font-weight: bold;">i18n("TEXT","&lt;DOMAIN&gt;");</span>. In
+the example above, we would write <span style="font-weight: bold;">i18n("TEXT","test");.
+</span>Note that domain names are case sensitive.
+<h2>Where's the magic?<br>
+</h2>
+Originally, the "magic" (including the plugin's configuration and i18n
+domain bindings) took place in the file config.php. As config.php is
+included even if we don't have a backend language (in fact, the
+information about the backend language is never available in the config
+file), the magic happens in cfg_language_de.inc.php. This is the only
+place where the proper initialisation of the plugin's config.plugin.php
+file can be guaranteed.<br>
+</body>
+</html>

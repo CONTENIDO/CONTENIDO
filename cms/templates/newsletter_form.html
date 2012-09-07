@@ -1,0 +1,31 @@
+<br/>
+<form method="post" action="{FORM_ACTION}" name="newsletterform"{FORM_TARGET}>
+    <div id="contactForm">
+        <div class="contactRow clearfix">
+            <label for="emailname">{EMAILNAME}</label>
+            <input id="emailname" type="text" name="emailname" value="" class="eingabe" maxlength="100"/>
+        </div>
+        <div class="contactRow clearfix">
+            <label for="email">{EMAIL}</label>
+            <input id="email" type="text" name="email" value="" class="eingabe" maxlength="100"/>
+        </div>
+        <div class="contactRow clearfix" style="padding-bottom:5px;">
+            <label for="action">&nbsp;</label>
+            <select name="action" class="eingabe" maxlength="100" style="float:left; margin-right:3px;">
+                <option value="subscribe" selected>{SUBSCRIBE}</option>
+                <option value="delete">{DELETE}</option>
+            </select>
+            {EXTRAHTML}
+        </div>
+        <hr class="clearfix" style="border: 1px solid #f1f1f1; width: 430px;"/>
+        <div id="contactFormSubmit" class="clearfix">
+    		<div id="contactFormSubmitLeft">
+    			<input type="reset" value="{LOESCHEN}" />
+    		</div>
+    		<div id="contactFormSubmitRight">
+    			<input type="submit" value="{ABSCHICKEN}" />
+    		</div>
+        </div>
+    </div>
+</form>
+<br/>

@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+    <script type="text/javascript">
+
+        parent.parent.frames["left"].frames['left_bottom'].location.reload();
+
+    </script>
+</head>
+<body style="margin: 10px">
+
+<form method="post" name="modform" action="{ACTION}">
+
+<table cellspacing="0" cellpadding="2" border="0" width="100%">
+
+    <input type="hidden" name="idmod" value="{IDMOD}" />
+
+    <tr style="font-weight:bold; background-color: #a9aec2">
+        <td colspan="2" class="textw_medium" style="border: 1px;border-color: #747488; border-style: solid">i18n("Name"):</td>
+    </tr>
+
+    <tr style="background-color: #F4F4F7">
+        <td colspan="2" style="border: 1px;  border-top:0px ;border-color: #747488; border-style: solid"><input name="name" style="border: 1px; border-style: solid; border-color:#747488; background: #FFFFFF" type="text" class="code_input" value="{NAME}" /></td>
+    </tr>
+
+    <tr><td colspan="2"><img src="images/spacer.gif" width="1" height="10"></td></tr>
+
+    <tr style="font-weight:bold; background-color: #a9aec2">
+        <td colspan="2" class="textw_medium" style="border: 1px;border-color: #747488; border-style: solid">i18n("Description"):</td>
+    </tr>
+
+    <tr style="background-color: #F4F4F7">
+        <td colspan="2" class="text_medium" style="border: 1px; border-top:0px; border-color: #747488; border-style: solid"><textarea name="descr" style="border: 1px; border-style: solid; border-color:#747488; background: #FFFFFF" class="{CLASS}" cols="80" rows="3">{DESCR}</textarea></td>
+    </tr>
+
+    <tr><td colspan="2"><img src="images/spacer.gif" width="1" height="10"></td></tr>
+
+    <!-- BEGIN:BLOCK -->
+    <tr style="font-weight:bold; background-color: #a9aec2">
+        <td class="textw_medium" style="border: 1px; border-right:0px;border-color: #747488; border-style: solid">{CAPTION}</td>
+        <td class="textw_medium" style="border: 1px; border-left:0px;border-color: #747488; border-style: solid" align="right">{ERROR}</td>
+    </tr>
+
+    <tr style="background-color: #F4F4F7">
+        <td colspan="2" style="border: 1px; border-top:0px; border-color: #747488; border-style: solid"><textarea style="border: 1px; border-style: solid; border-color:#747488; background: #FFFFFF" class="{CLASS}" name="{NAME}" cols="80" rows="5">{VALUE}</textarea></td>
+    </tr>
+
+    <tr><td><img src="images/spacer.gif" width="1" height="10"></td></tr>
+    <!-- END:BLOCK -->
+
+    <tr>
+        <td align="right" colspan="2"><input accesskey="s" type="image" src="images/but_ok.gif"></td>
+    </tr>
+
+</form>
+
+</body>
+</html>

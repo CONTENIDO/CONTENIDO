@@ -1,0 +1,537 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+  <title>Contenido - Backend customizing</title>
+  <style type="text/css">
+     body,tr,td {
+                   background-color: #ffffff;
+                   scrollbar-face-color:#C6C6D5;
+                   scrollbar-highlight-color:#FFFFFF;
+                   scrollbar-3dlight-color:#747488;
+                   scrollbar-darkshadow-color:#000000;
+                   scrollbar-shadow-color:#334F77;
+                   scrollbar-arrow-color:#334F77;
+                   scrollbar-track-color:#C7C7D6;
+		           font-family: Verdana, Arial, Helvetica, Sans-Serif;
+		           font-size: 11px;
+		           color: #000000;
+                }
+     h1 {
+                   font-family: Verdana, Arial, Helvetica, Sans-Serif; 
+                   font-size: 20px;
+                   color: #000000;
+                   margin-top: 0px;
+        }
+     h2 {
+                   font-family: Verdana, Arial, Helvetica, Sans-Serif;
+                   font-size: 15px;
+                   color: #000000;
+        }
+  </style>
+</head>
+<body style="color: rgb(0, 0, 0); background-color: #F1F1F1;" alink="#000099" link="#000099" vlink="#990099">
+
+<div>
+	<img src="conlogo.gif" alt="Contenido Logo" style="display:block;float:left;margin:0 30px 0 0;" />
+	<h1 style="float:left;line-height:80px;padding:0;margin:0;">Backend customizing (V. 4.8.x)</h1>
+</div>
+<br style="clear:both;" />
+
+<h2>Introduction</h2>
+Backend customizing is a mechanism to customize various parameters of
+the backend. There are not many settings you can do, as this mechanism
+is relatively new. However, this mechanism will be used more and more
+in the future.<br>
+<br>
+<h2>How it works</h2>
+Customizing Contenido settings is very easy and can be done via the
+group or user customizing settings. Here's an example for the user
+customizing:<br>
+<br>
+<img src="backend.customizing.1.gif" alt="" style="width: 631px; height: 104px;"><br>
+<br>
+Important: User settings have precendence before group settings. User
+settings always override group settings. If the user is added to more
+than one group, the result is undefined. Make sure that your groups
+don't override each other.<br>
+<br>
+<h2><span style="font-weight: bold;">Common parameters</span></h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; font-weight: bold;">Area/Type</td>
+      <td style="vertical-align: top; font-weight: bold;">Property</td>
+      <td style="vertical-align: top; font-weight: bold;">Value (Description)</td>
+      <td style="vertical-align: top; font-weight: bold; width: 185px;">Applies to</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">backend</td>
+      <td style="vertical-align: top;">currentlogintime</td>
+      <td style="vertical-align: top;">Date and Time when this session has been started (automatically set by the backend)</td>
+      <td style="vertical-align: top;">Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">backend</td>
+      <td style="vertical-align: top;">lastlogintime</td>
+      <td style="vertical-align: top;">Date and Time when the last session was started (automatically set by the backend)</td>
+      <td style="vertical-align: top;">Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">backend</td>
+      <td style="vertical-align: top;">preferred_idclient</td>
+      <td style="vertical-align: top;">ID of the client which should be selected after backend login</td>
+      <td style="vertical-align: top;">System, Clients, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">backend</td>
+      <td style="vertical-align: top;">leftframewidth</td>
+      <td style="vertical-align: top;">Defines the width of the left frame. Standard
+        value is 250.</td>
+      <td style="vertical-align: top;">System, Clients, Group, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">backend</td>
+      <td style="vertical-align: top;">small-navigation</td>
+      <td style="vertical-align: top;">(true, false): If true, a small navigation is shown. Default: false</td>
+      <td style="vertical-align: top;">System, Clients, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">articles</td>
+      <td style="vertical-align: top;">show-new-window-checkbox</td>
+      <td style="vertical-align: top;">
+        (true, false): If true, show "new window" checkbox for redirects in article properties.
+        Note: If a redirect has been specified, the page is redirected to the new URL using an html 
+        page header. As header redirects can't open new windows, this setting is only useful,
+        if a navigation module is used, which mentions the "open in new window" setting and 
+        adds a &prime;target=&quot;_blank&quot;&prime; to the link, if necessary. Default: false
+      </td>
+      <td style="vertical-align: top;">System, Clients, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">cms_img</td>
+      <td style="vertical-align: top;">directory-height</td>
+      <td style="vertical-align: top;">Height of the directory lister in rows, default 5</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">cms_img</td>
+      <td style="vertical-align: top;">directory-width</td>
+      <td style="vertical-align: top;">Width of the directory lister in pixels, default 300</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">cms_img</td>
+      <td style="vertical-align: top;">file-height</td>
+      <td style="vertical-align: top;">Height of the file lister in rows, default 5</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">cms_img</td>
+      <td style="vertical-align: top;">file-width</td>
+      <td style="vertical-align: top;">Width of the file lister in pixels, default 300</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">cms_img</td>
+      <td style="vertical-align: top;">description-height</td>
+      <td style="vertical-align: top;">Height of the description box in rows, default 5</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">cms_img</td>
+      <td style="vertical-align: top;">description-width</td>
+      <td style="vertical-align: top;">Width of the description box in characters, default 70</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">cms_img</td>
+      <td style="vertical-align: top;">preview-height</td>
+      <td style="vertical-align: top;">Height of the preview area in pixels, default 400</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">cms_img</td>
+      <td style="vertical-align: top;">preview-width</td>
+      <td style="vertical-align: top;">Width of the preview window in pixels, default 600</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">imagemagick</td>
+      <td style="vertical-align: top;">available</td>
+      <td style="vertical-align: top;">Set "1" if ImageMagick is available on your server to receive best results when resizing images</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">modules</td>
+      <td style="vertical-align: top;">java-edit</td>
+      <td style="vertical-align: top;">Enable the java module editor</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">modules</td>
+      <td style="vertical-align: top;">edit-with-tabs</td>
+      <td style="vertical-align: top;">(true, false) If set to "true" you can use the &lt;tab&gt; key to insert tabs in the input and output code areas (IE 6/7, FF 1.5/2). Default: false</td>
+      <td style="vertical-align: top;">System, Clients, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">modules</td>
+      <td style="vertical-align: top;">disable-history</td>
+      <td style="vertical-align: top;">(true, false) If true, don't use the module history. Default: false</td>
+      <td style="vertical-align: top;">System, Clients, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">modules</td>
+      <td style="vertical-align: top;">storeasfiles</td>
+      <td style="vertical-align: top;">Defines if Contenido should store modules as text files. THIS IS HIGHLY EXPERIMENTAL, ONLY USE IF YOU KNOW WHAT YOU ARE DOING! Default off.</td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">modules</td>
+      <td style="vertical-align: top;">loadfromfiles</td>
+      <td style="vertical-align: top;">Defines if Contenido should load modules as text files. THIS IS HIGHLY EXPERIMENTAL, ONLY USE IF YOU KNOW WHAT YOU ARE DOING! Default off.</td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">modules</td>
+      <td style="vertical-align: top;">force-menu-check</td>
+      <td style="vertical-align: top;">If system/modulecheck is enabled, force module check while module list will be generated (instead of using database information). Default $quot;false$quot;.</td>
+      <td style="vertical-align: top;">System, Clients, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">system</td>
+      <td style="vertical-align: top;">modulecheck</td>
+      <td style="vertical-align: top;">if set to "false" (as string), modules aren't tested for syntax errors (needed for older PHP versions)</td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">system</td>
+      <td style="vertical-align: top;">languageorder</td>
+      <td style="vertical-align: top;">If set to "name", languages in the drop-down (top right) will be shown ordered by name, 
+      if not specified or set to something else, languages will be ordered by language id (default)</td>
+      <td style="vertical-align: top;">System, Clients, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">system</td>
+      <td style="vertical-align: top;">multiassign</td>
+      <td style="vertical-align: top;">If false, don't allow multi assignments for articles.</td>
+      <td style="vertical-align: top;">System, Clients</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">layout</td>
+      <td style="vertical-align: top;">htmlvalidator</td>
+      <td style="vertical-align: top;">(true, false): If true, use the HTML validator. Default: true</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">newsletter</td>
+      <td style="vertical-align: top;">option-cronjob-available</td>
+      <td style="vertical-align: top;">(true, false): If true, then a newsletter
+        option can be activated to send the newsletter using cron jobs. Note, that
+        this option should only be used, if a real cron service is available
+        (do not use the Contenido built-in pseudo cron service). Additionally,
+        note, that there is a send job file available in the contenido/cronjobs
+        folder, but it hasn't been added to the cron job list - just generate
+        a real cron job on your server running this file. Default: false</td>
+      <td style="vertical-align: top;">System, Clients, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">newsletter</td>
+      <td style="vertical-align: top;">disable-rn-replacement</td>
+      <td style="vertical-align: top;">(true, false): If true, "\r\n" will not
+        be replaced by just "\n" to prevent double lines in mails. This may be
+        a good idea on Windows-Servers. Usually, use the default setting. Default: false</td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">newsletter</td>
+      <td style="vertical-align: top;">remove_base_tag</td>
+      <td style="vertical-align: top;">(true, false): Usually every article contains a &quote;base href&quote;
+        tag. This is nice, as all links, URLs and sources can be relative and we can
+        move the client around, as we like.<br /><br />But there is a problem with anchors: They
+        only work, if the link to the anchor (on the same page) contains the URL of the
+        current article (e.g. &quot;front_content.php?idart=77#MyAnchor&quot;). This works
+        fine, if you are on the website, but not, if you use anchors in html newsletter
+        articles (as the mail doesn't has this URL).<br /><br />If you like to use anchors in html
+        newsletters, set this setting to &quot;true&quot; and check everything twice, as
+        also all URLs and source path will be changed by Contenido code. Default: false</td>
+      <td style="vertical-align: top;">Client</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">newsletter</td>
+      <td style="vertical-align: top;">html_username<br />html_password</td>
+      <td style="vertical-align: top;">If the frontend (the website) is proteced
+        using .htaccess (username/password), you have to specify html_username and
+        html_password to be able to send html newsletters (as html newsletters
+        are just usual articles). Default: empty or not specified</td>
+      <td style="vertical-align: top;">Client</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">frontendusers</td>
+      <td style="vertical-align: top;">pluginsearch</td>
+      <td style="vertical-align: top;">(true, false): If true, the frontend users
+        menu also searches trough plugins. However, searching trough plugins
+        have a huge performance inpact on the list. If you have alot of frontend
+        users, set this to false to disable this function. Default: true</td>
+      <td style="vertical-align: top;">System, Clients, Users</td>
+    </tr>
+	<tr>
+      <td style="vertical-align: top;">frontendusers</td>
+      <td style="vertical-align: top;">pluginsearch_valid_plugins</td>
+      <td style="vertical-align: top;">If pluginsearch is set to true, you can hereby 
+        limit the plugins to search over. This property must be a comma-separated list 
+        (no whitespaces) of all plugins that should be used for pluginsearch.
+        All other plugins will be skipped to improve performance.</td>
+      <td style="vertical-align: top;">System, Clients, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">generator</td>
+      <td style="vertical-align: top;">xhtml</td>
+      <td style="vertical-align: top;">(true, false): Defines if the tags generated by Contenido
+        should be XHTML compliant. WARNING: This does not alter the HTML code
+        in your layouts and modules! You have to revise your modules and layouts
+        to be XHTML compliant. Default: false.</td>
+      <td style="vertical-align: top;">System, Clients</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">generator</td>
+      <td style="vertical-align: top;">basehref</td>
+      <td style="vertical-align: top;">(true, false): Defines if Contenido should automatically
+        insert a base href tag. Default: true.</td>
+      <td style="vertical-align: top;">System, Clients</td>
+    </tr>
+	<tr>
+      <td style="vertical-align: top;">edit_area</td>
+      <td style="vertical-align: top;">activated</td>
+      <td style="vertical-align: top;">(true, false): Defines if syntax highlighting editor is used in backend for modul, js, css and html code Default: true.</td>
+      <td style="vertical-align: top;">System, Clients, Groups, Users</td>
+    </tr>
+	<tr>
+      <td style="vertical-align: top;">system</td>
+      <td style="vertical-align: top;">insight_editing_activated</td>
+      <td style="vertical-align: top;">(true, false): Defines if insight editing is used in article editor</td>
+      <td style="vertical-align: top;">System, Clients, Groups, Users</td>
+    </tr>
+  	<tr>
+      <td style="vertical-align: top;">maintenance</td>
+      <td style="vertical-align: top;">mode</td>
+      <td style="vertical-align: top;">(disabled, enabled): In maintenance mode, only sysadmins are allowed to login into contenido backend. Default: disabled</td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+	<tr>
+      <td style="vertical-align: top;">pw_request</td>
+      <td style="vertical-align: top;">enable</td>
+      <td style="vertical-align: top;">(true, false): Property definies if contanido is allowed to generate new passwords for backenduser and submits them via mail. Default: true</td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">system</td>
+      <td style="vertical-align: top;">mail_host</td>
+      <td style="vertical-align: top;">Host which is used for sending system mails (PW-Request). Default: localhost</td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+	<tr>
+      <td style="vertical-align: top;">system</td>
+      <td style="vertical-align: top;">mail_sender</td>
+      <td style="vertical-align: top;">Sender mail-adress of Contenido Systemmails. (PW-Request). Default: info@contenido.org</td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+	<tr>
+      <td style="vertical-align: top;">system</td>
+      <td style="vertical-align: top;">mail_sender_name</td>
+      <td style="vertical-align: top;">Sender name of Contenido Systemmails. (PW-Request). Default: Contenido Backend</td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+	<tr>
+      <td style="vertical-align: top;">update</td>
+      <td style="vertical-align: top;">check</td>
+      <td style="vertical-align: top;">(true, false): Update checker notifies sysadmins, if there are new updates for contenido on contenido org. Default: false </td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+	<tr>
+      <td style="vertical-align: top;">update</td>
+      <td style="vertical-align: top;">news_feed</td>
+      <td style="vertical-align: top;">(true, false): Update RSS News notifies sysadmins, about news on contenido org and security issues. Default: false </td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+
+<h2>tinyMCE-related Parameters</h2>
+Starting with Contenido V4.6.16 all tinyMCE settings which may be specified for tinyMCE
+and the plugins may be specified as system, client, group or user setting. Use &quot;tinymce&quot;
+as type and as name the name of the parameter according to the tinyMCE documentation.<br />
+<br />
+These parameters can't be set using a setting: document_base_url, file_browser_callback<br />
+<br />
+<table border="1" cellpadding="2"
+ cellspacing="2" style="text-align: left; width: 100%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">content_css</td>
+      <td style="vertical-align: top;">Defines the stylesheet to 
+        include within tinyMCE (&lt;= V4.6.15: wysiwyg/tinymce-stylesheet-file).</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">theme_advanced_styles</td>
+      <td style="vertical-align: top;">Defines the available styles in the tinyMCE style
+        dropdown (&lt;= V4.6.15: wysiwyg/tinymce-styles)</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">width</td>
+      <td style="vertical-align: top;">Defines the width of tinyMCE (&lt;= V4.6.15: wysiwyg/tinymce-width, 
+        default 100%)</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">height</td>
+      <td style="vertical-align: top;">Defines the height if tinyMCE (&lt;= V4.6.15: wysiwyg/tinymce-height, 
+        default 480px)</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">contenido_height_html</td>
+      <td style="vertical-align: top;">Overrides the tinyMCE height when editing
+        the CMS_HTML element (&lt;= V4.6.15: wysiwyg/tinymce-height-html)
+      </td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">contenido_height_head</td>
+      <td style="vertical-align: top;">Overrides the tinyMCE height when editing
+        the CMS_HTMLHEAD element (&lt;= V4.6.15: wysiwyg/tinymce-height-head)</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">contenido_gzip</td>
+      <td style="vertical-align: top;">If set to &quot;true&quot; use gzip compression.
+        The server has to provide the compression method. Default: &quot;false&quot;</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">contenido_toolbar_mode</td>
+      <td style="vertical-align: top;">Defines the tinyMCE toolbar mode (default
+        &quot;full&quot;). Available choices: full, simple, mini, custom (&lt;= V4.6.15: wysiwyg/tinymce-toolbar-mode)</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">theme_advanced_buttons1<br />
+                                       theme_advanced_buttons2<br />
+                                       theme_advanced_buttons3</td>
+      <td style="vertical-align: top;">Defines which items should be shown on
+        the first/second/third toolbar. Please have a look at the tinyMCE documentation to
+        find out which items you can use (&lt;= V4.6.15: wysiwyg/tinymce-toolbar1/2/3). 
+        Only used if the toolbar mode is &quot;custom&quot;.</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">plugins</td>
+      <td style="vertical-align: top;">Defines which plugins should be loaded 
+      (&lt;= V4.6.15: wysiwyg/tinymce-plugins). Only used if the toolbar mode is &quot;custom&quot;.</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">valid_elements</td>
+      <td style="vertical-align: top;">Defines which elements are allowed. See
+        tinyMCE documentation for more information (&lt;= V4.6.15: wysiwyg/tinymce-valid-elements).<br />
+        Default: +a[name|href|target|title],strong/b[class],em/i[class],strike[class],u[class],
+        p[dir|class|align],ol,ul,li,br,img[class|src|border=0|alt|title|hspace|vspace|width|height|align],
+        sub,sup,blockquote[dir|style],table[border=0|cellspacing|cellpadding|width|height|class|align],
+        tr[class|rowspan|width|height|align|valign],td[dir|class|colspan|rowspan|width|height|align|valign],
+        div[dir|class|align],span[class|align],pre[class|align],address[class|align],h1[dir|class|align],
+        h2[dir|class|align],h3[dir|class|align],h4[dir|class|align],h5[dir|class|align],h6[dir|class|align],hr</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">extended_valid_elements</td>
+      <td style="vertical-align: top;">Defined which elements are allowed. These
+        elements are added to valid_elements (&lt;= V4.6.15: wysiwyg/tinymce-extended-valid-elements).<br />
+        Default: form[name|action|method],textarea[name|style|cols|rows],input[type|name|value|style|onclick],
+        a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],
+        hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">contenido_background_color</td>
+      <td style="vertical-align: top;">Defines the tinyMCE background color (any
+        valid CSS color value can be used). If you use an HTML hex color code,
+        also include the # sign before the color (e.g. #ffffff). Default is
+        &quot;white&quot; (&lt;= V4.6.15: wysiwyg/tinymce-backgroundcolor).</td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">convert_urls</td>
+      <td style="vertical-align: top;">(true, false): Defines, if URLs will be converted (e.g. to relative URLs) 
+        at all. Please note, that URLs should be converted (e.g. for the time you may have to 
+        change the domain or server path). Default: true (&lt;= V4.6.15: wysiwyg/tinymce-convert-urls)</td>
+      <td style="vertical-align: top;">System, Clients, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">relative_urls</td>
+      <td style="vertical-align: top;">(true, false): If convert_urls is true, then 
+        this setting specifies, if URLs will be converted to relative or absolute URLs. 
+        Please note, that relative URLs should be used (e.g. for the time you may have to 
+        change the domain or server path). Default: true (&lt;= V4.6.15: wysiwyg/tinymce-relative-urls)</td>
+      <td style="vertical-align: top;">System, Clients, Groups, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">tinymce</td>
+      <td style="vertical-align: top;">contenido_lists</td>
+      <td style="vertical-align: top;">If specified, adds dropdown lists with links 
+        for all articles (Insert Link popup window), images (Insert Image popup window) and/or
+        all media/flash files (Insert Media/Flash popup window). Valid values are: link, image, 
+        media, flash.
+        Values have to be separated by a comma, e.g. &quot;link,image&quot;.<br /><br />
+        <strong>Do not specify</strong>, if you have a lot of articles, images and/or media files
+        (&lt;= V4.6.15: wysiwyg/tinymce-lists).
+      </td>
+      <td style="vertical-align: top;">System, Groups, Users</td>
+    </tr>
+  </tbody>
+</table>
+<br /><br />
+<h2>Style-editor, Script-editor and HTML-editor related Parameters</h2>
+<table border="1" cellpadding="2"
+ cellspacing="2" style="text-align: left; width: 100%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">style_editor</td>
+      <td style="vertical-align: top;">wrap</td>
+      <td style="vertical-align: top;">{on, off} Default off. Defines the wrap attribute of the textarea to edit the CSS file. In case of 'on' the lines will be wraped.</td>
+      <td style="vertical-align: top;">System, Clients, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">script_editor</td>
+      <td style="vertical-align: top;">wrap</td>
+      <td style="vertical-align: top;">{on, off} Default off. Defines the wrap attribute of the textarea to edit the JS file.</td>
+      <td style="vertical-align: top;">System, Clients, Users</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">html_editor</td>
+      <td style="vertical-align: top;">wrap</td>
+      <td style="vertical-align: top;">{on, off} Default off. Defines the wrap attribute of the textarea to edit the HTML file.</td>
+      <td style="vertical-align: top;">System, Clients, Users</td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+</body>
+</html>

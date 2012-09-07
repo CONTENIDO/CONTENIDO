@@ -1,0 +1,12 @@
+<xml version="1.0" encoding="UTF-8">
+<plugin>
+	<main>Content Allocation</main>
+    <content_allocation></content_allocation>
+    
+    
+    <contenido>
+    	<article>
+    		<content_allocation>Content Allocation</content_allocation>
+    	</article>
+    </contenido>
+</plugin>

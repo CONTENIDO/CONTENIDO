@@ -1,0 +1,52 @@
+<!-- subnav template -->
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+    <!--script type="text/javascript" src="scripts/rowMark.js"></script-->
+    <script type="text/javascript" src="scripts/subnav.js"></script>
+</head>
+<body>
+
+  <!--table cellspacing="0" cellpadding="0" border="0" width="100%">
+  
+      <tr style="background-color: #E2E2E2; height: 22px"-->
+          <!-- BEGIN:BLOCK -->
+          <!--td id="{ID}" class="{CLASS}" {OPTIONS} style="padding-left: 8px; padding-right: 8px; background-color: #E2E2E2">sub{CAPTION}</td-->
+          <!-- END:BLOCK -->
+          <!--td width="100%"><img src="images/spacer.gif" width="10" height="1"></td>
+      </tr>
+
+  </table-->
+
+<div id="navcontainer">
+<ul id="navlist" style="padding-left:250px;">
+	<!-- BEGIN:BLOCK -->
+    <li id="{ID}">{CAPTION}</li>
+    <!-- END:BLOCK -->
+</ul>
+</div>
+
+<script type="text/javascript">
+    
+    // First sub menu item
+	/*
+    if (cObj = document.getElementById('c_0')) 
+    {
+        sub.click(cObj);
+    }
+    */
+    /*
+	var cObj = document.getElementById('c_0');
+    if (cObj) { sub.init(cObj); }
+    */
+    sub.init();
+    
+</script>
+<!--{DEFAULT}-->
+
+</body>
+</html>

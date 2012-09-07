@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Contenido XML language file -->
+<language>
+    <navigation>
+        <content>
+            <main>Contenuto</main>
+            <article>
+                <main>Articoli</main>
+                <overview>Supervista</overview>
+                <editor>Editore</editor>
+                <properties>Proprieta</properties>
+                <configuration>Configurazione</configuration>
+                <preview>Prevista</preview>
+            </article>
+            <structure>
+            	<main>Categoria</main>
+            	<overview>Supervista</overview>
+            </structure>
+
+            <upload>
+            	<main>Indice</main>
+            	<overview>Supervista</overview>
+            	<edit>Modificare</edit>
+            	<fileupload>Upload</fileupload>
+            </upload>
+        </content>
+        <style>
+            <main>Stile</main>
+            <layouts>
+            	<main>Layouts</main>
+            	<edit>Modificare</edit>
+            	<preview>Prevista</preview>
+            </layouts>
+            <modules>
+            	<main>Moduli</main>
+            	<edit>Modificare</edit>
+            	<history>Storia</history>
+            	<translation>Traduzione</translation>
+            	<package>Package</package>
+            </modules>
+            <templates>
+                <main>Templates</main>
+                <edit>Modificare</edit>
+                <conf>Preconfigurazione</conf>
+                <visual>Modificare Visuale</visual>
+            </templates>
+            <styleeditor>Editore Stile</styleeditor>
+            <jseditor>Editore Skript</jseditor>
+            <tpleditor>Editore HTML</tpleditor>
+        </style>
+        <statistic>
+            <main>Statistiche</main>
+            <hits>Afferamento</hits>
+        </statistic>
+        <administration>
+            <main>Administrazione</main>
+            <users>
+                <main>Utente</main>
+                <userproperties>Proprieta</userproperties>
+                <areas>Zone</areas>
+                <layout>Layout</layout>
+                <content>Contentenuto</content>
+                <module>Moduli</module>
+                <template>Template</template>
+                <structure>Categorie</structure>
+            </users>
+            <groups>
+                <main>Gruppi</main>
+                <members>Membri</members>
+                <overview>Proprieta</overview>
+                <areas>Zone</areas>
+                <layout>Layout</layout>
+                <content>Contenuto</content>
+                <module>Moduli</module>
+                <template>Template</template>
+                <structure>Categorie</structure>
+            </groups>
+            <languages>Lingue</languages>
+            <plugins>Plugins</plugins>
+            <clients>
+            	<main>Clienti</main>
+            	<clientproperties>Proprieta</clientproperties>
+            	<clientartspec>Specifiche Articoli</clientartspec>
+            	<clientsettings>Proprieta del Cliente</clientsettings>
+            </clients>
+            <logs>Logs</logs>
+            <debug>Debug</debug>
+            <system>
+             	<main>Sistema</main>
+             	<syssettings>Proprieta del sistema</syssettings>
+            	<sysvalues>Variabili del sistema</sysvalues>
+            	<syserrorreport>Rapporto Errori</syserrorreport>
+            </system>
+           <frontend>
+            	<main>Frontend</main>
+            </frontend>
+        </administration>
+        <mycontenido>
+            <main>MyContenido</main>
+            <overview>Supervista</overview>
+            <recentarticles>Ultimi Articoli modificati</recentarticles>
+            <todolist>Riccordo</todolist>
+            <settings>Proprieta</settings>
+        </mycontenido>
+        <extra>
+            <main>Extras</main>
+            <newsletter>Bollettino E-Mail</newsletter>
+            <mailing>Mailing</mailing>
+            <recipients>Destinatori</recipients>
+            <recipientgroups>Gruppo Destinatori</recipientgroups>
+        </extra>
+        <info>Informazione</info>
+        <login>Login</login>
+    </navigation>
+</language>

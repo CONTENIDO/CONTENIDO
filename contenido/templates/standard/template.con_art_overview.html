@@ -1,0 +1,196 @@
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+	<link rel="stylesheet" type="text/css" href="styles/contenido.css"/>
+	<script type="text/javascript" src="scripts/rowMark.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/tip_balloon.css" />
+	<script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
+	<script type="text/javascript" src="scripts/articleObject.js.php?contenido={SID}"></script>
+
+	<script language="javascript">
+
+        /* Contenido Session-ID */
+        var sid = "{SID}";
+
+        /* New messageBox
+           instance */
+        box = new messageBox("", "", "", 0, 0);
+
+        /* Function for deleting articles */
+        function deleteArticle(idart, idcat, next) {
+            var url = "main.php?area=con&action=con_deleteart&frame=4&idcat="+idcat+"&idart="+idart+"&next="+next+"&contenido="+sid;
+            window.location.href = url;
+        }
+        
+    </script>
+</head>
+<body style="margin:10px">
+<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
+<script type="text/javascript" src="scripts/tip_balloon.js"></script>
+
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
+	<div class="text_large">{CATEGORY}</div>
+	<tr>
+  	<td colspan="12"><img src="images/spacer.gif" width="1" height="10"></td>
+  </tr>
+
+  <tr valign="middle">
+  	<td colspan="4" class="text_medium" style="padding-right: 5px;border: 1px; border-color: #B3B3B3; border-style: solid; border-right: none; background-color: #E2E2E2">
+    	<table cellspacing="0" cellpadding="0" border="0">
+      	<tr>
+					<td>{NEWARTICLE_IMG}</td> 
+					<td>&nbsp;</td> 
+					<td>{NEWARTICLE_TEXT}</td>              
+         </tr>
+			</table>
+    </td>
+    <td align="right" class="text_medium" colspan="10" style="border: 1px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #E2E2E2">{ARTSORTCAPTION} {ARTSORT} {ELEMPERPAGECAPTION} {ELEMPERPAGE}</td>
+  </tr>
+
+  <tr>
+   <td colspan="12"><img src="images/spacer.gif" width="1" height="10"></td>
+  </tr>
+
+  {NOTIFICATION}
+</table>
+
+<table class="bordered" width="100%" border="0" cellspacing="0" cellpadding="2">
+    <tr>
+    	{HEADERS}
+    </tr>
+
+    <!-- BEGIN:BLOCK -->
+    <tr id="{ROWID}" {CSS_CLASS} style="background-color: {BGCOLOR};" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
+		{CELLS}
+    </tr>
+    <!-- END:BLOCK -->
+</table>
+
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
+    <tr>
+        <td><img src="images/spacer.gif" width="1" height="10"></td>
+    </tr>
+	<tr class="text_medium" style="background-color: #ffffff;">
+        <td style="border: 1px; border-right:0px; border-color: #B3B3B3; border-style: solid; background-color: #E2E2E2; color:#666666">{BROWSE}</td>
+        <td style="border: 1px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #E2E2E2; color:#666666; text-align:right;">{CLICK_ROW_NOTIFICATION}</td>
+    </tr>
+</table>
+
+<script language="javascript">
+
+	rcount = 0;
+	initValues();
+    function initValues() {
+        /* Create a reference to the
+           Article Object in frame 'right_top' */
+        artObj = parent.parent.frames["left"].frames["left_top"].artObj;
+        
+        /* Reset article object properties.
+           e.g. Some article was edited and we are
+           now back in the overview mask. There is
+           now no marked article, the articleObject
+           data should be reset.  */
+        if ( artObj ) {
+            artObj.reset();
+            artObj.enable();
+            artObj.setHrefOverview(document.location.href);
+            
+            /* Save current page selection */
+    	    artObj.next = {NEXT};
+        }
+
+        /* Timeout to call the function afer 250ms */
+        window.setTimeout("createReference()", 250);
+    }
+    /* Javascript-Error work-around...
+       try to create the reference after
+       250ms again... and hope it works.. */
+    function createReference() {
+    	
+        if (!artObj) {
+            artObj = parent.parent.frames["left"].frames["left_top"].artObj;
+            
+            if (artObj)
+            {
+	            artObj.reset();
+	            artObj.enable();
+                artObj.setHrefOverview(document.location.href);
+	            
+	            /* Save current page selection */
+	            artObj.next = {NEXT};
+            }
+        }
+        
+        if (!artObj)
+        {
+        	return false;	
+        }
+        
+    }
+
+    /* Extract data from
+       the article grid and
+       send them to the articleObject
+       Instance. The data is stored in
+       the attribute 'id' of the row
+       object. */
+    function conArtOverviewExtractData( obj ) {
+		if (!artObj) 
+		{
+			var rval = createReference();
+			if (rval == false)
+			{
+				return false;
+			}
+		}
+        var datastring  = obj.id;
+        var data        = datastring.split( "-" );
+
+        if ( data.length == 6 ) {
+
+            /* Send data to articleObject instance:
+                0:  idart
+                1:  idartlang
+                2:  idcat
+                3:  idcatlang
+                5:  idcatart */
+            
+            artObj.setProperties(data[0], data[1], data[2], data[3], data[4], data[5]);
+        }
+        
+        return true;
+    }
+
+    /* Function for sorting the articles */
+    function artSort(selObj) {
+
+        var url = '{SELF_URL}';
+        var i = selObj.selectedIndex;
+        var sortkey = selObj.options[i].value;
+
+        window.location.href = url + '&sort=' + sortkey;
+
+    }
+    
+    function changeElemPerPage(selObj) {
+        var url = '{SELF_URL}';
+        var i = selObj.selectedIndex;
+        var elemperpage = selObj.options[i].value;
+
+        window.location.href = url + '&elemperpage=' + elemperpage;
+    }
+
+    /* Mark the first submenu item i.e. 'Overview' */
+    if ( parent.parent.frames['right'].frames['right_top'].document.getElementById('c_0') ) {
+        menuItem = parent.parent.frames['right'].frames['right_top'].document.getElementById('c_0');
+        parent.parent.frames['right'].frames['right_top'].sub.click(menuItem);
+    }
+    
+    {ROWMARKSCRIPT};
+
+</script>
+</body>
+</html>

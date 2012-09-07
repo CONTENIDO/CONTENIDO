@@ -1,0 +1,2311 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Contenido 4.4\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2003-10-14 11:34+0100\n"
+"Last-Translator: John van Aerle <john@mikajo.nl>\n"
+"Language-Team: Contenido Translators <translators@contenido.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# e:\timo\contenido431/contenido/classes/class.client.php:110
+msgid "No client"
+msgstr "Geen klant"
+
+# e:\timo\contenido431/contenido/includes/include.tpl_new.php:14
+msgid "No item loaded"
+msgstr "Er is geen item geladen"
+
+# e:\timo\contenido431/contenido/classes/class.navigation.php:239
+# e:\timo\contenido431/contenido/includes/rights.inc.php:143
+# e:\timo\contenido431/contenido/includes/grouprights.inc.php:143
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:19
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:49
+msgid "Client"
+msgstr "Klant"
+
+# e:\timo\contenido431/contenido/classes/class.navigation.php:240
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:23
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:51
+msgid "User"
+msgstr "Gebruiker"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:168
+# e:\timo\contenido431/contenido/includes/include.lang_edit.php:82
+# e:\timo\contenido431/contenido/includes/include.mycontenido_settings.php:82
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:114
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:133
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:103
+# e:\timo\contenido431/contenido/includes/include.rights_details.php:100
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:156
+# e:\timo\contenido431/contenido/includes/include.grouprights_create.php:101
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:106
+# e:\timo\contenido431/contenido/includes/grouprights_members.inc.php:132
+# e:\timo\contenido431/contenido/includes/grouprights_members.inc.php:150
+msgid "Save changes"
+msgstr "Wijzigingen opslaan"
+
+# e:\timo\contenido431/cms/front_content.php:180
+# e:\timo\contenido431/cms/front_content.php:202
+# e:\timo\contenido431/contenido/external/frontend/front_content.php:180
+# e:\timo\contenido431/contenido/external/frontend/front_content.php:202
+# e:\timo\contenido431/client2/front_content.php:180
+# e:\timo\contenido431/client2/front_content.php:202
+# e:\timo\contenido431/test/front_content.php:180
+# e:\timo\contenido431/test/front_content.php:202
+msgid "No start article for this category"
+msgstr "Geen startartikel voor deze categorie"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:285
+# e:\timo\contenido431/contenido/includes/include.mycontenido_lastarticles.php:206
+#, c-format
+msgid "Article is in use by %s (%s)"
+msgstr "Artikel is in gebruik door %s(%s)"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:69
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:103
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:103
+msgid "Internal link"
+msgstr "Interne link"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:78
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:198
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:236
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:107
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:227
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:265
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:107
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:227
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:265
+msgid "Please choose"
+msgstr "Maak een keuze"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:157
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:159
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:186
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:188
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:186
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:188
+# e:\timo\contenido431/contenido/includes/include.con_left_top.php:38
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:283
+msgid "--- None ---"
+msgstr "--- Geen ---"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:212
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:241
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:241
+msgid "External link"
+msgstr "Externe link"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:215
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:244
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:244
+msgid "Target"
+msgstr "Target"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:217
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:246
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:246
+msgid "Open in same window"
+msgstr "Open in zelfde venster"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:218
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:247
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:247
+msgid "Open in new window"
+msgstr "Open in nieuw venster"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:221
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:250
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:250
+# e:\timo\contenido431/contenido/includes/include.mycontenido_settings.php:103
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:153
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:139
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:201
+msgid "E-Mail"
+msgstr "E-mail"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:225
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:254
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:254
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:16
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:112
+msgid "Style"
+msgstr "Stijl"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:227
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:256
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:256
+msgid "Default"
+msgstr "Standaard"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:228
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:257
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:257
+msgid "Mail"
+msgstr "Mail"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:229
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:258
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:258
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:12
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:55
+msgid "Content"
+msgstr "Content"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:232
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:261
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:261
+msgid "Contenido image"
+msgstr "Contenido afbeelding"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:252
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:279
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:279
+msgid "OK"
+msgstr "OK"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:253
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:280
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:280
+# e:\timo\contenido431/contenido/scripts/langref.php:23
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:44
+msgid "Cancel"
+msgstr "Annuleren"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:81
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:254
+msgid "Configure template"
+msgstr "Template configureren"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:82
+msgid "Create article"
+msgstr "Nieuw artikel"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:83
+msgid "Configure article"
+msgstr "Artikel configureren"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:84
+msgid "Save article"
+msgstr "Artikel opslaan"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:360
+msgid "Lock article"
+msgstr "Check-in artikel"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:85
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:87
+msgid "Edit article"
+msgstr "Artikel bewerken"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:86
+msgid "Edit article properties"
+msgstr "Artikel eigenschappen"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:88
+msgid "Help"
+msgstr "Help"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:89
+msgid "Make category online"
+msgstr "Categorie publiceren"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:90
+msgid "Change template"
+msgstr "Wijzig template"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:91
+msgid "Set start article"
+msgstr "Artikel als startartikel tonen"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:92
+msgid "Make article online"
+msgstr "Artikel publiceren"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:93
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:100
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:318
+msgid "Protect category"
+msgstr "Beveilig categorie"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:94
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:311
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:70
+msgid "Delete article"
+msgstr "Artikel verwijderen"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:95
+msgid "Edit template configuration"
+msgstr "Wijzig template configuratie"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:96
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:289
+msgid "Rename category"
+msgstr "Categorienaam wijzigen"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:97
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:296
+msgid "New category"
+msgstr "Nieuwe categorie"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:98
+msgid "Set category on- or offline"
+msgstr "Categorie on/offline zetten"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:99
+msgid "Disable category"
+msgstr "Categorie uitschakelen"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:101
+msgid "Frontend access"
+msgstr "Bezoekerstoegang"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:102
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:331
+msgid "Delete category"
+msgstr "Categorie verwijderen"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:103
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:363
+msgid "Move category up"
+msgstr "Categorie naar boven plaatsen"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:104
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:92
+msgid "Move category"
+msgstr "Verplaats categorie"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:105
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:478
+msgid "Create new tree"
+msgstr "Maak nieuwe boomstructuur"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:106
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:398
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:62
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:76
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:78
+msgid "Configure category"
+msgstr "Categorie configureren"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:107
+msgid "Create directory"
+msgstr "Nieuwe map"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:108
+msgid "Upload files"
+msgstr "Bestanden uploaden"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:109
+msgid "Delete files"
+msgstr "Bestanden verwijderen"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:110
+# e:\timo\contenido431/contenido/includes/include.lay_overview.php:85
+msgid "Delete layout"
+msgstr "Verwijder layout"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:111
+msgid "Modify layout"
+msgstr "Wijzig layout"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:112
+msgid "Create layout"
+msgstr "Maak layout"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:113
+# e:\timo\contenido431/contenido/includes/include.mod_overview.php:87
+msgid "Delete module"
+msgstr "Verwijder module"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:114
+msgid "Edit module"
+msgstr "Bewerk module"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:115
+msgid "Create module"
+msgstr "Nieuwe module"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:116
+# e:\timo\contenido431/contenido/includes/include.tpl_overview.php:63
+msgid "Delete template"
+msgstr "Verwijder template"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:117
+msgid "Edit template"
+msgstr "Bewerk template"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:118
+msgid "Create template"
+msgstr "Maak template"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:119
+# e:\timo\contenido431/contenido/includes/include.tpl_overview.php:73
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:135
+msgid "Duplicate template"
+msgstr "Dupliceer template"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:120
+msgid "Edit rights"
+msgstr "Bewerk rechten"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:121
+msgid "Edit user"
+msgstr "Bewerk gebruiker"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:122
+# e:\timo\contenido431/contenido/includes/include.rights_left_top.php:71
+msgid "Create user"
+msgstr "Nieuwe gebruiker"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:123
+# e:\timo\contenido431/contenido/includes/include.rights_menu.php:138
+# e:\timo\contenido431/contenido/includes/include.rights_menu.php:146
+msgid "Delete user"
+msgstr "Verwijder gebruiker"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:124
+msgid "Delete group members"
+msgstr "Verwijder groepsleden"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:125
+msgid "Add group members"
+msgstr "Toevoegen groepsleden"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:126
+msgid "Edit group"
+msgstr "Bewerk groep"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:127
+# e:\timo\contenido431/contenido/includes/include.grouprights_left_top.php:70
+msgid "Create group"
+msgstr "Nieuwe groep"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:128
+# e:\timo\contenido431/contenido/includes/include.grouprights_menu.php:162
+msgid "Delete group"
+msgstr "Verwijder groep"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:129
+msgid "Show statistics"
+msgstr "Bekijk statistieken"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:130
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:156
+# e:\timo\contenido431/contenido/includes/include.recipients_menu.php:195
+msgid "Delete recipient"
+msgstr "Verwijder geadresseerde"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:131
+msgid "Activate/Deactivate recipient"
+msgstr "Activeer/deactiveer geadresseerde"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:132
+msgid "Edit newsletter"
+msgstr "Bewerk nieuwsbrief"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:133
+# e:\timo\contenido431/contenido/includes/include.newsletter_left_top.php:30
+msgid "Create newsletter"
+msgstr "Nieuwe nieuwsbrief"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:134
+# e:\timo\contenido431/contenido/includes/include.newsletter_menu.php:76
+# e:\timo\contenido431/contenido/includes/include.newsletter_menu.php:118
+msgid "Delete newsletter"
+msgstr "Verwijder nieuwsbrief"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:135
+# e:\timo\contenido431/contenido/includes/include.newsletter_menu.php:90
+# e:\timo\contenido431/contenido/includes/include.newsletter_menu.php:124
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:164
+msgid "Send newsletter"
+msgstr "Verstuur nieuwsbrief"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:136
+# e:\timo\contenido431/contenido/includes/include.lang_overview.php:53
+msgid "Delete language"
+msgstr "Taal verwijderen"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:137
+msgid "Edit language"
+msgstr "Taal bewerken"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:138
+# e:\timo\contenido431/contenido/includes/include.lang_left_top.php:60
+msgid "Create language"
+msgstr "Nieuwe taal"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:139
+# e:\timo\contenido431/contenido/includes/include.lang_overview.php:43
+msgid "Activate language"
+msgstr "Taal activeren"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:140
+# e:\timo\contenido431/contenido/includes/include.lang_overview.php:47
+msgid "Deactivate language"
+msgstr "Taal deactiveren"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:141
+msgid "Rename language"
+msgstr "Taal wijzigen"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:143
+msgid "Install/Remove plugins"
+msgstr "Installeren/verwijderen plugins"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:144
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:235
+msgid "Delete file"
+msgstr "Bestand verwijderen"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:147
+msgid "Modify style"
+msgstr "Wijzig stijl"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:148
+# e:\timo\contenido431/contenido/includes/include.style_left_top.php:30
+msgid "Create style"
+msgstr "Nieuwe stijl"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:149
+msgid "Delete style"
+msgstr "Verwijder stijl"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:150
+msgid "Edit script"
+msgstr "Bewerk script"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:151
+msgid "Delete script"
+msgstr "Verwijder script"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:152
+# e:\timo\contenido431/contenido/includes/include.js_left_top.php:30
+msgid "Create script"
+msgstr "Nieuw script"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:154
+msgid "Edit recipient"
+msgstr "Bewerk geadresseerde"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:155
+# e:\timo\contenido431/contenido/includes/include.recipients_left_top.php:29
+msgid "Create recipient"
+msgstr "Nieuwe geadresseerde"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:160
+# e:\timo\contenido431/contenido/includes/include.client_left_top.php:30
+msgid "Create client"
+msgstr "Nieuwe klant"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:161
+msgid "Edit client"
+msgstr "Bewerk klant"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:162
+msgid "Remove client"
+msgstr "Verwijder klant"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:290
+# e:\timo\contenido431/contenido/includes/include.CMS_IMG.php:82
+# e:\timo\contenido431/contenido/includes/include.CMS_IMG.php:84
+# e:\timo\contenido431/contenido/includes/include.CMS_LINK.php:113
+# e:\timo\contenido431/contenido/includes/include.CMS_LINK.php:115
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:222
+# e:\timo\contenido431/contenido/includes/include.mycontenido_lastarticles.php:168
+# e:\timo\contenido431/contenido/includes/include.CMS_SWF.php:79
+msgid "None"
+msgstr "Geen"
+
+# e:\timo\contenido431/contenido/includes/functions.con.php:428
+msgid "Default title"
+msgstr "Standaard titel"
+
+# e:\timo\contenido431/contenido/includes/include.CMS_HEAD.php:57
+# e:\timo\contenido431/contenido/includes/include.CMS_HTML.php:54
+# e:\timo\contenido431/contenido/includes/include.CMS_HTMLHEAD.php:56
+# e:\timo\contenido431/contenido/includes/include.CMS_IMG.php:60
+# e:\timo\contenido431/contenido/includes/include.CMS_LINK.php:59
+# e:\timo\contenido431/contenido/includes/include.CMS_TEXT.php:54
+# e:\timo\contenido431/contenido/includes/include.edit_CMS_HTML.php:31
+# e:\timo\contenido431/contenido/includes/include.CMS_SWF.php:58
+msgid "description"
+msgstr "omschrijving"
+
+# e:\timo\contenido431/contenido/includes/functions.general.php:28
+msgid "January"
+msgstr "januari"
+
+# e:\timo\contenido431/contenido/includes/functions.general.php:29
+msgid "February"
+msgstr "februari"
+
+# e:\timo\contenido431/contenido/includes/functions.general.php:30
+msgid "March"
+msgstr "maart"
+
+# e:\timo\contenido431/contenido/includes/functions.general.php:31
+msgid "April"
+msgstr "april"
+
+# e:\timo\contenido431/contenido/includes/functions.general.php:32
+msgid "May"
+msgstr "mei"
+
+# e:\timo\contenido431/contenido/includes/functions.general.php:33
+msgid "June"
+msgstr "juni"
+
+# e:\timo\contenido431/contenido/includes/functions.general.php:34
+msgid "July"
+msgstr "juli"
+
+# e:\timo\contenido431/contenido/includes/functions.general.php:35
+msgid "August"
+msgstr "augustus"
+
+# e:\timo\contenido431/contenido/includes/functions.general.php:36
+msgid "September"
+msgstr "september"
+
+# e:\timo\contenido431/contenido/includes/functions.general.php:37
+msgid "October"
+msgstr "oktober"
+
+# e:\timo\contenido431/contenido/includes/functions.general.php:38
+msgid "November"
+msgstr "november"
+
+# e:\timo\contenido431/contenido/includes/functions.general.php:39
+msgid "December"
+msgstr "december"
+
+# e:\timo\contenido431/contenido/includes/functions.lang.php:96
+msgid "Could not set the language-ID in the file 'config.php'. Please set the language manually."
+msgstr "Language-ID kon niet worden gewijzigd in 'config.php'. Wijzig de taal svp handmatig."
+
+# e:\timo\contenido431/contenido/includes/functions.lang.php:487
+# e:\timo\contenido431/contenido/includes/functions.lang.php:601
+msgid "Could not delete language"
+msgstr "Taal verwijderen is mislukt"
+
+# e:\timo\contenido431/contenido/includes/functions.stat.php:21
+msgid "Info about article"
+msgstr "Artikelinfo"
+
+# e:\timo\contenido431/contenido/includes/functions.stat.php:23
+msgid "Info about directory"
+msgstr "Directoryinfo"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.stat.php:323
+msgid "Sum"
+msgstr "Totaal"
+
+# e:\timo\contenido431/contenido/includes/functions.stat.php:756
+# e:\timo\contenido431/contenido/includes/functions.stat.php:785
+# e:\timo\contenido431/contenido/includes/include.stat_overview.php:31
+msgid "Top 10"
+msgstr "Top 10"
+
+# e:\timo\contenido431/contenido/includes/functions.stat.php:757
+# e:\timo\contenido431/contenido/includes/functions.stat.php:786
+# e:\timo\contenido431/contenido/includes/include.stat_overview.php:34
+msgid "Top 20"
+msgstr "Top 20"
+
+# e:\timo\contenido431/contenido/includes/functions.stat.php:758
+# e:\timo\contenido431/contenido/includes/functions.stat.php:787
+# e:\timo\contenido431/contenido/includes/include.stat_overview.php:37
+msgid "Top 30"
+msgstr "Top 30"
+
+# e:\timo\contenido431/contenido/includes/functions.stat.php:759
+# e:\timo\contenido431/contenido/includes/functions.stat.php:788
+# e:\timo\contenido431/contenido/includes/include.rights_left_top.php:41
+# e:\timo\contenido431/contenido/includes/include.grouprights_left_top.php:40
+msgid "All"
+msgstr "Alle"
+
+# e:\timo\contenido431/contenido/includes/include.mod_edit_form.php:47
+# e:\timo\contenido431/contenido/includes/include.mod_edit_form.php:64
+ msgid "error log successfully cleared"
+msgstr "error log is succesvol gewist"
+
+# e:\timo\contenido431/contenido/includes/include.mod_edit_form.php:47
+# e:\timo\contenido431/contenido/includes/include.mod_edit_form.php:64
+msgid "install error log successfully cleared"
+msgstr "install error log is succesvol gewist"
+
+# e:\timo\contenido431/contenido/includes/main.login.php:91
+msgid "client settings"
+msgstr "klant instellingen"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:180
+# e:\timo\contenido431/contenido/includes/include.lang_edit.php:94
+# e:\timo\contenido431/contenido/includes/include.mycontenido_settings.php:88
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:122
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:141
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:112
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:169
+# e:\timo\contenido431/contenido/includes/include.grouprights_create.php:110
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:119
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:16
+msgid "values"
+msgstr "waarden"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:30
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:209
+msgid "language(s)"
+msgstr "talen"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:162
+msgid "htmlpath"
+msgstr "htmlpad"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:229
+msgid "frontendpath"
+msgstr "frontendpath"
+
+# e:\timo\contenido431/contenido/includes/main.login.php:91
+msgid "Settings"
+msgstr "Instellingen"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:180
+# e:\timo\contenido431/contenido/includes/include.lang_edit.php:94
+# e:\timo\contenido431/contenido/includes/include.mycontenido_settings.php:88
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:122
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:141
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:112
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:169
+# e:\timo\contenido431/contenido/includes/include.grouprights_create.php:110
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:119
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:16
+msgid "Values"
+msgstr "Waarden"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:410
+msgid "an error occured while sending your bug report! Please try again"
+msgstr "er is een fout opgetreden bij het versturen van de bug report. Probeer het svp nogmaals"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:414
+msgid "bug report forwarded"
+msgstr "bug report is verstuurd"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:419
+msgid "please fill out all mandatory fields"
+msgstr "vul svp alle verplichte velden in"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:423
+msgid "please enter a valid email adress"
+msgstr "voer svp een geldig emailadres in"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:427
+msgid "you must agree the declaration of consent"
+msgstr "u dient accoord te gaan met de verklaring"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:183
+msgid "Client / Language"
+msgstr "Klant / Taal"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/grouprights.inc.php:244
+msgid "Current group doesn't have any rights to any client/language."
+msgstr "Huidige groep heeft geen rechten tot een klant/taal"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:136
+# e:\timo\contenido431/contenido/includes/include.lang_edit.php:49
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:53
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:69
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:61
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:85
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:85
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:108
+# e:\timo\contenido431/contenido/includes/rights.inc.php:423
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:66
+# e:\timo\contenido431/contenido/includes/grouprights.inc.php:423
+msgid "Changes saved"
+msgstr "Wijzigingen opgeslagen"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:26
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:480
+# e:\timo\contenido431/contenido/includes/include.con_edit_form.php:477
+# e:\timo\contenido431/contenido/includes/include.js_edit_form.php:19
+# e:\timo\contenido431/contenido/includes/include.lang_edit.php:21
+# e:\timo\contenido431/contenido/includes/include.lay_edit_form.php:17
+# e:\timo\contenido431/contenido/includes/include.logs.php:25
+# e:\timo\contenido431/contenido/includes/include.newsletter_send.php:19
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:22
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:16
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:19
+# e:\timo\contenido431/contenido/includes/include.style_edit_form.php:17
+# e:\timo\contenido431/contenido/includes/include.tpl_edit_form.php:17
+# e:\timo\contenido431/contenido/includes/include.tplcfg_edit_form.php:90
+# e:\timo\contenido431/contenido/includes/include.upl_dirs_overview.php:91
+# e:\timo\contenido431/contenido/includes/rights_area.inc.php:15
+# e:\timo\contenido431/contenido/includes/rights_con.inc.php:9
+# e:\timo\contenido431/contenido/includes/rights_lay.inc.php:15
+# e:\timo\contenido431/contenido/includes/grouprights_area.inc.php:15
+# e:\timo\contenido431/contenido/includes/grouprights_con.inc.php:9
+# e:\timo\contenido431/contenido/includes/grouprights_lay.inc.php:15
+# e:\timo\contenido431/contenido/includes/grouprights_str.inc.php:9
+# e:\timo\contenido431/contenido/includes/grouprights_tpl.inc.php:9
+# e:\timo\contenido431/contenido/includes/include.grouprights_create.php:19
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:21
+# e:\timo\contenido431/contenido/includes/rights_mod.inc.php:9
+# e:\timo\contenido431/contenido/includes/rights_str.inc.php:9
+# e:\timo\contenido431/contenido/includes/rights_tpl.inc.php:9
+# e:\timo\contenido431/contenido/includes/grouprights_members.inc.php:24
+# e:\timo\contenido431/contenido/includes/grouprights_mod.inc.php:9
+msgid "Permission denied"
+msgstr "Toegang geweigerd"
+
+# e:\timo\contenido431/contenido/includes/rights_area.inc.php:50
+# e:\timo\contenido431/contenido/includes/rights_lay.inc.php:65
+# e:\timo\contenido431/contenido/includes/grouprights_area.inc.php:50
+# e:\timo\contenido431/contenido/includes/grouprights_str.inc.php:65
+# e:\timo\contenido431/contenido/includes/rights_mod.inc.php:57
+# e:\timo\contenido431/contenido/includes/rights_str.inc.php:64
+msgid "Check all"
+msgstr "Selecteer alles"
+
+# e:\timo\contenido431/contenido/includes/include.con_edit_form.php:277
+# e:\timo\contenido431/contenido/includes/rights_con.inc.php:27
+# e:\timo\contenido431/contenido/includes/grouprights_con.inc.php:27
+# e:\timo\contenido431/contenido/includes/grouprights_str.inc.php:26
+# e:\timo\contenido431/contenido/includes/rights_str.inc.php:26
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:53
+# e:\timo\contenido431/contenido/templates/standard/template.mycontenido_lastarticles.html:61
+# e:\timo\contenido431/contenido/templates/standard/template.str_overview.html:47
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:14
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:73
+msgid "Category"
+msgstr "Categorie"
+
+# e:\timo\contenido431/contenido/includes/rights_con.inc.php:139
+# e:\timo\contenido431/contenido/includes/grouprights_con.inc.php:139
+# e:\timo\contenido431/contenido/includes/grouprights_str.inc.php:131
+# e:\timo\contenido431/contenido/includes/rights_str.inc.php:130
+msgid "Apply rights for this category to all categories on the same level or above"
+msgstr "De rechten voor deze categorie toepassen op alle onderliggende categorieen in deze laag"
+
+# e:\timo\contenido431/contenido/includes/rights_con.inc.php:140
+# e:\timo\contenido431/contenido/includes/grouprights_con.inc.php:140
+# e:\timo\contenido431/contenido/includes/grouprights_str.inc.php:132
+# e:\timo\contenido431/contenido/includes/rights_str.inc.php:131
+msgid "Apply rights for this category to all categories below the current category"
+msgstr "De rechten voor deze categorie toepassen op alle onderliggende categorieen onder deze categorie"
+
+# e:\timo\contenido431/contenido/includes/rights_lay.inc.php:25
+# e:\timo\contenido431/contenido/includes/grouprights_lay.inc.php:25
+msgid "Layout name"
+msgstr "Naam voor layout"
+
+# e:\timo\contenido431/contenido/includes/rights_lay.inc.php:27
+# e:\timo\contenido431/contenido/includes/grouprights_lay.inc.php:27
+# e:\timo\contenido431/contenido/includes/grouprights_tpl.inc.php:27
+# e:\timo\contenido431/contenido/includes/include.grouprights_create.php:119
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:129
+# e:\timo\contenido431/contenido/includes/rights_mod.inc.php:27
+# e:\timo\contenido431/contenido/includes/rights_tpl.inc.php:27
+# e:\timo\contenido431/contenido/includes/grouprights_mod.inc.php:27
+# e:\timo\contenido431/contenido/scripts/langref.php:30
+# e:\timo\contenido431/contenido/templates/standard/template.lay_edit_form.html:29
+# e:\timo\contenido431/contenido/templates/standard/template.mod_edit_form.html:30
+# e:\timo\contenido431/contenido/templates/standard/template.tpl_edit_form.html:26
+# e:\timo\contenido431/contenido/templates/standard/template.upl_files_overview.html:79
+msgid "Description"
+msgstr "Omschrijving"
+
+# e:\timo\contenido431/contenido/includes/grouprights_members.inc.php:94
+msgid "The following users were added to this group"
+msgstr "De volgende gebruikers zijn toegevoegd aan deze groep"
+
+# e:\timo\contenido431/contenido/includes/grouprights_members.inc.php:98
+msgid "The following users are already existing in the group and where not added"
+msgstr "De volgende gebruikers waren al toegevoegd aan deze groep en zijn niet opnieuw toegevoegd"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:169
+# e:\timo\contenido431/contenido/includes/include.lang_edit.php:83
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:115
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:134
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:157
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:107
+# e:\timo\contenido431/contenido/includes/grouprights_members.inc.php:133
+# e:\timo\contenido431/contenido/includes/grouprights_members.inc.php:151
+msgid "Discard changes"
+msgstr "Annuleer wijzigingen"
+
+# e:\timo\contenido431/contenido/includes/grouprights_members.inc.php:155
+msgid "Group member"
+msgstr "Groepslid"
+
+# e:\timo\contenido431/contenido/includes/grouprights_members.inc.php:159
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:27
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:52
+msgid "Action"
+msgstr "Actie"
+
+# e:\timo\contenido431/contenido/includes/grouprights_members.inc.php:175
+msgid "Delete"
+msgstr "Verwijder"
+
+# e:\timo\contenido431/contenido/includes/grouprights_members.inc.php:216
+msgid "Add group member"
+msgstr "Toevoegen groepslid"
+
+# e:\timo\contenido431/contenido/includes/grouprights_members.inc.php:223
+msgid "Choose user"
+msgstr "Selecteer een gebruiker"
+
+# e:\timo\contenido431/contenido/includes/rights_mod.inc.php:26
+# e:\timo\contenido431/contenido/includes/grouprights_mod.inc.php:26
+msgid "Module name"
+msgstr "Modulenaam"
+
+# e:\timo\contenido431/contenido/includes/grouprights_tpl.inc.php:26
+# e:\timo\contenido431/contenido/includes/rights_tpl.inc.php:26
+msgid "Template name"
+msgstr "Naam template"
+
+# e:\timo\contenido431/contenido/includes/include.tplcfg_edit_form.php:332
+#, c-format
+msgid "Edit link for container %s"
+msgstr "Bewerk link voor container %s"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.CMS_LINK.php:199
+msgid "Link to a document"
+msgstr "Link naar een document"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:174
+msgid "Link to an image"
+msgstr "Linken naar afbeelding"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:174
+msgid "Link to an archive"
+msgstr "Linken naar een archief"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.CMS_LINK.php:245
+msgid "Link to a media file"
+msgstr "Link naar een media bestand"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:174
+msgid "Link to any file"
+msgstr "Linken naar een bestand"
+
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:100
+msgid "Upload file"
+msgstr "Bestand uploaden"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:215
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:244
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:244
+msgid "Target frame"
+msgstr "Target frame"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:218
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:247
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:247
+msgid "Open link in new window"
+msgstr "Open link in nieuw venster"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:31
+msgid "No client ID passed"
+msgstr "Geen client ID verwerkt"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:91
+msgid "Couldn't write the file config.php."
+msgstr "Bestand config.php kan niet worden opgeslagen."
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:101
+#, c-format
+msgid "The directory %s already exists. The client was created, but you have to copy the frontend-template yourself"
+msgstr "De directory %s bestaat reeds. De klant is aangemaakt, maar u dient de frontend-templates zelf te kopieren."
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:119
+msgid "You changed the client path. You might need to copy the frontend to the new location"
+msgstr "U heeft het pad naar de klant gewijzigd. Vergeet niet de frontend ook naar deze locatie te kopieren."
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:177
+# e:\timo\contenido431/contenido/includes/include.lang_edit.php:91
+# e:\timo\contenido431/contenido/includes/include.mycontenido_settings.php:85
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:119
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:138
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:109
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:166
+# e:\timo\contenido431/contenido/includes/include.grouprights_create.php:107
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:115
+msgid "Property"
+msgstr "Funtie"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:180
+# e:\timo\contenido431/contenido/includes/include.lang_edit.php:94
+# e:\timo\contenido431/contenido/includes/include.mycontenido_settings.php:88
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:122
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:141
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:112
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:169
+# e:\timo\contenido431/contenido/includes/include.grouprights_create.php:110
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:119
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:16
+msgid "Value"
+msgstr "Waarde"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:183
+msgid "Client name"
+msgstr "Klantnaam"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:196
+msgid "Server path"
+msgstr "Serverpad"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:209
+msgid "Web address"
+msgstr "Internetadres"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:215
+msgid "Error page category"
+msgstr "Error page categorie"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:221
+msgid "Error page article"
+msgstr "Error page artikel"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:229
+msgid "Copy frontend template"
+msgstr "Kopieer frontend templates"
+
+# e:\timo\contenido431/contenido/includes/include.client_menu.php:59
+msgid "Delete client"
+msgstr "Klant verwijderen"
+
+# e:\timo\contenido431/contenido/includes/include.client_menu.php:60
+#, c-format
+msgid "Do you really want to delete the following client:<br><br>%s<br>"
+msgstr "Weet u zeker dat u de volgende klant wilt verwijderen? :<br><br>%s<br> "
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:162
+msgid "Remove lock"
+msgstr "Check-out"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:285
+# e:\timo\contenido431/contenido/includes/include.mycontenido_lastarticles.php:206
+msgid "Article is locked"
+msgstr "Artikel staat op check-in"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:285
+# e:\timo\contenido431/contenido/includes/include.mycontenido_lastarticles.php:206
+msgid "Article is not locked"
+msgstr "Artikel kan worden bewerkt"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:213
+msgid "Article properties"
+msgstr "Artikel eigenschappen"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:264
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:266
+msgid "Make start article"
+msgstr "Definieer als startartikel"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:270
+# e:\timo\contenido431/contenido/includes/include.con_edit_form.php:183
+msgid "Start article"
+msgstr "Startartikel"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:283
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:307
+# e:\timo\contenido431/contenido/scripts/langref.php:8
+msgid "Make offline"
+msgstr "Offline zetten"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:285
+# e:\timo\contenido431/contenido/includes/include.mycontenido_lastarticles.php:206
+msgid "Article is online"
+msgstr "Artikel staat online"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:291
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:309
+# e:\timo\contenido431/contenido/scripts/langref.php:9
+msgid "Make online"
+msgstr "Online zetten"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:293
+# e:\timo\contenido431/contenido/includes/include.mycontenido_lastarticles.php:209
+msgid "Article is offline"
+msgstr "Artikel is offline"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:310
+#, c-format
+msgid "Are you sure to delete the following article:<br><br><b>%s</b>"
+msgstr "Weet u zeker dat u het volgende artikel wilt verwijderen? :<br<br><b>%s</b>"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:338
+msgid "Alphabetical"
+msgstr "Alfabetisch"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:339
+msgid "Last change"
+msgstr "Laatste wijziging"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:340
+msgid "Created date"
+msgstr "Gemaakt op"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:341
+# e:\timo\contenido431/contenido/includes/include.con_edit_form.php:187
+msgid "Sort key"
+msgstr "Sorteersleutel"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:360
+msgid "Sort articles"
+msgstr "Sorteer artikelen"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:394
+msgid "No articles found"
+msgstr "Geen artikelen gevonden"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:419
+msgid "Configure Category"
+msgstr "Categorie configureren"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:443
+msgid "Create new article"
+msgstr "Nieuw artikel maken"
+
+# e:\timo\contenido431/contenido/includes/include.con_edit_form.php:130
+# e:\timo\contenido431/contenido/includes/include.stat_overview.php:73
+# e:\timo\contenido431/contenido/templates/standard/template.con_art_overview.html:58
+# e:\timo\contenido431/contenido/templates/standard/template.mycontenido_lastarticles.html:60
+msgid "Title"
+msgstr "Titel"
+
+# e:\timo\contenido431/contenido/includes/include.con_edit_form.php:132
+msgid "Article number"
+msgstr "Artikelnummer"
+
+# e:\timo\contenido431/contenido/includes/include.con_edit_form.php:135
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:157
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:183
+msgid "Author"
+msgstr "Auteur"
+
+# e:\timo\contenido431/contenido/includes/include.con_edit_form.php:142
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:150
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:169
+# e:\timo\contenido431/contenido/templates/standard/template.con_art_overview.html:59
+# e:\timo\contenido431/contenido/templates/standard/template.mycontenido_lastarticles.html:62
+msgid "Created"
+msgstr "Gemaakt op"
+
+# e:\timo\contenido431/contenido/includes/include.con_edit_form.php:146
+msgid "Last modified"
+msgstr "Laatst gewijzigd"
+
+# e:\timo\contenido431/contenido/includes/include.con_edit_form.php:150
+msgid "Redirect"
+msgstr "Redirect"
+
+# e:\timo\contenido431/contenido/includes/include.con_edit_form.php:157
+msgid "New Window"
+msgstr "Nieuw venster"
+
+# e:\timo\contenido431/contenido/includes/include.con_edit_form.php:408
+msgid "Summary"
+msgstr "Overzicht"
+
+# e:\timo\contenido431/contenido/includes/include.con_left_top.php:33
+# e:\timo\contenido431/contenido/scripts/langref.php:12
+msgid "Choose template"
+msgstr "Kies een template"
+
+# e:\timo\contenido431/contenido/includes/include.con_str_overview.php:226
+msgid "Close all categories"
+msgstr "Sluit alle categorieen"
+
+# e:\timo\contenido431/contenido/includes/include.con_str_overview.php:227
+msgid "Open all categories"
+msgstr "Open alle categorieëen"
+
+# e:\timo\contenido431/contenido/includes/include.grouprights_create.php:113
+msgid "Group name"
+msgstr "Groepsnaam"
+
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:179
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:246
+# e:\timo\contenido431/contenido/includes/include.grouprights_create.php:130
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:141
+msgid "System administrator"
+msgstr "Systeembeheerder"
+
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:202
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:270
+# e:\timo\contenido431/contenido/includes/include.grouprights_create.php:154
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:165
+msgid "Administrator"
+msgstr "Administrator"
+
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:224
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:292
+# e:\timo\contenido431/contenido/includes/include.grouprights_create.php:176
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:187
+msgid "Access clients"
+msgstr "Klanttoegang"
+
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:256
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:325
+# e:\timo\contenido431/contenido/includes/include.grouprights_create.php:208
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:219
+msgid "Access languages"
+msgstr "Taaltoegang"
+
+# e:\timo\contenido431/contenido/includes/include.rights_left_top.php:42
+# e:\timo\contenido431/contenido/includes/include.grouprights_left_top.php:41
+msgid "Frontend only"
+msgstr "Alleen frontend"
+
+# e:\timo\contenido431/contenido/includes/include.rights_left_top.php:43
+# e:\timo\contenido431/contenido/includes/include.grouprights_left_top.php:42
+msgid "Backend only"
+msgstr "Alleen backend"
+
+# e:\timo\contenido431/contenido/includes/include.grouprights_menu.php:152
+#, c-format
+msgid "Do you really want to delete the group %s?"
+msgstr "Weet u zeker dat u groep %s wilt verwijderen?"
+
+# e:\timo\contenido431/contenido/includes/include.grouprights_menu.php:163
+#, c-format
+msgid "Do you really want to delete the following group:<br><br>%s<br>"
+msgstr "Weet u zeker dat u de volgende groep wilt verwijderen? :<br><br>%s<br>"
+
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:122
+msgid "Groupname"
+msgstr "Groepsnaam"
+
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:368
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:261
+msgid "User-defined properties"
+msgstr "Gebruiker-gedefinieerde eigenschappen"
+
+# e:\timo\contenido431/contenido/includes/include.js_files_overview.php:60
+msgid "Delete JavaScript"
+msgstr "Verwijder JavaScript"
+
+# e:\timo\contenido431/contenido/includes/include.js_files_overview.php:61
+#, c-format
+msgid "Do you really want to delete the following JavaScript source file:<br><br>%s<br>"
+msgstr "Weet u zeker dat u het volgende JavaScript bestand wilt verwijderen? :<br><br>%s<br>"
+
+# e:\timo\contenido431/contenido/includes/include.lang_edit.php:97
+msgid "Language name"
+msgstr "Taalnaam"
+
+# e:\timo\contenido431/contenido/includes/include.lang_edit.php:118
+msgid "Encoding"
+msgstr "Encoding"
+
+# e:\timo\contenido431/contenido/includes/include.lang_edit.php:124
+msgid "Active"
+msgstr "Actief"
+
+# e:\timo\contenido431/contenido/includes/include.lang_left_top.php:59
+msgid "Do you really want to create a new language?"
+msgstr "Weet u zeker dat u een nieuwe taal wilt aanmaken?"
+
+# e:\timo\contenido431/contenido/includes/include.lang_overview.php:52
+#, c-format
+msgid "Do you really want to delete the language %s?"
+msgstr "Weet u zeker dat u de taal %s wilt verwijderen?"
+
+# e:\timo\contenido431/contenido/includes/include.lang_overview.php:85
+msgid "Language deleted"
+msgstr "Taal is verwijderd"
+
+# e:\timo\contenido431/contenido/includes/include.lay_edit_form.php:41
+# e:\timo\contenido431/contenido/templates/standard/template.js_edit_form.html:31
+# e:\timo\contenido431/contenido/templates/standard/template.js_new_form.html:30
+# e:\timo\contenido431/contenido/templates/standard/template.style_edit_form.html:31
+msgid "Code"
+msgstr "Code"
+
+# e:\timo\contenido431/contenido/includes/include.lay_new.php:17
+msgid "New Layout"
+msgstr "Nieuwe layout"
+
+# e:\timo\contenido431/contenido/includes/include.lay_overview.php:63
+msgid "Layout is not deleteable"
+msgstr "Layout kan niet verwijderd worden"
+
+# e:\timo\contenido431/contenido/includes/include.lay_overview.php:68
+# e:\timo\contenido431/contenido/includes/include.mod_edit_form.php:17
+# e:\timo\contenido431/contenido/includes/include.mod_overview.php:69
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:22
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:336
+msgid "No permission"
+msgstr "Geen toegang"
+
+# e:\timo\contenido431/contenido/includes/include.lay_overview.php:73
+msgid "Layout is in use, cannot delete"
+msgstr "Layout is in gebruik en kan daardoor niet verwijderd worden"
+
+# e:\timo\contenido431/contenido/includes/include.lay_overview.php:74
+msgid "Layout is in use"
+msgstr "Layout is in gebruik"
+
+# e:\timo\contenido431/contenido/includes/include.lay_overview.php:86
+#, c-format
+msgid "Do you really want to delete the following layout:<br><br>%s<br>"
+msgstr "Weet u zeker dat u de volgende layout wilt verwijderen? :<br><br>%s<br>"
+
+# e:\timo\contenido431/contenido/includes/include.logs.php:44
+msgid "Submit query"
+msgstr "Verstuur query"
+
+# e:\timo\contenido431/contenido/includes/include.logs.php:55
+msgid "All users"
+msgstr "Alle gebruikers"
+
+# e:\timo\contenido431/contenido/includes/include.logs.php:57
+msgid "All actions"
+msgstr "Alle acties"
+
+# e:\timo\contenido431/contenido/includes/include.logs.php:126
+msgid "Unlimited"
+msgstr "Onbeperkt"
+
+# e:\timo\contenido431/contenido/includes/include.logs.php:127
+# e:\timo\contenido431/contenido/includes/include.logs.php:128
+# e:\timo\contenido431/contenido/includes/include.logs.php:129
+# e:\timo\contenido431/contenido/includes/include.logs.php:130
+# e:\timo\contenido431/contenido/includes/include.logs.php:131
+msgid "Entries"
+msgstr "Invoer"
+
+# e:\timo\contenido431/contenido/includes/include.logs.php:191
+# e:\timo\contenido431/contenido/includes/include.recipients_menu.php:118
+msgid "No results"
+msgstr "Geen resultaten"
+
+# e:\timo\contenido431/contenido/includes/include.mod_edit_form.php:44
+# e:\timo\contenido431/contenido/includes/include.mod_edit_form.php:61
+#, c-format
+msgid "Error in module. Error location: %s"
+msgstr "Error in module. Fout locatie: %s"
+
+# e:\timo\contenido431/contenido/includes/include.mod_edit_form.php:47
+# e:\timo\contenido431/contenido/includes/include.mod_edit_form.php:64
+msgid "Module successfully compiled"
+msgstr "Module is succesvol gecompileerd"
+
+# e:\timo\contenido431/contenido/includes/include.mod_edit_form.php:51
+msgid "Input"
+msgstr "Input"
+
+# e:\timo\contenido431/contenido/includes/include.mod_edit_form.php:67
+msgid "Output"
+msgstr "Output"
+
+# e:\timo\contenido431/contenido/includes/include.mod_new.php:17
+msgid "New module"
+msgstr "Nieuwe module"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.mod_overview.php:37
+msgid "- Unnamed Module -"
+msgstr "- Naamloze module -"
+
+# e:\timo\contenido431/contenido/includes/include.mod_overview.php:74
+msgid "Module in use, cannot delete"
+msgstr "Module is in gebruik en kan daardoor niet verwijderd worden"
+
+# e:\timo\contenido431/contenido/includes/include.mod_overview.php:79
+msgid "In use"
+msgstr "In gebruik"
+
+# e:\timo\contenido431/contenido/includes/include.mod_overview.php:88
+#, c-format
+msgid "Do you really want to delete the following module:<br><br>%s<br>"
+msgstr "Weet u zeker dat u de volgende module wilt verwijderen? :<br><br>%s<br>"
+
+# e:\timo\contenido431/contenido/includes/include.mycontenido_lastarticles.php:86
+msgid "Recently edited articles"
+msgstr "Recent gewijzigde artikelen"
+
+# e:\timo\contenido431/contenido/includes/main.login.php:78
+# e:\timo\contenido431/contenido/includes/include.mycontenido_lastarticles.php:113
+msgid "Change client"
+msgstr "Andere klant"
+
+# e:\timo\contenido431/contenido/includes/main.login.php:49
+# e:\timo\contenido431/contenido/includes/include.mycontenido_lastarticles.php:124
+msgid "Welcome"
+msgstr "Welkom"
+
+# e:\timo\contenido431/contenido/includes/main.login.php:50
+# e:\timo\contenido431/contenido/includes/include.mycontenido_lastarticles.php:125
+msgid "You are logged in as"
+msgstr "U bent ingelogt als"
+
+# e:\timo\contenido431/contenido/includes/main.login.php:51
+# e:\timo\contenido431/contenido/includes/include.mycontenido_lastarticles.php:126
+msgid "Last login"
+msgstr "Laatste login"
+
+# e:\timo\contenido431/contenido/includes/include.mycontenido_lastarticles.php:278
+msgid "No article found"
+msgstr "Geen artikel gevonden"
+
+# e:\timo\contenido431/contenido/includes/include.mycontenido_settings.php:48
+msgid "Saved changes"
+msgstr "Wijzigingen opgeslagen"
+
+# e:\timo\contenido431/contenido/includes/include.mycontenido_settings.php:51
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:67
+# e:\timo\contenido431/contenido/includes/include.rights_details.php:52
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:88
+msgid "Passwords don't match"
+msgstr "Wachtwoorden komen niet overeen"
+
+# e:\timo\contenido431/contenido/includes/include.mycontenido_settings.php:77
+#, c-format
+msgid "Settings for %s"
+msgstr "Instellingen voor %s"
+
+# e:\timo\contenido431/contenido/includes/include.mycontenido_settings.php:91
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:127
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:187
+msgid "New password"
+msgstr "Nieuw wachtwoord"
+
+# e:\timo\contenido431/contenido/includes/include.mycontenido_settings.php:97
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:133
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:194
+msgid "Confirm new password"
+msgstr "Herhaal wachtwoord"
+
+# e:\timo\contenido431/contenido/includes/include.mycontenido_settings.php:110
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:262
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:375
+msgid "Use WYSIWYG-Editor"
+msgstr "Gebruik WYSIWYG editor"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:126
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:145
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:121
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:180
+# e:\timo\contenido431/contenido/templates/standard/template.js_edit_form.html:21
+# e:\timo\contenido431/contenido/templates/standard/template.lay_edit_form.html:19
+# e:\timo\contenido431/contenido/templates/standard/template.mod_edit_form.html:20
+# e:\timo\contenido431/contenido/templates/standard/template.style_edit_form.html:21
+# e:\timo\contenido431/contenido/templates/standard/template.tpl_edit_form.html:16
+msgid "Name"
+msgstr "Naam"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:134
+msgid "From"
+msgstr "Van"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:141
+msgid "Subject"
+msgstr "Onderwerp"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:169
+msgid "Special Message Tags (will be replaced when sending)"
+msgstr "Speciale berichtcodes (worden automatisch verwerkt bij versturen)"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:170
+msgid "Name of the recipient"
+msgstr "Naam geadresseerde"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:171
+msgid "Date of when the mail has been sent"
+msgstr "Datum verstuurd"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:172
+msgid "Time of when the mail has been sent"
+msgstr "Tijd verstuurd"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:173
+msgid "Number of recipients"
+msgstr "Aantal geadresseerden"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:174
+msgid "Link to unsubscribe"
+msgstr "Link om uit te schrijven"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:175
+msgid "Link to pause the subscription"
+msgstr "Link om lidmaatschap tijdelijk te stoppen"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:176
+msgid "Link to resume the subscription"
+msgstr "Link om lidmaatschap weer voort te zetten"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:179
+msgid "Message"
+msgstr "Bericht"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_menu.php:75
+#, c-format
+msgid "Do you really want to delete the newsletter named %s?"
+msgstr "Weet u zeker dat u de nieuwsletter %s wilt verwijderen?"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_menu.php:83
+#, c-format
+msgid "Do you really want to send the newsletter named %s?"
+msgstr "Weet u zeker dat u nieuwsbrief %s wilt verzenden?"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_menu.php:119
+#, c-format
+msgid "Do you really want to delete the following newsletter:<br><br>%s<br>"
+msgstr "Weet u zeker dat u de volgende nieuwsbrief wilt verwijderen? :<br><br>%s<br>"
+
+# e:\timo\contenido431/contenido/includes/include.newsletter_menu.php:125
+#, c-format
+msgid "Do you really want to send the following newsletter:<br><br>%s<br>"
+msgstr "Weet u zeker dat u de volgende nieuwsbrief wilt verzenden? :<br><br>%s<br>"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.newsletter_send.php:80
+#, c-format
+msgid "Newsletter was sent to %s recipient(s)"
+msgstr "Nieuwsbrief is verstuurd naar %s geadresseerden"
+
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:160
+msgid "Deactivated"
+msgstr "Gedeactiveerd"
+
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:176
+# e:\timo\contenido431/contenido/templates/standard/template.con_art_overview.html:60
+msgid "Changed"
+msgstr "Gewijzigd"
+
+# e:\timo\contenido431/contenido/includes/include.recipients_menu.php:116
+msgid "Page"
+msgstr "Pagina"
+
+# e:\timo\contenido431/contenido/includes/include.recipients_menu.php:121
+msgid "Start search"
+msgstr "Start zoeken"
+
+# e:\timo\contenido431/contenido/includes/include.recipients_menu.php:184
+#, c-format
+msgid "Do you really want to delete the recipient %s?"
+msgstr "Weet u zeker dat u geadresseerde %s wilt verwijderen?"
+
+# e:\timo\contenido431/contenido/includes/include.recipients_menu.php:196
+#, c-format
+msgid "Do you really want to delete the following recipient:<br><br>%s<br>"
+msgstr "Weet u zeker dat u de volgende geadresseerde wilt verwijderen? :<br><br>%s<br>"
+
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:115
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:173
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:145
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:208
+msgid "Phone number"
+msgstr "Telefoonnummer"
+
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:151
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:215
+msgid "Street"
+msgstr "Adres"
+
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:157
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:222
+msgid "ZIP code"
+msgstr "Postcode"
+
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:163
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:229
+msgid "City"
+msgstr "Plaats"
+
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:169
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:236
+msgid "Country"
+msgstr "Land"
+
+# e:\timo\contenido431/contenido/includes/include.rights_menu.php:137
+#, c-format
+msgid "Do you really want to delete the user %s?"
+msgstr "Weet u zeker dat u gebruiker %s wilt verwijderen?"
+
+# e:\timo\contenido431/contenido/includes/include.rights_menu.php:147
+#, c-format
+msgid "Do you really want to delete the following user:<br><br>%s<br>"
+msgstr "Weet u zeker dat u de volgende gebruiker wilt verwijderen? :<br><br>%s<br>"
+
+# e:\timo\contenido431/contenido/includes/include.stat_menu.php:18
+msgid "Current Report"
+msgstr "Huidig rapport"
+
+# e:\timo\contenido431/contenido/includes/include.stat_menu.php:26
+msgid "Statistics Overview"
+msgstr "Overzicht statistieken"
+
+# e:\timo\contenido431/contenido/includes/include.stat_menu.php:37
+msgid "Archived Statistics"
+msgstr "Gearchiveerde statistieken"
+
+# e:\timo\contenido431/contenido/includes/include.stat_overview.php:28
+# e:\timo\contenido431/contenido/includes/include.stat_overview.php:41
+msgid "Full statistics"
+msgstr "Volledige statistieken"
+
+# e:\timo\contenido431/contenido/includes/include.stat_overview.php:60
+msgid "Yearly"
+msgstr "Jaarlijks"
+
+# e:\timo\contenido431/contenido/includes/include.stat_overview.php:64
+msgid "Current"
+msgstr "Huidig"
+
+# e:\timo\contenido431/contenido/includes/include.stat_overview.php:74
+msgid "Status"
+msgstr "Status"
+
+# e:\timo\contenido431/contenido/includes/include.stat_overview.php:75
+msgid "Number of articles"
+msgstr "Aantal artikelen"
+
+# e:\timo\contenido431/contenido/includes/include.stat_overview.php:76
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:26
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:181
+msgid "Hits"
+msgstr "Hits"
+
+# e:\timo\contenido431/contenido/includes/include.stat_overview.php:78
+msgid "Hits in this language"
+msgstr "Hits in deze taal"
+
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:320
+msgid "Unprotect category"
+msgstr "Beveiliging categorie opheffen"
+
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:330
+#, c-format
+msgid "Do you really want to delete the following category:<br><br><b>%s</b>"
+msgstr "Weet u zeker dat u de volgende categorie wilt verwijderen? :<br><br><b>%s</b><br>"
+
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:340
+msgid "One or more subtrees are existing, unable to delete"
+msgstr "Eén of meerdere onderliggende lagen zijn actief, verwijderen is niet mogelijk."
+
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:345
+msgid "One or more articles are existing, unable to delete"
+msgstr "Eén of meerdere artikelen zijn actief, verwijderen is niet mogelijk."
+
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:349
+msgid "One or more subtrees and one or more articles are existing, unable to delete."
+msgstr "Eén of meerdere onderliggende lagen en één of meerdere artikelen zijn actief, verwijderen is niet mogelijk."
+
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:375
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:390
+msgid "Move tree"
+msgstr "Verplaats boomstructuur"
+
+# e:\timo\contenido431/contenido/includes/include.str_overview.php:380
+msgid "Place tree here"
+msgstr "Plaats boomstructuur hier"
+
+# e:\timo\contenido431/contenido/includes/include.style_edit_form.php:75
+msgid "File is not existing or readable"
+msgstr "Bestand bestaat niet of is onleesbaar"
+
+# e:\timo\contenido431/contenido/includes/include.style_edit_form.php:78
+msgid "Invalid file"
+msgstr "Ongeldig bestand"
+
+# e:\timo\contenido431/contenido/includes/include.style_files_overview.php:61
+msgid "Delete stylesheet"
+msgstr "Verwijder stylesheet"
+
+# e:\timo\contenido431/contenido/includes/include.style_files_overview.php:62
+#, c-format
+msgid "Do you really want to delete the following stylesheet:<br><br>%s<br>"
+msgstr "Weet u zeker dat u de volgende stylesheet wilt verwijderen? :<br><br>%s<br>"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:394
+msgid "No error log entries found"
+msgstr "Geen error log regels gevonden."
+
+# e:\timo\contenido431/contenido/includes/include.mycontenido_lastarticles.php:278
+msgid "No error log file found"
+msgstr "Geen error log bestand gevonden"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.system_sysvalues.php:71
+msgid "No install error log entries found"
+msgstr "Geen fouten in logmeldingen gevonden voor install"
+
+# e:\timo\contenido431/contenido/includes/include.tpl_new.php:14
+msgid "New template"
+msgstr "Nieuwe template"
+
+# e:\timo\contenido431/contenido/includes/include.tpl_overview.php:64
+#, c-format
+msgid "Do you really want to delete the following template:<br><br>%s<br>"
+msgstr "Weet u zeker dat u de volgende template wilt verwijderen? :<br><br>%s<br>"
+
+# e:\timo\contenido431/contenido/includes/include.mod_edit_form.php:74
+# e:\timo\contenido431/contenido/includes/include.tplcfg_edit_form.php:249
+# e:\timo\contenido431/contenido/templates/standard/template.con_art_overview.html:62
+# e:\timo\contenido431/contenido/templates/standard/template.mycontenido_lastarticles.html:64
+msgid "Template"
+msgstr "Template"
+
+# e:\timo\contenido431/contenido/includes/include.tplcfg_edit_form.php:332
+msgid "Module in container"
+msgstr "Module in container"
+
+# e:\timo\contenido431/contenido/includes/include.upl_dirs_overview.php:89
+msgid "Directory contains files"
+msgstr "Directory bevat bestanden."
+
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:24
+msgid "Filename A-Z"
+msgstr "Bestandsnaam A-Z"
+
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:25
+msgid "Filename Z-A"
+msgstr "Bestandsnaam Z-A"
+
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:26
+msgid "Description A-Z"
+msgstr "Beschrijving A-Z"
+
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:27
+msgid "Description Z-A"
+msgstr "Beschrijving Z-A"
+
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:28
+# e:\timo\contenido431/contenido/templates/standard/template.upl_files_overview.html:81
+msgid "File size"
+msgstr "Bestandsgrootte"
+
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:84
+msgid "File upload"
+msgstr "Bestandsbeheer"
+
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:164
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:166
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:175
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:184
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:191
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:197
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:203
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:209
+msgid "Show file"
+msgstr "Bekijk bestand"
+
+# e:\timo\contenido431/contenido/includes/include.upl_files_overview.php:231
+msgid "Rename file"
+msgstr "Wijzig bestandsnaam"
+
+# e:\timo\contenido431/contenido/includes/include.upl_left_top.php:16
+msgid "New directory in"
+msgstr "Nieuwe directory in"
+
+# e:\timo\contenido431/contenido/includes/main.login.php:39
+msgid "No Login Information available."
+msgstr "Geen inlog informatie beschikbaar."
+
+# e:\timo\contenido431/contenido/includes/main.login.php:90
+msgid "Overview"
+msgstr "Overzicht"
+
+# e:\timo\contenido431/contenido/includes/main.login.php:124
+msgid "Symbol help"
+msgstr "Hulp bij symbolen"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/rights.inc.php:250
+msgid "Current user doesn't have any rights to any client/language."
+msgstr "Huidige gebruiker heeft geen rechten tot klanten/talen"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:10
+msgid "Protect"
+msgstr "Beveilig"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:11
+msgid "Remove protection"
+msgstr "Verwijder beveiliging"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:13
+msgid "Overview cannot be displayed"
+msgstr "Overzicht kan niet worden weergegeven"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:14
+msgid "Error"
+msgstr "Fout"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:15
+msgid "Article can't be displayed"
+msgstr "Artikel kan niet worden weergegeven"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:16
+msgid "No article was selected"
+msgstr "Er is geen artikel geselecteerd"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:17
+msgid "Template configuration can't be displayed"
+msgstr "Template configuratie kan niet worden weergegeven"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:18
+msgid "Editor can't be displayed"
+msgstr "Editor kan niet worden weergegeven"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:19
+msgid "Preview can't be displayed"
+msgstr "Voorbeeld kan niet worden weergegeven"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:20
+msgid "Error calling the calendar: no target control specified"
+msgstr "Fout bij aanroepen van kalender: geen target control geselecteerd"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:21
+msgid "Error calling the calendar: parameter specified is not valid target control"
+msgstr "Fout bij aanroepen kalender: opgegeven parameter is geen geldig target control"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:22
+msgid "Confirm"
+msgstr "Bevestig"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:24
+msgid "Close window"
+msgstr "Sluit venster"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:25
+msgid "Click to close"
+msgstr "Klik hier om te sluiten"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:26
+msgid "Headline / HTML"
+msgstr "Hoofdkop / HTML"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:27
+msgid "Text / HTML"
+msgstr "Tekst / HTML"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:28
+msgid "Text / Standard"
+msgstr "Tekst / Standaard"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:29
+msgid "Picture"
+msgstr "Afbeelding"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:31
+msgid "Description / Standard"
+msgstr "Omschrijving / Standaard"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:32
+msgid "Flash Movie"
+msgstr "Flash bestand"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:33
+msgid "Link"
+msgstr "Link"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:34
+msgid "Frame"
+msgstr "Frame"
+
+# e:\timo\contenido431/contenido/templates/standard/template.con_art_overview.html:61
+msgid "Sort order"
+msgstr "Sorteervolgorde"
+
+# e:\timo\contenido431/contenido/templates/standard/template.con_art_overview.html:63
+# e:\timo\contenido431/contenido/templates/standard/template.str_overview.html:49
+msgid "Actions"
+msgstr "Acties"
+
+# e:\timo\contenido431/contenido/templates/standard/template.con_edit_form.html:55
+msgid "Time control"
+msgstr "Tijdscontrole"
+
+# e:\timo\contenido431/contenido/templates/standard/template.con_edit_form.html:58
+msgid "Use time control"
+msgstr "Gebruik tijdscontrole"
+
+# e:\timo\contenido431/contenido/templates/standard/template.con_edit_form.html:60
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:31
+msgid "Start date"
+msgstr "Startdatum"
+
+# e:\timo\contenido431/contenido/templates/standard/template.con_edit_form.html:64
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:35
+msgid "End date"
+msgstr "Einddatum"
+
+# e:\timo\contenido431/contenido/templates/standard/template.con_edit_form.html:67
+msgid "When expired, move to category"
+msgstr "Indien verlopen, verplaats naar categorie"
+
+# e:\timo\contenido431/contenido/templates/standard/template.con_edit_form.html:69
+msgid "Make online after move"
+msgstr "Plaats online na verplaatsen"
+
+# e:\timo\contenido431/contenido/templates/standard/template.con_edit_form.html:121
+msgid "Page title"
+msgstr "Pagina titel"
+
+# e:\timo\contenido431/contenido/templates/standard/template.con_edit_form.html:128
+msgid "Meta tags"
+msgstr "Meta tags"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:13
+msgid "Concept and Implementation"
+msgstr "Concept en implementatie"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:13
+msgid "Germany"
+msgstr "Duitsland"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:13
+msgid "Phone"
+msgstr "Telefoon"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:19
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:26
+msgid "Graphics"
+msgstr "Afbeeldingen"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:20
+msgid "Design Drafts"
+msgstr "Design"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.info.html:20
+msgid "Translating Contenido to Dutch"
+msgstr "Vertaling van Contenido naar Nederlands"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:21
+msgid "Concepts / Testing"
+msgstr "Concept en testen"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:22
+msgid "HTML-Templates"
+msgstr "HTML templates"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:23
+msgid "Documentation"
+msgstr "Documentatie"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:24
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:27
+msgid "Development"
+msgstr "Ontwikkeling"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:25
+msgid "Core Development"
+msgstr "Hoofd ontwikkeling"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:26
+msgid "Lead Development"
+msgstr "Lead ontwikkeling"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:26
+msgid "Technical Concepts"
+msgstr "Technische concepten"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:28
+msgid "Conceptual Project Management / Testing"
+msgstr "Concept project management / testen"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:29
+msgid "Technical Project Management / Testing"
+msgstr "Technische project management / testing"
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:30
+msgid "Special thanks to all other contributors of the former releases and bugreporters."
+msgstr "Wij danken iedereen die meegeholpen heeft aan de ontwikkeling van Contenido."
+
+# e:\timo\contenido431/contenido/templates/standard/template.info.html:36
+msgid "You can find many information and a community forum on the <a href=\"http://www.contenido.de\" target=\"_blank\">Contenido Portal</a>"
+msgstr "Informatie over Contenido en een forum kunt u vinden op:  <a href=\"http://www.contenido.de\" target=\"_blank\">Contenido Portal</a>"
+
+# e:\timo\contenido431/contenido/templates/standard/template.js_new_form.html:20
+# e:\timo\contenido431/contenido/templates/standard/template.upl_files_overview.html:77
+msgid "Filename"
+msgstr "Bestandsnaam"
+
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:15
+msgid "Filter"
+msgstr "Filter"
+
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:39
+msgid "Limit"
+msgstr "Beperk"
+
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:50
+msgid "Date"
+msgstr "Datum"
+
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:54
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:13
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:56
+msgid "Article"
+msgstr "Artikel"
+
+# e:\timo\contenido431/contenido/templates/standard/template.mycontenido_lastarticles.html:29
+msgid "Your clients"
+msgstr "Uw klanten"
+
+# e:\timo\contenido431/contenido/templates/standard/template.mycontenido_lastarticles.html:59
+msgid "Start"
+msgstr "Start"
+
+# e:\timo\contenido431/contenido/templates/standard/template.mycontenido_lastarticles.html:63
+msgid "Modified"
+msgstr "Gewijzigd"
+
+# e:\timo\contenido431/contenido/templates/standard/template.mycontenido_lastarticles.html:65
+msgid "Info"
+msgstr "Info"
+
+# e:\timo\contenido431/contenido/includes/functions.general.php:30
+msgid "Search"
+msgstr "Zoeken"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:10
+msgid "Table of contents"
+msgstr "Sitemap"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:11
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:38
+msgid "Common"
+msgstr "Algemeen"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:15
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:100
+msgid "File management"
+msgstr "Bestandsbeheer"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:17
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:113
+msgid "Layouts"
+msgstr "Layouts"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:18
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:122
+msgid "Modules"
+msgstr "Modules"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:19
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:131
+msgid "Templates"
+msgstr "Templates"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:20
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:140
+msgid "Style editor"
+msgstr "Style editor"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:21
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:147
+msgid "Script editor"
+msgstr "Script editor"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:22
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:159
+msgid "Extras"
+msgstr "Extras"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:23
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:160
+msgid "Newsletter"
+msgstr "Nieuwsbrief"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:24
+msgid "Recipients"
+msgstr "Geadresseerden"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:25
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:180
+msgid "Statistics"
+msgstr "Statistieken"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:27
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:194
+msgid "Administration"
+msgstr "Administratie"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:28
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:195
+msgid "Users"
+msgstr "Gebruikers"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:29
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:202
+msgid "Groups"
+msgstr "Groepen"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:30
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:209
+msgid "Languages"
+msgstr "Talen"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:31
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:218
+msgid "Clients"
+msgstr "Klanten"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:42
+msgid "Execute query / Save"
+msgstr "Uitvoeren query / bewaar"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:46
+msgid "Logout"
+msgstr "Uitloggen"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:48
+msgid "Change to MyContenido (Personal Settings)"
+msgstr "Ga naar Mijn Contenido (persoonlijke instellingen)"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:60
+msgid "Element is protected / accessible (change trough click)"
+msgstr "Element is beveiligd / toegankelijk (wijzig door te klikken)"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:64
+msgid "Article is start article / is not start article"
+msgstr "Artikel is een startartikel / is geen startartikel"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:66
+msgid "Configure article properties"
+msgstr "Configureer artikel eigenschappen"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:68
+msgid "Element is online / offline (change trough click)"
+msgstr "Element is online / offline (wijzig door te klikken)"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:80
+msgid "Create category"
+msgstr "Nieuwe categorie"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:82
+msgid "Set category online / offline"
+msgstr "Zet categorie online / offline"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:84
+msgid "Category is online and protected / unprotected"
+msgstr "Categorie is online en beveiligd / niet beveiligd"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:86
+msgid "Category is offline and protected / unprotected"
+msgstr "Categorie is offline en beveiligd / niet beveiligd"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:88
+msgid "Category is online, contains an error and is protected / unprotected"
+msgstr "Categorie is online, bevat een fout en is beveiligd / niet beveiligd"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:90
+msgid "Category is offline, contains an error and is protected / unprotected"
+msgstr "Categorie is offline, bevat een fout en is beveiligd / niet beveiligd"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:94
+msgid "Select move target"
+msgstr "Selecteer target voor verplaatsen"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:96
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:119
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:128
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:137
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:144
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:151
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:166
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:173
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:199
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:206
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:215
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:222
+msgid "Delete / Delete not available"
+msgstr "Verwijder / verwijderen niet mogelijk"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:103
+msgid "Root upload folder"
+msgstr "Root upload map"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:105
+msgid "Regular folder"
+msgstr "Normale map"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:117
+msgid "Layout in use"
+msgstr "Layout is in gebruik"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:126
+msgid "Module in use"
+msgstr "Module is in gebruik"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:185
+msgid "Article is online / offline"
+msgstr "Artikel is online / offline"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:213
+msgid "Language active / not active"
+msgstr "Taal is actief / inactief"
+
+# e:\timo\contenido431/contenido/includes/include.stat_menu.php:18
+msgid "Bugreport"
+msgstr "Bugreport"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:22
+msgid "Important"
+msgstr "Belangrijk"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:24
+msgid "Please don't send 'test' bug reports."
+msgstr "Stuur svp geen 'test' bug reports."
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:25
+msgid "Make sure you enter your correct eMail-Address."
+msgstr "Controleer svp of u het juiste emailadres heeft ingevoerd."
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:26
+msgid "If you want to determinate if your bug has already been fixed, visit the following locations"
+msgstr "Indien u de status van uw bug wilt bekijken, bezoek de volgende pagina"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:232
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:261
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:261
+msgid "Contenido Forum"
+msgstr "Contenido forum"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:232
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:261
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:261
+msgid "Contenido Bug-Tracker"
+msgstr "Contenido Bug-Tracker"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:35
+msgid "Your E-Mail-Address"
+msgstr "Uw e-mailadres"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:34
+msgid "First Name"
+msgstr "Voornaam"
+
+# e:\timo\contenido431/contenido/includes/include.con_art_overview.php:339
+msgid "Last Name"
+msgstr "Achternaam"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:50
+msgid "Area"
+msgstr "Omgeving"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:55
+msgid "Your bugreport"
+msgstr "Uw bugreport"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:59
+msgid "<b><i>Fields marked with a "
+msgstr "<b><i>Velden gemarkeerd met een"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:59
+msgid " are mandatory fields"
+msgstr "zijn verplichte velden."
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:62
+msgid "<b><i>declaration of consent:"
+msgstr "<b><i>verklaring van toestemming:"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:63
+msgid "In order to ensure the best support, this bugreport mail will contain several files as attachement.<br>Please remove the check marks from the checkboxes which informations you don't want to send!"
+msgstr "Om de bugs sneller op te kunnen sporen worden er met deze bugreport een aantal bestanden meegestuurd als attachment.<br>Deselecteer de checkboxes waarvan u de informatie niet wilt versturen!"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:65
+msgid "errorlog.txt (contains error messages arose during run time)"
+msgstr "errorlog.txt (bevat foutmeldingen die worden opgeslagen)"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:66
+msgid "install.log.txt (contains error messages arose during upgrading to a newer version)"
+msgstr "install.log.txt (bevat foutmeldingen die worden opgeslagen tijdens upgraden naar een nieuwe versie)"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:67
+msgid "systemvariables.html (contains contains several Contenido settings)"
+msgstr "systemvariables.html (bevat diverse Contenido instellingen)"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:68
+msgid "phpinfo.html (contains output generated through the phpinfo() function)"
+msgstr "phpinfo.html (bevat de variabelen en instellingen van PHP)"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:69
+msgid "By checking this box I agree that four for business AG receives and processes the bug report data.<br>I also agree that the submitted data is used for bug processing and that the bug will be made public using the Contenido Bug-Tracker."
+msgstr "Bij het aanvinken van deze checkbox ga ik accoord met het versturen van de bug report naar four for business AG. <br>Ik ga ook accoord dat de te versturen informatie wordt gebruikt voor het oplossen van de bug en dat de bug publiekelijk wordt gemaakt via de Contenido Bug-Tracker."
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:95
+msgid "User system configuration"
+msgstr "Gebruikers systeem configuratie"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:180
+# e:\timo\contenido431/contenido/includes/include.lang_edit.php:94
+# e:\timo\contenido431/contenido/includes/include.mycontenido_settings.php:88
+# e:\timo\contenido431/contenido/includes/include.newsletter_edit.php:122
+# e:\timo\contenido431/contenido/includes/include.recipients_edit.php:141
+# e:\timo\contenido431/contenido/includes/include.rights_create.php:112
+# e:\timo\contenido431/contenido/includes/include.rights_overview.php:169
+# e:\timo\contenido431/contenido/includes/include.grouprights_create.php:110
+# e:\timo\contenido431/contenido/includes/include.grouprights_overview.php:119
+# e:\timo\contenido431/contenido/templates/standard/template.log_main.html:16
+msgid "Variable"
+msgstr "Variabele"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_sysval_mailattach.html:23
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_variables.html:17
+msgid "Local value"
+msgstr "Lokale waarde"
+
+# e:\timo\contenido431/contenido/includes/cfg_language_de.inc.php:95
+msgid "Your system configuration"
+msgstr "Uw systeem configuratie"
+
+# e:\timo\contenido431/contenido/external/wysiwyg/insert_link.php:232
+# e:\timo\contenido431/contenido/external/wysiwyg/spaw/insert_link.php:261
+# e:\timo\contenido431/contenido/external/wysiwyg/htmlarea2/insert_link.php:261
+msgid "Contenido Error Log"
+msgstr "Contenido error log"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_variables.html:38
+msgid "clear error log"
+msgstr "wis error log"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_variables.html:45
+msgid "Contenido Install Error Log"
+msgstr "Contenido Install Error Log"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_variables.html:52
+msgid "clear Install error log"
+msgstr "wis install error log"
+
+# e:\timo\contenido431/contenido/templates/standard/template.tpl_edit_form.html:39
+msgid "Layout"
+msgstr "Layout"
+
+# e:\timo\contenido431/contenido/templates/standard/template.tpl_edit_form.html:52
+msgid "Layout description"
+msgstr "Layout omschrijving"
+
+# e:\timo\contenido431/contenido/templates/standard/template.upl_files_overview.html:56
+msgid "Sort files"
+msgstr "Sorteer bestanden"
+
+# e:\timo\contenido431/contenido/templates/standard/template.upl_files_overview.html:83
+msgid "Image size"
+msgstr "Afbeeldingsgrootte"
+
+# e:\timo\contenido431/contenido/templates/standard/template.welcome.html:14
+msgid "Available clients"
+msgstr "Beschikbare klanten"
+
+# e:\timo\contenido431/contenido/templates/standard/template.welcome.html:50
+msgid "Help about Contenido"
+msgstr "Hulp bij Contenido"
+
+# e:\timo\contenido431/contenido/templates/standard/template.welcome.html:55
+msgid "Contact System Administrators"
+msgstr "Neem contact op met Systeembeheerder"
+
+# e:\timo\contenido431/contenido/templates/standard/template.welcome.html:55
+msgid "Contact Client Administrators"
+msgstr "Neem contact op met klantbeheerder"
+

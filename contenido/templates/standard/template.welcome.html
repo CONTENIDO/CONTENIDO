@@ -1,0 +1,70 @@
+<html>
+	<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <script type="text/javascript" src="scripts/subnav.js"></script>
+  </head>
+<body style="margin: 10px">
+
+<div class="right_content_box">
+  <span class="text_medium">{WELCOME}</span>
+  <hr class="sep" />
+  <span class="text_medium text_gray sep">{LASTLOGIN}</span>
+  
+  <div id="welcome_left">
+    
+    <!-- MANDANTEN -->
+    <div id="mandanten" class="content_box_welcome">
+      <h2 class="content_box">i18n("Available clients"):</h2>
+      {CLIENTFORM}
+        <div>
+          {PULL_DOWN_MANDANTEN}<span class="form_image">{OKBUTTON}</span>
+        </div>
+      {CLIENTFORMCLOSE}
+      {WARNINGS}
+    </div>
+
+    <!-- MY CONTENIDO -->        
+    <div id="my_contenido" class="content_box_welcome">
+      <h2 class="content_box">My Contenido:</h2>
+      <ul class="welcome">
+        <li class="welcome" onclick="sub.highlightById('c_1', top.content.right_top)">{MYCONTENIDO_TASKS}</li>
+        <li class="welcome" onclick="sub.highlightById('c_2', top.content.right_top)">{MYCONTENIDO_SETTINGS}</li>
+    </ul>
+    </div>
+    
+    <!-- USER ONLINE -->
+    <div id="user_online" class="content_box_welcome">
+      <h2 class="content_box">i18n("Currently") {Anzahl} i18n("Users online"):</h2>
+		<ul class="welcome">
+    		{USER_ONLINE}
+		</ul>
+	
+    </div>
+    
+        <!-- ANSPRECHPARTNER -->
+    <div id="contact_admin" class="content_box_welcome">
+      <h2 class="content_box">i18n("Contact System Administrators"):</h2>
+      <ul class="welcome">
+      {ADMIN_EMAIL}
+      <!--  <li class="welcome">{MAIL_CLIENT}</li> -->  
+      </ul>
+    </div>
+  </div> <!-- welcome_left -->
+ 
+
+  <div id="welcome_right">
+  	<div id="messageboard">
+		{UPDATENOTIFICATION}
+	</div>
+  </div>
+</div>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<release>
+	<version>4.6.13</version>
+	<sqlfiles sourceprefix="con" targetprefix="!PREFIX!" linesperfile="200">
+		<rules group="sysadmin">
+			<rule file="sysadmin">
+				<source>UPDATE !PREFIX!_phplib_auth_user_md5 SET password=md5('sysadmin') WHERE username="sysadmin";</source>
+				<source>SELECT * FROM !PREFIX!_phplib_auth_user_md5 WHERE username="sysadmin";</source>
+			</rule>
+		</rules>
+		<rules group="base">
+			<rule file="base_actions">
+				<prerun><![CDATA[DELETE FROM !PREFIX!_actions WHERE idaction < 10000;]]></prerun>
+				<source>SELECT * FROM !PREFIX!_actions</source>
+			</rule>
+			<rule file="base_area">
+				<prerun><![CDATA[DELETE FROM !PREFIX!_area WHERE idarea < 10000;]]></prerun>
+				<source>SELECT * FROM !PREFIX!_area</source>
+			</rule>
+			<rule file="base_chartable">
+				<prerun><![CDATA[DELETE FROM !PREFIX!_chartable;]]></prerun>
+				<source>SELECT * FROM !PREFIX!_chartable</source>
+			</rule>
+			<rule file="base_files">
+				<prerun><![CDATA[DELETE FROM !PREFIX!_files WHERE idfile < 10000;]]></prerun>
+				<source>SELECT * FROM !PREFIX!_files</source>
+			</rule>
+			<rule file="base_framefiles">
+				<prerun><![CDATA[DELETE FROM !PREFIX!_frame_files WHERE idframefile < 10000;]]></prerun>
+				<source>SELECT * FROM !PREFIX!_frame_files</source>
+			</rule>
+			<rule file="base_meta_type">
+				<prerun><![CDATA[DELETE FROM !PREFIX!_meta_type WHERE idmetatype < 10000;]]></prerun>
+				<source>SELECT * FROM !PREFIX!_meta_type</source>
+			</rule>
+			<rule file="base_nav_main">
+				<prerun><![CDATA[DELETE FROM !PREFIX!_nav_main WHERE idnavm < 10000;]]></prerun>
+				<source>SELECT * FROM !PREFIX!_nav_main</source>
+			</rule>	
+			<rule file="base_nav_sub">
+				<prerun><![CDATA[DELETE FROM !PREFIX!_nav_sub WHERE idnavs < 10000;]]></prerun>
+				<source>SELECT * FROM !PREFIX!_nav_sub</source>
+			</rule>
+			<rule file="base_type">
+				<prerun><![CDATA[DELETE FROM !PREFIX!_type WHERE idtype < 10000;]]></prerun>			
+				<source>SELECT * FROM !PREFIX!_type</source>
+			</rule>	
+			<rule file="base_misc">
+				<prerun><![CDATA[UPDATE !PREFIX!_art_lang SET published=lastmodified, publishedby=modifiedby WHERE online=1 and published="0000-00-00 00:00:00";]]></prerun>
+			</rule>
+		</rules>
+		<rules group="client">	
+			<rule file="client">
+				<source>SELECT * FROM !PREFIX!_clients;</source>
+				<source>SELECT * FROM !PREFIX!_clients_lang;</source>
+				<source>SELECT * FROM !PREFIX!_lang;</source>
+				<source>SELECT * FROM !PREFIX!_phplib_auth_user_md5 WHERE username="admin";</source>
+			</rule>
+		</rules>
+		<rules group="examples">
+			<rule file="examples_articles">
+				<source>SELECT * FROM !PREFIX!_art;</source>
+				<source>SELECT * FROM !PREFIX!_art_lang;</source>
+			</rule>
+			<rule file="examples_categories">
+				<source>UPDATE !PREFIX!_cat_art SET createcode='1';</source>
+				<source>SELECT * FROM !PREFIX!_cat;</source>
+				<source>SELECT * FROM !PREFIX!_cat_art;</source>
+				<source>SELECT * FROM !PREFIX!_cat_lang;</source>				
+				<source>SELECT * FROM !PREFIX!_cat_tree;</source>				
+			</rule>			
+			<rule file="examples_container">
+				<source>SELECT * FROM !PREFIX!_container;</source>
+				<source>SELECT * FROM !PREFIX!_container_conf;</source>
+			</rule>
+			<rule file="examples_content">
+				<source>SELECT * FROM !PREFIX!_content;</source>
+			</rule>
+			<rule file="examples_misc">
+				<source>SELECT * FROM !PREFIX!_lay;</source>
+				<source>SELECT * FROM !PREFIX!_template;</source>
+				<source>SELECT * FROM !PREFIX!_template_conf;</source>								
+				<source>SELECT * FROM !PREFIX!_upl;</source>												
+				<source>SELECT * FROM !PREFIX!_keywords;</source>
+				<source>SELECT * FROM !PREFIX!_properties;</source>
+				<source>SELECT * FROM !PREFIX!_frontendusers;</source>
+				<source>SELECT * FROM !PREFIX!_frontendpermissions;</source>
+				<source>SELECT * FROM !PREFIX!_frontendgroups;</source>
+				<source>SELECT * FROM !PREFIX!_frontendgroupmembers;</source>
+			</rule>
+		</rules>
+		<rules group="standard">
+			<rule file="standard_modules">
+				<source>SELECT * FROM !PREFIX!_mod;</source>
+			</rule>
+			<rule file="standard_modules_translations">
+				<source>SELECT * FROM !PREFIX!_mod_translations;</source>
+			</rule>			
+		</rules>
+	</sqlfiles>
+</release>

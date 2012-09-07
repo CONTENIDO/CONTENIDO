@@ -1,0 +1,18 @@
+<!-- developer design for file list -->
+<h3>{TITLE}</h3>
+<!-- 
+	Possible place holders for entries: 
+	FILELINK, FILENAME, FILEEXTENSION, FILESIZE, FILESIZE_UNIT, 
+	FILECREATIONDATE, FILEMODIFYDATE, FILEDIRCTORY,
+	FILEMETA_DESCRIPTION, FILEMETA_KEYWORDS, FILEMETA_MEDIANAME,
+	FILEMETA_INTERNAL_NOTICE, FILEMETA_COPYRIGHT
+-->
+<!-- BEGIN:BLOCK -->
+<div style="float: left;margin-bottom: 20px;width:47%;padding-right:5px">
+	<b><a href="{FILELINK}">{FILENAME}</a></b> ({FILEEXTENSION})<br />
+	<span style="color: rgb(170, 170, 170);">{LABEL_FILESIZE}</span> {FILESIZE} {FILESIZE_UNIT}<br />
+	<span style="color: rgb(170, 170, 170);">{LABEL_UPLOAD_DATE}</span> {FILECREATIONDATE}<br />
+	{FILEMETA_DESCRIPTION}
+</div>
+<!-- END:BLOCK -->
+<br style="clear:both" />

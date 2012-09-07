@@ -1,0 +1,8 @@
+This directory contains driver classes for use with Contenido's GenericDB. These
+drivers are responsible for building joins and handling database metadata, but
+NOT for sending queries and returning results.
+
+Dieses Verzeichnis enthält Treiberklassen für die Verwendung mit der Contenido
+GenericDB. Diese Treiber sind ausschließlich dafür da, um Joins aufzubauen und
+um die Metadaten zu verwalten. Sie sind NICHT für das Senden von Queries oder
+das zurückgeben von Query-Ergebnissen zuständig.

@@ -1,0 +1,63 @@
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
+    
+    <script language="javascript">
+        var sid = "{SID}";
+        box = new messageBox("", "", "", 0, 0);
+
+        function deleteLang(idlang) 
+        {
+          str  = "";
+          str += "main.php?area=lang_edit";
+          str += "&action=lang_deletelanguage";
+          str += "&idlang=" + idlang;
+          str += "&targetclient={TARGETCLIENT}";
+          str += "&frame=4";
+          str += "&contenido=" + sid;
+
+          parent.parent.frames["right"].frames["right_bottom"].location.href = str;
+        }
+        
+        if (!top.content.left.left_top && top.content.left.left_top.iLanguagecount) {
+           window.setTimeout("refreshLangCount()", 1000); 
+        } else {
+           refreshLangCount();
+        }
+        
+        function refreshLangCount () {
+            top.content.left.left_top.iLanguagecount = {LANG_COUNT};
+        }
+
+    </script>
+</head>
+<body>
+
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
+
+    {NOTIFICATION}
+
+    <!-- BEGIN:BLOCK -->
+    <tr class="text_medium" style="background-color: {BGCOLOR};" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)"{MARKED}>
+        <td align="left" class="text_medium">{ICON}</td>
+        <td width="100%" style="padding-left:10px">{LANGUAGE}</td>
+        <td>{ACTIVATEBUTTON}</td>
+        <td>{DELETEBUTTON}</td>
+    </tr>
+    <!-- END:BLOCK -->
+
+</table>
+<script language="javascript">
+    if (document.getElementById('marked')) {
+            var markedRow = document.getElementById('marked');
+            row.click(markedRow);
+    }
+</script>
+</body>
+</html>

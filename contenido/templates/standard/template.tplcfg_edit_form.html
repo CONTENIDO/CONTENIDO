@@ -1,0 +1,63 @@
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript"></script>
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+</head>
+<body style="margin: 10px">
+<p style="display:{DISPLAY_HEADER}; font-weight:bold;">{HEADER}</p>
+<div class="categorypath">{CATEGORY}</div>
+
+<form name="tplcfgform" action="{FORMACTION}" id="tpl_form" method="post" enctype="multipart/form-data">
+
+{HIDDEN}
+<table cellspacing="0" cellpadding="2" border="0">
+
+    <tr>
+        <td class="text_medium" style="background-color:#E2E2E2;border: 1px;border-color: #B3B3B3;border-right:0px; border-style: solid">{TEMPLATECAPTION}</td>
+        <td class="text_medium" style="background-color:#F1F1F1;padding-left:5px; border: 1px; border-left:0px;border-color: #B3B3B3; border-style: solid">{TEMPLATESELECTBOX}</td>
+    </tr>
+
+    <tr>
+        <td colspan="2"><img src="images/spacer.gif" width="1" height="10"></td>
+    </tr>
+
+    <!-- BEGIN:BLOCK -->
+    <tr><td colspan="2"><img src="images/spacer.gif" width="1" height="10"></td></tr>
+    <tr>
+        <td class="text_medium" style="background-color:#E2E2E2;padding-left:5px;border: 1px;border-color: #B3B3B3; border-style: solid;border-right:0px;">{MODULECAPTION}</td>
+        <td class="text_medium" style="background-color:#F1F1F1; padding-left:5px; border: 1px; border-left:0px;border-color: #B3B3B3; border-style: solid">{MODULENAME}</td>
+    </tr>
+
+    <tr>
+        <td class="text_medium" colspan="2" style="border: 1px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">
+        {MODULECODE}
+        </td>
+    </tr>
+    <!-- END:BLOCK -->
+
+    <tr>
+        <td colspan="2"><img src="images/spacer.gif" width="1" height="10"></td>
+    </tr>
+
+    <tr>
+        <td colspan="2" align="right">
+            {BUTTONS}
+        </td>
+    </tr>
+
+</table>
+
+</form>
+
+<script type="text/javascript">
+{SCRIPT}
+</script>
+
+{MARKSUBMENU}
+
+</body>
+</html>

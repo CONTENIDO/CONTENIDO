@@ -1,0 +1,57 @@
+<div id="contactForm">
+	<form action="{form_action}" method="post">
+		<input type="hidden" name="send" value="1" />
+		<div class="contactRow clearfix">
+			<table>
+				<tr>
+					<td class="pt" style="width:80px;"><label for="Anrede">{ANREDE}</label></td>
+					<td style="width:10px;"><input type="radio" name="Anrede" value="{ANREDE_OPTION1}" id="Anrede" checked="checked" style="width:auto;border:0;" /></td>
+					<td class="pt">{ANREDE_OPTION1}</td>
+					<td style="width:10px;"><input type="radio" name="Anrede" value="{ANREDE_OPTION2}" style="width:auto;border:0;" /></td>
+					<td class="pt">{ANREDE_OPTION2}</td>
+					<td class="pt" style="text-align:right;">* {PFLICHTFELDER}</td>
+				</tr>
+			</table>
+		</div>
+		<div class="contactRow clearfix">
+			<label for="Vorname">{VORNAME} *</label>
+			<input type="text" name="Vorname" id="Vorname" class="eingabe" maxlength="100"/>
+		</div>
+		<div class="contactRow clearfix">
+			<label for="Name">{NACHNAME} *</label>
+			<input type="text" name="Nachname" id="Nachname" class="eingabe" maxlength="100"/>
+		</div>
+		<div class="contactRow clearfix">
+			<label for="Firma">{FIRMA} *</label>
+			<input type="text" name="Firma" id="Firma" class="eingabe" maxlength="100"/>
+		</div>
+		<div class="contactRow clearfix">
+			<label for="Strasse">{STRASSE} *</label>
+			<input type="text" name="Strasse" id="Strasse" class="eingabe" maxlength="100"/>
+		</div>
+		<div class="contactRow clearfix">
+			<label for="PLZOrt">{PLZORT} *</label>
+			<input type="text" name="PLZOrt" id="PLZOrt" class="eingabe" maxlength="100"/>
+		</div>
+		<div class="contactRow clearfix">
+			<label for="Telefon">{TELEFON} *</label>
+			<input type="text" name="Telefon" id="Telefon" class="eingabe" maxlength="100"/>
+		</div>
+		<div class="contactRow clearfix">
+			<label for="EMail">{EMAIL} *</label>
+			<input type="text" name="EMail" id="EMail" class="eingabe" maxlength="100"/>
+		</div>
+		<div class="contactRow clearfix">
+			<label for="Anliegen">{ANLIEGEN} *</label>
+			<textarea name="Anliegen" id="Anliegen"></textarea>
+		</div>
+		<div id="contactFormSubmit" class="clearfix">
+			<div id="contactFormSubmitLeft">
+				<input type="reset" value="{LOESCHEN}" />
+			</div>
+			<div id="contactFormSubmitRight">
+				<input type="submit" value="{ABSCHICKEN}" />
+			</div>
+		</div>
+	</form>
+</div>

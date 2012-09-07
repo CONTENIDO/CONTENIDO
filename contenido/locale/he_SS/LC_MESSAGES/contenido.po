@@ -1,0 +1,2173 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Contenido 4.4\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2003-10-14 10:23+0100\n"
+"Last-Translator: Timo A. Hummel <timo.hummel@4fb.de>\n"
+"Language-Team: Contenido Translators <translators@contenido.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "No client"
+msgstr "Empf&auml;nger erzeugen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
+#, fuzzy
+msgid "No item loaded"
+msgstr "Neues Template"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+msgid "Client"
+msgstr "Kunne"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:226
+msgid "User"
+msgstr "Benuddza"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:338
+msgid "Save changes"
+msgstr "&Auml;nnerunge merke"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/external/frontend/front_content.php:199
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/external/frontend/front_content.php:221
+msgid "No start article for this category"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:284
+#, fuzzy, c-format
+msgid "Article is in use by %s (%s)"
+msgstr "is onl&auml;in"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:69
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:69
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:69
+msgid "Internal link"
+msgstr "Interner Link"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:78
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:198
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:236
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:78
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:198
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:236
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:78
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:198
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:236
+msgid "Please choose"
+msgstr "Ausw&auml;hle"
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:37
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:283
+msgid "--- None ---"
+msgstr "--- Koina ---"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:212
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:212
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:212
+msgid "External link"
+msgstr "Externer Link"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:215
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:215
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:215
+msgid "Target"
+msgstr "Ziel"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:217
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:217
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:217
+msgid "Open in same window"
+msgstr "Im glaasche Fenschta uffmache"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:218
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:218
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:218
+msgid "Open in new window"
+msgstr "Im annere Fenschta uffmache"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:221
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:221
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:221
+msgid "E-Mail"
+msgstr "E-Mail"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:225
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:225
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:225
+msgid "Style"
+msgstr "Schtail"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:227
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:227
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:227
+msgid "Default"
+msgstr "des normale "
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:228
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:228
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:228
+msgid "Mail"
+msgstr "Mail"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+msgid "Content"
+msgstr "des wos drin is"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
+msgid "Contenido image"
+msgstr "Contenido-Bildschar"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:252
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:252
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:252
+msgid "OK"
+msgstr "Ei jo"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:60
+msgid "Cancel"
+msgstr "Abbreche"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:253
+msgid "Configure template"
+msgstr "Template konfiguriere"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:442
+#, fuzzy
+msgid "Create article"
+msgstr "Neue Ardiggl mache"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:253
+#, fuzzy
+msgid "Configure article"
+msgstr "Template konfiguriere"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#, fuzzy
+msgid "Save article"
+msgstr "is schun en Staddartigll"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#, fuzzy
+msgid "Lock article"
+msgstr "Ardiggl sortierung"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#, fuzzy
+msgid "Edit article"
+msgstr "is schun en Staddartigll"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:212
+#, fuzzy
+msgid "Edit article properties"
+msgstr "Eieschafte"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:88
+msgid "Help"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:290
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:309
+#, fuzzy
+msgid "Make category online"
+msgstr "machs emol onl&auml;in"
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
+#, fuzzy
+msgid "Change template"
+msgstr "Template w&auml;hle"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#, fuzzy
+msgid "Set start article"
+msgstr "is schun en Staddartigll"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:290
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:309
+#, fuzzy
+msgid "Make article online"
+msgstr "machs emol onl&auml;in"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:318
+msgid "Protect category"
+msgstr "Kategorie sch&uuml;tzen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+msgid "Delete article"
+msgstr "Artiggl l&ouml;sche"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:95
+msgid "Edit template configuration"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:289
+msgid "Rename category"
+msgstr "Kategorie umbenennen"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:296
+msgid "New category"
+msgstr "Neue Kategorie"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:98
+msgid "Set category on- or offline"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:331
+#, fuzzy
+msgid "Disable category"
+msgstr "Kategorie l&ouml;schen"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:101
+msgid "Frontend access"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:331
+msgid "Delete category"
+msgstr "Kategorie l&ouml;schen"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:363
+msgid "Move category up"
+msgstr "Eine Kategorie nach oben verschieben"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:363
+#, fuzzy
+msgid "Move category"
+msgstr "Eine Kategorie nach oben verschieben"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:478
+msgid "Create new tree"
+msgstr "Neuen Baum anlegen"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:398
+msgid "Configure category"
+msgstr "Kategorie konfigurieren"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Create directory"
+msgstr "Empf&auml;nger erzeugen"
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:100
+#, fuzzy
+msgid "Upload files"
+msgstr "Datei hochladen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "Delete files"
+msgstr "Datei l&ouml;schen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+msgid "Delete layout"
+msgstr "Layout l&ouml;sche"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:111
+msgid "Modify layout"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "Create layout"
+msgstr "Layout l&ouml;sche"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+msgid "Delete module"
+msgstr "Modul l&ouml;sche"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_new.php:17
+#, fuzzy
+msgid "Edit module"
+msgstr "Neues Modul"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "Create module"
+msgstr "Modul l&ouml;sche"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+msgid "Delete template"
+msgstr "Template l&ouml;schen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
+#, fuzzy
+msgid "Edit template"
+msgstr "Neues Template"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "Create template"
+msgstr "Template l&ouml;schen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:253
+msgid "Duplicate template"
+msgstr "Template duplizieren"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:120
+msgid "Edit rights"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:121
+msgid "Edit user"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Create user"
+msgstr "Style erstellen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "Delete user"
+msgstr "Modul l&ouml;sche"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "Delete group members"
+msgstr "Modul l&ouml;sche"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:125
+msgid "Add group members"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:126
+msgid "Edit group"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Create group"
+msgstr "Neues Schkript"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "Delete group"
+msgstr "Layout l&ouml;sche"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:129
+msgid "Show statistics"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Delete recipient"
+msgstr "Empf&auml;nger erzeugen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Activate/Deactivate recipient"
+msgstr "Empf&auml;nger erzeugen"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_menu.php:87
+#, fuzzy
+msgid "Edit newsletter"
+msgstr "Newsletter verschigge"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:478
+msgid "Create newsletter"
+msgstr "Newsletter erzeugen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+msgid "Delete newsletter"
+msgstr "Newsletter l&ouml;sche"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_menu.php:87
+msgid "Send newsletter"
+msgstr "Newsletter verschigge"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "Delete language"
+msgstr "Layout l&ouml;sche"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:137
+msgid "Edit language"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Create language"
+msgstr "Hamma gemacht om"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:139
+# e:\timo\contenido_head/contenido/includes/include.lang_overview.php:43
+msgid "Activate language"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:160
+#, fuzzy
+msgid "Deactivate language"
+msgstr "Deaktiviert"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:289
+#, fuzzy
+msgid "Rename language"
+msgstr "Datei umbenennen"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:143
+msgid "Install/Remove plugins"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+msgid "Delete file"
+msgstr "Datei l&ouml;schen"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:147
+msgid "Modify style"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+msgid "Create style"
+msgstr "Style erstellen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "Delete style"
+msgstr "Datei l&ouml;schen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Edit script"
+msgstr "Neues Schkript"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Delete script"
+msgstr "Neues Schkript"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+msgid "Create script"
+msgstr "Neues Schkript"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Edit recipient"
+msgstr "Empf&auml;nger erzeugen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+msgid "Create recipient"
+msgstr "Empf&auml;nger erzeugen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Create client"
+msgstr "Empf&auml;nger erzeugen"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:161
+msgid "Edit client"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:74
+#, fuzzy
+msgid "Remove client"
+msgstr "Mandant wechseln"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:13
+#, fuzzy
+msgid "None"
+msgstr "Delefon"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:227
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:227
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:227
+#, fuzzy
+msgid "Default title"
+msgstr "des normale "
+
+# e:\timo\contenido_head/contenido/templates/standard/template.upl_files_overview.html:79
+#, fuzzy
+msgid "description"
+msgstr "Beschreiwung"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:24
+msgid "January"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:25
+msgid "February"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:26
+msgid "March"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:27
+msgid "April"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:28
+msgid "May"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:29
+msgid "June"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:30
+msgid "July"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:31
+msgid "August"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:32
+msgid "September"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:33
+msgid "October"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:34
+msgid "November"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:35
+msgid "December"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.lang.php:96
+msgid "Could not set the language-ID in the file 'config.php'. Please set the language manually."
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "Could not delete language"
+msgstr "Layout l&ouml;sche"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#, fuzzy
+msgid "Info about article"
+msgstr "is schun en Staddartigll"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Info about directory"
+msgstr "Empf&auml;nger erzeugen"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.stat.php:323
+msgid "Sum"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:756
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:785
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:31
+msgid "Top 10"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:757
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:786
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:34
+msgid "Top 20"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:758
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:787
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:37
+msgid "Top 30"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:759
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:788
+msgid "All"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:47
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:64
+#, fuzzy
+msgid "error log successfully cleared"
+msgstr "Hoscht alles richtisch gemacht"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:47
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:64
+#, fuzzy
+msgid "upgrade error log successfully cleared"
+msgstr "Hoscht alles richtisch gemacht"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:87
+#, fuzzy
+msgid "client settings"
+msgstr "Einstellungen"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:122
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:141
+#, fuzzy
+msgid "values"
+msgstr "Wert"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "language(s)"
+msgstr "Layout l&ouml;sche"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:162
+msgid "htmlpath"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+#, fuzzy
+msgid "frontendpath"
+msgstr "des wos drin is"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:87
+msgid "Settings"
+msgstr "Einstellungen"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:122
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:141
+#, fuzzy
+msgid "Values"
+msgstr "Wert"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:410
+msgid "an error occured while sending your bug report! Please try again"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:414
+msgid "bug report forwarded"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:419
+msgid "please fill out all mandatory fields"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:423
+msgid "please enter a valid email adress"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:427
+msgid "you must agree the declaration of consent"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+#, fuzzy
+msgid "Client / Language"
+msgstr "Kunne"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/grouprights.inc.php:244
+msgid "Current group doesn't have any rights to any client/language."
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:60
+msgid "Changes saved"
+msgstr "&Auml;nnerunge drin"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:90
+msgid "Permission denied"
+msgstr "Hamma ned, gibts ned!"
+
+# e:\timo\contenido_head/contenido/includes/grouprights_area.inc.php:50
+# e:\timo\contenido_head/contenido/includes/grouprights_str.inc.php:65
+# e:\timo\contenido_head/contenido/includes/rights_area.inc.php:50
+# e:\timo\contenido_head/contenido/includes/rights_lay.inc.php:65
+# e:\timo\contenido_head/contenido/includes/rights_mod.inc.php:57
+# e:\timo\contenido_head/contenido/includes/rights_str.inc.php:64
+msgid "Check all"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.str_overview.html:47
+msgid "Category"
+msgstr "Kadegorie"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/grouprights_con.inc.php:139
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/grouprights_str.inc.php:131
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/rights_con.inc.php:139
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/rights_str.inc.php:130
+msgid "Apply rights for this category to all categories on the same level or above"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/grouprights_con.inc.php:140
+# e:\timo\contenido_head/contenido/includes/grouprights_str.inc.php:132
+# e:\timo\contenido_head/contenido/includes/rights_con.inc.php:140
+# e:\timo\contenido_head/contenido/includes/rights_str.inc.php:131
+msgid "Apply rights for this category to all categories below the current category"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:39
+#, fuzzy
+msgid "Layout name"
+msgstr "Layout"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.upl_files_overview.html:79
+msgid "Description"
+msgstr "Beschreiwung"
+
+# e:\timo\contenido_head/contenido/includes/grouprights_members.inc.php:94
+msgid "The following users were added to this group"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/grouprights_members.inc.php:98
+msgid "The following users are already existing in the group and where not added"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:338
+msgid "Discard changes"
+msgstr "&Auml;nnerunge wegwerfe"
+
+# e:\timo\contenido_head/contenido/includes/grouprights_members.inc.php:155
+msgid "Group member"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:63
+# e:\timo\contenido_head/contenido/templates/standard/template.str_overview.html:49
+#, fuzzy
+msgid "Action"
+msgstr "Aktionen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "Delete"
+msgstr "Datei l&ouml;schen"
+
+# e:\timo\contenido_head/contenido/includes/grouprights_members.inc.php:216
+msgid "Add group member"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
+#, fuzzy
+msgid "Choose user"
+msgstr "Template w&auml;hle"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:332
+#, fuzzy
+msgid "Module name"
+msgstr "Modul in Container"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:249
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:62
+#, fuzzy
+msgid "Template name"
+msgstr "Template"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:332
+#, fuzzy, c-format
+msgid "Edit link for container %s"
+msgstr "Modul in Container"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.CMS_LINK.php:199
+msgid "Link to a document"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:174
+#, fuzzy
+msgid "Link to an image"
+msgstr "Link zum l&ouml;schen des Abonnements"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:174
+#, fuzzy
+msgid "Link to an archive"
+msgstr "Link zum l&ouml;schen des Abonnements"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.CMS_LINK.php:245
+msgid "Link to a media file"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:174
+#, fuzzy
+msgid "Link to any file"
+msgstr "Link zum l&ouml;schen des Abonnements"
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:100
+msgid "Upload file"
+msgstr "Datei hochladen"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:215
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:215
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:215
+#, fuzzy
+msgid "Target frame"
+msgstr "Ziel"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:218
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:218
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:218
+#, fuzzy
+msgid "Open link in new window"
+msgstr "Im annere Fenschta uffmache"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.client_edit.php:31
+msgid "No client ID passed"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.client_edit.php:91
+msgid "Couldn't write the file config.php."
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.client_edit.php:101
+#, c-format
+msgid "The directory %s already exists. The client was created, but you have to copy the frontend-template yourself"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.client_edit.php:119
+msgid "You changed the client path. You might need to copy the frontend to the new location"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:119
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:138
+msgid "Property"
+msgstr "Eieschaft"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:122
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:141
+msgid "Value"
+msgstr "Wert"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+#, fuzzy
+msgid "Client name"
+msgstr "Kunne"
+
+# e:\timo\contenido_head/contenido/includes/include.client_edit.php:196
+msgid "Server path"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.client_edit.php:209
+msgid "Web address"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:318
+#, fuzzy
+msgid "Error page category"
+msgstr "Kategorie sch&uuml;tzen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#, fuzzy
+msgid "Error page article"
+msgstr "Ardiggl sortierung"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "Copy frontend template"
+msgstr "Template l&ouml;schen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Delete client"
+msgstr "Empf&auml;nger erzeugen"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, fuzzy, c-format
+msgid "Do you really want to delete the following client:<br><br>%s<br>"
+msgstr "Willscht des Layout do werklich l&ouml;sche? <br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:74
+#, fuzzy
+msgid "Remove lock"
+msgstr "Mandant wechseln"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:284
+#, fuzzy
+msgid "Article is locked"
+msgstr "is onl&auml;in"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:284
+#, fuzzy
+msgid "Article is not locked"
+msgstr "is onl&auml;in"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:212
+msgid "Article properties"
+msgstr "Eieschafte"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:263
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:265
+msgid "Make start article"
+msgstr "machs zu eneme Staddartigll"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+msgid "Start article"
+msgstr "is schun en Staddartigll"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:282
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:307
+msgid "Make offline"
+msgstr "mach emol offl&auml;in"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:284
+msgid "Article is online"
+msgstr "is onl&auml;in"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:290
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:309
+msgid "Make online"
+msgstr "machs emol onl&auml;in"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:292
+msgid "Article is offline"
+msgstr "is offl&auml;in"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:309
+#, c-format
+msgid "Are you sure to delete the following article:<br><br><b>%s</b>"
+msgstr "Wilschte de Artiggl weerklisch l&ouml;sche:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:337
+msgid "Alphabetical"
+msgstr "Alphabeetisch"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:338
+msgid "Last change"
+msgstr "Letscht &Auml;nnerung"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+msgid "Created date"
+msgstr "Hamma gemacht om"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:186
+msgid "Sort key"
+msgstr "Sodierschl&uuml;ssl"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+msgid "Sort articles"
+msgstr "Ardiggl sortierung"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+msgid "No articles found"
+msgstr "Nix gefunne!"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:418
+msgid "Configure Category"
+msgstr "Kaddegorie konfiguriere"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:442
+msgid "Create new article"
+msgstr "Neue Ardiggl mache"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:129
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:58
+msgid "Title"
+msgstr "Diddl"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:131
+msgid "Article number"
+msgstr "Ardigglnumma"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:157
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:183
+msgid "Author"
+msgstr "Autor"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:59
+msgid "Created"
+msgstr "Gemacht om"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:47
+msgid "Last modified"
+msgstr "Ge&auml;nnert"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:149
+msgid "Redirect"
+msgstr "Weidaschigge"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:156
+msgid "New Window"
+msgstr "Neues Fenschta uffmache"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:407
+msgid "Summary"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
+msgid "Choose template"
+msgstr "Template w&auml;hle"
+
+# e:\timo\contenido_head/contenido/includes/include.con_str_overview.php:226
+msgid "Close all categories"
+msgstr "Alles zumache"
+
+# e:\timo\contenido_head/contenido/includes/include.con_str_overview.php:227
+msgid "Open all categories"
+msgstr "Alles uffmache"
+
+# e:\timo\contenido_head/contenido/includes/include.grouprights_create.php:113
+msgid "Group name"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:55
+#, fuzzy
+msgid "System administrator"
+msgstr "Syschtemadminischtrador kontaggdiere"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:55
+#, fuzzy
+msgid "Administrator"
+msgstr "Syschtemadminischtrador kontaggdiere"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:14
+#, fuzzy
+msgid "Access clients"
+msgstr "Moi Kunne"
+
+# e:\timo\contenido_head/contenido/includes/include.grouprights_overview.php:219
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:256
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:325
+msgid "Access languages"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.grouprights_left_top.php:41
+# e:\timo\contenido_head/contenido/includes/include.rights_left_top.php:42
+msgid "Frontend only"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:290
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:309
+#, fuzzy
+msgid "Backend only"
+msgstr "machs emol onl&auml;in"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, fuzzy, c-format
+msgid "Do you really want to delete the group %s?"
+msgstr "Willschte den Empfänga do werklisch l&ouml;sche?:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, fuzzy, c-format
+msgid "Do you really want to delete the following group:<br><br>%s<br>"
+msgstr "Willscht des Layout do werklich l&ouml;sche? <br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.grouprights_overview.php:122
+msgid "Groupname"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:212
+#, fuzzy
+msgid "User-defined properties"
+msgstr "Eieschafte"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Delete JavaScript"
+msgstr "Neues Schkript"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, fuzzy, c-format
+msgid "Do you really want to delete the following JavaScript source file:<br><br>%s<br>"
+msgstr "Willschte des Modul werklisch entfernne? <br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.lang_edit.php:97
+msgid "Language name"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.lang_edit.php:118
+msgid "Encoding"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:63
+# e:\timo\contenido_head/contenido/templates/standard/template.str_overview.html:49
+#, fuzzy
+msgid "Active"
+msgstr "Aktionen"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, fuzzy
+msgid "Do you really want to create a new language?"
+msgstr "Willschte den Newsletter do werklisch l&ouml;sche? :<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, fuzzy, c-format
+msgid "Do you really want to delete the language %s?"
+msgstr "Willschte den Newsletter do werklisch l&ouml;sche? :<br><br><b>%s</b>"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.lang_overview.php:85
+msgid "Language deleted"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_new_form.html:30
+msgid "Code"
+msgstr "Quelltekschtle"
+
+# e:\timo\contenido_head/contenido/includes/include.lay_new.php:17
+msgid "New Layout"
+msgstr "Neus Layout"
+
+# e:\timo\contenido_head/contenido/includes/include.lay_overview.php:63
+msgid "Layout is not deleteable"
+msgstr "Layout kenne mer ned l&ouml;sche"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:336
+msgid "No permission"
+msgstr "Derfschte ned!"
+
+# e:\timo\contenido_head/contenido/includes/include.lay_overview.php:73
+msgid "Layout is in use, cannot delete"
+msgstr "Layout benutze mer schun, kenne mer ned entferne"
+
+# e:\timo\contenido_head/contenido/includes/include.lay_overview.php:74
+msgid "Layout is in use"
+msgstr "Benutze mer schun"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, c-format
+msgid "Do you really want to delete the following layout:<br><br>%s<br>"
+msgstr "Willscht des Layout do werklich l&ouml;sche? <br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.logs.php:44
+msgid "Submit query"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.logs.php:55
+msgid "All users"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:63
+# e:\timo\contenido_head/contenido/templates/standard/template.str_overview.html:49
+#, fuzzy
+msgid "All actions"
+msgstr "Aktionen"
+
+# e:\timo\contenido_head/contenido/includes/include.logs.php:126
+msgid "Unlimited"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.logs.php:127
+# e:\timo\contenido_head/contenido/includes/include.logs.php:128
+# e:\timo\contenido_head/contenido/includes/include.logs.php:129
+# e:\timo\contenido_head/contenido/includes/include.logs.php:130
+# e:\timo\contenido_head/contenido/includes/include.logs.php:131
+msgid "Entries"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_menu.php:118
+msgid "No results"
+msgstr "Keine Resultate"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:44
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:61
+#, c-format
+msgid "Error in module. Error location: %s"
+msgstr "Hoschte was kabudd gemacht. Un zwar do: %s"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:47
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:64
+msgid "Module successfully compiled"
+msgstr "Hoscht alles richtisch gemacht"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:51
+msgid "Input"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:67
+msgid "Output"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.mod_new.php:17
+msgid "New module"
+msgstr "Neues Modul"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.mod_overview.php:37
+msgid "- Unnamed Module -"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.mod_overview.php:74
+msgid "Module in use, cannot delete"
+msgstr "Benutze mer schun, konnscht ned entfernne"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_overview.php:79
+msgid "In use"
+msgstr "Benutze mer schun"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, c-format
+msgid "Do you really want to delete the following module:<br><br>%s<br>"
+msgstr "Willschte des Modul werklisch entfernne? <br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "Recently edited articles"
+msgstr "Artiggl l&ouml;sche"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:74
+msgid "Change client"
+msgstr "Mandant wechseln"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:45
+msgid "Welcome"
+msgstr "Willkommen"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:46
+msgid "You are logged in as"
+msgstr "Sie sind angemeldet als"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:47
+msgid "Last login"
+msgstr "Letzter Login"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+#, fuzzy
+msgid "No article found"
+msgstr "Nix gefunne!"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:338
+#, fuzzy
+msgid "Saved changes"
+msgstr "&Auml;nnerunge merke"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:67
+# e:\timo\contenido_head/contenido/includes/include.rights_details.php:52
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:88
+msgid "Passwords don't match"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:87
+#, fuzzy, c-format
+msgid "Settings for %s"
+msgstr "Einstellungen"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:127
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:187
+msgid "New password"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:133
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:194
+msgid "Confirm new password"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:262
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:373
+msgid "Use WYSIWYG-Editor"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_edit_form.html:21
+# e:\timo\contenido_head/contenido/templates/standard/template.lay_edit_form.html:19
+# e:\timo\contenido_head/contenido/templates/standard/template.mod_edit_form.html:20
+# e:\timo\contenido_head/contenido/templates/standard/template.style_edit_form.html:21
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:16
+msgid "Name"
+msgstr "Name"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:134
+msgid "From"
+msgstr "Geschiggt vun:"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:141
+msgid "Subject"
+msgstr "Betreff"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:169
+msgid "Special Message Tags (will be replaced when sending)"
+msgstr "Komischa Krempl der beim senne ersetzt werd:"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:170
+msgid "Name of the recipient"
+msgstr "Name vun dem der's krischt"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:171
+msgid "Date of when the mail has been sent"
+msgstr "Verschigge-Datum"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:172
+msgid "Time of when the mail has been sent"
+msgstr "Verschigge-Uhrzeit"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:173
+msgid "Number of recipients"
+msgstr "Ohzahl von de Menneles dies bekumme"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:174
+msgid "Link to unsubscribe"
+msgstr "Link zum l&ouml;schen des Abonnements"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:175
+msgid "Link to pause the subscription"
+msgstr "Link zum Pausieren des Abonnements"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:176
+msgid "Link to resume the subscription"
+msgstr "Link, um das Abonnement wieder aufzunehmen"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:179
+msgid "Message"
+msgstr "Was g'saat werd"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, c-format
+msgid "Do you really want to delete the newsletter named %s?"
+msgstr "Willschte den Newsletter do werklisch l&ouml;sche? :<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, c-format
+msgid "Do you really want to send the newsletter named %s?"
+msgstr "Willschte den Newsletter do werklisch verschigge?:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, fuzzy, c-format
+msgid "Do you really want to delete the following newsletter:<br><br>%s<br>"
+msgstr "M&ouml;chten Sie das folgende Template wirklich l&ouml;schen:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, fuzzy, c-format
+msgid "Do you really want to send the following newsletter:<br><br>%s<br>"
+msgstr "M&ouml;chten Sie das folgende Template wirklich l&ouml;schen:<br><br><b>%s</b>"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.newsletter_send.php:80
+#, c-format
+msgid "Newsletter was sent to %s recipient(s)"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:160
+msgid "Deactivated"
+msgstr "Deaktiviert"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:60
+msgid "Changed"
+msgstr "Ge&auml;nnert"
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_menu.php:116
+msgid "Page"
+msgstr "Seite"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+msgid "Start search"
+msgstr "Suche starten"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, c-format
+msgid "Do you really want to delete the recipient %s?"
+msgstr "Willschte den Empfänga do werklisch l&ouml;sche?:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, fuzzy, c-format
+msgid "Do you really want to delete the following recipient:<br><br>%s<br>"
+msgstr "M&ouml;chten Sie das folgende Template wirklich l&ouml;schen:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:226
+#, fuzzy
+msgid "Username"
+msgstr "Benuddza"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:131
+#, fuzzy
+msgid "Phone number"
+msgstr "Ardigglnumma"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:151
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:215
+msgid "Street"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:157
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:222
+msgid "ZIP code"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:163
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:229
+msgid "City"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:169
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:236
+msgid "Country"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, fuzzy, c-format
+msgid "Do you really want to delete the user %s?"
+msgstr "Willschte den Empfänga do werklisch l&ouml;sche?:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, fuzzy, c-format
+msgid "Do you really want to delete the following user:<br><br>%s<br>"
+msgstr "Willschte des Modul werklisch entfernne? <br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.stat_menu.php:18
+msgid "Current Report"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.stat_menu.php:26
+msgid "Statistics Overview"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.stat_menu.php:37
+msgid "Archived Statistics"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:28
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:41
+msgid "Full statistics"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:60
+msgid "Yearly"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+#, fuzzy
+msgid "Current"
+msgstr "Kunne"
+
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:74
+msgid "Status"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:173
+#, fuzzy
+msgid "Number of articles"
+msgstr "Ohzahl von de Menneles dies bekumme"
+
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:76
+msgid "Hits"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:78
+msgid "Hits in this language"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:320
+msgid "Unprotect category"
+msgstr "Kategorie freigeben"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, c-format
+msgid "Do you really want to delete the following category:<br><br><b>%s</b>"
+msgstr "M&ouml;chten Sie die folgende Kategorie wirklich l&ouml;schen:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:340
+msgid "One or more subtrees are existing, unable to delete"
+msgstr "Mindestens eine Unterkategorie existiert, l&ouml;schen nicht m&ouml;glich"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:345
+msgid "One or more articles are existing, unable to delete"
+msgstr "Ein oder mehrere Artikel existieren, l&ouml;schen nicht m&ouml;glich"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:349
+msgid "One or more subtrees and one or more articles are existing, unable to delete."
+msgstr "Mindestens eine Unterkategorie sowie mindestens ein Artikel existieren, l&ouml;schen nicht m&ouml;glich"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:375
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:390
+msgid "Move tree"
+msgstr "Baum verschieben"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:380
+msgid "Place tree here"
+msgstr "Baum hier ablegen"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.style_edit_form.php:72
+msgid "File is not existing or readable"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:100
+#, fuzzy
+msgid "Invalid file"
+msgstr "Datei hochladen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#, fuzzy
+msgid "Delete stylesheet"
+msgstr "Datei l&ouml;schen"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, fuzzy, c-format
+msgid "Do you really want to delete the following stylesheet:<br><br>%s<br>"
+msgstr "M&ouml;chten Sie das folgende Template wirklich l&ouml;schen:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+#, fuzzy
+msgid "No error log entries found"
+msgstr "Nix gefunne!"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+#, fuzzy
+msgid "No error log file found"
+msgstr "Nix gefunne!"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.system_sysvalues.php:71
+msgid "No upgrade error log entries found"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
+msgid "New template"
+msgstr "Neues Template"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#, c-format
+msgid "Do you really want to delete the following template:<br><br>%s<br>"
+msgstr "M&ouml;chten Sie das folgende Template wirklich l&ouml;schen:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:249
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:62
+msgid "Template"
+msgstr "Template"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:332
+msgid "Module in container"
+msgstr "Modul in Container"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.upl_dirs_overview.php:89
+msgid "Directory contains files"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_new_form.html:20
+msgid "Filename A-Z"
+msgstr "Dateiname A-Z"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_new_form.html:20
+msgid "Filename Z-A"
+msgstr "Dateiname Z-A"
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:26
+msgid "Description A-Z"
+msgstr "Beschreibung A-Z"
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:27
+msgid "Description Z-A"
+msgstr "Beschreibung Z-A"
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:28
+# e:\timo\contenido_head/contenido/templates/standard/template.upl_files_overview.html:81
+msgid "File size"
+msgstr "Dateigr&ouml;sse"
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:84
+msgid "File upload"
+msgstr "Datei hochladen"
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:164
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:166
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:175
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:184
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:191
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:197
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:203
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:209
+msgid "Show file"
+msgstr "Datei anzeigen"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:289
+msgid "Rename file"
+msgstr "Datei umbenennen"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:296
+#, fuzzy
+msgid "New directory in"
+msgstr "Neue Kategorie"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:35
+msgid "No Login Information available."
+msgstr "Keine Login-Informationen verf&uuml;gbar."
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:86
+msgid "Overview"
+msgstr "&Uuml;bersicht"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:120
+msgid "Symbol help"
+msgstr "Symbolhilfe"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/rights.inc.php:250
+msgid "Current user doesn't have any rights to any client/language."
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:119
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:138
+#, fuzzy
+msgid "Protect"
+msgstr "Eieschaft"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:74
+#, fuzzy
+msgid "Remove protection"
+msgstr "Mandant wechseln"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:13
+msgid "Overview cannot be displayed"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:14
+msgid "Error"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:15
+msgid "Article can't be displayed"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+#, fuzzy
+msgid "No article was selected"
+msgstr "Nix gefunne!"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:17
+msgid "Template configuration can't be displayed"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:18
+msgid "Editor can't be displayed"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:19
+msgid "Preview can't be displayed"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:20
+msgid "Error calling the calendar: no target control specified"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:21
+msgid "Error calling the calendar: parameter specified is not valid target control"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:22
+msgid "Confirm"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:156
+#, fuzzy
+msgid "Close window"
+msgstr "Neues Fenschta uffmache"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:25
+msgid "Click to close"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:26
+msgid "Headline / HTML"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:27
+msgid "Text / HTML"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:28
+msgid "Text / Standard"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:29
+msgid "Picture"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.upl_files_overview.html:79
+#, fuzzy
+msgid "Description / Standard"
+msgstr "Beschreiwung"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:32
+msgid "Flash Movie"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/scripts/langref.php:33
+msgid "Link"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_edit_form.html:21
+# e:\timo\contenido_head/contenido/templates/standard/template.lay_edit_form.html:19
+# e:\timo\contenido_head/contenido/templates/standard/template.mod_edit_form.html:20
+# e:\timo\contenido_head/contenido/templates/standard/template.style_edit_form.html:21
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:16
+#, fuzzy
+msgid "Frame"
+msgstr "Name"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:61
+msgid "Sort order"
+msgstr "Sortierreihenfolge"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:63
+# e:\timo\contenido_head/contenido/templates/standard/template.str_overview.html:49
+msgid "Actions"
+msgstr "Aktionen"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:55
+msgid "Time control"
+msgstr "Zeitsteuerung"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:58
+msgid "Use time control"
+msgstr "Zeitsteuerung benutzen"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:60
+msgid "Start date"
+msgstr "Startzeitpunkt"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:64
+msgid "End date"
+msgstr "Endzeitpunkt"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:67
+msgid "When expired, move to category"
+msgstr "Nach Ablauf verschieben nach:"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:69
+msgid "Make online after move"
+msgstr "Nach dem verschieben Online stellen"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:121
+msgid "Page title"
+msgstr "Seide Diddl"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:128
+msgid "Meta tags"
+msgstr "Metatags"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:13
+msgid "Concept and Implementation"
+msgstr "Konzepte und Implementierung"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:13
+msgid "Germany"
+msgstr "Deutschland"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:13
+msgid "Phone"
+msgstr "Delefon"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:19
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:26
+msgid "Graphics"
+msgstr "Grafik"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:20
+msgid "Design Drafts"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.info.html:20
+msgid "Translating Contenido to Dutch"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:21
+msgid "Concepts / Testing"
+msgstr "Konzepte / Qualit&auml;tssicherung"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:22
+msgid "HTML-Templates"
+msgstr "HTML-Templates"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:23
+msgid "Documentation"
+msgstr "Dokumentation"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:24
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:27
+msgid "Development"
+msgstr "un noch oner, der's gemacht hod"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:25
+msgid "Core Development"
+msgstr "Noch ona von de Macha"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:24
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:27
+msgid "Lead Development"
+msgstr "Oner von de Macha"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:26
+msgid "Technical Concepts"
+msgstr "Deschnische Konzepde"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:28
+msgid "Conceptual Project Management / Testing"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:29
+msgid "Technical Project Management / Testing"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.info.html:30
+msgid "Special thanks to all other contributors of the former releases and bugreporters."
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:36
+msgid "You can find many information and a community forum on the <a href=\"http://www.contenido.de\" target=\"_blank\">Contenido Portal</a>"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_new_form.html:20
+msgid "Filename"
+msgstr "Dadainaam"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.log_main.html:15
+msgid "Filter"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.log_main.html:39
+msgid "Limit"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.log_main.html:50
+msgid "Date"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:131
+#, fuzzy
+msgid "Article"
+msgstr "Ardigglnumma"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Your clients"
+msgstr "Empf&auml;nger erzeugen"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:60
+#, fuzzy
+msgid "Start"
+msgstr "Startzeitpunkt"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:47
+#, fuzzy
+msgid "Modified"
+msgstr "Ge&auml;nnert"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.mycontenido_lastarticles.html:65
+msgid "Info"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#, fuzzy
+msgid "Search"
+msgstr "Suche starten"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:9
+msgid "Table of contents"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:10
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:37
+msgid "Common"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_new_form.html:20
+#, fuzzy
+msgid "File management"
+msgstr "Dadainaam"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:39
+#, fuzzy
+msgid "Layouts"
+msgstr "Layout"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:332
+#, fuzzy
+msgid "Modules"
+msgstr "Modul in Container"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:249
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:62
+#, fuzzy
+msgid "Templates"
+msgstr "Template"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:19
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:139
+msgid "Style editor"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:20
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:146
+msgid "Script editor"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:21
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:158
+msgid "Extras"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_menu.php:87
+#, fuzzy
+msgid "Newsletter"
+msgstr "Newsletter verschigge"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#, fuzzy
+msgid "Recipients"
+msgstr "Empf&auml;nger erzeugen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#, fuzzy
+msgid "Statistics"
+msgstr "is schun en Staddartigll"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:55
+#, fuzzy
+msgid "Administration"
+msgstr "Syschtemadminischtrador kontaggdiere"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:226
+#, fuzzy
+msgid "Users"
+msgstr "Benuddza"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:28
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:201
+msgid "Groups"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:29
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:208
+msgid "Languages"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+#, fuzzy
+msgid "Clients"
+msgstr "Kunne"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:41
+msgid "Execute query / Save"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:39
+#, fuzzy
+msgid "Logout"
+msgstr "Layout"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:47
+msgid "Change to MyContenido (Personal Settings)"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:59
+msgid "Element is protected / accessible (change trough click)"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:63
+msgid "Article is start article / is not start article"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:212
+#, fuzzy
+msgid "Configure article properties"
+msgstr "Eieschafte"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:67
+msgid "Element is online / offline (change trough click)"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:289
+#, fuzzy
+msgid "Create category"
+msgstr "Kategorie umbenennen"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:290
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:309
+#, fuzzy
+msgid "Set category online / offline"
+msgstr "machs emol onl&auml;in"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:83
+msgid "Category is online and protected / unprotected"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:85
+msgid "Category is offline and protected / unprotected"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:87
+msgid "Category is online, contains an error and is protected / unprotected"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:89
+msgid "Category is offline, contains an error and is protected / unprotected"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:93
+msgid "Select move target"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:95
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:118
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:127
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:136
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:143
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:150
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:165
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:172
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:198
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:205
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:214
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:221
+msgid "Delete / Delete not available"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:100
+#, fuzzy
+msgid "Root upload folder"
+msgstr "Datei hochladen"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:104
+msgid "Regular folder"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.lay_overview.php:74
+#, fuzzy
+msgid "Layout in use"
+msgstr "Benutze mer schun"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:332
+#, fuzzy
+msgid "Module in use"
+msgstr "Modul in Container"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:292
+#, fuzzy
+msgid "Article is online / offline"
+msgstr "is offl&auml;in"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.symbolhelp.html:212
+msgid "Language active / not active"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:11
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:18
+msgid "Bugreport"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:22
+msgid "Important"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:24
+msgid "Please don't send 'test' bug reports."
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:25
+msgid "Make sure you enter your correct eMail-Address."
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:26
+msgid "If you want to determinate if your bug has already been fixed, visit the following locations"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
+#, fuzzy
+msgid "Contenido Forum"
+msgstr "Contenido-Bildschar"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
+#, fuzzy
+msgid "Contenido Bug-Tracker"
+msgstr "Contenido-Bildschar"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:35
+msgid "Your E-Mail-Address"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:40
+msgid "First Name"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:39
+#, fuzzy
+msgid "Last Name"
+msgstr "Layout"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:50
+msgid "Area"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:55
+msgid "Your bugreport"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:59
+msgid "<b><i>Fields marked with a "
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:59
+msgid " are mandatory fields"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:62
+msgid "<b><i>declaration of consent:"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:63
+msgid "In order to ensure the best support, this bugreport mail will contain several files as attachement.<br>Please remove the check marks from the checkboxes which informations you don't want to send!"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:65
+msgid "errorlog.txt (contains error messages arose during run time)"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:66
+msgid "upgrade-errorlog.txt (contains error messages arose during upgrading to a newer version)"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:67
+msgid "systemvariables.html (contains contains several Contenido settings)"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:68
+msgid "phpinfo.html (contains output generated through the phpinfo() function)"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:69
+msgid "By checking this box I agree that four for business AG receives and processes the bug report data.<br>I also agree that the submitted data is used for bug processing and that the bug will be made public using the Contenido Bug-Tracker."
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_sysval_mailattach.html:17
+msgid "User system configuration"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:122
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:141
+#, fuzzy
+msgid "Variable"
+msgstr "Wert"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_sysval_mailattach.html:23
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_variables.html:17
+msgid "Local value"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_variables.html:11
+msgid "Your system configuration"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
+#, fuzzy
+msgid "Contenido Error Log"
+msgstr "Contenido-Bildschar"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_variables.html:38
+msgid "clear error log"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_variables.html:45
+msgid "Contenido Upgrade Error Log"
+msgstr ""
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_variables.html:52
+msgid "clear upgrade error log"
+msgstr ""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:39
+msgid "Layout"
+msgstr "Layout"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.upl_files_overview.html:79
+msgid "Layout description"
+msgstr "Layout Beschreiwung"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:340
+msgid "Sort files"
+msgstr "Dadaisodierung"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.upl_files_overview.html:83
+msgid "Image size"
+msgstr "Bildsche grees"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:14
+msgid "Available clients"
+msgstr "Moi Kunne"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:50
+msgid "Help about Contenido"
+msgstr "Isch waas nemmer weida!"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:55
+msgid "Contact System Administrators"
+msgstr "Syschtemadminischtrador kontaggdiere"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:55
+msgid "Contact Client Administrators"
+msgstr "Kunne Adminischtrador kontaggdiere"
+

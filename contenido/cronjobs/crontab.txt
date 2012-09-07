@@ -1,0 +1,8 @@
+*/1 * * * * move_articles.php
+*/5 * * * * send_reminder.php
+0 0 1 * * move_old_stats.php
+*/5 * * * * session_cleanup.php
+0 0 * * * optimize_database.php
+*/5 * * * * send_reminder.php
+*/5 * * * * setfrontenduserstate.php
+#02 1 * * * linkchecker.php

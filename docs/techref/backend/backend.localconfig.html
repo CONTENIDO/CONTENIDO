@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>Contenido - Preserving local settings</title>
+  <style type="text/css">
+body            {
+                    background-color: #ffffff;
+                    scrollbar-face-color:#C6C6D5;
+                    scrollbar-highlight-color:#FFFFFF;
+                    scrollbar-3dlight-color:#747488;
+                    scrollbar-darkshadow-color:#000000;
+                    scrollbar-shadow-color:#334F77;
+                    scrollbar-arrow-color:#334F77;
+                    scrollbar-track-color:#C7C7D6;
+		    font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px; color: #000000;
+                }
+
+h1 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 20px; color: #000000;
+ margin-top: 0px;
+}
+
+h2 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 15px; color: #000000;
+}
+
+  </style>
+</head>
+<body style="color: rgb(0, 0, 0); background-color: #F1F1F1;"
+ link="#000099" vlink="#990099" alink="#000099">
+ 
+<div style="width:998px;">
+	<img src="conlogo.gif" alt="Contenido Logo" style="display:block;float:left;margin:0 30px 0 0;" />
+	<h1 style="float:left;line-height:80px;padding:0;margin:0;">Preserving local settings (V. 4.8.x)</h1>
+</div>
+<br style="clear:both;" />
+<h2>Introduction</h2>
+In the past, all modifications to Contenido's config.php file were lost
+during an upgrade.<br>
+<br>
+<h2>Where? What? How?<br>
+</h2>
+Contenido now includes a local config file - config.local.php. This
+file isn't overwritten during an upgrade, so you can make your changes
+there (recommended by now). It is included in the main config.php file.
+Remember that the config.php file is usually the first file included;
+don't do any tricks like database queries there.<br>
+<br>
+<h2>Frontend config?</h2>
+Yep, that's also possible. Just create a file "config.local.php" in the
+frontend directory. The file will be executed just after the
+front_content.php's init code (so you've got all variables and database
+available), but just before the magic starts (like executing the
+content code etc). Note that everything is available from the backend's
+config.local.php also.<br>
+<br>
+</body>
+</html>

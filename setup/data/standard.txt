@@ -1,0 +1,3 @@
+standard/standard_modules1.sql
+standard/standard_modules_translations1.sql
+standard/standard_modules_translations2.sql

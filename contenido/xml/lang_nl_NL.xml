@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Contenido XML language file -->
+<language>
+    <navigation>
+        <content>
+            <main>Content</main>
+            <article>
+                <main>Artikelen</main>
+                <overview>Overzicht</overview>
+                <editor>Editor</editor>
+                <properties>Eigenschappen</properties>
+                <configuration>Configuratie</configuration>
+                <preview>Voorbeeld</preview>
+            </article>
+            <structure>
+            	<main>Categorieën</main>
+            	<overview>Overview</overview>
+            </structure>
+            <upload>
+            	<main>Bestandsbeheer</main>
+            	<overview>Overview</overview>
+            	<edit>Edit</edit>
+            	<fileupload>Upload Files</fileupload>
+            </upload>
+        </content>
+        <style>
+            <main>Opmaak</main>
+            <layouts>
+            	<main>Layouts</main>
+            	<edit>Edit</edit>
+            	<preview>Preview</preview>
+            </layouts>
+            <modules>
+            	<main>Modules</main>
+            	<edit>Edit</edit>
+            	<history>History</history>
+            	<translation>Translation</translation>
+            	<package>Package</package>
+            </modules>
+            <templates>
+                <main>Templates</main>
+                <edit>Bewerk</edit>
+                <conf>Voorconfiguratie</conf>
+                <visual>Visual edit</visual>
+            </templates>
+            <styleeditor>CSS editor</styleeditor>
+            <jseditor>Script editor</jseditor>
+            <tpleditor>Modul-Templates</tpleditor>
+        </style>
+        <statistic>
+            <main>Statistieken</main>
+            <hits>Hits</hits>
+        </statistic>
+        <administration>
+            <main>Administratie</main>
+            <users>
+                <main>Gebruikers</main>
+                <userproperties>Eigenschappen</userproperties>
+                <areas>Sitegedeelten</areas>
+                <layout>Layouts</layout>
+                <content>Content</content>
+                <module>Modules</module>
+                <template>Templates</template>
+                <structure>Categorieëen</structure>
+            </users>
+            <groups>
+                <main>Groepen</main>
+                <members>Leden</members>
+                <overview>Eigenschappen</overview>
+                <areas>Sitegedeelten</areas>
+                <layout>Layouts</layout>
+                <content>Content</content>
+                <module>Modules</module>
+                <template>Templates</template>
+                <structure>Categorieëen</structure>
+            </groups>
+            <languages>Talen</languages>
+            <plugins>Plugins</plugins>
+            <clients>
+            	<main>Klanten</main>
+            	<clientproperties>Properties</clientproperties>
+            	<clientartspec>Article specifications</clientartspec>
+            	<clientsettings>Client settings</clientsettings>
+            </clients>
+            <logs>Logbestanden</logs>
+            <debug>Debug</debug>
+            <system>
+            	<main>System</main>
+             	<syssettings>System settings</syssettings>
+            	<sysvalues>System variables</sysvalues>
+            	<syserrorreport>Error report</syserrorreport>
+            </system>
+            <frontend>
+            	<main>Frontend</main>
+            </frontend>
+        </administration>
+        <mycontenido>
+            <main>Mijn Contenido</main>
+            <overview>Overzicht</overview>
+            <recentarticles>Recently edited articles</recentarticles>
+            <todolist>Reminder List</todolist>
+            <settings>Instellingen</settings>
+        </mycontenido>
+        <extra>
+            <main>Extras</main>
+            <newsletter>Nieuwsbrief</newsletter>
+            <mailing>Mailing</mailing>
+            <recipients>Leden</recipients>
+            <recipientgroups>Leden groepen</recipientgroups>
+        </extra>
+        <info>Info</info>
+        <login>Inloggen</login>
+    </navigation>
+</language>

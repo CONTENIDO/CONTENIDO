@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>Contenido - Frontend customizing</title>
+  <style type="text/css">
+body,tr,td            {
+                    background-color: #ffffff;
+                    scrollbar-face-color:#C6C6D5;
+                    scrollbar-highlight-color:#FFFFFF;
+                    scrollbar-3dlight-color:#747488;
+                    scrollbar-darkshadow-color:#000000;
+                    scrollbar-shadow-color:#334F77;
+                    scrollbar-arrow-color:#334F77;
+                    scrollbar-track-color:#C7C7D6;
+		    font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px; color: #000000;
+                }
+
+h1 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 20px; color: #000000;
+ margin-top: 0px;
+}
+
+h2 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 15px; color: #000000;
+}
+
+  </style>
+</head>
+<body style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);"
+ alink="#000099" link="#000099" vlink="#990099">
+<table
+ style="border-bottom: 1px solid; text-align: left; background-color: rgb(255, 255, 255); width: 100%;"
+ border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><img src="conlogo.gif"
+ alt="Contenido"
+ style="width: 190px; height: 112px; padding-right: 20px;" align="left">
+      <h1>Backend customizing</h1>
+      <table style="text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+        <tbody>
+          <tr>
+            <td style="vertical-align: top;">Author</td>
+            <td style="vertical-align: top;">Björn Behrens (HerrB)</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Created</td>
+            <td style="vertical-align: top;">20th September 2006</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Audience</td>
+            <td style="vertical-align: top;">Site Administrators</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Applies to</td>
+            <td style="vertical-align: top;">Contenido 4.8.4 or later</td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Introduction</h2>
+Frontend customizing is a mechanism to customize various parameters of
+the frontend. There are not many settings you can do, as this mechanism
+is relatively new. However, this mechanism will be used more and more
+in the future.<br>
+<br>
+<h2>How it works</h2>
+Customizing Contenido settings is very easy and can be done via the
+system or client customizing settings.<br>
+<br>
+Important: User settings have precendence before group settings. User
+settings always override group settings. If the user is added to more
+than one group, the result is undefined. Make sure that your groups
+don't override each other.<br>
+<br>
+<h2><span style="font-weight: bold;">Common parameters</span></h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; font-weight: bold;">Area/Type</td>
+      <td style="vertical-align: top; font-weight: bold;">Property</td>
+      <td style="vertical-align: top; font-weight: bold;">Value (Description)</td>
+      <td style="vertical-align: top; font-weight: bold; width: 185px;">Applies to</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">login_error_page</td>
+      <td style="vertical-align: top;">idcatart</td>
+      <td style="vertical-align: top;">If specified, then a user who is logged out or tries to open a protected 
+      category if not logged in will get redirected to the page specified by idcatart. This setting overrides other 
+      login_error_page settings.</td>
+      <td style="vertical-align: top;">Clients, System</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">login_error_page</td>
+      <td style="vertical-align: top;">idcat</td>
+      <td style="vertical-align: top;">If specified, then a user who is logged out or tries to open a protected 
+      category if not logged in will get redirected to the category specified by idcat. You can specify idcat
+      and/or idart (see next setting).</td>
+      <td style="vertical-align: top;">Clients, System</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">login_error_page</td>
+      <td style="vertical-align: top;">idart</td>
+      <td style="vertical-align: top;">If specified, then a user who is logged out or tries to open a protected 
+      category if not logged in will get redirected to the article specified by idart. You can specify idcat
+      and/or idart (see previous setting).</td>
+      <td style="vertical-align: top;">System, Clients</td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+</body>
+</html>

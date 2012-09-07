@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/infoBox.js"></script>
+    <script type="text/javascript" src="scripts/general.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+    <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>    
+	<script type="text/javascript">
+
+		var sid = "{SID}";
+
+		/* Create messageBox
+           instance */
+        box = new messageBox("", "", "", 0, 0);
+
+        /* Function for deleting
+           modules */
+
+        function deleteGroup(idgroup) {
+            url  = 'main.php?area=groups';
+            url += '&action=group_delete';
+            url += '&frame=2';
+            url += '&groupid=' + idgroup;
+            url += '&contenido=' + sid;
+            window.location.href = url;
+			
+			parent.parent.right.right_top.location.href = 'main.php?area=groups&frame=3&contenido=' + sid;
+			parent.parent.right.right_bottom.location.href = 'main.php?area=groups&frame=4&contenido=' + sid;
+        }
+    </script>       
+</head>
+<body>
+
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
+    <!-- BEGIN:BLOCK -->
+    <tr class="text_medium" id="{ID_MARKED}" style="background-color: {BGCOLOR};" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
+    		<td>{ICON}</td>
+            <td width="100%">{TEXT}</td><td align="right">{DELETE}</td>
+    </tr>
+    <!-- END:BLOCK -->
+
+</table>
+<script type="text/javascript">
+    if (document.getElementById('marked')) {
+        row.markedRow = document.getElementById('marked');
+    }
+</script>
+</body>
+</html>

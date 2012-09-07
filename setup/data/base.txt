@@ -1,0 +1,17 @@
+base/base_actions1.sql
+base/base_area1.sql
+base/base_chartable1.sql
+base/base_chartable2.sql
+base/base_chartable3.sql
+base/base_chartable4.sql
+base/base_chartable5.sql
+base/base_chartable6.sql
+base/base_chartable7.sql
+base/base_files1.sql
+base/base_framefiles1.sql
+base/base_framefiles2.sql
+base/base_meta_type1.sql
+base/base_nav_main1.sql
+base/base_nav_sub1.sql
+base/base_type1.sql
+base/base_misc1.sql

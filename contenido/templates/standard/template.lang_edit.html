@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+</head>
+<body style="margin:10px">
+
+{FORM}
+
+<table id="stats" style="border:0px; border-left:1px; border-bottom: 1px;border-color: {BORDERCOLOR}; border-style: solid;" cellspacing="0" cellpadding="2" border="0">
+
+    <!-- BEGIN:BLOCK -->
+    <tr id="{ROWNAME}" class="text_medium" style="background-color: {BGCOLOR};" >
+        <td valign="top" style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;padding-left:{PADDING_LEFT}px">{CATNAME}</td>
+        <td valign="top" style="border: 0px; border-top:1px; border-right:1px; border-color: {BORDERCOLOR}; border-style: solid;" align="left">{CATFIELD}</td>
+    </tr>
+    <!-- END:BLOCK -->
+    
+    <tr id="{ROWNAME}" class="text_medium" style="background-color: #FFFFFF;" >
+        <td valign="top" style="border: 0px; border-top:1px; border-right:0px;border-color: {BORDERCOLOR}; border-style: solid;padding-left:{PADDING_LEFT}px">&nbsp;</td>
+        <td valign="top" style="border: 0px; border-top:1px; border-right:1px; border-color: {BORDERCOLOR}; border-style: solid;" align="right"><a accesskey="c" href="{CANCELLINK}"><img border="0" src="images/but_cancel.gif" alt="{CANCELTEXT}" title="{CANCELTEXT}"></a><img src="images/spacer.gif" width="20"><INPUT accesskey="s" type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}" border="0"></td>
+    </tr>
+    
+</table>
+
+</form>
+</body>
+</html>

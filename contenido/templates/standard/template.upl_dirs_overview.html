@@ -1,0 +1,88 @@
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/general.js"></script>
+    <script language="JavaScript" src="scripts/parameterCollector.js"></script>
+    <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
+    
+    <script type="text/javascript">
+      
+      var sid = "{SID}";
+      box = new messageBox("", "", "", 0, 0);
+      function deleteDirectory(path) 
+        {
+          url  = 'main.php?area=upl';
+          url += '&frame=2';
+          url += '&contenido=' + sid;
+          {APPENDPARAMETERS}
+          url += '&path=' + path;
+          url += '&action=upl_delete';
+          window.location.href = url;
+        }
+        
+      function renameDir (oldname, parent)
+      {
+        var newname;
+        var url;
+       	newname = prompt("{RENAME}",oldname);
+
+			  if (newname)
+			  {
+          url  = 'main.php?area=upl';
+          url += '&action=upl_renamedir';
+          url += '&frame=2';
+          url += '&newname=' + newname;
+          url += '&oldname=' + oldname;
+          url += '&parent=' + parent;
+          url += '&contenido=' + sid;
+          window.location.href = url;		
+			  }
+      }
+
+    </script>
+</head>
+<body>
+
+<p>{WARNING}</p>
+{CATBROWSER}
+
+<table width="87%" style="margin:10px 10px 10px 17px;" cellspacing="0" cellpadding="0" border="0">
+    <!-- BEGIN:BLOCK -->
+    <tr id="{PATH}" style="background-color: {BGCOLOR}" onmouseover="upl.over(this)" onmouseout="upl.out(this)" onclick="upl.click(this)">
+        <td style="padding-left: {INDENT}px">
+            <table style="margin-top:-1px;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td align="left" valign="top" class="text_medium" nowrap="nowrap">{COLLAPSE}{DIRNAME}</td>
+									<td align="right" nowrap="nowrap">{EDITBUTTON}{DELETEBUTTON}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <!-- END:BLOCK -->
+</table>
+<script type="text/javascript">
+     var id_path = '{ID_PATH}';
+     if (document.getElementById(id_path)) {
+         upl.click(document.getElementById(id_path));
+     }
+     
+     function refreshMenu() {
+        var left_top = top.content.left.left_top;
+        
+        if (left_top.document.getElementById('caption2')) {
+            left_top.document.getElementById('caption2').innerHTML = id_path;
+        }
+        
+        if (left_top.document.newdir) {
+            left_top.document.newdir.selectedfile.value = id_path;
+            left_top.document.newdir.path.value = id_path;
+        }
+     }
+</script>
+</body>
+</html>

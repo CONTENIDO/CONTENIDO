@@ -1,0 +1,170 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Contenido 4.4\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2007-09-11 17:15+0100\n"
+"Last-Translator: \n"
+"Language-Team: Contenido Translators <translators@contenido.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED STATES\n"
+"X-Poedit-KeywordsList: i18n;trans;gettext\n"
+"X-Poedit-Basepath: E:\\timo\\contenido_head\\contenido\n"
+
+# E:\timo\contenido_head\contenido/includes/functions.stat.php:21
+msgid "Info &uuml;ber Artikel"
+msgstr ""
+
+# E:\timo\contenido_head\contenido/includes/functions.stat.php:23
+msgid "Info &uuml;ber Verzeichnis"
+msgstr ""
+
+# E:\timo\contenido_head\contenido/includes/include.stat_menu.php:32
+msgid "Statistikübersicht"
+msgstr "Statistics Overview"
+
+# E:\timo\contenido_head\contenido/includes/include.stat_menu.php:43
+msgid "Archivierte Statistiken"
+msgstr "Archived Statistics"
+
+# E:\timo\contenido_head\contenido/templates/standard/template.welcome.html:55
+msgid "Kontakt Systemadministrator(en)"
+msgstr ""
+
+# E:\timo\contenido_head\contenido/templates/standard/template.welcome.html:55
+msgid "Kontakt Mandanten-Administrator(en)"
+msgstr "Contact Client Administrator(s)"
+
+msgid "Currently"
+msgstr "Currently"
+
+msgid "User Online"
+msgstr "user(s) online"
+
+msgid "Syncronize Category"
+msgstr "Synchronize Category"
+
+msgid "Syncronize Article"
+msgstr "Synchronize Article"
+
+msgid "Syncronize from"
+msgstr "Synchronize from"
+
+msgid "Created"
+msgstr "Date created"
+
+msgid "Last modified"
+msgstr "Date modified"
+
+msgid "Publishing date"
+msgstr "Date published"
+
+msgid "Make online after move"
+msgstr "Keep article online after move"
+
+msgid "Categoryname"
+msgstr "Category name"
+
+msgid "Interns"
+msgstr "Internal Links"
+
+msgid "Externs"
+msgstr "External Links"
+
+msgid "Intern/extern Links"
+msgstr "Internal and external Links"
+
+msgid "Groupname"
+msgstr "Group Name"
+
+msgid "eMail notification"
+msgstr "E-Mail notification"
+
+msgid "Make online"
+msgstr "Set online"
+
+msgid "Make offline"
+msgstr "Set offline"
+
+msgid "Set reminder / add to todo list"
+msgstr "Set reminder / add to to-do list"
+
+msgid "Add TODO item"
+msgstr "Add To-Do item"
+
+msgid "Make category online"
+msgstr "Set category online"
+
+msgid "please enter a valid E-Mail adress"
+msgstr "please enter a valid e-mail adress"
+
+msgid "The code for the following article<br>couldnt be generated:"
+msgstr "The code for the following article<br>couldn't be generated:"
+
+msgid "Datum"
+msgstr "Date"
+
+msgid "Restrict display"
+msgstr "Restrict view"
+
+msgid "Date, when the mail has been sent"
+msgstr "Date of e-mail delivery"
+
+msgid "Time, when the mail has been sent"
+msgstr "Time of e-mail delivery"
+
+msgid "My mail address"
+msgstr "My e-mail address"
+
+msgid "Send test destination:"
+msgstr "Test e-mail recipient"
+
+msgid "Purge recipients"
+msgstr "Clean up recipients"
+
+msgid "Purge timeframe"
+msgstr "Timeframe"
+
+msgid "Member list options"
+msgstr "List options (member)"
+
+msgid "Member navigation"
+msgstr "Paging (member)"
+
+msgid "Outsider list options"
+msgstr "List options (non-member)"
+
+msgid "Outsider navigation"
+msgstr "Paging (non-member)"
+
+msgid "Associated Groups"
+msgstr "Member of"
+
+msgid "Confirmed Date"
+msgstr "Confirmation Date"
+
+msgid "Add TODO item"
+msgstr "Add To-Do item"
+
+msgid "eMail notification"
+msgstr "E-mail notification"
+
+msgid "No article was selected"
+msgstr "No article selected"
+
+msgid "Can't edit articles in foreign languages."
+msgstr "Can't edit articles in inactive or not synchronized languages."
+
+msgid "Information (Impressum)"
+msgstr "Information (Imprint)"
+
+msgid "Author (Creator)"
+msgstr "created by"
+
+msgid "Author (Modifier)"
+msgstr "modified by"
+
+msgid "Publisher"
+msgstr "published by"
