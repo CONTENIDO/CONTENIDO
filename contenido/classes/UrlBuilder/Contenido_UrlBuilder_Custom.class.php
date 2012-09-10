@@ -10,29 +10,29 @@
 /**
  * Contenido_UrlBuilder_Custom
  *
- * @deprecated [2012-09-04] Use cUriBuilderCustom instead of this class.
+ * @deprecated [2012-09-06] Use cUriBuilderCustom instead of this class.
  */
 class Contenido_UrlBuilder_Custom extends cUriBuilderCustom {
 
     /**
      *
-     * @deprecated 2012-09-04 this function is not supported any longer
+     * @deprecated 2012-09-06 this function is not supported any longer
      *             use function located in cUriBuilderCustom instead of this
      *             function
      */
     private function __construct() {
-        cDeprecated("Use class cVersionImport instead");
+        cDeprecated('use constructor from cUriBuilderCustom instead');
         parent::__construct();
     }
 
     /**
      *
-     * @deprecated 2012-09-04 this function is not supported any longer
+     * @deprecated 2012-09-06 this function is not supported any longer
      *             use function located in cUriBuilderCustom instead of this
      *             function
      */
     public static function getInstance() {
-        cDeprecated("This function is not supported any longer");
+        cDeprecated('use getInstance() from cUriBuilderCustom instead');
         return cUriBuilderCustom::getInstance();
     }
 

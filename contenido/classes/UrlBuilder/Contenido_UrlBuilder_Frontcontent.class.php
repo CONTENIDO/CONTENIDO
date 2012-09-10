@@ -10,30 +10,30 @@
 /**
  * cUriBuilderFrontcontent
  *
- * @deprecated [2012-09-04] Use cUriBuilderFrontcontent instead of this class.
+ * @deprecated [2012-09-06] Use cUriBuilderFrontcontent instead of this class.
  */
 class Contenido_UrlBuilder_Frontcontent extends cUriBuilderFrontcontent {
 
     /**
      *
-     * @deprecated 2012-09-04 this function is not supported any longer
+     * @deprecated 2012-09-06 this function is not supported any longer
      *             use function located in cUriBuilderFrontcontent instead of
      *             this function
      */
     public function __construct() {
-        cDeprecated("Use class cVersionImport instead");
+       cDeprecated("use constructor from cUriBuilderFrontcontent instead");
         parent::__construct();
     }
 
     /**
      *
-     * @deprecated 2012-09-04 this function is not supported any longer
+     * @deprecated 2012-09-06 this function is not supported any longer
      *             use function located in cUriBuilderFrontcontent instead of
      *             this function
      */
     public static function getInstance() {
-        cDeprecated("This function is not supported any longer");
-        return cUriBuilderFactory::getInstance();
+        cDeprecated("use getInstance() from cUriBuilderFrontcontent instead");
+        return cUriBuilderFrontcontent::getInstance();
     }
 
 }

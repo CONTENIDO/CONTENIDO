@@ -8,46 +8,44 @@
 // Don't use it, it's still available due to downwards compatibility.
 
 /**
- * VersionImport
+ * Contenido_Url
  *
- * @deprecated [2012-09-04] Use cUri instead of this class.
+ * @deprecated [2012-09-06] Use cUri instead of this class.
  */
 class Contenido_Url extends cUri {
 
     /**
      *
-     * @deprecated 2012-09-04 this function is not supported any longer
-     *             use function located in cUri instead of this
+     * @deprecated 2012-09-06 this function is not supported any longer
+     *             use constructor located in cUri instead of this
      *             function
      */
     private function __construct() {
-        cDeprecated("Use class cVersionImport instead");
+        cDeprecated("use constructor from cUri instead");
         parent::__construct();
     }
 
     /**
      *
-     * @deprecated 2012-09-04 this function is not supported any longer
+     * @deprecated 2012-09-06 this function is not supported any longer
      *             use function located in cUri instead of this
      *             function
      */
     public function getUrlBuilder() {
-        cDeprecated("This function is not supported any longer");
+        cDeprecated("use getUriBuilder() from cUri instead");
         return cUri::getUriBuilder();
     }
 
     /**
      *
-     * @deprecated 2012-09-04 this function is not supported any longer
+     * @deprecated 2012-09-06 this function is not supported any longer
      *             use function located in cUri instead of this
      *             function
      */
     public static function getInstance() {
-        cDeprecated("This function is not supported any longer");
+        cDeprecated("use getInstance() from cUri instead");
         return cUri::getInstance();
     }
-
-
 
 }
 
