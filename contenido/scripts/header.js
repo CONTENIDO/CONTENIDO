@@ -80,11 +80,17 @@ function changeContenidoLanguage(idlang) {
 
     if (top.content.right) {
         if (top.content.right.right_top) {
-            top.content.right.right_top.location.href = replaceQueryString(top.content.right.right_top.location.href, 'changelang', idlang);
+        	// remove the action parameter, so that actions are not executed in the other language
+        	var href = replaceQueryString(top.content.right.right_top.location.href, 'action', '');
+        	href = replaceQueryString(href, 'changelang', idlang);
+        	top.content.right.right_top.location.href = href;
         }
 
         if (top.content.right.right_bottom) {
-            top.content.right.right_bottom.location.href = replaceQueryString(top.content.right.right_bottom.location.href, 'changelang', idlang);
+        	// remove the action parameter, so that actions are not executed in the other language
+        	var href = replaceQueryString(top.content.right.right_bottom.location.href, 'action', '');
+        	href = replaceQueryString(href, 'changelang', idlang);
+            top.content.right.right_bottom.location.href = href;
         }
     }
 

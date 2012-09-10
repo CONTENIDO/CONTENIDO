@@ -605,14 +605,23 @@ function conDeleteart($idart) {
         $contentColl->deleteBy('idartlang', (int) $artLangColl->get('idartlang'));
     }
 
+    // delete values from con_cat_art only in the correct language
+    $catLangColl = new cApiCategoryLanguageCollection();
+    $catLangColl->select('`idlang`=' . cSecurity::toInteger($lang));
+    $idcats = $catLangColl->getAllIds();
+    $idcatsString = "('" . implode(',', $idcats) . "')";
     $catArtColl = new cApiCategoryArticleCollection();
-    $catArtColl->deleteBy('idart', (int) $idart);
+    $catArtColl->deleteByWhereClause('`idart`=' . $idart . ' AND `idcat` IN ' . $idcatsString);
 
+    // delete entry from con_art_lang
     $artLangColl = new cApiArticleLanguageCollection();
-    $artLangColl->deleteBy('idart', (int) $idart);
-
-    $oArtColl = new cApiArticleCollection();
-    $oArtColl->delete((int) $idart);
+    $artLangColl->deleteBy('idartlang', (int) $idartlang);
+    // delete entry from con_art only if this article does not exist in any language
+    $artLangColl->select('`idart`=' . $idart);
+    if ($artLangColl->next() === false) {
+        $oArtColl = new cApiArticleCollection();
+        $oArtColl->delete((int) $idart);
+    }
 
     # Contenido Extension Chain
     # @see docs/techref/plugins/Contenido Extension Chainer.pdf
