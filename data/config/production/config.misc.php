@@ -59,6 +59,12 @@ $cfg['debug']['rendering'] = false;
 // (bool) To output the code when editing and browsing the frontend, set this to true
 $cfg['debug']['codeoutput'] = false;
 
+// (bool) Whether the chain system should be disabled.
+$cfg['debug']['disable_chains'] = false;
+
+// (bool) Whether the plugin system should be disabled. If disabled, plugins are neither scanned nor included.
+$cfg['debug']['disable_plugins'] = false;
+
 // (bool) If true, use the field 'urlname' for resolving. 'name' otherwise
 $cfg['urlpathresolve'] = false;
 

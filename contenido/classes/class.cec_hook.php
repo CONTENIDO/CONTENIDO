@@ -172,7 +172,7 @@ class cApiCecHook {
         if ($cecIterator->count() > 0) {
             $cecIterator->reset();
 
-            while ($chainEntry = $cecIterator->next()) {
+            while (($chainEntry = $cecIterator->next()) !== false) {
                 // invoke CEC function
                 $chainEntry->setTemporaryArguments($args);
                 $chainEntry->execute();
@@ -222,7 +222,7 @@ class cApiCecHook {
         if ($cecIterator->count() > 0) {
             $cecIterator->reset();
 
-            while ($chainEntry = $cecIterator->next()) {
+            while (($chainEntry = $cecIterator->next()) !== false) {
                 // invoke CEC function
                 $chainEntry->setTemporaryArguments($args);
                 $return = $chainEntry->execute();
@@ -275,7 +275,7 @@ class cApiCecHook {
         if ($cecIterator->count() > 0) {
             $cecIterator->reset();
 
-            while ($chainEntry = $cecIterator->next()) {
+            while (($chainEntry = $cecIterator->next()) !== false) {
                 // invoke CEC function
                 $chainEntry->setTemporaryArguments($args);
                 $return = $chainEntry->execute();

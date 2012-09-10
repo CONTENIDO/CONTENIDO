@@ -171,6 +171,12 @@ class cApiCecRegistry {
      * @return void
      */
     protected function _addChain($sChainName, array $aParameters = array()) {
+        $cfg = cRegistry::getConfig();
+        // do not add the chain if the chain system is disabled
+        if ($cfg['debug']['disable_chains']) {
+            return;
+        }
+
         $this->_aChains[$sChainName]['parameters'] = $aParameters;
         $this->_aChains[$sChainName]['functions'] = array();
     }
@@ -192,6 +198,12 @@ class cApiCecRegistry {
      * @return bool True on success, otherwhise false
      */
     public function addChainFunction($sChainName, $sFunctionName) {
+        $cfg = cRegistry::getConfig();
+        // do not add the chain if the chain system is disabled
+        if ($cfg['debug']['disable_chains']) {
+            return;
+        }
+
         // Check if the chain exists
         if (!$this->isChainRegistered($sChainName)) {
             throw new cInvalidArgumentException('Chain ' . $sChainName . ' doesn\'t exist.');

@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -168,6 +163,10 @@ class cGuiNavigation {
             while ($db2->next_record()) {
                 $area = $db2->f('area');
                 if ($perm->have_perm_area_action($area) || $db2->f('relevant') == 0) {
+                    // if this menu entry is a plugin and plugins are disabled, ignore it
+                    if (strpos($db2->f('location'), ';') !== false && $cfg['debug']['disable_plugins']) {
+                        continue;
+                    }
                     // Extract names from the XML document.
                     $name = $this->getName($db2->f('location'));
                     $this->data[$db->f('idnavm')][] = array($name, $area);
