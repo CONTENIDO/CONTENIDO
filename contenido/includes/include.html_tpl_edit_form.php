@@ -18,15 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2004-07-14
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2008-08-14, Timo Trautmann, Bilal Arslan - Functions for versionning and storing file meta data added
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -61,6 +52,7 @@ if ($action == $sActionDelete) {
 
     $path = $cfgClient[$client]["tpl"]["path"];
     # delete file
+    // TODO also delete the versioning files
     if (!strrchr($_REQUEST['delfile'], "/")) {
         if (cFileHandler::exists($path.$_REQUEST['delfile'])) {
             unlink($path.$_REQUEST['delfile']);
@@ -252,5 +244,3 @@ if ($action == $sActionDelete) {
         $page->render();
     }
 }
-
-?>

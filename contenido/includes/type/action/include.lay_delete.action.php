@@ -24,4 +24,3 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 $errno = layDeleteLayout($idlay);
-?>

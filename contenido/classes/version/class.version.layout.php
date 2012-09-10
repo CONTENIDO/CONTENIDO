@@ -11,109 +11,105 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.0
- * @author     Bilal Arslan, Timo Trautmann
- * @copyright  four for business AG <info@contenido.org>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release >= 4.8.8
- *
- *
- * {@internal
- *   created 2008-08-05
- *   $Id: class.versionLayout.php 2465 2012-06-29 10:16:01Z fulai.zhang $
- * }}
+ * @package CONTENIDO Backend Classes
+ * @version 1.0.0
+ * @author Bilal Arslan, Timo Trautmann
+ * @copyright four for business AG <info@contenido.org>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release >= 4.8.8
  */
 
 if (!defined('CON_FRAMEWORK')) {
- die('Illegal call');
+    die('Illegal call');
 }
+class cVersionLayout extends cVersion {
 
- class cVersionLayout extends cVersion {
-   /**
-    * The name of Layout
-    * @access private
-    */
+    /**
+     * The name of Layout
+     *
+     * @access private
+     */
     private $sName;
 
-   /**
-    * The code of Layout
-    * @access private
-    */
-     private $sCode;
+    /**
+     * The code of Layout
+     *
+     * @access private
+     */
+    private $sCode;
 
-   /**
-    * The Description of Layout
-    * @access private
-    */
-     private $sDescripion;
+    /**
+     * The Description of Layout
+     *
+     * @access private
+     */
+    private $sDescripion;
 
-   /**
-    * The Metainformation about layout
-    * @access private
-    */
-     private $sDeletabel;
+    /**
+     * The Metainformation about layout
+     *
+     * @access private
+     */
+    private $sDeletabel;
 
-   /**
-    * The class versionLayout object constructor, initializes class variables
-    *
-    * @param string  $iIdLayout The name of style file
-    * @param array $aCfg
-    * @param array $aCfgClient
-    * @param object $oDB
-    * @param integer $iClient
-    * @param object $sArea
-    * @param object $iFrame
-    *
-    * @return void its only initialize class members
-    */
-     public function __construct($iIdLayout, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame){
-//         Init class members in super class
+    /**
+     * The class versionLayout object constructor, initializes class variables
+     *
+     * @param string $iIdLayout The name of style file
+     * @param array $aCfg
+     * @param array $aCfgClient
+     * @param object $oDB
+     * @param integer $iClient
+     * @param object $sArea
+     * @param object $iFrame
+     *
+     * @return void its only initialize class members
+     */
+    public function __construct($iIdLayout, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
+        // Init class members in super class
         parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
 
-//         folder layout
-         $this->sType = "layout";
-         $this->iIdentity = $iIdLayout;
+        // folder layout
+        $this->sType = "layout";
+        $this->iIdentity = $iIdLayout;
 
-//        This function looks if maximum number of stored versions is achieved
+        // This function looks if maximum number of stored versions is achieved
         $this->prune();
 
-         $this->initRevisions();
+        $this->initRevisions();
 
-         // Set Layout Table Iformation
-         $this->setLayoutTable();
+        // Set Layout Table Iformation
+        $this->setLayoutTable();
 
-         // Create Body Node of Xml File
-         $this->setData("name", $this->sName);
-         $this->setData("description", $this->sDescripion);
-         $this->setData("code", $this->sCode);
-         $this->setData("deletable", $this->bDeletabel);
+        // Create Body Node of Xml File
+        $this->setData("name", $this->sName);
+        $this->setData("description", $this->sDescripion);
+        $this->setData("code", $this->sCode);
+        $this->setData("deletable", $this->bDeletabel);
+    }
 
-     }
+    /**
+     *
+     *
+     * Set code to data ...
+     *
+     * @param string $code
+     */
+    public function setCode($code) {
+        $this->setData('code', $code);
+    }
 
-
-     /**
-      *
-      * Set code to data ...
-      *
-      * @param string  $code
-      */
-     public function setCode($code) {
-
-         $this->setData('code', $code);
-
-     }
-     /**
-      * Function reads rows variables from table con_layout and init with the class members.
-      *
-      * @return void
-      */
-     private function setLayoutTable(){
-
-         if(!is_object($this->oDB))
-          $this->oDB = cRegistry::getDb();
+    /**
+     * Function reads rows variables from table con_layout and init with the
+     * class members.
+     *
+     * @return void
+     */
+    private function setLayoutTable() {
+        if (!is_object($this->oDB))
+            $this->oDB = cRegistry::getDb();
 
         $sSql = "";
         $aLayout = array();
@@ -121,11 +117,11 @@ if (!defined('CON_FRAMEWORK')) {
         $sSql = "SELECT
                     *
                 FROM
-                ". $this->aCfg["tab"]["lay"] ."
+                " . $this->aCfg["tab"]["lay"] . "
                 WHERE
-                    idlay = '".cSecurity::toInteger($this->iIdentity)."'";
+                    idlay = '" . cSecurity::toInteger($this->iIdentity) . "'";
 
-        if($this->oDB->query($sSql)) {
+        if ($this->oDB->query($sSql)) {
             $this->oDB->next_record();
             $this->iClient = $this->oDB->f("idclient");
             $this->sName = $this->oDB->f("name");
@@ -135,25 +131,24 @@ if (!defined('CON_FRAMEWORK')) {
             $this->dCreated = $this->oDB->f("created");
             $this->dLastModified = $this->oDB->f("lastmodified");
         }
-
     } // end function
 
-   /**
-    * This function read an xml file nodes
-    *
-    * @param string  $sPath Path to file
-    *
-    * @return array returns array width this three nodes
-    */
+    /**
+     * This function read an xml file nodes
+     *
+     * @param string $sPath Path to file
+     *
+     * @return array returns array width this three nodes
+     */
     public function initXmlReader($sPath) {
         $aResult = array();
-        if($sPath !=""){
-                // Output this xml file
+        if ($sPath != "") {
+            // Output this xml file
             $sXML = simplexml_load_file($sPath);
 
             if ($sXML) {
                 foreach ($sXML->body as $oBodyValues) {
-                    //    if choose xml file read value an set it
+                    // if choose xml file read value an set it
                     $aResult["name"] = $oBodyValues->name;
                     $aResult["desc"] = $oBodyValues->description;
                     $aResult["code"] = $oBodyValues->code;
@@ -163,23 +158,26 @@ if (!defined('CON_FRAMEWORK')) {
         return $aResult;
     }
 
-   /**
-      * Function returns javascript which refreshes CONTENIDO frames for file list an subnavigation.
-      * This is neccessary, if filenames where changed, when a history entry is restored
-      *
-      * @param integer $iIdClient - id of client which contains this file
-      * @param string  $sArea - name of CONTENIDO area in which this procedure should be done
-      * @param integer $iIdLayout - Id of layout to highlight
-      * @param object $sess - CONTENIDO session object
-      *
-      * @return string  - Javascript for refrehing frames
-      */
+    /**
+     * Function returns javascript which refreshes CONTENIDO frames for file
+     * list an subnavigation.
+     * This is neccessary, if filenames where changed, when a history entry is
+     * restored
+     *
+     * @param integer $iIdClient - id of client which contains this file
+     * @param string $sArea - name of CONTENIDO area in which this procedure
+     *            should be done
+     * @param integer $iIdLayout - Id of layout to highlight
+     * @param object $sess - CONTENIDO session object
+     *
+     * @return string - Javascript for refrehing frames
+     */
     public function renderReloadScript($sArea, $iIdLayout, $sess) {
         $sReloadScript = "<script type=\"text/javascript\">
                  var left_bottom = top.content.left.left_bottom;
 
                  if(left_bottom){
-                    var href = '".$sess->url("main.php?area=$sArea&frame=2&idlay=$iIdLayout")."';
+                    var href = '" . $sess->url("main.php?area=$sArea&frame=2&idlay=$iIdLayout") . "';
                     left_bottom.location.href = href;
                  }
 
@@ -187,5 +185,4 @@ if (!defined('CON_FRAMEWORK')) {
         return $sReloadScript;
     }
 
- }// end of class
-?>
+}

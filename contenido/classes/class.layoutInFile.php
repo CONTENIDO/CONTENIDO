@@ -27,6 +27,12 @@ if (!defined('CON_FRAMEWORK')) {
 class LayoutInFile {
 
     /**
+     * The ID of the layout
+     * @var int
+     */
+    protected $_layoutId = 0;
+
+    /**
      * The code of the layout
      * @var string
      */
@@ -79,6 +85,7 @@ class LayoutInFile {
             $db = cRegistry::getDb();
         }
 
+        $this->_layoutId = $layoutId;
         $this->_db = $db;
         $this->init($layoutId, $layoutCode, $cfg, $lang);
     }
@@ -273,13 +280,10 @@ class LayoutInFile {
     }
 
     /**
-     * @TODO: resolve redundant code from module handler
-     * This method erase a directory recrusive.
-     *
-     * @param string $path
-     * @return 0 all right, -1 paht is not a direcrotry, -2 erro at erase, -3 unknown type of file in directory
+     * @deprecated 2012-09-10 Use cFileHandler::recursiveRmdir($dirname) instead
      */
     private function _rec_rmdir($path) {
+        cDeprecated('Use cFileHandler::recursiveRmdir($dirname) instead');
         // schau' nach, ob das ueberhaupt ein Verzeichnis ist
         if (!is_dir($path)) {
             return -1;
@@ -347,15 +351,25 @@ class LayoutInFile {
     }
 
     /**
-     * Erase complete a layout
-     * @return boolean true if succsses
+     * Removes this layout from the filesystem.
+     * Also deletes the version files.
+     *
+     * @return boolean true on success or false on failure
      */
     public function eraseLayout() {
-        if ($this->_rec_rmdir($this->_layoutPath) != 0) {
-            return false;
+        global $area, $frame;
+        $cfg = cRegistry::getConfig();
+        $cfgClient = cRegistry::getClientConfig();
+        $db = cRegistry::getDb();
+        $client = cRegistry::getClientId();
+
+        $layoutVersion = new cVersionLayout($this->_layoutId, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $success = true;
+        if (count($layoutVersion->getRevisionFiles()) > 0 && !$layoutVersion->deleteFile()) {
+            $success = false;
         }
 
-        return true;
+        return $success && cFileHandler::recursiveRmdir($this->_layoutPath);
     }
 
     /**
@@ -437,5 +451,3 @@ class LayoutInFile {
     }
 
 }
-
-?>

@@ -53,7 +53,8 @@ class cFileHandler {
      * @param int $offset this will be the first byte which is read. Optional.
      * @param bool $reverse if true, the function will start from the back of
      *        the file. Optional.
-     * @throws cInvalidArgumentException if the file with the given filename does not exist
+     * @throws cInvalidArgumentException if the file with the given filename
+     *         does not exist
      * @return string bool success it returns the bytes which have been read.
      *         Otherwise false.
      */
@@ -82,7 +83,8 @@ class cFileHandler {
      * @param int $lines the number of lines to be read. Optional.
      * @param int $lineoffset this will be the first line which is read.
      *        Optional.
-     * @throws cInvalidArgumentException if the file with the given filename does not exist
+     * @throws cInvalidArgumentException if the file with the given filename
+     *         does not exist
      * @return string array bool one line was read the function will return it.
      *         If more than one line was read the function will return an array
      *         containing the lines. Otherwise false is returned
@@ -186,7 +188,8 @@ class cFileHandler {
      * Checks if a file is readable for the PHP user
      *
      * @param string $filename the name and path of the file
-     * @throws cInvalidArgumentException if the file with the given filename does not exist
+     * @throws cInvalidArgumentException if the file with the given filename
+     *         does not exist
      * @return bool true if the file is readable
      */
     public static function readable($filename) {
@@ -201,7 +204,8 @@ class cFileHandler {
      * Removes a file from the filesystem
      *
      * @param string $filename the name and path of the file
-     * @throws cInvalidArgumentException if the file with the given filename does not exist
+     * @throws cInvalidArgumentException if the file with the given filename
+     *         does not exist
      * @return bool true on success
      */
     public static function remove($filename) {
@@ -216,7 +220,8 @@ class cFileHandler {
      * Truncates a file so that it is empty
      *
      * @param string $filename the name and path of the file
-     * @throws cInvalidArgumentException if the file with the given filename does not exist
+     * @throws cInvalidArgumentException if the file with the given filename
+     *         does not exist
      * @return bool true on success
      */
     public static function truncate($filename) {
@@ -237,7 +242,8 @@ class cFileHandler {
      * @param string $filename the name of the source file
      * @param string $destination the destination. Note that the file can also
      *        be renamed in the process of moving it
-     * @throws cInvalidArgumentException if the file with the given filename does not exist
+     * @throws cInvalidArgumentException if the file with the given filename
+     *         does not exist
      * @return bool true on success
      */
     public static function move($filename, $destination) {
@@ -257,7 +263,8 @@ class cFileHandler {
      *
      * @param string $filename the name and path of the file
      * @param string $new_filename the new name of the file
-     * @throws cInvalidArgumentException if the file with the given filename does not exist
+     * @throws cInvalidArgumentException if the file with the given filename
+     *         does not exist
      * @return bool true on success
      */
     public static function rename($filename, $new_filename) {
@@ -278,7 +285,8 @@ class cFileHandler {
      * @param string $filename the name and path of the file
      * @param string $destination the destination. Note that existing files get
      *        overwritten
-     * @throws cInvalidArgumentException if the file with the given filename does not exist
+     * @throws cInvalidArgumentException if the file with the given filename
+     *         does not exist
      * @return bool true on success
      */
     public static function copy($filename, $destination) {
@@ -298,7 +306,8 @@ class cFileHandler {
      *
      * @param string $filename the name and path of the file
      * @param string $mode the new access mode
-     * @throws cInvalidArgumentException if the file with the given filename does not exist
+     * @throws cInvalidArgumentException if the file with the given filename
+     *         does not exist
      * @return bool true on success
      */
     public static function chmod($filename, $mode) {
@@ -322,7 +331,8 @@ class cFileHandler {
      * 'mime' - the mime type of the file
      *
      * @param string $filename the name and path to the file
-     * @throws cInvalidArgumentException if the file with the given filename does not exist
+     * @throws cInvalidArgumentException if the file with the given filename
+     *         does not exist
      * @return array Returns an array containing information about the file
      */
     public static function info($filename) {
@@ -409,7 +419,7 @@ class cFileHandler {
      *
      * @param string $filename the filename to validate
      * @param boolean $notifyAndExitOnFailure if set, function will show a
-     *            notification and will exit the script
+     *        notification and will exit the script
      * @return boolean true if the given filename is valid, false otherwise
      */
     public static function validateFilename($filename, $notifyAndExitOnFailure = true) {
@@ -420,7 +430,7 @@ class cFileHandler {
                 // display notification and exit
                 $notification = new cGuiNotification();
                 $notification->displayNotification('error', i18n('Wrong file name.'));
-                exit;
+                exit();
             }
 
             return false;
@@ -433,13 +443,36 @@ class cFileHandler {
                 // display notification and exit
                 $notification = new cGuiNotification();
                 $notification->displayNotification("error", i18n("Please insert file name."));
-                exit;
+                exit();
             }
 
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * Deletes a directory and all of its contents.
+     *
+     * @param string $dirname the name of the directory which should be deleted
+     * @return bool true on success or false on failure
+     */
+    public static function recursiveRmdir($dirname) {
+        // make sure $dirname ends with a slash
+        if (substr($dirname, -1) !== '/') {
+            $dirname .= '/';
+        }
+        // recursively remove all directories and files
+        foreach (glob($dirname . '*') as $file) {
+            if (is_dir($file)) {
+                self::recursiveRmdir($file);
+            } else {
+                unlink($file);
+            }
+        }
+
+        return rmdir($dirname);
     }
 
 }

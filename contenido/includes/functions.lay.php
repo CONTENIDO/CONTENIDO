@@ -10,19 +10,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.3.2
- * @author     Jan Lengowski
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003
- *   $Id$:
- * }}
+ * @package CONTENIDO Backend Includes
+ * @version 1.3.2
+ * @author Jan Lengowski
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -43,10 +38,9 @@ cInclude('classes', 'class.layoutInFile.php');
  * @return int $idlay Id of the new or edited Layout
  *
  * @author Olaf Niemann <olaf.niemann@4fb.de>
- * @copryright four for business AG <www.4fb.de>
+ *         @copryright four for business AG <www.4fb.de>
  */
-function layEditLayout($idlay, $name, $description, $code)
-{
+function layEditLayout($idlay, $name, $description, $code) {
     global $client, $auth, $cfg, $sess, $lang, $area_tree, $perm, $cfgClient;
 
     $db2 = cRegistry::getDb();
@@ -153,27 +147,31 @@ function layEditLayout($idlay, $name, $description, $code)
 
         return $idlay;
     }
-
 }
 
-// @fixme: Document me!
-function layDeleteLayout($idlay)
-{
-    global $db, $client, $cfg, $area_tree, $perm;
+/**
+ * Deletes the layout with the given ID from the database and the file system.
+ *
+ * @param int $idlay the ID of the layout
+ * @return string an error code if the layout is still in use
+ */
+function layDeleteLayout($idlay) {
+    global $client, $cfg, $area_tree, $perm;
 
-    $notification = new cGuiNotification();
-
-    $sql = 'SELECT * FROM '.$cfg['tab']['tpl'].' WHERE idlay='.(int) $idlay;
-    $db->query($sql);
-    if ($db->next_record()) {
-        return '0301'; // layout is still in use, you cannot delete it
+    $tplColl = new cApiTemplateCollection();
+    $tplColl->select('`idlay`=' . $idlay);
+    if ($tplColl->next()) {
+        // layout is still in use, you cannot delete it
+        return '0301';
     } else {
-        // Save the layout in file system
+        // delete the layout in file system
         $layoutInFile = new LayoutInFile($idlay, '', $cfg, 1);
         if ($layoutInFile->eraseLayout()) {
+            // delete layout in database
             $layoutCollection = new cApiLayoutCollection();
             $layoutCollection->delete($idlay);
         } else {
+            $notification = new cGuiNotification();
             $notification->displayNotification('error', i18n("Can't delete layout!"));
         }
     }
@@ -182,5 +180,3 @@ function layDeleteLayout($idlay)
     cInclude('includes', 'functions.rights.php');
     deleteRightsForElement('lay', $idlay);
 }
-
-?>

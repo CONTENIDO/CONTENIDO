@@ -602,20 +602,25 @@ class cModuleHandler {
     }
 
     /**
-     * Warning dont work if more fils exist in the dir
-     * then input.php or output.php
+     * Removes this module from the filesystem.
+     * Also deletes the version files.
      *
-     * @return bool
+     * @return bool true on success or false on failure
      */
     public function eraseModule() {
-        $ret = NULL;
+        global $area, $frame;
+        $cfg = cRegistry::getConfig();
+        $cfgClient = cRegistry::getClientConfig();
+        $db = cRegistry::getDb();
+        $client = cRegistry::getClientId();
 
-        // if modulName is a string
-        if (strlen($this->_moduleAlias) > 0) {
-            $ret = $this->_rec_rmdir($this->_modulePath);
+        $moduleVersion = new cVersionModule($this->_idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $success = true;
+        if (count($moduleVersion->getRevisionFiles()) > 0 && !$moduleVersion->deleteFile()) {
+            $success = false;
         }
 
-        return ($ret == 0);
+        return $success && cFileHandler::recursiveRmdir($this->_modulePath);
     }
 
     /**
@@ -895,15 +900,10 @@ class cModuleHandler {
     }
 
     /**
-     * This method erase a directory recrusive.
-     *
-     * @todo : comments in english and move recursive directory deletion to somewhere else
-     *
-     * @param string $path
-     * @return 0 all right, -1 paht is not a direcrotry, -2 erro at erase, -3
-     *         unknown type of file in directory
+     * @deprecated 2012-09-10 Use cFileHandler::recursiveRmdir($dirname) instead
      */
     private function _rec_rmdir($path) {
+        cDeprecated('Use cFileHandler::recursiveRmdir($dirname) instead');
         // schau' nach, ob das ueberhaupt ein Verzeichnis ist
         if (!is_dir($path)) {
             return -1;

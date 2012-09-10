@@ -18,11 +18,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  * @since file available since CONTENIDO release >= 4.8.8
- *
- *        {@internal
- *        created 2008-08-12
- *        $Id: class.versionImport.php 2464 2012-06-29 10:13:10Z fulai.zhang $
- *        }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -112,4 +107,3 @@ class cVersionImport extends cVersion {
     }
 
 }
-?>

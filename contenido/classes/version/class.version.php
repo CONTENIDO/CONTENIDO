@@ -10,143 +10,158 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.3
- * @author     Bilal Arslan, Timo Trautmann
- * @copyright  four for business AG <info@contenido.org>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release >= 4.8.8
- *
- * {@internal
- *   created 2008-08-12
- * }}
+ * @package CONTENIDO Backend Classes
+ * @version 1.0.3
+ * @author Bilal Arslan, Timo Trautmann
+ * @copyright four for business AG <info@contenido.org>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release >= 4.8.8
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-
 class cVersion {
 
     /**
      * Id of Type
-     * @var  string
+     *
+     * @var string
      */
     protected $sType;
 
     /**
      * md5 coded name of author
-     * @var  string
+     *
+     * @var string
      */
     protected $sAuthor;
 
     /**
      * Time of created
-     * @var  ???
+     *
+     * @var ???
      */
     protected $dCreated;
 
     /**
      * Time of last modified
-     * @var  ???
+     *
+     * @var ???
      */
     protected $dLastModified;
 
     /**
      * Body data of xml file
-     * @var  string
+     *
+     * @var string
      */
     protected $aBodyData;
 
     /**
      * For init global variable
-     * @var  array
+     *
+     * @var array
      */
     protected $aCfg;
 
     /**
      * For init global variable $cfgClient
-     * @var  array
+     *
+     * @var array
      */
     protected $aCfgClient;
 
     /**
      * Database object
-     * @var  DB_Contenido
+     *
+     * @var DB_Contenido
      */
     protected $oDB;
 
     /**
      * For init global variable $client
-     * @var  int
+     *
+     * @var int
      */
     protected $iClient;
 
     /**
      * Revision files of current file
-     * @var  array
+     *
+     * @var array
      */
     public $aRevisionFiles;
 
     /**
      * Number of Revision
-     * @var  int
+     *
+     * @var int
      */
     protected $iRevisionNumber;
 
     /**
      * Timestamp
-     * @var  ???
+     *
+     * @var ???
      */
     protected $dTimestamp;
 
     /**
      * For init global variable $area
-     * @var  array
+     *
+     * @var array
      */
     protected $sArea;
 
     /**
      * For init global variable $frame
-     * @var  int
+     *
+     * @var int
      */
     protected $iFrame;
 
     /**
      * For init variables
-     * @var  array
+     *
+     * @var array
      */
     protected $aVarForm;
 
     /**
      * Identity the Id of Content Type
-     * @var  int
+     *
+     * @var int
      */
     protected $iIdentity;
 
     /**
      * To take control versioning is switched off
-     * @var  bool
+     *
+     * @var bool
      */
     private $bVersioningActive;
 
     /**
      * Timestamp
-     * @var  ???
+     *
+     * @var ???
      */
     protected $dActualTimestamp;
 
     /**
      * Alternative Path for save version files
-     * @var  string
+     *
+     * @var string
      */
     protected $sAlternativePath;
 
     /**
      * Displays Notification only onetimes per object
-     * @var  int
+     *
+     * @var int
      */
     public static $iDisplayNotification;
 
@@ -200,8 +215,9 @@ class cVersion {
         }
 
         if (is_dir($this->sAlternativePath) == false) {
-            // Alternative Path is not true or is not exist, we use the frontendpath
-            if ($this->sAlternativePath != '' AND self::$iDisplayNotification < 2) {
+            // Alternative Path is not true or is not exist, we use the
+            // frontendpath
+            if ($this->sAlternativePath != '' and self::$iDisplayNotification < 2) {
                 $oNotification = new cGuiNotification();
                 $sNotification = i18n('Alternative path %s does not exist. Version was saved in frondendpath.');
                 $oNotification->displayNotification('warning', sprintf($sNotification, $this->sAlternativePath));
@@ -215,7 +231,8 @@ class cVersion {
     }
 
     /**
-     * This function looks if maximum number of stored versions is achieved. If true, it will be delete the first version.
+     * This function looks if maximum number of stored versions is achieved.
+     * If true, it will be delete the first version.
      *
      * @return void
      */
@@ -229,7 +246,7 @@ class cVersion {
 
         $bDelete = true;
 
-        while (count($this->aRevisionFiles) >= $sVar AND $bDelete AND (int) $sVar > 0) {
+        while (count($this->aRevisionFiles) >= $sVar and $bDelete and (int) $sVar > 0) {
             $iIndex = end(array_keys($this->aRevisionFiles));
             $bDelete = $this->deleteFile($this->getFirstRevision());
             unset($this->aRevisionFiles[$iIndex]);
@@ -237,11 +254,20 @@ class cVersion {
     }
 
     /**
-     * This function checks if needed version paths exists and were created if neccessary
+     * This function checks if needed version paths exists and were created if
+     * neccessary
+     *
      * @return void
      */
     protected function checkPaths() {
-        $aPath = array('/', 'css/', 'js/', 'layout/', 'module/', 'templates/');
+        $aPath = array(
+            '/',
+            'css/',
+            'js/',
+            'layout/',
+            'module/',
+            'templates/'
+        );
         $sFrontEndPath = '';
         if ($this->sAlternativePath == '') {
             $sFrontEndPath = $this->aCfgClient[$this->iClient]['version']['path'];
@@ -270,14 +296,17 @@ class cVersion {
     }
 
     /**
-     * This function creats an xml file. XML Writer helps for create this file.
+     * This function creats an xml file.
+     * XML Writer helps for create this file.
      *
      * @param string $sFileName name of xml file to create
      * @return bool true if saving file was successful, otherwise false
      */
     public function createNewXml($sDirectory, $sFileName) {
         $oWriter = new cXmlWriter();
-        $oRootElement = $oWriter->addElement('version', '', null, array('xml:lang' => 'de'));
+        $oRootElement = $oWriter->addElement('version', '', null, array(
+            'xml:lang' => 'de'
+        ));
         $oHeadElement = $oWriter->addElement('head', '', $oRootElement);
 
         $oWriter->addElement('version_id', $this->iIdentity . '_' . $this->iVersion, $oHeadElement);
@@ -325,7 +354,8 @@ class cVersion {
     }
 
     /**
-     * This function inits version files. Its filter also timestamp and version files
+     * This function inits version files.
+     * Its filter also timestamp and version files
      *
      * @return array returns xml file names
      */
@@ -336,8 +366,7 @@ class cVersion {
         // Open this Filepath and read then the content.
         $sDir = $this->getFilePath();
         if (is_dir($sDir)) {
-            if ($dh = opendir($sDir)) {
-
+            if (($dh = opendir($sDir)) !== false) {
                 while (($file = readdir($dh)) !== false) {
                     if ($file != '.' && $file != '..') {
                         $aData = explode('.', $file);
@@ -365,16 +394,16 @@ class cVersion {
         // Open this Filepath and read then the content.
         $sDir = $this->getFilePath();
 
-        $bDelet = false;
-        if (is_dir($sDir) AND $sFirstFile == '') {
-            if ($dh = opendir($sDir)) {
+        $bDelete = false;
+        if (is_dir($sDir) and $sFirstFile == '') {
+            if (($dh = opendir($sDir)) !== false) {
                 while (($sFile = readdir($dh)) !== false) {
                     if ($sFile != '.' && $sFile != '..') {
                         // Delete the files
                         $bDelete = unlink($sDir . $sFile);
                     }
                 }
-//                  if the files be cleared, the delete the folder
+                // if the files be cleared, the delete the folder
                 $bDelete = rmdir($sDir);
             }
         } else if ($sFirstFile != '') {
@@ -416,7 +445,7 @@ class cVersion {
      * @return integer returns number of Revison File
      */
     private function getRevision() {
-        $this->iVersion = ($this->iRevisionNumber + 1 ) . '_' . $this->dActualTimestamp;
+        $this->iVersion = ($this->iRevisionNumber + 1) . '_' . $this->dActualTimestamp;
         return $this->iVersion;
     }
 
@@ -431,7 +460,7 @@ class cVersion {
         $aKey = $this->aRevisionFiles;
         $sFirstRevision = '';
 
-//        to take first element, we use right sort
+        // to take first element, we use right sort
         ksort($aKey);
         foreach ($aKey as $value) {
             return $sFirstRevision = $value;
@@ -477,11 +506,12 @@ class cVersion {
     /**
      * The general SelectBox function for get Revision.
      *
-     * @param string  $sTableForm The name of Table_Form class
-     * @param string  $sAddHeader The Header Label of SelectBox Widget
-     * @param string  $sLabelOfSelectBox  The Label of SelectBox Widget
-     * @param string  $sIdOfSelectBox  Id of Select Box
-     * return string  if is exists Revision, then returns HTML Code of full SelectBox else returns empty string
+     * @param string $sTableForm The name of Table_Form class
+     * @param string $sAddHeader The Header Label of SelectBox Widget
+     * @param string $sLabelOfSelectBox The Label of SelectBox Widget
+     * @param string $sIdOfSelectBox Id of Select Box
+     *        return string if is exists Revision, then returns HTML Code of
+     *            full SelectBox else returns empty string
      */
     public function buildSelectBox($sTableForm, $sAddHeader, $sLabelOfSelectBox, $sIdOfSelectBox) {
         $oForm = new cGuiTableForm($sTableForm);
@@ -506,7 +536,8 @@ class cVersion {
     }
 
     /**
-     * Messagebox for build selectBox. Dynamic allocation for type.
+     * Messagebox for build selectBox.
+     * Dynamic allocation for type.
      * return array the attributes alt and poput returns
      */
     private function getMessages() {
@@ -543,9 +574,9 @@ class cVersion {
     /**
      * A Class Function for fill version files
      *
-     * @param string  $sTableForm The name of Table_Form class
-     * @param string  $sAddHeader The Header Label of SelectBox Widget
-     * return string  returns select-box with filled files
+     * @param string $sTableForm The name of Table_Form class
+     * @param string $sAddHeader The Header Label of SelectBox Widget
+     *        return string returns select-box with filled files
      */
     private function getSelectBox($aTempVesions, $sIdOfSelectBox) {
         $sSelected = $_POST[$sIdOfSelectBox];
@@ -576,7 +607,9 @@ class cVersion {
         }
 
         $oHTMLTextarea->setStyle('font-family: monospace; width: 100%;');
-        $oHTMLTextarea->updateAttributes(array('wrap' => 'off'));
+        $oHTMLTextarea->updateAttributes(array(
+            'wrap' => 'off'
+        ));
 
         return $oHTMLTextarea->render();
     }
@@ -592,7 +625,9 @@ class cVersion {
     public function getTextBox($sName, $sInitValue, $iWidth, $bDisabled = false) {
         $oHTMLTextbox = new cHTMLTextbox($sName, html_entity_decode($sInitValue), $iWidth, '', '', $bDisabled);
         $oHTMLTextbox->setStyle('font-family:monospace; width:100%;');
-        $oHTMLTextbox->updateAttributes(array('wrap' => 'off'));
+        $oHTMLTextbox->updateAttributes(array(
+            'wrap' => 'off'
+        ));
 
         return $oHTMLTextbox->render();
     }
@@ -622,5 +657,3 @@ class cVersion {
     }
 
 }
-
-?>

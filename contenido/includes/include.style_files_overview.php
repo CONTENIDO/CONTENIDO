@@ -61,12 +61,12 @@ $sScriptTemplate = '
     // Create messageBox instance
     box = new messageBox("", "", "", 0, 0);
 
-    function deleteFile(file)
+    function deleteFile(idsfi)
     {
         url  = "main.php?area='.$sArea.'";
         url += "&action='.$sActionDelete.'";
         url += "&frame=2";
-        url += "&delfile=" + file;
+        url += "&idsfi=" + idsfi;
         url += "&contenido='.$sSession.'";
         window.location.href = url;
         parent.parent.frames["right"].frames["right_bottom"].location.href = "main.php?area='.$sArea.'&frame=4&action='.$sActionDelete.'&delfile="+file+"&contenido='.$sSession.'";
@@ -109,7 +109,12 @@ if ($handle = opendir($path)) {
             $delDescr = sprintf(i18n("Do you really want to delete the following file:<br><br>%s<br>"),$filename);
 
             if ($perm->have_perm_area_action('style', $sActionDelete)) {
-                $tpl->set('d', 'DELETE', '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteFile(\\\''.$filename.'\\\')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'"></a>');
+                $sql = 'SELECT `idsfi` FROM `' . $cfg['tab']['file_information'] . '` WHERE `idclient`=' . cSecurity::toInteger($client) . ' AND `filename`=' . cSecurity::toString($filename);
+                $db->query($sql);
+                if ($db->next_record()) {
+                    $idsfi = $db->f('idsfi');
+                }
+                $tpl->set('d', 'DELETE', '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteFile(\\\''.$idsfi.'\\\')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'"></a>');
             } else {
                 $tpl->set('d', 'DELETE', '');
             }

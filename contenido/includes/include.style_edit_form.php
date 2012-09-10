@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-04-20
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -34,9 +29,6 @@ cInclude('external', 'codemirror/class.codemirror.php');
 
 $sFileType = 'css';
 
-$sActionCreate = 'style_create';
-$sActionEdit = 'style_edit';
-$sActionDelete = 'style_delete';
 $sFilename = '';
 $page = new cGuiPage("style_edit_form");
 $page->setEncoding('utf-8');
@@ -55,12 +47,13 @@ if (!(int) $client > 0) {
     return;
 }
 
-if ($action == $sActionDelete) {
+if ($action == 'style_delete') {
     $path = $cfgClient[$client]['css']['path'];
     // Delete file
+    // TODO also delete the versioning files
     if (!strrchr($_REQUEST['delfile'], '/')) {
-        if (cFileHandler::exists($path.$_REQUEST['delfile'])) {
-            unlink($path.$_REQUEST['delfile']);
+        if (cFileHandler::exists($path . $_REQUEST['delfile'])) {
+            unlink($path . $_REQUEST['delfile']);
             removeFileInformation($client, $_REQUEST['delfile'], 'css', $db);
             $page->displayInfo(i18n('Deleted CSS file successfully!'));
         }
@@ -97,7 +90,7 @@ if ($action == $sActionDelete) {
     $aFileInfo = getFileInformation($client, $sTempFilename, $sTypeContent, $db);
 
     // Create new file
-    if ($_REQUEST['action'] == $sActionCreate && $_REQUEST['status'] == 'send') {
+    if ($_REQUEST['action'] == 'style_create' && $_REQUEST['status'] == 'send') {
         $sTempFilename = $sFilename;
         // check filename and create new file
         cFileHandler::validateFilename($sFilename);
@@ -117,7 +110,7 @@ if ($action == $sActionDelete) {
     }
 
     // Edit selected file
-    if ($_REQUEST['action'] == $sActionEdit && $_REQUEST['status'] == 'send') {
+    if ($_REQUEST['action'] == 'style_edit' && $_REQUEST['status'] == 'send') {
         $tempTemplate = $sTempFilename;
         if ($sFilename != $sTempFilename) {
             cFileHandler::validateFilename($sFilename);
@@ -170,9 +163,9 @@ if ($action == $sActionDelete) {
 
     // Generate edit form
     if (isset($_REQUEST['action'])) {
-        $sAction = ($bEdit) ? $sActionEdit : $_REQUEST['action'];
+        $sAction = ($bEdit) ? 'style_edit' : $_REQUEST['action'];
 
-        if ($_REQUEST['action'] == $sActionEdit) {
+        if ($_REQUEST['action'] == 'style_edit') {
             $sCode = cFileHandler::read($path . $sFilename);
         } else {
             $sCode = stripslashes($_REQUEST['code']); // stripslashes is required here in case of creating a new file
@@ -212,5 +205,3 @@ if ($action == $sActionDelete) {
         $page->render();
     }
 }
-
-?>

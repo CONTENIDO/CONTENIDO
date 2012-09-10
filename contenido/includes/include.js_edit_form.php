@@ -34,9 +34,6 @@ cInclude("external", "codemirror/class.codemirror.php");
 
 $sFileType = "js";
 
-$sActionCreate = 'js_create';
-$sActionEdit = 'js_edit';
-$sActionDelete = 'js_delete';
 $sFilename = '';
 $page = new cGuiPage("js_edit_form");
 
@@ -55,8 +52,9 @@ if (!(int) $client > 0) {
 }
 
 
-if ($action == $sActionDelete) {
+if ($action == 'js_delete') {
     $path = $cfgClient[$client]["js"]["path"];
+    // TODO also delete the versioning files
     if (!strrchr($_REQUEST['delfile'], "/")) {
         if (cFileHandler::exists($path.$_REQUEST['delfile'])) {
             unlink($path.$_REQUEST['delfile']);
@@ -104,7 +102,7 @@ if ($action == $sActionDelete) {
     $aFileInfo = getFileInformation ($client, $sTempFilename, $sTypeContent, $db);
 
     // Create new file
-    if ($_REQUEST['action'] == $sActionCreate && $_REQUEST['status'] == 'send') {
+    if ($_REQUEST['action'] == 'js_create' && $_REQUEST['status'] == 'send') {
         $sTempFilename = $sFilename;
         // check filename and create new file
         cFileHandler::validateFilename($sFilename);
@@ -124,7 +122,7 @@ if ($action == $sActionDelete) {
     }
 
     // Edit selected file
-    if ($_REQUEST['action'] == $sActionEdit && $_REQUEST['status'] == 'send') {
+    if ($_REQUEST['action'] == 'js_edit' && $_REQUEST['status'] == 'send') {
         $sTempTempFilename = $sTempFilename;
 
         if ($sFilename != $sTempFilename) {
@@ -175,9 +173,9 @@ if ($action == $sActionDelete) {
     if (isset($_REQUEST['action'])) {
         $aFileInfo = getFileInformation($client, $sFilename, $sTypeContent, $db);
 
-        $sAction = ($bEdit) ? $sActionEdit : $_REQUEST['action'];
+        $sAction = ($bEdit) ? 'js_edit' : $_REQUEST['action'];
 
-        if ($_REQUEST['action'] == $sActionEdit) {
+        if ($_REQUEST['action'] == 'js_edit') {
             $sCode = cFileHandler::read($path . $sFilename);
             if ($sCode === false) {
                 exit;
