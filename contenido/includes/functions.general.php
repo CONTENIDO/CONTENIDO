@@ -1392,12 +1392,11 @@ function notifyOnError($errortitle, $errormessage) {
 
 /**
  *
- * @deprecated 2012-09-04 this function is not supported any longer
- *             use function located in cUriBuilderCustom instead of this
+ * @deprecated 2012-09-05 use function located in cArray instead of this
  *             function
  */
 function cInitializeArrayKey(&$aArray, $sKey, $mDefault = '') {
-    cDeprecated("Use class cVersionImport instead");
+    cDeprecated('Use function initializeKey($aArray, $sKey, $mDefault) from cArray instead');
     cArray::initializeKey($aArray, $sKey, $mDefault);
 }
 
