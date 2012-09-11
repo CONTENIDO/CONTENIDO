@@ -26,7 +26,7 @@
  */
 
 if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
+    die('Illegal call');
 }
 
 /**
@@ -35,18 +35,17 @@ if (!defined('CON_FRAMEWORK')) {
  * @param   int  iCurrentStep  The current step to display active.
  * @return  string
  */
-function cGenerateSetupStepsDisplay($iCurrentStep)
-{
+function cGenerateSetupStepsDisplay($iCurrentStep) {
     if (!defined('CON_SETUP_STEPS')) {
         return '';
     }
     $sStepsPath = '';
-    for ($i=1; $i < CON_SETUP_STEPS + 1; $i++) {
+    for ($i = 1; $i < CON_SETUP_STEPS + 1; $i++) {
         $sCssActive = '';
         if ($iCurrentStep == $i) {
             $sCssActive = 'background-color:#fff;color:#0060B1;';
         }
-        $sStepsPath .= '<span style="'.$sCssActive.'">&nbsp;'.strval($i).'&nbsp;</span>&nbsp;&nbsp;&nbsp;';
+        $sStepsPath .= '<span style="' . $sCssActive . '">&nbsp;' . strval($i) . '&nbsp;</span>&nbsp;&nbsp;&nbsp;';
     }
     return $sStepsPath;
 }
@@ -57,10 +56,31 @@ function cGenerateSetupStepsDisplay($iCurrentStep)
  * @param   string  $sErrorMessage  Message to log in file
  * @return  void
  */
-function logSetupFailure($sErrorMessage)
-{
+function logSetupFailure($sErrorMessage) {
     global $cfg;
     cFileHandler::write($cfg['path']['contenido_logs'] . 'setuplog.txt', $sErrorMessage . PHP_EOL . PHP_EOL, true);
+}
+
+/**
+ * Initializes clients configuration, if not done before
+ * @global  array  $cfg
+ * @global  array  $cfgClient
+ * @param  bool  $reset  Flag to reset any existing client configuration
+ */
+function setupInitializeCfgClient($reset = false) {
+    global $cfg, $cfgClient;
+
+    if (true === $reset) {
+        $cfgClient = array();
+    }
+
+    // Load client configuration
+    if (!isset($cfgClient) || !isset($cfgClient['set'])) {
+        if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
+            require($cfg['path']['contenido_config'] . 'config.clients.php');
+        }
+        rereadClients();
+    }
 }
 
 ?>
