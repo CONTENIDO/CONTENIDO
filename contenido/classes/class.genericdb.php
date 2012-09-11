@@ -1420,10 +1420,14 @@ class Item
 	 * Loads an item by ID from the database
 	 * @param string $field Specifies the field
 	 * @param string $value Specifies the value
+	 * @param bool $bSafe use inFilter or not
 	 * @return bool True if the load was successful
 	 */
-	function loadBy($field, $value)
+	function loadBy($field, $value, $bSafe = true)
 	{
+		if ($bSafe) {
+            $value = $this->_inFilter($value);
+        }
 
 		/* SQL-Statement to select by field */
 		$sql = "SELECT * FROM ".$this->table." WHERE ".$field." = '".$value."'";
