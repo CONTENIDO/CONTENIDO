@@ -24,14 +24,13 @@
  */
 
 if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
+    die('Illegal call');
 }
 
-class cSetupClientAdjust extends cSetupMask
-{
-    function cSetupClientAdjust($step, $previous, $next)
-    {
-        global $cfg;
+class cSetupClientAdjust extends cSetupMask {
+
+    function cSetupClientAdjust($step, $previous, $next) {
+        global $db, $cfg, $cfgClient;
 
         cSetupMask::cSetupMask("templates/setup/forms/pathinfo.tpl", $step);
         $this->setHeader(i18n("Client Settings"));
@@ -52,35 +51,45 @@ class cSetupClientAdjust extends cSetupMask
 
         @include($cfg['path']['contenido_config'] . 'config.php');
 
-        foreach ($aClients as $iIdClient => $aInfo) {
-            if ($_SESSION["frontendpath"][$iIdClient] == "") {
-                $iDifferencePos = findSimilarText($cfg['path']['frontend']."/", $aInfo["frontendpath"]);
+        setupInitializeCfgClient();
 
+        foreach ($aClients as $idclient => $aInfo) {
+            $name = $aInfo['name'];
+
+            if (isset($cfgClient[$idclient])) {
+                $htmlPath = $cfgClient[$idclient]["path"]["htmlpath"];
+                $frontendPath = $cfgClient[$idclient]["path"]["frontend"];
+            } else {
+                $htmlPath = '';
+                $frontendPath = '';
+            }
+
+            if ($_SESSION["frontendpath"][$idclient] == "") {
+                $iDifferencePos = findSimilarText($cfg['path']['frontend'] . "/", $frontendPath);
                 if ($iDifferencePos > 0) {
-                    $sClientPath = $a_root_path ."/". substr($aInfo["frontendpath"], $iDifferencePos + 1, strlen($aInfo["frontendpath"]) - $iDifferencePos);
-                    $_SESSION["frontendpath"][$iIdClient] = $sClientPath;
+                    $sClientPath = $a_root_path . "/" . substr($frontendPath, $iDifferencePos + 1, strlen($frontendPath) - $iDifferencePos);
+                    $_SESSION["frontendpath"][$idclient] = $sClientPath;
                 } else {
-                    $_SESSION["frontendpath"][$iIdClient] = $aInfo["frontendpath"];
+                    $_SESSION["frontendpath"][$idclient] = $frontendPath;
                 }
             }
 
-            if ($_SESSION["htmlpath"][$iIdClient] == "") {
+            if ($_SESSION["htmlpath"][$idclient] == "") {
                 // Use frontendpath instead of htmlpath as the directories should be aligned pairwhise
-                $iDifferencePos = findSimilarText($cfg['path']['frontend']."/", $aInfo["frontendpath"]);
-
+                $iDifferencePos = findSimilarText($cfg['path']['frontend'] . "/", $frontendPath);
                 if ($iDifferencePos > 0) {
-                    $sClientPath = $a_root_http_path . "/".substr($aInfo["frontendpath"], $iDifferencePos + 1, strlen($aInfo["frontendpath"]) - $iDifferencePos);
-                    $_SESSION["htmlpath"][$iIdClient] = $sClientPath;
+                    $sClientPath = $a_root_http_path . "/" . substr($frontendPath, $iDifferencePos + 1, strlen($frontendPath) - $iDifferencePos);
+                    $_SESSION["htmlpath"][$idclient] = $sClientPath;
                 } else {
-                    $_SESSION["htmlpath"][$iIdClient] = $aInfo["htmlpath"];
+                    $_SESSION["htmlpath"][$idclient] = $htmlPath;
                 }
             }
 
-            $sName = sprintf(i18n("Old server path for %s (%s)"), $aInfo["name"], $iIdClient);
-            $sName .= ":<br>" . $aInfo["frontendpath"]."<br><br>";
-            $sName .= sprintf(i18n("New server path for %s (%s)"), $aInfo["name"], $iIdClient);
+            $sName = sprintf(i18n("Old server path for %s (%s)"), $name, $idclient);
+            $sName .= ":<br>" . $frontendPath . "<br><br>";
+            $sName .= sprintf(i18n("New server path for %s (%s)"), $name, $idclient);
             $sName .= ":<br>";
-            $oSystemPathBox = new cHTMLTextbox("frontendpath[$iIdClient]", $_SESSION["frontendpath"][$iIdClient]);
+            $oSystemPathBox = new cHTMLTextbox("frontendpath[$idclient]", $_SESSION["frontendpath"][$idclient]);
             $oSystemPathBox->setWidth(100);
             $oSystemPathBox->setClass("small");
             $oClientSystemPath = new cHTMLInfoMessage(array($sName, $oSystemPathBox), "&nbsp;");
@@ -88,11 +97,11 @@ class cSetupClientAdjust extends cSetupMask
 
             $aPathList[] = $oClientSystemPath;
 
-            $sName = sprintf(i18n("Old web path for %s (%s)"), $aInfo["name"], $iIdClient);
-            $sName .= ":<br>" . $aInfo["htmlpath"]."<br><br>";
-            $sName .= sprintf(i18n("New web path for %s (%s)"), $aInfo["name"], $iIdClient);
+            $sName = sprintf(i18n("Old web path for %s (%s)"), $name, $idclient);
+            $sName .= ":<br>" . $htmlPath . "<br><br>";
+            $sName .= sprintf(i18n("New web path for %s (%s)"), $name, $idclient);
             $sName .= ":<br>";
-            $oSystemPathBox = new cHTMLTextbox("htmlpath[$iIdClient]", $_SESSION["htmlpath"][$iIdClient]);
+            $oSystemPathBox = new cHTMLTextbox("htmlpath[$idclient]", $_SESSION["htmlpath"][$idclient]);
             $oSystemPathBox->setWidth(100);
             $oSystemPathBox->setClass("small");
             $oClientSystemPath = new cHTMLInfoMessage(array($sName, $oSystemPathBox), "&nbsp;");
@@ -107,6 +116,7 @@ class cSetupClientAdjust extends cSetupMask
 
         $this->setNavigation($previous, $next);
     }
+
 }
 
 ?>
