@@ -712,7 +712,6 @@ class cSetupSystemtest extends cSetupMask
 								
 		if ($_SESSION["setuptype"] == "setup" || ($_SESSION["setuptype"] == "migration" && is_dir("../cms/")))
 		{
-echo '<pre>setup migration logFilePrediction</pre>';
 			$this->logFilePrediction(   "cms/cache/",
 										C_SEVERITY_WARNING);
 			$this->logFilePrediction(   "cms/css/",
