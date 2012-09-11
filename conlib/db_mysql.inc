@@ -466,7 +466,7 @@ class DB_Sql {
 
   function server_info()
   {
-     $arr['description'] = mysql_get_server_info();
+     $arr['description'] = mysql_get_server_info($this->Link_ID);
      return $arr;
   }
 
