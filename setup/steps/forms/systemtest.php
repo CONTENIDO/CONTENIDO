@@ -417,7 +417,7 @@ class cSetupSystemtest extends cSetupMask {
         return false;
     }
 
-    function doFilesystemTests() {
+    function doFileSystemTests() {
         global $cfg;
 
         $this->logFilePrediction($cfg['path']['contenido_logs'] . "errorlog.txt", self::C_SEVERITY_WARNING, self::C_FILETYPE_FILE);
