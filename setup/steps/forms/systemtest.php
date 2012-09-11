@@ -333,6 +333,11 @@ class cSetupSystemtest extends cSetupMask
 						i18n("PHP XML Extension is not loaded"),
 						i18n("The PHP XML Extension is not loaded. Contenido uses XML-functions like xml_parser_create and won't work without the XML Extension.")); 
 		
+		$this->runTest( isPHPExtensionLoaded("xmlwriter"),
+						C_SEVERITY_ERROR,
+						i18n("PHP XMLWriter Extension is not loaded"),
+						i18n("The PHP XMLWriter Extension is not loaded. Contenido uses XMLWriter and won't work without the XMLWriter Extension.")); 
+		
 		$this->runTest( function_exists("xml_parser_create"),
 						C_SEVERITY_ERROR,
 						i18n("PHP XML Extension is not loaded"),
