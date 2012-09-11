@@ -526,8 +526,8 @@ msgid "PHP memory_limit directive too small"
 msgstr "PHP memory_limit Directive zu klein"
 
 #: setup/steps/forms/systemtest.php:229
-msgid "The memory_limit directive is set to 4 MB or lower. This might be not enough for Contenido to operate correctly. We recommend to disable this setting completely, as this can cause problems with large Contenido projects."
-msgstr "Die memory_limit Directive ist auf 4 MB oder weniger gesetzt. Dies kann für Contenido nicht ausreichen sein. Wir empfehlen diese Einstellung komplett zu deaktivieren, um Probleme bei grösseren Contenido Projekten zu vermeiden."
+msgid "The memory_limit directive is set to 32 MB or lower. This might be not enough for Contenido to operate correctly. We recommend to disable this setting completely, as this can cause problems with large Contenido projects."
+msgstr "Die memory_limit Directive ist auf 32 MB oder weniger gesetzt. Dies kann für Contenido nicht ausreichen sein. Wir empfehlen diese Einstellung komplett zu deaktivieren, um Probleme bei grösseren Contenido Projekten zu vermeiden."
 
 #: setup/steps/forms/systemtest.php:234
 msgid "PHP sql.safe_mode turned on"
