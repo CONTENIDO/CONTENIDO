@@ -172,7 +172,7 @@ function checkMySQLTableCreation ($db, $database, $table)
 		return false;
 	}
 	
-	$db->query("CREATE TABLE $table (test INT( 1 ) NOT NULL) TYPE = MYISAM ;");
+	$db->query("CREATE TABLE `$table` (test INT(1) NOT NULL) ENGINE = MYISAM;");
 	
 	if ($db->Errno == 0)
 	{
