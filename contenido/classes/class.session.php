@@ -232,7 +232,7 @@ class cSession {
      * Rebuilds every registered variable from the session.
      */
     public function thaw() {
-        if ($_SESSION[$this->_prefix . 'csession'] != "") {
+        if (isset($_SESSION[$this->_prefix . 'csession']) && $_SESSION[$this->_prefix . 'csession'] != '') {
             eval(sprintf(';%s', $_SESSION[$this->_prefix . 'csession']));
         }
     }

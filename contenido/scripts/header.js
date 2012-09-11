@@ -14,14 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @requires   jQuery JavaScript Framework
- *
- * {@internal
- *   created  2004-03-22
- *   modified 2009-12-17  Murat Purc, Redesign of header menu handling, takeover menu code from template, added CONTENIDORegistry, HeaderMenu, HeaderClickMenu, HeaderDelayMenu and Firebug Emulation
- *
- *   $Id$:
- * }}
- *
  */
 
 var active_main;
@@ -29,8 +21,7 @@ var active_sub;
 var active_link;
 var active_sub_link;
 
-function show(id, slink)
-{
+function show(id, slink) {
     $("#sub_0").css("display", "none");
 
     if (active_main) {
@@ -53,8 +44,7 @@ function show(id, slink)
     active_main = id;
 }
 
-function hide(id)
-{
+function hide(id) {
     $("#"+id).css("display", "none");
     active_main = 0;
 }
@@ -62,8 +52,6 @@ function hide(id)
 
 /**
  * Switches the backend language, by reloading top frame with new langugage.
- *
- * Uses global variable "sid"!
  *
  * @param    {Integer}  idlang
  */
@@ -98,6 +86,44 @@ function changeContenidoLanguage(idlang) {
 }
 
 /**
+ * Switches the backend client, by reloading top frame with new client.
+ *
+ * @param    {Integer}  idclient
+ */
+function changeContenidoClient(idclient) {
+	parent.window.document.location.href = replaceQueryString(parent.window.document.location.href, 'changeclient', idclient);
+	return;
+	// TODO when the startup process has been reworked, it should be possible to reload the frames individually, so that the current page stays the same
+    if (top.content.left) {
+        if (top.content.left.left_top) {
+            top.content.left.left_top.location.href = replaceQueryString(top.content.left.left_top.location.href, 'changeclient', idclient);
+        }
+
+        if (top.content.left.left_bottom) {
+            top.content.left.left_bottom.location.href = replaceQueryString(top.content.left.left_bottom.location.href, 'changeclient', idclient);
+        }
+    }
+
+    if (top.content.right) {
+        if (top.content.right.right_top) {
+        	// remove the action parameter, so that actions are not executed in the other language
+        	var href = replaceQueryString(top.content.right.right_top.location.href, 'action', '');
+        	href = replaceQueryString(href, 'changeclient', idclient);
+        	top.content.right.right_top.location.href = href;
+        }
+
+        if (top.content.right.right_bottom) {
+        	// remove the action parameter, so that actions are not executed in the other language
+        	var href = replaceQueryString(top.content.right.right_bottom.location.href, 'action', '');
+        	href = replaceQueryString(href, 'changeclient', idclient);
+            top.content.right.right_bottom.location.href = href;
+        }
+    }
+
+    top.header.location.href = replaceQueryString(top.header.location.href, 'changeclient', idclient);
+}
+
+/**
  * Replaces or adds a variable in a URL.
  *
  * @param    {String}    url
@@ -115,11 +141,18 @@ function replaceQueryString(url, param, value) {
     }
 }
 
+$(function() {
+	$('#changeclient').click(function() {
+		$('#chosenclient').hide();
+		$('#cClientSelect').show();
+		$(this).hide();
+	});
+});
+
 /**
  * Resets the header menu.
  */
-function resetHeaderMenu()
-{
+function resetHeaderMenu() {
     var menu = ContenidoRegistry.get("headerMenu");
     menu.reset();
 

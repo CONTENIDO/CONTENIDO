@@ -80,7 +80,8 @@ $userid = $auth->auth['uid'];
 $page->set('s', 'WELCOME', '<b>' . i18n('Welcome') . ' </b>' . ($vuser->getRealname($userid, true) ? $vuser->getRealname($userid, true) : $vuser->getUserName($userid, true)) . '.');
 $page->set('s', 'LASTLOGIN', i18n('Last login') . ': ' . $lastlogin);
 
-$clients = $classclient->getAccessibleClients();
+$clientCollection = new cApiClientCollection();
+$clients = $clientCollection->getAccessibleClients();
 
 $cApiClient = new cApiClient();
 

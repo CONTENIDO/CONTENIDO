@@ -288,7 +288,7 @@ class cGuiNavigation {
         }
 
         $oUser = new cApiUser($auth->auth["uid"]);
-        $classclient = new cApiClientCollection();
+        $clientCollection = new cApiClientCollection();
 
         if (getEffectiveSetting('system', 'clickmenu') == 'true') {
             // set click menu
@@ -304,9 +304,8 @@ class cGuiNavigation {
 
         $main->set('s', 'ACTION', $sess->url('index.php'));
         $main->set('s', 'LANG', $this->_renderLanguageSelect());
-        $main->set('s', 'WIDTH', $itemWidth); ####
 
-        $sClientName = $classclient->getClientName($client);
+        $sClientName = $clientCollection->getClientName($client);
         if (strlen($sClientName) > 25) {
             $sClientName = cApiStrTrimHard($sClientName, 25);
         }
@@ -318,20 +317,21 @@ class cGuiNavigation {
         } else {
             $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
 
-            $sClientName = $classclient->getClientName($client) . ' (' . $client . ')';
+            $sClientName = '<span id="chosenclient">' . $clientCollection->getClientName($client) . ' (' . $client . ')</span>';
             $sClientUrl = cRegistry::getFrontendUrl();
-
             $frontendPath = cRegistry::getFrontendPath();
 
             if ($clientImage !== false && $clientImage != "" && cFileHandler::exists( $frontendPath . $clientImage)) {
                 $sClientImageTemplate = '<img src="%s" alt="%s" title="%s" />';
 
-                $sThumbnailPath = cApiImgScale( $frontendPath . $clientImage, 80, 25, 0, 1);
+                $sThumbnailPath = cApiImgScale($frontendPath . $clientImage, 80, 25, 0, 1);
                 $sClientImageTag = sprintf($sClientImageTemplate, $sThumbnailPath, $sClientName, $sClientName);
 
                 $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientImageTag));
             } else {
-                $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientName));
+                $html = sprintf($sClientNameTemplate, $sClientUrl, $sClientName);
+                $html .= $this->_renderClientSelect();
+                $main->set('s', 'CHOSENCLIENT', $html);
             }
         }
 
@@ -372,22 +372,15 @@ class cGuiNavigation {
             $availableLanguages->select('', '', 'idlang ASC');
         }
 
-        $db = cRegistry::getDb();
-
         if ($availableLanguages->count() > 0) {
-            while ($myLang = $availableLanguages->nextAccessible()) {
+            while (($myLang = $availableLanguages->nextAccessible()) !== false) {
                 $key = $myLang->get('idlang');
                 $value = $myLang->get('name');
 
-                // I want to get rid of such silly constructs very soon :)
-
-                $sql = "SELECT idclient FROM " . $cfg['tab']['clients_lang'] . " WHERE
-                        idlang = '" . cSecurity::toInteger($key) . "'";
-
-                $db->query($sql);
-
-                if ($db->next_record()) {
-                    if ($db->f('idclient') == $client) {
+                $clientsLang = new cApiClientLanguage();
+                $clientsLang->loadBy('idlang', cSecurity::toInteger($key));
+                if ($clientsLang->isLoaded()) {
+                    if ($clientsLang->get('idclient') == $client) {
                         if ($key == $lang) {
                             $tpl->set('d', 'SELECTED', 'selected');
                         } else {
@@ -411,6 +404,50 @@ class cGuiNavigation {
         }
 
         return $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
+    }
+
+    /**
+     * Renders a select box where the client can be selected as well as an edit button.
+     *
+     * @return string rendered HTML
+     */
+    protected function _renderClientSelect() {
+        $cfg = cRegistry::getConfig();
+        $client = cRegistry::getClientId();
+        $tpl = new cTemplate();
+
+        $tpl->set('s', 'NAME', 'changeclient');
+        $tpl->set('s', 'CLASS', 'text_medium nodisplay');
+        $tpl->set('s', 'ID', 'cClientSelect');
+        $tpl->set('s', 'OPTIONS', 'onchange="changeContenidoClient(this.value)"');
+
+        // get all accessible clients
+        $clientCollection = new cApiClientCollection();
+        $clients = $clientCollection->getAccessibleClients();
+        // add all accessible clients to the select
+        foreach ($clients as $idclient => $clientInfo) {
+            $name = $clientInfo['name'];
+            if ($idclient == $client) {
+                $tpl->set('d', 'SELECTED', 'selected');
+            } else {
+                $tpl->set('d', 'SELECTED', '');
+            }
+
+            if (strlen($name) > 20) {
+                $name = cApiStrTrimHard($name, 20);
+            }
+
+            $tpl->set('d', 'VALUE', $idclient);
+            $tpl->set('d', 'CAPTION', $name . ' (' . $idclient . ')');
+            $tpl->next();
+        }
+
+        $html = $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
+        $editButton = new cHTMLImage(cRegistry::getBackendUrl() . $cfg['path']['images'] . 'but_edithead.gif');
+        $editButton->setID('changeclient');
+        $editButton->appendStyleDefinition('cursor', 'pointer');
+
+        return $html . $editButton->render();
     }
 
 }
