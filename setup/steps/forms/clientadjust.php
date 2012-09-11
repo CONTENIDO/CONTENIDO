@@ -59,7 +59,7 @@ class cSetupClientAdjust extends cSetupMask
 		
 		foreach ($aClients as $iIdClient => $aInfo)
 		{
-			if ($_SESSION["frontendpath"][$iIdClient] == "")
+			if (!isset($_SESSION["frontendpath"][$iIdClient]) || $_SESSION["frontendpath"][$iIdClient] == "")
 			{
 				$iDifferencePos = findSimilarText($cfg['path']['frontend']."/", $aInfo["frontendpath"]);
 				
@@ -73,7 +73,7 @@ class cSetupClientAdjust extends cSetupMask
 				}
 			}
 			
-			if ($_SESSION["htmlpath"][$iIdClient] == "")
+			if (!isset($_SESSION["htmlpath"][$iIdClient]) || $_SESSION["htmlpath"][$iIdClient] == "")
 			{
 				/* Use frontendpath instead of htmlpath as the directories should be aligned pairwhise */
 				$iDifferencePos = findSimilarText($cfg['path']['frontend']."/", $aInfo["frontendpath"]);
