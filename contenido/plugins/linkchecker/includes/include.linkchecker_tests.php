@@ -55,6 +55,7 @@ function checkLinks() {
         }
 
         // Check articles
+        $aFind = array();
         $sql = "SELECT idart, online FROM " . $cfg['tab']['art_lang'] . " WHERE idart IN (" . $sSearch . ")";
         $db->query($sql);
 
@@ -86,9 +87,8 @@ function checkLinks() {
 
         }
 
-        $aFind = array();
-
         // Check categorys
+        $aFind = array();
         $sql = "SELECT idcat, startidartlang, visible FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat IN (" . $sSearch . ") AND idlang = '" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
 
@@ -133,9 +133,8 @@ function checkLinks() {
 
         }
 
-        $aFind = array();
-
         // Check articles
+        $aFind = array();
         $sql = "SELECT idcatart FROM " . $cfg['tab']['cat_art'] . " WHERE idcatart IN (" . $sSearch . ")";
         $db->query($sql);
 
