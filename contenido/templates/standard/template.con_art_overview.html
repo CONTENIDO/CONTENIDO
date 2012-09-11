@@ -291,7 +291,7 @@
     // show mark function or hide
     $('input.mark_articles').click(function() {
         $('div.bulk_editing_functions').hide();
-        if ($(this).prop('checked') == 'checked') {
+        if ($(this).prop('checked')) {
             $('div.bulk_editing_functions').show();
         } else if($('input.mark_articles:checked').length > 0) {
             $('div.bulk_editing_functions').show();
@@ -302,7 +302,7 @@
     $('a.flip_mark').click(function() {
         $('div.bulk_editing_functions').hide();
         $('input.mark_articles').each(function(index, value) {
-            if ($(this).prop('checked') == 'checked') {
+            if ($(this).prop('checked')) {
                 $(this).removeProp('checked');
             } else {
                 $('div.bulk_editing_functions').show();
