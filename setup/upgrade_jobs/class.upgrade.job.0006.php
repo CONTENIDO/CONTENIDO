@@ -52,12 +52,7 @@ class cUpgradeJob_0007 extends cUpgradeJobAbstract {
         if ($this->_setupType == 'upgrade') {
 
             // Load client configuration
-            if (!isset($cfgClient) || !isset($cfgClient['set'])) {
-                if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
-                    require_once($cfg['path']['contenido_config'] . 'config.clients.php');
-                }
-                rereadClients();
-            }
+            setupInitializeCfgClient();
 
             $allClients = $this->_getAllClients();
 

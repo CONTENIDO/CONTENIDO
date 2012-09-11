@@ -182,11 +182,7 @@ if ($currentStep < $totalSteps) {
 
     // For import mod_history rows to versioning
     if ($_SESSION['setuptype'] == 'migration' || $_SESSION['setuptype'] == 'upgrade') {
-        $cfgClient = array();
-        if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
-            require_once($cfg['path']['contenido_config'] . 'config.clients.php');
-        }
-        rereadClients();
+        setupInitializeCfgClient(true);
     }
 
     require_once(CON_SETUP_PATH . '/upgrade_jobs/class.upgrade.job.abstract.php');
