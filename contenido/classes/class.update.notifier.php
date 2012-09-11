@@ -508,45 +508,50 @@ class Contenido_UpdateNotifier {
 	protected function getVendorHostFiles() {
 		$aXMLContent = array();
 
-		$oSocket = @fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout); 
-		if ( !is_resource($oSocket) ) { 
+		$hSocket = @fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout);
+		if (!is_resource($hSocket)) {
    			$sErrorMessage = i18n('Unable to check for new updates!')." ".i18n('Connection to contenido.org failed!');
 			$this->sErrorOutput = $this->renderOutput($sErrorMessage);
 		} else { 
 			// get update file
-   			fputs($oSocket, "GET /".$this->sVendorHostPath.$this->sVendorXMLFile." HTTP/1.0\r\n\r\n"); 
-   			while(!feof($oSocket)) { 
-       			$sXMLUpdate .= fgets($oSocket, 128); 
+            $sXMLUpdate = '';
+   			fputs($hSocket, "GET /".$this->sVendorHostPath.$this->sVendorXMLFile." HTTP/1.0\r\n\r\n"); 
+   			while (!feof($hSocket)) { 
+       			$sXMLUpdate .= fgets($hSocket, 128); 
    			} 
 			$sSeparator = strpos($sXMLUpdate, "\r\n\r\n");
 			$sXMLUpdate = substr($sXMLUpdate, $sSeparator + 4);
-			fclose($oSocket); 
+			fclose($hSocket); 
 			
 			// get german rss file
-			$oSocket = @fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout); 
-			fputs($oSocket, "GET /".$this->sVendorHostPath.$this->sVendorRssDeFile." HTTP/1.0\r\n\r\n"); 
-   			while(!feof($oSocket)) { 
-       			$sDeRSSContent .= fgets($oSocket, 128); 
-   			} 
-			$sSeparator 	= strpos($sDeRSSContent, "\r\n\r\n");
-			$sDeRSSContent 	= substr($sDeRSSContent, $sSeparator + 4);
+            $sDeRSSContent = '';
+			$hSocket = @fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout);
+            if (is_resource($hSocket)) {
+                fputs($hSocket, "GET /".$this->sVendorHostPath.$this->sVendorRssDeFile." HTTP/1.0\r\n\r\n");
+                while (!feof($hSocket)) {
+                    $sDeRSSContent .= fgets($hSocket, 128);
+                }
+                $sSeparator = strpos($sDeRSSContent, "\r\n\r\n");
+                $sDeRSSContent = substr($sDeRSSContent, $sSeparator + 4);
+                fclose($hSocket);
+            }
 
-			fclose($oSocket); 
+            // get english rss file
+            $sEnRSSContent = '';
+            $hSocket = @fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout);
+            if (is_resource($hSocket)) {
+                fputs($hSocket, "GET /".$this->sVendorHostPath.$this->sVendorRssEnFile." HTTP/1.0\r\n\r\n");
+                while (!feof($hSocket)) {
+                    $sEnRSSContent .= fgets($hSocket, 128);
+                }
+                $sSeparator = strpos($sEnRSSContent, "\r\n\r\n");
+                $sEnRSSContent = substr($sEnRSSContent, $sSeparator + 4);
+                fclose($hSocket);
+            }
 
-			// get english rss file
-			$oSocket = @fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout); 
-			fputs($oSocket, "GET /".$this->sVendorHostPath.$this->sVendorRssEnFile." HTTP/1.0\r\n\r\n"); 
-   			while(!feof($oSocket)) { 
-       			$sEnRSSContent .= fgets($oSocket, 128); 
-   			} 
-			$sSeparator 	= strpos($sEnRSSContent, "\r\n\r\n");
-			$sEnRSSContent 	= substr($sEnRSSContent, $sSeparator + 4);
-
-			fclose($oSocket); 
-
-			$aXMLContent[$this->sVendorXMLFile] 	= $sXMLUpdate;
-			$aXMLContent[$this->sVendorRssDeFile] 	= $sDeRSSContent;
-			$aXMLContent[$this->sVendorRssEnFile] 	= $sEnRSSContent;
+			$aXMLContent[$this->sVendorXMLFile] = $sXMLUpdate;
+			$aXMLContent[$this->sVendorRssDeFile] = $sDeRSSContent;
+			$aXMLContent[$this->sVendorRssEnFile] = $sEnRSSContent;
 		}
 
 		return $aXMLContent;
