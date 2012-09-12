@@ -1043,14 +1043,15 @@ abstract class ItemCollection extends cItemBaseAbstract {
         if (!is_object($this->_iteratorItem)) {
             $this->_iteratorItem = new $this->_itemClass();
         }
+        $obj = clone $this->_iteratorItem;
 
         if (is_array($mItem)) {
-            $this->_iteratorItem->loadByRecordSet($mItem);
+            $obj->loadByRecordSet($mItem);
         } else {
-            $this->_iteratorItem->loadByPrimaryKey($mItem);
+            $obj->loadByPrimaryKey($mItem);
         }
 
-        return $this->_iteratorItem;
+        return $obj;
     }
 
     /**
