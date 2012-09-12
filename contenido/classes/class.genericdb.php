@@ -1178,14 +1178,14 @@ class ItemCollection
 			die("loadItem MUST be overridden by the extension class (in class ".get_class($this).")");
 		}
 
-		if (!is_object($this->_iteratorItem))
+                if (!is_object($this->_iteratorItem))
 		{
 			$this->_iteratorItem = new $this->_itemClass();
 		}
 
-		$this->_iteratorItem->loadByPrimaryKey($vitem);
-
-		return ($this->_iteratorItem);
+                $obj = clone $this->_iteratorItem;
+		$obj->loadByPrimaryKey($vitem);
+		return $obj;
 	}
 
 	/**
