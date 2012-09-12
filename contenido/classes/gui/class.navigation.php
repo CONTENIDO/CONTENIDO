@@ -414,16 +414,19 @@ class cGuiNavigation {
     protected function _renderClientSelect() {
         $cfg = cRegistry::getConfig();
         $client = cRegistry::getClientId();
-        $tpl = new cTemplate();
+        // get all accessible clients
+        $clientCollection = new cApiClientCollection();
+        $clients = $clientCollection->getAccessibleClients();
+        if (count($clients) === 1) {
+            return '';
+        }
 
+        $tpl = new cTemplate();
         $tpl->set('s', 'NAME', 'changeclient');
         $tpl->set('s', 'CLASS', 'text_medium nodisplay');
         $tpl->set('s', 'ID', 'cClientSelect');
         $tpl->set('s', 'OPTIONS', 'onchange="changeContenidoClient(this.value)"');
 
-        // get all accessible clients
-        $clientCollection = new cApiClientCollection();
-        $clients = $clientCollection->getAccessibleClients();
         // add all accessible clients to the select
         foreach ($clients as $idclient => $clientInfo) {
             $name = $clientInfo['name'];
