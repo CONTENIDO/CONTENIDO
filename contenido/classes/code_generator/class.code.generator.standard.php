@@ -358,9 +358,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $aAvailableTags = conGetAvailableMetaTagTypes();
         foreach ($aAvailableTags as $key => $value) {
             $sMetaValue = conGetMetaValue($this->_idartlang, $key);
-            if (strlen($sMetaValue) > 0) {
-                //$aMetaTags[$value['name']] = array(array('attribute' => $value['fieldname'], 'value' => $sMetaValue), ...);
-                $aMetaTags[] = array($value['fieldname'] => $value['name'], 'content' => $sMetaValue);
+            if (0 < strlen($sMetaValue)) {
+                $aMetaTags[] = array($value['fieldname'] => $value['metatype'], 'content' => $sMetaValue);
             }
         }
 
