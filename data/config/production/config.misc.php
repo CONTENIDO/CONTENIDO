@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  2004-02-24
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -254,15 +249,15 @@ $cfg['password']['min_length'] = 6;
 // (int) If set to a value greater than 0 so many lower and upper case character
 //       must appear in the password.
 //       (e.g.: if set to 2, 2 upper and 2 lower case characters must appear)
-$cfg['password']['mixed_case_mandatory'] = 3;
+$cfg['password']['mixed_case_mandatory'] = 0;
 
 // (int) If 'symbols_mandatory' set to a value greater than 0, at least so many
 //       symbols has to appear in given password.
-$cfg['password']['symbols_mandatory'] = 3;
+$cfg['password']['symbols_mandatory'] = 0;
 
 // (int) If set to a value greater than 0, at least $cfg['password']['numbers_mandatory']
 //       numbers must be in password
-$cfg['password']['numbers_mandatory'] = 3;
+$cfg['password']['numbers_mandatory'] = 2;
 
 
 /* Content Type Settings
@@ -349,5 +344,3 @@ $cfg['images']['image_magick']['path'] = '';
 
 // (string) Name of code generator to use (e. g. 'Standard' to use class cCodeGeneratorStandard)
 $cfg['code_generator']['name'] = 'Standard';
-
-?>
