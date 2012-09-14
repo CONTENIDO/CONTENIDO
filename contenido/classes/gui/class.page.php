@@ -499,9 +499,9 @@ class cGuiPage {
         $strscript = $this->_subnav . "\n" . $this->_markscript . "\n";
         foreach ($this->_scripts as $script) {
             if (strpos($script, "http") === 0 || strpos($script, "//") === 0) {
-                $strscript .= "<script type='text/javascript' src='" . $script . "'></script>\n";
+                $strscript .= '<script type="text/javascript" src="' . $script . '"></script>' . "\n";
             } else if (strpos($script, "<script") === false) {
-                $strscript .= "<script type='text/javascript' src='scripts/" . $script . "'></script>\n";
+                $strscript .= '<script type="text/javascript" src="scripts/' . $script . '"></script>' . "\n";
             } else {
                 cDeprecated("You shouldn't use inline JS for the backend pages.");
                 $strscript .= $script;
@@ -512,9 +512,9 @@ class cGuiPage {
         $strstyle = "";
         foreach ($this->_styles as $style) {
             if (strpos($script, "http") === 0 || strpos($script, "//") === 0) {
-                $strstyle .= "<link href='" . $style . "' type='text/css' rel='stylesheet'>\n";
+                $strstyle .= '<link href="' . $style . '" type="text/css" rel="stylesheet">' . "\n";
             } else {
-                $strstyle .= "<link href='styles/" . $style . "' type='text/css' rel='stylesheet'>\n";
+                $strstyle .= '<link href="styles/' . $style . '" type="text/css" rel="stylesheet">' . "\n";
             }
         }
         $this->_pagetemplate->set("s", "STYLES", $strstyle);
