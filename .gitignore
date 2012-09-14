@@ -14,5 +14,6 @@ data/config/production/config.php
 data/cronlog/*.job
 data/logs/deprecatedlog.txt
 data/logs/errorlog.txt
+data/logs/exception.txt
 data/logs/security.txt
 /nbproject
