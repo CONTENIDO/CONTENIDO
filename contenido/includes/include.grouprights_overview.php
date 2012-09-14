@@ -93,7 +93,6 @@ $tpl->reset();
 $tpl->set('s', 'NOTIFICATION', $sNotification);
 
 $form = '<form name="group_properties" method="post" action="' . $sess->url("main.php?") . '">
-             ' . $sess->hidden_session(true) . '
              <input type="hidden" name="area" value="' . $area . '">
              <input type="hidden" name="action" value="group_edit">
              <input type="hidden" name="frame" value="' . $frame . '">

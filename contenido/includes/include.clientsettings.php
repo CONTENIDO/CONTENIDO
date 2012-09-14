@@ -6,10 +6,6 @@
  * Description:
  * CONTENIDO Client Settings
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.0
  * @author     unknown
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -184,7 +175,7 @@ if (($_GET['action'] == "clientsettings_edit_item")) {
     $oForm2->setVar("idclient", $idclient);
     $oForm2->setVar("idclientslang", $_REQUEST["idclientslang"]);
 
-    $oForm2->add($oList->render());
+    $oForm2->appendContent($oList->render());
     $oPage->setContent(array($oFrmRange, $spacer, $oForm2, $spacer, $oForm));
 } else {
     $oPage->setContent(array($oFrmRange, $spacer, $oList, $spacer, $oForm));

@@ -6,10 +6,6 @@
  * Description:
  * Left top
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
  * @author     Olaf Niemann
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-04-01
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -60,7 +51,7 @@ if ($appendparameters != 'filebrowser' && (int) $client > 0) {
     $sSearch = $search->render();
 
     $form = new cHTMLForm('search');
-    $form->add('<table border="0" cellspacing="0" cellpadding="0"><tr><td>' . $sSearch . '</td><td><input style="margin-left: 5px;" type="image" src="images/submit.gif"></td></tr></table>');
+    $form->appendContent('<table border="0" cellspacing="0" cellpadding="0"><tr><td>' . $sSearch . '</td><td><input style="margin-left: 5px;" type="image" src="images/submit.gif"></td></tr></table>');
     $form->setVar('area', $area);
     $form->setVar('frame', $frame);
     $form->setVar('contenido', $sess->id);
@@ -137,5 +128,3 @@ $tpl->set('d', 'COLLAPSE', '');
 $tpl->next();
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['upl_left_top']);
-
-?>

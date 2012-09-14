@@ -6,10 +6,6 @@
  * Description:
  * Runs the upgrade job to takeover some properties from upload to upload_meta
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Setup upgrade
  * @version    0.1
  * @author     Murat Purc <murat@purc>
@@ -49,7 +45,7 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
     //update description from con_upl to con_upl_meta
     protected function _updateUpl2Meta() {
         global $cfg, $client;
-        
+
         // @fixme  Update works only for default client...
         $client = 1;
 

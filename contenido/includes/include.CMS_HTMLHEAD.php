@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  2002-03-02
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -86,7 +81,6 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
     $backendUrl = cRegistry::getBackendUrl();
 
     echo "      <form method=\"post\" action=\"". $backendUrl . $cfg["path"]["includes"]."include.backendedit.php\">\n";
-    echo "        ".$sess->hidden_session();
     echo "        <input type=hidden name=lang value=\"$lang\">\n";
 //    echo "        <input type=hidden name=submit value=\"editcontent\">\n";
     echo "        <input type=hidden name=typenr value=\"$typenr\">\n";

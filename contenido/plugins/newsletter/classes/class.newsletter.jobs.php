@@ -12,17 +12,12 @@
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.1
- * @author     Björn Behrens
+ * @author     Bjï¿½rn Behrens
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  2004-08-01
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -174,7 +169,7 @@ class NewsletterJobCollection extends ItemCollection
                     $oGroups->query();
                     #$oGroups->select("idnewsgroup IN ('" . implode("','", unserialize($oNewsletter->get("send_ids"))) . "')", "", "groupname");
 
-                    while ($oGroup = $oGroups->next()) {
+                    while (($oGroup = $oGroups->next()) !== false) {
                         $aSendInfo[] = $oGroup->get("groupname");
                     }
 
@@ -282,7 +277,7 @@ class NewsletterJob extends Item
                 $oLogs->setWhere("status", "sending");
                 $oLogs->query();
 
-                while ($oLog = $oLogs->next()) {
+                while (($oLog = $oLogs->next()) !== false) {
                     $oLog->set("status", "error (sending)");
                     $oLog->store();
                 }
@@ -371,7 +366,7 @@ class NewsletterJob extends Item
             }
 
             $oLogs->query();
-            while ($oLog = $oLogs->next()) {
+            while (($oLog = $oLogs->next()) !== false) {
                 $iCount++;
                 $oLog->set("status", "sending");
                 $oLog->store();
@@ -417,25 +412,24 @@ class NewsletterJob extends Item
                         unset($recipient);
                     }
 
-                    $oMail = new PHPMailer();
-                    $oMail->CharSet   = $sEncoding;
-                    $oMail->IsHTML($bIsHTML && $bSendHTML);
-                    $oMail->From      = $sFrom;
-                    $oMail->FromName  = $sFromName;
-                    $oMail->AddAddress($sEMail);
-                    $oMail->Mailer    = "mail";
-                    $oMail->Subject   = $sSubject;
-
+                    $mailer = new cMailer();
+                    $mailer->setEncoding($sEncoding);
+                    $from = array($sFromName => $sFrom);
+                    $to = $sEMail;
                     if ($bIsHTML && $bSendHTML) {
-                        $oMail->Body    = $sRcpMsgHTML;
-                        $oMail->AltBody = $sRcpMsgText."\n\n";
+                        $body = $sRcpMsgHTML;
                     } else {
-                        $oMail->Body    = $sRcpMsgText."\n\n";
+                        $body = $sRcpMsgText . "\n\n";
                     }
+                    $contentType = 'text/plain';
+                    if ($bIsHTML && $bSendHTML) {
+                        $contentType = 'text/html';
+                    }
+                    $result = $mailer->sendMail($from, $to, $sSubject, $body, '', '', '', false, $contentType);
 
-                    if ($oMail->Send()) {
+                    if ($result) {
                         $oLog->set("status", "successful");
-                        $oLog->set("sent",     date("Y-m-d H:i:s"), false);
+                        $oLog->set("sent", date("Y-m-d H:i:s"), false);
                     } else {
                         $oLog->set("status", "error (sending)");
                     }
@@ -531,4 +525,3 @@ class cNewsletterJob extends NewsletterJob {
         $this->__construct();
     }
 }
-?>

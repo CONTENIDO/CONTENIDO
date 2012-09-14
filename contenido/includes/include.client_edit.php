@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-04-30
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -33,8 +28,6 @@ $properties = new cApiPropertyCollection();
 $oClient = new cApiClient();
 
 if ($action == 'client_new') {
-    // $nextid = $db->nextid($cfg['tab']['clients']);
-    // $idclient = $nextid;
     $new = true;
 }
 
@@ -173,16 +166,10 @@ $form = '<form name="client_properties" method="post" action="' . $sess->url("ma
              <input type="hidden" name="oldpath" value="' . $serverpath . '">
              <input type="hidden" name="idclient" value="' . $idclient . '">';
 
-$tpl->set('s', 'JAVASCRIPT', $javascript);
 $tpl->set('s', 'FORM', $form);
 $tpl->set('s', 'SUBMITTEXT', i18n("Save changes"));
 $tpl->set('s', 'CANCELTEXT', i18n("Discard changes"));
 $tpl->set('s', 'CANCELLINK', $sess->url("main.php?area=$area&frame=4&idclient=$idclient"));
-
-if ($error) {
-    echo $error;
-}
-
 $tpl->set('s', 'PROPERTY', i18n("Property"));
 $tpl->set('s', 'VALUE', i18n("Value"));
 $tpl->set('d', 'BRDRT', 1);
@@ -289,5 +276,3 @@ $tpl->set('s', 'IDCLIENT', $idclient);
 
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['client_edit']);
-
-?>

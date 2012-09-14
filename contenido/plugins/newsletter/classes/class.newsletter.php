@@ -6,23 +6,14 @@
  * Description:
  * Newsletter recipient class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Classes
  * @version    1.1
- * @author     Björn Behrens
+ * @author     BjÃ¶rn Behrens
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  2004-08-01
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -313,23 +304,23 @@ class Newsletter extends Item
         #\[mail[^\]]((name=(?P<name>[^"]*.*?[^"]*))|(type="(?P<type>.*?)"))\](?P<content>.*?)\[\/mail\]
 
         /* RegExp explanation:
-         * Match the character "[" literally «\[»
-         * Match the characters "mail" literally «mail»
-         * Match "whitespace characters" (spaces, tabs, line breaks, etc.) after "mail" «\s*»
-         * Match the regular expression below and capture its match into backreference number 1 «([^]]+)»
-         * Match any character that is not a "]" «[^]]+»
-         *       Between one and unlimited times, as many times as possible, giving back as needed (greedy) «+»
-         * Match the character "]" literally «\]»
-         * Match the regular expression below and capture its match into backreference number 2 «((?:.|\s)+?)»
-         *    Match the regular expression below «(?:.|\s)+?»
-         *       Between one and unlimited times, as few times as possible, expanding as needed (lazy) «+?»
-         *       Match either the regular expression below (attempting the next alternative only if this one fails) «.»
-         *          Match any single character that is not a line break character «.»
-         *       Or match regular expression number 2 below (the entire group fails if this one fails to match) «\s»
-         *          Match a single character that is a "whitespace character" (spaces, tabs, line breaks, etc.) «\s»
-         * Match the character "[" literally «\[»
-         * Match the characters "/mail" literally «/mail»
-         * Match the character "]" literally «\]»
+         * Match the character "[" literally ï¿½\[ï¿½
+         * Match the characters "mail" literally ï¿½mailï¿½
+         * Match "whitespace characters" (spaces, tabs, line breaks, etc.) after "mail" ï¿½\s*ï¿½
+         * Match the regular expression below and capture its match into backreference number 1 ï¿½([^]]+)ï¿½
+         * Match any character that is not a "]" ï¿½[^]]+ï¿½
+         *       Between one and unlimited times, as many times as possible, giving back as needed (greedy) ï¿½+ï¿½
+         * Match the character "]" literally ï¿½\]ï¿½
+         * Match the regular expression below and capture its match into backreference number 2 ï¿½((?:.|\s)+?)ï¿½
+         *    Match the regular expression below ï¿½(?:.|\s)+?ï¿½
+         *       Between one and unlimited times, as few times as possible, expanding as needed (lazy) ï¿½+?ï¿½
+         *       Match either the regular expression below (attempting the next alternative only if this one fails) ï¿½.ï¿½
+         *          Match any single character that is not a line break character ï¿½.ï¿½
+         *       Or match regular expression number 2 below (the entire group fails if this one fails to match) ï¿½\sï¿½
+         *          Match a single character that is a "whitespace character" (spaces, tabs, line breaks, etc.) ï¿½\sï¿½
+         * Match the character "[" literally ï¿½\[ï¿½
+         * Match the characters "/mail" literally ï¿½/mailï¿½
+         * Match the character "]" literally ï¿½\]ï¿½
          * Ignore case (i), . includes new lines (s)
          **/
 
@@ -716,23 +707,24 @@ class Newsletter extends Item
             $this->_sError = $sName." (".$sEMail."): ".sprintf($sError, $sEMail);
             return false;
         } else {
-            $oMail = new PHPMailer();
-            $oMail->CharSet  = $sEncoding;
-            $oMail->IsHTML($bIsHTML);
-            $oMail->From     = $sFrom;
-            $oMail->FromName = $sFromName;
-            $oMail->AddAddress($sEMail);
-            $oMail->Mailer   = "mail";
-            $oMail->Subject  = $sSubject;
-
             if ($bIsHTML) {
-                $oMail->Body    = $sMessageHTML;
-                $oMail->AltBody = $sMessageText."\n\n";
+                $body = $sMessageHTML;
             } else {
-                $oMail->Body    = $sMessageText."\n\n";
+                $body = $sMessageText."\n\n";
+            }
+            if ($bIsHTML) {
+                $contentType = 'text/html';
+            } else {
+                $contentType = 'text/plain';
             }
 
-            if (!$oMail->Send()) {
+            $mailer = new cMailer();
+            $message = Swift_Message::newInstance($sSubject, $body, $contentType, $sEncoding);
+            $message->setFrom($sFrom, $sFromName);
+            $message->setTo($sEMail);
+            $result = $mailer->send($message);
+
+            if (!$result) {
                 if ($contenido) { // Use i18n only in backend
                     $sError = i18n("Newsletter to %s could not be sent");
                 } else {
@@ -920,23 +912,25 @@ class Newsletter extends Item
                     }
                     $aMessages[] = $sName." (".$sEMail."): ".sprintf($sError, $sEMail);
                 } else {
-                    $oMail = new PHPMailer();
-                    $oMail->CharSet  = $sEncoding;
-                    $oMail->IsHTML($bIsHTML && $bSendHTML);
-                    $oMail->From     = $sFrom;
-                    $oMail->FromName = $sFromName;
-                    $oMail->AddAddress($sEMail);
-                    $oMail->Mailer   = "mail";
-                    $oMail->Subject  = $sSubject;
-
                     if ($bIsHTML && $bSendHTML) {
-                        $oMail->Body    = $sRcpMsgHTML;
-                        $oMail->AltBody = $sRcpMsgText."\n\n";
+                        $body = $sRcpMsgHTML;
                     } else {
-                        $oMail->Body    = $sRcpMsgText."\n\n";
+                        $body = $sRcpMsgText."\n\n";
                     }
 
-                    if ($oMail->Send()) {
+                    if ($bIsHTML && $bSendHTML) {
+                        $contentType = 'text/html';
+                    } else {
+                        $contentType = 'text/plain';
+                    }
+
+                    $mailer = new cMailer();
+                    $message = Swift_Message::newInstance($sSubject, $body, $contentType, $sEncoding);
+                    $message->setFrom($sFrom, $sFromName);
+                    $message->setTo($sEMail);
+                    $result = $mailer->send($message);
+
+                    if ($result) {
                         $aSendRcps[] = $sName." (".$sEMail.")";
                     } else {
                         if ($contenido) { // Use i18n only in backend
@@ -989,5 +983,3 @@ class Newsletter extends Item
         return $aResult;
     }
 }
-
-?>

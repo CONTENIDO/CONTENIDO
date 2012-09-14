@@ -6,10 +6,6 @@
  * Description:
  * File manager
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.6.0
  * @author     Timo A. Hummel
@@ -18,13 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * @fixme:  Remove inline CSS and JS!
- *
- * {@internal
- *   created 2003-12-29
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -679,7 +668,7 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1, $thumbnailmode) {
     $delform->setVar("frame", 4);
 
     // Table with (preview) images
-    $delform->add($output);
+    $delform->appendContent($output);
 
     $page->addScript($sess->url("iZoom.js.php"));
 
@@ -722,5 +711,3 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1, $thumbnailmode) {
 
 uplSyncDirectory($path);
 uplRender($path, $sortby, $sortmode, $startpage, $thumbnailmode);
-
-?>

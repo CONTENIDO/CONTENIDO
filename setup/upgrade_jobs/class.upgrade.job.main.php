@@ -6,10 +6,6 @@
  * Description:
  * Runs the main upgrade job
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Setup upgrade
  * @version    0.1
  * @author     Murat Purc <murat@purc>

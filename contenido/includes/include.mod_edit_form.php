@@ -128,7 +128,7 @@ if ($action == "mod_importexport_module") {
     if ($mode == "import") {
         if (cFileHandler::exists($_FILES["upload"]["tmp_name"])) {
             if (!$module->import($_FILES['upload']['name'], $_FILES["upload"]["tmp_name"])) {
-                $page->displayError(i18n("Culd not import modul:"));
+                $page->displayError(i18n("Could not import modul:"));
             } else {
                 // Load the item again (clearing slashes from import)
                 $module->loadByPrimaryKey($module->get($module->primaryKey));

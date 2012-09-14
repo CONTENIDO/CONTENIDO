@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-05-07
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -62,7 +57,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 <?php
 cDeprecated('Do not use CMS_HTMLTEXT any more - use CMS_TEXT instead!');
 $cNotification = new Contenido_Notification();
-$cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie bearbeiten einen veralteten Content-Typen (CMS_HTMLTEXT). Dieser Content-Typ wird in einer späteren Version von CONTENIDO nicht mehr unterstützt. Bitte wechseln Sie auf den neuen Content-Typen CMS_TEXT.');
+$cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie bearbeiten einen veralteten Content-Typen (CMS_HTMLTEXT). Dieser Content-Typ wird in einer spï¿½teren Version von CONTENIDO nicht mehr unterstï¿½tzt. Bitte wechseln Sie auf den neuen Content-Typen CMS_TEXT.');
 ?>
 <table width="100%"  border=0 cellspacing="0" cellpadding="0" bgcolor="#ffffff">
   <tr>
@@ -77,7 +72,6 @@ $cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie be
    getAvailableContentTypes($idartlang);
 
     echo "  <form name=\"editcontent\" method=\"post\" action=\"". $backendUrl .$cfg["path"]["includes"]."include.backendedit.php\">";
-    $sess->hidden_session();
     echo "  <input type=hidden name=lang value=\"$lang\">";
 //        echo "  <input type=hidden name=submit value=\"editcontent\">";
     echo "  <input type=hidden name=typenr value=\"$typenr\">";

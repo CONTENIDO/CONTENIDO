@@ -4,11 +4,7 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Runs the upgrade job for convert date time and urldecode 
- *
- * Requirements:
- * @con_php_req 5.0
- *
+ * Runs the upgrade job for convert date time and urldecode
  *
  * @package    CONTENIDO Setup upgrade
  * @version    0.1

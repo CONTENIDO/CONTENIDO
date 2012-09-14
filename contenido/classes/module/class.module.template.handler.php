@@ -174,7 +174,7 @@ class cModuleTemplateHandler extends cModuleHandler {
     }
 
     /**
-     * We have two actions wich culd send from form.
+     * We have two actions wich could send from form.
      *
      * @param string $action
      */

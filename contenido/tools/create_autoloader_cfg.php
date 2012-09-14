@@ -15,9 +15,6 @@
  *     $ php create_autoloader_cfg.php
  * 3. Check created class map file
  *
- * Requirements:
- * @con_php_req 5.0
- *
  * @package    CONTENIDO Autoloader
  * @version    0.0.2
  * @author     Murat Purc <murat@purc.de>
@@ -26,11 +23,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2010-12-27
- *   $Id$:
- * }}
  */
 
 

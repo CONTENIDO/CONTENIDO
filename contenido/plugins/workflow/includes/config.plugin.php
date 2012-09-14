@@ -6,10 +6,6 @@
  * Description:
  *  Workflow allocation class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Plugins
  * @subpackage Workflow
  * @version    1.5
@@ -18,11 +14,6 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2003-07-18
- *   $Id$
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -372,8 +363,8 @@ function piworkflowRenderColumn($idcat, $idart, $idartlang, $column) {
             $form->setVar("idcat", $idcat);
             $form->setVar("modidartlang", $idartlang);
             $form->setVar("idtpl", $idtpl);
-            $form->add('<table cellspacing="0" border="0"><tr><td>' . $sActionSelect . '</td><td>');
-            $form->add('<input type="image" src="' . $cfg["path"]["htmlpath"] . $cfg["path"]["images"] . "submit.gif" . '"></tr></table>');
+            $form->appendContent('<table cellspacing="0" border="0"><tr><td>' . $sActionSelect . '</td><td>');
+            $form->appendContent('<input type="image" src="' . $cfg["path"]["htmlpath"] . $cfg["path"]["images"] . "submit.gif" . '"></tr></table>');
 
             if ($mayEdit == true) {
                 return ($form->render(true));
@@ -405,5 +396,3 @@ function piworkflowCreateTasksFolder() {
 
     return ($item);
 }
-
-?>

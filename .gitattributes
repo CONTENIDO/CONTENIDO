@@ -292,7 +292,7 @@ contenido/classes/class.iterator.php -text
 contenido/classes/class.lang.php -text
 contenido/classes/class.layout.php -text
 contenido/classes/class.layoutInFile.php -text
-contenido/classes/class.mail.php -text
+contenido/classes/class.mailer.php -text
 contenido/classes/class.metaobject.php -text
 contenido/classes/class.note.php -text
 contenido/classes/class.pager.php -text
@@ -1441,10 +1441,7 @@ contenido/includes/include.lay_overview.php -text
 contenido/includes/include.lay_preview.php -text
 contenido/includes/include.left_top_blank.php -text
 contenido/includes/include.logs.php -text
-contenido/includes/include.mail_log.left_bottom.php -text
-contenido/includes/include.mail_log.left_top.php -text
-contenido/includes/include.mail_log.right_bottom.php -text
-contenido/includes/include.mail_log_subnav.php -text
+contenido/includes/include.mail_log.php -text
 contenido/includes/include.mod_edit_form.php -text
 contenido/includes/include.mod_history.php -text
 contenido/includes/include.mod_import_export.php -text
@@ -1957,6 +1954,7 @@ contenido/scripts/jquery/jquery-ui.js -text
 contenido/scripts/jquery/jquery.js -text
 contenido/scripts/jquery/jquery.ui.datepicker-de.js -text svneol=unset#text/plain
 contenido/scripts/langref.php -text
+contenido/scripts/mail_log.js -text svneol=unset#text/plain
 contenido/scripts/md5.js -text
 contenido/scripts/messageBox.js.php -text
 contenido/scripts/parameterCollector.js -text
@@ -2075,9 +2073,6 @@ contenido/templates/standard/template.left_top.html -text
 contenido/templates/standard/template.left_top_blank.html -text
 contenido/templates/standard/template.log_main.html -text
 contenido/templates/standard/template.log_menu.html -text
-contenido/templates/standard/template.mail_log.detail.html -text svneol=unset#text/plain
-contenido/templates/standard/template.mail_log.left_bottom.html -text
-contenido/templates/standard/template.mail_log.right_bottom.html -text
 contenido/templates/standard/template.mod_edit_form.html -text
 contenido/templates/standard/template.mod_history.html -text
 contenido/templates/standard/template.mod_left_top.html -text
@@ -2385,5 +2380,6 @@ setup/templates/setup/forms/systemdata.tpl -text
 setup/templates/setup/forms/systemtest.tpl -text
 setup/templates/setuptype.tpl -text
 setup/tests/tfile.txt -text
+setup/upgrade_jobs/class.upgrade.job.0007.php -text
 test/frontend/Validator/Contenido_Validator_Email.php -text
 test/frontend/ValidatorTestSuite.php -text

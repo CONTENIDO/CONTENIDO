@@ -6,10 +6,6 @@
  * Description:
  * Mail log success management class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package CONTENIDO API
  * @version 0.1
  * @author Simon Sprankel
@@ -44,7 +40,7 @@ class cApiMailLogSuccessCollection extends ItemCollection {
      * Creates a new mail log success entry with the given data.
      *
      * @param int $idmail
-     * @param string $recipient
+     * @param array $recipient
      * @param boolean $success
      * @param string $exception
      * @return boolean
@@ -53,7 +49,7 @@ class cApiMailLogSuccessCollection extends ItemCollection {
         $item = parent::createNewItem();
 
         $item->set('idmail', $idmail);
-        $item->set('recipient', $recipient);
+        $item->set('recipient', json_encode($recipient));
         $item->set('success', $success);
         $item->set('exception', $exception);
 

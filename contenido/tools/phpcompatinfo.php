@@ -21,9 +21,6 @@
  * Pass the output into a file using following commnad:
  *     $ php phpcompat.php > phpcompat_info.txt
  *
- * Requirements:
- * @con_php_req 5.0
- *
  * @package    CONTENIDO Tools
  * @version    0.0.1
  * @author     Murat Purc <murat@purc.de>
@@ -32,12 +29,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-02-23
- *   $Id$:
- * }}
- *
  */
 
 

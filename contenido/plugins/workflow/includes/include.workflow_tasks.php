@@ -6,10 +6,6 @@
  * Description:
  * Workflow task overview mask
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Plugins
  * @subpackage Workflow
  * @version    1.4.1
@@ -18,11 +14,6 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2003-07-30
- *   $Id$
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -118,8 +109,8 @@ if ($perm->have_perm_area_action($area, "workflow_task_user_select")) {
     $form->setEvent("submit", "setUsershow();");
     $form->setVar("frame", $frame);
     $form->setVar("action", "workflow_task_user_select");
-    $form->add(i18n("Show users") . ": " . getUsers("show", $usershow));
-    $form->add('<input style="vertical-align:middle;" type="image" src="' . $cfg["path"]["htmlpath"] . $cfg["path"]["images"] . "submit.gif" . '">');
+    $form->appendContent(i18n("Show users") . ": " . getUsers("show", $usershow));
+    $form->appendContent('<input style="vertical-align:middle;" type="image" src="' . $cfg["path"]["htmlpath"] . $cfg["path"]["images"] . "submit.gif" . '">');
 
     $tpl->set('s', 'USERSELECT', $form->render(true));
 } else {
@@ -242,5 +233,3 @@ $frame = ob_get_contents();
 ob_end_clean();
 
 $tpl->generate($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/templates/template.workflow_tasks.html");
-
-?>

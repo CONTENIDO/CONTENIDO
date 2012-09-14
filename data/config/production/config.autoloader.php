@@ -18,9 +18,6 @@
  *   CONTENIDO autoloader mechanism
  *
  *
- * Requirements:
- * @con_php_req 5.0
- *
  * @package    CONTENIDO Backend Includes
  * @version    0.1
  * @author     System
@@ -29,10 +26,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release >= 4.9.0
- *
- * {@internal
- *     created  2012-09-05
- * }}
  */
 
 
@@ -105,7 +98,7 @@ return array(
     'cIterator' => 'contenido/classes/class.iterator.php',
     'Layout' => 'contenido/classes/class.layout.php',
     'LayoutInFile' => 'contenido/classes/class.layoutInFile.php',
-    'cMail' => 'contenido/classes/class.mail.php',
+    'cMailer' => 'contenido/classes/class.mailer.php',
     'cMetaObject' => 'contenido/classes/class.metaobject.php',
     'NoteCollection' => 'contenido/classes/class.note.php',
     'NoteItem' => 'contenido/classes/class.note.php',

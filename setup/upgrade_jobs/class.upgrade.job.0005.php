@@ -6,10 +6,6 @@
  * Description:
  * Runs the upgrade job for ...
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Setup upgrade
  * @version    0.1
  * @author     Murat Purc <murat@purc>
@@ -26,7 +22,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-class cUpgradeJob_0006 extends cUpgradeJobAbstract {
+class cUpgradeJob_0005 extends cUpgradeJobAbstract {
 
     public function execute() {
         global $cfg;

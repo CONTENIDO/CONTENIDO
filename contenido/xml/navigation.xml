@@ -82,6 +82,7 @@ i18n("System settings")
 i18n("Purge")
 i18n("Error report")
 i18n("Frontend")
+i18n("E-Mail-Log")
 i18n("My CONTENIDO")
 i18n("Overview")
 i18n("Recently edited articles")
@@ -206,6 +207,9 @@ i18n("Login")
             <frontend>
                 <main>Frontend</main>
             </frontend>
+            <mail_log>
+                <main>E-Mail-Log</main>
+            </mail_log>
         </administration>
         <mycontenido>
             <main>My CONTENIDO</main>

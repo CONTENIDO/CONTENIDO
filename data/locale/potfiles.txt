@@ -43,7 +43,7 @@
 ./classes/class.lang.php
 ./classes/class.layout.php
 ./classes/class.layoutInFile.php
-./classes/class.mail.php
+./classes/class.mailer.php
 ./classes/class.metaobject.php
 ./classes/class.note.php
 ./classes/class.pager.php
@@ -777,9 +777,6 @@
 ./templates/standard/template.left_top_blank.html
 ./templates/standard/template.log_main.html
 ./templates/standard/template.log_menu.html
-./templates/standard/template.mail_log.detail.html
-./templates/standard/template.mail_log.left_bottom.html
-./templates/standard/template.mail_log.right_bottom.html
 ./templates/standard/template.mod_edit_form.html
 ./templates/standard/template.mod_history.html
 ./templates/standard/template.mod_left_top.html

@@ -117,8 +117,8 @@ if (!empty($artspec)) {
                 $form->setVar("action", "client_artspec_save");
                 $form->setVar("online", $artspec[$id]['online']);
                 $inputbox = new cHTMLTextbox("artspectext", $artspec[$id]['artspec']);
-                $form->add($inputbox->render());
-                $form->add('<input type="image" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif" alt="' . i18n('Save') . '" title="' . i18n('Save') . '">');
+                $form->appendContent($inputbox->render());
+                $form->appendContent('<input type="image" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif" alt="' . i18n('Save') . '" title="' . i18n('Save') . '">');
 
                 $list->setCell($count, 1, $form->render(true));
             } else {

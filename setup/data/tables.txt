@@ -242,7 +242,6 @@
 "mail_log_success";"recipient";"varchar(512)";"";"";"";"";""
 "mail_log_success";"success";"tinyint(1)";"";"";"";"";""
 "mail_log_success";"exception";"varchar(255)";"";"";"";"";""
-"mail_log_success";"idmail_resend";"int(10)";"";"";"0";"";""
 "meta_tag";"idmetatag";"int(10)";"";"PRI";"0";"";"1"
 "meta_tag";"idartlang";"int(10)";"";"";"0";"";""
 "meta_tag";"idmetatype";"int(10)";"";"";"0";"";""

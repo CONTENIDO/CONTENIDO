@@ -9,9 +9,6 @@
  * only possible every 30 minutes Mailsender, Mailsendername and Mailserver are set into system properties.
  * There it is also possible to deactivate this feature.
  *
- * Requirements:
- * @con_php_req 5.0
- *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.1.0
@@ -124,9 +121,6 @@ class cPasswordRequest {
      */
     protected $_mailhost;
 
-    /* ################################################################ */
-    /* ################################################################ */
-
     /**
      * Constructor of RequestPassword initializes class variables
      *
@@ -163,25 +157,25 @@ class cPasswordRequest {
         }
 
         //get systemproperty for senders mail and validate mailadress, if not set use standard sender
-        $sSendermail = getSystemProperty('system', 'mail_sender');
-        if (preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $sSendermail)) {
-            $this->_sendermail = $sSendermail;
+        $sendermail = getSystemProperty('system', 'mail_sender');
+        if (preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $sendermail)) {
+            $this->_sendermail = $sendermail;
         } else {
             $this->_sendermail = 'noreply@contenido-passwordservice.de';
         }
 
         //get systemproperty for senders name, if not set use CONTENIDO Backend
-        $sSendername = getSystemProperty('system', 'mail_sender_name');
-        if ($sSendername != '') {
-            $this->_sendername = $sSendername;
+        $sendername = getSystemProperty('system', 'mail_sender_name');
+        if ($sendername != '') {
+            $this->_sendername = $sendername;
         } else {
             $this->_sendername = 'CONTENIDO Backend';
         }
 
         //get systemproperty for location of mailserver, if not set use localhost
-        $sMailhost = getSystemProperty('system', 'mail_host');
-        if ($sMailhost != '') {
-            $this->_mailhost = $sMailhost;
+        $mailhost = getSystemProperty('system', 'mail_host');
+        if ($mailhost != '') {
+            $this->_mailhost = $mailhost;
         } else {
             $this->_mailhost = 'localhost';
         }
@@ -200,14 +194,14 @@ class cPasswordRequest {
             return;
         }
 
-        $sMessage = '';
+        $message = '';
 
         //if form is sumbitted call function handleNewPassword() and set submitted username to class variable $sUsername
         if (isset($_POST['action']) && $_POST['action'] == 'request_pw') {
             //avoid SQL-Injection, first check if submitted vars are escaped automatically
             $this->_username = $_POST['request_username'];
 
-            $sMessage = $this->_handleNewPassword();
+            $message = $this->_handleNewPassword();
             //if form is submitted, show corresponding password request layer
             $this->_tpl->set('s', 'JS_CALL', 'showRequestLayer();');
         } else {
@@ -216,20 +210,20 @@ class cPasswordRequest {
         }
 
         //generate new form
-        $oForm = new cHTMLForm('request_pw', 'index.php', 'post');
+        $form = new cHTMLForm('request_pw', 'index.php', 'post');
 
         //generate input for username
-        $oInputUsername = new cHTMLTextbox('request_username', stripslashes($_POST['request_username']), '', '', 'request_username');
-        $oInputUsername->setStyle('width:215px;');
+        $inputUsername = new cHTMLTextbox('request_username', stripslashes($_POST['request_username']), '', '', 'request_username');
+        $inputUsername->setStyle('width:215px;');
 
         //set request action and current language
-        $oForm->setVar('action', 'request_pw');
-        $oForm->setVar('belang', $GLOBALS['belang']);
+        $form->setVar('action', 'request_pw');
+        $form->setVar('belang', $GLOBALS['belang']);
 
         //generate submitbutton and fill the form
-        $oForm->setContent('<input type="image" src="images/submit.gif" alt="' . i18n('Submit') . '" title="' . i18n('Submit') . '" style="vertical-align:top; margin-top:2px; float:right; margin-right:6px;">' . $oInputUsername->render());
-        $this->_tpl->set('s', 'FORM', $oForm->render());
-        $this->_tpl->set('s', 'MESSAGE', $sMessage);
+        $form->setContent('<input type="image" src="images/submit.gif" alt="' . i18n('Submit') . '" title="' . i18n('Submit') . '" style="vertical-align:top; margin-top:2px; float:right; margin-right:6px;">' . $inputUsername->render());
+        $this->_tpl->set('s', 'FORM', $form->render());
+        $this->_tpl->set('s', 'MESSAGE', $message);
         $this->_tpl->set('s', 'LABEL', i18n('Please enter your login') . ':');
 
         //if handleNewPassword() returns a message, display it
@@ -248,57 +242,56 @@ class cPasswordRequest {
      */
     protected function _handleNewPassword() {
         //notification message, which is returned to caller
-        $sMessage = '';
+        $message = '';
         $this->_username = stripslashes($this->_username);
 
         //check if requested username exists, also get email and  timestamp when user last requests a new password (last_pw_request)
-        $sSql = "SELECT username, last_pw_request, email FROM " . $this->_cfg["tab"]["phplib_auth_user_md5"] . "
+        $sql = "SELECT username, last_pw_request, email FROM " . $this->_cfg["tab"]["phplib_auth_user_md5"] . "
                  WHERE username = '" . $this->_db->escape($this->_username) . "'
-                 AND ( valid_from <= NOW() OR valid_from = '0000-00-00')
-                 AND ( valid_to >= NOW() OR valid_to = '0000-00-00' )";
+                 AND (valid_from <= NOW() OR valid_from = '0000-00-00' OR valid_from IS NULL)
+                 AND (valid_to >= NOW() OR valid_to = '0000-00-00' OR valid_to IS NULL)";
 
-        $this->_db->query($sSql);
+        $this->_db->query($sql);
         if ($this->_db->next_record() && md5($this->_username) == md5($this->_db->f('username'))) {
             //by default user is allowed to request new password
-            $bIsAllowed = true;
-            $sLast_pw_request = $this->_db->f('last_pw_request');
+            $isAllowed = true;
+            $lastPwRequest = $this->_db->f('last_pw_request');
             //store users mail adress to class variable
             $this->_email = $this->_db->f('email');
 
             //check if there is a correct last request date
-            if (preg_match('/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/', $sLast_pw_request, $aMatches)) {
-                $iLastRequest = mktime($aMatches[4], $aMatches[5], $aMatches[6], $aMatches[2], $aMatches[3], $aMatches[1]);
-                $iNow = time();
+            if (preg_match('/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/', $lastPwRequest, $aMatches)) {
+                $lastRequest = mktime($aMatches[4], $aMatches[5], $aMatches[6], $aMatches[2], $aMatches[3], $aMatches[1]);
 
                 //check if this last request is longer ago then timelimit.
-                if ($iNow - $iLastRequest < (60 * $this->_reloadTime)) {
+                if ((time() - $lastRequest) < (60 * $this->_reloadTime)) {
                     //user is not allowed to request new password, he has to wait
-                    $bIsAllowed = false;
-                    $sMessage = sprintf(i18n('Password requests are allowed every %s minutes.'), $this->_reloadTime);
+                    $isAllowed = false;
+                    $message = sprintf(i18n('Password requests are allowed every %s minutes.'), $this->_reloadTime);
                 }
             }
 
             //check if syntax of users mail adress is correct and there is no standard mailadress like admin_kunde@IhreSite.de or sysadmin@IhreSite.de
-            if ((!preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $this->_email) || $this->_email == 'sysadmin@IhreSite.de' || $this->_email == 'admin_kunde@IhreSite.de') && $bIsAllowed) {
-                $bIsAllowed = false;
+            if ((!preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $this->_email) || $this->_email == 'sysadmin@IhreSite.de' || $this->_email == 'admin_kunde@IhreSite.de') && $isAllowed) {
+                $isAllowed = false;
                 //$sMessage = i18n('The requested user has no valid e-mail address. Submitting new password is not possible. Please contact your system- administrator for further support.');
-                $sMessage = i18n('No matching data found. Please contact your systemadministrator.');
+                $message = i18n('No matching data found. Please contact your systemadministrator.');
             }
 
             //if there are no errors, call function setNewPassword(), else wait a while, then return error message
-            if ($bIsAllowed) {
+            if ($isAllowed) {
                 $this->_setNewPassword();
-                $sMessage = i18n('New password was submitted to your e-mail address.');
+                $message = i18n('New password was submitted to your e-mail address.');
             } else {
                 sleep(5);
             }
         } else {
             //slepp a while, then return error message
             //$sMessage = i18n('This user does not exist.');
-            $sMessage = i18n('No matching data found. Please contact your systemadministrator.');
+            $message = i18n('No matching data found. Please contact your systemadministrator.');
             sleep(5);
         }
-        return $sMessage;
+        return $message;
     }
 
     /**
@@ -308,54 +301,37 @@ class cPasswordRequest {
      */
     protected function _setNewPassword() {
         //generate new password, using generatePassword()
-        $sPassword = $this->_generatePassword();
+        $password = $this->_generatePassword();
 
         //update database entry, set new password and last_pw_request time
-        $sSql = "UPDATE " . $this->_cfg["tab"]["phplib_auth_user_md5"] . "
+        $sql = "UPDATE " . $this->_cfg["tab"]["phplib_auth_user_md5"] . "
                          SET last_pw_request = '" . date('Y-m-d H:i:s') . "',
-                             tmp_pw_request = '" . md5($sPassword) . "',
-                             password = '" . md5($sPassword) . "'
+                             tmp_pw_request = '" . md5($password) . "',
+                             password = '" . md5($password) . "'
                          WHERE username = '" . $this->_username . "'";
-        $this->_db->query($sSql);
+        $this->_db->query($sql);
 
         //call function submitMail(), which sends new password to user
-        $this->_submitMail($sPassword);
+        $this->_submitMail($password);
     }
 
     /**
      * Function submits new password to users mail adress
      *
      * @access private
-     * @param string $sPassword - the new password
+     * @param string $password - the new password
      */
-    protected function _submitMail($sPassword) {
-        $sPassword = (string) $sPassword;
+    protected function _submitMail($password) {
+        $password = (string) $password;
 
         //get translation for mailbody and insert username and new password
-        $sMailBody = sprintf(i18n("Dear CONTENIDO-User %s,\n\nYour password to log in Content Management System CONTENIDO is: %s\n\nBest regards\n\nYour CONTENIDO sysadmin"), $this->_username, $sPassword);
+        $mailBody = sprintf(i18n("Dear CONTENIDO-User %s,\n\nYour password to log in Content Management System CONTENIDO is: %s\n\nBest regards\n\nYour CONTENIDO sysadmin"), $this->_username, $password);
 
-        //use php mailer class for submitting mail
-        $oMail = new PHPMailer();
-        //set host of mailserver
-        $oMail->Host = $this->_mailhost;
-        //it is not a html mail
-        $oMail->IsHTML(0);
-        //set senders e-mail adress
-        $oMail->From = $this->_sendermail;
-        //set senders name
-        $oMail->FromName = $this->_sendername;
-
-        //set users e mail adress as recipient
-        $oMail->AddAddress($this->_email, "");
-        //set mail subject
-        $oMail->Subject = html_entity_decode(stripslashes(i18n('Your new password for CONTENIDO Backend')));
-        //append mail body
-        $oMail->Body = html_entity_decode($sMailBody);
-        //wrap after 1000 chars
-        $oMail->WordWrap = 1000;
-        //activate mail and send it
-        $oMail->IsMail();
-        $oMail->Send();
+        $mailer = new cMailer();
+        $from = array($this->_sendermail => $this->_sendername);
+        $subject = utf8_encode(html_entity_decode(stripslashes(i18n('Your new password for CONTENIDO Backend'))));
+        $body = utf8_encode(html_entity_decode($mailBody));
+        $mailer->sendMail($from, $this->_email, $subject, $body);
     }
 
     /**
@@ -366,16 +342,16 @@ class cPasswordRequest {
      */
     protected function _generatePassword() {
         //possible chars which were used in password
-        $sChars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghjkmnopqrstuvwxyz123456789";
+        $chars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghjkmnopqrstuvwxyz123456789";
 
-        $sPw = "";
+        $password = "";
 
         //for each character of password choose one from $sChars randomly
         for ($i = 0; $i < $this->_passLength; $i++) {
-            $sPw.= $sChars[rand(0, strlen($sChars))];
+            $password.= $chars[rand(0, strlen($chars))];
         }
 
-        return $sPw;
+        return $password;
     }
 
 }

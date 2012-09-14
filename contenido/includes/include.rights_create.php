@@ -47,8 +47,10 @@ if ($action == 'user_createuser') {
 
         $oUserCollection = new cApiUserCollection();
         $oUser = $oUserCollection->create($username);
-
-        if (strcmp($password, $passwordagain) == 0) {
+        if ($oUser === false) {
+            $sNotification = $notification->returnNotification("warning", i18n("Username already exists"));
+            $bError = true;
+        } else if (strcmp($password, $passwordagain) == 0) {
 
             // ok, both passwords given are equal, but is the password valid?
             $iPassCheck = $oUser->setPassword($password);
@@ -106,7 +108,6 @@ $tpl->reset();
 $tpl->set('s','NOTIFICATION', $sNotification);
 
 $form = '<form name="user_properties" method="post" action="' . $sess->url("main.php?") . '">
-        ' . $sess->hidden_session(true) . '
         <input type="hidden" name="area" value="' . $area . '">
         <input type="hidden" name="action" value="user_createuser">
         <input type="hidden" name="frame" value="' . $frame . '">

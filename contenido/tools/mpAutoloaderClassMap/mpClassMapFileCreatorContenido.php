@@ -46,9 +46,6 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
  * Description:
 {DESCRIPTION}
  *
- * Requirements:
- * {REQUIREMENTS}
- *
  * @package    {PACKAGE}
  * @version    {VERSION}
  * @author     {AUTHOR}
@@ -57,10 +54,6 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
  * @link       {LINK}
  * @link       {LINK2}
  * @since      {SINCE}
- *
- * {@internal
- *     created  {INTERNAL_DATE}
- * }}
  */
 
 {CONTENT}
@@ -80,8 +73,6 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
  *   CONTENIDO autoloader mechanism
  *');
 
-        $this->_data->internal_date = date('Y-m-d');
-        $this->_data->requirements  = '@con_php_req 5.0';
         $this->_data->package       = 'CONTENIDO Backend Includes';
         $this->_data->version       = '0.1';
         $this->_data->author        = 'System';

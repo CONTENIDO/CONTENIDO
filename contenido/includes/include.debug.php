@@ -18,14 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-06-04
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -103,7 +95,6 @@ if ($querytype == "area")
 echo "<h1>Debug</h1>";
 echo "<h4>Check for right:</h4>";
 $form = '<form name="group_properties" method="post" action="'.$sess->url("main.php?").'">
-                 '.$sess->hidden_session().'
                  <input type="hidden" name="area" value="'.$area.'">
                  <input type="hidden" name="action" value="group_edit">
                  <input type="hidden" name="frame" value="'.$frame.'">

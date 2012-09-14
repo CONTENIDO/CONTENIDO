@@ -218,9 +218,9 @@ class cHTML {
      */
     public function setAlt($alt) {
         return $this->updateAttributes(array(
-                    'alt' => $alt,
-                    'title' => $alt
-                ));
+            'alt' => $alt,
+            'title' => $alt
+        ));
     }
 
     /**
@@ -254,7 +254,7 @@ class cHTML {
     }
 
     /**
-     * Adds an "onXXX" javascript event handler
+     * Adds an "on???" javascript event handler
      *
      * example:
      * $item->setEvent('change','document.forms[0].submit');
@@ -265,9 +265,9 @@ class cHTML {
      */
     public function setEvent($event, $action) {
         if (substr($event, 0, 2) !== 'on') {
-            return $this->updateAttribute('on' . $event, $action);
+            return $this->updateAttribute('on' . $event, htmlspecialchars($action));
         } else {
-            return $this->updateAttribute($event, $action);
+            return $this->updateAttribute($event, htmlspecialchars($action));
         }
     }
 
@@ -420,8 +420,8 @@ class cHTML {
     /**
      * Sets the content of the object
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTML $this
      */
     protected function _setContent($content) {
@@ -454,6 +454,45 @@ class cHTML {
                 }
             } else {
                 $this->_content = $content;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Adds the given content to the already existing content of this object.
+     *
+     * @param string|object|array $content String with the content or an object
+     *        to
+     *        render or an array of strings/objects.
+     * @return cHTML $this
+     */
+    protected function _appendContent($content) {
+        if (!is_string($this->_content)) {
+            $this->_content = '';
+        }
+        $this->_contentlessTag = false;
+        if (is_array($content)) {
+            // content is an array, so iterate over it and append the elements
+            foreach ($content as $item) {
+                if (is_object($item)) {
+                    if (method_exists($item, 'render')) {
+                        $this->_content .= $item->render();
+                    }
+                } else {
+                    $this->_content .= $item;
+                }
+            }
+        } else {
+            // content is an object or a string, so just append the rendered
+            // content
+            if (is_object($content)) {
+                if (method_exists($content, 'render')) {
+                    $this->_content .= $content->render();
+                }
+            } else {
+                $this->_content .= $content;
             }
         }
 
@@ -568,8 +607,8 @@ class cHTML {
      */
     public function updateAttribute($name, $value) {
         return $this->updateAttributes(array(
-                    $name => $value
-                ));
+            $name => $value
+        ));
     }
 
     /**
@@ -1967,12 +2006,23 @@ class cHTMLDiv extends cHTML {
     /**
      * Sets the div's content
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTMLDiv $this
      */
     public function setContent($content) {
         return $this->_setContent($content);
+    }
+
+    /**
+     * Appends code / objects to the content.
+     *
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
+     * @return cHTMLDiv $this
+     */
+    public function appendContent($content) {
+        return $this->_appendContent($content);
     }
 
 }
@@ -2011,12 +2061,23 @@ class cHTMLSpan extends cHTML {
     /**
      * Sets the div's content
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTMLSpan $this
      */
     public function setContent($content) {
         return $this->_setContent($content);
+    }
+
+    /**
+     * Appends code / objects to the content.
+     *
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
+     * @return cHTMLDiv $this
+     */
+    public function appendContent($content) {
+        return $this->_appendContent($content);
     }
 
 }
@@ -2057,12 +2118,23 @@ class cHTMLParagraph extends cHTML {
     /**
      * Sets the p's content
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTMLParagraph $this
      */
     public function setContent($content) {
         return $this->_setContent($content);
+    }
+
+    /**
+     * Appends code / objects to the content.
+     *
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
+     * @return cHTMLDiv $this
+     */
+    public function appendContent($content) {
+        return $this->_appendContent($content);
     }
 
 }
@@ -2272,12 +2344,23 @@ class cHTMLTable extends cHTML {
     /**
      * Sets the table's content
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTMLTable $this
      */
     public function setContent($content) {
         return $this->_setContent($content);
+    }
+
+    /**
+     * Appends code / objects to the content.
+     *
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
+     * @return cHTMLDiv $this
+     */
+    public function appendContent($content) {
+        return $this->_appendContent($content);
     }
 
     /**
@@ -2373,12 +2456,23 @@ class cHTMLTableBody extends cHTML {
     /**
      * Sets the table body's content
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTMLTableBody $this
      */
     public function setContent($content) {
         return $this->_setContent($content);
+    }
+
+    /**
+     * Appends code / objects to the content.
+     *
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
+     * @return cHTMLDiv $this
+     */
+    public function appendContent($content) {
+        return $this->_appendContent($content);
     }
 
 }
@@ -2414,12 +2508,23 @@ class cHTMLTableRow extends cHTML {
     /**
      * Sets the table row's content
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTMLTableRow $this
      */
     public function setContent($content) {
         return $this->_setContent($content);
+    }
+
+    /**
+     * Appends code / objects to the content.
+     *
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
+     * @return cHTMLDiv $this
+     */
+    public function appendContent($content) {
+        return $this->_appendContent($content);
     }
 
 }
@@ -2515,12 +2620,23 @@ class cHTMLTableData extends cHTML {
     /**
      * Sets the table data's content
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTMLTableData $this
      */
     public function setContent($content) {
         return $this->_setContent($content);
+    }
+
+    /**
+     * Appends code / objects to the content.
+     *
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
+     * @return cHTMLDiv $this
+     */
+    public function appendContent($content) {
+        return $this->_appendContent($content);
     }
 
 }
@@ -2556,12 +2672,23 @@ class cHTMLTableHead extends cHTML {
     /**
      * Sets the table head's content
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTMLTableHead $this
      */
     public function setContent($content) {
         return $this->_setContent($content);
+    }
+
+    /**
+     * Appends code / objects to the content.
+     *
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
+     * @return cHTMLDiv $this
+     */
+    public function appendContent($content) {
+        return $this->_appendContent($content);
     }
 
 }
@@ -2597,12 +2724,23 @@ class cHTMLTableHeader extends cHTML {
     /**
      * Sets the table head's content
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTMLTableHeader $this
      */
     public function setContent($content) {
         return $this->_setContent($content);
+    }
+
+    /**
+     * Appends code / objects to the content.
+     *
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
+     * @return cHTMLDiv $this
+     */
+    public function appendContent($content) {
+        return $this->_appendContent($content);
     }
 
 }
@@ -2731,7 +2869,9 @@ class cHTMLAlignmentTable extends cHTMLTable {
 class cHTMLForm extends cHTML {
 
     protected $_name;
+
     protected $_action;
+
     protected $_method;
 
     /**
@@ -2768,11 +2908,12 @@ class cHTMLForm extends cHTML {
      *
      * @param string $content content to add
      * @return cHTMLForm $this
+     * @deprecated 2012-09-12 Use appendContent($content) instead!
      */
     public function add($content) {
-        $this->_content .= $content;
+        cDeprecated('Use appendContent($content) instead!');
 
-        return $this;
+        return $this->appendContent($content);
     }
 
     /**
@@ -2791,12 +2932,23 @@ class cHTMLForm extends cHTML {
     /**
      * Sets the form's content
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTMLForm $this
      */
     public function setContent($content) {
         return $this->_setContent($content);
+    }
+
+    /**
+     * Appends code / objects to the content.
+     *
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
+     * @return cHTMLDiv $this
+     */
+    public function appendContent($content) {
+        return $this->_appendContent($content);
     }
 
     /**
@@ -2831,7 +2983,9 @@ class cHTMLForm extends cHTML {
 
 /**
  * cHTMLScript class represents a script.
- * @todo  Should set attribute type="text/javascript" by default or depending on doctype!
+ *
+ * @todo Should set attribute type="text/javascript" by default or depending on
+ *       doctype!
  * @package Core
  * @subpackage Frontend
  */
@@ -2851,12 +3005,23 @@ class cHTMLScript extends cHTML {
     /**
      * Sets the table head's content
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTMLScript $this
      */
     public function setContent($content) {
         return $this->_setContent($content);
+    }
+
+    /**
+     * Appends code / objects to the content.
+     *
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
+     * @return cHTMLDiv $this
+     */
+    public function appendContent($content) {
+        return $this->_appendContent($content);
     }
 
 }
@@ -2893,12 +3058,23 @@ class cHTMLList extends cHTML {
     /**
      * Sets the list's content
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTMLList $this
      */
     public function setContent($content) {
         return $this->_setContent($content);
+    }
+
+    /**
+     * Appends code / objects to the content.
+     *
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
+     * @return cHTMLDiv $this
+     */
+    public function appendContent($content) {
+        return $this->_appendContent($content);
     }
 
 }
@@ -2929,12 +3105,23 @@ class cHTMLListItem extends cHTML {
     /**
      * Sets the list item's content
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTMLListItem $this
      */
     public function setContent($content) {
         return $this->_setContent($content);
+    }
+
+    /**
+     * Appends code / objects to the content.
+     *
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
+     * @return cHTMLDiv $this
+     */
+    public function appendContent($content) {
+        return $this->_appendContent($content);
     }
 
 }
@@ -2947,7 +3134,6 @@ class cHTMLListItem extends cHTML {
  */
 class cHTMLLink extends cHTML {
     /* Stores the link location */
-
     protected $_link;
 
     /* Stores the content */
@@ -2958,6 +3144,7 @@ class cHTMLLink extends cHTML {
 
     /* Stores the custom entries */
     protected $_custom;
+
     protected $_image;
 
     /**
@@ -3151,12 +3338,23 @@ class cHTMLLink extends cHTML {
     /**
      * Sets the link's content
      *
-     * @param string|object $content String with the content or an object to
-     *            render.
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
      * @return cHTMLLink $this
      */
     public function setContent($content) {
         return $this->_setContent($content);
+    }
+
+    /**
+     * Appends code / objects to the content.
+     *
+     * @param string|object|array $content String with the content or a cHTML
+     *        object to render or an array of strings / objects.
+     * @return cHTMLDiv $this
+     */
+    public function appendContent($content) {
+        return $this->_appendContent($content);
     }
 
     /**
@@ -3185,22 +3383,39 @@ class cHTMLLink extends cHTML {
 class Link extends cHTMLLink {
 
     public $link;
+
     public $title;
+
     public $targetarea;
+
     public $targetframe;
+
     public $targetaction;
+
     public $targetarea2;
+
     public $targetframe2;
+
     public $targetaction2;
+
     public $caption;
+
     public $javascripts;
+
     public $type;
+
     public $custom;
+
     public $content;
+
     public $attributes;
+
     public $img_width;
+
     public $img_height;
+
     public $img_type;
+
     public $img_attr;
 
     public function __construct() {

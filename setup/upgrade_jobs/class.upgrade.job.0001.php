@@ -4,11 +4,6 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Runs the upgrade job to update client path
- *
- * Requirements:
- * @con_php_req 5.0
- *
  *
  * @package    CONTENIDO Setup upgrade
  * @version    0.1

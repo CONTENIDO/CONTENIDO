@@ -18,14 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-04-02
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -94,7 +86,6 @@ while ($db->next_record()) {
 }
 
 $newlanguageform = '<form name=newlanguage method="post" action="'.$sess->url("main.php?area=$area&frame=$frame").'">
-                    '.$sess->hidden_session().'
                     <input type="hidden" name="action" value="lang_newlanguage">
                     <table cellpadding="0" cellspacing="0" border="0">
                     <tr><td class="text_medium">'.i18n("New language").':
@@ -123,5 +114,3 @@ $tpl->set('s', 'LANG_COUNT', $iLangCount);
 
 # Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lang_overview']);
-
-?>

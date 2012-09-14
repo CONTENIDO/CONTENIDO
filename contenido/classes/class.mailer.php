@@ -29,7 +29,7 @@ require_once 'swiftmailer/lib/swift_init.php';
  * @package Core
  * @subpackage Util
  */
-class cMail extends Swift_Mailer {
+class cMailer extends Swift_Mailer {
 
     private $_isPreSendError = true;
 
@@ -115,9 +115,9 @@ class cMail extends Swift_Mailer {
             $this->_mailHost = $mailHost;
         }
 
-        // get mailserver user and pass from system properties
-        $this->_mailUser = (getSystemProperty('system', 'mail_user')) ? getSystemProperty('system', 'mail_user') : '';
-        $this->_mailPass = (getSystemProperty('system', 'mail_pass')) ? getSystemProperty('system', 'mail_pass') : '';
+            // get mailserver user and pass from system properties
+        $this->_mailUser = (getSystemProperty('system', 'mail_user'))? getSystemProperty('system', 'mail_user') : '';
+        $this->_mailPass = (getSystemProperty('system', 'mail_pass'))? getSystemProperty('system', 'mail_pass') : '';
 
         // get mailserver encryption from system properties
         $encryptions = array(
@@ -137,10 +137,10 @@ class cMail extends Swift_Mailer {
         $transport = Swift_SmtpTransport::newInstance($this->_mailHost, $this->_mailPort, $this->_mailEncryption);
         if (!empty($this->_mailUser)) {
             $authHandler = new Swift_Transport_Esmtp_AuthHandler(array(
-                        new Swift_Transport_Esmtp_Auth_PlainAuthenticator(),
-                        new Swift_Transport_Esmtp_Auth_LoginAuthenticator(),
-                        new Swift_Transport_Esmtp_Auth_CramMd5Authenticator()
-                    ));
+                new Swift_Transport_Esmtp_Auth_PlainAuthenticator(),
+                new Swift_Transport_Esmtp_Auth_LoginAuthenticator(),
+                new Swift_Transport_Esmtp_Auth_CramMd5Authenticator()
+            ));
             $authHandler->setUsername($this->_mailUser);
             if (!empty($this->_mailPass)) {
                 $authHandler->setPassword($this->_mailPass);
@@ -161,7 +161,19 @@ class cMail extends Swift_Mailer {
     }
 
     /**
-     * Nice wrapper function for sending a mail.
+     * Sets the encoding of the messages which are sent with this mailer object.
+     * If you want to use UTF-8, you do not need to call this method.
+     *
+     * @param string $encoding the character encoding
+     */
+    public function setEncoding($encoding) {
+        Swift_Preferences::getInstance()->setCharset($encoding);
+    }
+
+    /**
+     * Wrapper function for sending a mail.
+     * All parameters which accept mail addresses also accept an array where
+     * the key is the email address and the value is the name.
      *
      * @param string|array $from the sender of the mail, if something "empty" is
      *        given, default address from CONTENIDO system settings is used
@@ -174,9 +186,10 @@ class cMail extends Swift_Mailer {
      *        should get a blind copy
      * @param string|array $replyTo [optional] address to which replies should
      *        be sent
+     * @param bool $resend [optional] whether the mail is resent
      * @return int number of recipients to which the mail has been sent
      */
-    public function sendMail($from, $to, $subject, $body = '', $cc = null, $bcc = null, $replyTo = null) {
+    public function sendMail($from, $to, $subject, $body = '', $cc = null, $bcc = null, $replyTo = null, $resend = false, $contentType = 'text/plain') {
         $message = Swift_Message::newInstance($subject, $body);
         if (empty($from) || is_array($from) && count($from) > 1) {
             $message->setFrom(array(
@@ -189,11 +202,58 @@ class cMail extends Swift_Mailer {
         $message->setCc($cc);
         $message->setBcc($bcc);
         $message->setReplyTo($replyTo);
+        $message->setContentType($contentType);
         $failedRecipients = array();
-        $result = $this->send($message, $failedRecipients);
-        $this->_logMail($message, $failedRecipients);
+
+        return $this->send($message, $failedRecipients, $resend);
+    }
+
+    /**
+     * Sends the given Swift_Mime_Message and logs it if $resend is false.
+     *
+     * @see Swift_Mailer::send()
+     */
+    public function send(Swift_Mime_Message $message, &$failedRecipients = null, $resend = false) {
+        if (!is_array($failedRecipients)) {
+            $failedRecipients = array();
+        }
+        $result = parent::send($message, $failedRecipients);
+
+        // log the mail only if it is a new one
+        if (!$resend) {
+            $this->_logMail($message, $failedRecipients);
+        }
 
         return $result;
+    }
+
+    /**
+     * Resends the mail with the given idmailsuccess.
+     *
+     * @param int $idmailsuccess the ID of the mail which should be resend
+     * @throws cInvalidArgumentException if the mail has already been sent
+     *         successfully or does not exist
+     */
+    public function resendMail($idmailsuccess) {
+        $mailLogSuccess = new cApiMailLogSuccess($idmailsuccess);
+        if (!$mailLogSuccess->isLoaded() || $mailLogSuccess->get('success') == 1) {
+            throw new cInvalidArgumentException('The mail which should be resent has already been sent successfully or does not exist.');
+        }
+        $idmail = $mailLogSuccess->get('idmail');
+        $mailLog = new cApiMailLog($idmail);
+        $from = json_decode($mailLog->get('from'), true);
+        $to = json_decode($mailLog->get('to'), true);
+        $replyTo = json_decode($mailLog->get('reply_to'), true);
+        $cc = json_decode($mailLog->get('cc'), true);
+        $bcc = json_decode($mailLog->get('bcc'), true);
+        $subject = $mailLog->get('subject');
+        $body = $mailLog->get('body');
+        $success = $this->sendMail($from, $to, $subject, $body, $cc, $bcc, $replyTo, true);
+
+        if ($success) {
+            $mailLogSuccess->set('success', 1);
+            $mailLogSuccess->store();
+        }
     }
 
     /**
@@ -202,6 +262,7 @@ class cMail extends Swift_Mailer {
      * @param Swift_Message $message the message which has been send
      * @param array $failedRecipients [optional] the recipient addresses that
      *        did not get the mail
+     * @return the idmail of the inserted table row in con_mail_log
      */
     private function _logMail($message, $failedRecipients = array()) {
         $mailLogCollection = new cApiMailLogCollection();
@@ -217,16 +278,21 @@ class cMail extends Swift_Mailer {
         $mailLogSuccessCollection = new cApiMailLogSuccessCollection();
         foreach ($recipientArrays as $recipients) {
             foreach ($recipients as $key => $value) {
+                $recipient = array(
+                    $key => $value
+                );
                 $success = true;
-                if (in_array($key, $failedRecipients)) {
-                    $success = false;
-                }
                 // TODO how do we get the information why message sending has
                 // failed?
                 $exception = '';
-                $mailLogSuccessCollection->create($idmail, $key, $success, $exception);
+                if (in_array($key, $failedRecipients)) {
+                    $success = false;
+                }
+                $mailLogSuccessCollection->create($idmail, $recipient, $success, $exception);
             }
         }
+
+        return $idmail;
     }
 
 }

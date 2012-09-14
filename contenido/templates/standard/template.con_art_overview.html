@@ -68,16 +68,6 @@
             refreshSubMenu('c_1');
         });
     </script>
-    <style>
-        .bulk_editing_functions a, a.flip_mark {
-            cursor: pointer;
-        }
-
-        .bulk_editing_functions a img, a.flip_mark img {
-            vertical-align: middle;
-            margin-right: 6px;
-        }
-    </style>
 </head>
 <body style="margin:10px">
     <form action ="main.php" name="bulk_editing" class="bulk_editing_form" method="post">
@@ -92,10 +82,10 @@
         <input type="hidden" name="sourcelanguage" value="{SOURCELANGUAGE}">
         <input type="hidden" name="syncoptions" value="{SYNCOPTIONS}">
     </form>
+    <div class="text_large">
+        {CATEGORY}
+    </div>
     <table width="100%" cellspacing="0" cellpadding="2" border="0">
-        <div class="text_large">
-            {CATEGORY}
-        </div>
         <tr>
             <td colspan="12">
                 <img src="images/spacer.gif" width="1" height="10">
@@ -130,16 +120,12 @@
     <table width="100%" cellspacing="0" cellpadding="2" border="0" style="{noArticle}">
         <tr valign="middle">
             <td style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; text-align:right; border-style: solid; background-color: #E2E2E2;" colspan="7">
+                <a class="flip_mark" href="javascript:void(0)"><img alt="i18n('Flip selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif"> i18n("Flip selection")</a>
+                <div class="bulk_editing_functions">
+                    i18n("Apply to all selected articles"):
+                    {BULK_EDITING_FUNCTIONS}
+                </div>
                 {BROWSE}
-                <div style="float:left; heigth:20px; line-height:20px; vertical-align:middle;  width:600px; text-align:left;">
-                    <a style="float:left;" onmouseover="this.style.cursor='pointer'" class="flip_mark"><img onmouseover="this.style.cursor='pointer'" alt="i18n('Flip selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif" style="margin-right:0px; vertical-align:middle;"> i18n("Flip selection")</a>
-                    <div class="bulk_editing_functions" style="float:left;margin-left:25px;height:16px;display:none;">
-                        <span>i18n("Apply to all selected articles"):</span>
-                        {BULK_EDITING_FUNCTIONS}
-                    </div>
-                </div>
-                <div style="clear:both;">
-                </div>
             </td>
         </tr>
         <tr height="10">
@@ -164,14 +150,10 @@
     </tr>
     <tr valign="middle">
         <td style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; text-align:right; border-style: solid; background-color: #E2E2E2;" colspan="7">
-            <div style="float:left; heigth:20px; line-height:20px; vertical-align:middle; width:600px; text-align:left;">
-                <a style="float:left;" onmouseover="this.style.cursor='pointer'" class="flip_mark"><img onmouseover="this.style.cursor='pointer'" alt="i18n('Flip Selection')" title="Markierung umkehren" src="images/but_invert_selection.gif" style="margin-right:0px; vertical-align:middle;"> i18n("Flip Selection")</a>
-                <div class="bulk_editing_functions" style="float:left;margin-left:25px;height:16px;display:none;">
-                    <span>i18n("Apply to all selected articles"):</span>
-                    {BULK_EDITING_FUNCTIONS}
-                </div>
-            </div>
-            <div style="clear:both;">
+            <a class="flip_mark" href="javascript:void(0)"><img alt="i18n('Flip selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif"> i18n("Flip selection")</a>
+            <div class="bulk_editing_functions">
+                i18n("Apply to all selected articles"):
+                {BULK_EDITING_FUNCTIONS}
             </div>
         </td>
     </tr>

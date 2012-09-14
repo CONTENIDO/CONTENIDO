@@ -6,10 +6,6 @@
  * Description:
  *  Workflow allocation class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Plugins
  * @subpackage Workflow
  * @version    1.4.1
@@ -18,11 +14,6 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2003-07-18
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -150,16 +141,7 @@ class WorkflowArtAllocation extends Item {
     public function store() {
         global $cfg;
 
-        $sMailhost = getSystemProperty('system', 'mail_host');
-        if ($sMailhost == '') {
-            $sMailhost = 'localhost';
-        }
-
-        $oMail = new PHPMailer();
-        $oMail->Host = $sMailhost;
-        $oMail->IsHTML(0);
-        $oMail->WordWrap = 1000;
-        $oMail->IsMail();
+        $mailer = new cMailer();
 
         if (array_key_exists("idusersequence", $this->modifiedValues)) {
             $usersequence = new WorkflowUserSequence();
@@ -253,17 +235,11 @@ class WorkflowArtAllocation extends Item {
 
                         while ($db->next_record()) {
                             $user->loadByPrimaryKey($db->f("user_id"));
-                            $oMail->AddAddress($user->getField("email"), "");
-                            $oMail->Subject = stripslashes(i18n('Workflow notification'));
-                            $oMail->Body = $filledMail;
-                            $oMail->Send();
+                            $mailer->sendMail(null, $user->getField("email"), stripslashes(i18n('Workflow notification')), $filledMail);
                         }
                     } else {
                         $user->loadByPrimaryKey($usersequence->get("iduser"));
-                        $oMail->AddAddress($user->getField("email"), "");
-                        $oMail->Subject = stripslashes(i18n('Workflow notification'));
-                        $oMail->Body = $filledMail;
-                        $oMail->Send();
+                        $mailer->sendMail(null, $user->getField("email"), stripslashes(i18n('Workflow notification')), $filledMail);
                     }
                 } else {
                     $email = "Hello %s,\n\n" .
@@ -288,19 +264,11 @@ class WorkflowArtAllocation extends Item {
 
                         while ($db->next_record()) {
                             $user->loadByPrimaryKey($db->f("user_id"));
-                            echo "mail to " . $user->getField("email") . "<br>";
-                            $oMail->AddAddress($user->getField("email"), "");
-                            $oMail->Subject = stripslashes(i18n('Workflow escalation'));
-                            $oMail->Body = $filledMail;
-                            $oMail->Send();
+                            $mailer->sendMail(null, $user->getField("email"), stripslashes(i18n('Workflow escalation')), $filledMail);
                         }
                     } else {
                         $user->loadByPrimaryKey($usersequence->get("iduser"));
-                        echo "mail to " . $user->getField("email") . "<br>";
-                        $oMail->AddAddress($user->getField("email"), "");
-                        $oMail->Subject = stripslashes(i18n('Workflow escalation'));
-                        $oMail->Body = $filledMail;
-                        $oMail->Send();
+                        $mailer->sendMail(null, $user->getField("email"), stripslashes(i18n('Workflow escalation')), $filledMail);
                     }
                 }
             }
@@ -315,5 +283,3 @@ class WorkflowArtAllocation extends Item {
     }
 
 }
-
-?>

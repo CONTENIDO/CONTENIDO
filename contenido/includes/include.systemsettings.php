@@ -6,10 +6,6 @@
  * Description:
  * CONTENIDO System Settings Screen
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.7.0
  * @author     Timo A. Hummel
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-11-18
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -191,7 +182,7 @@ if ($action == "systemsettings_edit_item") {
         $form2->setVar("area", $area);
         $form2->setVar("frame", $frame);
         $form2->setVar("action", "systemsettings_save_item");
-        $form2->add($list->render());
+        $form2->appendContent($list->render());
         $renderobj[] = $form2;
     }
 } else {
@@ -205,5 +196,3 @@ if (strpos($auth->auth["perm"], "sysadmin") !== false) {
 
 $page->setContent($renderobj);
 $page->render();
-
-?>

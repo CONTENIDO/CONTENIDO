@@ -7,9 +7,6 @@
  * Manages HTML pages and provides functions for rendering them.
  * As a usage example you can take a look at include.upl_files_upload.php
  *
- * Requirements:
- * @con_php_req 5
- *
  * @package CONTENIDO Backend
  * @subpackage GUI
  * @author mischa.holz
@@ -17,11 +14,6 @@
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
- *
- *       {@internal
- *       created 2012-07-10
- *       $Id: class.page.php 2379 2012-06-22 21:00:16Z xmurrix $:
- *       }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -51,7 +43,7 @@ class cGuiPage {
     /**
      * The general page template.
      *
-     * @var Template
+     * @var cTemplate
      */
     protected $_pagetemplate;
 
@@ -59,7 +51,7 @@ class cGuiPage {
      * The template for everything that is inside the body.
      * (Usually template.PAGENAME.html)
      *
-     * @var Template
+     * @var cTemplate
      */
     protected $_contenttemplate;
 
@@ -345,10 +337,19 @@ class cGuiPage {
      * @param string $type Either "s" or "d" for "static" or "dynamic" values
      * @param string $key The key which should be replaced
      * @param string $value The value which should replace the key
-     * @see Template::set()
+     * @see cTemplate::set()
      */
     public function set($type, $key, $value) {
         $this->_contenttemplate->set($type, $key, $value);
+    }
+
+    /**
+     * Calls the next() method on the content template.
+     *
+     * @see cTemplate::next()
+     */
+    public function next() {
+        $this->_contenttemplate->next();
     }
 
     /**
@@ -414,6 +415,22 @@ class cGuiPage {
             );
         }
         $this->_objects = $objects;
+    }
+
+    /**
+     * Appends all cHTML objects in an array (or a single object) which build up the
+     * site instead of a content template.
+     * NOTE: All these objects must have a render() method or else they won't be
+     * shown
+     *
+     * @param array|object $objects An array of objects or a single object
+     */
+    public function appendContent($objects) {
+        if (!is_array($objects)) {
+            $this->_objects[] = $objects;
+        } else {
+            $this->_objects[] = array_merge($this->_objects, $objects);
+        }
     }
 
     /**
@@ -558,5 +575,3 @@ class cGuiPage {
     }
 
 }
-
-?>

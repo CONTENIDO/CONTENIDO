@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-05-07
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -77,7 +72,6 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
    getAvailableContentTypes($idartlang);
 
     echo "  <form name=\"editcontent\" method=\"post\" action=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php\">";
-    $sess->hidden_session();
     echo "  <input type=hidden name=lang value=\"$lang\">";
     echo "  <input type=hidden name=typenr value=\"$typenr\">";
     echo "  <input type=hidden name=idart value=\"$idart\">";

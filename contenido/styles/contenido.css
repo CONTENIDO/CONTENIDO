@@ -12,11 +12,6 @@
  * @license    http: //www.contenido.org/license/LIZENZ.txt
  * @link       http: //www.4fb.de
  * @link       http: //www.contenido.org
- *
- * {@internal
- *   created  Long time ago
- *   $Id$
- * }}
  */
 
 
@@ -1986,4 +1981,24 @@ div#legend table.article {
 
 #imgFormSubmit {
     cursor: pointer;
+}
+
+/* Bulk Editing Functions on Article Overview and Mail Logging Page */
+a.flip_mark {
+    float: left;
+    margin-right: 25px;
+}
+
+a.flip_mark img {
+    vertical-align: middle;
+}
+
+div.bulk_editing_functions {
+    display: none;
+    float: left;
+}
+
+div.bulk_editing_functions a img {
+    margin-left: 7px;
+    vertical-align: middle;
 }
