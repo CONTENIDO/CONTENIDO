@@ -56,11 +56,8 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
-// Set path to current frontend
-$frontend_path = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/';
-
 // Include the config file of the frontend to init the Client and Language Id
-include_once($frontend_path . 'data/config/config.php');
+include_once('data/config/config.php');
 
 // Contenido startup process
 include_once($contenido_path.'includes/startup.php');
@@ -117,7 +114,7 @@ if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
 }
 
 // update urlbuilder set http base path
-Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
+cUri::getInstance()->getUriBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
 
 // Initialize language
 if (!isset($lang)) {
@@ -179,7 +176,7 @@ $aParams = array(
     'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client],
     'lang' => $lang, 'error'=> '1'
 );
-$errsite = 'Location: ' . Contenido_Url::getInstance()->buildRedirect($aParams);
+$errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
 
 ///////////////////// initial code from front_content.php //////////////////////
 
