@@ -9,10 +9,6 @@
  * @subpackage  Validator
  */
 
-cInclude('classes', 'Validator/Abstract.class.php');
-cInclude('classes', 'Validator/Factory.class.php');
-cInclude('classes', 'Validator/Email.class.php');
-
 /**
  * Class to test email validator.
  *
