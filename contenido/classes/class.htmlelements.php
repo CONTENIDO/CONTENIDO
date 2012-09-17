@@ -2189,7 +2189,7 @@ class cHTMLImage extends cHTML {
         $this->_tag = 'img';
         $this->_contentlessTag = true;
 
-        $this->setBorder(0);
+        $this->setBorder(NULL);
         $this->setSrc($src);
         $this->setClass($class);
     }
@@ -2297,15 +2297,15 @@ class cHTMLImage extends cHTML {
     public function toHTML() {
         $this->updateAttribute('src', $this->_src);
 
-        if (!empty($this->_width)) {
+        if (!is_null($this->_width)) {
             $this->updateAttribute('width', $this->_width);
         }
 
-        if (!empty($this->_height)) {
+        if (!is_null($this->_height)) {
             $this->updateAttribute('height', $this->_height);
         }
 
-        if (!empty($this->_border)) {
+        if (!is_null($this->_border)) {
         	$this->updateAttribute('border', $this->_border);
         }
 
@@ -2334,7 +2334,7 @@ class cHTMLTable extends cHTML {
         $this->_contentlessTag = false;
         $this->setPadding(0);
         $this->setSpacing(0);
-        $this->setBorder(0);
+        $this->setBorder(NULL);
     }
 
     /**
