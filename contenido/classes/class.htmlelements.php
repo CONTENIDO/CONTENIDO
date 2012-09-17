@@ -2252,10 +2252,10 @@ class cHTMLImage extends cHTML {
      * @return cHTMLImage $this
      */
     public function setBorder($border) {
-	    if(!is_null($border)){echo $border;
+	    if(!is_null($border)){
 	    	$border = intval($border);
 	        $this->_border = $border;
-	    } else { echo "Null";
+	    } else {
 	    	$this->_border = $border;
 	    }
         return $this;
