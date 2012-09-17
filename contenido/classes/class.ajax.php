@@ -169,8 +169,8 @@ class cAjaxRequest {
                 break;
 
             case 'scaleImage':
-                $filename = $_REQUEST['url'];
-                $filename = str_replace($frontendURL, $frontendURL, $filename);
+                $filename_a = $_REQUEST['url'];
+                $filename = str_replace($frontendURL, $frontendPath, $filename_a);
                 // $filename muss not url path(http://) sondern globale PC
                 // Path(c:/) sein.
                 $filetype = substr($filename, strlen($filename) - 4, 4);
@@ -188,13 +188,13 @@ class cAjaxRequest {
                         $string = cApiImgScale($filename, 428, 210);
                         break;
                     default:
-                        $string = $_REQUEST['sUrl'];
+                        $string = $filename_a;
                         break;
                 }
                 // if can not scale, so $sString is null, then show the original
                 // image.
                 if ($string == '') {
-                    $filename = str_replace($frontendURL,$frontendURL, $_REQUEST['sUrl']);
+                    $filename = str_replace($frontendPath,$frontendURL, $filename_a);
                     $string = $filename;
                 }
                 break;
