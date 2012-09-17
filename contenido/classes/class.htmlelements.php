@@ -2252,9 +2252,12 @@ class cHTMLImage extends cHTML {
      * @return cHTMLImage $this
      */
     public function setBorder($border) {
-        $border = intval($border);
-        $this->_border = $border;
-
+	    if(!is_null($border)){echo $border;
+	    	$border = intval($border);
+	        $this->_border = $border;
+	    } else { echo "Null";
+	    	$this->_border = $border;
+	    }
         return $this;
     }
 
@@ -2302,7 +2305,9 @@ class cHTMLImage extends cHTML {
             $this->updateAttribute('height', $this->_height);
         }
 
-        $this->updateAttribute('border', $this->_border);
+        if (!empty($this->_border)) {
+        	$this->updateAttribute('border', $this->_border);
+        }
 
         return parent::toHTML();
     }
