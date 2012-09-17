@@ -336,7 +336,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
     unset($tpl2);
     $result = array(
         "metatype" => "",
-        "fieldtype" => "text",
+        "fieldtype" => array("text","textarea"),
         "maxlength" => "255",
         "fieldname" => "name"
     );
@@ -349,8 +349,18 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
 
     while ($db->next_record()) {
         if ($db->f("Field") != 'idmetatype') {
-            $tpl2->set('d', 'METATITLE', $db->f("Field"));
-            $tpl2->set('d', 'METAFIELDTYPE', '<input type="text" onblur="restoreOnBlur(this, \'' . $result[$db->f("Field")] . '\')" onfocus="clearOnFocus(this, \'' . $result[$db->f("Field")] . '\');" value="' . $result[$db->f("Field")] . '" maxlength="255" style="width:400px;" id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '" class="text_medium">');
+            $tpl2->set('d', 'METATITLE', i18n($db->f("Field")));
+            if(!is_array($result[$db->f("Field")])){
+            	$str = '<input type="text" onblur="restoreOnBlur(this, \'' . $result[$db->f("Field")] . '\')" onfocus="clearOnFocus(this, \'' . $result[$db->f("Field")] . '\');" value="' . $result[$db->f("Field")] . '" maxlength="255" style="width:100%;" id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '" class="text_medium">';
+            } else {
+	            $str = '<select id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '">';
+            	foreach($result[$db->f("Field")] as $item){
+	            	$str .= '<option value="' . $item . '">' . $item . '</option>';
+            	}
+	            $str .= '<select>';
+            }
+            $tpl2->set('d', 'METAFIELDTYPE', $str);
+
             $tpl2->next();
         }
     }
