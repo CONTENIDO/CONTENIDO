@@ -29,7 +29,7 @@ if ($action == "client_delete") {
     if ($perm->have_perm_area_action("client", "client_delete")) {
 
         $sql = "DELETE FROM " . $cfg["tab"]["clients"] . " WHERE
-             idclient = '" . cSecurity::toInteger($idclient) . "'";
+             idclient = '" . cSecurity::toInteger($idclientdelete) . "'";
         $db->query($sql);
     }
 }
