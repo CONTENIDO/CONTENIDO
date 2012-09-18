@@ -622,7 +622,9 @@ class cHTML {
         $attributes = $this->_parseAttributes($attributes);
 
         foreach ($attributes as $key => $value) {
-            $this->_attributes[$key] = $value;
+            if (!is_null($value)) {
+                $this->_attributes[$key] = $value;
+            }
         }
 
         return $this;
@@ -2169,13 +2171,6 @@ class cHTMLImage extends cHTML {
     protected $_height;
 
     /**
-     * Image border
-     *
-     * @var int
-     */
-    protected $_border;
-
-    /**
      * Constructor.
      * Creates an HTML IMG element.
      *
@@ -2189,7 +2184,6 @@ class cHTMLImage extends cHTML {
         $this->_tag = 'img';
         $this->_contentlessTag = true;
 
-        $this->setBorder(NULL);
         $this->setSrc($src);
         $this->setClass($class);
     }
@@ -2252,13 +2246,7 @@ class cHTMLImage extends cHTML {
      * @return cHTMLImage $this
      */
     public function setBorder($border) {
-	    if(!is_null($border)){
-	    	$border = intval($border);
-	        $this->_border = $border;
-	    } else {
-	    	$this->_border = $border;
-	    }
-        return $this;
+        return $this->updateAttribute('border', $border);
     }
 
     /**
@@ -2303,10 +2291,6 @@ class cHTMLImage extends cHTML {
 
         if (!is_null($this->_height)) {
             $this->updateAttribute('height', $this->_height);
-        }
-
-        if (!is_null($this->_border)) {
-        	$this->updateAttribute('border', $this->_border);
         }
 
         return parent::toHTML();
