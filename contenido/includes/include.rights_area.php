@@ -40,7 +40,7 @@ while ($db->next_record()) { //set a new rights list for this user
 }
 
 if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit")) {
-    saverights();
+    saveRights();
 } else {
     if (!$perm->have_perm_area_action($area, $action)) {
         $notification->displayNotification("error", i18n("Permission denied"));

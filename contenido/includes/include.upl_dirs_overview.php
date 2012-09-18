@@ -30,7 +30,7 @@ if (!(int) $client > 0) {
     return;
 }
 
-function getExpandCollapseButton($item) {
+function getUplExpandCollapseButton($item) {
     global $sess, $PHP_SELF, $frame, $area, $appendparameters;
     $selflink = "main.php";
 
@@ -291,7 +291,7 @@ if (is_array($objects)) {
         $a_file->collapsed_icon = "images/grid_expand.gif";
         $a_file->expanded_icon = "images/grid_collapse.gif";
         $dlevels[$depth] = $a_file->custom["lastitem"];
-        $imgcollapse = getExpandCollapseButton($a_file);
+        $imgcollapse = getUplExpandCollapseButton($a_file);
         $fileurl = rawurlencode($path . $file . '/');
         $pathurl = rawurlencode($path);
 
@@ -409,7 +409,7 @@ if (is_array($objects)) {
         $a_file->collapsed_icon = "images/grid_expand.gif";
         $a_file->expanded_icon = "images/grid_collapse.gif";
         $dlevels[$depth] = $a_file->custom["lastitem"];
-        $collapse = getExpandCollapseButton($a_file);
+        $collapse = getUplExpandCollapseButton($a_file);
         $fileurl = rawurlencode($path . $file . '/');
         $pathurl = rawurlencode($path);
 

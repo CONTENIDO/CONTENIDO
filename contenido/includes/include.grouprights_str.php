@@ -38,7 +38,7 @@ while ($db->next_record()) { //set a new rights list fore this user
 }
 
 if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit")) {
-    saverights();
+    saveGroupRights();
 } else {
     if (!$perm->have_perm_area_action($area, $action)) {
         $notification->displayNotification("error", i18n("Permission denied"));

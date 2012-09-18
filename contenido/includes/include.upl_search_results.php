@@ -6,31 +6,31 @@
  * Description:
  * File Manager Search Engine Reulsts
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.9.1
- * @author     Timo A. Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @package CONTENIDO Backend Includes
+ * @version 1.9.1
+ * @author Timo A. Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 cInclude('includes', 'api/functions.frontend.list.php');
 cInclude('includes', 'functions.upl.php');
 cInclude('includes', 'functions.file.php');
 
 $appendparameters = $_REQUEST["appendparameters"];
-
-class UploadList extends FrontendList {
+class UploadSearchResultList extends FrontendList {
 
     var $dark;
+
     var $size;
+
     var $pathdata;
 
     function convert($field, $data) {
@@ -80,17 +80,17 @@ class UploadList extends FrontendList {
             // If this file is an image, try to open
             $fileType = strtolower(getFileType($data));
             switch ($fileType) {
-                case "png" :
-                case "psd" :
-                case "gif" :
-                case "tiff" :
-                case "bmp" :
-                case "jpeg" :
-                case "jpg" :
-                case "bmp" :
-                case "iff" :
-                case "xbm" :
-                case "wbmp" :
+                case "png":
+                case "psd":
+                case "gif":
+                case "tiff":
+                case "bmp":
+                case "jpeg":
+                case "jpg":
+                case "bmp":
+                case "iff":
+                case "xbm":
+                case "wbmp":
                     $frontendURL = cRegistry::getFrontendUrl();
 
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
@@ -106,15 +106,13 @@ class UploadList extends FrontendList {
                     }
 
                     if (cApiDbfs::isDbfs($data)) {
-                        $retValue =
-                                '<a href="JavaScript:iZoom(\'' . $sess->url($frontendURL . "dbfs.php?file=" . $data) . '\');">
+                        $retValue = '<a href="JavaScript:iZoom(\'' . $sess->url($frontendURL . "dbfs.php?file=" . $data) . '\');">
                                 <img class="hover" name="smallImage" src="' . $sCacheThumbnail . '">
                                 <img class="preview" name="prevImage" src="' . $sCacheThumbnail . '">
                             </a>';
                         return $retValue;
                     } else {
-                        $retValue =
-                                '<a href="JavaScript:iZoom(\'' . $frontendURL . $cfgClient[$client]["upload"] . $data . '\');">
+                        $retValue = '<a href="JavaScript:iZoom(\'' . $frontendURL . $cfgClient[$client]["upload"] . $data . '\');">
                                     <img class="hover" name="smallImage"  onMouseOver="correctPosition(this, ' . $iWidth . ', ' . $iHeight . ');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="' . $sCacheThumbnail . '">
                                     <img class="preview" name="prevImage" src="' . $sCacheThumbnail . '">
                                 </a>';
@@ -133,311 +131,313 @@ class UploadList extends FrontendList {
 
 }
 
-function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmode) {
-    global $cfg, $client, $cfgClient, $area, $frame, $sess, $appendparameters, $currentuser;
+if ($sortby == "") {
+    $sortby = 7;
+    $sortmode = "DESC";
+}
 
-    if ($sortby == "") {
-        $sortby = 7;
-        $sortmode = "DESC";
-    }
+if ($startpage == "") {
+    $startpage = 1;
+}
 
-    if ($startpage == "") {
-        $startpage = 1;
-    }
+$thisfile = $sess->url("main.php?idarea=$area&frame=$frame&appendparameters=$appendparameters&searchfor=$searchfor&thumbnailmode=$thumbnailmode");
+$scrollthisfile = $thisfile . "&sortmode=$sortmode&sortby=$sortby";
 
-    $thisfile = $sess->url("main.php?idarea=$area&frame=$frame&appendparameters=$appendparameters&searchfor=$searchfor&thumbnailmode=$thumbnailmode");
-    $scrollthisfile = $thisfile . "&sortmode=$sortmode&sortby=$sortby";
-
-    if ($sortby == 3 && $sortmode == "DESC") {
-        $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '<img src="images/sort_down.gif" border="0"></a>';
+if ($sortby == 3 && $sortmode == "DESC") {
+    $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '<img src="images/sort_down.gif" border="0"></a>';
+} else {
+    if ($sortby == 3) {
+        $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '<img src="images/sort_up.gif" border="0"></a>';
     } else {
-        if ($sortby == 3) {
-            $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '<img src="images/sort_up.gif" border="0"></a>';
-        } else {
-            $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '</a>';
-        }
+        $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '</a>';
     }
+}
 
-    if ($sortby == 4 && $sortmode == "DESC") {
-        $pathsort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Path") . '<img src="images/sort_down.gif" border="0"></a>';
+if ($sortby == 4 && $sortmode == "DESC") {
+    $pathsort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Path") . '<img src="images/sort_down.gif" border="0"></a>';
+} else {
+    if ($sortby == 4) {
+        $pathsort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Path") . '<img src="images/sort_up.gif" border="0"></a>';
     } else {
-        if ($sortby == 4) {
-            $pathsort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Path") . '<img src="images/sort_up.gif" border="0"></a>';
-        } else {
-            $pathsort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Path") . "</a>";
-        }
+        $pathsort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Path") . "</a>";
     }
+}
 
-    if ($sortby == 5 && $sortmode == "DESC") {
-        $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=5&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Size") . '<img src="images/sort_down.gif" border="0"></a>';
+if ($sortby == 5 && $sortmode == "DESC") {
+    $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=5&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Size") . '<img src="images/sort_down.gif" border="0"></a>';
+} else {
+    if ($sortby == 5) {
+        $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=5&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Size") . '<img src="images/sort_up.gif" border="0"></a>';
     } else {
-        if ($sortby == 5) {
-            $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=5&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Size") . '<img src="images/sort_up.gif" border="0"></a>';
-        } else {
-            $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=5&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Size") . "</a>";
-        }
+        $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=5&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Size") . "</a>";
     }
+}
 
-    if ($sortby == 6 && $sortmode == "DESC") {
-        $typesort = '<a class="gray" href="' . $thisfile . '&sortby=6&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Type") . '<img src="images/sort_down.gif" border="0"></a>';
+if ($sortby == 6 && $sortmode == "DESC") {
+    $typesort = '<a class="gray" href="' . $thisfile . '&sortby=6&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Type") . '<img src="images/sort_down.gif" border="0"></a>';
+} else {
+    if ($sortby == 6) {
+        $typesort = '<a class="gray" href="' . $thisfile . '&sortby=6&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Type") . '<img src="images/sort_up.gif" border="0"></a>';
     } else {
-        if ($sortby == 6) {
-            $typesort = '<a class="gray" href="' . $thisfile . '&sortby=6&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Type") . '<img src="images/sort_up.gif" border="0"></a>';
-        } else {
-            $typesort = '<a class="gray" href="' . $thisfile . '&sortby=6&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Type") . "</a>";
-        }
+        $typesort = '<a class="gray" href="' . $thisfile . '&sortby=6&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Type") . "</a>";
     }
+}
 
-    if ($sortby == 7 && $sortmode == "DESC") {
-        $srelevance = '<a class="gray" href="' . $thisfile . '&sortby=7&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Relevance") . '<img src="images/sort_down.gif" border="0"></a>';
+if ($sortby == 7 && $sortmode == "DESC") {
+    $srelevance = '<a class="gray" href="' . $thisfile . '&sortby=7&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Relevance") . '<img src="images/sort_down.gif" border="0"></a>';
+} else {
+    if ($sortby == 7) {
+        $srelevance = '<a class="gray" href="' . $thisfile . '&sortby=7&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Relevance") . '<img src="images/sort_up.gif" border="0"></a>';
     } else {
-        if ($sortby == 7) {
-            $srelevance = '<a class="gray" href="' . $thisfile . '&sortby=7&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Relevance") . '<img src="images/sort_up.gif" border="0"></a>';
-        } else {
-            $srelevance = '<a class="gray" href="' . $thisfile . '&sortby=7&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Relevance") . "</a>";
-        }
+        $srelevance = '<a class="gray" href="' . $thisfile . '&sortby=7&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Relevance") . "</a>";
     }
+}
 
-    $sToolsRow = '<tr class="textg_medium">
-                      <th colspan="6" style="border-bottom: 1px solid #b3b3b3; height:20px; line-height:20px; vertical-align:middle; padding-left:5px;" id="cat_navbar">
-                          <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:300px; padding:0px 5px; text-align:right;">' . i18n("Searched for:") . " " . $searchfor . '</div>
-                          <div style="clear:both;"></div>
-                      </th>
-                  </tr>';
+$sToolsRow = '<tr class="textg_medium">
+                  <th colspan="6" style="border-bottom: 1px solid #b3b3b3; height:20px; line-height:20px; vertical-align:middle; padding-left:5px;" id="cat_navbar">
+                      <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:300px; padding:0px 5px; text-align:right;">' . i18n("Searched for:") . " " . $searchfor . '</div>
+                      <div style="clear:both;"></div>
+                  </th>
+              </tr>';
 
-    // List wraps
+// List wraps
 
-    $sSpacedRow = '<tr height="10">
-                        <td colspan="6" style="border-bottom-width: 0px;"></td>
-                   </tr>';
+$sSpacedRow = '<tr height="10">
+                    <td colspan="6" style="border-bottom-width: 0px;"></td>
+               </tr>';
 
+$pagerwrap = '<tr>
+                <th colspan="6" id="cat_navbar">
+                    <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLRIGHT-</div>
+                    <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-PAGE-</div>
+                    <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLLEFT-</div>
+                    <span style="margin-right:10px; line-height:20px; vertical-align:middle;">' . i18n("Files per Page") . '</span> -C-FILESPERPAGE-
+                    <div style="clear:both;"></div>
+                </th>
+            </tr>';
 
-
-    $pagerwrap = '<tr>
-                    <th colspan="6" id="cat_navbar">
-                        <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLRIGHT-</div>
-                        <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-PAGE-</div>
-                        <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLLEFT-</div>
-                        <span style="margin-right:10px; line-height:20px; vertical-align:middle;">' . i18n("Files per Page") . '</span> -C-FILESPERPAGE-
-                        <div style="clear:both;"></div>
-                    </th>
+$startwrap = '<table class="hoverbox generic" cellspacing="0" cellpadding="2" border="0">
+                ' . $pagerwrap . $sSpacedRow . $sToolsRow . $sSpacedRow . '
+               <tr>
+                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . i18n("Preview") . '</th>
+                    <th width="100%" align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $fnsort . '</th>
+                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $pathsort . '</th>
+                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $sizesort . '</th>
+                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $typesort . '</th>
+                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $srelevance . '</th>
                 </tr>';
+$itemwrap = '<tr>
+                    <td align="center" valign="top" class="text_medium" style="white-space:nowrap;" nowrap="nowrap">%s</td>
+                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" nowrap="nowrap">%s</td>
+                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="200" nowrap="nowrap">%s</td>
+                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
+                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
+                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="75" nowrap="nowrap">%s</td>
+                </tr>';
+$endwrap = $sSpacedRow . $sToolsRow . $sSpacedRow . $pagerwrap . '</table>';
 
-    $startwrap = '<table class="hoverbox generic" cellspacing="0" cellpadding="2" border="0">
-                    ' . $pagerwrap . $sSpacedRow . $sToolsRow . $sSpacedRow . '
-                   <tr>
-                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . i18n("Preview") . '</th>
-                        <th width="100%" align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $fnsort . '</th>
-                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $pathsort . '</th>
-                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $sizesort . '</th>
-                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $typesort . '</th>
-                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $srelevance . '</th>
-                    </tr>';
-    $itemwrap = '<tr>
-                        <td align="center" valign="top" class="text_medium" style="white-space:nowrap;" nowrap="nowrap">%s</td>
-                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" nowrap="nowrap">%s</td>
-                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="200" nowrap="nowrap">%s</td>
-                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
-                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
-                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="75" nowrap="nowrap">%s</td>
-                    </tr>';
-    $endwrap = $sSpacedRow . $sToolsRow . $sSpacedRow . $pagerwrap . '</table>';
+// Object initializing
+$page = new cGuiPage("upl_search_results");
+$list2 = new UploadSearchResultList($startwrap, $endwrap, $itemwrap);
 
-    // Object initializing
-    $page = new cGuiPage("upl_search_results");
-    $list2 = new UploadList($startwrap, $endwrap, $itemwrap);
+$uploads = new cApiUploadCollection();
 
-    $uploads = new cApiUploadCollection();
+// Fetch data
+$files = uplSearch($searchfor);
 
-    // Fetch data
-    $files = uplSearch($searchfor);
-
-    if ($thumbnailmode == '') {
-        $current_mode = $currentuser->getUserProperty('upload_folder_thumbnailmode', md5('search_results_num_per_page'));
-        if ($current_mode != '') {
-            $thumbnailmode = $current_mode;
-        } else {
-            $thumbnailmode = getEffectiveSetting('backend', 'thumbnailmode', 100);
-        }
+if ($thumbnailmode == '') {
+    $current_mode = $currentuser->getUserProperty('upload_folder_thumbnailmode', md5('search_results_num_per_page'));
+    if ($current_mode != '') {
+        $thumbnailmode = $current_mode;
+    } else {
+        $thumbnailmode = getEffectiveSetting('backend', 'thumbnailmode', 100);
     }
+}
 
-    switch ($thumbnailmode) {
-        case 25: $numpics = 25;
-            break;
-        case 50: $numpics = 50;
-            break;
-        case 100:$numpics = 100;
-            break;
-        case 200:$numpics = 200;
-            break;
-        default: $thumbnailmode = 100;
-            $numpics = 15;
-            break;
+switch ($thumbnailmode) {
+    case 25:
+        $numpics = 25;
+        break;
+    case 50:
+        $numpics = 50;
+        break;
+    case 100:
+        $numpics = 100;
+        break;
+    case 200:
+        $numpics = 200;
+        break;
+    default:
+        $thumbnailmode = 100;
+        $numpics = 15;
+        break;
+}
+
+$currentuser->setUserProperty('upload_folder_thumbnailmode', md5('search_results_num_per_page'), $thumbnailmode);
+
+$list2->setResultsPerPage($numpics);
+
+$list2->size = $thumbnailmode;
+
+$rownum = 0;
+if (!is_array($files)) {
+    $files = array();
+}
+
+arsort($files, SORT_NUMERIC);
+
+$count = 0;
+$properties = new cApiPropertyCollection();
+
+foreach ($files as $file => $rating) {
+
+    $slashpos = strrpos($file, "/");
+
+    if ($slashpos === false) {
+        $myfilename = $file;
+        $mydirname = "";
+    } else {
+        $myfilename = substr($file, $slashpos + 1);
+        $mydirname = substr($file, 0, $slashpos + 1);
     }
+    $path = $mydirname;
 
-    $currentuser->setUserProperty('upload_folder_thumbnailmode', md5('search_results_num_per_page'), $thumbnailmode);
+    $filename = $myfilename;
+    $dirname = $cfgClient[$client]["upl"]["path"] . $mydirname;
 
-    $list2->setResultsPerPage($numpics);
+    $uploads->select("idclient = '$client' AND dirname = '$mydirname' AND filename = '$filename'");
 
-    $list2->size = $thumbnailmode;
+    if ($item = $uploads->next()) {
+        $filesize = $item->get("size");
 
-    $rownum = 0;
-    if (!is_array($files)) {
-        $files = array();
-    }
-
-    arsort($files, SORT_NUMERIC);
-
-    $count = 0;
-    $properties = new cApiPropertyCollection();
-
-    foreach ($files as $file => $rating) {
-
-        $slashpos = strrpos($file, "/");
-
-        if ($slashpos === false) {
-            $myfilename = $file;
-            $mydirname = "";
-        } else {
-            $myfilename = substr($file, $slashpos + 1);
-            $mydirname = substr($file, 0, $slashpos + 1);
-        }
-        $path = $mydirname;
-
-        $filename = $myfilename;
-        $dirname = $cfgClient[$client]["upl"]["path"] . $mydirname;
-
-        $uploads->select("idclient = '$client' AND dirname = '$mydirname' AND filename = '$filename'");
-
-        if ($item = $uploads->next()) {
-            $filesize = $item->get("size");
-
-            if ($filesize == 0) {
-                if (cFileHandler::exists($dirname . $filename)) {
-                    $filesize = filesize($dirname . $filename);
-                }
-            }
-            $description = $item->get("description");
-        } else {
+        if ($filesize == 0) {
             if (cFileHandler::exists($dirname . $filename)) {
                 $filesize = filesize($dirname . $filename);
             }
         }
-
-        $count++;
-
-        $medianame = $properties->getValue("upload", $mydirname . $filename, "file", "medianame");
-        $medianotes = $properties->getValue("upload", $mydirname . $filename, "file", "medianotes");
-
-        $showfilename = $filename;
-        $bgColor = false;
-
-        $fileType = strtolower(getFileType($data));
-        $list2->setData($rownum, $mydirname . $filename, $showfilename, $mydirname, $filesize, $fileType, $rating / 10);
-
-        $rownum++;
-    }
-
-    if ($rownum == 0) {
-        $page->displayWarning(i18n("No files found"));
-        $page->abortRendering();
-        $page->render();
-        return;
-    }
-
-    if ($sortmode == "ASC") {
-        $list2->sort($sortby, SORT_ASC);
+        $description = $item->get("description");
     } else {
-        $list2->sort($sortby, SORT_DESC);
-    }
-
-    if ($startpage < 1) {
-        $startpage = 1;
-    }
-
-    if ($startpage > $list2->getNumPages()) {
-        $startpage = $list2->getNumPages();
-    }
-
-    $list2->setListStart($startpage);
-
-    // Create scroller
-    if ($list2->getCurrentPage() > 1) {
-        $prevpage = '<a href="' . $scrollthisfile . '&startpage=' . ($list2->getCurrentPage() - 1) . '" class="invert_hover">' . i18n("Previous Page") . '</a>';
-    } else {
-        $nextpage = '&nbsp;';
-    }
-
-    if ($list2->getCurrentPage() < $list2->getNumPages()) {
-        $nextpage = '<a href="' . $scrollthisfile . '&startpage=' . ($list2->getCurrentPage() + 1) . '" class="invert_hover">' . i18n("Next Page") . '</a>';
-    } else {
-        $nextpage = '&nbsp;';
-    }
-
-    if ($list2->getNumPages() > 1) {
-        $num_pages = $list2->getNumPages();
-
-        $paging_form .= "<script type=\"text/javascript\">
-            function jumpToPage(select) {
-                var pagenumber = select.selectedIndex + 1;
-                url = '" . $sess->url("main.php?idarea=$area&frame=$frame&appendparameters=$appendparameters&searchfor=$searchfor&thumbnailmode=$thumbnailmode") . "';
-                document.location.href = url + '&startpage=' + pagenumber;
-            }
-        </script>";
-        $paging_form .= "<select name=\"start_page\" class=\"text_medium\" onChange=\"jumpToPage(this);\">";
-        for ($i = 1; $i <= $num_pages; $i++) {
-            if ($i == $startpage) {
-                $selected = " selected";
-            } else {
-                $selected = "";
-            }
-            $paging_form.="<option value=\"$i\"$selected>$i</option>";
+        if (cFileHandler::exists($dirname . $filename)) {
+            $filesize = filesize($dirname . $filename);
         }
-
-        $paging_form.="</select>";
-    } else {
-        $paging_form = "1";
     }
 
-    $curpage = $paging_form . " / " . $list2->getNumPages();
+    $count++;
 
-    $scroller = $prevpage . $nextpage;
+    $medianame = $properties->getValue("upload", $mydirname . $filename, "file", "medianame");
+    $medianotes = $properties->getValue("upload", $mydirname . $filename, "file", "medianotes");
 
-    $output = $list2->output(true);
+    $showfilename = $filename;
+    $bgColor = false;
 
-    $output = str_replace("-C-SCROLLLEFT-", $prevpage, $output);
-    $output = str_replace("-C-SCROLLRIGHT-", $nextpage, $output);
-    $output = str_replace("-C-PAGE-", i18n("Page") . " " . $curpage, $output);
-    $output = str_replace("-C-THUMBNAILMODE-", $thumbnailmode, $output);
+    $fileType = strtolower(getFileType($data));
+    $list2->setData($rownum, $mydirname . $filename, $showfilename, $mydirname, $filesize, $fileType, $rating / 10);
 
-    $form = new cHTMLForm("options");
-    $form->setVar("contenido", $sess->id);
-    $form->setVar("area", $area);
-    $form->setVar("frame", $frame);
-    $form->setVar("searchfor", $searchfor);
-    $form->setVar("sortmode", $sortmode);
-    $form->setVar("sortby", $sortby);
-    $form->setVar("startpage", $startpage);
-    $form->setVar("appendparameters", $appendparameters);
-
-    $select = new cHTMLSelectElement("thumbnailmode_input");
-
-    $values = array(25 => "25", 50 => "50", 100 => "100", 200 => "200");
-
-    $select->autoFill($values);
-
-    $select->setDefault($thumbnailmode);
-    $select->setEvent('change', "document.options.thumbnailmode.value = this.value");
-
-    $topbar = $select->render() . '<input type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif" style="vertical-align:middle; margin-left:5px;">';
-
-    $output = str_replace("-C-FILESPERPAGE-", $topbar, $output);
-
-    $page->addScript($sess->url("iZoom.js.php"));
-
-    $form->appendContent($output);
-    $page->set("s", "FORM", $form->render());
-    $page->render();
+    $rownum++;
 }
 
-uplRender($searchfor, $sortby, $sortmode, $startpage, $thumbnailmode);
+if ($rownum == 0) {
+    $page->displayWarning(i18n("No files found"));
+    $page->abortRendering();
+    $page->render();
+    return;
+}
+
+if ($sortmode == "ASC") {
+    $list2->sort($sortby, SORT_ASC);
+} else {
+    $list2->sort($sortby, SORT_DESC);
+}
+
+if ($startpage < 1) {
+    $startpage = 1;
+}
+
+if ($startpage > $list2->getNumPages()) {
+    $startpage = $list2->getNumPages();
+}
+
+$list2->setListStart($startpage);
+
+// Create scroller
+if ($list2->getCurrentPage() > 1) {
+    $prevpage = '<a href="' . $scrollthisfile . '&startpage=' . ($list2->getCurrentPage() - 1) . '" class="invert_hover">' . i18n("Previous Page") . '</a>';
+} else {
+    $nextpage = '&nbsp;';
+}
+
+if ($list2->getCurrentPage() < $list2->getNumPages()) {
+    $nextpage = '<a href="' . $scrollthisfile . '&startpage=' . ($list2->getCurrentPage() + 1) . '" class="invert_hover">' . i18n("Next Page") . '</a>';
+} else {
+    $nextpage = '&nbsp;';
+}
+
+if ($list2->getNumPages() > 1) {
+    $num_pages = $list2->getNumPages();
+
+    $paging_form .= "<script type=\"text/javascript\">
+        function jumpToPage(select) {
+            var pagenumber = select.selectedIndex + 1;
+            url = '" . $sess->url("main.php?idarea=$area&frame=$frame&appendparameters=$appendparameters&searchfor=$searchfor&thumbnailmode=$thumbnailmode") . "';
+            document.location.href = url + '&startpage=' + pagenumber;
+        }
+    </script>";
+    $paging_form .= "<select name=\"start_page\" class=\"text_medium\" onChange=\"jumpToPage(this);\">";
+    for ($i = 1; $i <= $num_pages; $i++) {
+        if ($i == $startpage) {
+            $selected = " selected";
+        } else {
+            $selected = "";
+        }
+        $paging_form .= "<option value=\"$i\"$selected>$i</option>";
+    }
+
+    $paging_form .= "</select>";
+} else {
+    $paging_form = "1";
+}
+
+$curpage = $paging_form . " / " . $list2->getNumPages();
+
+$scroller = $prevpage . $nextpage;
+
+$output = $list2->output(true);
+
+$output = str_replace("-C-SCROLLLEFT-", $prevpage, $output);
+$output = str_replace("-C-SCROLLRIGHT-", $nextpage, $output);
+$output = str_replace("-C-PAGE-", i18n("Page") . " " . $curpage, $output);
+$output = str_replace("-C-THUMBNAILMODE-", $thumbnailmode, $output);
+
+$form = new cHTMLForm("options");
+$form->setVar("contenido", $sess->id);
+$form->setVar("area", $area);
+$form->setVar("frame", $frame);
+$form->setVar("searchfor", $searchfor);
+$form->setVar("sortmode", $sortmode);
+$form->setVar("sortby", $sortby);
+$form->setVar("startpage", $startpage);
+$form->setVar("appendparameters", $appendparameters);
+
+$select = new cHTMLSelectElement("thumbnailmode_input");
+
+$values = array(
+    25 => "25",
+    50 => "50",
+    100 => "100",
+    200 => "200"
+);
+
+$select->autoFill($values);
+
+$select->setDefault($thumbnailmode);
+$select->setEvent('change', "document.options.thumbnailmode.value = this.value");
+
+$topbar = $select->render() . '<input type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif" style="vertical-align:middle; margin-left:5px;">';
+
+$output = str_replace("-C-FILESPERPAGE-", $topbar, $output);
+
+$page->addScript($sess->url("iZoom.js.php"));
+
+$form->appendContent($output);
+$page->set("s", "FORM", $form->render());
+$page->render();

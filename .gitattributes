@@ -1547,7 +1547,6 @@ contenido/includes/type/action/include.tpl_duplicate.action.php -text
 contenido/includes/type/action/include.tpl_edit.action.php -text
 contenido/includes/type/action/include.tpl_visedit.action.php -text
 contenido/includes/type/action/include.upl_mkdir.action.php -text
-contenido/includes/type/action/include.user_saverightsarea.action.php -text
 contenido/includes/type/code/include.CMS_EASYIMGEDIT.code.php -text
 contenido/includes/type/code/include.CMS_HTMLTEXT.code.php -text
 contenido/includes/type/code/include.CMS_IMGEDIT.code.php -text

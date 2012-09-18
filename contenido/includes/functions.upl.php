@@ -7,14 +7,14 @@
  * Upload functions
  *
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.4.1
- * @author     Jan Lengowski
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @package CONTENIDO Backend Includes
+ * @version 1.4.1
+ * @author Jan Lengowski
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -28,13 +28,12 @@ cInclude('includes', 'functions.file.php');
  * the full path name on mouseover
  *
  * @author Timo Trautmann (4fb)
- * @param  string  $sDisplayPath  Original filepath
- * @param  int     $iLimit        Limit of chars which were displayed directly. If the path
- *                                string is shorter there will be no tooltipp
- * @return string  Contains short path name and tooltipp if neccessary
+ * @param string $sDisplayPath Original filepath
+ * @param int $iLimit Limit of chars which were displayed directly. If the path
+ *        string is shorter there will be no tooltipp
+ * @return string Contains short path name and tooltipp if neccessary
  */
-function generateDisplayFilePath($sDisplayPath, $iLimit)
-{
+function generateDisplayFilePath($sDisplayPath, $iLimit) {
     $sDisplayPath = (string) $sDisplayPath;
     $iLimit = (int) $iLimit;
 
@@ -48,40 +47,39 @@ function generateDisplayFilePath($sDisplayPath, $iLimit)
 
         foreach ($aPathFragments as $sFragment) {
             if ($sFragment != '') {
-                if (strlen($sFragment) > ($iLimit-5)) {
+                if (strlen($sFragment) > ($iLimit - 5)) {
                     $sFragment = cApiStrTrimHard($sFragment, $iLimit);
                 }
 
-                if ($iCharcount+strlen($sFragment)+1 > $iLimit) {
-                    $sTooltippString .= '<br>'.$sFragment.'/';
+                if ($iCharcount + strlen($sFragment) + 1 > $iLimit) {
+                    $sTooltippString .= '<br>' . $sFragment . '/';
                     $iCharcount = strlen($sFragment);
                 } else {
-                    $iCharcount = $iCharcount+1+strlen($sFragment);
-                    $sTooltippString .= $sFragment.'/';
+                    $iCharcount = $iCharcount + 1 + strlen($sFragment);
+                    $sTooltippString .= $sFragment . '/';
                 }
             }
         }
 
-        $sDisplayPath = '<span title="'.$sTooltippString.'" class="tooltip">'.$sDisplayPathShort.'</span>';
+        $sDisplayPath = '<span title="' . $sTooltippString . '" class="tooltip">' . $sDisplayPathShort . '</span>';
     }
     return $sDisplayPath;
 }
 
-
 /**
- * Returns array structure of passed directory. Parses the directory recursively and
+ * Returns array structure of passed directory.
+ * Parses the directory recursively and
  * collects informations about found subdirectories.
  *
- * @param   string  $sCurrentDir  Directory to parse
- * @param   string  $sStartDir  Start directory. Will be used by recursion.
- * @param   array   $aFiles  Files array structure. Will be used by recursion.
- * @param   int     $iDepth  Nesting depth of found files. Will be used by recursion.
- * @param   string  $sPathString  Path used to create full path to files. Will be used by recursion.
- * @return  array   Indexed arraay containing assoziative directory informations
+ * @param string $sCurrentDir Directory to parse
+ * @param string $sStartDir Start directory. Will be used by recursion.
+ * @param array $aFiles Files array structure. Will be used by recursion.
+ * @param int $iDepth Nesting depth of found files. Will be used by recursion.
+ * @param string $sPathString Path used to create full path to files. Will be
+ *        used by recursion.
+ * @return array Indexed arraay containing assoziative directory informations
  */
-function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = array(),
-    $iDepth = -1, $sPathString = '')
-{
+function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = array(), $iDepth = -1, $sPathString = '') {
     $iDepth++;
 
     $aDirsToExclude = uplGetDirectoriesToExclude();
@@ -111,7 +109,7 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
             $_aFile = array(
                 'name' => $file,
                 'depth' => $iDepth,
-                'pathstring' => $sPathString . $file . '/',
+                'pathstring' => $sPathString . $file . '/'
             );
 
             $aFiles[] = $_aFile;
@@ -128,12 +126,11 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
 /**
  * Checks if passed upload directory contains at least one file or directory
  *
- * @param   string  $sDir
- * @return  bool
- * @todo    Function name is misleading, should be renamed to uplIsEmpty
+ * @param string $sDir
+ * @return bool
+ * @todo Function name is misleading, should be renamed to uplIsEmpty
  */
-function uplHasFiles($sDir)
-{
+function uplHasFiles($sDir) {
     global $client, $cfgClient;
 
     if (!$hDir = @opendir($cfgClient[$client]['upl']['path'] . $sDir)) {
@@ -152,15 +149,13 @@ function uplHasFiles($sDir)
     return $bHasContent;
 }
 
-
 /**
  * Checks if passed upload directory contains at least one directory
  *
- * @param   string  $sDir
- * @return  bool
+ * @param string $sDir
+ * @return bool
  */
-function uplHasSubdirs($sDir)
-{
+function uplHasSubdirs($sDir) {
     global $client, $cfgClient;
 
     if (!$hDir = @opendir($cfgClient[$client]['upl']['path'] . $sDir)) {
@@ -181,17 +176,15 @@ function uplHasSubdirs($sDir)
     return $bHasSubdir;
 }
 
-
 /**
  * Sync database contents with directory and vice versa.
  * - Removes all db entries pointing to non existing directories
  * - Removes all db entries pointing to non existing upload files
  * - Syncs found files in passed path with the database
  *
- * @param string  $sPath  Specifies the path to scan
+ * @param string $sPath Specifies the path to scan
  */
-function uplSyncDirectory($sPath)
-{
+function uplSyncDirectory($sPath) {
     global $cfgClient, $client, $cfg, $db;
 
     if (cApiDbfs::isDbfs($sPath)) {
@@ -202,8 +195,7 @@ function uplSyncDirectory($sPath)
 
     // get current upload directory, it's subdirectories and remove all database
     // entries pointing to a non existing upload directory on the file system
-    $sql = 'SELECT DISTINCT(dirname) AS dirname FROM ' . $cfg['tab']['upl'] . ' WHERE '
-         . 'idclient=' . (int) $client . ' AND dirname LIKE "' . $db->escape($sPath) . '%"';
+    $sql = 'SELECT DISTINCT(dirname) AS dirname FROM ' . $cfg['tab']['upl'] . ' WHERE ' . 'idclient=' . (int) $client . ' AND dirname LIKE "' . $db->escape($sPath) . '%"';
     $db->query($sql);
     while ($db->next_record()) {
         $sCurrDirname = $db->f('dirname');
@@ -217,9 +209,10 @@ function uplSyncDirectory($sPath)
         }
     }
 
-    // delete all db entries related to current directory without existing file on file system
+    // delete all db entries related to current directory without existing file
+    // on file system
     $oUploadsColl->select("dirname='" . $oUploadsColl->escape($sPath) . "' AND idclient=" . (int) $client);
-    while ($oUpload = $oUploadsColl->next()) {
+    while (($oUpload = $oUploadsColl->next()) !== false) {
         if (!cFileHandler::exists($cfgClient[$client]['upl']['path'] . $oUpload->get('dirname') . $oUpload->get('filename'))) {
             $oUploadsColl->delete($oUpload->get('idupl'));
         }
@@ -229,7 +222,7 @@ function uplSyncDirectory($sPath)
     $sFullPath = $cfgClient[$client]['upl']['path'] . $sPath;
     if (is_dir($sFullPath)) {
         $aDirsToExclude = uplGetDirectoriesToExclude();
-        if ($hDir = opendir($sFullPath)) {
+        if (($hDir = opendir($sFullPath)) !== false) {
             while (false !== ($file = readdir($hDir))) {
                 if (!in_array(strtolower($file), $aDirsToExclude)) {
                     if (is_file($sFullPath . $file)) {
@@ -242,14 +235,12 @@ function uplSyncDirectory($sPath)
     }
 }
 
-
 /**
  * Sync database contents with DBFS
  *
- * @param  string  $sPath  Specifies the path to scan
+ * @param string $sPath Specifies the path to scan
  */
-function uplSyncDirectoryDBFS($sPath)
-{
+function uplSyncDirectoryDBFS($sPath) {
     global $cfgClient, $client, $cfg, $db;
 
     $oUploadsColl = new cApiUploadCollection();
@@ -259,7 +250,7 @@ function uplSyncDirectoryDBFS($sPath)
     if ($oDBFSColl->dir_exists($sPath)) {
         $sStripPath = cApiDbfs::stripPath($sPath);
         $oDBFSColl->select("dirname = '$sStripPath'");
-        while ($oFile = $oDBFSColl->next()) {
+        while (($oFile = $oDBFSColl->next()) !== false) {
             if ($oFile->get('filename') != '.') {
                 $oUploadsColl->sync($sPath . "/", $oFile->get('filename'));
             }
@@ -267,14 +258,14 @@ function uplSyncDirectoryDBFS($sPath)
     }
 
     $oUploadsColl->select("dirname='$sPath/' AND idclient='$client'");
-    while ($oUpload = $oUploadsColl->next()) {
+    while (($oUpload = $oUploadsColl->next()) !== false) {
         if (!$oDBFSColl->file_exists($oUpload->get('dirname') . $oUpload->get('filename'))) {
             $oUploadsColl->delete($oUpload->get("idupl"));
         }
     }
 
     $oPropertiesColl->select("idclient='$client' AND itemtype='upload' AND type='file' AND itemid LIKE '" . $sPath . "%'");
-    while ($oProperty = $oPropertiesColl->next()) {
+    while (($oProperty = $oPropertiesColl->next()) !== false) {
         if (!$oDBFSColl->file_exists($oProperty->get('itemid'))) {
             $oPropertiesColl->delete($oProperty->get('idproperty'));
         }
@@ -283,17 +274,16 @@ function uplSyncDirectoryDBFS($sPath)
     return;
 }
 
-
 /**
  * Creates a upload directory, either in filesystem or in dbfs.
  *
- * @param  string  $sPath  Path to directory to create, either path from client upload
- *                         directory or a dbfs path
- * @param  string  $sName  Name of directory to create
- * @param  string|void   Octal value of filemode as string ('0702') or nothing
+ * @param string $sPath Path to directory to create, either path from client
+ *        upload
+ *        directory or a dbfs path
+ * @param string $sName Name of directory to create
+ * @param string|void Octal value of filemode as string ('0702') or nothing
  */
-function uplmkdir($sPath, $sName)
-{
+function uplmkdir($sPath, $sName) {
     global $cfgClient, $client, $action;
 
     if (cApiDbfs::isDbfs($sPath)) {
@@ -317,30 +307,29 @@ function uplmkdir($sPath, $sName)
     }
 }
 
-
 /**
  * Renames a upload directory, updates all found upoad files containing the old
  * directory name and updates also all entries in propertoes table related to
  * affected upload files.
  *
- * @param  string  $sOldName
- * @param  string  $sNewName
- * @param  string  $sParent
+ * @param string $sOldName
+ * @param string $sNewName
+ * @param string $sParent
  * @throws cException if the upload path can not be renamed
  * @return void
  */
-function uplRenameDirectory($sOldName, $sNewName, $sParent)
-{
+function uplRenameDirectory($sOldName, $sNewName, $sParent) {
     global $cfgClient, $client, $cfg, $db;
 
     // rename directory
-    $sOldUplPath = $cfgClient[$client]['upl']['path'] . $sParent  . $sOldName;
-    $sNewUplPath = $cfgClient[$client]['upl']['path'] . $sParent  . $sNewName . '/';
+    $sOldUplPath = $cfgClient[$client]['upl']['path'] . $sParent . $sOldName;
+    $sNewUplPath = $cfgClient[$client]['upl']['path'] . $sParent . $sNewName . '/';
     if (!$bResult = rename($sOldUplPath, $sNewUplPath)) {
         throw new cException("Couldn't rename upload path {$sOldUplPath} to {$sNewUplPath}");
     }
 
-    // fetch all directory strings starting with the old path, and replace them with the new path
+    // fetch all directory strings starting with the old path, and replace them
+    // with the new path
     $oUploadColl = new cApiUploadCollection();
     $oUploadColl->select("idclient=" . (int) $client . " AND dirname LIKE '" . $oUploadColl->escape($sParent . $sOldName) . "%'");
     while (($oUpload = $oUploadColl->next()) !== false) {
@@ -351,9 +340,10 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent)
         $oUpload->store();
     }
 
-    // update all upload item properties starting with the old path, replace itemid with the new path
+    // update all upload item properties starting with the old path, replace
+    // itemid with the new path
     $oPropertyColl = new cApiPropertyCollection();
-    $oPropertyColl->select("idclient=" . (int) $client . " AND itemtype='upload' AND type='file' AND itemid LIKE '". $oPropertyColl->escape($sParent . $sOldName) . "%'");
+    $oPropertyColl->select("idclient=" . (int) $client . " AND itemtype='upload' AND type='file' AND itemid LIKE '" . $oPropertyColl->escape($sParent . $sOldName) . "%'");
     while (($oProperty = $oPropertyColl->next()) !== false) {
         $sDirName = $oProperty->get('itemid');
         $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
@@ -363,19 +353,17 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent)
     }
 }
 
-
 /**
  * Parses passed directory recursively and stores some properties in TreeItem
  *
- * @param  string  $sDirectory
- * @param  TreeItem  $oRootItem
- * @param  int  $iLevel
- * @param  string  $sParent
- * @param  int  $iRenameLevel
- * @return  array  List of invalid directories
+ * @param string $sDirectory
+ * @param TreeItem $oRootItem
+ * @param int $iLevel
+ * @param string $sParent
+ * @param int $iRenameLevel
+ * @return array List of invalid directories
  */
-function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $sParent = '', $iRenameLevel = 0)
-{
+function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $sParent = '', $iRenameLevel = 0) {
     $aInvalidDirectories = array();
 
     $hDir = @opendir($sDirectory);
@@ -412,7 +400,7 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
         foreach ($aFiles as $key => $file) {
             $oItem = new TreeItem($file, $sDirectory . $file . '/', true);
             $oItem->custom['level'] = $iLevel;
-            $oItem->custom['lastitem'] = ($key == count($aFiles)-1);
+            $oItem->custom['lastitem'] = ($key == count($aFiles) - 1);
             $oItem->custom['parent'] = $sDirectory;
 
             $oRootItem->addItem($oItem);
@@ -427,26 +415,23 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
     return $aInvalidDirectories;
 }
 
-
 /**
  * Collects informations about all available dbfs directories stored in TreeItem
  *
- * @param  string  $directory  Not used at te moment!
- * @param  TreeItem  $oRootItem
- * @param  int  $level  Not used at te moment!
+ * @param string $directory Not used at te moment!
+ * @param TreeItem $oRootItem
+ * @param int $level Not used at te moment!
  */
-function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $client)
-{
-
+function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $client) {
     $dbfs = new cApiDbfsCollection();
-    $dbfs->select("filename = '.' AND idclient=".cSecurity::toInteger($client), 'dirname', 'dirname ASC');
+    $dbfs->select("filename = '.' AND idclient=" . cSecurity::toInteger($client), 'dirname', 'dirname ASC');
     $count = 0;
     $lastlevel = 0;
     $item['.'] = $oRootItem;
 
-    while ($dbitem = $dbfs->next()) {
+    while (($dbitem = $dbfs->next()) !== false) {
         $dirname = $dbitem->get('dirname');
-        $level = substr_count($dirname, '/')+2;
+        $level = substr_count($dirname, '/') + 2;
         $file = basename($dbitem->get('dirname'));
         $parent = dirname($dbitem->get('dirname'));
 
@@ -481,16 +466,14 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
     }
 }
 
-
 /**
  * Returns thumbnail for a specific upload file
  *
- * @param   string  $sFile  Filename to retrieve the thumbnail for
- * @param   int  $iMaxSize  Thumb dimension (size of with and heigth)
- * @return  string
+ * @param string $sFile Filename to retrieve the thumbnail for
+ * @param int $iMaxSize Thumb dimension (size of with and heigth)
+ * @return string
  */
-function uplGetThumbnail($sFile, $iMaxSize)
-{
+function uplGetThumbnail($sFile, $iMaxSize) {
     global $client, $cfgClient;
 
     if ($iMaxSize == -1) {
@@ -528,15 +511,13 @@ function uplGetThumbnail($sFile, $iMaxSize)
     }
 }
 
-
 /**
  * Returns the icon for a file type
  *
- * @param   string  $sFile  Filename to retrieve the extension for
- * @return  string  Icon for the file type
+ * @param string $sFile Filename to retrieve the extension for
+ * @return string Icon for the file type
  */
-function uplGetFileIcon($sFile)
-{
+function uplGetFileIcon($sFile) {
     global $cfg;
 
     $sPathFiletypes = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'filetypes/';
@@ -667,105 +648,151 @@ function uplGetFileIcon($sFile)
     return $sPathFiletypes . $icon;
 }
 
-
 /**
  * Returns the description for a file type
  *
- * @param   string  $sExtension  Extension to use
- * @return  string  Text for the file type
+ * @param string $sExtension Extension to use
+ * @return string Text for the file type
  */
-function uplGetFileTypeDescription($sExtension)
-{
+function uplGetFileTypeDescription($sExtension) {
     global $cfg;
 
     switch ($sExtension) {
         // Presentation files
-        case "sxi": return (i18n("OpenOffice.org Presentation"));
-        case "sti": return (i18n("OpenOffice.org Presentation Template"));
-        case "pps": return (i18n("Microsoft PowerPoint Screen Presentation"));
-        case "pot": return (i18n("Microsoft PowerPoint Presentation Template"));
-        case "kpr": return (i18n("KDE KPresenter Document"));
-        case "ppt": return (i18n("Microsoft PowerPoint Presentation Template"));
+        case "sxi":
+            return (i18n("OpenOffice.org Presentation"));
+        case "sti":
+            return (i18n("OpenOffice.org Presentation Template"));
+        case "pps":
+            return (i18n("Microsoft PowerPoint Screen Presentation"));
+        case "pot":
+            return (i18n("Microsoft PowerPoint Presentation Template"));
+        case "kpr":
+            return (i18n("KDE KPresenter Document"));
+        case "ppt":
+            return (i18n("Microsoft PowerPoint Presentation Template"));
 
         // Document files
-        case "doc": return (i18n("Microsoft Word Document or regular text file"));
-        case "dot": return (i18n("Microsoft Word Template"));
-        case "sxw": return (i18n("OpenOffice.org Text Document"));
-        case "stw": return (i18n("OpenOffice.org Text Document Template"));
-        case "sdw": return (i18n("StarOffice 5.0 Text Document"));
-        case "kwd": return (i18n("KDE KWord Document"));
+        case "doc":
+            return (i18n("Microsoft Word Document or regular text file"));
+        case "dot":
+            return (i18n("Microsoft Word Template"));
+        case "sxw":
+            return (i18n("OpenOffice.org Text Document"));
+        case "stw":
+            return (i18n("OpenOffice.org Text Document Template"));
+        case "sdw":
+            return (i18n("StarOffice 5.0 Text Document"));
+        case "kwd":
+            return (i18n("KDE KWord Document"));
 
         // Spreadsheet files
-        case "xls": return (i18n("Microsoft Excel Worksheet"));
-        case "sxc": return (i18n("OpenOffice.org Table"));
-        case "stc": return (i18n("OpenOffice.org Table Template"));
-        case "xlw": return (i18n("Microsoft Excel File"));
-        case "xlt": return (i18n("Microsoft Excel Template"));
-        case "csv": return (i18n("Comma Seperated Value File"));
-        case "ksp": return (i18n("KDE KSpread Document"));
-        case "sdc": return (i18n("StarOffice 5.0 Table"));
+        case "xls":
+            return (i18n("Microsoft Excel Worksheet"));
+        case "sxc":
+            return (i18n("OpenOffice.org Table"));
+        case "stc":
+            return (i18n("OpenOffice.org Table Template"));
+        case "xlw":
+            return (i18n("Microsoft Excel File"));
+        case "xlt":
+            return (i18n("Microsoft Excel Template"));
+        case "csv":
+            return (i18n("Comma Seperated Value File"));
+        case "ksp":
+            return (i18n("KDE KSpread Document"));
+        case "sdc":
+            return (i18n("StarOffice 5.0 Table"));
 
         // Text types
-        case "txt": return (i18n("Plain Text"));
-        case "rtf": return (i18n("Rich Text Format"));
+        case "txt":
+            return (i18n("Plain Text"));
+        case "rtf":
+            return (i18n("Rich Text Format"));
 
         // Images
-        case "gif": return (i18n("GIF Image"));
-        case "png": return (i18n("PNG Image"));
-        case "jpeg": return (i18n("JPEG Image"));
-        case "jpg": return (i18n("JPEG Image"));
-        case "tif": return (i18n("TIFF Image"));
-        case "psd": return (i18n("Adobe Photoshop Image"));
+        case "gif":
+            return (i18n("GIF Image"));
+        case "png":
+            return (i18n("PNG Image"));
+        case "jpeg":
+            return (i18n("JPEG Image"));
+        case "jpg":
+            return (i18n("JPEG Image"));
+        case "tif":
+            return (i18n("TIFF Image"));
+        case "psd":
+            return (i18n("Adobe Photoshop Image"));
 
         // HTML
-        case "html": return (i18n("Hypertext Markup Language Document"));
-        case "htm": return (i18n("Hypertext Markup Language Document"));
-        case "css": return (i18n("Cascading Style Sheets"));
+        case "html":
+            return (i18n("Hypertext Markup Language Document"));
+        case "htm":
+            return (i18n("Hypertext Markup Language Document"));
+        case "css":
+            return (i18n("Cascading Style Sheets"));
 
         // Archives
-        case "lha": return (i18n("LHA Archive"));
-        case "rar": return (i18n("RAR Archive"));
-        case "arj": return (i18n("ARJ Archive"));
-        case "bz2": return (i18n("bz2-compressed File"));
-        case "bz": return (i18n("bzip-compressed File"));
-        case "zip": return (i18n("ZIP Archive"));
-        case "tar": return (i18n("TAR Archive"));
-        case "gz": return (i18n("GZ Compressed File"));
+        case "lha":
+            return (i18n("LHA Archive"));
+        case "rar":
+            return (i18n("RAR Archive"));
+        case "arj":
+            return (i18n("ARJ Archive"));
+        case "bz2":
+            return (i18n("bz2-compressed File"));
+        case "bz":
+            return (i18n("bzip-compressed File"));
+        case "zip":
+            return (i18n("ZIP Archive"));
+        case "tar":
+            return (i18n("TAR Archive"));
+        case "gz":
+            return (i18n("GZ Compressed File"));
 
         // Source files
-        case "c": return (i18n("C Program Code"));
+        case "c":
+            return (i18n("C Program Code"));
         case "c++":
         case "cc":
-        case "cpp": return (i18n("C++ Program Code"));
+        case "cpp":
+            return (i18n("C++ Program Code"));
         case "hpp":
-        case "h": return (i18n("C or C++ Program Header"));
+        case "h":
+            return (i18n("C or C++ Program Header"));
         case "php":
         case "php3":
-        case "php4": return (i18n("PHP Program Code"));
-        case "phps": return (i18n("PHP Source File"));
+        case "php4":
+            return (i18n("PHP Program Code"));
+        case "phps":
+            return (i18n("PHP Source File"));
 
-        case "pdf": return (i18n("Adobe Acrobat Portable Document"));
+        case "pdf":
+            return (i18n("Adobe Acrobat Portable Document"));
 
         // Movies
-        case "mov": return (i18n("QuickTime Movie"));
-        case "avi": return (i18n("avi Movie"));
+        case "mov":
+            return (i18n("QuickTime Movie"));
+        case "avi":
+            return (i18n("avi Movie"));
         case "mpg":
-        case "mpeg": return (i18n("MPEG Movie"));
-        case "wmv": return (i18n("Windows Media Video"));
+        case "mpeg":
+            return (i18n("MPEG Movie"));
+        case "wmv":
+            return (i18n("Windows Media Video"));
 
-        default: return (i18n($sExtension . "-File"));
+        default:
+            return (i18n($sExtension . "-File"));
     }
 }
-
 
 /**
  * Removes unwanted characters from passed filename.
  *
- * @param   string  $sFilename
- * @return  string
+ * @param string $sFilename
+ * @return string
  */
-function uplCreateFriendlyName ($filename)
-{
+function uplCreateFriendlyName($filename) {
     global $cfg, $lang;
 
     $oLang = new cApiLanguage();
@@ -778,9 +805,13 @@ function uplCreateFriendlyName ($filename)
     }
 
     $chars = '';
-    if ( is_array($cfg['upl']['allow_additional_chars']) ) {
+    if (is_array($cfg['upl']['allow_additional_chars'])) {
         $chars = implode("", $cfg['upl']['allow_additional_chars']);
-        $chars = str_replace( array('-', '[', ']') , '', $chars );
+        $chars = str_replace(array(
+            '-',
+            '[',
+            ']'
+        ), '', $chars);
     }
 
     $filename = cApiStrReplaceDiacritics($filename, strtoupper($oLang->getField('encoding')));
@@ -789,9 +820,7 @@ function uplCreateFriendlyName ($filename)
     return $filename;
 }
 
-
-function uplSearch($searchfor)
-{
+function uplSearch($searchfor) {
     global $client;
 
     $oPropertiesCol = new cApiPropertyCollection();
@@ -801,46 +830,45 @@ function uplSearch($searchfor)
     $searchfordb = $oPropertiesCol->escape($searchfor);
 
     // Search for keywords first, ranking +5
-    $oPropertiesCol->select("idclient='".$clientdb."' AND itemtype='upload' AND type='file' AND name='keywords' AND value LIKE '%".$searchfordb."%'",'itemid');
-    while ($item = $oPropertiesCol->next()) {
+    $oPropertiesCol->select("idclient='" . $clientdb . "' AND itemtype='upload' AND type='file' AND name='keywords' AND value LIKE '%" . $searchfordb . "%'", 'itemid');
+    while (($item = $oPropertiesCol->next()) !== false) {
         $items[$item->get('itemid')] += (substr_count(strtolower($item->get("value")), strtolower($searchfor)) * 5);
     }
 
     // Search for medianame , ranking +4
-    $oPropertiesCol->select("idclient='".$clientdb."' AND itemtype='upload' AND type='file' AND name='medianame' AND value LIKE '%".$searchfordb."%'",'itemid');
-    while ($item = $oPropertiesCol->next()) {
+    $oPropertiesCol->select("idclient='" . $clientdb . "' AND itemtype='upload' AND type='file' AND name='medianame' AND value LIKE '%" . $searchfordb . "%'", 'itemid');
+    while (($item = $oPropertiesCol->next()) !== false) {
         $items[$item->get('itemid')] += (substr_count(strtolower($item->get("value")), strtolower($searchfor)) * 4);
     }
 
     // Search for media notes, ranking +3
-    $oPropertiesCol->select("idclient='".$clientdb."' AND itemtype='upload' AND type='file' AND name='medianotes' AND value LIKE '%".$searchfordb."%'",'itemid');
-    while ($item = $oPropertiesCol->next()) {
+    $oPropertiesCol->select("idclient='" . $clientdb . "' AND itemtype='upload' AND type='file' AND name='medianotes' AND value LIKE '%" . $searchfordb . "%'", 'itemid');
+    while (($item = $oPropertiesCol->next()) !== false) {
         $items[$item->get('itemid')] += (substr_count(strtolower($item->get("value")), strtolower($searchfor)) * 3);
     }
 
     // Search for description, ranking +2
-    $oUploadsCol->select("idclient='".$clientdb."' AND description LIKE '%".$searchfordb."%'", "idupl");
-    while ($item = $oUploadsCol->next()) {
-        $items[$item->get('dirname').$item->get('filename')] += (substr_count(strtolower($item->get('description')), strtolower($searchfor)) * 2);
+    $oUploadsCol->select("idclient='" . $clientdb . "' AND description LIKE '%" . $searchfordb . "%'", "idupl");
+    while (($item = $oUploadsCol->next()) !== false) {
+        $items[$item->get('dirname') . $item->get('filename')] += (substr_count(strtolower($item->get('description')), strtolower($searchfor)) * 2);
     }
 
     // Search for file name, ranking +1
-    $oUploadsCol->select("idclient='".$clientdb."' AND filename LIKE '%".$searchfordb."%'", "idupl");
-    while ($item = $oUploadsCol->next()) {
-        $items[$item->get('dirname').$item->get('filename')] += 1;
+    $oUploadsCol->select("idclient='" . $clientdb . "' AND filename LIKE '%" . $searchfordb . "%'", "idupl");
+    while (($item = $oUploadsCol->next()) !== false) {
+        $items[$item->get('dirname') . $item->get('filename')] += 1;
     }
 
     return ($items);
 }
 
-
 /**
  * Returns file extension
- * @param  string  $sFile
- * @return  string
+ *
+ * @param string $sFile
+ * @return string
  */
-function uplGetFileExtension($sFile)
-{
+function uplGetFileExtension($sFile) {
     // Fetch the dot position
     $iDotPosition = strrpos($sFile, '.');
     $sExtension = substr($sFile, $iDotPosition + 1);
@@ -851,13 +879,13 @@ function uplGetFileExtension($sFile)
     }
 }
 
-
 /**
- * Returns list of directory names to exclude e. g. from directory listings.
- * @return  array
+ * Returns list of directory names to exclude e.
+ * g. from directory listings.
+ *
+ * @return array
  */
-function uplGetDirectoriesToExclude()
-{
+function uplGetDirectoriesToExclude() {
     static $mDirsToExclude;
     if (isset($mDirsToExclude)) {
         return $mDirsToExclude;
@@ -874,5 +902,3 @@ function uplGetDirectoriesToExclude()
     }
     return $mDirsToExclude;
 }
-
-?>

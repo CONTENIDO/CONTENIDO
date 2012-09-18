@@ -6,14 +6,14 @@
  * Description:
  * Displays structure
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.5
- * @author     Olaf Niemann
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @package CONTENIDO Backend Includes
+ * @version 1.0.5
+ * @author Olaf Niemann
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -31,18 +31,19 @@ if ($action == 'str_duplicate' && ($perm->have_perm_area_action('str', 'str_dupl
     strCopyTree($idcat, $parentid);
 }
 
-// Everybody is allowed to update aliases, if there is no Permission to update category names, this block updates category alias only
+// Everybody is allowed to update aliases, if there is no Permission to update
+// category names, this block updates category alias only
 if ($action == 'str_renamecat' && isset($_POST['newcategoryalias'])) {
     if (!($perm->have_perm_area_action($tmp_area, 'str_renamecat') || $perm->have_perm_area_action_item($tmp_area, 'str_renamecat', $idcat))) {
         strRenameCategoryAlias($idcat, $lang, $_POST['newcategoryalias']);
     }
 }
 
-
 $oDirectionDb = cRegistry::getDb();
 
 /**
- * Build a Category select Box containg all categories which user is allowed to create new categories
+ * Build a Category select Box containg all categories which user is allowed to
+ * create new categories
  *
  * @return string HTML
  */
@@ -107,14 +108,17 @@ function buildCategorySelectRights() {
     return $oHtmlSelect->toHtml();
 }
 
-function getExpandCollapseButton($item, $catName) {
+function getStrExpandCollapseButton($item, $catName) {
     global $sess, $frame, $area;
     $selflink = 'main.php';
 
     $img = new cHTMLImage();
-    $img->updateAttributes(array('style' => 'padding:4px;'));
+    $img->updateAttributes(array(
+        'style' => 'padding:4px;'
+    ));
 
-    // if current user is admin or sysadmin, show additional information as tooltip
+    // if current user is admin or sysadmin, show additional information as
+    // tooltip
     $auth = cRegistry::getAuth();
     $currentUser = new cApiUser($auth->auth['uid']);
     $userPerms = $currentUser->getPerms();
@@ -149,8 +153,7 @@ function getTemplateSelect() {
     $oHtmlSelectOption = new cHTMLOptionElement('--- ' . i18n("none") . ' ---', 0, false);
     $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
 
-    $sql = "SELECT idtpl, name, defaulttemplate FROM " . $cfg['tab']['tpl']
-            . " WHERE idclient = '" . $client . "' ORDER BY name";
+    $sql = "SELECT idtpl, name, defaulttemplate FROM " . $cfg['tab']['tpl'] . " WHERE idclient = '" . $client . "' ORDER BY name";
 
     if ($db->query($sql)) {
         while ($db->next_record()) {
@@ -427,27 +430,16 @@ unset($objects[0]);
 $selflink = 'main.php';
 $expandlink = $sess->url($selflink . "?area=$area&frame=$frame&expand=all&syncoptions=$syncoptions");
 $collapselink = $sess->url($selflink . "?area=$area&frame=$frame&collapse=all&syncoptions=$syncoptions");
-$collapseimg =
-        '<a class="black" href="' .
-        $collapselink .
-        '" alt="' . i18n("Close all categories") .
-        '" title="' . i18n("Close all categories") . '">
-        <img src="images/close_all.gif">&nbsp;' . i18n("Close all categories") .
-        '</a>';
-$expandimg =
-        '<a class="black" href="' .
-        $expandlink .
-        '" alt="' . i18n("Open all categories") .
-        '" title="' . i18n("Open all categories") . '">
-        <img src="images/open_all.gif">&nbsp;' . i18n("Open all categories") .
-        '</a>';
-
+$collapseimg = '<a class="black" href="' . $collapselink . '" alt="' . i18n("Close all categories") . '" title="' . i18n("Close all categories") . '">
+        <img src="images/close_all.gif">&nbsp;' . i18n("Close all categories") . '</a>';
+$expandimg = '<a class="black" href="' . $expandlink . '" alt="' . i18n("Open all categories") . '" title="' . i18n("Open all categories") . '">
+        <img src="images/open_all.gif">&nbsp;' . i18n("Open all categories") . '</a>';
 
 $tpl->set('s', 'COLLAPSE_ALL', $collapseimg);
 $tpl->set('s', 'EXPAND_ALL', $expandimg);
 $sMouseover = 'onmouseover="str.over(this)" onmouseout="str.out(this)" onclick="str.click(this)"';
 
-//Fill inline edit table row
+// Fill inline edit table row
 $tpl->set('s', 'SUM_COLUMNS_EDIT', 14 + count($listColumns));
 $tpl->set('s', 'ACTION_EDIT_URL', $sess->url("main.php?frame=$frame"));
 $tpl->set('s', 'SRC_CANCEL', $backendUrl . $cfg["path"]["images"] . 'but_cancel.gif');
@@ -484,7 +476,8 @@ while ($db->next_record()) {
 }
 
 foreach ($objects as $key => $value) {
-    // check if there area any permission for this $idcat in the mainarea 6 (=str) and there subareas
+    // check if there area any permission for this $idcat in the mainarea 6
+    // (=str) and there subareas
     $bCheck = false;
     if (!$bCheck) {
         $bCheck = $perm->have_perm_area_action($tmp_area, 'str_newtree');
@@ -525,7 +518,7 @@ foreach ($objects as $key => $value) {
 
     if ($bCheck) {
 
-        //Insert empty row
+        // Insert empty row
         if ($value->custom['level'] == 0 && $value->custom['preid'] != 0) {
 
             $tpl->set('d', 'BGCOLOR', '#FFFFFF');
@@ -582,14 +575,14 @@ foreach ($objects as $key => $value) {
             $sCategoryname = cApiStrTrimHard($sCategoryname, 30);
         }
 
-        //$tpl->set('d', 'CATEGORY', $sCategoryname);
+        // $tpl->set('d', 'CATEGORY', $sCategoryname);
         if (strlen($value->name) > 30) {
             $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', 'title="' . $value->name . '" class="tooltip"');
         } else {
             $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', '');
         }
 
-        $tpl->set('d', 'COLLAPSE_CATEGORY_NAME', getExpandCollapseButton($value, $sCategoryname));
+        $tpl->set('d', 'COLLAPSE_CATEGORY_NAME', getStrExpandCollapseButton($value, $sCategoryname));
         if ($value->custom['alias']) {
             $sCategoryalias = $value->custom['alias'];
             if (strlen($value->custom['alias']) > 30) {
@@ -801,7 +794,7 @@ foreach ($aInlineEditData as $iIdCat => $aData) {
     foreach ($aData as $aKey => $aValue) {
         $aTmp[] = $aKey . "':'" . $aValue;
     }
-    $jsDataArray.= "
+    $jsDataArray .= "
     strDataObj[$iIdCat] = {'" . implode("', '", $aTmp) . "'};";
 }
 
@@ -850,11 +843,9 @@ $tpl->set('s', 'INPUT_ALIAS_EDIT', $oNewAlias->render());
 
 $sCategorySelect = buildCategorySelectRights('idcat', '');
 
-// Show Layerbutton for adding new Cateogries and set options according to Permisssions
-if (($perm->have_perm_area_action($tmp_area, 'str_newtree') ||
-        $perm->have_perm_area_action($tmp_area, 'str_newcat') ||
-        $bAreaAddNewCategory)
-        && (int) $client > 0 && (int) $lang > 0) {
+// Show Layerbutton for adding new Cateogries and set options according to
+// Permisssions
+if (($perm->have_perm_area_action($tmp_area, 'str_newtree') || $perm->have_perm_area_action($tmp_area, 'str_newcat') || $bAreaAddNewCategory) && (int) $client > 0 && (int) $lang > 0) {
     $tpl->set('s', 'NEWCAT', $string . '<a class="black" id="new_tree_button" href="javascript:showNewForm();"><img src="images/folder_new.gif">&nbsp;' . i18n('Create new category') . '</a>');
     if ($perm->have_perm_area_action($tmp_area, 'str_newtree')) {
         if ($perm->have_perm_area_action($tmp_area, 'str_newcat') || $bAreaAddNewCategory) {

@@ -6,18 +6,14 @@
  * Description:
  * CONTENIDO User Rights
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.2
- * @author     unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @package CONTENIDO Backend Includes
+ * @version 1.0.2
+ * @author unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -45,9 +41,7 @@ $oTpl->reset();
 // Set new right_list (=all possible rights)
 if (!is_array($right_list)) {
     // Select all rights, actions an their locations without area login
-    $sql = "SELECT A.idarea, A.parent_id, B.location, A.name "
-            . "FROM " . $cfg["tab"]["area"] . " AS A LEFT JOIN " . $cfg["tab"]["nav_sub"] . " AS B ON  A.idarea = B.idarea "
-            . "WHERE A.name!='login' AND A.relevant='1' AND A.online='1' GROUP BY A.name ORDER BY A.idarea";
+    $sql = "SELECT A.idarea, A.parent_id, B.location, A.name " . "FROM " . $cfg["tab"]["area"] . " AS A LEFT JOIN " . $cfg["tab"]["nav_sub"] . " AS B ON  A.idarea = B.idarea " . "WHERE A.name!='login' AND A.relevant='1' AND A.online='1' GROUP BY A.name ORDER BY A.idarea";
     $db->query($sql);
 
     while ($db->next_record()) {
@@ -97,9 +91,7 @@ foreach ($clientList as $key => $value) {
     $db->query($sql);
 
     while ($db->next_record()) {
-        if ((strpos($userPerms, "client[$key]") !== false) &&
-                (strpos($userPerms, "lang[" . $db->f("idlang") . "]") !== false) &&
-                ($perm->have_perm("lang[" . $db->f("idlang") . "]"))) {
+        if ((strpos($userPerms, "client[$key]") !== false) && (strpos($userPerms, "lang[" . $db->f("idlang") . "]") !== false) && ($perm->have_perm("lang[" . $db->f("idlang") . "]"))) {
             if ($firstSel == false) {
                 $firstSel = true;
                 $firstClientsLang = $db->f('idclientslang');
@@ -146,9 +138,26 @@ if ($area != 'user_content') {
     $oHtmlSelect->setDefault($_POST['filter_rights']);
 
     // Set global array which defines rights to display
-    $aArticleRights = array('con_syncarticle', 'con_lock', 'con_deleteart', 'con_makeonline', 'con_makestart', 'con_duplicate', 'con_editart', 'con_newart', 'con_edit');
-    $aCategoryRights = array('con_synccat', 'con_makecatonline', 'con_makepublic');
-    $aTempalteRights = array('con_changetemplate', 'con_tplcfg_edit');
+    $aArticleRights = array(
+        'con_syncarticle',
+        'con_lock',
+        'con_deleteart',
+        'con_makeonline',
+        'con_makestart',
+        'con_duplicate',
+        'con_editart',
+        'con_newart',
+        'con_edit'
+    );
+    $aCategoryRights = array(
+        'con_synccat',
+        'con_makecatonline',
+        'con_makepublic'
+    );
+    $aTempalteRights = array(
+        'con_changetemplate',
+        'con_tplcfg_edit'
+    );
 
     $aViewRights = array();
     $bExclusive = false;
@@ -174,7 +183,6 @@ if ($area != 'user_content') {
     $oTpl->set('s', 'INPUT_SELECT_RIGHTS', $oHtmlSelect->render());
     $oTpl->set('s', 'DISPLAY_RIGHTS', 'block');
 }
-
 
 $bEndScript = false;
 
@@ -216,120 +224,4 @@ if ($bEndScript == true) {
     $oTpl->set('s', 'EXTERNAL_SCRIPTS', '');
     $oTpl->generate('templates/standard/' . $cfg['templates']['include.rights']);
     die();
-}
-
-function saverightsarea() {
-    global $userid;
-    global $rights_client, $rights_lang, $rights_admin, $rights_sysadmin, $rights_perms, $rights_list;
-
-    $oUser = new cApiUser($userid);
-    if (!$oUser->isLoaded()) {
-        return;
-    }
-
-    if (!isset($rights_perms)) {
-        // Get permissions of this user
-        $rights_perms = $oUser->get('perms');
-    }
-
-    // If there are no permissions, delete permissions for lan and client
-    if (!is_array($rights_list)) {
-        $rights_perms = preg_replace("/,+client\[$rights_client\]/", '', $rights_perms);
-        $rights_perms = preg_replace("/,+lang\[$rights_lang\]/", '', $rights_perms);
-    } else {
-        if (!strstr($rights_perms, "client[$rights_client]")) {
-            $rights_perms .= ",client[$rights_client]";
-        }
-        if (!strstr($rights_perms, "lang[$rights_lang]")) {
-            $rights_perms .= ",lang[$rights_lang]";
-        }
-    }
-
-    // If admin is checked
-    if ($rights_admin == 1) {
-        // If admin is not set
-        if (!strstr($rights_perms, "admin[$rights_client]")) {
-            $rights_perms .= ",admin[$rights_client]";
-        }
-    } else {
-        // Cut admin from the string
-        $rights_perms = preg_replace("/,*admin\[$rights_client\]/", '', $rights_perms);
-    }
-
-    // If sysadmin is checked
-    if ($rights_sysadmin == 1) {
-        // If sysadmin is not set
-        if (!strstr($rights_perms, 'sysadmin')) {
-            $rights_perms .= ',sysadmin';
-        }
-    } else {
-        // Cat sysadmin from string
-        $rights_perms = preg_replace('/,*sysadmin/', '', $rights_perms);
-    }
-
-    // Cut ',' in front of the string
-    $rights_perms = preg_replace('/^,/', '', $rights_perms);
-
-    // Update table
-    $oUser->set('perms', $oUser->escape($rights_perms));
-    $oUser->store();
-
-    // Save the other rights
-    saverights();
-}
-
-function saverights() {
-    global $perm, $notification, $db, $userid;
-    global $rights_list, $rights_list_old, $rights_client, $rights_lang;
-
-    // If no checkbox is checked
-    if (!is_array($rights_list)) {
-        $rights_list = array();
-    }
-
-    // Search all checks which are not in the new rights_list for deleting
-    $arraydel = array_diff(array_keys($rights_list_old), array_keys($rights_list));
-
-    // Search all checks which are not in the rights_list_old for saving
-    $arraysave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
-
-    if (is_array($arraydel)) {
-        foreach ($arraydel as $value) {
-            $data = explode('|', $value);
-            $data[0] = $perm->getIDForArea($data[0]);
-            $data[1] = $perm->getIDForAction($data[1]);
-
-            $where = "user_id = '" . $db->escape($userid) . "' AND idclient = " . (int) $rights_client
-                    . " AND idlang = " . (int) $rights_lang . " AND idarea = " . (int) $data[0]
-                    . " AND idcat = " . (int) $data[2] . " AND idaction = " . (int) $data[1] . " AND type = 0";
-            $oRightColl = new cApiRightCollection();
-            $oRightColl->deleteByWhereClause($where);
-        }
-    }
-
-    unset($data);
-
-    // Search for all mentioned checkboxes
-    if (is_array($arraysave)) {
-        foreach ($arraysave as $value) {
-            // Explodes the key it consits areaid+actionid+itemid
-            $data = explode('|', $value);
-
-            // Since areas are stored in a numeric form in the rights table, we have
-            // to convert them from strings into numbers
-            $data[0] = $perm->getIDForArea($data[0]);
-            $data[1] = $perm->getIDForAction($data[1]);
-
-            if (!isset($data[1])) {
-                $data[1] = 0;
-            }
-
-            // Insert new right
-            $oRightColl = new cApiRightCollection();
-            $oRightColl->create($userid, $data[0], $data[1], $data[2], $rights_client, $rights_lang, 0);
-        }
-    }
-
-    $rights_list_old = $rights_list;
-    $notification->displayNotification('info', i18n('Changes saved'));
 }

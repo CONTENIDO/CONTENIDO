@@ -673,7 +673,6 @@
 ./includes/type/action/include.tpl_edit.action.php
 ./includes/type/action/include.tpl_visedit.action.php
 ./includes/type/action/include.upl_mkdir.action.php
-./includes/type/action/include.user_saverightsarea.action.php
 ./includes/type/code/include.CMS_EASYIMGEDIT.code.php
 ./includes/type/code/include.CMS_HTMLTEXT.code.php
 ./includes/type/code/include.CMS_IMGEDIT.code.php
