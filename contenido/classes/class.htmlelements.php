@@ -770,7 +770,6 @@ class cHTMLFormElement extends cHTML {
         $this->setDisabled($disabled);
         $this->setTabindex($tabindex);
         $this->setAccessKey($accesskey);
-        $this->setClass($class);
     }
 
     /**
@@ -2148,28 +2147,6 @@ class cHTMLParagraph extends cHTML {
  * @subpackage Frontend
  */
 class cHTMLImage extends cHTML {
-
-    /**
-     * Image source
-     *
-     * @var string
-     */
-    protected $_src;
-
-    /**
-     * Image width
-     *
-     * @var int
-     */
-    protected $_width;
-
-    /**
-     * Image height
-     *
-     * @var int
-     */
-    protected $_height;
-
     /**
      * Constructor.
      * Creates an HTML IMG element.
@@ -2205,12 +2182,10 @@ class cHTMLImage extends cHTML {
      */
     public function setSrc($src) {
         if ($src === null) {
-            $this->_src = 'images/spacer.gif';
-        } else {
-            $this->_src = $src;
+            $src = 'images/spacer.gif';
         }
-
-        return $this;
+		
+		return $this->updateAttribute('src', $src);
     }
 
     /**
@@ -2220,10 +2195,7 @@ class cHTMLImage extends cHTML {
      * @return cHTMLImage $this
      */
     public function setWidth($width) {
-        $width = intval($width);
-        $this->_width = $width;
-
-        return $this;
+        return $this->updateAttribute('width', $width);
     }
 
     /**
@@ -2233,10 +2205,7 @@ class cHTMLImage extends cHTML {
      * @return cHTMLImage $this
      */
     public function setHeight($height) {
-        $height = intval($height);
-        $this->_height = $height;
-
-        return $this;
+		return $this->updateAttribute('height', $height);
     }
 
     /**
@@ -2267,35 +2236,14 @@ class cHTMLImage extends cHTML {
      * Apply dimensions from the source image
      */
     public function applyDimensions() {
-
         // Try to open the image
-        list($width, $height) = @getimagesize(cRegistry::getBackendPath() . $this->_src);
+        list($width, $height) = @getimagesize(cRegistry::getBackendPath() . $this->getAttribute('src'));
 
         if (!empty($width) && !empty($height)) {
             $this->setWidth($width);
             $this->setHeight($height);
         }
     }
-
-    /**
-     * Renders the IMG element
-     *
-     * @return string Rendered HTML
-     */
-    public function toHTML() {
-        $this->updateAttribute('src', $this->_src);
-
-        if (!is_null($this->_width)) {
-            $this->updateAttribute('width', $this->_width);
-        }
-
-        if (!is_null($this->_height)) {
-            $this->updateAttribute('height', $this->_height);
-        }
-
-        return parent::toHTML();
-    }
-
 }
 
 /**
