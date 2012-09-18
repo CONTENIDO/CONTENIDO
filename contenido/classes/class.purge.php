@@ -23,57 +23,37 @@ if (!defined('CON_FRAMEWORK')) {
 class cSystemPurge {
 
     /**
-     * @var DB_Contenido
-     */
-    private $_db;
-
-    /**
-     * @var array
-     */
-    private $_cfg;
-
-    /**
-     * @var array
-     */
-    private $_cfgClient;
-
-    /**
+     *
      * @var array
      */
     private $dirsExcludedWithFiles = array(
-        '.', '..', '.svn', '.cvs', '.htaccess'
+        '.',
+        '..',
+        '.svn',
+        '.cvs',
+        '.htaccess'
     );
 
     /**
+     *
      * @var array
      */
-    private $_logFileTypes = array();
+    private $_logFileTypes = array(
+        'txt'
+    );
 
     /**
      *
      * @var array
      */
-    private $_cronjobFileTypes = array();
+    private $_cronjobFileTypes = array(
+        'job'
+    );
 
     /**
      * Constructor of class
-     *
-     * @param DB_Contenido $db
-     * @param array $cfg
-     * @param array $cfgClient
      */
-    public function __construct(&$db, $cfg, $cfgClient) {
-        $this->_db = $db;
-        $this->_cfg = $cfg;
-        $this->_cfgClient = $cfgClient;
-
-        $this->setLogFileTypes(array(
-            'txt'
-        ));
-        $this->setCronjobFileTypes(array(
-            'job'
-        ));
-
+    public function __construct() {
         $this->_setSystemDirectory();
     }
 
@@ -85,9 +65,10 @@ class cSystemPurge {
      */
     public function resetClientConCode($clientId) {
         global $perm, $currentuser;
+        $cfgClient = cRegistry::getClientConfig();
 
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $mask = $this->_cfgClient[$clientId]['cache']['path'] . 'code/*.php';
+            $mask = $cfgClient[$clientId]['cache']['path'] . 'code/*.php';
             $arr = glob($mask);
             foreach ($arr as $file) {
                 if (!unlink($file)) {
@@ -108,12 +89,14 @@ class cSystemPurge {
      */
     public function resetClientConCatArt($clientId) {
         global $perm, $currentuser;
+        $db = cRegistry::getDb();
+        $cfg = cRegistry::getConfig();
 
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $sSql = ' UPDATE ' . $this->_cfg['tab']['cat_art'] . ' cca, ' . $this->_cfg['tab']['cat'] . ' cc, ' . $this->_cfg['tab']['art'] . ' ca ' . ' SET cca.createcode=1 ' . ' WHERE cc.idcat = cca.idcat ' . ' AND ca.idart = cca.idart ' . ' AND cc.idclient = ' . (int) $clientId . ' AND ca.idclient = ' . (int) $clientId;
-            $this->_db->query($sSql);
+            $sSql = ' UPDATE ' . $cfg['tab']['cat_art'] . ' cca, ' . $cfg['tab']['cat'] . ' cc, ' . $cfg['tab']['art'] . ' ca ' . ' SET cca.createcode=1 ' . ' WHERE cc.idcat = cca.idcat ' . ' AND ca.idart = cca.idart ' . ' AND cc.idclient = ' . (int) $clientId . ' AND ca.idclient = ' . (int) $clientId;
+            $db->query($sSql);
 
-            return ($this->_db->Error == '') ? true : false;
+            return ($db->Error == '')? true : false;
         } else {
             return false;
         }
@@ -126,12 +109,14 @@ class cSystemPurge {
      */
     public function resetConInuse() {
         global $perm, $currentuser;
+        $db = cRegistry::getDb();
+        $cfg = cRegistry::getConfig();
 
         if ($perm->isSysadmin($currentuser)) {
-            $sql = 'DELETE FROM ' . $this->_cfg['tab']['inuse'];
-            $this->_db->query($sql);
+            $sql = 'DELETE FROM ' . $cfg['tab']['inuse'];
+            $db->query($sql);
 
-            return ($this->_db->Error == '') ? true : false;
+            return ($db->Error == '')? true : false;
         } else {
             return false;
         }
@@ -145,11 +130,12 @@ class cSystemPurge {
      */
     public function clearClientCache($clientId) {
         global $perm, $currentuser;
+        $cfgClient = cRegistry::getClientConfig();
 
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $cacheDir = $this->_cfgClient[$clientId]['cache']['path'];
+            $cacheDir = $cfgClient[$clientId]['cache']['path'];
             if (is_dir($cacheDir)) {
-                return ($this->clearDir($cacheDir, $cacheDir) ? true : false);
+                return ($this->clearDir($cacheDir, $cacheDir)? true : false);
             }
             return false;
         } else {
@@ -165,9 +151,10 @@ class cSystemPurge {
      */
     public function clearClientHistory($clientId, $keep, $fileNumber) {
         global $perm, $currentuser;
+        $cfgClient = cRegistry::getClientConfig();
 
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $versionDir = $this->_cfgClient[$clientId]['version']['path'];
+            $versionDir = $cfgClient[$clientId]['version']['path'];
             if (is_dir($versionDir)) {
                 $tmpFile = array();
                 $this->clearDir($versionDir, $versionDir, $keep, $tmpFile);
@@ -178,7 +165,7 @@ class cSystemPurge {
 
                         $count = count($tmpFile[$sKey]);
                         // find the total number to delete
-                        $countDelete = ($count <= $fileNumber) ? 0 : ($count - $fileNumber);
+                        $countDelete = ($count <= $fileNumber)? 0 : ($count - $fileNumber);
                         // delete the files
                         for ($i = 0; $i < $countDelete; $i++) {
                             if (cFileHandler::exists($tmpFile[$sKey][$i]) && is_writable($tmpFile[$sKey][$i])) {
@@ -205,9 +192,10 @@ class cSystemPurge {
      */
     public function clearClientLog($clientId) {
         global $perm, $currentuser;
+        $cfgClient = cRegistry::getClientConfig();
 
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $logDir = $this->_cfgClient[$clientId]['log']['path'];
+            $logDir = $cfgClient[$clientId]['log']['path'];
             if (is_dir($logDir)) {
                 return $this->emptyFile($logDir, $this->_logFileTypes);
             }
@@ -225,8 +213,9 @@ class cSystemPurge {
      */
     public function clearConLog() {
         global $perm, $currentuser;
+        $cfg = cRegistry::getConfig();
 
-        $logDir = $this->_cfg['path']['contenido_logs'];
+        $logDir = $cfg['path']['contenido_logs'];
         if ($perm->isSysadmin($currentuser)) {
             if (is_dir($logDir)) {
                 return $this->emptyFile($logDir, $this->_logFileTypes);
@@ -245,8 +234,9 @@ class cSystemPurge {
      */
     public function clearConCronjob() {
         global $perm, $currentuser;
+        $cfg = cRegistry::getConfig();
 
-        $cronjobDir = $this->_cfg['path']['contenido_cronlog'];
+        $cronjobDir = $cfg['path']['contenido_cronlog'];
         if ($perm->isSysadmin($currentuser)) {
             if (is_dir($cronjobDir)) {
                 return $this->emptyFile($cronjobDir, $this->_cronjobFileTypes);
@@ -265,11 +255,12 @@ class cSystemPurge {
      */
     public function clearConCache() {
         global $perm, $currentuser;
+        $cfg = cRegistry::getConfig();
 
-        $cacheDir = $this->_cfg['path']['contenido_cache'];
+        $cacheDir = $cfg['path']['contenido_cache'];
         if ($perm->isSysadmin($currentuser)) {
             if (is_dir($cacheDir)) {
-                return ($this->clearDir($cacheDir, $cacheDir) ? true : false);
+                return ($this->clearDir($cacheDir, $cacheDir)? true : false);
             }
             return false;
         } else {
@@ -291,7 +282,7 @@ class cSystemPurge {
             $tmp = str_replace(array(
                 '/',
                 '..'
-                    ), '', $dirPath);
+            ), '', $dirPath);
             while (false !== ($file = readdir($handle))) {
                 if (!in_array($file, $this->dirsExcludedWithFiles)) {
                     $filePath = $dirPath . '/' . $file;
@@ -315,12 +306,12 @@ class cSystemPurge {
             $dirName = end($dirs);
 
             if (str_replace(array(
-                        '/',
-                        '..'
-                            ), '', $dirPath) != str_replace(array(
-                        '/',
-                        '..'
-                            ), '', $tmpDirPath) && $keep === false && !in_array($dirName, $this->dirsExcludedWithFiles)) {
+                '/',
+                '..'
+            ), '', $dirPath) != str_replace(array(
+                '/',
+                '..'
+            ), '', $tmpDirPath) && $keep === false && !in_array($dirName, $this->dirsExcludedWithFiles)) {
                 rmdir($dirPath);
             }
 
@@ -359,7 +350,7 @@ class cSystemPurge {
             }
 
             // true if all files are cleaned
-            return ($count == $countCleared) ? true : false;
+            return ($count == $countCleared)? true : false;
         }
 
         return false;
@@ -372,7 +363,9 @@ class cSystemPurge {
      * @return string $sClientDir
      */
     public function getClientDir($clientId) {
-        return $this->_cfgClient[$clientId]['path']['frontend'];
+        $cfgClient = cRegistry::getClientConfig();
+
+        return $cfgClient[$clientId]['path']['frontend'];
     }
 
     /**
@@ -419,13 +412,14 @@ class cSystemPurge {
     }
 
 }
-
 class Purge extends cSystemPurge {
 
-    /** @deprecated Class was renamed to cSystemPurge */
-    public function __construct(&$db, $cfg, $cfgClient) {
+    /**
+     * @deprecated Class was renamed to cSystemPurge
+     */
+    public function __construct() {
         cDeprecated('Class was renamed to cSystemPurge');
-        parent::__construct($db, $cfg, $cfgClient);
+        parent::__construct();
     }
 
 }

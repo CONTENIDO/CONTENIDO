@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Project: CONTENIDO
  *
@@ -14,14 +13,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.8.12
- *
- * {@internal
- *   created  2010-01-11
- *   modified 2010-08-03, added check for the permission
- *     modified 2010-12-14, Munkh-Ulzii Balidar, changed the select box name
- *                            to 'purge_clients' for security, see [CON-375]
- *   $Id$:
- * }
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -64,7 +55,7 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
             $aClientToClear[] = (int)$_POST['purge_clients'];
         }
 
-        $oPurge = new cSystemPurge($db, $cfg, $cfgClient);
+        $oPurge = new cSystemPurge();
         if (count($aClientToClear) > 0) {
             // execute the selected actions
 
@@ -219,6 +210,3 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['system_purge']);
 
 }
-
-
-?>
