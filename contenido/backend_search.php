@@ -6,10 +6,6 @@
  * Description:
  * CONTENIDO main file
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend
  * @version    1.0.6
  * @author     Holger Librenz, Andreas Lindner
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  2007-04-20
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -723,7 +714,7 @@ if ($iAffectedRows <= 0 || (empty($where) && !$bLostAndFound)) {
             $sArticleProperty = i18n("Article properties");
             $sConfigureTpl = i18n("Configure template");
             $sDeleteArticle = i18n("Delete article");
-            $sDeleteArticleQuestion = i18n("Do you really want to delete following article");
+            $sDeleteArticleQuestion = i18n("Do you really want to delete the following article");
 
             $sRowId = "$idart-$idartlang-$idcat-0-$idcatart-$iLangID";
 
@@ -750,7 +741,7 @@ if ($iAffectedRows <= 0 || (empty($where) && !$bLostAndFound)) {
             }
 
             if ($perm->have_perm_area_action_item("con", "con_deleteart",$idcat)) {
-                $delete = "<a href=\"javascript://\" onclick=\"box.confirm(&quot;$sDeleteArticle&quot;, &quot;$sDeleteArticleQuestion:<br><br><b>$db->f('title')</b>&quot;, &quot;deleteArticle($idart,$idcat)&quot;)\" title=\"$sDeleteArticle\"><img src=\"images/delete.gif\" title=\"$sDeleteArticle\" alt=\"$sDeleteArticle\" border=\"0\"></a>";
+                $delete = '<a href="javascript:void(0)" onclick="showConfirmation(&quot;' . $sDeleteArticleQuestion . ':<br><br><b>' . $db->f('title') . '</b>&quot;, function() {deleteArticle(' . $idart . ', ' . $idcat . ');});" title="' . $sDeleteArticle . '"><img src="images/delete.gif" title="' . $sDeleteArticle . '" alt="' . $sDeleteArticle . '"></a>';
             } else {
                 $delete = "";
             }
@@ -826,5 +817,3 @@ if (sizeof($_GET) == 0 && isset($_POST) && !$bNoCriteria) {
 $tpl->set('s', 'SUBNAVI', $sLoadSubnavi);
 sendEncodingHeader($db, $cfg, $lang);
 $tpl->generate($cfg['path']['templates'] . 'template.backend_search_results.html');
-
-?>

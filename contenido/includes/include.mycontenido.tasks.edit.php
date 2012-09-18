@@ -6,10 +6,6 @@
  * Description:
  * MyContenido task edit page
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.4
  * @author     unknown
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -108,16 +99,15 @@ $progress = new cHTMLTextbox("progress", (int)$todoitem->getProperty("todo", "pr
 $ui->add(i18n("Progress"), $progress->render()."%");
 
 $cpage->setContent(array($ui));
-$cpage->addStyle("datetimepicker/jquery-ui-timepicker-addon.css");
-$cpage->addStyle("smoothness/jquery-ui-1.8.20.custom.css");
+$cpage->addStyle("jquery/plugins/timepicker.css");
+$cpage->addStyle("jquery/jquery-ui.css");
 
-$cpage->addScript("datetimepicker/jquery-ui-timepicker-addon.js");
+$cpage->addScript("jquery/plugins/timepicker.js");
 $cpage->addScript("jquery/jquery-ui.js");
 
 if(($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
-    $cpage->addScript("datetimepicker/jquery-ui-timepicker-".$lang_short.".js");
-    $cpage->addScript("jquery/jquery.ui.datepicker-".$lang_short.".js");
+    $cpage->addScript("jquery/plugins/timepicker-".$lang_short.".js");
+    $cpage->addScript("jquery/plugins/datepicker-".$lang_short.".js");
 }
 
 $cpage->render();
-?>

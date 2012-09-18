@@ -101,7 +101,7 @@ cContentTypeDate.prototype.loadExternalFiles = function(calendarPic) {
         $('head').append('<link rel="stylesheet" id="cms_date_styles" href="' + this.pathBackend + 'styles/content_types/cms_date.css" type="text/css" media="all" />');
     }
     if ($('#jquery_ui_styles').length === 0) {
-        $('head').append('<link rel="stylesheet" id="jquery_ui_styles" href="' + this.pathBackend + 'styles/smoothness/jquery-ui-1.8.20.custom.css" type="text/css" media="all" />');
+        $('head').append('<link rel="stylesheet" id="jquery_ui_styles" href="' + this.pathBackend + 'styles/jquery/jquery-ui.css" type="text/css" media="all" />');
     }
     conLoadFile(this.pathBackend + 'scripts/jquery/jquery-ui.js', cContentTypeDate.prototype.jQueryUiCallback, this, new Array(calendarPic));
 };
@@ -111,7 +111,7 @@ cContentTypeDate.prototype.loadExternalFiles = function(calendarPic) {
  * loaded. Loads the appropriate language.
  */
 cContentTypeDate.prototype.jQueryUiCallback = function(calendarPic) {
-    conLoadFile(this.pathBackend + 'scripts/datetimepicker/jquery-ui-timepicker-addon.js', cContentTypeDate.prototype.jQueryUiTimepickerCallback, this, new Array(calendarPic));
+    conLoadFile(this.pathBackend + 'scripts/jquery/plugins/timepicker.js', cContentTypeDate.prototype.jQueryUiTimepickerCallback, this, new Array(calendarPic));
 };
 
 /**
@@ -146,8 +146,8 @@ cContentTypeDate.prototype.jQueryUiTimepickerCallback = function(calendarPic) {
     });
     // only load the localisation file if the language is not english
     if (self.lang !== 'en') {
-        conLoadFile(self.pathBackend + 'scripts/jquery/jquery.ui.datepicker-' + self.lang + '.js');
-        conLoadFile(self.pathBackend + 'scripts/datetimepicker/jquery-ui-timepicker-' + self.lang + '.js');
+        conLoadFile(self.pathBackend + 'scripts/jquery/plugins/datepicker-' + self.lang + '.js');
+        conLoadFile(self.pathBackend + 'scripts/jquery/plugins/timepicker-' + self.lang + '.js');
     }
 };
 

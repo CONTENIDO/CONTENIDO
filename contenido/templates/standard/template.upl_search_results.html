@@ -12,8 +12,6 @@ a.invert_hover:hover {
 </style>
 
 <script type="text/javascript">
-    box = new messageBox("", "", "", 0, 0);
-
     function uplSort(selObj) {
         var url = '{SELF_URL}',
             i = selObj.selectedIndex,
@@ -42,7 +40,7 @@ a.invert_hover:hover {
     }
 
     function showDelMsg(strElement, path, file, page) {
-        box.confirm("i18n("Delete file")", "i18n("Do you really want to delete the following file"):<br><b>" + strElement + "</b>", "deleteFile('" + path + "', '" + file + "', " + page + ")");
+        showConfirmation('i18n("Do you really want to delete the following file"):<br><b>' + strElement + '</b>', function() { deleteFile('"' + path + '"', '"' + file + '"', '"' + page + '"'); });
     }
 
     // Function for deleting items

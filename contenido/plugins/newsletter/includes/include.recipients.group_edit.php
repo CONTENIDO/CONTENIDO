@@ -6,10 +6,6 @@
  * Description:
  * Recipient group editor
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Plugins
  * @subpackage Newsletter
  * @version    1.1.1
@@ -19,11 +15,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2004-08-01, Björn Behrens (HerrB)
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -258,13 +249,12 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     $oMemberListOptionRow->setContentData($sContent);
 
     // Members
-    $oAddedRecipientList = new cGuiList;
+    $oAddedRecipientList = new cGuiList();
 
     $oAddedRecipientList->setCell(0, 1, "<strong>".i18n("Name", 'newsletter')."</strong>");
     $oImgDel = new cHTMLImage("images/but_invert_selection.gif");
     $sLnkDelIcon = '<a title="'.i18n("Check all", 'newsletter').'" href="javascript://" onclick="fncCheckDel(\'deluser[]\');">'.$oImgDel->render().'</a>';
     $oAddedRecipientList->setCell(0, 2, $sLnkDelIcon);
-    $oAddedRecipientList->setCellAlignment(0, 2, "right");
 
     $oInsiders = new NewsletterRecipientCollection;
 
@@ -347,7 +337,6 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
             } else {
                 $oAddedRecipientList->setCell($iID, 2, "&nbsp;");
             }
-            $oAddedRecipientList->setCellAlignment($iID, 2, "right");
         }
     }
 
@@ -577,5 +566,3 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     $oPage->setContent($oForm);
 }
 $oPage->render();
-
-?>

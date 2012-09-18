@@ -270,7 +270,6 @@ class CodeMirror {
             $js .= '<script type="text/javascript" src="' . $path . 'lib/util/searchcursor.js"></script>' . PHP_EOL;
             $js .= '<script type="text/javascript" src="' . $path . 'lib/util/search.js"></script>' . PHP_EOL;
             $js .= '<script type="text/javascript" src="' . $path . 'lib/contenido_integration.js"></script>' . PHP_EOL;
-            $js .= '<script type="text/javascript" src="' . $conPath . 'scripts/jquery/jquery.js"></script>' . PHP_EOL;
             $js .= $this->_getSyntaxScripts();
             $js .= '<link rel="stylesheet" href="' . $path . 'lib/codemirror.css" />' . PHP_EOL;
             $js .= '<link rel="stylesheet" href="' . $path . 'lib/util/dialog.css" />' . PHP_EOL;

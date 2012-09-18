@@ -6,10 +6,6 @@
  * Description:
  * Frontend user list
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Plugins
  * @subpackage Newsletter
  * @version    1.2.2
@@ -19,14 +15,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2007-01-01, Björn Behrens (HerrB)
- *   modified 2008-06-27, Dominik Ziegler, add security fix
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -256,18 +244,14 @@ $sExecScript = '
     <script type="text/javascript">
         var sid = "'.$sess->id.'";
 
-        // Create messageBox instance
-        box = new messageBox("", "", "", 0, 0);
-
         function showSendTestMsg(lngId) {
-            box.confirm("'.$aMsg["SendTestTitle"].'", "'.$aMsg["SendTestDescr"].'", "sendTestNewsletter(\'" + lngId + "\')");
+            showConfirmation("' . $aMsg["SendTestDescr"] . '", function() { sendTestNewsletter(lngId); });
         }
 
         function showDelMsg(lngId, strElement) {
-            box.confirm("'.$aMsg["DelTitle"].'", "'.$aMsg["DelDescr"].'<b>" + strElement + "</b>", "deleteNewsletter(\'" + lngId + "\')");
+            showConfirmation("' . $aMsg["DelDescr"] . '<b>" + strElement + "</b>", function() { deleteNewsletter(lngId); });
         }
 
-        //
         function checkSelection(strValue) {
             if (strValue == "selection") {
                 document.getElementById("groupselect").disabled = false;
@@ -357,5 +341,3 @@ $oScript->setContent($jsCode);
 
 $oPage->setContent(array($oMenu, $oScript));
 $oPage->render();
-
-?>

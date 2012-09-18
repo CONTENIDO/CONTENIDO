@@ -1937,8 +1937,6 @@ contenido/scripts/content_types/cmsFilelist.js -text
 contenido/scripts/content_types/cmsImgeditor.js -text
 contenido/scripts/content_types/cmsLinkeditor.js -text
 contenido/scripts/content_types/cmsTeaser.js -text
-contenido/scripts/datetimepicker/jquery-ui-timepicker-addon.js -text svneol=unset#text/plain
-contenido/scripts/datetimepicker/jquery-ui-timepicker-de.js -text svneol=unset#text/plain
 contenido/scripts/dragdrop.upl_files_upload.js -text
 contenido/scripts/expandCollapse.js -text
 contenido/scripts/general.js -text
@@ -1948,11 +1946,13 @@ contenido/scripts/help.js.php -text
 contenido/scripts/iZoom.js.php -text
 contenido/scripts/index.php -text
 contenido/scripts/infoBox.js -text
-contenido/scripts/jquery.tipsy.js -text
 contenido/scripts/jquery/ajaxupload.js -text
 contenido/scripts/jquery/jquery-ui.js -text
 contenido/scripts/jquery/jquery.js -text
-contenido/scripts/jquery/jquery.ui.datepicker-de.js -text svneol=unset#text/plain
+contenido/scripts/jquery/plugins/datepicker-de.js -text svneol=unset#text/plain
+contenido/scripts/jquery/plugins/timepicker-de.js -text svneol=unset#text/plain
+contenido/scripts/jquery/plugins/timepicker.js -text svneol=unset#text/plain
+contenido/scripts/jquery/plugins/tipsy.js -text
 contenido/scripts/langref.php -text
 contenido/scripts/mail_log.js -text svneol=unset#text/plain
 contenido/scripts/md5.js -text
@@ -1974,25 +1974,25 @@ contenido/styles/content_types/cms_filelist.css -text
 contenido/styles/content_types/cms_imgeditor.css -text
 contenido/styles/content_types/cms_linkeditor.css -text
 contenido/styles/content_types/cms_teaser.css -text svneol=unset#text/plain
-contenido/styles/datetimepicker/jquery-ui-timepicker-addon.css -text svneol=unset#text/plain
 contenido/styles/index.php -text
 contenido/styles/inuse.css -text
-contenido/styles/smoothness/images/ui-bg_flat_0_aaaaaa_40x100.png -text
-contenido/styles/smoothness/images/ui-bg_flat_75_ffffff_40x100.png -text
-contenido/styles/smoothness/images/ui-bg_glass_55_fbf9ee_1x400.png -text
-contenido/styles/smoothness/images/ui-bg_glass_65_ffffff_1x400.png -text
-contenido/styles/smoothness/images/ui-bg_glass_75_dadada_1x400.png -text
-contenido/styles/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png -text
-contenido/styles/smoothness/images/ui-bg_glass_95_fef1ec_1x400.png -text
-contenido/styles/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png -text
-contenido/styles/smoothness/images/ui-icons_222222_256x240.png -text
-contenido/styles/smoothness/images/ui-icons_2e83ff_256x240.png -text
-contenido/styles/smoothness/images/ui-icons_454545_256x240.png -text
-contenido/styles/smoothness/images/ui-icons_888888_256x240.png -text
-contenido/styles/smoothness/images/ui-icons_cd0a0a_256x240.png -text
-contenido/styles/smoothness/jquery-ui-1.8.20.custom.css -text svneol=unset#text/plain
+contenido/styles/jquery/images/ui-bg_flat_0_aaaaaa_40x100.png -text
+contenido/styles/jquery/images/ui-bg_flat_75_ffffff_40x100.png -text
+contenido/styles/jquery/images/ui-bg_glass_55_fbf9ee_1x400.png -text
+contenido/styles/jquery/images/ui-bg_glass_65_ffffff_1x400.png -text
+contenido/styles/jquery/images/ui-bg_glass_75_dadada_1x400.png -text
+contenido/styles/jquery/images/ui-bg_glass_75_e6e6e6_1x400.png -text
+contenido/styles/jquery/images/ui-bg_glass_95_fef1ec_1x400.png -text
+contenido/styles/jquery/images/ui-bg_highlight-soft_75_cccccc_1x100.png -text
+contenido/styles/jquery/images/ui-icons_222222_256x240.png -text
+contenido/styles/jquery/images/ui-icons_2e83ff_256x240.png -text
+contenido/styles/jquery/images/ui-icons_454545_256x240.png -text
+contenido/styles/jquery/images/ui-icons_888888_256x240.png -text
+contenido/styles/jquery/images/ui-icons_cd0a0a_256x240.png -text
+contenido/styles/jquery/jquery-ui.css -text svneol=unset#text/plain
+contenido/styles/jquery/plugins/timepicker.css -text svneol=unset#text/plain
+contenido/styles/jquery/plugins/tipsy.css -text
 contenido/styles/str_overview.css -text
-contenido/styles/tipsy.css -text
 contenido/subnav.php -text
 contenido/templates/index.php -text
 contenido/templates/standard/filler.html -text
@@ -2084,7 +2084,6 @@ contenido/templates/standard/template.mycontenido_lastarticles.html -text
 contenido/templates/standard/template.mycontenido_settings.html -text
 contenido/templates/standard/template.mycontenido_start.html -text
 contenido/templates/standard/template.mycontenido_subnav.html -text
-contenido/templates/standard/template.newsletter_left_top.html -text
 contenido/templates/standard/template.request_password.html -text svneol=unset#text/plain
 contenido/templates/standard/template.right_top_blank.html -text
 contenido/templates/standard/template.rights.html -text

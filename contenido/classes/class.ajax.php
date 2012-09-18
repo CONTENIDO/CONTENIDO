@@ -6,10 +6,6 @@
  * Description:
  * Class for outputting some content for Ajax use
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package CONTENIDO Content Types
  * @version 1.0.2
  * @author Timo Trautmann
@@ -23,9 +19,6 @@
 /**
  * Class for outputting some content for Ajax use
  */
-
-
-
 class cAjaxRequest {
 
     /**
@@ -293,6 +286,15 @@ class cAjaxRequest {
 
                 $string = $linkEditor->getUploadFileSelect($dirName);
                 break;
+
+            case 'generaljstranslations':
+                $translations = array();
+                $translations['Confirmation Required'] = i18n('Confirmation Required');
+                $translations['OK'] = i18n('OK');
+                $translations['Cancel'] = i18n('Cancel');
+                $string = json_encode($translations);
+                break;
+
             default:
                 // if action is unknown generate error message
                 $string = 'Unknown Ajax Action';

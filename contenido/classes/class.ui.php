@@ -6,10 +6,6 @@
  * Description:
  * CONTENIDO UI Classes
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Classes
  * @version    1.5.3
  * @author     Timo A. Hummel
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *  created 2003-05-20
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -203,7 +194,11 @@ class UI_Page {
         $this->content = $content;
     }
 
+    /**
+     * @deprecated 2012-09-17 Use jQuery UI Dialog instead!
+     */
     function setMessageBox() {
+        cDeprecated('Use jQuery UI Dialog instead!');
         global $sess;
         $this->scripts["__msgbox"] =
                 '<script type="text/javascript" src="scripts/messageBox.js.php?contenido=' . $sess->id . '"></script>' .
@@ -249,5 +244,3 @@ class UI_Page {
     }
 
 }
-
-?>

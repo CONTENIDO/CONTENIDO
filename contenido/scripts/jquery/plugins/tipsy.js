@@ -9,6 +9,13 @@
         return (typeof thing == 'function') ? (thing.call(ctx)) : thing;
     };
 
+    function isElementInDOM(ele) {
+      while (ele = ele.parentNode) {
+        if (ele == document) return true;
+      }
+      return false;
+    };
+
     function Tipsy(element, options) {
         this.$element = $(element);
         this.options = options;
@@ -104,6 +111,7 @@
         tip: function() {
             if (!this.$tip) {
                 this.$tip = $('<div class="tipsy"></div>').html('<div class="tipsy-arrow"></div><div class="tipsy-inner"></div>');
+                this.$tip.data('tipsy-pointee', this.$element[0]);
             }
             return this.$tip;
         },
@@ -191,6 +199,15 @@
         trigger: 'hover'
     };
 
+    $.fn.tipsy.revalidate = function() {
+      $('.tipsy').each(function() {
+        var pointee = $.data(this, 'tipsy-pointee');
+        if (!pointee || !isElementInDOM(pointee)) {
+          $(this).remove();
+        }
+      });
+    };
+
     // Overwrite this method to provide options on a per-element basis.
     // For example, you could store the gravity in a 'tipsy-gravity' attribute:
     // return $.extend({}, options, {gravity: $(ele).attr('tipsy-gravity') || 'n' });
@@ -223,19 +240,19 @@
      *        component.
      */
      $.fn.tipsy.autoBounds = function(margin, prefer) {
-        return function() {
-            var dir = {ns: prefer[0], ew: (prefer.length > 1 ? prefer[1] : false)},
-                boundTop = $(document).scrollTop() + margin,
-                boundLeft = $(document).scrollLeft() + margin,
-                $this = $(this);
+		return function() {
+			var dir = {ns: prefer[0], ew: (prefer.length > 1 ? prefer[1] : false)},
+			    boundTop = $(document).scrollTop() + margin,
+			    boundLeft = $(document).scrollLeft() + margin,
+			    $this = $(this);
 
-            if ($this.offset().top < boundTop) dir.ns = 'n';
-            if ($this.offset().left < boundLeft) dir.ew = 'w';
-            if ($(window).width() + $(document).scrollLeft() - $this.offset().left < margin) dir.ew = 'e';
-            if ($(window).height() + $(document).scrollTop() - $this.offset().top < margin) dir.ns = 's';
+			if ($this.offset().top < boundTop) dir.ns = 'n';
+			if ($this.offset().left < boundLeft) dir.ew = 'w';
+			if ($(window).width() + $(document).scrollLeft() - $this.offset().left < margin) dir.ew = 'e';
+			if ($(window).height() + $(document).scrollTop() - $this.offset().top < margin) dir.ns = 's';
 
-            return dir.ns + (dir.ew ? dir.ew : '');
-        }
-    };
+			return dir.ns + (dir.ew ? dir.ew : '');
+		}
+	};
 
 })(jQuery);

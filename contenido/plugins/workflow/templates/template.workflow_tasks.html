@@ -6,17 +6,16 @@
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="pragma" content="no-cache">
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
+    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/general.js"></script>
-    <script type="text/javascript" src="scripts/messageBox.js.php?{SESSNAME}={SESSID}"></script>
     <script type="text/javascript" src="scripts/articleObject.js.php?{SESSNAME}={SESSID}"></script>
     <script type="text/javascript">
     <!--
         /* CONTENIDO Session-ID */
         var sid = "{SESSID}";
-
-        /* New messageBox instance */
-        box = new messageBox("", "", "", 0, 0);
 
         /* Function for deleting articles */
         function deleteArticle(idart, idcat) {

@@ -6,10 +6,6 @@
  * Description:
  * Message box for errors and / or confirms
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend sripts
  * @version    1.0.4
  * @author     Jan Lengowski
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.7
- *
- * {@internal
- *   created  2003-05-08
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -125,11 +116,7 @@ var bMsie = (document.all) ? true : false;
  * @param message srint The message text
  * @param htmlTemplate
  *
- *
-
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- * @version 0.9
+ * @deprecated 2012-09-17 Use jQuery UI Dialog instead!
  */
 function messageBox(headline, message, htmlTemplate, width, height) {
 
@@ -169,8 +156,7 @@ function messageBox(headline, message, htmlTemplate, width, height) {
 /**
  * Displays a notification
  *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
+ * @deprecated 2012-09-17 Use showNotification from general.js instead!
  */
 messageBox.prototype.notify = function(head, msg) {
     /* Some required variables */
@@ -248,8 +234,6 @@ messageBox.prototype.notify = function(head, msg) {
 
 }
 
-
-
 /**
  * Displays a confirmation pop-up.
  *
@@ -257,8 +241,7 @@ messageBox.prototype.notify = function(head, msg) {
  * @param msg string The message
  * @param callback string Name of the function executed on confirmation
  *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
+ * @deprecated 2012-09-17 Use showConfirmation() from general.js instead!
  */
 messageBox.prototype.confirm = function(head, msg, callback) {
 
@@ -291,10 +274,8 @@ messageBox.prototype.confirm = function(head, msg, callback) {
     }
 
     /* Check if the callback functions are passed as array */
-    if (typeof(callback) == "object")
-    {
-        for (var i=0; i < callback.length; i++)
-        {
+    if (typeof(callback) == "object") {
+        for (var i=0; i < callback.length; i++) {
             sCallback += actionFrame+"." + callback[i] + ";";
         }
     } else {
@@ -362,28 +343,23 @@ messageBox.prototype.confirm = function(head, msg, callback) {
   /* error catching is for weenies ! */
 }
 
-function performAction (area, action, frame, itemtype, itemid, sid)
-{
+function performAction (area, action, frame, itemtype, itemid, sid) {
     url  = 'main.php?area='+area;
     url += '&action='+action;
     url += '&frame='+frame;
     url += '&' + itemtype + '=' + itemid;
     url += '&contenido=' + sid;
 
-    if (frame == 1)
-    {
+    if (frame == 1) {
         parent.parent.left.left_top.location.href = url;
     }
-    if (frame == 2)
-    {
+    if (frame == 2) {
         parent.parent.left.left_bottom.location.href = url;
     }
-    if (frame == 3)
-    {
+    if (frame == 3) {
         parent.parent.right.right_top.location.href = url;
     }
-    if (frame == 4)
-    {
+    if (frame == 4) {
         parent.parent.right.right_bottom.location.href = url;
     }
 }

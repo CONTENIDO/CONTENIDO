@@ -580,7 +580,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 }
 
                 $confirmString = sprintf(i18n("Are you sure to delete the following article:<br><br><b>%s</b>"), htmlspecialchars($tmp_title));
-                $tmp_del = '<a href="javascript://" onclick="box.confirm(&quot;' . i18n("Delete article") . '&quot;, &quot;' . addslashes($confirmString) . '&quot;, &quot;deleteArticle(' . $idart . ',' . $idcat . ',' . $next . ')&quot;)" title="' . i18n("Delete article") . '"><img src="images/delete.gif" title="' . i18n("Delete article") . '" alt="' . i18n("Delete article") . '" border="0" style="margin-left:3px;"></a>';
+                $tmp_del = '<a href="javascript:void(0)" onclick="showConfirmation(&quot;' . $confirmString . '&quot;, function(){ deleteArticle(' . $idart . ', ' . $idcat . ', ' . $next . '); });return false;" title="' . i18n("Delete article") . '"><img src="images/delete.gif" title="' . i18n("Delete article") . '" alt="' . i18n("Delete article") . '"></a>';
             } else {
                 $tmp_del = '';
             }
@@ -764,7 +764,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         if ($articlesToSync > 0) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_syncarticle', 'images/but_sync_art.gif', i18n('Copy article to the current language'));
         }
-        $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), "box.confirm('" . i18n('Delete marked articles') . "', '" . i18n('Are you sure to delete the selected articles') . "','deleteArticles()');");
+        $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), 'showConfirmation("' . i18n('Are you sure to delete the selected articles') . '", deleteArticles)');
         $tpl->set('s', 'BULK_EDITING_FUNCTIONS', $bulkEditingFunctions);
 
         if (count($artlist) > 0) {

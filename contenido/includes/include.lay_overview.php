@@ -6,10 +6,6 @@
  * Description:
  * List layouts in database
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.2
  * @author     Olaf Niemann
@@ -18,15 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-03-27
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2010-08-18, Munkh-Ulzii Balidar, add a functionality to show the used info
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -42,7 +29,7 @@ $tpl->reset();
 $tpl->set('s', 'SID', $sess->id);
 
 $darkrow = false;
-while ($layout = $oLayouts->next()) {
+while (($layout = $oLayouts->next()) !== false) {
 
     if (!$perm->have_perm_area_action_item('lay_edit', 'lay_edit', $layout->get('idlay'))) {
         continue;
@@ -90,7 +77,7 @@ while ($layout = $oLayouts->next()) {
     if ($perm->have_perm_area_action_item('lay', 'lay_delete', $idlay) && !$inUse) {
         $delTitle = i18n("Delete layout");
         $delDescr = sprintf(i18n("Do you really want to delete the following layout:<br><br>%s<br>"), htmlspecialchars($name));
-        $delLink  = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteLayout('.$idlay.')\')">'
+        $delLink  = '<a title="'.$delTitle.'" href="javascript://" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteLayout(' . $idlay . '); });return false;">'
                   . '<img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
         $tpl->set('d', 'DELETE', $delLink);
     } else {
@@ -117,4 +104,3 @@ $tpl->set('s', 'AJAXURL',  cRegistry::getBackendUrl() . 'ajaxmain.php');
 $tpl->set('s', 'BOX_TITLE', i18n("The layout '%s' is used for following templates") . ":");
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lay_overview']);
-?>

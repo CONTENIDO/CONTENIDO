@@ -1,23 +1,15 @@
-/******************************************
-* File      :   general.js
-* Project   :   CONTENIDO
-* Descr     :   Defines general required
-*               javascript functions
-*
-* Author    :   Jan Lengowski
-* Created   :   25.03.2003
-* Modified  :   $Date$
-*
-* $Id$
+/**
+ * This file contains general functions which are potentially helpful for every
+ * backend page. The file should therefore be included in every backend page.
+ */
 
-* © four for business AG
-******************************************/
+$(function() {
+    // get the translations once, so that they are already loaded
+    getTranslations();
+});
 
 /**
- * Javascript Multilink
- *
- *  Example:
- *  <code>
+ * Javascript Multilink Example: <code>
  *    conMultiLink (
  *         "frame",
  *        "link",
@@ -28,25 +20,23 @@
  *    )
  * </code>
  *
- * @param [arguments*] optional amount of arguments used pairwise for assigning URLs to frame names in CONTENIDO.
- *                     The last argument is optional but must (!) be "simpleFrame" if used to specify that the complete frame structure is not available.
+ * @param [arguments*]
+ *            optional amount of arguments used pairwise for assigning URLs to
+ *            frame names in CONTENIDO. The last argument is optional but must
+ *            (!) be "simpleFrame" if used to specify that the complete frame
+ *            structure is not available.
  * @return void
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @author Marco Jahn <Marco.Jahn@4fb.de>
- * @author Frederic Schneider <Frederic.Schneider@4fb.de>
- * @copryright four for business AG <www.4fb.de>
  */
-function conMultiLink()
-{
+function conMultiLink() {
     // get last argument
-    var tmp = arguments[arguments.length-1];
+    var tmp = arguments[arguments.length - 1];
     // check by last argument if reduced frame structure is used
-    var simpleFrame = (tmp == "simpleFrame") ? true : false ;
-    // change for-loop counter if last parameter is used to identify simple frame multilinks
+    var simpleFrame = (tmp == "simpleFrame") ? true : false;
+    // change for-loop counter if last parameter is used to identify simple
+    // frame multilinks
     var len = (simpleFrame) ? arguments.length - 1 : arguments.length;
 
-    for (var i = 0; i < len; i += 2) {
+    for ( var i = 0; i < len; i += 2) {
         f = arguments[i];
         l = arguments[i + 1];
 
@@ -62,7 +52,123 @@ function conMultiLink()
     }
 }
 
+/**
+ * @deprecated 2012-09-17 This function does not do anything and should not be
+ *             used.
+ */
 function handleErrors() {
 
     return true;
+}
+
+function getRegistry() {
+    return window.top.header.ContenidoRegistry;
+}
+
+/**
+ * Determines the window in which all the content is being displayed and returns
+ * it.
+ *
+ * @returns the window object in which all content is being displayed
+ */
+function getContentWindow() {
+    if (typeof window.top.content.right !== 'undefined') {
+        return window.top.content.right.right_bottom;
+    }
+    return window.top.content.right_bottom;
+}
+
+/**
+ * Loads the translations from the server once and just returns them if they
+ * have already been loaded.
+ *
+ * @returns {Object}
+ */
+function getTranslations() {
+    var registry = getRegistry();
+    // if the translations have not been loaded yet, do it now
+    if (typeof registry.get('translations') === 'undefined') {
+        $.ajax({
+            async : false,
+            data : 'ajax=generaljstranslations',
+            dataType : 'json',
+            success : function(data) {
+                registry.set('translations', data);
+            },
+            url : 'ajaxmain.php'
+        });
+    }
+
+    return registry.get('translations');
+}
+
+/**
+ * Shows a confirmation box with the help of jQuery UI Dialog.
+ *
+ * @param description
+ *            {String} the text which is displayed in the dialog
+ * @param callback
+ *            a callback function which is called if the user confirmed
+ * @param additionalOptions
+ *            {Object} options which can be used to customise the behaviour of
+ *            the dialog box
+ */
+function showConfirmation(description, callback, additionalOptions) {
+    // get the translations so that we can use them
+    var translations = getTranslations();
+    // define the options and extend them with the given ones
+    var contentWindow = getContentWindow();
+    var buttons = {};
+    buttons[translations['OK']] = function() {
+        if (typeof callback === 'function') {
+            callback();
+        }
+        $(this).dialog('close');
+    };
+    buttons[translations['Cancel']] = function() {
+        // unfortunately, the following line does not work if the dialog is
+        // opened from another frame
+        // $(this).dialog('close');
+        // so use this ugly workaround
+        $(this).parent().remove();
+    };
+    var options = {
+        buttons : buttons,
+        position : ['center', 50],
+        resizable: false,
+        title : translations['Confirmation Required']
+    };
+    options = $.extend(options, additionalOptions);
+    // show the dialog in the content window
+    contentWindow.$('<div>' + description + '</div>').dialog(options);
+}
+
+/**
+ * Shows a notification box with the help of jQuery UI Dialog.
+ *
+ * @param title
+ *            {String} the title of the box
+ * @param description
+ *            {String} the text which is displayed in the box
+ * @param additionalOptions
+ *            {Object} options which can be used to customise the behaviour of
+ *            the dialog box
+ */
+function showNotification(title, description, additionalOptions) {
+    // get the translations so that we can use them
+    var translations = getTranslations();
+    // define the options and extend them with the given ones
+    var buttons = {};
+    buttons[translations['OK']] = function() {
+        $(this).dialog('close');
+    };
+    var options = {
+        buttons : buttons,
+        position : ['center', 50],
+        title : title
+    };
+    options = $.extend(options, additionalOptions);
+    // show the dialog in the content window
+    var contentWindow = getContentWindow();
+    contentWindow.$('<div>' + description + '</div>').dialog(options);
 }

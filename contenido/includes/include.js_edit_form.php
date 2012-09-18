@@ -6,10 +6,6 @@
  * Description:
  * Edit file
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.1.1
  * @author     Willi Mann
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2004-07-14
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -213,8 +204,9 @@ if ($action == 'js_delete') {
             $page->addScript($sReloadScript);
         }
         $page->render();
-
+    } else {
+        $page = new cGuiPage('generic_page');
+        $page->setContent('');
+        $page->render();
     }
 }
-
-?>

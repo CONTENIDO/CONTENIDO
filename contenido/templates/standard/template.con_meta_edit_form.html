@@ -6,18 +6,17 @@
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="pragma" content="no-cache">
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
-    <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
-    <script type="text/javascript" src="scripts/general.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
+    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-    <script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>
+    <script type="text/javascript" src="scripts/general.js"></script>
     <!-- get javascript files for language != en -->
     {CAL_LANG}
-    <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
     <script type="text/javascript">
         var sid = "{SID}";
-        box = new messageBox("", "", "", 0, 0);
+
         $(document).ready(function() {
             $("div#categorypath > a").click(function() {
                 var url = $(this).attr('href');

@@ -6,10 +6,6 @@
  * Description:
  * Frontend user editor
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Plugins
  * @subpackage Newsletter
  * @version    1.0.2
@@ -19,14 +15,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2007-01-01, Björn Behrens (HerrB)
- *   modified 2008-06-27, Dominik Ziegler, add security fix
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -233,9 +221,6 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             }
         }
 
-        // Create messageBox instance
-        box = new messageBox("", "", "", 0, 0);
-
         // If html newsletter template selection has changed, ask user
         // if he/she may like to save this change (e.g. to get an html
         // newsletter immediately)
@@ -248,7 +233,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
                     submitForm();
                 } else {
                     // You may loose information, warn!
-                    box.confirm("'.i18n("HTML newsletter template changed", 'newsletter').'", "'.i18n("HTML template has been changed. Do you like to save now to apply changes?<br><br><b>Note, that existing HTML newsletter content will get lost!</b>", 'newsletter').'", "submitForm()");
+                    showConfirmation("' . i18n("HTML template has been changed. Do you like to save now to apply changes?<br><br><b>Note, that existing HTML newsletter content will get lost!</b>", 'newsletter') . '", submitForm);
                 }
             }
         }
@@ -262,4 +247,3 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 }
 
 $oPage->render();
-?>

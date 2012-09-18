@@ -6,10 +6,6 @@
  * Description:
  * Left top pane
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Plugins
  * @subpackage Newsletter
  * @version    1.0.2
@@ -19,15 +15,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2007-01-01, Björn Behrens (HerrB)
- *   modified 2008-06-27, Dominik Ziegler, add security fix
- *   modified 2008-08-03, Björn Behrens (HerrB), complete makeover to fix bugs and reduce memory waste
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -606,7 +593,7 @@ if ($perm->have_perm_area_action("recipients", "recipients_create")) {
 // Create a link to purge subscribed but not confirmed recipients
 if ($perm->have_perm_area_action("recipients", "recipients_delete")) {
     $oLink = new cHTMLLink();
-    $oLink->setLink('javascript:showPurgeMsg("'.i18n('Purge recipients', 'newsletter').'", "'.sprintf(i18n("Do you really want to remove recipients, that have not been confirmed since %s days and over?", 'newsletter'), '"+purgetimeframe+"').'")');
+    $oLink->setLink("javascript:showPurgeMsg('" . i18n('Purge recipients', 'newsletter') . "', '" . sprintf(i18n('Do you really want to remove recipients, that have not been confirmed since %s days and over?', 'newsletter'), purgetimeframe) . "')");
     $oLink->setContent('<img src="'.$cfg["path"]["images"] . 'delete.gif">'.i18n("Purge recipients", 'newsletter').'</a>');
     $sContent .= $oLink->render();
 }
@@ -987,5 +974,3 @@ $oTpl->set('s', 'SESSID', $sess->id);
 $oTpl->generate(
    cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.newsletter_left_top.html'
 );
-
-?>

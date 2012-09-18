@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release >= 5.0
- *
- * {@internal
- *   created 2008-08-12
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -149,5 +144,3 @@ if ($sSelectBox != "") {
 }
 
 $oPage->render();
-
-?>

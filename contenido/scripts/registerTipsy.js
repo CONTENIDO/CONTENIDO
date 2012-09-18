@@ -1,8 +1,8 @@
-
-(function($) {
-
+$(function() {
     $(document).ready(function() {
-        $(".tooltip").tipsy({gravity: $.fn.tipsy.autoWE, html: true });
+        $('.tooltip').tipsy({
+            gravity : $.fn.tipsy.autoWE,
+            html : true
+        });
     });
-
-})(jQuery);
+});

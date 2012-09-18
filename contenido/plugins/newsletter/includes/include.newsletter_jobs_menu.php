@@ -6,10 +6,6 @@
  * Description:
  * Frontend user list
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Plugins
  * @subpackage Newsletter
  * @version    1.0.2
@@ -19,14 +15,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2007-01-01, Björn Behrens (HerrB)
- *   modified 2008-06-27, Dominik Ziegler, add security fix
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -231,15 +219,12 @@ $sExecScript = '
         // Session-ID
         var sid = "'.$sess->id.'";
 
-        // Create messageBox instance
-        box = new messageBox("", "", "", 0, 0);
-
         function showSendMsg(lngId, strElement) {
-            box.confirm("'.$aMsg["SendTitle"].'", "'.$aMsg["SendDescr"].'<b>" + strElement + "</b>", "runJob(\'" + lngId + "\')");
+            showConfirmation("' . $aMsg["SendDescr"] . '<b>" + strElement + "</b>", function() { runJob(lngId); });
         }
 
         function showDelMsg(lngId, strElement) {
-            box.confirm("'.$aMsg["DelTitle"].'", "'.$aMsg["DelDescr"].'<b>" + strElement + "</b>", "deleteJob(\'" + lngId + "\')");
+            showConfirmation("' . $aMsg["DelDescr"] . '<b>" + strElement + "</b>", function() { deleteJob(lngId); });
         }
 
         // Function for running job
@@ -327,5 +312,3 @@ $oPage->addScript($sRefreshPager);
 //$oPage->setContent(array('<table border="0" cellspacing="0" cellpadding="0" width="100%">', $oListOptionRow, '</table>', $oMenu->render(false)));
 $oPage->setContent($oMenu);
 $oPage->render();
-
-?>

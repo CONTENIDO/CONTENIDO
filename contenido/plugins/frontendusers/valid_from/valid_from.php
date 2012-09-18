@@ -40,8 +40,8 @@ function frontendusers_valid_from_display()
 
     if(($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
 
-        $langscripts=  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
-        <script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
+        $langscripts=  '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-'.$lang_short.'.js"></script>
+        <script type="text/javascript" src="scripts/jquery/plugins/datepicker-'.$lang_short.'.js"></script>';
     }
 
     $path_to_calender_pic = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
@@ -55,11 +55,11 @@ function frontendusers_valid_from_display()
     }
     $currentValue = str_replace('00:00:00', '', $currentValue);
 
-    $sValidFrom = ' <link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
-                    <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
+    $sValidFrom = ' <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
+                    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
                     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
                     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-                    <script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>';
+                    <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>';
     $sValidFrom .= $langscripts;
 
     $sValidFrom .= '<input type="text" id="valid_from" name="valid_from" value="'.$currentValue.'">';

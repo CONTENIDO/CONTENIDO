@@ -18,11 +18,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-12-30
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -34,18 +29,14 @@ cInclude("includes", "functions.upl.php");
 
 $page = new cGuiPage("upl_edit");
 
-$page->addStyle("datetimepicker/jquery-ui-timepicker-addon.css");
-$page->addStyle("smoothness/jquery-ui-1.8.20.custom.css");
-$page->addScript("datetimepicker/jquery-ui-timepicker-addon.js");
+$page->addStyle("jquery/plugins/timepicker.css");
+$page->addScript("jquery/plugins/timepicker.js");
 
 //get language js files
 if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
-    $page->addScript("datetimepicker/jquery-ui-timepicker-".$lang_short.".js");
-    $page->addScript("jquery/jquery.ui.datepicker-".$lang_short.".js");
+    $page->addScript("jquery/plugins/timepicker-".$lang_short.".js");
+    $page->addScript("jquery/plugins/datepicker-".$lang_short.".js");
 }
-
-$page->addScript("jquery.tipsy.js");
-$page->addScript("registerTipsy.js");
 
 $form = new cGuiTableForm("properties");
 $form->setVar("frame", $frame);
@@ -298,5 +289,3 @@ if ($upload = $uploads->next()) {
 }
 
 $page->render();
-
-?>

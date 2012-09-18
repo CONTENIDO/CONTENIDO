@@ -6,18 +6,14 @@
  * Description:
  * Rights menu
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.2
- * @author     Olaf Niemann
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @package CONTENIDO Backend Includes
+ * @version 1.0.2
+ * @author Olaf Niemann
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -26,27 +22,25 @@ if (!defined('CON_FRAMEWORK')) {
 
 $oPage = new cGuiPage("rights_menu");
 
-$cApiUserCollection = new cApiUserCollection;
+$cApiUserCollection = new cApiUserCollection();
 $cApiUserCollection->query();
 $iSumUsers = $cApiUserCollection->count();
 
-if (isset($_REQUEST["sortby"]) && $_REQUEST["sortby"] != "")
-{
-    $cApiUserCollection->setOrder($_REQUEST["sortby"]. " ". $_REQUEST["sortorder"]);
+if (isset($_REQUEST["sortby"]) && $_REQUEST["sortby"] != "") {
+    $cApiUserCollection->setOrder($_REQUEST["sortby"] . " " . $_REQUEST["sortorder"]);
 } else {
     $cApiUserCollection->setOrder("username asc");
 }
 
-if (isset($_REQUEST["filter"]) && $_REQUEST["filter"] != "")
-{
-    $cApiUserCollection->setWhereGroup("default", "username", "%".$_REQUEST["filter"]."%", "LIKE");
-    $cApiUserCollection->setWhereGroup("default", "realname", "%".$_REQUEST["filter"]."%", "LIKE");
-    $cApiUserCollection->setWhereGroup("default", "email", "%".$_REQUEST["filter"]."%", "LIKE");
-    $cApiUserCollection->setWhereGroup("default", "telephone", "%".$_REQUEST["filter"]."%", "LIKE");
-    $cApiUserCollection->setWhereGroup("default", "address_street", "%".$_REQUEST["filter"]."%", "LIKE");
-    $cApiUserCollection->setWhereGroup("default", "address_zip", "%".$_REQUEST["filter"]."%", "LIKE");
-    $cApiUserCollection->setWhereGroup("default", "address_city", "%".$_REQUEST["filter"]."%", "LIKE");
-    $cApiUserCollection->setWhereGroup("default", "address_country", "%".$_REQUEST["filter"]."%", "LIKE");
+if (isset($_REQUEST["filter"]) && $_REQUEST["filter"] != "") {
+    $cApiUserCollection->setWhereGroup("default", "username", "%" . $_REQUEST["filter"] . "%", "LIKE");
+    $cApiUserCollection->setWhereGroup("default", "realname", "%" . $_REQUEST["filter"] . "%", "LIKE");
+    $cApiUserCollection->setWhereGroup("default", "email", "%" . $_REQUEST["filter"] . "%", "LIKE");
+    $cApiUserCollection->setWhereGroup("default", "telephone", "%" . $_REQUEST["filter"] . "%", "LIKE");
+    $cApiUserCollection->setWhereGroup("default", "address_street", "%" . $_REQUEST["filter"] . "%", "LIKE");
+    $cApiUserCollection->setWhereGroup("default", "address_zip", "%" . $_REQUEST["filter"] . "%", "LIKE");
+    $cApiUserCollection->setWhereGroup("default", "address_city", "%" . $_REQUEST["filter"] . "%", "LIKE");
+    $cApiUserCollection->setWhereGroup("default", "address_country", "%" . $_REQUEST["filter"] . "%", "LIKE");
 
     $cApiUserCollection->setInnerGroupCondition("default", "OR");
 }
@@ -59,83 +53,70 @@ $iMenu = 0;
 $iItemCount = 0;
 $mPage = $_REQUEST["page"];
 
-if ($mPage == 0)
-{
+if ($mPage == 0) {
     $mPage = 1;
 }
 
 $elemperpage = $_REQUEST["elemperpage"];
 
-if ($elemperpage == 0)
-{
+if ($elemperpage == 0) {
     $elemperpage = 25;
 }
 
-$mlist = new cGuiMenu;
+$mlist = new cGuiMenu();
 $sToday = date('Y-m-d');
 
-
-if (($elemperpage*$mPage) >= $iSumUsers+$elemperpage && $mPage  != 1) {
+if (($elemperpage * $mPage) >= $iSumUsers + $elemperpage && $mPage != 1) {
     $_REQUEST["page"]--;
     $mPage--;
 }
 
-while ($cApiUser = $cApiUserCollection->next())
-{
+while ($cApiUser = $cApiUserCollection->next()) {
     $userid = $cApiUser->get("user_id");
 
     $aUserPermissions = explode(',', $cApiUser->get('perms'));
 
     $bDisplayUser = false;
 
-    if (in_array("sysadmin", $aCurrentUserPermissions))
-    {
+    if (in_array("sysadmin", $aCurrentUserPermissions)) {
         $bDisplayUser = true;
     }
 
-    foreach ($aCurrentUserAccessibleClients as $key => $value)
-    {
-        if (in_array("client[$key]", $aUserPermissions))
-        {
+    foreach ($aCurrentUserAccessibleClients as $key => $value) {
+        if (in_array("client[$key]", $aUserPermissions)) {
             $bDisplayUser = true;
         }
     }
 
-    foreach ($aUserPermissions as $sLocalPermission)
-    {
-        if (in_array($sLocalPermission, $aCurrentUserPermissions))
-        {
+    foreach ($aUserPermissions as $sLocalPermission) {
+        if (in_array($sLocalPermission, $aCurrentUserPermissions)) {
             $bDisplayUser = true;
         }
     }
 
-    $link = new cHTMLLink;
+    $link = new cHTMLLink();
     $link->setMultiLink("user", "", "user_overview", "");
     $link->setCustom("userid", $cApiUser->get("user_id"));
 
-    if ($bDisplayUser == true)
-    {
+    if ($bDisplayUser == true) {
         $iItemCount++;
 
-        if ($iItemCount > ($elemperpage * ($mPage - 1)) && $iItemCount < (($elemperpage * $mPage) + 1))
-        {
-            if ($perm->have_perm_area_action('user',"user_delete") ) {
-                    $message = sprintf(i18n("Do you really want to delete the user %s?"), $cApiUser->get("username"));
+        if ($iItemCount > ($elemperpage * ($mPage - 1)) && $iItemCount < (($elemperpage * $mPage) + 1)) {
+            if ($perm->have_perm_area_action('user', "user_delete")) {
+                $message = sprintf(i18n("Do you really want to delete the user %s?"), $cApiUser->get("username"));
 
-                    $delTitle = i18n("Delete user");
-                    $deletebutton = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$message.'\', \'deleteBackenduser(\\\''.$userid.'\\\')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
-
-                } else {
-                    $deletebutton = "";
-                }
+                $delTitle = i18n("Delete user");
+                $deletebutton = '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $message . '&quot;, function() { deleteBackenduser(&quot;' . $userid . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+            } else {
+                $deletebutton = '';
+            }
 
             $iMenu++;
 
-            if (($sToday < $cApiUser->get("valid_from") && ($cApiUser->get("valid_from") != '0000-00-00' && $cApiUser->get("valid_from") != '')) ||
-                ($sToday > $cApiUser->get("valid_to") && ($cApiUser->get("valid_to") != '0000-00-00') && $cApiUser->get("valid_from") != '')) {
-                $mlist->setTitle($iMenu, '<span style="color:#b3b3b8">'.$cApiUser->get("username")."<br>".$cApiUser->get("realname").'</span>');
-            }  else {
-                $mlist->setTitle($iMenu, $cApiUser->get("username")."<br>".$cApiUser->get("realname"));
+            if (($sToday < $cApiUser->get("valid_from") && ($cApiUser->get("valid_from") != '0000-00-00' && $cApiUser->get("valid_from") != '')) || ($sToday > $cApiUser->get("valid_to") && ($cApiUser->get("valid_to") != '0000-00-00') && $cApiUser->get("valid_from") != '')) {
+                $mlist->setTitle($iMenu, '<span style="color:#b3b3b8">' . $cApiUser->get("username") . "<br>" . $cApiUser->get("realname") . '</span>');
+            } else {
+                $mlist->setTitle($iMenu, $cApiUser->get("username") . "<br>" . $cApiUser->get("realname"));
             }
 
             $mlist->setLink($iMenu, $link);
@@ -146,17 +127,12 @@ while ($cApiUser = $cApiUserCollection->next())
             }
         }
     }
-
 }
 
 $deleteScript = '<script type="text/javascript">
 
         /* Session-ID */
-        var sid = "'.$sess->id.'";
-
-        /* Create messageBox
-           instance */
-        box = new messageBox("", "", "", 0, 0);
+        var sid = "' . $sess->id . '";
 
         /* Function for deleting
            modules */
@@ -175,7 +151,7 @@ $deleteScript = '<script type="text/javascript">
             url += \'&sortorder=\' +form.sortorder.value;
             url += \'&filter=\' +form.filter.value;
             url += \'&elemperpage=\' +form.elemperpage.value;
-            url += \'&page=\' +\''.$mPage.'\';
+            url += \'&page=\' +\'' . $mPage . '\';
             parent.parent.right.right_bottom.location.href = url;
             parent.parent.right.right_top.location.href = \'main.php?area=user&frame=3&contenido=\'+sid;
 
@@ -188,15 +164,18 @@ $markActiveScript = '<script type="text/javascript">
                              row.markedRow = document.getElementById(\'marked\');
                          }
                     </script>';
-    //<script type="text/javascript" src="scripts/rowMark.js"></script>
+// <script type="text/javascript" src="scripts/rowMark.js"></script>
 $oPage->addScript('parameterCollector.js');
 $oPage->addScript($deleteScript);
 $oDiv = new cHTMLDiv();
 $oDiv->setContent($markActiveScript);
-$oPage->setContent(array($mlist, $oDiv));
+$oPage->setContent(array(
+    $mlist,
+    $oDiv
+));
 
-//generate current content for Object Pager
-$oPagerLink = new cHTMLLink;
+// generate current content for Object Pager
+$oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("elemperpage", $elemperpage);
@@ -208,19 +187,18 @@ $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
 
-$pagerID="pager";
+$pagerID = "pager";
 $oPager = new cGuiObjectPager("44b41691-0dd4-443c-a594-66a8164e25fd", $iItemCount, $elemperpage, $page, $oPagerLink, "page", $pagerID);
 
-
-//add slashes, to insert in javascript
+// add slashes, to insert in javascript
 $sPagerContent = $oPager->render(1);
 $sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
 $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 
-//send new object pager to left_top
+// send new object pager to left_top
 $sRefreshPager = '
     <script type="text/javascript">
-        var sNavigation = \''.$sPagerContent.'\';
+        var sNavigation = \'' . $sPagerContent . '\';
         var left_top = parent.left_top;
         if (left_top.document) {
             var oPager = left_top.document.getElementById(\'44b41691-0dd4-443c-a594-66a8164e25fd\');

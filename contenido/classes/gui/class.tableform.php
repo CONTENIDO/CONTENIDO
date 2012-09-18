@@ -6,9 +6,6 @@
  * Description:
  * Manages HTML menus
  *
- * Requirements:
- * @con_php_req 5
- *
  * @package    CONTENIDO Backend
  * @subpackage GUI
  * @author     mischa.holz
@@ -16,11 +13,6 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2012-07-12
- *   $Id: class.tableform.php 2379 2012-06-22 21:00:16Z xmurrix $:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -239,14 +231,12 @@ class cGuiTableForm {
             if ($value["action"] !== false) {
 
                 if ($value["confirmtitle"] != "") {
-                    $action = '[\'';
-                    $action .= addslashes('document.forms[\'' . $this->formname . '\'].elements[\'action\'].value = \'' . $value["action"] . '\'') . '\',\'';
-                    $action .= addslashes('document.forms[\'' . $this->formname . '\'].submit()');
-                    $action .= '\']';
+                    $action = 'document.forms["' . $this->formname . '"].elements["action"].value = "' . $value['action'] . '";';
+                    $action .= 'document.forms["' . $this->formname . '"].submit()';
 
-                    $onclick = 'box.confirm(\'' . $value["confirmtitle"] . '\', \'' . $value["confirmdescription"] . '\', ' . $action . ');return false;';
+                    $onclick = 'showConfirmation("' . $value['confirmdescription'] . '", function() { ' . $action . ' });return false;';
                 } else {
-                    $onclick = 'document.forms[\'' . $this->formname . '\'].elements[\'action\'].value = \'' . $value["action"] . '\';';
+                    $onclick = 'document.forms["' . $this->formname . '"].elements["action"].value = "' . $value['action'] . '";';
                 }
             }
 
@@ -257,10 +247,9 @@ class cGuiTableForm {
             $button = new cHTMLFormElement("submit", "", "", "", "", "image_button");
             $button->setAttribute("type", "image");
             $button->setAttribute("src", $value["image"]);
-            $button->setAttribute("onclick", $onclick);
-            $button->setAttribute("title", $value['description']);
-            $button->setAttribute("alt", $value['description']);
+            $button->setAlt($value['description']);
             $button->setAttribute("accesskey", $accesskey);
+            $button->setEvent("onclick", $onclick);
             $custombuttons .= $button->render();
         }
 
@@ -300,5 +289,3 @@ class UI_Table_Form extends cGuiTableForm {
     }
 
 }
-
-?>

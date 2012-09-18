@@ -6,10 +6,6 @@
  * Description:
  * Moving article related logic to the front_end
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend sripts
  * @version    1.0.4
  * @author     Jan Lengowski
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.7
- *
- * {@internal
- *   created  2003-05-23
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -216,9 +207,6 @@ articleObject.prototype.doAction = function(str)
 
     /* Flag if action will be executed. */
     var doAction = false;
-
-    /* create messageBox instance */
-    var box = new messageBox("", "", "", 0, 0);
 
     /* Notify Headline */
     var headline = "<?php echo i18n("Error"); ?>";
@@ -443,7 +431,7 @@ articleObject.prototype.doAction = function(str)
         this.actionFrame.location.href = url_str;
         return true;
     } else {
-        box.notify(headline, err_str);
+        showNotification(headline, err_str);
     }
 
     return false;

@@ -6,10 +6,6 @@
  * Description:
  * Module list
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.3.2
  * @author     unknown
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-03-21
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -168,7 +159,7 @@ foreach ($allModules as $idmod => $module) {
             if ($perm->have_perm_area_action_item("mod", "mod_delete", $idmod)) {
                 $delTitle = i18n("Delete module");
                 $delDescr = sprintf(i18n("Do you really want to delete the following module:<br><br>%s<br>"), $sName);
-                $deletebutton = '<a title="' . $delTitle . '" href="javascript://" onclick="box.confirm(\'' . $delTitle . '\', \'' . $delDescr . '\', \'deleteModule(' . $idmod . ')\')"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+                $deletebutton = '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteModule(' . $idmod . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
             } else {
                 $delDescription = i18n("No permission");
             }
@@ -212,7 +203,7 @@ $oPagerLink->setCustom("contenido", $sess->id);
 $oPager = new cGuiObjectPager("02420d6b-a77e-4a97-9395-7f6be480f497", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $pagerl);
 
 //add slashes, to insert in javascript
-$sPagerContent = $oPager->render(1);
+$sPagerContent = $oPager->render(true);
 $sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
 $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 
@@ -236,5 +227,3 @@ $sRefreshPager = '
 $oPage->addScript($sRefreshPager);
 
 $oPage->render();
-
-?>

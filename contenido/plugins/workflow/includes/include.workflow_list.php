@@ -6,10 +6,6 @@
  * Description:
  * Workflow list
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Plugins
  * @subpackage Workflow
  * @version    1.5
@@ -18,11 +14,6 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2006-01-13
- *   $Id$
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -68,7 +59,7 @@ while (($workflow = $workflows->next()) !== false) {
 
     $delTitle = i18n("Delete workflow", "workflow");
     $delDescr = sprintf(i18n("Do you really want to delete the following workflow:<br><br>%s<br>", "workflow"), $wfname);
-    $delete = '<a title="' . $delTitle . '" href="javascript://" onclick="box.confirm(\'' . $delTitle . '\', \'' . $delDescr . '\', \'deleteWorkflow(\\\'' . $wfid . '\\\')\')"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+    $delete = '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteWorkflow(' . $wfid . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
 
     $ui->setTitle($wfid, $wfname);
     $ui->setLink($wfid, $link);
@@ -85,5 +76,3 @@ if (!empty($sScript)) {
 }
 $page->set("s", "FORM", $ui->render());
 $page->render();
-
-?>

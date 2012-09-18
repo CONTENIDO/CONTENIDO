@@ -181,9 +181,4 @@ if (($_GET['action'] == "clientsettings_edit_item")) {
     $oPage->setContent(array($oFrmRange, $spacer, $oList, $spacer, $oForm));
 }
 
-$oPage->addStyle('tipsy.css');
-$oPage->addScript("jquery.tipsy.js");
-$oPage->addScript("registerTipsy.js");
 $oPage->render();
-
-?>

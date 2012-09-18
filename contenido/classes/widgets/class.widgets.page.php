@@ -219,12 +219,11 @@ class cPage extends cHTML
     }
 
     /**
-     * set default JS for a messagebox
-     *
-     * @global cSession $sess
+     * @deprecated 2012-09-17 Use jQuery UI Dialog instead!
      */
     public function setMessageBoxScript()
     {
+        cDeprecated('Use jQuery UI Dialog instead!');
         global $sess;
         $this->_scripts["__msgbox"] =
                 '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>'.

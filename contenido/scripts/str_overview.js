@@ -320,13 +320,13 @@ function checkForm() {
 
     // Categoryname is a required field
     if (category == '') {
-        box.notify(sFormError, sEmptyCatname);
+        showNotification(sFormError, sEmptyCatname);
         return false;
     }
 
     // If Category is no tree, a target category must be selected
     if (!checkbox.checked && input.value == '') {
-        box.notify(sFormError, sEmptyCatSourcename);
+        showNotification(sFormError, sEmptyCatSourcename);
         return false;
     }
 }

@@ -1,6 +1,5 @@
 <script type="text/javascript">
     var sid = "1";
-    box = new messageBox("", "", "", 0, 0);
 
     function deleteModule(idmod) {
         //console.log(parent.frames[1].document.filter.sortorder);
@@ -29,7 +28,7 @@
                     function(data) {
                         var inUseTitle = "i18n("The module '%s' is used for following templates")";
                         inUseTitle = inUseTitle.replace('%s', modName);
-                        box.notify(inUseTitle, data);
+                        showNotification(inUseTitle, data);
                     }
                 );
             }

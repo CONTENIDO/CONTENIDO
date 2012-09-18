@@ -193,7 +193,7 @@ ContenidoRegistry = {
     remove: function(key) {
         this._instances = this._instances.splice(this._instances.indexOf(key), 1);
     }
-}
+};
 
 
 // #################################################################################################
@@ -371,7 +371,7 @@ var HeaderMenu = {
         this.setActiveMenu(this.getMenuIdBySubMenuId(curElement));
         this.setActiveSubMenu(curElement);
     }
-}
+};
 
 
 // #################################################################################################
@@ -521,6 +521,6 @@ if (!("console" in window) || !("firebug" in console)) {
         info:  function(){},
         warn:  function(){},
         error: function(){}
-    }
+    };
 })();
 }

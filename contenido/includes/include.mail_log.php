@@ -134,7 +134,7 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
                     // construct the delete link
                     $img = new cHTMLImage('images/delete.gif');
                     $link = new cHTMLLink('javascript:void(0)');
-                    $link->setEvent('click', 'box.confirm("' . i18n('Delete email log') . '", "' . i18n('Do you really want to delete this email?') . '", "deleteEmails(' . $item->get('idmail') . ')")');
+                    $link->setEvent('click', 'showConfirmation("' . i18n('Do you really want to delete this email?') . '", function() { deleteEmails(' . $item->get('idmail') . '); });return false;');
                     $link->setContent($img);
                     $td->appendContent($link);
                     break;
@@ -219,7 +219,7 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
         $td = new cHTMLTableData();
         $link = new cHTMLLink('javascript:void(0)');
         $link->setClass('con_deletemails');
-        $link->setEvent('click', 'box.confirm("' . i18n('Delete email log') . '", "' . i18n('Do you really want to delete this email?') . '", "deleteEmails(' . $idmail . ')");');
+        $link->setEvent('click', 'showConfirmation("' . i18n('Do you really want to delete this email?') . '", function() { deleteEmails(' . $idmail . '); });return false;');
         $image = new cHTMLImage('images/delete.gif');
         $image->setAlt(i18n('Delete emails'));
         $link->setContent($image);
@@ -326,7 +326,7 @@ function mailLogBulkEditingFunctions() {
     // construct the bulk editing functions
     $link = new cHTMLLink('javascript:void(0)');
     $link->setClass('con_deletemails');
-    $link->setEvent('click', 'box.confirm("' . i18n('Delete email log') . '", "' . i18n('Do you really want to delete the selected emails?') . '", "deleteEmails()");');
+    $link->setEvent('click', 'showConfirmation("' . i18n('Do you really want to delete the selected emails?') . '", deleteEmails);return false;');
     $image = new cHTMLImage('images/delete.gif');
     $image->setAlt(i18n('Delete emails'));
     $link->setContent($image);

@@ -6,10 +6,6 @@
  * Description:
  * Popup for todo
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.3
  * @author     unknown
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -73,8 +64,8 @@ if ($action == 'todo_save_item') {
     $langscripts = array();
 
     if(($lang_short = substr(strtolower($belang), 0, 2)) != 'en') {
-        $langscripts[] = 'datetimepicker/jquery-ui-timepicker-' . $lang_short . '.js';
-        $langscripts[] = 'jquery/jquery.ui.datepicker-' . $lang_short . '.js';
+        $langscripts[] = 'jquery/plugins/timepicker-' . $lang_short . '.js';
+        $langscripts[] = 'jquery/plugins/datepicker-' . $lang_short . '.js';
     }
 
     $path_to_calender_pic =   cRegistry::getBackendUrl(). $cfg['path']['images'] . 'calendar.gif';
@@ -147,9 +138,8 @@ $(document).ready(function() {
 
     $ui->add(i18n("Assigned to"), $userselect->render());
 
-    $cpage->addStyle('datetimepicker/jquery-ui-timepicker-addon.css');
-    $cpage->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
-    $cpage->addScript('datetimepicker/jquery-ui-timepicker-addon.js');
+    $cpage->addStyle('jquery/plugins/timepicker.css');
+    $cpage->addScript('jquery/plugins/timepicker.js');
     foreach ($langscripts as $langscript) {
         $cpage->addScript($langscript);
     }
@@ -157,5 +147,3 @@ $(document).ready(function() {
     $cpage->setcontent($ui);
 }
 $cpage->render();
-
-?>

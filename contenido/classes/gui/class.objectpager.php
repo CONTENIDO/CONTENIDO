@@ -6,10 +6,6 @@
  * Description:
  * Foldable pager for menus
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Classes
  * @version    1.2
  * @author     Timo Hummel
@@ -17,11 +13,6 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2005-05-11
- *   $Id: class.objectpager.php 2379 2012-06-22 21:00:16Z xmurrix $
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -56,7 +47,7 @@ class cGuiObjectPager extends cGuiFoldingRow {
         $this->_parameterToAdd = $parameterToAdd;
     }
 
-    function render($bContentOnly = 0) {
+    function render($bContentOnly = false) {
         #Do not display Page navigation if there is only one Page and we are not in newsletter section
         if ($this->_cPager->getMaxPages() == 1) {
             $this->_headerRow->setStyle("display:none");
@@ -158,5 +149,3 @@ class cObjectPager extends cGuiObjectPager {
     }
 
 }
-
-?>

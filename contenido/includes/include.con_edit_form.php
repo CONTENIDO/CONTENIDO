@@ -6,10 +6,6 @@
  * Description:
  * Form for editing the article properties
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.5.3
  * @author     unknown
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-01-21
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -417,7 +408,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
                 $boxTitle = i18n("Remove multiple category assignments");
                 $boxDescr = i18n("Do you really want to remove the assignments to all categories except the current one?");
 
-                $rbutton->setEvent("click", 'box.confirm(\'' . $boxTitle . '\', \'' . $boxDescr . '\', \'removeAssignments(' . $idart . ', ' . $idcat . ')\'); return false;');
+                $rbutton->setEvent("click", 'showConfirmation("' . $boxDescr . '", function() { removeAssignments(' . $idart . ',' . $idcat . '); });return false;');
                 $button = "<br>" . $rbutton->render();
 
                 $moveOK = false;
@@ -686,8 +677,8 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     }
 
     if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
-        $langscripts = '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-' . $lang_short . '.js"></script>
-                 <script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-' . $lang_short . '.js"></script>';
+        $langscripts = '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $lang_short . '.js"></script>
+                 <script type="text/javascript" src="scripts/jquery/plugins/datepicker-' . $lang_short . '.js"></script>';
         $tpl->set('s', 'CAL_LANG', $langscripts);
     } else {
         $tpl->set('s', 'CAL_LANG', '');
@@ -718,5 +709,3 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     // User has no permission to see this form
     $notification->displayNotification("error", i18n("Permission denied"));
 }
-
-?>

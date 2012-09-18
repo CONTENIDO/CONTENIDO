@@ -6,10 +6,6 @@
  * Description:
  * left_top frame
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
  * @author     Timo A. Hummel
@@ -18,15 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-05-08
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2012-01-17, Mischa Holz, fixed errors with the translation
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -85,5 +72,3 @@ if ($perm->have_perm_area_action($area, "lang_newlanguage") && $iClientcount > 0
 }
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lang_left_top']);
-
-?>

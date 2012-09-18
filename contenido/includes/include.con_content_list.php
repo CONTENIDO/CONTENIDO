@@ -6,10 +6,6 @@
  * Description:
  * Content Type list for editing the content in an article
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.3
  * @author     Fulai zhang
@@ -18,12 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * @todo replace code generation by Contenido_CodeGenerator (see contenido/classes/CodeGenerator)
- *
- * {@internal
- *   created  2012
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -165,8 +155,10 @@ $layoutcode = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="pragma" content="no-cache">
     <link rel="stylesheet" type="text/css" href="../contenido/styles/contenido.css">
-    <script type="text/javascript" src="../contenido/scripts/general.js"></script>
+    <link rel="stylesheet" type="text/css" href="../contenido/styles/jquery/jquery-ui.css">
     <script type="text/javascript" src="../contenido/scripts/jquery/jquery.js"></script>
+    <script type="text/javascript" src="../contenido/scripts/jquery/jquery-ui.js"></script>
+    <script type="text/javascript" src="../contenido/scripts/general.js"></script>
     <style>
     .contypeList {
         border: 1px solid #B3B3B3;
@@ -421,5 +413,3 @@ function getAktuellType($r, $aList) {
     }
     return $r;
 }
-
-?>

@@ -6,10 +6,6 @@
  * Description:
  * Builds the third navigation layer
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.2
  * @author     Jan Lengowski
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-01-25
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -142,5 +133,3 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
 } else {
     include(cRegistry::getBackendPath() . $cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
 }
-
-?>
