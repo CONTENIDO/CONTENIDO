@@ -6,14 +6,14 @@
  * Description:
  * CONTENIDO Client Settings
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.0
- * @author     unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @package CONTENIDO Backend Includes
+ * @version 1.0.0
+ * @author unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -23,7 +23,7 @@ if (!defined('CON_FRAMEWORK')) {
 $backendUrl = cRegistry::getBackendUrl();
 
 $oPage = new cGuiPage("clientsettings");
-$oList = new cGuiScrollList;
+$oList = new cGuiScrollList();
 
 $idclient = $_GET['idclient'];
 if (strlen($idclient) == 0) {
@@ -82,8 +82,12 @@ if ($_GET['action'] == 'clientsettings_delete_item') {
 }
 
 $oList->setHeader(i18n('Type'), i18n('Name'), i18n('Value'), '&nbsp;');
-$oList->objHeaderItem->updateAttributes(array('width' => 52));
-$oList->objRow->updateAttributes(array('valign' => 'top'));
+$oList->objHeaderItem->updateAttributes(array(
+    'width' => 52
+));
+$oList->objRow->updateAttributes(array(
+    'valign' => 'top'
+));
 
 $aItems = $oClient->getProperties();
 
@@ -106,11 +110,11 @@ if ($aItems !== false) {
         $oLnkEdit->setCustom("idprop", $iKey);
 
         if (($_GET['action'] == "clientsettings_edit_item") && ($_GET['idprop'] == $iKey)) {
-            $oInputboxValue = new cHTMLTextbox("csvalue", $aValue['value']);
+            $oInputboxValue = new cHTMLTextbox("csvalue", htmlspecialchars($aValue['value']));
             $oInputboxValue->setWidth(30);
-            $oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
+            $oInputboxName = new cHTMLTextbox("csname", htmlspecialchars($aValue['name']));
             $oInputboxName->setWidth(15);
-            $oInputboxType = new cHTMLTextbox("cstype", $aValue['type']);
+            $oInputboxType = new cHTMLTextbox("cstype", htmlspecialchars($aValue['type']));
             $oInputboxType->setWidth(15);
 
             $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
@@ -140,7 +144,9 @@ if ($aItems !== false) {
         $iCounter++;
     }
 } else {
-    $oList->objItem->updateAttributes(array('colspan' => 4));
+    $oList->objItem->updateAttributes(array(
+        'colspan' => 4
+    ));
     $oList->setData(0, i18n("No defined properties"));
 }
 
@@ -176,9 +182,21 @@ if (($_GET['action'] == "clientsettings_edit_item")) {
     $oForm2->setVar("idclientslang", $_REQUEST["idclientslang"]);
 
     $oForm2->appendContent($oList->render());
-    $oPage->setContent(array($oFrmRange, $spacer, $oForm2, $spacer, $oForm));
+    $oPage->setContent(array(
+        $oFrmRange,
+        $spacer,
+        $oForm2,
+        $spacer,
+        $oForm
+    ));
 } else {
-    $oPage->setContent(array($oFrmRange, $spacer, $oList, $spacer, $oForm));
+    $oPage->setContent(array(
+        $oFrmRange,
+        $spacer,
+        $oList,
+        $spacer,
+        $oForm
+    ));
 }
 
 $oPage->render();
