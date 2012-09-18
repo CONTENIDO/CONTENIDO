@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-18 12:21+0200\n"
+"POT-Creation-Date: 2012-09-18 13:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgstr ""
 #: includes/include.con_art_overview.php:72
 #: includes/include.con_art_overview.php:704
 #: includes/include.con_edit_form.php:186
-#: includes/include.con_meta_form.php:202
+#: includes/include.con_meta_form.php:196
 #: includes/include.stat_overview.php:101 includes/include.upl_artlist.php:80
 #: templates/standard/template.mycontenido_lastarticles.html:63
 msgid "Title"
@@ -1208,7 +1208,7 @@ msgstr ""
 #: includes/include.client_artspec.php:55 includes/include.client_edit.php:36
 #: includes/include.con_art_overview.php:970
 #: includes/include.con_edit_form.php:710
-#: includes/include.con_meta_form.php:390
+#: includes/include.con_meta_form.php:397
 #: includes/include.grouprights_area.php:45
 #: includes/include.grouprights_con.php:44
 #: includes/include.grouprights_create.php:31
@@ -1399,7 +1399,7 @@ msgstr ""
 
 #: includes/frontend/include.front_content.php:362
 #: includes/include.con_edit_form.php:105
-#: includes/include.con_meta_form.php:127
+#: includes/include.con_meta_form.php:120
 #: includes/include.tplcfg_edit_form.php:54
 #, php-format
 msgid "Article is in use by %s (%s)"
@@ -2212,7 +2212,7 @@ msgstr ""
 #: includes/include.con_art_overview.php:876
 #: includes/include.con_content_list.php:183
 #: includes/include.con_edit_form.php:183
-#: includes/include.con_meta_form.php:199
+#: includes/include.con_meta_form.php:193
 #: includes/include.tplcfg_edit_form.php:263
 msgid "You are here"
 msgstr ""
@@ -2367,12 +2367,12 @@ msgid ""
 msgstr ""
 
 #: includes/include.con_edit_form.php:612
-#: includes/include.con_meta_form.php:265
+#: includes/include.con_meta_form.php:258
 msgid "Summary"
 msgstr ""
 
 #: includes/include.con_edit_form.php:689
-#: includes/include.con_meta_form.php:330
+#: includes/include.con_meta_form.php:323
 msgid "Please fill in the start date and/or the end date!"
 msgstr ""
 
@@ -2512,12 +2512,28 @@ msgstr ""
 msgid "Legend"
 msgstr ""
 
-#: includes/include.con_meta_form.php:198
+#: includes/include.con_meta_form.php:192
 msgid "Meta tags administration"
 msgstr ""
 
-#: includes/include.con_meta_form.php:344
+#: includes/include.con_meta_form.php:340
 msgid "New meta tag"
+msgstr ""
+
+#: includes/include.con_meta_form.php:349
+msgid "Field Value"
+msgstr ""
+
+#: includes/include.con_meta_form.php:351
+msgid "Field Type"
+msgstr ""
+
+#: includes/include.con_meta_form.php:353
+msgid "Max Length"
+msgstr ""
+
+#: includes/include.con_meta_form.php:355
+msgid "Field Name"
 msgstr ""
 
 #: includes/include.frontend.group.subnav.php:34

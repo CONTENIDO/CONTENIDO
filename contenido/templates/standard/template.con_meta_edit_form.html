@@ -64,14 +64,12 @@
             </tr>
             <!-- END:BLOCK -->
 
-            <tr valign="top">
-                <td style="border: 1px; border-right: 0px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">&nbsp;</td>
-                <td colspan="3" style="border: 1px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top" align="right">{ADDMETABTN}</td>
-            </tr>
-
             {ADDNEWMETA}
 
-            <tr><td colspan="4" class="text_medium" align="right"><input accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}"></td></tr>
+            <tr>
+                <td class="text_medium">{ADDMETABTN}</td>
+                <td class="text_medium" align="right"><input accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}"></td>
+            </tr>
 
         </table>
 
@@ -89,10 +87,10 @@
 
         {DATAPUSH}
 
-        $('span#addMeta').hover(function() {
+        $('img#addMeta').hover(function() {
             $(this).css('cursor','pointer');
         });
-        $('span#addMeta').click(function() {
+        $('img#addMeta').click(function() {
             $('tr[name=newMeta]').each(function() {
                 $(this).slideToggle();
             });

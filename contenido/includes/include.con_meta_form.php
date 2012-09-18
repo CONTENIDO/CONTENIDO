@@ -6,23 +6,14 @@
  * Description:
  * Form for editing the article properties
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.5.3
- * @author     Fulai Zhang
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2012-04-30
- *   $Id$:
- * }}
+ * @package CONTENIDO Backend Includes
+ * @version 1.5.3
+ * @author Fulai Zhang
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -44,7 +35,7 @@ if ($action == "con_newart" && $newart != true) {
     return;
 }
 
-//Add a new Meta Tag in DB
+// Add a new Meta Tag in DB
 if ($METAmetatype) {
     $sql = "INSERT INTO `" . $cfg["tab"]["meta_type"] . "` (
         `metatype` ,
@@ -60,8 +51,7 @@ if ($METAmetatype) {
 
 $disabled = '';
 
-if ($perm->have_perm_area_action($area, "con_meta_edit") ||
-        $perm->have_perm_area_action_item($area, "con_meta_edit", $idcat)) {
+if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_area_action_item($area, "con_meta_edit", $idcat)) {
     $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idcat=" . cSecurity::toInteger($idcat);
     $db->query($sql);
     $db->next_record();
@@ -76,13 +66,16 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
 
     if ($db->f("created")) {
 
-        //****************** this art was edited before ********************
+        // ****************** this art was edited before ********************
         $tmp_firstedit = 0;
         $tmp_idartlang = $db->f("idartlang");
         $tmp_page_title = cSecurity::unFilter(stripslashes($db->f("pagetitle")));
         $tmp_idlang = $db->f("idlang");
         $tmp_title = cSecurity::unFilter($db->f("title"));
-        $tmp_urlname = cSecurity::unFilter($db->f("urlname"));      // plugin Advanced Mod Rewrite - edit by stese
+        $tmp_urlname = cSecurity::unFilter($db->f("urlname")); // plugin
+                                                               // Advanced Mod
+                                                               // Rewrite - edit
+                                                               // by stese
         $tmp_artspec = $db->f("artspec");
         $tmp_summary = cSecurity::unFilter($db->f("summary"));
         $tmp_created = $db->f("created");
@@ -100,9 +93,9 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
         $tmp_onlineaftermove = $db->f("time_online_move");
         $tmp_usetimemgmt = $db->f("timemgmt");
         $tmp_locked = $db->f("locked");
-        $tmp_redirect_checked = ($db->f("redirect") == '1') ? 'checked' : '';
-        $tmp_redirect_url = ($db->f("redirect_url") != '0') ? $db->f("redirect_url") : "http://";
-        $tmp_external_redirect_checked = ($db->f("external_redirect") == '1') ? 'checked' : '';
+        $tmp_redirect_checked = ($db->f("redirect") == '1')? 'checked' : '';
+        $tmp_redirect_url = ($db->f("redirect_url") != '0')? $db->f("redirect_url") : "http://";
+        $tmp_external_redirect_checked = ($db->f("external_redirect") == '1')? 'checked' : '';
         $idtplinput = $db->f("idtplinput");
 
         if ($tmp_modifiedby == '') {
@@ -138,17 +131,18 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
         }
     } else {
 
-        //***************** this art is edited the first time *************
+        // ***************** this art is edited the first time *************
 
         if (!$idart) {
-            $tmp_firstedit = 1; //**** is needed when input is written to db (update or insert)
+            $tmp_firstedit = 1; // **** is needed when input is written to db
+                                    // (update or insert)
         }
 
         $tmp_idartlang = 0;
         $tmp_idlang = $lang;
         $tmp_page_title = stripslashes($db->f("pagetitle"));
         $tmp_title = '';
-        $tmp_urlname = '';   // plugin Advanced Mod Rewrite - edit by stese
+        $tmp_urlname = ''; // plugin Advanced Mod Rewrite - edit by stese
         $tmp_artspec = '';
         $tmp_summary = '';
         $tmp_created = date("Y-m-d H:i:s");
@@ -239,9 +233,8 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
                 break;
         }
 
-
         $tpl->set('d', 'METAFIELDTYPE', $element);
-        //$tpl->set('d', 'METAVALUE', conGetMetaValue($tmp_idartlang,$key));
+        // $tpl->set('d', 'METAVALUE', conGetMetaValue($tmp_idartlang,$key));
         $tpl->set('d', 'METATITLE', $value["metatype"] . ':');
         $tpl->next();
     }
@@ -332,11 +325,14 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
         }
     }
 
-    //add new meta in DB
+    // add new meta in DB
     unset($tpl2);
     $result = array(
         "metatype" => "",
-        "fieldtype" => array("text","textarea"),
+        "fieldtype" => array(
+            "text",
+            "textarea"
+        ),
         "maxlength" => "255",
         "fieldname" => "name"
     );
@@ -349,15 +345,26 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
 
     while ($db->next_record()) {
         if ($db->f("Field") != 'idmetatype') {
-            $tpl2->set('d', 'METATITLE', i18n($db->f("Field")));
-            if(!is_array($result[$db->f("Field")])){
-            	$str = '<input type="text" onblur="restoreOnBlur(this, \'' . $result[$db->f("Field")] . '\')" onfocus="clearOnFocus(this, \'' . $result[$db->f("Field")] . '\');" value="' . $result[$db->f("Field")] . '" maxlength="255" style="width:100%;" id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '" class="text_medium">';
+            if ($db->f("Field") === 'metatype') {
+                $tpl2->set('d', 'METATITLE', i18n('Field Value'));
+            } else if ($db->f("Field") === 'fieldtype') {
+                $tpl2->set('d', 'METATITLE', i18n('Field Type'));
+            } else if ($db->f("Field") === 'maxlength') {
+                $tpl2->set('d', 'METATITLE', i18n('Max Length'));
+            } else if ($db->f("Field") === 'fieldname') {
+                $tpl2->set('d', 'METATITLE', i18n('Field Name'));
             } else {
-	            $str = '<select id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '">';
-            	foreach($result[$db->f("Field")] as $item){
-	            	$str .= '<option value="' . $item . '">' . $item . '</option>';
-            	}
-	            $str .= '<select>';
+                $tpl2->set('d', 'METATITLE', i18n($db->f("Field")));
+            }
+
+            if (!is_array($result[$db->f("Field")])) {
+                $str = '<input type="text" onblur="restoreOnBlur(this, \'' . $result[$db->f("Field")] . '\')" onfocus="clearOnFocus(this, \'' . $result[$db->f("Field")] . '\');" value="' . $result[$db->f("Field")] . '" maxlength="255" style="width:100%;" id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '" class="text_medium">';
+            } else {
+                $str = '<select id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '">';
+                foreach ($result[$db->f("Field")] as $item) {
+                    $str .= '<option value="' . $item . '">' . $item . '</option>';
+                }
+                $str .= '<select>';
             }
             $tpl2->set('d', 'METAFIELDTYPE', $str);
 
@@ -373,10 +380,10 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
         $tpl->set('s', 'ADDMETABTN', '&nbsp;');
         $tpl->set('s', 'ADDNEWMETA', '&nbsp;');
     } else {
-        $tpl->set('s', 'ADDMETABTN', '<span id="addMeta" style="color: green;">+</span>');
+        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta" />');
         $tpl->set('s', 'ADDNEWMETA', $select);
     }
-    //breadcrumb onclick
+    // breadcrumb onclick
     $tpl->set('s', 'iIdcat', $idcat);
     $tpl->set('s', 'iIdtpl', $idtpl);
     $tpl->set('s', 'SYNCOPTIONS', -1);
@@ -389,5 +396,3 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
     // User has no permission to see this form
     $notification->displayNotification("error", i18n("Permission denied"));
 }
-
-?>

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-18 12:21+0200\n"
-"PO-Revision-Date: 2012-09-18 12:22+0100\n"
+"POT-Creation-Date: 2012-09-18 13:29+0200\n"
+"PO-Revision-Date: 2012-09-18 13:30+0100\n"
 "Last-Translator: \n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr "Vielen Dank für die Speicherung dieser Suche!"
 #: includes/include.con_art_overview.php:72
 #: includes/include.con_art_overview.php:704
 #: includes/include.con_edit_form.php:186
-#: includes/include.con_meta_form.php:202
+#: includes/include.con_meta_form.php:196
 #: includes/include.stat_overview.php:101
 #: includes/include.upl_artlist.php:80
 #: templates/standard/template.mycontenido_lastarticles.html:63
@@ -1282,7 +1282,7 @@ msgstr "Vorlagendatei wurde erfolgreich gelöscht!"
 #: includes/include.client_edit.php:36
 #: includes/include.con_art_overview.php:970
 #: includes/include.con_edit_form.php:710
-#: includes/include.con_meta_form.php:390
+#: includes/include.con_meta_form.php:397
 #: includes/include.grouprights_area.php:45
 #: includes/include.grouprights_con.php:44
 #: includes/include.grouprights_create.php:31
@@ -1497,7 +1497,7 @@ msgstr "Fehler: Artikel/Kategorie nicht gefunden!"
 
 #: includes/frontend/include.front_content.php:362
 #: includes/include.con_edit_form.php:105
-#: includes/include.con_meta_form.php:127
+#: includes/include.con_meta_form.php:120
 #: includes/include.tplcfg_edit_form.php:54
 #, php-format
 msgid "Article is in use by %s (%s)"
@@ -2348,7 +2348,7 @@ msgstr "Elemente/Seite:"
 #: includes/include.con_art_overview.php:876
 #: includes/include.con_content_list.php:183
 #: includes/include.con_edit_form.php:183
-#: includes/include.con_meta_form.php:199
+#: includes/include.con_meta_form.php:193
 #: includes/include.tplcfg_edit_form.php:263
 msgid "You are here"
 msgstr "Sie sind hier"
@@ -2499,12 +2499,12 @@ msgid "Language parts of the articles are existing in other languages and are on
 msgstr "Sprachabhängige Teile dieses Artikels existieren in anderen Sprachen und sind online. Um die Kategoriezuweisung zu verändern, setzen Sie die anderen sprachabhängigen Teile zuerst offline."
 
 #: includes/include.con_edit_form.php:612
-#: includes/include.con_meta_form.php:265
+#: includes/include.con_meta_form.php:258
 msgid "Summary"
 msgstr "Zusammenfassung"
 
 #: includes/include.con_edit_form.php:689
-#: includes/include.con_meta_form.php:330
+#: includes/include.con_meta_form.php:323
 msgid "Please fill in the start date and/or the end date!"
 msgstr "Bitte geben Sie Startzeitpunkt und/oder Endzeitpunkt ein!"
 
@@ -2658,13 +2658,29 @@ msgstr "Unterkategorien mit kopieren"
 msgid "Legend"
 msgstr "Legende"
 
-#: includes/include.con_meta_form.php:198
+#: includes/include.con_meta_form.php:192
 msgid "Meta tags administration"
 msgstr "Meta-Tag Administration"
 
-#: includes/include.con_meta_form.php:344
+#: includes/include.con_meta_form.php:340
 msgid "New meta tag"
 msgstr "Neuer Meta-Tag"
+
+#: includes/include.con_meta_form.php:349
+msgid "Field Value"
+msgstr "Feldwert"
+
+#: includes/include.con_meta_form.php:351
+msgid "Field Type"
+msgstr "Eingabetyp"
+
+#: includes/include.con_meta_form.php:353
+msgid "Max Length"
+msgstr "Maximale Länge"
+
+#: includes/include.con_meta_form.php:355
+msgid "Field Name"
+msgstr "Feldname"
 
 #: includes/include.frontend.group.subnav.php:34
 #: includes/include.mycontenido.php:176
