@@ -790,7 +790,7 @@ class ModRewrite extends ModRewriteBase
         if ($aData = mr_queryAndNextRecord($sql)) {
             $languageId = $aData['idlang'];
         } else {
-            $languageId = false;
+            $languageId = 0;
         }
 
         $mr_statics[$key] = $languageId;

@@ -174,13 +174,13 @@ class ModRewriteController extends ModRewriteBase
 
 
     /**
-     * Getter for change language id (see $GLOBALS['change_lang'])
+     * Getter for change language id (see $GLOBALS['changelang'])
      *
      * @return  int  Change language id
      */
     public function getChangeLang()
     {
-        return $GLOBALS['change_lang'];
+        return $GLOBALS['changelang'];
     }
 
 
@@ -438,14 +438,14 @@ class ModRewriteController extends ModRewriteBase
 
         if (parent::getConfig('use_language_name') == 1) {
             // thanks to Nicolas Dickinson for multi Client/Language BugFix
-            $changelang = ModRewrite::getLanguageId(array_shift($this->_aParts) , $this->_iClientMR);
+            $tmpChangelang = ModRewrite::getLanguageId(array_shift($this->_aParts) , $this->_iClientMR);
         } else {
-            $changelang = (int) array_shift($this->_aParts);
+            $tmpChangelang = (int) array_shift($this->_aParts);
         }
 
-        if ((int) $changelang > 0) {
-            $lang = $changelang;
-            $changelang = $changelang;
+        if ((int) $tmpChangelang > 0) {
+            $lang = $tmpChangelang;
+            $changelang = $tmpChangelang;
         }
     }
 
