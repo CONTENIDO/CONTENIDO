@@ -36,14 +36,25 @@
  * @param integer iId
  */
 function addTeaserEvents(sFrameId, sImageId, sPath, sSession, iIdArtLang, iId) {
-	loadExternalScripts(sFrameId, sPath);
-	addTabbingEvents(sFrameId);
-	addFrameShowEvent(sFrameId, sImageId);
-	addSaveEvent(sFrameId, iIdArtLang, iId);
-	addFrameCloseEvents(sFrameId);
-	addAjaxGetArticleListEvent(sFrameId, sPath, sSession);
-	addManualTeaserEvent(sFrameId);
-	addClickEvent(sFrameId);
+    cmsTeaser_initialize(sFrameId);
+	cmsTeaser_loadExternalScripts(sFrameId, sPath);
+	cmsTeaser_addTabbingEvents(sFrameId);
+	cmsTeaser_addFrameShowEvent(sFrameId, sImageId);
+	cmsTeaser_addSaveEvent(sFrameId, iIdArtLang, iId);
+	cmsTeaser_addFrameCloseEvents(sFrameId);
+	cmsTeaser_addAjaxGetArticleListEvent(sFrameId, sPath, sSession);
+	cmsTeaser_addManualTeaserEvent(sFrameId);
+	cmsTeaser_addClickEvent(sFrameId);
+}
+
+/**
+ * Appends the passed node to the end of body tag. This is necessary to have more 
+ * control during positioninig.
+ *
+ * @param string sFrameId
+ */
+function cmsTeaser_initialize(sFrameId) {
+    $(sFrameId).appendTo($('body'));
 }
 
 /**
@@ -53,7 +64,7 @@ function addTeaserEvents(sFrameId, sImageId, sPath, sSession, iIdArtLang, iId) {
  * @param string sName
  * @param string sValue
  */
-function appendTeaserValue(sName, sValue) {
+function cmsTeaser_appendTeaserValue(sName, sValue) {
 	$("form[name='editcontent']").append('<input type="hidden" value="'+sValue+'" name="'+sName+'"/>');
 }
 
@@ -63,7 +74,7 @@ function appendTeaserValue(sName, sValue) {
  * @param string sFrameId
  * @param string sImageId
  */
-function addFrameShowEvent(sFrameId, sImageId) {
+function cmsTeaser_addFrameShowEvent(sFrameId, sImageId) {
 	$(sImageId).css('cursor', 'pointer');
 	$(sImageId).click(function () {
 		$(sFrameId).fadeIn("normal");
@@ -78,7 +89,7 @@ function addFrameShowEvent(sFrameId, sImageId) {
  *
  * @param string sFrameId
  */
-function addTabbingEvents(sFrameId) {
+function cmsTeaser_addTabbingEvents(sFrameId) {
 	$(sFrameId+" .menu li").css('cursor', 'pointer');
 	//add layer click events
 	$(sFrameId+" .menu li").click(function(){
@@ -100,7 +111,7 @@ function addTabbingEvents(sFrameId) {
  * @param integer iIdArtLang
  * @param integer iId
  */
-function addSaveEvent(sFrameId, iIdArtLang, iId) {
+function cmsTeaser_addSaveEvent(sFrameId, iIdArtLang, iId) {
 	$(sFrameId+' .save_settings').css('cursor', 'pointer');
 	$(sFrameId+' .save_settings').click(function() {
 		addManualTeaserEntry(sFrameId);
@@ -137,7 +148,7 @@ function addSaveEvent(sFrameId, iIdArtLang, iId) {
  *
  * @param string sFrameId
  */
-function addFrameCloseEvents(sFrameId) {
+function cmsTeaser_addFrameCloseEvents(sFrameId) {
 	//add cancel image event
 	$(sFrameId+' .close').css('cursor', 'pointer');
 	$(sFrameId+' .close').click(function () {
@@ -160,7 +171,7 @@ function addFrameCloseEvents(sFrameId) {
  * @param string sPath
  * @param string sSession
  */
-function addAjaxGetArticleListEvent(sFrameId, sPath, sSession) {
+function cmsTeaser_addAjaxGetArticleListEvent(sFrameId, sPath, sSession) {
 	$(sFrameId+' #teaser_cat').change(function() {
 		//get new article select and replace it with default value
 		$.ajax({
@@ -181,15 +192,17 @@ function addAjaxGetArticleListEvent(sFrameId, sPath, sSession) {
  * @param string sFrameId
  * @param string sPath
  */
-function loadExternalScripts(sFrameId, sPath) {
-	$('head').append('<link rel="stylesheet" href="'+sPath+'styles/cms_teaser.css" type="text/css" media="all" />');
+function cmsTeaser_loadExternalScripts(sFrameId, sPath) {
+    if ($('#cms_teaser').length == 0) {
+        $('head').append('<link rel="stylesheet" id="cms_teaser" href="'+sPath+'styles/cms_teaser.css" type="text/css" media="all" />');
+    }
 	
-	$.getScript(sPath+'scripts/jquery/jquery-ui.js', function() {
-		$.getScript(sPath+'scripts/jquery/jquery-ui.js', function() {
-			$(sFrameId).draggable({handle: '.head'});
-			$(sFrameId+' .head').css('cursor', 'move');
-		});
-	});
+    conLoadFile(sPath+'scripts/jquery/jquery-ui.js', 'cmsTeaser_loadExternalScriptsCallback(\''+sFrameId+'\');');
+}
+
+function cmsTeaser_loadExternalScriptsCallback(sFrameId) {
+    $(sFrameId).draggable({handle: '.head'});
+    $(sFrameId+' .head').css('cursor', 'move');
 }
 
 /**
@@ -198,7 +211,7 @@ function loadExternalScripts(sFrameId, sPath) {
  *
  * @param string sFrameId
  */
-function addManualTeaserEvent(sFrameId) {
+function cmsTeaser_addManualTeaserEvent(sFrameId) {
 	$(sFrameId+' #add_art').css('cursor', 'pointer');
 		$(sFrameId+' #add_art').click(function() {
 			//call internal add function
@@ -212,7 +225,7 @@ function addManualTeaserEvent(sFrameId) {
  *
  * @param string sFrameId
  */
-function addManualTeaserEntry(sFrameId) {
+function cmsTeaser_addManualTeaserEntry(sFrameId) {
 	var oArt = $(sFrameId+' #teaser_art');
 	var iIdArt = oArt.attr('value');
 	var sName = '';
@@ -247,7 +260,7 @@ function addManualTeaserEntry(sFrameId) {
  *
  * @param string sFrameId
  */
-function addClickEvent(sFrameId) {
+function cmsTeaser_addClickEvent(sFrameId) {
 	$(sFrameId+' #teaser_manual_art').dblclick(function() {
 		$(sFrameId+' #teaser_manual_art option').each(function() {
 			if($(this).attr('selected')) {

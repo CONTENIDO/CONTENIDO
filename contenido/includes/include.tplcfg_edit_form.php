@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2002
  *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *   $Id: include.tplcfg_edit_form.php 2144 2012-05-04 15:25:30Z fulai.zhang $: 
  *
  *   $Id: include.tplcfg_edit_form.php 373 2008-06-27 14:50:50Z frederic.schneider $:
  * }}
@@ -44,7 +45,7 @@ if ( isset($idart) ) {
 			/* Remove all own marks */
 			$col->removeSessionMarks($sess->id);
 			
-			if (($obj = $col->checkMark("article", $idartlang)) === false)
+        if (($obj = $col->checkMark('article', $idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) {
 			{
 				$col->markInUse("article", $idartlang, $sess->id, $auth->auth["uid"]);
 				$inUse = false;
@@ -63,7 +64,7 @@ if ( isset($idart) ) {
 			}
 		} else {
 			$col = new InUseCollection;
-			$col->removeSessionMarks($sess->id);
+        if (($obj = $col->checkMark('categorytpl', $idcat)) === false || $obj->get("userid") == $auth->auth['uid']) {
 			if (($obj = $col->checkMark("categorytpl", $idcat)) === false)
 			{
 				$col->markInUse("categorytpl", $idcat, $sess->id, $auth->auth["uid"]);

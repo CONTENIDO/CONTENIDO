@@ -14,7 +14,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.3.6
+ * @version    1.3.7
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -31,10 +31,10 @@
  *   modified 2009-10-29, Murat Purc, removed deprecated functions (PHP 5.3 ready)
  *   modified 2009-12-18, Murat Purc, fixed meta tag generation, see [#CON-272]
  *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
- *   modified 2010-10-11, Dominik Ziegler, display only major and minor version of version number
+ *   modified 2010-12-09, Dominik Ziegler, fixed multiple replacements of title tags [#CON-373]
  *
- *   $Id: functions.con2.php 1221 2010-10-11 10:16:09Z dominik.ziegler $:
- * }}
+ *   $Id: functions.con2.php 1243 2010-12-09 11:21:26Z dominik.ziegler $:
+* }}
  * 
  */
 
@@ -434,7 +434,8 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	/* add/replace title */
 	if ($pagetitle != "")
 	{
-		$code = preg_replace("/<title>.*?<\/title>/is", "{TITLE}", $code);
+			$code = preg_replace("/<title>.*?<\/title>/is", "{TITLE}", $code, 1);
+
 
 		if (strstr($code, "{TITLE}"))
 		{

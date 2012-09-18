@@ -13,7 +13,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.1.0
+ * @version    1.1.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,8 @@
  * {@internal 
  *   created  2010-05-16
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
+ *   modified 2011-08-24, Dominik Ziegler, changed default server path and web url definitions [#CON-430]
+
  *   
  *   $Id$
  * }}
@@ -51,35 +53,33 @@ global $cfg;
  * Note: If you want to modify the locations of subdirectories for
  *       some reason (e.g. the includes directory), see Section 8.
  */
+ 
+/* The root server path where all frontends reside */
+$cfg['path']['frontend']                = '{CONTENIDO_ROOT}'; 
 
 /* The root server path to the contenido backend */
-$cfg['path']['contenido']               = '{CONTENIDO_ROOT}/contenido/';
+$cfg['path']['contenido']               = $cfg['path']['frontend'] . '/contenido/';
+
+/* The root server path to the conlib directory */
+$cfg['path']['phplib']                  = $cfg['path']['frontend'] . '/conlib/';
+
+/* The root server path to the pear directory */
+$cfg['path']['pear']                    = $cfg['path']['frontend'] . '/pear/';
+
+/* The server path to all WYSIWYG-Editors */
+$cfg['path']['all_wysiwyg']             = $cfg['path']['contenido']  . '/external/wysiwyg/';
+
+/* The server path to the desired WYSIWYG-Editor */
+$cfg['path']['wysiwyg']                 = $cfg['path']['all_wysiwyg'] . '/tinymce3/';
 
 /* The web server path to the contenido backend */
 $cfg['path']['contenido_fullhtml']      = '{CONTENIDO_WEB}/contenido/';
 
-/* The root server path where all frontends reside */
-$cfg['path']['frontend']                = '{CONTENIDO_ROOT}';
-
-/* The root server path to the conlib directory */
-$cfg['path']['phplib']                  = '{CONTENIDO_ROOT}/conlib/';
-
-/* The root server path to the pear directory */
-$cfg['path']['pear']                    = '{CONTENIDO_ROOT}/pear/';
-
-/* The server path to the desired WYSIWYG-Editor */
-$cfg['path']['wysiwyg']                 = '{CONTENIDO_ROOT}/contenido/external/wysiwyg/tinymce3/';
+/* The web path to all WYSIWYG-Editors */
+$cfg['path']['all_wysiwyg_html']        = $cfg['path']['contenido_fullhtml'] . '/external/wysiwyg/';
 
 /* The web path to the desired WYSIWYG-Editor */
-$cfg['path']['wysiwyg_html']            = '{CONTENIDO_WEB}/contenido/external/wysiwyg/tinymce3/';
-
-/* The server path to all WYSIWYG-Editors */
-$cfg['path']['all_wysiwyg']             = '{CONTENIDO_ROOT}/contenido/external/wysiwyg/';
-
-/* The web path to all WYSIWYG-Editors */
-$cfg['path']['all_wysiwyg_html']        = '{CONTENIDO_WEB}/contenido/external/wysiwyg/';
-
-
+$cfg['path']['wysiwyg_html']            = $cfg['path']['all_wysiwyg_html'] . '/tinymce3/';
 
 
 

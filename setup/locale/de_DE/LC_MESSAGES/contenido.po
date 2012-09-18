@@ -569,6 +569,12 @@ msgstr "PHP XMLWriter Extension nicht geladen"
 msgid "The PHP XMLWriter Extension is not loaded. Contenido uses XMLWriter and won't work without the XMLWriter Extension."
 msgstr "Die PHP XMLWriter-Extension ist nicht geladen. Contenido verwendet XMLWriter und wird ohne die XMLWriter-Extension nicht funktionieren."
 
+msgid "PHP XMLWriter Extension is not loaded"
+msgstr "PHP XMLWriter Extension nicht geladen"
+
+msgid "The PHP XMLWriter Extension is not loaded. Contenido uses XMLWriter and won't work without the XMLWriter Extension."
+msgstr "Die PHP XMLWriter-Extension ist nicht geladen. Contenido verwendet XMLWriter und wird ohne die XMLWriter-Extension nicht funktionieren."
+
 #: setup/steps/forms/systemtest.php:265
 msgid "Unable to check for a suitable image resizer"
 msgstr "Überprüfung auf geeignete Bildkomprimierung fehlgeschlagen."

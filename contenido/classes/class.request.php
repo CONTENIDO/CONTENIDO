@@ -107,7 +107,7 @@ class Request {
 			$mRequest = $_COOKIE;
 		}
 
-		if (!array_key_exists($sName, $mRequest) || strlen($mRequest[$sName]) == 0) {
+		if (!array_key_exists($sName, $mRequest) || (!is_array($mRequest[$sName]) && strlen($mRequest[$sName]) == 0)) {
 			/*
 			 * The specified paramter does not exist.
 			 */

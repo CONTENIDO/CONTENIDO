@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.1.2
+ * @version    1.1.3
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,8 +24,9 @@
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-10-??, Bilal Arslan - moved password DB queries, added new ConUser object
  *   modified 2008-11-17, H. Librenz - method calls on new ConUser object modified, comments added
+ *   modified 2011-02-07, Dominik Ziegler, removed integration of not supported java module editor
  *
- *   $Id: include.mycontenido_settings.php 904 2008-12-04 14:55:00Z timo.trautmann $:
+ *   $Id: include.mycontenido_settings.php 1284 2011-02-07 14:38:29Z dominik.ziegler $:
  * }}
  *
  */
@@ -49,11 +50,6 @@ if ($action == "mycontenido_editself")
 	if (!isset($wysi))
 	{
 		$wysi = false;
-	}
-
-	if (!isset($javaedit))
-	{
-		$javaedit = false;
 	}
 
 	$error = false;
@@ -98,7 +94,6 @@ if ($action == "mycontenido_editself")
 	$user->setUserProperty("backend", "timeformat", $format);
 	$user->setUserProperty("backend", "timeformat_date", $formatdate);
 	$user->setUserProperty("backend", "timeformat_time", $formattime);
-	$user->setUserProperty("modules", "java-edit", $javaedit);
     $user->store();
 }
 
@@ -131,12 +126,6 @@ $form->add(i18n("E-Mail"), $email);
 $wysiwyg = new cHTMLCheckbox("wysi", 1);
 $wysiwyg->setChecked($user->get("wysi"));
 $wysiwyg->setLabelText(i18n("Use WYSIWYG Editor"));
-
-$javaedit = new cHTMLCheckbox("javaedit", 1);
-$javaedit->setChecked($user->getUserProperty("modules", "java-edit"));
-$javaedit->setLabelText(i18n("Use JAVA Module Editor (experimental)"));
-
-$form->add(i18n("Options"), array($wysiwyg,$javaedit));
 
 $formathint = "<br>".i18n("The format is equal to PHP's date() function.");
 $formathint.= "<br>";

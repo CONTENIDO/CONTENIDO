@@ -871,9 +871,7 @@ function uplGetFileTypeDescription ($extension)
 
 function uplCreateFriendlyName ($filename)
 {
-	global $cfg;
-	
-	$newfilename = "";
+	global $cfg, $oLang;
 	
 	if (!is_array($cfg['upl']['allow_additional_chars'])) {
 		$filename = str_replace(" ", "_", $filename);
@@ -881,32 +879,16 @@ function uplCreateFriendlyName ($filename)
 		$filename = str_replace(" ", "_", $filename);
 	}
 	
-	for ($i=0;$i<strlen($filename);$i++)
-	{
-		$atom = substr($filename, $i,1);
-		$bFound = false;
-		
-		if (preg_match("/[[:alnum:]]/i", $atom ))
-		{
-			$newfilename .= $atom;
-			$bFound = true;		
-		}
-		
-		if (($atom == "-" || $atom == "_" || $atom == ".") && !$bFound)
-		{
-			$newfilename .= $atom;
-			$bFound = true;
-		}
-		
-		#Check for additionally allowed charcaters in $cfg['upl']['allow_additional_chars'] (must be array of chars allowed) 
-		if (is_array($cfg['upl']['allow_additional_chars']) && !$bFound) {
-			if (in_array($atom, $cfg['upl']['allow_additional_chars'])) {
-				$newfilename .= $atom;
-			}
-		}
+	$chars = '';
+	if ( is_array($cfg['upl']['allow_additional_chars']) ) {
+		$chars = implode("", $cfg['upl']['allow_additional_chars']);
+		$chars = str_replace( array('-', '[', ']') , '', $chars );
 	}
 	
-	return $newfilename;
+	$filename = capiStrReplaceDiacritics($filename, strtoupper($oLang->getField('encoding')));
+	$filename = preg_replace("/[^A-Za-z0-9._\-" . $chars . "]/i", '', $filename);
+
+	return $filename;
 }
 
 function uplSearch ($searchfor)

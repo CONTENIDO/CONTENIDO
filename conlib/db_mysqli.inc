@@ -540,8 +540,12 @@ class DB_Sql
 
     function server_info()
     {
-        $arr['description'] = mysqli_get_server_info($this->Link_ID);
-        return $arr;
+        if ($this->Link_ID) {
+            $arr = array();
+            $arr['description'] = mysqli_get_server_info($this->Link_ID);
+            return $arr;
+        }
+        return null;
     }
 
 

@@ -29,7 +29,7 @@
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *   modified 2008-07-07, Frederic Schneider, fixed wrong language var
  *
- *   $Id: include.linkchecker.php 681 2008-08-12 16:17:07Z timo.trautmann $:
+ *   $Id: include.linkchecker.php 1853 2012-02-10 14:27:49Z dominik.ziegler $:
  * }}
  * 
  */
@@ -189,7 +189,7 @@ $sql = "SELECT lastmodified FROM " . $cfg['tab']['content'] . " content
 
 /* Whitelist: Add */
 if(!empty($_GET['whitelist'])) {
-	$sql = "INSERT INTO " . $cfg['tab']['whitelist'] . " VALUES ('" . Contenido_Security::escapeDB(base64_decode($_GET['whitelist']), $db) . "', '" . time() . "')";
+	$sql = "REPLACE INTO " . $cfg['tab']['whitelist'] . " VALUES ('" . Contenido_Security::escapeDB(base64_decode($_GET['whitelist']), $db) . "', '" . time() . "')";
 	$db->query($sql);
 }
 

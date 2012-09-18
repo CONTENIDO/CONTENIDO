@@ -105,10 +105,11 @@
 	var iIdArtLang = '{IDARTLANG}';
 	var iId = '{ID}';
 	
-	$.getScript(sPath+'scripts/cmsTeaser.js', function() {
-		$.getScript(sPath+'scripts/cmsTeaser.js', function() {
-			addTeaserEvents(teaserFrame{ID}, teaserImage{ID}, sPath, sSession, iIdArtLang, '{ID}');
-		});
-	});
+
+    conLoadFile(sPath+'scripts/cmsTeaser.js', 'addTeaserEvents{ID}();');
+    
+    function addTeaserEvents{ID} () {
+        addTeaserEvents(teaserFrame{ID}, teaserImage{ID}, sPath, sSession, iIdArtLang, '{ID}');
+    }
 	-->
 </script>

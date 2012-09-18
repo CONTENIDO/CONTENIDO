@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -26,9 +26,10 @@
  *   modified 2008-11-17, H. Librenz - new ConUser class are used for user creation now, comments fixed, code formatted
  *   modified 2008-11-18, H. Librenz - values given during a submittion try are now resubmitted
  *   modified 2010-05-31, Ortwin Pinke, PHP >= 5.3, replace deprecated split-function with explode()
+ *   modified 2011-09-01, Dominik Ziegler, prevent creating users without password
  *
- *   $Id: include.rights_create.php 1169 2010-05-31 13:35:38Z oldperl $:
- * }}
+ *   $Id: include.rights_create.php 1541 2011-09-01 12:15:49Z dominik.ziegler $:
+* }}
  *
  */
 
@@ -45,10 +46,14 @@ if (! $perm->have_perm_area_action ( $area, $action )) {
 	$notification->displayNotification ( "error", i18n ( "Permission denied" ) );
 } else {
 
-	if ($action == "user_createuser") {
-		if ($username == "") {
-			$error = i18n ( "Username can't be empty" );
-		} else {
+if ($action == 'user_createuser') {
+    if ($username == '') {
+        $sNotification = $notification->returnNotification("warning", i18n("Username can't be empty"));
+        $bError = true;
+    } else if ($password == '') {
+        $sNotification = $notification->returnNotification("warning", i18n("Password can't be empty"));
+        $bError = true;
+    } else {
 
 			$stringy_perms = array ();
 			if ($msysadmin) {

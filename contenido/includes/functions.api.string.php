@@ -26,7 +26,7 @@
  *   modified 2009-04-30, Ortwin Pinke, CON-252
  *   modified 2010-01-07, Ingo van Peren, CON-293   
  *
- *   $Id: functions.api.string.php 1114 2010-01-07 18:09:47Z Dodger77 $:
+ *   $Id: functions.api.string.php  1726 2012-01-04 13:12:30Z dominik.ziegler $:
  * }}
  * 
  */
@@ -272,13 +272,12 @@ function capiStrTrimSentence ($string, $approxlen, $hard = false)
  * @author Timo A. Hummel
  * @copyright four for business AG, http://www.4fb.de
  */
-function capiStrReplaceDiacritics ($sString, $sourceEncoding = "ISO-8859-1", $targetEncoding = false)
+function capiStrReplaceDiacritics ($sString, $sourceEncoding = "ISO-8859-1", $targetEncoding = "ISO-8859-1")
 {
-	/* If the target encoding isn't set, use source encoding */
-	if ($targetEncoding == false)
-	{
-		$targetEncoding = $sourceEncoding;
+	if ($sourceEncoding == 'UTF-8') {
+		$sString = utf8_decode($sString);
 	}
+
 	
 	// replace regular german umlauts and other common characters with diacritics
     static $aSearch, $aReplace;

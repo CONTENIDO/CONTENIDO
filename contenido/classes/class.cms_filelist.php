@@ -21,6 +21,7 @@
  * 
  * {@internal 
  *   created 2009-10-01
+ *   modified 2010-10-29, Dominik Ziegler - fixed CON-362 (removed whitespace from client setting)
  *
  *   $Id$:
  * }}
@@ -493,7 +494,7 @@ class Cms_FileList {
 			$i++;
 		}
 		
-		$aAdditionalOptions = getEffectiveSettingsByType('cms_filelist_extensions ');
+		$aAdditionalOptions = getEffectiveSettingsByType('cms_filelist_extensions');
 		foreach ($aAdditionalOptions as $sLabel => $sExtension) {
 			$oHtmlSelectOption = new cHTMLOptionElement( $sLabel . " (." . $sExtension . ")", $sExtension, false );
 			$oHtmlSelectOption->setAlt($sLabel . " (." . $sExtension . ")");

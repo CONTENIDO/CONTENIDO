@@ -35,8 +35,9 @@
  *   modified 2010-06-18, Ingo van Peeren, fixed some issues with next id and order of con_cat_tree entries 
  *   modified 2010-09-17, Ingo van Peeren, fixed some issues wrong level information causing garbled tree [#CON-348]
  *   modified 2010-10-13, Dominik Ziegler, No copy label per default when copying articles or categories (CON-352)
+ *   modified 2012-01-17, Mischa Holz, reworked strDeeperCategoriesArray to fix [CON-453]
  *
- *   $Id: functions.str.php 1229 2010-10-13 11:41:23Z dominik.ziegler $:
+ *   $Id: functions.str.php 1785 2012-01-17 16:53:36Z mischa.holz $:
  * }}
  *
  */
@@ -854,26 +855,34 @@ function strMakePublic($idcat, $lang, $public) {
     }
 }
 
-
+/**
+* Returns all childs and childchidls of $idcat_start
+* 
+* @param	int	$idcat_start the start category
+* @return	Array contains all childs of $idcat_start and $id_cat start itself
+*/
 function strDeeperCategoriesArray($idcat_start) {
     global $db;
     global $client;
     global $cfg;
 
-    $sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B WHERE A.idcat=B.idcat AND idclient='".Contenido_Security::toInteger($client)."' ORDER BY idtree";
-    $db->query($sql);
-    $i = 0;
-    while ($db->next_record()) {
-        if ($db->f("parentid") < $idcat_start) {        // ending part of tree
-            $i = 0;
-        }
-        if ($db->f("idcat") == $idcat_start) {        // starting part of tree
-            $i = 1;
-        }
-        if ($i == 1) {
-            $catstring[] = $db->f("idcat");
-        }
+	$adb = new DB_Contenido($cfg);
+	
+    $sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B WHERE A.idcat=B.idcat AND B.parentid='".$idcat_start."' AND idclient='".Contenido_Security::toInteger($client)."' ORDER BY idtree";
+    $adb->query($sql);
+    
+    $catstring = Array();
+    
+    
+    while ($adb->next_record()) {
+    	$id_cat = $adb->f("idcat");
+    	$childs = strDeeperCategoriesArray($id_cat);
+    	foreach($childs as $cc) {
+    		array_push($catstring, $cc);
+    	}
     }
+	
+	array_push($catstring, $idcat_start);
 
     return $catstring;
 }

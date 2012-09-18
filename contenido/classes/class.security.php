@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    1.1.0
+ * @version    1.1.1
  * @author     Frederic Schneider
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -32,8 +32,9 @@
  *   modified 2010-05-20, Murat Purc, extended/added request parameter checks which are usable
  *                        by Contenido startup process. Changed script terminations by die() to Exceptions.
  *   modified 2010-09-30, Dominik Ziegler, added optional logging
+ *   modified 2010-11-22, Dominik Ziegler, fixed behaviour of isInteger [CON-365]
  *
- *   $Id: class.security.php 1231 2010-10-13 12:22:50Z timo.trautmann $:
+ *   $Id: class.security.php  1238 2010-11-22 11:26:33Z dominik.ziegler $:
  * }}
  *
  */
@@ -198,11 +199,9 @@ class Contenido_Security {
 	 *
      * @return 	boolean	check state
      */
-    public static function isInteger($sVar) {
-        $sTempVar 	= $sVar;
-        $sTemp2Var 	= self::toString( self::toInteger($sVar) );
- 
-        return ( $sTempVar === $sTemp2Var );
+    public static function isInteger($sVar) { 
+	
+        return ( preg_match('/^[0-9]+$/', $sVar) );
     }
 
     /**

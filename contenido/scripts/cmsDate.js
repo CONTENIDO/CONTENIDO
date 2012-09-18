@@ -59,6 +59,25 @@ function closeHandler(cal){
 	cal.destroy();
 	cal_is_open = false;
 }
+
+
+function createCmsDateCallback(id, format, showsTime, showsOtherMonths, sDivSelectId, sConPath, sSelectId, sLang, sInstance) {
+    conLoadFile(sConPath+'scripts/jscalendar/lang/calendar-'+sLang+'.js', 'createCmsDateCallback2("'+id+'","'+format+'","'+showsTime+'","'+showsOtherMonths+'","'+sDivSelectId+'","'+sConPath+'","'+sSelectId+'","'+sLang+'","'+sInstance+'");'); 
+}
+
+function createCmsDateCallback2(id, format, showsTime, showsOtherMonths, sDivSelectId, sConPath, sSelectId, sLang, sInstance) {
+    conLoadFile(sConPath+'scripts/jscalendar/calendar-setup.js', sInstance+' = new CmsDate("'+id+'","'+format+'","'+showsTime+'","'+showsOtherMonths+'","'+sDivSelectId+'","'+sConPath+'","'+sSelectId+'");');    
+}
+
+function createCmsDate(id, format, showsTime, showsOtherMonths, sDivSelectId, sConPath, sSelectId, sLang, sInstance) {
+    conLoadFile(sConPath+'scripts/jscalendar/calendar.js', 'createCmsDateCallback("'+id+'","'+format+'","'+showsTime+'","'+showsOtherMonths+'","'+sDivSelectId+'","'+sConPath+'","'+sSelectId+'","'+sLang+'","'+sInstance+'");'); 
+    
+    if ($('#cms_date').length == 0) {
+        $('head').append('<link rel="stylesheet" id="cms_date" href="'+sConPath+'scripts/jscalendar/calendar-contenido.css" type="text/css" media="all" />');
+    }
+}
+
+
 /**
  * The CmsDate object constructor. 
  * 
@@ -70,7 +89,7 @@ function closeHandler(cal){
  * @param {string} sConPath, contenido path
  * @param {string} sSelectId, select id from select-box
  */
-CmsDate = function(id, format, showsTime, showsOtherMonths, sDivSelectId, sConPath, sSelectId){
+CmsDate = function(id, format, showsTime, showsOtherMonths, sDivSelectId, sConPath, sSelectId){    
     // first-time call, create the calendar.
     this.cal = new Calendar(1, null, selected, closeHandler);
     
@@ -86,6 +105,7 @@ CmsDate = function(id, format, showsTime, showsOtherMonths, sDivSelectId, sConPa
 	this.cal.contenido_path = sConPath;
 	this.cal.contenido_call_handler = this;
 }
+
 
 /**
  * This function creats a Calendar.

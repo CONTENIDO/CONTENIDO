@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.3
+ * @version    1.0.5
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,8 +25,10 @@
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2009-12-14, Dominik Ziegler, use User::getRealname() for user name output and provide username fallback
  *   modified 2010-05-20, Oliver Lohkemper, add param true for get active admins
+ *   modified 2011-01-28, Dominik Ziegler, added missing notice in backend home when no clients are available [#CON-379]
+ *   modified 2011-08-18, Dominik Ziegler, added notification if maintenance mode is active [#CON-403]
  *
- *   $Id: main.login.php 1153 2010-05-20 06:49:53Z OliverL $:
+ *   $Id: main.login.php 1498 2011-08-18 15:04:51Z dominik.ziegler $:
  * }}
  * 
  */
@@ -66,6 +68,20 @@ $lastlogin= $vuser->getUserProperty("system", "lastlogintime");
 if ($lastlogin == "") {
 	$lastlogin= i18n("No Login Information available.");
 }
+// notification for requested password
+$sNotificationText = '';
+if($vuser->getField('using_pw_request') == 1) {
+    $sNotificationText = $notification->returnNotification("warning", i18n("You're logged in with a temporary password. Please change your password."));
+	$sNotificationText .= '<br />';
+}
+
+// check for active maintenance mode
+if (getSystemProperty('maintenance', 'mode') == 'enabled') {
+	$sNotificationText .= $notification->returnNotification("warning", i18n("Contenido is in maintenance mode. Only sysadmins are allowed to login."));
+	$sNotificationText .= '<br />';
+}
+	
+$tpl->set('s', 'NOTIFICATION', $sNotificationText);
 
 $userid = $auth->auth["uid"];
 
@@ -113,7 +129,7 @@ if (count($clients) > 1) {
 	$tpl->set('s', 'OKBUTTON', '<input type="image" src="images/but_ok.gif" alt="' . i18n("Change client") . '" title="' . i18n("Change client") . '" border="0">');
 } else {
 	$tpl->set('s', 'OKBUTTON', '');
-	$tpl->set('s', 'CLIENTFORM', '');
+	$tpl->set('s', 'CLIENTFORM', i18n('No clients available!'));
 	$tpl->set('s', 'CLIENTFORMCLOSE', '');
 
 	foreach ($clients as $key => $v_client) {
@@ -169,8 +185,8 @@ if ($todoitems->count() == 1) {
 
 $mycontenido_overview= '<a class="blue" href="' . $sess->url("main.php?area=mycontenido&frame=4") . '">' . i18n("Overview") . '</a>';
 $mycontenido_lastarticles= '<a class="blue" href="' . $sess->url("main.php?area=mycontenido_recent&frame=4") . '">' . i18n("Recently edited articles") . '</a>';
-$mycontenido_tasks= '<a class="blue" href="' . $sess->url("main.php?area=mycontenido_tasks&frame=4") . '">' . sprintf($sTaskTranslation, $todoitems->count()) . '</a>';
-$mycontenido_settings= '<a class="blue" href="' . $sess->url("main.php?area=mycontenido_settings&frame=4") . '">' . i18n("Settings") . '</a>';
+$mycontenido_tasks= '<a class="blue" onclick="sub.highlightById(\'c_1\', top.content.right_top)" href="' . $sess->url("main.php?area=mycontenido_tasks&frame=4") . '">' . sprintf($sTaskTranslation, $todoitems->count()) . '</a>';
+$mycontenido_settings= '<a class="blue" onclick="sub.highlightById(\'c_2\', top.content.right_top)" href="' . $sess->url("main.php?area=mycontenido_settings&frame=4") . '">' . i18n("Settings") . '</a>';
 
 $tpl->set('s', 'MYCONTENIDO_OVERVIEW', $mycontenido_overview);
 $tpl->set('s', 'MYCONTENIDO_LASTARTICLES', $mycontenido_lastarticles);
@@ -232,14 +248,6 @@ foreach ($aMemberList as $key) {
 $tpl->set('s', 'USER_ONLINE', $sOutput);
 $tpl->set('s', 'Anzahl', $iNumberOfUsers);
 
-// rss feed
-if($perm->isSysadmin($vuser) && $cfg["backend"]["newsfeed"] == true){
-	$newsfeed = 'some news';
-	$tpl->set('s', 'CONTENIDO_NEWS', $newsfeed);
-}
-else{
-	$tpl->set('s', 'CONTENIDO_NEWS', '');
-}
 
 // check for new updates
 $oUpdateNotifier = new Contenido_UpdateNotifier($cfg, $vuser, $perm, $sess, $belang);

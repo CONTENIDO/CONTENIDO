@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.3.3
+ * @version    1.3.4
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,9 +25,10 @@
  *   modified 2008-07-03, Dominik Ziegler, fixed bug CON-143
  *   modified 2009-02-15, Murat Purc, fixed bug CON-238
  *   modified 2010-09-29, Ortwin Pinke, fixed bug CON-349
+ *   modified 2010-12-16, Dominik Ziegler, display error message on database connection failure [#CON-376]
  *
- *   $Id: functions.general.php 1214 2010-09-29 09:01:27Z oldperl $:
- * }}
+ *   $Id: functions.general.php 1246 2010-12-16 13:13:04Z dominik.ziegler $:
+* }}
  * 
  */
 
@@ -2263,26 +2264,33 @@ function endAndLogTiming($uuid)
 }
 
 // @TODO: it's better to create a instance of DB_Contenido class, the class constructor connects also to the database. 
-function checkMySQLConnectivity()
-{
+function checkMySQLConnectivity() {
+
 	global $contenido_host, $contenido_database, $contenido_user, $contenido_password, $cfg;
 
-	if ($cfg["database_extension"] == "mysqli")
-	{
-			if (($iPos = strpos($contenido_host, ":")) !== false)
-			{
-				list($sHost, $sPort) = explode(":", $contenido_host);
-				
-				$res = @ mysqli_connect($sHost, $contenido_user, $contenido_password, "", $sPort);
-			} else {
-				$res = @ mysqli_connect($contenido_host, $contenido_user, $contenido_password);	
-			}
+	if ($cfg["database_extension"] == "mysqli") {
+		if (($iPos = strpos($contenido_host, ":")) !== false) {
+			list($sHost, $sPort) = explode(":", $contenido_host);
+			
+			$res = @ mysqli_connect($sHost, $contenido_user, $contenido_password, "", $sPort);
+		} else {
+			$res = @ mysqli_connect($contenido_host, $contenido_user, $contenido_password);	
+		}
 	} else {
 		$res = @ mysql_connect($contenido_host, $contenido_user, $contenido_password);
 	}
+	
+	$selectDb = false;
+	if ( $res ) {
+		if ($cfg["database_extension"] == "mysqli") {
+			$selectDb = @ mysqli_select_db($contenido_database);
+		} else {
+			$selectDb = @ mysql_select_db($contenido_database);
+		}
+	}
 
-	if (!$res)
-	{
+	if ( !$res || !$selectDb ) {
+	
 		$errortitle = i18n("MySQL Database not reachable for installation %s");
 		$errortitle = sprintf($errortitle, $cfg["path"]["contenido_fullhtml"]);
 

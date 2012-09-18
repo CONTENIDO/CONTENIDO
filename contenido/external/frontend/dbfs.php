@@ -23,8 +23,9 @@
  *  created  unknown
  *  modified 2008-06-16, H. Librenz - Hotfix: checking for potential unsecure calling 
  *  modified 2008-07-04, bilal arslan, added security fix
+ *  modified 2012-03-012, rusmir jusufovic, add include for config.local and config.after
  *
- *   $Id: dbfs.php 842 2008-09-24 09:57:50Z timo.trautmann $:
+ *   $Id: dbfs.php 1934 2012-03-01 11:32:56Z rusmir.jusufovic $:
  * }}
  * 
  */
@@ -35,6 +36,14 @@
 $contenido_path = '';
 # include the config file of the frontend to init the Client and Language Id
 include_once ("config.php");
+
+/*
+ * local configuration
+*/
+if (file_exists("config.local.php"))
+{
+	@ include ("config.local.php");
+}
 
 // include security class and check request variables
 include_once ($contenido_path . 'classes/class.security.php');
@@ -63,6 +72,14 @@ $client = $load_client;
 
 $dbfs = new DBFSCollection;
 $dbfs->outputFile($file);
+
+/*
+ * configuration settings after the site is displayed.
+*/
+if (file_exists("config.after.php"))
+{
+	@ include ("config.after.php");
+}
 
 page_close();
 

@@ -47,14 +47,11 @@ var sub = {
      *                       top.content.right_top       (when there is no left/right frameset)
      */
 	'highlightById': function(id, frame) {
-        var ul = frame.document.getElementById('navlist');
-    	var as = ul.getElementsByTagName('a');
-    	for (var i=0; i<=as.length; i++) {
-            if (as[i]) {
-                as[i].className = '';
-            }
-    	}
-        frame.document.getElementById(id).getElementsByTagName('a')[0].className = 'current';
+             this._reset(frame);
+        var elem = this._getAnchorById(id, frame);
+        if (elem) {
+            elem.className = 'current';
+        }
     },
     
 	/**

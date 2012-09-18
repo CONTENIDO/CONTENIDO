@@ -60,9 +60,10 @@
  *   modified 2009-12-31, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
  *   modified 2010-05-20, Murat Purc, moved security checks into startup process, see [#CON-307]
  *   modified 2010-09-23, Murat Purc, fixed $encoding handling, see [#CON-305]
+ *   modified 2011-02-07, Dominik Ziegler, added exit after redirections to force their execution
  *
- *   $Id: front_content.php 1212 2010-09-22 23:05:18Z xmurrix $:
- * }}
+ *   $Id: front_content.php 1636 2011-10-14 15:13:27Z dominik.ziegler $:
+* }}
  *
  */
 
@@ -343,6 +344,7 @@ if (!$idcatart)
                     else
                     {
                         header($errsite);
+						exit;
                     }
                 }
             }
@@ -397,6 +399,7 @@ if (!$idcatart)
                     else
                     {
                         header($errsite);
+						exit;
                     }
                 }
             }
@@ -430,6 +433,7 @@ $idartlang = getArtLang($idart, $lang);
 if ($idartlang === false)
 {
     header($errsite);
+	exit;
 }
 
 /*
@@ -662,6 +666,7 @@ else
                 else
                 {
                     header($errsite);
+					exit;
                 }
             }
         }
@@ -778,6 +783,7 @@ else
             if (!$allow)
             {
                 header($errsite);
+				exit;
             }
         }
     }
@@ -833,26 +839,26 @@ else
     ##############################################
     # time management
     ##############################################
-    $sql = "SELECT timemgmt FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
+    $sql = "SELECT timemgmt, online, redirect, redirect_url, datestart, dateend FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
     $db->query($sql);
     $db->next_record();
-
-    if (($db->f("timemgmt") == "1") && ($isstart != 1))
-    {
-        $sql = "SELECT online, redirect, redirect_url FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'
-                AND NOW() > datestart AND NOW() < dateend";
-    }
-    else
-    {
-        $sql = "SELECT online, redirect, redirect_url FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
-    }
-
-    $db->query($sql);
-    $db->next_record();
-
+	
     $online = $db->f("online");
-    $redirect = $db->f("redirect");
+	$redirect = $db->f("redirect");
     $redirect_url = $db->f("redirect_url");
+	
+	if ($db->f("timemgmt") == "1" && $isstart != 1) {
+		$dateStart = $db->f("datestart");
+		$dateEnd = $db->f("dateend");
+
+		if ($dateStart != '0000-00-00 00:00:00' && strtotime($dateStart) > time()) {
+            $online = 0;
+        }
+
+        if ($dateEnd != '0000-00-00 00:00:00' && strtotime($dateEnd) < time()) {
+            $online = 0;
+        }
+	}
 
     @ eval ("\$"."redirect_url = \"$redirect_url\";"); // transform variables
 
@@ -950,6 +956,7 @@ else
             else
             {
                 header($errsite);
+				exit;
             }
         }
     }

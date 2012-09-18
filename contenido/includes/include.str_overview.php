@@ -27,8 +27,9 @@
  *   modified 2010-01-30, Ingo van Peeren, some optimization of the amount of db queries for template names and descriptions, see [CON-301]
  *                                         removed use of deprecated methods of class.template.php, see [CON-302]
  *   modified 2010-02-06, Ingo van Peeren, fixed small bug added by last modification
+ *   modified 2012-01-17, Mischa Holz, fixed a bug displaying HTML special chars in category names see [CON-470]
  *
- *   $Id: include.str_overview.php 1132 2010-02-06 19:29:17Z Dodger77 $:
+ *   $Id: include.str_overview.php 1783 2012-01-17 13:58:08Z mischa.holz $:
  * }}
  * 
  */
@@ -140,7 +141,7 @@ function buildCategorySelectRights() {
 			$spaces .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 		}
 
-        $sCategoryname = htmlspecialchars($props["name"]);
+        $sCategoryname = $props["name"];
         $sCategoryname = capiStrTrimHard($sCategoryname, 30);
         $oHtmlSelectOption = new cHTMLOptionElement($spaces.">".$sCategoryname, $tmpidcat, false, !$props["perm"]);
         $oHtmlSelect->addOptionElement($j, $oHtmlSelectOption);    

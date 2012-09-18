@@ -43,6 +43,6 @@ function frontendusers_valid_to_store ($variables)
 {
 	global $feuser;
 	
-	$feuser->set("valid_to", $variables["valid_to"]);
+	$feuser->set("valid_to", $variables["valid_to"], false);
 }
 ?>

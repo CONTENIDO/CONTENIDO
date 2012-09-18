@@ -11,7 +11,7 @@
  * @con_php_req 5.0
  * 
  *
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,6 +21,7 @@
  * 
  * {@internal 
  *   created 2008-08-19
+ *   modified 2010-11-30, Dominik Ziegler, added check of minimum period time at update notifier check period [CON-372]
  *
  * }}
  * 
@@ -101,6 +102,7 @@ $aManagedProperties = array(
                           array('type' => 'edit_area', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Use editarea for code highlighting'), 'group' => i18n('Backend')),
                           array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => array('false', 'true'), 'label' => i18n('Use TinyMce as insight editor'), 'group' => i18n('Backend')), 
 						  array('type' => 'backend', 'name' => 'preferred_idclient', 'value' => 'integer', 'label' => i18n('Default client (ID)'), 'group' => i18n('Backend')),
+						  array('type' => 'backend', 'name' => 'max_log_size', 'value' => 'label', 'label' => i18n('Maximum log size in MiB (0 = infinite)'), 'group' => i18n('Backend')),
                           array('type' => 'system', 'name' => 'mail_host', 'value' => '', 'label' => i18n('Mailserver host'), 'group' => i18n('Mailserver')),
                           array('type' => 'system', 'name' => 'mail_sender', 'value' => '', 'label' => i18n('Mailserver sender mail'), 'group' => i18n('Mailserver')),
                           array('type' => 'system', 'name' => 'mail_sender_name', 'value' => '', 'label' => i18n('Mailserver sender name'), 'group' => i18n('Mailserver')),
@@ -118,10 +120,16 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
         $sStoredValue = $aSettings[$aProperty['type']][$aProperty['name']]['value'];
 
         if ($sStoredValue != $sValue &&  (is_array($aProperty['value']) && $sValue != '' || !is_array($aProperty['value']))) {
-            setSystemProperty($aProperty['type'], $aProperty['name'], $sValue); 
-            $bStored = true;
+			if ( $aProperty['type'] == 'update' && $aProperty['name'] == 'check_period' && (int) $sValue < 60 ) {
+				$sNotification = $notification->displayNotification("error", i18n("Update check period must be at least 60 minutes."));
+				$bStored = false;
+				break;
+			} else {
+				setSystemProperty($aProperty['type'], $aProperty['name'], $sValue); 
+				$bStored = true;
+			}
         }        
-   }  
+     
    if ($bStored) {
         $sNotification = $notification->displayNotification("info", i18n("Changes saved"));
    }   

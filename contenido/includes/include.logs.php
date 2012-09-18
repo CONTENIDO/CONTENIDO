@@ -27,7 +27,7 @@
  *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *
- *   $Id: include.logs.php 1157 2010-05-20 14:10:43Z xmurrix $:
+ *   $Id: include.logs.php 1966 2012-03-03 22:27:39Z dominik.ziegler $:
  * }}
  * 
  */
@@ -137,7 +137,7 @@ if(!$perm->have_perm_area_action($area))
 	}
 
 	$years = array();
-	for ($i = 2000; $i < 2020; $i++)
+	for ($i = 2000; $i < (date('Y') + 1); $i++)
 	{
 		$years[$i] = $i;
 	}

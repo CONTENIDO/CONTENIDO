@@ -28,7 +28,7 @@
  * 	 						is found in current and at least one more language
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready) and formatting
  *
- *   $Id: functions.pathresolver.php 1085 2009-10-24 02:01:34Z xmurrix $:
+ *   $Id: functions.pathresolver.php  2014 2012-03-10 16:27:01Z dominik.ziegler $:
  * }}
  *
  */
@@ -82,7 +82,7 @@ function prResolvePathViaURLNames($path) {
                             `idcat` INT( 10 ) NOT NULL ,
                             `idlang` INT( 10 ) NOT NULL ,
                             `lastcached` INT(10) NOT NULL
-                            ) TYPE = HEAP;';
+                            ) ENGINE = HEAP;';
 
             $db->query($sql);
         }

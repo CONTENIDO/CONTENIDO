@@ -922,13 +922,13 @@ msgid "bug report forwarded"
 msgstr "Bug Report abgeschickt"
 
 msgid "please fill out all mandatory fields"
-msgstr "Bitte alle Pflichtfelder ausfüllen"
+msgstr "Bitte alle Pflichtfelder ausf&uuml;llen"
 
 msgid "please enter a valid E-Mail adress"
 msgstr "Bitte geben Sie eine g&uuml;ltige E-Mail Adresse an"
 
 msgid "you must agree the declaration of consent"
-msgstr "Sie müssen der Vereinbarung zustimmen"
+msgstr "Sie m&uuml;ssen der Vereinbarung zustimmen"
 
 msgid "OpenOffice.org Presentation"
 msgstr "OpenOffice.org Präsentation"
@@ -2488,6 +2488,9 @@ msgstr "Die folgenden Spaltennamen k&ouml;nnen verwendet werden:"
 msgid "Username can't be empty"
 msgstr "Benutzername darf nicht leer sein"
 
+msgid "Password can't be empty"
+msgstr "Passwort darf nicht leer sein"
+
 msgid "Username already exists"
 msgstr "Benutzername existiert bereits"
 
@@ -3944,3 +3947,22 @@ msgstr "Ver&ouml;ffentlichungsdatum"
 
 msgid "Is used in"
 msgstr "Wird benutzt in"
+
+msgid "No clients available!"
+msgstr "Keine Mandanten verf&uuml;gbar!"
+
+#: includes/include.system_configuration.php:105
+msgid "Maximum log size in MiB (0 = infinite)"
+msgstr "Maximale Log Gr&ouml;&szlig;e in MiB (0 = unendlich)"
+
+msgid "Update check period must be at least 60 minutes."
+msgstr "Die Aktualisierungsperiode muss mindestens 60 Minuten betragen."
+
+#: main.loginform.php:92
+msgid "Contenido is in maintenance mode. Only sysadmins are allowed to login." 
+msgstr "Contenido befindet sich im Wartungsmodus. Nur Systemadministratoren k&ouml;nnen sich einloggen."
+
+msgid "Please try again later."
+msgstr "Bitte versuchen Sie es zu einem sp&auml;teren Zeitpunkt erneut."
+
+

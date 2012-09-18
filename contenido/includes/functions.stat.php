@@ -1,59 +1,51 @@
 <?php
 /**
- * Project:
+ * Project: 
  * Contenido Content Management System
- *
- * Description:
+ * 
+ * Description: 
  * Define the "stat" related functions
- *
- * Requirements:
+ * 
+ * Requirements: 
  * @con_php_req 5.0
- *
+ * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.3
+ * @version    1.0.2
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- *
- * {@internal
+ * 
+ * {@internal 
  *   created 2002-03-02
  *   modified 2008-06-26, Frederic Schneider, add security fix
- *   modified 2008-07-22, Ingo van Peeren, fixed SQL syntax error due to security fix
- *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready) and commented code
+ *   modified 2008-07-22, Ingo van Peeren, fixed SQL syntax error due to security fix  
  *
- *   $Id: functions.stat.php 1085 2009-10-24 02:01:34Z xmurrix $:
+ *   $Id: functions.stat.php 1750 2012-01-10 15:02:32Z bilal.arslan $:
  * }}
- *
+ * 
  */
 
 if(!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
+	die('Illegal call');
 }
 
 cInclude("includes", "functions.database.php");
+cInclude('classes','UrlBuilder/Contenido_UrlBuilderFactory.class.php');
 
-/**
- * Displays statistic information layer (a div Tag)
- *
- * @param   int     $id    Either article or directory id
- * @param   string  $type  The type
- * @param   int     $x     Style top position
- * @param   int     $y     Style left position
- * @param   int     $w     Style width
- * @param   int     $h     Style height
- * @return  string  Composed info layer
- */
-function statsDisplayInfo($id, $type, $x, $y, $w, $h) {
-    if (strcmp($type,"article" == 0)) {
+
+function statsDisplayInfo($id, $type, $x, $y, $w, $h)
+{
+    if (strcmp($type,"article" == 0))
+    {
         $text = i18n("Info about article")." ". $id;
     } else {
         $text = i18n("Info about directory") ." ". $id;
     }
-
+    
     $div = '<DIV ID="idElement14" class="text_medium" style="background: #E8E8EE;
              border: 1px; border-style: solid; border-color: #B3B3B3; position:absolute;
              top:'.$x.'px; left:'.$y.'.px; width:'.$w.'px; height:'.$h.'px;">'.$text.'</DIV>';
@@ -69,14 +61,15 @@ function statsDisplayInfo($id, $type, $x, $y, $w, $h) {
  * @return none
  *
  */
-function statsArchive($yearmonth) {
+function statsArchive($yearmonth)
+{
     global $cfg;
 
-    $yearmonth = preg_replace('/\s/', '0', $yearmonth);
+    $yearmonth = ereg_replace (" ", "0", $yearmonth);
 
-    $db = new DB_Contenido;
+	$db = new DB_Contenido;
     $db2 = new DB_Contenido;
-
+	
     $sql = "SELECT
                 idcatart, idlang, idclient, visited, visitdate
             FROM
@@ -84,7 +77,8 @@ function statsArchive($yearmonth) {
 
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->next_record())
+    {
         $insertSQL = "INSERT INTO
                           ".$cfg["tab"]["stat_archive"]."
                           ( idstatarch, archived, idcatart, idlang, idclient, visited, visitdate)
@@ -115,7 +109,8 @@ function statsArchive($yearmonth) {
 
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->next_record())
+    {
         $insertSQL = "INSERT INTO
                           ".$cfg["tab"]["stat"]."
                           ( idstat, idcatart, idlang, idclient, visited )
@@ -128,7 +123,7 @@ function statsArchive($yearmonth) {
 
         $db2->query($insertSQL);
     }
-}
+} 
 
 
 /**
@@ -144,26 +139,27 @@ function statsArchive($yearmonth) {
  * @return none
  *
  */
-function statsOverviewAll($yearmonth) {
-    global $cfg, $db, $tpl, $client, $lang;
-
+function statsOverviewAll($yearmonth)
+{
+	global $cfg, $db, $tpl, $client, $lang;
+    
     $sDisplay = 'table-row';
+	
+	$bUseHeapTable = $cfg["statistics_heap_table"];
+	
+	$sHeapTable = $cfg['tab']['stat_heap_table'];
 
-    $bUseHeapTable = $cfg["statistics_heap_table"];
-
-    $sHeapTable = $cfg['tab']['stat_heap_table'];
-
-    if ($bUseHeapTable) {
-        if (!dbTableExists ($db, $sHeapTable)) {
-            buildHeapTable ($sHeapTable, $db);
-        }
-    }
+	if ($bUseHeapTable) {
+		if (!dbTableExists ($db, $sHeapTable)) {
+			buildHeapTable ($sHeapTable, $db);
+		}
+	}
 
     if (preg_match('/MSIE/', $_SERVER['HTTP_USER_AGENT'])) {
         $sDisplay = 'block';
     }
-
-    $sql = "SELECT
+    
+	$sql = "SELECT
                     idtree, A.idcat, level, preid, C.name, visible
                 FROM
                     ".$cfg["tab"]["cat_tree"]." AS A,
@@ -183,13 +179,13 @@ function statsOverviewAll($yearmonth) {
     $db->query($sql);
 
     $currentRow = 2;
-
+    
     $aRowname = array();
     $iLevel = 0;
-
+    
     $tpl->set('s', 'IMG_EXPAND', $cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'open_all.gif');
     $tpl->set('s', 'IMG_COLLAPSE', $cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'close_all.gif');
-
+    
     while ($db->next_record()) {
         if ($db->f("level") == 0 && $db->f("preid") != 0) {
             $bgcolor = '#FFFFFF';
@@ -209,13 +205,13 @@ function statsOverviewAll($yearmonth) {
 
             $tpl->next();
             $currentRow++;
-        }
+    	}
 
-        $padding_left	= 10 + ( 15 * $db->f("level") );
+    	$padding_left	= 10 + ( 15 * $db->f("level") );
         $text			= $db->f(4);
         $idcat			= $db->f("idcat");
         $bCatVisible = $db->f("visible");
-
+        
         if ($db->f("level") < $iLevel) {
             $iDistance = $iLevel-$db->f("level");
 
@@ -224,7 +220,7 @@ function statsOverviewAll($yearmonth) {
             }
             $iLevel = $db->f("level");
         }
-
+        
         if ($db->f("level") >= $iLevel) {
             if ($db->f("level") == $iLevel) {
                 array_pop($aRowname);
@@ -241,19 +237,19 @@ function statsOverviewAll($yearmonth) {
         $db2->next_record();
 
         $numberOfArticles = $db2->f(0);
-        $sumNumberOfArticles += $numberOfArticles;
+		$sumNumberOfArticles += $numberOfArticles;
         //************** hits of category total**************
         if (strcmp($yearmonth,"current") == 0) {
             $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."' AND B.idclient='".Contenido_Security::toInteger($client)."'";
         } else {
-            if(!$bUseHeapTable) {
-                $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
+			if(!$bUseHeapTable) {
+            	$sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
                         AND B.idclient='".Contenido_Security::toInteger($client)."' AND B.archived = '".Contenido_Security::escapeDB($yearmonth, $db2)."'";
-            } else {
-                $sql = "SELECT SUM(visited) FROM ".Contenido_Security::escapeDB($sHeapTable, $db2)." WHERE idcat='".Contenido_Security::toInteger($idcat)."'
+	        } else {
+	            $sql = "SELECT SUM(visited) FROM ".Contenido_Security::escapeDB($sHeapTable, $db2)." WHERE idcat='".Contenido_Security::toInteger($idcat)."'
                         AND idclient='".Contenido_Security::toInteger($client)."' AND archived = '".Contenido_Security::escapeDB($yearmonth, $db2)."'";
-            }
-        }
+	        }
+	    }
         $db2->query($sql);
         $db2->next_record();
 
@@ -264,15 +260,15 @@ function statsOverviewAll($yearmonth) {
             $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
                     AND B.idlang='".Contenido_Security::toInteger($lang)."' AND B.idclient='".Contenido_Security::toInteger($client)."'";
         } else {
-            if(!$bUseHeapTable) {
-                $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
+			if(!$bUseHeapTable) {
+            	$sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
                         AND B.idlang='".Contenido_Security::toInteger($lang)."' AND B.idclient='".Contenido_Security::toInteger($client)."' AND B.archived = '".Contenido_Security::escapeDB($yearmonth, $db2)."'";
-            } else {
-                $sql = "SELECT SUM(visited) FROM ".Contenido_Security::escapeDB($sHeapTable, $db2)." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'
+	        } else {
+	            $sql = "SELECT SUM(visited) FROM ".Contenido_Security::escapeDB($sHeapTable, $db2)." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'
                         AND idclient='".Contenido_Security::toInteger($client)."' AND archived = '".Contenido_Security::escapeDB($yearmonth, $db2)."'";
-            }
-        }
-
+			}
+		}
+				
         $db2->query($sql);
         $db2->next_record();
 
@@ -284,17 +280,18 @@ function statsOverviewAll($yearmonth) {
         $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["art"]." AS B, ".$cfg["tab"]["art_lang"]." AS C WHERE A.idcat='".Contenido_Security::toInteger($idcat)."'
                 AND A.idart=B.idart AND B.idart=C.idart AND C.idlang='".Contenido_Security::toInteger($lang)."' ORDER BY B.idart";
         $db2->query($sql);
-
+        
         $numrows = $db2->num_rows();
         $onclick = "";
-
+        
         $online = $db->f("visible");
-        if ($bCatVisible == 1) {
+        if ($bCatVisible == 1)
+        {
             $offonline = '<img src="'.$cfg['path']['images'].'online_off.gif" alt="'.i18n("Category is online").'" title="'.i18n("Category is online").'">';
         } else {
             $offonline = '<img src="'.$cfg['path']['images'].'offline_off.gif" alt="'.i18n("Category is offline").'" title="'.i18n("Category is offline").'">';
         }
-
+        
         //************check if there are subcategories ******************
         $iSumSubCategories = 0;
         $sSql = "SELECT count(*) as cat_count from ".$cfg["tab"]["cat"]." WHERE parentid = '".Contenido_Security::toInteger($idcat)."';";
@@ -304,7 +301,7 @@ function statsOverviewAll($yearmonth) {
             $iSumSubCategories = $db3->f('cat_count');
         }
         $db3->free();
-
+        
         $bgcolor = $cfg["color"]["table_dark"];
         $tpl->set('d', 'BGCOLOR', $bgcolor);
         $tpl->set('d', 'PADDING_LEFT', $padding_left);
@@ -317,10 +314,10 @@ function statsOverviewAll($yearmonth) {
         $tpl->set('d', 'ROWNAME', implode('_', $aRowname));
         if ($numrows > 0 || $iSumSubCategories > 0) {
             $tpl->set('d', 'EXPAND', '<a href="javascript:changeVisibility(\''.implode('_', $aRowname).'\', '.$db->f("level").', '.$idcat.')">
-                                          <img src="'.$cfg['path']['images'].'open_all.gif"
-                                               alt="'.i18n("Open category").'"
-                                               title="'.i18n("Open category").'"
-                                               id="'.implode('_', $aRowname).'_img"
+                                          <img src="'.$cfg['path']['images'].'open_all.gif" 
+                                               alt="'.i18n("Open category").'" 
+                                               title="'.i18n("Open category").'" 
+                                               id="'.implode('_', $aRowname).'_img" 
                                                style="vertical-align:top; margin-top:6px;">
                                       </a>');
         } else {
@@ -333,12 +330,12 @@ function statsOverviewAll($yearmonth) {
         } else {
             $tpl->set('d', 'DISPLAY_ROW', $sDisplay);
         }
-
+        
         $tpl->next();
         $currentRow++;
-
+        
         $onclick = "";
-
+        
         $text             = "";
         $numberOfArticles = "";
         $total            = "";
@@ -346,7 +343,7 @@ function statsOverviewAll($yearmonth) {
 
         while ($db2->next_record()) {
             $idart = $db2->f("idart");
-
+            
             array_push($aRowname, $idart);
 
             $text             = "";
@@ -354,26 +351,26 @@ function statsOverviewAll($yearmonth) {
             $total            = "";
             $inThisLanguage   = "";
 
-            $padding_left = 10 + ( 15 * ($db->f("level")+1) );
+    	    $padding_left = 10 + ( 15 * ($db->f("level")+1) );
 
             $text = $db2->f("title");
             $online = $db2->f("online");
 
             //************** number of arts **************
-            $db3 = new DB_contenido;
+          	$db3 = new DB_contenido;
 
-            //************** hits of art total **************
-            if (strcmp($yearmonth,"current") == 0) {
-             $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
-                     AND A.idart='".Contenido_Security::toInteger($idart)."' AND B.idclient='".Contenido_Security::toInteger($client)."'";
+           	//************** hits of art total **************
+           	if (strcmp($yearmonth,"current") == 0) {
+                $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
+                        AND A.idart='".Contenido_Security::toInteger($idart)."' AND B.idclient='".Contenido_Security::toInteger($client)."'";
             } else {
-                if(!$bUseHeapTable) {
-                    $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
+				if(!$bUseHeapTable) {
+	                $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
                             AND A.idart='".Contenido_Security::toInteger($idart)."' AND B.idclient='".Contenido_Security::toInteger($client)."' and B.archived = '".Contenido_Security::escapeDB($yearmonth, $db3)."'";
-                } else {
-                    $sql = "SELECT SUM(visited) FROM ".Contenido_Security::escapeDB($sHeapTable, $db3)." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idart='".Contenido_Security::toInteger($idart)."'
+	            } else {
+	                $sql = "SELECT SUM(visited) FROM ".Contenido_Security::escapeDB($sHeapTable, $db3)." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idart='".Contenido_Security::toInteger($idart)."'
                             AND idclient='".Contenido_Security::toInteger($client)."' AND archived = '".Contenido_Security::escapeDB($yearmonth, $db3)."'";
-                }
+	            }
             }
 
             $db3->query($sql);
@@ -383,19 +380,19 @@ function statsOverviewAll($yearmonth) {
 
             //************** hits of art in this language ***************
             if (strcmp($yearmonth,"current") == 0) {
-                $sql = "SELECT visited FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
+          	     $sql = "SELECT visited FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
                         AND A.idart='".Contenido_Security::toInteger($idart)."' AND B.idlang='".Contenido_Security::toInteger($lang)."' AND B.idclient='".Contenido_Security::toInteger($client)."'";
-            } else {
-                if (!$bUseHeapTable) {
-                    $sql = "SELECT visited FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
+          	} else {
+				if(!$bUseHeapTable) {
+          	    	 $sql = "SELECT visited FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
                             AND A.idart='".Contenido_Security::toInteger($idart)."' AND B.idlang='".Contenido_Security::toInteger($lang)."' AND B.idclient='".Contenido_Security::toInteger($client)."'
                             AND B.archived = '".Contenido_Security::escapeDB($yearmonth, $db3)."'";
-                } else {
-                    $sql = "SELECT visited FROM ".Contenido_Security::escapeDB($sHeapTable, $db3)." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idart='".Contenido_Security::toInteger($idart)."'
+	          	} else {
+    	      	     $sql = "SELECT visited FROM ".Contenido_Security::escapeDB($sHeapTable, $db3)." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idart='".Contenido_Security::toInteger($idart)."'
                             AND idlang='".Contenido_Security::toInteger($lang)."' AND idclient='".Contenido_Security::toInteger($client)."' AND archived = '".Contenido_Security::escapeDB($yearmonth, $db3)."'";
-                }
-            }
-
+        		}
+		  	}
+	        
             $db3->query($sql);
             $db3->next_record();
 
@@ -425,22 +422,22 @@ function statsOverviewAll($yearmonth) {
             $tpl->set('d', 'DISPLAY_ROW', 'none');
             $tpl->next();
             $currentRow++;
-
+            
             array_pop($aRowname);
         }
     }
 
     //************** hits total**************
-    if (strcmp($yearmonth,"current") == 0) {
-        $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND B.idclient='".Contenido_Security::toInteger($client)."'";
-    } else {
-        if (!$bUseHeapTable) {
-            $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND B.idclient='".Contenido_Security::toInteger($client)."'
-                    AND B.archived = '".Contenido_Security::escapeDB($yearmonth, $db)."'";
-        } else {
-            $sql = "SELECT SUM(visited) FROM ".Contenido_Security::escapeDB($sHeapTable, $db)." WHERE idclient='".Contenido_Security::toInteger($client)."' AND archived = '".Contenido_Security::escapeDB($yearmonth, $db)."'";
-        }
-    }
+	    if (strcmp($yearmonth,"current") == 0) {
+	        $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND B.idclient='".Contenido_Security::toInteger($client)."'";
+	    } else {
+			if(!$bUseHeapTable) {
+	       		$sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND B.idclient='".Contenido_Security::toInteger($client)."'
+                        AND B.archived = '".Contenido_Security::escapeDB($yearmonth, $db)."'";
+		    } else {
+		       $sql = "SELECT SUM(visited) FROM ".Contenido_Security::escapeDB($sHeapTable, $db)." WHERE idclient='".Contenido_Security::toInteger($client)."' AND archived = '".Contenido_Security::escapeDB($yearmonth, $db)."'";
+		    }
+	    }
 
     $db->query($sql);
     $db->next_record();
@@ -452,20 +449,20 @@ function statsOverviewAll($yearmonth) {
         $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND B.idlang='".Contenido_Security::toInteger($lang)."'
                 AND B.idclient='".Contenido_Security::toInteger($client)."'";
     } else {
-        if(!$bUseHeapTable) {
-            $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND B.idlang='".Contenido_Security::toInteger($lang)."'
+		if(!$bUseHeapTable) {
+        	$sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND B.idlang='".Contenido_Security::toInteger($lang)."'
                     AND B.idclient='".Contenido_Security::toInteger($client)."' AND B.archived = '".Contenido_Security::escapeDB($yearmonth, $db)."'";
-        } else {
-            $sql = "SELECT SUM(visited) FROM ".Contenido_Security::escapeDB($sHeapTable, $db)." WHERE idlang='".Contenido_Security::toInteger($lang)."' AND idclient='".Contenido_Security::toInteger($client)."'
+	    } else {
+	        $sql = "SELECT SUM(visited) FROM ".Contenido_Security::escapeDB($sHeapTable, $db)." WHERE idlang='".Contenido_Security::toInteger($lang)."' AND idclient='".Contenido_Security::toInteger($client)."'
                     AND archived = '".Contenido_Security::escapeDB($yearmonth, $db)."'";
-        }
-    }
-
+		}
+	}
+	
     $db->query($sql);
     $db->next_record();
 
     $inThisLanguage = $db->f(0);
-
+    
     $bgcolor = '#FFFFFF';
     $tpl->set('d', 'BGCOLOR', $bgcolor);
     $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
@@ -502,15 +499,16 @@ function statsOverviewAll($yearmonth) {
  * @return none
  *
  */
-function statsOverviewYear($year) {
+function statsOverviewYear($year)
+{
     global $cfg, $db, $tpl, $client, $lang;
 
     $sDisplay = 'table-row';
-
+    
     if (preg_match('/MSIE/', $_SERVER['HTTP_USER_AGENT'])) {
         $sDisplay = 'block';
     }
-
+    
     $sql = "SELECT
                     idtree, A.idcat, level, preid, C.name, visible
                 FROM
@@ -531,10 +529,10 @@ function statsOverviewYear($year) {
     $db->query($sql);
 
     $currentRow = 2;
-
+    
     $aRowname = array();
     $iLevel = 0;
-
+    
     $tpl->set('s', 'IMG_EXPAND', $cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'open_all.gif');
     $tpl->set('s', 'IMG_COLLAPSE', $cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'close_all.gif');
 
@@ -556,13 +554,13 @@ function statsOverviewYear($year) {
             $tpl->set('d', 'ROWNAME', '');
             $tpl->next();
             $currentRow++;
-        }
+    	}
 
-        $padding_left 	= 10 + ( 15 * $db->f("level") );
+    	$padding_left 	= 10 + ( 15 * $db->f("level") );
         $text 			= $db->f(4);
         $idcat			= $db->f("idcat");
         $bCatVisible = $db->f("visible");
-
+        
         if ($db->f("level") < $iLevel) {
             $iDistance = $iLevel-$db->f("level");
 
@@ -571,7 +569,7 @@ function statsOverviewYear($year) {
             }
             $iLevel = $db->f("level");
         }
-
+        
         if ($db->f("level") >= $iLevel) {
             if ($db->f("level") == $iLevel) {
                 array_pop($aRowname);
@@ -588,7 +586,7 @@ function statsOverviewYear($year) {
         $db2->next_record();
 
         $numberOfArticles = $db2->f(0);
-        $sumNumberOfArticles += $numberOfArticles;
+		$sumNumberOfArticles += $numberOfArticles;
         $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
                 AND B.idclient='".Contenido_Security::toInteger($client)."' AND SUBSTRING(B.archived,1,4) = ".Contenido_Security::toInteger($year, $db2)." GROUP BY SUBSTRING(B.archived,1,4)";
 
@@ -622,7 +620,7 @@ function statsOverviewYear($year) {
         } else {
             $offonline = '<img src="'.$cfg['path']['images'].'online_off.gif" alt="Kategorie ist online" title="Kategorie ist sichtbar">';
         }
-
+        
         //************check if there are subcategories ******************
         $iSumSubCategories = 0;
         $sSql = "SELECT count(*) as cat_count from ".$cfg["tab"]["cat"]." WHERE parentid = '".Contenido_Security::toInteger($idcat)."';";
@@ -632,7 +630,7 @@ function statsOverviewYear($year) {
             $iSumSubCategories = $db3->f('cat_count');
         }
         $db3->free();
-
+        
         $bgcolor = $cfg["color"]["table_dark"];
         $tpl->set('d', 'BGCOLOR', $bgcolor);
         $tpl->set('d', 'PADDING_LEFT', $padding_left);
@@ -645,25 +643,25 @@ function statsOverviewYear($year) {
         $tpl->set('d', 'ROWNAME', implode('_', $aRowname));
         $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
         $tpl->set('d', 'INTHISLANGUAGE', $inThisLanguage);
-
+        
         if ($numrows > 0 || $iSumSubCategories > 0) {
             $tpl->set('d', 'EXPAND', '<a href="javascript:changeVisibility(\''.implode('_', $aRowname).'\', '.$db->f("level").', '.$idcat.')">
-                                          <img src="'.$cfg['path']['images'].'open_all.gif"
-                                               alt="'.i18n("Open category").'"
-                                               title="'.i18n("Open category").'"
-                                               id="'.implode('_', $aRowname).'_img"
+                                          <img src="'.$cfg['path']['images'].'open_all.gif" 
+                                               alt="'.i18n("Open category").'" 
+                                               title="'.i18n("Open category").'" 
+                                               id="'.implode('_', $aRowname).'_img" 
                                                style="vertical-align:top; margin-top:6px;">
                                       </a>');
         } else {
             $tpl->set('d', 'EXPAND', '<img src="'.$cfg['path']['images'].'spacer.gif" width="7">');
         }
-
+        
         if ($db->f("level") != 0) {
             $tpl->set('d', 'DISPLAY_ROW', 'none');
         } else {
             $tpl->set('d', 'DISPLAY_ROW', $sDisplay);
         }
-
+        
         $tpl->next();
         $currentRow++;
 
@@ -678,25 +676,25 @@ function statsOverviewYear($year) {
             $idart = $db2->f("idart");
 
             array_push($aRowname, $idart);
-
+            
             $text             = "";
             $numberOfArticles = "";
             $total            = "";
             $inThisLanguage   = "";
 
-            $padding_left = 10 + ( 15 * ($db->f("level")+1) );
+    	    $padding_left = 10 + ( 15 * ($db->f("level")+1) );
 
             $text = $db2->f("title");
             $online = $db2->f("online");
 
             //************** number of arts **************
-            $db3 = new DB_contenido;
+          	$db3 = new DB_contenido;
 
-               //************** hits of art total **************
+           	//************** hits of art total **************
             $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
                     AND A.idart='".Contenido_Security::toInteger($idart)."' AND B.idclient='".Contenido_Security::toInteger($client)."' AND SUBSTRING(B.archived,1,4) = ".Contenido_Security::escapeDB($year, $db3)."
                     GROUP BY SUBSTRING(B.archived,1,4)";
-
+            
             $db3->query($sql);
             $db3->next_record();
 
@@ -706,7 +704,7 @@ function statsOverviewYear($year) {
             $sql = "SELECT visited FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'
                     AND A.idart='".Contenido_Security::toInteger($idart)."' AND B.idlang='".Contenido_Security::toInteger($lang)."' AND B.idclient='".Contenido_Security::toInteger($client)."'
                     AND SUBSTRING(B.archived,1,4) = ".Contenido_Security::escapeDB($year, $db3)." GROUP BY SUBSTRING(B.archived,1,4)";
-
+          	
             $db3->query($sql);
             $db3->next_record();
 
@@ -736,7 +734,7 @@ function statsOverviewYear($year) {
             $tpl->set('d', 'DISPLAY_ROW', 'none');
             $tpl->next();
             $currentRow++;
-
+            
             array_pop($aRowname);
         }
     }
@@ -796,56 +794,59 @@ function statsOverviewYear($year) {
  * @return none
  *
  */
-function statsOverviewTop($yearmonth, $top) {
+function statsOverviewTop($yearmonth, $top)
+{
     global $cfg, $db, $tpl, $client, $lang;
 
-    if (strcmp($yearmonth,"current") == 0) {
-        $sql = "SELECT
-                    C.title, A.visited
-                FROM ".$cfg["tab"]["stat"]." AS A,
-                     ".$cfg["tab"]["cat_art"]." AS B,
-                     ".$cfg["tab"]["art_lang"]." AS C
-                WHERE
-                    C.idart = B.idart
-                AND
-                    C.idlang = A.idlang
-                AND
-                    B.idcatart = A.idcatart
-                AND
-                    A.idclient = '".Contenido_Security::toInteger($client)."'
-                AND
-                    A.idlang = '".Contenido_Security::toInteger($lang)."'
-                ORDER BY
-                    A.visited DESC
+    if (strcmp($yearmonth,"current") == 0)
+    {
+    $sql = "SELECT
+                C.title, A.visited, C.idart
+            FROM ".$cfg["tab"]["stat"]." AS A,
+                 ".$cfg["tab"]["cat_art"]." AS B,
+                 ".$cfg["tab"]["art_lang"]." AS C
+            WHERE
+                C.idart = B.idart
+            AND
+                C.idlang = A.idlang
+            AND
+                B.idcatart = A.idcatart
+            AND
+                A.idclient = '".Contenido_Security::toInteger($client)."'
+            AND
+                A.idlang = '".Contenido_Security::toInteger($lang)."'
+            ORDER BY
+                A.visited DESC
 
-                LIMIT
-                    ".Contenido_Security::escapeDB($top, $db);
+            LIMIT
+                ".Contenido_Security::escapeDB($top, $db);
     } else {
-        $sql = "SELECT
-                    C.title, A.visited, B.idcat
-                FROM ".$cfg["tab"]["stat_archive"]." AS A,
-                     ".$cfg["tab"]["cat_art"]." AS B,
-                     ".$cfg["tab"]["art_lang"]." AS C
-                WHERE
-                    C.idart = B.idart
-                AND
-                    C.idlang = A.idlang
-                AND
-                    B.idcatart = A.idcatart
-                AND
-                    A.idclient = '".Contenido_Security::toInteger($client)."'
-                AND
-                    A.archived = '".Contenido_Security::escapeDB($yearmonth, $db)."'
-                AND
-                    A.idlang = '".Contenido_Security::toInteger($lang)."'
-                ORDER BY
-                    A.visited DESC
-                LIMIT
-                    ".Contenido_Security::escapeDB($top, $db);
+    $sql = "SELECT
+                C.title, A.visited, B.idcat, C.idart
+            FROM ".$cfg["tab"]["stat_archive"]." AS A,
+                 ".$cfg["tab"]["cat_art"]." AS B,
+                 ".$cfg["tab"]["art_lang"]." AS C
+            WHERE
+                C.idart = B.idart
+            AND
+                C.idlang = A.idlang
+            AND
+                B.idcatart = A.idcatart
+            AND
+                A.idclient = '".Contenido_Security::toInteger($client)."'
+            AND
+                A.archived = '".Contenido_Security::escapeDB($yearmonth, $db)."'
+            AND
+                A.idlang = '".Contenido_Security::toInteger($lang)."'
+            ORDER BY
+                A.visited DESC
+            LIMIT
+                ".Contenido_Security::escapeDB($top, $db);
     }
 
     $db->query($sql);
-
+    global $client, $cfgClient;
+    
     while ($db->next_record()) {
         $cat_name = "";
         statCreateLocationString($db->f(2),"&nbsp;/&nbsp;", $cat_name);
@@ -856,33 +857,16 @@ function statsOverviewTop($yearmonth, $top) {
         $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
         $tpl->set('d', 'TEXT',  $db->f(0));
         $tpl->set('d', 'TOTAL', $db->f(1));
+        $tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'].'front_content.php?idart='.$db->f('idart'));
         $tpl->next();
     }
 }
 
-/**
- * Returns the canonical month.
- *
- * Wrapper for function getCanonicalMonth()
- *
- * @param   int  $month  The digit representation of a month
- * @return  string  Textual representation of a month
- */
-function statReturnCanonicalMonth($month) {
-    return getCanonicalMonth($month);
+function statReturnCanonicalMonth($month)
+{
+	return getCanonicalMonth($month);
 }
 
-
-/**
- * Generates the location string for passed category id.
- *
- * Performs a recursive call, if parent category doesn't matches to 0
- *
- * @param   int  $idcat  The category id
- * @param   string  $seperator  Separator for location string
- * @param   string  $cat_str    The location string variable (reference)
- * @return  void
- */
 function statCreateLocationString($idcat, $seperator, &$cat_str) {
 
     global $cfg, $db, $client, $lang;
@@ -910,8 +894,9 @@ function statCreateLocationString($idcat, $seperator, &$cat_str) {
     $tmp_cat_str = $name . $seperator . $cat_str;
     $cat_str = $tmp_cat_str;
 
-    if ($parentid != 0) {
+    if ( $parentid != 0 ) {
         statCreateLocationString($parentid, $seperator, $cat_str);
+
     } else {
         $sep_length = strlen($seperator);
         $str_length = strlen($cat_str);
@@ -933,11 +918,12 @@ function statCreateLocationString($idcat, $seperator, &$cat_str) {
  * @return none
  *
  */
-function statsOverviewTopYear($year, $top) {
+function statsOverviewTopYear($year, $top)
+{
     global $cfg, $db, $tpl, $client, $lang;
 
     $sql = "SELECT
-                C.title, SUM(A.visited) as visited
+                C.title, SUM(A.visited) as visited, B.idcat AS idcat, C.idart AS idart
             FROM ".$cfg["tab"]["stat_archive"]." AS A,
                  ".$cfg["tab"]["cat_art"]." AS B,
                  ".$cfg["tab"]["art_lang"]." AS C
@@ -962,17 +948,22 @@ function statsOverviewTopYear($year, $top) {
 
     $db->query($sql);
 
+    global $cfgClient, $client;
     while ($db->next_record()) {
+        $cat_name = '';
+        statCreateLocationString($db->f('idcat'),"&nbsp;/&nbsp;", &$cat_name);
         $bgcolor = $cfg["color"]["table_light"];
         $tpl->set('d', 'BGCOLOR', $bgcolor);
         $tpl->set('d', 'PADDING_LEFT', '0');
         $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
         $tpl->set('d', 'TEXT', $db->f(0));
         $tpl->set('d', 'TOTAL', $db->f(1));
+        $tpl->set('d', 'PATH', "Pfad:&nbsp;/&nbsp;".$cat_name);
+        $tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'].'front_content.php?idart='.$db->f('idart'));
+        
         $tpl->next();
     }
 }
-
 /**
  * Returns a drop down to choose the stats to display
  *
@@ -983,7 +974,9 @@ function statsOverviewTopYear($year, $top) {
  * @return string Returns a drop down string
  *
  */
-function statDisplayTopChooser($default) {
+function statDisplayTopChooser($default)
+{
+
      if ($default == "top10") { $defaultTop10 = "selected";}
      if ($default == "top20") { $defaultTop20 = "selected";}
      if ($default == "top30") { $defaultTop30 = "selected";}
@@ -997,6 +990,7 @@ function statDisplayTopChooser($default) {
              "    <option value=\"all\" $defaultAll>".i18n("All")."</option>".
              "  </select>".
              "</form>");
+
 }
 
 /**
@@ -1009,7 +1003,9 @@ function statDisplayTopChooser($default) {
  * @return string Returns a drop down string
  *
  */
-function statDisplayYearlyTopChooser($default) {
+function statDisplayYearlyTopChooser($default)
+{
+
      if ($default == "top10") { $defaultTop10 = "selected";}
      if ($default == "top20") { $defaultTop20 = "selected";}
      if ($default == "top30") { $defaultTop30 = "selected";}
@@ -1023,6 +1019,7 @@ function statDisplayYearlyTopChooser($default) {
              "    <option value=\"all\" $defaultAll>".i18n("All")."</option>".
              "  </select>".
              "</form>");
+
 }
 
 /**
@@ -1034,28 +1031,30 @@ function statDisplayYearlyTopChooser($default) {
  *
  * @return array  Array of strings with years.
  */
-function statGetAvailableYears($client, $lang) {
-    global $cfg, $db;
-
-    $availableYears = array();
-
-    $sql = "SELECT SUBSTRING(`archived`,1,4)
-            FROM
-                ".$cfg["tab"]["stat_archive"]."
-            WHERE
-                idlang = '".Contenido_Security::toInteger($lang)."' AND
-                idclient = '".Contenido_Security::toInteger($client)."'
-            GROUP BY
-                SUBSTRING(`archived`,1,4)
-            ORDER BY
-                SUBSTRING(`archived`,1,4) DESC";
-
-    $db->query($sql);
-    while ($db->next_record()) {
-        array_push($availableYears, $db->f(0));
-    }
-
-    return($availableYears);
+function statGetAvailableYears ($client, $lang)
+{
+         global $cfg, $db;
+         
+         $availableYears = array();
+         
+         $sql =    "SELECT SUBSTRING(`archived`,1,4)
+                    FROM
+                        ".$cfg["tab"]["stat_archive"]."
+                    WHERE
+                        idlang = '".Contenido_Security::toInteger($lang)."' AND
+                        idclient = '".Contenido_Security::toInteger($client)."'
+                    GROUP BY
+                        SUBSTRING(`archived`,1,4)
+                    ORDER BY
+                        SUBSTRING(`archived`,1,4) DESC";
+                        
+        $db->Query($sql);
+         while ($db->next_record())
+         {
+           array_push($availableYears, $db->f(0));
+         }
+         
+         return($availableYears);
 }
 
 /**
@@ -1068,75 +1067,65 @@ function statGetAvailableYears($client, $lang) {
  *
  * @return array  Array of strings with months.
  */
-function statGetAvailableMonths($year, $client, $lang) {
-    global $cfg, $db;
+function statGetAvailableMonths ($year, $client, $lang)
+{
+         global $cfg, $db;
 
-    $availableYears = array();
+         $availableYears = array();
 
-    $sql = "SELECT SUBSTRING(`archived`,5,2)
-            FROM
-                ".$cfg["tab"]["stat_archive"]."
-            WHERE
-                idlang = '".Contenido_Security::toInteger($lang)."' AND
-                idclient = '".Contenido_Security::toInteger($client)."' AND
-                SUBSTRING(`archived`,1,4) = '".Contenido_Security::escapeDB($year, $db)."'
-            GROUP BY
-                SUBSTRING(`archived`,5,2)
-            ORDER BY SUBSTRING(`archived`,5,2) DESC";
+         $sql =    "SELECT SUBSTRING(`archived`,5,2)
+                    FROM
+                        ".$cfg["tab"]["stat_archive"]."
+                    WHERE
+                        idlang = '".Contenido_Security::toInteger($lang)."' AND
+                        idclient = '".Contenido_Security::toInteger($client)."' AND
+                        SUBSTRING(`archived`,1,4) = '".Contenido_Security::escapeDB($year, $db)."'
+                    GROUP BY
+                        SUBSTRING(`archived`,5,2)
+                    ORDER BY SUBSTRING(`archived`,5,2) DESC";
 
-    $db->query($sql);
-    while ($db->next_record()) {
-        array_push($availableYears, $db->f(0));
-    }
+        $db->Query($sql);
+         while ($db->next_record())
+         {
+           array_push($availableYears, $db->f(0));
+         }
 
-    return($availableYears);
+         return($availableYears);
 }
 
+function statResetStatistic ($client) {
+        global $db;
+        global $cfg;
 
-/**
- * Resets the statistic for passed client
- *
- * @param   int  $client  Id of client
- * @return  void
- */
-function statResetStatistic($client) {
-    global $db;
-    global $cfg;
-    $sql = "UPDATE ".$cfg["tab"]["stat"]." SET visited=0 WHERE idclient='".Contenido_Security::toInteger($client)."'";
-    $db->query($sql);
+        $sql = "UPDATE ".$cfg["tab"]["stat"]." SET visited=0 WHERE idclient='".Contenido_Security::toInteger($client)."'";
+         $db->query($sql);
 }
 
+function buildHeapTable ($sHeapTable, $db) {
+	
+	global $cfg;	
+	
+	$sql = "DROP TABLE IF EXISTS ".Contenido_Security::escapeDB($sHeapTable, $db).";";  
+	$db->query($sql); 
+			
+	$sql = "CREATE TABLE ".Contenido_Security::escapeDB($sHeapTable, $db)." TYPE=HEAP
+				SELECT 
+					A.idcatart,
+					A.idcat,
+					A.idart,
+					B.idstatarch,
+					B.archived,
+					B.idlang,
+					B.idclient,
+					B.visited
+				FROM
+					".$cfg['tab']['cat_art']." AS A, ".$cfg['tab']['stat_archive']." AS B
+				WHERE
+					A.idcatart = B.idcatart;";
+	$db->query($sql); 
 
-/**
- * Deletes existing heap table (table in memory) and creates it.
- *
- * @param   string        $sHeapTable  Table name
- * @param   DB_Contenido  $db          Database object
- * @return  void
- */
-function buildHeapTable($sHeapTable, $db) {
-    global $cfg;
+	$sql = "ALTER TABLE `".Contenido_Security::escapeDB($sHeapTable, $db)."` ADD PRIMARY KEY (`idcatart`,`idcat` ,`idart`,`idstatarch` ,`archived`,`idlang`,`idclient` ,`visited`);";  
+	$db->query($sql); 
 
-    $sql = "DROP TABLE IF EXISTS ".Contenido_Security::escapeDB($sHeapTable, $db).";";
-    $db->query($sql);
-
-    $sql = "CREATE TABLE ".Contenido_Security::escapeDB($sHeapTable, $db)." TYPE=HEAP
-                SELECT
-                    A.idcatart,
-                    A.idcat,
-                    A.idart,
-                    B.idstatarch,
-                    B.archived,
-                    B.idlang,
-                    B.idclient,
-                    B.visited
-                FROM
-                    ".$cfg['tab']['cat_art']." AS A, ".$cfg['tab']['stat_archive']." AS B
-                WHERE
-                    A.idcatart = B.idcatart;";
-    $db->query($sql);
-
-    $sql = "ALTER TABLE `".Contenido_Security::escapeDB($sHeapTable, $db)."` ADD PRIMARY KEY (`idcatart`,`idcat` ,`idart`,`idstatarch` ,`archived`,`idlang`,`idclient` ,`visited`);";
-    $db->query($sql);
 }
 ?>

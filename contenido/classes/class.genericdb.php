@@ -1417,7 +1417,7 @@ class Item
 
 	/**
 	 * loadBy ($field, $value)
-	 * Loads an item by ID from the database
+	 * Loads an item by colum/field from the database
 	 * @param string $field Specifies the field
 	 * @param string $value Specifies the value
 	 * @param bool $bSafe use inFilter or not

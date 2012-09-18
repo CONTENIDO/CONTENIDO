@@ -22,8 +22,10 @@
  * {@internal 
  *   created 2003-07-03
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2012-01-17, Mischa Holz, removed hessisch
  *
- *   $Id: functions.i18n.php 315 2008-06-26 11:14:53Z frederic.schneider $:
+ *   $Id: functions.i18n.php 1780 2012-01-17 11:08:24Z mischa.holz $:
+
  * }}
  * 
  */
@@ -81,11 +83,6 @@ function i18n ($string, $domain = "contenido")
 	cInitializeArrayKey($cfg, "native_i18n", false);
 	
 	if (!$cfg["native_i18n"])
-	{
-		return i18nEmulateGettext($string, $domain);
-	}
-	
-	if ($i18nLanguage == "he_SS")
 	{
 		return i18nEmulateGettext($string, $domain);
 	}
@@ -369,11 +366,6 @@ function i18nGetAvailableLanguages ()
 		'sv_SE' => array('Swedish', 'Sweden', 'ISO8859-1', 'sv', 'se'),
 		'tr_TR' => array('Turkisch', 'Turkey', 'ISO8859-9', 'tr', 'tr') 
 	);
-
-    if (strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'],"hessisch") !== false)
-    {
-    	$aLanguages = array_merge($aLanguages, array('he_SS' => array('Hessisch', 'Germany', 'ISO8859-1', 'de', 'de'))); 
-    }
 
 	return ($aLanguages); 
 }

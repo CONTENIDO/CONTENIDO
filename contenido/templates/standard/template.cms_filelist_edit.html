@@ -126,10 +126,10 @@
 	var sLabelIgnoreExtensionsOff = '{LABEL_IGNORESELECTION}';
 	var bIgnoreExtensions{ID} = '{IGNOREEXTENSIONS}';
 	
-	$.getScript(sPath+'scripts/cmsFileList.js', function() {
-		$.getScript(sPath+'scripts/cmsFileList.js', function() {
-			addFileListEvents(fileListFrame{ID}, fileListImage{ID}, sPath, sSession, iIdArtLang, {ID}, aFileListData{ID}, bIgnoreExtensions{ID});
-		});
-	});
+    conLoadFile(sPath+'scripts/cmsFileList.js', 'addFileListEvents{ID}();');
+    
+    function addFileListEvents{ID} () {
+        addFileListEvents(fileListFrame{ID}, fileListImage{ID}, sPath, sSession, iIdArtLang, {ID}, aFileListData{ID}, bIgnoreExtensions{ID});
+    }
 	-->
 </script>
