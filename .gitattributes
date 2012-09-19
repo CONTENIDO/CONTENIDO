@@ -1622,7 +1622,6 @@ contenido/logout.php -text
 contenido/main.loginform.php -text
 contenido/main.php -text
 contenido/plugins/chains/includes/config.plugin.php -text
-contenido/plugins/chains/includes/include.chain.content.createmetatags.php -text
 contenido/plugins/chains/includes/include.chain.frontend.cat_access.php -text
 contenido/plugins/chains/includes/include.chain.frontend.cat_backendaccess.php -text
 contenido/plugins/chains/includes/include.chain.frontend.createbasehref.php -text
