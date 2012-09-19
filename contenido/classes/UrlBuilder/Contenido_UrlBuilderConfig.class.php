@@ -54,7 +54,7 @@ class Contenido_UrlBuilderConfig extends cUriBuilderConfig {
      *             function
      */
     public static function getConfig() {
-        cDeprecated('use getConfig() instead, located in cUriBuilderConfig'');
+        cDeprecated('use getConfig() instead, located in cUriBuilderConfig');
         return cUriBuilderConfig::getConfig();
     }
 
