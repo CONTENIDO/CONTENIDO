@@ -397,7 +397,6 @@ return array(
     'cLogWriterFile' => 'contenido/classes/log/class.log.writer.file.php',
     'cLogWriter' => 'contenido/classes/log/class.log.writer.php',
     'cModuleLog' => 'contenido/classes/log/class.modulelog.php',
-    'Contenido_UpgradeJob' => 'contenido/classes/module/class.contenido.upgrade.job.php',
     'cModuleFileTranslation' => 'contenido/classes/module/class.module.filetranslation.php',
     'Contenido_Module_FileTranslation' => 'contenido/classes/module/class.module.filetranslation.php',
     'cModuleHandler' => 'contenido/classes/module/class.module.handler.php',
