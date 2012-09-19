@@ -23,10 +23,20 @@ if (!defined('CON_FRAMEWORK')) {
 class cSystemPurge {
 
     /**
+     * These directories should not be deleted.
      *
      * @var array
      */
-    private $dirsExcludedWithFiles = array(
+    private $_dirsExcluded = array(
+        'code'
+    );
+
+    /**
+     * These directories and the included files should not be cleared.
+     *
+     * @var array
+     */
+    private $_dirsExcludedWithFiles = array(
         '.',
         '..',
         '.svn',
@@ -54,7 +64,15 @@ class cSystemPurge {
      * Constructor of class
      */
     public function __construct() {
-        $this->_setSystemDirectory();
+        // check and set the system directories to exclude from purge
+        $dirsToExcludeWithFiles = getSystemProperty('system', 'purge-dirstoexclude-withfiles');
+        $aDirsToExcludeWithFiles = array_map('trim', explode(',', $dirsToExcludeWithFiles));
+        if (count($aDirsToExcludeWithFiles) < 1 || empty($aDirsToExcludeWithFiles[0])) {
+            $aDirsToExcludeWithFiles = $this->_dirsExcludedWithFiles;
+            setSystemProperty('system', 'purge-dirstoexclude-withfiles', implode(',', $aDirsToExcludeWithFiles));
+        }
+
+        $this->_dirsExcludedWithFiles = $aDirsToExcludeWithFiles;
     }
 
     /**
@@ -284,7 +302,7 @@ class cSystemPurge {
                 '..'
             ), '', $dirPath);
             while (false !== ($file = readdir($handle))) {
-                if (!in_array($file, $this->dirsExcludedWithFiles)) {
+                if (!in_array($file, $this->_dirsExcludedWithFiles)) {
                     $filePath = $dirPath . '/' . $file;
                     $filePath = str_replace('//', '/', $filePath);
                     if (is_dir($filePath)) {
@@ -311,7 +329,7 @@ class cSystemPurge {
             ), '', $dirPath) != str_replace(array(
                 '/',
                 '..'
-            ), '', $tmpDirPath) && $keep === false && !in_array($dirName, $this->dirsExcludedWithFiles)) {
+            ), '', $tmpDirPath) && $keep === false && !in_array($dirName, $this->_dirsExcludedWithFiles) && !in_array($dirName, $this->_dirsExcluded)) {
                 rmdir($dirPath);
             }
 
@@ -396,25 +414,27 @@ class cSystemPurge {
     }
 
     /**
-     * Check and set the system directories to exclude from purge
      *
-     * @return void
+     * @deprecated 2012-09-19 Logic has been moved to cSystemPurge::_construct
      */
     private function _setSystemDirectory() {
+        cDeprecated('Logic has been moved to cSystemPurge::_construct');
+
         $dirsToExcludeWithFiles = getSystemProperty('system', 'purge-dirstoexclude-withfiles');
         $aDirsToExcludeWithFiles = array_map('trim', explode(',', $dirsToExcludeWithFiles));
         if (count($aDirsToExcludeWithFiles) < 1 || empty($aDirsToExcludeWithFiles[0])) {
-            $aDirsToExcludeWithFiles = $this->dirsExcludedWithFiles;
+            $aDirsToExcludeWithFiles = $this->_dirsExcludedWithFiles;
             setSystemProperty('system', 'purge-dirstoexclude-withfiles', implode(',', $aDirsToExcludeWithFiles));
         }
 
-        $this->dirsExcludedWithFiles = $aDirsToExcludeWithFiles;
+        $this->_dirsExcludedWithFiles = $aDirsToExcludeWithFiles;
     }
 
 }
 class Purge extends cSystemPurge {
 
     /**
+     *
      * @deprecated Class was renamed to cSystemPurge
      */
     public function __construct() {
