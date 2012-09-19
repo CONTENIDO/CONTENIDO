@@ -28,7 +28,8 @@ class cSystemPurge {
      * @var array
      */
     private $_dirsExcluded = array(
-        'code'
+        'code',
+        'templates_c'
     );
 
     /**
