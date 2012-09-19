@@ -444,7 +444,6 @@ contenido/classes/log/class.log.php -text
 contenido/classes/log/class.log.writer.file.php -text
 contenido/classes/log/class.log.writer.php -text
 contenido/classes/log/class.modulelog.php -text
-contenido/classes/module/class.contenido.upgrade.job.php -text
 contenido/classes/module/class.module.filetranslation.php -text
 contenido/classes/module/class.module.handler.php -text
 contenido/classes/module/class.module.search.php -text

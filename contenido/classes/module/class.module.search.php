@@ -151,10 +151,10 @@ class cModuleSearch extends cModuleHandler {
 
         $result = array();
 
-        while (($modul = $db->next_record())) {
+        while (($modul = $db->next_record()) !== false) {
             if ($db->f('search_in_file') == 1) {
                 if ($this->_findInFiles($this->_filter, $modul) == true) {
-                    $this->_initWithDatabaseRow($db);
+                    $this->initWithDatabaseRow($db);
                     $result[$db->f('idmod')] = array(
                         'name' => $db->f('name'),
                         'description' => $db->f('description'),
@@ -164,7 +164,7 @@ class cModuleSearch extends cModuleHandler {
                     );
                 }
             } else {
-                $this->_initWithDatabaseRow($db);
+                $this->initWithDatabaseRow($db);
                 $result[$db->f('idmod')] = array(
                     'name' => $db->f('name'),
                     'description' => $db->f('description'),
@@ -186,7 +186,7 @@ class cModuleSearch extends cModuleHandler {
      * @return boolean if found in files true else false
      */
     private function _findInFiles($filter, $dbRowModule) {
-        $this->_initWithDatabaseRow($dbRowModule);
+        $this->initWithDatabaseRow($dbRowModule);
         if (stripos($this->readInput() . ' ' . $this->readOutput(), $filter) === false) {
             return false;
         } else {
@@ -256,8 +256,8 @@ class cModuleSearch extends cModuleHandler {
         $db->query($sql);
         $result = array();
 
-        while (($module = $db->next_record())) {
-            $this->_initWithDatabaseRow($db);
+        while (($module = $db->next_record()) !== false) {
+            $this->initWithDatabaseRow($db);
             $result[$db->f('idmod')] = array(
                 'name' => $db->f('name'),
                 'description' => $db->f('description'),
@@ -286,8 +286,8 @@ class cModuleSearch extends cModuleHandler {
         $db->query($sql);
         $result = array();
 
-        while (($module = $db->next_record())) {
-            $this->_initWithDatabaseRow($db);
+        while (($module = $db->next_record()) !== false) {
+            $this->initWithDatabaseRow($db);
 
             if (stripos($this->readInput(), $this->_filter) !== false) {
                 $result[$db->f('idmod')] = array(
@@ -319,8 +319,8 @@ class cModuleSearch extends cModuleHandler {
         $db->query($sql);
         $result = array();
 
-        while (($module = $db->next_record())) {
-            $this->_initWithDatabaseRow($db);
+        while (($module = $db->next_record()) !== false) {
+            $this->initWithDatabaseRow($db);
 
             if (stripos($this->readOutput(), $this->_filter) !== false) {
                 $result[$db->f('idmod')] = array(
@@ -353,8 +353,8 @@ class cModuleSearch extends cModuleHandler {
         $db->query($sql);
         $result = array();
 
-        while (($module = $db->next_record())) {
-            $this->_initWithDatabaseRow($db);
+        while (($module = $db->next_record()) !== false) {
+            $this->initWithDatabaseRow($db);
             $result[$db->f('idmod')] = array(
                 'name' => $db->f('name'),
                 'description' => $db->f('description'),
@@ -385,8 +385,8 @@ class cModuleSearch extends cModuleHandler {
         $db->query($sql);
         $result = array();
 
-        while (($module = $db->next_record())) {
-            $this->_initWithDatabaseRow($db);
+        while (($module = $db->next_record()) !== false) {
+            $this->initWithDatabaseRow($db);
             $result[$db->f('idmod')] = array(
                 'name' => $db->f('name'),
                 'description' => $db->f('description'),

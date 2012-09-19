@@ -16,13 +16,86 @@
  * @since      file available since CONTENIDO release 4.9
  */
 
-
 if (!defined('CON_FRAMEWORK')) {
      die('Illegal call');
 }
 
 
+global $cfg;
+checkAndInclude($cfg['path']['contenido'] . 'includes/functions.api.string.php');
+
 class cUpgradeJob_0002 extends cUpgradeJobAbstract {
+
+    /**
+     * This method clean the name of moduls table $cfg['tab']['mod'].
+     * Clean means all the charecters (�,*+#...) will be replaced.
+     */
+    private function _changeNameCleanUrl() {
+        global $cfg;
+
+        $myDb = clone $this->_oDb;
+        $db = clone $this->_oDb;
+
+        // select all moduls
+        $sql = sprintf('SELECT * FROM %s', $cfg['tab']['mod']);
+        $db->query($sql);
+
+        while ($db->next_record()) {
+            // clear name from not allow charecters
+            $newName = cApiStrCleanURLCharacters($db->f('name'));
+            if ($newName != $db->f('name')) {
+                $mySql = sprintf("UPDATE %s SET name='%s' WHERE idmod=%s", $cfg['tab']['mod'], $newName, $db->f('idmod'));
+                $myDb->query($mySql);
+            }
+        }
+    }
+
+    /**
+     * This method will be transfer the moduls from $cfg['tab']['mod'] to the
+     * file system.
+     * This Method will be call by setup
+     */
+    private function _convertModulesToFile() {
+        global $cfg;
+
+        $db = clone $this->_oDb;
+
+        if ($this->_setupType == 'upgrade') {
+            // clean name of module (Umlaute, not allowed character ..),
+            // prepare for file system
+            $this->_changeNameCleanUrl();
+
+            // select all frontendpaht of the clients, frontendpaht is in the
+            // table $cfg['tab']['clients']
+            $sql = sprintf('SELECT * FROM %s ORDER BY idmod', $cfg['tab']['mod']);
+            $db->query($sql);
+
+            $moduleHandler = new cModuleHandler();
+            // create all main module directories
+            $moduleHandler->createAllMainDirectories();
+
+            while ($db->next_record()) {
+                // init the ModulHandler with all data of the modul
+                // inclusive client
+                $moduleHandler->initWithDatabaseRow($db);
+
+                // make new module only if modul not exist in directory
+                if ($moduleHandler->modulePathExists() != true) {
+                    // we need no error handling here because module could still
+                    // exist from previous version
+                    if ($moduleHandler->createModule($db->f('input'), $db->f('output')) == true) {
+                        // save module translation
+                        $translations = new cModuleFileTranslation($db->f('idmod'));
+                        $translations->saveTranslations();
+                    }
+                }
+            }
+        }
+
+        // remove input and output fields from db
+        $sql = sprintf('ALTER TABLE %s DROP input, DROP output', $cfg['tab']['mod']);
+        $db->query($sql);
+    }
 
     public function execute() {
         global $cfg;
@@ -66,8 +139,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
             cModuleHandler::setEncoding('ISO-8859-1');
 
             // Save all modules from db-table to the filesystem
-            $contenidoUpgradeJob = new Contenido_UpgradeJob($this->_oDb);
-            $contenidoUpgradeJob->convertModulesToFile($this->_setupType);
+            $this->_convertModulesToFile();
 
             // Save layout from db-table to the file system
             // @fixme  LayoutInFile uses global $client, we can't do this for all clients...

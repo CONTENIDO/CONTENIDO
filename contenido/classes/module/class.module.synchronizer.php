@@ -181,7 +181,7 @@ class cModuleSynchronizer extends cModuleHandler {
      */
     private function _synchronizeFilesystemAndDb($db) {
         $returnIdMod = 0;
-        $this->_initWithDatabaseRow($db);
+        $this->initWithDatabaseRow($db);
         // modul dont exist in filesystem
         if ($this->modulePathExists() == false) {
             $modul = new cApiModule($db->f('idmod'));

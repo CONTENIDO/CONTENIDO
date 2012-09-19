@@ -276,12 +276,20 @@ class cModuleHandler {
     }
 
     /**
+     * @deprecated 2012-09-19 Use the public method initWithDatabaseRow instead!
+     */
+    protected function _initWithDatabaseRow($db) {
+        cDeprecated('Use the public method initWithDatabaseRow instead!');
+        $this->initWithDatabaseRow($db);
+    }
+
+    /**
      * Init the vars of the class.
      *
      * @param array $modulData
      *            [idmod],[name],[input],[output],[forntedpath],[client]
      */
-    protected function _initWithDatabaseRow($db) {
+    public function initWithDatabaseRow($db) {
         if (is_object($db)) {
             $this->_initByModule($db->f('idmod'));
         }

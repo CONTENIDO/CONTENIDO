@@ -96,9 +96,17 @@ class cUpgradeJob_0007 extends cUpgradeJobAbstract {
             }
 
             // remove the column idmail_resend from the table
-            // con_mail_log_success
-            $sql = 'ALTER TABLE `' . $cfg['tab']['mail_log_success'] . '` DROP `idmail_resend`';
+            // con_mail_log_success if it exists
+            $columns = array();
+            $sql = 'SHOW COLUMNS FROM ' . $cfg['tab']['mail_log_success'];
             $db->query($sql);
+            while ($db->next_record()) {
+                $columns[] = $db->f('Field');
+            }
+            if (in_array('idmail_resend', $columns)) {
+                $sql = 'ALTER TABLE `' . $cfg['tab']['mail_log_success'] . '` DROP `idmail_resend`';
+                $db->query($sql);
+            }
         }
     }
 

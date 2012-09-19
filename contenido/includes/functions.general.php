@@ -463,7 +463,6 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         }
     }
 
-    $aConfigFileContent[] = '?>';
     cFileHandler::write($cfg['path']['contenido_config'] . 'config.clients.php', implode(PHP_EOL, $aConfigFileContent));
 }
 
