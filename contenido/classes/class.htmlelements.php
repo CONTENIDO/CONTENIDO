@@ -2184,7 +2184,7 @@ class cHTMLImage extends cHTML {
         if ($src === null) {
             $src = 'images/spacer.gif';
         }
-		
+
 		return $this->updateAttribute('src', $src);
     }
 

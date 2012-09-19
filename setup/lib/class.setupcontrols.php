@@ -47,8 +47,8 @@ class cHTMLAlphaImage extends cHTMLImage {
         $alphaLoader = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'%s\')';
         $imageLocations = "this.imgnormal = '%s'; this.imgover = '%s'; this.clickimgnormal = '%s'; this.clickimgover = '%s';";
 
-        $this->appendStyleDefinition("filter", sprintf($alphaLoader, $this->_src));
-        $this->attachEventDefinition("imagelocs", "onload", sprintf($imageLocations, $this->_src, $this->_sMouseoverSrc, $this->_sClickImage, $this->_sMouseoverClickImage));
+        $this->appendStyleDefinition("filter", sprintf($alphaLoader, $this->getAttribute('src')));
+        $this->attachEventDefinition("imagelocs", "onload", sprintf($imageLocations, $this->getAttribute('src'), $this->_sMouseoverSrc, $this->_sClickImage, $this->_sMouseoverClickImage));
         $this->attachEventDefinition("swapper", "onload", 'if (!this.init) {IEAlphaInit(this); IEAlphaApply(this, this.imgnormal); this.init = true;}');
 
         if ($this->_sMouseoverSrc != "") {
@@ -59,7 +59,7 @@ class cHTMLAlphaImage extends cHTMLImage {
             } else {
                 $sMouseScript = 'if (isMSIE) { this.style.filter = \'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\\\'%1$s\\\');\'; } else { this.src=\'%1$s\'; }';
                 $this->attachEventDefinition("mouseover", "onmouseover", sprintf($sMouseScript, $this->_sMouseoverSrc));
-                $this->attachEventDefinition("mouseover", "onmouseout", sprintf($sMouseScript, $this->_src));
+                $this->attachEventDefinition("mouseover", "onmouseout", sprintf($sMouseScript, $this->getAttribute('src')));
             }
         }
 
