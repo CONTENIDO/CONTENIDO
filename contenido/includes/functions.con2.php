@@ -7,7 +7,6 @@
  * CONTENIDO Content Functions
  *
  * Requirements:
- * @con_php_req 5.0
  * @con_notice Please add only stuff which is relevant for the frontend
  *             AND the backend. This file should NOT contain any backend editing
  *             functions to improve frontend performance:
@@ -21,11 +20,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-12-15
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -87,7 +81,7 @@ function conGetAvailableMetaTagTypes() {
     $oMetaTypeColl->select();
     $aMetaTypes = array();
 
-    while ($oMetaType = $oMetaTypeColl->next()) {
+    while (($oMetaType = $oMetaTypeColl->next()) !== false) {
         $rs = $oMetaType->toArray();
         $aMetaTypes[$rs['idmetatype']] = array(
             'metatype' => $rs['metatype'],
@@ -131,18 +125,23 @@ function conGetMetaValue($idartlang, $idmetatype) {
  * @param  int  $idartlang ID of the article
  * @param  int  $idmetatype Metatype-ID
  * @param  string  $value Value of the meta tag
+ * @return bool whether the meta value has been saved successfully
  */
 function conSetMetaValue($idartlang, $idmetatype, $value) {
-    static $oMetaTagColl;
-    if (!isset($oMetaTagColl)) {
-        $oMetaTagColl = new cApiMetaTagCollection();
+    static $metaTagColl;
+    if (!isset($metaTagColl)) {
+        $metaTagColl = new cApiMetaTagCollection();
     }
 
-    $oMetaTag = $oMetaTagColl->fetchByArtLangAndMetaType($idartlang, $idmetatype);
-    if (is_object($oMetaTag)) {
-        $oMetaTag->updateMetaValue($value);
+    $metaTag = $metaTagColl->fetchByArtLangAndMetaType($idartlang, $idmetatype);
+    $artLang = new cApiArticleLanguage($idartlang);
+    $artLang->set('lastmodified', date('Y-m-d H:i:s'));
+    $artLang->store();
+    if (is_object($metaTag)) {
+        return $metaTag->updateMetaValue($value);
     } else {
-        $oMetaTagColl->create($idartlang, $idmetatype, $value);
+        $metaTagColl->create($idartlang, $idmetatype, $value);
+        return true;
     }
 }
 
@@ -229,7 +228,7 @@ function conGetUsedModules($idtpl) {
 
     $oContainerColl = new cApiContainerCollection();
     $oContainerColl->select('idtpl = ' . (int) $idtpl, '', 'number ASC');
-    while ($oContainer = $oContainerColl->next()) {
+    while (($oContainer = $oContainerColl->next()) !== false) {
         $modules[(int) $oContainer->get('number')] = (int) $oContainer->get('idmod');
     }
 
@@ -248,7 +247,7 @@ function conGetContainerConfiguration($idtplcfg) {
 
     $oContainerConfColl = new cApiContainerConfigurationCollection();
     $oContainerConfColl->select('idtplcfg = ' . (int) $idtplcfg, '', 'number ASC');
-    while ($oContainerConf = $oContainerConfColl->next()) {
+    while (($oContainerConf = $oContainerConfColl->next()) !== false) {
         $configuration[(int) $oContainerConf->get('number')] = $oContainerConf->get('container');
     }
 
@@ -313,5 +312,3 @@ function conGetTemplateConfigurationIdForCategory($idcat, $lang, $client) {
 
     return ($db->next_record()) ? $db->f('idtplcfg') : null;
 }
-
-?>

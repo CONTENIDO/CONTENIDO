@@ -282,12 +282,9 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
 
     $oArtLang->store();
 
-    /*
-      $availableTags = conGetAvailableMetaTagTypes();
-      foreach ($availableTags as $key => $value) {
-      conSetMetaValue($idartlang, $key, $_POST['META' . $value['name']]);
-      }
-     */
+    // article has been saved, so clear the article cache
+    $purge = new cSystemPurge();
+    $purge->clearArticleCache($idartlang);
 }
 
 /**
@@ -341,6 +338,10 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     $oArtLang->set('lastmodified', $lastmodified);
     $oArtLang->set('modifiedby', $author);
     $oArtLang->store();
+
+    // content entry has been saved, so clear the article cache
+    $purge = new cSystemPurge();
+    $purge->clearArticleCache($idartlang);
 }
 
 /**

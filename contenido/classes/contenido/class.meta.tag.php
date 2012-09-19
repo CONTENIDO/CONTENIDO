@@ -6,10 +6,6 @@
  * Description:
  * Metatag management class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO API
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
@@ -17,11 +13,6 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2011-07-20
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -106,5 +97,3 @@ class cApiMetaTag extends Item {
     }
 
 }
-
-?>

@@ -6,9 +6,6 @@
  * Description:
  * con_editart action
  *
- * Requirements:
- * @con_php_req 5.0
- *
  * @package    CONTENIDO Backend Includes
  * @version    0.0.1
  * @author     Dominik Ziegler
@@ -32,4 +29,3 @@ if ($tmpchangelang != $lang) {
 }
 
 header("location: $path$url");
-?>

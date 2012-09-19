@@ -6,9 +6,6 @@
  * Description:
  * con_saveart action
  *
- * Requirements:
- * @con_php_req 5.0
- *
  * @package    CONTENIDO Backend Includes
  * @version    0.0.1
  * @author     Dominik Ziegler
@@ -164,4 +161,3 @@ cApiCecHook::execute("Contenido.Action.con_saveart.AfterCall", array(
     'dateend'      => $dateend,
     'artsort'      => $artsort
 ));
-?>

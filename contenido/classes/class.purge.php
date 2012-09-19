@@ -288,6 +288,33 @@ class cSystemPurge {
     }
 
     /**
+     * Clears the article cache of the article which is defined by the given
+     * parameters.
+     *
+     * @param int $idartlang the idartlang of the article
+     * @return void
+     */
+    public function clearArticleCache($idartlang) {
+        $cfgClient = cRegistry::getClientConfig();
+        $client = cRegistry::getClientId();
+
+        $artLang = new cApiArticleLanguage($idartlang);
+        $idlang = $artLang->get('idlang');
+        $idart = $artLang->get('idart');
+        $art = new cApiArticle($idart);
+        $idclient = $art->get('idclient');
+
+        $catArtColl = new cApiCategoryArticleCollection();
+        $catArtColl->select('idart=' . $idart);
+        while (($item = $catArtColl->next()) !== false) {
+            $filename = $cfgClient[$client]['code']['path'] . $idclient . '.' . $idlang . '.' . $item->get('idcatart') . '.php';
+            if (cFileHandler::exists($filename)) {
+                cFileHandler::remove($filename);
+            }
+        }
+    }
+
+    /**
      * Delete all files and sub directories in a directory
      *
      * @param string $dirPath
