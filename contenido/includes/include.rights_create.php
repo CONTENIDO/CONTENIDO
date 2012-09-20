@@ -48,11 +48,9 @@ if (! $perm->have_perm_area_action ( $area, $action )) {
 
 if ($action == 'user_createuser') {
     if ($username == '') {
-        $sNotification = $notification->returnNotification("warning", i18n("Username can't be empty"));
-        $bError = true;
+        $error = i18n("Username can't be empty");
     } else if ($password == '') {
-        $sNotification = $notification->returnNotification("warning", i18n("Password can't be empty"));
-        $bError = true;
+        $error = i18n("Password can't be empty");
     } else {
 
 			$stringy_perms = array ();
