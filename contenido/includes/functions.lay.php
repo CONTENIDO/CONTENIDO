@@ -6,10 +6,6 @@
  * Description:
  * Defines the Layout related functions
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package CONTENIDO Backend Includes
  * @version 1.3.2
  * @author Jan Lengowski

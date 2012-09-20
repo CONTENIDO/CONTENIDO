@@ -6,10 +6,6 @@
  * Description:
  * Some system functions
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.2.3
  * @author     unknown
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -206,5 +197,3 @@ function system_have_perm($client) {
     cDeprecated("Use function systemHavePerm() instead");
     return systemHavePerm($client);
 }
-
-?>

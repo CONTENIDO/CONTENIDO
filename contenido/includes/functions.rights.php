@@ -83,7 +83,7 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
     // get all actions for corresponding area
     $oActionColl = new cApiActionCollection();
     $oActionColl->select('idarea IN (' . implode(',', $areaContainer) . ')');
-    while ($oItem = $oActionColl->next()) {
+    while (($oItem = $oActionColl->next()) !== false) {
         $whereAreaActions[] = '(idarea = ' . (int) $oItem->get('idarea') . ' AND idaction = ' . (int) $oItem->get('idaction') . ')';
     }
     $whereAreaActions = '(' . implode(' OR ', $whereAreaActions) . ')'; // only
@@ -100,7 +100,7 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
     }
 
     $oSourceRighsColl->select($sWhere);
-    while ($oItem = $oSourceRighsColl->next()) {
+    while (($oItem = $oSourceRighsColl->next()) !== false) {
         $rs = $oItem->toObject();
         $oDestRightCol->create($rs->user_id, $rs->idarea, $rs->idaction, $newiditem, $rs->idclient, $rs->idlang, $rs->type);
     }
@@ -162,7 +162,7 @@ function createRightsForElement($area, $iditem, $idlang = false) {
     }
 
     $oSourceRighsColl->select($sWhere);
-    while ($oItem = $oSourceRighsColl->next()) {
+    while (($oItem = $oSourceRighsColl->next()) !== false) {
         $rs = $oItem->toObject();
 
         // concatenate a key to use it to prevent double entries

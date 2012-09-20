@@ -6,10 +6,6 @@
  * Description:
  * Define the Template related functions
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
  * @author     Olaf Niemann
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-01-21
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -832,5 +823,3 @@ function tplAutoFillModules ($idtpl)
     }
 
 }
-
-?>

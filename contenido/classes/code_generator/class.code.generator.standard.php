@@ -5,7 +5,6 @@
  * @package Core
  * @subpackage Content Type
  * @version SVN Revision $Rev:$
- * @id SVN Id $Id$
  *
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>
@@ -141,14 +140,14 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // Save the collected css/js data and save it under the template name ([templatename].css , [templatename].js in cache dir
         $cssFile = '';
         if (strlen($this->_cssData) > 0) {
-            if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, 'css', $this->_cssData))) {
+            if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, 'css', $this->_cssData)) !== false) {
                 $cssFile = '<link rel="stylesheet" type="text/css" href="' . $myFileCss . '" />';
             }
         }
 
         $jsFile = '';
         if (strlen($this->_jsData) > 0) {
-            if (($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, 'js', $this->_jsData))) {
+            if (($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, 'js', $this->_jsData)) !== false) {
                 $jsFile = '<script src="' . $myFileJs . '" type="text/javascript"></script>';
             }
         }
@@ -244,7 +243,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         if ($_cecIterator->count() > 0) {
             $aTmpMetaTags = $aMetaTags;
 
-            while ($chainEntry = $_cecIterator->next()) {
+            while (($chainEntry = $_cecIterator->next()) !== false) {
                 $aTmpMetaTags = $chainEntry->execute($aTmpMetaTags);
             }
 

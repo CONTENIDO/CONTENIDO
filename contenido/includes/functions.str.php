@@ -6,10 +6,6 @@
  * Description:
  * Defines the structure/category ("str") related functions
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.4.0
  * @author     Olaf Niemann
@@ -19,11 +15,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2002-03-02
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -219,7 +210,7 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
 function strOrderedPostTreeList($idcat, $poststring) {
     $oCatColl = new cApiCategoryCollection();
     $oCatColl->select('parentid = 0 AND preid = ' . (int) $idcat . ' AND idcat != 0');
-    if ($oCat = $oCatColl->next()) {
+    if (($oCat = $oCatColl->next()) !== false) {
         $postIdcat = $oCat->get('idcat');
         $poststring = $poststring . ',' . $postIdcat;
         $poststring = strOrderedPostTreeList($postIdcat, $poststring);
@@ -598,7 +589,7 @@ function strDeleteCategory($idcat) {
     // Are there any additional entries for other languages?
     $oCatLangColl = new cApiCategoryLanguageCollection();
     $oCatLangColl->select('idcat = ' . (int) $idcat);
-    if ($oCatLang = $oCatLangColl->next()) {
+    if (($oCatLang = $oCatLangColl->next()) !== false) {
         // More languages found, delete rights for current category
         deleteRightsForElement('str', $idcat, $lang);
         deleteRightsForElement('con', $idcat, $lang);
@@ -630,7 +621,7 @@ function strDeleteCategory($idcat) {
 
     $oCatLangColl = new cApiCategoryLanguageCollection();
     $oCatLangColl->select('idcat = ' . (int) $idcat);
-    if ($oCatLang = $oCatLangColl->next()) {
+    if (($oCatLang = $oCatLangColl->next()) !== false) {
         // Delete template configuration (deletes also all container configurations)
         $oTemplateConfigColl = new cApiTemplateConfigurationCollection();
         $oTemplateConfigColl->delete($oCatLang->get('idtplcfg'));
@@ -1004,7 +995,7 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
         $oContainerConfColl->select('idtplcfg = ' . (int) $oOldCatLang->get('idtplcfg'));
 
         $oNewContainerConfColl = new cApiContainerConfigurationCollection();
-        while ($oItem = $oContainerConfColl->next()) {
+        while (($oItem = $oContainerConfColl->next()) !== false) {
             $oNewContainerConfColl->create($oNewCatLang->get('idtplcfg'), $oItem->get('number'), $oItem->get('container'));
         }
     }
@@ -1070,7 +1061,7 @@ function strAssignTemplate($idcat, $client, $idTplCfg) {
     if ($iIdtplcfg == 0) {
         // Get default template
         $oTemplateColl = new cApiTemplateCollection('defaulttemplate = 1 AND idclient = ' . (int) $client);
-        if ($oTemplate = $oTemplateColl->next()) {
+        if (($oTemplate = $oTemplateColl->next()) !== false) {
             $idtpl = $oTemplate->get('idtpl');
         }
     } else {
@@ -1081,7 +1072,7 @@ function strAssignTemplate($idcat, $client, $idTplCfg) {
     if ($idtpl) {
         // Assign template
         $oCatLangColl = new cApiCategoryLanguageCollection('idcat = ' . (int) $idcat);
-        while ($oCatLang = $oCatLangColl->next()) {
+        while (($oCatLang = $oCatLangColl->next()) !== false) {
             $oCatLang->assignTemplate($idtpl);
         }
     }
@@ -1128,5 +1119,3 @@ function strShowTreeTable() {
     }
     echo "</table>";
 }
-
-?>

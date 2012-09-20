@@ -9,10 +9,6 @@
  *
  * Contains also common file and directory related functions
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.5
  * @author     Willi Man
@@ -21,11 +17,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release >= 4.6
- *
- * {@internal
- *   created 2004-07-13
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -363,7 +354,7 @@ function scanDirectory($sDirectory, $bRecursive = false) {
 
     while (count(($openDirs)) >= 1) {
         $sDirectory = array_pop($openDirs);
-        if ($hDirHandle = opendir($sDirectory)) {
+        if (($hDirHandle = opendir($sDirectory)) !== false) {
             while (($sFile = readdir($hDirHandle)) !== false) {
                 if ($sFile != '.' && $sFile != '..') {
                     $sFullpathFile = $sDirectory . '/' . $sFile;

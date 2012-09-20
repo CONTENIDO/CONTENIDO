@@ -6,10 +6,6 @@
  * Description:
  * Backend edit include
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend classes
  * @version    1.0.5
  * @author     unknown
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -127,5 +118,3 @@ cDebug::out('Rendering this page took: ' . ($end - $start) . ' seconds<br>');
 cDebug::out('Building the complete page took: ' . ($end - $fullstart) . ' seconds<br>');
 
 cRegistry::shutdown();
-
-?>

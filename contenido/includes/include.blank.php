@@ -6,10 +6,6 @@
  * Description:
  * CONTENIDO Blank Include
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.0
  * @author     unknown
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -31,4 +22,3 @@ if (!defined('CON_FRAMEWORK')) {
 
 $tpl->set('s', 'CONTENTS', '');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['blank']);
-?>

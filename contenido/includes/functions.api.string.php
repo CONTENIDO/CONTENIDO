@@ -6,10 +6,6 @@
  * Description:
  * CONTENIDO Strign API functions
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.6.1
  * @author     Timo A. Hummel
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-08-08
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -207,7 +198,7 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
  * cApiStrReplaceDiacritics: Converts diactritics to english characters whenever possible.
  *
  * For german umlauts, this function converts the umlauts to their ASCII
- * equalients (e.g. ä => ae).
+ * equalients (e.g. ï¿½ => ae).
  *
  * For more information about diacritics, refer to
  * http://en.wikipedia.org/wiki/Diacritic
@@ -225,9 +216,9 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'ISO-8859-1', $tar
     }
 
     // replace regular german umlauts and other common characters with diacritics
-    static $aSearch, $aReplace;
+    static $aSearch = null, $aReplace = null;
     if (!isset($aSearch)) {
-        $aSearch = array('Ä', 'Ö', 'Ü', 'ä', 'ö', 'ü', 'ß', 'Á', 'À', 'Â', 'á', 'à', 'â', 'É', 'È', 'Ê', 'é', 'è', 'ê', 'Í', 'Ì', 'Î', 'í', 'ì', 'î', 'Ó', 'Ò', 'Ô', 'ó', 'ò', 'ô', 'Ú', 'Ù', 'Û', 'ú', 'ù', 'û');
+        $aSearch = array('ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½');
         $aReplace = array('Ae', 'Oe', 'Ue', 'ae', 'oe', 'ue', 'ss', 'A', 'A', 'A', 'a', 'a', 'a', 'E', 'E', 'E', 'e', 'e', 'e', 'I', 'I', 'I', 'i', 'i', 'i', 'O', 'O', 'O', 'o', 'o', 'o', 'U', 'U', 'U', 'u', 'u', 'u');
     }
     $sString = str_replace($aSearch, $aReplace, $sString);
@@ -343,5 +334,3 @@ function cApiStrNormalizeLineEndings($sString, $sLineEnding = "\n") {
 
     return $sString;
 }
-
-?>

@@ -102,7 +102,7 @@ function conGetAvailableMetaTagTypes() {
  * @return  string
  */
 function conGetMetaValue($idartlang, $idmetatype) {
-    static $oMetaTagColl;
+    static $oMetaTagColl = null;
     if (!isset($oMetaTagColl)) {
         $oMetaTagColl = new cApiMetaTagCollection();
     }
@@ -128,7 +128,7 @@ function conGetMetaValue($idartlang, $idmetatype) {
  * @return bool whether the meta value has been saved successfully
  */
 function conSetMetaValue($idartlang, $idmetatype, $value) {
-    static $metaTagColl;
+    static $metaTagColl = null;
     if (!isset($metaTagColl)) {
         $metaTagColl = new cApiMetaTagCollection();
     }
@@ -159,7 +159,7 @@ function conSetMetaValue($idartlang, $idmetatype, $value) {
 function conGenerateKeywords($client, $lang) {
     global $cfg;
 
-    static $oDB;
+    static $oDB = null;
     if (!isset($oDB)) {
         $oDB = cRegistry::getDb();
     }
@@ -200,7 +200,7 @@ function conGenerateKeywords($client, $lang) {
 function conGetContentFromArticle($iIdArtLang) {
     global $cfg;
 
-    static $oDB;
+    static $oDB = null;
     if (!isset($oDB)) {
         $oDB = cRegistry::getDb();
     }
