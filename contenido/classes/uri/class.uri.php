@@ -23,7 +23,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-final class cUri {
+class cUri {
 
     /**
      * Self instance.
