@@ -123,7 +123,11 @@ function showConfirmation(description, callback, additionalOptions) {
         if (typeof callback === 'function') {
             callback();
         }
-        $(this).dialog('close');
+        // unfortunately, the following line does not work if the dialog is
+        // opened from another frame
+        // $(this).dialog('close');
+        // so use this ugly workaround
+        $(this).parent().remove();
     };
     buttons[translations['Cancel']] = function() {
         // unfortunately, the following line does not work if the dialog is
@@ -160,7 +164,11 @@ function showNotification(title, description, additionalOptions) {
     // define the options and extend them with the given ones
     var buttons = {};
     buttons[translations['OK']] = function() {
-        $(this).dialog('close');
+        // unfortunately, the following line does not work if the dialog is
+        // opened from another frame
+        // $(this).dialog('close');
+        // so use this ugly workaround
+        $(this).parent().remove();
     };
     var options = {
         buttons : buttons,
