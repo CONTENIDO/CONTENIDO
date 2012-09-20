@@ -1,15 +1,15 @@
 <?php
 
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Module history
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend classes
  * @version    1.0.9
@@ -19,8 +19,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-12-14
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2008-10-03, Oliver Lohkemper, modified UploadCollection::delete()
@@ -28,7 +28,7 @@
  *
  *   $Id: class.upload.php 858 2008-10-20 07:26:28Z OliverL $:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -48,20 +48,20 @@ class UploadCollection extends ItemCollection
 		global $cfg;
 		parent::ItemCollection($cfg["tab"]["upl"], "idupl");
 	}
-	
+
 	function sync ($dir, $file)
 	{
 		global $client;
 
-		
+
 		if (strstr(strtolower($_ENV["OS"]), 'windows') === FALSE) {
-			#Unix  style OS distinguish between lower and uppercase file names, i.e. test.gif is not the same as Test.gif 
+			#Unix  style OS distinguish between lower and uppercase file names, i.e. test.gif is not the same as Test.gif
 			$this->select("dirname = BINARY '$dir' AND filename = BINARY '$file' AND idclient = '$client'");
 		} else {
 			#Windows OS doesn't distinguish between lower and uppercase file names, i.e. test.gif is the same as Test.gif in file system
 			$this->select("dirname = '$dir' AND filename = '$file' AND idclient = '$client'");
 		}
-		
+
 		if ($item = $this->next())
 		{
 			$item->update();
@@ -69,39 +69,39 @@ class UploadCollection extends ItemCollection
 			$this->create($dir, $file);
 		}
 	}
-	
+
 	function create ($dir, $file)
 	{
 		global $client, $cfg, $auth;
-		
+
 		$item = parent::create();
-	
+
 		$item->set("idclient", $client);
 		$item->set("filename", $file, false);
 		$item->set("dirname", $dir, false);
 		$item->set("author", $auth->auth["uid"]);
 		$item->set("created", date("Y-m-d H:i:s"),false);
 		$item->store();
-		
+
 		$item->update();
-		
-		return ($item);	
-		
+
+		return ($item);
+
 	}
-	
+
 	function loadItem ($itemID)
 	{
 		$item = new UploadItem();
 		$item->loadByPrimaryKey($itemID);
 		return ($item);
 	}
-	
+
 	function delete ($id)
 	{
 		global $_cecRegistry, $cfgClient, $client;
 		$item = new UploadItem();
 		$item->loadByPrimaryKey($id);
-	   
+
 		/*
 		* Call chain
 		*/
@@ -110,7 +110,7 @@ class UploadCollection extends ItemCollection
 			while ($chainEntry = $_cecIterator->next()) {
 				$chainEntry->execute( $item->get('idupl'), $item->get("dirname"), $item->get("filename") );
 		}   }
-	   
+
 		/*
 		* delete from Filesystem or DBFS
 		*/
@@ -123,12 +123,28 @@ class UploadCollection extends ItemCollection
 			unlink( $cfgClient[$client]["upl"]["path"].$item->get("dirname").$item->get("filename") );
 		  }
 		}
-	   
+
+		$this->deleteUploadMetaData($id);
 		/*
 		* delete in DB
 		*/
 		return parent::delete($id);
-	} 
+	}
+
+	/**
+	 *
+	 * Deletes meta-data from con_upl_meta table if file is deleting
+	 * @param int $idupl
+	 * @return bool
+	 */
+	protected function deleteUploadMetaData($idupl)
+	{
+	    global $client, $db, $cfg;
+	    $sql = "DELETE FROM `%s` WHERE %s = '%s'";
+	    $sqlQuery = sprintf($sql,$cfg['tab']['upl_meta'],  'idupl', (string)$idupl);
+	    return $db->query($sqlQuery);
+	}
+
 }
 
 class UploadItem extends Item
@@ -143,12 +159,12 @@ class UploadItem extends Item
 		global $cfg;
 		parent::Item($cfg["tab"]["upl"], "idupl");
 	}
-	
-	
+
+
 	function update ()
 	{
 		global $client, $cfgClient;
-		
+
 		if (substr($this->get("dirname"),0,5) == "dbfs:")
 		{
 			$isdbfs = true;
@@ -157,20 +173,20 @@ class UploadItem extends Item
 			$isdbfs = false;
 			$dir = $cfgClient[$client]["upl"]["path"].$this->get("dirname");
 		}
-		
+
 		$file = $this->get("filename");
-		
+
 		$dbfs = new DBFSCollection;
-		
+
 		$fullfile = $dir.$file;
     	/* Strip the file extension */
     	$dotposition = strrpos($file, ".");
-    	
+
     	if ($dotposition !== false)
     	{
     		$extension = substr($file, $dotposition + 1);
     	}
-    	
+
     	if ($isdbfs)
 		{
 			$filesize = $dbfs->getSize($fullfile);
@@ -180,15 +196,15 @@ class UploadItem extends Item
 				$filesize = filesize($fullfile);
 			}
 		}
-    	
+
     	$touched = false;
-    	
+
     	if ($this->get("filetype") != $extension)
     	{
     		$this->set("filetype", $extension);
     		$touched = true;
     	}
-    	
+
     	if ($this->get("size") != $filesize)
     	{
     		$this->set("size", $filesize);
@@ -200,14 +216,14 @@ class UploadItem extends Item
     		$this->store();
 		}
 	}
-	
+
 	function store ()
 	{
 		global $auth, $_cecRegistry;
-		
+
 		$this->set("modifiedby", $auth->auth["uid"]);
 		$this->set("lastmodified", date("Y-m-d H:i:s"),false);
-		
+
 		/*
 		* Call chain
 		*/
@@ -216,10 +232,10 @@ class UploadItem extends Item
 			while ($chainEntry = $_cecIterator->next()) {
 				$chainEntry->execute( $this->get("idupl"), $this->get("dirname"), $this->get("filename") );
 		}   }
-	  
+
 		parent::store();
 	}
-	
+
 }
 
 
