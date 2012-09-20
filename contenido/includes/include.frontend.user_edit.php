@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Frontend user editor
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.1.10
@@ -18,16 +18,16 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2009-06-02, Andreas Lindner, fix check for duplicate user name when it contains a special character    
- *   modified 2011-06-01, Ortwin Pinke, fixed CON-402 german umlaute not correct displayed for membergroups
+ *   modified 2009-06-02, Andreas Lindner, fix check for duplicate user name when it contains a special character
+ *  modified 2011-06-01, Ortwin Pinke, fixed CON-402 german umlaute not correct displayed for membergroups
  *
  *   $Id: include.frontend.user_edit.php 1376 2011-06-01 13:36:55Z oldperl $:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -42,14 +42,14 @@ cInclude("classes", "class.frontend.groups.php");
 cInclude("classes", "class.properties.php");
 
 $page = new cPage;
-          
+
 $feusers = new FrontendUserCollection;
 
 if (is_array($cfg['plugins']['frontendusers']))
 {
 	foreach ($cfg['plugins']['frontendusers'] as $plugin)
 	{
-		plugin_include("frontendusers", $plugin."/".$plugin.".php");	
+		plugin_include("frontendusers", $plugin."/".$plugin.".php");
 	}
 }
 
@@ -94,14 +94,14 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
 	$feusers->delete($idfrontenduser);
 
 	$iterator = $_cecRegistry->getIterator("Contenido.Permissions.FrontendUser.AfterDeletion");
-	
+
 	while ($chainEntry = $iterator->next())
 	{
 		$chainEntry->execute($idfrontenduser);
 	}
 
 	$idfrontenduser = 0;
-	$feuser = new FrontendUser;	
+	$feuser = new FrontendUser;
 	$page->addScript('reload', $sReloadScript);
 }
 
@@ -111,18 +111,18 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client)
 	{
 		$page->addScript('reload', $sReloadScript);
 		$messages = array();
-		
+
 		if ($feuser->get("username") != stripslashes($username))
 		{
     		$feusers->select("username = '".urlencode($username)."' and idclient='$client'");
     		if ($feusers->next())
     		{
-    			$messages[] = i18n("Could not set new username: Username already exists");	
+    			$messages[] = i18n("Could not set new username: Username already exists");
     		} else {
     			$feuser->set("username", stripslashes($username));
     		}
 		}
-		
+
 		if ($newpd != $newpd2)
 		{
 			$messages[] = i18n("Could not set new password: Passwords don't match");
@@ -132,7 +132,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client)
 				$feuser->set("password", $newpd);
 			}
 		}
-		
+
 		$feuser->set("active", $active);
 
     	/* Check out if there are any plugins */
@@ -143,7 +143,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client)
     			if (function_exists("frontendusers_".$plugin."_wantedVariables") &&
     				function_exists("frontendusers_".$plugin."_store"))
     			{
-    				# check if user belongs to a specific group 
+    				# check if user belongs to a specific group
 					# if true store values defined in frontenduser plugin
     				if (function_exists("frontendusers_".$plugin."_checkUserGroup"))
     				{
@@ -152,35 +152,35 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client)
     				{
     					$bCheckUserGroup = true;
     				}
-    				
+
     				if ($bCheckUserGroup)
     				{
             			$wantVariables = call_user_func("frontendusers_".$plugin."_wantedVariables");
-            			
+
             			if (is_array($wantVariables))
             			{
             				$varArray = array();
-            				
+
             				foreach ($wantVariables as $value)
             				{
-            					$varArray[$value] = stripslashes($GLOBALS[$value]);	
-            				}	
+            					$varArray[$value] = stripslashes($GLOBALS[$value]);
+            				}
             			}
             			$store = call_user_func("frontendusers_".$plugin."_store", $varArray);
     				}
     			}
     		}
     	}
-    	
-    	$feuser->store();		
+
+    	$feuser->store();
 	}
-	
+
 	if (count($messages) > 0)
 	{
 		$notis = $notification->returnNotification("warning", implode("<br>", $messages)) . "<br>";
 	}
-	
-	
+
+
 	$form = new UI_Table_Form("properties");
 	$form->setVar("frame", $frame);
     $form->setVar("area", $area);
@@ -188,20 +188,20 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client)
     $form->setVar("idfrontenduser", $idfrontenduser);
 
 	$form->addHeader(i18n("Edit user"));
-	
+
 	$username = new cHTMLTextbox("username", $feuser->get("username"),40);
 	$newpw    = new cHTMLPasswordBox("newpd","",40);
 	$newpw2   = new cHTMLPasswordBox("newpd2","",40);
 	$active   = new cHTMLCheckbox("active","1");
 	$active->setChecked($feuser->get("active"));
-	
+
 	$form->add(i18n("User name"), $username->render());
 	$form->add(i18n("New password"), $newpw->render());
 	$form->add(i18n("New password (again)"), $newpw2->render());
 	$form->add(i18n("Active"), $active->toHTML(false));
-	
+
 	$pluginOrder = trim_array(explode(",",getSystemProperty("plugin", "frontendusers-pluginorder")));
-	
+
 	/* Check out if there are any plugins */
 	if (is_array($pluginOrder))
 	{
@@ -210,7 +210,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client)
 			if (function_exists("frontendusers_".$plugin."_getTitle") &&
 				function_exists("frontendusers_".$plugin."_display"))
 			{
-				# check if user belongs to a specific group 
+				# check if user belongs to a specific group
 				# if true display frontenduser plugin
 				if (function_exists("frontendusers_".$plugin."_checkUserGroup"))
 				{
@@ -219,17 +219,17 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client)
 				{
 					$bCheckUserGroup = true;
 				}
-				
+
 				if ($bCheckUserGroup)
 				{
         			$plugTitle = call_user_func("frontendusers_".$plugin."_getTitle");
         			$display = call_user_func("frontendusers_".$plugin."_display", $feuser);
-        			
+
         			if (is_array($plugTitle) && is_array($display))
         			{
         				foreach ($plugTitle as $key => $value)
         				{
-        					$form->add($value, $display[$key]);	
+        					$form->add($value, $display[$key]);
         				}
         			} else {
         				if (is_array($plugTitle) || is_array($display))
@@ -244,32 +244,35 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client)
 		}
 
 		$arrGroups = $feuser->getGroupsForUser();
-		
+
 		if (count($arrGroups) > 0) {
-      $aMemberGroups = array();
+		$aMemberGroups = array();
 
       foreach($arrGroups as $iGroup) {
-          $oMemberGroup = new FrontendGroup($iGroup);
+          $oMemberGroup = new FrontendGroup();
+          $oMemberGroup->loadByPrimaryKey($iGroup);
           $aMemberGroups[] = $oMemberGroup->get("groupname");
       }
 
       asort($aMemberGroups);
 
       $sTemp = implode('<br/>', $aMemberGroups);
+
 		} else {
-      $sTemp = i18n("none");
-		
-		$form->add(i18n("Group membership"), $sTemp ); 
-		
-		$form->add(i18n("Author"), $classuser->getUserName($feuser->get("author")) . " (". $feuser->get("created").")" ); 
+			$sTemp = i18n("none");
+		}
+
+		$form->add(i18n("Group membership"), $sTemp );
+
+		$form->add(i18n("Author"), $classuser->getUserName($feuser->get("author")) . " (". $feuser->get("created").")" );
 		$form->add(i18n("Last modified by"), $classuser->getUserName($feuser->get("modifiedby")). " (". $feuser->get("modified").")" );
-		
+
 	}
 	$page->setContent(	$notis .
 						$form->render(true));
 	$page->addScript('reload', $sReloadScript);
 } else {
-	$page->setContent("");	
+	$page->setContent("");
 }
 
 $page->render();

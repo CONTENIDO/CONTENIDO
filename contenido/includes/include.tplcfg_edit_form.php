@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Displays form for configuring a template
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.0.0
@@ -18,15 +18,14 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2002
  *   modified 2008-06-27, Dominik Ziegler, add security fix
- *   $Id: include.tplcfg_edit_form.php 2144 2012-05-04 15:25:30Z fulai.zhang $: 
  *
  *   $Id: include.tplcfg_edit_form.php 373 2008-06-27 14:50:50Z frederic.schneider $:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -41,46 +40,46 @@ if ( isset($idart) ) {
 		{
 	    	$idartlang = getArtLang($idart, $lang);
 	    	$col = new InUseCollection;
-			
+
 			/* Remove all own marks */
 			$col->removeSessionMarks($sess->id);
-			
-        if (($obj = $col->checkMark('article', $idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) {
+
+			if (($obj = $col->checkMark("article", $idartlang)) === false)
 			{
 				$col->markInUse("article", $idartlang, $sess->id, $auth->auth["uid"]);
 				$inUse = false;
-	    		$disabled = "";						
+	    		$disabled = "";
 			} else {
-				
+
 				$vuser = new User;
 				$vuser->loadUserByUserID($obj->get("userid"));
 				$inUseUser = $vuser->getField("username");
 				$inUseUserRealName = $vuser->getField("realname");
-				
+
 				$message = sprintf(i18n("Article is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
-				$notification->displayNotification("warning", $message);			
+				$notification->displayNotification("warning", $message);
 				$inUse = true;
-		    	$disabled = 'disabled="disabled"';			
+		    	$disabled = 'disabled="disabled"';
 			}
 		} else {
 			$col = new InUseCollection;
-        if (($obj = $col->checkMark('categorytpl', $idcat)) === false || $obj->get("userid") == $auth->auth['uid']) {
+			$col->removeSessionMarks($sess->id);
 			if (($obj = $col->checkMark("categorytpl", $idcat)) === false)
 			{
 				$col->markInUse("categorytpl", $idcat, $sess->id, $auth->auth["uid"]);
 				$inUse = false;
-	    		$disabled = "";						
+	    		$disabled = "";
 			} else {
-				
+
 				$vuser = new User;
 				$vuser->loadUserByUserID($obj->get("userid"));
 				$inUseUser = $vuser->getField("username");
 				$inUseUserRealName = $vuser->getField("realname");
-				
+
 				$message = sprintf(i18n("Category Template configuration is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
-				$notification->displayNotification("warning", $message);			
+				$notification->displayNotification("warning", $message);
 				$inUse = true;
-		    	$disabled = 'disabled="disabled"';			
+		    	$disabled = 'disabled="disabled"';
 			}
 		}
 }
@@ -97,7 +96,7 @@ if ( $idart ) {
 	if ($perm->have_perm_area_action("con","con_tplcfg_edit") ||
                 $perm->have_perm_area_action_item("con","con_tplcfg_edit",$idcat))
     {
-	
+
     /* Article is configured */
     $sql = "SELECT
                 c.idtpl AS idtpl,
@@ -114,7 +113,7 @@ if ( $idart ) {
                 c.idtpl     = a.idtpl";
 
     $db->query($sql);
-    
+
     if ( $db->next_record() ) {
 
         /* template configuration found */
@@ -140,16 +139,16 @@ if ( $idart ) {
             $db->query($sql);
 
             $idtplcfg = $nextid;
-            
+
         }
-        
+
     }
-    
+
     } else {
     	$notification->displayNotification("error", i18n("Permission denied"));
-    	exit;	
+    	exit;
     }
-    
+
 } elseif ( $idcat ) {
 
     /* Category is configured */
@@ -167,7 +166,7 @@ if ( $idart ) {
                 c.idtpl     = a.idtpl AND
                 c.idclient  = '".Contenido_Security::toInteger($client)."'";
     $db->query($sql);
-    
+
     if ( $db->next_record() ) {
 
         /* template configuration found */
@@ -195,7 +194,7 @@ if ( $idart ) {
 
 
 /* change template to '--- Nothing ---' */
-if ( $idtpl == 0 ) { 
+if ( $idtpl == 0 ) {
 	$idtplcfg = 0;
 }
 
@@ -211,7 +210,7 @@ if ( !$db->next_record() ) {
 
     $db->query($sql);
     $db->next_record();
-    
+
     if ( 0 != $db->f("idtplcfg") ) {
 
         /* Template has a pre-configuration,
@@ -220,21 +219,21 @@ if ( !$db->next_record() ) {
            $idtplcfg from the category*/
         $sql = "SELECT * FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($db->f("idtplcfg"))."' ORDER BY number DESC";
         $db->query($sql);
-        
+
         while ( $db->next_record() ) {
 
             /* get data */
             $nextid     = $db3->nextid($cfg["tab"]["container_conf"]);
             $number     = $db->f("number");
             $container  = $db->f("container");
-            
+
             /* write new entry */
             $sql = "INSERT INTO
                         ".$cfg["tab"]["container_conf"]."
                         (idcontainerc, idtplcfg, number, container)
                     VALUES
                         ('".Contenido_Security::toInteger($nextid)."', '".Contenido_Security::toInteger($idtplcfg)."', '".Contenido_Security::toInteger($number)."', '".Contenido_Security::escapeDB($container, $db2)."')";
-                        
+
             $db2->query($sql);
         }
     }
@@ -303,7 +302,7 @@ $sql = "SELECT
             idclient = '".Contenido_Security::toInteger($client)."'
         ORDER BY
             name";
-        
+
 $db->query($sql);
 
 $tpl2->set('d', 'VALUE', 0);
@@ -318,13 +317,13 @@ while ( $db->next_record() ) {
         $tpl2->set('d', 'CAPTION',  $db->f("name") );
         $tpl2->set('d', 'SELECTED', '');
         $tpl2->next();
-        
+
     } else {
         $tpl2->set('d', 'VALUE',    $db->f("idtpl") );
         $tpl2->set('d', 'CAPTION',  $db->f("name") );
         $tpl2->set('d', 'SELECTED', 'selected="selected"');
         $tpl2->next();
-        
+
     }
 }
 
@@ -339,7 +338,7 @@ $tpl->set('s', 'TEMPLATESELECTBOX', $select );
             ".$cfg["tab"]["container"]."
         WHERE
             idtpl='".Contenido_Security::toInteger($idtpl)."' ORDER BY number ASC";
-            
+
 $db->query($sql);
 
 $a_d = array();
@@ -373,7 +372,7 @@ if (isset($a_d) && is_array($a_d)) {
                 $modulename    = $db->f("name");
 
                 $varstring = array();
-                
+
                 if (isset($a_c[$cnumber])) {
                     $a_c[$cnumber] = preg_replace("/&$/", "", $a_c[$cnumber]);
                     $tmp1 = preg_split("/&/", $a_c[$cnumber]);
@@ -385,10 +384,10 @@ if (isset($a_d) && is_array($a_d)) {
                             }
                     }
                 }
-                
+
                 $CiCMS_Var = '$C'.$cnumber.'CMS_VALUE';
                 $CiCMS_VALUE = '';
-                
+
                 foreach ($varstring as $key3=>$value3){
                    $tmp = urldecode($value3);
                    $tmp = str_replace("\'", "'", $tmp);
@@ -396,14 +395,14 @@ if (isset($a_d) && is_array($a_d)) {
                    $input = str_replace("\$CMS_VALUE[$key3]", $tmp, $input);
                    $input = str_replace("CMS_VALUE[$key3]", $tmp, $input);
                 }
-                
+
                 $input = str_replace("CMS_VALUE", $CiCMS_Var, $input);
                 $input = str_replace("\$".$CiCMS_Var, $CiCMS_Var, $input);
                 $input  = str_replace("CMS_VAR", "C".$cnumber."CMS_VAR" , $input);
-                
+
                 ob_start();
                 eval($CiCMS_VALUE." \r\n ".$input);
-                    
+
                 $modulecode = ob_get_contents();
                 ob_end_clean();
 
@@ -444,21 +443,21 @@ $script = '
                    5 -> has right for: online
                    6 -> has right for: public
                    7 -> idstring not splitted */
-            			              	
+
 				tmp_idtpl = ("'.$idtpl.'" == "") ? 0 : "'.$idtpl.'";
-	 
-				changed = (obj.tplId != tmp_idtpl);				
+
+				changed = (obj.tplId != tmp_idtpl);
 
                 sData = "'.$idcat.'-'.$idtpl.'-"+obj.isOnline+"-"+obj.isPublic+"-"+obj.hasRight["template"]+"-"+obj.hasRight["online"]+"-"+obj.hasRight["public"];
-                                													
-				if ( changed ) {    				    				
-				    obj.load( "'.$idcat.'", "'.$idtpl.'", obj.isOnline, obj.isPublic, obj.hasRight["template"], obj.hasRight["online"], obj.hasRight["public"], sData );        						
+
+				if ( changed ) {
+				    obj.load( "'.$idcat.'", "'.$idtpl.'", obj.isOnline, obj.isPublic, obj.hasRight["template"], obj.hasRight["online"], obj.hasRight["public"], sData );
 					parent.parent.frames["left"].frames["left_bottom"].location.href = "'.$sess->url("main.php?area=con&force=1&frame=2").'";
-					
-				}         		
+
+				}
 
            }
-           
+
 
            // parent.parent.frames["right"].frames["right_top"].location.href = "main.php?area=con&frame=3&idcat=0&contenido='.$sess->id.'";
            artObj = parent.parent.frames["left"].frames["left_top"].artObj;
@@ -468,10 +467,10 @@ $script = '
    when configuring a category  */
 if ( !$idart && $area != "str_tplcfg") {
     $tpl->set('s', 'SCRIPT', $script);
-    
+
 } else {
     $tpl->set('s', 'SCRIPT', '');
-    
+
 }
 
 if ($idart)
@@ -479,7 +478,7 @@ if ($idart)
     $markscript = markSubMenuItem(2, true);
     $tpl->set('s', 'MARKSUBMENU', $markscript);
 } else {
-	$tpl->set('s', 'MARKSUBMENU', "");	
+	$tpl->set('s', 'MARKSUBMENU', "");
 }
 
 

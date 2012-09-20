@@ -1,15 +1,15 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * File provides a user friendly way for setting general system properties instead of using
  * Systemproperties
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @version    1.0.1
  * @author     Timo Trautmann
@@ -18,13 +18,13 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release 4.8.8
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2008-08-19
  *   modified 2010-11-30, Dominik Ziegler, added check of minimum period time at update notifier check period [CON-372]
  *
  * }}
- * 
+ *
  */
 if(!defined('CON_FRAMEWORK')) {
    die('Illegal call');
@@ -33,7 +33,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 function renderBooleanProperty($sName, $aPossValues, $sValue, $sLabel) {
     $aReturn = array();
-    
+
     if ($aPossValues[0] == $sValue) {
         $bChecked = false;
     } else {
@@ -43,10 +43,10 @@ function renderBooleanProperty($sName, $aPossValues, $sValue, $sLabel) {
     $oCheckbox = new cHTMLCheckbox($sName, $aPossValues[1], $sName, $bChecked);
     $oCheckbox->setLabelText('&nbsp;&nbsp;'.$sLabel);
     $oCheckbox->setStyle('margin:0; padding:0px;margin-left:3px;');
-    
+
     $aReturn['input'] = $oCheckbox->render();
     $aReturn['label'] = '';
-    
+
     return $aReturn;
 }
 
@@ -87,7 +87,7 @@ function getPostValue($aProperty) {
     } else {
         return '';
     }
-} 
+}
 
 $aManagedProperties = array(
                           array('type' => 'versioning', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Versioning activated'), 'group' => i18n('Versioning')),
@@ -100,15 +100,14 @@ $aManagedProperties = array(
                           array('type' => 'pw_request', 'name' => 'enable', 'value' => array('false', 'true'), 'label' => i18n('Use passwordrequest in Backend'), 'group' => i18n('Backend')),
                           array('type' => 'maintenance', 'name' => 'mode', 'value' => array('disabled', 'enabled'), 'label' => i18n('Activate maintenance mode'), 'group' => i18n('Backend')),
                           array('type' => 'edit_area', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Use editarea for code highlighting'), 'group' => i18n('Backend')),
-                          array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => array('false', 'true'), 'label' => i18n('Use TinyMce as insight editor'), 'group' => i18n('Backend')), 
+                          array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => array('false', 'true'), 'label' => i18n('Use TinyMce as insight editor'), 'group' => i18n('Backend')),
 						  array('type' => 'backend', 'name' => 'preferred_idclient', 'value' => 'integer', 'label' => i18n('Default client (ID)'), 'group' => i18n('Backend')),
-						  array('type' => 'backend', 'name' => 'max_log_size', 'value' => 'label', 'label' => i18n('Maximum log size in MiB (0 = infinite)'), 'group' => i18n('Backend')),
                           array('type' => 'system', 'name' => 'mail_host', 'value' => '', 'label' => i18n('Mailserver host'), 'group' => i18n('Mailserver')),
                           array('type' => 'system', 'name' => 'mail_sender', 'value' => '', 'label' => i18n('Mailserver sender mail'), 'group' => i18n('Mailserver')),
                           array('type' => 'system', 'name' => 'mail_sender_name', 'value' => '', 'label' => i18n('Mailserver sender name'), 'group' => i18n('Mailserver')),
                           array('type' => 'generator', 'name' => 'xhtml', 'value' => array('false', 'true'), 'label' => i18n('Generate XHTML'), 'group' => i18n('Development')),
                           array('type' => 'generator', 'name' => 'basehref', 'value' => array('false', 'true'), 'label' => i18n('Generate basehref'), 'group' => i18n('Development')),
-                          array('type' => 'imagemagick', 'name' => 'available', 'value' => array('0', '1'), 'label' => i18n('Use image magic (if available)'), 'group' => i18n('Development'))				  
+                          array('type' => 'imagemagick', 'name' => 'available', 'value' => array('0', '1'), 'label' => i18n('Use image magic (if available)'), 'group' => i18n('Development'))
 					  );
 
 $aSettings = getSystemProperties(1);
@@ -125,18 +124,18 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
 				$bStored = false;
 				break;
 			} else {
-				setSystemProperty($aProperty['type'], $aProperty['name'], $sValue); 
+				setSystemProperty($aProperty['type'], $aProperty['name'], $sValue);
 				$bStored = true;
 			}
-        }        
-     
+        }
+   }
    if ($bStored) {
         $sNotification = $notification->displayNotification("info", i18n("Changes saved"));
-   }   
+   }
 }
 
 
-                      
+
 $aSettings = getSystemProperties(1);
 
 $oForm = new UI_Table_Form("system_configuration");
@@ -158,13 +157,13 @@ foreach ($aManagedProperties as $aProperty) {
     } else {
         $sValue = '';
     }
-    
+
     if (is_array($aProperty['value'])) {
         $aHtmlElement = renderBooleanProperty($sName, $aProperty['value'], $sValue, $aProperty['label']);
     } else {
         $aHtmlElement = renderTextProperty($sName, $sValue, $aProperty['label']);
     }
-    
+
     if ($sCurGroup == '' || $sCurGroup == $aProperty['group']) {
         if ($sCurGroup == '') {
             $sCurGroup = $aProperty['group'];
