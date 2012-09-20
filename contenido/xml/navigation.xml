@@ -194,7 +194,11 @@ i18n("Login")
                 <clientartspec>Article specifications</clientartspec>
                 <clientsettings>Client settings</clientsettings>
             </clients>
-            <logs>Logs</logs>
+            <logs>
+            	<main>Logs</main>
+				<mail_action>Actions</mail_action>
+				<mail_log>Mails</mail_log>
+			</logs>
             <debug>Debug</debug>
             <system>
                 <main>System</main>
@@ -207,9 +211,6 @@ i18n("Login")
             <frontend>
                 <main>Frontend</main>
             </frontend>
-            <mail_log>
-                <main>E-Mail-Log</main>
-            </mail_log>
         </administration>
         <mycontenido>
             <main>My CONTENIDO</main>

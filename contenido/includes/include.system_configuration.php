@@ -107,7 +107,7 @@ function renderTextProperty($name, $value, $label) {
     return $return;
 }
 
-$page = new cGuiPage('system_configuration', '', '1');
+$page = new cGuiPage('system_configuration', '', '0');
 
 // read the properties from the XML file
 $propertyTypes = cXmlReader::xmlStringToArray(cFileHandler::read($cfg['path']['xml'] . 'system.xml'));

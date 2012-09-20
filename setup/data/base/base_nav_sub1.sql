@@ -27,7 +27,7 @@ INSERT INTO !PREFIX!_nav_sub VALUES('30', '0', '37', '1', 'navigation/administra
 INSERT INTO !PREFIX!_nav_sub VALUES('31', '0', '38', '1', 'navigation/administration/users/structure', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('33', '0', '42', '1', 'navigation/mycontenido/overview', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('36', '5', '46', '0', 'navigation/administration/clients/main', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('49', '5', '49', '0', 'navigation/administration/logs', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('49', '5', '49', '0', 'navigation/administration/logs/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('37', '0', '4', '1', 'navigation/content/article/preview', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('38', '3', '50', '1', 'newsletter/xml/;navigation/extra/recipients', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('41', '0', '61', '1', 'navigation/administration/groups/overview', '1');
@@ -39,10 +39,10 @@ INSERT INTO !PREFIX!_nav_sub VALUES('47', '0', '58', '1', 'navigation/administra
 INSERT INTO !PREFIX!_nav_sub VALUES('48', '0', '59', '1', 'navigation/administration/groups/structure', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('9', '5', '54', '0', 'navigation/administration/groups/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('42', '0', '63', '1', 'navigation/administration/groups/members', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('53', '5', '65', '0', 'navigation/administration/system/main', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('51', '0', '65', '1', 'navigation/administration/system/sysvalues', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('53', '5', '415', '0', 'navigation/administration/system/main', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('51', '0', '65', '1', 'navigation/administration/system/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('416', '0', '67', '1', 'navigation/administration/system/syssettings', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('415', '67', '415', '1', 'navigation/administration/system/configuration', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('415', '5', '415', '1', 'navigation/administration/system/configuration', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('55', '0', '48', '1', 'navigation/administration/clients/clientproperties', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('56', '0', '68', '1', 'navigation/administration/clients/clientartspec', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('57', '0', '9', '1', 'navigation/style/layouts/edit', '1');
@@ -68,7 +68,7 @@ INSERT INTO !PREFIX!_nav_sub VALUES ('86', '0', '96', '1', 'navigation/style/mod
 INSERT INTO !PREFIX!_nav_sub VALUES('500', '1', '500', '0', 'linkchecker/xml/lang_de_DE.xml;navigation/content/linkchecker/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('502', '0', '500', '1', 'linkchecker/xml/lang_de_DE.xml;navigation/content/linkchecker/overview', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('503', '0', '501', '1', 'linkchecker/xml/lang_de_DE.xml;navigation/content/linkchecker/whitelist', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('550', '5', '550', '0', 'navigation/administration/mail_log/main', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('550', '5', '550', '1', 'navigation/administration/logs/mail_log', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('551', '0', '551', '1', 'navigation/administration/mail_log/overview', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('552', '0', '552', '1', 'navigation/administration/mail_log/detail', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('600', '3', '600', '0', 'workflow/xml/lang_de_DE.xml;navigation/extra/workflow/main', '1');
@@ -85,3 +85,4 @@ INSERT INTO !PREFIX!_nav_sub VALUES('402', '0', '402', '1', 'navigation/style/js
 INSERT INTO !PREFIX!_nav_sub VALUES('397', '0', '71', '1', 'navigation/style/tpleditor/file', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('403', '0', '403', '1', 'navigation/style/tpleditor/history', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('805', '0', '811', '1', 'navigation/administration/system/purge', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('951', '5', '49', '1', 'navigation/administration/logs/mail_action', '1');

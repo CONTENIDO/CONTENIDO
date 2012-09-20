@@ -50,8 +50,8 @@ INSERT INTO !PREFIX!_area VALUES('60', 'groups', 'groups_create', '1', '1', '0')
 INSERT INTO !PREFIX!_area VALUES('61', 'groups', 'groups_overview', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('62', 'groups', 'groups_areas', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('63', 'groups', 'groups_members', '1', '1', '0');
-INSERT INTO !PREFIX!_area VALUES('65', '0', 'system', '1', '1', '1');
-INSERT INTO !PREFIX!_area VALUES('67', 'system', 'system_settings', '1', '1', '0');
+INSERT INTO !PREFIX!_area VALUES('65', 'logs', 'system', '1', '1', '1');
+INSERT INTO !PREFIX!_area VALUES('67', 'system_configuration', 'system_settings', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('68', 'client', 'client_articlespec', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('69', 'lay', 'lay_preview', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('70', 'mod', 'mod_history', '1', '1', '0');
@@ -83,7 +83,7 @@ INSERT INTO !PREFIX!_area VALUES ('401', 'style', 'style_history', '1', '1', '0'
 INSERT INTO !PREFIX!_area VALUES ('403', 'htmltpl', 'htmltpl_history', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('500', '0', 'linkchecker', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('501', 'linkchecker', 'lc_whitelist', '1', '1', '1');
-INSERT INTO !PREFIX!_area VALUES ('550', '0', 'mail_log', '1', '1', '1');
+INSERT INTO !PREFIX!_area VALUES ('550', 'logs', 'mail_log', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('551', 'mail_log', 'mail_log_overview', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('552', 'mail_log', 'mail_log_detail', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('600', '0', 'workflow', '1', '1', '0');
@@ -93,7 +93,7 @@ INSERT INTO !PREFIX!_area VALUES ('603', 'workflow', 'workflow_step_edit', '1', 
 INSERT INTO !PREFIX!_area VALUES ('604', 'con', 'con_workflow', '0', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('801', '0', 'content_allocation', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('802', 'con', 'con_contentallocation', '1', '1', '0');
-INSERT INTO !PREFIX!_area VALUES ('415', 'system', 'system_configuration', '1', '1', '0');
-INSERT INTO !PREFIX!_area VALUES ('811', 'system', 'system_purge', '1', '1', '0');
+INSERT INTO !PREFIX!_area VALUES ('415', '0', 'system_configuration', '1', '1', '1');
+INSERT INTO !PREFIX!_area VALUES ('811', 'system_configuration', 'system_purge', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('100', 'con', 'con_meta', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('105', 'con', 'con_content_list', '1', '1', '0');
