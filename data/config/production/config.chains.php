@@ -6,10 +6,6 @@
  * Description:
  * CONTENIDO Chains
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.2
  * @author     unknown
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -798,4 +789,17 @@ $_cecRegistry->registerChain("Contenido.Content.conGenerateCode", "string");
  */
 $_cecRegistry->registerChain("Contenido.Content.XmlSitemapCreate", "SimpleXMLElement");
 
-?>
+/**
+ * Chain Contenido.Backend.ConEditFormAdditionalRows"
+ * This chain is called in the include.con_edit_form.php file.
+ * You can add new rows to the article properties form with it.
+ *
+ * Parameters & order:
+ * int idart the ID of the article which is edited
+ * int idlang the ID of the corresponding language
+ * int idclient the ID of the corresponding client
+ *
+ * Returns:
+ * string     HTML code defining additional table rows
+ */
+$_cecRegistry->registerChain("Contenido.Backend.ConEditFormAdditionalRows", "int", "int", "int");

@@ -656,6 +656,15 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         }
     }
 
+    // provide possibility to add additional rows
+    $additionalRows = '';
+    $cecRegistry = cApiCecRegistry::getInstance();
+    $cecIterator = $cecRegistry->getIterator('Contenido.Backend.ConEditFormAdditionalRows');
+    while (($chainEntry = $cecIterator->next()) !== false) {
+        $additionalRows .= $chainEntry->execute($idart, $lang, $client);
+    }
+    $tpl->set('s', 'ADDITIONAL_ROWS', $additionalRows);
+
     $script = '';
     if ($newart) {
         $script = 'artObj.disableNavForNewArt();';
