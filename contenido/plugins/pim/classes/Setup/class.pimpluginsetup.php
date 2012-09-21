@@ -305,7 +305,7 @@ class PimPluginSetup {
 
         while (($pimPlugin = $pimPluginColl->next()) !== false) {
             $foldername = $pimPlugin->get('folder');
-            $folderpath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $foldername;
+            $folderpath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($foldername);
             cFileHandler::recursiveRmdir($folderpath);
         }
 
