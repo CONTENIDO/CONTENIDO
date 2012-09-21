@@ -194,8 +194,8 @@ class Contenido_Session extends Session {
 
     public function __construct() {
         global $cfg;
-		
-		cDeprecated('This class was replaced by cSession. Please use it instead.');
+
+        cDeprecated('This class was replaced by cSession. Please use it instead.');
 
         $sFallback = 'sql';
         $sClassPrefix = 'Contenido_CT_';

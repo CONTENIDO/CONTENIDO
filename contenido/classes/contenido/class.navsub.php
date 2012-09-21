@@ -59,7 +59,7 @@ class cApiNavSubCollection extends ItemCollection
         $item->set('idarea', $area);
         $item->set('level', $level);
         $item->set('location', $location);
-		$item->set('online', $online);
+        $item->set('online', $online);
 
         $item->store();
 

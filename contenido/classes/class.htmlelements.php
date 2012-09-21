@@ -2185,7 +2185,7 @@ class cHTMLImage extends cHTML {
             $src = 'images/spacer.gif';
         }
 
-		return $this->updateAttribute('src', $src);
+        return $this->updateAttribute('src', $src);
     }
 
     /**
@@ -2205,7 +2205,7 @@ class cHTMLImage extends cHTML {
      * @return cHTMLImage $this
      */
     public function setHeight($height) {
-		return $this->updateAttribute('height', $height);
+        return $this->updateAttribute('height', $height);
     }
 
     /**

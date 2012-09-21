@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
- * MySQL Driver for GenericDB 
- * 
- * Requirements: 
+ *
+ * Description:
+ * MySQL Driver for GenericDB
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend classes
  * @version    1.12
@@ -19,15 +19,15 @@
  * @link       http://www.contenido.org
  * @deprecated [2012-08-10] Use class in contenido/classes/genericdb/class.gdb.mysql.php
  *                          - Use cGenericDbDriverMysql
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2006-05-10
  *   $Id$
  * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 ?>

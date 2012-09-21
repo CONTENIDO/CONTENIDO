@@ -293,10 +293,10 @@
 
     // execute the action
     $('div.bulk_editing_functions a').click(function() {
-    	// action delete article has a security prompt, so do nothing here
-    	if (!$(this).hasClass('con_deleteart')) {
-    	    doAction($(this));
-    	}
+        // action delete article has a security prompt, so do nothing here
+        if (!$(this).hasClass('con_deleteart')) {
+            doAction($(this));
+        }
         return false;
     });
 
