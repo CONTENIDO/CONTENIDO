@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CONTENIDO XML language file -->
+<language>
+    <navigation>
+        <content>
+            <url_shortener>
+                <main>URL Shortener</main>
+            </url_shortener>
+        </content>
+    </navigation>
+</language>

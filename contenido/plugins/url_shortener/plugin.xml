@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugin>
+    <general active="1">
+        <plugin_name>URL Shortener Plugin</plugin_name>
+        <plugin_foldername>url_shortener</plugin_foldername>
+        <guid></guid>
+        <description>URL Shortener Plugin for CONTENIDO</description>
+        <author>Simon Sprankel</author>
+        <copyright>four for business AG</copyright>
+        <mail>info@4fb.de</mail>
+        <website>http://www.4fb.de</website>
+        <version>0.0.1</version>
+        <min_contenido_version>4.9.0-beta1</min_contenido_version>
+        <max_contenido_version></max_contenido_version>
+    </general>
+    <contenido>
+        <areas>
+            <area menuless="1">url_shortener</area>
+        </areas>
+        <actions>
+            <action area="url_shortener">url_shortener</action>
+        </actions>
+        <frames>
+            <frame area="url_shortener" filetype="main" name="url_shortener/includes/include.url_shortener.php" frameId="4" />    
+        </frames>
+        <nav_sub>
+            <nav area="url_shortener" level="0" navm="1">url_shortener/xml/;navigation/content/url_shortener/main</nav>
+        </nav_sub>
+    </contenido>
+</plugin>

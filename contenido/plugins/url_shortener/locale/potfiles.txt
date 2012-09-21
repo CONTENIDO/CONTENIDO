@@ -1,0 +1,7 @@
+./classes/class.url_shortener.shorturl.php
+./includes/config.plugin.php
+./includes/functions.url_shortener.php
+./includes/include.url_shortener.php
+./plugin.xml
+./xml/lang_de_DE.xml
+./xml/lang_en_US.xml
