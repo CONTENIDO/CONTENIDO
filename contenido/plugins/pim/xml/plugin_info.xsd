@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xsd:element name="plugin" type="PluginTyp" />
+
+    <xsd:complexType name="PluginTyp">
+        <xsd:sequence>
+            <xsd:element name="general" type="GeneralTyp" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="plugin_dependencies" type="PluginDependenciesTyp" minOccurs="0" />
+            <xsd:element name="contenido" type="ContenidoTyp" minOccurs="1" maxOccurs="1" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="GeneralTyp">
+        <xsd:all>
+            <xsd:element name="plugin_name" type="xsd:string" minOccurs="1" />
+            <xsd:element name="plugin_foldername" type="xsd:string" minOccurs="1" />
+            <xsd:element name="guid" type="xsd:string" minOccurs="1" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="author" type="xsd:string" minOccurs="1" />
+            <xsd:element name="copyright" type="xsd:string" minOccurs="0" />
+            <xsd:element name="mail" type="xsd:string" minOccurs="0" />
+            <xsd:element name="website" type="xsd:string" minOccurs="0" />
+            <xsd:element name="version" type="xsd:string" minOccurs="1" />
+            <xsd:element name="min_contenido_version" type="xsd:string" minOccurs="1" default="4.9.0" />
+            <xsd:element name="max_contenido_version" type="xsd:string" minOccurs="0" />
+        </xsd:all>
+        <xsd:attribute name="active" default="1" />
+    </xsd:complexType>
+
+    <xsd:complexType name="PluginDependenciesTyp">
+        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="depend">
+                <xsd:complexType>
+                    <xsd:simpleContent>
+                        <xsd:extension base="xsd:string">
+                            <xsd:attribute name="version" type="xsd:string"/>
+                        </xsd:extension>
+                    </xsd:simpleContent>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ContenidoTyp">
+        <xsd:sequence minOccurs="0">
+            <xsd:element name="areas" type="ContenidoAreasTyp" />
+            <xsd:element name="actions" type="ContenidoActionsTyp" />
+            <xsd:element name="frames" type="ContenidoFramesTyp" />
+            <!--<xsd:element name="nav_main" type="ContenidoNavMainTyp" />-->
+            <xsd:element name="nav_sub" type="ContenidoNavSubTyp" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ContenidoAreasTyp">
+        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="area">
+                <xsd:complexType>
+                    <xsd:simpleContent>
+                        <xsd:extension base="xsd:string">
+                            <xsd:attribute name="parent" type="xsd:string" />
+							<xsd:attribute name="menuless" type="xsd:integer" default="0" />
+                        </xsd:extension>
+                    </xsd:simpleContent>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ContenidoActionsTyp">
+        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="action">
+                <xsd:complexType>
+                    <xsd:simpleContent>
+                        <xsd:extension base="xsd:string">
+                            <xsd:attribute name="area" type="xsd:string" use="required" />
+                        </xsd:extension>
+                    </xsd:simpleContent>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+	
+    <xsd:complexType name="ContenidoFramesTyp">
+        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="frame">
+                <xsd:complexType>
+                    <xsd:simpleContent>
+                        <xsd:extension base="xsd:string">
+                            <xsd:attribute name="area" type="xsd:string" use="required" />
+                            <xsd:attribute name="filetype" type="xsd:string" default="main" />
+                            <xsd:attribute name="name" type="xsd:string" use="required" />
+                            <xsd:attribute name="frameId" type="xsd:integer" />
+                        </xsd:extension>
+                    </xsd:simpleContent>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ContenidoNavSubTyp">
+        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="nav">
+                <xsd:complexType>
+                    <xsd:simpleContent>
+                        <xsd:extension base="xsd:string">
+                            <xsd:attribute name="area" type="xsd:string" use="required" />
+							<xsd:attribute name="level" type="xsd:integer" use="required" />
+                            <xsd:attribute name="navm" type="xsd:integer" />
+                        </xsd:extension>
+                    </xsd:simpleContent>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+</xsd:schema>

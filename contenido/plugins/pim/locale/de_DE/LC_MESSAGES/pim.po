@@ -1,0 +1,81 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: CONTENIDO Plugin Manager\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-14 13:27+0100\n"
+"PO-Revision-Date: 2012-09-14 13:30+0100\n"
+"Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
+"Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-KeywordsList: i18n\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: C:\\projects\\workspace\\pim\\contenido\\plugins\\pim\n"
+
+#: C:\projects\workspace\pim\contenido\plugins\pim/includes/include.right_bottom.php:107
+#, fuzzy
+msgid "The plugin has been successfully installed"
+msgstr "Das Plugin wurde erfolgreich installiert"
+
+#: C:\projects\workspace\pim\contenido\plugins\pim/includes/include.right_bottom.php:126
+msgid "Y-m-d"
+msgstr "d.m.Y"
+
+#: C:\projects\workspace\pim\contenido\plugins\pim/includes/include.right_bottom.php:139
+msgid "Installed since"
+msgstr "Installiert seit"
+
+#: C:\projects\workspace\pim\contenido\plugins\pim/includes/include.right_bottom.php:140
+msgid "Author"
+msgstr "Autor"
+
+#: C:\projects\workspace\pim\contenido\plugins\pim/includes/include.right_bottom.php:141
+msgid "Contact"
+msgstr "Kontakt"
+
+#: C:\projects\workspace\pim\contenido\plugins\pim/includes/include.right_bottom.php:142
+msgid "Uninstall"
+msgstr "L&ouml;schen"
+
+#: C:\projects\workspace\pim\contenido\plugins\pim/includes/include.right_bottom.php:143
+#: C:\projects\workspace\pim\contenido\plugins\pim/includes/include.right_bottom.php:145
+msgid "Update"
+msgstr "Aktualisieren"
+
+#: C:\projects\workspace\pim\contenido\plugins\pim/includes/include.right_bottom.php:144
+msgid "Please choose your new file"
+msgstr "Plugin-Paket auswählen"
+
+#: C:\projects\workspace\pim\contenido\plugins\pim/includes/include.right_bottom.php:156
+msgid "Add new plugin"
+msgstr "Neues Plugin installieren"
+
+#: C:\projects\workspace\pim\contenido\plugins\pim/includes/include.right_bottom.php:157
+msgid "Please choose a plugin package"
+msgstr "Plugin-Paket auswählen"
+
+#: C:\projects\workspace\pim\contenido\plugins\pim/includes/include.right_bottom.php:158
+msgid "Upload plugin package"
+msgstr "Plugin-Paket hochladen"
+
+#: C:\projects\workspace\pim\contenido\plugins\pim/includes/include.right_bottom.php:159
+msgid "Installed Plugins"
+msgstr "Installierte Plugins"
+
+#~ msgid "from"
+#~ msgstr "von"
+
+#~ msgid "Uninstall selected plugin"
+#~ msgstr "L&ouml;sche das ausgew&auml;hlte Plugin"
+
+#~ msgid "Update: Please choose a plugin package"
+#~ msgstr "Aktualisierung: Plugin Paket auswählen"
+
+#~ msgid "Mail"
+#~ msgstr "E-Mail"
+
+#~ msgid "Remove marked Plugins"
+#~ msgstr "Markierte Plugins l&ouml;schen"

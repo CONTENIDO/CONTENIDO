@@ -1,0 +1,14 @@
+./classes/class.pim.plugin.collection.php
+./classes/class.pim.plugin.relations.collection.php
+./classes/Contenido_Plugin.class.php
+./classes/Contenido_Plugin_Base.class.php
+./classes/Setup/class.pimpluginsetup.php
+./classes/Util/Zip/class.pimpluginarchiveextractor.php
+./classes/View/Contenido_PluginView.class.php
+./includes/config.plugin.php
+./includes/include.right_bottom.php
+./templates/pim_install.html
+./templates/pim_overview.html
+./templates/pim_plugins.html
+./xml/pim.xml
+./xml/plugin.xml
