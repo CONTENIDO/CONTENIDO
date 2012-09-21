@@ -132,7 +132,7 @@ class PimPluginArchiveExtractor {
      * @access public
      * @param $filename string
      * @param $content bool [optional] whether to return the content or just the
-     *        dir and filename of the extracted file
+     *            dir and filename of the extracted file
      * @return string content of extracted file or dir and filename of extracted
      *         File
      */
@@ -155,9 +155,21 @@ class PimPluginArchiveExtractor {
      * @return void
      */
     public function destroyTempFiles() {
-        unlink($this->tempDir . 'plugin.xml');
-        unlink($this->tempDir . 'plugin.sql');
-        unlink($this->_source);
+
+        // remove plugin.xml if exists
+        if (cFileHandler::exists($this->tempDir . 'plugin.xml')) {
+            cFileHandler::remove($this->tempDir . 'plugin.xml');
+        }
+
+        // remove plugin.sql if exists
+        if (cFileHandler::exists($this->tempDir . 'plugin.sql')) {
+            cFileHandler::remove($this->tempDir . 'plugin.sql');
+        }
+
+        // remove temporary plugin dir if exists
+        if (cFileHandler::exists($this->_source)) {
+            cFileHandler::remove($this->_source);
+        }
     }
 
 }
