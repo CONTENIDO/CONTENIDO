@@ -1,4 +1,4 @@
-DELETE FROM !PREFIX!_area WHERE idarea < 10000;
+DELETE FROM !PREFIX!_area WHERE idarea <= 10000;
 INSERT INTO !PREFIX!_area VALUES('3', 'con', 'con_editart', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('2', 'con', 'con_editcontent', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('1', '0', 'con', '1', '1', '0');
@@ -97,3 +97,4 @@ INSERT INTO !PREFIX!_area VALUES ('415', '0', 'system_configuration', '1', '1', 
 INSERT INTO !PREFIX!_area VALUES ('811', 'system_configuration', 'system_purge', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('100', 'con', 'con_meta', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('105', 'con', 'con_content_list', '1', '1', '0');
+INSERT INTO !PREFIX!_area VALUES ('10000', '0', 'pim', '1', '1', '1');

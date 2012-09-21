@@ -1,4 +1,4 @@
-DELETE FROM !PREFIX!_frame_files WHERE idframefile < 10000;
+DELETE FROM !PREFIX!_frame_files WHERE idframefile <= 10000;
 INSERT INTO !PREFIX!_frame_files VALUES('1', '10', '2', '1');
 INSERT INTO !PREFIX!_frame_files VALUES('2', '11', '4', '2');
 INSERT INTO !PREFIX!_frame_files VALUES('3', '11', '4', '3');

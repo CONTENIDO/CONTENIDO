@@ -1,4 +1,4 @@
-DELETE FROM !PREFIX!_files WHERE idfile < 10000;
+DELETE FROM !PREFIX!_files WHERE idfile <= 10000;
 INSERT INTO !PREFIX!_files VALUES('1', '10', 'include.mod_overview.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('2', '11', 'include.mod_edit_form.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('3', '11', 'functions.mod.php', 'inc');
@@ -209,6 +209,6 @@ INSERT INTO !PREFIX!_files VALUES ('415', '415', 'include.system_configuration.p
 INSERT INTO !PREFIX!_files VALUES ('813', '811', 'include.system_purge.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('850', '100', 'include.con_meta_form.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('855', '105', 'include.con_content_list.php', 'main');
-
+INSERT INTO !PREFIX!_files VALUES ('10000', '10000', 'pim/includes/include.right_bottom.php', 'main');
 
 

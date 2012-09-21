@@ -1,4 +1,4 @@
-DELETE FROM !PREFIX!_nav_sub WHERE idnavs < 10000;
+DELETE FROM !PREFIX!_nav_sub WHERE idnavs <= 10000;
 INSERT INTO !PREFIX!_nav_sub VALUES('1', '1', '1', '0', 'navigation/content/article/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('2', '1', '6', '0', 'navigation/content/structure/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('3', '1', '7', '0', 'navigation/content/upload/main', '1');
@@ -86,3 +86,4 @@ INSERT INTO !PREFIX!_nav_sub VALUES('397', '0', '71', '1', 'navigation/style/tpl
 INSERT INTO !PREFIX!_nav_sub VALUES('403', '0', '403', '1', 'navigation/style/tpleditor/history', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('805', '0', '811', '1', 'navigation/administration/system/purge', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('951', '5', '49', '1', 'navigation/administration/logs/mail_action', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('10000', '5', '10000', '0', 'pim/xml/pim.xml;plugin/pim', '1');
