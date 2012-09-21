@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Upload functions
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.3.3
@@ -18,18 +18,18 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-12-28
  *   modified 2008-06-26, Frederic Schneider, add security fix
- *   modified 2008-11-27, Andreas Lindner, add possibility to define additional chars as allowed in file / dir names  
+ *   modified 2008-11-27, Andreas Lindner, add possibility to define additional chars as allowed in file / dir names
  *   modified 2009-03-16, Ingo van Peeren, fixed some sql-statements and a missing parameter in uplRenameDirectory()
  *   modified 2009-10-22, OliverL, fixed uplHasFiles is only one file in directory you can delete Directory
  *   modified 2009-10-29, Murat Purc, replaced deprecated functions (PHP 5.3 ready) and usage of is_dbfs()
  *
  *   $Id: functions.upl.php 1094 2009-11-06 01:22:13Z xmurrix $:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -46,28 +46,28 @@ cInclude("classes", "class.dbfs.php");
  *
  * @author Timo Trautmann (4fb)
  * @param string $sDisplayPath - original filepath
- * @param int $iLimit - limit of chars which were displayed directly. If the path 
+ * @param int $iLimit - limit of chars which were displayed directly. If the path
  *                      string is shorter there will be no tooltipp
  * @return string - string, which contains short path name and tooltipp if neccessary
  */
 function generateDisplayFilePath ($sDisplayPath, $iLimit) {
     $sDisplayPath = (string) $sDisplayPath;
     $iLimit = (int) $iLimit;
-    
+
     if (strlen($sDisplayPath) > $iLimit) {
         $sDisplayPathShort = capiStrTrimHard($sDisplayPath, $iLimit);
-        
+
         $sTooltippString = '';
         $iCharcount = 0;
-        
+
         $aPathFragments = explode('/', $sDisplayPath);
-            
+
         foreach ($aPathFragments as $sFragment) {
             if ($sFragment != '') {
                 if (strlen($sFragment) > ($iLimit-5)) {
                     $sFragment = capiStrTrimHard($sFragment, $iLimit);
                 }
-            
+
                 if($iCharcount+strlen($sFragment)+1 > $iLimit) {
                     $sTooltippString .= '<br>'.$sFragment.'/';
                     $iCharcount = strlen($sFragment);
@@ -77,7 +77,7 @@ function generateDisplayFilePath ($sDisplayPath, $iLimit) {
                 }
             }
         }
-        
+
         $sDisplayPath = '<span onmouseover="Tip(\''.$sTooltippString.'\', BALLOON, true, ABOVE, true);">'.$sDisplayPathShort.'</span>';
     }
     return $sDisplayPath;
@@ -116,7 +116,7 @@ function uplDirectoryListRecursive ($currentdir, $startdir=NULL, $files=array(),
             if ($file != ".." && $file != ".") {
 
                 if ((filetype(getcwd()."/".$file) == "dir") &&
-                    (opendir(getcwd()."/".$file) !== false)) { 
+                    (opendir(getcwd()."/".$file) !== false)) {
                     $a_file['name']  = $file;
                     $a_file['depth'] = $depth;
                     $a_file['pathstring']  = $pathstring.$file.'/';;
@@ -190,10 +190,10 @@ function uplRecursiveRmDirIfEmpty($dir) {
             return 0;
     }
     $directory = @opendir($dir);
-    
+
     if (!$directory)
     {
-    	return false;	
+    	return false;
     }
     readdir($directory);
 
@@ -222,9 +222,9 @@ function uplHasFiles($dir)
     $directory = @opendir($cfgClient[$client]["upl"]["path"].$dir);
 
     if (!$directory) {
-    	return true;	
+    	return true;
     }
-	
+
     while(false !== ($dir_entry = readdir($directory))) {
             if($dir_entry != "." && $dir_entry != "..") {
             				closedir($directory);
@@ -242,12 +242,12 @@ function uplHasSubdirs($dir)
 	global $client, $cfgClient;
 
     $directory = @opendir($cfgClient[$client]["upl"]["path"].$dir);
-    
+
     if (!$directory)
     {
-    	return true;	
+    	return true;
     }
-    
+
     readdir($directory);
 
     $ret = false;
@@ -262,7 +262,7 @@ function uplHasSubdirs($dir)
         		}
     		}
     }
-    
+
     return ($ret);
 }
 
@@ -271,7 +271,7 @@ function uplHasSubdirs($dir)
  * uplSyncDirectory ($path)
  * Sync database contents with directory
  *
- * @param string $path Specifies the path to scan 
+ * @param string $path Specifies the path to scan
  */
 function uplSyncDirectory ($path)
 {
@@ -279,20 +279,20 @@ function uplSyncDirectory ($path)
 
 	if (is_dbfs($path))
 	{
-		return uplSyncDirectoryDBFS($path);	
+		return uplSyncDirectoryDBFS($path);
 	}
-	
+
 	$uploads = new UploadCollection;
     $properties = new PropertyCollection;
-    	
+
 	/* Read all files in a specific directory */
 	$dir = $cfgClient[$client]['upl']['path'].$path;
-	
+
 	$olddir = getcwd();
-	
+
 	@chdir($dir);
 	$dirhandle = @opendir($dir);
-	
+
 	/* Whoops, probably failed to open. Return to the caller, but clean up stuff first. */
 	if (!$dirhandle)
 	{
@@ -303,25 +303,25 @@ function uplSyncDirectory ($path)
         	if (!file_exists($cfgClient[$client]["upl"]["path"].$upload->get("dirname").$upload->get("filename")))
         	{
         		$uploads->delete($upload->get("idupl"));
-        	}	
+        	}
         }
-        
+
         // A click on "Upload" (root) would result in path = "" and this will result in LIKE '%' = everything
         // So, we have to exclude dbfs-files, as they "don't exist" (-> file_exists)
         $properties->select("idclient = '$client' AND itemtype='upload' AND type='file' AND itemid LIKE '".$path."%' AND itemid NOT LIKE 'dbfs%'");
-        
+
        	while ($property = $properties->next())
        	{
        		if (!file_exists($cfgClient[$client]["upl"]["path"].$property->get("itemid")))
     		{
-    			$properties->delete($property->get("idproperty"));	
+    			$properties->delete($property->get("idproperty"));
     		}
-       	}        
-        
+       	}
+
 		chdir($olddir);
 		return;
 	}
-	
+
 	/* Put all the files into the $files array */
 	while ($file = readdir ($dirhandle))
     {
@@ -333,7 +333,7 @@ function uplSyncDirectory ($path)
     		}
     	}
     }
-    
+
     $uploads->select("dirname = '$path' AND idclient = '$client'");
 
     while ($upload = $uploads->next())
@@ -341,21 +341,21 @@ function uplSyncDirectory ($path)
     	if (!file_exists($cfgClient[$client]["upl"]["path"].$upload->get("dirname").$upload->get("filename")))
     	{
     		$uploads->delete($upload->get("idupl"));
-    	}	
+    	}
     }
 
     // A click on "Upload" (root) would result in path = "" and this will result in LIKE '%' = everything
     // So, we have to exclude dbfs-files, as they "don't exist" (-> file_exists)
     $properties->select("idclient = '$client' AND itemtype='upload' AND type='file' AND itemid LIKE '".$path."%' AND itemid NOT LIKE 'dbfs%'");
-        
+
    	while ($property = $properties->next())
    	{
    		if (!file_exists($cfgClient[$client]["upl"]["path"].$property->get("itemid")))
 		{
-			$properties->delete($property->get("idproperty"));	
+			$properties->delete($property->get("idproperty"));
 		}
    	}
-    
+
     chdir($olddir);
 }
 
@@ -363,22 +363,22 @@ function uplSyncDirectory ($path)
  * uplSyncDirectoryDBFS ($path)
  * Sync database contents with DBFS
  *
- * @param string $path Specifies the path to scan 
+ * @param string $path Specifies the path to scan
  */
 function uplSyncDirectoryDBFS ($path)
 {
 	global $cfgClient, $client, $cfg, $db;
-	
+
 	$uploads = new UploadCollection;
     $properties = new PropertyCollection;
     $dbfs = new DBFSCollection;
-    
+
     if ($dbfs->dir_exists($path))
     {
     	$strippath = $dbfs->strip_path($path);
-    	
+
     	$dbfs->select("dirname = '$strippath'");
-    	
+
     	while ($file = $dbfs->next())
         {
         	if ($file->get("filename") != ".")
@@ -395,38 +395,38 @@ function uplSyncDirectoryDBFS ($path)
     	if (!$dbfs->file_exists($upload->get("dirname").$upload->get("filename")))
     	{
     		$uploads->delete($upload->get("idupl"));
-    	}	
+    	}
     }
-    
+
     $properties->select("idclient = '$client' AND itemtype='upload' AND type='file' AND itemid LIKE '".$path."%'");
-    
+
    	while ($property = $properties->next())
    	{
    		if (!$dbfs->file_exists($property->get("itemid")))
 		{
-			$properties->delete($property->get("idproperty"));	
+			$properties->delete($property->get("idproperty"));
 		}
-   	}        
-    
+   	}
+
 	return;
 }
 
 
 function uplmkdir($path,$name) {
-	
+
         global $cfgClient, $client, $action;
-       
+
         if (is_dbfs($path))
         {
         	$path = str_replace("dbfs:","", $path);
-        	
+
         	$fullpath = $path."/".$name."/.";
-        	
+
         	$dbfs = new DBFSCollection;
         	$dbfs->create($fullpath);
-        	return;	
+        	return;
         }
-        
+
         $name = uplCreateFriendlyName($name);
         $name = strtr($name, "'", ".");
         if(file_exists($cfgClient[$client]['upl']['path'].$path.$name)) {
@@ -442,11 +442,11 @@ function uplmkdir($path,$name) {
 function uplRenameDirectory ($oldpath, $newpath, $parent)
 {
 	global $cfgClient, $client, $cfg, $db;
-	
+
 	$db2 = new DB_Contenido;
-	
+
 	rename($cfgClient[$client]['upl']['path'].$parent.$oldpath, $cfgClient[$client]['upl']['path'].$parent.$newpath."/");
-	
+
 	/* Fetch all directory strings starting with the old path, and replace them
        with the new path */
 	$sql = "SELECT dirname, idupl FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND dirname LIKE '".Contenido_Security::escapeDB($parent, $db).Contenido_Security::escapeDB($oldpath, $db)."%'";
@@ -456,45 +456,45 @@ function uplRenameDirectory ($oldpath, $newpath, $parent)
 	{
 		$moldpath = $db->f("dirname");
 		$junk = substr($moldpath, strlen($parent) + strlen($oldpath));
-		
-		$newpath2 = $parent . $newpath . $junk; 
- 
+
+		$newpath2 = $parent . $newpath . $junk;
+
 		$idupl = $db->f("idupl");
 		$sql = "UPDATE ".$cfg["tab"]["upl"]." SET dirname='".Contenido_Security::escapeDB($newpath2, $db)."' WHERE idupl = '".Contenido_Security::toInteger($idupl)."'";
 		$db2->query($sql);
-		
+
 	}
-	
+
 	$sql = "SELECT itemid, idproperty FROM ".$cfg["tab"]["properties"]." WHERE itemid LIKE '".Contenido_Security::escapeDB($parent, $db).Contenido_Security::escapeDB($oldpath, $db)."%'";
 	$db->query($sql);
-	
+
 	while ($db->next_record())
 	{
 		$moldpath = $db->f("itemid");
 		$junk = substr($moldpath, strlen($parent) + strlen($oldpath));
-		
-		$newpath2 = $parent . $newpath . $junk; 
+
+		$newpath2 = $parent . $newpath . $junk;
 		$idproperty = $db->f("idproperty");
 		$sql = "UPDATE ".$cfg["tab"]["properties"]." SET itemid = '$newpath2' WHERE idproperty='$idproperty'";
 		$db2->query($sql);
 	}
-	
+
 }
 
 
 function uplRecursiveDirectoryList ($directory, &$rootitem, $level, $sParent = '', $iRenameLevel = null)
 {
 	$dirhandle = @opendir($directory);
-	
+
 	if (!$dirhandle)
 	{
-	} 
-	else 
+	}
+	else
 	{
         $aInvalidDirectories = array();
-        
+
 		unset($files);
-		
+
         //list the files in the dir
         while ($file = readdir ($dirhandle))
         {
@@ -520,7 +520,7 @@ function uplRecursiveDirectoryList ($directory, &$rootitem, $level, $sParent = '
             	}
         	}
         }
-        
+
         if (is_array($files))
         {
         	sort($files);
@@ -535,16 +535,16 @@ function uplRecursiveDirectoryList ($directory, &$rootitem, $level, $sParent = '
                 		unset($item);
                 		$item = new TreeItem($file, $directory.$file."/",true);
                 		$item->custom["level"] = $level;
-                		
+
                 		if ($key == count($files)-1)
                 		{
                 			$item->custom["lastitem"] = true;
                 		} else {
                 			$item->custom["lastitem"] = false;
                 		}
-                		
+
                 		$item->custom["parent"] = $directory;
-                		
+
                 		$rootitem->addItem($item);
                 		$old = $rootitem;
                 		$aArrayTemp = uplRecursiveDirectoryList($directory.$file."/", $item, $level + 1, $sParent.$file.'/', $iRenameLevel);
@@ -553,10 +553,10 @@ function uplRecursiveDirectoryList ($directory, &$rootitem, $level, $sParent = '
                 		chdir($olddir);
                 	}
             	}
-        	}	
+        	}
         }
 	}
-	
+
     @closedir ($dirhandle);
     return $aInvalidDirectories;
 }
@@ -569,7 +569,7 @@ function uplRecursiveDBDirectoryList ($directory, &$rootitem, $level)
 	$count = 0;
 	$lastlevel = 0;
 	$item["."] = &$rootitem;
-		
+
 	while ($dbitem = $dbfs->next())
 	{
 		$dirname = $dbitem->get("dirname");
@@ -597,17 +597,17 @@ function uplRecursiveDBDirectoryList ($directory, &$rootitem, $level)
     			unset($prevobj[$lastlevel]);
     			$lprevobj->custom["lastitem"] = true;
     		}
-    		
+
     		$prevobj[$level] = &$item[$dirname];
     		$lprevobj = &$item[$dirname];
-    		
+
     		$lastlevel = $level;
-    
+
     		if (is_object($item[$parent]))
     		{
-    			$item[$parent]->addItem($item[$dirname]);		
+    			$item[$parent]->addItem($item[$dirname]);
     		}
-    		
+
     		$count++;
 		}
 	}
@@ -622,7 +622,7 @@ function uplGetThumbnail ($file, $maxsize)
 	{
 		return uplGetFileIcon ($file);
 	}
-	
+
 	switch (getFileExtension($file))
 	{
 		case "png":
@@ -642,7 +642,7 @@ function uplGetThumbnail ($file, $maxsize)
 				{
 					return $img;
 				} else {
-					$value = capiImgScale($cfg["path"]["contenido"]."images/unknown.jpg", $maxsize, $maxsize, false, false, 50);	
+					$value = capiImgScale($cfg["path"]["contenido"]."images/unknown.jpg", $maxsize, $maxsize, false, false, 50);
 					if ($value !== false)
 					{
 						return $value;
@@ -654,7 +654,7 @@ function uplGetThumbnail ($file, $maxsize)
 		default:
 				return uplGetFileIcon ($file);
 				break;
-		
+
 	}
 }
 
@@ -669,7 +669,7 @@ function uplGetThumbnail ($file, $maxsize)
 function uplGetFileIcon ($file)
 {
 	global $cfg;
-	
+
 	switch (getFileExtension($file)) {
 		case "sxi":
 		case "sti":
@@ -709,7 +709,7 @@ function uplGetFileIcon ($file)
 					break;
 		case "txt":
 		case "rtf": $icon = "txt.gif";
-					break;					
+					break;
 		case "gif": $icon = "gif.gif";
 					break;
 		case "png": $icon = "png.gif";
@@ -763,8 +763,8 @@ function uplGetFileIcon ($file)
         case "ps": $icon = "design.gif";
                    break;
         case "css": $icon = "css.gif";
-					
-		default: 
+
+		default:
             if (file_exists($cfg['path']['contenido_fullhtml'] . $cfg["path"]["images"]. "filetypes/".getFileExtension($file).".gif")) {
                 $icon = getFileExtension($file).".gif";
             } else {
@@ -772,7 +772,7 @@ function uplGetFileIcon ($file)
             }
             break;
     }
-	
+
 	return $cfg['path']['contenido_fullhtml'] . $cfg["path"]["images"]. "filetypes/".$icon;
 }
 
@@ -788,7 +788,7 @@ function uplGetFileIcon ($file)
 function uplGetFileTypeDescription ($extension)
 {
 	global $cfg;
-	
+
 	switch ($extension)
 	{
 		/* Presentation files */
@@ -821,13 +821,13 @@ function uplGetFileTypeDescription ($extension)
 		case "txt": return (i18n("Plain Text"));
 		case "rtf": return (i18n("Rich Text Format"));
 
-		/* Images */					
+		/* Images */
 		case "gif": return (i18n("GIF Image"));
 		case "png": return (i18n("PNG Image"));
 		case "jpeg": return (i18n("JPEG Image"));
 		case "jpg": return (i18n("JPEG Image"));
 		case "tif": return (i18n("TIFF Image"));
-		case "psd": return (i18n("Adobe Photoshop Image"));		
+		case "psd": return (i18n("Adobe Photoshop Image"));
 
 		/* HTML */
 		case "html": return (i18n("Hypertext Markup Language Document"));
@@ -855,36 +855,39 @@ function uplGetFileTypeDescription ($extension)
 		case "php3":
 		case "php4": return (i18n("PHP Program Code"));
 		case "phps": return (i18n("PHP Source File"));
-		
+
 		case "pdf": return (i18n("Adobe Acrobat Portable Document"));
-		
-		/* Movies */ 
+
+		/* Movies */
 		case "mov": return (i18n("QuickTime Movie"));
 		case "avi": return (i18n("avi Movie"));
 		case "mpg":
 		case "mpeg": return (i18n("MPEG Movie"));
 		case "wmv": return (i18n("Windows Media Video"));
-		
+
 		default: return (i18n($extension."-File"));
 	}
 }
 
 function uplCreateFriendlyName ($filename)
 {
-	global $cfg, $oLang;
-	
+	global $cfg, $lang;
+
+	$oLang = new Language();
+	$oLang->loadByPrimaryKey($lang);
+
 	if (!is_array($cfg['upl']['allow_additional_chars'])) {
 		$filename = str_replace(" ", "_", $filename);
 	} elseif (in_array(' ', $cfg['upl']['allow_additional_chars']) === FALSE) {
 		$filename = str_replace(" ", "_", $filename);
 	}
-	
+
 	$chars = '';
 	if ( is_array($cfg['upl']['allow_additional_chars']) ) {
 		$chars = implode("", $cfg['upl']['allow_additional_chars']);
 		$chars = str_replace( array('-', '[', ']') , '', $chars );
 	}
-	
+	var_dump($oLang);
 	$filename = capiStrReplaceDiacritics($filename, strtoupper($oLang->getField('encoding')));
 	$filename = preg_replace("/[^A-Za-z0-9._\-" . $chars . "]/i", '', $filename);
 
@@ -894,12 +897,12 @@ function uplCreateFriendlyName ($filename)
 function uplSearch ($searchfor)
 {
 	global $client;
-	
+
     $properties = new PropertyCollection;
     $uploads = new UploadCollection;
-    
+
     $mysearch = urlencode($searchfor);
-    
+
     /* Search for keywords first, ranking +5 */
     $properties->select("idclient='".Contenido_Security::toInteger($client)."' AND itemtype = 'upload' AND type='file' AND name='keywords' AND value LIKE '%".Contenido_Security::escapeDB($mysearch, $db)."%'","itemid");
 
@@ -915,7 +918,7 @@ function uplSearch ($searchfor)
     {
     	$items[$item->get("itemid")] += (substr_count(strtolower($item->get("value")), strtolower($searchfor)) * 4);
     }
-    
+
     /* Search for media notes, ranking +3 */
     $properties->select("idclient='".Contenido_Security::toInteger($client)."' AND itemtype = 'upload' AND type='file' AND name='medianotes' AND value LIKE '%".Contenido_Security::escapeDB($mysearch, $db)."%'","itemid");
 
@@ -931,29 +934,29 @@ function uplSearch ($searchfor)
     {
     	$items[$item->get("dirname").$item->get("filename")] += (substr_count(strtolower($item->get("description")), strtolower($searchfor)) * 2);
     }
-    
+
     /* Search for file name, ranking +1 */
     $uploads->select("idclient='".Contenido_Security::toInteger($client)."' AND filename LIKE '%".Contenido_Security::escapeDB($mysearch, $db)."%'", "idupl");
 
     while ($item = $uploads->next())
     {
     	$items[$item->get("dirname").$item->get("filename")] += 1;
-    }    
-    
-    return ($items);	
+    }
+
+    return ($items);
 }
 
 function uplGetFileExtension ($sFile)
 {
 	/* Fetch the dot position */
 	$iDotPosition = strrpos($sFile, ".");
-	
+
 	$sExtension = substr($sFile, $iDotPosition + 1);
 	if (strpos($sExtension, "/") !== false)
 	{
-		return false;	
+		return false;
 	} else {
-		return $sExtension;	
+		return $sExtension;
 	}
 }
 ?>
