@@ -137,10 +137,9 @@ class PimPluginSetup {
         $actionCount = count($tempXml->action);
         for ($i = 0; $i < $actionCount; $i++) {
             // build attribut
-            foreach ($tempXml->action[$i]->attributes() as $area)
-                ;
+            $area = $tempXml->action[$i]->attributes();
 
-                // security check
+            // security check
             $area = cSecurity::escapeString($area);
             $action = cSecurity::escapeString($tempXml->action[$i]);
 
@@ -179,8 +178,7 @@ class PimPluginSetup {
     }
 
     /**
-     * TODO: Implement at XSD-File
-     * Add entries at *_nav_main
+     * TODO: Implement at XSD-File Add entries at *_nav_main
      *
      * @access protected
      * @param $tempXml temporary plugin definitions

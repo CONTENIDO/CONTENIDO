@@ -143,7 +143,8 @@ while (($plugin = $oItem->next()) !== false) {
     $view2->setVariable(i18n('Please choose your new file', 'pim'), 'LANG_UPDATE_CHOOSE');
     $view2->setVariable(i18n('Update', 'pim'), 'LANG_UPDATE_UPLOAD');
 
-    // TODO: Implementierung einer Abfangmeldung "Wollen Sie dieses Plugin wirklich löschen?"
+    // TODO: Implementierung einer Abfangmeldung "Wollen Sie dieses Plugin
+    // wirklich löschen?"
     // uninstall link
     $view2->setVariable($sess->url('main.php?area=pim&frame=4&pim_view=uninstall&pluginId=' . $plugin->get('idplugin')), 'UNINSTALL_LINK');
 
