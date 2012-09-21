@@ -244,7 +244,7 @@ class PimPluginSetup {
             $f = fopen($tempSqlFilename, 'rb');
 
             while (($tempSqlContent = fgets($f)) !== false) {
-                $tempSqlContent = str_replace('[tablename]', $cfg['tab']['plugins'] . '_', $tempSqlContent);
+                $tempSqlContent = str_replace('!PREFIX!', $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent);
                 // TODO remove debug output
                 echo $tempSqlContent . '<br />';
             }
