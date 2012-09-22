@@ -35,7 +35,7 @@ include_once('../includes/startup.php');
 header('Content-Type: text/javascript');
 
 cRegistry::bootstrap(array('sess' => 'cSession',
-                'auth' => 'Contenido_Challenge_Crypt_Auth',
+                'auth' => 'cAuthHandlerBackend',
                 'perm' => 'cPermission'));
 
 i18nInit($cfg['path']['contenido_locale'], $belang);

@@ -41,7 +41,7 @@ include_once('./includes/startup.php');
 
 cRegistry::bootstrap(array(
     'sess' => 'cSession',
-    'auth' => 'Contenido_Challenge_Crypt_Auth',
+    'auth' => 'cAuthHandlerBackend',
     'perm' => 'cPermission'
 ));
 

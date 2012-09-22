@@ -1489,7 +1489,7 @@ function cleanupSessions() {
     $db = cRegistry::getDb();
     $db2 = cRegistry::getDb();
     $col = new cApiInUseCollection();
-    $auth = new Contenido_Challenge_Crypt_Auth();
+    $auth = new cAuthHandlerBackend();
     $maxdate = date("YmdHis", time() - ($auth->lifetime * 60));
     // Expire old sessions
     $sql = "SELECT changed, sid FROM " . $cfg["tab"]["phplib_active_sessions"];

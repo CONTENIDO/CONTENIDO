@@ -319,7 +319,7 @@ class cEffectiveSetting {
      */
     protected static function _isAuthenticated() {
         global $auth;
-        return ($auth instanceof Contenido_Auth && $auth->is_authenticated() && !$auth->is_auth_form_uid());
+        return ($auth instanceof cAuth && $auth->isAuthenticated() && !$auth->isLoginForm());
     }
 
 }

@@ -222,7 +222,6 @@ cms/upload/bildergalerie/P1030817.jpg -text
 cms/upload/bildergalerie/P1040562.jpg -text
 cms/upload/bildergalerie/P1040563.jpg -text
 cms/upload/bildergalerie/P1080353.jpg -text
-conlib/auth.inc -text
 conlib/db_mysql.inc -text
 conlib/db_mysqli.inc -text
 conlib/db_pdo_mysql.inc -text
@@ -252,6 +251,10 @@ contenido/classes/UrlBuilder/Contenido_UrlBuilder_Frontcontent.class.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilder_MR.class.php -text
 contenido/classes/UrlBuilder/Sample.php -text
 contenido/classes/abstract_classes/class.conuser.php -text
+contenido/classes/auth/class.auth.handler.abstract.php -text
+contenido/classes/auth/class.auth.handler.backend.php -text
+contenido/classes/auth/class.auth.handler.frontend.php -text
+contenido/classes/auth/class.auth.php -text
 contenido/classes/cache/class.output.cache.php -text
 contenido/classes/class.action.php -text
 contenido/classes/class.activeusers.php -text

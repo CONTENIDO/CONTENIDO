@@ -414,7 +414,7 @@ class cApiPropertyCollection extends ItemCollection {
      *
      * @param   mixed  $field       Field to search in
      * @param   mixed  $fieldValue  Value to search for
-     * @param   Contenido_Auth  $auth  Narrow result down to user in auth objext
+     * @param   cAuth  $auth  Narrow result down to user in auth objext
      * @return  array  For each given item
      */
     public function getAllValues($field, $fieldValue, $auth = NULL) {

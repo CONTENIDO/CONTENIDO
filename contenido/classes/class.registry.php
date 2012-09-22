@@ -262,7 +262,7 @@ class cRegistry {
 
     /**
      * Returns the auth object stored in the global variable "auth".
-     * @return Auth
+     * @return cAuth
      */
     public static function getAuth() {
         return self::_fetchGlobalVariable('auth');

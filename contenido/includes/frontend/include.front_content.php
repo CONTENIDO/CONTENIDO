@@ -80,7 +80,7 @@ if ($contenido) {
     // Backend
     cRegistry::bootstrap(array(
         'sess' => 'cSession',
-        'auth' => 'Contenido_Challenge_Crypt_Auth',
+        'auth' => 'cAuthHandlerBackend',
         'perm' => 'cPermission'
     ));
     i18nInit($cfg['path']['contenido_locale'], $belang);
@@ -88,7 +88,7 @@ if ($contenido) {
     // Frontend
     cRegistry::bootstrap(array(
         'sess' => 'cFrontendSession',
-        'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth',
+        'auth' => 'cAuthHandlerFrontend',
         'perm' => 'cPermission'
     ));
 }

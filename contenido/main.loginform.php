@@ -88,9 +88,11 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
 $tpl = new cTemplate();
 $tpl->reset();
 
+$sess = cRegistry::getSession();
+
 $tpl->set('s', 'BASEPATH', cRegistry::getBackendUrl());
 $tpl->set('s', 'TITEL', ':: :: :: :: CONTENIDO Login');
-$tpl->set('s', 'ACTION', $this->url());
+$tpl->set('s', 'ACTION', $sess->selfURL());
 
 $aAvailableLangs = i18nGetAvailableLanguages();
 $str = '';

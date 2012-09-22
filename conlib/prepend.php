@@ -46,7 +46,7 @@ if (is_file($_PHPLIB['libdir'] . $dbDriverFileName)) {
 unset($dbDriverFileName);
 
 require_once($_PHPLIB['libdir'] . 'session.inc');   // Session management
-require_once($_PHPLIB['libdir'] . 'auth.inc');      // Authorization management
+
 // Additional require statements go before this line
 require_once($_PHPLIB['libdir'] . 'local.php');     // Required, contains your local configuration.
 require_once($_PHPLIB['libdir'] . 'page.inc');      // Required, contains the page management functions.

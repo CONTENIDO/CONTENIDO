@@ -77,10 +77,8 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
      */
     protected function loadSubCategories($iIdcat, $bAsObjects = true, $bWithSubCategories = false, $iSubCategoriesLoadDepth = 3) {
         $iIdcat = (int) $iIdcat;
-        $bUseAuth = (is_null($this->oAuth) ||
-                        (get_class($this->oAuth) != 'Auth' && get_class($this->oAuth) != 'Contenido_Frontend_Challenge_Crypt_Auth') && get_class($this->oAuth) != 'Contenido_Challenge_Crypt_Auth')
-                        ? false
-                        : true;
+        $bUseAuth = $this->oAuth instanceof cAuth;
+		
         $sFieldsToSelect = 'cattree.idcat, cattree.level';
         if ($bUseAuth === true) { // adapted from FrontendNavigation by Willi Man
             $sFieldsToSelect = 'cattree.idcat, cattree.level, catlang.public, catlang.idcatlang';
@@ -253,14 +251,14 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
     }
 
     /**
-     * Set internal property for Auth object to load only those categories the FE-User has right to see.
+     * Set internal property for cAuth object to load only those categories the FE-User has right to see.
      * Use this method if you have protected Categories and need to check agains FrontendUser Rights.
      * @access public
-     * @param Auth $oAuth
+     * @param cAuth $oAuth
      * @return void
      * @author Rudi Bieller
      */
-    public function setAuth(Auth $oAuth) {
+    public function setAuth(cAuth $oAuth) {
         $this->oAuth = $oAuth;
     }
 

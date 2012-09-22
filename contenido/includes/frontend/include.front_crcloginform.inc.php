@@ -32,6 +32,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 global $cfg, $cfgClient, $idcat, $idart, $idcatart, $lang, $client, $username, $encoding;
 
+$sess = cRegistry::getSession();
+
 $err_catart = trim(getEffectiveSetting('login_error_page', 'idcatart', ''));
 $err_cat    = trim(getEffectiveSetting('login_error_page', 'idcat', ''));
 $err_art    = trim(getEffectiveSetting('login_error_page', 'idart', ''));
