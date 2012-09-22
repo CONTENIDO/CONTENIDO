@@ -517,7 +517,22 @@ class cApiArticleLanguage extends Item {
         }
         return array_keys($this->content);
     }
-
+	
+	/**
+	 * Returns the link to the current object.
+	 * @return	string	link
+	 */
+	public function getLink() {
+		if ($this->isLoaded() === false) {
+			return '';
+		}
+		
+		$options = array();
+		$options['idart'] = $this->get('idart');
+		$options['lang'] = $this->get('idlang');
+		
+		return cUri::getInstance()->build($options);
+	}
 }
 
 ?>
