@@ -25,18 +25,17 @@ class cXmlReader extends cXmlBase {
      *         or loaded)
      */
     public function load($filename) {
-        if (!cFileHandler::exists($filename)) {
+        if (cFileHandler::exists($filename) === false) {
             return false;
         }
 
         // Load document via object method to avoid warning in PHP strict mode.
         $doc = new DOMDocument();
         if (false === $doc->load($filename)) {
-            throw new cException('could not load file "' . $filename . '"');
+            throw new cException('Could not load file "' . $filename . '"');
         }
 
-        $this->_dom = $doc;
-        $this->_initXpathInstance();
+		$this->setDomDocument($doc);
 
         return ($this->_dom instanceof DOMDocument);
     }

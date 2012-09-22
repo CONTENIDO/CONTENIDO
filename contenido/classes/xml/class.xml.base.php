@@ -43,6 +43,24 @@ abstract class cXmlBase {
 
         $this->_dom = new DOMDocument($version, $encoding);
     }
+	
+	/**
+	 * Returns the DOMDocument object.
+	 * @return DOMDocument
+	 */
+	public function getDomDocument() {
+		return $this->_dom;
+	}
+	
+	/**
+	 * Sets a current DOMDocument object to class.
+	 * @param	DOMDocument	$domDocument DOMDocument object
+	 * @return	void
+	 */
+	public function setDomDocument(DOMDocument $domDocument) {
+		$this->_dom = $domDocument;
+		$this->_initXpathInstance();
+	}
 
     /**
      * Returns the encoding of the XML document.

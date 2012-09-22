@@ -1,17 +1,3 @@
-?><?php
-/**
- * Description: Display an RSS Feed. Module "Input".
- *
- * @version    1.0.0
- * @author     Timo Hummel, Andreas Lindner
- * @copyright  four for business AG <www.4fb.de>
- *
- * {@internal
- *   created 2005-09-30
- *   $Id$
- * }}
- */
-
 ?>
 
 <table>

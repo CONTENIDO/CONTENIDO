@@ -661,41 +661,28 @@ class cUpdateNotifier {
         }
 
         if ($this->sRSSContent != '') {
-            $sFeedContent = substr($this->sRSSContent, 0, 1024);
-            $sFeedContent = trim($sFeedContent);
+			$doc = new cXmlReader();
+			$doc->load($this->sCacheDirectory . $this->sRSSFile);
+			
+			$maxFeedItems = 3;
 
-            $aMatches = array();
-
-            $sRegExp = "/<\?xml.*encoding=[\"\'](.*)[\"\']\?>/i";
-
-            preg_match($sRegExp, $sFeedContent, $aMatches);
-
-            if ($aMatches[1]) {
-                $oRss = new XML_RSS($this->sCacheDirectory . $this->sRSSFile, $aMatches[1]);
-            } else {
-                $oRss = new XML_RSS($this->sCacheDirectory . $this->sRSSFile);
-            }
-
-            $oRss->parse();
-
-            $iCnt = 0;
-            foreach ($oRss->getItems() as $aItem) {
-                $sText = htmlentities($aItem['description'], ENT_QUOTES);
+			for ($iCnt = 0; $iCnt < $maxFeedItems; $iCnt++) {
+				$title = $doc->getXpathValue('*/channel/item/title', $iCnt);
+				$link = $doc->getXpathValue('*/channel/item/link', $iCnt);
+				$description = $doc->getXpathValue('*/channel/item/description', $iCnt);
+				$date = $doc->getXpathValue('*/channel/item/pubDate', $iCnt);
+								
+                $sText = htmlentities($description, ENT_QUOTES);
                 if (strlen($sText) > 150) {
                     $sText = cApiStrTrimAfterWord($sText, 150) . '...';
                 }
 
-                $oTpl->set("d", "NEWS_DATE", $aItem['pubdate']);
-                $oTpl->set("d", "NEWS_TITLE", $aItem['title']);
+                $oTpl->set("d", "NEWS_DATE", $date);
+                $oTpl->set("d", "NEWS_TITLE", $title);
                 $oTpl->set("d", "NEWS_TEXT", $sText);
-                $oTpl->set("d", "NEWS_URL", $aItem['link']);
+                $oTpl->set("d", "NEWS_URL", $link);
                 $oTpl->set("d", "LABEL_MORE", i18n('read more'));
                 $oTpl->next();
-                $iCnt++;
-
-                if ($iCnt == 3) {
-                    break;
-                }
             }
 
             if ($iCnt == 0) {
