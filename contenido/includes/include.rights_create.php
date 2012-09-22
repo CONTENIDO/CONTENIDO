@@ -186,7 +186,7 @@ $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     if (in_array("admin[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
         $oCheckbox = new cHTMLCheckbox("madmin[" . $idclient . "]", $idclient, "madmin[" . $idclient . "]" . $idclient, in_array("admin[" . $idclient . "]", $aPerms));
-        $oCheckbox->setLabelText($item['name'] . "(" . $idclient . ")");
+        $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }
@@ -202,7 +202,7 @@ $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     if (in_array("client[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[" . $idclient . "]", $aAuthPerms)) {
         $oCheckbox = new cHTMLCheckbox("mclient[" . $idclient . "]", $idclient, "mclient[" . $idclient . "]" . $idclient, in_array("client[" . $idclient . "]", $aPerms));
-        $oCheckbox->setLabelText($item['name'] . "(" . $idclient . ")");
+        $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }
@@ -217,7 +217,7 @@ $sClientCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
     if ($perm->have_perm_client("lang[" . $item['idlang'] . "]") || $perm->have_perm_client("admin[" . $item['idclient'] . "]")) {
         $oCheckbox = new cHTMLCheckbox("mlang[" . $item['idlang'] . "]", $item['idlang'], "mlang[" . $item['idlang'] . "]" . $item['idlang'], in_array("lang[" . $item['idlang'] . "]", $aPerms));
-        $oCheckbox->setLabelText($item['langname'] . "(" . $item['clientname'] . ")");
+        $oCheckbox->setLabelText($item['langname'] . " (" . $item['clientname'] . ")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }
