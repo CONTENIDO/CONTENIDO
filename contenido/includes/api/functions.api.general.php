@@ -44,13 +44,13 @@ if (!defined('CON_FRAMEWORK')) {
  * Includes a file and takes care of all path transformations.
  *
  * Example:
- * contenido_include('classes', 'class.backend.php');
+ * cInclude('classes', 'class.backend.php');
  *
  * Currently defined areas:
  *
  * frontend    Path to the *current* frontend
- * conlib      Path to conlib
- * pear        Path to the bundled pear copy
+ * conlib      Path to conlib [deprecated]
+ * pear        Path to the bundled pear copy [deprecated]
  * classes     Path to the CONTENIDO classes (see NOTE below)
  * cronjobs    Path to the cronjobs
  * external    Path to the external tools
@@ -60,7 +60,7 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * NOTE: Since CONTENIDO (since v 4.9.0) provides autoloading of required
  *       class files, there is no need to load CONTENIDO class files of by using
- *       contenido_include() or cInclude().
+ *       cInclude().
  *
  * @param   string  $sWhere       The area which should be included
  * @param   string  $sWhat        The filename of the include
@@ -68,11 +68,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @param   string  $bReturnPath  Flag to return the path instead of including the file
  * @return  void
  */
-
-
-
-function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = false)
-{
+function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
     $backendPath = cRegistry::getBackendPath();
     global $client, $cfg, $cfgClient, $cCurrentModule;
 
@@ -83,8 +79,8 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
 
     switch ($sWhere) {
         case 'module':
-               $handler = new cModuleHandler($cCurrentModule);
-               $sInclude = $handler->getPhpPath() . $sWhat;
+			$handler = new cModuleHandler($cCurrentModule);
+			$sInclude = $handler->getPhpPath() . $sWhat;
             break;
         case 'frontend':
             $sInclude = cRegistry::getFrontendPath() . $sWhat;
@@ -97,6 +93,10 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
             break;
         case 'conlib':
         case 'phplib':
+			if (function_exists('cDeprecated')) {
+				cDeprecated("The support for the conlib library is deprecated. Do not use this classes!");
+			}
+			
             $sInclude = $cfg['path']['phplib'] . $sWhat;
             break;
         case 'classes':
@@ -107,6 +107,10 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
             $sInclude = $backendPath  . $cfg['path'][$sWhere] . $sWhat;
             break;
         case 'pear':
+			if (function_exists('cDeprecated')) {
+				cDeprecated("The support for the PEAR library is deprecated. Do not use this classes!");
+			}
+			
             $sInclude = $sWhat;
             $sIncludePath = ini_get('include_path');
 
@@ -187,18 +191,15 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
 
 
 /**
- * Shortcut to contenido_include.
- *
- * @see contenido_include
- *
- * @param   string  $sWhere  The area which should be included
- * @param   string  $sWhat   The filename of the include
- * @param   bool    $bForce  If true, force the file to be included
- * @return  void
+ * Alias of cInclude.
+ * @deprecated 2012-09-12
  */
-function cInclude($sWhere, $sWhat, $bForce = false)
-{
-    contenido_include($sWhere, $sWhat, $bForce);
+function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
+	if (function_exists('cDeprecated')) {
+		cDeprecated("This function is deprecated. Use cInclude instead.");
+	}
+	
+    cInclude($sWhere, $sWhat, $bForce, $bReturnPath);
 }
 
 /**
@@ -211,14 +212,11 @@ function cInclude($sWhere, $sWhat, $bForce = false)
  * @param   string  $sWhat   The filename of the include
  * @return  void
  */
-function plugin_include($sWhere, $sWhat)
-{
+function plugin_include($sWhere, $sWhat) {
     global $cfg;
 
     $sInclude = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $sWhere. '/' . $sWhat;
 
     include_once($sInclude);
 }
-
-
 ?>
