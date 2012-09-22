@@ -189,7 +189,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @return cApiUserProperty[]
      */
     public function fetchByTypeName($type, $name) {
-        $this->select("typ e ='" . $this->escape($type) . "' AND name = '" . $this->escape($name) . "'");
+        $this->select("type ='" . $this->escape($type) . "' AND name = '" . $this->escape($name) . "'");
         $props = array();
         while ($property = $this->next()) {
             $props[] = clone $property;
