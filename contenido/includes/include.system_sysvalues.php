@@ -66,7 +66,7 @@ $aChecks = array(
     1 => $cfg['path']['frontend'],
     2 => cRegistry::getBackendPath(),
     3 => $cfg['path']['all_wysiwyg'],
-    4 =>  cRegistry::getBackendUrl(),
+    4 => cRegistry::getBackendUrl(),
     5 => $cfg['path']['all_wysiwyg_html']
 );
 
@@ -74,8 +74,6 @@ $aServerConfiguration = array(
     array(i18n('System environment'), CON_ENVIRONMENT),
     array(i18n('Host name'), $_SERVER['HTTP_HOST'], 0),
     array(i18n('CONTENIDO server path'), $cfg['path']['frontend'], 0),
-    array(i18n('CONTENIDO PEAR path'), $cfg['path']['pear'], 1),
-    array(i18n('CONTENIDO PHPLIB path'), $cfg['path']['phplib'], 1),
     array(i18n('CONTENIDO backend path'), cRegistry::getBackendPath(), 1),
     array(i18n('CONTENIDO WYSIWYG repository path'), $cfg['path']['all_wysiwyg'], 2),
     array(i18n('CONTENIDO WYSIWYG editor path'), $cfg['path']['wysiwyg'], 3),
