@@ -236,11 +236,9 @@ contenido/ajaxmain.php -text
 contenido/backend_search.php -text
 contenido/classes/Contenido_Category/Contenido_Category.class.php -text
 contenido/classes/Contenido_Category/Contenido_Category_Articles.class.php -text
-contenido/classes/Contenido_Category/Sample.php -text
 contenido/classes/Contenido_FrontendNavigation/Contenido_FrontendNavigation.class.php -text
 contenido/classes/Contenido_FrontendNavigation/Contenido_FrontendNavigation_Base.class.php -text
 contenido/classes/Contenido_FrontendNavigation/Contenido_FrontendNavigation_Breadcrumb.class.php -text
-contenido/classes/Contenido_FrontendNavigation/Sample.php -text
 contenido/classes/Url/Contenido_Url.class.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilder.class.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilderConfig.class.php -text
