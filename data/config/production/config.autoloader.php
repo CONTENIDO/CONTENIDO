@@ -262,6 +262,7 @@ return array(
     'NotInitializedException' => 'contenido/classes/uri/class.uribuilder.config.php',
     'cUriBuilderConfig' => 'contenido/classes/uri/class.uribuilder.config.php',
     'cUriBuilderMR' => 'contenido/classes/uri/class.uribuilder.mr.php',
+    'cCategoryHelper' => 'contenido/classes/class.category.helper.php',
     'cTemplate' => 'contenido/classes/class.template.php',
     'Template' => 'contenido/classes/class.template.php',
     'cDatatypeNumber' => 'contenido/classes/datatypes/class.datatype.number.php',
