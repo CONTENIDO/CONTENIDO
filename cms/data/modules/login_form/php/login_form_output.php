@@ -1,22 +1,5 @@
 <?php
-/**
- * Description: Display login form
- *
- * @version    1.0.0
- * @author     Rudi Bieller
- * @copyright  four for business AG <www.4fb.de>
- *
- * {@internal
- *   created 2008-04-07
- *   $Id$
- * }}
- */
-
-if (!isset($tpl) || !is_object($tpl)) {
-    $tpl = new cTemplate();
-}
-
-$tpl->reset();
+$tpl = new cTemplate();
 
 if ($auth->auth["uid"] == "nobody") {
     $sTargetIdcat = getEffectiveSetting('login', 'idcat', '1');
@@ -31,10 +14,9 @@ if ($auth->auth["uid"] == "nobody") {
     $tpl->generate('templates/login_form.html');
 } else {
     try {
-        $oConCat = new Contenido_Category($db, $cfg);
-        $oConCat->load($idcat, true, $lang);
-        $bCatIsPublic = ($oConCat->getCategoryLanguage()->getVisible() == 1 && $oConCat->getCategoryLanguage()->getPublic() == 1)
-                        ? true : false;
+		$category = new cApiCategoryLanguage();
+		$category->loadByCategoryIdAndLanguageId($idcat, $lang);
+        $bCatIsPublic = ($category->get('visible') == 1 && $category->get('public') == 1) ? true : false;
     } catch (Exception $e) {
         echo $e->getMessage();
     }
