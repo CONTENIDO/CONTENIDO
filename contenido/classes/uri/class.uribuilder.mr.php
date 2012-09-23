@@ -24,9 +24,6 @@
 
 defined('CON_FRAMEWORK') or die('Illegal call');
 
-cInclude('classes', 'uri/class.uriBuilder.php');
-cInclude('classes', 'uri/class.uriBuilder.Factory.php');
-
 /**
  * Class to build frontend urls for advandced mod rewrite plugin.
  * Extends abstract Contenido_UriBuilder class and implements singleton pattern.
