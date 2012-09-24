@@ -710,7 +710,7 @@ class cSetupSystemtest extends cSetupMask
   $this->logFilePrediction(	"contenido/temp/",
 									C_SEVERITY_WARNING);
 
-		if ($_SESSION["setuptype"] == "setup" || ($_SESSION["setuptype"] == "migration" && is_dir(C_FRONTEND_PATH . "cms/") )) {
+		if ($_SESSION["setuptype"] == "setup" || ($_SESSION["setuptype"] == "migration" && is_dir("../" . "cms/") )) {
             // Setup mode or migration mode with a existing default client frontend path
 			$this->logFilePrediction(   "cms/cache/",
 										C_SEVERITY_WARNING);
@@ -749,18 +749,18 @@ class cSetupSystemtest extends cSetupMask
 
 	function logFilePrediction ($sFile, $iSeverity)
 	{
-		$status = canWriteFile(C_FRONTEND_PATH . $sFile);
+		$status = canWriteFile("../" . $sFile);
 
 		$sTitle = sprintf(i18n("Can't write %s"), $sFile);
 		$sMessage = sprintf(i18n("Setup or Contenido can't write to the file %s. Please change the file permissions to correct this problem."), $sFile);
 
 		if ($status == false)
 		{
-			if (file_exists(C_FRONTEND_PATH . $sFile))
+			if (file_exists("../" . $sFile))
 			{
-				$sTarget = C_FRONTEND_PATH . $sFile;
+				$sTarget = "../" . $sFile;
 
-				$iPerm = predictCorrectFilepermissions(C_FRONTEND_PATH . $sFile);
+				$iPerm = predictCorrectFilepermissions("../" . $sFile);
 
 				switch ($iPerm)
 				{
