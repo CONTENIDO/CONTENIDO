@@ -346,32 +346,31 @@ class Contenido_Navigation {
         if (strlen($sClientName) > 25) {
             $sClientName = capiStrTrimHard($sClientName, 25);
         }
-		
+
 		$client = Contenido_Security::toInteger($client);
 		if ( $client == 0 ) {
 			$sClientNameTemplate = '<b>' . i18n("Client") . ':</b> %s';
 			$main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientName));
 		} else {
 			$sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
-			
+
 			$sClientName 	= $classclient->getClientName($client).' ('.$client.')';
 			$sClientUrl 	= $cfgClient[$client]["path"]["htmlpath"];
 
 			if ($clientImage !== false && $clientImage != "" && file_exists($cfgClient[$client]['path']['frontend'].$clientImage)) {
 				$sClientImageTemplate = '<img src="%s" alt="%s" title="%s" />';
-				
+
 				$sThumbnailPath 	= capiImgScale($cfgClient[$client]['path']['frontend'].$clientImage, 80, 25, 0, 1);
 				$sClientImageTag 	= sprintf($sClientImageTemplate, $sThumbnailPath, $sClientName, $sClientName);
-				
+
 				$main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientImageTag));
 			} else {
 				$main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientName));
 			}
 		}
-		
+
 		$main->set('s', 'CHOSENUSER', "<b>".i18n("User").":</b> ".$classuser->getRealname($auth->auth["uid"], true));
-		
-        $main->set('s', 'SID', $sess->id);
+		$main->set('s', 'SID', $sess->id);
         $main->set('s', 'MAINLOGINLINK', $sess->url("frameset.php?area=mycontenido&frame=4"));
 
         // additional footer javascript
