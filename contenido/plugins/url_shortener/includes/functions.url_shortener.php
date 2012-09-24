@@ -22,7 +22,7 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * @return string rendered HTML code
  */
-function piusEditFormAdditionalRows($idart, $idlang, $idclient) {
+function piUsEditFormAdditionalRows($idart, $idlang, $idclient) {
     $shortUrl = new cApiShortUrl();
     $shortUrl->loadByMany(array(
         'idart' => $idart,
@@ -42,6 +42,7 @@ function piusEditFormAdditionalRows($idart, $idlang, $idclient) {
     $td->setClass('text_medium');
     $textbox = new cHTMLTextbox('url_shortener_shorturl', $shortUrl->get('shorturl'));
     $td->setContent($textbox);
+    $td->setColspan('3');
     $tr->appendContent($td);
 
     return $tr->render();
@@ -53,15 +54,15 @@ function piusEditFormAdditionalRows($idart, $idlang, $idclient) {
  *
  * @param array $values the values which are saved
  */
-function piusConSaveArtAfter($values) {
+function piUsConSaveArtAfter($values) {
     // if not all parameters have been given, do nothing
-    if (!isset($_POST['url_shortener_shorturl']) || !isset($values['idart']) || !isset($values['idlang']) || !isset($values['idclient'])) {
+    if (!isset($_POST['url_shortener_shorturl']) || !isset($values['idart'])) {
         return;
     }
     $shorturl = $_POST['url_shortener_shorturl'];
     $idart = $values['idart'];
-    $idlang = $values['idlang'];
-    $idclient = $values['idclient'];
+    $idlang = cRegistry::getLanguageId();
+    $idclient = cRegistry::getClientId();
     $shortUrlItem = new cApiShortUrl();
     $shortUrlItem->loadByMany(array(
         'idart' => $idart,
@@ -70,17 +71,32 @@ function piusConSaveArtAfter($values) {
     ));
     $shortUrlColl = new cApiShortUrlCollection();
     // if given shorturl is already in use, show error message
-    // TODO check in a different function
-    $shortUrlColl->select("shorturl='" . $shorturl . "'");
+    $shortUrlColl->select("shorturl='" . $shorturl . "' AND (idart!='" . $idart . "' OR idclient!='" . $idclient . "')");
     if ($shortUrlColl->count() !== 0) {
-        // TODO add warning to session as soon as this is possible (depends CON-772)
-        // TODO add info in which client, language, category and article the shorturl is already in use
+        // TODO add warning to session as soon as this is possible (depends
+        // CON-772)
+        // TODO add info in which client, language, category and article the
+        // shorturl is already in use
         // $session = cRegistry::getSession();
-        // $session->addWarning(i18n('The entered short URL already exists', 'url_shortener'));
-        echo i18n('The entered short URL already exists', 'url_shortener');
+        // $session->addWarning(i18n('The entered short URL already exists!',
+        // 'url_shortener'));
+        $message = i18n('The entered short URL already exists!', 'url_shortener');
+        $notification = new cGuiNotification();
+        $notification->displayNotification(cGuiNotification::LEVEL_ERROR, $message);
         return;
     }
-    // TODO check if given shorturl is valid (document 2.5)
+    // check if given shorturl is valid
+    if (!$shortUrlColl->isValidShortUrl($shorturl)) {
+        // TODO add warning to session as soon as this is possible (depends
+        // CON-772)
+        // $session = cRegistry::getSession();
+        // $session->addWarning(i18n('The entered short URL is not valid!',
+        // 'url_shortener'));
+        $message = i18n('The entered short URL is not valid!', 'url_shortener');
+        $notification = new cGuiNotification();
+        $notification->displayNotification(cGuiNotification::LEVEL_ERROR, $message);
+        return;
+    }
     if ($_POST['url_shortener_shorturl'] === '') {
         // delete short URL if it exists
         if ($shortUrlItem->isLoaded()) {
@@ -96,5 +112,21 @@ function piusConSaveArtAfter($values) {
             // short URL does not exist yet, create a new one
             $shortUrlColl->create($shorturl, $idart, $idlang, $idclient);
         }
+    }
+}
+
+/**
+ * Function is called after the plugins have been loaded.
+ * If the string placeholder in the example URL http://www.domain.de/placeholder
+ * is a defined short URL, the user is redirected to the correct URL.
+ */
+function piUsAfterLoadPlugins() {
+    $requestUri = $_SERVER['REQUEST_URI'];
+    $shorturl = substr($requestUri, strrpos($requestUri, '/') + 1);
+    $shortUrlItem = new cApiShortUrl();
+    $shortUrlItem->loadBy('shorturl', $shorturl);
+    if ($shortUrlItem->isLoaded()) {
+        header('Location:front_content.php?idart=' . $shortUrlItem->get(idart) . '&idlang=' . $shortUrlItem->get('idlang'));
+        exit();
     }
 }

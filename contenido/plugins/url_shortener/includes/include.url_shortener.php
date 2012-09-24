@@ -18,8 +18,35 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+global $action, $idshorturl;
+
 $page = new cGuiPage('url_shortener');
-$page->displayInfo('First version of URL Shortener works ^^');
+
+// check permissions
+$auth = cRegistry::getAuth();
+$userPerm = explode(',', $auth->auth['perm']);
+if (!in_array('sysadmin', $userPerm)) {
+    $page->displayError(i18n('Short URLs can only be managed by system administrators!', 'url_shortener'));
+}
+
+// process the actions
+if ($action === 'url_shortener_delete' && !empty($idshorturl)) {
+    $shortUrlColl = new cApiShortUrlCollection();
+    if ($shortUrlColl->delete($idshorturl)) {
+        $page->displayInfo(i18n('The short URL has successfully been deleted!', 'url_shortener'));
+    }
+} else if ($action === 'url_shortener_edit' && !empty($idshorturl)) {
+    // TODO edit the shorturl
+}
+
+// show notification if there are no short URLs yet
+$shortUrlColl = new cApiShortUrlCollection();
+$shortUrlColl->query();
+if ($shortUrlColl->count() === 0) {
+    $page->displayInfo(i18n('No short URLs have been defined yet!', 'url_shortener'));
+    $page->render();
+    exit;
+}
 
 $table = new cHTMLTable();
 $table->setClass('generic');
@@ -48,40 +75,55 @@ $table->appendContent($theader);
 // construct the table body
 $tbody = new cHTMLTableBody();
 
-$shortUrlColl = new cApiShortUrlCollection();
 // TODO add paging functionality via $shortUrlColl->setLimit();
-$shortUrlColl->query();
 while (($shortUrl = $shortUrlColl->next()) !== false) {
     $tr = new cHTMLTableRow();
     $contents = array();
+
     // get the client name
-    $client = new cApiClient($shortUrl->get('idclient'));
-    $contents[] = $client->get('name');
+    $apiClient = new cApiClient($shortUrl->get('idclient'));
+    $contents[] = $apiClient->get('name');
+
     // get the language name
-    $lang = new cApiLanguage($shortUrl->get('idlang'));
-    $contents[] = $lang->get('name');
-    // TODO get the category
-    $contents[] = 'cat';
+    $langItem = new cApiLanguage($shortUrl->get('idlang'));
+    $contents[] = $langItem->get('name');
+
+    // get the category
+    $catArt = new cApiCategoryArticle();
+    $catArt->loadBy('idart', $shortUrl->get('idart'));
+    $catLang = new cApiCategoryLanguage();
+    $catLang->loadByCategoryIdAndLanguageId($catArt->get('idcat'), $shortUrl->get('idlang'));
+    $contents[] = $catLang->get('name');
+
     // get the article
     $artlang = new cApiArticleLanguage();
     $artlang->loadByArticleAndLanguageId($shortUrl->get('idart'), $shortUrl->get('idlang'));
     $contents[] = $artlang->get('title');
-    // TODO get SEO URL
-    $params = array(
+
+    // construct SEO URL
+    $uriParams = array(
         'idart' => $shortUrl->get('idart'),
         'lang' => $shortUrl->get('idlang')
     );
-    $url = cUri::getInstance()->build($params, true);
+    $url = cUri::getInstance()->build($uriParams, true);
     $contents[] = $url;
+
     // get short URL
     $contents[] = $shortUrl->get('shorturl');
+
     // get creation date TODO format the date according to settings
     $contents[] = $shortUrl->get('created');
-    // TODO construct URL with idart and idlang
 
-    $contents[] = 'URL with idart and idlang';
+    // construct URL with idart and idlang
+    $uriBuilder = cUriBuilderFactory::getUriBuilder('front_content');
+    $uriBuilder->buildUrl($uriParams, true);
+    $contents[] = $uriBuilder->getUrl();
+
     // create the action buttons
-    $link = new cHTMLLink('');
+    $link = new cHTMLLink(cRegistry::getBackendUrl() . 'main.php?area=url_shortener&frame=4&action=url_shortener_delete&idshorturl=' . $shortUrl->get('idshorturl') . '&contenido=' . cRegistry::getSession()->id);
+    $image = new cHTMLImage('images/but_delete.gif');
+    $link->setContent($image);
+    $contents[] = $link;
 
     // append all contents to the table row
     foreach ($contents as $content) {

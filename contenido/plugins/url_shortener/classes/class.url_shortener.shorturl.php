@@ -45,6 +45,37 @@ class cApiShortUrlCollection extends ItemCollection {
         return $item;
     }
 
+    public function isValidShortUrl($shorturl) {
+        $cfg = cRegistry::getConfig();
+
+        // check if given shorturl is not a directory in the client folder
+        $exclude = scandir(cRegistry::getFrontendPath());
+        if (is_array($cfg['url_shortener']['exlude_dirs'])) {
+            $exclude = array_merge($exclude, $cfg['url_shortener']['exlude_dirs']);
+        }
+        if (in_array($shorturl, $exclude)) {
+            return false;
+        }
+
+        // check if given shorturl respects minimum length
+        $minLength = 3;
+        if (is_numeric($cfg['url_shortener']['minimum_length'])) {
+            $minLength = $cfg['url_shortener']['minimum_length'];
+        }
+        if (strlen($shorturl) < $minLength) {
+            return false;
+        }
+
+        // check if given shorturl contains only valid characters
+        if (isset($cfg['url_shortener']['allowed_chars'])) {
+            if (!preg_match($cfg['url_shortener']['allowed_chars'], $shorturl)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }
 class cApiShortUrl extends Item {
 
