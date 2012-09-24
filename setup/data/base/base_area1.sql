@@ -50,8 +50,8 @@ INSERT INTO !PREFIX!_area VALUES('60', 'groups', 'groups_create', '1', '1', '0')
 INSERT INTO !PREFIX!_area VALUES('61', 'groups', 'groups_overview', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('62', 'groups', 'groups_areas', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('63', 'groups', 'groups_members', '1', '1', '0');
-INSERT INTO !PREFIX!_area VALUES('65', 'logs', 'system', '1', '1', '1');
-INSERT INTO !PREFIX!_area VALUES('67', 'system_configuration', 'system_settings', '1', '1', '0');
+INSERT INTO !PREFIX!_area VALUES('65', '0', 'system', '1', '1', '1');
+INSERT INTO !PREFIX!_area VALUES('67', 'system', 'system_settings', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('68', 'client', 'client_articlespec', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('69', 'lay', 'lay_preview', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('70', 'mod', 'mod_history', '1', '1', '0');
@@ -93,8 +93,9 @@ INSERT INTO !PREFIX!_area VALUES ('603', 'workflow', 'workflow_step_edit', '1', 
 INSERT INTO !PREFIX!_area VALUES ('604', 'con', 'con_workflow', '0', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('801', '0', 'content_allocation', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('802', 'con', 'con_contentallocation', '1', '1', '0');
-INSERT INTO !PREFIX!_area VALUES ('415', '0', 'system_configuration', '1', '1', '1');
-INSERT INTO !PREFIX!_area VALUES ('811', 'system_configuration', 'system_purge', '1', '1', '0');
+INSERT INTO !PREFIX!_area VALUES ('415', 'system', 'system_configuration', '1', '1', '0');
+INSERT INTO !PREFIX!_area VALUES ('811', 'system', 'system_purge', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('100', 'con', 'con_meta', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('105', 'con', 'con_content_list', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('10000', '0', 'pim', '1', '1', '1');
+INSERT INTO !PREFIX!_area VALUES ('951', 'logs', 'system_log', '1', '1', '1');

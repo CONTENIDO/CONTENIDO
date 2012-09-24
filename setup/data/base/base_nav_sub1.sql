@@ -39,10 +39,10 @@ INSERT INTO !PREFIX!_nav_sub VALUES('47', '0', '58', '1', 'navigation/administra
 INSERT INTO !PREFIX!_nav_sub VALUES('48', '0', '59', '1', 'navigation/administration/groups/structure', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('9', '5', '54', '0', 'navigation/administration/groups/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('42', '0', '63', '1', 'navigation/administration/groups/members', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('53', '5', '415', '0', 'navigation/administration/system/main', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('51', '0', '65', '1', 'navigation/administration/system/main', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('53', '5', '65', '0', 'navigation/administration/system/main', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('51', '0', '65', '1', 'navigation/administration/system/sysvalues', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('416', '0', '67', '1', 'navigation/administration/system/syssettings', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('415', '5', '415', '1', 'navigation/administration/system/configuration', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('415', '67', '415', '1', 'navigation/administration/system/configuration', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('55', '0', '48', '1', 'navigation/administration/clients/clientproperties', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('56', '0', '68', '1', 'navigation/administration/clients/clientartspec', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('57', '0', '9', '1', 'navigation/style/layouts/edit', '1');
@@ -86,4 +86,5 @@ INSERT INTO !PREFIX!_nav_sub VALUES('397', '0', '71', '1', 'navigation/style/tpl
 INSERT INTO !PREFIX!_nav_sub VALUES('403', '0', '403', '1', 'navigation/style/tpleditor/history', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('805', '0', '811', '1', 'navigation/administration/system/purge', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('951', '5', '49', '1', 'navigation/administration/logs/mail_action', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('952', '5', '951', '1', 'navigation/administration/system/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('10000', '5', '10000', '0', 'pim/xml/pim.xml;plugin/pim', '1');
