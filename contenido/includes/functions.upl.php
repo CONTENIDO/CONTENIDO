@@ -887,7 +887,7 @@ function uplCreateFriendlyName ($filename)
 		$chars = implode("", $cfg['upl']['allow_additional_chars']);
 		$chars = str_replace( array('-', '[', ']') , '', $chars );
 	}
-	var_dump($oLang);
+
 	$filename = capiStrReplaceDiacritics($filename, strtoupper($oLang->getField('encoding')));
 	$filename = preg_replace("/[^A-Za-z0-9._\-" . $chars . "]/i", '', $filename);
 
