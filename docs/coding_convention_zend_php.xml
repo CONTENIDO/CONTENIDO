@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <profiles>
-<profile name="4fb Convention">
+<profile name="4fb PHP Convention">
 <setting id="com.zend.php.core.formatter.insert_new_line_in_function_invoke" value="0"/>
 <setting id="com.zend.php.formatter.core.formatter.alignment_for_arguments_in_allocation_expression_force_split" value="false"/>
 <setting id="com.zend.php.formatter.core.formatter.alignment_for_arguments_in_allocation_expression_indent_policy" value="0"/>

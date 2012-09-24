@@ -2181,7 +2181,8 @@ data/locale/en_US/LC_MESSAGES/contenido.mo -text
 data/locale/en_US/LC_MESSAGES/contenido.po -text
 data/locale/potfiles.txt -text
 docs/api/doxy-api.conf -text
-docs/coding_convention_zend.xml -text
+docs/coding_convention_zend_js.xml -text svneol=unset#text/plain
+docs/coding_convention_zend_php.xml -text svneol=unset#text/plain
 docs/techref/assets/conlogo.gif -text
 docs/techref/backend/backend.autoloader.html -text
 docs/techref/backend/backend.customizing.1.gif -text
