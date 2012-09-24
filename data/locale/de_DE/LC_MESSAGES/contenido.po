@@ -6282,3 +6282,393 @@ msgstr "Berechtigungen emulieren"
 
 #~ msgid "Generate basehref"
 #~ msgstr "Basehref erzeugen"
+
+#~ system integrity
+
+#: steps/forms/systemtest.php:64
+msgid "PHP MySQL Extension missing"
+msgstr "PHP MySQL Extension nicht geladen"
+
+#: steps/forms/systemtest.php:65
+msgid "CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. Please configure PHP to use either MySQL or MySQLi."
+msgstr "CONTENIDO benötigt die MySQL- oder MySQLi-Extension, um auf MySQL-Datenbanken zuzugreifen. Bitte konfigurieren Sie PHP so, daß PHP entweder MySQL oder MySQLi verwendet."
+
+#: steps/forms/systemtest.php:86
+msgid "Information"
+msgstr "Information"
+
+#: steps/forms/systemtest.php:90
+msgid "Warning"
+msgstr "Warnung"
+
+#: steps/forms/systemtest.php:94
+msgid "Fatal error"
+msgstr "Schwerer Fehler"
+
+#: steps/forms/systemtest.php:106
+msgid "No problems detected"
+msgstr "Keine Probleme gefunden"
+
+#: steps/forms/systemtest.php:106
+msgid "System integrity could not detect any problems with your system environment"
+msgstr "Die Systemintegrität konnte keine Probleme mit Ihrer Systemumgebung finden."
+
+#: steps/forms/systemtest.php:153
+#, php-format
+msgid "An old Version of Plugin %s is installed on your system."
+msgstr "Eine alte Version des Plugin %s ist auf Ihrem System installiert."
+
+#: steps/forms/systemtest.php:158
+msgid "Please remove all old plugins before you continue. To transfer old plugin data, please copy the old plugin data tables into the new plugin data tables after the installation. The new plugintable names are the same, but contains the table prefix of CONTENIDO. Also delete the old plugin tables after data transfer."
+msgstr "Bitte entfernen Sie alle alten Plugins bevor Sie fortfahren. Um die alten Plugindaten zu übertragen, kopieren Sie bitte die alten Daten aus den Plugintabellen nach der Installation in die neuen Plugintabellen. Die neuen Plugintabellen haben die gleiche Bezeichnung, besitzen jedoch zusätzlich den CONTENIDO Tabellenpräfix. Bitte entfernen Sie auch nach der Datenübertragung die alten Plugintabellen."
+
+#: steps/forms/systemtest.php:160
+msgid "Old Plugins are still installed"
+msgstr "Alte Plugins sind noch installiert"
+
+#: steps/forms/systemtest.php:171
+#, php-format
+msgid ""
+"You are updating a previous version of CONTENIDO to %s. Some directories/files have been moved to other sections in %s.\n"
+"\n"
+"Please ensure to copy contenido/includes/config.php to data/config/production/config.php and also other configuration files within contenido/includes/ to data/config/production/."
+msgstr ""
+"Sie aktualisieren von einer früheren CONTENIDO Version auf %s. In der Version %s wurden einige Verzeichnisse/Dateien in andere Bereiche ausgelagert.\n"
+"\n"
+"Bitte stellen Sie sicher, dass die Datei contenido/includes/config.php in data/config/production/config.php kopiert wird. Das gilt auch für andere Konfigurations-Dateien in contenido/includes/ die bei Bedarf nach data/config/production/ kopiert werden sollten."
+
+#: steps/forms/systemtest.php:174
+msgid "Attention: Some directories/files have been moved"
+msgstr "Achtung: Einige Verzeichnisse/Dateien wurden verschoben"
+
+#: steps/forms/systemtest.php:189
+#, php-format
+msgid "PHP Version lower than %s"
+msgstr "PHP Version unter %s"
+
+#: steps/forms/systemtest.php:190
+#, php-format
+msgid "CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."
+msgstr "CONTENIDO benötigt PHP %s oder höher für einen reibungslosen Betrieb. Bitte updaten Sie Ihre PHP Version, bzw. wenden Sie sich an Ihren Provider."
+
+#: steps/forms/systemtest.php:194
+msgid "File uploads disabled"
+msgstr "Upload Dateien deaktiviert"
+
+#: steps/forms/systemtest.php:195
+#, php-format
+msgid "Your PHP version is not configured for file uploads. You can't upload files using CONTENIDO's file manager unless you configure PHP for file uploads. See %s for more information"
+msgstr "Ihr PHP ist nicht für den Upload von Dateien konfiguriert. Sie können über CONTENIDO keine Dateien uploaden, wenn Sie nicht Ihr PHP für Datei Uploads konfigurieren. Weitere Informationen finden Sie unter %s"
+
+#: steps/forms/systemtest.php:200
+msgid "PHP setting 'magic_quotes_runtime' is turned on"
+msgstr "PHP Einstellung 'magic_quotes_runtime' ist aktiviert."
+
+#: steps/forms/systemtest.php:201
+msgid "The PHP setting 'magic_quotes_runtime' is turned on. CONTENIDO has been developed to comply with magic_quotes_runtime=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."
+msgstr "Die PHP Einstellung 'magic_quotes_runtime' ist aktiviert. CONTENIDO wurde entwickelt mit der deaktivierten Einstellung 'magic_quotes_runtime', da dies die Standardeinstellung von PHP ist. Sie müssen diese Einstellung verändern, damit CONTENIDO läuft."
+
+#: steps/forms/systemtest.php:205
+msgid "PHP Setting 'magic_quotes_sybase' is turned on"
+msgstr "PHP Einstellung 'magic_quotes_sybase' eingeschalten"
+
+#: steps/forms/systemtest.php:206
+msgid "The PHP Setting 'magic_quotes_sybase' is turned on. CONTENIDO has been developed to comply with magic_quotes_sybase=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."
+msgstr "Die PHP Einstellung 'magic_quotes_sybase' ist aktiviert. CONTENIDO wurde entwickelt mit der deaktivierten Einstellung 'magic_quotes_sybase', da dies die Standardeinstellung von PHP ist. Sie müssen diese Einstellung verändern, damit CONTENIDO läuft."
+
+#: steps/forms/systemtest.php:210
+msgid "PHP maximum execution time is less than 30 seconds"
+msgstr "Die PHP Ausführungszeit liegt unter 30 Sekunden."
+
+#: steps/forms/systemtest.php:211
+msgid "PHP is configured for a maximum execution time of less than 30 seconds. This could cause problems with slow web servers and/or long operations in the backend. Our recommended execution time is 120 seconds on slow web servers, 60 seconds for medium ones and 30 seconds for fast web servers."
+msgstr "PHP ist konfiguriert für eine maximale Ausführungszeit von weniger als 30 Sekunden. Dies kann Probleme verursachen bei langsamen Webservern und/oder zeitintensiven Aktionen im CONTENIDO Backend. Unsere empfohlene Ausführungszeit liegt bei 120 Sekunden bei langsamen Webservern, 60 Sekunden bei mittleren und 30 Sekunden bei schnellen Webservern."
+
+#: steps/forms/systemtest.php:214
+msgid "The class ZipArchive could not be found"
+msgstr "Die Klasse ZipArchive konnte nicht gefunden werden."
+
+#: steps/forms/systemtest.php:214
+msgid "This could cause some problems, but CONTENIDO is able to run without it. You should check your PHP installation."
+msgstr "Das könnte Probleme verursachen, aber CONTENIDO wird auch ohne die Klasse funktionieren. Sie sollten Ihre PHP Installation überprüfen."
+
+#: steps/forms/systemtest.php:223
+msgid "open_basedir directive set to '.'"
+msgstr "Die Direktive open_basedir ist auf '.' gesetzt."
+
+#: steps/forms/systemtest.php:224
+msgid "The directive open_basedir is set to '.' (e.g. current directory). This means that CONTENIDO is unable to access files in a logical upper level in the filesystem. This will cause problems managing the CONTENIDO frontends. Either add the full path of this CONTENIDO installation to the open_basedir directive, or turn it off completely."
+msgstr "Die Direktive open_basedir ist auf '.' (aktuelles Verzeichnis) gesetzt. Dies bedeuetet, daß CONTENIDO keine Dateien oberhalb des aktuellen Pfades öffnen kann. Hieraus ergibt sich ein Problem, wenn CONTENIDO seine Frontends verwalten muß. Bitte fügen Sie den kompletten Pfad der CONTENIDO-Installation zur Direktive open_basedir hinzu, oder deaktivieren Sie open_basedir komplett."
+
+#: steps/forms/systemtest.php:229
+msgid "open_basedir setting might be insufficient"
+msgstr "open_basedir-Einstellung könnte unzureichend sein"
+
+#: steps/forms/systemtest.php:230
+msgid "System integrity believes that the PHP directive open_basedir is configured sufficient, however, if you encounter errors like 'open_basedir restriction in effect. File <filename> is not within the allowed path(s): <path>', you have to adjust the open_basedir directive"
+msgstr "Die Systemintegrität hat erkannt, daß die PHP-Direktive vermutlich ausreichend konfiguriert ist. Wenn Sie jedoch Meldungen wie 'open_basedir restriction in effect. File <filename> is not within the allowed path(s): <path>' erhalten, müssen Sie die open_basedir-Direktive anpassen."
+
+#: steps/forms/systemtest.php:235
+msgid "open_basedir directive incompatible"
+msgstr "open_basedir Directive inkompatibel"
+
+#: steps/forms/systemtest.php:236
+msgid "System integrity has checked your PHP open_basedir directive and reckons that it is not sufficient. Please change the directive to include the CONTENIDO installation or turn it off completely."
+msgstr "Die Systemintegrität hat die PHP-Direktive open_basedir geprüft. Diese Direktive ist vermutlich unzureichend konfiguriert. Bitte ändern Sie die Direktive, sodaß sie den kompletten Pfad zur CONTENIDO-Installation enthält, oder deaktivieren Sie die Direktive komplett."
+
+#: steps/forms/systemtest.php:245
+msgid "PHP memory_limit directive too small"
+msgstr "PHP memory_limit Directive zu klein"
+
+#: steps/forms/systemtest.php:246
+msgid "The memory_limit directive is set to 32 MB or lower. This might be not enough for CONTENIDO to operate correctly. We recommend to disable this setting completely, as this can cause problems with large CONTENIDO projects."
+msgstr "Die memory_limit Directive ist auf 32 MB oder weniger gesetzt. Dies kann für CONTENIDO nicht ausreichen sein. Wir empfehlen diese Einstellung komplett zu deaktivieren, um Probleme bei grösseren CONTENIDO Projekten zu vermeiden."
+
+#: steps/forms/systemtest.php:251
+msgid "PHP sql.safe_mode turned on"
+msgstr "PHP Einstellung 'sql.safe_mode' ist aktiviert."
+
+#: steps/forms/systemtest.php:252
+msgid "The PHP directive sql.safe_mode is turned on. This causes problems with the SQL queries issued by CONTENIDO. Please turn that directive off."
+msgstr "Die PHP Directive sql.safe_mode ist aktiviert. Dies kann Probleme mit SQL Abfragen verursachen. Bitte deaktivieren Sie diese Einstellung."
+
+#: steps/forms/systemtest.php:256
+msgid "PHP GD-Extension is not loaded"
+msgstr "PHP GD-Extension nicht geladen"
+
+#: steps/forms/systemtest.php:257
+msgid "The PHP GD-Extension is not loaded. Some third-party modules rely on the GD functionality. If you don't enable the GD extension, you will encounter problems with modules like galleries."
+msgstr "Die PHP GD-Extension ist nicht geladen. Module von Drittanbietern verwenden teilweise die GD-Library für Grafikfunktionen. Wenn Sie diese Extension nicht aktivieren, werden Probleme mit diversen Modulen auftreten, z.b. mit Bildergalerien."
+
+#: steps/forms/systemtest.php:261
+msgid "PHP PCRE Extension is not loaded"
+msgstr "PHP PCRE Extension nicht geladen"
+
+#: steps/forms/systemtest.php:262
+msgid "The PHP PCRE Extension is not loaded. CONTENIDO uses PCRE-functions like preg_repace and preg_match and won't work without the PCRE Extension."
+msgstr "Die PHP PCRE-Extension ist nicht geladen. CONTENIDO benötigt PCRE-Funktionen wie z.b. preg_replace und preg_match und wird ohne die PCRE-Extension nicht funktionieren."
+
+#: steps/forms/systemtest.php:266
+#: steps/forms/systemtest.php:271
+#: steps/forms/systemtest.php:276
+msgid "PHP XML Extension is not loaded"
+msgstr "PHP XML Extension nicht geladen"
+
+#: steps/forms/systemtest.php:267
+#: steps/forms/systemtest.php:272
+#: steps/forms/systemtest.php:277
+msgid "The PHP XML Extension is not loaded. CONTENIDO won't work without the XML Extension."
+msgstr "Die PHP XML-Extension ist nicht geladen. CONTENIDO wird ohne die XML-Extension nicht funktionieren."
+
+#: steps/forms/systemtest.php:285
+msgid "Unable to check for a suitable image resizer"
+msgstr "Überprüfung auf geeignete Bildkomprimierung fehlgeschlagen."
+
+#: steps/forms/systemtest.php:286
+msgid "System integrity has tried to check for a suitable image resizer (which is, for exampl, required for thumbnail creation), but was not able to clearly identify one. If thumbnails won't work, make sure you've got either the GD-extension or ImageMagick available."
+msgstr "Die Systemintegrität konnte keine geeignete Bildkomprimierung finden. Falls die Minitaturbilder (Thumbnails) nicht funktionieren, müssen Sie entweder die Erweiterung GD oder ImageMagick installieren."
+
+#: steps/forms/systemtest.php:291
+msgid "No suitable image resizer available"
+msgstr "Keine geeignete Bildkomprimierung vorhanden."
+
+#: steps/forms/systemtest.php:292
+msgid "System integrity checked your image resizing support, however, it was unable to find a suitable image resizer. Thumbnails won't work correctly or won't be looking good. Install the GD-Extension or ImageMagick"
+msgstr "Die Systemintegrität hat keine geeignete Bildkomprimierung gefunden. Miniaturbilder werden nicht korrekt komprimiert. Bitte installieren Sie die Erweiterung GD oder ImageMagick."
+
+#: steps/forms/systemtest.php:303
+msgid "GD-Library GIF read support missing"
+msgstr "Gd-Library GIF Leseunterstützung fehlt"
+
+#: steps/forms/systemtest.php:304
+msgid "Your GD version doesn't support reading GIF files. This might cause problems with some modules."
+msgstr "Ihre GD Version unterstützt nicht das Lesen von GIF Dateien. Dies kann bei einigen Modulen zu Problemen führen."
+
+#: steps/forms/systemtest.php:308
+msgid "GD-Library GIF write support missing"
+msgstr "GD-Library GIF Schreibunterstützung fehlt"
+
+#: steps/forms/systemtest.php:309
+msgid "Your GD version doesn't support writing GIF files. This might cause problems with some modules."
+msgstr "Ihre GD Version unterstützt nicht das Schreiben von GIF Dateien. Dies kann bei einigen Modulen zu Problemen führen."
+
+#: steps/forms/systemtest.php:313
+msgid "GD-Library JPEG read support missing"
+msgstr "GD-Library JPEG Leseunterstützung fehlt"
+
+#: steps/forms/systemtest.php:314
+msgid "Your GD version doesn't support reading JPEG files. This might cause problems with some modules."
+msgstr "Ihre GD Version unterstützt nicht das Lesen von JPEG Dateien. Dies kann bei einigen Modulen zu Problemen führen."
+
+#: steps/forms/systemtest.php:318
+msgid "GD-Library JPEG write support missing"
+msgstr "GD-Library JPEG Schreibunterstützung fehlt"
+
+#: steps/forms/systemtest.php:319
+msgid "Your GD version doesn't support writing JPEG files. This might cause problems with some modules."
+msgstr "Ihre GD Version unterstützt nicht das Schreiben von JPEG Dateien. Dies kann bei einigen Modulen zu Problemen führen."
+
+#: steps/forms/systemtest.php:323
+msgid "GD-Library PNG read support missing"
+msgstr "GD-Library PNG Leseunterstützung fehlt"
+
+#: steps/forms/systemtest.php:324
+msgid "Your GD version doesn't support reading PNG files. This might cause problems with some modules."
+msgstr "Ihre GD Version unterstützt nicht das Lesen von PNG Dateien. Dies kann bei einigen Modulen zu Problemen führen."
+
+#: steps/forms/systemtest.php:328
+msgid "GD-Library PNG write support missing"
+msgstr "GD-Library PNG Schreibunterstützung fehlt"
+
+#: steps/forms/systemtest.php:329
+msgid "Your GD version doesn't support writing PNG files. This might cause problems with some modules."
+msgstr "Ihre GD Version unterstützt nicht das Schreiben von PNG Dateien. Dies kann bei einigen Modulen zu Problemen führen."
+
+#: steps/forms/systemtest.php:344
+msgid "MySQL database connect failed"
+msgstr "Verbindung zur MySQL Datenbank fehlgeschlagen."
+
+#: steps/forms/systemtest.php:345
+#, php-format
+msgid "System integrity was unable to connect to the MySQL Server (Server %s, Username %s). Please correct the MySQL data and try again.<br><br>The error message given was: %s"
+msgstr "Die Systemintegrität konnte nicht mit dem MySQL Server (Server %s, Username %s) verbinden. Bitte überprüfen Sie die Verbindungsdaten zur Datenbank und versuchen es erneut.<br><br>Die Fehlermeldung von MySQL war: %s."
+
+#: steps/forms/systemtest.php:358
+msgid "MySQL is running in strict mode"
+msgstr "MySQL läuft strict Modus"
+
+#: steps/forms/systemtest.php:381
+msgid "MySQL database already exists and seems to be filled"
+msgstr "MySQL-Datenbank existiert bereits und scheint gefüllt zu sein"
+
+#: steps/forms/systemtest.php:382
+#, php-format
+msgid "System integrity checked the database %s and found the table %s. It seems that you already have a CONTENIDO installation in this database. If you want to install anyways, change the database prefix. If you want to upgrade from a previous version, choose 'upgrade' as setup type."
+msgstr "Die Systemintegrität hat die Datenbank %s geprüft und die Tabelle %s gefunden. Es scheint, als ob eine (ältere) CONTENIDO-Version bereits installiert ist. Wenn Sie trotzdem in dieser Datenbank installieren möchten, wählen Sie einen anderen Präfix. Wenn Sie von einer älteren CONTENIDO-Version upgraden möchten, wählen Sie bitte \"Upgrade\" als Setupart."
+
+#: steps/forms/systemtest.php:392
+msgid "MySQL test table already exists in the database"
+msgstr "MySQL Testtabelle existiert bereits in der Datenbank"
+
+#: steps/forms/systemtest.php:393
+#, php-format
+msgid "System integrity checked the database %s and found the test table %s. Please remove it before continuing."
+msgstr "Die Systemintegrität hat die Datenbank %s geprüft und die Testtabelle %s gefunden. Bitte entfernen Sie diese, bevor Sie fortfahren."
+
+#: steps/forms/systemtest.php:403
+#: steps/forms/systemtest.php:436
+msgid "Unable to create tables in the selected MySQL database"
+msgstr "Kann keine Tabellen in der gewählten MySQL-Datenbank anlegen"
+
+#: steps/forms/systemtest.php:404
+#: steps/forms/systemtest.php:437
+#, php-format
+msgid "System integrity tried to create a test table in the database %s and failed. Please assign table creation permissions to the database user you entered, or ask an administrator to do so."
+msgstr "Die Systemintegrität hat versucht, eine Testtabelle in der Datenbank %s anzulegen und ist gescheitert. Bitte weisen Sie ihrem Datenbankbenutzer entsprechende Rechte zu, oder fragen Sie einen Administrator."
+
+#: steps/forms/systemtest.php:414
+#: steps/forms/systemtest.php:447
+msgid "Unable to remove the test table"
+msgstr "Konnte die Testtabelle nicht entfernen"
+
+#: steps/forms/systemtest.php:415
+#: steps/forms/systemtest.php:448
+#, php-format
+msgid "System integrity tried to remove the test table %s in the database %s and failed due to insufficient permissions. Please remove the table %s manually."
+msgstr "Die Systemintegrität hat die Testtabelle %s in der Datenbank %s erstellt, konnte sie jedoch aufgrund fehlender Berechtigungen nicht löschen. Bitte löschen Sie die Testtabelle %s manuell."
+
+#: steps/forms/systemtest.php:426
+msgid "Unable to create the database in the MySQL server"
+msgstr "Datenbankerzeugung auf dem MySQL-Server ist fehlgeschlagen"
+
+#: steps/forms/systemtest.php:427
+msgid "System integrity tried to create a test database and failed. Please assign database creation permissions to the database user you entered, ask an administrator to do so, or create the database manually."
+msgstr "Die Systemintegrität hat versucht, eine Testdatenbank zu erzeugen, jedoch ist die Datenbankerzeugung fehlgeschlagen. Bitte vergeben Sie passende Berechtigungen für den eingegebenen Datenbankbenutzer, fragen Sie ihre Administrator, oder erstellen Sie die Datenbank händisch."
+
+#: steps/forms/systemtest.php:461
+#: steps/forms/systemtest.php:475
+msgid "No data found for the migration"
+msgstr "Keine Daten für die Migration gefunden"
+
+#: steps/forms/systemtest.php:462
+#, php-format
+msgid "System integrity tried to locate the data for the migration, however, the database %s doesn't exist. You need to copy your database first before running system integrity."
+msgstr "Die Systemintegrität hat versucht, die Daten für die Migration zu lokalisieren, jedoch enthält die Datenbank %s keine Tabellen. Bitte kopieren Sie die Datenbank bevor Sie die Systemintegrität ausführen."
+
+#: steps/forms/systemtest.php:476
+#, php-format
+msgid "System integrity tried to locate the data for the migration, however, the database %s contains no tables. You need to copy your database first before running system integrity."
+msgstr "Die Systemintegrität hat versucht, die Daten für die Migration zu lokalisieren, jedoch enthält die Datenbank %s keine Tabellen. Bitte kopieren Sie die Datenbank bevor Sie die Systemintegrität ausführen."
+
+#: steps/forms/systemtest.php:490
+#: steps/forms/systemtest.php:504
+msgid "No data found for the upgrade"
+msgstr "Keine Daten für das Upgrade gefunden"
+
+#: steps/forms/systemtest.php:491
+#, php-format
+msgid "System integrity tried to locate the data for the upgrade, however, the database %s doesn't exist. You need to copy your database first before running system integrity."
+msgstr "Die Systemintegrität hat versucht, die Daten für das Upgrade zu lokalisieren, jedoch existiert die Datenbank %s nicht. Bitte kopieren Sie die Datenbank bevor Sie die Systemintegrität ausführen."
+
+#: steps/forms/systemtest.php:505
+#, php-format
+msgid "System integrity tried to locate the data for the upgrade, however, the database %s contains no tables. You need to copy your database first before running system integrity."
+msgstr "Die Systemintegrität hat versucht, die Daten für das Upgrade zu lokalisieren, jedoch enthält die Datenbank %s keine Tabellen. Bitte kopieren Sie die Datenbank bevor Sie die Systemintegrität ausführen."
+
+#: steps/forms/systemtest.php:601
+#, php-format
+msgid "Can't write %s"
+msgstr "Kann %s nicht schreiben"
+
+#: steps/forms/systemtest.php:602
+#, php-format
+msgid "System integrity or CONTENIDO can't write to the file %s. Please change the file permissions to correct this problem."
+msgstr "Die Systemintegrität oder CONTENIDO kann nicht die Datei %s schreiben. Bitte ändern Sie die Dateiberechtigungen, um das Problem zu lösen."
+
+#: steps/forms/systemtest.php:612
+msgid "Your Server runs Windows. Due to that, System integrity can't recommend any file permissions."
+msgstr "Ihr Server läuft mit Windows. Daher kann die Systemintegrität keine Dateiberechtigungen empfehlen."
+
+#: steps/forms/systemtest.php:615
+#, php-format
+msgid "Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file %s, especially in environments where ACL (Access Control Lists) are used."
+msgstr "Aufgrund einer sehr restriktiven Systemumgebung kann die Systemintegrität keinen Hinweis auf die richtigen Dateirechte geben. Fragen Sie Ihren Systemadministrator nach Schreibrechten für die Datei %s, insbesondere in Umgebungen, in denen ACL's (Access Control Lists) verwendet werden."
+
+#: steps/forms/systemtest.php:620
+#, php-format
+msgid "Your web server and the owner of your files are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the file mask to %s or set the owner to allow writing the file."
+msgstr "Der Webserver und der Besitzer der Datei sind identisch. Sie müssen den Schreibzugriff aktivieren, z.b. mit chmod u+rw %s, oder durch das setzen der Rechtemaske auf %s."
+
+#: steps/forms/systemtest.php:625
+#, php-format
+msgid "Your web server's group and the group of your files are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the file mask to %s or set the group to allow writing the file."
+msgstr "Die Webservergruppe und die Gruppe der Datei ist identisch. Aktivieren Sie Schreibzugriff für die Gruppe, z.b. mit chmod g+rw %s, oder durch das Setzen der Rechtemaske auf %s."
+
+#: steps/forms/systemtest.php:630
+#, php-format
+msgid "Your web server is not equal to the file owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the files. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the file mask to %s or set the others to allow writing the file."
+msgstr "Der Webserver ist ungleich dem Dateibesitzer, und befindet sich nicht in der Webserver-Gruppe. Es wäre unsicher, den \"world\"-Schreibzugriff zu aktivieren. Wenn Sie dennoch installieren möchten, aktivieren Sie den Schreibzugriff für jedermann (world), z.b. mit chmod o+rw %s, oder durch das setzen der Rechtemaske auf %s."
+
+#: steps/forms/systemtest.php:640
+msgid "Your Server runs Windows. Due to that, System integrity can't recommend any directory permissions."
+msgstr "Ihr Webserver läuft mit Windows. Daher kann die Systemintegrität keine Verzeichnisberechtigungen empfehlen."
+
+#: steps/forms/systemtest.php:643
+#, php-format
+msgid "Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file or directory %s, especially in environments where ACL (Access Control Lists) are used."
+msgstr "Aufgrund einer sehr restriktiven Umgebung kann die Systemintegrität keinen Hinweis auf die richtigen Dateirechte geben. Fragen Sie Ihren Systemadministrator nach Schreibrechten auf die Datei oder das Verzeichnis %s, insbesondere bei Systemen, bei denen ACL's (Access Control Lists) verwendet werden."
+
+#: steps/forms/systemtest.php:648
+#, php-format
+msgid "Your web server and the owner of your directory are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the directory mask to %s or set the owner to allow writing the directory."
+msgstr "Der Webserver sowie der Besitzer des Verzeichnisses sind identisch. Sie müssen Schreibzugriff für den Besitzer aktivieren, z.b. mit chmod u+rw %s, oder durch das setzen der Rechtemaske auf %s."
+
+#: steps/forms/systemtest.php:653
+#, php-format
+msgid "Your web server's group and the group of your directory are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the directory mask to %s or set the group to allow writing the directory."
+msgstr "Die Webservergruppe sowie die Gruppe des Verzeichnisses sind identisch. Sie müssen den Schreibzugriff für die Gruppe aktivieren, z.b. mit chmod g+rw %s, oder durch setzen der Rechtemaske auf %s."
+
+#: steps/forms/systemtest.php:658
+#, php-format
+msgid "Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."
+msgstr "Der Webserver ist ungleich dem Verzeichnisbesitzer, und ist nicht in der Webserver-Gruppe. Es wäre unsicher, dem Verzeichnis \"world\"-Schreibzugriff zu erlauben. Wenn Sie dennoch installieren möchten, aktivieren Sie Schreibzugriff für jedermann, z.b. mit chmod o+rw %s oder durch das Setzen der Rechtemaske %s."

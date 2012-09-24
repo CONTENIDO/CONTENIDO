@@ -1,0 +1,1 @@
+<div>{CONTROL_TESTRESULTS}</div>

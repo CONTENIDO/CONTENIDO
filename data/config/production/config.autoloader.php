@@ -631,5 +631,6 @@ return array(
     'Contenido_UrlBuilderFactory' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilderFactory.class.php',
     'Contenido_UrlBuilder_CustomPath' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_CustomPath.class.php',
     'XmlTree' => 'contenido/classes/class.xmltree.php',
-    'XmlNode' => 'contenido/classes/class.xmltree.php'
+    'XmlNode' => 'contenido/classes/class.xmltree.php',
+    'cSetupMask' => 'setup/lib/class.setupmask.php'
 );

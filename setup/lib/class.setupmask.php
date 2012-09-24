@@ -126,6 +126,26 @@ class cSetupMask
 
         $this->_oTpl->generate("templates/setup.tpl", false, false);
     }
+
+	function renderSystemCheck()
+    {
+        if ($this->_bNavigationEnabled) {
+            $this->_createNavigation();
+        }
+
+        if ($this->_iStep !== false) {
+            $this->_oTpl->set("s", "STEPS", '');
+        } else {
+            $this->_oTpl->set("s", "STEPS", '');
+        }
+
+        $this->_oTpl->set("s", "HEADER", '');
+        $this->_oTpl->set("s", "TITLE", '');
+
+        $this->_oTpl->set("s", "CONTENT", $this->_oStepTemplate->generate($this->_sStepTemplate, true, false));
+
+        $this->_oTpl->generate("templates/systemcheck/setup.tpl", false, false);
+    }
 }
 
 ?>
