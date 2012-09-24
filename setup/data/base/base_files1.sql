@@ -207,8 +207,9 @@ INSERT INTO !PREFIX!_files VALUES ('415', '415', 'include.system_configuration.p
 INSERT INTO !PREFIX!_files VALUES ('813', '811', 'include.system_purge.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('850', '100', 'include.con_meta_form.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('855', '105', 'include.con_content_list.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('10000', '10000', 'pim/includes/include.right_bottom.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('955', '951', 'include.system_log_sysvalues.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('956', '951', 'functions.system.php', 'inc');
+INSERT INTO !PREFIX!_files VALUES ('957', '953', 'include.system_integrity.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('10000', '10000', 'pim/includes/include.right_bottom.php', 'main');
 
 

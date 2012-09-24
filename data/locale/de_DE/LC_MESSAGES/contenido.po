@@ -5656,6 +5656,10 @@ msgstr "Systemeinstellungen"
 msgid "Purge"
 msgstr "Bereinigung"
 
+#: xml/navigation.xml:210
+msgid "System integrity"
+msgstr "Systemintegrität"
+
 #: xml/navigation.xml:83
 msgid "Error report"
 msgstr "Fehlerbericht"

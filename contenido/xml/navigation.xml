@@ -202,11 +202,12 @@ i18n("Login")
             <debug>Debug</debug>
             <system>
                 <main>System</main>
-                 <syssettings>Expert settings</syssettings>
+                <syssettings>Expert settings</syssettings>
                 <sysvalues>System variables</sysvalues>
                 <configuration>System settings</configuration>
                 <purge>Purge</purge>
                 <syserrorreport>Error report</syserrorreport>
+                <integrity>System integrity</integrity>
             </system>
             <frontend>
                 <main>Frontend</main>
