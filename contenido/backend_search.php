@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Contenido main file
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend
  * @version    1.0.5
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2007-04-20
  *   modified 2008-06-15, Rudi Bieller, Bugfix CON-149
  *   modified 2008-06-27, Frederic Schneider, add security fix
@@ -30,7 +30,7 @@
  *
  *   $Id: backend_search.php 1157 2010-05-20 14:10:43Z xmurrix $:
  * }}
- * 
+ *
  */
 
 /*
@@ -74,7 +74,7 @@ $iSearchID = NULL;
 $iSearchID_tmp = 0;
 
 // Suche - Text
-$sSearchStr = NULL;	
+$sSearchStr = NULL;
 $sSearchStr_tmp = '';
 
 // Suche - Date type
@@ -100,7 +100,7 @@ $dateformat = getEffectiveSetting("backend", "timeformat_date", "Y-m-d");
 // fuer das Initialiseren der Sub-Navi benoetigte Werte
 $sLoadSubnavi = '';
 $iIDCat = 0;
-$iIDTpl = 0; 
+$iIDTpl = 0;
 
 // Session- und Sprachdaten aus Formularanfrage sichern
 if (isset($_POST[$sess->name])) {
@@ -122,7 +122,7 @@ if (isset($_POST['speach'])) {
 if( !empty($sSession) ) {
     //Backend
     page_open(array (
-        'sess' => 'Contenido_Session', 
+        'sess' => 'Contenido_Session',
         'auth' => 'Contenido_Challenge_Crypt_Auth',
         'perm' => 'Contenido_Perm'
 	));
@@ -171,27 +171,27 @@ function generateJs ($aValues) {
         global $save_date_field;
         global $save_author;
         global $save_name;
-    
+
         return 'function refresh_article_search_form (refresh) {
                     var oFrame = top.content.left.left_top;
                     if (oFrame) {
                         oForm = oFrame.document.backend_search;
-                        
+
                         oForm.bs_search_text.value = "'.$aValues[$save_title].'";
                         oForm.bs_search_id.value = "'.$aValues[$save_id].'";
                         oForm.bs_search_date_type.value = "'.$aValues[$save_date_field].'";
-                        
+
                         oFrame.toggle_tr_visibility("tr_date_from");
                         oFrame.toggle_tr_visibility("tr_date_to");
-                        
+
                         oForm.bs_search_date_from_day.value = "'.$aValues[$save_date_from_day].'";
                         oForm.bs_search_date_from_month.value = "'.$aValues[$save_date_to_month].'";
                         oForm.bs_search_date_from_year.value = "'.$aValues[$save_date_from_year].'";
-                        
+
                         oForm.bs_search_date_to_day.value = "'.$aValues[$save_date_to_day].'";
                         oForm.bs_search_date_to_month.value = "'.$aValues[$save_date_to_month].'";
                         oForm.bs_search_date_to_year.value = "'.$aValues[$save_date_to_year].'";
-                        
+
                         oForm.bs_search_author.value = "'.$aValues[$save_author].'";
                     }
                 }
@@ -202,7 +202,7 @@ function generateJs ($aValues) {
     }
 }
 
-/** Function masks string for inserting into SQL statement 
+/** Function masks string for inserting into SQL statement
  *
  * @param string $sString
  * @return string
@@ -233,18 +233,18 @@ function getSearchResults($itemidReq, $itemtypeReq)
 	global $save_author;
 	global $save_name;
 	global $type;
-	
+
 	$retValue = array();
 	// Request from DB
 	$propertyCollection = new PropertyCollection;
 	$results = $propertyCollection->getValuesByType($itemtypeReq, $itemidReq, $type);
-	
+
 	// Put results in returning Array
 	$retValue[$save_title] = $results[$save_title];
 	$retValue[$save_id] = $results[$save_id];
 	$retValue[$save_date_field] = $results[$save_date_field];
 	$retValue[$save_author] = $results[$save_author];
-	
+
 	// Date from
 	$sSearchStrDateFromDay_tmp = 0;
 	$sSearchStrDateFromMonth_tmp = 0;
@@ -286,7 +286,7 @@ if( sizeof($_GET) == 0 && isset($_POST['save_search']) )
 	$itemtype = rand(0,10000);
 	$itemid = time();
 	$propertyCollection = new PropertyCollection;
-	
+
 	/**
 	 * Getting values from POST and storing them to DB
 	 * no checking for consistency done here because these values have already been checked when
@@ -307,7 +307,7 @@ if( sizeof($_GET) == 0 && isset($_POST['save_search']) )
 	$propertyCollection->setValue($itemtype, $itemid, $type, $save_author, $_POST[$save_author]);
 	// Name of search (displayed to user)
 	$propertyCollection->setValue($itemtype, $itemid, $type, $save_name, $_POST[$save_name]);
-    
+
 	// Call search we justed saved to show results
 	$searchResults = getSearchResults($itemid, $itemtype);
 	$sSearchStr_tmp = $searchResults[$save_title];
@@ -320,12 +320,12 @@ if( sizeof($_GET) == 0 && isset($_POST['save_search']) )
 	$sSearchStrDateToMonth_tmp = $searchResults[$save_date_to_month];
 	$sSearchStrDateToYear_tmp = $searchResults[$save_date_to_year];
 	$sSearchStrAuthor_tmp = $searchResults[$save_author];
-    
+
     $sScript = generateJs($searchResults);
 
 	// Reload top left to show new search name
 	$refreshScript .= 'top.content.left.left_top.location.href = top.content.left.left_top.location.href+"&save_search=true";';
-	
+
 	// Message for successfull saving
 	$saveSuccessfull = i18n("Thank you for saving this search from extinction !");
 }
@@ -335,7 +335,7 @@ elseif( sizeof($_GET) > 0)
 	$itemtypeReq = $_GET['itemtype'];
 	$itemidReq = $_GET['itemid'];
 	// Do we have the request parameters we need to fetch search values of stored search ?
-	if( (isset($itemtypeReq) && strlen($itemtypeReq)>0) && 
+	if( (isset($itemtypeReq) && strlen($itemtypeReq)>0) &&
 			(isset($itemidReq) && strlen($itemidReq)>0)
 		)
 	{
@@ -350,10 +350,10 @@ elseif( sizeof($_GET) > 0)
 		$sSearchStrDateToMonth_tmp = $searchResults[$save_date_to_month];
 		$sSearchStrDateToYear_tmp = $searchResults[$save_date_to_year];
 		$sSearchStrAuthor_tmp = $searchResults[$save_author];
-        
+
         $sSearchStrDateFrom_tmp = $searchResults[$save_date_from];
         $sSearchStrDateTo_tmp = $searchResults[$save_date_to];
-        
+
         #script for refreshing search form with stored search options
         $sScript = generateJs($searchResults);
 
@@ -364,7 +364,7 @@ elseif( sizeof($_GET) > 0)
 		$actDate = time();
 		$weekInSeconds = 60 * 60 * 24 * 7;  // seconds, minutes, hours, days
 		$oneWeekEarlier = $actDate - $weekInSeconds;
-		
+
 		$sSearchStrDateType_tmp = 'lastmodified';
 		$sSearchStrDateFromDay_tmp = date('d', $oneWeekEarlier);
 		$sSearchStrDateFromMonth_tmp = date('m', $oneWeekEarlier);
@@ -400,7 +400,7 @@ if (!empty($sSearchStr_tmp)) {
     $sSearchStr = $sSearchStr_tmp;
 }
 // Article ID
-if ($iSearchID_tmp > 0) {
+if ($iSearchID_tmp >= 0) {
     $iSearchID = $iSearchID_tmp;
 }
 // Date
@@ -416,7 +416,7 @@ if ($sSearchStrDateType_tmp != 'n/a') {
 	} else {
 		$sSearchStrDateTo = '';
 	}
-	
+
 	$sDateFieldName = $sSearchStrDateType_tmp;
 } else {
 	$sDateFieldName = '';
@@ -524,16 +524,16 @@ if ($iAffectedRows <= 0 || empty($where)) {
     $tpl->next();
 } else {
 	$bHit = false;
-	
+
     for ($i = 0; $i < $iAffectedRows; $i++) {
-		
+
         // reinitialisiere Hilfs-String
         $sRow = '';
 
 	    $db->next_record();
 
 		$idcat = $db->f("idcat");
-		
+
 		$check_rights = $perm->have_perm_area_action("con", "con_makestart");
 
 		if (!$check_rights) {
@@ -563,14 +563,14 @@ if ($iAffectedRows <= 0 || empty($where)) {
 		if (!$check_rights) {
 			$check_rights = $perm->have_perm_area_action("con_editart", "con_saveart");
 		}
-		
+
 		#Check rights per cat
 		if (!$check_rights) {
 			//hotfix timo trautmann 2008-12-10 also check rights in associated groups
 			$aGroupsForUser = $perm->getGroupsForUser($auth->auth[uid]);
 			$aGroupsForUser[] = $auth->auth[uid];
 			$sTmpUserString = implode("','", $aGroupsForUser);
-			
+
 			#Check if any rights are applied to current user or his groups
 			$sql = "SELECT *
 					FROM ".$cfg["tab"]["rights"]."
@@ -578,7 +578,7 @@ if ($iAffectedRows <= 0 || empty($where)) {
 			$db2->query($sql);
 
 			if ($db2->num_rows() != 0) {
-				
+
 				if (!$check_rights) {
 					$check_rights = $perm->have_perm_area_action_item("con", "con_makestart",$idcat);
 				}
@@ -611,10 +611,10 @@ if ($iAffectedRows <= 0 || empty($where)) {
 				}
 			}
 		}
-	    
+
 	    if ($check_rights) {
 	    	$bHit = true;
-	    	
+
 		    $idart             = $db->f("idart");
 		    $idartlang         = $db->f("idartlang");
 		    $idcatart          = $db->f("idcatart");
@@ -628,13 +628,13 @@ if ($iAffectedRows <= 0 || empty($where)) {
 		    $locked            = $db->f("locked");
 		    $startidartlang    = $db->f("startidartlang");
 		    $templatename      = $db->f("tplname");
-	
+
 		    // fuer den ersten gefundenen Artikel die Werte fuer CategoryID und TemplateID merken
 	        if ($i == 0) {
 	            $iIDCat = $idcat;
 	            $iIDTpl = $idtpl;
 	        }
-		    
+
 		    /* Funktion zum umwandeln in Startartikel/normale Artikel*/
 			if ($perm->have_perm_area_action_item("con", "con_makestart",$idcat) && 0 == 1) {
 			    if( $startidartlang == $idartlang ) {
@@ -651,7 +651,7 @@ if ($iAffectedRows <= 0 || empty($where)) {
 			    	$makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><img src=\"images/isstart0.gif\" border=\"0\" title=\"{$sFlagTitle}\" alt=\"{$sFlagTitle}\"></td>";
 				}
 			}
-			
+
 		    /* Funktion zum online/offline stellen */
 		    if( $online==1 ) {
 		        $sOnlineStatus = i18n('Make offline');
@@ -670,23 +670,23 @@ if ($iAffectedRows <= 0 || empty($where)) {
 		        $sLockStatus = i18n('Freeze article');
 		        $lockArticle = "<a href=\"main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&contenido=$sSession\" title=\"{$sLockStatus}\"><img src=\"images/lock_open.gif\" title=\"{$sLockStatus}\" alt=\"{$sLockStatus}\" border=\"0\"></a>";
 		    }
-		    
+
 		    /* Templatename */
 		    if (!empty($templatename)) {
 		        $sTemplateName = htmlentities($templatename);
 		    } else {
 		        $sTemplateName = '--- ' . i18n("None") . ' ---';
 		    }
-		
+
 		    $todoListeSubject = i18n("Reminder");
-		    
+
 		    $sReminder = i18n("Set reminder / add to todo list");
 		    $sDuplicateArticle = i18n("Duplicate article");
 		    $sArticleProperty = i18n("Article properties");
 		    $sConfigureTpl = i18n("Configure template");
 		    $sDeleteArticle = i18n("Delete article");
 		    $sDeleteArticleQuestion = i18n("Do you really want to delete following article");
-		    
+
 		    $sRowId = "$idart-$idartlang-$idcat-0-$idcatart-$iLangID";
 
             if ($i == 0) {
@@ -710,7 +710,7 @@ if ($iAffectedRows <= 0 || empty($where)) {
 			} else {
 				$duplicate = "";
 			}
-		    
+
 		    if ($perm->have_perm_area_action_item("con", "con_deleteart",$idcat)) {
 				$delete = "<a href=\"javascript://\" onclick=\"box.confirm(&quot;$sDeleteArticle&quot;, &quot;$sDeleteArticleQuestion:<br><br><b>$db->f('title')</b>&quot;, &quot;deleteArticle($idart,$idcat)&quot;)\" title=\"$sDeleteArticle\"><img src=\"images/delete.gif\" title=\"$sDeleteArticle\" alt=\"$sDeleteArticle\" border=\"0\"></a>";
 		    }else {
@@ -737,16 +737,16 @@ if ($iAffectedRows <= 0 || empty($where)) {
 	        $tpl->next();
 	    } #if
 	} #for
-    
+
     if (!$bHit) {
 
 	    $sNothingFound = i18n("No article found.");
-	
+
 	    $sRow = '<tr><td colspan="7" class="bordercell">' . $sNothingFound . '</td></tr>';
 	    $tpl->set('d', 'ROWS', $sRow);
 	    $tpl->next();
     }
-    
+
 	$sLoadSubnavi = 'parent.parent.frames["right"].frames["right_top"].location.href = \'main.php?area=con&frame=3&idcat=' . $iIDCat . '&idtpl=' . $iIDTpl . '&contenido=' . $sSession . "';";
 } #if
 
@@ -777,7 +777,7 @@ if( sizeof($_GET) == 0 && isset($_POST) ) {
     $searchForm .= '</form>';
     $tpl->set('s', 'STORESEARCHFORM', $searchForm);
 
-    // Title / Header for 'store the search' form 
+    // Title / Header for 'store the search' form
     $tpl->set('s', 'STORESEARCHINFO', i18n("Save this Search"));
 } else {
     $tpl->set('s', 'STORESEARCHINFO', '');
