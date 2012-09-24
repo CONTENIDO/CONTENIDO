@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Defines the general contenido functions
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.3.4
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2008-07-03, Dominik Ziegler, fixed bug CON-143
@@ -29,7 +29,7 @@
  *
  *   $Id: functions.general.php 1246 2010-12-16 13:13:04Z dominik.ziegler $:
 * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -107,7 +107,7 @@ function is_alphanumeric($test, $umlauts = true)
 
 	if ($umlauts == true)
 	{
-		$match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
+		$match = "/^[a-z0-9ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ]+$/i";
 	} else
 	{
 		$match = "/^[a-z0-9 ]+$/i";
@@ -161,9 +161,9 @@ function getCanonicalMonth($month)
 
 /**
  * Get multi-language day
- * 
+ *
  * @param integer the day number of date(w)
- * 
+ *
  * @return string  Dayname of current language
  */
 
@@ -192,7 +192,7 @@ function getCanonicalDay($iDay)
 		case 0 :
 			return (i18n("Sunday"));
 			break;
-		default: break;	
+		default: break;
 	}
 }
 
@@ -277,7 +277,7 @@ function markSubMenuItem($menuitem, $return = false)
 {
 
 	$str = '<script type="text/javascript">
-	
+
 			try {
 			/* Check if we are in a dual-frame or a quad-frame */
 			if ( parent.parent.frames[0].name == "header")
@@ -285,18 +285,18 @@ function markSubMenuItem($menuitem, $return = false)
 	    		if ( parent.frames["right_top"].document.getElementById("c_'.$menuitem.'") ) {
 	                menuItem = parent.frames["right_top"].document.getElementById("c_'.$menuitem.'").getElementsByTagName(\'a\')[0];
 	                parent.frames["right_top"].sub.clicked(menuItem);
-	            } 	
+	            }
 			} else {
 	        /* Check if submenuItem is existing
 	           and mark it */
-			
-				
+
+
 	            if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_'.$menuitem.'") ) {
 	                menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_'.$menuitem.'").getElementsByTagName(\'a\')[0];
-                    
+
 	                parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem);
-	            } 
-				
+	            }
+
 			}
 			} catch (e)
 			{}
@@ -465,14 +465,14 @@ function getLanguageNamesByClient($client)
 	return $list;
 }
 
-function set_magic_quotes_gpc(&$code) { 
+function set_magic_quotes_gpc(&$code) {
       global $cfg;
-       
-      if (!$cfg['simulate_magic_quotes']) { 
+
+      if (!$cfg['simulate_magic_quotes']) {
             if (get_magic_quotes_gpc() == 0)
             {
             	$code = addslashes($code);
-            } 
+            }
       }
 }
 
@@ -480,11 +480,11 @@ function set_magic_quotes_gpc(&$code) {
  * @deprecated since 22.08.2005
  * This function is called everytime when the code of an article is generated.
  * In this case indexing can cause performance problems.
- * Indexing an article is treated now in function conSaveContentEntry. 
+ * Indexing an article is treated now in function conSaveContentEntry.
  */
 function SaveKeywordsforart($keycode, $idart, $place, $lang)
 {
-	; # do nothing 
+	; # do nothing
 }
 
 function fakeheader($time)
@@ -737,21 +737,21 @@ function isValidMail($sEMail, $bStrict = false)
 		// HerrB (14.02.2008), code posted by Calvini
 		// See http://www.contenido.org/forum/viewtopic.php?p=106612#106612
 		// Note, that IDNs are currently only supported if given as punycode
-		
+
 		// "Strict" just means "95% real-world match",
 		// e.g. a.b@c.de, a-b@c.de, a_b@c.de and some special chars (not \n, ;)
-		
+
 		// See also http://www.php.net/manual/en/function.eregi.php#52458,
 		// but note http://www.php.net/manual/en/function.eregi.php#55215
-		// or just kill yourself, as being dumb to even try to validate an 
+		// or just kill yourself, as being dumb to even try to validate an
 		// email address: http://www.php.net/manual/en/function.preg-match.php#76615
-		
-		$sLocalChar		= '-a-z0-9_!#\\$&\'\\*\\+\\/=\\?\\^`\\{\\|\\}~'; 
-		$sLocalRegEx	= '['.$sLocalChar.'](\\.*['.$sLocalChar.'])*'; 
-		$sDomainChar	= 'a-zäöü'; 
+
+		$sLocalChar		= '-a-z0-9_!#\\$&\'\\*\\+\\/=\\?\\^`\\{\\|\\}~';
+		$sLocalRegEx	= '['.$sLocalChar.'](\\.*['.$sLocalChar.'])*';
+		$sDomainChar	= 'a-zï¿½ï¿½ï¿½';
 		$sDomainRegEx	= $sDomainRegEx  = '((['.$sDomainChar.']|['.$sDomainChar.']['.$sDomainChar.'0-9-]{0,61}['.$sDomainChar.'0-9])\\.)+';
 		$sTLDChar		= 'a-z';
-		$sTLDRegEx		= '['.$sTLDChar.']{2,}'; 
+		$sTLDRegEx		= '['.$sTLDChar.']{2,}';
 		return preg_match('/^' . $sLocalRegEx . '@' . $sDomainRegEx . $sTLDRegEx . '$/i', $sEMail);
 	} else {
 		return preg_match("/^[0-9a-z]([-_.]*[0-9a-z]*)*@[a-z0-9-]+\.([a-z])/i", $sEMail);
@@ -817,7 +817,7 @@ function rereadClients()
 
 /**
  * Sets a system property entry
- * 
+ *
  * @modified Timo Trautmann 22.02.2008 Support for editing name and type
  *
  * @param string $type The type of the item
@@ -826,23 +826,23 @@ function rereadClients()
  * @param int $idsystemprop The sysprop id, use optional. If set it allows to modify type name and value
  */
 function setSystemProperty($type, $name, $value, $idsystemprop = 0)
-{	
+{
 	global $cfg;
 	if ($type == "" || $name == "")
 	{
 		return false;
 	}
-    
+
     $idsystemprop = Contenido_Security::toInteger($idsystemprop);
-    
+
 	$db_systemprop = new DB_Contenido;
-    
+
     if ($idsystemprop == 0) {
         $sql = "SELECT idsystemprop FROM ".$cfg["tab"]["system_prop"]." WHERE type='".Contenido_Security::escapeDB($type, $db_systemprop)."' AND name='".Contenido_Security::escapeDB($name, $db_systemprop)."'";
     } else {
         $sql = "SELECT idsystemprop FROM ".$cfg["tab"]["system_prop"]." WHERE idsystemprop='$idsystemprop'";
     }
-    
+
 	$db_systemprop->query($sql);
 
 	if ($db_systemprop->num_rows() > 0)
@@ -866,7 +866,7 @@ function setSystemProperty($type, $name, $value, $idsystemprop = 0)
 
 /**
  * Remove a system property entry
- * 
+ *
  * @param string $type The type of the item
  * @param string $name The name of the item
  */
@@ -892,7 +892,7 @@ function deleteSystemProperty($type, $name)
  * $array[$type][$name][idsystemprop] = $idsystemprop;
  *
  * @param boolean bGetPropId - if true special mode is activated which generates for each property a third array, which also contains idsystemprop value
- * @return array 
+ * @return array
  */
 function getSystemProperties($bGetPropId = 0)
 {
@@ -903,7 +903,7 @@ function getSystemProperties($bGetPropId = 0)
 	$sql = "SELECT idsystemprop, type, name, value FROM ".$cfg["tab"]["system_prop"]." ORDER BY type ASC, name ASC, value ASC";
 	$db_systemprop->query($sql);
     $results = array();
-    
+
     if ($bGetPropId) {
     	while ($db_systemprop->next_record())
     	{
@@ -922,10 +922,10 @@ function getSystemProperties($bGetPropId = 0)
 
 /**
  * Gets a system property entry
- * 
+ *
  * @param string $type The type of the item
  * @param string $name The name of the item
- * @return mixed boolean false if nothing was found, or 
+ * @return mixed boolean false if nothing was found, or
  */
 function getSystemProperty($type, $name)
 {
@@ -945,30 +945,30 @@ function getSystemProperty($type, $name)
 	}
 }
 
-/** 
- * Gets system property entries 
- * 
- * @param string $type The type of the item 
- * @return array Value 
- */ 
-function getSystemPropertiesByType($sType) 
+/**
+ * Gets system property entries
+ *
+ * @param string $type The type of the item
+ * @return array Value
+ */
+function getSystemPropertiesByType($sType)
 {
 	global $cfg;
-	
+
 	$aResult = array();
-	
+
 	$db_systemprop = new DB_Contenido;
-	
+
 	$sSQL = "SELECT name, value FROM ".$cfg["tab"]["system_prop"]." WHERE type='".Contenido_Security::escapeDB($sType, $db_systemprop)."' ORDER BY name";
 	$db_systemprop->query($sSQL);
-	
+
 	while ($db_systemprop->next_record())
 	{
-		$aResult[$db_systemprop->f("name")] = urldecode($db_systemprop->f("value")); 
+		$aResult[$db_systemprop->f("name")] = urldecode($db_systemprop->f("value"));
 	}
 
-	return $aResult; 
-} 
+	return $aResult;
+}
 
 /**
  * Returns the current effective setting for a property.
@@ -978,11 +978,11 @@ function getSystemPropertiesByType($sType)
  *
  * System properties can be overridden by the group, and group
  * properties can be overridden by the user.
- * 
+ *
  * @param string $type The type of the item
  * @param string $name The name of the item
  * @param string $default Optional default value
- * @return mixed boolean false if nothing was found 
+ * @return mixed boolean false if nothing was found
  */
 function getEffectiveSetting($type, $name, $default = "")
 {
@@ -991,25 +991,25 @@ function getEffectiveSetting($type, $name, $default = "")
 	if ($auth->auth["uid"] != "nobody")
 	{
 		cInclude('classes', 'class.user.php');
-		
+
 		$user = new User;
 		$user->loadUserByUserID($auth->auth["uid"]);
-	
+
 		$value = $user->getUserProperty($type, $name, true);
         unset($user);
 	} else {
-		$value = false;	
+		$value = false;
 	}
 
     if ($value == false) {
         cInclude('classes', 'class.genericdb.php');
         cInclude('classes', 'contenido/class.clientslang.php');
-        
+
         $oClient = new cApiClientLanguage(false, $client, $lang);
         $value = $oClient->getProperty($type, $name);
         unset ($oClient);
     }
-    
+
 	if ($value == false)
 	{
         cInclude('classes', 'contenido/class.client.php');
@@ -1017,12 +1017,12 @@ function getEffectiveSetting($type, $name, $default = "")
 		$value = $oClient->getProperty($type, $name);
         unset ($oClient);
 	}
-    
+
 	if ($value == false)
 	{
 		$value = getSystemProperty($type, $name);
 	}
-	
+
 	if ($value === false)
 	{
 		return $default;
@@ -1031,49 +1031,49 @@ function getEffectiveSetting($type, $name, $default = "")
 	}
 }
 
-/** 
- * Returns the current effective settings for a type of properties. 
- * 
- * The order is: 
- * System => Client => Group => User 
- * 
- * System properties can be overridden by the group, and group 
- * properties can be overridden by the user. 
- * 
- * @param string $type The type of the item 
- * @return array Value 
- */ 
-function getEffectiveSettingsByType($sType) 
+/**
+ * Returns the current effective settings for a type of properties.
+ *
+ * The order is:
+ * System => Client => Group => User
+ *
+ * System properties can be overridden by the group, and group
+ * properties can be overridden by the user.
+ *
+ * @param string $type The type of the item
+ * @return array Value
+ */
+function getEffectiveSettingsByType($sType)
 {
 	global $auth, $client, $cfg, $lang;
-	
+
 	$aResult = getSystemPropertiesByType($sType);
-	
+
 	cInclude('classes', 'contenido/class.client.php');
-	
+
 	$oClient = new cApiClient($client);
 	$aResult = array_merge($aResult, $oClient->getPropertiesByType($sType));
     unset ($oClient);
-    
+
     cInclude('classes', 'class.genericdb.php');
     cInclude('classes', 'contenido/class.clientslang.php');
-    
+
     $oClient = new cApiClientLanguage(false, $client, $lang);
     $aResult = array_merge($aResult, $oClient->getPropertiesByType($sType));
-    
+
 	unset ($oClient);
-	
+
 	if ($auth->auth["uid"] != "nobody")
 	{
 		cInclude('classes', 'class.user.php');
-		
+
 		$oUser = new User;
 		$oUser->loadUserByUserID($auth->auth["uid"]);
-		
+
 		$aResult = array_merge($aResult, $oUser->getUserPropertiesByType($sType, true));
 	}
-	
-	return $aResult; 
+
+	return $aResult;
 }
 
 /**
@@ -1112,7 +1112,7 @@ function addArtspec($artspectext, $online)
 
 	if (isset ($_POST['idartspec']))
 	{ //update
-		$sql = "UPDATE ".$cfg['tab']['art_spec']." SET 
+		$sql = "UPDATE ".$cfg['tab']['art_spec']." SET
 						artspec='".Contenido_Security::escapeDB(urldecode($artspectext), $db)."',
 						online='".Contenido_Security::toInteger($online)."'
 					WHERE idartspec=".Contenido_Security::toInteger($_POST['idartspec'])."";
@@ -1195,7 +1195,7 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
 	$html = '';
 	$html .= '<select id="'.$sName.'" name="'.$sName.'">';
 	$html .= '  <option value="">'.i18n("Please choose").'</option>';
-	
+
 	$sql = "SELECT b.title, b.idart FROM
 	    	   ".$cfg["tab"]["art"]." AS a, ".$cfg["tab"]["art_lang"]." AS b, ".$cfg["tab"]["cat_art"]." AS c
 			   WHERE c.idcat = '".Contenido_Security::toInteger($iIdCat)."'
@@ -1203,7 +1203,7 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
 	           ORDER BY b.title";
 
 	$db->query($sql);
-	
+
 	while ($db->next_record())
 	{
 		if ($sValue != $db->f('idart'))
@@ -1213,7 +1213,7 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
 			$html .= '<option value="'.$db->f('idart').'" style="background-color:#EFEFEF" selected="selected">'.$db->f('title').'</option>';
 		}
 	}
-	
+
 	$html .= '</select>';
 
 	return $html;
@@ -1437,7 +1437,7 @@ if (!function_exists("str_ireplace"))
  * @param $replace string String to replace
  * @param $subject string String to process
  *
- * @return string Processed string		
+ * @return string Processed string
  */
 function str_ireplace_once($find, $replace, $subject)
 {
@@ -1467,7 +1467,7 @@ function str_ireplace_once($find, $replace, $subject)
  * @param $replace string String to replace
  * @param $subject string String to process
  *
- * @return string Processed string		
+ * @return string Processed string
  */
 function str_ireplace_once_reverse($find, $replace, $subject)
 {
@@ -1498,7 +1498,7 @@ function str_ireplace_once_reverse($find, $replace, $subject)
  * @param $needle   string  String to search for
  * @param $start    integer Offset
  *
- * @return string Processed string		
+ * @return string Processed string
  */
 function str_rpos($haystack, $needle, $start = 0)
 {
@@ -1525,7 +1525,7 @@ function str_rpos($haystack, $needle, $start = 0)
 /**
  * isImageMagickAvailable - checks if ImageMagick is available
  *
- * @return boolean true if ImageMagick is available		
+ * @return boolean true if ImageMagick is available
  */
 function isImageMagickAvailable()
 {
@@ -1544,14 +1544,14 @@ function isImageMagickAvailable()
 
 	$output = array ();
 	$retval = 0;
-	
+
 	@exec("convert", $output, $retval);
 
     if (!is_array($output) || count($output) == 0)
     {
         return false;
     }
-    
+
 	if (strpos($output[0], "ImageMagick") !== false)
 	{
 		$_imagemagickAvailable = true;
@@ -1566,7 +1566,7 @@ function isImageMagickAvailable()
 /**
  * isRunningFromWeb - checks if the script is being runned from the web
  *
- * @return boolean true if the script is running from the web		
+ * @return boolean true if the script is running from the web
  */
 function isRunningFromWeb()
 {
@@ -1581,7 +1581,7 @@ function isRunningFromWeb()
 /**
  * getClientName: Returns the client name for a given ID
  *
- * @return string client name		
+ * @return string client name
  */
 function getClientName($idclient)
 {
@@ -1705,7 +1705,7 @@ function scanDirectory($sDirectory, $bRecursive = false)
  * same, otherwise the function won't find them!
  *
  * @param $entity Name of the directory to scan
- * @return string client name		
+ * @return string client name
  */
 function scanPlugins($entity)
 {
@@ -1837,7 +1837,7 @@ function callPluginStore($entity)
 
 function displayPlugin($entity, & $form)
 {
-	/* TODO: Function can't work, as $feuser is not defined (see $display = 
+	/* TODO: Function can't work, as $feuser is not defined (see $display =
 	 * call_user_func($entity."_".$plugin."_display", $feuser);) and plugins need
 	 * - if data has to be shown - global objects ...
 	 */
@@ -1881,7 +1881,7 @@ function displayPlugin($entity, & $form)
  * echo createRandomName(8);
  *
  * @param $nameLength Length of the generated string
- * @return string random name		
+ * @return string random name
  */
 function createRandomName($nameLength)
 {
@@ -1943,7 +1943,7 @@ function sendPostRequest($host, $path, $data, $referer = "", $port = 80)
  * mime_content_type: Define if it doesn't exist
  *
  * @param $file	File to check
- * @return string mime-type	
+ * @return string mime-type
  */
 if (!function_exists("mime_content_type"))
 {
@@ -2010,9 +2010,9 @@ function define_if($constant, $value)
 
 /**
  * Specify platform specific newline character; PHP_EOL has been introduced in PHP 5.0.2
- * Note, that Mac seems to use \r, sorry guys 
+ * Note, that Mac seems to use \r, sorry guys
  */
-if (!defined('PHP_EOL')) 
+if (!defined('PHP_EOL'))
 {
 	if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN')
 	{
@@ -2176,7 +2176,7 @@ function getNamedFrame($frame)
 /**
  * startTiming: Starts the timing for a specific function
  *
- * @param function string Name of the function 
+ * @param function string Name of the function
  * @param parameters array All parameters for the function to measure
  *
  * @return int uuid for this measure process
@@ -2210,7 +2210,7 @@ function startTiming($function, $parameters = array ())
 /**
  * endAndLogTiming: Ends the timing process and logs it to the timings file
  *
- * @param uuid int UUID which has been used for timing 
+ * @param uuid int UUID which has been used for timing
  */
 function endAndLogTiming($uuid)
 {
@@ -2263,7 +2263,7 @@ function endAndLogTiming($uuid)
 	trigger_error("calling function ".$_timings[$uuid]["function"]."(".$parameterString.") took ".$timeSpent." seconds", E_USER_NOTICE);
 }
 
-// @TODO: it's better to create a instance of DB_Contenido class, the class constructor connects also to the database. 
+// @TODO: it's better to create a instance of DB_Contenido class, the class constructor connects also to the database.
 function checkMySQLConnectivity() {
 
 	global $contenido_host, $contenido_database, $contenido_user, $contenido_password, $cfg;
@@ -2271,15 +2271,15 @@ function checkMySQLConnectivity() {
 	if ($cfg["database_extension"] == "mysqli") {
 		if (($iPos = strpos($contenido_host, ":")) !== false) {
 			list($sHost, $sPort) = explode(":", $contenido_host);
-			
+
 			$res = @ mysqli_connect($sHost, $contenido_user, $contenido_password, "", $sPort);
 		} else {
-			$res = @ mysqli_connect($contenido_host, $contenido_user, $contenido_password);	
+			$res = @ mysqli_connect($contenido_host, $contenido_user, $contenido_password);
 		}
 	} else {
 		$res = @ mysql_connect($contenido_host, $contenido_user, $contenido_password);
 	}
-	
+
 	$selectDb = false;
 	if ( $res ) {
 		if ($cfg["database_extension"] == "mysqli") {
@@ -2290,7 +2290,7 @@ function checkMySQLConnectivity() {
 	}
 
 	if ( !$res || !$selectDb ) {
-	
+
 		$errortitle = i18n("MySQL Database not reachable for installation %s");
 		$errortitle = sprintf($errortitle, $cfg["path"]["contenido_fullhtml"]);
 
@@ -2302,12 +2302,14 @@ function checkMySQLConnectivity() {
 		if ($cfg["contenido"]["errorpage"] != "")
 		{
 			header("Location: ".$cfg["contenido"]["errorpage"]);
+		} else {
+			die("Could not connect to the database server with this configuration!");
 		}
 		exit;
 	} else
 	{
 		if ($cfg["database_extension"] == "mysqli")
-		{		
+		{
 			mysqli_close($res);
 		} else {
 			mysql_close($res);
@@ -2334,8 +2336,8 @@ function notifyOnError($errortitle, $errormessage)
 			$sMailhost = getSystemProperty('system', 'mail_host');
 			if ($sMailhost == '') {
 				$sMailhost = 'localhost';
-			} 
-		
+			}
+
 			$oMail = new phpmailer;
 			$oMail->Host = $sMailhost;
 			$oMail->IsHTML(0);
@@ -2345,7 +2347,7 @@ function notifyOnError($errortitle, $errormessage)
 			$oMail->AddAddress($cfg["contenido"]["notifyonerror"], "");
 			$oMail->Subject = $errortitle;
 			$oMail->Body = $errormessage;
-		
+
 			/* Notify configured email */
 			$oMail->Send();
 		}
@@ -2419,15 +2421,15 @@ function cInitializeArrayKey (&$aArray, $sKey, $mDefault = "")
 	{
 		if (isset($aArray))
 		{
-			return false;	
+			return false;
 		}
-		
+
 		$aArray = array();
 	}
-	
+
 	if (!array_key_exists($sKey, $aArray))
 	{
-		$aArray[$sKey] = $mDefault;	
+		$aArray[$sKey] = $mDefault;
 	}
 }
 
@@ -2441,62 +2443,62 @@ function cInitializeArrayKey (&$aArray, $sKey, $mDefault = "")
  * @param DB_Contenido $db
  * @param array $cfg global cfg-array
  * @param int $lang global language id
- * 
+ *
  * @since 4.6.18
- * 
+ *
  * @version 1.0.0
  * @author Holger Librenz
  */
 function sendEncodingHeader ($db, $cfg, $lang) {
     if (array_key_exists("use_encoding", $_GET))
     {
-        $use_encoding = trim(strip_tags($_GET["use_encoding"]));  
+        $use_encoding = trim(strip_tags($_GET["use_encoding"]));
     }
-    
+
     if (array_key_exists("use_encoding", $_POST))
     {
-        $use_encoding = trim(strip_tags($_POST["use_encoding"])); 
+        $use_encoding = trim(strip_tags($_POST["use_encoding"]));
     }
-    
+
     if (!isset($use_encoding))
     {
         $use_encoding = true;
     }
-    
+
     if (is_string($use_encoding))
     {
         if ($use_encoding == "false")
         {
-            $use_encoding = false;  
+            $use_encoding = false;
         } else {
-            $use_encoding = true;   
+            $use_encoding = true;
         }
     }
-    
+
     if ($use_encoding != false)
     {
         $sql = "SELECT idlang, encoding FROM ".$cfg["tab"]["lang"];
         $db->query($sql);
-        
+
         $aLanguageEncodings = array();
-        
+
         while ($db->next_record())
         {
             $aLanguageEncodings[$db->f("idlang")] = $db->f("encoding");
         }
-        
+
         if (array_key_exists($lang, $aLanguageEncodings))
         {
             if (!in_array($aLanguageEncodings[$lang], $cfg['AvailableCharsets']))
             {
-                header("Content-Type: text/html; charset=ISO-8859-1");      
+                header("Content-Type: text/html; charset=ISO-8859-1");
             } else {
-                header("Content-Type: text/html; charset={$aLanguageEncodings[$lang]}");        
+                header("Content-Type: text/html; charset={$aLanguageEncodings[$lang]}");
             }
         } else {
-            header("Content-Type: text/html; charset=ISO-8859-1");          
+            header("Content-Type: text/html; charset=ISO-8859-1");
         }
-    
+
     }
 }
 ?>
