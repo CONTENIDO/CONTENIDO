@@ -183,10 +183,8 @@ INSERT INTO !PREFIX!_files VALUES ('501', '501', 'linkchecker/includes/include.l
 INSERT INTO !PREFIX!_files VALUES ('502', '500', 'linkchecker/includes/include.linkchecker_right_top.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('503', '52', 'include.subnav_blank.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('550', '550', 'include.mail_log.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('551', '550', 'include.mail_log.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('554', '550', 'include.mail_log.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('555', '551', 'include.mail_log.right_bottom.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('556', '552', 'include.mail_log.right_bottom.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('555', '551', 'include.mail_log.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('556', '552', 'include.mail_log.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('600', '600', 'workflow/includes/include.workflow_left_top.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('601', '600', 'workflow/includes/include.workflow_list.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('602', '601', 'workflow/includes/include.workflow_edit.php', 'main');
