@@ -132,6 +132,7 @@ $cfg['templates']['symbolhelp']           = 'template.symbolhelp.html';
 
 $cfg['templates']['system_variables']     = 'template.system_variables.html';
 $cfg['templates']['system_variables_block'] = 'template.system_variables_block.html';
+$cfg['templates']['system_log_variables'] = 'template.system_log_variables.html';
 
 $cfg['templates']['request_password']     = 'template.request_password.html';
 $cfg['templates']['file_subnav']          = 'template.file_subnav.html';

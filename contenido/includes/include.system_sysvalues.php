@@ -37,7 +37,7 @@ if (isset($tmp_notification)) {
 } else {
     $tpl->set('s', 'TEMPNOTIFICATION', '');
 }
-
+/*
 // error log
 if (cFileHandler::exists($cfg['path']['contenido_logs'] . 'errorlog.txt')) {
     $info = cFileHandler::info($cfg['path']['contenido_logs'] . 'errorlog.txt');
@@ -60,7 +60,7 @@ if (cFileHandler::exists($cfg['path']['contenido_logs'] . 'errorlog.txt')) {
 $tpl->set('s', 'TXTERRORLOGSIZE', $txtAreaHeight);
 $tpl->set('s', 'ERRORLOG', $errorLogBuffer);
 $tpl->set('s', 'LOGEMPTYURL', htmlentities($sess->url("main.php?area=$area&frame=$frame&action=emptyLog")));
-
+*/
 // server configuration
 $aChecks = array(
     1 => $cfg['path']['frontend'],

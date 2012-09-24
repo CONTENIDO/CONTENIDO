@@ -1487,6 +1487,7 @@ contenido/includes/include.subnav.php -text
 contenido/includes/include.subnav_blank.php -text
 contenido/includes/include.symbolhelp.php -text
 contenido/includes/include.system_configuration.php -text
+contenido/includes/include.system_log_sysvalues.php -text
 contenido/includes/include.system_purge.php -text
 contenido/includes/include.system_sysvalues.php -text
 contenido/includes/include.systemsettings.php -text
@@ -2136,6 +2137,7 @@ contenido/templates/standard/template.subnav_blank.html -text
 contenido/templates/standard/template.subnav_noleft.html -text
 contenido/templates/standard/template.symbolhelp.html -text
 contenido/templates/standard/template.system_configuration.html -text
+contenido/templates/standard/template.system_log_variables.html -text
 contenido/templates/standard/template.system_purge.html -text
 contenido/templates/standard/template.system_subnav.html -text
 contenido/templates/standard/template.system_variables.html -text
