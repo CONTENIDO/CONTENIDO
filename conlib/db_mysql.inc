@@ -1,13 +1,13 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
- * 
- * Requirements: 
+ *
+ * Description:
+ *
+ * Requirements:
  * @con_php_req 5
- * 
+ *
  *
  * @package    Contenido Backend <Area>
  * @version    0.1.1
@@ -18,15 +18,15 @@
  * @link       http://www.contenido.org
  * @since      file available since contenido release <Contenido Version>
  * @deprecated file deprecated in contenido release <Contenido Version>
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2002-07-21
  *   modified 2008-07-04, bilal arslan, added security fix
  *   modified 2009-12-18, Murat Purc, Replaced mysql_list_fields() against a SQL statement, see [#CON-262]
  *
  *   $Id: db_mysql.inc 1105 2009-12-18 13:43:21Z xmurrix $:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -466,9 +466,13 @@ class DB_Sql {
 
   function server_info()
   {
-     $arr['description'] = mysql_get_server_info($this->Link_ID);
-     return $arr;
-  }
+          if (is_resource($this->Link_ID)) {
+            $arr = array();
+            $arr['description'] = mysql_get_server_info($this->Link_ID);
+            return $arr;
+        }
+        return null;
+    }
 
   /**
    * This method equates to mysql_fetch_object(). It returns the current
