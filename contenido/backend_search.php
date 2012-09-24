@@ -381,7 +381,7 @@ if (!empty($sSearchStr_tmp)) {
     $sSearchStr = $sSearchStr_tmp;
 }
 // Article ID
-if ($iSearchID_tmp > 0) {
+if ($iSearchID_tmp >= 0) {
     $iSearchID = $iSearchID_tmp;
 }
 // Date
