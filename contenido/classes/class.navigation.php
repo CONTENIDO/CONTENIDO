@@ -363,9 +363,9 @@ class Contenido_Navigation {
 				$sThumbnailPath 	= capiImgScale($cfgClient[$client]['path']['frontend'].$clientImage, 80, 25, 0, 1);
 				$sClientImageTag 	= sprintf($sClientImageTemplate, $sThumbnailPath, $sClientName, $sClientName);
 
-				$main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientImageTag));
+				$main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientImageTag));
 			} else {
-				$main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientName));
+				$main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientName));
 			}
 		}
 
