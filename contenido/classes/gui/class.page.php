@@ -242,10 +242,10 @@ class cGuiPage {
         if (strpos($stylesheet, 'http') === 0 || strpos($stylesheet, '//') === 0) {
             // the given stylesheet path is absolute
             $this->_styles[] = $stylesheet;
-        } else if (cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . $cfg['path']['styles'] . $stylesheet)) {
+        } else if (cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['styles'] . $stylesheet)) {
             // the given stylesheet path is relative to the plugin stylesheets
             // folder
-            $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginname . $cfg['path']['styles'] . $stylesheet;
+            $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['styles'] . $stylesheet;
             $this->_styles[] = $fullpath;
         } else if (cFileHandler::exists($backendPath . $cfg['path']['styles'] . $stylesheet)) {
             // the given stylesheet path is relative to the CONTENIDO
