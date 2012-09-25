@@ -215,9 +215,9 @@ class cGuiPage {
         if (strpos(trim($script), 'http') === 0 || strpos(trim($script), '<script') === 0 || strpos(trim($script), '//') === 0) {
             // the given script path is absolute
             $this->_scripts[] = $script;
-        } else if (cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . $cfg['path']['scripts'] . $script)) {
+        } else if (cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['scripts'] . $script)) {
             // the given script path is relative to the plugin scripts folder
-            $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginname . $cfg['path']['scripts'] . $script;
+            $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['scripts'] . $script;
             $this->_scripts[] = $fullpath;
         } else if (cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $script)) {
             // the given script path is relative to the CONTENIDO scripts folder
