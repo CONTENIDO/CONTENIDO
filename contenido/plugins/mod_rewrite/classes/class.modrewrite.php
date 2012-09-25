@@ -406,7 +406,7 @@ class ModRewrite extends ModRewriteBase
 
         $path = str_replace('/', parent::getConfig('category_seperator'), $path);
 
-        $key = 'cat_ids_and_urlpath';
+        $key = 'cat_ids_and_urlpath_' . $client . '_' . $lang;
 
         if (isset(self::$_lookupTable[$key])) {
             $aPathsCache = self::$_lookupTable[$key];
@@ -418,6 +418,7 @@ class ModRewrite extends ModRewriteBase
             $sql = "SELECT cl.idcat, cl.urlpath FROM " . $cfg['tab']['cat_lang']
                  . " AS cl, " . $cfg['tab']['cat'] . " AS c WHERE c.idclient = " . $client
                  . " AND c.idcat = cl.idcat AND cl.idlang = " . $lang;
+
             self::$_db->query($sql);
             while (self::$_db->next_record()) {
                 $urlPath = self::$_db->f('urlpath');
@@ -716,21 +717,22 @@ class ModRewrite extends ModRewriteBase
     /**
      * Get client id from client name
      *
-     * @param   string   Client name
-     * @return  integer  Client id
+     * @param   string   $sClientName  Client name
+     * @return  int  Client id
      */
     public static function getClientId($sClientName = '')
     {
         global $cfg;
 
-        $sClientName = self::$_db->escape($sClientName);
+        $sClientName = strtolower(self::$_db->escape($sClientName));
         $key         = 'clientid_by_name_' . $sClientName;
 
         if (isset(self::$_lookupTable[$key])) {
             return self::$_lookupTable[$key];
         }
 
-        $sql = "SELECT idclient FROM " . $cfg['tab']['clients'] . " WHERE name = '" . $sClientName . "'";
+        $sql = "SELECT idclient FROM " . $cfg['tab']['clients'] . " WHERE LOWER(name) = '" . $sClientName . "' OR LOWER(name) = '" . urldecode($sClientName) . "'";
+
         if ($aData = mr_queryAndNextRecord($sql)) {
             $clientId = $aData['idclient'];
         } else {
@@ -834,13 +836,13 @@ class ModRewrite extends ModRewriteBase
      *
      * @param  string   $sLanguageName  Language name
      * @param  int      $iClientId      Client id
-     * @return integer  Language id
+     * @return int  Language id
      */
     public static function getLanguageId($sLanguageName = '', $iClientId = 1)
     {
         global $cfg;
 
-        $sLanguageName = self::$_db->escape($sLanguageName);
+        $sLanguageName = strtolower(self::$_db->escape($sLanguageName));
         $iClientId     = (int) $iClientId;
         $key           = 'langid_by_langname_clientid_' . $sLanguageName . '_' . $iClientId;
 
@@ -850,7 +852,8 @@ class ModRewrite extends ModRewriteBase
 
         $sql  = "SELECT l.idlang FROM " . $cfg['tab']['lang'] . " as l "
               . "LEFT JOIN " . $cfg['tab']['clients_lang'] . " AS cl ON l.idlang = cl.idlang "
-              . "WHERE cl.idclient = ". $iClientId . " AND l.name = '" . $sLanguageName . "'";
+              . "WHERE cl.idclient = ". $iClientId . " AND (LOWER(l.name) = '" . $sLanguageName . "' "
+              . "OR LOWER(l.name) = '" . urldecode($sLanguageName) . "')";
         if ($aData = mr_queryAndNextRecord($sql)) {
             $languageId = $aData['idlang'];
         } else {
