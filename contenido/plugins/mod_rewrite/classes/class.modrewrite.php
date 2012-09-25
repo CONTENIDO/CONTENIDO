@@ -15,7 +15,7 @@
  * @version     0.1
  * @author      Stefan Seifarth / stese
  * @author      Murat Purc <murat@purc.de>
- * @copyright   � www.polycoder.de
+ * @copyright   www.polycoder.de
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
@@ -51,6 +51,12 @@ class ModRewrite extends ModRewriteBase
      */
     private static $_db;
 
+    /**
+     * Lookup table to cache some internal data such as db query results
+     *
+     * @var  array
+     */
+    protected static $_lookupTable;
 
     /**
      * Initialization, is to call at least once, also possible to call multible
@@ -64,6 +70,7 @@ class ModRewrite extends ModRewriteBase
     {
         mr_loadConfiguration($clientId, true);
         self::$_db = cRegistry::getDb();
+        self::$_lookupTable = array();
     }
 
 
@@ -75,7 +82,7 @@ class ModRewrite extends ModRewriteBase
      * @param   string  $sName    Websafe name to check
      * @param   int     $iCatId   Current category id
      * @param   int     $iLangId  Current language id
-     * @return     bool    True if websafename already exists, false if not
+     * @return  bool    True if websafename already exists, false if not
      */
     public static function isInCategories($sName = '', $iCatId = 0, $iLangId = 0)
     {
@@ -87,7 +94,7 @@ class ModRewrite extends ModRewriteBase
 
         // get parentid
         $iParentId = 0;
-        $sql = "SELECT parentid FROM " . $cfg['tab']['cat'] . " WHERE idcat = '$iCatId'";
+        $sql = "SELECT parentid FROM " . $cfg['tab']['cat'] . " WHERE idcat = " . $iCatId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             $iParentId = ($aData['parentid'] > 0 ) ? (int) $aData['parentid'] : 0;
         }
@@ -95,8 +102,8 @@ class ModRewrite extends ModRewriteBase
         // check if websafe name is in this category
         $sql = "SELECT count(cl.idcat) as numcats FROM " . $cfg['tab']['cat_lang'] . " cl "
              . "LEFT JOIN " . $cfg['tab']['cat'] . " c ON cl.idcat = c.idcat WHERE "
-             . "c.parentid = '$iParentId' AND cl.idlang = '" . $iLangId . "' AND "
-             . "cl.urlname = '" . $sName . "' AND cl.idcat <> '$iCatId'";
+             . "c.parentid = '$iParentId' AND cl.idlang = " . $iLangId . " AND "
+             . "cl.urlname = '" . $sName . "' AND cl.idcat <> " . $iCatId;
         ModRewriteDebugger::log($sql, 'ModRewrite::isInCategories $sql');
 
         if ($aData = mr_queryAndNextRecord($sql)) {
@@ -130,7 +137,7 @@ class ModRewrite extends ModRewriteBase
         // handle multipages
         if ($iCatId == 0) {
             // get category id if not set
-            $sql = "SELECT idcat FROM " . $cfg['tab']['cat_art'] . " WHERE idart = '$iArtId'";
+            $sql = "SELECT idcat FROM " . $cfg['tab']['cat_art'] . " WHERE idart = " . $iArtId;
             if ($aData = mr_queryAndNextRecord($sql)) {
                 $iCatId = ($aData['idcat'] > 0) ? (int) $aData['idcat'] : 0;
             }
@@ -139,8 +146,8 @@ class ModRewrite extends ModRewriteBase
         // check if websafe name is in this category
         $sql = "SELECT count(al.idart) as numcats FROM " . $cfg['tab']['art_lang'] . " al "
              . "LEFT JOIN " . $cfg['tab']['cat_art'] . " ca ON al.idart = ca.idart WHERE "
-             . " ca.idcat='$iCatId' AND al.idlang='" . $iLangId . "' AND "
-             . "al.urlname='" . $sName . "' AND al.idart <> '$iArtId'";
+             . " ca.idcat='$iCatId' AND al.idlang=" . $iLangId . " AND "
+             . "al.urlname='" . $sName . "' AND al.idart <> " . $iArtId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             return ($aData['numcats'] > 0) ? true : false;
         }
@@ -186,7 +193,7 @@ class ModRewrite extends ModRewriteBase
         if (!self::isInCatArticles($sNewName, $iArtId, $iLangId, $iCatId)) {
             // insert websafe name in article list
             $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET urlname = '$sNewName' "
-                 . "WHERE idart = '$iArtId' AND idlang = '$iLangId'";
+                 . "WHERE idart = " . $iArtId . " AND idlang = " . $iLangId;
             return self::$_db->query($sql);
         } else {
             return false;
@@ -229,7 +236,7 @@ class ModRewrite extends ModRewriteBase
         if (!self::isInCategories($sNewName, $iCatId, $iLangId)) {
             // insert websafe name in article list
             $sql = "UPDATE " . $cfg['tab']['cat_lang'] . " SET urlname = '$sNewName' "
-                 . "WHERE idcat = '$iCatId' AND idlang = '$iLangId'";
+                 . "WHERE idcat = " . $iCatId . " AND idlang = " . $iLangId;
 
             ModRewriteDebugger::log(array(
                 'sName'    => $sName,
@@ -265,7 +272,7 @@ class ModRewrite extends ModRewriteBase
 
         // insert websafe name in article list
         $sql = "UPDATE " . $cfg['tab']['cat_lang'] . " SET urlpath = '$sPath' "
-             . "WHERE idcat = '$iCatId' AND idlang = '$iLangId'";
+             . "WHERE idcat = " . $iCatId . " AND idlang = " . $iLangId;
 
         ModRewriteDebugger::log(array(
             'iCatId'   => $iCatId,
@@ -289,7 +296,7 @@ class ModRewrite extends ModRewriteBase
         global $cfg;
 
         $iArtlangId = (int) $iArtlangId;
-        $sql = "SELECT idart, idlang FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang = '$iArtlangId'";
+        $sql = "SELECT idart, idlang FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang = " . $iArtlangId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             return $aData;
         }
@@ -315,20 +322,20 @@ class ModRewrite extends ModRewriteBase
 
         $sWhere = '';
         if ($iLangId !== 0) {
-            $sWhere = ' AND al.idlang=' . $iLangId;
+            $sWhere = ' AND al.idlang = ' . $iLangId;
         }
         // only article name were given
         if ($iCatId == 0) {
             // get all basic category ids with parentid=0
             $aCatIds = array();
-            $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid = '0'";
+            $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid = 0";
             self::$_db->query($sql);
             while (self::$_db->next_record()) {
-                $aCatIds[] = "idcat = '" . self::$_db->f('idcat') . "'";
+                $aCatIds[] = "idcat = " . (int) self::$_db->f('idcat');
             }
             $sWhere .= " AND ( " . join(" OR ", $aCatIds) . ")";
         } else {
-            $sWhere .= " AND ca.idcat = '$iCatId'";
+            $sWhere .= " AND ca.idcat = " . $iCatId;
         }
 
         $sql = "SELECT al.idart FROM " . $cfg['tab']['art_lang'] . " al "
@@ -352,24 +359,24 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getCatName($iCatId = 0, $iLangId = 0)
     {
-        global $cfg, $mr_statics;
+        global $cfg;
 
         $iCatId  = (int) $iCatId;
         $iLangId = (int) $iLangId;
         $key     = 'catname_by_catid_idlang_' . $iCatId . '_' . $iLangId;
 
-        if (isset($mr_statics[$key])) {
-            return $mr_statics[$key];
+        if (isset(self::$_lookupTable[$key])) {
+            return self::$_lookupTable[$key];
         }
 
-        $sql = "SELECT name FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = '$iCatId' AND idlang = '$iLangId'";
+        $sql = "SELECT name FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = " . $iCatId . " AND idlang = " . $iLangId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             $catName = $aData['name'];
         } else {
             $catName = '';
         }
 
-        $mr_statics[$key] = $catName;
+        self::$_lookupTable[$key] = $catName;
         return $catName;
     }
 
@@ -384,7 +391,7 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getCatIdByUrlPath($path)
     {
-        global $cfg, $client, $lang, $mr_statics;
+        global $cfg, $client, $lang;
 
         if (strpos($path, '/') === 0) {
             $path = substr($path, 1);
@@ -401,8 +408,8 @@ class ModRewrite extends ModRewriteBase
 
         $key = 'cat_ids_and_urlpath';
 
-        if (isset($mr_statics[$key])) {
-            $aPathsCache = $mr_statics[$key];
+        if (isset(self::$_lookupTable[$key])) {
+            $aPathsCache = self::$_lookupTable[$key];
         } else {
             $aPathsCache = array();
         }
@@ -427,7 +434,7 @@ class ModRewrite extends ModRewriteBase
                 $aPathsCache[self::$_db->f('idcat')] = $urlPath;
             }
         }
-        $mr_statics[$key] = $aPathsCache;
+        self::$_lookupTable[$key] = $aPathsCache;
 
         // compare paths using the similar_text algorithm
         $fPercent = 0;
@@ -471,7 +478,7 @@ class ModRewrite extends ModRewriteBase
         $iLangId = (int) $iLangId;
 
         $sql = "SELECT title FROM " . $cfg['tab']['art_lang'] . " WHERE "
-             . "idart = '$iArtId' AND idlang = '$iLangId'";
+             . "idart = " . $iArtId . " AND idlang = " . $iLangId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             return $aData['title'];
         }
@@ -487,24 +494,24 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getCatLanguages($iCatId = 0)
     {
-        global $cfg, $mr_statics;
+        global $cfg;
 
         $iCatId = (int) $iCatId;
         $key    = 'cat_idlang_by_catid_' . $iCatId;
 
-        if (isset($mr_statics[$key])) {
-            return $mr_statics[$key];
+        if (isset(self::$_lookupTable[$key])) {
+            return self::$_lookupTable[$key];
         }
 
         $aLanguages = array();
 
-        $sql = "SELECT idlang FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = '$iCatId'";
+        $sql = "SELECT idlang FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = " . $iCatId;
         self::$_db->query($sql);
         while (self::$_db->next_record()) {
             $aLanguages[] = self::$_db->f('idlang');
         }
 
-        $mr_statics[$key] = $aLanguages;
+        self::$_lookupTable[$key] = $aLanguages;
         return $aLanguages;
     }
 
@@ -520,7 +527,7 @@ class ModRewrite extends ModRewriteBase
         global $cfg;
 
         $iArtlangId = (int) $iArtlangId;
-        $sql = "SELECT urlname, idlang FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang = '$iArtlangId'";
+        $sql = "SELECT urlname, idlang FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang = " . $iArtlangId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             return $aData;
         }
@@ -541,16 +548,16 @@ class ModRewrite extends ModRewriteBase
     {
         global $cfg;
 
-        $aDirectories  = array();
-        $bFinish       = false;
-        $iTmpCatId     = (int) $iCatId;
-        $iLangId       = (int) $iLangId;
-        $iLastId       = (int) $iLastId;
+        $aDirectories = array();
+        $bFinish      = false;
+        $iTmpCatId    = (int) $iCatId;
+        $iLangId      = (int) $iLangId;
+        $iLastId      = (int) $iLastId;
 
         while ($bFinish == false) {
             $sql = "SELECT cl.urlname, c.parentid FROM " . $cfg['tab']['cat_lang'] . " cl "
                  . "LEFT JOIN " . $cfg['tab']['cat'] . " c ON cl.idcat = c.idcat "
-                 . "WHERE cl.idcat = '$iTmpCatId' AND cl.idlang = '$iLangId'";
+                 . "WHERE cl.idcat = " . $iTmpCatId . " AND cl.idlang = " . $iLangId;
             if ($aData = mr_queryAndNextRecord($sql)) {
                 $aDirectories[] = $aData['urlname'];
                 $iTmpCatId      = (int) $aData['parentid'];
@@ -650,7 +657,7 @@ class ModRewrite extends ModRewriteBase
         $iArtId  = (int) $iArtId;
         $iLangId = (int) $iLangId;
         $sql = "SELECT urlname FROM " . $cfg['tab']['art_lang'] . " WHERE "
-             . "idart = '" . $iArtId . "' AND idlang = '" . $iLangId . "'";
+             . "idart = " . $iArtId . " AND idlang = " . $iLangId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             return $aData['urlname'];
         }
@@ -669,7 +676,7 @@ class ModRewrite extends ModRewriteBase
         global $cfg;
 
         $iArtLangId = (int) $iArtLangId;
-        $sql = "SELECT urlname FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang = '". $iArtLangId . "'";
+        $sql = "SELECT urlname FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang = " . $iArtLangId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             return $aData['urlname'];
         }
@@ -685,23 +692,23 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getClientName($clientId = 0)
     {
-        global $cfg, $mr_statics;
+        global $cfg;
 
         $clientId = (int) $clientId;
         $key = 'clientname_by_clientid_' . $clientId;
 
-        if (isset($mr_statics[$key])) {
-            return $mr_statics[$key];
+        if (isset(self::$_lookupTable[$key])) {
+            return self::$_lookupTable[$key];
         }
 
-        $sql = "SELECT name FROM " . $cfg['tab']['clients'] . " WHERE idclient = '$clientId'";
+        $sql = "SELECT name FROM " . $cfg['tab']['clients'] . " WHERE idclient = " . $clientId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             $clientName = $aData['name'];
         } else {
             $clientName = '';
         }
 
-        $mr_statics[$key] = $clientName;
+        self::$_lookupTable[$key] = $clientName;
         return $clientName;
     }
 
@@ -714,13 +721,13 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getClientId($sClientName = '')
     {
-        global $cfg, $mr_statics;
+        global $cfg;
 
         $sClientName = self::$_db->escape($sClientName);
         $key         = 'clientid_by_name_' . $sClientName;
 
-        if (isset($mr_statics[$key])) {
-            return $mr_statics[$key];
+        if (isset(self::$_lookupTable[$key])) {
+            return self::$_lookupTable[$key];
         }
 
         $sql = "SELECT idclient FROM " . $cfg['tab']['clients'] . " WHERE name = '" . $sClientName . "'";
@@ -730,8 +737,37 @@ class ModRewrite extends ModRewriteBase
             $clientId = false;
         }
 
-        $mr_statics[$key] = $clientId;
+        self::$_lookupTable[$key] = $clientId;
         return $clientId;
+    }
+
+
+    /**
+     * Checks if client id exists
+     *
+     * @param   int  $clientId
+     * @return  bool
+     */
+    public static function clientIdExists($clientId)
+    {
+        global $cfg;
+
+        $clientId = (int) $clientId;
+        $key      = 'clientid_exists_' . $clientId;
+
+        if (isset(self::$_lookupTable[$key])) {
+            return self::$_lookupTable[$key];
+        }
+
+        $sql = "SELECT idclient FROM " . $cfg['tab']['clients'] . " WHERE idclient = " . $clientId;
+        if ($aData = mr_queryAndNextRecord($sql)) {
+            $exists = true;
+        } else {
+            $exists = false;
+        }
+
+        self::$_lookupTable[$key] = $exists;
+        return $exists;
     }
 
 
@@ -743,24 +779,52 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getLanguageName($languageId = 0)
     {
-        global $cfg, $mr_statics;
+        global $cfg;
 
         $languageId = (int) $languageId;
         $key        = 'languagename_by_id_' . $languageId;
 
-        if (isset($mr_statics[$key])) {
-            return $mr_statics[$key];
+        if (isset(self::$_lookupTable[$key])) {
+            return self::$_lookupTable[$key];
         }
 
-        $sql = "SELECT name FROM " . $cfg['tab']['lang'] . " WHERE idlang = '$languageId'";
+        $sql = "SELECT name FROM " . $cfg['tab']['lang'] . " WHERE idlang = " . $languageId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             $languageName = $aData['name'];
         } else {
             $languageName = '';
         }
 
-        $mr_statics[$key] = $languageName;
+        self::$_lookupTable[$key] = $languageName;
         return $languageName;
+    }
+
+    /**
+     * Checks if language id exists
+     *
+     * @param   int     $languageId  Language id
+     * @return  bool
+     */
+    public static function languageIdExists($languageId)
+    {
+        global $cfg;
+
+        $languageId = (int) $languageId;
+        $key        = 'languageid_exists_' . $languageId;
+
+        if (isset(self::$_lookupTable[$key])) {
+            return self::$_lookupTable[$key];
+        }
+
+        $sql = "SELECT idlang FROM " . $cfg['tab']['lang'] . " WHERE idlang = " . $languageId;
+        if ($aData = mr_queryAndNextRecord($sql)) {
+            $exists = true;
+        } else {
+            $exists = false;
+        }
+
+        self::$_lookupTable[$key] = $exists;
+        return $exists;
     }
 
 
@@ -774,26 +838,26 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getLanguageId($sLanguageName = '', $iClientId = 1)
     {
-        global $cfg, $mr_statics;
+        global $cfg;
 
         $sLanguageName = self::$_db->escape($sLanguageName);
         $iClientId     = (int) $iClientId;
         $key           = 'langid_by_langname_clientid_' . $sLanguageName . '_' . $iClientId;
 
-        if (isset($mr_statics[$key])) {
-            return $mr_statics[$key];
+        if (isset(self::$_lookupTable[$key])) {
+            return self::$_lookupTable[$key];
         }
 
         $sql  = "SELECT l.idlang FROM " . $cfg['tab']['lang'] . " as l "
               . "LEFT JOIN " . $cfg['tab']['clients_lang'] . " AS cl ON l.idlang = cl.idlang "
-              . "WHERE cl.idclient = '". $iClientId . "' AND l.name = '" . $sLanguageName . "'";
+              . "WHERE cl.idclient = ". $iClientId . " AND l.name = '" . $sLanguageName . "'";
         if ($aData = mr_queryAndNextRecord($sql)) {
             $languageId = $aData['idlang'];
         } else {
             $languageId = 0;
         }
 
-        $mr_statics[$key] = $languageId;
+        self::$_lookupTable[$key] = $languageId;
         return $languageId;
     }
 
@@ -811,8 +875,6 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getClientFullUrlParts($url)
     {
-
-
         $clientPath = cRegistry::getFrontendUrl();
 
         if (stristr($url, $clientPath) !== false) {

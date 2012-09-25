@@ -55,10 +55,7 @@ $_cecRegistry->registerChain("Contenido.Frontend.CreateURL", "string");
 ####################################################################################################
 
 
-global $cfg, $contenido, $mr_statics;
-
-// used for caching
-$mr_statics = array();
+global $cfg, $contenido;
 
 // initialize client id
 if (isset($client) && (int) $client > 0) {
