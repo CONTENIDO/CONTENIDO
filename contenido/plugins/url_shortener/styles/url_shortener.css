@@ -1,0 +1,5 @@
+.edit-link, .save-link {
+    float: right;
+    margin: 2px;
+    vertical-align: middle;
+}

@@ -1,0 +1,71 @@
+################################################################################
+# CONTENIDO URL Shortener plugin restrictive rewrite rules set.
+#
+# Contains strict rules, each rewrite exclusion must be set manually.
+# - Exclude requests to directories usage/, contenido/, setup/, cms/upload/
+# - Exclude requests to cms/front_content.php
+# - Pass thru requests to common ressources (pictures, movies, js, css, pdf)
+#
+# @version    0.0.1
+# @author     Murat Purc <murat@purc.de>
+# @copyright  four for business AG <www.4fb.de>
+# @license    http://www.contenido.org/license/LIZENZ.txt
+# @link       http://www.4fb.de
+# @link       http://www.contenido.org
+# @since      file available since CONTENIDO release 4.9.0
+#
+# $Id: htaccess_restrictive.txt 1563 2011-09-12 09:34:51Z fulai.zhang $
+################################################################################
+
+
+# Enable following lines to run PHP5 on 1und1.de (1and1.com)
+#AddType x-mapp-php5 .php
+#AddHandler x-mapp-php5 .php
+
+<IfModule mod_rewrite.c>
+
+    # Enable rewrite engine
+    RewriteEngine on
+
+
+    # Specify a base URL-path for the rules
+    RewriteBase /cms
+
+
+    # Catch some common exploits in query string to get rid of them.
+    # NOTE: Conditions to prevent protocols (ftp, http[s]) in query string could
+    #       be a disadvantage in some cases.
+    RewriteCond %{QUERY_STRING} contenido_path=.*$  [NC,OR]
+    RewriteCond %{QUERY_STRING} cfg\[path\]=.*$  [NC,OR]
+    RewriteCond %{QUERY_STRING} _PHPLIB\[libdir\]=.*$  [NC,OR]
+    RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} ftp://.*$  [NC,OR]
+    RewriteCond %{QUERY_STRING} http[s]*://.*$ [NC]
+    RewriteRule ^.* - [F,L]  # all matching conditions from above will end in nirvana
+
+
+    # Exclude some files and directories from rewriting
+    RewriteRule ^usage/.*$ - [L]
+    RewriteRule ^contenido/.*$ - [L]
+    RewriteRule ^setup/.*$ - [L]
+    RewriteRule ^cms/upload/.*$ - [L]
+    RewriteRule ^cms/test/.*$ - [L]
+    RewriteRule ^cms/front_content.php.*$ - [L]
+
+
+    # One RewriteRule to rule them all.
+    # Exclude common extensions from rewriting and pass remaining requests to
+    # front_content.php.
+    RewriteRule !\.(avi|css|doc|flv|gif|gzip|ico|jpeg|jpg|js|mov|mp3|pdf|png|ppt|rar|txt|wav|wmv|xml|zip)$ front_content.php [NC,QSA,L]
+
+</IfModule>
+
+
+# Some rules to compress files.
+# NOTE: Following settings are not url shortener specific, but enabling mod_deflate
+#       for some file types can help to reduce bandwith.
+<IfModule mod_deflate.c>
+    <FilesMatch "\.(js|css|html|htm|php|xml)$">
+        SetOutputFilter DEFLATE
+    </FilesMatch>
+</IfModule>

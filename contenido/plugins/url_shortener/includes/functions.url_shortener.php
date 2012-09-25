@@ -69,30 +69,28 @@ function piUsConSaveArtAfter($values) {
         'idlang' => $idlang,
         'idclient' => $idclient
     ));
-    $shortUrlColl = new cApiShortUrlCollection();
     // if given shorturl is already in use, show error message
-    $shortUrlColl->select("shorturl='" . $shorturl . "' AND (idart!='" . $idart . "' OR idclient!='" . $idclient . "')");
-    if ($shortUrlColl->count() !== 0) {
+    $shortUrlItem = new cApiShortUrl();
+    $shortUrlItem->loadBy('shorturl', $shorturl);
+    if ($shortUrlItem->isLoaded()) {
         // TODO add warning to session as soon as this is possible (depends
         // CON-772)
-        // TODO add info in which client, language, category and article the
-        // shorturl is already in use
         // $session = cRegistry::getSession();
-        // $session->addWarning(i18n('The entered short URL already exists!',
-        // 'url_shortener'));
-        $message = i18n('The entered short URL already exists!', 'url_shortener');
+        // $session->addWarning($message);
+        $message = piUsGetErrorMessage(cApiShortUrlCollection::ERR_ALREADY_EXISTS, $shortUrlItem);
         $notification = new cGuiNotification();
         $notification->displayNotification(cGuiNotification::LEVEL_ERROR, $message);
         return;
     }
     // check if given shorturl is valid
-    if (!$shortUrlColl->isValidShortUrl($shorturl)) {
+    $shortUrlColl = new cApiShortUrlCollection();
+    $errorCode = $shortUrlColl->isValidShortUrl($shorturl);
+    if ($errorCode !== true) {
+        $message = piUsGetErrorMessage($errorCode);
         // TODO add warning to session as soon as this is possible (depends
         // CON-772)
         // $session = cRegistry::getSession();
-        // $session->addWarning(i18n('The entered short URL is not valid!',
-        // 'url_shortener'));
-        $message = i18n('The entered short URL is not valid!', 'url_shortener');
+        // $session->addWarning($message);
         $notification = new cGuiNotification();
         $notification->displayNotification(cGuiNotification::LEVEL_ERROR, $message);
         return;
@@ -116,6 +114,59 @@ function piUsConSaveArtAfter($values) {
 }
 
 /**
+ * Computes an error message which describes the given error code.
+ *
+ * @param int $errorCode the error code
+ * @return string the error message describing the given error code
+ */
+function piUsGetErrorMessage($errorCode, $shortUrlItem = null) {
+    switch ($errorCode) {
+        case cApiShortUrlCollection::ERR_INVALID_CHARS:
+            return i18n('The entered short URL contains invalid characters!', 'url_shortener');
+            break;
+        case cApiShortUrlCollection::ERR_IS_ARTICLE_ALIAS:
+            return i18n('The entered short URL is already an article alias!', 'url_shortener');
+            break;
+        case cApiShortUrlCollection::ERR_IS_CATEGORY_ALIAS:
+            return i18n('The entered short URL is already a category alias!', 'url_shortener');
+            break;
+        case cApiShortUrlCollection::ERR_IS_CLIENT_FOLDER:
+            return i18n('The entered short URL is a subdirectory of the client directory!', 'url_shortener');
+            break;
+        case cApiShortUrlCollection::ERR_TOO_SHORT:
+            return i18n('The entered short URL is too short!', 'url_shortener');
+            break;
+        case cApiShortUrlCollection::ERR_ALREADY_EXISTS:
+            $message = i18n('The entered short URL already exists!', 'url_shortener');
+            $message .= '<br />';
+            if ($shortUrlItem !== null) {
+                // add the client name to the error message
+                $clientColl = new cApiClientCollection();
+                $message .= i18n('Client', 'url_shortener') . ': ' . $clientColl->getClientname($shortUrlItem->get('idclient'));;
+                $message .= '<br />';
+                // add the language name to the error message
+                $langColl = new cApiLanguageCollection();
+                $message .= i18n('Language', 'url_shortener') . ': ' . $langColl->getLanguageName($shortUrlItem->get('idlang'));
+                $message .= '<br />';
+                // add the category name to the error message
+                $catArt = new cApiCategoryArticle();
+                $catArt->loadBy('idart', $shortUrlItem->get('idart'));
+                $catLang = new cApiCategoryLanguage();
+                $catLang->loadByCategoryIdAndLanguageId($catArt->get('idcat'), $shortUrlItem->get('idlang'));
+                $message .= i18n('Category', 'url_shortener') . ': ' . $catLang->get('name');
+                $message .= '<br />';
+                // add the article name to the error message
+                $artlang = new cApiArticleLanguage();
+                $artlang->loadByArticleAndLanguageId($shortUrlItem->get('idart'), $shortUrlItem->get('idlang'));
+                $message .= i18n('Article', 'url_shortener') . ': ' . $artlang->get('title');
+            }
+            return $message;
+            break;
+    }
+    return i18n('The entered short URL is not valid!', 'url_shortener');
+}
+
+/**
  * Function is called after the plugins have been loaded.
  * If the string placeholder in the example URL http://www.domain.de/placeholder
  * is a defined short URL, the user is redirected to the correct URL.
@@ -126,7 +177,12 @@ function piUsAfterLoadPlugins() {
     $shortUrlItem = new cApiShortUrl();
     $shortUrlItem->loadBy('shorturl', $shorturl);
     if ($shortUrlItem->isLoaded()) {
-        header('Location:front_content.php?idart=' . $shortUrlItem->get(idart) . '&idlang=' . $shortUrlItem->get('idlang'));
+        $uriParams = array(
+            'idart' => $shortUrlItem->get('idart'),
+            'lang' => $shortUrlItem->get('idlang')
+        );
+        $url = cUri::getInstance()->build($uriParams, true);
+        header('Location:' . $url);
         exit();
     }
 }

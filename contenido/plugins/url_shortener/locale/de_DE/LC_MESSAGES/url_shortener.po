@@ -1,138 +1,135 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-09-25 14:01+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2012-09-25 14:01+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: i18n\n"
+"X-Poedit-Basepath: ../../../\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: includes/functions.url_shortener.php:38
 #: includes/include.url_shortener.php:133
 msgid "Short URL"
-msgstr ""
+msgstr "Short URL"
 
 #: includes/functions.url_shortener.php:125
 msgid "The entered short URL contains invalid characters!"
-msgstr ""
+msgstr "Die eingegebene Short URL beinhaltet ungültige Zeichen!"
 
 #: includes/functions.url_shortener.php:128
 msgid "The entered short URL is already an article alias!"
-msgstr ""
+msgstr "Die eingegebene Short URL ist schon ein Artikel Alias!"
 
 #: includes/functions.url_shortener.php:131
 msgid "The entered short URL is already a category alias!"
-msgstr ""
+msgstr "Die eingegebene Short URL ist schon ein Kategorie Alias!"
 
 #: includes/functions.url_shortener.php:134
 msgid "The entered short URL is a subdirectory of the client directory!"
-msgstr ""
+msgstr "Die eingegebene Short URL ist ein Unterverzeichnis des Mandantenverzeichnis!"
 
 #: includes/functions.url_shortener.php:137
 msgid "The entered short URL is too short!"
-msgstr ""
+msgstr "Die eingegebene Short URL ist zu kurz!"
 
 #: includes/functions.url_shortener.php:140
 msgid "The entered short URL already exists!"
-msgstr ""
+msgstr "Die eingegebene Short URL existiert bereits!"
 
 #: includes/functions.url_shortener.php:145
 #: includes/include.url_shortener.php:129
 msgid "Client"
-msgstr ""
+msgstr "Mandant"
 
 #: includes/functions.url_shortener.php:149
 #: includes/include.url_shortener.php:130
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 #: includes/functions.url_shortener.php:156
 #: includes/include.url_shortener.php:131
 msgid "Category"
-msgstr ""
+msgstr "Kategorie"
 
 #: includes/functions.url_shortener.php:161
 #: includes/include.url_shortener.php:132
 msgid "Article"
-msgstr ""
+msgstr "Artikel"
 
 #: includes/functions.url_shortener.php:166
 msgid "The entered short URL is not valid!"
-msgstr ""
+msgstr "Die eingegebene Short URL ist ungültig!"
 
 #: includes/include.url_shortener.php:29
 msgid "Short URLs can only be managed by system administrators!"
-msgstr ""
+msgstr "Short URLs können nur von Systemadministratoren verwaltet werden!"
 
 #: includes/include.url_shortener.php:36
 msgid "The short URL has successfully been deleted!"
-msgstr ""
+msgstr "Die Short URL wurde erfolgreich gelöscht!"
 
 #: includes/include.url_shortener.php:65
 msgid "Short URL successfully edited!"
-msgstr ""
+msgstr "Die Short URL wurde erfolgreich bearbeitet!"
 
 #: includes/include.url_shortener.php:67
 msgid "Short URL could not be saved!"
-msgstr ""
+msgstr "Die Short URL konnte nicht gespeichert werden!"
 
 #: includes/include.url_shortener.php:78
 msgid "The .htaccess file already exists, so that it has not been copied!"
-msgstr ""
+msgstr "Die .htaccess Datei existiert bereits, sodass sie nicht kopiert wurde!"
 
 #: includes/include.url_shortener.php:80
 msgid "The .htaccess file has been successfully copied to the client path!"
-msgstr ""
+msgstr "Die .htaccess Datei wurde erfolgreich ins Mandantenverzeichnis kopiert!"
 
 #: includes/include.url_shortener.php:82
 msgid "The .htaccess file could not be copied to the client path!"
-msgstr ""
+msgstr "Die .htaccess Datei konnte nicht ins Mandantenverzeichnis kopiert werden!"
 
 #: includes/include.url_shortener.php:89
 msgid "A .htaccess file could not be found. The short URLs will not work!"
-msgstr ""
+msgstr "Es wurde keine .htaccess Datei gefunden. Die Short URLs werden nicht funktionieren!"
 
 #: includes/include.url_shortener.php:92
 msgid "Copy the simple .htaccess file to the client path."
-msgstr ""
+msgstr "Kopiere die simple .htaccess Datei ins Mandantenverzeichnis."
 
 #: includes/include.url_shortener.php:96
 msgid "Copy the restrictive .htaccess file to the client path."
-msgstr ""
+msgstr "Kopiere die restriktive .htaccess Datei ins Mandantenverzeichnis."
 
 #: includes/include.url_shortener.php:99
-msgid ""
-"If CONTENIDO is installed in a subdirectory, you need to change the "
-"RewriteBase path in the copied .htaccess file!"
-msgstr ""
+msgid "If CONTENIDO is installed in a subdirectory, you need to change the RewriteBase path in the copied .htaccess file!"
+msgstr "Sie müssen den RewriteBase Pfad in der kopierten .htaccess Datei anpassen, wenn CONTENIDO in einem Unterverzeichnis installiert wurde."
 
 #: includes/include.url_shortener.php:107
 msgid "No short URLs have been defined yet!"
-msgstr ""
+msgstr "Es wurden noch keine Short URLs definiert!"
 
 #: includes/include.url_shortener.php:134
 msgid "Creation Date"
-msgstr ""
+msgstr "Erstellungsdatum"
 
 #: includes/include.url_shortener.php:135
 msgid "URL With idart And idlang"
-msgstr ""
+msgstr "URL mit idart und idlang"
 
 #: includes/include.url_shortener.php:136
 msgid "Actions"
-msgstr ""
+msgstr "Aktionen"
 
 #: includes/include.url_shortener.php:215
 #, php-format
 msgid "Do you really want to delete the short URL %s?"
-msgstr ""
+msgstr "Möchten Sie wirklich die Short URL %s löschen?"
+

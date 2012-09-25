@@ -1,0 +1,69 @@
+################################################################################
+# CONTENIDO URL Shortener plugin simple rewrite rules set.
+#
+# Contains few easy to handle rewrite rules.
+#
+# @version    0.0.1
+# @author     Murat Purc <murat@purc.de>
+# @copyright  four for business AG <www.4fb.de>
+# @license    http://www.contenido.org/license/LIZENZ.txt
+# @link       http://www.4fb.de
+# @link       http://www.contenido.org
+# @since      file available since CONTENIDO release 4.9.0
+#
+# $Id: htaccess_simple.txt 1563 2011-09-12 09:34:51Z fulai.zhang $
+################################################################################
+
+
+# Enable following lines to run PHP5 on 1und1.de (1and1.com)
+#AddType x-mapp-php5 .php
+#AddHandler x-mapp-php5 .php
+
+<IfModule mod_rewrite.c>
+
+    # Enable rewrite engine
+    RewriteEngine on
+
+
+    # Specify a base URL-path for the rules
+    RewriteBase /cms
+
+
+    # Catch some common exploits in query string to get rid of them
+    # NOTE: Conditions to prevent protocols (ftp, http[s]) in query string could
+    #       be a disadvantage in some cases
+    RewriteCond %{QUERY_STRING} contenido_path=.*$  [NC,OR]
+    RewriteCond %{QUERY_STRING} cfg\[path\]=.*$  [NC,OR]
+    RewriteCond %{QUERY_STRING} _PHPLIB\[libdir\]=.*$  [NC,OR]
+    RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} ftp://.*$  [NC,OR]
+    RewriteCond %{QUERY_STRING} http[s]*://.*$ [NC]
+    RewriteRule ^.* - [F,L]  # all matching conditions from above will end in nirvana
+
+
+    # Rewrite request to root to front_content.php
+    RewriteRule ^$ front_content.php [QSA,L]
+
+
+    # Exclude following request from rewriting
+    # tests for valid symlinks (-s), not empty files (-l) and folders (-d)
+    RewriteCond %{REQUEST_FILENAME} -s [OR]
+    RewriteCond %{REQUEST_FILENAME} -l [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^.*$ - [NC,L]
+
+
+    # Pass other requests to front_content.php
+    RewriteRule ^.*$ front_content.php [QSA,NC,L]
+
+</IfModule>
+
+
+# Some rules to compress files.
+# NOTE: Following settings are not url shortener specific, but enabling mod_deflate
+#       for some file types can help to reduce bandwith.
+<IfModule mod_deflate.c>
+    <FilesMatch "\.(js|css|html|htm|php|xml)$">
+        SetOutputFilter DEFLATE
+    </FilesMatch>
+</IfModule>

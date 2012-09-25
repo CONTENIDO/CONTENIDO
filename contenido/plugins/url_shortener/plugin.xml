@@ -18,7 +18,8 @@
             <area menuless="1">url_shortener</area>
         </areas>
         <actions>
-            <action area="url_shortener">url_shortener</action>
+            <action area="url_shortener">url_shortener_delete</action>
+            <action area="url_shortener">url_shortener_edit</action>
         </actions>
         <frames>
             <frame area="url_shortener" filetype="main" name="url_shortener/includes/include.url_shortener.php" frameId="4" />    

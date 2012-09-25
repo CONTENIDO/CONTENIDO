@@ -17,6 +17,18 @@ if (!defined('CON_FRAMEWORK')) {
 }
 class cApiShortUrlCollection extends ItemCollection {
 
+    const ERR_IS_CLIENT_FOLDER = 1;
+
+    const ERR_TOO_SHORT = 2;
+
+    const ERR_INVALID_CHARS = 3;
+
+    const ERR_IS_ARTICLE_ALIAS = 4;
+
+    const ERR_IS_CATEGORY_ALIAS = 5;
+
+    const ERR_ALREADY_EXISTS = 6;
+
     public function __construct() {
         $cfg = cRegistry::getConfig();
         parent::__construct($cfg['tab']['url_shortener']['shorturl'], 'idshorturl');
@@ -45,16 +57,27 @@ class cApiShortUrlCollection extends ItemCollection {
         return $item;
     }
 
+    /**
+     * Checks whether the given short URL is valid with the following criteria:
+     * - given url is not a directory in the client folder
+     * - given url respects minimum length
+     * - given url contains only valid characters
+     * - given url is not an article or category alias
+     *
+     * @param string $shorturl the short URL to check
+     * @return int boolean error code if the given shorturl is invalid or true
+     *         if it is valid
+     */
     public function isValidShortUrl($shorturl) {
         $cfg = cRegistry::getConfig();
 
-        // check if given shorturl is not a directory in the client folder
+        // check if given shorturl is a directory in the client folder
         $exclude = scandir(cRegistry::getFrontendPath());
         if (is_array($cfg['url_shortener']['exlude_dirs'])) {
             $exclude = array_merge($exclude, $cfg['url_shortener']['exlude_dirs']);
         }
         if (in_array($shorturl, $exclude)) {
-            return false;
+            return self::ERR_IS_CLIENT_FOLDER;
         }
 
         // check if given shorturl respects minimum length
@@ -63,14 +86,26 @@ class cApiShortUrlCollection extends ItemCollection {
             $minLength = $cfg['url_shortener']['minimum_length'];
         }
         if (strlen($shorturl) < $minLength) {
-            return false;
+            return self::ERR_TOO_SHORT;
         }
 
         // check if given shorturl contains only valid characters
         if (isset($cfg['url_shortener']['allowed_chars'])) {
             if (!preg_match($cfg['url_shortener']['allowed_chars'], $shorturl)) {
-                return false;
+                return self::ERR_INVALID_CHARS;
             }
+        }
+
+        // check if there is an article or category alias with this name
+        $artLangColl = new cApiArticleLanguageCollection();
+        $artLangColl->select("urlname='" . $shorturl . "'");
+        if ($artLangColl->count() > 0) {
+            return self::ERR_IS_ARTICLE_ALIAS;
+        }
+        $catLangColl = new cApiCategoryLanguageCollection();
+        $catLangColl->select("urlname='" . $shorturl . "'");
+        if ($catLangColl->count() > 0) {
+            return self::ERR_IS_CATEGORY_ALIAS;
         }
 
         return true;

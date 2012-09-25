@@ -1904,16 +1904,21 @@ contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_wrapper.php -t
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_write_file.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_security.php -text
 contenido/plugins/url_shortener/classes/class.url_shortener.shorturl.php -text
+contenido/plugins/url_shortener/files/htaccess_restrictive.txt -text svneol=unset#text/plain
+contenido/plugins/url_shortener/files/htaccess_simple.txt -text svneol=unset#text/plain
 contenido/plugins/url_shortener/includes/config.plugin.php -text
 contenido/plugins/url_shortener/includes/functions.url_shortener.php -text
 contenido/plugins/url_shortener/includes/include.url_shortener.php -text
-contenido/plugins/url_shortener/locale/de_DE/url_shortener.mo -text
-contenido/plugins/url_shortener/locale/de_DE/url_shortener.po -text
-contenido/plugins/url_shortener/locale/en_US/url_shortener.mo -text
-contenido/plugins/url_shortener/locale/en_US/url_shortener.po -text
+contenido/plugins/url_shortener/locale/de_DE/LC_MESSAGES/url_shortener.mo -text
+contenido/plugins/url_shortener/locale/de_DE/LC_MESSAGES/url_shortener.po -text
+contenido/plugins/url_shortener/locale/en_US/LC_MESSAGES/url_shortener.mo -text
+contenido/plugins/url_shortener/locale/en_US/LC_MESSAGES/url_shortener.po -text
 contenido/plugins/url_shortener/locale/potfiles.txt -text svneol=unset#text/plain
 contenido/plugins/url_shortener/locale/url_shortener.pot -text
+contenido/plugins/url_shortener/plugin.sql -text
 contenido/plugins/url_shortener/plugin.xml -text svneol=unset#text/plain
+contenido/plugins/url_shortener/scripts/url_shortener.js -text svneol=unset#text/plain
+contenido/plugins/url_shortener/styles/url_shortener.css -text svneol=unset#text/plain
 contenido/plugins/url_shortener/xml/lang_de_DE.xml -text svneol=unset#text/plain
 contenido/plugins/url_shortener/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/plugins/workflow/classes/class.workflow.php -text

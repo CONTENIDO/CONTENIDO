@@ -99,7 +99,7 @@ class cApiLanguageCollection extends ItemCollection {
 
         $clientsLanguageColl = new cApiClientLanguageCollection();
         $clientsLanguageColl->select('idlang = ' . $lang);
-        if ($clientsLang = $clientsLanguageColl->next()) {
+        if (($clientsLang = $clientsLanguageColl->next()) !== false) {
             if ($client != $clientsLang->get('idclient')) {
                 $item = $this->nextAccessible();
             }
@@ -117,6 +117,21 @@ class cApiLanguageCollection extends ItemCollection {
             return $item;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Returns the language name of the language with the given ID.
+     *
+     * @param int $idlang the ID of the language
+     * @return string the name of the language
+     */
+    public function getLanguageName($idlang) {
+        $item = new cApiLanguage($idlang);
+        if ($item->isLoaded()) {
+            return $item->get('name');
+        } else {
+            return i18n('No language');
         }
     }
 
