@@ -22,7 +22,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 class cSystemCheck extends cSetupMask {
-	/**
+    /**
      * #@+
      *
      * @var int
@@ -150,7 +150,7 @@ class cSystemCheck extends cSetupMask {
         $errors = false;
 
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
-		$cHTMLErrorMessageList->setStyle('width: 450px;height:218px;overflow:auto;border:1px solid #B3B3B3;');
+        $cHTMLErrorMessageList->setStyle('width: 450px;height:218px;overflow:auto;border:1px solid #B3B3B3;');
         // Run PHP tests
         $this->doPHPTests();
 

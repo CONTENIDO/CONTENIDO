@@ -35,7 +35,7 @@ class cXmlReader extends cXmlBase {
             throw new cException('Could not load file "' . $filename . '"');
         }
 
-		$this->setDomDocument($doc);
+        $this->setDomDocument($doc);
 
         return ($this->_dom instanceof DOMDocument);
     }

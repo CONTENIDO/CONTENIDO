@@ -490,22 +490,22 @@ class cApiCategory extends Item {
 
         parent::setField($name, $value, $safe);
     }
-	
-	/**
-	 * Returns the link to the current object.
-	 * @return	string	link
-	 */
-	public function getLink() {
-		if ($this->isLoaded() === false) {
-			return '';
-		}
-		
-		$options = array();
-		$options['idcat'] = $this->get('idcat');
-		$options['lang'] = cRegistry::getLanguageId();
-		
-		return cUri::getInstance()->build($options);
-	}
+
+    /**
+     * Returns the link to the current object.
+     * @return    string    link
+     */
+    public function getLink() {
+        if ($this->isLoaded() === false) {
+            return '';
+        }
+
+        $options = array();
+        $options['idcat'] = $this->get('idcat');
+        $options['lang'] = cRegistry::getLanguageId();
+
+        return cUri::getInstance()->build($options);
+    }
 
 }
 

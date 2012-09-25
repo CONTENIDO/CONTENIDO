@@ -14,8 +14,8 @@ if ($auth->auth["uid"] == "nobody") {
     $tpl->generate('templates/login_form.html');
 } else {
     try {
-		$category = new cApiCategoryLanguage();
-		$category->loadByCategoryIdAndLanguageId($idcat, $lang);
+        $category = new cApiCategoryLanguage();
+        $category->loadByCategoryIdAndLanguageId($idcat, $lang);
         $bCatIsPublic = ($category->get('visible') == 1 && $category->get('public') == 1) ? true : false;
     } catch (Exception $e) {
         echo $e->getMessage();

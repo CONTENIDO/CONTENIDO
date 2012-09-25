@@ -661,17 +661,17 @@ class cUpdateNotifier {
         }
 
         if ($this->sRSSContent != '') {
-			$doc = new cXmlReader();
-			$doc->load($this->sCacheDirectory . $this->sRSSFile);
-			
-			$maxFeedItems = 3;
+            $doc = new cXmlReader();
+            $doc->load($this->sCacheDirectory . $this->sRSSFile);
 
-			for ($iCnt = 0; $iCnt < $maxFeedItems; $iCnt++) {
-				$title = $doc->getXpathValue('*/channel/item/title', $iCnt);
-				$link = $doc->getXpathValue('*/channel/item/link', $iCnt);
-				$description = $doc->getXpathValue('*/channel/item/description', $iCnt);
-				$date = $doc->getXpathValue('*/channel/item/pubDate', $iCnt);
-								
+            $maxFeedItems = 3;
+
+            for ($iCnt = 0; $iCnt < $maxFeedItems; $iCnt++) {
+                $title = $doc->getXpathValue('*/channel/item/title', $iCnt);
+                $link = $doc->getXpathValue('*/channel/item/link', $iCnt);
+                $description = $doc->getXpathValue('*/channel/item/description', $iCnt);
+                $date = $doc->getXpathValue('*/channel/item/pubDate', $iCnt);
+
                 $sText = htmlentities($description, ENT_QUOTES);
                 if (strlen($sText) > 150) {
                     $sText = cApiStrTrimAfterWord($sText, 150) . '...';

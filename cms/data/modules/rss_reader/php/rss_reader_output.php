@@ -21,15 +21,15 @@ $domDocument->load($feedUrl);
 $doc->setDomDocument($domDocument);
 
 for ($i = 0; $i < $maxFeedItems; $i++) {
-	$title = $doc->getXpathValue('*/channel/item/title', $i);
-	$link = $doc->getXpathValue('*/channel/item/link', $i);
-	$description = $doc->getXpathValue('*/channel/item/description', $i);
-	
-	$tpl->set("d", "TITLE", htmlentities($title, ENT_QUOTES));
-	$tpl->set("d", "LINK", htmlentities($link, ENT_QUOTES));
-	$tpl->set("d", "DESCRIPTION", htmlentities($description, ENT_QUOTES));
-	$tpl->set("d", "READ_ON", mi18n("weiterlesen"));
-	$tpl->next();
+    $title = $doc->getXpathValue('*/channel/item/title', $i);
+    $link = $doc->getXpathValue('*/channel/item/link', $i);
+    $description = $doc->getXpathValue('*/channel/item/description', $i);
+
+    $tpl->set("d", "TITLE", htmlentities($title, ENT_QUOTES));
+    $tpl->set("d", "LINK", htmlentities($link, ENT_QUOTES));
+    $tpl->set("d", "DESCRIPTION", htmlentities($description, ENT_QUOTES));
+    $tpl->set("d", "READ_ON", mi18n("weiterlesen"));
+    $tpl->next();
 }
 
 $tpl->generate(cRegistry::getFrontendPath() . "templates/" . "CMS_VALUE[1]");

@@ -195,10 +195,10 @@ i18n("Login")
                 <clientsettings>Client settings</clientsettings>
             </clients>
             <logs>
-            	<main>Logs</main>
-				<mail_action>Actions</mail_action>
-				<mail_log>Mails</mail_log>
-			</logs>
+                <main>Logs</main>
+                <mail_action>Actions</mail_action>
+                <mail_log>Mails</mail_log>
+            </logs>
             <debug>Debug</debug>
             <system>
                 <main>System</main>

@@ -78,7 +78,7 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
     protected function loadSubCategories($iIdcat, $bAsObjects = true, $bWithSubCategories = false, $iSubCategoriesLoadDepth = 3) {
         $iIdcat = (int) $iIdcat;
         $bUseAuth = $this->oAuth instanceof cAuth;
-		
+
         $sFieldsToSelect = 'cattree.idcat, cattree.level';
         if ($bUseAuth === true) { // adapted from FrontendNavigation by Willi Man
             $sFieldsToSelect = 'cattree.idcat, cattree.level, catlang.public, catlang.idcatlang';

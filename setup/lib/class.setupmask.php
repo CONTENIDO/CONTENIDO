@@ -127,7 +127,7 @@ class cSetupMask
         $this->_oTpl->generate("templates/setup.tpl", false, false);
     }
 
-	function renderSystemCheck()
+    function renderSystemCheck()
     {
         if ($this->_bNavigationEnabled) {
             $this->_createNavigation();

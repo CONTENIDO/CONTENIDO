@@ -10,6 +10,6 @@
 <script type="text/javascript" src="../setup/script/setup.js"></script>
 </head>
 <body>
-	<div id="setupBody">{CONTENT}</div>
+    <div id="setupBody">{CONTENT}</div>
 </body>
 </html>

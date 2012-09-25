@@ -274,22 +274,22 @@ class cApiCategoryLanguage extends Item {
         $this->set('lastmodified', date('Y-m-d H:i:s'));
         return parent::store();
     }
-	
-	/**
-	 * Returns the link to the current object.
-	 * @return	string	link
-	 */
-	public function getLink() {
-		if ($this->isLoaded() === false) {
-			return '';
-		}
-		
-		$options = array();
-		$options['idcat'] = $this->get('idcat');
-		$options['lang'] = $this->get('idlang');
-		
-		return cUri::getInstance()->build($options);
-	}
+
+    /**
+     * Returns the link to the current object.
+     * @return    string    link
+     */
+    public function getLink() {
+        if ($this->isLoaded() === false) {
+            return '';
+        }
+
+        $options = array();
+        $options['idcat'] = $this->get('idcat');
+        $options['lang'] = $this->get('idlang');
+
+        return cUri::getInstance()->build($options);
+    }
 
 }
 

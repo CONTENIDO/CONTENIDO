@@ -22,7 +22,7 @@
             <action area="url_shortener">url_shortener_edit</action>
         </actions>
         <frames>
-            <frame area="url_shortener" filetype="main" name="url_shortener/includes/include.url_shortener.php" frameId="4" />    
+            <frame area="url_shortener" filetype="main" name="url_shortener/includes/include.url_shortener.php" frameId="4" />
         </frames>
         <nav_sub>
             <nav area="url_shortener" level="0" navm="1">url_shortener/xml/;navigation/content/url_shortener/main</nav>

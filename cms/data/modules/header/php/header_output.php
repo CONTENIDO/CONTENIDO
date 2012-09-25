@@ -6,19 +6,19 @@ $iIdcatStart = (int) getEffectiveSetting('navigation', 'idcat-home', '1');
 
 try {
     // get headline
-	if ($iIdcatStart != intval($idcat)) {
-		$category = new cApiCategoryLanguage();
-		$category->loadByCategoryIdAndLanguageId($idcat, $lang);
-		
-		$sHeadline = $category->get('name');
-	} else {
-		$sHeadline = mi18n("Willkommen!");
-	}
+    if ($iIdcatStart != intval($idcat)) {
+        $category = new cApiCategoryLanguage();
+        $category->loadByCategoryIdAndLanguageId($idcat, $lang);
+
+        $sHeadline = $category->get('name');
+    } else {
+        $sHeadline = mi18n("Willkommen!");
+    }
 
     $sImgEdit = "CMS_IMGEDITOR[1]";
     $sImgSrc = "CMS_IMG[1]";
-    
-	$sCssStyle = '';
+
+    $sCssStyle = '';
     if ($contenido && $edit) {
         echo '<div id="modHeaderImgEdit">' . $sImgEdit . '</div>';
     }

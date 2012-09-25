@@ -79,8 +79,8 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
 
     switch ($sWhere) {
         case 'module':
-			$handler = new cModuleHandler($cCurrentModule);
-			$sInclude = $handler->getPhpPath() . $sWhat;
+            $handler = new cModuleHandler($cCurrentModule);
+            $sInclude = $handler->getPhpPath() . $sWhat;
             break;
         case 'frontend':
             $sInclude = cRegistry::getFrontendPath() . $sWhat;
@@ -93,10 +93,10 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
             break;
         case 'conlib':
         case 'phplib':
-			if (function_exists('cDeprecated')) {
-				cDeprecated("The support for the conlib library is deprecated. Do not use this classes!");
-			}
-			
+            if (function_exists('cDeprecated')) {
+                cDeprecated("The support for the conlib library is deprecated. Do not use this classes!");
+            }
+
             $sInclude = $cfg['path']['phplib'] . $sWhat;
             break;
         case 'classes':
@@ -107,10 +107,10 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
             $sInclude = $backendPath  . $cfg['path'][$sWhere] . $sWhat;
             break;
         case 'pear':
-			if (function_exists('cDeprecated')) {
-				cDeprecated("The support for the PEAR library is deprecated. Do not use this classes!");
-			}
-			
+            if (function_exists('cDeprecated')) {
+                cDeprecated("The support for the PEAR library is deprecated. Do not use this classes!");
+            }
+
             $sInclude = $sWhat;
             $sIncludePath = ini_get('include_path');
 
@@ -195,10 +195,10 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
  * @deprecated 2012-09-12
  */
 function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
-	if (function_exists('cDeprecated')) {
-		cDeprecated("This function is deprecated. Use cInclude instead.");
-	}
-	
+    if (function_exists('cDeprecated')) {
+        cDeprecated("This function is deprecated. Use cInclude instead.");
+    }
+
     cInclude($sWhere, $sWhat, $bForce, $bReturnPath);
 }
 
