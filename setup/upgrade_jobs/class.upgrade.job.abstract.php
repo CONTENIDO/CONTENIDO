@@ -32,6 +32,12 @@ abstract class cUpgradeJobAbstract {
     protected static $_rootPath;
     protected static $_rootHttpPath;
 
+    /**
+     * Constructor, sets some properties
+     * @param  DB_Contenido  $db
+     * @param  array  $cfg  Main configuration array
+     * @param  array  $cfgClient  Clients configuration array
+     */
     public function __construct($db, $cfg, $cfgClient) {
         $this->_oDb = $db;
         $this->_aCfg = (is_array($cfg)) ? $cfg : $GLOBALS['cfg'];
@@ -54,8 +60,15 @@ abstract class cUpgradeJobAbstract {
         }
     }
 
+    /**
+     * Main function for each upgrade job. Each upgrade job has to implement this!
+     */
     public abstract function execute();
 
+    /**
+     * Returns list of all available clients
+     * @return cApiClient[]
+     */
     protected function _getAllClients() {
         $aClients = array();
         $oClientColl = new cApiClientCollection();
@@ -67,6 +80,10 @@ abstract class cUpgradeJobAbstract {
         return $aClients;
     }
 
+    /**
+     * Returns list of all available languages
+     * @return cApiLanguage[]
+     */
     protected function _getAllLanguages() {
         $aLanguages = array();
         $oLanguageColl = new cApiLanguageCollection();
@@ -78,4 +95,12 @@ abstract class cUpgradeJobAbstract {
         return $aLanguages;
     }
 
+    /**
+     * Logs passed setup error, wrapper for logSetupFailure() function
+     * @param  string  $errorMsg
+     */
+    protected _logError($errorMsg) {
+        $className = get_class($this);
+        logSetupFailure($className . ': ' . $errorMsg. "\n");
+    }
 }
