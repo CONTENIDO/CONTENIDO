@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * List layouts in database
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.0.1
@@ -18,15 +18,15 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-03-27
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2010-08-18, Munkh-Ulzii Balidar, add a functionality to show the used info
  *
- *   $Id: include.lay_overview.php 1224 2010-10-12 08:59:42Z dominik.ziegler $:
+ *   $Id: include.lay_overview.php 1290 2011-02-09 15:09:31Z timo.trautmann $:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -58,7 +58,7 @@ while ($layout = $layouts->next()) {
         }
 
         if ($perm->have_perm_area_action_item("lay_edit","lay_edit",$layout->get("idlay"))) {
-        	
+
         	$tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')" title="%s" alt="%s">%s</a>';
         	$area = "lay";
         	$mstr = sprintf($tmp_mstr, 'right_top',
@@ -92,28 +92,28 @@ while ($layout = $layouts->next()) {
         if ($inUse)
         {
         	$delDescription = i18n("Layout is in use, cannot delete");
-        	$inUseDescription = i18n("Layout is in use");
-            $tpl->set('d', 'INUSE','<a href="javascript:;" rel="' . $layout->get("idlay") . '" class="in_used_lay"><img src="'.$cfg['path']['images'].'exclamation.gif" border="0" title="'.$inUseDescription.'" alt="'.$inUseDescription.'"></a>');
+        	$inUseDescription = i18n("Click for more information about usage");
+        	$tpl->set('d', 'INUSE','<a href="javascript:;" rel="' . $layout->get("idlay") . '" class="in_used_lay"><img src="'.$cfg['path']['images'].'exclamation.gif" border="0" title="'.$inUseDescription.'" alt="'.$inUseDescription.'"></a>');
         } else {
-            $tpl->set('d', 'INUSE','');    
+            $tpl->set('d', 'INUSE','');
         }
-        
+
         if ($perm->have_perm_area_action_item("lay","lay_delete",$layout->get("idlay")) &&
             !$inUse)
             {
             	$delTitle = i18n("Delete layout");
             	$delDescr = sprintf(i18n("Do you really want to delete the following layout:<br><br>%s<br>"),htmlspecialchars($name));
-            	
-            	
+
+
                 $tpl->set('d', 'DELETE', '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteLayout('.$idlay.')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>');
         } else {
             $tpl->set('d', 'DELETE','<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$delDescription.'" alt="'.$delDescription.'">');
         }
-        
+
         $todo = new TODOLink("idlay",$layout->get("idlay"), i18n("Layout").": ".$name,"");
-        
+
         $tpl->set('d', 'TODO', $todo->render());
-        
+
         if (stripslashes($_REQUEST['idlay']) == $layout->get("idlay")) {
             $tpl->set('d', 'ID', 'marked');
         } else {
@@ -129,7 +129,7 @@ while ($layout = $layouts->next()) {
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'SESSION', $contenido);
 $tpl->set('s', 'AJAXURL', $cfg['path']['contenido_fullhtml'].'ajaxmain.php');
-$tpl->set('s', 'BOX_TITLE', i18n("Is used in") . ":");
+$tpl->set('s', 'BOX_TITLE', i18n("The layout '%s' is used for following templates") . ":");
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lay_overview']);
 ?>

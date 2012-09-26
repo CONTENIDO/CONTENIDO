@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Shows all templates in the left frame
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.0.1
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2003-03-27
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
@@ -27,7 +27,7 @@
  *
  *   $Id: include.tpl_overview.php 1224 2010-10-12 08:59:42Z dominik.ziegler $:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -81,7 +81,7 @@ while ( $db->next_record() ) {
                                        'right_bottom',
                                        $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"),
                                        $name);
-			
+
 		}
 
         if ($perm->have_perm_area_action_item("tpl_edit","tpl_edit",$db->f("idtpl"))) {
@@ -92,13 +92,13 @@ while ( $db->next_record() ) {
 
              /* Check if template is in use */
             $inUse = tplIsTemplateInUse($idtpl);
-			
-            $inUseString = i18n("In use");
-			
+
+            $inUseString = i18n("Click for more information about usage");
+
             if (!$inUse && ($perm->have_perm_area_action_item("tpl","tpl_delete",$db->f("idtpl")))) {
             	$delTitle = i18n("Delete template");
         		$delDescr = sprintf(i18n("Do you really want to delete the following template:<br><br>%s<br>"),htmlspecialchars($name));
-            
+
                 $tpl->set('d', 'DELETE', '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteTemplate('.$idtpl.')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>');
                 $tpl->set('d', 'INUSE', '<img src="images/spacer.gif" width="16">');
             } else {
@@ -109,7 +109,7 @@ while ( $db->next_record() ) {
 
            if ($perm->have_perm_area_action_item("tpl","tpl_dup", $db->f("idtpl"))) {
                 $copybutton = '<a target="right_bottom" href="'.$sess->url("main.php?area=tpl_edit&action=tpl_duplicate&idtpl=$idtpl&frame=4").'" title="'.i18n("Duplicate template").'"><img src="'.$cfg["path"]["images"].'but_copy.gif'.'" border="0" title="'.i18n("Duplicate template").'" alt="'.i18n("Duplicate template").'"></a>';
-                        
+
            } else {
                $copybutton = '<img src="images/spacer.gif" width="14" height="1">';
            }
@@ -125,7 +125,7 @@ while ( $db->next_record() ) {
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'SESSION', $contenido);
 $tpl->set('s', 'AJAXURL', $cfg['path']['contenido_fullhtml'].'ajaxmain.php');
-$tpl->set('s', 'BOX_TITLE', i18n("Is used in") . ":");
+$tpl->set('s', 'BOX_TITLE', i18n("The template '%s' is used for following categories and articles") . ":");
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tpl_overview']);
 
 ?>

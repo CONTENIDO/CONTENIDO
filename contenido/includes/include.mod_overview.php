@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Module list
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.3.2
@@ -18,15 +18,15 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-03-21
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2010-08-18, Munkh-Ulzii Balidar, add a functionality to show the used info
  *
- *   $Id: include.mod_overview.php 1224 2010-10-12 08:59:42Z dominik.ziegler $:
+ *   $Id: include.mod_overview.php 1247 2010-12-28 16:58:06Z xmurrix $:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -58,22 +58,22 @@ $oPage					      = new cPage;
 
 // no value found in request for items per page -> get form db or set default
 $oUser = new cApiUser($auth->auth["uid"]);
-if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] < 0) 
+if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] < 0)
 {
 	$_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
 }
-if (!is_numeric($_REQUEST["elemperpage"])) 
+if (!is_numeric($_REQUEST["elemperpage"]))
 {
 	$_REQUEST["elemperpage"] = 0;
 }
-if ($_REQUEST["elemperpage"] > 0) 
+if ($_REQUEST["elemperpage"] > 0)
 {
 	// -- All -- will not be stored, as it may be impossible to change this back to something more useful
 	$oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
 }
 unset ($oUser);
 
-if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['page'] <= 0 || $_REQUEST["elemperpage"] == 0) 
+if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['page'] <= 0 || $_REQUEST["elemperpage"] == 0)
 {
 	$_REQUEST["page"] = 1;
 }
@@ -82,7 +82,7 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
 if (isset ($_REQUEST["sortby"]) && $_REQUEST["sortby"] != "")
 {
 	$cApiModuleCollection->setOrder($_REQUEST["sortby"]." ".$_REQUEST["sortorder"]);
-} 
+}
 else
 {
 	$cApiModuleCollection->setOrder("name asc");
@@ -127,7 +127,7 @@ if (isset($_REQUEST["filtertype"]))
 			break;
 		default:
 			$cApiModuleCollection->setWhere("type", $_REQUEST["filtertype"]);
-			break;	
+			break;
 	}
 }
 
@@ -135,23 +135,23 @@ if (isset($_REQUEST["filtertype"]))
 $cApiModuleCollection->setWhere("idclient", $client);
 
 
-if ($_REQUEST["elemperpage"] > 0) 
+if ($_REQUEST["elemperpage"] > 0)
 {
 	$cApiModuleCollection->query();
 	$iItemCount = $cApiModuleCollection->count();
 
-	if ($iItemCount < (($_REQUEST["page"] - 1) * $_REQUEST["elemperpage"])) 
+	if ($iItemCount < (($_REQUEST["page"] - 1) * $_REQUEST["elemperpage"]))
 	{
 		$_REQUEST["page"] = 1;
 	}
-    
+
     if ($_REQUEST["elemperpage"]*($_REQUEST["page"]) >= $iItemCount+$_REQUEST["elemperpage"] && $_REQUEST["page"]  != 1) {
         $_REQUEST["page"]--;
     }
 
 	$cApiModuleCollection->setLimit(($_REQUEST["elemperpage"] * ($_REQUEST["page"] -1)), $_REQUEST["elemperpage"]);
-} 
-else 
+}
+else
 {
 	$iItemCount 		= 0;
 }
@@ -169,7 +169,7 @@ while ($cApiModule = $cApiModuleCollection->next())
 	if ($perm->have_perm_item($area, $db->f("idmod")) || $perm->have_perm_area_action("mod_translate", "mod_translation_save") || $perm->have_perm_area_action_item("mod_translate", "mod_translation_save", $cApiModule->get("idmod")))
 	{
 			$idmod = $cApiModule->get("idmod");
-			
+
 			$link = new cHTMLLink;
 			$link->setMultiLink("mod", "", "mod_edit", "");
 			$link->setCustom("idmod", $cApiModule->get("idmod"));
@@ -200,17 +200,17 @@ while ($cApiModule = $cApiModuleCollection->next())
 			}
 			else
 			{
-				// Do not check modules (or don't force it) - so, let's take a look into the database 
+				// Do not check modules (or don't force it) - so, let's take a look into the database
 				$sModuleError = $cApiModule->get("error");
-				
+
 				if ($sModuleError == "none")
 				{
 					$colName = $sName;
-				} 
+				}
 				else if ($sModuleError == "input" || $sModuleError == "output")
 				{
 					$colName = '<font color="#B1AC58">'.$sName.'</font>';
-				} 
+				}
 				else
 				{
 					$colName = '<font color="red">'.$sName.'</font>';
@@ -228,13 +228,13 @@ while ($cApiModule = $cApiModuleCollection->next())
 			$inUse = $classmodule->moduleInUse($idmod);
 
 			$deletebutton = "";
-			
+
 			if ($inUse)
 			{
-				$inUseString = i18n("In use");
-				$mlist->setActions($iMenu, 'inuse', '<a href="javascript:;" rel="' . $idmod . '" class="in_used_mod"><img src="'.$cfg['path']['images'].'exclamation.gif" border="0" title="'.$inUseString.'" alt="'.$inUseString.'"></a>');
+				$inUseString = i18n("Click for more information about usage");
+			    $mlist->setActions($iMenu, 'inuse', '<a href="javascript:;" rel="' . $idmod . '" class="in_used_mod"><img src="'.$cfg['path']['images'].'exclamation.gif" border="0" title="'.$inUseString.'" alt="'.$inUseString.'"></a>');
 				$delDescription = i18n("Module in use, cannot delete");
-				
+
 			} else {
                 $mlist->setActions($iMenu, 'inuse', '<img src="./images/spacer.gif" border="0" width="16">');
 				if ($perm->have_perm_area_action_item("mod", "mod_delete", $cApiModule->get("idmod")))
@@ -242,26 +242,26 @@ while ($cApiModule = $cApiModuleCollection->next())
 				$delTitle = i18n("Delete module");
 				$delDescr = sprintf(i18n("Do you really want to delete the following module:<br><br>%s<br>"), $sName);
 
-				$deletebutton = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteModule('.$idmod.')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';				
+				$deletebutton = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteModule('.$idmod.')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
 				} else {
-					$delDescription = i18n("No permission");	
+					$delDescription = i18n("No permission");
 				}
 			}
-			
+
 			if ($deletebutton == "")
 			{
                 //$deletebutton = '<img src="images/spacer.gif" width="16" height="16">';
-				$deletebutton = '<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$delDescription.'" alt="'.$delDescription.'">';	
+				$deletebutton = '<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$delDescription.'" alt="'.$delDescription.'">';
 			}
-			
+
 			$todo = new TODOLink("idmod", $db->f("idmod"), "Module: $sName", "");
-			
+
 			$mlist->setActions($iMenu, "todo", $todo->render());
 			$mlist->setActions($iMenu, "delete", $deletebutton);
-            
+
             if ($_GET['idmod'] == $idmod) {
                 $mlist->setExtra($iMenu, 'id="marked" ');
-            }     
+            }
 			//$mlist->setImage($iMenu, "images/but_module.gif");
 			//$mlist->setImage($iMenu, 'images/spacer.gif', 5);
 		}
@@ -275,7 +275,7 @@ $deleteScript = '    <script type="text/javascript">
         function deleteModule(idmod) {
 
         //console.log(parent.frames[1].document.filter.sortorder);
-        
+
   			form = document.getElementById("filter");
 
         url  = \'main.php?area=mod_edit\';
@@ -294,32 +294,35 @@ $deleteScript = '    <script type="text/javascript">
 
     </script>';
 
-$sShowUsedInfo = ' 
-		<script type="text/javascript">       
+$sShowUsedInfo = '
+		<script type="text/javascript">
 			$(document).ready(function() {
-				
+
 	        	$(".in_used_mod").live("click", function() {
 	            	var iId = $(this).attr("rel");
+    	            var modName = $(this).parents().filter(\'table:first\').parent().prev().text();
 	            	if (iId) {
 	            		$.post(
-	            		   "' . $cfg['path']['contenido_fullhtml'] . 'ajaxmain.php' . '", 
-	      				   { area: "' . $area . '", ajax: "inused_module", id: iId, contenido: sid }, 
+	            		   "' . $cfg['path']['contenido_fullhtml'] . 'ajaxmain.php' . '",
+	      				   { area: "' . $area . '", ajax: "inused_module", id: iId, contenido: sid },
 	      				   function(data) {
-	      					  box.notify("' . i18n("Is used in") . ':", data);
-	      				   } 
+	      					  var inUseTitle = "' . i18n("The module '%s' is used for following templates") . '";
+          				  	  inUseTitle = inUseTitle.replace(\'%s\', modName);
+	      					  box.notify(inUseTitle, data);
+	      				   }
 	      				);
-	            	}	
+	            	}
 	        	});
 	        });
         </script>
         ';
 
-$sMarkRow = '<script language="javascript">    
+$sMarkRow = '<script language="javascript">
                 if (document.getElementById(\'marked\')) {
                     row.click(document.getElementById(\'marked\'));
                 }
             </script>';
-    
+
 $oPage->setMargin(0);
 $oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
 $oPage->addScript('jquery', '<script type="text/javascript" src="scripts/jquery/jquery.js"></script>');
@@ -363,8 +366,8 @@ $sRefreshPager = '
             }
         }
     </script>';
-            
-$oPage->addScript('refreshpager', $sRefreshPager); 
+
+$oPage->addScript('refreshpager', $sRefreshPager);
 
 $oPage->render();
 ?>
