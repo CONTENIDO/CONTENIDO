@@ -202,30 +202,14 @@ function addFrameCloseEvents(sFrameId) {
  * @param string sPath
  */
 function loadExternalScripts(sFrameId, sPath, iFileListId) {
-	$('head').append('<link rel="stylesheet" href="'+sPath+'styles/cms_filelist.css" type="text/css" media="all" />');
-	/*
-	$('head').append('<link rel="stylesheet" href="'+sPath+'scripts/jscalendar/calendar-contenido.css" media="all" />');
+    if ($('#cms_filelist').length == 0) {
+        $('head').append('<link rel="stylesheet" id="cms_filelist" href="'+sPath+'styles/cms_filelist.css" type="text/css" media="all" />');
+	}
 	
-	$.getScript(sPath+'scripts/jscalendar/calendar.js', function() {
-		$.getScript(sPath+'scripts/jscalendar/lang/calendar-de.js', function() {
-			$.getScript(sPath+'scripts/jscalendar/calendar-setup.js', function() {			
-				for (i = 0; i < dateFields.length; i++) {
-					Calendar.setup({
-						inputField : dateFields[i],
-						ifFormat : "%d.%m.%Y",
-						weekNumbers : true,
-						firstDay : 1,
-						showsTime : false,
-						contenidoPath : sPath
-					}); 							
-				}
-			});
-		});
-	});
-	*/
-	
-	$.getScript(sPath+'scripts/jquery/jquery-ui.js', function() {
-		$.getScript(sPath+'scripts/jquery/jquery-ui.js', function() {
+    conLoadFile(sPath+'scripts/jquery/jquery-ui.js', 'cmsFileList_loadExternalScriptsCallback(\''+sFrameId+'\');');
+}
+
+function cmsFileList_loadExternalScriptsCallback(sFrameId) {
 			$(sFrameId).draggable({
 				handle: '.head'
 			});
