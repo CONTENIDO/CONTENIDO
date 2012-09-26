@@ -19,7 +19,7 @@
  *   created 2008-09-05
  *   modified 2009-01-23, Ortwin Pinke, BUG-Fix in setFocus first parameter for execInstanceCommand has to be the Id of Tinyobject, not the object itself 
  *
- *   $Id: con_tiny.js 1045 2009-06-26 07:51:12Z timo.trautmann $:
+ *   $Id: con_tiny.js 1540 2011-09-01 07:54:16Z timo.trautmann $:
  * }}
  * 
  */
@@ -81,16 +81,12 @@ function updateImageFilebrowser ()
  * @return string - converted url
  */
 function CustomURLConverter(url, node, on_save) {
-		if (node != null && node.nodeName  != 'IMG' && node != 'img' && url.indexOf(frontend_path) == -1) {
-	        var oEd = new tinymce.Editor('contenido', '');
-	        url = oEd.convertURL(url, node, on_save);
-		} else {
-			var src = url;
-			
-			if (!src.match(/^https?:\/\//g)) {
-				url = frontend_path+src;
-			}
-		}
+        var src = url;
+        
+        if (!src.match(/^https?:\/\//g)) {
+            url = frontend_path+src;
+        }
+		
         return url;
 }
 
@@ -401,4 +397,4 @@ function conLoadFile(sScript, sCallback) {
         eval(sCallback);
     }
     return true;
-}   
+}

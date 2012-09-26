@@ -60,7 +60,6 @@ function closeHandler(cal){
 	cal_is_open = false;
 }
 
-
 function createCmsDateCallback(id, format, showsTime, showsOtherMonths, sDivSelectId, sConPath, sSelectId, sLang, sInstance) {
     conLoadFile(sConPath+'scripts/jscalendar/lang/calendar-'+sLang+'.js', 'createCmsDateCallback2("'+id+'","'+format+'","'+showsTime+'","'+showsOtherMonths+'","'+sDivSelectId+'","'+sConPath+'","'+sSelectId+'","'+sLang+'","'+sInstance+'");'); 
 }
@@ -76,7 +75,6 @@ function createCmsDate(id, format, showsTime, showsOtherMonths, sDivSelectId, sC
         $('head').append('<link rel="stylesheet" id="cms_date" href="'+sConPath+'scripts/jscalendar/calendar-contenido.css" type="text/css" media="all" />');
     }
 }
-
 
 /**
  * The CmsDate object constructor. 
@@ -194,4 +192,3 @@ CmsDate.prototype.changeFormat = function(format){
     this.cal.setDateFormat(format); // set the specified date format
     this.cal.refresh();
 }
-

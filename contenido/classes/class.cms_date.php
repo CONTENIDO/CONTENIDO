@@ -239,8 +239,7 @@ private function getDateFormats(){
  * @return (String) js-script
  */
 public function getJsScript(){
-	
-		$this->sJS = "<script type=\"text/javascript\">
+	$this->sJS = "<script type=\"text/javascript\">
                        var $this->sCalName;
                        function load_$this->sCalName() {
                            createCmsDate('".$this->sEditAreaId."', '%d.%m.%Y %H:%M', '24', true, '".$this->sDivSelectId."', '".$this->aCfg['path']['contenido_fullhtml']."','".$this->sSelectId."', '".$this->getLanguageContenido()."', '".$this->sCalName."');
@@ -248,7 +247,7 @@ public function getJsScript(){
                        
                        conLoadFile('".$this->aCfg['path']['contenido_fullhtml']."scripts/cmsDate.js', 'load_$this->sCalName();');
                    </script>";
-
+	
 	// output 
 	$this->sJS = AddSlashes(AddSlashes($this->sJS));
 	$this->sJS = str_replace("\\\'", "'", $this->sJS);
@@ -316,7 +315,7 @@ private function getOkButton(){
 private function getEditingField(){
 	
 	    // Inline Editing Field
-	$oDivBox = new cHTMLDIV();
+	$oDivBox = new cHTMLDiv();
 	$oDivBox->setStyleDefinition("border", "1px dashed #dddddd");
 	$this->sEditAreaId  = "DATE_" . $this->oDB->f("idtype") . "_" . $this->iNumberOfCms;
 	$oDivBox->setId($this->sEditAreaId);
@@ -341,7 +340,7 @@ private function getEditingField(){
 private function getSelectBox(){
 		
 	//  Div Format SelectBox
-	$oMenueDiv = new cHTMLDIV();
+	$oMenueDiv = new cHTMLDiv();
 	$this->sDivSelectId = "menue-$this->iNumberOfCms";
 	$oMenueDiv->setId($this->sDivSelectId);
 	$oMenueDiv->setStyleDefinition("padding", "4px");
@@ -386,4 +385,4 @@ private function getLanguageContenido(){
 }
 
 
-?>	
+?>

@@ -8,7 +8,6 @@
 		
 		function myCustomSetupContent(editor_id, body, doc) {
 			tinyMCE.get(editor_id).setContent(tinyMCE.get(editor_id).getContent());
-			//body.innerHTML = "my new content" + body.innerHTML;
 		}
 		
 		function cutFullpath(element_id, html, body) {
@@ -86,16 +85,12 @@
 		}
 
 		function CustomURLConverter(url, node, on_save) {
-			if (node != null && node.nodeName  != 'IMG' && node != 'img' && url.indexOf(frontend_path) == -1) {
-				var oEd = new tinymce.Editor('contenido', '');
-				url = oEd.convertURL(url, node, on_save);
-			} else {
-				var src = url;
-				
-				if (!src.match(/^https?:\/\//g)) {
-					url = frontend_path+src;
-				}
-			}
+            var src = url;
+            
+            if (!src.match(/^https?:\/\//g)) {
+                url = frontend_path+src;
+            }
+
 			return url;
 		}
 

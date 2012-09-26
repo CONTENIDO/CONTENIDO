@@ -114,7 +114,7 @@ function cmsTeaser_addTabbingEvents(sFrameId) {
 function cmsTeaser_addSaveEvent(sFrameId, iIdArtLang, iId) {
 	$(sFrameId+' .save_settings').css('cursor', 'pointer');
 	$(sFrameId+' .save_settings').click(function() {
-		addManualTeaserEntry(sFrameId);
+		cmsTeaser_addManualTeaserEntry(sFrameId);
 		var sValue = '';
 		//iterate over all teaser properties
 		for (var i = 0; i < aData.length; i++) {
@@ -135,10 +135,10 @@ function cmsTeaser_addSaveEvent(sFrameId, iIdArtLang, iId) {
 		    //default value for select boxes and text boxes
 			sValue = $(sFrameId+' #'+aData[i]).attr('value');
 		  }
-		  appendTeaserValue(aData[i], sValue);
+		  cmsTeaser_appendTeaserValue(aData[i], sValue);
 		}
-		appendTeaserValue('teaser_action', 'store');
-		appendTeaserValue('teaser_id', iId);
+		cmsTeaser_appendTeaserValue('teaser_action', 'store');
+		cmsTeaser_appendTeaserValue('teaser_id', iId);
 		setcontent(iIdArtLang,'0');
 	});
 }
@@ -215,7 +215,7 @@ function cmsTeaser_addManualTeaserEvent(sFrameId) {
 	$(sFrameId+' #add_art').css('cursor', 'pointer');
 		$(sFrameId+' #add_art').click(function() {
 			//call internal add function
-			addManualTeaserEntry(sFrameId);
+			cmsTeaser_addManualTeaserEntry(sFrameId);
 		});
 }
 
