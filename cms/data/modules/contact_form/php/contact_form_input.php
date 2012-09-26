@@ -37,8 +37,6 @@ $mId = uniqid('m_');
     <?php
     $c1 = '';
     $c2 = '';
-    $c3 = '';
-    $c4 = '';
     switch (strtolower("CMS_VALUE[4]")) {
         case "smtp":
             $c1 = ' checked';
@@ -46,14 +44,8 @@ $mId = uniqid('m_');
         case "mail":
             $c2 = ' checked';
             break;
-        case "sendmail":
-            $c3 = ' checked';
-            break;
-        case "qmail":
-            $c4 = ' checked';
-            break;
         default:
-            $c3 = ' checked';
+            $c2 = ' checked';
     }
     ?>
     <tr>
@@ -61,12 +53,6 @@ $mId = uniqid('m_');
         <td>
             <input type="radio" name="<?php echo "CMS_VAR[4]";?>" id="<?php echo $mId ?>_mailer_mail" value="mail"<?php echo $c2;?>>
             <label for="<?php echo $mId ?>_mailer_mail"><?php echo mi18n("mail");?></label><br />
-
-            <input type="radio" name="<?php echo "CMS_VAR[4]";?>" id="<?php echo $mId ?>_mailer_qmail" value="qmail"<?php echo $c4;?>>
-            <label for="<?php echo $mId ?>_mailer_qmail"><?php echo mi18n("qmail");?></label><br />
-
-            <input type="radio" name="<?php echo "CMS_VAR[4]";?>" id="<?php echo $mId ?>_mailer_sendmail" value="sendmail"<?php echo $c3;?>>
-            <label for="<?php echo $mId ?>_mailer_sendmail"><?php echo mi18n("sendmail");?></label><br />
 
             <input type="radio" name="<?php echo "CMS_VAR[4]";?>" id="<?php echo $mId ?>_mailer_smtp" value="smtp"<?php echo $c1;?>>
             <label for="<?php echo $mId ?>_mailer_smtp"><?php echo mi18n("smtp");?></label><br />

@@ -31,8 +31,6 @@ require_once 'swiftmailer/lib/swift_init.php';
  */
 class cMailer extends Swift_Mailer {
 
-    private $_isPreSendError = true;
-
     /**
      * The mail host name
      *
@@ -115,7 +113,7 @@ class cMailer extends Swift_Mailer {
             $this->_mailHost = $mailHost;
         }
 
-            // get mailserver user and pass from system properties
+        // get mailserver user and pass from system properties
         $this->_mailUser = (getSystemProperty('system', 'mail_user'))? getSystemProperty('system', 'mail_user') : '';
         $this->_mailPass = (getSystemProperty('system', 'mail_pass'))? getSystemProperty('system', 'mail_pass') : '';
 
@@ -134,16 +132,34 @@ class cMailer extends Swift_Mailer {
         }
 
         // try to use SMTP
-        $transport = Swift_SmtpTransport::newInstance($this->_mailHost, $this->_mailPort, $this->_mailEncryption);
-        if (!empty($this->_mailUser)) {
+        $transport = self::constructTransport($this->_mailHost, $this->_mailPort, $this->_mailEncryption, $this->_mailUser, $this->_mailPass);
+        parent::__construct($transport);
+    }
+
+    /**
+     * Tries to establish an SMTP connection with the given settings.
+     * If this is possible, a Swift_SmtpTransport object is returned. Otherwise
+     * a simple Swift_MailTransport object is returned.
+     *
+     * @param string $mailHost the mail host
+     * @param string $mailPort the mail port
+     * @param string $mailEncryption [optional] the mail encryption
+     * @param string $mailUser [optional] the mail user
+     * @param string $mailPass [optional] the mail password
+     * @return Swift_SmtpTransport Swift_MailTransport the transport object
+     */
+    public static function constructTransport($mailHost, $mailPort, $mailEncryption = null, $mailUser = null, $mailPass = null) {
+        // try to use SMTP
+        $transport = Swift_SmtpTransport::newInstance($mailHost, $mailPort, $mailEncryption);
+        if (!empty($mailUser)) {
             $authHandler = new Swift_Transport_Esmtp_AuthHandler(array(
                 new Swift_Transport_Esmtp_Auth_PlainAuthenticator(),
                 new Swift_Transport_Esmtp_Auth_LoginAuthenticator(),
                 new Swift_Transport_Esmtp_Auth_CramMd5Authenticator()
             ));
-            $authHandler->setUsername($this->_mailUser);
-            if (!empty($this->_mailPass)) {
-                $authHandler->setPassword($this->_mailPass);
+            $authHandler->setUsername($mailUser);
+            if (!empty($mailPass)) {
+                $authHandler->setPassword($mailPass);
             }
             $transport->setExtensionHandlers(array(
                 $authHandler
@@ -157,7 +173,8 @@ class cMailer extends Swift_Mailer {
             // if SMTP is not possible, simply use PHP's mail() functionality
             $transport = Swift_MailTransport::newInstance();
         }
-        parent::__construct($transport);
+
+        return $transport;
     }
 
     /**
@@ -190,7 +207,7 @@ class cMailer extends Swift_Mailer {
      * @return int number of recipients to which the mail has been sent
      */
     public function sendMail($from, $to, $subject, $body = '', $cc = null, $bcc = null, $replyTo = null, $resend = false, $contentType = 'text/plain') {
-        $message = Swift_Message::newInstance($subject, $body);
+        $message = Swift_Message::newInstance($subject, $body, $contentType);
         if (empty($from) || is_array($from) && count($from) > 1) {
             $message->setFrom(array(
                 $this->_mailSender => $this->_mailSenderName
@@ -202,7 +219,6 @@ class cMailer extends Swift_Mailer {
         $message->setCc($cc);
         $message->setBcc($bcc);
         $message->setReplyTo($replyTo);
-        $message->setContentType($contentType);
         $failedRecipients = array();
 
         return $this->send($message, $failedRecipients, $resend);

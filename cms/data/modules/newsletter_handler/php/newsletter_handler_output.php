@@ -141,15 +141,11 @@ if ($_POST['action'] == "subscribe") {
 
             $sBody = mi18n("txtMailSubscribe")."\n".$frontendURL."front_content.php?changelang=".$lang."&idcatart=".$aSettings['HandlerID']."&confirm=".$recipient->get("hash")."\n\n";
 
-            $oMail = new PHPMailer();
-            $oMail->From     = $aSettings['SenderEMail'];
-            $oMail->FromName = $aSettings['SenderEMail'];
-            $oMail->AddAddress($sEMail);
-            $oMail->Mailer   = "mail";
-            $oMail->Subject  = mi18n("Newsletter: Confirmation");
-            $oMail->Body     = $sBody;
+            $mailer = new cMailer();
+            $from = array($aSettings['SenderEMail'] => $aSettings['SenderEMail']);
+            $recipients = $mailer->sendMail($from, $sEMail, mi18n("Newsletter: Confirmation"), $sBody);
 
-            if ($oMail->Send()) {
+            if ($recipients > 0) {
                 $sMessage = mi18n("Dear subscriber,<br>your e-mail address is now subscribed for our newsletter. You will now receive an e-mail asking you to confirm your subscription.");
 
                 if ($aSettings['FrontendLink'] == "enabled") {
@@ -188,15 +184,11 @@ if ($_POST['action'] == "subscribe") {
     } elseif ($recipient = $oRecipients->emailExists($_POST['email'])) {
         $sBody = mi18n("txtMailDelete")."\n" . $frontendURL . "front_content.php?changelang=".$lang."&idcatart=".$aSettings['HandlerID']."&unsubscribe=".$recipient->get("hash")."\n\n";
 
-        $oMail = new PHPMailer();
-        $oMail->From     = $aSettings['SenderEMail'];
-        $oMail->FromName = $aSettings['SenderEMail'];
-        $oMail->AddAddress($recipient->get("email"));
-        $oMail->Mailer   = "mail";
-        $oMail->Subject  = mi18n("Newsletter: Cancel subscription");
-        $oMail->Body     = $sBody;
+        $mailer = new cMailer();
+        $from = array($aSettings['SenderEMail'] => $aSettings['SenderEMail']);
+        $recipients = $mailer->sendMail($from, $recipient->get('email'), mi18n("Newsletter: Cancel subscription"), $sBody);
 
-        if ($oMail->Send()) {
+        if ($recipients > 0) {
             $sMessage = mi18n("Dear subscriber,<br>a mail has been sent to your e-mail address. Please confirm the cancelation of the newsletter subscription.");
         } else {
             $sMessage = mi18n("Sorry, there was a problem sending you the cancelation confirmation e-mail. Please ask the webmaster for help.");
@@ -210,7 +202,7 @@ if ($_POST['action'] == "subscribe") {
     $oRecipients->setWhere("hash", $_GET['confirm']);
     $oRecipients->query();
 
-    if ($recipient = $oRecipients->next()) {
+    if (($recipient = $oRecipients->next()) !== false) {
         $iID    = $recipient->get("idnewsrcp"); // For some reason, $recipient may get invalid later on - save id
         $sEMail = $recipient->get("email");     // ... and email
         $recipient->set("confirmed", 1);
@@ -226,7 +218,7 @@ if ($_POST['action'] == "subscribe") {
         $oNewsletters->setWhere("welcome", '1');
         $oNewsletters->query();
 
-        if ($oNewsletter = $oNewsletters->next()) {
+        if (($oNewsletter = $oNewsletters->next()) !== false) {
             $aRecipients = array(); // Needed, as used by reference
             $oNewsletter->sendDirect($aSettings['HandlerID'], $iID, false, $aRecipients);
             $sMessage .= mi18n(" The welcome newsletter is already on the way to you!");
@@ -238,7 +230,7 @@ if ($_POST['action'] == "subscribe") {
             $oFrontendUsers->setWhere("username", $sEMail);
             $oFrontendUsers->query();
 
-            if ($frontenduser = $oFrontendUsers->next()) {
+            if (($frontenduser = $oFrontendUsers->next()) !== false) {
                 $frontenduser->set("active", 1);
                 $sPassword = substr(md5(rand()),0,8); // Generating password
                 $frontenduser->set("password", $sPassword);
@@ -249,15 +241,11 @@ if ($_POST['action'] == "subscribe") {
 
                 $sBody = mi18n("txtMailPassword")."\n\n".mi18n("Username: ").$sEMail."\n".mi18n("Password: ").$sPassword."\n\n".mi18n("Click here to login: "). $frontendURL ."front_content.php?changelang=".$lang;
 
-                $oMail           = new PHPMailer();
-                $oMail->From     = $aSettings['SenderEMail'];
-                $oMail->FromName = $aSettings['SenderEMail'];
-                $oMail->AddAddress($sEMail);
-                $oMail->Mailer   = "mail";
-                $oMail->Subject  = mi18n("Website account");
-                $oMail->Body     = $sBody;
+                $mailer = new cMailer();
+                $from = array($aSettings['SenderEMail'] => $aSettings['SenderEMail']);
+                $recipients = $mailer->sendMail($from, $sEMail, mi18n("Website account"), $sBody);
 
-                if ($oMail->Send()) {
+                if ($recipients > 0) {
                     $sMessage .= mi18n("<br><br>The account details and the password has also been sent to your mail account.");
                 } else {
                     $sMessage .= mi18n("<br><br><b>Sorry, there was a problem sending you the account details by mail. Please remember the given password.</b><b>");
@@ -275,7 +263,7 @@ if ($_POST['action'] == "subscribe") {
     $oRecipients->setWhere("hash", $_GET['stop']);
     $oRecipients->query();
 
-    if ($recipient = $oRecipients->next()) {
+    if (($recipient = $oRecipients->next()) !== false) {
         $recipient->set("deactivated", 1);
         $recipient->store();
         $sMessage = mi18n("Your newsletter subscription has been paused.");
@@ -288,7 +276,7 @@ if ($_POST['action'] == "subscribe") {
     $oRecipients->setWhere("hash", $_GET['goon']);
     $oRecipients->query();
 
-    if ($recipient = $oRecipients->next()) {
+    if (($recipient = $oRecipients->next()) !== false) {
         $recipient->set("deactivated", 0);
         $recipient->store();
         $sMessage = mi18n("Newsletter subscription has been resumed.");
@@ -301,7 +289,7 @@ if ($_POST['action'] == "subscribe") {
     $oRecipients->setWhere("hash", $_GET['unsubscribe']);
     $oRecipients->query();
 
-    if ($recipient = $oRecipients->next()) {
+    if (($recipient = $oRecipients->next()) !== false) {
         $sEMail = $recipient->get("email"); // Saving recipient e-mail address for frontend account
         $oRecipients->delete($recipient->get("idnewsrcp"));
 
@@ -313,7 +301,7 @@ if ($_POST['action'] == "subscribe") {
             $oFrontendUsers->setWhere("username", $sEMail);
             $oFrontendUsers->query();
 
-            if ($frontenduser = $oFrontendUsers->next()) {
+            if (($frontenduser = $oFrontendUsers->next()) !== false) {
                 switch ($aSettings['FrontendDel']) {
                     case "DeleteUser": // Deleting frontend account
                         $oFrontendUsers->delete($frontenduser->get("idfrontenduser"));

@@ -85,9 +85,29 @@ if (!isset($_POST['send'])) {
            . '</p>';
     } else {
         // No errors, create and send mail
-        $mail = new PHPMailer();
-        $mailBody = '<html><head></head><body bgcolor="#ffffff"><table cellspacing="0" cellpadding="2" border="0">';
+        switch (strtolower("CMS_VALUE[4]")) {
+            case "smtp":
+                $host = "CMS_VALUE[5]";
+                $user = "CMS_VALUE[6]";
+                $password = "CMS_VALUE[7]";
+                if (is_numeric("CMS_VALUE[8]")) {
+                    $port = (int) "CMS_VALUE[8]";
+                } else {
+                    $port = 25;
+                }
+                $transport = cMailer::constructTransport($host, $port, null, $user, $password);
+                $mailer = new cMailer($transport);
+                break;
+            case "mail":
+            // backwards compatibility: use mail if sendmail is defined
+            case "sendmail":
+                $transport = cMailer::constructTransport(null, null);
+                $mailer = new cMailer($transport);
+                break;
+            default :
+        }
 
+        $mailBody = '<html><head></head><body bgcolor="#ffffff"><table cellspacing="0" cellpadding="2" border="0">';
         if (is_array($_POST)) {
             foreach ($_POST as $key => $value) {
                 if ($key != 'send') {
@@ -95,49 +115,19 @@ if (!isset($_POST['send'])) {
                 }
             }
         }
+        $mailBody .= '</table></body></html>';
+        $from = array("CMS_VALUE[0]" => "CMS_VALUE[2]");
+        $to = "CMS_VALUE[1]";
+        $subject = "CMS_VALUE[3]";
 
-        $mailBody .= '</table></bo'.'dy></html>';
-        $mail->Host = "localhost";
-        $mail->IsHTML(true);
-
-        // Get mailer from settings
-        switch (strtolower("CMS_VALUE[4]")) {
-            case "smtp" :
-                $mail->IsSMTP();
-                $host = "CMS_VALUE[5]";
-                $user = "CMS_VALUE[6]";
-                $password = "CMS_VALUE[7]";
-                if (($host != '') && ($user != '') && ($password != '')) {
-                    $mail->SMTPAuth = true;
-                    $mail->Host = $host;
-                    $mail->Username = $user;
-                    $mail->Password = $password;
-                    if (is_numeric("CMS_VALUE[8]")) {
-                        $mail->Port = (int) "CMS_VALUE[8]";
-                    }
-                }
-                break;
-            case "mail" :
-                $mail->IsMail();
-                break;
-            case "sendmail" :
-                $mail->IsSendmail();
-                break;
-            case "qmail" :
-                $mail->IsQmail();
-                break;
-            default :
-        }
-        $mail->From = "CMS_VALUE[0]";
-        $mail->FromName = "CMS_VALUE[2]";
-        $mail->AddAddress("CMS_VALUE[1]", "");
-        $mail->Subject = "CMS_VALUE[3]";
-        $mail->Body = $mailBody;
-        $mail->WordWrap = 50;
-        $mail->Send();
+        $recipients = $mailer->sendMail($from, $to, $subject, $mailBody, null, null, null, false, 'text/html');
 
         // Display message after mail is sent
-        echo mi18n("Ihr Anliegen wurde uns &uuml;bermittelt. Vielen Dank!") . $br;
+        if ($recipients > 0) {
+            echo mi18n("Ihr Anliegen wurde uns übermittelt. Vielen Dank!") . $br;
+        } else {
+            echo mi18n("Ihr Anliegen konnte nicht übermittelt werden.") . $br;
+        }
     }
 }
 
