@@ -119,6 +119,21 @@ class cApiCategoryLanguageCollection extends ItemCollection {
     }
 
     /**
+     * Returns article id of articlelanguages startarticle by category id and language id
+     * @param  int  $idcat
+     * @param  int  $idlang
+     * @return  int
+     */
+    public function getStartIdartByIdcatAndIdlang($idcat, $idlang) {
+        global $cfg;
+        $sql = "SELECT al.idart FROM `" . $cfg['tab']['art_lang'] . "` AS al, `" . $this->table . "` "
+             . "AS cl WHERE cl.idcat = " . (int) $idcat . " AND cl.startidartlang != 0 AND "
+             . "cl.idlang = " . (int) $idlang . " AND cl.idlang = al.idlang AND cl.startidartlang = al.idartlang";
+        $this->db->query($sql);
+        return ($this->db->next_record()) ? $this->db->f('idart') : 0;
+    }
+
+    /**
      * Checks if passed idartlang is a start article.
      * @param  int  $idartlang
      * @param  int  $idcat  Check category id additionally
