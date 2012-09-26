@@ -148,7 +148,7 @@ while ($db->next_record()) {
             $delTitle = i18n("Delete group");
             $delDescr = sprintf(i18n("Do you really want to delete the following group:<br><br>%s<br>"), htmlspecialchars($groupname));
 
-            $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteGroup(' . $groupid . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>');
+            $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteGroup(&quot;' . $groupid . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>');
         } else {
             $tpl->set('d', 'DELETE', '&nbsp;');
         }

@@ -6,10 +6,6 @@
  * Description:
  * CONTENIDO Create Group Function
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.7.4
  * @author     Timo A. Hummel

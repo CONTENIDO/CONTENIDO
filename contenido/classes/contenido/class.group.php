@@ -6,10 +6,6 @@
  * Description:
  * Group class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO API
  * @version    1.2.1
  * @author     Dominik Ziegler
@@ -89,7 +85,7 @@ class cApiGroupCollection extends ItemCollection {
 
         $where = "group_id IN ('" . implode("', '", $aIds) . "')";
         $this->select($where);
-        while ($oItem = $this->next()) {
+        while (($oItem = $this->next()) !== false) {
             $aGroups[] = clone $oItem;
         }
 
@@ -150,7 +146,7 @@ class cApiGroupCollection extends ItemCollection {
         }
 
         $this->select($where);
-        while ($oItem = $this->next()) {
+        while (($oItem = $this->next()) !== false) {
             $groups[] = clone $oItem;
         }
 
@@ -368,7 +364,7 @@ class Groups {
     function deleteGroupByID($groupid) {
         cDeprecated("Use cApiGroupCollection->delete() instead");
         $oGroupCol = new cApiGroupCollection();
-        return $oGroupCol->delete($userid);
+        return $oGroupCol->delete($groupid);
     }
 
     /** @deprecated  [2012-03-27]  Use cApiGroupCollection->deleteGroupByGroupname() instead */
@@ -497,5 +493,3 @@ class Group {
     }
 
 }
-
-?>

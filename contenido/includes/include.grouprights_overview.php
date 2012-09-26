@@ -6,10 +6,6 @@
  * Description:
  * CONTENIDO Groups Overview Page
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.1.4
  * @author     Timo A. Hummel

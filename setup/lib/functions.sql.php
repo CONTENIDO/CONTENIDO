@@ -5,10 +5,6 @@
  *
  * Description:
  *
- * Requirements:
- * @con_php_req 5
- *
- *
  * @package    CONTENIDO setup
  * @version    0.2
  * @author     unknown
@@ -16,12 +12,6 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- *
- * {@internal
- *   created  unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -64,13 +54,14 @@ function injectSQL($db, $prefix, $file, $replacements = array()) {
 // @FIXME: Comment me plz!
 function addAutoIncrementToTables($db, $cfg) {
     $filterTables = array(
+        $cfg['sql']['sqlprefix'] . '_groups',
         $cfg['sql']['sqlprefix'] . '_pica_alloc_con',
         $cfg['sql']['sqlprefix'] . '_pica_lang',
         $cfg['sql']['sqlprefix'] . '_sequence',
         $cfg['sql']['sqlprefix'] . '_phplib_active_sessions',
         $cfg['sql']['sqlprefix'] . '_online_user',
         $cfg['sql']['sqlprefix'] . '_pi_linkwhitelist',
-        $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5',
+        $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5'
     );
 
     $sql = 'SHOW TABLES FROM  ' . $cfg['db']['connection']['database'] . '';
@@ -301,5 +292,3 @@ function splitSqlFile($sql, $delimiter) {
 
     return $output;
 }
-
-?>
