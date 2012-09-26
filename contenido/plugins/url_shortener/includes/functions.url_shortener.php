@@ -70,9 +70,13 @@ function piUsConSaveArtAfter($values) {
         'idclient' => $idclient
     ));
     // if given shorturl is already in use, show error message
-    $shortUrlItem = new cApiShortUrl();
-    $shortUrlItem->loadBy('shorturl', $shorturl);
-    if ($shortUrlItem->isLoaded()) {
+    $checkShortUrlItem = new cApiShortUrl();
+    $checkShortUrlItem->loadBy('shorturl', $shorturl);
+    if ($checkShortUrlItem->isLoaded()) {
+        // if shorturl has not been changed, do nothing
+        if ($shortUrlItem->get('shorturl') === $checkShortUrlItem->get('shorturl')) {
+            return;
+        }
         // TODO add warning to session as soon as this is possible (depends
         // CON-772)
         // $session = cRegistry::getSession();
