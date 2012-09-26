@@ -413,7 +413,7 @@ class NewsletterJob extends Item
                     }
 
                     $mailer = new cMailer();
-                    $mailer->setEncoding($sEncoding);
+                    $mailer->setCharset($sEncoding);
                     $from = array($sFromName => $sFrom);
                     $to = $sEMail;
                     if ($bIsHTML && $bSendHTML) {

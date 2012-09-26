@@ -51,9 +51,11 @@ class cApiMailLogCollection extends ItemCollection {
      * @param string $subject
      * @param string $body
      * @param string $created timestamp!
+     * @param string $charset
+     * @param string $contentType
      * @return int the idmail of the newly created mail
      */
-    public function create($from, $to, $replyTo, $cc, $bcc, $subject, $body, $created) {
+    public function create($from, $to, $replyTo, $cc, $bcc, $subject, $body, $created, $charset, $contentType) {
         $item = parent::createNewItem();
 
         $item->set('from', json_encode($from));
@@ -69,6 +71,8 @@ class cApiMailLogCollection extends ItemCollection {
         $item->set('idclient', $idclient);
         $idlang = cRegistry::getLanguageId();
         $item->set('idlang', $idlang);
+        $item->set('charset', $charset);
+        $item->set('content_type', $contentType);
 
         $item->store();
 
@@ -92,6 +96,7 @@ class cApiMailLog extends Item {
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['mail_log'], 'idmail');
+        $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

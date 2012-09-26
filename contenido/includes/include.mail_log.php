@@ -206,7 +206,11 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
                     break;
                 default:
                     $td = new cHTMLTableData();
-                    $td->setContent($mailItem->get($key) . '&nbsp;');
+                    $data = $mailItem->get($key);
+                    if ($mailItem->get('content_type') === 'text/plain') {
+                        $data = nl2br($data);
+                    }
+                    $td->setContent($data . '&nbsp;');
                     $tr->appendContent($td);
             }
             $table->appendContent($tr);

@@ -75,6 +75,7 @@ class cApiMailLogSuccess extends Item {
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['mail_log_success'], 'idmailsuccess');
+        $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

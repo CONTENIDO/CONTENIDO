@@ -178,13 +178,13 @@ class cMailer extends Swift_Mailer {
     }
 
     /**
-     * Sets the encoding of the messages which are sent with this mailer object.
+     * Sets the charset of the messages which are sent with this mailer object.
      * If you want to use UTF-8, you do not need to call this method.
      *
-     * @param string $encoding the character encoding
+     * @param string $charset the character encoding
      */
-    public function setEncoding($encoding) {
-        Swift_Preferences::getInstance()->setCharset($encoding);
+    public function setCharset($charset) {
+        Swift_Preferences::getInstance()->setCharset($charset);
     }
 
     /**
@@ -255,6 +255,8 @@ class cMailer extends Swift_Mailer {
         if (!$mailLogSuccess->isLoaded() || $mailLogSuccess->get('success') == 1) {
             throw new cInvalidArgumentException('The mail which should be resent has already been sent successfully or does not exist.');
         }
+
+        // get all fields, json-decode address fields
         $idmail = $mailLogSuccess->get('idmail');
         $mailLog = new cApiMailLog($idmail);
         $from = json_decode($mailLog->get('from'), true);
@@ -264,12 +266,58 @@ class cMailer extends Swift_Mailer {
         $bcc = json_decode($mailLog->get('bcc'), true);
         $subject = $mailLog->get('subject');
         $body = $mailLog->get('body');
-        $success = $this->sendMail($from, $to, $subject, $body, $cc, $bcc, $replyTo, true);
+        $contentType = $mailLog->get('content_type');
+        $this->setCharset($mailLog->get('charset'));
+
+        // decode all fields
+        $charset = $mailLog->get('charset');
+        $from = $this->decodeField($from, $charset);
+        $to = $this->decodeField($to, $charset);
+        $replyTo = $this->decodeField($replyTo, $charset);
+        $cc = $this->decodeField($cc, $charset);
+        $bcc = $this->decodeField($bcc, $charset);
+        $subject = $this->decodeField($subject, $charset);
+        $body = $this->decodeField($body, $charset);
+
+        $success = $this->sendMail($from, $to, $subject, $body, $cc, $bcc, $replyTo, true, $contentType);
 
         if ($success) {
             $mailLogSuccess->set('success', 1);
             $mailLogSuccess->store();
         }
+    }
+
+    /**
+     * Encodes the given value / the given array values with htmlentities.
+     *
+     * @param string|array $value the value to encode
+     * @param string $charset the charset to use in htmlentities
+     * @return string|array the encoded value
+     */
+    private function encodeField($value, $charset) {
+        if (is_array($value)) {
+            array_walk($value, function(&$item, $key, $charset) { $item = htmlentities($item, ENT_COMPAT, $charset, false); }, $charset);
+            return $value;
+        } else if (is_string($value)) {
+            return htmlentities($value, ENT_COMPAT, $charset, false);
+        }
+        return $value;
+    }
+
+    /**
+     * Decodes the given value / the given array values with html_entity_decode.
+     *
+     * @param string|array $value the value to decode
+     * @param string $charset the charset to use in htmlentities
+     * @return string|array the decoded value
+     */
+    private function decodeField($value, $charset) {
+        if (is_array($value)) {
+            array_walk($value, function(&$item, $key, $charset) { $item = html_entity_decode($item, ENT_COMPAT | ENT_HTML401, $charset, false); }, $charset);
+        } else if (is_string($value)) {
+            return html_entity_decode($value, ENT_COMPAT | ENT_HTML401, $charset);
+        }
+        return $value;
     }
 
     /**
@@ -282,7 +330,18 @@ class cMailer extends Swift_Mailer {
      */
     private function _logMail($message, $failedRecipients = array()) {
         $mailLogCollection = new cApiMailLogCollection();
-        $idmail = $mailLogCollection->create($message->getFrom(), $message->getTo(), $message->getReplyTo(), $message->getCc(), $message->getBcc(), $message->getSubject(), $message->getBody(), time());
+
+        // encode all fields
+        $charset = $message->getCharset();
+        $from = $this->encodeField($message->getFrom(), $charset);
+        $to = $this->encodeField($message->getTo(), $charset);
+        $replyTo = $this->encodeField($message->getReplyTo(), $charset);
+        $cc = $this->encodeField($message->getCc(), $charset);
+        $bcc = $this->encodeField($message->getBcc(), $charset);
+        $subject = $this->encodeField($message->getSubject(), $charset);
+        $body = $this->encodeField($message->getBody(), $charset);
+        $contentType = $message->getContentType();
+        $idmail = $mailLogCollection->create($from, $to, $replyTo, $cc, $bcc, $subject, $body, time(), $charset, $contentType);
 
         // do not use array_merge here since the mail addresses are array keys
         // array_merge will make problems if one recipient is e.g. in cc and bcc

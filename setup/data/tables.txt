@@ -237,6 +237,8 @@
 "mail_log";"created";"datetime";"";"";"0000-00-00 00:00:00";"";""
 "mail_log";"idclient";"int(10)";"";"";"";"";""
 "mail_log";"idlang";"int(10)";"";"";"";"";""
+"mail_log";"charset";"varchar(32)";"";"";"";"";""
+"mail_log";"content_type";"varchar(32)";"";"";"";"";""
 "mail_log_success";"idmailsuccess";"int(10)";"";"PRI";"0";"";"1"
 "mail_log_success";"idmail";"int(10)";"";"";"";"";""
 "mail_log_success";"recipient";"varchar(512)";"";"";"";"";""
