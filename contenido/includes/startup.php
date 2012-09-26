@@ -17,10 +17,6 @@
  *
  * @TODO: Collect all startup (bootstrap) related jobs into this file...
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Includes
  * @version    1.1.2
  * @author     four for Business AG
@@ -29,11 +25,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -90,7 +81,8 @@ require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/cla
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.requestvalidator.php');
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.filehandler.php');
 try {
-    $oRequestValidator = new cRequestValidator(realpath(dirname(__FILE__) . '/../..') . '/data/config/' . CON_ENVIRONMENT);
+    $requestValidator = cRequestValidator::getInstance();
+    $requestValidator->checkParams();
 } catch (cFileNotFoundException $e) {
     die($e->getMessage());
 }
@@ -159,7 +151,7 @@ cAutoload::initialize($cfg);
 // Author: Martin Horwath
 $localePath = $cfg['path']['contenido_locale'];
 $handle = opendir($localePath);
-while ($locale = readdir($handle)) {
+while (($locale = readdir($handle)) !== false) {
     if (is_dir($localePath . $locale) && $locale != '..' && $locale != '.') {
         if (cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.po') &&
             cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.mo')) {
@@ -183,5 +175,3 @@ DB_Contenido::setDefaultConfiguration($cfg['db']);
 
 // Initialize UriBuilder, configuration is set in data/config/{environment}/config.misc.php
 cUriBuilderConfig::setConfig($cfg['url_builder']);
-
-?>

@@ -22,12 +22,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- *
- * {@internal
- *   created 2008-02-06
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -56,12 +50,11 @@ class HttpInputValidator extends cRequestValidator {
      * cause an hard exit!
      *
      * @deprecated [2012-07-03] This class was replaced by cRequestValidator
-     * @param string $sConfigPath
      * @return HttpInputValidator
      */
-    function HttpInputValidator($sConfigPath) {
+    function HttpInputValidator() {
         cDeprecated("This class was replaced by cRequestValidator");
-        parent::__construct($sConfigPath);
+        parent::__construct();
     }
 
     /**
@@ -89,5 +82,3 @@ class HttpInputValidator extends cRequestValidator {
     }
 
 }
-
-?>

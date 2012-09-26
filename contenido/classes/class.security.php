@@ -6,10 +6,6 @@
  * Description:
  * This object makes CONTENIDO more secure
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Classes
  * @version    1.1.2
  * @author     Frederic Schneider
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.7
- *
- * {@internal
- *   created  2008-06-25
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -75,6 +66,17 @@ class Contenido_Security_Exception extends Exception {
  * CONTENIDO Security class
  */
 class cSecurity {
+
+    /**
+     * Checks some CONTENIDO core related request parameters against XSS
+     *
+     * @return  bool|void  True on success otherwhise nothing.
+     */
+    public static function checkRequests() {
+        $requestValidator = cRequestValidator::getInstance();
+
+        return $requestValidator->checkParams();
+    }
 
     /**
      * Escapes string using CONTENIDO urlencoding method and escapes string for inserting
@@ -251,9 +253,9 @@ class Contenido_Security extends cSecurity {
      * @return  bool|void  True on success otherwhise nothing.
      */
     public static function checkRequests() {
-        global $oRequestValidator;
+        $requestValidator = cRequestValidator::getInstance();
 
-        return $oRequestValidator->checkParams();
+        return $requestValidator->checkParams();
     }
 
     /**
@@ -263,9 +265,9 @@ class Contenido_Security extends cSecurity {
      * @return  bool|void  True on success otherwhise nothing.
      */
     public static function checkRequestBelang() {
-        global $oRequestValidator;
+        $requestValidator = cRequestValidator::getInstance();
 
-        return $oRequestValidator->checkParams();
+        return $requestValidator->checkParams();
     }
 
     /**
@@ -275,9 +277,9 @@ class Contenido_Security extends cSecurity {
      * @return  bool|void  True on success otherwhise nothing.
      */
     public static function checkRequestForbiddenParameter() {
-        global $oRequestValidator;
+        $requestValidator = cRequestValidator::getInstance();
 
-        return $oRequestValidator->checkParams();
+        return $requestValidator->checkParams();
     }
 
     /**
@@ -290,9 +292,9 @@ class Contenido_Security extends cSecurity {
      * @return  bool  Just true
      */
     public static function checkRequestMustbeNumericParameter() {
-        global $oRequestValidator;
+        $requestValidator = cRequestValidator::getInstance();
 
-        return $oRequestValidator->checkParams();
+        return $requestValidator->checkParams();
     }
 
     /**
@@ -302,9 +304,9 @@ class Contenido_Security extends cSecurity {
      * @return  bool|void  True on success otherwhise nothing.
      */
     public static function checkRequestSession() {
-        global $oRequestValidator;
+        $requestValidator = cRequestValidator::getInstance();
 
-        return $oRequestValidator->checkParams();
+        return $requestValidator->checkParams();
     }
 
     /**
@@ -425,5 +427,3 @@ class Contenido_Security extends cSecurity {
     }
 
 }
-
-?>

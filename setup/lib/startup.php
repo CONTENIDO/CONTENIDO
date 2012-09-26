@@ -6,10 +6,6 @@
  * Description:
  * Main CONTENIDO setup bootstrap file.
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO setup bootstrap
  * @version    0.0.2
  * @author     Murat Purc <murat@purc.de>
@@ -18,11 +14,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-02-28
- *   $Id$
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -97,7 +88,8 @@ function checkAndInclude($filename) {
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.filehandler.php');
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.requestvalidator.php');
 try {
-    $oRequestValidator = new cRequestValidator(CON_FRONTEND_PATH . '/data/config/' . CONTENIDO_ENVIRONMENT);
+    $requestValidator = cRequestValidator::getInstance();
+    $requestValidator->checkParams();
 } catch (cFileNotFoundException $e) {
     die($e->getMessage());
 }
@@ -243,5 +235,3 @@ checkAndInclude($cfg['path']['phplib'] . 'prepend.php');
 if (isset($_SESSION['language'])) {
     i18nInit('locale/', $_SESSION['language']);
 }
-
-?>
