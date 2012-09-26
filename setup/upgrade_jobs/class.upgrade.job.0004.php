@@ -107,7 +107,7 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
                     $db->query($sSql);
                     if ($db->Error != 0) {
                         $bError = false;
-                        echo "<pre>" . $sql . "\nMysql Error:" . $db->Error . "(" . $db->Errno . ")</pre>";
+                        echo "<pre>" . $sSql . "\nMysql Error:" . $db->Error . "(" . $db->Errno . ")</pre>";
                     }
                 }
             }
@@ -118,7 +118,7 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
             $sSql = "ALTER TABLE `" . $cfg['tab']['upl'] . "` DROP `description`";
             $db->query($sSql);
             if ($db->Error != 0) {
-                echo "<pre>" . $sql . "\nMysql Error:" . $db->Error . "(" . $db->Errno . ")</pre>";
+                echo "<pre>" . $sSql . "\nMysql Error:" . $db->Error . "(" . $db->Errno . ")</pre>";
             }
         } else {
             echo "<pre>error on _updateUpl2Meta();" . $j . '==' . count($aUpl) . "</pre>";
