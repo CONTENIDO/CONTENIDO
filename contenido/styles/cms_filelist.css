@@ -5,14 +5,15 @@
     z-index: 10000;
 }
 
-.cms_filelist  * {
+.cms_filelist * {
     margin: 0;
     padding: 0;
     line-height: 100%;
 }
 
 .cms_filelist {
-	padding: 3px;
+	font-size: 12px;
+    padding: 3px;
 	position:absolute; 
 	width: 432px;
 	
