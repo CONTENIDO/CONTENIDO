@@ -454,7 +454,6 @@ contenido/classes/module/class.module.synchronizer.php -text
 contenido/classes/module/class.module.template.handler.php -text
 contenido/classes/phpmailer/class.phpmailer.php -text
 contenido/classes/phpmailer/class.smtp.php -text
-contenido/classes/phpmailer/language/phpmailer.lang-de.php -text
 contenido/classes/swiftmailer/CHANGES -text
 contenido/classes/swiftmailer/LICENSE -text
 contenido/classes/swiftmailer/README -text
