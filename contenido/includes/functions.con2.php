@@ -191,11 +191,6 @@ function conGenerateKeywords($client, $lang) {
  * @param int $iIdArtLang ArticleLanguageId of an article (idartlang)
  * @return array Array with content of an article indexed by content-types as follows:
  *               - $arr[type][typeid] = value;
- *
- * @author Willi Man
- * Created   :   12.05.2004
- * Modified  :   13.05.2004
- * @copyright four for business AG 2003
  */
 function conGetContentFromArticle($iIdArtLang) {
     global $cfg;

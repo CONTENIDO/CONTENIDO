@@ -361,38 +361,27 @@ class cSearchIndex extends cSearchBaseAbstract {
                     foreach ($data as $typeid => $code) {
                         $this->_debug('code', $code);
 
-                        $code = stripslashes($code); // remove backslash
+                        // remove backslash
+                        $code = stripslashes($code);
+                        // replace HTML line breaks with newlines
                         $code = str_ireplace(array(
                             '<br>',
                             '<br />'
-                                ), "\n", $code); // replace
-                        // HTML
-                        // line
-                        // breaks
-                        // with
-                        // newlines
-                        $code = strip_tags($code); // remove html tags
+                                ), "\n", $code);
+                        // remove html tags
+                        $code = strip_tags($code);
                         if (strlen($code) > 0) {
                             $code = html_entity_decode($code);
                         }
                         $this->_debug('code', $code);
 
-                        $tmp_keys = preg_split('/[\s,]+/', trim($code)); // split
-                        // content
-                        // by
-                        // any
-                        // number
-                        // of
-                        // commas
-                        // or
-                        // space
-                        // characters
+                        // split content by any number of commas or space characters
+                        $tmp_keys = preg_split('/[\s,]+/', trim($code));
                         $this->_debug('tmp_keys', $tmp_keys);
 
                         foreach ($tmp_keys as $value) {
-                            $value = strtolower($value); // index terms are
-                            // stored with lower
-                            // case
+                            // index terms are stored with lower case
+                            $value = strtolower($value);
 
                             if (!in_array($value, $this->_stopwords)) {
                                 // eliminate stopwords
@@ -553,8 +542,8 @@ class cSearchIndex extends cSearchBaseAbstract {
         );
 
         for ($i = 127; $i < 192; $i++) {
-            array_push($aSpecialChars, chr($i)); // some other special
-            // characters
+            // some other special characters
+            array_push($aSpecialChars, chr($i));
         }
 
         // TODO: The transformation of accented characters must depend on the
@@ -566,7 +555,7 @@ class cSearchIndex extends cSearchBaseAbstract {
         $sEncoding = getEncodingByLanguage($this->db, $this->lang);
 
         if (strtolower($sEncoding) != 'iso-8859-2') {
-            $key = htmlentities($key, NULL, $sEncoding);
+            $key = htmlentities($key, null, $sEncoding);
         } else {
             $key = htmlentities_iso88592($key);
         }
@@ -999,8 +988,8 @@ class cSearch extends cSearchBaseAbstract {
             $this->_searchableArts = $this->getSearchableArticles($options);
         }
 
-        $this->intMinimumSimilarity = 50; // minimum similarity between
-        // searchword and keyword in percent
+        // minimum similarity between searchword and keyword in percent
+        $this->intMinimumSimilarity = 50;
     }
 
     /**
@@ -1085,12 +1074,8 @@ class cSearch extends cSearchBaseAbstract {
                     $percent = 0;
                     $similarity = 0;
                     foreach ($this->_searchWords as $word) {
-                        similar_text($word, $keyword, $percent); // computes
-                        // similarity
-                        // between
-                        // searchword
-                        // and keyword
-                        // in percent
+                        // computes similarity between searchword and keyword in percent
+                        similar_text($word, $keyword, $percent);
                         if ($percent > $similarity) {
                             $similarity = $percent;
                             $searchword = $word;
@@ -1173,15 +1158,13 @@ class cSearch extends cSearchBaseAbstract {
      */
     public function stripWords($searchwords) {
         $tmp_words = array();
-        $searchwords = stripslashes($searchwords); // remove backslash
-        $searchwords = strip_tags($searchwords); // remove html tags
+        // remove backslash
+        $searchwords = stripslashes($searchwords);
+        // remove html tags
+        $searchwords = strip_tags($searchwords);
 
-        $tmp_words = preg_split('/[\s,]+/', trim($searchwords)); // split the
-        // phrase by
-        // any number
-        // of commas or
-        // space
-        // characters
+        // split the phrase by any number of commas or space characters
+        $tmp_words = preg_split('/[\s,]+/', trim($searchwords));
 
         $tmp_searchwords = array();
 
