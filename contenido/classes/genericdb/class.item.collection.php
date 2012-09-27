@@ -62,7 +62,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
     /**
      * @var array Reverse join partners for this data object
      */
-    protected $_JoinPartners;
+    protected $_JoinPartners = array();
 
     /**
      * @var array Forward join partners for this data object
