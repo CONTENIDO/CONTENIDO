@@ -1,12 +1,12 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Session Management for PHP3
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
@@ -18,17 +18,18 @@
  * @link       http://www.contenido.org
  * @since      file available since contenido release <Contenido Version>
  * @deprecated file deprecated in contenido release <Contenido Version>
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2000-01-01
  *   modified 2008-07-04, bilal arslan, added security fix
- *   modified 2010-02-02, Ingo van Peeren, added local method connect() in order 
+ *   modified 2010-02-02, Ingo van Peeren, added local method connect() in order
  *                                         to allow only one database connection, see [CON-300]
  *   modified 2010-02-17, Ingo van Peeren, only one connection for mysqli too
+ *   modified 2011-02-26, Ortwin Pinke, added temporary pw request behaviour, so user may login with old and/or requested pw
  *
- *   $Id: local.php 1133 2010-02-17 13:46:41Z Dodger77 $:
+ *   $Id: local.php 1309 2011-02-26 14:32:42Z oldperl $:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -55,48 +56,48 @@ class DB_Contenido extends DB_Sql {
 	  } else {
 	  		$this->Database = $contenido_database;
 	  }
-	  
+
 	  if ($Host)
 	  {
 	  		$this->Host = $Host;
 	  } else {
 	  		$this->Host = $contenido_host;
 	  }
-	  
+
 	  if ($User)
 	  {
-	  		$this->User = $User;	
+	  		$this->User = $User;
 	  } else {
 	  		$this->User = $contenido_user;
 	  }
-	  
+
 	  if ($Password)
 	  {
-	  		$this->Password = $Password;	
+	  		$this->Password = $Password;
 	  } else {
-			$this->Password = $contenido_password;	  		
+			$this->Password = $contenido_password;
 	  }
-	  
+
       if (!is_array($cachemeta))
       {
       	$cachemeta = array();
       }
-      
+
       // TODO check this out
       // HerrB: Checked and disabled. Kills umlauts, if tables are latin1_general.
-      
+
       // try to use the new connection and get the needed encryption
       //$this->query("SET NAMES 'utf8'");
   }
-  
+
   // Wrapper for parent connect methods in order to allow only 1 database connection
   function connect($Database = "", $Host = "", $User = "", $Password = "") {
       global $db_link;
-         
+
       if ((0 == $db_link || !is_resource($db_link)) && !is_object($db_link)) {
           $db_link = parent::connect($Database, $Host, $User, $Password);
       }
-         
+
       $this->Link_ID = $db_link;
 
       return $this->Link_ID;
@@ -105,13 +106,13 @@ class DB_Contenido extends DB_Sql {
   function haltmsg($msg) {
     error_log($msg);
   }
-  
+
   function copyResultToArray ($table = "")
   {
   		global $cachemeta;
-  	
+
   		$values = array();
-  		
+
   		if ($table != "")
   		{
   			if (array_key_exists($table, $cachemeta))
@@ -124,23 +125,23 @@ class DB_Contenido extends DB_Sql {
   		} else {
   			$metadata = $this->metadata();
   		}
-  		
+
 		if (!is_array($metadata))
 		{
 			return false;
 		}
-		
+
 		foreach ($metadata as $entry)
 		{
 			$values[$entry['name']] = $this->f($entry['name']);
 		}
-		
+
 		return $values;
   }
 }
 
 class Contenido_CT_Sql extends CT_Sql {
-	
+
   var $database_class = "DB_Contenido";          ## Which database to connect...
   var $database_table = ""; ## and find our session data in this table.
 
@@ -160,11 +161,11 @@ class Contenido_CT_File extends CT_File {
 	/**
 	 * The maximum length for one line
 	 * in session file.
-	 * 
+	 *
 	 * @var int
 	 */
 	var $iLineLength = 999999;
-	
+
 	/**
 	 * Overrides standard constructor
 	 * for setting up file path to
@@ -172,15 +173,15 @@ class Contenido_CT_File extends CT_File {
 	 * in php.ini
 	 *
 	 * @return Contenido_CT_File
-	 * 
+	 *
 	 * @author Holger Librenz <holger.librenz@4fb.de>
 	 */
     function Contenido_CT_File () {
     	global $cfg;
-    	
-    	if (isset($cfg['session_line_length']) && 
+
+    	if (isset($cfg['session_line_length']) &&
     	      !empty($cfg['session_line_length'])) {
-    	   	$this->iLineLength = (int) $cfg['session_line_length']; 
+    	   	$this->iLineLength = (int) $cfg['session_line_length'];
     	}
 
         // get php.ini value for session path
@@ -231,7 +232,7 @@ class Contenido_Session extends Session {
   var $lifetime       	= 0;                  ## 0 = do session cookies, else minutes
   var $that_class     	= "Contenido_CT_Sql"; ## name of data storage container
   var $gc_probability 	= 5;
-  
+
   function Contenido_Session () {
       global $cfg;
 
@@ -249,13 +250,13 @@ class Contenido_Session extends Session {
       $this->that_class = $sClass;
 
   }
-  
+
   function delete ()
   {
   	cInclude("classes", "class.inuse.php");
   	$col = new InUseCollection;
-	$col->removeSessionMarks($this->id);	
-	
+	$col->removeSessionMarks($this->id);
+
 	parent::delete();
   }
 }
@@ -271,30 +272,30 @@ class Contenido_Frontend_Session extends Session {
   var $lifetime       = 0;                  ## 0 = do session cookies, else minutes
   var $that_class     = "Contenido_CT_Sql"; ## name of data storage container
   var $gc_probability = 5;
-  
+
   function Contenido_Frontend_Session () {
 	global $load_lang, $load_client, $cfg;
-  	
+
   	$this->cookiename = "sid_".$load_client."_".$load_lang;
-  	
+
   	$this->setExpires(time()+3600);
 
   	/*
-  	 * added 2007-10-11, H. Librenz	- bugfix (found by dodger77): we need alternative session containers 
+  	 * added 2007-10-11, H. Librenz	- bugfix (found by dodger77): we need alternative session containers
   	 * 									also in frontend ;)
   	 */
     $sFallback = 'sql';
     $sClassPrefix = 'Contenido_CT_';
-    
+
     $sStorageContainer = strtolower($cfg['session_container']);
-    
+
     if (class_exists ($sClassPrefix . ucfirst($sStorageContainer))) {
        $sClass = $sClassPrefix . ucfirst($sStorageContainer);
     } else {
       $sClass = $sClassPrefix . ucfirst($sFallback);
     }
-    
-    $this->that_class = $sClass;  	
+
+    $this->that_class = $sClass;
   }
 }
 
@@ -320,7 +321,7 @@ function auth_validatelogin() {
     {
     	return false;
     }
-    
+
     if(isset($username)) {
         $this->auth["uname"]=$username;     ## This provides access for "loginform.ihtml"
     }else if ($this->nobody){                      ##  provides for "default login cancel"
@@ -382,7 +383,7 @@ class Contenido_Challenge_Auth extends Auth {
 
   function auth_validatelogin() {
     global $username, $password, $challenge, $response, $timestamp;
-    
+
     if ($password == "")
     {
     	return false;
@@ -452,13 +453,13 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
 		$this->group_table = $cfg["tab"]["groups"];
 		$this->member_table = $cfg["tab"]["groupmembers"];
 		$this->lifetime = $cfg["backend"]["timeout"];
-		
+
 		if ($this->lifetime == 0)
 		{
 			$this->lifetime = 15;
 		}
   }
-  
+
   function auth_loginform() {
 
     global $sess;
@@ -470,32 +471,32 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
     $sess->register("challenge");
 
     include ($cfg["path"]["contenido"] . 'main.loginform.php');
-    
+
   }
 
   function auth_loglogin($uid)
   {
         global $cfg, $client, $lang, $auth, $sess, $saveLoginTime;
-        
+
         $perm = new Contenido_Perm;
-        
+
         $timestamp	= date("Y-m-d H:i:s");
         $idcatart	= "0";
 
     	/* Find the first accessible client and language for the user */
 		// All the needed information should be available in clients_lang - but the previous code was designed with a
-		// reference to the clients table. Maybe fail-safe technology, who knows... 
+		// reference to the clients table. Maybe fail-safe technology, who knows...
     	$sql = "SELECT tblClientsLang.idclient, tblClientsLang.idlang FROM ".
     		   $cfg["tab"]["clients"]." AS tblClients, ".$cfg["tab"]["clients_lang"]." AS tblClientsLang ".
         	   "WHERE tblClients.idclient = tblClientsLang.idclient ORDER BY idclient ASC, idlang ASC";
 		$this->db->query($sql);
-    	
+
     	$bFound = false;
     	while ($this->db->next_record() && !$bFound)
 		{
 			$iTmpClient	= $this->db->f("idclient");
 			$iTmpLang	= $this->db->f("idlang");
-			
+
 			if ($perm->have_perm_client_lang($iTmpClient, $iTmpLang))
 			{
 				$client	= $iTmpClient;
@@ -503,10 +504,10 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
 				$bFound = true;
 			}
 		}
-		
+
         if (isset($idcat) && isset($idart))
         {
-            
+
 //            SECURITY FIX
             $sql = "SELECT idcatart
                     FROM
@@ -514,19 +515,19 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
                     WHERE
                         idcat = '".Contenido_Security::toInteger($idcat)."' AND
                         idart = '".Contenido_Security::toInteger($idart)."'";
-    
+
             $this->db->query($sql);
-    
+
             $this->db->next_record();
             $idcatart = $this->db->f("idcatart");
         }
-   
+
         if (!is_numeric($client)) { return; }
         if (!is_numeric($lang)) { return;  }
-		
+
 		$idaction	= $perm->getIDForAction("login");
 		$lastentry	= $this->db->nextid($cfg["tab"]["actionlog"]);
-		
+
         $sql = "INSERT INTO
                     ". $cfg["tab"]["actionlog"]."
                 SET
@@ -537,30 +538,30 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
                     idaction = $idaction,
                     idcatart = $idcatart,
                     logtimestamp = '$timestamp'";
-                    
+
         $this->db->query($sql);
-        
+
         $sess->register("saveLoginTime");
-        
+
         $saveLoginTime = true;
 	}
-    
+
   function auth_validatelogin() {
 
     global $username, $password, $challenge, $response, $formtimestamp, $auth_handlers;
-    
+
     $gperm = array();
-    
+
     if ($password == "")
     {
-    	return false;	
+    	return false;
     }
-    
+
     if (($formtimestamp + (60*15)) < time())
     {
     	return false;
     }
-    
+
     if(isset($username)) {
         $this->auth["uname"]=$username;     ## This provides access for "loginform.ihtml"
     }else if ($this->nobody){                      ##  provides for "default login cancel"
@@ -571,14 +572,28 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
     $uid  = false;
 	$perm = false;
 	$pass = false;
-	
+
     $sDate = date('Y-m-d');
 
-    $this->db->query(sprintf("select user_id,perms,password from %s where username = '%s' AND
-                              (valid_from <= '".$sDate."' OR valid_from = '0000-00-00' OR valid_from is NULL) AND 
+    $this->db->query(sprintf("select user_id,perms,password,tmp_pw_request from %s where username = '%s' AND
+                              (valid_from <= '".$sDate."' OR valid_from = '0000-00-00' OR valid_from is NULL) AND
                               (valid_to >= '".$sDate."' OR valid_to = '0000-00-00' OR valid_to is NULL)",
 							 $this->database_table,
 							  Contenido_Security::escapeDB($username,  $this->db)));
+
+    // check if requested new password is used, if set equal password
+    $sRequestPassword = $this->db->f("tmp_pw_request");
+    $this->auth['pwr'] = false;
+    if(md5($password) == $sRequestPassword) {
+        $sQuery =   "UPDATE ".$this->database_table." SET password = '".$sRequestPassword."',
+                         tmp_pw_request = NULL,
+                         using_pw_request = 1,
+                         WHERE username = '".Contenido_Security::escapeDB($username,  $this->db)."'";
+        $this->db->query($sQuery);
+        $pass = $sRequestPassword;
+        $this->auth['pwr'] = true;
+    }
+
 
     $sMaintenanceMode = getSystemProperty('maintenance', 'mode');
     while($this->db->next_record()) {
@@ -599,13 +614,13 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
             unset($perm);
             unset($pass);
         }
-        
+
 		if (is_array($auth_handlers) && !$bInMaintenance)
 		{
     		if (array_key_exists($pass, $auth_handlers))
     		{
     			$success = call_user_func($auth_handlers[$pass], $username, $password);
-    			
+
     			if ($success)
     			{
     				$uid = md5($username);
@@ -614,7 +629,7 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
     		}
 		}
 	}
-    
+
     if ($uid == false)
     {
     	## No user found, sleep and exit
@@ -628,15 +643,15 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
 								 $uid));
 
 		if ($perm != "")
-		{                          
+		{
 			$gperm[] = $perm;
 		}
-	
+
     	while ($this->db->next_record())
     	{
     		$gperm[] = $this->db->f("perms");
     	}
-    
+
     	if (is_array($gperm))
     	{
     		$perm = implode(",",$gperm);
@@ -656,7 +671,7 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
     	}
 
     	$expected_response = md5("$username:$pass:$challenge");
-    
+
     	if ($expected_response != $response)	## Response is set, JS is enabled
     	{
 			sleep(5);
@@ -678,7 +693,7 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth {
   var $database_table = "";
   var $fe_database_table = "";
   var $group_table    = "";
-  var $member_table   = "";  
+  var $member_table   = "";
   var $nobody         = true;
 
   function Contenido_Frontend_Challenge_Crypt_Auth ()
@@ -689,21 +704,21 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth {
 	$this->group_table = $cfg["tab"]["groups"];
 	$this->member_table = $cfg["tab"]["groupmembers"];
   }
-  
+
   function auth_preauth()
   {
     global $password;
-    
-	if ($password == "") 
-	{ 
-		/* Stay as nobody when an empty password is passed */ 
-		$uid = $this->auth["uname"] = $this->auth["uid"] = "nobody"; 
-		return false; 
+
+	if ($password == "")
+	{
+		/* Stay as nobody when an empty password is passed */
+		$uid = $this->auth["uname"] = $this->auth["uid"] = "nobody";
+		return false;
     }
-    
+
     return $this->auth_validatelogin();
   }
-  
+
   function auth_loginform()
   {
     global $sess;
@@ -721,11 +736,11 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth {
   function auth_validatelogin()
   {
 	global $username, $password, $challenge, $response, $auth_handlers, $client;
-    
-    
-    
+
+
+
     $client = (int)$client;
-    
+
     if(isset($username))
     {
         $this->auth["uname"] = $username;     ## This provides access for "loginform.ihtml"
@@ -733,21 +748,21 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth {
         $uid = $this->auth["uname"] = $this->auth["uid"] = "nobody";
         return $uid;
     }
-    
+
     $uid = false;
 
     /* Authentification via frontend users */
-    $this->db->query(sprintf("SELECT idfrontenduser, password FROM %s WHERE username = '%s' AND idclient='$client' AND active='1'", 
+    $this->db->query(sprintf("SELECT idfrontenduser, password FROM %s WHERE username = '%s' AND idclient='$client' AND active='1'",
     						 $this->fe_database_table,
     						 Contenido_Security::escapeDB(urlencode($username), $this->db )));
-    
+
 	if ($this->db->next_record())
 	{
 		$uid  = $this->db->f("idfrontenduser");
 		$perm = "frontend";
 		$pass = $this->db->f("password");
 	}
-	
+
 	if ($uid == false)
 	{
 		/* Authentification via backend users */
@@ -766,7 +781,7 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth {
     			if (array_key_exists($pass, $auth_handlers))
     			{
     				$success = call_user_func($auth_handlers[$pass], $username, $password);
-    		
+
     				if ($success)
     				{
     					$uid  = md5($username);
@@ -775,7 +790,7 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth {
     			}
 			}
 		}
-	
+
 		if ($uid !== false) {
 	    	$this->db->query(sprintf("select A.group_id as group_id, A.perms as perms ".
     	            				 "from %s AS A, %s AS B where A.group_id = B.group_id AND ".
@@ -783,27 +798,27 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth {
         	                 		 $this->group_table,
             	             		 $this->member_table,
                 	         		 $uid));
-                          
+
 			/* Deactivated: Backend user would be sysadmin when logged on as frontend user
-	     	*  (and perms would be checked), see http://www.contenido.org/forum/viewtopic.php?p=85666#85666 
+	     	*  (and perms would be checked), see http://www.contenido.org/forum/viewtopic.php?p=85666#85666
 			$perm = "sysadmin"; */
 			if ($perm != "")
 			{
 				$gperm[] = $perm;
 			}
-	
+
 	    	while ($this->db->next_record())
     		{
     			$gperm[] = $this->db->f("perms");
     		}
-    
+
 	    	if (is_array($gperm))
     		{
     			$perm = implode(",",$gperm);
     		}
 		}
 	}
-	
+
 	if ($uid == false)
 	{
 		## User not found, sleep and exit
@@ -837,21 +852,21 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth {
 
 /**
  * Registers an external auth handler
- */ 
+ */
 function register_auth_handler($aHandlers)
 {
 	global $auth_handlers;
-	
+
 	if (!is_array($auth_handlers))
 	{
 		$auth_handlers = array();
 	}
-	
+
 	if (!is_array($aHandlers))
 	{
 		$aHandlers = Array($aHandlers);
 	}
-	
+
 	foreach ($aHandlers as $sHandler)
 	{
 		if (!in_array($sHandler, $auth_handlers))

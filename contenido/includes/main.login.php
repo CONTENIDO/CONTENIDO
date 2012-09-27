@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Contenido Start Screen
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.0.5
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-01-21
  *   modified 2008-06-26, Dominik Ziegler, update notifier class added
  *   modified 2008-06-27, Frederic Schneider, add security fix
@@ -28,9 +28,9 @@
  *   modified 2011-01-28, Dominik Ziegler, added missing notice in backend home when no clients are available [#CON-379]
  *   modified 2011-08-18, Dominik Ziegler, added notification if maintenance mode is active [#CON-403]
  *
- *   $Id: main.login.php 1498 2011-08-18 15:04:51Z dominik.ziegler $:
+ *   $Id: main.login.php 1268 2011-01-28 12:18:44Z dominik.ziegler $:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -68,6 +68,15 @@ $lastlogin= $vuser->getUserProperty("system", "lastlogintime");
 if ($lastlogin == "") {
 	$lastlogin= i18n("No Login Information available.");
 }
+
+// notification for requested password
+if($vuser->getField('using_pw_request') == 1) {
+    $sPwNoti = $notification->returnNotification("warning", i18n("You're logged in with a temporary password. Please change your password."));
+} else {
+    $sPwNoti = '';
+}
+$tpl->set('s', 'NOTIFICATION', $sPwNoti);
+
 // notification for requested password
 $sNotificationText = '';
 if($vuser->getField('using_pw_request') == 1) {
@@ -80,7 +89,7 @@ if (getSystemProperty('maintenance', 'mode') == 'enabled') {
 	$sNotificationText .= $notification->returnNotification("warning", i18n("Contenido is in maintenance mode. Only sysadmins are allowed to login."));
 	$sNotificationText .= '<br />';
 }
-	
+
 $tpl->set('s', 'NOTIFICATION', $sNotificationText);
 
 $userid = $auth->auth["uid"];
@@ -146,13 +155,13 @@ if (count($clients) > 1) {
 			}
         }
 	}
-    
+
     if ($perm->have_perm() && count($warnings) > 0) {
 		$tpl->set('s', 'WARNINGS', "<br>" . $notification->messageBox("warning", implode("<br>", $warnings), 0));
 	} else {
 		$tpl->set('s', 'WARNINGS', '');
 	}
-    
+
 	$tpl->set('s', 'PULL_DOWN_MANDANTEN', $name);
 }
 
@@ -239,7 +248,7 @@ $aMemberList= $oActiveUsers->findAllUser();
 
 // Template for display current user
 $sTemplate = "";
-$sOutput = "";	
+$sOutput = "";
 $sTemplate= '<li class="welcome">%s, %s</li>';
 
 foreach ($aMemberList as $key) {

@@ -8,7 +8,7 @@
  * @package Contenido Backend Classes
  * @subpackages Backend User
  *
- * @version $Revision$
+ * @version 1.4.0
  * @author Holger Librenz
  * @copyright four for business AG
  *
@@ -33,6 +33,10 @@ cInclude('exceptions', 'exception.conuser.php');
  * @version 0.0.1
  * @author Holger Librenz
  * @copyright four for business AG
+ *
+ *  modified 2011-02-26, Ortwin Pinke, added unset for pw-request-marker, changed header svn-id and version declaration
+ *
+ *  $Id:$
  */
 abstract class ConUser_Abstract implements iConUser {
 

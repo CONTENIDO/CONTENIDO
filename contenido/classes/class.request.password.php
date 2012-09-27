@@ -1,35 +1,36 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Class for handling passwort recovery for backend users. If a user has set his e-mail address, this class
  * generates a new Password for user and submits to his e-mail adress. Submitting a new Password is
  * only possible every 30 minutes Mailsender, Mailsendername and Mailserver are set into system properties.
  * There it is also possible to deactivate this feature.
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend classes
- * @version    1.0.0
+ * @version    1.1.0
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since 2008-03-20
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2008-03-20
  *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2010-05-27, Oliver Lohkemper, check if user activ in handleNewPassword() 
+ *   modified 2010-05-27, Oliver Lohkemper, check if user activ in handleNewPassword()
+ *   modified 2011-02-26, Ortwin Pinke, added temporary pw request behaviour, so user may login with old and/or requested pw
  *
- *   $Id: class.request.password.php 1167 2010-05-27 08:10:06Z OliverL $:
+ *   $Id: class.request.password.php 1309 2011-02-26 14:32:42Z oldperl $:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -44,13 +45,8 @@ cInclude ("classes", "class.phpmailer.php");
  *
  * Description: Class for handling passwort recovery
  *
- * @version 1.0.0
  * @author Timo Trautmann
  * @copyright four for business AG <www.4fb.de>
- *
- * {@internal
- *   created 2008-03-20
- * }}
  *
  */
 class RequestPassword {
@@ -334,8 +330,8 @@ class RequestPassword {
         //update database entry, set new password and last_pw_request time
         $sSql = "UPDATE ".$this->aCfg["tab"]["phplib_auth_user_md5"]."
                          SET last_pw_request = '".date('Y-m-d H:i:s')."',
-                             password = '".md5($sPassword)."'
-			             WHERE username = '".$this->sUsername."'";
+                             tmp_pw_request = '".md5($sPassword)."'
+                         WHERE username = '".$this->sUsername."'";
         $this->oDb->query($sSql);
 
         //call function submitMail(), which sends new password to user
@@ -353,7 +349,6 @@ class RequestPassword {
 
         //get translation for mailbody and insert username and new password
         $sMailBody = sprintf(i18n("Dear Contenidouser %s,\n\nYour password to log in Content Management System Contenido is: %s\n\nBest regards\n\nYour Contenido sysadmin"), $this->sUsername, $sPassword);
-
         //use php mailer class for submitting mail
         $oMail = new phpmailer;
         //set host of mailserver
@@ -364,7 +359,6 @@ class RequestPassword {
         $oMail->From = $this->sSendermail;
         //set senders name
         $oMail->FromName = $this->sSendername;
-
         //set users e mail adress as recipient
         $oMail->AddAddress($this->sEmail, "");
         //set mail subject

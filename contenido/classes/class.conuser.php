@@ -30,7 +30,7 @@
  *      If 'symbols_mandatory' set to a value greater than 0, at least so many symbols has to appear in
  *      given password. What symbols are regcognized can be administrated via 'symbols_regex'. This has
  *      to be a regular expression which is used to "find" the symbols in $sNewPassword. If not set, following
- *      RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/"
+ *      RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^ï¿½\\\]/"
  *  $cfg['password']['mixed_case_mandatory'], int
  *      If set to a value greater than 0 so many lower and upper case character must appear in the password.
  *      (e.g.: if set to 2, 2 upper and 2 lower case characters must appear)
@@ -48,7 +48,7 @@
  * @package Contenido Backend classes
  * @subpackage Backend User
  *
- * @version $Revision$
+ * @version  1.4.0
  * @author Bilal Arslan, Holger Librenz
  * @copyright four for business AG
  *
@@ -60,8 +60,9 @@
  *  modified 2008-12-04, Bilal Arslan, Bugfixed for set passwort length, comments "how to use" fixed.
  *  Bugfixed for password, lower Case Upper case count, for symbols count and numbers count.
  *  modified 2008-12-04, Timo Trautman, Added Contenido $cfg as param for getErrorString()
+ *  modified 2011-02-26, Ortwin Pinke, added unset for pw-request-marker, changed header svn-id and version declaration
  *
- *  @Id
+ *  $Id:$
  * }}
  *
  **/
@@ -429,7 +430,8 @@ class ConUser extends ConUser_Abstract {
                   UPDATE
                       `" . $this->aCfg ["tab"] ["phplib_auth_user_md5"] . "`
                   SET
-                      password='" . Contenido_Security::escapeDB ( $sPass, $this->oDb ) . "'
+                      password='" . Contenido_Security::escapeDB ( $sPass, $this->oDb ) . "',
+                      using_pw_request = '0'
                   WHERE
                       user_id = '" . Contenido_Security::escapeDB ( $sUserId, $this->oDB ) . "'";
 
@@ -668,7 +670,7 @@ class ConUser extends ConUser_Abstract {
     }
 
     /**
- 
+
 	 *
 	 * Following configuration values are recognized:
 	 * $this->aCfg['password']['check_password_mask'], bool
@@ -683,7 +685,7 @@ class ConUser extends ConUser_Abstract {
      *      If 'symbols_mandatory' set to a value greater than 0, at least so many symbols has to appear in
      *      given password. What symbols are regcognized can be administrated via 'symbols_regex'. This has
      *      to be a regular expression which is used to "find" the symbols in $sNewPassword. If not set, following
-     *      RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/"
+     *      RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^ï¿½\\\]/"
      * $this->aCfg['password']['mixed_case_mandatory'], int
      *      If set to a value greater than 0 so many lower and upper case character must appear in the password.
      *      (e.g.: if set to 2, 2 upper and 2 lower case characters must appear)
@@ -727,13 +729,13 @@ class ConUser extends ConUser_Abstract {
             (int) $this->aCfg['password']['symbols_mandatory'] > 0) {
 
                 $aSymbols = array();
-                $sSymbolsDefault = "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/";
+                $sSymbolsDefault = "/[|!@#$%&*\/=?,;.:\-_+~^ï¿½\\\]/";
                 if (isset($this->aCfg['password']['symbols_regex']) && !empty($this->aCfg['password']['symbols_regex'])) {
                     $sSymbolsDefault = $this->aCfg['password']['symbols_regex'];
                 }
 
                 preg_match_all($sSymbolsDefault, $sNewPassword, $aSymbols);
-				
+
                 if (count($aSymbols[0]) < (int) $this->aCfg['password']['symbols_mandatory']) {
                     $iResult = iConUser::PASS_NOT_ENOUGH_SYMBOLS;
                 }
@@ -849,7 +851,7 @@ class ConUser extends ConUser_Abstract {
      */
     public static function getErrorString ($iErrorCode, $aCfg) {
         $sError = "";
-   
+
         switch ($iErrorCode) {
             case iConUser::PASS_NOT_ENOUGH_MIXED_CHARS: {
                 $sError = sprintf(i18n("Please use at least %d lower and upper case characters in your password!"),
