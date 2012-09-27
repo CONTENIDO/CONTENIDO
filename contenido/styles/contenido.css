@@ -772,7 +772,7 @@ td.sub {
 a:link {
     text-decoration: none;
 }
-a.nav: link {
+a.nav:link {
     font-family: verdana;
     font-size: 11px;
     color: #fff;
@@ -1649,7 +1649,7 @@ div.shelf_elem_statuslabel {
 }
 .widthpx486 {
     width: 486px;
-}.
+}
 .widthpx500 {
     width: 500px;
 }
@@ -1945,7 +1945,7 @@ div#top_left_container.admin_frontend > div:first-child {
     background: #E2E2E2;
     margin: 0 0 10px 0;
     padding: 2px;
-    vertical-ailgn:middle;
+    vertical-align: middle;
     line-height:20px;
 }
 .contenttest {
