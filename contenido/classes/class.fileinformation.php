@@ -47,6 +47,13 @@ class cApiFileInformationCollection extends ItemCollection {
         $this->_setItemClass('cApiFileInformation');
     }
 
+    /**
+     * Creates a new entry in the database
+     * @param  $typeContent  type of the entry
+     * @param  $filename  name of the file
+     * @param  $description  an optional description
+     */
+
     public function create($typeContent, $filename, $description = '') {
         $client = cRegistry::getClientId();
         $auth = cRegistry::getAuth();
@@ -74,7 +81,15 @@ class cApiFileInformationCollection extends ItemCollection {
             $this->updateFile($filename, $typeContent, $description);
         }
     }
-
+    /**
+     * updates a new entry in the database
+     * @param  $typeContent  type of the entry
+     * @param  $filename  name of the file
+     * @param  $description  an optional description
+     * @param  $newFilename  an optional new filename
+     * @param  $author  an optional author
+     *
+     */
     public function updateFile($sFilename, $sTypeContent, $description = '', $newFilename = '', $author = '') {
         $auth = cRegistry::getAuth();
         $client = cRegistry::getClientId();
@@ -102,10 +117,22 @@ class cApiFileInformationCollection extends ItemCollection {
         return $item;
     }
 
+    /**
+     * removes a new entry in the database
+     * @param  array wioth parameters
+     *
+     */
     public function removeFileInformation($values) {
         $this->deleteByMany($values);
     }
 
+    /**
+     * return an array with fileinformations from the database
+     * @param  $sType  type of the entry
+     * @param  $filename  name of the file
+     *
+     * @return array
+     */
     public function getFileInformation($sFilename, $sType) {
         $client = cRegistry::getClientId();
         $aFileInformation = array();
@@ -124,6 +151,17 @@ class cApiFileInformationCollection extends ItemCollection {
             $aFileInformation['description'] = cSecurity::unFilter($item->get('description'));
         }
         return $aFileInformation;
+    }
+
+}
+class cApiFileInformation extends Item {
+
+    public function __construct($id = false) {
+        global $cfg;
+        parent::__construct($cfg["tab"]["file_information"], 'idsfi');
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
+        }
     }
 
 }
