@@ -21,7 +21,6 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 cInclude("includes", "functions.file.php");
-
 $tpl->reset();
 
 if (!(int) $client > 0) {
@@ -43,13 +42,14 @@ $sActionDelete = 'style_delete';
 
 $sScriptTemplate = '
 <script type="text/javascript">
-    function deleteFile(idsfi) {
+    function deleteFile(file) {
+        //parent.parent.frames["right"].frames["right_bottom"].location.href = "main.php?area=' . $sArea . '&frame=4&action=' . $sActionDelete . '&delfile="+file+"&contenido=' . $sSession . '";
         url  = "main.php?area=' . $sArea . '";
         url += "&action=' . $sActionDelete . '";
         url += "&frame=2";
-        url += "&idsfi=" + idsfi;
+        //url += "&idsfi=" + idsfi;
         url += "&contenido=' . $sSession . '";
-        window.location.href = url;
+        //window.location.href = url;
         parent.parent.frames["right"].frames["right_bottom"].location.href = "main.php?area=' . $sArea . '&frame=4&action=' . $sActionDelete . '&delfile="+file+"&contenido=' . $sSession . '";
     }
 </script>';
@@ -85,7 +85,7 @@ if (($handle = opendir($path)) !== false) {
             $delDescr = sprintf(i18n("Do you really want to delete the following file:<br><br>%s<br>"), $filename);
 
             if ($perm->have_perm_area_action('style', $sActionDelete)) {
-                $sql = 'SELECT `idsfi` FROM `' . $cfg['tab']['file_information'] . '` WHERE `idclient`=' . cSecurity::toInteger($client) . ' AND `filename`=' . cSecurity::toString($filename);
+                $sql = 'SELECT `idsfi` FROM `' . $cfg['tab']['file_information'] . '` WHERE `idclient`=' . cSecurity::toInteger($client) . " AND `filename`='" . cSecurity::toString($filename) . "'";
                 $db->query($sql);
                 if ($db->next_record()) {
                     $idsfi = $db->f('idsfi');
