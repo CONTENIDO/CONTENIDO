@@ -286,52 +286,23 @@ if (!is_array($files)) {
 
 arsort($files, SORT_NUMERIC);
 
-$count = 0;
-$properties = new cApiPropertyCollection();
+foreach ($files as $idupl => $rating) {
+    $upl = new cApiUpload($idupl);
 
-foreach ($files as $file => $rating) {
+    $filename = $upl->get('filename');
+    $dirname = $upl->get('dirname');
+    $fullDirname = $cfgClient[$client]["upl"]["path"] . $upl->get('dirname');
 
-    $slashpos = strrpos($file, "/");
-
-    if ($slashpos === false) {
-        $myfilename = $file;
-        $mydirname = "";
-    } else {
-        $myfilename = substr($file, $slashpos + 1);
-        $mydirname = substr($file, 0, $slashpos + 1);
+    $filesize = $upl->get('size');
+    if ($filesize == 0 && cFileHandler::exists($fullDirname . $filename)) {
+        $filesize = filesize($fullDirname . $filename);
+        $upl->set('size', $filesize);
+        $upl->store();
     }
-    $path = $mydirname;
+    $description = $upl->get('description');
 
-    $filename = $myfilename;
-    $dirname = $cfgClient[$client]["upl"]["path"] . $mydirname;
-
-    $uploads->select("idclient = '$client' AND dirname = '$mydirname' AND filename = '$filename'");
-
-    if ($item = $uploads->next()) {
-        $filesize = $item->get("size");
-
-        if ($filesize == 0) {
-            if (cFileHandler::exists($dirname . $filename)) {
-                $filesize = filesize($dirname . $filename);
-            }
-        }
-        $description = $item->get("description");
-    } else {
-        if (cFileHandler::exists($dirname . $filename)) {
-            $filesize = filesize($dirname . $filename);
-        }
-    }
-
-    $count++;
-
-    $medianame = $properties->getValue("upload", $mydirname . $filename, "file", "medianame");
-    $medianotes = $properties->getValue("upload", $mydirname . $filename, "file", "medianotes");
-
-    $showfilename = $filename;
-    $bgColor = false;
-
-    $fileType = strtolower(getFileType($data));
-    $list2->setData($rownum, $mydirname . $filename, $showfilename, $mydirname, $filesize, $fileType, $rating / 10);
+    $fileType = strtolower(getFileType($filename));
+    $list2->setData($rownum, $dirname . $filename, $filename, $dirname, $filesize, $fileType, $rating / 10);
 
     $rownum++;
 }

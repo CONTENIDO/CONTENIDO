@@ -6,7 +6,6 @@
  * Description:
  * Upload functions
  *
- *
  * @package CONTENIDO Backend Includes
  * @version 1.4.1
  * @author Jan Lengowski
@@ -821,45 +820,77 @@ function uplCreateFriendlyName($filename) {
 }
 
 function uplSearch($searchfor) {
-    global $client;
+    $client = cRegistry::getClientId();
+    $client = cSecurity::toInteger($client);
+    $lang = cRegistry::getLanguageId();
+    $lang = cSecurity::toInteger($lang);
 
-    $oPropertiesCol = new cApiPropertyCollection();
-    $oUploadsCol = new cApiUploadCollection();
+    $uploadsColl = new cApiUploadCollection();
+    $uplMetaColl = new cApiUploadMetaCollection();
 
-    $clientdb = cSecurity::toInteger($client);
-    $searchfordb = $oPropertiesCol->escape($searchfor);
+    $searchfordb = $uplMetaColl->escape($searchfor);
 
-    // Search for keywords first, ranking +5
-    $oPropertiesCol->select("idclient='" . $clientdb . "' AND itemtype='upload' AND type='file' AND name='keywords' AND value LIKE '%" . $searchfordb . "%'", 'itemid');
-    while (($item = $oPropertiesCol->next()) !== false) {
-        $items[$item->get('itemid')] += (substr_count(strtolower($item->get("value")), strtolower($searchfor)) * 5);
+    // Search for description, ranking *5
+    $uplMetaColl->link('cApiUploadCollection');
+    $uplMetaColl->setWhereGroup('description', 'capiuploadcollection.idclient', $client);
+    $uplMetaColl->setWhereGroup('description', 'capiuploadmetacollection.idlang', $lang);
+    $uplMetaColl->setWhereGroup('description', 'capiuploadmetacollection.description', '%' . $searchfordb . '%', 'LIKE');
+    $uplMetaColl->query();
+    while (($item = $uplMetaColl->next()) !== false) {
+        $items[$item->get('idupl')] += (substr_count(strtolower($item->get('description')), strtolower($searchfor)) * 5);
     }
 
-    // Search for medianame , ranking +4
-    $oPropertiesCol->select("idclient='" . $clientdb . "' AND itemtype='upload' AND type='file' AND name='medianame' AND value LIKE '%" . $searchfordb . "%'", 'itemid');
-    while (($item = $oPropertiesCol->next()) !== false) {
-        $items[$item->get('itemid')] += (substr_count(strtolower($item->get("value")), strtolower($searchfor)) * 4);
+    // Search for medianame, ranking *4
+    $uplMetaColl->resetQuery();
+    $uplMetaColl->link('cApiUploadCollection');
+    $uplMetaColl->setWhereGroup('medianame', 'capiuploadcollection.idclient', $client);
+    $uplMetaColl->setWhereGroup('medianame', 'capiuploadmetacollection.idlang', $lang);
+    $uplMetaColl->setWhereGroup('medianame', 'capiuploadmetacollection.medianame', '%' . $searchfordb . '%', 'LIKE');
+    $uplMetaColl->query();
+    while (($item = $uplMetaColl->next()) !== false) {
+        $items[$item->get('idupl')] += (substr_count(strtolower($item->get('medianame')), strtolower($searchfor)) * 4);
     }
 
-    // Search for media notes, ranking +3
-    $oPropertiesCol->select("idclient='" . $clientdb . "' AND itemtype='upload' AND type='file' AND name='medianotes' AND value LIKE '%" . $searchfordb . "%'", 'itemid');
-    while (($item = $oPropertiesCol->next()) !== false) {
-        $items[$item->get('itemid')] += (substr_count(strtolower($item->get("value")), strtolower($searchfor)) * 3);
+    // Search for file name, ranking +4
+    $uploadsColl->select("idclient='" . $client . "' AND filename LIKE '%" . $searchfordb . "%'");
+    while (($item = $uploadsColl->next()) !== false) {
+        $items[$item->get('idupl')] += 4;
     }
 
-    // Search for description, ranking +2
-    $oUploadsCol->select("idclient='" . $clientdb . "' AND description LIKE '%" . $searchfordb . "%'", "idupl");
-    while (($item = $oUploadsCol->next()) !== false) {
-        $items[$item->get('dirname') . $item->get('filename')] += (substr_count(strtolower($item->get('description')), strtolower($searchfor)) * 2);
+    // Search for keywords, ranking *3
+    $uplMetaColl->resetQuery();
+    $uplMetaColl->link('cApiUploadCollection');
+    $uplMetaColl->setWhereGroup('keywords', 'capiuploadcollection.idclient', $client);
+    $uplMetaColl->setWhereGroup('keywords', 'capiuploadmetacollection.idlang', $lang);
+    $uplMetaColl->setWhereGroup('keywords', 'capiuploadmetacollection.keywords', '%' . $searchfordb . '%', 'LIKE');
+    $uplMetaColl->query();
+    while (($item = $uplMetaColl->next()) !== false) {
+        $items[$item->get('idupl')] += (substr_count(strtolower($item->get('keywords')), strtolower($searchfor)) * 3);
     }
 
-    // Search for file name, ranking +1
-    $oUploadsCol->select("idclient='" . $clientdb . "' AND filename LIKE '%" . $searchfordb . "%'", "idupl");
-    while (($item = $oUploadsCol->next()) !== false) {
-        $items[$item->get('dirname') . $item->get('filename')] += 1;
+    // Search for copyright, ranking *2
+    $uplMetaColl->resetQuery();
+    $uplMetaColl->link('cApiUploadCollection');
+    $uplMetaColl->setWhereGroup('copyright', 'capiuploadcollection.idclient', $client);
+    $uplMetaColl->setWhereGroup('copyright', 'capiuploadmetacollection.idlang', $lang);
+    $uplMetaColl->setWhereGroup('copyright', 'capiuploadmetacollection.copyright', '%' . $searchfordb . '%', 'LIKE');
+    $uplMetaColl->query();
+    while (($item = $uplMetaColl->next()) !== false) {
+        $items[$item->get('idupl')] += (substr_count(strtolower($item->get('copyright')), strtolower($searchfor)) * 2);
     }
 
-    return ($items);
+    // Search for internal_notice, ranking *1
+    $uplMetaColl->resetQuery();
+    $uplMetaColl->link('cApiUploadCollection');
+    $uplMetaColl->setWhereGroup('internal_notice', 'capiuploadcollection.idclient', $client);
+    $uplMetaColl->setWhereGroup('internal_notice', 'capiuploadmetacollection.idlang', $lang);
+    $uplMetaColl->setWhereGroup('internal_notice', 'capiuploadmetacollection.internal_notice', '%' . $searchfordb . '%', 'LIKE');
+    $uplMetaColl->query();
+    while (($item = $uplMetaColl->next()) !== false) {
+        $items[$item->get('idupl')] += (substr_count(strtolower($item->get('internal_notice')), strtolower($searchfor)));
+    }
+
+    return $items;
 }
 
 /**
