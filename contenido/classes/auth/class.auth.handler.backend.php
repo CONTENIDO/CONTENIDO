@@ -2,29 +2,30 @@
 /**
  * This file contains the backend authentication handler class.
  *
- * @package            Core
- * @subpackage        Authentication
- * @version            1.0
+ * @package Core
+ * @subpackage Authentication
  *
- * @author            Dominik Ziegler
- * @copyright        four for business AG <www.4fb.de>
- * @license            http://www.contenido.org/license/LIZENZ.txt
- * @link            http://www.4fb.de
- * @link            http://www.contenido.org
+ * @author Dominik Ziegler
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 /**
- * @package            Core
- * @subpackage        Authentication
- *
  * This class contains the methods for the backend authentication in CONTENIDO.
+ *
+ * @package Core
+ * @subpackage Authentication
  */
 class cAuthHandlerBackend extends cAuthHandlerAbstract {
+
     /**
      * Constructor of the backend auth handler.
-     * Automatically sets the lifetime of the authentication to the configured value.
+     * Automatically sets the lifetime of the authentication to the configured
+     * value.
      *
-     * @return    void
+     * @return void
      */
     public function __construct() {
         $cfg = cRegistry::getConfig();
@@ -41,7 +42,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
     }
 
     public function displayLoginForm() {
-        include(cRegistry::getBackendPath() . 'main.loginform.php');
+        include (cRegistry::getBackendPath() . 'main.loginform.php');
     }
 
     public function validateCredentials() {
@@ -82,7 +83,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
 
         $userColl->select($where);
 
-        while ($item = $userColl->next()) {
+        while (($item = $userColl->next()) !== false) {
             $uid = $item->get('user_id');
             $perm = $item->get('perms');
             $pass = $item->get('password'); // Password is stored as a md5 hash
@@ -113,7 +114,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
     public function logSuccessfulAuth() {
         global $client, $lang, $saveLoginTime;
 
-        $perm = new cPermission;
+        $perm = new cPermission();
 
         // Find the first accessible client and language for the user
         $clientLangColl = new cApiClientLanguageCollection();
@@ -138,6 +139,9 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
 
         $idaction = $perm->getIDForAction('login');
 
+        $authInfo = $this->getAuthInfo();
+        $uid = $authInfo->auth['uid'];
+
         // create a actionlog entry
         $actionLogCol = new cApiActionlogCollection();
         $actionLogCol->create($uid, $client, $lang, $idaction, 0);
@@ -146,10 +150,13 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         $sess->register('saveLoginTime');
         $saveLoginTime = true;
     }
+
 }
 
 /**
- * @deprecated    2012-09-22
+ *
+ * @deprecated 2012-09-22
  */
 class Contenido_Challenge_Crypt_Auth extends cAuthHandlerBackend {
+
 }

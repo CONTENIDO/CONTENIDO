@@ -2,24 +2,24 @@
 /**
  * This file contains the frontend authentication handler class.
  *
- * @package            Core
- * @subpackage        Authentication
- * @version            1.0
+ * @package Core
+ * @subpackage Authentication
  *
- * @author            Dominik Ziegler
- * @copyright        four for business AG <www.4fb.de>
- * @license            http://www.contenido.org/license/LIZENZ.txt
- * @link            http://www.4fb.de
- * @link            http://www.contenido.org
+ * @author Dominik Ziegler
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 /**
- * @package            Core
- * @subpackage        Authentication
- *
  * This class contains the methods for the frontend authentication in CONTENIDO.
+ *
+ * @package Core
+ * @subpackage Authentication
  */
 class cAuthHandlerFrontend extends cAuthHandlerAbstract {
+
     public function preAuthorize() {
         $password = $_POST['password'];
 
@@ -33,7 +33,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
     }
 
     public function displayLoginForm() {
-        include(cRegistry::getFrontendPath() . 'front_crcloginform.inc.php');
+        include (cRegistry::getFrontendPath() . 'front_crcloginform.inc.php');
     }
 
     public function validateCredentials() {
@@ -63,7 +63,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
         $where = "username = '" . $username . "' AND idclient='" . $client . "' AND active=1";
         $frontendUserColl->select($where);
 
-        while ($item = $frontendUserColl->next()) {
+        while (($item = $frontendUserColl->next()) !== false) {
             $uid = $item->get('idfrontenduser');
             $perm = 'frontend';
             $pass = $item->get('password');
@@ -82,10 +82,11 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
 
             $userColl->select($where);
 
-            while ($item = $userColl->next()) {
+            while (($item = $userColl->next()) !== false) {
                 $uid = $item->get('user_id');
                 $perm = $item->get('perms');
-                $pass = $item->get('password'); // Password is stored as a md5 hash
+                $pass = $item->get('password'); // Password is stored as a md5
+                                                    // hash
             }
         }
 
@@ -114,10 +115,13 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
     public function logSuccessfulAuth() {
         return;
     }
+
 }
 
 /**
- * @deprecated    2012-09-22
+ *
+ * @deprecated 2012-09-22
  */
 class Contenido_Frontend_Challenge_Crypt_Auth extends cAuthHandlerFrontend {
+
 }
