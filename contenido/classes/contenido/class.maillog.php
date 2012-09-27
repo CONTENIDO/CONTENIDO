@@ -6,10 +6,6 @@
  * Description:
  * Mail log management class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package CONTENIDO API
  * @version 0.1
  * @author Simon Sprankel

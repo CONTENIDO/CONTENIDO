@@ -6,22 +6,13 @@
  * Description:
  * Metatype management class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    0.1
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2012-07-20
- *   $Id$
- * }}
+ * @package CONTENIDO API
+ * @version 0.1
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -30,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Metatype collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiMetaTypeCollection extends ItemCollection {
@@ -46,10 +38,11 @@ class cApiMetaTypeCollection extends ItemCollection {
 
     /**
      * Creates a meta type entry.
-     * @param  string  $metatype
-     * @param  string  $fieldtype
-     * @param  int  $maxlength
-     * @param  string  $fieldname
+     *
+     * @param string $metatype
+     * @param string $fieldtype
+     * @param int $maxlength
+     * @param string $fieldname
      * @return cApiMetaType
      */
     public function create($metatype, $fieldtype, $maxlength, $fieldname) {
@@ -68,14 +61,16 @@ class cApiMetaTypeCollection extends ItemCollection {
 
 /**
  * Metatype item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiMetaType extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -88,9 +83,10 @@ class cApiMetaType extends Item {
 
     /**
      * Userdefined setter for article language fields.
-     * @param  string  $name
-     * @param  mixed   $value
-     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
         if ('maxlength' == $name) {
@@ -105,5 +101,3 @@ class cApiMetaType extends Item {
     }
 
 }
-
-?>

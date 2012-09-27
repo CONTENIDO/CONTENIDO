@@ -6,25 +6,18 @@
  * Description:
  * Frontend group classes
  *
- * Code is taken over from file contenido/classes/class.frontend.groups.php in favor of
+ * Code is taken over from file contenido/classes/class.frontend.groups.php in
+ * favor of
  * normalizing API.
  *
- * Requirements:
- * @con_php_req 5.0
- *
- * @package    CONTENIDO API
- * @version    0.1
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-09-20
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 0.1
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release 4.9.0
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -33,7 +26,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Frontend group collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiFrontendGroupCollection extends ItemCollection {
@@ -45,10 +39,14 @@ class cApiFrontendGroupCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['frontendgroups'], 'idfrontendgroup');
         $this->_setItemClass('cApiFrontendGroup');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiClientCollection');
     }
 
     /**
      * Creates a new group
+     *
      * @param $groupname string Specifies the groupname
      * @param $password string Specifies the password (optional)
      */
@@ -57,12 +55,12 @@ class cApiFrontendGroupCollection extends ItemCollection {
 
         $group = new cApiFrontendGroup();
 
-        #$_arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
+        // _arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
 
         $mangledGroupName = $group->_inFilter($groupname);
         $this->select("idclient = " . (int) $client . " AND groupname = '" . $mangledGroupName . "'");
 
-        if ($obj = $this->next()) {
+        if (($obj = $this->next()) !== false) {
             $groupname = $groupname . md5(rand());
         }
 
@@ -85,7 +83,7 @@ class cApiFrontendGroupCollection extends ItemCollection {
         $associations = new cApiFrontendGroupMemberCollection();
         $associations->select('idfrontendgroup = ' . (int) $itemID);
 
-        while ($item = $associations->next()) {
+        while (($item = $associations->next()) !== false) {
             $associations->delete($item->get('idfrontendgroupmember'));
         }
         parent::delete($itemID);
@@ -95,14 +93,16 @@ class cApiFrontendGroupCollection extends ItemCollection {
 
 /**
  * Frontend group item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiFrontendGroup extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -114,16 +114,19 @@ class cApiFrontendGroup extends Item {
 
 }
 
-################################################################################
-# Old versions of frontend group item collection and frontend group item classes
-#
-# NOTE: Class implemetations below are deprecated and the will be removed in
-#       future versions of contenido.
-#       Don't use them, they are still available due to downwards compatibility.
+// ##############################################################################
+// Old versions of frontend group item collection and frontend group item
+// classes
+//
+// NOTE: Class implemetations below are deprecated and the will be removed in
+// future versions of contenido.
+// Don't use them, they are still available due to downwards compatibility.
 
 /**
  * Frontend group collection
- * @deprecated  [2011-09-20] Use cApiFrontendGroupCollection instead of this class.
+ *
+ * @deprecated [2011-09-20] Use cApiFrontendGroupCollection instead of this
+ *             class.
  */
 class FrontendGroupCollection extends cApiFrontendGroupCollection {
 
@@ -141,7 +144,8 @@ class FrontendGroupCollection extends cApiFrontendGroupCollection {
 
 /**
  * Single frontend group item
- * @deprecated  [2011-09-20] Use cApiFrontendGroup instead of this class.
+ *
+ * @deprecated [2011-09-20] Use cApiFrontendGroup instead of this class.
  */
 class FrontendGroup extends cApiFrontendGroup {
 
@@ -156,5 +160,3 @@ class FrontendGroup extends cApiFrontendGroup {
     }
 
 }
-
-?>

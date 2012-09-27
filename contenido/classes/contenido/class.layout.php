@@ -6,22 +6,13 @@
  * Description:
  * Layout class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    1.1.1
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2004-08-07
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 1.1.1
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -30,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Layout collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiLayoutCollection extends ItemCollection {
@@ -39,9 +31,16 @@ class cApiLayoutCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['lay'], 'idlay');
         $this->_setItemClass('cApiLayout');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiClientCollection');
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiLayoutCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
@@ -50,14 +49,14 @@ class cApiLayoutCollection extends ItemCollection {
     /**
      * Creates a layout entry.
      *
-     * @param  string  $name
-     * @param  int  $idclient
-     * @param  string  $alias
-     * @param  string  $description
-     * @param  int  $deletable  Either 1 or 0
-     * @param  string  $author
-     * @param  string  $created
-     * @param  string  $lastmodified
+     * @param string $name
+     * @param int $idclient
+     * @param string $alias
+     * @param string $description
+     * @param int $deletable Either 1 or 0
+     * @param string $author
+     * @param string $created
+     * @param string $lastmodified
      * @return cApiLayout
      */
     public function create($name, $idclient = null, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '') {
@@ -94,20 +93,23 @@ class cApiLayoutCollection extends ItemCollection {
 
 /**
  * Layout item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiLayout extends Item {
 
     /**
      * List of templates being used by current layout
+     *
      * @var array
      */
     protected $_aUsedTemplates = array();
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -118,7 +120,11 @@ class cApiLayout extends Item {
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiLayout($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
@@ -126,7 +132,8 @@ class cApiLayout extends Item {
 
     /**
      * Checks if the layout is in use in any templates.
-     * @param bool $setData  Flag to set used templates data structure
+     *
+     * @param bool $setData Flag to set used templates data structure
      * @throws cException If layout item has not been loaded before
      * @return bool
      */
@@ -156,6 +163,7 @@ class cApiLayout extends Item {
 
     /**
      * Get the informations of used templates
+     *
      * @return array template data
      */
     public function getUsedTemplates() {
@@ -164,14 +172,15 @@ class cApiLayout extends Item {
 
     /**
      * Userdefined setter for layout fields.
-     * @param  string  $name
-     * @param  mixed   $value
-     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'deletable':
-                $value = ($value == 1) ? 1 : 0;
+                $value = ($value == 1)? 1 : 0;
                 break;
             case 'idclient':
                 $value = (int) $value;
@@ -186,5 +195,3 @@ class cApiLayout extends Item {
     }
 
 }
-
-?>

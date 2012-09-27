@@ -6,22 +6,13 @@
  * Description:
  * Code management class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    0.1
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2011-07-19
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 0.1
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -30,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Code collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiCodeCollection extends ItemCollection {
@@ -42,10 +34,16 @@ class cApiCodeCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['code'], 'idcode');
         $this->_setItemClass('cApiCode');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiCategoryArticleCollection');
+        $this->_setJoinPartner('cApiLanguageCollection');
+        $this->_setJoinPartner('cApiClientCollection');
     }
 
     /**
      * Creates a code entry.
+     *
      * @param int $iIdCatArt
      * @param int $iIdLang
      * @param int $iIdClient
@@ -66,9 +64,10 @@ class cApiCodeCollection extends ItemCollection {
 
     /**
      * Returns a code entry by category article and language.
+     *
      * @param int $iIdCatArt
      * @param int $iIdLang
-     * @return cApiCode|null
+     * @return cApiCode null
      */
     public function fetchByCatArtAndLang($iIdCatArt, $iIdLang) {
         $this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);
@@ -77,11 +76,12 @@ class cApiCodeCollection extends ItemCollection {
 
     /**
      * Deletes code by category article.
+     *
      * @param int $iIdCatArt
      */
     public function deleteByCatArt($iIdCatArt) {
         $this->select('idcatart=' . (int) $iIdCatArt);
-        while ($oCode = $this->next()) {
+        while (($oCode = $this->next()) !== false) {
             $this->delete($oCode->get('idcode'));
         }
     }
@@ -90,14 +90,16 @@ class cApiCodeCollection extends ItemCollection {
 
 /**
  * Code item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiCode extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -110,8 +112,9 @@ class cApiCode extends Item {
 
     /**
      * Updates code of an entry.
-     * @param   string  $sCode
-     * @return  bool
+     *
+     * @param string $sCode
+     * @return bool
      */
     public function updateCode($sCode) {
         $this->set('code', $this->escape($sCode), false);
@@ -119,5 +122,3 @@ class cApiCode extends Item {
     }
 
 }
-
-?>

@@ -6,22 +6,13 @@
  * Description:
  * Area management class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    1.3.1
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2004-08-04
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 1.3.1
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -30,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Area collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiAreaCollection extends ItemCollection {
@@ -44,7 +36,11 @@ class cApiAreaCollection extends ItemCollection {
         $this->_setItemClass('cApiArea');
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiAreaCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
@@ -53,23 +49,23 @@ class cApiAreaCollection extends ItemCollection {
     /**
      * Creates a area item entry
      *
-     * @param  string  $name Name
-     * @param  string|int  $parentid  Parent id as astring or number
-     * @param  int  $relevant  0 or 1
-     * @param  int  $online  0 or 1
-     * @param  int  $menuless  0 or 1
+     * @param string $name Name
+     * @param string|int $parentid Parent id as astring or number
+     * @param int $relevant 0 or 1
+     * @param int $online 0 or 1
+     * @param int $menuless 0 or 1
      * @return cApiArea
      */
     public function create($name, $parentid = 0, $relevant = 1, $online = 1, $menuless = 0) {
-        $parentid = (is_string($parentid)) ? $this->escape($parentid) : (int) $parentid;
+        $parentid = (is_string($parentid))? $this->escape($parentid) : (int) $parentid;
 
         $item = parent::createNewItem();
 
         $item->set('parent_id', $parentid);
         $item->set('name', $this->escape($name));
-        $item->set('relevant', (1 == $relevant) ? 1 : 0);
-        $item->set('online', (1 == $online) ? 1 : 0);
-        $item->set('menuless', (1 == $menuless) ? 1 : 0);
+        $item->set('relevant', (1 == $relevant)? 1 : 0);
+        $item->set('online', (1 == $online)? 1 : 0);
+        $item->set('menuless', (1 == $menuless)? 1 : 0);
 
         $item->store();
 
@@ -79,8 +75,8 @@ class cApiAreaCollection extends ItemCollection {
     /**
      * Returns the parent id of passed area
      *
-     * @param   int|string  $area  Area id or name
-     * @return  string|int  Unique name of parent area or passed area
+     * @param int|string $area Area id or name
+     * @return string int name of parent area or passed area
      */
     public function getParentAreaID($area) {
         if (is_numeric($area)) {
@@ -89,14 +85,14 @@ class cApiAreaCollection extends ItemCollection {
             $sql = "SELECT b.name FROM `%s` AS a, `%s` AS b WHERE a.name = '%s' AND b.name = a.parent_id";
         }
         $this->db->query($sql, $this->table, $this->table, $area);
-        return ($this->db->next_record()) ? $this->db->f('name') : $area;
+        return ($this->db->next_record())? $this->db->f('name') : $area;
     }
 
     /**
      * Returns all area ids having passed area as name or as parent id
      *
-     * @param   int|string  $nameOrId  Area name or parent id
-     * @return  array  List of area ids
+     * @param int|string $nameOrId Area name or parent id
+     * @return array List of area ids
      */
     public function getIdareasByAreaNameOrParentId($nameOrId) {
         $sql = "SELECT idarea FROM `%s` AS a WHERE a.name = '%s' OR a.parent_id = '%s' ORDER BY idarea";
@@ -113,15 +109,17 @@ class cApiAreaCollection extends ItemCollection {
     /**
      * Returns all areas available in the system
      *
-     * @return  array   Array with id and name entries
+     * @return array Array with id and name entries
      */
     public function getAvailableAreas() {
         $aClients = array();
 
         $this->select();
 
-        while ($oItem = $this->next()) {
-            $aAreas[$oItem->get('idarea')] = array('name' => $oItem->get('name'));
+        while (($oItem = $this->next()) !== false) {
+            $aAreas[$oItem->get('idarea')] = array(
+                'name' => $oItem->get('name')
+            );
         }
 
         return ($aAreas);
@@ -129,7 +127,8 @@ class cApiAreaCollection extends ItemCollection {
 
     /**
      * Returns the name for a given areaid
-     * @return string   String with the name for the area
+     *
+     * @return string String with the name for the area
      */
     public function getAreaName($area) {
         $oItem = new cApiArea($area);
@@ -138,7 +137,8 @@ class cApiAreaCollection extends ItemCollection {
 
     /**
      * Returns the idarea for a given area name
-     * @return int     Integer with the ID for the area
+     *
+     * @return int Integer with the ID for the area
      */
     public function getAreaID($area) {
         $oItem = new cApiArea();
@@ -151,14 +151,16 @@ class cApiAreaCollection extends ItemCollection {
 
 /**
  * Area item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiArea extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -169,13 +171,20 @@ class cApiArea extends Item {
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiArea($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 
-    /** @deprecated  [2011-10-25] Use cApiAreaCollection->create() */
+    /**
+     *
+     * @deprecated [2011-10-25] Use cApiAreaCollection->create()
+     */
     public function create($name, $parentid = 0, $relevant = 1, $online = 1, $menuless = 0) {
         cDeprecated("Use cApiAreaCollection->create() instead");
 
@@ -183,7 +192,10 @@ class cApiArea extends Item {
         return $oAreaColl->create($name, $parentid, $relevant, $online, $menuless);
     }
 
-    /** @deprecated  [2012-02-24] Use cApiAreaCollection->create() */
+    /**
+     *
+     * @deprecated [2012-02-24] Use cApiAreaCollection->create()
+     */
     public function createAction($area, $name, $code, $location, $relevant) {
         cDeprecated("Use cApiAreaCollection->create() instead");
 
@@ -194,7 +206,8 @@ class cApiArea extends Item {
 }
 
 /**
- * @deprecated  [2012-02-25] Use cApiAreaCollection instead of this class.
+ *
+ * @deprecated [2012-02-25] Use cApiAreaCollection instead of this class.
  */
 class Area extends cApiAreaCollection {
 
@@ -209,5 +222,3 @@ class Area extends cApiAreaCollection {
     }
 
 }
-
-?>

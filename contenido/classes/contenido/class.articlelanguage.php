@@ -6,22 +6,13 @@
  * Description:
  * Article access class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    1.4.1
- * @author     Bjoern Behrens
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2007-05-25
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 1.4.1
+ * @author Bjoern Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -30,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Article language collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiArticleLanguageCollection extends ItemCollection {
@@ -39,14 +31,22 @@ class cApiArticleLanguageCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['art_lang'], 'idartlang');
         $this->_setItemClass('cApiArticleLanguage');
+
+        // set the join partners so that joins can be used via link() method
         $this->_setJoinPartner('cApiArticleCollection');
+        $this->_setJoinPartner('cApiLanguageCollection');
+        $this->_setJoinPartner('cApiTemplateConfigurationCollection');
 
         if ($select !== false) {
             $this->select($select);
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiArticleLanguageCollection($select = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($select);
@@ -54,49 +54,43 @@ class cApiArticleLanguageCollection extends ItemCollection {
 
     /**
      * Creates an article language item entry.
-     * @global  object  $auth
-     * @param   int  $idart
-     * @param   int  $idlang
-     * @param   string  $title
-     * @param   string  $urlname
-     * @param   string  $pagetitle
-     * @param   string  $summary
-     * @param   int  $artspec
-     * @param   string  $created
-     * @param   string  $author
-     * @param   string  $lastmodified
-     * @param   string  $modifiedby
-     * @param   string  $published
-     * @param   string  $publishedby
-     * @param   int  $online
-     * @param   int  $redirect
-     * @param   string  $redirect_url
-     * @param   int  $external_redirect
-     * @param   int  $artsort
-     * @param   int  $timemgmt
-     * @param   string  $datestart
-     * @param   string  $dateend
-     * @param   int  $status
-     * @param   int  $time_move_cat
-     * @param   int  $time_target_cat
-     * @param   int  $time_online_move
-     * @param   int  $locked
-     * @param  mixed  $free_use_01
-     * @param  mixed  $free_use_02
-     * @param  mixed  $free_use_03
-     * @param  int  $searchable
-     * @param  float  $sitemapprio
-     * @param  string  $changefreq
+     *
+     * @global object $auth
+     * @param int $idart
+     * @param int $idlang
+     * @param string $title
+     * @param string $urlname
+     * @param string $pagetitle
+     * @param string $summary
+     * @param int $artspec
+     * @param string $created
+     * @param string $author
+     * @param string $lastmodified
+     * @param string $modifiedby
+     * @param string $published
+     * @param string $publishedby
+     * @param int $online
+     * @param int $redirect
+     * @param string $redirect_url
+     * @param int $external_redirect
+     * @param int $artsort
+     * @param int $timemgmt
+     * @param string $datestart
+     * @param string $dateend
+     * @param int $status
+     * @param int $time_move_cat
+     * @param int $time_target_cat
+     * @param int $time_online_move
+     * @param int $locked
+     * @param mixed $free_use_01
+     * @param mixed $free_use_02
+     * @param mixed $free_use_03
+     * @param int $searchable
+     * @param float $sitemapprio
+     * @param string $changefreq
      * @return cApiArticleLanguage
      */
-    public function create($idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0,
-        $created = '', $author = '', $lastmodified = '', $modifiedby = '', $published = '',
-        $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '', $external_redirect = 0,
-        $artsort = 0, $timemgmt = 0, $datestart = '', $dateend = '', $status = 0,
-        $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0, $locked = 0,
-        $free_use_01 = '', $free_use_02 = '', $free_use_03 = '', $searchable = 1,
-        $sitemapprio = 0.5, $changefreq = '') {
-
+    public function create($idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0, $created = '', $author = '', $lastmodified = '', $modifiedby = '', $published = '', $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '', $external_redirect = 0, $artsort = 0, $timemgmt = 0, $datestart = '', $dateend = '', $status = 0, $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0, $locked = 0, $free_use_01 = '', $free_use_02 = '', $free_use_03 = '', $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
         global $auth;
 
         if (empty($author)) {
@@ -109,7 +103,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $urlname = (trim($urlname) == '') ? trim($title) : trim($urlname);
+        $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
 
         $item = parent::createNewItem();
 
@@ -153,14 +147,15 @@ class cApiArticleLanguageCollection extends ItemCollection {
 
     /**
      * Returns id (idartlang) of articlelanguage by article id and language id
-     * @param  int  $idcat
-     * @param  int  $idlang
-     * @return  int
+     *
+     * @param int $idcat
+     * @param int $idlang
+     * @return int
      */
     public function getIdByArticleIdAndLanguageId($idart, $idlang) {
         $sql = "SELECT idartlang FROM `%s` WHERE idart = %d AND idlang = %d";
         $this->db->query($sql, $this->table, $idart, $idlang);
-        return ($this->db->next_record()) ? $this->db->f('idartlang') : 0;
+        return ($this->db->next_record())? $this->db->f('idartlang') : 0;
     }
 
 }
@@ -181,34 +176,34 @@ class cApiArticleLanguageCollection extends ItemCollection {
  *
  * List of article properties:
  *
- * idartlang         - Language dependant article id
- * idart             - Language indepenant article id
- * idclient          - Id of the client
- * idtplcfg          - Template configuration id
- * title             - Internal Title
- * pagetitle         - HTML Title
- * summary           - Article summary
- * created           - Date created
- * lastmodified      - Date lastmodiefied
- * author            - Article author (username)
- * online            - On-/offline
- * redirect          - Redirect
- * redirect_url      - Redirect URL
- * artsort           - Article sort key
- * timemgmt          - Time management
- * datestart         - Time management start date
- * dateend           - Time management end date
- * status            - Article status
- * free_use_01       - Free to use
- * free_use_02       - Free to use
- * free_use_03       - Free to use
- * time_move_cat     - Move category after time management
- * time_target_cat   - Move category to this cat after time management
- * time_online_move  - Set article online after move
+ * idartlang - Language dependant article id
+ * idart - Language indepenant article id
+ * idclient - Id of the client
+ * idtplcfg - Template configuration id
+ * title - Internal Title
+ * pagetitle - HTML Title
+ * summary - Article summary
+ * created - Date created
+ * lastmodified - Date lastmodiefied
+ * author - Article author (username)
+ * online - On-/offline
+ * redirect - Redirect
+ * redirect_url - Redirect URL
+ * artsort - Article sort key
+ * timemgmt - Time management
+ * datestart - Time management start date
+ * dateend - Time management end date
+ * status - Article status
+ * free_use_01 - Free to use
+ * free_use_02 - Free to use
+ * free_use_03 - Free to use
+ * time_move_cat - Move category after time management
+ * time_target_cat - Move category to this cat after time management
+ * time_online_move - Set article online after move
  * external_redirect - Open article in new window
- * locked            - Article is locked for editing
- * searchable        - Whether article should be found via search
- * sitemapprio       - The priority for the sitemap
+ * locked - Article is locked for editing
+ * searchable - Whether article should be found via search
+ * sitemapprio - The priority for the sitemap
  *
  * You can extract article content with the
  * $obj->getContent(contype [, number]) method.
@@ -217,7 +212,8 @@ class cApiArticleLanguageCollection extends ItemCollection {
  *
  * $headline = $obj->getContent("htmlhead", 1);
  *
- * If the second parameter is ommitted the method returns an array with all available
+ * If the second parameter is ommitted the method returns an array with all
+ * available
  * content of this type. The array has the following schema:
  *
  * array( number => content );
@@ -228,44 +224,49 @@ class cApiArticleLanguageCollection extends ItemCollection {
  * $headlines[2] Second headline
  * $headlines[6] Sixth headline
  *
- * Legal content type string are defined in the CONTENIDO system table 'con_type'.
+ * Legal content type string are defined in the CONTENIDO system table
+ * 'con_type'.
  * Default content types are:
  *
- * NOTE: This parameter is case insesitive, you can use html or cms_HTML or CmS_HtMl.
+ * NOTE: This parameter is case insesitive, you can use html or cms_HTML or
+ * CmS_HtMl.
  * Your don't need start with cms, but it won't crash if you do so.
  *
- * htmlhead     - HTML Headline
- * html         - HTML Text
- * headline     - Headline (no HTML)
- * text         - Text (no HTML)
- * img          - Upload id of the element
- * imgdescr     - Image description
- * link         - Link (URL)
- * linktarget   - Linktarget (_self, _blank, _top ...)
- * linkdescr    - Linkdescription
- * swf          - Upload id of the element
+ * htmlhead - HTML Headline
+ * html - HTML Text
+ * headline - Headline (no HTML)
+ * text - Text (no HTML)
+ * img - Upload id of the element
+ * imgdescr - Image description
+ * link - Link (URL)
+ * linktarget - Linktarget (_self, _blank, _top ...)
+ * linkdescr - Linkdescription
+ * swf - Upload id of the element
  *
- * @package    CONTENIDO API
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiArticleLanguage extends Item {
 
     /**
      * Config array
+     *
      * @var array
      */
     public $tab;
 
     /**
      * Article content
+     *
      * @var array
      */
     public $content = null;
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
-     * @param  bool  $fetchContent  Flag to fetch content
+     *
+     * @param mixed $mId Specifies the ID of item to load
+     * @param bool $fetchContent Flag to fetch content
      */
     public function __construct($mId = false, $fetchContent = false) {
         global $cfg;
@@ -279,7 +280,11 @@ class cApiArticleLanguage extends Item {
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiArticleLanguage($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
@@ -288,15 +293,18 @@ class cApiArticleLanguage extends Item {
     /**
      * Load data by article and language id
      *
-     * @param  int  $idart   Article id
-     * @param  int  $idlang  Language id
-     * @param  bool  $fetchContent  Flag to fetch content
-     * @return  bool  true on success, otherwhise false
+     * @param int $idart Article id
+     * @param int $idlang Language id
+     * @param bool $fetchContent Flag to fetch content
+     * @return bool true on success, otherwhise false
      */
     public function loadByArticleAndLanguageId($idart, $idlang, $fetchContent = false) {
         $result = true;
         if ($this->virgin == true) {
-            $aProps = array('idart' => $idart, 'idlang' => $idlang);
+            $aProps = array(
+                'idart' => $idart,
+                'idlang' => $idlang
+            );
             $aRecordSet = $this->_oCache->getItemByProperties($aProps);
             if ($aRecordSet) {
                 // entry in cache found, load entry from cache
@@ -356,9 +364,7 @@ class cApiArticleLanguage extends Item {
             return;
         }
 
-        $sql = 'SELECT b.type, a.typeid, a.value FROM `%s` AS a, `%s` AS b '
-                . 'WHERE a.idartlang = %d AND b.idtype = a.idtype '
-                . 'ORDER BY a.idtype, a.typeid';
+        $sql = 'SELECT b.type, a.typeid, a.value FROM `%s` AS a, `%s` AS b ' . 'WHERE a.idartlang = %d AND b.idtype = a.idtype ' . 'ORDER BY a.idtype, a.typeid';
 
         $this->db->query($sql, $cfg['tab']['content'], $cfg['tab']['type'], $this->get('idartlang'));
 
@@ -373,37 +379,37 @@ class cApiArticleLanguage extends Item {
      *
      * List of article properties:
      *
-     * idartlang         - Language dependant article id
-     * idart             - Language indepenant article id
-     * idclient          - Id of the client
-     * idtplcfg          - Template configuration id
-     * title             - Internal Title
-     * pagetitle         - HTML Title
-     * summary           - Article summary
-     * created           - Date created
-     * lastmodified      - Date lastmodiefied
-     * author            - Article author (username)
-     * online            - On-/offline
-     * redirect          - Redirect
-     * redirect_url      - Redirect URL
-     * artsort           - Article sort key
-     * timemgmt          - Time management
-     * datestart         - Time management start date
-     * dateend           - Time management end date
-     * status            - Article status
-     * free_use_01       - Free to use
-     * free_use_02       - Free to use
-     * free_use_03       - Free to use
-     * time_move_cat     - Move category after time management
-     * time_target_cat   - Move category to this cat after time management
-     * time_online_move  - Set article online after move
+     * idartlang - Language dependant article id
+     * idart - Language indepenant article id
+     * idclient - Id of the client
+     * idtplcfg - Template configuration id
+     * title - Internal Title
+     * pagetitle - HTML Title
+     * summary - Article summary
+     * created - Date created
+     * lastmodified - Date lastmodiefied
+     * author - Article author (username)
+     * online - On-/offline
+     * redirect - Redirect
+     * redirect_url - Redirect URL
+     * artsort - Article sort key
+     * timemgmt - Time management
+     * datestart - Time management start date
+     * dateend - Time management end date
+     * status - Article status
+     * free_use_01 - Free to use
+     * free_use_02 - Free to use
+     * free_use_03 - Free to use
+     * time_move_cat - Move category after time management
+     * time_target_cat - Move category to this cat after time management
+     * time_online_move - Set article online after move
      * external_redirect - Open article in new window
-     * locked            - Article is locked for editing
-     * searchable        - Whether article should be found via search
-     * sitemapprio       - The priority for the sitemap
+     * locked - Article is locked for editing
+     * searchable - Whether article should be found via search
+     * sitemapprio - The priority for the sitemap
      *
-     * @param   string  $name
-     * @return  string  Value of property
+     * @param string $name
+     * @return string Value of property
      */
     public function getField($name) {
         return $this->values[$name];
@@ -411,9 +417,10 @@ class cApiArticleLanguage extends Item {
 
     /**
      * Userdefined setter for article language fields.
-     * @param  string  $name
-     * @param  mixed   $value
-     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -426,7 +433,7 @@ class cApiArticleLanguage extends Item {
             case 'redirect':
             case 'external_redirect':
             case 'locked':
-                $value = ($value == 1) ? 1 : 0;
+                $value = ($value == 1)? 1 : 0;
                 break;
             case 'idart':
             case 'idlang':
@@ -438,7 +445,7 @@ class cApiArticleLanguage extends Item {
                 $value = (int) $value;
                 break;
             case 'redirect_url':
-                $value = ($value == 'http://' || $value == '') ? '0' : $value;
+                $value = ($value == 'http://' || $value == '')? '0' : $value;
                 break;
         }
 
@@ -455,29 +462,30 @@ class cApiArticleLanguage extends Item {
      * Returns the specified content element or an array("id"=>"value") if the
      * second parameter is omitted.
      *
-     * Legal content type string are defined in the CONTENIDO system table 'con_type'.
+     * Legal content type string are defined in the CONTENIDO system table
+     * 'con_type'.
      * Default content types are:
      *
-     * NOTE: Parameter is case insesitive, you can use html or cms_HTML or CmS_HtMl.
+     * NOTE: Parameter is case insesitive, you can use html or cms_HTML or
+     * CmS_HtMl.
      * Your don't need start with cms, but it won't crash if you do so.
      *
-     * htmlhead     - HTML Headline
-     * html         - HTML Text
-     * headline     - Headline (no HTML)
-     * text         - Text (no HTML)
-     * img          - Upload id of the element
-     * imgdescr     - Image description
-     * link         - Link (URL)
-     * linktarget   - Linktarget (_self, _blank, _top ...)
-     * linkdescr    - Linkdescription
-     * swf          - Upload id of the element
+     * htmlhead - HTML Headline
+     * html - HTML Text
+     * headline - Headline (no HTML)
+     * text - Text (no HTML)
+     * img - Upload id of the element
+     * imgdescr - Image description
+     * link - Link (URL)
+     * linktarget - Linktarget (_self, _blank, _top ...)
+     * linkdescr - Linkdescription
+     * swf - Upload id of the element
      *
-     * @param   string  $type  CMS_TYPE - Legal cms type string
-     * @param   int|null     $id    Id of the content
-     * @return  string|array  Content data
+     * @param string $type CMS_TYPE - Legal cms type string
+     * @param int|null $id Id of the content
+     * @return string array data
      */
     public function getContent($type, $id = null) {
-
         if (null === $this->content) {
             $this->_getArticleContent();
         }
@@ -502,7 +510,7 @@ class cApiArticleLanguage extends Item {
         }
 
         // return String
-        return (isset($this->content[$type][$id])) ? $this->content[$type][$id] : '';
+        return (isset($this->content[$type][$id]))? $this->content[$type][$id] : '';
     }
 
     /**
@@ -520,7 +528,8 @@ class cApiArticleLanguage extends Item {
 
     /**
      * Returns the link to the current object.
-     * @return    string    link
+     *
+     * @return string link
      */
     public function getLink() {
         if ($this->isLoaded() === false) {
@@ -533,6 +542,5 @@ class cApiArticleLanguage extends Item {
 
         return cUri::getInstance()->build($options);
     }
-}
 
-?>
+}

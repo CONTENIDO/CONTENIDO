@@ -7,25 +7,16 @@
  * Code is taken over from file contenido/classes/class.upload.php in favor of
  * normalizing API.
  *
- * Requirements:
- * @con_php_req 5.0
+ * @package CONTENIDO API
+ * @version 0.1.1
+ * @author Timo A. Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  *
- *
- * @package    CONTENIDO API
- * @version    0.1.1
- * @author     Timo A. Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * @todo  Reset in/out filters of parent classes.
- *
- * {@internal
- *   created  2011-10-11
- *   $Id$:
- * }}
+ * @todo Reset in/out filters of parent classes.
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -34,27 +25,32 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Upload collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiUploadCollection extends ItemCollection {
 
     /**
      * Constructor Function
+     *
      * @global array $cfg
      */
     public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['upl'], 'idupl');
         $this->_setItemClass('cApiUpload');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiClientCollection');
     }
 
     /**
      * Syncronizes upload directory and file with database.
+     *
      * @global int $client
      * @param string $sDirname
-     * @param string $sFilename
-     * return cApiUpload
+     * @param string $sFilename return cApiUpload
      */
     public function sync($sDirname, $sFilename) {
         global $client;
@@ -62,14 +58,16 @@ class cApiUploadCollection extends ItemCollection {
         $sDirname = $this->escape($sDirname);
         $sFilename = $this->escape($sFilename);
         if (strstr(strtolower($_ENV['OS']), 'windows') === false) {
-            // Unix style OS distinguish between lower and uppercase file names, i.e. test.gif is not the same as Test.gif
+            // Unix style OS distinguish between lower and uppercase file names,
+            // i.e. test.gif is not the same as Test.gif
             $this->select("dirname = BINARY '$sDirname' AND filename = BINARY '$sFilename' AND idclient = " . (int) $client);
         } else {
-            // Windows OS doesn't distinguish between lower and uppercase file names, i.e. test.gif is the same as Test.gif in file system
+            // Windows OS doesn't distinguish between lower and uppercase file
+            // names, i.e. test.gif is the same as Test.gif in file system
             $this->select("dirname = '$sDirname' AND filename = '$sFilename' AND idclient = " . (int) $client);
         }
 
-        if ($oItem = $this->next()) {
+        if (($oItem = $this->next()) !== false) {
             $oItem->update();
         } else {
             $sFiletype = (string) uplGetFileExtension($sFilename);
@@ -82,6 +80,7 @@ class cApiUploadCollection extends ItemCollection {
 
     /**
      * Creates a upload entry.
+     *
      * @global int $client
      * @global array $cfg
      * @global object $auth
@@ -103,7 +102,7 @@ class cApiUploadCollection extends ItemCollection {
         $oItem->set('filetype', $sFiletype, false);
         $oItem->set('size', $iFileSize, false);
         $oItem->set('dirname', $sDirname, false);
-        //$oItem->set('description', $sDescription, false);
+        // $oItem->set('description', $sDescription, false);
         $oItem->set('status', $iStatus, false);
         $oItem->set('author', $auth->auth['uid']);
         $oItem->set('created', date('Y-m-d H:i:s'), false);
@@ -114,12 +113,13 @@ class cApiUploadCollection extends ItemCollection {
 
     /**
      * Deletes upload file and it's properties
+     *
      * @global cApiCecRegistry $_cecRegistry
      * @global array $cfgClient
      * @global int $client
      * @param int $id
-     * @return bool
-     * FIXME  Code is similar/redundant to include.upl_files_overview.php 216-230
+     * @return bool FIXME Code is similar/redundant to
+     *         include.upl_files_overview.php 216-230
      */
     public function delete($id) {
         global $_cecRegistry, $cfgClient, $client;
@@ -132,7 +132,7 @@ class cApiUploadCollection extends ItemCollection {
         // call chain
         $_cecIterator = $_cecRegistry->getIterator('Contenido.Upl_edit.Delete');
         if ($_cecIterator->count() > 0) {
-            while ($chainEntry = $_cecIterator->next()) {
+            while (($chainEntry = $_cecIterator->next()) !== false) {
                 $chainEntry->execute($oUpload->get('idupl'), $oUpload->get('dirname'), $oUpload->get('filename'));
             }
         }
@@ -146,7 +146,8 @@ class cApiUploadCollection extends ItemCollection {
         }
 
         // delete properties
-        // note: parents delete methos does normally this job, but the properties
+        // note: parents delete methos does normally this job, but the
+        // properties
         // are stored by using dirname + filename instead of idupl
         $oUpload->deletePropertiesByItemid($sDirFileName);
 
@@ -158,7 +159,10 @@ class cApiUploadCollection extends ItemCollection {
 
     /**
      *
+     *
+     *
      * Deletes meta-data from con_upl_meta table if file is deleting
+     *
      * @param int $idupl
      * @return bool
      */
@@ -170,6 +174,7 @@ class cApiUploadCollection extends ItemCollection {
 
     /**
      * Deletes upload directory by its dirname.
+     *
      * @global int $client
      * @param string $sDirname
      */
@@ -177,7 +182,7 @@ class cApiUploadCollection extends ItemCollection {
         global $client;
 
         $this->select("dirname = '" . $this->escape($sDirname) . "' AND idclient = " . (int) $client);
-        while ($oUpload = $this->next()) {
+        while (($oUpload = $this->next()) !== false) {
             $this->delete($oUpload->get('idupl'));
         }
     }
@@ -186,20 +191,23 @@ class cApiUploadCollection extends ItemCollection {
 
 /**
  * Upload item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiUpload extends Item {
 
     /**
      * Property collection instance
+     *
      * @var cApiPropertyCollection
      */
     protected $_oPropertyCollection;
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -237,6 +245,7 @@ class cApiUpload extends Item {
 
     /**
      * Stores made changes
+     *
      * @global object $auth
      * @global cApiCecRegistry $_cecRegistry
      * @return bool
@@ -250,7 +259,7 @@ class cApiUpload extends Item {
         // Call chain
         $_cecIterator = $_cecRegistry->getIterator('Contenido.Upl_edit.SaveRows');
         if ($_cecIterator->count() > 0) {
-            while ($chainEntry = $_cecIterator->next()) {
+            while (($chainEntry = $_cecIterator->next()) !== false) {
                 $chainEntry->execute($this->get('idupl'), $this->get('dirname'), $this->get('filename'));
             }
         }
@@ -260,6 +269,7 @@ class cApiUpload extends Item {
 
     /**
      * Deletes all upload properties by it's itemid
+     *
      * @param string $sItemid
      */
     public function deletePropertiesByItemid($sItemid) {
@@ -278,9 +288,7 @@ class cApiUpload extends Item {
         global $client, $cfgClient;
 
         $bIsDbfs = cApiDbfs::isDbfs($sDirname);
-        if ($bIsDbfs) {
-            $sDirname = $sDirname;
-        } else {
+        if (!$bIsDbfs) {
             $sDirname = $cfgClient[$client]['upl']['path'] . $sDirname;
         }
 
@@ -299,6 +307,7 @@ class cApiUpload extends Item {
 
     /**
      * Lazy instantiation and return of properties object
+     *
      * @global int $client
      * @return cApiPropertyCollection
      */
@@ -315,16 +324,17 @@ class cApiUpload extends Item {
 
 }
 
-################################################################################
-# Old versions of upload item collection and upload item classes
-#
-# NOTE: Class implemetations below are deprecated and the will be removed in
-#       future versions of contenido.
-#       Don't use them, they are still available due to downwards compatibility.
+// ##############################################################################
+// Old versions of upload item collection and upload item classes
+//
+// NOTE: Class implemetations below are deprecated and the will be removed in
+// future versions of contenido.
+// Don't use them, they are still available due to downwards compatibility.
 
 /**
  * Upload collection
- * @deprecated  [2011-10-11] Use cApiUploadCollection instead of this class.
+ *
+ * @deprecated [2011-10-11] Use cApiUploadCollection instead of this class.
  */
 class UploadCollection extends cApiUploadCollection {
 
@@ -342,7 +352,8 @@ class UploadCollection extends cApiUploadCollection {
 
 /**
  * Single upload item
- * @deprecated  [2011-10-11] Use cApiUpload instead of this class.
+ *
+ * @deprecated [2011-10-11] Use cApiUpload instead of this class.
  */
 class UploadItem extends cApiUpload {
 
@@ -357,5 +368,3 @@ class UploadItem extends cApiUpload {
     }
 
 }
-
-?>

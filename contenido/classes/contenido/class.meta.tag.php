@@ -6,13 +6,13 @@
  * Description:
  * Metatag management class
  *
- * @package    CONTENIDO API
- * @version    0.1
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @package CONTENIDO API
+ * @version 0.1
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -21,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Metatag collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiMetaTagCollection extends ItemCollection {
@@ -33,10 +34,15 @@ class cApiMetaTagCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['meta_tag'], 'idmetatag');
         $this->_setItemClass('cApiMetaTag');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiArticleLanguageCollection');
+        $this->_setJoinPartner('cApiMetaTypeCollection');
     }
 
     /**
      * Creates a meta tag entry.
+     *
      * @param int $iIdArtLang
      * @param int $iIdMetaType
      * @param string $sMetaValue
@@ -55,9 +61,10 @@ class cApiMetaTagCollection extends ItemCollection {
 
     /**
      * Returns a meta tag entry by article language and meta type.
+     *
      * @param int $iIdArtLang
      * @param int $iIdMetaType
-     * @return cApiMetaTag|null
+     * @return cApiMetaTag null
      */
     public function fetchByArtLangAndMetaType($iIdArtLang, $iIdMetaType) {
         $this->select('idartlang=' . (int) $iIdArtLang . ' AND idmetatype=' . (int) $iIdMetaType);
@@ -68,14 +75,16 @@ class cApiMetaTagCollection extends ItemCollection {
 
 /**
  * Metatag item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiMetaTag extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -88,8 +97,9 @@ class cApiMetaTag extends Item {
 
     /**
      * Updates meta value of an entry.
-     * @param   string  $sMetaValue
-     * @return  bool
+     *
+     * @param string $sMetaValue
+     * @return bool
      */
     public function updateMetaValue($sMetaValue) {
         $this->set('metavalue', $this->escape($sMetaValue), false);

@@ -6,22 +6,13 @@
  * Description:
  * Category management class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    1.7
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2005-08-30
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 1.7
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -30,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Category collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiCategoryCollection extends ItemCollection {
@@ -38,18 +30,26 @@ class cApiCategoryCollection extends ItemCollection {
     /**
      * Constructor function.
      *
-     * @param  string  $select  Select statement (see ItemCollection::select())
+     * @param string $select Select statement (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
         parent::__construct($cfg['tab']['cat'], 'idcat');
         $this->_setItemClass('cApiCategory');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiClientCollection');
+
         if ($select !== false) {
             $this->select($select);
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiCategoryCollection($select = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($select);
@@ -58,14 +58,14 @@ class cApiCategoryCollection extends ItemCollection {
     /**
      * Creates a category entry.
      *
-     * @param  int  $idclient
-     * @param  int  $parentid
-     * @param  int  $preid
-     * @param  int  $postid
-     * @param  int  $status
-     * @param  string  $author
-     * @param  string  $created
-     * @param  string  $lastmodified
+     * @param int $idclient
+     * @param int $parentid
+     * @param int $preid
+     * @param int $postid
+     * @param int $status
+     * @param string $author
+     * @param string $created
+     * @param string $lastmodified
      * @return cApiCategory
      */
     public function create($idclient, $parentid = 0, $preid = 0, $postid = 0, $status = 0, $author = '', $created = '', $lastmodified = '') {
@@ -97,11 +97,12 @@ class cApiCategoryCollection extends ItemCollection {
     }
 
     /**
-     * Returns the last category tree entry from the category table for a specific client.
+     * Returns the last category tree entry from the category table for a
+     * specific client.
      * Last entry has no parentid and no postid.
      *
-     * @param  int  $idclient
-     * @return  cApiCategory|null
+     * @param int $idclient
+     * @return cApiCategory null
      */
     public function fetchLastCategoryTree($idclient) {
         $where = 'parentid=0 AND postid=0 AND idclient=' . (int) $idclient;
@@ -111,8 +112,9 @@ class cApiCategoryCollection extends ItemCollection {
 
     /**
      * Returns list of categories (category ids) by passed client.
-     * @param  int  $idclient
-     * @return  array
+     *
+     * @param int $idclient
+     * @return array
      */
     public function getCategoryIdsByClient($idclient) {
         $list = array();
@@ -131,13 +133,13 @@ class cApiCategoryCollection extends ItemCollection {
      * <pre>
      * ...
      * parent_category
-     *     this_category
-     *     post_category (*)
+     * this_category
+     * post_category (*)
      * ...
      * (*) Returned category id
      * </pre>
      *
-     * @param  int  $idcat
+     * @param int $idcat
      * @return int
      */
     public function getNextPostCategoryId($idcat) {
@@ -151,7 +153,7 @@ class cApiCategoryCollection extends ItemCollection {
             if ($this->db->next_record()) {
                 // Parent from post can't be 0
                 $parentid = (int) $this->db->f('parentid');
-                return ($parentid != 0) ? $idcat : 0;
+                return ($parentid != 0)? $idcat : 0;
             } else {
                 return 99;
             }
@@ -162,23 +164,24 @@ class cApiCategoryCollection extends ItemCollection {
     }
 
     /**
-     * Returns the id of category which is located after passed category ids parent category.
+     * Returns the id of category which is located after passed category ids
+     * parent category.
      *
      * Example:
      * <pre>
      * ...
      * root_category
-     *     parent_category
-     *         previous_cateory
-     *         this_category
-     *         post_category
-     *     parents_post_category (*)
+     * parent_category
+     * previous_cateory
+     * this_category
+     * post_category
+     * parents_post_category (*)
      * ...
      * (*) Returned category id
      * </pre>
      *
-     * @param   int  $idcat  Category id
-     * @return  int
+     * @param int $idcat Category id
+     * @return int
      */
     public function getParentsNextPostCategoryId($idcat) {
         $sql = "SELECT parentid FROM `%s` WHERE idcat = %d";
@@ -197,7 +200,7 @@ class cApiCategoryCollection extends ItemCollection {
                     if ($this->db->next_record()) {
                         // Parent from post must not be 0
                         $parentid = (int) $this->db->f('parentid');
-                        return ($parentid != 0) ? $idcat : 0;
+                        return ($parentid != 0)? $idcat : 0;
                     } else {
                         return 99;
                     }
@@ -222,16 +225,17 @@ class cApiCategoryCollection extends ItemCollection {
      * <pre>
      * ...
      * this_category
-     *     child_category (*)
-     *     child_category2
-     *     child_category3
+     * child_category (*)
+     * child_category2
+     * child_category3
      * ...
      * (*) Returned category id
      * </pre>
      *
-     * @global  array  $cfg
-     * @param  int  $idcat
-     * @param  int|null  $idlang  If defined, it checks also if there is a next deeper category in this language.
+     * @global array $cfg
+     * @param int $idcat
+     * @param int|null $idlang If defined, it checks also if there is a next
+     *        deeper category in this language.
      * @return int
      */
     public function getFirstChildCategoryId($idcat, $idlang = null) {
@@ -250,7 +254,7 @@ class cApiCategoryCollection extends ItemCollection {
             $sql = "SELECT idcatlang FROM `%s` WHERE idcat = %d AND idlang = %d";
             $sql = $this->db->prepare($sql, $cfg['tab']['cat_lang'], $idcat, $idlang);
             $this->db->query($sql);
-            return ($this->db->next_record()) ? $midcat : 0;
+            return ($this->db->next_record())? $midcat : 0;
         } else {
             // Deeper element does not exist
             return 0;
@@ -258,23 +262,24 @@ class cApiCategoryCollection extends ItemCollection {
     }
 
     /**
-     * Returns list of all child category ids, only them on next deeper level (not recursive!)
+     * Returns list of all child category ids, only them on next deeper level
+     * (not recursive!)
      * The returned array contains already the order of the categories.
      * Example:
      * <pre>
      * ...
      * this_category
-     *     child_category (*)
-     *     child_category2 (*)
-     *         child_of_child_category2
-     *     child_category3 (*)
+     * child_category (*)
+     * child_category2 (*)
+     * child_of_child_category2
+     * child_category3 (*)
      * ...
      * (*) Returned category ids
      * </pre>
      *
-     * @global  array  $cfg
-     * @param  int  $idcat
-     * @param  int|null  $idlang
+     * @global array $cfg
+     * @param int $idcat
+     * @param int|null $idlang
      * @return array
      */
     public function getAllChildCategoryIds($idcat, $idlang = null) {
@@ -313,30 +318,32 @@ class cApiCategoryCollection extends ItemCollection {
 
     /**
      * Returns list of all child category ids and their child category ids of
-     * passed category id. The list also contains the id of passed category.
+     * passed category id.
+     * The list also contains the id of passed category.
      *
      * The return value of this function could be used to perform bulk actions
      * on a specific category an all of its childcategories.
      *
      * NOTE: The returned array is not sorted!
-     *       Return value is similar to getAllCategoryIdsRecursive2, only the sorting differs
+     * Return value is similar to getAllCategoryIdsRecursive2, only the sorting
+     * differs
      *
      * Example:
      * <pre>
      * ...
      * this_category (*)
-     *     child_category (*)
-     *     child_category2 (*)
-     *         child_of_child_category2 (*)
-     *     child_category3 (*)
-     *         child_of_child_category3 (*)
+     * child_category (*)
+     * child_category2 (*)
+     * child_of_child_category2 (*)
+     * child_category3 (*)
+     * child_of_child_category3 (*)
      * ...
      * (*) Returned category ids
      * </pre>
      *
-     * @global  array  $cfg
-     * @param  int  $idcat
-     * @param  int  $idclient
+     * @global array $cfg
+     * @param int $idcat
+     * @param int $idclient
      * @return array
      */
     public function getAllCategoryIdsRecursive($idcat, $idclient) {
@@ -359,8 +366,8 @@ class cApiCategoryCollection extends ItemCollection {
                 'cat_tree' => $cfg['tab']['cat_tree'],
                 'cat' => $this->table,
                 'parentid' => (int) $actId,
-                'idclient' => (int) $idclient,
-                    ));
+                'idclient' => (int) $idclient
+            ));
             $this->db->query($sql);
 
             while ($this->db->next_record()) {
@@ -373,30 +380,32 @@ class cApiCategoryCollection extends ItemCollection {
 
     /**
      * Returns list of all child category ids and their child category ids of
-     * passed category id. The list also contains the id of passed category.
+     * passed category id.
+     * The list also contains the id of passed category.
      *
      * The return value of this function could be used to perform bulk actions
      * on a specific category an all of its childcategories.
      *
-     * NOTE: Return value is similar to getAllCategoryIdsRecursive, only the sorting differs
+     * NOTE: Return value is similar to getAllCategoryIdsRecursive, only the
+     * sorting differs
      *
      * Example:
      * <pre>
      * ...
      * this_category (*)
-     *     child_category (*)
-     *     child_category2 (*)
-     *         child_of_child_category2 (*)
-     *     child_category3 (*)
-     *         child_of_child_category3 (*)
+     * child_category (*)
+     * child_category2 (*)
+     * child_of_child_category2 (*)
+     * child_category3 (*)
+     * child_of_child_category3 (*)
      * ...
      * (*) Returned category ids
      * </pre>
      *
-     * @global  array  $cfg
-     * @param  int  $idcat
-     * @param  int  $client
-     * @return array  Sorted by category id
+     * @global array $cfg
+     * @param int $idcat
+     * @param int $client
+     * @return array Sorted by category id
      */
     public function getAllCategoryIdsRecursive2($idcat, $idclient) {
         global $cfg;
@@ -410,7 +419,8 @@ class cApiCategoryCollection extends ItemCollection {
         $this->db->query($sql);
 
         while ($this->db->next_record()) {
-            if ($found && $this->db->f('level') <= $curLevel) { // ending part of tree
+            if ($found && $this->db->f('level') <= $curLevel) { // ending part
+                                                                // of tree
                 $found = false;
             }
 
@@ -431,14 +441,16 @@ class cApiCategoryCollection extends ItemCollection {
 
 /**
  * Category item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiCategory extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -450,7 +462,11 @@ class cApiCategory extends Item {
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiCategory($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
@@ -459,7 +475,7 @@ class cApiCategory extends Item {
     /**
      * Updates lastmodified field and calls parents store method
      *
-     * @return  bool
+     * @return bool
      */
     public function store() {
         $this->set('lastmodified', date('Y-m-d H:i:s'));
@@ -468,9 +484,10 @@ class cApiCategory extends Item {
 
     /**
      * Userdefined setter for category fields.
-     * @param  string  $name
-     * @param  mixed   $value
-     * @param  bool    $safe   Flag to run defined inFilter on passed value
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $safe Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $safe = true) {
         switch ($name) {
@@ -493,7 +510,8 @@ class cApiCategory extends Item {
 
     /**
      * Returns the link to the current object.
-     * @return    string    link
+     *
+     * @return string link
      */
     public function getLink() {
         if ($this->isLoaded() === false) {
@@ -509,16 +527,17 @@ class cApiCategory extends Item {
 
 }
 
-################################################################################
-# Old versions of category item collection and category item classes
-#
-# NOTE: Class implemetations below are deprecated and the will be removed in
-#       future versions of contenido.
-#       Don't use them, they are still available due to downwards compatibility.
+// ##############################################################################
+// Old versions of category item collection and category item classes
+//
+// NOTE: Class implemetations below are deprecated and the will be removed in
+// future versions of contenido.
+// Don't use them, they are still available due to downwards compatibility.
 
 /**
  * Category collection
- * @deprecated  [2011-11-15] Use cApiCategoryCollection instead of this class.
+ *
+ * @deprecated [2011-11-15] Use cApiCategoryCollection instead of this class.
  */
 class CategoryCollection extends cApiCategoryCollection {
 
@@ -536,7 +555,8 @@ class CategoryCollection extends cApiCategoryCollection {
 
 /**
  * Single category item
- * @deprecated  [2011-11-15] Use cApiCategory instead of this class.
+ *
+ * @deprecated [2011-11-15] Use cApiCategory instead of this class.
  */
 class CategoryItem extends cApiCategory {
 
@@ -555,7 +575,7 @@ class CategoryItem extends cApiCategory {
             // Load all child language items
             $catlangs = new cApiCategoryLanguageCollection();
             $catlangs->select("idcat = " . (int) $key);
-            while ($item = $catlangs->next()) {
+            while (($item = $catlangs->next()) !== false) {
                 $this->lang[$item->get("idlang")] = $item;
             }
             return true;
@@ -564,5 +584,3 @@ class CategoryItem extends cApiCategory {
     }
 
 }
-
-?>

@@ -16,26 +16,24 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * File collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
-class cApiNavMainCollection extends ItemCollection
-{
+class cApiNavMainCollection extends ItemCollection {
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['nav_main'], 'idnavm');
         $this->_setItemClass('cApiNavMain');
     }
 
-    public function create($location)
-    {
+    public function create($location) {
         $item = parent::createNewItem();
 
         $location = cSecurity::escapeString($location);
@@ -45,29 +43,33 @@ class cApiNavMainCollection extends ItemCollection
 
         return ($item);
     }
-}
 
+}
 
 /**
  * NavMain item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
-class cApiNavMain extends Item
-{
+class cApiNavMain extends Item {
+
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['nav_main'], 'idnavm');
-        $this->setFilters(array('addslashes'), array('stripslashes'));
+        $this->setFilters(array(
+            'addslashes'
+        ), array(
+            'stripslashes'
+        ));
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
 }
-?>

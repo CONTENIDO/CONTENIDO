@@ -6,23 +6,14 @@
  * Description:
  * Action log management class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    0.1
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2012-01-24
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 0.1
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release 4.9.0
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -31,7 +22,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Actionlog collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiActionlogCollection extends ItemCollection {
@@ -43,17 +35,24 @@ class cApiActionlogCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['actionlog'], 'idlog');
         $this->_setItemClass('cApiActionlog');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiUserCollection');
+        $this->_setJoinPartner('cApiClientCollection');
+        $this->_setJoinPartner('cApiLanguageCollection');
+        $this->_setJoinPartner('cApiActionCollection');
+        $this->_setJoinPartner('cApiCategoryArticleCollection');
     }
 
     /**
      * Creates a actionlog item entry
      *
-     * @param  string  $userId  User id
-     * @param  int  $idclient
-     * @param  int  $idlang
-     * @param  int  $idaction
-     * @param  int  $idcatart
-     * @param  string  $logtimestamp
+     * @param string $userId User id
+     * @param int $idclient
+     * @param int $idlang
+     * @param int $idaction
+     * @param int $idcatart
+     * @param string $logtimestamp
      * @return cApiActionlog
      */
     public function create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp = '') {
@@ -79,14 +78,16 @@ class cApiActionlogCollection extends ItemCollection {
 
 /**
  * Actionlog item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiActionlog extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -98,5 +99,3 @@ class cApiActionlog extends Item {
     }
 
 }
-
-?>

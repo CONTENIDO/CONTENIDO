@@ -16,26 +16,28 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * File collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
-class cApiNavSubCollection extends ItemCollection
-{
+class cApiNavSubCollection extends ItemCollection {
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['nav_sub'], 'idnavs');
         $this->_setItemClass('cApiNavSub');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiNavMainCollection');
+        $this->_setJoinPartner('cApiAreaCollection');
     }
 
-    public function create($navm, $area, $level, $location, $online = '1')
-    {
+    public function create($navm, $area, $level, $location, $online = '1') {
         $item = parent::createNewItem();
 
         if (is_string($area)) {
@@ -65,29 +67,33 @@ class cApiNavSubCollection extends ItemCollection
 
         return ($item);
     }
-}
 
+}
 
 /**
  * NavMain item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
-class cApiNavSub extends Item
-{
+class cApiNavSub extends Item {
+
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['nav_sub'], 'idnavs');
-        $this->setFilters(array('addslashes'), array('stripslashes'));
+        $this->setFilters(array(
+            'addslashes'
+        ), array(
+            'stripslashes'
+        ));
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
 }
-?>

@@ -6,23 +6,14 @@
  * Description:
  * Language management class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    1.5.1
- * @author     Bjoern Behrens
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @todo       merge logic with contenido/classes/class.lang.php
- *
- * {@internal
- *   created  2007-05-25
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 1.5.1
+ * @author Bjoern Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @todo merge logic with contenido/classes/class.lang.php
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -31,7 +22,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Language collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiLanguageCollection extends ItemCollection {
@@ -43,10 +35,13 @@ class cApiLanguageCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['lang'], 'idlang');
         $this->_setItemClass('cApiLanguage');
-        $this->_setJoinPartner('cApiClientLanguageCollection');
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiLanguageCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
@@ -80,14 +75,15 @@ class cApiLanguageCollection extends ItemCollection {
     }
 
     /**
-     * Returns next accessible language for current client and current logged in user.
+     * Returns next accessible language for current client and current logged in
+     * user.
      *
      * @global object $perm
      * @global array $cfg
      * @global int $client
      * @global int $lang
      *
-     * @return  cApiLanguage|null
+     * @return cApiLanguage null
      */
     public function nextAccessible() {
         global $perm, $cfg, $client, $lang;
@@ -106,9 +102,7 @@ class cApiLanguageCollection extends ItemCollection {
         }
 
         if ($item) {
-            if ($perm->have_perm_client('lang[' . $item->get('idlang') . ']') ||
-                    $perm->have_perm_client('admin[' . $client . ']') ||
-                    $perm->have_perm_client()) {
+            if ($perm->have_perm_client('lang[' . $item->get('idlang') . ']') || $perm->have_perm_client('admin[' . $client . ']') || $perm->have_perm_client()) {
                 // Do nothing for now
             } else {
                 $item = $this->nextAccessible();
@@ -139,14 +133,16 @@ class cApiLanguageCollection extends ItemCollection {
 
 /**
  * Language item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiLanguage extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -156,7 +152,11 @@ class cApiLanguage extends Item {
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiLanguage($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
@@ -174,16 +174,17 @@ class cApiLanguage extends Item {
 
 }
 
-################################################################################
-# Old versions of language item collection and language item classes
-#
-# NOTE: Class implemetations below are deprecated and the will be removed in
-#       future versions of contenido.
-#       Don't use them, they are still available due to downwards compatibility.
+// ##############################################################################
+// Old versions of language item collection and language item classes
+//
+// NOTE: Class implemetations below are deprecated and the will be removed in
+// future versions of contenido.
+// Don't use them, they are still available due to downwards compatibility.
 
 /**
  * Language collection
- * @deprecated  [2011-11-15] Use cApiLanguageCollection instead of this class.
+ *
+ * @deprecated [2011-11-15] Use cApiLanguageCollection instead of this class.
  */
 class Languages extends cApiLanguageCollection {
 
@@ -201,7 +202,8 @@ class Languages extends cApiLanguageCollection {
 
 /**
  * Single language item
- * @deprecated  [2011-11-15] Use cApiLanguage instead of this class.
+ *
+ * @deprecated [2011-11-15] Use cApiLanguage instead of this class.
  */
 class Language extends cApiLanguage {
 
@@ -216,5 +218,3 @@ class Language extends cApiLanguage {
     }
 
 }
-
-?>

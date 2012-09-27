@@ -6,17 +6,13 @@
  * Description:
  * Content entry class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    1.0
- * @author     Dominik Ziegler
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @package CONTENIDO API
+ * @version 1.0
+ * @author Dominik Ziegler
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -25,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Content collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiContentCollection extends ItemCollection {
@@ -34,18 +31,23 @@ class cApiContentCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['content'], 'idcontent');
         $this->_setItemClass('cApiContent');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiArticleLanguageCollection');
+        $this->_setJoinPartner('cApiTypeCollection');
     }
 
     /**
      * Creates a content entry.
+     *
      * @param int $idArtLang
      * @param int $idType
      * @param int $typeId
      * @param string $value
      * @param int $version
-     * @param  string  $author
-     * @param  string  $created
-     * @param  string  $lastmodified
+     * @param string $author
+     * @param string $created
+     * @param string $lastmodified
      * @return cApiContent
      */
     public function create($idArtLang, $idType, $typeId, $value, $version, $author = '', $created = '', $lastmodified = '') {
@@ -81,14 +83,16 @@ class cApiContentCollection extends ItemCollection {
 
 /**
  * Content item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiContent extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -101,9 +105,10 @@ class cApiContent extends Item {
 
     /**
      * Userdefined setter for item fields.
-     * @param  string  $name
-     * @param  mixed   $value
-     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -124,13 +129,18 @@ class cApiContent extends Item {
 
     /**
      * Loads an content entry by its article language id, idtype and type id.
-     * @param   int  $idartlang
-     * @param   int  $idtype
-     * @param   int  $typeid
-     * @return  bool
+     *
+     * @param int $idartlang
+     * @param int $idtype
+     * @param int $typeid
+     * @return bool
      */
     public function loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid) {
-        $aProps = array('idartlang' => $idartlang, 'idtype' => $idtype, 'typeid' => $typeid);
+        $aProps = array(
+            'idartlang' => $idartlang,
+            'idtype' => $idtype,
+            'typeid' => $typeid
+        );
         $aRecordSet = $this->_oCache->getItemByProperties($aProps);
         if ($aRecordSet) {
             // entry in cache found, load entry from cache
@@ -143,5 +153,3 @@ class cApiContent extends Item {
     }
 
 }
-
-?>

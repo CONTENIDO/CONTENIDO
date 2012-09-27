@@ -6,17 +6,13 @@
  * Description:
  * Client management class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    1.2.1
- * @author     Bjoern Behrens
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @package CONTENIDO API
+ * @version 1.2.1
+ * @author Bjoern Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -25,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Client collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiClientCollection extends ItemCollection {
@@ -37,10 +34,13 @@ class cApiClientCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['clients'], 'idclient');
         $this->_setItemClass('cApiClient');
-        $this->_setJoinPartner('cApiClientLanguageCollection');
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiClientCollection() {
         cDeprecated('Use __construct() instead');
         $this->__construct();
@@ -48,14 +48,15 @@ class cApiClientCollection extends ItemCollection {
 
     /**
      * Creates a new client entry
-     * @global  object  $auth
-     * @param  string  $name
-     * @param  int  $errsite_cat
-     * @param  int  $errsite_art
-     * @param  string  $author
-     * @param  string  $created
-     * @param  string  $lastmodified
-     * @return  cApiClient
+     *
+     * @global object $auth
+     * @param string $name
+     * @param int $errsite_cat
+     * @param int $errsite_art
+     * @param string $author
+     * @param string $created
+     * @param string $lastmodified
+     * @return cApiClient
      */
     public function create($name, $errsite_cat = 0, $errsite_art = 0, $author = '', $created = '', $lastmodified = '') {
         global $auth;
@@ -85,7 +86,7 @@ class cApiClientCollection extends ItemCollection {
     /**
      * Returns all clients available in the system
      *
-     * @return  array   Array with id and name entries
+     * @return array Array with id and name entries
      */
     public function getAvailableClients() {
         $clients = array();
@@ -93,7 +94,9 @@ class cApiClientCollection extends ItemCollection {
         $this->select();
 
         while (($item = $this->next()) !== false) {
-            $clients[$item->get('idclient')] = array('name' => $item->get('name'));
+            $clients[$item->get('idclient')] = array(
+                'name' => $item->get('name')
+            );
         }
 
         return $clients;
@@ -102,17 +105,17 @@ class cApiClientCollection extends ItemCollection {
     /**
      * Returns all clients available in the system
      *
-     * @return  array   Array with id and name entries
+     * @return array Array with id and name entries
      */
     public function getAccessibleClients() {
         global $perm;
         $clients = array();
         $this->select();
         while (($item = $this->next()) !== false) {
-            if ($perm->have_perm_client("client[" . $item->get('idclient') . "]") ||
-                    $perm->have_perm_client("admin[" . $item->get('idclient') . "]") ||
-                    $perm->have_perm_client()) {
-                $clients[$item->get('idclient')] = array('name' => $item->get('name'));
+            if ($perm->have_perm_client("client[" . $item->get('idclient') . "]") || $perm->have_perm_client("admin[" . $item->get('idclient') . "]") || $perm->have_perm_client()) {
+                $clients[$item->get('idclient')] = array(
+                    'name' => $item->get('name')
+                );
             }
         }
         return $clients;
@@ -121,14 +124,13 @@ class cApiClientCollection extends ItemCollection {
     /**
      * Returns first client available in the system
      *
-     * @return  cApiClient|null
+     * @return cApiClient null
      */
     public function getFirstAccessibleClient() {
         global $perm;
         $this->select();
         while (($item = $this->next()) !== false) {
-            if ($perm->have_perm_client("client[" . $item->get('idclient') . "]") ||
-                    $perm->have_perm_client("admin[" . $item->get('idclient') . "]")) {
+            if ($perm->have_perm_client("client[" . $item->get('idclient') . "]") || $perm->have_perm_client("admin[" . $item->get('idclient') . "]")) {
                 return $item;
             }
         }
@@ -138,8 +140,8 @@ class cApiClientCollection extends ItemCollection {
     /**
      * Returns the clientname of the given clientid
      *
-     * @param   int   $idClient
-     * @return  string  Clientname if found, or empty string if not.
+     * @param int $idClient
+     * @return string Clientname if found, or empty string if not.
      */
     public function getClientname($idClient) {
         $this->select("idclient='" . (int) $idClient . "'");
@@ -153,8 +155,8 @@ class cApiClientCollection extends ItemCollection {
     /**
      * Returns if the given client has a language
      *
-     * @param   int   $idClient
-     * @return  bool  true if the client has a language
+     * @param int $idClient
+     * @return bool true if the client has a language
      */
     public function hasLanguageAssigned($idClient) {
         $client = new cApiClient($idClient);
@@ -166,11 +168,12 @@ class cApiClientCollection extends ItemCollection {
 
 /**
  * Class cApiClient, client item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
- * @author     Marco Jahn <Marco.Jahn@4fb.de>
- * @version    1.01
- * @copyright  four for business 2004
+ * @author Marco Jahn <Marco.Jahn@4fb.de>
+ * @version 1.01
+ * @copyright four for business 2004
  */
 class cApiClient extends Item {
 
@@ -178,13 +181,15 @@ class cApiClient extends Item {
 
     /**
      * Property collection instance
+     *
      * @var cApiPropertyCollection
      */
     protected $_oPropertyCollection;
 
     /**
      * Constructor Function
-     * @param  mixed  $id  Specifies the ID of item to load
+     *
+     * @param mixed $id Specifies the ID of item to load
      */
     public function __construct($id = false) {
         global $cfg;
@@ -194,7 +199,11 @@ class cApiClient extends Item {
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiClient($id = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($id);
@@ -203,9 +212,9 @@ class cApiClient extends Item {
     /**
      * Static accessor to the singleton instance.
      *
-     * @todo  There is no need since caching is available at GenericDB level
-     * @param   int  $client
-     * @return  cApiClient  Reference to the singleton instance.
+     * @todo There is no need since caching is available at GenericDB level
+     * @param int $client
+     * @return cApiClient Reference to the singleton instance.
      */
     public static function getInstance($client = false) {
         static $currentInstance = array();
@@ -225,8 +234,8 @@ class cApiClient extends Item {
     /**
      * Load dataset by primary key
      *
-     * @param   int  $idKey
-     * @return  bool
+     * @param int $idKey
+     * @return bool
      */
     public function loadByPrimaryKey($idKey) {
         if (parent::loadByPrimaryKey($idKey) == true) {
@@ -239,10 +248,10 @@ class cApiClient extends Item {
     /**
      * Set client property
      *
-     * @param  mixed  $type   Type of the data to store (arbitary data)
-     * @param  mixed  $name   Entry name
-     * @param  mixed  $value  Value
-     * @param  mixed  $idproperty
+     * @param mixed $type Type of the data to store (arbitary data)
+     * @param mixed $name Entry name
+     * @param mixed $value Value
+     * @param mixed $idproperty
      */
     public function setProperty($type, $name, $value, $idproperty = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
@@ -252,9 +261,9 @@ class cApiClient extends Item {
     /**
      * Get client property
      *
-     * @param   mixed  $type   Type of the data to get
-     * @param   mixed  $name   Entry name
-     * @return  mixed  Value
+     * @param mixed $type Type of the data to get
+     * @param mixed $name Entry name
+     * @return mixed Value
      */
     public function getProperty($type, $name) {
         $propertyColl = $this->_getPropertiesCollectionInstance();
@@ -264,9 +273,9 @@ class cApiClient extends Item {
     /**
      * Delete client property
      *
-     * @param   int  $idProp  Id of property
-     * @param   string  $p2  Not used, is here to prevent PHP Strict warnings
-     * @return  void
+     * @param int $idProp Id of property
+     * @param string $p2 Not used, is here to prevent PHP Strict warnings
+     * @return void
      */
     public function deleteProperty($idProp, $p2 = "") {
         $propertyColl = $this->_getPropertiesCollectionInstance();
@@ -276,8 +285,8 @@ class cApiClient extends Item {
     /**
      * Get client properties by type
      *
-     * @param   mixed  $type   Type of the data to get
-     * @return  array  Assoziative array
+     * @param mixed $type Type of the data to get
+     * @return array Assoziative array
      */
     public function getPropertiesByType($type) {
         $propertyColl = $this->_getPropertiesCollectionInstance();
@@ -287,9 +296,10 @@ class cApiClient extends Item {
     /**
      * Get all client properties
      *
-     * @param   mixed  $mType   Type of the data to get
-     * @return  array|false  Assoziative array
-     * @todo    return value should be the same as getPropertiesByType(), e. g. an empty array instead false
+     * @param mixed $mType Type of the data to get
+     * @return array false array
+     * @todo return value should be the same as getPropertiesByType(), e. g. an
+     *       empty array instead false
      */
     public function getProperties() {
         $propertyColl = $this->_getPropertiesCollectionInstance();
@@ -313,7 +323,7 @@ class cApiClient extends Item {
     /**
      * Check if client has at least one language
      *
-     * @return  bool
+     * @return bool
      */
     public function hasLanguages() {
         $clientLanguageCollection = new cApiClientLanguageCollection();
@@ -329,9 +339,10 @@ class cApiClient extends Item {
 
     /**
      * Userdefined setter for client fields.
-     * @param  string  $name
-     * @param  mixed   $value
-     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -366,7 +377,8 @@ class cApiClient extends Item {
 
 /**
  * Client class
- * @deprecated  [2012-02-09] Use cApiClientCollection instead of this class.
+ *
+ * @deprecated [2012-02-09] Use cApiClientCollection instead of this class.
  */
 class Client extends cApiClientCollection {
 

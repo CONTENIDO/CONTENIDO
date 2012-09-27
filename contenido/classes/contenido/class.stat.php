@@ -6,22 +6,13 @@
  * Description:
  * Statistics management class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    0.1
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2011-07-20
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 0.1
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -30,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Statistic collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiStatCollection extends ItemCollection {
@@ -42,10 +34,17 @@ class cApiStatCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['stat'], 'idstat');
         $this->_setItemClass('cApiStat');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiCategoryArticleCollection');
+        $this->_setJoinPartner('cApiLanguageCollection');
+        $this->_setJoinPartner('cApiClientCollection');
     }
 
     /**
-     * Tracks a visit. Increments a existing entry or creates a new one.
+     * Tracks a visit.
+     * Increments a existing entry or creates a new one.
+     *
      * @param int $iIdCatArt
      * @param int $iIdLang
      * @param int $iIdClient
@@ -61,6 +60,7 @@ class cApiStatCollection extends ItemCollection {
 
     /**
      * Creates a stat entry.
+     *
      * @param int $iIdCatArt
      * @param int $iIdLang
      * @param int $iIdClient
@@ -81,9 +81,10 @@ class cApiStatCollection extends ItemCollection {
 
     /**
      * Returns a stat entry by category article and language.
+     *
      * @param int $iIdCatArt
      * @param int $iIdLang
-     * @return cApiStat|null
+     * @return cApiStat null
      */
     public function fetchByCatArtAndLang($iIdCatArt, $iIdLang) {
         $this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);
@@ -92,9 +93,10 @@ class cApiStatCollection extends ItemCollection {
 
     /**
      * Deletes statistics entries by category article id and language id.
-     * @param   int  $idcatart
-     * @param   int  $idlang
-     * @return  int  Number of deleted items
+     *
+     * @param int $idcatart
+     * @param int $idlang
+     * @return int Number of deleted items
      */
     public function deleteByCategoryArticleAndLanguage($idcatart, $idlang) {
         $where = 'idcatart = ' . (int) $idcatart . ' AND idlang = ' . (int) $idlang;
@@ -105,14 +107,16 @@ class cApiStatCollection extends ItemCollection {
 
 /**
  * Statistic item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiStat extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -129,5 +133,3 @@ class cApiStat extends Item {
     }
 
 }
-
-?>

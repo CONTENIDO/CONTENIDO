@@ -6,22 +6,13 @@
  * Description:
  * Area management class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    1.5
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2004-08-04
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 1.5
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -30,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Template collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiTemplateCollection extends ItemCollection {
@@ -39,18 +31,31 @@ class cApiTemplateCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['tpl'], 'idtpl');
         $this->_setItemClass('cApiTemplate');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiLayoutCollection');
+        $this->_setJoinPartner('cApiTemplateCollection');
+        $this->_setJoinPartner('cApiTemplateConfigurationCollection');
+
         if ($select !== false) {
             $this->select($select);
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiTemplateCollection($select = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($select);
     }
 
-    /** @deprecated 2012-03-05 This function is not longer supported. */
+    /**
+     *
+     * @deprecated 2012-03-05 This function is not longer supported.
+     */
     public function setDefaultTemplate($idtpl) {
         cDeprecated("This function is not longer supported.");
 
@@ -67,8 +72,7 @@ class cApiTemplateCollection extends ItemCollection {
     /**
      * Returns the default template configuration item
      *
-     * @param  int  $idclient
-     * return cApiTemplateConfiguration|null
+     * @param int $idclient return cApiTemplateConfiguration|null
      */
     public function selectDefaultTemplate($idclient) {
         $this->select('defaulttemplate = 1 AND idclient = ' . $idclient);
@@ -77,13 +81,14 @@ class cApiTemplateCollection extends ItemCollection {
 
     /**
      * Returns all templates having passed layout id.
-     * @param  int  $idlay
+     *
+     * @param int $idlay
      * @return cApiTemplate[]
      */
     public function fetchByIdLay($idlay) {
         $this->select('idlay = ' . $idlay);
         $entries = array();
-        while ($entry = $this->next()) {
+        while (($entry = $this->next()) !== false) {
             $entries[] = clone $entry;
         }
         return $entries;
@@ -93,14 +98,16 @@ class cApiTemplateCollection extends ItemCollection {
 
 /**
  * Template item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiTemplate extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -111,12 +118,14 @@ class cApiTemplate extends Item {
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiTemplate($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 
 }
-
-?>

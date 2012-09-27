@@ -6,17 +6,13 @@
  * Description:
  * Type management class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    0.1
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @package CONTENIDO API
+ * @version 0.1
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -25,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Type collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiTypeCollection extends ItemCollection {
@@ -41,13 +38,14 @@ class cApiTypeCollection extends ItemCollection {
 
     /**
      * Creates a type entry.
-     * @param  string  $type
-     * @param  string  $description
-     * @param  string  $code
-     * @param  int  $status
-     * @param  string  $author
-     * @param  string  $created
-     * @param  string  $lastmodified
+     *
+     * @param string $type
+     * @param string $description
+     * @param string $code
+     * @param int $status
+     * @param string $author
+     * @param string $created
+     * @param string $lastmodified
      * @return cApiType
      */
     public function create($type, $description, $code = '', $status = 0, $author = '', $created = '', $lastmodified = '') {
@@ -81,14 +79,16 @@ class cApiTypeCollection extends ItemCollection {
 
 /**
  * Type item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiType extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $id  Specifies the ID of item to load
+     *
+     * @param mixed $id Specifies the ID of item to load
      */
     public function __construct($id = false) {
         global $cfg;
@@ -101,11 +101,14 @@ class cApiType extends Item {
 
     /**
      * Loads an type entry by its type.
-     * @param   string  $type  e. g. CMS_HTML, CMS_TEXT, etc.
-     * @return  bool
+     *
+     * @param string $type e. g. CMS_HTML, CMS_TEXT, etc.
+     * @return bool
      */
     public function loadByType($type) {
-        $aProps = array('type' => $type);
+        $aProps = array(
+            'type' => $type
+        );
         $aRecordSet = $this->_oCache->getItemByProperties($aProps);
         if ($aRecordSet) {
             // entry in cache found, load entry from cache
@@ -119,9 +122,10 @@ class cApiType extends Item {
 
     /**
      * Userdefined setter for item fields.
-     * @param  string  $name
-     * @param  mixed   $value
-     * @param  bool    $safe   Flag to run defined inFilter on passed value
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $safe Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $safe = true) {
         if ('status' === $name) {
@@ -136,5 +140,3 @@ class cApiType extends Item {
     }
 
 }
-
-?>

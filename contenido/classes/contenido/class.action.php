@@ -6,22 +6,13 @@
  * Description:
  * Action management class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    1.5
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2006-06-09
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 1.5
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -30,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Action collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiActionCollection extends ItemCollection {
@@ -42,9 +34,16 @@ class cApiActionCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['actions'], 'idaction');
         $this->_setItemClass('cApiAction');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiAreaCollection');
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiActionCollection() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
@@ -53,13 +52,13 @@ class cApiActionCollection extends ItemCollection {
     /**
      * Creates an action entry
      *
-     * @param  string|int  $area
-     * @param  string|int  $name
-     * @param  string|int  $alt_name
-     * @param  string  $code
-     * @param  string  $location
-     * @param  int  $relevant
-     * @return  cApiAction
+     * @param string|int $area
+     * @param string|int $name
+     * @param string|int $alt_name
+     * @param string $code
+     * @param string $location
+     * @param int $relevant
+     * @return cApiAction
      */
     public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1) {
         $item = parent::createNewItem();
@@ -99,7 +98,8 @@ class cApiActionCollection extends ItemCollection {
 
     /**
      * Returns all actions available in the system
-     * @return array   Array with id and name entries
+     *
+     * @return array Array with id and name entries
      */
     public function getAvailableActions() {
         global $cfg;
@@ -125,18 +125,19 @@ class cApiActionCollection extends ItemCollection {
     /**
      * Return name of passed action.
      *
-     * @param  int  Id of action
-     * @return string|null
+     * @param int Id of action
+     * @return string null
      */
     public function getActionName($action) {
         $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
-        return ($this->db->next_record()) ? $this->db->f('name') : null;
+        return ($this->db->next_record())? $this->db->f('name') : null;
     }
 
     /**
      * Returns the area for the given action.
-     * @param  string|int  Name or id of action
-     * @return int|null   Integer with the area ID for the given action or null
+     *
+     * @param string|int Name or id of action
+     * @return int null with the area ID for the given action or null
      */
     function getAreaForAction($action) {
         if (!is_numeric($action)) {
@@ -145,43 +146,54 @@ class cApiActionCollection extends ItemCollection {
             $this->db->query("SELECT idarea FROM `%s` WHERE idaction = %d", $this->table, $action);
         }
 
-        return ($this->db->next_record()) ? $this->db->f('idarea') : null;
+        return ($this->db->next_record())? $this->db->f('idarea') : null;
     }
 
 }
 
 /**
  * Action item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiAction extends Item {
 
     /**
-     * @var  bool
+     *
+     * @var bool
      */
     protected $_objectInvalid;
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
         $this->_objectInvalid = false;
 
         parent::__construct($cfg['tab']['actions'], 'idaction');
-        $this->setFilters(array('addslashes'), array('stripslashes'));
+        $this->setFilters(array(
+            'addslashes'
+        ), array(
+            'stripslashes'
+        ));
 
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
 
-        // @todo  Where is this used???
+        // @todo Where is this used???
         $this->_wantParameters = array();
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiAction($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
@@ -189,16 +201,17 @@ class cApiAction extends Item {
 
 }
 
-################################################################################
-# Old version of action class
-#
-# NOTE: Class implemetation below is deprecated and the will be removed in
-#       future versions of contenido.
-#       Don't use it, it's still available due to downwards compatibility.
+// ##############################################################################
+// Old version of action class
+//
+// NOTE: Class implemetation below is deprecated and the will be removed in
+// future versions of contenido.
+// Don't use it, it's still available due to downwards compatibility.
 
 /**
  * Action
- * @deprecated  [2012-03-01] Use cApiActionCollection instead of this class.
+ *
+ * @deprecated [2012-03-01] Use cApiActionCollection instead of this class.
  */
 class Action extends cApiActionCollection {
 
@@ -213,5 +226,3 @@ class Action extends cApiActionCollection {
     }
 
 }
-
-?>

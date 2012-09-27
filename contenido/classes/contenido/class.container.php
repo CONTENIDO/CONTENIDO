@@ -6,22 +6,13 @@
  * Description:
  * Template access class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    1.4
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2004-08-04
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 1.4
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -30,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Container collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiContainerCollection extends ItemCollection {
@@ -39,12 +31,20 @@ class cApiContainerCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['container'], 'idcontainer');
         $this->_setItemClass('cApiContainer');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiTemplateCollection');
+
         if ($select !== false) {
             $this->select($select);
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiContainerCollection($select = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($select = false);
@@ -52,14 +52,14 @@ class cApiContainerCollection extends ItemCollection {
 
     public function clearAssignments($idtpl) {
         $this->select('idtpl = ' . (int) $idtpl);
-        while ($item = $this->next()) {
+        while (($item = $this->next()) !== false) {
             $this->delete($item->get('idcontainer'));
         }
     }
 
     public function assignModul($idtpl, $number, $idmod) {
         $this->select('idtpl = ' . (int) $idtpl . ' AND number = ' . (int) $number);
-        if ($item = $this->next()) {
+        if (($item = $this->next()) !== false) {
             $item->set('idmod', (int) $idmod);
             $item->store();
         } else {
@@ -79,14 +79,16 @@ class cApiContainerCollection extends ItemCollection {
 
 /**
  * Container item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiContainer extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -97,12 +99,14 @@ class cApiContainer extends Item {
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiContainer($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 
 }
-
-?>

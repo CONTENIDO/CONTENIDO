@@ -6,114 +6,82 @@
  * Description:
  * Custom properties
  *
- * Code is taken over from file contenido/classes/class.properties.php in favor of
- * normalizing API.
+ * Code is taken over from file contenido/classes/class.properties.php in favor
+ * of normalizing API.
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    0.1
- * @author     Timo A. Hummel
- * @author     Murat Purc
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-10-11
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 0.1
+ * @author Timo A. Hummel
+ * @author Murat Purc
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release 4.9.0
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
-/* Custom properties
- * -----------------
- *
- * Custom properties are properties which can be assigned to virtually any element
- * in CONTENIDO and underlaying websites.
- *
- *
- * Table structure
- * ---------------
- *
- * Field        Size            Description
- * -----        ----            -----------
- * idproperty   int(10)         idproperty (automatically handled by this class)
- * itemtype     varchar(32)     Custom item type (e.g. idcat, idart, idartlang, custom)
- * itemid       varchar(32)     ID of the item
- * type         varchar(32)     Property type
- * name         varchar(32)     Property name
- * value        text            Property value
- * author       varchar(32)     Author (md5-hash of the username)
- * created      datetime        Created date and time
- * modified     datetime        Modified date and time
- * modifiedby   varchar(32)     Modified by (md5-hash of the username)
- *
- *
- * Example:
- * --------
- * A module needs to store custom properties for categories. Modifying the database
- * would be a bad thing, since the changes might get lost during an upgrade or
- * reinstall.
- *
- * If the custom property for a category would be the path to a category image,
- * we would fill a row as follows:
- *
- * itemtype: idcat
- * itemid:   <number of your category>
- * type:     category
- * name:     image
- * value:    images/category01.gif
- *
- * idproperty, author, created, modified and modifiedby are automatically handled by
- * the class.
- *
- *
- * If caching is enabled, see $cfg['properties']['properties']['enable_cache'],
- * configured entries will be loaded at first time.
- * If enabled, each call of cApiPropertyCollection functions to retrieve cacheable
- * properties will return the cached entries without stressing the database.
- *
- * The cApiPropertyCollection class keeps also track of changed and deleted
- * properties and synchronizes them with cached values, as long as you use the
- * interface of cApiPropertyCollection to manage the properties.
+/*
+ * Custom properties ----------------- Custom properties are properties which
+ * can be assigned to virtually any element in CONTENIDO and underlaying
+ * websites. Table structure --------------- Field Size Description ----- ----
+ * ----------- idproperty int(10) idproperty (automatically handled by this
+ * class) itemtype varchar(32) Custom item type (e.g. idcat, idart, idartlang,
+ * custom) itemid varchar(32) ID of the item type varchar(32) Property type name
+ * varchar(32) Property name value text Property value author varchar(32) Author
+ * (md5-hash of the username) created datetime Created date and time modified
+ * datetime Modified date and time modifiedby varchar(32) Modified by (md5-hash
+ * of the username) Example: -------- A module needs to store custom properties
+ * for categories. Modifying the database would be a bad thing, since the
+ * changes might get lost during an upgrade or reinstall. If the custom property
+ * for a category would be the path to a category image, we would fill a row as
+ * follows: itemtype: idcat itemid: <number of your category> type: category
+ * name: image value: images/category01.gif idproperty, author, created,
+ * modified and modifiedby are automatically handled by the class. If caching is
+ * enabled, see $cfg['properties']['properties']['enable_cache'], configured
+ * entries will be loaded at first time. If enabled, each call of
+ * cApiPropertyCollection functions to retrieve cacheable properties will return
+ * the cached entries without stressing the database. The cApiPropertyCollection
+ * class keeps also track of changed and deleted properties and synchronizes
+ * them with cached values, as long as you use the interface of
+ * cApiPropertyCollection to manage the properties.
  */
 
 /**
  * Property collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiPropertyCollection extends ItemCollection {
 
     /**
      * Client id
+     *
      * @var int
      */
     public $client;
 
     /**
      * List of cached entries
+     *
      * @var array
      */
     protected static $_entries;
 
     /**
      * Flag to enable caching.
+     *
      * @var bool
      */
     protected static $_enableCache;
 
     /**
      * Itemtypes and itemids array
+     *
      * @var array
      */
     protected static $_cacheItemtypes;
@@ -127,13 +95,14 @@ class cApiPropertyCollection extends ItemCollection {
         parent::__construct($cfg['tab']['properties'], 'idproperty');
         $this->_setItemClass('cApiProperty');
 
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiClientCollection');
+
         if (!isset(self::$_enableCache)) {
-            if (isset($cfg['properties']) && isset($cfg['properties']['properties'])
-                    && isset($cfg['properties']['properties']['enable_cache'])) {
+            if (isset($cfg['properties']) && isset($cfg['properties']['properties']) && isset($cfg['properties']['properties']['enable_cache'])) {
                 self::$_enableCache = (bool) $cfg['properties']['properties']['enable_cache'];
 
-                if (isset($cfg['properties']['properties']['itemtypes'])
-                        && is_array($cfg['properties']['properties']['itemtypes'])) {
+                if (isset($cfg['properties']['properties']['itemtypes']) && is_array($cfg['properties']['properties']['itemtypes'])) {
                     self::$_cacheItemtypes = $cfg['properties']['properties']['itemtypes'];
                     foreach (self::$_cacheItemtypes as $name => $value) {
                         if ('%client%' == $value) {
@@ -168,15 +137,17 @@ class cApiPropertyCollection extends ItemCollection {
      * Creates a new property item.
      *
      * Example:
-     * $proerty = $properties->create('idcat', 27, 'visual', 'image', 'images/tool.gif');
+     * $proerty = $properties->create('idcat', 27, 'visual', 'image',
+     * 'images/tool.gif');
      *
-     * @param   mixed  $itemtype     Type of the item (example: idcat)
-     * @param   mixed  $itemid       ID of the item (example: 31)
-     * @param   mixed  $type         Type of the data to store (arbitary data)
-     * @param   mixed  $name         Entry name
-     * @param   mixed  $value        Value
-     * @param   bool   $bInternally  Optionally default false (on internal call do not escape parameters again
-     * @return  cApiProperty
+     * @param mixed $itemtype Type of the item (example: idcat)
+     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $type Type of the data to store (arbitary data)
+     * @param mixed $name Entry name
+     * @param mixed $value Value
+     * @param bool $bInternally Optionally default false (on internal call do
+     *        not escape parameters again
+     * @return cApiProperty
      */
     public function create($itemtype, $itemid, $type, $name, $value, $bInternally = false) {
         global $cfg, $auth;
@@ -215,11 +186,11 @@ class cApiPropertyCollection extends ItemCollection {
      * Example:
      * $value = $properties->getValue('idcat', 27, 'visual', 'image');
      *
-     * @param   mixed  $itemtype  Type of the item (example: idcat)
-     * @param   mixed  $itemid    ID of the item (example: 31)
-     * @param   mixed  $type      Type of the data to store (arbitary data)
-     * @param   mixed  $name      Entry name
-     * @return  mixed  Value
+     * @param mixed $itemtype Type of the item (example: idcat)
+     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $type Type of the data to store (arbitary data)
+     * @param mixed $name Entry name
+     * @return mixed Value
      */
     public function getValue($itemtype, $itemid, $type, $name, $default = false) {
         if ($this->_useCache($itemtype, $itemid)) {
@@ -237,7 +208,7 @@ class cApiPropertyCollection extends ItemCollection {
             $this->select("itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "' AND name = '" . $name . "'");
         }
 
-        if ($item = $this->next()) {
+        if (($item = $this->next()) !== false) {
             return (cSecurity::unescapeDB($item->get('value')));
         }
 
@@ -250,11 +221,12 @@ class cApiPropertyCollection extends ItemCollection {
      * Example:
      * $values = $properties->getValuesByType('idcat', 27, 'visual');
      *
-     * @param   mixed  $itemtype  Type of the item (example: idcat)
-     * @param   mixed  $itemid    ID of the item (example: 31)
-     * @param   mixed  $type      Type of the data to store (arbitary data)
-     * @return  array  Value
-     * */
+     * @param mixed $itemtype Type of the item (example: idcat)
+     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $type Type of the data to store (arbitary data)
+     * @return array Value
+     *
+     */
     public function getValuesByType($itemtype, $itemid, $type) {
         if ($this->_useCache($itemtype, $itemid)) {
             return $this->_getValuesByTypeFromCache($itemtype, $itemid, $type);
@@ -271,7 +243,7 @@ class cApiPropertyCollection extends ItemCollection {
             $this->select("itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "'");
         }
 
-        while ($item = $this->next()) {
+        while (($item = $this->next()) !== false) {
             $aResult[$item->get('name')] = cSecurity::unescapeDB($item->get('value'));
         }
 
@@ -284,10 +256,11 @@ class cApiPropertyCollection extends ItemCollection {
      * Example:
      * $values = $properties->getValuesOnlyByTypeName('note', 'category');
      *
-     * @param   mixed  $itemtype  Type of the item (example: idcat)
-     * @param   mixed  $name      Type of the data to store (arbitary data)
-     * @return  array  Value
-     * */
+     * @param mixed $itemtype Type of the item (example: idcat)
+     * @param mixed $name Type of the data to store (arbitary data)
+     * @return array Value
+     *
+     */
     public function getValuesOnlyByTypeName($type, $name) {
         $aResult = array();
         $type = $this->db->escape($type);
@@ -295,7 +268,7 @@ class cApiPropertyCollection extends ItemCollection {
 
         $this->select("type = '" . $type . "' AND name = '" . $name . "");
 
-        while ($item = $this->next()) {
+        while (($item = $this->next()) !== false) {
             $aResult[] = cSecurity::unescapeDB($item->get('value'));
         }
 
@@ -303,18 +276,20 @@ class cApiPropertyCollection extends ItemCollection {
     }
 
     /**
-     * Sets a property item. Handles creation and updating.
+     * Sets a property item.
+     * Handles creation and updating.
      * Existing item will be updated, not existing item will be created.
      *
      * Example:
      * $properties->setValue('idcat', 27, 'visual', 'image', 'images/tool.gif');
      *
-     * @param   mixed  $itemtype  Type of the item (example: idcat)
-     * @param   mixed  $itemid    ID of the item (example: 31)
-     * @param   mixed  $type      Type of the data to store (arbitary data)
-     * @param   mixed  $name      Entry name
-     * @param   mixed  $value     Value
-     * @param   int    $idProp    Id of database record (if set, update on this basis (possiblity to update name value and type))
+     * @param mixed $itemtype Type of the item (example: idcat)
+     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $type Type of the data to store (arbitary data)
+     * @param mixed $name Entry name
+     * @param mixed $value Value
+     * @param int $idProp Id of database record (if set, update on this basis
+     *        (possiblity to update name value and type))
      */
     public function setValue($itemtype, $itemid, $type, $name, $value, $idProp = 0) {
         $itemtype = $this->db->escape($itemtype);
@@ -330,7 +305,7 @@ class cApiPropertyCollection extends ItemCollection {
             $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND idproperty = " . $idProp);
         }
 
-        if ($item = $this->next()) {
+        if (($item = $this->next()) !== false) {
             $item->set('value', $value);
             $item->set('name', $name);
             $item->set('type', $type);
@@ -350,10 +325,10 @@ class cApiPropertyCollection extends ItemCollection {
      * Example:
      * $properties->deleteValue('idcat', 27, 'visual', 'image');
      *
-     * @param  mixed  $itemtype  Type of the item (example: idcat)
-     * @param  mixed  $itemid    ID of the item (example: 31)
-     * @param  mixed  $type      Type of the data to store (arbitary data)
-     * @param  mixed  $name      Entry name
+     * @param mixed $itemtype Type of the item (example: idcat)
+     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $type Type of the data to store (arbitary data)
+     * @param mixed $name Entry name
      */
     public function deleteValue($itemtype, $itemid, $type, $name) {
         $itemtype = $this->db->escape($itemtype);
@@ -378,9 +353,9 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Checks if values for a given item are available.
      *
-     * @param   mixed  $itemtype  Type of the item (example: idcat)
-     * @param   mixed  $itemid    ID of the item (example: 31)
-     * @return  array  For each given item
+     * @param mixed $itemtype Type of the item (example: idcat)
+     * @param mixed $itemid ID of the item (example: 31)
+     * @return array For each given item
      */
     public function getProperties($itemtype, $itemid) {
         if ($this->_useCache($itemtype, $itemid)) {
@@ -398,12 +373,15 @@ class cApiPropertyCollection extends ItemCollection {
 
         $result[$itemid] = false;
 
-        while ($item = $this->next()) {
+        while (($item = $this->next()) !== false) {
             // enable accessing property values per number and field name
             $result[$item->get('itemid')][$item->get('idproperty')] = array(
-                0 => $item->get('type'), 'type' => $item->get('type'),
-                1 => $item->get('name'), 'name' => $item->get('name'),
-                2 => $item->get('value'), 'value' => $item->get('value')
+                0 => $item->get('type'),
+                'type' => $item->get('type'),
+                1 => $item->get('name'),
+                'name' => $item->get('name'),
+                2 => $item->get('value'),
+                'value' => $item->get('value')
             );
         }
         return $result;
@@ -412,10 +390,10 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Returns all datasets selected by given field and value combination
      *
-     * @param   mixed  $field       Field to search in
-     * @param   mixed  $fieldValue  Value to search for
-     * @param   cAuth  $auth  Narrow result down to user in auth objext
-     * @return  array  For each given item
+     * @param mixed $field Field to search in
+     * @param mixed $fieldValue Value to search for
+     * @param cAuth $auth Narrow result down to user in auth objext
+     * @return array For each given item
      */
     public function getAllValues($field, $fieldValue, $auth = NULL) {
         $authString = '';
@@ -430,7 +408,7 @@ class cApiPropertyCollection extends ItemCollection {
         }
 
         $retValue = array();
-        while ($item = $this->next()) {
+        while (($item = $this->next()) !== false) {
             $dbLine = array(
                 'idproperty' => $item->get('idproperty'),
                 'idclient' => $item->get('idclient'),
@@ -452,8 +430,8 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Delete all properties which match itemtype and itemid
      *
-     * @param  mixed  $itemtype  Type of the item (example: idcat)
-     * @param  mixed  $itemid    ID of the item (example: 31)
+     * @param mixed $itemtype Type of the item (example: idcat)
+     * @param mixed $itemid ID of the item (example: 31)
      */
     public function deleteProperties($itemtype, $itemid) {
         $itemtype = $this->db->escape($itemtype);
@@ -473,12 +451,15 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Delete all properties which match itemtype and multiple itemids.
      *
-     * @param  mixed  $itemtype  Type of the item (example: idcat)
-     * @param  array  $itemids   Ids of multiple items (example: array(31,12,22))
+     * @param mixed $itemtype Type of the item (example: idcat)
+     * @param array $itemids Ids of multiple items (example: array(31,12,22))
      */
     public function deletePropertiesMultiple($itemtype, array $itemids) {
         $itemtype = $this->db->escape($itemtype);
-        $itemids = array_map(array($this, 'escape'), $itemids);
+        $itemids = array_map(array(
+            $this,
+            'escape'
+        ), $itemids);
 
         $in = "'" . implode("', '", $itemids) . "'";
 
@@ -496,7 +477,7 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Changes the client
      *
-     * @param  int  $idclient
+     * @param int $idclient
      */
     public function changeClient($idclient) {
         $this->client = (int) $idclient;
@@ -526,7 +507,7 @@ class cApiPropertyCollection extends ItemCollection {
 
         $where = "idclient = " . (int) $client . ' AND ' . implode(' OR ', $where);
         $this->select($where);
-        while ($property = $this->next()) {
+        while (($property = $this->next()) !== false) {
             $this->_addToCache($property);
         }
     }
@@ -548,7 +529,9 @@ class cApiPropertyCollection extends ItemCollection {
     }
 
     /**
-     * Deletes multiple property entries by their ids. Deletes them also from internal cache.
+     * Deletes multiple property entries by their ids.
+     * Deletes them also from internal cache.
+     *
      * @param array $ids
      */
     protected function _deletePropertiesByIds(array $ids) {
@@ -562,7 +545,8 @@ class cApiPropertyCollection extends ItemCollection {
 
     /**
      * Adds a entry to the cache.
-     * @param  cApiUserProperty  $entry
+     *
+     * @param cApiUserProperty $entry
      */
     protected function _addToCache($entry) {
         global $client;
@@ -572,7 +556,8 @@ class cApiPropertyCollection extends ItemCollection {
 
     /**
      * Removes a entry from cache.
-     * @param   int  $id
+     *
+     * @param int $id
      */
     protected function _deleteFromCache($id) {
         if (isset(self::$_entries[$id])) {
@@ -582,7 +567,8 @@ class cApiPropertyCollection extends ItemCollection {
 
     /**
      * Removes multiple entries from cache.
-     * @param   array  $ids
+     *
+     * @param array $ids
      */
     protected function _deleteFromCacheMultiple(array $ids) {
         foreach ($ids as $id) {
@@ -595,16 +581,15 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Returns the value for a given item from cache.
      *
-     * @param   mixed  $itemtype  Type of the item (example: idcat)
-     * @param   mixed  $itemid    ID of the item (example: 31)
-     * @param   mixed  $type      Type of the data to store (arbitary data)
-     * @param   mixed  $name      Entry name
-     * @return  mixed  Value
+     * @param mixed $itemtype Type of the item (example: idcat)
+     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $type Type of the data to store (arbitary data)
+     * @param mixed $name Entry name
+     * @return mixed Value
      */
     protected function _getValueFromCache($itemtype, $itemid, $type, $name, $default = false) {
         foreach (self::$_entries as $id => $entry) {
-            if ($entry['itemtype'] == $itemtype && $entry['itemid'] == $itemid
-                    && $entry['type'] == $type && $entry['name'] == $name) {
+            if ($entry['itemtype'] == $itemtype && $entry['itemid'] == $itemid && $entry['type'] == $type && $entry['name'] == $name) {
                 return cSecurity::unescapeDB($entry['value']);
             }
         }
@@ -615,17 +600,17 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Returns the values for a given item by its type from cache.
      *
-     * @param   mixed  $itemtype  Type of the item (example: idcat)
-     * @param   mixed  $itemid    ID of the item (example: 31)
-     * @param   mixed  $type      Type of the data to store (arbitary data)
-     * @return  array  Value
-     * */
+     * @param mixed $itemtype Type of the item (example: idcat)
+     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $type Type of the data to store (arbitary data)
+     * @return array Value
+     *
+     */
     protected function _getValuesByTypeFromCache($itemtype, $itemid, $type) {
         $result = array();
 
         foreach (self::$_entries as $id => $entry) {
-            if ($entry['itemtype'] == $itemtype && $entry['itemid'] == $itemid
-                    && $entry['type'] == $type) {
+            if ($entry['itemtype'] == $itemtype && $entry['itemid'] == $itemid && $entry['type'] == $type) {
                 $result[$entry['name']] = cSecurity::unescapeDB($entry['value']);
             }
         }
@@ -636,9 +621,9 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Returns poperties for given item are available.
      *
-     * @param   mixed  $itemtype  Type of the item (example: idcat)
-     * @param   mixed  $itemid    ID of the item (example: 31)
-     * @return  array  For each given item
+     * @param mixed $itemtype Type of the item (example: idcat)
+     * @param mixed $itemid ID of the item (example: 31)
+     * @return array For each given item
      */
     public function _getPropertiesFromCache($itemtype, $itemid) {
         $result = array();
@@ -648,9 +633,12 @@ class cApiPropertyCollection extends ItemCollection {
             if ($entry['itemtype'] == $itemtype && $entry['itemid'] == $itemid) {
                 // enable accessing property values per number and field name
                 $result[$entry['itemid']][$entry['idproperty']] = array(
-                    0 => $entry['type'], 'type' => $entry['type'],
-                    1 => $entry['name'], 'name' => $entry['name'],
-                    2 => $entry['value'], 'value' => $entry['value']
+                    0 => $entry['type'],
+                    'type' => $entry['type'],
+                    1 => $entry['name'],
+                    'name' => $entry['name'],
+                    2 => $entry['value'],
+                    'value' => $entry['value']
                 );
             }
         }
@@ -662,20 +650,23 @@ class cApiPropertyCollection extends ItemCollection {
 
 /**
  * Property item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiProperty extends Item {
 
     /**
      * Array which stores the maximum string length of each field
-     * @var  array
+     *
+     * @var array
      */
     public $maximumLength;
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -695,7 +686,8 @@ class cApiProperty extends Item {
 
     /**
      * Stores changed cApiProperty
-     * @return  bool
+     *
+     * @return bool
      */
     public function store() {
         global $auth;
@@ -709,10 +701,11 @@ class cApiProperty extends Item {
     /**
      * Sets value of a field
      *
-     * @param  string  $field
-     * @param  string  $value
-     * @param  bool    $safe  Flag to run filter on passed value
-     * @throws cInvalidArgumentException if the field is too small for the given value
+     * @param string $field
+     * @param string $value
+     * @param bool $safe Flag to run filter on passed value
+     * @throws cInvalidArgumentException if the field is too small for the given
+     *         value
      * @return void
      */
     public function setField($field, $value, $safe = true) {
@@ -727,16 +720,17 @@ class cApiProperty extends Item {
 
 }
 
-################################################################################
-# Old versions of property item collection and property item classes
-#
-# NOTE: Class implemetations below are deprecated and the will be removed in
-#       future versions of contenido.
-#       Don't use them, they are still available due to downwards compatibility.
+// ##############################################################################
+// Old versions of property item collection and property item classes
+//
+// NOTE: Class implemetations below are deprecated and the will be removed in
+// future versions of contenido.
+// Don't use them, they are still available due to downwards compatibility.
 
 /**
  * Property collection
- * @deprecated  [2011-10-11] Use cApiPropertyCollection instead of this class.
+ *
+ * @deprecated [2011-10-11] Use cApiPropertyCollection instead of this class.
  */
 class PropertyCollection extends cApiPropertyCollection {
 
@@ -754,7 +748,8 @@ class PropertyCollection extends cApiPropertyCollection {
 
 /**
  * Single property item
- * @deprecated  [2011-10-11] Use cApiProperty instead of this class.
+ *
+ * @deprecated [2011-10-11] Use cApiProperty instead of this class.
  */
 class PropertyItem extends cApiProperty {
 
@@ -769,5 +764,3 @@ class PropertyItem extends cApiProperty {
     }
 
 }
-
-?>

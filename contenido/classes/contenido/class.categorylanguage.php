@@ -6,22 +6,13 @@
  * Description:
  * Layout class
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    1.3.2
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2005-11-08
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 1.3.2
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -30,7 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Category language collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiCategoryLanguageCollection extends ItemCollection {
@@ -38,19 +30,28 @@ class cApiCategoryLanguageCollection extends ItemCollection {
     /**
      * Constructor function.
      *
-     * @param  string  $select  Select statement (see ItemCollection::select())
+     * @param string $select Select statement (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
         parent::__construct($cfg['tab']['cat_lang'], 'idcatlang');
         $this->_setItemClass('cApiCategoryLanguage');
+
+        // set the join partners so that joins can be used via link() method
         $this->_setJoinPartner('cApiCategoryCollection');
+        $this->_setJoinPartner('cApiLanguageCollection');
+        $this->_setJoinPartner('cApiTemplateConfigurationCollection');
+
         if ($select !== false) {
             $this->select($select);
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiCategoryLanguageCollection($select = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($select);
@@ -59,19 +60,19 @@ class cApiCategoryLanguageCollection extends ItemCollection {
     /**
      * Creates a category language entry.
      *
-     * @param  int  $idcat
-     * @param  int  $idlang
-     * @param  string  $name
-     * @param  string  $urlname
-     * @param  string  $urlpath
-     * @param  int  $idtplcfg
-     * @param  int  $visible
-     * @param  int  $public
-     * @param  int  $status
-     * @param  string  $author
-     * @param  int  $startidartlang
-     * @param  string  $created
-     * @param  string  $lastmodified
+     * @param int $idcat
+     * @param int $idlang
+     * @param string $name
+     * @param string $urlname
+     * @param string $urlpath
+     * @param int $idtplcfg
+     * @param int $visible
+     * @param int $public
+     * @param int $status
+     * @param string $author
+     * @param int $startidartlang
+     * @param string $created
+     * @param string $lastmodified
      * @return cApiCategoryLanguage
      */
     public function create($idcat, $idlang, $name, $urlname, $urlpath = '', $idtplcfg = 0, $visible = 0, $public = 0, $status = 0, $author = '', $startidartlang = 0, $created = '', $lastmodified = '') {
@@ -108,37 +109,39 @@ class cApiCategoryLanguageCollection extends ItemCollection {
 
     /**
      * Returns startidartlang of articlelanguage by category id and language id
-     * @param  int  $idcat
-     * @param  int  $idlang
-     * @return  int
+     *
+     * @param int $idcat
+     * @param int $idlang
+     * @return int
      */
     public function getStartIdartlangByIdcatAndIdlang($idcat, $idlang) {
         $sql = "SELECT startidartlang FROM `" . $this->table . "` WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $idlang . " AND startidartlang != 0";
         $this->db->query($sql);
-        return ($this->db->next_record()) ? $this->db->f('startidartlang') : 0;
+        return ($this->db->next_record())? $this->db->f('startidartlang') : 0;
     }
 
     /**
-     * Returns article id of articlelanguages startarticle by category id and language id
-     * @param  int  $idcat
-     * @param  int  $idlang
-     * @return  int
+     * Returns article id of articlelanguages startarticle by category id and
+     * language id
+     *
+     * @param int $idcat
+     * @param int $idlang
+     * @return int
      */
     public function getStartIdartByIdcatAndIdlang($idcat, $idlang) {
         global $cfg;
-        $sql = "SELECT al.idart FROM `" . $cfg['tab']['art_lang'] . "` AS al, `" . $this->table . "` "
-             . "AS cl WHERE cl.idcat = " . (int) $idcat . " AND cl.startidartlang != 0 AND "
-             . "cl.idlang = " . (int) $idlang . " AND cl.idlang = al.idlang AND cl.startidartlang = al.idartlang";
+        $sql = "SELECT al.idart FROM `" . $cfg['tab']['art_lang'] . "` AS al, `" . $this->table . "` " . "AS cl WHERE cl.idcat = " . (int) $idcat . " AND cl.startidartlang != 0 AND " . "cl.idlang = " . (int) $idlang . " AND cl.idlang = al.idlang AND cl.startidartlang = al.idartlang";
         $this->db->query($sql);
-        return ($this->db->next_record()) ? $this->db->f('idart') : 0;
+        return ($this->db->next_record())? $this->db->f('idart') : 0;
     }
 
     /**
      * Checks if passed idartlang is a start article.
-     * @param  int  $idartlang
-     * @param  int  $idcat  Check category id additionally
-     * @param  int  $idlang  Check language id additionally
-     * @return  bool
+     *
+     * @param int $idartlang
+     * @param int $idcat Check category id additionally
+     * @param int $idlang Check language id additionally
+     * @return bool
      */
     public function isStartArticle($idartlang, $idcat = null, $idlang = null) {
         $where = 'startidartlang = ' . (int) $idartlang;
@@ -154,18 +157,21 @@ class cApiCategoryLanguageCollection extends ItemCollection {
         $this->db->query($sql);
         return ($this->db->next_record() && $this->db->f('startidartlang') != 0);
     }
+
 }
 
 /**
  * Category language item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiCategoryLanguage extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -176,7 +182,11 @@ class cApiCategoryLanguage extends Item {
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    /**
+     *
+     * @deprecated [2011-03-15] Old constructor function for downwards
+     *             compatibility
+     */
     public function cApiCategoryLanguage($mId = false) {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
@@ -185,12 +195,15 @@ class cApiCategoryLanguage extends Item {
     /**
      * Load data by category id and language id
      *
-     * @param  int  $idcat   Category id
-     * @param  int  $idlang  Language id
-     * @return  bool  true on success, otherwhise false
+     * @param int $idcat Category id
+     * @param int $idlang Language id
+     * @return bool true on success, otherwhise false
      */
     public function loadByCategoryIdAndLanguageId($idcat, $idlang) {
-        $aProps = array('idcat' => $idcat, 'idlang' => $idlang);
+        $aProps = array(
+            'idcat' => $idcat,
+            'idlang' => $idlang
+        );
         $aRecordSet = $this->_oCache->getItemByProperties($aProps);
         if ($aRecordSet) {
             // entry in cache found, load entry from cache
@@ -204,9 +217,10 @@ class cApiCategoryLanguage extends Item {
 
     /**
      * Userdefined setter for article language fields.
-     * @param  string  $name
-     * @param  mixed   $value
-     * @param  bool    $safe   Flag to run defined inFilter on passed value
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $safe Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $safe = true) {
         switch ($name) {
@@ -218,7 +232,7 @@ class cApiCategoryLanguage extends Item {
                 break;
             case 'visible':
             case 'public':
-                $value = ($value == 1) ? 1 : 0;
+                $value = ($value == 1)? 1 : 0;
                 break;
             case 'idcat':
             case 'idlang':
@@ -251,7 +265,8 @@ class cApiCategoryLanguage extends Item {
 
         $oTplConf = $oTplConfColl->create($idtpl);
 
-        // If there is a preconfiguration of template, copy its settings into templateconfiguration
+        // If there is a preconfiguration of template, copy its settings into
+        // templateconfiguration
         $oTplConfColl->copyTemplatePreconfiguration($idtpl, $oTplConf->get('idtplcfg'));
 
         $this->set('idtplcfg', $oTplConf->get('idtplcfg'));
@@ -283,7 +298,7 @@ class cApiCategoryLanguage extends Item {
     /**
      * Updates lastmodified field and calls parents store method
      *
-     * @return  bool
+     * @return bool
      */
     public function store() {
         $this->set('lastmodified', date('Y-m-d H:i:s'));
@@ -292,7 +307,8 @@ class cApiCategoryLanguage extends Item {
 
     /**
      * Returns the link to the current object.
-     * @return    string    link
+     *
+     * @return string link
      */
     public function getLink() {
         if ($this->isLoaded() === false) {
@@ -308,16 +324,19 @@ class cApiCategoryLanguage extends Item {
 
 }
 
-################################################################################
-# Old versions of category language item collection and category language item classes
-#
-# NOTE: Class implemetations below are deprecated and the will be removed in
-#       future versions of contenido.
-#       Don't use them, they are still available due to downwards compatibility.
+// ##############################################################################
+// Old versions of category language item collection and category language item
+// classes
+//
+// NOTE: Class implemetations below are deprecated and the will be removed in
+// future versions of contenido.
+// Don't use them, they are still available due to downwards compatibility.
 
 /**
  * Category language collection
- * @deprecated  [2011-11-15] Use cApiCategoryLanguageCollection instead of this class.
+ *
+ * @deprecated [2011-11-15] Use cApiCategoryLanguageCollection instead of this
+ *             class.
  */
 class CategoryLanguageCollection extends cApiCategoryLanguageCollection {
 
@@ -335,7 +354,8 @@ class CategoryLanguageCollection extends cApiCategoryLanguageCollection {
 
 /**
  * Single category language item
- * @deprecated  [2011-11-15] Use  instead of this class.
+ *
+ * @deprecated [2011-11-15] Use instead of this class.
  */
 class CategoryLanguageItem extends cApiCategoryLanguage {
 
@@ -350,5 +370,3 @@ class CategoryLanguageItem extends cApiCategoryLanguage {
     }
 
 }
-
-?>

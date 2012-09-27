@@ -34,6 +34,9 @@ class cApiMailLogSuccessCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['mail_log_success'], 'idmailsuccess');
         $this->_setItemClass('cApiMailLogSuccess');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiMailLogCollection');
     }
 
     /**

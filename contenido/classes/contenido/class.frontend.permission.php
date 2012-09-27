@@ -6,26 +6,18 @@
  * Description:
  * Frontend permission classes
  *
- * Code is taken over from file contenido/classes/class.frontend.permissions.php in favor of
+ * Code is taken over from file contenido/classes/class.frontend.permissions.php
+ * in favor of
  * normalizing API.
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO API
- * @version    0.1
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-10-06
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 0.1
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release 4.9.0
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -34,12 +26,14 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Frontend permission collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiFrontendPermissionCollection extends ItemCollection {
 
     /**
+     *
      * @var cApiFrontendPermission
      */
     protected $_frontendPermission;
@@ -53,16 +47,20 @@ class cApiFrontendPermissionCollection extends ItemCollection {
 
         parent::__construct($cfg['tab']['frontendpermissions'], 'idfrontendpermission');
         $this->_setItemClass('cApiFrontendPermission');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiFrontendGroupCollection');
+        $this->_setJoinPartner('cApiLanguageCollection');
     }
 
     /**
      * Creates a new permission entry.
      *
-     * @param  int     $group   Specifies the frontend group
-     * @param  string  $plugin  Specifies the plugin
-     * @param  string  $action  Specifies the action
-     * @param  string  $item    Specifies the item
-     * @return cApiFrontendPermission|null
+     * @param int $group Specifies the frontend group
+     * @param string $plugin Specifies the plugin
+     * @param string $action Specifies the action
+     * @param string $item Specifies the item
+     * @return cApiFrontendPermission null
      */
     public function create($group, $plugin, $action, $item) {
         global $lang;
@@ -85,10 +83,10 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     /**
      * Sets a permission entry, is a wrapper for create() function
      *
-     * @param  int     $group   Specifies the frontend group
-     * @param  string  $plugin  Specifies the plugin
-     * @param  string  $action  Specifies the action
-     * @param  string  $item    Specifies the item
+     * @param int $group Specifies the frontend group
+     * @param string $plugin Specifies the plugin
+     * @param string $action Specifies the action
+     * @param string $item Specifies the item
      */
     public function setPerm($group, $plugin, $action, $item) {
         $this->create($group, $plugin, $action, $item);
@@ -100,17 +98,17 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      * 1.) Checks for global permission
      * 2.) Checks for specific item permission
      *
-     * @param  int     $group    Specifies the frontend group
-     * @param  string  $plugin   Specifies the plugin
-     * @param  string  $action   Specifies the action
-     * @param  string  $item     Specifies the item
-     * @param  bool    $useLang  Flag to use language (Not used!)
+     * @param int $group Specifies the frontend group
+     * @param string $plugin Specifies the plugin
+     * @param string $action Specifies the action
+     * @param string $item Specifies the item
+     * @param bool $useLang Flag to use language (Not used!)
      * @return bool
      */
     public function checkPerm($group, $plugin, $action, $item, $useLang = false) {
         global $lang;
 
-        #$checklang = ($useLang !== false) ? $useLang : $lang;
+        // checklang = ($useLang !== false) ? $useLang : $lang;
 
         $group = (int) $group;
         $plugin = $this->_frontendPermission->_inFilter($plugin);
@@ -125,23 +123,23 @@ class cApiFrontendPermissionCollection extends ItemCollection {
 
         // Check for item permisson
         $this->select("idlang=" . $lang . " AND idfrontendgroup=" . $group . " AND plugin='" . $plugin . "' AND action='" . $action . "' AND item='" . $item . "'");
-        return ($this->next()) ? true : false;
+        return ($this->next())? true : false;
     }
 
     /**
      * Removes the permission.
      *
-     * @param  int     $group    Specifies the frontend group
-     * @param  string  $plugin   Specifies the plugin
-     * @param  string  $action   Specifies the action
-     * @param  string  $item     Specifies the item
-     * @param  bool    $useLang  Flag to use language (Not used!)
+     * @param int $group Specifies the frontend group
+     * @param string $plugin Specifies the plugin
+     * @param string $action Specifies the action
+     * @param string $item Specifies the item
+     * @param bool $useLang Flag to use language (Not used!)
      * @return bool
      */
     public function removePerm($group, $plugin, $action, $item, $useLang = false) {
         global $lang;
 
-        #$checklang = ($useLang !== false) ? $useLang : $lang;
+        // checklang = ($useLang !== false) ? $useLang : $lang;
 
         $group = (int) $group;
         $plugin = $this->_frontendPermission->_inFilter($plugin);
@@ -149,7 +147,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
         $item = $this->_frontendPermission->_inFilter($item);
 
         $this->select("idlang=" . $lang . " AND idfrontendgroup=" . $group . " AND plugin='" . $plugin . "' AND action='" . $action . "' AND item='" . $item . "'");
-        if ($myitem = $this->next()) {
+        if (($myitem = $this->next()) !== false) {
             return $this->delete($myitem->get('idfrontendpermission'));
         }
         return false;
@@ -159,14 +157,16 @@ class cApiFrontendPermissionCollection extends ItemCollection {
 
 /**
  * Frontend permission item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiFrontendPermission extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -178,17 +178,19 @@ class cApiFrontendPermission extends Item {
 
 }
 
-################################################################################
-# Old versions of frontend permission item collection and frontend permission
-# item classes
-#
-# NOTE: Class implemetations below are deprecated and the will be removed in
-#       future versions of contenido.
-#       Don't use them, they are still available due to downwards compatibility.
+// ##############################################################################
+// Old versions of frontend permission item collection and frontend permission
+// item classes
+//
+// NOTE: Class implemetations below are deprecated and the will be removed in
+// future versions of contenido.
+// Don't use them, they are still available due to downwards compatibility.
 
 /**
  * Frontend permission collection
- * @deprecated  [2011-10-06] Use cApiFrontendPermissionCollection instead of this class.
+ *
+ * @deprecated [2011-10-06] Use cApiFrontendPermissionCollection instead of this
+ *             class.
  */
 class FrontendPermissionCollection extends cApiFrontendPermissionCollection {
 
@@ -206,7 +208,8 @@ class FrontendPermissionCollection extends cApiFrontendPermissionCollection {
 
 /**
  * Single frontend permission item
- * @deprecated  [2011-10-06] Use cApiFrontendPermission instead of this class.
+ *
+ * @deprecated [2011-10-06] Use cApiFrontendPermission instead of this class.
  */
 class FrontendPermission extends cApiFrontendPermission {
 
@@ -221,5 +224,3 @@ class FrontendPermission extends cApiFrontendPermission {
     }
 
 }
-
-?>

@@ -6,25 +6,17 @@
  * Description:
  * Database based file system
  *
- * Requirements:
- * @con_php_req 5.0
- *
  * Code is taken over from file contenido/classes/class.dbfs.php in favor of
  * normalizing API.
  *
- * @package    CONTENIDO API
- * @version    0.1.2
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-09-19
- *   $Id$:
- * }}
+ * @package CONTENIDO API
+ * @version 0.1.2
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release 4.9.0
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -35,7 +27,8 @@ cInclude('includes', 'functions.file.php');
 
 /**
  * DFFS item collection
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiDbfsCollection extends ItemCollection {
@@ -47,6 +40,9 @@ class cApiDbfsCollection extends ItemCollection {
         global $cfg;
         parent::__construct($cfg['tab']['dbfs'], 'iddbfs');
         $this->_setItemClass('cApiDbfs');
+
+        // set the join partners so that joins can be used via link() method
+        $this->_setJoinPartner('cApiClientCollection');
     }
 
     /**
@@ -69,7 +65,7 @@ class cApiDbfsCollection extends ItemCollection {
 
         $this->select("dirname = '" . $dir . "' AND filename = '" . $file . "' AND idclient = " . $client . " LIMIT 1");
 
-        if ($item = $this->next()) {
+        if (($item = $this->next()) !== false) {
             $properties = new cApiPropertyCollection();
             // Check if we're allowed to access it
             $protocol = cApiDbfs::PROTOCOL_DBFS;
@@ -94,8 +90,9 @@ class cApiDbfsCollection extends ItemCollection {
 
     /**
      * Writes physical existing file into dbfs
-     * @param  string  $localfile
-     * @param  string $targetfile
+     *
+     * @param string $localfile
+     * @param string $targetfile
      */
     public function writeFromFile($localfile, $targetfile) {
         $targetfile = cApiDbfs::stripPath($targetfile);
@@ -107,8 +104,9 @@ class cApiDbfsCollection extends ItemCollection {
 
     /**
      * Writes dbfs file into phsical file system
-     * @param  string  $sourcefile
-     * @param  string $localfile
+     *
+     * @param string $sourcefile
+     * @param string $localfile
      */
     public function writeToFile($sourcefile, $localfile) {
         $sourcefile = cApiDbfs::stripPath($sourcefile);
@@ -118,9 +116,10 @@ class cApiDbfsCollection extends ItemCollection {
 
     /**
      * Writes dbfs file, creates if if not exists.
-     * @param  string  $file
-     * @param  string $content
-     * @param  string $mimetype
+     *
+     * @param string $file
+     * @param string $content
+     * @param string $mimetype
      */
     public function write($file, $content = '', $mimetype = '') {
         $file = cApiDbfs::stripPath($file);
@@ -133,8 +132,9 @@ class cApiDbfsCollection extends ItemCollection {
 
     /**
      * Checks if passed dbfs path has any files.
-     * @global  int  $client
-     * @param  string  $path
+     *
+     * @global int $client
+     * @param string $path
      * @return bool
      */
     public function hasFiles($path) {
@@ -159,7 +159,8 @@ class cApiDbfsCollection extends ItemCollection {
 
     /**
      * Reads content from dbfs file.
-     * @param  string  $file
+     *
+     * @param string $file
      * @return string
      */
     public function read($file) {
@@ -168,8 +169,9 @@ class cApiDbfsCollection extends ItemCollection {
 
     /**
      * Checks, if a dbfs file exists.
+     *
      * @global int $client
-     * @param  string  $path
+     * @param string $path
      * @return bool
      */
     public function file_exists($path) {
@@ -195,8 +197,9 @@ class cApiDbfsCollection extends ItemCollection {
 
     /**
      * Checks, if a dbfs directory exists.
+     *
      * @global int $client
-     * @param  string  $path
+     * @param string $path
      * @return bool
      */
     public function dir_exists($path) {
@@ -294,7 +297,7 @@ class cApiDbfsCollection extends ItemCollection {
         }
 
         $this->select("dirname = '" . $dirname . "' AND filename = '" . $filename . "' AND idclient = " . $client . " LIMIT 1");
-        if ($item = $this->next()) {
+        if (($item = $this->next()) !== false) {
             $item->set('content', $content);
             $item->set('size', strlen($content));
             $item->store();
@@ -314,7 +317,7 @@ class cApiDbfsCollection extends ItemCollection {
         }
 
         $this->select("dirname = '" . $dirname . "' AND filename = '" . $filename . "' AND idclient = " . $client . " LIMIT 1");
-        if ($item = $this->next()) {
+        if (($item = $this->next()) !== false) {
             return $item->get('size');
         }
     }
@@ -331,7 +334,7 @@ class cApiDbfsCollection extends ItemCollection {
         }
 
         $this->select("dirname = '" . $dirname . "' AND filename = '" . $filename . "' AND idclient = " . $client . " LIMIT 1");
-        if ($item = $this->next()) {
+        if (($item = $this->next()) !== false) {
             return ($item->get("content"));
         }
     }
@@ -349,14 +352,16 @@ class cApiDbfsCollection extends ItemCollection {
         }
 
         $this->select("dirname = '" . $dirname . "' AND filename = '" . $filename . "' AND idclient = " . $client . " LIMIT 1");
-        if ($item = $this->next()) {
+        if (($item = $this->next()) !== false) {
             $this->delete($item->get('iddbfs'));
         }
     }
 
     /**
-     * Checks if time management is activated and if yes then check if file is in period
-     * @param  string  $sPath
+     * Checks if time management is activated and if yes then check if file is
+     * in period
+     *
+     * @param string $sPath
      * @return bool $bAvailable
      */
     public function checkTimeManagement($sPath, $oProperties) {
@@ -375,8 +380,7 @@ class cApiDbfsCollection extends ItemCollection {
 
         $iNow = time();
 
-        if ($iNow < $this->dateToTimestamp($sStartDate) ||
-                ($iNow > $this->dateToTimestamp($sEndDate) && (int) $this->dateToTimestamp($sEndDate) > 0)) {
+        if ($iNow < $this->dateToTimestamp($sStartDate) || ($iNow > $this->dateToTimestamp($sEndDate) && (int) $this->dateToTimestamp($sEndDate) > 0)) {
 
             return false;
         }
@@ -385,6 +389,7 @@ class cApiDbfsCollection extends ItemCollection {
 
     /**
      * converts date to timestamp:
+     *
      * @param string $sDate
      * @return int $iTimestamp
      */
@@ -392,7 +397,10 @@ class cApiDbfsCollection extends ItemCollection {
         return strtotime($sDate);
     }
 
-    /** @deprecated  [2012-06-20] Use cApiDbfs::stripPath() */
+    /**
+     *
+     * @deprecated [2012-06-20] Use cApiDbfs::stripPath()
+     */
     public function strip_path($path) {
         cDeprecated("Use cApiDbfs::stripPath()");
         return cApiDbfs::stripPath($path);
@@ -402,7 +410,8 @@ class cApiDbfsCollection extends ItemCollection {
 
 /**
  * DBFS item
- * @package    CONTENIDO API
+ *
+ * @package CONTENIDO API
  * @subpackage Model
  */
 class cApiDbfs extends Item {
@@ -411,7 +420,8 @@ class cApiDbfs extends Item {
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -444,8 +454,9 @@ class cApiDbfs extends Item {
 
     /**
      * Removes the DBFS protocol and leading '/' from received path.
-     * @param   string  $path
-     * @return  string
+     *
+     * @param string $path
+     * @return string
      */
     public static function stripPath($path) {
         $path = self::stripProtocol($path);
@@ -457,8 +468,9 @@ class cApiDbfs extends Item {
 
     /**
      * Removes the DBFS protocol received path.
-     * @param   string  $path
-     * @return  string
+     *
+     * @param string $path
+     * @return string
      */
     public static function stripProtocol($path) {
         if (self::isDbfs($path)) {
@@ -469,8 +481,9 @@ class cApiDbfs extends Item {
 
     /**
      * Checks if passed file id a DBFS
-     * @param   string  $file
-     * @return  bool
+     *
+     * @param string $file
+     * @return bool
      */
     public static function isDbfs($file) {
         return (substr($file, 0, 5) == self::PROTOCOL_DBFS);
@@ -478,16 +491,17 @@ class cApiDbfs extends Item {
 
 }
 
-################################################################################
-# Old versions of dbfs item collection and dbfs item classes
-#
-# NOTE: Class implemetations below are deprecated and the will be removed in
-#       future versions of contenido.
-#       Don't use them, they are still available due to downwards compatibility.
+// ##############################################################################
+// Old versions of dbfs item collection and dbfs item classes
+//
+// NOTE: Class implemetations below are deprecated and the will be removed in
+// future versions of contenido.
+// Don't use them, they are still available due to downwards compatibility.
 
 /**
  * DBFS item collection
- * @deprecated  [2011-09-19] Use  instead of this class.
+ *
+ * @deprecated [2011-09-19] Use instead of this class.
  */
 class DBFSCollection extends cApiDbfsCollection {
 
@@ -505,7 +519,8 @@ class DBFSCollection extends cApiDbfsCollection {
 
 /**
  * Single dbfs item
- * @deprecated  [2011-09-19] Use  instead of this class.
+ *
+ * @deprecated [2011-09-19] Use instead of this class.
  */
 class DBFSItem extends cApiDbfs {
 
@@ -520,5 +535,3 @@ class DBFSItem extends cApiDbfs {
     }
 
 }
-
-?>
