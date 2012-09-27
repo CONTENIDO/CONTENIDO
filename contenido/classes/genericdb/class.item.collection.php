@@ -10,10 +10,6 @@
  * Because of required downwards compatibilitiy all protected/private member
  * variables or methods don't have an leading underscore.
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend Classes
  * @version    0.2
  * @author     Timo A. Hummel <Timo.Hummel@4fb.de>
@@ -23,11 +19,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.9
- *
- * {@internal
- *   created  2003-07-18
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -597,7 +588,6 @@ abstract class ItemCollection extends cItemBaseAbstract {
      */
     public function resetQuery() {
         $this->setLimit(0, 0);
-        $this->_JoinPartners = array();
         $this->_forwardJoinPartners = array();
         $this->_links = array();
         $this->_where['global'] = array();
