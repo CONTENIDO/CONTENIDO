@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * MyContenido tasks overview
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.0.1
@@ -18,14 +18,14 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *
  *   $Id: include.mycontenido.tasks.php 504 2008-07-02 11:59:49Z timo.trautmann $:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -40,7 +40,7 @@ cInclude("classes", "class.htmlelements.php");
 if (!isset($sortmode))
 {
 	$sortmode = $currentuser->getUserProperty("system","tasks_sortmode");
-	$sortby   = $currentuser->getUserProperty("system","tasks_sortby");	
+	$sortby   = $currentuser->getUserProperty("system","tasks_sortby");
 }
 
 $dateformat = getEffectiveSetting("backend", "timeformat", "Y-m-d H:i:s");
@@ -58,9 +58,9 @@ if (isset($_REQUEST["listsubmit"]))
 } else {
 	if ($currentuser->getUserProperty("mycontenido", "hidedonetasks") == "true")
 	{
-		$c_restrict = true;	
+		$c_restrict = true;
 	} else {
-		$c_restrict = false;	
+		$c_restrict = false;
 	}
 }
 
@@ -70,39 +70,39 @@ class TODOBackendList extends cScrollList
 	function TODOBackendList ()
 	{
 		global $todoitems;
-		
+
 		parent::cScrollList();
-		
+
 		$this->statustypes = $todoitems->getStatusTypes();
 		$this->prioritytypes = $todoitems->getPriorityTypes();
 	}
-	
+
 	function onRenderColumn ($column)
 	{
 		if ($column == 6 || $column == 5)
 		{
-			$this->objItem->updateAttributes(array("align" => "center"));	
+			$this->objItem->updateAttributes(array("align" => "center"));
 		} else {
-			$this->objItem->updateAttributes(array("align" => "left"));	
+			$this->objItem->updateAttributes(array("align" => "left"));
 		}
 	}
-	
+
 	function convert ($key, $value, $hidden)
 	{
 		global $link, $dateformat, $cfg;
-		
+
 		if ($key == 2)
 		{
 			$link->setCustom("idcommunication", $hidden[1]);
 			$link->setContent($value);
 			return $link->render();
 		}
-		
+
 		if ($key == 3)
 		{
-			return date($dateformat,strtotime($value));	
+			return date($dateformat,strtotime($value));
 		}
-		
+
 		if ($key == 5)
 		{
 
@@ -123,50 +123,50 @@ class TODOBackendList extends cScrollList
 				case "waiting":
 						$img = "status_waiting.gif";
 						break;
-						
+
 				default: break;
 			}
 
 			if (!array_key_exists($value, $this->statustypes))
 			{
 				return i18n("No status type set");
-			}						
+			}
 			$image = new cHTMLImage($cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."reminder/".$img);
 			$image->setAlt($this->statustypes[$value]);
-			
+
             //Do not display statuicon, only show statustext
 			//return $image->render();
 			return $this->statustypes[$value];
 		}
-		
+
 		if ($key == 7)
 		{
 			$amount = $value / 20;
-			
+
 			if ($amount < 0)
 			{
 				$amount  = 0;
 			}
-			
+
 			if ($amount  > 5)
 			{
 				$amount  = 5;
 			}
-			
+
 			$amount = round($amount);
-			
+
 			$image = new cHTMLImage($cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."reminder/progress.gif");
 			$image->setAlt(sprintf(i18n("%d %% complete"), $value));
 			$ret = "";
-			
+
 			for ($i=0;$i<$amount;$i++)
 			{
-				$ret .= $image->render();	
+				$ret .= $image->render();
 			}
-			
+
 			return $ret;
 		}
-		
+
 		if ($key == 6)
 		{
 			switch ($value)
@@ -185,7 +185,7 @@ class TODOBackendList extends cScrollList
 						break;
 				default: break;
 			}
-			
+
 			$image = new cHTMLImage($cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."reminder/".$img);
 			$image->setAlt($this->prioritytypes[$p]);
 			return $image->render();
@@ -194,12 +194,12 @@ class TODOBackendList extends cScrollList
 		{
 			if ($value !== "")
 			{
-				
+
 				if (round($value,2) == 0)
 				{
 					return i18n("Today");
 				} else {
-					
+
     				if ($value < 0)
     				{
     					return number_format(0-$value, 2, ',', '') . " ".i18n("Day(s)");
@@ -207,60 +207,60 @@ class TODOBackendList extends cScrollList
     					return '<font color="red">'. number_format(0-$value, 2, ',', '') . " ".i18n("Day(s)").'</font>';
     				}
 				}
-			}	
+			}
 		}
 		return $value;
-	}	
+	}
 }
 
 if ($action == "todo_save_item")
 {
-	
+
 	$subject = stripslashes($subject);
 	$message = stripslashes($message);
-		
+
 	$todoitem = new TODOItem;
 	$todoitem->loadByPrimaryKey($idcommunication);
-	
+
 	$todoitem->set("subject", $subject);
 	$todoitem->set("message", $message);
 	$todoitem->set("recipient", $userassignment);
-	
+
 	if (isset($reminderdate))
 	{
 		$todoitem->setProperty("todo", "reminderdate", strtotime($reminderdate));
 	}
-	
+
 	if (isset($notibackend))
 	{
 		$todoitem->setProperty("todo", "backendnoti", $notibackend);
 	}
-	
+
 	if (isset($notiemail))
-	{	
-		$todoitem->setProperty("todo", "emailnoti", $notiemail);	
+	{
+		$todoitem->setProperty("todo", "emailnoti", $notiemail);
 	}
-	
+
 	$todoitem->setProperty("todo", "status", $status);
-	
+
 	if ($priority < 0)
 	{
 		$priority = 0;
 	}
-	
+
 	if ($priority > 100)
 	{
 		$priority = 100;
 	}
-	
+
 	$todoitem->setProperty("todo", "priority", $priority);
 	$todoitem->setProperty("todo", "progress", $progress);
-	
+
 	$todoitem->setProperty("todo", "enddate", $enddate);
-	
+
 	$todoitem->store();
-	
-		
+
+
 }
 $cpage = new cPage;
 
@@ -294,83 +294,83 @@ while ($todo = $todoitems->next())
 	{
     	$subject = $todo->get("subject");
     	$created = $todo->get("created");
-    
-    
+
+
     	$reminder = $todo->getProperty("todo", "enddate");
     	$status = $todo->getProperty("todo", "status");
     	$priority = $todo->getProperty("todo", "priority");
     	$complete = $todo->getProperty("todo", "progress");
-    	
+
     	if (trim($subject) == "")
     	{
     		$subject = i18n("Unnamed item");
     	}
-    
+
     	if (trim($reminder) == "")
     	{
     		$reminder = i18n("No end date set");
     	} else {
     		$reminder = date($dateformat,strtotime($reminder));
     	}
-    	
+
     	if (trim($status) == "")
     	{
     		$status = i18n("No status set");
     	}
-    
+
     	$link->setCustom("idcommunication", $todo->get("idcommunication"));
-    	
-    	
+
+
     	$link->setContent('<img src="images/but_todo.gif" border="0" style="padding-top: 2px; padding-bottom: 2px;">');
-    	
+
     	$mimg = $link->render();
-    	
+
     	$link->setContent($subject);
-    	
+
     	$msubject = $link->render();
-    	
+
     	$idcommunication = $todo->get("idcommunication");
-    	
+
     	$delete = new cHTMLLink;
-    	
+
     	$delete->setCLink("mycontenido_tasks", 4, "mycontenido_tasks_delete");
     	$delete->setCustom("idcommunication", $idcommunication);
     	$delete->setCustom("sortby", $sortby);
     	$delete->setCustom("sortmode", $sortmode);
-    	
+
     	$img = new cHTMLImage("images/delete.gif");
     	$img->setAlt(i18n("Delete item"));
-    	
+
     	$delete->setContent($img->render());
-    	
+
     	$properties = $link;
-    	
+
     	$img = new cHTMLImage("images/but_art_conf2.gif");
     	$img->setAlt(i18n("Edit item"));
 		$img->setStyle("padding-right: 4px;");
 	   	$properties->setContent($img);
-    	    	
+
     	$actions = $properties->render() . $delete->render();
-    	
+
     	if ($todo->getProperty("todo", "enddate") != "")
     	{
     		$duein = round((time() - strtotime($todo->getProperty("todo", "enddate"))) / 86400,2);
     	} else {
     		$duein = "";
     	}
-    	
+
     	switch ($priority)
     	{
     		case "low": $p = 0;break;
     		case "medium": $p = 1;break;
     		case "high": $p = 2;break;
     		case "immediately": $p = 3;break;
-    		default: break;		
+    		default: break;
     	}
-    	
+
     	$list->setData($lcount, $mimg, $subject, $created, $reminder, $status, $p, $complete, $duein, $actions);
     	$list->setHiddenData($lcount, $idcommunication, $idcommunication);
-    	
+
     	$lcount++;
 	}
 	}
@@ -402,18 +402,18 @@ $form->add(i18n("Options"), $restrict->render());
 
 if ($lcount == 0)
 {
-	$cpage->setContent($form->render()."<br>".i18n("No tasks found")."<br>".markSubMenuItem(2, true));
+	$cpage->setContent($form->render()."<br>".i18n("No tasks found"));
 } else {
 	if (!isset($sortby))
 	{
 		$sortby = 1;
 	}
-	
+
 	if (!isset($sortmode))
 	{
 		$sortmode = "ASC";
 	}
-	
+
     $list->setSortable(1,true);
     $list->setSortable(2,true);
     $list->setSortable(3,true);
@@ -422,8 +422,8 @@ if ($lcount == 0)
     $list->setSortable(6,true);
     $list->setSortable(7,true);
     $list->sort($sortby, $sortmode);
-    
-    $cpage->setContent($form->render()."<br>".$list->render(). markSubMenuItem(2, true));
+
+    $cpage->setContent($form->render()."<br>".$list->render());
 }
 $cpage->render();
 
