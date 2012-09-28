@@ -2427,11 +2427,13 @@ class cHTMLTableRow extends cHTML {
      *
      * @return void
      */
-    public function __construct($content) {
+    public function __construct($content = null) {
         parent::__construct();
         $this->_contentlessTag = false;
         $this->_tag = 'tr';
-        $this->setContent($content);
+        if (!empty($content)) {
+            $this->setContent($content);
+        }
     }
 
     /**
@@ -2480,11 +2482,13 @@ class cHTMLTableData extends cHTML {
      *
      * @return void
      */
-    public function __construct($content) {
+    public function __construct($content = null) {
         parent::__construct();
         $this->_contentlessTag = false;
         $this->_tag = 'td';
-        $this->setContent($content);
+        if (!empty($content)) {
+            $this->setContent($content);
+        }
     }
 
     /**
