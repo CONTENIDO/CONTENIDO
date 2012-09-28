@@ -240,7 +240,7 @@ class PimPluginSetup {
 
         for ($i = 0; $i < $tempSqlLines; $i++) {
             $tempSqlContent[$i] = str_replace('!PREFIX!', $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
-            $db->query($tempSqlContent[$i]);
+            $db->query(cSecurity::escapeDB($tempSqlContent[$i], $db));
         }
     }
 
@@ -298,14 +298,14 @@ class PimPluginSetup {
         // delete folders
         $pimPluginColl->setWhere('idplugin', $pluginId);
         $pimPluginColl->query();
-        $pimPlugin = $pimPluginColl->next();
+        $pimPluginSql = $pimPluginColl->next();
 
-        $foldername = $pimPlugin->get('folder');
+        $foldername = $pimPluginSql->get('folder');
         $folderpath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($foldername);
         cFileHandler::recursiveRmdir($folderpath);
 
         // pluginname
-        $pluginname = $pimPlugin->get('name');
+        $pluginname = $pimPluginSql->get('name');
 
         // delete entries at *_plugins_rel and *_plugins
         $pimPluginRelColl->deleteByWhereClause('idplugin = ' . $pluginId);
