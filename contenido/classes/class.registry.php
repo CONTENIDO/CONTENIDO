@@ -30,6 +30,28 @@ class cRegistry {
     protected static $_appVars = array();
 
     /**
+     * Container for information messages
+     *
+     * @var array
+     */
+    public static $_infoMessages = array();
+
+    /**
+     * Container for error messages
+     *
+     * @var array
+     */
+    public static $_errMessages = array();
+
+    /**
+     * Container for warning messages
+     *
+     * @var array
+     */
+    public static $_warnMessages = array();
+
+
+    /**
      * Function wich returns path after the last possible place
      * changing via configuration file.
      * @return path
@@ -465,4 +487,63 @@ class cRegistry {
         }
     }
 
+    /**
+     * Stores an information massage in the cRegistry
+     *
+     * @param    string message
+     *
+     */
+    public static function addInfoMessage($message){
+    	self::$_infoMessages[] = $message;
+    }
+
+    /**
+     * Stores an information massage in the cRegistry
+     *
+     * @param    string message
+     *
+     */
+    public static function addErrorMessage($message){
+    array_push(self::$_errMessages, $message);
+    }
+
+    /**
+     * Stores an information massage in the cRegistry
+     *
+     * @param    string message
+     *
+     */
+    public static function addWarningMessage($message){
+    array_push(self::$_warnMessages, $message);
+    }
+
+    /**
+     * Returns an array with information messages
+     *
+     * @return   array
+     *
+     */
+    public static function getInfoMessages(){
+        return self::$_infoMessages;
+    }
+
+    /**
+     * Returns an array with error messages
+     *
+     * @return   array
+     *
+     */
+    public static function getErrorMessages(){
+        return self::$_errMessages;
+    }
+
+    /**
+     * Returns an array with warning messages
+     *
+     * @return   array
+     *
+     */
+    public static function getWarningMessages(){
+        return self::$_warnMessages;
+    }
 }

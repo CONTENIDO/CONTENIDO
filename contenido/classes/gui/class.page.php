@@ -519,6 +519,21 @@ class cGuiPage {
         }
         $this->_pagetemplate->set("s", "STYLES", $strstyle);
 
+        // get messages from cRegistry
+        $infoMessages = cRegistry::getInfoMessages();
+        foreach ($infoMessages as $message) {
+        	$this->displayInfo($message);
+        }
+
+        $errorMessages = cRegistry::getErrorMessages();
+        foreach ($errorMessages as $message) {
+            $this->displayError($message);
+        }
+
+        $warningMessages = cRegistry::getWarningMessages();
+        foreach ($warningMessages as $message) {
+            $this->displayWarning($message);
+        }
         $text = "";
         if ($this->_info != "") {
             $text = $notification->returnNotification("info", $this->_info) . "<br>";
