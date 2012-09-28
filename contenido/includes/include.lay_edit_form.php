@@ -208,7 +208,7 @@ if (!$layout->virgin)
 	$ta_description->setStyle("font-family: monospace;width: 100%;");
 	$ta_description->updateAttributes(array("wrap" => "off"));
 	
-	$ta_code = new cHTMLTextarea("code", htmlspecialchars($code), 100,20, 'code');
+	$ta_code = new cHTMLTextarea("code", conHtmlSpecialChars($code), 100,20, 'code');
 	$ta_code->setStyle("font-family: monospace;width: 100%;");
 	$ta_code->updateAttributes(array("wrap" => "off"));
 	
@@ -224,11 +224,11 @@ if (!$layout->virgin)
     $tpl->set('s', 'IDLAY',     $idlay);
     $tpl->set('s', 'DESCR',     $description);
     $tpl->set('s', 'CLASS', 'code_sfullwidth');
-    $tpl->set('s', 'NAME',      htmlspecialchars($name));
+    $tpl->set('s', 'NAME',      conHtmlSpecialChars($name));
     
     # Set dynamic pointers
     $tpl->set('d', 'CAPTION', i18n("Code").':');
-    $tpl->set('d', 'VALUE',   htmlspecialchars($code));
+    $tpl->set('d', 'VALUE',   conHtmlSpecialChars($code));
     $tpl->set('d', 'CLASS', 'code_fullwidth');
     $tpl->set('d', 'NAME',    'code');
     $tpl->next();

@@ -537,11 +537,11 @@ class cApiModule extends Item
     	$tree  = new XmlTree('1.0', 'ISO-8859-1');
     	$root =& $tree->addRoot('module');
 
-		$root->appendChild("name", htmlspecialchars($this->get("name")));    		
-		$root->appendChild("description", htmlspecialchars($this->get("description")));
-		$root->appendChild("type", htmlspecialchars($this->get("type")));
-		$root->appendChild("input", htmlspecialchars($this->get("input")));
-		$root->appendChild("output", htmlspecialchars($this->get("output")));
+		$root->appendChild("name", conHtmlSpecialChars($this->get("name")));    		
+		$root->appendChild("description", conHtmlSpecialChars($this->get("description")));
+		$root->appendChild("type", conHtmlSpecialChars($this->get("type")));
+		$root->appendChild("input", conHtmlSpecialChars($this->get("input")));
+		$root->appendChild("output", conHtmlSpecialChars($this->get("output")));
 		
     	if ($return == false)
     	{
@@ -602,7 +602,7 @@ class cApiModule extends Item
 	 * 								of the xml file will be imported. If specified, has to 
 	 * 								contain an array of this structure:
 	 * 
-	 * $aOptions["items"][<filetype>][<htmlspecialchars(filename)>]				= "skip", "append" or "overwrite";
+	 * $aOptions["items"][<filetype>][<conHtmlSpecialChars(filename)>]				= "skip", "append" or "overwrite";
 	 * $aOptions["translations"][<PackageLanguage>]	= <AssignedIDLang>;
 	 * 
 	 * 								If a file is not mentioned in the $aOptions["items"][<filetype>]
@@ -670,15 +670,15 @@ class cApiModule extends Item
 				{
 					foreach ($_mImport["items"][$sFileType] as $sFileName => $aContent)
 					{
-						if (!array_key_exists(htmlspecialchars($sFileName), $aOptions["items"][$sFileType]) || 
-							$aOptions["items"][$sFileType][htmlspecialchars($sFileName)] == "overwrite")
+						if (!array_key_exists(conHtmlSpecialChars($sFileName), $aOptions["items"][$sFileType]) || 
+							$aOptions["items"][$sFileType][conHtmlSpecialChars($sFileName)] == "overwrite")
 						{
 							if (!file_exists($sFilePath . $sFileName))
 							{
 								createFile($sFileName, $sFilePath);
 							}
 							fileEdit($sFileName, $aContent["content"], $sFilePath);
-						} else if ($aOptions["items"][$sFileType][htmlspecialchars($sFileName)] == "append")
+						} else if ($aOptions["items"][$sFileType][conHtmlSpecialChars($sFileName)] == "append")
 						{
 							$sOriginalContent = getFileContent($sFileName, $sFilePath);
 							
@@ -693,8 +693,8 @@ class cApiModule extends Item
 			{
 				foreach ($_mImport["items"]["layouts"] as $sLayout => $aContent)
 				{
-					if (!array_key_exists(htmlspecialchars($sLayout), $aOptions["items"]["layouts"]) || 
-						$aOptions["items"]["layouts"][htmlspecialchars($sLayout)] == "overwrite")
+					if (!array_key_exists(conHtmlSpecialChars($sLayout), $aOptions["items"]["layouts"]) || 
+						$aOptions["items"]["layouts"][conHtmlSpecialChars($sLayout)] == "overwrite")
 					{
 						$oLayouts = new cApiLayoutCollection;
 						$oLayouts->setWhere("idclient", $client);
@@ -707,7 +707,7 @@ class cApiModule extends Item
 						} else {
 							layEditLayout($oLayout->get($oLayout->primaryKey), addslashes($sLayout), addslashes($aContent["description"]), addslashes($aContent["content"]));
 						}						
-					} else if ($aOptions["items"]["layouts"][htmlspecialchars($sLayout)] == "append")
+					} else if ($aOptions["items"]["layouts"][conHtmlSpecialChars($sLayout)] == "append")
 					{
 						$oLayouts = new cApiLayoutCollection;
 						$oLayouts->setWhere("idclient", $client);
@@ -786,11 +786,11 @@ class cApiModule extends Item
 
 		// Export basic module
 		$oNodeModule =& $oRoot->appendChild("module");
-		$oNodeModule->appendChild("name",		 htmlspecialchars($this->get("name")));			
-		$oNodeModule->appendChild("description", htmlspecialchars($this->get("description")));
-		$oNodeModule->appendChild("type", 		 htmlspecialchars($this->get("type")));
-		$oNodeModule->appendChild("input", 		 htmlspecialchars($this->get("input")));
-		$oNodeModule->appendChild("output", 	 htmlspecialchars($this->get("output")));
+		$oNodeModule->appendChild("name",		 conHtmlSpecialChars($this->get("name")));			
+		$oNodeModule->appendChild("description", conHtmlSpecialChars($this->get("description")));
+		$oNodeModule->appendChild("type", 		 conHtmlSpecialChars($this->get("type")));
+		$oNodeModule->appendChild("input", 		 conHtmlSpecialChars($this->get("input")));
+		$oNodeModule->appendChild("output", 	 conHtmlSpecialChars($this->get("output")));
 		
 		// Export files (e.g. js, css, templates)
 		foreach ($this->_packageStructure As $sFileType => $sFilePath)
@@ -804,9 +804,9 @@ class cApiModule extends Item
 					{
 						$sContent = getFileContent($sFileName, $sFilePath);
 						
-						$oNodeFiles->appendChild("area", 	htmlspecialchars($sFileType));
-						$oNodeFiles->appendChild("name", 	htmlspecialchars($sFileName));
-						$oNodeFiles->appendChild("content", htmlspecialchars($sContent));
+						$oNodeFiles->appendChild("area", 	conHtmlSpecialChars($sFileType));
+						$oNodeFiles->appendChild("name", 	conHtmlSpecialChars($sFileName));
+						$oNodeFiles->appendChild("content", conHtmlSpecialChars($sContent));
 					}
 				}
 			}
@@ -825,9 +825,9 @@ class cApiModule extends Item
 			if (in_array($oLayout->get($oLayout->primaryKey), $aData["layouts"]))
 			{
 				$oNodeLayouts->appendChild("area", 			"layouts");
-				$oNodeLayouts->appendChild("name", 			htmlspecialchars($oLayout->get("name")));
-				$oNodeLayouts->appendChild("description",	htmlspecialchars($oLayout->get("description")));
-				$oNodeLayouts->appendChild("content",		htmlspecialchars($oLayout->get("code")));
+				$oNodeLayouts->appendChild("name", 			conHtmlSpecialChars($oLayout->get("name")));
+				$oNodeLayouts->appendChild("description",	conHtmlSpecialChars($oLayout->get("description")));
+				$oNodeLayouts->appendChild("content",		conHtmlSpecialChars($oLayout->get("code")));
 			}
 		}
 		unset ($oLayout);
@@ -851,9 +851,9 @@ class cApiModule extends Item
 					// This is nice, but it doesn't help so much,
 					// as this data is available too late on import ...
 	   				$oNodeTrans->setNodeAttribs(array("origin-language-id" => $iID,
-	   									   			  "origin-language-name" => htmlspecialchars($oLang->get("name"))));
+	   									   			  "origin-language-name" => conHtmlSpecialChars($oLang->get("name"))));
 					// ... so we store the important information with the data
-					$oNodeTrans->appendChild("language", htmlspecialchars($oLang->get("name")));
+					$oNodeTrans->appendChild("language", conHtmlSpecialChars($oLang->get("name")));
 					
 					$oTranslations = new cApiModuleTranslationCollection;
 					$oTranslations->setWhere("idmod", $iIDMod);
@@ -864,8 +864,8 @@ class cApiModule extends Item
 					{
 						$oNodeString =& $oNodeTrans->appendChild("string");
 			
-						$oNodeString->appendChild("original",		htmlspecialchars($oTranslation->get("original")));
-						$oNodeString->appendChild("translation",	htmlspecialchars($oTranslation->get("translation")));
+						$oNodeString->appendChild("original",		conHtmlSpecialChars($oTranslation->get("original")));
+						$oNodeString->appendChild("translation",	conHtmlSpecialChars($oTranslation->get("translation")));
 					}
 				}
 			}
@@ -1028,8 +1028,8 @@ class cApiModuleTranslationCollection extends ItemCollection
 		{
 			$string =&$translation->appendChild("string");
 			
-			$string->appendChild("original", htmlspecialchars($otranslation->get("original")));
-			$string->appendChild("translation", htmlspecialchars($otranslation->get("translation")));	
+			$string->appendChild("original", conHtmlSpecialChars($otranslation->get("original")));
+			$string->appendChild("translation", conHtmlSpecialChars($otranslation->get("translation")));	
 		}	   									   
 		
 		if ($return == false)

@@ -160,7 +160,7 @@ class Contenido_Security {
 			}
 		}
 	  
-		return self::escapeDB( htmlspecialchars( urlencode($sString)), $oDb, false);
+		return self::escapeDB( conHtmlSpecialChars( urlencode($sString)), $oDb, false);
     }
 
     /**

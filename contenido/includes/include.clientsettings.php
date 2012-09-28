@@ -154,18 +154,18 @@ if ($aItems !== false)
             $sMouseoverTemplate = '<span onmouseover="Tip(\'%s\', BALLOON, true, ABOVE, true);">%s</span>';
             
             if (strlen($aValue['type']) > 35) {
-                $sShort = htmlspecialchars(capiStrTrimHard($aValue['type'], 35));
-                $aValue['type'] = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($aValue['type']), ENT_QUOTES), $sShort);
+                $sShort = conHtmlSpecialChars(capiStrTrimHard($aValue['type'], 35));
+                $aValue['type'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($aValue['type']), ENT_QUOTES), $sShort);
             }
             
             if (strlen($aValue['value']) > 35) {
-                $sShort = htmlspecialchars(capiStrTrimHard($aValue['value'], 35));
-                $aValue['value'] = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($aValue['value']), ENT_QUOTES), $sShort);
+                $sShort = conHtmlSpecialChars(capiStrTrimHard($aValue['value'], 35));
+                $aValue['value'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($aValue['value']), ENT_QUOTES), $sShort);
             }
             
             if (strlen($aValue['name']) > 35) {
-                $sShort = htmlspecialchars(capiStrTrimHard($aValue['name'], 35));
-                $aValue['name'] = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($aValue['name']), ENT_QUOTES), $sShort);
+                $sShort = conHtmlSpecialChars(capiStrTrimHard($aValue['name'], 35));
+                $aValue['name'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($aValue['name']), ENT_QUOTES), $sShort);
             }
 			
         	$oList->setData($iCounter, $aValue['type'], $aValue['name'], $aValue['value'], $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());

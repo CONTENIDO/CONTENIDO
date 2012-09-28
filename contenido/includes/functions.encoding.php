@@ -22,7 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-26, Frederic Schneider, add security fix
- *   modified 2008-11-12, Andreas Lindner, add function htmlentities_iso88592    
+ *   modified 2008-11-12, Andreas Lindner, add function conHtmlentities_iso88592    
  *
  *   $Id: functions.encoding.php 873 2008-11-12 09:18:50Z andreas.lindner $:
  * }}
@@ -82,10 +82,10 @@ function getEncodingByLanguage (&$oDb, $iLang, $cfg) {
  * @return string
  */
 
-function htmlentities_iso88592 ($sInput = '') {
+function conHtmlentities_iso88592 ($sInput = '') {
     
 	$arrEntities_pl = array('&ecirc;', '&oacute;', '&plusmn;', '&para;', '&sup3;', '&iquest;', '&frac14;', '&aelig;', '&ntilde;', '&Ecirc;', '&Oacute;', '&iexcl;', '&brvbar;', '&pound;', '&not;', '&macr;', '&AElig;', '&Ntilde;');   
-    $arrEntities = get_html_translation_table(HTML_ENTITIES);
+    $arrEntities = conGetHtmlTranslationTable(HTML_ENTITIES);
     $arrEntities = array_diff($arrEntities, $arrEntities_pl);
 
     return strtr($sInput, $arrEntities);

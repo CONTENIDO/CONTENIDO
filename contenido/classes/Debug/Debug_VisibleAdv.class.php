@@ -163,7 +163,7 @@ class Debug_VisibleAdv implements IDebug, Countable {
 					$bTextarea = true;
 				} else {
 					$bPlainText = true;
-					$mValue = htmlspecialchars($mValue);
+					$mValue = conHtmlSpecialChars($mValue);
 				}
 			} else {
 				$bPlainText = true;

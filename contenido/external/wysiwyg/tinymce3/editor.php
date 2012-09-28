@@ -53,7 +53,7 @@ if ($a_content[$type][$typenr]) {
 	// if not set it is possible to use available content from var $editor_content
 }
 
-$editor_content = htmlspecialchars($editor_content);
+$editor_content = conHtmlSpecialChars($editor_content);
 
 $cTinyMCEEditor = new cTinyMCEEditor($editor_name, $editor_content);
 

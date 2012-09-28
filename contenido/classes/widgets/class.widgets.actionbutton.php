@@ -259,11 +259,11 @@ class cApiClickableQuestionAction extends cApiClickableAction
 		switch ($this->_mode)
 		{
 			case QUESTIONACTION_PROMPT:
-				$this->_link->attachEventDefinition("_".get_class($this).rand(), "onclick", 'var answer = prompt("'.htmlspecialchars($this->_question).'");if (answer == null) {return false;} else { this.href = this.href + "&'.$this->_resultVar.'="+answer; return true;}');
+				$this->_link->attachEventDefinition("_".get_class($this).rand(), "onclick", 'var answer = prompt("'.conHtmlSpecialChars($this->_question).'");if (answer == null) {return false;} else { this.href = this.href + "&'.$this->_resultVar.'="+answer; return true;}');
 				break;
 			case QUESTIONACTION_YESNO:
 			default:
-			 	$this->_link->attachEventDefinition("_".get_class($this).rand(), "onclick", 'var answer = confirm("'.htmlspecialchars($this->_question).'");if (answer == false) {return false;} else { return true;}');
+			 	$this->_link->attachEventDefinition("_".get_class($this).rand(), "onclick", 'var answer = confirm("'.conHtmlSpecialChars($this->_question).'");if (answer == false) {return false;} else { return true;}');
 			 	break;
 		}
 			

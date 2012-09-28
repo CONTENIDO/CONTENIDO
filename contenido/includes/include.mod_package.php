@@ -165,16 +165,16 @@ function displayFiles ($aFiles, $aSelected, &$oForm, $sCaption, $sField, $sDisab
 			{
 				if (in_array($sFile[0], $aSelected))
 				{
-					$oOption = new cHTMLOptionElement(htmlspecialchars($sFile[1]), $sFile[0], true);
+					$oOption = new cHTMLOptionElement(conHtmlSpecialChars($sFile[1]), $sFile[0], true);
 				} else {
-					$oOption = new cHTMLOptionElement(htmlspecialchars($sFile[1]), $sFile[0]);
+					$oOption = new cHTMLOptionElement(conHtmlSpecialChars($sFile[1]), $sFile[0]);
 				}
 			} else {
 				if (in_array($sID, $aSelected))
 				{
-					$oOption = new cHTMLOptionElement(htmlspecialchars($sFile), $sID, true);
+					$oOption = new cHTMLOptionElement(conHtmlSpecialChars($sFile), $sID, true);
 				} else {
-					$oOption = new cHTMLOptionElement(htmlspecialchars($sFile), $sID);
+					$oOption = new cHTMLOptionElement(conHtmlSpecialChars($sFile), $sID);
 				}
 			} // End-Edit
 			$oSelFiles->addOptionElement($iCounter, $oOption);
@@ -265,7 +265,7 @@ if ($idmod > 0 && $perm->have_perm_area_action_item("mod_edit", "mod_edit", $idm
 							{
 								foreach ($aResult[$sFileType] as $sFile)
 								{
-									$oLstFiles->setCell($iCounter, 1, htmlspecialchars($sFile));
+									$oLstFiles->setCell($iCounter, 1, conHtmlSpecialChars($sFile));
 									
 									switch ($aFileType["path"])
 									{
@@ -273,7 +273,7 @@ if ($idmod > 0 && $perm->have_perm_area_action_item("mod_edit", "mod_edit", $idm
 											// Languages have to be assigned, they won't be added or something
 											if (is_array($aDataFiles))
 											{
-												$oSelLang = new cHTMLSelectElement("selAssignTrans[".htmlspecialchars($sFile)."]");
+												$oSelLang = new cHTMLSelectElement("selAssignTrans[".conHtmlSpecialChars($sFile)."]");
 												// $oSelLang->autoFill(array_merge(array(0 => $sMsg["- Select -"]), $aDataFiles)); // Old Version
 												$oSelLang->autoFill(array_merge(array(array(0 , $sMsg["- Select -"])), $aDataFiles));  // Edit: 2008-06-27 By: OliverL
 												
@@ -293,9 +293,9 @@ if ($idmod > 0 && $perm->have_perm_area_action_item("mod_edit", "mod_edit", $idm
 										default:
 											if (is_array($aDataFiles) && in_array($sFile, $aDataFiles))
 											{
-												$oRadSkip 		= new cHTMLRadiobutton("radItem[".$sFileType."][".htmlspecialchars($sFile)."]", "skip", "", true);
-												$oRadAppend 	= new cHTMLRadiobutton("radItem[".$sFileType."][".htmlspecialchars($sFile)."]", "append");
-												$oRadOverwrite	= new cHTMLRadiobutton("radItem[".$sFileType."][".htmlspecialchars($sFile)."]", "overwrite");
+												$oRadSkip 		= new cHTMLRadiobutton("radItem[".$sFileType."][".conHtmlSpecialChars($sFile)."]", "skip", "", true);
+												$oRadAppend 	= new cHTMLRadiobutton("radItem[".$sFileType."][".conHtmlSpecialChars($sFile)."]", "append");
+												$oRadOverwrite	= new cHTMLRadiobutton("radItem[".$sFileType."][".conHtmlSpecialChars($sFile)."]", "overwrite");
 												
 												$oLstFiles->setCell($iCounter, 2, $sMsg["Conflict"]);
 												$oLstFiles->setCell($iCounter, 3, sprintf($sMsg["Action"], $oRadSkip->toHTML(false), $oRadAppend->toHTML(false), $oRadOverwrite->toHTML(false)));

@@ -1376,7 +1376,7 @@ class Item
 	 * @var array 
 	 * @access private
 	 */
-	var $_arrInFilters = array ('urlencode', 'htmlspecialchars', 'addslashes');
+	var $_arrInFilters = array ('urlencode', 'conHtmlSpecialChars', 'addslashes');
 
 	/**
 	 * Array storing the funcion names of the filters

@@ -166,14 +166,14 @@ function strNewTree($catname, $catalias = '', $bVisible = 0, $bPublic = 1, $iIdt
                 if ($tmp_lang == $lang) {
                     $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
                             VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
-                            '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
-                            '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+                            '".conHtmlSpecialChars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
+                            '".conHtmlSpecialChars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
                     $db->query($sql);
                 } else {
                     $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
                             VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
-                            '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
-                           '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+                            '".conHtmlSpecialChars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
+                           '".conHtmlSpecialChars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
                     $db->query($sql);
                 }
             }
@@ -192,14 +192,14 @@ function strNewTree($catname, $catalias = '', $bVisible = 0, $bPublic = 1, $iIdt
                 if ($tmp_lang == $lang) {
                     $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
                             VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
-                            '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
-                            '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+                            '".conHtmlSpecialChars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
+                            '".conHtmlSpecialChars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
                     $db->query($sql);
                 } else {
                     $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
                             VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
-                            '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
-                            '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+                            '".conHtmlSpecialChars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
+                            '".conHtmlSpecialChars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
                     $db->query($sql);
                 }
             }
@@ -326,14 +326,14 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
             if ($tmp_lang == $lang) {
                 $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
                         VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
-                        '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
-                        '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+                        '".conHtmlSpecialChars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
+                        '".conHtmlSpecialChars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
                 $db->query($sql);
             } else {
                 $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
                         VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
-                        '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
-                        '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+                        '".conHtmlSpecialChars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
+                        '".conHtmlSpecialChars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
                 $db->query($sql);
             }
         }
@@ -354,14 +354,14 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
             if ($tmp_lang == $lang) {
                 $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
                         VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
-                        '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
-                        '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+                        '".conHtmlSpecialChars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
+                        '".conHtmlSpecialChars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
                 $db->query($sql);
             } else {
                 $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
                         VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
-                        '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
-                        '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+                        '".conHtmlSpecialChars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
+                        '".conHtmlSpecialChars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
                 $db->query($sql);
             }
         }
@@ -773,13 +773,13 @@ function strRenameCategory($idcat, $lang, $newcategoryname, $newcategoryalias) {
     $remakeStrTable = true;
 
     if (trim($newcategoryname) != "") {
-        $sUrlname = htmlspecialchars(capiStrCleanURLCharacters($newcategoryname), ENT_QUOTES);
-        $sName = htmlspecialchars($newcategoryname, ENT_QUOTES);
+        $sUrlname = conHtmlSpecialChars(capiStrCleanURLCharacters($newcategoryname), ENT_QUOTES);
+        $sName = conHtmlSpecialChars($newcategoryname, ENT_QUOTES);
 
         if (trim($newcategoryalias) != "") {
             $sql = "SELECT urlname, name FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
             $db->query($sql);
-            $sUrlnameNew = htmlspecialchars(capiStrCleanURLCharacters($newcategoryalias), ENT_QUOTES);
+            $sUrlnameNew = conHtmlSpecialChars(capiStrCleanURLCharacters($newcategoryalias), ENT_QUOTES);
             if ($db->next_record()) {
                 $sOldAlias = $db->f('urlname');
                 $sOldName = $db->f('name');

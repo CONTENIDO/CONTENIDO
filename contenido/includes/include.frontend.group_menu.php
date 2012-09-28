@@ -53,7 +53,7 @@ while ($fegroup = $fegroups->next())
     $link->setCustom("idfrontendgroup",$idfegroup);
 
     $delTitle = i18n("Delete frontend group");
-    $delDescr = sprintf(i18n("Do you really want to delete the following frontend group:<br><b>%s</b>"),htmlspecialchars($groupname));
+    $delDescr = sprintf(i18n("Do you really want to delete the following frontend group:<br><b>%s</b>"),conHtmlSpecialChars($groupname));
   	$delete = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteFrontendGroup(\\\''.$idfegroup.'\\\')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';	
 		
   	$menu->setTitle($idfegroup, $groupname);	

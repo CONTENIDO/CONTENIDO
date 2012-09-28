@@ -936,7 +936,7 @@ class XML_RPC_Response extends XML_RPC_Base
     {
         if ($fcode != 0) {
             $this->fn = $fcode;
-            $this->fs = htmlspecialchars($fstr);
+            $this->fs = conHtmlSpecialChars($fstr);
         } else {
             $this->xv = $val;
         }
@@ -1261,7 +1261,7 @@ class XML_RPC_Message extends XML_RPC_Base
         $hdrfnd = 0;
         if ($this->debug) {
             print "<PRE>---GOT---\n";
-            print isset($_SERVER['SERVER_PROTOCOL']) ? htmlspecialchars($data) : $data;
+            print isset($_SERVER['SERVER_PROTOCOL']) ? conHtmlSpecialChars($data) : $data;
             print "\n---END---\n</PRE>";
         }
 
@@ -1314,7 +1314,7 @@ class XML_RPC_Message extends XML_RPC_Base
         if ($this->debug) {
             print '<PRE>---EVALING---[' .
             strlen($XML_RPC_xh[$parser]['st']) . " chars]---\n" .
-            htmlspecialchars($XML_RPC_xh[$parser]['st']) . ";\n---END---</PRE>";
+            conHtmlSpecialChars($XML_RPC_xh[$parser]['st']) . ";\n---END---</PRE>";
         }
         if (strlen($XML_RPC_xh[$parser]['st']) == 0) {
             // then something odd has happened
@@ -1537,7 +1537,7 @@ class XML_RPC_Value extends XML_RPC_Base
                 $rs .= "<${typ}>" . ($val ? '1' : '0') . "</${typ}>";
                 break;
             case $XML_RPC_String:
-                $rs .= "<${typ}>" . htmlspecialchars($val). "</${typ}>";
+                $rs .= "<${typ}>" . conHtmlSpecialChars($val). "</${typ}>";
                 break;
             default:
                 $rs .= "<${typ}>${val}</${typ}>";

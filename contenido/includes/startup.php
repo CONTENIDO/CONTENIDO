@@ -48,6 +48,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+// include php 5.4 fix functions
+include_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/includes/functions.php54.php');
 
 // 1. security check: Include security class and invoke basic request checks
 include_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.security.php');

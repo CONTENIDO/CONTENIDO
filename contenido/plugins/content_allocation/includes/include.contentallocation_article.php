@@ -74,7 +74,7 @@ prCreateURLNameLocationString($idcat, '/', $catString);
 $oArticle = new Article ($idart, $client, $lang);
 $sArticleTitle = $oArticle->getField('title');
 
-$sLocationString = "<div class=\"categorypath\">".$catString.'/'.htmlspecialchars($sArticleTitle)."</div>";
+$sLocationString = "<div class=\"categorypath\">".$catString.'/'.conHtmlSpecialChars($sArticleTitle)."</div>";
 
 // load allocations
 $loadedAllocations = $oAlloc->loadAllocations($this_idartlang);

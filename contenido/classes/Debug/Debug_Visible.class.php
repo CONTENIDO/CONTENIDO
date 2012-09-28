@@ -87,7 +87,7 @@ class Debug_Visible implements IDebug {
 					$bTextarea = true;
 				} else {
 					$bPlainText = true;
-					$mVariable = htmlspecialchars($mVariable);
+					$mVariable = conHtmlSpecialChars($mVariable);
 				}
 			} else {
 				$bPlainText = true;

@@ -74,7 +74,7 @@ class RecipientGroupCollection extends ItemCollection
 
 		$group = new RecipientGroup;
 
-		$_arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
+		$_arrInFilters = array('urlencode', 'conHtmlSpecialChars', 'addslashes');
 
 		$mangledGroupName = $group->_inFilter($groupname);
 		$this->setWhere("idclient", $client);

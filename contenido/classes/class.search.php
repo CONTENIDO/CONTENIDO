@@ -284,13 +284,13 @@ class Index
 	              		$code = stripslashes($code); // remove backslash
 	              		$code = str_ireplace(array('<br>', '<br />'), "\n", $code); // replace HTML line breaks with newlines
 	              		$code = strip_tags($code); // remove html tags
-				  		if (function_exists('html_entity_decode'))
+				  		if (function_exists('conHtmlEntityDecode'))
 	                    {
 
 				/* Workaround for a PHP 4.3.0 bug */	                    	
 	                    	if (strlen($code) > 0)
 	                    	{
-	                    		$code = html_entity_decode($code);
+	                    		$code = conHtmlEntityDecode($code);
 	                    	}
 	                    }else
 	                    {
@@ -473,9 +473,9 @@ class Index
 		$sEncoding = getEncodingByLanguage($this->db, $this->lang, $this->cfg);
 		
 		if (strtolower($sEncoding) != 'iso-8859-2') {
-			$key = htmlentities($key, NULL, $sEncoding);
+			$key = conHtmlentities($key, NULL, $sEncoding);
 		} else {
-			$key = htmlentities_iso88592($key);
+			$key = conHtmlentities_iso88592($key);
 		}
 
         $aUmlautMap = array (
@@ -492,7 +492,7 @@ class Index
             $key = str_replace($sUmlaut, $sMapped, $key);
         }
 
-        $key = html_entity_decode($key);
+        $key = conHtmlEntityDecode($key);
 	  	
 	  	$key = str_replace($special_chars, "", $key);
 		
@@ -507,7 +507,7 @@ class Index
 	 * @return $key 
 	 */ 
     function addSpecialUmlauts ($key) {
-        $key = htmlentities($key, NULL, getEncodingByLanguage($this->db, $this->lang, $this->cfg));
+        $key = conHtmlentities($key, NULL, getEncodingByLanguage($this->db, $this->lang, $this->cfg));
         $aUmlautMap = array (
             'ue'    => '&Uuml;',
             'ue'    => '&uuml;',
@@ -522,7 +522,7 @@ class Index
             $key = str_replace($sUmlaut, $sMapped, $key);
         }
 
-        $key = html_entity_decode($key); 
+        $key = conHtmlEntityDecode($key); 
         return $key;
     }
     
@@ -1612,13 +1612,13 @@ class SearchResult
 			if (isset($cms_nr) AND is_numeric($cms_nr)) // get content of cms_type[cms_nr]
 			{
                 //build consistent escaped string(Timo Trautmann) 2008-04-17
-				$cms_content = htmlentities(html_entity_decode(strip_tags($article->getContent($cms_type, $cms_nr))));	
+				$cms_content = conHtmlentities(conHtmlEntityDecode(strip_tags($article->getContent($cms_type, $cms_nr))));	
 				if (count($this->replacement) == 2) 
 				{
     				foreach($search_words as $word)
     				{
                         //build consistent escaped string, replace ae ue .. with original html entities (Timo Trautmann) 2008-04-17
-                        $word = htmlentities(html_entity_decode($this->index->addSpecialUmlauts($word)));
+                        $word = conHtmlentities(conHtmlEntityDecode($this->index->addSpecialUmlauts($word)));
                         $match = array();
     					preg_match("/$word/i", $cms_content, $match);
     					if (isset($match[0]))
@@ -1629,7 +1629,7 @@ class SearchResult
     					}
     				}
 				}
-				$content[] = htmlspecialchars_decode($cms_content);	
+				$content[] = conHtmlSpecialChars_decode($cms_content);	
 			}else // get content of cms_type[$id], where $id are the cms_type numbers found in search
 			{
     			foreach ($id_type as $id)

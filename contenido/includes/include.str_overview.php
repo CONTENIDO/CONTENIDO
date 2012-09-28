@@ -736,7 +736,7 @@ if ( $perm->have_perm_area_action($area) ) {
             $hasArticles = strHasArticles($value->id);
             if(($hasChildren == 0) && ($hasArticles == false) &&($perm->have_perm_area_action($tmp_area, "str_deletecat") || $perm->have_perm_area_action_item($tmp_area,"str_deletecat",$value->id))) {
 
-                $delete = '<a href="javascript://" onclick="confDel('.$value->id.','.$value->custom['parentid'].', \''.htmlspecialchars($value->name).'\')">'."<img src=\"".$cfg["path"]["images"]."delete.gif\"></a>";
+                $delete = '<a href="javascript://" onclick="confDel('.$value->id.','.$value->custom['parentid'].', \''.conHtmlSpecialChars($value->name).'\')">'."<img src=\"".$cfg["path"]["images"]."delete.gif\"></a>";
                 $tpl->set('d', 'DELETEBUTTON', $delete);
             } else {
                 $message = i18n("No permission");
@@ -818,7 +818,7 @@ if ( $perm->have_perm_area_action($area) ) {
             
             if ($perm->have_perm_area_action("str", "str_duplicate") || $perm->have_perm_area_action_item("str", "str_duplicate", $value->id))
             {
-                $duplicate = '<a href="javascript://" onclick="confDupl('.$value->id.','.$value->custom['parentid'].', \''.htmlspecialchars($value->name).'\')">'."<img src=\"".$cfg["path"]["images"]."folder_duplicate.gif\"></a>";
+                $duplicate = '<a href="javascript://" onclick="confDupl('.$value->id.','.$value->custom['parentid'].', \''.conHtmlSpecialChars($value->name).'\')">'."<img src=\"".$cfg["path"]["images"]."folder_duplicate.gif\"></a>";
             	
             	$tpl->set('d', 'DUPLICATEBUTTON', $duplicate);
             } else {

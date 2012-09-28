@@ -102,7 +102,7 @@ while ($layout = $layouts->next()) {
             !$inUse)
             {
             	$delTitle = i18n("Delete layout");
-            	$delDescr = sprintf(i18n("Do you really want to delete the following layout:<br><br>%s<br>"),htmlspecialchars($name));
+            	$delDescr = sprintf(i18n("Do you really want to delete the following layout:<br><br>%s<br>"),conHtmlSpecialChars($name));
 
 
                 $tpl->set('d', 'DELETE', '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteLayout('.$idlay.')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>');

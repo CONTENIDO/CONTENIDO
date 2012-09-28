@@ -204,9 +204,9 @@ class cApiXml2Array
 				// TODO
 				// correct encoding from utf-8 to locale
 				// NEEDS to be updated to correct in both ways!
-				#$result['#text'] = html_entity_decode(htmlentities($domnode->get_content(), ENT_COMPAT, 'UTF-8'), ENT_COMPAT,'ISO-8859-1');
-				#$result = html_entity_decode(htmlentities($domnode->get_content(), ENT_COMPAT, 'UTF-8'), ENT_COMPAT,'ISO-8859-1');
-				$result = $this->dummy_html_entity_decode(htmlentities($domnode->get_content(), ENT_COMPAT, 'UTF-8'));
+				#$result['#text'] = conHtmlEntityDecode(conHtmlentities($domnode->get_content(), ENT_COMPAT, 'UTF-8'), ENT_COMPAT,'ISO-8859-1');
+				#$result = conHtmlEntityDecode(conHtmlentities($domnode->get_content(), ENT_COMPAT, 'UTF-8'), ENT_COMPAT,'ISO-8859-1');
+				$result = $this->dummy_conHtmlEntityDecode(conHtmlentities($domnode->get_content(), ENT_COMPAT, 'UTF-8'));
 			}
 	
 			return $result;
@@ -227,9 +227,9 @@ class cApiXml2Array
 		return ($matches[1])?$matches[1]:"";
 	}
 	
-	function dummy_html_entity_decode ($string)
+	function dummy_conHtmlEntityDecode ($string)
 	{
-	   $trans_tbl = get_html_translation_table(HTML_ENTITIES);
+	   $trans_tbl = conGetHtmlTranslationTable(HTML_ENTITIES);
 	   $trans_tbl = array_flip($trans_tbl);
 	   return strtr($string, $trans_tbl);	
 	}

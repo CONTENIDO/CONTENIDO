@@ -715,7 +715,7 @@ class Contenido_UpdateNotifier
 
             $iCnt = 0;
             foreach ($oRss->getItems() as $aItem) {
-                $sText = htmlentities($aItem['description'],ENT_QUOTES);
+                $sText = conHtmlentities($aItem['description'],ENT_QUOTES);
                 if (strlen($sText) > 150) {
                     $sText = capiStrTrimAfterWord($sText, 150).'...';
                 }

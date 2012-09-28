@@ -70,6 +70,7 @@ if (is_array($_REQUEST))
 }
 
 /* Includes */
+checkAndInclude("../contenido/includes/functions.php54.php");
 checkAndInclude("lib/defines.php");
 checkAndInclude("../pear/HTML/Common.php");
 checkAndInclude("../contenido/classes/class.htmlelements.php");

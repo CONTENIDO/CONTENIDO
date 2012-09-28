@@ -397,7 +397,7 @@ foreach ($aUserTable as $mkey => $params)
 	{    
     	$iMenu++;
     	
-		$message = sprintf(i18n("Do you really want to delete the user %s?"), htmlspecialchars($params["username"]));
+		$message = sprintf(i18n("Do you really want to delete the user %s?"), conHtmlSpecialChars($params["username"]));
 	        		
 		$delTitle = i18n("Delete user");
 		$deletebutton = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$message.'\', \'deleteFrontenduser('.$idfrontenduser.')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';

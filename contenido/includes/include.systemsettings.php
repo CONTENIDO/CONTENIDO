@@ -126,18 +126,18 @@ if (is_array($settings))
                 $sMouseoverTemplate = '<span onmouseover="Tip(\'%s\', BALLOON, true, ABOVE, true);">%s</span>';
             
                 if (strlen($type) > 35) {
-                    $sShort = htmlspecialchars(capiStrTrimHard($type, 35));
-                    $type = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($type), ENT_QUOTES), $sShort);
+                    $sShort = conHtmlSpecialChars(capiStrTrimHard($type, 35));
+                    $type = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($type), ENT_QUOTES), $sShort);
                 }
                 
                 if (strlen($value['value']) > 35) {
-                    $sShort = htmlspecialchars(capiStrTrimHard($value['value'], 35));
-                    $value['value'] = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($value['value']), ENT_QUOTES), $sShort);
+                    $sShort = conHtmlSpecialChars(capiStrTrimHard($value['value'], 35));
+                    $value['value'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($value['value']), ENT_QUOTES), $sShort);
                 }
                 
                 if (strlen($key) > 35) {
-                    $sShort = htmlspecialchars(capiStrTrimHard($key, 35));
-                    $key = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($key), ENT_QUOTES), $sShort);
+                    $sShort = conHtmlSpecialChars(capiStrTrimHard($key, 35));
+                    $key = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($key), ENT_QUOTES), $sShort);
                 }
 				
 				!strlen(trim($value['value'])) ? $sValue = '&nbsp;' : $sValue = $value['value'];

@@ -74,7 +74,7 @@ while ($db->next_record()) {
     }
 
     // Delete Button
-    $deleteMsg = sprintf(i18n("Do you really want to delete the language %s?"),htmlspecialchars($db->f("name")));
+    $deleteMsg = sprintf(i18n("Do you really want to delete the language %s?"),conHtmlSpecialChars($db->f("name")));
     $deleteAct = i18n("Delete language");
     $deletebutton = '<a title="'.$deleteAct.'" href="javascript://" onclick="box.confirm(\''.$deleteAct.'\', \''.$deleteMsg.'\', \'deleteLang('.$db->f("idlang").')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$deleteAct.'" alt="'.$deleteAct.'"></a>';
 

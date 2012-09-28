@@ -242,7 +242,7 @@ class HttpInputValidator {
 			}
 		} elseif ($this->sMode == 'training') {
 			echo "\n<br />VIOLATION: URL contains invalid or undefined paramaters! URL: '" . 
-				htmlentities($_SERVER['QUERY_STRING']) . "' <br />\n";
+				conHtmlentities($_SERVER['QUERY_STRING']) . "' <br />\n";
 		}
 	}
 	

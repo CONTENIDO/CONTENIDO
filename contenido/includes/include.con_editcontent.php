@@ -625,7 +625,7 @@ EOD;
 
 		if ($cfg["debug"]["codeoutput"])
       	{
-			echo "<textarea>".htmlspecialchars($code)."</textarea>";
+			echo "<textarea>".conHtmlSpecialChars($code)."</textarea>";
       	}
 
         $code = str_ireplace_once("<head>", "<head>\n".'<base href="'.$cfgClient[$client]["path"]["htmlpath"].'">', $code);

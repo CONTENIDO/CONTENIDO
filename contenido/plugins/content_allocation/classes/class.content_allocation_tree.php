@@ -87,7 +87,7 @@ class pApiTree {
 	/**
 	 * 
 	 */
-	var $_arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
+	var $_arrInFilters = array('urlencode', 'conHtmlSpecialChars', 'addslashes');
 
 	/**
 	 * 

@@ -245,7 +245,7 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
 			
 			$form->addHeader(i18n("Edit language"));
 			
-			$form->add(i18n("Language name"), formGenerateField ("text", "langname", htmlspecialchars($db->f("name")), 40, 255));
+			$form->add(i18n("Language name"), formGenerateField ("text", "langname", conHtmlSpecialChars($db->f("name")), 40, 255));
 			$form->add(i18n("Active"), formGenerateCheckbox ("active", "1",$db->f("active")));
 			
 			$form->addSubHeader(i18n("Language"));

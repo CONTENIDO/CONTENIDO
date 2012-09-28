@@ -85,7 +85,7 @@ function keywordDensity ($headline, $text) {
     $headline = strip_tags($headline);
     $text = strip_tags($text);
     
-	$text = html_entity_decode($text);
+	$text = conHtmlEntityDecode($text);
 	
 	// replace all non converted entities and double/more spaces
 	$patterns = array('#&[a-zA-Z]+\;#ei', '#\s+#');

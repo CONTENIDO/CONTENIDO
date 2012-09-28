@@ -442,7 +442,7 @@ class XML_Tree_Node {
     {
         static $trans_tbl = null;
         if (!$trans_tbl) {
-            $trans_tbl = get_html_translation_table(HTML_ENTITIES);
+            $trans_tbl = conGetHtmlTranslationTable(HTML_ENTITIES);
             $trans_tbl = array_flip($trans_tbl);
         }
         for ($i = 1; $i <= 255; $i++) {

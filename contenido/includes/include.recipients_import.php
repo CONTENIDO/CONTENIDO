@@ -136,7 +136,7 @@ while ($oRcpGroup = $oRcpGroups->next())
 	// Only PHP5!
 	//$sGroupName = str_replace(str_split(" \t\n\r\0\x0B;"), "", $oRcpGroup->get("groupname"));
 	
-	$aFields[$sField]					= strtolower(htmlentities(trim(i18n("Group") . "_" . $sGroupName)));
+	$aFields[$sField]					= strtolower(conHtmlentities(trim(i18n("Group") . "_" . $sGroupName)));
 	$aFieldDetails[$sField]["fieldtype"]= "group";
 	$aFieldDetails[$sField]["mandatory"]= false;
 	$aFieldDetails[$sField]["type"]		= "string";
@@ -179,7 +179,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
 				$aInvalidLines[] = $sLine;
 				
 				foreach ($aParts as $sHeader) {
-					$sKey = array_search(strtolower(htmlentities(trim($sHeader))), $aFields);
+					$sKey = array_search(strtolower(conHtmlentities(trim($sHeader))), $aFields);
 					if ($sKey === false) {
 						$aMessage[] = sprintf(i18n("Given column header '%s' unknown, column ignored"), $sHeader);
                 	} else {

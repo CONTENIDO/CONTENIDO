@@ -335,7 +335,7 @@ class cWidgetMultiToggleButton extends cWidgetButton
 		if ($this->_hinttext != "" && $this->_hintobject != "")
 		{
 			/* htmldecode was added to avoid double-htmlencoding by the pear
-			 * HTML classes, where they are doing a htmlspecialchars where
+			 * HTML classes, where they are doing a conHtmlSpecialChars where
 			 * they shouldn't do it.
 			 * 
 			 */

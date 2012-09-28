@@ -83,7 +83,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
 		$page_title = addslashes($page_title);
 
 		$urlname            = (trim($urlname) == '') ? trim($title) : trim($urlname);
-        $urlname            = htmlspecialchars(capiStrCleanURLCharacters($urlname), ENT_QUOTES);
+        $urlname            = conHtmlSpecialChars(capiStrCleanURLCharacters($urlname), ENT_QUOTES);
         $usetimemgmt		= ($timemgmt == '1') 	? '1' : '0';
 		$movetocat 			= ($time_move_cat == '1') ? '1' : '0';
 		$onlineaftermove 	= ($time_online_move == '1') ? '1' : '0';
@@ -401,7 +401,7 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
         $page_title = addslashes($page_title);
         
 		$urlname     = (trim($urlname) == '') ? trim($title) : trim($urlname);
-        $urlname     = htmlspecialchars(capiStrCleanURLCharacters($urlname), ENT_QUOTES);
+        $urlname     = conHtmlSpecialChars(capiStrCleanURLCharacters($urlname), ENT_QUOTES);
         $usetimemgmt = ($timemgmt == '1') ? '1': '0';        
 		$onlineaftermove = ($time_online_move == '1') ? '1' : '0';
 		$movetocat = ($time_move_cat == '1') ? '1' : '0';

@@ -153,7 +153,7 @@ if ($doedit == "1") {
 		$form->add(i18n("Link"),formGenerateField ("text", "CMS_LINKextern", $a_link_extern_value, 60, 255));
         
       
-        $form->add(i18n("Description"),"<TEXTAREA name=CMS_LINKDESCR ROWS=3 COLS=60>".htmlspecialchars($a_content["CMS_LINKDESCR"][$typenr])."</TEXTAREA>");
+        $form->add(i18n("Description"),"<TEXTAREA name=CMS_LINKDESCR ROWS=3 COLS=60>".conHtmlSpecialChars($a_content["CMS_LINKDESCR"][$typenr])."</TEXTAREA>");
         
         
 		

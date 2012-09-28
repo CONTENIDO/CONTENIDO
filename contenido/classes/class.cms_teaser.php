@@ -913,8 +913,8 @@ class Cms_Teaser {
 			//teaserfilter defines strings which must be contained in text for display. 
 			//if string is defined check if article contains this string and abort, if article does not contain this string
 			if ($this->aSettings['teaser_filter'] != '') {
-				$iPosText = strrpos(html_entity_decode($sText), $this->aSettings['teaser_filter']);
-				$iPosHead = strrpos(html_entity_decode($sTitle), $this->aSettings['teaser_filter']);
+				$iPosText = strrpos(conHtmlEntityDecode($sText), $this->aSettings['teaser_filter']);
+				$iPosHead = strrpos(conHtmlEntityDecode($sTitle), $this->aSettings['teaser_filter']);
 				if (is_bool($iPosText) && !$iPosText && is_bool($iPosHead) && !$iPosHead) {
 					return false;
 				}
@@ -1035,7 +1035,7 @@ class Cms_Teaser {
         
 		return $sCode;
 		//use this to show xml document which contains teaser settings
-		#return '<pre>'.htmlentities($this->sContent).'</pre>';
+		#return '<pre>'.conHtmlentities($this->sContent).'</pre>';
 	}
 	
 	/**

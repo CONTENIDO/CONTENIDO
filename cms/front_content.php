@@ -914,7 +914,7 @@ else
         {
             if ($cfg["debug"]["codeoutput"])
             {
-                echo "<textarea>".htmlspecialchars($code)."</textarea>";
+                echo "<textarea>".conHtmlSpecialChars($code)."</textarea>";
             }
 
             /*

@@ -855,15 +855,15 @@ class PEAR_Common extends PEAR
         $ret .= "<!DOCTYPE package SYSTEM \"http://pear.php.net/dtd/package-1.0\">\n";
         $ret .= "<package version=\"1.0\">
   <name>$pkginfo[package]</name>
-  <summary>".htmlspecialchars($pkginfo['summary'])."</summary>
-  <description>".htmlspecialchars($pkginfo['description'])."</description>
+  <summary>".conHtmlSpecialChars($pkginfo['summary'])."</summary>
+  <description>".conHtmlSpecialChars($pkginfo['description'])."</description>
   <maintainers>
 ";
         foreach ($pkginfo['maintainers'] as $maint) {
             $ret .= "    <maintainer>\n";
             foreach ($maint_map as $idx => $elm) {
                 $ret .= "      <$elm>";
-                $ret .= htmlspecialchars($maint[$idx]);
+                $ret .= conHtmlSpecialChars($maint[$idx]);
                 $ret .= "</$elm>\n";
             }
             $ret .= "    </maintainer>\n";
@@ -912,10 +912,10 @@ class PEAR_Common extends PEAR
             $ret .= "$indent    <state>$pkginfo[release_state]</state>\n";
         }
         if (!empty($pkginfo['release_notes'])) {
-            $ret .= "$indent    <notes>".htmlspecialchars($pkginfo['release_notes'])."</notes>\n";
+            $ret .= "$indent    <notes>".conHtmlSpecialChars($pkginfo['release_notes'])."</notes>\n";
         }
         if (!empty($pkginfo['release_warnings'])) {
-            $ret .= "$indent    <warnings>".htmlspecialchars($pkginfo['release_warnings'])."</warnings>\n";
+            $ret .= "$indent    <warnings>".conHtmlSpecialChars($pkginfo['release_warnings'])."</warnings>\n";
         }
         if (isset($pkginfo['release_deps']) && sizeof($pkginfo['release_deps']) > 0) {
             $ret .= "$indent    <deps>\n";
@@ -936,11 +936,11 @@ class PEAR_Common extends PEAR
             $ret .= "$indent    <configureoptions>\n";
             foreach ($pkginfo['configure_options'] as $c) {
                 $ret .= "$indent      <configureoption name=\"".
-                    htmlspecialchars($c['name']) . "\"";
+                    conHtmlSpecialChars($c['name']) . "\"";
                 if (isset($c['default'])) {
-                    $ret .= " default=\"" . htmlspecialchars($c['default']) . "\"";
+                    $ret .= " default=\"" . conHtmlSpecialChars($c['default']) . "\"";
                 }
-                $ret .= " prompt=\"" . htmlspecialchars($c['prompt']) . "\"";
+                $ret .= " prompt=\"" . conHtmlSpecialChars($c['prompt']) . "\"";
                 $ret .= "/>\n";
             }
             $ret .= "$indent    </configureoptions>\n";
@@ -961,7 +961,7 @@ class PEAR_Common extends PEAR
                 @$ret .= "$indent      <file role=\"$fa[role]\"";
                 if (isset($fa['baseinstalldir'])) {
                     $ret .= ' baseinstalldir="' .
-                        htmlspecialchars($fa['baseinstalldir']) . '"';
+                        conHtmlSpecialChars($fa['baseinstalldir']) . '"';
                 }
                 if (isset($fa['md5sum'])) {
                     $ret .= " md5sum=\"$fa[md5sum]\"";
@@ -971,9 +971,9 @@ class PEAR_Common extends PEAR
                 }
                 if (!empty($fa['install-as'])) {
                     $ret .= ' install-as="' .
-                        htmlspecialchars($fa['install-as']) . '"';
+                        conHtmlSpecialChars($fa['install-as']) . '"';
                 }
-                $ret .= ' name="' . htmlspecialchars($file) . '"';
+                $ret .= ' name="' . conHtmlSpecialChars($file) . '"';
                 if (empty($fa['replacements'])) {
                     $ret .= "/>\n";
                 } else {
@@ -981,7 +981,7 @@ class PEAR_Common extends PEAR
                     foreach ($fa['replacements'] as $r) {
                         $ret .= "$indent        <replace";
                         foreach ($r as $k => $v) {
-                            $ret .= " $k=\"" . htmlspecialchars($v) .'"';
+                            $ret .= " $k=\"" . conHtmlSpecialChars($v) .'"';
                         }
                         $ret .= "/>\n";
                     }

@@ -72,7 +72,7 @@ class FrontendGroupCollection extends ItemCollection {
 		
 		$group = new FrontendGroup;
 		
-		$_arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
+		$_arrInFilters = array('urlencode', 'conHtmlSpecialChars', 'addslashes');
 
 		$mangledGroupName = $group->_inFilter($groupname);		
 		$this->select("idclient = '$client' AND groupname = '$mangledGroupName'");

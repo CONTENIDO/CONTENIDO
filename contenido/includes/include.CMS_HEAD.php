@@ -22,7 +22,7 @@
  * {@internal 
  *   created 2003-05-07
  *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2008-01-05, Timo Trautmann, add htmlspecialchars() instead of htmlentitydecode() because of UTF-8 Bug
+ *   modified 2008-01-05, Timo Trautmann, add conHtmlSpecialChars() instead of htmlentitydecode() because of UTF-8 Bug
  *
  *   $Id: include.CMS_HEAD.php 934 2009-01-05 10:32:56Z timo.trautmann $:
  * }}
@@ -79,7 +79,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 
         if ($type == "CMS_HEAD") {
                 echo "  <TR><TD valign=\"top\" class=text_medium>&nbsp;".$typenr.".&nbsp;".$a_description[$type][$typenr].":&nbsp;</TD><TD class=content>";
-                echo "  <INPUT type=text name=\"CMS_HEAD\" VALUE=\"".htmlspecialchars(urldecode($a_content[$type][$typenr]))."\" SIZE=90>";
+                echo "  <INPUT type=text name=\"CMS_HEAD\" VALUE=\"".conHtmlSpecialChars(urldecode($a_content[$type][$typenr]))."\" SIZE=90>";
                 echo "  </TD></TR>";
         }
         

@@ -205,7 +205,7 @@ else {
 		// Show path of selected category to user		
 		$catString = '';
 		prCreateURLNameLocationString($idcat, '/', $catString);
-		$tpl->set('s', 'CATEGORY', $catString.'/'.htmlspecialchars($tmp_title));
+		$tpl->set('s', 'CATEGORY', $catString.'/'.conHtmlSpecialChars($tmp_title));
 		
 		/* Title */
 		$tpl->set('s', 'TITEL', i18n("Title"));
@@ -244,10 +244,10 @@ else {
 		$tpl->set('s', 'ARTIKELART', i18n("Article specification"));
 		$tpl->set('s', 'ARTIKELARTSELECT', $tmp_inputArtSort);
 
-		$tpl->set('s', 'TITEL-FIELD', '<input '.$disabled.' style="width:400px;" type="text" class="text_medium" name="title" value="'.htmlspecialchars($tmp_title).'">');
+		$tpl->set('s', 'TITEL-FIELD', '<input '.$disabled.' style="width:400px;" type="text" class="text_medium" name="title" value="'.conHtmlSpecialChars($tmp_title).'">');
 
         // plugin Advanced Mod Rewrite - edit by stese
-        $tpl->set('s', 'URLNAME-FIELD', '<input '.$disabled.' style="width:400px;" type="text" class="text_medium" name="urlname" value="'.htmlspecialchars($tmp_urlname).'">');
+        $tpl->set('s', 'URLNAME-FIELD', '<input '.$disabled.' style="width:400px;" type="text" class="text_medium" name="urlname" value="'.conHtmlSpecialChars($tmp_urlname).'">');
         // end plugin Advanced Mod Rewrite
 
 		$tpl->set('s', 'ARTIKELID', "idart");
@@ -319,7 +319,7 @@ else {
 			$forceDisable = "disabled";
 		}
 
-		$tpl->set('s', 'URL', '<input type="text" '.$disabled.' '.$forceDisable.' class="text_medium" name="redirect_url" style="width:380px;" id="redirect_url" value="'.htmlspecialchars($tmp_redirect_url).'">');
+		$tpl->set('s', 'URL', '<input type="text" '.$disabled.' '.$forceDisable.' class="text_medium" name="redirect_url" style="width:380px;" id="redirect_url" value="'.conHtmlSpecialChars($tmp_redirect_url).'">');
 
 		/* Redirect - New window */
 		if (getEffectiveSetting("articles", "show-new-window-checkbox", "false") == "true")
@@ -620,7 +620,7 @@ else {
 		$select = $tpl2->generate($cfg["path"]["templates"] . $cfg["templates"]["generic_select"], true);
 
 		/* Seitentitel */
-		$title_input = '<input type="text" '.$disabled.' class="text_medium" name="page_title" style="width:400px;" value="'.htmlspecialchars($tmp_page_title).'">';
+		$title_input = '<input type="text" '.$disabled.' class="text_medium" name="page_title" style="width:400px;" value="'.conHtmlSpecialChars($tmp_page_title).'">';
 		$tpl->set("s", "TITLE-INPUT", $title_input);
 
 		/* Meta-Tags */
@@ -647,14 +647,14 @@ else {
 			{
 				case "text":
                     if ($value["name"] == 'date') {
-                        $element = '<input '.$disabled.' class="text_medium" type="text" name="META'.$value["name"].'" id="META'.$value["name"].'" style="width:380px;" maxlength='.$value["maxlength"].' value="'.htmlspecialchars(conGetMetaValue($tmp_idartlang,$key)).'">
+                        $element = '<input '.$disabled.' class="text_medium" type="text" name="META'.$value["name"].'" id="META'.$value["name"].'" style="width:380px;" maxlength='.$value["maxlength"].' value="'.conHtmlSpecialChars(conGetMetaValue($tmp_idartlang,$key)).'">
                                     <img src="images/calendar.gif" width="16" height="16" style="vertical-align:top;margin-top:2px;" id="METAdate_button" title="'.i18n("Select date").'" alt="'.i18n("Select date").'">'.$sMetaDate;
                     } else {
-                        $element = '<input '.$disabled.' class="text_medium" type="text" name="META'.$value["name"].'" id="META'.$value["name"].'" style="width:400px;" maxlength='.$value["maxlength"].' value="'.htmlspecialchars(conGetMetaValue($tmp_idartlang,$key)).'">';
+                        $element = '<input '.$disabled.' class="text_medium" type="text" name="META'.$value["name"].'" id="META'.$value["name"].'" style="width:400px;" maxlength='.$value["maxlength"].' value="'.conHtmlSpecialChars(conGetMetaValue($tmp_idartlang,$key)).'">';
 					}
                     break;
 				case "textarea":
-					$element = '<textarea '.$disabled.' class="text_medium" name="META'.$value["name"].'" id="META'.$value["name"].'" style="width:400px;" rows=3>'.htmlspecialchars(conGetMetaValue($tmp_idartlang,$key)).'</textarea>';
+					$element = '<textarea '.$disabled.' class="text_medium" name="META'.$value["name"].'" id="META'.$value["name"].'" style="width:400px;" rows=3>'.conHtmlSpecialChars(conGetMetaValue($tmp_idartlang,$key)).'</textarea>';
 					break;
 			}
             

@@ -535,10 +535,10 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	
 	foreach ($metatags as $value)
 	{
-        // decode entities and htmlspecialchars, content will be converted later using htmlspecialchars()
+        // decode entities and conHtmlSpecialChars, content will be converted later using conHtmlSpecialChars()
         // by render() function 
-        $value['content'] = html_entity_decode($value['content'], ENT_QUOTES, strtoupper($encoding[$lang]));
-        $value['content'] = htmlspecialchars_decode($value['content'], ENT_QUOTES);
+        $value['content'] = conHtmlEntityDecode($value['content'], ENT_QUOTES, strtoupper($encoding[$lang]));
+        $value['content'] = conHtmlSpecialChars_decode($value['content'], ENT_QUOTES);
 
 		// build up metatag string
 		$oMetaTagGen = new cHTML();

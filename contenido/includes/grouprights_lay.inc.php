@@ -133,8 +133,8 @@ $db->query($sql);
 
 while ($db->next_record()) {
 
-	$sTplName     = htmlentities($db->f("name"));
-	$sDescription = htmlentities($db->f("description"));
+	$sTplName     = conHtmlentities($db->f("name"));
+	$sDescription = conHtmlentities($db->f("description"));
 
 
 	$sTable .= $oTable->row();

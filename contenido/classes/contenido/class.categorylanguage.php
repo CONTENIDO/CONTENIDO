@@ -70,7 +70,7 @@ class cApiCategoryLanguage extends Item
 				$this->setField("urlname", $value);
 				break;
 			case "urlname":
-				$value = htmlspecialchars(capiStrCleanURLCharacters($value), ENT_QUOTES);
+				$value = conHtmlSpecialChars(capiStrCleanURLCharacters($value), ENT_QUOTES);
 				break;	
 		}
 		

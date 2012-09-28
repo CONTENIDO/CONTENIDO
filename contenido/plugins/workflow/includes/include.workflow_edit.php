@@ -46,8 +46,8 @@ if ($action == "workflow_save")
 		$workflow = $workflows->create();
 	}
 
-	$workflow->set("name",htmlspecialchars($wfname));
-	$workflow->set("description",htmlspecialchars($wfdescription));
+	$workflow->set("name",conHtmlSpecialChars($wfname));
+	$workflow->set("description",conHtmlSpecialChars($wfdescription));
 	$idworkflow = $workflow->get("idworkflow");
 	$workflow->store();
 }
