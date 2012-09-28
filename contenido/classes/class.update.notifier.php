@@ -433,7 +433,7 @@ class Contenido_UpdateNotifier
 
         if ($this->sXMLContent != "") {
             $this->oXML = simplexml_load_string($this->sXMLContent);
-            if (!is_object($this->oXML)) {
+			if (!is_object($this->oXML)) {
                    $sErrorMessage = i18n('Unable to check for new updates!')." ".i18n('Could not handle server response!');
                 $this->sErrorOutput = $this->renderOutput($sErrorMessage);
             } else {
@@ -626,7 +626,7 @@ class Contenido_UpdateNotifier
      */
     protected function checkPatchLevel()
     {
-        $sVersionCompare = version_compare($this->aCfg['version'], $this->sVendorVersion);
+		$sVersionCompare = version_compare($this->aCfg['version'], $this->sVendorVersion);
         return $sVersionCompare;
     }
 
@@ -766,7 +766,7 @@ class Contenido_UpdateNotifier
             $sOutput = $this->renderOutput($sMessage);
         } else if ($this->sErrorOutput != "") {
             $sOutput = $this->sErrorOutput;
-        } else if (!$this->sVendorVersion) {
+		} else if ($this->sVendorVersion == '') {
             $sMessage = i18n('You have an unknown or unsupported version of Contenido!');
             $sOutput = $this->renderOutput($sMessage);
         } else if ($this->sVendorVersion == "deprecated") {
