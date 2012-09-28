@@ -31,7 +31,7 @@ if (function_exists('conPhp54Check') == false) {
 }
 
 if (function_exists('conHtmlSpecialChars') == false) {
-	function conHtmlSpecialChars($value, $flags = '', $encoding = '', $doubleEncode = true) {
+	function conHtmlSpecialChars($value, $flags = '', $encoding = '') {
 		$isPhp54 = conPhp54Check();
 		
 		if ($isPhp54 == 1) {
@@ -41,7 +41,7 @@ if (function_exists('conHtmlSpecialChars') == false) {
 			$flags = ($flags == '') ? ENT_COMPAT : $flags;
 		}
 		
-		return htmlspecialchars($value, $flags, $encoding, $doubleEncode);
+		return htmlspecialchars($value, $flags, $encoding);
 	}
 }
 
@@ -61,7 +61,7 @@ if (function_exists('conHtmlEntityDecode') == false) {
 }
 
 if (function_exists('conHtmlentities') == false) {
-	function conHtmlentities($value, $flags = '', $encoding = '', $doubleEncode = true) {
+	function conHtmlentities($value, $flags = '', $encoding = '') {
 		$isPhp54 = conPhp54Check();
 		
 		if ($isPhp54 == 1) {
@@ -71,23 +71,22 @@ if (function_exists('conHtmlentities') == false) {
 			$flags = ($flags == '') ? ENT_COMPAT : $flags;
 		}
 		
-		return htmlentities($value, $flags, $encoding, $doubleEncode);
+		return htmlentities($value, $flags, $encoding);
 	}
 }
 
 if (function_exists('conGetHtmlTranslationTable') == false) {
-	function conGetHtmlTranslationTable($table = '', $flags = '', $encoding = '') {
+	function conGetHtmlTranslationTable($table = '', $flags = '') {
 		$isPhp54 = conPhp54Check();
 		
 		if ($isPhp54 == 1) {
 			$table = ($table == '') ? HTML_SPECIALCHARS : $table;
 			$flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
-			$encoding = ($encoding == '') ? 'ISO-8859-1' : $encoding;
 		} else {
 			$flags = ($flags == '') ? ENT_COMPAT : $flags;
 		}
 		
-		return get_html_translation_table($table, $flags, $encoding);
+		return get_html_translation_table($table, $flags);
 	}
 }
 
