@@ -22,17 +22,11 @@ class PimPluginSetup {
 
     public $tempXml;
 
-    protected $_pluginConfig;
-
     protected $_pluginSqlBuilder;
 
     protected $_extractor; // TODO
     public function addArchiveObject($extractor) {
         $this->_extractor = $extractor;
-    }
-
-    public function setConfig(Contenido_PluginConfig $config) {
-        $this->_pluginConfig = $config;
     }
 
     // check $sTempXml file with getValidXml()
@@ -236,16 +230,17 @@ class PimPluginSetup {
      */
     protected function _installAddSpecificSql() {
         $cfg = cRegistry::getConfig();
+        $db = cRegistry::getDb();
         $tempSqlFilename = $this->_extractor->extractArchiveFileToVariable('plugin.sql', 0);
 
-        if (file_exists($tempSqlFilename)) {
-            $f = fopen($tempSqlFilename, 'rb');
+        $tempSqlContent = cFileHandler::read($tempSqlFilename);
+        $tempSqlContent = str_replace("\r\n", "\n", $tempSqlContent);
+        $tempSqlContent = explode("\n", $tempSqlContent);
+        $tempSqlLines = count($tempSqlContent);
 
-            while (($tempSqlContent = fgets($f)) !== false) {
-                $tempSqlContent = str_replace('!PREFIX!', $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent);
-                // TODO remove debug output
-                echo $tempSqlContent . '<br />';
-            }
+        for ($i = 0; $i < $tempSqlLines; $i++) {
+            $tempSqlContent[$i] = str_replace('!PREFIX!', $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
+            $db->query($tempSqlContent[$i]);
         }
     }
 
@@ -254,9 +249,10 @@ class PimPluginSetup {
      *
      * @access public
      * @param $pluginId id of uninstall plugid
+     * @param $page page class
      * @return void
      */
-    public function uninstall($pluginId) {
+    public function uninstall($pluginId, $page) {
         $cfg = cRegistry::getConfig();
 
         // security check
@@ -302,16 +298,22 @@ class PimPluginSetup {
         // delete folders
         $pimPluginColl->setWhere('idplugin', $pluginId);
         $pimPluginColl->query();
+        $pimPlugin = $pimPluginColl->next();
 
-        while (($pimPlugin = $pimPluginColl->next()) !== false) {
-            $foldername = $pimPlugin->get('folder');
-            $folderpath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($foldername);
-            cFileHandler::recursiveRmdir($folderpath);
-        }
+        $foldername = $pimPlugin->get('folder');
+        $folderpath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($foldername);
+        cFileHandler::recursiveRmdir($folderpath);
+
+        // pluginname
+        $pluginname = $pimPlugin->get('name');
 
         // delete entries at *_plugins_rel and *_plugins
         $pimPluginRelColl->deleteByWhereClause('idplugin = ' . $pluginId);
         $pimPluginColl->deleteByWhereClause('idplugin = ' . $pluginId);
+
+        // result message
+        $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been successfully uninstalled', 'pim'));
+
     }
 
 }

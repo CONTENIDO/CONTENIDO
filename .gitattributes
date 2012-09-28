@@ -1777,7 +1777,6 @@ contenido/plugins/pim/classes/Contenido_Plugin.class.php -text
 contenido/plugins/pim/classes/Contenido_Plugin_Base.class.php -text
 contenido/plugins/pim/classes/Setup/class.pimpluginsetup.php -text
 contenido/plugins/pim/classes/Util/Zip/class.pimpluginarchiveextractor.php -text
-contenido/plugins/pim/classes/View/Contenido_PluginView.class.php -text
 contenido/plugins/pim/classes/class.pim.plugin.collection.php -text
 contenido/plugins/pim/classes/class.pim.plugin.relations.collection.php -text
 contenido/plugins/pim/includes/config.plugin.php -text
@@ -1786,9 +1785,8 @@ contenido/plugins/pim/locale/de_DE/LC_MESSAGES/pim.mo -text
 contenido/plugins/pim/locale/de_DE/LC_MESSAGES/pim.po -text
 contenido/plugins/pim/locale/pim.pot -text
 contenido/plugins/pim/locale/pim_potfiles.txt -text svneol=unset#text/plain
-contenido/plugins/pim/templates/pim_install.html -text svneol=unset#text/plain
-contenido/plugins/pim/templates/pim_overview.html -text svneol=unset#text/plain
-contenido/plugins/pim/templates/pim_plugins.html -text svneol=unset#text/plain
+contenido/plugins/pim/templates/template.pim_overview.html -text svneol=unset#text/plain
+contenido/plugins/pim/templates/template.pim_plugins.html -text svneol=unset#text/plain
 contenido/plugins/pim/xml/pim.xml -text svneol=unset#text/plain
 contenido/plugins/pim/xml/plugin_info.xml -text svneol=unset#text/plain
 contenido/plugins/pim/xml/plugin_info.xsd -text svneol=unset#text/plain

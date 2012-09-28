@@ -25,4 +25,3 @@ plugin_include('pim', 'classes/Util/Zip/class.pimpluginarchiveextractor.php');
 
 // old
 plugin_include('pim', 'classes/Contenido_Plugin_Base.class.php');
-plugin_include('pim', 'classes/View/Contenido_PluginView.class.php');

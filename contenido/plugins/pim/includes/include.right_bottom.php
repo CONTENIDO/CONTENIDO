@@ -22,28 +22,75 @@ $setup = new PimPluginSetup();
 // OLD
 $plugin = new Contenido_Plugin_Base($db, $cfg, $cfgClient, $lang);
 
-// TODO: Change!
-$view = new Contenido_PluginView($sess);
+$page = new cGuiPage('pim_overview', 'pim');
+
+// get all installed plugins
+$oItem = new PimPluginCollection();
+$oItem->select();
+
+while (($plugin = $oItem->next()) !== false) {
+
+    // initalization new class
+    $pagePlugins = new cGuiPage('pim_plugins', 'pim');
+
+    // date
+    $date = date_format(date_create($plugin->get('installed')), i18n('Y-m-d', 'pim'));
+
+    $pagePlugins->set('s', 'IDPLUGIN', $plugin->get('idplugin'));
+    $pagePlugins->set('s', 'NAME', $plugin->get('name'));
+    $pagePlugins->set('s', 'VERSION', $plugin->get('version'));
+    $pagePlugins->set('s', 'DESCRIPTION', $plugin->get('description'));
+    $pagePlugins->set('s', 'AUTHOR', $plugin->get('author'));
+    $pagePlugins->set('s', 'MAIL', $plugin->get('mail'));
+    $pagePlugins->set('s', 'WEBSITE', $plugin->get('website'));
+    $pagePlugins->set('s', 'COPYRIGHT', $plugin->get('copyright'));
+    $pagePlugins->set('s', 'INSTALLED', $date);
+
+    $pagePlugins->set('s', 'LANG_INSTALLED', i18n('Installed since', 'pim'));
+    $pagePlugins->set('s', 'LANG_AUTHOR', i18n('Author', 'pim'));
+    $pagePlugins->set('s', 'LANG_CONTACT', i18n('Contact', 'pim'));
+    $pagePlugins->set('s', 'LANG_UNINSTALL', i18n('Uninstall', 'pim'));
+    $pagePlugins->set('s', 'LANG_UPDATE', i18n('Update', 'pim'));
+    $pagePlugins->set('s', 'LANG_UPDATE_CHOOSE', i18n('Please choose your new file', 'pim'));
+    $pagePlugins->set('s', 'LANG_UPDATE_UPLOAD', i18n('Update', 'pim'));
+
+    // TODO: Implementierung einer Abfangmeldung "Wollen Sie dieses Plugin
+    // wirklich löschen?"
+    // uninstall link
+    $pagePlugins->set('s', 'UNINSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall&pluginId=' . $plugin->get('idplugin')));
+
+    $plugins .= $pagePlugins->render(null, true);
+}
+
+// added language vars
+$page->set('s', 'LANG_ADD', i18n('Add new plugin', 'pim'));
+$page->set('s', 'LANG_ADD_CHOOSE', i18n('Please choose a plugin package', 'pim'));
+$page->set('s', 'LANG_ADD_UPLOAD', i18n('Upload plugin package', 'pim'));
+$page->set('s', 'LANG_INSTALLED', i18n('Installed Plugins', 'pim'));
+
+// added installed plugins to pim_overview
+$page->set('s', 'INSTALLED_PLUGINS', $oItem->count());
+$page->set('s', 'PLUGINS',  $plugins);
 
 $viewAction = isset($_REQUEST['pim_view'])? $_REQUEST['pim_view'] : 'overview';
 
 switch ($viewAction) {
     case 'update':
         $setup->uninstall($_POST['pluginId']);
-        installationRoutine();
+        installationRoutine($page);
         break;
     case 'uninstall':
-        $setup->uninstall($_GET['pluginId']);
+        $setup->uninstall($_GET['pluginId'], $page);
         break;
     case 'install':
-        installationRoutine();
+        installationRoutine($page);
         break;
 }
 
 // TODO: Ggfls. koennen einige der Aufrufe auch in die Klasse ausgegliedert und
 // uebersichtlicher
 // implementiert werden
-function installationRoutine() {
+function installationRoutine($page) {
     global $cfg, $setup;
 
     // name of uploaded file
@@ -72,13 +119,17 @@ function installationRoutine() {
     // check min contenido version
     if (!empty($tempXml->general->min_contenido_version) && version_compare($cfg['version'], $tempXml->general->min_contenido_version, '<')) {
         $extractor->destroyTempFiles();
-        throw new cException('You have to installed CONTENIDO ' . $tempXml->general->min_contenido_version . ' or higher to install this plugin!');
+		$page->displayError(i18n('You have to install CONTENIDO <strong>', 'pim') . $tempXml->general->min_contenido_version . i18n('</strong> or higher to install this plugin!', 'pim'));
+		$page->render();
+		exit;
     }
 
     // check max contenido version
     if (!empty($tempXml->general->max_contenido_version) && version_compare($cfg['version'], $tempXml->general->max_contenido_version, '>')) {
         $extractor->destroyTempFiles();
-        throw new cException('You\'re current CONTENIDO version is to new - max CONTENIDO version: ' . $tempXml->general->max_contenido_version);
+        $page->displayError(i18n('You\'re current CONTENIDO version is to new - max CONTENIDO version: ' . $tempXml->general->max_contenido_version . '', 'pim'));
+        $page->render();
+        exit;
     }
 
     // build the new plugin dir
@@ -103,7 +154,7 @@ function installationRoutine() {
     $setup->install($tempXml);
 
     // Success message
-    $notice = i18n('The plugin has been successfully installed', 'pim');
+    $page->displayInfo(i18n('The plugin has been successfully installed', 'pim'));
 
     // close extracted archive
     $extractor->closeArchive();
@@ -112,57 +163,4 @@ function installationRoutine() {
     $extractor->destroyTempFiles();
 }
 
-// get all installed plugins
-$oItem = new PimPluginCollection();
-$oItem->select();
-
-while (($plugin = $oItem->next()) !== false) {
-
-    // initalization new class
-    $view2 = new Contenido_PluginView($sess);
-
-    // date
-    $date = date_format(date_create($plugin->get('installed')), i18n('Y-m-d', 'pim'));
-
-    $view2->setVariable($plugin->get('idplugin'), 'IDPLUGIN');
-    $view2->setVariable($plugin->get('name'), 'NAME');
-    $view2->setVariable($plugin->get('version'), 'VERSION');
-    $view2->setVariable($plugin->get('description'), 'DESCRIPTION');
-    $view2->setVariable($plugin->get('author'), 'AUTHOR');
-    $view2->setVariable($plugin->get('mail'), 'MAIL');
-    $view2->setVariable($plugin->get('website'), 'WEBSITE');
-    $view2->setVariable($plugin->get('copyright'), 'COPYRIGHT');
-    $view2->setVariable($date, 'INSTALLED');
-    $view2->setVariable($notice, 'NOTICE');
-
-    $view2->setVariable(i18n('Installed since', 'pim'), 'LANG_INSTALLED');
-    $view2->setVariable(i18n('Author', 'pim'), 'LANG_AUTHOR');
-    $view2->setVariable(i18n('Contact', 'pim'), 'LANG_CONTACT');
-    $view2->setVariable(i18n('Uninstall', 'pim'), 'LANG_UNINSTALL');
-    $view2->setVariable(i18n('Update', 'pim'), 'LANG_UPDATE');
-    $view2->setVariable(i18n('Please choose your new file', 'pim'), 'LANG_UPDATE_CHOOSE');
-    $view2->setVariable(i18n('Update', 'pim'), 'LANG_UPDATE_UPLOAD');
-
-    // TODO: Implementierung einer Abfangmeldung "Wollen Sie dieses Plugin
-    // wirklich löschen?"
-    // uninstall link
-    $view2->setVariable($sess->url('main.php?area=pim&frame=4&pim_view=uninstall&pluginId=' . $plugin->get('idplugin')), 'UNINSTALL_LINK');
-
-    $view2->setTemplate('plugins/pim/templates/pim_plugins.html');
-    $plugins .= $view2->getRendered(1); // rendered only pim_plugins
-}
-
-// added language vars
-$view->setVariable(i18n('Add new plugin', 'pim'), 'LANG_ADD');
-$view->setVariable(i18n('Please choose a plugin package', 'pim'), 'LANG_ADD_CHOOSE');
-$view->setVariable(i18n('Upload plugin package', 'pim'), 'LANG_ADD_UPLOAD');
-$view->setVariable(i18n('Installed Plugins', 'pim'), 'LANG_INSTALLED');
-
-// added installed plugins to pim_overview
-$view->setVariable($oItem->count(), 'INSTALLED_PLUGINS');
-$view->setVariable($plugins, 'PLUGINS');
-
-// show overview page
-$view->setTemplate('plugins/pim/templates/pim_overview.html');
-
-$view->getRendered();
+$page->render();
