@@ -7,7 +7,6 @@
  * Display files from specified directory
  *
  * @package CONTENIDO Backend Includes
- * @version 1.3.1
  * @author Olaf Niemann, Willi Man
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -20,18 +19,18 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-cInclude("includes", "functions.file.php");
+cInclude('includes', 'functions.file.php');
 $tpl->reset();
 
 if (!(int) $client > 0) {
     // If there is no client selected, display empty page
-    $oPage = new cGuiPage("style_files_overview");
+    $oPage = new cGuiPage('style_files_overview');
     $oPage->render();
     return;
 }
 
-$path = $cfgClient[$client]["css"]["path"];
-$sFileType = "css";
+$path = $cfgClient[$client]['css']['path'];
+$sFileType = 'css';
 
 $sSession = $sess->id;
 
@@ -63,7 +62,7 @@ if (($handle = opendir($path)) !== false) {
         if (substr($file, (strlen($file) - (strlen($sFileType) + 1)), (strlen($sFileType) + 1)) == ".$sFileType" and is_readable($path . $file)) {
             $aFiles[] = $file;
         } elseif (substr($file, (strlen($file) - (strlen($sFileType) + 1)), (strlen($sFileType) + 1)) == ".$sFileType" and !is_readable($path . $file)) {
-            $notification->displayNotification("error", $file . " " . i18n("is not readable!"));
+            $notification->displayNotification('error', $file . ' ' . i18n('is not readable!'));
         }
     }
     closedir($handle);
@@ -81,8 +80,8 @@ if (($handle = opendir($path)) !== false) {
 
             $tpl->set('d', 'FILENAME', $html_filename);
 
-            $delTitle = i18n("Delete File");
-            $delDescr = sprintf(i18n("Do you really want to delete the following file:<br><br>%s<br>"), $filename);
+            $delTitle = i18n('Delete File');
+            $delDescr = sprintf(i18n('Do you really want to delete the following file:<br><br>%s<br>'), $filename);
 
             if ($perm->have_perm_area_action('style', $sActionDelete)) {
                 $sql = 'SELECT `idsfi` FROM `' . $cfg['tab']['file_information'] . '` WHERE `idclient`=' . cSecurity::toInteger($client) . " AND `filename`='" . cSecurity::toString($filename) . "'";
@@ -105,7 +104,7 @@ if (($handle = opendir($path)) !== false) {
         }
     }
 } else if ((int) $client > 0) {
-    $notification->displayNotification("error", i18n("Directory is not existing or readable!") . "<br>$path");
+    $notification->displayNotification('error', i18n('Directory is not existing or readable!') . "<br>$path");
 }
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['files_overview']);

@@ -20,21 +20,21 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-cInclude("external", "codemirror/class.codemirror.php");
-cInclude("includes", "functions.file.php");
+cInclude('external', 'codemirror/class.codemirror.php');
+cInclude('includes', 'functions.file.php');
 
-$sFileType = "html";
+$sFileType = 'html';
 
 $sActionCreate = 'htmltpl_create';
 $sActionEdit = 'htmltpl_edit';
 $sActionDelete = 'htmltpl_delete';
 $sFilename = '';
-$page = new cGuiPage("html_tpl_edit_form");
+$page = new cGuiPage('html_tpl_edit_form');
 
 $tpl->reset();
 
 if (!$perm->have_perm_area_action($area, $action)) {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n('Permission denied'));
     return;
 }
 
@@ -46,10 +46,10 @@ if (!(int) $client > 0) {
 
 if ($action == $sActionDelete) {
 
-    $path = $cfgClient[$client]["tpl"]["path"];
+    $path = $cfgClient[$client]['tpl']['path'];
     // delete file
     // TODO also delete the versioning files
-    if (!strrchr($_REQUEST['delfile'], "/")) {
+    if (!strrchr($_REQUEST['delfile'], '/')) {
         if (cFileHandler::exists($path . $_REQUEST['delfile'])) {
             unlink($path . $_REQUEST['delfile']);
             $fileInfoCollection = new cApiFileInformationCollection();
@@ -59,7 +59,7 @@ if ($action == $sActionDelete) {
                 'type' => 'templates'
             ));
 
-            $page->displayInfo(i18n("Deleted template file successfully!"));
+            $page->displayInfo(i18n('Deleted template file successfully!'));
         }
     }
     $sReloadScript = "<script type=\"text/javascript\">
@@ -74,7 +74,7 @@ if ($action == $sActionDelete) {
     $page->addScript($sReloadScript);
     $page->render();
 } else {
-    $path = $cfgClient[$client]["tpl"]["path"];
+    $path = $cfgClient[$client]['tpl']['path'];
     $sTempFilename = stripslashes($_REQUEST['tmp_file']);
     $sOrigFileName = $sTempFilename;
 
@@ -94,11 +94,11 @@ if ($action == $sActionDelete) {
                              }
                          </script>";
     } else {
-        $sReloadScript = "";
+        $sReloadScript = '';
     }
 
     // Content Type is template
-    $sTypeContent = "templates";
+    $sTypeContent = 'templates';
 
     // Create new file
     if ($_REQUEST['action'] == $sActionCreate && $_REQUEST['status'] == 'send') {
@@ -117,7 +117,7 @@ if ($action == $sActionDelete) {
         $fileInfoCollection = new cApiFileInformationCollection();
         $fileInfoCollection->create('templates', $sFilename, $_REQUEST['description']);
 
-        $page->displayInfo(i18n("Created new template file successfully!"));
+        $page->displayInfo(i18n('Created new template file successfully!'));
     }
 
     // Edit selected file
@@ -128,7 +128,7 @@ if ($action == $sActionDelete) {
             if (cFileHandler::rename($path . $sTempFilename, $sFilename)) {
                 $sTempFilename = $sFilename;
             } else {
-                $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
+                $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $path . $sTempFilename));
                 exit();
             }
             $sReloadScript .= "<script type=\"text/javascript\">
@@ -143,16 +143,16 @@ if ($action == $sActionDelete) {
         }
 
         if ($sFilename != $sTempTempFilename) {
-            $page->displayInfo(i18n("Renamed template file successfully!"));
+            $page->displayInfo(i18n('Renamed template file successfully!'));
         } else {
-            $page->displayInfo(i18n("Saved changes successfully!"));
+            $page->displayInfo(i18n('Saved changes successfully!'));
         }
 
         $fileInfoCollection = new cApiFileInformationCollection();
         $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
 
-        if ((count($aFileInfo) > 0) && ($aFileInfo["idsfi"] != "")) {
-            $oVersion = new cVersionFile($aFileInfo["idsfi"], $aFileInfo, $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame, $sOrigFileName);
+        if ((count($aFileInfo) > 0) && ($aFileInfo['idsfi'] != '')) {
+            $oVersion = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame, $sOrigFileName);
             // Create new Layout Version in cms/version/css/ folder
             $oVersion->createNewVersion();
         }
@@ -161,7 +161,7 @@ if ($action == $sActionDelete) {
         $fileInfoCollection->updateFile($sOrigFileName, 'templates', $_REQUEST['description'], $sFilename);
 
         // Track version
-        $sTypeContent = "templates";
+        $sTypeContent = 'templates';
 
         cFileHandler::validateFilename($sFilename);
         cFileHandler::write($path . $sFilename, $_REQUEST['code']);
@@ -184,33 +184,33 @@ if ($action == $sActionDelete) {
         }
 
         // Try to validate html
-        if (getEffectiveSetting("layout", "htmlvalidator", "true") == "true" && $sCode !== "") {
+        if (getEffectiveSetting('layout', 'htmlvalidator', 'true') == 'true' && $sCode !== '') {
             $v = new cHTMLValidator();
             $v->validate($sCode);
-            $msg = "";
+            $msg = '';
 
             foreach ($v->missingNodes as $value) {
-                $idqualifier = "";
+                $idqualifier = '';
 
                 $attr = array();
 
-                if ($value["name"] != "") {
-                    $attr["name"] = "name '" . $value["name"] . "'";
+                if ($value['name'] != '') {
+                    $attr['name'] = "name '" . $value['name'] . "'";
                 }
 
-                if ($value["id"] != "") {
-                    $attr["id"] = "id '" . $value["id"] . "'";
+                if ($value['id'] != '') {
+                    $attr['id'] = "id '" . $value['id'] . "'";
                 }
 
-                $idqualifier = implode(", ", $attr);
+                $idqualifier = implode(', ', $attr);
 
-                if ($idqualifier != "") {
+                if ($idqualifier != '') {
                     $idqualifier = "($idqualifier)";
                 }
-                $msg .= sprintf(i18n("Tag '%s' %s has no end tag (start tag is on line %s char %s)"), $value["tag"], $idqualifier, $value["line"], $value["char"]) . "<br>";
+                $msg .= sprintf(i18n("Tag '%s' %s has no end tag (start tag is on line %s char %s)"), $value['tag'], $idqualifier, $value['line'], $value['char']) . '<br>';
             }
 
-            if ($msg != "") {
+            if ($msg != '') {
                 $page->displayWarning($msg);
             }
         }
@@ -218,27 +218,27 @@ if ($action == $sActionDelete) {
         $fileInfoCollection = new cApiFileInformationCollection();
         $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
 
-        $form = new cGuiTableForm("file_editor");
-        $form->addHeader(i18n("Edit file"));
-        $form->setVar("area", $area);
-        $form->setVar("action", $sAction);
-        $form->setVar("frame", $frame);
-        $form->setVar("status", 'send');
-        $form->setVar("tmp_file", $sTempFilename);
+        $form = new cGuiTableForm('file_editor');
+        $form->addHeader(i18n('Edit file'));
+        $form->setVar('area', $area);
+        $form->setVar('action', $sAction);
+        $form->setVar('frame', $frame);
+        $form->setVar('status', 'send');
+        $form->setVar('tmp_file', $sTempFilename);
 
-        $tb_name = new cHTMLTextbox("file", $sFilename, 60);
-        $ta_code = new cHTMLTextarea("code", htmlspecialchars($sCode), 100, 35, "code");
-        $descr = new cHTMLTextarea("description", htmlspecialchars($aFileInfo["description"]), 100, 5);
+        $tb_name = new cHTMLTextbox('file', $sFilename, 60);
+        $ta_code = new cHTMLTextarea('code', htmlspecialchars($sCode), 100, 35, 'code');
+        $descr = new cHTMLTextarea('description', htmlspecialchars($aFileInfo['description']), 100, 5);
 
-        $ta_code->setStyle("font-family: monospace;width: 100%;");
-        $descr->setStyle("font-family: monospace;width: 100%;");
+        $ta_code->setStyle('font-family: monospace;width: 100%;');
+        $descr->setStyle('font-family: monospace;width: 100%;');
         $ta_code->updateAttributes(array(
-            "wrap" => getEffectiveSetting('html_editor', 'wrap', 'off')
+            'wrap' => getEffectiveSetting('html_editor', 'wrap', 'off')
         ));
 
-        $form->add(i18n("Name"), $tb_name);
-        $form->add(i18n("Description"), $descr->render());
-        $form->add(i18n("Code"), $ta_code);
+        $form->add(i18n('Name'), $tb_name);
+        $form->add(i18n('Description'), $descr->render());
+        $form->add(i18n('Code'), $ta_code);
 
         $page->setContent($form);
 

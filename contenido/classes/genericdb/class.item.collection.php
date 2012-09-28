@@ -1271,14 +1271,13 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * Deletes also cached e entries and any existing properties.
      *
      * @param   mixed  $mValue  The value of the field
-     *
+     * @return bool
      */
     public function deleteByMany($values) {
         $item = new cApiFileInformation();
         $item->loadByMany($values);
         $deleteItemId = $item->get('idsfi');
-        $this->delete($deleteItemId);
-
+        return $this->delete($deleteItemId);
     }
 
     /**

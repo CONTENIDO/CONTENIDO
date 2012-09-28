@@ -6,54 +6,31 @@
  * Description:
  * MySQL Driver for GenericDB
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package CONTENIDO Backend Classes
- * @version 1.12
  * @author Konstantinos Katikakis
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-cInclude("includes", "functions.file.php");
 
-/**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * MySQL Driver for GenericDB
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.12
- * @author Konstantinos Katikakis
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- */
+cInclude('includes', 'functions.file.php');
 class cApiFileInformationCollection extends ItemCollection {
 
     public function __construct() {
         global $cfg;
-        parent::__construct($cfg["tab"]["file_information"], 'idsfi');
+        parent::__construct($cfg['tab']['file_information'], 'idsfi');
         $this->_setItemClass('cApiFileInformation');
     }
 
     /**
      * Creates a new entry in the database
-     * @param  $typeContent  type of the entry
-     * @param  $filename  name of the file
-     * @param  $description  an optional description
+     *
+     * @param $typeContent type of the entry
+     * @param $filename name of the file
+     * @param $description an optional description
+     * @return cApiFileInformation the new item
      */
-
     public function create($typeContent, $filename, $description = '') {
         $client = cRegistry::getClientId();
         $auth = cRegistry::getAuth();
@@ -76,33 +53,35 @@ class cApiFileInformationCollection extends ItemCollection {
             $item->set('description', $description);
             $item->store();
 
-            return $item->get('idsfi');
+            return $item;
         } else {
-            $this->updateFile($filename, $typeContent, $description);
+            return $this->updateFile($filename, $typeContent, $description);
         }
     }
+
     /**
      * updates a new entry in the database
-     * @param  $typeContent  type of the entry
-     * @param  $filename  name of the file
-     * @param  $description  an optional description
-     * @param  $newFilename  an optional new filename
-     * @param  $author  an optional author
      *
+     * @param $filename name of the file
+     * @param $typeContent type of the entry
+     * @param $description an optional description
+     * @param $newFilename an optional new filename
+     * @param $author an optional author
+     * @return cApiFileInformation the updated item
      */
-    public function updateFile($sFilename, $sTypeContent, $description = '', $newFilename = '', $author = '') {
+    public function updateFile($filename, $typeContent, $description = '', $newFilename = '', $author = '') {
         $auth = cRegistry::getAuth();
         $client = cRegistry::getClientId();
         $item = new cApiFileInformation();
         $item->loadByMany(array(
             'idclient' => $client,
-            'type' => $sTypeContent,
-            'filename' => $sFilename
+            'type' => $typeContent,
+            'filename' => $filename
         ));
         $id = $item->get('idsfi');
         if ($item->isLoaded()) {
             $item->set('idsfi', $id);
-            $item->set('lastmodified', date("Y-m-d H:i:s"));
+            $item->set('lastmodified', date('Y-m-d H:i:s'));
             $item->set('description', $description);
             $item->set('modifiedby', $auth->auth['uid']);
             if (!empty($newFilename)) {
@@ -119,8 +98,9 @@ class cApiFileInformationCollection extends ItemCollection {
 
     /**
      * removes a new entry in the database
-     * @param  array wioth parameters
      *
+     * @param array wioth parameters
+     * @return void
      */
     public function removeFileInformation($values) {
         $this->deleteByMany($values);
@@ -128,29 +108,29 @@ class cApiFileInformationCollection extends ItemCollection {
 
     /**
      * return an array with fileinformations from the database
-     * @param  $sType  type of the entry
-     * @param  $filename  name of the file
      *
+     * @param $filename name of the file
+     * @param $type type of the entry
      * @return array
      */
-    public function getFileInformation($sFilename, $sType) {
+    public function getFileInformation($filename, $type) {
         $client = cRegistry::getClientId();
-        $aFileInformation = array();
+        $fileInformation = array();
         $item = new cApiFileInformation();
         $item->loadByMany(array(
             'idclient' => $client,
-            'type' => $sType,
-            'filename' => $sFilename
+            'type' => $type,
+            'filename' => $filename
         ));
         if ($item->isLoaded()) {
-            $aFileInformation['idsfi'] = $item->get('idsfi');
-            $aFileInformation['created'] = $item->get('created');
-            $aFileInformation['lastmodified'] = $item->get('lastmodified');
-            $aFileInformation['author'] = cSecurity::unFilter($item->get('author'));
-            $aFileInformation['modifiedby'] = $item->get('modifiedby');
-            $aFileInformation['description'] = cSecurity::unFilter($item->get('description'));
+            $fileInformation['idsfi'] = $item->get('idsfi');
+            $fileInformation['created'] = $item->get('created');
+            $fileInformation['lastmodified'] = $item->get('lastmodified');
+            $fileInformation['author'] = cSecurity::unFilter($item->get('author'));
+            $fileInformation['modifiedby'] = $item->get('modifiedby');
+            $fileInformation['description'] = cSecurity::unFilter($item->get('description'));
         }
-        return $aFileInformation;
+        return $fileInformation;
     }
 
 }
@@ -158,12 +138,10 @@ class cApiFileInformation extends Item {
 
     public function __construct($id = false) {
         global $cfg;
-        parent::__construct($cfg["tab"]["file_information"], 'idsfi');
+        parent::__construct($cfg['tab']['file_information'], 'idsfi');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
     }
 
 }
-
-?>

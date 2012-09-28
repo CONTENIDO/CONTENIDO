@@ -6,12 +6,7 @@
  * Description:
  * Edit file
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package CONTENIDO Backend Includes
- * @version 1.0.2
  * @author Olaf Niemann, Willi Mann
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -28,7 +23,7 @@ cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('classes', 'class.fileinformation.php');
 $sFileType = 'css';
 $sFilename = '';
-$page = new cGuiPage("style_edit_form");
+$page = new cGuiPage('style_edit_form');
 $page->setEncoding('utf-8');
 
 $tpl->reset();
@@ -126,7 +121,7 @@ if ($action == 'style_delete') {
             if (cFileHandler::rename($path . $sTempFilename, $sFilename)) {
                 $sTempFilename = $sFilename;
             } else {
-                $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
+                $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $path . $sTempFilename));
                 exit();
             }
             $sReloadScript .= "<script type=\"text/javascript\">
@@ -154,9 +149,9 @@ if ($action == 'style_delete') {
 
         // Show message
         if ($sFilename != $sTempTempFilename) {
-            $page->displayInfo(i18n("Renamed template file successfully!"));
+            $page->displayInfo(i18n('Renamed template file successfully!'));
         } else {
-            $page->displayInfo(i18n("Saved changes successfully!"));
+            $page->displayInfo(i18n('Saved changes successfully!'));
         }
 
         $fileInfoCollection = new cApiFileInformationCollection();

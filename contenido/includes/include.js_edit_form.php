@@ -7,7 +7,6 @@
  * Edit file
  *
  * @package CONTENIDO Backend Includes
- * @version 1.1.1
  * @author Willi Mann
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -20,17 +19,17 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-cInclude("external", "codemirror/class.codemirror.php");
+cInclude('external', 'codemirror/class.codemirror.php');
 
-$sFileType = "js";
+$sFileType = 'js';
 
 $sFilename = '';
-$page = new cGuiPage("js_edit_form");
+$page = new cGuiPage('js_edit_form');
 
 $tpl->reset();
 
 if (!$perm->have_perm_area_action($area, $action)) {
-    $page->displayCriticalError(i18n("Permission denied"));
+    $page->displayCriticalError(i18n('Permission denied'));
     $page->render();
     return;
 }
@@ -42,10 +41,10 @@ if (!(int) $client > 0) {
 }
 
 if ($action == 'js_delete') {
-    $path = $cfgClient[$client]["js"]["path"];
+    $path = $cfgClient[$client]['js']['path'];
     // TODO also delete the versioning files
 
-    if (!strrchr($_REQUEST['delfile'], "/")) {
+    if (!strrchr($_REQUEST['delfile'], '/')) {
         if (cFileHandler::exists($path . $_REQUEST['delfile'])) {
             unlink($path . $_REQUEST['delfile']);
             $fileInfoCollection = new cApiFileInformationCollection();
@@ -55,7 +54,7 @@ if ($action == 'js_delete') {
                 'type' => 'js'
             ));
 
-            $page->displayInfo(i18n("Deleted JS-File successfully!"));
+            $page->displayInfo(i18n('Deleted JS-File successfully!'));
         }
     }
 
@@ -70,7 +69,7 @@ if ($action == 'js_delete') {
     $page->addScript($sReloadScript);
     $page->render();
 } else {
-    $path = $cfgClient[$client]["js"]["path"];
+    $path = $cfgClient[$client]['js']['path'];
     $sTempFilename = stripslashes($_REQUEST['tmp_file']);
     $sOrigFileName = $sTempFilename;
 
@@ -90,11 +89,11 @@ if ($action == 'js_delete') {
                              }
                          </script>";
     } else {
-        $sReloadScript = "";
+        $sReloadScript = '';
     }
 
     // Content Type is template
-    $sTypeContent = "js";
+    $sTypeContent = 'js';
 
     // Create new file
     if ($_REQUEST['action'] == 'js_create' && $_REQUEST['status'] == 'send') {
@@ -113,7 +112,7 @@ if ($action == 'js_delete') {
                  }
                  </script>";
         // if ($bEdit) {
-        $page->displayInfo(i18n("Crated new JS-File successfully!"));
+        $page->displayInfo(i18n('Crated new JS-File successfully!'));
         // }
     }
 
@@ -126,7 +125,7 @@ if ($action == 'js_delete') {
             if (cFileHandler::rename($path . $sTempFilename, $sFilename)) {
                 $sTempFilename = $sFilename;
             } else {
-                $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
+                $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $path . $sTempFilename));
                 exit();
             }
             $sReloadScript .= "<script type=\"text/javascript\">
@@ -143,8 +142,8 @@ if ($action == 'js_delete') {
         $fileInfoCollection = new cApiFileInformationCollection();
         $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
 
-        if (count($aFileInfo) > 0 && $aFileInfo["idsfi"] != "") {
-            $oVersion = new cVersionFile($aFileInfo["idsfi"], $aFileInfo, $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame, $sOrigFileName);
+        if (count($aFileInfo) > 0 && $aFileInfo['idsfi'] != '') {
+            $oVersion = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame, $sOrigFileName);
             // Create new Jscript Version in cms/version/js/ folder
             $oVersion->createNewVersion();
         }
@@ -157,9 +156,9 @@ if ($action == 'js_delete') {
         $bEdit = cFileHandler::read($path . $sFilename);
 
         if ($sFilename != $sTempTempFilename) {
-            $page->displayInfo(i18n("Renamed the JS-File successfully!"));
+            $page->displayInfo(i18n('Renamed the JS-File successfully!'));
         } else {
-            $page->displayInfo(i18n("Saved changes successfully!"));
+            $page->displayInfo(i18n('Saved changes successfully!'));
         }
     }
 
@@ -181,27 +180,27 @@ if ($action == 'js_delete') {
                                                       // of creating a new file
         }
 
-        $form = new cGuiTableForm("file_editor");
-        $form->addHeader(i18n("Edit file"));
-        $form->setVar("area", $area);
-        $form->setVar("action", $sAction);
-        $form->setVar("frame", $frame);
-        $form->setVar("status", 'send');
-        $form->setVar("tmp_file", $sTempFilename);
+        $form = new cGuiTableForm('file_editor');
+        $form->addHeader(i18n('Edit file'));
+        $form->setVar('area', $area);
+        $form->setVar('action', $sAction);
+        $form->setVar('frame', $frame);
+        $form->setVar('status', 'send');
+        $form->setVar('tmp_file', $sTempFilename);
 
-        $tb_name = new cHTMLTextbox("file", $sFilename, 60);
-        $ta_code = new cHTMLTextarea("code", htmlspecialchars($sCode), 100, 35, "code");
-        $descr = new cHTMLTextarea("description", htmlspecialchars($aFileInfo["description"]), 100, 5);
+        $tb_name = new cHTMLTextbox('file', $sFilename, 60);
+        $ta_code = new cHTMLTextarea('code', htmlspecialchars($sCode), 100, 35, 'code');
+        $descr = new cHTMLTextarea('description', htmlspecialchars($aFileInfo['description']), 100, 5);
 
-        $ta_code->setStyle("font-family: monospace;width: 100%;");
-        $descr->setStyle("font-family: monospace;width: 100%;");
+        $ta_code->setStyle('font-family: monospace;width: 100%;');
+        $descr->setStyle('font-family: monospace;width: 100%;');
         $ta_code->updateAttributes(array(
-            "wrap" => getEffectiveSetting('script_editor', 'wrap', 'off')
+            'wrap' => getEffectiveSetting('script_editor', 'wrap', 'off')
         ));
 
-        $form->add(i18n("Name"), $tb_name);
-        $form->add(i18n("Description"), $descr->render());
-        $form->add(i18n("Code"), $ta_code);
+        $form->add(i18n('Name'), $tb_name);
+        $form->add(i18n('Description'), $descr->render());
+        $form->add(i18n('Code'), $ta_code);
 
         $page->setContent($form);
 

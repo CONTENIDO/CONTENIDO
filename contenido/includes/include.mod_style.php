@@ -7,23 +7,13 @@
  * Description:
  * Edit file
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package CONTENIDO Backend Includes
- * @version 1.0.2
  * @author Olaf Niemann, Willi Mann
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  * @since file available since CONTENIDO release <= 4.6
- *
- *        {@internal
- *        created 2003-04-20
- *        $Id$:
- *        }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -49,7 +39,7 @@ if (empty($action)) {
     $actionRequest = $action;
 }
 
-$page = new cGuiPage("mod_style");
+$page = new cGuiPage('mod_style');
 
 $tpl->reset();
 $premCreate = false;
@@ -157,7 +147,7 @@ if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
         if (cFileHandler::rename($path . $sTempFilename, $sFilename)) {
             $sTempFilename = $sFilename;
         } else {
-            $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
+            $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $path . $sTempFilename));
             exit();
         }
         $sReloadScript .= "<script type=\"text/javascript\">
@@ -238,5 +228,3 @@ if (isset($actionRequest)) {
     // $page->addScript('reload', $sReloadScript);
     $page->render();
 }
-
-?>
