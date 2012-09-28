@@ -337,9 +337,10 @@ class XML_doc {
 
         if (empty($literal2NumericEntity)) {
             $transTbl = conGetHtmlTranslationTable(HTML_ENTITIES);
-            foreach ($transTbl as $char => $entity) {
-                if (strpos('&"<>', $char) !== FALSE) continue;
-                    $literal2NumericEntity[$entity] = '&#'.ord($char).';';
+			foreach ($transTbl as $char => $entity) {
+                if (strpos('&"<>', $char) != FALSE) continue;
+                $literal2NumericEntity[$entity] = '&#'.ord($char).';';
+					
             }
         }
 
