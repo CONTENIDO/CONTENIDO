@@ -99,7 +99,7 @@ abstract class cUpgradeJobAbstract {
      * Logs passed setup error, wrapper for logSetupFailure() function
      * @param  string  $errorMsg
      */
-    protected _logError($errorMsg) {
+    protected function _logError($errorMsg) {
         $className = get_class($this);
         logSetupFailure($className . ': ' . $errorMsg. "\n");
     }
