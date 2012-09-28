@@ -1773,8 +1773,6 @@ contenido/plugins/newsletter/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/plugins/newsletter/xml/lang_fr_FR.xml -text svneol=unset#text/plain
 contenido/plugins/newsletter/xml/lang_it_IT.xml -text svneol=unset#text/plain
 contenido/plugins/newsletter/xml/lang_nl_NL.xml -text svneol=unset#text/plain
-contenido/plugins/pim/classes/Contenido_Plugin.class.php -text
-contenido/plugins/pim/classes/Contenido_Plugin_Base.class.php -text
 contenido/plugins/pim/classes/Setup/class.pimpluginsetup.php -text
 contenido/plugins/pim/classes/Util/Zip/class.pimpluginarchiveextractor.php -text
 contenido/plugins/pim/classes/class.pim.plugin.collection.php -text

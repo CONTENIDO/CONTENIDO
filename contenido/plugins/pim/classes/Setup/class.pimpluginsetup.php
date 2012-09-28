@@ -311,7 +311,7 @@ class PimPluginSetup {
         $pimPluginRelColl->deleteByWhereClause('idplugin = ' . $pluginId);
         $pimPluginColl->deleteByWhereClause('idplugin = ' . $pluginId);
 
-        // result message
+        // success message
         $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been successfully uninstalled', 'pim'));
 
     }

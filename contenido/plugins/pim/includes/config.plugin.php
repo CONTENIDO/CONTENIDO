@@ -22,6 +22,3 @@ plugin_include('pim', 'classes/class.pim.plugin.collection.php');
 plugin_include('pim', 'classes/class.pim.plugin.relations.collection.php');
 plugin_include('pim', 'classes/Setup/class.pimpluginsetup.php');
 plugin_include('pim', 'classes/Util/Zip/class.pimpluginarchiveextractor.php');
-
-// old
-plugin_include('pim', 'classes/Contenido_Plugin_Base.class.php');

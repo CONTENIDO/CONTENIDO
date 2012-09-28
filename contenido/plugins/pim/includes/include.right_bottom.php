@@ -18,10 +18,6 @@ if (!defined('CON_FRAMEWORK')) {
 
 // initializing classes
 $setup = new PimPluginSetup();
-
-// OLD
-$plugin = new Contenido_Plugin_Base($db, $cfg, $cfgClient, $lang);
-
 $page = new cGuiPage('pim_overview', 'pim');
 
 // get all installed plugins
@@ -153,7 +149,7 @@ function installationRoutine($page) {
     // sql inserts
     $setup->install($tempXml);
 
-    // Success message
+    // success message
     $page->displayInfo(i18n('The plugin has been successfully installed', 'pim'));
 
     // close extracted archive
