@@ -14,8 +14,8 @@
 	<script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
     
 	<script type="text/javascript">
-			var sid = "{SID}";
-			box = new messageBox("", "", "", 0, 0);
+		var sid = "{SID}";
+		box = new messageBox("", "", "", 0, 0);
 	
       function removeAssignments(idart, idcat) {
           url  = 'main.php?area=con_editart';
@@ -86,13 +86,11 @@
             <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{DIRECTLINKTEXT}</td>
             <td width="75%" colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{DIRECTLINK}</td>
            </tr>
-
                            
 		 <tr valign="top">
             <td width="25%" class="text_medium" style="border: 1px;border-top: 0px;  border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ARTIKELART}</td>
             <td width="75%" colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ARTIKELARTSELECT}</td>
            </tr>
-         
         
           <tr valign="top">
             <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ARTIKELID}</td>
@@ -101,14 +99,12 @@
             <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ALLOCID}</td>
            </tr>
 
-
           <tr valign="top">
             <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ERSTELLT}</td>
             <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{ERSTELLUNGS-DATUM}</td>
             <td width="25%" class="text_medium" style="border: 1px;border-top: 0px; border-left:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{AUTHOR_CREATOR}</td>
             <td width="25%" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{AUTOR-ERSTELLUNGS-NAME}</td>
            </tr>
-           
 
           <tr valign="top">
             <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{LETZTE-AENDERUNG}</td>
@@ -166,25 +162,21 @@
             <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{SORTIERUNG}</td>
             <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{SORTIERUNG-FIELD}</td>
         </tr>
-        
 
         <tr valign="top">
             <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{STRUKTUR}</td>
             <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{STRUKTUR-FIELD}</td>
         </tr>
-        
 
         <tr valign="top">
             <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{SUMMARY}</td>
             <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{SUMMARY-INPUT}</td>
         </tr>
-        
       
      <tr>
         <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">i18n("Page title")</td>
         <td colspan="3" class="text_medium" style="border: 1px; border-top: 0px; border-left:0px;border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{TITLE-INPUT}</td>
     </tr>
-    
 
      <tr>
         <td class="text_medium" style="border: 1px;border-top: 0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">i18n("Meta tags")</td>
@@ -210,7 +202,6 @@
 </form>
 
 <script language="javascript">
-
     /* Create a reference to the
        Article Object in frame 'right_top' */
     artObj = parent.parent.frames["left"].frames["left_top"].artObj;
@@ -221,7 +212,18 @@
     }
     
     {DATAPUSH}
-
 </script>
 </body>
+<!--
+template.con_edit_form
+
+i18n("Time control")
+i18n("Use time control")
+i18n("Start date")
+i18n("End date")
+i18n("When expired, move to category")
+i18n("Make online after move")
+i18n("Page title")
+i18n("Meta tags")
+-->
 </html>

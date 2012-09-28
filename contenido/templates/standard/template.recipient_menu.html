@@ -14,7 +14,6 @@
 
 		function rcpChangeLimit()
 		{
-			
 			var element = document.getElementsByTagName("SELECT");
 			
 			url  = "";
@@ -28,7 +27,6 @@
 
 		function rcpStartSearch()
 		{
-			
 			var element = document.getElementsByTagName("INPUT");
 			
 			url  = "";
@@ -41,14 +39,12 @@
 			parent.parent.frames["left"].frames["left_bottom"].location.href = url;
 		}
 		
-		        /* Create messageBox
-           instance */
+        /* Create messageBox instance */
         box = new messageBox("", "", "", 0, 0);
 
-        /* Function for deleting
-           modules */
-
-        function deleteRecipient(idrcp) {
+        /* Function for deleting modules */
+        function deleteRecipient(idrcp)
+        {
             url  = 'main.php?area=recipients';
             url += '&action=recipients_delete';
             url += '&frame=4';
@@ -110,4 +106,10 @@
 
 </table>
 </body>
+<!--
+template.recipient_menu
+
+i18n("Limit")
+i18n("Search")
+-->
 </html>

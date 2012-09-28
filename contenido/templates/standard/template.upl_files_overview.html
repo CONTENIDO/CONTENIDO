@@ -12,14 +12,13 @@
  
     <script type="text/javascript">
 
-        function uplSort(selObj) {
-
+        function uplSort(selObj)
+        {
             var url = '{SELF_URL}';
             var i = selObj.selectedIndex;
             var sortkey = selObj.options[i].value;
 
             window.location.href = url + '&sort=' + sortkey;
-
         }
 
         function iZoom(path, defaultWidth, defaultHeight)
@@ -44,13 +43,11 @@
             zwin.document.close();
         }
 
-
     </script>
 
     <script language="javascript">
         parent.parent.frames["left"].frames["left_bottom"].location.reload();
     </script>
-
 
 </head>
 <body style="margin:10px">
@@ -97,4 +94,16 @@
 </table>
 
 </body>
+<!--
+template.upl_files_overview
+
+i18n("Click to close")
+i18n("Close")
+i18n("Sort files")
+i18n("Filename")
+i18n("Description")
+i18n("File size")
+i18n("Image size")
+
+-->
 </html>
