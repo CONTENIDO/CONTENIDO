@@ -1267,6 +1267,21 @@ abstract class ItemCollection extends cItemBaseAbstract {
     }
 
     /**
+     * Deletes all found items in the table matching the passed field and it's value.
+     * Deletes also cached e entries and any existing properties.
+     *
+     * @param   mixed  $mValue  The value of the field
+     *
+     */
+    public function deleteByMany($values) {
+        $item = new cApiFileInformation();
+        $item->loadByMany($values);
+        $deleteItemId = $item->get('idsfi');
+        $this->delete($deleteItemId);
+
+    }
+
+    /**
      * Deletes an item in the table, deletes also existing cache entries and
      * properties of the item.
      *
