@@ -239,8 +239,11 @@ class PimPluginSetup {
         $tempSqlLines = count($tempSqlContent);
 
         for ($i = 0; $i < $tempSqlLines; $i++) {
-            $tempSqlContent[$i] = str_replace('!PREFIX!', $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
-            $db->query(cSecurity::escapeDB($tempSqlContent[$i], $db));
+
+            if (strpos($tempSqlContent[$i], 'CREATE TABLE IF NOT EXISTS !PREFIX!') === 0 || strpos($tempSqlContent[$i], 'INSERT INTO !PREFIX!') === 0 || strpos($tempSqlContent[$i], 'UPDATE !PREFIX!') === 0 || strpos($tempSqlContent[$i], 'ALTER TABLE !PREFIX!') === 0) {
+                $tempSqlContent[$i] = str_replace('!PREFIX!', $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
+                $db->query(cSecurity::escapeDB($tempSqlContent[$i], $db));
+            }
         }
     }
 
@@ -249,7 +252,7 @@ class PimPluginSetup {
      *
      * @access public
      * @param $pluginId id of uninstall plugid
-     * @param $page page class
+     * @param $page page class for success message
      * @return void
      */
     public function uninstall($pluginId, $page) {
@@ -313,7 +316,6 @@ class PimPluginSetup {
 
         // success message
         $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been successfully uninstalled', 'pim'));
-
     }
 
 }

@@ -66,7 +66,7 @@ $page->set('s', 'LANG_INSTALLED', i18n('Installed Plugins', 'pim'));
 
 // added installed plugins to pim_overview
 $page->set('s', 'INSTALLED_PLUGINS', $oItem->count());
-$page->set('s', 'PLUGINS',  $plugins);
+$page->set('s', 'PLUGINS', $plugins);
 
 $viewAction = isset($_REQUEST['pim_view'])? $_REQUEST['pim_view'] : 'overview';
 
@@ -115,9 +115,9 @@ function installationRoutine($page) {
     // check min contenido version
     if (!empty($tempXml->general->min_contenido_version) && version_compare($cfg['version'], $tempXml->general->min_contenido_version, '<')) {
         $extractor->destroyTempFiles();
-		$page->displayError(i18n('You have to install CONTENIDO <strong>', 'pim') . $tempXml->general->min_contenido_version . i18n('</strong> or higher to install this plugin!', 'pim'));
-		$page->render();
-		exit;
+        $page->displayError(i18n('You have to install CONTENIDO <strong>', 'pim') . $tempXml->general->min_contenido_version . i18n('</strong> or higher to install this plugin!', 'pim'));
+        $page->render();
+        exit();
     }
 
     // check max contenido version
@@ -125,7 +125,7 @@ function installationRoutine($page) {
         $extractor->destroyTempFiles();
         $page->displayError(i18n('You\'re current CONTENIDO version is to new - max CONTENIDO version: ' . $tempXml->general->max_contenido_version . '', 'pim'));
         $page->render();
-        exit;
+        exit();
     }
 
     // build the new plugin dir
