@@ -1,0 +1,2 @@
+Choose article=Artikel wählen
+Please choose=Bitte wählen

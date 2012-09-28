@@ -13,6 +13,7 @@ cms/data/config/config.php -text
 cms/data/layouts/standard/standard.html -text
 cms/data/layouts/xml-layout/xml-layout.html -text svneol=unset#text/plain
 cms/data/modules/article_include/info.xml -text
+cms/data/modules/article_include/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/article_include/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/data/modules/article_include/php/article_include_input.php -text
 cms/data/modules/article_include/php/article_include_output.php -text

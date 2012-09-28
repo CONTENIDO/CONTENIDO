@@ -1,1 +1,2 @@
-Artikel wählen=was ist das übersetztung
+Choose article=
+Please choose=

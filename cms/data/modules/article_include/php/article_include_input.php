@@ -1,65 +1,68 @@
 ?><?php
 /**
- * Description: Article Include input
+ * Article Include input
  *
- * @version    1.0.0
- * @author     Willi Man
- * @copyright  four for business AG <www.4fb.de>
- *
- * {@internal
- *   created 2003-12-18
- *   $Id$
- * }}
+ * @author Willi Man
+ * @author Simon Sprankel
+ * @copyright four for business AG <www.4fb.de>
  */
 
-// Get current settings
-$name         = "CMS_VAR[1]";
-$cms_idcat    = "CMS_VALUE[1]";
-$cms_idcatart = "CMS_VALUE[2]";
+$cfg = cRegistry::getConfig();
+$db = cRegistry::getDb();
+$lang = cRegistry::getLanguageId();
 
-$bDebug = false;
+// Get current settings
+$name = "CMS_VAR[1]";
+$cmsIdcat = "CMS_VALUE[1]";
+$cmsIdcatart = "CMS_VALUE[2]";
 
 // Cat selector
-echo buildCategorySelect($name, $cms_idcat);
+echo buildCategorySelect($name, $cmsIdcat);
 
-if ($bDebug) {
-    echo "<pre>cat $cms_idcat catart $cms_idcatart client $client lang $lang <br>webpath ".cRegistry::getFrontendUrl()."</pre>";
+$table = new cHTMLTable();
+$td = new cHTMLTableData(mi18n('Choose article') . ':');
+$td->setClass('text_medium');
+$tr = new cHTMLTableRow($td);
+$table->appendContent($tr);
+
+// build article select
+$select = new cHTMLSelectElement("CMS_VAR[2]");
+$option = new cHTMLOptionElement(mi18n('Please choose'), '');
+// if no article has been selected yet, select "please choose" option
+if (empty($cmsIdcatart)) {
+    $option->setSelected(true);
 }
+$select->appendOptionElement($option);
 
-echo '<table cellpadding="0" cellspacing="0" border="0">';
-
-// Article selector
-echo '
-      <tr><td class="text_medium" style="padding:5px">'.mi18n("Artikel wählen").': </td></tr>
-      <tr><td class="text_medium" style="padding:5px">
-      <select name="CMS_VAR[2]" style="width:240px">
-      <option value="" selected>'.i18n("Please choose").'</option>';
-
-if ($cms_idcat != "0" && strlen($cms_idcat) > 0) {
-    $sql = "SELECT
+if (!empty($cmsIdcat)) {
+    $sql = 'SELECT
                 a.title AS title, b.idcatart AS idcatart
            FROM
-                ".$cfg["tab"]["art_lang"]." AS a, ".$cfg["tab"]["cat_art"]." AS b
+                ' . $cfg['tab']['art_lang'] . ' AS a, ' . $cfg['tab']['cat_art'] . " AS b
             WHERE
-                b.idcat = '".$cms_idcat."' AND a.idart = b.idart AND a.idlang = '".$lang."'";
-
+                b.idcat = '" . $cmsIdcat . "' AND a.idart = b.idart AND a.idlang = '" . $lang . "'";
     $db->query($sql);
-
     while ($db->next_record()) {
-        $catartid = $db->f('idcatart');
+        $idcatart = $db->f('idcatart');
         $title = $db->f('title');
+        $option = new cHTMLOptionElement($title, $idcatart);
 
-        if ($cms_idcatart != $catartid) {
-            echo '<option value="'.$catartid.'">&nbsp;'.$title.'</option>';
-        } else {
-            echo '<option selected="selected" value="'.$catartid.'">&nbsp;'.$title.'</option>';
+        if ($cmsIdcatart == $idcatart) {
+            $option->setSelected(true);
         }
+        $select->appendOptionElement($option);
     }
 }
 
-echo '</select>&nbsp;<input type="image" src="images/submit.gif">
-</td>
-</tr>
-</table>';
+$td = new cHTMLTableData($select);
+$input = new cHTMLFormElement();
+$input->setAttribute('type', 'image');
+$input->setAttribute('src', 'images/submit.gif');
+$td->appendContent($input);
+$td->setClass('text_medium');
+$tr = new cHTMLTableRow($td);
+$table->appendContent($tr);
+
+echo $table->render();
 
 ?><?php
