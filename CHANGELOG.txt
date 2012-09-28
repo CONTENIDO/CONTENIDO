@@ -6,17 +6,79 @@ CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 $Id: CHANGELOG.txt 1230 2010-10-13 12:14:37Z timo.trautmann $:
 
+Release 4.8.16
+----------------------------------------------------------------------	
+** Bug
+    * [CON-266] - Upgrade/Migration not possible without xmlwriter extension
+    * [CON-357] - You can't use two instances of CMS-FILELIST within same article
+    * [CON-358] - CMS_TEASER: no output if sort by publisheddate is selected
+    * [CON-362] - Custom file extensions in CMS_FILELIST are ignored
+    * [CON-365] - Only logins are logged in administration->logs
+    * [CON-366] - class.update.notifier.php throws multiple fopen errors
+    * [CON-369] - Wrong datatype for in_array haystack in linkchecker
+    * [CON-372] - Limited check period of update notifier is displayed wrong in backend settings page when set under 60 minutes
+    * [CON-373] - Multiple replacements of title tags
+    * [CON-375] - purgetools: cleaning only one client causes Illegal Call
+    * [CON-378] - Error while trying to get the frontend path of a non existing client in backend header
+    * [CON-380] - MySQL 5.5 is not supported due to deprecated CREATE TABLE syntax
+    * [CON-386] - Redirections in front_content.php are not forced with exit
+    * [CON-391] - CMS_DATE error after Update to 4.8.14
+    * [CON-392] - Article Timeschedule problem in Release: 4.8.12
+    * [CON-399] - Wrong condition in Contenido_Url::parse() function
+    * [CON-402] - Groupname shown for frontenduser are broken with german umlaute
+    * [CON-405] - FEUser-Plugins valide_to and valide_from saving wrong time
+    * [CON-406] - TinyMCE: Idart is missing in url using anchor-feature of TinyMCE
+    * [CON-413] - Item class method loadBy() does not find filtered id values
+    * [CON-414] - Not workings links and not filled template variable in backend statistic
+    * [CON-421] - Users can be added without password
+    * [CON-423] - Empty array breaks SQL query for content allocation matching
+    * [CON-445] - Calling system overview in BE may throw a db connect error
+    * [CON-446] - Linkchecker whitelist works not correct
+    * [CON-451] - Deleting upload item doesn't deletes entries in upload meta table
+    * [CON-452] - class.request.php transforms arrays to NULL values as of PHP 5.3.0
+    * [CON-453] - Multiple categories switch on/off if one category is toggled
+    * [CON-454] - Special characters in files can cause duplication of entries in con_upl
+    * [CON-463] - Searching for article ID 0 leads into display error
+    * [CON-464] - Removal of upgrade error log display
+    * [CON-470] - Ampersand is displayed wrong in category creation
+    * [CON-497] - Multple tab selection on dashboard links
+    * [CON-523] - Special characters in Content Allocation
+    * [CON-716] - Wrong item reference after calling createNewItem(), select() and next() of ItemCollection
+    * [CON-756] - Adapt setup to MySQL 5.5
+
+** Improvement
+    * [CON-251] - Checking write permissions in cms-folder during migration setup
+    * [CON-332] - Old password is overwritten with new one using password-request
+    * [CON-376] - Display error message on database connection failure
+    * [CON-379] - Info in backend home is missing when no clients are available for dropdown box
+    * [CON-382] - Remove integration of old unspported java module editor
+    * [CON-387] - Provide error message on database failures
+    * [CON-403] - Show info in dashboard if maintenance is active
+    * [CON-430] - Change default definition for path and url configuration
+    * [CON-482] - Extend memory_limit check in setup process to 32M
+    * [CON-506] - Remove own inuse-entries in editor for current object
+    * [CON-507] - Include config.local.php and config.after.php also in dbfs.php
+    * [CON-519] - Limit the year selection to current year in log view
+
+** New Feature
+    * [CON-361] - Check permission for FE-User in Navigation_Meta
+
+** Task
+    * [CON-360] - Identify the "inuse"-tabledata as a title by Itemname
+    * [CON-394] - Check setting include_path configuration for PEAR
+    * [CON-479] - Footnotes in english demo client are not translated
+    * [CON-780] - Add support for PHP 5.4 installations
+
+
 Release 4.8.15
 ----------------------------------------------------------------------	
 ** Bug
-
     * [CON-390] - Security Issue in all cronjobs
 
 
 Release 4.8.14
 ----------------------------------------------------------------------	
 ** Bug
-
     * [CON-305] - Initialization of global $encodinmg could fail
     * [CON-319] - Info for can't write a upload in directory
     * [CON-340] - TinyMCE wraps table in a p-tag
@@ -29,11 +91,9 @@ Release 4.8.14
     * [CON-352] - No copy label per default when copying articles or categories
 
 ** Improvement
-
     * [CON-322] - scan and save only in BE (for FE performance & security)
 
 ** New Feature
-
     * [CON-342] - New defalut File for SubNavi for Frame 3 (right-top)
     * [CON-353] - Added Inuse Information for Layouts, Modules and Templates
 
