@@ -752,7 +752,7 @@ class cUpdateNotifier {
             $sOutput = $this->renderOutput($sMessage);
         } else if ($this->sErrorOutput != "") {
             $sOutput = $this->sErrorOutput;
-        } else if (!$this->sVendorVersion) {
+        } else if ($this->sVendorVersion == '') {
             $sMessage = i18n('You have an unknown or unsupported version of CONTENIDO!');
             $sOutput = $this->renderOutput($sMessage);
         } else if ($this->sVendorVersion == "deprecated") {
