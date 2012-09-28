@@ -134,8 +134,11 @@ function i18nEmulateGettext ($string, $domain = "contenido")
 	
 	if (!isset($transFile[$domain]))
 	{
-		$transFile[$domain] = implode('',file($i18nDomains[$domain].$i18nLanguage."/LC_MESSAGES/".$domain.".po"));
+		$transFile[$domain] = implode('', file($i18nDomains[$domain].$i18nLanguage."/LC_MESSAGES/".$domain.".po"));
 		
+        $transFile[$domain] = str_replace("\n\r", "\n", $transFile[$domain]);
+        $transFile[$domain] = str_replace("\r\n", "\n", $transFile[$domain]);
+
 		// Remove comments from file
 		$transFile[$domain] = preg_replace('/^#.+/m', '', $transFile[$domain]);
 		
@@ -172,13 +175,13 @@ function i18nEmulateGettext ($string, $domain = "contenido")
 		return $string;
 	}
 	
-	$results = array();
-	preg_match("/msgid.*\"(".preg_quote(str_replace(Array("\n", "\r", "\t"), Array('\n', '\r', '\t'), $string),"/").")\"(?:\s*)?\nmsgstr(?:\s*)\"(.*)\"/", $transFile[$domain], $results);
-	# Old: preg_match("/msgid.*\"".preg_quote($string,"/")."\".*\nmsgstr(\s*)\"(.*)\"/", $transFile[$domain], $results);
+	$matches = array();
+	$result = preg_match("/msgid.*\"(".preg_quote(str_replace(Array("\n", "\r", "\t"), Array('\n', '\r', '\t'), $string),"/").")\"(?:\s*)?\nmsgstr(?:\s*)\"(.*)\"/", $transFile[$domain], $matches);
+	# Old: preg_match("/msgid.*\"".preg_quote($string,"/")."\".*\nmsgstr(\s*)\"(.*)\"/", $transFile[$domain], $matches);
 
-	if (array_key_exists(1, $results))
+	if ($result && !empty($matches[2]))
 	{
-		$_i18nTranslationCache[$string] = stripslashes(str_replace(Array('\n', '\r', '\t'), Array("\n", "\r", "\t"), $results[2]));
+		$_i18nTranslationCache[$string] = stripslashes(str_replace(Array('\n', '\r', '\t'), Array("\n", "\r", "\t"), $matches[2]));
 		return $_i18nTranslationCache[$string];
 	} else {
 		return $string;	
