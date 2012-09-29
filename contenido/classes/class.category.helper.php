@@ -303,7 +303,7 @@ class cCategoryHelper {
 			$catId = (int) $db->f('idcat');
 			$catLevel = (int) $db->f('level');
 			
-			if ($catLevel > $depth) {
+			if ($depth > 0 && $catLevel > $depth) {
 				break;
 			}
 			

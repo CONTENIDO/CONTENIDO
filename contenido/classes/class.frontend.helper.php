@@ -44,17 +44,14 @@ class cFrontendHelper {
     protected function __construct() {
     }
 	
-	/**
-	 * Helper function to render the navigation.
-	 *
+	/** 
+	 * Fetches the requested category tree.
 	 * @param	int			$baseCategoryId		root category ID
 	 * @param	int			$depth				maximum depth
 	 * @param	int			$currentCategoryId	the current category ID
-	 * @param	cTemplate	$tpl				template reference
-	 *
-	 * @return	void
+	 * @return	array	category tree
 	 */
-	public function renderNavigation($baseCategoryId, $depth, $currentCategoryId, cTemplate &$tpl) {
+	protected function _fetchCategoryTree($baseCategoryId, $depth, $currentCategoryId) {
 		if ((int) $baseCategoryId == 0) {
 			throw new cUnexpectedValueException("Expect category ID greater than 0.");
 		}
@@ -64,14 +61,10 @@ class cFrontendHelper {
 		
 		$categoryTree = $categoryHelper->getSubCategories($baseCategoryId, $depth);
 		
-		$aLevelInfo = array();
+		$tree = array();
 		
 		foreach ($categoryTree as $treeData) {
 			$catId = $treeData['idcat'];
-			
-			if (!isset($aLevelInfo[$catId])) {
-				$aLevelInfo[$catId] = array();
-			}
 			
 			$firstChildId = $lastChildId = 0;
 			if (count($treeData['subcats']) > 0) {
@@ -81,8 +74,6 @@ class cFrontendHelper {
 				$lastChildId = $treeData['subcats'][$lastIndex]['idcat'];
 			}
 			
-			$url = $treeData['item']->getLink();
-			
 			$markActive = ($currentCategoryId == $catId);
 			if ($markActive == false) {
 				$parentCategories = $categoryHelper->getParentCategoryIds($currentCategoryId);
@@ -91,16 +82,71 @@ class cFrontendHelper {
 				}
 			}
 			
+			$treeItem['first_child_id'] = $firstChildId;
+			$treeItem['last_child_id'] = $lastChildId;
+			$treeItem['tree_data'] = $treeData;
+			$treeItem['active'] = $markActive;
+			$tree[] = $treeItem;
+		}
+		
+		return $tree;
+	}
+	
+	/**
+	 * Helper function to render the navigation.
+	 * @param	int			$baseCategoryId		root category ID
+	 * @param	int			$depth				maximum depth
+	 * @param	int			$currentCategoryId	the current category ID
+	 * @param	cTemplate	$tpl				template reference
+	 * @return	void
+	 */
+	public function renderNavigation($baseCategoryId, $depth, $currentCategoryId, cTemplate &$tpl) {
+		$tree = $this->_fetchCategoryTree($baseCategoryId, $depth, $currentCategoryId);
+		
+		foreach ($tree as $treeItem) {
+			$treeData = $treeItem['tree_data'];
+			$catId = $treeData['idcat'];
+			
+			$firstChildId = $treeItem['first_child_id'];
+			$lastChildId = $treeItem['last_child_id'];
+
 			$tpl->set('d', 'name', $treeData['item']->getField('name'));
 			$tpl->set('d', 'css_level', $treeData['level']);
 			$tpl->set('d', 'css_first_item', ($firstChildId == $catId ? ' first' : ''));
 			$tpl->set('d', 'css_last_item', ($lastChildId == $catId ? ' last' : ''));
 			$tpl->set('d', 'css_active_item', ($markActive === true ? ' active' : ''));
-			$tpl->set('d', 'url', $url);
+			$tpl->set('d', 'url', $treeData['item']->getLink());
 			$tpl->next();
 			
 			if ($markActive === true && $firstChildId != 0) {
 				$this->renderNavigation($catId, $depth, $currentCategoryId, $tpl);
+			}
+		}
+	}
+	
+	/**
+	 * Helper function to render the sitemap.
+	 * @param	int			$baseCategoryId		root category ID
+	 * @param	int			$depth				maximum depth
+	 * @param	cTemplate	$tpl				template reference
+	 * @return	void
+	 */
+	public function renderSitemap($baseCategoryId, $depth, cTemplate &$tpl) {
+		$tree = $this->_fetchCategoryTree($baseCategoryId, $depth, 0);
+		
+		foreach ($tree as $treeItem) {
+			$treeData = $treeItem['tree_data'];
+			$catId = $treeData['idcat'];
+			
+			$firstChildId = $treeItem['first_child_id'];
+
+			$tpl->set('d', 'name', $treeData['item']->getField('name'));
+			$tpl->set('d', 'css_level', $treeData['level']);
+			$tpl->set('d', 'url', $treeData['item']->getLink());
+			$tpl->next();
+			
+			if ($firstChildId != 0) {
+				$this->renderSitemap($catId, $depth, $tpl);
 			}
 		}
 	}

@@ -1,34 +1,13 @@
 ?><?php
-/**
- * Description: Simple sitemap input
- *
- * @version    0.1.0
- * @author     Rudi Bieller
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @todo       move function to load all categories somewhere else...
- * @todo       use some template instead of html in code...
- *
- * {@internal
- *   created 2009-01-05
- *   $Id$
- * }}
- */
-
 if (!isset($db)) {
     $db = cRegistry::getDb();
 }
 
 $iSelectedCat = intval("CMS_VALUE[1]");
 $iSelectedDepth = intval("CMS_VALUE[2]");
-$iSelectedHtmlOutputStyle = intval("CMS_VALUE[3]");
 $aAllCategories = sitemap_getAllCategories($db, $cfg, $lang, $client);
 $sOptionsCategories = '';
 $sOptionsDepth = '';
-$sSelectedHtmlStyle0 = $iSelectedHtmlOutputStyle == 0 ? ' selected="selected"' : '';
-$sSelectedHtmlStyle1 = $iSelectedHtmlOutputStyle == 1 ? ' selected="selected"' : '';
 
 $sHtmlTable = '<table border="0" cellpadding="10" cellspacing="0">
     <tr>
@@ -46,15 +25,6 @@ $sHtmlTable = '<table border="0" cellpadding="10" cellspacing="0">
         <select name="' . "CMS_VAR[2]" . '">
             <option value="0">---Select---</option>
             [SNIP_DEPTH]
-        </select>
-    </td>
-</tr>
-<tr>
-    <td>'.mi18n("HTML Ausgabe:").'</td>
-    <td>
-        <select name="' . "CMS_VAR[3]" . '">
-            <option value="0"'.$sSelectedHtmlStyle0.'>Alle Kategorien in einer Liste</option>
-            <option value="1"'.$sSelectedHtmlStyle1.'>Alle Hauptkategorien in einer eigenen Liste</option>
         </select>
     </td>
 </tr>
