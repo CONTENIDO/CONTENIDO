@@ -17,18 +17,15 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2008-02-15
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
+/** 
+ * @deprecated 2012-09-29 This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.
+ */
 class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
     /**
      * @var obj
@@ -57,8 +54,10 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
      * @param int $iLang
      * @return void
      * @author Rudi Bieller
+	 * @deprecated 2012-09-29 This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.
      */
     public function __construct(DB_Contenido $oDb, array $aCfg, $iClient, $iLang, array $aCfgClient) {
+		cDeprecated("This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.");
         parent::__construct($oDb, $aCfg, $iClient, $iLang, $aCfgClient);
         $this->iRootCat = -1;
     }

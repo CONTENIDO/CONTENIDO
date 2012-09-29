@@ -17,38 +17,21 @@
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
- *
- *       {@internal
- *       created 2008-02-15
- *       $Id: Contenido_FrontendNavigation_Base.class.php 2898 2012-08-14
- *       23:32:06Z xmurrix $:
- *       }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
+
+/** 
+ * @deprecated 2012-09-29 This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.
+ */
 class Contenido_FrontendNavigation_Base {
 
-    /**
-     * #@+
-     *
-     * @var int
-     * @access protected
-     */
     protected $iLang;
 
     protected $iClient;
 
-    /**
-     * #@-
-     */
-
-    /**
-     *
-     * @var array
-     * @access protected
-     */
     protected $aCategories;
 
     /**
@@ -114,8 +97,10 @@ class Contenido_FrontendNavigation_Base {
      * @param int $iLang
      * @return void
      * @author Rudi Bieller
+	 * @deprecated 2012-09-29 This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.
      */
     public function __construct(DB_Contenido $oDb, array $aCfg, $iClient, $iLang, array $aCfgClient) {
+		cDeprecated("This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.");
         $this->oDb = $oDb;
         $this->aCfg = $aCfg;
         $this->iClient = (int) $iClient;
@@ -145,7 +130,7 @@ class Contenido_FrontendNavigation_Base {
      * @todo Apply other styles as soon as they are available
      */
     public function getUrl(array $aParams, $sStyle = 'custom_path', array $aConfig = array(), $bUseAbsolutePath = false) {
-        try {
+		try {
             $oUriBuilder = cUriBuilderFactory::getUriBuilder($sStyle);
             if ($bUseAbsolutePath === true) {
                 $oUriBuilder->setHttpBasePath($this->aCfgClient[$this->iClient]['path']['htmlpath']);
@@ -169,8 +154,6 @@ class Contenido_FrontendNavigation_Base {
      * @author Rudi Bieller
      */
     public function setDebug($bDebug = true, $sDebugMode = cDebug::DEBUGGER_VISIBLE) {
-        cDeprecated("This function is no longer needed. \$oDbg gets chosen by the system settings.");
-
         $this->sDbgMode = $sDebugMode;
         if ($bDebug === true) {
             $this->bDbg = true;
