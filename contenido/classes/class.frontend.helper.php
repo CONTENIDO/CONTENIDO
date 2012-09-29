@@ -109,6 +109,8 @@ class cFrontendHelper {
 			
 			$firstChildId = $treeItem['first_child_id'];
 			$lastChildId = $treeItem['last_child_id'];
+			
+			$markActive = $treeItem['active'];
 
 			$tpl->set('d', 'name', $treeData['item']->getField('name'));
 			$tpl->set('d', 'css_level', $treeData['level']);
