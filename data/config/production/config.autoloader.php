@@ -30,6 +30,7 @@
 
 
 return array(
+    'cFrontendHelper' => 'contenido/classes/class.frontend.helper.php',
     'cApiCecHook' => 'contenido/classes/class.cec_hook.php',
     'CEC_Hook' => 'contenido/classes/class.cec_hook.php',
     'XsltProcessor' => 'contenido/classes/class.xsltprocessor.php',
@@ -168,6 +169,8 @@ return array(
     'cApiFile' => 'contenido/classes/contenido/class.file.php',
     'cApiCategoryArticleCollection' => 'contenido/classes/contenido/class.categoryarticle.php',
     'cApiCategoryArticle' => 'contenido/classes/contenido/class.categoryarticle.php',
+    'cApiFileInformationCollection' => 'contenido/classes/contenido/class.fileinformation.php',
+    'cApiFileInformation' => 'contenido/classes/contenido/class.fileinformation.php',
     'cApiArticleSpecificationCollection' => 'contenido/classes/contenido/class.article.specification.php',
     'cApiArticleSpecification' => 'contenido/classes/contenido/class.article.specification.php',
     'ArtSpecCollection' => 'contenido/classes/contenido/class.article.specification.php',
@@ -332,7 +335,6 @@ return array(
     'cAjaxRequest' => 'contenido/classes/class.ajax.php',
     'Ajax' => 'contenido/classes/class.ajax.php',
     'PHPMailer' => 'contenido/classes/phpmailer/class.phpmailer.php',
-    'phpmailerException' => 'contenido/classes/phpmailer/class.phpmailer.php',
     'SMTP' => 'contenido/classes/phpmailer/class.smtp.php',
     'Contenido_NavMain_Util' => 'contenido/classes/util/modules/class.contenido.nav.main.util.php',
     'Contenido_Sitemap_Util' => 'contenido/classes/util/modules/class.contenido.sitemap.util.php',
@@ -390,6 +392,7 @@ return array(
     'ConUser' => 'contenido/classes/class.conuser.php',
     'cMetaObject' => 'contenido/classes/class.metaobject.php',
     'cIterator' => 'contenido/classes/class.iterator.php',
+    'cSystemCheck' => 'contenido/classes/class.systemcheck.php',
     'cAutoload' => 'contenido/classes/class.autoload.php',
     'cTree' => 'contenido/classes/tree/class.ctree.php',
     'cTreeItem' => 'contenido/classes/tree/class.ctreeitem.php',
@@ -631,6 +634,5 @@ return array(
     'Contenido_UrlBuilderFactory' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilderFactory.class.php',
     'Contenido_UrlBuilder_CustomPath' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_CustomPath.class.php',
     'XmlTree' => 'contenido/classes/class.xmltree.php',
-    'XmlNode' => 'contenido/classes/class.xmltree.php',
-    'cSetupMask' => 'setup/lib/class.setupmask.php'
+    'XmlNode' => 'contenido/classes/class.xmltree.php'
 );

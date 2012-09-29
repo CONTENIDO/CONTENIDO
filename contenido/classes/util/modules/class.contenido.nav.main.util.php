@@ -13,15 +13,11 @@
  * @version    1.0.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
- *
- * {@internal
- *   created 2009-01-15
- *
- *   $Id$
- * }}
- *
  */
 
+ /**
+  * @deprecated 2012-09-23 This class is not longer supported. Use cCategoryHelper instead.
+  */
 class Contenido_NavMain_Util {
     /**
      * Recursive Loop over all (sub)categories.
@@ -35,9 +31,11 @@ class Contenido_NavMain_Util {
      * @param int $iLang
      * @param array $aLevelInfo Information for marking active cat per levels
      * @param array $aDepthInfo Info on level depth / where to stop. Format: array(iCurrentLoopCount, iMaxLoopCount)
+	 * @deprecated 2012-09-23 This class is not longer supported. Use cCategoryHelper instead.
      * @return void
      */
     public static function loopCats(Contenido_Category $oCategory, Contenido_FrontendNavigation $oFrontendNavigation, cTemplate $oTpl, array $aCfg, $iLang, array $aLevelInfo, $iCurrentPageIdcat, array $aDepthInfo = array()) {
+		cDeprecated("This class is not longer supported. Use cFrontendHelper->renderNavigation() instead.");
         $aDepthInfo[0] = isset($aDepthInfo[0]) ? $aDepthInfo[0] + 1 : 1;
         $aDepthInfo[1] = isset($aDepthInfo[1]) ? $aDepthInfo[1] : 1;
         // display current item

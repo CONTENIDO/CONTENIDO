@@ -280,6 +280,7 @@ contenido/classes/class.excel.php -text
 contenido/classes/class.filehandler.php -text
 contenido/classes/class.form.php -text
 contenido/classes/class.frontend.groups.php -text
+contenido/classes/class.frontend.helper.php -text
 contenido/classes/class.frontend.logic.php -text
 contenido/classes/class.frontend.permissions.php -text
 contenido/classes/class.frontend.users.php -text
