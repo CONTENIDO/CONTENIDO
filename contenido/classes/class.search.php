@@ -1629,7 +1629,7 @@ class SearchResult
     					}
     				}
 				}
-				$content[] = conHtmlSpecialChars_decode($cms_content);	
+				$content[] = htmlspecialchars_decode($cms_content);	
 			}else // get content of cms_type[$id], where $id are the cms_type numbers found in search
 			{
     			foreach ($id_type as $id)
