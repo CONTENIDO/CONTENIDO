@@ -89,7 +89,7 @@ class cCategoryHelper {
 	public function setAuth($auth) {
 		$this->_auth = $auth;
 		
-		$feUser = new cApiFrontendGroupMember($auth->auth['uid']);
+		$feUser = new cApiFrontendUser($auth->auth['uid']);
 		if ($feUser->isLoaded() === true) {
 			$this->_feGroups = $feUser->getGroupsForUser();
 		}
