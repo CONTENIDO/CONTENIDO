@@ -451,3 +451,16 @@ class cLayoutHandler {
     }
 
 }
+
+/**
+ * @deprecated [2011-11-15] Use cLayoutHandler instead of this class.
+ */
+class LayoutInFile extends cLayoutHandler {
+    /**
+     * @deprecated [2011-11-15] Use cLayoutHandler instead of this class.
+     */
+    public function __construct($layoutId, $layoutCode, $cfg, $lang, $db = null) {
+        cDeprecated("Use class cLayoutHandler instead");
+        parent::__construct($layoutId, $layoutCode, $cfg, $lang, $db);
+    }
+}
