@@ -452,7 +452,9 @@ function mi18n($string) {
     $contenidoTranslateFromFile = new cModuleFileTranslation($cCurrentModule, true);
     $array = $contenidoTranslateFromFile->getLangarray();
 
-    return ($array[$result] == '')? $result : $array[$result];
+    $untranslatedMessage = 'Module translation not found: ' . $result;
+
+    return ($array[$result] == '') ? $untranslatedMessage : $array[$result];
 }
 
 ?>
