@@ -60,6 +60,9 @@ $cfg['debug']['disable_chains'] = false;
 // (bool) Whether the plugin system should be disabled. If disabled, plugins are neither scanned nor included.
 $cfg['debug']['disable_plugins'] = false;
 
+// (bool) Whether deprecations should be logged. If disabled, there are no information on usage of outdated code.
+$cfg['debug']['log_deprecations'] = true;
+
 // (bool) If true, use the field 'urlname' for resolving. 'name' otherwise
 $cfg['urlpathresolve'] = false;
 
@@ -157,24 +160,6 @@ $cfg['php_error_reporting'] = E_ALL ^E_NOTICE;
 
 // (bool) Use heap table to accelerate statitics (off by default)
 $cfg['statistics_heap_table'] = false;
-
-
-/* HTTP parameter check
- * -----------------------------------------------------------------------------
- * This feature checks GET and POST parameters against a whitelist defined in
- * $cfg['http_params_check']['config']. Depending on mode administrated in the
- * same config as the whitelist CONTENIDO will stop processing in case of unknown
- * or invalid GET parameter.
- *
- * For further informations and initial discussion see  http://contenido.org/forum/viewtopic.php?p=113492!
- *
- * Special thx to kummer!
- */
-// (bool) Turns parameter checking on or off
-$cfg['http_params_check']['enabled'] = false;
-
-// (string) Configuration file (whitelist and mode)
-$cfg['http_params_check']['config'] = $cfg['path']['contenido_config'] . 'config.http_check.php';
 
 
 /* Global cache control flag

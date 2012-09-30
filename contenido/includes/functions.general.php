@@ -1229,6 +1229,10 @@ function cError($file, $line, $message) {
 function cDeprecated($message = '') {
     global $cfg;
 
+    if (isset($cfg['debug']['log_deprecations']) && $cfg['debug']['log_deprecations'] == false) {
+        return;
+    }
+
     $e = new Exception();
     $stack = $e->getTrace();
     $function_name = $stack[1]['function'];
