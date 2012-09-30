@@ -6,11 +6,6 @@
  * Description:
  * Utility to get articles of category/categories as cApiArticleLanguage objects.
  * For now, this object will use objects 'cApiArticleLanguage' and 'ArticleCollection'.
- * TODO: Method getNonStartArticlesInCategoryRange() must be fixed so order by condition is working correctly (works now just by category, not overall)
- * TODO: Somehow avoid ArticleCollection because it is too expensive.
- * TODO: Also take article specifications into account
- * TODO: Extend _buildQuery() to accept more order conditions
- * TODO: Merge with
  *
  * Requirements:
  * @con_php_req 5.0
@@ -24,23 +19,15 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.9
- *
- * {@internal
- *  created 2008-08-21
- *  modified 2009-04-09: Timo Trautmann fixed inconsistence bug in getNonStartArticlesInCategory()
- *  modified 2010-10-28 Ortwin Pinke, changed behaviour for $sOrderBy in getNonStartArticlesInCategory()
- *
- *
- *  $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
+/**
+ * @deprecated 2012-09-29 This class is not longer supported. Use cArticleCollector instead.
+ */
 class Contenido_Category_Articles extends Contenido_Category_Base
 {
     /**#@+
@@ -63,9 +50,11 @@ class Contenido_Category_Articles extends Contenido_Category_Base
      * @param int $iClient
      * @param int $iLang
      * @return void
+     * @deprecated 2012-09-29 This class is not longer supported. Use cArticleCollector instead.
      */
     public function __construct(DB_Contenido $oDb, array $aCfg, $iClient, $iLang)
     {
+        cDeprecated("This class is not longer supported. Use cArticleCollector instead.");
         parent::__construct($oDb, $aCfg);
         $this->setClient($iClient);
         $this->setLang($iLang);
@@ -335,48 +324,14 @@ class Contenido_Category_Articles extends Contenido_Category_Base
     }
 
     /**
-     * Return non start articles of a given category range.
-     * Remember to check for idart: if intval(idart) == 0, given idcat has no start article!
-     * Sortorder is applied to each category and not overall!
-     * @param array $aCategoryIds
-     * @param string $sOrderBy Valid are fields of tbl. con_art_lang
-     * @param string $sOrderDirection
-     * @param boolean $bArticleIdAsKey
      * @throws cBadMethodCallException Because method has not been implemented yet
-     * @return array An array with Article objects if any were found
-     * TODO: must be fixed so order by condition is working correctly (works now just by category, not overall)
      */
     public function getNonStartArticlesInCategoryRange(array $aCategoryIds, $sOrderBy = 'created', $sOrderDirection = 'DESC', $bArticleIdAsKey = false)
     {
         throw new cBadMethodCallException('Method not implemented yet!');
-        if (!in_array(strtolower($sOrderDirection), array('asc', 'desc'))) {
-            $sOrderDirection = 'DESC';
-        }
-        $aReturn = array();
-        if (sizeof($aCategoryIds) > 0) {
-            foreach ($aCategoryIds as $iIdcat) {
-                $aOptions = array(
-                    'idcat' => (int) $iIdcat,
-                    'lang' => $this->getLang(),
-                    'client' => $this->getClient(),
-                    'start' => false,
-                    'order' => $this->oDb->escape($sOrderBy),
-                    'direction' => $sOrderDirection
-                );
-                $this->oArticleCollection = new ArticleCollection($aOptions);
-                if ($bArticleIdAsKey === false) {
-                    $aReturn[] = $this->oArticleCollection->startArticle();
-                } else {
-                    $oStartArticle = $this->oArticleCollection->startArticle();
-                    $aReturn[$oStartArticle->values['idart']] = $oStartArticle;
-                }
-            }
-        }
-        return $aReturn;
     }
 
     /**
-     *
      * @throws cBadMethodCallException Because method has not been implemented yet
      */
     public function getCategoryByArticleId($iArticleId)
