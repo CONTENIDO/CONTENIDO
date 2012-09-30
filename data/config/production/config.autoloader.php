@@ -374,6 +374,7 @@ return array(
     'cSession' => 'contenido/classes/class.session.php',
     'cFrontendSession' => 'contenido/classes/class.session.php',
     'VersionLayout' => 'contenido/classes/class.versionLayout.php',
+    'cArticleCollector' => 'contenido/classes/class.article.collector.php',
     'cWYSIWYGEditor' => 'contenido/classes/class.wysiwyg_editor.php',
     'Form' => 'contenido/classes/class.form.php',
     'FormField' => 'contenido/classes/class.form.php',
