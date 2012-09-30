@@ -295,8 +295,9 @@ contenido/classes/class.input.helper.php -text
 contenido/classes/class.inuse.php -text
 contenido/classes/class.iterator.php -text
 contenido/classes/class.lang.php -text
+contenido/classes/class.layout.handler.php -text
 contenido/classes/class.layout.php -text
-contenido/classes/class.layoutInFile.php -text
+contenido/classes/class.layout.synchronizer.php -text
 contenido/classes/class.mailer.php -text
 contenido/classes/class.metaobject.php -text
 contenido/classes/class.note.php -text
@@ -313,7 +314,6 @@ contenido/classes/class.search.php -text
 contenido/classes/class.security.php -text
 contenido/classes/class.session.php -text
 contenido/classes/class.structure.php -text
-contenido/classes/class.synchronizeLayouts.php -text
 contenido/classes/class.systemcheck.php -text
 contenido/classes/class.table.php -text
 contenido/classes/class.template.php -text

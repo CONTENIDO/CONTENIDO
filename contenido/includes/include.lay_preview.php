@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$layoutInFile = new LayoutInFile(cSecurity::toInteger($_GET['idlay']), '', $cfg, $lang);
+$layoutInFile = new cLayoutHandler(cSecurity::toInteger($_GET['idlay']), '', $cfg, $lang);
 if (($code = $layoutInFile->getLayoutCode()) == false) {
     echo i18n("No such layout");
 }

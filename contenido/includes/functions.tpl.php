@@ -199,7 +199,7 @@ function tplBrowseLayoutForContainers($idlay) {
         global $containerinf;
         global $lang;
 
-        $layoutInFile = new LayoutInFile($idlay, "", $cfg, $lang);
+        $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
         $code = $layoutInFile->getLayoutCode();
 
 
@@ -356,7 +356,7 @@ function tplPreparseLayout ($idlay)
     global $cfg;
     global $lang;
 
-    $layoutInFile = new LayoutInFile($idlay, "", $cfg, $lang);
+    $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
     $code = $layoutInFile->getLayoutCode();
 
     $parser = new HtmlParser($code);

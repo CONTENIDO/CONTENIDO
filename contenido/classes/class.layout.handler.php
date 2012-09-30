@@ -24,7 +24,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-class LayoutInFile {
+class cLayoutHandler {
 
     /**
      * The ID of the layout

@@ -30,7 +30,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 cInclude("external", "codemirror/class.codemirror.php");
-cInclude('classes', 'class.synchronizeLayouts.php');
+cInclude('classes', 'class.layout.synchronizer.php');
 
 if (!isset($idlay)) {
     $idlay = 0;
@@ -49,7 +49,7 @@ if ($action == "lay_new") {
     } else {
         $layoutAlias = strtolower(cApiStrCleanURLCharacters(i18n("-- New layout --")));
 
-        if (LayoutInFile::existLayout($layoutAlias, $cfgClient, $client)) {
+        if (cLayoutHandler::existLayout($layoutAlias, $cfgClient, $client)) {
             $page->displayError(i18n("Layout name exist, rename the layout!"));
         } else {
             $layouts = new cApiLayoutCollection();
@@ -61,7 +61,7 @@ if ($action == "lay_new") {
             $layout->store();
 
             // make new layout in filesystem
-            $layoutInFile = new LayoutInFile($layout->get("idlay"), "", $cfg, $lang);
+            $layoutInFile = new cLayoutHandler($layout->get("idlay"), "", $cfg, $lang);
             if ($layoutInFile->saveLayout('') == false) {
                 $page->displayError(i18n("Cant save layout in filesystem!"));
             } else {
@@ -83,7 +83,7 @@ if ($action == "lay_new") {
     if (!$perm->have_perm_area_action_anyitem($area, $action)) {
         $page->displayError(i18n("Permission denied"));
     } else {
-        $layoutSynchronization = new SynchronizeLayouts($cfg, $cfgClient, $lang, $client);
+        $layoutSynchronization = new cLayoutSynchronizer($cfg, $cfgClient, $lang, $client);
         $layoutSynchronization->synchronize();
         // Reload the overview of Layouts
         $bReloadSyncSrcipt = true;
@@ -110,7 +110,7 @@ if (!$layout->virgin) {
     $msg = "";
 
     $idlay = $layout->get("idlay");
-    $layoutInFile = new LayoutInFile($idlay, "", $cfg, $lang);
+    $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
     $code = $layoutInFile->getLayoutCode();
     #$code = $layout->get("code");
     $name = $layout->get("name");

@@ -22,7 +22,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 cInclude('includes', 'functions.tpl.php');
 cInclude('includes', 'functions.con.php');
-cInclude('classes', 'class.layoutInFile.php');
+cInclude('classes', 'class.layout.handler.php');
 
 /**
  * Edit or Create a new layout
@@ -59,7 +59,7 @@ function layEditLayout($idlay, $name, $description, $code) {
     $layoutAlias = cModuleHandler::getCleanName(strtolower($name));
 
     // Constructor for the layout in filesystem
-    $layoutInFile = new LayoutInFile($idlay, stripslashes($code), $cfg, $lang);
+    $layoutInFile = new cLayoutHandler($idlay, stripslashes($code), $cfg, $lang);
 
     // Track version
     $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
@@ -86,11 +86,11 @@ function layEditLayout($idlay, $name, $description, $code) {
         return $idlay;
     } else {
         // Save the layout in file system
-        $layoutInFile = new LayoutInFile($idlay, stripslashes($code), $cfg, $lang);
+        $layoutInFile = new cLayoutHandler($idlay, stripslashes($code), $cfg, $lang);
         // Name changed
         if ($layoutAlias != $layoutInFile->getLayoutName()) {
             // Exist layout in directory
-            if (LayoutInFile::existLayout($layoutAlias, $cfgClient, $client) == true) {
+            if (cLayoutHandler::existLayout($layoutAlias, $cfgClient, $client) == true) {
                 // Save in old directory
                 if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
                     $notification->displayNotification("error", i18n("Can't save layout in file!"));
@@ -161,7 +161,7 @@ function layDeleteLayout($idlay) {
         return '0301';
     } else {
         // delete the layout in file system
-        $layoutInFile = new LayoutInFile($idlay, '', $cfg, 1);
+        $layoutInFile = new cLayoutHandler($idlay, '', $cfg, 1);
         if ($layoutInFile->eraseLayout()) {
             // delete layout in database
             $layoutCollection = new cApiLayoutCollection();

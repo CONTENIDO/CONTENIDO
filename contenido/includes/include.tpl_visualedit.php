@@ -79,7 +79,7 @@ while ($db->next_record()) {
 
 
     #$code = $db->f('code');
-    $layoutInFile = new LayoutInFile($idlay, "", $cfg, $lang);
+    $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
     $code = $layoutInFile->getLayoutCode();
 
     // get document version (html or xhtml)

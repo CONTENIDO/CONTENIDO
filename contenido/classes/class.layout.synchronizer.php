@@ -24,7 +24,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-class SynchronizeLayouts {
+class cLayoutSynchronizer {
 
     protected $_cfg;
     protected $_lang;
@@ -49,7 +49,7 @@ class SynchronizeLayouts {
     private function _addOrUpdateLayout($dir, $oldLayoutName, $newLayoutName, $idclient) {
         //if layout dont exist in the $cfg["tab"]["lay"] table.
         if ($this->_isExistInTable($oldLayoutName, $idclient) == false) {
-            //add new Layout in db-tablle
+            //add new Layout in db-table
             $this->_addLayout($newLayoutName, $idclient);
             //make a layout file if not exist
             if (!cFileHandler::exists($dir . $newLayoutName . '/' . $newLayoutName . '.html')) {
@@ -171,7 +171,7 @@ class SynchronizeLayouts {
                     if ($lastmodified < $lastmodifiedLayout) {
                         //update field lastmodified in table lay
                         $this->setLastModified($lastmodifiedLayout, $db->f('idlay'));
-                        $layout = new LayoutInFile($db->f('idlay'), ' ', $this->_cfg, $this->_lang);
+                        $layout = new cLayoutHandler($db->f('idlay'), ' ', $this->_cfg, $this->_lang);
                         // Update CODE table
                         conGenerateCodeForAllartsUsingLayout($db->f('idlay'));
                         $this->_outputMessage['info'][] = i18n("Synchronization successfully layout name: ") . $db->f('name');
@@ -180,7 +180,7 @@ class SynchronizeLayouts {
             } else {
                 $oLayout = new cApiLayout($db->f('idlay'));
 
-                $layout = new LayoutInFile($db->f('idlay'), '', $this->_cfg, $this->_lang);
+                $layout = new cLayoutHandler($db->f('idlay'), '', $this->_cfg, $this->_lang);
                 //is layout in use
                 if ($oLayout->isInUse()) {
                     //make layout file

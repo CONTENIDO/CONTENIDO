@@ -58,7 +58,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $a_d = conGetUsedModules($idtpl);
 
         // Load layout code from file
-        $layoutInFile = new LayoutInFile($idlay, '', $cfg, $this->_lang);
+        $layoutInFile = new cLayoutHandler($idlay, '', $cfg, $this->_lang);
         $this->_layoutCode = $layoutInFile->getLayoutCode();
         $this->_layoutCode = cApiStrNormalizeLineEndings($this->_layoutCode, "\n");
 

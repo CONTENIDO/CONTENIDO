@@ -99,7 +99,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
 
     public function execute() {
         global $cfg;
-        global $client, $lang, $cfgClient;  // is used in LayoutInFile below!!!
+        global $client, $lang, $cfgClient;  // is used in cLayoutHandler below!!!
 
         // Makes the new concept of modules (save the modules to the file) save the translation
         if ($this->_setupType == 'upgrade' || $this->_setupType == 'setup') {
@@ -142,8 +142,8 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
             $this->_convertModulesToFile();
 
             // Save layout from db-table to the file system
-            // @fixme  LayoutInFile uses global $client, we can't do this for all clients...
-            $layoutInFile = new LayoutInFile(1, '', $cfg, 1, $this->_oDb);
+            // @fixme  cLayoutHandler uses global $client, we can't do this for all clients...
+            $layoutInFile = new cLayoutHandler(1, '', $cfg, 1, $this->_oDb);
             $layoutInFile->upgrade();
 
             $db2 = getSetupMySQLDBConnection();
