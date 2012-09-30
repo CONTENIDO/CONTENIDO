@@ -260,6 +260,7 @@ contenido/classes/class.activeusers.php -text
 contenido/classes/class.ajax.php -text
 contenido/classes/class.area.php -text
 contenido/classes/class.art.php -text
+contenido/classes/class.article.collector.php -text
 contenido/classes/class.article.php -text
 contenido/classes/class.artspec.php -text
 contenido/classes/class.autoload.php -text
