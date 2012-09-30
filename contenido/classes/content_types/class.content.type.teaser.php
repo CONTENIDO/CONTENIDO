@@ -217,28 +217,27 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                 }
             }
         } else {
-            // in case of automatic teaser use class Contenido_Category_Articles
+            // in case of automatic teaser use class cArticleCollector
             // for getting all arts in category
-            $db = cRegistry::getDb();
-            $conCatArt = new Contenido_Category_Articles($db, $this->_cfg, $this->_client, $this->_lang);
-            // decide to teaser articles or not
+
+            $options = array(
+                'lang' => $this->_lang,
+                'client' => $this->_client,
+                'idcat' => $this->_settings['teaser_category'],
+                'order' => $this->_settings['teaser_sort'],
+                'direction' => $this->_settings['teaser_sort_order'],
+                'limit' => $this->_settings['teaser_count'],
+                'start' => false
+            );
+
             if ($this->_settings['teaser_start'] == 'true') {
-                $articles = $conCatArt->getArticlesInCategory($this->_settings['teaser_category'], $this->_settings['teaser_sort'], $this->_settings['teaser_sort_order']);
-            } else {
-                $articles = $conCatArt->getNonStartArticlesInCategory($this->_settings['teaser_category'], $this->_settings['teaser_sort'], $this->_settings['teaser_sort_order']);
+                $options['start'] = true;
             }
 
-            $i = 0;
-            // iterate over all found articles
-            foreach ($articles as $article) {
-                // try to fill teaser image
-                if ($this->_fillTeaserTemplateEntry($article, $template)) {
-                    $i++;
-                    // break render, if teaser limit is reached
-                    if ($i == $this->_settings['teaser_count']) {
-                        break;
-                    }
-                }
+            $artCollector = new cArticleCollector($options);
+
+            foreach ($artCollector as $article) {
+                $this->_fillTeaserTemplateEntry($article, $template);
             }
         }
 
