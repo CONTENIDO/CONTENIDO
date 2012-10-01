@@ -75,31 +75,10 @@ $tpl->set('s', 'VERSION',  $cfg['version']);
 $tpl->set('s', 'LOCATION', $backendUrl);
 
 // Hide menu-frame for some areas
-
-// First of all, fetch the meta data of the area table to check if there's a menuless column
-$aMetadata = $db->metadata($cfg['tab']['area']);
-$bFound = false;
-
-foreach ($aMetadata as $aFieldDescriptor) {
-    if ($aFieldDescriptor['name'] == 'menuless') {
-        $bFound = true;
-        break;
-    }
-}
-
-$aMenulessAreas = array();
-
-// @TODO: How old are the old style menueless areas???
-if ($bFound == true) {
-    // Yes, a menuless column does exist
-    $oAreaColl = new cApiAreaCollection();
-    $oAreaColl->select('menuless=1');
-    while ($oItem = $oAreaColl->next()) {
-        $aMenulessAreas[] = $oItem->get('name');
-    }
-} else {
-    // No, use old style hard-coded menuless area stuff
-    $aMenulessAreas = array('str', 'logs', 'debug', 'system');
+$oAreaColl = new cApiAreaCollection();
+$oAreaColl->select('menuless=1');
+while ($oItem = $oAreaColl->next()) {
+	$aMenulessAreas[] = $oItem->get('name');
 }
 
 if (in_array($area, $aMenulessAreas) || (isset($menuless) && $menuless == 1)) {
