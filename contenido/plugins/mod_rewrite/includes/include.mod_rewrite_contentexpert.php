@@ -1,38 +1,23 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * Plugin mod_rewrite backend include file to administer expert (in content frame)
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
- * @version     0.1
+ * @package     plugin
+ * @subpackage  Mod Rewrite
+ * @version     SVN Revision $Rev:$
+ * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
- * @since       file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created   2011-04-11
- *   modified  2011-05-17  Murat Purc, added check for available client id
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+global $client, $cfg;
 
 ################################################################################
 ##### Initialization
@@ -48,7 +33,7 @@ if ((int) $client <= 0) {
 plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_contentexpert_controller.php');
 
 $action = (isset($_REQUEST['mr_action'])) ? $_REQUEST['mr_action'] : 'index';
-$debug  = false;
+$debug = false;
 
 
 ################################################################################
@@ -70,7 +55,7 @@ $oView->copy_htaccess_error = '';
 $oView->copy_htaccess_contenido_chk = ' checked="checked"';
 $oView->copy_htaccess_cms_chk = '';
 $oView->contenido_full_path = $aHtaccessInfo['contenido_full_path'];
-$oView->client_full_path    = $aHtaccessInfo['client_full_path'];
+$oView->client_full_path = $aHtaccessInfo['client_full_path'];
 $oView->content_after = '';
 
 $oMrController->setProperty('htaccessInfo', $aHtaccessInfo);
@@ -113,30 +98,18 @@ $oView->lng_save_changes = i18n('Save changes', 'mod_rewrite');
 ##### Action processing
 
 if ($action == 'index') {
-
     $oMrController->indexAction();
-
 } elseif ($action == 'copyhtaccess') {
-
     $oMrController->copyHtaccessAction();
-
 } elseif ($action == 'downloadhtaccess') {
-
     $oMrController->downloadHtaccessAction();
     exit();
-
 } elseif ($action == 'reset') {
-
     $oMrController->resetAction();
-
 } elseif ($action == 'resetempty') {
-
     $oMrController->resetEmptyAction();
-
 } else {
-
     $oMrController->indexAction();
-
 }
 
 

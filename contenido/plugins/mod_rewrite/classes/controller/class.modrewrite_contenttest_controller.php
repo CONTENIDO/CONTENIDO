@@ -1,31 +1,16 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * AMR test controller
  *
- * Description:
- * Content test controller
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
- * @version     0.1
+ * @package     plugin
+ * @subpackage  Mod Rewrite
+ * @version     SVN Revision $Rev:$
+ * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
- * @since       file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-04-11
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -36,55 +21,49 @@ if (!defined('CON_FRAMEWORK')) {
 plugin_include('mod_rewrite', 'classes/class.modrewritetest.php');
 plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_controller_abstract.php');
 
-
 /**
  * Content controller to run tests.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
+ * @package     plugin
+ * @subpackage  Mod Rewrite
  */
-class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
-{
+class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract {
+
     /**
      * Number of max items to process
      * @var  int
      */
     protected $_iMaxItems = 0;
 
-
     /**
      * Initializer method, sets some view variables
      */
-    public function init()
-    {
-        $this->_oView->content   = '';
-        $this->_oView->form_idart_chk     = ($this->_getParam('idart')) ? ' checked="checked"' : '';
-        $this->_oView->form_idcat_chk     = ($this->_getParam('idcat')) ? ' checked="checked"' : '';
-        $this->_oView->form_idcatart_chk  = ($this->_getParam('idcatart')) ? ' checked="checked"' : '';
+    public function init() {
+        $this->_oView->content = '';
+        $this->_oView->form_idart_chk = ($this->_getParam('idart')) ? ' checked="checked"' : '';
+        $this->_oView->form_idcat_chk = ($this->_getParam('idcat')) ? ' checked="checked"' : '';
+        $this->_oView->form_idcatart_chk = ($this->_getParam('idcatart')) ? ' checked="checked"' : '';
         $this->_oView->form_idartlang_chk = ($this->_getParam('idartlang')) ? ' checked="checked"' : '';
-        $this->_oView->form_maxitems      = (int) $this->_getParam('maxitems', 200);
+        $this->_oView->form_maxitems = (int) $this->_getParam('maxitems', 200);
         $this->_iMaxItems = $this->_oView->form_maxitems;
     }
 
     /**
      * Index action
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $this->_oView->content = '';
-
     }
 
     /**
      * Test action
      */
-    public function testAction()
-    {
+    public function testAction() {
         $this->_oView->content = '';
 
         // Array for testcases
-        $aTests  = array();
+        $aTests = array();
 
         // Instance of mr test
         $oMRTest = new ModRewriteTest($this->_iMaxItems);
@@ -99,15 +78,15 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
         foreach ($aStruct as $idcat => $aCat) {
             // category
             $aTests[] = array(
-                'url'   => $oMRTest->composeURL($aCat, 'c'),
+                'url' => $oMRTest->composeURL($aCat, 'c'),
                 'level' => $aCat['level'],
-                'name'  => $aCat['name']
+                'name' => $aCat['name']
             );
 
             foreach ($aCat['articles'] as $idart => $aArt) {
                 // articles
                 $aTests[] = array(
-                    'url'  => $oMRTest->composeURL($aArt, 'a'),
+                    'url' => $oMRTest->composeURL($aArt, 'a'),
                     'level' => $aCat['level'],
                     'name' => $aCat['name'] . ' :: ' . $aArt['title']
                 );
@@ -125,14 +104,14 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
         }
 
         $successCounter = 0;
-        $failCounter    = 0;
+        $failCounter = 0;
 
         // second loop to do the rest
         foreach ($aTests as $p => $v) {
-            $url    = mr_buildNewUrl($v['url']);
-            $arr    = $oMRTest->resolveUrl($url);
+            $url = mr_buildNewUrl($v['url']);
+            $arr = $oMRTest->resolveUrl($url);
             $resUrl = $oMRTest->getResolvedUrl();
-            $color  = 'green';
+            $color = 'green';
 
             if ($url !== $resUrl) {
                 if ($oMRTest->getRoutingFoundState()) {
@@ -146,7 +125,7 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
                 $successCounter++;
             }
 
-            $pref   = str_repeat('    ', $v['level']);
+            $pref = str_repeat('    ', $v['level']);
 
             // render resolve information for current item
             $itemTpl = $this->_oView->lng_result_item_tpl;
@@ -172,7 +151,6 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
         $msg = str_replace('{num_fail}', $failCounter, $msg);
 
         $this->_oView->content = $msg . $this->_oView->content;
-
     }
 
 }

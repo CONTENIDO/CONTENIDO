@@ -1,47 +1,30 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * AMR test class
  *
- * Description:
- * Advanced Mod Rewrite test class.
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
- * @version     0.1
+ * @package     plugin
+ * @subpackage  Mod Rewrite
+ * @version     SVN Revision $Rev:$
+ * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
- * @since       file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2008-05-xx
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Mod rewrite test class.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
+ * @package     plugin
+ * @subpackage  Mod Rewrite
  */
-class ModRewriteTest
-{
+class ModRewriteTest {
 
     /**
      * Global $cfg array
@@ -55,7 +38,6 @@ class ModRewriteTest
      */
     protected $_aCfgTab;
 
-
     /**
      * Max items to process
      * @var  int
@@ -68,48 +50,40 @@ class ModRewriteTest
      */
     protected $_sResolvedUrl;
 
-
     /**
      * Routing found flag
      * @var  bool
      */
     protected $_bRoutingFound = false;
 
-
     /**
      * Constuctor
      * @param  int  $maxItems  Max items (urls to articles/categories) to process
      */
-    public function __construct($maxItems)
-    {
+    public function __construct($maxItems) {
         global $cfg;
-        $this->_aCfg    = & $cfg;
+        $this->_aCfg = & $cfg;
         $this->_aCfgTab = & $cfg['tab'];
         $this->_iMaxItems = $maxItems;
     }
-
 
     /**
      * Returns resolved URL
      *
      * @return  bool  Resolved URL
      */
-    public function getResolvedUrl()
-    {
+    public function getResolvedUrl() {
         return $this->_sResolvedUrl;
     }
-
 
     /**
      * Returns flagz about found routing
      *
      * @return  bool
      */
-    public function getRoutingFoundState()
-    {
+    public function getRoutingFoundState() {
         return $this->_bRoutingFound;
     }
-
 
     /**
      * Fetchs full structure of the installation (categories and articles) and returns it back.
@@ -122,11 +96,10 @@ class ModRewriteTest
      *   $arr[idcat]['articles'][idart] = Article dataset
      * </code>
      */
-    public function fetchFullStructure($idclient = null, $idlang = null)
-    {
+    public function fetchFullStructure($idclient = null, $idlang = null) {
         global $client, $lang;
 
-        $db  = cRegistry::getDb();
+        $db = cRegistry::getDb();
         $db2 = cRegistry::getDb();
 
         if (!$idclient || (int) $idclient == 0) {
@@ -149,14 +122,13 @@ class ModRewriteTest
                 WHERE
                     a.idcat = b.idcat AND
                     c.idcat = a.idcat AND
-                    c.idclient = '".$idclient."' AND
-                    b.idlang = '".$idlang."'
+                    c.idclient = '" . $idclient . "' AND
+                    b.idlang = '" . $idlang . "'
                 ORDER BY
                     a.idtree";
 
         $db->query($sql);
 
-        $loop    = false;
         $counter = 0;
 
         while ($db->next_record()) {
@@ -172,15 +144,15 @@ class ModRewriteTest
             $sql2 = "SELECT
                          *
                      FROM
-                         ".$aTab['cat_art']."  AS a,
-                         ".$aTab['art']."      AS b,
-                         ".$aTab['art_lang']." AS c
+                         " . $aTab['cat_art'] . "  AS a,
+                         " . $aTab['art'] . "      AS b,
+                         " . $aTab['art_lang'] . " AS c
                      WHERE
-                         a.idcat = '".$idcat."' AND
+                         a.idcat = '" . $idcat . "' AND
                          b.idart = a.idart AND
                          c.idart = a.idart AND
-                         c.idlang = '".$idlang."' AND
-                         b.idclient = '".$idclient."'
+                         c.idlang = '" . $idlang . "' AND
+                         b.idclient = '" . $idclient . "'
                      ORDER BY
                          c.title ASC";
 
@@ -198,7 +170,6 @@ class ModRewriteTest
         return $aStruct;
     }
 
-
     /**
      * Creates an URL using passed data.
      *
@@ -214,8 +185,7 @@ class ModRewriteTest
      * @param  string  $type  Either 'c' or 'a' (category or article). If set to
      *                        'c' only the parameter idcat will be added to the URL
      */
-    public function composeURL($arr, $type)
-    {
+    public function composeURL($arr, $type) {
         $type = ($type == 'a') ? 'a' : 'c';
 
         $param = array();
@@ -240,7 +210,6 @@ class ModRewriteTest
         return 'front_content.php?' . implode('&amp;', $param);
     }
 
-
     /**
      * Resolves variables of an page (idcat, idart, idclient, idlang, etc.) by
      * processing passed url using ModRewriteController
@@ -248,14 +217,15 @@ class ModRewriteTest
      * @param   string  $url  Url to resolve
      * @return  array   Assoziative array with resolved data
      */
-    public function resolveUrl($url)
-    {
+    public function resolveUrl($url) {
         // some globals to reset
         $aGlobs = array(
             'mr_preprocessedPageError', 'idart', 'idcat'
         );
         foreach ($aGlobs as $p => $k) {
-            if (isset($GLOBALS[$k])) { unset($GLOBALS[$k]); }
+            if (isset($GLOBALS[$k])) {
+                unset($GLOBALS[$k]);
+            }
         }
 
         $aReturn = array();
@@ -269,14 +239,13 @@ class ModRewriteTest
             // an error occured (idcat and or idart couldn't catched by controller)
             $aReturn['mr_preprocessedPageError'] = 1;
 
-            $this->_sResolvedUrl  = '';
+            $this->_sResolvedUrl = '';
             $this->_bRoutingFound = false;
-
         } else {
 
             // set some global variables
 
-            $this->_sResolvedUrl  = $oMRController->getResolvedUrl();
+            $this->_sResolvedUrl = $oMRController->getResolvedUrl();
             $this->_bRoutingFound = $oMRController->getRoutingFoundState();
 
             if ($oMRController->getClient()) {
@@ -306,12 +275,10 @@ class ModRewriteTest
             if ($oMRController->getPath()) {
                 $aReturn['path'] = $oMRController->getPath();
             }
-
         }
 
         return $aReturn;
     }
-
 
     /**
      * Creates a readable string from passed resolved data array.
@@ -319,14 +286,13 @@ class ModRewriteTest
      * @param   array   Assoziative array with resolved data
      * @return  string  Readable resolved data
      */
-    public function getReadableResolvedData(array $data)
-    {
+    public function getReadableResolvedData(array $data) {
         // compose resolved string
         $ret = '';
         foreach ($data as $k => $v) {
             $ret .= $k . '=' . $v . '; ';
         }
-        $ret = substr($ret, 0, strlen($ret)-2);
+        $ret = substr($ret, 0, strlen($ret) - 2);
         return $ret;
     }
 

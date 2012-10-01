@@ -1,9 +1,5 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * Mod Rewrite front_content.php controller. Does some preprocessing jobs, tries
  * to set following variables, depending on mod rewrite configuration and if
  * request part exists:
@@ -14,26 +10,15 @@
  * - $idart
  * - $idcat
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
- * @version     0.1
+ * @package     plugin
+ * @subpackage  Mod Rewrite
+ * @version     SVN Revision $Rev:$
+ * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
- * @since       file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2008-05-xx
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -41,7 +26,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-global $client, $changeclient, $cfgClient, $lang, $changelang, $idart, $idcat, $path;
+global $client, $changeclient, $cfgClient, $lang, $changelang, $idart, $idcat, $path, $mr_preprocessedPageError;
 
 ModRewriteDebugger::add(ModRewrite::getConfig(), 'front_content_controller.php mod rewrite config');
 
@@ -59,20 +44,19 @@ if ($oMRController->errorOccured()) {
     if ($iRedirToErrPage == 1 && (int) $client > 0 && (int) $lang > 0) {
         global $errsite_idcat, $errsite_idart;
 
-        if ($cfgClient['set'] != 'set')    {
+        if ($cfgClient['set'] != 'set') {
             rereadClients();
         }
 
         // errorpage
         $aParams = array(
             'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client],
-            'lang' => $lang, 'error'=> '1'
+            'lang' => $lang, 'error' => '1'
         );
         $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
         mr_header($errsite);
         exit();
     }
-
 } else {
 
     // set some global variables
@@ -104,7 +88,6 @@ if ($oMRController->errorOccured()) {
     if ($oMRController->getPath()) {
         $path = $oMRController->getPath();
     }
-
 }
 
 // some debugs

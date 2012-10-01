@@ -1,40 +1,31 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * Mod Rewrite front_content.php controller. Does some preprocessing jobs, tries
+ * to set following variables, depending on mod rewrite configuration and if
+ * request part exists:
+ * - $client
+ * - $changeclient
+ * - $lang
+ * - $changelang
+ * - $idart
+ * - $idcat
  *
- * Description:
- * Defines the 'modrewrite' related helper functions
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
- * @version     0.1
+ * @package     plugin
+ * @subpackage  Mod Rewrite
+ * @version     SVN Revision $Rev:$
+ * @id          $Id$:
  * @author      Stefan Seifarth / stese
  * @author      Murat Purc <murat@purc.de>
- * @copyright   � www.polycoder.de
+ * @copyright   www.polycoder.de
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
- * @since       file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created   2004-12-04
- *   modified  2005-12-18
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-
 
 /**
  * Processes mod_rewrite related job for created new tree.
@@ -44,11 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @param   array  $data  Assoziative array with some values
  * @return  array  Passed parameter
  */
-
-
-
-function mr_strNewTree(array $data)
-{
+function mr_strNewTree(array $data) {
     global $lang;
 
     ModRewriteDebugger::log($data, 'mr_strNewTree $data');
@@ -63,7 +50,6 @@ function mr_strNewTree(array $data)
     return $data;
 }
 
-
 /**
  * Processes mod_rewrite related job for created new category.
  *
@@ -72,8 +58,7 @@ function mr_strNewTree(array $data)
  * @param   array  $data  Assoziative array with some values
  * @return  array  Passed parameter
  */
-function mr_strNewCategory(array $data)
-{
+function mr_strNewCategory(array $data) {
     global $lang;
 
     ModRewriteDebugger::log($data, 'mr_strNewCategory $data');
@@ -88,7 +73,6 @@ function mr_strNewCategory(array $data)
     return $data;
 }
 
-
 /**
  * Processes mod_rewrite related job for renamed category
  * 2010-02-01: and now all existing subcategories and modify their paths too...
@@ -99,15 +83,14 @@ function mr_strNewCategory(array $data)
  * @param   array  $data  Assoziative array with some values
  * @return  array  Passed parameter
  */
-function mr_strRenameCategory(array $data)
-{
+function mr_strRenameCategory(array $data) {
     ModRewriteDebugger::log($data, 'mr_strRenameCategory $data');
 
     // hes 20100102
     // maximal 50 recursion level
     $recursion = (is_int($data['recursion'])) ? $data['recursion'] : 1;
     if ($recursion > 50) {
-        exit("#20100201-1503: sorry - maximum function nesting level of ".$recursion." reached");
+        exit("#20100201-1503: sorry - maximum function nesting level of " . $recursion . " reached");
     }
 
     $mrCatAlias = (trim($data['newcategoryalias']) !== '') ? trim($data['newcategoryalias']) : trim($data['newcategoryname']);
@@ -130,11 +113,11 @@ function mr_strRenameCategory(array $data)
 
         // hes 20100102
         $childData = array(
-            'idcat'            => $oCat->get('idcat'),
-            'lang'             => (int) $data['lang'],
-            'newcategoryname'  => $oCatLan->get('name'),
+            'idcat' => $oCat->get('idcat'),
+            'lang' => (int) $data['lang'],
+            'newcategoryname' => $oCatLan->get('name'),
             'newcategoryalias' => $oCatLan->get('urlname'),
-            'recursion'        => $recursion + 1
+            'recursion' => $recursion + 1
         );
 
         $resData = mr_strRenameCategory($childData);
@@ -142,7 +125,6 @@ function mr_strRenameCategory(array $data)
 
     return $data;
 }
-
 
 /**
  * Processes mod_rewrite related job after moving a category up.
@@ -155,8 +137,7 @@ function mr_strRenameCategory(array $data)
  * @param   int  $idcat  Category id
  * @return  int  Category id
  */
-function mr_strMoveUpCategory($idcat)
-{
+function mr_strMoveUpCategory($idcat) {
     ModRewriteDebugger::log($idcat, 'mr_strMoveUpCategory $idcat');
 
     // category check
@@ -179,7 +160,6 @@ function mr_strMoveUpCategory($idcat)
     return $idcat;
 }
 
-
 /**
  * Processes mod_rewrite related job after moving a category down.
  *
@@ -191,8 +171,7 @@ function mr_strMoveUpCategory($idcat)
  * @param   int  $idcat  Id of category beeing moved down
  * @return  int  Category id
  */
-function mr_strMovedownCategory($idcat)
-{
+function mr_strMovedownCategory($idcat) {
     ModRewriteDebugger::log($idcat, 'mr_strMovedownCategory $idcat');
 
     // category check
@@ -214,7 +193,6 @@ function mr_strMovedownCategory($idcat)
     return $idcat;
 }
 
-
 /**
  * Processes mod_rewrite related job after moving a category subtree.
  *
@@ -223,8 +201,7 @@ function mr_strMovedownCategory($idcat)
  * @param   array  $data  Assoziative array with some values
  * @return  array  Passed parameter
  */
-function mr_strMoveSubtree(array $data)
-{
+function mr_strMoveSubtree(array $data) {
     ModRewriteDebugger::log($data, 'mr_strMoveSubtree $data');
 
     // category check
@@ -258,7 +235,6 @@ function mr_strMoveSubtree(array $data)
     return $data;
 }
 
-
 /**
  * Processes mod_rewrite related job after copying a category subtree.
  *
@@ -267,8 +243,7 @@ function mr_strMoveSubtree(array $data)
  * @param   array  $data  Assoziative array with some values
  * @return  array  Passed parameter
  */
-function mr_strCopyCategory(array $data)
-{
+function mr_strCopyCategory(array $data) {
     ModRewriteDebugger::log($data, 'mr_strCopyCategory $data');
 
     $idcat = (int) $data['newcat']->get('idcat');
@@ -288,7 +263,6 @@ function mr_strCopyCategory(array $data)
     }
 }
 
-
 /**
  * Processes mod_rewrite related job during structure synchronisation process,
  * sets the urlpath of current category.
@@ -298,13 +272,11 @@ function mr_strCopyCategory(array $data)
  * @param   array  $data  Assoziative array with some values
  * @return  array  Passed parameter
  */
-function mr_strSyncCategory(array $data)
-{
+function mr_strSyncCategory(array $data) {
     ModRewriteDebugger::log($data, 'mr_strSyncCategory $data');
     ModRewrite::setCatUrlPath($data['idcat'], $data['idlang']);
     return $data;
 }
-
 
 /**
  * Processes mod_rewrite related job for saved articles (new or modified article).
@@ -314,8 +286,7 @@ function mr_strSyncCategory(array $data)
  * @param   array  $data  Assoziative array with some article properties
  * @return  array  Passed parameter
  */
-function mr_conSaveArticle(array $data)
-{
+function mr_conSaveArticle(array $data) {
     global $tmp_firstedit, $client;
 
     ModRewriteDebugger::log($data, 'mr_conSaveArticle $data');
@@ -328,7 +299,7 @@ function mr_conSaveArticle(array $data)
         $data['urlname'] = $data['title'];
     }
 
-    if (1 == $tmp_firstedit)    {
+    if (1 == $tmp_firstedit) {
         // new article
         $aLanguages = getLanguagesByClient($client);
 
@@ -347,7 +318,6 @@ function mr_conSaveArticle(array $data)
     return $data;
 }
 
-
 /**
  * Processes mod_rewrite related job for articles beeing moved.
  *
@@ -356,8 +326,7 @@ function mr_conSaveArticle(array $data)
  * @param   array  $data  Assoziative array with record entries
  * @return  array  Loop through of arguments
  */
-function mr_conMoveArticles($data)
-{
+function mr_conMoveArticles($data) {
     ModRewriteDebugger::log($data, 'mr_conMoveArticles $data');
 
     // too defensive but secure way
@@ -377,7 +346,6 @@ function mr_conMoveArticles($data)
     return $data;
 }
 
-
 /**
  * Processes mod_rewrite related job for duplicated articles.
  *
@@ -386,8 +354,7 @@ function mr_conMoveArticles($data)
  * @param   array  $data  Assoziative array with record entries
  * @return  array  Loop through of arguments
  */
-function mr_conCopyArtLang($data)
-{
+function mr_conCopyArtLang($data) {
     ModRewriteDebugger::log($data, 'mr_conCopyArtLang $data');
 
     // too defensive but secure way
@@ -406,7 +373,6 @@ function mr_conCopyArtLang($data)
     return $data;
 }
 
-
 /**
  * Processes mod_rewrite related job for synchronized articles.
  *
@@ -422,8 +388,7 @@ function mr_conCopyArtLang($data)
  *
  * @return  array  Loop through of argument
  */
-function mr_conSyncArticle($data)
-{
+function mr_conSyncArticle($data) {
     ModRewriteDebugger::log($data, 'mr_conSyncArticle $data');
 
     // too defensive but secure way
@@ -453,7 +418,6 @@ function mr_conSyncArticle($data)
     return $data;
 }
 
-
 /**
  * Works as a wrapper for Contenido_Url.
  *
@@ -464,8 +428,7 @@ function mr_conSyncArticle($data)
  * @param   string  $url  URL to rebuild
  * @return  string        New URL
  */
-function mr_buildNewUrl($url)
-{
+function mr_buildNewUrl($url) {
     global $lang;
 
     ModRewriteDebugger::add($url, 'mr_buildNewUrl() in -> $url');
@@ -486,13 +449,14 @@ function mr_buildNewUrl($url)
         $newUrl .= '#' . $aUrl['fragment'];
     }
 
-    $arr['in']  = $url;
-    $arr['out'] = $newUrl;
+    $arr = array(
+        'in' => $url,
+        'out' => $newUrl,
+    );
     ModRewriteDebugger::add($arr, 'mr_buildNewUrl() in -> out');
 
     return $newUrl;
 }
-
 
 /**
  * Replaces existing ancors inside passed code, while rebuilding the urls.
@@ -503,8 +467,7 @@ function mr_buildNewUrl($url)
  * @param   string  $code   Code to prepare
  * @return  string          New code
  */
-function mr_buildGeneratedCode($code)
-{
+function mr_buildGeneratedCode($code) {
     global $client, $cfgClient;
 
     ModRewriteDebugger::add($code, 'mr_buildGeneratedCode() in');
@@ -515,9 +478,7 @@ function mr_buildGeneratedCode($code)
 
         // anchor hack
         $code = preg_replace_callback(
-            "/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i",
-            create_function('$arr_matches' , 'return ModRewrite::rewriteHtmlAnchor($arr_matches);'),
-            $code
+                "/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i", create_function('$arr_matches', 'return ModRewrite::rewriteHtmlAnchor($arr_matches);'), $code
         );
 
         // remove fucking tinymce single quote entities:
@@ -549,6 +510,7 @@ function mr_buildGeneratedCode($code)
         $oMRUrlStack = ModRewriteUrlStack::getInstance();
         $oMRUrlStack->add('front_content.php');
 
+        $matches = null;
         preg_match_all("/([\"|\'|=])front_content\.php(.?|.+?)([\"|\'|>])/i", $code, $matches, PREG_SET_ORDER);
         foreach ($matches as $val) {
             $oMRUrlStack->add('front_content.php' . $val[2]);
@@ -558,9 +520,7 @@ function mr_buildGeneratedCode($code)
         $code = str_replace('"front_content.php"', '"' . mr_buildNewUrl('front_content.php') . '"', $code);
         $code = str_replace("'front_content.php'", "'" . mr_buildNewUrl('front_content.php') . "'", $code);
         $code = preg_replace_callback(
-            "/([\"|\'|=])front_content\.php(.?|.+?)([\"|\'|>])/i",
-            create_function('$aMatches' , 'return $aMatches[1] . mr_buildNewUrl("front_content.php" . $aMatches[2]) . $aMatches[3];'),
-            $code
+                "/([\"|\'|=])front_content\.php(.?|.+?)([\"|\'|>])/i", create_function('$aMatches', 'return $aMatches[1] . mr_buildNewUrl("front_content.php" . $aMatches[2]) . $aMatches[3];'), $code
         );
 
         ModRewriteDebugger::add($code, 'mr_buildGeneratedCode() out');
@@ -569,15 +529,13 @@ function mr_buildGeneratedCode($code)
     } else {
         // anchor hack for non modrewrite websites
         $code = preg_replace_callback(
-                    "/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i",
-        create_function('$arr_matches' , 'return ModRewrite::contenidoHtmlAnchor($arr_matches, $GLOBALS["is_XHTML"]);'),
-        $code
+                "/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i", create_function('$arr_matches', 'return ModRewrite::contenidoHtmlAnchor($arr_matches, $GLOBALS["is_XHTML"]);'), $code
         );
     }
 
     ModRewriteDebugger::add(($sseEndtime - $sseStarttime), 'mr_buildGeneratedCode() total spend time');
 
-    if ($debug = mr_debugOutput(false)) {
+    if (($debug = mr_debugOutput(false)) === true) {
         $code = cString::iReplaceOnce("</body>", $debug . "\n</body>", $code);
     }
 
@@ -585,14 +543,12 @@ function mr_buildGeneratedCode($code)
     // print "\n\n<!-- modrewrite generation time: " . ($sseEndtime - $sseStarttime) . " seconds -->";
 }
 
-
 /**
  * Sets language of client, like done in front_content.php
  *
  * @param  int  $client  Client id
  */
-function mr_setClientLanguageId($client)
-{
+function mr_setClientLanguageId($client) {
     global $lang, $load_lang, $cfg;
 
     if ((int) $lang > 0) {
@@ -606,19 +562,16 @@ function mr_setClientLanguageId($client)
 
     // try to get clients language from table
     $sql = "SELECT B.idlang FROM "
-                . $cfg['tab']['clients_lang']." AS A, "
-                . $cfg['tab']['lang']." AS B "
-          . "WHERE "
-                . "A.idclient='" . ((int) $client) . "' AND A.idlang=B.idlang"
-          . "LIMIT 0,1";
+            . $cfg['tab']['clients_lang'] . " AS A, "
+            . $cfg['tab']['lang'] . " AS B "
+            . "WHERE "
+            . "A.idclient='" . ((int) $client) . "' AND A.idlang=B.idlang"
+            . "LIMIT 0,1";
 
-    if ($aData = mr_queryAndNextRecord($sql)) {
+    if (($aData = mr_queryAndNextRecord($sql)) === true) {
         $lang = $aData['idlang'];
     }
 }
-
-
-
 
 /**
  * Loads Advanced Mod Rewrite configuration for passed client using serialized
@@ -631,8 +584,7 @@ function mr_setClientLanguageId($client)
  * @param  bool  $forceReload  Flag to force to reload configuration, e. g. after
  *                             done changes on it
  */
-function mr_loadConfiguration($clientId, $forceReload = false)
-{
+function mr_loadConfiguration($clientId, $forceReload = false) {
     global $cfg;
     static $aLoaded;
 
@@ -657,7 +609,6 @@ function mr_loadConfiguration($clientId, $forceReload = false)
     $aLoaded[$clientId] = true;
 }
 
-
 /**
  * Returns the mod rewrite configuration array of an client.
  *
@@ -667,8 +618,7 @@ function mr_loadConfiguration($clientId, $forceReload = false)
  * @param   int   $clientId     Id of client
  * @return  array|null
  */
-function mr_getConfiguration($clientId)
-{
+function mr_getConfiguration($clientId) {
     global $cfg;
 
     $backendPath = cRegistry::getBackendPath();
@@ -677,13 +627,12 @@ function mr_getConfiguration($clientId)
     if (!is_file($file) || !is_readable($file)) {
         return null;
     }
-    if ($content = cFileHandler::read($file)) {
+    if (($content = cFileHandler::read($file)) === true) {
         return unserialize($content);
     } else {
         return null;
     }
 }
-
 
 /**
  * Saves the mod rewrite configuration array of an client.
@@ -695,8 +644,7 @@ function mr_getConfiguration($clientId)
  * @param   array  $config       Configuration to save
  * @return  bool
  */
-function mr_setConfiguration($clientId, array $config)
-{
+function mr_setConfiguration($clientId, array $config) {
     global $cfg;
 
     $backendPath = cRegistry::getBackendPath();
@@ -706,7 +654,6 @@ function mr_setConfiguration($clientId, array $config)
     return ($result) ? true : false;
 }
 
-
 /**
  * Includes the frontend controller script which parses the url and extacts
  * needed data like idcat, idart, lang and client from it.
@@ -715,8 +662,7 @@ function mr_setConfiguration($clientId, array $config)
  *
  * @return  bool  Just a return value
  */
-function mr_runFrontendController()
-{
+function mr_runFrontendController() {
     $iStartTime = getmicrotime();
 
     plugin_include('mod_rewrite', 'includes/config.plugin.php');
@@ -731,7 +677,6 @@ function mr_runFrontendController()
     return true;
 }
 
-
 /**
  * Cleanups passed string from characters beeing repeated two or more times
  *
@@ -739,14 +684,12 @@ function mr_runFrontendController()
  * @param   string  $string  String to clean from character
  * @return  string  Cleaned string
  */
-function mr_removeMultipleChars($char, $string)
-{
+function mr_removeMultipleChars($char, $string) {
     while (strpos($string, $char . $char) !== false) {
         $string = str_replace($char . $char, $char, $string);
     }
     return $string;
 }
-
 
 /**
  * Returns amr related translation text
@@ -754,15 +697,13 @@ function mr_removeMultipleChars($char, $string)
  * @param   string  $key    The message id as string
  * @return  string  Related message
  */
-function mr_i18n($key)
-{
+function mr_i18n($key) {
     global $lngAMR;
     return (is_array($lngAMR) && isset($lngAMR[$key])) ? $lngAMR[$key] : 'n. a.';
 }
 
 ################################################################################
 ### Some helper functions, which are not plugin specific
-
 
 /**
  * Database query helper. Used to execute a select statement and to return the
@@ -785,8 +726,7 @@ function mr_i18n($key)
  * @param   string  $query  Query to execute
  * @return  mixed   Assoziative array including recordset or null
  */
-function mr_queryAndNextRecord($query)
-{
+function mr_queryAndNextRecord($query) {
     static $db;
     if (!isset($db)) {
         $db = cRegistry::getDb();
@@ -796,7 +736,6 @@ function mr_queryAndNextRecord($query)
     }
     return ($db->next_record()) ? $db->Record : null;
 }
-
 
 /**
  * Returns value of an array key (assoziative or indexed).
@@ -829,8 +768,7 @@ function mr_queryAndNextRecord($query)
  * @param   mixed  $default  Default value to return
  * @return  mixed  Either the found value or the default value
  */
-function mr_arrayValue($array, $key, $default = null)
-{
+function mr_arrayValue($array, $key, $default = null) {
     if (!is_array($array)) {
         return $default;
     } elseif (!isset($array[$key])) {
@@ -839,7 +777,6 @@ function mr_arrayValue($array, $key, $default = null)
         return $array[$key];
     }
 }
-
 
 /**
  * Request cleanup function. Request data is allways tainted and must be filtered.
@@ -865,11 +802,7 @@ function mr_arrayValue($array, $key, $default = null)
  *
  * @return  mixed  Cleaned data
  */
-
-
-
-function mr_requestCleanup(&$data, $options = null)
-{
+function mr_requestCleanup(&$data, $options = null) {
     if (!mr_arrayValue($options, 'filter')) {
         $options['filter'] = array('trim', 'strip_tags', 'stripslashes');
     }
@@ -894,7 +827,6 @@ function mr_requestCleanup(&$data, $options = null)
     return $data;
 }
 
-
 /**
  * Minimalistic'n simple way to get request variables.
  *
@@ -904,8 +836,7 @@ function mr_requestCleanup(&$data, $options = null)
  * @param   mixed   $default  Default value to return
  * @return  mixed   The value
  */
-function mr_getRequest($key, $default = null)
-{
+function mr_getRequest($key, $default = null) {
     static $cache;
     if (!isset($cache)) {
         $cache = array();
@@ -924,27 +855,25 @@ function mr_getRequest($key, $default = null)
     return $cache[$key];
 }
 
-
 /**
  * Replaces calling of header method for redirects in front_content.php,
  * used during development.
  *
  * @param  $header  Header value for redirect
  */
-function mr_header($header)
-{
-    header($header);return;
+function mr_header($header) {
+    header($header);
+    return;
 
     $header = str_replace('Location: ', '', $header);
     echo '<html>
         <head></head>
         <body>
-        <p><a href="'.$header.'">'.$header.'</a></p>';
+        <p><a href="' . $header . '">' . $header . '</a></p>';
     mr_debugOutput();
     echo '</body></html>';
     exit();
 }
-
 
 /**
  * Debug output only during development
@@ -952,11 +881,10 @@ function mr_header($header)
  * @param   bool  $print  Flag to echo the debug data
  * @return  mixed  Either the debug data, if parameter $print is set to true, or nothing
  */
-function mr_debugOutput($print = true)
-{
+function mr_debugOutput($print = true) {
     global $DB_Contenido_QueryCache;
     if (isset($DB_Contenido_QueryCache) && is_array($DB_Contenido_QueryCache) &&
-        count($DB_Contenido_QueryCache) > 0) {
+            count($DB_Contenido_QueryCache) > 0) {
         ModRewriteDebugger::add($DB_Contenido_QueryCache, 'sql statements');
 
         // calculate total time consumption of queries

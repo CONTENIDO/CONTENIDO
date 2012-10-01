@@ -1,75 +1,52 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * AMR Content controller class
  *
- * Description:
- * Content controller
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
- * @version     0.1
+ * @package     plugin
+ * @subpackage  Mod Rewrite
+ * @version     SVN Revision $Rev:$
+ * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
- * @since       file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-04-11
- *
- *   $Id$:
- * }}
- *
  */
-
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
 
-plugin_include(
-    'mod_rewrite', 'classes/controller/class.modrewrite_controller_abstract.php'
-);
-
+plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_controller_abstract.php');
 
 /**
  * Content controller for general settings.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
+ * @package     plugin
+ * @subpackage  Mod Rewrite
  */
-class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
-{
+class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
 
     /**
      * Index action
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         // donut
     }
-
 
     /**
      * Save settings action
      */
-    public function saveAction()
-    {
+    public function saveAction() {
         $bDebug = $this->getProperty('bDebug');
         $aSeparator = $this->getProperty('aSeparator');
         $aWordSeparator = $this->getProperty('aWordSeparator');
         $routingSeparator = $this->getProperty('routingSeparator');
 
         $bError = false;
-        $aMR    = array();
+        $aMR = array();
 
         $request = (count($_POST) > 0) ? $_POST : $_GET;
         mr_requestCleanup($request);
@@ -105,7 +82,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
                     $this->_oView->rootdir_error = $this->_notifyBox('warning', $sMsg);
                 }
             }
-            $this->_oView->rootdir         = htmlentities($request['rootdir']);
+            $this->_oView->rootdir = htmlentities($request['rootdir']);
             $aMR['mod_rewrite']['rootdir'] = $request['rootdir'];
         }
 
@@ -120,81 +97,81 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
 
         // start from root
         if (mr_arrayValue($request, 'startfromroot') == 1) {
-            $this->_oView->startfromroot_chk     = ' checked="checked"';
+            $this->_oView->startfromroot_chk = ' checked="checked"';
             $aMR['mod_rewrite']['startfromroot'] = 1;
         } else {
-            $this->_oView->startfromroot_chk     = '';
+            $this->_oView->startfromroot_chk = '';
             $aMR['mod_rewrite']['startfromroot'] = 0;
         }
 
         // prevent duplicated content
         if (mr_arrayValue($request, 'prevent_duplicated_content') == 1) {
-            $this->_oView->prevent_duplicated_content_chk     = ' checked="checked"';
+            $this->_oView->prevent_duplicated_content_chk = ' checked="checked"';
             $aMR['mod_rewrite']['prevent_duplicated_content'] = 1;
         } else {
-            $this->_oView->prevent_duplicated_content_chk     = '';
+            $this->_oView->prevent_duplicated_content_chk = '';
             $aMR['mod_rewrite']['prevent_duplicated_content'] = 0;
         }
 
         // language settings
         if (mr_arrayValue($request, 'use_language') == 1) {
-            $this->_oView->use_language_chk           = ' checked="checked"';
+            $this->_oView->use_language_chk = ' checked="checked"';
             $this->_oView->use_language_name_disabled = '';
-            $aMR['mod_rewrite']['use_language']  = 1;
+            $aMR['mod_rewrite']['use_language'] = 1;
             if (mr_arrayValue($request, 'use_language_name') == 1) {
-                $this->_oView->use_language_name_chk     = ' checked="checked"';
+                $this->_oView->use_language_name_chk = ' checked="checked"';
                 $aMR['mod_rewrite']['use_language_name'] = 1;
             } else {
-                $this->_oView->use_language_name_chk     = '';
+                $this->_oView->use_language_name_chk = '';
                 $aMR['mod_rewrite']['use_language_name'] = 0;
             }
         } else {
-            $this->_oView->use_language_chk           = '';
-            $this->_oView->use_language_name_chk      = '';
+            $this->_oView->use_language_chk = '';
+            $this->_oView->use_language_name_chk = '';
             $this->_oView->use_language_name_disabled = ' disabled="disabled"';
-            $aMR['mod_rewrite']['use_language']       = 0;
-            $aMR['mod_rewrite']['use_language_name']  = 0;
+            $aMR['mod_rewrite']['use_language'] = 0;
+            $aMR['mod_rewrite']['use_language_name'] = 0;
         }
 
         // client settings
         if (mr_arrayValue($request, 'use_client') == 1) {
-            $this->_oView->use_client_chk           = ' checked="checked"';
+            $this->_oView->use_client_chk = ' checked="checked"';
             $this->_oView->use_client_name_disabled = '';
-            $aMR['mod_rewrite']['use_client']  = 1;
+            $aMR['mod_rewrite']['use_client'] = 1;
             if (mr_arrayValue($request, 'use_client_name') == 1) {
-                $this->_oView->use_client_name_chk     = ' checked="checked"';
+                $this->_oView->use_client_name_chk = ' checked="checked"';
                 $aMR['mod_rewrite']['use_client_name'] = 1;
             } else {
-                $this->_oView->use_client_name_chk     = '';
+                $this->_oView->use_client_name_chk = '';
                 $aMR['mod_rewrite']['use_client_name'] = 0;
             }
         } else {
-            $this->_oView->use_client_chk           = '';
-            $this->_oView->use_client_name_chk      = '';
+            $this->_oView->use_client_chk = '';
+            $this->_oView->use_client_name_chk = '';
             $this->_oView->use_client_name_disabled = ' disabled="disabled"';
-            $aMR['mod_rewrite']['use_client']       = 0;
-            $aMR['mod_rewrite']['use_client_name']  = 0;
+            $aMR['mod_rewrite']['use_client'] = 0;
+            $aMR['mod_rewrite']['use_client_name'] = 0;
         }
 
         // use lowercase uri
         if (mr_arrayValue($request, 'use_lowercase_uri') == 1) {
-            $this->_oView->use_lowercase_uri_chk     = ' checked="checked"';
+            $this->_oView->use_lowercase_uri_chk = ' checked="checked"';
             $aMR['mod_rewrite']['use_lowercase_uri'] = 1;
         } else {
-            $this->_oView->use_lowercase_uri_chk     = '';
+            $this->_oView->use_lowercase_uri_chk = '';
             $aMR['mod_rewrite']['use_lowercase_uri'] = 0;
         }
 
-        $this->_oView->category_separator_attrib       = '';
-        $this->_oView->category_word_separator_attrib  = '';
-        $this->_oView->article_separator_attrib        = '';
-        $this->_oView->article_word_separator_attrib   = '';
+        $this->_oView->category_separator_attrib = '';
+        $this->_oView->category_word_separator_attrib = '';
+        $this->_oView->article_separator_attrib = '';
+        $this->_oView->article_word_separator_attrib = '';
 
         $separatorPattern = $aSeparator['pattern'];
-        $separatorInfo    = $aSeparator['info'];
+        $separatorInfo = $aSeparator['info'];
 
         $wordSeparatorPattern = $aSeparator['pattern'];
-        $wordSeparatorInfo    = $aSeparator['info'];
+        $wordSeparatorInfo = $aSeparator['info'];
 
         $categorySeperator = mr_arrayValue($request, 'category_seperator', '');
         $categoryWordSeperator = mr_arrayValue($request, 'category_word_seperator', '');
@@ -213,7 +190,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
             $this->_oView->category_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
 
-        // category word seperator
+            // category word seperator
         } elseif ($categoryWordSeperator == '') {
             $sMsg = i18n('Please specify separator (%s) for category words', 'mod_rewrite');
             $sMsg = sprintf($sMsg, $wordSeparatorInfo);
@@ -225,7 +202,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
             $this->_oView->category_word_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
 
-        // article seperator
+            // article seperator
         } elseif ($articleSeperator == '') {
             $sMsg = i18n('Please specify separator (%s) for article', 'mod_rewrite');
             $sMsg = sprintf($sMsg, $separatorInfo);
@@ -237,7 +214,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
             $this->_oView->article_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
 
-        // article word seperator
+            // article word seperator
         } elseif ($articleWordSeperator == '') {
             $sMsg = i18n('Please specify separator (%s) for article words', 'mod_rewrite');
             $sMsg = sprintf($sMsg, $wordSeparatorInfo);
@@ -249,31 +226,31 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
             $this->_oView->article_word_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
 
-        // category_seperator - category_word_seperator
+            // category_seperator - category_word_seperator
         } elseif ($categorySeperator == $categoryWordSeperator) {
             $sMsg = i18n('Separator for category and category words must not be identical', 'mod_rewrite');
             $this->_oView->category_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
-        // category_seperator - article_word_seperator
+            // category_seperator - article_word_seperator
         } elseif ($categorySeperator == $articleWordSeperator) {
             $sMsg = i18n('Separator for category and article words must not be identical', 'mod_rewrite');
             $this->_oView->category_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
-        // article_seperator - article_word_seperator
+            // article_seperator - article_word_seperator
         } elseif ($articleSeperator == $articleWordSeperator) {
             $sMsg = i18n('Separator for category-article and article words must not be identical', 'mod_rewrite');
             $this->_oView->article_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
         }
 
-        $this->_oView->category_separator              = htmlentities($categorySeperator);
-        $aMR['mod_rewrite']['category_seperator']      = $categorySeperator;
-        $this->_oView->category_word_separator         = htmlentities($categoryWordSeperator);
+        $this->_oView->category_separator = htmlentities($categorySeperator);
+        $aMR['mod_rewrite']['category_seperator'] = $categorySeperator;
+        $this->_oView->category_word_separator = htmlentities($categoryWordSeperator);
         $aMR['mod_rewrite']['category_word_seperator'] = $categoryWordSeperator;
-        $this->_oView->article_separator               = htmlentities($articleSeperator);
-        $aMR['mod_rewrite']['article_seperator']       = $articleSeperator;
-        $this->_oView->article_word_separator          = htmlentities($articleWordSeperator);
-        $aMR['mod_rewrite']['article_word_seperator']  = $articleWordSeperator;
+        $this->_oView->article_separator = htmlentities($articleSeperator);
+        $aMR['mod_rewrite']['article_seperator'] = $articleSeperator;
+        $this->_oView->article_word_separator = htmlentities($articleWordSeperator);
+        $aMR['mod_rewrite']['article_word_seperator'] = $articleWordSeperator;
 
         // file extension
         if (mr_arrayValue($request, 'file_extension', '') !== '') {
@@ -309,7 +286,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
 
         // add start article name to url
         if (mr_arrayValue($request, 'add_startart_name_to_url') == 1) {
-            $this->_oView->add_startart_name_to_url_chk          = ' checked="checked"';
+            $this->_oView->add_startart_name_to_url_chk = ' checked="checked"';
             $aMR['mod_rewrite']['add_startart_name_to_url'] = 1;
             if (mr_arrayValue($request, 'add_startart_name_to_url', '') !== '') {
                 if (!preg_match('/^[a-zA-Z0-9\-_\/\.]*$/', $request['default_startart_name'])) {
@@ -317,29 +294,29 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
                     $this->_oView->add_startart_name_to_url_error = $this->_notifyBox('error', $sMsg);
                     $bError = true;
                 }
-                $this->_oView->default_startart_name         = htmlentities($request['default_startart_name']);
+                $this->_oView->default_startart_name = htmlentities($request['default_startart_name']);
                 $aMR['mod_rewrite']['default_startart_name'] = $request['default_startart_name'];
             } else {
-                $this->_oView->default_startart_name         = '';
+                $this->_oView->default_startart_name = '';
                 $aMR['mod_rewrite']['default_startart_name'] = '';
             }
         } else {
-            $this->_oView->add_startart_name_to_url_chk      = '';
-            $aMR['mod_rewrite']['add_startart_name_to_url']  = 0;
-            $this->_oView->default_startart_name             = '';
-            $aMR['mod_rewrite']['default_startart_name']     = '';
+            $this->_oView->add_startart_name_to_url_chk = '';
+            $aMR['mod_rewrite']['add_startart_name_to_url'] = 0;
+            $this->_oView->default_startart_name = '';
+            $aMR['mod_rewrite']['default_startart_name'] = '';
         }
 
         // rewrite urls at
         if (mr_arrayValue($request, 'rewrite_urls_at') == 'congeneratecode') {
-            $this->_oView->rewrite_urls_at_congeneratecode_chk          = ' checked="checked"';
-            $this->_oView->rewrite_urls_at_front_content_output_chk     = '';
-            $aMR['mod_rewrite']['rewrite_urls_at_congeneratecode']      = 1;
+            $this->_oView->rewrite_urls_at_congeneratecode_chk = ' checked="checked"';
+            $this->_oView->rewrite_urls_at_front_content_output_chk = '';
+            $aMR['mod_rewrite']['rewrite_urls_at_congeneratecode'] = 1;
             $aMR['mod_rewrite']['rewrite_urls_at_front_content_output'] = 0;
         } else {
-            $this->_oView->rewrite_urls_at_congeneratecode_chk          = '';
-            $this->_oView->rewrite_urls_at_front_content_output_chk     = ' checked="checked"';
-            $aMR['mod_rewrite']['rewrite_urls_at_congeneratecode']      = 0;
+            $this->_oView->rewrite_urls_at_congeneratecode_chk = '';
+            $this->_oView->rewrite_urls_at_front_content_output_chk = ' checked="checked"';
+            $aMR['mod_rewrite']['rewrite_urls_at_congeneratecode'] = 0;
             $aMR['mod_rewrite']['rewrite_urls_at_front_content_output'] = 1;
         }
 
@@ -368,10 +345,10 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
 
         // redirect invalid article to errorsite
         if (isset($request['redirect_invalid_article_to_errorsite'])) {
-            $this->_oView->redirect_invalid_article_to_errorsite_chk     = ' checked="checked"';
+            $this->_oView->redirect_invalid_article_to_errorsite_chk = ' checked="checked"';
             $aMR['mod_rewrite']['redirect_invalid_article_to_errorsite'] = 1;
         } else {
-            $this->_oView->redirect_invalid_article_to_errorsite_chk     = '';
+            $this->_oView->redirect_invalid_article_to_errorsite_chk = '';
             $aMR['mod_rewrite']['redirect_invalid_article_to_errorsite'] = 0;
         }
 
@@ -383,7 +360,9 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
 
         if ($bDebug == true) {
             echo $this->_notifyBox('info', 'Debug');
-            echo '<pre class="example">';print_r($aMR['mod_rewrite']);echo '</pre>';
+            echo '<pre class="example">';
+            print_r($aMR['mod_rewrite']);
+            echo '</pre>';
             $sMsg = i18n('Configuration has <b>not</b> been saved, because of enabled debugging', 'mod_rewrite');
             echo $this->_notifyBox('info', $sMsg);
             return;
@@ -404,14 +383,12 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
         }
     }
 
-
     /**
      * Checks, if any sseparators setting is modified or not
      * @param   array  $aNewCfg  New configuration send by requests.
      * @return  bool
      */
-    protected function _separatorModified($aNewCfg)
-    {
+    protected function _separatorModified($aNewCfg) {
         $aCfg = ModRewrite::getConfig();
 
         if ($aCfg['category_seperator'] != $aNewCfg['category_seperator']) {

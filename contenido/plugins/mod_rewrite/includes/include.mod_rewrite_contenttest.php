@@ -1,9 +1,5 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * Testscript for Advanced Mod Rewrite Plugin.
  *
  * The goal of this testscript is to provide an easy way for a variance comparison
@@ -13,24 +9,22 @@
  * CONTENIDO installation, creates the SEO URLs for each existing category/article
  * and resolves the generated URLs.
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
- * @version     0.1
+ * @package     plugin
+ * @subpackage  Mod Rewrite
+ * @version     SVN Revision $Rev:$
+ * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
- * @since       file available since CONTENIDO release 4.9.0
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
+
+global $client, $cfg;
 
 
 ################################################################################
@@ -88,5 +82,5 @@ $oView->content .= mr_debugOutput(false);
 ##### Output
 
 $oMrTestController->render(
-   cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'mod_rewrite/templates/contenttest.html'
+    cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'mod_rewrite/templates/contenttest.html'
 );

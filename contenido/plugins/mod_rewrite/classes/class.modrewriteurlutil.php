@@ -1,37 +1,21 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * AMR url utility class
  *
- * Description:
- * Includes Mod Rewrite url utility class.
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
- * @version     0.1
+ * @package     plugin
+ * @subpackage  Mod Rewrite
+ * @version     SVN Revision $Rev:$
+ * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
- * @since       file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2008-05-xx
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-
 
 /**
  * Mod Rewrite url utility class. Handles convertion of Urls from CONTENIDO core
@@ -39,11 +23,10 @@ if (!defined('CON_FRAMEWORK')) {
  * pattern and vice versa.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
+ * @package     plugin
+ * @subpackage  Mod Rewrite
  */
-class ModRewriteUrlUtil extends ModRewriteBase
-{
+class ModRewriteUrlUtil extends ModRewriteBase {
 
     /**
      * Self instance (singleton implementation)
@@ -105,39 +88,35 @@ class ModRewriteUrlUtil extends ModRewriteBase
      */
     private $_mrExt;
 
-
     /**
      * Constructor, sets some AMR configuration related properties
      */
-    private function __construct()
-    {
+    private function __construct() {
         $aCfg = parent::getConfig();
         $this->_mrCatWordSep = $aCfg['category_word_seperator'];
-        $this->_mrCatSep     = $aCfg['category_seperator'];
-        $this->_mrArtSep     = $aCfg['article_seperator'];
+        $this->_mrCatSep = $aCfg['category_seperator'];
+        $this->_mrArtSep = $aCfg['article_seperator'];
         $this->_mrArtWordSep = $aCfg['article_word_seperator'];
-        $this->_mrExt        = $aCfg['file_extension'];
+        $this->_mrExt = $aCfg['file_extension'];
     }
 
     /**
      * Prevent cloning
      */
-    private function __clone()
-    {
+    private function __clone() {
+
     }
 
     /**
      * Returns self instance (singleton pattern)
      * @return  ModRewriteUrlUtil
      */
-    public static function getInstance()
-    {
+    public static function getInstance() {
         if (self::$_instance == null) {
             self::$_instance = new ModRewriteUrlUtil();
         }
         return self::$_instance;
     }
-
 
     /**
      * Converts passed AMR url path to CONTENIDO url path.
@@ -145,11 +124,9 @@ class ModRewriteUrlUtil extends ModRewriteBase
      * @param   string  $urlPath  AMR url path
      * @return  string  CONTENIDO url path
      */
-    public function toContenidoUrlPath($urlPath)
-    {
+    public function toContenidoUrlPath($urlPath) {
         $newUrlPath = $this->_toUrlPath(
-            $urlPath, $this->_mrCatSep, $this->_catSep, $this->_mrCatWordSep, $this->_catWordSep,
-            $this->_mrArtSep, $this->_artSep
+                $urlPath, $this->_mrCatSep, $this->_catSep, $this->_mrCatWordSep, $this->_catWordSep, $this->_mrArtSep, $this->_artSep
         );
         return $newUrlPath;
     }
@@ -160,15 +137,12 @@ class ModRewriteUrlUtil extends ModRewriteBase
      * @param   string  $urlPath  CONTENIDO url path
      * @return  string  AMR url path
      */
-    public function toModRewriteUrlPath($urlPath)
-    {
+    public function toModRewriteUrlPath($urlPath) {
         $newUrlPath = $this->_toUrlPath(
-            $urlPath, $this->_catSep, $this->_mrCatSep, $this->_catWordSep, $this->_mrCatWordSep,
-            $this->_artSep, $this->_mrArtSep
+                $urlPath, $this->_catSep, $this->_mrCatSep, $this->_catWordSep, $this->_mrCatWordSep, $this->_artSep, $this->_mrArtSep
         );
         return $newUrlPath;
     }
-
 
     /**
      * Converts passed url path to a another url path (CONTENIDO to AMR and vice versa).
@@ -182,9 +156,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
      * @param   string  $toArtSep        Destination article seperator
      * @return  string  Destination url path
      */
-    private function _toUrlPath($urlPath, $fromCatSep, $toCatSep, $fromCatWordSep, $toCatWordSep,
-                                $fromArtSep, $toArtSep)
-    {
+    private function _toUrlPath($urlPath, $fromCatSep, $toCatSep, $fromCatWordSep, $toCatWordSep, $fromArtSep, $toArtSep) {
         if ((string) $urlPath == '') {
             return $urlPath;
         }
@@ -206,19 +178,16 @@ class ModRewriteUrlUtil extends ModRewriteBase
         return $urlPath;
     }
 
-
     /**
      * Converts passed AMR url name to CONTENIDO url name.
      *
      * @param   string  $urlName  AMR url name
      * @return  string  CONTENIDO url name
      */
-    public function toContenidoUrlName($urlName)
-    {
+    public function toContenidoUrlName($urlName) {
         $newUrlName = $this->_toUrlName($urlName, $this->_mrArtWordSep, $this->_artWordSep);
         return $newUrlName;
     }
-
 
     /**
      * Converts passed CONTENIDO url name to AMR url name.
@@ -226,12 +195,10 @@ class ModRewriteUrlUtil extends ModRewriteBase
      * @param   string  $urlName  CONTENIDO url name
      * @return  string  AMR url name
      */
-    public function toModRewriteUrlName($urlName)
-    {
+    public function toModRewriteUrlName($urlName) {
         $newUrlName = $this->_toUrlName($urlName, $this->_artWordSep, $this->_mrArtWordSep);
         return $newUrlName;
     }
-
 
     /**
      * Converts passed url name to a another url name (CONTENIDO to AMR and vice versa).
@@ -241,8 +208,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
      * @param   string  $toArtWordSep    Destination article word seperator
      * @return  string  Destination url name
      */
-    private function _toUrlName($urlName, $fromArtWordSep, $toArtWordSep)
-    {
+    private function _toUrlName($urlName, $fromArtWordSep, $toArtWordSep) {
         if ((string) $urlName == '') {
             return $urlName;
         }
@@ -257,46 +223,41 @@ class ModRewriteUrlUtil extends ModRewriteBase
         return $urlName;
     }
 
-
     /**
      * Converts passed AMR url to CONTENIDO url.
      *
      * @param   string  $url  AMR url
      * @return  string  CONTENIDO url
      */
-    public function toContenidoUrl($url)
-    {
+    public function toContenidoUrl($url) {
         if (strpos($url, $this->_mrExt) === false) {
             $newUrl = $this->toContenidoUrlPath($url);
         } else {
             // replace category word and article word seperator
-            $path   = substr($url, 0, strrpos($url, $this->_mrArtSep) + 1);
-            $name   = substr($url, strrpos($url, $this->_mrArtSep) + 1);
+            $path = substr($url, 0, strrpos($url, $this->_mrArtSep) + 1);
+            $name = substr($url, strrpos($url, $this->_mrArtSep) + 1);
             $newUrl = $this->toContenidoUrlPath($path) . $this->toContenidoUrlName($name);
         }
         return $newUrl;
     }
 
-
     /**
      * Converts passed AMR url to CONTENIDO url.
      *
      * @param   string  $url  AMR url
      * @return  string  CONTENIDO url
      */
-    public function toModRewriteUrl($url)
-    {
+    public function toModRewriteUrl($url) {
         if (strpos($url, $this->_mrExt) === false) {
             $newUrl = $this->toModRewriteUrlPath($url);
         } else {
             // replace category word and article word seperator
-            $path   = substr($url, 0, strrpos($url, $this->_artSep) + 1);
-            $name   = substr($url, strrpos($url, $this->_artSep) + 1);
+            $path = substr($url, 0, strrpos($url, $this->_artSep) + 1);
+            $name = substr($url, strrpos($url, $this->_artSep) + 1);
             $newUrl = $this->toModRewriteUrlPath($path) . $this->toModRewriteUrlName($name);
         }
         return $newUrl;
     }
-
 
     /**
      * Converts passed url to a another url (CONTENIDO to AMR and vice versa).
@@ -314,9 +275,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
      *
      * @deprecated  No more used, is to delete
      */
-    private function _toUrl($url, $fromCatSep, $toCatSep, $fromCatWordSep, $toCatWordSep,
-                            $fromArtSep, $toArtSep, $fromArtWordSep, $toArtWordSep)
-    {
+    private function _toUrl($url, $fromCatSep, $toCatSep, $fromCatWordSep, $toCatWordSep, $fromArtSep, $toArtSep, $fromArtWordSep, $toArtWordSep) {
         cDeprecated("This function is no more used");
 
         if ((string) $url == '') {

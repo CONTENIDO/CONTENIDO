@@ -1,40 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * Plugin Advanced Mod Rewrite initialization file.
  *
  * This file will be included by CONTENIDO plugin loader routine, and the content
  * of this file ensures that the AMR Plugin will be initialized correctly.
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
- * @version     0.1
+ * @package     plugin
+ * @subpackage  Mod Rewrite
+ * @version     SVN Revision $Rev:$
+ * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
- * @since       file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2008-05-xx
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+global $_cecRegistry, $cfg, $contenido, $area, $client, $load_client;
 
 ####################################################################################################
 /**
@@ -53,10 +39,6 @@ if (!defined('CON_FRAMEWORK')) {
  */
 $_cecRegistry->registerChain("Contenido.Frontend.CreateURL", "string");
 ####################################################################################################
-
-
-global $cfg, $contenido;
-
 // initialize client id
 if (isset($client) && (int) $client > 0) {
     $clientId = (int) $client;
@@ -138,7 +120,6 @@ if (ModRewrite::isEnabled()) {
 
     if (!isset($contenido)) {
         // we are not in backend, add cec functions for rewriting
-
         // Add mr related function for hook "after plugins loaded" to CONTENIDO Extension Chainer
         $_cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'mr_runFrontendController');
 
@@ -150,7 +131,7 @@ if (ModRewrite::isEnabled()) {
 
         // overwrite url builder configuration with own url builder
         $cfg['url_builder']['name'] = 'MR';
-        $cfg['config']              = array();
+        $cfg['config'] = array();
         cUriBuilderConfig::setConfig($cfg['url_builder']);
 
         if ($aMrCfg['rewrite_urls_at_congeneratecode'] == 1) {
@@ -164,15 +145,14 @@ if (ModRewrite::isEnabled()) {
             $_cecRegistry->addChainFunction('Contenido.Content.conGenerateCode', 'mr_buildGeneratedCode');
         }
     }
-
 }
 
 if (isset($contenido) && isset($area) && $area == 'mod_rewrite_test') {
     // configure url builder to enable it on test page
     $cfg['url_builder']['name'] = 'MR';
-    $cfg['config']              = array();
+    $cfg['config'] = array();
     cUriBuilderConfig::setConfig($cfg['url_builder']);
     ModRewrite::setEnabled(true);
 }
 
-unset($clientId, $options);
+unset($clientId);

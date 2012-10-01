@@ -1,33 +1,17 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * AMR Content expert controller class
  *
- * Description:
- * Content expert controller
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
- * @version     0.1
+ * @package     plugin
+ * @subpackage  Mod Rewrite
+ * @version     SVN Revision $Rev:$
+ * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
- * @since       file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-04-11
- *
- *   $Id$:
- * }}
- *
  */
-
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
@@ -36,16 +20,15 @@ if (!defined('CON_FRAMEWORK')) {
 
 plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_controller_abstract.php');
 
-
 /**
  * Content expert controller for expert settings/actions.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
+ * @package     plugin
+ * @subpackage  Mod Rewrite
  */
-class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
-{
+class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
+
     /**
      * Path to restrictive htaccess file
      * @var string
@@ -58,12 +41,10 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
      */
     protected $_htaccessSimple = '';
 
-
     /**
      * Initializer method, sets the paths to htaccess files
      */
-    public function init()
-    {
+    public function init() {
         $this->_oView->content_before = '';
 
         $pluginPath = $this->_cfg['path']['contenido'] . $this->_cfg['path']['plugins'] . 'mod_rewrite/';
@@ -71,20 +52,17 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
         $this->_htaccessSimple = $pluginPath . 'files/htaccess_simple.txt';
     }
 
-
     /**
      * Index action
      */
-    public function indexAction()
-    {
+    public function indexAction() {
+        
     }
-
 
     /**
      * Copy htaccess action
      */
-    public function copyHtaccessAction()
-    {
+    public function copyHtaccessAction() {
         $type = $this->_getParam('htaccesstype');
         $copy = $this->_getParam('copy');
 
@@ -122,12 +100,10 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
         $this->_oView->content_before = $this->_notifyBox('info', $msg);
     }
 
-
     /**
      * Download htaccess action
      */
-    public function downloadHtaccessAction()
-    {
+    public function downloadHtaccessAction() {
         $type = $this->_getParam('htaccesstype');
 
         if ($type != 'restrictive' && $type != 'simple') {
@@ -148,23 +124,19 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
         $this->render('{CONTENT}');
     }
 
-
     /**
      * Reset aliases action
      */
-    public function resetAction()
-    {
+    public function resetAction() {
         // recreate all aliases
         ModRewrite::recreateAliases(false);
         $this->_oView->content_before = $this->_notifyBox('info', 'Alle Aliase wurden zur&uuml;ckgesetzt');
     }
 
-
     /**
      * Reset only empty aliases action
      */
-    public function resetEmptyAction()
-    {
+    public function resetEmptyAction() {
         // recreate only empty aliases
         ModRewrite::recreateAliases(true);
         $this->_oView->content_before = $this->_notifyBox('info', 'Nur leere Aliase wurden zur&uuml;ckgesetzt');

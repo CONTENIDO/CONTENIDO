@@ -1,43 +1,28 @@
 <?php
-
 /**
- * Project:
- * CONTENIDO Content Management System
+ * AMR debugger class
  *
- * Description:
- * Plugin mod rewrite debugger class
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
- * @version     0.1
+ * @package     plugin
+ * @subpackage  Mod Rewrite
+ * @version     SVN Revision $Rev:$
+ * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
- * @since       file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-04-11
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Mod rewrite debugger class.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
+ * @package     plugin
+ * @subpackage  Mod Rewrite
  */
 class ModRewriteDebugger {
 

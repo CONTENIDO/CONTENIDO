@@ -1,37 +1,21 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * AMR url stack class
  *
- * Description:
- * Includes mod rewrite url stack class.
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
- * @version     0.1
+ * @package     plugin
+ * @subpackage  Mod Rewrite
+ * @version     SVN Revision $Rev:$
+ * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
- * @since       file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2008-09-10
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-
 
 /**
  * Mod rewrite url stack class. Provides features to collect urls and to get the
@@ -62,11 +46,10 @@ if (!defined('CON_FRAMEWORK')) {
  * </code>
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Plugins
- * @subpackage  ModRewrite
+ * @package     plugin
+ * @subpackage  Mod Rewrite
  */
-class ModRewriteUrlStack
-{
+class ModRewriteUrlStack {
 
     /**
      * Self instance
@@ -119,41 +102,35 @@ class ModRewriteUrlStack
      */
     private $_idLang;
 
-
     /**
      * Constructor, sets some properties.
      */
-    private function __construct()
-    {
+    private function __construct() {
         global $cfg, $lang;
-        $this->_oDb    = cRegistry::getDb();
-        $this->_aTab   = $cfg['tab'];
+        $this->_oDb = cRegistry::getDb();
+        $this->_aTab = $cfg['tab'];
         $this->_idLang = $lang;
     }
-
 
     /**
      * Returns a instance of ModRewriteUrlStack (singleton implementation)
      *
      * @return  ModRewriteUrlStack
      */
-    public static function getInstance()
-    {
+    public static function getInstance() {
         if (self::$_instance == null) {
             self::$_instance = new ModRewriteUrlStack();
         }
         return self::$_instance;
     }
 
-
     /**
      * Adds an url to the stack
      *
      * @param  string  Url, like front_content.php?idcat=123...
      */
-    public function add($url)
-    {
-        $url  = ModRewrite::urlPreClean($url);
+    public function add($url) {
+        $url = ModRewrite::urlPreClean($url);
         if (isset($this->_aUrls[$url])) {
             return;
         }
@@ -175,10 +152,9 @@ class ModRewriteUrlStack
         }
 
         $sStackId = $this->_makeStackId($aUrl['params']);
-        $this->_aUrls[$url]       = $sStackId;
+        $this->_aUrls[$url] = $sStackId;
         $this->_aStack[$sStackId] = array('params' => $aUrl['params']);
     }
-
 
     /**
      * Returns the pretty urlparts (only category path an article name) of the
@@ -191,9 +167,8 @@ class ModRewriteUrlStack
      * $arr['urlname']
      * </code>
      */
-    public function getPrettyUrlParts($url)
-    {
-        $url  = ModRewrite::urlPreClean($url);
+    public function getPrettyUrlParts($url) {
+        $url = ModRewrite::urlPreClean($url);
         if (!isset($this->_aUrls[$url])) {
             $this->add($url);
         }
@@ -209,7 +184,6 @@ class ModRewriteUrlStack
         return $aPretty;
     }
 
-
     /**
      * Extracts passed url using parse_urla and adds also the 'params' array to it
      *
@@ -217,8 +191,7 @@ class ModRewriteUrlStack
      * @return  array  Components containing result of parse_url with additional
      *                 'params' array
      */
-    private function _extractUrl($url)
-    {
+    private function _extractUrl($url) {
         $aUrl = @parse_url($url);
         if (isset($aUrl['query'])) {
             $aUrl['query'] = str_replace('&amp;', '&', $aUrl['query']);
@@ -230,7 +203,6 @@ class ModRewriteUrlStack
         return $aUrl;
     }
 
-
     /**
      * Extracts article or category related parameter from passed params array
      * and generates an identifier.
@@ -238,8 +210,7 @@ class ModRewriteUrlStack
      * @param   array   $aParams  Parameter array
      * @return  string  Composed stack id
      */
-    private function _makeStackId(array $aParams)
-    {
+    private function _makeStackId(array $aParams) {
         # idcatart
         if ((int) mr_arrayValue($aParams, 'idart') > 0) {
             $sStackId = 'idart_' . $aParams['idart'] . '_lang_' . $aParams['lang'];
@@ -257,15 +228,13 @@ class ModRewriteUrlStack
         return $sStackId;
     }
 
-
     /**
      * Main function to get the urlparts of urls.
      *
      * Composes the query by looping thru stored but non processed urls, executes
      * the query and adds the (urlpath and urlname) result to the stack.
      */
-    private function _chunkSetPrettyUrlParts()
-    {
+    private function _chunkSetPrettyUrlParts() {
         // collect stack parameter to get urlpath and urlname
         $aStack = array();
         foreach ($this->_aStack as $stackId => $item) {
