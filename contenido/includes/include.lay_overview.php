@@ -36,7 +36,7 @@ while (($layout = $oLayouts->next()) !== false) {
     }
 
     $name  = $layout->get('name');
-    $descr = $layout->get('description');
+    $descr = htmlspecialchars($layout->get('description'));
     $idlay = $layout->get('idlay');
 
     if (strlen($descr) > 64) {
