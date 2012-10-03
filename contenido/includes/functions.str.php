@@ -24,14 +24,6 @@ if (!defined('CON_FRAMEWORK')) {
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.database.php');
 
-global $db_str;
-global $db_str2;
-
-if (class_exists('DB_Contenido')) {
-    $db_str = cRegistry::getDb();
-    $db_str2 = cRegistry::getDb();
-}
-
 /**
  * Creates a new category tree (root category item).
  *
