@@ -405,6 +405,12 @@ contenido/classes/datatypes/class.datatype.currency.php -text
 contenido/classes/datatypes/class.datatype.datetime.php -text
 contenido/classes/datatypes/class.datatype.number.php -text
 contenido/classes/datatypes/class.datatype.php -text
+contenido/classes/db/class.db.driver.abstract.php -text
+contenido/classes/db/class.db.driver.handler.php -text
+contenido/classes/db/class.db.driver.mysql.php -text
+contenido/classes/db/class.db.driver.mysqli.php -text
+contenido/classes/db/class.db.php -text
+contenido/classes/db/class.exception.db.php -text
 contenido/classes/debug/Sample.php -text
 contenido/classes/debug/class.debug.dev.null.php -text
 contenido/classes/debug/class.debug.file.and.vis.adv.php -text
