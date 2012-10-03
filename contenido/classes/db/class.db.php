@@ -56,27 +56,6 @@ class cDb extends cDbDriverHandler {
     protected $_errorMessage = '';
 
     /**
-     *
-     * Get last inserted id of given tablename
-     *
-     * @param string $tableName
-     * @return int|null last id of table
-     * @TODO: move this function to driver logic
-     */
-    public function getLastInsertedId($tableName = '') {
-        $lastId = null;
-        if (strlen($tableName) > 0) {
-            $sqlGetLastInsertedId = 'SELECT LAST_INSERT_ID() as last_id FROM ' . $tableName;
-            $this->query($sqlGetLastInsertedId);
-            if ($this->next_record()) {
-                $lastId = $this->f('last_id');
-            }
-        }
-
-        return $lastId;
-    }
-
-    /**
      * Returns the query ID resource.
      * @return null|resource
      */

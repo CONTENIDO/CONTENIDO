@@ -689,6 +689,26 @@ abstract class cDbDriverHandler {
     }
 
     /**
+     * Get last inserted id of given table name
+     * @param string $tableName
+     * @return int|null last id of table
+     */
+    public function getLastInsertedId($tableName = '') {
+        $lastId = null;
+
+        if (strlen($tableName) == 0) {
+            return $lastId;
+        }
+
+        $this->query('SELECT LAST_INSERT_ID() as last_id FROM ' . $tableName);
+        if ($this->nextRecord()) {
+            $lastId = $this->f('last_id');
+        }
+
+        return $lastId;
+    }
+
+    /**
      * Parses te table structure and generates a metadata from it.
      *
      * @param   string  $tableName  The table to get metadata or empty string to retrieve
