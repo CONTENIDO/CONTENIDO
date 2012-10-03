@@ -876,28 +876,10 @@ abstract class cDbDriverHandler {
         cWarning(__FILE__, __LINE__, $message);
     }
 
-
-    /**
-     * @deprecated 2012-10-02 This method is deprecated. Use getMetaData instead.
-     */
-    public function metadata($tableName = '', $full = false) {
-        cDeprecated("This method is deprecated. Use getMetaData instead.");
-        return $this->getMetaData($tableName, $full);
-    }
-
-    /**
-     * @deprecated 2012-10-02 This method is deprecated. Use numRows instead.
-     */
-    public function nf() {
-        cDeprecated("This method is deprecated. Use numRows instead.");
-        return $this->numRows();
-    }
-
     /**
      * @see cDbDriverHandler::numRows
      */
     public function num_rows() {
-        cDeprecated("This method is deprecated. Use numRows instead.");
         return $this->numRows();
     }
 
@@ -920,6 +902,22 @@ abstract class cDbDriverHandler {
      */
     public function next_record() {
         return $this->nextRecord();
+    }
+	
+    /**
+     * @deprecated 2012-10-02 This method is deprecated. Use getMetaData instead.
+     */
+    public function metadata($tableName = '', $full = false) {
+        cDeprecated("This method is deprecated. Use getMetaData instead.");
+        return $this->getMetaData($tableName, $full);
+    }
+
+    /**
+     * @deprecated 2012-10-02 This method is deprecated. Use numRows instead.
+     */
+    public function nf() {
+        cDeprecated("This method is deprecated. Use numRows instead.");
+        return $this->numRows();
     }
 
     /**
