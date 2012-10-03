@@ -45,6 +45,7 @@ abstract class cUpgradeJobAbstract {
         $this->_setupType = $_SESSION['setuptype'];
         // set default configuration for DB connection
         DB_Contenido::setDefaultConfiguration($cfg['db']);
+        cDb::setDefaultConfiguration($cfg['db']);
 
         if (!isset(self::$_rootPath)) {
             list($rootPath, $rootHttpPath) = getSystemDirectories();
