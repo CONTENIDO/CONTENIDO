@@ -100,14 +100,14 @@ class cSystemCheck extends cSetupMask {
      * Constructor.
      *
      * @access public
-     * @param DB_Contenido $oDb
+     * @param cDb $oDb
      * @param array $aCfg
      * @param int $iClient
      * @param int $iLang
      * @return void
      * @author Rudi Bieller
      */
-    public function __construct($step, $previous, $next, DB_Contenido $oDb, array $aCfg, $iClient, $iLang, array $aCfgClient) {
+    public function __construct($step, $previous, $next, cDb $oDb, array $aCfg, $iClient, $iLang, array $aCfgClient) {
         $this->oDb = $oDb;
         $this->aCfg = $aCfg;
         $this->iClient = (int) $iClient;
@@ -511,7 +511,7 @@ class cSystemCheck extends cSetupMask {
         $dbCfg = $cfg['db'];
         unset($dbCfg['connection']['database']);
 
-        $db = new DB_Contenido($dbCfg);
+        $db = new cDb($dbCfg);
         $db->query('SELECT LOWER(@@GLOBAL.sql_mode) AS sql_mode');
         if ($db->next_record()) {
             if (strpos($db->f('sql_mode'), 'strict_trans_tables') !== false || strpos($db->f('sql_mode'), 'strict_all_tables') !== false) {

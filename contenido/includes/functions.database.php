@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Returns existing indexes of a specific table.
- * @param   DB_Contenido  $db
+ * @param   cDb  $db
  * @param   string  $table
  * @return  array  Assoziative array where the key and the value is the index name
  */
@@ -76,7 +76,7 @@ function dbGetIndexes($db, $table)
  *  - $oldVal might be empty if the field didn't exist
  *  - $tableValues['fieldname'] contains the already existing values
  *
- * @param  DB_Contenido  $db  Database instance
+ * @param  cDb  $db  Database instance
  * @param  string  $table  Name of table to create/update
  * @param  string  $field  Name of field to create/update
  * @param  string  $type  Data type of field. Feasible values are all possible data types
@@ -242,7 +242,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
 /**
  * Checks, if passed table exists in the database
- * @param   DB_Contenido  $db
+ * @param   cDb  $db
  * @param   string  $table
  * @return  bool
  */
@@ -273,7 +273,7 @@ function dbTableExists($db, $table)
 
 /**
  * Returns the column structure of a table
- * @param   DB_Contenido  $db
+ * @param   cDb  $db
  * @param   string  $table
  * @return  array|bool  Either assoziative column array or false
  */
@@ -305,7 +305,7 @@ function dbGetColumns($db, $table)
 
 /**
  * Returns the primary key column of a table
- * @param   DB_Contenido  $db
+ * @param   cDb  $db
  * @param   string  $table
  * @return  string
  */

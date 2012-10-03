@@ -441,7 +441,7 @@ class cOutputCacheHandler extends cOutputCache
      *                                  - $a['cacheprefix'] string. add prefix 2 stored filenames
      *                                  - $a['idoptions'] array. several variables 2 create a unique id, if the output depends
      *                                                           on them. e. g. array('uri'=>$_SERVER['REQUEST_URI'],'post'=>$_POST,'get'=>$_GET);
-     * @param   DB_Contenido  $db       CONTENIDO database object
+     * @param   cDb  $db       CONTENIDO database object
      * @param   int      $iCreateCode   Flag of createcode state from table con_cat_art
      */
     public function cOutputCacheHandler($aConf, $db, $iCreateCode = null)

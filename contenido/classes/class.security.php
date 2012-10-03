@@ -82,7 +82,7 @@ class cSecurity {
      * Escapes string using CONTENIDO urlencoding method and escapes string for inserting
      *
      * @param   string        $sString  Input string
-     * @param   DB_Contenido  $oDb      CONTENIDO database object
+     * @param   cDb  $oDb      CONTENIDO database object
      * @return  string   Filtered string
      */
     public static function filter($sString, $oDb) {
@@ -176,7 +176,7 @@ class cSecurity {
      * Escaped an query-string with mysql_real_escape_string
      *
      * @param   string        $sString          Input string
-     * @param   DB_Contenido  $oDB              CONTENIDO database object
+     * @param   cDb  $oDB              CONTENIDO database object
      * @param   boolean       $bUndoAddSlashes  Flag for undo addslashes (optional, default: true)
      * @return  string  Converted string
      */
@@ -187,7 +187,7 @@ class cSecurity {
             if (defined('CON_STRIPSLASHES') && $bUndoAddSlashes == true) {
                 $sString = stripslashes($sString);
             }
-            return $oDB->Escape($sString);
+            return $oDB->escape($sString);
         }
     }
 
@@ -324,7 +324,7 @@ class Contenido_Security extends cSecurity {
      *
      * @deprecated [2012-07-02] This function is now executed by cSecurity
      * @param   string        $sString  Input string
-     * @param   DB_Contenido  $oDb      CONTENIDO database object
+     * @param   cDb  $oDb      CONTENIDO database object
      * @return  string   Filtered string
      */
     public static function filter($sString, $oDb) {

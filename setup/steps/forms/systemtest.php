@@ -407,7 +407,7 @@ class cSetupSystemtest extends cSetupMask {
         $dbCfg = $cfg['db'];
         unset($dbCfg['connection']['database']);
 
-        $db = new DB_Contenido($dbCfg);
+        $db = new cDb($dbCfg);
         $db->query('SELECT LOWER(@@GLOBAL.sql_mode) AS sql_mode');
         if ($db->next_record()) {
             if (strpos($db->f('sql_mode'), 'strict_trans_tables') !== false || strpos($db->f('sql_mode'), 'strict_all_tables') !== false) {

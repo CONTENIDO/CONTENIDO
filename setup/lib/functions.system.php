@@ -30,7 +30,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Checks if a plugin is already installed
- * @param   DB_Contenido  $db
+ * @param   cDb  $db
  * @param   string  $sPluginname
  * @return  bool
  */
@@ -79,7 +79,7 @@ function checkExistingPlugin($db, $sPluginname) {
 
 /**
  * Updates system properties
- * @param  DB_Contenido $db
+ * @param  cDb $db
  * @param  string  $table  DB table name
  */
 function updateSystemProperties($db, $table) {
@@ -126,7 +126,7 @@ function updateSystemProperties($db, $table) {
 
 /**
  * Updates contenido version in given table
- * @param  DB_Contenido $db
+ * @param  cDb $db
  * @param  string  $table  DB table name
  * @param  string  $version  Version
  */
@@ -146,7 +146,7 @@ function updateContenidoVersion($db, $table, $version) {
 
 /**
  * Returns current version
- * @param  DB_Contenido $db
+ * @param  cDb $db
  * @param  string  $table  DB table name
  * @return string
  */

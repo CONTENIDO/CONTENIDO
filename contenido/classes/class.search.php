@@ -38,7 +38,7 @@ abstract class cSearchBaseAbstract {
     /**
      * CONTENIDO database object
      *
-     * @var DB_Contenido
+     * @var cDb
      */
     protected $oDB;
 
@@ -75,7 +75,7 @@ abstract class cSearchBaseAbstract {
     /**
      * Initialises some properties
      *
-     * @param DB_Contenido $oDB Optional database instance
+     * @param cDb $oDB Optional database instance
      * @param bool $bDebug Optional, flag to enable debugging (no longer needed)
      */
     protected function __construct($oDB = null, $bDebug = false) {
@@ -273,7 +273,7 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * Constructor, set object properties
      *
-     * @param DB_Contenido $db CONTENIDO Database object
+     * @param cDb $db CONTENIDO Database object
      * @return void
      */
     public function __construct($db = null) {
@@ -963,7 +963,7 @@ class cSearch extends cSearchBaseAbstract {
      *        articles or articles in categories which are offline
      *        $options['searchable_articles'] array of article ID's which should
      *        be searchable
-     * @param DB_Contenido $db Optional database instance
+     * @param cDb $db Optional database instance
      * @return void
      */
     public function __construct($options, $db = null) {
@@ -1510,7 +1510,7 @@ class cSearchResult extends cSearchBaseAbstract {
      *
      * @param array $search_result List of article ids
      * @param int $result_per_page Number of items per page
-     * @param DB_Contenido $oDB Optional db instance
+     * @param cDb $oDB Optional db instance
      * @param bool $bDebug Optional flag to enable debugging
      */
     public function __construct($search_result, $result_per_page, $oDB = null, $bDebug = false) {

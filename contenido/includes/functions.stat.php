@@ -1022,7 +1022,7 @@ function statResetStatistic($client) {
  * Deletes existing heap table (table in memory) and creates it.
  *
  * @param   string        $sHeapTable  Table name
- * @param   DB_Contenido  $db          Database object
+ * @param   cDb  $db          Database object
  * @return  void
  */
 function buildHeapTable($sHeapTable, $db) {

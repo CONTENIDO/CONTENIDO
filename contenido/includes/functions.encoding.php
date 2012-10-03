@@ -27,7 +27,7 @@ if (!defined('CON_FRAMEWORK')) {
 /**
  * Returns encoding for language with ID $iLang (global $lang in CONTENIDO
  * style).
- * The parameter $db has to be an instance of DB_Contenido (global $db in con)
+ * The parameter $db has to be an instance of cDb (global $db in con)
  * and
  * $cfg is the equivalent to global $cfg array in CONTENIDO.
  * If no encoding is found or any parameter is not valid, the function will
@@ -36,7 +36,7 @@ if (!defined('CON_FRAMEWORK')) {
  * modified 18.03.2008 - Removed special mySQl behaviour (using db object
  * instead) Timo Trautmann
  *
- * @param DB_Contenido $db not used any more!
+ * @param cDb $db not used any more!
  * @param int $lang
  * @return string
  */

@@ -64,12 +64,6 @@ class cTemplate {
      */
     public $Dyn_replacements = array();
 
-    /**
-     * Database instance
-     *
-     * @var DB_Contenido
-     */
-    public $db;
 
     /**
      * Dynamic counter

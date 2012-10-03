@@ -54,7 +54,7 @@ class cPermission {
     /**
      * Database instance
      *
-     * @var DB_Contenido
+     * @var cDb
      */
     public $db;
 

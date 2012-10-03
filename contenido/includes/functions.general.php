@@ -1408,7 +1408,7 @@ function cInitializeArrayKey(&$aArray, $sKey, $mDefault = '') {
  * settings.
  * Based on this informations it will send an HTTP header for right encoding.
  *
- * @param DB_Contenido $db NO MORE NEEDED
+ * @param cDb $db NO MORE NEEDED
  * @param array $cfg Global cfg-array
  * @param int $lang Global language id
  * @param string $contentType Mime type
@@ -1580,11 +1580,11 @@ function cIDNADecode($targetEncoding, $string) {
 }
 
 /**
- * @deprecated [2012-01-18] DB_Contenido performs the check for itself.
+ * @deprecated [2012-01-18] cDb performs the check for itself.
  * This method is no longer needed
  */
 function checkMySQLConnectivity() {
-    cDeprecated("DB_Contenido performs the check for itself. This method is no longer needed");
+    cDeprecated("cDb performs the check for itself. This method is no longer needed");
 }
 
 /**

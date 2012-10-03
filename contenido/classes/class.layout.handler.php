@@ -145,7 +145,7 @@ class cLayoutHandler {
     /**
      * Init class vars with values, only use for setup or upgrade
      *
-     * @param DB_Contenido $dbObject
+     * @param cDb $dbObject
      */
     public function initWithDbObject($dbObject) {
         global $cfgClient, $client;

@@ -868,7 +868,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
     public function next() {
         if ($this->db->next_record()) {
             if ($this->_bAllMode) {
-                $aRs = $this->db->toArray(DB_Contenido::FETCH_BOTH);
+                $aRs = $this->db->toArray(cDb::FETCH_BOTH);
                 return $this->loadItem($aRs);
             } else {
                 return $this->loadItem($this->db->f($this->primaryKey));

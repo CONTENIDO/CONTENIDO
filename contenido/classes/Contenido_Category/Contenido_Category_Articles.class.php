@@ -52,7 +52,7 @@ class Contenido_Category_Articles extends Contenido_Category_Base
      * @return void
      * @deprecated 2012-09-29 This class is not longer supported. Use cArticleCollector instead.
      */
-    public function __construct(DB_Contenido $oDb, array $aCfg, $iClient, $iLang)
+    public function __construct($oDb, array $aCfg, $iClient, $iLang)
     {
         cDeprecated("This class is not longer supported. Use cArticleCollector instead.");
         parent::__construct($oDb, $aCfg);

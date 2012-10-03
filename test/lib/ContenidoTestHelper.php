@@ -12,7 +12,7 @@ class ContenidoTestHelper
 {
     /**
      * Database instance
-     * @var  DB_Contenido
+     * @var  cDb
      */
     private static $_db = null;
 
@@ -37,7 +37,7 @@ class ContenidoTestHelper
     /**
      * Sets the database instance and returns it back.
      *
-     * @return  DB_Contenido
+     * @return  cDb
      */
     private static function _getDatabase()
     {

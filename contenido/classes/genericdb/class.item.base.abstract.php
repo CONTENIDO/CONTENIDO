@@ -70,14 +70,14 @@ abstract class cItemBaseAbstract extends cGenericDb {
 
     /**
      * Database instance, contains the database object
-     * @var  DB_Contenido
+     * @var  cDb
      */
     protected $db;
 
     /**
      * Second DB instance, is required for some additional queries without
      * losing an current existing query result.
-     * @var  DB_Contenido
+     * @var  cDb
      */
     protected $secondDb;
 
@@ -196,10 +196,10 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * Returns the second database instance, usable to run additional statements
      * without losing current query results.
      *
-     * @return  DB_Contenido
+     * @return  cDb
      */
     protected function _getSecondDBInstance() {
-        if (!isset($this->secondDb) || !($this->secondDb instanceof DB_Contenido)) {
+        if (!isset($this->secondDb) || !($this->secondDb instanceof cDb)) {
             $this->secondDb = cRegistry::getDb();
         }
         return $this->secondDb;

@@ -30,7 +30,7 @@ abstract class cCodeGeneratorAbstract {
     /**
      * CONTENIDO database instance
      *
-     * @var DB_Contenido
+     * @var cDb
      */
     protected $_db;
 

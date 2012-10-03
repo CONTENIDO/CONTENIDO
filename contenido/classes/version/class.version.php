@@ -77,7 +77,7 @@ class cVersion {
     /**
      * Database object
      *
-     * @var DB_Contenido
+     * @var cDb
      */
     protected $oDB;
 

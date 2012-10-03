@@ -1465,7 +1465,7 @@ function conSyncArticle($idart, $srclang, $dstlang) {
  * @param  int  $idartlang
  * @param  int  $idcat
  * @param  int  $idlang
- * @param  DB_Contenido|null  $db (NOT used)
+ * @param  cDb|null  $db (NOT used)
  * @return bool
  */
 function isStartArticle($idartlang, $idcat, $idlang, $db = null) {
@@ -1477,7 +1477,7 @@ function isStartArticle($idartlang, $idcat, $idlang, $db = null) {
  * Returns all categories in which the given article is in.
  *
  * @param   int  $idart  Article ID
- * @param   DB_Contenido|null  $db  If specified, uses the given db object (NOT used)
+ * @param   cDb|null  $db  If specified, uses the given db object (NOT used)
  * @return  array  Flat array which contains all category id's
  */
 function conGetCategoryAssignments($idart, $db = null) {

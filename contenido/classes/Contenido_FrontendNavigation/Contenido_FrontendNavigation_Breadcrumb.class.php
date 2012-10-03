@@ -57,7 +57,7 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
      * @author Rudi Bieller
 	 * @deprecated 2012-09-29 This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.
      */
-    public function __construct(DB_Contenido $oDb, array $aCfg, $iClient, $iLang, array $aCfgClient) {
+    public function __construct($oDb, array $aCfg, $iClient, $iLang, array $aCfgClient) {
 		cDeprecated("This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.");
         parent::__construct($oDb, $aCfg, $iClient, $iLang, $aCfgClient);
         $this->oCategories = null;

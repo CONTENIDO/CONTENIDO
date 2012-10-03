@@ -425,7 +425,7 @@ function langActivateDeactivateLanguage($idlang, $active) {
  * Returns the base direction of text (ltr = left to right, rtl = right to left) by language id
  *
  * @param  int  $idlang
- * @param  DB_Contenido  Is not in use
+ * @param  cDb  Is not in use
  * @return string  'ltr' or 'rtl'
  */
 function langGetTextDirection($idlang, $db = null) {

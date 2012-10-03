@@ -61,7 +61,7 @@ class ModRewriteUrlStack {
     /**
      * Database object
      *
-     * @var  DB_Contenido
+     * @var  cDb
      */
     private $_oDb;
 

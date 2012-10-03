@@ -92,7 +92,7 @@ class cEffectiveSetting {
         // if the DB connection is not possible, just return
         // the default value in order to avoid PHP notices
         try {
-            $db = new DB_Contenido();
+            $db = new cDb();
         } catch (cException $e) {
             return $default;
         }

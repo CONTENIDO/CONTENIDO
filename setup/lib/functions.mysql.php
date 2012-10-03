@@ -63,7 +63,7 @@ function doMySQLConnect($host, $username, $password)
         ),
     );
     try {
-        $db = new DB_Contenido($aOptions);
+        $db = new cDb($aOptions);
     } catch (Exception $e) {
         return array($db, false);
     }
@@ -87,7 +87,7 @@ function getSetupMySQLDBConnection($full = true)
         unset($cfgDb['connection']['database']);
     }
 
-    $db = new DB_Contenido($cfgDb);
+    $db = new cDb($cfgDb);
     return $db;
 }
 

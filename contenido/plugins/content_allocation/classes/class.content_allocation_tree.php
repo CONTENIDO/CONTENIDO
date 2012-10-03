@@ -42,7 +42,7 @@ class pApiTree {
     /**
      *
      * Contenido DB
-     * @var DB_Contenido
+     * @var cDb
      */
     var $db = null;
 

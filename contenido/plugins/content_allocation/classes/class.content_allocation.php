@@ -49,7 +49,7 @@ class pApiContentAllocation {
     /**
      * References database object
      *
-     * @var DB_Contenido
+     * @var cDb
      */
     var $db = null;
     var $table = null;

@@ -32,7 +32,7 @@ class ModRewrite extends ModRewriteBase {
     /**
      * Database instance
      *
-     * @var  DB_Contenido
+     * @var  cDb
      */
     private static $_db;
 
