@@ -33,11 +33,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <CONTENIDO Version>
- *
- * {@internal
- *   created  2000-01-01
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -45,9 +40,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /**
- * MySQLi database driver
- * @package    CONTENIDO Core
- * @subpackage Database
+ * @deprecated 2012-10-02 This class is not longer supported. Use cDbDriverMysqli instead.
  */
 class DB_Sql extends DB_Sql_Abstract {
 
@@ -71,11 +64,10 @@ class DB_Sql extends DB_Sql_Abstract {
     );
 
     /**
-     * Constructor.
-     *
-     * @param  array  $options  Optional assoziative options
-     */
+	 * @deprecated 2012-10-02 This class is not longer supported. Use cDbDriverMysqli instead.
+	 */
     public function __construct(array $options = array()) {
+		cDeprecated("This class is not longer supported. Use cDbDriverMysqli instead.");
         $options = array_merge($options, array(
             'type' => 'mysqli',
                 ));

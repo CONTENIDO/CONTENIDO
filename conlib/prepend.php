@@ -34,17 +34,6 @@ $_PHPLIB['libdir'] = str_replace('\\', '/', dirname(__FILE__) . '/');
 
 global $cfg;
 
-require($_PHPLIB['libdir'] . 'db_sql_abstract.inc');
-
-// include/require database driver
-$dbDriverFileName = 'db_' . $cfg['database_extension'] . '.inc';
-if (is_file($_PHPLIB['libdir'] . $dbDriverFileName)) {
-    require_once($_PHPLIB['libdir'] . $dbDriverFileName);
-} else {
-    die('Invalid database extension: ' . $cfg['database_extension']);
-}
-unset($dbDriverFileName);
-
 require_once($_PHPLIB['libdir'] . 'session.inc');   // Session management
 
 // Additional require statements go before this line

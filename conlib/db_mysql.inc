@@ -28,11 +28,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <CONTENIDO Version>
- *
- * {@internal
- *   created  2002-07-21
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -40,18 +35,15 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /**
- * MySQL database driver
- * @package    CONTENIDO Core
- * @subpackage Database
+ * @deprecated 2012-10-02 This class is not longer supported. Use cDbDriverMysql instead.
  */
 class DB_Sql extends DB_Sql_Abstract {
 
     /**
-     * Constructor.
-     *
-     * @param  array  $options  Optional assoziative options
-     */
+	 * @deprecated 2012-10-02 This class is not longer supported. Use cDbDriverMysql instead.
+	 */
     public function __construct(array $options = array()) {
+		cDeprecated("This class is not longer supported. Use cDbDriverMysqli instead.");
         $options = array_merge($options, array(
             'type' => 'mysql'
                 ));

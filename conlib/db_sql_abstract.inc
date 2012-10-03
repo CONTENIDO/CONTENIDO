@@ -19,11 +19,6 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-03-03
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -31,9 +26,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /**
- * Abstract database driver class.
- * @package    CONTENIDO Core
- * @subpackage Database
+ * @deprecated 2012-10-02 This class is not longer supported. Use cDbDriverAbstract and cDbDriverHandler instead.
  */
 abstract class DB_Sql_Abstract {
 
@@ -209,21 +202,11 @@ abstract class DB_Sql_Abstract {
         'Halt_On_Error' => '_sHaltOnError',
     );
 
-    /**
-     * Constructor, sets passed options and connects to the DBMS, if not done before.
-     *
-     * Uses default connection settings, passed $aOptions['db_connection'] settings
-     * will overwrite connection settings for current instance.
-     *
-     * @param  array  $aOptions  Assoziative options as follows:
-     *                          - $aOptions['haltBehavior']  (string)  Optional, halt behavior on occured errors
-     *                          - $aOptions['haltMsgPrefix']  (string)  Optional, Text to prepend to the halt message
-     *                          - $aOptions['type']  (string)  Database driver name
-     *                          - $aOptions['enableProfiling']  (bool)  Optional, flag to enable profiling
-     *                          - $aOptions['connection']  (array)  Optional, assoziative connection settings
-     * @return  void
-     */
+	/**
+	 * @deprecated 2012-10-02 This class is not longer supported. Use cDbDriverAbstract and cDbDriverHandler instead.
+	 */
     protected function __construct(array $aOptions) {
+		cDeprecated("This class is not longer supported. Use cDbDriverAbstract and cDbDriverHandler instead.");
         // use default connection configuration, but overwrite it by passed options
         $this->_aDbCfg = array_merge(self::$_aDefaultDbCfg, $aOptions);
 

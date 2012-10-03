@@ -83,20 +83,22 @@ abstract class cDbDriverHandler {
      */
     protected static $_profileData = array();
 
-    /**
-     * Constructor of database class.
+	/**
+     * Constructor, sets passed options and connects to the DBMS, if not done before.
      *
-     * @param array  $options  Optional assoziative options. The value depends
-     *                          on used DBMS, but is generally as follows:
-     *                          - $options['connection']['host']  (string) Hostname  or ip
-     *                          - $options['connection']['database']  (string) Database name
-     *                          - $options['connection']['user']  (string) User name
-     *                          - $options['connection']['password']  (string)  User password
+     * Uses default connection settings, passed $options['connection'] settings
+     * will overwrite connection settings for current instance.
+     *
+     * @param  array  $options  Assoziative options as follows:
      *                          - $options['haltBehavior']  (string)  Optional, halt behavior on occured errors
      *                          - $options['haltMsgPrefix']  (string)  Optional, Text to prepend to the halt message
      *                          - $options['enableProfiling']  (bool)  Optional, flag to enable profiling
-     * @throws cDbException if the database connection could not be established
-     * @return void
+     *                          - $options['connection']  (array)  Optional, assoziative connection settings
+	 *                          - $options['connection']['host']  (string) Hostname  or ip
+     *                          - $options['connection']['database']  (string) Database name
+     *                          - $options['connection']['user']  (string) User name
+     *                          - $options['connection']['password']  (string)  User password
+     * @return  void
      */
     public function __construct($options = array()) {
         // use default connection configuration, but overwrite it by passed options

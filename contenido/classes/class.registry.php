@@ -327,11 +327,11 @@ class cRegistry {
     /**
      * Returns a new CONTENIDO database object.
      * @TODO: Perhaps its better to instantiate only one object and reset it on call.
-     * @return DB_Contenido
+     * @return cDb
      */
     public static function getDb() {
         try {
-            $db = new DB_Contenido();
+            $db = new cDb();
         } catch (Exception $e) {
             die($e->getMessage());
         }

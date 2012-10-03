@@ -29,124 +29,13 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /**
- * @package    CONTENIDO Core
- * @subpackage Database
+ * @deprecated 2012-10-02 This class is not supported any longer.
  */
-
-class DB_Contenido extends DB_Sql {
-
-    /**
-     * Constructor of database class.
-     *
-     * @param array  $options  Optional assoziative options. The value depends
-     *                          on used DBMS, but is generally as follows:
-     *                          - $options['connection']['host']  (string) Hostname  or ip
-     *                          - $options['connection']['database']  (string) Database name
-     *                          - $options['connection']['user']  (string) User name
-     *                          - $options['connection']['password']  (string)  User password
-     *                          - $options['haltBehavior']  (string)  Optional, halt behavior on occured errors
-     *                          - $options['haltMsgPrefix']  (string)  Optional, Text to prepend to the halt message
-     *                          - $options['enableProfiling']  (bool)  Optional, flag to enable profiling
-     * @throws cException if the database connection could not be established
-     * @return void
-     */
-    public function __construct(array $options = array()) {
-        global $cachemeta;
-        global $cfg;
-
+class DB_Contenido extends cDb {
+    public function __construct($options = array()) {
         parent::__construct($options);
-
-        if (!is_array($cachemeta)) {
-            $cachemeta = array();
-        }
-
-        if ($this->Errno == 1) {
-            $backendUrl = cRegistry::getBackendUrl();
-            $contenidoPath = (empty($backendUrl))? $cfg['path']['frontend'] : $backendUrl;
-
-            $errormessage = i18n('The MySQL Database for the installation %s is not reachable. Please check if this is a temporary problem or if it is a real fault.');
-            $errormessage = sprintf($errormessage, $contenidoPath);
-
-            throw new cException($errormessage);
-        }
+        cDeprecated("This class is not supported any longer. Use cDb instead.");
     }
-
-    /**
-     * Fetches the next recordset from result set
-     *
-     * @param  bool
-     */
-    public function next_record() {
-        global $cCurrentModule;
-
-        if (!$this->Query_ID) {
-            if ($cCurrentModule > 0) {
-                $this->halt('next_record called with no query pending in Module ID ' . $cCurrentModule . '.');
-            } else {
-                $this->halt('next_record called with no query pending.');
-            }
-            return false;
-        }
-
-        return parent::next_record();
-    }
-
-    /**
-     *
-     * Get last inserted id of given tablename
-     *
-     * @param string $tableName
-     * @return int|null last id of table
-     */
-    public function getLastInsertedId($tableName = '') {
-        $lastId = null;
-        if (strlen($tableName) > 0) {
-            $sqlGetLastInsertedId = 'SELECT LAST_INSERT_ID() as last_id FROM ' . $tableName;
-            $this->query($sqlGetLastInsertedId);
-            if ($this->next_record()) {
-                $lastId = $this->f('last_id');
-            }
-        }
-
-        return $lastId;
-    }
-
-    /**
-     * Returns the metada of passed table
-     *
-     * @param   string  $sTable  The tablename of empty string to retrieve metadata of all tables!
-     * @return  array|bool   Assoziative metadata array (result depends on used db driver)
-     *                       or false in case of an error
-     * @deprecated [2011-03-03] Use db drivers toArray() method instead
-     */
-    public function copyResultToArray($sTable = '') {
-        global $cachemeta;
-        cDeprecated('Use db drivers toArray() method instead');
-
-        $aValues = array();
-
-        if ($sTable != '') {
-            if (array_key_exists($sTable, $cachemeta)) {
-                $aMetadata = $cachemeta[$sTable];
-            } else {
-                $cachemeta[$sTable] = $this->metadata($sTable);
-                $aMetadata = $cachemeta[$sTable];
-            }
-        } else {
-            $aMetadata = $this->metadata($sTable);
-        }
-
-        if (!is_array($aMetadata) || count($aMetadata) == 0) {
-            return false;
-        }
-
-        foreach ($aMetadata as $entry) {
-            $aValues[$entry['name']] = $this->f($entry['name']);
-        }
-
-        return $aValues;
-    }
-
 }
 
 /**

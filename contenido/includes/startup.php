@@ -170,8 +170,9 @@ cInclude('includes', 'functions.i18n.php');
 $_cecRegistry = cApiCecRegistry::getInstance();
 require_once($cfg['path']['contenido_config'] . 'config.chains.php');
 
-// Set default database connection parameterecho '<pre>';
+// Set default database connection parameter
 DB_Contenido::setDefaultConfiguration($cfg['db']);
+cDb::setDefaultConfiguration($cfg['db']);
 
 // Initialize UriBuilder, configuration is set in data/config/{environment}/config.misc.php
 cUriBuilderConfig::setConfig($cfg['url_builder']);
