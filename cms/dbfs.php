@@ -19,6 +19,8 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+global $contenido_path, $contenido, $client, $load_client, $file;
+
 // Set path to current frontend
 $frontend_path = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/';
 
@@ -29,13 +31,17 @@ include_once($frontend_path . 'data/config/config.php');
 include_once($contenido_path . 'includes/startup.php');
 
 if ($contenido) {
-    cRegistry::bootstrap(array('sess' => 'cSession',
-                    'auth' => 'cAuthHandlerBackend',
-                    'perm' => 'cPermission'));
+    cRegistry::bootstrap(array(
+        'sess' => 'cSession',
+        'auth' => 'cAuthHandlerBackend',
+        'perm' => 'cPermission'
+    ));
 } else {
-    cRegistry::bootstrap(array('sess' => 'cFrontendSession',
-                    'auth' => 'cAuthHandlerFrontend',
-                    'perm' => 'cPermission'));
+    cRegistry::bootstrap(array(
+        'sess' => 'cFrontendSession',
+        'auth' => 'cAuthHandlerFrontend',
+        'perm' => 'cPermission'
+    ));
 }
 
 // Shorten load time

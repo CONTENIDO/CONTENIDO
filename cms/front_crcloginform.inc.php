@@ -1,26 +1,17 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * Frontend login form.
  *
- * Description:
- * Login form
+ * @package Frontend
+ * @subpackage Form
+ * @version SVN Revision $Rev:$
+ * @version SVN Id $Id$
  *
- * Requirements:
- * @con_php_req 5
- *
- * @package    CONTENIDO Frontend
- * @version    0.5.2
- * @author     Jan Lengowski
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2003-01-2003
- *   $Id$:
- * }}
+ * @author Jan Lengowski
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
