@@ -1506,7 +1506,7 @@ function conRemoveOldCategoryArticle($idcat, $idart, $idartlang, $client, $lang)
     $oCatArtColl = new cApiCategoryArticleCollection();
     $oCatArt = $oCatArtColl->fetchByCategoryIdAndArticleId($idcat, $idart);
     if (!is_object($oCatArt)) {
-        continue;
+        return;
     }
 
     $idcatart = $oCatArt->get('idcatart');
