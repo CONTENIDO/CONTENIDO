@@ -1,19 +1,16 @@
+msgid ""
+msgstr ""
 "Project-Id-Version: Contenido 4.8\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-07 12:12+0100\n"
-"PO-Revision-Date: 2008-07-02 14:50+0100\n"
-"Last-Translator: \n"
-"Language-Team: Contenido Translators <translators@contenido.de>\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Murat Purc <murat@purc.de>\n"
+"Language-Team: Contenido Translators <translators@contenido.de> "
+"<translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
-"X-Poedit-Basepath: H:\\timo.trautmann\\contenido_reloaded\\\n"
-"X-Poedit-KeywordsList: i18n;trans\n"
-"X-Poedit-Keywords: i18n,trans\n"
-"X-Poedit-SourceCharset: iso-8859-1\n"
-"X-Poedit-SearchPath-0: contenido\n"
+"Language: German\n"
+"X-Generator: Poedit 1.5.3\n"
 
 msgid "Search results"
 msgstr "Suchergebnisse"
@@ -25,10 +22,10 @@ msgid "Title"
 msgstr "Titel"
 
 msgid "Changed"
-msgstr "Ge&auml;ndert"
+msgstr "Geändert"
 
 msgid "Published"
-msgstr "Ver&ouml;ffentlicht"
+msgstr "Veröffentlicht"
 
 msgid "Sort order"
 msgstr "Sortierreihenfolge"
@@ -82,10 +79,10 @@ msgid "Configure template"
 msgstr "Template konfigurieren"
 
 msgid "Delete article"
-msgstr "Artikel l&ouml;schen"
+msgstr "Artikel löschen"
 
 msgid "Do you really want to delete following article"
-msgstr "M&ouml;chten Sie wirklich die folgende Datei l&ouml;schen:<br>"
+msgstr "Möchten Sie wirklich die folgende Datei löschen:<br>"
 
 msgid "Search Name"
 msgstr "Bezeichnung"
@@ -97,13 +94,13 @@ msgid "No client"
 msgstr "Kein Mandant"
 
 msgid "Click here if you want to override the lock"
-msgstr "Hier klicken, um die Sperre zu &uuml;bergehen"
+msgstr "Hier klicken, um die Sperre zu übergehen"
 
 msgid "Do you really want to override the lock?"
-msgstr "M&ouml;chten Sie wirklich die Sperre &uuml;bergehen?"
+msgstr "Möchten Sie wirklich die Sperre übergehen?"
 
 msgid "Override lock"
-msgstr "Sperre &uuml;bergehen"
+msgstr "Sperre übergehen"
 
 msgid "Hide notification"
 msgstr "Benachrichtigung ausblenden"
@@ -117,41 +114,60 @@ msgstr "Benutzer"
 msgid "Newsletter: %s"
 msgstr "Newsletter: %s"
 
-msgid "There was a problem getting the newsletter article using http. Error: %s (%s)"
-msgstr "Der HTML-Newsletter-Artikel konnte nicht eingelesen werden. Fehler: %s (%s)"
+msgid ""
+"There was a problem getting the newsletter article using http. Error: %s (%s)"
+msgstr ""
+"Der HTML-Newsletter-Artikel konnte nicht eingelesen werden. Fehler: %s (%s)"
 
 msgid "Newsletter to %s could not be sent: No html message available"
-msgstr "Newsletter an %s konnte nicht versendet werden: Keine HTML-Nachricht ver&uuml;gbar"
+msgstr ""
+"Newsletter an %s konnte nicht versendet werden: Keine HTML-Nachricht "
+"verügbar"
 
 msgid "Newsletter to %s could not be sent: No valid e-mail address"
-msgstr "Newsletter an %s konnte nicht versendet werden: Keine g&uumltige E-Mail-Adresse verf&uuml;gbar"
+msgstr ""
+"Newsletter an %s konnte nicht versendet werden: Keine g&uumltige E-Mail-"
+"Adresse verfügbar"
 
 msgid "Newsletter to %s could not be sent"
 msgstr "Newsletter an %s konnte nicht versendet werden"
 
 msgid "Newsletter could not be sent: No html message available"
-msgstr "Newsletter konnte nicht versendet werden: Keine HTML-Nachricht verf&uuml;gbar"
+msgstr ""
+"Newsletter konnte nicht versendet werden: Keine HTML-Nachricht verfügbar"
 
-msgid "Newsletter to %s could not be sent: Recipient has an incompatible or empty key"
-msgstr "Newsletter an %s konnte nicht versendet werden: Empf&auml;nger hat einen inkompatiblen oder leeren Schl&uuml;ssel."
+msgid ""
+"Newsletter to %s could not be sent: Recipient has an incompatible or empty "
+"key"
+msgstr ""
+"Newsletter an %s konnte nicht versendet werden: Empfänger hat einen "
+"inkompatiblen oder leeren Schlüssel."
 
 msgid "Newsletter to %s could not be sent: No valid e-mail address specified"
-msgstr "Newsletter an %s konnte nicht versendet werden: Keine g&uuml;tige E-Mail Adresse angegeben"
+msgstr ""
+"Newsletter an %s konnte nicht versendet werden: Keine gütige E-Mail "
+"Adresse angegeben"
 
 msgid "No recipient with specified recipient/group id %s/%s found"
-msgstr "Keine Empf&auml;nger mit der angegebenen Empf&auml;nger-/Gruppen-ID %s/%s gefunden"
+msgstr ""
+"Keine Empfänger mit der angegebenen Empfänger-/Gruppen-ID %s/%s "
+"gefunden"
 
 msgid "No recipients found"
-msgstr "Keine Empf&auml;nger gefunden"
+msgstr "Keine Empfänger gefunden"
 
 msgid "No (more) recipients found"
-msgstr "Keine (weiteren) Empf&auml;nger gefunden"
+msgstr "Keine (weiteren) Empfänger gefunden"
 
 msgid "Sent successfully"
 msgstr "Erfolgreich versendet"
 
-msgid "Newsletter to %s could not be sent (recipient has an incompatible or empty key)."
-msgstr "Newsletter an %s konnte nicht versendet werden: Empf&auml;nger hat einen inkompatiblen oder leeren Schl&uuml;ssel"
+msgid ""
+"Newsletter to %s could not be sent (recipient has an incompatible or empty "
+"key)."
+msgstr ""
+"Newsletter an %s konnte nicht versendet werden: Empfänger hat einen "
+"inkompatiblen oder leeren Schlüssel"
 
 msgid "View notes / add note"
 msgstr "Notizen anzeigen / hinzufügen"
@@ -160,10 +176,10 @@ msgid "Provide address"
 msgstr "Adresse angeben"
 
 msgid "Mailer not supported"
-msgstr "Mailer wird nicht unterst&uuml,tzt"
+msgstr "Mailer wird nicht unterstützt"
 
 msgid "Execute"
-msgstr "Ausf&uuml;hren"
+msgstr "Ausführen"
 
 msgid "Instantiate"
 msgstr "Keine mail()-Instanz erzeugt"
@@ -172,7 +188,7 @@ msgid "From failed"
 msgstr "Fehler bei SMTP-Versand"
 
 msgid "Recipients failed"
-msgstr "Fehlerhafte Empf&auml;nger"
+msgstr "Fehlerhafte Empfänger"
 
 msgid "Data not accepted"
 msgstr "Daten nicht akzeptiert"
@@ -187,7 +203,7 @@ msgid "File access"
 msgstr "Dateizugriff"
 
 msgid "File open"
-msgstr "&Ouml;ffnen der Datei"
+msgstr "Öffnen der Datei"
 
 msgid "Encoding"
 msgstr "Encoding"
@@ -220,7 +236,7 @@ msgid "Immediately"
 msgstr "Sofort"
 
 msgid "Save changes"
-msgstr "&Auml;nderungen speichern"
+msgstr "Änderungen speichern"
 
 msgid "- Unnamed Module -"
 msgstr "- Unbenanntes Modul -"
@@ -232,7 +248,7 @@ msgid "February"
 msgstr "Februar"
 
 msgid "March"
-msgstr "M&auml;rz"
+msgstr "März"
 
 msgid "April"
 msgstr "April"
@@ -313,13 +329,13 @@ msgid ""
 msgstr ""
 "Hallo %s,\n"
 "\n"
-"Du hast eine Wiedervorlage erhalten f&uuml;r den Mandanten '%s' at\n"
+"Du hast eine Wiedervorlage erhalten für den Mandanten '%s' at\n"
 "%s:\n"
 "\n"
 "%s"
 
 msgid "No start article for this category"
-msgstr "Kein Startartikel f&uuml;r diese Kategorie"
+msgstr "Kein Startartikel für diese Kategorie"
 
 msgid "Article is in use by %s (%s)"
 msgstr "Artikel wird benutzt von %s (%s)"
@@ -328,7 +344,7 @@ msgid "Internal link"
 msgstr "Interner Link"
 
 msgid "Please choose"
-msgstr "Bitte w&auml;hlen"
+msgstr "Bitte wählen"
 
 msgid "none"
 msgstr "kein"
@@ -340,10 +356,10 @@ msgid "Target"
 msgstr "Ziel"
 
 msgid "Open in same window"
-msgstr "Im gleichen Fenster &ouml;ffnen"
+msgstr "Im gleichen Fenster öffnen"
 
 msgid "Open in new window"
-msgstr "Im neuen Fenster &ouml;ffnen"
+msgstr "Im neuen Fenster öffnen"
 
 msgid "E-Mail"
 msgstr "E-Mail"
@@ -382,10 +398,10 @@ msgid "Media"
 msgstr "Medien"
 
 msgid "Open in parent frame"
-msgstr "Im parent-Frame &ouml;ffnen"
+msgstr "Im parent-Frame öffnen"
 
 msgid "Open in top frame"
-msgstr "Im top-Frame &ouml;ffnen"
+msgstr "Im top-Frame öffnen"
 
 msgid "Edit URL names"
 msgstr "URL-Namen bearbeiten"
@@ -445,7 +461,7 @@ msgid "Set category on- or offline"
 msgstr "Kategorie on- oder offline setzen"
 
 msgid "Disable category"
-msgstr "Kategorie sch&uuml;tzen"
+msgstr "Kategorie schützen"
 
 msgid "Frontend access"
 msgstr "Frontend-Zugriff"
@@ -478,7 +494,7 @@ msgid "Upload files"
 msgstr "Dateien hochladen"
 
 msgid "Delete files"
-msgstr "Dateien l&ouml;schen"
+msgstr "Dateien löschen"
 
 msgid "Remove directory"
 msgstr "Verzeichnis löschen"
@@ -493,10 +509,10 @@ msgid "Rename file"
 msgstr "Datei umbenennen"
 
 msgid "Multidelete Files"
-msgstr "Mehrfachl&ouml;schung"
+msgstr "Mehrfachlöschung"
 
 msgid "Delete layout"
-msgstr "Layout l&ouml;schen"
+msgstr "Layout löschen"
 
 msgid "Modify layout"
 msgstr "Layout bearbeiten"
@@ -505,7 +521,7 @@ msgid "Create layout"
 msgstr "Layout erstellen"
 
 msgid "Delete module"
-msgstr "Modul l&ouml;schen"
+msgstr "Modul löschen"
 
 msgid "Take over module history"
 msgstr "Modulhistorie übernehmen"
@@ -517,7 +533,7 @@ msgid "Clear layout history"
 msgstr "Layouthistorie löschen"
 
 msgid "Do you really want to clear layout history?"
-msgstr "M&ouml;chten Sie wirklich die Layouthistorie löschen?" 
+msgstr "Möchten Sie wirklich die Layouthistorie löschen?"
 
 msgid "Note: This only affects the current layout."
 msgstr "Hinweis: Dies betrifft nur das aktuelle Layout."
@@ -526,7 +542,7 @@ msgid "Clear style history"
 msgstr "Stylehistorie löschen"
 
 msgid "Do you really want to clear style history?"
-msgstr "M&ouml;chten Sie wirklich die Stylehistorie löschen?" 
+msgstr "Möchten Sie wirklich die Stylehistorie löschen?"
 
 msgid "Note: This only affects the current style."
 msgstr "Hinweis: Dies betrifft nur das aktuelle Style."
@@ -535,7 +551,7 @@ msgid "Clear Java-Script history"
 msgstr "Java-Script Historie löschen"
 
 msgid "Do you really want to clear Java-Script history?"
-msgstr "M&ouml;chten Sie wirklich die Java-Script Historie löschen?" 
+msgstr "Möchten Sie wirklich die Java-Script Historie löschen?"
 
 msgid "Note: This only affects the current Java-Script."
 msgstr "Hinweis: Dies betrifft nur das aktuelle Java-Script."
@@ -544,13 +560,13 @@ msgid "Clear HTML-Template history"
 msgstr "HTML-Template Historie löschen"
 
 msgid "Do you really want to clear HTML-Template history?"
-msgstr "M&ouml;chten Sie wirklich die HTML-Template Historie löschen?" 
+msgstr "Möchten Sie wirklich die HTML-Template Historie löschen?"
 
 msgid "Note: This only the affects current HTML-Template."
 msgstr "Hinweis: Dies betrifft nur das aktuelle HTML-Template."
 
 msgid "Version history was cleared"
-msgstr "Die Versionhistorie wurde erfolgreich gel&ouml;scht"
+msgstr "Die Versionhistorie wurde erfolgreich gelöscht"
 
 msgid "Edit module"
 msgstr "Modul bearbeiten"
@@ -559,13 +575,13 @@ msgid "Create module"
 msgstr "Modul erstellen"
 
 msgid "Translate modules"
-msgstr "Modul &uuml;bersetzen"
+msgstr "Modul übersetzen"
 
 msgid "Translation import/export"
-msgstr "&Uuml;bersetzungen importieren/exportieren"
+msgstr "Übersetzungen importieren/exportieren"
 
 msgid "Delete template"
-msgstr "Template l&ouml;schen"
+msgstr "Template löschen"
 
 msgid "Edit template"
 msgstr "Template bearbeiten"
@@ -589,13 +605,13 @@ msgid "Create user"
 msgstr "Benutzer erstellen"
 
 msgid "Delete user"
-msgstr "Benutzer l&ouml;schen"
+msgstr "Benutzer löschen"
 
 msgid "Delete group members"
-msgstr "Gruppenmitglieder l&ouml;schen"
+msgstr "Gruppenmitglieder löschen"
 
 msgid "Add group members"
-msgstr "Gruppenmitglied hinzuf&uuml;gen"
+msgstr "Gruppenmitglied hinzufügen"
 
 msgid "Filter users"
 msgstr "Benutzer filtern"
@@ -607,7 +623,7 @@ msgid "Create group"
 msgstr "Gruppe erzeugen"
 
 msgid "Delete group"
-msgstr "Gruppe l&ouml;schen"
+msgstr "Gruppe löschen"
 
 msgid "Show statistics"
 msgstr "Statistik anzeigen"
@@ -622,10 +638,10 @@ msgid "Rename language"
 msgstr "Sprache umbenennen"
 
 msgid "Create language"
-msgstr "Sprache erstellen f&uuml;r"
+msgstr "Sprache erstellen für"
 
 msgid "Delete language"
-msgstr "Sprache l&ouml;schen"
+msgstr "Sprache löschen"
 
 msgid "Edit language"
 msgstr "Sprache bearbeiten"
@@ -637,7 +653,7 @@ msgid "Install/Remove plugins"
 msgstr "Plugins installieren/deinstallieren"
 
 msgid "Delete file"
-msgstr "Datei l&ouml;schen"
+msgstr "Datei löschen"
 
 msgid "Modify CSS"
 msgstr "CSS modifizieren"
@@ -652,7 +668,7 @@ msgid "Edit script"
 msgstr "Script bearbeiten"
 
 msgid "Delete script"
-msgstr "Script l&ouml;schen"
+msgstr "Script löschen"
 
 msgid "Create script"
 msgstr "Script erstellen"
@@ -673,46 +689,46 @@ msgid "Create newsletter"
 msgstr "Newsletter erzeugen"
 
 msgid "Delete newsletter"
-msgstr "Newsletter l&ouml;schen"
+msgstr "Newsletter löschen"
 
 msgid "Add newsletter dispatch job"
 msgstr "Newsletter Versand-Job erzeugen"
 
 msgid "Change global HTML newsletter settings"
-msgstr "Globale HTML-Newsletter-Einstellungen &auml;ndern"
+msgstr "Globale HTML-Newsletter-Einstellungen ändern"
 
 msgid "Send test newsletter (to groups)"
 msgstr "Test-Newsletter versenden (an Gruppen)"
 
 msgid "Delete dispatch job"
-msgstr "Newsletter Versand-Job l&ouml;schen"
+msgstr "Newsletter Versand-Job löschen"
 
 msgid "Remove recipient from dispatch job"
-msgstr "Empf&auml;nger aus Newsletter-Job herausnehmen"
+msgstr "Empfänger aus Newsletter-Job herausnehmen"
 
 msgid "Run job"
-msgstr "Job ausf&uuml;hren"
+msgstr "Job ausführen"
 
 msgid "Edit recipient"
-msgstr "Empf&auml;nger bearbeiten"
+msgstr "Empfänger bearbeiten"
 
 msgid "Create recipient"
-msgstr "Empf&auml;nger erzeugen"
+msgstr "Empfänger erzeugen"
 
 msgid "Delete recipient"
-msgstr "Empf&auml;nger l&ouml;schen"
+msgstr "Empfänger löschen"
 
 msgid "Delete recipient group"
-msgstr "Empf&auml;nger Gruppe l&ouml;schen"
+msgstr "Empfänger Gruppe löschen"
 
 msgid "Create recipient group"
-msgstr "Empf&auml;nger Gruppe erstellen"
+msgstr "Empfänger Gruppe erstellen"
 
 msgid "Delete recipient from group"
-msgstr "Empf&auml;nger aus Gruppe entfernen"
+msgstr "Empfänger aus Gruppe entfernen"
 
 msgid "Save recipient group"
-msgstr "&Auml;nderungen in Empf&auml;nger Gruppe speichern"
+msgstr "Änderungen in Empfänger Gruppe speichern"
 
 msgid "Create client"
 msgstr "Mandant erzeugen"
@@ -721,7 +737,7 @@ msgid "Edit client"
 msgstr "Mandant bearbeiten"
 
 msgid "Remove client"
-msgstr "Mandant l&ouml;schen"
+msgstr "Mandant löschen"
 
 msgid "Delete clientsetting"
 msgstr "Mandanteneinstellungen löschen"
@@ -798,20 +814,28 @@ msgstr "Konnte Datei %s nicht umbenennen"
 msgid "MySQL Database not reachable for installation %s"
 msgstr "MySQL-Datenbank für die Installation %s ist nicht erreichbar "
 
-msgid "The MySQL Database for the installation %s is not reachable. Please check if this is a temporary problem or if it is a real fault."
-msgstr "Die MySQL-Datenbank für die Installation %s ist nicht erreichbar. Bitte prüfen Sie, ob dies ein temporäres Problem oder ein wirklicher Ausfall ist."
+msgid ""
+"The MySQL Database for the installation %s is not reachable. Please check if "
+"this is a temporary problem or if it is a real fault."
+msgstr ""
+"Die MySQL-Datenbank für die Installation %s ist nicht erreichbar. Bitte "
+"prüfen Sie, ob dies ein temporäres Problem oder ein wirklicher Ausfall ist."
 
-msgid "Could not set the language-ID in the file 'config.php'. Please set the language manually."
-msgstr "Konnte die Sprach-ID in der Datei \"config.php\" nicht setzen. Bitte Sprach-ID manuell setzen."
+msgid ""
+"Could not set the language-ID in the file 'config.php'. Please set the "
+"language manually."
+msgstr ""
+"Konnte die Sprach-ID in der Datei \"config.php\" nicht setzen. Bitte Sprach-"
+"ID manuell setzen."
 
 msgid "Could not delete language"
-msgstr "Konnte Sprache nicht l&ouml;schen"
+msgstr "Konnte Sprache nicht löschen"
 
 msgid "Info about article"
-msgstr "Info &uuml;ber Artikel"
+msgstr "Info über Artikel"
 
 msgid "Info about directory"
-msgstr "Info &uuml;ber Verzeichnis"
+msgstr "Info über Verzeichnis"
 
 msgid "Category is online"
 msgstr "Kategorie ist online"
@@ -916,19 +940,21 @@ msgid "Values"
 msgstr "Werte"
 
 msgid "an error occured while sending your bug report! Please try again"
-msgstr "Ein Fehler ist während des Sendens des Bugreports aufgetreten! Bitte versuchen Sie es noch einmal"
+msgstr ""
+"Ein Fehler ist während des Sendens des Bugreports aufgetreten! Bitte "
+"versuchen Sie es noch einmal"
 
 msgid "bug report forwarded"
 msgstr "Bug Report abgeschickt"
 
 msgid "please fill out all mandatory fields"
-msgstr "Bitte alle Pflichtfelder ausf&uuml;llen"
+msgstr "Bitte alle Pflichtfelder ausfüllen"
 
 msgid "please enter a valid E-Mail adress"
-msgstr "Bitte geben Sie eine g&uuml;ltige E-Mail Adresse an"
+msgstr "Bitte geben Sie eine gültige E-Mail Adresse an"
 
 msgid "you must agree the declaration of consent"
-msgstr "Sie m&uuml;ssen der Vereinbarung zustimmen"
+msgstr "Sie müssen der Vereinbarung zustimmen"
 
 msgid "OpenOffice.org Presentation"
 msgstr "OpenOffice.org Präsentation"
@@ -1072,10 +1098,12 @@ msgid "Client / Language"
 msgstr "Mandant / Sprache"
 
 msgid "Current group doesn't have any rights to any client/language."
-msgstr "Die aktuelle Gruppe hat keine Zugriffsrechte auf irgendeine(n) Sprache bzw Mandant"
+msgstr ""
+"Die aktuelle Gruppe hat keine Zugriffsrechte auf irgendeine(n) Sprache bzw "
+"Mandant"
 
 msgid "Changes saved"
-msgstr "&Auml;nderungen gespeichert"
+msgstr "Änderungen gespeichert"
 
 msgid "Permission denied"
 msgstr "Zugriff verweigert"
@@ -1086,11 +1114,16 @@ msgstr "Alle markieren"
 msgid "Category"
 msgstr "Kategorie"
 
-msgid "Apply rights for this category to all categories on the same level or above"
-msgstr "Rechte dieser Kategorie allen Kategorien auf derselben Ebene oder darüber zuweisen"
+msgid ""
+"Apply rights for this category to all categories on the same level or above"
+msgstr ""
+"Rechte dieser Kategorie allen Kategorien auf derselben Ebene oder darüber "
+"zuweisen"
 
-msgid "Apply rights for this category to all categories below the current category"
-msgstr "Rechte dieser Kategorie allen Kategorien unter dieser Kategorie zuweisen"
+msgid ""
+"Apply rights for this category to all categories below the current category"
+msgstr ""
+"Rechte dieser Kategorie allen Kategorien unter dieser Kategorie zuweisen"
 
 msgid "Layout name"
 msgstr "Layoutname"
@@ -1099,13 +1132,16 @@ msgid "Description"
 msgstr "Beschreibung"
 
 msgid "The following users were added to this group"
-msgstr "Die folgenden Benutzer wurden dieser Gruppe hinzugef&uuml;gt"
+msgstr "Die folgenden Benutzer wurden dieser Gruppe hinzugefügt"
 
-msgid "The following users are already existing in the group and where not added"
-msgstr "Die folgenden Benutzer existieren in dieser Gruppe bereits und wurden deshalb nicht hinzugef&uuml;gt"
+msgid ""
+"The following users are already existing in the group and where not added"
+msgstr ""
+"Die folgenden Benutzer existieren in dieser Gruppe bereits und wurden "
+"deshalb nicht hinzugefügt"
 
 msgid "Discard changes"
-msgstr "&Auml;ngerungen verwerfen"
+msgstr "Ängerungen verwerfen"
 
 msgid "Group member"
 msgstr "Gruppenmitglied"
@@ -1114,16 +1150,16 @@ msgid "Action"
 msgstr "Aktion"
 
 msgid "Delete"
-msgstr "L&ouml;schen"
+msgstr "Löschen"
 
 msgid "No users found"
 msgstr "Keine Benutzer gefunden"
 
 msgid "Add group member"
-msgstr "Gruppenmitglied hinzuf&uuml;gen"
+msgstr "Gruppenmitglied hinzufügen"
 
 msgid "Choose user"
-msgstr "Benutzer w&auml;hlen"
+msgstr "Benutzer wählen"
 
 msgid "Module name"
 msgstr "Modulname"
@@ -1132,7 +1168,7 @@ msgid "Template name"
 msgstr "Templatename"
 
 msgid "Edit image for container %s"
-msgstr "Bild f&uuml;r Container %s bearbeiten"
+msgstr "Bild für Container %s bearbeiten"
 
 msgid "Upload image"
 msgstr "Bild hochladen"
@@ -1141,7 +1177,7 @@ msgid "Save without leaving the editor"
 msgstr "Speichern und im Editor bleiben"
 
 msgid "Save and close editor"
-msgstr "Speichern und Editor schlie&szligen"
+msgstr "Speichern und Editor schließen"
 
 msgid "Directory / File"
 msgstr "Verzeichnis / Datei"
@@ -1171,7 +1207,7 @@ msgid "Target frame"
 msgstr "Zielframe"
 
 msgid "Open link in new window"
-msgstr "Im neuen Fenster &ouml;ffnen"
+msgstr "Im neuen Fenster öffnen"
 
 msgid "Link"
 msgstr "Link"
@@ -1198,16 +1234,24 @@ msgid "Specification name"
 msgstr "Name der Spezifikation"
 
 msgid "No client ID passed"
-msgstr "Keine ClientID &uuml;bergeben"
+msgstr "Keine ClientID übergeben"
 
 msgid "Couldn't write the file config.php."
 msgstr "Konnte die Datei config.php nicht schreiben"
 
-msgid "The directory %s already exists. The client was created, but you have to copy the frontend-template yourself"
-msgstr "Das Verzeichnis %s existiert bereits. Der Mandant wurde erstellt, das Frontend-Template muß jedoch noch dorthin kopiert werden"
+msgid ""
+"The directory %s already exists. The client was created, but you have to "
+"copy the frontend-template yourself"
+msgstr ""
+"Das Verzeichnis %s existiert bereits. Der Mandant wurde erstellt, das "
+"Frontend-Template muß jedoch noch dorthin kopiert werden"
 
-msgid "You changed the client path. You might need to copy the frontend to the new location"
-msgstr "Der Mandanten-Pfad wurde ge&auml;ndert. Das Frontend muss eventuell an die neue Lokation kopiert werden."
+msgid ""
+"You changed the client path. You might need to copy the frontend to the new "
+"location"
+msgstr ""
+"Der Mandanten-Pfad wurde geändert. Das Frontend muss eventuell an die "
+"neue Lokation kopiert werden."
 
 msgid "Property"
 msgstr "Eigenschaft"
@@ -1246,16 +1290,18 @@ msgid "Copy frontend template"
 msgstr "Frontend-Template kopieren"
 
 msgid "Delete client"
-msgstr "Mandant l&ouml;schen"
+msgstr "Mandant löschen"
 
 msgid "Do you really want to delete the following client:<br><br>%s<br>"
-msgstr "M&ouml;chten Sie den folgenden Mandant wirklich l&ouml;schen:<br><br><b>%s</b>"
+msgstr ""
+"Möchten Sie den folgenden Mandant wirklich löschen:<br><br><b>%s</"
+"b>"
 
 msgid "Select range"
-msgstr "Bereich ausw&auml;hlen"
+msgstr "Bereich auswählen"
 
 msgid "Language independent"
-msgstr "Sprachunabh&auml;ngig"
+msgstr "Sprachunabhängig"
 
 msgid "Range"
 msgstr "Bereich"
@@ -1276,7 +1322,7 @@ msgid "Add new variable"
 msgstr "Neue Variable hinzufügen"
 
 msgid "not yet published"
-msgstr "noch nicht ver&ouml;ffentlicht"
+msgstr "noch nicht veröffentlicht"
 
 msgid "Article is in use"
 msgstr "Artikel wird benutzt"
@@ -1310,7 +1356,9 @@ msgid "Article is offline"
 msgstr "Artikel ist offline"
 
 msgid "Are you sure to delete the following article:<br><br><b>%s</b>"
-msgstr "M&ouml;chten Sie den folgenden Artikel wirklich l&ouml;schen:<br><br><b>%s</b>"
+msgstr ""
+"Möchten Sie den folgenden Artikel wirklich löschen:<br><br><b>%s</"
+"b>"
 
 msgid "Go to page: %s"
 msgstr "Gehe zu Seite: %s"
@@ -1322,13 +1370,13 @@ msgid "Alphabetical"
 msgstr "Alphabetisch"
 
 msgid "Last change"
-msgstr "Letzte &Auml;nderung"
+msgstr "Letzte Änderung"
 
 msgid "Published date"
-msgstr "Ver&ouml;ffentlichungsdatum"
+msgstr "Veröffentlichungsdatum"
 
 msgid "Sort key"
-msgstr "Sortierschl&uuml;ssel"
+msgstr "Sortierschlüssel"
 
 msgid "Sort articles:"
 msgstr "Sortierung:"
@@ -1384,11 +1432,21 @@ msgstr "Zuweisungen entfernen"
 msgid "Remove multiple category assignments"
 msgstr "Mehrfachzuordnung entfernen"
 
-msgid "Do you really want to remove the assignments to all categories except the current one?"
-msgstr "Möchten Sie wirklich alle Zuweisungen zu allen Kategorien außer der aktuellen entfernen?"
+msgid ""
+"Do you really want to remove the assignments to all categories except the "
+"current one?"
+msgstr ""
+"Möchten Sie wirklich alle Zuweisungen zu allen Kategorien außer der "
+"aktuellen entfernen?"
 
-msgid "Language parts of the articles are existing in other languages and are online. To change the category assignment, please set the other articles offline first."
-msgstr "Sprachabhängige Teile dieses Artikels existieren in anderen Sprachen und sind online. Um die Kategoriezuweisung zu verändern, setzen Sie die anderen sprachabhängigen Teile zuerst offline."
+msgid ""
+"Language parts of the articles are existing in other languages and are "
+"online. To change the category assignment, please set the other articles "
+"offline first."
+msgstr ""
+"Sprachabhängige Teile dieses Artikels existieren in anderen Sprachen und "
+"sind online. Um die Kategoriezuweisung zu verändern, setzen Sie die anderen "
+"sprachabhängigen Teile zuerst offline."
 
 msgid "Endzeitpunkt wählen"
 msgstr "Endzeitpunkt wählen"
@@ -1403,7 +1461,8 @@ msgid "No template assigned to the category<br>and/or the article"
 msgstr "Kein Template mit einer Kategorie<br>und/oder einem Artikel assoziiert"
 
 msgid "The code for the following article<br>couldnt be generated:"
-msgstr "Der Code f&uuml;r den folgenden Artikel <br>konnte nicht erstellt werden:"
+msgstr ""
+"Der Code für den folgenden Artikel <br>konnte nicht erstellt werden:"
 
 msgid "Article"
 msgstr "Artikel"
@@ -1454,7 +1513,7 @@ msgid "My articles"
 msgstr "Meine Artikel"
 
 msgid "Choose template"
-msgstr "Template w&auml;hlen"
+msgstr "Template wählen"
 
 msgid "Edit Category"
 msgstr "Kategorie bearbeiten"
@@ -1472,16 +1531,16 @@ msgid "Lock / Unlock"
 msgstr "Schützen / Freigeben"
 
 msgid "close all"
-msgstr "alle schlie&szlig;en"
+msgstr "alle schließen"
 
 msgid "Close all categories"
 msgstr "Alle Kategorien schliessen"
 
 msgid "open all"
-msgstr "alle &ouml;ffnen"
+msgstr "alle öffnen"
 
 msgid "Open all categories"
-msgstr "Alle Kategorien &ouml;ffnen"
+msgstr "Alle Kategorien öffnen"
 
 msgid "Interns"
 msgstr "Interne Links"
@@ -1505,7 +1564,7 @@ msgid "Copy to current language"
 msgstr "In die aktuelle Sprache kopieren"
 
 msgid "Overview"
-msgstr "&Uuml;bersicht"
+msgstr "Übersicht"
 
 msgid "-- new group --"
 msgstr "-- Neue Gruppe --"
@@ -1514,7 +1573,7 @@ msgid "Could not set new group name: Group already exists"
 msgstr "Konnte Gruppennamen nicht setzen: Gruppe existiert bereits"
 
 msgid "No users are added to this group yet"
-msgstr "Gruppe enth&auml;lt noch keine Benutzer"
+msgstr "Gruppe enthält noch keine Benutzer"
 
 msgid "Group name"
 msgstr "Gruppenname"
@@ -1529,13 +1588,17 @@ msgid "Add users"
 msgstr "Benutzer hinzufügen"
 
 msgid "Note: Hold ctrl to select multiple items."
-msgstr "Hinweis: Dr&uuml;cken und halten Sie die Taste \"STRG\", um mehrere Eintr&auml;ge zu selektieren."
+msgstr ""
+"Hinweis: Drücken und halten Sie die Taste \"STRG\", um mehrere "
+"Einträge zu selektieren."
 
 msgid "Delete frontend group"
 msgstr "Frontend-Gruppe löschen"
 
 msgid "Do you really want to delete the following frontend group:<br><b>%s</b>"
-msgstr "M&ouml;chten Sie die folgende Frontend-Gruppe wirklich l&ouml;schen:<br><b>%s</b>"
+msgstr ""
+"Möchten Sie die folgende Frontend-Gruppe wirklich löschen:<br><b>"
+"%s</b>"
 
 msgid "Invalid plugin"
 msgstr "Ungültiges Plugin"
@@ -1595,16 +1658,21 @@ msgid "Apply"
 msgstr "Anwenden"
 
 msgid "Do you really want to delete the user %s?"
-msgstr "M&ouml;chten Sie den folgenden Benutzer wirklich l&ouml;schen:<br><br><b>%s</b>"
+msgstr ""
+"Möchten Sie den folgenden Benutzer wirklich löschen:<br><br><b>%s</"
+"b>"
 
 msgid "-- new user --"
 msgstr "-- Neuer Benutzer --"
 
 msgid "Could not set new username: Username already exists"
-msgstr "Konnte neuen Benutzernamen nicht setzen: Benutzername existiert bereits"
+msgstr ""
+"Konnte neuen Benutzernamen nicht setzen: Benutzername existiert bereits"
 
 msgid "Could not set new password: Passwords don't match"
-msgstr "Konnte neues Passwort nicht setzen: Passwort und Bestätigung stimmen nicht überein"
+msgstr ""
+"Konnte neues Passwort nicht setzen: Passwort und Bestätigung stimmen nicht "
+"überein"
 
 msgid "User name"
 msgstr "Benutzername"
@@ -1621,8 +1689,12 @@ msgstr "Aktiv"
 msgid "WARNING"
 msgstr "WARNUNG"
 
-msgid "The plugin %s delivered an array for the displayed titles, but did not return an array for the contents."
-msgstr "Das Plugin %s lieferte ein Array f&uuml;r die angezeigten Titel, aber lieferte kein Array f&uuml;r die Inhalte."
+msgid ""
+"The plugin %s delivered an array for the displayed titles, but did not "
+"return an array for the contents."
+msgstr ""
+"Das Plugin %s lieferte ein Array für die angezeigten Titel, aber "
+"lieferte kein Array für die Inhalte."
 
 msgid "Last modified by"
 msgstr "Zuletzt geändert von"
@@ -1649,10 +1721,12 @@ msgid "Backend only"
 msgstr "Nur Backend"
 
 msgid "Do you really want to delete the group %s?"
-msgstr "M&ouml;chten Sie die folgende Gruppe wirklich l&ouml;schen:<br><br><b>%s</b>"
+msgstr ""
+"Möchten Sie die folgende Gruppe wirklich löschen:<br><br><b>%s</b>"
 
 msgid "Do you really want to delete the following group:<br><br>%s<br>"
-msgstr "M&ouml;chten Sie die folgende Gruppe wirklich l&ouml;schen:<br><br><b>%s</b>"
+msgstr ""
+"Möchten Sie die folgende Gruppe wirklich löschen:<br><br><b>%s</b>"
 
 msgid "Groupname"
 msgstr "Gruppenname"
@@ -1664,7 +1738,9 @@ msgid "User-defined properties"
 msgstr "Benutzerdefinierte Eigenschaften"
 
 msgid "Tag '%s' %s has no end tag (start tag is on line %s char %s)"
-msgstr "Tag '%s' %s hat keinen End-Tag (Start-Tag befindet sich auf Zeile %s Zeichen %s)"
+msgstr ""
+"Tag '%s' %s hat keinen End-Tag (Start-Tag befindet sich auf Zeile %s Zeichen "
+"%s)"
 
 msgid "Edit file"
 msgstr "Datei bearbeiten"
@@ -1687,8 +1763,13 @@ msgstr "Verzeichnis existiert nicht oder ist nicht lesbar"
 msgid "Create module template"
 msgstr "Modul-Template erstellen"
 
-msgid "You can find many information and a community forum on the <a href=\"http://www.contenido.org\" target=\"_blank\">Contenido Portal</a>"
-msgstr "Alle Informationen zu Contenido und das Contenido Community Forum finden Sie auf dem <a href=\"http://www.contenido.org\" target=\"_blank\">Contenido Portal</a>"
+msgid ""
+"You can find many information and a community forum on the <a href=\"http://"
+"www.contenido.org\" target=\"_blank\">Contenido Portal</a>"
+msgstr ""
+"Alle Informationen zu Contenido und das Contenido Community Forum finden Sie "
+"auf dem <a href=\"http://www.contenido.org\" target=\"_blank\">Contenido "
+"Portal</a>"
 
 msgid "Language name"
 msgstr "Name der Sprache"
@@ -1712,16 +1793,16 @@ msgid "Time format"
 msgstr "Zeitformat"
 
 msgid "Do you really want to create a new language?"
-msgstr "M&ouml;chten Sie wirklich eine neue Sprache erstellen?"
+msgstr "Möchten Sie wirklich eine neue Sprache erstellen?"
 
 msgid "Do you really want to delete the language %s?"
-msgstr "M&ouml;chten Sie die Sprache %s wirklich l&ouml;schen?"
+msgstr "Möchten Sie die Sprache %s wirklich löschen?"
 
 msgid "New language"
 msgstr "Neue Sprache"
 
 msgid "Language deleted"
-msgstr "Sprache gel&ouml;scht"
+msgstr "Sprache gelöscht"
 
 msgid "-- New Layout --"
 msgstr "-- Neues Layout --"
@@ -1729,11 +1810,19 @@ msgstr "-- Neues Layout --"
 msgid "Container %s was defined %s times"
 msgstr "Container %s wurde %sx definiert"
 
-msgid "The body tag does not exist in the layout. This is a requirement for the in-site editing."
-msgstr "Der body-Tag existiert nicht in diesem Layout. Dies ist eine Voraussetzung für das In-Site-Editing."
+msgid ""
+"The body tag does not exist in the layout. This is a requirement for the in-"
+"site editing."
+msgstr ""
+"Der body-Tag existiert nicht in diesem Layout. Dies ist eine Voraussetzung "
+"für das In-Site-Editing."
 
-msgid "The head tag does not exist in the layout. This is a requirement for the in-site editing."
-msgstr "Der head-Tag existiert nicht in diesem Layout. Dies ist eine Voraussetzung für das In-Site-Editing."
+msgid ""
+"The head tag does not exist in the layout. This is a requirement for the in-"
+"site editing."
+msgstr ""
+"Der head-Tag existiert nicht in diesem Layout. Dies ist eine Voraussetzung "
+"für das In-Site-Editing."
 
 msgid "Edit Layout"
 msgstr "Layout bearbeiten"
@@ -1748,13 +1837,14 @@ msgid "No permission"
 msgstr "Kein Zugriff"
 
 msgid "Layout is in use, cannot delete"
-msgstr "Layout wird benutzt, l&ouml;schen nicht m&ouml;glich"
+msgstr "Layout wird benutzt, löschen nicht möglich"
 
 msgid "Layout is in use"
 msgstr "Layout wird benutzt"
 
 msgid "Do you really want to delete the following layout:<br><br>%s<br>"
-msgstr "M&ouml;chten Sie das folgende Layout wirklich l&ouml;schen:<br><br><b>%s</b>"
+msgstr ""
+"Möchten Sie das folgende Layout wirklich löschen:<br><br><b>%s</b>"
 
 msgid "Layout"
 msgstr "Layout"
@@ -1775,7 +1865,7 @@ msgid "Unlimited"
 msgstr "Unbegrenzt"
 
 msgid "Entries"
-msgstr "Eintr&auml;ge"
+msgstr "Einträge"
 
 msgid "No results"
 msgstr "Keine Resultate"
@@ -1810,8 +1900,13 @@ msgstr "Eingabe"
 msgid "Output"
 msgstr "Ausgabe"
 
-msgid "This module uses variables and/or functions which are probably not available in this Contenido version. Please make sure that you use up-to-date modules."
-msgstr "Dieses Modul verwendet Variablen und/oder Funktionen, die in dieser Contenido-Version nicht mehr vorhanden sind. Bitte stellen Sie sicher, daß sie aktuelle Module verwenden."
+msgid ""
+"This module uses variables and/or functions which are probably not available "
+"in this Contenido version. Please make sure that you use up-to-date modules."
+msgstr ""
+"Dieses Modul verwendet Variablen und/oder Funktionen, die in dieser "
+"Contenido-Version nicht mehr vorhanden sind. Bitte stellen Sie sicher, daß "
+"sie aktuelle Module verwenden."
 
 msgid "File"
 msgstr "Datei"
@@ -1856,13 +1951,15 @@ msgid "In use"
 msgstr "Wird benutzt"
 
 msgid "Module in use, cannot delete"
-msgstr "Modul wird benutzt, l&ouml;schen nicht m&ouml;glich"
+msgstr "Modul wird benutzt, löschen nicht möglich"
 
 msgid "Template in use, cannot delete"
-msgstr "Template wird benutzt, l&ouml;schen nicht m&ouml;glich"
+msgstr "Template wird benutzt, löschen nicht möglich"
 
 msgid "Do you really want to delete the following module:<br><br>%s<br>"
-msgstr "M&ouml;chten Sie die das folgende Modul wirklich l&ouml;schen:<br><br><b>%s</b>"
+msgstr ""
+"Möchten Sie die das folgende Modul wirklich löschen:<br><br><b>%s</"
+"b>"
 
 msgid "No elements available"
 msgstr "Keine Elemente vorhanden"
@@ -1880,16 +1977,16 @@ msgid "Layouts"
 msgstr "Layouts"
 
 msgid "Translations"
-msgstr "&Uuml;bersetzung"
+msgstr "Übersetzung"
 
 msgid "Skip"
-msgstr "&Uuml;berspringen"
+msgstr "Überspringen"
 
 msgid "Append"
-msgstr "Hinzuf&uuml;gen"
+msgstr "Hinzufügen"
 
 msgid "Overwrite"
-msgstr "&Uuml;berschreiben"
+msgstr "Überschreiben"
 
 msgid "Assign"
 msgstr "Zuordnen"
@@ -1901,7 +1998,7 @@ msgid "Ignored"
 msgstr "Ignoriert"
 
 msgid "- Select -"
-msgstr "- Ausw&auml;hlen -"
+msgstr "- Auswählen -"
 
 msgid "Status"
 msgstr "Status"
@@ -1910,7 +2007,9 @@ msgid "Import"
 msgstr "Import"
 
 msgid "Import was not succesful, please check data and try again"
-msgstr "Import nicht erfolgreich abgeschlossen, bitte &uumlberpr&uuml;fen Sie die Daten und versuchen Sie es erneut"
+msgstr ""
+"Import nicht erfolgreich abgeschlossen, bitte überprüfen Sie die "
+"Daten und versuchen Sie es erneut"
 
 msgid "Retry"
 msgstr "Wiederholen"
@@ -1937,10 +2036,14 @@ msgid "Original module string"
 msgstr "Ursprünglicher Modulstring"
 
 msgid "Translation for %s"
-msgstr "&Uuml;bersetzung f&uuml;r %s"
+msgstr "Übersetzung für %s"
 
-msgid "Hint: Hit ALT+SHIFT+S to save the translated entry and advance to the next string."
-msgstr "Hinweis: Drücken Sie ALT+SHIFT+S, um den aktuellen Eintrag zu speichern und zur nächsten Zeichenkette zu springen."
+msgid ""
+"Hint: Hit ALT+SHIFT+S to save the translated entry and advance to the next "
+"string."
+msgstr ""
+"Hinweis: Drücken Sie ALT+SHIFT+S, um den aktuellen Eintrag zu speichern und "
+"zur nächsten Zeichenkette zu springen."
 
 msgid "String list"
 msgstr "Zeichenkettenliste"
@@ -1967,7 +2070,7 @@ msgid "Reminder date"
 msgstr "Zeitpunkt Wiedervorlage"
 
 msgid "Priority"
-msgstr "Priorit&auml;t"
+msgstr "Priorität"
 
 msgid "Progress"
 msgstr "Fortschritt"
@@ -2021,19 +2124,19 @@ msgid "Old password incorrect"
 msgstr "Altes Passwort nicht korrekt"
 
 msgid "Passwords don't match"
-msgstr "Passw&ouml;rter stimmen nicht &uuml;berein"
+msgstr "Passwörter stimmen nicht überein"
 
 msgid "Password changed"
 msgstr "Passwort geändert"
 
 msgid "Settings for %s"
-msgstr "Einstellungen f&uuml;r %s"
+msgstr "Einstellungen für %s"
 
 msgid "Old password"
 msgstr "Altes Passwort"
 
 msgid "Confirm new password"
-msgstr "Neues Passwort best&auml;tigen"
+msgstr "Neues Passwort bestätigen"
 
 msgid "Use WYSIWYG Editor"
 msgstr "WYSIWYG-Editor benutzen"
@@ -2053,11 +2156,15 @@ msgstr "-- Neuer Newsletter --"
 msgid "Newsletter dispatch job has been added for this newsletter"
 msgstr "Versand-Job für diesen Newsletter wurde erzeugt"
 
-msgid "Newsletter dispatch job has been not been added! Please check newsletter details"
-msgstr "Versand-Job für diesen Newsletter wurde nicht erzeugt! Bitte die Angaben &uuml;berpr&uuml;fen"
+msgid ""
+"Newsletter dispatch job has been not been added! Please check newsletter "
+"details"
+msgstr ""
+"Versand-Job für diesen Newsletter wurde nicht erzeugt! Bitte die Angaben "
+"überprüfen"
 
 msgid "Test newsletter has been sent to:"
-msgstr "Test-Newsletter wurde an folgende Empf&auml;nger gesendet:"
+msgstr "Test-Newsletter wurde an folgende Empfänger gesendet:"
 
 msgid "Test newsletter has not been sent (partly or completely):"
 msgstr "Der Newsletter wurde nicht gesendet (im Ganzen oder in Teilen):"
@@ -2069,10 +2176,17 @@ msgid "Error messages:"
 msgstr "Fehlermeldungen:"
 
 msgid "Could not set new newsletter name: name already exists"
-msgstr "Name konnte nicht ge&auml;ndert werden: Ein Newsletter gleichen Namens existiert bereits."
+msgstr ""
+"Name konnte nicht geändert werden: Ein Newsletter gleichen Namens "
+"existiert bereits."
 
-msgid "'Send to recipients in selected groups' has been selected, but no group has been specified. Selection has been set to 'Send to all recipients'"
-msgstr "'Newsletter an die Mitglieder der ausgew&auml;hlten Gruppe(n) senden' wurde aktiviert, aber es wurde keine Gruppe ausgew&auml;hlt. Die Option wurde auf 'An alle Empf&auml;nger senden' zur&uuml;ckgesetzt"
+msgid ""
+"'Send to recipients in selected groups' has been selected, but no group has "
+"been specified. Selection has been set to 'Send to all recipients'"
+msgstr ""
+"'Newsletter an die Mitglieder der ausgewählten Gruppe(n) senden' wurde "
+"aktiviert, aber es wurde keine Gruppe ausgewählt. Die Option wurde auf "
+"'An alle Empfänger senden' zurückgesetzt"
 
 msgid "Text only"
 msgstr "Nur Text"
@@ -2090,22 +2204,26 @@ msgid "optional"
 msgstr "Optional"
 
 msgid "Note: Hold <Ctrl> to select multiple items."
-msgstr "Hinweis: Dr&uuml;cken und halten Sie die Taste <Strg>, um mehrere Eintr&auml;ge zu selektieren."
+msgstr ""
+"Hinweis: Drücken und halten Sie die Taste <Strg>, um mehrere Einträ"
+"ge zu selektieren."
 
 msgid "Recipients"
 msgstr "Empfänger"
 
 msgid "Send newsletter to all recipients"
-msgstr "Newsletter an alle Empf&auml;nger senden"
+msgstr "Newsletter an alle Empfänger senden"
 
 msgid "Send newsletter to the members of the default group"
 msgstr "Newsletter an Mitglieder der Standardgruppe senden"
 
 msgid "Send newsletter to the members of the selected group(s):"
-msgstr "Newsletter an die Mitglieder der ausgew&auml;hlten Gruppe(n) senden:"
+msgstr "Newsletter an die Mitglieder der ausgewählten Gruppe(n) senden:"
 
 msgid "Option has to be enabled as client setting - see techref for details"
-msgstr "Option muss &uuml;ber eine Systemeinstellung aktiviert werden - siehe techref f&uuml;r details"
+msgstr ""
+"Option muss über eine Systemeinstellung aktiviert werden - siehe "
+"techref für details"
 
 msgid "Note: Set to 0 to send chunks manually."
 msgstr "Hinweis: 0 auswählen um Blöcke manuell zu versenden"
@@ -2117,13 +2235,13 @@ msgid "Use cronjob"
 msgstr "Cronjob verwenden"
 
 msgid "Send in blocks:"
-msgstr "In Bl&ouml;cken senden:"
+msgstr "In Blöcken senden:"
 
 msgid "Recipients per block:"
-msgstr "Empf&auml;nger pro Block:"
+msgstr "Empfänger pro Block:"
 
 msgid "Delay between blocks:"
-msgstr "Pause zwischen Bl&ouml;cken:"
+msgstr "Pause zwischen Blöcken:"
 
 msgid "sec."
 msgstr "Sek."
@@ -2131,11 +2249,19 @@ msgstr "Sek."
 msgid "Save option settings as default"
 msgstr "Einstellungen als Standard speichern"
 
-msgid "The html newsletter article has been deleted (idart: %s), the html message is lost"
-msgstr "Der HTML-Newsletter-Artikel wurde gel&ouml;scht (idart: %s), die HTML-Nachricht kann nicht wiederhergestellt werden"
+msgid ""
+"The html newsletter article has been deleted (idart: %s), the html message "
+"is lost"
+msgstr ""
+"Der HTML-Newsletter-Artikel wurde gelöscht (idart: %s), die HTML-"
+"Nachricht kann nicht wiederhergestellt werden"
 
-msgid "The html newsletter template article has been deleted, it has been restored using the html message article of this newsletter"
-msgstr "Der HTML-Newsletter-Template-Artikel wurde gel&ouml;scht; er wurde aus dem aktuellen HTML-Newsletter-Artikel wiederhergestellt"
+msgid ""
+"The html newsletter template article has been deleted, it has been restored "
+"using the html message article of this newsletter"
+msgstr ""
+"Der HTML-Newsletter-Template-Artikel wurde gelöscht; er wurde aus dem "
+"aktuellen HTML-Newsletter-Artikel wiederhergestellt"
 
 msgid "%s (Template restored)"
 msgstr "%s (Wiederhergestellt)"
@@ -2150,7 +2276,7 @@ msgid "Special message tags (will be replaced when sending)"
 msgstr "Spezielle Tags (werden beim Senden ersetzt)"
 
 msgid "Name of the recipient"
-msgstr "Name des Empf&auml;gers"
+msgstr "Name des Empfägers"
 
 msgid "Date, when the mail has been sent"
 msgstr "Datum des E-Mail Versands"
@@ -2159,7 +2285,7 @@ msgid "Time, when the mail has been sent"
 msgstr "Zeit des e-Mail Versand"
 
 msgid "Number of recipients"
-msgstr "Anzahl der Empf&auml;nger"
+msgstr "Anzahl der Empfänger"
 
 msgid "Link to unsubscribe"
 msgstr "Link zum Abbestellen des Newsletters"
@@ -2171,13 +2297,14 @@ msgid "Link to resume the subscription"
 msgstr "Link, um das Newsletterempfang wieder aufzunehmen"
 
 msgid "Special message tags (will be replaced when sending, {..} = optional)"
-msgstr "Spezielle Nachrichten-Tags (werden beim Senden ersetzt, {...} = optional)"
+msgstr ""
+"Spezielle Nachrichten-Tags (werden beim Senden ersetzt, {...} = optional)"
 
 msgid "Link text"
 msgstr "Link-Text"
 
 msgid "Additional message tags from recipients plugins:"
-msgstr "Zus&auml;tzliche Tags aus Empf&auml;nger-Plugins:"
+msgstr "Zusätzliche Tags aus Empfänger-Plugins:"
 
 msgid "-- none --"
 msgstr "-- Kein(e) --"
@@ -2185,32 +2312,45 @@ msgstr "-- Kein(e) --"
 msgid "HTML Template"
 msgstr "HTML-Template"
 
-msgid "Note, that changing the template discards the current html message content"
-msgstr "Hinweis: Eine &Auml;nderung des Templates verwirft die aktuelle HTML-Nachricht"
+msgid ""
+"Note, that changing the template discards the current html message content"
+msgstr ""
+"Hinweis: Eine Änderung des Templates verwirft die aktuelle HTML-"
+"Nachricht"
 
 msgid "HTML Message"
 msgstr "HTML-Nachricht"
 
-msgid "Newsletter type has been set to HTML/text, please remember to select an html template"
-msgstr "Dieser Newsletter ist ein HTML- und Text-Newsletter; bitte denken Sie daran, ein HTML-Template auszuw&auml;hlen"
+msgid ""
+"Newsletter type has been set to HTML/text, please remember to select an html "
+"template"
+msgstr ""
+"Dieser Newsletter ist ein HTML- und Text-Newsletter; bitte denken Sie daran, "
+"ein HTML-Template auszuwählen"
 
 msgid "Please choose a template first"
-msgstr "Bitte zuerst HTML-Template w&auml;hlen"
+msgstr "Bitte zuerst HTML-Template wählen"
 
 msgid "Text Message"
 msgstr "Text-Nachricht"
 
 msgid "HTML newsletter template changed"
-msgstr "&Auml;nderung des HTML-Newsletter-Templates"
+msgstr "Änderung des HTML-Newsletter-Templates"
 
-msgid "HTML template has been changed. Do you like to save now to apply changes?<br /><br /><b>Note, that existing HTML newsletter content will get lost!</b>"
-msgstr "Das HTML-Template wurde ge&auml;ndert. M&ouml;chten Sie jetzt speichern, um die &Auml;nderungen anzuwenden?<br /><br /><b>Bitte beachten Sie, dass der ggf. vorhandene Inhalt des HTML-Newsletters verloren geht!</b>"
+msgid ""
+"HTML template has been changed. Do you like to save now to apply changes?"
+"<br /><br /><b>Note, that existing HTML newsletter content will get lost!</b>"
+msgstr ""
+"Das HTML-Template wurde geändert. Möchten Sie jetzt speichern, um "
+"die Änderungen anzuwenden?<br /><br /><b>Bitte beachten Sie, dass der "
+"ggf. vorhandene Inhalt des HTML-Newsletters verloren geht!</b>"
 
 msgid "Report:"
 msgstr "Bericht:"
 
 msgid "Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)"
-msgstr "Sende Newsletter ... (Block %s von %s, Empf&auml;nger: %s, gesendet: %s)"
+msgstr ""
+"Sende Newsletter ... (Block %s von %s, Empfänger: %s, gesendet: %s)"
 
 msgid "Stop sending"
 msgstr "Senden abbrechen"
@@ -2219,7 +2359,7 @@ msgid "Send next chunk"
 msgstr "Nächster Block senden"
 
 msgid "The newsletter has been sent to %s recipients"
-msgstr "Der Newsletter wurde an %s Empf&auml;nger gesendet"
+msgstr "Der Newsletter wurde an %s Empfänger gesendet"
 
 msgid "Recipient"
 msgstr "Empfänger"
@@ -2264,7 +2404,7 @@ msgid "From"
 msgstr "Absender"
 
 msgid "Send newsletter to single recipient:"
-msgstr "Newsletter an einzelnen Empf&auml;nger senden:"
+msgstr "Newsletter an einzelnen Empfänger senden:"
 
 msgid "Use cronjob: Enabled"
 msgstr "Cronjob: Aktiviert"
@@ -2273,16 +2413,20 @@ msgid "Use cronjob: Not enabled"
 msgstr "Cronjob: Nicht aktiviert"
 
 msgid "Dispatch: Enabled (block size: %s, delay: %s sec.)"
-msgstr "In Bl&ouml;cken versenden: Aktiviert (Blockgr&ouml;&szlig;e: %s, Pause: %s Sek.)"
+msgstr ""
+"In Blöcken versenden: Aktiviert (Blockgröße: %s, Pause: %s "
+"Sek.)"
 
 msgid "Dispatch: Disabled"
 msgstr "Block-Sendung: Deaktiviert"
 
 msgid "Do you really want to delete the following newsletter dispatch job:<br>"
-msgstr "M&ouml;chten Sie wirklich den folgenden Newsletter Versand-Job l&ouml;schen:<br>"
+msgstr ""
+"Möchten Sie wirklich den folgenden Newsletter Versand-Job löschen:"
+"<br>"
 
 msgid "Do you really want to run the following job:<br>"
-msgstr "M&ouml;chten Sie wirklich den folgenden Job ausf&uuml;hren:<br>"
+msgstr "Möchten Sie wirklich den folgenden Job ausführen:<br>"
 
 msgid "View"
 msgstr "Ansehen"
@@ -2302,29 +2446,41 @@ msgstr "Empfänger-Gruppen"
 msgid "Send test newsletter"
 msgstr "Test-Newsletter versenden"
 
-msgid "Send test newsletter (disabled, check newsletter sender e-mail address and handler article selection)"
-msgstr "Test-Newsletter versenden (deaktiviert, Absender-Adresse und Handler-Artikel &uuml;berpr&uuml;fen)"
+msgid ""
+"Send test newsletter (disabled, check newsletter sender e-mail address and "
+"handler article selection)"
+msgstr ""
+"Test-Newsletter versenden (deaktiviert, Absender-Adresse und Handler-Artikel "
+"überprüfen)"
 
-msgid "Add newsletter dispatch job (disabled, check newsletter sender e-mail address and handler article selection)"
-msgstr "Newsletter-Versand-Job erzeugen (deaktiviert, Absender-Adresse und Handler-Artikel &uuml;berpr&uuml;fen)"
+msgid ""
+"Add newsletter dispatch job (disabled, check newsletter sender e-mail "
+"address and handler article selection)"
+msgstr ""
+"Newsletter-Versand-Job erzeugen (deaktiviert, Absender-Adresse und Handler-"
+"Artikel überprüfen)"
 
 msgid "Duplicate newsletter"
 msgstr "Newsletter kopieren"
 
 msgid "Do you really want to delete the following newsletter:<br>"
-msgstr "Sind Sie sicher, dass Sie den folgenden Newsletter l&ouml;schen m&ouml;chten:<br>"
+msgstr ""
+"Sind Sie sicher, dass Sie den folgenden Newsletter löschen möchten:"
+"<br>"
 
 msgid "Please select"
-msgstr "Bitte w&auml;hlen"
+msgstr "Bitte wählen"
 
 msgid "My mail address"
 msgstr "Meine E-Mail-Adresse"
 
 msgid "Recipient group: %s"
-msgstr "Empf&auml;nger-Gruppe: %s"
+msgstr "Empfänger-Gruppe: %s"
 
 msgid "Do you really want to send the newsletter to:<br><strong>%s</strong>"
-msgstr "M&ouml;chten Sie wirklich den Newsletter an den angegebenen Empf&auml;nger versenden:<br><strong>%s</strong>"
+msgstr ""
+"Möchten Sie wirklich den Newsletter an den angegebenen Empfänger "
+"versenden:<br><strong>%s</strong>"
 
 msgid "Save"
 msgstr "Speichern"
@@ -2339,28 +2495,37 @@ msgid "HTML Newsletter Category:"
 msgstr "Kategorie (HTML-Newsletter):"
 
 msgid "Send test destination:"
-msgstr "Test-Empf&auml;nger:"
+msgstr "Test-Empfänger:"
 
-msgid "%d recipients, with no or incompatible key has been updated. Deactivate update function."
-msgstr "%d Empf&auml;nger ohne bzw. mit inkompatiblen Schl&uuml;ssel wurden aktualisiert. Deaktivieren Sie die Update-Funktion."
+msgid ""
+"%d recipients, with no or incompatible key has been updated. Deactivate "
+"update function."
+msgstr ""
+"%d Empfänger ohne bzw. mit inkompatiblen Schlüssel wurden "
+"aktualisiert. Deaktivieren Sie die Update-Funktion."
 
 msgid "Confirmed"
-msgstr "Best&auml;tigt"
+msgstr "Bestätigt"
 
 msgid "Deactivated"
 msgstr "Deaktiviert"
 
 msgid "Do you really want to delete the following recipient:<br>"
-msgstr "M&ouml;chten Sie wirklich den folgenden Empf&auml;nger l&ouml;schen:<br>"
+msgstr ""
+"Möchten Sie wirklich den folgenden Empfänger löschen:<br>"
 
 msgid "Import recipients"
-msgstr "Empf&auml;nger importieren"
+msgstr "Empfänger importieren"
 
 msgid "Purge recipients"
-msgstr "Empf&auml;nger aufr&auml;umen"
+msgstr "Empfänger aufräumen"
 
-msgid "Do you really want to remove recipients, that have not been confirmed since %s days and over?"
-msgstr "Wollen Sie wirklich alle Empf&auml;nger, die ihre E-Mail-Adresse seit mehr als %s Tagen nicht best&auml;tigt haben, l&ouml;schen?"
+msgid ""
+"Do you really want to remove recipients, that have not been confirmed since "
+"%s days and over?"
+msgstr ""
+"Wollen Sie wirklich alle Empfänger, die ihre E-Mail-Adresse seit mehr "
+"als %s Tagen nicht bestätigt haben, löschen?"
 
 msgid "Purge timeframe"
 msgstr "Zeitfenster"
@@ -2371,8 +2536,10 @@ msgstr "Tage"
 msgid "-- All groups --"
 msgstr "-- Alle Gruppen --"
 
-msgid "Do you really want to delete the following newsletter recipient group:<br>"
-msgstr "Sind Sie sicher, dass Sie die folgende Gruppe l&ouml;schen m&ouml;chten:<br>"
+msgid ""
+"Do you really want to delete the following newsletter recipient group:<br>"
+msgstr ""
+"Sind Sie sicher, dass Sie die folgende Gruppe löschen möchten:<br>"
 
 msgid "Edit Message"
 msgstr "Nachricht bearbeiten"
@@ -2393,13 +2560,13 @@ msgid "Member list options"
 msgstr "Anzeigeoptionen (Mitglieder)"
 
 msgid "No recipients are added to this group yet"
-msgstr "Die Gruppe enth&auml;lt z.Z. keine Empf&auml;nger"
+msgstr "Die Gruppe enthält z.Z. keine Empfänger"
 
 msgid "Member navigation"
 msgstr "Navigation (Mitglieder)"
 
 msgid "Recipients in group"
-msgstr "Empf&auml;nger in der Gruppe"
+msgstr "Empfänger in der Gruppe"
 
 msgid "Outsider list options"
 msgstr "Anzeigeoptionen (Nicht-Mitglieder)"
@@ -2408,43 +2575,63 @@ msgid "Outsider navigation"
 msgstr "Navigation (Nicht-Mitglieder)"
 
 msgid "Add recipients"
-msgstr "Empf&auml;nger hinzuf&uuml;gen"
+msgstr "Empfänger hinzufügen"
 
 msgid "Note: Hold &lt;Ctrl&gt; to<br>select multiple items."
-msgstr "Hinweis: Halten Sie &lt;Ctrl&gt; gedr&uuml;ckt, um<br>mehrere Elemente auszuwählen."
+msgstr ""
+"Hinweis: Halten Sie &lt;Ctrl&gt; gedrückt, um<br>mehrere Elemente "
+"auszuwählen."
 
 msgid "-- new recipient --"
 msgstr "-- Neuer Empfänger --"
 
-msgid "%1backslashdollard recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed."
-msgstr "%1backslashdollard Empf&auml;nger, die ihre E-Mail-Adresse seit mehr als %2backslashdollard Tagen nicht best&auml;tigt haben, wurden gel&ouml;scht."
+msgid ""
+"%1backslashdollard recipients, which hasn't been confirmed since more than "
+"%2backslashdollard days has been removed."
+msgstr ""
+"%1backslashdollard Empfänger, die ihre E-Mail-Adresse seit mehr als "
+"%2backslashdollard Tagen nicht bestätigt haben, wurden gelöscht."
 
-msgid "There are no recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed."
-msgstr "Es gibt keine Empf&auml;nger, die ihre E-Mail-Adresse seit mehr als %2backslashdollard Tagen nicht best&auml;tigt haben."
+msgid ""
+"There are no recipients, which hasn't been confirmed since more than "
+"%2backslashdollard days has been removed."
+msgstr ""
+"Es gibt keine Empfänger, die ihre E-Mail-Adresse seit mehr als "
+"%2backslashdollard Tagen nicht bestätigt haben."
 
 msgid "Please specify a valid e-mail address"
-msgstr "Bitte geben Sie eine g&uuml;ltige E-Mail-Adresse an"
+msgstr "Bitte geben Sie eine gültige E-Mail-Adresse an"
 
-msgid "Could not set new e-mail adress: Other recipient with same e-mail address already exists"
-msgstr "E-Mail-Adresse konnte nicht ge&auml;ndert werden: Ein Empf&auml;nger mit der gleichen E-Mail-Adresse existiert bereits"
+msgid ""
+"Could not set new e-mail adress: Other recipient with same e-mail address "
+"already exists"
+msgstr ""
+"E-Mail-Adresse konnte nicht geändert werden: Ein Empfänger mit der "
+"gleichen E-Mail-Adresse existiert bereits"
 
 msgid "Message type"
 msgstr "Nachrichtentyp"
 
 msgid "Recipient is not member of any group"
-msgstr "Empf&auml;nger ist kein Mitglied einer Gruppe"
+msgstr "Empfänger ist kein Mitglied einer Gruppe"
 
 msgid "Associated Groups"
 msgstr "Mitglied von"
 
 msgid "Confirmed Date"
-msgstr "Best&auml;tigungsdatum"
+msgstr "Bestätigungsdatum"
 
 msgid "yes"
 msgstr "ja"
 
-msgid "%d recipients added, %d recipients skipped (email already exists) and %d invalid recipients/e-mail adresses ignored. Invalid recipients are shown (if any)."
-msgstr "%d Empf&auml;nger erg&auml;nzt, %d Empf&auml;nger übergangen (Empf&auml;nger-E-Mail-Adresse wird bereits verwendet) und %d ung&uuml;tige Emf&auml;nger/E-Mail-Adressen ignoriert. Ggf. ung&uuml;ltige Empf&auml;nger werden angezeigt."
+msgid ""
+"%d recipients added, %d recipients skipped (email already exists) and %d "
+"invalid recipients/e-mail adresses ignored. Invalid recipients are shown (if "
+"any)."
+msgstr ""
+"%d Empfänger ergänzt, %d Empfänger übergangen (Empfänger-"
+"E-Mail-Adresse wird bereits verwendet) und %d ungütige Emfänger/E-"
+"Mail-Adressen ignoriert. Ggf. ungültige Empfänger werden angezeigt."
 
 msgid "Tab"
 msgstr "Tab"
@@ -2455,17 +2642,30 @@ msgstr "Semikolon"
 msgid "Delimiter"
 msgstr "Trennzeichen"
 
-msgid "Insert recipients using this format:<br />&lt;data&gt;[Delimiter]&lt;data&gt;... - each recipient in a new line."
-msgstr "Empf&auml;nger im folgenden Format eingeben: <br />&lt;Daten&gt;[Trennzeichen]&lt;Daten&gt;... - jeweils eine Zeile pro Empf&auml;nger."
+msgid ""
+"Insert recipients using this format:<br />&lt;data&gt;[Delimiter]&lt;"
+"data&gt;... - each recipient in a new line."
+msgstr ""
+"Empfänger im folgenden Format eingeben: <br />&lt;Daten&gt;"
+"[Trennzeichen]&lt;Daten&gt;... - jeweils eine Zeile pro Empfänger."
 
 msgid "Specify colum types:"
 msgstr "Spaltentypen definieren:"
 
-msgid "<br />The first line must contain the column names; this specifies the column order.<br />&lt;column name&gt;[delimiter]&lt;column name&gt;..."
-msgstr "<br />Die erste Zeile muss die Spaltennamen enthalten; dies definiert die Spaltenreihenfolge.<br />&lt;Spaltenname&gt;[Separator]&lt;Spaltenname&gt;..."
+msgid ""
+"<br />The first line must contain the column names; this specifies the "
+"column order.<br />&lt;column name&gt;[delimiter]&lt;column name&gt;..."
+msgstr ""
+"<br />Die erste Zeile muss die Spaltennamen enthalten; dies definiert die "
+"Spaltenreihenfolge.<br />&lt;Spaltenname&gt;[Separator]&lt;Spaltenname&gt;..."
 
-msgid "The recipients have to be entered using the following format:<br />&lt;data&gt;[Delimiter]&lt;data&gt;... - each recipient in a new line."
-msgstr "Die Empf&auml;nger m&uuml;ssen nach dem folgenden Format eingegeben werden: <br />&lt;data&gt;[Separator]&lt;data&gt;... - Jeder Empf&auml;nger in einer neuen Zeile."
+msgid ""
+"The recipients have to be entered using the following format:<br />&lt;"
+"data&gt;[Delimiter]&lt;data&gt;... - each recipient in a new line."
+msgstr ""
+"Die Empfänger müssen nach dem folgenden Format eingegeben werden: "
+"<br />&lt;data&gt;[Separator]&lt;data&gt;... - Jeder Empfänger in einer "
+"neuen Zeile."
 
 msgid "Data structure:"
 msgstr "Datenstruktur:"
@@ -2476,14 +2676,19 @@ msgstr "Beispiel:"
 msgid "Import information"
 msgstr "Import Hinweise"
 
-msgid "<br />e.g. name;mail -> first column contains the name, the second the mail address."
-msgstr "<br />z.B. Name;Mail -> erste Spalte enth&auml;lt den Namen, die zweite die E-Mail-Adresse."
+msgid ""
+"<br />e.g. name;mail -> first column contains the name, the second the mail "
+"address."
+msgstr ""
+"<br />z.B. Name;Mail -> erste Spalte enthält den Namen, die zweite die "
+"E-Mail-Adresse."
 
 msgid "<br />name;mail;confirmed<br />Smith;jon.smith@example.org;1"
-msgstr "<br /><br />name;mail;best&auml;tigt<br />Smith;jon.smith@example.org;1"
+msgstr ""
+"<br /><br />name;mail;bestätigt<br />Smith;jon.smith@example.org;1"
 
 msgid "The following column names will be recognized:"
-msgstr "Die folgenden Spaltennamen k&ouml;nnen verwendet werden:"
+msgstr "Die folgenden Spaltennamen können verwendet werden:"
 
 msgid "Username can't be empty"
 msgstr "Benutzername darf nicht leer sein"
@@ -2528,7 +2733,7 @@ msgid "Current Report"
 msgstr "Aktuelle Statistik"
 
 msgid "Statistics Overview"
-msgstr "Statistik&uuml;bersicht"
+msgstr "Statistikübersicht"
 
 msgid "Archived Statistics"
 msgstr "Archivierte Statistiken"
@@ -2537,7 +2742,7 @@ msgid "Full statistics"
 msgstr "Alle Statistiken"
 
 msgid "Yearly"
-msgstr "J&auml;hrlich"
+msgstr "Jährlich"
 
 msgid "Current"
 msgstr "Aktuell"
@@ -2561,7 +2766,9 @@ msgid "Unprotect category"
 msgstr "Kategorie freigeben"
 
 msgid "Do you really want to delete the following category:<br><br><b>%s</b>"
-msgstr "M&ouml;chten Sie die folgende Kategorie wirklich l&ouml;schen:<br><br><b>%s</b>"
+msgstr ""
+"Möchten Sie die folgende Kategorie wirklich löschen:<br><br><b>%s</"
+"b>"
 
 msgid "One or more subtrees are existing, unable to delete"
 msgstr "Mindestens eine Unterkategorie existiert, löschen nicht möglich"
@@ -2569,8 +2776,11 @@ msgstr "Mindestens eine Unterkategorie existiert, löschen nicht möglich"
 msgid "One or more articles are existing, unable to delete"
 msgstr "Ein oder mehrere Artikel existieren, löschen nicht möglich"
 
-msgid "One or more subtrees and one or more articles are existing, unable to delete."
-msgstr "Mindestens eine Unterkategorie sowie mindestens ein Artikel existieren, löschen nicht möglich"
+msgid ""
+"One or more subtrees and one or more articles are existing, unable to delete."
+msgstr ""
+"Mindestens eine Unterkategorie sowie mindestens ein Artikel existieren, "
+"löschen nicht möglich"
 
 msgid "Move tree"
 msgstr "Baum verschieben"
@@ -2578,8 +2788,14 @@ msgstr "Baum verschieben"
 msgid "Place tree here"
 msgstr "Baum hier ablegen"
 
-msgid "Do you really want to duplicate the following category:<br><br><b>%s</b><br><br>Notice: The duplicate process can take up to several minutes, depending on how many subitems and articles you've got."
-msgstr "Soll die folgende Kategorie wirklich dupliziert werden:<br><br><b>%s</b><br><br>Hinweis: Der Duplizierungsprozess kann mehrere Minuten dauern, Abhängig von der Anzahl der Artikel und Unterkategorien."
+msgid ""
+"Do you really want to duplicate the following category:<br><br><b>%s</"
+"b><br><br>Notice: The duplicate process can take up to several minutes, "
+"depending on how many subitems and articles you've got."
+msgstr ""
+"Soll die folgende Kategorie wirklich dupliziert werden:<br><br><b>%s</"
+"b><br><br>Hinweis: Der Duplizierungsprozess kann mehrere Minuten dauern, "
+"Abhängig von der Anzahl der Artikel und Unterkategorien."
 
 msgid "Create new category"
 msgstr "Neue Kategorie erstellen"
@@ -2612,7 +2828,9 @@ msgid "New template"
 msgstr "Neues Template"
 
 msgid "Do you really want to delete the following template:<br><br>%s<br>"
-msgstr "M&ouml;chten Sie das folgende Template wirklich l&ouml;schen:<br><br><b>%s</b>"
+msgstr ""
+"Möchten Sie das folgende Template wirklich löschen:<br><br><b>%s</"
+"b>"
 
 msgid "Category Template configuration is in use by %s (%s)"
 msgstr "Templatekonfiguration (Kategorie) wird benutzt von %s (%s)"
@@ -2624,7 +2842,7 @@ msgid "Use this category"
 msgstr "Diese Kategorie verwenden"
 
 msgid "Modified"
-msgstr "Ge&auml;ndert"
+msgstr "Geändert"
 
 msgid "Sort Order"
 msgstr "Sortierreihenfolge"
@@ -2648,10 +2866,12 @@ msgid "Delete directory"
 msgstr "Verzeichnis löschen"
 
 msgid "Do you really want to delete the following directory:"
-msgstr "M&ouml;chten Sie das folgende Verzeichnis wirklich l&ouml;schen:<br><br><b></b>"
+msgstr ""
+"Möchten Sie das folgende Verzeichnis wirklich löschen:<br><br><b></"
+"b>"
 
 msgid "Directory contains files"
-msgstr "Verzeichnis enth&auml;lt Dateien"
+msgstr "Verzeichnis enthält Dateien"
 
 msgid "Database Filesystem"
 msgstr "Datenbank-Dateisystem"
@@ -2738,7 +2958,7 @@ msgid "Page"
 msgstr "Seite"
 
 msgid "Do you really want to delete the following file:<br>"
-msgstr "M&ouml;chten Sie wirklich die folgende Datei l&ouml;schen:<br>"
+msgstr "Möchten Sie wirklich die folgende Datei löschen:<br>"
 
 msgid "Enter new filename"
 msgstr "Neuer Dateiname"
@@ -2762,10 +2982,10 @@ msgid "Searched for:"
 msgstr "Suchbegriff:"
 
 msgid "Thumbnail size:"
-msgstr "Thumbnail-Gr&ouml;&szlig;e"
+msgstr "Thumbnail-Größe"
 
 msgid "No Login Information available."
-msgstr "Keine Login-Informationen verf&uuml;gbar."
+msgstr "Keine Login-Informationen verfügbar."
 
 msgid "Welcome"
 msgstr "Willkommen"
@@ -2791,17 +3011,32 @@ msgstr "Symbolhilfe"
 msgid "Contenido Manual"
 msgstr "Contenido Redakteurshandbuch"
 
-msgid "The selected user is a system administrator. A system administrator has all rights for all clients for all languages and therefore rights can't be specified in more detail."
-msgstr "Der gew&auml;hlte Nutzer ist ein Systemadministrator. Ein Systemadministrator verf&uuml;gt &uuml;ber alle Rechte f&uuml;r alle Mandanten in allen Sprachen, es k&ouml;nnen keine weiteren Einstellungen f&uuml;r Rechte vorgenommen werden."
+msgid ""
+"The selected user is a system administrator. A system administrator has all "
+"rights for all clients for all languages and therefore rights can't be "
+"specified in more detail."
+msgstr ""
+"Der gewählte Nutzer ist ein Systemadministrator. Ein "
+"Systemadministrator verfügt über alle Rechte für alle "
+"Mandanten in allen Sprachen, es können keine weiteren Einstellungen "
+"für Rechte vorgenommen werden."
 
-msgid "The selected user is assigned to clients as admin, only. An admin has all rights for a client and therefore rights can't be specified in more detail."
-msgstr "Der gew&auml;hlte Nutzer ist nur als Administrator Mandanten zugeordnet. Ein Administrator verf&uuml;gt &uuml;ber alle Rechte f&uuml;r den oder die zugeordneten Mandanten in allen Sprachen, es k&ouml;nnen keine weiteren Einstellungen f&uuml;r Rechte vorgenommen werden."
+msgid ""
+"The selected user is assigned to clients as admin, only. An admin has all "
+"rights for a client and therefore rights can't be specified in more detail."
+msgstr ""
+"Der gewählte Nutzer ist nur als Administrator Mandanten zugeordnet. Ein "
+"Administrator verfügt über alle Rechte für den oder die "
+"zugeordneten Mandanten in allen Sprachen, es können keine weiteren "
+"Einstellungen für Rechte vorgenommen werden."
 
 msgid "Current user doesn't have any rights to any client/language."
-msgstr "Der aktuelle Benutzer hat keine Zugriffsrechte auf irgendeine(n) Sprache bzw Mandant"
+msgstr ""
+"Der aktuelle Benutzer hat keine Zugriffsrechte auf irgendeine(n) Sprache bzw "
+"Mandant"
 
 msgid "Protect"
-msgstr "Sch&uuml;tzen"
+msgstr "Schützen"
 
 msgid "Remove protection"
 msgstr "Schutz entfernen"
@@ -2810,19 +3045,21 @@ msgid "Error"
 msgstr "Fehler"
 
 msgid "Overview cannot be displayed"
-msgstr "&Uuml;bersicht kann nicht angezeigt werden"
+msgstr "Übersicht kann nicht angezeigt werden"
 
 msgid "Editor can't be displayed"
 msgstr "Editor kann nicht angezeigt werden"
 
 msgid "Can't edit articles in foreign languages."
-msgstr "Artikel in nicht-aktiver, bzw. nicht synchronisierter Sprache nicht bearbeitbar."
+msgstr ""
+"Artikel in nicht-aktiver, bzw. nicht synchronisierter Sprache nicht "
+"bearbeitbar."
 
 msgid "Article can't be displayed"
 msgstr "Artikel kann nicht angezeigt werden"
 
 msgid "No article was selected"
-msgstr "Kein Artikel ausgew&auml;hlt"
+msgstr "Kein Artikel ausgewählt"
 
 msgid "Template configuration can't be displayed"
 msgstr "Template-Konfiguration kann nicht angezeigt werden"
@@ -2837,13 +3074,13 @@ msgid "Click to close"
 msgstr "Klicken zum Schliessen"
 
 msgid "Confirm"
-msgstr "Best&auml;tigen"
+msgstr "Bestätigen"
 
 msgid "Close window"
 msgstr "Fenster schliessen"
 
 msgid "Headline / HTML"
-msgstr "&Uuml;berschrift / HTML"
+msgstr "Überschrift / HTML"
 
 msgid "Text / HTML"
 msgstr "Text / HTML"
@@ -2864,7 +3101,7 @@ msgid "Frame"
 msgstr "Frame"
 
 msgid "Select date, please."
-msgstr "Bitte Datum w&auml;hlen"
+msgstr "Bitte Datum wählen"
 
 msgid "Su"
 msgstr "So"
@@ -3044,7 +3281,8 @@ msgid "Category is offline and unprotected / protected"
 msgstr "Kategorie ist offline und ungeschützt / geschützt"
 
 msgid "Category is online, contains an error and is unprotected / protected"
-msgstr "Kategorie ist online, enthält einen Fehler und ist ungeschützt / geschützt"
+msgstr ""
+"Kategorie ist online, enthält einen Fehler und ist ungeschützt / geschützt"
 
 msgid "Category is offline, contains an error and is unprotected / protected"
 msgstr "Kategorie ist offline, ist fehlerhaft und ist ungeschützt / geschützt"
@@ -3143,10 +3381,10 @@ msgid "Notification"
 msgstr "Hinweis"
 
 msgid "with click select line for further treatment"
-msgstr "mit klick Zeile zur weiteren Bearbeitung ausw&auml;hlen"
+msgstr "mit klick Zeile zur weiteren Bearbeitung auswählen"
 
 msgid "Group membership"
-msgstr "Gruppenzugeh&ouml;rigkeit"
+msgstr "Gruppenzugehörigkeit"
 
 msgid "Also copy subcategories"
 msgstr "Unterkategorien mit kopieren"
@@ -3164,7 +3402,7 @@ msgid "Store"
 msgstr "Speichern"
 
 msgid "Warning: Changes will reset active Workflows"
-msgstr "Warnung: &Auml;nderungen setzen aktive Workflows zur&uuml;ck"
+msgstr "Warnung: Änderungen setzen aktive Workflows zurück"
 
 msgid "Author (Creator)"
 msgstr "erstellt von"
@@ -3188,10 +3426,10 @@ msgid "Manage group members"
 msgstr "Gruppenmitglieder verwalten"
 
 msgid "Add right side selected users to group"
-msgstr "F&uuml;ge rechts ausgew&auml;hlte Benutzer der Gruppe hinzu"
+msgstr "Füge rechts ausgewählte Benutzer der Gruppe hinzu"
 
 msgid "Remove left side selected users from group"
-msgstr "Entferne links ausgew&auml;hlte Benutzer aus der Gruppe"
+msgstr "Entferne links ausgewählte Benutzer aus der Gruppe"
 
 msgid "Rights type"
 msgstr "Rechtegruppe"
@@ -3209,7 +3447,7 @@ msgid "Plugin/Other rights"
 msgstr "Pluginrechte / Andere Rechte"
 
 msgid "Add frontendusers"
-msgstr "Frontendbenutzer hinzuf&uuml;gen"
+msgstr "Frontendbenutzer hinzufügen"
 
 msgid "Remove"
 msgstr "Entfernen"
@@ -3233,7 +3471,7 @@ msgid "New Category %s successfully stored!"
 msgstr "Neue Kategorie %s erfolgreich erstellt!"
 
 msgid "Category successfully deleted!"
-msgstr "Kategorie erfolgreich gel&ouml;scht!"
+msgstr "Kategorie erfolgreich gelöscht!"
 
 msgid "Please enter a category name."
 msgstr "Bitte geben Sie einen Kategorienamen ein."
@@ -3249,7 +3487,8 @@ msgid ""
 msgstr ""
 "Lieber Contenidouser %s,\n"
 "\n"
-"Ihr Passwort für das Login in das Content Management System Contenido ist: %s\n"
+"Ihr Passwort für das Login in das Content Management System Contenido ist: "
+"%s\n"
 "\n"
 "Viele Grüße\n"
 "\n"
@@ -3261,11 +3500,19 @@ msgstr "Ihr neues Passwort für das Contenido Backend"
 msgid "Password"
 msgstr "Passwort"
 
-msgid "The setup directory still exists. Please remove the setup directory before you continue."
-msgstr "Das Setupverzeichnis existiert noch. Bitte l&ouml;schen Sie das Setupverzeichnis, bevor Sie fortfahren."
+msgid ""
+"The setup directory still exists. Please remove the setup directory before "
+"you continue."
+msgstr ""
+"Das Setupverzeichnis existiert noch. Bitte löschen Sie das "
+"Setupverzeichnis, bevor Sie fortfahren."
 
-msgid "The sysadmin and/or the admin account still contains a well-known default password. Please change immediately after login."
-msgstr "Der Sysadmin und/oder Admin Account ist noch auf das Standardpasswort gesetzt. Bitte &auml;ndern Sie gleich nach dem Login diese Passw&ouml;rter."
+msgid ""
+"The sysadmin and/or the admin account still contains a well-known default "
+"password. Please change immediately after login."
+msgstr ""
+"Der Sysadmin und/oder Admin Account ist noch auf das Standardpasswort "
+"gesetzt. Bitte ändern Sie gleich nach dem Login diese Passwörter."
 
 msgid "Request password?"
 msgstr "Passwort vergessen?"
@@ -3277,19 +3524,26 @@ msgid "This user does not exist."
 msgstr "Der eingegebene Nutzername existiert nicht."
 
 msgid "Password requests are allowed every %s minutes."
-msgstr "Passw&ouml;rter k&ouml;nnen nur alle %s Minuten angefordert werden."
+msgstr "Passwörter können nur alle %s Minuten angefordert werden."
 
 msgid "New password was submitted to your e-mail address."
 msgstr "Das neue Passwort wurde Ihnen soeben an Ihre E-Mailadresse gesendet."
 
-msgid "The requested user has no valid e-mail address. Submitting new password is not possible. Please contact your system- administrator for further support."
-msgstr "Der betroffene Nutzer hat keine g&uuml;ltige E-Mailadresse hinterlegt. Die Zusendung eines neuen Passworts ist nicht m&ouml;glich. Bitte kontaktieren Sie Ihren System- administrator f&uuml;r weitere Unterst&uuml;tzung."
+msgid ""
+"The requested user has no valid e-mail address. Submitting new password is "
+"not possible. Please contact your system- administrator for further support."
+msgstr ""
+"Der betroffene Nutzer hat keine gültige E-Mailadresse hinterlegt. Die "
+"Zusendung eines neuen Passworts ist nicht möglich. Bitte kontaktieren "
+"Sie Ihren System- administrator für weitere Unterstützung."
 
 msgid "Invalid Login or Password!"
 msgstr "Login fehlgeschlagen!"
 
 msgid "No matching data found. Please contact your systemadministrator."
-msgstr "Keine passenden Daten gefunden. Bitte wenden Sie sich an Ihren System- administrator."
+msgstr ""
+"Keine passenden Daten gefunden. Bitte wenden Sie sich an Ihren System- "
+"administrator."
 
 msgid "Set category online"
 msgstr "Kategorie online setzen"
@@ -3298,13 +3552,13 @@ msgid "Set category offline"
 msgstr "Kategorie offline setzen"
 
 msgid "Are you sure to delete the following category"
-msgstr "Sind Sie sicher, dass Sie die folgende Kategorie L&ouml;schen wollen"
+msgstr "Sind Sie sicher, dass Sie die folgende Kategorie Löschen wollen"
 
 msgid "No Client selected"
-msgstr "Kein Mandant ausgew&auml;hlt"
+msgstr "Kein Mandant ausgewählt"
 
 msgid "-- No Language available --"
-msgstr "-- Keine Sprache verf&uuml;gbar --"
+msgstr "-- Keine Sprache verfügbar --"
 
 msgid "There is no Content Allocation tree."
 msgstr "Es exisitiert kein Content Allocation Baum."
@@ -3313,13 +3567,16 @@ msgid "Form error"
 msgstr "Formularfehler"
 
 msgid "Please select a new Position for new category"
-msgstr "Bitte w&auml;hlen Sie eine Position f&uuml;r die neue Kategorie"
+msgstr "Bitte wählen Sie eine Position für die neue Kategorie"
 
 msgid "Field category name is empty"
 msgstr "Das Feld Kateogoriename ist leer"
 
-msgid "Notice: In order to use this client, you must create a new language for it."
-msgstr "Hinweis: Um den neuen Mandanten zu nutzen, m&uuml;ssen Sie eine neue Sprache daf&uuml;r anlegen."
+msgid ""
+"Notice: In order to use this client, you must create a new language for it."
+msgstr ""
+"Hinweis: Um den neuen Mandanten zu nutzen, müssen Sie eine neue Sprache "
+"dafür anlegen."
 
 msgid "Please click %shere%s to create a new language."
 msgstr "Bitte klicken Sie %shier%s, um dies zu tun."
@@ -3327,8 +3584,13 @@ msgstr "Bitte klicken Sie %shier%s, um dies zu tun."
 msgid "Select date"
 msgstr "Datum auswählen"
 
-msgid "Contenido is in maintenance mode. Only sysadmins are allowed to login. Please try again later."
-msgstr "Contenido befindet sich im Wartungsmodus. Nur Systemadministratoren k&ouml;nnen sich einloggen. Bitte versuchen Sie es zu einem sp&auml;teren Zeitpunkt erneut."
+msgid ""
+"Contenido is in maintenance mode. Only sysadmins are allowed to login. "
+"Please try again later."
+msgstr ""
+"Contenido befindet sich im Wartungsmodus. Nur Systemadministratoren kö"
+"nnen sich einloggen. Bitte versuchen Sie es zu einem späteren Zeitpunkt "
+"erneut."
 
 msgid "Your Contenido Version"
 msgstr "Ihre Contenido Version"
@@ -3349,13 +3611,13 @@ msgid "Import from file"
 msgstr "Aus Datei importieren"
 
 msgid "Changed by"
-msgstr "Ge&auml;ndert von"
+msgstr "Geändert von"
 
 msgid "Show History Entry"
 msgstr "Historieneintrag anzeigen"
 
 msgid "Translate module '%s'"
-msgstr "Modul &uuml;bersetzen \"%s\""
+msgstr "Modul übersetzen \"%s\""
 
 msgid "Update Information"
 msgstr "Update-Nachrichten"
@@ -3378,14 +3640,18 @@ msgstr "Benachrichtigung deaktivieren"
 msgid "Enable notification"
 msgstr "Benachrichtigung aktivieren"
 
-msgid "Update notification is disabled! For actual update information, please activate."
-msgstr "Die Update-Benachrichtigung ist deaktiviert! F&uuml;r aktuelle Update-Nachrichten, bitte aktiveren."
+msgid ""
+"Update notification is disabled! For actual update information, please "
+"activate."
+msgstr ""
+"Die Update-Benachrichtigung ist deaktiviert! Für aktuelle Update-"
+"Nachrichten, bitte aktiveren."
 
 msgid "Your version of Contenido is up to date!"
 msgstr "Ihre Version von Contenido ist aktuell!"
 
 msgid "Unable to check for new updates!"
-msgstr "Update-&Uuml;berpr&uuml;fung kann nicht durchgef&uuml;hrt werden!"
+msgstr "Update-Überprüfung kann nicht durchgeführt werden!"
 
 msgid "Connection to contenido.org failed!"
 msgstr "Verbindung zu contenido.org fehlgeschlagen!"
@@ -3397,19 +3663,37 @@ msgid "Could not determine vendor version!"
 msgstr "Hersteller-Version konnte nicht gelesen werden!"
 
 msgid "You have an unknown or unsupported version of Contenido!"
-msgstr "Sie haben eine unbekannte oder nicht unterst&uuml;tzte Version von Contenido!"
+msgstr ""
+"Sie haben eine unbekannte oder nicht unterstützte Version von Contenido!"
 
-msgid "Your version of Contenido is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Download now!</a>"
-msgstr "Ihre Version von Contenido wird nicht l&auml;nger mit Updates gepflegt. Bitte aktualisieren Sie auf eine h&ouml;here Version! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Jetzt herunterladen!</a>"
+msgid ""
+"Your version of Contenido is deprecated and not longer supported for any "
+"updates. Please update to a higher version! <br /> <a href=\"%s\" class="
+"\"blue\" target=\"_blank\">Download now!</a>"
+msgstr ""
+"Ihre Version von Contenido wird nicht länger mit Updates gepflegt. "
+"Bitte aktualisieren Sie auf eine höhere Version! <br /> <a href=\"%s\" "
+"class=\"blue\" target=\"_blank\">Jetzt herunterladen!</a>"
 
-msgid "A new version of Contenido is available! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Download %s now!</a>"
-msgstr "Eine neue Version von Contenido ist verf&uuml;gbar! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">%s jetzt herunterladen!</a>"
+msgid ""
+"A new version of Contenido is available! <br /> <a href=\"%s\" class=\"blue"
+"\" target=\"_blank\">Download %s now!</a>"
+msgstr ""
+"Eine neue Version von Contenido ist verfügbar! <br /> <a href=\"%s\" "
+"class=\"blue\" target=\"_blank\">%s jetzt herunterladen!</a>"
 
-msgid "It seems to be that your version string was manipulated. Contenido %s does not exist!"
-msgstr "Anscheinend wurde Ihre Version manipuliert. Contenido %s existiert nicht!"
+msgid ""
+"It seems to be that your version string was manipulated. Contenido %s does "
+"not exist!"
+msgstr ""
+"Anscheinend wurde Ihre Version manipuliert. Contenido %s existiert nicht!"
 
-msgid "Your webserver does not have write permissions for the directory /contenido/cache/!"
-msgstr "Ihr Webserver hat keine Schreibberechtigungen f&uuml;r das Verzeichnis /contenido/cache/!"
+msgid ""
+"Your webserver does not have write permissions for the directory /contenido/"
+"cache/!"
+msgstr ""
+"Ihr Webserver hat keine Schreibberechtigungen für das Verzeichnis /"
+"contenido/cache/!"
 
 msgid "read more"
 msgstr "mehr lesen"
@@ -3430,7 +3714,7 @@ msgid "Delete reminder item"
 msgstr "Wiedervorlage löschen"
 
 msgid "Execute recipients import"
-msgstr "Empf&auml;nger-Import ausführen"
+msgstr "Empfänger-Import ausführen"
 
 msgid "Delete system property"
 msgstr "Systemeinstellung löschen"
@@ -3517,22 +3801,22 @@ msgid "GD library"
 msgstr "GD-Bibliothek"
 
 msgid "Please Choose Format"
-msgstr "Format Ausw&auml;hlen"
+msgstr "Format Auswählen"
 
 msgid "No layout history available"
-msgstr "Keine Layout-Historie verf&uuml;gbar"
+msgstr "Keine Layout-Historie verfügbar"
 
 msgid "No style history available"
-msgstr "Keine Style-Historie verf&uuml;gbar"
+msgstr "Keine Style-Historie verfügbar"
 
 msgid "No jscript history available"
-msgstr "Keine JavaScript-Historie verf&uuml;gbar"
+msgstr "Keine JavaScript-Historie verfügbar"
 
 msgid "No template history available"
-msgstr "Keine Template-Historie verf&uuml;gbar"
+msgstr "Keine Template-Historie verfügbar"
 
 msgid "No module history available"
-msgstr "Keine Modul-Historie verf&uuml;gbar"
+msgstr "Keine Modul-Historie verfügbar"
 
 msgid "Internal History Error"
 msgstr "Interner Historie Fehler"
@@ -3540,20 +3824,24 @@ msgstr "Interner Historie Fehler"
 msgid "Versioning is not activated"
 msgstr "Die Versionierung ist nicht aktiv"
 
-msgid "The following directories contains invalid characters and were ignored: "
-msgstr "Die folgenden Verzeichnisnamen beinhalten ung&uuml;ltige Zeichen und wurden daher ignoriert: "
+msgid ""
+"The following directories contains invalid characters and were ignored: "
+msgstr ""
+"Die folgenden Verzeichnisnamen beinhalten ungültige Zeichen und wurden "
+"daher ignoriert: "
 
 msgid "Please click here in order to rename automatically."
-msgstr "Bitte klicken Sie hier, um die Verzeichnisse automatisch umzubennennen."
+msgstr ""
+"Bitte klicken Sie hier, um die Verzeichnisse automatisch umzubennennen."
 
 msgid "Manage History"
 msgstr "Historie verwalten"
 
 msgid "Truncate History"
-msgstr "Historie l&ouml;schen"
+msgstr "Historie löschen"
 
 msgid "Thank you for saving this search from extinction !"
-msgstr "Vielen Dank f&uuml;r die Speicherung dieser Suche !"
+msgstr "Vielen Dank für die Speicherung dieser Suche !"
 
 msgid "Edit Systemconfigration"
 msgstr "Systemkonfiguration bearbeiten"
@@ -3568,7 +3856,7 @@ msgid "Versioning activated"
 msgstr "Versionierung aktiviert"
 
 msgid "Serverpath to version files"
-msgstr "Serverpfad f&uuml;r Versionierungsdateien"
+msgstr "Serverpfad für Versionierungsdateien"
 
 msgid "Maximum number of stored versions"
 msgstr "Maximale Anzahl gespeicherter Versionen"
@@ -3577,7 +3865,7 @@ msgid "Update notifier"
 msgstr "Update Benachrichtigung"
 
 msgid "Check for updates"
-msgstr "Auf Aktualisierungen pr&uuml;fen"
+msgstr "Auf Aktualisierungen prüfen"
 
 msgid "Get news from contenido.org"
 msgstr "Neuigkeiten von contenido.org lesen"
@@ -3607,13 +3895,13 @@ msgid "Generate basehref"
 msgstr "Basehref erzeugen"
 
 msgid "Use image magic (if available)"
-msgstr "Image magic benutzen (wenn verf&uuml;gbar)"
+msgstr "Image magic benutzen (wenn verfügbar)"
 
 msgid "System Configuration"
 msgstr "Systemeinstellungen"
 
 msgid "Clickable menu in backend"
-msgstr "Hauptmen&uuml;wechsel bei Klick"
+msgstr "Hauptmenüwechsel bei Klick"
 
 msgid "Use passwordrequest in Backend"
 msgstr "Passwort vergessen Funktion benutzen"
@@ -3622,22 +3910,29 @@ msgid "Activate maintenance mode"
 msgstr "Wartungsmodus aktiviert"
 
 msgid "Use editarea for code highlighting"
-msgstr "Editarea f&uuml;r Syntaxhighlighting verwenden"
+msgstr "Editarea für Syntaxhighlighting verwenden"
 
 msgid "Alternative path %s does not exist. Version was saved in frondendpath."
-msgstr "Der alternative Pfad %s existiert nicht. Die Verison wurde im Frontendpfad gespeichert."
+msgstr ""
+"Der alternative Pfad %s existiert nicht. Die Verison wurde im Frontendpfad "
+"gespeichert."
 
 msgid "Are you sure you want to delete the selected files?"
-msgstr "Sind Sie sich sicher, dass Sie die gew&auml;hlten Dateien wirklich l&ouml;schen wollen?"
+msgstr ""
+"Sind Sie sich sicher, dass Sie die gewählten Dateien wirklich lö"
+"schen wollen?"
 
 msgid "Delete Files"
-msgstr "Dateien l&ouml;schen"
+msgstr "Dateien löschen"
 
 msgid "Do you want to save changes?"
 msgstr "Möchten Sie die Änderungen speichern?"
 
-msgid "Please use at least %d lower and upper case characters in your password!"
-msgstr "Bitte benutzen Sie mindestens %d Klein- und Groß-Buchstaben in Ihrem Passwort!"
+msgid ""
+"Please use at least %d lower and upper case characters in your password!"
+msgstr ""
+"Bitte benutzen Sie mindestens %d Klein- und Groß-Buchstaben in Ihrem "
+"Passwort!"
 
 msgid "Please use at least %d numbers in your password!"
 msgstr "Bitte benutzen Sie mindestens %d Zahlen in Ihrem Passwort!"
@@ -3652,7 +3947,9 @@ msgid "Password does not contain enough different characters."
 msgstr "Ihr Passwort beinhaltet nicht genug unterschiedliche Zeichen."
 
 msgid "Please choose a more secure password!"
-msgstr "Ihr Passwort ist nicht sicher genug. Bitte w&auml;hlen Sie eind sicheres Passwort!"
+msgstr ""
+"Ihr Passwort ist nicht sicher genug. Bitte wählen Sie eind sicheres "
+"Passwort!"
 
 msgid "Close editor"
 msgstr "Editor schließen"
@@ -3670,7 +3967,7 @@ msgid "General Settings"
 msgstr "Allgemeine Einstellungen"
 
 msgid "Teasertitle"
-msgstr "Teaser&uuml;berschrift"
+msgstr "Teaserüberschrift"
 
 msgid "Sourcecategory"
 msgstr "Quellkategorie"
@@ -3688,7 +3985,7 @@ msgid "Source Settings"
 msgstr "Quelleinstellungen"
 
 msgid "Source Headline"
-msgstr "Quelle &Uuml;berschrift"
+msgstr "Quelle Überschrift"
 
 msgid "Source Text"
 msgstr "Quelle Text"
@@ -3718,7 +4015,7 @@ msgid "Imageheight"
 msgstr "Bildhöhe"
 
 msgid "Size Settings"
-msgstr "Gr&ouml;&szlig;eneinstellungen"
+msgstr "Größeneinstellungen"
 
 msgid "Characterlength"
 msgstr "Zeichenanzahl"
@@ -3745,13 +4042,13 @@ msgid "Included Articles"
 msgstr "Eingebundene Artikel"
 
 msgid "Add Article"
-msgstr "Artikel hinzuf&uuml;gen"
+msgstr "Artikel hinzufügen"
 
 msgid "Manual Teaser"
 msgstr "Manueller Teaser"
 
 msgid "Add"
-msgstr "Hinzuf&uuml;gen"
+msgstr "Hinzufügen"
 
 msgid "Sort Sequence"
 msgstr "Sortierungsreihenfolge"
@@ -3790,7 +4087,7 @@ msgid "Source directory"
 msgstr "Quellverzeichnis"
 
 msgid "Include subdirectories?"
-msgstr "Unterverzeichnisse ber&uuml;cksichtigen?"
+msgstr "Unterverzeichnisse berücksichtigen?"
 
 msgid "Include meta data?"
 msgstr "Meta-Daten laden?"
@@ -3811,13 +4108,13 @@ msgid "Filter settings"
 msgstr "Filter-Einstellungen"
 
 msgid "File size limit"
-msgstr "Dateigr&ouml;&szlig;enbeschr&auml;nkung"
+msgstr "Dateigrößenbeschränkung"
 
 msgid "Creation date limit"
 msgstr "Zeitraum des Erstellungsdatums"
 
 msgid "Modify date limit"
-msgstr "Zeitraum des &Auml;nderungsdatums"
+msgstr "Zeitraum des Änderungsdatums"
 
 msgid "Ignore selection (use all)"
 msgstr "Auswahl ignorieren (alle benutzen)"
@@ -3826,16 +4123,16 @@ msgid "Selection will be ignored!"
 msgstr "Auswahl wird ignoriert!"
 
 msgid "Select all entries"
-msgstr "Alle Eintr&auml;ge selektieren"
+msgstr "Alle Einträge selektieren"
 
 msgid "Directory"
 msgstr "Verzeichnis"
 
 msgid "Existing files"
-msgstr "Ausgew&auml;hlte Dateien"
+msgstr "Ausgewählte Dateien"
 
 msgid "Add file"
-msgstr "Datei hinzuf&uuml;gen"
+msgstr "Datei hinzufügen"
 
 msgid "Cancel moving %s"
 msgstr "Verschieben von %s abbrechen"
@@ -3859,13 +4156,13 @@ msgid "Activate the code generation in %s"
 msgstr "Code-Generierung in der Tabelle %s"
 
 msgid "Clear client cache"
-msgstr "Cache-Dateien l&ouml;schen"
+msgstr "Cache-Dateien löschen"
 
 msgid "Clear client log file"
 msgstr "Log-Datei leeren"
 
 msgid "Clear client history"
-msgstr "Versionierung l&ouml;schen"
+msgstr "Versionierung löschen"
 
 msgid "Keep last histories"
 msgstr "Letzten Versionierungen beibehalten"
@@ -3877,7 +4174,7 @@ msgid "Clear contenido log file"
 msgstr "Contenido Log-Datei leeren"
 
 msgid "Clear contenido cache"
-msgstr "Contenido Cache l&ouml;schen"
+msgstr "Contenido Cache löschen"
 
 msgid "Reset cronjobs"
 msgstr "job-Dateien von Cronjob leeren"
@@ -3886,19 +4183,20 @@ msgid "System purge"
 msgstr "System Bereinigen"
 
 msgid "No action selected!"
-msgstr "Keine Aktion ausgew&auml;hlt!"
+msgstr "Keine Aktion ausgewählt!"
 
 msgid "These changes can not be cancelled."
-msgstr "Die &Auml;nderungen k&ouml;nnen Sie nicht wiederherstellen."
+msgstr "Die Änderungen können Sie nicht wiederherstellen."
 
 msgid "Do you really want to complete it?"
-msgstr "Wollen Sie diese Aktion wirklich ausf&uuml;hren!"
+msgstr "Wollen Sie diese Aktion wirklich ausführen!"
 
 msgid "The changes were successfully executed."
-msgstr "Die &Auml;nderungen wurden erfolgreich ausgef&uuml;hrt."
+msgstr "Die Änderungen wurden erfolgreich ausgeführt."
 
 msgid "The changes were not all successfully completed."
-msgstr "Die &Auml;nderungen wurden teilweise nicht erfolgreich ausgef&uuml;hrt."
+msgstr ""
+"Die Änderungen wurden teilweise nicht erfolgreich ausgeführt."
 
 msgid "Client %s"
 msgstr "Mandant %s"
@@ -3910,19 +4208,19 @@ msgid "The %s is not updated!"
 msgstr "Tabelle %s ist nicht akutalisiert!"
 
 msgid "The cache is not deleted!"
-msgstr "Cache wurde nicht gel&ouml;scht"
+msgstr "Cache wurde nicht gelöscht"
 
 msgid "The log is not deleted!"
 msgstr "Log-Datei wurde nicht geleert"
 
 msgid "The history is not deleted!"
-msgstr "Versionierung wurde nicht gel&ouml;scht!"
+msgstr "Versionierung wurde nicht gelöscht!"
 
 msgid "The contenido log is not cleaned!"
 msgstr "Contenido Log-Datei wurde nicht geleert"
 
 msgid "The contenido cache is not deleted!"
-msgstr "Contenido Cache wurde nicht gel&ouml;scht!"
+msgstr "Contenido Cache wurde nicht gelöscht!"
 
 msgid "The contenido cronjobs are not cleaned!"
 msgstr "Contenido Cronjob-Dateien wurden nicht geleert!"
@@ -3937,29 +4235,29 @@ msgid "-- Unnamed Template --"
 msgstr "-- Unbenanntes Template --"
 
 msgid "Layout deleted"
-msgstr "Layout gel&ouml;scht"
+msgstr "Layout gelöscht"
 
 msgid "Publisheddate"
-msgstr "Ver&ouml;ffentlichungsdatum"
+msgstr "Veröffentlichungsdatum"
 
 msgid "Is used in"
 msgstr "Wird benutzt in"
 
 msgid "No clients available!"
-msgstr "Keine Mandanten verf&uuml;gbar!"
+msgstr "Keine Mandanten verfügbar!"
 
 #: includes/include.system_configuration.php:105
 msgid "Maximum log size in MiB (0 = infinite)"
-msgstr "Maximale Log Gr&ouml;&szlig;e in MiB (0 = unendlich)"
+msgstr "Maximale Log Größe in MiB (0 = unendlich)"
 
 msgid "Update check period must be at least 60 minutes."
 msgstr "Die Aktualisierungsperiode muss mindestens 60 Minuten betragen."
 
 #: main.loginform.php:92
-msgid "Contenido is in maintenance mode. Only sysadmins are allowed to login." 
-msgstr "Contenido befindet sich im Wartungsmodus. Nur Systemadministratoren k&ouml;nnen sich einloggen."
+msgid "Contenido is in maintenance mode. Only sysadmins are allowed to login."
+msgstr ""
+"Contenido befindet sich im Wartungsmodus. Nur Systemadministratoren kö"
+"nnen sich einloggen."
 
 msgid "Please try again later."
-msgstr "Bitte versuchen Sie es zu einem sp&auml;teren Zeitpunkt erneut."
-
-
+msgstr "Bitte versuchen Sie es zu einem späteren Zeitpunkt erneut."
