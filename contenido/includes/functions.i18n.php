@@ -57,7 +57,7 @@ function trans ($string)
  * @param $domain string The domain to look up
  * @return string  Returns the translation
  */
-function i18n ($string, $domain = "contenido")
+function i18n($string, $domain = "contenido")
 {
 	global $cfg, $i18nLanguage;
 	
@@ -373,7 +373,7 @@ function i18nGetAvailableLanguages ()
 	return ($aLanguages); 
 }
 
-function mi18n ($string)
+function mi18n($string)
 {
 	cInclude("classes", "contenido/class.module.php");
 	
