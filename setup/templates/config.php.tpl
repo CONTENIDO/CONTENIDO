@@ -67,19 +67,19 @@ $cfg['path']['phplib']                  = $cfg['path']['frontend'] . '/conlib/';
 $cfg['path']['pear']                    = $cfg['path']['frontend'] . '/pear/';
 
 /* The server path to all WYSIWYG-Editors */
-$cfg['path']['all_wysiwyg']             = $cfg['path']['contenido']  . '/external/wysiwyg/';
+$cfg['path']['all_wysiwyg']             = $cfg['path']['contenido']  . 'external/wysiwyg/';
 
 /* The server path to the desired WYSIWYG-Editor */
-$cfg['path']['wysiwyg']                 = $cfg['path']['all_wysiwyg'] . '/tinymce3/';
+$cfg['path']['wysiwyg']                 = $cfg['path']['all_wysiwyg'] . 'tinymce3/';
 
 /* The web server path to the contenido backend */
 $cfg['path']['contenido_fullhtml']      = '{CONTENIDO_WEB}/contenido/';
 
 /* The web path to all WYSIWYG-Editors */
-$cfg['path']['all_wysiwyg_html']        = $cfg['path']['contenido_fullhtml'] . '/external/wysiwyg/';
+$cfg['path']['all_wysiwyg_html']        = $cfg['path']['contenido_fullhtml'] . 'external/wysiwyg/';
 
 /* The web path to the desired WYSIWYG-Editor */
-$cfg['path']['wysiwyg_html']            = $cfg['path']['all_wysiwyg_html'] . '/tinymce3/';
+$cfg['path']['wysiwyg_html']            = $cfg['path']['all_wysiwyg_html'] . 'tinymce3/';
 
 
 
