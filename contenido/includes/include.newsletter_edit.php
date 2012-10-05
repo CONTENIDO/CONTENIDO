@@ -58,7 +58,7 @@ if (is_array($cfg['plugins']['newsletters'])) {
 if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create"))
 {
 	// Create new newsletter
-	$oNewsletter 	= $oNewsletters->create(i18n("-- new newsletter --"));
+	$oNewsletter 	= $oNewsletters->create("-- " . i18n("New newsletter") . " --");
 	$idnewsletter	= $oNewsletter->get("idnews");
 	$oPage->setSubnav("idnewsletter=$idnewsletter", "news");
 	$oPage->setReload();

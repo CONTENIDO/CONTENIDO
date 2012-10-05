@@ -155,7 +155,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 	$oSelElements = new cHTMLSelectElement("elemperpage");
 	$oSelElements->setEvent("onchange", "document.forms.frmOptions.submit();");
 	
-	$aData = Array("0"   => i18n("-All-"),
+	$aData = Array("0"   => "-- " . i18n("All") . " --",
 				   "50"  => "50",
 				   "100" => "100",
 				   "250" => "250",

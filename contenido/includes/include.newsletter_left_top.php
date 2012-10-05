@@ -263,10 +263,10 @@ $sContent .= '	  <tr>'."\n";
 $sContent .= '		 <td>'.$oCkbHTMLNewsletter->toHTML(false).' '.i18n("Enable HTML Newsletter").'</td>'."\n";
 $sContent .= '	  </tr>'."\n";
 $sContent .= '	  <tr>'."\n";
-$sContent .= '		 <td>'.i18n("HTML Template Category:").'<br />'.$oSelHTMLTemplateIDCat->render().'</td>'."\n";
+$sContent .= '		 <td>'.i18n("HTML template category:").'<br />'.$oSelHTMLTemplateIDCat->render().'</td>'."\n";
 $sContent .= '	  </tr>'."\n";
 $sContent .= '	  <tr>'."\n";
-$sContent .= '		 <td>'.i18n("HTML Newsletter Category:").'<br />'.$oSelHTMLNewsletterIDCat->render().'</td>'."\n";
+$sContent .= '		 <td>'.i18n("HTML newsletter category:").'<br />'.$oSelHTMLNewsletterIDCat->render().'</td>'."\n";
 $sContent .= '	  </tr>'."\n";
 $sContent .= '	  <tr>'."\n";
 $sContent .= '		 <td>'.i18n("Send test destination:").'<br />'.$oSelTestDestination->render().'</td>'."\n";
@@ -289,7 +289,7 @@ if ($iItemsPerPage == 0) {
 }
 
 $oSelItemsPerPage = new cHTMLSelectElement("elemperpage");
-$oSelItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
+$oSelItemsPerPage->autoFill(array(0 => "-- " . i18n("All") . " --", 25 => 25, 50 => 50, 75 => 75, 100 => 100));
 $oSelItemsPerPage->setDefault($iItemsPerPage);
 // Sort By
 $oSelSortBy	= new cHTMLSelectElement("sortby");
@@ -304,7 +304,7 @@ $oSelSortOrder->setDefault("ASC");
 $oTextboxFilter = new cHTMLTextbox("filter", "", 16);
 // Search In
 $oSelSearchIn = new cHTMLSelectElement("searchin");
-$oOption	= new cHTMLOptionElement(i18n("-- All fields --"), "--all--");
+$oOption	= new cHTMLOptionElement("-- " . i18n("All fields") . " --", "--all--");
 $oSelSearchIn->addOptionElement("all", $oOption);
 $oOption	= new cHTMLOptionElement("Name", "name");
 $oSelSearchIn->addOptionElement($sKey, $oOption);
@@ -448,7 +448,7 @@ if ($iItemsPerPage == 0) {
 }
 
 $oSelItemsPerPage = new cHTMLSelectElement("elemperpage");
-$oSelItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
+$oSelItemsPerPage->autoFill(array(0 => "-- " . i18n("All") . " --", 25 => 25, 50 => 50, 75 => 75, 100 => 100));
 $oSelItemsPerPage->setDefault($iItemsPerPage);
 
 // Sort by
@@ -472,7 +472,7 @@ $oTxtFilter = new cHTMLTextbox("filter", "", 16);
 
 //Search in
 $oSelSearchIn = new cHTMLSelectElement("searchin");
-$oOption = new cHTMLOptionElement(i18n("-- All fields --"), "--all--");
+$oOption = new cHTMLOptionElement("-- " . i18n("All fields") . " --", "--all--");
 $oSelSearchIn->addOptionElement("all", $oOption);
 
 foreach ($aFields as $sKey => $aData)
@@ -671,7 +671,7 @@ if ($iItemsPerPage == 0) {
 }
 
 $oSelItemsPerPage = new cHTMLSelectElement("elemperpage");
-$oSelItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
+$oSelItemsPerPage->autoFill(array(0 => "-- " . i18n("All") . " --", 25 => 25, 50 => 50, 75 => 75, 100 => 100));
 $oSelItemsPerPage->setDefault($iItemsPerPage);
 
 $oSelSortBy = new cHTMLSelectElement("sortby");
@@ -689,7 +689,7 @@ $oSelSortOrder->autoFill(array("ASC" => i18n("Ascending"), "DESC" => i18n("Desce
 $oSelSortOrder->setDefault("ASC");
 
 $oSelRestrictGroup = new cHTMLSelectElement("restrictgroup");
-$oOption = new cHTMLOptionElement(i18n("-- All groups --"), "--all--");
+$oOption = new cHTMLOptionElement("-- " . i18n("All groups") . " --", "--all--");
 $oSelRestrictGroup->addOptionElement("all", $oOption);
 
 // Fetch recipient groups
@@ -717,7 +717,7 @@ $oSelRestrictGroup->setDefault("--all--");
 $oTxtFilter = new cHTMLTextbox("filter", "", 16);
 
 $oSelSearchIn = new cHTMLSelectElement("searchin");
-$oOption = new cHTMLOptionElement(i18n("-- All fields --"), "--all--");
+$oOption = new cHTMLOptionElement("-- " . i18n("All fields") . " --", "--all--");
 $oSelSearchIn->addOptionElement("all", $oOption);
 
 foreach ($aFields as $sKey => $aData) {
@@ -851,7 +851,7 @@ if ($iItemsPerPage == 0) {
 }
 
 $oSelItemsPerPage = new cHTMLSelectElement("elemperpage");
-$oSelItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
+$oSelItemsPerPage->autoFill(array(0 => "-- " . i18n("All") . " --", 25 => 25, 50 => 50, 75 => 75, 100 => 100));
 $oSelItemsPerPage->setDefault($iItemsPerPage);
 
 $oSelSortBy = new cHTMLSelectElement("sortby");
@@ -870,7 +870,7 @@ $oSelSortOrder->setDefault("ASC");
 $oTxtFilter = new cHTMLTextbox("filter", "", 16);
 
 $oSelSearchIn = new cHTMLSelectElement("searchin");
-$oOption = new cHTMLOptionElement(i18n("-- All fields --"), "--all--");
+$oOption = new cHTMLOptionElement("-- " . i18n("All fields") . " --", "--all--");
 $oSelSearchIn->addOptionElement("all", $oOption);
 
 foreach ($aFields as $sKey => $aData) {

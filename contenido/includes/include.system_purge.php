@@ -126,8 +126,8 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
 	            }
 	        }
 
-	        $sContenido = i18n("Contenido: ");
-        
+	        $sContenido = i18n("Contenido") . ':';
+
 	        if (isset($_POST['conInuse']) && $_POST['conInuse'] == 1) {
 	            if (!$oPurge->resetConInuse()) {
 	                $bError = true;
@@ -188,7 +188,7 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
     $tpl->set('s', 'SELECT_CLIENT', $sSelectClient);    
     
     $tpl->set('s', 'TITLE', i18n("System purge"));
-    $tpl->set('s', 'ERR_MSG_SELECT_CLIENT', i18n("No Client selected!"));   
+    $tpl->set('s', 'ERR_MSG_SELECT_CLIENT', i18n("No client selected!"));   
     
     $tpl->set('s', 'CONTENIDO', $contenido);    
     

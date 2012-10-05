@@ -262,9 +262,9 @@ else {
 
 		$option[0] = new cHTMLOptionElement( i18n("Select an entry to display link"), "");
 		$option[1] = new cHTMLOptionElement( i18n("Article only"), $baselink);
-		$option[2] = new cHTMLOptionElement( i18n("Article with Category"), $baselink."&idcat=$idcat");
-		$option[3] = new cHTMLOptionElement( i18n("Article with Category and Language"), $baselink."&idcat=$idcat&lang=$lang");
-		$option[4] = new cHTMLOptionElement( i18n("Article with Language"), $baselink."&lang=$lang");
+		$option[2] = new cHTMLOptionElement( i18n("Article with category"), $baselink."&idcat=$idcat");
+		$option[3] = new cHTMLOptionElement( i18n("Article with category and language"), $baselink."&idcat=$idcat&lang=$lang");
+		$option[4] = new cHTMLOptionElement( i18n("Article with language"), $baselink."&lang=$lang");
 
 		$select->addOptionElement(0, $option[0]);
 		$select->addOptionElement(1, $option[1]);

@@ -244,7 +244,7 @@ if ($idmod > 0 && $perm->have_perm_area_action_item("mod_edit", "mod_edit", $idm
 						$sMsg["Assign"]		= i18n("Assign");
 						$sMsg["Conflict"]	= i18n("Conflict");
 						$sMsg["Ignored"]	= i18n("Ignored");
-						$sMsg["- Select -"]	= i18n("- Select -");
+						$sMsg["- Select -"]	= "-- " . i18n("Select") . " --";
 						
 						// Files
 						foreach ($aFileTypes as $sFileType => $aFileType)

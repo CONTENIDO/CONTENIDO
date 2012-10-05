@@ -207,7 +207,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 		$oTemplateArticles = new ArticleCollection($aOptions);
 		
 		$aItems = array();
-		$aItems[] = array(0, i18n("-- none --"));
+		$aItems[] = array(0, "-- " . i18n"None") . " --");
 		while ($oArticle = $oTemplateArticles->nextArticle())
 		{
 			$aItems[] = array($oArticle->get("idart"), $oArticle->get("title"));
@@ -219,7 +219,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 		unset ($oArticles);
 		unset ($oTemplateArticles);
 		
-		$oForm->add(i18n("HTML Template"), $oSelTemplate->render()."&nbsp;".i18n("Note, that changing the template discards the current html message content"));
+		$oForm->add(i18n("HTML template"), $oSelTemplate->render()."&nbsp;".i18n("Note, that changing the template discards the current html message content"));
 		
 		if ($iTplIDArt != 0)
 		{

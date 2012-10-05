@@ -46,7 +46,7 @@ if (isset($_GET['idnewsletter']))
 	$tpl->next();
 
 	# Set template data
-	$sCaption = i18n("Edit Message");
+	$sCaption = i18n("Edit message");
 
 	$tpl->set("d", "ID",		'c_'.$tpl->dyn_cnt);
 	$tpl->set("d", "CLASS",	 	'');

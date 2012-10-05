@@ -99,7 +99,7 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
 
     // Generate Form
     $oForm = new UI_Table_Form("mod_display");
-    $oForm->addHeader(i18n("Edit Module"));
+    $oForm->addHeader(i18n("Edit module"));
     $oForm ->setWidth("100%");
     $oForm->setVar("area", "mod_history");
     $oForm->setVar("frame", $frame);
@@ -138,8 +138,8 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
     // Add new Elements of Form
     $oForm->add(i18n("Name"), $sName);
     $oForm->add(i18n("Description"), $sDescription);
-    $oForm->add(i18n("Code Input"), $sCodeInput);
-    $oForm->add(i18n("Code Output"), $sCodeOutput);
+    $oForm->add(i18n("Code input"), $sCodeInput);
+    $oForm->add(i18n("Code output"), $sCodeOutput);
     $oForm->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c"/*, "mod_history_takeover"*/); //modified it 
     $oForm->unsetActionButton("submit");
 

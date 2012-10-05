@@ -129,7 +129,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage'))
     	
     	// Generate Form
     	$oForm = new UI_Table_Form("jscript_display");
-    	$oForm->addHeader(i18n("Edit JScript"));
+    	$oForm->addHeader(i18n("Edit JavaScript"));
     	$oForm ->setWidth("100%");
     	$oForm->setVar("area", $area);
     	$oForm->setVar("frame", $frame);

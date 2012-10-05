@@ -382,7 +382,7 @@
       function addOptionElement (select, value, sGroupname) {
           var oNewOption = document.createElement("option");
           if (!sGroupname) {
-            var sGroupname = 'i18n("-- new group --")';
+            var sGroupname = '-- i18n("New group") --';
           }
           oNewOption.value = value;
           var oNewLabel = document.createTextNode(sGroupname);
@@ -462,6 +462,6 @@
 <!--
 template.newsletter_left_top
 
-i18n("-- new group --")
+i18n("New group")
 -->
 </html>

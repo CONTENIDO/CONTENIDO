@@ -109,7 +109,7 @@ if (isset($a_d) && is_array($a_d)) {
 				global $cCurrentModule;
 				$cCurrentModule = $db->f("idmod");
 				
-                $modulecaption = sprintf(i18n("Module in Container %s"), $cnumber);
+                $modulecaption = sprintf(i18n("Module in container %s"), $cnumber);
                 $modulename    = $db->f("name");
 
 //              echo "$a_c[$cnumber]<br><br>";

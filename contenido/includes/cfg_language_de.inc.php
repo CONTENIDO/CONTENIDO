@@ -100,8 +100,8 @@ $lngAct["con"]["con_makecatonline"] 				= i18n("Make category online");
 $lngAct["con"]["con_changetemplate"] 				= i18n("Change template");
 $lngAct["con"]["con_makestart"]                    	= i18n("Set start article");
 $lngAct["con"]["con_makeonline"]                   	= i18n("Make article online");
-$lngAct["con"]["con_synccat"]                    	= i18n("Syncronize Category");
-$lngAct["con"]["con_syncarticle"]                   = i18n("Syncronize Article");
+$lngAct["con"]["con_synccat"]                    	= i18n("Syncronize category");
+$lngAct["con"]["con_syncarticle"]                   = i18n("Syncronize article");
 $lngAct["con"]["con_makepublic"]                   	= i18n("Protect category");
 $lngAct["con"]["con_deleteart"]                    	= i18n("Delete article");
 $lngAct["con"]["con_tplcfg_edit"]   				= i18n("Edit template configuration");
@@ -147,13 +147,13 @@ $lngAct["upl"]["31"]                    			= i18n("Create directory");
 $lngAct["lay"]["lay_delete"]                    	= i18n("Delete layout");
 $lngAct["lay_edit"]["lay_edit"]             		= i18n("Modify layout");
 $lngAct["lay_edit"]["lay_new"]          			= i18n("Create layout");
-$lngAct["lay_history"]["lay_history_manage"]    	= i18n("Manage History");
-$lngAct["lay_history"]["history_truncate"]    	    = i18n("Truncate History");
+$lngAct["lay_history"]["lay_history_manage"]    	= i18n("Manage history");
+$lngAct["lay_history"]["history_truncate"]    	    = i18n("Truncate history");
 
 
 $lngAct["mod"]["mod_delete"]                   		= i18n("Delete module");
-$lngAct["mod_history"]["mod_history_manage"]    	= i18n("Manage History");
-$lngAct["mod_history"]["history_truncate"]    	    = i18n("Truncate History");
+$lngAct["mod_history"]["mod_history_manage"]    	= i18n("Manage history");
+$lngAct["mod_history"]["history_truncate"]    	    = i18n("Truncate history");
 $lngAct["mod_edit"]["mod_edit"]               		= i18n("Edit module");
 $lngAct["mod_edit"]["mod_new"]          			= i18n("Create module");
 $lngAct["mod_edit"]["mod_importexport_module"]		= i18n("Import/Export module");
@@ -210,8 +210,8 @@ $lngAct["js_history"]["history_truncate"]    	    = i18n("Truncate History");
 $lngAct["htmltpl"]["htmltpl_edit"]          		= i18n("Modify HTML-Template");
 $lngAct["htmltpl"]["htmltpl_create"]        		= i18n("Create HTML-Template");
 $lngAct["htmltpl"]["htmltpl_delete"]        		= i18n("Delete HTML-Template");
-$lngAct["htmltpl_history"]["htmltpl_history_manage"]    	= i18n("Manage History");
-$lngAct["htmltpl_history"]["history_truncate"]    	    = i18n("Truncate History");
+$lngAct["htmltpl_history"]["htmltpl_history_manage"]    	= i18n("Manage history");
+$lngAct["htmltpl_history"]["history_truncate"]    	    = i18n("Truncate history");
 
 $lngAct["news"]["news_save"]                   					= i18n("Edit newsletter");
 $lngAct["news"]["news_create"] 									= i18n("Create newsletter");
@@ -268,7 +268,7 @@ $lngAct["system_settings"]["systemsettings_edit_item"]			= i18n("Edit system pro
 $lngAct["system_settings"]["systemsettings_save_item"]			= i18n("Save system property");
 
 $lngAct["system"]["emptyLog"]									= i18n("Empty log");
-$lngAct["system_configuration"]["edit_sysconf"]					= i18n("Edit Systemconfigration");
+$lngAct["system_configuration"]["edit_sysconf"]					= i18n("Edit system configration");
 $lngAct["system_purge"]["do_purge"]	 = i18n("Do system purge");
 
 $lngAct["logs"]["log_show"] 						= i18n("Show log");

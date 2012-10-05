@@ -275,7 +275,7 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
                         <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLRIGHT-</div>
                         <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-PAGE-</div>
                         <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLLEFT-</div>
-                        <span style="margin-right:10px; line-height:20px; vertical-align:middle;">'.i18n("Files per Page").'</span> -C-FILESPERPAGE-
+                        <span style="margin-right:10px; line-height:20px; vertical-align:middle;">'.i18n("Files per page").'</span> -C-FILESPERPAGE-
                         <div style="clear:both;"></div>
                     </td>
                 </tr>';

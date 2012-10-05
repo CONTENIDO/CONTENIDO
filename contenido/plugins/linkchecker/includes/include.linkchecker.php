@@ -46,7 +46,7 @@ if(!$perm->have_perm_area_action($plugin_name, $plugin_name) && $cronjob != true
 }
 
 if((int) $client == 0 && $cronjob != true) {
-	$notification->displayNotification("error", i18n("No Client selected"));
+	$notification->displayNotification("error", i18n("No client selected"));
 	exit;
 }
 

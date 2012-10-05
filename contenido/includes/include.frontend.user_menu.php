@@ -58,7 +58,7 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
 	$_REQUEST["page"] = 1;
 }
 
-$aFieldsToSearch = array("--all--" => i18n("-- All fields --"), "username" => i18n("Username"));
+$aFieldsToSearch = array("--all--" => "-- " . i18n("All fields") . " --", "username" => i18n("Username"));
 $aFieldsToSort = array("username" => i18n("Username"));
 
 $aFieldSources = array();
@@ -144,7 +144,7 @@ $fegroups = new FrontendGroupCollection;
 $fegroups->setWhere("idclient", $client);
 $fegroups->query();
 
-$aFEGroups = array("--all--" => i18n("-- All Groups --"));
+$aFEGroups = array("--all--" => "-- " . i18n("All groups") . " --");
 
 while ($fegroup = $fegroups->next())
 {

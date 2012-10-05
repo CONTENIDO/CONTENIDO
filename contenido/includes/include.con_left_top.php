@@ -391,7 +391,7 @@ while ($db->next_record()) {
 }
 // Template Dropdown
 $editCat  = '<div style="height:110px;padding-top:5px; padding-left: 17px; margin-bottom:-1px; border-right:1px solid #B3B3B3">';
-$editCat	.= i18n("Template:") . "<br />";
+$editCat	.= i18n("Template") . ":<br />";
 $editCat	.= '<div style="">';
 $editCat	.= $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
 $editCat	.='<a id="changetpl" href="#"><img style="vertical-align: middle;" src="images/submit.gif" border="0"></a><br />';
@@ -400,8 +400,8 @@ $editCat	.= '</div>';
 $editCat	.= '<div style="margin: 5px 0 5px 0;">';
 $tpl->set('s', 'CAT_HREF', $sess->url("main.php?area=con_tplcfg&action=tplcfg_edit&frame=4&mode=art").'&idcat=');
 $tpl->set('s', 'IDCAT', $idcat);
-$editCat	.= '<div id="oTemplatecfg_label"><a href="javascript:configureCategory();"><img style="vertical-align: middle;" id="oTemplatecfg" vspace="3" hspace="2" src="'.$cfg["path"]["images"].'but_cat_conf2.gif" border="0" title="'.i18n("Configure Category").'" alt="'.i18n("Configure Category").'"><a>';
-$editCat	.= '<a href="javascript:configureCategory();">'.i18n("Configure Category").'</a></div>';
+$editCat	.= '<div id="oTemplatecfg_label"><a href="javascript:configureCategory();"><img style="vertical-align: middle;" id="oTemplatecfg" vspace="3" hspace="2" src="'.$cfg["path"]["images"].'but_cat_conf2.gif" border="0" title="'.i18n("Configure category").'" alt="'.i18n("Configure category").'"><a>';
+$editCat	.= '<a href="javascript:configureCategory();">'.i18n("Configure category").'</a></div>';
 // Online / Offline
 $editCat	.= '<div id="oOnline_label"><a href="#"><img style="vertical-align: middle;" id="oOnline" src="images/offline.gif" vspace="2" hspace="2" border="0" title="'.i18n("Online / Offline").'" alt="'.i18n("Online / Offline").'"></a>';
 $editCat	.= '<a href="#">'.i18n("Online / Offline").'</a></div>';
@@ -445,7 +445,7 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
 
     $selectbox = new cHTMLSelectElement("syncoptions");
     
-    $option = new cHTMLOptionElement("--- ".i18n("None")." ---", -1);
+    $option = new cHTMLOptionElement("-- ".i18n("None")." --", -1);
     $selectbox->addOptionElement(-1, $option);
     
     foreach ($languages as $languageid => $languagename)

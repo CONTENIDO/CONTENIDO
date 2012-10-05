@@ -56,7 +56,7 @@ if ($action == "lay_new")
 		$notification->displayNotification("error", i18n("Permission denied"));	
 	} else {
 		$layouts = new cApiLayoutCollection;	
-		$layout = $layouts->create(i18n("-- New Layout --"));
+		$layout = $layouts->create("-- " . i18n("New layout") . " --");
 	}
 } elseif ($action == "lay_delete")
 {

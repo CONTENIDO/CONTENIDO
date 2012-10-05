@@ -56,7 +56,7 @@ $str = '';
 if ((int) $client > 0) {
     $str = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;line-height:100px;"><a style="margin-top:5px;" class="addfunction" target="right_bottom" href="'.$sess->url("main.php?area=mod_edit&frame=4&action=mod_new").'">'.i18n("New module").'</a></div>';
 } else {
-    $str = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;">'.i18n('No Client selected').'</div>';
+    $str = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;">'.i18n('No client selected').'</div>';
 }
 
 #only show other options, if there is a active client
@@ -70,7 +70,7 @@ if ((int) $client > 0) {
     $oListOptionRow = new cFoldingRow("e9ddf415-4b2d-4a75-8060-c3cd88b6ff98", i18n("List options"), $listoplink);
     $tpl->set('s', 'LISTOPLINK', $listoplink);
     $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
-    $oSelectItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
+    $oSelectItemsPerPage->autoFill(array(0 => "-- " . i18n("All") . " --", 25 => 25, 50 => 50, 75 => 75, 100 => 100));
     $oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
     $oSelectSortBy = new cHTMLSelectElement("sortby");
     $oSelectSortBy->autoFill($aSortByOptions);
@@ -80,7 +80,7 @@ if ((int) $client > 0) {
     $oSelectSortOrder->setDefault($_REQUEST["sortorder"]);
 
     $oSelectSearchIn = new cHTMLSelectElement("searchin");
-    $oSelectSearchIn->autoFill(array('' => i18n("-- All --"), 
+    $oSelectSearchIn->autoFill(array('' => "-- " . i18n("All") . " --", 
                                      'name' => i18n("Modulname"), 
                                      'description' => i18n("Description"), 
                                      'type' => i18n("Type"), 
@@ -100,8 +100,8 @@ if ((int) $client > 0) {
 
     $db->query($sql);
     $aFilterType = array();
-    $aFilterType["--all--"] = i18n("-- All --");
-    $aFilterType["--wotype--"] = i18n("-- Without type --");
+    $aFilterType["--all--"] = "-- " . i18n("All") . " --";
+    $aFilterType["--wotype--"] = "-- " . i18n("Without type") . " --";
 
     while ($db->next_record())
     {

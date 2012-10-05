@@ -209,7 +209,7 @@ private function getDateFormats(){
 	$iYearShort = date("y");
 	
 	$this->aFormat = array(
-		  array("0",i18n("Please Choose Format")),
+		  array("0", i18n("Please choose format")),
 		  array("%d.%m.%Y", date('d.m.Y')),
 		  array("%A, %d.%m.%Y", $sDayName . ', ' . $iDay .'.'. $iMonth .'.'. $iYear ),
 		  array("%d. %B %Y", $iDay.'. ' .$sMonthName. ' '. $iYear),

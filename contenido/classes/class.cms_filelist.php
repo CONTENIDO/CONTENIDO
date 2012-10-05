@@ -411,7 +411,7 @@ class Cms_FileList {
 	private function getStyleSelect($sSelected) {
 		$oHtmlSelect = new 	cHTMLSelectElement ('filelist_style', "", 'filelist_style');
 		
-		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Default Style"), 'cms_filelist_style_default.html', true);
+		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Default style"), 'cms_filelist_style_default.html', true);
 		$oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
 		
 		$aAdditionalOptions = getEffectiveSettingsByType('cms_filelist_style');
@@ -722,8 +722,8 @@ class Cms_FileList {
 		$oTpl->set('s', 'MANUAL', 								i18n("Manual"));
 		$oTpl->set('s', 'FILTER', 								i18n("Filter"));
 		
-		$oTpl->set('s', 'LABEL_GENERAL', 						i18n("General Settings"));
-		$oTpl->set('s', 'LABEL_MANUAL', 						i18n("Manual Settings"));
+		$oTpl->set('s', 'LABEL_GENERAL', 						i18n("General settings"));
+		$oTpl->set('s', 'LABEL_MANUAL', 						i18n("Manual settings"));
 		$oTpl->set('s', 'LABEL_FILTER', 						i18n("Filter settings"));
 		$oTpl->set('s', 'LABEL_FILELIST_SETTINGS', 				i18n("File list settings"));
 		$oTpl->set('s', 'LABEL_FILELIST_TITLE', 				i18n("File list title"));

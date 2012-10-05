@@ -339,7 +339,7 @@ class cApiModule extends Item
 			case "name":
 				if ($value == "")
 				{
-					$value = i18n("- Unnamed Module -");	
+					$value = "-- " . i18n("Unnamed module") . " --";	
 				}	
 		}
 		

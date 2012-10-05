@@ -129,11 +129,11 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
         $oVersionHtmlTemp->setVarForm("file", $sFileName);
 
     	// create and output the select box, for params please look class.version.php
-    	$sSelectBox = $oVersionHtmlTemp->buildSelectBox("html_tpl_history", "HTML Template History", "Show History Entry", "idhtml_tpl_history");
+    	$sSelectBox = $oVersionHtmlTemp->buildSelectBox("html_tpl_history", i18n("HTML template history"), i18n("Show history entry"), "idhtml_tpl_history");
     	
     	// Generate Form
     	$oForm = new UI_Table_Form("jscript_display");
-    	$oForm->addHeader(i18n("Edit JScript"));
+    	$oForm->addHeader(i18n("Edit JavaScript"));
     	$oForm ->setWidth("100%");
     	$oForm->setVar("area", $area);
     	$oForm->setVar("frame", $frame);

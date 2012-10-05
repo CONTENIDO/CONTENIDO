@@ -64,7 +64,7 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
 	$_REQUEST["page"] = 1;
 }
 
-$aFieldsToSearch = array("--all--" => i18n("-- All fields --"), "username" => i18n("Username"));
+$aFieldsToSearch = array("--all--" => "-- " . i18n("All fields") . " --", "username" => i18n("Username"));
 $aFieldsToSort = array("username" => i18n("Username"));
 
 $aFieldSources = array();
@@ -183,7 +183,7 @@ if ((int) $client > 0) {
     $oLink->setContent(i18n("Create user"));
 } else {
     $oLink->setLink('');
-    $oLink->setContent(i18n("No Client selected"));
+    $oLink->setContent(i18n("No client selected"));
 }
 $oLink->setClass("addfunction");
 $oLink->setStyle('margin-left: 17px;margin-top:5px');
@@ -230,7 +230,7 @@ $fegroups = new FrontendGroupCollection;
 $fegroups->setWhere("idclient", $client);
 $fegroups->query();
 
-$aFEGroups = array("--all--" => i18n("-- All Groups --"));
+$aFEGroups = array("--all--" => "-- " . i18n("All groups") . " --");
 
 while ($fegroup = $fegroups->next())
 {
@@ -447,7 +447,7 @@ if ((int) $client > 0) {
     $menu->setTitle("-2", i18n("Create group"));
 } else {
     $link->setLink('');
-    $menu->setTitle("-2", i18n("No Client selected"));
+    $menu->setTitle("-2", i18n("No client selected"));
 }
 $menu->setImage("-2", $cfg["path"]["images"] . "folder_new.gif");	
 $menu->setLink("-2", $link);

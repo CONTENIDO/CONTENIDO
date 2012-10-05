@@ -57,7 +57,7 @@ function emptyLogFile()
 			fclose($errorLogHandle);
 			$tmp_notification = $notification->returnNotification("info", i18n("error log successfully cleared"));
 		} else if (file_exists($cfg['path']['contenido']."logs/errorlog.txt") && !is_writeable($cfg['path']['contenido']."logs/errorlog.txt")) {
-		    $tmp_notification = $notification->returnNotification("error", i18n("Can't clear error log : Access is denied!"));
+		    $tmp_notification = $notification->returnNotification("error", i18n("Can't clear error log: Access is denied!"));
 		}
 	}
 	elseif ($_GET['log'] == 2)
@@ -68,7 +68,7 @@ function emptyLogFile()
 			fclose($errorLogHandle);
 			$tmp_notification = $notification->returnNotification("info", i18n("install error log successfully cleared"));
 		} else if (file_exists($cfg['path']['contenido']."logs/install.log.txt") && !is_writeable($cfg['path']['contenido']."logs/install.log.txt")) {
-		    $tmp_notification = $notification->returnNotification("error", i18n("Can't clear install error log : Access is denied!"));
+		    $tmp_notification = $notification->returnNotification("error", i18n("Can't clear install error log: Access is denied!"));
 		}
 	}
 	return $tmp_notification;

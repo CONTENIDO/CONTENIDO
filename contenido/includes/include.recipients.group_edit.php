@@ -53,7 +53,7 @@ $aFields["deactivated"] = array("field" => "deactivated",	"caption" => i18n("Dea
 
 if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $action))
 {
-	$oRGroup = $oRGroups->create(" ".i18n("-- new group --"));
+	$oRGroup = $oRGroups->create(" -- ".i18n("New group") . " --");
 	$_REQUEST["idrecipientgroup"] = $oRGroup->get("idnewsgroup");
 	$oPage->setReload();
 	$sRefreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'add\')</script>';
@@ -200,7 +200,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 	$oMemberListOptionRow = new cFoldingRow("a91f5540-52db-11db-b0de-0800200c9a66",i18n("Member list options"));
 	
 	$oSelItemsPerPage = new cHTMLSelectElement("member_elemperpage");
-	$oSelItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
+	$oSelItemsPerPage->autoFill(array(0 => "-- " . i18n("All") . " --", 25 => 25, 50 => 50, 75 => 75, 100 => 100));
 	$oSelItemsPerPage->setDefault($_REQUEST["member_elemperpage"]);
 	
 	$oSelSortBy = new cHTMLSelectElement("member_sortby");
@@ -222,7 +222,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 	$oTxtFilter = new cHTMLTextbox("member_filter", $_REQUEST["member_filter"], 16);
 	
 	$oSelSearchIn = new cHTMLSelectElement("member_searchin");
-	$oOption = new cHTMLOptionElement(i18n("-- All fields --"), "--all--");
+	$oOption = new cHTMLOptionElement("-- " . i18n("All fields") . " --", "--all--");
 	$oSelSearchIn->addOptionElement("all", $oOption);
 	
 	foreach ($aFields as $sKey => $aData) {
@@ -397,7 +397,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 	$oOutsiderListOptionRow = new cFoldingRow("ca633b00-52e9-11db-b0de-0800200c9a66",i18n("Outsider list options"));
 	
 	$oSelItemsPerPage = new cHTMLSelectElement("outsider_elemperpage");
-	$oSelItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
+	$oSelItemsPerPage->autoFill(array(0 => "-- " . i18n("All") . " --", 25 => 25, 50 => 50, 75 => 75, 100 => 100));
 	$oSelItemsPerPage->setDefault($_REQUEST["outsider_elemperpage"]);
 	
 	$oSelSortBy = new cHTMLSelectElement("outsider_sortby");
@@ -419,7 +419,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 	$oTxtFilter = new cHTMLTextbox("outsider_filter", $_REQUEST["outsider_filter"], 16);
 	
 	$oSelSearchIn = new cHTMLSelectElement("outsider_searchin");
-	$oOption = new cHTMLOptionElement(i18n("-- All fields --"), "--all--");
+	$oOption = new cHTMLOptionElement("-- " . i18n("All fields") . " --", "--all--");
 	$oSelSearchIn->addOptionElement("all", $oOption);
 	
 	foreach ($aFields as $sKey => $aData) {

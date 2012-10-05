@@ -71,7 +71,7 @@ while($oFEGroup = $oFEGroupMemberCollection->next())
 
 if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "frontend_create"))
 {
-		$feuser = $feusers->create(" ".i18n("-- new user --"));
+		$feuser = $feusers->create(" -- ".i18n("New user") . " --");
 		$idfrontenduser = $feuser->get("idfrontenduser");
 }
 

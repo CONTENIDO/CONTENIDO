@@ -58,7 +58,7 @@ if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $act
 	if ($action == "mod_new")
 	{
 		$modules = new cApiModuleCollection;
-		$module = $modules->create(i18n("- Unnamed Module -"));
+		$module = $modules->create("-- " . i18n("Unnamed module") . " --");
 		$module->set("description", implode("\n", array(i18n("<your module description>"), "", i18n("Author: "), i18n("Version:"))));
 		$module->store();
 	} else {
