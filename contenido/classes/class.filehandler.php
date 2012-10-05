@@ -305,7 +305,7 @@ class cFileHandler {
      * Changes the file permissions
      *
      * @param string $filename the name and path of the file
-     * @param string $mode the new access mode
+     * @param int $mode the new access mode
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
      * @return bool true on success
