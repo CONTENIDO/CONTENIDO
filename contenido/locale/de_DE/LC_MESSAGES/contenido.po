@@ -3402,8 +3402,8 @@ msgstr "Sie haben eine unbekannte oder nicht unterst&uuml;tzte Version von Conte
 msgid "Your version of Contenido is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Download now!</a>"
 msgstr "Ihre Version von Contenido wird nicht l&auml;nger mit Updates gepflegt. Bitte aktualisieren Sie auf eine h&ouml;here Version! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Jetzt herunterladen!</a>"
 
-msgid "A new version of Contenido is available! <br /> <a href="%s" class="blue" target="_blank">Download %s now!</a>"
-msgstr "Eine neue Version von Contenido ist verf&uuml;gbar! <br /> <a href="%s" class="blue" target="_blank">%s jetzt herunterladen!</a>"
+msgid "A new version of Contenido is available! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Download %s now!</a>"
+msgstr "Eine neue Version von Contenido ist verf&uuml;gbar! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">%s jetzt herunterladen!</a>"
 
 msgid "It seems to be that your version string was manipulated. Contenido %s does not exist!"
 msgstr "Anscheinend wurde Ihre Version manipuliert. Contenido %s existiert nicht!"
@@ -3854,9 +3854,6 @@ msgstr "alle Mandanten"
 
 msgid "from list"
 msgstr "aus Liste"
-
-msgid "Reset the table %s"
-msgstr "Tabelle %s leeren"
 
 msgid "Activate the code generation in %s"
 msgstr "Code-Generierung in der Tabelle %s"
