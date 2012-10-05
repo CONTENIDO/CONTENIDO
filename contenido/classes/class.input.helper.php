@@ -246,7 +246,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
                 $sSQL .= "AND tblContent.idtype IN (" . cSecurity::escapeDB($sTypeRange, $oDB) . ") ";
             }
 
-            $sql .= "ORDER BY tblContent.idtype, tblContent.typeid";
+            $sSQL .= "ORDER BY tblContent.idtype, tblContent.typeid";
 
             $oDB->query($sSQL);
 
