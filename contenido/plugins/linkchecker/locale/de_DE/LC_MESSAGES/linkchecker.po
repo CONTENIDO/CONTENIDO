@@ -1,122 +1,166 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Contenido Linkchecker\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-02-27 10:16+0100\n"
-"Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-05 20:32+0200\n"
+"PO-Revision-Date: 2012-10-05 20:36+0100\n"
+"Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
 "X-Poedit-Basepath: H:\\frederic.schneider\\\n"
 "X-Poedit-KeywordsList: i18n\n"
-"X-Poedit-SearchPath-0: H:\\frederic.schneider\\contenido\\plugins\\linkchecker\\includes\n"
+"X-Generator: Poedit 1.5.3\n"
+"X-Poedit-SearchPath-0: H:\\frederic.schneider\\contenido\\plugins"
+"\\linkchecker\\includes\n"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:196
-#, fuzzy
+#: includes/include.linkchecker.php:49
+msgid "No Client selected"
+msgstr "Kein Mandant ausgewählt"
+
+#: includes/include.linkchecker.php:96
+msgid "Interns"
+msgstr "Interne"
+
+#: includes/include.linkchecker.php:98
+msgid "Externs"
+msgstr "Externe"
+
+#: includes/include.linkchecker.php:100
+msgid "Intern/extern Links"
+msgstr "Interne/Externe Links"
+
+# includes/include.linkchecker.php:196
+#: includes/include.linkchecker.php:295
 msgid "Link analysis from "
 msgstr "Link-Analyse vom "
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:196
+# includes/include.linkchecker.php:196
+#: includes/include.linkchecker.php:295
 msgid "%Y-%m-%d"
 msgstr "%d.%m.%Y"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:42
+# includes/include.linkchecker_tests.php:42
+#: includes/include.linkchecker.php:300
 msgid "<strong>No errors</strong> were found."
 msgstr "Es wurden <strong>keine Fehler</strong> gefunden."
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:227
-#, fuzzy
+# includes/include.linkchecker.php:227
+#: includes/include.linkchecker.php:304
 msgid "Total checked links"
-msgstr "Insgesamt gepr&uuml;fte Links"
+msgstr "Insgesamt geprüfte Links"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:24
+# includes/include.linkchecker_tests.php:24
+#: includes/include.linkchecker.php:305
 msgid "idart"
 msgstr "idart"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:30
+# includes/include.linkchecker_tests.php:30
+#: includes/include.linkchecker.php:306
 msgid "Article"
 msgstr "Artikel"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:26
+# includes/include.linkchecker_tests.php:26
+#: includes/include.linkchecker.php:307
 msgid "idcat"
 msgstr "idcat"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:31
+# includes/include.linkchecker_tests.php:31
+#: includes/include.linkchecker.php:308
 msgid "Category"
 msgstr "Kategorie"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:47
+# includes/include.linkchecker.php:47
+#: includes/include.linkchecker.php:309
 msgid "Description"
 msgstr "Beschreibung"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:31
+# includes/include.linkchecker_tests.php:31
+#: includes/include.linkchecker.php:310
 msgid "Linkerror"
 msgstr "Linkfehler"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:40
+# includes/include.linkchecker_whitelist.php:40
+#: includes/include.linkchecker.php:311
 msgid "Links to articles"
 msgstr "Links auf Artikel"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:40
+# includes/include.linkchecker_whitelist.php:40
+#: includes/include.linkchecker.php:312
 msgid "Links to categories"
 msgstr "Links auf Kategorien"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:51
+# includes/include.linkchecker.php:51
+#: includes/include.linkchecker.php:313
 msgid "Links to documents and images"
 msgstr "Links auf Bilder und Dokumente"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:237
-#, fuzzy
+# includes/include.linkchecker.php:237
+#: includes/include.linkchecker.php:314
 msgid "Links to extern sites and not defined links"
 msgstr "Links auf externe Quellen und nicht zugewiesene Links"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:46
+# includes/include.linkchecker_tests.php:46
+#: includes/include.linkchecker.php:316
 msgid "Wrong links"
 msgstr "Fehlerhafte Links"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:271
+# includes/include.linkchecker.php:271
+#: includes/include.linkchecker.php:345
 msgid "Unknown: articles, documents etc. do not exist."
 msgstr "Unknown: Artikel, Dokumente et cetera existieren nicht."
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:273
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:275
+# includes/include.linkchecker.php:273
+# includes/include.linkchecker.php:275
+#: includes/include.linkchecker.php:347 includes/include.linkchecker.php:349
 msgid "Offline: article or category is offline."
 msgstr "Offline: Artikel oder Kategorie ist offline."
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:277
+# includes/include.linkchecker.php:277
+#: includes/include.linkchecker.php:351
 msgid "dbfs: no matches found in the dbfs database."
 msgstr "dbfs: In der dbfs-Datenbank ist die gesuchte Datei nicht vorhanden."
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:67
+# includes/include.linkchecker_tests.php:67
+#: includes/include.linkchecker.php:384
 msgid "No errors for this type."
-msgstr "Es wurden f&uuml;r diesen Linktyp keine Fehler gefunden."
+msgstr "Es wurden für diesen Linktyp keine Fehler gefunden."
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:196
+# includes/include.linkchecker.php:196
+#: includes/include.linkchecker_whitelist.php:68
 msgid "%Y-%m-%d, %I:%M%S %p"
 msgstr "%d.%m.%Y, %H:%M:%S"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:40
+# includes/include.linkchecker_whitelist.php:40
+#: includes/include.linkchecker_whitelist.php:75
 msgid "Links at whitelist"
-msgstr "Links auf der wei&szlig;en Liste"
+msgstr "Links auf der weißen Liste"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:41
+# includes/include.linkchecker_whitelist.php:41
+#: includes/include.linkchecker_whitelist.php:76
 msgid "Delete"
 msgstr "Entfernen"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:42
+# includes/include.linkchecker_whitelist.php:42
+#: includes/include.linkchecker_whitelist.php:77
 msgid "Entry"
 msgstr "Eintragung"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:43
+# includes/include.linkchecker_whitelist.php:43
+#: includes/include.linkchecker_whitelist.php:78
 msgid "URLs"
 msgstr "Links"
 
-# H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:45
-msgid "This links are on the whitelist. Whitelist-links won't be check at linkchecker."
-msgstr "Diese Links befinden sich auf der wei&szlig;en Liste und werden nicht vom Linkchecker &uuml;berpr&uuml;ft."
+# includes/include.linkchecker_whitelist.php:45
+#: includes/include.linkchecker_whitelist.php:79
+msgid ""
+"This links are on the whitelist. Whitelist-links won't be check at "
+"linkchecker."
+msgstr ""
+"Diese Links befinden sich auf der weißen Liste und werden nicht vom "
+"Linkchecker überprüft."
 
-msgid "View whitelist"
-msgstr "Whitelist anzeigen"
+#~ msgid "View whitelist"
+#~ msgstr "Whitelist anzeigen"
