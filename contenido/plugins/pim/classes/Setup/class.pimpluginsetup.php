@@ -239,6 +239,10 @@ class PimPluginSetup {
         $db = cRegistry::getDb();
         $tempSqlFilename = $this->_extractor->extractArchiveFileToVariable('plugin.sql', 0);
 
+        if (!cFileHandler::exists($tempSqlFilename)) {
+            return;
+        }
+
         $tempSqlContent = cFileHandler::read($tempSqlFilename);
         $tempSqlContent = str_replace("\r\n", "\n", $tempSqlContent);
         $tempSqlContent = explode("\n", $tempSqlContent);
