@@ -354,9 +354,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         // split ids, if there is only one id, array has only one place filled,
         // that is also ok
-        $idsArray = explode(',', $ids);
-        foreach ($idsArray as $currentId) {
-            $return .= $article->getContent($contentTypeName, $currentId);
+        foreach (explode(',', $ids) as $currentId) {
+            $return .= ' ' . $article->getContent($contentTypeName, $currentId);
         }
 
         return $return;
