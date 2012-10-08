@@ -102,8 +102,10 @@ class PimPluginSetup {
 
             // security check
             $area = cSecurity::escapeString($tempXml->area[$i]);
-            $attributes['parent'] = cSecurity::escapeString($attributes['parent']);
-            $attributes['menuless'] = cSecurity::toInteger($attributes['menuless']);
+            $attributes = array(
+                'parent' => cSecurity::escapeString($attributes['parent']),
+                'menuless' => cSecurity::toInteger($attributes['menuless']),
+            );
 
             // parent fix
             if (empty($attributes['parent'])) {
@@ -155,6 +157,8 @@ class PimPluginSetup {
 
         $frameCount = count($tempXml->frame);
         for ($i = 0; $i < $frameCount; $i++) {
+
+            $attributes = array();
 
             // build attributes with security checks
             foreach ($tempXml->frame[$i]->attributes() as $sKey => $sValue) {
@@ -209,6 +213,8 @@ class PimPluginSetup {
         $navCount = count($tempXml->nav);
         for ($i = 0; $i < $navCount; $i++) {
 
+            $attributes = array();
+
             // build attributes
             foreach ($tempXml->nav[$i]->attributes() as $key => $value) {
                 $attributes[$key] = $value;
@@ -255,7 +261,7 @@ class PimPluginSetup {
      * @param $page page class for success message
      * @return void
      */
-    public function uninstall($pluginId, $page) {
+    public function uninstall($pluginId, cGuiPage $page) {
         $cfg = cRegistry::getConfig();
 
         // security check
@@ -274,6 +280,8 @@ class PimPluginSetup {
         $pimPluginRelColl = new PimPluginRelationsCollection();
         $pimPluginRelColl->setWhere('idplugin', $pluginId);
         $pimPluginRelColl->query();
+
+        $relations = array();
 
         while (($relation = $pimPluginRelColl->next()) !== false) {
             // relation to tables *_area and *_nav_main
