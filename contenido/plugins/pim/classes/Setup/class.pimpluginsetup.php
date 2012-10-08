@@ -261,7 +261,7 @@ class PimPluginSetup {
      * @param $page page class for success message
      * @return void
      */
-    public function uninstall($pluginId, cGuiPage $page) {
+    public function uninstall($pluginId, $page = null) {
         $cfg = cRegistry::getConfig();
 
         // security check
@@ -323,7 +323,9 @@ class PimPluginSetup {
         $pimPluginColl->deleteByWhereClause('idplugin = ' . $pluginId);
 
         // success message
-        $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been successfully uninstalled', 'pim'));
+        if ($page instanceof cGuiPage) {
+            $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been successfully uninstalled', 'pim'));
+        }
     }
 
 }
