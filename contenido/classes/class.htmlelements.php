@@ -154,6 +154,14 @@ class cHTML {
     }
 
     /**
+     * Setter for static $_generateXHTML property
+     * @param  bool  $value
+     */
+    public static function setGenerateXHTML($value) {
+        self::$_generateXHTML = (bool) $value;
+    }
+
+    /**
      * Contentless tag setter
      *
      * @param bool $contentlessTag

@@ -187,6 +187,9 @@ if (!empty($timezoneCfg) && ini_get('date.timezone') !== $timezoneCfg) {
 checkAndInclude($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');
 cAutoload::initialize($cfg);
 
+// Set generateXHTML property of cHTML class to prevent db query, especially at 
+// the beginning of an new installation where we have no db
+cHTML::setGenerateXHTML(false);
 
 // Common includes
 checkAndInclude(CON_SETUP_PATH . '/lib/defines.php');
