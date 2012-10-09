@@ -46,7 +46,8 @@
 
 
     # Exclude following request from rewriting
-    # tests for valid symlinks (-s), not empty files (-l) and folders (-d)
+    # tests for favicon.ico, valid symlinks (-s), not empty files (-l) and folders (-d)
+    RewriteCond %{REQUEST_URI} ^/favicon.ico$ [OR]
     RewriteCond %{REQUEST_FILENAME} -s [OR]
     RewriteCond %{REQUEST_FILENAME} -l [OR]
     RewriteCond %{REQUEST_FILENAME} -d
