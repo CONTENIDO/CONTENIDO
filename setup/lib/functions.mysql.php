@@ -132,7 +132,7 @@ function checkMySQLDatabaseExists($db, $database)
     $db->connect();
 
     if (hasMySQLiExtension() && !hasMySQLExtension()) {
-        if (@mysqli_select_db($database, $db->Link_ID)) {
+        if (@mysqli_select_db($database, $db->getLinkId())) {
             return true;
         } else {
             $db->query("SHOW DATABASES LIKE '$database'");
@@ -143,7 +143,7 @@ function checkMySQLDatabaseExists($db, $database)
             }
         }
     } else {
-        if (@mysql_select_db($database, $db->Link_ID)) {
+        if (@mysql_select_db($database, $db->getLinkId())) {
             return true;
         } else {
             $db->query("SHOW DATABASES LIKE '$database'");
@@ -161,13 +161,13 @@ function checkMySQLDatabaseUse($db, $database)
     $db->connect();
 
     if (hasMySQLiExtension() && !hasMySQLExtension()) {
-        if (@mysqli_select_db($database, $db->Link_ID)) {
+        if (@mysqli_select_db($database, $db->getLinkId())) {
             return true;
         } else {
             return false;
         }
     } else {
-        if (@mysql_select_db($database, $db->Link_ID)) {
+        if (@mysql_select_db($database, $db->getLinkId())) {
             return true;
         } else {
             return false;
