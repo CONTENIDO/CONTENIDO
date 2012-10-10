@@ -125,19 +125,26 @@ abstract class cSearchBaseAbstract {
 }
 
 abstract class SearchBaseAbstract extends cSearchBaseAbstract {
-    /** @deprecated [2012-07-24] class was renamed to cSearchBaseAbstract */
+
+    /**
+     * @deprecated [2012-07-24] class was renamed to cSearchBaseAbstract
+     */
     public function __construct($oDB = null, $bDebug = false) {
         cDeprecated('Class was renamed to cSearchBaseAbstract.');
         parent::__construct($oDB, $bDebug);
     }
 }
 
-/** @deprecated [2012-02-25] Use cSearchIndex instead. */
+/**
+ * @deprecated [2012-02-25] Use cSearchIndex instead.
+ */
 class Index extends cSearchIndex {
+
     public function __construct($oDB = null) {
         cDeprecated('Use cSearchIndex instead.');
         parent::SearchIndex($oDB);
     }
+
     public function Index($oDB = null) {
         $this->__construct($oDB);
     }
@@ -367,7 +374,7 @@ class cSearchIndex extends cSearchBaseAbstract {
                         $code = str_ireplace(array(
                             '<br>',
                             '<br />'
-                                ), "\n", $code);
+                        ), "\n", $code);
                         // remove html tags
                         $code = strip_tags($code);
                         if (strlen($code) > 0) {
@@ -375,7 +382,8 @@ class cSearchIndex extends cSearchBaseAbstract {
                         }
                         $this->_debug('code', $code);
 
-                        // split content by any number of commas or space characters
+                        // split content by any number of commas or space
+                        // characters
                         $tmp_keys = preg_split('/[\s,]+/', trim($code));
                         $this->_debug('tmp_keys', $tmp_keys);
 
@@ -671,7 +679,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      */
     public function checkCmsType($idtype) {
         $idtype = strtoupper($idtype);
-        return (in_array($idtype, $this->_cmsOptions)) ? false : true;
+        return (in_array($idtype, $this->_cmsOptions))? false : true;
     }
 
     /**
@@ -932,6 +940,7 @@ class cSearch extends cSearchBaseAbstract {
      * keyword/searchword, similarity .
      *
      *
+     *
      * ..
      *
      * @var array
@@ -974,12 +983,12 @@ class cSearch extends cSearchBaseAbstract {
         $this->_cmsType = $this->_index->cms_type;
         $this->_cmsTypeSuffix = $this->_index->cms_type_suffix;
 
-        $this->_searchOption = (array_key_exists('db', $options)) ? strtolower($options['db']) : 'regexp';
-        $this->_searchCombination = (array_key_exists('combine', $options)) ? strtolower($options['combine']) : 'or';
-        $this->_protected = (array_key_exists('protected', $options)) ? $options['protected'] : true;
-        $this->_dontshowofflinearticles = (array_key_exists('dontshowofflinearticles', $options)) ? $options['dontshowofflinearticles'] : false;
-        $this->_exclude = (array_key_exists('exclude', $options)) ? $options['exclude'] : true;
-        $this->_articleSpecs = (array_key_exists('artspecs', $options) && is_array($options['artspecs'])) ? $options['artspecs'] : array();
+        $this->_searchOption = (array_key_exists('db', $options))? strtolower($options['db']) : 'regexp';
+        $this->_searchCombination = (array_key_exists('combine', $options))? strtolower($options['combine']) : 'or';
+        $this->_protected = (array_key_exists('protected', $options))? $options['protected'] : true;
+        $this->_dontshowofflinearticles = (array_key_exists('dontshowofflinearticles', $options))? $options['dontshowofflinearticles'] : false;
+        $this->_exclude = (array_key_exists('exclude', $options))? $options['exclude'] : true;
+        $this->_articleSpecs = (array_key_exists('artspecs', $options) && is_array($options['artspecs']))? $options['artspecs'] : array();
         $this->_index->setCmsOptions($this->_cmsTypeSuffix);
 
         if (array_key_exists('searchable_articles', $options) && is_array($options['searchable_articles'])) {
@@ -1074,7 +1083,8 @@ class cSearch extends cSearchBaseAbstract {
                     $percent = 0;
                     $similarity = 0;
                     foreach ($this->_searchWords as $word) {
-                        // computes similarity between searchword and keyword in percent
+                        // computes similarity between searchword and keyword in
+                        // percent
                         similar_text($word, $keyword, $percent);
                         if ($percent > $similarity) {
                             $similarity = $percent;
@@ -1203,25 +1213,40 @@ class cSearch extends cSearchBaseAbstract {
         $this->_debug('sql', $sql);
         $this->db->query($sql);
 
-        $aSubCats = array();
-        $i = false;
+        // $aSubCats = array();
+        // $i = false;
+        // while ($this->db->next_record()) {
+        // if ($this->db->f('parentid') < $cat_start) {
+        // // ending part of tree
+        // $i = false;
+        // }
+        // if ($this->db->f('idcat') == $cat_start) {
+        // // starting part of tree
+        // $i = true;
+        // }
+        // if ($i == true) {
+        // $aSubCats[] = $this->db->f('idcat');
+        // }
+        // }
 
+        $sub_cats = array(
+            $cat_start
+        );
         while ($this->db->next_record()) {
-            if ($this->db->f('parentid') < $cat_start) {
-                // ending part of tree
-                $i = false;
+            // ommit if cat is no child of any recognized descendant
+            if (!in_array($this->db->f('parentid'), $sub_cats)) {
+                continue;
             }
-
-            if ($this->db->f('idcat') == $cat_start) {
-                // starting part of tree
-                $i = true;
+            // ommit if cat is already recognized (happens with $cat_start)
+            if (in_array($this->db->f('idcat'), $sub_cats)) {
+                continue;
             }
-
-            if ($i == true) {
-                $aSubCats[] = $this->db->f('idcat');
-            }
+            // add cat as recognized descendant
+            $sub_cats[] = $this->db->f('idcat');
         }
+
         return $aSubCats;
+
     }
 
     /**
@@ -1491,6 +1516,7 @@ class cSearchResult extends cSearchBaseAbstract {
      * keyword/searchword, similarity .
      *
      *
+     *
      * ..
      *
      * @var array
@@ -1614,8 +1640,8 @@ class cSearchResult extends cSearchBaseAbstract {
                             $pattern = $match[0];
                             $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
                             $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize
-                            // located
-                            // searchwords
+                                                                                                        // located
+                                                                                                        // searchwords
                         }
                     }
                 }
@@ -1633,8 +1659,8 @@ class cSearchResult extends cSearchBaseAbstract {
                                 $pattern = $match[0];
                                 $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
                                 $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize
-                                // located
-                                // searchwords
+                                                                                                            // located
+                                                                                                            // searchwords
                             }
                         }
                     }
