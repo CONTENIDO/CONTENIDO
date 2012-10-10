@@ -295,6 +295,7 @@ contenido/external/edit_area/edit_area.js -text svneol=unset#text/plain
 contenido/external/edit_area/edit_area_compressor.php -text
 contenido/external/edit_area/edit_area_full.gz -text
 contenido/external/edit_area/edit_area_full.js -text svneol=unset#text/plain
+contenido/external/edit_area/edit_area_full_with_plugins.gz -text
 contenido/external/edit_area/edit_area_functions.js -text svneol=unset#text/plain
 contenido/external/edit_area/edit_area_loader.js -text svneol=unset#text/plain
 contenido/external/edit_area/elements_functions.js -text svneol=unset#text/plain
