@@ -67,7 +67,7 @@ $oTree = new pApiContentAllocationTreeView('f7771624-4874-4745-8b7e-21a49a71a447
 // store item
 if ($_POST['step'] == 'store') { 
 	$pNotify = '<div style="width:410px;margin-bottom:20px;">';
-	$sMessage = sprintf(i18n("New Category %s successfully stored!"), $treeItem['name']);
+	$sMessage = sprintf(i18n("New Category %s successfully stored!", "content_allocation"), $treeItem['name']);
     $notification->displayNotification("info", $sMessage);
 	$pNotify .= '</div>';
 	$oTree->storeItem($aPostTreeItem);
@@ -75,7 +75,7 @@ if ($_POST['step'] == 'store') {
 // rename item
 if ($_POST['step'] == 'storeRename') { 
 	$pNotify = '<div style="width:410px;margin-bottom:20px;">';
-	$sMessage = sprintf(i18n("Category %s successfully renamed!"), $treeItem['name']);
+	$sMessage = sprintf(i18n("Category %s successfully renamed!", "content_allocation"), $treeItem['name']);
     $notification->displayNotification("info", $sMessage);
 	$pNotify .= '</div>';
 	$oTree->storeItem($aPostTreeItem);
@@ -87,7 +87,7 @@ if ($_GET['step'] == 'moveup') {
 
 if ($_GET['step'] == 'deleteItem') { // delete item
 	$pNotify = '<div style="width:410px;margin-bottom:20px;">';
-	$sMessage = i18n("Category successfully deleted!");
+	$sMessage = i18n("Category successfully deleted!", "content_allocation");
     $notification->displayNotification("info", $sMessage);
 	$pNotify .= '</div>';
 	$oTree->deleteItem($_GET['idpica_alloc']);
@@ -116,7 +116,7 @@ if ($_GET['step'] == 'createRoot') { // create new root item
 		<input type="hidden" name="area" value="'.$area.'" />
 		<input type="hidden" name="step" value="store" />
 		<input type="hidden" name="treeItemPost[parentid]" value="root" />
-		<tr><td colspan="2" class="text_medium">'.i18n("Create new tree").'</td></tr>
+		<tr><td colspan="2" class="text_medium">'.i18n("Create new tree", "content_allocation").'</td></tr>
 		<tr>
 			<td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value=""></td>
 			<td>&nbsp;<a href="main.php?action='.$action.'&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img src="images/but_cancel.gif" border="0" /></a>
@@ -129,7 +129,7 @@ if ($_GET['step'] == 'createRoot') { // create new root item
 			controller.focus();
 			function fieldCheck() {
 				if (controller.value == "") {
-					alert("'.i18n("Please enter a category name.").'");
+					alert("'.i18n("Please enter a category name.", "content_allocation").'");
 					controller.focus();
 					return false;
 				}
@@ -139,7 +139,7 @@ if ($_GET['step'] == 'createRoot') { // create new root item
 	$oDiv->setContent($form);
 	$sTemp = $oDiv->render();
 } else {
-    $newTree = '<a href="main.php?action='.$action.'&step=createRoot&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img  src="images/folder_new.gif" border="0" style="vertical-align: middle; margin-right: 5px;">'.i18n("Create new tree").'</a><div style="height:10px"></div>';
+    $newTree = '<a href="main.php?action='.$action.'&step=createRoot&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img  src="images/folder_new.gif" border="0" style="vertical-align: middle; margin-right: 5px;">'.i18n("Create new tree", "content_allocation").'</a><div style="height:10px"></div>';
 }
 
 $result = $oTree->renderTree(true);

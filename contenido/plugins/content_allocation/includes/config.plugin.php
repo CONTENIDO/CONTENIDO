@@ -61,7 +61,7 @@ $cfg['pica']['script_complexlist'] = $cfg['path']['contenido_fullhtml'] . $cfg['
 
 // administration > users > area translations
 global $lngAct, $_cecRegistry;
-$lngAct['con_contentallocation']['storeallocation'] = i18n("Store content allocations");
+$lngAct['con_contentallocation']['storeallocation'] = i18n("Store content allocations", "content_allocation");
 
 plugin_include('content_allocation', 'includes/functions.chains.php');
 

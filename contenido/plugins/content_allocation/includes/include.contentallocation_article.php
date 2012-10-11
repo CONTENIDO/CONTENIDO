@@ -83,7 +83,7 @@ $oTree->setChecked($loadedAllocations);
 $result = $oTree->renderTree(true);
 
 if ($result == false) {
-    $result = $notification->returnNotification("warning", i18n('There is no Content Allocation tree.'));
+    $result = $notification->returnNotification("warning", i18n('There is no Content Allocation tree.', "content_allocation"));
 } else {
 	if (!is_object($tpl)) { $tpl = new Template; }
 	$hiddenfields = '<input type="hidden" name="action" value="storeallocation">
@@ -108,8 +108,8 @@ if ($result == false) {
 	
 	$tpl->set('s', 'TREE', $result);
 
-	$tpl->set('s', 'REMOVE_ALL', i18n("Remove all"));
-	$tpl->set('s', 'REMOVE', i18n("Remove"));
+	$tpl->set('s', 'REMOVE_ALL', i18n("Remove all", "content_allocation"));
+	$tpl->set('s', 'REMOVE', i18n("Remove", "content_allocation"));
 	
 	$result = $tpl->generate($cfg['pica']['treetemplate_complexlist'], true);
 	

@@ -1,0 +1,115 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Contenido Content Allocation\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-11 22:53+0200\n"
+"PO-Revision-Date: 2012-10-11 22:59+0100\n"
+"Last-Translator: Murat Purc <murat@purc.de>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: i18n\n"
+"X-Poedit-Basepath: ../../../\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: classes/class.content_allocation_article.php:107
+#: classes/class.content_allocation_treeview.php:224
+msgid "Category"
+msgstr "Kategorie"
+
+#: classes/class.content_allocation_treeview.php:100
+#: classes/class.content_allocation_treeview.php:177
+msgid "Please enter a category name"
+msgstr "Bitte geben Sie einen Kateorienamen ein"
+
+#: classes/class.content_allocation_treeview.php:124
+msgid "New category"
+msgstr "Neue Kategorie"
+
+#: classes/class.content_allocation_treeview.php:126
+msgid "Rename category"
+msgstr "Kategorie umbenennen"
+
+#: classes/class.content_allocation_treeview.php:127
+msgid "Move category up"
+msgstr "Kategorie aufwärts bewegen"
+
+#: classes/class.content_allocation_treeview.php:128
+msgid "Move category down"
+msgstr "Kategorie abwärts bewegen"
+
+#: classes/class.content_allocation_treeview.php:132
+msgid "Set category offline"
+msgstr "Kategorie offline nehmen"
+
+#: classes/class.content_allocation_treeview.php:134
+msgid "Set category online"
+msgstr "Kategorie online schalten"
+
+#: classes/class.content_allocation_treeview.php:138
+msgid "One or more subcategories exist, unable to delete"
+msgstr "Löschen nicht möglich, da eine oder mehrere Unterkategorien existieren"
+
+#: classes/class.content_allocation_treeview.php:141
+msgid "Delete category"
+msgstr "Kategorie löschen"
+
+#: classes/class.content_allocation_treeview.php:141
+msgid "Are you sure to delete the following category"
+msgstr "Sind Sie sicher, dass sie die folgende Kategorie löschen möchten"
+
+#: classes/class.content_allocation_treeview.php:225
+msgid "Actions"
+msgstr "Aktionen"
+
+#: includes/config.plugin.php:64
+msgid "Store content allocations"
+msgstr "Content Allocations speichern"
+
+#: includes/functions.chains.php:61
+msgid "Content Allocation"
+msgstr "Content Allocation"
+
+#: includes/include.contentallocation_article.php:86
+msgid "There is no Content Allocation tree."
+msgstr "Es gibt noch keinen Tagging Baum."
+
+#: includes/include.contentallocation_article.php:111
+msgid "Remove all"
+msgstr "Alles entfernen"
+
+#: includes/include.contentallocation_article.php:112
+msgid "Remove"
+msgstr "Entfernen"
+
+#: includes/include.right_bottom.php:70
+#, php-format
+msgid "New Category %s successfully stored!"
+msgstr "Neue Kategorie %s gespeichert!"
+
+#: includes/include.right_bottom.php:78
+#, php-format
+msgid "Category %s successfully renamed!"
+msgstr "Kategorie %s erfolgreich umbenannt!"
+
+#: includes/include.right_bottom.php:90
+msgid "Category successfully deleted!"
+msgstr "Kategorie gelöscht!"
+
+#: includes/include.right_bottom.php:119 includes/include.right_bottom.php:142
+msgid "Create new tree"
+msgstr "Neuen Baum erstellen"
+
+#: includes/include.right_bottom.php:132
+msgid "Please enter a category name."
+msgstr "Bitte geben Sie einen Kateorienamen ein"
+
+#~ msgid "Store tagging"
+#~ msgstr "Speichere Tagging"
+
+#~ msgid "Tagging"
+#~ msgstr "Tagging"
+
+#~ msgid "You are here"
+#~ msgstr "Sie sind hier"

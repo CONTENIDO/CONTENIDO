@@ -58,7 +58,7 @@ function pica_RenderArticleAction ($idcat, $idart, $idartlang, $actionkey)
 	
 	if ($actionkey == "con_contentallocation")
 	{
- 		return '<a title="'.i18n("Content Allocation").'" alt="'.i18n("Content Allocation").'" href="'.$sess->url('main.php?area=con_contentallocation&action=con_edit&idart='.$idart.'&idartlang='.$idartlang.'&idcat='.$idcat.'&frame=4').'"><img src="plugins/content_allocation/images/call_contentallocation.gif"></a>';
+ 		return '<a title="'.i18n("Content Allocation", "content_allocation").'" alt="'.i18n("Content Allocation", "content_allocation").'" href="'.$sess->url('main.php?area=con_contentallocation&action=con_edit&idart='.$idart.'&idartlang='.$idartlang.'&idcat='.$idcat.'&frame=4').'"><img src="plugins/content_allocation/images/call_contentallocation.gif"></a>';
  	
 	} else {
 		return "";	

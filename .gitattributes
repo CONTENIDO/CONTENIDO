@@ -1241,6 +1241,8 @@ contenido/plugins/content_allocation/includes/include.left_bottom.php -text
 contenido/plugins/content_allocation/includes/include.left_top.php -text
 contenido/plugins/content_allocation/includes/include.right_bottom.php -text
 contenido/plugins/content_allocation/includes/include.right_top.php -text
+contenido/plugins/content_allocation/locale/de_DE/LC_MESSAGES/content_allocation.mo -text
+contenido/plugins/content_allocation/locale/de_DE/LC_MESSAGES/content_allocation.po -text
 contenido/plugins/content_allocation/scripts/complexlist.js -text svneol=unset#text/plain
 contenido/plugins/content_allocation/style/complexlist.css -text svneol=unset#text/plain
 contenido/plugins/content_allocation/templates/template.tree_article.html -text svneol=unset#text/plain

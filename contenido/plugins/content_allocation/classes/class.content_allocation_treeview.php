@@ -97,7 +97,7 @@ class pApiContentAllocationTreeView extends pApiTree {
 						controller.focus();
 						function fieldCheck() {
 							if (controller.value == "") {
-								alert("'.i18n("Please enter a category name").'");
+								alert("'.i18n("Please enter a category name", "content_allocation").'");
 								controller.focus();
 								return false;
 							}
@@ -121,24 +121,24 @@ class pApiContentAllocationTreeView extends pApiTree {
 			}
 			
 			$item['ITEMINDENT'] = $item_tmp['level'] * 15 + 3;
-			$item['ACTION_CREATE'] = '<a href="main.php?contenido='.$sess->id.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=add&parentid='.$item_tmp['idpica_alloc'].'"><img src="images/folder_new.gif" border="0" title="'.i18n("New category").'" alt="'.i18n("New category").'" /></a>';
+			$item['ACTION_CREATE'] = '<a href="main.php?contenido='.$sess->id.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=add&parentid='.$item_tmp['idpica_alloc'].'"><img src="images/folder_new.gif" border="0" title="'.i18n("New category", "content_allocation").'" alt="'.i18n("New category", "content_allocation").'" /></a>';
 			
-			$item['ACTION_RENAME'] = '<a href="main.php?contenido='.$sess->id.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=rename&idpica_alloc='.$item_tmp['idpica_alloc'].'"><img src="images/but_todo.gif" width="16" height="16" border="0" alt="'.i18n("Rename category").'" title="'.i18n("Rename category").'" /></a>';
-			$item['ACTION_MOVE_UP'] = (count($result) >= 1) ? '<a href="main.php?contenido='.$sess->id.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=moveup&idpica_alloc='.$item_tmp['idpica_alloc'].'"><img src="images/folder_moveup.gif" border="0" alt="'.i18n("Move category up").'" title="'.i18n("Move category up").'" /></a>' : '<img src="images/spacer.gif" width="16" height="16" /></a>';
-			$item['ACTION_MOVE_DOWN'] = (count($result) >= 1) ? '<img src="images/folder_movedown.gif" border="0" alt="'.i18n("Move category down").'" title="'.i18n("Move category down").'" />' : '<img src="images/spacer.gif" width="16" height="16" />';
+			$item['ACTION_RENAME'] = '<a href="main.php?contenido='.$sess->id.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=rename&idpica_alloc='.$item_tmp['idpica_alloc'].'"><img src="images/but_todo.gif" width="16" height="16" border="0" alt="'.i18n("Rename category", "content_allocation").'" title="'.i18n("Rename category", "content_allocation").'" /></a>';
+			$item['ACTION_MOVE_UP'] = (count($result) >= 1) ? '<a href="main.php?contenido='.$sess->id.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=moveup&idpica_alloc='.$item_tmp['idpica_alloc'].'"><img src="images/folder_moveup.gif" border="0" alt="'.i18n("Move category up", "content_allocation").'" title="'.i18n("Move category up", "content_allocation").'" /></a>' : '<img src="images/spacer.gif" width="16" height="16" /></a>';
+			$item['ACTION_MOVE_DOWN'] = (count($result) >= 1) ? '<img src="images/folder_movedown.gif" border="0" alt="'.i18n("Move category down", "content_allocation").'" title="'.i18n("Move category down", "content_allocation").'" />' : '<img src="images/spacer.gif" width="16" height="16" />';
 			$item['ACTION_MOVE_DOWN'] = '';
 			
 			if ($item_tmp['online'] == 1) { // set offline
-				$item['ACTION_ONOFFLINE'] = '<a href="main.php?contenido='.$sess->id.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=offline&idpica_alloc='.$item_tmp['idpica_alloc'].'""><img src="images/online.gif" alt="'.i18n("Set category offline").'" title="'.i18n("Set category offline").'"></a>';
+				$item['ACTION_ONOFFLINE'] = '<a href="main.php?contenido='.$sess->id.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=offline&idpica_alloc='.$item_tmp['idpica_alloc'].'""><img src="images/online.gif" alt="'.i18n("Set category offline", "content_allocation").'" title="'.i18n("Set category offline", "content_allocation").'"></a>';
 			} else {
-				$item['ACTION_ONOFFLINE'] = '<a href="main.php?contenido='.$sess->id.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=online&idpica_alloc='.$item_tmp['idpica_alloc'].'""><img src="images/offline.gif" alt="'.i18n("Set category online").'" title="'.i18n("Set category online").'"></a>';
+				$item['ACTION_ONOFFLINE'] = '<a href="main.php?contenido='.$sess->id.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=online&idpica_alloc='.$item_tmp['idpica_alloc'].'""><img src="images/offline.gif" alt="'.i18n("Set category online", "content_allocation").'" title="'.i18n("Set category online", "content_allocation").'"></a>';
 			}
 			
 			if ($item_tmp['children']) {
-				$item['ACTION_DELETE'] = '<img src="images/delete_inact.gif" border="0" alt="'.i18n("One or more subcategories exist, unable to delete").'" title="'.i18n("One or more subcategories exist, unable to delete").'">';
+				$item['ACTION_DELETE'] = '<img src="images/delete_inact.gif" border="0" alt="'.i18n("One or more subcategories exist, unable to delete", "content_allocation").'" title="'.i18n("One or more subcategories exist, unable to delete", "content_allocation").'">';
 			} else {
 				$name = str_replace("\"", "&amp;quot;", str_replace("'", "\'", $item_tmp['name']));
-				$item['ACTION_DELETE'] = '<a href="javascript://" onclick="box.confirm(&quot;'.i18n("Delete category").'&quot;, &quot;'.i18n("Are you sure to delete the following category").':<br><br><b>'.$name.'</b>&quot;,&quot;deleteCategory('.$item_tmp['idpica_alloc'].')&quot;);"><img src="images/delete.gif" border="0" alt="'.i18n("Delete category").'" title="'.i18n("Delete category").'"></a>';
+				$item['ACTION_DELETE'] = '<a href="javascript://" onclick="box.confirm(&quot;'.i18n("Delete category", "content_allocation").'&quot;, &quot;'.i18n("Are you sure to delete the following category", "content_allocation").':<br><br><b>'.$name.'</b>&quot;,&quot;deleteCategory('.$item_tmp['idpica_alloc'].')&quot;);"><img src="images/delete.gif" border="0" alt="'.i18n("Delete category", "content_allocation").'" title="'.i18n("Delete category", "content_allocation").'"></a>';
 			}
 			
 			array_push($result, $item);
@@ -174,7 +174,7 @@ class pApiContentAllocationTreeView extends pApiTree {
 						controller.focus();
 						function fieldCheck() {
 							if (controller.value == "") {
-								alert("'.i18n("Please enter a category name").'");
+								alert("'.i18n("Please enter a category name", "content_allocation").'");
 								controller.focus();
 								return false;
 							}
@@ -221,8 +221,8 @@ class pApiContentAllocationTreeView extends pApiTree {
 			$this->tpl->next();
 		}
 		
-		$this->tpl->set('s', 'CATEGORY', i18n("Category"));
-		$this->tpl->set('s', 'ACTIONS', i18n("Actions"));
+		$this->tpl->set('s', 'CATEGORY', i18n("Category", "content_allocation"));
+		$this->tpl->set('s', 'ACTIONS', i18n("Actions", "content_allocation"));
 		
 		if ($return === true) {
 			return $this->tpl->generate($this->template, true);
