@@ -163,9 +163,10 @@ function i18nEmulateGettext ($string, $domain = "contenido")
 		   has to be converted to:
 		   	msgid "Hello %s,\n\nyou've got a new reminder for the client '%s' at\n%s:\n\n%s"
 		   	msgstr "Hallo %s,\n\ndu hast eine Wiedervorlage erhalten für den Mandanten '%s' at\n%s:\n\n%s"
-        */ 
-        $transFile[$domain] = preg_replace('/\\\n"\\s+"/m', '\\\\n', $transFile[$domain]); 
+        */
         $transFile[$domain] = preg_replace('/(""\\s+")/m', '"', $transFile[$domain]);
+        $transFile[$domain] = preg_replace('/\\n"\\s+"/m', '\\n', $transFile[$domain]); 
+        $transFile[$domain] = preg_replace('/("\n+")/m', '', $transFile[$domain]);
 	}
 	
 	$stringStart = strpos($transFile[$domain], '"'.str_replace(Array("\n", "\r", "\t"), Array('\n', '\r', '\t'), $string).'"');
