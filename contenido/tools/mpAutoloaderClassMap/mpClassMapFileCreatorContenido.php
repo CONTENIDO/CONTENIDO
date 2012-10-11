@@ -80,7 +80,7 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
         $this->_data->license       = 'http://www.contenido.org/license/LIZENZ.txt';
         $this->_data->link          = 'http://www.4fb.de';
         $this->_data->link2         = 'http://www.contenido.org';
-        $this->_data->since         = 'file available since CONTENIDO release >= 4.9.0';
+        $this->_data->since         = 'file available since CONTENIDO release >= 4.8.17';
     }
 
 
