@@ -1542,6 +1542,8 @@ contenido/xml/lang_fr_FR.xml -text svneol=unset#text/plain
 contenido/xml/lang_it_IT.xml -text svneol=unset#text/plain
 contenido/xml/lang_nl_NL.xml -text svneol=unset#text/plain
 docs/api/doxy-api.conf -text
+docs/techref/assets/conlogo.gif -text
+docs/techref/backend/backend.autoloader.html -text
 docs/techref/backend/backend.customizing.1.gif -text
 docs/techref/backend/backend.customizing.html -text svneol=unset#text/plain
 docs/techref/backend/backend.localconfig.html -text svneol=unset#text/plain

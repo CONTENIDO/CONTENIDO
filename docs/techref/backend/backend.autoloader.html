@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <title>Contenido - Autoloader for class type files</title>
+    <link rel="stylesheet" href="../assets/techref.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<div id="header">
+    <img src="../assets/conlogo.gif" alt="Contenido Logo">
+    <h1>Contenido autoloader (since V. 4.8.17)</h1>
+</div>
+
+<div class="section">
+  <table class="info" border="0" cellpadding="2" cellspacing="2">
+    <tbody>
+      <tr>
+        <td>Author</td>
+        <td>Murat Purc, murat@purc.de</td>
+      </tr>
+      <tr>
+        <td>Created</td>
+        <td>28th December 2010</td>
+      </tr>
+      <tr>
+        <td>Audience</td>
+        <td>Module/Plugin Developers</td>
+      </tr>
+      <tr>
+        <td>Applies to</td>
+        <td>Contenido 4.8.17 or later</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+<h2><a name="intro">Introduction</a></h2>
+<p>Contenido provides autoloading for source files of classes/interfaces which are
+delivered by a Contenido package.<br>
+The main goal of autoloading is to reduce the list of needed includes which is usually
+at the beginning of scripts. By implementing a autoloader, the PHP engine has the
+possibility to load the file while trying to use a class/interface.</p>
+</div>
+
+
+<div class="section">
+<h2><a name="how_it_works">How it works?</a></h2>
+<p>The Contenido autoloader will be initialized during the application startup process.
+The autoloading solution in Contenido uses the class map strategy. It uses a generated
+class map configuration file, which is available inside contenido/includes/ folder.</p>
+<pre>contenido/includes/config.autoloader.php</pre>
+<p>Each class type name is pointed to a file which contains the implementation of the
+required class type. By trying to use a class type, the autoloader will load the
+needed file if not done before.<br>
+<br>
+<strong>Example:</strong><br>
+Usually you have to ensure that a class file is already loaded by using include/require
+statements or by using Contenido's cInclude function:</p>
+<pre>
+cInclude('classes', 'class.article.php');
+$oArt = new Article();
+</pre>
+
+<p>With a autoloader the manually loading is not required anymore.</p>
+<pre>
+$oArt = new Article();
+</pre>
+</div>
+
+
+<div class="section">
+<h2><a name="available_classes_interfaces">Classes/Interfaces available by the autoloader</a></h2>
+<p>At the moment all available classes/interfaces inside following directories
+of a Contenido installation:</p>
+<pre>
+contenido/classes/
+</pre>
+<p><strong>NOTE:</strong><br>
+The autoloader doesn't handle loading of files which don't belong to the Contenido package.
+This means, additional added files (e. g. user defined classes/libraries) aren't
+automatically available for the autoloader. Read the <a href="#autogen_classmap">section</a> below, if you want to
+provide autoloading of additional class type files.</p>
+</div>
+
+
+<div class="section">
+<h2><a name="extending_classmap">Extending the class map configuration</a></h2>
+<p>Don't edit the class map configuration manually, the next update could overwrite
+your changes. The autoloading is extendable by adding a additional user defined class map
+file inside the "contenido/includes/" folder, which could contain further class map settings or
+could overwrite settings of main class map file.</p>
+<pre>contenido/includes/config.autoloader.local.php</pre>
+<p>This file will not be overwritten during a update.<br>
+<br>
+The content of the user defined file should have the following structure:</p>
+<pre>
+&lt;?php
+return array(
+    '{classname_1}' => '{path_to_classfile_1}',
+    '{classname_2}' => '{path_to_classfile_2}',
+    '{classname_3}' => '{path_to_classfile_3}',
+);
+</pre>
+<p>Where {classname_X} is the name of the class/interface and {path_to_classfile_X} is the
+path (from Contenido installation folder) to the file which contains the implementation of the class/interface.<p>
+
+<p><strong>Example:</strong><br>
+Let's assume that Contenido is installed in folder /var/www/ which contains a
+additional library "myLib" (full path: /var/www/myLib/) with a class "myFoobarClass"
+in file "class.myfoobarclass.php" (full path: /var/www/myLib/class.myfoobarclass.php).
+Then the user defined class map file should contain a entry for this like:</p>
+<pre>
+&lt;?php
+return array(
+    ...
+    'myFoobarClass' => 'myLib/class.myfoobarclass.php',
+    ...
+);
+</pre>
+</div>
+
+
+<div class="section">
+<h2><a name="autogen_classmap">Auto generation of user defined class map configuration</a></h2>
+<p>If you don't want to maintain the user defined class map configuration manually, then
+you may let a copy of the command line script (which is adapted to your requirements)
+<span class="pre">contenido/tools/create_autoloader_cfg.php</span>
+to do the job.<br>
+<br>
+Do following steps to achieve this:</p>
+<ul>
+    <li>Create a copy of create_autoloader_cfg.php and name it e. g. create_localautoloader_cfg.php</li>
+    <li>
+        Open create_localautoloader_cfg.php and adapt it to your requirements (see Initialization/Settings)
+        <ul>
+            <li>
+                Set setting $context->destinationFile to
+                <span class="pre">$context->destinationFile = $context->contenidoInstallPath . '/contenido/includes/config.autoloader.local.php';</span>
+                <strong>NOTE:</strong> Don't use another file name, it's predefined and has to be "config.autoloader.local.php"
+            </li>
+            <li>
+                Define paths which should be parsed recursively, e. g.
+<pre>$context->pathsToParse = array(
+    $context->contenidoInstallPath . '/my_path/',
+    $context->contenidoInstallPath . '/my_other_path/',
+);
+</pre>
+            </li>
+            <li>
+                Change class type finder options (if required), e. g.
+<pre>// class type finder options
+$context->options = array(
+    // list of directories which are to exclude from parsing (case insensitive)
+    'excludeDirs'       => array('.svn'),
+    // list of files which are to exclude from parsing (case insensitive), also possible regex patterns like /^~*.\.php$/
+    'excludeFiles'      => array(),
+    // list of file extensions to parse (case insensitive)
+    'extensionsToParse' => '.php',
+    'enableDebug'       => false,
+);
+</pre>
+            </li>
+        </ul>
+    </li>
+    <li>
+        Run the class map creator by typing following to the command line:
+        <span class="pre">$ php create_localautoloader_cfg.php</span>
+        <strong>NOTE:</strong> PHP needs write permissions for folder "contenido/includes/"
+    </li>
+    <li>
+    Check the generated/upated file "config.autoloader.local.php" inside "contenido/includes/" folder
+    </li>
+</ul>
+</div>
+
+
+<div class="section">
+<h2><a name="manual_classmap_config">Adding class map configuration manually</a></h2>
+<p>As a addition to the <a href="#autogen_classmap">user defined class map configuration</a>,
+    the Contenido autoloader provides the feature to add class map configurations manually by using
+    following methods:
+</p>
+<ul>
+    <li>
+        <span class="pre">cAutoload::addClassmapConfig(array $config)</span><br>
+        Adding additional autoloader classmap configuration.<br>
+<pre>
+// Structure is: "Classname" => "Path to classfile from Contenido installation folder"
+$config = array(
+    'myPluginsClass' => 'contenido/plugins/myplugin/classes/class.myPluginClass.php',
+    'myPluginsOtherClass' => 'contenido/plugins/myplugin/classes/class.myPluginsOtherClass.php',
+);
+cAutoload::addClassmapConfig(array $config);
+</pre>
+    </li>
+    <li>
+        <span class="pre">cAutoload::addClassmapConfigFile($configFile)</span><br>
+        Adding additional autoloader class map configuration file.<br>
+<pre>
+$configFile = '/path/to/additional/classmap/config.php';
+cAutoload::addClassmapConfigFile($configFile);
+</pre>
+
+The provided file must return a class map configuration array as follows:
+<pre>
+&lt;?php
+// Structure is: "Classname" => "Path to classfile from Contenido installation folder"
+return array(
+    'myPluginsClass' => 'contenido/plugins/myplugin/classes/class.myPluginClass.php',
+    'myPluginsOtherClass' => 'contenido/plugins/myplugin/classes/class.myPluginsOtherClass.php',
+    'myCmsClass' => 'cms/includes/class.myCmsClass.php',
+);
+</pre>
+    </li>
+</ul>
+<p>
+<strong>NOTE:</strong><br>
+Since the autoloader is implemented for Contenido, it doesn't support to
+load classfiles being located outside of the Contenido installation folder.
+</p>
+</div>
+
+<div class="section">
+<h2><a name="extending_contenido_core">Extending Contenido core with autoload mechanism</a></h2>
+<p>By using the Contenido autoloader it's possible to extend/overwrite Contenido core classes
+    (except classes inside conlib directory) without changing the core files.</p>
+<p>Let's assume, you want to use your own Template class in Modules, but everything should
+    still be downwards compatible.<br>
+<br>
+Do following steps to achieve this:</p>
+<ul>
+    <li>Create a user defined folder (if required) which should contain your own Template class file</li>
+    <li>Create a class file (e. g. class.mytemplate.php), which should contain the
+        implementation of new class Template</li>
+    <li>Implement your own Template class. Ensure that the interface of your Template class
+        is identical to the Contenido Template class. This means, each public accessible
+        property, method should have the same interface as in the original Contenido
+        Template class (Same names, properties, parameters, etc.).</li>
+    <li>Modify the functions to your requirements</li>
+    <li>Add the class map configuration of your new Template class to the user defined
+        file config.autoloader.local.php or regenerate the user defined class map file
+        (see <a href="#extending_classmap">extending class map</a>,
+        <a href="#autogen_classmap">auto generation of class map</a> and
+        <a href="#manual_classmap_config">adding manual class map configuration</a>)</li>
+</ul>
+<p>
+<strong>NOTE:</strong><br>
+There is one main disadvantage by using this way of extending the Contenido core.
+Each time after an update of your Contenido installation it's strongly recommend
+to check your user defined implementations against changes in original Contenido
+core files and, if applicable, to adapt your files to those changes.</p>
+</div>
+
+</body>
+</html>

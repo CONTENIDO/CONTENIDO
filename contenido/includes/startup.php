@@ -87,6 +87,9 @@ include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/cfg_sql.in
 // Various base API functions
 require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/api/functions.api.general.php');
 
+// Initialization of autoloader
+require_once($cfg['path']['contenido'] . 'classes/class.autoload.php');
+cAutoload::initialize($cfg);
 
 // 2. security check: Check HTTP parameters, if requested
 if ($cfg['http_params_check']['enabled'] === true) {

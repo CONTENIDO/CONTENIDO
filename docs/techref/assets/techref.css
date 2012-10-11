@@ -1,0 +1,115 @@
+/**
+ * Project:
+ * CONTENIDO Content Management System
+ *
+ * Description:
+ * Techref docs styles
+ *
+ * @package    CONTENIDO Techref styles
+ * @version    1.0
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http: //www.contenido.org/license/LIZENZ.txt
+ * @link       http: //www.4fb.de
+ * @link       http: //www.contenido.org
+ *
+ * {@internal
+ *   created  2012-06-27
+ *   $Id$
+ * }}
+ */
+
+
+body {
+    background-color: #f1f1f1;
+    color: #000;
+    font: normal normal normal 11px/normal verdana, arial, helvetica, sans-serif;
+    scrollbar-face-color: #c6c6d5;
+    scrollbar-highlight-color: #ffffff;
+    scrollbar-3dlight-color: #747488;
+    scrollbar-darkshadow-color: #000000;
+    scrollbar-shadow-color: #334f77;
+    scrollbar-arrow-color: #334f77;
+    scrollbar-track-color: #c7c7d6;
+}
+
+table {
+    font: normal normal normal 11px/normal verdana, arial, helvetica, sans-serif;
+}
+
+a:link,
+a:active {
+    color: #009;
+}
+a:visited {
+    color: #909;
+}
+
+h1 {
+    font: normal normal bold 20px/normal verdana, arial, helvetica, sans-serif;
+    color: #000;
+    margin-top: 0;
+}
+h2 {
+    font: normal normal bold 15px/normal verdana, arial, helvetica, sans-serif;
+    color: #000;
+}
+
+pre,
+.pre {
+    background-color: #f6f6f6;
+    border: 1px solid #dadada;
+    display: block;
+    font-family: "Courier New";
+    margin: 10px 0;
+    padding: 7px 10px;
+}
+
+#header {
+    clear: both;
+    overflow: hidden;
+    width: 998px;
+}
+#header img {
+    display: block;
+    float: left;
+    margin: 0 30px 0 0;
+}
+#header h1 {
+    float: left;
+    line-height: 75px;
+    padding: 0;
+    margin: 0;
+}
+
+.section {
+    padding: 7px 0;
+}
+
+.section li {
+    padding: 3px 0;
+}
+
+
+table.full {
+    text-align: left;
+    width: 100%;
+}
+table.full th {
+    vertical-align: top;
+    font-weight: bold;
+}
+table.full td {
+    vertical-align: top;
+}
+
+table.info {
+    text-align: left;
+}
+table.info th {
+    vertical-align: top;
+    font-weight: bold;
+}
+table.info td {
+    vertical-align: top;
+}

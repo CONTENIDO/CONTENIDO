@@ -71,6 +71,10 @@ if (!defined('DIRECTORY_SEPARATOR')) {
  * includes    Path to the contenido includes
  * scripts      Path to the contenido scripts
  *
+ * NOTE: Since Contenido (since v 4.8.17) provides autoloading of required
+ *       class files, there is no need to load Contenido class files of by using
+ *       cInclude().
+ *
  * @param $where string The area which should be included
  * @param $what string The filename of the include
  * @param $force boolean If true, force the file to be included
@@ -103,6 +107,13 @@ function contenido_include ($where, $what, $force = false, $returnpath = false)
       case "conlib":
       case "phplib":
             $include = $cfg['path']['phplib'] . $what;
+            break;
+      case "classes":
+            if (cAutoload::isAutoloadable($cfg['path'][$where] . $what)) {
+                // The class file will be loaded automatically by the autoloader - get out here
+                return;
+            }
+            $sInclude = $backendPath  . $cfg['path'][$where] . $what;
             break;
       case "pear":
             $include = $what;
