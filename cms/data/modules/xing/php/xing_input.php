@@ -16,12 +16,12 @@
 
 <table>
     <tr>
-        <td><?php echo mi18n("URL zum Profil");?></td>
+        <td><?php echo mi18n("URL_TO_PROFILE");?></td>
         <td><input type="text" name="CMS_VAR[0]" value="<?php echo "CMS_VALUE[0]"; ?>"></td>
     </tr>
     <tr>
         <td>
-            <?php echo mi18n("Aussehen");?>
+            <?php echo mi18n("LOOK");?>
         </td>
         <td>
             <input type="radio" name="CMS_VAR[1]" value="small" <?php  $value = "CMS_VALUE[1]"; if ($value == "small" ) echo 'checked="checked"'; ?>>
@@ -32,7 +32,7 @@
         </td>
     </tr>
     <tr>
-        <td><?php echo mi18n("Name");?></td>
+        <td><?php echo mi18n("NAME");?></td>
         <td><input type="text" name="CMS_VAR[2]" value="<?php echo "CMS_VALUE[2]"; ?>"></td>
     </tr>
 </table>

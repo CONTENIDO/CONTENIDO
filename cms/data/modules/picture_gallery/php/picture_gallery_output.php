@@ -19,8 +19,8 @@ cInclude('includes', 'functions.file.php');
 $bRecursive = false;
 
 // mi18n variables
-$sSeeImage = mi18n("Bildvorschau");
-$sDownImage = mi18n("Bild herunterladen");
+$sSeeImage = mi18n("IMAGE_PREVIEW");
+$sDownImage = mi18n("DOWNLOAD_IMAGE");
 
 $sPath = "CMS_VALUE[5]";
 if ($sPath == '') {
@@ -104,11 +104,11 @@ if ($_REQUEST['view'] == '') {
             $sScaledImage = cApiImgScale($sImageToDisplay, $iWidth, $iHeight);
             $sScaledImageHtmlPath = str_replace($cfgClient[$client]['path']['htmlpath'], '', $sScaledImage);
 
-            $link = 'front_content.php?idcatart=' . $idcatart . '&amp;start=' . $start . '&amp;view=' . urlencode(str_replace($cfgClient[$client]['path']['frontend'], '', $sImageToDisplay));
+            $link = 'front_content.php?idcatart=' . $idcatart . '&start=' . $start . '&view=' . urlencode(str_replace($cfgClient[$client]['path']['frontend'], '', $sImageToDisplay));
 
             $description = ig_getImageDescription($sImageToDisplay);
             if ($description == '') {
-                $description = '&nbsp;';
+                $description = ' ';
             }
 
             $sDownloadLink = str_replace($cfgClient[$client]['path']['frontend'], '', $sImageToDisplay);
@@ -122,8 +122,8 @@ if ($_REQUEST['view'] == '') {
             $oImageTpl->set('s', 'DESCRIPTION', $description);
             $oImageTpl->set('s', 'DOWNLOAD_LINK', $sDownloadLink);
             $oImageTpl->set('s', 'DOWNLOAD_SIZE', $sDownloadSize);
-            $oImageTpl->set('s', 'DOWNLOAD_CAPTION', mi18n("Bild herunterladen"));
-            $oImageTpl->set('s', 'PREVIEW_CAPTION', mi18n("Bildvorschau"));
+            $oImageTpl->set('s', 'DOWNLOAD_CAPTION', mi18n("DOWNLOAD_IMAGE"));
+            $oImageTpl->set('s', 'PREVIEW_CAPTION', mi18n("IMAGE_PREVIEW"));
             $oImageTpl->set('s', 'LINKDESCRIPTION', '');
             $oImageTpl->set('s', 'SEE_IMAGE', $sSeeImage);
             $oImageTpl->set('s', 'DOWNLOAD_IMAGE', $sDownImage);
@@ -172,14 +172,14 @@ if ($_REQUEST['view'] == '') {
         if ($iCurrentPage == '') {
             $iCurrentPage = 1;
         }
-        $sBack = sprintf("front_content.php?idcatart=%s&amp;start=%s", $idcatart, $iCurrentPage - 1);
-        $sNext = sprintf("front_content.php?idcatart=%s&amp;start=%s", $idcatart, $iCurrentPage + 1);
+        $sBack = sprintf("front_content.php?idcatart=%s&start=%s", $idcatart, $iCurrentPage - 1);
+        $sNext = sprintf("front_content.php?idcatart=%s&start=%s", $idcatart, $iCurrentPage + 1);
 
         for ($i = 1; $i <= $iPages; $i++) {
             if ($i == $iCurrentPage) {
                 $aAllLinks[$i] = $i;
             } else {
-                $aAllLinks[$i] = sprintf("front_content.php?idcatart=%s&amp;start=%s", $idcatart, $i);
+                $aAllLinks[$i] = sprintf("front_content.php?idcatart=%s&start=%s", $idcatart, $i);
             }
         }
 
@@ -198,7 +198,7 @@ if ($_REQUEST['view'] == '') {
 
             $oTpl1 = new cTemplate();
 
-            $sNextButton = sprintf($sHtml, $sNext, mi18n("vor"), mi18n("&nbsp;vor&nbsp;") . '<img src="images/link_pfeil_klein.gif" />');
+            $sNextButton = sprintf($sHtml, $sNext, mi18n("NEXT"), mi18n(" NEXT ") . '<img src="images/link_pfeil_klein.gif" />');
             $oTpl1->set('s', 'Begin', '');
 
             foreach ($aAllLinks as $key => $value) {
@@ -221,8 +221,8 @@ if ($_REQUEST['view'] == '') {
         if ($iCurrentPage > 1 && ($iPages - $iCurrentPage) != 0) { // body see all
             $oPreviousTpl = new cTemplate();
 
-            $sBackButton = sprintf($sHtml, $sBack, mi18n("zur&uuml;ck"), "<img src='images/link_pfeil_klein_links.gif' />" . mi18n("&nbsp;zur&uuml;ck&nbsp;"));
-            $sNextButton = sprintf($sHtml, $sNext, mi18n("vor"), mi18n("&nbsp;vor&nbsp;") . '<img src="images/link_pfeil_klein.gif" />');
+            $sBackButton = sprintf($sHtml, $sBack, mi18n("BACK"), "<img src='images/link_pfeil_klein_links.gif' />" . mi18n(" BACK "));
+            $sNextButton = sprintf($sHtml, $sNext, mi18n("NEXT"), mi18n(" NEXT ") . '<img src="images/link_pfeil_klein.gif" />');
 
             $oPreviousTpl->set('s', 'Begin', $sBackButton);
 
@@ -244,7 +244,7 @@ if ($_REQUEST['view'] == '') {
         } else if ($iPages - $iCurrentPage == 0) { // this is end
             $oNextTpl = new cTemplate();
             $oNextTpl->reset();
-            $sBackButton = sprintf($sHtml, $sBack, mi18n("zur&uuml;ck"), "<img src='images/link_pfeil_klein_links.gif' />" . mi18n("&nbsp;zur&uuml;ck&nbsp;"));
+            $sBackButton = sprintf($sHtml, $sBack, mi18n("BACK"), "<img src='images/link_pfeil_klein_links.gif' />" . mi18n(" BACK "));
             $oNextTpl->set('s', 'End', '');
 
             foreach ($aAllLinks as $key => $value) {
@@ -281,12 +281,12 @@ if ($_REQUEST['view'] == '') {
 
     $oImageTpl = new cTemplate();
     $oImageTpl->set('s', 'IMG', $sScaledImageHtmlPath);
-    $oImageTpl->set('s', 'BACKLINK', 'front_content.php?idcat=' . $idcat . '&amp;idart=' . $idart . '&amp;start=' . $start);
-    $oImageTpl->set('s', 'BACKCAPTION', mi18n("&nbsp;zur&uuml;ck"));
+    $oImageTpl->set('s', 'BACKLINK', 'front_content.php?idcat=' . $idcat . '&idart=' . $idart . '&start=' . $start);
+    $oImageTpl->set('s', 'BACKCAPTION', mi18n(" BACK"));
     $oImageTpl->set('s', 'DESCRIPTION', $description);
     $oImageTpl->set('s', 'DOWNLOAD_LINK', $sDownloadLink);
     $oImageTpl->set('s', 'DOWNLOAD_SIZE', $sDownloadSize);
-    $oImageTpl->set('s', 'DOWNLOAD_CAPTION', mi18n("Bild herunterladen&nbsp;"));
+    $oImageTpl->set('s', 'DOWNLOAD_CAPTION', mi18n("DOWNLOAD_IMAGE "));
 
     $oImageTpl->generate('gallery_detail.html', false, false);
 }

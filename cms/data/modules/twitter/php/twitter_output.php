@@ -32,13 +32,13 @@ $showCount = "CMS_VALUE[8]";
 
 #echo "values: ".$twitterName.$twitterLook.$showTwitts.$countTwitts.$showFollowButton;
 
-$tplLableTranslation->set('s', "LESS_MINUTES", mi18n("vor weniger als einer Minute"));
-$tplLableTranslation->set('s', "ONE_MINUTES", mi18n("vor einer Minute"));
-$tplLableTranslation->set('s', "MORE_MINUTES", mi18n("vor %d Minuten"));
-$tplLableTranslation->set('s', "ONE_HOURS", mi18n("vor einer Stunde"));
-$tplLableTranslation->set('s', "MORE_HOURS", mi18n("vor %d Stunden"));
-$tplLableTranslation->set('s', "ONE_DAY", mi18n("vor einem Tag"));
-$tplLableTranslation->set('s', "MORE_DAYS", mi18n("vor %d Tagen"));
+$tplLableTranslation->set('s', "LESS_MINUTES", mi18n("LESS_THAN_A_MINUTE_AGO"));
+$tplLableTranslation->set('s', "ONE_MINUTES", mi18n("A_MINUTE_AGO"));
+$tplLableTranslation->set('s', "MORE_MINUTES", mi18n("ABOUT_%d_MINUTES_AGO"));
+$tplLableTranslation->set('s', "ONE_HOURS", mi18n("AN_HOUR_AGO"));
+$tplLableTranslation->set('s', "MORE_HOURS", mi18n("ABOUT_%d_HOURS_AGO"));
+$tplLableTranslation->set('s', "ONE_DAY", mi18n("A_DAY_AGO"));
+$tplLableTranslation->set('s', "MORE_DAYS", mi18n("ABOUT_%d_DAYS"));
 
 $tplTwitts->set('s', "USER_NAME", $twitterName);
 $tplTwitts->set('s', "COUNT", $countTwitts);

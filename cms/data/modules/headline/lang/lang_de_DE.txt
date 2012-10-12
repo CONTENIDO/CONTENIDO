@@ -1,1 +1,0 @@
-TRANSLATE_ME=übersetze mich

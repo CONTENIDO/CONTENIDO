@@ -1,2 +1,2 @@
-Choose article=Artikel wählen
-Please choose=Bitte wählen
+CHOOSE_ARTICLE=Artikel wählen
+PLEASE_CHOOSE=Bitte wählen

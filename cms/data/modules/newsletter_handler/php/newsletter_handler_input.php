@@ -99,11 +99,11 @@ $oHidAction = new cHTMLHiddenField('hidAction'.$cnumber, 'save');
 
 $oTxtSender = new cHTMLTextbox("txtSender".$cnumber, $aSettings['SenderEMail'], 30);
 
-$oCfgTable->setCell('sender', 0, mi18n("Sender e-mail:"));
+$oCfgTable->setCell('sender', 0, mi18n("SENDER_EMAIL:"));
 $oCfgTable->setCell('sender', 1, $oHidAction->render().$oTxtSender->render());
 
 $oSelHandlerCatArt = new cHTMLInputSelectElement('selHandlerCatArt'.$cnumber, 1, '', true);
-$oOption           = new cHTMLOptionElement(mi18n("- Please select -"), '');
+$oOption           = new cHTMLOptionElement(mi18n("- PLEASE_SELECT -"), '');
 $oSelHandlerCatArt->addOptionElement(0, $oOption);
 $oSelHandlerCatArt->addCategories(0, true, false, false, true, true);
 $oSelHandlerCatArt->setDefault($iHandlerCatArt);
@@ -111,8 +111,8 @@ $oSelHandlerCatArt->setDefault($iHandlerCatArt);
 $oCkbUpdate        = new cHTMLCheckbox('ckbUpdateHandlerID'.$cnumber, 'enabled');
 $oCkbUpdate->setEvent('click', 'if (this.checked) {document.forms[0].selHandlerCatArt'.$cnumber.'.disabled = false;} else {document.forms[0].selHandlerCatArt'.$cnumber.'.disabled = true;}');
 
-$oCfgTable->setCell('handler', 0, mi18n("Handler Article:"));
-$oCfgTable->setCell('handler', 1, $oSelHandlerCatArt->render()."\n&nbsp;".$oCkbUpdate->toHTML(false).mi18n("Update"));
+$oCfgTable->setCell('handler', 0, mi18n("HANDLER_ARTICLE:"));
+$oCfgTable->setCell('handler', 1, $oSelHandlerCatArt->render()."\n ".$oCkbUpdate->toHTML(false).mi18n("UPDATE"));
 
 // Getting newsletter groups (if any)
 $oRcpGroups = new NewsletterRecipientGroupCollection();
@@ -127,12 +127,12 @@ $oRcpGroups->query();
 // 'Default' option. This is necessary, as there may have been groups specified (and used)
 // but they have been deleted, later on.
 
-$oCfgTable->setCell('join_01', 0, mi18n("Join:"));
+$oCfgTable->setCell('join_01', 0, mi18n("JOIN:"));
 
 if ($oRcpGroups->Count() == 0) {
     // No groups available, only default group possible
     $oRadJoinDefault = new cHTMLRadioButton('radJoin'.$cnumber, 'Default', '', true);
-    $oCfgTable->setCell('join_01', 1, $oRadJoinDefault->toHTML(false).mi18n("default group"));
+    $oCfgTable->setCell('join_01', 1, $oRadJoinDefault->toHTML(false).mi18n("DEFAULT_GROUP"));
 } else {
     // Groups available, show different group join options
 
@@ -143,7 +143,7 @@ if ($oRcpGroups->Count() == 0) {
         $oRadJoinDefault = new cHTMLRadioButton('radJoin'.$cnumber, 'Default');
     }
     $oRadJoinDefault->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = true; document.forms[0].selGroup".$cnumber.".disabled = true;");
-    $oCfgTable->setCell('join_01', 1, $oRadJoinDefault->toHTML(false).mi18n("default group"));
+    $oCfgTable->setCell('join_01', 1, $oRadJoinDefault->toHTML(false).mi18n("DEFAULT_GROUP"));
 
     // Join admin selected groups automatically
     if ($aSettings['JoinSel'] == 'Selected') {
@@ -153,7 +153,7 @@ if ($oRcpGroups->Count() == 0) {
     }
     $oRadJoinSelected->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = false; document.forms[0].selGroup".$cnumber.".disabled = false;");
     $oCfgTable->setCell('join_02', 0, '');
-    $oCfgTable->setCell('join_02', 1, $oRadJoinSelected->toHTML(false).mi18n("selected group(s)"));
+    $oCfgTable->setCell('join_02', 1, $oRadJoinSelected->toHTML(false).mi18n("SELECTED_GROUP(S)"));
 
     // Join the groups the user has selected (-> provide a list for the user), optionally, the user may select more than one group
     if ($aSettings['JoinSel'] == 'UserSelected') {
@@ -167,7 +167,7 @@ if ($oRcpGroups->Count() == 0) {
     $oCfgTable->setCell('join_03', 0, '');
     $oCfgTable->setCell('join_03', 1, $oRadJoinUserSel->toHTML(false).mi18n("group(s) as selected by user").'<br />'."\n".$oCkbJoinMultiple->toHTML(false).mi18n("Multiple group selection allowed"));
 
-    $oCfgTable->setCell('groups', 0, mi18n("Select group(s):"));
+    $oCfgTable->setCell('groups', 0, mi18n("SELECT_GROUP(S):"));
 
     // Show groups
     // Trick: To save multiple selections in <select>-Element, add some JS which saves the
@@ -211,21 +211,21 @@ if ($oRcpGroups->Count() == 0) {
 }
 
 // Options: Message type (user [->selectbox], text or html)
-$oCfgTable->setCell('options_01', 0, mi18n("Options:"));
+$oCfgTable->setCell('options_01', 0, mi18n("OPTIONS:"));
 
 $oSelMsgType = new cHTMLSelectElement('selMessageType'.$cnumber);
-$oOption = new cHTMLOptionElement(mi18n("User selected"), "user");
+$oOption = new cHTMLOptionElement(mi18n("USER_SELECTED"), "user");
 $oSelMsgType->addOptionElement(0, $oOption);
-$oOption = new cHTMLOptionElement(mi18n("Text only"), "text");
+$oOption = new cHTMLOptionElement(mi18n("TEXT_ONLY"), "text");
 $oSelMsgType->addOptionElement(1, $oOption);
-$oOption = new cHTMLOptionElement(mi18n("HTML and text"), "html");
+$oOption = new cHTMLOptionElement(mi18n("HTML_AND_TEXT"), "html");
 $oSelMsgType->addOptionElement(2, $oOption);
 $oSelMsgType->setDefault($aSettings['JoinMessageType']);
 
-$oCfgTable->setCell('options_01', 1, mi18n("Default message type:").'&nbsp;'.$oSelMsgType->render());
+$oCfgTable->setCell('options_01', 1, mi18n("DEFAULT_MESSAGE_TYPE:").' '.$oSelMsgType->render());
 
 // Frontend Link
-$oCfgTable->setCell('link_01', 0, mi18n("Frontend Users:"));
+$oCfgTable->setCell('link_01', 0, mi18n("FRONTEND_USERS:"));
 $oCkbLink = new cHTMLCheckbox('ckbFrontendLink'.$cnumber, 'enabled', '', $aSettings['FrontendLink']);
 
 $sSkript = "if (this.checked) {
@@ -242,7 +242,7 @@ $sSkript = "if (this.checked) {
               document.forms[0].elements['CMS_VAR[6]'][2].disabled = true;}";
 $oCkbLink->setEvent("click", $sSkript);
 
-$oCfgTable->setCell('link_01', 1, $oCkbLink->toHTML(false).mi18n("Activate Link"));
+$oCfgTable->setCell('link_01', 1, $oCkbLink->toHTML(false).mi18n("ACTIVATE_LINK"));
 
 // Link: Activation options
 $oCfgTable->setCell('link_02', 0, '');
@@ -281,17 +281,17 @@ if ($aSettings['FrontendLink'] == '') {
     $oRadDelDisable->setDisabled(true);
     $oRadDelNothing->setDisabled(true);
 }
-$oCfgTable->setCell('link_02', 1, mi18n("Confirmation means:").'<br />'.
-                    $oRadActivateUser->toHTML(false).mi18n("Activate").
-                    $oRadActivateNothing->toHTML(false).mi18n("No changes"));
+$oCfgTable->setCell('link_02', 1, mi18n("CONFIRMATION_MEANS:").'<br />'.
+                    $oRadActivateUser->toHTML(false).mi18n("ACTIVATE").
+                    $oRadActivateNothing->toHTML(false).mi18n("NO_CHANGES"));
 
 // Link: Cancellation options
 $oCfgTable->setCell('link_03', 0, '');
 
-$oCfgTable->setCell('link_03', 1, mi18n("Cancellation means:").'<br />'.
-                    $oRadDelDelete->toHTML(false).mi18n("Delete").
-                    $oRadDelDisable->toHTML(false).mi18n("Disable").
-                    $oRadDelNothing->toHTML(false).mi18n("No changes"));
+$oCfgTable->setCell('link_03', 1, mi18n("CANCELLATION_MEANS:").'<br />'.
+                    $oRadDelDelete->toHTML(false).mi18n("DELETE").
+                    $oRadDelDisable->toHTML(false).mi18n("DISABLE").
+                    $oRadDelNothing->toHTML(false).mi18n("NO_CHANGES"));
 
 $oCfgTable->render(true);
 

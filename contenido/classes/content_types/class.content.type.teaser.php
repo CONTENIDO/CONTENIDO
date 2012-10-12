@@ -321,6 +321,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             $template->set('d', 'ART_URL', 'front_content.php?idart=' . $idArt);
             $template->set('d', 'PUBLISHED', $published);
             $template->set('d', 'PUBLISHED_MANUAL', $date);
+            $template->set('d', 'MORE', self::$_translations['MORE']);
 
             if ($date != '') {
                 $template->set('d', 'PUBLISHED_COMBINED', $date);

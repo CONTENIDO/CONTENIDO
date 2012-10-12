@@ -28,7 +28,7 @@ for ($i = 0; $i < $maxFeedItems; $i++) {
     $tpl->set("d", "TITLE", htmlentities($title, ENT_QUOTES));
     $tpl->set("d", "LINK", htmlentities($link, ENT_QUOTES));
     $tpl->set("d", "DESCRIPTION", htmlentities($description, ENT_QUOTES));
-    $tpl->set("d", "READ_ON", mi18n("weiterlesen"));
+    $tpl->set("d", "READ_ON", mi18n("READ_MORE"));
     $tpl->next();
 }
 

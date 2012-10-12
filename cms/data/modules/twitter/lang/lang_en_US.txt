@@ -16,3 +16,4 @@ Zeige Tweet-button=Show tweet-button
 Default Text=Default text
 URL to share=
 Z&auml;hler anzeigen=Show count
+SHOW

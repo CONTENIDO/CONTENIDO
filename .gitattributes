@@ -40,10 +40,12 @@ cms/data/modules/googleanalytics/php/googleanalytics_input.php -text
 cms/data/modules/googleanalytics/php/googleanalytics_output.php -text
 cms/data/modules/googleanalytics/template/googleanalytics.html -text svneol=unset#text/plain
 cms/data/modules/googleplus/info.xml -text
+cms/data/modules/googleplus/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/googleplus/php/googleplus_input.php -text
 cms/data/modules/googleplus/php/googleplus_output.php -text
 cms/data/modules/googleplus/template/google_plus.html -text
 cms/data/modules/header/info.xml -text
+cms/data/modules/header/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/header/php/header_input.php -text
 cms/data/modules/header/php/header_output.php -text
 cms/data/modules/headline/info.xml -text
@@ -78,9 +80,11 @@ cms/data/modules/newsletter_form/lang/lang_en_US.txt -text svneol=unset#text/pla
 cms/data/modules/newsletter_form/php/newsletter_form_input.php -text
 cms/data/modules/newsletter_form/php/newsletter_form_output.php -text
 cms/data/modules/newsletter_handler/info.xml -text
+cms/data/modules/newsletter_handler/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/newsletter_handler/php/newsletter_handler_input.php -text
 cms/data/modules/newsletter_handler/php/newsletter_handler_output.php -text
 cms/data/modules/picture_gallery/info.xml -text
+cms/data/modules/picture_gallery/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/picture_gallery/php/picture_gallery_input.php -text
 cms/data/modules/picture_gallery/php/picture_gallery_output.php -text
 cms/data/modules/picture_gallery/template/gallery.html -text
@@ -93,15 +97,19 @@ cms/data/modules/piwik/php/piwik_input.php -text
 cms/data/modules/piwik/php/piwik_output.php -text
 cms/data/modules/piwik/template/piwik.html -text svneol=unset#text/plain
 cms/data/modules/rss_reader/info.xml -text
+cms/data/modules/rss_reader/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/rss_reader/php/rss_reader_input.php -text
 cms/data/modules/rss_reader/php/rss_reader_output.php -text
 cms/data/modules/search_input/info.xml -text
+cms/data/modules/search_input/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/search_input/php/search_input_input.php -text
 cms/data/modules/search_input/php/search_input_output.php -text
 cms/data/modules/search_output/info.xml -text
+cms/data/modules/search_output/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/search_output/php/search_output_input.php -text
 cms/data/modules/search_output/php/search_output_output.php -text
 cms/data/modules/sitemap/info.xml -text
+cms/data/modules/sitemap/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/sitemap/php/sitemap_input.php -text
 cms/data/modules/sitemap/php/sitemap_output.php -text
 cms/data/modules/sub_headline/info.xml -text
@@ -120,6 +128,7 @@ cms/data/modules/twitter/css/twitter.css -text
 cms/data/modules/twitter/image/logo_twitter_withbird.png -text
 cms/data/modules/twitter/info.xml -text
 cms/data/modules/twitter/js/twitter.js -text
+cms/data/modules/twitter/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/twitter/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/data/modules/twitter/php/twitter_input.php -text
 cms/data/modules/twitter/php/twitter_output.php -text

@@ -19,10 +19,10 @@ $tpl->reset();
 
 $sTargetIdcat = getEffectiveSetting('search-results', 'idcat', '1');
 $sTargetIdart = getEffectiveSetting('search-results', 'idart', '1');
-$sFormAction = 'front_content.php?idcat='.$sTargetIdcat.'&amp;idart='.$sTargetIdart;
+$sFormAction = 'front_content.php?idcat='.$sTargetIdcat.'&idart='.$sTargetIdart;
 
 $tpl->set('s', 'form_action', $sFormAction);
-$tpl->set('s', 'label_search', mi18n("Suche"));
+$tpl->set('s', 'label_search', mi18n("SEARCH"));
 $tpl->generate('templates/search_input.html');
 
 ?>

@@ -1,3 +1,3 @@
-URL=
-Aussehen=
-Name/Vorname=
+URL_TO_PROFILE=URL zum Profil
+LOOK=Aussehen
+NAME=Name

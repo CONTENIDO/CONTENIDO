@@ -6,10 +6,10 @@
         <td><input type="text" name="<?php echo "CMS_VAR[0]"; ?>" value="<?php echo "CMS_VALUE[0]"; ?>" style="width:320px"></td>
     </tr>
     <tr>
-        <td><?php echo mi18n("RSS-Template auswählen"); ?>:</td>
+        <td><?php echo mi18n("RSS_TEMPLATE_SELECT"); ?>:</td>
         <td>
             <select name="<?php echo  "CMS_VAR[1]"; ?>" size="1" style="width:320px">
-                <option value=""><?php echo mi18n("Nichts ausgewählt"); ?></option>
+                <option value=""><?php echo mi18n("NOTHING_SELECTED"); ?></option>
                 <?php
                 $strPath_fs = cRegistry::getFrontendPath() . 'templates/';
                 $handle = opendir($strPath_fs);
@@ -27,7 +27,7 @@
         </td>
     </tr>
     <tr>
-        <td><?php echo mi18n("Anzahl Einträge"); ?></td>
+        <td><?php echo mi18n("COUNT_ITEM"); ?></td>
         <td><input type="text" name="<?php echo "CMS_VAR[2]"; ?>" value="<?php echo "CMS_VALUE[2]"; ?>"></td>
     </tr>
 </table>

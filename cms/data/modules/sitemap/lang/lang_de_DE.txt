@@ -1,0 +1,2 @@
+CHOOSE_CATEGORY:=Kategorie wählen
+MAXIMUM_NUMBER_OF_LEVELS:=Maximale Anzahl Ebenen:

@@ -35,8 +35,8 @@ $sSearchRange = $cApiClient->getProperty('searchrange', 'include');
 $aSearchRange = explode(',', $sSearchRange);
 
 // Multilingual settings
-$sYourSearchFor = mi18n("Ihre Suche nach");
-$sMore = mi18n("mehr");
+$sYourSearchFor = mi18n("YOUR_SEARCH_FOR");
+$sMore = mi18n("MORE");
 
 // Get search term and pre-process it
 if (isset ($_GET['searchterm'])) {
@@ -95,10 +95,10 @@ if (strlen(trim($searchterm)) > 0) {
 
     // Build results page
     if (count($aSearchResults) > 0) {
-        $tpl->set('s', 'result_page', mi18n("Ergebnis-Seite").':');
+        $tpl->set('s', 'result_page', mi18n("RESULT_PAGE").':');
 
         // Build meessage
-        $message = $sYourSearchFor." '".htmlspecialchars(strip_tags($searchterm_display))."' ".mi18n("hat $$$ Treffer ergeben").":";
+        $message = $sYourSearchFor." '".htmlspecialchars(strip_tags($searchterm_display))."' ".mi18n("GAVE_RESULTS").":";
         $message = str_replace('$$$', count($aSearchResults), $message);
         $tpl->set('s', 'MESSAGE', $message);
 
@@ -139,12 +139,12 @@ if (strlen(trim($searchterm)) > 0) {
             try {
                 $nextlink = cUri::getInstance()->build($aParams);
             } catch (cInvalidArgumentException $e) {
-                $nextlink = $sess->url('front_content.php?idcat='.$idcat.'&amp;idart='.$idart.'&amp;searchterm='.$searchterm_display.'&amp;page='.$i.$sArtSpecs);
+                $nextlink = $sess->url('front_content.php?idcat='.$idcat.'&idart='.$idart.'&searchterm='.$searchterm_display.'&page='.$i.$sArtSpecs);
             }
             if ($i == $page) {
-                $nextlinks .= '<span style="white-space:nowrap;">&nbsp;<strong>'.$i.'</strong>&nbsp;</span>';
+                $nextlinks .= '<span style="white-space:nowrap;"> <strong>'.$i.'</strong> </span>';
             } else {
-                $nextlinks .= '<span style="white-space:nowrap;">&nbsp;<a href="'.$nextlink.'" title="'.$i.'. '.mi18n("Ergebnisseite anzeigen").'">'.$i.'</a>&nbsp;</span>';
+                $nextlinks .= '<span style="white-space:nowrap;"> <a href="'.$nextlink.'" title="'.$i.'. '.mi18n("VIEW_RESULT_PAGE").'">'.$i.'</a> </span>';
             }
         }
         $tpl->set('s', 'PAGES', $nextlinks);
@@ -170,9 +170,9 @@ if (strlen(trim($searchterm)) > 0) {
             try {
                 $next = cUri::getInstance()->build($aParams);
             } catch (cInvalidArgumentException $e) {
-                $next = $sess->url('front_content.php?idcat='.$idcat.'&amp;idart='.$idart.'&amp;searchterm='.$searchterm.'&amp;page='.$n.$sArtSpecs);
+                $next = $sess->url('front_content.php?idcat='.$idcat.'&idart='.$idart.'&searchterm='.$searchterm.'&page='.$n.$sArtSpecs);
             }
-            $nextpage .= '&nbsp;<a href="'.$next.'" title="'.mi18n("nächste Ergebnisseite anzeigen").'">'.mi18n("vor").'&nbsp;&nbsp;<img src="images/link_pfeil_klein.gif" alt="" /></a>';
+            $nextpage .= ' <a href="'.$next.'" title="'.mi18n("VIEW_NEXT_RESULT_PAGE").'">'.mi18n("NEXT").'  <img src="images/link_pfeil_klein.gif" alt="" /></a>';
             $tpl->set('s', 'NEXT', $nextpage);
         } else {
             $tpl->set('s', 'NEXT', '');
@@ -199,9 +199,9 @@ if (strlen(trim($searchterm)) > 0) {
             try {
                 $pre = cUri::getInstance()->build($aParams);
             } catch (cInvalidArgumentException $e) {
-                $pre = $sess->url('front_content.php?idcat='.$idcat.'&amp;idart='.$idart.'&amp;searchterm='.$searchterm.'&amp;page='.$p.$sArtSpecs);
+                $pre = $sess->url('front_content.php?idcat='.$idcat.'&idart='.$idart.'&searchterm='.$searchterm.'&page='.$p.$sArtSpecs);
             }
-            $prevpage .= '<a href="'.$pre.'" title="'.mi18n("vorherige Ergebnisseite anzeigen").'"><img src="images/link_pfeil_klein_links.gif" alt="" />&nbsp;&nbsp;'.mi18n("zurück").'</a>&nbsp;';
+            $prevpage .= '<a href="'.$pre.'" title="'.mi18n("VIEW_PREVIOUS_PAGE").'"><img src="images/link_pfeil_klein_links.gif" alt="" />  '.mi18n("PREVIOUS").'</a> ';
             $tpl->set('s', 'PREV', $prevpage);
         } else {
             $tpl->set('s', 'PREV', '');
@@ -260,11 +260,11 @@ if (strlen(trim($searchterm)) > 0) {
                 try {
                     $href = cUri::getInstance()->build($aParams);
                 } catch (cInvalidArgumentException $e) {
-                    $href = $sess->url("front_content.php?idcat=$cat_id&amp;idart=$key");
+                    $href = $sess->url("front_content.php?idcat=$cat_id&idart=$key");
                 }
                 $tpl->set('d', 'more', $sMore);
                 $tpl->set('d', 'HREF', $href);
-                $tpl->set('d', 'TITLE', mi18n("Link zu Suchergebnis").' '.$i);
+                $tpl->set('d', 'TITLE', mi18n("LINK_SEARCH_RESULTS").' '.$i);
                 $tpl->set('d', 'NUM', $num);
                 $tpl->set('d', 'CATNAME', $headline);
                 $tpl->set('d', 'HEADLINE', $text);
@@ -280,7 +280,7 @@ if (strlen(trim($searchterm)) > 0) {
         }
     } else {
         // No results
-        $tpl->set('s', 'MESSAGE', $sYourSearchFor." '".htmlspecialchars(strip_tags($searchterm))."' ".mi18n("hat leider keine Treffer ergeben").".");
+        $tpl->set('s', 'MESSAGE', $sYourSearchFor." '".htmlspecialchars(strip_tags($searchterm))."' ".mi18n("GAVE_NO_RESULTS").".");
         $tpl->set('s', 'NEXT', '');
         $tpl->set('s', 'PREV', '');
         $tpl->set('s', 'PAGES', '');
@@ -289,7 +289,7 @@ if (strlen(trim($searchterm)) > 0) {
     }
 } else {
     echo '<div id="searchResults">';
-    echo '<h1>'.mi18n("Keine Suchergebnisse - Bitte suchen Sie über das Sucheingabefeld!").'</h1>';
+    echo '<h1>'.mi18n("TXT_NO_SEARCH_RESULTS.").'</h1>';
     echo '</div>';
 }
 

@@ -1,0 +1,15 @@
+IMAGE_PREVIEW=Bildvorschau
+DOWNLOAD_IMAGE=Bild herunterladen
+NEXT=vor
+ NEXT = vor 
+BACK=zurück
+ BACK = zurück
+ BACK=zurück
+DOWNLOAD_IMAGE =Bild herunterladen 
+WIDTH=Breite
+HEIGHT=Höhe
+COLUMNS=Spalten
+ROWS=Zeilen
+WIDE_DETAILED_VIEW=Breite Detailansicht
+SELECT_DIRECTORY=Verzeichnis auswählen
+NOTHING_SELECTED=Nichts ausgewählt

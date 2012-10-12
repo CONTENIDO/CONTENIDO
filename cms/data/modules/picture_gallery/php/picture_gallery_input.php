@@ -16,30 +16,30 @@
 
 <table>
     <tr>
-        <td><?php echo mi18n("Breite");?></td>
+        <td><?php echo mi18n("WIDTH");?></td>
         <td><input type="text" name="<?php echo "CMS_VAR[0]"; ?>" value="<?php echo "CMS_VALUE[0]"; ?>"></td>
     </tr>
     <tr>
-        <td><?php echo mi18n("H&ouml;he");?></td>
+        <td><?php echo mi18n("HEIGHT");?></td>
         <td><input type="text" name="<?php echo "CMS_VAR[1]"; ?>" value="<?php echo "CMS_VALUE[1]"; ?>"></td>
     </tr>
     <tr>
-        <td><?php echo mi18n("Spalten");?></td>
+        <td><?php echo mi18n("COLUMNS");?></td>
         <td><input type="text" name="<?php echo "CMS_VAR[2]"; ?>" value="<?php echo "CMS_VALUE[2]"; ?>"></td>
     </tr>
     <tr>
-        <td><?php echo mi18n("Zeilen");?></td>
+        <td><?php echo mi18n("ROWS");?></td>
         <td><input type="text" name="<?php echo "CMS_VAR[3]"; ?>" value="<?php echo "CMS_VALUE[3]"; ?>"></td>
     </tr>
     <tr>
-        <td><?php echo mi18n("Breite Detailansicht");?></td>
+        <td><?php echo mi18n("WIDE_DETAILED_VIEW");?></td>
         <td><input type="text" name="<?php echo "CMS_VAR[4]"; ?>" value="<?php echo "CMS_VALUE[4]"; ?>"></td>
     </tr>
     <tr>
-        <td><?php echo mi18n("Verzeichnis ausw&auml;hlen"); ?></td>
+        <td><?php echo mi18n("SELECT_DIRECTORY"); ?></td>
         <td>
             <select name="CMS_VAR[5]" size="1" style="width: 320px">
-                <option value=""><?php echo mi18n("Nichts ausgew&auml;hlt"); ?></option>
+                <option value=""><?php echo mi18n("NOTHING_SELECTED"); ?></option>
                 <?php
                 $sql = "SELECT DISTINCT dirname FROM ".$cfg['tab']['upl']." ORDER BY dirname";
                 $db->query($sql);

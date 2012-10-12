@@ -20,14 +20,14 @@ $cmsIdcatart = "CMS_VALUE[2]";
 echo buildCategorySelect($name, $cmsIdcat);
 
 $table = new cHTMLTable();
-$td = new cHTMLTableData(mi18n('Choose article') . ':');
+$td = new cHTMLTableData(mi18n("CHOOSE_ARTICLE") . ':');
 $td->setClass('text_medium');
 $tr = new cHTMLTableRow($td);
 $table->appendContent($tr);
 
 // build article select
 $select = new cHTMLSelectElement("CMS_VAR[2]");
-$option = new cHTMLOptionElement(mi18n('Please choose'), '');
+$option = new cHTMLOptionElement(mi18n("PLEASE_CHOOSE"), '');
 // if no article has been selected yet, select "please choose" option
 if (empty($cmsIdcatart)) {
     $option->setSelected(true);

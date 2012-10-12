@@ -1,0 +1,5 @@
+READ_MORE=weiterlesen
+URL=URL
+RSS_TEMPLATE_SELECT=RSS-Template auswählen
+NOTHING_SELECTED=Nichts ausgewählt
+COUNT_ITEM=Anzahl Einträge

@@ -42,7 +42,7 @@ if (!isset($oPage) || !is_object($oPage)) {
 }
 $oPage->reset();
 
-$oPage->set('s', 'FORM_ACTION', 'front_content.php?changelang='.$lang.'&amp;idcatart='.
+$oPage->set('s', 'FORM_ACTION', 'front_content.php?changelang='.$lang.'&idcatart='.
             $oClientLang->getProperty('newsletter', 'idcatart'));
 unset($oClientLang);
 
@@ -51,8 +51,8 @@ if ($aSettings["OptNewWindow"]) {
 } else {
     $oPage->set('s', 'FORM_TARGET', '');
 }
-$oPage->set('s', 'EMAILNAME', mi18n("Name"));
-$oPage->set('s', 'EMAIL',     mi18n("E-Mail"));
+$oPage->set('s', 'EMAILNAME', mi18n("NAME"));
+$oPage->set('s', 'EMAIL',     mi18n("E_MAIL"));
 
 $sTmpHTML = "";
 if ($aSettings["JoinSel"] == "UserSelected") {
@@ -69,7 +69,7 @@ if ($aSettings["JoinSel"] == "UserSelected") {
     #$oRcpGroups->select("idclient = '$client' AND idlang = '$lang' AND defaultgroup = '0' AND idnewsgroup IN (".$aSettings["JoinGroups"].")","", "groupname ASC");
 
     if ($oRcpGroups->Count() > 0) {
-        $oLblGroupSel = new cHTMLLabel(mi18n("Select"), "selNewsletterGroup");
+        $oLblGroupSel = new cHTMLLabel(mi18n("SELECT"), "selNewsletterGroup");
 
         $oSelGroup = new cHTMLSelectElement("selNewsletterGroup[]", "", "selNewsletterGroup");
         $oSelGroup->setSize(2);
@@ -94,13 +94,13 @@ if ($aSettings["JoinSel"] == "UserSelected") {
 // $sTmpHTML .= '...';
 
 if ($aSettings['JoinMessageType'] == 'user') {
-    $oLblType = new cHTMLLabel(mi18n("Type"), "selNewsletterType");
+    $oLblType = new cHTMLLabel(mi18n("TYPE"), "selNewsletterType");
 
     $oSelType = new cHTMLSelectElement("selNewsletterType", "", "selNewsletterType");
     $oSelType->setSize(1);
     $oSelType->setClass("");
 
-    $oOption = new cHTMLOptionElement(mi18n("Text only"), 0);
+    $oOption = new cHTMLOptionElement(mi18n("TEXT_ONLY"), 0);
     $oSelType->addOptionElement(0, $oOption);
     $oOption = new cHTMLOptionElement(mi18n("HTML"), 1);
     $oSelType->addOptionElement(1, $oOption);
@@ -111,17 +111,17 @@ if ($aSettings['JoinMessageType'] == 'user') {
 }
 $oPage->set('s', 'EXTRAHTML', $sTmpHTML);
 
-$oPage->set('s', 'NEWSLETTER', mi18n("Newsletter"));
-$oPage->set('s', 'SUBSCRIBE',  mi18n("Subscribe"));
-$oPage->set('s', 'DELETE',     mi18n("Unsubscribe"));
+$oPage->set('s', 'NEWSLETTER', mi18n("NEWSLETTER_"));
+$oPage->set('s', 'SUBSCRIBE',  mi18n("SUBSCRIBE_"));
+$oPage->set('s', 'DELETE',     mi18n("UNSUBSCRIBE"));
 
-$oPage->set("s", "ABSCHICKEN", mi18n("submit"));
-$oPage->set("s", "LOESCHEN", mi18n("delete"));
-$oPage->set('s', 'JOIN', mi18n("Join"));
+$oPage->set("s", "ABSCHICKEN", mi18n("SUBMIT"));
+$oPage->set("s", "LOESCHEN", mi18n("DELETE"));
+$oPage->set('s', 'JOIN', mi18n("JOIN"));
 $oPage->set('s', 'LINKEDITOR',$cmsLinkeditor );
-$oPage->set('s', 'PRIVACY_TEXT_PART1', mi18n("Ich habe die"));
+$oPage->set('s', 'PRIVACY_TEXT_PART1', mi18n("I_HAVE"));
 
-$oPage->set('s', 'PRIVACY_TEXT_PART2', mi18n(" gelesen und bin damit einverstanden. "));
+$oPage->set('s', 'PRIVACY_TEXT_PART2', mi18n(" READ_AND_ACCEPT. "));
 
 $oPage->generate('templates/'.$sTemplate);
 

@@ -12,7 +12,7 @@ try {
 
         $sHeadline = $category->get('name');
     } else {
-        $sHeadline = mi18n("Willkommen!");
+        $sHeadline = mi18n("WELCOME!");
     }
 
     $sImgEdit = "CMS_IMGEDITOR[1]";
@@ -28,7 +28,7 @@ try {
 
     $tpl->set('s', 'css-style', $sCssStyle);
     $tpl->set('s', 'url', 'front_content.php');
-    $tpl->set('s', 'title', mi18n("Zur CONTENIDO Homepage"));
+    $tpl->set('s', 'title', mi18n("TXT_WELCOME"));
     $tpl->set('s', 'headline', $sHeadline);
     $tpl->generate('templates/header.html');
 } catch (cInvalidArgumentException $eI) {
