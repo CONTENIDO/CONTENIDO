@@ -365,15 +365,29 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // Add CONTENIDO meta tag
         $aVersion = explode('.', $cfg['version']);
         $sContenidoVersion = $aVersion[0] . '.' . $aVersion[1];
+
+        $oArtLang = new cApiArticleLanguage();
+        $oArtLang->loadByArticleAndLanguageId($this->_idart, $this->_lang);
+        if (!$oArtLang->isLoaded()) {
+            continue;
+        }
+        $search = $oArtLang->get('searchable');
+
+        if($search == 0){
+        	$searchable = 'NOINDEX';
+        } else {
+            $searchable = 'INDEX';
+        }
+
         $aMetaTags[] = array('name' => 'generator', 'content' => 'CMS CONTENIDO ' . $sContenidoVersion);
 
         // Add content type or charseet meta tag
         if (getEffectiveSetting('generator', 'html5', 'false') == 'true') {
-            $aMetaTags[] = array('charset' => $encoding[$this->_lang]);
+            $aMetaTags[] = array('charset' => $encoding[$this->_lang], 'searchable' => $searchable);
         } elseif (getEffectiveSetting('generator', 'xhtml', 'false') == 'true') {
-            $aMetaTags[] = array('http-equiv' => 'Content-Type', 'content' => 'application/xhtml+xml; charset=' . $encoding[$this->_lang]);
+            $aMetaTags[] = array('http-equiv' => 'Content-Type', 'content' => 'application/xhtml+xml; charset=' . $encoding[$this->_lang], 'searchable' => $searchable);
         } else {
-            $aMetaTags[] = array('http-equiv' => 'Content-Type', 'content' => 'text/html; charset=' . $encoding[$this->_lang]);
+            $aMetaTags[] = array('http-equiv' => 'Content-Type', 'content' => 'text/html; charset=' . $encoding[$this->_lang], 'searchable' => $searchable);
         }
 
         return $aMetaTags;
