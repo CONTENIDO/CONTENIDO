@@ -12,6 +12,10 @@
  * @link http://www.contenido.org
  */
 
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call: Missing framework initialization - request aborted.');
+}
+
 /**
  * This class contains the abstract methods for the authentication in CONTENIDO.
  *
