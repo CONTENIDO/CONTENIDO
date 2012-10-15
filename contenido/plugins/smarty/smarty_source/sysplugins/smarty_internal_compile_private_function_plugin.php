@@ -11,10 +11,25 @@
 
 /**
  * Smarty Internal Plugin Compile Function Plugin Class
+ *
+ * @package Smarty
+ * @subpackage Compiler
  */
 class Smarty_Internal_Compile_Private_Function_Plugin extends Smarty_Internal_CompileBase {
-    // attribute definitions
+
+    /**
+     * Attribute definition: Overwrites base class.
+     *
+     * @var array
+     * @see Smarty_Internal_CompileBase
+     */
     public $required_attributes = array();
+    /**
+     * Attribute definition: Overwrites base class.
+     *
+     * @var array
+     * @see Smarty_Internal_CompileBase
+     */
     public $optional_attributes = array('_any');
 
     /**
@@ -29,14 +44,13 @@ class Smarty_Internal_Compile_Private_Function_Plugin extends Smarty_Internal_Co
      */
     public function compile($args, $compiler, $parameter, $tag, $function)
     {
-        $this->compiler = $compiler;
         // This tag does create output
-        $this->compiler->has_output = true;
+        $compiler->has_output = true;
 
         // check and get attributes
-        $_attr = $this->_get_attributes($args);
+        $_attr = $this->getAttributes($compiler, $args);
         if ($_attr['nocache'] === true) {
-            $this->compiler->tag_nocache = true;
+            $compiler->tag_nocache = true;
         }
         unset($_attr['nocache']);
         // convert attributes into parameter array string
@@ -53,6 +67,7 @@ class Smarty_Internal_Compile_Private_Function_Plugin extends Smarty_Internal_Co
         $output = "<?php echo {$function}({$_params},\$_smarty_tpl);?>\n";
         return $output;
     }
+
 }
 
 ?>

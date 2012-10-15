@@ -1794,6 +1794,7 @@ contenido/plugins/smarty/classes/class.Contenido_Backend_SmartyWrapper.php -text
 contenido/plugins/smarty/classes/class.Contenido_SmartyWrapper.php -text
 contenido/plugins/smarty/includes/config.plugin.php -text
 contenido/plugins/smarty/smarty_source/Smarty.class.php -text
+contenido/plugins/smarty/smarty_source/SmartyBC.class.php -text
 contenido/plugins/smarty/smarty_source/debug.tpl -text
 contenido/plugins/smarty/smarty_source/plugins/block.php.php -text
 contenido/plugins/smarty/smarty_source/plugins/block.textformat.php -text
@@ -1823,19 +1824,30 @@ contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.count_paragraphs
 contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.count_sentences.php -text
 contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.count_words.php -text
 contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.default.php -text
+contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.escape.php -text
+contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.from_charset.php -text
 contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.indent.php -text
 contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.lower.php -text
 contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.noprint.php -text
 contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.string_format.php -text
 contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.strip.php -text
 contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.strip_tags.php -text
+contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.to_charset.php -text
+contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.unescape.php -text
 contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.upper.php -text
 contenido/plugins/smarty/smarty_source/plugins/modifiercompiler.wordwrap.php -text
 contenido/plugins/smarty/smarty_source/plugins/outputfilter.trimwhitespace.php -text
 contenido/plugins/smarty/smarty_source/plugins/shared.escape_special_chars.php -text
+contenido/plugins/smarty/smarty_source/plugins/shared.literal_compiler_param.php -text
 contenido/plugins/smarty/smarty_source/plugins/shared.make_timestamp.php -text
 contenido/plugins/smarty/smarty_source/plugins/shared.mb_str_replace.php -text
+contenido/plugins/smarty/smarty_source/plugins/shared.mb_unicode.php -text
+contenido/plugins/smarty/smarty_source/plugins/shared.mb_wordwrap.php -text
 contenido/plugins/smarty/smarty_source/plugins/variablefilter.htmlspecialchars.php -text
+contenido/plugins/smarty/smarty_source/sysplugins/smarty_cacheresource.php -text
+contenido/plugins/smarty/smarty_source/sysplugins/smarty_cacheresource_custom.php -text
+contenido/plugins/smarty/smarty_source/sysplugins/smarty_cacheresource_keyvaluestore.php -text
+contenido/plugins/smarty/smarty_source/sysplugins/smarty_config_source.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_cacheresource_file.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_compile_append.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_compile_assign.php -text
@@ -1868,6 +1880,7 @@ contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_compile_privat
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_compile_private_special_variable.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_compile_rdelim.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_compile_section.php -text
+contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_compile_setfilter.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_compile_while.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_compilebase.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_config.php -text
@@ -1892,12 +1905,17 @@ contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_resource_strea
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_resource_string.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_smartytemplatecompiler.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_template.php -text
+contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_templatebase.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_templatecompilerbase.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_templatelexer.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_templateparser.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_utility.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_wrapper.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_write_file.php -text
+contenido/plugins/smarty/smarty_source/sysplugins/smarty_resource.php -text
+contenido/plugins/smarty/smarty_source/sysplugins/smarty_resource_custom.php -text
+contenido/plugins/smarty/smarty_source/sysplugins/smarty_resource_recompiled.php -text
+contenido/plugins/smarty/smarty_source/sysplugins/smarty_resource_uncompiled.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_security.php -text
 contenido/plugins/url_shortener/classes/class.url_shortener.shorturl.php -text
 contenido/plugins/url_shortener/files/htaccess_restrictive.txt -text svneol=unset#text/plain
@@ -1982,6 +2000,7 @@ contenido/scripts/iZoom.js.php -text
 contenido/scripts/index.php -text
 contenido/scripts/infoBox.js -text
 contenido/scripts/jquery/ajaxupload.js -text
+contenido/scripts/jquery/fileuploader.js -text svneol=unset#text/plain
 contenido/scripts/jquery/jquery-ui.js -text
 contenido/scripts/jquery/jquery.js -text
 contenido/scripts/jquery/plugins/datepicker-de.js -text svneol=unset#text/plain
@@ -2011,6 +2030,8 @@ contenido/styles/content_types/cms_linkeditor.css -text
 contenido/styles/content_types/cms_teaser.css -text svneol=unset#text/plain
 contenido/styles/index.php -text
 contenido/styles/inuse.css -text
+contenido/styles/jquery/fileuploader.css -text svneol=unset#text/plain
+contenido/styles/jquery/images/loading.gif -text
 contenido/styles/jquery/images/ui-bg_flat_0_aaaaaa_40x100.png -text
 contenido/styles/jquery/images/ui-bg_flat_75_ffffff_40x100.png -text
 contenido/styles/jquery/images/ui-bg_glass_55_fbf9ee_1x400.png -text

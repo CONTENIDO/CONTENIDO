@@ -11,12 +11,16 @@
 
 /**
  * Smarty Internal Plugin Compile special Smarty Variable Class
+ *
+ * @package Smarty
+ * @subpackage Compiler
  */
 class Smarty_Internal_Compile_Private_Special_Variable extends Smarty_Internal_CompileBase {
+
     /**
      * Compiles code for the speical $smarty variables
      *
-     * @param array $args array with attributes from parser
+     * @param array  $args     array with attributes from parser
      * @param object $compiler compiler object
      * @return string compiled code
      */
@@ -56,10 +60,13 @@ class Smarty_Internal_Compile_Private_Special_Variable extends Smarty_Internal_C
                 break;
 
             case 'template':
-                return 'basename($_smarty_tpl->getTemplateFilepath())';
+                return 'basename($_smarty_tpl->source->filepath)';
+
+            case 'template_object':
+                return '$_smarty_tpl';
 
             case 'current_dir':
-                return 'dirname($_smarty_tpl->getTemplateFilepath())';
+                return 'dirname($_smarty_tpl->source->filepath)';
 
             case 'version':
                 $_version = Smarty::SMARTY_VERSION;
@@ -73,7 +80,11 @@ class Smarty_Internal_Compile_Private_Special_Variable extends Smarty_Internal_C
                 return '@' . trim($_index[1], "'");
 
             case 'config':
-                return "\$_smarty_tpl->getConfigVariable($_index[1])";
+                if (isset($_index[2])) {
+                    return "(is_array(\$tmp = \$_smarty_tpl->getConfigVariable($_index[1])) ? \$tmp[$_index[2]] : null)";
+                } else {
+                    return "\$_smarty_tpl->getConfigVariable($_index[1])";
+                }
             case 'ldelim':
                 $_ldelim = $compiler->smarty->left_delimiter;
                 return "'$_ldelim'";
@@ -94,6 +105,7 @@ class Smarty_Internal_Compile_Private_Special_Variable extends Smarty_Internal_C
         }
         return $compiled_ref;
     }
+
 }
 
 ?>

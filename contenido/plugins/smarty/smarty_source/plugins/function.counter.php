@@ -11,12 +11,12 @@
  * Type:     function<br>
  * Name:     counter<br>
  * Purpose:  print out a counter value
+ *
  * @author Monte Ohrt <monte at ohrt dot com>
- * @link http://smarty.php.net/manual/en/language.function.counter.php {counter}
+ * @link http://www.smarty.net/manual/en/language.function.counter.php {counter}
  *       (Smarty online manual)
- * @param array parameters
- * @param Smarty
- * @param object $template template object
+ * @param array                    $params   parameters
+ * @param Smarty_Internal_Template $template template object
  * @return string|null
  */
 function smarty_function_counter($params, $template)
@@ -45,7 +45,7 @@ function smarty_function_counter($params, $template)
     if (isset($counter['assign'])) {
         $template->assign($counter['assign'], $counter['count']);
     }
-
+    
     if (isset($params['print'])) {
         $print = (bool)$params['print'];
     } else {
@@ -61,7 +61,7 @@ function smarty_function_counter($params, $template)
     if (isset($params['skip'])) {
         $counter['skip'] = $params['skip'];
     }
-
+    
     if (isset($params['direction'])) {
         $counter['direction'] = $params['direction'];
     }
@@ -70,9 +70,9 @@ function smarty_function_counter($params, $template)
         $counter['count'] -= $counter['skip'];
     else
         $counter['count'] += $counter['skip'];
-
+    
     return $retval;
-
+    
 }
 
 ?>
