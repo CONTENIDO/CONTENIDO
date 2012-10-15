@@ -143,7 +143,7 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
     $x = imagesx($imageHandle);
     $y = imagesy($imageHandle);
 
-    list($targetX, $targetY) = cApiImageGetTragetDimensions($x, $y, $maxX, $maxY, $expand);
+    list($targetX, $targetY) = cApiImageGetTargetDimensions($x, $y, $maxX, $maxY, $expand);
 
     // Create the target image with the target size, resize it afterwards.
     if ($crop) {
@@ -250,7 +250,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
     $x = imagesx($imageHandle);
     $y = imagesy($imageHandle);
 
-    list($targetX, $targetY) = cApiImageGetTragetDimensions($x, $y, $maxX, $maxY, $expand);
+    list($targetX, $targetY) = cApiImageGetTargetDimensions($x, $y, $maxX, $maxY, $expand);
 
     // Create the target image with the target size, resize it afterwards.
     if ($crop) {
@@ -351,7 +351,7 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
         return false;
     }
 
-    list($targetX, $targetY) = cApiImageGetTragetDimensions($x, $y, $maxX, $maxY, $expand);
+    list($targetX, $targetY) = cApiImageGetTargetDimensions($x, $y, $maxX, $maxY, $expand);
 
     // If is animated gif resize first frame
     if ($filetype == '.gif') {
@@ -563,7 +563,7 @@ function cApiImageCheckImageEditingPosibility() {
  * @param   bool  $expand
  * @return  array  Index 0 is target X and index 1 is target Y
  */
-function cApiImageGetTragetDimensions($x, $y, $maxX, $maxY, $expand) {
+function cApiImageGetTargetDimensions($x, $y, $maxX, $maxY, $expand) {
     if (($maxX / $x) < ($maxY / $y)) {
         $targetY = $y * ($maxX / $x);
         $targetX = round($maxX);
