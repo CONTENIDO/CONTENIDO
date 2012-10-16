@@ -101,14 +101,10 @@ cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 
 $db = cRegistry::getDb();
 
-$sess->register('cfgClient');
-$sess->register('errsite_idcat');
-$sess->register('errsite_idart');
+//$sess->register('cfgClient');
+//$sess->register('errsite_idcat');
+//$sess->register('errsite_idart');
 $sess->register('encoding');
-
-if ($cfgClient['set'] != 'set') {
-    rereadClients();
-}
 
 // Initialize encodings
 if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
@@ -202,7 +198,7 @@ if (isset($path) && strlen($path) > 1) {
 
 // Error page
 $aParams = array(
-    'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client],
+    'client' => $client, 'idcat' => $cfgClient[$client]["errsite"]["idcat"], 'idart' => $cfgClient[$client]["errsite"]["idart"],
     'lang' => $lang, 'error' => '1'
 );
 $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);

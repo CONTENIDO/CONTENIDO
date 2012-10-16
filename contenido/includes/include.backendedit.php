@@ -100,14 +100,6 @@ if (isset($area)) {
     $area = (isset($sess_area) && $sess_area != '') ? $sess_area : 'login';
 }
 
-$sess->register('cfgClient');
-$sess->register('errsite_idcat');
-$sess->register('errsite_idart');
-
-if ($cfgClient['set'] != 'set') {
-    rereadClients();
-}
-
 $start = getmicrotime();
 
 include(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'include.' . $type . '.php');

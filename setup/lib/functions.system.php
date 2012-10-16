@@ -200,7 +200,6 @@ function updateClientPath($db, $table, $idclient, $frontendpath, $htmlpath) {
     global $cfg, $cfgClient;
     checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
 
-    rereadClients();
     updateClientCache($idclient, $htmlpath, $frontendpath);
 }
 

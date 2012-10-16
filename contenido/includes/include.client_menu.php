@@ -31,6 +31,9 @@ if ($action == "client_delete") {
         $sql = "DELETE FROM " . $cfg["tab"]["clients"] . " WHERE
              idclient = '" . cSecurity::toInteger($idclientdelete) . "'";
         $db->query($sql);
+        $cfgClient[$idclientdelete] = null;
+
+        updateClientCache();
     }
 }
 

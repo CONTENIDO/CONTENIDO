@@ -105,8 +105,6 @@ $perm->load_permissions();
 $tpl = new cTemplate();
 $nav = new cGuiNavigation();
 
-rereadClients();
-
 $nav->buildHeader($lang);
 
 cRegistry::shutdown();

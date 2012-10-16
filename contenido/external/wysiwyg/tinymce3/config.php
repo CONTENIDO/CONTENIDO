@@ -36,8 +36,4 @@ cInclude('includes', 'functions.api.php');
 
 $db = cRegistry::getDb();
 
-if ($cfgClient['set'] != 'set') {
-    rereadClients();
-}
-
 ?>

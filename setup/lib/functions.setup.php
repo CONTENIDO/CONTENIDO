@@ -79,7 +79,6 @@ function setupInitializeCfgClient($reset = false) {
         if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
             require($cfg['path']['contenido_config'] . 'config.clients.php');
         }
-        rereadClients();
     }
 }
 

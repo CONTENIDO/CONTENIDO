@@ -109,6 +109,12 @@ require_once($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
 
 if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
     require_once($cfg['path']['contenido_config'] . 'config.clients.php');
+    foreach($cfgClient as $id => $client) {
+        if(is_array($client)) {
+            $errsite_idcat[$id] = $client["errsite"]["idcat"];
+            $errsite_idart[$id] = $client["errsite"]["idart"];
+        }
+    }
 }
 
 // Include userdefined configuration (if available), where you are able to

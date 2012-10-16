@@ -24,8 +24,6 @@ include_once('../../includes/startup.php');
 
 $frontendPath = cRegistry::getFrontendPath();
 
-// Load base clients settings and change to current clients frontend directory
-rereadClients();
 // if directory does not exist, show error message
 if (!is_dir($frontendPath)) {
     $notification = new cGuiNotification();

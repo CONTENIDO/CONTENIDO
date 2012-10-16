@@ -26,7 +26,6 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 $client = (isset($client)) ? $client : $load_client;
-rereadClients();
 
 plugin_include('smarty', 'classes/class.Contenido_SmartyWrapper.php');
 

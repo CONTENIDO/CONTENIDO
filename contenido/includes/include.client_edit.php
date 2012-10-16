@@ -66,9 +66,10 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
         $oClientColl = new cApiClientCollection();
         $oClient = $oClientColl->create($clientname, $errsite_cat, $errsite_art);
 
-        rereadClients();
-
         $idclient = $oClient->get('idclient');
+        $cfgClient[$idclient]["name"] = $clientname;
+        updateClientCache();
+
         $properties->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
 
         $backendPath = cRegistry::getBackendPath();
@@ -119,7 +120,6 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
     }
 
     $new = false;
-    rereadClients();
 
     updateClientCache($idclient, $htmlpath, $frontendpath);
 

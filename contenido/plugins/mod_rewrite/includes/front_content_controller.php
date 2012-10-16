@@ -42,15 +42,11 @@ if ($oMRController->errorOccured()) {
     $iRedirToErrPage = ModRewrite::getConfig('redirect_invalid_article_to_errorsite', 0);
     // try to redirect to errorpage if desired
     if ($iRedirToErrPage == 1 && (int) $client > 0 && (int) $lang > 0) {
-        global $errsite_idcat, $errsite_idart;
-
-        if ($cfgClient['set'] != 'set') {
-            rereadClients();
-        }
+        global $cfgClient;
 
         // errorpage
         $aParams = array(
-            'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client],
+            'client' => $client, 'idcat' => $cfgClient[$client]["errsite"]["idcat"], 'idart' => $cfgClient[$client]["errsite"]["idart"],
             'lang' => $lang, 'error' => '1'
         );
         $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);

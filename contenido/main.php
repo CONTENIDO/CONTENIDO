@@ -154,14 +154,6 @@ if (isset($area)) {
     $area = (isset($sess_area) && $sess_area != '')? $sess_area : 'login';
 }
 
-$sess->register('cfgClient');
-$sess->register('errsite_idcat');
-$sess->register('errsite_idart');
-
-if ($cfgClient['set'] != 'set') {
-    rereadClients();
-}
-
 // Initialize CONTENIDO_Backend.
 // Load all actions from the DB and check if permission is granted.
 $oldmemusage = memory_get_usage();

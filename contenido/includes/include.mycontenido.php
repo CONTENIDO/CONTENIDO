@@ -64,11 +64,32 @@ $max_log_size = getSystemProperty('backend', 'max_log_size');
 if ($max_log_size === false) {
     $max_log_size = 10;
 }
-
 if (in_array('sysadmin', explode(',', $vuser->getEffectiveUserPerms())) && $max_log_size > 0) {
     $log_size = getDirectorySize($cfg['path']['contenido_logs']);
     if ($log_size > $max_log_size * 1024 * 1024) {
         $page->displayWarning(i18n('The log directory is bigger than') . ' ' . humanReadableSize($max_log_size * 1024 * 1024) . '.' . i18n('Current size') . ': ' . humanReadableSize($log_size));
+    }
+}
+
+//check for data in the old data folders
+$foldersToCheck = array($cfg["path"]["frontend"]."/contenido/logs", $cfg["path"]["frontend"]."/contenido/temp");
+foreach($cfgClient as $iclient => $aclient) {
+    if(!is_numeric($iclient)) {
+        continue;
+    }
+    $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend']."layouts";
+    $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend']."logs";
+}
+$faultyFolders = array();
+foreach($foldersToCheck as $folder) {
+    $handle = @opendir($folder);
+    if($handle != false) {
+        $faultyFolders[] = $folder;
+    }
+}
+foreach($faultyFolders as $folder) {
+    if(in_array("sysadmin", explode(",", $vuser->getEffectiveUserPerms()))) {
+        $page->displayWarning(i18n("The folder located at ".$folder." contains data but it's no longer needed. You can delete it."));
     }
 }
 

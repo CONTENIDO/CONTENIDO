@@ -441,33 +441,16 @@ function htmldecode($string) {
     return $ret;
 }
 
+/**
+ * Loads the client information from the database and stores it in config.client.php.
+ * Reinitializes the $cfgClient array and fills it wih updated information if provided.
+ *
+ * @param number $idclient client id which will be updated
+ * @param string $htmlpath new HTML path. Starting with "http://"
+ * @param string $frontendpath path the to the frontend
+ */
 function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
-    global $cfg, $cfgClient;
-
-    if ($idclient != 0 && $htmlpath != '' && $frontendpath != '') {
-        $cfgClient[$idclient]['path']['frontend'] = cSecurity::escapeString($frontendpath);
-        $cfgClient[$idclient]['path']['htmlpath'] = cSecurity::escapeString($htmlpath);
-    }
-
-    $aConfigFileContent = array();
-    $aConfigFileContent[] = '<?php';
-    $aConfigFileContent[] = 'global $cfgClient;';
-    $aConfigFileContent[] = '';
-
-    foreach ($cfgClient as $iIdClient => $aClient) {
-        if ((int) $iIdClient > 0) {
-            $aConfigFileContent[] = '/* ' . $aClient['name'] . ' */';
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["htmlpath"] = "' . $aClient['path']['htmlpath'] . '";';
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["frontend"] = "' . $aClient['path']['frontend'] . '";';
-            $aConfigFileContent[] = '';
-        }
-    }
-
-    cFileHandler::write($cfg['path']['contenido_config'] . 'config.clients.php', implode(PHP_EOL, $aConfigFileContent));
-}
-
-function rereadClients() {
-    global $cfgClient, $errsite_idcat, $errsite_idart, $db, $cfg;
+    global $cfg, $cfgClient, $errsite_idcat, $errsite_idart, $db;
 
     if (!is_object($db)) {
         $db = cRegistry::getDb();
@@ -475,6 +458,21 @@ function rereadClients() {
 
     $sql = 'SELECT idclient, name, errsite_cat, errsite_art FROM ' . $cfg['tab']['clients'];
     $db->query($sql);
+
+    $htmlpaths = array();
+    $frontendpaths = array();
+    foreach($cfgClient as $id => $client) {
+        if(is_array($client)) {
+            $htmlpaths[$id] = $client["path"]["htmlpath"];
+            $frontendpaths[$id] = $client["path"]["frontend"];
+        }
+    }
+    unset($cfgClient);
+    $cfgClient = array();
+    foreach($htmlpaths as $id => $path) {
+        $cfgClient[$id]["path"]["htmlpath"] = $htmlpaths[$id];
+        $cfgClient[$id]["path"]["frontend"] = $frontendpaths[$id];
+    }
 
     while ($db->next_record()) {
         $iClient = $db->f('idclient');
@@ -484,6 +482,8 @@ function rereadClients() {
 
         $errsite_idcat[$iClient] = $db->f('errsite_cat');
         $errsite_idart[$iClient] = $db->f('errsite_art');
+        $cfgClient[$iClient]["errsite"]["idcat"] = $errsite_idcat[$iClient];
+        $cfgClient[$iClient]["errsite"]["idart"] = $errsite_idart[$iClient];
 
         $cfgClient[$iClient]['images'] = $cfgClient[$iClient]['path']['htmlpath'] . 'images/';
         $cfgClient[$iClient]['upload'] = 'upload/';
@@ -529,6 +529,82 @@ function rereadClients() {
         $cfgClient[$iClient]['version']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/version/';
         $cfgClient[$iClient]['version']['frontendpath'] = 'data/version/';
     }
+
+    if ($idclient != 0 && $htmlpath != '' && $frontendpath != '') {
+        $cfgClient[$idclient]['path']['frontend'] = cSecurity::escapeString($frontendpath);
+        $cfgClient[$idclient]['path']['htmlpath'] = cSecurity::escapeString($htmlpath);
+    }
+
+    $aConfigFileContent = array();
+    $aConfigFileContent[] = '<?php';
+    $aConfigFileContent[] = 'global $cfgClient;';
+    $aConfigFileContent[] = '';
+
+    foreach ($cfgClient as $iIdClient => $aClient) {
+        if ((int) $iIdClient > 0 && is_array($aClient)) {
+            $aConfigFileContent[] = '/* ' . $aClient['name'] . ' */';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["name"] = "'.$aClient['name'].'";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["errsite"]["idcat"] = "'.$aClient["errsite"]["idcat"].'";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["errsite"]["idart"] = "'.$aClient["errsite"]["idart"].'";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["images"] = "'.$aClient["path"]["htmlpath"].'images/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["upload"] = "upload/";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["htmlpath"]["frontend"] = "'.$aClient["path"]["htmlpath"].'";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["upl"]["path"] = "'.$aClient["path"]["frontend"].'upload/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["upl"]["htmlpath"] = "'.$aClient["htmlpath"]["frontend"].'upload/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["upl"]["frontendpath"] = "upload/";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["css"]["path"] = "'.$aClient["path"]["frontend"].'css/";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["js"]["path"] = "'.$aClient["path"]["frontend"].'js/";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["tpl"]["path"] = "'.$aClient["path"]["frontend"].'templates/";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["cache"]["path"] = "'.$aClient["path"]["frontend"].'cache/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["cache"]["frontendpath"] = "cache/";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["code"]["path"] = "'.$aClient["path"]["frontend"].'cache/code/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["code"]["frontendpath"] = "cache/code/";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["sitemap"]["path"] = "'.$aClient["path"]["frontend"].'sitemaps/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["sitemap"]["frontendpath"] = "sitemaps/";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["template"]["path"] = "'.$aClient["path"]["frontend"].'templates/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["template"]["frontendpath"] = "templates/";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["data"]["path"] = "'.$aClient["path"]["frontend"].'data/";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["module"]["path"] = "'.$aClient["path"]["frontend"].'data/modules/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["module"]["frontendpath"] = "data/modules/";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["config"]["path"] = "'.$aClient["path"]["frontend"].'data/config/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["config"]["frontendpath"] = "data/config/";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["layout"]["path"] = "'.$aClient["path"]["frontend"].'data/layouts/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["layout"]["frontendpath"] = "data/layouts/";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["log"]["path"] = "'.$aClient["path"]["frontend"].'data/logs/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["log"]["frontendpath"] = "data/logs/";';
+
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["version"]["path"] = "'.$aClient["path"]["frontend"].'data/version/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["version"]["frontendpath"] = "data/version/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["path"]["htmlpath"] = "' . $aClient['path']['htmlpath'] . '";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["path"]["frontend"] = "' . $aClient['path']['frontend'] . '";';
+            $aConfigFileContent[] = '';
+        }
+    }
+    $aConfigFileContent[] = '$cfgClient["set"] = "set";';
+    $aConfigFileContent[] = '?>';
+
+    cFileHandler::write($cfg['path']['contenido_config'] . 'config.clients.php', implode(PHP_EOL, $aConfigFileContent));
+}
+
+/**
+ * @deprecated no longer needed
+ */
+function rereadClients() {
+    cDeprecated("This function is no longer needed since all client information is stored in config.client.php.");
 }
 
 /**
