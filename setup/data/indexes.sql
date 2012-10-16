@@ -1,9 +1,7 @@
 ALTER TABLE !PREFIX!_actions add INDEX idarea (idarea);
-ALTER TABLE !PREFIX!_actions add FULLTEXT INDEX name (name);
 ALTER TABLE !PREFIX!_actions add INDEX name_2 (name);
 
 ALTER TABLE !PREFIX!_area add INDEX idarea (idarea,name,online);
-ALTER TABLE !PREFIX!_area add FULLTEXT INDEX name (name);
 ALTER TABLE !PREFIX!_area add INDEX name_2 (name);
 
 ALTER TABLE !PREFIX!_art add INDEX idclient (idclient);
