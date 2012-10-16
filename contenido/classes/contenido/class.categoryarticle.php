@@ -31,8 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "class.genericdb.php");
-
 class cApiCategoryArticleCollection extends ItemCollection
 {
 	function cApiCategoryArticleCollection ($select = false)

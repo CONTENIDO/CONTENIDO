@@ -31,8 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude('classes', 'class.genericdb.php');
-
 class cApiAreaCollection extends ItemCollection
 {
 	/**

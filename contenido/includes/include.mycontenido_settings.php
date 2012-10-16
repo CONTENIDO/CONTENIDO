@@ -35,11 +35,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.ui.php");
-cInclude("classes", "widgets/class.widgets.page.php");
-cInclude("classes", "contenido/class.user.php");
-cInclude('classes', 'class.conuser.php');
-
 $user = new cApiUser($auth->auth["uid"]);
 
 $noti = "";

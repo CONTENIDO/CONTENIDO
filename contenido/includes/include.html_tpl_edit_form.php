@@ -33,9 +33,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.ui.php");
-cInclude("classes", "widgets/class.widgets.page.php");
-cInclude("classes", "class.htmlvalidator.php");
 cInclude("external", "edit_area/class.edit_area.php");
 cInclude("includes", "functions.file.php");
 
@@ -123,9 +120,6 @@ if (!$perm->have_perm_area_action($area, $action))
 	   /**
 		* START TRACK VERSION
 		**/
-		cInclude("classes", "class.version.php");
-		cInclude("classes", "class.versionFile.php");
-			
 		$sTypeContent = "templates";
 			
         if((count($aFileInfo) == 0) || ((int)$aFileInfo["idsfi"] == 0)) {

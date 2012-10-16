@@ -528,9 +528,6 @@ class cConCacheHandler extends cConCache {
 		if (is_null($iCreateCode)) {
             // check if code is expired
 
-			cInclude('classes', 'contenido/class.article.php');
-			cInclude('classes', 'contenido/class.categoryarticle.php');
-
 			$oApiCatArtColl = new cApiCategoryArticleCollection('idart="'.$GLOBALS['idart'].'" AND idcat="'.$GLOBALS['idcat'].'"');
 			if ($oApiCatArt = $oApiCatArtColl->next()) {
 				$iCreateCode = $oApiCatArt->get('createcode');

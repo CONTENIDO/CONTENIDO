@@ -469,10 +469,6 @@ if ($cfg["cache"]["disable"] != '1') {
  */
 if ($contenido)
 {
-    cInclude("classes", 'class.inuse.php');
-    cInclude("classes", 'class.user.php');
-    cInclude("classes", 'class.table.php');
-    cInclude("classes", 'class.notification.php');
 
     $perm->load_permissions();
 

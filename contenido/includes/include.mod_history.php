@@ -30,14 +30,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-// For build select box
-cInclude("classes", "class.ui.php");
-cInclude("classes", "class.htmlelements.php");
-
-// For get Version Informatian    
-cInclude("classes", "class.version.php");
-cInclude("classes","class.versionModule.php");
-
 
 // For Editor syntax highlighting
 cInclude("external", "edit_area/class.edit_area.php");

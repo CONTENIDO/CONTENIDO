@@ -39,9 +39,6 @@ if(!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-include_once('Contenido_Category.class.php');
-cInclude("classes", "class.article.php");
-cInclude("classes", "class.security.php");
 
 class Contenido_Category_Articles extends Contenido_Category_Base {
     /**#@+

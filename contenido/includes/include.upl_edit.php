@@ -36,9 +36,6 @@ if(!defined('CON_FRAMEWORK')) {
    die('Illegal call');
 }
 
-cInclude("classes", "class.ui.php");
-cInclude("classes", "class.htmlelements.php");
-cInclude("classes", "class.properties.php");
 cInclude("includes", "functions.upl.php");
 
 $page = new UI_Page;

@@ -31,9 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "class.htmlelements.php");
-cInclude("classes", "datatypes/class.datatype.datetime.php");
-
 class cCalendarControl extends cHTMLTable
 {
 	var $_oDate;

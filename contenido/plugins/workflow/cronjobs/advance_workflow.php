@@ -33,20 +33,6 @@ define('CON_FRAMEWORK', true);
 // Contenido startup process
 include_once ('../../../includes/startup.php');
 
-cInclude("classes", "class.security.php");
-cInclude("classes", "class.user.php");
-cInclude("classes", "class.xml.php");
-cInclude("classes", "class.navigation.php");
-cInclude("classes", "class.template.php");
-cInclude("classes", "class.backend.php");
-cInclude("classes", "class.table.php");
-cInclude("classes", "class.notification.php");
-cInclude("classes", "class.area.php");
-
-cInclude("classes", "class.layout.php");
-cInclude("classes", "class.client.php");
-cInclude("classes", "class.cat.php");
-cInclude("classes", "class.treeitem.php");
 cInclude("includes", "cfg_language_de.inc.php");
 cInclude("includes", "functions.con.php");
 

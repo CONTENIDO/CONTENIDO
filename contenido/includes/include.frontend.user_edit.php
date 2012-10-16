@@ -34,12 +34,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "widgets/class.widgets.page.php");
-cInclude("classes", "class.ui.php");
-cInclude("classes", "class.htmlelements.php");
-cInclude("classes", "class.frontend.users.php");
-cInclude("classes", "class.frontend.groups.php");
-cInclude("classes", "class.properties.php");
 
 $page = new cPage;
 

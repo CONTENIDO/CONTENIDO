@@ -34,9 +34,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes","class.ui.php");
-cInclude("classes","class.htmlelements.php");
-cInclude("classes", "widgets/class.widgets.page.php");
 $tpl2 = new Template();
 
 if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $action))) {

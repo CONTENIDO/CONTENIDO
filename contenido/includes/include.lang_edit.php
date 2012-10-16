@@ -33,8 +33,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.htmlelements.php");
-cInclude("classes", "class.ui.php");
 
 includePlugins("languages");
 

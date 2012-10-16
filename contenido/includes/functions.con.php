@@ -594,8 +594,6 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
 		global $db;
 	}
 	
-	cInclude("classes", "class.search.php");
-	
     $date   = date("Y-m-d H:i:s");
     $author = $auth->auth["uname"];
 

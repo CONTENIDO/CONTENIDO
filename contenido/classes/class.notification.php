@@ -33,7 +33,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.table.php");
 
 class Contenido_Notification {
 

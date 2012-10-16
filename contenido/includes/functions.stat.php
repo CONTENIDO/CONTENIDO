@@ -37,7 +37,6 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 cInclude("includes", "functions.database.php");
-cInclude('classes', 'UrlBuilder/Contenido_UrlBuilderFactory.class.php');
 
 /**
  * Displays statistic information layer (a div Tag)

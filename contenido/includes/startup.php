@@ -93,7 +93,6 @@ cAutoload::initialize($cfg);
 
 // 2. security check: Check HTTP parameters, if requested
 if ($cfg['http_params_check']['enabled'] === true) {
-    cInclude('classes', 'class.httpinputvalidator.php');
     $oHttpInputValidator =
         new HttpInputValidator($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.http_check.php');
 }
@@ -128,8 +127,6 @@ cInclude('includes', 'functions.i18n.php');
 
 
 // Initialization of CEC
-cInclude('classes', 'class.cec.php');
-cInclude('classes', 'class.cec_hook.php');
 $_cecRegistry = cApiCECRegistry::getInstance();
 cInclude('includes', 'config.chains.php');
 
@@ -145,8 +142,6 @@ checkMySQLConnectivity();
 
 
 // Initialize UrlBuilder, configuration is set in /contenido/includes/config.misc.php
-cInclude('classes', 'Url/Contenido_Url.class.php');
-cInclude('classes', 'UrlBuilder/Contenido_UrlBuilderConfig.class.php');
 Contenido_UrlBuilderConfig::setConfig($cfg['url_builder']);
 
 

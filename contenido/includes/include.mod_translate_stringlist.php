@@ -32,9 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "widgets/class.widgets.page.php");
-cInclude("classes", "contenido/class.module.php");
-cInclude("classes", "class.htmlelements.php");
 
 $translations = new cApiModuleTranslationCollection;
 $translations->select("idmod = '$idmod' AND idlang='$lang'");

@@ -990,8 +990,6 @@ function getEffectiveSetting($type, $name, $default = "")
 
 	if ($auth->auth["uid"] != "nobody")
 	{
-		cInclude('classes', 'class.user.php');
-
 		$user = new User;
 		$user->loadUserByUserID($auth->auth["uid"]);
 
@@ -1002,9 +1000,6 @@ function getEffectiveSetting($type, $name, $default = "")
 	}
 
     if ($value == false) {
-        cInclude('classes', 'class.genericdb.php');
-        cInclude('classes', 'contenido/class.clientslang.php');
-
         $oClient = new cApiClientLanguage(false, $client, $lang);
         $value = $oClient->getProperty($type, $name);
         unset ($oClient);
@@ -1012,7 +1007,6 @@ function getEffectiveSetting($type, $name, $default = "")
 
 	if ($value == false)
 	{
-        cInclude('classes', 'contenido/class.client.php');
 		$oClient = new cApiClient($client);
 		$value = $oClient->getProperty($type, $name);
         unset ($oClient);
@@ -1049,14 +1043,9 @@ function getEffectiveSettingsByType($sType)
 
 	$aResult = getSystemPropertiesByType($sType);
 
-	cInclude('classes', 'contenido/class.client.php');
-
 	$oClient = new cApiClient($client);
 	$aResult = array_merge($aResult, $oClient->getPropertiesByType($sType));
     unset ($oClient);
-
-    cInclude('classes', 'class.genericdb.php');
-    cInclude('classes', 'contenido/class.clientslang.php');
 
     $oClient = new cApiClientLanguage(false, $client, $lang);
     $aResult = array_merge($aResult, $oClient->getPropertiesByType($sType));
@@ -1065,8 +1054,6 @@ function getEffectiveSettingsByType($sType)
 
 	if ($auth->auth["uid"] != "nobody")
 	{
-		cInclude('classes', 'class.user.php');
-
 		$oUser = new User;
 		$oUser->loadUserByUserID($auth->auth["uid"]);
 
@@ -2332,7 +2319,6 @@ function notifyOnError($errortitle, $errormessage)
 	if ((time() - $notifytimestamp) > $cfg["contenido"]["notifyinterval"] * 60)
 	{
 		if ($cfg['contenido']['notifyonerror'] != "") {
-			cInclude("classes", 'class.phpmailer.php');
 			$sMailhost = getSystemProperty('system', 'mail_host');
 			if ($sMailhost == '') {
 				$sMailhost = 'localhost';

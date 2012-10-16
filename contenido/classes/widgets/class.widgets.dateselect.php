@@ -31,8 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "class.htmlelements.php");
-
 class cDropdownDateSelect
 {
 

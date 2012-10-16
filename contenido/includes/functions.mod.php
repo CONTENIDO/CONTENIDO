@@ -35,7 +35,6 @@ if(!defined('CON_FRAMEWORK')) {
 
 cInclude("includes", "functions.tpl.php");
 cInclude("includes", "functions.con.php");
-cInclude("classes", "contenido/class.module.php");
 
 function modEditModule($idmod, $name, $description, $input, $output, $template, $type = "")
 {
@@ -47,9 +46,6 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     /**
 	* START TRACK VERSION
 	**/
-	cInclude("classes", "class.version.php");
-	cInclude("classes", "class.versionModule.php");
-	
 	$oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
 	
 	// Create new Module Version in cms/version/module/

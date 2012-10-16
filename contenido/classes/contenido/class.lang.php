@@ -31,9 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude('classes', 'class.genericdb.php');
-
-
 class cApiLanguageCollection extends ItemCollection
 {
 /**

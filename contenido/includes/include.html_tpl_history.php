@@ -28,15 +28,8 @@
 
 if(!defined('CON_FRAMEWORK')) {
  die('Illegal call');
-} 
+}
  
-// For build select box
-cInclude("classes", "class.ui.php");
-cInclude("classes", "class.htmlelements.php");
-
-// For get Version Informatian    
-cInclude("classes", "class.version.php");
-cInclude("classes", "class.versionFile.php");
 
 // For read Fileinformation an get the id of current File
 cInclude("includes", "functions.file.php");

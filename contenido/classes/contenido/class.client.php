@@ -31,8 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude('classes', 'class.genericdb.php');
-
 class cApiClientCollection extends ItemCollection
 {
 	/**
@@ -41,7 +39,6 @@ class cApiClientCollection extends ItemCollection
 	function cApiClientCollection()
 	{
 		global $cfg;
-		cInclude("classes", "contenido/class.clientslang.php");
 		
 		parent::ItemCollection($cfg['tab']['clients'], 'idclient');
 		$this->_setItemClass("cApiClient");
@@ -160,8 +157,6 @@ class cApiClient extends Item
 	{
 		global $cfg;
 		
-		cInclude("classes", "contenido/class.clientslang.php");
-	
 		parent::Item($cfg['tab']['clients'], 'idclient');
 		
 		if ($idclient !== false)

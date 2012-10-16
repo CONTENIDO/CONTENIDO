@@ -33,13 +33,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes",  "contenido/class.module.php");
-cInclude("classes",  "contenido/class.clientslang.php");
-cInclude("classes",  "contenido/class.lang.php");
-cInclude("classes",  "contenido/class.layout.php");
-cInclude("classes",  "class.ui.php");
-cInclude("classes",  "class.htmlelements.php");
-cInclude("classes",  "widgets/class.widgets.page.php");
 cInclude("includes", "functions.upl.php");
 
 $sNoti		= "";

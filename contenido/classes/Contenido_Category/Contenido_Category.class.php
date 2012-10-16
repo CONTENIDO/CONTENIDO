@@ -35,9 +35,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude('classes', 'Debug/DebuggerFactory.class.php');
-cInclude("classes", "class.security.php");
-
 /**
  * Implementation of a Contenido Category.
  * @version 0.9.0

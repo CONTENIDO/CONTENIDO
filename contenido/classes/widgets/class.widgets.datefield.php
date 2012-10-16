@@ -31,8 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "datatypes/class.datatype.datetime.php");
-
 class cDatefield extends cHTMLTextbox
 {
 	var $_oDate;

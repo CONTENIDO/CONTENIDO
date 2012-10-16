@@ -69,9 +69,6 @@ function layEditLayout($idlay, $name, $description, $code) {
 	/**
 	* START TRACK VERSION
 	**/
-	cInclude("classes", "class.version.php");
-	cInclude("classes", "class.versionLayout.php");
-	
 	$oVersion = new VersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
 	
 	// Create new Layout Version in cms/version/layout/

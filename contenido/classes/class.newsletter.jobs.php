@@ -32,11 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.newsletter.php");
-cInclude("classes", "class.newsletter.logs.php");
-cInclude("classes", "contenido/class.clientslang.php");
-cInclude("classes", "contenido/class.lang.php");
-cInclude("classes", "class.phpmailer.php");
 
 /**
  * Collection management class

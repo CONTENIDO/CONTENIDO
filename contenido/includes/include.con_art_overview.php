@@ -36,7 +36,6 @@ if(!defined('CON_FRAMEWORK')) {
 
 cInclude("includes","functions.tpl.php");
 cInclude("includes","functions.str.php");
-cInclude("classes", "class.todo.php");
 cInclude("includes", "functions.pathresolver.php");
 $firstMark = false;
 $db2 = new DB_Contenido;

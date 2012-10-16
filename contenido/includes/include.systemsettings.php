@@ -39,10 +39,6 @@ $aManagedValues = array('versioning_prune_limit', 'update_check', 'update_news_f
                         'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml', 'imagemagick_available',
 						'system_insight_editing_activated');
 
-
-cInclude("classes","class.ui.php");
-cInclude("classes","class.htmlelements.php");
-
 if ($action == "systemsettings_save_item")
 {
     if (!in_array($systype.'_'.$sysname, $aManagedValues)) {

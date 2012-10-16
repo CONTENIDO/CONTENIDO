@@ -30,7 +30,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude('classes', 'class.security.php');
 
 class cApiClientLanguageCollection extends ItemCollection
 {

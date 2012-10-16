@@ -32,9 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.htmlelements.php");
-cInclude('classes', 'contenido/class.client.php');
-
 $properties = new PropertyCollection;
 
 $db2 = new DB_Contenido;

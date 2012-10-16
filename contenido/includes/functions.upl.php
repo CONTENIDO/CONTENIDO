@@ -36,9 +36,6 @@ if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.upload.php");
-cInclude("classes", "class.properties.php");
-cInclude("classes", "class.dbfs.php");
 
 /**
  * Function reduces long path names and creates a dynamic tooltipp which shows

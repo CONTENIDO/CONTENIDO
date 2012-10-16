@@ -31,8 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude('classes', 'UrlBuilder/Contenido_UrlBuilderFactory.class.php');
-
 // build a front_content.php URL
 try {
     $aParams = array('idcat' => 1, 'idart' => 5);

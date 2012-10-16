@@ -30,7 +30,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.security.php");
 
 $cfg["tab"]["workflow"] = $cfg['sql']['sqlprefix']."_piwf_workflow";
 $cfg["tab"]["workflow_allocation"] = $cfg['sql']['sqlprefix']."_piwf_allocation";
@@ -40,8 +39,6 @@ $cfg["tab"]["workflow_tasks"] = $cfg['sql']['sqlprefix']."_piwf_tasks";
 $cfg["tab"]["workflow_user_sequences"] = $cfg['sql']['sqlprefix']."_piwf_user_sequences";
 $cfg["tab"]["workflow_actions"] = $cfg['sql']['sqlprefix']."_piwf_actions";
 
-cInclude('classes', 'class.genericdb.php');
-cInclude('classes', 'class.ui.php');
 plugin_include('workflow', 'classes/class.workflowactions.php');
 plugin_include('workflow', 'classes/class.workflowallocation.php');
 plugin_include('workflow', 'classes/class.workflowartallocation.php');

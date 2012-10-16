@@ -47,8 +47,6 @@ if (!defined("CON_FRAMEWORK")) {
 // Contenido startup process
 include_once (dirname(__FILE__) . '/includes/startup.php');
 
-cInclude("classes", "class.properties.php");
-
 page_open(array('sess' => 'Contenido_Session',
 	'auth' => 'Contenido_Challenge_Crypt_Auth',
 	'perm' => 'Contenido_Perm'));

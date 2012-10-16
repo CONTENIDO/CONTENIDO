@@ -32,15 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.newsletter.php");
-cInclude("classes", "class.newsletter.jobs.php");
-cInclude("classes", "class.newsletter.groups.php");
-cInclude("classes", "contenido/class.clientslang.php");
-cInclude("classes", "contenido/class.articlelanguage.php");
-cInclude("classes", "widgets/class.widgets.page.php");
-cInclude("classes", "class.ui.php");
-cInclude("classes", "class.htmlelements.php");
-cInclude("classes", "contenido/class.user.php");
 
 // Initialization
 $oPage			= new cPage;
@@ -141,7 +132,6 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
 		    $perm->have_perm_area_action($area, "news_save") ||
 		    $perm->have_perm_area_action($area, "news_add_job"))) {
 	// Send test newsletter		    	
-	cInclude("classes", "contenido/class.lang.php");
 	$oUser 	= new cApiUser($auth->auth["uid"]);
 	
 	// Subnav gets not updated otherwise (no multilink from newsletter_menu)

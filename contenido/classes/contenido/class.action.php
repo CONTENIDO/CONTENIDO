@@ -30,9 +30,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude('classes', 'class.genericdb.php');
-cInclude('classes', 'contenido/class.area.php');
-
 class cApiActionCollection extends ItemCollection
 {
 	/**

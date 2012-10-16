@@ -45,8 +45,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude('classes', 'Debug/DebuggerFactory.class.php');
-
 $oMyObj = new stdClass();
 $oMyObj->sTest = 'some property value';
 $oMyObj->aTest = array('item1', 'item2');

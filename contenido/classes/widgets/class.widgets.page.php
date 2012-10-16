@@ -31,10 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "class.htmlelements.php");
-cInclude("classes", "widgets/class.widgets.buttons.php");
-cInclude("classes", "contenido/class.user.php");
-
 /**
  * Regular page
  *

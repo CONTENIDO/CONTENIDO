@@ -38,11 +38,7 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.ui.php");
-cInclude("classes", "class.htmlelements.php");
 cInclude("includes", "api/functions.frontend.list.php");
-cInclude("classes", "class.properties.php");
-cInclude("classes", "class.todo.php");
 
 
 if (!(int) $client > 0) {

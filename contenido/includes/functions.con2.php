@@ -531,8 +531,6 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 
 	$sMetatags = '';
 	
-	cInclude("classes", "class.htmlelements.php");
-	
 	foreach ($metatags as $value)
 	{
         // decode entities and conHtmlSpecialChars, content will be converted later using conHtmlSpecialChars()
@@ -761,8 +759,6 @@ function conGenerateKeywords($client, $lang)
 
 	if (count($articles) > 0)
 	{
-		cInclude('classes', 'class.search.php');
-
 		foreach ($articles as $artid => $article_lang)
 		{
 			$article_content = array ();

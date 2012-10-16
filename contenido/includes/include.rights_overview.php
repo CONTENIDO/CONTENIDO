@@ -39,9 +39,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-// load "new" user class
-cInclude('classes', 'class.conuser.php');
-
 cInclude('includes', 'functions.rights.php');
 $users = new Users;
 

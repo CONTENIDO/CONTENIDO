@@ -37,12 +37,9 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes","class.htmlelements.php");
-cInclude("classes","class.ui.php");
 cInclude("includes","functions.str.php");
 cInclude("includes","functions.tpl.php");
 cInclude('includes', 'functions.lang.php');
-cInclude("classes", "widgets/class.widgets.foldingrow.php");
 
 $tpl->reset();
 global $sess, $frame, $area;

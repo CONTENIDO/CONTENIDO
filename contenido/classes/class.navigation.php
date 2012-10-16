@@ -37,7 +37,6 @@ if(!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-cInclude('classes', 'class.lang.php');
 cInclude('includes', 'functions.api.string.php');
 cInclude('includes', 'functions.api.images.php');
 
@@ -69,10 +68,6 @@ class Contenido_Navigation {
      */
     function Contenido_Navigation() {
         global $cfg, $belang;
-
-        if (!class_exists('XML_doc')) {
-            cInclude('classes', 'class.xml.php');
-        }
 
         $this->xml = new XML_Doc();
         $this->plugxml = new XML_Doc();
@@ -150,8 +145,6 @@ class Contenido_Navigation {
     */
     function _buildHeaderData() {
         global $cfg, $perm, $belang;
-
-        cInclude('classes', 'class.htmlelements.php');
 
         $db  = new DB_Contenido();
         $db2 = new DB_Contenido();

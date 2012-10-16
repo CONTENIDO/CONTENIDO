@@ -36,7 +36,6 @@ if(!defined('CON_FRAMEWORK')) {
 // ########### standard navigation
 // ########### retrieve subcategories of a given category and output them with idcat and name
 // #####################################################################################################################
-cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation.class.php');
 
 try {
 	$oFeNav = new Contenido_FrontendNavigation($db, $cfg, $client, $lang, $cfgClient);
@@ -59,7 +58,6 @@ try {
 // ########### breadcrumb navigation
 // ########### retrieve breadcrumb from a given category up to a given level and output the categories with idcat and name
 // #####################################################################################################################
-cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation_Breadcrumb.class.php');
 
 try {
 	$oBreadcrumb = new Contenido_FrontendNavigation_Breadcrumb($db, $cfg, $client, $lang, $cfgClient);
@@ -83,7 +81,6 @@ try {
 // ########### http://www.someurl.com/index-b-13-91.html
 // ########### /path/path/path/rocknroll,goodies,1,2,3.4fb
 // #####################################################################################################################
-cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation.class.php');
 
 // build Navigation with different types of URL style
 $aUrlStyleFunky = array('prefix' => 'rocknroll', 'suffix' => '.4fb', 'separator' => ','); // to create some other style of url

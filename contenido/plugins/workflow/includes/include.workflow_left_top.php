@@ -30,7 +30,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.ui.php");
 
 $create = new Link;
 $create->setMultiLink("workflow","","workflow_common","workflow_create");

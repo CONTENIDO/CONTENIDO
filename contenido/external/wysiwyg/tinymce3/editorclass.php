@@ -61,11 +61,11 @@
  * }}
  * 
  */
- if(!defined('CON_FRAMEWORK')) {
+
+if(!defined('CON_FRAMEWORK')) {
    die('Illegal call');
 }
 
-cInclude("classes",  "class.wysiwyg_editor.php");
 cInclude("includes", "functions.lang.php");
 
 class cTinyMCEEditor extends cWYSIWYGEditor

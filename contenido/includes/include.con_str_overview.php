@@ -39,12 +39,9 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes","class.htmlelements.php");
-cInclude("classes","class.ui.php");
 cInclude("includes","functions.str.php");
 cInclude("includes","functions.tpl.php");
 cInclude('includes', 'functions.lang.php');
-cInclude("classes", "widgets/class.widgets.foldingrow.php");
 
 function showTree($iIdcat, &$aWholelist) {
 global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client, $lang, $navigationTree;

@@ -32,15 +32,11 @@ if(!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 cInclude("plugins", "repository/keyword_density.php");
-cInclude('classes', 'class.security.php');
 
 function cecCreateMetatags ($metatags) {
 
     global $cfg, $lang, $idart, $client, $cfgClient, $idcat, $idartlang;
-
-    cInclude('classes', 'class.user.php');
 
     //Basic settings
     $cachetime = 3600; // measured in seconds

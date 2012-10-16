@@ -31,10 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-
-cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation_Base.class.php');
-cInclude("classes", "class.security.php");
-
 class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigation_Base {
     /**
      * @var int

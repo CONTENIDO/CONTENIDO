@@ -32,7 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.genericdb.php");
 
 /**
  * Frontend user management class

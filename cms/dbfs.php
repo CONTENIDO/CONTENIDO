@@ -43,7 +43,6 @@ include_once ("config.php");
 // Contenido startup process
 include_once ($contenido_path . 'includes/startup.php');
 
-cInclude("classes", "class.dbfs.php");
 
 if ($contenido)
 {

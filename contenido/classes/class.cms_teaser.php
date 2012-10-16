@@ -44,7 +44,6 @@ if(!defined('CON_FRAMEWORK')) {
 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.api.images.php');
-cInclude('classes', 'Contenido_Category/Contenido_Category_Articles.class.php');
 
 /**
  * Class handles content type teaser, its editmode and viewmode. All properties of teaser content type 
@@ -1046,7 +1045,6 @@ class Cms_Teaser {
 	 */
 	public function getAllWidgetView() {
 		$sCode = '\";?><?php 	 
-					cInclude("classes", "class.cms_teaser.php");
 					$oTeaser = new Cms_Teaser(\'%s\', %s, 0, "", $cfg, null, "", $client, $lang, $cfgClient, null);
 					
 					echo $oTeaser->getAllWidgetOutput();

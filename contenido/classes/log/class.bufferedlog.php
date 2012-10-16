@@ -50,8 +50,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "log/class.log.php");
-
 class cBufferedLog extends cLog
 {
 	/**

@@ -367,8 +367,6 @@ function tplPreparseLayout ($idlay)
     $db->next_record();
     $code = $db->f("code");
     
-    cInclude("classes", "class.htmlparser.php");
-    
     $parser = new HtmlParser($code);
     $bIsBody = false;
 	while ($parser->parse())

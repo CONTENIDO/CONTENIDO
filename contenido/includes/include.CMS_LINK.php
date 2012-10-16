@@ -119,12 +119,9 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
   <tr>
     <td>
     <?php
-
-		
+	
         getAvailableContentTypes($idartlang);
 
-		cInclude("classes","class.ui.php");
-		cInclude("classes","class.template.php");
 		cInclude("includes","functions.forms.php");
 		global $typenr;
 		

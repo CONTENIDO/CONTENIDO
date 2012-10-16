@@ -33,13 +33,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude('classes', 'contenido/class.client.php');
-cInclude('classes', 'contenido/class.clientslang.php');
-cInclude('classes', 'contenido/class.lang.php');
-cInclude('classes', 'class.ui.php');
-cInclude('classes', 'widgets/class.widgets.page.php');
-cInclude('classes', 'class.htmlelements.php');
-
 $oPage = new cPage;
 $oList = new cScrollList;
 

@@ -31,9 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "contenido/class.module.php");
-cInclude("classes", "log/class.bufferedlog.php");
-
 class cModuleLog extends cBufferedLog
 {
 	var $_oModule;

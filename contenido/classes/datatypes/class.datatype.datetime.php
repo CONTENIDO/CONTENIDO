@@ -30,8 +30,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "datatypes/class.datatype.php");
-cInclude("classes", "contenido/class.user.php");
 
 /* The UNIX Timestamp is the amount of seconds
    passed since Jan 1 1970 00:00:00 GMT */

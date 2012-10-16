@@ -38,7 +38,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes","class.htmlelements.php");
 $debug = false;
 
 $tmp_area = "str";
