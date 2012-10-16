@@ -206,7 +206,7 @@ function strNewTree($catname, $catalias = '', $bVisible = 0, $bPublic = 1, $iIdt
         }
 
         // set correct rights for element
-        cInclude ("includes", "functions.rights.php");
+        cInclude("includes", "functions.rights.php");
         foreach ($a_languages as $tmp_lang) {
             createRightsForElement("str", $tmp_newid, $tmp_lang);
             createRightsForElement("con", $tmp_newid, $tmp_lang);
@@ -369,7 +369,7 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
     }
 
     // set correct rights for element
-    cInclude ("includes", "functions.rights.php");
+    cInclude("includes", "functions.rights.php");
     foreach ($a_languages as $tmp_lang) {
         copyRightsForElement("str", $tmp_parentid, $tmp_newid, $tmp_lang);
         copyRightsForElement("con", $tmp_parentid, $tmp_newid, $tmp_lang);
@@ -941,7 +941,7 @@ function strDeleteCategory($idcat) {
             if ($db->num_rows() > 0) {
                 // more languages found...
                 // delete rights for element
-                cInclude ("includes", "functions.rights.php");
+                cInclude("includes", "functions.rights.php");
                 deleteRightsForElement("str", $idcat, $lang);
                 deleteRightsForElement("con", $idcat, $lang);
 
@@ -992,7 +992,7 @@ function strDeleteCategory($idcat) {
         }
 
         // delete rights for element
-        cInclude ("includes", "functions.rights.php");
+        cInclude("includes", "functions.rights.php");
         deleteRightsForElement("str", $idcat);
         deleteRightsForElement("con", $idcat);
     }
@@ -1330,7 +1330,7 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
             CEC_Hook::execute('Contenido.Category.strSyncCategory_Loop', $param);
 
             // set correct rights for element
-            cInclude ("includes", "functions.rights.php");
+            cInclude("includes", "functions.rights.php");
             createRightsForElement("str", $idcat, $targetlang);
             createRightsForElement("con", $idcat, $targetlang);
         }

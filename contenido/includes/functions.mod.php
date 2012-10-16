@@ -33,9 +33,9 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude ("includes", "functions.tpl.php");
-cInclude ("includes", "functions.con.php");
-cInclude ("classes", "contenido/class.module.php");
+cInclude("includes", "functions.tpl.php");
+cInclude("includes", "functions.con.php");
+cInclude("classes", "contenido/class.module.php");
 
 function modEditModule($idmod, $name, $description, $input, $output, $template, $type = "")
 {
@@ -66,7 +66,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 
 		$idmod = $cApiModule->get("idmod");
 		
-        cInclude ("includes", "functions.rights.php");
+        cInclude("includes", "functions.rights.php");
         createRightsForElement("mod", $idmod);
 	} else {
 		$cApiModule = new cApiModule;
@@ -105,7 +105,7 @@ function modDeleteModule($idmod)
 
 
     // delete rights for element
-    cInclude ("includes", "functions.rights.php");
+    cInclude("includes", "functions.rights.php");
     deleteRightsForElement("mod", $idmod); 
 }
 

@@ -215,7 +215,7 @@ function contenido_include ($where, $what, $force = false, $returnpath = false)
  * @return none
  *
  */
-function cInclude ($where, $what, $force = false)
+function cInclude($where, $what, $force = false)
 {
 	contenido_include($where, $what, $force);
 }

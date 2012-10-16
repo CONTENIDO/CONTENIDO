@@ -39,8 +39,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 global $cfg, $username;
 
-cInclude ("classes", "class.notification.php");
-cInclude ("classes", "class.request.password.php");
+cInclude("classes", "class.notification.php");
+cInclude("classes", "class.request.password.php");
 
 $aLangs = i18nStripAcceptLanguages($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 

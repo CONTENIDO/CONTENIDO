@@ -38,26 +38,26 @@ include_once ('../includes/startup.php');
 
 $fullstart = getmicrotime();
 
-cInclude ("includes", 'functions.api.php');
-cInclude ("includes", 'functions.forms.php');
-cInclude ("includes", 'functions.con.php');
+cInclude("includes", 'functions.api.php');
+cInclude("includes", 'functions.forms.php');
+cInclude("includes", 'functions.con.php');
 
-cInclude ("classes", 'class.xml.php');
-cInclude ("classes", 'class.navigation.php');
-cInclude ("classes", 'class.template.php');
-cInclude ("classes", 'class.backend.php');
-cInclude ("classes", 'class.notification.php');
-cInclude ("classes", 'class.area.php');
-cInclude ("classes", 'class.action.php');
-cInclude ("classes", 'contenido/class.module.php');
-cInclude ("classes", 'class.layout.php');
-cInclude ("classes", 'class.treeitem.php');
-cInclude ("classes", 'class.user.php');
-cInclude ("classes", 'class.group.php');
-cInclude ("classes", 'class.cat.php');
-cInclude ("classes", 'class.client.php');
-cInclude ("classes", 'class.inuse.php');
-cInclude ("classes", 'class.table.php');
+cInclude("classes", 'class.xml.php');
+cInclude("classes", 'class.navigation.php');
+cInclude("classes", 'class.template.php');
+cInclude("classes", 'class.backend.php');
+cInclude("classes", 'class.notification.php');
+cInclude("classes", 'class.area.php');
+cInclude("classes", 'class.action.php');
+cInclude("classes", 'contenido/class.module.php');
+cInclude("classes", 'class.layout.php');
+cInclude("classes", 'class.treeitem.php');
+cInclude("classes", 'class.user.php');
+cInclude("classes", 'class.group.php');
+cInclude("classes", 'class.cat.php');
+cInclude("classes", 'class.client.php');
+cInclude("classes", 'class.inuse.php');
+cInclude("classes", 'class.table.php');
 
 
 page_open(array('sess' => 'Contenido_Session',
@@ -65,7 +65,7 @@ page_open(array('sess' => 'Contenido_Session',
                 'perm' => 'Contenido_Perm'));
 
 i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
-cInclude ("includes", 'cfg_language_de.inc.php');
+cInclude("includes", 'cfg_language_de.inc.php');
 
 
 

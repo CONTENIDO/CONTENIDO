@@ -34,7 +34,7 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude ("includes", "functions.con.php");
+cInclude("includes", "functions.con.php");
 
 /**
  * Edit or create a new Template
@@ -87,7 +87,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
             $db->query($sql);
 
             // set correct rights for element
-            cInclude ("includes", "functions.rights.php");
+            cInclude("includes", "functions.rights.php");
             createRightsForElement("tpl", $idtpl);
 
         } else {
@@ -184,7 +184,7 @@ function tplDeleteTemplate($idtpl) {
 
         }
 
-        cInclude ("includes", "functions.rights.php");
+        cInclude("includes", "functions.rights.php");
         deleteRightsForElement("tpl", $idtpl);
 
 }
@@ -367,7 +367,7 @@ function tplPreparseLayout ($idlay)
     $db->next_record();
     $code = $db->f("code");
     
-    cInclude ("classes", "class.htmlparser.php");
+    cInclude("classes", "class.htmlparser.php");
     
     $parser = new HtmlParser($code);
     $bIsBody = false;
@@ -506,7 +506,7 @@ function tplDuplicateTemplate($idtpl) {
     } 
 	//modified (added) 2008-06-30 end
 
-    cInclude ("includes", "functions.rights.php");
+    cInclude("includes", "functions.rights.php");
     copyRightsForElement("tpl", $idtpl, $new_idtpl);
     
     return $new_idtpl;

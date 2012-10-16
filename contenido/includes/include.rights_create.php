@@ -38,9 +38,9 @@ if (! defined ( 'CON_FRAMEWORK' )) {
 }
 
 // added 2008-11-17, H. Librenz
-cInclude ( 'classes', 'class.conuser.php' );
+cInclude('classes', 'class.conuser.php' );
 
-cInclude ( 'includes', 'functions.rights.php' );
+cInclude('includes', 'functions.rights.php' );
 
 if (! $perm->have_perm_area_action ( $area, $action )) {
 	$notification->displayNotification ( "error", i18n( "Permission denied" ) );

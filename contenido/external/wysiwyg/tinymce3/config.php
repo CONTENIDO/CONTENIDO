@@ -43,10 +43,10 @@ if (file_exists( $contenido_path . 'startup.php'))
 	@include_once ($contenido_path . 'config.php');
 }
 
-cInclude ("includes", 'functions.con.php');
-cInclude ("includes", 'functions.general.php');
-cInclude ("includes", 'functions.i18n.php');
-cInclude ("includes", 'functions.api.php');
+cInclude("includes", 'functions.con.php');
+cInclude("includes", 'functions.general.php');
+cInclude("includes", 'functions.i18n.php');
+cInclude("includes", 'functions.api.php');
 
 $db = new DB_Contenido;
 

@@ -40,10 +40,10 @@ if (!defined("CON_FRAMEWORK")) {
 // Contenido startup process
 include_once ('./includes/startup.php');
 
-cInclude ("classes", 'class.xml.php');
-cInclude ("classes", 'class.navigation.php');
-cInclude ("classes", 'class.template.php');
-cInclude ("classes", 'class.backend.php');
+cInclude("classes", 'class.xml.php');
+cInclude("classes", 'class.navigation.php');
+cInclude("classes", 'class.template.php');
+cInclude("classes", 'class.backend.php');
 
 
 page_open(array('sess' => 'Contenido_Session',
@@ -60,8 +60,8 @@ i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
  */
 //includePluginConf();
 require_once $cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php';
-cInclude ("includes", 'cfg_language_de.inc.php');
-cInclude ("includes", 'functions.forms.php');
+cInclude("includes", 'cfg_language_de.inc.php');
+cInclude("includes", 'functions.forms.php');
 
 $sess->register("belang");
 

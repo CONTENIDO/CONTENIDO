@@ -32,8 +32,8 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude ("includes", "functions.tpl.php");
-cInclude ("includes", "functions.con.php");
+cInclude("includes", "functions.tpl.php");
+cInclude("includes", "functions.con.php");
 
 /**
  * Edit or Create a new layout
@@ -93,7 +93,7 @@ function layEditLayout($idlay, $name, $description, $code) {
         $db->query($sql);
 
         // set correct rights for element
-        cInclude ("includes", "functions.rights.php");
+        cInclude("includes", "functions.rights.php");
         createRightsForElement("lay", $idlay);
 
         return $idlay;
@@ -129,8 +129,7 @@ function layDeleteLayout($idlay) {
         }
 
         // delete rights for element
-        cInclude ("includes", "functions.rights.php");
+        cInclude("includes", "functions.rights.php");
         deleteRightsForElement("lay", $idlay); 
-
 }
 ?>

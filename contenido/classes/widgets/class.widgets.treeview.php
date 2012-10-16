@@ -10,7 +10,7 @@
 * $Id: class.widgets.treeview.php,v 1.5 2006/10/05 23:47:21 bjoern.behrens Exp $
 ******************************************/
 cInclude("classes", "tree/class.ctree.php");
-cInclude ("classes", "class.htmlelements.php");
+cInclude("classes", "class.htmlelements.php");
 cInclude("classes", "contenido/class.user.php");
 
 define("TREEVIEW_GRIDLINE_SOLID" , "solid");
