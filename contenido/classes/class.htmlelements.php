@@ -158,6 +158,18 @@ class cHTML extends HTML_Common
 		$this->_aEventDefinitions = array ();
 	}
 
+    /**
+     * Setter for static $_generateXHTML property
+     * @param  bool  $value
+     */
+    public static function setGenerateXHTML($value) {
+        global $cfg;
+        if (!is_array($cfg)) {
+            $cfg = array();
+        }
+        $cfg["generate_xhtml"] = (bool) $value;
+    }
+
 	function setContentlessTag($contentlessTag = true)
 	{
 		$this->_contentlessTag = $contentlessTag;
