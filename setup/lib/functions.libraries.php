@@ -66,39 +66,4 @@ function checkImageResizer ()
 
 }
 
-function isImageMagickAvailable ()
-{
-	global $_imagemagickAvailable;
-	
-	if (is_bool($_imagemagickAvailable))
-	{
-		if ($_imagemagickAvailable === true)
-		{
-			return true;	
-		} else {
-			return false;	
-		}
-	}
-	
-	$output = array();
-	
-	$retval = "";
-	
-	@exec("convert",$output, $retval);
-
-    if (!is_array($output) || count($output) == 0)
-    {
-        return false;
-    }
-    	
-	if (strpos($output[0],"ImageMagick") !== false)
-	{
-		$_imagemagickAvailable = true;
-		return true;
-	} else {
-		$_imagemagickAvailable = false;
-		return false;
-	}
-}
-
 ?>

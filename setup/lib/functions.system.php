@@ -256,16 +256,6 @@ function findSimilarText ($string1, $string2)
 	return $i - 1;
 }
 
-function htmldecode($string)
-{
-	$trans_tbl = conGetHtmlTranslationTable(HTML_ENTITIES);
-	$trans_tbl = array_flip($trans_tbl);
-	$ret = strtr($string, $trans_tbl);
-
-	return $ret;
-}
-
-
 function rereadClients_Setup()
 {
 	global $cfgClient;
