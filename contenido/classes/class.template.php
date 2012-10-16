@@ -262,35 +262,34 @@ class Template
     * @param $functionName string Name of the translation function (e.g. i18n) 
     */ 
 	function replacei18n(& $template, $functionName) {
+        $container = array();
 
-		$container = array();
+        // Be sure that php code stays unchanged
+        $php_matches = array();
+        /*
+         * if (preg_match_all('/<\?(php)?((.)|(\s))*?\?>/i', $template,
+         * $php_matches)) { $x = 0; foreach ($php_matches[0] as $php_match) {
+         * $x++; $template = str_replace($php_match , '{PHP#' . $x . '#PHP}',
+         * $template); $container[$x] = $php_match; } }
+         */
 
-		// Be sure that php code stays unchanged
-		$php_matches = array();
-		if (preg_match_all('/<\?(php)?((.)|(\s))*?\?>/i', $template, $php_matches)) {
-			$x = 0;
-			foreach ($php_matches[0] as $php_match) {
-				$x++;
-				$template = str_replace($php_match , "{PHP#".$x."#PHP}", $template);
-				$container[$x] = $php_match;
-			}
-		}
+        $functionNameQ = preg_quote($functionName, '/');
 
-		// If template contains functionName + parameter store all matches
-		$matches = array();
-		preg_match_all("/".preg_quote($functionName, "/")."\\(([\\\"\\'])(.*?)\\1\\)/s", $template, $matches);
+        // If template contains functionName + parameter store all matches
+        $matches = array();
+        preg_match_all('/' . $functionNameQ . "\\(([\\\"\\'])(.*?)\\1\\)/s", $template, $matches);
 
-		$matches = array_values(array_unique($matches[2]));
-		for ($a = 0; $a < count($matches); $a ++) {
-			$template = preg_replace("/".preg_quote($functionName, "/")."\\([\\\"\\']".preg_quote($matches[$a], "/")."[\\\"\\']\\)/s", i18n($matches[$a], $this->_sDomain), $template);
-		}
+        $matches = array_values(array_unique($matches[2]));
+        for ($a = 0; $a < count($matches); $a++) {
+            $template = preg_replace('/' . $functionNameQ . "\\([\\\"\\']" . preg_quote($matches[$a], '/') . "[\\\"\\']\\)/s", i18n($matches[$a], $this->_sDomain), $template);
+        }
 
-		// Change back php placeholder
-		if (is_array($container)) {
-			foreach ($container as $x => $php_match) {
-				$template = str_replace("{PHP#".$x."#PHP}" , $php_match, $template);
-			}
-		}
+        // Change back php placeholder
+        if (is_array($container)) {
+            foreach ($container as $x => $php_match) {
+                $template = str_replace('{PHP#' . $x . '#PHP}', $php_match, $template);
+            }
+        }
 	}
 
 } # end class
