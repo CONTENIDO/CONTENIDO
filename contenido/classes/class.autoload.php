@@ -272,11 +272,10 @@ class cAutoload {
         return $filePathName;
     }
 
-
     /**
      * Normalizes the passed configuration array by returning a new copy of it
      * which contains the keys in lowercase.
-     * This prevents errors by trying to loas class 'foobar' if the real class name is 'FooBar'.
+     * This prevents errors by trying to load class 'foobar' if the real class name is 'FooBar'.
      *
      * @param   array  $config
      * @return  array
