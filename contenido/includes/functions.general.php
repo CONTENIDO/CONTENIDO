@@ -2338,7 +2338,7 @@ function notifyOnError($errortitle, $errormessage)
 				$sMailhost = 'localhost';
 			}
 
-			$oMail = new phpmailer;
+			$oMail = new PHPMailer;
 			$oMail->Host = $sMailhost;
 			$oMail->IsHTML(0);
 			$oMail->WordWrap = 1000;

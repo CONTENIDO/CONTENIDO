@@ -1977,11 +1977,11 @@ class cHTMLLink extends cHTML
 }
 
 /**
- * DIV Element
+ * Div Element
  *
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLDIV extends cHTML
+class cHTMLDiv extends cHTML
 {
 	/**
 	 * Constructor. Creates an HTML DIV element.
@@ -1989,7 +1989,7 @@ class cHTMLDIV extends cHTML
 	 * @param $content mixed String or object with the contents
 	 *
 	 */
-	function cHTMLDIV($content = "")
+	function cHTMLDiv($content = "")
 	{
 		cHTML :: cHTML();
 		$this->setContent($content);
@@ -2025,7 +2025,7 @@ class cHTMLDIV extends cHTML
  *
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLSPAN extends cHTML
+class cHTMLSpan extends cHTML
 {
 	/**
 	 * Constructor. Creates an HTML DIV element.
@@ -2033,7 +2033,7 @@ class cHTMLSPAN extends cHTML
 	 * @param $content mixed String or object with the contents
 	 *
 	 */
-	function cHTMLSPAN($content = "")
+	function cHTMLSpan($content = "")
 	{
 		cHTML :: cHTML();
 		$this->setContent($content);
