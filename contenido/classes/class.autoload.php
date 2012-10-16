@@ -110,7 +110,7 @@ class cAutoload {
         // load n' store autoloader class map file
         $file = $cfg['path']['contenido_config'] . 'config.autoloader.php';
         if ($arr = include_once($file)) {
-            self::$_includeFiles = $arr;
+            self::addClassmapConfig($arr);
         }
 
         // load n' store additional autoloader class map file, if exists
@@ -137,7 +137,11 @@ class cAutoload {
      * @return  void
      */
     public static function addClassmapConfig(array $config) {
-        self::$_includeFiles = array_merge(self::$_includeFiles, $config);
+        $newConfig = self::_normalizeConfig($config);
+        if (!is_array(self::$_includeFiles)) {
+            self::$_includeFiles = array();
+        }
+        self::$_includeFiles = array_merge(self::$_includeFiles, $newConfig);
     }
 
     /**
@@ -236,7 +240,8 @@ class cAutoload {
      * @return  (string|null)  Path and filename or null
      */
     private static function _getContenidoClassFile($className) {
-        $file = isset(self::$_includeFiles[$className]) ? self::$_conRootPath . self::$_includeFiles[$className] : null;
+        $classNameLower = strtolower($className);
+        $file = isset(self::$_includeFiles[$classNameLower]) ? self::$_conRootPath . self::$_includeFiles[$classNameLower] : null;
         return self::_validateClassAndFile($className, $file);
     }
 
@@ -265,6 +270,22 @@ class cAutoload {
         }
 
         return $filePathName;
+    }
+
+    /**
+     * Normalizes the passed configuration array by returning a new copy of it
+     * which contains the keys in lowercase.
+     * This prevents errors by trying to load class 'foobar' if the real class name is 'FooBar'.
+     *
+     * @param   array  $config
+     * @return  array
+     */
+    private static function _normalizeConfig(array $config) {
+        $newConfig = array();
+        foreach ($config as $name => $file) {
+            $newConfig[strtolower($name)] = $file;
+        }
+        return $newConfig;
     }
 
     /**
