@@ -20,113 +20,93 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created  2004-02-12
- *   modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious script call
- *   modified 2008-06-30, Dominik Ziegler, fixed bug CON-143, added new header
- *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
- *
  *   $Id: send_reminder.php 1157 2010-05-20 14:10:43Z xmurrix $:
  * }}
- * 
  */
 
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
 }
 
-// Contenido startup process
-include_once ('../includes/startup.php');
+global $cfg, $area, $client;
 
-cInclude ("classes", 'class.genericdb.php');
-cInclude ("classes", 'class.properties.php');
-cInclude ("classes", 'class.todo.php');
-cInclude ("classes", 'class.user.php');
-cInclude ("classes", 'class.phpmailer.php');
+// CONTENIDO path
+$contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
 
-global $cfg, $client;
+// CONTENIDO startup process
+include_once($contenidoPath . 'includes/startup.php');
 
 $oldclient = $client;
 
-if(!isRunningFromWeb() || function_exists("runJob") || $area == "cronjobs")
-{
-	$db = new DB_Contenido;
+if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
+    $db = new DB_Contenido();
 
-	$sql = "SELECT idclient FROM ".$cfg["tab"]["clients"];
-	$db->query($sql);
+    $sql = 'SELECT idclient FROM ' . $cfg['tab']['clients'];
+    $db->query($sql);
 
-	$clients = array();
+    $clients = array();
+    $clientNames = array();
 
-	while ($db->next_record())
-	{
-		$clients[] = $db->f("idclient");
-	}
+    while ($db->next_record()) {
+        $clients[] = $db->f('idclient');
+    }
 
-	foreach ($clients as $client)
-	{
-		$mydate = time();
+    foreach ($clients as $client) {
+        $mydate = time();
 
-    	$props = new PropertyCollection;
-    	$props->select("itemtype = 'idcommunication' AND type = 'todo' AND name = 'reminderdate' AND value < $mydate AND value != 0 AND idclient=$client");
-		$pastreminders = array();
+        $props = new PropertyCollection();
+        $props->select("itemtype = 'idcommunication' AND type = 'todo' AND name = 'reminderdate' AND value < $mydate AND value != 0 AND idclient=$client");
+        $pastreminders = array();
 
-    	while ($prop = $props->next())
-    	{
-    		$pastreminders[] = $prop->get("itemid");
-    	}
+        while (($prop = $props->next()) !== false) {
+            $pastreminders[] = $prop->get('itemid');
+        }
 
-    	$todoitem = new TODOItem;
+        $todoitem = new TODOItem();
 
-    	foreach ($pastreminders as $reminder)
-    	{
+        foreach ($pastreminders as $reminder) {
+            $todoitem->loadByPrimaryKey($reminder);
 
-    		$todoitem->loadByPrimaryKey($reminder);
+            if ($todoitem->get('idclient') == $client) {
+                // Check if email noti is active
+                if ($todoitem->getProperty('todo', 'emailnoti') == 1 && $todoitem->getProperty('todo', 'emailnoti-sent') == 0) {
+                    $user = new User();
+                    $user->loadUserByUserID($todoitem->get('recipient'));
+                    $realname = $user->getField('realname');
 
-    		if ($todoitem->get("idclient") == $client)
-    		{
-        		/* Check if email noti is active */
-        		if ($todoitem->getProperty("todo", "emailnoti") == 1 && $todoitem->getProperty("todo", "emailnoti-sent") == 0)
-        		{
-					//modified : 2008-07-03 - use php mailer class instead of mail()
-					$sMailhost = getSystemProperty('system', 'mail_host');
-					if ($sMailhost == '') {
-						$sMailhost = 'localhost';
-					} 
-					
-					$oMail = new phpmailer;
-					$oMail->Host = $sMailhost;
-					$oMail->IsHTML(0);
-					$oMail->WordWrap = 1000;
-					$oMail->IsMail();
-				
-        			$user = new User;
-        			$user->loadUserByUserID($todoitem->get("recipient"));
+                    $client = $todoitem->get('idclient');
+                    if (!isset($clientNames[$client])) {
+                        $clientNames[$client] = getClientName($client);
+                    }
+                    $clientname = $clientNames[$client];
 
-					$oMail->AddAddress($user->getField("email"), "");
-        			$realname = $user->getField("realname");
-        			$oMail->Subject = $todoitem->get("subject");
+                    $todoitem->setProperty('todo', 'emailnoti-sent', '1');
+                    $todoitem->setProperty('todo', 'emailnoti', '0');
 
-        			$client = $todoitem->get("idclient");
-        			$clientname = getClientName($client);
+                    $message = i18n("Hello %s,\n\nyou've got a new reminder for the client '%s' at\n%s:\n\n%s");
+                    $path = $cfg['path']['contenido_fullhtml'];
+                    $message = sprintf($message, $realname, $clientname, $path, $todoitem->get('message'));
 
-        			$todoitem->setProperty("todo", "emailnoti-sent", "1");
-        			$todoitem->setProperty("todo", "emailnoti", "0");
+                    $sMailhost = getSystemProperty('system', 'mail_host');
+                    if ($sMailhost == '') {
+                        $sMailhost = 'localhost';
+                    }
 
-        			$message = i18n("Hello %s,\n\nyou've got a new reminder for the client '%s' at\n%s:\n\n%s");
+                    $oMail = new PHPMailer();
+                    $oMail->Host = $sMailhost;
+                    $oMail->IsHTML(0);
+                    $oMail->WordWrap = 1000;
+                    $oMail->IsMail();
+                    $oMail->AddAddress($user->getField('email'), '');
+                    $oMail->Subject = $todoitem->get('subject');
+                    $oMail->Body = $message;
+                    $oMail->Send();
+                }
 
-        			$path = $cfg["path"]["contenido_fullhtml"];
-
-        			$message = sprintf($message, $realname, $clientname, $path, $todoitem->get("message"));
-					$oMail->Body = $message;
-        			$oMail->Send();
-        		}
-
-        		$todoitem->setProperty("todo", "reminderdate", "0");
-    		}
-    	}
-
-	}
-
+                $todoitem->setProperty('todo', 'reminderdate', '0');
+            }
+        }
+    }
 }
 
 $client = $oldclient;
-?>
