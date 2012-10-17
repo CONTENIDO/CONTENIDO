@@ -60,7 +60,7 @@ if ((int) $client == 0) {
 #####################
 if ($appendparameters != 'filebrowser' && (int) $client > 0) {
     $search = new cHTMLTextbox("searchfor", $_REQUEST['searchfor'], 26);
-    $sSearch->setStyle = "width:170px;";
+    $search->setStyle("width:170px");
     $sSearch = $search->render();
 
     $form = new UI_Form("search");
