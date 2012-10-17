@@ -163,6 +163,9 @@ function layDeleteLayout($idlay) {
         // delete the layout in file system
         $layoutInFile = new cLayoutHandler($idlay, '', $cfg, 1);
         if ($layoutInFile->eraseLayout()) {
+            if(is_dir($cfgClient[$client]['version']['path']."layout/".$idlay)) {
+                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path']."layout/".$layout);
+            }
             // delete layout in database
             $layoutCollection = new cApiLayoutCollection();
             $layoutCollection->delete($idlay);

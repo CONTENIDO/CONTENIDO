@@ -53,6 +53,13 @@ if ($action == $sActionDelete) {
         if (cFileHandler::exists($path . $_REQUEST['delfile'])) {
             unlink($path . $_REQUEST['delfile']);
             $fileInfoCollection = new cApiFileInformationCollection();
+
+            $fileIds = $fileInfoCollection->getIdsByWhereClause("`filename`='".$_REQUEST["delfile"]."'");
+
+            if(is_dir($cfgClient[$client]['version']['path']."templates/".$fileIds[0])) {
+                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path']."templates/".$fileIds[0]);
+            }
+
             $fileInfoCollection->removeFileInformation(array(
                 'idclient' => $client,
                 'filename' => $_REQUEST['delfile'],

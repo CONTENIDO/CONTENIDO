@@ -461,10 +461,10 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
     $htmlpaths = array();
     $frontendpaths = array();
-    foreach($cfgClient as $id => $client) {
+    foreach($cfgClient as $id => $aclient) {
         if(is_array($client)) {
-            $htmlpaths[$id] = $client["path"]["htmlpath"];
-            $frontendpaths[$id] = $client["path"]["frontend"];
+            $htmlpaths[$id] = $aclient["path"]["htmlpath"];
+            $frontendpaths[$id] = $aclient["path"]["frontend"];
         }
     }
     unset($cfgClient);

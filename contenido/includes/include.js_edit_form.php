@@ -42,12 +42,17 @@ if (!(int) $client > 0) {
 
 if ($action == 'js_delete') {
     $path = $cfgClient[$client]['js']['path'];
-    // TODO also delete the versioning files
 
     if (!strrchr($_REQUEST['delfile'], '/')) {
         if (cFileHandler::exists($path . $_REQUEST['delfile'])) {
-            unlink($path . $_REQUEST['delfile']);
             $fileInfoCollection = new cApiFileInformationCollection();
+            $fileIds = $fileInfoCollection->getIdsByWhereClause("`filename`='".$_REQUEST["delfile"]."'");
+
+            if(is_dir($cfgClient[$client]['version']['path']."js/".$fileIds[0])) {
+                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path']."js/".$fileIds[0]);
+            }
+
+            unlink($path . $_REQUEST['delfile']);
             $fileInfoCollection->removeFileInformation(array(
                 'idclient' => $client,
                 'filename' => $_REQUEST['delfile'],

@@ -39,7 +39,7 @@ if (($action == "mod_delete") && (!$perm->have_perm_area_action_anyitem($area, $
 if ($action == "mod_delete") {
     // if erase had been successfully
     if ($contenidoModuleHandler->eraseModule() == true) {
-        $modules = new cApiModuleCollection;
+        $modules = new cApiModuleCollection();
         $modules->delete($idmod);
         // show success message
         $notificationClass = new cGuiNotification();

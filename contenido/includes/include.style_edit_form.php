@@ -20,7 +20,6 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 cInclude('external', 'codemirror/class.codemirror.php');
-cInclude('classes', 'class.fileinformation.php');
 $sFileType = 'css';
 $sFilename = '';
 $page = new cGuiPage('style_edit_form');
@@ -42,14 +41,19 @@ if (!(int) $client > 0) {
 if ($action == 'style_delete') {
     $path = $cfgClient[$client]['css']['path'];
     // Delete file
-    // TODO also delete the versioning files
     $file = new cApiFileInformation();
+
     $file->loadByMany(array(
         'idsfi' => $_REQUEST['delfile']
     ));
     $filename = $file->get('filename');
     if (!strrchr($_REQUEST['delfile'], '/')) {
         if (cFileHandler::exists($path . $filename)) {
+            $fileId = $file->get("idsfi");
+            if(is_dir($cfgClient[$client]['version']['path']."css/".$fileId)) {
+                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path']."css/".$fileId);
+            }
+
             unlink($path . $filename);
             $fileInfoCollection = new cApiFileInformationCollection();
             $fileInfoCollection->removeFileInformation(array(
@@ -148,7 +152,7 @@ if ($action == 'style_delete') {
         $bEdit = cFileHandler::read($path . $sFilename);
 
         // Show message
-        if ($sFilename != $sTempTempFilename) {
+        if ($sFilename != $sTempFilename) {
             $page->displayInfo(i18n('Renamed template file successfully!'));
         } else {
             $page->displayInfo(i18n('Saved changes successfully!'));
