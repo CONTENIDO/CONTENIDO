@@ -121,7 +121,7 @@ if (is_array($_REQUEST)) {
 
 
 // Some basic configuration
-global $cfg, $contenido_host, $contenido_database, $contenido_user, $contenido_password;
+global $cfg;
 
 $cfg['path']['frontend'] = CON_FRONTEND_PATH;
 $cfg['path']['contenido'] = $cfg['path']['frontend'] . '/contenido/';
@@ -129,13 +129,7 @@ $cfg['path']['phplib'] = $cfg['path']['frontend'] . '/conlib/';
 $cfg['path']['pear'] = $cfg['path']['frontend'] . '/pear/';
 
 // DB related settings
-// @todo: Replace usage of database related session values in setup against the global variables below.
-//        We are setting them here and there is no need to use $_SESSION db stuff anymore...
 $cfg['sql']['sqlprefix'] = (isset($_SESSION['dbprefix'])) ? $_SESSION['dbprefix'] : 'con';
-$contenido_host = (isset($_SESSION['dbhost'])) ? $_SESSION['dbhost'] : '';
-$contenido_database = (isset($_SESSION['dbname'])) ? $_SESSION['dbname'] : '';
-$contenido_user = (isset($_SESSION['dbuser'])) ? $_SESSION['dbuser'] : '';
-$contenido_password = (isset($_SESSION['dbpass'])) ? $_SESSION['dbpass'] : '';
 
 checkAndInclude($cfg['path']['contenido'] . 'includes/config.path.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/config.misc.php');
