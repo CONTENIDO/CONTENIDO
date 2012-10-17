@@ -414,18 +414,16 @@ class cSetupSystemtest extends cSetupMask
 						sprintf(i18n("Setup was unable to connect to the MySQL Server (Server %s, Username %s). Please correct the MySQL data and try again.<br><br>The error message given was: %s"),
 						$_SESSION["dbhost"], $_SESSION["dbuser"], $sErrorMessage));
 
-		$db = new DB_Contenido($_SESSION["dbhost"], "", $_SESSION["dbuser"], $_SESSION["dbpass"]);
-
-		$version = fetchMySQLVersion($db);
-
 		if ($status == false)
 		{
 			return;
 		}
 
+		$db = new DB_Contenido($_SESSION["dbhost"], "", $_SESSION["dbuser"], $_SESSION["dbpass"]);
 
-
-
+		$this->runTest(!$this->isSqlModeStrict(), 
+                        C_SEVERITY_ERROR, i18n('MySQL is running in strict mode'),
+                        i18n('MySQL is running in strict mode, Contenido will not work with this mode. Please change your sql_mode!'));
 
 		switch ($_SESSION["setuptype"])
 		{
@@ -669,7 +667,24 @@ class cSetupSystemtest extends cSetupMask
 
 	}
 
-	function doFilesystemTests ()
+    /**
+     * Is mysql strict modus active
+     *
+     * @return boolean true if stric modus is detected
+     */
+    function isSqlModeStrict() {
+        $db = new DB_Contenido($_SESSION["dbhost"], "", $_SESSION["dbuser"], $_SESSION["dbpass"]);
+
+        $db->query('SELECT LOWER(@@GLOBAL.sql_mode) AS sql_mode');
+        if ($db->next_record()) {
+            if (strpos($db->f('sql_mode'), 'strict_trans_tables') !== false || strpos($db->f('sql_mode'), 'strict_all_tables') !== false) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+        function doFilesystemTests ()
 	{
 		$this->logFilePrediction(	"contenido/logs/errorlog.txt",
 									C_SEVERITY_WARNING);

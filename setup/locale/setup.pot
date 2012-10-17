@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-28 01:59+0200\n"
+"POT-Creation-Date: 2012-10-18 00:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -672,11 +672,21 @@ msgid ""
 "was: %s"
 msgstr ""
 
-#: steps/forms/systemtest.php:454
+#: steps/forms/systemtest.php:425
+msgid "MySQL is running in strict mode"
+msgstr ""
+
+#: steps/forms/systemtest.php:426
+msgid ""
+"MySQL is running in strict mode, Contenido will not work with this mode. "
+"Please change your sql_mode!"
+msgstr ""
+
+#: steps/forms/systemtest.php:452
 msgid "MySQL database already exists and seems to be filled"
 msgstr ""
 
-#: steps/forms/systemtest.php:455
+#: steps/forms/systemtest.php:453
 #, php-format
 msgid ""
 "Setup checked the database %s and found the table %s. It seems that you "
@@ -685,22 +695,22 @@ msgid ""
 "previous version, choose 'upgrade' as setup type."
 msgstr ""
 
-#: steps/forms/systemtest.php:469
+#: steps/forms/systemtest.php:467
 msgid "MySQL test table already exists in the database"
 msgstr ""
 
-#: steps/forms/systemtest.php:470
+#: steps/forms/systemtest.php:468
 #, php-format
 msgid ""
 "Setup checked the database %s and found the test table %s. Please remove it "
 "before continuing."
 msgstr ""
 
-#: steps/forms/systemtest.php:481 steps/forms/systemtest.php:536
+#: steps/forms/systemtest.php:479 steps/forms/systemtest.php:534
 msgid "Unable to create tables in the selected MySQL database"
 msgstr ""
 
-#: steps/forms/systemtest.php:482 steps/forms/systemtest.php:537
+#: steps/forms/systemtest.php:480 steps/forms/systemtest.php:535
 #, php-format
 msgid ""
 "Setup tried to create a test table in the database %s and failed. Please "
@@ -708,13 +718,13 @@ msgid ""
 "an administrator to do so."
 msgstr ""
 
-#: steps/forms/systemtest.php:494 steps/forms/systemtest.php:549
-#: steps/forms/systemtest.php:610 steps/forms/systemtest.php:658
+#: steps/forms/systemtest.php:492 steps/forms/systemtest.php:547
+#: steps/forms/systemtest.php:608 steps/forms/systemtest.php:656
 msgid "Unable to lock tables in the selected MySQL database"
 msgstr ""
 
-#: steps/forms/systemtest.php:495 steps/forms/systemtest.php:550
-#: steps/forms/systemtest.php:611 steps/forms/systemtest.php:659
+#: steps/forms/systemtest.php:493 steps/forms/systemtest.php:548
+#: steps/forms/systemtest.php:609 steps/forms/systemtest.php:657
 #, php-format
 msgid ""
 "Setup tried to lock a test table in the database %s and failed. You can "
@@ -723,40 +733,40 @@ msgid ""
 "permission to your database user!"
 msgstr ""
 
-#: steps/forms/systemtest.php:509 steps/forms/systemtest.php:564
+#: steps/forms/systemtest.php:507 steps/forms/systemtest.php:562
 msgid "Unable to remove the test table"
 msgstr ""
 
-#: steps/forms/systemtest.php:510 steps/forms/systemtest.php:565
+#: steps/forms/systemtest.php:508 steps/forms/systemtest.php:563
 #, php-format
 msgid ""
 "Setup tried to remove the test table %s in the database %s and failed due to "
 "insufficient permissions. Please remove the table %s manually."
 msgstr ""
 
-#: steps/forms/systemtest.php:523
+#: steps/forms/systemtest.php:521
 msgid "Unable to create the database in the MySQL server"
 msgstr ""
 
-#: steps/forms/systemtest.php:524
+#: steps/forms/systemtest.php:522
 msgid ""
 "Setup tried to create a test database and failed. Please assign database "
 "creation permissions to the database user you entered, ask an administrator "
 "to do so, or create the database manually."
 msgstr ""
 
-#: steps/forms/systemtest.php:580 steps/forms/systemtest.php:597
+#: steps/forms/systemtest.php:578 steps/forms/systemtest.php:595
 msgid "No data found for the migration"
 msgstr ""
 
-#: steps/forms/systemtest.php:581
+#: steps/forms/systemtest.php:579
 #, php-format
 msgid ""
 "Setup tried to locate the data for the migration, however, the database %s "
 "doesn't exist. You need to copy your database first before running setup."
 msgstr ""
 
-#: steps/forms/systemtest.php:598
+#: steps/forms/systemtest.php:596
 #, php-format
 msgid ""
 "Setup tried to locate the data for the migration, however, the database %s "
@@ -764,18 +774,18 @@ msgid ""
 "setup."
 msgstr ""
 
-#: steps/forms/systemtest.php:628 steps/forms/systemtest.php:645
+#: steps/forms/systemtest.php:626 steps/forms/systemtest.php:643
 msgid "No data found for the upgrade"
 msgstr ""
 
-#: steps/forms/systemtest.php:629
+#: steps/forms/systemtest.php:627
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
 "doesn't exist. You need to copy your database first before running setup."
 msgstr ""
 
-#: steps/forms/systemtest.php:646
+#: steps/forms/systemtest.php:644
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
@@ -783,25 +793,25 @@ msgid ""
 "setup."
 msgstr ""
 
-#: steps/forms/systemtest.php:754
+#: steps/forms/systemtest.php:769
 #, php-format
 msgid "Can't write %s"
 msgstr ""
 
-#: steps/forms/systemtest.php:755
+#: steps/forms/systemtest.php:770
 #, php-format
 msgid ""
 "Setup or Contenido can't write to the file %s. Please change the file "
 "permissions to correct this problem."
 msgstr ""
 
-#: steps/forms/systemtest.php:768
+#: steps/forms/systemtest.php:783
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any file "
 "permissions."
 msgstr ""
 
-#: steps/forms/systemtest.php:771
+#: steps/forms/systemtest.php:786
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -809,7 +819,7 @@ msgid ""
 "environments where ACL (Access Control Lists) are used."
 msgstr ""
 
-#: steps/forms/systemtest.php:776
+#: steps/forms/systemtest.php:791
 #, php-format
 msgid ""
 "Your web server and the owner of your files are identical. You need to "
@@ -817,7 +827,7 @@ msgid ""
 "file mask to %s or set the owner to allow writing the file."
 msgstr ""
 
-#: steps/forms/systemtest.php:781
+#: steps/forms/systemtest.php:796
 #, php-format
 msgid ""
 "Your web server's group and the group of your files are identical. You need "
@@ -825,7 +835,7 @@ msgid ""
 "file mask to %s or set the group to allow writing the file."
 msgstr ""
 
-#: steps/forms/systemtest.php:786
+#: steps/forms/systemtest.php:801
 #, php-format
 msgid ""
 "Your web server is not equal to the file owner, and is not in the "
@@ -835,13 +845,13 @@ msgid ""
 "others to allow writing the file."
 msgstr ""
 
-#: steps/forms/systemtest.php:797
+#: steps/forms/systemtest.php:812
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any directory "
 "permissions."
 msgstr ""
 
-#: steps/forms/systemtest.php:800
+#: steps/forms/systemtest.php:815
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -849,7 +859,7 @@ msgid ""
 "especially in environments where ACL (Access Control Lists) are used."
 msgstr ""
 
-#: steps/forms/systemtest.php:805
+#: steps/forms/systemtest.php:820
 #, php-format
 msgid ""
 "Your web server and the owner of your directory are identical. You need to "
@@ -857,7 +867,7 @@ msgid ""
 "directory mask to %s or set the owner to allow writing the directory."
 msgstr ""
 
-#: steps/forms/systemtest.php:810
+#: steps/forms/systemtest.php:825
 #, php-format
 msgid ""
 "Your web server's group and the group of your directory are identical. You "
@@ -865,7 +875,7 @@ msgid ""
 "the directory mask to %s or set the group to allow writing the directory."
 msgstr ""
 
-#: steps/forms/systemtest.php:815
+#: steps/forms/systemtest.php:830
 #, php-format
 msgid ""
 "Your web server is not equal to the directory owner, and is not in the "
