@@ -1,4 +1,7 @@
 /.buildpath
 /.project
 /.settings
+cms/cache/*.tmp
 contenido/cronjobs/*.job
+contenido/includes/config.php
+contenido/logs/*.txt
