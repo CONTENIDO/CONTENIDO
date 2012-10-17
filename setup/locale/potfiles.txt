@@ -60,5 +60,8 @@
 ./upgrade_jobs/class.upgrade.job.0004.php
 ./upgrade_jobs/class.upgrade.job.0005.php
 ./upgrade_jobs/class.upgrade.job.0006.php
+./upgrade_jobs/class.upgrade.job.0007.php
+./upgrade_jobs/class.upgrade.job.0008.php
+./upgrade_jobs/class.upgrade.job.0009.php
 ./upgrade_jobs/class.upgrade.job.abstract.php
 ./upgrade_jobs/class.upgrade.job.main.php

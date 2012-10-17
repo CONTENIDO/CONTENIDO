@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-16 01:16+0200\n"
+"POT-Creation-Date: 2012-10-18 00:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,33 +74,33 @@ msgstr ""
 msgid "None available"
 msgstr ""
 
-#: steps/forms/clientadjust.php:37 steps/forms/clientadjust.php:38
+#: steps/forms/clientadjust.php:36 steps/forms/clientadjust.php:37
 msgid "Client Settings"
 msgstr ""
 
-#: steps/forms/clientadjust.php:39
+#: steps/forms/clientadjust.php:38
 msgid ""
 "Please check the directories identified by the system. If you need to change "
 "a client path, click on the name and enter your new path in the available "
 "input box."
 msgstr ""
 
-#: steps/forms/clientadjust.php:79
+#: steps/forms/clientadjust.php:88
 #, php-format
 msgid "Old server path for %s (%s)"
 msgstr ""
 
-#: steps/forms/clientadjust.php:81
+#: steps/forms/clientadjust.php:90
 #, php-format
 msgid "New server path for %s (%s)"
 msgstr ""
 
-#: steps/forms/clientadjust.php:91
+#: steps/forms/clientadjust.php:100
 #, php-format
 msgid "Old web path for %s (%s)"
 msgstr ""
 
-#: steps/forms/clientadjust.php:93
+#: steps/forms/clientadjust.php:102
 #, php-format
 msgid "New web path for %s (%s)"
 msgstr ""
@@ -363,50 +363,50 @@ msgstr ""
 msgid "You need to enter a database user."
 msgstr ""
 
-#: steps/forms/systemtest.php:45 steps/forms/systemtest.php:46
+#: steps/forms/systemtest.php:44 steps/forms/systemtest.php:45
 msgid "System Test"
 msgstr ""
 
-#: steps/forms/systemtest.php:47
+#: steps/forms/systemtest.php:46
 msgid "Your system has been tested for compatibility with CONTENIDO:"
 msgstr ""
 
-#: steps/forms/systemtest.php:64
+#: steps/forms/systemtest.php:61
 msgid "PHP MySQL Extension missing"
 msgstr ""
 
-#: steps/forms/systemtest.php:65
+#: steps/forms/systemtest.php:61
 msgid ""
 "CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. "
 "Please configure PHP to use either MySQL or MySQLi."
 msgstr ""
 
-#: steps/forms/systemtest.php:86
+#: steps/forms/systemtest.php:81
 msgid "Information"
 msgstr ""
 
-#: steps/forms/systemtest.php:90
+#: steps/forms/systemtest.php:85
 msgid "Warning"
 msgstr ""
 
-#: steps/forms/systemtest.php:94
+#: steps/forms/systemtest.php:89
 msgid "Fatal error"
 msgstr ""
 
-#: steps/forms/systemtest.php:106
+#: steps/forms/systemtest.php:100
 msgid "No problems detected"
 msgstr ""
 
-#: steps/forms/systemtest.php:106
+#: steps/forms/systemtest.php:100
 msgid "Setup could not detect any problems with your system environment"
 msgstr ""
 
-#: steps/forms/systemtest.php:153
+#: steps/forms/systemtest.php:159
 #, php-format
 msgid "An old Version of Plugin %s is installed on your system."
 msgstr ""
 
-#: steps/forms/systemtest.php:158
+#: steps/forms/systemtest.php:164
 msgid ""
 "Please remove all old plugins before you continue. To transfer old plugin "
 "data, please copy the old plugin data tables into the new plugin data tables "
@@ -415,11 +415,11 @@ msgid ""
 "transfer."
 msgstr ""
 
-#: steps/forms/systemtest.php:160
+#: steps/forms/systemtest.php:166
 msgid "Old Plugins are still installed"
 msgstr ""
 
-#: steps/forms/systemtest.php:171
+#: steps/forms/systemtest.php:179
 #, php-format
 msgid ""
 "You are updating a previous version of CONTENIDO to %s. Some directories/"
@@ -430,27 +430,27 @@ msgid ""
 "includes/ to data/config/production/."
 msgstr ""
 
-#: steps/forms/systemtest.php:174
+#: steps/forms/systemtest.php:182
 msgid "Attention: Some directories/files have been moved"
 msgstr ""
 
-#: steps/forms/systemtest.php:189
+#: steps/forms/systemtest.php:197
 #, php-format
 msgid "PHP Version lower than %s"
 msgstr ""
 
-#: steps/forms/systemtest.php:190
+#: steps/forms/systemtest.php:197
 #, php-format
 msgid ""
 "CONTENIDO requires PHP %s or higher as it uses functionality first "
 "introduced with this version. Please update your PHP version."
 msgstr ""
 
-#: steps/forms/systemtest.php:194
+#: steps/forms/systemtest.php:199
 msgid "File uploads disabled"
 msgstr ""
 
-#: steps/forms/systemtest.php:195
+#: steps/forms/systemtest.php:199
 #, php-format
 msgid ""
 "Your PHP version is not configured for file uploads. You can't upload files "
@@ -458,7 +458,7 @@ msgid ""
 "See %s for more information"
 msgstr ""
 
-#: steps/forms/systemtest.php:200
+#: steps/forms/systemtest.php:201
 msgid "PHP setting 'magic_quotes_runtime' is turned on"
 msgstr ""
 
@@ -469,22 +469,22 @@ msgid ""
 "setting. You have to change this directive to make CONTENIDO work."
 msgstr ""
 
-#: steps/forms/systemtest.php:205
+#: steps/forms/systemtest.php:203
 msgid "PHP Setting 'magic_quotes_sybase' is turned on"
 msgstr ""
 
-#: steps/forms/systemtest.php:206
+#: steps/forms/systemtest.php:203
 msgid ""
 "The PHP Setting 'magic_quotes_sybase' is turned on. CONTENIDO has been "
 "developed to comply with magic_quotes_sybase=Off as this is the PHP default "
 "setting. You have to change this directive to make CONTENIDO work."
 msgstr ""
 
-#: steps/forms/systemtest.php:210
+#: steps/forms/systemtest.php:205
 msgid "PHP maximum execution time is less than 30 seconds"
 msgstr ""
 
-#: steps/forms/systemtest.php:211
+#: steps/forms/systemtest.php:205
 msgid ""
 "PHP is configured for a maximum execution time of less than 30 seconds. This "
 "could cause problems with slow web servers and/or long operations in the "
@@ -492,21 +492,21 @@ msgid ""
 "60 seconds for medium ones and 30 seconds for fast web servers."
 msgstr ""
 
-#: steps/forms/systemtest.php:214
+#: steps/forms/systemtest.php:207
 msgid "The class ZipArchive could not be found"
 msgstr ""
 
-#: steps/forms/systemtest.php:214
+#: steps/forms/systemtest.php:207
 msgid ""
 "This could cause some problems, but CONTENIDO is able to run without it. You "
 "should check your PHP installation."
 msgstr ""
 
-#: steps/forms/systemtest.php:223
+#: steps/forms/systemtest.php:215
 msgid "open_basedir directive set to '.'"
 msgstr ""
 
-#: steps/forms/systemtest.php:224
+#: steps/forms/systemtest.php:215
 msgid ""
 "The directive open_basedir is set to '.' (e.g. current directory). This "
 "means that CONTENIDO is unable to access files in a logical upper level in "
@@ -515,11 +515,11 @@ msgid ""
 "directive, or turn it off completely."
 msgstr ""
 
-#: steps/forms/systemtest.php:229
+#: steps/forms/systemtest.php:218
 msgid "open_basedir setting might be insufficient"
 msgstr ""
 
-#: steps/forms/systemtest.php:230
+#: steps/forms/systemtest.php:218
 msgid ""
 "Setup believes that the PHP directive open_basedir is configured sufficient, "
 "however, if you encounter errors like 'open_basedir restriction in effect. "
@@ -527,76 +527,76 @@ msgid ""
 "adjust the open_basedir directive"
 msgstr ""
 
-#: steps/forms/systemtest.php:235
+#: steps/forms/systemtest.php:221
 msgid "open_basedir directive incompatible"
 msgstr ""
 
-#: steps/forms/systemtest.php:236
+#: steps/forms/systemtest.php:221
 msgid ""
 "Setup has checked your PHP open_basedir directive and reckons that it is not "
 "sufficient. Please change the directive to include the CONTENIDO "
 "installation or turn it off completely."
 msgstr ""
 
-#: steps/forms/systemtest.php:245
+#: steps/forms/systemtest.php:227
 msgid "PHP memory_limit directive too small"
 msgstr ""
 
-#: steps/forms/systemtest.php:246
+#: steps/forms/systemtest.php:227
 msgid ""
 "The memory_limit directive is set to 32 MB or lower. This might be not "
 "enough for CONTENIDO to operate correctly. We recommend to disable this "
 "setting completely, as this can cause problems with large CONTENIDO projects."
 msgstr ""
 
-#: steps/forms/systemtest.php:251
+#: steps/forms/systemtest.php:230
 msgid "PHP sql.safe_mode turned on"
 msgstr ""
 
-#: steps/forms/systemtest.php:252
+#: steps/forms/systemtest.php:230
 msgid ""
 "The PHP directive sql.safe_mode is turned on. This causes problems with the "
 "SQL queries issued by CONTENIDO. Please turn that directive off."
 msgstr ""
 
-#: steps/forms/systemtest.php:256
+#: steps/forms/systemtest.php:232
 msgid "PHP GD-Extension is not loaded"
 msgstr ""
 
-#: steps/forms/systemtest.php:257
+#: steps/forms/systemtest.php:232
 msgid ""
 "The PHP GD-Extension is not loaded. Some third-party modules rely on the GD "
 "functionality. If you don't enable the GD extension, you will encounter "
 "problems with modules like galleries."
 msgstr ""
 
-#: steps/forms/systemtest.php:261
+#: steps/forms/systemtest.php:234
 msgid "PHP PCRE Extension is not loaded"
 msgstr ""
 
-#: steps/forms/systemtest.php:262
+#: steps/forms/systemtest.php:234
 msgid ""
 "The PHP PCRE Extension is not loaded. CONTENIDO uses PCRE-functions like "
 "preg_repace and preg_match and won't work without the PCRE Extension."
 msgstr ""
 
-#: steps/forms/systemtest.php:266 steps/forms/systemtest.php:271
-#: steps/forms/systemtest.php:276
+#: steps/forms/systemtest.php:236 steps/forms/systemtest.php:238
+#: steps/forms/systemtest.php:240
 msgid "PHP XML Extension is not loaded"
 msgstr ""
 
-#: steps/forms/systemtest.php:267 steps/forms/systemtest.php:272
-#: steps/forms/systemtest.php:277
+#: steps/forms/systemtest.php:236 steps/forms/systemtest.php:238
+#: steps/forms/systemtest.php:240
 msgid ""
 "The PHP XML Extension is not loaded. CONTENIDO won't work without the XML "
 "Extension."
 msgstr ""
 
-#: steps/forms/systemtest.php:285
+#: steps/forms/systemtest.php:245
 msgid "Unable to check for a suitable image resizer"
 msgstr ""
 
-#: steps/forms/systemtest.php:286
+#: steps/forms/systemtest.php:245
 msgid ""
 "Setup has tried to check for a suitable image resizer (which is, for exampl, "
 "required for thumbnail creation), but was not able to clearly identify one. "
@@ -604,82 +604,92 @@ msgid ""
 "ImageMagick available."
 msgstr ""
 
-#: steps/forms/systemtest.php:291
+#: steps/forms/systemtest.php:248
 msgid "No suitable image resizer available"
 msgstr ""
 
-#: steps/forms/systemtest.php:292
+#: steps/forms/systemtest.php:248
 msgid ""
 "Setup checked your image resizing support, however, it was unable to find a "
 "suitable image resizer. Thumbnails won't work correctly or won't be looking "
 "good. Install the GD-Extension or ImageMagick"
 msgstr ""
 
-#: steps/forms/systemtest.php:303
+#: steps/forms/systemtest.php:252
+msgid "PHP iconv functions are not available."
+msgstr ""
+
+#: steps/forms/systemtest.php:252
+msgid ""
+"PHP has been compiled with the --without-iconv directive. CONTENIDO won't "
+"work without the iconv functions."
+msgstr ""
+
+#: steps/forms/systemtest.php:258
 msgid "GD-Library GIF read support missing"
 msgstr ""
 
-#: steps/forms/systemtest.php:304
+#: steps/forms/systemtest.php:258
 msgid ""
 "Your GD version doesn't support reading GIF files. This might cause problems "
 "with some modules."
 msgstr ""
 
-#: steps/forms/systemtest.php:308
+#: steps/forms/systemtest.php:260
 msgid "GD-Library GIF write support missing"
 msgstr ""
 
-#: steps/forms/systemtest.php:309
+#: steps/forms/systemtest.php:260
 msgid ""
 "Your GD version doesn't support writing GIF files. This might cause problems "
 "with some modules."
 msgstr ""
 
-#: steps/forms/systemtest.php:313
+#: steps/forms/systemtest.php:262
 msgid "GD-Library JPEG read support missing"
 msgstr ""
 
-#: steps/forms/systemtest.php:314
+#: steps/forms/systemtest.php:262
 msgid ""
 "Your GD version doesn't support reading JPEG files. This might cause "
 "problems with some modules."
 msgstr ""
 
-#: steps/forms/systemtest.php:318
+#: steps/forms/systemtest.php:264
 msgid "GD-Library JPEG write support missing"
 msgstr ""
 
-#: steps/forms/systemtest.php:319
+#: steps/forms/systemtest.php:264
 msgid ""
 "Your GD version doesn't support writing JPEG files. This might cause "
 "problems with some modules."
 msgstr ""
 
-#: steps/forms/systemtest.php:323
+#: steps/forms/systemtest.php:266
 msgid "GD-Library PNG read support missing"
 msgstr ""
 
-#: steps/forms/systemtest.php:324
+#: steps/forms/systemtest.php:266
 msgid ""
 "Your GD version doesn't support reading PNG files. This might cause problems "
 "with some modules."
 msgstr ""
 
-#: steps/forms/systemtest.php:328
+#: steps/forms/systemtest.php:268
 msgid "GD-Library PNG write support missing"
 msgstr ""
 
-#: steps/forms/systemtest.php:329
+#: steps/forms/systemtest.php:268
 msgid ""
 "Your GD version doesn't support writing PNG files. This might cause problems "
 "with some modules."
 msgstr ""
 
-#: steps/forms/systemtest.php:344
+#: steps/forms/systemtest.php:280
 msgid "MySQL database connect failed"
 msgstr ""
 
-#: steps/forms/systemtest.php:345
+#: steps/forms/systemtest.php:280
 #, php-format
 msgid ""
 "Setup was unable to connect to the MySQL Server (Server %s, Username %s). "
@@ -687,15 +697,21 @@ msgid ""
 "was: %s"
 msgstr ""
 
-#: steps/forms/systemtest.php:358
+#: steps/forms/systemtest.php:288
 msgid "MySQL is running in strict mode"
 msgstr ""
 
-#: steps/forms/systemtest.php:381
+#: steps/forms/systemtest.php:288
+msgid ""
+"MySQL is running in strict mode, CONTENIDO will not work with this mode. "
+"Please change your sql_mode!"
+msgstr ""
+
+#: steps/forms/systemtest.php:307
 msgid "MySQL database already exists and seems to be filled"
 msgstr ""
 
-#: steps/forms/systemtest.php:382
+#: steps/forms/systemtest.php:307
 #, php-format
 msgid ""
 "Setup checked the database %s and found the table %s. It seems that you "
@@ -704,22 +720,22 @@ msgid ""
 "previous version, choose 'upgrade' as setup type."
 msgstr ""
 
-#: steps/forms/systemtest.php:392
+#: steps/forms/systemtest.php:314
 msgid "MySQL test table already exists in the database"
 msgstr ""
 
-#: steps/forms/systemtest.php:393
+#: steps/forms/systemtest.php:314
 #, php-format
 msgid ""
 "Setup checked the database %s and found the test table %s. Please remove it "
 "before continuing."
 msgstr ""
 
-#: steps/forms/systemtest.php:403 steps/forms/systemtest.php:436
+#: steps/forms/systemtest.php:321 steps/forms/systemtest.php:342
 msgid "Unable to create tables in the selected MySQL database"
 msgstr ""
 
-#: steps/forms/systemtest.php:404 steps/forms/systemtest.php:437
+#: steps/forms/systemtest.php:321 steps/forms/systemtest.php:342
 #, php-format
 msgid ""
 "Setup tried to create a test table in the database %s and failed. Please "
@@ -727,40 +743,40 @@ msgid ""
 "an administrator to do so."
 msgstr ""
 
-#: steps/forms/systemtest.php:414 steps/forms/systemtest.php:447
+#: steps/forms/systemtest.php:328 steps/forms/systemtest.php:349
 msgid "Unable to remove the test table"
 msgstr ""
 
-#: steps/forms/systemtest.php:415 steps/forms/systemtest.php:448
+#: steps/forms/systemtest.php:328 steps/forms/systemtest.php:349
 #, php-format
 msgid ""
 "Setup tried to remove the test table %s in the database %s and failed due to "
 "insufficient permissions. Please remove the table %s manually."
 msgstr ""
 
-#: steps/forms/systemtest.php:426
+#: steps/forms/systemtest.php:335
 msgid "Unable to create the database in the MySQL server"
 msgstr ""
 
-#: steps/forms/systemtest.php:427
+#: steps/forms/systemtest.php:335
 msgid ""
 "Setup tried to create a test database and failed. Please assign database "
 "creation permissions to the database user you entered, ask an administrator "
 "to do so, or create the database manually."
 msgstr ""
 
-#: steps/forms/systemtest.php:461 steps/forms/systemtest.php:475
+#: steps/forms/systemtest.php:359 steps/forms/systemtest.php:369
 msgid "No data found for the migration"
 msgstr ""
 
-#: steps/forms/systemtest.php:462
+#: steps/forms/systemtest.php:359
 #, php-format
 msgid ""
 "Setup tried to locate the data for the migration, however, the database %s "
 "doesn't exist. You need to copy your database first before running setup."
 msgstr ""
 
-#: steps/forms/systemtest.php:476
+#: steps/forms/systemtest.php:369
 #, php-format
 msgid ""
 "Setup tried to locate the data for the migration, however, the database %s "
@@ -768,18 +784,18 @@ msgid ""
 "setup."
 msgstr ""
 
-#: steps/forms/systemtest.php:490 steps/forms/systemtest.php:504
+#: steps/forms/systemtest.php:380 steps/forms/systemtest.php:390
 msgid "No data found for the upgrade"
 msgstr ""
 
-#: steps/forms/systemtest.php:491
+#: steps/forms/systemtest.php:380
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
 "doesn't exist. You need to copy your database first before running setup."
 msgstr ""
 
-#: steps/forms/systemtest.php:505
+#: steps/forms/systemtest.php:390
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
@@ -787,25 +803,25 @@ msgid ""
 "setup."
 msgstr ""
 
-#: steps/forms/systemtest.php:601
+#: steps/forms/systemtest.php:474
 #, php-format
 msgid "Can't write %s"
 msgstr ""
 
-#: steps/forms/systemtest.php:602
+#: steps/forms/systemtest.php:475
 #, php-format
 msgid ""
 "Setup or CONTENIDO can't write to the file %s. Please change the file "
 "permissions to correct this problem."
 msgstr ""
 
-#: steps/forms/systemtest.php:612
+#: steps/forms/systemtest.php:483
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any file "
 "permissions."
 msgstr ""
 
-#: steps/forms/systemtest.php:615
+#: steps/forms/systemtest.php:486
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -813,7 +829,7 @@ msgid ""
 "environments where ACL (Access Control Lists) are used."
 msgstr ""
 
-#: steps/forms/systemtest.php:620
+#: steps/forms/systemtest.php:491
 #, php-format
 msgid ""
 "Your web server and the owner of your files are identical. You need to "
@@ -821,7 +837,7 @@ msgid ""
 "file mask to %s or set the owner to allow writing the file."
 msgstr ""
 
-#: steps/forms/systemtest.php:625
+#: steps/forms/systemtest.php:496
 #, php-format
 msgid ""
 "Your web server's group and the group of your files are identical. You need "
@@ -829,7 +845,7 @@ msgid ""
 "file mask to %s or set the group to allow writing the file."
 msgstr ""
 
-#: steps/forms/systemtest.php:630
+#: steps/forms/systemtest.php:501
 #, php-format
 msgid ""
 "Your web server is not equal to the file owner, and is not in the "
@@ -839,13 +855,13 @@ msgid ""
 "others to allow writing the file."
 msgstr ""
 
-#: steps/forms/systemtest.php:640
+#: steps/forms/systemtest.php:511
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any directory "
 "permissions."
 msgstr ""
 
-#: steps/forms/systemtest.php:643
+#: steps/forms/systemtest.php:514
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -853,7 +869,7 @@ msgid ""
 "especially in environments where ACL (Access Control Lists) are used."
 msgstr ""
 
-#: steps/forms/systemtest.php:648
+#: steps/forms/systemtest.php:519
 #, php-format
 msgid ""
 "Your web server and the owner of your directory are identical. You need to "
@@ -861,7 +877,7 @@ msgid ""
 "directory mask to %s or set the owner to allow writing the directory."
 msgstr ""
 
-#: steps/forms/systemtest.php:653
+#: steps/forms/systemtest.php:524
 #, php-format
 msgid ""
 "Your web server's group and the group of your directory are identical. You "
@@ -869,7 +885,7 @@ msgid ""
 "the directory mask to %s or set the group to allow writing the directory."
 msgstr ""
 
-#: steps/forms/systemtest.php:658
+#: steps/forms/systemtest.php:529
 #, php-format
 msgid ""
 "Your web server is not equal to the directory owner, and is not in the "

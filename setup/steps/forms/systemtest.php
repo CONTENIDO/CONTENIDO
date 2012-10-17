@@ -285,7 +285,7 @@ class cSetupSystemtest extends cSetupMask {
 
         $db = getSetupMySQLDBConnection(false);
 
-        $this->runTest(!$this->isSqlModeStrict(), self::C_SEVERITY_ERROR, i18n('MySQL is running in strict mode'), 'MySql is running in strict mode, CONTENIDO will not running. Please change your sql_mode!');
+        $this->runTest(!$this->isSqlModeStrict(), self::C_SEVERITY_ERROR, i18n('MySQL is running in strict mode'), i18n('MySQL is running in strict mode, CONTENIDO will not work with this mode. Please change your sql_mode!'));
 
         switch ($_SESSION["setuptype"]) {
             case "setup":
