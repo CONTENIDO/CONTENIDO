@@ -86,7 +86,7 @@ function htmlentities_iso88592($input = '') {
         '&AElig;',
         '&Ntilde;'
     );
-    $arrEntities = get_html_translation_table(HTML_ENTITIES);
+    $arrEntities = conGetHtmlTranslationTable(HTML_ENTITIES);
     $arrEntities = array_diff($arrEntities, $arrEntities_pl);
 
     return strtr($input, $arrEntities);

@@ -37,7 +37,7 @@ class cContentTypeText extends cContentTypeAbstract {
      * @return void
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        $rawSettings = htmlspecialchars($rawSettings);
+        $rawSettings = conHtmlSpecialChars($rawSettings);
         // change attributes from the parent class and call the parent
         // constructor
         parent::__construct($rawSettings, $id, $contentTypes);

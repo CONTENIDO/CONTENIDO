@@ -127,10 +127,10 @@ $iframe = '<iframe frameborder="0" style="border:1px solid black;" width="620" s
 
 $table = '<table border="0" width="600" border="0"><tr><td width="50%">' . i18n("Original module string") . '</td><td width="50%">' . sprintf(i18n("Translation for %s"), $langstring) . '</td><td width="20">&nbsp;</td></tr><tr><td colspan="3">' . $iframe . '</td></tr>';
 
-$original = new cHTMLTextarea('t_orig', htmlspecialchars($lastString)); ////$mtrans->get('original')));
+$original = new cHTMLTextarea('t_orig', conHtmlSpecialChars($lastString)); ////$mtrans->get('original')));
 $original->setStyle('width:300px;');
 
-$translated = new cHTMLTextarea('t_trans', htmlspecialchars($lastUebersetzung)); //$mtrans->get('translation')));
+$translated = new cHTMLTextarea('t_trans', conHtmlSpecialChars($lastUebersetzung)); //$mtrans->get('translation')));
 $translated->setStyle('width:300px;');
 
 $table .= '<tr><td>' . $original->render() . '</td><td>' . $translated->render() . '</td><td width="20">&nbsp;</td></tr></table>';

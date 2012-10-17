@@ -82,7 +82,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
                     $this->_oView->rootdir_error = $this->_notifyBox('warning', $sMsg);
                 }
             }
-            $this->_oView->rootdir = htmlentities($request['rootdir']);
+            $this->_oView->rootdir = conHtmlentities($request['rootdir']);
             $aMR['mod_rewrite']['rootdir'] = $request['rootdir'];
         }
 
@@ -243,13 +243,13 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
             $bError = true;
         }
 
-        $this->_oView->category_separator = htmlentities($categorySeperator);
+        $this->_oView->category_separator = conHtmlentities($categorySeperator);
         $aMR['mod_rewrite']['category_seperator'] = $categorySeperator;
-        $this->_oView->category_word_separator = htmlentities($categoryWordSeperator);
+        $this->_oView->category_word_separator = conHtmlentities($categoryWordSeperator);
         $aMR['mod_rewrite']['category_word_seperator'] = $categoryWordSeperator;
-        $this->_oView->article_separator = htmlentities($articleSeperator);
+        $this->_oView->article_separator = conHtmlentities($articleSeperator);
         $aMR['mod_rewrite']['article_seperator'] = $articleSeperator;
-        $this->_oView->article_word_separator = htmlentities($articleWordSeperator);
+        $this->_oView->article_word_separator = conHtmlentities($articleWordSeperator);
         $aMR['mod_rewrite']['article_word_seperator'] = $articleWordSeperator;
 
         // file extension
@@ -259,7 +259,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
                 $this->_oView->file_extension_error = $this->_notifyBox('error', $sMsg);
                 $bError = true;
             }
-            $this->_oView->file_extension = htmlentities($request['file_extension']);
+            $this->_oView->file_extension = conHtmlentities($request['file_extension']);
             $aMR['mod_rewrite']['file_extension'] = $request['file_extension'];
         } else {
             $this->_oView->file_extension = '.html';
@@ -294,7 +294,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
                     $this->_oView->add_startart_name_to_url_error = $this->_notifyBox('error', $sMsg);
                     $bError = true;
                 }
-                $this->_oView->default_startart_name = htmlentities($request['default_startart_name']);
+                $this->_oView->default_startart_name = conHtmlentities($request['default_startart_name']);
                 $aMR['mod_rewrite']['default_startart_name'] = $request['default_startart_name'];
             } else {
                 $this->_oView->default_startart_name = '';
@@ -336,7 +336,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
                 }
                 $aRouting[$routingDef[0]] = $routingDef[1];
             }
-            $this->_oView->rewrite_routing = htmlentities($request['rewrite_routing']);
+            $this->_oView->rewrite_routing = conHtmlentities($request['rewrite_routing']);
             $aMR['mod_rewrite']['routing'] = $aRouting;
         } else {
             $this->_oView->rewrite_routing = '';

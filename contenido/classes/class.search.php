@@ -378,7 +378,7 @@ class cSearchIndex extends cSearchBaseAbstract {
                         // remove html tags
                         $code = strip_tags($code);
                         if (strlen($code) > 0) {
-                            $code = html_entity_decode($code);
+                            $code = conHtmlEntityDecode($code);
                         }
                         $this->_debug('code', $code);
 
@@ -563,7 +563,7 @@ class cSearchIndex extends cSearchBaseAbstract {
         $sEncoding = getEncodingByLanguage($this->db, $this->lang);
 
         if (strtolower($sEncoding) != 'iso-8859-2') {
-            $key = htmlentities($key, null, $sEncoding);
+            $key = conHtmlentities($key, null, $sEncoding);
         } else {
             $key = htmlentities_iso88592($key);
         }
@@ -582,7 +582,7 @@ class cSearchIndex extends cSearchBaseAbstract {
             $key = str_replace($sUmlaut, $sMapped, $key);
         }
 
-        $key = html_entity_decode($key);
+        $key = conHtmlEntityDecode($key);
         $key = str_replace($aSpecialChars, '', $key);
 
         return $key;
@@ -598,7 +598,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @return $key
      */
     public function addSpecialUmlauts($key) {
-        $key = htmlentities($key, null, getEncodingByLanguage($this->db, $this->lang));
+        $key = conHtmlentities($key, null, getEncodingByLanguage($this->db, $this->lang));
         $aUmlautMap = array(
             'ue' => '&Uuml;',
             'ue' => '&uuml;',
@@ -613,7 +613,7 @@ class cSearchIndex extends cSearchBaseAbstract {
             $key = str_replace($sUmlaut, $sMapped, $key);
         }
 
-        $key = html_entity_decode($key);
+        $key = conHtmlEntityDecode($key);
         return $key;
     }
 
@@ -1627,13 +1627,13 @@ class cSearchResult extends cSearchBaseAbstract {
             if (isset($cms_nr) && is_numeric($cms_nr)) {
                 // get content of cms_type[cms_nr]
                 // build consistent escaped string(Timo Trautmann) 2008-04-17
-                $cms_content = htmlentities(html_entity_decode(strip_tags($article->getContent($cms_type, $cms_nr))));
+                $cms_content = conHtmlentities(conHtmlEntityDecode(strip_tags($article->getContent($cms_type, $cms_nr))));
                 if (count($this->_replacement) == 2) {
                     foreach ($search_words as $word) {
                         // build consistent escaped string, replace ae ue ..
                         // with original html entities (Timo Trautmann)
                         // 2008-04-17
-                        $word = htmlentities(html_entity_decode($this->_index->addSpecialUmlauts($word)));
+                        $word = conHtmlentities(conHtmlEntityDecode($this->_index->addSpecialUmlauts($word)));
                         $match = array();
                         preg_match("/$word/i", $cms_content, $match);
                         if (isset($match[0])) {

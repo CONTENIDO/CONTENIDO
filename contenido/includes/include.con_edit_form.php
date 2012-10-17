@@ -178,7 +178,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
     $artString = '';
     if (!empty($tmp_title)) {
-        $artString = ' > ' . htmlspecialchars($tmp_title);
+        $artString = ' > ' . conHtmlSpecialChars($tmp_title);
     }
     $tpl->set('s', 'CATEGORY', i18n("You are here") . ": " . $catString . $artString);
 
@@ -214,10 +214,10 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'ARTIKELART', i18n("Article specification"));
     $tpl->set('s', 'ARTIKELARTSELECT', $tmp_inputArtSort);
 
-    $tpl->set('s', 'TITEL-FIELD', '<input ' . $disabled . ' style="width:400px;" type="text" class="text_medium" name="title" value="' . htmlspecialchars($tmp_title) . '">');
+    $tpl->set('s', 'TITEL-FIELD', '<input ' . $disabled . ' style="width:400px;" type="text" class="text_medium" name="title" value="' . conHtmlSpecialChars($tmp_title) . '">');
 
     // plugin Advanced Mod Rewrite - edit by stese
-    $tpl->set('s', 'URLNAME-FIELD', '<input ' . $disabled . ' style="width:400px;" type="text" class="text_medium" name="urlname" value="' . htmlspecialchars($tmp_urlname) . '">');
+    $tpl->set('s', 'URLNAME-FIELD', '<input ' . $disabled . ' style="width:400px;" type="text" class="text_medium" name="urlname" value="' . conHtmlSpecialChars($tmp_urlname) . '">');
     // end plugin Advanced Mod Rewrite
 
     $tpl->set('s', 'ARTIKELID', "idart");
@@ -307,7 +307,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     } else {
         $forceDisable = "disabled";
     }
-    $tpl->set('s', 'URL', '<input type="text" ' . $disabled . ' ' . $forceDisable . ' class="text_medium" name="redirect_url" style="width:380px;" id="redirect_url" value="' . htmlspecialchars($tmp_redirect_url) . '">');
+    $tpl->set('s', 'URL', '<input type="text" ' . $disabled . ' ' . $forceDisable . ' class="text_medium" name="redirect_url" style="width:380px;" id="redirect_url" value="' . conHtmlSpecialChars($tmp_redirect_url) . '">');
 
     // Redirect - New window
     if (getEffectiveSetting("articles", "show-new-window-checkbox", "false") == "true") {
@@ -589,7 +589,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $select = $tpl2->generate($cfg["path"]["templates"] . $cfg["templates"]["generic_select"], true);
 
     // Seitentitel
-    $title_input = '<input type="text" ' . $disabled . ' class="text_medium" name="page_title" style="width:400px;" value="' . htmlspecialchars($tmp_page_title) . '">';
+    $title_input = '<input type="text" ' . $disabled . ' class="text_medium" name="page_title" style="width:400px;" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
     $tpl->set("s", "TITLE-INPUT", $title_input);
 
 

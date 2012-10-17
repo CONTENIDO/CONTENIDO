@@ -137,7 +137,6 @@ if (isset($changeclient)) {
 if (isset($changelang)) {
     $lang = $changelang;
 }
-
 // Initialize client
 if (!isset($client)) {
     // load_client defined in __FRONTEND_PATH__/data/config/config.php
@@ -605,7 +604,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             exit;
         } else {
             if ($cfg['debug']['codeoutput']) {
-                echo '<textarea>' . htmlspecialchars($code) . '</textarea>';
+                echo '<textarea>' . conHtmlSpecialChars($code) . '</textarea>';
             }
 
                 // That's it! The code of an article will be evaluated.

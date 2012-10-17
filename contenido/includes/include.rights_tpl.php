@@ -130,8 +130,8 @@ $sql = "SELECT * FROM " . $cfg["tab"]["tpl"] . " WHERE idclient='" . cSecurity::
 $db->query($sql);
 
 while ($db->next_record()) {
-    $tplname = htmlentities($db->f("name"));
-    $description = htmlentities($db->f("description"));
+    $tplname = conHtmlentities($db->f("name"));
+    $description = conHtmlentities($db->f("description"));
 
     $objItem->updateAttributes(array("class" => "td_rights0"));
     $objItem->setContent($tplname);

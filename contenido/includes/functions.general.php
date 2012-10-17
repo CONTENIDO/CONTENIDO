@@ -435,7 +435,7 @@ function isValidMail($email, $strict = false) {
 }
 
 function htmldecode($string) {
-    $trans_tbl = get_html_translation_table(HTML_ENTITIES);
+    $trans_tbl = conGetHtmlTranslationTable(HTML_ENTITIES);
     $trans_tbl = array_flip($trans_tbl);
     $ret = strtr($string, $trans_tbl);
     return $ret;

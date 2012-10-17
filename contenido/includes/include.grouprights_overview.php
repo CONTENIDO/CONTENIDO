@@ -110,7 +110,7 @@ $tpl->set('d', 'CATFIELD', stripslashes($oGroup->getGroupName(true)));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Description"));
-$oTxtDesc = new cHTMLTextbox('description', htmlentities(stripslashes($oGroup->getField('description')), ENT_QUOTES), 40, 255);
+$oTxtDesc = new cHTMLTextbox('description', conHtmlentities(stripslashes($oGroup->getField('description')), ENT_QUOTES), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtDesc->render());
 $tpl->next();
 

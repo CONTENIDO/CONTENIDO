@@ -137,7 +137,7 @@ if ($code == "0601") {
 }
 
 if ($cfg["debug"]["codeoutput"]) {
-    cDebug::out(htmlspecialchars($code));
+    cDebug::out(conHtmlSpecialChars($code));
 }
 
 chdir(cRegistry::getFrontendPath());

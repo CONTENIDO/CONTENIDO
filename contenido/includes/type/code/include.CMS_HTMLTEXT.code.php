@@ -43,7 +43,7 @@ $content = strip_tags($content);
 
 $content = str_replace('&nbsp;', ' ', $content);
 
-$content = htmlspecialchars($content);
+$content = conHtmlSpecialChars($content);
 if ($content == '') {
     $content = '&nbsp;';
 }

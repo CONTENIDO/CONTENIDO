@@ -154,7 +154,7 @@ class ModRewrite extends ModRewriteBase {
         $iCatId = (int) $iCatId;
 
         // get websafe name
-        $sNewName = cApiStrCleanURLCharacters(html_entity_decode($sName));
+        $sNewName = cApiStrCleanURLCharacters(conHtmlEntityDecode($sName));
 
         // remove double or more separators
         $sNewName = mr_removeMultipleChars('-', $sNewName);
@@ -195,7 +195,7 @@ class ModRewrite extends ModRewriteBase {
         $iLangId = (int) $iLangId;
 
         // create websafe name
-        $sNewName = cApiStrCleanURLCharacters(html_entity_decode($sName));
+        $sNewName = cApiStrCleanURLCharacters(conHtmlEntityDecode($sName));
 
         // remove double or more separators
         $sNewName = mr_removeMultipleChars('-', $sNewName);

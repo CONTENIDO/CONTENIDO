@@ -192,7 +192,7 @@ if (is_array($isCurrent)) {
 
                 $templatename = $db->f('tpl_name');
                 if (!empty($templatename)) {
-                    $templatename = htmlentities($templatename);
+                    $templatename = conHtmlentities($templatename);
                 } else {
                     $templatename = '--- ' . i18n("None") . ' ---';
                 }

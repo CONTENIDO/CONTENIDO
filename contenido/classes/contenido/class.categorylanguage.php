@@ -225,10 +225,10 @@ class cApiCategoryLanguage extends Item {
     public function setField($name, $value, $safe = true) {
         switch ($name) {
             case 'name':
-                $this->setField('urlname', htmlspecialchars($value, ENT_QUOTES), $safe);
+                $this->setField('urlname', conHtmlSpecialChars($value, ENT_QUOTES), $safe);
                 break;
             case 'urlname':
-                $value = htmlspecialchars(cApiStrCleanURLCharacters($value), ENT_QUOTES);
+                $value = conHtmlSpecialChars(cApiStrCleanURLCharacters($value), ENT_QUOTES);
                 break;
             case 'visible':
             case 'public':

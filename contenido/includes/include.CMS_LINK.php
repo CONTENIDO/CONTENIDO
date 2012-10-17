@@ -345,7 +345,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
         $upldirs .= "</select>";
 
         $form->add(i18n("Upload file"), $upldirs.'<input name="uplfile[]" type="file">');
-        $form->add(i18n("Description"), "<textarea name=CMS_LINKDESCR rows=3 cols=60>".htmlspecialchars($a_content["CMS_LINKDESCR"][$typenr])."</textarea>");
+        $form->add(i18n("Description"), "<textarea name=CMS_LINKDESCR rows=3 cols=60>".conHtmlSpecialChars($a_content["CMS_LINKDESCR"][$typenr])."</textarea>");
 
         $linktarget = "  <input class=text_medium type=text name=CMS_LINKTARGET value=\"".$a_content["CMS_LINKTARGET"][$typenr]."\" size=60 onchange=\"setlinktargettosomething();\">";
 

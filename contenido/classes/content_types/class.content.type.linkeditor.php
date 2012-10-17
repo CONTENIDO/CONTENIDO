@@ -54,11 +54,11 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         );
 
         // encoding conversions to avoid problems with umlauts
-        $rawSettings = html_entity_decode($rawSettings);
+        $rawSettings = conHtmlEntityDecode($rawSettings);
         $rawSettings = utf8_encode($rawSettings);
         parent::__construct($rawSettings, $id, $contentTypes);
         $this->_settings['linkeditor_title'] = utf8_decode($this->_settings['linkeditor_title']);
-        $this->_settings['linkeditor_title'] = htmlentities($this->_settings['linkeditor_title']);
+        $this->_settings['linkeditor_title'] = conHtmlentities($this->_settings['linkeditor_title']);
 
         // if form is submitted, store the current teaser settings
         // notice: also check the ID of the content type (there could be more
@@ -66,7 +66,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         if (isset($_POST['linkeditor_action']) && $_POST['linkeditor_action'] === 'store' && isset($_POST['linkeditor_id']) && (int) $_POST['linkeditor_id'] == $this->_id) {
             // use htmlentities for the title
             // otherwise umlauts will crash the XML parsing
-            $_POST['linkeditor_title'] = htmlentities($_POST['linkeditor_title']);
+            $_POST['linkeditor_title'] = conHtmlentities($_POST['linkeditor_title']);
             $this->_storeSettings();
         }
     }
@@ -245,7 +245,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         $wrapperContent = array();
 
         $wrapperContent[] = new cHTMLLabel(i18n('Title'), 'linkeditor_title_' . $this->_id);
-        $title = html_entity_decode($this->_settings['linkeditor_title']);
+        $title = conHtmlEntityDecode($this->_settings['linkeditor_title']);
         $wrapperContent[] = new cHTMLTextbox('linkeditor_title_' . $this->_id, $title, '', '', 'linkeditor_title_' . $this->_id);
         $wrapperContent[] = new cHTMLCheckbox('linkeditor_newwindow_' . $this->_id, '', 'linkeditor_newwindow_' . $this->_id, ($this->_settings['linkeditor_newwindow'] === 'true'));
         $wrapperContent[] = new cHTMLLabel(i18n('Open in a new window'), 'linkeditor_newwindow_' . $this->_id);

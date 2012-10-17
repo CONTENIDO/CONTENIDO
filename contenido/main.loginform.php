@@ -126,7 +126,7 @@ $tpl->set('s', 'OPTIONS', $str);
 $tpl->set('s', 'LANGUAGE', i18n('Language'));
 $tpl->set('s', 'BACKEND', i18n('CONTENIDO Backend'));
 $tpl->set('s', 'LOGIN', i18n('Login'));
-$tpl->set('s', 'USERNAME', (isset($this->auth["uname"])) ? htmlentities(strip_tags($this->auth["uname"])) : "");
+$tpl->set('s', 'USERNAME', (isset($this->auth["uname"])) ? conHtmlentities(strip_tags($this->auth["uname"])) : "");
 
 if (isset($username) && $username != '') {
     $err = i18n('Invalid login or password!');

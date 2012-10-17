@@ -190,7 +190,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
 
     $tpl->set('s', 'TITEL', i18n("Meta tags administration"));
-    $tpl->set('s', 'CATEGORY', i18n("You are here") . ": " . $catString . ' > ' . htmlspecialchars($tmp_title));
+    $tpl->set('s', 'CATEGORY', i18n("You are here") . ": " . $catString . ' > ' . conHtmlSpecialChars($tmp_title));
 
     // Title
     $tpl->set('s', 'TITEL', i18n("Title"));
@@ -201,7 +201,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
         $tpl->set('s', 'NOTIFICATION', '');
     }
     // Page title
-    $title_input = '<input type="text" ' . $disabled . ' class="text_medium" name="page_title" style="width:400px;" value="' . htmlspecialchars($tmp_page_title) . '">';
+    $title_input = '<input type="text" ' . $disabled . ' class="text_medium" name="page_title" style="width:400px;" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
     $tpl->set("s", "TITLE-INPUT", $title_input);
 
     if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
@@ -223,13 +223,13 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
         switch ($value["fieldtype"]) {
             case "text":
                 if ($value["metatype"] == 'date') {
-                    $element = '<input ' . $disabled . ' class="text_medium" type="text" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" style="width:380px;" maxlength=' . $value["maxlength"] . ' value="' . htmlspecialchars(conGetMetaValue($tmp_idartlang, $key)) . '">';
+                    $element = '<input ' . $disabled . ' class="text_medium" type="text" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" style="width:380px;" maxlength=' . $value["maxlength"] . ' value="' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '">';
                 } else {
-                    $element = '<input ' . $disabled . ' class="text_medium" type="text" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" style="width:400px;" maxlength=' . $value["maxlength"] . ' value="' . htmlspecialchars(conGetMetaValue($tmp_idartlang, $key)) . '">';
+                    $element = '<input ' . $disabled . ' class="text_medium" type="text" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" style="width:400px;" maxlength=' . $value["maxlength"] . ' value="' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '">';
                 }
                 break;
             case "textarea":
-                $element = '<textarea ' . $disabled . ' class="text_medium" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" style="width:400px;" rows=3>' . htmlspecialchars(conGetMetaValue($tmp_idartlang, $key)) . '</textarea>';
+                $element = '<textarea ' . $disabled . ' class="text_medium" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" style="width:400px;" rows=3>' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '</textarea>';
                 break;
         }
 

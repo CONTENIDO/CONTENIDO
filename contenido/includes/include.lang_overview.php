@@ -62,7 +62,7 @@ while ($db->next_record()) {
     }
 
     // Delete Button
-    $deleteMsg = sprintf(i18n("Do you really want to delete the language %s?"), htmlspecialchars($db->f("name")));
+    $deleteMsg = sprintf(i18n("Do you really want to delete the language %s?"), conHtmlSpecialChars($db->f("name")));
     $deleteAct = i18n("Delete language");
     $deletebutton = '<a title="' . $deleteAct . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $deleteMsg . '&quot;, function() { deleteLang(' . $db->f('idlang') . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $deleteAct . '" alt="' . $deleteAct . '"></a>';
 

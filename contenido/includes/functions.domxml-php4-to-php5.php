@@ -361,7 +361,7 @@ class php4DOMNode
  function new_child($name,$content)
  {
   $mySubNode=$this->myDOMNode->ownerDocument->createElement($name);
-  $mySubNode->appendChild($this->myDOMNode->ownerDocument->createTextNode(html_entity_decode($content,ENT_QUOTES)));
+  $mySubNode->appendChild($this->myDOMNode->ownerDocument->createTextNode(conHtmlEntityDecode($content,ENT_QUOTES)));
   $this->myDOMNode->appendChild($mySubNode);
   return new php4DOMElement($mySubNode,$this->myOwnerDocument);
  }

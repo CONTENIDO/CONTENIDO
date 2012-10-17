@@ -163,7 +163,7 @@ EOT;
         $oTxtEXLink = new cHTMLTextbox("CMS_LINKextern", $a_link_extern_value, 60, 255);
         $form->add(i18n("Link"), $oTxtEXLink->render());
 
-        $form->add(i18n("Description"), "<textarea name=CMS_LINKDESCR rows=3 cols=60>".htmlspecialchars($a_content["CMS_LINKDESCR"][$typenr])."</textarea>");
+        $form->add(i18n("Description"), "<textarea name=CMS_LINKDESCR rows=3 cols=60>".conHtmlSpecialChars($a_content["CMS_LINKDESCR"][$typenr])."</textarea>");
 
 
         $form->addCancel($sess->url($path2));

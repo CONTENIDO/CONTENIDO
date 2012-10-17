@@ -425,7 +425,7 @@ class cApiArticleLanguage extends Item {
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'urlname':
-                $value = htmlspecialchars(cApiStrCleanURLCharacters($value), ENT_QUOTES);
+                $value = conHtmlSpecialChars(cApiStrCleanURLCharacters($value), ENT_QUOTES);
                 break;
             case 'timemgmt':
             case 'time_move_cat':

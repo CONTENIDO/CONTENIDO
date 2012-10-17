@@ -110,11 +110,11 @@ if ($aItems !== false) {
         $oLnkEdit->setCustom("idprop", $iKey);
 
         if (($_GET['action'] == "clientsettings_edit_item") && ($_GET['idprop'] == $iKey)) {
-            $oInputboxValue = new cHTMLTextbox("csvalue", htmlspecialchars($aValue['value']));
+            $oInputboxValue = new cHTMLTextbox("csvalue", conHtmlSpecialChars($aValue['value']));
             $oInputboxValue->setWidth(30);
-            $oInputboxName = new cHTMLTextbox("csname", htmlspecialchars($aValue['name']));
+            $oInputboxName = new cHTMLTextbox("csname", conHtmlSpecialChars($aValue['name']));
             $oInputboxName->setWidth(15);
-            $oInputboxType = new cHTMLTextbox("cstype", htmlspecialchars($aValue['type']));
+            $oInputboxType = new cHTMLTextbox("cstype", conHtmlSpecialChars($aValue['type']));
             $oInputboxType->setWidth(15);
 
             $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
@@ -125,18 +125,18 @@ if ($aItems !== false) {
             $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
             if (strlen($aValue['type']) > 35) {
-                $sShort = htmlspecialchars(cApiStrTrimHard($aValue['type'], 35));
-                $aValue['type'] = sprintf($sMouseoverTemplate, htmlspecialchars($aValue['type'], ENT_QUOTES), $sShort);
+                $sShort = conHtmlSpecialChars(cApiStrTrimHard($aValue['type'], 35));
+                $aValue['type'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars($aValue['type'], ENT_QUOTES), $sShort);
             }
 
             if (strlen($aValue['value']) > 35) {
-                $sShort = htmlspecialchars(cApiStrTrimHard($aValue['value'], 35));
-                $aValue['value'] = sprintf($sMouseoverTemplate, htmlspecialchars($aValue['value'], ENT_QUOTES), $sShort);
+                $sShort = conHtmlSpecialChars(cApiStrTrimHard($aValue['value'], 35));
+                $aValue['value'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars($aValue['value'], ENT_QUOTES), $sShort);
             }
 
             if (strlen($aValue['name']) > 35) {
-                $sShort = htmlspecialchars(cApiStrTrimHard($aValue['name'], 35));
-                $aValue['name'] = sprintf($sMouseoverTemplate, htmlspecialchars($aValue['name'], ENT_QUOTES), $sShort);
+                $sShort = conHtmlSpecialChars(cApiStrTrimHard($aValue['name'], 35));
+                $aValue['name'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars($aValue['name'], ENT_QUOTES), $sShort);
             }
 
             $oList->setData($iCounter, $aValue['type'], $aValue['name'], $aValue['value'], $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());

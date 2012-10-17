@@ -686,7 +686,7 @@ foreach ($objects as $key => $value) {
         $hasChildren = strNextDeeper($value->id);
         $hasArticles = strHasArticles($value->id);
         if (($hasChildren == 0) && ($hasArticles == false) && ($perm->have_perm_area_action($tmp_area, 'str_deletecat') || $perm->have_perm_area_action_item($tmp_area, 'str_deletecat', $value->id))) {
-            $delete = '<a href="javascript://" onclick="confDel(' . $value->id . ',' . $value->custom['parentid'] . ', \'' . htmlspecialchars($value->name) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "delete.gif\" alt=\"" . i18n("Delete category") . "\" title=\"" . i18n("Delete category") . "\"></a>";
+            $delete = '<a href="javascript://" onclick="confDel(' . $value->id . ',' . $value->custom['parentid'] . ', \'' . conHtmlSpecialChars($value->name) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "delete.gif\" alt=\"" . i18n("Delete category") . "\" title=\"" . i18n("Delete category") . "\"></a>";
             $tpl->set('d', 'DELETEBUTTON', $delete);
         } else {
             $message = i18n("No permission");
@@ -758,7 +758,7 @@ foreach ($objects as $key => $value) {
         }
 
         if ($perm->have_perm_area_action('str', 'str_duplicate') || $perm->have_perm_area_action_item('str', 'str_duplicate', $value->id)) {
-            $duplicate = '<a href="javascript://" onclick="confDupl(' . $value->id . ',' . $value->custom['parentid'] . ', \'' . htmlspecialchars($value->name) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "folder_duplicate.gif\" alt=\"" . i18n("Duplicate category") . "\" title=\"" . i18n("Duplicate category") . "\"></a>";
+            $duplicate = '<a href="javascript://" onclick="confDupl(' . $value->id . ',' . $value->custom['parentid'] . ', \'' . conHtmlSpecialChars($value->name) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "folder_duplicate.gif\" alt=\"" . i18n("Duplicate category") . "\" title=\"" . i18n("Duplicate category") . "\"></a>";
             $tpl->set('d', 'DUPLICATEBUTTON', $duplicate);
         } else {
             $tpl->set('d', 'DUPLICATEBUTTON', '&nbsp;');

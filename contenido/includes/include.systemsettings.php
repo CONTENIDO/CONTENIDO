@@ -115,18 +115,18 @@ if (is_array($settings)) {
                 $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
                 if (strlen($type) > 35) {
-                    $sShort = htmlspecialchars(cApiStrTrimHard($type, 35));
-                    $type = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($type), ENT_QUOTES), $sShort);
+                    $sShort = conHtmlSpecialChars(cApiStrTrimHard($type, 35));
+                    $type = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($type), ENT_QUOTES), $sShort);
                 }
 
                 if (strlen($value['value']) > 35) {
-                    $sShort = htmlspecialchars(cApiStrTrimHard($value['value'], 35));
-                    $value['value'] = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($value['value']), ENT_QUOTES), $sShort);
+                    $sShort = conHtmlSpecialChars(cApiStrTrimHard($value['value'], 35));
+                    $value['value'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($value['value']), ENT_QUOTES), $sShort);
                 }
 
                 if (strlen($key) > 35) {
-                    $sShort = htmlspecialchars(cApiStrTrimHard($key, 35));
-                    $key = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($key), ENT_QUOTES), $sShort);
+                    $sShort = conHtmlSpecialChars(cApiStrTrimHard($key, 35));
+                    $key = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($key), ENT_QUOTES), $sShort);
                 }
                 !strlen(trim($value['value'])) ? $sValue = '&nbsp;' : $sValue = $value['value'];
 

@@ -449,7 +449,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         // $tb_name = new cHTMLLabel($sFilename,'');
         $tb_name = new cHTMLTextbox('file', $this->_file, 60);
 
-        $ta_code = new cHTMLTextarea('code', htmlspecialchars($this->_code), 100, 35, 'code');
+        $ta_code = new cHTMLTextarea('code', conHtmlSpecialChars($this->_code), 100, 35, 'code');
 
         $ta_code->setStyle('font-family: monospace;width: 100%;');
 

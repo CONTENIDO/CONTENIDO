@@ -25,9 +25,9 @@ for ($i = 0; $i < $maxFeedItems; $i++) {
     $link = $doc->getXpathValue('*/channel/item/link', $i);
     $description = $doc->getXpathValue('*/channel/item/description', $i);
 
-    $tpl->set("d", "TITLE", htmlentities($title, ENT_QUOTES));
-    $tpl->set("d", "LINK", htmlentities($link, ENT_QUOTES));
-    $tpl->set("d", "DESCRIPTION", htmlentities($description, ENT_QUOTES));
+    $tpl->set("d", "TITLE", conHtmlentities($title, ENT_QUOTES));
+    $tpl->set("d", "LINK", conHtmlentities($link, ENT_QUOTES));
+    $tpl->set("d", "DESCRIPTION", conHtmlentities($description, ENT_QUOTES));
     $tpl->set("d", "READ_ON", mi18n("READ_MORE"));
     $tpl->next();
 }

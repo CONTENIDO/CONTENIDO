@@ -162,12 +162,12 @@ class cHTMLValidator {
                 if (is_array($this->missingTags[$key + 1])) {
                     // echo ($key+1) . " ". $i."<br>";
                     if (array_key_exists($i + 2, $this->missingTags[$key + 1])) {
-                        $html .= "<u><b>" . htmlspecialchars($char) . "</b></u>";
+                        $html .= "<u><b>" . conHtmlSpecialChars($char) . "</b></u>";
                     } else {
-                        $html .= htmlspecialchars($char);
+                        $html .= conHtmlSpecialChars($char);
                     }
                 } else {
-                    $html .= htmlspecialchars($char);
+                    $html .= conHtmlSpecialChars($char);
                 }
             }
 

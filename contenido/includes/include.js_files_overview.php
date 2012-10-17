@@ -82,7 +82,7 @@ if (($handle = opendir($path)) !== false) {
                            $sess->url("main.php?area=$area&frame=3&file=$filename"),
                            'right_bottom',
                            $sess->url("main.php?area=$area&frame=4&action=$sActionEdit&file=$filename&tmp_file=$filename"),
-                           $filename, $filename, htmlspecialchars($filename));
+                           $filename, $filename, conHtmlSpecialChars($filename));
 
             $tpl->set('d', 'FILENAME', $html_filename);
 

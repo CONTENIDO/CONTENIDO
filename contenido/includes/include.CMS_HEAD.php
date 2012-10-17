@@ -85,7 +85,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 
     if ($type == "CMS_HEAD") {
             echo "  <tr><td valign=\"top\" class=text_medium>&nbsp;".$typenr.".&nbsp;".$a_description[$type][$typenr].":&nbsp;</td><td class=content>";
-            echo "  <input type=text name=\"CMS_HEAD\" value=\"".htmlspecialchars($a_content[$type][$typenr])."\" size=90>";
+            echo "  <input type=text name=\"CMS_HEAD\" value=\"".conHtmlSpecialChars($a_content[$type][$typenr])."\" size=90>";
             echo "  </td></tr>";
     }
 

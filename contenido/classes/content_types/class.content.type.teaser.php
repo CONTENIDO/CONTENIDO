@@ -275,8 +275,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             // if string is defined check if article contains this string and
             // abort, if article does not contain this string
             if ($this->_settings['teaser_filter'] != '') {
-                $iPosText = strrpos(html_entity_decode($text), $this->_settings['teaser_filter']);
-                $iPosHead = strrpos(html_entity_decode($title), $this->_settings['teaser_filter']);
+                $iPosText = strrpos(conHtmlEntityDecode($text), $this->_settings['teaser_filter']);
+                $iPosHead = strrpos(conHtmlEntityDecode($title), $this->_settings['teaser_filter']);
                 if (is_bool($iPosText) && !$iPosText && is_bool($iPosHead) && !$iPosHead) {
                     return false;
                 }

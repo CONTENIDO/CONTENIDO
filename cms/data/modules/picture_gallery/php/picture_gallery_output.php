@@ -321,7 +321,7 @@ function ig_getImageDescription($idupl) {
     }
     $description = $uploadMeta->get('description');
     if (!empty($description)) {
-        return htmlspecialchars($description);
+        return conHtmlSpecialChars($description);
     }
     return '';
 }

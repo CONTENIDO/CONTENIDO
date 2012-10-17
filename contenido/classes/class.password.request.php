@@ -329,8 +329,8 @@ class cPasswordRequest {
 
         $mailer = new cMailer();
         $from = array($this->_sendermail => $this->_sendername);
-        $subject = utf8_encode(html_entity_decode(stripslashes(i18n('Your new password for CONTENIDO Backend'))));
-        $body = utf8_encode(html_entity_decode($mailBody));
+        $subject = utf8_encode(conHtmlEntityDecode(stripslashes(i18n('Your new password for CONTENIDO Backend'))));
+        $body = utf8_encode(conHtmlEntityDecode($mailBody));
         $mailer->sendMail($from, $this->_email, $subject, $body);
     }
 

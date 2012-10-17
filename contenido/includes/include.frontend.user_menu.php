@@ -255,7 +255,7 @@ foreach ($aUserTable as $mkey => $params) {
     if (($iItemCount > ($elemperpage * ($mPage - 1)) && $iItemCount < (($elemperpage * $mPage) + 1)) || $bUsePlugins == false) {
         $iMenu++;
 
-        $message = sprintf(i18n("Do you really want to delete the user %s?"), htmlspecialchars($params["username"]));
+        $message = sprintf(i18n("Do you really want to delete the user %s?"), conHtmlSpecialChars($params["username"]));
 
         $delTitle = i18n("Delete user");
         $deletebutton = '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $message . '&quot;, function() { deleteFrontenduser(' . $idfrontenduser . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';

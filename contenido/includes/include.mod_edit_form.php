@@ -162,7 +162,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $form->addHeader(i18n("Edit module"));
 
     $name = new cHTMLTextbox("name", $module->get("name"), 60);
-    $descr = new cHTMLTextarea("descr", htmlspecialchars($module->get("description")), 100, 5);
+    $descr = new cHTMLTextarea("descr", conHtmlSpecialChars($module->get("description")), 100, 5);
 
     // Get input and output code; if specified, prepare row fields
     $sInputData = "";

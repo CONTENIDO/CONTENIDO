@@ -702,7 +702,7 @@ if ($iAffectedRows <= 0 || (empty($where) && !$bLostAndFound)) {
 
             // Templatename
             if (!empty($templatename)) {
-                $sTemplateName = htmlentities($templatename);
+                $sTemplateName = conHtmlentities($templatename);
             } else {
                 $sTemplateName = '--- ' . i18n("None") . ' ---';
             }

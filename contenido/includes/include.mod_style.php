@@ -211,7 +211,7 @@ if (isset($actionRequest)) {
     $form->setVar('idmod', $idmod);
     $tb_name = new cHTMLLabel($sFilename, '');
 
-    $ta_code = new cHTMLTextarea('code', htmlspecialchars($sCode), 100, 35, 'code');
+    $ta_code = new cHTMLTextarea('code', conHtmlSpecialChars($sCode), 100, 35, 'code');
     $ta_code->setStyle('font-family: monospace;width: 100%;');
     $ta_code->updateAttributes(array(
         'wrap' => getEffectiveSetting('style_editor', 'wrap', 'off')

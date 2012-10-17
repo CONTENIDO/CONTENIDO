@@ -273,9 +273,9 @@ class cHTML {
      */
     public function setEvent($event, $action) {
         if (substr($event, 0, 2) !== 'on') {
-            return $this->updateAttribute('on' . $event, htmlspecialchars($action));
+            return $this->updateAttribute('on' . $event, conHtmlSpecialChars($action));
         } else {
-            return $this->updateAttribute($event, htmlspecialchars($action));
+            return $this->updateAttribute($event, conHtmlSpecialChars($action));
         }
     }
 

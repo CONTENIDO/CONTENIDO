@@ -70,7 +70,7 @@ if (($handle = opendir($path)) !== false) {
 
             $tmp_mstr = '<a class=\"action\" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')" title="%s" alt="%s">%s</a>';
 
-            $html_filename = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&file=$filename"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&action=$sActionEdit&file=$filename&tmp_file=$filename"), $filename, $filename, htmlspecialchars($filename));
+            $html_filename = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&file=$filename"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&action=$sActionEdit&file=$filename&tmp_file=$filename"), $filename, $filename, conHtmlSpecialChars($filename));
 
             $tpl->set('d', 'FILENAME', $html_filename);
 

@@ -45,9 +45,9 @@ while ($db->next_record()) {
         $tmp_mstr = '<a title="%s" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 
         if ($db->f("defaulttemplate") == 1) {
-            $mstr = sprintf($tmp_mstr, htmlspecialchars($descr), 'right_top', $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"), "<b>" . $name . "</b>");
+            $mstr = sprintf($tmp_mstr, conHtmlSpecialChars($descr), 'right_top', $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"), "<b>" . $name . "</b>");
         } else {
-            $mstr = sprintf($tmp_mstr, htmlspecialchars($descr), 'right_top', $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"), $name);
+            $mstr = sprintf($tmp_mstr, conHtmlSpecialChars($descr), 'right_top', $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"), $name);
         }
 
         if ($perm->have_perm_area_action_item("tpl_edit", "tpl_edit", $db->f("idtpl"))) {
@@ -63,7 +63,7 @@ while ($db->next_record()) {
 
         if (!$inUse && ($perm->have_perm_area_action_item("tpl", "tpl_delete", $db->f("idtpl")))) {
             $delTitle = i18n("Delete template");
-            $delDescr = sprintf(i18n("Do you really want to delete the following template:<br><br>%s<br>"), htmlspecialchars($name));
+            $delDescr = sprintf(i18n("Do you really want to delete the following template:<br><br>%s<br>"), conHtmlSpecialChars($name));
 
             $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteTemplate(' . $idtpl . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>');
             $tpl->set('d', 'INUSE', '<img src="images/spacer.gif" width="16">');

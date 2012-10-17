@@ -75,6 +75,8 @@ if (!defined('CON_ENVIRONMENT')) {
 //          Use environment setting!
 $cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/config/' . CON_ENVIRONMENT . '/';
 
+include_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/includes/functions.php54.php');
+
 // Security check: Include security class and invoke basic request checks
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.registry.php');
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.security.php');
@@ -109,10 +111,10 @@ require_once($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
 
 if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
     require_once($cfg['path']['contenido_config'] . 'config.clients.php');
-    foreach($cfgClient as $id => $client) {
-        if(is_array($client)) {
-            $errsite_idcat[$id] = $client["errsite"]["idcat"];
-            $errsite_idart[$id] = $client["errsite"]["idart"];
+    foreach($cfgClient as $id => $aclient) {
+        if(is_array($aclient)) {
+            $errsite_idcat[$id] = $aclient["errsite"]["idcat"];
+            $errsite_idart[$id] = $aclient["errsite"]["idart"];
         }
     }
 }

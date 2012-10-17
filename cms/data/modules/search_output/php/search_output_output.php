@@ -40,9 +40,9 @@ $sMore = mi18n("MORE");
 
 // Get search term and pre-process it
 if (isset ($_GET['searchterm'])) {
-    $searchterm = urldecode(htmlentities(strip_tags(stripslashes($_GET['searchterm']))));
+    $searchterm = urldecode(conHtmlentities(strip_tags(stripslashes($_GET['searchterm']))));
 } elseif (isset ($_POST['searchterm'])) {
-    $searchterm = urldecode(htmlentities(strip_tags(stripslashes($_POST['searchterm']))));
+    $searchterm = urldecode(conHtmlentities(strip_tags(stripslashes($_POST['searchterm']))));
 }
 $searchterm = str_replace(' + ', ' AND ', $searchterm);
 $searchterm = str_replace(' - ', ' NOT ', $searchterm);
@@ -66,7 +66,7 @@ $aArtSpecs[] = 0;
 
 if (strlen(trim($searchterm)) > 0) {
     // Parse search term and set search options
-    $searchterm = html_entity_decode($searchterm);
+    $searchterm = conHtmlEntityDecode($searchterm);
 
     if (stristr($searchterm, ' or ') === false) {
         $combine = 'and';
@@ -98,7 +98,7 @@ if (strlen(trim($searchterm)) > 0) {
         $tpl->set('s', 'result_page', mi18n("RESULT_PAGE").':');
 
         // Build meessage
-        $message = $sYourSearchFor." '".htmlspecialchars(strip_tags($searchterm_display))."' ".mi18n("GAVE_RESULTS").":";
+        $message = $sYourSearchFor." '".conHtmlSpecialChars(strip_tags($searchterm_display))."' ".mi18n("GAVE_RESULTS").":";
         $message = str_replace('$$$', count($aSearchResults), $message);
         $tpl->set('s', 'MESSAGE', $message);
 
@@ -280,7 +280,7 @@ if (strlen(trim($searchterm)) > 0) {
         }
     } else {
         // No results
-        $tpl->set('s', 'MESSAGE', $sYourSearchFor." '".htmlspecialchars(strip_tags($searchterm))."' ".mi18n("GAVE_NO_RESULTS").".");
+        $tpl->set('s', 'MESSAGE', $sYourSearchFor." '".conHtmlSpecialChars(strip_tags($searchterm))."' ".mi18n("GAVE_NO_RESULTS").".");
         $tpl->set('s', 'NEXT', '');
         $tpl->set('s', 'PREV', '');
         $tpl->set('s', 'PAGES', '');

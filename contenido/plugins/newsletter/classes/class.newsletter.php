@@ -278,8 +278,8 @@ class Newsletter extends Item
                                     $sParameter .= ' '.$sKey . '="' . $sValue . '"';
                                 }
                             }
-                            $sMessage    = str_replace("MAIL_".strtoupper($sField), '<a href="'.htmlentities($sData).'"'.$sParameter.'>'.$sText.'</a>', $sMessage);
-                            #$sMessage    = '<a href="'.htmlentities($sData).'"'.$sParameter.'>'.$sMessage.'</a>';
+                            $sMessage    = str_replace("MAIL_".strtoupper($sField), '<a href="'.conHtmlentities($sData).'"'.$sParameter.'>'.$sText.'</a>', $sMessage);
+                            #$sMessage    = '<a href="'.conHtmlentities($sData).'"'.$sParameter.'>'.$sMessage.'</a>';
                             break;
                         default:
                             $sMessage    = str_replace("MAIL_".strtoupper($sField), $sData, $sMessage);

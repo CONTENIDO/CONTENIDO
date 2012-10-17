@@ -296,10 +296,10 @@ class cMailer extends Swift_Mailer {
      */
     private function encodeField($value, $charset) {
         if (is_array($value)) {
-            array_walk($value, function(&$item, $key, $charset) { $item = htmlentities($item, ENT_COMPAT, $charset, false); }, $charset);
+            array_walk($value, function(&$item, $key, $charset) { $item = conHtmlentities($item, ENT_COMPAT, $charset, false); }, $charset);
             return $value;
         } else if (is_string($value)) {
-            return htmlentities($value, ENT_COMPAT, $charset, false);
+            return conHtmlentities($value, ENT_COMPAT, $charset, false);
         }
         return $value;
     }
@@ -313,9 +313,9 @@ class cMailer extends Swift_Mailer {
      */
     private function decodeField($value, $charset) {
         if (is_array($value)) {
-            array_walk($value, function(&$item, $key, $charset) { $item = html_entity_decode($item, ENT_COMPAT | ENT_HTML401, $charset, false); }, $charset);
+            array_walk($value, function(&$item, $key, $charset) { $item = conHtmlEntityDecode($item, ENT_COMPAT | ENT_HTML401, $charset, false); }, $charset);
         } else if (is_string($value)) {
-            return html_entity_decode($value, ENT_COMPAT | ENT_HTML401, $charset);
+            return conHtmlEntityDecode($value, ENT_COMPAT | ENT_HTML401, $charset);
         }
         return $value;
     }

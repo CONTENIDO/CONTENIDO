@@ -79,8 +79,8 @@ class cVersionModule extends cVersion {
 
         // retrieve module code from files
         $oModuleHandler = new cModuleHandler($iIdMod);
-        $this->setData('CodeOutput', htmlspecialchars($oModuleHandler->readOutput()));
-        $this->setData('CodeInput', htmlspecialchars($oModuleHandler->readInput()));
+        $this->setData('CodeOutput', conHtmlSpecialChars($oModuleHandler->readOutput()));
+        $this->setData('CodeInput', conHtmlSpecialChars($oModuleHandler->readInput()));
     }
 
     /**

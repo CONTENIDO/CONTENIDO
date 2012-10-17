@@ -178,7 +178,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
                     $bTextarea = true;
                 } else {
                     $bPlainText = true;
-                    $mValue = htmlspecialchars($mValue);
+                    $mValue = conHtmlSpecialChars($mValue);
                 }
             } else {
                 $bPlainText = true;

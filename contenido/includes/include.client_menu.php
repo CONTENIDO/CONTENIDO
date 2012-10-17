@@ -53,7 +53,7 @@ while ($db->next_record()) {
 
         if (!$classclient->hasLanguageAssigned($idclient) && $perm->have_perm_area_action('client', "client_delete")) {
             $delTitle = i18n("Delete client");
-            $delDescr = sprintf(i18n("Do you really want to delete the following client:<br><br>%s<br>"), htmlspecialchars($db->f("name")));
+            $delDescr = sprintf(i18n("Do you really want to delete the following client:<br><br>%s<br>"), conHtmlSpecialChars($db->f("name")));
             $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteClient(&quot;' . $idclient . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>');
         } else {
             $tpl->set('d', 'DELETE', '&nbsp;');

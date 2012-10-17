@@ -90,7 +90,7 @@ class cSecurity {
         if (defined('CON_STRIPSLASHES')) {
             $sString = stripslashes($sString);
         }
-        return self::escapeDB(htmlspecialchars($sString), $oDb, false);
+        return self::escapeDB(conHtmlSpecialChars($sString), $oDb, false);
     }
 
     /**

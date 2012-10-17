@@ -789,10 +789,10 @@ class cModuleHandler {
         $oWriter = new cXmlWriter();
         $oRootElement = $oWriter->addElement('module', '', null);
 
-        $oWriter->addElement('name', htmlspecialchars($moduleName), $oRootElement);
-        $oWriter->addElement('description', htmlspecialchars($description), $oRootElement);
-        $oWriter->addElement('type', htmlspecialchars($type), $oRootElement);
-        $oWriter->addElement('alias', htmlspecialchars($alias), $oRootElement);
+        $oWriter->addElement('name', conHtmlSpecialChars($moduleName), $oRootElement);
+        $oWriter->addElement('description', conHtmlSpecialChars($description), $oRootElement);
+        $oWriter->addElement('type', conHtmlSpecialChars($type), $oRootElement);
+        $oWriter->addElement('alias', conHtmlSpecialChars($alias), $oRootElement);
 
         return $oWriter->saveToFile($this->_modulePath, 'info.xml');
     }

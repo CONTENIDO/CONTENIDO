@@ -176,7 +176,7 @@ $tpl->set('d', 'BRDRT', 1);
 $tpl->set('d', 'BRDRB', 0);
 
 $tpl->set('d', 'CATNAME', i18n("Client name"));
-$oTxtClient = new cHTMLTextbox("clientname", htmlspecialchars($oClient->get("name")), 50, 255);
+$oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars($oClient->get("name")), 50, 255);
 $tpl->set('d', 'CATFIELD', $oTxtClient->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
@@ -187,7 +187,7 @@ if ($serverpath == '') {
 }
 
 $tpl->set('d', 'CATNAME', i18n("Server path"));
-$oTxtServer = new cHTMLTextbox("frontendpath", htmlspecialchars($serverpath), 50, 255);
+$oTxtServer = new cHTMLTextbox("frontendpath", conHtmlSpecialChars($serverpath), 50, 255);
 $tpl->set('d', 'CATFIELD', $oTxtServer->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
@@ -198,7 +198,7 @@ if ($htmlpath == '') {
 }
 
 $tpl->set('d', 'CATNAME', i18n("Web address"));
-$oTxtWeb = new cHTMLTextbox("htmlpath", htmlspecialchars($htmlpath), 50, 255);
+$oTxtWeb = new cHTMLTextbox("htmlpath", conHtmlSpecialChars($htmlpath), 50, 255);
 $tpl->set('d', 'CATFIELD', $oTxtWeb->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);

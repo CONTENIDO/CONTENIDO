@@ -145,7 +145,7 @@ class XsltProcessor {
     function literal2NumericEntities($stringXml) {
         $literal2NumericEntity = array();
         if (empty($literal2NumericEntity)) {
-            $transTbl = get_html_translation_table(HTML_ENTITIES);
+            $transTbl = conGetHtmlTranslationTable(HTML_ENTITIES);
             foreach ($transTbl as $char => $entity) {
                 if (strpos('&"<>', $char) !== FALSE)
                     continue;

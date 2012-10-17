@@ -623,7 +623,7 @@ class cVersion {
      * @return string HTML Code of Input Textfield
      */
     public function getTextBox($sName, $sInitValue, $iWidth, $bDisabled = false) {
-        $oHTMLTextbox = new cHTMLTextbox($sName, html_entity_decode($sInitValue), $iWidth, '', '', $bDisabled);
+        $oHTMLTextbox = new cHTMLTextbox($sName, conHtmlEntityDecode($sInitValue), $iWidth, '', '', $bDisabled);
         $oHTMLTextbox->setStyle('font-family:monospace; width:100%;');
         $oHTMLTextbox->updateAttributes(array(
             'wrap' => 'off'
@@ -651,7 +651,7 @@ class cVersion {
      */
     public function setBodyNodeDescription($sDesc) {
         if ($sDesc != '') {
-            $this->sDescripion = htmlentities($sDesc);
+            $this->sDescripion = conHtmlentities($sDesc);
             $this->setData('description', $this->sDescripion);
         }
     }

@@ -70,8 +70,8 @@ while ($db->next_record()) {
 
     // construct the XML node
     $child = $sitemap->addChild('url');
-    $child->addChild('loc', htmlspecialchars($link));
-    $child->addChild('lastmod', htmlspecialchars($lastmod));
+    $child->addChild('loc', conHtmlSpecialChars($link));
+    $child->addChild('lastmod', conHtmlSpecialChars($lastmod));
     if (!empty($frequency)) {
         $child->addChild('changefreq', $frequency);
     }

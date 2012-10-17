@@ -313,7 +313,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $idcatart = $sart["idcatart"];
             $created = $sart["created"];
             $modified = $sart["lastmodified"];
-            $title = htmlspecialchars($sart["title"]);
+            $title = conHtmlSpecialChars($sart["title"]);
             $timemgmt = $sart["timemgmt"];
             $datestart = $sart["datestart"];
             $dateend = $sart["dateend"];
@@ -579,7 +579,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     $tmp_title = substr($tmp_title, 0, 27) . "...";
                 }
 
-                $confirmString = sprintf(i18n("Are you sure to delete the following article:<br><br><b>%s</b>"), htmlspecialchars($tmp_title));
+                $confirmString = sprintf(i18n("Are you sure to delete the following article:<br><br><b>%s</b>"), conHtmlSpecialChars($tmp_title));
                 $tmp_del = '<a href="javascript:void(0)" onclick="showConfirmation(&quot;' . $confirmString . '&quot;, function(){ deleteArticle(' . $idart . ', ' . $idcat . ', ' . $next . '); });return false;" title="' . i18n("Delete article") . '"><img src="images/delete.gif" title="' . i18n("Delete article") . '" alt="' . i18n("Delete article") . '"></a>';
             } else {
                 $tmp_del = '';
@@ -873,7 +873,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         if ($cat_name_tmp != '') {
             $cat_name = '<div id="categorypath" class="categorypath">';
-            $cat_name .= i18n("You are here") . ": " . $cat_name_tmp . ' ' . htmlspecialchars($sFistArticleName);
+            $cat_name .= i18n("You are here") . ": " . $cat_name_tmp . ' ' . conHtmlSpecialChars($sFistArticleName);
             $cat_name .= "</div>";
         } else {
             $cat_name = '';

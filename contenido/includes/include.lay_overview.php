@@ -36,7 +36,7 @@ while (($layout = $oLayouts->next()) !== false) {
     }
 
     $name  = $layout->get('name');
-    $descr = htmlspecialchars($layout->get('description'));
+    $descr = conHtmlSpecialChars($layout->get('description'));
     $idlay = $layout->get('idlay');
 
     if (strlen($descr) > 64) {
@@ -76,7 +76,7 @@ while (($layout = $oLayouts->next()) !== false) {
 
     if ($perm->have_perm_area_action_item('lay', 'lay_delete', $idlay) && !$inUse) {
         $delTitle = i18n("Delete layout");
-        $delDescr = sprintf(i18n("Do you really want to delete the following layout:<br><br>%s<br>"), htmlspecialchars($name));
+        $delDescr = sprintf(i18n("Do you really want to delete the following layout:<br><br>%s<br>"), conHtmlSpecialChars($name));
         $delLink  = '<a title="'.$delTitle.'" href="javascript://" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteLayout(' . $idlay . '); });return false;">'
                   . '<img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
         $tpl->set('d', 'DELETE', $delLink);

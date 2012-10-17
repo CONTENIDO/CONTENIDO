@@ -209,7 +209,7 @@ if (!$layout->virgin) {
     $ta_description->setStyle("font-family: monospace;width: 100%;");
     $ta_description->updateAttributes(array("wrap" => "off"));
 
-    $ta_code = new cHTMLTextarea("code", htmlspecialchars($code), 100,20, 'code');
+    $ta_code = new cHTMLTextarea("code", conHtmlSpecialChars($code), 100,20, 'code');
     $ta_code->setStyle("font-family: monospace;width: 100%;");
     $ta_code->updateAttributes(array("wrap" => "off"));
 

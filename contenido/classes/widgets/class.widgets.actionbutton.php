@@ -260,11 +260,11 @@ class cApiClickableQuestionAction extends cApiClickableAction {
     public function render() {
         switch ($this->_mode) {
             case self::QUESTIONACTION_PROMPT:
-                $this->_link->attachEventDefinition("_" . get_class($this) . rand(), "onclick", 'var answer = prompt("' . htmlspecialchars($this->_question) . '");if (answer == null) {return false;} else { this.href = this.href + "&' . $this->_resultVar . '="+answer; return true;}');
+                $this->_link->attachEventDefinition("_" . get_class($this) . rand(), "onclick", 'var answer = prompt("' . conHtmlSpecialChars($this->_question) . '");if (answer == null) {return false;} else { this.href = this.href + "&' . $this->_resultVar . '="+answer; return true;}');
                 break;
             case self::QUESTIONACTION_YESNO:
             default:
-                $this->_link->attachEventDefinition("_" . get_class($this) . rand(), "onclick", 'var answer = confirm("' . htmlspecialchars($this->_question) . '");if (answer == false) {return false;} else { return true;}');
+                $this->_link->attachEventDefinition("_" . get_class($this) . rand(), "onclick", 'var answer = confirm("' . conHtmlSpecialChars($this->_question) . '");if (answer == false) {return false;} else { return true;}');
                 break;
         }
 

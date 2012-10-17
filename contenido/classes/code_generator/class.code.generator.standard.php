@@ -291,9 +291,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         foreach ($aMetaTags as $value) {
             // Decode entities and htmlspecialchars, content will be converted later
-            // using htmlspecialchars() by render() function
+            // using conHtmlSpecialChars() by render() function
             if (isset($value['content'])) {
-                $value['content'] = html_entity_decode($value['content'], ENT_QUOTES, strtoupper($encoding[$this->_lang]));
+                $value['content'] = conHtmlEntityDecode($value['content'], ENT_QUOTES, strtoupper($encoding[$this->_lang]));
                 $value['content'] = htmlspecialchars_decode($value['content'], ENT_QUOTES);
             }
 

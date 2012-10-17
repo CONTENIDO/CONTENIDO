@@ -59,7 +59,7 @@ if (cFileHandler::exists($cfg['path']['contenido_logs'] . 'errorlog.txt')) {
 
 $tpl->set('s', 'TXTERRORLOGSIZE', $txtAreaHeight);
 $tpl->set('s', 'ERRORLOG', $errorLogBuffer);
-$tpl->set('s', 'LOGEMPTYURL', htmlentities($sess->url("main.php?area=$area&frame=$frame&action=emptyLog")));
+$tpl->set('s', 'LOGEMPTYURL', conHtmlentities($sess->url("main.php?area=$area&frame=$frame&action=emptyLog")));
 */
 // server configuration
 $aChecks = array(
