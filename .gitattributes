@@ -2463,4 +2463,3 @@ setup/upgrade_jobs/class.upgrade.job.0008.php -text
 setup/upgrade_jobs/class.upgrade.job.0009.php -text
 test/frontend/Validator/Contenido_Validator_Email.php -text
 test/frontend/ValidatorTestSuite.php -text
-test/upgrade_salt.php -text

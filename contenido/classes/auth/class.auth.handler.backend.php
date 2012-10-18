@@ -74,6 +74,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         $uid = false;
         $perm = false;
         $pass = false;
+        $salt = false;
 
         $userColl = new cApiUserCollection();
         $where = "username = '" . $username . "'";
