@@ -87,6 +87,40 @@ function addAutoIncrementToTables($db, $cfg) {
     }
 }
 
+/**
+ * Adds salts to the passwords of the backend and frontend users. Converts old passwords into new ones
+ * @param object $db The database object
+ */
+function addSalts($db) {
+    global $cfg;
+
+    $db2 = getSetupMySQLDBConnection();
+
+    $db->query("ALTER TABLE ".$cfg["tab"]["user"]." CHANGE password password VARCHAR(64)");
+    $db->query("ALTER TABLE ".$cfg["tab"]["user"]." ADD salt VARCHAR(32) AFTER password");
+
+    $db->query("SELECT * FROM ".$cfg["tab"]["user"]);
+    while($db->nextRecord()) {
+        if($db->f("salt") == "") {
+            $salt = md5($db->f("username").rand(1000, 9999).rand(1000, 9999).rand(1000, 9999));
+            $db2->query("UPDATE ".$cfg["tab"]["user"]." SET salt='".$salt."' WHERE user_id='".$db->f("user_id")."'");
+            $db2->query("UPDATE ".$cfg["tab"]["user"]." SET password='".hash("sha256", $db->f("password").$salt)."' WHERE user_id='".$db->f("user_id")."'");
+        }
+    }
+
+    $db->query("ALTER TABLE ".$cfg["tab"]["frontendusers"]." CHANGE password password VARCHAR(64)");
+    $db->query("ALTER TABLE ".$cfg["tab"]["frontendusers"]." ADD salt VARCHAR(32) AFTER password");
+
+    $db->query("SELECT * FROM ".$cfg["tab"]["frontendusers"]);
+    while($db->nextRecord()) {
+        if($db->f("salt") == "") {
+            $salt = md5($db->f("username").rand(1000, 9999).rand(1000, 9999).rand(1000, 9999));
+            $db2->query("UPDATE ".$cfg["tab"]["frontendusers"]." SET salt='".$salt."' WHERE idfrontenduser='".$db->f("idfrontenduser")."'");
+            $db2->query("UPDATE ".$cfg["tab"]["frontendusers"]." SET password='".hash("sha256", $db->f("password").$salt)."' WHERE idfrontenduser='".$db->f("idfrontenduser")."'");
+        }
+    }
+}
+
 function urlDecodeTables($db) {
     global $cfg;
 

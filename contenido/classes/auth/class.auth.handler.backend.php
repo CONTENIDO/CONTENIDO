@@ -90,10 +90,11 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         while (($item = $userColl->next()) !== false) {
             $uid = $item->get('user_id');
             $perm = $item->get('perms');
-            $pass = $item->get('password'); // Password is stored as a md5 hash
+            $pass = $item->get('password'); // Password is stored as a sha256 hash
+            $salt = $item->get("salt");
         }
 
-        if ($uid == false || md5($password) != $pass) {
+        if ($uid == false || hash("sha256", md5($password).$salt) != $pass) {
             // No user found, sleep and exit
             sleep(5);
             return false;

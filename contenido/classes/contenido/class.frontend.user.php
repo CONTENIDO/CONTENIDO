@@ -82,6 +82,7 @@ class cApiFrontendUserCollection extends ItemCollection {
         $item->set('idclient', $client);
         $item->set('username', $username);
         $item->set('password', $password);
+        $item->set('salt', md5($username.rand(1000, 9999).rand(1000, 9999).rand(1000, 9999)));
         $item->set('created', date('Y-m-d H:i:s'), false);
         $item->set('author', $auth->auth['uid']);
         $item->set('active', 0);
@@ -157,7 +158,7 @@ class cApiFrontendUser extends Item {
      */
     public function setField($field, $value, $safe = true) {
         if ($field == 'password') {
-            return parent::setField($field, md5($value), $safe);
+            return parent::setField($field, hash("sha256", md5($value).$this->get("salt")), $safe);
         } else {
             return parent::setField($field, $value, $safe);
         }

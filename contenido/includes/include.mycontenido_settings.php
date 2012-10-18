@@ -44,7 +44,7 @@ if ($action == "mycontenido_editself") {
     $error = false;
 
     if ($newpassword != "") {
-        if (cApiUser::encodePassword($oldpassword) != $user->get("password")) {
+        if ($user->encodePassword($oldpassword) != $user->get("password")) {
             $error = i18n("Old password incorrect");
         }
 

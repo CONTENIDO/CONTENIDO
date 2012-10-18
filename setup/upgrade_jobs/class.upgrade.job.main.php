@@ -105,6 +105,9 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
                                 'SELECT * FROM ".$cfg["tab"]["actions"]."')");
         $this->_oDb->query("PREPARE stmt FROM @query");
         $this->_oDb->query("EXECUTE stmt");
+
+        //convert passwords to salted ones
+        addSalts($this->_oDb);
     }
 
     /**

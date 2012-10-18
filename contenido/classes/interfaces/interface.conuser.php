@@ -193,7 +193,7 @@ interface iConUser
      * @param string $sPassword
      * @return string
      */
-    public static function encodePassword($sPassword);
+    public function encodePassword($sPassword);
 }
 
 ?>

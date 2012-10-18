@@ -60,6 +60,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
         $uid = false;
         $perm = false;
         $pass = false;
+        $salt = false;
 
         $client = cRegistry::getClientId();
 
@@ -71,6 +72,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
             $uid = $item->get('idfrontenduser');
             $perm = 'frontend';
             $pass = $item->get('password');
+            $salt = $item->get('salt');
         }
 
         if ($uid == false) {
@@ -89,13 +91,12 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
             while (($item = $userColl->next()) !== false) {
                 $uid = $item->get('user_id');
                 $perm = $item->get('perms');
-                $pass = $item->get('password'); // Password is stored as a md5
-                                                    // hash
+                $pass = $item->get('password'); // Password is stored as a sha256 hash
+                $salt = $item->get('salt');
             }
         }
 
-        if ($uid == false || md5($password) != $pass) {
-            // No user found, sleep and exit
+        if ($uid == false || hash("sha256", md5($password).$salt) != $pass) {
             sleep(5);
             return false;
         }

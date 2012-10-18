@@ -119,6 +119,7 @@ class cApiUserCollection extends ItemCollection {
         }
 
         $item->set('username', $username);
+        $item->set('salt', md5($username.rand(1000, 9999).rand(1000, 9999).rand(1000, 9999)));
         $item->store();
 
         return $item;
@@ -485,16 +486,6 @@ class cApiUser extends Item {
     }
 
     /**
-     * Encodes a passed password (uses md5 to generate a hash of it).
-     *
-     * @param string $password The password to encode
-     * @return string Encoded password
-     */
-    public static function encodePassword($password) {
-        return md5($password);
-    }
-
-    /**
      * Checks a given password against some predefined rules like minimum
      * character
      * length, required special character, etc...
@@ -573,6 +564,16 @@ class cApiUser extends Item {
     }
 
     /**
+     * Encodes a passed password (uses md5 to generate a hash of it).
+     *
+     * @param string $password The password to encode
+     * @return string Encoded password
+     */
+    public function encodePassword($password) {
+        return hash("sha256", md5($password).$this->get("salt"));
+    }
+
+    /**
      * User defined field value setter.
      *
      * @param string $sField Field name
@@ -621,7 +622,7 @@ class cApiUser extends Item {
             return $result;
         }
 
-        $encPass = self::encodePassword($password);
+        $encPass = $this->encodePassword($password);
 
         if ($this->get('password') != $encPass) {
             $this->set('password', $encPass);
@@ -642,7 +643,7 @@ class cApiUser extends Item {
      * @return int bool PASS_* or false if saving fails
      */
     public function savePassword($password) {
-        if ($this->get('password') == self::encodePassword($password)) {
+        if ($this->get('password') == $this->encodePassword($password)) {
             return self::PASS_OK;
         }
 

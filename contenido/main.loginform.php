@@ -58,12 +58,19 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
     // Check, if sysadmin and/or admin accounts are still using well-known default passwords
     $db = cRegistry::getDb();
 
+    $db->query("SELECT * FROM " . $cfg['tab']['user'] . " WHERE (username = 'sysadmin')");
+    $db->next_record();
+    $sys_salt = $db->f("salt");
+    $db->query("SELECT salt FROM " . $cfg['tab']['user'] . " WHERE username='admin'");
+    $db->next_record();
+    $adm_salt = $db->f("salt");
+
     $sDate = date('Y-m-d');
     $sSQL = "SELECT * FROM " . $cfg['tab']['user'] . "
-             WHERE (username = 'sysadmin' AND password = '48a365b4ce1e322a55ae9017f3daf0c0'
+             WHERE (username = 'sysadmin' AND password = '".hash("sha256", "48a365b4ce1e322a55ae9017f3daf0c0".$sys_salt)."'
                     AND (valid_from <= '" . $db->escape($sDate) . "' OR valid_from = '0000-00-00' OR valid_from is NULL) AND
                    (valid_to >= '" . $db->escape($sDate) . "' OR valid_to = '0000-00-00' OR valid_to is NULL))
-                 OR (username = 'admin' AND password = '21232f297a57a5a743894a0e4a801fc3'
+                 OR (username = 'admin' AND password = '".hash("sha256", "21232f297a57a5a743894a0e4a801fc3".$adm_salt)."'
                      AND (valid_from <= '" . $db->escape($sDate) . "' OR valid_from = '0000-00-00' OR valid_from is NULL) AND
                     (valid_to >= '" . $db->escape($sDate) . "' OR valid_to = '0000-00-00' OR valid_to is NULL))
                    ";
