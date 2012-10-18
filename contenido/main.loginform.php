@@ -61,6 +61,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
     $db->query("SELECT * FROM " . $cfg['tab']['user'] . " WHERE (username = 'sysadmin')");
     $db->next_record();
     $sys_salt = $db->f("salt");
+
     $db->query("SELECT salt FROM " . $cfg['tab']['user'] . " WHERE username='admin'");
     $db->next_record();
     $adm_salt = $db->f("salt");
