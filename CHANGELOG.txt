@@ -6,6 +6,26 @@ CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 $Id: CHANGELOG.txt 1230 2010-10-13 12:14:37Z timo.trautmann $:
 
+Release 4.8.17
+----------------------------------------------------------------------	
+** Bug
+    * [CON-334] - Generic DB does not handle NOT NULL fields
+    * [CON-784] - conHtmlSpecialChars_decode is not declared
+    * [CON-788] - Wrong/Incomplete translations
+    * [CON-789] - Multiple slashes in created config files
+    * [CON-790] - Usage of conHtmlSpecialChars in EditArea compressor
+    * [CON-791] - EditArea may not have write permissions.
+    * [CON-795] - Normalize usage of class names for cHTMLDiv, cHTMLSpan and PHPMailer
+    * [CON-796] - Add feature to load case insensitive class name files to autoloader
+    * [CON-798] - Creating default object from empty value in file management
+
+** New Feature
+    * [CON-335] - Autoloader for contenido classes
+
+** Task
+    * [CON-389] - Updates of localization
+
+
 Release 4.8.16
 ----------------------------------------------------------------------	
 ** Bug
