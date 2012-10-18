@@ -138,7 +138,7 @@ $cfg['AvailableCharsets'] = array(
 @ini_set("error_log",$cfg["path"]["contenido"]."logs/errorlog.txt");
 
 /* Report all errors except warnings */
-error_reporting (E_ALL ^ (E_NOTICE | E_STRICT));
+error_reporting (E_ALL & ~(E_STRICT | E_NOTICE));
 
 /* Session data storage container (PHPLIB)
  * ----------------------------------
