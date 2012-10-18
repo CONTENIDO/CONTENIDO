@@ -156,6 +156,14 @@ abstract class cCodeGeneratorAbstract {
      */
     protected $_moduleSuffix = array();
 
+    /**
+     * Module output code suffix
+     *
+     * @var array
+     */
+    protected $oArtLang;
+
+
     public function __construct() {
         $this->_db = cRegistry::getDb();
     }
@@ -202,14 +210,14 @@ abstract class cCodeGeneratorAbstract {
         $this->_layout = (bool) $layout;
         $this->_save = (bool) $save;
 
-        $oArtLang = new cApiArticleLanguage();
-        $oArtLang->loadByArticleAndLanguageId($idart, $lang);
-        if (!$oArtLang->isLoaded()) {
+        $this->oArtLang = new cApiArticleLanguage();
+        $this->oArtLang->loadByArticleAndLanguageId($idart, $lang);
+        if (!$this->oArtLang->isLoaded()) {
             throw new cInvalidArgumentException('Couldn\'t load article language for idart=' . $idart . 'AND idlang=' . $lang);
         }
 
-        $this->_idartlang = $oArtLang->get('idartlang');
-        $this->_pageTitle = stripslashes($oArtLang->get('pagetitle'));
+        $this->_idartlang = $this->oArtLang->get('idartlang');
+        $this->_pageTitle = stripslashes($this->oArtLang->get('pagetitle'));
 
         return $this->_generate($contype);
     }
@@ -536,6 +544,13 @@ abstract class cCodeGeneratorAbstract {
         global $cfg;
         $typeCodeFile = cRegistry::getBackendPath() . $cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
         return $typeCodeFile;
+    }
+
+    /**
+     * returns the artlang object
+     */
+    protected function getArtLangObject() {
+       return $this->oArtLang;
     }
 
     /**
