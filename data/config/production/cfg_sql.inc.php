@@ -73,7 +73,7 @@ $cfg['tab']['news_rcp'] = $cfg['sql']['sqlprefix'] . '_news_rcp';
 $cfg['tab']['news'] = $cfg['sql']['sqlprefix'] . '_news';
 $cfg['tab']['online_user'] = $cfg['sql']['sqlprefix'] . '_online_user';
 $cfg['tab']['phplib_active_sessions'] = $cfg['sql']['sqlprefix'] . '_phplib_active_sessions';
-$cfg['tab']['phplib_auth_user_md5'] = $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5';
+$cfg['tab']['user'] = $cfg['sql']['sqlprefix'] . '_user';
 $cfg['tab']['plugins'] = $cfg['sql']['sqlprefix'] . '_plugins';
 $cfg['tab']['plugins_rel'] = $cfg['sql']['sqlprefix'] . '_plugins_rel';
 $cfg['tab']['properties'] = $cfg['sql']['sqlprefix'] . '_properties';
@@ -88,4 +88,7 @@ $cfg['tab']['type'] = $cfg['sql']['sqlprefix'] . '_type';
 $cfg['tab']['upl_meta'] = $cfg['sql']['sqlprefix'] . '_upl_meta';
 $cfg['tab']['upl'] = $cfg['sql']['sqlprefix'] . '_upl';
 $cfg['tab']['user_prop'] = $cfg['sql']['sqlprefix'] . '_user_prop';
+
+
+$cfg['tab']['phplib_auth_user_md5'] = $cfg['tab']['user'];
 ?>

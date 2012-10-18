@@ -155,7 +155,7 @@ function checkLinks() {
     if(count($aSearchIDInfosNonID) != 0) { // Checks other links (e. g. http, www, dfbs)
 
         // Select userrights (is the user admin or sysadmin?)
-        $sql = "SELECT username FROM " . $cfg['tab']['phplib_auth_user_md5'] . " WHERE user_id='" . cSecurity::escapeDB($auth->auth['uid'], $db) . "' AND perms LIKE '%admin%'";
+        $sql = "SELECT username FROM " . $cfg['tab']['user'] . " WHERE user_id='" . cSecurity::escapeDB($auth->auth['uid'], $db) . "' AND perms LIKE '%admin%'";
         $db->query($sql);
 
         if($db->num_rows() > 0 || $cronjob == true) { // User is admin when he is or when he run the cronjob

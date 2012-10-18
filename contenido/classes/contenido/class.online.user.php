@@ -104,7 +104,7 @@ class cApiOnlineUserCollection extends ItemCollection {
     /**
      * Find all user_ids in the table 'online_user' for get rest information
      * from
-     * table 'con_phplib_auth_user_md5'
+     * table 'con_user'
      *
      * @return array Returns array of user-information
      */

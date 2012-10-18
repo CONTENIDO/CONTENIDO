@@ -456,13 +456,18 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $db = cRegistry::getDb();
     }
 
+    if ($idclient != 0 && $htmlpath != '' && $frontendpath != '') {
+        $cfgClient[$idclient]['path']['frontend'] = cSecurity::escapeString($frontendpath);
+        $cfgClient[$idclient]['path']['htmlpath'] = cSecurity::escapeString($htmlpath);
+    }
+
     $sql = 'SELECT idclient, name, errsite_cat, errsite_art FROM ' . $cfg['tab']['clients'];
     $db->query($sql);
 
     $htmlpaths = array();
     $frontendpaths = array();
     foreach($cfgClient as $id => $aclient) {
-        if(is_array($client)) {
+        if(is_array($aclient)) {
             $htmlpaths[$id] = $aclient["path"]["htmlpath"];
             $frontendpaths[$id] = $aclient["path"]["frontend"];
         }
@@ -530,11 +535,6 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $cfgClient[$iClient]['version']['frontendpath'] = 'data/version/';
     }
 
-    if ($idclient != 0 && $htmlpath != '' && $frontendpath != '') {
-        $cfgClient[$idclient]['path']['frontend'] = cSecurity::escapeString($frontendpath);
-        $cfgClient[$idclient]['path']['htmlpath'] = cSecurity::escapeString($htmlpath);
-    }
-
     $aConfigFileContent = array();
     $aConfigFileContent[] = '<?php';
     $aConfigFileContent[] = 'global $cfgClient;';
@@ -598,6 +598,8 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
     $aConfigFileContent[] = '?>';
 
     cFileHandler::write($cfg['path']['contenido_config'] . 'config.clients.php', implode(PHP_EOL, $aConfigFileContent));
+
+    return $cfgClient;
 }
 
 /**

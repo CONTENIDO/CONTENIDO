@@ -93,7 +93,7 @@ for ($i = $sActualYear - 10; $i < $sActualYear + 30; $i++) {
 
 $arrUsers = array();
 
-$query = "SELECT * FROM " . $cfg['tab']['phplib_auth_user_md5'] . " ORDER BY realname";
+$query = "SELECT * FROM " . $cfg['tab']['user'] . " ORDER BY realname";
 
 $arrUsers['n/a'] = '-';
 

@@ -204,7 +204,7 @@ class WorkflowUserSequence extends Item {
             case "iduser":
                 if ($value != 0) {
                     $db = cRegistry::getDb();
-                    $sql = "SELECT user_id FROM " . $cfg["tab"]["phplib_auth_user_md5"] .
+                    $sql = "SELECT user_id FROM " . $cfg['tab']['user'] .
                             " WHERE user_id = '" . cSecurity::escapeDB($value, $db) . "'";
                     $db->query($sql);
 

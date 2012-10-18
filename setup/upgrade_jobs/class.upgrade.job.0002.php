@@ -132,8 +132,9 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
                     $this->_oDb->query($sql);
                 }
                 checkAndInclude($cfg['path']['contenido_config'] . 'config.clients.php');
-                updateClientCache();
             }
+
+            $cfgClient = updateClientCache();
 
             cModuleHandler::setEncoding('ISO-8859-1');
 

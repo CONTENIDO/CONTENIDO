@@ -43,7 +43,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
         updateContenidoVersion($this->_oDb, $cfg['tab']['system_prop'], CON_SETUP_VERSION);
 
         if (isset($_SESSION['sysadminpass']) && $_SESSION['sysadminpass'] != '') {
-            updateSysadminPassword($this->_oDb, $cfg['tab']['phplib_auth_user_md5'], 'sysadmin');
+            updateSysadminPassword($this->_oDb, $cfg['sql']['sqlprefix'].'_phplib_auth_user_md5', 'sysadmin');
         }
 
         // Empty code table and set code creation (on update) flag
@@ -93,6 +93,18 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
 
         // Insert or update default system properties
         updateSystemProperties($this->_oDb, $cfg['tab']['system_prop']);
+
+        //Workaround for RENAME TABLE IF EXIST _phplib_auth_user_md5 TO _user
+        $this->_oDb->query("SELECT Count(*)
+                                INTO @exists
+                                FROM information_schema.tables
+                                WHERE table_schema = '".$cfg["db"]["connection"]["database"]."'
+                                    AND table_name = '".$cfg["sql"]["sqlprefix"]."_phplib_auth_user_md5'");
+        $this->_oDb->query("SET @query = If(@exists>0,
+                                'RENAME TABLE ".$cfg["sql"]["sqlprefix"]."_phplib_auth_user_md5 TO ".$cfg["sql"]["sqlprefix"]."_user',
+                                'SELECT * FROM ".$cfg["tab"]["actions"]."')");
+        $this->_oDb->query("PREPARE stmt FROM @query");
+        $this->_oDb->query("EXECUTE stmt");
     }
 
     /**

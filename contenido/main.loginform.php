@@ -59,7 +59,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
     $db = cRegistry::getDb();
 
     $sDate = date('Y-m-d');
-    $sSQL = "SELECT * FROM " . $cfg['tab']['phplib_auth_user_md5'] . "
+    $sSQL = "SELECT * FROM " . $cfg['tab']['user'] . "
              WHERE (username = 'sysadmin' AND password = '48a365b4ce1e322a55ae9017f3daf0c0'
                     AND (valid_from <= '" . $db->escape($sDate) . "' OR valid_from = '0000-00-00' OR valid_from is NULL) AND
                    (valid_to >= '" . $db->escape($sDate) . "' OR valid_to = '0000-00-00' OR valid_to is NULL))

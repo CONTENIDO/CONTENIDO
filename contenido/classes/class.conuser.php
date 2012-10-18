@@ -117,7 +117,7 @@ class ConUser extends cApiUser {
     }
 
     /**
-     * This function does update without password column to all columns of con_phplib_auth_user_md5 table.
+     * This function does update without password column to all columns of con_user table.
      *
      * @return void
      */

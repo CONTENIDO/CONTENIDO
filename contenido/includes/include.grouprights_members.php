@@ -92,7 +92,7 @@ if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $acti
 
 
 $tab1 = $cfg["tab"]["groupmembers"];
-$tab2 = $cfg["tab"]["phplib_auth_user_md5"];
+$tab2 = $cfg['tab']['user'];
 
 $sortby = getEffectiveSetting("backend", "sort_backend_users_by", "");
 

@@ -246,7 +246,7 @@ class cPasswordRequest {
         $this->_username = stripslashes($this->_username);
 
         //check if requested username exists, also get email and  timestamp when user last requests a new password (last_pw_request)
-        $sql = "SELECT username, last_pw_request, email FROM " . $this->_cfg["tab"]["phplib_auth_user_md5"] . "
+        $sql = "SELECT username, last_pw_request, email FROM " . $this->_cfg['tab']['user'] . "
                  WHERE username = '" . $this->_db->escape($this->_username) . "'
                  AND (valid_from <= NOW() OR valid_from = '0000-00-00' OR valid_from IS NULL)
                  AND (valid_to >= NOW() OR valid_to = '0000-00-00' OR valid_to IS NULL)";
@@ -304,7 +304,7 @@ class cPasswordRequest {
         $password = $this->_generatePassword();
 
         //update database entry, set new password and last_pw_request time
-        $sql = "UPDATE " . $this->_cfg["tab"]["phplib_auth_user_md5"] . "
+        $sql = "UPDATE " . $this->_cfg['tab']['user'] . "
                          SET last_pw_request = '" . date('Y-m-d H:i:s') . "',
                              tmp_pw_request = '" . md5($password) . "',
                              password = '" . md5($password) . "'

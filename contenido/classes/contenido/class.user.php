@@ -87,7 +87,7 @@ class cApiUserCollection extends ItemCollection {
      */
     public function __construct($where = false) {
         global $cfg;
-        parent::__construct($cfg['tab']['phplib_auth_user_md5'], 'user_id');
+        parent::__construct($cfg['tab']['user'], 'user_id');
         $this->_setItemClass('cApiUser');
         if ($where !== false) {
             $this->select($where);
@@ -414,7 +414,7 @@ class cApiUser extends Item {
      */
     public function __construct($mId = false) {
         global $cfg;
-        parent::__construct($cfg['tab']['phplib_auth_user_md5'], 'user_id');
+        parent::__construct($cfg['tab']['user'], 'user_id');
         $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -1275,7 +1275,7 @@ class Users {
     function Users($table = '') {
         cDeprecated('Use cApiUserCollection() instead');
         global $cfg;
-        $this->table = ($table == '')? $cfg['tab']['phplib_auth_user_md5'] : $table;
+        $this->table = ($table == '')? $cfg['tab']['user'] : $table;
         $this->db = cRegistry::getDb();
     }
 
@@ -1346,7 +1346,7 @@ class User {
     function User($table = '') {
         cDeprecated('Use cApiUser() instead');
         global $cfg;
-        $this->table = ($table == '')? $cfg['tab']['phplib_auth_user_md5'] : $table;
+        $this->table = ($table == '')? $cfg['tab']['user'] : $table;
         $this->db = cRegistry::getDb();
     }
 

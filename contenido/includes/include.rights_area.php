@@ -57,7 +57,7 @@ $sJsBefore .= "var areatree = new Array();\n";
 
 if (!isset($rights_perms) || $action == "" || !isset($action)) {
     //search for the permissions of this user
-    $sql = "SELECT perms FROM " . $cfg["tab"]["phplib_auth_user_md5"] . " WHERE user_id='$userid'";
+    $sql = "SELECT perms FROM " . $cfg['tab']['user'] . " WHERE user_id='$userid'";
 
     $db->query($sql);
     $db->next_record();

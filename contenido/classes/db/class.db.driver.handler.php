@@ -903,7 +903,7 @@ abstract class cDbDriverHandler {
     public function next_record() {
         return $this->nextRecord();
     }
-	
+
     /**
      * @deprecated 2012-10-02 This method is deprecated. Use getMetaData instead.
      */
