@@ -149,7 +149,7 @@ if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0)
 Contenido_Security::checkFrontendGlobals();
 
 
-// update urlbuilder set http base path 
+// update urlbuilder set http base path
 Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
 
 
@@ -240,10 +240,14 @@ if (isset($path) && strlen($path) > 1)
 
 // error page
 $aParams = array (
-    'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client], 
+    'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client],
     'lang' => $lang, 'error'=> '1'
 );
 $errsite = 'Location: ' . Contenido_Url::getInstance()->buildRedirect($aParams);
+
+if($error == 1) {
+    header("HTTP/1.0 404 Not found");
+}
 
 
 /*
@@ -831,11 +835,11 @@ else
     $sql = "SELECT timemgmt, online, redirect, redirect_url, datestart, dateend FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
     $db->query($sql);
     $db->next_record();
-	
+
     $online = $db->f("online");
 	$redirect = $db->f("redirect");
     $redirect_url = $db->f("redirect_url");
-	
+
 	if ($db->f("timemgmt") == "1" && $isstart != 1) {
 		$dateStart = $db->f("datestart");
 		$dateEnd = $db->f("dateend");

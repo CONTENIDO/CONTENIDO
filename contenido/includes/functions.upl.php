@@ -268,92 +268,58 @@ function uplHasSubdirs($dir)
  * uplSyncDirectory ($path)
  * Sync database contents with directory
  *
- * @param string $path Specifies the path to scan
+ * @param string $sPath Specifies the path to scan
  */
-function uplSyncDirectory ($path)
+function uplSyncDirectory ($sPath)
 {
 	global $cfgClient, $client, $cfg, $db;
 
-	if (is_dbfs($path))
-	{
-		return uplSyncDirectoryDBFS($path);
+	if (is_dbfs($sPath)) {
+	    return uplSyncDirectoryDBFS($sPath);
 	}
 
-	$uploads = new UploadCollection;
-    $properties = new PropertyCollection;
+	$oUploadsColl = new UploadCollection();
 
-	/* Read all files in a specific directory */
-	$dir = $cfgClient[$client]['upl']['path'].$path;
-
-	$olddir = getcwd();
-
-	@chdir($dir);
-	$dirhandle = @opendir($dir);
-
-	/* Whoops, probably failed to open. Return to the caller, but clean up stuff first. */
-	if (!$dirhandle)
-	{
-		$uploads->select("dirname = '$path' AND idclient = '$client'");
-
-        while ($upload = $uploads->next())
-        {
-        	if (!file_exists($cfgClient[$client]["upl"]["path"].$upload->get("dirname").$upload->get("filename")))
-        	{
-        		$uploads->delete($upload->get("idupl"));
-        	}
-        }
-
-        // A click on "Upload" (root) would result in path = "" and this will result in LIKE '%' = everything
-        // So, we have to exclude dbfs-files, as they "don't exist" (-> file_exists)
-        $properties->select("idclient = '$client' AND itemtype='upload' AND type='file' AND itemid LIKE '".$path."%' AND itemid NOT LIKE 'dbfs%'");
-
-       	while ($property = $properties->next())
-       	{
-       		if (!file_exists($cfgClient[$client]["upl"]["path"].$property->get("itemid")))
-    		{
-    			$properties->delete($property->get("idproperty"));
-    		}
-       	}
-
-		chdir($olddir);
-		return;
+	// get current upload directory, it's subdirectories and remove all database
+	// entries pointing to a non existing upload directory on the file system
+	$sql = 'SELECT DISTINCT(dirname) AS dirname FROM ' . $cfg['tab']['upl'] . ' WHERE '
+	        . 'idclient=' . (int) $client . ' AND dirname LIKE "' . $db->escape($sPath) . '%"';
+	$db->query($sql);
+	while ($db->next_record()) {
+	    $sCurrDirname = $db->f('dirname');
+	    $sSubDir = substr($sCurrDirname, strlen($sPath));
+	    if (substr_count($sSubDir, '/') <= 1) {
+	        // subdirectory is a direct descendant, process this directory too
+	        $sFullPath = $cfgClient[$client]['upl']['path'] . $sCurrDirname;
+	        if (!is_dir($sFullPath)) {
+	            $oUploadsColl->deleteByDirname($sCurrDirname);
+	        }
+	    }
 	}
 
-	/* Put all the files into the $files array */
-	while ($file = readdir ($dirhandle))
-    {
-    	if ($file != "." && $file != "..")
-    	{
-    		if (is_file($file))
-    		{
-    			$uploads->sync($path, $file);
-    		}
-    	}
-    }
+	// delete all db entries related to current directory without existing file on file system
+	$oUploadsColl->select("dirname='" . Contenido_Security::escapeDB($sPath, $oUploadsColl->db) . "' AND idclient=" . (int) $client);
+	while ($oUpload = $oUploadsColl->next()) {
+	    if (!file_exists($cfgClient[$client]['upl']['path'] . $oUpload->get('dirname') . $oUpload->get('filename'))) {
+	        $oUploadsColl->delete($oUpload->get('idupl'));
+	    }
+	}
 
-    $uploads->select("dirname = '$path' AND idclient = '$client'");
-
-    while ($upload = $uploads->next())
-    {
-    	if (!file_exists($cfgClient[$client]["upl"]["path"].$upload->get("dirname").$upload->get("filename")))
-    	{
-    		$uploads->delete($upload->get("idupl"));
-    	}
-    }
-
-    // A click on "Upload" (root) would result in path = "" and this will result in LIKE '%' = everything
-    // So, we have to exclude dbfs-files, as they "don't exist" (-> file_exists)
-    $properties->select("idclient = '$client' AND itemtype='upload' AND type='file' AND itemid LIKE '".$path."%' AND itemid NOT LIKE 'dbfs%'");
-
-   	while ($property = $properties->next())
-   	{
-   		if (!file_exists($cfgClient[$client]["upl"]["path"].$property->get("itemid")))
-		{
-			$properties->delete($property->get("idproperty"));
-		}
-   	}
-
-    chdir($olddir);
+	// sync all files in current directory with database
+	$sFullPath = $cfgClient[$client]['upl']['path'] . $sPath;
+	if (is_dir($sFullPath)) {
+	    $aDirsToExclude = uplGetDirectoriesToExclude();
+	    if ($hDir = opendir($sFullPath)) {
+	        while (false !== ($file = readdir($hDir))) {
+	            if (!in_array(strtolower($file), $aDirsToExclude)) {
+	                if (is_file($sFullPath . $file)) {
+	                    $oUploadsColl->sync($sPath, $file);
+	                }
+	            }
+	        }
+	        closedir($hDir);
+	    }
+	}
 }
 
 /**
@@ -955,5 +921,29 @@ function uplGetFileExtension ($sFile)
 	} else {
 		return $sExtension;
 	}
+}
+
+
+/**
+ * Returns list of directory names to exclude e. g. from directory listings.
+ * @return  array
+ */
+function uplGetDirectoriesToExclude()
+{
+    static $mDirsToExclude;
+    if (isset($mDirsToExclude)) {
+        return $mDirsToExclude;
+    }
+
+    $mDirsToExclude = trim(getSystemProperty('system', 'upldirlist-dirstoexclude'));
+    if ($mDirsToExclude === '') {
+        $mDirsToExclude = '.,..,.svn,.cvs';
+        setSystemProperty('system', 'upldirlist-dirstoexclude', $mDirsToExclude);
+    }
+    $mDirsToExclude = explode(',', $mDirsToExclude);
+    foreach ($mDirsToExclude as $pos => $item) {
+        $mDirsToExclude[$pos] = trim($item);
+    }
+    return $mDirsToExclude;
 }
 ?>

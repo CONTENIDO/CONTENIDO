@@ -51,12 +51,12 @@
  *   modified 2008-09-07, Murat Purc, new chain 'Contenido.Frontend.AfterLoadPlugins'
  *   modified 2008-11-11, Andreas Lindner, added additional option to CEC_Hook::setConditions for frontend user acccess
  *   modified 2008-11-11, Andreas Lindner, Fixed typo in var name $iLangCheck (missing $)
- *   modified 2008-11-11, Andreas Lindner,        
- *   modified 2008-11-18, Timo Trautmann: in backendeditmode also check if logged in backenduser has permission to view preview of page 
+ *   modified 2008-11-11, Andreas Lindner,
+ *   modified 2008-11-18, Timo Trautmann: in backendeditmode also check if logged in backenduser has permission to view preview of page
  *   modified 2008-11-18, Murat Purc, add usage of Contenido_Url to create urls to frontend pages
  *   modified 2008-12-23, Murat Purc, fixed problems with Contenido_Url
  *   modified 2009-01-13, Murat Purc, changed handling of internal redirects
- *   modified 2009-03-02, Andreas Lindner, prevent $lang being wrongly set to 0 
+ *   modified 2009-03-02, Andreas Lindner, prevent $lang being wrongly set to 0
  *   modified 2009-04-16, OliverL, check return from Contenido.Frontend.HTMLCodeOutput
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
  *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
@@ -157,7 +157,7 @@ if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0)
 Contenido_Security::checkFrontendGlobals();
 
 
-// update urlbuilder set http base path 
+// update urlbuilder set http base path
 Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
 
 
@@ -248,11 +248,14 @@ if (isset($path) && strlen($path) > 1)
 
 // error page
 $aParams = array (
-    'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client], 
+    'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client],
     'lang' => $lang, 'error'=> '1'
 );
 $errsite = 'Location: ' . Contenido_Url::getInstance()->buildRedirect($aParams);
 
+if($error == 1) {
+    header("HTTP/1.0 404 Not found");
+}
 
 /*
  * Try to initialize variables $idcat, $idart, $idcatart, $idartlang
@@ -840,11 +843,11 @@ else
     $sql = "SELECT timemgmt, online, redirect, redirect_url, datestart, dateend FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
     $db->query($sql);
     $db->next_record();
-	
+
     $online = $db->f("online");
 	$redirect = $db->f("redirect");
     $redirect_url = $db->f("redirect_url");
-	
+
 	if ($db->f("timemgmt") == "1" && $isstart != 1) {
 		$dateStart = $db->f("datestart");
 		$dateEnd = $db->f("dateend");

@@ -143,6 +143,20 @@ class UploadCollection extends ItemCollection
 	    return $db->query($sqlQuery);
 	}
 
+	/**
+	 * Deletes upload directory by its dirname.
+	 *
+	 * @global int $client
+	 * @param string $sDirname
+	 */
+	public function deleteByDirname($sDirname) {
+	    global $client;
+
+	    $this->select("dirname = '" . Contenido_Security::escapeDB($sDirname, $this->db) . "' AND idclient = " . (int) $client);
+	    while (($oUpload = $this->next()) !== false) {
+	        $this->delete($oUpload->get('idupl'));
+	    }
+	}
 }
 
 class UploadItem extends Item

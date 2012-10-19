@@ -1,13 +1,13 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
- * 
- * Requirements: 
+ *
+ * Description:
+ *
+ * Requirements:
  * @con_php_req 5
- * 
+ *
  *
  * @package    Contenido Backend <Area>
  * @version    0.4
@@ -18,17 +18,17 @@
  * @link       http://www.contenido.org
  * @since      file available since contenido release <Contenido Version>
  * @deprecated file deprecated in contenido release <Contenido Version>
- * 
+ *
  * {@internal
  *   created  2003-01-2003
  *   modified 2005-09-29, Andreas Lindner
  *   modified 2008-07-03, bilal arslan, added security fix
  *   modified 2008-11-18, Murat Purc, add usage of Contenido_Url to create urls to frontend pages and redesign of HTML markup
- *   modified 2008-12-26, Murat Purc, fixed problems with Contenido_Url and removed usage of asserts (css and image) from backend 
+ *   modified 2008-12-26, Murat Purc, fixed problems with Contenido_Url and removed usage of asserts (css and image) from backend
  *
  *   $Id: front_crcloginform.inc.php 928 2008-12-27 12:50:30Z xmurrix $:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -100,7 +100,7 @@ $sFormAction = $oUrl->build($aUrl['params']);
 if (!is_file($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif')) {
     $sLoginButton = '<input type="image" title="Login" alt="Login" src="' . $sClientHtmlPath . 'images/but_ok.gif" />' . "\n";
 } else {
-    $sLoginButton = '<input type="button" title="Login" value="Login" style="font-size:90%;font-weight:bold;background-color:' . $cfg['color']['table_header'] . ';border:1px solid ' . $cfg['color']['table_border'] . ';" />' . "\n";
+    $sLoginButton = '<input type="submit" title="Login" value="Login" style="font-size:90%;font-weight:bold;background-color:' . $cfg['color']['table_header'] . ';border:1px solid ' . $cfg['color']['table_border'] . ';" />' . "\n";
 }
 
 ?>
@@ -108,7 +108,7 @@ if (!is_file($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif')) {
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>" /> 
+    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>" />
     <title>:: :: :: :: Contenido Login</title>
     <script type="text/javascript"><!--
     if (top != self) {
@@ -122,7 +122,7 @@ if (!is_file($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif')) {
     a img {border:none;}
     #loginPageWrap {
         width:230px; height:120px; text-align:center; border:1px solid <?php echo $cfg['color']['table_border'] ?>; background-color:<?php echo $cfg['color']['table_light'] ?>;
-        position:absolute; left:50%; top:50%; margin-left:-115px; margin-top:-60px; 
+        position:absolute; left:50%; top:50%; margin-left:-115px; margin-top:-60px;
     }
     #login {text-align:left;}
     #login label {display:block; float:left; width:70px; }

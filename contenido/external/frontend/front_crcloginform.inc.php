@@ -1,16 +1,16 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * <Description>
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5
  * @con_template <Templatefiles>
  * @con_notice <Notice>
- * 
+ *
  *
  * @package    Contenido Backend <Area>
  * @version    <version>
@@ -21,8 +21,8 @@
  * @link       http://www.contenido.org
  * @since      file available since contenido release <Contenido Version>
  * @deprecated file deprecated in contenido release <Contenido Version>
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2003-01-21
  *   modified 2005-09-29, Andreas Lindner
  *   modified 2008-07-04, bilal arslan, added security fix
@@ -31,7 +31,7 @@
  *
  *   $Id: front_crcloginform.inc.php 931 2009-01-03 18:17:46Z xmurrix $:
  * }}
- * 
+ *
  */
 if(!defined('CON_FRAMEWORK')) {
   die('Illegal call');
@@ -102,7 +102,7 @@ $sFormAction = $oUrl->build($aUrl['params']);
 if (!is_file($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif')) {
     $sLoginButton = '<input type="image" title="Login" alt="Login" src="' . $sClientHtmlPath . 'images/but_ok.gif" />' . "\n";
 } else {
-    $sLoginButton = '<input type="button" title="Login" value="Login" style="font-size:90%;font-weight:bold;background-color:' . $cfg['color']['table_header'] . ';border:1px solid ' . $cfg['color']['table_border'] . ';" />' . "\n";
+    $sLoginButton = '<input type="submit" title="Login" value="Login" style="font-size:90%;font-weight:bold;background-color:' . $cfg['color']['table_header'] . ';border:1px solid ' . $cfg['color']['table_border'] . ';" />' . "\n";
 }
 
 ?>
@@ -110,7 +110,7 @@ if (!is_file($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif')) {
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>" /> 
+    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>" />
     <title>:: :: :: :: Contenido Login</title>
     <script type="text/javascript"><!--
     if (top != self) {
@@ -124,7 +124,7 @@ if (!is_file($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif')) {
     a img {border:none;}
     #loginPageWrap {
         width:230px; height:120px; text-align:center; border:1px solid <?php echo $cfg['color']['table_border'] ?>; background-color:<?php echo $cfg['color']['table_light'] ?>;
-        position:absolute; left:50%; top:50%; margin-left:-115px; margin-top:-60px; 
+        position:absolute; left:50%; top:50%; margin-left:-115px; margin-top:-60px;
     }
     #login {text-align:left;}
     #login label {display:block; float:left; width:70px; }

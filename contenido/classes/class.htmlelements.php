@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * HTML elements
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend classes
  * @version    1.6.2
@@ -18,14 +18,14 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-08-21
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *
  *   $Id: class.htmlelements.php 469 2008-07-02 09:44:45Z frederic.schneider $:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -49,35 +49,35 @@ class cHTML extends HTML_Common
 {
 	/**
 	 * Storage of the open SGML tag template
-	 * @var string 
+	 * @var string
 	 * @access private
 	 */
 	var $_skeleton_open;
 
 	/**
 	 * Storage of a single SGML tag template
-	 * @var string 
+	 * @var string
 	 * @access private
 	 */
 	var $_skeleton_single;
 
 	/**
 	 * Storage of the close SGML tag
-	 * @var string 
+	 * @var string
 	 * @access private
 	 */
 	var $_skeleton_close;
 
 	/**
 	 * Defines which tag to use
-	 * @var string 
+	 * @var string
 	 * @access private
 	 */
 	var $_tag;
 
 	/**
 	 * Defines the style definitions
-	 * @var string 
+	 * @var string
 	 * @access private
 	 */
 	var $_styledefs;
@@ -89,7 +89,7 @@ class cHTML extends HTML_Common
 	 */
 	var $_requiredScripts;
 
-	/** 
+	/**
 	 * Defines if the current tag is a contentless tag
 	 * @var boolean
 	 * @access private
@@ -102,15 +102,15 @@ class cHTML extends HTML_Common
 	var $_aEventDefinitions;
 
 	/**
-	 * Style definitions 
+	 * Style definitions
 	 */
 	var $_aStyleDefinitions;
-	
+
 	/**
 	 * The content itself
 	 */
 	var $_content;
-	
+
 	/**
 	 * Constructor Function
 	 * Initializes the SGML open/close tags
@@ -124,7 +124,7 @@ class cHTML extends HTML_Common
 		$this->_skeleton_open = '<%s%s>';
 		$this->_skeleton_close = '</%s>';
 
-		
+
 		/* Cache the XHTML setting for performance reasons */
 		if (!is_array($cfg) || !array_key_exists("generate_xhtml", $cfg))
 		{
@@ -132,7 +132,7 @@ class cHTML extends HTML_Common
 			{
 				$cfg["generate_xhtml"] = getEffectiveSetting("generator", "xhtml", false);
 			} else {
-				$cfg["generate_xhtml"] = false;	
+				$cfg["generate_xhtml"] = false;
 			}
 		}
 
@@ -140,7 +140,7 @@ class cHTML extends HTML_Common
 		{
 			$cfg["generate_xhtml"] = false;
 		}
-		
+
 		if ($cfg["generate_xhtml"] == true)
 		{
 			$this->_skeleton_single = '<%s%s />';
@@ -177,7 +177,7 @@ class cHTML extends HTML_Common
 
 	/**
 	 * advances to the next ID available in the system.
-	 * 
+	 *
 	 * This function is useful if you need to use HTML elements
 	 * in a loop, but don't want to re-create new objects each time.
 	 *
@@ -205,11 +205,11 @@ class cHTML extends HTML_Common
 	/**
 	 * setAlt: sets the alt and title attributes
 	 *
-	 * Sets the "alt" and "title" tags. Usually, "alt" is used 
+	 * Sets the "alt" and "title" tags. Usually, "alt" is used
 	 * for accessibility and "title" for mouse overs.
-	 * 
+	 *
 	 * To set the text for all browsers for mouse over, set "alt"
-	 * and "title". IE behaves incorrectly and shows "alt" on 
+	 * and "title". IE behaves incorrectly and shows "alt" on
 	 * mouse over. Mozilla browsers only show "title" as mouse over.
 	 *
 	 * @param $alt string Text to set as the "alt" attribute
@@ -293,7 +293,7 @@ class cHTML extends HTML_Common
 
 	/**
 	 * fillSkeleton: Fills the open SGML tag skeleton
-	 * 
+	 *
 	 * fillSkeleton fills the SGML opener tag with the
 	 * specified attributes. Attributes need to be passed
 	 * in the stringyfied variant.
@@ -329,37 +329,37 @@ class cHTML extends HTML_Common
 	 *
 	 * @deprecated name change, use attachStyleDefinition
 	 * @param $entity string Entity to define
-	 * @param $definition string Definition for the given entity 
+	 * @param $definition string Definition for the given entity
 	 * @return string filled SGML closing skeleton
 	 */
 	function setStyleDefinition($entity, $definition)
 	{
 		$this->_styledefs[$entity] = $definition;
 	}
-	
+
 	/**
 	 * attachStyleDefinition: Attaches a style definition.
-	 * 
+	 *
 	 * This function is not restricted to a single style, e.g.
 	 * you can set multiple style definitions as-is to the handler.
-	 * 
+	 *
 	 * $example->attachStyle("myIdentifier",
 	 * 			"border: 1px solid black; white-space: nowrap");
 	 * $example->attachStyle("myIdentifier2",
 	 * 						"padding: 0px");
-	 * 
+	 *
 	 * Results in:
-	 * 
+	 *
 	 * style="border: 1px solid black; white-space: nowrap; padding: 0px;"
 	 *
 	 * @param $sName   		string Name for a style definition
-	 * @param $sDefinition 	string Definition for the given entity 
+	 * @param $sDefinition 	string Definition for the given entity
 	 * @return string filled SGML closing skeleton
 	 */
 	function attachStyleDefinition($sName, $sDefinition)
 	{
 		$this->_aStyleDefinitions[$sName] = $sDefinition;
-	}	
+	}
 
 	function addRequiredScript($script)
 	{
@@ -386,9 +386,9 @@ class cHTML extends HTML_Common
 		if (is_array($content))
 		{
 			unset ($this->_content);
-			
+
 			$this->_content = "";
-			
+
 			foreach ($content as $item)
 			{
 				if (is_object($item))
@@ -432,10 +432,10 @@ class cHTML extends HTML_Common
 
 	/**
 	 * attachEventDefinition: Attaches the code for an event
-	 * 
+	 *
 	 * Example to attach an onClick handler:
 	 * setEventDefinition("foo", "onClick", "alert('foo');");
-	 * 
+	 *
 	 * @param $sName string defines the name of the event
 	 * @param $sEvent string defines the event (e.g. onClick)
 	 * @param $sCode string defines the code
@@ -448,7 +448,7 @@ class cHTML extends HTML_Common
 
 	/**
 	 * setAttribte: Sets a specific attribute
-	 * 
+	 *
 	 * @param $sAttributeName string Name of the attribute
 	 * @param $sValue string Value of the attribute
 	 */
@@ -459,7 +459,7 @@ class cHTML extends HTML_Common
 
 	/**
 	 * Renders the output
-	 * If the tag 
+	 * If the tag
 	 */
 	function toHTML()
 	{
@@ -476,22 +476,22 @@ class cHTML extends HTML_Common
 				$style .= ";";
 			}
 		}
-		
+
 		foreach ($this->_aStyleDefinitions as $sEntry)
 		{
 			$style .= $sEntry;
-			
+
 			if (substr($style, strlen($style) - 1) != ";")
 			{
 				$style .= ";";
-			}			
+			}
 		}
 
-		
+
 		foreach ($this->_aEventDefinitions as $sEventName => $sEntry)
 		{
 			$aFullCode = array();
-			
+
 			foreach ($sEntry as $sName => $sCode)
 			{
 				$aFullCode[] = $sCode;
@@ -535,6 +535,15 @@ class cHTML extends HTML_Common
 	{
 		return $this->toHtml();
 	}
+
+	/**
+	 * Direct call of object as string will return it's generated markup.
+	 *
+	 * @return string Generated markup
+	 */
+	public function __toString() {
+	    return $this->render();
+	}
 }
 
 /**
@@ -549,7 +558,7 @@ class cHTMLFormElement extends cHTML
 	 * Constructor. This is a generic form element, where
 	 * specific elements should be inherited from this class.
 	 *
-	 * @param $name string Name of the element 
+	 * @param $name string Name of the element
 	 * @param $id string ID of the element
 	 * @param $disabled string Item disabled flag (non-empty to set disabled)
 	 * @param $tabindex string Tab index for form elements
@@ -576,12 +585,12 @@ class cHTMLFormElement extends cHTML
 
 	/**
 	 * Sets the "disabled" attribute of an element. User Agents
-	 * usually are showing the element as "greyed-out". 
+	 * usually are showing the element as "greyed-out".
 		 *
 	 * Example:
 	 * $obj->setDisabled("disabled");
 	 * $obj->setDisabled("");
-	 * 
+	 *
 	 * The first example sets the disabled flag, the second one
 	 * removes the disabled flag.
 	 *
@@ -805,7 +814,7 @@ class cHTMLTextbox extends cHTMLFormElement
 	function cHTMLTextbox($name, $initvalue = "", $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
 	{
 		cHTMLFormElement :: cHTMLFormElement($name, $id, $disabled, $tabindex, $accesskey);
-        
+
 		$this->_tag = "input";
 		$this->setContentlessTag();
 		$this->setValue($initvalue);
@@ -1169,7 +1178,7 @@ class cHTMLSelectElement extends cHTMLFormElement
 	 * $stuff = array(
 	 *					array("value","title"),
 	 *					array("value","title"));
-	 * 
+	 *
 	 * or regular key => value arrays.
 	 *
 	 * @param $stuff array Array with all items
@@ -1220,7 +1229,7 @@ class cHTMLSelectElement extends cHTMLFormElement
 
 	/**
 	 * Sets a specific cHTMLOptionElement to the selected
-	 * state. 
+	 * state.
 	 *
 	 * @param $lvalue string Specifies the "value" of the cHTMLOptionElement to set
 	 *
@@ -1282,7 +1291,7 @@ class cHTMLSelectElement extends cHTMLFormElement
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Sets specified elements as selected (and all others as unselected)
 	 *
@@ -1343,7 +1352,7 @@ class cHTMLOptionElement extends cHTMLFormElement
 {
 	/**
 	 * Title to display
-	 * @var string 
+	 * @var string
 	 * @access private
 	 */
 	var $_title;
@@ -1374,7 +1383,7 @@ class cHTMLOptionElement extends cHTMLFormElement
 	/**
 	 * sets the selected flag
 	 *
-	 * @param $selected boolean If true, adds the "selected" attribute 
+	 * @param $selected boolean If true, adds the "selected" attribute
 	 *
 	 * @return none
 	 */
@@ -1392,7 +1401,7 @@ class cHTMLOptionElement extends cHTMLFormElement
 	/**
 	 * sets the selected flag
 	 *
-	 * @param $selected boolean If true, adds the "selected" attribute 
+	 * @param $selected boolean If true, adds the "selected" attribute
 	 *
 	 * @return none
 	 */
@@ -1410,7 +1419,7 @@ class cHTMLOptionElement extends cHTMLFormElement
 	/**
 	 * sets the disabled flag
 	 *
-	 * @param $disabled boolean If true, adds the "disabled" attribute 
+	 * @param $disabled boolean If true, adds the "disabled" attribute
 	 *
 	 * @return none
 	 */
@@ -1450,7 +1459,7 @@ class cHTMLRadiobutton extends cHTMLFormElement
 {
 	/**
 	 * Values for the check box
-	 * @var string 
+	 * @var string
 	 * @access private
 	 */
 	var $_value;
@@ -1517,7 +1526,7 @@ class cHTMLRadiobutton extends cHTMLFormElement
 	 * will be rendered as seperate HTML label, if not, it will be displayed
 	 * as regular text. Displaying the value can be turned off via the parameter.
 		 *
-	 * @param $renderlabel boolean If true, renders a label 
+	 * @param $renderlabel boolean If true, renders a label
 	 *
 	 * @return string Rendered HTML
 	 */
@@ -1626,7 +1635,7 @@ class cHTMLCheckbox extends cHTMLFormElement
 	 * will be rendered as seperate HTML label, if not, it will be displayed
 	 * as regular text. Displaying the value can be turned off via the parameter.
 		 *
-	 * @param $renderlabel boolean If true, renders a label 
+	 * @param $renderlabel boolean If true, renders a label
 	 *
 	 * @return string Rendered HTML
 	 */
@@ -2086,14 +2095,14 @@ class cHTMLImage extends cHTML
 {
 	/**
 	 * Image source
-	 * @var string 
+	 * @var string
 	 * @access private
 	 */
 	var $_src;
 
 	/**
 	 * Image width
-	 * @var int 
+	 * @var int
 	 * @access private
 	 */
 	var $_width;

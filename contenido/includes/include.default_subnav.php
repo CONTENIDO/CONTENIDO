@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Builds the third navigation layer
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.0.0
@@ -18,13 +18,13 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release 4.8.14
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2010-08-23
  *
  *   $Id: include.default_subnav.php 338 2008-06-27 09:02:23Z frederic.schneider $:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK'))
@@ -63,7 +63,7 @@ $area = Contenido_Security::escapeDB($area, $db);
  */
 	$sUrlParams = ''; # URL-Parameter as string "&..." + "&..."
 	$iCountBasicVal = 0; # Count of basic Parameter in URL
-	
+
 	foreach( $_GET as $sTempKey => $sTempValue )
 	{
 		if( in_array($sTempKey, $aBasicParams) )
@@ -74,13 +74,13 @@ $area = Contenido_Security::escapeDB($area, $db);
 		else if( ( substr($sTempKey,0,2)=='id' || substr($sTempKey, -2, 2)=='id' )
 			  && ( (int)$sTempValue==$sTempValue 					 // check integer
 					|| preg_match("/^[0-9a-f]{32}$/", $sTempValue) ) // check md5
-			  	 ) 
+			  	 )
 		{
 			/* complement the selected data */
 			$sUrlParams.= '&'.$sTempKey.'='.$sTempValue;
 		}
 	}
-	
+
 /*
  * is loading from main.php
  * dann ist die Anzahl aller gültigen Variablen mit den in GET identisch
@@ -91,7 +91,7 @@ $area = Contenido_Security::escapeDB($area, $db);
 	}
 
 /*
- * Area-Url-Params 
+ * Area-Url-Params
  *
  * for special params
  *
@@ -107,13 +107,13 @@ $area = Contenido_Security::escapeDB($area, $db);
 
 /* Debug */
 	$sDebugMsg.= 'Url-Params: '.$sUrlParams."\n";
-	
+
 
 /*
  * Select NavSubItems from DB
  */
 	$nav = new Contenido_Navigation;
-	
+
 	$sql = "SELECT
 				navsub.location AS location,
 				area.name       AS name,
@@ -125,10 +125,10 @@ $area = Contenido_Security::escapeDB($area, $db);
 				area.idarea = navsub.idarea
 			  AND
 				navsub.level = 1
-			  AND 
+			  AND
 				navsub.online = 1
-			  AND ( 
-					area.parent_id = '".$area."' 
+			  AND (
+					area.parent_id = '".$area."'
 				OR
 					area.name = '".$area."'
 				)
@@ -138,40 +138,40 @@ $area = Contenido_Security::escapeDB($area, $db);
 
 /* Debug */
 	$sDebugMsg.= '<!-- SQL-Select: '."\n".$sql."\n".' -->'."\n";
-	
-	
+
+
 	$db->query($sql);
-	
+
 	while( $db->next_record() )
 	{
 		/* Name */
 		$sArea = $db->f("name");
-		
+
 		/* Set translation path */
 		$sCaption = $nav->getName( $db->f("location") );
-		
+
 		/* for Main-Area*/
 		if( $sArea == $area )
 		{
 			/* Menueless */
 			$bMenuless = $db->f("menuless") ? true : false;
-			
+
 			if( $bVirgin && !$bMenuless && $db->f("name") == $area )
 			{
 				// ist loading fron Main, Main-Area and Menuless -> stop this "while"
 				break;
-			}	
+			}
 		}
-		
+
 		/* Link */
 		$sLink = $sess->url("main.php?area=".$sArea."&frame=4".($appendparameters?'&appendparameters='.$appendparameters:'')."&contenido=".$sess->id.$sUrlParams);
-		
+
 		/* Class */
 		if($sArea == $area)
 			$sClass = ' current';
 		else
 			$sClass = '';
-		
+
 		/* fill template */
 		$tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt );
 		$tpl->set("d", "CLASS",     'item '.$sArea );
@@ -179,22 +179,31 @@ $area = Contenido_Security::escapeDB($area, $db);
 		$tpl->next();
 	}
 
+	//Has area a menu?
+	if($db->num_rows() == 0) {
+	    $sql = sprintf("SELECT menuless FROM %s WHERE name = '%s' AND parent_id = 0", $cfg["tab"]["area"], $area);
+	    $db->query($sql);
+	    while($db->next_record()) {
+            $bMenuless = $db->f("menuless") ? true : false;
+        }
+    }
+
 	if( !$bVirgin || $bMenuless )
 	{
 		$tpl->set('s', 'CLASS', $bMenuless ? 'menuless' : '');
 		$tpl->set('s', 'SESSID', $sess->id);
-		
+
 		$sTpl = $tpl->generate( $cfg["path"]["templates"] . $cfg['templates']['default_subnav'], true );
-		
+
 		if($bDebug === true) {
-			
+
 			$aExectime["fullend"] = getmicrotime();
 			$sExectime = ($aExectime["fullend"] - $aExectime["fullstart"]);
 			$sDebugMsg.= 'sExectime: '.substr($sExectime,0,7)." sec"."\n";
-			
+
 			$sTpl = str_replace( '</body>', '<div style="position:absolute; right:15px; width: 200px; top:0px; height: 32px; overflow: scroll; background:#fff; color:#000; border:1px dotted #f00; padding:2px;">'.nl2br( $sDebugMsg ).'</div>'.'</body>', $sTpl );
 		}
-		
+
 		echo $sTpl;
 	}
 	else

@@ -213,7 +213,7 @@ $sOutputAdmin = "";
 foreach ($admins as $key => $value) {
 	if ($value["email"] != "") {
 		$sAdminEmail= '<a class="blue" href="mailto:' . $value["email"] . '">' . $value["email"] . '</a>';
-		$sAdminName= $value['realname'];
+		$sAdminName = $value['realname'] ? $value["realname"] : $value["username"];
 		$sOutputAdmin .= sprintf($sAdminTemplate, $sAdminName, $sAdminEmail);
 	}
 }
@@ -245,12 +245,16 @@ $aMemberList= $oActiveUsers->findAllUser();
 // Template for display current user
 $sTemplate = "";
 $sOutput = "";
-$sTemplate= '<li class="welcome">%s, %s</li>';
+$sTemplate= '<li class="welcome">%s%s</li>';
 
 foreach ($aMemberList as $key) {
-	$sRealName= $key['realname'];
-	$aPerms['0']= $key['perms'];
-	$sOutput .= sprintf($sTemplate,  $sRealName, $aPerms['0']);
+	$sRealName = $key['realname'] ? $key["realname"] : $key["username"];
+	$aPerms['0'] = $key['perms'];
+	if(strstr($aPerms['0'], "admin") === false) {
+	    $sOutput .= sprintf($sTemplate,  $sRealName, " ".$aPerms['0']);
+	} else {
+	    $sOutput .= sprintf($sTemplate,  $sRealName, ", ".$aPerms['0']);
+	}
 }
 
 // set template welcome
