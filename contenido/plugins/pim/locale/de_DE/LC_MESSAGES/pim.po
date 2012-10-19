@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-19 13:17+0100\n"
-"PO-Revision-Date: 2012-10-19 13:17+0100\n"
+"POT-Creation-Date: 2012-10-19 13:41+0100\n"
+"PO-Revision-Date: 2012-10-19 13:42+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "MIME-Version: 1.0\n"
@@ -52,43 +52,47 @@ msgstr "Aktualisieren"
 msgid "Please choose your new file"
 msgstr "Plugin-Paket auswählen"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:86
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:78
+msgid "Foldername"
+msgstr "Ordnername"
+
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:88
 msgid "No entries"
 msgstr "Keine Eintr&auml;ge"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:90
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:92
 msgid "Add new plugin"
 msgstr "Neues Plugin installieren"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:91
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:93
 msgid "Please choose a plugin package"
 msgstr "Plugin-Paket auswählen"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:92
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:94
 msgid "Upload plugin package"
 msgstr "Plugin-Paket hochladen"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:93
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:95
 msgid "Installed Plugins"
 msgstr "Installierte Plugins"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:94
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:96
 msgid "Not installed Plugins"
 msgstr "Noch nicht installierte Plugins"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:160
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:162
 msgid "You have to install CONTENIDO <strong>"
 msgstr "Sie ben&ouml;tigen mindestens die CONTENIDO-Version <strong>"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:160
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:162
 msgid "</strong> or higher to install this plugin!"
 msgstr "</strong> oder h&ouml;her, um dieses Plugin installieren zu k&ouml;nnen!"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:168
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:170
 msgid "You're current CONTENIDO version is to new - max CONTENIDO version: "
 msgstr "Ihre aktuelle CONTENIDO-Version ist zu neu - maximale CONTENDIO-Version:"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:195
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:197
 msgid "The plugin has been successfully installed"
 msgstr "Das Plugin wurde erfolgreich installiert"
 

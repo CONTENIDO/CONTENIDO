@@ -75,6 +75,7 @@ while ($pluginFoldername = readdir($handle)) {
         // initalization new class
         $pagePlugins = new cGuiPage('pim_plugins_extracted', 'pim');
 
+        $pagePlugins->set('s', 'LANG_FOLDERNAME', i18n('Foldername', 'pim'));
         $pagePlugins->set('s', 'FOLDERNAME', $pluginFoldername);
         $pagePlugins->set('s', 'INSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=install-extracted&pluginFoldername=' . $pluginFoldername));
 
