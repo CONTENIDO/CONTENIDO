@@ -15,10 +15,6 @@
         <max_contenido_version></max_contenido_version>
     </general>
 
-    <plugin_dependencies>
-        <depend version="1.0.3">b9653ztdbde004e1ad4dbbd90a25def6555f4gh40</depend>
-    </plugin_dependencies>
-
     <contenido>
 
         <areas>
