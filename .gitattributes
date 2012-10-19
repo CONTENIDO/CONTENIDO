@@ -1801,6 +1801,7 @@ contenido/plugins/pim/locale/de_DE/LC_MESSAGES/pim.mo -text
 contenido/plugins/pim/locale/de_DE/LC_MESSAGES/pim.po -text
 contenido/plugins/pim/locale/pim.pot -text
 contenido/plugins/pim/locale/pim_potfiles.txt -text svneol=unset#text/plain
+contenido/plugins/pim/templates/template.pim_error.html -text svneol=unset#text/plain
 contenido/plugins/pim/templates/template.pim_overview.html -text svneol=unset#text/plain
 contenido/plugins/pim/templates/template.pim_plugins_extracted.html -text svneol=unset#text/plain
 contenido/plugins/pim/templates/template.pim_plugins_installed.html -text svneol=unset#text/plain

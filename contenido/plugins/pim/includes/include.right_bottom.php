@@ -20,6 +20,140 @@ if (!defined('CON_FRAMEWORK')) {
 $setup = new PimPluginSetup();
 $page = new cGuiPage('pim_overview', 'pim');
 
+$viewAction = isset($_REQUEST['pim_view'])? $_REQUEST['pim_view'] : 'overview';
+
+switch ($viewAction) {
+    case 'update':
+        $setup->uninstall($_POST['pluginId']);
+        installationRoutine($page);
+        break;
+    case 'uninstall':
+        $setup->uninstall($_GET['pluginId'], $page);
+        break;
+    case 'install':
+        installationRoutine($page);
+        break;
+    case 'install-extracted':
+        installationRoutine($page, true, $_GET['pluginFoldername']);
+        break;
+}
+
+// TODO: Ggfls. koennen einige der Aufrufe auch in die Klasse ausgegliedert und
+// uebersichtlicher
+// implementiert werden
+function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
+    global $setup;
+    $cfg = cRegistry::getConfig();
+    $sess = cRegistry::getSession();
+
+    if ($isExtracted === false) {
+
+        // name of uploaded file
+        $tempFileName = cSecurity::escapeString($_FILES['package']['name']);
+
+        // path to temp-dir
+        $tempFileNewPath = $cfg['path']['frontend'] . '/' . $cfg['path']['temp'];
+
+        move_uploaded_file($_FILES['package']['tmp_name'], $tempFileNewPath . $tempFileName);
+
+        // initalizing plugin archive extractor
+        try {
+            $extractor = new PimPluginArchiveExtractor($tempFileNewPath, $tempFileName);
+            $setup->addArchiveObject($extractor);
+        } catch (cException $e) {
+            $extractor->destroyTempFiles();
+        }
+
+        $setup->tempXml = $extractor->extractArchiveFileToVariable('plugin.xml');
+    } else {
+        $setup->isExtracted = true;
+        $setup->extractedPath = $extractedPath;
+        $setup->tempXml = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . $extractedPath . '/plugin.xml');
+    }
+
+    // xml file validation
+    $setup->checkXml();
+
+    // load plugin.xml to an xml-string
+    $tempXml = simplexml_load_string($setup->tempXml);
+
+    // check min CONTENIDO version
+    if (!empty($tempXml->general->min_contenido_version) && version_compare($cfg['version'], $tempXml->general->min_contenido_version, '<')) {
+
+        if ($isExtracted === false) {
+            $extractor->destroyTempFiles();
+        }
+
+        $pageError = new cGuiPage('pim_error', 'pim');
+        $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
+        $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
+        $pageError->displayError(i18n('You have to install CONTENIDO <strong>', 'pim') . $tempXml->general->min_contenido_version . i18n('</strong> or higher to install this plugin!', 'pim'));
+        $pageError->render();
+        exit();
+    }
+
+    // check max CONTENIDO version
+    if (!empty($tempXml->general->max_contenido_version) && version_compare($cfg['version'], $tempXml->general->max_contenido_version, '>')) {
+
+        if ($isExtracted === false) {
+            $extractor->destroyTempFiles();
+        }
+
+        $pageError = new cGuiPage('pim_error', 'pim');
+        $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
+        $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
+        $pageError->displayError(i18n('Your current CONTENIDO version is to new - max CONTENIDO version: ' . $tempXml->general->max_contenido_version . '', 'pim'));
+        $pageError->render();
+        exit();
+    }
+
+    // build the new plugin dir
+    $tempPluginDir = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $tempXml->general->plugin_foldername . DIRECTORY_SEPARATOR;
+
+    // extract files into plugin dir
+    if ($setup->valid === true && $isExtracted === false) {
+        try {
+            $extractor->setDestinationPath($tempPluginDir);
+        } catch (cException $e) {
+            $extractor->destroyTempFiles();
+        }
+
+        try {
+            $extractor->extractArchive();
+        } catch (cException $e) {
+            $extractor->destroyTempFiles();
+        }
+    }
+
+    // sql inserts
+    $setup->install($tempXml);
+
+    // success message
+    $page->displayInfo(i18n('The plugin has been successfully installed', 'pim'));
+
+    if ($isExtracted === false) {
+
+        // close extracted archive
+        $extractor->closeArchive();
+
+        // delete temporary files
+        $extractor->destroyTempFiles();
+    } else {
+
+        $tempPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $extractedPath;
+
+        // remove plugin.xml if exists
+        if (cFileHandler::exists($tempPath . '/plugin.xml')) {
+            cFileHandler::remove($tempPath . '/plugin.xml');
+        }
+
+        // remove plugin.sql if exists
+        if (cFileHandler::exists($tempPath . '/plugin.sql')) {
+            cFileHandler::remove($tempPath . '/plugin.sql');
+        }
+    }
+}
+
 // initializing array for installed plugins
 $installedPluginFoldernames = array();
 
@@ -99,132 +233,5 @@ $page->set('s', 'LANG_EXTRACTED', i18n('Not installed Plugins', 'pim'));
 $page->set('s', 'INSTALLED_PLUGINS', $oItem->count());
 $page->set('s', 'PLUGINS_INSTALLED', $pluginsInstalled);
 $page->set('s', 'PLUGINS_EXTRACTED', $pluginsExtracted);
-
-$viewAction = isset($_REQUEST['pim_view'])? $_REQUEST['pim_view'] : 'overview';
-
-switch ($viewAction) {
-    case 'update':
-        $setup->uninstall($_POST['pluginId']);
-        installationRoutine($page);
-        break;
-    case 'uninstall':
-        $setup->uninstall($_GET['pluginId'], $page);
-        break;
-    case 'install':
-        installationRoutine($page);
-        break;
-    case 'install-extracted':
-        installationRoutine($page, true, $_GET['pluginFoldername']);
-        break;
-}
-
-// TODO: Ggfls. koennen einige der Aufrufe auch in die Klasse ausgegliedert und
-// uebersichtlicher
-// implementiert werden
-function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
-    global $setup;
-    $cfg = cRegistry::getConfig();
-
-    if ($isExtracted === false) {
-
-        // name of uploaded file
-        $tempFileName = cSecurity::escapeString($_FILES['package']['name']);
-
-        // path to temp-dir
-        $tempFileNewPath = $cfg['path']['frontend'] . '/' . $cfg['path']['temp'];
-
-        move_uploaded_file($_FILES['package']['tmp_name'], $tempFileNewPath . $tempFileName);
-
-        // initalizing plugin archive extractor
-        try {
-            $extractor = new PimPluginArchiveExtractor($tempFileNewPath, $tempFileName);
-            $setup->addArchiveObject($extractor);
-        } catch (cException $e) {
-            $extractor->destroyTempFiles();
-        }
-
-        $setup->tempXml = $extractor->extractArchiveFileToVariable('plugin.xml');
-    } else {
-        $setup->isExtracted = true;
-        $setup->extractedPath = $extractedPath;
-        $setup->tempXml = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . $extractedPath . '/plugin.xml');
-    }
-
-    // xml file validation
-    $setup->checkXml();
-
-    // load plugin.xml to an xml-string
-    $tempXml = simplexml_load_string($setup->tempXml);
-
-    // check min CONTENIDO version
-    if (!empty($tempXml->general->min_contenido_version) && version_compare($cfg['version'], $tempXml->general->min_contenido_version, '<')) {
-
-        if ($isExtracted === false) {
-            $extractor->destroyTempFiles();
-        }
-
-        $page->displayError(i18n('You have to install CONTENIDO <strong>', 'pim') . $tempXml->general->min_contenido_version . i18n('</strong> or higher to install this plugin!', 'pim'));
-        $page->render();
-        exit();
-    }
-
-    // check max CONTENIDO version
-    if (!empty($tempXml->general->max_contenido_version) && version_compare($cfg['version'], $tempXml->general->max_contenido_version, '>')) {
-
-        if ($isExtracted === false) {
-            $extractor->destroyTempFiles();
-        }
-
-        $page->displayError(i18n('You\'re current CONTENIDO version is to new - max CONTENIDO version: ' . $tempXml->general->max_contenido_version . '', 'pim'));
-        $page->render();
-        exit();
-    }
-
-    // build the new plugin dir
-    $tempPluginDir = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $tempXml->general->plugin_foldername . DIRECTORY_SEPARATOR;
-
-    // extract files into plugin dir
-    if ($setup->valid === true && $isExtracted === false) {
-        try {
-            $extractor->setDestinationPath($tempPluginDir);
-        } catch (cException $e) {
-            $extractor->destroyTempFiles();
-        }
-
-        try {
-            $extractor->extractArchive();
-        } catch (cException $e) {
-            $extractor->destroyTempFiles();
-        }
-    }
-
-    // sql inserts
-    $setup->install($tempXml);
-
-    // success message
-    $page->displayInfo(i18n('The plugin has been successfully installed', 'pim'));
-
-    if ($isExtracted === false) {
-
-        // close extracted archive
-        $extractor->closeArchive();
-
-        // delete temporary files
-        $extractor->destroyTempFiles();
-    } else {
-
-        $tempPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $extractedPath;
-
-        // remove plugin.xml if exists
-        if (cFileHandler::exists($tempPath . '/plugin.xml')) {
-            cFileHandler::remove($tempPath . '/plugin.xml');
-        }
-
-        // remove plugin.sql if exists
-        if (cFileHandler::exists($tempPath . '/plugin.sql')) {
-            cFileHandler::remove($tempPath . '/plugin.sql');
-        }
-    }
-}
 
 $page->render();
