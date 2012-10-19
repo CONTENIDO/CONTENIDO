@@ -34,8 +34,8 @@ if (!isset($_POST['send'])) {
     $tpl->set('s', "NACHNAME", mi18n("LASTNAME"));
     $tpl->set('s', "VORNAME", mi18n("FIRSTNAME"));
     $tpl->set('s', "FIRMA", mi18n("FIRM"));
-	$tpl->set('s', "STRASSE", mi18n("STREET/NR"));
-	$tpl->set('s', "PLZORT", mi18n("POSTCODE/CITY"));
+    $tpl->set('s', "STRASSE", mi18n("STREET/NR"));
+    $tpl->set('s', "PLZORT", mi18n("POSTCODE/CITY"));
     $tpl->set('s', "TELEFON", mi18n("TELEPHONE"));
     $tpl->set('s', "EMAIL", mi18n("E-MAIL"));
     $tpl->set('s', "ANLIEGEN", mi18n("MESSAGE"));
@@ -49,7 +49,7 @@ if (!isset($_POST['send'])) {
 
     $errorMsg = array();
     if ($_POST['Anrede'] == '') {
-		$errorMsg[] = mi18n("TXT_ENTER_TITLE");
+        $errorMsg[] = mi18n("TXT_ENTER_TITLE");
     }
     if ($_POST['Vorname'] == '') {
         $errorMsg[] = mi18n("TXT_ENTER_FIRSTNAME");
@@ -64,7 +64,7 @@ if (!isset($_POST['send'])) {
         $errorMsg[] = mi18n("TXT_ENTER_STREET");
     }
     if ($_POST['PLZOrt'] == '') {
-		$errorMsg[] = mi18n("TXT_ENTER_POSTCODE/CITY");
+        $errorMsg[] = mi18n("TXT_ENTER_POSTCODE/CITY");
     }
     if ($_POST['Telefon'] == '') {
         $errorMsg[] = mi18n("TXT_ENTER_TELEPHONE");
@@ -124,7 +124,7 @@ if (!isset($_POST['send'])) {
 
         // Display message after mail is sent
         if ($recipients > 0) {
-			echo mi18n("TXT_REQUEST_SUBMITED") . $br;
+            echo mi18n("TXT_REQUEST_SUBMITED") . $br;
         } else {
             echo mi18n("TXT_REQUEST_NOT_SUBMITED.") . $br;
         }

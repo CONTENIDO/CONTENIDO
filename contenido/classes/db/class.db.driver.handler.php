@@ -83,7 +83,7 @@ abstract class cDbDriverHandler {
      */
     protected static $_profileData = array();
 
-	/**
+    /**
      * Constructor, sets passed options and connects to the DBMS, if not done before.
      *
      * Uses default connection settings, passed $options['connection'] settings
@@ -94,7 +94,7 @@ abstract class cDbDriverHandler {
      *                          - $options['haltMsgPrefix']  (string)  Optional, Text to prepend to the halt message
      *                          - $options['enableProfiling']  (bool)  Optional, flag to enable profiling
      *                          - $options['connection']  (array)  Optional, assoziative connection settings
-	 *                          - $options['connection']['host']  (string) Hostname  or ip
+     *                          - $options['connection']['host']  (string) Hostname  or ip
      *                          - $options['connection']['database']  (string) Database name
      *                          - $options['connection']['user']  (string) User name
      *                          - $options['connection']['password']  (string)  User password

@@ -283,7 +283,7 @@ qq.FileUploaderBasic = function(o){
         autoUpload: true,
         // validation
         allowedExtensions: [],
-        acceptFiles: null,		// comma separated string of mime-types for browser to display in browse dialog
+        acceptFiles: null,        // comma separated string of mime-types for browser to display in browse dialog
         sizeLimit: 0,
         minSizeLimit: 0,
         // events

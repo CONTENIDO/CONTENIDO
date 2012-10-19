@@ -277,7 +277,7 @@ class cI18n {
           msgstr "Hallo %s,\n\ndu hast eine Wiedervorlage erhalten für den Mandanten '%s' at\n%s:\n\n%s"
          */
         $content = preg_replace('/(""\\s+")/m', '"', $content);
-        $content = preg_replace('/\\n"\\s+"/m', '\\n', $content); 
+        $content = preg_replace('/\\n"\\s+"/m', '\\n', $content);
         $content = preg_replace('/("\n+")/m', '', $content);
 
         return $content;

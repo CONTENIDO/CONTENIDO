@@ -56,7 +56,7 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
      * Index action
      */
     public function indexAction() {
-        
+
     }
 
     /**

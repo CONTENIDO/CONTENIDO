@@ -494,7 +494,7 @@ class cRegistry {
      *
      */
     public static function addInfoMessage($message){
-    	self::$_infoMessages[] = $message;
+        self::$_infoMessages[] = $message;
     }
 
     /**

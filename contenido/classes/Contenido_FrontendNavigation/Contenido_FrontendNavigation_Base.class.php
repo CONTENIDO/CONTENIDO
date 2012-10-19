@@ -23,7 +23,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/** 
+/**
  * @deprecated 2012-09-29 This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.
  */
 class Contenido_FrontendNavigation_Base {
@@ -97,10 +97,10 @@ class Contenido_FrontendNavigation_Base {
      * @param int $iLang
      * @return void
      * @author Rudi Bieller
-	 * @deprecated 2012-09-29 This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.
+     * @deprecated 2012-09-29 This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.
      */
     public function __construct($oDb, array $aCfg, $iClient, $iLang, array $aCfgClient) {
-		cDeprecated("This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.");
+        cDeprecated("This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.");
         $this->oDb = $oDb;
         $this->aCfg = $aCfg;
         $this->iClient = (int) $iClient;
@@ -130,7 +130,7 @@ class Contenido_FrontendNavigation_Base {
      * @todo Apply other styles as soon as they are available
      */
     public function getUrl(array $aParams, $sStyle = 'custom_path', array $aConfig = array(), $bUseAbsolutePath = false) {
-		try {
+        try {
             $oUriBuilder = cUriBuilderFactory::getUriBuilder($sStyle);
             if ($bUseAbsolutePath === true) {
                 $oUriBuilder->setHttpBasePath($this->aCfgClient[$this->iClient]['path']['htmlpath']);

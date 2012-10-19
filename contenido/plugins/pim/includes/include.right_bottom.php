@@ -22,7 +22,7 @@ $page = new cGuiPage('pim_overview', 'pim');
 
 // check disable plugin var
 if($cfg['debug']['disable_plugins'] === true) {
-	$page->displayWarning(i18n('Currently the plugin system is disabled via configuration', 'pim'));
+    $page->displayWarning(i18n('Currently the plugin system is disabled via configuration', 'pim'));
 }
 
 $viewAction = isset($_REQUEST['pim_view'])? $_REQUEST['pim_view'] : 'overview';

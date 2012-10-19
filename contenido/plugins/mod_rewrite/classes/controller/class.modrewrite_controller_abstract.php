@@ -114,7 +114,7 @@ abstract class ModRewrite_ControllerAbstract {
      * This method will be invoked in constructor of ModRewrite_ControllerAbstract.
      */
     public function init() {
-        
+
     }
 
     /**

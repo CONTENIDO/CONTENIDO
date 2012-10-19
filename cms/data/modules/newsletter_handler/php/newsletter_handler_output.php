@@ -120,7 +120,7 @@ if ($_POST['action'] == "subscribe") {
                         }
 
                         if ($bError) {
-							$sMessage = mi18n("There was an error processing your request. Please ask the webmaster for help.");
+                            $sMessage = mi18n("There was an error processing your request. Please ask the webmaster for help.");
                         } else {
                             $recipient = $oRecipients->create($sEMail, $sName, 0, implode(",", $_POST['selNewsletterGroup']));
                         }
@@ -143,10 +143,10 @@ if ($_POST['action'] == "subscribe") {
 
             $mailer = new cMailer();
             $from = array($aSettings['SenderEMail'] => $aSettings['SenderEMail']);
-			$recipients = $mailer->sendMail($from, $sEMail, mi18n("Newsletter: Confirmation"), $sBody);
+            $recipients = $mailer->sendMail($from, $sEMail, mi18n("Newsletter: Confirmation"), $sBody);
 
             if ($recipients > 0) {
-				$sMessage = mi18n("Dear subscriber,
+                $sMessage = mi18n("Dear subscriber,
 your e-mail address is now subscribed for our newsletter. You will now receive an e-mail asking you to confirm your subscription.");
 
                 if ($aSettings['FrontendLink'] == "enabled") {
@@ -166,12 +166,12 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
                                 $sMessage .= mi18n("<br><br>After the confirmation you will also receive a password which you can use with your e-mail address to logon to special areas on this website.");
                             }
                         } else {
-							$sMessage .= mi18n("<br><br>Sorry, there was a problem creating your website account. Please ask the webmaster for help.");
+                            $sMessage .= mi18n("<br><br>Sorry, there was a problem creating your website account. Please ask the webmaster for help.");
                         }
                     }
                 }
             } else {
-				$sMessage = mi18n("Sorry, there was a problem sending the confirmation mail to your e-mail address. Please ask the webmaster for help.");
+                $sMessage = mi18n("Sorry, there was a problem sending the confirmation mail to your e-mail address. Please ask the webmaster for help.");
             }
         } else {
             $sMessage = mi18n("Sorry, there was a problem subscribing your e-mail address for the newsletter. Please ask the webmaster for help.");
@@ -190,9 +190,9 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
         $recipients = $mailer->sendMail($from, $recipient->get('email'), mi18n("Newsletter: Cancel subscription"), $sBody);
 
         if ($recipients > 0) {
-			$sMessage = mi18n("Dear subscriber,<br>a mail has been sent to your e-mail address. Please confirm the cancelation of the newsletter subscription.");
+            $sMessage = mi18n("Dear subscriber,<br>a mail has been sent to your e-mail address. Please confirm the cancelation of the newsletter subscription.");
         } else {
-			$sMessage = mi18n("Sorry, there was a problem sending you the cancelation confirmation e-mail. Please ask the webmaster for help.");
+            $sMessage = mi18n("Sorry, there was a problem sending you the cancelation confirmation e-mail. Please ask the webmaster for help.");
         }
     } else {
         $sMessage = mi18n("Sorry, the e-mail address was not found.");
@@ -237,7 +237,7 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
                 $frontenduser->set("password", $sPassword);
                 $frontenduser->store();
 
-				$sMessage .= mi18n("<br><br>Additionally, your website account has been activated. You can now use the following username and password to log in to access special areas on our website:<br>");
+                $sMessage .= mi18n("<br><br>Additionally, your website account has been activated. You can now use the following username and password to log in to access special areas on our website:<br>");
                 $sMessage .= mi18n("USERNAME: ").$sEMail.mi18n("<br>PASSWORD: ").$sPassword;
 
                 $sBody = mi18n("TXTMAILPASSWORD")."\n\n".mi18n("USERNAME: ").$sEMail."\n".mi18n("PASSWORD: ").$sPassword."\n\n".mi18n("Click here to login: "). $frontendURL ."front_content.php?changelang=".$lang;
@@ -252,11 +252,11 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
                     $sMessage .= mi18n("<br><br><b>Sorry, there was a problem sending you the account details by mail. Please remember the given password.</b><b>");
                 }
             } else {
-				$sMessage .= mi18n("<br><br>Sorry, there was a problem activating your website account, also. Please ask the webmaster for help.");
+                $sMessage .= mi18n("<br><br>Sorry, there was a problem activating your website account, also. Please ask the webmaster for help.");
             }
         }
     } else {
-		$sMessage = mi18n("Sorry, there was a problem confirming your subscription. Please ask the webmaster for help.");
+        $sMessage = mi18n("Sorry, there was a problem confirming your subscription. Please ask the webmaster for help.");
     }
 } elseif (strlen($_GET['stop']) == 30 && isAlphanumeric($_GET['stop'])) {
     $oRecipients->setWhere("idclient", $client);
@@ -269,7 +269,7 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
         $recipient->store();
         $sMessage = mi18n("Your newsletter subscription has been paused.");
     } else {
-		$sMessage = mi18n("Sorry, there was a problem pausing your newsletter subscription. Please ask the webmaster for help.");
+        $sMessage = mi18n("Sorry, there was a problem pausing your newsletter subscription. Please ask the webmaster for help.");
     }
 } elseif (strlen($_GET['goon']) == 30 && isAlphanumeric($_GET['goon'])) {
     $oRecipients->setWhere("idclient", $client);
@@ -282,7 +282,7 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
         $recipient->store();
         $sMessage = mi18n("Newsletter subscription has been resumed.");
     } else {
-		$sMessage = mi18n("Sorry, there was a problem resuming your newsletter subscription. Please ask the webmaster for help.");
+        $sMessage = mi18n("Sorry, there was a problem resuming your newsletter subscription. Please ask the webmaster for help.");
     }
 } elseif (strlen($_GET['unsubscribe']) == 30 && isAlphanumeric($_GET['unsubscribe'])) {
     $oRecipients->setWhere("idclient", $client);

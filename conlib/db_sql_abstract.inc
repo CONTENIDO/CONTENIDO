@@ -202,11 +202,11 @@ abstract class DB_Sql_Abstract {
         'Halt_On_Error' => '_sHaltOnError',
     );
 
-	/**
-	 * @deprecated 2012-10-02 This class is not longer supported. Use cDbDriverAbstract and cDbDriverHandler instead.
-	 */
+    /**
+     * @deprecated 2012-10-02 This class is not longer supported. Use cDbDriverAbstract and cDbDriverHandler instead.
+     */
     protected function __construct(array $aOptions) {
-		cDeprecated("This class is not longer supported. Use cDbDriverAbstract and cDbDriverHandler instead.");
+        cDeprecated("This class is not longer supported. Use cDbDriverAbstract and cDbDriverHandler instead.");
         // use default connection configuration, but overwrite it by passed options
         $this->_aDbCfg = array_merge(self::$_aDefaultDbCfg, $aOptions);
 

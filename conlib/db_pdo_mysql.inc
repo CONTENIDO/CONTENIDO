@@ -66,10 +66,10 @@ class DB_Sql extends DB_Sql_Abstract {
     );
 
     /**
-	 * @deprecated 2012-10-02 This class is not longer supported. Currenty there is not replacement for it yet. You might find a class for the new cDb implementation in a further version.
-	 */
+     * @deprecated 2012-10-02 This class is not longer supported. Currenty there is not replacement for it yet. You might find a class for the new cDb implementation in a further version.
+     */
     public function __construct(array $options = array()) {
-		cDeprecated("This class is not longer supported. Currenty there is not replacement for it yet. You might find a class for the new cDb implementation in a further version.");
+        cDeprecated("This class is not longer supported. Currenty there is not replacement for it yet. You might find a class for the new cDb implementation in a further version.");
         $options = array_merge($options, array(
             'type' => 'pdo_mysql',
                 ));

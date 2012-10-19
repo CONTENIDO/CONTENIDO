@@ -23,7 +23,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/** 
+/**
  * @deprecated 2012-09-29 This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.
  */
 class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
@@ -54,10 +54,10 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
      * @param int $iLang
      * @return void
      * @author Rudi Bieller
-	 * @deprecated 2012-09-29 This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.
+     * @deprecated 2012-09-29 This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.
      */
     public function __construct($oDb, array $aCfg, $iClient, $iLang, array $aCfgClient) {
-		cDeprecated("This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.");
+        cDeprecated("This class is not longer supported. Use cCategoryHelper and cFrontendHelper instead.");
         parent::__construct($oDb, $aCfg, $iClient, $iLang, $aCfgClient);
         $this->iRootCat = -1;
     }

@@ -64,10 +64,10 @@ class DB_Sql extends DB_Sql_Abstract {
     );
 
     /**
-	 * @deprecated 2012-10-02 This class is not longer supported. Use cDbDriverMysqli instead.
-	 */
+     * @deprecated 2012-10-02 This class is not longer supported. Use cDbDriverMysqli instead.
+     */
     public function __construct(array $options = array()) {
-		cDeprecated("This class is not longer supported. Use cDbDriverMysqli instead.");
+        cDeprecated("This class is not longer supported. Use cDbDriverMysqli instead.");
         $options = array_merge($options, array(
             'type' => 'mysqli',
                 ));

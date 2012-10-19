@@ -121,11 +121,11 @@ function saveSitemap(SimpleXMLElement $sitemap, $filename = '') {
         $success = $sitemap->asXML($filename);
         if ($success) {
             $transString = mi18n("XML sitemap successfully written to %s");
-			$transString = str_replace('$$$', $filename, $transString);
-			echo $transString;
+            $transString = str_replace('$$$', $filename, $transString);
+            echo $transString;
         } else {
-			$transString = mi18n("XML sitemap could not be written to %s");
-			$transString = str_replace('$$$', $shortFilename, $transString);
+            $transString = mi18n("XML sitemap could not be written to %s");
+            $transString = str_replace('$$$', $shortFilename, $transString);
         }
     }
 }

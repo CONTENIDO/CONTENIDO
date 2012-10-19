@@ -78,7 +78,7 @@ $tpl->set('s', 'LOCATION', $backendUrl);
 $oAreaColl = new cApiAreaCollection();
 $oAreaColl->select('menuless=1');
 while ($oItem = $oAreaColl->next()) {
-	$aMenulessAreas[] = $oItem->get('name');
+    $aMenulessAreas[] = $oItem->get('name');
 }
 
 if (in_array($area, $aMenulessAreas) || (isset($menuless) && $menuless == 1)) {
