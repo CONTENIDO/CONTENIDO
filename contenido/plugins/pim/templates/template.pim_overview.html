@@ -67,7 +67,16 @@
 
 		<h2>CONTENIDO Plugin Manager</h2>
 
-		<table width="100%" cellspacing="0" cellpadding="3" style="border: 0;">
+		<table width="800px" cellspacing="0" cellpadding="3" style="border: 0;">
+			<tr class="text_medium">
+				<td><strong>{LANG_EXTRACTED}</strong>:</td>
+			</tr>
+			<tr>
+				<td>{PLUGINS_EXTRACTED}</td>
+			</tr>
+		</table>
+
+		<table width="800px" cellspacing="0" cellpadding="3" style="border: 0;">
 			<tr class="text_medium">
 				<td><strong>{LANG_INSTALLED}</strong> (<span style="color: #FF0000;">{INSTALLED_PLUGINS}</span>)</td>
 			</tr>
@@ -89,4 +98,4 @@
 				<input type="submit" name="upload_package" id="upload_package" value="{LANG_ADD_UPLOAD}" />
 			</form>
 		</div>
-		{PLUGINS}
+		{PLUGINS_INSTALLED}

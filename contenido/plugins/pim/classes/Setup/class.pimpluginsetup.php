@@ -22,6 +22,10 @@ class PimPluginSetup {
 
     public $tempXml;
 
+    public $isExtracted = false;
+
+    public $extractedPath;
+
     protected $_pluginSqlBuilder;
 
     protected $_extractor; // TODO
@@ -42,7 +46,11 @@ class PimPluginSetup {
             $this->valid = true;
             return true;
         } else {
-            $this->_extractor->destroyTempFiles();
+
+            if ($this->isExtracted === false) {
+                $this->_extractor->destroyTempFiles();
+            }
+
             throw new cException('Invalid Xml document');
         }
     }
@@ -103,8 +111,8 @@ class PimPluginSetup {
             // security check
             $area = cSecurity::escapeString($tempXml->area[$i]);
             $attributes = array(
-                'parent' => cSecurity::escapeString($attributes['parent']),
-                'menuless' => cSecurity::toInteger($attributes['menuless']),
+                    'parent' => cSecurity::escapeString($attributes['parent']),
+                    'menuless' => cSecurity::toInteger($attributes['menuless'])
             );
 
             // parent fix
@@ -237,7 +245,12 @@ class PimPluginSetup {
     protected function _installAddSpecificSql() {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-        $tempSqlFilename = $this->_extractor->extractArchiveFileToVariable('plugin.sql', 0);
+
+        if ($this->isExtracted === false) {
+            $tempSqlFilename = $this->_extractor->extractArchiveFileToVariable('plugin.sql', 0);
+        } else {
+            $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->extractedPath . '/plugin.sql';
+        }
 
         if (!cFileHandler::exists($tempSqlFilename)) {
             return;
