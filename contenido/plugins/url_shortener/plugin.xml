@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <plugin>
     <general active="1">
-        <plugin_name>URL Shortener Plugin</plugin_name>
+        <plugin_name>URL Shortener</plugin_name>
         <plugin_foldername>url_shortener</plugin_foldername>
         <guid></guid>
         <description>URL Shortener Plugin for CONTENIDO</description>
