@@ -70,7 +70,7 @@ while ($pluginFoldername = readdir($handle)) {
 
     $tempPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername . '/plugin.xml';
 
-    if (cFileHandler::exists($tempPath) && !in_array($installedPluginFoldernames, $pluginFoldername)) {
+    if (cFileHandler::exists($tempPath) && !in_array($pluginFoldername, $installedPluginFoldernames)) {
 
         // initalization new class
         $pagePlugins = new cGuiPage('pim_plugins_extracted', 'pim');
@@ -84,7 +84,7 @@ while ($pluginFoldername = readdir($handle)) {
 }
 
 // if pluginsExtracted var is empty
-if(empty($pluginsExtracted)) {
+if (empty($pluginsExtracted)) {
     $pluginsExtracted = i18n('No entries', 'pim');
 }
 
@@ -156,17 +156,25 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
     // load plugin.xml to an xml-string
     $tempXml = simplexml_load_string($setup->tempXml);
 
-    // check min contenido version
+    // check min CONTENIDO version
     if (!empty($tempXml->general->min_contenido_version) && version_compare($cfg['version'], $tempXml->general->min_contenido_version, '<')) {
-        $extractor->destroyTempFiles();
+
+        if ($isExtracted === false) {
+            $extractor->destroyTempFiles();
+        }
+
         $page->displayError(i18n('You have to install CONTENIDO <strong>', 'pim') . $tempXml->general->min_contenido_version . i18n('</strong> or higher to install this plugin!', 'pim'));
         $page->render();
         exit();
     }
 
-    // check max contenido version
+    // check max CONTENIDO version
     if (!empty($tempXml->general->max_contenido_version) && version_compare($cfg['version'], $tempXml->general->max_contenido_version, '>')) {
-        $extractor->destroyTempFiles();
+
+        if ($isExtracted === false) {
+            $extractor->destroyTempFiles();
+        }
+
         $page->displayError(i18n('You\'re current CONTENIDO version is to new - max CONTENIDO version: ' . $tempXml->general->max_contenido_version . '', 'pim'));
         $page->render();
         exit();
