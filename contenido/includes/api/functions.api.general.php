@@ -113,7 +113,7 @@ function contenido_include ($where, $what, $force = false, $returnpath = false)
                 // The class file will be loaded automatically by the autoloader - get out here
                 return;
             }
-            $include = $backendPath  . $cfg['path'][$where] . $what;
+            $include = $cfg['path']['contenido']  . $cfg['path'][$where] . $what;
             break;
       case "pear":
             $include = $what;
