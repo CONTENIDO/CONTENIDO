@@ -65,30 +65,6 @@ switch ($currentStep) {
     case 'setup8':
         checkAndInclude(CON_SETUP_PATH . '/steps/setup/step8.php');
         break;
-    case 'migration1':
-        checkAndInclude(CON_SETUP_PATH . '/steps/migration/step1.php');
-        break;
-    case 'migration2':
-        checkAndInclude(CON_SETUP_PATH . '/steps/migration/step2.php');
-        break;
-    case 'migration3':
-        checkAndInclude(CON_SETUP_PATH . '/steps/migration/step3.php');
-        break;
-    case 'migration4':
-        checkAndInclude(CON_SETUP_PATH . '/steps/migration/step4.php');
-        break;
-    case 'migration5':
-        checkAndInclude(CON_SETUP_PATH . '/steps/migration/step5.php');
-        break;
-    case 'migration6':
-        checkAndInclude(CON_SETUP_PATH . '/steps/migration/step6.php');
-        break;
-    case 'migration7':
-        checkAndInclude(CON_SETUP_PATH . '/steps/migration/step7.php');
-        break;
-    case 'migration8':
-        checkAndInclude(CON_SETUP_PATH . '/steps/migration/step8.php');
-        break;
     case 'upgrade1':
         checkAndInclude(CON_SETUP_PATH . '/steps/upgrade/step1.php');
         break;
@@ -109,9 +85,6 @@ switch ($currentStep) {
         break;
     case 'upgrade7':
         checkAndInclude(CON_SETUP_PATH . '/steps/upgrade/step7.php');
-        break;
-    case 'domigration':
-        checkAndInclude(CON_SETUP_PATH . '/steps/migration/domigration.php');
         break;
     case 'doupgrade':
         checkAndInclude(CON_SETUP_PATH . '/steps/upgrade/doupgrade.php');

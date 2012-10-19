@@ -82,9 +82,6 @@ class cSetupSystemData extends cSetupMask
             case "upgrade":
                 $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please enter the required database information. If the database data of your previous installation could have been read, the data will be inserted automatically. If you are unsure about the data, please ask your provider or administrator."));
                 break;
-            case "migration":
-                $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please enter the required database information. Make sure you copied the data from your old installation (e.g. development or staging system) into a new database. Please enter the parameters of the new database."));
-                break;
         }
 
         if ($_SESSION["dbprefix"] == "") {

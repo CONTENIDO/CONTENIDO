@@ -50,13 +50,6 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
         $this->_oDb->query('DELETE FROM %s', $cfg['tab']['code']);
         $this->_oDb->query('UPDATE %s SET createcode = 1', $cfg['tab']['cat_art']);
 
-        if ($this->_setupType == 'migration') {
-            $aClients = listClients($this->_oDb, $cfg['tab']['clients']);
-            foreach ($aClients as $iIdClient => $aInfo) {
-                updateClientPath($this->_oDb, $cfg['tab']['clients'], $iIdClient, $_SESSION['frontendpath'][$iIdClient], $_SESSION['htmlpath'][$iIdClient]);
-            }
-        }
-
         // @fixme What job is this???
         if ($this->_setupType == 'upgrade') {
             $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " WHERE is_start = 1";

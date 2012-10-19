@@ -65,9 +65,6 @@ class cSetupMask
             case "upgrade":
                 $this->_sHeader = 'Upgrade - ' . $sHeader;
                 break;
-            case "migration":
-                $this->_sHeader = 'Migration - ' . $sHeader;
-                break;
             default:
                 $this->_sHeader = $sHeader;
                 break;

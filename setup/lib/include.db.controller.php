@@ -181,7 +181,7 @@ if ($currentStep < $totalSteps) {
     // Databasse setup is done, now do remaining upgrade jobs
 
     // For import mod_history rows to versioning
-    if ($_SESSION['setuptype'] == 'migration' || $_SESSION['setuptype'] == 'upgrade') {
+    if ($_SESSION['setuptype'] == 'upgrade') {
         setupInitializeCfgClient(true);
     }
 

@@ -55,12 +55,6 @@ class cSetupInstaller extends cSetupMask
                 $_SESSION["upgrade_nextstep"] = "ugprade7";
                 $this->setNavigation("", "upgrade7");
                 break;
-            case "migration":
-                $this->_oStepTemplate->set("s", "DONEINSTALLATION", i18n("Setup completed migration. Click on next to continue."));
-                $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Setup is migrating, please wait..."));
-                $_SESSION["upgrade_nextstep"] = "migration8";
-                $this->setNavigation("", "migration8");
-                break;
         }
     }
 }

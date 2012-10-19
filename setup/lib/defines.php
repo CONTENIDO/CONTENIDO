@@ -44,13 +44,6 @@ if (isset($_SESSION['setuptype'])) {
             define('C_SETUP_STEPS', 7);
             define('CON_SETUP_STEPS', 7);
             break;
-        case 'migration':
-            /**
-             * @deprecated 2012-09-06 Constant has been renamed to CON_SETUP_STEPS
-             */
-            define('C_SETUP_STEPS', 8);
-            define('CON_SETUP_STEPS', 8);
-            break;
     }
 }
 

@@ -454,27 +454,6 @@ class cSystemCheck extends cSetupMask {
                     }
                 }
                 break;
-            case "migration":
-                $db = getSetupMySQLDBConnection(false);
-
-                // Check if the database exists
-                $status = checkMySQLDatabaseExists($db, $_SESSION["dbname"]);
-                if (!$status) {
-                    $this->runTest(false, self::C_SEVERITY_ERROR, i18n("No data found for the migration"), sprintf(i18n("System integrity tried to locate the data for the migration, however, the database %s doesn't exist. You need to copy your database first before running system integrity."), $_SESSION["dbname"]));
-                    return;
-                }
-
-                $db = getSetupMySQLDBConnection();
-
-                // Check if data already exists
-                $sql = 'SHOW TABLES LIKE "%s_actions"';
-                $db->query(sprintf($sql, $_SESSION["dbprefix"]));
-                if (!$db->next_record()) {
-                    $this->runTest(false, self::C_SEVERITY_ERROR, i18n("No data found for the migration"), sprintf(i18n("System integrity tried to locate the data for the migration, however, the database %s contains no tables. You need to copy your database first before running system integrity."), $_SESSION["dbname"]));
-                    return;
-                }
-
-                break;
             case "upgrade":
                 $db = getSetupMySQLDBConnection(false);
 
@@ -539,9 +518,7 @@ class cSystemCheck extends cSetupMask {
         $this->logFilePrediction($cfg['path']['contenido_cache'], self::C_SEVERITY_WARNING, self::C_FILETYPE_DIR);
         $this->logFilePrediction($cfg['path']['contenido_temp'], self::C_SEVERITY_WARNING, self::C_FILETYPE_DIR);
 
-        if ($_SESSION["setuptype"] == "setup" || ($_SESSION["setuptype"] == "migration" && is_dir(CON_FRONTEND_PATH . '/cms/'))) {
-            // Setup mode or migration mode with a existing default client
-            // frontend path
+        if ($_SESSION["setuptype"] == "setup") {
             $this->logFilePrediction($cfg['path']['frontend'] . "/cms/cache/", self::C_SEVERITY_WARNING, self::C_FILETYPE_DIR);
             $this->logFilePrediction($cfg['path']['frontend'] . "/cms/cache/code/", self::C_SEVERITY_WARNING, self::C_FILETYPE_DIR);
             $this->logFilePrediction($cfg['path']['frontend'] . "/cms/css/", self::C_SEVERITY_WARNING, self::C_FILETYPE_DIR);

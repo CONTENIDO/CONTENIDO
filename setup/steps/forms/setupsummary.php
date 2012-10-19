@@ -49,9 +49,6 @@ class cSetupSetupSummary extends cSetupMask
             case "upgrade":
                 $sType = i18n("Upgrade");
                 break;
-            case "migration":
-                $sType = i18n("Migration");
-                break;
         }
 
         switch ($_SESSION["configmode"]) {

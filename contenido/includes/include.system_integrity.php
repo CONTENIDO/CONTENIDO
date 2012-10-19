@@ -43,13 +43,4 @@ include_once('../setup/lib/class.setupmask.php');
 
 $cSystemCheck = new cSystemCheck(4, "setup3", "setup5", $db, $cfg, $client, $lang, $cfgClient);
 $cSystemCheck->renderSystemCheck();
-
-/*
-$cSystemCheck = new cSystemCheck(4, "upgrade3", "upgrade5", $db, $cfg, $client, $lang, $cfgClient);
-$cSystemCheck->renderSystemCheck();
-
-$cSystemCheck = new cSystemCheck(4, "migration3", "migration5", $db, $cfg, $client, $lang, $cfgClient);
-$cSystemCheck->renderSystemCheck();
-*/
-
 ?>

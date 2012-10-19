@@ -2412,15 +2412,6 @@ setup/steps/forms/setupsummary.php -text
 setup/steps/forms/systemdata.php -text
 setup/steps/forms/systemtest.php -text
 setup/steps/languagechooser.php -text
-setup/steps/migration/domigration.php -text
-setup/steps/migration/step1.php -text
-setup/steps/migration/step2.php -text
-setup/steps/migration/step3.php -text
-setup/steps/migration/step4.php -text
-setup/steps/migration/step5.php -text
-setup/steps/migration/step6.php -text
-setup/steps/migration/step7.php -text
-setup/steps/migration/step8.php -text
 setup/steps/notinstallable.php -text
 setup/steps/setup/doinstall.php -text
 setup/steps/setup/step1.php -text

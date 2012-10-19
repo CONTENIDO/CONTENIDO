@@ -80,9 +80,6 @@ class cSetupResults extends cSetupMask
                 case "upgrade":
                     $this->setNavigation("upgrade1", "");
                     break;
-                case "migration":
-                    $this->setNavigation("migration1", "");
-                    break;
             }
         }
     }
