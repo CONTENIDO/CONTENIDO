@@ -190,7 +190,13 @@ while (($plugin = $oItem->next()) !== false) {
     // TODO: Implementierung einer Abfangmeldung "Wollen Sie dieses Plugin
     // wirklich löschen?"
     // uninstall link
-    $pagePlugins->set('s', 'UNINSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall&pluginId=' . $plugin->get('idplugin')));
+    if (is_writable($cfg['path']['contenido'] . $cfg['path']['plugins']  . $plugin->get('folder'))) {
+        $pagePlugins->set('s', 'UNINSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall&pluginId=' . $plugin->get('idplugin')));
+        $pagePlugins->set('s', 'LANG_WRITABLE', '');
+    } else {
+        $pagePlugins->set('s', 'UNINSTALL_LINK', $sess->url('main.php?area=pim&frame=4'));
+        $pagePlugins->set('s', 'LANG_WRITABLE', i18n('(<span style="color: red;">This plugin is not writeable, please set the rights manually</span>)', 'pim'));
+    }
 
     // put foldername into array installedPluginFoldernames
     $installedPluginFoldernames[] = $plugin->get('folder');
