@@ -310,6 +310,7 @@ $tpl2->set('d', 'CAPTION', '--- '.i18n("none"). ' ---');
 $tpl2->set('d', 'SELECTED', '');
 $tpl2->next();
 
+$tpl->set('s', 'TEMPLATEDESCRIPTION', "");
 while ( $db->next_record() ) {
 
     if ($db->f("idtpl") != "$idtpl") {
@@ -322,6 +323,7 @@ while ( $db->next_record() ) {
         $tpl2->set('d', 'VALUE',    $db->f("idtpl") );
         $tpl2->set('d', 'CAPTION',  $db->f("name") );
         $tpl2->set('d', 'SELECTED', 'selected="selected"');
+        $tpl->set('s', 'TEMPLATEDESCRIPTION', $db->f("description"));
         $tpl2->next();
 
     }
@@ -329,6 +331,7 @@ while ( $db->next_record() ) {
 
 $select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true);
 $tpl->set('s', 'TEMPLATESELECTBOX', $select );
+$tpl->set('s', 'DESCRIPTIONCAPTION', i18n("Description").":");
 
 	/* modul input bereich von allen
 	   container anzeigen  */

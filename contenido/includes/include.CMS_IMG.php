@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CMS_IMG editor
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.3.3
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2003-12-10
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-07-07, Dominik Ziegler, fixed language bug
@@ -28,7 +28,7 @@
  *
  *   $Id: include.CMS_IMG.php 1157 2010-05-20 14:10:43Z xmurrix $:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -66,7 +66,7 @@ if ($doedit == "1") {
          }
         }
 
-</script> 
+</script>
 <body onLoad="window.setTimeout('disp_preview()',500);">
 <table width="100%"  border=0 cellspacing="0" cellpadding="0" bgcolor="#ffffff">
   <tr>
@@ -79,9 +79,9 @@ if ($doedit == "1") {
 
 <?php
 	cInclude("includes","functions.forms.php");
-	
+
     getAvailableContentTypes($idartlang);
-    
+
     $dirheight = 5;
     $dirwidth = 300;
     $filewidth = 300;
@@ -90,17 +90,17 @@ if ($doedit == "1") {
     $descrheight = 5;
     $previewwidth = 600;
     $previewheight = 400;
-    
+
     $dirheight 		= getEffectiveSetting("cms_img", "directory-height", $dirheight);
     $dirwidth 		= getEffectiveSetting("cms_img", "directory-width", $dirwidth);
     $fileheight		= getEffectiveSetting("cms_img", "file-height", $fileheight);
     $filewidth 		= getEffectiveSetting("cms_img", "file-width", $filewidth);
     $descrheight	= getEffectiveSetting("cms_img", "description-height", $descrheight);
-    $descrwidth		= getEffectiveSetting("cms_img", "description-width", $descrwidth);    
+    $descrwidth		= getEffectiveSetting("cms_img", "description-width", $descrwidth);
     $previewwidth	= getEffectiveSetting("cms_img", "preview-width", $previewwidth);
     $previewheight	= getEffectiveSetting("cms_img", "preview-height", $previewheight);
-    
-    
+
+
     // COLLECT DATA
     if (!isset($img_dir))
     {
@@ -109,66 +109,66 @@ if ($doedit == "1") {
         $db->next_record();
         $img_dir = $db->f("dirname");
     }
-           
+
     $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".$client."' AND filetype IN ('jpeg', 'jpg', 'gif', 'png') ORDER BY dirname, filename ASC";
     $db->query($sql);
-    
+
     $ds_name = Array();
     $ds_lvl = array();
-    
+
     while ( $db->next_record() )
     {
-    
+
     	$descr = $db->f("description");
-    	
+
         if ( strlen($descr) > 24 )
         {
             $descr = substr($descr, 0, 24);
             $descr .= "..";
         }
-        
+
         // collect data for dir selection
 		$dirname = $db->f("dirname");
         $tmp = explode('/', $dirname);
-        
+
         $mypath = array();
         $mylvl = 0;
-        
+
         foreach ($tmp as $value)
         {
         	if ($value != "")
         	{
             	/* Make sure an entry exists for each path component */
     			$mypath[]= $value;
-    			
+
     			$thispath = implode("/", $mypath)."/";
-    			
+
     			if (!in_array($thispath, $ds_name))
     			{
     				$mylvl++;
     				$ds_lvl[$thispath] = $mylvl;
     				$ds_name[$thispath] = $value;
     				$ds_fullpath[$thispath] = $thispath;
-    				 
+
     			}
-        	}        	
+        	}
         }
         if (!in_array($tmp[count($tmp)-2],$ds_name))
         {
             $ds_lvl[$dirname] = count($tmp)-1;
             $ds_name[$dirname] = $tmp[count($tmp)-2];
-            $ds_fullpath[$dirname] = $db->f("dirname"); 
+            $ds_fullpath[$dirname] = $db->f("dirname");
         }
-        
+
         if (strcmp($img_dir,$db->f("dirname"))==0)
         {
             $img_list[] = $db->f("filename");
             $img_id[] = $db->f("idupl");
             $img_descr[] = $descr;
         }
-     
+
     }
-    
+
     $form = new UI_Table_Form("editcontent", $cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php");
     $form->setVar("lang",$lang);
     $form->setVar("typenr",$typenr);
@@ -180,22 +180,22 @@ if ($doedit == "1") {
     $form->setVar("doedit",1);
     $form->setVar("type",$type);
     $form->setVar("changeview","edit");
-    $form->setVar("CMS_LINK", $a_content["CMS_LINK"][$typenr]);       
+    $form->setVar("CMS_LINK", $a_content["CMS_LINK"][$typenr]);
 
 	$header = sprintf(i18n("Edit image for container %s"),$typenr);
 	$form->addHeader($header);
-	
+
 	$dirselect = new cHTMLSelectElement("img_dir");
 	$dirselect->setEvent("change", "doedit.value=0; submit();");
 	$dirselect->setSize($dirheight);
 	$dirselect->setStyle("width: {$dirwidth}px;");
-	
+
 	foreach ($ds_lvl as $key => $value)
 	{
 		$text = str_repeat("-",$value*2)."> ".$ds_name[$key];
 
 		$option = new cHTMLOptionElement($text, $ds_fullpath[$key]);
-		
+
         switch ($value)
         {
             case 0:
@@ -207,23 +207,27 @@ if ($doedit == "1") {
 
 		if (strcmp($img_dir,$ds_fullpath[$key])==0)
         {
-        	$option->setSelected("selected");	
+        	$option->setSelected("selected");
         }
-        
+
         $dirselect->addOptionElement($key, $option);
-		
+
 	}
-	
+
 	$script =  '<script language="JavaScript">';
 	$script .= "imglnk = new Array();";
-    
+
     if (is_array($img_list))
     {
     	foreach($img_list as $key => $value)
     	{
-        	$script .= 'imglnk["'.$img_id[$key].'"] = "'.$cfgClient[$client]["path"]["htmlpath"].$cfgClient[$client]["upl"]["frontendpath"].$img_dir.$img_list[$key].'";';
+    	    if(is_dbfs($img_dir)) {
+                $script .= 'imglnk["'.$img_id[$key].'"] = "'.$cfgClient[$client]["path"]["htmlpath"]."dbfs.php?file=".$img_dir.$img_list[$key].'";';
+            } else {
+        	    $script .= 'imglnk["'.$img_id[$key].'"] = "'.$cfgClient[$client]["path"]["htmlpath"].$cfgClient[$client]["upl"]["frontendpath"].$img_dir.$img_list[$key].'";';
+            }
     	}
-    }   
+    }
     $script .= "</script>";
 
 	$fileselect = new cHTMLSelectElement("CMS_IMG");
@@ -232,55 +236,55 @@ if ($doedit == "1") {
 	$fileselect->setStyle("width: {$filewidth}px;");
 
 	$option = new cHTMLOptionElement("-- ".i18n("None")." --", "0");
-	
+
 	if ($a_content["CMS_IMG"][$typenr] == 0)
 	{
 		$option->setSelected("selected");
 	}
 
 	$fileselect->addOptionElement(-1,$option);
-	
+
 	if (is_array($img_list))
 	{
         foreach ($img_list as $key => $value)
         {
         	$description = $img_descr[$key];
-        	
+
         	if ($description != "")
         	{
-        		$text = $value . " (". $description .")";	
+        		$text = $value . " (". $description .")";
         	} else {
         		$text = $value;
         	}
-    
+
             switch ($key % 2)
             {
                 case 0: $style="background-color:#D0D0D0;"; break;
                 case 1: $style="background-color:#E0E0E0;"; break;
             }
-            
+
             $option = new cHTMLOptionElement($text, $img_id[$key]);
-            
+
             if ($a_content["CMS_IMG"][$typenr]==$img_id[$key])
     		{
     			$option->setSelected("selected");
     		}
-    		
+
     		$option->setStyle($style);
     		$fileselect->addOptionElement($key, $option);
-        }	
+        }
 	}
-		
+
 	$form->add(i18n("Directory / File"), $dirselect->render().$script.$fileselect->render());
-	
+
 	$textarea = new cHTMLTextarea("CMS_IMGDESCR", $a_content["CMS_IMGDESCR"][$typenr], $descrwidth, $descrheight);
-	$form->add(i18n("Description"), $textarea->render()); 
-	
+	$form->add(i18n("Description"), $textarea->render());
+
     $preview = '<iframe src="about:blank" name="preview" style="border: 0px; width:'.$previewwidth.'px; height:'.$previewheight.'px;">';
     $preview .= '</iframe>';
 
 	$form->add(i18n("Preview"), $preview);
-	
+
 	$form->render(false);
 ?>
 </td></tr></table>
