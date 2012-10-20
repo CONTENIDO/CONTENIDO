@@ -26,7 +26,7 @@
  *
  * {@internal
  *   created 2008-07-31
- *   $Id$:
+ *   $Id: include.chain.frontend.createbasehref.php 2755 2012-07-25 20:10:28Z xmurrix $:
  * }}
  */
 

@@ -22,7 +22,7 @@
  * {@internal
  *   created
  *   modified 2008-07-04, bilal arslan, added security fix
- *   $Id$:
+ *   $Id: include.chain.frontend.cat_access.php 2755 2012-07-25 20:10:28Z xmurrix $:
  * }}
  *
  */

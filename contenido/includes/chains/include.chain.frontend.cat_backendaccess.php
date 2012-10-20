@@ -23,7 +23,7 @@
  *   modified 2008-07-04, bilal arslan, added security fix
  *   modified 2008-09-14, Murat Purc, CON-206: fixed backend access logic
  *   modified 2008-10-30, Andreas Lindner, also consider group memnership of backend users
- *   $Id$:
+ *   $Id: include.chain.frontend.cat_backendaccess.php 2755 2012-07-25 20:10:28Z xmurrix $:
  * }}
  *
  */

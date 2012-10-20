@@ -178,6 +178,11 @@ cInclude('includes', 'functions.i18n.php');
 $_cecRegistry = cApiCecRegistry::getInstance();
 require_once($cfg['path']['contenido_config'] . 'config.chains.php');
 
+// load all system chain inclusions if there are any
+if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.chains.load.php')) {
+	include_once($cfg['path']['contenido_config'] . 'config.chains.load.php');
+}
+
 // Set default database connection parameter
 DB_Contenido::setDefaultConfiguration($cfg['db']);
 cDb::setDefaultConfiguration($cfg['db']);

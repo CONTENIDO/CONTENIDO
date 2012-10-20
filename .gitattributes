@@ -1368,6 +1368,9 @@ contenido/images/workflow_step_delete.gif -text
 contenido/includes/ajax/include.ajax.con.php -text
 contenido/includes/api/functions.api.general.php -text
 contenido/includes/api/functions.frontend.list.php -text
+contenido/includes/chains/include.chain.frontend.cat_access.php -text
+contenido/includes/chains/include.chain.frontend.cat_backendaccess.php -text
+contenido/includes/chains/include.chain.frontend.createbasehref.php -text
 contenido/includes/functions.api.category.php -text
 contenido/includes/functions.api.images.php -text
 contenido/includes/functions.api.php -text
@@ -1645,9 +1648,6 @@ contenido/logout.php -text
 contenido/main.loginform.php -text
 contenido/main.php -text
 contenido/plugins/chains/includes/config.plugin.php -text
-contenido/plugins/chains/includes/include.chain.frontend.cat_access.php -text
-contenido/plugins/chains/includes/include.chain.frontend.cat_backendaccess.php -text
-contenido/plugins/chains/includes/include.chain.frontend.createbasehref.php -text
 contenido/plugins/content_allocation/classes/class.content_allocation.php -text
 contenido/plugins/content_allocation/classes/class.content_allocation_article.php -text
 contenido/plugins/content_allocation/classes/class.content_allocation_complexlist.php -text
@@ -2223,6 +2223,7 @@ contenido/xml/legend.xml -text
 contenido/xml/navigation.xml -text
 contenido/xml/system.xml -text svneol=unset#text/plain
 data/.htaccess -text
+data/config/production/config.chains.load.php -text
 data/cronlog/crontab.txt -text
 data/locale/contenido.pot -text
 data/locale/de_DE/LC_MESSAGES/contenido.mo -text
