@@ -93,10 +93,6 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
             break;
         case 'conlib':
         case 'phplib':
-            if (function_exists('cDeprecated')) {
-                cDeprecated("The support for the conlib library is deprecated. Do not use this classes!");
-            }
-
             $sInclude = $cfg['path']['phplib'] . $sWhat;
             break;
         case 'classes':
