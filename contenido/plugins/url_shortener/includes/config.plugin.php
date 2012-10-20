@@ -21,7 +21,7 @@ global $cfg;
 // extend the $cfg array with the table name if the table name has not been
 // defined yet
 if (!isset($cfg['tab']['url_shortener']['shorturl'])) {
-    $cfg['tab']['url_shortener']['shorturl'] = $cfg['sql']['sqlprefix'] . '_pi_us_shorturl';
+    $cfg['tab']['url_shortener']['shorturl'] = $cfg['sql']['sqlprefix'] . '_pi_shorturl';
 }
 // extend the $cfg array with the short URL rules if they have not been defined
 // yet
