@@ -281,9 +281,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     public function getMetaData($tableName, $full = false) {
         $res = array();
 
-        $dbClone = $this->cloneHandler();
-        $dbClone->query('SELECT * FROM `%s` LIMIT 1', $tableName);
-        $id = $dbClone->getQueryId();
+        $this->query('SELECT * FROM `%s` LIMIT 1', $tableName);
+        $id = $this->getQueryId();
         if (!$id) {
             $this->_handler->halt('Metadata query failed.');
             return false;
@@ -307,7 +306,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
             $res['num_fields'] = $count;
         }
 
-        $dbClone->free();
+        $this->free();
 
         return $res;
     }
@@ -317,10 +316,9 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      */
     public function getTableNames() {
         $return = array();
-        $dbClone = $this->cloneHandler();
-        if ($dbClone->query('SHOW TABLES')) {
-            while ($dbClone->nextRecord()) {
-                $record = $dbClone->getRecord();
+        if ($this->query('SHOW TABLES')) {
+            while ($this->nextRecord()) {
+                $record = $this->getRecord();
                 $return[] = array(
                     'table_name' => $record[0],
                     'tablespace_name' => $this->_dbCfg['connection']['database'],
@@ -328,7 +326,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
                 );
             }
 
-            $dbClone->free();
+            $this->free();
         }
         return $return;
     }

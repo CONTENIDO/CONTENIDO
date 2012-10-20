@@ -60,14 +60,6 @@ abstract class cDbDriverAbstract {
     }
 
     /**
-     * Clones and returns the database driver handler instance.
-     * @return cDbDriverHandler|null
-     */
-    public function cloneHandler() {
-        return clone $this->_handler;
-    }
-
-    /**
      * Abstract method for checking database driver base functions.
      * If this check fails, the database connection will not be established.
      * @return bool
