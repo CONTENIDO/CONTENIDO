@@ -47,49 +47,9 @@ if (isset($_POST['belang']) && $_POST['belang'] != '') {
 }
 
 $noti = '';
-if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
-    $aMessages = array();
-
-    // Check, if setup folder is still available
-    if (cFileHandler::exists(dirname(dirname(__FILE__)) . '/setup')) {
-        $aMessages[] = i18n("The setup directory still exists. Please remove the setup directory before you continue.");
-    }
-
-    // Check, if sysadmin and/or admin accounts are still using well-known default passwords
-    $db = cRegistry::getDb();
-
-    $db->query("SELECT * FROM " . $cfg['tab']['user'] . " WHERE (username = 'sysadmin')");
-    $db->next_record();
-    $sys_salt = $db->f("salt");
-
-    $db->query("SELECT salt FROM " . $cfg['tab']['user'] . " WHERE username='admin'");
-    $db->next_record();
-    $adm_salt = $db->f("salt");
-
-    $sDate = date('Y-m-d');
-    $sSQL = "SELECT * FROM " . $cfg['tab']['user'] . "
-             WHERE (username = 'sysadmin' AND password = '".hash("sha256", "48a365b4ce1e322a55ae9017f3daf0c0".$sys_salt)."'
-                    AND (valid_from <= '" . $db->escape($sDate) . "' OR valid_from = '0000-00-00' OR valid_from is NULL) AND
-                   (valid_to >= '" . $db->escape($sDate) . "' OR valid_to = '0000-00-00' OR valid_to is NULL))
-                 OR (username = 'admin' AND password = '".hash("sha256", "21232f297a57a5a743894a0e4a801fc3".$adm_salt)."'
-                     AND (valid_from <= '" . $db->escape($sDate) . "' OR valid_from = '0000-00-00' OR valid_from is NULL) AND
-                    (valid_to >= '" . $db->escape($sDate) . "' OR valid_to = '0000-00-00' OR valid_to is NULL))
-                   ";
-    $db->query($sSQL);
-
-    if ($db->num_rows() > 0) {
-        $aMessages[] = i18n("The sysadmin and/or the admin account still contains a well-known default password. Please change immediately after login.");
-    }
-    unset($db);
-
-    if (getSystemProperty('maintenance', 'mode') == 'enabled') {
-        $aMessages[] = i18n("CONTENIDO is in maintenance mode. Only sysadmins are allowed to login. Please try again later.");
-    }
-
-    if (count($aMessages) > 0) {
-        $notification = new cGuiNotification();
-        $noti = $notification->returnMessageBox('warning', implode('<br />', $aMessages), 1) . '<br />';
-    }
+if (getSystemProperty('maintenance', 'mode') == 'enabled') {
+	$notification = new cGuiNotification();
+	$noti = $notification->returnMessageBox('warning', i18n("CONTENIDO is in maintenance mode. Only sysadmins are allowed to login. Please try again later.") . '<br />');
 }
 
 // Fill template

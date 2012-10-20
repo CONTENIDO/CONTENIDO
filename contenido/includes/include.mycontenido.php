@@ -59,6 +59,11 @@ if (getSystemProperty('maintenance', 'mode') == 'enabled') {
     $page->displayWarning(i18n('CONTENIDO is in maintenance mode. Only sysadmins are allowed to login.'));
 }
 
+// Check, if setup folder is still available
+if (cFileHandler::exists(dirname(dirname(dirname(__FILE__))) . '/setup')) {
+	$page->displayWarning(i18n("The setup directory still exists. Please remove the setup directory before you continue."));
+}
+
 // check for size of log directory
 $max_log_size = getSystemProperty('backend', 'max_log_size');
 if ($max_log_size === false) {
