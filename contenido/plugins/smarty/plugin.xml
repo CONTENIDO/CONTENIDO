@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugin>
+    <general active="1">
+        <plugin_name>Smarty Wrapper</plugin_name>
+        <plugin_foldername>smarty</plugin_foldername>
+        <guid></guid>
+        <description>Provides smarty template engine for CONTENIDO Backend and Frontend</description>
+        <author>Bilal Arslan, Andreas Dieter</author>
+        <copyright>four for business AG</copyright>
+        <mail>info@4fb.de</mail>
+        <website>http://www.4fb.de</website>
+        <version>1.0.0</version>
+        <min_contenido_version>4.9.0-beta1</min_contenido_version>
+        <max_contenido_version></max_contenido_version>
+    </general>
+
+    <contenido/>
+</plugin>
