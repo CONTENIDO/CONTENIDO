@@ -118,8 +118,8 @@ function updateSystemProperties($db, $table) {
             $db->query($sql);
         }
 
-        if ($db->Errno != 0) {
-            logSetupFailure("Unable to execute SQL statement:\n" . $sql . "\nMysql Error: " . $db->Error . " (" . $db->Errno . ")");
+        if ($db->getErrorNumber() != 0) {
+            logSetupFailure("Unable to execute SQL statement:\n" . $sql . "\nMysql Error: " . $db->getErrorMessage() . " (" . $db->getErrorNumber() . ")");
         }
     }
 }
@@ -162,13 +162,13 @@ function getContenidoVersion($db, $table) {
 }
 
 // @FIXME: Comment me plz!
-function updateSysadminPassword($db, $table, $password) {
+function updateSysadminPassword($db, $table, $password, $mail) {
     $sql = "SELECT password FROM %s WHERE username='sysadmin'";
     $db->query(sprintf($sql, cSecurity::escapeDB($table, $db)));
 
     if ($db->next_record()) {
-        $sql = "UPDATE %s SET password='%s' WHERE username='sysadmin'";
-        $db->query(sprintf($sql, cSecurity::escapeDB($table, $db), md5($password)));
+        $sql = "UPDATE %s SET password='%s', email='%s' WHERE username='sysadmin'";
+        $db->query(sprintf($sql, cSecurity::escapeDB($table, $db), md5($password), $mail));
         return true;
     } else {
 

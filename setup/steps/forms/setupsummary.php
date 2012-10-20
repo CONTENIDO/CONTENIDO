@@ -51,15 +51,6 @@ class cSetupSetupSummary extends cSetupMask
                 break;
         }
 
-        switch ($_SESSION["configmode"]) {
-            case "save":
-                $sConfigMode = i18n("Save");
-                break;
-            case "download":
-                $sConfigMode = i18n("Download");
-                break;
-        }
-
         $messages = array(
             i18n("Installation type") . ":"   => $sType,
             i18n("Database parameters") . ":" => i18n("Database host") . ": " . $_SESSION["dbhost"] . "<br>" . i18n("Database name") . ": " . $_SESSION["dbname"] . "<br>" . i18n("Database username") . ": " . $_SESSION["dbuser"] . "<br>" . i18n("Database prefix") . ": " . $_SESSION["dbprefix"],
@@ -74,12 +65,6 @@ class cSetupSetupSummary extends cSetupMask
             $messages[i18n("Client installation").":"] = $aChoices[$_SESSION["clientmode"]];
         }
 
-        // additional plugins
-        $aPlugins = $this->_getSelectedAdditionalPlugins();
-        if (count($aPlugins) > 0) {
-            $messages[i18n("Additional Plugins").":"] = implode('<br>', $aPlugins);;
-        }
-
         $cHTMLFoldableErrorMessages = array();
 
         foreach ($messages as $key => $message) {
@@ -91,25 +76,6 @@ class cSetupSetupSummary extends cSetupMask
         $this->_oStepTemplate->set("s", "CONTROL_SETUPSUMMARY", $cHTMLErrorMessageList->render());
 
         $this->setNavigation($previous, $next);
-    }
-
-    function _getSelectedAdditionalPlugins()
-    {
-        $aPlugins = array();
-        if ($_SESSION['plugin_newsletter'] == 'true') {
-            $aPlugins[] = i18n('Newsletter');
-        }
-        if ($_SESSION['plugin_content_allocation'] == 'true') {
-            $aPlugins[] = i18n('Tagging');
-        }
-        if ($_SESSION['plugin_mod_rewrite'] == 'true') {
-            $aPlugins[] = i18n('Mod Rewrite');
-        }
-
-        if ($_SESSION['plugin_cronjob_overview'] == 'true') {
-            $aPlugins[] = i18n('Cronjob Overview');
-        }
-        return $aPlugins;
     }
 }
 

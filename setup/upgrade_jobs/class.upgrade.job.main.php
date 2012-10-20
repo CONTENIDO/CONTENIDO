@@ -41,10 +41,9 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
         global $cfg;
 
         updateContenidoVersion($this->_oDb, $cfg['tab']['system_prop'], CON_SETUP_VERSION);
-
-        if (isset($_SESSION['sysadminpass']) && $_SESSION['sysadminpass'] != '') {
-            updateSysadminPassword($this->_oDb, $cfg['sql']['sqlprefix'].'_phplib_auth_user_md5', 'sysadmin');
-        }
+        if ($this->_setupType == 'setup') {
+			updateSysadminPassword($this->_oDb, $cfg['sql']['sqlprefix'].'_user', $_SESSION['adminpass'], $_SESSION['adminmail']);
+		}
 
         // Empty code table and set code creation (on update) flag
         $this->_oDb->query('DELETE FROM %s', $cfg['tab']['code']);
@@ -86,20 +85,22 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
 
         // Insert or update default system properties
         updateSystemProperties($this->_oDb, $cfg['tab']['system_prop']);
-
-        //Workaround for RENAME TABLE IF EXIST _phplib_auth_user_md5 TO _user
-        $this->_oDb->query("SELECT Count(*)
-                                INTO @exists
-                                FROM information_schema.tables
-                                WHERE table_schema = '".$cfg["db"]["connection"]["database"]."'
-                                    AND table_name = '".$cfg["sql"]["sqlprefix"]."_phplib_auth_user_md5'");
-        $this->_oDb->query("SET @query = If(@exists>0,
-                                'RENAME TABLE ".$cfg["sql"]["sqlprefix"]."_phplib_auth_user_md5 TO ".$cfg["sql"]["sqlprefix"]."_user',
-                                'SELECT * FROM ".$cfg["tab"]["actions"]."')");
-        $this->_oDb->query("PREPARE stmt FROM @query");
-        $this->_oDb->query("EXECUTE stmt");
-
-        //convert passwords to salted ones
+		
+		$this->_oDb->query('SHOW TABLES LIKE "%s"', $cfg["sql"]["sqlprefix"] . "_phplib_auth_user_md5");
+		$oldTable = $this->_oDb->nextRecord();
+		
+		$this->_oDb->query('SHOW TABLES LIKE "%s"', $cfg["sql"]["sqlprefix"] . "_user");
+		$newTable = $this->_oDb->nextRecord();
+		
+		if ($oldTable === true) {
+			if ($newTable === false) {
+				$this->_oDb->query("RENAME TABLE ".$cfg["sql"]["sqlprefix"]."_phplib_auth_user_md5 TO ".$cfg["sql"]["sqlprefix"]."_user");
+			} else {
+				$this->_oDb->query("DROP TABLE ".$cfg["sql"]["sqlprefix"]."_phplib_auth_user_md5");
+			}
+		}
+		
+        // convert passwords to salted ones
         addSalts($this->_oDb);
     }
 

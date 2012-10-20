@@ -2352,14 +2352,6 @@ setup/data/examples/examples_misc4.sql -text
 setup/data/examples/examples_misc5.sql -text
 setup/data/examples/examples_misc6.sql -text
 setup/data/indexes.sql -text
-setup/data/plugin_content_allocation.txt -text
-setup/data/plugin_cronjob_overview.txt -text svneol=unset#text/plain
-setup/data/plugin_mod_rewrite.txt -text
-setup/data/plugin_newsletter.txt -text
-setup/data/plugins/plugins_content_allocation.sql -text
-setup/data/plugins/plugins_cronjob_overview.sql -text
-setup/data/plugins/plugins_mod_rewrite.sql -text
-setup/data/plugins/plugins_newsletter.sql -text
 setup/data/standard.txt -text
 setup/data/standard/standard_modules1.sql -text
 setup/data/standard/standard_modules_translations1.sql -text
@@ -2367,7 +2359,6 @@ setup/data/standard/standard_modules_translations2.sql -text
 setup/data/sysadmin.txt -text
 setup/data/sysadmin/sysadmin1.sql -text
 setup/data/tables.txt -text
-setup/data/tables_pi.txt -text
 setup/images/controls/arrow_closed.png -text
 setup/images/controls/arrow_open.png -text
 setup/images/controls/back.gif -text
@@ -2399,9 +2390,9 @@ setup/locale/de_DE/LC_MESSAGES/contenido.mo -text
 setup/locale/de_DE/LC_MESSAGES/contenido.po -text
 setup/locale/potfiles.txt -text
 setup/locale/setup.pot -text
-setup/script/pluginInfo.js -text
 setup/script/setup.js -text
 setup/steps/forms/additionalplugins.php -text
+setup/steps/forms/adminpassword.php -text
 setup/steps/forms/clientadjust.php -text
 setup/steps/forms/clientmode.php -text
 setup/steps/forms/configmode.php -text
@@ -2430,7 +2421,6 @@ setup/steps/upgrade/step3.php -text
 setup/steps/upgrade/step4.php -text
 setup/steps/upgrade/step5.php -text
 setup/steps/upgrade/step6.php -text
-setup/steps/upgrade/step7.php -text
 setup/style/setup.css -text
 setup/templates/cfoldablerow.tpl -text
 setup/templates/config.php.tpl -text
@@ -2438,7 +2428,7 @@ setup/templates/crow.tpl -text
 setup/templates/languagechooser.tpl -text
 setup/templates/notinstallable.tpl -text
 setup/templates/setup.tpl -text
-setup/templates/setup/forms/additionalplugins.tpl -text
+setup/templates/setup/forms/adminpassword.tpl -text
 setup/templates/setup/forms/clientmode.tpl -text
 setup/templates/setup/forms/configmode.tpl -text
 setup/templates/setup/forms/configmodewopass.tpl -text

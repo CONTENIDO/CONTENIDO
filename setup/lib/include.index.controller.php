@@ -83,9 +83,6 @@ switch ($currentStep) {
     case 'upgrade6':
         checkAndInclude(CON_SETUP_PATH . '/steps/upgrade/step6.php');
         break;
-    case 'upgrade7':
-        checkAndInclude(CON_SETUP_PATH . '/steps/upgrade/step7.php');
-        break;
     case 'doupgrade':
         checkAndInclude(CON_SETUP_PATH . '/steps/upgrade/doupgrade.php');
         break;

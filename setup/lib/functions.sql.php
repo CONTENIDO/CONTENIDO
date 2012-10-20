@@ -42,8 +42,8 @@ function injectSQL($db, $prefix, $file, $replacements = array()) {
 
         $db->query($sqlChunk);
 
-        if ($db->Errno != 0) {
-            logSetupFailure("Unable to execute SQL statement:\n" . $sqlChunk . "\nMysql Error: " . $db->Error . " (" . $db->Errno . ")");
+        if ($db->getErrorNumber() != 0) {
+            logSetupFailure("Unable to execute SQL statement:\n" . $sqlChunk . "\nMysql Error: " . $db->getErrorMessage() . " (" . $db->getErrorNumber() . ")");
             $_SESSION['install_failedchunks'] = true;
         }
     }
@@ -61,19 +61,20 @@ function addAutoIncrementToTables($db, $cfg) {
         $cfg['sql']['sqlprefix'] . '_phplib_active_sessions',
         $cfg['sql']['sqlprefix'] . '_online_user',
         $cfg['sql']['sqlprefix'] . '_pi_linkwhitelist',
-        $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5'
+        $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5',
+		$cfg['sql']['sqlprefix'] . '_user'
     );
 
     $sql = 'SHOW TABLES FROM  ' . $cfg['db']['connection']['database'] . '';
     $db->query($sql);
 
-    if ($db->Error != 0) {
-        logSetupFailure("Unable to execute SQL statement:\n" . $sql . "\nMysql Error: " . $db->Error . " (" . $db->Errno . ")");
+    if ($db->getErrorNumber() != 0) {
+        logSetupFailure("Unable to execute SQL statement:\n" . $sql . "\nMysql Error: " . $db->getErrorMessage() . " (" . $db->getErrorNumber() . ")");
         $_SESSION['install_failedupgradetable'] = true;
     }
 
     $i = 0;
-    while ($row = mysql_fetch_row($db->Query_ID)) {
+    while ($row = mysql_fetch_row($db->getQueryId())) {
         if (in_array($row[0], $filterTables) === false && strpos($row[0], $cfg['sql']['sqlprefix'] . '_') !== false) {
             alterTableHandling($row);
             $i++;
@@ -96,20 +97,32 @@ function addSalts($db) {
 
     $db2 = getSetupMySQLDBConnection();
 
-    $db->query("ALTER TABLE ".$cfg["tab"]["user"]." CHANGE password password VARCHAR(64)");
-    $db->query("ALTER TABLE ".$cfg["tab"]["user"]." ADD salt VARCHAR(32) AFTER password");
+	$sql = "SHOW COLUMNS FROM %s LIKE 'salt'";
+	$sql = sprintf($sql, $cfg['tab']['user']);
+
+	$db->query($sql);
+	if ($db->num_rows() == 0) {
+		$db2->query("ALTER TABLE ".$cfg["tab"]["user"]." CHANGE password password VARCHAR(64)");
+		$db2->query("ALTER TABLE ".$cfg["tab"]["user"]." ADD salt VARCHAR(32) AFTER password");
+	}
 
     $db->query("SELECT * FROM ".$cfg["tab"]["user"]);
-    while($db->nextRecord()) {
-        if($db->f("salt") == "") {
+    while ($db->nextRecord()) {
+        if ($db->f("salt") == "") {
             $salt = md5($db->f("username").rand(1000, 9999).rand(1000, 9999).rand(1000, 9999));
             $db2->query("UPDATE ".$cfg["tab"]["user"]." SET salt='".$salt."' WHERE user_id='".$db->f("user_id")."'");
             $db2->query("UPDATE ".$cfg["tab"]["user"]." SET password='".hash("sha256", $db->f("password").$salt)."' WHERE user_id='".$db->f("user_id")."'");
         }
     }
+	
+	$sql = "SHOW COLUMNS FROM %s LIKE 'salt'";
+	$sql = sprintf($sql, $cfg['tab']['frontendusers']);
 
-    $db->query("ALTER TABLE ".$cfg["tab"]["frontendusers"]." CHANGE password password VARCHAR(64)");
-    $db->query("ALTER TABLE ".$cfg["tab"]["frontendusers"]." ADD salt VARCHAR(32) AFTER password");
+	$db->query($sql);
+	if ($db->num_rows() == 0) {
+		$db2->query("ALTER TABLE ".$cfg["tab"]["frontendusers"]." CHANGE password password VARCHAR(64)");
+		$db2->query("ALTER TABLE ".$cfg["tab"]["frontendusers"]." ADD salt VARCHAR(32) AFTER password");
+	}
 
     $db->query("SELECT * FROM ".$cfg["tab"]["frontendusers"]);
     while($db->nextRecord()) {
@@ -129,7 +142,7 @@ function urlDecodeTables($db) {
     urlDecodeTable($db, $cfg['tab']['properties']);
     urlDecodeTable($db, $cfg['tab']['upl_meta']);
     urlDecodeTable($db, $cfg['tab']['container']);
-    urlDecodeTable($db, $cfg['sql']['sqlprefix'] . '_pica_lang');
+    urlDecodeTable($db, $cfg['sql']['sqlprefix'] . '_pica_lang', true);
     urlDecodeTable($db, $cfg['tab']['news_rcp']);
     urlDecodeTable($db, $cfg['tab']['art_lang']);
     urlDecodeTable($db, $cfg['tab']['user_prop']);
@@ -138,7 +151,14 @@ function urlDecodeTables($db) {
     urlDecodeTable($db, $cfg['tab']['news_jobs']);
 }
 
-function urlDecodeTable($db, $table) {
+function urlDecodeTable($db, $table, $checkTableExists = false) {
+	if ($checkTableExists === true) {
+		$db->query('SHOW TABLES LIKE "%s"', $table);
+		if ($db->nextRecord() === false) {
+			return;
+		}
+	}
+
     $sql = "SELECT * FROM " . $table;
     $db->query($sql);
 
@@ -159,7 +179,11 @@ function urlDecodeTable($db, $table) {
 }
 
 function convertToDatetime($db, $cfg) {
-    $db->query("ALTER TABLE " . $cfg['sql']['sqlprefix'] . "_piwf_art_allocation CHANGE  `starttime`  `starttime` DATETIME NOT NULL");
+	$db->query('SHOW TABLES LIKE "%s"', $cfg["sql"]["sqlprefix"] . "_piwf_art_allocation");
+	if ($db->nextRecord()) {
+		$db->query("ALTER TABLE " . $cfg['sql']['sqlprefix'] . "_piwf_art_allocation CHANGE  `starttime`  `starttime` DATETIME NOT NULL");
+	}
+    
     $db->query("ALTER TABLE " . $cfg['sql']['sqlprefix'] . "_template_conf CHANGE  `created`  `created` DATETIME NOT NULL");
 }
 
@@ -170,13 +194,13 @@ function alterTableHandling($row) {
     $db = getSetupMySQLDBConnection(false);
     $sql = 'SHOW KEYS FROM `' . $tableName . '` WHERE Key_name="PRIMARY"';
     $db->query($sql);
-    while ($row = mysql_fetch_row($db->Query_ID)) {
+    while ($row = mysql_fetch_row($db->getQueryId())) {
         $primaryKey = $row[4];
         $dbAlter = getSetupMySQLDBConnection(false);
         $sqlAlter = 'ALTER TABLE `' . $tableName . '` CHANGE `' . $primaryKey . '` `' . $primaryKey . '` INT(10) NOT NULL AUTO_INCREMENT';
         $dbAlter->query($sqlAlter);
-        if ($dbAlter->Errno != 0) {
-            logSetupFailure("Unable to execute SQL statement:\n" . $sqlAlter . "\nMysql Error: " . $dbAlter->Error . " (" . $dbAlter->Errno . ")");
+        if ($dbAlter->getErrorNumber() != 0) {
+            logSetupFailure("Unable to execute SQL statement:\n" . $sqlAlter . "\nMysql Error: " . $dbAlter->getErrorMessage() . " (" . $dbAlter->getErrorNumber() . ")");
             $_SESSION['install_failedupgradetable'] = true;
         }
     }

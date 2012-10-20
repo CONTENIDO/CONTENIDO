@@ -65,7 +65,7 @@ while (($data = fgetcsv($file, 4000, ';')) !== false) {
         }
         dbUpgradeTable($db, $cfg['sql']['sqlprefix'] . '_' . $data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], '', $drop);
 
-        if ($db->Errno != 0) {
+        if ($db->getErrorNumber() != 0) {
             $_SESSION['install_failedupgradetable'] = true;
         }
     }
@@ -73,34 +73,6 @@ while (($data = fgetcsv($file, 4000, ';')) !== false) {
     $count++;
     $fullCount++;
 }
-
-// Count DB Chunks (plugins)
-$file = fopen('data/tables_pi.txt', 'r');
-$step = 1;
-while (($data = fgetcsv($file, 4000, ';')) !== false) {
-    if ($count == CON_SETUP_MAX_CHUNKS_PER_STEP) {
-        $count = 1;
-        $step++;
-    }
-
-    if ($currentStep == $step) {
-        if ($data[7] == '1') {
-            $drop = true;
-        } else {
-            $drop = false;
-        }
-        dbUpgradeTable($db, $cfg['sql']['sqlprefix'] . '_' . $data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], '', $drop);
-
-        if ($db->Errno != 0) {
-            $_SESSION['install_failedupgradetable'] = true;
-        }
-    }
-
-    $count++;
-    $fullCount++;
-}
-
-$pluginChunks = array();
 
 $baseChunks = explode("\n", cFileHandler::read('data/base.txt'));
 
@@ -111,26 +83,6 @@ $moduleChunks = explode("\n", cFileHandler::read('data/standard.txt'));
 $contentChunks = explode("\n", cFileHandler::read('data/examples.txt'));
 
 $sysadminChunk = explode("\n", cFileHandler::read('data/sysadmin.txt'));
-
-if ($_SESSION['plugin_newsletter'] == 'true') {
-    $newsletter = explode("\n", cFileHandler::read('data/plugin_newsletter.txt'));
-    $pluginChunks = array_merge($pluginChunks, $newsletter);
-}
-
-if ($_SESSION['plugin_content_allocation'] == 'true') {
-    $tagging = explode("\n", cFileHandler::read('data/plugin_content_allocation.txt'));
-    $pluginChunks = array_merge($pluginChunks, $tagging);
-}
-
-if ($_SESSION['plugin_mod_rewrite'] == 'true') {
-    $mod_rewrite = explode("\n", cFileHandler::read('data/plugin_mod_rewrite.txt'));
-    $pluginChunks = array_merge($pluginChunks, $mod_rewrite);
-}
-
-if ($_SESSION['plugin_cronjob_overview'] == 'true') {
-    $cronjob_overview = explode("\n", cFileHandler::read('data/plugin_cronjob_overview.txt'));
-    $pluginChunks = array_merge($pluginChunks, $cronjob_overview);
-}
 
 list($rootPath, $rootHttpPath) = getSystemDirectories();
 
@@ -149,8 +101,6 @@ if ($_SESSION['setuptype'] == 'setup') {
 } else {
     $fullChunks = $baseChunks;
 }
-
-$fullChunks = array_merge($fullChunks, $pluginChunks);
 
 $totalSteps = ceil($fullCount / CON_SETUP_MAX_CHUNKS_PER_STEP) + count($fullChunks) + 1;
 foreach ($fullChunks as $fullChunk) {

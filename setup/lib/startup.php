@@ -102,36 +102,10 @@ if (is_array($_REQUEST)) {
             // c = setup controller to process
             continue;
         }
-        if (($value != '' && $key != 'dbpass') || ($key == 'dbpass' && $_REQUEST['dbpass_changed'] == 'true')) {
+        if (($value != '' && $key != 'dbpass' && $key != 'adminpass' && $key != 'adminpassrepeat') || ($key == 'dbpass' && $_REQUEST['dbpass_changed'] == 'true') || ($key == 'adminpass' && $_REQUEST['adminpass_changed'] == 'true') || ($key == 'adminpassrepeat' && $_REQUEST['adminpassrepeat_changed'] == 'true')) {
             $_SESSION[$key] = $value;
         }
     }
-    /*
-      ############################################################################
-      // FIXME  Following lines of code would enshure that previous selected optional
-      //        settings will be removed from session, if they are unselected afterwards.
-      //        But, how should we handle not selected plugins, whose files will be included
-      //        even if the are not installed?
-
-      // check for not selected options (radio button or checkbox)
-      $aSetupOptionalSettingsList = array(
-      'setup7' => array(
-      'plugin_newsletter',
-      'plugin_content_allocation',
-      'plugin_mod_rewrite',
-      )
-      );
-
-      if (isset($_REQUEST['step']) && isset($aSetupOptionalSettingsList[$_REQUEST['step']])) {
-      $aList = $aSetupOptionalSettingsList[$_REQUEST['step']];
-      foreach ($aList as $key) {
-      if (isset($_SESSION[$key]) && !isset($_REQUEST[$key])) {
-      unset($_SESSION[$key]);
-      }
-      }
-      }
-      ############################################################################
-     */
 }
 
 

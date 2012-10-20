@@ -40,7 +40,7 @@ class cSetupResults extends cSetupMask
             $this->_oStepTemplate->set("s", "TITLE", i18n("Results"));
             $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("CONTENIDO was installed and configured successfully on your server."));
             if ($_SESSION["setuptype"] == 'setup') {
-                $this->_oStepTemplate->set("s", "LOGIN_INFO", '<p>'.i18n("Please use username <b>sysadmin</b> and password <b>sysadmin</b> to login into CONTENIDO Backend.").'</p>');
+                $this->_oStepTemplate->set("s", "LOGIN_INFO", '<p>'.i18n("Please use username <b>sysadmin</b> and the configured password to login into CONTENIDO Backend.").'</p>');
             } else {
                 $this->_oStepTemplate->set("s", "LOGIN_INFO", '');
             }

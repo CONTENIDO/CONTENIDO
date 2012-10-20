@@ -81,9 +81,3 @@ ALTER TABLE !PREFIX!_file_information ADD INDEX filename (filename);
 ALTER TABLE !PREFIX!_system_prop ADD INDEX type_name (type, name);
 
 ALTER TABLE !PREFIX!_stat ADD INDEX idcatart_idlang (idcatart, idlang);
-
-ALTER TABLE !PREFIX!_pica_alloc_con DROP PRIMARY KEY;
-ALTER TABLE !PREFIX!_pica_alloc_con ADD PRIMARY KEY (`idpica_alloc`, `idartlang`);
-ALTER TABLE !PREFIX!_pica_lang DROP PRIMARY KEY;
-ALTER TABLE !PREFIX!_pica_lang ADD PRIMARY KEY (`idpica_alloc`, `idlang`);
-DROP TABLE IF EXISTS !PREFIX!_pi_externlinks;

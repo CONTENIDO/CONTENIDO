@@ -119,7 +119,7 @@ function checkMySQLDatabaseCreation($db, $database)
         return true;
     } else {
         $db->query("CREATE DATABASE $database");
-        if ($db->Errno != 0) {
+        if ($db->getErrorNumber() != 0) {
             return false;
         } else {
             return true;
@@ -183,7 +183,7 @@ function checkMySQLTableCreation($db, $database, $table)
 
     $db->query("CREATE TABLE $table (test INT( 1 ) NOT NULL) ENGINE = MYISAM ;");
 
-    if ($db->Errno == 0) {
+    if ($db->getErrorNumber() == 0) {
         return true;
     } else {
         return false;
@@ -198,7 +198,7 @@ function checkMySQLLockTable($db, $database, $table)
 
     $db->query("LOCK TABLES $table WRITE");
 
-    if ($db->Errno == 0) {
+    if ($db->getErrorNumber() == 0) {
         return true;
     } else {
         return false;
@@ -213,7 +213,7 @@ function checkMySQLUnlockTables($db, $database)
 
     $db->query("UNLOCK TABLES");
 
-    if ($db->Errno == 0) {
+    if ($db->getErrorNumber() == 0) {
         return true;
     } else {
         return false;
@@ -228,7 +228,7 @@ function checkMySQLDropTable($db, $database, $table)
 
     $db->query("DROP TABLE $table");
 
-    if ($db->Errno == 0) {
+    if ($db->getErrorNumber() == 0) {
         return true;
     } else {
         return false;
@@ -239,7 +239,7 @@ function checkMySQLDropDatabase($db, $database)
 {
     $db->query("DROP DATABASE $database");
 
-    if ($db->Errno == 0) {
+    if ($db->getErrorNumber() == 0) {
         return true;
     } else {
         return false;

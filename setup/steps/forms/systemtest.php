@@ -106,6 +106,29 @@ class cSetupSystemtest extends cSetupMask {
 
         if ($errors == true) {
             $this->setNavigation($previous, "");
+			
+			switch ($_SESSION['setuptype']) {
+				case "upgrade":
+					$thisStep = 'upgrade' . $step;
+					break;
+				case "setup":
+				default:
+					$thisStep = 'setup' . $step;
+					break;
+			}
+			
+			$link = new cHTMLLink("#");
+			$link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$thisStep."';");
+			$link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
+
+			$refreshSetup = new cHTMLAlphaImage();
+			$refreshSetup->setSrc(CON_SETUP_CONTENIDO_HTML_PATH . "images/but_refresh.gif");
+			$refreshSetup->setMouseOver(CON_SETUP_CONTENIDO_HTML_PATH . "images/but_refresh.gif");
+			$refreshSetup->setClass("button");
+
+			$link->setContent($refreshSetup);
+
+			$this->_oStepTemplate->set("s", "NEXT", $link->render());
         } else {
             $this->setNavigation($previous, $next);
         }
@@ -117,7 +140,7 @@ class cSetupSystemtest extends cSetupMask {
 
         // get all tables in database and list it into array
         $avariableTableNames = array();
-        $tableNames = $db->table_names();
+        $tableNames = $db->getTableNames();
         if (!is_array($tableNames)) {
             return;
         }

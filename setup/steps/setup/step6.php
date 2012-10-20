@@ -32,8 +32,8 @@ if (!defined('CON_FRAMEWORK')) {
      die('Illegal call');
 }
 
-checkAndInclude("steps/forms/additionalplugins.php");
+checkAndInclude("steps/forms/adminpassword.php");
 
-$cSetupSetupSummary = new cSetupAdditionalPlugins(6, "setup5", "setup7");
+$cSetupSetupSummary = new cSetupAdminPassword(6, "setup5", "setup7");
 $cSetupSetupSummary->render();
 ?>

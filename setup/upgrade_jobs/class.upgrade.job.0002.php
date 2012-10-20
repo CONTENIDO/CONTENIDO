@@ -102,72 +102,76 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
         global $client, $lang, $cfgClient;  // is used in cLayoutHandler below!!!
 
         // Makes the new concept of modules (save the modules to the file) save the translation
-        if ($this->_setupType == 'upgrade' || $this->_setupType == 'setup') {
 
-            // @fixme  Get rid of hacks below
-            // @fixme  Logic below works only for setup, not for upgrade because of different clients and languages
+		// @fixme  Get rid of hacks below
+		// @fixme  Logic below works only for setup, not for upgrade because of different clients and languages
 
-            $clientBackup = $client;
-            $langBackup = $lang;
-            $client = 1;
-            $lang = 1;
+		$clientBackup = $client;
+		$langBackup = $lang;
+		$client = 1;
+		$lang = 1;
 
-            if ($this->_setupType == 'upgrade') {
-                $sql = "SHOW COLUMNS FROM %s LIKE 'frontendpath'";
-                $sql = sprintf($sql, $cfg['tab']['clients']);
+		if ($this->_setupType == 'upgrade') {
+			$sql = "SHOW COLUMNS FROM %s LIKE 'frontendpath'";
+			$sql = sprintf($sql, $cfg['tab']['clients']);
 
-                $this->_oDb->query($sql);
-                if ($this->_oDb->num_rows() != 0) {
-                    $sql = "SELECT * FROM " . $cfg['tab']['clients'];
-                    $this->_oDb->query($sql);
+			$this->_oDb->query($sql);
+			if ($this->_oDb->num_rows() != 0) {
+				$sql = "SELECT * FROM " . $cfg['tab']['clients'];
+				$this->_oDb->query($sql);
 
-                    while ($this->_oDb->next_record()) {
-                        updateClientCache($this->_oDb->f("idclient"), $this->_oDb->f("htmlpath"), $this->_oDb->f("frontendpath"));
-                    }
+				while ($this->_oDb->next_record()) {
+					updateClientCache($this->_oDb->f("idclient"), $this->_oDb->f("htmlpath"), $this->_oDb->f("frontendpath"));
+				}
 
-                    $sql = sprintf("ALTER TABLE %s DROP htmlpath", $cfg['tab']['clients']);
-                    $this->_oDb->query($sql);
+				$sql = sprintf("ALTER TABLE %s DROP htmlpath", $cfg['tab']['clients']);
+				$this->_oDb->query($sql);
 
-                    $sql = sprintf("ALTER TABLE %s DROP frontendpath", $cfg['tab']['clients']);
-                    $this->_oDb->query($sql);
-                }
-                checkAndInclude($cfg['path']['contenido_config'] . 'config.clients.php');
-            }
+				$sql = sprintf("ALTER TABLE %s DROP frontendpath", $cfg['tab']['clients']);
+				$this->_oDb->query($sql);
+			}
+			checkAndInclude($cfg['path']['contenido_config'] . 'config.clients.php');
+		}
 
-            $cfgClient = updateClientCache();
+		$cfgClient = updateClientCache();
+		
+		// Save all modules from db-table to the filesystem if exists
+		$sql = "SHOW COLUMNS FROM %s LIKE 'OUTPUT'";
+		$sql = sprintf($sql, $cfg['tab']['mod']);
 
-            cModuleHandler::setEncoding('ISO-8859-1');
+		$this->_oDb->query($sql);
+		if ($this->_oDb->num_rows() == 0) {
+			cModuleHandler::setEncoding('ISO-8859-1');
+			$this->_convertModulesToFile();
+		}
 
-            // Save all modules from db-table to the filesystem
-            $this->_convertModulesToFile();
+		// Save layout from db-table to the file system
+		// @fixme  cLayoutHandler uses global $client, we can't do this for all clients...
+		$layoutInFile = new cLayoutHandler(1, '', $cfg, 1, $this->_oDb);
+		$layoutInFile->upgrade();
 
-            // Save layout from db-table to the file system
-            // @fixme  cLayoutHandler uses global $client, we can't do this for all clients...
-            $layoutInFile = new cLayoutHandler(1, '', $cfg, 1, $this->_oDb);
-            $layoutInFile->upgrade();
+		$db2 = getSetupMySQLDBConnection();
+		$sql = "SELECT * FROM " . $cfg['tab']['lay'];
+		$this->_oDb->query($sql);
+		while ($this->_oDb->next_record()) {
+			if ($this->_oDb->f("alias") == "") {
+				$sql = "UPDATE " . $cfg['tab']['lay'] . " SET `alias`='" . $this->_oDb->f("name") . "' WHERE `idlay`='" . $this->_oDb->f("idlay") . "';";
+				$db2->query($sql);
+			}
+		}
 
-            $db2 = getSetupMySQLDBConnection();
-            $sql = "SELECT * FROM " . $cfg['tab']['lay'];
-            $this->_oDb->query($sql);
-            while ($this->_oDb->next_record()) {
-                if ($this->_oDb->f("alias") == "") {
-                    $sql = "UPDATE " . $cfg['tab']['lay'] . " SET `alias`='" . $this->_oDb->f("name") . "' WHERE `idlay`='" . $this->_oDb->f("idlay") . "';";
-                    $db2->query($sql);
-                }
-            }
+		$sql = "SELECT * FROM " . $cfg['tab']['mod'];
+		$this->_oDb->query($sql);
+		while ($this->_oDb->next_record()) {
+			if ($this->_oDb->f("alias") == "") {
+				$sql = "UPDATE " . $cfg['tab']['mod'] . " SET `alias`='" . $this->_oDb->f("name") . "' WHERE `idmod`='" . $this->_oDb->f("idmod") . "';";
+				$db2->query($sql);
+			}
+		}
 
-            $sql = "SELECT * FROM " . $cfg['tab']['mod'];
-            $this->_oDb->query($sql);
-            while ($this->_oDb->next_record()) {
-                if ($this->_oDb->f("alias") == "") {
-                    $sql = "UPDATE " . $cfg['tab']['mod'] . " SET `alias`='" . $this->_oDb->f("name") . "' WHERE `idmod`='" . $this->_oDb->f("idmod") . "';";
-                    $db2->query($sql);
-                }
-            }
-
-            $client = $clientBackup;
-            $lang = $langBackup;
-        }
+		$client = $clientBackup;
+		$lang = $langBackup;
+	
     }
 
 }

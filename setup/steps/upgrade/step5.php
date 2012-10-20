@@ -32,8 +32,8 @@ if (!defined('CON_FRAMEWORK')) {
      die('Illegal call');
 }
 
-checkAndInclude("steps/forms/additionalplugins.php");
+checkAndInclude("steps/forms/setupsummary.php");
 
-$cSetupSetupSummary = new cSetupAdditionalPlugins(5, "upgrade4", "upgrade6");
+$cSetupSetupSummary = new cSetupSetupSummary(5, "upgrade4", "doupgrade");
 $cSetupSetupSummary->render();
 ?>
