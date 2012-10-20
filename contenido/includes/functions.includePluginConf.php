@@ -27,7 +27,7 @@ if (!defined('CON_FRAMEWORK')) {
 $plugins = array();
 $pluginFolder = cRegistry::getBackendPath() . $cfg['path']['plugins'];
 
-if ($cfg['debug']['disable_plugins'] === true) {
+if ($cfg['debug']['disable_plugins'] === false) {
 	// Initialize plugin manager
 	i18nRegisterDomain('pim', $pluginFolder . 'pim/locale/');
 	include_once($pluginFolder . 'pim/includes/config.plugin.php');
