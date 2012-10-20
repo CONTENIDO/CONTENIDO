@@ -81,7 +81,7 @@ function sitemap_getAllCategories($oDb, array $aCfg, $iLang, $iClient) {
             AND C.visible=1
           ORDER BY A.idtree";
     $oDb->query($sSql);
-    if ($oDb->Errno == 0 && $oDb->num_rows() > 0) {
+    if ($oDb->num_rows() > 0) {
         while ($oDb->next_record()) {
             $aResult[] = array(
                 'idcat' => intval($oDb->f('idcat')),
