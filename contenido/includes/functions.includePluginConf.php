@@ -24,87 +24,38 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-// do not include plugin files if plugins are disabled
-if (!$cfg['debug']['disable_plugins']) {
-    $pluginorder = getSystemProperty('system', 'plugin-order');
+$plugins = array();
+$pluginFolder = cRegistry::getBackendPath() . $cfg['path']['plugins'];
 
-    $plugins = explode(',', $pluginorder);
+if ($cfg['debug']['disable_plugins'] === true) {
+	// Initialize plugin manager
+	i18nRegisterDomain('pim', $pluginFolder . 'pim/locale/');
+	include_once($pluginFolder . 'pim/includes/config.plugin.php');
+	
+	// Load all active plugins
+	$pluginColl = new PimPluginCollection();
+    $pluginColl->setWhere('active', 1);
+    $pluginColl->query();
 
-    $ipc_conpluginpath = cRegistry::getBackendPath() . $cfg['path']['plugins'];
+	while (($plugin = $pluginColl->next()) !== false) {
+		$pluginName = $plugin->get('folder');
+		
+		if (is_dir($pluginFolder . $pluginName . '/')) {
+			$plugins[] = $pluginName;
+		}
+	}
+}
 
-    // Scan and save only by the BE
-    if ($contenido) {
-        $lastscantime = getSystemProperty('system', 'plugin-lastscantime');
+// Include all active plugins
+foreach ($plugins as $pluginName) {
+	$pluginLocaleDir = $pluginFolder . $pluginName . '/locale/';
+	$pluginConfigFile = $pluginFolder . $pluginName . '/includes/config.plugin.php';
 
-        // Clean up: Fetch and trim the plugin order
-        $plugins = array();
+	if (cFileHandler::exists($pluginLocaleDir)) {
+		i18nRegisterDomain($pluginName, $pluginLocaleDir);
+	}
 
-        if ($pluginorder != '') {
-            $plugins = explode(',', $pluginorder);
-
-            foreach ($plugins as $key => $plugin) {
-                $plugins[$key] = trim($plugin);
-            }
-        }
-
-        // Don't scan all the time, but each 60 seconds
-        if ($lastscantime + 60 < time()) {
-
-            // Directories which are to exclude from scanning process
-            $dirsToExclude = trim(getSystemProperty('system', 'plugin-dirstoexclude'));
-            if ($dirsToExclude === '') {
-                $dirsToExclude = '.,..,.svn,.cvs,includes';
-                setSystemProperty('system', 'plugin-dirstoexclude', $dirsToExclude);
-            }
-            $dirsToExclude = explode(',', $dirsToExclude);
-            foreach ($dirsToExclude as $pos => $item) {
-                $dirsToExclude[$pos] = trim($item);
-            }
-
-            // scan for new Plugins
-            $dh = opendir($ipc_conpluginpath);
-            while (($file = readdir($dh)) !== false) {
-                if (is_dir($ipc_conpluginpath . $file) && !in_array(strtolower($file), $dirsToExclude) && !in_array($file, $plugins)) {
-                    $plugins[] = $file;
-                }
-            }
-            closedir($dh);
-
-            setSystemProperty('system', 'plugin-lastscantime', time());
-
-            // Remove plugins do not exist
-            foreach ($plugins as $key => $ipc_plugin) {
-                if (!is_dir($ipc_conpluginpath . $ipc_plugin . '/') || in_array($ipc_plugin, $dirsToExclude)) {
-                    unset($plugins[$key]);
-                }
-            }
-
-            // Save Scanresult
-            $pluginorder = implode(',', $plugins);
-            setSystemProperty('system', 'plugin-order', $pluginorder);
-        }
-    }
-
-    // Load Plugin-Config and Plugin-Translation
-    foreach ($plugins as $key => $ipc_plugin) {
-        if (!is_dir($ipc_conpluginpath . $ipc_plugin . '/')) {
-            unset($plugins[$key]);
-        } else {
-            $ipc_localedir = $ipc_conpluginpath . $ipc_plugin . '/locale/';
-            $ipc_langfile = $ipc_conpluginpath . $ipc_plugin . '/includes/language.plugin.php';
-            $ipc_configfile = $ipc_conpluginpath . $ipc_plugin . '/includes/config.plugin.php';
-
-            if (cFileHandler::exists($ipc_localedir)) {
-                i18nRegisterDomain($ipc_plugin, $ipc_localedir);
-            }
-            if (cFileHandler::exists($ipc_langfile)) {
-                include_once ($ipc_langfile);
-            }
-            if (cFileHandler::exists($ipc_configfile)) {
-                include_once ($ipc_configfile);
-            }
-        }
-    }
-
-    unset($plugins);
+	if (cFileHandler::exists($pluginConfigFile)) {
+		include_once($pluginConfigFile);
+	}
 }
