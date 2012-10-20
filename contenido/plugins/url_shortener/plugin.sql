@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS !TABLENAME!`_shorturl` (
+CREATE TABLE IF NOT EXISTS `!TABLENAME!_shorturl` (
   `idshorturl` int(11) NOT NULL auto_increment,
   `shorturl` varchar(32) NOT NULL,
   `idart` int(11) NOT NULL,
