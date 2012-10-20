@@ -864,15 +864,15 @@ abstract class cDbDriverHandler {
         $errorNumber = $this->getErrorNumber();
         $errorMessage = $this->getErrorMessage();
 
-        if (!$errorNumber) {
-            $errorNumber = $this->getDriver()->getErrorMessage();
-        }
-
         if (!$errorMessage) {
-            $errorMessage = $this->getDriver()->getErrorNumber();
+            $errorMessage = $this->getDriver()->getErrorMessage();
         }
 
-        $message = sprintf("Database failure: %s (%s) - %s\n",$errorNumber, $errorMessage, $message);
+        if (!$errorNumber) {
+            $errorNumber = $this->getDriver()->getErrorNumber();
+        }
+
+        $message = sprintf("Database failure: %s (%s) - %s\n", $errorNumber, $errorMessage, $message);
         cWarning(__FILE__, __LINE__, $message);
     }
 
