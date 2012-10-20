@@ -1647,7 +1647,6 @@ contenido/jar/dnd/org/contenido/UploadStatusShelf.java -text
 contenido/logout.php -text
 contenido/main.loginform.php -text
 contenido/main.php -text
-contenido/plugins/chains/includes/config.plugin.php -text
 contenido/plugins/content_allocation/classes/class.content_allocation.php -text
 contenido/plugins/content_allocation/classes/class.content_allocation_article.php -text
 contenido/plugins/content_allocation/classes/class.content_allocation_complexlist.php -text
