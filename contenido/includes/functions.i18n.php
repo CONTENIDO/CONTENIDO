@@ -85,7 +85,7 @@ function i18n($string, $domain = "contenido")
 	if (!$cfg["native_i18n"])
 	{
 	    $ret = i18nEmulateGettext($string, $domain);
-        $ret = htmlspecialchars_decode(htmlentities($ret, ENT_COMPAT, 'ISO-8859-1', false));
+        $ret = htmlspecialchars_decode(conHtmlentities($ret, ENT_COMPAT, 'ISO-8859-1', false));
 		return $ret;
 	}
 
