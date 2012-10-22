@@ -227,7 +227,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
        ($structure[$field]['Extra'] != $extra)) {
 
         if ($structure[$field]['Key'] == 'PRI') {
-            $sql = "ALTER TABLE `".$db->escape($table)."` ADD PRIMARY KEY ('".$db->escape($field)."') ";
+            $sql = "ALTER TABLE `".$db->escape($table)."` ADD PRIMARY KEY (".$db->escape($field).") ";
         } else {
             $sql = "ALTER TABLE `".$db->escape($table)."` CHANGE COLUMN `".$db->escape($field)."` `".$db->escape($field)."` ".$db->escape($type)." ".$parameter['NULL']." ".$parameter['DEFAULT']." ".$parameter['KEY'];
         }
