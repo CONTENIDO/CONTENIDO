@@ -1,7 +1,3 @@
-INSERT INTO !PREFIX!_frame_files VALUES('210', '90', '4', '202');
-INSERT INTO !PREFIX!_frame_files VALUES('211', '90', '3', '203');
-INSERT INTO !PREFIX!_frame_files VALUES('212', '17', '4', '204');
-INSERT INTO !PREFIX!_frame_files VALUES('213', '91', '4', '205');
 INSERT INTO !PREFIX!_frame_files VALUES('214', '92', '4', '206');
 INSERT INTO !PREFIX!_frame_files VALUES('215', '93', '4', '207');
 INSERT INTO !PREFIX!_frame_files VALUES('216', '94', '4', '208');

@@ -29,7 +29,6 @@ INSERT INTO !PREFIX!_nav_sub VALUES('33', '0', '42', '1', 'navigation/mycontenid
 INSERT INTO !PREFIX!_nav_sub VALUES('36', '5', '46', '0', 'navigation/administration/clients/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('49', '5', '49', '0', 'navigation/administration/logs/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('37', '0', '4', '1', 'navigation/content/article/preview', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('38', '3', '50', '1', 'newsletter/xml/;navigation/extra/recipients', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('41', '0', '61', '1', 'navigation/administration/groups/overview', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('43', '0', '62', '1', 'navigation/administration/groups/areas', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('44', '0', '55', '1', 'navigation/administration/groups/layout', '1');
@@ -59,7 +58,6 @@ INSERT INTO !PREFIX!_nav_sub VALUES('76', '0', '45', '1', 'navigation/mycontenid
 INSERT INTO !PREFIX!_nav_sub VALUES('77', '0', '81', '1', 'navigation/style/modules/translation', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('78', '0', '83', '1', 'navigation/administration/clients/clientsettings', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('79', '0', '6', '1', 'navigation/content/structure/overview', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('81', '3', '86', '1', 'newsletter/xml/;navigation/extra/recipientgroups', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('82', '3', '92', '1', 'navigation/style/modules/package', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('83', '0', '93', '1', 'navigation/style/modules/template', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('84', '0', '94', '1', 'navigation/style/modules/style', '1');
