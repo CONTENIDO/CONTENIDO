@@ -136,7 +136,7 @@ $sSystemStatistics = $oTpl2->generate($cfg['path']['templates'] . $cfg['template
 $tpl->set('s', 'SYSTEM_STATISTICS', $sSystemStatistics);
 
 // installed versions
-$sql_server_info = $db->server_info();
+$sql_server_info = $db->getServerInfo();
 
 $aInstalledVersions = array(
     array(i18n('CONTENIDO version'), $cfg['version']),
