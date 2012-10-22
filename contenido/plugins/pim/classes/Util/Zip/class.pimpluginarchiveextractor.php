@@ -148,7 +148,7 @@ class PimPluginArchiveExtractor {
     }
 
     /**
-     * Destory temporary plugin files (plugin.xml, plugin.sql and files at
+     * Destory temporary plugin files (plugin.xml, plugin_install.sql and files at
      * CONTENIDO temp dir)
      *
      * @access public
@@ -161,9 +161,9 @@ class PimPluginArchiveExtractor {
             cFileHandler::remove($this->tempDir . 'plugin.xml');
         }
 
-        // remove plugin.sql if exists
-        if (cFileHandler::exists($this->tempDir . 'plugin.sql')) {
-            cFileHandler::remove($this->tempDir . 'plugin.sql');
+        // remove plugin_install.sql if exists
+        if (cFileHandler::exists($this->tempDir . 'plugin_install.sql')) {
+            cFileHandler::remove($this->tempDir . 'plugin_install.sql');
         }
 
         // remove temporary plugin dir if exists

@@ -1951,8 +1951,9 @@ contenido/plugins/url_shortener/locale/en_US/LC_MESSAGES/url_shortener.mo -text
 contenido/plugins/url_shortener/locale/en_US/LC_MESSAGES/url_shortener.po -text
 contenido/plugins/url_shortener/locale/potfiles.txt -text svneol=unset#text/plain
 contenido/plugins/url_shortener/locale/url_shortener.pot -text
-contenido/plugins/url_shortener/plugin.sql -text
 contenido/plugins/url_shortener/plugin.xml -text svneol=unset#text/plain
+contenido/plugins/url_shortener/plugin_install.sql -text
+contenido/plugins/url_shortener/plugin_uninstall.sql -text
 contenido/plugins/url_shortener/scripts/url_shortener.js -text svneol=unset#text/plain
 contenido/plugins/url_shortener/styles/url_shortener.css -text svneol=unset#text/plain
 contenido/plugins/url_shortener/xml/lang_de_DE.xml -text svneol=unset#text/plain

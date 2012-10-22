@@ -247,9 +247,9 @@ class PimPluginSetup {
         $db = cRegistry::getDb();
 
         if ($this->isExtracted === false) {
-            $tempSqlFilename = $this->_extractor->extractArchiveFileToVariable('plugin.sql', 0);
+            $tempSqlFilename = $this->_extractor->extractArchiveFileToVariable('plugin_install.sql', 0);
         } else {
-            $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->extractedPath . '/plugin.sql';
+            $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->extractedPath . '/plugin_install.sql';
         }
 
         if (!cFileHandler::exists($tempSqlFilename)) {
@@ -323,12 +323,17 @@ class PimPluginSetup {
             $navMainColl->deleteByWhereClause("idnavm IN('" . join("', '", $relations['navm']) . "')");
         }
 
-        // delete folders
+        // get plugininformations
         $pimPluginColl->setWhere('idplugin', $pluginId);
         $pimPluginColl->query();
         $pimPluginSql = $pimPluginColl->next();
 
         $foldername = $pimPluginSql->get('folder');
+
+        // delete specific sql entries or tables
+        $this->_uninstallDeleteSpecificSql($foldername);
+
+        // delete folders
         $folderpath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($foldername);
         cFileHandler::recursiveRmdir($folderpath);
 
@@ -342,6 +347,37 @@ class PimPluginSetup {
         // success message
         if ($page instanceof cGuiPage) {
             $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been successfully uninstalled', 'pim'));
+        }
+    }
+
+    /**
+     * Delete specific sql entries or tables
+     *
+     * @access protected
+     * @param $foldername foldername of installed plugin
+     * @return void
+     */
+    protected function _uninstallDeleteSpecificSql($foldername) {
+        $cfg = cRegistry::getConfig();
+        $db = cRegistry::getDb();
+
+        $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $foldername . '/plugin_uninstall.sql';
+
+        if (!cFileHandler::exists($tempSqlFilename)) {
+            return;
+        }
+
+        $tempSqlContent = cFileHandler::read($tempSqlFilename);
+        $tempSqlContent = str_replace("\r\n", "\n", $tempSqlContent);
+        $tempSqlContent = explode("\n", $tempSqlContent);
+        $tempSqlLines = count($tempSqlContent);
+
+        for ($i = 0; $i < $tempSqlLines; $i++) {
+
+            if (strpos($tempSqlContent[$i], 'DELETE FROM !PREFIX!') === 0 || strpos($tempSqlContent[$i], 'DROP TABLE !PREFIX!') === 0) {
+                $tempSqlContent[$i] = str_replace('!PREFIX!', $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
+                $db->query(cSecurity::escapeDB($tempSqlContent[$i], $db));
+            }
         }
     }
 

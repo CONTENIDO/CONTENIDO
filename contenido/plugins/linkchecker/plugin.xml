@@ -4,7 +4,7 @@
     <general active="1">
         <plugin_name>Linkchecker</plugin_name>
         <plugin_foldername>linkchecker</plugin_foldername>
-        <guid>a9613eabde004e1ad4daad30a25def6555f4ac28</guid>
+        <uuid>bab94c1149b463f72f28320177f8d31b</uuid>
         <description>Checks intern and extern links to valid</description>
         <author>Frederic Schneider (4fb)</author>
         <copyright>four for business AG</copyright>

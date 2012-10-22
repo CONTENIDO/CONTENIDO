@@ -3,7 +3,7 @@
     <general active="1">
         <plugin_name>Smarty Wrapper</plugin_name>
         <plugin_foldername>smarty</plugin_foldername>
-        <guid></guid>
+        <uuid>82b117e94bb2cbcbce4e56b79a7d0c23</uuid>
         <description>Provides smarty template engine for CONTENIDO Backend and Frontend</description>
         <author>Bilal Arslan, Andreas Dieter</author>
         <copyright>four for business AG</copyright>

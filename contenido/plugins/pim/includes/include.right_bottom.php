@@ -21,7 +21,7 @@ $setup = new PimPluginSetup();
 $page = new cGuiPage('pim_overview', 'pim');
 
 // check disable plugin var
-if($cfg['debug']['disable_plugins'] === true) {
+if ($cfg['debug']['disable_plugins'] === true) {
     $page->displayWarning(i18n('Currently the plugin system is disabled via configuration', 'pim'));
 }
 
@@ -152,9 +152,9 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
             cFileHandler::remove($tempPath . '/plugin.xml');
         }
 
-        // remove plugin.sql if exists
-        if (cFileHandler::exists($tempPath . '/plugin.sql')) {
-            cFileHandler::remove($tempPath . '/plugin.sql');
+        // remove plugin_install.sql if exists
+        if (cFileHandler::exists($tempPath . '/plugin_install.sql')) {
+            cFileHandler::remove($tempPath . '/plugin_install.sql');
         }
     }
 }
@@ -168,7 +168,7 @@ $oItem->select();
 
 while (($plugin = $oItem->next()) !== false) {
 
-    // initalization new class
+    // initialization new class
     $pagePlugins = new cGuiPage('pim_plugins_installed', 'pim');
 
     // date
@@ -195,7 +195,7 @@ while (($plugin = $oItem->next()) !== false) {
     // TODO: Implementierung einer Abfangmeldung "Wollen Sie dieses Plugin
     // wirklich löschen?"
     // uninstall link
-    if (is_writable($cfg['path']['contenido'] . $cfg['path']['plugins']  . $plugin->get('folder'))) {
+    if (is_writable($cfg['path']['contenido'] . $cfg['path']['plugins'] . $plugin->get('folder'))) {
         $pagePlugins->set('s', 'UNINSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall&pluginId=' . $plugin->get('idplugin')));
         $pagePlugins->set('s', 'LANG_WRITABLE', '');
     } else {
