@@ -1711,6 +1711,8 @@ contenido/plugins/linkchecker/locale/de_DE/LC_MESSAGES/linkchecker.po -text
 contenido/plugins/linkchecker/locale/linkchecker.pot -text
 contenido/plugins/linkchecker/locale/potfiles.txt svneol=native#text/plain
 contenido/plugins/linkchecker/plugin.xml -text svneol=unset#text/plain
+contenido/plugins/linkchecker/plugin_install.sql -text
+contenido/plugins/linkchecker/plugin_uninstall.sql -text
 contenido/plugins/linkchecker/templates/standard/template.linkchecker_noerrors.html -text
 contenido/plugins/linkchecker/templates/standard/template.linkchecker_test.html -text
 contenido/plugins/linkchecker/templates/standard/template.linkchecker_test_errors.html -text
