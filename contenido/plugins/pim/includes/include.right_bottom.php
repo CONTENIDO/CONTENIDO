@@ -20,6 +20,13 @@ if (!defined('CON_FRAMEWORK')) {
 $setup = new PimPluginSetup();
 $page = new cGuiPage('pim_overview', 'pim');
 
+if ($perm->isSysadmin($currentuser) ) {
+    // access denied
+    $page->displayCriticalError(i18n("Permission denied"));
+    $page->render();
+    exit;
+}
+
 // check disable plugin var
 if ($cfg['debug']['disable_plugins'] === true) {
     $page->displayWarning(i18n('Currently the plugin system is disabled via configuration', 'pim'));
