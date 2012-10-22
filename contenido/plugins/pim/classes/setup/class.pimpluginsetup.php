@@ -434,4 +434,62 @@ class PimPluginSetup {
         }
     }
 
+    /**
+     * Check uuId for update routine
+     *
+     * @access protected
+     * @param integer $pluginId id of installed plugid
+     * @return void
+     */
+    public function checkSamePlugin($pluginId) {
+        $cfg = cRegistry::getConfig();
+        $db = cRegistry::getDb();
+        $sess = cRegistry::getSession();
+
+        // name of uploaded file
+        $tempFileName = cSecurity::escapeString($_FILES['package']['name']);
+
+        // path to temp-dir
+        $tempFileNewPath = $cfg['path']['frontend'] . '/' . $cfg['path']['temp'];
+
+        move_uploaded_file($_FILES['package']['tmp_name'], $tempFileNewPath . $tempFileName);
+
+        // initalizing plugin archive extractor
+        try {
+            $extractor = new PimPluginArchiveExtractor($tempFileNewPath, $tempFileName);
+            $this->addArchiveObject($extractor);
+        } catch (cException $e) {
+            $extractor->destroyTempFiles();
+        }
+
+        $tempPluginXmlContent = $extractor->extractArchiveFileToVariable('plugin.xml');
+        $this->setTempXml($tempPluginXmlContent);
+
+        // load plugin.xml to an xml-string
+        $tempXml = simplexml_load_string($this->getTempXml());
+
+        // new uuId
+        $newId = $tempXml->general->uuid;
+
+        $pimPluginColl = new PimPluginCollection();
+        $pimPluginColl->setWhere('idplugin', $pluginId);
+        $pimPluginColl->query();
+        $result = $pimPluginColl->next();
+
+        // old uuId
+        $oldId = $result->get('uuid');
+
+        if ($newId == $oldId) {
+            return true;
+        } else {
+
+            $pageError = new cGuiPage('pim_error', 'pim');
+            $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
+            $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
+            $pageError->displayError(i18n('You have to update the same plugin', 'pim'));
+            $pageError->render();
+            exit();
+        }
+    }
+
 }
