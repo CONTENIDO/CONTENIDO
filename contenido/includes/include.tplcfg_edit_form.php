@@ -295,7 +295,8 @@ $tpl2->set('s', 'OPTIONS', $disabled.' '.$disabled2.' onchange="tplcfgform.chang
 
 $sql = "SELECT
             idtpl,
-            name
+            name,
+            description
         FROM
             ".$cfg['tab']['tpl']."
         WHERE
@@ -310,20 +311,21 @@ $tpl2->set('d', 'CAPTION', '--- '.i18n("none"). ' ---');
 $tpl2->set('d', 'SELECTED', '');
 $tpl2->next();
 
-$tpl->set('s', 'TEMPLATEDESCRIPTION', "");
+$desc = "";
 while ( $db->next_record() ) {
+    if($idtpl == $db->f("idtpl")) {
+        $desc = $db->f("description");
+    }
 
     if ($db->f("idtpl") != "$idtpl") {
         $tpl2->set('d', 'VALUE',    $db->f("idtpl") );
         $tpl2->set('d', 'CAPTION',  $db->f("name") );
         $tpl2->set('d', 'SELECTED', '');
         $tpl2->next();
-
     } else {
         $tpl2->set('d', 'VALUE',    $db->f("idtpl") );
         $tpl2->set('d', 'CAPTION',  $db->f("name") );
         $tpl2->set('d', 'SELECTED', 'selected="selected"');
-        $tpl->set('s', 'TEMPLATEDESCRIPTION', $db->f("description"));
         $tpl2->next();
 
     }
@@ -332,6 +334,7 @@ while ( $db->next_record() ) {
 $select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true);
 $tpl->set('s', 'TEMPLATESELECTBOX', $select );
 $tpl->set('s', 'DESCRIPTIONCAPTION', i18n("Description").":");
+$tpl->set('s', 'TEMPLATEDESCRIPTION', $desc);
 
 	/* modul input bereich von allen
 	   container anzeigen  */
