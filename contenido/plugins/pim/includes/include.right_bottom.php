@@ -20,7 +20,7 @@ if (!defined('CON_FRAMEWORK')) {
 $setup = new PimPluginSetup();
 $page = new cGuiPage('pim_overview', 'pim');
 
-if ($perm->isSysadmin($currentuser) ) {
+if (!$perm->isSysadmin($currentuser) ) {
     // access denied
     $page->displayCriticalError(i18n("Permission denied"));
     $page->render();
