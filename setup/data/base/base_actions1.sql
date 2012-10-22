@@ -122,7 +122,6 @@ INSERT INTO !PREFIX!_actions VALUES('439', '16', '', 'news_html_settings', '', '
 INSERT INTO !PREFIX!_actions VALUES('440', '91', '', 'recipients_import', '', '', '0');
 INSERT INTO !PREFIX!_actions VALUES('441', '90', '', 'news_job_run', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('442', '91', '', 'recipients_import_exec', '', '', '0');
-INSERT INTO !PREFIX!_actions VALUES ('800', '802', '', 'storeallocation', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('444', '77', '', 'frontendgroup_user_add', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('202', '402', 'js_history_manage', 'js_history_manage', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('203', '403', 'htmltpl_history_manage', 'htmltpl_history_manage', '', '', '1');

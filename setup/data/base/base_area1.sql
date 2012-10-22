@@ -84,8 +84,6 @@ INSERT INTO !PREFIX!_area VALUES ('403', 'htmltpl', 'htmltpl_history', '1', '1',
 INSERT INTO !PREFIX!_area VALUES ('550', 'logs', 'mail_log', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('551', 'mail_log', 'mail_log_overview', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('552', 'mail_log', 'mail_log_detail', '1', '1', '1');
-INSERT INTO !PREFIX!_area VALUES ('801', '0', 'content_allocation', '1', '1', '1');
-INSERT INTO !PREFIX!_area VALUES ('802', 'con', 'con_contentallocation', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('415', 'system', 'system_configuration', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('811', 'system', 'system_purge', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('100', 'con', 'con_meta', '1', '1', '0');
