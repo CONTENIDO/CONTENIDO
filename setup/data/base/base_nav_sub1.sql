@@ -65,9 +65,6 @@ INSERT INTO !PREFIX!_nav_sub VALUES('83', '0', '93', '1', 'navigation/style/modu
 INSERT INTO !PREFIX!_nav_sub VALUES('84', '0', '94', '1', 'navigation/style/modules/style', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('85', '0', '95', '1', 'navigation/style/modules/script', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES ('86', '0', '96', '1', 'navigation/style/modules/import-export', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('500', '1', '500', '0', 'linkchecker/xml/lang_de_DE.xml;navigation/content/linkchecker/main', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('502', '0', '500', '1', 'linkchecker/xml/lang_de_DE.xml;navigation/content/linkchecker/overview', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('503', '0', '501', '1', 'linkchecker/xml/lang_de_DE.xml;navigation/content/linkchecker/whitelist', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('550', '5', '550', '1', 'navigation/administration/logs/mail_log', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('551', '0', '551', '1', 'navigation/administration/mail_log/overview', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('552', '0', '552', '1', 'navigation/administration/mail_log/detail', '1');

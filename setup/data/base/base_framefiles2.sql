@@ -14,8 +14,6 @@ INSERT INTO !PREFIX!_frame_files VALUES ('400', '400', '4', '400');
 INSERT INTO !PREFIX!_frame_files VALUES ('399', '31', '3', '399');
 INSERT INTO !PREFIX!_frame_files VALUES ('398', '32', '3', '398');
 INSERT INTO !PREFIX!_frame_files VALUES ('397', '71', '3', '397');
-INSERT INTO !PREFIX!_frame_files VALUES ('500', '500', '4', '500');
-INSERT INTO !PREFIX!_frame_files VALUES ('501', '501', '4', '501');
 INSERT INTO !PREFIX!_frame_files VALUES ('503', '52', '3', '503');
 INSERT INTO !PREFIX!_frame_files VALUES ('551', '550', '4', '550');
 INSERT INTO !PREFIX!_frame_files VALUES ('555', '551', '4', '555');

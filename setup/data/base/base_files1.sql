@@ -178,9 +178,6 @@ INSERT INTO !PREFIX!_files VALUES('207', '93', 'include.mod_template.php', 'main
 INSERT INTO !PREFIX!_files VALUES('208', '94', 'include.mod_style.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('209', '95', 'include.mod_script.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('210', '96', 'include.mod_import_export.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('500', '500', 'linkchecker/includes/include.linkchecker.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('501', '501', 'linkchecker/includes/include.linkchecker_whitelist.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('502', '500', 'linkchecker/includes/include.linkchecker_right_top.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('503', '52', 'include.subnav_blank.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('550', '550', 'include.mail_log.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('555', '551', 'include.mail_log.php', 'main');

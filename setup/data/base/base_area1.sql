@@ -81,8 +81,6 @@ INSERT INTO !PREFIX!_area VALUES ('400', 'lay', 'lay_history', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('402', 'js', 'js_history', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('401', 'style', 'style_history', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('403', 'htmltpl', 'htmltpl_history', '1', '1', '0');
-INSERT INTO !PREFIX!_area VALUES ('500', '0', 'linkchecker', '1', '1', '1');
-INSERT INTO !PREFIX!_area VALUES ('501', 'linkchecker', 'lc_whitelist', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('550', 'logs', 'mail_log', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('551', 'mail_log', 'mail_log_overview', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('552', 'mail_log', 'mail_log_detail', '1', '1', '1');
