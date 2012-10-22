@@ -33,7 +33,7 @@ class PimPluginCollection extends ItemCollection {
      *
      * @param none
      */
-    public function create($name, $description, $author, $copyright, $mail, $website, $version, $foldername, $guId, $active) {
+    public function create($name, $description, $author, $copyright, $mail, $website, $version, $foldername, $uuId, $active) {
         global $client;
 
         $nextId = $this->_getNextId();
@@ -48,7 +48,7 @@ class PimPluginCollection extends ItemCollection {
         $website = cSecurity::escapeString($website);
         $version = cSecurity::escapeString($version);
         $foldername = cSecurity::escapeString($foldername);
-        $guId = cSecurity::escapeString($guId);
+        $uuId = cSecurity::escapeString($uuId);
         $active = cSecurity::toInteger($active);
 
         // create a new entry
@@ -62,7 +62,7 @@ class PimPluginCollection extends ItemCollection {
         $item->set('website', $website);
         $item->set('version', $version);
         $item->set('folder', $foldername);
-        $item->set('guid', $guId);
+        $item->set('uuid', $uuId);
         $item->set('installed', date('Y-m-d H:i:s'), false);
         $item->set('active', $active);
 

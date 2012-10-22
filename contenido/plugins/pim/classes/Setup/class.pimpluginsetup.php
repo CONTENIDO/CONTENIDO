@@ -66,7 +66,7 @@ class PimPluginSetup {
         $pimPluginColl = new PimPluginCollection();
 
         // add entry at *_plugins
-        $pimPlugin = $pimPluginColl->create($tempXml->general->plugin_name, $tempXml->general->description, $tempXml->general->author, $tempXml->general->copyright, $tempXml->general->mail, $tempXml->general->website, $tempXml->general->version, $tempXml->general->plugin_foldername, $tempXml->general->guid, $tempXml->general->attributes()->active);
+        $pimPlugin = $pimPluginColl->create($tempXml->general->plugin_name, $tempXml->general->description, $tempXml->general->author, $tempXml->general->copyright, $tempXml->general->mail, $tempXml->general->website, $tempXml->general->version, $tempXml->general->plugin_foldername, $tempXml->general->uuid, $tempXml->general->attributes()->active);
         $pluginId = $pimPlugin->get('idplugin');
 
         // add entries at *_area

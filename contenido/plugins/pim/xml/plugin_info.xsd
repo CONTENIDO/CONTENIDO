@@ -15,7 +15,7 @@
         <xsd:all>
             <xsd:element name="plugin_name" type="xsd:string" minOccurs="1" />
             <xsd:element name="plugin_foldername" type="xsd:string" minOccurs="1" />
-            <xsd:element name="guid" type="xsd:string" minOccurs="1" />
+            <xsd:element name="uuid" type="xsd:string" minOccurs="1" />
             <xsd:element name="description" type="xsd:string" minOccurs="0" />
             <xsd:element name="author" type="xsd:string" minOccurs="1" />
             <xsd:element name="copyright" type="xsd:string" minOccurs="0" />
