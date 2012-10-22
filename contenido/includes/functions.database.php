@@ -219,7 +219,7 @@ if ($bDebug) {echo 'createField:'.$createField.'<br />';}
 	   ($structure[$field]['Extra'] != $extra)) {
       
 		if ($structure[$field]['Key'] == "PRI") {
-			$alterField = "  ALTER TABLE ".Contenido_Security::escapeDB($table, $db)." ADD PRIMARY KEY ('".Contenido_Security::escapeDB($field, $db)."') ";
+			$alterField = "  ALTER TABLE ".Contenido_Security::escapeDB($table, $db)." ADD PRIMARY KEY (".Contenido_Security::escapeDB($field, $db).") ";
 		} else {
 			$alterField = "  ALTER TABLE ".Contenido_Security::escapeDB($table, $db)." CHANGE COLUMN $field $field $type ".$parameter['NULL']." ".$parameter['DEFAULT']." ".$parameter['KEY'];	
 		}
