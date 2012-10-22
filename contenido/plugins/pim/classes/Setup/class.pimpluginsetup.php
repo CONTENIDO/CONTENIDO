@@ -18,31 +18,30 @@ if (!defined('CON_FRAMEWORK')) {
 }
 class PimPluginSetup {
 
-    public $valid = false;
+    protected $valid = false;
 
-    public $tempXml;
+    protected $tempXml;
 
-    public $isExtracted = false;
+    protected $isExtracted = false;
 
-    public $extractedPath;
-
-    protected $_pluginSqlBuilder;
+    protected $extractedPath;
 
     protected $_extractor; // TODO
     public function addArchiveObject($extractor) {
         $this->_extractor = $extractor;
     }
 
-    // check $sTempXml file with getValidXml()
-    public function checkXml() {
-        $this->getValidXml($this->tempXml, 'plugins/pim/xml/plugin_info.xsd');
-    }
-
-    public function getValidXml($xml, $xsd) {
+    /**
+     * Checks xml file to valid
+     *
+     * @throws cException
+     * @return boolean
+     */
+    public function checkValidXml() {
         $dom = new DomDocument();
-        $dom->loadXML($xml);
+        $dom->loadXML($this->tempXml);
 
-        if ($dom->schemaValidate($xsd)) {
+        if ($dom->schemaValidate('plugins/pim/xml/plugin_info.xsd')) {
             $this->valid = true;
             return true;
         } else {
@@ -53,6 +52,59 @@ class PimPluginSetup {
 
             throw new cException('Invalid Xml document');
         }
+    }
+
+    /**
+     * Get method for $tempXml
+     *
+     * @access public
+     * @return content of $tempXml
+     */
+    public function getTempXml() {
+        return $this->tempXml;
+    }
+
+    /**
+     * Get method for $valid
+     *
+     * @access public
+     * @return true or fales value of $valid
+     */
+    public function getValid() {
+        return $this->valid;
+    }
+
+    /**
+     * Set method for $tempXml
+     *
+     * @access public
+     * @param $value xml content
+     * @return void
+     */
+    public function setTempXml($value) {
+        $this->tempXml = $value;
+    }
+
+    /**
+     * Set method for $isExtracted
+     *
+     * @access public
+     * @param $value true or false value
+     * @return void
+     */
+    public function setIsExtracted($value) {
+        $this->isExtracted = $value;
+    }
+
+    /**
+     * Set method for $extractedPath
+     *
+     * @access public
+     * @param $value path to extracted files
+     * @return void
+     */
+    public function setExtractedPath($value) {
+        $this->extractedPath = $value;
     }
 
     /**
@@ -79,7 +131,8 @@ class PimPluginSetup {
         $this->_installAddFrames($tempXml->contenido->frames);
 
         // add entries at *_nav_main
-        $this->_installAddNavMain($tempXml->contenido->nav_main, $pluginId);
+        // TODO: $this->_installAddNavMain($tempXml->contenido->nav_main,
+        // $pluginId);
 
         // add entries at *_nav_sub
         $this->_installAddNavSub($tempXml->contenido->nav_sub);
@@ -184,7 +237,7 @@ class PimPluginSetup {
     }
 
     /**
-     * TODO: Implement at XSD-File Add entries at *_nav_main
+     * TODO: Implement at XSD-File, add entries at *_nav_main
      *
      * @access protected
      * @param $tempXml temporary plugin definitions

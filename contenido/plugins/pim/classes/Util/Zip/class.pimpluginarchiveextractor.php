@@ -29,7 +29,7 @@ class PimPluginArchiveExtractor {
      *
      * @var string
      */
-    public $tempDir = '';
+    protected $tempDir = '';
 
     /**
      * The archive file
@@ -56,24 +56,24 @@ class PimPluginArchiveExtractor {
      * Constructor of ArchiveExtractor, load the file list
      *
      * @access public
-     * @param $sSource string
-     * @param $sFilename string
+     * @param $source path to the temp directory
+     * @param $filename name of zip archive
      * @throws cException if the source file does not exists
      * @return void
      */
-    public function __construct($sSource, $sFilename) {
+    public function __construct($source, $filename) {
         $cfg = cRegistry::getConfig();
 
         // initialzing ziparchive
         $this->_extractor = new ZipArchive();
 
-        // path to temp dir
-        $this->tempDir = $sSource;
+        // path to temp directory
+        $this->tempDir = $source;
 
-        // temp dir with zip archive
-        $this->_source = (string) $sSource . (string) $sFilename;
+        // temp directory with zip archive
+        $this->_source = (string) $source . (string) $filename;
 
-        if (file_exists($sSource)) {
+        if (file_exists($source)) {
             // generate absolute path to the plugin manager directory
             $this->_absPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'pim' . DIRECTORY_SEPARATOR;
 
@@ -148,8 +148,8 @@ class PimPluginArchiveExtractor {
     }
 
     /**
-     * Destory temporary plugin files (plugin.xml, plugin_install.sql and files at
-     * CONTENIDO temp dir)
+     * Destory temporary plugin files (plugin.xml, plugin_install.sql and files
+     * at CONTENIDO temp dir)
      *
      * @access public
      * @return void

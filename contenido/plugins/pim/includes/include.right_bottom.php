@@ -43,9 +43,7 @@ switch ($viewAction) {
         break;
 }
 
-// TODO: Ggfls. koennen einige der Aufrufe auch in die Klasse ausgegliedert und
-// uebersichtlicher
-// implementiert werden
+// TODO: Move code into classes
 function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
     global $setup;
     $cfg = cRegistry::getConfig();
@@ -69,18 +67,20 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
             $extractor->destroyTempFiles();
         }
 
-        $setup->tempXml = $extractor->extractArchiveFileToVariable('plugin.xml');
+        $tempPluginXmlContent = $extractor->extractArchiveFileToVariable('plugin.xml');
+        $setup->setTempXml($tempPluginXmlContent);
     } else {
-        $setup->isExtracted = true;
-        $setup->extractedPath = $extractedPath;
-        $setup->tempXml = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . $extractedPath . '/plugin.xml');
+        $tempPluginXmlContent = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . $extractedPath . '/plugin.xml');
+        $setup->setTempXml($tempPluginXmlContent);
+        $setup->setIsExtracted($isExtracted);
+        $setup->setExtractedPath($extractedPath);
     }
 
     // xml file validation
-    $setup->checkXml();
+    $setup->checkValidXml();
 
     // load plugin.xml to an xml-string
-    $tempXml = simplexml_load_string($setup->tempXml);
+    $tempXml = simplexml_load_string($setup->getTempXml());
 
     // check min CONTENIDO version
     if (!empty($tempXml->general->min_contenido_version) && version_compare($cfg['version'], $tempXml->general->min_contenido_version, '<')) {
@@ -116,7 +116,7 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
     $tempPluginDir = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $tempXml->general->plugin_foldername . DIRECTORY_SEPARATOR;
 
     // extract files into plugin dir
-    if ($setup->valid === true && $isExtracted === false) {
+    if ($setup->getValid() === true && $isExtracted === false) {
         try {
             $extractor->setDestinationPath($tempPluginDir);
         } catch (cException $e) {
@@ -159,6 +159,9 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
     }
 }
 
+// path to pim template files
+$tempTplPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'pim/templates';
+
 // initializing array for installed plugins
 $installedPluginFoldernames = array();
 
@@ -168,8 +171,8 @@ $oItem->select();
 
 while (($plugin = $oItem->next()) !== false) {
 
-    // initialization new class
-    $pagePlugins = new cGuiPage('pim_plugins_installed', 'pim');
+    // initialization new template class
+    $pagePlugins = new cTemplate();
 
     // date
     $date = date_format(date_create($plugin->get('installed')), i18n('Y-m-d', 'pim'));
@@ -187,26 +190,25 @@ while (($plugin = $oItem->next()) !== false) {
     $pagePlugins->set('s', 'LANG_INSTALLED', i18n('Installed since', 'pim'));
     $pagePlugins->set('s', 'LANG_AUTHOR', i18n('Author', 'pim'));
     $pagePlugins->set('s', 'LANG_CONTACT', i18n('Contact', 'pim'));
-    $pagePlugins->set('s', 'LANG_UNINSTALL', i18n('Uninstall', 'pim'));
+
     $pagePlugins->set('s', 'LANG_UPDATE', i18n('Update', 'pim'));
     $pagePlugins->set('s', 'LANG_UPDATE_CHOOSE', i18n('Please choose your new file', 'pim'));
     $pagePlugins->set('s', 'LANG_UPDATE_UPLOAD', i18n('Update', 'pim'));
 
-    // TODO: Implementierung einer Abfangmeldung "Wollen Sie dieses Plugin
-    // wirklich löschen?"
     // uninstall link
     if (is_writable($cfg['path']['contenido'] . $cfg['path']['plugins'] . $plugin->get('folder'))) {
-        $pagePlugins->set('s', 'UNINSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall&pluginId=' . $plugin->get('idplugin')));
+        $tempUninstallLink = $sess->url('main.php?area=pim&frame=4&pim_view=uninstall&pluginId=' . $plugin->get('idplugin'));
+        $pagePlugins->set('s', 'UNINSTALL_LINK', '<a href="javascript:void(0)" onclick="javascript:showConfirmation(\'' . i18n('Are you sure to delete this plugin? Plugin Manager will delete all content of the plugin', 'pim') . '\', function() { window.location.href=\'' . $tempUninstallLink . '\';})">' . i18n('Uninstall', 'pim') . '</a>');
         $pagePlugins->set('s', 'LANG_WRITABLE', '');
     } else {
-        $pagePlugins->set('s', 'UNINSTALL_LINK', $sess->url('main.php?area=pim&frame=4'));
-        $pagePlugins->set('s', 'LANG_WRITABLE', i18n('(<span style="color: red;">This plugin is not writeable, please set the rights manually</span>)', 'pim'));
+        $pagePlugins->set('s', 'UNINSTALL_LINK', '');
+        $pagePlugins->set('s', 'LANG_WRITABLE', '<span style="color: red;">' . i18n('This plugin is not writeable, please set the rights manually', 'pim') . '</span>');
     }
 
     // put foldername into array installedPluginFoldernames
     $installedPluginFoldernames[] = $plugin->get('folder');
 
-    $pluginsInstalled .= $pagePlugins->render(null, true);
+    $pluginsInstalled .= $pagePlugins->generate($tempTplPath . '/template.pim_plugins_installed.html', true, false);
 }
 
 // get extracted plugins
@@ -217,14 +219,14 @@ while ($pluginFoldername = readdir($handle)) {
 
     if (cFileHandler::exists($tempPath) && !in_array($pluginFoldername, $installedPluginFoldernames)) {
 
-        // initalization new class
-        $pagePlugins = new cGuiPage('pim_plugins_extracted', 'pim');
+        // initalization new template class
+        $pagePlugins = new cTemplate();
 
         $pagePlugins->set('s', 'LANG_FOLDERNAME', i18n('Foldername', 'pim'));
         $pagePlugins->set('s', 'FOLDERNAME', $pluginFoldername);
         $pagePlugins->set('s', 'INSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=install-extracted&pluginFoldername=' . $pluginFoldername));
 
-        $pluginsExtracted .= $pagePlugins->render(null, true);
+        $pluginsExtracted .= $pagePlugins->generate($tempTplPath . '/template.pim_plugins_extracted.html', true, false);
     }
 }
 
