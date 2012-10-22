@@ -6,6 +6,33 @@ CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 $Id: CHANGELOG.txt 1230 2010-10-13 12:14:37Z timo.trautmann $:
 
+Release 4.8.18
+----------------------------------------------------------------------	
+** Bug
+    * [CON-354] - PHP-Error in Area Modul-Package if css/js/tpl-dir not exists
+    * [CON-371] - No reset of template object in some example client modules
+    * [CON-374] - Newsletter encoding is ignored due to wrong parameter values
+    * [CON-381] - Various bugs in versioning feature
+    * [CON-385] - Fallback login page front_crcloginform.inc.php does not work
+    * [CON-401] - Check reported issue with synchronization of renamed/deleted upload folder via FTP
+    * [CON-404] - Missing dbfs URL creation in CMS type CMS_IMG
+    * [CON-471] - Display problem with headline in language creation
+    * [CON-496] - Menu frame in tab "Logs" contains image for left frame
+    * [CON-608] - No fallback for username if real name is not entered
+    * [CON-609] - Unnecessary "," in online user display on dashboard
+    * [CON-676] - Single table head of article specifications
+    * [CON-800] - Wrong variable name in contenido_include()
+
+** Improvement
+    * [CON-510] - Return of rendered code in cHTML classes by calling their object as string
+    * [CON-613] - The error pages should return actual HTTP error codes instead of 200
+
+** New Feature
+    * [CON-476] - Extend setup checks with maximum PHP version support
+    * [CON-562] - Display template description on all configuration views
+    * [CON-567] - Support for PNG transparency in scaling feature
+
+
 Release 4.8.17
 ----------------------------------------------------------------------	
 ** Bug
