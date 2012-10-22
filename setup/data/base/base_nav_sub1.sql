@@ -68,9 +68,6 @@ INSERT INTO !PREFIX!_nav_sub VALUES ('86', '0', '96', '1', 'navigation/style/mod
 INSERT INTO !PREFIX!_nav_sub VALUES('550', '5', '550', '1', 'navigation/administration/logs/mail_log', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('551', '0', '551', '1', 'navigation/administration/mail_log/overview', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('552', '0', '552', '1', 'navigation/administration/mail_log/detail', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('600', '3', '600', '0', 'workflow/xml/lang_de_DE.xml;navigation/extra/workflow/main', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('601', '0', '601', '1', 'workflow/xml/lang_de_DE.xml;navigation/extra/workflow/settings', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('602', '0', '602', '1', 'workflow/xml/lang_de_DE.xml;navigation/extra/workflow/steps', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('21', '2', '31', '0', 'navigation/style/styleeditor/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('22', '2', '32', '0', 'navigation/style/jseditor/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('61', '2', '71', '0', 'navigation/style/tpleditor/main', '1');

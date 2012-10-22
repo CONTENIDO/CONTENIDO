@@ -84,11 +84,6 @@ INSERT INTO !PREFIX!_area VALUES ('403', 'htmltpl', 'htmltpl_history', '1', '1',
 INSERT INTO !PREFIX!_area VALUES ('550', 'logs', 'mail_log', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('551', 'mail_log', 'mail_log_overview', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('552', 'mail_log', 'mail_log_detail', '1', '1', '1');
-INSERT INTO !PREFIX!_area VALUES ('600', '0', 'workflow', '1', '1', '0');
-INSERT INTO !PREFIX!_area VALUES ('601', 'workflow', 'workflow_common', '1', '1', '0');
-INSERT INTO !PREFIX!_area VALUES ('602', 'workflow', 'workflow_steps', '1', '1', '0');
-INSERT INTO !PREFIX!_area VALUES ('603', 'workflow', 'workflow_step_edit', '1', '1', '0');
-INSERT INTO !PREFIX!_area VALUES ('604', 'con', 'con_workflow', '0', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('801', '0', 'content_allocation', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('802', 'con', 'con_contentallocation', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('415', 'system', 'system_configuration', '1', '1', '0');

@@ -182,12 +182,6 @@ INSERT INTO !PREFIX!_files VALUES ('503', '52', 'include.subnav_blank.php', 'mai
 INSERT INTO !PREFIX!_files VALUES ('550', '550', 'include.mail_log.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('555', '551', 'include.mail_log.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('556', '552', 'include.mail_log.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('600', '600', 'workflow/includes/include.workflow_left_top.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('601', '600', 'workflow/includes/include.workflow_list.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('602', '601', 'workflow/includes/include.workflow_edit.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('603', '600', 'workflow/includes/include.workflow_subnav.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('604', '602', 'workflow/includes/include.workflow_steps.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('605', '604', 'workflow/includes/include.workflow_tasks.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('800', '801', 'content_allocation/includes/include.left_top.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('801', '801', 'content_allocation/includes/include.left_bottom.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('802', '801', 'content_allocation/includes/include.right_top.php', 'main');
