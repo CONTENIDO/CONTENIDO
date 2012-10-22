@@ -396,7 +396,7 @@
 "plugins";"website";"varchar(255)";"";"";"";"";""
 "plugins";"version";"varchar(10)";"";"";"";"";""
 "plugins";"folder";"varchar(255)";"";"";"";"";""
-"plugins";"guid";"varchar(255)";"";"";"";"";""
+"plugins";"uuid";"varchar(255)";"";"";"";"";""
 "plugins";"installed";"varchar(20)";"";"";"0";"";""
 "plugins";"active";"tinyint(1)";"YES";"";"";"";""
 "properties";"idproperty";"int(10)";"";"PRI";"0";"";"1"
