@@ -866,16 +866,22 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @return Item|bool  The next object, or false if no more objects
      */
     public function next() {
-        if ($this->db->next_record()) {
+        $ret = false;
+        while ($this->db->next_record()) {
             if ($this->_bAllMode) {
                 $aRs = $this->db->toArray(cDb::FETCH_BOTH);
-                return $this->loadItem($aRs);
+                $ret = $this->loadItem($aRs);
             } else {
-                return $this->loadItem($this->db->f($this->primaryKey));
+                $ret = $this->loadItem($this->db->f($this->primaryKey));
             }
-        } else {
-            return false;
+
+            if($ret->get($this->primaryKey) == "") {
+                continue;
+            } else {
+                break;
+            }
         }
+        return $ret;
     }
 
     /**
