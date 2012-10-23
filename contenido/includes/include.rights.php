@@ -20,6 +20,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+include_once(cRegistry::getBackendPath() . 'includes/functions.rights.php');
+
 if (!isset($actionarea)) {
     $actionarea = 'area';
 }
