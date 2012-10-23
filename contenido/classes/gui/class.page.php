@@ -511,7 +511,7 @@ class cGuiPage {
 
         $strstyle = "";
         foreach ($this->_styles as $style) {
-            if (strpos($script, "http") === 0 || strpos($script, "//") === 0) {
+            if (strpos($style, "http") === 0 || strpos($style, "//") === 0) {
                 $strstyle .= '<link href="' . $style . '" type="text/css" rel="stylesheet">' . "\n";
             } else {
                 $strstyle .= '<link href="styles/' . $style . '" type="text/css" rel="stylesheet">' . "\n";

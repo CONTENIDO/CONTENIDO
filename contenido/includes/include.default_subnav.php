@@ -118,7 +118,6 @@ $sql = "SELECT
 
 $db->query($sql);
 
-
 while ($db->next_record()) {
     // Name
     $sArea = $db->f('name');

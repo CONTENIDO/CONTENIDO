@@ -323,7 +323,7 @@ contenido/classes/class.search.php -text
 contenido/classes/class.security.php -text
 contenido/classes/class.session.php -text
 contenido/classes/class.structure.php -text
-contenido/classes/class.systemcheck.php -text
+contenido/classes/class.systemtest.php -text
 contenido/classes/class.table.php -text
 contenido/classes/class.template.php -text
 contenido/classes/class.templateconfig.php -text
@@ -2074,6 +2074,7 @@ contenido/styles/jquery/jquery-ui.css -text svneol=unset#text/plain
 contenido/styles/jquery/plugins/timepicker.css -text svneol=unset#text/plain
 contenido/styles/jquery/plugins/tipsy.css -text
 contenido/styles/str_overview.css -text
+contenido/styles/system_integrity.css -text
 contenido/subnav.php -text
 contenido/templates/index.php -text
 contenido/templates/standard/filler.html -text
@@ -2186,6 +2187,7 @@ contenido/templates/standard/template.subnav_blank.html -text
 contenido/templates/standard/template.subnav_noleft.html -text
 contenido/templates/standard/template.symbolhelp.html -text
 contenido/templates/standard/template.system_configuration.html -text
+contenido/templates/standard/template.system_integrity.html -text
 contenido/templates/standard/template.system_log_variables.html -text
 contenido/templates/standard/template.system_purge.html -text
 contenido/templates/standard/template.system_subnav.html -text
@@ -2203,8 +2205,6 @@ contenido/templates/standard/template.upl_search_results.html -text
 contenido/templates/standard/template.welcome_update.html -text
 contenido/templates/standard/white.html -text
 contenido/templates/standard/widgets/template.widgets.left_top.html -text
-contenido/templates/systemcheck/setup.tpl -text
-contenido/templates/systemcheck/systemtest.tpl -text
 contenido/tools/contenidocheck.php -text
 contenido/tools/convert_recipient_keys.php -text
 contenido/tools/convert_startarticles.php -text
