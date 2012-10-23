@@ -39,6 +39,36 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
     private $_cmsTypes;
 
     /**
+     * Content types in this array will be completely ignored by CMS_TEASER
+     * They won't be displayed in the frontend and they won't be shown as an option in the backend
+     *
+     * @var array
+     */
+    private $_ignoreTypes = array(
+            "CMS_SWF"
+            );
+
+    /**
+     * If CMS_TEASER tries to load one of the content types listed as the keys of this array it will load the value of that key instead
+     * These won't be listed as an option in the backend either
+     *
+     * @var array
+     */
+    private $_forwardTypes = array(
+            "CMS_EASYIMGEDIT" => "CMS_IMG",
+            "CMS_EASYIMG" => "CMS_IMG",
+            "CMS_HTMLTEXT" => "CMS_TEXT",
+            "CMS_LINKTITLE" => "CMS_LINKDESCR",
+            "CMS_LINKEDIT" => "CMS_LINK",
+            "CMS_SIMPLELINKEDIT" => "CMS_LINK",
+            "CMS_IMGTITLE" => "CMS_IMGDESCR",
+            "CMS_RAWLINK" => "CMS_LINK",
+            "CMS_IMGEDIT" => "CMS_IMG",
+            "CMS_IMGEDITOR" => "CMS_IMG",
+            "CMS_LINKEDITOR" => "CMS_LINK"
+            );
+
+    /**
      * Initialises class attributes and handles store events.
      *
      * @param string $rawSettings the raw settings in an XML structure or as
@@ -351,11 +381,15 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * @return string - largest result of content
      */
     private function _getArtContent(cApiArticleLanguage &$article, $contentTypeName, $ids) {
-        $return = '';
+        $this->_initCmsTypes();
 
+        $return = '';
         // split ids, if there is only one id, array has only one place filled,
         // that is also ok
         foreach (explode(',', $ids) as $currentId) {
+            if($this->_forwardTypes[$contentTypeName] != "") {
+                $contentTypeName = $this->_forwardTypes[$contentTypeName];
+            }
             $return .= ' ' . $article->getContent($contentTypeName, $currentId);
         }
 
@@ -531,21 +565,26 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
     }
 
     /**
-     * Function which gets all currenty avariable content types and their ids
+     * Gets all currenty avariable content types and their ids
      * from database and store it into class variable aCMSTypes.
-     * Because this
-     * information is used multiple, this way causes a better performance to get
-     * this information seperately
+     * Because this information is used multiple times, this causes a better performance than gettting it seperately
      *
      * @return void
      */
     private function _initCmsTypes() {
+        if(!empty($this->_cmsTypes)) {
+            return;
+        }
+
         $this->_cmsTypes = array();
 
         $sql = 'SELECT * FROM ' . $this->_cfg['tab']['type'] . ' ORDER BY type';
         $db = cRegistry::getDb();
         $db->query($sql);
         while ($db->next_record()) {
+            if(in_array($db->f('type'), $this->_ignoreTypes)) { //we do not want certain content types
+                continue;
+            }
             $this->_cmsTypes[$db->f('idtype')] = $db->f('type');
         }
     }
@@ -676,6 +715,9 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         // use $this->_cmsTypes as basis for this select box which contains all
         // avariable content types in system
         foreach ($this->_cmsTypes as $key => $value) {
+            if($this->_forwardTypes[$value] != "") {
+                continue;
+            }
             $htmlSelectOption = new cHTMLOptionElement($value, $value, false);
             $htmlSelect->addOptionElement($key, $htmlSelectOption);
         }
