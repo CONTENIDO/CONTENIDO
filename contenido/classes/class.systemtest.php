@@ -754,7 +754,7 @@ class cSystemtest {
         );
         try {
             $db = new cDb($aOptions);
-        } catch (Exception $e) {
+        } catch (cDbException $e) {
             return array($db, false);
         }
 
@@ -954,7 +954,7 @@ class cSystemtest {
     }
 
     public function testMySQL($host, $username, $password) {
-        list($handle, $status) = $this->doMySQLConnect($host, $user, $password);
+        list($handle, $status) = $this->doMySQLConnect($host, $username, $password);
 
         $errorMessage = "";
         if ($this->testMySQLiExtension() && !$this->testMySQLExtension()) {

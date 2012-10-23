@@ -85,21 +85,24 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
 
         // Insert or update default system properties
         updateSystemProperties($this->_oDb, $cfg['tab']['system_prop']);
-		
+
 		$this->_oDb->query('SHOW TABLES LIKE "%s"', $cfg["sql"]["sqlprefix"] . "_phplib_auth_user_md5");
 		$oldTable = $this->_oDb->nextRecord();
-		
+
 		$this->_oDb->query('SHOW TABLES LIKE "%s"', $cfg["sql"]["sqlprefix"] . "_user");
 		$newTable = $this->_oDb->nextRecord();
-		
+
 		if ($oldTable === true) {
 			if ($newTable === false) {
+			    //only the old table exists. Rename it.
 				$this->_oDb->query("RENAME TABLE ".$cfg["sql"]["sqlprefix"]."_phplib_auth_user_md5 TO ".$cfg["sql"]["sqlprefix"]."_user");
 			} else {
-				$this->_oDb->query("DROP TABLE ".$cfg["sql"]["sqlprefix"]."_phplib_auth_user_md5");
+			    //the new and the old table exists. We trust the old table more since the new one should've been deleted by the setup. Drop the new one and rename the old one
+				$this->_oDb->query("DROP TABLE ".$cfg["sql"]["sqlprefix"]."_user");
+				$this->_oDb->query("RENAME TABLE ".$cfg["sql"]["sqlprefix"]."_phplib_auth_user_md5 TO ".$cfg["sql"]["sqlprefix"]."_user");
 			}
 		}
-		
+
         // convert passwords to salted ones
         addSalts($this->_oDb);
     }
