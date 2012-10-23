@@ -222,7 +222,7 @@ class cItemCache {
         }
 
         // remove entry
-        if (!isset($this->_aItemsCache[$mId])) {
+        if (isset($this->_aItemsCache[$mId])) {
             unset($this->_aItemsCache[$mId]);
         }
     }
@@ -240,7 +240,7 @@ class cItemCache {
 
         // remove entries
         foreach ($aIds as $mId) {
-            if (!isset($this->_aItemsCache[$mId])) {
+            if (isset($this->_aItemsCache[$mId])) {
                 unset($this->_aItemsCache[$mId]);
             }
         }
