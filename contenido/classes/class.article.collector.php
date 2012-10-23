@@ -12,6 +12,10 @@
  * @link http://www.contenido.org
  */
 
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call: Missing framework initialization - request aborted.');
+}
+
 /**
  * This class contains functions for the article helper in CONTENIDO.
  * The article collector returns you a list of articles, which destination you can choose.
@@ -46,6 +50,12 @@ class cArticleCollector implements SeekableIterator, Countable {
      * @var array
      */
     protected $_articles = array();
+
+    /**
+     * Total paging data.
+     * @var array
+     */
+    protected $_pages = array();
 
     /**
      * Start articles of the requested categories.
@@ -174,7 +184,7 @@ class cArticleCollector implements SeekableIterator, Countable {
         }
 
         $sqlCat = (count($this->_options['categories']) > 0) ? " c.idcat IN ('" . implode("','", $this->_options['categories']) . "') AND b.idart = c.idart AND " : '';
-        $sqlArtSpecs = (count($this->artspecs) > 0) ? " a.artspec IN ('" . implode("','", $this->artspecs) . "') AND " : '';
+        $sqlArtSpecs = (count($this->_options['artspecs']) > 0) ? " a.artspec IN ('" . implode("','", $this->_options['artspecs']) . "') AND " : '';
 
         $sql = "SELECT DISTINCT a.idartlang FROM "
             . $cfg['tab']['art_lang'] . " AS a, "
@@ -242,6 +252,65 @@ class cArticleCollector implements SeekableIterator, Countable {
         }
 
         return false;
+    }
+
+    /**
+     * Compatibility method for old ArticleCollection.
+     * Split the article results into pages of a given size.
+     *
+     * Example:
+     * Article Collection with 5 articles
+     *
+     *   [0] => 250
+     *   [1] => 251
+     *   [2] => 253
+     *   [3] => 254
+     *   [4] => 255
+     *
+     * $collection->setResultPerPage(2)
+     *
+     * Would split the results into 3 pages
+     *
+     * [0] => [0] => 250
+     *        [1] => 251
+     * [1] => [0] => 253
+     *        [1] => 254
+     * [2] => [0] => 255
+     *
+     * A page can be selected with
+     * $collection->setPage(int page)
+     *
+     * @param int $resPerPage
+     * @return  void
+     */
+    public function setResultPerPage($resPerPage) {
+        if ($resPerPage > 0) {
+            if (is_array($this->_articles)) {
+                $this->_pages = array_chunk($this->_articles, $resPerPage);
+            } else {
+                $this->_pages = array();
+            }
+        }
+    }
+
+    /**
+     * Compatibility method for old ArticleCollection.
+     * Select a page if the results was divided before.
+     *
+     * $collection->setResultPerPage(2);
+     * $collection->setPage(1);
+     *
+     * // Iterate through all articles of page two
+     * while ($art = $collection->nextArticle())
+     * { ... }
+     *
+     * @param int $page The page of the article collection
+     * @return  void
+     */
+    public function setPage($page) {
+        if (is_array($this->_pages[$page])) {
+            $this->_articles = $this->_pages[$page];
+        }
     }
 
     /**
