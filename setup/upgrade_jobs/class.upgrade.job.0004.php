@@ -105,7 +105,7 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
                         //do nothing;
                     }
                     $db->query($sSql);
-                    if ($db->Error != 0) {
+                    if ($db->getErrorNumber() != 0) {
                         $bError = false;
                         $this->_logError($sSql . "\nMysql Error:" . $db->getErrorMessage() . "(" . $db->getErrorNumber() . ")");
                     }
@@ -117,7 +117,7 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
         if ($bError && $j == count($aUpl)) {
             $sSql = "ALTER TABLE `" . $cfg['tab']['upl'] . "` DROP `description`";
             $db->query($sSql);
-            if ($db->Error != 0) {
+            if ($db->getErrorNumber() != 0) {
                 $this->_logError($sSql . "\nMysql Error:" . $db->getErrorMessage() . "(" . $db->getErrorNumber() . ")");
             }
         } else {
