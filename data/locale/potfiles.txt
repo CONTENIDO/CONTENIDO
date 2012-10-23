@@ -865,10 +865,8 @@
 ../data/config/production/config.autoloader.php
 ../data/config/production/config.chains.load.php
 ../data/config/production/config.chains.php
-../data/config/production/config.clients.php
 ../data/config/production/config.colors.php
 ../data/config/production/config.http_check.php
 ../data/config/production/config.misc.php
 ../data/config/production/config.path.php
-../data/config/production/config.php
 ../data/config/production/config.templates.php

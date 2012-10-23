@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-23 10:57+0200\n"
+"POT-Creation-Date: 2012-10-23 16:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,7 +43,7 @@ msgstr ""
 
 #: backend_search.php:500
 #: classes/content_types/class.content.type.filelist.php:553
-#: classes/content_types/class.content.type.teaser.php:705
+#: classes/content_types/class.content.type.teaser.php:747
 #: includes/include.con_art_overview.php:75
 #: includes/include.frontend.left_top.php:244 includes/include.mod_new.php:112
 #: includes/include.rights_left_top.php:146
@@ -56,7 +56,7 @@ msgid "Search results"
 msgstr ""
 
 #: backend_search.php:521 classes/class.ajax.php:144
-#: classes/content_types/class.content.type.teaser.php:844
+#: classes/content_types/class.content.type.teaser.php:886
 #: includes/include.con_art_overview.php:71
 #: includes/include.con_subnav.php:114 includes/include.logs.php:284
 #: templates/standard/template.symbolhelp.html:20
@@ -188,7 +188,7 @@ msgid "No data found!"
 msgstr ""
 
 #: classes/class.ajax.php:128
-#: classes/content_types/class.content.type.teaser.php:842
+#: classes/content_types/class.content.type.teaser.php:884
 #: includes/include.con_edit_form.php:511
 #: includes/include.grouprights_con.php:73
 #: includes/include.grouprights_str.php:74 includes/include.logs.php:283
@@ -1059,7 +1059,7 @@ msgid "Directories"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:476
-#: classes/content_types/class.content.type.teaser.php:503
+#: classes/content_types/class.content.type.teaser.php:537
 msgid "General"
 msgstr ""
 
@@ -1071,7 +1071,7 @@ msgid "Filter"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:478
-#: classes/content_types/class.content.type.teaser.php:505
+#: classes/content_types/class.content.type.teaser.php:539
 msgid "Manual"
 msgstr ""
 
@@ -1080,7 +1080,7 @@ msgid "Source directory"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:545
-#: classes/content_types/class.content.type.teaser.php:563
+#: classes/content_types/class.content.type.teaser.php:602
 msgid "General settings"
 msgstr ""
 
@@ -1130,7 +1130,7 @@ msgid "Date modified"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:618
-#: classes/content_types/class.content.type.teaser.php:769
+#: classes/content_types/class.content.type.teaser.php:811
 #: includes/include.frontend.left_top.php:102
 #: includes/include.frontend.user_menu.php:100 includes/include.mod_new.php:53
 #: includes/include.rights_left_top.php:109
@@ -1138,7 +1138,7 @@ msgid "Ascending"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:621
-#: classes/content_types/class.content.type.teaser.php:772
+#: classes/content_types/class.content.type.teaser.php:814
 #: includes/include.frontend.left_top.php:103
 #: includes/include.frontend.user_menu.php:101 includes/include.mod_new.php:53
 #: includes/include.rights_left_top.php:110
@@ -1321,62 +1321,62 @@ msgstr ""
 msgid "Open in a new window"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:498
+#: classes/content_types/class.content.type.teaser.php:532
 msgid "Teaser settings"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:504
+#: classes/content_types/class.content.type.teaser.php:538
 msgid "Advanced"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:564
+#: classes/content_types/class.content.type.teaser.php:603
 msgid "Teaser title"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:566
+#: classes/content_types/class.content.type.teaser.php:605
 msgid "Source category"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:568
+#: classes/content_types/class.content.type.teaser.php:607
 #: includes/include.stat_overview.php:103
 #: includes/include.system_sysvalues.php:115
 msgid "Number of articles"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:570
+#: classes/content_types/class.content.type.teaser.php:609
 msgid "Teaser style"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:572
+#: classes/content_types/class.content.type.teaser.php:611
 msgid "Teaser start article"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:575
+#: classes/content_types/class.content.type.teaser.php:614
 msgid "Source settings"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:576
+#: classes/content_types/class.content.type.teaser.php:615
 msgid "Source headline"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:578
+#: classes/content_types/class.content.type.teaser.php:617
 msgid "Source text"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:580
+#: classes/content_types/class.content.type.teaser.php:619
 msgid "Source image"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:582
+#: classes/content_types/class.content.type.teaser.php:621
 msgid "Source date"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:600
-#: classes/content_types/class.content.type.teaser.php:626
-#: classes/content_types/class.content.type.teaser.php:673
-#: classes/content_types/class.content.type.teaser.php:733
-#: classes/content_types/class.content.type.teaser.php:765
-#: classes/content_types/class.content.type.teaser.php:790
+#: classes/content_types/class.content.type.teaser.php:639
+#: classes/content_types/class.content.type.teaser.php:665
+#: classes/content_types/class.content.type.teaser.php:712
+#: classes/content_types/class.content.type.teaser.php:775
+#: classes/content_types/class.content.type.teaser.php:807
+#: classes/content_types/class.content.type.teaser.php:832
 #: includes/functions.general.php:870 includes/functions.general.php:910
 #: includes/include.CMS_LINK.php:221 includes/include.CMS_LINK.php:243
 #: includes/include.CMS_LINK.php:264 includes/include.CMS_LINK.php:285
@@ -1384,93 +1384,93 @@ msgstr ""
 msgid "Please choose"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:630
+#: classes/content_types/class.content.type.teaser.php:669
 msgid "Block style"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:633
+#: classes/content_types/class.content.type.teaser.php:672
 msgid "Blog style"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:700
+#: classes/content_types/class.content.type.teaser.php:742
 msgid "Advanced teaser settings"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:701
+#: classes/content_types/class.content.type.teaser.php:743
 msgid "Teaser filter"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:703
+#: classes/content_types/class.content.type.teaser.php:745
 msgid "Teaser sort"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:708
+#: classes/content_types/class.content.type.teaser.php:750
 msgid "Size settings"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:709
+#: classes/content_types/class.content.type.teaser.php:751
 msgid "Character length"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:711
+#: classes/content_types/class.content.type.teaser.php:753
 msgid "Image width"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:713
+#: classes/content_types/class.content.type.teaser.php:755
 msgid "Image height"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:715
+#: classes/content_types/class.content.type.teaser.php:757
 msgid "Image scale"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:737
+#: classes/content_types/class.content.type.teaser.php:779
 msgid "Sort sequence"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:740
+#: classes/content_types/class.content.type.teaser.php:782
 #: includes/include.mycontenido_lastarticles.php:176
 msgid "Creation date"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:743
+#: classes/content_types/class.content.type.teaser.php:785
 msgid "Published date"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:746
+#: classes/content_types/class.content.type.teaser.php:788
 msgid "Modification date"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:794
+#: classes/content_types/class.content.type.teaser.php:836
 msgid "Scaled"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:797
+#: classes/content_types/class.content.type.teaser.php:839
 msgid "Cropped"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:817
+#: classes/content_types/class.content.type.teaser.php:859
 msgid "Manual teaser settings"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:818
+#: classes/content_types/class.content.type.teaser.php:860
 msgid "Manual teaser"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:821
+#: classes/content_types/class.content.type.teaser.php:863
 msgid "Included articles"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:834
-#: classes/content_types/class.content.type.teaser.php:870
+#: classes/content_types/class.content.type.teaser.php:876
+#: classes/content_types/class.content.type.teaser.php:912
 msgid "Unknown article"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:841
+#: classes/content_types/class.content.type.teaser.php:883
 msgid "Add article"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:846
+#: classes/content_types/class.content.type.teaser.php:888
 msgid "Add"
 msgstr ""
 
@@ -2140,7 +2140,7 @@ msgstr ""
 #: includes/include.con_art_overview.php:815
 #: includes/include.grouprights.php:120
 #: includes/include.grouprights_left_top.php:51
-#: includes/include.rights.php:127 includes/include.rights_left_top.php:67
+#: includes/include.rights.php:129 includes/include.rights_left_top.php:67
 msgid "All"
 msgstr ""
 
@@ -3335,19 +3335,19 @@ msgstr ""
 msgid "Last modified by"
 msgstr ""
 
-#: includes/include.grouprights.php:122 includes/include.rights.php:129
+#: includes/include.grouprights.php:122 includes/include.rights.php:131
 msgid "Article rights"
 msgstr ""
 
-#: includes/include.grouprights.php:124 includes/include.rights.php:131
+#: includes/include.grouprights.php:124 includes/include.rights.php:133
 msgid "Category rights"
 msgstr ""
 
-#: includes/include.grouprights.php:126 includes/include.rights.php:133
+#: includes/include.grouprights.php:126 includes/include.rights.php:135
 msgid "Template rights"
 msgstr ""
 
-#: includes/include.grouprights.php:128 includes/include.rights.php:135
+#: includes/include.grouprights.php:128 includes/include.rights.php:137
 msgid "Plugin/Other rights"
 msgstr ""
 
@@ -4163,7 +4163,10 @@ msgid "Current size"
 msgstr ""
 
 #: includes/include.mycontenido.php:97
-msgid "The folder located at "
+#, php-format
+msgid ""
+"The folder located at %s contains data but it's no longer needed. You can "
+"delete it."
 msgstr ""
 
 #: includes/include.mycontenido.php:103
@@ -4413,20 +4416,20 @@ msgstr ""
 msgid "Template preconfiguration"
 msgstr ""
 
-#: includes/include.rights.php:201
+#: includes/include.rights.php:203
 msgid ""
 "The selected user is a system administrator. A system administrator has all "
 "rights for all clients for all languages and therefore rights can't be "
 "specified in more detail."
 msgstr ""
 
-#: includes/include.rights.php:204
+#: includes/include.rights.php:206
 msgid ""
 "The selected user is assigned to clients as admin, only. An admin has all "
 "rights for a client and therefore rights can't be specified in more detail."
 msgstr ""
 
-#: includes/include.rights.php:206
+#: includes/include.rights.php:208
 msgid "Current user doesn't have any rights to any client/language."
 msgstr ""
 

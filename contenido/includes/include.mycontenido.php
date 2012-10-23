@@ -94,7 +94,7 @@ foreach($foldersToCheck as $folder) {
 }
 foreach($faultyFolders as $folder) {
     if(in_array("sysadmin", explode(",", $vuser->getEffectiveUserPerms()))) {
-        $page->displayWarning(i18n("The folder located at ".$folder." contains data but it's no longer needed. You can delete it."));
+        $page->displayWarning(sprintf(i18n("The folder located at %s contains data but it's no longer needed. You can delete it."), $folder));
     }
 }
 
