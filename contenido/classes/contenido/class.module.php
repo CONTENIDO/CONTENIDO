@@ -250,6 +250,9 @@ class cApiModule extends Item {
         // Initialize array
         $strings = array();
 
+		// change the code to ignore parameters from the formated string
+        $code = str_replace("\"", "\")", $code);
+
         // Split the code into mi18n chunks
         $varr = preg_split('/mi18n([\s]*)\(([\s]*)"/', $code, -1);
 
@@ -333,6 +336,9 @@ class cApiModule extends Item {
 
         // Initialize array
         $strings = array();
+
+		// change the code to ignore parameters from the formated string
+        $code = str_replace("\"", "\")", $code);
 
         // Split the code into mi18n chunks
         $varr = preg_split('/mi18n([\s]*)\(([\s]*)"/', $code, -1);
