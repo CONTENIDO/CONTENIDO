@@ -69,6 +69,13 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             );
 
     /**
+     * Placeholders for labels in frontend.
+     * Important: This must be a static array!
+     * @var        array
+     */
+    protected static $_translations = array("MORE");
+
+    /**
      * Initialises class attributes and handles store events.
      *
      * @param string $rawSettings the raw settings in an XML structure or as
@@ -109,9 +116,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             'teaser_source_date',
             'teaser_source_date_count'
         );
-        self::$_translations = array(
-            'MORE' => 'mehr'
-        );
+
         parent::__construct($rawSettings, $id, $contentTypes);
 
         // if form is submitted, store the current teaser settings
@@ -122,6 +127,20 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         }
 
         $this->_setDefaultValues();
+    }
+
+    /**
+     * Returns all translation strings for mi18n.
+     *
+     * @param array $translationStrings translation strings
+     * @return array updated translation string
+     */
+    public static function addModuleTranslations(array $translationStrings) {
+        foreach (self::$_translations as $value) {
+            $translationStrings[] = $value;
+        }
+
+        return $translationStrings;
     }
 
     /**
@@ -351,7 +370,6 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             $template->set('d', 'ART_URL', 'front_content.php?idart=' . $idArt);
             $template->set('d', 'PUBLISHED', $published);
             $template->set('d', 'PUBLISHED_MANUAL', $date);
-            $template->set('d', 'MORE', self::$_translations['MORE']);
 
             if ($date != '') {
                 $template->set('d', 'PUBLISHED_COMBINED', $date);
@@ -359,8 +377,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                 $template->set('d', 'PUBLISHED_COMBINED', $published);
             }
 
-            foreach (self::$_translations as $sKey => $sValue) {
-                $template->set('d', $sKey, mi18n($sValue));
+            foreach (self::$_translations as $translationString) {
+                $template->set('d', $translationString, mi18n($translationString));
             }
 
             $template->next();

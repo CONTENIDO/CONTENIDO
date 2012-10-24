@@ -71,6 +71,13 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     );
 
     /**
+     * Placeholders for labels in frontend.
+     * Important: This must be a static array!
+     * @var        array
+     */
+    protected static $_translations = array("LABEL_FILESIZE", "LABEL_UPLOAD_DATE");
+
+    /**
      * Initialises class attributes and handles store events.
      *
      * @param string $rawSettings the raw settings in an XML structure or as
@@ -102,10 +109,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             'filelist_manual_files',
             'filelist_filecount'
         );
-        self::$_translations = array(
-            'LABEL_FILESIZE' => 'Dateigr&ouml;&szlig;e',
-            'LABEL_UPLOAD_DATE' => 'Hochgeladen am'
-        );
+
         parent::__construct($rawSettings, $id, $contentTypes);
 
         // dynamically add form fields based on the meta data identifiers
@@ -139,6 +143,20 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             }
             $this->_storeSettings();
         }
+    }
+
+    /**
+     * Returns all translation strings for mi18n.
+     *
+     * @param array $translationStrings translation strings
+     * @return array updated translation string
+     */
+    public static function addModuleTranslations(array $translationStrings) {
+        foreach (self::$_translations as $value) {
+            $translationStrings[] = $value;
+        }
+
+        return $translationStrings;
     }
 
     /**
@@ -411,8 +429,9 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $template->set('d', 'FILEMODIFYDATE', date('d.m.Y', $fileData['filemodifydate']));
         $template->set('d', 'FILEDIRECTORY', $directoryName);
         $template->set('d', 'FILELINK', $fileLink);
-        foreach (self::$_translations as $sKey => $sValue) {
-            $template->set('d', $sKey, mi18n($sValue));
+
+        foreach (self::$_translations as $translationString) {
+            $template->set('d', $translationString, mi18n($translationString));
         }
 
         $template->next();

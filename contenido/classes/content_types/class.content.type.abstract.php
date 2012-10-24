@@ -144,15 +144,6 @@ abstract class cContentTypeAbstract {
     protected $_uploadPath;
 
     /**
-     * Content type specific translations.
-     * Important: This must be a static
-     * array!
-     *
-     * @var array
-     */
-    protected static $_translations = array();
-
-    /**
      * The raw settings from the DB.
      *
      * @var string
@@ -262,20 +253,6 @@ abstract class cContentTypeAbstract {
         }
         // store new settings in the database
         conSaveContentEntry($this->_idArtLang, $this->_type, $this->_id, $settingsToStore);
-    }
-
-    /**
-     * Returns all translation strings for mi18n.
-     *
-     * @param array $translationStrings translation strings
-     * @return array updated translation string
-     */
-    public static function addModuleTranslations(array $translationStrings) {
-        foreach (self::$_translations as $value) {
-            $translationStrings[] = $value;
-        }
-
-        return $translationStrings;
     }
 
     /**

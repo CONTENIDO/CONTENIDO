@@ -292,21 +292,19 @@ class cApiModule extends Item {
         if (is_array($cfg['translatable_content_types']) && count($cfg['translatable_content_types']) > 0) {
             // iterate over all defines cms content types
             foreach ($cfg['translatable_content_types'] as $sContentType) {
-                // check if the content type exists and include his class file
-                if (file_exists($cfg['contenido']['path'] . 'classes/class.' . strtolower($sContentType) . '.php')) {
-                    cInclude('classes', 'class.' . strtolower($sContentType) . '.php');
-                    // if the class exists, has the method
-                    // 'addModuleTranslations'
-                    // and the current module contains this cms content type we
-                    // add the additional translations for the module
-                    if (class_exists($sContentType) && method_exists($sContentType, 'addModuleTranslations') && preg_match('/' . strtoupper($sContentType) . '\[\d+\]/', $code)) {
+                $contentTypeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $sContentType)));
 
-                        $strings = call_user_func(array(
-                            $sContentType,
-                            'addModuleTranslations'
-                        ), $strings);
-                    }
+                // if the class exists, has the method
+                // 'addModuleTranslations'
+                // and the current module contains this cms content type we
+                // add the additional translations for the module
+                if (class_exists($contentTypeClassName) && method_exists($contentTypeClassName, 'addModuleTranslations') && preg_match('/' . strtoupper($sContentType) . '\[\d+\]/', $code)) {
+                    $strings = call_user_func(array(
+                        $contentTypeClassName,
+                        'addModuleTranslations'
+                    ), $strings);
                 }
+
             }
         }
 
@@ -379,21 +377,19 @@ class cApiModule extends Item {
         if (is_array($cfg['translatable_content_types']) && count($cfg['translatable_content_types']) > 0) {
             // iterate over all defines cms content types
             foreach ($cfg['translatable_content_types'] as $sContentType) {
-                // check if the content type exists and include his class file
-                if (cFileHandler::exists($cfg['contenido']['path'] . 'classes/class.' . strtolower($sContentType) . '.php')) {
-                    cInclude('classes', 'class.' . strtolower($sContentType) . '.php');
-                    // if the class exists, has the method
-                    // 'addModuleTranslations'
-                    // and the current module contains this cms content type we
-                    // add the additional translations for the module
-                    if (class_exists($sContentType) && method_exists($sContentType, 'addModuleTranslations') && preg_match('/' . strtoupper($sContentType) . '\[\d+\]/', $code)) {
+                $contentTypeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $sContentType)));
 
-                        $strings = call_user_func(array(
-                            $sContentType,
-                            'addModuleTranslations'
-                        ), $strings);
-                    }
+                // if the class exists, has the method
+                // 'addModuleTranslations'
+                // and the current module contains this cms content type we
+                // add the additional translations for the module
+                if (class_exists($contentTypeClassName) && method_exists($contentTypeClassName, 'addModuleTranslations') && preg_match('/' . strtoupper($sContentType) . '\[\d+\]/', $code)) {
+                    $strings = call_user_func(array(
+                        $contentTypeClassName,
+                        'addModuleTranslations'
+                    ), $strings);
                 }
+
             }
         }
 
