@@ -290,6 +290,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         }
 
         $artlist = array();
+        $colitem = array();
         $articlesOnline = 0;
         $articlesOffline = 0;
         $articlesLocked = 0;
@@ -352,9 +353,15 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $alttitle = sprintf(i18n("Article in use by %s (%s)"), $inUseUser, $inUseUserRealName) . " " . $alttitle;
             }
 
+
+
             // Id of the row, stores informations about the article and category
             $tmp_rowid = $idart . "-" . $idartlang . "-" . $lidcat . "-" . $idcatlang . "-" . $idcatart . "-" . $idlang;
             $tpl->set('d', 'ROWID', $tmp_rowid);
+
+            if ($idlang != $lang) {
+                $colitem[$tmp_rowid] = 'con_sync';
+            }
 
             // Article Title
             if ($perm->have_perm_area_action('con_editcontent', 'con_editart') ||
@@ -800,6 +807,12 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     }
                 }
                 $tpl->set('d', 'CELLS', implode("\n", $cells));
+
+                if ($colitem[$key2] == 'con_sync') {
+                    $tpl->set('d', 'CSS_CLASS', 'class="con_sync"');
+                } else {
+                    $tpl->set('d', 'CSS_CLASS', '');
+                }
 
                 $tpl->set('d', 'ROWID', $key2);
                 $tpl->next();
