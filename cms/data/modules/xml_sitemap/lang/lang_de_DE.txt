@@ -1,4 +1,4 @@
 XML sitemap successfully written to %s=XML Sitemap erfolgreich geschrieben in 
-XML sitemap could not be written to %s=XML sitemap konnte nicht geschrieben werden in 
+XML sitemap could not be written to %s=XML Sitemap konnte nicht geschrieben werden in 
 CHOOSE_TREE:=Baum wählen
-TXT_ENTER_FILENAME:=Enter filename (optional)
+TXT_ENTER_FILENAME:=Bitte geben Sie den Dateinamen ein:

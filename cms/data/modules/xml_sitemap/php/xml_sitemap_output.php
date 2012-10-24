@@ -120,12 +120,9 @@ function saveSitemap(SimpleXMLElement $sitemap, $filename = '') {
         $shortFilename = $cfgClient[$client]['sitemap']['frontendpath'] . $filename;
         $success = $sitemap->asXML($filename);
         if ($success) {
-            $transString = mi18n("XML sitemap successfully written to %s");
-            $transString = str_replace('$$$', $filename, $transString);
-            echo $transString;
+            $transString = mi18n("XML sitemap successfully written to %s", $filename);
         } else {
-            $transString = mi18n("XML sitemap could not be written to %s");
-            $transString = str_replace('$$$', $shortFilename, $transString);
+            $transString = mi18n("XML sitemap could not be written to %s", $shortFilename);
         }
     }
 }
