@@ -1027,6 +1027,11 @@ function isRunningFromWeb() {
 function scanPlugins($entity) {
     global $cfg;
 
+    $basedir = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $entity . '/';
+    if (is_dir($basedir) === false) {
+        return;
+    }
+
     $pluginorder = getSystemProperty('plugin', $entity . '-pluginorder');
     $lastscantime = getSystemProperty('plugin', $entity . '-lastscantime');
 
@@ -1040,10 +1045,10 @@ function scanPlugins($entity) {
         }
     }
 
-    $basedir = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $entity . '/';
 
-    // Don't scan all the time, but each 60 seconds
-    if ($lastscantime + 60 < time()) {
+
+    // Don't scan all the time, but each 5 minutes
+    if ($lastscantime + 300 < time()) {
         setSystemProperty('plugin', $entity . '-lastscantime', time());
 
         $dh = opendir($basedir);

@@ -59,3 +59,8 @@ foreach ($plugins as $pluginName) {
 		include_once($pluginConfigFile);
 	}
 }
+
+// Load legacy plugins frontendusers and frontendlogic
+// They remain in old sub plugins logic for now
+scanPlugins("frontendusers");
+scanPlugins("frontendlogic");
