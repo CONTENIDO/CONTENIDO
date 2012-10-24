@@ -91,7 +91,7 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
     $tempXml = simplexml_load_string($setup->getTempXml());
 
     // check min CONTENIDO version
-    if (!empty($tempXml->general->min_contenido_version) && version_compare($cfg['version'], $tempXml->general->min_contenido_version, '<')) {
+    if ($tempXml->general->min_contenido_version != '' && version_compare($cfg['version'], $tempXml->general->min_contenido_version, '<')) {
 
         if ($isExtracted === false) {
             $extractor->destroyTempFiles();
@@ -106,7 +106,7 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
     }
 
     // check max CONTENIDO version
-    if (!empty($tempXml->general->max_contenido_version) && version_compare($cfg['version'], $tempXml->general->max_contenido_version, '>')) {
+    if ($tempXml->general->max_contenido_version != '' && version_compare($cfg['version'], $tempXml->general->max_contenido_version, '>')) {
 
         if ($isExtracted === false) {
             $extractor->destroyTempFiles();
