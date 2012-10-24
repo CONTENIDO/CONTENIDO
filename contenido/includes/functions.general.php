@@ -275,42 +275,34 @@ function getParentAreaId($area)
  */
 function markSubMenuItem($menuitem, $return = false)
 {
+    $str = '
+    <script type="text/javascript">
+    (function(id){
+        var menuItem;
 
-	$str = '<script type="text/javascript">
+        try {
+            // Check if we are in a dual-frame or a quad-frame
+            if (parent.parent.frames[0].name == "header") {
+                if (parent.frames["right_top"].document.getElementById(id)) {
+                    menuItem = parent.frames["right_top"].document.getElementById(id).getElementsByTagName("a")[0];
+                    parent.frames["right_top"].sub.clicked(menuItem);
+                }
+            } else {
+                // Check if submenuItem is existing and mark it
+                if (parent.parent.frames["right"].frames["right_top"].document.getElementById(id)) {
+                    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById(id).getElementsByTagName("a")[0];
+                    parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem);
+                }
+            }
+        } catch (e) {}
+    })("c_' . $menuitem . '");
+    </script>';
 
-			try {
-			/* Check if we are in a dual-frame or a quad-frame */
-			if ( parent.parent.frames[0].name == "header")
-			{
-	    		if ( parent.frames["right_top"].document.getElementById("c_'.$menuitem.'") ) {
-	                menuItem = parent.frames["right_top"].document.getElementById("c_'.$menuitem.'").getElementsByTagName(\'a\')[0];
-	                parent.frames["right_top"].sub.clicked(menuItem);
-	            }
-			} else {
-	        /* Check if submenuItem is existing
-	           and mark it */
-
-
-	            if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_'.$menuitem.'") ) {
-	                menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_'.$menuitem.'").getElementsByTagName(\'a\')[0];
-
-	                parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem);
-	            }
-
-			}
-			} catch (e)
-			{}
-	    </script>';
-
-	if ($return)
-	{
-		return $str;
-
-	} else
-	{
-		echo $str;
-
-	}
+    if ($return) {
+        return $str;
+    } else {
+        echo $str;
+    }
 }
 
 /**
