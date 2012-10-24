@@ -56,9 +56,6 @@ if (empty($_GET['action'])) {
 plugin_include('linkchecker', 'includes/config.plugin.php');
 plugin_include('linkchecker', 'includes/include.checkperms.php');
 plugin_include('linkchecker', 'includes/include.linkchecker_tests.php');
-cInclude('pear', 'PEAR.php');
-cInclude('pear', 'Cache/Lite.php');
-
 
 // Initialization
 $actionID = 500;
@@ -94,7 +91,7 @@ $tpl->set('s', 'UPDATE_HREF', $sLink . intval($_GET['mode']) . '&live=1');
 
 // Cache options
 $aCacheName = array('errors' => $sess->id, 'errorscount' => $aCacheName['errors'] . "ErrorsCountChecked");
-$oCache = new Cache_Lite(array('cacheDir' => $cfgClient[$client]['cache']['path'], 'caching' => true, 'lifeTime' => 1209600, 'automaticCleaningFactor' => 1));
+$oCache = new cFileCache(array('cacheDir' => $cfgClient[$client]['cache']['path'], 'lifeTime' => 1209600));
 
 /* * ********
   Program code

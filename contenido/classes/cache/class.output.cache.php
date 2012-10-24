@@ -1,53 +1,34 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the output cache classes.
  *
- * Description:
- *
- * Requirements:
- * @con_php_req 5
- *
- * @package    CONTENIDO Frontend
+ * @package Core
  * @subpackage Cache
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
  *
- *
- * @class      cOutputCache
- * @brief      Class cOutputCache. Handles the "PEAR Cache Output" functionality.
- * @file       class.concache.php
- * @version    0.9
- * @date       2006-07-07
- *
- * {@internal
- *   created  2006-07-07
- *   modified 2008-07-03, bilal arslan, added security fix
- *
- *   $Id$:
- * }}
- *
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
+    die('Illegal call: Missing framework initialization - request aborted.');
 }
 
 /**
- * @package    CONTENIDO Frontend
+ * This class contains functions for the output cache in CONTENIDO.
+ *
+ * @package Core
  * @subpackage Cache
  */
-class cOutputCache
-{
+class cOutputCache {
 
     /**
-     * PEAR Cache Output Object
-     * @var obj $_oPearCache
+     * File Cache Object
+     * @var cFileCache $_fileCache
      */
-    protected $_oPearCache;
+    protected $_fileCache;
 
     /**
      * Flag 2 activate caching.
@@ -116,7 +97,7 @@ class cOutputCache
      * Substring 2 add as prefix to cache-filename.
      * @var string $_sPrefix
      */
-    protected $_sPrefix = 'cache_';
+    protected $_sPrefix = 'cache_output_';
 
     /**
      * Default lifetime of cached files.
@@ -173,13 +154,13 @@ VALID UNTIL: %s
         }
 
         // config options are passed to the cache as an array
-        $this->_aCacheOptions = array('cache_dir' => $this->_sDir, 'filename_prefix' => $this->_sPrefix);
+        $this->_aCacheOptions = array('cacheDir' => $this->_sDir, 'fileNamePrefix' => $this->_sPrefix);
     }
 
     /**
      * Set/Get the flag 2 enable caching.
      *
-     * @param    bool   $enable   True 2 enable chaching or false
+     * @param    bool   $enable   True 2 enable caching or false
      * @return   mixed            Enable flag or void
      */
     public function enable($enable = null)
@@ -273,6 +254,27 @@ VALID UNTIL: %s
     }
 
     /**
+     * Starts the cache process.
+     * @return bool|string
+     */
+    protected function _start() {
+        $id = $this->_sID;
+        $group = $this->_sGroup;
+
+        // this is already cached return it from the cache so that the user
+        // can use the cache content and stop script execution
+        if ($content = $this->_fileCache->get($id, $group)) {
+            return $content;
+        }
+
+        // WARNING: we need the output buffer - possible clashes
+        ob_start();
+        ob_implicit_flush(false);
+
+        return '';
+    }
+
+    /**
      * Handles PEAR caching. The script will be terminated by calling die(), if any cached
      * content is found.
      *
@@ -288,18 +290,17 @@ VALID UNTIL: %s
         $this->_iStartTime = $this->_getMicroTime();
 
         // set cache object and unique id
-        $this->_initPEARCache();
+        $this->_initFileCache();
 
-        // check if it's cached and start the output buffering if neccessary
-        if ($content = $this->_oPearCache->start($this->_sID, $this->_sGroup)) {
-
+        // check if it's cached and start the output buffering if necessary
+        if ($content = $this->_start()) {
             //raise beforeoutput event
             $this->_raiseEvent('beforeoutput');
 
             $iEndTime = $this->_getMicroTime();
             if ($this->_bHtmlComment) {
                 $time     = sprintf("%2.4f", $iEndTime - $this->_iStartTime);
-                $exp      = date('Y-m-d H:i:s', $this->_oPearCache->container->expires);
+                $exp      = ($this->_iLifetime == 0 ? 'infinite' : date('Y-m-d H:i:s', time() + $this->_iLifetime));
                 $content .= sprintf($this->_sHtmlCommentTpl, 'HIT', $time.' sec.', $exp);
                 if ($iPageStartTime != null && is_numeric($iPageStartTime)) {
                     $content .= '<!-- ['.sprintf("%2.4f", $iEndTime - $iPageStartTime).'] -->';
@@ -332,8 +333,12 @@ VALID UNTIL: %s
             return;
         }
 
-        // this might go into your auto_append file. store the data into the cache, default lifetime is set in $this->_iLifetime
-        $this->_oPearCache->endPrint($this->_iLifetime, __FILE__ . ' ' . filemtime(__FILE__));
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        $this->_fileCache->save($content, $this->_sID, $this->_sGroup);
+
+        echo $content;
 
         if ($this->_bDebug) {
             $this->_sDebugMsg .= "\n".sprintf("MISS: %2.4f sec.\n", $this->_getMicroTime() - $this->_iStartTime);
@@ -350,11 +355,8 @@ VALID UNTIL: %s
     public function removeFromCache()
     {
         // set cache object and unique id
-        $this->_initPEARCache();
-        $bExists = $this->_oPearCache->isCached($this->_sID, $this->_sGroup);
-        if ($bExists) {
-            $this->_oPearCache->remove($this->_sID, $this->_sGroup);
-        }
+        $this->_initFileCache();
+        $this->_fileCache->remove($this->_sID, $this->_sGroup);
     }
 
     /**
@@ -363,18 +365,17 @@ VALID UNTIL: %s
      *
      * @return   void
      */
-    protected function _initPEARCache()
+    protected function _initFileCache()
     {
-        if (is_object($this->_oPearCache)) {
+        if (is_object($this->_fileCache)) {
             return;
         }
 
         // create a output cache object mode - file storage
-        cInclude('pear', 'Cache/Output.php');
-        $this->_oPearCache = new Cache_Output('file', $this->_aCacheOptions);
+        $this->_fileCache = new cFileCache($this->_aCacheOptions);
 
-        // generate an ID from whatever might influence the script behavoiur
-        $this->_sID = $this->_oPearCache->generateID($this->_aIDOptions);
+        // generate an ID from whatever might influence the script behaviour
+        $this->_sID = $this->_fileCache->generateID($this->_aIDOptions);
     }
 
     /**
@@ -410,16 +411,11 @@ VALID UNTIL: %s
 
 }
 
-
 /**
- * Class cOutputCacheHandler. This is used to set configuration and to manage caching output.
+ * This class contains functions for the output cache handler in CONTENIDO.
  *
- * @package    CONTENIDO Frontend
+ * @package Core
  * @subpackage Cache
- * @version    0.9
- * @date       07.07.2006
- * @author     Murat Purc <murat@purc.de>
- * @copyright  © Murat Purc 2006
  */
 class cOutputCacheHandler extends cOutputCache
 {
@@ -444,7 +440,7 @@ class cOutputCacheHandler extends cOutputCache
      * @param   cDb  $db       CONTENIDO database object
      * @param   int      $iCreateCode   Flag of createcode state from table con_cat_art
      */
-    public function cOutputCacheHandler($aConf, $db, $iCreateCode = null)
+    public function __construct($aConf, $db, $iCreateCode = null)
     {
         // check if caching is allowed on CONTENIDO variable
         if ($aConf['excludecontenido'] == true) {
@@ -477,7 +473,7 @@ class cOutputCacheHandler extends cOutputCache
         $this->_oDB = $db;
 
         // set caching configuration
-        parent::cOutputCache($aConf['cachedir'], $aConf['cachegroup']);
+        parent::__construct($aConf['cachedir'], $aConf['cachegroup']);
         $this->debug($aConf['debug']);
         $this->htmlComment($aConf['htmlcomment']);
         $this->lifetime($aConf['lifetime']);
