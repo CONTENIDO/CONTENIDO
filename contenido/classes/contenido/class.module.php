@@ -419,7 +419,7 @@ class cApiModule extends Item {
                 ORDER BY t.name";
         $db->query($sql);
 
-        if ($db->nf() == 0) {
+        if ($db->numRows() == 0) {
             return false;
         } else {
             $i = 0;
