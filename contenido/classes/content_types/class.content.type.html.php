@@ -79,7 +79,8 @@ class cContentTypeHtml extends cContentTypeAbstract {
         $wysiwygDiv->setEvent('Blur', "this.style.border='1px dashed #bfbfbf';");
         $wysiwygDiv->appendStyleDefinitions(array(
             'border' => '1px dashed #bfbfbf',
-            'direction' => langGetTextDirection($this->_lang)
+            'direction' => langGetTextDirection($this->_lang),
+			'min-height' => '20px'
         ));
         $wysiwygDiv->updateAttribute('contentEditable', 'true');
         $wysiwygDiv->setContent($this->_rawSettings);
