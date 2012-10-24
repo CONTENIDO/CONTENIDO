@@ -100,7 +100,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
         // Convert URLs and Relative URLs default
         $this->_setSetting("convert_urls", true);
-        $this->_setSetting("relative_urls", true);
+        $this->_setSetting("relative_urls", false);
 
         // Editor name (a comma spearated list of instances)
         $this->_setSetting("elements", $sEditorName);
