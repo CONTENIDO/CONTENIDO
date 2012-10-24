@@ -41,6 +41,7 @@ return array(
     'Auth' => 'contenido/classes/auth/class.auth.php',
     'cOutputCache' => 'contenido/classes/cache/class.output.cache.php',
     'cOutputCacheHandler' => 'contenido/classes/cache/class.output.cache.php',
+	'cFileCache' => 'contenido/classes/cache/class.file.cache.php',
     'cAjaxRequest' => 'contenido/classes/class.ajax.php',
     'Ajax' => 'contenido/classes/class.ajax.php',
     'cArray' => 'contenido/classes/class.array.php',
