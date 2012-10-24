@@ -427,7 +427,7 @@ $where = "";
 $bNoCriteria = true;
 
 // Article ID
-if (!is_null($iSearchID)) {
+if ($iSearchID > 0) {
     $where.= " AND (a.idart = ".cSecurity::toInteger($iSearchID).")";
     $bNoCriteria = false;
 }
