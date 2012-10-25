@@ -56,7 +56,7 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient) {
  */
 function piUsConSaveArtAfter($values) {
     // if not all parameters have been given, do nothing
-    if (!isset($_POST['url_shortener_shorturl']) || !isset($values['idart'])) {
+    if (!isset($_POST['url_shortener_shorturl']) || $_POST['url_shortener_shorturl'] == '' || !isset($values['idart'])) {
         return;
     }
     $shorturl = $_POST['url_shortener_shorturl'];
