@@ -746,7 +746,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         }
 
         // set default values
-        $htmlSelect->setSelected($this->_settings['filelist_extensions']);
+		$extensions = (is_array($this->_settings['filelist_extensions'])) ? $this->_settings['filelist_extensions'] : array();
+        $htmlSelect->setSelected($extensions);
         $htmlSelect->setMultiselect();
         $htmlSelect->setSize(5);
 
