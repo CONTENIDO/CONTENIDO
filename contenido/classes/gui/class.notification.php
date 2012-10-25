@@ -163,7 +163,7 @@ class cGuiNotification {
                 break;
         }
 
-        $sNoti = '<div id="contenido_notification" style="position:relative;left:0;top:0;z-index:10;">';
+        $sNoti = '<div id="contenido_notification" style="position:relative;left:0;top:0;z-index:0;">';
         $sNoti .= $oNotifySpan->toHTML();
         $sNoti .= '</div>';
 
