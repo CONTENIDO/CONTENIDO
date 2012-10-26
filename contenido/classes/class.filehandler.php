@@ -1,13 +1,8 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * Class for file handling. This class should never be instantiated
- *
- * Requirements:
- * @con_php_req 5.0
+ * Project: CONTENIDO Content Management System Description: Class for file
+ * handling. This class should never be instantiated Requirements: @con_php_req
+ * 5.0
  *
  *
  * @package CONTENIDO Backend Classes
@@ -52,7 +47,7 @@ class cFileHandler {
      * @param int $length the number of bytes to read. Optional.
      * @param int $offset this will be the first byte which is read. Optional.
      * @param bool $reverse if true, the function will start from the back of
-     *        the file. Optional.
+     *            the file. Optional.
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
      * @return string bool success it returns the bytes which have been read.
@@ -82,7 +77,7 @@ class cFileHandler {
      * @param string $filename the name and path of the file
      * @param int $lines the number of lines to be read. Optional.
      * @param int $lineoffset this will be the first line which is read.
-     *        Optional.
+     *            Optional.
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
      * @return string array bool one line was read the function will return it.
@@ -134,7 +129,7 @@ class cFileHandler {
      * @param string $filename the name and path of the file
      * @param string $content the data which should be written
      * @param bool $append if true the data will be appended to the file.
-     *        Optional.
+     *            Optional.
      * @return bool true on success, false otherwise
      */
     public static function write($filename, $content, $append = false) {
@@ -241,7 +236,7 @@ class cFileHandler {
      *
      * @param string $filename the name of the source file
      * @param string $destination the destination. Note that the file can also
-     *        be renamed in the process of moving it
+     *            be renamed in the process of moving it
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
      * @return bool true on success
@@ -284,7 +279,7 @@ class cFileHandler {
      *
      * @param string $filename the name and path of the file
      * @param string $destination the destination. Note that existing files get
-     *        overwritten
+     *            overwritten
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
      * @return bool true on success
@@ -319,16 +314,13 @@ class cFileHandler {
     }
 
     /**
-     * Returns an array containing information about the file.
-     *
-     * Currently following elements are in it:
-     * 'size' - the file size (in byte)
-     * 'atime' - the time the file was last accessed (unix timestamp)
-     * 'ctime' - time the file was created (unix timestamp)
-     * 'mtime' - time the file was last modified (unix timestamp)
-     * 'perms' - permissions of the file represented in 4 octal digits
-     * 'extension' - the file extension or '' if there's no extension
-     * 'mime' - the mime type of the file
+     * Returns an array containing information about the file. Currently
+     * following elements are in it: 'size' - the file size (in byte) 'atime' -
+     * the time the file was last accessed (unix timestamp) 'ctime' - time the
+     * file was created (unix timestamp) 'mtime' - time the file was last
+     * modified (unix timestamp) 'perms' - permissions of the file represented
+     * in 4 octal digits 'extension' - the file extension or '' if there's no
+     * extension 'mime' - the mime type of the file
      *
      * @param string $filename the name and path to the file
      * @throws cInvalidArgumentException if the file with the given filename
@@ -419,7 +411,7 @@ class cFileHandler {
      *
      * @param string $filename the filename to validate
      * @param boolean $notifyAndExitOnFailure if set, function will show a
-     *        notification and will exit the script
+     *            notification and will exit the script
      * @return boolean true if the given filename is valid, false otherwise
      */
     public static function validateFilename($filename, $notifyAndExitOnFailure = true) {
@@ -463,16 +455,19 @@ class cFileHandler {
         if (substr($dirname, -1) !== '/') {
             $dirname .= '/';
         }
-		
-		foreach (new DirectoryIterator($dirname) as $file) {
-			if (is_dir($file)) {
-                self::recursiveRmdir($file);
-            } else {
-                unlink($file);
+
+        foreach (new DirectoryIterator($dirname) as $file) {
+
+            if ($file != "." && $file != "..") {
+
+                $file = $dirname . $file;
+                if (is_dir($file)) {
+                    self::recursiveRmdir($file);
+                } else {
+                    unlink($file);
+                }
             }
-			
-			$files[] = $file->getFilename();
-		}
+        }
 
         return rmdir($dirname);
     }
