@@ -4,7 +4,7 @@
         <plugin_name>Cronjobs Overview</plugin_name>
         <plugin_foldername>cronjobs_overview</plugin_foldername>
         <uuid>5AD0160D-EC51-9481-C9AB-A89319B55057</uuid>
-        <description>URL Shortener Plugin for CONTENIDO</description>
+        <description>Managed cronjobs at backend</description>
         <author>Rusmir Jusufovic</author>
         <copyright>four for business AG</copyright>
         <mail>info@4fb.de</mail>
