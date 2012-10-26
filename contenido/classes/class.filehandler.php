@@ -463,14 +463,16 @@ class cFileHandler {
         if (substr($dirname, -1) !== '/') {
             $dirname .= '/';
         }
-        // recursively remove all directories and files
-        foreach (glob($dirname . '*') as $file) {
-            if (is_dir($file)) {
+		
+		foreach (new DirectoryIterator($dirname) as $file) {
+			if (is_dir($file)) {
                 self::recursiveRmdir($file);
             } else {
                 unlink($file);
             }
-        }
+			
+			$files[] = $file->getFilename();
+		}
 
         return rmdir($dirname);
     }
