@@ -142,7 +142,7 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
     $setup->install($tempXml);
 
     // success message
-    $page->displayInfo(i18n('The plugin has been successfully installed', 'pim'));
+    $page->displayInfo(i18n('The plugin has been successfully installed. To apply the changes please login into backend again.', 'pim'));
 
     if ($isExtracted === false) {
 

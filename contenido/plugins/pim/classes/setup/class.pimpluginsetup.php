@@ -399,7 +399,7 @@ class PimPluginSetup {
 
         // success message
         if ($page instanceof cGuiPage) {
-            $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been successfully uninstalled', 'pim'));
+            $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been successfully uninstalled. To apply the changes please login into backend again.', 'pim'));
         }
     }
 

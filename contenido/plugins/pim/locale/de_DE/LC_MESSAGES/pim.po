@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-22 15:45+0100\n"
-"PO-Revision-Date: 2012-10-22 15:45+0100\n"
+"POT-Creation-Date: 2012-10-26 10:17+0100\n"
+"PO-Revision-Date: 2012-10-26 10:17+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "MIME-Version: 1.0\n"
@@ -20,8 +20,9 @@ msgid "The plugin <strong>"
 msgstr "Das Plugin <strong>"
 
 #: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:402
-msgid "</strong> has been successfully uninstalled"
-msgstr "</strong> wurde erfolgreich entfernt"
+#, fuzzy
+msgid "</strong> has been successfully uninstalled. To apply the changes please login into backend again."
+msgstr "Das Plugin wurde erfolgreich installiert. Damit die &Auml;nderungen wirksam werden, melden Sie sich bitte neu im Backend an."
 
 #: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:488
 #: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:102
@@ -55,8 +56,8 @@ msgid "Your current CONTENIDO version is to new - max CONTENIDO version: "
 msgstr "Ihre aktuelle CONTENIDO-Version ist zu neu - maximale CONTENDIO-Version:"
 
 #: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:145
-msgid "The plugin has been successfully installed"
-msgstr "Das Plugin wurde erfolgreich installiert"
+msgid "The plugin has been successfully installed. To apply the changes please login into backend again."
+msgstr "Das Plugin wurde erfolgreich installiert. Damit die &Auml;nderungen wirksam werden, melden Sie sich bitte neu im Backend an."
 
 #: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:186
 msgid "Y-m-d"
@@ -122,6 +123,9 @@ msgstr "Installierte Plugins"
 #: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:251
 msgid "Not installed Plugins"
 msgstr "Noch nicht installierte Plugins"
+
+#~ msgid "</strong> has been successfully uninstalled"
+#~ msgstr "</strong> wurde erfolgreich entfernt"
 
 #~ msgid "from"
 #~ msgstr "von"
