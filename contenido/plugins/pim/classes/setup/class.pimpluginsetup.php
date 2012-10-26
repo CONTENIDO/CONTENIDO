@@ -483,14 +483,14 @@ class PimPluginSetup {
             // old uuId
             $oldId = $result->get('uuid');
 
-            if ($pluginId == 0 && $newId == $oldId) {
+            if ($pluginId == 0 && $newId == $oldId) { // case: new installation
                 $pageError = new cGuiPage('pim_error', 'pim');
                 $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
                 $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
                 $pageError->displayError(i18n('This plugin is already installed', 'pim'));
                 $pageError->render();
                 exit();
-            } elseif($pluginId != 0 && $newId != $oldId) {
+            } elseif ($pluginId != 0 && $newId != $oldId) { // case: update
                 $pageError = new cGuiPage('pim_error', 'pim');
                 $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
                 $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
@@ -502,7 +502,7 @@ class PimPluginSetup {
     }
 
     /**
-     * Check file type
+     * Check file type Plugin Manager accepted only Zip archives
      *
      * @access public
      * @return void
@@ -510,15 +510,14 @@ class PimPluginSetup {
     public function checkZip() {
         $sess = cRegistry::getSession();
 
-        if(substr($_FILES['package']['name'], -4) != ".zip") {
+        if (substr($_FILES['package']['name'], -4) != ".zip") {
             $pageError = new cGuiPage('pim_error', 'pim');
             $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
             $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
-            $pageError->displayError(i18n('Plugin Manager accepted only ZIP archives', 'pim'));
+            $pageError->displayError(i18n('Plugin Manager accepted only Zip archives', 'pim'));
             $pageError->render();
             exit();
         }
-
     }
 
 }
