@@ -1676,6 +1676,8 @@ contenido/plugins/content_allocation/locale/de_DE/LC_MESSAGES/content_allocation
 contenido/plugins/content_allocation/locale/de_DE/LC_MESSAGES/content_allocation.po -text
 contenido/plugins/content_allocation/locale/potfiles.txt -text svneol=unset#text/plain
 contenido/plugins/content_allocation/plugin.xml -text svneol=unset#text/plain
+contenido/plugins/content_allocation/plugin_install.sql -text
+contenido/plugins/content_allocation/plugin_uninstall.sql -text
 contenido/plugins/content_allocation/scripts/complexlist.js -text svneol=unset#text/plain
 contenido/plugins/content_allocation/styles/complexlist.css -text svneol=unset#text/plain
 contenido/plugins/content_allocation/templates/template.tree_article.html -text svneol=unset#text/plain
