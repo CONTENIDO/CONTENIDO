@@ -45,10 +45,10 @@
         <frames>
             <frame area="workflow" filetype="main" name="workflow/includes/include.workflow_left_top.php" frameId="1" />
 			<frame area="workflow" filetype="main" name="workflow/includes/include.workflow_list.php" frameId="2" />
-			<frame area="workflow_common" filetype="main" name="workflow/includes/include.workflow_edit.php" frameId="3" />
-			<frame area="workflow" filetype="main" name="workflow/includes/include.workflow_subnav.php" frameId="4" />
+			<frame area="workflow_common" filetype="main" name="workflow/includes/include.workflow_edit.php" frameId="4" />
+			<frame area="workflow" filetype="main" name="workflow/includes/include.workflow_subnav.php" frameId="3" />
 			<frame area="workflow_steps" filetype="main" name="workflow/includes/include.workflow_steps.php" frameId="4" />
-			<frame area="con_workflow" filetype="main" name="workflow/includes/include.workflow_tasks.php" frameId="3" />
+			<frame area="con_workflow" filetype="main" name="workflow/includes/include.workflow_tasks.php" />
         </frames>
         <nav_sub>
             <nav area="workflow" level="0" navm="3">workflow/xml/lang_de_DE.xml;navigation/extra/workflow/main</nav>
