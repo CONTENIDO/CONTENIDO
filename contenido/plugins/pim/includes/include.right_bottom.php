@@ -36,6 +36,7 @@ $viewAction = isset($_REQUEST['pim_view'])? $_REQUEST['pim_view'] : 'overview';
 
 switch ($viewAction) {
     case 'update':
+        $setup->checkZip();
         $setup->checkSamePlugin($_POST['pluginId']);
         $setup->uninstall($_POST['pluginId']);
         installationRoutine($page);
@@ -44,6 +45,7 @@ switch ($viewAction) {
         $setup->uninstall($_GET['pluginId'], $page);
         break;
     case 'install':
+        $setup->checkZip();
         $setup->checkSamePlugin();
         installationRoutine($page);
         break;

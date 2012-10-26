@@ -501,4 +501,24 @@ class PimPluginSetup {
         }
     }
 
+    /**
+     * Check file type
+     *
+     * @access public
+     * @return void
+     */
+    public function checkZip() {
+        $sess = cRegistry::getSession();
+
+        if(substr($_FILES['package']['name'], -4) != ".zip") {
+            $pageError = new cGuiPage('pim_error', 'pim');
+            $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
+            $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
+            $pageError->displayError(i18n('Plugin Manager accepted only ZIP archives', 'pim'));
+            $pageError->render();
+            exit();
+        }
+
+    }
+
 }
