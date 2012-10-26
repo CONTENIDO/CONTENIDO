@@ -12,6 +12,11 @@
  * }}
  */
 
+if (!class_exists('cNewsletterJobCollection')) {
+    echo mi18n("ERROR_CLASS");
+	exit();
+}
+
 // Initialisation
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 $oClient     = new cApiClient($client);

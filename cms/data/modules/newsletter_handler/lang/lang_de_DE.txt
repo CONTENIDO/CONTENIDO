@@ -1,3 +1,4 @@
+ERROR_CLASS=Das Newsletter-Plugin ist momentan nicht installiert!
 SPECIFY_EMAIL=Bitte geben Sie eine E-Mail-Adresse an.
 SPECIFY_VALID_EMAIL=Bitte geben Sie eine gültige E-Mail-Adresse an.
 EMAIL_REGISTERED=Die angebene E-Mail-Adresse ist bereits für den Newsletter angemeldet.
