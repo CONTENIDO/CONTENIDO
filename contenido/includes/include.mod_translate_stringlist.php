@@ -56,7 +56,7 @@ foreach ($translationsArray as $key => $value) {
     $link->setCustom("row", $rowCount);
 
     $href = $link->getHREF();
-    $mylink->setLink(htmlspecialchars('javascript:parent.location="' . $href . '"'));
+    $mylink->setLink(conHtmlSpecialChars('javascript:parent.location="' . $href . '"'));
     $mylink->setContent($string);
     if ($rowCount == $row) {// $translation->get("idmodtranslation"))
         $style = "active";
