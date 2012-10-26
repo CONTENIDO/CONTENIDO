@@ -16,21 +16,21 @@
     <contenido>
         <areas>
             <area menuless="1">content_allocation</area>
-			<area parent="con" menuless="0">con_contentallocation</area>
+            <area parent="con" menuless="0">con_contentallocation</area>
         </areas>
-		<actions>
-			<action area="con_contentallocation">storeallocation</action> 
-		</actions>
+        <actions>
+            <action area="con_contentallocation">storeallocation</action>
+        </actions>
         <frames>
             <frame area="content_allocation" filetype="main" name="content_allocation/includes/include.left_top.php" frameId="1" />
-			<frame area="content_allocation" filetype="main" name="content_allocation/includes/include.left_bottom.php" frameId="2" />
-			<frame area="content_allocation" filetype="main" name="content_allocation/includes/include.right_top.php" />
-			<frame area="content_allocation" filetype="main" name="content_allocation/includes/include.right_bottom.php" frameId="4" />
-			<frame area="con_contentallocation" filetype="main" name="content_allocation/includes/include.contentallocation_article.php" frameId="4" />
+            <frame area="content_allocation" filetype="main" name="content_allocation/includes/include.left_bottom.php" frameId="2" />
+            <frame area="content_allocation" filetype="main" name="content_allocation/includes/include.right_top.php" />
+            <frame area="content_allocation" filetype="main" name="content_allocation/includes/include.right_bottom.php" frameId="4" />
+            <frame area="con_contentallocation" filetype="main" name="content_allocation/includes/include.contentallocation_article.php" frameId="4" />
         </frames>
         <nav_sub>
             <nav area="content_allocation" level="0" navm="3">content_allocation/xml/;navigation/extra/content_allocation/main</nav>
-			<nav area="content_allocation" level="1" navm="0">content_allocation/xml/;navigation/contenido/article/content_allocation</nav>
+            <nav area="content_allocation" level="1" navm="0">content_allocation/xml/;navigation/contenido/article/content_allocation</nav>
         </nav_sub>
     </contenido>
 </plugin>

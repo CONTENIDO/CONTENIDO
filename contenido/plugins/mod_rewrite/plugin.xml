@@ -14,32 +14,32 @@
         <min_contenido_version>4.9.0-beta1</min_contenido_version>
         <max_contenido_version></max_contenido_version>
     </general>
-	
+
     <contenido>
 
         <areas>
             <area menuless="1">mod_rewrite</area>
             <area parent="mod_rewrite" menuless="1">mod_rewrite_expert</area>
-			<area parent="mod_rewrite" menuless="1">mod_rewrite_test</area>
+            <area parent="mod_rewrite" menuless="1">mod_rewrite_test</area>
         </areas>
 
         <actions>
             <action area="mod_rewrite">mod_rewrite</action>
-			<action area="mod_rewrite">mod_rewrite_expert</action>
-			<action area="mod_rewrite">mod_rewrite_test</action>
+            <action area="mod_rewrite">mod_rewrite_expert</action>
+            <action area="mod_rewrite">mod_rewrite_test</action>
         </actions>
 
         <frames>
             <frame area="mod_rewrite" filetype="main" name="mod_rewrite/includes/include.mod_rewrite_content.php" frameId="4" />
             <frame area="mod_rewrite_expert" filetype="main" name="mod_rewrite/includes/include.mod_rewrite_contentexpert.php" frameId="4" />
-            <frame area="mod_rewrite_test" filetype="main" name="mod_rewrite/includes/include.mod_rewrite_contenttest.php" frameId="4" />       
+            <frame area="mod_rewrite_test" filetype="main" name="mod_rewrite/includes/include.mod_rewrite_contenttest.php" frameId="4" />
         </frames>
 
         <nav_sub>
             <nav area="mod_rewrite" level="1" navm="0">mod_rewrite/xml/;navigation/content/mod_rewrite/settings</nav>
             <nav area="mod_rewrite" level="0" navm="1">mod_rewrite/xml/;navigation/content/mod_rewrite/main</nav>
-			<nav area="mod_rewrite_expert" level="1" navm="0">mod_rewrite/xml/;navigation/content/mod_rewrite/expert</nav>
-			<nav area="mod_rewrite_test" level="1" navm="0">mod_rewrite/xml/;navigation/content/mod_rewrite/test</nav>
+            <nav area="mod_rewrite_expert" level="1" navm="0">mod_rewrite/xml/;navigation/content/mod_rewrite/expert</nav>
+            <nav area="mod_rewrite_test" level="1" navm="0">mod_rewrite/xml/;navigation/content/mod_rewrite/test</nav>
         </nav_sub>
 
     </contenido>

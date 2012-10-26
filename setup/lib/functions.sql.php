@@ -62,7 +62,7 @@ function addAutoIncrementToTables($db, $cfg) {
         $cfg['sql']['sqlprefix'] . '_online_user',
         $cfg['sql']['sqlprefix'] . '_pi_linkwhitelist',
         $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5',
-		$cfg['sql']['sqlprefix'] . '_user'
+        $cfg['sql']['sqlprefix'] . '_user'
     );
 
     $sql = 'SHOW TABLES FROM  ' . $cfg['db']['connection']['database'] . '';
@@ -97,14 +97,14 @@ function addSalts($db) {
 
     $db2 = getSetupMySQLDBConnection();
 
-	$sql = "SHOW COLUMNS FROM %s LIKE 'salt'";
-	$sql = sprintf($sql, $cfg['tab']['user']);
+    $sql = "SHOW COLUMNS FROM %s LIKE 'salt'";
+    $sql = sprintf($sql, $cfg['tab']['user']);
 
-	$db->query($sql);
-	if ($db->num_rows() == 0) {
-		$db2->query("ALTER TABLE ".$cfg["tab"]["user"]." CHANGE password password VARCHAR(64)");
-		$db2->query("ALTER TABLE ".$cfg["tab"]["user"]." ADD salt VARCHAR(32) AFTER password");
-	}
+    $db->query($sql);
+    if ($db->num_rows() == 0) {
+        $db2->query("ALTER TABLE ".$cfg["tab"]["user"]." CHANGE password password VARCHAR(64)");
+        $db2->query("ALTER TABLE ".$cfg["tab"]["user"]." ADD salt VARCHAR(32) AFTER password");
+    }
 
     $db->query("SELECT * FROM ".$cfg["tab"]["user"]);
     while ($db->nextRecord()) {
@@ -114,15 +114,15 @@ function addSalts($db) {
             $db2->query("UPDATE ".$cfg["tab"]["user"]." SET password='".hash("sha256", $db->f("password").$salt)."' WHERE user_id='".$db->f("user_id")."'");
         }
     }
-	
-	$sql = "SHOW COLUMNS FROM %s LIKE 'salt'";
-	$sql = sprintf($sql, $cfg['tab']['frontendusers']);
 
-	$db->query($sql);
-	if ($db->num_rows() == 0) {
-		$db2->query("ALTER TABLE ".$cfg["tab"]["frontendusers"]." CHANGE password password VARCHAR(64)");
-		$db2->query("ALTER TABLE ".$cfg["tab"]["frontendusers"]." ADD salt VARCHAR(32) AFTER password");
-	}
+    $sql = "SHOW COLUMNS FROM %s LIKE 'salt'";
+    $sql = sprintf($sql, $cfg['tab']['frontendusers']);
+
+    $db->query($sql);
+    if ($db->num_rows() == 0) {
+        $db2->query("ALTER TABLE ".$cfg["tab"]["frontendusers"]." CHANGE password password VARCHAR(64)");
+        $db2->query("ALTER TABLE ".$cfg["tab"]["frontendusers"]." ADD salt VARCHAR(32) AFTER password");
+    }
 
     $db->query("SELECT * FROM ".$cfg["tab"]["frontendusers"]);
     while($db->nextRecord()) {
@@ -152,12 +152,12 @@ function urlDecodeTables($db) {
 }
 
 function urlDecodeTable($db, $table, $checkTableExists = false) {
-	if ($checkTableExists === true) {
-		$db->query('SHOW TABLES LIKE "%s"', $table);
-		if ($db->nextRecord() === false) {
-			return;
-		}
-	}
+    if ($checkTableExists === true) {
+        $db->query('SHOW TABLES LIKE "%s"', $table);
+        if ($db->nextRecord() === false) {
+            return;
+        }
+    }
 
     $sql = "SELECT * FROM " . $table;
     $db->query($sql);
@@ -179,11 +179,11 @@ function urlDecodeTable($db, $table, $checkTableExists = false) {
 }
 
 function convertToDatetime($db, $cfg) {
-	$db->query('SHOW TABLES LIKE "%s"', $cfg["sql"]["sqlprefix"] . "_piwf_art_allocation");
-	if ($db->nextRecord()) {
-		$db->query("ALTER TABLE " . $cfg['sql']['sqlprefix'] . "_piwf_art_allocation CHANGE  `starttime`  `starttime` DATETIME NOT NULL");
-	}
-    
+    $db->query('SHOW TABLES LIKE "%s"', $cfg["sql"]["sqlprefix"] . "_piwf_art_allocation");
+    if ($db->nextRecord()) {
+        $db->query("ALTER TABLE " . $cfg['sql']['sqlprefix'] . "_piwf_art_allocation CHANGE  `starttime`  `starttime` DATETIME NOT NULL");
+    }
+
     $db->query("ALTER TABLE " . $cfg['sql']['sqlprefix'] . "_template_conf CHANGE  `created`  `created` DATETIME NOT NULL");
 }
 

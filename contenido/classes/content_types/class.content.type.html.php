@@ -80,7 +80,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
         $wysiwygDiv->appendStyleDefinitions(array(
             'border' => '1px dashed #bfbfbf',
             'direction' => langGetTextDirection($this->_lang),
-			'min-height' => '20px'
+            'min-height' => '20px'
         ));
         $wysiwygDiv->updateAttribute('contentEditable', 'true');
         $wysiwygDiv->setContent($this->_rawSettings);

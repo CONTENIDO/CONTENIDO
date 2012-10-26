@@ -22,9 +22,9 @@
             <action area="cronjob">cronjob_overview</action>
         </actions>
         <frames>
-        	<frame area="cronjob" filetype="main" name="cronjobs_overview/includes/include.left_top.php" frameId="1" />
-        	<frame area="cronjob" filetype="main" name="cronjobs_overview/includes/include.left_bottom.php" frameId="2" />
-        	<frame area="cronjob" filetype="main" name="cronjobs_overview/includes/include.right_top.php" frameId="3" />
+            <frame area="cronjob" filetype="main" name="cronjobs_overview/includes/include.left_top.php" frameId="1" />
+            <frame area="cronjob" filetype="main" name="cronjobs_overview/includes/include.left_bottom.php" frameId="2" />
+            <frame area="cronjob" filetype="main" name="cronjobs_overview/includes/include.right_top.php" frameId="3" />
             <frame area="cronjob" filetype="main" name="cronjobs_overview/includes/include.right_bottom.php" frameId="4" />
         </frames>
         <nav_sub>

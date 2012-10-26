@@ -12,11 +12,11 @@
                     <td class="first"><div class="description">{LABEL_ADMINPASS}</div></td>
                     <td class="last">{INPUT_ADMINPASS}</td>
                 </tr>
-				<tr>
+                <tr>
                     <td class="first"><div class="description">{LABEL_ADMINPASSREPEAT}</div></td>
                     <td class="last">{INPUT_ADMINPASSREPEAT}</td>
                 </tr>
-				<tr>
+                <tr>
                     <td class="first"><div class="description">{LABEL_ADMINMAIL}</div></td>
                     <td class="last">{INPUT_ADMINMAIL}</td>
                 </tr>

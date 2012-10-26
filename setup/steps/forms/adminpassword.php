@@ -33,14 +33,14 @@ class cSetupAdminPassword extends cSetupMask {
         $this->_oStepTemplate->set("s", "TITLE", i18n("Administrator password"));
 
         $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please enter the password for the default administrator account sysadmin and specify it's mail address in case you forgot your entered password."));
-		
-		if ($_SESSION["adminpass"] != "") {
+
+        if ($_SESSION["adminpass"] != "") {
             $displayadminpass = str_repeat("*", strlen($_SESSION["adminpass"]));
         } else {
             $displayadminpass = "";
         }
-		
-		if ($_SESSION["adminpassrepeat"] != "") {
+
+        if ($_SESSION["adminpassrepeat"] != "") {
             $displayadminpassrepeat = str_repeat("*", strlen($_SESSION["adminpassrepeat"]));
         } else {
             $displayadminpassrepeat = "";
@@ -48,29 +48,29 @@ class cSetupAdminPassword extends cSetupMask {
 
         $adminmail = new cHTMLTextbox("adminmail", $_SESSION["adminmail"], 30, 255);
         $adminpass = new cHTMLPasswordbox("adminpass", $displayadminpass, 30, 255);
-		$adminpassrepeat = new cHTMLPasswordbox("adminpassrepeat", $displayadminpassrepeat, 30, 255);
-		
+        $adminpassrepeat = new cHTMLPasswordbox("adminpassrepeat", $displayadminpassrepeat, 30, 255);
+
         $adminpass->attachEventDefinition("onchange handler", "onchange", "document.setupform.adminpass_changed.value = 'true';");
         $adminpass->attachEventDefinition("onchange handler", "onkeypress", "document.setupform.adminpass_changed.value = 'true';");
-		
-		$adminpassrepeat->attachEventDefinition("onchange handler", "onchange", "document.setupform.adminpassrepeat_changed.value = 'true';");
+
+        $adminpassrepeat->attachEventDefinition("onchange handler", "onchange", "document.setupform.adminpassrepeat_changed.value = 'true';");
         $adminpassrepeat->attachEventDefinition("onchange handler", "onkeypress", "document.setupform.adminpassrepeat_changed.value = 'true';");
 
         $adminpass_hidden = new cHTMLHiddenField("adminpass_changed", "false");
-		$adminpassrepeat_hidden = new cHTMLHiddenField("adminpassrepeat_changed", "false");
+        $adminpassrepeat_hidden = new cHTMLHiddenField("adminpassrepeat_changed", "false");
 
         $this->_oStepTemplate->set("s", "LABEL_ADMINPASS", i18n("Administrator password"));
-		$this->_oStepTemplate->set("s", "LABEL_ADMINPASSREPEAT", i18n("Administrator password") . " " . i18n("(repeat)"));
+        $this->_oStepTemplate->set("s", "LABEL_ADMINPASSREPEAT", i18n("Administrator password") . " " . i18n("(repeat)"));
         $this->_oStepTemplate->set("s", "LABEL_ADMINMAIL", i18n("Administrator mail address"));
-        
+
         $this->_oStepTemplate->set("s", "INPUT_ADMINPASS", $adminpass->render().$adminpass_hidden->render());
-		$this->_oStepTemplate->set("s", "INPUT_ADMINPASSREPEAT", $adminpassrepeat->render().$adminpassrepeat_hidden->render());
+        $this->_oStepTemplate->set("s", "INPUT_ADMINPASSREPEAT", $adminpassrepeat->render().$adminpassrepeat_hidden->render());
         $this->_oStepTemplate->set("s", "INPUT_ADMINMAIL", $adminmail->render());
 
         $this->setNavigation($previous, $next);
     }
-	
-	function _createNavigation()
+
+    function _createNavigation()
     {
         $link = new cHTMLLink("#");
 
@@ -78,10 +78,10 @@ class cSetupAdminPassword extends cSetupMask {
             $checkScript = sprintf(
                 "var msg = ''; if (document.setupform.adminpass.value == '' || document.setupform.adminpassrepeat.value == '') { msg += '%s '; } if (msg == '' && document.setupform.adminpass.value != document.setupform.adminpassrepeat.value) { msg += '%s '; } if (msg == '' && document.setupform.adminmail.value == '') { msg += '%s '; } if (msg == '') { document.setupform.submit(); } else { alert(msg); }",
                 i18n("You need to enter a password."),
-				i18n("The entered passwords are not matching."),
+                i18n("The entered passwords are not matching."),
                 i18n("You need to enter a mail address.")
             );
-			
+
             $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_bNextstep."';");
             $link->attachEventDefinition("submitAttach", "onclick", $checkScript);
        // } else {

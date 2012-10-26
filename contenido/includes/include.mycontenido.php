@@ -61,7 +61,7 @@ if (getSystemProperty('maintenance', 'mode') == 'enabled') {
 
 // Check, if setup folder is still available
 if (cFileHandler::exists(dirname(dirname(dirname(__FILE__))) . '/setup')) {
-	$page->displayWarning(i18n("The setup directory still exists. Please remove the setup directory before you continue."));
+    $page->displayWarning(i18n("The setup directory still exists. Please remove the setup directory before you continue."));
 }
 
 // check for size of log directory

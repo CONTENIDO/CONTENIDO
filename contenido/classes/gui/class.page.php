@@ -522,7 +522,7 @@ class cGuiPage {
         // get messages from cRegistry
         $infoMessages = cRegistry::getInfoMessages();
         foreach ($infoMessages as $message) {
-        	$this->displayInfo($message);
+            $this->displayInfo($message);
         }
 
         $errorMessages = cRegistry::getErrorMessages();

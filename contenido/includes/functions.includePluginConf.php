@@ -28,36 +28,36 @@ $plugins = array();
 $pluginFolder = cRegistry::getBackendPath() . $cfg['path']['plugins'];
 
 if ($cfg['debug']['disable_plugins'] === false) {
-	// Initialize plugin manager
-	i18nRegisterDomain('pim', $pluginFolder . 'pim/locale/');
-	include_once($pluginFolder . 'pim/includes/config.plugin.php');
-	
-	// Load all active plugins
-	$pluginColl = new PimPluginCollection();
+    // Initialize plugin manager
+    i18nRegisterDomain('pim', $pluginFolder . 'pim/locale/');
+    include_once($pluginFolder . 'pim/includes/config.plugin.php');
+
+    // Load all active plugins
+    $pluginColl = new PimPluginCollection();
     $pluginColl->setWhere('active', 1);
     $pluginColl->query();
 
-	while (($plugin = $pluginColl->next()) !== false) {
-		$pluginName = $plugin->get('folder');
-		
-		if (is_dir($pluginFolder . $pluginName . '/')) {
-			$plugins[] = $pluginName;
-		}
-	}
+    while (($plugin = $pluginColl->next()) !== false) {
+        $pluginName = $plugin->get('folder');
+
+        if (is_dir($pluginFolder . $pluginName . '/')) {
+            $plugins[] = $pluginName;
+        }
+    }
 }
 
 // Include all active plugins
 foreach ($plugins as $pluginName) {
-	$pluginLocaleDir = $pluginFolder . $pluginName . '/locale/';
-	$pluginConfigFile = $pluginFolder . $pluginName . '/includes/config.plugin.php';
+    $pluginLocaleDir = $pluginFolder . $pluginName . '/locale/';
+    $pluginConfigFile = $pluginFolder . $pluginName . '/includes/config.plugin.php';
 
-	if (cFileHandler::exists($pluginLocaleDir)) {
-		i18nRegisterDomain($pluginName, $pluginLocaleDir);
-	}
+    if (cFileHandler::exists($pluginLocaleDir)) {
+        i18nRegisterDomain($pluginName, $pluginLocaleDir);
+    }
 
-	if (cFileHandler::exists($pluginConfigFile)) {
-		include_once($pluginConfigFile);
-	}
+    if (cFileHandler::exists($pluginConfigFile)) {
+        include_once($pluginConfigFile);
+    }
 }
 
 // Load legacy plugins frontendusers and frontendlogic

@@ -122,7 +122,7 @@ function saveSitemap(SimpleXMLElement $sitemap, $filename = '') {
         if ($success) {
             $transString = mi18n("XML_SITEMAP_SUCCES_WRITTEN", $filename);
         } else {
-			$transString = mi18n("XML_SITEMAP_NOT_WRITTEN", $shortFilename);
+            $transString = mi18n("XML_SITEMAP_NOT_WRITTEN", $shortFilename);
         }
     }
 }

@@ -14,7 +14,7 @@
 
 if (!class_exists('cNewsletterJobCollection')) {
     echo mi18n("ERROR_CLASS");
-	exit();
+    exit();
 }
 
 // Initialisation
@@ -125,7 +125,7 @@ if ($_POST['action'] == "subscribe") {
                         }
 
                         if ($bError) {
-							$sMessage = mi18n("ERROR_REQUEST");
+                            $sMessage = mi18n("ERROR_REQUEST");
                         } else {
                             $recipient = $oRecipients->create($sEMail, $sName, 0, implode(",", $_POST['selNewsletterGroup']));
                         }
@@ -148,10 +148,10 @@ if ($_POST['action'] == "subscribe") {
 
             $mailer = new cMailer();
             $from = array($aSettings['SenderEMail'] => $aSettings['SenderEMail']);
-			$recipients = $mailer->sendMail($from, $sEMail, mi18n("NEWSLETTER_CONFIRMATION"), $sBody);
+            $recipients = $mailer->sendMail($from, $sEMail, mi18n("NEWSLETTER_CONFIRMATION"), $sBody);
 
             if ($recipients > 0) {
-				$sMessage = mi18n("Dear subscriber,
+                $sMessage = mi18n("Dear subscriber,
 your e-mail address is now subscribed for our newsletter. You will now receive an e-mail asking you to confirm your subscription.");
 
                 if ($aSettings['FrontendLink'] == "enabled") {
@@ -171,12 +171,12 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
                                 $sMessage .= mi18n("TXT_AFTER_CONFIRMATION");
                             }
                         } else {
-							$sMessage .= mi18n("TXT_PROBLEM_CREATING_ACCOUNT");
+                            $sMessage .= mi18n("TXT_PROBLEM_CREATING_ACCOUNT");
                         }
                     }
                 }
             } else {
-				$sMessage = mi18n("TXT_SENDING_CONFIRMATION_MAIL");
+                $sMessage = mi18n("TXT_SENDING_CONFIRMATION_MAIL");
             }
         } else {
             $sMessage = mi18n("TXT_PROBLEM_SUBSCRIBING_EMAIL");
@@ -195,9 +195,9 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
         $recipients = $mailer->sendMail($from, $recipient->get('email'), mi18n("NEWSLETTER_CANCEL"), $sBody);
 
         if ($recipients > 0) {
-			$sMessage = mi18n("TXT_SUBSCRIBER_EMAIL_SEND");
+            $sMessage = mi18n("TXT_SUBSCRIBER_EMAIL_SEND");
         } else {
-			$sMessage = mi18n("PROBLEM_SENDING_CANCELATION_EMAIL");
+            $sMessage = mi18n("PROBLEM_SENDING_CANCELATION_EMAIL");
         }
     } else {
         $sMessage = mi18n("EMAIL_NOT_FOUND");
@@ -242,12 +242,12 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
                 $frontenduser->set("password", $sPassword);
                 $frontenduser->store();
 
-				$sMessage .= mi18n("TXT_ACCOUNT_ACTIVATED");
-				$sMessage .= mi18n("USERNAME_COLON").$sEMail.mi18n("
+                $sMessage .= mi18n("TXT_ACCOUNT_ACTIVATED");
+                $sMessage .= mi18n("USERNAME_COLON").$sEMail.mi18n("
 
 _BR ").$sPassword;
 
-				$sBody = mi18n("TXTMAILPASSWORD")."\n\n".mi18n("USERNAME_COLON").$sEMail."\n".mi18n("PASSWORD_COLON ").$sPassword."\n\n".mi18n("LOGIN_CLICK"). $frontendURL ."front_content.php?changelang=".$lang;
+                $sBody = mi18n("TXTMAILPASSWORD")."\n\n".mi18n("USERNAME_COLON").$sEMail."\n".mi18n("PASSWORD_COLON ").$sPassword."\n\n".mi18n("LOGIN_CLICK"). $frontendURL ."front_content.php?changelang=".$lang;
 
                 $mailer = new cMailer();
                 $from = array($aSettings['SenderEMail'] => $aSettings['SenderEMail']);
@@ -259,11 +259,11 @@ _BR ").$sPassword;
                     $sMessage .= mi18n("TXT_PROBLEM_ACCOUNTDETAILS");
                 }
             } else {
-				$sMessage .= mi18n("PROBLEM_ACTIVATING_EMAIL_ACCOUNT");
+                $sMessage .= mi18n("PROBLEM_ACTIVATING_EMAIL_ACCOUNT");
             }
         }
     } else {
-		$sMessage = mi18n("PROBLEM_CONFIRMING_SUBSCRIPTION");
+        $sMessage = mi18n("PROBLEM_CONFIRMING_SUBSCRIPTION");
     }
 } elseif (strlen($_GET['stop']) == 30 && isAlphanumeric($_GET['stop'])) {
     $oRecipients->setWhere("idclient", $client);
@@ -276,7 +276,7 @@ _BR ").$sPassword;
         $recipient->store();
         $sMessage = mi18n("NEWSLETTER_SUBSCRIPTION_PAUSED");
     } else {
-		$sMessage = mi18n("PROBLEM_PAUSING_NEWSLETTER_SUBSCRIPTION");
+        $sMessage = mi18n("PROBLEM_PAUSING_NEWSLETTER_SUBSCRIPTION");
     }
 } elseif (strlen($_GET['goon']) == 30 && isAlphanumeric($_GET['goon'])) {
     $oRecipients->setWhere("idclient", $client);
@@ -289,7 +289,7 @@ _BR ").$sPassword;
         $recipient->store();
         $sMessage = mi18n("NEWSLETTER_SUBSCRIPTION_RESUMED");
     } else {
-		$sMessage = mi18n("PROBLEM_RESUMING_NEWSLETTER_SUBSCRIPTION");
+        $sMessage = mi18n("PROBLEM_RESUMING_NEWSLETTER_SUBSCRIPTION");
     }
 } elseif (strlen($_GET['unsubscribe']) == 30 && isAlphanumeric($_GET['unsubscribe'])) {
     $oRecipients->setWhere("idclient", $client);
