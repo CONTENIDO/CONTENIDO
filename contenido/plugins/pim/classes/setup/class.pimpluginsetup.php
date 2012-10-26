@@ -502,7 +502,7 @@ class PimPluginSetup {
     }
 
     /**
-     * Check file type, Plugin Manager accepted only Zip archives
+     * Check file type, Plugin Manager accepts only Zip archives
      *
      * @access public
      * @return void
