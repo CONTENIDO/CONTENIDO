@@ -1,0 +1,14 @@
+IMAGE_PREVIEW=Image preview
+DOWNLOAD_IMAGE=Download image
+NEXT=next
+WS_NEXT = next
+BACK=back
+WS_BACK= zurück 
+DOWNLOAD_IMAGE_WS=Download image 
+WIDTH=Width
+HEIGHT=Height
+COLUMNS=Columns
+ROWS=Rows
+WIDE_DETAILED_VIEW=Wide detailed view
+SELECT_DIRECTORY=Select directory
+NOTHING_SELECTED=Nothing selected

@@ -289,7 +289,7 @@ if (strlen(trim($searchterm)) > 0) {
     }
 } else {
     echo '<div id="searchResults">';
-    echo '<h1>'.mi18n("TXT_NO_SEARCH_RESULTS.").'</h1>';
+    echo '<h1>'.mi18n("TXT_NO_SEARCH_RESULTS").'</h1>';
     echo '</div>';
 }
 

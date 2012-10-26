@@ -16,7 +16,7 @@
 
 <table>
     <tr>
-        <td><?php echo mi18n("URL_TO_PROFILE");?></td>
+        <td><?php echo mi18n("URL_PROFILE");?></td>
         <td><input type="text" name="CMS_VAR[0]" value="<?php echo "CMS_VALUE[0]"; ?>"></td>
     </tr>
     <tr>

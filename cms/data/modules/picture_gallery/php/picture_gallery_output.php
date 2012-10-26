@@ -198,7 +198,7 @@ if ($_REQUEST['view'] == '') {
 
             $oTpl1 = new cTemplate();
 
-            $sNextButton = sprintf($sHtml, $sNext, mi18n("NEXT"), mi18n(" NEXT ") . '<img src="images/link_pfeil_klein.gif" />');
+            $sNextButton = sprintf($sHtml, $sNext, mi18n("NEXT"), mi18n("WS_NEXT ") . '<img src="images/link_pfeil_klein.gif" />');
             $oTpl1->set('s', 'Begin', '');
 
             foreach ($aAllLinks as $key => $value) {
@@ -221,8 +221,8 @@ if ($_REQUEST['view'] == '') {
         if ($iCurrentPage > 1 && ($iPages - $iCurrentPage) != 0) { // body see all
             $oPreviousTpl = new cTemplate();
 
-            $sBackButton = sprintf($sHtml, $sBack, mi18n("BACK"), "<img src='images/link_pfeil_klein_links.gif' />" . mi18n(" BACK "));
-            $sNextButton = sprintf($sHtml, $sNext, mi18n("NEXT"), mi18n(" NEXT ") . '<img src="images/link_pfeil_klein.gif" />');
+            $sBackButton = sprintf($sHtml, $sBack, mi18n("BACK"), "<img src='images/link_pfeil_klein_links.gif' />" . mi18n("WS_BACK"));
+            $sNextButton = sprintf($sHtml, $sNext, mi18n("NEXT"), mi18n("WS_NEXT ") . '<img src="images/link_pfeil_klein.gif" />');
 
             $oPreviousTpl->set('s', 'Begin', $sBackButton);
 
@@ -244,7 +244,7 @@ if ($_REQUEST['view'] == '') {
         } else if ($iPages - $iCurrentPage == 0) { // this is end
             $oNextTpl = new cTemplate();
             $oNextTpl->reset();
-            $sBackButton = sprintf($sHtml, $sBack, mi18n("BACK"), "<img src='images/link_pfeil_klein_links.gif' />" . mi18n(" BACK "));
+            $sBackButton = sprintf($sHtml, $sBack, mi18n("BACK"), "<img src='images/link_pfeil_klein_links.gif' />" . mi18n("WS_BACK"));
             $oNextTpl->set('s', 'End', '');
 
             foreach ($aAllLinks as $key => $value) {
@@ -282,11 +282,11 @@ if ($_REQUEST['view'] == '') {
     $oImageTpl = new cTemplate();
     $oImageTpl->set('s', 'IMG', $sScaledImageHtmlPath);
     $oImageTpl->set('s', 'BACKLINK', 'front_content.php?idcat=' . $idcat . '&idart=' . $idart . '&start=' . $start);
-    $oImageTpl->set('s', 'BACKCAPTION', mi18n(" BACK"));
+    $oImageTpl->set('s', 'BACKCAPTION', mi18n("WS_BACK"));
     $oImageTpl->set('s', 'DESCRIPTION', $description);
     $oImageTpl->set('s', 'DOWNLOAD_LINK', $sDownloadLink);
     $oImageTpl->set('s', 'DOWNLOAD_SIZE', $sDownloadSize);
-    $oImageTpl->set('s', 'DOWNLOAD_CAPTION', mi18n("DOWNLOAD_IMAGE "));
+    $oImageTpl->set('s', 'DOWNLOAD_CAPTION', mi18n("DOWNLOAD_IMAGE_WS"));
 
     $oImageTpl->generate('gallery_detail.html', false, false);
 }

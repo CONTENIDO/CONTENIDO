@@ -32,7 +32,7 @@
         </td>
     </tr>
     <tr>
-        <td><?php echo mi18n("SHOW_TWEETS ");?></td>
+        <td><?php echo mi18n("SHOW_TWEETS");?></td>
         <td>
             <input type="checkbox" name="CMS_VAR[2]" value="1" <?php $value = "CMS_VALUE[2]"; if ($value) echo 'checked="checked"'; ?>>
         </td>

@@ -1,11 +1,10 @@
 IMAGE_PREVIEW=Bildvorschau
 DOWNLOAD_IMAGE=Bild herunterladen
 NEXT=vor
- NEXT = vor 
+WS_NEXT = vor
 BACK=zurück
- BACK = zurück
- BACK=zurück
-DOWNLOAD_IMAGE =Bild herunterladen 
+WS_BACK= zurück
+DOWNLOAD_IMAGE_WS=Bild herunterladen 
 WIDTH=Breite
 HEIGHT=Höhe
 COLUMNS=Spalten

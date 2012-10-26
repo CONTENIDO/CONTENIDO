@@ -1,0 +1,2 @@
+CHOOSE_CATEGORY_COLON=Choose category
+MAXIMUM_NUMBER_LEVELS_COLON=Maximum number of levels:

@@ -1,0 +1,5 @@
+READ_MORE=Read more
+URL=URL
+RSS_TEMPLATE_SELECT=RSS-Template select
+NOTHING_SELECTED=Nothing selected
+COUNT_ITEM=Count item

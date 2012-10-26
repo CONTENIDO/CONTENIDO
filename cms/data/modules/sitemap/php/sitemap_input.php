@@ -11,7 +11,7 @@ $sOptionsDepth = '';
 
 $sHtmlTable = '<table border="0" cellpadding="10" cellspacing="0">
     <tr>
-        <td>'.mi18n("CHOOSE_CATEGORY:").'</td>
+<td>'.mi18n("CHOOSE_CATEGORY_COLON").'</td>
         <td>
             <select name="' . "CMS_VAR[1]" . '">
                 <option value="0">---Alle---</option>
@@ -20,7 +20,7 @@ $sHtmlTable = '<table border="0" cellpadding="10" cellspacing="0">
         </td>
 </tr>
 <tr>
-<td>'.mi18n("MAXIMUM_NUMBER_OF_LEVELS:").'</td>
+<td>'.mi18n("MAXIMUM_NUMBER_LEVELS_COLON").'</td>
     <td>
         <select name="' . "CMS_VAR[2]" . '">
             <option value="0">---Select---</option>

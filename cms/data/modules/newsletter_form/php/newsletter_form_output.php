@@ -111,17 +111,17 @@ if ($aSettings['JoinMessageType'] == 'user') {
 }
 $oPage->set('s', 'EXTRAHTML', $sTmpHTML);
 
-$oPage->set('s', 'NEWSLETTER', mi18n("NEWSLETTER_"));
-$oPage->set('s', 'SUBSCRIBE',  mi18n("SUBSCRIBE_"));
+$oPage->set('s', 'NEWSLETTER', mi18n("NEWSLETTER_SRC"));
+$oPage->set('s', 'SUBSCRIBE',  mi18n("SUBSCRIBE_SRC"));
 $oPage->set('s', 'DELETE',     mi18n("UNSUBSCRIBE"));
 
 $oPage->set("s", "ABSCHICKEN", mi18n("SUBMIT"));
 $oPage->set("s", "LOESCHEN", mi18n("DELETE"));
 $oPage->set('s', 'JOIN', mi18n("JOIN"));
 $oPage->set('s', 'LINKEDITOR',$cmsLinkeditor );
-$oPage->set('s', 'PRIVACY_TEXT_PART1', mi18n("I_HAVE"));
+$oPage->set('s', 'PRIVACY_TEXT_PART1', mi18n("READ_AND_ACCEPT_1"));
 
-$oPage->set('s', 'PRIVACY_TEXT_PART2', mi18n(" READ_AND_ACCEPT. "));
+$oPage->set('s', 'PRIVACY_TEXT_PART2', mi18n("READ_AND_ACCEPT_2 "));
 
 $oPage->generate('templates/'.$sTemplate);
 

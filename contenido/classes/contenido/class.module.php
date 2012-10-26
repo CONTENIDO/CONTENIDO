@@ -250,7 +250,8 @@ class cApiModule extends Item {
         // Initialize array
         $strings = array();
 
-		// change the code to ignore parameters from the formated string
+
+        // change the code to ignore parameters from the formated string
         $code = str_replace("\"", "\")", $code);
 
         // Split the code into mi18n chunks
@@ -268,6 +269,7 @@ class cApiModule extends Item {
                 if ($closing !== false) {
                     $value = substr($value, 0, $closing) . '")';
                 }
+                $value= substr($value,1);
 
                 // Append mi18n again
                 $varr[$key] = 'mi18n("' . $value;
@@ -335,7 +337,7 @@ class cApiModule extends Item {
         // Initialize array
         $strings = array();
 
-		// change the code to ignore parameters from the formated string
+        // change the code to ignore parameters from the formated string
         $code = str_replace("\"", "\")", $code);
 
         // Split the code into mi18n chunks
@@ -354,6 +356,7 @@ class cApiModule extends Item {
                     $value = substr($value, 0, $closing) . '")';
                 }
 
+                $value= substr($value,1);
                 // Append mi18n again
                 $varr[$key] = 'mi18n("' . $value;
 

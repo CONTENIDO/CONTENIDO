@@ -12,7 +12,7 @@ try {
 
         $sHeadline = $category->get('name');
     } else {
-        $sHeadline = mi18n("WELCOME!");
+        $sHeadline = mi18n("WELCOME");
     }
 
     $sImgEdit = "CMS_IMGEDITOR[1]";

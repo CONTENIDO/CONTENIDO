@@ -66,13 +66,13 @@ if ($aSettings['FrontendDel'] == '') {
 
 if ($_POST['action'] == "subscribe") {
     if (!isset($_POST['email']) || !$_POST['email']) {
-        $sMessage = mi18n("Please specify an e-mail address.");
+        $sMessage = mi18n("SPECIFY_EMAIL");
     } elseif (!isValidMail($_POST['email']) || strpos($_POST['email'], ",") != false || strpos($_POST['email'], ";") != false) {
-        $sMessage = mi18n("Please specify a valid e-mail address.");
+        $sMessage = mi18n("SPECIFY_VALID_EMAIL");
     } elseif ($oRecipients->emailExists($_POST['email'])) {
-        $sMessage = mi18n("This e-mail address has been already registered for the newsletter.");
+        $sMessage = mi18n("EMAIL_REGISTERED");
     } elseif ($_POST['privacy'] != 1){
-        $sMessage = mi18n("Please accept your privacy policy!");
+        $sMessage = mi18n("ACCEPT_POLICY");
     } else {
         $sEMail = preg_replace('/[\r\n]+/', '', stripslashes($_POST['email']));
         $sName  = stripslashes($_POST["emailname"]);
@@ -105,7 +105,7 @@ if ($_POST['action'] == "subscribe") {
                     $recipient = $oRecipients->create($sEMail, $sName, 0, "", $iMessageType); // No group selected
                 } else {
                     if ($iSelCount > 1 && $aSettings['JoinMultiple'] != "enabled") {
-                        $sMessage = mi18n("Please select one group, only.");
+                        $sMessage = mi18n("SELECT_ONE_GROUP");
                     } else {
                         // Recipient wants to join special groups
                         $aGroups = explode(",", $aSettings['JoinGroups']);
@@ -120,7 +120,7 @@ if ($_POST['action'] == "subscribe") {
                         }
 
                         if ($bError) {
-                            $sMessage = mi18n("There was an error processing your request. Please ask the webmaster for help.");
+							$sMessage = mi18n("ERROR_REQUEST");
                         } else {
                             $recipient = $oRecipients->create($sEMail, $sName, 0, implode(",", $_POST['selNewsletterGroup']));
                         }
@@ -143,10 +143,10 @@ if ($_POST['action'] == "subscribe") {
 
             $mailer = new cMailer();
             $from = array($aSettings['SenderEMail'] => $aSettings['SenderEMail']);
-            $recipients = $mailer->sendMail($from, $sEMail, mi18n("Newsletter: Confirmation"), $sBody);
+			$recipients = $mailer->sendMail($from, $sEMail, mi18n("NEWSLETTER_CONFIRMATION"), $sBody);
 
             if ($recipients > 0) {
-                $sMessage = mi18n("Dear subscriber,
+				$sMessage = mi18n("Dear subscriber,
 your e-mail address is now subscribed for our newsletter. You will now receive an e-mail asking you to confirm your subscription.");
 
                 if ($aSettings['FrontendLink'] == "enabled") {
@@ -163,39 +163,39 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
 
                             if ($aSettings['FrontendConfirm'] == "ActivateUser") {
                                 // Inform about frontend user account creation
-                                $sMessage .= mi18n("<br><br>After the confirmation you will also receive a password which you can use with your e-mail address to logon to special areas on this website.");
+                                $sMessage .= mi18n("TXT_AFTER_CONFIRMATION");
                             }
                         } else {
-                            $sMessage .= mi18n("<br><br>Sorry, there was a problem creating your website account. Please ask the webmaster for help.");
+							$sMessage .= mi18n("TXT_PROBLEM_CREATING_ACCOUNT");
                         }
                     }
                 }
             } else {
-                $sMessage = mi18n("Sorry, there was a problem sending the confirmation mail to your e-mail address. Please ask the webmaster for help.");
+				$sMessage = mi18n("TXT_SENDING_CONFIRMATION_MAIL");
             }
         } else {
-            $sMessage = mi18n("Sorry, there was a problem subscribing your e-mail address for the newsletter. Please ask the webmaster for help.");
+            $sMessage = mi18n("TXT_PROBLEM_SUBSCRIBING_EMAIL");
         }
     }
 } elseif ($_POST['action'] == "delete") {
     if (!isset($_POST['email']) || !$_POST['email']) {
-        $sMessage = mi18n("Please specify an e-mail address.");
+        $sMessage = mi18n("SPECIFY_EMAIL");
     } elseif (!isValidMail($_POST['email']) || strpos($_POST['email'], ",") != false || strpos($_POST['email'], ";") != false) {
-        $sMessage = mi18n("Please specify a valid e-mail address.");
+        $sMessage = mi18n("SPECIFY_VALID_EMAIL");
     } elseif ($recipient = $oRecipients->emailExists($_POST['email'])) {
         $sBody = mi18n("TXTMAILDELETE")."\n" . $frontendURL . "front_content.php?changelang=".$lang."&idcatart=".$aSettings['HandlerID']."&unsubscribe=".$recipient->get("hash")."\n\n";
 
         $mailer = new cMailer();
         $from = array($aSettings['SenderEMail'] => $aSettings['SenderEMail']);
-        $recipients = $mailer->sendMail($from, $recipient->get('email'), mi18n("Newsletter: Cancel subscription"), $sBody);
+        $recipients = $mailer->sendMail($from, $recipient->get('email'), mi18n("NEWSLETTER_CANCEL"), $sBody);
 
         if ($recipients > 0) {
-            $sMessage = mi18n("Dear subscriber,<br>a mail has been sent to your e-mail address. Please confirm the cancelation of the newsletter subscription.");
+			$sMessage = mi18n("TXT_SUBSCRIBER_EMAIL_SEND");
         } else {
-            $sMessage = mi18n("Sorry, there was a problem sending you the cancelation confirmation e-mail. Please ask the webmaster for help.");
+			$sMessage = mi18n("PROBLEM_SENDING_CANCELATION_EMAIL");
         }
     } else {
-        $sMessage = mi18n("Sorry, the e-mail address was not found.");
+        $sMessage = mi18n("EMAIL_NOT_FOUND");
     }
 } elseif (strlen($_GET['confirm']) == 30 && isAlphanumeric($_GET['confirm'])) {
     $oRecipients->setWhere("idclient", $client);
@@ -211,7 +211,7 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
         $recipient->set("deactivated", 0);
         $recipient->store();
 
-        $sMessage = mi18n("Thank you! You have confirmed your subscription to our newsletter!");
+        $sMessage = mi18n("CONFIRMED_SUBSCRIPTION_NEWSLETTER");
 
         $oNewsletters = new NewsletterCollection;
         $oNewsletters->setWhere("idclient", $client);
@@ -222,7 +222,7 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
         if (($oNewsletter = $oNewsletters->next()) !== false) {
             $aRecipients = array(); // Needed, as used by reference
             $oNewsletter->sendDirect($aSettings['HandlerID'], $iID, false, $aRecipients);
-            $sMessage .= mi18n("The welcome newsletter is already on the way to you!");
+            $sMessage .= mi18n("WELCOME_NEWSLETTER");
         }
 
         if ($aSettings['FrontendLink'] == "enabled" && $aSettings['FrontendConfirm'] == "ActivateUser") {
@@ -237,26 +237,28 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
                 $frontenduser->set("password", $sPassword);
                 $frontenduser->store();
 
-                $sMessage .= mi18n("<br><br>Additionally, your website account has been activated. You can now use the following username and password to log in to access special areas on our website:<br>");
-                $sMessage .= mi18n("USERNAME: ").$sEMail.mi18n("<br>PASSWORD: ").$sPassword;
+				$sMessage .= mi18n("TXT_ACCOUNT_ACTIVATED");
+				$sMessage .= mi18n("USERNAME_COLON").$sEMail.mi18n("
 
-                $sBody = mi18n("TXTMAILPASSWORD")."\n\n".mi18n("USERNAME: ").$sEMail."\n".mi18n("PASSWORD: ").$sPassword."\n\n".mi18n("Click here to login: "). $frontendURL ."front_content.php?changelang=".$lang;
+_BR ").$sPassword;
+
+				$sBody = mi18n("TXTMAILPASSWORD")."\n\n".mi18n("USERNAME_COLON").$sEMail."\n".mi18n("PASSWORD_COLON ").$sPassword."\n\n".mi18n("LOGIN_CLICK"). $frontendURL ."front_content.php?changelang=".$lang;
 
                 $mailer = new cMailer();
                 $from = array($aSettings['SenderEMail'] => $aSettings['SenderEMail']);
                 $recipients = $mailer->sendMail($from, $sEMail, mi18n("WEBSITE_ACCOUNT"), $sBody);
 
                 if ($recipients > 0) {
-                    $sMessage .= mi18n("<br><br>The account details and the password has also been sent to your mail account..");
+                    $sMessage .= mi18n("ACOUNT_DETAILS_EMAIL");
                 } else {
-                    $sMessage .= mi18n("<br><br><b>Sorry, there was a problem sending you the account details by mail. Please remember the given password.</b><b>");
+                    $sMessage .= mi18n("TXT_PROBLEM_ACCOUNTDETAILS");
                 }
             } else {
-                $sMessage .= mi18n("<br><br>Sorry, there was a problem activating your website account, also. Please ask the webmaster for help.");
+				$sMessage .= mi18n("PROBLEM_ACTIVATING_EMAIL_ACCOUNT");
             }
         }
     } else {
-        $sMessage = mi18n("Sorry, there was a problem confirming your subscription. Please ask the webmaster for help.");
+		$sMessage = mi18n("PROBLEM_CONFIRMING_SUBSCRIPTION");
     }
 } elseif (strlen($_GET['stop']) == 30 && isAlphanumeric($_GET['stop'])) {
     $oRecipients->setWhere("idclient", $client);
@@ -267,9 +269,9 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
     if (($recipient = $oRecipients->next()) !== false) {
         $recipient->set("deactivated", 1);
         $recipient->store();
-        $sMessage = mi18n("Your newsletter subscription has been paused.");
+        $sMessage = mi18n("NEWSLETTER_SUBSCRIPTION_PAUSED");
     } else {
-        $sMessage = mi18n("Sorry, there was a problem pausing your newsletter subscription. Please ask the webmaster for help.");
+		$sMessage = mi18n("PROBLEM_PAUSING_NEWSLETTER_SUBSCRIPTION");
     }
 } elseif (strlen($_GET['goon']) == 30 && isAlphanumeric($_GET['goon'])) {
     $oRecipients->setWhere("idclient", $client);
@@ -280,9 +282,9 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
     if (($recipient = $oRecipients->next()) !== false) {
         $recipient->set("deactivated", 0);
         $recipient->store();
-        $sMessage = mi18n("Newsletter subscription has been resumed.");
+        $sMessage = mi18n("NEWSLETTER_SUBSCRIPTION_RESUMED");
     } else {
-        $sMessage = mi18n("Sorry, there was a problem resuming your newsletter subscription. Please ask the webmaster for help.");
+		$sMessage = mi18n("PROBLEM_RESUMING_NEWSLETTER_SUBSCRIPTION");
     }
 } elseif (strlen($_GET['unsubscribe']) == 30 && isAlphanumeric($_GET['unsubscribe'])) {
     $oRecipients->setWhere("idclient", $client);
@@ -294,7 +296,7 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
         $sEMail = $recipient->get("email"); // Saving recipient e-mail address for frontend account
         $oRecipients->delete($recipient->get("idnewsrcp"));
 
-        $sMessage = mi18n("Your e-mail address has been removed from our list of newsletter recipients.");
+        $sMessage = mi18n("EMAIL_ADDRESS_REMOVED");
 
         if ($aSettings['FrontendLink'] == "enabled") {
             $oFrontendUsers = new cApiFrontendUserCollection();
@@ -306,19 +308,19 @@ your e-mail address is now subscribed for our newsletter. You will now receive a
                 switch ($aSettings['FrontendDel']) {
                     case "DeleteUser": // Deleting frontend account
                         $oFrontendUsers->delete($frontenduser->get("idfrontenduser"));
-                        $sMessage .= mi18n("Your website account has been deleted.");
+                        $sMessage .= mi18n("WEBSITE_ACCOUNT_DELETED");
                         break;
                     case "DisableUser": // Disabling frontend account
                         $frontenduser->set("active", 0);
                         $frontenduser->store();
-                        $sMessage .= mi18n("Your website account has been disabled.");
+                        $sMessage .= mi18n("WEBSITE_ACCOUNT_DISABLED");
                         break;
                     default:
                 }
             }
         }
     } else {
-        $sMessage = mi18n("Sorry, there was a problem removing your e-mail address. Please ask the webmaster for help.");
+        $sMessage = mi18n("PROBLEM_REMOVING_EMAIL_ADDRESS");
     }
 }
 

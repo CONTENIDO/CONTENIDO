@@ -1,7 +1,7 @@
-Geschlossener Bereich Login=Closed area login
-name=name
-pass=pass
-einloggen=sign in
-Willkommen <strong>[uname]</strong>, schön, dass Sie wieder bei uns vorbeischauen.=Welcome, <strong>[uname]</strong>. Nice to have you with us again.
-Geschlossener Bereich Logout=Closed area sign out
-ausloggen=sign out
+CLOSED_AREA_LOGIN=Closed area login
+NAME=name
+PASS=pass
+LOGIN=sign in
+TXT_WELCOME_USER=Welcome, <strong>[uname]</strong>. Nice to have you with us again.
+CLOSED_AREA_LOGOUT=Closed area sign out
+LOGOUT=sign out

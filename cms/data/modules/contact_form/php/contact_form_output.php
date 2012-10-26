@@ -126,7 +126,7 @@ if (!isset($_POST['send'])) {
         if ($recipients > 0) {
             echo mi18n("TXT_REQUEST_SUBMITED") . $br;
         } else {
-            echo mi18n("TXT_REQUEST_NOT_SUBMITED.") . $br;
+            echo mi18n("TXT_REQUEST_NOT_SUBMITED") . $br;
         }
     }
 }

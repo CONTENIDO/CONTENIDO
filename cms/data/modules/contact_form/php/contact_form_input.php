@@ -74,7 +74,7 @@ $mId = uniqid('m_');
         <td><?php echo mi18n("SMTP_PORT");?></td>
         <td>
             <input type="text" name="<?php echo "CMS_VAR[8]";?>" value="<?php echo "CMS_VALUE[8]"; ?>"><br />
-            <small><?php echo mi18n("(STANDARD_PORT_IS_25)");?></small>
+            <small><?php echo mi18n("STANDARD_PORT");?></small>
         </td>
     </tr>
 </table>

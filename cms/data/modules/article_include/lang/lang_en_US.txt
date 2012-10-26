@@ -1,2 +1,2 @@
-Choose article=
-Please choose=
+CHOOSE_ARTICLE=Choose article
+PLEASE_CHOOSE=Please choose

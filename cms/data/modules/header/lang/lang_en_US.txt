@@ -1,0 +1,2 @@
+WELCOME=Welcome!
+TXT_WELCOME=To CONTENIDO Homepage

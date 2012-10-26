@@ -1,2 +1,2 @@
-WELCOME!=Willkommen!
+WELCOME=Willkommen!
 TXT_WELCOME=Zur CONTENIDO Homepage

@@ -70,8 +70,8 @@ while ($db->next_record()) {
 
     // construct the XML node
     $child = $sitemap->addChild('url');
-    $child->addChild('loc', conHtmlSpecialChars($link));
-    $child->addChild('lastmod', conHtmlSpecialChars($lastmod));
+    $child->addChild('loc', htmlspecialchars($link));
+    $child->addChild('lastmod', htmlspecialchars($lastmod));
     if (!empty($frequency)) {
         $child->addChild('changefreq', $frequency);
     }
@@ -120,9 +120,9 @@ function saveSitemap(SimpleXMLElement $sitemap, $filename = '') {
         $shortFilename = $cfgClient[$client]['sitemap']['frontendpath'] . $filename;
         $success = $sitemap->asXML($filename);
         if ($success) {
-            $transString = mi18n("XML sitemap successfully written to %s", $filename);
+            $transString = mi18n("XML_SITEMAP_SUCCES_WRITTEN", $filename);
         } else {
-            $transString = mi18n("XML sitemap could not be written to %s", $shortFilename);
+			$transString = mi18n("XML_SITEMAP_NOT_WRITTEN", $shortFilename);
         }
     }
 }

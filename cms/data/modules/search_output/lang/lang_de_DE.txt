@@ -9,4 +9,4 @@ VIEW_PREVIOUS_PAGE=vorherige Ergebnisseite anzeigen
 PREVIOUS=zurück
 LINK_SEARCH_RESULTS=Link zu Suchergebnis
 GAVE_NO_RESULTS=hat leider keine Treffer ergeben
-TXT_NO_SEARCH_RESULTS.=Keine Suchergebnisse - Bitte suchen Sie über das Sucheingabefeld!
+TXT_NO_SEARCH_RESULTS=Keine Suchergebnisse - Bitte suchen Sie über das Sucheingabefeld!
