@@ -483,18 +483,18 @@ class PimPluginSetup {
             // old uuId
             $oldId = $result->get('uuid');
 
-            if ($newId == $oldId) {
-                return true;
-            } else {
+            if ($pluginId == 0 && $newId == $oldId) {
                 $pageError = new cGuiPage('pim_error', 'pim');
                 $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
                 $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
-
-                if($pluginId != '0') {
-                	$pageError->displayError(i18n('You have to update the same plugin', 'pim'));
-                } else {
-                	$pageError->displayError(i18n('This plugin is already installed', 'pim'));
-                }
+                $pageError->displayError(i18n('This plugin is already installed', 'pim'));
+                $pageError->render();
+                exit();
+            } elseif($pluginId != 0 && $newId != $oldId) {
+                $pageError = new cGuiPage('pim_error', 'pim');
+                $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
+                $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
+                $pageError->displayError(i18n('You have to update the same plugin', 'pim'));
                 $pageError->render();
                 exit();
             }
