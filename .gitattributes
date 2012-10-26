@@ -1684,6 +1684,7 @@ contenido/plugins/cronjobs_overview/locale/cronjobs_overview.pot -text
 contenido/plugins/cronjobs_overview/locale/de_DE/LC_MESSAGES/cronjobs_overview.mo -text
 contenido/plugins/cronjobs_overview/locale/de_DE/LC_MESSAGES/cronjobs_overview.po -text
 contenido/plugins/cronjobs_overview/locale/potfiles.txt -text svneol=unset#text/plain
+contenido/plugins/cronjobs_overview/plugin.xml -text svneol=unset#text/plain
 contenido/plugins/cronjobs_overview/templates/left_bottom.html -text svneol=unset#text/plain
 contenido/plugins/cronjobs_overview/templates/left_top.html -text svneol=unset#text/plain
 contenido/plugins/cronjobs_overview/templates/right_bottom_crontab_edit.html -text svneol=unset#text/plain

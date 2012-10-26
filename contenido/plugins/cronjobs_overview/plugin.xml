@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugin>
+    <general active="1">
+        <plugin_name>Cronjobs Overview</plugin_name>
+        <plugin_foldername>cronjobs_overview</plugin_foldername>
+        <uuid>5AD0160D-EC51-9481-C9AB-A89319B55057</uuid>
+        <description>URL Shortener Plugin for CONTENIDO</description>
+        <author>Simon Sprankel</author>
+        <copyright>four for business AG</copyright>
+        <mail>info@4fb.de</mail>
+        <website>http://www.4fb.de</website>
+        <version>1.0.0</version>
+        <min_contenido_version>4.9.0-beta1</min_contenido_version>
+        <max_contenido_version></max_contenido_version>
+    </general>
+    <contenido>
+        <areas>
+            <area menuless="0">cronjob</area>
+        </areas>
+        <actions>
+            <action area="cronjob">cronjob_execute</action>
+            <action area="cronjob">cronjob_overview</action>
+        </actions>
+        <frames>
+            <frame area="cronjob" filetype="main" name="cronjobs_overview/includes/include.right_bottom.php" frameId="4" />
+			<frame area="cronjob" filetype="main" name="cronjobs_overview/includes/include.right_top.php" frameId="3" />
+        </frames>
+        <nav_sub>
+            <nav area="cronjob" level="0" navm="5">cronjobs_overview/xml/cronjobs_overview.xml;plugin/cronjob</nav>
+        </nav_sub>
+    </contenido>
+</plugin>
