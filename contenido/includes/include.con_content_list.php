@@ -53,6 +53,8 @@ if ($action == 'savecontype' || $action == 10) {
         // restore orginal values
         $data = $_REQUEST['data'];
         $value = $_REQUEST['value'];
+
+        $notification->displayNotification("info", i18n("Changes saved"));
     }
 
     conGenerateCodeForArtInAllCategories($idart);
@@ -60,6 +62,8 @@ if ($action == 'savecontype' || $action == 10) {
     if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
         $oContentColl = new cApiContentCollection();
         $oContentColl->delete((int) $_REQUEST['idcontent']);
+        $notification->displayNotification("info", i18n("Changes saved"));
+
     }
 }
 
@@ -86,7 +90,7 @@ foreach ($sortID as $name) {
     $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM %s AS a, %s AS b "
          . "WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s' ORDER BY idtype, typeid, idcontent";
     $db->query($sql, $cfg["tab"]["content"], $cfg["tab"]["type"], $_REQUEST["idartlang"], $name);
-    while ($db->next_record()) {
+    while ($db->next_record() && $db->f("value") != '') {
         $result[$db->f("name")][$db->f("id")] = $db->f("value");
         if (!in_array($db->f("name"), $aList)) {
             $aList[$db->f("idtype")] = $db->f("name");
@@ -95,7 +99,7 @@ foreach ($sortID as $name) {
 }
 
 $typeAktuell = getAktuellType($typeAktuell, $aList);
-//print_r($result);
+//print_r($typeAktuell);
 //create Layoutcode
 //if ($action == 'con_content') {
 //@fulai.zhang: Mark submenuitem 'Editor' in the CONTENIDO Backend (Area: Contenido --> Articles --> Editor)
@@ -187,8 +191,7 @@ if (count($result) <= 0) {
 } else {
     foreach ($aIdtype as $idtype) {
         foreach ($sortID as $name) {
-            if (in_array($name, array_keys($result)) && count($result[$name]) >= $idtype) {
-
+            if (in_array($name, array_keys($result)) && $result[$name][$idtype] != '') {
                 if (in_array($name . "[" . $idtype . "]", $typeAktuell)) {
                     $class = '';
                 } else {
