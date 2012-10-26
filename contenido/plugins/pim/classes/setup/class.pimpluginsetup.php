@@ -441,7 +441,7 @@ class PimPluginSetup {
      * @param integer $pluginId id of installed plugid
      * @return void
      */
-    public function checkSamePlugin($pluginId) {
+    public function checkSamePlugin($pluginId = '0') {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
         $sess = cRegistry::getSession();
@@ -472,23 +472,32 @@ class PimPluginSetup {
         $newId = $tempXml->general->uuid;
 
         $pimPluginColl = new PimPluginCollection();
-        $pimPluginColl->setWhere('idplugin', $pluginId);
+
+        if ($pluginId != '0') {
+            $pimPluginColl->setWhere('idplugin', $pluginId);
+        }
+
         $pimPluginColl->query();
-        $result = $pimPluginColl->next();
+        while ($result = $pimPluginColl->next()) {
 
-        // old uuId
-        $oldId = $result->get('uuid');
+            // old uuId
+            $oldId = $result->get('uuid');
 
-        if ($newId == $oldId) {
-            return true;
-        } else {
+            if ($newId == $oldId) {
+                return true;
+            } else {
+                $pageError = new cGuiPage('pim_error', 'pim');
+                $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
+                $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
 
-            $pageError = new cGuiPage('pim_error', 'pim');
-            $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
-            $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
-            $pageError->displayError(i18n('You have to update the same plugin', 'pim'));
-            $pageError->render();
-            exit();
+                if($pluginId != '0') {
+                	$pageError->displayError(i18n('You have to update the same plugin', 'pim'));
+                } else {
+                	$pageError->displayError(i18n('This plugin is already installed', 'pim'));
+                }
+                $pageError->render();
+                exit();
+            }
         }
     }
 

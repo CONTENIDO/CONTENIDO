@@ -20,11 +20,11 @@ if (!defined('CON_FRAMEWORK')) {
 $setup = new PimPluginSetup();
 $page = new cGuiPage('pim_overview', 'pim');
 
-if (!$perm->isSysadmin($currentuser) ) {
+if (!$perm->isSysadmin($currentuser)) {
     // access denied
     $page->displayCriticalError(i18n("Permission denied"));
     $page->render();
-    exit;
+    exit();
 }
 
 // check disable plugin var
@@ -44,6 +44,7 @@ switch ($viewAction) {
         $setup->uninstall($_GET['pluginId'], $page);
         break;
     case 'install':
+        $setup->checkSamePlugin();
         installationRoutine($page);
         break;
     case 'install-extracted':
