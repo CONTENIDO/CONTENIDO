@@ -19,8 +19,8 @@
 
         <areas>
             <area menuless="1">mod_rewrite</area>
-            <area parent="mod_rewite" menuless="1">mod_rewrite_expert</area>
-			<area parent="mod_rewite" menuless="1">mod_rewrite_test</area>
+            <area parent="mod_rewrite" menuless="1">mod_rewrite_expert</area>
+			<area parent="mod_rewrite" menuless="1">mod_rewrite_test</area>
         </areas>
 
         <actions>
