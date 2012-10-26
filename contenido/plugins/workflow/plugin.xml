@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugin>
+    <general active="1">
+        <plugin_name>Workflow</plugin_name>
+        <plugin_foldername>workflow</plugin_foldername>
+        <uuid>DBD45468-60CD-00E2-9772-2FCD3BC582DB</uuid>
+        <description>Managed workflow via backend</description>
+        <author>Timo Hummel</author>
+        <copyright>four for business AG</copyright>
+        <mail>info@4fb.de</mail>
+        <website>http://www.4fb.de</website>
+        <version>1.0.0</version>
+        <min_contenido_version>4.9.0-beta1</min_contenido_version>
+        <max_contenido_version></max_contenido_version>
+    </general>
+    <contenido>
+        <areas>
+            <area menuless="0">workflow</area>
+			<area parent="workflow" menuless="0">workflow_common</area>
+			<area parent="workflow" menuless="0">workflow_steps</area>
+			<area parent="workflow" menuless="0">workflow_step_edit</area>
+			<area parent="con" menuless="0">con_workflow</area>
+        </areas>
+		<actions>
+			<action area="workflow_common">workflow_show</action>
+			<action area="workflow_common">workflow_create</action>
+			<action area="workflow_common">workflow_save</action>			
+			<action area="workflow">workflow_delete</action> 
+			<action area="workflow_steps">workflow_step_edit</action>
+			<action area="workflow_steps">workflow_step_up</action>
+			<action area="workflow_steps">workflow_step_down</action>
+			<action area="workflow_steps">workflow_save_step</action>
+			<action area="workflow_steps">workflow_create_step</action>
+			<action area="workflow_steps">workflow_step_delete</action>
+			<action area="workflow_steps">workflow_user_up</action>
+			<action area="workflow_steps">workflow_user_down</action>
+			<action area="workflow_steps">workflow_create_user</action>
+			<action area="workflow_steps">workflow_user_delete</action>
+			<action area="str">workflow_cat_assign</action>
+			<action area="con">workflow_do_action</action>
+			<action area="str">workflow_inherit_down</action>
+			<action area="con_workflow">workflow_task_user_select</action>
+			<action area="con_workflow">workflow_do_action</action>
+		</actions>
+        <frames>
+            <frame area="workflow" filetype="main" name="workflow/includes/include.workflow_left_top.php" frameId="1" />
+			<frame area="workflow" filetype="main" name="workflow/includes/include.workflow_list.php" frameId="2" />
+			<frame area="workflow_common" filetype="main" name="workflow/includes/include.workflow_edit.php" frameId="3" />
+			<frame area="workflow" filetype="main" name="workflow/includes/include.workflow_subnav.php" frameId="4" />
+			<frame area="workflow_steps" filetype="main" name="workflow/includes/include.workflow_steps.php" frameId="4" />
+			<frame area="con_workflow" filetype="main" name="workflow/includes/include.workflow_tasks.php" frameId="3" />
+        </frames>
+        <nav_sub>
+            <nav area="workflow" level="0" navm="3">workflow/xml/lang_de_DE.xml;navigation/extra/workflow/main</nav>
+			<nav area="workflow_common" level="1" navm="0">workflow/xml/lang_de_DE.xml;navigation/extra/workflow/settings</nav>
+			<nav area="workflow_steps" level="1" navm="0">workflow/xml/lang_de_DE.xml;navigation/extra/workflow/steps</nav>
+        </nav_sub>
+    </contenido>
+</plugin>
