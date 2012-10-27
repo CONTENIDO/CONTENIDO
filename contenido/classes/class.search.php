@@ -1229,20 +1229,20 @@ class cSearch extends cSearchBaseAbstract {
         // }
         // }
 
-        $sub_cats = array(
+        $aSubCats = array(
             $cat_start
         );
         while ($this->db->next_record()) {
             // ommit if cat is no child of any recognized descendant
-            if (!in_array($this->db->f('parentid'), $sub_cats)) {
+            if (!in_array($this->db->f('parentid'), $aSubCats)) {
                 continue;
             }
             // ommit if cat is already recognized (happens with $cat_start)
-            if (in_array($this->db->f('idcat'), $sub_cats)) {
+            if (in_array($this->db->f('idcat'), $aSubCats)) {
                 continue;
             }
             // add cat as recognized descendant
-            $sub_cats[] = $this->db->f('idcat');
+            $aSubCats[] = $this->db->f('idcat');
         }
 
         return $aSubCats;
