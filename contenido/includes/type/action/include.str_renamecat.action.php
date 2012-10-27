@@ -23,6 +23,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude('includes', 'functions.str.php');
+
 strRenameCategory($idcat, $lang, $newcategoryname, $newcategoryalias);
 cApiCecHook::execute("Contenido.Action.str_renamecat.AfterCall", array(
     'idcat'            => $idcat,

@@ -20,6 +20,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude('includes', 'functions.mod.php');
+
 if (empty($type)) {
     $type = $customtype;
 }

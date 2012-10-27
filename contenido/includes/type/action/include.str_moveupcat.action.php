@@ -23,6 +23,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude('includes', 'functions.str.php');
+
 strMoveUpCategory($idcat);
 strRemakeTreeTable();
 cApiCecHook::execute("Contenido.Action.str_moveupcat.AfterCall", $idcat);

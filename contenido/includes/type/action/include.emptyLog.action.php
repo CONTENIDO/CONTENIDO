@@ -23,5 +23,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude('includes', 'functions.system.php');
 $tmp_notification = emptyLogFile();
 ?>

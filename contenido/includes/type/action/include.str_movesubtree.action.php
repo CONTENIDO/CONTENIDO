@@ -23,6 +23,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude('includes', 'functions.str.php');
+
 strMoveSubtree($idcat, $parentid_new, $preid_new, $postid_new);
 strRemakeTreeTable();
 cApiCecHook::execute("Contenido.Action.str_movesubtree.AfterCall", array(

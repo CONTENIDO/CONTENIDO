@@ -23,6 +23,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude('includes', 'functions.str.php');
+
 $tmp_newid  = strNewCategory($idcat, $categoryname, true, $categoryalias, $visible, $public, $idtplcfg);
 cApiCecHook::execute("Contenido.Action.str_newcat.AfterCall", array(
     'newcategoryid' => $tmp_newid,

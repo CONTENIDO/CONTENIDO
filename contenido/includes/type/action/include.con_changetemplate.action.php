@@ -24,6 +24,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 if ($perm->have_perm_area_action("con", "con_changetemplate") || $perm->have_perm_area_action_item("con", "con_changetemplate", $idcat)) {
+	cInclude('includes', 'functions.con.php');
     conChangeTemplateForCat($idcat, $idtpl);
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));

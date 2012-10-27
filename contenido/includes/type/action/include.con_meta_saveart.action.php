@@ -20,6 +20,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude('includes', 'functions.con2.php');
+
 $artLang = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
 $artLang->set('pagetitle', $_POST["page_title"]);
 $artLang->store();

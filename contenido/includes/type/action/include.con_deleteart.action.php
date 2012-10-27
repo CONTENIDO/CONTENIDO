@@ -23,6 +23,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude('includes', 'functions.con.php');
+
 if (isset($_POST['idarts'])) {
     //delete articles (bulk editing)
     $idarts = json_decode($_POST['idarts'], true);

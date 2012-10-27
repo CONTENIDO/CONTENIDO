@@ -23,5 +23,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-conMakeStart ($idcatart, $is_start);
+cInclude('includes', 'functions.con.php');
+conMakeStart($idcatart, $is_start);
 ?>

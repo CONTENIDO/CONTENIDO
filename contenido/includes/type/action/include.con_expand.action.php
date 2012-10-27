@@ -23,5 +23,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-conExpand ($idcat, $lang, $expanded);
+// TODO: conExpand is not defined in the system. Where does this come from?!
+// conExpand($idcat, $lang, $expanded);
 ?>

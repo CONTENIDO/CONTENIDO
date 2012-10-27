@@ -23,5 +23,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude('includes', 'functions.tpl.php');
 $idtpl = tplEditTemplate($changelayout, $idtpl, $tplname, $description, $idlay, $c, $tplisdefault);
 ?>

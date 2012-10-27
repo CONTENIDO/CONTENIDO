@@ -23,7 +23,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
+cInclude('includes', 'functions.con.php');
 if (isset($_POST['idarts'])) {
     $idarts = json_decode($_POST['idarts'], true);
     $online = $_POST['invert'] == 1 ? 0 : 1;

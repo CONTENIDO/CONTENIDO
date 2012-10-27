@@ -23,5 +23,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude('includes', 'functions.lay.php');
 $idlay = layEditLayout($idlay, $layname, $description, $code);
 ?>

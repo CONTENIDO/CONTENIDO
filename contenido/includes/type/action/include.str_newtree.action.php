@@ -23,6 +23,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude('includes', 'functions.str.php');
+
 $tmp_newid = strNewTree($categoryname, $categoryalias, $visible, $public, $idtplcfg);
 strRemakeTreeTable();
 cApiCecHook::execute("Contenido.Action.str_newtree.AfterCall", array(
