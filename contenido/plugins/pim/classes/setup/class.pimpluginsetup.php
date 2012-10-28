@@ -164,8 +164,8 @@ class PimPluginSetup {
             // security check
             $area = cSecurity::escapeString($tempXml->area[$i]);
             $attributes = array(
-                    'parent' => cSecurity::escapeString($attributes['parent']),
-                    'menuless' => cSecurity::toInteger($attributes['menuless'])
+                'parent' => cSecurity::escapeString($attributes['parent']),
+                'menuless' => cSecurity::toInteger($attributes['menuless'])
             );
 
             // parent fix
@@ -514,7 +514,7 @@ class PimPluginSetup {
             $pageError = new cGuiPage('pim_error', 'pim');
             $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
             $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
-            $pageError->displayError(i18n('Plugin Manager accepted only Zip archives', 'pim'));
+            $pageError->displayError(i18n('Plugin Manager accepts only Zip archives', 'pim'));
             $pageError->render();
             exit();
         }
