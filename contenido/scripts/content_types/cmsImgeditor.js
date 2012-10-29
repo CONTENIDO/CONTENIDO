@@ -302,7 +302,7 @@ cContentTypeImgeditor.prototype.createMKDir = function() {
                             });
 
                             if ($.inArray(title, titles) === -1) {
-                                $('div.cms_image .con_str_tree li div>a').each(function(index) {
+                                $('div.cms_imgeditor .con_str_tree li div>a').each(function(index) {
                                     if ($(this).attr('title') === self.selectedPath) {
                                         $(this).parent().parent('li:has(ul)').children('ul').remove();
                                         $(this).parent().after(msg);
