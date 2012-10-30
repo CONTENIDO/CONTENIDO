@@ -48,5 +48,5 @@ while (($fegroup = $fegroups->next()) !== false) {
     }
 }
 
-$page->set('s', 'FORM', $menu->render());
+$page->set('s', 'FORM', $menu->render(false));
 $page->render();
