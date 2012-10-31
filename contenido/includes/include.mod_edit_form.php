@@ -57,7 +57,7 @@ if ($action == "mod_delete") {
     }
 }
 
-if (($action == "mod_synch") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
+if (($action == "mod_sync") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
     $notification->displayNotification("error", i18n("No permission"));
     return;
 }
