@@ -440,18 +440,6 @@ class cApiDbfs extends Item {
         return parent::store();
     }
 
-    public function setField($field, $value, $safe = true) {
-        if ($field == 'dirname' || $field == 'filename' || $field == 'mimetype') {
-            // Don't do safe encoding
-            $safe = false;
-
-            $value = str_replace("'", '', $value);
-            $value = str_replace('"', '', $value);
-        }
-
-        parent::setField($field, $value, $safe);
-    }
-
     /**
      * Removes the DBFS protocol and leading '/' from received path.
      *

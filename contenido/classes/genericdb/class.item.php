@@ -385,11 +385,16 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         foreach ($this->modifiedValues as $key => $bValue) {
+            $value = $this->values[$key];
+            if (is_string($value)) {
+                $value = $this->db->escape($value);
+            }
+
             if ($first == true) {
-                $sql .= "`$key` = '" . $this->values[$key] . "'";
+                $sql .= "`$key` = '" . $value . "'";
                 $first = false;
             } else {
-                $sql .= ", `$key` = '" . $this->values[$key] . "'";
+                $sql .= ", `$key` = '" . $value . "'";
             }
         }
 

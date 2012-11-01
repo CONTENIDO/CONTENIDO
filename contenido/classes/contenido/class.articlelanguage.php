@@ -449,10 +449,6 @@ class cApiArticleLanguage extends Item {
                 break;
         }
 
-        if (is_string($value)) {
-            $value = $this->escape($value);
-        }
-
         parent::setField($name, $value, $bSafe);
     }
 

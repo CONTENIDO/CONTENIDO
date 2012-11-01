@@ -93,10 +93,6 @@ class cApiMetaType extends Item {
             $value = (int) $value;
         }
 
-        if (is_string($value)) {
-            $value = $this->escape($value);
-        }
-
         parent::setField($name, $value, $bSafe);
     }
 
