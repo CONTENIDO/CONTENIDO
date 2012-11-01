@@ -6,6 +6,9 @@
  * Description:
  * Edit file
  *
+ * @fixme: Rework logic for creation of cApiFileInformation entries
+ *         It may happpen, that we have already a file but not a entry or vice versa!
+ *
  * @package CONTENIDO Backend Includes
  * @version 1.5.1
  * @author Willi Mann
@@ -70,12 +73,12 @@ if ($action == $sActionDelete) {
         }
     }
     $sReloadScript = "<script type=\"text/javascript\">
-    var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-    if (left_bottom) {
-    var href = left_bottom.location.href;
-    href = href.replace(/&file[^&]*/, '');
-    left_bottom.location.href = href+'&file='+'" . $sFilename . "';
-    }
+        var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
+        if (left_bottom) {
+            var href = left_bottom.location.href;
+            href = href.replace(/&file[^&]*/, '');
+            left_bottom.location.href = href+'&file='+'" . $sFilename . "';
+        }
     </script>";
 
     $page->addScript($sReloadScript);
@@ -158,12 +161,20 @@ if ($action == $sActionDelete) {
         $fileInfoCollection = new cApiFileInformationCollection();
         $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
 
+        // @fixme: Rework logic. Even if we have already a file, there may be no db entry available!
+        if (0 == count($aFileInfo)) {
+            // No entry, create it
+            $fileInfoCollection->create('templates', $sFilename, $_REQUEST['description']);
+        }
+
+        // @fixme: Check condition below, how is it possible to have an db entry with primary key?
         if ((count($aFileInfo) > 0) && ($aFileInfo['idsfi'] != '')) {
             $oVersion = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame, $sOrigFileName);
             // Create new Layout Version in cms/version/css/ folder
             $oVersion->createNewVersion();
         }
 
+        // @fixme: no need to update if it was created before (see code above)
         $fileInfoCollection = new cApiFileInformationCollection();
         $fileInfoCollection->updateFile($sOrigFileName, 'templates', $_REQUEST['description'], $sFilename);
 
