@@ -101,7 +101,7 @@ function buildCategorySelectRights() {
 
         $sCategoryname = $props['name'];
         $sCategoryname = cApiStrTrimHard($sCategoryname, 30);
-        $oHtmlSelectOption = new cHTMLOptionElement($spaces . ">" . $sCategoryname, $tmpidcat, false, !$props['perm']);
+        $oHtmlSelectOption = new cHTMLOptionElement($spaces . ">" . conHtmlSpecialChars($sCategoryname), $tmpidcat, false, !$props['perm']);
         $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
     }
 
@@ -133,15 +133,15 @@ function getStrExpandCollapseButton($item, $catName) {
             $expandlink = $sess->url($selflink . "?area=$area&frame=$frame&expand=" . $item->id);
             $img->setSrc($item->collapsed_icon);
             $img->setAlt(i18n("Open category"));
-            return '<a href="' . $expandlink . '">' . $img->render() . '</a>&nbsp;' . '<a href="' . $expandlink . '"' . $title . '>' . $catName . '</a>';
+            return '<a href="' . $expandlink . '">' . $img->render() . '</a>&nbsp;' . '<a href="' . $expandlink . '"' . $title . '>' . conHtmlSpecialChars($catName) . '</a>';
         } else {
             $collapselink = $sess->url($selflink . "?area=$area&frame=$frame&collapse=" . $item->id);
             $img->setSrc($item->expanded_icon);
             $img->setAlt(i18n("Close category"));
-            return '<a href="' . $collapselink . '">' . $img->render() . '</a>&nbsp;' . '<a href="' . $collapselink . '"' . $title . '>' . $catName . '</a>';
+            return '<a href="' . $collapselink . '">' . $img->render() . '</a>&nbsp;' . '<a href="' . $collapselink . '"' . $title . '>' . conHtmlSpecialChars($catName) . '</a>';
         }
     } else {
-        return '<img src="images/spacer.gif" style="padding:4px;" width="7" height="7">&nbsp;<span' . $title . '>' . $catName . '</span>';
+        return '<img src="images/spacer.gif" style="padding:4px;" width="7" height="7">&nbsp;<span' . $title . '>' . conHtmlSpecialChars($catName) . '</span>';
     }
 }
 
@@ -638,9 +638,11 @@ foreach ($objects as $key => $value) {
         $aRecord = array();
         $sCatName = $value->name;
 
-        $aRecord['catn'] = str_replace('\'', '\\\'', $sCatName);
+#        $aRecord['catn'] = str_replace('\'', '\\\'', $sCatName);
+        $aRecord['catn'] = conHtmlSpecialChars($sCatName);
         $sAlias = $value->custom['alias'];
-        $aRecord['alias'] = str_replace('\'', '\\\'', $sAlias);
+#        $aRecord['alias'] = str_replace('\'', '\\\'', $sAlias);
+        $aRecord['alias'] = conHtmlSpecialChars($sAlias);
         $aRecord['idtplcfg'] = $value->custom['idtplcfg'];
         $aRecord['pName'] = $bPermRename;
         $aRecord['pTplcfg'] = $bPermTplcfg;
