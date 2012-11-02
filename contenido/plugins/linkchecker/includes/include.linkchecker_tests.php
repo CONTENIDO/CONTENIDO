@@ -199,7 +199,7 @@ function checkLinks() {
                 $sDirname = substr($sDBurl, 0, $iPos);
                 $sFilename = substr($sDBurl, $iPos + 1);
 
-                // Check categorys
+                // Check dbfs
                 $sql = "SELECT iddbfs FROM " . $cfg['tab']['dbfs'] . " WHERE dirname IN('" . $sDirname . "', '" . conHtmlEntityDecode($sDirname) . "', '" . $sDirname . "') AND filename = '" . $sFilename . "'";
                 $db->query($sql);
 
