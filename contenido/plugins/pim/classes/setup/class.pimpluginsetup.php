@@ -18,6 +18,8 @@ if (!defined('CON_FRAMEWORK')) {
 }
 class PimPluginSetup {
 
+    protected $sqlPrefix = "!PREFIX!";
+
     protected $valid = false;
 
     protected $tempXml;
@@ -316,8 +318,8 @@ class PimPluginSetup {
 
         for ($i = 0; $i < $tempSqlLines; $i++) {
 
-            if (strpos($tempSqlContent[$i], 'CREATE TABLE IF NOT EXISTS !PREFIX!') === 0 || strpos($tempSqlContent[$i], 'INSERT INTO !PREFIX!') === 0 || strpos($tempSqlContent[$i], 'UPDATE !PREFIX!') === 0 || strpos($tempSqlContent[$i], 'ALTER TABLE !PREFIX!') === 0) {
-                $tempSqlContent[$i] = str_replace('!PREFIX!', $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
+            if (strpos($tempSqlContent[$i], 'CREATE TABLE IF NOT EXISTS ' . $this->sqlPrefix) === 0 || strpos($tempSqlContent[$i], 'INSERT INTO ' . $this->sqlPrefix) === 0 || strpos($tempSqlContent[$i], 'UPDATE ' . $this->sqlPrefix) === 0 || strpos($tempSqlContent[$i], 'ALTER TABLE ' . $this->sqlPrefix) === 0) {
+                $tempSqlContent[$i] = str_replace($this->sqlPrefix, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
                 $db->query($tempSqlContent[$i]);
             }
         }
@@ -427,8 +429,8 @@ class PimPluginSetup {
 
         for ($i = 0; $i < $tempSqlLines; $i++) {
 
-            if (strpos($tempSqlContent[$i], 'DELETE FROM !PREFIX!') === 0 || strpos($tempSqlContent[$i], 'DROP TABLE !PREFIX!') === 0) {
-                $tempSqlContent[$i] = str_replace('!PREFIX!', $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
+            if (strpos($tempSqlContent[$i], 'DELETE FROM ' . $this->sqlPrefix) === 0 || strpos($tempSqlContent[$i], 'DROP TABLE ' . $this->sqlPrefix) === 0) {
+                $tempSqlContent[$i] = str_replace($this->sqlPrefix, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
                 $db->query($tempSqlContent[$i]);
             }
         }
@@ -449,9 +451,10 @@ class PimPluginSetup {
         // name of uploaded file
         $tempFileName = cSecurity::escapeString($_FILES['package']['name']);
 
-        // path to temp-dir
+        // path to temporary dir
         $tempFileNewPath = $cfg['path']['frontend'] . '/' . $cfg['path']['temp'];
 
+        // move temporary files into CONTENIDO temp dir
         move_uploaded_file($_FILES['package']['tmp_name'], $tempFileNewPath . $tempFileName);
 
         // initalizing plugin archive extractor
@@ -462,17 +465,21 @@ class PimPluginSetup {
             $extractor->destroyTempFiles();
         }
 
+        // extract plugin.xml content to variable
         $tempPluginXmlContent = $extractor->extractArchiveFileToVariable('plugin.xml');
         $this->setTempXml($tempPluginXmlContent);
 
         // load plugin.xml to an xml-string
         $tempXml = simplexml_load_string($this->getTempXml());
 
-        // new uuId
+        // save new uuId
         $newId = $tempXml->general->uuid;
 
+        // initializing PimPluginCollection class
         $pimPluginColl = new PimPluginCollection();
 
+        // if pluginId is not null, add idplugin for sql statement (case:
+        // update)
         if ($pluginId != '0') {
             $pimPluginColl->setWhere('idplugin', $pluginId);
         }
@@ -480,10 +487,11 @@ class PimPluginSetup {
         $pimPluginColl->query();
         while ($result = $pimPluginColl->next()) {
 
-            // old uuId
+            // save old uuId
             $oldId = $result->get('uuid');
 
             if ($pluginId == 0 && $newId == $oldId) { // case: new installation
+                                                      // failed
                 $pageError = new cGuiPage('pim_error', 'pim');
                 $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
                 $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
@@ -491,6 +499,7 @@ class PimPluginSetup {
                 $pageError->render();
                 exit();
             } elseif ($pluginId != 0 && $newId != $oldId) { // case: update
+                                                            // failed
                 $pageError = new cGuiPage('pim_error', 'pim');
                 $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
                 $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
