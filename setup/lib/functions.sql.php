@@ -143,12 +143,13 @@ function urlDecodeTables($db) {
     urlDecodeTable($db, $cfg['tab']['upl_meta']);
     urlDecodeTable($db, $cfg['tab']['container']);
     urlDecodeTable($db, $cfg['sql']['sqlprefix'] . '_pica_lang', true);
-    urlDecodeTable($db, $cfg['tab']['news_rcp']);
+	urlDecodeTable($db, $cfg['sql']['sqlprefix'] . '_pi_news_rcp', true);
     urlDecodeTable($db, $cfg['tab']['art_lang']);
     urlDecodeTable($db, $cfg['tab']['user_prop']);
     urlDecodeTable($db, $cfg['tab']['system_prop']);
     urlDecodeTable($db, $cfg['tab']['art_spec']);
-    urlDecodeTable($db, $cfg['tab']['news_jobs']);
+	urlDecodeTable($db, $cfg['sql']['sqlprefix'] . '_pi_news_jobs', true);
+	
 }
 
 function urlDecodeTable($db, $table, $checkTableExists = false) {
