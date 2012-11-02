@@ -1,33 +1,22 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * Whitelist for the Linkchecker
- *
- * Requirements:
- * @con_php_req 5.0
+ * Project: CONTENIDO Content Management System Description: Whitelist for the
+ * Linkchecker Requirements: @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Plugins
+ * @package CONTENIDO Plugins
  * @subpackage Linkchecker
- * @version    2.0.1
- * @author     Frederic Schneider
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.8.7
- *
- * {@internal
- *   created 2007-11-02
- *   modified 2007-12-13, 2008-05-09, 2008-05-15, Frederic Schneider
- *   modified 2008-06-02, Frederic Schneider, add security fix
- *
- *   $Id$:
- * }}
- *
+ * @version 2.0.1
+ * @author Frederic Schneider
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release 4.8.7 {@internal created
+ *        2007-11-02 modified 2007-12-13, 2008-05-09, 2008-05-15, Frederic
+ *        Schneider modified 2008-06-02, Frederic Schneider, add security fix
+ *        $Id: include.linkchecker_whitelist.php 3076 2012-08-28 12:43:55Z
+ *        konstantinos.katikak $: }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -38,8 +27,8 @@ $plugin_name = "linkchecker";
 $iWhitelist_timeout = 2592000; // 30 days
 global $perm;
 
-if(!$perm->have_perm_area_action($plugin_name, $plugin_name)) {
-    exit;
+if (!$perm->have_perm_area_action($plugin_name, $plugin_name)) {
+    exit();
 }
 
 $backendUrl = cRegistry::getBackendUrl();
@@ -49,7 +38,7 @@ $tpl->set('s', 'CONTENIDO_URL', $backendUrl);
 $tpl->set('s', 'SID', $sess->id);
 
 /* Whitelist: Delete */
-if(!empty($_GET['url_to_delete'])) {
+if (!empty($_GET['url_to_delete'])) {
     $sql = "DELETE FROM " . $cfg['tab']['whitelist'] . " WHERE url = '" . cSecurity::escapeDB(base64_decode($_GET['url_to_delete']), $db) . "'";
     $db->query($sql);
 }
@@ -61,7 +50,7 @@ $db->query($sql);
 
 while ($db->next_record()) {
 
-    $tpl2 = new cTemplate;
+    $tpl2 = new cTemplate();
     $tpl2->reset();
 
     $tpl2->set('s', 'CONTENIDO_URL', $backendUrl);
@@ -71,7 +60,6 @@ while ($db->next_record()) {
     $tpl2->set('s', 'ENTRY', strftime(i18n('%Y-%m-%d, %I:%M%S %p', $plugin_name), $db->f("lastview")));
 
     $aWhitelist .= $tpl2->generate($cfg['templates']['linkchecker_whitelist_urls'], 1);
-
 }
 
 // Template- and languagevars
