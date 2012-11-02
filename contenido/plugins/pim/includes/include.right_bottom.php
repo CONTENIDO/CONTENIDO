@@ -20,8 +20,8 @@ if (!defined('CON_FRAMEWORK')) {
 $setup = new PimPluginSetup();
 $page = new cGuiPage('pim_overview', 'pim');
 
+// access denied
 if (!$perm->isSysadmin($currentuser)) {
-    // access denied
     $page->displayCriticalError(i18n("Permission denied"));
     $page->render();
     exit();
@@ -54,7 +54,15 @@ switch ($viewAction) {
         break;
 }
 
-// TODO: Move code into classes
+// TODO: Move the following function into classes
+/**
+ * Installation steps to install a new plugin
+ * Function differ between extracted and Zip archive plugins
+ *
+ * @param cGuiPage $page
+ * @param boolean $isExtracted
+ * @param string $extractedPath foldername from extracted plugin
+ */
 function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
     global $setup;
     $cfg = cRegistry::getConfig();
@@ -65,9 +73,10 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
         // name of uploaded file
         $tempFileName = cSecurity::escapeString($_FILES['package']['name']);
 
-        // path to temp-dir
+        // path to temporary dir
         $tempFileNewPath = $cfg['path']['frontend'] . '/' . $cfg['path']['temp'];
 
+        // move temporary files into CONTENIDO temp dir
         move_uploaded_file($_FILES['package']['tmp_name'], $tempFileNewPath . $tempFileName);
 
         // initalizing plugin archive extractor
@@ -147,9 +156,8 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
     // success message
     $page->displayInfo(i18n('The plugin has been successfully installed. To apply the changes please login into backend again.', 'pim'));
 
+    // close extracted archive
     if ($isExtracted === false) {
-
-        // close extracted archive
         $extractor->closeArchive();
     }
 }
