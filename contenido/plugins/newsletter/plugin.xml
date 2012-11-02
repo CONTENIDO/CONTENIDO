@@ -26,9 +26,24 @@
             <action area="news">news_save</action>
             <action area="news">news_create</action>
             <action area="news">news_delete</action>
+            <action area="news">news_duplicate</action>
+            <action area="news">news_add_job</action>
+            <action area="news">news_send_test</action>
+            <action area="news_jobs">news_job_delete</action>
+            <action area="news_jobs">news_job_details</action>
+            <action area="news_jobs">news_job_detail_delete</action>
+            <action area="news">news_html_settings</action>
+            <action area="news_jobs">news_job_run</action>
             <action area="recipients">recipients_save</action>
             <action area="recipients">recipients_create</action>
             <action area="recipients">recipients_delete</action>
+            <action area="recipientgroups">recipientgroup_delete</action>
+            <action area="recipientgroups">recipientgroup_create</action>
+            <action area="recipientgroups">recipientgroup_recipient_delete</action>
+            <action area="recipientgroups">recipientgroup_save_group</action>
+            <action area="recipients">recipients_purge</action>
+            <action area="recipients_import">recipients_import</action>
+            <action area="recipients_import">recipients_import_exec</action>
         </actions>
         <frames>
             <frame area="news" filetype="main" name="newsletter/includes/include.newsletter_left_top.php" frameId="1" />
@@ -53,6 +68,7 @@
         <nav_sub>
             <nav area="recipients" level="1" navm="3">newsletter/xml/;navigation/extra/recipients</nav>
             <nav area="recipientgroups" level="1" navm="3">newsletter/xml/;navigation/extra/recipientgroups</nav>
+            <nav area="news" level="0" navm="3">newsletter/xml/;navigation/extra/newsletter</nav>
         </nav_sub>
     </contenido>
 </plugin>

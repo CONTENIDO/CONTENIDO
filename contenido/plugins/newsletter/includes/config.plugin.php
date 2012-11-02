@@ -25,6 +25,13 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+$cfg['tab']['news_groupmembers'] = $cfg['sql']['sqlprefix'] . '_pi_news_groupmembers';
+$cfg['tab']['news_groups'] = $cfg['sql']['sqlprefix'] . '_pi_news_groups';
+$cfg['tab']['news_jobs'] = $cfg['sql']['sqlprefix'] . '_pi_news_jobs';
+$cfg['tab']['news_log'] = $cfg['sql']['sqlprefix'] . '_pi_news_log';
+$cfg['tab']['news_rcp'] = $cfg['sql']['sqlprefix'] . '_pi_news_rcp';
+$cfg['tab']['news'] = $cfg['sql']['sqlprefix'] . '_pi_news';
+
 // plugin includes
 plugin_include('newsletter', 'classes/class.newsletter.php');
 plugin_include('newsletter', 'classes/class.newsletter.logs.php');
