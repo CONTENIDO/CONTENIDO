@@ -429,7 +429,7 @@ class PimPluginSetup {
 
             if (strpos($tempSqlContent[$i], 'DELETE FROM !PREFIX!') === 0 || strpos($tempSqlContent[$i], 'DROP TABLE !PREFIX!') === 0) {
                 $tempSqlContent[$i] = str_replace('!PREFIX!', $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
-                $db->query(cSecurity::escapeDB($tempSqlContent[$i], $db));
+                $db->query($tempSqlContent[$i]);
             }
         }
     }
