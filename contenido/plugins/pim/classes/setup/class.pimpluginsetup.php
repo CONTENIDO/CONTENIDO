@@ -164,8 +164,8 @@ class PimPluginSetup {
             // security check
             $area = cSecurity::escapeString($tempXml->area[$i]);
             $attributes = array(
-                'parent' => cSecurity::escapeString($attributes['parent']),
-                'menuless' => cSecurity::toInteger($attributes['menuless'])
+                    'parent' => cSecurity::escapeString($attributes['parent']),
+                    'menuless' => cSecurity::toInteger($attributes['menuless'])
             );
 
             // parent fix
@@ -318,7 +318,7 @@ class PimPluginSetup {
 
             if (strpos($tempSqlContent[$i], 'CREATE TABLE IF NOT EXISTS !PREFIX!') === 0 || strpos($tempSqlContent[$i], 'INSERT INTO !PREFIX!') === 0 || strpos($tempSqlContent[$i], 'UPDATE !PREFIX!') === 0 || strpos($tempSqlContent[$i], 'ALTER TABLE !PREFIX!') === 0) {
                 $tempSqlContent[$i] = str_replace('!PREFIX!', $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
-                $db->query(cSecurity::escapeDB($tempSqlContent[$i], $db));
+                $db->query($tempSqlContent[$i]);
             }
         }
     }

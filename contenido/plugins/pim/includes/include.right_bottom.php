@@ -151,22 +151,6 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
 
         // close extracted archive
         $extractor->closeArchive();
-
-        // delete temporary files
-        $extractor->destroyTempFiles();
-    } else {
-
-        $tempPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $extractedPath;
-
-        // remove plugin.xml if exists
-        if (cFileHandler::exists($tempPath . '/plugin.xml')) {
-            cFileHandler::remove($tempPath . '/plugin.xml');
-        }
-
-        // remove plugin_install.sql if exists
-        if (cFileHandler::exists($tempPath . '/plugin_install.sql')) {
-            cFileHandler::remove($tempPath . '/plugin_install.sql');
-        }
     }
 }
 
