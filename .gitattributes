@@ -73,6 +73,8 @@ cms/data/modules/navigation_meta/info.xml -text
 cms/data/modules/navigation_meta/php/navigation_meta_input.php -text
 cms/data/modules/navigation_meta/php/navigation_meta_output.php -text
 cms/data/modules/news/info.xml -text
+cms/data/modules/news/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/data/modules/news/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/data/modules/news/php/news_input.php -text
 cms/data/modules/news/php/news_output.php -text
 cms/data/modules/newsletter_form/css/newsletter_form.css -text svneol=unset#text/plain
