@@ -58,7 +58,7 @@ function hide(id) {
 function changeContenidoLanguage(idlang) {
     if (top.content.left) {
         if (top.content.left.left_top) {
-            top.content.left.left_top.location.href = replaceQueryString(top.content.left.left_top.location.href, 'changelang', idlang);
+             top.content.left.left_top.location.href = replaceQueryString(top.content.left.left_top.location.href, 'changelang', idlang);
         }
 
         if (top.content.left.left_bottom) {
@@ -78,6 +78,7 @@ function changeContenidoLanguage(idlang) {
         	// remove the action parameter, so that actions are not executed in the other language
         	var href = replaceQueryString(top.content.right.right_bottom.location.href, 'action', '');
         	href = replaceQueryString(href, 'changelang', idlang);
+        	href = replaceQueryString(href, 'frame', 4);
             top.content.right.right_bottom.location.href = href;
         }
     }
@@ -137,7 +138,13 @@ function replaceQueryString(url, param, value) {
     if (url.match(re)) {
         return url.replace(re, '$1' + param + "=" + value + '$2');
     } else {
-        return url + '&' + param + "=" + value;
+    	if (url.indexOf('.php?') > 0) {
+    		prefixSign = '&';
+    	} else {
+    		prefixSign = '?';
+    	}
+    	
+        return url + prefixSign + param + "=" + value;
     }
 }
 
