@@ -39,13 +39,13 @@ function cContentTypeImgeditor(frameId, imageId, pathBackend, pathFrontend, idAr
      * @type String
      */
     this.selectedPath = '';
-
-     /**
+	
+	 /**
      * Defines if needed js scripts were loaded
      *
      * @type Integer
      */
-    this.scriptLoaded = 0;
+	this.scriptLoaded = 0;
 
 }
 
@@ -82,7 +82,7 @@ cContentTypeImgeditor.prototype.loadExternalFiles = function() {
     if ($('#cms_imgeditor_styles').length === 0) {
         $('head').append('<link rel="stylesheet" id="cms_imgeditor_styles" href="' + this.pathBackend + 'styles/content_types/cms_imgeditor.css" type="text/css" media="all" />');
     }
-    conLoadFile(this.pathBackend + 'scripts/jquery/fileuploader.js', cContentTypeImgeditor.prototype.initUpload, this);
+    conLoadFile(this.pathBackend + 'scripts/jquery/ajaxupload.js', cContentTypeImgeditor.prototype.initUpload, this);
 };
 
 /**
@@ -90,9 +90,9 @@ cContentTypeImgeditor.prototype.loadExternalFiles = function() {
  *
  */
 cContentTypeImgeditor.prototype.initUpload = function() {
-    var self = this;
+	var self = this;
     self.imageFileUpload();
-    self.scriptLoaded = 1;
+	self.scriptLoaded = 1;
 }
 
 /**
@@ -203,11 +203,11 @@ cContentTypeImgeditor.prototype.showFolderPath = function() {
     $(self.frameId + ' #caption2').text(selectedPath);
     $(self.frameId + ' form[name="newdir"] input[name="path"]').val(selectedPath);
     $(self.frameId + ' form[name="properties"] input[name="path"]').val(selectedPath);
-
-
-    if (self.scriptLoaded == 1) {
-        self.imageFileUpload();
-    }
+	
+	
+	if (self.scriptLoaded == 1) {
+		self.imageFileUpload();
+	}
 };
 
 /**
@@ -302,7 +302,7 @@ cContentTypeImgeditor.prototype.createMKDir = function() {
                             });
 
                             if ($.inArray(title, titles) === -1) {
-                                $('div.cms_imgeditor .con_str_tree li div>a').each(function(index) {
+                                $('div.cms_image .con_str_tree li div>a').each(function(index) {
                                     if ($(this).attr('title') === self.selectedPath) {
                                         $(this).parent().parent('li:has(ul)').children('ul').remove();
                                         $(this).parent().after(msg);
@@ -329,13 +329,13 @@ cContentTypeImgeditor.prototype.imageFileUpload = function() {
     if (self.selectedPath !== '' && self.selectedPath !== 'upload') {
         dirname = self.selectedPath + '/';
     }
+	
+	$('body > input[type=file]').remove();
+	$('#cms_image_m' + self.id).unbind();
 
-    $('body > input[type=file]').remove();
-    $('#cms_image_m' + self.id).unbind();
-
-    new qq.FileUploaderBasic('#cms_image_m' + self.id, {
+    new AjaxUpload('#cms_image_m' + self.id, {
         action: self.pathBackend + 'ajaxmain.php?ajax=upl_upload&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&contenido=' + self.session,
-        inputName: 'file[]',
+        name: 'file[]',
         onSubmit: function() {
             $('img.loading').show();
         },
@@ -351,9 +351,9 @@ cContentTypeImgeditor.prototype.imageFileUpload = function() {
                     $('img.loading').hide();
                     $(self.frameId + ' #directoryFile_' + self.id).html(msg);
                     self.addSelectAction();
-                    if (self.scriptLoaded == 1) {
-                        self.imageFileUpload();
-                    }
+					if (self.scriptLoaded == 1) {
+						self.imageFileUpload();
+					}
                 }
             });
         }

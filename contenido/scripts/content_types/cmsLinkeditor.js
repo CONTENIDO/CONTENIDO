@@ -71,7 +71,7 @@ cContentTypeLinkeditor.prototype.loadExternalFiles = function() {
     if ($('#cms_linkeditor_styles').length === 0) {
         $('head').append('<link rel="stylesheet" id="cms_linkeditor_styles" href="' + this.pathBackend + 'styles/content_types/cms_linkeditor.css" type="text/css" media="all" />');
     }
-    conLoadFile(this.pathBackend + 'scripts/jquery/fileuploader.js');
+    conLoadFile(this.pathBackend + 'scripts/jquery/ajaxupload.js');
 };
 
 /**
@@ -256,9 +256,9 @@ cContentTypeLinkeditor.prototype.linkEditorFileUpload = function() {
         dirname = self.selectedPath + '/';
     }
 
-    new qq.FileploaderBasic('#cms_linkeditor_m' + self.id, {
+    new AjaxUpload('#cms_linkeditor_m' + self.id, {
         action: self.pathBackend + 'ajaxmain.php?ajax=upl_upload&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&contenido=' + self.session,
-        inputName: 'file[]',
+        name: 'file[]',
         onSubmit: function() {
             $('img.loading').show();
         },
