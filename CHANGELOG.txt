@@ -1,6 +1,126 @@
 ---------------------------------------------------------------------
 ------------------------ CONTENIDO CHANGELOG ------------------------
 ---------------------------------------------------------------------
+Release 4.9.0 Beta 1
+----------------------------------------------------------------------
+** Bug
+    * [CON-666] - Invalid code in contenido/scripts/boxes.upl_files_overview.js
+    * [CON-689] - Invalid usage of cGuiPage->addScript() in Newsletter plugin and todo popup.
+    * [CON-693] - Duplicated articles get wrong lastmodify time
+    * [CON-696] - Missing hover effects on bulk editing links in article overview
+    * [CON-697] - Messed up design for tagging table in Content - Articles
+    * [CON-699] - Category configuration with trailing arrow in breadcrumb and misbehaviour on tabs
+    * [CON-700] - Module versioning issues
+    * [CON-702] - Untranslated and not existing actions
+    * [CON-703] - Various bugs in workflow plugin
+    * [CON-705] - Debug classes directory begins with uppercase character
+    * [CON-709] - Language chooser executes actions twice
+    * [CON-712] - Update of url retrieval in TinyMCE due to removed support for link generator
+    * [CON-713] - Password forgot mail displays html entities
+    * [CON-716] - Wrong item reference after calling createNewItem(), select() and next() of ItemCollection
+    * [CON-719] - cApiIsImageMagickAvailable() returns true although IM is not installed
+    * [CON-720] - PHP Warning on area tab of rights management page
+    * [CON-729] - Changing the property "show debug messages"does not work properly
+    * [CON-730] - Two recurring PHP warnings after new installation
+    * [CON-738] - Check content type CMS_DATE completely
+    * [CON-740] - Malformed meta elements created by CONTENIDO
+    * [CON-743] - module xml_sitemap uses 100% CPU
+    * [CON-746] - Bad module CSS positioning
+    * [CON-749] - Multiple declared functions and classes with same name
+    * [CON-757] - Wrong Entry After Deleting an Item from the ItemCollection
+    * [CON-758] - modified META title of an article is not displayed before code cache is cleaned
+    * [CON-759] - User is created although password is marked as insecure
+    * [CON-760] - client settings are displayed escaped
+    * [CON-761] - client settings cannot store JSON expressions
+    * [CON-762] - AMR prevents display of error pages under certain circumstances
+    * [CON-763] - Unsetting attributes of cHTMLImage
+    * [CON-768] - Backend File Search Does Not Work Properly
+    * [CON-773] - Layout descriptions are not escaped
+    * [CON-776] - Mail Logging Encoding Problem
+    * [CON-792] - typo in function name (cApiImageGetTragetDimensions)
+    * [CON-798] - Creating default object from empty value in file management
+    * [CON-807] - Url shortener Error while creating a new article
+
+** Improvement
+    * [CON-504] - Global mailer class
+    * [CON-640] - Update of third party libraries
+    * [CON-656] - Cleanup old data folder
+    * [CON-657] - Move global variables $errsite_idcat and $errsite_idart to global variable $cfgClient.
+    * [CON-658] - Optimize filling/setup of $cfgClient.
+    * [CON-678] - Unify code of rights pages
+    * [CON-681] - Port remaining PHP4 classes to PHP5
+    * [CON-695] - Add 10 as new default setting for items per page in article overview and file management
+    * [CON-698] - Redirection to file upload if directory is empty
+    * [CON-701] - Add new configurations for disabling hook and plugin system
+    * [CON-711] - Implement exception handling
+    * [CON-717] - Versioning files should be deleted when the corresponding component is deleted
+    * [CON-718] - Improvements for creating new meta tags
+    * [CON-721] - Improvements on cRequestValidator
+    * [CON-722] - Move cInitializeArrayKey to cArray::initializeKey
+    * [CON-739] - Replace message box popups with jQuery UI Dialog
+    * [CON-741] - Implement an empty format for CMS_DATE
+    * [CON-745] - Do not show left frame on Extras - Tagging page
+    * [CON-764] - Merge log pages
+    * [CON-777] - CMS_TEASER Delete Old/Outdated Content Types
+    * [CON-783] - Change behaviour of untranslated module translations
+    * [CON-796] - Add feature to load case insensitive class name files to autoloader
+
+** New Feature
+    * [CON-633] - Rewrite of the existent Contenido_Category classes
+    * [CON-635] - Port auth conlib classes to new cAuth classes
+    * [CON-636] - Port database conlib classes to new cDb classes
+    * [CON-652] - Implement new checkbox "Searchable / Indexable" for articles
+    * [CON-653] - URL Shortener
+    * [CON-686] - Drag and drop for category management page
+    * [CON-687] - Implement getter functions for paths and URLs
+    * [CON-692] - mi18n should support %s
+    * [CON-710] - Client switcher in backend header
+    * [CON-714] - Add synchronizing to bulk editing
+    * [CON-715] - Check password forgot functionality
+    * [CON-724] - Reload left menu frame if deletion of file in file management causes empty folder
+    * [CON-725] - Implement a system integrity check page in backend
+    * [CON-726] - Implement cApiFileInformation and cApiFileInformationCollection
+    * [CON-727] - Replace PEAR package RSS Reader
+    * [CON-728] - Rework getEncodingByLanguage to use cApiLanguage
+    * [CON-731] - PIM: Implement setup and uninstall plugin routine
+    * [CON-732] - PIM: Implement generic db classes for con_plugins and con_plugins_rel
+    * [CON-733] - Implement generic db classes for con_nav_main and con_nav_sub
+    * [CON-734] - PIM: Implement backend views for displaying plugins and related actions
+    * [CON-735] - PIM: Implement update routine for plugins
+    * [CON-736] - PIM: Implement possibility to execute custom SQL queries
+    * [CON-737] - PIM: Add installation of plugin manager into setup and update process
+    * [CON-747] - Automatic code cache refresh
+    * [CON-750] - Integration of salted passwords
+    * [CON-772] - Add possibility to add backend notifications statically
+    * [CON-775] - CONTENIDO should generate a meta tag which outputs INDEX or NOINDEX
+    * [CON-785] - Implement a link getter for articles and categories
+    * [CON-786] - Implement configuration flag for logging deprecations
+    * [CON-793] - Implement setting of administrator password in setup
+    * [CON-794] - Rename database table con_phplib_auth_user_md5 to con_user
+    * [CON-804] - Display refresh button in setup process if system test fails
+
+** Task
+    * [CON-427] - Move definition of managed system properties to XML file
+    * [CON-539] - Separate Workflow to plugin
+    * [CON-603] - Check of include.grouprights_details.php
+    * [CON-682] - Deprecate class Article_Property
+    * [CON-683] - Deprecate outdated classes
+    * [CON-704] - Rename Contenido_Url and Contenido_UrlBuilder to cUri and cUriBuilder
+    * [CON-707] - Unify systems constant name prefixes
+    * [CON-723] - Port Contenido_UpgradeJob to upgrade steps folder
+    * [CON-751] - Rename LayoutInFile and SynchronizeLayouts to cLayoutHandler and cLayoutSynchronizer
+    * [CON-765] - Restore older version of phpmailer
+    * [CON-771] - Remove meta tag file cache
+    * [CON-774] - PIM: Upgrade script for existing fields in con_plugins
+    * [CON-779] - PIM: Display errors and infos
+    * [CON-780] - Add support for PHP 5.4 installations
+    * [CON-781] - PIM: Installation without archive files
+    * [CON-782] - PIM: Remove plugin installation from setup process
+    * [CON-787] - Add default module translations
+    * [CON-797] - Remove migration type completely from setup
+    * [CON-802] - PIM: Update structure of existing plugins for new PIM logic
+    * [CON-805] - Move chains from plugin folder to includes
+
 
 Release 4.9.0 Alpha 3
 ----------------------------------------------------------------------
