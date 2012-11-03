@@ -166,7 +166,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // add module JS at {JS} position or before closing body tag if there is no {JS}
         if (!empty($jsFile)) {
             if (strpos($this->_layoutCode, '{JS}') !== false) {
-                $this->_layoutCode = cString::iReplaceOnce('{CSS}', $jsFile, $this->_layoutCode);
+                $this->_layoutCode = cString::iReplaceOnce('{JS}', $jsFile, $this->_layoutCode);
             } else {
                 $this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
             }
