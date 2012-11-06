@@ -198,7 +198,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 		$oTemplateArticles = new ArticleCollection($aOptions);
 		
 		$aItems = array();
-		$aItems[] = array(0, "-- " . i18n"None") . " --");
+		$aItems[] = array(0, "-- " . i18n("None") . " --");
 		while ($oArticle = $oTemplateArticles->nextArticle())
 		{
 			$aItems[] = array($oArticle->get("idart"), $oArticle->get("title"));
