@@ -264,7 +264,7 @@ class cPermission {
                 return false;
             }
 
-            while ($oItem = $$oRightsColl->next()) {
+            while ($oItem = $oRightsColl->next()) {
                 $item_rights[$oItem->get('idarea')][$oItem->get('idaction')][$oItem->get('idcat')] = $oItem->get('idcat');
             }
 
