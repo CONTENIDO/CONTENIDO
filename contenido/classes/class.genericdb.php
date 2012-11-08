@@ -33,6 +33,7 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+global $cfg;
 
 /* Try to load GenericDB database driver */
 $driver_filename = $cfg["path"]["contenido"].$cfg["path"]["classes"]."drivers/".$cfg['sql']['gdb_driver']."/class.gdb.".$cfg['sql']['gdb_driver'].".php";
