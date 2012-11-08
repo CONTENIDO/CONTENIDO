@@ -150,7 +150,7 @@ class XML_doc {
      */
      function valueOf($xpath) {
 
-        if (!is_array($this->parsearray)) { // build tree once
+        if (!isset($this->parsearray) || !is_array($this->parsearray)) { // build tree once
             $this->parse(false);
         }
 
@@ -298,6 +298,7 @@ class XML_doc {
         // Collect the data onto the end of the current chars it dont collect whitespaces.
 
         $data = preg_replace ( "/[[:space:]]+/i", " ", $data );
+        $pos = "";
 
         if(trim($data)){
            //search for the element path
