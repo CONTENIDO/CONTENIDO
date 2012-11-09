@@ -1,29 +1,21 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * Main file for the plugin linkchecker
- *
- * Requirements:
- * @con_php_req 5.0
+ * Project: CONTENIDO Content Management System
+ * Description: Main file for the plugin linkchecker
+ * Requirements: @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Plugins
+ * @package CONTENIDO Plugins
  * @subpackage Linkchecker
- * @version    2.0.1
- * @author     Frederic Schneider
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.8.7
- *
- * {@internal
- *   created 2007-08-08
- *   $Id$:
- * }}
+ * @version 2.0.1
+ * @author Frederic Schneider
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release 4.8.7 {@internal created
+ *        2007-08-08 $Id: include.linkchecker.php 3642 2012-11-09 09:02:48Z
+ *        frederic.schneider $: }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -34,12 +26,12 @@ $plugin_name = "linkchecker";
 global $cfg;
 
 if (!$perm->have_perm_area_action($plugin_name, $plugin_name) && $cronjob != true) {
-    exit;
+    exit();
 }
 
 if ((int) $client == 0 && $cronjob != true) {
     $notification->displayNotification("error", i18n("No Client selected"));
-    exit;
+    exit();
 }
 
 // If no mode defined, use mode three
@@ -66,7 +58,10 @@ $aSearchIDInfosNonID = array();
 $iWhitelist_timeout = 2592000; // 30 days
 
 // Var initialization
-$aUrl = array('cms' => cRegistry::getFrontendUrl(), 'contenido' => cRegistry::getBackendUrl());
+$aUrl = array(
+        'cms' => cRegistry::getFrontendUrl(),
+        'contenido' => cRegistry::getBackendUrl()
+);
 
 // Template- and languagevars
 if ($cronjob != true) {
@@ -91,16 +86,21 @@ $tpl->set('s', 'INTERNS_EXTERNS_LABEL', i18n("Intern/extern Links", $plugin_name
 $tpl->set('s', 'UPDATE_HREF', $sLink . intval($_GET['mode']) . '&live=1');
 
 // Cache options
-$aCacheName = array('errors' => $sess->id, 'errorscount' => $aCacheName['errors'] . "ErrorsCountChecked");
-$oCache = new cFileCache(array('cacheDir' => $cfgClient[$client]['cache']['path'], 'lifeTime' => 1209600));
+$aCacheName = array(
+        'errors' => $sess->id,
+        'errorscount' => $aCacheName['errors'] . "ErrorsCountChecked"
+);
+$oCache = new cFileCache(array(
+        'cacheDir' => $cfgClient[$client]['cache']['path'],
+        'lifeTime' => 1209600
+));
 
-/* * ********
-  Program code
- * ******** */
+/*
+ * ******** Program code ********
+ */
 
 // function linksort
 function linksort($sErrors) {
-
     if ($_GET['sort'] == "nameart") {
 
         foreach ($sErrors as $key => $aRow) {
@@ -136,14 +136,7 @@ function linksort($sErrors) {
 
 // function url_is_image
 function url_is_image($sUrl) {
-
-    if (substr($sUrl, -3, 3) == "gif"
-            || substr($sUrl, -3, 3) == "jpg"
-            || substr($sUrl, -4, 4) == "jpeg"
-            || substr($sUrl, -3, 3) == "png"
-            || substr($sUrl, -3, 3) == "tif"
-            || substr($sUrl, -3, 3) == "psd"
-            || substr($sUrl, -3, 3) == "bmp") {
+    if (substr($sUrl, -3, 3) == "gif" || substr($sUrl, -3, 3) == "jpg" || substr($sUrl, -4, 4) == "jpeg" || substr($sUrl, -3, 3) == "png" || substr($sUrl, -3, 3) == "tif" || substr($sUrl, -3, 3) == "psd" || substr($sUrl, -3, 3) == "bmp") {
         return true;
     } else {
         return false;
@@ -152,11 +145,7 @@ function url_is_image($sUrl) {
 
 // function url_is_uri
 function url_is_uri($sUrl) {
-
-    if (substr($sUrl, 0, 4) == "file"
-            || substr($sUrl, 0, 3) == "ftp"
-            || substr($sUrl, 0, 4) == "http"
-            || substr($sUrl, 0, 2) == "ww") {
+    if (substr($sUrl, 0, 4) == "file" || substr($sUrl, 0, 3) == "ftp" || substr($sUrl, 0, 4) == "http" || substr($sUrl, 0, 2) == "ww") {
         return true;
     } else {
         return false;
@@ -278,7 +267,6 @@ if (empty($aErrors) && $cronjob != true) {
 
     $tpl->set('s', 'NO_ERRORS', i18n("<strong>No errors</strong> were found.", $plugin_name));
     $tpl->generate($cfg['templates']['linkchecker_noerrors']);
-
 } elseif (!empty($aErrors) && $cronjob != true) {
 
     $tpl->set('s', 'ERRORS_HEADLINE', i18n("Total checked links", $plugin_name));
@@ -296,7 +284,12 @@ if (empty($aErrors) && $cronjob != true) {
     $tpl->set('s', 'ERRORS_HELP_ERRORS', i18n("Wrong links", $plugin_name));
 
     // error_output initialization
-    $aError_output = array('art' => '', 'cat' => '', 'docimages' => '', 'others' => '');
+    $aError_output = array(
+            'art' => '',
+            'cat' => '',
+            'docimages' => '',
+            'others' => ''
+    );
 
     foreach ($aErrors as $sKey => $aRow) {
 
@@ -304,19 +297,19 @@ if (empty($aErrors) && $cronjob != true) {
 
         for ($i = 0; $i < count($aRow); $i++) {
 
-            $tpl2 = new cTemplate;
+            $tpl2 = new cTemplate();
             $tpl2->reset();
 
             $tpl2->set('s', 'ERRORS_ERROR_TYPE', $aRow[$i]['error_type']);
             $tpl2->set('s', 'ERRORS_ARTID', $aRow[$i]['idart']);
             $tpl2->set('s', 'ERRORS_ARTICLE', $aRow[$i]['nameart']);
-            $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', substr($aRow[$i]['nameart'], 0, 20) . ((strlen($aRow[$i]['nameart']) > 20) ? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', substr($aRow[$i]['nameart'], 0, 20) . ((strlen($aRow[$i]['nameart']) > 20)? ' ...' : ''));
             $tpl2->set('s', 'ERRORS_CATID', $aRow[$i]['idcat']);
             $tpl2->set('s', 'ERRORS_LINK', $aRow[$i]['url']);
             $tpl2->set('s', 'ERRORS_LINK_ENCODE', base64_encode($aRow[$i]['url']));
-            $tpl2->set('s', 'ERRORS_LINK_SHORT', substr($aRow[$i]['url'], 0, 55) . ((strlen($aRow[$i]['url']) > 55) ? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_LINK_SHORT', substr($aRow[$i]['url'], 0, 55) . ((strlen($aRow[$i]['url']) > 55)? ' ...' : ''));
             $tpl2->set('s', 'ERRORS_CATNAME', $aRow[$i]['namecat']);
-            $tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($aRow[$i]['namecat'], 0, 20) . ((strlen($aRow[$i]['namecat']) > 20) ? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($aRow[$i]['namecat'], 0, 20) . ((strlen($aRow[$i]['namecat']) > 20)? ' ...' : ''));
             $tpl2->set('s', 'MODE', $_GET['mode']);
             $tpl2->set('s', 'URL', $aUrl['contenido']);
             $tpl2->set('s', 'SID', $sess->id);
@@ -334,13 +327,17 @@ if (empty($aErrors) && $cronjob != true) {
             if ($sKey != "cat") {
                 $aError_output[$sKey] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors'], 1);
             } else {
-                $aError_output[$sKey] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors_cat'], 1); // special template for idcats
+                $aError_output[$sKey] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors_cat'], 1); // special
+                                                                                                               // template
+                                                                                                               // for
+                                                                                                               // idcats
             }
         }
     }
 
     /* Counter */
-    if ($iCounter = $oCache->get($aCacheName['errorscount'], intval($_GET['mode']))) { // Cache exists?
+    if ($iCounter = $oCache->get($aCacheName['errorscount'], intval($_GET['mode']))) { // Cache
+                                                                                       // exists?
         $iErrors_count_checked = $iCounter;
     } else { // Count searched links: idarts + idcats + idcatarts + others
         $iErrors_count_checked = count($aSearchIDInfosArt) + count($aSearchIDInfosCat) + count($aSearchIDInfosCatArt) + count($aSearchIDInfosNonID);
