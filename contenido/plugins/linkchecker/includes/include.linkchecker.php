@@ -64,6 +64,7 @@ $aSearchIDInfosArt = array();
 $aSearchIDInfosCatArt = array();
 $aSearchIDInfosNonID = array();
 $iWhitelist_timeout = 2592000; // 30 days
+
 // Var initialization
 $aUrl = array('cms' => cRegistry::getFrontendUrl(), 'contenido' => cRegistry::getBackendUrl());
 
@@ -97,8 +98,7 @@ $oCache = new cFileCache(array('cacheDir' => $cfgClient[$client]['cache']['path'
   Program code
  * ******** */
 
-/* function linksort */
-
+// function linksort
 function linksort($sErrors) {
 
     if ($_GET['sort'] == "nameart") {
@@ -192,6 +192,7 @@ $sCache_errors = $oCache->get($aCacheName['errors'], intval($_GET['mode']));
 if ($sCache_errors && $_GET['live'] != 1) {
     $aErrors = unserialize($sCache_errors);
 } else { // If no cache exists
+
     // Select all categorys
     $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " GROUP BY idcat";
     $db->query($sql);
@@ -271,8 +272,13 @@ if ($cronjob != true) {
 
 // If no errors found, say that
 if (empty($aErrors) && $cronjob != true) {
+
+    // Remove older cache
+    $oCache->remove($aCacheName['errors'], intval($_GET['mode']));
+
     $tpl->set('s', 'NO_ERRORS', i18n("<strong>No errors</strong> were found.", $plugin_name));
     $tpl->generate($cfg['templates']['linkchecker_noerrors']);
+
 } elseif (!empty($aErrors) && $cronjob != true) {
 
     $tpl->set('s', 'ERRORS_HEADLINE', i18n("Total checked links", $plugin_name));
