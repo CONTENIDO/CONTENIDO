@@ -13,17 +13,17 @@
 
     <xsd:complexType name="GeneralTyp">
         <xsd:all>
-            <xsd:element name="plugin_name" type="xsd:string" minOccurs="1" />
-            <xsd:element name="plugin_foldername" type="xsd:string" minOccurs="1" />
-            <xsd:element name="uuid" type="xsd:string" minOccurs="1" />
-            <xsd:element name="description" type="xsd:string" minOccurs="0" />
-            <xsd:element name="author" type="xsd:string" minOccurs="1" />
-            <xsd:element name="copyright" type="xsd:string" minOccurs="1" />
-            <xsd:element name="mail" type="xsd:string" minOccurs="0" />
-            <xsd:element name="website" type="xsd:string" minOccurs="0" />
-            <xsd:element name="version" type="xsd:string" minOccurs="1" />
-            <xsd:element name="min_contenido_version" type="xsd:string" minOccurs="1" default="4.9.0" />
-            <xsd:element name="max_contenido_version" type="xsd:string" minOccurs="0" />
+            <xsd:element name="plugin_name" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="plugin_foldername" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="uuid" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="author" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="copyright" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="mail" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="website" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="version" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="min_contenido_version" type="xsd:string" minOccurs="1" maxOccurs="1" default="4.9.0" />
+            <xsd:element name="max_contenido_version" type="xsd:string" minOccurs="0" maxOccurs="1" />
         </xsd:all>
         <xsd:attribute name="active" default="1" />
     </xsd:complexType>
