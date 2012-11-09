@@ -56,7 +56,7 @@ switch ($viewAction) {
 
 // TODO: Move the following function into classes
 /**
- * Installation steps to install a new plugin Function differ between extracted
+ * Installation steps to install a new plugin. Function differ between extracted
  * and Zip archive plugins
  *
  * @param cGuiPage $page
