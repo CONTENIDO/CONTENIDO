@@ -516,7 +516,7 @@ class ModRewrite extends ModRewriteBase {
             $sql = "SELECT cl.urlname, c.parentid FROM " . $cfg['tab']['cat_lang'] . " cl "
                     . "LEFT JOIN " . $cfg['tab']['cat'] . " c ON cl.idcat = c.idcat "
                     . "WHERE cl.idcat = " . $iTmpCatId . " AND cl.idlang = " . $iLangId;
-            if (($aData = mr_queryAndNextRecord($sql)) === true) {
+            if ($aData = mr_queryAndNextRecord($sql)) {
                 $aDirectories[] = $aData['urlname'];
                 $iTmpCatId = (int) $aData['parentid'];
 
