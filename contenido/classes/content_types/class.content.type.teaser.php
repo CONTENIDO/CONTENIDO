@@ -282,7 +282,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                     } 
                     
                     if ($returnAsArray == true && $this->_fillTeaserTemplateEntry($article, $template)) {
-                    	array_push($articles, $idArt);
+                    	array_push($articles, $article);
                     	
                     	if ($i == $this->_settings['teaser_count']) {
                     		break;
@@ -312,7 +312,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
             foreach ($artCollector as $article) {
             	if ($returnAsArray == true) {
-            		array_push($articles, $article->getField("idart"));
+            		array_push($articles, $article);
             	} else {
             		$this->_fillTeaserTemplateEntry($article, $template);
             	}
