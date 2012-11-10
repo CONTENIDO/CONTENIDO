@@ -19,7 +19,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // Relative path to CONTENIDO directory, for all inclusions, in most cases: '../contenido/'
-$contenido_path = 'C:/projects/workspace/contenido_example/contenido/';
+$contenido_path = '../contenido/';
 
 // If language isn't specified, set this client and language (ID)
 $load_lang   = '1';
