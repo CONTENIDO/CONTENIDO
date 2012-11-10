@@ -2405,8 +2405,6 @@ setup/data/examples/examples_misc6.sql -text
 setup/data/indexes.sql -text
 setup/data/standard.txt -text
 setup/data/standard/standard_modules1.sql -text
-setup/data/standard/standard_modules_translations1.sql -text
-setup/data/standard/standard_modules_translations2.sql -text
 setup/data/sysadmin.txt -text
 setup/data/sysadmin/sysadmin1.sql -text
 setup/data/tables.txt -text
