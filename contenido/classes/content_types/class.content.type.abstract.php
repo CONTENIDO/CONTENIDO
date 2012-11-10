@@ -221,6 +221,15 @@ abstract class cContentTypeAbstract {
             $this->_settings = $this->_rawSettings;
         }
     }
+    
+    /**
+     * Function returns curren content type configuration as array
+     * 
+     * @return array
+     */
+    public function getConfiguration() {
+    	return $this->_settings;
+    }
 
     /**
      * Stores all values from the $_POST array in the $_settings attribute
