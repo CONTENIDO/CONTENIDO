@@ -6,7 +6,9 @@ html{
 body{
 /*Pages shadow to be done*/  
  	font-family: Verdana, sans-serif;
-	font-size:12px;
+	font-size:12px;  
+	line-height: 15px; 
+	color: #797979;
 }  
 
 #page {
@@ -119,7 +121,39 @@ body{
 	min-height:50px;
 	width: 670px;
 	margin-left: 30px;
+} 
+
+
+h1 {
+	font-size: 19px;
+	color: #9ba21b; 
+	margin-bottom: 10px;  
+	font-weight:normal;
 }    
+h2 {
+	font-size: 13px;
+	color: #0083cb;
+	font-weight: normal;  
+	margin-bottom: 7px; 
+}
+p {
+	text-align: justify;
+}  
+p + p {
+	margin-top: 7px;
+}  
+
+p a {
+	color:#0083cb; 
+	text-decoration: none; 
+	border-bottom: 1px dotted #0083cb;
+}
+p a:hover {
+	color:#9ba21b; 
+	text-decoration: none; 
+	border-bottom: 1px dotted #9ba21b;
+}
+
  
 
 /* ----- FOOTER ----- */  
