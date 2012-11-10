@@ -12,7 +12,7 @@
  * @link http://www.4fb.de
  */
 
-// get header as content type HTMLHEAD with index 2
+// get header from content type HTMLHEAD with index 2
 $header = "CMS_HTMLHEAD[2]";
 
 $label = NULL;

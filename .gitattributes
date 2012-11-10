@@ -16,6 +16,11 @@ cms/data/config/config.php -text
 cms/data/layouts/standard/standard.html -text
 cms/data/layouts/startpage/startpage.html -text svneol=unset#text/plain
 cms/data/logs/index.php -text
+cms/data/modules/content_date/info.xml -text svneol=unset#text/plain
+cms/data/modules/content_date/lang/lang_de_DE.txt -text
+cms/data/modules/content_date/php/content_date_input.php -text
+cms/data/modules/content_date/php/content_date_output.php -text
+cms/data/modules/content_date/template/get.tpl -text
 cms/data/modules/content_header_first/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_header_first/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/content_header_first/php/content_header_first_input.php -text
@@ -26,6 +31,11 @@ cms/data/modules/content_header_second/lang/lang_de_DE.txt -text svneol=unset#te
 cms/data/modules/content_header_second/php/content_header_second_input.php -text
 cms/data/modules/content_header_second/php/content_header_second_output.php -text
 cms/data/modules/content_header_second/template/get.tpl -text
+cms/data/modules/content_image/info.xml -text svneol=unset#text/plain
+cms/data/modules/content_image/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/data/modules/content_image/php/content_image_input.php -text
+cms/data/modules/content_image/php/content_image_output.php -text
+cms/data/modules/content_image/template/get.tpl -text
 cms/data/modules/content_rss_creator/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_rss_creator/php/content_rss_creator_input.php -text
 cms/data/modules/content_rss_creator/php/content_rss_creator_output.php -text
