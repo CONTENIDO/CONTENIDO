@@ -2413,7 +2413,6 @@ setup/data/examples.txt -text
 setup/data/examples/examples_articles1.sql -text
 setup/data/examples/examples_categories1.sql -text
 setup/data/examples/examples_container1.sql -text
-setup/data/examples/examples_container2.sql -text
 setup/data/examples/examples_content1.sql -text
 setup/data/examples/examples_misc1.sql -text
 setup/data/examples/examples_misc2.sql -text

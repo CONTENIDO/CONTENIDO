@@ -1,7 +1,6 @@
 examples/examples_articles1.sql
 examples/examples_categories1.sql
 examples/examples_container1.sql
-examples/examples_container2.sql
 examples/examples_content1.sql
 examples/examples_misc1.sql
 examples/examples_misc2.sql
