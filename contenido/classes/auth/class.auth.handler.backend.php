@@ -128,7 +128,10 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
 
         $bFound = false;
         while ($bFound == false) {
-            $item = $clientLangColl->next();
+            if (($item = $clientLangColl->next()) === false) {
+                break;
+            }
+
             $iTmpClient = $item->get('idclient');
             $iTmpLang = $item->get('idlang');
 
