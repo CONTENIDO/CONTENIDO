@@ -1,39 +1,54 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="utf-8" />
-    <title>HTML5 Layout</title>   
-    <link rel="stylesheet" href="css/reset.css" type="text/css" /> 
-    <link rel="stylesheet" href="css/main.css" type="text/css" />
-  </head>
-  <body>
-    <div id="page">
-      <div id="header">
-         <img src="../../../images/misc/logo.png" width="279" height="41" alt="Contenido Logo" id="logo">
-      </div>
-      <div id="breadcrumb">
-           <ul>
-            <li>Breadcrumb:</li>
-            <li><a href="">point</a></li>
-            <li><a href="">point</a></li>
-           </ul>
-      </div> 
-      <div id="menu">
-          menu comming soon
-      </div>    
-      <div id="content">
-         content here
-      </div>   
-      <div id="footer">
-        <ul class="navigation">
-          <li><a href="">Sitemap</a></li>
-          <li><a href="">Impressum</a></li>
-          <li><a href="">Datenschutz</a></li>
-          <li><a href="">FAQ</a></li>
-          <li><a href="">Forum</a></li>
-        </ul>
-      </div> 
-      <div id="copyright"></div>
-    </div>
-  </body>
+
+    <head>
+		<title>HTML5 Layout</title>   
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="css/reset.css" type="text/css" /> 
+		<link rel="stylesheet" href="css/main.css" type="text/css" />
+		<link type="text/css" rel="stylesheet" href="/css/contenido_backend.css">
+    </head>
+
+    <body>
+
+	    <div id="page">
+	
+	        <div id="header">
+	            <img src="../../../images/misc/logo.png" width="279" height="41" alt="Contenido Logo" id="logo">
+	        </div>
+	
+	        <div id="breadcrumb">
+	            <ul>
+	                <li>Breadcrumb:</li>
+	                <li><a href="">point</a></li>
+	                <li><a href="">point</a></li>
+	            </ul>
+	        </div> 
+	        
+	        <div id="menu">
+	            menu comming soon
+	        </div>    
+	        
+	        <div id="content">
+				<container id="110" name="first header" types="content" mode="fixed" default="content_header_first">first header</container>
+				<container id="120" name="second header" types="content" mode="fixed" default="content_header_second">second header</container>
+				<container id="130" name="text" types="content" mode="fixed" default="content_text">text</container>
+	        </div>   
+	
+	        <div id="footer">
+	            <ul class="navigation">
+					<li><a href="">Sitemap</a></li>
+					<li><a href="">Impressum</a></li>
+					<li><a href="">Datenschutz</a></li>
+					<li><a href="">FAQ</a></li>
+					<li><a href="">Forum</a></li>
+	            </ul>
+	        </div>
+	
+	        <div id="copyright"></div>
+	
+	    </div>
+
+    </body>
+
 </html>

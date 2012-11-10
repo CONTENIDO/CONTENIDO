@@ -6,6 +6,7 @@
 /UPGRADE.txt -text
 cms/cache/code/.htaccess -text
 cms/cache/index.php -text
+cms/css/contenido_backend.css -text svneol=unset#text/plain
 cms/css/index.php -text
 cms/css/main.css -text svneol=unset#text/plain
 cms/css/reset.css -text svneol=unset#text/plain
@@ -15,6 +16,20 @@ cms/data/config/config.php -text
 cms/data/layouts/standard/standard.html -text
 cms/data/layouts/startpage/startpage.html -text svneol=unset#text/plain
 cms/data/logs/index.php -text
+cms/data/modules/content_header_first/info.xml -text svneol=unset#text/plain
+cms/data/modules/content_header_first/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/data/modules/content_header_first/php/content_header_first_input.php -text
+cms/data/modules/content_header_first/php/content_header_first_output.php -text
+cms/data/modules/content_header_first/template/get.tpl -text
+cms/data/modules/content_header_second/info.xml -text svneol=unset#text/plain
+cms/data/modules/content_header_second/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/data/modules/content_header_second/php/content_header_second_input.php -text
+cms/data/modules/content_header_second/php/content_header_second_output.php -text
+cms/data/modules/content_header_second/template/get.tpl -text
+cms/data/modules/content_text/info.xml -text svneol=unset#text/plain
+cms/data/modules/content_text/php/content_text_input.php -text
+cms/data/modules/content_text/php/content_text_output.php -text
+cms/data/modules/content_text/template/get.tpl -text
 cms/data/version/.htaccess -text
 cms/dbfs.php -text
 cms/error.php -text
