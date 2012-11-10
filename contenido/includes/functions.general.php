@@ -572,8 +572,8 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["code"]["path"] = "'.$aClient["path"]["frontend"].'cache/code/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["code"]["frontendpath"] = "cache/code/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["sitemap"]["path"] = "'.$aClient["path"]["frontend"].'sitemaps/";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["sitemap"]["frontendpath"] = "sitemaps/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["xml"]["path"] = "'.$aClient["path"]["frontend"].'xml/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["xml"]["frontendpath"] = "xml/";';
 
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["template"]["path"] = "'.$aClient["path"]["frontend"].'templates/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["template"]["frontendpath"] = "templates/";';
