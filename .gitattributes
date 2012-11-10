@@ -7,6 +7,8 @@
 cms/cache/code/.htaccess -text
 cms/cache/index.php -text
 cms/css/index.php -text
+cms/css/main.css -text svneol=unset#text/plain
+cms/css/reset.css -text svneol=unset#text/plain
 cms/css/style_tiny.css -text
 cms/data/.htaccess -text
 cms/data/config/config.php -text
@@ -18,8 +20,10 @@ cms/dbfs.php -text
 cms/error.php -text
 cms/front_content.php -text
 cms/front_crcloginform.inc.php -text
+cms/images/backgrounds/bg.png -text
 cms/images/but_ok.gif -text
 cms/images/index.php -text
+cms/images/misc/logo.png -text
 cms/includes/concache.php -text
 cms/includes/index.php -text
 cms/index.php -text
