@@ -12,7 +12,7 @@ cms/data/version/js/*
 cms/data/version/layout/*
 cms/data/version/module/*
 cms/data/version/templates/*
-cms/sitemaps/*
+cms/xml/*
 cms_old/cache/*
 cms_old/cache/code/*
 contenido/cronjobs/*.job
