@@ -47,6 +47,9 @@ cms/includes/concache.php -text
 cms/includes/index.php -text
 cms/index.php -text
 cms/js/index.php -text
+cms/js/jquery-1.8.2.min.js -text svneol=unset#text/plain
+cms/js/jquery-ui-1.9.1.custom.min.js -text svneol=unset#text/plain
+cms/js/main.js -text svneol=unset#text/plain
 cms/robots.txt -text
 cms/templates/error_page.html -text
 cms/templates/index.php -text
