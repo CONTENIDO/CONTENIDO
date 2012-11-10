@@ -26,6 +26,9 @@ cms/data/modules/content_header_second/lang/lang_de_DE.txt -text svneol=unset#te
 cms/data/modules/content_header_second/php/content_header_second_input.php -text
 cms/data/modules/content_header_second/php/content_header_second_output.php -text
 cms/data/modules/content_header_second/template/get.tpl -text
+cms/data/modules/content_rss_creator/info.xml -text svneol=unset#text/plain
+cms/data/modules/content_rss_creator/php/content_rss_creator_input.php -text
+cms/data/modules/content_rss_creator/php/content_rss_creator_output.php -text
 cms/data/modules/content_text/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_text/php/content_text_input.php -text
 cms/data/modules/content_text/php/content_text_output.php -text
