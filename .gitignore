@@ -2,8 +2,8 @@
 /.cache
 /.project
 /.settings
-cms/cache/*
-cms/cache/code/*
+cms_old/cache/*
+cms_old/cache/code/*
 contenido/cronjobs/*.job
 contenido/external/frontend/.htaccess_recommended
 contenido/includes/config.clients.php
