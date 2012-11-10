@@ -516,8 +516,8 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $cfgClient[$iClient]['code']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'cache/code/';
         $cfgClient[$iClient]['code']['frontendpath'] = 'cache/code/';
 
-        $cfgClient[$iClient]['sitemap']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'sitemaps/';
-        $cfgClient[$iClient]['sitemap']['frontendpath'] = 'sitemaps/';
+        $cfgClient[$iClient]['xml']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'xml/';
+        $cfgClient[$iClient]['xml']['frontendpath'] = 'xml/';
 
         $cfgClient[$iClient]['template']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'templates/';
         $cfgClient[$iClient]['template']['frontendpath'] = 'templates/';
