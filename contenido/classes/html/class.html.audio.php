@@ -1,0 +1,71 @@
+<?php
+/**
+ * This file contains the cHTMLAudio class.
+ *
+ * @package Core
+ * @subpackage HTML
+ * @version SVN Revision $Rev:$
+ *
+ * @author Simon Sprankel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ */
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
+
+/**
+ * cHTMLAudio class specifies sound content.
+ *
+ * @package Core
+ * @subpackage Frontend
+ */
+class cHTMLAudio extends cHTMLContentElement {
+
+    public function __construct($content = '', $class = '', $id = '', $src = '') {
+        parent::__construct($content, $class, $id);
+        $this->_tag = 'audio';
+        $this->setSrc($src);
+    }
+
+    /**
+     * Sets the src attribute of this element.
+     *
+     * @param string $src
+     */
+    public function setSrc($src) {
+        $this->setAttribute('src', $src);
+    }
+
+    /**
+     * Sets the autoplay attribute which specifies if the sound should be played
+     * automatically.
+     *
+     * @param bool $autoplay
+     */
+    public function setAutoplay($autoplay) {
+        if ($autoplay) {
+            $this->setAttribute('autoplay', 'autoplay');
+        } else {
+            $this->removeAttribute('autplay');
+        }
+    }
+
+    /**
+     * Sets the controls attribute which specifies if controls should be shown
+     * in the player.
+     *
+     * @param bool $controls
+     */
+    public function setControls($controls) {
+        if ($controls) {
+            $this->setAttribute('controls', 'controls');
+        } else {
+            $this->removeAttribute('controls');
+        }
+    }
+
+}
