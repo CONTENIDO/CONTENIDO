@@ -2,6 +2,8 @@
 /.cache
 /.project
 /.settings
+cms/cache/*
+cms/cache/templates_c/*
 cms_old/cache/*
 cms_old/cache/code/*
 contenido/cronjobs/*.job
