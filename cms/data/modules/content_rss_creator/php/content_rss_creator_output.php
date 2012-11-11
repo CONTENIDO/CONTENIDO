@@ -76,11 +76,12 @@
     	$title = strip_tags($article->getContent('HTMLHEAD', 1));
     	$text = strip_tags($article->getContent('HTML', 1));
     	$text = capiStrTrimAfterWord($text, $configuration['teaser_character_limit']);
-    	$link = $article->getLink();
+    	$link = $cfgClient[$client]['path']['htmlpath'] . $article->getLink();
     	
     	$child->addChild('title', conHtmlSpecialChars($title));
     	$child->addChild('link', conHtmlSpecialChars($link));
     	$child->addChild('description', conHtmlSpecialChars($text));
+    	$child->addChild('pubDate', date('D, d M Y H:i:s T', strtotime($article->getField('published'))));
     }  
 
     $success = $rssFeed->asXML($filename);
