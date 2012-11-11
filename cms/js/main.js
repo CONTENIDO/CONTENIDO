@@ -28,7 +28,7 @@ $(function(){
 		sliceTo =page*imgPerPage;
 		$(".galery .slider").html("");
 		$(".galery .source li").slice(sliceFrom,sliceTo).each(function(){
-			 $(".galery .slider").append('<li><a href="'+$(this).children("a").attr("href")+'"><img src="'+$(this).children("a").text()+'" alt="" /></a></li>');
+			 $(".galery .slider").append('<li><a href="'+$(this).children("a").attr("href")+'" rel="'+$(this).children("a").attr("rel")+'" title="'+$(this).children("a").attr("title")+'"><img src="'+$(this).children("a").text()+'" alt="" /></a></li>');
 		}); 
 		$(".galery .slider li:odd").addClass("odd");  
 		
@@ -61,7 +61,7 @@ $(function(){
 	
 	$(".galery .slider").delegate("a", "click", function(e){
 		 e.preventDefault();
-		$(".galery .lightbox").html('<img src="'+$(this).attr("href")+'" alt="" /><p>TEXT</p>').dialog({
+		$(".galery .lightbox").html('<img src="'+$(this).attr("href")+'" alt="" /><p>'+$(this).attr("rel")+': '+$(this).attr("title")+'</p>').dialog({
 			modal:true,
 			width: 'auto',
 			height: 'auto',
