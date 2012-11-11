@@ -50,6 +50,10 @@ cms/data/modules/navigation_bottom/info.xml -text svneol=unset#text/plain
 cms/data/modules/navigation_bottom/php/navigation_bottom_input.php -text
 cms/data/modules/navigation_bottom/php/navigation_bottom_output.php -text
 cms/data/modules/navigation_bottom/template/get.tpl -text
+cms/data/modules/navigation_main/info.xml -text svneol=unset#text/plain
+cms/data/modules/navigation_main/php/navigation_main_input.php -text
+cms/data/modules/navigation_main/php/navigation_main_output.php -text
+cms/data/modules/navigation_main/template/navigation.tpl -text
 cms/data/modules/script_tracker_google/info.xml -text svneol=unset#text/plain
 cms/data/modules/script_tracker_google/php/script_tracker_google_input.php -text
 cms/data/modules/script_tracker_google/php/script_tracker_google_output.php -text
