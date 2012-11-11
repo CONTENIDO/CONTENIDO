@@ -11,8 +11,6 @@
  * @link http://www.4fb.de
  */
 
-global $force;
-
 // read articles from defined cat, including its start article and ordering it
 // by its custom order
 $collector = new cArticleCollector(array(
@@ -21,6 +19,7 @@ $collector = new cArticleCollector(array(
     'order' => 'sortsequence'
 ));
 
+$articles = array();
 foreach ($collector as $article) {
     $articles[] = array(
         'title' => $article->get('title'),
@@ -33,6 +32,7 @@ foreach ($collector as $article) {
 
 // use smarty template to output header text
 $tpl = Contenido_SmartyWrapper::getInstance();
+global $force;
 if (1 == $force) {
     $tpl->clearAllCache();
 }
