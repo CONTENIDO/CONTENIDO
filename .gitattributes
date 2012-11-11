@@ -46,6 +46,10 @@ cms/data/modules/content_text/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/content_text/php/content_text_input.php -text
 cms/data/modules/content_text/php/content_text_output.php -text
 cms/data/modules/content_text/template/get.tpl -text
+cms/data/modules/navigation_bottom/info.xml -text svneol=unset#text/plain
+cms/data/modules/navigation_bottom/php/navigation_bottom_input.php -text
+cms/data/modules/navigation_bottom/php/navigation_bottom_output.php -text
+cms/data/modules/navigation_bottom/template/get.tpl -text
 cms/data/modules/script_tracker_google/info.xml -text svneol=unset#text/plain
 cms/data/modules/script_tracker_google/php/script_tracker_google_input.php -text
 cms/data/modules/script_tracker_google/php/script_tracker_google_output.php -text
