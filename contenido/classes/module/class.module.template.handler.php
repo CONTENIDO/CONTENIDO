@@ -423,7 +423,7 @@ class cModuleTemplateHandler extends cModuleHandler {
 
             // select the current file
             if ($file == $this->_file) {
-                $optionField->setAttributes('selected', 'selected');
+                $optionField->setAttribute('selected', 'selected');
             }
 
             $selectFile->addOptionElement($key, $optionField);
