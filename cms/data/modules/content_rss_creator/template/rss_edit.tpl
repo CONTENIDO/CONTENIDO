@@ -4,6 +4,13 @@
 <br/>
 
 <div>
+	<label class="content-type-label">{$label_rss_source}</label>
+	<div><a href="{$rss_source}" target="_blank">{$label_rss_source}</a></div>
+</div>
+
+<br/>
+
+<div>
 	<label class="content-type-label">{$label_rss_title}</label>
 	<div>{$rss_title}</div>
 </div>

@@ -1,12 +1,17 @@
 <?php
 	$teaserIndex = 5;	
 	
+	$cfgClient = cRegistry::getClientConfig();
+	$client = cRegistry::getClientId();
+	$filename = $cfgClient[$client]['xml']['frontendpath'] . 'rss.xml';
+	
 	$labelRssTitle = mi18n("LABEL_RSS_TITLE");
 	$labelRssLink = mi18n("LABEL_RSS_LINK");
 	$labelRssDescription = mi18n("LABEL_RSS_DESCRIPTION");
 	$labelRssConfiguration = mi18n("LABEL_RSS_CONFIGURATION");
 	$labelRssH1 = mi18n("LABEL_RSS_H1");
 	$labelRssLogo = mi18n("LABEL_RSS_LOGO");
+	$labelRssSource = mi18n("LABEL_RSS_SOURCE");
 	
 	$rssTitle = "CMS_TEXT[1]";
 	$rssLink = "CMS_TEXT[2]";
@@ -14,6 +19,7 @@
 	$rssConfiguration = '';
 	$rssLogo = "CMS_IMGEDITOR[1]";
 	$rssLogoDisplay = "CMS_IMG[1]";
+	$rssSource = $filename;
 	
 	$tpl = Contenido_SmartyWrapper::getInstance();
 	
@@ -23,8 +29,11 @@
 	$tpl->assign('label_rss_description', $labelRssDescription);
 	$tpl->assign('label_rss_h1', $labelRssH1);
 	$tpl->assign('label_rss_logo', $labelRssLogo);
-
+	$tpl->assign('label_rss_link', $labelRssLink);
+	$tpl->assign('label_rss_source', $labelRssSource);
+	
 	$tpl->assign('rss_title', $rssTitle);
+	$tpl->assign('rss_source', $rssSource);
 	$tpl->assign('rss_link', $rssLink);
 	$tpl->assign('rss_logo', $rssLogo);
 	$tpl->assign('rss_logo_display', $rssLogoDisplay);
@@ -72,11 +81,7 @@
     	$child->addChild('title', conHtmlSpecialChars($title));
     	$child->addChild('link', conHtmlSpecialChars($link));
     	$child->addChild('description', conHtmlSpecialChars($text));
-    }
-    
-    $cfgClient = cRegistry::getClientConfig();
-    $client = cRegistry::getClientId();
-    $filename = $cfgClient[$client]['xml']['frontendpath'] . 'rss.xml';
+    }  
 
     $success = $rssFeed->asXML($filename);
     #print_r($configuration);
