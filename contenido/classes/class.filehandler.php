@@ -451,6 +451,10 @@ class cFileHandler {
      * @return bool true on success or false on failure
      */
     public static function recursiveRmdir($dirname) {
+        if ($dirname == '') {
+            throw new cInvalidArgumentException("Directory name must not be empty.");
+        }
+
         // make sure $dirname ends with a slash
         if (substr($dirname, -1) !== '/') {
             $dirname .= '/';
