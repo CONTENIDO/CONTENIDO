@@ -259,7 +259,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                         $upload = new cApiUpload();
                         $upload->loadByMany(array(
                             'filename' => $filenameData['filename'],
-                            'dirname' => $filenameData['path'],
+                            'dirname' => $filenameData['path'] . '/',
                             'idclient' => $this->_client
                         ));
                         $uploadMeta = new cApiUploadMeta();
