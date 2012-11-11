@@ -125,6 +125,10 @@ cms/upload/picture_gallery/picture_3.jpg -text
 cms/upload/picture_gallery/picture_4.jpg -text
 cms/upload/picture_gallery/picture_5.jpg -text
 cms/upload/picture_gallery/picture_6.jpg -text
+cms/upload/slider/slider_1.jpg -text
+cms/upload/slider/slider_2.jpg -text
+cms/upload/slider/slider_3.jpg -text
+cms/upload/slider/slider_4.jpg -text
 cms_old/.htaccess_recommended -text
 cms_old/css/contenido_sample.css -text
 cms_old/css/index.php -text
