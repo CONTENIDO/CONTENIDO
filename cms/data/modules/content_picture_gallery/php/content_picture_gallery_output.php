@@ -1,25 +1,23 @@
 <?php 
 	$tpl = Contenido_SmartyWrapper::getInstance();
+	$filelistIndex = 1;
 	
-	$upload = new cApiUploadCollection();
-	$upload->select("dirname = 'picture_gallery/'");
+	$art = new Article(cRegistry::getArticleLanguageId(), cRegistry::getClientId(), cRegistry::getLanguageId());
+	$contentValue = $art->getContent("FILELIST", $filelistIndex);
+	
+	$filelist = new cContentTypeFilelist($contentValue, $filelistIndex, array());
+	$files = $filelist->getConfiguredFiles();
 	
 	$pictures = array();
 	
-	while (($item = $upload->next()) !== false) {
+	foreach ($files as $file) {
+		$path = 'upload/' . $file['path'] . '/' . $file['filename'];
 		
-		$path = 'upload/' . $item->getField('dirname') . $item->getField('filename');
-
-		$id = $item->getField('idupl');
-
-		$meta = new cApiUploadMeta();
-		$meta->loadByUploadIdAndLanguageId($id, $lang);
-
 		$record = array();
 		$record['thumb'] = cApiImgScale($path, 319, 199);
 		$record['lightbox'] = $path;
-		$record['description'] = $meta->getField('description');
-		$record['copyright'] = $meta->getField('copyright');
+		$record['description'] = $file['metadata']['description'];
+		$record['copyright'] = $file['metadata']['copyright'];
 		
 		array_push($pictures, $record);
 	}
@@ -29,7 +27,6 @@
 	$tpl->display('content_picture_gallery/template/picture_gallery.tpl');
 	
 	if (cRegistry::isBackendEditMode()) {
-		//TODO USE FILELIST SELECTOR AS INPUT FOR THIS MODULE
 		echo "CMS_FILELIST[1]";
 	}
 	
