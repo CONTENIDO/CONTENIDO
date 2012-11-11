@@ -8,4 +8,14 @@
     padding: 2px;
     margin-top: 5px;
     margin-bottom: 2px;
+    font-weight: bold;
+}
+.content-type-label-secondary {
+    color: #F00;
+    background-color: #FEE;
+    display: block;
+    padding: 2px;
+    margin-top: 5px;
+    margin-bottom: 2px;
+    font-weight: normal;
 }
