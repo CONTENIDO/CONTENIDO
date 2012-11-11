@@ -22,6 +22,7 @@ cms/data/modules/config_social_media/lang/lang_de_DE.txt -text
 cms/data/modules/config_social_media/php/config_social_media_input.php -text
 cms/data/modules/config_social_media/php/config_social_media_output.php -text
 cms/data/modules/config_social_media/template/get.tpl -text
+cms/data/modules/content_date/css/content_date.css -text svneol=unset#text/plain
 cms/data/modules/content_date/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_date/lang/lang_de_DE.txt -text
 cms/data/modules/content_date/php/content_date_input.php -text
@@ -74,6 +75,10 @@ cms/data/modules/navigation_main/info.xml -text svneol=unset#text/plain
 cms/data/modules/navigation_main/php/navigation_main_input.php -text
 cms/data/modules/navigation_main/php/navigation_main_output.php -text
 cms/data/modules/navigation_main/template/navigation.tpl -text
+cms/data/modules/navigation_social_media/info.xml -text svneol=unset#text/plain
+cms/data/modules/navigation_social_media/php/navigation_social_media_input.php -text
+cms/data/modules/navigation_social_media/php/navigation_social_media_output.php -text
+cms/data/modules/navigation_social_media/template/get.tpl -text
 cms/data/modules/script_tracker_google/info.xml -text svneol=unset#text/plain
 cms/data/modules/script_tracker_google/php/script_tracker_google_input.php -text
 cms/data/modules/script_tracker_google/php/script_tracker_google_output.php -text

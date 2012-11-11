@@ -31,6 +31,10 @@ if (cRegistry::isBackendEditMode()) {
 
 // use smarty template to output header text
 $tpl = Contenido_SmartyWrapper::getInstance();
+global $force;
+if (1 == $force) {
+    $tpl->clearAllCache();
+}
 $tpl->assign('label', $label);
 $tpl->assign('header', $header);
 $tpl->display('content_header_second/template/get.tpl');

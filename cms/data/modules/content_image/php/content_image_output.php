@@ -25,7 +25,7 @@ if (cRegistry::isBackendEditMode()) {
 // therefor the image dimensions have to be determined
 if (0 < strlen($imageSource)) {
     $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
-    $filename = str_replace($clientConfig["upl"]["path"], $clientConfig["upl"]["htmlpath"], $imageSource);
+    $filename = str_replace($clientConfig["upl"]["htmlpath"], $clientConfig["upl"]["path"], $imageSource);
     list($imageWidth, $imageHeight) = getimagesize($filename);
     $image = new stdClass();
     $image->src = $imageSource;
@@ -44,6 +44,10 @@ if (cRegistry::isBackendEditMode()) {
 
 // use smarty template to output header text
 $tpl = Contenido_SmartyWrapper::getInstance();
+global $force;
+if (1 == $force) {
+    $tpl->clearAllCache();
+}
 $tpl->assign('labelImage', $labelImage);
 $tpl->assign('editor', $imageEditor);
 $tpl->assign('image', $image);

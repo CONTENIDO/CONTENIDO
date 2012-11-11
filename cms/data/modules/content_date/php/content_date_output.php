@@ -22,6 +22,10 @@ if (cRegistry::isBackendEditMode()) {
 
 // use smarty template to output header text
 $tpl = Contenido_SmartyWrapper::getInstance();
+global $force;
+if (1 == $force) {
+    $tpl->clearAllCache();
+}
 $tpl->assign('label', $label);
 $tpl->assign('date', $date);
 $tpl->display('content_date/template/get.tpl');
