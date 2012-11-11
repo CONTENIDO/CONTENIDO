@@ -25,6 +25,8 @@ $article = new cApiArticleLanguage();
 $article->loadByArticleAndLanguageId(cRegistry::getArticleId(), cRegistry::getLanguageId());
 $headline = strip_tags($article->getContent('CMS_HTMLHEAD', 1));
 
+array_shift($breadcrumb);
+
 // initialize smarty
 $tpl = Contenido_SmartyWrapper::getInstance();
 $tpl->assign('label_breadcrumb', mi18n("LABEL_BREADCRUMB"));

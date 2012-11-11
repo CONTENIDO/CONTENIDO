@@ -30,5 +30,9 @@ if ($headline != '') {
     $breadcrumb[] = $headline;
 }
 
-echo implode(' - ', $breadcrumb);
+array_shift($breadcrumb);
+
+if (count($breadcrumb) > 0) {
+    echo implode(' - ', $breadcrumb);
+}
 ?>
