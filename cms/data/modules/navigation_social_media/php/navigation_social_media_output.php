@@ -11,7 +11,7 @@
  * @link http://www.4fb.de
  */
 
-$configIdart = getEffectiveSetting('social_media_config', 'idart', 0);
+$configIdart = getEffectiveSetting('footer_config', 'idart', 0);
 
 if (0< $configIdart) {
 

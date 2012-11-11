@@ -17,11 +17,20 @@ cms/data/layouts/picture_gallery/picture_gallery.html -text
 cms/data/layouts/standard/standard.html -text
 cms/data/layouts/start_page/start_page.html -text svneol=unset#text/plain
 cms/data/logs/index.php -text
+cms/data/modules/config_copyright_notice/info.xml -text svneol=unset#text/plain
+cms/data/modules/config_copyright_notice/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/data/modules/config_copyright_notice/php/config_copyright_notice_input.php -text
+cms/data/modules/config_copyright_notice/php/config_copyright_notice_output.php -text
+cms/data/modules/config_copyright_notice/template/get.tpl -text
 cms/data/modules/config_social_media/info.xml -text svneol=unset#text/plain
 cms/data/modules/config_social_media/lang/lang_de_DE.txt -text
 cms/data/modules/config_social_media/php/config_social_media_input.php -text
 cms/data/modules/config_social_media/php/config_social_media_output.php -text
 cms/data/modules/config_social_media/template/get.tpl -text
+cms/data/modules/content_copyright_notice/info.xml -text svneol=unset#text/plain
+cms/data/modules/content_copyright_notice/php/content_copyright_notice_input.php -text
+cms/data/modules/content_copyright_notice/php/content_copyright_notice_output.php -text
+cms/data/modules/content_copyright_notice/template/get.tpl -text
 cms/data/modules/content_date/css/content_date.css -text svneol=unset#text/plain
 cms/data/modules/content_date/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_date/lang/lang_de_DE.txt -text

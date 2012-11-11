@@ -10,12 +10,15 @@
   <body>
 
     <div id="page">
+      
       <div id="header">
 		  <a href="front_content.php"><img src="images/misc/logo.png" width="279" height="41" alt="Contenido Logo" id="logo"></a>
       </div>
+      
       <div id="breadcrumb">
 		  <container id="90" name="breadcrumb" types="navigation" mode="fixed" default="navigation_breadcrumb">breadcrumb</container>
       </div> 
+      
       <div id="menu">
 		  <container id="100" name="left navigation" types="navigation" mode="fixed" default="navigation_main">left navigation</container>
       </div>    
@@ -32,11 +35,15 @@
             <container id="190" name="content" types="content" mode="optional" default="">content</container>
             <container id="200" name="content" types="content" mode="optional" default="">content</container>		
       </div>   
+
       <div id="footer">
-            <container id="210" name="bottom navigation" types="navigation" mode="fixed" default="navigation_bottom">bottom navigation</container>
-        
+            <container id="210" name="bottom navigation" types="navigation" mode="optional" default="navigation_bottom">bottom navigation</container>
+            <container id="220" name="social media links" types="navigation" mode="optional" default="navigation_social_media">social media links</container>
       </div> 
-      <div id="copyright"></div>
+
+      <div id="copyright">
+            <container id="230" name="copyright notice" types="content" mode="optional" default="content_copyright_notice">copyright notice</container>
+      </div>
 
     </div>
 

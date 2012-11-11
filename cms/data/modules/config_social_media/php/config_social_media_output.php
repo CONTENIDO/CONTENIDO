@@ -13,7 +13,9 @@
 
 if (cRegistry::isBackendEditMode()) {
 
-    // get links from content type TEXT with different indexes
+	$label = mi18n("LABEL_SOCIAL_MEDIA");
+
+	// get links from content type TEXT with different indexes
     $items = array(
         'rss' => array(
             'name' => mi18n("NAME_RSS"),
@@ -47,6 +49,7 @@ if (cRegistry::isBackendEditMode()) {
     if (1 == $force) {
         $tpl->clearAllCache();
     }
+    $tpl->assign('label', $label);
     $tpl->assign('items', $items);
     $tpl->display('config_social_media/template/get.tpl');
 
