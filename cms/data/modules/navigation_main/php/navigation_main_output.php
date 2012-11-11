@@ -1,16 +1,28 @@
 <?php
 
+/**
+ * description: main navigation
+ *
+ * @package Module
+ * @subpackage navigation_main
+ * @version SVN Revision $Rev:$
+ * @author marcus.gnass@4fb.de
+ * @copyright four for business AG
+ * @link http://www.4fb.de
+ */
+
 // get client settings
 $rootIdcat = getEffectiveSetting('navigation_main', 'idcat', 1);
 $depth = getEffectiveSetting('navigation_main', 'depth', 3);
-
-$idcat = cRegistry::getCategoryId();
 
 // get category tree
 $auth = cRegistry::getAuth();
 $categoryHelper = cCategoryHelper::getInstance();
 $categoryHelper->setAuth($auth);
 $tree = $categoryHelper->getSubCategories($rootIdcat, $depth);
+
+// get current idcat
+$idcat = cRegistry::getCategoryId();
 
 // get breadcrumb of current category
 $helper = cCategoryHelper::getInstance();
