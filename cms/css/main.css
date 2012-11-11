@@ -163,13 +163,71 @@ p a:hover {
 .slider {
 	width:920px;
 	height:280px; 
+}    
+.slider .images {
+	display: inline;
 }
 .slider .images li {
-	position: absolute; 
-	display:none;
+	position: absolute;  
+	opacity:0;  
+	list-style:none;
 } 
 .slider .images li.active {
-	display:block;
+	opacity:1;
+} 
+.slider .images li img {
+	position: absolute; 
+	z-index:1;
+} 
+.slider .images li a {
+	position: absolute; 
+	z-index:2;
+ 	display: block;
+	width: 150px; 
+	text-align: center;  
+	text-decoration: none;
+	color:#fff;  
+	background: #e50051;
+	height: 25px;
+	line-height: 25px;
+	border-radius: 9px;  
+	margin: 200px 0 0 700px; 
+	border-bottom: 1px solid #c31250;
+	border-right: 1px solid #c31250; 
+	border-top: 1px solid #d687a4; 
+	border-left: 1px solid #d687a4;  
+} 
+  
+.slider .pagination{
+ 	margin-top: 245px; 
+	left:50%;
+	position: absolute; 
+	z-index:3;
+	background: #fff;  
+	padding: 0 25px;
+}  
+.slider .pagination li {
+	list-style:none;   
+	float: left;
+} 
+.slider .pagination li + li {
+	margin-left: 3px;
+}
+.slider .pagination li a {
+	display: block;
+	width: 17px;
+	height: 17px;
+	line-height:17px;
+	border: 1px dashed #797979;
+	color: #797979;           
+	text-decoration: none; 
+	text-align: center; 
+	font-size:15px;
+}  
+.slider .pagination li a:hover,
+.slider .pagination li a.active {
+	border: 1px solid #0083cb;
+	color: #0083cb;
 }
 
 /* ----- NEWSTEASER ----- */  
