@@ -59,7 +59,7 @@ $(function(){
 		} 
 	});  
 	
-	$(".galery .slider ").delegate("a", "click", function(e){
+	$(".galery .slider").delegate("a", "click", function(e){
 		 e.preventDefault();
 		$(".galery .lightbox").html('<img src="'+$(this).attr("href")+'" alt="" /><p>TEXT</p>').dialog({
 			modal:true,
@@ -70,6 +70,12 @@ $(function(){
 				$(".galery").prepend('<div class="lightbox"></div>');
 			}
 		}); 
-	});
+	}); 
+	
+	
+	/* ----- SLIDER ----- */ 
+	
+	
+	
 	
 });

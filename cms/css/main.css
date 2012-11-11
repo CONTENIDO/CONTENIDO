@@ -1,19 +1,23 @@
 @CHARSET "UTF-8";      
 
 html{
-	    background: #f4f4f4 url('../images/backgrounds/bg.png') repeat;     
+	    background: #f4f4f4 url('../images/backgrounds/bg.png') repeat; 
+	height: 100%;    
 }  
 body{
 /*Pages shadow to be done*/  
  	font-family: Verdana, sans-serif;
 	font-size:12px;  
 	line-height: 15px; 
-	color: #797979;
+	color: #797979; 
+	overflow-y:scroll;  
+	height: 100%;
+	
 }  
 
 #page {
-	width: 960px;
-	min-height:100%;
+	width: 960px;   
+	height:100%;
 	background: #fff;
 	margin: 0 auto;
 } 
@@ -112,7 +116,8 @@ body{
  
 /* ----- CONTENT ----- */  
 #content {
-	width: 920px;
+	width: 920px; 
+	
 	margin-left:20px; 
 	float: left; 
 }     
@@ -152,6 +157,78 @@ p a:hover {
 	color:#9ba21b; 
 	text-decoration: none; 
 	border-bottom: 1px dotted #9ba21b;
+}   
+/* ----- SLIDER ----- */    
+
+.slider {
+	width:920px;
+	height:280px; 
+}
+.slider .images li {
+	position: absolute; 
+	display:none;
+} 
+.slider .images li.active {
+	display:block;
+}
+
+/* ----- NEWSTEASER ----- */  
+/* 4-culumn version */
+
+.column_quarter{
+	width: 920px; 
+	margin-bottom: 50px;
+} 
+.column_quarter .col {
+	float:left;
+	width: 210px;
+} 
+.column_quarter .col + .col {
+	margin-left: 20px;
+}
+.column_quarter .col h3 {
+	font-size: 14px;
+	line-height: 40px;
+} 
+.column_quarter .col span.date {
+	font-size: 9px; 
+	color: #ccc;
+}
+.column_quarter .col .teaser_img {
+	margin:0 0 40px 0;  
+	height: 110px;
+	width: 215px; 
+	background: #efefef; 
+	overflow:hidden;
+} 
+.column_quarter .col .teaser_img p {
+	width:205px;
+	height: 100px;
+	display:block;
+	margin-top:-90px;    
+  background: #fff;
+	opacity: 0.5;  
+	padding: 5px;  
+	
+} 
+.column_quarter .col .teaser_img:hover p {
+	margin-top:0;    
+	transition: all 0.4s;
+	-moz-transition: all 0.4s; /* Firefox 4 */
+	-webkit-transition: all 0.4s; /* Safari and Chrome */
+	-o-transition: all 0.4s; /* Opera */
+} 
+
+.column_quarter .col a.more {
+	text-decoration: none;
+	color:#9ba21b; 
+	text-align:right; 
+	display: block; 
+	line-height:17px; 
+	margin-top:5px;
+} 
+.column_quarter .col a.more:hover {
+	color: #0083cb;
 }
 
 /* ----- GALERY ----- */  
