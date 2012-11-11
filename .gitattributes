@@ -53,6 +53,12 @@ cms/data/modules/navigation_bottom/info.xml -text svneol=unset#text/plain
 cms/data/modules/navigation_bottom/php/navigation_bottom_input.php -text
 cms/data/modules/navigation_bottom/php/navigation_bottom_output.php -text
 cms/data/modules/navigation_bottom/template/get.tpl -text
+cms/data/modules/navigation_breadcrumb/info.xml -text svneol=unset#text/plain
+cms/data/modules/navigation_breadcrumb/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/data/modules/navigation_breadcrumb/lang/lang_en_GB.txt -text svneol=unset#text/plain
+cms/data/modules/navigation_breadcrumb/php/navigation_breadcrumb_input.php -text
+cms/data/modules/navigation_breadcrumb/php/navigation_breadcrumb_output.php -text
+cms/data/modules/navigation_breadcrumb/template/breadcrumb.tpl -text
 cms/data/modules/navigation_main/info.xml -text svneol=unset#text/plain
 cms/data/modules/navigation_main/php/navigation_main_input.php -text
 cms/data/modules/navigation_main/php/navigation_main_output.php -text
