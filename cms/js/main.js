@@ -59,7 +59,7 @@ $(function(){
 		} 
 	});  
 	
-	$(".galery .slider li a").on("click", function(e){
+	$(".galery .slider ").delegate("a", "click", function(e){
 		 e.preventDefault();
 		$(".galery .lightbox").html('<img src="'+$(this).attr("href")+'" alt="" /><p>TEXT</p>').dialog({
 			modal:true,
