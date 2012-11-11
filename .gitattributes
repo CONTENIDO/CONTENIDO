@@ -2231,6 +2231,7 @@ contenido/scripts/rowMark.js -text
 contenido/scripts/setPager.js -text
 contenido/scripts/str_overview.js -text
 contenido/scripts/subnav.js -text
+contenido/scripts/system_log_sysvalues.js -text svneol=unset#text/plain
 contenido/scripts/upl_files_overview.js -text svneol=unset#text/plain
 contenido/styles/contenido.css -text
 contenido/styles/content_types/cms_abstract_tabbed.css -text svneol=unset#text/plain
@@ -2375,7 +2376,6 @@ contenido/templates/standard/template.subnav_noleft.html -text
 contenido/templates/standard/template.symbolhelp.html -text
 contenido/templates/standard/template.system_configuration.html -text
 contenido/templates/standard/template.system_integrity.html -text
-contenido/templates/standard/template.system_log_variables.html -text
 contenido/templates/standard/template.system_purge.html -text
 contenido/templates/standard/template.system_subnav.html -text
 contenido/templates/standard/template.system_variables.html -text

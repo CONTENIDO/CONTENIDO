@@ -177,5 +177,3 @@ $oActiveUser = new cApiOnlineUserCollection();
 $oActiveUser->startUsersTracking();
 
 cRegistry::shutdown();
-
-?>

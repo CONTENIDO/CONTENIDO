@@ -295,6 +295,17 @@ class cAjaxRequest {
                 $string = json_encode($translations);
                 break;
 
+            case 'logfilecontent':
+                $type = $_REQUEST['logfile'];
+                $numberOfLines = $_REQUEST['numberOfLines'];
+                $cfg = cRegistry::getConfig();
+                $filename = $cfg['path']['frontend'] . DS . $cfg['path']['logs'] . $type;
+                $string = cFileHandler::read($filename);
+                $lines = file($filename);
+                $lines = array_splice($lines, $numberOfLines * -1);
+                $string = implode('', $lines);
+                break;
+
             default:
                 // if action is unknown generate error message
                 $string = 'Unknown Ajax Action';
