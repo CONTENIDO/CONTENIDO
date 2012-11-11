@@ -120,6 +120,12 @@ cms/robots.txt -text
 cms/templates/error_page.html -text
 cms/templates/index.php -text
 cms/upload/logos/logo.png -text
+cms/upload/picture_gallery/picture_1.jpg -text
+cms/upload/picture_gallery/picture_2.jpg -text
+cms/upload/picture_gallery/picture_3.jpg -text
+cms/upload/picture_gallery/picture_4.jpg -text
+cms/upload/picture_gallery/picture_5.jpg -text
+cms/upload/picture_gallery/picture_6.jpg -text
 cms_old/.htaccess_recommended -text
 cms_old/css/contenido_sample.css -text
 cms_old/css/index.php -text
