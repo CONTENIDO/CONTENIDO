@@ -84,6 +84,7 @@ cms/js/main.js -text svneol=unset#text/plain
 cms/robots.txt -text
 cms/templates/error_page.html -text
 cms/templates/index.php -text
+cms/upload/logos/logo.png -text
 cms_old/.htaccess_recommended -text
 cms_old/css/contenido_sample.css -text
 cms_old/css/index.php -text

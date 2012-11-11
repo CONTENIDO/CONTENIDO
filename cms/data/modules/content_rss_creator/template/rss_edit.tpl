@@ -25,6 +25,14 @@
 <br/>
 
 <div>
+	<label class="content-type-label">{$label_rss_logo}</label>
+	<div>{$rss_logo}</div>
+	<div><img src="{$rss_logo_display}" alt=""/></div>
+</div>
+
+<br/>
+
+<div>
 	<label class="content-type-label">{$label_rss_configuration}</label>
 	<div>{$rss_configuration}</div>
 </div>
