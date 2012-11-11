@@ -43,6 +43,10 @@ cms/data/modules/content_image/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/content_image/php/content_image_input.php -text
 cms/data/modules/content_image/php/content_image_output.php -text
 cms/data/modules/content_image/template/get.tpl -text
+cms/data/modules/content_picture_gallery/info.xml -text svneol=unset#text/plain
+cms/data/modules/content_picture_gallery/php/content_picture_gallery_input.php -text
+cms/data/modules/content_picture_gallery/php/content_picture_gallery_output.php -text
+cms/data/modules/content_picture_gallery/template/picture_gallery.tpl -text
 cms/data/modules/content_rss_creator/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_rss_creator/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/content_rss_creator/php/content_rss_creator_input.php -text
