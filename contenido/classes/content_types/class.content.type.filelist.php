@@ -73,9 +73,13 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     /**
      * Placeholders for labels in frontend.
      * Important: This must be a static array!
-     * @var        array
+     *
+     * @var array
      */
-    protected static $_translations = array("LABEL_FILESIZE", "LABEL_UPLOAD_DATE");
+    protected static $_translations = array(
+        "LABEL_FILESIZE",
+        "LABEL_UPLOAD_DATE"
+    );
 
     /**
      * Initialises class attributes and handles store events.
@@ -204,20 +208,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         return $code;
     }
 
-    /**
-     * Function is called in edit- and viewmode in order to generate code for
-     * output.
-     *
-     * @return string generated code
-     */
-    public function generateFileListCode() {
-        if ($this->_settings['filelist_style'] === '') {
-            return '';
-        }
-        $template = new cTemplate();
-        $fileList = array();
-
-        $template->set('s', 'TITLE', $this->_settings['filelist_title']);
+    public function getConfiguredFiles() {
+        $files = array();
 
         if ($this->_settings['filelist_manual'] === 'true' && count($this->_settings['filelist_manual_files']) > 0) {
             $fileList = $this->_settings['filelist_manual_files'];
@@ -259,7 +251,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             }
 
             $i = 1;
-            foreach ($files as $filenameData) {
+            foreach ($files as $key => $filenameData) {
                 if (($this->_settings['filelist_filecount'] != 0 && $i <= $this->_settings['filelist_filecount']) || $this->_settings['filelist_filecount'] == 0) {
                     if ($this->_settings['filelist_incl_metadata'] === 'true') {
                         $metaData = array();
@@ -288,9 +280,36 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                     } else {
                         $filenameData['metadata'] = array();
                     }
-                    $this->fillFileListTemplateEntry($filenameData, $template);
+
+                    $files[$key] = $filenameData;
                     $i++;
                 }
+            }
+
+            return $files;
+        }
+    }
+
+    /**
+     * Function is called in edit- and viewmode in order to generate code for
+     * output.
+     *
+     * @return string generated code
+     */
+    public function generateFileListCode() {
+        if ($this->_settings['filelist_style'] === '') {
+            return '';
+        }
+        $template = new cTemplate();
+        $fileList = array();
+
+        $template->set('s', 'TITLE', $this->_settings['filelist_title']);
+
+        $files = $this->getConfiguredFiles();
+
+        if (count($files) > 0) {
+            foreach ($files as $filenameData) {
+                $this->fillFileListTemplateEntry($filenameData, $template);
             }
 
             // generate template
@@ -746,7 +765,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         }
 
         // set default values
-        $extensions = (is_array($this->_settings['filelist_extensions'])) ? $this->_settings['filelist_extensions'] : array();
+        $extensions = (is_array($this->_settings['filelist_extensions']))? $this->_settings['filelist_extensions'] : array();
         $htmlSelect->setSelected($extensions);
         $htmlSelect->setMultiselect();
         $htmlSelect->setSize(5);
@@ -896,5 +915,4 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         return $htmlSelect->render();
     }
-
 }
