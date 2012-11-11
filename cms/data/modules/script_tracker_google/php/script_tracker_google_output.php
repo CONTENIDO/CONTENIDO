@@ -3,9 +3,9 @@
  * Description: Google Analytics Tracking
  *
  * @package Module
- * @subpackage content_header_first
+ * @subpackage script_tracker_goog
  * @version SVN Revision $Rev:$
- * @author unkown
+ * @author simon.sprankel@4fb.de
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -13,9 +13,13 @@
 $account = getEffectiveSetting('stats', 'ga_account', '');
 
 if ($account != '' && cRegistry::isTrackingAllowed()) {
-    $tpl = new cTemplate();
-    $tpl->set('s', 'account', $account);
-    $tpl->generate('googleanalytics.html');
+	$tpl = Contenido_SmartyWrapper::getInstance();
+	global $force;
+	if (1 == $force) {
+	    $tpl->clearAllCache();
+	}
+    $tpl->assign('account', $account);
+    $tpl->display('script_tracker_google/template/get.tpl');
 }
 
 ?>

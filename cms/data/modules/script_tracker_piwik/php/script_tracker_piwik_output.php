@@ -14,11 +14,14 @@ $url  = getEffectiveSetting('stats', 'piwik_url', '');
 $site = getEffectiveSetting('stats', 'piwik_site', '');
 
 if ($url != '' && $site != '' && cRegistry::isTrackingAllowed()) {
-    $tpl = new cTemplate();
-
-    $tpl->set('s', 'url', $url);
-    $tpl->set('s', 'site', $site);
-    $tpl->generate('piwik.html');
+	$tpl = Contenido_SmartyWrapper::getInstance();
+	global $force;
+	if (1 == $force) {
+	    $tpl->clearAllCache();
+	}
+    $tpl->assign('url', $url);
+    $tpl->assign('site', $site);
+    $tpl->display('script_tracker_piwik/template/get.tpl');
 }
 
 ?>
