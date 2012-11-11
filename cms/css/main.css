@@ -154,8 +154,88 @@ p a:hover {
 	border-bottom: 1px dotted #9ba21b;
 }
 
- 
+/* ----- GALERY ----- */  
+.galery {
+	width: 670px;
+} 
+.galery .source {
+	display:none;
+}
+.galery .slider,
+.galery .pagination {
+	display: inline;
+} 
 
+.galery .slider li,
+.galery .pagination li {
+	list-style: none; 
+	float:left;
+}   
+
+.galery .slider li {
+	width: 319px;
+	height: 194px;
+	border: 3px solid #ccc; 
+	margin-bottom: 20px; 
+	overflow:hidden;
+}
+.galery .slider li img {
+	width: 319px; 
+	} 
+.galery .slider li.odd {
+	margin-left: 20px;
+}  
+
+.galery .pagination li + li {
+	margin-left:2px;
+} 
+.galery .pagination li a {
+	text-decoration: none;
+	padding: 2px 5px;
+	border: 2px solid transparent; 
+	display:block;    
+	margin-bottom:20px; 
+	color: #797979;
+} 
+.galery .pagination li a.active {
+	border: 2px solid #ccc; 
+	color: #0083cb;
+}    
+/* Overlays */
+.ui-widget-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+/* workarounds */
+button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra padding in Firefox */
+.ui-dialog { position: absolute;   overflow: hidden; }
+.ui-dialog .ui-dialog-titlebar { height: 30px; position: relative;  }
+.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .1em 0; }
+.ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin-top:-18px; height: 18px; }
+.ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
+.ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
+.ui-dialog .ui-dialog-content { position: relative; border: 0; background: none; overflow: auto; zoom: 1; }
+.ui-dialog .ui-dialog-buttonpane { text-align: left; border-width: 1px 0 0 0; background-image: none; margin: .5em 0 0 0; padding: .3em 1em .5em .4em; }
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: right; }
+.ui-dialog .ui-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
+.ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
+.ui-draggable .ui-dialog-titlebar { cursor: move; }
+
+/* Component containers
+----------------------------------*/
+
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif; font-size: 1em; }
+.ui-widget-content { background: #fff ; color: #797979;  border: 20px solid #fff;}
+.ui-widget-content a { color: #333333; }
+.ui-widget-header a { color: #797979; text-decoration: none; font-size:15px; text-align: right; }
+
+/* Overlays */
+.ui-widget-overlay { background: #666666 ; opacity: .5;filter:Alpha(Opacity=50); }
+.ui-widget-shadow { margin: -5px 0 0 -5px; padding: 5px; background: #000000 ; opacity: .2;filter:Alpha(Opacity=20); -moz-border-radius: 5px; -khtml-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; }
+  
+
+.ui-dialog-content {
+	text-align: center;
+}
 /* ----- FOOTER ----- */  
 
 #footer {
@@ -188,4 +268,8 @@ p a:hover {
 #copyright {
 	width: 100%;
 	height:80px;
-}
+}    
+
+
+
+
