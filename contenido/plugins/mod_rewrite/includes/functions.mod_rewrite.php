@@ -535,7 +535,7 @@ function mr_buildGeneratedCode($code) {
 
     ModRewriteDebugger::add(($sseEndtime - $sseStarttime), 'mr_buildGeneratedCode() total spend time');
 
-    if (($debug = mr_debugOutput(false)) === true) {
+    if ($debug = mr_debugOutput(false)) {
         $code = cString::iReplaceOnce("</body>", $debug . "\n</body>", $code);
     }
 
@@ -568,7 +568,7 @@ function mr_setClientLanguageId($client) {
             . "A.idclient='" . ((int) $client) . "' AND A.idlang=B.idlang"
             . "LIMIT 0,1";
 
-    if (($aData = mr_queryAndNextRecord($sql)) === true) {
+    if ($aData = mr_queryAndNextRecord($sql)) {
         $lang = $aData['idlang'];
     }
 }
@@ -627,7 +627,7 @@ function mr_getConfiguration($clientId) {
     if (!is_file($file) || !is_readable($file)) {
         return null;
     }
-    if (($content = cFileHandler::read($file)) === true) {
+    if ($content = cFileHandler::read($file)) {
         return unserialize($content);
     } else {
         return null;
