@@ -5,11 +5,16 @@
  *
  * @package Module
  * @subpackage navigation_bottom
- * @version SVN Revision $Rev:$
  * @author marcus.gnass@4fb.de
- * @copyright four for business AG
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call: Missing framework initialization - request aborted.');
+}
 
 // read articles from defined cat, including its start article and ordering it
 // by its custom order

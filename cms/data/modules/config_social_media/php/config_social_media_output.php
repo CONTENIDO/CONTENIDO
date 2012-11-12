@@ -5,15 +5,18 @@
  *
  * @package Module
  * @subpackage config_social_media
- * @version SVN Revision $Rev:$
  * @author marcus.gnass@4fb.de
- * @copyright four for business AG
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (cRegistry::isBackendEditMode()) {
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call: Missing framework initialization - request aborted.');
+}
 
-	$label = mi18n("LABEL_SOCIAL_MEDIA");
+if (cRegistry::isBackendEditMode()) {
 
 	// get links from content type TEXT with different indexes
     $items = array(
@@ -49,7 +52,7 @@ if (cRegistry::isBackendEditMode()) {
     if (1 == $force) {
         $tpl->clearAllCache();
     }
-    $tpl->assign('label', $label);
+    $tpl->assign('label', mi18n("LABEL_SOCIAL_MEDIA"));
     $tpl->assign('items', $items);
     $tpl->display('config_social_media/template/get.tpl');
 
