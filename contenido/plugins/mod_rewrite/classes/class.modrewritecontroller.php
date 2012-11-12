@@ -483,7 +483,7 @@ class ModRewriteController extends ModRewriteBase {
                 $clCol = new cApiClientLanguageCollection();
                 $clCol->setWhere('idclient', $client);
                 $clCol->query();
-                if (($clItem = $clCol->next()) === true) {
+                if ($clItem = $clCol->next()) {
                     $lang = $clItem->get('idlang');
                 }
             }
