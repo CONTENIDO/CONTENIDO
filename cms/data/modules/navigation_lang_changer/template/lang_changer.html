@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript">
+	/*
+	if page is loaded:
+	 1. remove hardcoded link for switching languages from the metanavigation,
+	 2. append smart lang changer to the metanavigation,
+	 3. remove redundant smart lang changer from the page
+	
+	 result: the smart lang changer is placed in the metanavigation instead of old hardcoded link. 
+	 */
+	$(document).ready(
+			function() {
+
+				$("#metaNavigation").children().last().remove();
+				$("#metaNavigation").append(
+						'<li>' + $("#langChanger").html() + '</li>');
+				$("#langChanger").remove();
+
+			});
+</script>
+</head>
+<body>
+	<ul>
+		<li id="langChanger"><a href="{url}" title="{title}">{label}</a></li>
+	</ul>
+</body>
+</html>
