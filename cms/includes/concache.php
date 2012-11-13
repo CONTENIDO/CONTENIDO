@@ -158,9 +158,4 @@ $cfgConCache['raiseonevent'] = array(
     'afteroutput'  => array($sStatCode, 'cRegistry::shutdown();')
 );
 
-
-// include concache file
-cInclude('classes', 'cache/class.outputcache.php');
-
-
 ?>
