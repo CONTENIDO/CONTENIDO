@@ -18,8 +18,6 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_controller_abstract.php');
-
 /**
  * Content expert controller for expert settings/actions.
  *

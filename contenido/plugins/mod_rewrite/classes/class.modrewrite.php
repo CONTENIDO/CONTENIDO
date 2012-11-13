@@ -309,7 +309,7 @@ class ModRewrite extends ModRewriteBase {
 
         $sql = "SELECT al.idart FROM " . $cfg['tab']['art_lang'] . " al "
                 . "LEFT JOIN " . $cfg['tab']['cat_art'] . " ca ON al.idart = ca.idart "
-                . "WHERE al.urlname = '$sArtName'" . $sWhere;
+                . "WHERE LOWER(al.urlname) = LOWER('$sArtName')" . $sWhere;
 
         if ($aData = mr_queryAndNextRecord($sql)) {
             return $aData['idart'];

@@ -49,13 +49,23 @@ if (isset($client) && (int) $client > 0) {
 }
 
 
-// include necessary sources
-plugin_include('mod_rewrite', 'classes/class.modrewritedebugger.php');
-plugin_include('mod_rewrite', 'classes/class.modrewritebase.php');
-plugin_include('mod_rewrite', 'classes/class.modrewrite.php');
-plugin_include('mod_rewrite', 'classes/class.modrewritecontroller.php');
-plugin_include('mod_rewrite', 'classes/class.modrewriteurlstack.php');
-plugin_include('mod_rewrite', 'classes/class.modrewriteurlutil.php');
+// include necessary sources, setup autoloader for plugin
+// @todo Use config variables for $pluginClassPath below!
+$pluginClassPath = 'contenido/plugins/mod_rewrite/classes/';
+cAutoload::addClassmapConfig(array(
+    'ModRewrite_ControllerAbstract' => $pluginClassPath . 'controller/class.modrewrite_controller_abstract.php',
+    'ModRewrite_ContentController' => $pluginClassPath . 'controller/class.modrewrite_content_controller.php',
+    'ModRewrite_ContentExpertController' => $pluginClassPath . 'controller/class.modrewrite_contentexpert_controller.php',
+    'ModRewrite_ContentTestController' => $pluginClassPath . 'controller/class.modrewrite_contenttest_controller.php',
+    'ModRewriteBase' => $pluginClassPath . 'class.modrewritebase.php',
+    'ModRewrite' => $pluginClassPath . 'class.modrewrite.php',
+    'ModRewriteController' => $pluginClassPath . 'class.modrewritecontroller.php',
+    'ModRewriteDebugger' => $pluginClassPath . 'class.modrewritedebugger.php',
+    'ModRewriteTest' => $pluginClassPath . 'class.modrewritetest.php',
+    'ModRewriteUrlStack' => $pluginClassPath . 'class.modrewriteurlstack.php',
+    'ModRewriteUrlUtil' => $pluginClassPath . 'class.modrewriteurlutil.php'
+));
+unset($pluginClassPath);
 plugin_include('mod_rewrite', 'includes/functions.mod_rewrite.php');
 
 

@@ -30,7 +30,6 @@ if ((int) $client <= 0) {
     return;
 }
 
-plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_content_controller.php');
 
 $action = (isset($_REQUEST['mr_action'])) ? $_REQUEST['mr_action'] : 'index';
 $bDebug = false;

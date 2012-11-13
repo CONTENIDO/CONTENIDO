@@ -238,6 +238,7 @@ class ModRewriteTest {
 
             // an error occured (idcat and or idart couldn't catched by controller)
             $aReturn['mr_preprocessedPageError'] = 1;
+            $aReturn['error'] = $oMRController->getError();
 
             $this->_sResolvedUrl = '';
             $this->_bRoutingFound = false;

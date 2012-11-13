@@ -18,9 +18,6 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-plugin_include('mod_rewrite', 'classes/class.modrewritetest.php');
-plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_controller_abstract.php');
-
 /**
  * Content controller to run tests.
  *
@@ -110,6 +107,7 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract {
         foreach ($aTests as $p => $v) {
             $url = mr_buildNewUrl($v['url']);
             $arr = $oMRTest->resolveUrl($url);
+            $error = '';
             $resUrl = $oMRTest->getResolvedUrl();
             $color = 'green';
 
@@ -125,6 +123,27 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract {
                 $successCounter++;
             }
 
+            // @todo: translate
+            if (isset($arr['error'])) {
+                switch ($arr['error']) {
+                    case ModRewriteController::ERROR_CLIENT:
+                        $error = 'client';
+                        break;
+                    case ModRewriteController::ERROR_LANGUAGE:
+                        $error = 'language';
+                        break;
+                    case ModRewriteController::ERROR_CATEGORY:
+                        $error = 'category';
+                        break;
+                    case ModRewriteController::ERROR_ARTICLE:
+                        $error = 'article';
+                        break;
+                    case ModRewriteController::ERROR_POST_VALIDATION:
+                        $error = 'validation';
+                        break;
+                }
+            }
+
             $pref = str_repeat('    ', $v['level']);
 
             // render resolve information for current item
@@ -135,6 +154,7 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract {
             $itemTpl = str_replace('{url_out}', $url, $itemTpl);
             $itemTpl = str_replace('{color}', $color, $itemTpl);
             $itemTpl = str_replace('{url_res}', $resUrl, $itemTpl);
+            $itemTpl = str_replace('{err}', $error, $itemTpl);
             $itemTpl = str_replace('{data}', $oMRTest->getReadableResolvedData($arr), $itemTpl);
 
             $this->_oView->content .= "\n" . $itemTpl . "\n";
