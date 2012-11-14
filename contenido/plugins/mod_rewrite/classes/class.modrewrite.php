@@ -85,7 +85,7 @@ class ModRewrite extends ModRewriteBase {
         $sql = "SELECT count(cl.idcat) as numcats FROM " . $cfg['tab']['cat_lang'] . " cl "
                 . "LEFT JOIN " . $cfg['tab']['cat'] . " c ON cl.idcat = c.idcat WHERE "
                 . "c.parentid = '$iParentId' AND cl.idlang = " . $iLangId . " AND "
-                . "cl.urlname = '" . $sName . "' AND cl.idcat <> " . $iCatId;
+                . "LOWER(cl.urlname) = LOWER('" . $sName . "') AND cl.idcat <> " . $iCatId;
         ModRewriteDebugger::log($sql, 'ModRewrite::isInCategories $sql');
 
         if ($aData = mr_queryAndNextRecord($sql)) {
@@ -127,7 +127,7 @@ class ModRewrite extends ModRewriteBase {
         $sql = "SELECT count(al.idart) as numcats FROM " . $cfg['tab']['art_lang'] . " al "
                 . "LEFT JOIN " . $cfg['tab']['cat_art'] . " ca ON al.idart = ca.idart WHERE "
                 . " ca.idcat='$iCatId' AND al.idlang=" . $iLangId . " AND "
-                . "al.urlname='" . $sName . "' AND al.idart <> " . $iArtId;
+                . "LOWER(al.urlname) = LOWER('" . $sName . "') AND al.idart <> " . $iArtId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             return ($aData['numcats'] > 0) ? true : false;
         }
@@ -219,8 +219,7 @@ class ModRewrite extends ModRewriteBase {
                 'iCatId' => $iCatId,
                 'iLangId' => $iLangId,
                 'sNewName' => $sNewName
-                    ), 'ModRewrite::setCatWebsafeName $data'
-            );
+            ), 'ModRewrite::setCatWebsafeName $data');
 
             return self::$_db->query($sql);
         } else {
@@ -251,8 +250,7 @@ class ModRewrite extends ModRewriteBase {
             'iCatId' => $iCatId,
             'iLangId' => $iLangId,
             'sPath' => $sPath
-                ), 'ModRewrite::setCatUrlPath $data'
-        );
+        ), 'ModRewrite::setCatUrlPath $data');
 
         return self::$_db->query($sql);
     }
