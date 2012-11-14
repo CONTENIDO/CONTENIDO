@@ -67,7 +67,7 @@ if ($artRetItem) {
 // if check is true then set url, otherwise check for next language
 if ($checkedCatArt === TRUE) {
 
-	$url = $catRetItem->getLink() . '&' . "changelang=" . $selectedLang . "&" ;
+	$url = $catRetItem->getLink() . '&' . "changelang=" . $selectedLang;
 	$urlSet = TRUE;
 } else if ($checkedCatArt === FALSE) {
 	foreach ( $allLanguages as $langs ) {

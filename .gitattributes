@@ -84,8 +84,10 @@ cms/data/modules/navigation_breadcrumb/php/navigation_breadcrumb_input.php -text
 cms/data/modules/navigation_breadcrumb/php/navigation_breadcrumb_output.php -text
 cms/data/modules/navigation_breadcrumb/template/breadcrumb.tpl -text
 cms/data/modules/navigation_lang_changer/css/lang_changer.css -text svneol=unset#text/plain
+cms/data/modules/navigation_lang_changer/css/navigation_lang_changer.css -text svneol=unset#text/plain
 cms/data/modules/navigation_lang_changer/info.xml -text svneol=unset#text/plain
 cms/data/modules/navigation_lang_changer/js/lang_changer.js -text svneol=unset#text/plain
+cms/data/modules/navigation_lang_changer/js/navigation_lang_changer.js -text svneol=unset#text/plain
 cms/data/modules/navigation_lang_changer/php/navigation_lang_changer_input.php -text
 cms/data/modules/navigation_lang_changer/php/navigation_lang_changer_output.php -text
 cms/data/modules/navigation_lang_changer/template/lang_changer.html -text svneol=unset#text/plain
