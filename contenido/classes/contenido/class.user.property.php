@@ -126,7 +126,7 @@ class cApiUserPropertyCollection extends ItemCollection {
     public function setValueByTypeName($type, $name, $value, $idcatlang = 0) {
         $item = $this->fetchByUserIdTypeName($type, $name);
         if ($item) {
-            $item->set('value', $this->escape($value));
+            $item->set('value', $value);
             $item->store();
         } else {
             $item = $this->create($type, $name, $value, $idcatlang);
@@ -151,10 +151,10 @@ class cApiUserPropertyCollection extends ItemCollection {
     public function create($type, $name, $value, $idcatlang = 0) {
         $item = parent::createNewItem();
 
-        $item->set('user_id', $this->escape($this->_userId));
-        $item->set('type', $this->escape($type));
-        $item->set('name', $this->escape($name));
-        $item->set('value', $this->escape($value));
+        $item->set('user_id', $this->_userId);
+        $item->set('type', $type);
+        $item->set('name', $name);
+        $item->set('value', $value);
         $item->set('idcatlang', (int) $idcatlang);
         $item->store();
 

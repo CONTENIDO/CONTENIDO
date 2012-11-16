@@ -361,7 +361,7 @@ $rootStrItem->expanded_icon = 'images/close_all.gif';
 
 buildTree($rootStrItem, $items);
 
-$expandedList = unserialize(stripslashes($currentuser->getUserProperty('system', 'cat_expandstate')));
+$expandedList = unserialize($currentuser->getUserProperty('system', 'cat_expandstate'));
 
 if (is_array($expandedList)) {
     $rootStrItem->markExpanded($expandedList);
