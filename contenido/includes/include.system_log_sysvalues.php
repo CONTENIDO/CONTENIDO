@@ -1,18 +1,15 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * Project: CONTENIDO Content Management System Description: Output of important
+ * system variables
  *
- * Description:
- * Output of important system variables
- *
- * @package    CONTENIDO Backend Includes
- * @author     Simon Sprankel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @package CONTENIDO Backend Includes
+ * @author Simon Sprankel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -71,10 +68,10 @@ if (!empty($files)) {
     $image = new cHTMLImage('images/submit.gif');
     $link->appendContent($image);
     $div = new cHTMLDiv(array(
-        new cHTMLSpan(i18n('Show')),
-        new cHTMLTextbox('number-of-lines', $numberOfLines, 3),
-        new cHTMLSpan(i18n('lines')),
-        $link
+            new cHTMLSpan(i18n('Show')),
+            new cHTMLTextbox('number-of-lines', $numberOfLines, 3),
+            new cHTMLSpan(i18n('lines')),
+            $link
     ), 'right');
     $logHeader->appendContent($div);
 
@@ -86,14 +83,17 @@ if (!empty($files)) {
     } else {
         $filename = $path . $logfile;
     }
-    $lines = file($filename);
-    $lines = array_splice($lines, $numberOfLines * -1);
-    $textarea = new cHTMLTextarea('logfile-content', implode('', $lines));
-    $textarea->setAttribute('readonly', 'readonly');
-    $textarea->appendStyleDefinition('width', '99%');
-    $textarea->appendStyleDefinition('height', '200px');
-    $textarea->setAttribute('cols', '100');
-    $page->appendContent($textarea);
+
+    if (cFileHandler::exists($filename)) {
+        $lines = file($filename);
+        $lines = array_splice($lines, $numberOfLines * -1);
+        $textarea = new cHTMLTextarea('logfile-content', implode('', $lines));
+        $textarea->setAttribute('readonly', 'readonly');
+        $textarea->appendStyleDefinition('width', '99%');
+        $textarea->appendStyleDefinition('height', '200px');
+        $textarea->setAttribute('cols', '100');
+        $page->appendContent($textarea);
+    }
 
     // create the action buttons
     $logFooter = new cHTMLDiv('', 'log-footer');
