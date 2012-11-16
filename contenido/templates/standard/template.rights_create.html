@@ -41,13 +41,10 @@
                     if (testStartDate > testEndDate) {
                         endDateTextBox.val(dateText);
                     }
-                } else {
-                    endDateTextBox.val(dateText);
                 }
             },
             onSelect: function (selectedDateTime){
                 var start = $(this).datetimepicker('getDate');
-                $('#valid_to').datetimepicker('option', 'minDate', new Date(start.getTime()));
             }
         });
 
@@ -64,13 +61,10 @@
                     if (testStartDate > testEndDate) {
                         startDateTextBox.val(dateText);
                     }
-                } else {
-                    startDateTextBox.val(dateText);
                 }
             },
             onSelect: function (selectedDateTime){
                 var end = $(this).datetimepicker('getDate');
-                $('#valid_from').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
             }
         });
     });
