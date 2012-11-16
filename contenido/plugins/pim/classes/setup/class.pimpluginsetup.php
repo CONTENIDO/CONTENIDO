@@ -388,10 +388,6 @@ class PimPluginSetup {
         // delete specific sql entries or tables
         $this->_uninstallDeleteSpecificSql($foldername);
 
-        // delete folders
-        $folderpath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($foldername);
-        cFileHandler::recursiveRmdir($folderpath);
-
         // pluginname
         $pluginname = $pimPluginSql->get('name');
 
@@ -433,6 +429,29 @@ class PimPluginSetup {
                 $tempSqlContent[$i] = str_replace($this->sqlPrefix, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
                 $db->query($tempSqlContent[$i]);
             }
+        }
+    }
+
+    /**
+     * Delete a installed plugin directory
+     *
+     * @access public
+     * @param $foldername name of extracted plugin
+     * @param $page page class for success or error message
+     * @return void
+     */
+    public function uninstallDir($foldername, $page = null) {
+        $cfg = cRegistry::getConfig();
+
+        // delete folders
+        $folderpath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($foldername);
+        cFileHandler::recursiveRmdir($folderpath);
+
+        // success message
+        if ($page instanceof cGuiPage && !cFileHandler::exists($folderpath)) {
+            $page->displayInfo(i18n('The pluginfolder <strong>', 'pim') . $foldername . i18n('</strong> has been successfully uninstalled.', 'pim'));
+        } else if (cFileHandler::exists($folderpath)) {
+            $page->displayError(i18n('The pluginfolder <strong>', 'pim') . $foldername . i18n('</strong> can not be uninstalled.', 'pim'));
         }
     }
 
