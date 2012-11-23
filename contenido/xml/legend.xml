@@ -14,6 +14,7 @@ i18n("active article with time control")
 i18n("inactive article with time control")
 i18n("category")
 i18n("inactive category")
+i18n("inactive category without any active start article")
 i18n("category without any active start article")
 i18n("protected category")
 i18n("protected category without any active start article")
@@ -51,8 +52,12 @@ i18n("inactive synchronized category")
         <description>category</description>
     </category>
     <category>
-        <imgsrc>images/folder_off_error.gif</imgsrc>
+        <imgsrc>images/folder_off.gif</imgsrc>
         <description>inactive category</description>
+    </category>
+    <category>
+        <imgsrc>images/folder_off_error.gif</imgsrc>
+        <description>inactive category without any active start article</description>
     </category>
     <category>
         <imgsrc>images/folder_on_error.gif</imgsrc>
