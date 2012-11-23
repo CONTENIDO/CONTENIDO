@@ -92,31 +92,32 @@ if (!empty($files)) {
         $textarea->appendStyleDefinition('width', '99%');
         $textarea->appendStyleDefinition('height', '200px');
         $textarea->setAttribute('cols', '100');
+
         $page->appendContent($textarea);
+
+        // create the action buttons
+        $logFooter = new cHTMLDiv('', 'log-footer');
+        $logFooter->appendContent(new cHTMLSpan(i18n('Clear log file, keep last ')));
+        $input = new cHTMLTextbox('keep-last-lines', '20');
+        $input->setWidth(2);
+        $logFooter->appendContent($input);
+        $logFooter->appendContent(new cHTMLSpan(i18n(' lines')));
+        $link = new cHTMLLink('javascript:void(0)');
+        $link->setEvent('click', 'clearLogFile()');
+        $image = new cHTMLImage('images/but_ok.gif');
+        $link->appendContent($image);
+        $logFooter->appendContent($link);
+
+        $link = new cHTMLLink('javascript:void(0)');
+        $link->setClass('right');
+        $link->setEvent('click', 'deleteLogFile()');
+        $link->appendContent(i18n('Delete log file'));
+        $image = new cHTMLImage('images/delete.gif');
+        $link->appendContent($image);
+        $logFooter->appendContent($link);
+
+        $page->appendContent($logFooter);
     }
-
-    // create the action buttons
-    $logFooter = new cHTMLDiv('', 'log-footer');
-    $logFooter->appendContent(new cHTMLSpan(i18n('Clear log file, keep last ')));
-    $input = new cHTMLTextbox('keep-last-lines', '20');
-    $input->setWidth(2);
-    $logFooter->appendContent($input);
-    $logFooter->appendContent(new cHTMLSpan(i18n(' lines')));
-    $link = new cHTMLLink('javascript:void(0)');
-    $link->setEvent('click', 'clearLogFile()');
-    $image = new cHTMLImage('images/but_ok.gif');
-    $link->appendContent($image);
-    $logFooter->appendContent($link);
-
-    $link = new cHTMLLink('javascript:void(0)');
-    $link->setClass('right');
-    $link->setEvent('click', 'deleteLogFile()');
-    $link->appendContent(i18n('Delete log file'));
-    $image = new cHTMLImage('images/delete.gif');
-    $link->appendContent($image);
-    $logFooter->appendContent($link);
-
-    $page->appendContent($logFooter);
 } else {
     $page->displayError(i18n('No log files found!'));
 }
