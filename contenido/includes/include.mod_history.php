@@ -110,8 +110,8 @@ if ($sRevision != '' && $_POST["action"] != "history_truncate") {
     if (count($aNodes) > 1) {
 
         //    if choose xml file read value an set it
-        $sName = $oVersion->getTextBox("modname", $aNodes["name"], 60);
-        $description = $oVersion->getTextarea("moddesc", $aNodes["desc"], 100, 10);
+        $sName = $oVersion->getTextBox("modname", stripslashes_deep(conHtmlentities(conHtmlSpecialChars($aNodes["name"]))), 60);
+        $description = $oVersion->getTextarea("moddesc", stripslashes_deep(conHtmlSpecialChars($aNodes["desc"])), 100, 10);
         $sCodeInput = $oVersion->getTextarea("CodeIn", $aNodes["code_input"], 100, 30, "IdCodeIn");
         $sCodeOutput = $oVersion->getTextarea("CodeOut", $aNodes["code_output"], 100, 30, "IdCodeOut");
     }

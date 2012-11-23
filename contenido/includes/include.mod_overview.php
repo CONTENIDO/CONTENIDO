@@ -112,7 +112,7 @@ foreach ($allModules as $idmod => $module) {
         $link->updateAttributes(array("title" => $module['description']));
         $link->updateAttributes(array("style" => "margin-left:5px"));
 
-        $sName = $module ['name']; //$cApiModule->get("name");
+        $sName = stripslashes_deep(conHtmlSpecialChars($module ['name'])); //$cApiModule->get("name");
 
         if ($sOptionModuleCheck !== "false" && $sOptionForceCheck !== "false") {
             // Check module and force check has been enabled - check module (surprisingly...)

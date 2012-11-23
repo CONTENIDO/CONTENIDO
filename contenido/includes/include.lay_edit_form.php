@@ -113,7 +113,7 @@ if (!$layout->virgin) {
     $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
     $code = $layoutInFile->getLayoutCode();
     #$code = $layout->get("code");
-    $name = $layout->get("name");
+    $name = stripslashes_deep(conHtmlSpecialChars($layout->get("name")));
     $description = $layout->get("description");
 
     // Search for duplicate containers

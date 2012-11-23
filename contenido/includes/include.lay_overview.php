@@ -35,7 +35,7 @@ while (($layout = $oLayouts->next()) !== false) {
         continue;
     }
 
-    $name  = $layout->get('name');
+    $name  = stripslashes_deep($layout->get('name'));
     $descr = conHtmlSpecialChars($layout->get('description'));
     $idlay = $layout->get('idlay');
 
