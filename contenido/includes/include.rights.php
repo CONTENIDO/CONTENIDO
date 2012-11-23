@@ -1,10 +1,7 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * CONTENIDO User Rights
+ * Project: CONTENIDO Content Management System
+ * Description: CONTENIDO User Rights
  *
  * @package CONTENIDO Backend Includes
  * @version 1.0.2
@@ -20,7 +17,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-include_once(cRegistry::getBackendPath() . 'includes/functions.rights.php');
+include_once (cRegistry::getBackendPath() . 'includes/functions.rights.php');
 
 if (!isset($actionarea)) {
     $actionarea = 'area';
@@ -88,37 +85,58 @@ $clientList = $oClientColl->getAccessibleClients();
 $firstSel = false;
 $firstClientsLang = 0;
 
+$availableClients = array();
+
 foreach ($clientList as $key => $value) {
     $sql = "SELECT * FROM " . $cfg["tab"]["lang"] . " AS A, " . $cfg["tab"]["clients_lang"] . " AS B WHERE B.idclient=" . (int) $key . " AND A.idlang=B.idlang";
     $db->query($sql);
 
     while ($db->next_record()) {
+
+        $idClientsLang = $db->f('idclientslang');
+
         if ((strpos($userPerms, "client[$key]") !== false) && (strpos($userPerms, "lang[" . $db->f("idlang") . "]") !== false) && ($perm->have_perm("lang[" . $db->f("idlang") . "]"))) {
             if ($firstSel == false) {
                 $firstSel = true;
-                $firstClientsLang = $db->f('idclientslang');
+                $firstClientsLang = $idClientsLang;
             }
 
-            if ($rights_clientslang == $db->f('idclientslang')) {
-                $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> ' . $db->f('name'), $db->f('idclientslang'), true);
-                $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
-                if (!isset($rights_client)) {
-                    $firstClientsLang = $db->f('idclientslang');
+            if ($rights_clientslang == $idClientsLang) {
+
+        	    $availableClients[] = array('idClientsLang' => $idClientsLang, 'value_name' => $value['name'], 'lang_name' => $db->f('name'), 'selected' => 1);
+
+        		if (!isset($rights_client)) {
+                    $firstClientsLang = $idClientsLang;
                 }
-            } else {
-                $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> ' . $db->f('name'), $db->f('idclientslang'), false);
-                $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
-            }
+
+        	} else {
+        	    $availableClients[] = array('idClientsLang' => $idClientsLang, 'value_name' => $value['name'], 'lang_name' => $db->f('name'), 'selected' => 0);
+        	}
+
         }
+
     }
+
+}
+
+// Generate Select Box or simple the value as text
+if(count($availableClients) > 1) {
+
+	foreach($availableClients as $key => $value) {
+	    $oHtmlSelectOption = new cHTMLOptionElement($availableClients[$key]['value_name'] . ' -> ' . $availableClients[$key]['lang_name'], $availableClients[$key]['idClientsLang'], $availableClients[$key]['selected']);
+        $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
+	}
+
+	$oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
+
+} else {
+    $string = "<span style=\"vertical-align:middle;\">" . $availableClients[0]['value_name'] . " -> " . $availableClients[0]['lang_name'] . "</span>&nbsp;";
+    $oTpl->set('s', 'INPUT_SELECT_CLIENT', $string);
 }
 
 if (!isset($rights_clientslang)) {
     $rights_clientslang = $firstClientsLang;
 }
-
-// Render Select Box
-$oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
 
 if ($area != 'user_content') {
     $oTpl->set('s', 'INPUT_SELECT_RIGHTS', '');
@@ -141,24 +159,24 @@ if ($area != 'user_content') {
 
     // Set global array which defines rights to display
     $aArticleRights = array(
-        'con_syncarticle',
-        'con_lock',
-        'con_deleteart',
-        'con_makeonline',
-        'con_makestart',
-        'con_duplicate',
-        'con_editart',
-        'con_newart',
-        'con_edit'
+            'con_syncarticle',
+            'con_lock',
+            'con_deleteart',
+            'con_makeonline',
+            'con_makestart',
+            'con_duplicate',
+            'con_editart',
+            'con_newart',
+            'con_edit'
     );
     $aCategoryRights = array(
-        'con_synccat',
-        'con_makecatonline',
-        'con_makepublic'
+            'con_synccat',
+            'con_makecatonline',
+            'con_makepublic'
     );
     $aTempalteRights = array(
-        'con_changetemplate',
-        'con_tplcfg_edit'
+            'con_changetemplate',
+            'con_tplcfg_edit'
     );
 
     $aViewRights = array();
