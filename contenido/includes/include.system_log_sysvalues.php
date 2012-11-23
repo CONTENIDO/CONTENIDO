@@ -68,9 +68,9 @@ if (!empty($files)) {
     $image = new cHTMLImage('images/submit.gif');
     $link->appendContent($image);
     $div = new cHTMLDiv(array(
-            new cHTMLSpan(i18n('Show')),
+            new cHTMLSpan(i18n('Show ')),
             new cHTMLTextbox('number-of-lines', $numberOfLines, 3),
-            new cHTMLSpan(i18n('lines')),
+            new cHTMLSpan(i18n(' lines')),
             $link
     ), 'right');
     $logHeader->appendContent($div);
