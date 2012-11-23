@@ -418,7 +418,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
                 $tpl2->set('s', 'ID', 'catsel');
                 $tpl2->set('s', 'NAME', 'idcatnew[]');
                 $tpl2->set('s', 'CLASS', 'text_medium');
-                $tpl2->set('s', 'OPTIONS', 'size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;"');
+                $tpl2->set('s', 'OPTIONS', 'size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;" ' . $disabled);
             }
         } else {
             $note = i18n("Language parts of the articles are existing in other languages and are online. To change the category assignment, please set the other articles offline first.");
@@ -432,7 +432,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tpl2->set('s', 'ID', 'catsel');
         $tpl2->set('s', 'NAME', 'idcatnew[]');
         $tpl2->set('s', 'CLASS', 'text_medium');
-        $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;" ' . $disabled . '');
+        $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;" ' . $disabled);
     }
 
     if (isset($tplinputchanged) && $tplinputchanged == 1) {
