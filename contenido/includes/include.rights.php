@@ -1,7 +1,7 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System
- * Description: CONTENIDO User Rights
+ * Project: CONTENIDO Content Management System Description: CONTENIDO User
+ * Rights
  *
  * @package CONTENIDO Backend Includes
  * @version 1.0.2
@@ -103,32 +103,37 @@ foreach ($clientList as $key => $value) {
 
             if ($rights_clientslang == $idClientsLang) {
 
-        	    $availableClients[] = array('idClientsLang' => $idClientsLang, 'value_name' => $value['name'], 'lang_name' => $db->f('name'), 'selected' => 1);
+                $availableClients[] = array(
+                        'idClientsLang' => $idClientsLang,
+                        'value_name' => $value['name'],
+                        'lang_name' => $db->f('name'),
+                        'selected' => 1
+                );
 
-        		if (!isset($rights_client)) {
+                if (!isset($rights_client)) {
                     $firstClientsLang = $idClientsLang;
                 }
-
-        	} else {
-        	    $availableClients[] = array('idClientsLang' => $idClientsLang, 'value_name' => $value['name'], 'lang_name' => $db->f('name'), 'selected' => 0);
-        	}
-
+            } else {
+                $availableClients[] = array(
+                        'idClientsLang' => $idClientsLang,
+                        'value_name' => $value['name'],
+                        'lang_name' => $db->f('name'),
+                        'selected' => 0
+                );
+            }
         }
-
     }
-
 }
 
 // Generate Select Box or simple the value as text
-if(count($availableClients) > 1) {
+if (count($availableClients) > 1) {
 
-	foreach($availableClients as $key => $value) {
-	    $oHtmlSelectOption = new cHTMLOptionElement($availableClients[$key]['value_name'] . ' -> ' . $availableClients[$key]['lang_name'], $availableClients[$key]['idClientsLang'], $availableClients[$key]['selected']);
+    foreach ($availableClients as $key => $value) {
+        $oHtmlSelectOption = new cHTMLOptionElement($availableClients[$key]['value_name'] . ' -> ' . $availableClients[$key]['lang_name'], $availableClients[$key]['idClientsLang'], $availableClients[$key]['selected']);
         $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
-	}
+    }
 
-	$oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
-
+    $oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
 } else {
     $string = "<span style=\"vertical-align:middle;\">" . $availableClients[0]['value_name'] . " -> " . $availableClients[0]['lang_name'] . "</span>&nbsp;";
     $oTpl->set('s', 'INPUT_SELECT_CLIENT', $string);
