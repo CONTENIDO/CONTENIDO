@@ -272,7 +272,7 @@ class cHTML {
      * @return cHTML $this
      */
     public function setEvent($event, $action) {
-        if (substr($event, 0, 2) !== 'on') {
+        if (substr($event, 0, 2) !== 'on' && $event != 'disabled') {
             return $this->updateAttribute('on' . $event, conHtmlSpecialChars($action));
         } else {
             return $this->updateAttribute($event, conHtmlSpecialChars($action));

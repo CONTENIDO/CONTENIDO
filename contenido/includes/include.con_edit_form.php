@@ -227,6 +227,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     $select = new cHTMLSelectElement("directlink");
     $select->setEvent("change", "var sVal=this.form.directlink.options[this.form.directlink.options.selectedIndex].value; document.getElementById('linkhint').value = sVal; if(sVal)document.getElementById('linkhintA').style.display='inline-block'; else document.getElementById('linkhintA').style.display='none';");
+    $select->setEvent("disabled", "disabled");
 
     $baselink = cRegistry::getFrontendUrl() . "front_content.php?idart=$idart";
 
@@ -242,7 +243,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $select->appendOptionElement($option[3]);
     $select->appendOptionElement($option[4]);
 
-    $tpl->set('s', 'DIRECTLINK', $select->render() . '<br><br><input style="width:400px;" class="text_medium" type="text" id="linkhint" readonly="readonly"> <input id="linkhintA" type="button" value="'.i18n("open").'" style="display: none;" onclick="window.open(document.getElementById(\'linkhint\').value);">');
+    $tpl->set('s', 'DIRECTLINK', $select->render() . '<br /><br /><input style="width:400px;" class="text_medium" type="text" id="linkhint" readonly="readonly" ' . $disabled . '> <input id="linkhintA" type="button" value="'.i18n("open").'" style="display: none;" onclick="window.open(document.getElementById(\'linkhint\').value);">');
 
     $tpl->set('s', 'ZUORDNUNGSID', "idcatart");
     $tpl->set('s', 'ALLOCID', $tmp_cat_art ? $tmp_cat_art : '&nbsp;');
@@ -401,7 +402,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
                 $tpl2->set('s', 'ID', 'catsel');
                 $tpl2->set('s', 'NAME', 'fake[]');
                 $tpl2->set('s', 'CLASS', 'text_medium');
-                $tpl2->set('s', 'OPTIONS', 'multiple="multiple" disabled="disabled" size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;background:lightgrey;"');
+                $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;background:lightgrey;" disabled="disabled"');
 
                 $rbutton = new cHTMLButton("removeassignment", i18n("Remove assignments"));
 
@@ -424,14 +425,14 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
             $tpl2->set('s', 'ID', 'catsel');
             $tpl2->set('s', 'NAME', 'fake[]');
             $tpl2->set('s', 'CLASS', 'text_medium');
-            $tpl2->set('s', 'OPTIONS', 'multiple="multiple" disabled="disabled" size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;background:lightgrey;"');
+            $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;background:lightgrey;" disabled="disabled"');
         }
     } else {
         // Old behaviour
         $tpl2->set('s', 'ID', 'catsel');
         $tpl2->set('s', 'NAME', 'idcatnew[]');
         $tpl2->set('s', 'CLASS', 'text_medium');
-        $tpl2->set('s', 'OPTIONS', 'multiple="multiple" ' . $disabled . ' size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;"');
+        $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;" ' . $disabled . '');
     }
 
     if (isset($tplinputchanged) && $tplinputchanged == 1) {
@@ -490,14 +491,12 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         if (!in_array($db->f("idcat"), $tmp_idcat_in_art)) {
             $tpl2->set('d', 'VALUE', $db->f("idcat"));
             $tpl2->set('d', 'SELECTED', '');
-            $tpl2->set('d', 'FROZEN', $disabled);
             $tpl2->set('d', 'CAPTION', $spaces . cSecurity::unFilter($db->f("name")));
 
             $tpl2->next();
         } else {
             $tpl2->set('d', 'VALUE', $db->f("idcat"));
             $tpl2->set('d', 'SELECTED', 'selected="selected"');
-            $tpl2->set('d', 'FROZEN', $disabled);
             $tpl2->set('d', 'CAPTION', $spaces . cSecurity::unFilter($db->f("name")));
             $tpl2->next();
 
