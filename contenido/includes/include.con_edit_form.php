@@ -490,12 +490,14 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         if (!in_array($db->f("idcat"), $tmp_idcat_in_art)) {
             $tpl2->set('d', 'VALUE', $db->f("idcat"));
             $tpl2->set('d', 'SELECTED', '');
+            $tpl2->set('d', 'FROZEN', $disabled);
             $tpl2->set('d', 'CAPTION', $spaces . cSecurity::unFilter($db->f("name")));
 
             $tpl2->next();
         } else {
             $tpl2->set('d', 'VALUE', $db->f("idcat"));
             $tpl2->set('d', 'SELECTED', 'selected="selected"');
+            $tpl2->set('d', 'FROZEN', $disabled);
             $tpl2->set('d', 'CAPTION', $spaces . cSecurity::unFilter($db->f("name")));
             $tpl2->next();
 
@@ -539,7 +541,6 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     }
 
     unset($tpl2);
-
 
     // Move to category
     $tpl2 = new cTemplate();
@@ -591,7 +592,6 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     // Seitentitel
     $title_input = '<input type="text" ' . $disabled . ' class="text_medium" name="page_title" style="width:400px;" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
     $tpl->set("s", "TITLE-INPUT", $title_input);
-
 
     // Struktur
     $tpl->set('s', 'MOVETOCATEGORYSELECT', $select);
