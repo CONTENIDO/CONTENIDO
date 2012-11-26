@@ -27,27 +27,27 @@ $currentLanguage = null;
 // fetch all existing languages, if no languages available, exit
 $allLanguages = $languageInstance->getAllIds ();
 if (empty ( $allLanguages )) {
-	echo "No languages present";
-	exit ();
+    echo "No languages present";
+    exit ();
 }
 // fetch current language
 $currentLanguage = cRegistry::getLanguageId ();
 
 // set next language is exists
 foreach ( $allLanguages as $langs ) {
-	if ($langs > $currentLanguage) {
-		$tpl->set ( 's', 'label', $languageInstance->getLanguageName ( $langs ) );
-		$tpl->set ( 's', 'title', $languageInstance->getLanguageName ( $langs ) );
-		$selectedLang = $langs;
-		$nextLang = TRUE;
-		break;
-	}
+    if ($langs > $currentLanguage) {
+        $tpl->set ( 's', 'label', $languageInstance->getLanguageName ( $langs ) );
+        $tpl->set ( 's', 'title', $languageInstance->getLanguageName ( $langs ) );
+        $selectedLang = $langs;
+        $nextLang = TRUE;
+        break;
+    }
 }
 
 // otherwise set first language
 if ($nextLang === FALSE) {
-	$tpl->set ( 's', 'label', $languageInstance->getLanguageName ( reset ( $allLanguages ) ) );
-	$selectedLang = reset ( $allLanguages );
+    $tpl->set ( 's', 'label', $languageInstance->getLanguageName ( reset ( $allLanguages ) ) );
+    $selectedLang = reset ( $allLanguages );
 }
 
 // check category and articles, if category exists and has start article which
@@ -56,60 +56,60 @@ $catCheck = $catCollection->select ( "idcat = " . $idcatAuto . " AND " . " idlan
 
 $catRetItem = $catCollection->fetchById ( $idcatAuto );
 if ($catCheck === TRUE && $catRetItem) {
-	$artRetItem = $artCollection->fetchById ( $catRetItem->get ( 'startidartlang' ) );
+    $artRetItem = $artCollection->fetchById ( $catRetItem->get ( 'startidartlang' ) );
 }
 if ($artRetItem) {
-	if ($artRetItem->get ( 'online' ) == 1 && $artRetItem->get ( 'locked' ) == 0) {
-		$checkedCatArt = TRUE;
-	}
+    if ($artRetItem->get ( 'online' ) == 1 && $artRetItem->get ( 'locked' ) == 0) {
+        $checkedCatArt = TRUE;
+    }
 }
 
 // if check is true then set url, otherwise check for next language
 if ($checkedCatArt === TRUE) {
 
-	$url = $catRetItem->getLink() . '&' . "changelang=" . $selectedLang;
-	$urlSet = TRUE;
+    $url = $catRetItem->getLink() . '&' . "changelang=" . $selectedLang;
+    $urlSet = TRUE;
 } else if ($checkedCatArt === FALSE) {
-	foreach ( $allLanguages as $langs ) {
-		if ($langs > $selectedLang) {
-			if ($catCollection->select ( "idcat = " . $idcatAuto . " AND " . " idlang = " . $langs . " AND " . "startidartlang != 0", null, null, null )) {
-				if ($artRetItem) {
-					if ($artRetItem->get ( 'online' ) == 1 && $artRetItem->get ( 'locked' ) == 0) {
-						$url = $catRetItem->getLink()  . '&' . "changelang=" . $langs;
-						$urlSet = TRUE;
-						$tpl->set ( 's', 'url', $url );
-					}
-				}
-			} else {
-				$url = cRegistry::getFrontendUrl () . 'front_content.php?' . '&' . "changelang=" . $selectedLang;
-				$urlSet = TRUE;
-			}
-		}
+    foreach ( $allLanguages as $langs ) {
+        if ($langs > $selectedLang) {
+            if ($catCollection->select ( "idcat = " . $idcatAuto . " AND " . " idlang = " . $langs . " AND " . "startidartlang != 0", null, null, null )) {
+                if ($artRetItem) {
+                    if ($artRetItem->get ( 'online' ) == 1 && $artRetItem->get ( 'locked' ) == 0) {
+                        $url = $catRetItem->getLink()  . '&' . "changelang=" . $langs;
+                        $urlSet = TRUE;
+                        $tpl->set ( 's', 'url', $url );
+                    }
+                }
+            } else {
+                $url = cRegistry::getFrontendUrl () . 'front_content.php?' . '&' . "changelang=" . $selectedLang;
+                $urlSet = TRUE;
+            }
+        }
 
-		else if ($currentLanguage != reset ( $allLanguages )) {
-			if ($catCollection->select ( "idcat = " . $idcatAuto . " AND " . " idlang = " . reset ( $allLanguages ) . " AND " . "startidartlang != 0", null, null, null )) {
-				$artRetItem = $artCollection->fetchById ( $catRetItem->get ( 'startidartlang' ) );
-				if ($artRetItem) {
-					if ($artRetItem->get ( 'online' ) == 1 && $artRetItem->get ( 'locked' ) == 0) {
-						$url = $catRetItem->getLink()  . '&' . "changelang=" . reset ( $allLanguages );
-						$urlSet = TRUE;
-					} else {
-						$urlSet = TRUE;
-						$url = cRegistry::getFrontendUrl () . 'front_content.php?' . "changelang=" . reset ( $allLanguages );
-					}
-				}
-			}
-		} else if ($currentLanguage == reset ( $allLanguages )) {
-			if ($catCollection->select ( "idcat = " . $idcatAuto . " AND " . " idlang = " . next ( $allLanguages ) . " AND " . "startidartlang != 0", null, null, null )) {
-				$url = $catRetItem->getLink()  . '&' . "changelang=" . next ( $allLanguages );
-				$urlSet = TRUE;
-			}
-		}
-	}
+        else if ($currentLanguage != reset ( $allLanguages )) {
+            if ($catCollection->select ( "idcat = " . $idcatAuto . " AND " . " idlang = " . reset ( $allLanguages ) . " AND " . "startidartlang != 0", null, null, null )) {
+                $artRetItem = $artCollection->fetchById ( $catRetItem->get ( 'startidartlang' ) );
+                if ($artRetItem) {
+                    if ($artRetItem->get ( 'online' ) == 1 && $artRetItem->get ( 'locked' ) == 0) {
+                        $url = $catRetItem->getLink()  . '&' . "changelang=" . reset ( $allLanguages );
+                        $urlSet = TRUE;
+                    } else {
+                        $urlSet = TRUE;
+                        $url = cRegistry::getFrontendUrl () . 'front_content.php?' . "changelang=" . reset ( $allLanguages );
+                    }
+                }
+            }
+        } else if ($currentLanguage == reset ( $allLanguages )) {
+            if ($catCollection->select ( "idcat = " . $idcatAuto . " AND " . " idlang = " . next ( $allLanguages ) . " AND " . "startidartlang != 0", null, null, null )) {
+                $url = $catRetItem->getLink()  . '&' . "changelang=" . next ( $allLanguages );
+                $urlSet = TRUE;
+            }
+        }
+    }
 }
 // if url is not set, then set fallback url to the homepage
 if ($urlSet === FALSE) {
-	$url = cRegistry::getFrontendUrl () . 'front_content.php?' . '&' . "changelang=" . reset ( $allLanguages );
+    $url = cRegistry::getFrontendUrl () . 'front_content.php?' . '&' . "changelang=" . reset ( $allLanguages );
 }
 
 $tpl->set ( 's', 'url', $url );

@@ -1,13 +1,13 @@
 <!-- content_image -->
 
 {if 0 lt $label|strlen}
-	<label class="content-type-label">{$label}</label>
+    <label class="content-type-label">{$label}</label>
 {/if}
 
 {$editor}
 
 {if NULL neq $image}
-	<img src="{$image->src}" alt="{$image->alt}" width="{$image->width}" height="{$image->height}" />
+    <img src="{$image->src}" alt="{$image->alt}" width="{$image->width}" height="{$image->height}" />
 {/if}
 
 <!-- /content_image -->

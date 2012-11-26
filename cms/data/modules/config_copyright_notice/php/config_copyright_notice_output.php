@@ -18,7 +18,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 if (cRegistry::isBackendEditMode()) {
 
-	$text = "CMS_HTML[1]";
+    $text = "CMS_HTML[1]";
 
     // use smarty template to output header text
     $tpl = Contenido_SmartyWrapper::getInstance();

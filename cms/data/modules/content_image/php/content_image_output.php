@@ -27,7 +27,7 @@ $imageDescription = "CMS_IMGDESCR[1]";
 // get editor as content type IMGEDITOR with index 1
 // skip IMGEDITOR in frontend cause it displays the image too!
 if (cRegistry::isBackendEditMode()) {
-	$imageEditor = "CMS_IMGEDITOR[1]";
+    $imageEditor = "CMS_IMGEDITOR[1]";
 }
 
 // build class containing all data necessary to display image

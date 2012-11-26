@@ -1,73 +1,78 @@
 <!DOCTYPE html>
-
 <!-- start page layout -->
-
 <html lang="de">
-  <head>
-    <meta charset="utf-8" />
-    <title><container id="10" name="title element" types="head" mode="fixed" default="head_title">title element</container></title>   
-    <link rel="stylesheet" href="css/reset.css" type="text/css" /> 
-    <link rel="stylesheet" href="css/main.css" type="text/css" />
-	<link rel="stylesheet" type="text/css" href="css/contenido_backend.css" />
-  </head>
-  
-  <body>
-    <div id="page">
-      <div id="header">
-         <img src="images/misc/logo.png" width="279" height="41" alt="Contenido Logo" id="logo">
-		 <div id="navigation_header">
-		 	<container id="211" name="language changer" types="navigation" mode="fixed" default="navigation_lang_changer">lang changer</container>
-		 	<container id="212" name="Contact" types="navigation" default="contact">contact</container>
-			<container id="213" name="Search" types="navigation" default="search">search</container>             
-     	</div>
-      </div>
-      <div id="breadcrumb">
-        <ul>
-          <li>Breadcrumb:</li>
-          <li><a href="">point</a></li>
-          <li><a href="">point</a></li>
-         </ul>
-      </div>   
-      <div id="content">
-        <div class="slider">
-            <ul class="images">
-              <li class="active"><img src="upload/slider/slider_1.jpg" alt="" /><a href="">Jetzt informieren &raquo;</a></li>
-              <li><img src="upload/slider/slider_2.jpg" alt="" /><a href="">Jetzt informieren &raquo;</a></li>
-              <li><img src="upload/slider/slider_3.jpg" alt="" /><a href="">Jetzt informieren &raquo;</a></li>
-              <li><img src="upload/slider/slider_4.jpg" alt="" /><a href="">Jetzt informieren &raquo;</a></li>
-            </ul>  
-            <ul class="pagination"></ul> 
-        </div> 
-        
-        <div class="column_quarter">
-          <div class="col"><h3>Headline</h3><div class="teaser_img"><p>Teaserinfo mit einer Zeile Text</p></div>
-          <h3>Headline</h3><span class="date">11.11.2012</span><p>Der eigentliche Teasertext zu einer aktuellen Nachricht, einem angerissenen Artikel oder einem wichtigen Event, von denen natürlich alle wichtig sind, sonst würden sie nicht hier stehen.</br> Dazu noch ein par Hintergrundinfos um es interessanter zu gestalten.</p><a href="" class="more">weiter lesen &raquo;</a></div>
-          <div class="col"><h3>Headline</h3><div class="teaser_img"><p>Teaserinfo mit einer Zeile Text</p></div>
-          <h3>Headline</h3><span class="date">11.11.2012</span><p>Der eigentliche Teasertext zu einer aktuellen Nachricht, einem angerissenen Artikel oder einem wichtigen Event, von denen natürlich alle wichtig sind, sonst würden sie nicht hier stehen.</br> Dazu noch ein par Hintergrundinfos um es interessanter zu gestalten.</p><a href="" class="more">weiter lesen &raquo;</a></div>
-          <div class="col"><h3>Headline</h3><div class="teaser_img"><p>Teaserinfo mit einer Zeile Text</p></div>
-          <h3>Headline</h3><span class="date">11.11.2012</span><p>Der eigentliche Teasertext zu einer aktuellen Nachricht, einem angerissenen Artikel oder einem wichtigen Event, von denen natürlich alle wichtig sind, sonst würden sie nicht hier stehen.</br> Dazu noch ein par Hintergrundinfos um es interessanter zu gestalten.</p><a href="" class="more">weiter lesen &raquo;</a></div>
-          <div class="col"><h3>Headline</h3><div class="teaser_img"><p>Teaserinfo mit einer Zeile Text</p></div>
-          <h3>Headline</h3><span class="date">11.11.2012</span><p>Der eigentliche Teasertext zu einer aktuellen Nachricht, einem angerissenen Artikel oder einem wichtigen Event, von denen natürlich alle wichtig sind, sonst würden sie nicht hier stehen.</br> Dazu noch ein par Hintergrundinfos um es interessanter zu gestalten.</p><a href="" class="more">weiter lesen &raquo;</a></div>
-        <div class="clear"></div>
-        </div> 
-        
-      </div>   
-      <div id="footer">
-            <container id="210" name="bottom navigation" types="navigation" mode="optional" default="navigation_bottom">bottom navigation</container>
-            <container id="220" name="social media links" types="navigation" mode="optional" default="navigation_social_media">social media links</container>
-      </div> 
+    <head>
+        <meta charset="utf-8" />
+        <title><container id="10" name="title element" types="head" mode="fixed" default="head_title">title element</container></title>
+        <link rel="stylesheet" href="css/reset.css" type="text/css" />
+        <link rel="stylesheet" href="css/main.css" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="css/contenido_backend.css" />
+    </head>
 
-      <div id="copyright">
-            <container id="230" name="copyright notice" types="content" mode="optional" default="content_copyright_notice">copyright notice</container>
-      </div>
+    <body>
 
-    </div>
-	
-	<container id="310" name="tracker script" types="script" mode="optional" default="script_tracker_google">tracker script</container>
-    <container id="320" name="tracker script" types="script" mode="optional" default="script_tracker_piwik">tracker script</container>
-  </body>  
-  <script src="js/jquery-1.8.2.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="js/jquery-ui-1.9.1.custom.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="js/main.js" type="text/javascript" charset="utf-8"></script>
-	<script src="js/jquery.validate.js" type="text/javascript" charset="utf-8"></script>
+        <div id="page">
+
+            <div id="header">
+                <img src="images/misc/logo.png" width="279" height="41" alt="Contenido Logo" id="logo" />
+                <div id="navigation_header">
+                    <container id="211" name="language changer" types="navigation" mode="fixed" default="navigation_lang_changer">lang changer</container>
+                    <container id="212" name="Contact" types="navigation" default="contact">contact</container>
+                    <container id="213" name="Search" types="navigation" default="search">search</container>
+                </div>
+            </div>
+
+            <div id="breadcrumb">
+                <ul>
+                    <li>Breadcrumb:</li>
+                    <li><a href="">point</a></li>
+                    <li><a href="">point</a></li>
+                </ul>
+            </div>
+
+            <div id="content">
+                <div class="slider">
+                    <ul class="images">
+                        <li class="active"><img src="upload/slider/slider_1.jpg" alt="" /><a href="">Jetzt informieren &raquo;</a></li>
+                        <li><img src="upload/slider/slider_2.jpg" alt="" /><a href="">Jetzt informieren &raquo;</a></li>
+                        <li><img src="upload/slider/slider_3.jpg" alt="" /><a href="">Jetzt informieren &raquo;</a></li>
+                        <li><img src="upload/slider/slider_4.jpg" alt="" /><a href="">Jetzt informieren &raquo;</a></li>
+                    </ul>
+                    <ul class="pagination"></ul>
+                </div>
+
+                <div class="column_quarter">
+                    <div class="col"><h3>Headline</h3><div class="teaser_img" /><p>Teaserinfo mit einer Zeile Text</p></div>
+                    <h3>Headline</h3><span class="date">11.11.2012</span><p>Der eigentliche Teasertext zu einer aktuellen Nachricht, einem angerissenen Artikel oder einem wichtigen Event, von denen natürlich alle wichtig sind, sonst würden sie nicht hier stehen.</br> Dazu noch ein par Hintergrundinfos um es interessanter zu gestalten.</p><a href="" class="more">weiter lesen &raquo;</a></div>
+                    <div class="col"><h3>Headline</h3><div class="teaser_img" /><p>Teaserinfo mit einer Zeile Text</p></div>
+                    <h3>Headline</h3><span class="date">11.11.2012</span><p>Der eigentliche Teasertext zu einer aktuellen Nachricht, einem angerissenen Artikel oder einem wichtigen Event, von denen natürlich alle wichtig sind, sonst würden sie nicht hier stehen.</br> Dazu noch ein par Hintergrundinfos um es interessanter zu gestalten.</p><a href="" class="more">weiter lesen &raquo;</a></div>
+                    <div class="col"><h3>Headline</h3><div class="teaser_img" /><p>Teaserinfo mit einer Zeile Text</p></div>
+                    <h3>Headline</h3><span class="date">11.11.2012</span><p>Der eigentliche Teasertext zu einer aktuellen Nachricht, einem angerissenen Artikel oder einem wichtigen Event, von denen natürlich alle wichtig sind, sonst würden sie nicht hier stehen.</br> Dazu noch ein par Hintergrundinfos um es interessanter zu gestalten.</p><a href="" class="more">weiter lesen &raquo;</a></div>
+                    <div class="col"><h3>Headline</h3><div class="teaser_img" /><p>Teaserinfo mit einer Zeile Text</p></div>
+                    <h3>Headline</h3><span class="date">11.11.2012</span><p>Der eigentliche Teasertext zu einer aktuellen Nachricht, einem angerissenen Artikel oder einem wichtigen Event, von denen natürlich alle wichtig sind, sonst würden sie nicht hier stehen.</br> Dazu noch ein par Hintergrundinfos um es interessanter zu gestalten.</p><a href="" class="more">weiter lesen &raquo;</a></div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+
+            <div id="footer">
+                <container id="210" name="bottom navigation" types="navigation" mode="optional" default="navigation_bottom">bottom navigation</container>
+                <container id="220" name="social media links" types="navigation" mode="optional" default="navigation_social_media">social media links</container>
+            </div>
+
+            <div id="copyright">
+                <container id="230" name="copyright notice" types="content" mode="optional" default="content_copyright_notice">copyright notice</container>
+            </div>
+
+        </div>
+
+        <container id="310" name="tracker script" types="script" mode="optional" default="script_tracker_google">tracker script</container>
+        <container id="320" name="tracker script" types="script" mode="optional" default="script_tracker_piwik">tracker script</container>
+
+    </body>
+
+    <script src="js/jquery-1.8.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery-ui-1.9.1.custom.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/main.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery.validate.js" type="text/javascript" charset="utf-8"></script>
+
 </html>

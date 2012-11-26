@@ -13,11 +13,11 @@
 $account = getEffectiveSetting('stats', 'ga_account', '');
 
 if ($account != '' && cRegistry::isTrackingAllowed()) {
-	$tpl = Contenido_SmartyWrapper::getInstance();
-	global $force;
-	if (1 == $force) {
-	    $tpl->clearAllCache();
-	}
+    $tpl = Contenido_SmartyWrapper::getInstance();
+    global $force;
+    if (1 == $force) {
+        $tpl->clearAllCache();
+    }
     $tpl->assign('account', $account);
     $tpl->display('script_tracker_google/template/get.tpl');
 }

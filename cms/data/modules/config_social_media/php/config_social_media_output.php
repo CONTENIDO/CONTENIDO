@@ -18,7 +18,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 if (cRegistry::isBackendEditMode()) {
 
-	// get links from content type TEXT with different indexes
+    // get links from content type TEXT with different indexes
     $items = array(
         'rss' => array(
             'name' => mi18n("NAME_RSS"),
