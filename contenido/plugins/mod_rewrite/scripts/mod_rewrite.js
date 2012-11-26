@@ -43,7 +43,7 @@ var mrPlugin = {
     initializeSettingsPage: function() {
         $(document).ready(function() {
             $("#mr_use_language").change(function() {
-                if ($(this).attr("checked") == "checked") {
+                if (true == $(this).attr("checked")) {
                     $("#mr_use_language_name").removeAttr("disabled");
                 } else {
                     $("#mr_use_language_name").attr("disabled", "disabled");
@@ -51,7 +51,7 @@ var mrPlugin = {
             });
 
             $("#mr_use_client").change(function() {
-                if ($(this).attr("checked") == "checked") {
+                if (true == $(this).attr("checked")) {
                     $("#mr_use_client_name").removeAttr("disabled");
                 } else {
                     $("#mr_use_client_name").attr("disabled", "disabled");
@@ -59,7 +59,7 @@ var mrPlugin = {
             });
 
             $("#mr_add_startart_name_to_url").change(function() {
-                if ($(this).attr("checked") == "checked") {
+                if (true == $(this).attr("checked")) {
                     $("#mr_default_startart_name").removeAttr("disabled")
                                                   .removeClass("disabled");
                 } else {
