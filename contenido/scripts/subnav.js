@@ -1,7 +1,7 @@
 /**
  * Subnavigation. Handles tab highlighting. Replaces most of the rowMark.js
  * functionality.
- * 
+ *
  * @author dirk.eschler
  */
 var sub = {
@@ -19,7 +19,7 @@ var sub = {
 
     /**
      * Highlights the active tab.
-     * 
+     *
      * @param {Object}
      *            cElm Clicked a-element, resp. the tab to highlight.
      * @todo Consider new name ("highlight"?) and rename remaining instances.
@@ -38,7 +38,7 @@ var sub = {
     /**
      * Highlights a tab by its element id. Useful for highlighting from an outer
      * frame.
-     * 
+     *
      * @param {String}
      *            id Element id of tab to highlight
      * @param {Object}
@@ -46,7 +46,7 @@ var sub = {
      *            top.content.right.right_top (when there is a left/right
      *            frameset) top.content.right_top (when there is no left/right
      *            frameset)
-     */   
+     */
     highlightById : function(id, frame) {
         this._reset(frame);
         var elem = this._getAnchorById(id, frame);
@@ -57,7 +57,7 @@ var sub = {
 
     /**
      * Returns list of all found anchors within sub navigation
-     * 
+     *
      * @param {Object}
      *            [frame] Optional, reference to frame handling the sub
      *            navigation
@@ -76,7 +76,7 @@ var sub = {
 
     /**
      * Returns anchor element by it's id
-     * 
+     *
      * @param {String}
      *            id
      * @param {Object}
@@ -85,7 +85,7 @@ var sub = {
      * @return {HTMLElement|null}
      * @protected
      */
-    _getAnchorById : function(id, frame) { 
+    _getAnchorById : function(id, frame) {
         var obj = (frame) ? frame.document : document;
         try {
             var elem = obj.getElementById(id).getElementsByTagName('a')[0];
@@ -96,7 +96,7 @@ var sub = {
 
     /**
      * Reset all tabs.
-     * 
+     *
      * @param {Object}
      *            [frame] Optional, reference to frame handling the sub
      *            navigation
@@ -119,7 +119,7 @@ var sub = {
 
     /**
      * Dummy method to avoid breakage.
-     * 
+     *
      * @todo Locate remaining inline calls to sub.click() and remove them
      */
     'click' : function() {

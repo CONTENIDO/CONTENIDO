@@ -32,7 +32,7 @@
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 /**
@@ -452,14 +452,14 @@ class PHPMailer
             $to .= $this->to[$i][0];
         }
 
-		// Contenido: If corresponding Contenido system property
-		// has been set and no sender has been specified, use specified
-		// from setting as sender (-> for provider always requiring mail() -f option)
-		if ($this->Sender == "") {
-			if (getSystemProperty("phpmailer", "mail_set_f_option") == "true") {
-				$this->Sender = trim($this->From);
-			}
-		}
+        // Contenido: If corresponding Contenido system property
+        // has been set and no sender has been specified, use specified
+        // from setting as sender (-> for provider always requiring mail() -f option)
+        if ($this->Sender == "") {
+            if (getSystemProperty("phpmailer", "mail_set_f_option") == "true") {
+                $this->Sender = trim($this->From);
+            }
+        }
 
         if ($this->Sender != "" && strlen(ini_get("safe_mode"))< 1)
         {

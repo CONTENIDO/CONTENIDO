@@ -228,17 +228,17 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         return $code;
     }
-    
+
     /**
      * Function returns idarts of selected articles as array
      *
      * @return array
      */
     public function getConfiguredArticles() {
-    	$articles = array();
-    	$articles = $this->generateTeaserCode(true);
-    	
-    	return $articles; 
+        $articles = array();
+        $articles = $this->generateTeaserCode(true);
+
+        return $articles;
     }
 
     /**
@@ -250,8 +250,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * @return mixed string of select box or array of articles
      */
     public function generateTeaserCode($returnAsArray = false) {
-    	$articles = array();
-    	
+        $articles = array();
+
         $template = new cTemplate();
         // set title of teaser
         $template->set('s', 'TITLE', $this->_settings['teaser_title']);
@@ -271,7 +271,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                 foreach ($manualArts as $idArt) {
                     $article = new cApiArticleLanguage();
                     $article->loadByArticleAndLanguageId($idArt, $this->_lang);
-                    
+
                     // try to fill teaser image
                     if ($returnAsArray == false && $this->_fillTeaserTemplateEntry($article, $template)) {
                         $i++;
@@ -279,14 +279,14 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                         if ($i == $this->_settings['teaser_count']) {
                             break;
                         }
-                    } 
-                    
+                    }
+
                     if ($returnAsArray == true && $this->_fillTeaserTemplateEntry($article, $template)) {
-                    	array_push($articles, $article);
-                    	
-                    	if ($i == $this->_settings['teaser_count']) {
-                    		break;
-                    	}
+                        array_push($articles, $article);
+
+                        if ($i == $this->_settings['teaser_count']) {
+                            break;
+                        }
                     }
                 }
             }
@@ -311,12 +311,12 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             $artCollector = new cArticleCollector($options);
 
             foreach ($artCollector as $article) {
-            	if ($returnAsArray == true) {
-            		array_push($articles, $article);
-            	} else {
-            		$this->_fillTeaserTemplateEntry($article, $template);
-            	}
-               
+                if ($returnAsArray == true) {
+                    array_push($articles, $article);
+                } else {
+                    $this->_fillTeaserTemplateEntry($article, $template);
+                }
+
             }
         }
 
@@ -327,8 +327,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             $code = $template->generate($this->_cfgClient[$this->_client]['path']['frontend'] . 'templates/' . $this->_settings['teaser_style'], true);
             return $code;
         } else if ($returnAsArray == true) {
-        	return $articles;
-        }        
+            return $articles;
+        }
     }
 
     /**

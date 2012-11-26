@@ -14,7 +14,7 @@
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  */
- 
+
  /**
   * @deprecated 2012-09-23 This class is not longer supported. Use cCategoryHelper instead.
   */
@@ -31,10 +31,10 @@ class Contenido_Sitemap_Util {
      * @param int $iLang
      * @param array $aDepthInfo Info on level depth / where to stop. Format: array(iCurrentLoopCount, iMaxLoopCount)
      * @deprecated 2012-09-23 This class is not longer supported. Use cCategoryHelper instead.
-	 * @return void
+     * @return void
      */
     public static function loopCats(Contenido_Category $oCategory, Contenido_FrontendNavigation $oFrontendNavigation, cTemplate $oTpl, $sUrlStyle, array $aCfg, $iLang, array $aDepthInfo = array()) {
-		cDeprecated("This class is not longer supported. Use cFrontendHelper->renderSitemap instead.");
+        cDeprecated("This class is not longer supported. Use cFrontendHelper->renderSitemap instead.");
         $aDepthInfo[0] = isset($aDepthInfo[0]) ? $aDepthInfo[0] + 1 : 1;
         $aDepthInfo[1] = isset($aDepthInfo[1]) ? $aDepthInfo[1] : 1;
         // display current item

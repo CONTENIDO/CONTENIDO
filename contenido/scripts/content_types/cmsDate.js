@@ -136,10 +136,10 @@ cContentTypeDate.prototype.jQueryUiTimepickerCallback = function(calendarPic) {
         $('#date_timestamp_' + self.id).datetimepicker('setDate', date);
         // set the format
         var dateFormat = 'yy-mm-dd';
-    	var timeFormat = 'hh:mm:ssTT';
+        var timeFormat = 'hh:mm:ssTT';
         if (self.belang == 'de_DE') {
-        	dateFormat = 'dd.mm.yy';
-        	timeFormat = 'hh:mm:ss';
+            dateFormat = 'dd.mm.yy';
+            timeFormat = 'hh:mm:ss';
         }
         $('#date_timestamp_' + self.id).datetimepicker('option', 'dateFormat', dateFormat);
         $('#date_timestamp_' + self.id).datetimepicker('option', 'timeFormat', timeFormat);

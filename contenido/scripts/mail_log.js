@@ -3,7 +3,7 @@ $(function() {
     $('a.flip_mark').click(function() {
         $('div.bulk_editing_functions').hide();
         $('input.mark_emails').each(function() {
-        	// show the bulk editing functions if there
+            // show the bulk editing functions if there
             if ($(this).prop('checked')) {
                 $(this).removeProp('checked');
             } else {
@@ -19,34 +19,34 @@ $(function() {
         if ($('input.mark_emails:checked').length > 0) {
             $('div.bulk_editing_functions').show();
         } else {
-        	$('div.bulk_editing_functions').hide();
+            $('div.bulk_editing_functions').hide();
         }
         // prevent that the click event is also called on the parent tr object
         eventObject.stopPropagation();
     });
-    
+
     $('tr').click(function(eventObject) {
-    	// if user clicked on an action button, do nothing
-    	if ($(eventObject.target).is('img')) {
-    		return;
-    	}
-    	// only toggle the checkbox if there is one
-    	var checkbox = $(this).find('input.mark_emails');
-    	if (checkbox.length === 1) {
-    		checkbox.prop('checked', !checkbox.prop('checked'));
-    	}
-    	// show the bulk editing functions if an email is selected
-    	if ($('input.mark_emails:checked').length > 0) {
+        // if user clicked on an action button, do nothing
+        if ($(eventObject.target).is('img')) {
+            return;
+        }
+        // only toggle the checkbox if there is one
+        var checkbox = $(this).find('input.mark_emails');
+        if (checkbox.length === 1) {
+            checkbox.prop('checked', !checkbox.prop('checked'));
+        }
+        // show the bulk editing functions if an email is selected
+        if ($('input.mark_emails:checked').length > 0) {
             $('div.bulk_editing_functions').show();
         } else {
-        	$('div.bulk_editing_functions').hide();
+            $('div.bulk_editing_functions').hide();
         }
     });
 });
 
 /**
  * Redirects to the detail page for the mail with the given ID.
- * 
+ *
  * @param {Number} idmail the ID of the email
  */
 function showInfo(idmail) {
@@ -60,22 +60,22 @@ function showInfo(idmail) {
  * Sends a request to the server to delete emails.
  * If the idmail is given, the email with this ID is deleted.
  * Otherwise, the IDs are taken from the selected checkboxes.
- * 
+ *
  * @param {Number} idmail [optional] the ID of the mail
  */
 function deleteEmails(idmail) {
-	var idmails = '';
-	if (typeof idmail !== 'undefined') {
-		// a single email should be deleted
+    var idmails = '';
+    if (typeof idmail !== 'undefined') {
+        // a single email should be deleted
         idmails = '[' + idmail + ']';
     } else {
-    	// bulk editing: delete the marked items
-	    idmails = '[';
-	    $('input.mark_emails:checked').each(function() {
+        // bulk editing: delete the marked items
+        idmails = '[';
+        $('input.mark_emails:checked').each(function() {
             idmails += $(this).val() + ',';
-	    });
-	    idmails = idmails.substring(0, idmails.length - 1);
-	    idmails += ']';
+        });
+        idmails = idmails.substring(0, idmails.length - 1);
+        idmails += ']';
     }
     // set the form values and send the form
     $('form.action-form input[name="area"]').val('mail_log_overview');
@@ -85,7 +85,7 @@ function deleteEmails(idmail) {
 }
 
 /**
- * 
+ *
  * @param idmailsuccess
  */
 function resendEmail(idmailsuccess) {

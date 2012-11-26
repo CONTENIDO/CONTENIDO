@@ -221,14 +221,14 @@ abstract class cContentTypeAbstract {
             $this->_settings = $this->_rawSettings;
         }
     }
-    
+
     /**
      * Function returns curren content type configuration as array
-     * 
+     *
      * @return array
      */
     public function getConfiguration() {
-    	return $this->_settings;
+        return $this->_settings;
     }
 
     /**

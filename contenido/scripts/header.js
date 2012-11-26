@@ -68,17 +68,17 @@ function changeContenidoLanguage(idlang) {
 
     if (top.content.right) {
         if (top.content.right.right_top) {
-        	// remove the action parameter, so that actions are not executed in the other language
-        	var href = replaceQueryString(top.content.right.right_top.location.href, 'action', '');
-        	href = replaceQueryString(href, 'changelang', idlang);
-        	top.content.right.right_top.location.href = href;
+            // remove the action parameter, so that actions are not executed in the other language
+            var href = replaceQueryString(top.content.right.right_top.location.href, 'action', '');
+            href = replaceQueryString(href, 'changelang', idlang);
+            top.content.right.right_top.location.href = href;
         }
 
         if (top.content.right.right_bottom) {
-        	// remove the action parameter, so that actions are not executed in the other language
-        	var href = replaceQueryString(top.content.right.right_bottom.location.href, 'action', '');
-        	href = replaceQueryString(href, 'changelang', idlang);
-        	href = replaceQueryString(href, 'frame', 4);
+            // remove the action parameter, so that actions are not executed in the other language
+            var href = replaceQueryString(top.content.right.right_bottom.location.href, 'action', '');
+            href = replaceQueryString(href, 'changelang', idlang);
+            href = replaceQueryString(href, 'frame', 4);
             top.content.right.right_bottom.location.href = href;
         }
     }
@@ -92,9 +92,9 @@ function changeContenidoLanguage(idlang) {
  * @param    {Integer}  idclient
  */
 function changeContenidoClient(idclient) {
-	parent.window.document.location.href = replaceQueryString(parent.window.document.location.href, 'changeclient', idclient);
-	return;
-	// TODO when the startup process has been reworked, it should be possible to reload the frames individually, so that the current page stays the same
+    parent.window.document.location.href = replaceQueryString(parent.window.document.location.href, 'changeclient', idclient);
+    return;
+    // TODO when the startup process has been reworked, it should be possible to reload the frames individually, so that the current page stays the same
     if (top.content.left) {
         if (top.content.left.left_top) {
             top.content.left.left_top.location.href = replaceQueryString(top.content.left.left_top.location.href, 'changeclient', idclient);
@@ -107,16 +107,16 @@ function changeContenidoClient(idclient) {
 
     if (top.content.right) {
         if (top.content.right.right_top) {
-        	// remove the action parameter, so that actions are not executed in the other language
-        	var href = replaceQueryString(top.content.right.right_top.location.href, 'action', '');
-        	href = replaceQueryString(href, 'changeclient', idclient);
-        	top.content.right.right_top.location.href = href;
+            // remove the action parameter, so that actions are not executed in the other language
+            var href = replaceQueryString(top.content.right.right_top.location.href, 'action', '');
+            href = replaceQueryString(href, 'changeclient', idclient);
+            top.content.right.right_top.location.href = href;
         }
 
         if (top.content.right.right_bottom) {
-        	// remove the action parameter, so that actions are not executed in the other language
-        	var href = replaceQueryString(top.content.right.right_bottom.location.href, 'action', '');
-        	href = replaceQueryString(href, 'changeclient', idclient);
+            // remove the action parameter, so that actions are not executed in the other language
+            var href = replaceQueryString(top.content.right.right_bottom.location.href, 'action', '');
+            href = replaceQueryString(href, 'changeclient', idclient);
             top.content.right.right_bottom.location.href = href;
         }
     }
@@ -138,22 +138,22 @@ function replaceQueryString(url, param, value) {
     if (url.match(re)) {
         return url.replace(re, '$1' + param + "=" + value + '$2');
     } else {
-    	if (url.indexOf('.php?') > 0) {
-    		prefixSign = '&';
-    	} else {
-    		prefixSign = '?';
-    	}
-    	
+        if (url.indexOf('.php?') > 0) {
+            prefixSign = '&';
+        } else {
+            prefixSign = '?';
+        }
+
         return url + prefixSign + param + "=" + value;
     }
 }
 
 $(function() {
-	$('#changeclient').click(function() {
-		$('#chosenclient').hide();
-		$('#cClientSelect').show();
-		$(this).hide();
-	});
+    $('#changeclient').click(function() {
+        $('#chosenclient').hide();
+        $('#cClientSelect').show();
+        $(this).hide();
+    });
 });
 
 /**

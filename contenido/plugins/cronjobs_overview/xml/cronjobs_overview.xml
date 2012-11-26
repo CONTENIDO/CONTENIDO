@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
-	<plugin>
-	    <cronjob>Cronjobs</cronjob>
-	</plugin>
+    <plugin>
+        <cronjob>Cronjobs</cronjob>
+    </plugin>
 </language>

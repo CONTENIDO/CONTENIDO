@@ -59,7 +59,7 @@ class Smarty_Internal_Resource_Stream extends Smarty_Resource_Recompiled {
             return false;
         }
     }
-    
+
     /**
      * modify resource_name according to resource handlers specifications
      *
