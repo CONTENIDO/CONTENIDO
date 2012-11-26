@@ -24,7 +24,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-include_once ('class.uribuilder.php');
 class cUriBuilderFrontcontent extends cUriBuilder {
 
     /**
@@ -88,7 +87,7 @@ class cUriBuilderFrontcontent extends cUriBuilder {
         if ($bIdcatSet === false && $bIdartSet === false && $bIdcatArtSet === false) {
             throw new cInvalidArgumentException('$aParams must have at least one of the following values set: $aParams[idcat], $aParams[idart] or $aParams[idcatart]!');
         }
-        $sHttpBasePath = $bUseAbsolutePath === true? $this->sHttpBasePath : '';
+        $sHttpBasePath = $bUseAbsolutePath === true ? $this->sHttpBasePath : '';
         if ($bIdcatSet === true) {
             if ($bIdartSet === true) {
                 $this->sUrl = $sHttpBasePath . 'front_content.php?idcat=' . strval($aParams['idcat']) . $this->_sAmp . 'idart=' . strval($aParams['idart']);

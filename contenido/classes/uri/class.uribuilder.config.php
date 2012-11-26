@@ -27,7 +27,6 @@ if (!defined('CON_FRAMEWORK')) {
 
 if (!class_exists('NotInitializedException')) {
     class NotInitializedException extends Exception {
-
     }
 }
 

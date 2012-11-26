@@ -33,6 +33,7 @@
  * @subpackage Database
  */
 class cDbDriverMysqli extends cDbDriverAbstract {
+
     protected $_dataTypes = array(
         0 => 'decimal',
         1 => 'tinyint',
@@ -100,7 +101,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
         }
 
         $res = mysqli_real_connect(
-            $dbHandler, $connectConfig['host'], $connectConfig['user'], $connectConfig['password'], $connectConfig['database'], $connectConfig['port'], $connectConfig['socket'], $connectConfig['flags']
+                $dbHandler, $connectConfig['host'], $connectConfig['user'], $connectConfig['password'], $connectConfig['database'], $connectConfig['port'], $connectConfig['socket'], $connectConfig['flags']
         );
 
         if ($res && $dbHandler && $connectConfig['database']) {
@@ -378,4 +379,5 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     public function disconnect() {
         mysqli_close($this->_handler->getLinkId());
     }
+
 }

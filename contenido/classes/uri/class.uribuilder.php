@@ -22,6 +22,7 @@
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
+
 abstract class cUriBuilder {
 
     /**
@@ -47,6 +48,7 @@ abstract class cUriBuilder {
      * @throws cBadMethodCallException If child class has not implemented this
      *         function
      */
+
     public static function getInstance() {
         throw new cBadMethodCallException("Child class has to implement this function");
     }

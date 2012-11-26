@@ -24,7 +24,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-include_once ('class.uribuilder.php');
 class cUriBuilderCustom extends cUriBuilder {
 
     /**
@@ -85,12 +84,12 @@ class cUriBuilderCustom extends cUriBuilder {
         }
         $this->aConfig = $aConfig;
 
-        $this->sUrl = $bUseAbsolutePath === true? $this->sHttpBasePath : '';
+        $this->sUrl = $bUseAbsolutePath === true ? $this->sHttpBasePath : '';
         $this->sUrl .= $this->aConfig['prefix'];
         foreach ($aParams as $sKey => $mVal) {
             $sVal = $mVal; // assuming mVal is a string and thus a single value
             if (is_array($mVal)) { // mVal has more than one value, e.g.
-                                   // index-b-1-2.html
+                // index-b-1-2.html
                 $sVal = implode($this->aConfig['separator'], $mVal);
             }
             $this->sUrl .= $this->aConfig['separator'] . strval($sKey) . $this->aConfig['separator'] . strval($sVal);

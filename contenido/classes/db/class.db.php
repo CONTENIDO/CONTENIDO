@@ -19,6 +19,7 @@
  * @subpackage Database
  */
 class cDb extends cDbDriverHandler {
+
     /**
      * Link ID resource
      * @var resource
@@ -164,4 +165,5 @@ class cDb extends cDbDriverHandler {
     public function setErrorNumber($errorNumber) {
         $this->_errorNumber = (int) $errorNumber;
     }
+
 }

@@ -19,6 +19,7 @@
  * @subpackage Database
  */
 abstract class cDbDriverAbstract {
+
     /**
      * Local database configuration.
      * @var array

@@ -37,7 +37,7 @@ try {
 
 // build a URL with category path with output /path/path/path/index-b-1-2-3.html (where "path" being languagedependent)
 try {
-    $aParams = array('idcat' => 1, 'lang' => 1, 'level' => 1, 'b' => array(1,2,3));
+    $aParams = array('idcat' => 1, 'lang' => 1, 'level' => 1, 'b' => array(1, 2, 3));
     $oUriBuilder = cUriBuilderFactory::getUriBuilder('custom_path');
     $oUriBuilder->buildUrl($aParams);
     echo $oUriBuilder->getUrl();
@@ -47,7 +47,7 @@ try {
 
 // build a URL with category path with output /path/path/path/rocknroll,goodies,1,2,3.4fb (where "path" being languagedependent)
 try {
-    $aParams = array('idcat' => 1, 'lang' => 1, 'level' => 1, 'goodies' => array(1,2,3));
+    $aParams = array('idcat' => 1, 'lang' => 1, 'level' => 1, 'goodies' => array(1, 2, 3));
     $aConfig = array('prefix' => 'rocknroll', 'suffix' => '.4fb', 'separator' => ',');
     $oUriBuilder = cUriBuilderFactory::getUriBuilder('custom_path');
     $oUriBuilder->buildUrl($aParams, false, $aConfig);

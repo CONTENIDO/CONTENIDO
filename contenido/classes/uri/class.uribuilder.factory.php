@@ -22,6 +22,7 @@
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
+
 class cUriBuilderFactory {
 
     /**
@@ -61,10 +62,7 @@ class cUriBuilderFactory {
                     if (!class_exists($sClassName)) {
                         throw new cInvalidArgumentException('The classfile of cUriBuilder couldn\'t included by Contenido_UriBuilderFactory: ' . $sBuilder . '!');
                     }
-                    return call_user_func(array(
-                        $sClassName,
-                        'getInstance'
-                    ));
+                    return call_user_func(array($sClassName, 'getInstance'));
                 }
 
                 throw new cInvalidArgumentException('Invalid/Empty cUriBuilder passed to cUriBuilderFactory: ' . $sBuilder . '!');

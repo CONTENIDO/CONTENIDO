@@ -15,10 +15,11 @@
  * @copyright  four for business AG <www.4fb.de>
  */
 
- /**
-  * @deprecated 2012-09-23 This class is not longer supported. Use cCategoryHelper instead.
-  */
+/**
+ * @deprecated 2012-09-23 This class is not longer supported. Use cCategoryHelper instead.
+ */
 class Contenido_NavMain_Util {
+
     /**
      * Recursive Loop over all (sub)categories.
      * Each level will be assigned a css class navmainStandardLevel_x
@@ -50,7 +51,7 @@ class Contenido_NavMain_Util {
         $bMarkActive = $oCategory->getIdCat() == $iCurrentPageIdcat || $oFrontendNavigation->isInPathToRoot($oCategory->getIdCat(), $iCurrentPageIdcat);
         if ($oCurrentSubcategories->count() > 0) {
             $aLevelInfo[$oCategory->getIdCat()]['first_child_item'] = $oCurrentSubcategories[0]->getIdCat();
-            $aLevelInfo[$oCategory->getIdCat()]['last_child_item'] = $oCurrentSubcategories[$oCurrentSubcategories->count()-1]->getIdCat();
+            $aLevelInfo[$oCategory->getIdCat()]['last_child_item'] = $oCurrentSubcategories[$oCurrentSubcategories->count() - 1]->getIdCat();
         }
         // this is just for sample client - modify to your needs!
         if ($aCfg['url_builder']['name'] == 'front_content' || $aCfg['url_builder']['name'] == 'MR') {
@@ -70,7 +71,7 @@ class Contenido_NavMain_Util {
         $oTpl->set('d', 'css_last_item', ($aLevelInfo[$oCategory->getIdParent()]['last_child_item'] == $oCategory->getIdCat() ? ' last' : ''));
         $oTpl->set('d', 'css_active_item', ($bMarkActive === true ? ' active' : ''));
         try {
-           $oTpl->set('d', 'url', cUri::getInstance()->build($aParams));
+            $oTpl->set('d', 'url', cUri::getInstance()->build($aParams));
         } catch (cInvalidArgumentException $e) {
             $oTpl->set('d', 'url', '#');
         }
@@ -78,8 +79,7 @@ class Contenido_NavMain_Util {
         // continue until max level depth
         if ($aDepthInfo[1] > $aDepthInfo[0]) {
             // check if current item has sub-items to be displayed
-            $bShowFollowUps = ($oCategory->getIdCat() == $iCurrentPageIdcat || $oFrontendNavigation->isInPathToRoot($oCategory->getIdCat(), $iCurrentPageIdcat))
-                              ? true : false;
+            $bShowFollowUps = ($oCategory->getIdCat() == $iCurrentPageIdcat || $oFrontendNavigation->isInPathToRoot($oCategory->getIdCat(), $iCurrentPageIdcat)) ? true : false;
             if ($bShowFollowUps === true && $oCurrentSubcategories->count() > 0) {
                 $oSubCategories = $oCurrentSubcategories;
                 foreach ($oSubCategories as $oSubCategory) {
@@ -88,5 +88,7 @@ class Contenido_NavMain_Util {
             }
         }
     }
+
 }
+
 ?>

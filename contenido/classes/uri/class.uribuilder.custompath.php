@@ -24,12 +24,10 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
-include_once('class.uribuilder.php');
 cInclude('includes', 'functions.pathresolver.php');
 
-class cUriBuilderCustomPath extends cUriBuilder
-{
+class cUriBuilderCustomPath extends cUriBuilder {
+
     /**
      * Self instance
      * @var  cUriBuilderCustomPath
@@ -46,8 +44,7 @@ class cUriBuilderCustomPath extends cUriBuilder
      * Constructor
      * @return void
      */
-    private function __construct()
-    {
+    private function __construct() {
         $this->sHttpBasePath = '';
     }
 
@@ -55,8 +52,7 @@ class cUriBuilderCustomPath extends cUriBuilder
      * Get instance of self
      * @return obj cUriBuilderFrontcontent
      */
-    public static function getInstance()
-    {
+    public static function getInstance() {
         if (self::$_instance == null) {
             self::$_instance = new self();
         }
@@ -76,8 +72,7 @@ class cUriBuilderCustomPath extends cUriBuilder
      * @throws cInvalidArgumentException
      * @todo Somehow get around using prCreateURLNameLocationString()
      */
-    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array())
-    {
+    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {
         if (!isset($aParams['idcat'])) {
             throw new cInvalidArgumentException('$aParams[idcat] must be set!');
         }
@@ -99,15 +94,7 @@ class cUriBuilderCustomPath extends cUriBuilder
         $this->aConfig = $aConfig;
 
         $sCategoryString = '';
-        prCreateURLNameLocationString(intval($aParams['idcat']),
-                                        "/",
-                                        $sCategoryString,
-                                        false,
-                                        "",
-                                        $aParams['level'],
-                                        $aParams['lang'],
-                                        true,
-                                        false);
+        prCreateURLNameLocationString(intval($aParams['idcat']), "/", $sCategoryString, false, "", $aParams['level'], $aParams['lang'], true, false);
         if (strlen($sCategoryString) > 0 && substr($sCategoryString, -1) != '/') {
             $sCategoryString .= '/';
         }
@@ -125,4 +112,5 @@ class cUriBuilderCustomPath extends cUriBuilder
         }
         $this->sUrl .= $this->aConfig['suffix'];
     }
+
 }

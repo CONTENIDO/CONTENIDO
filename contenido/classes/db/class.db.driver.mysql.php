@@ -29,6 +29,7 @@
  * @subpackage Database
  */
 class cDbDriverMysql extends cDbDriverAbstract {
+
     /**
      * @see cDbDriverAbstract::check
      */
@@ -330,4 +331,5 @@ class cDbDriverMysql extends cDbDriverAbstract {
     public function disconnect() {
         mysql_close($this->_handler->getLinkId());
     }
+
 }

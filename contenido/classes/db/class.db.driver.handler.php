@@ -19,6 +19,7 @@
  * @subpackage Database
  */
 abstract class cDbDriverHandler {
+
     const HALT_YES = 'yes';
     const HALT_NO = 'no';
     const HALT_REPORT = 'report';
@@ -978,4 +979,5 @@ abstract class cDbDriverHandler {
         cDeprecated('This method is deprecated. Use toArray() instead.');
         return $this->toArray();
     }
+
 }

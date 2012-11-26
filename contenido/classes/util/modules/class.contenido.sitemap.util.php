@@ -15,10 +15,11 @@
  * @copyright  four for business AG <www.4fb.de>
  */
 
- /**
-  * @deprecated 2012-09-23 This class is not longer supported. Use cCategoryHelper instead.
-  */
+/**
+ * @deprecated 2012-09-23 This class is not longer supported. Use cCategoryHelper instead.
+ */
 class Contenido_Sitemap_Util {
+
     /**
      * Recursive Loop over all (sub)categories.
      * Each level will be assigned a css class sitemapStandardLevel_x
@@ -54,7 +55,7 @@ class Contenido_Sitemap_Util {
         $oTpl->set('d', 'name', $oCategory->getCategoryLanguage()->getName());
         $oTpl->set('d', 'css_level', $iItemLevel);
         try {
-           $oTpl->set('d', 'url', cUri::getInstance()->build($aParams));
+            $oTpl->set('d', 'url', cUri::getInstance()->build($aParams));
         } catch (cInvalidArgumentException $e) {
             $oTpl->set('d', 'url', '#');
         }
@@ -70,5 +71,7 @@ class Contenido_Sitemap_Util {
             }
         }
     }
+
 }
+
 ?>
