@@ -369,7 +369,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
         $bSeparatorModified = $this->_separatorModified($aMR['mod_rewrite']);
 
         if (mr_setConfiguration($this->_client, $aMR)) {
-            $sMsg = 'Configuration has been saved';
+            $sMsg = i18n('Configuration has been saved', 'mod_rewrite');
             if ($bSeparatorModified) {
                 mr_loadConfiguration($this->_client, true);
             }
