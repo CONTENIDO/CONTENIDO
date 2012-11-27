@@ -1,231 +1,141 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
+
 CONTENIDO XML language file
 
 NOTE: Comments below with i18n() are used for translation purposes and the are
       required for the parser to detect/extract text to translate.
 
-gettext:
-i18n("Content")
-i18n("Articles")
-i18n("Overview")
-i18n("Editor")
-i18n("Properties")
-i18n("Configuration")
-i18n("Preview")
-i18n("SEO")
-i18n("Content")
-i18n("Category")
-i18n("Overview")
-i18n("File manager")
-i18n("Overview")
-i18n("Edit")
-i18n("Upload files")
-i18n("Style")
-i18n("Layouts")
-i18n("Edit")
-i18n("Preview")
-i18n("History")
-i18n("Modules")
-i18n("Edit")
-i18n("History")
-i18n("Translation")
-i18n("Template")
-i18n("CSS")
-i18n("JavaScript")
-i18n("Import/Export")
-i18n("Templates")
-i18n("Edit")
-i18n("Preconfiguration")
-i18n("Visual edit")
-i18n("CSS editor")
-i18n("File")
-i18n("History")
-i18n("JavaScript editor")
-i18n("File")
-i18n("History")
-i18n("Module templates")
-i18n("File")
-i18n("History")
-i18n("Statistics")
-i18n("Hits")
-i18n("Administration")
-i18n("Users")
-i18n("Properties")
-i18n("Areas")
-i18n("Layouts")
-i18n("Content")
-i18n("Modules")
-i18n("Templates")
-i18n("Categories")
-i18n("Groups")
-i18n("Members")
-i18n("Properties")
-i18n("Areas")
-i18n("Layouts")
-i18n("Content")
-i18n("Modules")
-i18n("Templates")
-i18n("Categories")
-i18n("Languages")
-i18n("Plugins")
-i18n("Clients")
-i18n("Properties")
-i18n("Article specifications")
-i18n("Client settings")
-i18n("Logs")
-i18n("Debug")
-i18n("System")
-i18n("Expert settings")
-i18n("System variables")
-i18n("System settings")
-i18n("Purge")
-i18n("Error report")
-i18n("Frontend")
-i18n("E-Mail-Log")
-i18n("My CONTENIDO")
-i18n("Overview")
-i18n("Recently edited articles")
-i18n("Reminder list")
-i18n("Settings")
-i18n("Extras")
-i18n("Mailing")
-i18n("Info")
-i18n("Login")
-i18n("System integrity")
-
 -->
 <language>
     <navigation>
         <content>
-            <main>Content</main>
+            <main>Content</main><!-- i18n("Content") -->
             <article>
-                <main>Articles</main>
-                <overview>Overview</overview>
-                <editor>Editor</editor>
-                <properties>Properties</properties>
-                <configuration>Configuration</configuration>
-                <preview>Preview</preview>
-                <meta>SEO</meta>
-                <content>Content</content>
+                <main>Articles</main><!-- i18n("Articles") -->
+                <overview>Overview</overview><!-- i18n("Overview") -->
+                <editor>Editor</editor><!-- i18n("Editor") -->
+                <properties>Properties</properties><!-- i18n("Properties") -->
+                <configuration>Configuration</configuration><!-- i18n("Configuration") -->
+                <preview>Preview</preview><!-- i18n("Preview") -->
+                <meta>Meta</meta><!-- i18n("Meta") -->
+                <content>Content</content><!-- i18n("Content") -->
             </article>
             <structure>
-                <main>Category</main>
-                <overview>Overview</overview>
+                <main>Category</main><!-- i18n("Category") -->
+                <overview>Overview</overview><!-- i18n("Overview") -->
             </structure>
             <upload>
-                <main>File manager</main>
-                <overview>Overview</overview>
-                <edit>Edit</edit>
-                <fileupload>Upload files</fileupload>
+                <main>File manager</main><!-- i18n("File manager") -->
+                <overview>Overview</overview><!-- i18n("Overview") -->
+                <edit>Edit</edit><!-- i18n("Edit") -->
+                <fileupload>Upload files</fileupload><!-- i18n("Upload files") -->
             </upload>
+            <translations>
+            	<main>Translations</main><!-- i18n("Translations") -->
+            </translations>
         </content>
         <style>
-            <main>Style</main>
+            <main>Style</main><!-- i18n("Style") -->
             <layouts>
-                <main>Layouts</main>
-                <edit>Edit</edit>
-                <preview>Preview</preview>
-                <history>History</history>
+                <main>Layouts</main><!-- i18n("Edit") -->
+                <edit>Edit</edit><!-- i18n("Edit") -->
+                <preview>Preview</preview><!-- i18n("Preview") -->
+                <history>History</history><!-- i18n("History") -->
             </layouts>
             <modules>
-                <main>Modules</main>
-                <edit>Edit</edit>
-                <history>History</history>
-                <translation>Translation</translation>
-                <template>Template</template>
-                <style>CSS</style>
-                <script>JavaScript</script>
-                <import-export>Import/Export</import-export>
+                <main>Modules</main><!-- i18n("Modules") -->
+                <edit>Edit</edit><!-- i18n("Edit") -->
+                <history>History</history><!-- i18n("History") -->
+                <translation>Translation</translation><!-- i18n("Translation") -->
+                <template>Template</template><!-- i18n("Template") -->
+                <style>CSS</style><!-- i18n("CSS") -->
+                <script>JavaScript</script><!-- i18n("JavaScript") -->
+                <import-export>Import/Export</import-export><!-- i18n("Import/Export") -->
             </modules>
             <templates>
-                <main>Templates</main>
-                <edit>Edit</edit>
-                <conf>Preconfiguration</conf>
-                <visual>Visual edit</visual>
+                <main>Templates</main><!-- i18n("Templates") -->
+                <edit>Edit</edit><!-- i18n("Edit") -->
+                <conf>Preconfiguration</conf><!-- i18n("Preconfiguration") -->
+                <visual>Visual edit</visual><!-- i18n("Visual edit") -->
             </templates>
             <styleeditor>
-                <main>CSS editor</main>
-                <file>File</file>
-                <history>History</history>
+                <main>CSS editor</main><!-- i18n("CSS editor") -->
+                <file>File</file><!-- i18n("File") -->
+                <history>History</history><!-- i18n("History") -->
             </styleeditor>
             <jseditor>
-                <main>JavaScript editor</main>
-                <file>File</file>
-                <history>History</history>
+                <main>JavaScript editor</main><!-- i18n("JavaScript editor") -->
+                <file>File</file><!-- i18n("File") -->
+                <history>History</history><!-- i18n("History") -->
             </jseditor>
             <tpleditor>
-                <main>Module templates</main>
-                <file>File</file>
-                <history>History</history>
+                <main>Module templates</main><!-- i18n("Module templates") -->
+                <file>File</file><!-- i18n("File") -->
+                <history>History</history><!-- i18n("History") -->
             </tpleditor>
         </style>
         <statistic>
-            <main>Statistics</main>
-            <hits>Hits</hits>
+            <main>Statistics</main><!-- i18n("Statistics") -->
+            <hits>Hits</hits><!-- i18n("Hits") -->
         </statistic>
         <administration>
-            <main>Administration</main>
+            <main>Administration</main><!-- i18n("Administration") -->
             <users>
-                <main>Users</main>
-                <userproperties>Properties</userproperties>
-                <areas>Areas</areas>
-                <layout>Layouts</layout>
-                <content>Content</content>
-                <module>Modules</module>
-                <template>Templates</template>
-                <structure>Categories</structure>
+                <main>Users</main><!-- i18n("Users") -->
+                <userproperties>Properties</userproperties><!-- i18n("Properties") -->
+                <areas>Areas</areas><!-- i18n("Areas") -->
+                <layout>Layouts</layout><!-- i18n("Layouts") -->
+                <content>Content</content><!-- i18n("Content") -->
+                <module>Modules</module><!-- i18n("Modules") -->
+                <template>Templates</template><!-- i18n("Templates") -->
+                <structure>Categories</structure><!-- i18n("Categories") -->
             </users>
             <groups>
-                <main>Groups</main>
-                <members>Members</members>
-                <overview>Properties</overview>
-                <areas>Areas</areas>
-                <layout>Layouts</layout>
-                <content>Content</content>
-                <module>Modules</module>
-                <template>Templates</template>
-                <structure>Categories</structure>
+                <main>Groups</main><!-- i18n("Groups") -->
+                <members>Members</members><!-- i18n("Members") -->
+                <overview>Properties</overview><!-- i18n("Properties") -->
+                <areas>Areas</areas><!-- i18n("Areas") -->
+                <layout>Layouts</layout><!-- i18n("Layouts") -->
+                <content>Content</content><!-- i18n("Content") -->
+                <module>Modules</module><!-- i18n("Modules") -->
+                <template>Templates</template><!-- i18n("Templates") -->
+                <structure>Categories</structure><!-- i18n("Categories") -->
             </groups>
-            <languages>Languages</languages>
-            <plugins>Plugins</plugins>
+            <languages>Languages</languages><!-- i18n("Languages") -->
+            <plugins>Plugins</plugins><!-- i18n("Plugins") -->
             <clients>
-                <main>Clients</main>
-                <clientproperties>Properties</clientproperties>
-                <clientartspec>Article specifications</clientartspec>
-                <clientsettings>Client settings</clientsettings>
+                <main>Clients</main><!-- i18n("Clients") -->
+                <clientproperties>Properties</clientproperties><!-- i18n("Properties") -->
+                <clientartspec>Article specifications</clientartspec><!-- i18n("Article specifications") -->
+                <clientsettings>Client settings</clientsettings><!-- i18n("Client settings") -->
             </clients>
-            <logs>
-                <main>Logs</main>
-                <mail_action>Actions</mail_action>
-                <mail_log>Mails</mail_log>
-            </logs>
-            <debug>Debug</debug>
+            <logs>Logs</logs><!-- i18n("Logs") -->
+            <debug>Debug</debug><!-- i18n("Debug") -->
             <system>
-                <main>System</main>
-                <syssettings>Expert settings</syssettings>
-                <sysvalues>System variables</sysvalues>
-                <configuration>System settings</configuration>
-                <purge>Purge</purge>
-                <syserrorreport>Error report</syserrorreport>
-                <integrity>System integrity</integrity>
+                <main>System</main><!-- i18n("System") -->
+                 <syssettings>Expert settings</syssettings><!-- i18n("Expert settings") -->
+                <sysvalues>System variables</sysvalues><!-- i18n("System variables") -->
+                <configuration>System settings</configuration><!-- i18n("System settings") -->
+                <purge>Purge</purge><!-- i18n("Purge") -->
+                <syserrorreport>Error report</syserrorreport><!-- i18n("Error report") -->
             </system>
             <frontend>
-                <main>Frontend</main>
+                <main>Frontend</main><!-- i18n("Frontend") -->
             </frontend>
         </administration>
         <mycontenido>
-            <main>My CONTENIDO</main>
-            <overview>Overview</overview>
-            <recentarticles>Recently edited articles</recentarticles>
-            <todolist>Reminder list</todolist>
-            <settings>Settings</settings>
+            <main>My CONTENIDO</main><!-- i18n("My CONTENIDO") -->
+            <overview>Overview</overview><!-- i18n("Overview") -->
+            <recentarticles>Recently edited articles</recentarticles><!-- i18n("Recently edited articles") -->
+            <todolist>Reminder list</todolist><!-- i18n("Reminder list") -->
+            <settings>Settings</settings><!-- i18n("Settings") -->
         </mycontenido>
         <extra>
-            <main>Extras</main>
-            <mailing>Mailing</mailing>
+            <main>Extras</main><!-- i18n("Extras") -->
+            <mailing>Mailing</mailing><!-- i18n("Mailing") -->
         </extra>
-        <info>Info</info>
-        <login>Login</login>
+        <info>Info</info><!-- i18n("Info") -->
+        <login>Login</login><!-- i18n("Login") -->
     </navigation>
 </language>

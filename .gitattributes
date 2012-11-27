@@ -1608,6 +1608,7 @@ contenido/includes/include.con_left_top.php -text
 contenido/includes/include.con_meta_form.php -text
 contenido/includes/include.con_str_overview.php -text
 contenido/includes/include.con_subnav.php -text
+contenido/includes/include.con_translate.php -text
 contenido/includes/include.debug.php -text
 contenido/includes/include.default_subnav.php -text
 contenido/includes/include.files_subnav.php -text
@@ -2311,6 +2312,7 @@ contenido/templates/standard/template.con_str_overview.html -text
 contenido/templates/standard/template.con_str_overview.list.html -text
 contenido/templates/standard/template.con_subnav.html -text
 contenido/templates/standard/template.con_subnav_noleft.html -text
+contenido/templates/standard/template.con_translate.html -text svneol=unset#text/plain
 contenido/templates/standard/template.deco.html -text
 contenido/templates/standard/template.default_subnav.html -text
 contenido/templates/standard/template.error_page.html -text svneol=unset#text/plain

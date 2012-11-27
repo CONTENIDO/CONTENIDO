@@ -1,0 +1,38 @@
+{INFO}
+<div class="atfilter">
+	<div class="right">
+		{SEARCH}
+	</div>
+	{NEWLANG}
+</div>
+{FORM}
+<div class="atpager">
+	<div class="right">{ELEMPERPAGE}</div>{PAGER}
+</div>
+<script type="text/javascript">
+    var sid = "1";
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".in_used_mod").live("click", function() {
+            var iId = $(this).attr("rel"),
+                modName = $(this).parents("td").prev().text();
+            if (iId) {
+                $.post("ajaxmain.php", { area: "mod", ajax: "inused_module", id: iId, contenido: sid },
+                    function(data) {
+                        var inUseTitle = "{MODULEINUSETEXT}";
+                        inUseTitle = inUseTitle.replace("%s", modName);
+                        showNotification(inUseTitle, data);
+                    }
+                );
+            }
+        });
+        $("th .del").parent().before(function() {
+            var iId = $(this).find('.del').attr('rel');
+            if (iId) {
+                return '<a href="{DELLANGHREF}' + iId + '"><img src="{DELLANGIMG}" title="{DELLANGALT}" alt="{DELLANGALT}"></a>';
+            }
+        });
+    });
+</script>

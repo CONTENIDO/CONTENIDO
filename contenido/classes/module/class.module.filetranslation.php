@@ -65,18 +65,22 @@ class cModuleFileTranslation extends cModuleHandler {
     /**
      *
      * @param array $cfg
-     * @param int $idclient
      * @param int $idmodul
-     * @param int $idlang
      * @param bool $static if true it will load once the translation from file
+	 * @param int $overrideIdlang use different language if not NULL
      */
-    public function __construct($idmodul = null, $static = false) {
+    public function __construct($idmodul = null, $static = false, $overrideIdlang = null) {
         parent::__construct($idmodul);
 
         // $this->_debug = true;
 
         if ($idmodul != null) {
             $this->_modulePath = $this->getModulePath();
+        }
+		
+		// override language if specified
+		if ($overrideIdlang != null) {
+            $this->_idlang = $overrideIdlang;
         }
 
         // dont open the translations file for each mi18n call
@@ -175,9 +179,6 @@ class cModuleFileTranslation extends cModuleHandler {
     /**
      * Save the hole translations for a idmod and lang.
      * For the upgrade/setup.
-     *
-     * @throws cException if the translation array can not be saved
-     * @return void
      */
     public function saveTranslations() {
         $db = cRegistry::getDb();
@@ -203,7 +204,7 @@ class cModuleFileTranslation extends cModuleHandler {
 
             if (count($translations) != 0) {
                 if ($this->saveTranslationArray($translations) == false) {
-                    throw new cException('Could not save translate idmod=' . $this->_idmod . ' !');
+                    cWarning(__FILE__, __LINE__, 'Could not save translate idmod=' . $this->_idmod . ' !');
                 }
             }
         }
