@@ -13,9 +13,8 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call: Missing framework initialization - request aborted.');
-}
+// assert framework initialization
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // get header from content type HTMLHEAD with index 1
 $header = "CMS_HTMLHEAD[1]";

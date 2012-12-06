@@ -12,9 +12,8 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call: Missing framework initialization - request aborted.');
-}
+// assert framework initialization
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // get image source from content type IMG with index 1
 $imageSource = "CMS_IMG[1]";

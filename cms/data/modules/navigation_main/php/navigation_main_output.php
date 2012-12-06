@@ -12,30 +12,24 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call: Missing framework initialization - request aborted.');
-}
+// assert framework initialization
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // get client settings
 $rootIdcat = getEffectiveSetting('navigation_main', 'idcat', 1);
 $depth = getEffectiveSetting('navigation_main', 'depth', 3);
 
 // get category tree
-$auth = cRegistry::getAuth();
 $categoryHelper = cCategoryHelper::getInstance();
-$categoryHelper->setAuth($auth);
+$categoryHelper->setAuth(cRegistry::getAuth());
 $tree = $categoryHelper->getSubCategories($rootIdcat, $depth);
 
-// get current idcat
-$idcat = cRegistry::getCategoryId();
-
-// get breadcrumb of current category
-$helper = cCategoryHelper::getInstance();
+// get path (breadcrumb) of current category
 $path = array_map(function (cApiCategoryLanguage $categoryLanguage) {
     return $categoryLanguage->get('idcat');
-}, $helper->getCategoryPath($idcat, 1));
+}, $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1));
 
-// use smarty template to output header text
+// use template to display navigation
 $tpl = Contenido_SmartyWrapper::getInstance();
 global $force;
 if (1 == $force) {
@@ -43,7 +37,7 @@ if (1 == $force) {
 }
 $tpl->assign('ulId', 'navigation');
 $tpl->assign('tree', $tree);
-$tpl->assign('actualIdcat', $idcat);
+$tpl->assign('actualIdcat', cRegistry::getCategoryId());
 $tpl->assign('path', $path);
 $tpl->display('navigation_main/template/navigation.tpl');
 

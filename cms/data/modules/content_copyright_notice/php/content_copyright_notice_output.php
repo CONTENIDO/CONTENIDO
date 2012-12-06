@@ -12,9 +12,8 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call: Missing framework initialization - request aborted.');
-}
+// assert framework initialization
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $configIdart = getEffectiveSetting('footer_config', 'idart', 0);
 
