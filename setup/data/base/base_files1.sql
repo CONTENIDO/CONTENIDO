@@ -179,5 +179,6 @@ INSERT INTO !PREFIX!_files VALUES('955', '951', 'include.system_log_sysvalues.ph
 INSERT INTO !PREFIX!_files VALUES('956', '951', 'functions.system.php', 'inc');
 INSERT INTO !PREFIX!_files VALUES ('957', '953', 'include.system_integrity.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('10000', '10000', 'pim/includes/include.right_bottom.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('500', '97', 'include.con_translate.php', 'main');
 
 

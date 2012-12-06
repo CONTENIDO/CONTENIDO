@@ -153,4 +153,5 @@ INSERT INTO !PREFIX!_frame_files VALUES('193', '84', '4', '186');
 INSERT INTO !PREFIX!_frame_files VALUES('199', '7', '5', '192');
 INSERT INTO !PREFIX!_frame_files VALUES('207', '88', '4', '199');
 INSERT INTO !PREFIX!_frame_files VALUES('208', '89', '4', '200');
+INSERT INTO !PREFIX!_frame_files VALUES('500', '97', '4', '500');
 
