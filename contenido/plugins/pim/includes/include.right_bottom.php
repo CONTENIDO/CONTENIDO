@@ -204,7 +204,7 @@ while (($plugin = $oItem->next()) !== false) {
     // uninstall link
     if (is_writable($cfg['path']['contenido'] . $cfg['path']['plugins'] . $plugin->get('folder'))) {
         $tempUninstallLink = $sess->url('main.php?area=pim&frame=4&pim_view=uninstall&pluginId=' . $plugin->get('idplugin'));
-        $pagePlugins->set('s', 'UNINSTALL_LINK', '<a href="javascript:void(0)" onclick="javascript:showConfirmation(\'' . i18n('Are you sure to delete this plugin?', 'pim') . '\', function() { window.location.href=\'' . $tempUninstallLink . '\';})">' . i18n('Uninstall', 'pim') . '</a>');
+        $pagePlugins->set('s', 'UNINSTALL_LINK', '<a href="javascript:void(0)" onclick="javascript:showConfirmation(\'' . i18n('Are you sure to delete this plugin? Files are not deleted in filesystem.', 'pim') . '\', function() { window.location.href=\'' . $tempUninstallLink . '\';})">' . i18n('Uninstall', 'pim') . '</a>');
         $pagePlugins->set('s', 'LANG_WRITABLE', '');
     } else {
         $pagePlugins->set('s', 'UNINSTALL_LINK', '');
@@ -229,6 +229,8 @@ while ($pluginFoldername = readdir($handle)) {
         $pagePlugins = new cTemplate();
 
         $pagePlugins->set('s', 'LANG_FOLDERNAME', i18n('Foldername', 'pim'));
+        $pagePlugins->set('s', 'LANG_TOOLTIP_INSTALL', i18n('Install extracted plugin', 'pim'));
+        $pagePlugins->set('s', 'LANG_TOOLTIP_UNINSTALL', i18n('Uninstall extracted plugin (deleted plugin files from filesystem)', 'pim'));
         $pagePlugins->set('s', 'FOLDERNAME', $pluginFoldername);
         $pagePlugins->set('s', 'INSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=install-extracted&pluginFoldername=' . $pluginFoldername));
         $pagePlugins->set('s', 'UNINSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall-extracted&pluginFoldername=' . $pluginFoldername));

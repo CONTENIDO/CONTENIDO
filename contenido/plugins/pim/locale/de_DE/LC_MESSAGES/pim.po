@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-07 11:29+0100\n"
-"PO-Revision-Date: 2012-12-07 11:29+0100\n"
+"POT-Creation-Date: 2012-12-07 16:31+0100\n"
+"PO-Revision-Date: 2012-12-07 16:32+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "MIME-Version: 1.0\n"
@@ -108,8 +108,8 @@ msgid "Please choose your new file"
 msgstr "Plugin-Paket auswählen"
 
 #: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:207
-msgid "Are you sure to delete this plugin?"
-msgstr "Sind Sie sicher, dass Sie dieses Plugin entfernen m&ouml;chten?"
+msgid "Are you sure to delete this plugin? Files are not deleted in filesystem."
+msgstr "Sind Sie sicher, dass Sie dieses Plugin entfernen m&ouml;chten? Die Dateien werden nicht aus dem Dateisystem entfernt."
 
 #: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:207
 msgid "Uninstall"
@@ -123,42 +123,44 @@ msgstr "Dieses Plugin ist nicht beschreibbar, bitte setzen Sie die Dateirechte m
 msgid "Foldername"
 msgstr "Ordnername"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:242
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:232
+msgid "Install extracted plugin"
+msgstr "Installiere das extrahierte Plugin"
+
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:233
+#, fuzzy
+msgid "Uninstall extracted plugin (deleted plugin files from filesystem)"
+msgstr "Entferne das extrahierte Plugin (das entfernte Plugin wird aus dem Dateisystem gel&ouml;scht)"
+
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:244
 msgid "No entries"
 msgstr "Keine Eintr&auml;ge"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:246
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:248
 msgid "Add new plugin"
 msgstr "Neues Plugin installieren"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:247
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:249
 msgid "Please choose a plugin package"
 msgstr "Plugin-Paket auswählen"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:248
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:250
 msgid "Upload plugin package"
 msgstr "Plugin-Paket hochladen"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:249
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:251
 msgid "Installed Plugins"
 msgstr "Installierte Plugins"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:250
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:252
 msgid "Not installed Plugins"
 msgstr "Noch nicht installierte Plugins"
 
-#~ msgid ""
-#~ "Are you sure to delete this plugin? Plugin Manager will delete all "
-#~ "content of the plugin"
-#~ msgstr ""
-#~ "Sind Sie sicher, dass Sie dieses Plugin entfernen m&ouml;chten? Der "
-#~ "Plugin Manager wird alle Inhalte des Plugins entfernen"
+#~ msgid "Are you sure to delete this plugin?"
+#~ msgstr "Sind Sie sicher, dass Sie dieses Plugin entfernen m&ouml;chten?"
 
 #~ msgid "from"
 #~ msgstr "von"
-
-#~ msgid "Uninstall selected plugin"
-#~ msgstr "L&ouml;sche das ausgew&auml;hlte Plugin"
 
 #~ msgid "Update: Please choose a plugin package"
 #~ msgstr "Aktualisierung: Plugin Paket auswählen"
