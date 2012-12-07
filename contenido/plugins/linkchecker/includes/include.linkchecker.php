@@ -1,8 +1,7 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System
- * Description: Main file for the plugin linkchecker
- * Requirements: @con_php_req 5.0
+ * Project: CONTENIDO Content Management System Description: Main file for the
+ * plugin linkchecker Requirements: @con_php_req 5.0
  *
  *
  * @package CONTENIDO Plugins
@@ -199,11 +198,18 @@ if ($sCache_errors && $_GET['live'] != 1) {
         }
     }
 
-    // Use SQL-WHERE if lang is not zero
+    // Build $aCats-Statement
+    if (count($aCats) == 0) {
+        $aCats_Sql = "";
+    } else {
+        $aCats_Sql = "AND cat.idcat IN (0, " . join(", ", $aCats) . ")";
+    }
+
+    // Use Sql-WHERE if lang is not zero
     if ($langart != 0) {
-        $sLang_where = "AND art.idlang = '" . cSecurity::toInteger($langart) . "' AND catName.idlang = '" . cSecurity::toInteger($langart) . "'";
+        $sLang_Sql = "AND art.idlang = '" . cSecurity::toInteger($langart) . "' AND catName.idlang = '" . cSecurity::toInteger($langart) . "'";
     } elseif (!isset($langart)) {
-        $sLang_where = "AND art.idlang = '" . cSecurity::toInteger($lang) . "' AND catName.idlang = '" . cSecurity::toInteger($lang) . "'";
+        $sLang_Sql = "AND art.idlang = '" . cSecurity::toInteger($lang) . "' AND catName.idlang = '" . cSecurity::toInteger($lang) . "'";
     }
 
     // How many articles exist? [Text]
@@ -212,7 +218,7 @@ if ($sCache_errors && $_GET['live'] != 1) {
             LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)
             LEFT JOIN " . $cfg['tab']['content'] . " con ON (con.idartlang = art.idartlang)
             WHERE (con.value LIKE '%action%' OR con.value LIKE '%data%' OR con.value LIKE '%href%' OR con.value LIKE '%src%')
-            AND cat.idcat IN (0, " . join(", ", $aCats) . ") AND cat.idcat != '0' " . $sLang_where . "
+            " . $aCats_Sql . " AND cat.idcat != '0' " . $sLang_where . "
             AND art.online = '1' AND art.redirect = '0'";
     $db->query($sql);
 
@@ -234,8 +240,7 @@ if ($sCache_errors && $_GET['live'] != 1) {
     $sql = "SELECT art.title, art.redirect_url, art.idlang, cat.idart, cat.idcat, catName.name AS namecat FROM " . $cfg['tab']['cat_art'] . " cat
             LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idart = cat.idart)
             LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)
-            WHERE cat.idcat IN (0, " . join(", ", $aCats) . ") AND cat.idcat != '0' " . $sLang_where . "
-            AND art.online = '1' AND art.redirect = '1'";
+            WHERE art.online = '1' AND art.redirect = '1' " . $aCats_Sql . " AND cat.idcat != '0' " . $sLang_Sql;
     $db->query($sql);
 
     while ($db->next_record()) {
@@ -328,9 +333,9 @@ if (empty($aErrors) && $cronjob != true) {
                 $aError_output[$sKey] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors'], 1);
             } else {
                 $aError_output[$sKey] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors_cat'], 1); // special
-                                                                                                               // template
-                                                                                                               // for
-                                                                                                               // idcats
+                                                                                                                   // template
+                                                                                                                   // for
+                                                                                                                   // idcats
             }
         }
     }
