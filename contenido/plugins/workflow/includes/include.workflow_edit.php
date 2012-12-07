@@ -53,8 +53,8 @@ if ($action == "workflow_save") {
         $page->displayInfo(i18n("Saved changes successfully!", 'workflow'));
     }
 
-    $workflow->set("name", conHtmlSpecialChars($wfname));
-    $workflow->set("description", conHtmlSpecialChars($wfdescription));
+    $workflow->set("name", conHtmlentities(conHtmlSpecialChars($wfname)));
+    $workflow->set("description", conHtmlentities(conHtmlSpecialChars($wfdescription)));
     $idworkflow = $workflow->get("idworkflow");
     $workflow->store();
 }

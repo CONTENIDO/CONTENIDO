@@ -115,8 +115,8 @@ if ($action == "workflow_save_step" || $action == "workflow_create_user") {
     $workflowitem = new WorkflowItem();
     $workflowitem->loadByPrimaryKey($idworkflowitem);
     $workflowitem->setField('idtask', $wftaskselect);
-    $workflowitem->setField('name', $wfstepname);
-    $workflowitem->setField('description', $wfstepdescription);
+    $workflowitem->setField('name', conHtmlentities(conHtmlSpecialChars($wfstepname)));
+    $workflowitem->setField('description', conHtmlentities(conHtmlSpecialChars($wfstepdescription)));
     $workflowitem->store();
 
     $usersequences = new WorkflowUserSequences();
