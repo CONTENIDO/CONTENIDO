@@ -24,7 +24,6 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 $plugin_name = "linkchecker";
-$iWhitelist_timeout = 2592000; // 30 days
 global $perm;
 
 if (!$perm->have_perm_area_action($plugin_name, $plugin_name)) {
@@ -45,7 +44,7 @@ if (!empty($_GET['url_to_delete'])) {
 
 // Get whitelist
 $sql = "SELECT url, lastview FROM " . $cfg['tab']['whitelist'] . " WHERE lastview < " . (time() + $iWhitelist_timeout) . "
-        AND lastview > " . (time() - $iWhitelist_timeout) . " ORDER BY lastview DESC";
+        AND lastview > " . (time() - $iWhitelistTimeout) . " ORDER BY lastview DESC";
 $db->query($sql);
 
 while ($db->next_record()) {

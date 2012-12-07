@@ -22,6 +22,11 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+// configuration
+$iWhitelistTimeout = 2592000; // 30 days
+$iCacheLifeTime = 1209600; // two weeks
+
+// paths
 $plugin_name = "linkchecker";
 $cfg['plugins']['linkchecker'] = cRegistry::getBackendPath() . "plugins/" . $plugin_name . "/";
 $cfg['tab']['whitelist'] = $cfg['sql']['sqlprefix'] . '_pi_linkwhitelist';

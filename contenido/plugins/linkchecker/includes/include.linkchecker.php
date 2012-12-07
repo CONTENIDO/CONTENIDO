@@ -54,7 +54,6 @@ $aCats = array();
 $aSearchIDInfosArt = array();
 $aSearchIDInfosCatArt = array();
 $aSearchIDInfosNonID = array();
-$iWhitelist_timeout = 2592000; // 30 days
 
 // Var initialization
 $aUrl = array(
@@ -91,7 +90,7 @@ $aCacheName = array(
 );
 $oCache = new cFileCache(array(
         'cacheDir' => $cfgClient[$client]['cache']['path'],
-        'lifeTime' => 1209600
+        'lifeTime' => $iCacheLifeTime
 ));
 
 /*
@@ -163,8 +162,8 @@ if (!empty($_GET['whitelist'])) {
 }
 
 /* Whitelist: Get */
-$sql = "SELECT url FROM " . $cfg['tab']['whitelist'] . " WHERE lastview < " . (time() + $iWhitelist_timeout) . "
-        AND lastview > " . (time() - $iWhitelist_timeout);
+$sql = "SELECT url FROM " . $cfg['tab']['whitelist'] . " WHERE lastview < " . (time() + $iWhitelistTimeout) . "
+        AND lastview > " . (time() - $iWhitelistTimeout);
 $db->query($sql);
 
 $aWhitelist = array();
