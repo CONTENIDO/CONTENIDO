@@ -1,10 +1,7 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * Defines the Layout related functions
+ * Project: CONTENIDO Content Management System
+ * Description: Defines the Layout related functions
  *
  * @package CONTENIDO Backend Includes
  * @version 1.3.2
@@ -32,9 +29,8 @@ cInclude('classes', 'class.layout.handler.php');
  * @param string $description Description of the Layout
  * @param string $code Layout HTML Code
  * @return int $idlay Id of the new or edited Layout
- *
- * @author Olaf Niemann <olaf.niemann@4fb.de>
- *         @copryright four for business AG <www.4fb.de>
+ * @author Olaf Niemann <olaf.niemann@4fb.de> @copryright four for business AG
+ *         <www.4fb.de>
  */
 function layEditLayout($idlay, $name, $description, $code) {
     global $client, $auth, $cfg, $sess, $lang, $area_tree, $perm, $cfgClient;
@@ -160,12 +156,14 @@ function layDeleteLayout($idlay) {
         // layout is still in use, you cannot delete it
         return '0301';
     } else {
+
         // delete the layout in file system
         $layoutInFile = new cLayoutHandler($idlay, '', $cfg, 1);
         if ($layoutInFile->eraseLayout()) {
-            if(is_dir($cfgClient[$client]['version']['path']."layout/".$idlay)) {
-                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path']."layout/".$layout);
+            if (cFileHandler::exists($cfgClient[$client]['version']['path'] . "layout" . DIRECTORY_SEPERATOR . $idlay)) {
+                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "layout" . DIRECTORY_SEPERATOR . $layout);
             }
+
             // delete layout in database
             $layoutCollection = new cApiLayoutCollection();
             $layoutCollection->delete($idlay);
