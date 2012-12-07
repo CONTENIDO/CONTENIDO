@@ -120,7 +120,7 @@ if ($action == 'js_delete') {
                  }
                  </script>";
         // if ($bEdit) {
-        $page->displayInfo(i18n('Crated new JS-File successfully!'));
+        $page->displayInfo(i18n('Created new JS-File successfully!'));
         // }
     }
 
