@@ -22,13 +22,13 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 $plugin_name = "linkchecker";
-global $cfg;
+$cfg = cRegistry::getConfig();
 
 if (!$perm->have_perm_area_action($plugin_name, $plugin_name) && $cronjob != true) {
     exit();
 }
 
-if ((int) $client == 0 && $cronjob != true) {
+if (cRegistry::getClientId() == 0 && $cronjob != true) {
     $notification->displayNotification("error", i18n("No Client selected"));
     exit();
 }
@@ -63,7 +63,7 @@ $aUrl = array(
 // Template- and languagevars
 if ($cronjob != true) {
     $tpl->set('s', 'FULLHTML', $aUrl['contenido']);
-    $tpl->set('s', 'MODE', intval($_GET['mode']));
+    $tpl->set('s', 'MODE', cSecurity::toInteger($_GET['mode']));
     $tpl->set('s', 'URL', $aUrl['contenido']);
     $tpl->set('s', 'SID', $sess->id);
 }
@@ -80,7 +80,7 @@ $tpl->set('s', 'INTERNS_EXTERNS_HREF', $sLink . '3');
 $tpl->set('s', 'INTERNS_EXTERNS_LABEL', i18n("Intern/extern Links", $plugin_name));
 
 // Fill Subnav III
-$tpl->set('s', 'UPDATE_HREF', $sLink . intval($_GET['mode']) . '&live=1');
+$tpl->set('s', 'UPDATE_HREF', $sLink . cSecurity::toInteger($_GET['mode']) . '&live=1');
 
 // Cache options
 $aCacheName = array(
@@ -172,7 +172,7 @@ while ($db->next_record()) {
 
 /* Get all links */
 // Cache errors
-$sCache_errors = $oCache->get($aCacheName['errors'], intval($_GET['mode']));
+$sCache_errors = $oCache->get($aCacheName['errors'], cSecurity::toInteger($_GET['mode']));
 
 // Search if cache doesn't exist or we're in live mode
 if ($sCache_errors && $_GET['live'] != 1) {
@@ -266,7 +266,7 @@ if ($cronjob != true) {
 if (empty($aErrors) && $cronjob != true) {
 
     // Remove older cache
-    $oCache->remove($aCacheName['errors'], intval($_GET['mode']));
+    $oCache->remove($aCacheName['errors'], cSecurity::toInteger($_GET['mode']));
 
     $tpl->set('s', 'NO_ERRORS', i18n("<strong>No errors</strong> were found.", $plugin_name));
     $tpl->generate($cfg['templates']['linkchecker_noerrors']);
@@ -339,21 +339,20 @@ if (empty($aErrors) && $cronjob != true) {
     }
 
     /* Counter */
-    if ($iCounter = $oCache->get($aCacheName['errorscount'], intval($_GET['mode']))) { // Cache
-                                                                                       // exists?
-        $iErrors_count_checked = $iCounter;
+    if ($iCounter = $oCache->get($aCacheName['errorscount'], cSecurity::toInteger($_GET['mode']))) { // Cache exists?
+        $iErrorsCountChecked = $iCounter;
     } else { // Count searched links: idarts + idcats + idcatarts + others
-        $iErrors_count_checked = count($aSearchIDInfosArt) + count($aSearchIDInfosCat) + count($aSearchIDInfosCatArt) + count($aSearchIDInfosNonID);
+        $iErrorsCountChecked = count($aSearchIDInfosArt) + count($aSearchIDInfosCat) + count($aSearchIDInfosCatArt) + count($aSearchIDInfosNonID);
     }
 
     // Count errors
     foreach ($aErrors as $sKey => $aRow) {
-        $iErrors_counted += count($aErrors[$sKey]);
+        $iErrorsCounted += count($aErrors[$sKey]);
     }
 
-    $tpl->set('s', 'ERRORS_COUNT_CHECKED', $iErrors_count_checked);
-    $tpl->set('s', 'ERRORS_COUNT_ERRORS', $iErrors_counted);
-    $tpl->set('s', 'ERRORS_COUNT_ERRORS_PERCENT', round(($iErrors_counted * 100) / $iErrors_count_checked, 2));
+    $tpl->set('s', 'ERRORS_COUNT_CHECKED', $iErrorsCountChecked);
+    $tpl->set('s', 'ERRORS_COUNT_ERRORS', $iErrorsCounted);
+    $tpl->set('s', 'ERRORS_COUNT_ERRORS_PERCENT', round(($iErrorsCounted * 100) / $iErrorsCountChecked, 2));
 
     /* Template output */
     foreach ($aError_output as $sKey => $sValue) {
@@ -376,16 +375,16 @@ if (empty($aErrors) && $cronjob != true) {
 
     /* Cache */
     // Remove older cache
-    $oCache->remove($aCacheName['errors'], intval($_GET['mode']));
+    $oCache->remove($aCacheName['errors'], cSecurity::toInteger($_GET['mode']));
 
     // Build new cache
-    $oCache->save(serialize($aErrors), $aCacheName['errors'], intval($_GET['mode']));
-    $oCache->save($iErrors_count_checked, $aCacheName['errorscount'], intval($_GET['mode']));
+    $oCache->save(serialize($aErrors), $aCacheName['errors'], cSecurity::toInteger($_GET['mode']));
+    $oCache->save($iErrorsCountChecked, $aCacheName['errorscount'], cSecurity::toInteger($_GET['mode']));
 }
 
 // Log
 if ($cronjob != true) {
-    $backend->log(0, 0, $client, $lang, $action);
+    $backend->log(0, 0, cRegistry::getClientId(), cRegistry::getLanguageId(), $action);
 }
 
 ?>
