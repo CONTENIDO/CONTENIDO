@@ -156,8 +156,11 @@ $sql = "SELECT lastmodified FROM " . $cfg['tab']['content'] . " content
 
 /* Whitelist: Add */
 if (!empty($_GET['whitelist'])) {
+
     $sql = "REPLACE INTO " . $cfg['tab']['whitelist'] . " VALUES ('" . cSecurity::escapeDB(base64_decode($_GET['whitelist']), $db) . "', '" . time() . "')";
     $db->query($sql);
+
+    $oCache->remove($aCacheName['errors'], cSecurity::toInteger($_GET['mode']));
 }
 
 /* Whitelist: Get */
@@ -339,7 +342,8 @@ if (empty($aErrors) && $cronjob != true) {
     }
 
     /* Counter */
-    if ($iCounter = $oCache->get($aCacheName['errorscount'], cSecurity::toInteger($_GET['mode']))) { // Cache exists?
+    if ($iCounter = $oCache->get($aCacheName['errorscount'], cSecurity::toInteger($_GET['mode']))) { // Cache
+                                                                                                     // exists?
         $iErrorsCountChecked = $iCounter;
     } else { // Count searched links: idarts + idcats + idcatarts + others
         $iErrorsCountChecked = count($aSearchIDInfosArt) + count($aSearchIDInfosCat) + count($aSearchIDInfosCatArt) + count($aSearchIDInfosNonID);
