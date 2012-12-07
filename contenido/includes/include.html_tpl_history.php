@@ -1,12 +1,8 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * Style History.
- * We use super class Version to create a new Version. To read the xml File, we
- * use SimpleXml.
+ * Project: CONTENIDO Content Management System
+ * Description: Style History. We use super class Version to create a new
+ * Version. To read the xml File, we use SimpleXml.
  *
  * @author Bilal Arslan, Timo Trautmann
  * @copyright four for business AG <www.4fb.de>
@@ -51,7 +47,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
 
     $sTypeContent = 'templates';
 
-    // Get File Informataion from DB
+    // Get File Information from DB
     $fileInfoCollection = new cApiFileInformationCollection();
     $aFileInfo = $fileInfoCollection->getFileInformation($sFileName, $sTypeContent);
 
@@ -62,7 +58,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
         unset($oVersionHtmlTemp);
     }
     if ($_POST['html_tpl_send'] == true && $_POST['html_tpl_code'] != '' && $sFileName != '' && $aFileInfo['idsfi'] != '') { // save
-                                                                                                                           // button
+                                                                                                                             // button
         $oVersionHtmlTemp = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
         // Get Post variables
@@ -104,7 +100,8 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
     }
 
     if ($sFileName != '' && $aFileInfo['idsfi'] != '' && $_POST['action'] != 'history_truncate') {
-        $oVersionHtmlTemp = new cVersionFile($aFileInfo['idsfi'], $aFileInfo['description'], $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+
+        $oVersionHtmlTemp = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
         // Init Form variables of SelectBox
         $sSelectBox = '';
