@@ -451,7 +451,7 @@ class PimPluginSetup {
         if ($page instanceof cGuiPage && !cFileHandler::exists($folderpath)) {
             $page->displayInfo(i18n('The pluginfolder <strong>', 'pim') . $foldername . i18n('</strong> has been successfully uninstalled.', 'pim'));
         } else if (cFileHandler::exists($folderpath)) {
-            $page->displayError(i18n('The pluginfolder <strong>', 'pim') . $foldername . i18n('</strong> can not be uninstalled.', 'pim'));
+            $page->displayError(i18n('The pluginfolder <strong>', 'pim') . $foldername . i18n('</strong> could not be uninstalled.', 'pim'));
         }
     }
 
