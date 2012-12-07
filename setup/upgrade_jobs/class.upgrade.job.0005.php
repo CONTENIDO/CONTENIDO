@@ -74,7 +74,15 @@ EOT;
             $contentCollection->query();
             while (($item = $contentCollection->next()) !== false) {
                 $oldFilelistVal = $item->get('value');
+                // skip CMS_FILELISTs w/ empty values
+                if (0 === strlen(trim($oldFilelistVal))) {
+                    continue;
+                }
                 $oldFilelistArray = cXmlBase::xmlStringToArray($oldFilelistVal);
+                // skip empty filelist array
+                if (true === empty($oldFilelistArray)) {
+                    continue;
+                }
                 // convert the whole entries
                 if (isset($oldFilelistArray['directories']['dir'])) {
                     $oldFilelistArray['directories'] = $oldFilelistArray['directories']['dir'];
