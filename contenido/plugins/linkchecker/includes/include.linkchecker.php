@@ -49,7 +49,6 @@ plugin_include('linkchecker', 'includes/include.checkperms.php');
 plugin_include('linkchecker', 'includes/include.linkchecker_tests.php');
 
 // Initialization
-$actionID = 500;
 $aCats = array();
 $aSearchIDInfosArt = array();
 $aSearchIDInfosCatArt = array();
