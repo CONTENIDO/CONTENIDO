@@ -35,7 +35,10 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
     }
 
     /**
-     * Initial update jobs
+     * Initial update jobs.
+     *
+     * NOTE: Don't spam this function with additional upgrade tasks.
+     *       Create a new upgrated job file and implement the execute() method!
      */
     protected function _executeInitialJobs() {
         global $cfg;
@@ -49,7 +52,39 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
         $this->_oDb->query('DELETE FROM %s', $cfg['tab']['code']);
         $this->_oDb->query('UPDATE %s SET createcode = 1', $cfg['tab']['cat_art']);
 
-        // @fixme What job is this???
+        // Convert old category start articles to new format, we don't support
+        $this->_jobConvertOldStartArticlesToNewOne();
+
+        // Update Keys
+        $aNothing = array();
+        injectSQL($this->_oDb, $cfg['sql']['sqlprefix'], 'data/indexes.sql', array(), $aNothing);
+
+        // Update to autoincrement
+        addAutoIncrementToTables($this->_oDb, $cfg);
+
+        // Insert or update default system properties
+        updateSystemProperties($this->_oDb, $cfg['tab']['system_prop']);
+
+        // Renames table 'phplib_auth_user_md5' to 'user'
+        $this->_renameOldUserTableToNewOne();
+    }
+
+    /**
+     * Function to convert old start article configuration to new style.
+     *
+     * In former CONTENIDO versions (4.6 or earlier) start articles were
+     * stored in table con_cat_art.is_start.
+     * Since 4.6 start articles are stored con_cat_lang.startidartlang.
+     *
+     * This function takes the start articles from con_cat_art.is_start and
+     * sets them in con_cat_lang.startidartlang for all available languages.
+     * @todo Move this to an upgrade job
+     */
+    protected function _jobConvertOldStartArticlesToNewOne() {
+        global $cfg;
+
+        // Convert old category start articles to new format, we don't support
+        // the configuration '$cfg["is_start_compatible"] = true;'
         if ($this->_setupType == 'upgrade') {
             $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " WHERE is_start = 1";
             $this->_oDb->query($sql);
@@ -75,35 +110,32 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
             $sql = "UPDATE " . $cfg["tab"]["cat_art"] . " SET is_start = 0";
             $this->_oDb->query($sql);
         }
+    }
 
-        // Update Keys
-        $aNothing = array();
-        injectSQL($this->_oDb, $cfg['sql']['sqlprefix'], 'data/indexes.sql', array(), $aNothing);
+    /**
+     * Renames table 'phplib_auth_user_md5' to 'user'
+     */
+    protected function _renameOldUserTableToNewOne() {
+        global $cfg;
 
-        // Update to autoincrement
-        addAutoIncrementToTables($this->_oDb, $cfg);
-
-        // Insert or update default system properties
-        updateSystemProperties($this->_oDb, $cfg['tab']['system_prop']);
-
-        $this->_oDb->query('SHOW TABLES LIKE "%s"', $cfg["sql"]["sqlprefix"] . "_phplib_auth_user_md5");
+        $this->_oDb->query('SHOW TABLES LIKE "%s"', $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5');
         $oldTable = $this->_oDb->nextRecord();
 
-        $this->_oDb->query('SHOW TABLES LIKE "%s"', $cfg["sql"]["sqlprefix"] . "_user");
+        $this->_oDb->query('SHOW TABLES LIKE "%s"', $cfg['sql']['sqlprefix'] . '_user');
         $newTable = $this->_oDb->nextRecord();
 
         if ($oldTable === true) {
             if ($newTable === false) {
-                //only the old table exists. Rename it.
-                $this->_oDb->query("RENAME TABLE ".$cfg["sql"]["sqlprefix"]."_phplib_auth_user_md5 TO ".$cfg["sql"]["sqlprefix"]."_user");
+                // Only the old table exists. Rename it.
+                $this->_oDb->query('RENAME TABLE ' . $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5 TO ' . $cfg['sql']['sqlprefix'] . '_user');
             } else {
-                //the new and the old table exists. We trust the old table more since the new one should've been deleted by the setup. Drop the new one and rename the old one
-                $this->_oDb->query("DROP TABLE ".$cfg["sql"]["sqlprefix"]."_user");
-                $this->_oDb->query("RENAME TABLE ".$cfg["sql"]["sqlprefix"]."_phplib_auth_user_md5 TO ".$cfg["sql"]["sqlprefix"]."_user");
+                // The new and the old table exists. We trust the old table more since the new one should've been deleted by the setup. Drop the new one and rename the old one
+                $this->_oDb->query('DROP TABLE ' . $cfg['sql']['sqlprefix'] . '_user');
+                $this->_oDb->query('RENAME TABLE ' . $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5 TO ' . $cfg['sql']['sqlprefix'] . '_user');
             }
         }
 
-        // convert passwords to salted ones
+        // Convert passwords to salted ones
         addSalts($this->_oDb);
     }
 
