@@ -79,6 +79,26 @@ function getContentWindow() {
 }
 
 /**
+ * Returns an URLs params as array.
+ * 
+ * @param url to determine params from
+ * @returns array
+ */
+function getUrlParams(url) {
+	var params = [];
+	var parts = url.split('?');
+	if (0 < parts.length) {
+		var queryString = parts[1];
+		var queryString = queryString.split('&');
+		for (var i in queryString) {
+			var query = queryString[i].split('=');
+			params[query[0]] = query[1];
+		}
+	}
+	return params;
+}
+
+/**
  * Loads the translations from the server once and just returns them if they
  * have already been loaded.
  *
@@ -88,14 +108,19 @@ function getTranslations() {
     var registry = getRegistry();
     // if the translations have not been loaded yet, do it now
     if (typeof registry.get('translations') === 'undefined') {
+    	// get param 'contenido' 
+    	var params = getUrlParams(window.location.search);
         $.ajax({
             async : false,
-            data : 'ajax=generaljstranslations',
+            url : 'ajaxmain.php',
+            data : 'ajax=generaljstranslations&contenido=' + params['contenido'],
             dataType : 'json',
             success : function(data) {
                 registry.set('translations', data);
             },
-            url : 'ajaxmain.php'
+            error: function(data) {
+            	alert('could not get translations');
+            }
         });
     }
 
