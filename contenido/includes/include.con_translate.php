@@ -352,7 +352,7 @@ if (is_array($allLanguages)) {
 							B.idclient = '" . cSecurity::toInteger($client) . "'
 									ORDER BY A.idlang";
 
-    $db->query($sSQL);
+    $db->query($sql);
 
     $langNames = array();
     while ($db->next_record()) {
