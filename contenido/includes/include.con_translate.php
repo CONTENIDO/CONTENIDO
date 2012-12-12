@@ -12,7 +12,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Ingo van Peeren
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -197,9 +197,17 @@ if ($action == 'con_translate_save') {
                 foreach ($stringtranslations as $idlang => $modlangtranslation) {
                     $contenidoTranslateFromFile = new cModuleFileTranslation($idmod, false, $idlang);
                     $fileTranslations = $contenidoTranslateFromFile->getTranslationArray();
+                    var_dump($fileTranslations);
+                    
+                    // get hashes for array keys
+                    $fileTranslationsHashes = array();
+                    foreach ($fileTranslations as $key => $value) {
+                        $fileTranslationsHashes[md5($key)] = $key;
+                    }
 
                     $hashparts = explode('_', $hash);
-                    $fileTranslations[stripslashes(base64_decode($hashparts[1]))] = stripslashes($modlangtranslation);
+                    $translationKey = $fileTranslationsHashes[$hashparts[1]];
+                    $fileTranslations[stripslashes($translationKey)] = stripslashes($modlangtranslation);
                     $thislangerror = $contenidoTranslateFromFile->saveTranslationArray($fileTranslations);
                     if (!$thislangerror) {
                         $error = true;
@@ -217,7 +225,7 @@ if ($action == 'con_translate_save') {
 }
 
 // Get all modules and translations for current client
-$sql = sprintf("SELECT idmod, name FROM %s WHERE idclient = %s", $cfg['tab']['mod'], $client);
+$sql = sprintf("SELECT idmod, name FROM %s WHERE idclient = %s ORDER BY name", $cfg['tab']['mod'], $client);
 $db->query($sql);
 
 $allModules = array();
@@ -238,7 +246,7 @@ while ($db->next_record()) {
         $fileTranslations = $contenidoTranslateFromFile->getTranslationArray();
         $translations = array();
         foreach ($fileTranslations as $key => $value) {
-            $hash = $idmod . '_' . base64_encode($key);
+            $hash = $idmod . '_' . md5($key);
             $translations[$hash] = $value;
         }
 
@@ -246,7 +254,7 @@ while ($db->next_record()) {
 
         // Insert new strings
         foreach ($strings as $string) {
-            $hash = $idmod . '_' . base64_encode($string);
+            $hash = $idmod . '_' . md5($string);
             if (isset($translations[$hash])) {
                 $currentTranslation = $translations[$hash];
             } else {
@@ -344,13 +352,13 @@ if (is_array($allLanguages)) {
     $selectExtraLangs = new cHTMLSelectElement('extralang[]', 30, 'newlang');
 
     $sql = "SELECT A.name AS name, A.idlang AS idlang, B.idclientslang AS idclientslang
-			FROM
-			" . $cfg["tab"]["lang"] . " AS A,
-					" . $cfg["tab"]["clients_lang"] . " AS B
-							WHERE
-							A.idlang = B.idlang AND
-							B.idclient = '" . cSecurity::toInteger($client) . "'
-									ORDER BY A.idlang";
+            FROM
+            " . $cfg["tab"]["lang"] . " AS A,
+                    " . $cfg["tab"]["clients_lang"] . " AS B
+                            WHERE
+                            A.idlang = B.idlang AND
+                            B.idclient = '" . cSecurity::toInteger($client) . "'
+                                    ORDER BY A.idlang";
 
     $db->query($sql);
 
@@ -472,6 +480,7 @@ $list->objRow->updateAttributes(array('valign' => 'top'));
 
 $submit = ' <input type="image" style="vertical-align:top;" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif">';
 $counter = 1;
+
 foreach ($allTranslations as $hash => $translationArray) {
     if (!$inUse && $perm->have_perm_area_action($area, 'con_translate_edit') && $action == 'con_translate_edit' && ($editstring == 'all' || $editstring == $hash) && ($editlang == 'all' || $editlang == $lang)) {
         $oTranslation = new cHTMLTextarea('modtrans[' . $translationArray['idmod'] . '][' . $hash . '][' . $lang . ']', $translationArray['translations'][$lang]);
