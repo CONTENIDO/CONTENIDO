@@ -20,6 +20,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude('includes', 'functions.rights.php');
+
 if (!isset($actionarea)) {
     $actionarea = 'area';
 }
