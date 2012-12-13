@@ -197,7 +197,6 @@ if ($action == 'con_translate_save') {
                 foreach ($stringtranslations as $idlang => $modlangtranslation) {
                     $contenidoTranslateFromFile = new cModuleFileTranslation($idmod, false, $idlang);
                     $fileTranslations = $contenidoTranslateFromFile->getTranslationArray();
-                    var_dump($fileTranslations);
                     
                     // get hashes for array keys
                     $fileTranslationsHashes = array();
