@@ -78,6 +78,42 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
 
         $this->objItem->setClass($sClass);
     }
+    
+    /**
+     * Sorts the list by a given field and a given order.
+     *
+     * @param $field    Field index
+     * @param $order    Sort order (see php's sort documentation)
+     */
+    public function sort($field, $order) {
+        if ($order == "") {
+            $order = SORT_ASC;
+        }
+
+        if ($order == "ASC") {
+            $order = SORT_ASC;
+        }
+
+        if ($order == "DESC") {
+            $order = SORT_DESC;
+        }
+
+        $this->sortkey = $field;
+        $this->sortmode = $order;
+        
+        $field = $field + 1;
+        
+        if ($field > 3) {
+            $sortby = array();
+            foreach ($this->data as $row => $cols) {
+                $sortby[$row] = trim(strtolower(strip_tags($cols[$field])));
+            }
+            $this->data = cArray::csort($this->data, $sortby, $order);
+        } else {            
+            $this->data = cArray::csort($this->data, "$field", $order);
+        }
+
+    }
 
 }
 
