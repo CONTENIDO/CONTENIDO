@@ -12,7 +12,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Ingo van Peeren
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -334,6 +334,7 @@ unset($fileTranslations);
 unset($translations);
 
 // Form for adding languages
+$formExtraLangsString = '';
 if (is_array($allLanguages)) {
 
     $formExtraLangs = new cHTMLForm('extralangs');
@@ -351,18 +352,20 @@ if (is_array($allLanguages)) {
     $labelExtraLangs = new cHTMLLabel(i18n("New language") . ':', 'newlang');
     $selectExtraLangs = new cHTMLSelectElement('extralang[]', 30, 'newlang');
 
-    $sql = "SELECT A.name AS name, A.idlang AS idlang, B.idclientslang AS idclientslang
+    $sql = "SELECT
+              A.name AS name, A.idlang AS idlang, B.idclientslang AS idclientslang
             FROM
-            " . $cfg["tab"]["lang"] . " AS A,
-                    " . $cfg["tab"]["clients_lang"] . " AS B
-                            WHERE
-                            A.idlang = B.idlang AND
-                            B.idclient = '" . cSecurity::toInteger($client) . "'
-                                    ORDER BY A.idlang";
+              " . $cfg["tab"]["lang"] . " AS A,
+              " . $cfg["tab"]["clients_lang"] . " AS B
+            WHERE
+              A.idlang = B.idlang AND
+              B.idclient = '" . cSecurity::toInteger($client) . "'
+            ORDER BY A.idlang";
 
     $db->query($sql);
 
     $langNames = array();
+    $countExtraLangOptions = 0;
     while ($db->next_record()) {
         $idlang = $db->f("idlang");
         $langString = $db->f("name") . " (" . $db->f("idlang") . ")";
@@ -370,16 +373,15 @@ if (is_array($allLanguages)) {
         if (!in_array($idlang, $allLanguages)) {
             $option = new cHTMLOptionElement($langString, $idlang);
             $selectExtraLangs->addOptionElement($idlang, $option);
+            $countExtraLangOptions++;
         }
     }
     $submitExtraLangs = new cHTMLButton('newlangsubmit', i18n("Add"), 'newlangsubmit', false, null, '', 'image');
     $submitExtraLangs->setImageSource($cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_art_new.gif');
 
     $formExtraLangs->setContent($labelExtraLangs->render() . $selectExtraLangs->render() . $submitExtraLangs->render());
-    if (count($langNames) > 0) {
+    if ($countExtraLangOptions > 0) {
         $formExtraLangsString = $formExtraLangs->render();
-    } else {
-        $formExtraLangsString = '';
     }
 }
 
