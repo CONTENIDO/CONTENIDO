@@ -12,7 +12,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Ingo van Peeren
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -229,19 +229,22 @@ if ($action == 'con_translate_save') {
     $savetranslations = $_REQUEST["modtrans"];
     if (is_array($savetranslations)) {
         foreach ($savetranslations as $idmod => $savemodtranslations) {
+            
+            // get translation keywords from module
+            $module = new cApiModule($idmod);
+            $moduleKeywords = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);            
+            $moduleKeywordsHashes = array();
+            foreach ($moduleKeywords as $keyword) {
+                $moduleKeywordsHashes[md5($keyword)] = $keyword;
+            }
+            
             foreach ($savemodtranslations as $hash => $stringtranslations) {
                 foreach ($stringtranslations as $idlang => $modlangtranslation) {
                     $contenidoTranslateFromFile = new cModuleFileTranslation($idmod, false, $idlang);
                     $fileTranslations = $contenidoTranslateFromFile->getTranslationArray();
-                    
-                    // get hashes for array keys
-                    $fileTranslationsHashes = array();
-                    foreach ($fileTranslations as $key => $value) {
-                        $fileTranslationsHashes[md5($key)] = $key;
-                    }
 
                     $hashparts = explode('_', $hash);
-                    $translationKey = $fileTranslationsHashes[$hashparts[1]];
+                    $translationKey = $moduleKeywordsHashes[$hashparts[1]];
                     $fileTranslations[stripslashes($translationKey)] = stripslashes($modlangtranslation);
                     $thislangerror = $contenidoTranslateFromFile->saveTranslationArray($fileTranslations);
                     if (!$thislangerror) {
