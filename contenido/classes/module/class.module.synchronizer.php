@@ -121,6 +121,8 @@ class cModuleSynchronizer extends cModuleHandler {
     public function compareFileAndModulTimestamp() {
         global $cfg, $cfgClient;
 
+        $synchLock = 0;
+
         $sql = sprintf('SELECT UNIX_TIMESTAMP(mod1.lastmodified) AS lastmodified,mod1.idclient,description,type, mod1.name, mod1.alias, mod1.idmod FROM %s AS mod1 WHERE mod1.idclient = %s', $this->_cfg['tab']['mod'], $this->_client);
         $notification = new cGuiNotification();
 
@@ -147,6 +149,7 @@ class cModuleSynchronizer extends cModuleHandler {
                 // use output
                 if ($lastmodified < $lastmodOutput) {
                     // update
+                    $synchLock = 1;
                     $this->setLastModified($lastmodOutput, $db->f('idmod'));
                     conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
                     $notification->displayNotification('info', sprintf(i18n('Module %s successfull synchronized'), $db->f('name')));
@@ -155,6 +158,7 @@ class cModuleSynchronizer extends cModuleHandler {
                 // use input
                 if ($lastmodified < $lastmodInput) {
                     // update
+                    $synchLock = 1;
                     $this->setLastModified($lastmodInput, $db->f('idmod'));
                     conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
                     $notification->displayNotification('info', sprintf(i18n('Module %s successfull synchronized'), $db->f('name')));
@@ -164,6 +168,10 @@ class cModuleSynchronizer extends cModuleHandler {
             if (($idmod = $this->_synchronizeFilesystemAndDb($db)) != 0) {
                 $retIdMod = $idmod;
             }
+        }
+
+        if($synchLock == 0) {
+            $notification->displayNotification('info', 'All modules already synchronized');
         }
 
         // we need it for the update of moduls on the left site (module/backend)

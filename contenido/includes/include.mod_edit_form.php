@@ -429,8 +429,9 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
         $page->addScript($oCodeMirrorInput->renderScript() . $oCodeMirrorOutput->renderScript());
 
-        //dont print meneu
+        //dont print menu
         if ($action == "mod_sync") {
+            $page->set("s", "FORM", "");
             $page->setSubnav("idmod=" . $idmod . "&dont_print_subnav=1");
         } else {
             $page->setSubnav("idmod=" . $idmod, "mod");
