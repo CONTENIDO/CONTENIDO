@@ -55,7 +55,7 @@ function hide(id) {
  *
  * @param    {Integer}  idlang
  */
-function changeContenidoLanguage(idlang) {
+function changeContenidoLanguage(idlang) {	
     if (top.content.left) {
         if (top.content.left.left_top) {
              top.content.left.left_top.location.href = replaceQueryString(top.content.left.left_top.location.href, 'changelang', idlang);
@@ -83,6 +83,14 @@ function changeContenidoLanguage(idlang) {
         }
     }
 
+    if(top.content.right_bottom) {
+		var href = replaceQueryString(top.content.right_bottom.location.href, 'action', '');
+        href = replaceQueryString(href, 'changelang', idlang);
+        href = replaceQueryString(href, 'frame', 4);
+        href = replaceQueryString(href, 'menuless', 1);
+        top.content.right_bottom.location.href = href;
+	}
+    
     top.header.location.href = replaceQueryString(top.header.location.href, 'changelang', idlang);
 }
 
