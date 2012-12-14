@@ -191,7 +191,7 @@ class cModuleSearch extends cModuleHandler {
             if ($this->_elementPerPage * ($this->_page) >= count($this->_result) + $this->_elementPerPage && $this->_page != 1) {
                 $this->_page--;
             }
-            return array_slice($modules, $this->_elementPerPage * ($this->_selectedPage - 1), $this->_elementPerPage);
+            return array_slice($modules, $this->_elementPerPage * ($this->_selectedPage - 1), $this->_elementPerPage, true);
         } else {
             return $modules;
         }
