@@ -46,6 +46,10 @@ cInclude('includes', 'functions.forms.php');
 $db = cRegistry::getDb();
 
 $iUserId = $auth->auth['uid'];
+
+$oInUse = new cApiInUseCollection();
+$oInUse->removeUserMarks($iUserId);
+
 $oActiveUser = new cApiOnlineUserCollection();
 $oActiveUser->deleteUser($iUserId);
 
