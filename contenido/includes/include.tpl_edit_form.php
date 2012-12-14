@@ -1,7 +1,6 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System
- * Description: Template edit form
+ * Project: CONTENIDO Content Management System Description: Template edit form
  * Requirements: @con_php_req 5.0
  *
  *
@@ -246,11 +245,9 @@ $href = $sess->url("main.php?area=tpl&frame=2&idtpl=" . $idtpl);
 $page->setReload();
 $page->setSubnav("idtpl=$idtpl", "tpl");
 
-// if ($action != "tpl_duplicate") {
 $page->setContent(array(
         $form
 ));
-// }
 
 if ($_POST["idtpl"] === "" && $idtpl > 0) {
     $page->displayInfo(i18n("Created new Template successfully!"));
