@@ -1,12 +1,7 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * This class search for modules (input, output,type,description, name )
- *
- * Requirements:
+ * Project: CONTENIDO Content Management System Description: This class search
+ * for modules (input, output,type,description, name ) Requirements:
  * @con_php_req 5.0
  *
  *
@@ -18,7 +13,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  * @since file available since CONTENIDO release >= 4.9
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -156,21 +150,21 @@ class cModuleSearch extends cModuleHandler {
                 if ($this->_findInFiles($this->_filter, $modul) == true) {
                     $this->initWithDatabaseRow($db);
                     $result[$db->f('idmod')] = array(
-                        'name' => $db->f('name'),
-                        'description' => $db->f('description'),
-                        'error' => $db->f('error'),
-                        'input' => $this->readInput(),
-                        'output' => $this->readOutput()
+                            'name' => $db->f('name'),
+                            'description' => $db->f('description'),
+                            'error' => $db->f('error'),
+                            'input' => $this->readInput(),
+                            'output' => $this->readOutput()
                     );
                 }
             } else {
                 $this->initWithDatabaseRow($db);
                 $result[$db->f('idmod')] = array(
-                    'name' => $db->f('name'),
-                    'description' => $db->f('description'),
-                    'error' => $db->f('error'),
-                    'input' => $this->readInput(),
-                    'output' => $this->readOutput()
+                        'name' => $db->f('name'),
+                        'description' => $db->f('description'),
+                        'error' => $db->f('error'),
+                        'input' => $this->readInput(),
+                        'output' => $this->readOutput()
                 );
             }
         }
@@ -195,8 +189,8 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Main method for the class.
-     * Search for modules in db and in input and outputs files.
+     * Main method for the class. Search for modules in db and in input and
+     * outputs files.
      *
      * @return array result
      */
@@ -259,11 +253,11 @@ class cModuleSearch extends cModuleHandler {
         while (($module = $db->next_record()) !== false) {
             $this->initWithDatabaseRow($db);
             $result[$db->f('idmod')] = array(
-                'name' => $db->f('name'),
-                'description' => $db->f('description'),
-                'error' => $db->f('error'),
-                'input' => $this->readInput(),
-                'output' => $this->readOutput()
+                    'name' => $db->f('name'),
+                    'description' => $db->f('description'),
+                    'error' => $db->f('error'),
+                    'input' => $this->readInput(),
+                    'output' => $this->readOutput()
             );
         }
         return $result;
@@ -279,8 +273,8 @@ class cModuleSearch extends cModuleHandler {
         $idClient = $client;
 
         $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
-                            type LIKE '%s' )
-                            ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, $this->_orderBy, $this->_sortOrder);
+                            type LIKE '%s' AND input LIKE '%s')
+                            ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
 
         $db = cRegistry::getDb();
         $db->query($sql);
@@ -288,16 +282,13 @@ class cModuleSearch extends cModuleHandler {
 
         while (($module = $db->next_record()) !== false) {
             $this->initWithDatabaseRow($db);
-
-            if (stripos($this->readInput(), $this->_filter) !== false) {
-                $result[$db->f('idmod')] = array(
+            $result[$db->f('idmod')] = array(
                     'name' => $db->f('name'),
                     'description' => $db->f('description'),
                     'error' => $db->f('error'),
                     'input' => $this->readInput(),
                     'output' => $this->readOutput()
-                );
-            }
+            );
         }
         return $result;
     }
@@ -312,8 +303,8 @@ class cModuleSearch extends cModuleHandler {
         $idClient = $client;
 
         $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
-                            type LIKE '%s' )
-                            ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, $this->_orderBy, $this->_sortOrder);
+                            type LIKE '%s' AND output LIKE '%s' )
+                            ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
 
         $db = cRegistry::getDb();
         $db->query($sql);
@@ -321,16 +312,13 @@ class cModuleSearch extends cModuleHandler {
 
         while (($module = $db->next_record()) !== false) {
             $this->initWithDatabaseRow($db);
-
-            if (stripos($this->readOutput(), $this->_filter) !== false) {
-                $result[$db->f('idmod')] = array(
+            $result[$db->f('idmod')] = array(
                     'name' => $db->f('name'),
                     'description' => $db->f('description'),
                     'error' => $db->f('error'),
                     'input' => $this->readInput(),
                     'output' => $this->readOutput()
-                );
-            }
+            );
         }
         return $result;
     }
@@ -356,11 +344,11 @@ class cModuleSearch extends cModuleHandler {
         while (($module = $db->next_record()) !== false) {
             $this->initWithDatabaseRow($db);
             $result[$db->f('idmod')] = array(
-                'name' => $db->f('name'),
-                'description' => $db->f('description'),
-                'error' => $db->f('error'),
-                'input' => $this->readInput(),
-                'output' => $this->readOutput()
+                    'name' => $db->f('name'),
+                    'description' => $db->f('description'),
+                    'error' => $db->f('error'),
+                    'input' => $this->readInput(),
+                    'output' => $this->readOutput()
             );
         }
 
@@ -388,20 +376,23 @@ class cModuleSearch extends cModuleHandler {
         while (($module = $db->next_record()) !== false) {
             $this->initWithDatabaseRow($db);
             $result[$db->f('idmod')] = array(
-                'name' => $db->f('name'),
-                'description' => $db->f('description'),
-                'error' => $db->f('error'),
-                'input' => $this->readInput(),
-                'output' => $this->readOutput()
+                    'name' => $db->f('name'),
+                    'description' => $db->f('description'),
+                    'error' => $db->f('error'),
+                    'input' => $this->readInput(),
+                    'output' => $this->readOutput()
             );
         }
         return $result;
     }
 
 }
-
 class Contenido_Module_Search extends cModuleSearch {
-    /** @deprecated [2012-07-24] class was renamed to cModuleSearch */
+
+    /**
+     *
+     * @deprecated [2012-07-24] class was renamed to cModuleSearch
+     */
     public function __construct($searchOptions) {
         cDeprecated('Class was renamed to cModuleSearch.');
         parent::__construct($searchOptions);
