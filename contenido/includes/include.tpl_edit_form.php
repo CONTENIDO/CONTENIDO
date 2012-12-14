@@ -1,34 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * Template edit form
- *
- * Requirements:
- * @con_php_req 5.0
+ * Project: CONTENIDO Content Management System
+ * Description: Template edit form
+ * Requirements: @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.2.0
- * @author     Timo A. Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
+ * @package CONTENIDO Backend Includes
+ * @version 1.2.0
+ * @author Timo A. Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6 {@internal created
+ *        unknown $Id: include.tpl_edit_form.php 2938 2012-08-16 23:03:51Z
+ *        xmurrix $: }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-
 
 $tpl2 = new cTemplate();
 
@@ -38,7 +29,7 @@ if ($action == "tpl_delete" && $perm->have_perm_area_action_anyitem($area, $acti
     $page->displayInfo(i18n("Deleted Template succcessfully!"));
     $page->abortRendering();
     $page->render();
-    exit;
+    exit();
 }
 
 if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
@@ -46,7 +37,6 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
     $page->render();
     return;
 }
-
 
 if ($action == "tpl_new") {
     $tplname = i18n("-- New template --");
@@ -85,7 +75,7 @@ while ($db->next_record()) {
     $a_c[$db->f("number")] = $db->f("idmod");
 }
 
-//*************** List layouts ****************
+// *************** List layouts ****************
 $tpl2->set('s', 'NAME', 'idlay');
 $tpl2->set('s', 'CLASS', 'text_medium');
 $tpl2->set('s', 'OPTIONS', 'onchange="tplform.changelayout.value=1;tplform.submit();"');
@@ -144,7 +134,6 @@ while ($db->next_record()) {
     $modules[$db->f("idmod")]["type"] = $db->f("type");
 }
 
-
 $form = new cGuiTableForm("tplform");
 $form->setVar("area", $area);
 $form->setVar("changelayout", 0);
@@ -162,7 +151,6 @@ $form->add(i18n("Name"), $name->render());
 
 $descr = new cHTMLTextarea("description", $description);
 $form->add(i18n("Description"), $descr->render());
-
 
 $standardcb = new cHTMLCheckbox("vdefault", 1, "", $vdefault);
 $form->add(i18n("Default"), $standardcb->toHTML(false));
@@ -228,7 +216,8 @@ if ($idlay) {
                 foreach ($modules as $key => $val) {
                     $option = new cHTMLOptionElement($val["name"], $key);
 
-                    //if ($a_c[$value] == $key || ($a_c[$value] == 0 && $val["name"] == $default))
+                    // if ($a_c[$value] == $key || ($a_c[$value] == 0 &&
+                    // $val["name"] == $default))
                     if ($a_c[$value] == $key || (($a_c[$value] == 0 && $val["name"] == $default) && $createmode == 1)) {
                         $option->setSelected(true);
                     }
@@ -257,13 +246,15 @@ $href = $sess->url("main.php?area=tpl&frame=2&idtpl=" . $idtpl);
 $page->setReload();
 $page->setSubnav("idtpl=$idtpl", "tpl");
 
-if ($action != "tpl_duplicate") {
-    $page->setContent(array($form));
-}
+// if ($action != "tpl_duplicate") {
+$page->setContent(array(
+        $form
+));
+// }
 
 if ($_POST["idtpl"] === "" && $idtpl > 0) {
     $page->displayInfo(i18n("Created new Template successfully!"));
-} elseif (isset($_POST["submit_x"]) || ($_POST["idtpl"] == $idtpl && $action != 'tpl_new' )) {
+} elseif (isset($_POST["submit_x"]) || ($_POST["idtpl"] == $idtpl && $action != 'tpl_new')) {
     $page->displayInfo(i18n("Saved changes successfully!"));
 }
 

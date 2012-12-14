@@ -24,5 +24,5 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 cInclude('includes', 'functions.tpl.php');
-tplDuplicateTemplate($idtpl);
+$idtpl = tplDuplicateTemplate($idtpl);
 ?>
