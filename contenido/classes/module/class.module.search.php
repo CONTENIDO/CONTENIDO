@@ -126,66 +126,30 @@ class cModuleSearch extends cModuleHandler {
         global $cfg, $client;
         $idClient = $client;
 
-        $sql1 = sprintf("(SELECT *, (0) AS search_in_file FROM %s WHERE idclient = %s AND (
+        $sql = sprintf("SELECT *, (0) FROM %s WHERE idclient = %s AND (
                             type LIKE '%s'
                             AND type LIKE '%s'
                             OR description LIKE '%s'
-                            OR name LIKE '%s')) ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%');
-
-        $sql2 = sprintf("UNION (SELECT *, (1) AS search_in_file FROM %s WHERE idclient = %s AND NOT(
-                            type LIKE '%s'
-                            AND type LIKE '%s'
-                            OR description LIKE '%s'
-                            OR name LIKE '%s'))
-                            ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
+                            OR name LIKE '%s'
+                			OR input LIKE '%s'
+                			OR output LIKE '%s') ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%');
 
         $db = cRegistry::getDb();
-
-        $db->query($sql1 . $sql2);
-
+        $db->query($sql);
         $result = array();
 
         while (($modul = $db->next_record()) !== false) {
-            if ($db->f('search_in_file') == 1) {
-                if ($this->_findInFiles($this->_filter, $modul) == true) {
-                    $this->initWithDatabaseRow($db);
-                    $result[$db->f('idmod')] = array(
-                            'name' => $db->f('name'),
-                            'description' => $db->f('description'),
-                            'error' => $db->f('error'),
-                            'input' => $this->readInput(),
-                            'output' => $this->readOutput()
-                    );
-                }
-            } else {
-                $this->initWithDatabaseRow($db);
-                $result[$db->f('idmod')] = array(
-                        'name' => $db->f('name'),
-                        'description' => $db->f('description'),
-                        'error' => $db->f('error'),
-                        'input' => $this->readInput(),
-                        'output' => $this->readOutput()
-                );
-            }
+            $this->initWithDatabaseRow($db);
+            $result[$db->f('idmod')] = array(
+                    'name' => $db->f('name'),
+                    'description' => $db->f('description'),
+                    'error' => $db->f('error'),
+                    'input' => $this->readInput(),
+                    'output' => $this->readOutput()
+            );
         }
 
         return $result;
-    }
-
-    /**
-     * Search for a sting in input and output of module
-     *
-     * @param string $filter
-     * @param (db object with the row) $dbRowModule
-     * @return boolean if found in files true else false
-     */
-    private function _findInFiles($filter, $dbRowModule) {
-        $this->initWithDatabaseRow($dbRowModule);
-        if (stripos($this->readInput() . ' ' . $this->readOutput(), $filter) === false) {
-            return false;
-        } else {
-            return true;
-        }
     }
 
     /**
