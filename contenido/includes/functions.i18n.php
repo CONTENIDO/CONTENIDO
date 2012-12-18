@@ -438,6 +438,10 @@ function i18nGetAvailableLanguages() {
  * @return string the translated string
  */
 function mi18n($string) {
+	if ($string == '') {
+		return 'No module translation ID specified.';
+	}
+	
     global $cCurrentModule;
 
     // dont workd by setup/upgrade
@@ -445,8 +449,6 @@ function mi18n($string) {
     cInclude('classes', 'module/class.module.filetranslation.php');
 
     $arrArgs = func_get_args();
-    $args = func_num_args();
-
     $result = call_user_func_array('sprintf', $arrArgs);
 
     $contenidoTranslateFromFile = new cModuleFileTranslation($cCurrentModule, true);
