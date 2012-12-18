@@ -109,18 +109,18 @@ function mr_strRenameCategory(array $data) {
         // hes 20100102
         $str = 'idcat=' . $oCat->get('idcat') . ' AND idlang=' . (int) $data['lang'];
         $oCatLanColl = new cApiCategoryLanguageCollection($str);
-        $oCatLan = $oCatLanColl->next();
+        if ($oCatLan = $oCatLanColl->next()) {
+            // hes 20100102
+            $childData = array(
+                'idcat' => $oCat->get('idcat'),
+                'lang' => (int) $data['lang'],
+                'newcategoryname' => $oCatLan->get('name'),
+                'newcategoryalias' => $oCatLan->get('urlname'),
+                'recursion' => $recursion + 1
+            );
 
-        // hes 20100102
-        $childData = array(
-            'idcat' => $oCat->get('idcat'),
-            'lang' => (int) $data['lang'],
-            'newcategoryname' => $oCatLan->get('name'),
-            'newcategoryalias' => $oCatLan->get('urlname'),
-            'recursion' => $recursion + 1
-        );
-
-        $resData = mr_strRenameCategory($childData);
+            $resData = mr_strRenameCategory($childData);
+        }
     }
 
     return $data;
