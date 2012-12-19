@@ -667,6 +667,8 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $script = '';
     if ($newart) {
         $script = 'artObj.disableNavForNewArt();';
+    } else {
+        $script = 'artObj.enableNavForArt();';
     }
     if (0 != $idart && 0 != $midcat) {
         $script .= 'artObj.setProperties("' . $idart . '", "' . $idartlang . '", "' . $midcat . '", "' . $idcatlang . '", "' . $idcatart . '", "' . $lang . '");';

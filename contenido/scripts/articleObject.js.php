@@ -518,6 +518,31 @@ articleObject.prototype.disableNavForNewArt = function() {
  * @param none
  * @return void
  */
+ articleObject.prototype.enableNavForArt = function() {
+ 	var oRef = [];
+
+    oRef[0] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
+    oRef[1] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_1");
+    oRef[2] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_2");
+    oRef[3] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_3");
+    oRef[4] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_4");
+    oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_5");
+    oRef[6] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_6");
+    oRef[7] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_7");
+
+    for (var i=2; i < oRef.length; i++) {
+        links = oRef[i].getElementsByTagName("a");
+        links[0].style.visibility = "visible";
+    }
+    parent.parent.frames["right"].frames["right_top"].sub.clicked(oRef[1].getElementsByTagName('a')[0]);
+ }
+
+/**
+ * Enables the navigation
+ *
+ * @param none
+ * @return void
+ */
 articleObject.prototype.enable = function() {
     var oRef = [];
 
