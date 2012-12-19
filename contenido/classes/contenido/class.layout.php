@@ -66,6 +66,10 @@ class cApiLayoutCollection extends ItemCollection {
             $idclient = $client;
         }
 
+        if(empty($alias)) {
+            $alias = strtolower(cApiStrCleanURLCharacters(i18n("-- New layout --")));
+        }
+
         if (empty($author)) {
             $author = $auth->auth['uname'];
         }
