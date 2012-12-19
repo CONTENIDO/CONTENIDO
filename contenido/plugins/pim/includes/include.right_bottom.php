@@ -153,15 +153,22 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
         }
     }
 
-    // sql inserts
-    $setup->install($tempXml);
+    if($isExtracted === true) {
 
-    // success message
-    $page->displayInfo(i18n('The plugin has been successfully installed. To apply the changes please login into backend again.', 'pim'));
+    	// sql inserts
+    	$setup->install($tempXml);
 
-    // close extracted archive
-    if ($isExtracted === false) {
+    	// success message
+    	$page->displayInfo(i18n('The plugin has been successfully installed. To apply the changes please login into backend again.', 'pim'));
+
+    } else {
+
+        // success message
+        $page->displayInfo(i18n('The plugin has been successfully uploaded. Now you can install it.', 'pim'));
+
+    	// close extracted archive
         $extractor->closeArchive();
+
     }
 }
 
@@ -245,9 +252,9 @@ if (empty($pluginsExtracted)) {
 }
 
 // added language vars
-$page->set('s', 'LANG_ADD', i18n('Add new plugin', 'pim'));
-$page->set('s', 'LANG_ADD_CHOOSE', i18n('Please choose a plugin package', 'pim'));
-$page->set('s', 'LANG_ADD_UPLOAD', i18n('Upload plugin package', 'pim'));
+$page->set('s', 'LANG_UPLOAD', i18n('Upload a new plugin', 'pim'));
+$page->set('s', 'LANG_UPLOAD_CHOOSE', i18n('Please choose a plugin package', 'pim'));
+$page->set('s', 'LANG_UPLOAD_BUTTON', i18n('Upload plugin package', 'pim'));
 $page->set('s', 'LANG_INSTALLED', i18n('Installed Plugins', 'pim'));
 $page->set('s', 'LANG_EXTRACTED', i18n('Not installed Plugins', 'pim'));
 
