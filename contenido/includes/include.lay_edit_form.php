@@ -74,7 +74,6 @@ if ($action == "lay_new") {
     if (!$perm->have_perm_area_action_anyitem($area, $action)) {
         $page->displayError(i18n("Permission denied"));
     } else {
-        $errno = layDeleteLayout($idlay);
         $layout->virgin = true;
         $page->displayInfo(i18n("Layout deleted"));
     }
