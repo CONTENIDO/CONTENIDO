@@ -352,7 +352,7 @@ if ($search != '' || ($filter != '' && $filter != -1)) {
                 }
             } else {
                 $iFilterTemplate = $aFilterType[1];
-                if (array_key_exists($iFilterTemplate, $modulesInUse[$aTranslation['idmod']])) {
+                if (is_array($modulesInUse[$aTranslation['idmod']]) && array_key_exists($iFilterTemplate, $modulesInUse[$aTranslation['idmod']])) {
                     $bFoundFilter = true;
                 }
             }
