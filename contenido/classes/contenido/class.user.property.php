@@ -1,25 +1,14 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * User property management class.
- *
- * cApiUserProperty instance contains following properties:
- * - iduserprop (int)
- * - user_id (string)
- * - type (string)
- * - name (string)
- * - value (string)
- * - idcatlang (int)
- *
+ * Project: CONTENIDO Content Management System
+ * Description: User property management class.
+ * cApiUserProperty instance contains following properties: - iduserprop (int) -
+ * user_id (string) - type (string) - name (string) - value (string) - idcatlang
+ * (int)
  * If caching is enabled, see $cfg['properties']['user_prop']['enable_cache'],
- * all entries will be loaded at first time.
- * If enabled, each call of cApiUserPropertyCollection functions to retrieve
- * properties
- * will return the cached entries without stressing the database.
- *
+ * all entries will be loaded at first time. If enabled, each call of
+ * cApiUserPropertyCollection functions to retrieve properties will return the
+ * cached entries without stressing the database.
  * The cApiUserPropertyCollection class keeps also track of changed and deleted
  * properties and synchronizes them with cached values, as long as you use the
  * interface of cApiUserPropertyCollection to manage the properties.
@@ -72,7 +61,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @param string $userId
      */
     public function __construct($userId) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         parent::__construct($cfg['tab']['user_prop'], 'iduserprop');
         $this->_setItemClass('cApiUserProperty');
 
@@ -109,7 +98,7 @@ class cApiUserPropertyCollection extends ItemCollection {
             throw new cInvalidArgumentException("Empty user id");
         }
         $this->_userId = $userId;
-        if (self::$_enableCache && !isset(self::$_entries)) {
+        if (self::$_enableCache) {
             $this->_loadFromCache();
         }
     }
@@ -184,8 +173,8 @@ class cApiUserPropertyCollection extends ItemCollection {
     }
 
     /**
-     * Returns all user properties of all users by type and name.
-     * NOTE: Enabled caching will be skipped in this case!
+     * Returns all user properties of all users by type and name. NOTE: Enabled
+     * caching will be skipped in this case!
      *
      * @param string $type
      * @param string $name
@@ -389,7 +378,7 @@ class cApiUserProperty extends Item {
      * @param mixed $mId Specifies the ID of item to load
      */
     public function __construct($mId = false) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         parent::__construct($cfg['tab']['user_prop'], 'iduserprop');
         $this->setFilters(array(), array());
         if ($mId !== false) {
