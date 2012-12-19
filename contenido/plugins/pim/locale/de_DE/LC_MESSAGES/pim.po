@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-19 13:21+0100\n"
-"PO-Revision-Date: 2012-12-19 13:21+0100\n"
+"POT-Creation-Date: 2012-12-19 16:20+0100\n"
+"PO-Revision-Date: 2012-12-19 16:20+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,8 @@ msgstr ""
 "X-Poedit-SearchPath-0: C:\\projects\\workspace\\contenido\\contenido\\plugins\\pim\n"
 
 #: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:400
+#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:475
+#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:479
 msgid "The plugin <strong>"
 msgstr "Das Plugin <strong>"
 
@@ -36,23 +38,31 @@ msgstr "</strong> wurde erfolgreich entfernt."
 msgid "</strong> could not be uninstalled."
 msgstr "</strong> konnte nicht entfernt werden."
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:516
-#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:524
-#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:544
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:117
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:132
+#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:475
+msgid "</strong> has been sucessfully disabled. To apply the changes please login into backend again."
+msgstr "</strong> wurde erfolgreich deaktiviert. Damit die &Auml;nderungen wirksam werden, melden Sie sich bitte neu im Backend an."
+
+#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:479
+msgid "</strong> has been sucessfully enabled. To apply the changes please login into backend again."
+msgstr "</strong> wurde erfolgreich aktiviert. Damit die &Auml;nderungen wirksam werden, melden Sie sich bitte neu im Backend an."
+
+#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:542
+#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:550
+#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:570
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:120
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:135
 msgid "Back to Plugin Manager"
 msgstr "Zur&uuml;ck zum Plugin Manager"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:517
+#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:543
 msgid "This plugin is already installed"
 msgstr "Dieses Plugin ist bereits installiert"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:525
+#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:551
 msgid "You have to update the same plugin"
 msgstr "Sie m&uuml;ssen das gleiche Plugin aktualisieren"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:545
+#: C:\projects\workspace\contenido\contenido\plugins\pim/classes/setup/class.pimpluginsetup.php:571
 #, fuzzy
 msgid "Plugin Manager accepts only Zip archives"
 msgstr "Der Plugin Manager akzeptiert lediglich Zip-Archive"
@@ -65,98 +75,106 @@ msgstr "Zugriff verweigert"
 msgid "Currently the plugin system is disabled via configuration"
 msgstr "Momentan ist das Plugin-System via der Konfiguration deaktiviert"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:118
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:121
 msgid "You have to install CONTENIDO <strong>"
 msgstr "Sie ben&ouml;tigen mindestens die CONTENIDO-Version <strong>"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:118
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:121
 msgid "</strong> or higher to install this plugin!"
 msgstr "</strong> oder h&ouml;her, um dieses Plugin installieren zu k&ouml;nnen!"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:133
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:136
 #, fuzzy
 msgid "Your current CONTENIDO version is to new - max CONTENIDO version: "
 msgstr "Ihre aktuelle CONTENIDO-Version ist zu neu - maximale CONTENDIO-Version:"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:162
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:165
 msgid "The plugin has been successfully installed. To apply the changes please login into backend again."
 msgstr "Das Plugin wurde erfolgreich installiert. Damit die &Auml;nderungen wirksam werden, melden Sie sich bitte neu im Backend an."
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:167
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:170
 msgid "The plugin has been successfully uploaded. Now you can install it."
 msgstr "Das Plugin wurde erfolgreich hochgeladen. Nun k&ouml;nnen Sie es installieren."
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:191
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:194
 msgid "Y-m-d"
 msgstr "d.m.Y"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:203
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:206
 msgid "Installed since"
 msgstr "Installiert seit"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:204
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:207
 msgid "Author"
 msgstr "Autor"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:205
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:208
 msgid "Contact"
 msgstr "Kontakt"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:207
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:209
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:210
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:212
 msgid "Update"
 msgstr "Aktualisieren"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:208
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:211
 msgid "Please choose your new file"
 msgstr "Plugin-Paket auswählen"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:214
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:218
+msgid "Disable plugin"
+msgstr "Deaktiviere das Plugin"
+
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:220
+msgid "Enable plugin"
+msgstr "Aktiviere das Plugin"
+
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:226
 msgid "Are you sure to delete this plugin? Files are not deleted in filesystem."
 msgstr "Sind Sie sicher, dass Sie dieses Plugin entfernen m&ouml;chten? Die Dateien werden nicht aus dem Dateisystem entfernt."
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:214
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:226
 msgid "Uninstall"
 msgstr "Entfernen"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:218
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:230
 msgid "This plugin is not writeable, please set the rights manually"
 msgstr "Dieses Plugin ist nicht beschreibbar, bitte setzen Sie die Dateirechte manuell"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:238
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:250
 msgid "Foldername"
 msgstr "Ordnername"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:239
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:251
 msgid "Install extracted plugin"
 msgstr "Installiere das extrahierte Plugin"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:240
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:252
 #, fuzzy
 msgid "Uninstall extracted plugin (deleted plugin files from filesystem)"
 msgstr "Entferne das extrahierte Plugin (das entfernte Plugin wird aus dem Dateisystem gel&ouml;scht)"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:251
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:263
 msgid "No entries"
 msgstr "Keine Eintr&auml;ge"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:255
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:267
 msgid "Upload a new plugin"
 msgstr "Neues Plugin hochladen"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:256
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:268
 msgid "Please choose a plugin package"
 msgstr "Plugin-Paket auswählen"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:257
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:269
 msgid "Upload plugin package"
 msgstr "Plugin-Paket hochladen"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:258
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:270
 msgid "Installed Plugins"
 msgstr "Installierte Plugins"
 
-#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:259
+#: C:\projects\workspace\contenido\contenido\plugins\pim/includes/include.right_bottom.php:271
 msgid "Not installed Plugins"
 msgstr "Noch nicht installierte Plugins"
 

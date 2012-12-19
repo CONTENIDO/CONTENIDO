@@ -456,6 +456,32 @@ class PimPluginSetup {
     }
 
     /**
+     * Enable / disable plugins (active status)
+     *
+     * @param unknown_type $pluginId
+     * @param $page page class for success or error message
+     * @return void
+     */
+    public function changeActiveStatus($pluginId, $page = null) {
+        $pimPluginColl = new PimPluginCollection();
+        $pimPluginColl->setWhere('idplugin', $pluginId);
+        $pimPluginColl->query();
+        $plugin = $pimPluginColl->next();
+        $pluginname = $plugin->get('name');
+        $activeStatus = $plugin->get('active');
+
+        if ($activeStatus == 1) {
+            $plugin->set('active', 0);
+            $plugin->store();
+            $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been sucessfully disabled. To apply the changes please login into backend again.', 'pim'));
+        } else {
+            $plugin->set('active', 1);
+            $plugin->store();
+            $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been sucessfully enabled. To apply the changes please login into backend again.', 'pim'));
+        }
+    }
+
+    /**
      * Check uuId for update routine
      *
      * @access protected

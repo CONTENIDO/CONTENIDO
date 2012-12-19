@@ -35,6 +35,9 @@ if ($cfg['debug']['disable_plugins'] === true) {
 $viewAction = isset($_REQUEST['pim_view'])? $_REQUEST['pim_view'] : 'overview';
 
 switch ($viewAction) {
+	case 'activestatus':
+	    $setup->changeActiveStatus($_GET['pluginId'], $page);
+	    break;
     case 'update':
         $setup->checkZip();
         $setup->checkSamePlugin($_POST['pluginId']);
@@ -207,6 +210,15 @@ while (($plugin = $oItem->next()) !== false) {
     $pagePlugins->set('s', 'LANG_UPDATE', i18n('Update', 'pim'));
     $pagePlugins->set('s', 'LANG_UPDATE_CHOOSE', i18n('Please choose your new file', 'pim'));
     $pagePlugins->set('s', 'LANG_UPDATE_UPLOAD', i18n('Update', 'pim'));
+
+    // enable / disable functionality
+    $activeStatus = $plugin->get('active');
+    $tempActiveStatusLink = $sess->url('main.php?area=pim&frame=4&pim_view=activestatus&pluginId=' . $plugin->get('idplugin'));
+    if($activeStatus == 1) {
+        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/online.gif" style="border: 0;vertical-align: middle;" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Disable plugin', 'pim') . '</a>');
+    } else {
+        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/offline.gif" style="border: 0;vertical-align: middle;" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Enable plugin', 'pim') . '</a>');
+    }
 
     // uninstall link
     if (is_writable($cfg['path']['contenido'] . $cfg['path']['plugins'] . $plugin->get('folder'))) {
