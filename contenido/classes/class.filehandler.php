@@ -358,13 +358,6 @@ class cFileHandler {
             $ret['mime'] = '';
         }
 
-        foreach ($ret as $value) {
-            if ($value === false) {
-                cWarning(__FILE__, __LINE__, 'Could not read ' . $filename);
-                return $ret;
-            }
-        }
-
         return $ret;
     }
 
