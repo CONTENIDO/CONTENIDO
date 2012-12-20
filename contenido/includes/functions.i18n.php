@@ -448,8 +448,14 @@ function mi18n($string) {
     cInclude('classes', 'contenido/class.module.php');
     cInclude('classes', 'module/class.module.filetranslation.php');
 
+	$args = func_num_args();
     $arrArgs = func_get_args();
-    $result = call_user_func_array('sprintf', $arrArgs);
+
+	if ((int) $args > 1) {
+		$result = call_user_func_array('sprintf', $arrArgs);
+	} else {
+		$result = $string;
+	}
 
     $contenidoTranslateFromFile = new cModuleFileTranslation($cCurrentModule, true);
     $array = $contenidoTranslateFromFile->getLangarray();
