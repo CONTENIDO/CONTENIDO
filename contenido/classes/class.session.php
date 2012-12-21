@@ -74,7 +74,7 @@ class cSession {
                 $url = cRegistry::getFrontendUrl();
             }
             $url = parse_url($url);
-            session_set_cookie_params($cfg['session']['lifetime'], $url['path']);
+            session_set_cookie_params(0, $url['path']);
             session_name($this->_prefix);
             session_start();
             $this->id = session_id();

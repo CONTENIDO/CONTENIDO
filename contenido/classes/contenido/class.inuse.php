@@ -152,12 +152,11 @@ class cApiInUseCollection extends ItemCollection {
     }
 
     /**
-     * Removes all inuse entries which are older than the session timeout of the
-     * backend session
+     * Removes all inuse entries which are older than the inuse timeout
      */
     public function removeOldMarks() {
         $cfg = cRegistry::getConfig();
-        $expire = time() - $cfg['session']['lifetime'];
+        $expire = time() - $cfg['inuse']['lifetime'];
 
         $this->select("timestamp < " . $expire);
 
