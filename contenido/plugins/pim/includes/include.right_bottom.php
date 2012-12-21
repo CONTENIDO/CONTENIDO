@@ -35,9 +35,9 @@ if ($cfg['debug']['disable_plugins'] === true) {
 $viewAction = isset($_REQUEST['pim_view'])? $_REQUEST['pim_view'] : 'overview';
 
 switch ($viewAction) {
-	case 'activestatus':
-	    $setup->changeActiveStatus($_GET['pluginId'], $page);
-	    break;
+    case 'activestatus':
+        $setup->changeActiveStatus($_GET['pluginId'], $page);
+        break;
     case 'update':
         $setup->checkZip();
         $setup->checkSamePlugin($_POST['pluginId']);
@@ -159,22 +159,22 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '', $
 
     if($isExtracted === true) {
 
-    	// sql inserts
-    	$setup->install($tempXml);
+        // sql inserts
+        $setup->install($tempXml);
 
-    	// success message
-    	if($update == false) {
-    		$page->displayInfo(i18n('The plugin has been successfully installed. To apply the changes please login into backend again.', 'pim'));
-    	} else {
-    	    $page->displayInfo(i18n('The plugin has been successfully updated. To apply the changes please login into backend again.', 'pim'));
-    	}
+        // success message
+        if($update == false) {
+            $page->displayInfo(i18n('The plugin has been successfully installed. To apply the changes please login into backend again.', 'pim'));
+        } else {
+            $page->displayInfo(i18n('The plugin has been successfully updated. To apply the changes please login into backend again.', 'pim'));
+        }
 
     } else {
 
         // success message
         $page->displayInfo(i18n('The plugin has been successfully uploaded. Now you can install it.', 'pim'));
 
-    	// close extracted archive
+        // close extracted archive
         $extractor->closeArchive();
 
     }

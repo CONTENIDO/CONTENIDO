@@ -131,8 +131,8 @@ class cModuleSearch extends cModuleHandler {
                             AND type LIKE '%s'
                             OR description LIKE '%s'
                             OR name LIKE '%s'
-                			OR input LIKE '%s'
-                			OR output LIKE '%s') ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%');
+                            OR input LIKE '%s'
+                            OR output LIKE '%s') ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%');
 
         $db = cRegistry::getDb();
         $db->query($sql);

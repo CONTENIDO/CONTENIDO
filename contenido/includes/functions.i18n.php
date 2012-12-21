@@ -438,24 +438,24 @@ function i18nGetAvailableLanguages() {
  * @return string the translated string
  */
 function mi18n($string) {
-	if ($string == '') {
-		return 'No module translation ID specified.';
-	}
-	
+    if ($string == '') {
+        return 'No module translation ID specified.';
+    }
+
     global $cCurrentModule;
 
     // dont workd by setup/upgrade
     cInclude('classes', 'contenido/class.module.php');
     cInclude('classes', 'module/class.module.filetranslation.php');
 
-	$args = func_num_args();
+    $args = func_num_args();
     $arrArgs = func_get_args();
 
-	if ((int) $args > 1) {
-		$result = call_user_func_array('sprintf', $arrArgs);
-	} else {
-		$result = $string;
-	}
+    if ((int) $args > 1) {
+        $result = call_user_func_array('sprintf', $arrArgs);
+    } else {
+        $result = $string;
+    }
 
     $contenidoTranslateFromFile = new cModuleFileTranslation($cCurrentModule, true);
     $array = $contenidoTranslateFromFile->getLangarray();

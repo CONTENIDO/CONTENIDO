@@ -253,10 +253,10 @@ class cModuleHandler {
             return false;
         }
         $url = $this->_cfgClient[$this->_client]['path']['htmlpath'] . $saveDirectory . '/' . $templateName . '.' . $fileType;
-        
+
         // Remove protocol so CSS & JS can be displayed for HTTPS too!
         $url = str_replace('http://', '//', $url);
-        
+
         return $url;
     }
 

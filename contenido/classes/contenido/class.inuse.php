@@ -161,7 +161,7 @@ class cApiInUseCollection extends ItemCollection {
         $this->select("timestamp < " . $expire);
 
         while (($obj = $this->next()) !== false) {
-			// Remove entry
+            // Remove entry
             $this->delete($obj->get('idinuse'));
             unset($obj);
         }

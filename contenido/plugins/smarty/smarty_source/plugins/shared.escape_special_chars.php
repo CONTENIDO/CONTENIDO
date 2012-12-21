@@ -45,7 +45,7 @@ if (version_compare(PHP_VERSION, '5.2.3', '>=')) {
             $string = str_replace(array('%%%SMARTY_START%%%', '%%%SMARTY_END%%%'), array('&', ';'), $string);
         }
         return $string;
-    }                        
+    }
 }
 
 ?>

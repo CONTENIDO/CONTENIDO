@@ -78,7 +78,7 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
 
         $this->objItem->setClass($sClass);
     }
-    
+
     /**
      * Sorts the list by a given field and a given order.
      *
@@ -100,16 +100,16 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
 
         $this->sortkey = $field;
         $this->sortmode = $order;
-        
+
         $field = $field + 1;
-        
+
         if ($field > 3) {
             $sortby = array();
             foreach ($this->data as $row => $cols) {
                 $sortby[$row] = trim(strtolower(strip_tags($cols[$field])));
             }
             $this->data = cArray::csort($this->data, $sortby, $order);
-        } else {            
+        } else {
             $this->data = cArray::csort($this->data, "$field", $order);
         }
 
@@ -229,15 +229,15 @@ if ($action == 'con_translate_save') {
     $savetranslations = $_REQUEST["modtrans"];
     if (is_array($savetranslations)) {
         foreach ($savetranslations as $idmod => $savemodtranslations) {
-            
+
             // get translation keywords from module
             $module = new cApiModule($idmod);
-            $moduleKeywords = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);            
+            $moduleKeywords = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);
             $moduleKeywordsHashes = array();
             foreach ($moduleKeywords as $keyword) {
                 $moduleKeywordsHashes[md5($keyword)] = $keyword;
             }
-            
+
             foreach ($savemodtranslations as $hash => $stringtranslations) {
                 foreach ($stringtranslations as $idlang => $modlangtranslation) {
                     $contenidoTranslateFromFile = new cModuleFileTranslation($idmod, false, $idlang);
@@ -423,7 +423,7 @@ if (is_array($allLanguages)) {
     }
 }
 
-// Form for choosing elements per page 
+// Form for choosing elements per page
 $formElementsPerPage = new cHTMLForm('elementsperpage');
 $formElementsPerPage->setVar('area', $area);
 $formElementsPerPage->setVar('frame', $frame);
