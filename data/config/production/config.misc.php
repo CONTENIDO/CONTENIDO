@@ -329,3 +329,9 @@ $cfg['images']['image_magick']['path'] = '';
 
 // (string) Name of code generator to use (e. g. 'Standard' to use class cCodeGeneratorStandard)
 $cfg['code_generator']['name'] = 'Standard';
+
+/* Session settings
+ *  * -----------------------------------------------------------------------------
+ */
+
+$cfg['session']['lifetime'] = 900;
