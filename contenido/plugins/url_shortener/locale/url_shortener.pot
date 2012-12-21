@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-25 14:01+0200\n"
+"POT-Creation-Date: 2012-12-21 14:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,121 +18,121 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: includes/functions.url_shortener.php:38
-#: includes/include.url_shortener.php:133
+#: includes/include.url_shortener.php:134
 msgid "Short URL"
 msgstr ""
 
-#: includes/functions.url_shortener.php:125
+#: includes/functions.url_shortener.php:129
 msgid "The entered short URL contains invalid characters!"
 msgstr ""
 
-#: includes/functions.url_shortener.php:128
+#: includes/functions.url_shortener.php:132
 msgid "The entered short URL is already an article alias!"
 msgstr ""
 
-#: includes/functions.url_shortener.php:131
+#: includes/functions.url_shortener.php:135
 msgid "The entered short URL is already a category alias!"
 msgstr ""
 
-#: includes/functions.url_shortener.php:134
+#: includes/functions.url_shortener.php:138
 msgid "The entered short URL is a subdirectory of the client directory!"
 msgstr ""
 
-#: includes/functions.url_shortener.php:137
+#: includes/functions.url_shortener.php:141
 msgid "The entered short URL is too short!"
 msgstr ""
 
-#: includes/functions.url_shortener.php:140
+#: includes/functions.url_shortener.php:144
 msgid "The entered short URL already exists!"
-msgstr ""
-
-#: includes/functions.url_shortener.php:145
-#: includes/include.url_shortener.php:129
-msgid "Client"
 msgstr ""
 
 #: includes/functions.url_shortener.php:149
 #: includes/include.url_shortener.php:130
+msgid "Client"
+msgstr ""
+
+#: includes/functions.url_shortener.php:153
+#: includes/include.url_shortener.php:131
 msgid "Language"
 msgstr ""
 
-#: includes/functions.url_shortener.php:156
-#: includes/include.url_shortener.php:131
+#: includes/functions.url_shortener.php:160
+#: includes/include.url_shortener.php:132
 msgid "Category"
 msgstr ""
 
-#: includes/functions.url_shortener.php:161
-#: includes/include.url_shortener.php:132
+#: includes/functions.url_shortener.php:165
+#: includes/include.url_shortener.php:133
 msgid "Article"
 msgstr ""
 
-#: includes/functions.url_shortener.php:166
+#: includes/functions.url_shortener.php:170
 msgid "The entered short URL is not valid!"
 msgstr ""
 
-#: includes/include.url_shortener.php:29
-msgid "Short URLs can only be managed by system administrators!"
+#: includes/include.url_shortener.php:30
+msgid "Short URLs can only be managed by authorized user!"
 msgstr ""
 
-#: includes/include.url_shortener.php:36
+#: includes/include.url_shortener.php:37
 msgid "The short URL has successfully been deleted!"
 msgstr ""
 
-#: includes/include.url_shortener.php:65
+#: includes/include.url_shortener.php:66
 msgid "Short URL successfully edited!"
 msgstr ""
 
-#: includes/include.url_shortener.php:67
+#: includes/include.url_shortener.php:68
 msgid "Short URL could not be saved!"
 msgstr ""
 
-#: includes/include.url_shortener.php:78
+#: includes/include.url_shortener.php:79
 msgid "The .htaccess file already exists, so that it has not been copied!"
 msgstr ""
 
-#: includes/include.url_shortener.php:80
+#: includes/include.url_shortener.php:81
 msgid "The .htaccess file has been successfully copied to the client path!"
 msgstr ""
 
-#: includes/include.url_shortener.php:82
+#: includes/include.url_shortener.php:83
 msgid "The .htaccess file could not be copied to the client path!"
 msgstr ""
 
-#: includes/include.url_shortener.php:89
+#: includes/include.url_shortener.php:90
 msgid "A .htaccess file could not be found. The short URLs will not work!"
 msgstr ""
 
-#: includes/include.url_shortener.php:92
+#: includes/include.url_shortener.php:93
 msgid "Copy the simple .htaccess file to the client path."
 msgstr ""
 
-#: includes/include.url_shortener.php:96
+#: includes/include.url_shortener.php:97
 msgid "Copy the restrictive .htaccess file to the client path."
 msgstr ""
 
-#: includes/include.url_shortener.php:99
+#: includes/include.url_shortener.php:100
 msgid ""
 "If CONTENIDO is installed in a subdirectory, you need to change the "
 "RewriteBase path in the copied .htaccess file!"
 msgstr ""
 
-#: includes/include.url_shortener.php:107
+#: includes/include.url_shortener.php:108
 msgid "No short URLs have been defined yet!"
 msgstr ""
 
-#: includes/include.url_shortener.php:134
+#: includes/include.url_shortener.php:135
 msgid "Creation Date"
 msgstr ""
 
-#: includes/include.url_shortener.php:135
+#: includes/include.url_shortener.php:136
 msgid "URL With idart And idlang"
 msgstr ""
 
-#: includes/include.url_shortener.php:136
+#: includes/include.url_shortener.php:137
 msgid "Actions"
 msgstr ""
 
-#: includes/include.url_shortener.php:215
+#: includes/include.url_shortener.php:216
 #, php-format
 msgid "Do you really want to delete the short URL %s?"
 msgstr ""
