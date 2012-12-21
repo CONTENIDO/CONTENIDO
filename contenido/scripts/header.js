@@ -195,7 +195,7 @@ ContenidoRegistry = {
     },
 
     get: function(key) {
-        if (this._instances[key] == "undefined") {
+        if (this._instances[key] === "undefined") {
             throw("No entry is registered for key '"+key+"'");
         }
         return this._instances[key];
