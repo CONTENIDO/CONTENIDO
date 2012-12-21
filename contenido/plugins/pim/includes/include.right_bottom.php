@@ -42,7 +42,7 @@ switch ($viewAction) {
         $setup->checkZip();
         $setup->checkSamePlugin($_POST['pluginId']);
         $setup->uninstall($_POST['pluginId']);
-        installationRoutine($page);
+        installationRoutine($page, true, $_POST['foldername'], true);
         break;
     case 'uninstall':
         $setup->uninstall($_GET['pluginId'], $page);
@@ -68,8 +68,9 @@ switch ($viewAction) {
  * @param cGuiPage $page
  * @param boolean $isExtracted
  * @param string $extractedPath foldername from extracted plugin
+ * @param boolean $update
  */
-function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
+function installationRoutine($page, $isExtracted = false, $extractedPath = '', $update = false) {
     global $setup;
     $cfg = cRegistry::getConfig();
     $sess = cRegistry::getSession();
@@ -162,7 +163,11 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '') {
     	$setup->install($tempXml);
 
     	// success message
-    	$page->displayInfo(i18n('The plugin has been successfully installed. To apply the changes please login into backend again.', 'pim'));
+    	if($update == false) {
+    		$page->displayInfo(i18n('The plugin has been successfully installed. To apply the changes please login into backend again.', 'pim'));
+    	} else {
+    	    $page->displayInfo(i18n('The plugin has been successfully updated. To apply the changes please login into backend again.', 'pim'));
+    	}
 
     } else {
 
@@ -194,6 +199,7 @@ while (($plugin = $oItem->next()) !== false) {
     $date = date_format(date_create($plugin->get('installed')), i18n('Y-m-d', 'pim'));
 
     $pagePlugins->set('s', 'IDPLUGIN', $plugin->get('idplugin'));
+    $pagePlugins->set('s', 'FOLDERNAME', $plugin->get('folder'));
     $pagePlugins->set('s', 'NAME', $plugin->get('name'));
     $pagePlugins->set('s', 'VERSION', $plugin->get('version'));
     $pagePlugins->set('s', 'DESCRIPTION', $plugin->get('description'));
