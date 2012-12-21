@@ -77,6 +77,7 @@ if ($cfg['use_pseudocron'] == true) {
 if (($frame == 1 || $frame == 4) && $_REQUEST['appendparameters'] != 'filebrowser') {
     $col = new cApiInUseCollection();
     $col->removeSessionMarks($sess->id);
+    $col->removeOldMarks();
 }
 
 // If the override flag is set, override a specific cApiInUse

@@ -1,9 +1,8 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System
- * Description: CONTENIDO In-Use classes
- * Code is taken over from file contenido/classes/class.inuse.php in favor of
- * normalizing API.
+ * Project: CONTENIDO Content Management System Description: CONTENIDO In-Use
+ * classes Code is taken over from file contenido/classes/class.inuse.php in
+ * favor of normalizing API.
  *
  * @package CONTENIDO API
  * @version 0.1.1
@@ -43,9 +42,9 @@ class cApiInUseCollection extends ItemCollection {
 
     /**
      * Marks a specific object as "in use". Note that items are released when
-     * the session is destroyed.
-     * Currently, the following types are defined and approved as internal
-     * CONTENIDO standard: - article - module - layout - template
+     * the session is destroyed. Currently, the following types are defined and
+     * approved as internal CONTENIDO standard: - article - module - layout -
+     * template
      *
      * @param string $type Specifies the type to mark.
      * @param mixed $objectid Specifies the object ID
@@ -69,6 +68,7 @@ class cApiInUseCollection extends ItemCollection {
             $newitem->set('objectid', $objectid);
             $newitem->set('session', $session);
             $newitem->set('userid', $user);
+            $newitem->set('timestamp', time());
             $newitem->store();
         }
         return $newitem;
@@ -152,6 +152,24 @@ class cApiInUseCollection extends ItemCollection {
     }
 
     /**
+     * Removes all inuse entries which are older than the session timeout of the
+     * backend session
+     */
+    public function removeOldMarks() {
+        $cfg = cRegistry::getConfig();
+        $session = cRegistry::getSession();
+        $expire = time() - $cfg['session']['lifetime'];
+
+        $this->select("timestamp < " . $expire);
+
+        while (($obj = $this->next()) !== false) {
+			// Remove entry
+            $this->delete($obj->get('idinuse'));
+            unset($obj);
+        }
+    }
+
+    /**
      * Removes all in-use marks for a specific session.
      *
      * @param string $session Specifies the session for which the "in use" marks
@@ -190,12 +208,11 @@ class cApiInUseCollection extends ItemCollection {
     }
 
     /**
-     * Checks and marks if not marked.
-     * Example: Check for "idmod", also return a lock message: list($inUse,
-     * $message) = $col->checkAndMark("idmod", $idmod, true, i18n("Module is in
-     * use by %s (%s)"));
-     * Example 2: Check for "idmod", don't return a lock message $inUse =
-     * $col->checkAndMark("idmod", $idmod);
+     * Checks and marks if not marked. Example: Check for "idmod", also return a
+     * lock message: list($inUse, $message) = $col->checkAndMark("idmod",
+     * $idmod, true, i18n("Module is in use by %s (%s)")); Example 2: Check for
+     * "idmod", don't return a lock message $inUse = $col->checkAndMark("idmod",
+     * $idmod);
      *
      * @param string $type Specifies the type to de-mark.
      * @param mixed $objectid Specifies the object ID

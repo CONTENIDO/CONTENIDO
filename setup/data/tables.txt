@@ -202,6 +202,7 @@
 "inuse";"objectid";"varchar(32)";"";"";"";"";""
 "inuse";"session";"varchar(32)";"";"";"";"";""
 "inuse";"userid";"varchar(32)";"";"";"";"";""
+"inuse";"timestamp";"int(11)";"";"";"";"";""
 "keywords";"idkeyword";"int(10)";"";"PRI";"0";"";"1"
 "keywords";"keyword";"varchar(50)";"";"MUL";"";"";""
 "keywords";"exp";"text";"";"";"";"";""

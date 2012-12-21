@@ -1,27 +1,18 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * Project: CONTENIDO Content Management System Description: Session management
+ * Requirements: @con_php_req 5
  *
- * Description:
- * Session management
- *
- * Requirements:
- * @con_php_req 5
- *
- * @package    CONTENIDO Core
- * @version    1.0
- * @author     Mischa Holz
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9
- *
- * {@internal
- *   created  2012-07-06
- *   $Id: class.session.php 2486 2012-07-02 21:49:26Z xmurrix $:
- * }}
+ * @package CONTENIDO Core
+ * @version 1.0
+ * @author Mischa Holz
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release 4.9 {@internal created
+ *        2012-07-06 $Id: class.session.php 2486 2012-07-02 21:49:26Z xmurrix $:
+ *        }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -31,38 +22,46 @@ if (!defined('CON_FRAMEWORK')) {
 /**
  * Handles the backend session
  */
-
 class cSession {
 
     /**
      * Saves the registered variables
+     *
      * @var array
      */
     protected $_pt;
 
     /**
      * The prefix for the session variables
+     *
      * @var string
      */
     protected $_prefix;
 
     /**
-     * Placeholder. This variable isn't needed to make sessions work any longer but some CONTENIDO functions/classes rely on it
+     * Placeholder. This variable isn't needed to make sessions work any longer
+     * but some CONTENIDO functions/classes rely on it
+     *
      * @var string
      */
     public $id;
 
     /**
-     * Placeholder. This variable isn't needed to make sessions work any longer but some CONTENIDO functions/classes rely on it
+     * Placeholder. This variable isn't needed to make sessions work any longer
+     * but some CONTENIDO functions/classes rely on it
+     *
      * @var unknown_type
      */
     public $name;
 
     /**
      * Starts the session
+     *
      * @param string The prefix for the session variables
      */
     public function __construct($prefix = 'backend') {
+        $cfg = cRegistry::getConfig();
+
         $this->_pt = array();
         $this->_prefix = $prefix;
 
@@ -75,7 +74,7 @@ class cSession {
                 $url = cRegistry::getFrontendUrl();
             }
             $url = parse_url($url);
-            session_set_cookie_params(0, $url['path']);
+            session_set_cookie_params($cfg['session']['lifetime'], $url['path']);
             session_name($this->_prefix);
             session_start();
             $this->id = session_id();
@@ -84,6 +83,7 @@ class cSession {
 
     /**
      * Registers a global variable which will become persistent
+     *
      * @param string $things The name of the variable (e.g. "idclient")
      */
     public function register($things) {
@@ -99,6 +99,7 @@ class cSession {
 
     /**
      * Unregisters a variable
+     *
      * @param string $name The name of the variable (e.g. "idclient")
      */
     public function unregister($name) {
@@ -107,6 +108,7 @@ class cSession {
 
     /**
      * Checks if a variable is registered
+     *
      * @param string $name The name of the variable (e.g. "idclient")
      * @deprecated Please use isRegistered instead
      */
@@ -117,6 +119,7 @@ class cSession {
 
     /**
      * Checks if a variable is registered
+     *
      * @param string $name The name of the variable (e.g. "idclient")
      */
     public function isRegistered($name) {
@@ -127,7 +130,9 @@ class cSession {
     }
 
     /**
-     * Attaches "&contenido=1" at the end of the URL. This is no longer needed to make sessions work but some CONTENIDO functions/classes rely on it
+     * Attaches "&contenido=1" at the end of the URL. This is no longer needed
+     * to make sessions work but some CONTENIDO functions/classes rely on it
+     *
      * @param string $url A URL
      */
     public function url($url) {
@@ -137,15 +142,30 @@ class cSession {
         // Remove trailing ?/& if needed
         $url = preg_replace('/[&?]+$/', '', $url);
 
-        $url .= (strpos($url, '?') != false ? '&' : '?') . urlencode($this->name) . '=' . $this->id;
+        $url .= (strpos($url, '?') != false? '&' : '?') . urlencode($this->name) . '=' . $this->id;
 
         // Encode naughty characters in the URL
-        $url = str_replace(array('<', '>', ' ', '"', '\''), array('%3C', '%3E', '+', '%22', '%27'), $url);
+        $url = str_replace(array(
+                '<',
+                '>',
+                ' ',
+                '"',
+                '\''
+        ), array(
+                '%3C',
+                '%3E',
+                '+',
+                '%22',
+                '%27'
+        ), $url);
         return $url;
     }
 
     /**
-     * Attaches "&contenido=1" at the end of the current URL. This is no longer needed to make sessions work but some CONTENIDO functions/classes rely on it
+     * Attaches "&contenido=1" at the end of the current URL. This is no longer
+     * needed to make sessions work but some CONTENIDO functions/classes rely on
+     * it
+     *
      * @param string $url A URL
      * @deprecated Please use selfURL() instead
      */
@@ -155,15 +175,20 @@ class cSession {
     }
 
     /**
-     * Attaches "&contenido=1" at the end of the current URL. This is no longer needed to make sessions work but some CONTENIDO functions/classes rely on it
+     * Attaches "&contenido=1" at the end of the current URL. This is no longer
+     * needed to make sessions work but some CONTENIDO functions/classes rely on
+     * it
+     *
      * @param string $url A URL
      */
     public function selfURL() {
-        return $this->url($_SERVER['PHP_SELF'] . ((isset($_SERVER['QUERY_STRING']) && ('' != $_SERVER['QUERY_STRING'])) ? '?' . $_SERVER['QUERY_STRING'] : ''));
+        return $this->url($_SERVER['PHP_SELF'] . ((isset($_SERVER['QUERY_STRING']) && ('' != $_SERVER['QUERY_STRING']))? '?' . $_SERVER['QUERY_STRING'] : ''));
     }
 
     /**
-     * Returns PHP code which can be used to rebuild the variable by evaluating it. This will work recursevly on arrays
+     * Returns PHP code which can be used to rebuild the variable by evaluating
+     * it. This will work recursevly on arrays
+     *
      * @param mixed $var A variable which should get serialized.
      * @return string the PHP code which can be evaluated.
      */
@@ -174,7 +199,9 @@ class cSession {
     }
 
     /**
-     * This function will go recursevly through arrays and objects to serialize them.
+     * This function will go recursevly through arrays and objects to serialize
+     * them.
+     *
      * @param mixed $var The variable
      * @param string $str The PHP code will be attached to this string
      */
@@ -197,7 +224,7 @@ class cSession {
             case 'object':
                 // $$var is an object. Enumerate the slots and serialize them.
                 eval("\$k = \$${var}->classname; \$l = reset(\$${var}->persistent_slots);");
-                $str.="\$$var = new $k; ";
+                $str .= "\$$var = new $k; ";
                 while ($l) {
                     // Structural recursion.
                     $this->_rSerialize($var . "->" . $l, $str);
@@ -207,7 +234,7 @@ class cSession {
             default:
                 // $$var is an atom. Extract it to $l, then generate code.
                 eval("\$l = \$$var;");
-                $str.="\$$var = '" . preg_replace("/([\\'])/", "\\\\1", $l) . "'; ";
+                $str .= "\$$var = '" . preg_replace("/([\\'])/", "\\\\1", $l) . "'; ";
                 break;
         }
     }
@@ -246,7 +273,9 @@ class cSession {
 
     /**
      * Dummy function. This is no longer needed and will always return "".
-     * @deprecated Since this function is not needed anymore it shouldn't be used
+     *
+     * @deprecated Since this function is not needed anymore it shouldn't be
+     *             used
      */
     public function hidden_session() {
         cDeprecated("Since this function is not needed anymore it shouldn't be used");
@@ -263,7 +292,8 @@ class cSession {
 }
 
 /**
- * Session class for the frontend. It uses a different prefix. The rest is the same
+ * Session class for the frontend. It uses a different prefix. The rest is the
+ * same
  */
 class cFrontendSession extends cSession {
 
@@ -277,7 +307,9 @@ class cFrontendSession extends cSession {
     }
 
     /**
-     * This function overrides cSession::url() so that the contenido=1 isn't attached to the URL for the frontend
+     * This function overrides cSession::url() so that the contenido=1 isn't
+     * attached to the URL for the frontend
+     *
      * @see cSession::url()
      */
     public function url($url) {
@@ -285,7 +317,19 @@ class cFrontendSession extends cSession {
 
         $url = preg_replace('/[&?]+$/', '', $url);
 
-        $url = str_replace(array('<', '>', ' ', '"', '\''), array('%3C', '%3E', '+', '%22', '%27'), $url);
+        $url = str_replace(array(
+                '<',
+                '>',
+                ' ',
+                '"',
+                '\''
+        ), array(
+                '%3C',
+                '%3E',
+                '+',
+                '%22',
+                '%27'
+        ), $url);
 
         return $url;
     }
