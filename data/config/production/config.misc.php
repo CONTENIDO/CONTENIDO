@@ -334,4 +334,4 @@ $cfg['code_generator']['name'] = 'Standard';
  *  * -----------------------------------------------------------------------------
  */
 
-$cfg['session']['lifetime'] = 900;
+$cfg['session']['lifetime'] = 3600;
