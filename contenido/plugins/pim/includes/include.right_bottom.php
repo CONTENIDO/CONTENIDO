@@ -188,7 +188,7 @@ $installedPluginFoldernames = array();
 
 // get all installed plugins
 $oItem = new PimPluginCollection();
-$oItem->select();
+$oItem->select(null, null, 'name');
 
 while (($plugin = $oItem->next()) !== false) {
 
