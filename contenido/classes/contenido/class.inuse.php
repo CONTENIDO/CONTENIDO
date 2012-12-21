@@ -157,7 +157,6 @@ class cApiInUseCollection extends ItemCollection {
      */
     public function removeOldMarks() {
         $cfg = cRegistry::getConfig();
-        $session = cRegistry::getSession();
         $expire = time() - $cfg['session']['lifetime'];
 
         $this->select("timestamp < " . $expire);
