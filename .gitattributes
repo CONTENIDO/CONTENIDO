@@ -2644,6 +2644,5 @@ setup/upgrade_jobs/class.upgrade.job.0007.php -text
 setup/upgrade_jobs/class.upgrade.job.0008.php -text
 setup/upgrade_jobs/class.upgrade.job.0009.php -text
 test/frontend/Chains/cApiCecRegistry.php -text
-test/frontend/Validator/Contenido_Validator_Email.php -text
 test/frontend/Validator/cValidatorEmail.php -text
 test/frontend/ValidatorTestSuite.php -text
