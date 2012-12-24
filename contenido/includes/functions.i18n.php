@@ -166,9 +166,14 @@ function i18nEmulateGettext ($string, $domain = "contenido")
 		   	msgid "Hello %s,\n\nyou've got a new reminder for the client '%s' at\n%s:\n\n%s"
 		   	msgstr "Hallo %s,\n\ndu hast eine Wiedervorlage erhalten für den Mandanten '%s' at\n%s:\n\n%s"
         */
+        // assemble broken long message lines (remove double quotes with a line break in between, e. g. "\n")
         $transFile[$domain] = preg_replace('/(""\\s+")/m', '"', $transFile[$domain]);
+        // replace line breaks followed by a whitespace character against a line break
         $transFile[$domain] = preg_replace('/\\n"\\s+"/m', '\\n', $transFile[$domain]);
+        // remove multiple line breaks
         $transFile[$domain] = preg_replace('/("\n+")/m', '', $transFile[$domain]);
+        // remove the backslash from double quotes (\"foobar\" -> "foobar")
+        $transFile[$domain] = preg_replace('/(\\\")/m', '"', $transFile[$domain]);
 	}
 
 	$stringStart = strpos($transFile[$domain], '"'.str_replace(Array("\n", "\r", "\t"), Array('\n', '\r', '\t'), $string).'"');
