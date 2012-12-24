@@ -267,7 +267,7 @@ class cI18n {
           msgstr ""
           "Hallo %s,\n"
           "\n"
-          "du hast eine Wiedervorlage erhalten fï¿½r den Mandanten '%s' at\n"
+          "du hast eine Wiedervorlage erhalten für den Mandanten '%s' at\n"
           "%s:\n"
           "\n"
           "%s"
