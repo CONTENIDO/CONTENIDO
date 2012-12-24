@@ -276,9 +276,14 @@ class cI18n {
           msgid "Hello %s,\n\nyou've got a new reminder for the client '%s' at\n%s:\n\n%s"
           msgstr "Hallo %s,\n\ndu hast eine Wiedervorlage erhalten für den Mandanten '%s' at\n%s:\n\n%s"
          */
+        // assemble broken long message lines (remove double quotes with a line break in between, e. g. "\n")
         $content = preg_replace('/(""\\s+")/m', '"', $content);
+        // replace line breaks followed by a whitespace character against a line break
         $content = preg_replace('/\\n"\\s+"/m', '\\n', $content);
+        // remove multiple line breaks
         $content = preg_replace('/("\n+")/m', '', $content);
+        // remove the backslash from double quotes (\"foobar\" -> "foobar")
+        $content = preg_replace('/(\\\")/m', '"', $content);
 
         return $content;
     }
