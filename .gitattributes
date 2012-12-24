@@ -65,6 +65,15 @@ cms/data/modules/content_sitemap_xml/lang/lang_de_DE.txt -text svneol=unset#text
 cms/data/modules/content_sitemap_xml/lang/lang_en_GB.txt -text svneol=unset#text/plain
 cms/data/modules/content_sitemap_xml/php/content_sitemap_xml_input.php -text
 cms/data/modules/content_sitemap_xml/php/content_sitemap_xml_output.php -text
+cms/data/modules/content_teaser_image/info.xml -text
+cms/data/modules/content_teaser_image/php/content_teaser_image_input.php -text
+cms/data/modules/content_teaser_image/php/content_teaser_image_output.php -text
+cms/data/modules/content_teaser_slider/info.xml -text
+cms/data/modules/content_teaser_slider/php/content_teaser_slider_input.php -text
+cms/data/modules/content_teaser_slider/php/content_teaser_slider_output.php -text
+cms/data/modules/content_teaser_text/info.xml -text
+cms/data/modules/content_teaser_text/php/content_teaser_text_input.php -text
+cms/data/modules/content_teaser_text/php/content_teaser_text_output.php -text
 cms/data/modules/content_text/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_text/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/content_text/php/content_text_input.php -text
@@ -124,6 +133,9 @@ cms/js/jquery-1.8.2.min.js -text svneol=unset#text/plain
 cms/js/jquery-ui-1.9.1.custom.min.js -text svneol=unset#text/plain
 cms/js/main.js -text svneol=unset#text/plain
 cms/robots.txt -text
+cms/templates/cms_teaser_image.html -text
+cms/templates/cms_teaser_slider.html -text
+cms/templates/cms_teaser_text.html -text
 cms/templates/error_page.html -text
 cms/templates/index.php -text
 cms/upload/logos/logo.png -text

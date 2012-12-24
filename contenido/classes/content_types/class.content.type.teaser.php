@@ -167,7 +167,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         // teaser style is liststyle by default
         if (strlen($this->_settings['teaser_style']) == 0) {
-            $this->_settings['teaser_style'] = 'cms_teaser_style_blog.html';
+            $this->_settings['teaser_style'] = 'cms_teaser_slider.html';
         }
 
         // teaser image width default
@@ -716,10 +716,13 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
         // set other avariable options manually
-        $htmlSelectOption = new cHTMLOptionElement(i18n("Block style"), 'cms_teaser_style_block.html', false);
+        $htmlSelectOption = new cHTMLOptionElement(i18n("Slider style"), 'cms_teaser_slider.html', false);
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
-        $htmlSelectOption = new cHTMLOptionElement(i18n("Blog style"), 'cms_teaser_style_blog.html', false);
+        $htmlSelectOption = new cHTMLOptionElement(i18n("Image style"), 'cms_teaser_image.html', false);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
+
+        $htmlSelectOption = new cHTMLOptionElement(i18n("Text style"), 'cms_teaser_text.html', false);
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
         $additionalOptions = getEffectiveSettingsByType('cms_teaser');
