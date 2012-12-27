@@ -76,6 +76,11 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
     protected static $_translations = array("MORE");
 
     /**
+     * Variable for detecting current interation
+     */
+    protected $iteration = 0;
+
+    /**
      * Initialises class attributes and handles store events.
      *
      * @param string $rawSettings the raw settings in an XML structure or as
@@ -379,15 +384,19 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             // if a content type is given, wich contains html
             if ((int) $imageId > 0) {
                 $image = $this->_getImage($imageId, $this->_settings['teaser_image_width'], $this->_settings['teaser_image_height'], $this->_settings['teaser_image_crop']);
-                $template->set('d', 'IMAGE', $image);
+                $template->set('d', 'IMAGE', $image['element']);
+                $template->set('d', 'IMAGE_SRC', $image['src']);
             } else if (strip_tags($imageId) != $imageId && strlen($imageId) > 0) {
                 $image = $this->_extractImage($imageId);
                 if (strlen($image) > 0) {
-                    $template->set('d', 'IMAGE', $image);
+                    $template->set('d', 'IMAGE', $image['element']);
+                    $template->set('d', 'IMAGE_SRC', $image['src']);
                 } else {
                     $template->set('d', 'IMAGE', '');
+                    $template->set('d', 'IMAGE_SRC', '');
                 }
             } else {
+                $template->set('d', 'IMAGE_SRC', '');
                 $template->set('d', 'IMAGE', '');
             }
 
@@ -412,6 +421,13 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             foreach (self::$_translations as $translationString) {
                 $template->set('d', $translationString, mi18n($translationString));
             }
+
+            if ($this->iteration == 0) {
+                $template->set('d', 'ACTIVE', 'active');
+            } else {
+                $template->set('d', 'ACTIVE', '');
+            }
+            $this->iteration++;
 
             $template->next();
         }
@@ -455,7 +471,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * @return img tag containing scaled image
      */
     private function _extractImage($content) {
-        $image = '';
+        $image = array();
 
         // search an image tag
         $regEx = "/<img[^>]*?>.*?/i";
@@ -496,6 +512,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      */
     private function _getImage($image, $maxX, $maxY, $cropped, $isFile = false) {
         $content = '';
+        $return = array();
 
         if ($cropped == 'true') {
             $cropped = true;
@@ -530,7 +547,10 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             $content = '<img alt="" src="' . $imgSrc . '" class="teaser_image"' . $letter . '>' . $content;
         }
 
-        return $content;
+        $return['element'] = $content;
+        $return['src'] = $imgSrc;
+
+        return $return;
     }
 
     /**

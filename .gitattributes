@@ -65,13 +65,21 @@ cms/data/modules/content_sitemap_xml/lang/lang_de_DE.txt -text svneol=unset#text
 cms/data/modules/content_sitemap_xml/lang/lang_en_GB.txt -text svneol=unset#text/plain
 cms/data/modules/content_sitemap_xml/php/content_sitemap_xml_input.php -text
 cms/data/modules/content_sitemap_xml/php/content_sitemap_xml_output.php -text
+cms/data/modules/content_teaser_config/info.xml -text
+cms/data/modules/content_teaser_config/lang/lang_de_DE.txt -text
+cms/data/modules/content_teaser_config/php/content_teaser_config_input.php -text
+cms/data/modules/content_teaser_config/php/content_teaser_config_output.php -text
+cms/data/modules/content_teaser_config/template/get.tpl -text
 cms/data/modules/content_teaser_image/info.xml -text
+cms/data/modules/content_teaser_image/lang/lang_de_DE.txt -text
 cms/data/modules/content_teaser_image/php/content_teaser_image_input.php -text
 cms/data/modules/content_teaser_image/php/content_teaser_image_output.php -text
 cms/data/modules/content_teaser_slider/info.xml -text
+cms/data/modules/content_teaser_slider/lang/lang_de_DE.txt -text
 cms/data/modules/content_teaser_slider/php/content_teaser_slider_input.php -text
 cms/data/modules/content_teaser_slider/php/content_teaser_slider_output.php -text
 cms/data/modules/content_teaser_text/info.xml -text
+cms/data/modules/content_teaser_text/lang/lang_de_DE.txt -text
 cms/data/modules/content_teaser_text/php/content_teaser_text_input.php -text
 cms/data/modules/content_teaser_text/php/content_teaser_text_output.php -text
 cms/data/modules/content_text/info.xml -text svneol=unset#text/plain
@@ -125,6 +133,7 @@ cms/images/backgrounds/bg.png -text
 cms/images/but_ok.gif -text
 cms/images/index.php -text
 cms/images/misc/logo.png -text
+cms/images/misc/sprite.png -text
 cms/includes/concache.php -text
 cms/includes/index.php -text
 cms/index.php -text
