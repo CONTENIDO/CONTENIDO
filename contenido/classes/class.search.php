@@ -1022,23 +1022,25 @@ class cSearch extends cSearchBaseAbstract {
 
         $tmp_searchwords = array();
         foreach ($this->_searchWords as $word) {
+            $wordEscaped = $this->db->escape($word);
             if ($this->_searchOption == 'like') {
-                $word = "'%" . $word . "%'";
+                $wordEscaped = "'%" . $wordEscaped . "%'";
             } elseif ($this->_searchOption == 'exact') {
-                $word = "'" . $word . "'";
+                $wordEscaped = "'" . $wordEscaped . "'";
             }
-            array_push($tmp_searchwords, $word);
+            $tmp_searchwords[] = $word;
         }
 
         if (count($this->_searchWordsExclude) > 0) {
             foreach ($this->_searchWordsExclude as $word) {
+                $wordEscaped = $this->db->escape($word);
                 if ($this->_searchOption == 'like') {
-                    $word = "'%" . $word . "%'";
+                    $wordEscaped = "'%" . $wordEscaped . "%'";
                 } elseif ($this->_searchOption == 'exact') {
-                    $word = "'" . $word . "'";
+                    $wordEscaped = "'" . $wordEscaped . "'";
                 }
-                array_push($tmp_searchwords, $word);
-                array_push($this->_searchWords, $word);
+                $tmp_searchwords[] = $wordEscaped;
+                $this->_searchWords[] = $word;
             }
         }
 
@@ -1047,11 +1049,11 @@ class cSearch extends cSearchBaseAbstract {
             $kwSql = "keyword REGEXP '" . implode('|', $tmp_searchwords) . "'";
         } elseif ($this->_searchOption == 'like') {
             // like search
-            $search_like = implode(" OR keyword LIKE ", cSecurity::escapeDB($tmp_searchwords, $this->oDB));
+            $search_like = implode(" OR keyword LIKE ", $tmp_searchwords);
             $kwSql = "keyword LIKE '" . $search_like;
         } elseif ($this->_searchOption == 'exact') {
             // exact match
-            $search_exact = implode(" OR keyword = ", cSecurity::escapeDB($tmp_searchwords, $this->oDB));
+            $search_exact = implode(" OR keyword = ", $tmp_searchwords);
             $kwSql = "keyword LIKE '" . $search_exact;
         }
 
