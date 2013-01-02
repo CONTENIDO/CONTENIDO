@@ -26,6 +26,7 @@
  *   modified 2008-06-30, Frederic Schneider, add security fix
  *   modified 2008-07-11, Dominik Ziegler, marked class search_helper as deprecated
  *   modified 2008-11-12, Andreas Lindner, add special treatment for iso-8859-2    
+ *   modified 2013-01-02, Murat Purc, Fixed escape issue in db search options [#CON-939]
  *
  *   $Id: class.search.php 873 2008-11-12 09:18:50Z andreas.lindner $: 
  * }}
@@ -931,30 +932,32 @@ class Search
 	  	$tmp_searchwords = array();
 	  	foreach($this->search_words as $word) 
 	  	{
+            $wordEscaped = Contenido_Security::escapeDB($word, $this->db);
 	  		if ($this->search_option == 'like')
 	  		{
-				$word = "'%".$word."%'";
+				$wordEscaped = "'%".$wordEscaped."%'";
 	  		}
-	  		if ($this->search_option == 'exact')
+            elseif ($this->search_option == 'exact')
 	  		{
-				$word = "'".$word."'";
+				$wordEscaped = "'".$wordEscaped."'";
 	  		}
-	      	array_push($tmp_searchwords, $word);
+	      	array_push($tmp_searchwords, $wordEscaped);
 	  	}
 	  	
 	  	if(count($this->search_words_exclude) > 0)
 	  	{
     	  	foreach($this->search_words_exclude as $word) 
     	  	{
+                $wordEscaped = Contenido_Security::escapeDB($word, $this->db);
     	  		if ($this->search_option == 'like')
     	  		{
-    				$word = "'%".$word."%'";
+    				$wordEscaped = "'%".$wordEscaped."%'";
     	  		}
-    	  		if ($this->search_option == 'exact')
+    	  		elseif ($this->search_option == 'exact')
     	  		{
-    				$word = "'".$word."'";
+    				$wordEscaped = "'".$wordEscaped."'";
     	  		}
-    	      	array_push($tmp_searchwords, $word);
+    	      	array_push($tmp_searchwords, $wordEscaped);
     	      	array_push($this->search_words, $word);
     	  	}    	  		
 	  	}
