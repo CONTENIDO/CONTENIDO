@@ -85,11 +85,11 @@ abstract class cSearchBaseAbstract {
         $this->lang = $lang;
         $this->client = $client;
 
-        $this->bDebug = true;
+        $this->bDebug = $bDebug;
 
-        if ($oDB == null) {
+        if ($oDB == null || !is_object($oDB)) {
             $this->db = cRegistry::getDb();
-        } elseif (is_object($oDB)) {
+        } else {
             $this->db = $oDB;
         }
     }
@@ -352,14 +352,6 @@ class cSearchIndex extends cSearchBaseAbstract {
      */
     public function createKeywords() {
         $tmp_keys = array();
-        $replace = array(
-            '&nbsp;',
-            '&amp;',
-            '&lt;',
-            '&gt;',
-            '&quot;',
-            '&#039;'
-        );
 
         // Only create keycodes, if some are available
         if (is_array($this->_keycode)) {
@@ -371,10 +363,7 @@ class cSearchIndex extends cSearchBaseAbstract {
                         // remove backslash
                         $code = stripslashes($code);
                         // replace HTML line breaks with newlines
-                        $code = str_ireplace(array(
-                            '<br>',
-                            '<br />'
-                        ), "\n", $code);
+                        $code = str_ireplace(array('<br>', '<br />'), "\n", $code);
                         // remove html tags
                         $code = strip_tags($code);
                         if (strlen($code) > 0) {
@@ -436,7 +425,7 @@ class cSearchIndex extends cSearchBaseAbstract {
                 $sql = "INSERT INTO " . $this->cfg['tab']['keywords'] . "
                             (keyword, " . $this->_place . ", idlang)
                         VALUES
-                            ('" . cSecurity::escapeDB($keyword, $this->db) . "', '" . cSecurity::escapeDB($index_string, $this->db) . "', " . cSecurity::toInteger($this->lang) . ")";
+                            ('" . $this->db->escape($keyword) . "', '" . $this->db->escape($index_string) . "', " . cSecurity::toInteger($this->lang) . ")";
             } else {
                 // if keyword allready exists, create new index_string
                 if (preg_match("/&$this->idart=/", $this->_keywordsOld[$keyword])) {
@@ -447,7 +436,7 @@ class cSearchIndex extends cSearchBaseAbstract {
 
                 $sql = "UPDATE " . $this->cfg['tab']['keywords'] . "
                         SET " . $this->_place . " = '" . $index_string . "'
-                        WHERE idlang='" . cSecurity::toInteger($this->lang) . "' AND keyword='" . cSecurity::escapeDB($keyword, $this->db) . "'";
+                        WHERE idlang='" . cSecurity::toInteger($this->lang) . "' AND keyword='" . $this->db->escape($keyword) . "'";
             }
             $this->_debug('sql', $sql);
 
@@ -469,11 +458,11 @@ class cSearchIndex extends cSearchBaseAbstract {
             if (strlen($index_string) == 0) {
                 // keyword is not referenced by any article
                 $sql = "DELETE FROM " . $this->cfg['tab']['keywords'] . "
-                    WHERE idlang='" . cSecurity::toInteger($this->lang) . "' AND keyword='" . cSecurity::escapeDB($key_del, $this->db) . "'";
+                    WHERE idlang = " . cSecurity::toInteger($this->lang) . " AND keyword = '" . $this->db->escape($key_del) . "'";
             } else {
                 $sql = "UPDATE " . $this->cfg['tab']['keywords'] . "
                     SET " . $this->_place . " = '" . $index_string . "'
-                    WHERE idlang='" . cSecurity::toInteger($this->lang) . "' AND keyword='" . cSecurity::escapeDB($key_del, $this->db) . "'";
+                    WHERE idlang = " . cSecurity::toInteger($this->lang) . " AND keyword = '" . $this->db->escape($key_del) . "'";
             }
             $this->_debug('sql', $sql);
             $this->db->query($sql);
@@ -515,43 +504,14 @@ class cSearchIndex extends cSearchBaseAbstract {
      */
     public function removeSpecialChars($key) {
         $aSpecialChars = array(
-            "-",
-            "_",
-            "'",
-            ".",
-            "!",
-            "\"",
-            "#",
-            "$",
-            "%",
-            "&",
-            "(",
-            ")",
-            "*",
-            "+",
-            ",",
-            "/",
-            ":",
-            ";",
-            "<",
-            "=",
-            ">",
-            "?",
-            "@",
-            "[",
-            "\\",
-            "]",
-            "^",
-            "`",
-            "{",
-            "|",
-            "}",
-            "~"
+            "-", "_", "'", ".", "!", "\"", "#", "$", "%", "&", "(", ")", "*", "+",
+            ",", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "`",
+            "{", "|", "}", "~"
         );
 
         for ($i = 127; $i < 192; $i++) {
             // some other special characters
-            array_push($aSpecialChars, chr($i));
+            $aSpecialChars[] = chr($i);
         }
 
         // TODO: The transformation of accented characters must depend on the
@@ -1169,22 +1129,18 @@ class cSearch extends cSearchBaseAbstract {
      * @return Array of stripped search-words
      */
     public function stripWords($searchwords) {
-        $tmp_words = array();
-        // remove backslash
-        $searchwords = stripslashes($searchwords);
-        // remove html tags
-        $searchwords = strip_tags($searchwords);
+        // remove backslash and html tags
+        $searchwords = trim(strip_tags(stripslashes($searchwords)));
 
         // split the phrase by any number of commas or space characters
-        $tmp_words = preg_split('/[\s,]+/', trim($searchwords));
+        $tmp_words = preg_split('/[\s,]+/', $searchwords);
 
         $tmp_searchwords = array();
 
         foreach ($tmp_words as $word) {
-            $word = strtolower($word);
-            $word = $this->_index->removeSpecialChars(trim($word));
+            $word = $this->_index->removeSpecialChars(trim(strtolower($word)));
             if (strlen($word) > 1) {
-                array_push($tmp_searchwords, $word);
+                $tmp_searchwords[] = $word;
             }
         }
 
@@ -1258,23 +1214,23 @@ class cSearch extends cSearchBaseAbstract {
      * @return array Articles in specified search range
      */
     public function getSearchableArticles($search_range) {
-        $cat_range = array();
+        $aCatRange = array();
         if (array_key_exists('cat_tree', $search_range) && is_array($search_range['cat_tree'])) {
             if (count($search_range['cat_tree']) > 0) {
                 foreach ($search_range['cat_tree'] as $cat) {
-                    $cat_range = array_merge($cat_range, $this->getSubTree($cat));
+                    $aCatRange = array_merge($aCatRange, $this->getSubTree($cat));
                 }
             }
         }
 
         if (array_key_exists('categories', $search_range) && is_array($search_range['categories'])) {
             if (count($search_range['categories']) > 0) {
-                $cat_range = array_merge($cat_range, $search_range['categories']);
+                $aCatRange = array_merge($aCatRange, $search_range['categories']);
             }
         }
 
-        $cat_range = array_unique($cat_range);
-        $sCatRange = implode("','", $cat_range);
+        $aCatRange = array_unique($aCatRange);
+        $sCatRange = implode("','", $aCatRange);
 
         if (array_key_exists('articles', $search_range) && is_array($search_range['articles'])) {
             if (count($search_range['articles']) > 0) {
@@ -1284,27 +1240,25 @@ class cSearch extends cSearchBaseAbstract {
             }
         }
 
-        $id_arts = array();
-
         if ($this->_protected == true) {
-            $protected = " C.public = '1' AND C.visible = '1' AND B.online = '1' ";
+            $sProtected = " C.public = 1 AND C.visible = 1 AND B.online = 1 ";
         } else {
             if ($this->_dontshowofflinearticles == true) {
-                $protected = " C.visible = '1' AND B.online = '1' ";
+                $sProtected = " C.visible = 1 AND B.online = 1 ";
             } else {
-                $protected = " 1 ";
+                $sProtected = " 1 ";
             }
         }
 
         if ($this->_exclude == true) {
             // exclude searchrange
-            $sSearchRange = " A.idcat NOT IN  ('" . $sCatRange . "') AND B.idart NOT IN  ('" . $sArtRange . "') AND ";
+            $sSearchRange = " A.idcat NOT IN ('" . $sCatRange . "') AND B.idart NOT IN ('" . $sArtRange . "') AND ";
         } else {
             // include searchrange
             if (strlen($sArtRange) > 0) {
-                $sSearchRange = " A.idcat IN  ('" . $sCatRange . "') AND B.idart IN  ('" . $sArtRange . "') AND ";
+                $sSearchRange = " A.idcat IN ('" . $sCatRange . "') AND B.idart IN ('" . $sArtRange . "') AND ";
             } else {
-                $sSearchRange = " A.idcat IN  ('" . $sCatRange . "') AND ";
+                $sSearchRange = " A.idcat IN ('" . $sCatRange . "') AND ";
             }
         }
 
@@ -1328,13 +1282,15 @@ class cSearch extends cSearchBaseAbstract {
                     B.searchable = 1  AND
                     A.idcat = C.idcat AND
                     " . $sArtSpecs . "
-                    " . $protected . " ";
+                    " . $sProtected . " ";
         $this->_debug('sql', $sql);
         $this->db->query($sql);
+
+        $aIdArts = array();
         while ($this->db->next_record()) {
-            $id_arts[] = $this->db->f('idart');
+            $aIdArts[] = $this->db->f('idart');
         }
-        return $id_arts;
+        return $aIdArts;
     }
 
     /**
@@ -1367,7 +1323,7 @@ class cSearch extends cSearchBaseAbstract {
      * @return void
      */
     public function setArticleSpecification($iArtspecID) {
-        array_push($this->_articleSpecs, $iArtspecID);
+        $this->_articleSpecs[] = $iArtspecID;
     }
 
     /**
@@ -1388,11 +1344,11 @@ class cSearch extends cSearchBaseAbstract {
                     " . $this->cfg['tab']['art_spec'] . "
                 WHERE
                     client = " . cSecurity::toInteger($this->client) . " AND
-                    artspec = '" . cSecurity::escapeDB($sArtSpecName, $this->db) . "' ";
+                    artspec = '" . $this->db->escape($sArtSpecName) . "' ";
         $this->_debug('sql', $sql);
         $this->db->query($sql);
         while ($this->db->next_record()) {
-            array_push($this->_articleSpecs, $this->db->f('idartspec'));
+            $this->_articleSpecs[] = $this->db->f('idartspec');
         }
     }
 
@@ -1575,7 +1531,6 @@ class cSearchResult extends cSearchBaseAbstract {
         $sorted_rank = array_reverse($ranked_search, true);
 
         if (isset($result_per_page) && $result_per_page > 0) {
-            $split_result = array();
             $split_result = array_chunk($sorted_rank, $result_per_page, true);
             $this->_orderedSearchResult = $split_result;
         } else {
@@ -1641,9 +1596,7 @@ class cSearchResult extends cSearchBaseAbstract {
                         if (isset($match[0])) {
                             $pattern = $match[0];
                             $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
-                            $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize
-                                                                                                        // located
-                                                                                                        // searchwords
+                            $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize located searchwords
                         }
                     }
                 }
@@ -1660,9 +1613,7 @@ class cSearchResult extends cSearchBaseAbstract {
                             if (isset($match[0])) {
                                 $pattern = $match[0];
                                 $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
-                                $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize
-                                                                                                            // located
-                                                                                                            // searchwords
+                                $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize located searchwords
                             }
                         }
                     }
@@ -1748,8 +1699,8 @@ class cSearchResult extends cSearchBaseAbstract {
      */
     public function setReplacement($rep1, $rep2) {
         if (strlen(trim($rep1)) > 0 && strlen(trim($rep2)) > 0) {
-            array_push($this->_replacement, $rep1);
-            array_push($this->_replacement, $rep2);
+            $this->_replacement[] = $rep1;
+            $this->_replacement[] = $rep2;
         }
     }
 
