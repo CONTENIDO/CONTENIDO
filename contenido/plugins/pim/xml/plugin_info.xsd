@@ -47,7 +47,7 @@
             <xsd:element name="areas" type="ContenidoAreasTyp" />
             <xsd:element name="actions" type="ContenidoActionsTyp" />
             <xsd:element name="frames" type="ContenidoFramesTyp" />
-            <!--<xsd:element name="nav_main" type="ContenidoNavMainTyp" />-->
+            <xsd:element name="nav_main" type="ContenidoNavMainTyp" />
             <xsd:element name="nav_sub" type="ContenidoNavSubTyp" />
         </xsd:sequence>
     </xsd:complexType>
@@ -95,6 +95,12 @@
                     </xsd:simpleContent>
                 </xsd:complexType>
             </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+	<xsd:complexType name="ContenidoNavMainTyp">
+		<xsd:sequence>
+        	<xsd:element name="nav" type="xsd:string" minOccurs="0" maxOccurs="0" />
         </xsd:sequence>
     </xsd:complexType>
 

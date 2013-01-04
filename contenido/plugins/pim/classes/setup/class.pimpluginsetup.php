@@ -40,6 +40,8 @@ class PimPluginSetup {
      * @return boolean
      */
     public function checkValidXml() {
+        $sess = cRegistry::getSession();
+
         $dom = new DomDocument();
         $dom->loadXML($this->tempXml);
 
@@ -52,7 +54,12 @@ class PimPluginSetup {
                 $this->_extractor->destroyTempFiles();
             }
 
-            throw new cException('Invalid Xml document');
+            $pageError = new cGuiPage('pim_error', 'pim');
+            $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
+            $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
+            $pageError->displayError(i18n('Invalid Xml document. Please contact the plugin author.', 'pim'));
+            $pageError->render();
+            exit();
         }
     }
 
@@ -133,8 +140,7 @@ class PimPluginSetup {
         $this->_installAddFrames($tempXml->contenido->frames);
 
         // add entries at *_nav_main
-        // TODO: $this->_installAddNavMain($tempXml->contenido->nav_main,
-        // $pluginId);
+        $this->_installAddNavMain($tempXml->contenido->nav_main, $pluginId);
 
         // add entries at *_nav_sub
         $this->_installAddNavSub($tempXml->contenido->nav_sub);
@@ -239,7 +245,7 @@ class PimPluginSetup {
     }
 
     /**
-     * TODO: Implement at XSD-File, add entries at *_nav_main
+     * Add entries at *_nav_main
      *
      * @access protected
      * @param $tempXml temporary plugin definitions
