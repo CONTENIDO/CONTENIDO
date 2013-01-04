@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-14 13:30+0200\n"
+"POT-Creation-Date: 2013-01-04 13:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,50 +17,180 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: includes/include.right_bottom.php:107
-msgid "The plugin has been successfully installed"
+#: classes/setup/class.pimpluginsetup.php:59
+#: classes/setup/class.pimpluginsetup.php:548
+#: classes/setup/class.pimpluginsetup.php:556
+#: classes/setup/class.pimpluginsetup.php:576
+#: includes/include.right_bottom.php:121 includes/include.right_bottom.php:136
+msgid "Back to Plugin Manager"
 msgstr ""
 
-#: includes/include.right_bottom.php:126
+#: classes/setup/class.pimpluginsetup.php:60
+msgid "Invalid Xml document. Please contact the plugin author."
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.php:406
+#: classes/setup/class.pimpluginsetup.php:482
+#: classes/setup/class.pimpluginsetup.php:486
+msgid "The plugin <strong>"
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.php:406
+msgid ""
+"</strong> has been successfully uninstalled. To apply the changes please "
+"login into backend again."
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.php:458
+#: classes/setup/class.pimpluginsetup.php:460
+msgid "The pluginfolder <strong>"
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.php:458
+msgid "</strong> has been successfully uninstalled."
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.php:460
+msgid "</strong> could not be uninstalled."
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.php:482
+msgid ""
+"</strong> has been sucessfully disabled. To apply the changes please login "
+"into backend again."
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.php:486
+msgid ""
+"</strong> has been sucessfully enabled. To apply the changes please login "
+"into backend again."
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.php:549
+msgid "This plugin is already installed"
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.php:557
+msgid "You have to update the same plugin"
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.php:577
+msgid "Plugin Manager accepts only Zip archives"
+msgstr ""
+
+#: includes/include.right_bottom.php:25
+msgid "Permission denied"
+msgstr ""
+
+#: includes/include.right_bottom.php:32
+msgid "Currently the plugin system is disabled via configuration"
+msgstr ""
+
+#: includes/include.right_bottom.php:122
+msgid "You have to install CONTENIDO <strong>"
+msgstr ""
+
+#: includes/include.right_bottom.php:122
+msgid "</strong> or higher to install this plugin!"
+msgstr ""
+
+#: includes/include.right_bottom.php:137
+msgid "Your current CONTENIDO version is to new - max CONTENIDO version: "
+msgstr ""
+
+#: includes/include.right_bottom.php:167
+msgid ""
+"The plugin has been successfully installed. To apply the changes please "
+"login into backend again."
+msgstr ""
+
+#: includes/include.right_bottom.php:169
+msgid ""
+"The plugin has been successfully updated. To apply the changes please login "
+"into backend again."
+msgstr ""
+
+#: includes/include.right_bottom.php:175
+msgid "The plugin has been successfully uploaded. Now you can install it."
+msgstr ""
+
+#: includes/include.right_bottom.php:199
 msgid "Y-m-d"
 msgstr ""
 
-#: includes/include.right_bottom.php:139
+#: includes/include.right_bottom.php:212
 msgid "Installed since"
 msgstr ""
 
-#: includes/include.right_bottom.php:140
+#: includes/include.right_bottom.php:213
 msgid "Author"
 msgstr ""
 
-#: includes/include.right_bottom.php:141
+#: includes/include.right_bottom.php:214
 msgid "Contact"
 msgstr ""
 
-#: includes/include.right_bottom.php:142
-msgid "Uninstall"
-msgstr ""
-
-#: includes/include.right_bottom.php:143 includes/include.right_bottom.php:145
+#: includes/include.right_bottom.php:216 includes/include.right_bottom.php:218
 msgid "Update"
 msgstr ""
 
-#: includes/include.right_bottom.php:144
+#: includes/include.right_bottom.php:217
 msgid "Please choose your new file"
 msgstr ""
 
-#: includes/include.right_bottom.php:156
-msgid "Add new plugin"
+#: includes/include.right_bottom.php:224
+msgid "Disable plugin"
 msgstr ""
 
-#: includes/include.right_bottom.php:157
+#: includes/include.right_bottom.php:226
+msgid "Enable plugin"
+msgstr ""
+
+#: includes/include.right_bottom.php:232
+msgid ""
+"Are you sure to delete this plugin? Files are not deleted in filesystem."
+msgstr ""
+
+#: includes/include.right_bottom.php:232
+msgid "Uninstall"
+msgstr ""
+
+#: includes/include.right_bottom.php:236
+msgid "This plugin is not writeable, please set the rights manually"
+msgstr ""
+
+#: includes/include.right_bottom.php:256
+msgid "Foldername"
+msgstr ""
+
+#: includes/include.right_bottom.php:257
+msgid "Install extracted plugin"
+msgstr ""
+
+#: includes/include.right_bottom.php:258
+msgid "Uninstall extracted plugin (deleted plugin files from filesystem)"
+msgstr ""
+
+#: includes/include.right_bottom.php:269
+msgid "No entries"
+msgstr ""
+
+#: includes/include.right_bottom.php:273
+msgid "Upload a new plugin"
+msgstr ""
+
+#: includes/include.right_bottom.php:274
 msgid "Please choose a plugin package"
 msgstr ""
 
-#: includes/include.right_bottom.php:158
+#: includes/include.right_bottom.php:275
 msgid "Upload plugin package"
 msgstr ""
 
-#: includes/include.right_bottom.php:159
+#: includes/include.right_bottom.php:276
 msgid "Installed Plugins"
+msgstr ""
+
+#: includes/include.right_bottom.php:277
+msgid "Not installed Plugins"
 msgstr ""
