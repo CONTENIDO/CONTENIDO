@@ -16,6 +16,11 @@
     <script type="text/javascript" src="scripts/general.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/str_overview.css">
     <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
+    <style type="text/css">
+        #cat_navbar span {padding-left:15px;}
+        #cat_navbar span.last {padding-left:5px;}
+        #category_list td.action {text-align:center;}
+    </style>
     <script type="text/javascript">
         /* Session-ID */
         var sid = "{SID}";
@@ -23,101 +28,162 @@
         var frame = "{FRAME}";
 
         $(function() {
-            // allow to drag and drop the table rows
-            $('#category_list tbody').sortable({
-                // only allow to drag&drop rows that do not have the 'fixed' class
-                items: '> tr:not(.fixed)',
-                start: function(event, ui) {
-                    // save the old index of the dragged element
-                    $(this).data('oldIndex', ui.item.index());
-                },
-                stop: function(event, ui) {
-                    var self = this;
-                    // get the old index of the dropped element
-                    var oldIndex = $(self).data('oldIndex');
-                    $(self).removeData('oldIndex');
-                    // do nothing if element has been dropped at the old position
-                    if (oldIndex == ui.item.index()) {
-                        return;
-                    }
+            var CSS_CLASS_DISABLED = 'ui-state-disabled',
+                SELECTOR_PARENT_CATS = '#category_list tbody tr[data-parentid={ID}]',
+                $categoryList = $('#category_list tbody');
 
-                    var additionalOptions = {
-                        buttons: {
-                            '{OK}': function() {
-                                // user wants to move the category, so send the request
-                                var idcat = ui.item.data('idcat');
-                                var prevItem = ui.item.prev();
-                                var nextItem = ui.item.next();
-                                // compute newParentId, newPreId, newPostId depending on where the category has been dropped
-                                if ((typeof prevItem.data('idcat') == 'undefined' || prevItem.data('idcat') == '') && nextItem.data('idcat') != '') {
-                                    // case: category moved to top level after empty row or to the very top
-                                    var newParentId = 0;
-                                    if (typeof prevItem.prev().data('idcat') != 'undefined') {
-                                        // case: category moved to top level after empty row, so search for the next level-0 category
-                                        var tempPrevItem  = prevItem;
-                                        while (tempPrevItem.data('level') != 0) {
-                                            tempPrevItem = tempPrevItem.prev();
-                                        }
-                                        var newPreId = tempPrevItem.data('idcat');
-                                    } else {
-                                        // case: category moved to the very top
-                                        var newPreId = 0;
-                                    }
-                                    var newPostId = nextItem.data('idcat');
-                                } else if (typeof prevItem.data('idcat') != 'undefined' && prevItem.data('idcat') != '' && (typeof nextItem.data('idcat') == 'undefined' || nextItem.data('idcat') == '')) {
-                                    // case: category moved to bottom of a top level category
-                                    var tempPrevItem  = prevItem;
+            /**
+             * Sets the disabled state of category items recursively.
+             * Calls itself for each categories having identical parentid as passed idcat.
+             * @private  Not intended to call from public context
+             * @param  {Number}  idcat  The category id to set disabled state
+             * @param  {Boolean}  disabled  Flad to set/remove disabled state
+             */
+            function _setCategoryItemsDisabledStateRecursive(idcat, disabled) {
+                var $items = $(SELECTOR_PARENT_CATS.replace('{ID}', idcat));
+                $items.each(function(pos, item) {
+                    if (disabled) {
+                        $(item).addClass(CSS_CLASS_DISABLED);
+                    } else {
+                        $(item).removeClass(CSS_CLASS_DISABLED);
+                    }
+                    _setCategoryItemsDisabledStateRecursive($(this).data('idcat'), disabled);
+                });
+            }
+
+            /**
+             * Handler for sortable start event
+             * @private  Not intended to call from public context
+             */
+            function _onSortableStart(event, ui) {
+                // save the old index/idcat of the dragged element
+                $(this).data('oldIndex', ui.item.index());
+                $(this).data('oldIdcat', ui.item.data('idcat'));
+            }
+
+            /**
+             * Handler for sortable stop event
+             * @private  Not intended to call from public context
+             */
+            function _onSortableStop(event, ui) {
+                var sortableContext = this,
+                    // get the old index/idcat of the dropped element
+                    oldIndex = $(this).data('oldIndex'),
+                    oldIdcat = $(this).data('oldIdcat');
+
+                var idcat = ui.item.data('idcat'),
+                    currItem = ui.item,
+                    prevItem = ui.item.prev(),
+                    nextItem = ui.item.next();
+
+                $(this).removeData('oldIndex');
+                $(this).removeData('oldIdcat');
+
+                // Do some checks...
+                if (oldIndex == currItem.index()) {
+                    // do nothing if element has been dropped at the old position
+                    _setCategoryItemsDisabledStateRecursive(oldIdcat, false);
+                    return;
+                } else if (currItem.hasClass(CSS_CLASS_DISABLED)) {
+                    // do nothing if element has been dropped into it's childs
+                    $(this).sortable('cancel');
+                    _setCategoryItemsDisabledStateRecursive(oldIdcat, false);
+                    return;
+                } else if (prevItem.hasClass(CSS_CLASS_DISABLED)) {
+                    // do nothing if element has been dropped between it's disabled childs
+                    $(this).sortable('cancel');
+                    _setCategoryItemsDisabledStateRecursive(oldIdcat, false);
+                    return;
+                }
+
+                var additionalOptions = {
+                    buttons: {
+                        '{OK}': function() {
+                            // user wants to move the category, so send the request
+                            var newParentId, newPreId, newPostId, tempPrevItem;
+
+                            // compute newParentId, newPreId, newPostId depending on where the category has been dropped
+                            if ((typeof prevItem.data('idcat') == 'undefined' || prevItem.data('idcat') == '') && nextItem.data('idcat') != '') {
+                                // case: category moved to top level after empty row or to the very top
+                                newParentId = 0;
+                                if (typeof prevItem.prev().data('idcat') != 'undefined') {
+                                    // case: category moved to top level after empty row, so search for the next level-0 category
+                                    tempPrevItem = prevItem;
                                     while (tempPrevItem.data('level') != 0) {
                                         tempPrevItem = tempPrevItem.prev();
                                     }
-                                    var newParentId = tempPrevItem.data('idcat');
-                                    if ($('#category_list tbody tr[data-parentid=' + newParentId + ']').size() > 0) {
-                                        // case: there already are child categories with this parentid
-                                        var newPreId = prevItem.data('idcat');
-                                    } else {
-                                        // case: there is no child category yet
-                                        var newPreId = 0;
-                                    }
-                                    var newPostId = 0;
+                                    newPreId = tempPrevItem.data('idcat');
                                 } else {
-                                    // there is a prev and a post category
-                                    if (prevItem.data('level') >= nextItem.data('level')) {
-                                        var newParentId = prevItem.data('parentid');
-                                    } else if (prevItem.data('level') <= nextItem.data('level')) {
-                                        var newParentId = nextItem.data('parentid');
-                                    }
-                                    if (prevItem.data('level') >= nextItem.data('level')) {
-                                        var newPreId = prevItem.data('idcat');
-                                    } else {
-                                        var newPreId = 0;
-                                    }
-                                    if (prevItem.data('level') <= nextItem.data('level')) {
-                                        var newPostId = nextItem.data('idcat');
-                                    } else {
-                                        var newPostId = 0;
-                                    }
+                                    // case: category moved to the very top
+                                    newPreId = 0;
                                 }
-                                // construct the URL and point the browser to it
-                                var url  = 'main.php?area=' + area;
-                                url += '&action=str_movesubtree';
-                                url += '&frame=' + frame;
-                                url += '&idcat=' + idcat;
-                                url += '&parentid_new=' + newParentId;
-                                url += '&preid_new=' + newPreId;
-                                url += '&postid_new=' + newPostId;
-                                url += '&contenido=' + sid;
-                                window.location.href = url;
-                                $(this).dialog('close');
-                            },
-                            '{CANCEL}': function() {
-                                // user does not want to move the category, so cancel
-                                $(self).sortable('cancel');
-                                $(this).dialog('close');
+                                newPostId = nextItem.data('idcat');
+                            } else if (typeof prevItem.data('idcat') != 'undefined' && prevItem.data('idcat') != '' && (typeof nextItem.data('idcat') == 'undefined' || nextItem.data('idcat') == '')) {
+                                // case: category moved to bottom of a top level category
+                                tempPrevItem = prevItem;
+                                while (tempPrevItem.data('level') != 0) {
+                                    tempPrevItem = tempPrevItem.prev();
+                                }
+                                newParentId = tempPrevItem.data('idcat');
+                                if ($(SELECTOR_PARENT_CATS.replace('{ID}', newParentId)).size() > 0) {
+                                    // case: there already are child categories with this parentid
+                                    newPreId = prevItem.data('idcat');
+                                } else {
+                                    // case: there is no child category yet
+                                    newPreId = 0;
+                                }
+                                newPostId = 0;
+                            } else {
+                                // there is a prev and a post category
+                                if (prevItem.data('level') >= nextItem.data('level')) {
+                                    newParentId = prevItem.data('parentid');
+                                } else if (prevItem.data('level') <= nextItem.data('level')) {
+                                    newParentId = nextItem.data('parentid');
+                                }
+                                if (prevItem.data('level') >= nextItem.data('level')) {
+                                    newPreId = prevItem.data('idcat');
+                                } else {
+                                    newPreId = 0;
+                                }
+                                if (prevItem.data('level') <= nextItem.data('level')) {
+                                    newPostId = nextItem.data('idcat');
+                                } else {
+                                    newPostId = 0;
+                                }
                             }
+                            // construct the URL and point the browser to it
+                            var url  = 'main.php?area=' + area;
+                            url += '&action=str_movesubtree';
+                            url += '&frame=' + frame;
+                            url += '&idcat=' + idcat;
+                            url += '&parentid_new=' + newParentId;
+                            url += '&preid_new=' + newPreId;
+                            url += '&postid_new=' + newPostId;
+                            url += '&contenido=' + sid;
+                            window.location.href = url;
+                            $(this).dialog('close');
+                        },
+                        '{CANCEL}': function() {
+                            // user does not want to move the category, so cancel
+                            $(sortableContext).sortable('cancel');
+                            _setCategoryItemsDisabledStateRecursive(oldIdcat, false);
+                            $(this).dialog('close');
                         }
-                    };
-                    showConfirmation('{MOVE_CONFIRMATION}', null, additionalOptions);
-                }
+                    }
+                };
+
+                showConfirmation('{MOVE_CONFIRMATION}', null, additionalOptions);
+            }
+
+            // allow to drag and drop the table rows
+            $categoryList.sortable({
+                // only allow to drag&drop rows that do not have the 'fixed' class
+                items: '> tr:not(.fixed)',
+                forcePlaceholderSize: true,
+                placeholder: 'ui-state-highlight',
+                cancel: '.' + CSS_CLASS_DISABLED,
+                start: _onSortableStart,
+                stop: _onSortableStop
             });
         });
 
@@ -148,8 +214,8 @@
         }
 
         /* Inserts Worflow Select Box into Category row */
-        function printWorkflowSelect (idcat, selected) {
-            var script = document.getElementById ('wf'+idcat);
+        function printWorkflowSelect(idcat, selected) {
+            var script = document.getElementById('wf'+idcat);
             var parent = script.parentNode;
 
             var sTemplate = '{PLUGIN_WORKFLOW}';
@@ -186,13 +252,13 @@
             window.location.href = url;
         }
 
-        function confDupl (idcat, idparent, sName) {
+        function confDupl(idcat, idparent, sName) {
             sMessage = '{DUPLICATE_MESSAGE}';
             sMessage = sMessage.replace(/%s/g, sName);
             showConfirmation(sMessage, function() { duplicateCategory(idcat, idparent); });
         }
 
-        function confDel (idcat, idparent, sName) {
+        function confDel(idcat, idparent, sName) {
             sMessage = '{DELETE_MESSAGE}';
             sMessage = sMessage.replace(/%s/g, sName);
             showConfirmation(sMessage, function() { deleteStr(idcat, idparent); });
@@ -207,7 +273,7 @@
         var docEl = (
             typeof document.compatMode != "undefined" &&
             document.compatMode        != "BackCompat"
-        )? "documentElement" : "body";
+        ) ? "documentElement" : "body";
 
         </script>
 </head>
@@ -247,20 +313,20 @@
        <div class="cat_icon_text">i18n("Configure category")</div>
        <div class="cat_end_row"></div>
 
-       <div style = "display:{PERMISSION_NEWTREE_DISPLAY}">
+       <div style="display:{PERMISSION_NEWTREE_DISPLAY}">
            <div class="cat_label">&nbsp;</div>
            <div class="cat_input">&nbsp;</div>
            <div class="cat_icon">
-               <input type="checkbox" name="is_tree"  value="0" id="is_tree" onclick="refreshStatus();" {PERMISSION_NEWTREE}>
+               <input type="checkbox" name="is_tree" value="0" id="is_tree" onclick="refreshStatus();" {PERMISSION_NEWTREE}>
            </div>
            <div class="cat_icon_text" id="public_label">i18n("Category is a tree")</div>
            <div class="cat_end_row"></div>
        </div>
 
-       <div style = "display:{PERMISSION_NEWCAT_DISPLAY}">
+       <div style="display:{PERMISSION_NEWCAT_DISPLAY}">
            <div class="cat_label">&nbsp;</div>
            <div class="cat_large">
-               <p style="margin:0; padding:0; margin-bottom: 5px;">i18n("Position of category")</p>
+               <p style="margin:0;padding:0;margin-bottom:5px;">i18n("Position of category")</p>
                {CATEGORY_SELECT}
            </div>
            <div class="cat_end_row"></div>
@@ -303,46 +369,46 @@
 
 <!-- Begin listing of existing categories -->
 <table class="generic" cellspacing="0" id="category_list">
-     <tr class="fixed">
-        <th colspan="{SUM_COLUMNS}" id="cat_navbar">
-            {NEWCAT}
-            <span style="padding-left:15px;">&nbsp;</span>
-            {COLLAPSE_ALL}
-            <span style="padding-left:15px;">&nbsp;</span>
-            {EXPAND_ALL}
-            <span style="padding-left:15px;">&nbsp;</span>
-            {CANCEL_MOVE_TREE}
-            <span style="padding-left:5px;">&nbsp;</span>
-        </th>
-     </tr>
-     <tr class="fixed">
-        <td style="border-width: 0px;" height="10" colspan="{SUM_COLUMNS}"></td>
-     </tr>
-     <tr class="fixed">
-        <th colspan="2" style="border-left: 1px solid #B3B3B3">
-                    <span class="overview_dist_left">i18n("Category")</span>
-        </th>
-        <th class="header">
-              i18n("Alias")
-        </th>
-        <th class="header">
-              i18n("Template")
-        </th>
-        <th class="header" colspan="8">
-              i18n("Actions")
-        </th>
-        {ADDITIONALHEADERS}
-    </tr>
-    <!-- layer for inline editing of existing categories -->
-    <tr id="cat_inline_layer" class="fixed">
-        <form name="renamecategory" method="post" action="{ACTION_EDIT_URL}">
+    <tbody>
+        <tr class="fixed">
+            <th colspan="{SUM_COLUMNS}" id="cat_navbar">
+                {NEWCAT}
+                <span>&nbsp;</span>
+                {COLLAPSE_ALL}
+                <span>&nbsp;</span>
+                {EXPAND_ALL}
+                <span>&nbsp;</span>
+                {CANCEL_MOVE_TREE}
+                <span class="last">&nbsp;</span>
+            </th>
+        </tr>
+        <tr class="fixed">
+            <td style="border-width:0px;" height="10" colspan="{SUM_COLUMNS}"></td>
+        </tr>
+        <tr class="fixed">
+            <th colspan="2" style="border-left:1px solid #B3B3B3">
+                <span class="overview_dist_left">i18n("Category")</span>
+            </th>
+            <th class="header">
+                i18n("Alias")
+            </th>
+            <th class="header">
+                i18n("Template")
+            </th>
+            <th class="header" colspan="9">
+                i18n("Actions")
+            </th>
+            {ADDITIONALHEADERS}
+        </tr>
+        <!-- layer for inline editing of existing categories -->
+        <tr id="cat_inline_layer" class="fixed">
+            <form name="renamecategory" method="post" action="{ACTION_EDIT_URL}">
             {INPUT_ACTION_EDIT}
             {INPUT_IDCAT}
             {INPUT_SESSION}
 
             <td class="str-style-a" valign="middle">&nbsp;</td>
             <td colspan="{SUM_COLUMNS_EDIT}" class="str-style-c" style="padding-left:15px; vertical-align:middle;">
-
                 <span id="cat_name">i18n('Categoryname') &nbsp; {INPUT_CATNAME_EDIT}<span style="padding-left:15px;">&nbsp;</span></span>
 
                 {LABEL_ALIAS_NAME}
@@ -355,25 +421,27 @@
                 &nbsp;
                 <input style="vertical-align:middle" type="image" src="{SRC_OK}">
             </td>
-        </form>
-    </tr>
-    <!-- BEGIN:BLOCK -->
-    <tr id="cat_{CATID}_row" class="text_medium draggable" style="background-color: {BGCOLOR};{HEIGHT}" data-idcat="{CATID}" data-parentid="{PARENTID}" data-level="{LEVEL}" {MOUSEOVER}>
-         <td width="3" class="str-style-a" valign="middle">&nbsp;</td>
-        <td {DIRECTION} class="{BORDER_CLASS}" style="padding-left:{INDENT};" valign="middle" {SHOW_MOUSEOVER_CATEGORY}>{COLLAPSE_CATEGORY_NAME}</td>
-        <td class="{BORDER_CLASS}" valign="middle" {SHOW_MOUSEOVER_ALIAS}>{ALIAS}</td>
-        <td width="30"  class="{BORDER_CLASS}" {SHOW_MOUSEOVER}><span class="overview_dist_right">{TPLNAME}</span></td>
-        <td width="25">{RENAMEBUTTON}</td>
-        <td width="25">{VISIBLEBUTTON}</td>
-        <td width="25">{PUBLICBUTTON}</td>
-        <td width="25">{UPBUTTON}</td>
-        <td width="25">{DOWNBUTTON}</td>
-        <td width="25">{MOVEBUTTON}</td>
-        <td width="25">{DUPLICATEBUTTON}</td>
-        <td width="25"  class="{BORDER_CLASS}">{DELETEBUTTON}</td>
-        {ADDITIONALCOLUMNS}
-    </tr>
-    <!-- END:BLOCK -->
+            </form>
+        </tr>
+        <!-- BEGIN:BLOCK -->
+        <tr id="cat_{CATID}_row" class="text_medium draggable" style="background-color:{BGCOLOR};{HEIGHT}" data-idcat="{CATID}" data-parentid="{PARENTID}" data-level="{LEVEL}" {MOUSEOVER}>
+            <td width="3" class="str-style-a" valign="middle">&nbsp;</td>
+            <td {DIRECTION} class="{BORDER_CLASS}" style="padding-left:{INDENT};" valign="middle" {SHOW_MOUSEOVER_CATEGORY}>{COLLAPSE_CATEGORY_NAME}</td>
+            <td class="{BORDER_CLASS}" valign="middle" {SHOW_MOUSEOVER_ALIAS}>{ALIAS}</td>
+            <td width="30" class="{BORDER_CLASS}" {SHOW_MOUSEOVER}><span class="overview_dist_right">{TPLNAME}</span></td>
+            <td width="25" class="action">{RENAMEBUTTON}</td>
+            <td width="25" class="action">{VISIBLEBUTTON}</td>
+            <td width="25" class="action">{PUBLICBUTTON}</td>
+            <td width="25" class="action">{UPBUTTON}</td>
+            <td width="25" class="action">{DOWNBUTTON}</td>
+            <td width="25" class="action">{MOVEBUTTON}</td>
+            <td width="25" class="action">{DUPLICATEBUTTON}</td>
+            <td width="25" class="action">{DELETEBUTTON}</td>
+            {ADDITIONALCOLUMNS}
+            <td width="1" class="str-style-c" valign="middle">&nbsp;</td>
+        </tr>
+        <!-- END:BLOCK -->
+    </tbody>
 </table>
 <script type="text/javascript">
     var strDataObj = {},

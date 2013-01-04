@@ -523,11 +523,6 @@ while ($db->next_record()) {
     );
 }
 
-// Add an empty row at the beginning (used for drag & drop)
-if (count($objects) > 0) {
-//    insertEmptyStrRow($listColumns);
-}
-
 foreach ($objects as $key => $value) {
     // check if there area any permission for this $idcat in the mainarea 6
     // (=str) and there subareas
@@ -800,11 +795,6 @@ foreach ($objects as $key => $value) {
         $tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $columns));
         $tpl->next();
     } // end if -> perm
-}
-
-// Add an empty row at the end (used for drag & drop)
-if (count($objects) > 0) {
-//    insertEmptyStrRow($listColumns);
 }
 
 $jsDataArray = "";
