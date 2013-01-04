@@ -544,6 +544,8 @@ foreach ($objects as $key => $value) {
             $tpl->set('d', 'MOUSEOVER', '');
             $tpl->set('d', 'SUM_COLUMNS_EDIT', 14 + count($listColumns));
             $tpl->set('d', 'CATID', '');
+            $tpl->set('d', 'PARENTID', '');
+            $tpl->set('d', 'LEVEL', '');
             $tpl->set('d', 'ACTION_EDIT_URL', '');
             $tpl->set('d', 'INPUT_CATEGORY', '');
             $tpl->set('d', 'LABEL_ALIAS_NAME', '');
