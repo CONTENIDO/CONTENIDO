@@ -135,7 +135,7 @@ class cRegistry {
      * @return integer
      */
     public static function getLanguageId() {
-        return self::_fetchGlobalVariable('lang', 0);
+        return self::_fetchGlobalVariable('lang', self::_fetchGlobalVariable('load_lang', 0) );
     }
 
     /**
