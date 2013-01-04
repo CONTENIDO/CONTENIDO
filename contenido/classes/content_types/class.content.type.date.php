@@ -5,7 +5,6 @@
  * @package Core
  * @subpackage Content Type
  * @version SVN Revision $Rev:$
- *
  * @author Bilal Arslan, Timo Trautmann, Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -19,8 +18,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Content type CMS_DATE which allows the editor to select a date from a
- * calendar and a date format.
- * The selected date is then shown in the selected format.
+ * calendar and a date format. The selected date is then shown in the selected
+ * format.
  *
  * @package Core
  * @subpackage Content Type
@@ -39,11 +38,10 @@ class cContentTypeDate extends cContentTypeAbstract {
      * Initialises class attributes and handles store events.
      *
      * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param integer $id ID of the content type, e.g. 3 if CMS_DATE[3] is
-     *        used
+     *            plaintext
+     * @param integer $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
      * @param array $contentTypes array containing the values of all content
-     *        types
+     *            types
      * @return void
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
@@ -53,8 +51,8 @@ class cContentTypeDate extends cContentTypeAbstract {
         $this->_prefix = 'date';
         $this->_settingsType = 'xml';
         $this->_formFields = array(
-            'date_timestamp',
-            'date_format'
+                'date_timestamp',
+                'date_format'
         );
         parent::__construct($rawSettings, $id, $contentTypes);
 
@@ -72,21 +70,21 @@ class cContentTypeDate extends cContentTypeAbstract {
 
         // initialise the date formats
         $this->_dateFormatsPhp = array(
-            conHtmlSpecialChars('{"dateFormat":"","timeFormat":""}') => '',
-            conHtmlSpecialChars('{"dateFormat":"d.m.Y","timeFormat":""}') => $this->_formatDate('d.m.Y'),
-            conHtmlSpecialChars('{"dateFormat":"D, d.m.Y","timeFormat":""}') => $this->_formatDate('D, d.m.Y'),
-            conHtmlSpecialChars('{"dateFormat":"d. F Y","timeFormat":""}') => $this->_formatDate('d. F Y'),
-            conHtmlSpecialChars('{"dateFormat":"Y-m-d","timeFormat":""}') => $this->_formatDate('Y-m-d'),
-            conHtmlSpecialChars('{"dateFormat":"d/F/Y","timeFormat":""}') => $this->_formatDate('d/F/Y'),
-            conHtmlSpecialChars('{"dateFormat":"d/m/y","timeFormat":""}') => $this->_formatDate('d/m/y'),
-            conHtmlSpecialChars('{"dateFormat":"F y","timeFormat":""}') => $this->_formatDate('F y'),
-            conHtmlSpecialChars('{"dateFormat":"F-y","timeFormat":""}') => $this->_formatDate('F-y'),
-            conHtmlSpecialChars('{"dateFormat":"d.m.Y","timeFormat":"H:i"}') => $this->_formatDate('d.m.Y H:i'),
-            conHtmlSpecialChars('{"dateFormat":"m.d.Y","timeFormat":"H:i:s"}') => $this->_formatDate('m.d.Y H:i:s'),
-            conHtmlSpecialChars('{"dateFormat":"","timeFormat":"H:i"}') => $this->_formatDate('H:i'),
-            conHtmlSpecialChars('{"dateFormat":"","timeFormat":"H:i:s"}') => $this->_formatDate('H:i:s'),
-            conHtmlSpecialChars('{"dateFormat":"","timeFormat":"h:i A"}') => $this->_formatDate('h:i A'),
-            conHtmlSpecialChars('{"dateFormat":"","timeFormat":"h:i:s A"}') => $this->_formatDate('h:i:s A')
+                conHtmlSpecialChars('{"dateFormat":"","timeFormat":""}') => '',
+                conHtmlSpecialChars('{"dateFormat":"d.m.Y","timeFormat":""}') => $this->_formatDate('d.m.Y'),
+                conHtmlSpecialChars('{"dateFormat":"D, d.m.Y","timeFormat":""}') => $this->_formatDate('D, d.m.Y'),
+                conHtmlSpecialChars('{"dateFormat":"d. F Y","timeFormat":""}') => $this->_formatDate('d. F Y'),
+                conHtmlSpecialChars('{"dateFormat":"Y-m-d","timeFormat":""}') => $this->_formatDate('Y-m-d'),
+                conHtmlSpecialChars('{"dateFormat":"d/F/Y","timeFormat":""}') => $this->_formatDate('d/F/Y'),
+                conHtmlSpecialChars('{"dateFormat":"d/m/y","timeFormat":""}') => $this->_formatDate('d/m/y'),
+                conHtmlSpecialChars('{"dateFormat":"F y","timeFormat":""}') => $this->_formatDate('F y'),
+                conHtmlSpecialChars('{"dateFormat":"F-y","timeFormat":""}') => $this->_formatDate('F-y'),
+                conHtmlSpecialChars('{"dateFormat":"d.m.Y","timeFormat":"H:i"}') => $this->_formatDate('d.m.Y H:i'),
+                conHtmlSpecialChars('{"dateFormat":"m.d.Y","timeFormat":"H:i:s"}') => $this->_formatDate('m.d.Y H:i:s'),
+                conHtmlSpecialChars('{"dateFormat":"","timeFormat":"H:i"}') => $this->_formatDate('H:i'),
+                conHtmlSpecialChars('{"dateFormat":"","timeFormat":"H:i:s"}') => $this->_formatDate('H:i:s'),
+                conHtmlSpecialChars('{"dateFormat":"","timeFormat":"h:i A"}') => $this->_formatDate('h:i A'),
+                conHtmlSpecialChars('{"dateFormat":"","timeFormat":"h:i:s A"}') => $this->_formatDate('h:i:s A')
         );
 
         // add formats from client settings
@@ -118,12 +116,12 @@ class cContentTypeDate extends cContentTypeAbstract {
     }
 
     /**
-     * Formats the given timestamp according to the given format.
-     * Localises the output.
+     * Formats the given timestamp according to the given format. Localises the
+     * output.
      *
      * @param string $format the format string in the PHP date format
      * @param int $timestamp the timestamp representing the date which should be
-     *        formatted
+     *            formatted
      * @return string the formatted, localised date
      */
     private function _formatDate($format, $timestamp = null) {
@@ -132,43 +130,43 @@ class cContentTypeDate extends cContentTypeAbstract {
             $timestamp = time();
         }
         $replacements = array(
-            'd',
-            'D',
-            'j',
-            'l',
-            'N',
-            'S',
-            'w',
-            'z',
-            'W',
-            'F',
-            'm',
-            'M',
-            'n',
-            't',
-            'L',
-            'o',
-            'Y',
-            'y',
-            'a',
-            'A',
-            'B',
-            'g',
-            'G',
-            'h',
-            'H',
-            'i',
-            's',
-            'u',
-            'e',
-            'I',
-            'O',
-            'P',
-            'T',
-            'Z',
-            'c',
-            'r',
-            'U'
+                'd',
+                'D',
+                'j',
+                'l',
+                'N',
+                'S',
+                'w',
+                'z',
+                'W',
+                'F',
+                'm',
+                'M',
+                'n',
+                't',
+                'L',
+                'o',
+                'Y',
+                'y',
+                'a',
+                'A',
+                'B',
+                'g',
+                'G',
+                'h',
+                'H',
+                'i',
+                's',
+                'u',
+                'e',
+                'I',
+                'O',
+                'P',
+                'T',
+                'Z',
+                'c',
+                'r',
+                'U'
         );
         foreach (str_split($format) as $char) {
             if (in_array($char, $replacements)) {
@@ -215,7 +213,12 @@ class cContentTypeDate extends cContentTypeAbstract {
         if (empty($format)) {
             $format = '';
         } else {
-            $format = implode(' ', json_decode($format, true));
+            $decoded_array = json_decode($format, true);
+            if (is_array($decoded_array)) {
+                $format = implode(' ', $decoded_array);
+            } else {
+                $format = '';
+            }
         }
         $timestamp = $this->_settings['date_timestamp'];
         if (empty($timestamp)) {
@@ -287,8 +290,8 @@ class cContentTypeDate extends cContentTypeAbstract {
     private function _generateFormatSelect() {
         $formatSelect = new cHTMLSelectElement($this->_prefix . '_format_select_' . $this->_id, '', $this->_prefix . '_format_select_' . $this->_id);
         $formatSelect->appendStyleDefinitions(array(
-            'border' => '1px solid #ccc',
-            'margin' => '2px 5px 5px'
+                'border' => '1px solid #ccc',
+                'margin' => '2px 5px 5px'
         ));
         $formatSelect->autoFill($this->_dateFormatsPhp);
         $phpDateFormat = conHtmlSpecialChars($this->_settings[$this->_prefix . '_format']);
