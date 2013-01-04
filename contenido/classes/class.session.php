@@ -301,7 +301,7 @@ class cFrontendSession extends cSession {
      * Starts the session and initilializes the class
      */
     public function __construct() {
-        global $client;
+        $client = cRegistry::getClientId();
 
         parent::__construct($client . "frontend");
     }

@@ -153,7 +153,7 @@ class cRegistry {
      * @return integer
      */
     public static function getClientId() {
-        return self::_fetchGlobalVariable('client', 0);
+        return self::_fetchGlobalVariable('client', self::_fetchGlobalVariable('load_client', 0) );
     }
 
     /**
