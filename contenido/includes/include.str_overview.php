@@ -166,6 +166,54 @@ function getTemplateSelect() {
     return $oHtmlSelect->toHtml();
 }
 
+function insertEmptyStrRow($listColumns) {
+    global $tpl;
+
+    $tpl->set('d', 'BGCOLOR', '#FFFFFF');
+    $tpl->set('d', 'BGCOLOR_EDIT', '#F1F1F1');
+    $tpl->set('d', 'ALIAS', '&nbsp;');
+    $tpl->set('d', 'INDENT', '3px');
+    $tpl->set('d', 'RENAMEBUTTON', '&nbsp;');
+    $tpl->set('d', 'NEWCATEGORYBUTTON', '&nbsp;');
+    $tpl->set('d', 'VISIBLEBUTTON', '&nbsp;');
+    $tpl->set('d', 'PUBLICBUTTON', '&nbsp;');
+    $tpl->set('d', 'DELETEBUTTON', '&nbsp;');
+    $tpl->set('d', 'UPBUTTON', '&nbsp;');
+    $tpl->set('d', 'COLLAPSE_CATEGORY_NAME', '&nbsp;');
+    $tpl->set('d', 'TPLNAME', '&nbsp;');
+    $tpl->set('d', 'MOVEBUTTON', '&nbsp;');
+    $tpl->set('d', 'DOWNBUTTON', '&nbsp;');
+    $tpl->set('d', 'SHOW_MOUSEOVER', '');
+    $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', '');
+    $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', '');
+    $tpl->set('d', 'TPLDESC', '');
+    $tpl->set('d', 'DUPLICATEBUTTON', '&nbsp;');
+    $tpl->set('d', 'TEMPLATEBUTTON', '&nbsp;');
+    $tpl->set('d', 'MOUSEOVER', '');
+    $tpl->set('d', 'SUM_COLUMNS_EDIT', 14 + count($listColumns));
+    $tpl->set('d', 'CATID', '');
+    $tpl->set('d', 'PARENTID', '');
+    $tpl->set('d', 'LEVEL', '');
+    $tpl->set('d', 'ACTION_EDIT_URL', '');
+    $tpl->set('d', 'INPUT_CATEGORY', '');
+    $tpl->set('d', 'LABEL_ALIAS_NAME', '');
+    $tpl->set('d', 'HREF_CANCEL', '');
+    $tpl->set('d', 'SRC_CANCEL', '');
+    $tpl->set('d', 'DIRECTION', '');
+    $tpl->set('d', 'SRC_OK', '');
+    $tpl->set('d', 'VALUE_ALIAS_NAME', '');
+    $tpl->set('d', 'HEIGHT', 'height:15px;');
+    $tpl->set('d', 'BORDER_CLASS', 'str-style-b');
+
+    $additionalColumns = array();
+    foreach ($listColumns as $content) {
+        // Content rows
+        $additionalColumns[] = '<td style="border:0;border-bottom:1px;border-right:1px;border-color:#B3B3B3;border-style:solid;" nowrap="nowrap">&nbsp;</td>';
+    }
+    $tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $additionalColumns));
+    $tpl->next();
+}
+
 getTemplateSelect();
 
 $sess->register("remakeStrTable");
@@ -475,6 +523,11 @@ while ($db->next_record()) {
     );
 }
 
+// Add an empty row at the beginning (used for drag & drop)
+if (count($objects) > 0) {
+//    insertEmptyStrRow($listColumns);
+}
+
 foreach ($objects as $key => $value) {
     // check if there area any permission for this $idcat in the mainarea 6
     // (=str) and there subareas
@@ -520,53 +573,10 @@ foreach ($objects as $key => $value) {
 
         // Insert empty row
         if ($value->custom['level'] == 0 && $value->custom['preid'] != 0) {
-
-            $tpl->set('d', 'BGCOLOR', '#FFFFFF');
-            $tpl->set('d', 'BGCOLOR_EDIT', '#F1F1F1');
-            $tpl->set('d', 'ALIAS', '&nbsp;');
-            $tpl->set('d', 'INDENT', '3px');
-            $tpl->set('d', 'RENAMEBUTTON', '&nbsp;');
-            $tpl->set('d', 'NEWCATEGORYBUTTON', '&nbsp;');
-            $tpl->set('d', 'VISIBLEBUTTON', '&nbsp;');
-            $tpl->set('d', 'PUBLICBUTTON', '&nbsp;');
-            $tpl->set('d', 'DELETEBUTTON', '&nbsp;');
-            $tpl->set('d', 'UPBUTTON', '&nbsp;');
-            $tpl->set('d', 'COLLAPSE_CATEGORY_NAME', '&nbsp;');
-            $tpl->set('d', 'TPLNAME', '&nbsp;');
-            $tpl->set('d', 'MOVEBUTTON', '&nbsp;');
-            $tpl->set('d', 'DOWNBUTTON', '&nbsp;');
-            $tpl->set('d', 'SHOW_MOUSEOVER', '');
-            $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', '');
-            $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', '');
-            $tpl->set('d', 'TPLDESC', '');
-            $tpl->set('d', 'DUPLICATEBUTTON', '&nbsp;');
-            $tpl->set('d', 'TEMPLATEBUTTON', '&nbsp;');
-            $tpl->set('d', 'MOUSEOVER', '');
-            $tpl->set('d', 'SUM_COLUMNS_EDIT', 14 + count($listColumns));
-            $tpl->set('d', 'CATID', '');
-            $tpl->set('d', 'PARENTID', '');
-            $tpl->set('d', 'LEVEL', '');
-            $tpl->set('d', 'ACTION_EDIT_URL', '');
-            $tpl->set('d', 'INPUT_CATEGORY', '');
-            $tpl->set('d', 'LABEL_ALIAS_NAME', '');
-            $tpl->set('d', 'HREF_CANCEL', '');
-            $tpl->set('d', 'SRC_CANCEL', '');
-            $tpl->set('d', 'DIRECTION', '');
-            $tpl->set('d', 'SRC_OK', '');
-            $tpl->set('d', 'VALUE_ALIAS_NAME', '');
-            $tpl->set('d', 'HEIGHT', 'height:5px;');
-            $tpl->set('d', 'BORDER_CLASS', 'str-style-b');
-
-            $additionalColumns = array();
-            foreach ($listColumns as $content) {
-                // Content rows
-                $additionalColumns[] = '<td style="border: 0px; border-bottom:1px; border-right: 1px; border-color: #B3B3B3; border-style: solid;" nowrap="nowrap">&nbsp;</td>';
-            }
-            $tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $additionalColumns));
-            $tpl->next();
+            insertEmptyStrRow($listColumns);
         }
 
-        $tpl->set('d', 'BGCOLOR', $bgcolor);
+        $tpl->set('d', 'BGCOLOR', '#FFFFFF');
         $tpl->set('d', 'BGCOLOR_EDIT', '#F1F1F1');
         $tpl->set('d', 'HEIGHT', 'height:25px');
         $tpl->set('d', 'BORDER_CLASS', 'str-style-c tooltip');
@@ -790,6 +800,11 @@ foreach ($objects as $key => $value) {
         $tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $columns));
         $tpl->next();
     } // end if -> perm
+}
+
+// Add an empty row at the end (used for drag & drop)
+if (count($objects) > 0) {
+//    insertEmptyStrRow($listColumns);
 }
 
 $jsDataArray = "";
