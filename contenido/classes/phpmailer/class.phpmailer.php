@@ -354,30 +354,29 @@ class PHPMailer
         $this->ReplyTo[$cur][1] = $name;
     }
 
-    /**
-     * Check that a string looks roughly like an email address should
-     * Static so it can be used without instantiation
-     * Tries to use PHP built-in validator in the filter extension (from PHP 5.2), falls back to a reasonably competent regex validator
-     * Conforms approximately to RFC2822
-     * @link http://www.hexillion.com/samples/#Regex Original pattern found here
-     * @param string $address The email address to check
-     * @return boolean
-     * @static
-     * @access public
-     * @fixme  Use build in validator cValidatorEmail or remove build in validator and use this everywhere!
-     */
-    public static function ValidateAddress($address) {
-        if (function_exists('filter_var')) { //Introduced in PHP 5.2
-          if(filter_var($address, FILTER_VALIDATE_EMAIL) === FALSE) {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return preg_match('/^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9_](?:[a-zA-Z0-9_\-](?!\.)){0,61}[a-zA-Z0-9_-]?\.)+[a-zA-Z0-9_](?:[a-zA-Z0-9_\-](?!$)){0,61}[a-zA-Z0-9_]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/', $address);
-        }
-    }
-
+	/**
+	   * Check that a string looks roughly like an email address should
+	   * Static so it can be used without instantiation
+	   * Tries to use PHP built-in validator in the filter extension (from PHP 5.2), falls back to a reasonably competent regex validator
+	   * Conforms approximately to RFC2822
+	   * @link http://www.hexillion.com/samples/#Regex Original pattern found here
+	   * @param string $address The email address to check
+	   * @return boolean
+	   * @static
+	   * @access public
+	   */
+	public static function ValidateAddress($address) {
+		if (function_exists('filter_var')) { //Introduced in PHP 5.2
+		  if(filter_var($address, FILTER_VALIDATE_EMAIL) === FALSE) {
+			return false;
+		  } else {
+			return true;
+		  }
+		} else {
+		  return preg_match('/^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9_](?:[a-zA-Z0-9_\-](?!\.)){0,61}[a-zA-Z0-9_-]?\.)+[a-zA-Z0-9_](?:[a-zA-Z0-9_\-](?!$)){0,61}[a-zA-Z0-9_]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/', $address);
+		}
+	}
+	
     /////////////////////////////////////////////////
     // MAIL SENDING METHODS
     /////////////////////////////////////////////////
@@ -833,11 +832,12 @@ class PHPMailer
         {
             if(count($this->to) > 0)
                 $result .= $this->AddrAppend("To", $this->to);
-            else if (count($this->cc) == 0)
-                $result .= $this->HeaderLine("To", "undisclosed-recipients:;");
-            if(count($this->cc) > 0)
-                $result .= $this->AddrAppend("Cc", $this->cc);
         }
+		
+		if (count($this->cc) == 0)
+			$result .= $this->HeaderLine("To", "undisclosed-recipients:;");
+		if(count($this->cc) > 0)
+			$result .= $this->AddrAppend("Cc", $this->cc);
 
         $from = array();
         $from[0][0] = trim($this->From);
