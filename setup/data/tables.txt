@@ -88,6 +88,7 @@
 "cat_lang";"lastmodified";"datetime";"";"";"0000-00-00 00:00:00";"";""
 "cat_lang";"startidartlang";"int(10)";"";"";"0";"";""
 "cat_lang";"urlname";"varchar(64)";"";"";"";"";""
+"cat_lang";"urlpath";"varchar(255)";"";"";"";"";""
 "cat_tree";"idtree";"int(10)";"";"PRI";"0";"";"1"
 "cat_tree";"idcat";"int(10)";"";"MUL";"0";"";""
 "cat_tree";"level";"int(2)";"";"";"0";"";""

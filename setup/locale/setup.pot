@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 00:22+0200\n"
+"POT-Creation-Date: 2013-01-09 01:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: steps/forms/additionalplugins.php:54 steps/forms/additionalplugins.php:55
+#: steps/forms/setupsummary.php:86
 msgid "Additional Plugins"
 msgstr ""
 
@@ -25,7 +26,7 @@ msgstr ""
 msgid "Please select Plugins to be installed"
 msgstr ""
 
-#: steps/forms/additionalplugins.php:60
+#: steps/forms/additionalplugins.php:60 steps/forms/setupsummary.php:107
 msgid "Newsletter"
 msgstr ""
 
@@ -37,7 +38,7 @@ msgid ""
 "Newsletters by Contenido articles."
 msgstr ""
 
-#: steps/forms/additionalplugins.php:61
+#: steps/forms/additionalplugins.php:61 steps/forms/setupsummary.php:110
 msgid "Content Allocation"
 msgstr ""
 
@@ -49,11 +50,19 @@ msgid ""
 "places and in different formats according to several criteria."
 msgstr ""
 
-#: steps/forms/additionalplugins.php:71
+#: steps/forms/additionalplugins.php:62 steps/forms/setupsummary.php:113
+msgid "Mod Rewrite"
+msgstr ""
+
+#: steps/forms/additionalplugins.php:62
+msgid "Creates so called Clean URLs for a Contenido installation"
+msgstr ""
+
+#: steps/forms/additionalplugins.php:72
 msgid "More information"
 msgstr ""
 
-#: steps/forms/additionalplugins.php:76
+#: steps/forms/additionalplugins.php:77
 msgid "None available"
 msgstr ""
 
@@ -98,7 +107,7 @@ msgid ""
 "working with."
 msgstr ""
 
-#: steps/forms/clientmode.php:46 steps/forms/setupsummary.php:74
+#: steps/forms/clientmode.php:46 steps/forms/setupsummary.php:76
 msgid "Client with example modules and example content"
 msgstr ""
 
@@ -106,7 +115,7 @@ msgstr ""
 msgid "Client with example modules, but without example content"
 msgstr ""
 
-#: steps/forms/clientmode.php:48 steps/forms/setupsummary.php:76
+#: steps/forms/clientmode.php:48 steps/forms/setupsummary.php:78
 msgid "Client without examples"
 msgstr ""
 
@@ -247,43 +256,39 @@ msgstr ""
 msgid "Migration"
 msgstr ""
 
-#: steps/forms/setupsummary.php:68
+#: steps/forms/setupsummary.php:70
 msgid "Installation type"
 msgstr ""
 
-#: steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:71
 msgid "Database parameters"
 msgstr ""
 
-#: steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:71
 msgid "Database host"
 msgstr ""
 
-#: steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:71
 msgid "Database name"
 msgstr ""
 
-#: steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:71
 msgid "Database username"
 msgstr ""
 
-#: steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:71
 msgid "Database prefix"
 msgstr ""
 
-#: steps/forms/setupsummary.php:70
-msgid "config.php"
-msgstr ""
-
-#: steps/forms/setupsummary.php:75
+#: steps/forms/setupsummary.php:77
 msgid "Client with example modules but without example content"
 msgstr ""
 
-#: steps/forms/setupsummary.php:77
+#: steps/forms/setupsummary.php:79
 msgid "Don't create a client"
 msgstr ""
 
-#: steps/forms/setupsummary.php:78
+#: steps/forms/setupsummary.php:80
 msgid "Client installation"
 msgstr ""
 

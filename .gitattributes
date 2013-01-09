@@ -1279,6 +1279,21 @@ contenido/plugins/linkchecker/xml/._lang_en_EN.xml -text
 contenido/plugins/linkchecker/xml/lang_de_DE.xml -text svneol=unset#text/plain
 contenido/plugins/linkchecker/xml/lang_en_EN.xml -text svneol=unset#text/plain
 contenido/plugins/linkchecker/xml/lang_en_US.xml -text svneol=unset#text/plain
+contenido/plugins/mod_rewrite/external/aToolTip/demos.html -text
+contenido/plugins/mod_rewrite/external/aToolTip/images/bg.png -text
+contenido/plugins/mod_rewrite/external/aToolTip/images/infoBtn.gif -text
+contenido/plugins/mod_rewrite/files/htaccess_restrictive.txt -text
+contenido/plugins/mod_rewrite/files/htaccess_simple.txt -text
+contenido/plugins/mod_rewrite/locale/de_DE/LC_MESSAGES/mod_rewrite.mo -text
+contenido/plugins/mod_rewrite/locale/de_DE/LC_MESSAGES/mod_rewrite.po -text
+contenido/plugins/mod_rewrite/locale/mod_rewrite.pot -text
+contenido/plugins/mod_rewrite/locale/potfiles.txt -text
+contenido/plugins/mod_rewrite/templates/content.html -text
+contenido/plugins/mod_rewrite/templates/content_top.html -text
+contenido/plugins/mod_rewrite/templates/contentexpert.html -text
+contenido/plugins/mod_rewrite/templates/contenttest.html -text
+contenido/plugins/mod_rewrite/xml/lang_de_DE.xml -text
+contenido/plugins/mod_rewrite/xml/lang_en_US.xml -text
 contenido/plugins/repository/custom/FrontendNavigation.php -text
 contenido/plugins/repository/keyword_density.php -text
 contenido/plugins/workflow/classes/class.workflow.php -text
@@ -1671,8 +1686,10 @@ setup/data/examples/examples_misc5.sql -text
 setup/data/examples/examples_misc6.sql -text
 setup/data/indexes.sql -text
 setup/data/plugin_content_allocation.txt -text svneol=unset#text/plain
+setup/data/plugin_mod_rewrite.txt -text
 setup/data/plugin_newsletter.txt -text svneol=unset#text/plain
 setup/data/plugins/plugins_content_allocation.sql -text
+setup/data/plugins/plugins_mod_rewrite.sql -text
 setup/data/plugins/plugins_newsletter.sql -text
 setup/data/standard.txt -text svneol=unset#text/plain
 setup/data/standard/standard_modules1.sql -text

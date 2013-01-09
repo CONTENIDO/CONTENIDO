@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Contenido Setup\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 00:22+0200\n"
-"PO-Revision-Date: 2012-10-18 00:25+0100\n"
+"POT-Creation-Date: 2013-01-09 00:13+0100\n"
+"PO-Revision-Date: 2013-01-09 00:15+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,6 +17,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: setup\n"
 
 #: steps/forms/additionalplugins.php:54 steps/forms/additionalplugins.php:55
+#: steps/forms/setupsummary.php:86
 msgid "Additional Plugins"
 msgstr "Zusätzliche Plugins"
 
@@ -24,7 +25,7 @@ msgstr "Zusätzliche Plugins"
 msgid "Please select Plugins to be installed"
 msgstr "Bitte wählen Sie die zu installierenden Plugins"
 
-#: steps/forms/additionalplugins.php:60
+#: steps/forms/additionalplugins.php:60 steps/forms/setupsummary.php:107
 msgid "Newsletter"
 msgstr "Newsletter"
 
@@ -40,7 +41,7 @@ msgstr ""
 "Definition von Newsletterempfängern und Empfängergruppen. Layouterstellung "
 "des HTML-Newsletters mit Hilfe von Contenidoartikeln."
 
-#: steps/forms/additionalplugins.php:61
+#: steps/forms/additionalplugins.php:61 steps/forms/setupsummary.php:110
 msgid "Content Allocation"
 msgstr "Content Allocation"
 
@@ -57,11 +58,19 @@ msgstr ""
 "unterschiedlicher Form dynamisch nach mehreren Kriterien selektiert "
 "darzustellen."
 
-#: steps/forms/additionalplugins.php:71
+#: steps/forms/additionalplugins.php:62 steps/forms/setupsummary.php:113
+msgid "Mod Rewrite"
+msgstr "Mod Rewrite"
+
+#: steps/forms/additionalplugins.php:62
+msgid "Creates so called Clean URLs for a Contenido installation"
+msgstr "Erstellt sogenannte Clean URLs für eine Contenido -Installation"
+
+#: steps/forms/additionalplugins.php:72
 msgid "More information"
 msgstr "Mehr Information"
 
-#: steps/forms/additionalplugins.php:76
+#: steps/forms/additionalplugins.php:77
 msgid "None available"
 msgstr "Keine verfügbar"
 
@@ -111,7 +120,7 @@ msgstr ""
 "Wenn Sie zum ersten Mal mit Contenido arbeiten, empfehlen wir Ihnen den "
 "Beispielmandanten."
 
-#: steps/forms/clientmode.php:46 steps/forms/setupsummary.php:74
+#: steps/forms/clientmode.php:46 steps/forms/setupsummary.php:76
 msgid "Client with example modules and example content"
 msgstr "Mandant mit Beispielmodulen und -inhalten"
 
@@ -119,7 +128,7 @@ msgstr "Mandant mit Beispielmodulen und -inhalten"
 msgid "Client with example modules, but without example content"
 msgstr "Mandant mit Beispielmodulen, aber ohne Beispielinhalte"
 
-#: steps/forms/clientmode.php:48 steps/forms/setupsummary.php:76
+#: steps/forms/clientmode.php:48 steps/forms/setupsummary.php:78
 msgid "Client without examples"
 msgstr "Mandant ohne Beispiele"
 
@@ -282,43 +291,39 @@ msgstr "Upgrade"
 msgid "Migration"
 msgstr "Migration"
 
-#: steps/forms/setupsummary.php:68
+#: steps/forms/setupsummary.php:70
 msgid "Installation type"
 msgstr "Installationsart"
 
-#: steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:71
 msgid "Database parameters"
 msgstr "Datenbank Parameter"
 
-#: steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:71
 msgid "Database host"
 msgstr "Datenbank Host"
 
-#: steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:71
 msgid "Database name"
 msgstr "Datenbank Name"
 
-#: steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:71
 msgid "Database username"
 msgstr "Datenbank Benutzername"
 
-#: steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:71
 msgid "Database prefix"
 msgstr "Datenbank Präfix"
 
-#: steps/forms/setupsummary.php:70
-msgid "config.php"
-msgstr "config.php"
-
-#: steps/forms/setupsummary.php:75
+#: steps/forms/setupsummary.php:77
 msgid "Client with example modules but without example content"
 msgstr "Mandant mit Beispielmodulen, aber ohne Beispielinhalte"
 
-#: steps/forms/setupsummary.php:77
+#: steps/forms/setupsummary.php:79
 msgid "Don't create a client"
 msgstr "Mandant nicht anlegen"
 
-#: steps/forms/setupsummary.php:78
+#: steps/forms/setupsummary.php:80
 msgid "Client installation"
 msgstr "Mandanteninstallation"
 
@@ -1161,6 +1166,9 @@ msgstr ""
 #: steps/setuptype.php:52
 msgid "Recommended for moving projects across servers."
 msgstr "Empfohlen für Projektumzüge zwischen Servern."
+
+#~ msgid "config.php"
+#~ msgstr "config.php"
 
 #~ msgid "Contenido Newsletter"
 #~ msgstr "Contenido Newsletter"
