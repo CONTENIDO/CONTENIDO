@@ -122,6 +122,8 @@ $wysiwyg = new cHTMLCheckbox("wysi", 1);
 $wysiwyg->setChecked($user->get("wysi"));
 $wysiwyg->setLabelText(i18n("Use WYSIWYG Editor"));
 
+$form->add(i18n("Options"), array($wysiwyg));
+
 $formathint = "<br>".i18n("The format is equal to PHP's date() function.");
 $formathint.= "<br>";
 $formathint.= i18n("Common date formattings").":";
