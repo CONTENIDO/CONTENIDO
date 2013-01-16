@@ -252,6 +252,14 @@ $cfg['password']['numbers_mandatory'] = 2;
 //         (dont forget the prefix 'CMS_'!)
 $cfg['translatable_content_types'] = array('CMS_TEASER', 'CMS_FILELIST');
 
+// (array) Content type CMS_LINKEDIT settings
+$cfg['content_types']['CMS_LINKEDIT'] = array(
+    'document_filetypes' => array('pdf', 'doc', 'ppt', 'xls', 'rtf', 'dot', 'docx', 'xlsx', 'pptx'),
+    'image_filetypes' => array('png', 'gif', 'tif', 'jpg', 'jpeg', 'psd', 'pdd', 'iff', 'bmp', 'rle', 'eps', 'fpx', 'pcx', 'jpe', 'pct', 'pic', 'pxr', 'tga'),
+    'archive_filetypes' => array('zip', 'arj', 'lha', 'lhx', 'tar', 'tgz', 'rar', 'gz'),
+    'media_filetypes' => array('mp3', 'mp2', 'avi', 'mpg', 'mpeg', 'mid', 'wav', 'mov', 'wmv'),
+);
+
 
 /* Properties settings
  * -----------------------------------------------------------------------------
