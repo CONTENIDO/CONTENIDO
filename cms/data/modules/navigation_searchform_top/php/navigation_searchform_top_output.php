@@ -19,12 +19,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $searchResultIdart = getEffectiveSetting('navigation_searchform_top', 'search_result_idart');
 $searchResultIdart = cSecurity::toInteger($searchResultIdart);
 
+// check if plugin mod_rewrite is enabled
+$isModRewriteEnabled = class_exists('ModRewrite') && ModRewrite::isEnabled();
+
 // show search form only if search result article is defined
 $action = $method = $label = $submit = '';
 if (0 < $searchResultIdart) {
     
     // determine action & method for search form
-    if (ModRewrite::isEnabled()) {
+    if ($isModRewriteEnabled) {
         $action = cUri::getInstance()->build(array(
             'idart' => $searchResultIdart,
             'lang' => cRegistry::getLanguageId()
@@ -62,7 +65,7 @@ $tpl->assign('action', $action);
 $tpl->assign('method', $method);
 $tpl->assign('label', $label);
 $tpl->assign('submit', $submit);
-if (!ModRewrite::isEnabled()) {
+if (!$isModRewriteEnabled) {
     $tpl->assign('idart', $searchResultIdart);
     $tpl->assign('idlang', cRegistry::getLanguageId());
 }
