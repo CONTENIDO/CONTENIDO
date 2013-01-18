@@ -112,6 +112,11 @@ cms/data/modules/navigation_main/info.xml -text svneol=unset#text/plain
 cms/data/modules/navigation_main/php/navigation_main_input.php -text
 cms/data/modules/navigation_main/php/navigation_main_output.php -text
 cms/data/modules/navigation_main/template/navigation.tpl -text
+cms/data/modules/navigation_searchform_top/info.xml -text svneol=unset#text/plain
+cms/data/modules/navigation_searchform_top/lang/lang_de_DE.txt -text
+cms/data/modules/navigation_searchform_top/php/navigation_searchform_top_input.php -text
+cms/data/modules/navigation_searchform_top/php/navigation_searchform_top_output.php -text
+cms/data/modules/navigation_searchform_top/template/get.tpl -text
 cms/data/modules/navigation_social_media/info.xml -text svneol=unset#text/plain
 cms/data/modules/navigation_social_media/php/navigation_social_media_input.php -text
 cms/data/modules/navigation_social_media/php/navigation_social_media_output.php -text
