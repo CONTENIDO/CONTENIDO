@@ -363,6 +363,71 @@ p a:hover {
     color: #0083cb;
 }
 
+/* ----- SEARCH RESULT ----- */
+#search.full {
+    width: 316px;
+    height: 24px;
+    padding: 0 5px;
+    border: 1px solid #797979;
+    margin-bottom: 30px;
+    outline: none;
+}
+.submit.search {
+   vertical-align: top;
+   background: #ec0053;
+   border: 1px solid #a34a6a;
+   border-radius: 12px;
+   height: 28px;
+   color: #fff;
+   padding: 0 15px;
+}
+
+.pagination {
+    padding: 10px 0;
+    font-size: 11px;
+}
+
+.pagination ul {
+    display: inline;
+    float: right;
+}
+.pagination ul li {
+    list-style: none;
+    float: left;
+    margin-left: 5px;
+}
+.pagination ul li a {
+    color :#000;
+}
+.pagination ul li a.active,
+.pagination ul li a:hover {
+    color: #0083cb;
+}
+#search_result {
+    display: inline;
+}
+#search_result li {
+    list-style: none;
+    padding: 0 0 0 30px;
+}
+#search_result li>span {
+    position: absolute;
+    width: 29px;
+    margin-left: -30px;
+    text-align:right;
+}
+
+#search_result li a {
+    color: #9ba21b;
+}
+#search_result li a:hover, 
+#search_result li:hover a {
+    color: #0083cb;
+}
+#search_result li p {
+    margin: 5px 0 20px 0;
+}
+
 /* ----- GALERY ----- */
 .galery {
     width: 670px;

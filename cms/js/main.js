@@ -25,6 +25,20 @@
 			}
 		}).val($input.attr('title'));
 	};
+	
+	/**
+	 * Define behaviour for "link_section" elements.
+	 * 
+	 * In a link-section every child will be clickable and referes to its containing anchor
+	 * Whole list rows will become links this way and also will be marked as such by a pointing 
+	 * cursor.
+	 * 
+	 */
+	$.fn.link_section = function() {
+		this.children().css({"cursor":"pointer"}).click(function(){		
+			window.location=$(this).find("a").attr("href");
+		});	
+	};
 
 })(jQuery);
 
@@ -50,7 +64,11 @@ $("#header #navigation_header #search_term").on("blur", function(e){
 	}
 });
 
-	
+
+/* ----- SEARCH RESULT PAGE ----- */
+
+$("#search_result").link_section();
+$("#search.full").self_labeled_input();	
 	
    /* ----- GALERY ----- */
 
