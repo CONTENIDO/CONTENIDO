@@ -25,6 +25,9 @@ $frontend_path = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/'
 include_once($frontend_path . 'data/config/config.php');
 
 // CONTENIDO startup process
+if (!is_file($contenido_path . 'includes/startup.php')) {
+    die("<h1>Fatal Error</h1><br>Couldn't include CONTENIDO startup.");
+}
 include_once($contenido_path . 'includes/startup.php');
 
 // Include article view handler
