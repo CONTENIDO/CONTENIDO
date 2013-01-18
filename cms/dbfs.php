@@ -37,10 +37,13 @@ if (!defined("CON_FRAMEWORK")) {
 }
 
 $contenido_path = '';
-# include the config file of the frontend to init the Client and Language Id
+// include the config file of the frontend to init the Client and Language Id
 include_once ("config.php");
 
 // Contenido startup process
+if (!is_file($contenido_path . 'includes/startup.php')) {
+    die("<h1>Fatal Error</h1><br>Couldn't include CONTENIDO startup.");
+}
 include_once ($contenido_path . 'includes/startup.php');
 
 
@@ -56,7 +59,7 @@ if ($contenido)
                     'perm' => 'Contenido_Perm'));
 }
 
-/* Shorten load time */
+// Shorten load time
 $client = $load_client;
 
 $dbfs = new DBFSCollection;

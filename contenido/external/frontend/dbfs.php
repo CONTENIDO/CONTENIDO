@@ -29,28 +29,20 @@
  * }}
  * 
  */
- if (!defined("CON_FRAMEWORK")) {
+
+if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
 $contenido_path = '';
-# include the config file of the frontend to init the Client and Language Id
+// include the config file of the frontend to init the Client and Language Id
 include_once ("config.php");
 
-/*
- * local configuration
-*/
-if (file_exists("config.local.php"))
-{
-	@ include ("config.local.php");
+// Contenido startup process
+if (!is_file($contenido_path . 'includes/startup.php')) {
+    die("<h1>Fatal Error</h1><br>Couldn't include CONTENIDO startup.");
 }
-
-// include security class and check request variables
-include_once ($contenido_path . 'classes/class.security.php');
-Contenido_Security::checkRequests();
-
-include_once ($contenido_path . "includes/startup.php");
-cInclude("includes", "functions.general.php");
+include_once ($contenido_path . 'includes/startup.php');
 
 
 if ($contenido)
@@ -65,19 +57,11 @@ if ($contenido)
                     'perm' => 'Contenido_Perm'));
 }
 
-/* Shorten load time */
+// Shorten load time
 $client = $load_client;
 
 $dbfs = new DBFSCollection;
 $dbfs->outputFile($file);
-
-/*
- * configuration settings after the site is displayed.
-*/
-if (file_exists("config.after.php"))
-{
-	@ include ("config.after.php");
-}
 
 page_close();
 

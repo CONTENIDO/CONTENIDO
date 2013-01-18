@@ -78,6 +78,9 @@ $contenido_path = '';
 include_once ("config.php");
 
 # Contenido startup process
+if (!is_file($contenido_path . 'includes/startup.php')) {
+    die("<h1>Fatal Error</h1><br>Couldn't include CONTENIDO startup.");
+}
 include_once ($contenido_path . 'includes/startup.php');
 
 cInclude("includes", "functions.con.php");
