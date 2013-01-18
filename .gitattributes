@@ -107,11 +107,11 @@ cms/data/modules/navigation_lang_changer/js/lang_changer.js -text svneol=unset#t
 cms/data/modules/navigation_lang_changer/js/navigation_lang_changer.js -text svneol=unset#text/plain
 cms/data/modules/navigation_lang_changer/php/navigation_lang_changer_input.php -text
 cms/data/modules/navigation_lang_changer/php/navigation_lang_changer_output.php -text
-cms/data/modules/navigation_lang_changer/template/lang_changer.html -text svneol=unset#text/plain
+cms/data/modules/navigation_lang_changer/template/get.html -text svneol=unset#text/plain
 cms/data/modules/navigation_main/info.xml -text svneol=unset#text/plain
 cms/data/modules/navigation_main/php/navigation_main_input.php -text
 cms/data/modules/navigation_main/php/navigation_main_output.php -text
-cms/data/modules/navigation_main/template/navigation.tpl -text
+cms/data/modules/navigation_main/template/get.tpl -text
 cms/data/modules/navigation_searchform_top/info.xml -text svneol=unset#text/plain
 cms/data/modules/navigation_searchform_top/lang/lang_de_DE.txt -text
 cms/data/modules/navigation_searchform_top/php/navigation_searchform_top_input.php -text

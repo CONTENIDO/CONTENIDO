@@ -1,4 +1,4 @@
-{if 0 lt $ulId|strlen}<!-- navigation_main -->{/if}
+{if 0 lt $ulId|strlen}<!-- navigation_main/template/get.tpl -->{/if}
 
 <ul class="{$ulId}">
 
@@ -12,11 +12,11 @@
         <li>
             <a class="{$aClass}" href="{$url}" title="{$name}">{$name}</a>
         {if $idcat|in_array:$path}
-            {include file="navigation_main/template/navigation.tpl"
-                tree=$wrapper.subcats ulId="" actualIdcat=$actualIdcat path=$path}
+            {include file="navigation_main/template/get.tpl"
+                tree=$wrapper.subcats path=$path ulId=""}
         {/if}
         </li>
      {/foreach}
 </ul>
 
-{if 0 lt $ulId|strlen}<!-- /navigation_main -->{/if}
+{if 0 lt $ulId|strlen}<!-- /navigation_main/template/get.tpl -->{/if}

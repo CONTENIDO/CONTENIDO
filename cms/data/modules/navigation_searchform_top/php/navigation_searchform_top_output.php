@@ -24,14 +24,18 @@ $action = $method = $label = $submit = '';
 if (0 < $searchResultIdart) {
     
     // determine action & method for search form
-    $action = cUri::getInstance()->build(array(
-        'idart' => $searchResultIdart,
-        'lang' => cRegistry::getLanguageId()
-    ));
-
+    if (ModRewrite::isEnabled()) {
+        $action = cUri::getInstance()->build(array(
+            'idart' => $searchResultIdart,
+            'lang' => cRegistry::getLanguageId()
+        ));
+    } else {
+        $action = 'front_content.php';
+    }
+    
     // determine how the search request should be transmitted
     $method = 'GET';
-                     
+    
     // determine label to be shown inside input field
     $label = mi18n("NAVIGATION_SEARCHFORM_TOP_LABEL");
     // this translation is optional
@@ -45,7 +49,7 @@ if (0 < $searchResultIdart) {
     if (false !== strpos($submit, 'Module translation not found: ')) {
         $submit = '';
     }
-    
+
 }
 
 // use template to display search form
@@ -58,6 +62,10 @@ $tpl->assign('action', $action);
 $tpl->assign('method', $method);
 $tpl->assign('label', $label);
 $tpl->assign('submit', $submit);
+if (!ModRewrite::isEnabled()) {
+    $tpl->assign('idart', $searchResultIdart);
+    $tpl->assign('idlang', cRegistry::getLanguageId());
+}
 $tpl->display('navigation_searchform_top/template/get.tpl');
 
 ?>

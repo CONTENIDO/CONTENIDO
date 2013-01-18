@@ -7,11 +7,9 @@
 	-->
 {else}
 	<form action="{$action}" method="{$method}" id="navigation_searchform_top">
-		{* The CSS class ffb-self-labeled-input adds a behaviour to
-		the input field that is described in $().self_labeled_input(). *}
-		<input type="text" id="search_term" name="search_term"
-			class="ffb-self-labeled-input" title="{$label}" />
-		<input type="submit" id="search_submit" value="{$submit}" />
+	{if $idart}<input type="hidden" name="idart" value="{$idart}" />{/if}
+	{if $idlang}<input type="hidden" name="idlang" value="{$idlang}" />{/if}
+		<input type="text" id="search_term" name="search_term" />
 	</form>
 {/if}
 

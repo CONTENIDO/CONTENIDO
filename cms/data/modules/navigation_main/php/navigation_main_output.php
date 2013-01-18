@@ -37,8 +37,7 @@ if (1 == $force) {
 }
 $tpl->assign('ulId', 'navigation');
 $tpl->assign('tree', $tree);
-$tpl->assign('actualIdcat', cRegistry::getCategoryId());
 $tpl->assign('path', $path);
-$tpl->display('navigation_main/template/navigation.tpl');
+$tpl->display('navigation_main/template/get.tpl');
 
 ?>
