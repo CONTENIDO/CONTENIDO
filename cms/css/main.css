@@ -336,14 +336,15 @@ p a:hover {
     width:205px;
     height: 100px;
     display:block;
-    margin-top:-90px;
-  background: #fff;
+    margin-top:-105px;
+    background: #fff;
     opacity: 0.5;
     padding: 5px;
-
+    border-bottom: 15px solid #fff;
 }
 .column_quarter .col .teaser_img:hover p {
     margin-top:0;
+    opacity: 0.9;
     transition: all 0.4s;
     -moz-transition: all 0.4s; /* Firefox 4 */
     -webkit-transition: all 0.4s; /* Safari and Chrome */
