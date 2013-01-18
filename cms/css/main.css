@@ -380,6 +380,7 @@ p a:hover {
    height: 28px;
    color: #fff;
    padding: 0 15px;
+   cursor: pointer;
 }
 
 .pagination {
