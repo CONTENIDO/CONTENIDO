@@ -12,7 +12,7 @@
     <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/contenidoConfig.js"></script>
     <script type="text/javascript">
-        var sid = "{SID}";
+        var sessid = "{SESSID}";
         var iLanguagecount = -1;
 
         function resizeFrame() {
@@ -23,33 +23,20 @@
             if (iLanguagecount == 0) {
                 langNewLanguage();
             } else {
-                var dropList = document.getElementById("editclient");
-                var selectedIndex = dropList.selectedIndex;
-                var targetclient = dropList.options[selectedIndex].innerHTML;
                 showConfirmation('i18n("Do you really want to create a new language?")', langNewLanguage);
             }
         }
 
         function langNewLanguage() {
             var element = document.getElementById("editclient");
-            var targetclient = element.value;
+            var targetclient = {TARGETCLIENT};
             var url = "";
             url += "main.php?area=lang_edit";
             url += "&action=lang_newlanguage";
             url += "&frame=4";
             url += "&targetclient="+targetclient;
-            url += "&contenido=" + sid;
+            url += "&contenido=" + sessid;
             parent.parent.frames["right"].frames["right_bottom"].location.href = url;
-        }
-
-        function langChangeClient() {
-            var element = document.getElementsByTagName("SELECT");
-            var url = "";
-            url += "main.php?area=lang";
-            url += "&frame=2";
-            url += "&targetclient="+element[0].value
-            url += "&contenido=" + sid;
-            parent.parent.frames["left"].frames["left_bottom"].location.href = url;
         }
     </script>
 </head>
@@ -57,7 +44,7 @@
 
 <div id="top_left_container" style="border: 1px solid #B3B3B3; padding:5px 0 5px 16px; margin-top:1px">
   {NEWLANG}
-  <div style="clear:both">{CLIENTSELECT}</div>
+  <div style="clear:both; font-weight: bold; margin-left: 20px;">{NAME}</div>
 </div>
 
 </body>

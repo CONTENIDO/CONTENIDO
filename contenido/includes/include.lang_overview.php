@@ -25,10 +25,6 @@ $area = "lang";
 if (!isset($action))
     $action = "";
 
-if (!is_numeric($targetclient)) {
-    $targetclient = $client;
-}
-
 $iGetIdlang = $idlang;
 
 $sql = "SELECT
@@ -38,7 +34,7 @@ $sql = "SELECT
         " . $cfg["tab"]["clients_lang"] . " AS B
         WHERE
         A.idlang=B.idlang AND
-        B.idclient='" . cSecurity::toInteger($targetclient) . "'
+        B.idclient='" . cSecurity::toInteger($client) . "'
         ORDER BY A.idlang";
 
 $db->query($sql);
