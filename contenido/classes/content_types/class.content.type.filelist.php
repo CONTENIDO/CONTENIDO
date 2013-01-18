@@ -824,6 +824,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $divContent = array();
         $divContent[] = new cHTMLParagraph(i18n('Existing files'), 'head_sub');
         $divContent[] = $this->_generateExistingFileSelect();
+        $divContent[] = new cHTMLSpan(i18n('Already configured entries can be deleted by using double click'), 'filelist_manual_' . $this->_id);
+        $divContent[] = new CHTMLSpan('<br /><br />', 'filelist_manual_' . $this->_id);
         $divContent[] = new cHTMLParagraph(i18n('Add file'), 'head_sub');
         $divContent[] = new cHTMLLabel(i18n('Directory'), '');
 
