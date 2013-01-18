@@ -36,6 +36,49 @@ body{
     margin-top:35px;
 }
 
+#header #navigation_header{
+    display: inline;
+    float: right;
+    margin-top: 35px;  
+}
+#header #navigation_header li {
+    list-style:none;
+    float: left;
+}
+
+#header #navigation_header li a {
+    text-decoration: none;
+    display: block;
+    padding: 7px 8px;
+    font-weight: bold;
+    color: #797979;
+    text-transform:capitalize;
+}
+#header #navigation_header li a:active,
+#header #navigation_header li a:hover {
+    color: #0083cb;
+}
+
+#header #navigation_header li.lang_changer a {
+    color: #9ba21b;
+}
+
+#header #navigation_header #search_term {
+    outline: none;
+    background: none;
+    border: none;
+    width: 135px;
+}
+#header #navigation_header form {
+    margin-top: 3px;
+    background: url('../images/misc/sprite.png') no-repeat -252px -293px; 
+    width: 24px; 
+    height: 23px;
+}
+#header #navigation_header form.active {
+    background: url('../images/misc/sprite.png') no-repeat -252px -335px;
+}
+
 
 /* ----- BREADCRUMB ----- */
 #breadcrumb {

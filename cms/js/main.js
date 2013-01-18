@@ -28,16 +28,34 @@
 
 })(jQuery);
 
-$(function() {
-
-	// initialize self labeled input fields
-	$('.ffb-self-labeled-input').self_labeled_input();
+$(function(){
 	
-	/* ----- GALERY ----- */
+	
+	/* ----- HEADER SEARCH FIELD ----- */
+	
+$("#header #navigation_header #search_term").on("focus", function(e){
+	$search_container = $(this).parent();
+	if(!$search_container.hasClass("active")){
+		$search_container.addClass("active")
+					     .animate({"width": "140px", "paddingLeft":"25px"}, 500, "swing");
+	}
+});
+$("#header #navigation_header #search_term").on("blur", function(e){
+	$search_container = $(this).parent();
+	if($search_container.hasClass("active")){
+		$search_container.animate({"width": "24px", "paddingLeft":"0"}, 500, "swing", function(){
+			$search_container.removeClass("active");
+		});
+	}
+});
 
-    var imgPerPage = 6,
-    	activePage,
-    	maxPage =0;
+	
+	
+   /* ----- GALERY ----- */
+
+     var imgPerPage = 6,
+             activePage,
+             maxPage =0;
 
     //Setting Pagination
     function iniPagination(){
