@@ -75,7 +75,7 @@ class DBFSCollection extends ItemCollection {
             header("Content-Type: $mimetype");
             header("Etag: " . md5(mt_rand()));
 
-            // Check, if output of Content-Disposition header should be skippd for the mimetype
+            // Check, if output of Content-Disposition header should be skipped for the mimetype
             $contentDispositionHeader = true;
             foreach ($cfg['dbfs']['skip_content_disposition_header_for_mimetypes'] as $mt) {
                 if (strtolower($mt) == strtolower($mimetype)) {
