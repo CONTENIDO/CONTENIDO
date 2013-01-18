@@ -63,6 +63,9 @@ $cfg['debug']['disable_plugins'] = false;
 // (bool) Whether deprecations should be logged. If disabled, there are no information on usage of outdated code.
 $cfg['debug']['log_deprecations'] = true;
 
+// (bool) Whether stacktraces should be logged. If disabled, the stacktrace is not logged with the corresponding error in log.
+$cfg['debug']['log_stacktraces'] = true;
+
 // (bool) If true, use the field 'urlname' for resolving. 'name' otherwise
 $cfg['urlpathresolve'] = false;
 
