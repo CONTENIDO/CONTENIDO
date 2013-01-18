@@ -201,7 +201,7 @@
                 }
 
                 if (bErr == false) {
-                    showConfirmation('{BOX_MESSAGE}', function() { document.frmSystemPurge.submit });
+                    showConfirmation('{BOX_MESSAGE}', function() { document.frmSystemPurge.submit() });
                 } else {
                     $('#system_clear_error_box span').html(sErrMsg);
                     if ($('#system_clear_error_box').css('display') == 'none') {
