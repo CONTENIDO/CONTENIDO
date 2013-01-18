@@ -1,9 +1,43 @@
-$(function(){
-   /* ----- GALERY ----- */
 
-     var imgPerPage = 6,
-             activePage,
-             maxPage =0;
+/**
+ */
+(function($) {
+
+	/**
+	 * Define behaviour for "self-labeled" input fields.
+	 * 
+	 * Formfields in some places have no label on their own but contain their
+	 * label text as value. These label texts should vanish when the formfield
+	 * gains focus and should be restored if it looses its focus and there is no
+	 * user input.
+	 */
+	$.fn.self_labeled_input = function() {
+		var $input = this;
+		$input.focus(function() {
+			// remove label so user can enter value
+			if ($input.val() == $input.attr('title')) {
+				$input.val('');
+			}
+		}).focusout(function() {
+			// restore label if user has entered nothing
+			if (0 === $input.val().trim().length) {
+				$input.val($input.attr('title'));
+			}
+		}).val($input.attr('title'));
+	};
+
+})(jQuery);
+
+$(function() {
+
+	// initialize self labeled input fields
+	$('.ffb-self-labeled-input').self_labeled_input();
+	
+	/* ----- GALERY ----- */
+
+    var imgPerPage = 6,
+    	activePage,
+    	maxPage =0;
 
     //Setting Pagination
     function iniPagination(){
