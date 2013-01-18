@@ -119,6 +119,12 @@ $backendUrl = cRegistry::getBackendUrl();
 
 $tpl->reset();
 
+// Get backend label
+$backend_label = getSystemProperty('backend', 'backend_label');
+$backend_label = " " . $backend_label . " ";
+$tpl->set('s', 'BACKEND_LABEL', $backend_label);
+
+// Template settings
 $tpl->set('s', 'HEADER', str_replace('&', '&amp;', $sess->url('header.php?changelang='.$lang.'&changeclient='.$client)));
 $tpl->set('s', 'CONTENT', str_replace('&', '&amp;', $sess->url('frameset.php?area=mycontenido&frame=1&menuless=1&changelang='.$changelang.'&lang='.$lang.'&client='.$client)));
 $tpl->set('s', 'VERSION', $cfg['version']);
