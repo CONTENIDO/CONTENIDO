@@ -42,6 +42,7 @@ $("#header #navigation_header #search_term").on("focus", function(e){
 });
 $("#header #navigation_header #search_term").on("blur", function(e){
 	$search_container = $(this).parent();
+	$(this).val("");
 	if($search_container.hasClass("active")){
 		$search_container.animate({"width": "24px", "paddingLeft":"0"}, 500, "swing", function(){
 			$search_container.removeClass("active");

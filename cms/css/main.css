@@ -68,12 +68,14 @@ body{
     background: none;
     border: none;
     width: 135px;
+    cursor: pointer;
 }
 #header #navigation_header form {
     margin-top: 3px;
     background: url('../images/misc/sprite.png') no-repeat -252px -293px; 
     width: 24px; 
     height: 23px;
+    overflow: hidden;
 }
 #header #navigation_header form.active {
     background: url('../images/misc/sprite.png') no-repeat -252px -335px;
