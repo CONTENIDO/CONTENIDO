@@ -261,6 +261,14 @@ $cfg['content_types']['CMS_LINKEDIT'] = array(
 );
 
 
+/* DBFS (Database file system) Settings
+ * -----------------------------------------------------------------------------
+ */
+// (array) List of mimetypes where the output of the Content-Disposition header
+//         should be skipped
+$cfg['dbfs']['skip_content_disposition_header_for_mimetypes'] = array('application/x-shockwave-flash');
+
+
 /* Properties settings
  * -----------------------------------------------------------------------------
  * Here you can configure the behavior of properties (user, group, system and

@@ -51,7 +51,7 @@ class cApiDbfsCollection extends ItemCollection {
      * @param string $path
      */
     public function outputFile($path) {
-        global $client, $auth;
+        global $cfg, $client, $auth;
 
         $path = cSecurity::escapeDB($path, null);
         $client = (int) $client;
@@ -81,8 +81,18 @@ class cApiDbfsCollection extends ItemCollection {
             header('Pragma: '); // leave blank to avoid IE errors
             header("Content-Type: $mimetype");
             header('Etag: ' . md5(mt_rand()));
-            // header("Content-Disposition: filename=$file");
-            header("Content-Disposition: attachment; filename=$file");
+
+            // Check, if output of Content-Disposition header should be skipped for the mimetype
+            $contentDispositionHeader = true;
+            foreach ($cfg['dbfs']['skip_content_disposition_header_for_mimetypes'] as $mt) {
+                if (strtolower($mt) == strtolower($mimetype)) {
+                    $contentDispositionHeader = false;
+                    break;
+                }
+            }
+            if ($contentDispositionHeader) {
+                header('Content-Disposition: attachment; filename=' . $file);
+            }
 
             echo $item->get('content');
         }
