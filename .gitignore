@@ -22,6 +22,7 @@ contenido/includes/config.clients.php
 contenido/includes/config.local.php
 contenido/includes/config.php
 data/config/production/config.clients.php
+data/config/production/config.local.php
 data/config/production/config.php
 data/cronlog/*.job
 data/logs/deprecatedlog.txt
