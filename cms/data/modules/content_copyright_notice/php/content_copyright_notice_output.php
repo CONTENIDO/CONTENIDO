@@ -22,12 +22,14 @@ if (0< $configIdart) {
     $article = new cApiArticleLanguage($configIdart, true);
     $text = $article->getContent('CMS_HTML', 1);
 
+	$text = str_replace('{year}', date('Y'), $text);
     // use smarty template to output header text
     $tpl = Contenido_SmartyWrapper::getInstance();
     global $force;
     if (1 == $force) {
         $tpl->clearAllCache();
     }
+
     $tpl->assign('text', $text);
     $tpl->display('content_copyright_notice/template/get.tpl');
 
