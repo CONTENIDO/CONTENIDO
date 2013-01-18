@@ -76,7 +76,7 @@ class Contenido_SmartyWrapper {
         self::$oSmarty = new Smarty();
         self::$aDefaultPaths = array(
             'template_dir' => $aClientCfg['module']['path'],
-            'cache_dir' => $aClientCfg['cache']['path'],
+            'cache_dir' => $aClientCfg['cache']['path'] . 'templates_c',
             'compile_dir' => $aClientCfg['cache']['path'] . 'templates_c'
         );
 
