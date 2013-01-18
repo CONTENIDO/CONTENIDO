@@ -292,4 +292,14 @@ $cfg['content_types']['CMS_LINKEDIT'] = array(
     'media_filetypes' => array('mp3', 'mp2', 'avi', 'mpg', 'mpeg', 'mid', 'wav', 'mov', 'wmv'),
 );
 
+
+/**
+ * DBFS (Database file system) Settings
+ * ----------------------------------
+ *
+ */
+// (array) List of mimetypes where the output of the Content-Disposition header
+//         should be skipped
+$cfg['dbfs']['skip_content_disposition_header_for_mimetypes'] = array('application/x-shockwave-flash');
+
 ?>
