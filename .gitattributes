@@ -1389,6 +1389,7 @@ contenido/images/but_cancel.gif -text
 contenido/images/but_cancel_off.gif -text
 contenido/images/but_cat_conf.gif -text
 contenido/images/but_cat_conf2.gif -text
+contenido/images/but_close_tiny.gif -text
 contenido/images/but_copy.gif -text
 contenido/images/but_delete.gif -text
 contenido/images/but_downloadlist.gif -text
@@ -1421,6 +1422,7 @@ contenido/images/but_properties.gif -text
 contenido/images/but_refresh.gif -text
 contenido/images/but_rename.gif -text
 contenido/images/but_rss.gif -text
+contenido/images/but_save_tiny.gif -text
 contenido/images/but_setreminder.gif -text
 contenido/images/but_speichern.gif -text
 contenido/images/but_sync_art.gif -text
