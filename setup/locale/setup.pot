@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-20 18:20+0200\n"
+"POT-Creation-Date: 2013-01-18 14:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,69 +17,363 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: steps/setuptype.php:41
-msgid "Please choose your setup type"
+#: steps/forms/setupresults.php:35 steps/forms/setupresults.php:40
+msgid "Results"
 msgstr ""
 
-#: steps/setuptype.php:42
-msgid "Install new CONTENIDO version"
+#: steps/forms/setupresults.php:41
+msgid "CONTENIDO was installed and configured successfully on your server."
 msgstr ""
 
-#: steps/setuptype.php:43
-#, php-format
-msgid "Version %s"
-msgstr ""
-
-#: steps/setuptype.php:44
-#, php-format
-msgid "This setup type will install CONTENIDO %s."
-msgstr ""
-
-#: steps/setuptype.php:44
+#: steps/forms/setupresults.php:43
 msgid ""
-"Please choose this type if you want to start with an empty or an example "
-"installation."
+"Please use username <b>sysadmin</b> and the configured password to login "
+"into CONTENIDO Backend."
 msgstr ""
 
-#: steps/setuptype.php:44
-msgid "Recommended for new projects."
+#: steps/forms/setupresults.php:47
+msgid "Please choose an item to start working:"
 msgstr ""
 
-#: steps/setuptype.php:46
-msgid "Upgrade existing installation"
-msgstr ""
-
-#: steps/setuptype.php:47
-#, php-format
-msgid "Upgrade to %s"
-msgstr ""
-
-#: steps/setuptype.php:48
+#: steps/forms/setupresults.php:48
 msgid ""
-"This setup type will upgrade your existing installation (CONTENIDO 4.6.x or "
-"later required)."
+"You can now start using CONTENIDO. Please delete the folder named 'setup'!"
 msgstr ""
 
-#: steps/setuptype.php:48
-msgid "Recommended for existing projects."
+#: steps/forms/setupresults.php:72
+msgid "Setup Results"
 msgstr ""
 
-#: steps/forms/pathinfo.php:39 steps/forms/pathinfo.php:40
-msgid "System Directories"
+#: steps/forms/setupresults.php:74
+#, php-format
+msgid ""
+"An error occured during installation. Please take a look at the file %s "
+"(located in &quot;data/logs/&quot;) for more information."
 msgstr ""
 
-#: steps/forms/pathinfo.php:41
+#: steps/forms/setupsummary.php:39 steps/forms/setupsummary.php:40
+msgid "Summary"
+msgstr ""
+
+#: steps/forms/setupsummary.php:41
+msgid ""
+"Please check your settings and click on the next button to start the "
+"installation"
+msgstr ""
+
+#: steps/forms/setupsummary.php:47
+msgid "Setup"
+msgstr ""
+
+#: steps/forms/setupsummary.php:50
+msgid "Upgrade"
+msgstr ""
+
+#: steps/forms/setupsummary.php:55
+msgid "Installation type"
+msgstr ""
+
+#: steps/forms/setupsummary.php:56
+msgid "Database parameters"
+msgstr ""
+
+#: steps/forms/setupsummary.php:56
+msgid "Database host"
+msgstr ""
+
+#: steps/forms/setupsummary.php:56
+msgid "Database name"
+msgstr ""
+
+#: steps/forms/setupsummary.php:56
+msgid "Database username"
+msgstr ""
+
+#: steps/forms/setupsummary.php:56
+msgid "Database prefix"
+msgstr ""
+
+#: steps/forms/setupsummary.php:61 steps/forms/clientmode.php:46
+msgid "Client with example modules and example content"
+msgstr ""
+
+#: steps/forms/setupsummary.php:62
+msgid "Client with example modules but without example content"
+msgstr ""
+
+#: steps/forms/setupsummary.php:63
+msgid "Don't create a client"
+msgstr ""
+
+#: steps/forms/setupsummary.php:65
+msgid "Client installation"
+msgstr ""
+
+#: steps/forms/systemtest.php:34 steps/forms/systemtest.php:35
+msgid "System Test"
+msgstr ""
+
+#: steps/forms/systemtest.php:36
+msgid "Your system has been tested for compatibility with CONTENIDO:"
+msgstr ""
+
+#: steps/forms/systemtest.php:45
+msgid "PHP MySQL Extension missing"
+msgstr ""
+
+#: steps/forms/systemtest.php:45
+msgid ""
+"CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. "
+"Please configure PHP to use either MySQL or MySQLi."
+msgstr ""
+
+#: steps/forms/systemtest.php:71
+msgid "Information"
+msgstr ""
+
+#: steps/forms/systemtest.php:75
+msgid "Warning"
+msgstr ""
+
+#: steps/forms/systemtest.php:79
+msgid "Fatal error"
+msgstr ""
+
+#: steps/forms/systemtest.php:87
+msgid "No problems detected"
+msgstr ""
+
+#: steps/forms/systemtest.php:87
+msgid "Setup could not detect any problems with your system environment"
+msgstr ""
+
+#: steps/forms/systemtest.php:169
+#, php-format
+msgid "An old Version of Plugin %s is installed on your system."
+msgstr ""
+
+#: steps/forms/systemtest.php:174
+msgid ""
+"Please remove all old plugins before you continue. To transfer old plugin "
+"data, please copy the old plugin data tables into the new plugin data tables "
+"after the installation. The new plugintable names are the same, but contains "
+"the table prefix of CONTENIDO. Also delete the old plugin tables after data "
+"transfer."
+msgstr ""
+
+#: steps/forms/systemtest.php:176
+msgid "Old Plugins are still installed"
+msgstr ""
+
+#: steps/forms/systemtest.php:189
+#, php-format
+msgid ""
+"You are updating a previous version of CONTENIDO to %s. Some directories/"
+"files have been moved to other sections in %s.\n"
+"\n"
+"Please ensure to copy contenido/includes/config.php to data/config/"
+"production/config.php and also other configuration files within contenido/"
+"includes/ to data/config/production/."
+msgstr ""
+
+#: steps/forms/systemtest.php:192
+msgid "Attention: Some directories/files have been moved"
+msgstr ""
+
+#: steps/forms/systemtest.php:214
+msgid "MySQL database already exists and seems to be filled"
+msgstr ""
+
+#: steps/forms/systemtest.php:214
+#, php-format
+msgid ""
+"Setup checked the database %s and found the table %s. It seems that you "
+"already have a CONTENIDO installation in this database. If you want to "
+"install anyways, change the database prefix. If you want to upgrade from a "
+"previous version, choose 'upgrade' as setup type."
+msgstr ""
+
+#: steps/forms/systemtest.php:221
+msgid "MySQL test table already exists in the database"
+msgstr ""
+
+#: steps/forms/systemtest.php:221
+#, php-format
+msgid ""
+"Setup checked the database %s and found the test table %s. Please remove it "
+"before continuing."
+msgstr ""
+
+#: steps/forms/systemtest.php:228 steps/forms/systemtest.php:249
+msgid "Unable to create tables in the selected MySQL database"
+msgstr ""
+
+#: steps/forms/systemtest.php:228 steps/forms/systemtest.php:249
+#, php-format
+msgid ""
+"Setup tried to create a test table in the database %s and failed. Please "
+"assign table creation permissions to the database user you entered, or ask "
+"an administrator to do so."
+msgstr ""
+
+#: steps/forms/systemtest.php:235 steps/forms/systemtest.php:256
+msgid "Unable to remove the test table"
+msgstr ""
+
+#: steps/forms/systemtest.php:235 steps/forms/systemtest.php:256
+#, php-format
+msgid ""
+"Setup tried to remove the test table %s in the database %s and failed due to "
+"insufficient permissions. Please remove the table %s manually."
+msgstr ""
+
+#: steps/forms/systemtest.php:242
+msgid "Unable to create the database in the MySQL server"
+msgstr ""
+
+#: steps/forms/systemtest.php:242
+msgid ""
+"Setup tried to create a test database and failed. Please assign database "
+"creation permissions to the database user you entered, ask an administrator "
+"to do so, or create the database manually."
+msgstr ""
+
+#: steps/forms/systemtest.php:266 steps/forms/systemtest.php:276
+msgid "No data found for the upgrade"
+msgstr ""
+
+#: steps/forms/systemtest.php:266
+#, php-format
+msgid ""
+"Setup tried to locate the data for the upgrade, however, the database %s "
+"doesn't exist. You need to copy your database first before running setup."
+msgstr ""
+
+#: steps/forms/systemtest.php:276
+#, php-format
+msgid ""
+"Setup tried to locate the data for the upgrade, however, the database %s "
+"contains no tables. You need to copy your database first before running "
+"setup."
+msgstr ""
+
+#: steps/forms/clientadjust.php:36 steps/forms/clientadjust.php:37
+msgid "Client Settings"
+msgstr ""
+
+#: steps/forms/clientadjust.php:38
 msgid ""
 "Please check the directories identified by the system. If you need to change "
-"a path, click on the name and enter the new path in the available input box."
+"a client path, click on the name and enter your new path in the available "
+"input box."
 msgstr ""
 
-#: steps/forms/pathinfo.php:57
-msgid "CONTENIDO Root Path"
+#: steps/forms/clientadjust.php:88
+#, php-format
+msgid "Old server path for %s (%s)"
 msgstr ""
 
-#: steps/forms/pathinfo.php:59
-msgid "CONTENIDO Web Path"
+#: steps/forms/clientadjust.php:90
+#, php-format
+msgid "New server path for %s (%s)"
+msgstr ""
+
+#: steps/forms/clientadjust.php:100
+#, php-format
+msgid "Old web path for %s (%s)"
+msgstr ""
+
+#: steps/forms/clientadjust.php:102
+#, php-format
+msgid "New web path for %s (%s)"
+msgstr ""
+
+#: steps/forms/installer.php:44 steps/forms/installer.php:45
+msgid "System Installation"
+msgstr ""
+
+#: steps/forms/installer.php:46
+msgid "CONTENIDO will be installed, please wait ..."
+msgstr ""
+
+#: steps/forms/installer.php:47
+msgid "Setup completed installing. Click on next to continue."
+msgstr ""
+
+#: steps/forms/installer.php:48
+msgid "Setup is installing, please wait..."
+msgstr ""
+
+#: steps/forms/installer.php:53 steps/forms/installer.php:54
+msgid "System Upgrade"
+msgstr ""
+
+#: steps/forms/installer.php:55
+msgid "CONTENIDO will be upgraded, please wait ..."
+msgstr ""
+
+#: steps/forms/installer.php:56
+msgid "Setup completed upgrading. Click on next to continue."
+msgstr ""
+
+#: steps/forms/installer.php:57
+msgid "Setup is upgrading, please wait..."
+msgstr ""
+
+#: steps/forms/additionalplugins.php:55 steps/forms/additionalplugins.php:56
+msgid "Additional Plugins"
+msgstr ""
+
+#: steps/forms/additionalplugins.php:57
+msgid "Please select Plugins to be installed"
+msgstr ""
+
+#: steps/forms/additionalplugins.php:61
+msgid "Newsletter"
+msgstr ""
+
+#: steps/forms/additionalplugins.php:61
+msgid ""
+"Newsletterfunctionality for dispatching text newsletters and HTML-"
+"Newsletters, extensible with professional newsletter extensions. Definition "
+"of newsletter recipients and groups of recipients. Layout design of the HTML-"
+"Newsletters by CONTENIDO articles."
+msgstr ""
+
+#: steps/forms/additionalplugins.php:62
+msgid "Tagging"
+msgstr ""
+
+#: steps/forms/additionalplugins.php:62
+msgid ""
+"For the representation and administration of content, 4fb developed the "
+"Tagging and content include technology. This technology dynamically allows "
+"on basis of a Template, to put the content in different places and in "
+"different formats according to several criteria."
+msgstr ""
+
+#: steps/forms/additionalplugins.php:63
+msgid "Mod Rewrite"
+msgstr ""
+
+#: steps/forms/additionalplugins.php:63
+msgid "Creates so called Clean URLs for a CONTENIDO installation"
+msgstr ""
+
+#: steps/forms/additionalplugins.php:64
+msgid "Cronjob Overview"
+msgstr ""
+
+#: steps/forms/additionalplugins.php:64
+msgid "Get an overview above your cronjobs"
+msgstr ""
+
+#: steps/forms/additionalplugins.php:73
+msgid "More information"
+msgstr ""
+
+#: steps/forms/additionalplugins.php:78
+msgid "None available"
 msgstr ""
 
 #: steps/forms/systemdata.php:75 steps/forms/systemdata.php:76
@@ -142,551 +436,6 @@ msgstr ""
 msgid "You need to enter a database user."
 msgstr ""
 
-#: steps/forms/systemtest.php:44 steps/forms/systemtest.php:45
-msgid "System Test"
-msgstr ""
-
-#: steps/forms/systemtest.php:46
-msgid "Your system has been tested for compatibility with CONTENIDO:"
-msgstr ""
-
-#: steps/forms/systemtest.php:61
-msgid "PHP MySQL Extension missing"
-msgstr ""
-
-#: steps/forms/systemtest.php:61
-msgid ""
-"CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. "
-"Please configure PHP to use either MySQL or MySQLi."
-msgstr ""
-
-#: steps/forms/systemtest.php:81
-msgid "Information"
-msgstr ""
-
-#: steps/forms/systemtest.php:85
-msgid "Warning"
-msgstr ""
-
-#: steps/forms/systemtest.php:89
-msgid "Fatal error"
-msgstr ""
-
-#: steps/forms/systemtest.php:100
-msgid "No problems detected"
-msgstr ""
-
-#: steps/forms/systemtest.php:100
-msgid "Setup could not detect any problems with your system environment"
-msgstr ""
-
-#: steps/forms/systemtest.php:182
-#, php-format
-msgid "An old Version of Plugin %s is installed on your system."
-msgstr ""
-
-#: steps/forms/systemtest.php:187
-msgid ""
-"Please remove all old plugins before you continue. To transfer old plugin "
-"data, please copy the old plugin data tables into the new plugin data tables "
-"after the installation. The new plugintable names are the same, but contains "
-"the table prefix of CONTENIDO. Also delete the old plugin tables after data "
-"transfer."
-msgstr ""
-
-#: steps/forms/systemtest.php:189
-msgid "Old Plugins are still installed"
-msgstr ""
-
-#: steps/forms/systemtest.php:202
-#, php-format
-msgid ""
-"You are updating a previous version of CONTENIDO to %s. Some directories/"
-"files have been moved to other sections in %s.\n"
-"\n"
-"Please ensure to copy contenido/includes/config.php to data/config/"
-"production/config.php and also other configuration files within contenido/"
-"includes/ to data/config/production/."
-msgstr ""
-
-#: steps/forms/systemtest.php:205
-msgid "Attention: Some directories/files have been moved"
-msgstr ""
-
-#: steps/forms/systemtest.php:220
-#, php-format
-msgid "PHP Version lower than %s"
-msgstr ""
-
-#: steps/forms/systemtest.php:220
-#, php-format
-msgid ""
-"CONTENIDO requires PHP %s or higher as it uses functionality first "
-"introduced with this version. Please update your PHP version."
-msgstr ""
-
-#: steps/forms/systemtest.php:222
-msgid "File uploads disabled"
-msgstr ""
-
-#: steps/forms/systemtest.php:222
-#, php-format
-msgid ""
-"Your PHP version is not configured for file uploads. You can't upload files "
-"using CONTENIDO's file manager unless you configure PHP for file uploads. "
-"See %s for more information"
-msgstr ""
-
-#: steps/forms/systemtest.php:224
-msgid "PHP setting 'magic_quotes_runtime' is turned on"
-msgstr ""
-
-#: steps/forms/systemtest.php:224
-msgid ""
-"The PHP setting 'magic_quotes_runtime' is turned on. CONTENIDO has been "
-"developed to comply with magic_quotes_runtime=Off as this is the PHP default "
-"setting. You have to change this directive to make CONTENIDO work."
-msgstr ""
-
-#: steps/forms/systemtest.php:226
-msgid "PHP Setting 'magic_quotes_sybase' is turned on"
-msgstr ""
-
-#: steps/forms/systemtest.php:226
-msgid ""
-"The PHP Setting 'magic_quotes_sybase' is turned on. CONTENIDO has been "
-"developed to comply with magic_quotes_sybase=Off as this is the PHP default "
-"setting. You have to change this directive to make CONTENIDO work."
-msgstr ""
-
-#: steps/forms/systemtest.php:228
-msgid "PHP maximum execution time is less than 30 seconds"
-msgstr ""
-
-#: steps/forms/systemtest.php:228
-msgid ""
-"PHP is configured for a maximum execution time of less than 30 seconds. This "
-"could cause problems with slow web servers and/or long operations in the "
-"backend. Our recommended execution time is 120 seconds on slow web servers, "
-"60 seconds for medium ones and 30 seconds for fast web servers."
-msgstr ""
-
-#: steps/forms/systemtest.php:230
-msgid "The class ZipArchive could not be found"
-msgstr ""
-
-#: steps/forms/systemtest.php:230
-msgid ""
-"This could cause some problems, but CONTENIDO is able to run without it. You "
-"should check your PHP installation."
-msgstr ""
-
-#: steps/forms/systemtest.php:238
-msgid "open_basedir directive set to '.'"
-msgstr ""
-
-#: steps/forms/systemtest.php:238
-msgid ""
-"The directive open_basedir is set to '.' (e.g. current directory). This "
-"means that CONTENIDO is unable to access files in a logical upper level in "
-"the filesystem. This will cause problems managing the CONTENIDO frontends. "
-"Either add the full path of this CONTENIDO installation to the open_basedir "
-"directive, or turn it off completely."
-msgstr ""
-
-#: steps/forms/systemtest.php:241
-msgid "open_basedir setting might be insufficient"
-msgstr ""
-
-#: steps/forms/systemtest.php:241
-msgid ""
-"Setup believes that the PHP directive open_basedir is configured sufficient, "
-"however, if you encounter errors like 'open_basedir restriction in effect. "
-"File <filename> is not within the allowed path(s): <path>', you have to "
-"adjust the open_basedir directive"
-msgstr ""
-
-#: steps/forms/systemtest.php:244
-msgid "open_basedir directive incompatible"
-msgstr ""
-
-#: steps/forms/systemtest.php:244
-msgid ""
-"Setup has checked your PHP open_basedir directive and reckons that it is not "
-"sufficient. Please change the directive to include the CONTENIDO "
-"installation or turn it off completely."
-msgstr ""
-
-#: steps/forms/systemtest.php:250
-msgid "PHP memory_limit directive too small"
-msgstr ""
-
-#: steps/forms/systemtest.php:250
-msgid ""
-"The memory_limit directive is set to 32 MB or lower. This might be not "
-"enough for CONTENIDO to operate correctly. We recommend to disable this "
-"setting completely, as this can cause problems with large CONTENIDO projects."
-msgstr ""
-
-#: steps/forms/systemtest.php:253
-msgid "PHP sql.safe_mode turned on"
-msgstr ""
-
-#: steps/forms/systemtest.php:253
-msgid ""
-"The PHP directive sql.safe_mode is turned on. This causes problems with the "
-"SQL queries issued by CONTENIDO. Please turn that directive off."
-msgstr ""
-
-#: steps/forms/systemtest.php:255
-msgid "PHP GD-Extension is not loaded"
-msgstr ""
-
-#: steps/forms/systemtest.php:255
-msgid ""
-"The PHP GD-Extension is not loaded. Some third-party modules rely on the GD "
-"functionality. If you don't enable the GD extension, you will encounter "
-"problems with modules like galleries."
-msgstr ""
-
-#: steps/forms/systemtest.php:257
-msgid "PHP PCRE Extension is not loaded"
-msgstr ""
-
-#: steps/forms/systemtest.php:257
-msgid ""
-"The PHP PCRE Extension is not loaded. CONTENIDO uses PCRE-functions like "
-"preg_repace and preg_match and won't work without the PCRE Extension."
-msgstr ""
-
-#: steps/forms/systemtest.php:259 steps/forms/systemtest.php:261
-#: steps/forms/systemtest.php:263
-msgid "PHP XML Extension is not loaded"
-msgstr ""
-
-#: steps/forms/systemtest.php:259 steps/forms/systemtest.php:261
-#: steps/forms/systemtest.php:263
-msgid ""
-"The PHP XML Extension is not loaded. CONTENIDO won't work without the XML "
-"Extension."
-msgstr ""
-
-#: steps/forms/systemtest.php:268
-msgid "Unable to check for a suitable image resizer"
-msgstr ""
-
-#: steps/forms/systemtest.php:268
-msgid ""
-"Setup has tried to check for a suitable image resizer (which is, for exampl, "
-"required for thumbnail creation), but was not able to clearly identify one. "
-"If thumbnails won't work, make sure you've got either the GD-extension or "
-"ImageMagick available."
-msgstr ""
-
-#: steps/forms/systemtest.php:271
-msgid "No suitable image resizer available"
-msgstr ""
-
-#: steps/forms/systemtest.php:271
-msgid ""
-"Setup checked your image resizing support, however, it was unable to find a "
-"suitable image resizer. Thumbnails won't work correctly or won't be looking "
-"good. Install the GD-Extension or ImageMagick"
-msgstr ""
-
-#: steps/forms/systemtest.php:275
-msgid "PHP iconv functions are not available."
-msgstr ""
-
-#: steps/forms/systemtest.php:275
-msgid ""
-"PHP has been compiled with the --without-iconv directive. CONTENIDO won't "
-"work without the iconv functions."
-msgstr ""
-
-#: steps/forms/systemtest.php:281
-msgid "GD-Library GIF read support missing"
-msgstr ""
-
-#: steps/forms/systemtest.php:281
-msgid ""
-"Your GD version doesn't support reading GIF files. This might cause problems "
-"with some modules."
-msgstr ""
-
-#: steps/forms/systemtest.php:283
-msgid "GD-Library GIF write support missing"
-msgstr ""
-
-#: steps/forms/systemtest.php:283
-msgid ""
-"Your GD version doesn't support writing GIF files. This might cause problems "
-"with some modules."
-msgstr ""
-
-#: steps/forms/systemtest.php:285
-msgid "GD-Library JPEG read support missing"
-msgstr ""
-
-#: steps/forms/systemtest.php:285
-msgid ""
-"Your GD version doesn't support reading JPEG files. This might cause "
-"problems with some modules."
-msgstr ""
-
-#: steps/forms/systemtest.php:287
-msgid "GD-Library JPEG write support missing"
-msgstr ""
-
-#: steps/forms/systemtest.php:287
-msgid ""
-"Your GD version doesn't support writing JPEG files. This might cause "
-"problems with some modules."
-msgstr ""
-
-#: steps/forms/systemtest.php:289
-msgid "GD-Library PNG read support missing"
-msgstr ""
-
-#: steps/forms/systemtest.php:289
-msgid ""
-"Your GD version doesn't support reading PNG files. This might cause problems "
-"with some modules."
-msgstr ""
-
-#: steps/forms/systemtest.php:291
-msgid "GD-Library PNG write support missing"
-msgstr ""
-
-#: steps/forms/systemtest.php:291
-msgid ""
-"Your GD version doesn't support writing PNG files. This might cause problems "
-"with some modules."
-msgstr ""
-
-#: steps/forms/systemtest.php:303
-msgid "MySQL database connect failed"
-msgstr ""
-
-#: steps/forms/systemtest.php:303
-#, php-format
-msgid ""
-"Setup was unable to connect to the MySQL Server (Server %s, Username %s). "
-"Please correct the MySQL data and try again.<br><br>The error message given "
-"was: %s"
-msgstr ""
-
-#: steps/forms/systemtest.php:311
-msgid "MySQL is running in strict mode"
-msgstr ""
-
-#: steps/forms/systemtest.php:311
-msgid ""
-"MySQL is running in strict mode, CONTENIDO will not work with this mode. "
-"Please change your sql_mode!"
-msgstr ""
-
-#: steps/forms/systemtest.php:330
-msgid "MySQL database already exists and seems to be filled"
-msgstr ""
-
-#: steps/forms/systemtest.php:330
-#, php-format
-msgid ""
-"Setup checked the database %s and found the table %s. It seems that you "
-"already have a CONTENIDO installation in this database. If you want to "
-"install anyways, change the database prefix. If you want to upgrade from a "
-"previous version, choose 'upgrade' as setup type."
-msgstr ""
-
-#: steps/forms/systemtest.php:337
-msgid "MySQL test table already exists in the database"
-msgstr ""
-
-#: steps/forms/systemtest.php:337
-#, php-format
-msgid ""
-"Setup checked the database %s and found the test table %s. Please remove it "
-"before continuing."
-msgstr ""
-
-#: steps/forms/systemtest.php:344 steps/forms/systemtest.php:365
-msgid "Unable to create tables in the selected MySQL database"
-msgstr ""
-
-#: steps/forms/systemtest.php:344 steps/forms/systemtest.php:365
-#, php-format
-msgid ""
-"Setup tried to create a test table in the database %s and failed. Please "
-"assign table creation permissions to the database user you entered, or ask "
-"an administrator to do so."
-msgstr ""
-
-#: steps/forms/systemtest.php:351 steps/forms/systemtest.php:372
-msgid "Unable to remove the test table"
-msgstr ""
-
-#: steps/forms/systemtest.php:351 steps/forms/systemtest.php:372
-#, php-format
-msgid ""
-"Setup tried to remove the test table %s in the database %s and failed due to "
-"insufficient permissions. Please remove the table %s manually."
-msgstr ""
-
-#: steps/forms/systemtest.php:358
-msgid "Unable to create the database in the MySQL server"
-msgstr ""
-
-#: steps/forms/systemtest.php:358
-msgid ""
-"Setup tried to create a test database and failed. Please assign database "
-"creation permissions to the database user you entered, ask an administrator "
-"to do so, or create the database manually."
-msgstr ""
-
-#: steps/forms/systemtest.php:382 steps/forms/systemtest.php:392
-msgid "No data found for the upgrade"
-msgstr ""
-
-#: steps/forms/systemtest.php:382
-#, php-format
-msgid ""
-"Setup tried to locate the data for the upgrade, however, the database %s "
-"doesn't exist. You need to copy your database first before running setup."
-msgstr ""
-
-#: steps/forms/systemtest.php:392
-#, php-format
-msgid ""
-"Setup tried to locate the data for the upgrade, however, the database %s "
-"contains no tables. You need to copy your database first before running "
-"setup."
-msgstr ""
-
-#: steps/forms/systemtest.php:474
-#, php-format
-msgid "Can't write %s"
-msgstr ""
-
-#: steps/forms/systemtest.php:475
-#, php-format
-msgid ""
-"Setup or CONTENIDO can't write to the file %s. Please change the file "
-"permissions to correct this problem."
-msgstr ""
-
-#: steps/forms/systemtest.php:483
-msgid ""
-"Your Server runs Windows. Due to that, Setup can't recommend any file "
-"permissions."
-msgstr ""
-
-#: steps/forms/systemtest.php:486
-#, php-format
-msgid ""
-"Due to a very restrictive environment, an advise is not possible. Ask your "
-"system administrator to enable write access to the file %s, especially in "
-"environments where ACL (Access Control Lists) are used."
-msgstr ""
-
-#: steps/forms/systemtest.php:491
-#, php-format
-msgid ""
-"Your web server and the owner of your files are identical. You need to "
-"enable write access for the owner, e.g. using chmod u+rw %s, setting the "
-"file mask to %s or set the owner to allow writing the file."
-msgstr ""
-
-#: steps/forms/systemtest.php:496
-#, php-format
-msgid ""
-"Your web server's group and the group of your files are identical. You need "
-"to enable write access for the group, e.g. using chmod g+rw %s, setting the "
-"file mask to %s or set the group to allow writing the file."
-msgstr ""
-
-#: steps/forms/systemtest.php:501
-#, php-format
-msgid ""
-"Your web server is not equal to the file owner, and is not in the "
-"webserver's group. It would be highly insecure to allow world write acess to "
-"the files. If you want to install anyways, enable write access for all "
-"others, e.g. using chmod o+rw %s, setting the file mask to %s or set the "
-"others to allow writing the file."
-msgstr ""
-
-#: steps/forms/systemtest.php:511
-msgid ""
-"Your Server runs Windows. Due to that, Setup can't recommend any directory "
-"permissions."
-msgstr ""
-
-#: steps/forms/systemtest.php:514
-#, php-format
-msgid ""
-"Due to a very restrictive environment, an advise is not possible. Ask your "
-"system administrator to enable write access to the file or directory %s, "
-"especially in environments where ACL (Access Control Lists) are used."
-msgstr ""
-
-#: steps/forms/systemtest.php:519
-#, php-format
-msgid ""
-"Your web server and the owner of your directory are identical. You need to "
-"enable write access for the owner, e.g. using chmod u+rw %s, setting the "
-"directory mask to %s or set the owner to allow writing the directory."
-msgstr ""
-
-#: steps/forms/systemtest.php:524
-#, php-format
-msgid ""
-"Your web server's group and the group of your directory are identical. You "
-"need to enable write access for the group, e.g. using chmod g+rw %s, setting "
-"the directory mask to %s or set the group to allow writing the directory."
-msgstr ""
-
-#: steps/forms/systemtest.php:529
-#, php-format
-msgid ""
-"Your web server is not equal to the directory owner, and is not in the "
-"webserver's group. It would be highly insecure to allow world write acess to "
-"the directory. If you want to install anyways, enable write access for all "
-"others, e.g. using chmod o+rw %s, setting the directory mask to %s or set "
-"the others to allow writing the directory."
-msgstr ""
-
-#: steps/forms/installer.php:44 steps/forms/installer.php:45
-msgid "System Installation"
-msgstr ""
-
-#: steps/forms/installer.php:46
-msgid "CONTENIDO will be installed, please wait ..."
-msgstr ""
-
-#: steps/forms/installer.php:47
-msgid "Setup completed installing. Click on next to continue."
-msgstr ""
-
-#: steps/forms/installer.php:48
-msgid "Setup is installing, please wait..."
-msgstr ""
-
-#: steps/forms/installer.php:53 steps/forms/installer.php:54
-msgid "System Upgrade"
-msgstr ""
-
-#: steps/forms/installer.php:55
-msgid "CONTENIDO will be upgraded, please wait ..."
-msgstr ""
-
-#: steps/forms/installer.php:56
-msgid "Setup completed upgrading. Click on next to continue."
-msgstr ""
-
-#: steps/forms/installer.php:57
-msgid "Setup is upgrading, please wait..."
-msgstr ""
-
 #: steps/forms/adminpassword.php:32 steps/forms/adminpassword.php:33
 #: steps/forms/adminpassword.php:62 steps/forms/adminpassword.php:63
 msgid "Administrator password"
@@ -718,201 +467,22 @@ msgstr ""
 msgid "You need to enter a mail address."
 msgstr ""
 
-#: steps/forms/additionalplugins.php:55 steps/forms/additionalplugins.php:56
-msgid "Additional Plugins"
+#: steps/forms/pathinfo.php:39 steps/forms/pathinfo.php:40
+msgid "System Directories"
 msgstr ""
 
-#: steps/forms/additionalplugins.php:57
-msgid "Please select Plugins to be installed"
-msgstr ""
-
-#: steps/forms/additionalplugins.php:61
-msgid "Newsletter"
-msgstr ""
-
-#: steps/forms/additionalplugins.php:61
-msgid ""
-"Newsletterfunctionality for dispatching text newsletters and HTML-"
-"Newsletters, extensible with professional newsletter extensions. Definition "
-"of newsletter recipients and groups of recipients. Layout design of the HTML-"
-"Newsletters by CONTENIDO articles."
-msgstr ""
-
-#: steps/forms/additionalplugins.php:62
-msgid "Tagging"
-msgstr ""
-
-#: steps/forms/additionalplugins.php:62
-msgid ""
-"For the representation and administration of content, 4fb developed the "
-"Tagging and content include technology. This technology dynamically allows "
-"on basis of a Template, to put the content in different places and in "
-"different formats according to several criteria."
-msgstr ""
-
-#: steps/forms/additionalplugins.php:63
-msgid "Mod Rewrite"
-msgstr ""
-
-#: steps/forms/additionalplugins.php:63
-msgid "Creates so called Clean URLs for a CONTENIDO installation"
-msgstr ""
-
-#: steps/forms/additionalplugins.php:64
-msgid "Cronjob Overview"
-msgstr ""
-
-#: steps/forms/additionalplugins.php:64
-msgid "Get an overview above your cronjobs"
-msgstr ""
-
-#: steps/forms/additionalplugins.php:73
-msgid "More information"
-msgstr ""
-
-#: steps/forms/additionalplugins.php:78
-msgid "None available"
-msgstr ""
-
-#: steps/forms/setupsummary.php:39 steps/forms/setupsummary.php:40
-msgid "Summary"
-msgstr ""
-
-#: steps/forms/setupsummary.php:41
-msgid ""
-"Please check your settings and click on the next button to start the "
-"installation"
-msgstr ""
-
-#: steps/forms/setupsummary.php:47
-msgid "Setup"
-msgstr ""
-
-#: steps/forms/setupsummary.php:50
-msgid "Upgrade"
-msgstr ""
-
-#: steps/forms/setupsummary.php:55
-msgid "Installation type"
-msgstr ""
-
-#: steps/forms/setupsummary.php:56
-msgid "Database parameters"
-msgstr ""
-
-#: steps/forms/setupsummary.php:56
-msgid "Database host"
-msgstr ""
-
-#: steps/forms/setupsummary.php:56
-msgid "Database name"
-msgstr ""
-
-#: steps/forms/setupsummary.php:56
-msgid "Database username"
-msgstr ""
-
-#: steps/forms/setupsummary.php:56
-msgid "Database prefix"
-msgstr ""
-
-#: steps/forms/setupsummary.php:61 steps/forms/clientmode.php:46
-msgid "Client with example modules and example content"
-msgstr ""
-
-#: steps/forms/setupsummary.php:62
-msgid "Client with example modules but without example content"
-msgstr ""
-
-#: steps/forms/setupsummary.php:63
-msgid "Don't create a client"
-msgstr ""
-
-#: steps/forms/setupsummary.php:65
-msgid "Client installation"
-msgstr ""
-
-#: steps/forms/clientadjust.php:36 steps/forms/clientadjust.php:37
-msgid "Client Settings"
-msgstr ""
-
-#: steps/forms/clientadjust.php:38
+#: steps/forms/pathinfo.php:41
 msgid ""
 "Please check the directories identified by the system. If you need to change "
-"a client path, click on the name and enter your new path in the available "
-"input box."
+"a path, click on the name and enter the new path in the available input box."
 msgstr ""
 
-#: steps/forms/clientadjust.php:88
-#, php-format
-msgid "Old server path for %s (%s)"
+#: steps/forms/pathinfo.php:57
+msgid "CONTENIDO Root Path"
 msgstr ""
 
-#: steps/forms/clientadjust.php:90
-#, php-format
-msgid "New server path for %s (%s)"
-msgstr ""
-
-#: steps/forms/clientadjust.php:100
-#, php-format
-msgid "Old web path for %s (%s)"
-msgstr ""
-
-#: steps/forms/clientadjust.php:102
-#, php-format
-msgid "New web path for %s (%s)"
-msgstr ""
-
-#: steps/forms/setupresults.php:35 steps/forms/setupresults.php:40
-msgid "Results"
-msgstr ""
-
-#: steps/forms/setupresults.php:41
-msgid "CONTENIDO was installed and configured successfully on your server."
-msgstr ""
-
-#: steps/forms/setupresults.php:43
-msgid ""
-"Please use username <b>sysadmin</b> and the configured password to login "
-"into CONTENIDO Backend."
-msgstr ""
-
-#: steps/forms/setupresults.php:47
-msgid "Please choose an item to start working:"
-msgstr ""
-
-#: steps/forms/setupresults.php:48
-msgid ""
-"You can now start using CONTENIDO. Please delete the folder named 'setup'!"
-msgstr ""
-
-#: steps/forms/setupresults.php:72
-msgid "Setup Results"
-msgstr ""
-
-#: steps/forms/setupresults.php:74
-#, php-format
-msgid ""
-"An error occured during installation. Please take a look at the file %s "
-"(located in &quot;data/logs/&quot;) for more information."
-msgstr ""
-
-#: steps/forms/clientmode.php:39 steps/forms/clientmode.php:40
-msgid "Example Client"
-msgstr ""
-
-#: steps/forms/clientmode.php:41
-msgid ""
-"If you are new to CONTENIDO, you should create an example client to start "
-"working with."
-msgstr ""
-
-#: steps/forms/clientmode.php:47
-msgid "Client with example modules, but without example content"
-msgstr ""
-
-#: steps/forms/clientmode.php:48
-msgid "Don't create client"
+#: steps/forms/pathinfo.php:59
+msgid "CONTENIDO Web Path"
 msgstr ""
 
 #: steps/forms/configmode.php:42 steps/forms/configmode.php:43
@@ -940,4 +510,69 @@ msgstr ""
 
 #: steps/forms/configmode.php:65
 msgid "Download"
+msgstr ""
+
+#: steps/forms/clientmode.php:39 steps/forms/clientmode.php:40
+msgid "Example Client"
+msgstr ""
+
+#: steps/forms/clientmode.php:41
+msgid ""
+"If you are new to CONTENIDO, you should create an example client to start "
+"working with."
+msgstr ""
+
+#: steps/forms/clientmode.php:47
+msgid "Client with example modules, but without example content"
+msgstr ""
+
+#: steps/forms/clientmode.php:48
+msgid "Don't create client"
+msgstr ""
+
+#: steps/setuptype.php:41
+msgid "Please choose your setup type"
+msgstr ""
+
+#: steps/setuptype.php:42
+msgid "Install new CONTENIDO version"
+msgstr ""
+
+#: steps/setuptype.php:43
+#, php-format
+msgid "Version %s"
+msgstr ""
+
+#: steps/setuptype.php:44
+#, php-format
+msgid "This setup type will install CONTENIDO %s."
+msgstr ""
+
+#: steps/setuptype.php:44
+msgid ""
+"Please choose this type if you want to start with an empty or an example "
+"installation."
+msgstr ""
+
+#: steps/setuptype.php:44
+msgid "Recommended for new projects."
+msgstr ""
+
+#: steps/setuptype.php:46
+msgid "Upgrade existing installation"
+msgstr ""
+
+#: steps/setuptype.php:47
+#, php-format
+msgid "Upgrade to %s"
+msgstr ""
+
+#: steps/setuptype.php:48
+msgid ""
+"This setup type will upgrade your existing installation (CONTENIDO 4.6.x or "
+"later required)."
+msgstr ""
+
+#: steps/setuptype.php:48
+msgid "Recommended for existing projects."
 msgstr ""
