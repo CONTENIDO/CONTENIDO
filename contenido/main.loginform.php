@@ -58,8 +58,12 @@ $tpl->reset();
 
 $sess = cRegistry::getSession();
 
+// Get backend label
+$backend_label = getSystemProperty('backend', 'backend_label');
+$backend_label = " " . $backend_label . " ";
+
 $tpl->set('s', 'BASEPATH', cRegistry::getBackendUrl());
-$tpl->set('s', 'TITEL', ':: :: :: :: CONTENIDO Login');
+$tpl->set('s', 'TITEL', ':: ::' . $backend_label . ':: :: CONTENIDO Login');
 $tpl->set('s', 'ACTION', $sess->selfURL());
 
 $aAvailableLangs = i18nGetAvailableLanguages();
