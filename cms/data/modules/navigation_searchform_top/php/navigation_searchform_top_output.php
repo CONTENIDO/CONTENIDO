@@ -25,7 +25,7 @@ $isModRewriteEnabled = class_exists('ModRewrite') && ModRewrite::isEnabled();
 // show search form only if search result article is defined
 $action = $method = $label = $submit = '';
 if (0 < $searchResultIdart) {
-    
+
     // determine action & method for search form
     if ($isModRewriteEnabled) {
         $action = cUri::getInstance()->build(array(
@@ -35,17 +35,17 @@ if (0 < $searchResultIdart) {
     } else {
         $action = 'front_content.php';
     }
-    
+
     // determine how the search request should be transmitted
     $method = 'GET';
-    
+
     // determine label to be shown inside input field
     $label = mi18n("NAVIGATION_SEARCHFORM_TOP_LABEL");
     // this translation is optional
     if (false !== strpos($label, 'Module translation not found: ')) {
         $label = '';
     }
-    
+
     // determine label to be shown on submit button
     $submit = mi18n("NAVIGATION_SEARCHFORM_TOP_SUBMIT");
     // this translation is optional

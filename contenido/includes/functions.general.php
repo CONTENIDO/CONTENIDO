@@ -1255,11 +1255,11 @@ function cWarning() {
     $function_name = $stack[1]['function'];
 
     $msg .= $function_name . "() [" . basename($stack[0]['file']) . "(" . $stack[0]['line'] . ")]\n";
-	
-	if ($cfg['debug']['log_stacktraces'] == true) {
-		$msg .= buildStackString();
-		$msg .= "\n";
-	}
+
+    if ($cfg['debug']['log_stacktraces'] == true) {
+        $msg .= buildStackString();
+        $msg .= "\n";
+    }
 
     cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
 
@@ -1303,11 +1303,11 @@ function cError($file, $line, $message) {
     $function_name = $stack[1]['function'];
 
     $msg .= $function_name . "() called in " . basename($stack[1]['file']) . "(" . $stack[1]['line'] . ")\n";
-	
-	if ($cfg['debug']['log_stacktraces'] == true) {
-		$msg .= buildStackString();
-		$msg .= "\n";
-	}
+
+    if ($cfg['debug']['log_stacktraces'] == true) {
+        $msg .= buildStackString();
+        $msg .= "\n";
+    }
 
     cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
 
@@ -1338,10 +1338,10 @@ function cDeprecated($message = '') {
         $msg .= "\n";
     }
 
-	if ($cfg['debug']['log_stacktraces'] == true) {
-		$msg .= buildStackString(2);
-		$msg .= "\n";
-	}
+    if ($cfg['debug']['log_stacktraces'] == true) {
+        $msg .= buildStackString(2);
+        $msg .= "\n";
+    }
 
     cFileHandler::write($cfg['path']['contenido_logs'] . 'deprecatedlog.txt', $msg, true);
 }

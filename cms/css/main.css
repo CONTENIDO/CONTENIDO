@@ -38,7 +38,7 @@ body {
 #header #navigation_header {
     display: inline;
     float: right;
-    margin-top: 35px;  
+    margin-top: 35px;
 }
 #header #navigation_header li {
     list-style:none;
@@ -71,8 +71,8 @@ body {
 }
 #header #navigation_header form {
     margin-top: 3px;
-    background: url('../images/misc/sprite.png') no-repeat -252px -293px; 
-    width: 24px; 
+    background: url('../images/misc/sprite.png') no-repeat -252px -293px;
+    width: 24px;
     height: 23px;
     overflow: hidden;
 }
@@ -420,7 +420,7 @@ p a:hover {
 #search_result li a {
     color: #9ba21b;
 }
-#search_result li a:hover, 
+#search_result li a:hover,
 #search_result li:hover a {
     color: #0083cb;
 }
@@ -629,7 +629,7 @@ button.ui-button::-moz-focus-inner {
 #copyright {
     width: 100%;
     height: 80px;
-	margin-top: 10px;
+    margin-top: 10px;
 }
 
 /* ----- SOCIAL MEDIA ----- */

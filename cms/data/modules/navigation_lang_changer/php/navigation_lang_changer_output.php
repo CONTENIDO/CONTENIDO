@@ -83,7 +83,7 @@ if ($checkedCatArt === true) {
                 $url = cRegistry::getFrontendUrl() . 'front_content.php?' . '&' . "changelang=" . $selectedLang;
                 $urlSet = true;
             }
-        } 
+        }
 
         else if ($currentLanguage != reset($allLanguages)) {
             if ($catCollection->select("idcat = " . $idcatAuto . " AND " . " idlang = " . reset($allLanguages) . " AND " . "startidartlang != 0", NULL, NULL, NULL)) {

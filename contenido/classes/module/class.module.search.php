@@ -133,7 +133,7 @@ class cModuleSearch extends cModuleHandler {
                             OR name LIKE '%s'
                             OR input LIKE '%s'
                             OR output LIKE '%s')
-                			ORDER BY %s %s", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
+                            ORDER BY %s %s", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
 
         $db = cRegistry::getDb();
         $db->query($sql);

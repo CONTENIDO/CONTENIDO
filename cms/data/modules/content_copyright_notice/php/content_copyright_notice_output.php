@@ -22,7 +22,7 @@ if (0< $configIdart) {
     $article = new cApiArticleLanguage($configIdart, true);
     $text = $article->getContent('CMS_HTML', 1);
 
-	$text = str_replace('{year}', date('Y'), $text);
+    $text = str_replace('{year}', date('Y'), $text);
     // use smarty template to output header text
     $tpl = Contenido_SmartyWrapper::getInstance();
     global $force;

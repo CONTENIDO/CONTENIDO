@@ -189,10 +189,10 @@ i18n("Visible debug")
                 <label>Maximum log size in MiB (0 = infinite)</label>
                 <group>Backend</group>
             </max_log_size>
-			<backend_label>
-            	<values>label</values>
-            	<label>Optional backend label</label>
-            	<group>Backend</group>
+            <backend_label>
+                <values>label</values>
+                <label>Optional backend label</label>
+                <group>Backend</group>
             </backend_label>
         </backend>
         <generator>
