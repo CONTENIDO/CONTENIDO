@@ -20,10 +20,11 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$area = "lang";
+$area = 'lang';
 
-if (!isset($action))
-    $action = "";
+if (!isset($action)) {
+    $action = '';
+}
 
 $iGetIdlang = $idlang;
 
@@ -75,25 +76,26 @@ while ($db->next_record()) {
     $tpl->next();
 }
 
-$newlanguageform = '<form name=newlanguage method="post" action="' . $sess->url("main.php?area=$area&frame=$frame") . '">
-                    <input type="hidden" name="action" value="lang_newlanguage">
-                    <table cellpadding="0" cellspacing="0" border="0">
-                    <tr><td class="text_medium">' . i18n("New language") . ':
-                    <INPUT type="text" name="name">&nbsp;&nbsp;&nbsp;
-                    <INPUT type="image" src="' . $cfg['path']['images'] . 'but_ok.gif" border="0">
-                    </td></tr></table></from>';
+$newlanguageform = '
+    <form name="newlanguage" method="post" action="' . $sess->url("main.php?area=$area&frame=$frame") . '">
+        <input type="hidden" name="action" value="lang_newlanguage">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tr><td class="text_medium">' . i18n("New language") . ':
+                <input type="text" name="name">&nbsp;&nbsp;&nbsp;
+                <input type="image" src="' . $cfg['path']['images'] . 'but_ok.gif" border="0">
+            </td></tr>
+        </table>
+    </from>
+';
 
 $tpl->set('s', 'NEWLANGUAGEFORM', $newlanguageform);
 $tpl->set('s', 'SID', $sess->id);
 
 if ($tmp_notification) {
-
     $noti_html = '<tr><td colspan="3">' . $tmp_notification . '</td></tr>';
     $tpl->set('s', 'NOTIFICATION', $noti_html);
 } else {
-
     $tmp_notification = $notification->returnNotification("info", i18n("Language deleted"));
-
     $noti_html = '<tr><td colspan="3">' . $tmp_notification . '</td></tr>';
     $tpl->set('s', 'NOTIFICATION', '');
 }
