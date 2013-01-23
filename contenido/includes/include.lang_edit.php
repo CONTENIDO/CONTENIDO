@@ -33,12 +33,14 @@ $newOption = '';
 $db2 = cRegistry::getDb();
 
 $sReload = '<script type="text/javascript">
+            (function() {
                 var left_bottom = top.content.left.left_bottom;
                 if (left_bottom) {
                     var href = left_bottom.location.href;
                     href = href.replace(/&idlang[^&]*/, \'\');
                     left_bottom.location.href = href+"&idlang="+"' . $idlang . '";
                 }
+            })();
             </script>';
 
 if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
@@ -47,14 +49,16 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
         $page->displayInfo(i18n("Deleted language successfully!"));
         // finally delete from dropdown in header
         $newOption = '<script type="text/javascript">
-                        var langList = top.header.document.getElementById("cLanguageSelect");
-                        var thepos = "";
-                        for (var i=0;i<langList.length;i++) {
-                            if (langList.options[i].value == ' . $idlang . ') {
-                                thepos = langList.options[i].index;
+                        (function() {
+                            var langList = top.header.document.getElementById("cLanguageSelect"),
+                                thepos = "", i;
+                            for (i = 0; i < langList.length; i++) {
+                                if (langList.options[i].value == ' . $idlang . ') {
+                                    thepos = langList.options[i].index;
+                                }
                             }
-                        }
-                        langList.remove(thepos);
+                            langList.remove(thepos);
+                        })();
                       </script>';
     }
 
@@ -67,9 +71,11 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
         }
 
         $newOption = '<script type="text/javascript">
-                        var newLang = new Option("' . i18n("New language") . ' (' . $new_idlang . ')", "' . $new_idlang . '", false, false);
-                        var langList = top.header.document.getElementById("cLanguageSelect");
-                        langList.options[langList.options.length] = newLang;
+                        (function() {
+                            var newLang = new Option("' . i18n("New language") . ' (' . $new_idlang . ')", "' . $new_idlang . '", false, false);
+                            var langList = top.header.document.getElementById("cLanguageSelect");
+                            langList.options[langList.options.length] = newLang;
+                        })();
                       </script>';
         $idlang = $new_idlang;
         $page->displayInfo(i18n("Created new language successfully!"));
@@ -100,13 +106,15 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
 
         // update dropdown in header
         $newOption = '<script type="text/javascript">
-                        var langList = top.header.document.getElementById("cLanguageSelect");
-                        var thepos = "";
-                        for (var i=0; i<langList.length; i++) {
-                            if (langList.options[i].value == ' . $idlang . ') {
-                                langList.options[i].innerHTML = \'' . $langname . ' (' . $idlang . ')\';
+                        (function() {
+                            var langList = top.header.document.getElementById("cLanguageSelect"),
+                                thepos = "", i;
+                            for (i = 0; i < langList.length; i++) {
+                                if (langList.options[i].value == ' . $idlang . ') {
+                                    langList.options[i].innerHTML = \'' . $langname . ' (' . $idlang . ')\';
+                                }
                             }
-                        }
+                        })();
                       </script>';
     }
 
