@@ -496,6 +496,7 @@ ul.linklist li a:visited {
 }
 ul.linklist li:hover a {
     color: #0083cb;
+    background: url('../images/misc/sprite.png') no-repeat 0 -231px;
 }
 
 ul.linklist li p {
