@@ -6,7 +6,7 @@
  * Description:
  * Fix functions for PHP 5.4
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend Includes
  * @version    1.0.0
  * @author     four for Business AG
  * @copyright  four for business AG <www.4fb.de>

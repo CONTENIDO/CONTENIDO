@@ -13,7 +13,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend Classes
  * @version    1.0.2
  * @author     Chris Ryan
  * @copyright  Chris Ryan

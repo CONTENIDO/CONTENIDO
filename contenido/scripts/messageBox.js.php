@@ -6,7 +6,7 @@
  * Description:
  * Message box for errors and / or confirms
  *
- * @package    CONTENIDO Backend sripts
+ * @package    CONTENIDO Backend Scripts
  * @version    1.0.4
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>

@@ -48,7 +48,6 @@ if (!defined('CON_FRAMEWORK')) {
  * @author Marco Jahn <marco.jahn@4fb.de>
  * @version 1.0
  * @copyright four for business 2003
- * @package Contenido_API
  * @deprecated 2012-08-24 Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead
  */
 class TemplateConfig {
