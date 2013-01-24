@@ -17,7 +17,7 @@ body {
 
 #page {
     width: 960px;
-    height: 100%;
+    /*height: 100%;*/
     background: #fff;
     margin: 0 auto;
 }
@@ -475,6 +475,94 @@ p a:hover {
     border: 2px solid #ccc;
     color: #0083cb;
 }
+
+/* ----- LINKLIST ----- */
+
+ul.linklist {
+    display: inline;
+}
+
+ul.linklist li {
+    list-style: none;
+    margin: 18px 0;
+}
+
+ul.linklist li a:link,
+ul.linklist li a:active,
+ul.linklist li a:visited {
+    color: #9ba21b;
+    background: url('../images/misc/sprite.png') no-repeat 0 -196px; 
+    padding-left: 9px;
+}
+ul.linklist li:hover a {
+    color: #0083cb;
+}
+
+ul.linklist li p {
+    margin-top: 7px;
+}
+
+/* ----- DOWNLOADLIST ----- */
+
+ul.downloadlist {
+    display: inline;
+}
+
+ul.downloadlist > li {
+    list-style: none;
+    padding: 15px 0;
+}
+
+ul.downloadlist ul.formats {
+    display: inline;
+}
+
+
+ul.downloadlist ul.formats li {
+    list-style: none;
+    float: left;
+}
+ul.downloadlist ul.formats li + li {
+    margin-left: 20px;
+}
+ul.downloadlist ul.formats li a:link,
+ul.downloadlist ul.formats li a:visited,
+ul.downloadlist ul.formats li a:active {
+  background: url('../images/misc/sprite.png') no-repeat 0 -267px; 
+  padding-left: 35px; 
+  height: 19px; 
+  display: block; 
+  color: #9ba21b;
+}
+
+ul.downloadlist ul.formats li:hover a {
+   color: #0083cb; 
+}
+
+ul.downloadlist > li > img {
+    width:148px;
+    height: 74px;
+    float: left;
+    margin-right: 20px;
+    border: 3px solid #f5f5f5;
+}
+ul.downloadlist > li > img + .content {
+    float: left;
+    width: 490px;
+
+}
+
+ul.downloadlist > li  span.info {
+    color: #a1a1a1;
+    font-size: 9px;
+    display: block;
+    margin: 10px 0 4px 0;
+}
+
+ul.downloadlist > li p {
+    font-size: 11px;
+}
+
 
 /* Overlays */
 .ui-widget-overlay {

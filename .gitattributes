@@ -15,6 +15,7 @@ cms/data/.htaccess -text
 cms/data/config/config.php -text
 cms/data/layouts/standard/standard.html -text
 cms/data/layouts/start_page/start_page.html -text svneol=unset#text/plain
+cms/data/layouts/temp-listen/temp-listen.html -text svneol=unset#text/plain
 cms/data/layouts/temp-suchergebnis/temp-suchergebnis.html -text svneol=unset#text/plain
 cms/data/logs/index.php -text
 cms/data/modules/config_copyright_notice/info.xml -text svneol=unset#text/plain

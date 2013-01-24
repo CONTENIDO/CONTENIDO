@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!-- standard layout -->
+<html lang="de">
+    <head>
+        <title><container id="10" name="title element" types="head" mode="fixed" default="head_title">title element</container></title>
+        <link rel="stylesheet" type="text/css" href="css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <link rel="stylesheet" type="text/css" href="css/contenido_backend.css" />
+    </head>
+
+    <body>
+
+        <div id="page">
+
+            <div id="header">
+                <img src="images/misc/logo.png" width="279" height="41" alt="Contenido Logo" id="logo" />
+                <ul id="navigation_header">
+                <li class="lang_changer">
+                    <container id="211" name="language changer" types="navigation" mode="fixed" default="navigation_lang_changer">lang changer</container>
+                 </li>
+                    <!--  <container id="212" name="Contact" types="navigation" default="contact">contact</container>
+                          <container id="213" name="Search" types="navigation" default="search">search</container>
+                    -->
+                    <li>
+                    <ul>
+                    <li><a href="">Navigation</a></li>
+                    <li><a href="">Navigation</a></li>
+                    <li><a href="">Navigation</a></li>
+                    </ul>
+
+                   </li>
+                   <li>
+                   <form action="{$action}" method="{$method}" id="navigation_searchform_top">
+                         <input type="text" id="search_term" name="search_term" title="{$label}" />
+                   </form>
+                   </li>
+                </ul>
+            </div>
+
+            <div id="breadcrumb">
+                <container id="90" name="breadcrumb" types="navigation" mode="fixed" default="navigation_breadcrumb">breadcrumb</container>
+            </div>
+
+            <div id="menu">
+                <container id="100" name="left navigation" types="navigation" mode="fixed" default="navigation_main">left navigation</container>
+            </div>
+
+            <div id="content">
+                <container id="110" name="content" types="content" mode="optional" default="content_header_first">first header</container>
+                <container id="120" name="content" types="content" mode="optional" default="content_header_second">second header</container>
+                <container id="130" name="content" types="content" mode="optional" default="content_image">image</container>
+                <container id="140" name="content" types="content" mode="optional" default="content_text">text</container>
+                <container id="150" name="content" types="content" mode="optional" default="content_date">date</container>
+                <container id="160" name="content" types="content" mode="optional" default="">content</container>
+                <container id="170" name="content" types="content" mode="optional" default="">content</container>
+                <container id="180" name="content" types="content" mode="optional" default="">content</container>
+                <container id="190" name="content" types="content" mode="optional" default="">content</container>
+                <container id="200" name="content" types="content" mode="optional" default="">content</container>
+
+
+                <h1>Listen</h1>
+                 <h2>NŸtzliche Links</h2>
+               
+               <ul class="linklist">
+                <li>
+                    <a href="">www.beispiel.de</a>
+                    <p>Bacon ipsum dolor sit amet pancetta beef ribs venison doner, pork loin brisket kielbasa pork chop fatback tri-tip turducken ground round jerky bresaola. Shoulder brisket shank doner strip steak. Capicola tenderloin chicken filet mignon t-bone </p>
+                </li>
+                <li>
+                    <a href="">www.beispiel.de</a>
+                    <p>Bacon ipsum dolor sit amet pancetta beef ribs venison doner, pork loin brisket kielbasa pork chop fatback tri-tip turducken ground round jerky bresaola. Shoulder brisket shank doner strip steak. Capicola tenderloin chicken filet mignon t-bone </p>
+                </li>
+                <li>
+                    <a href="">www.beispiel.de</a>
+                    <p>Bacon ipsum dolor sit amet pancetta beef ribs venison doner, pork loin brisket kielbasa pork chop fatback tri-tip turducken ground round jerky bresaola. Shoulder brisket shank doner strip steak. Capicola tenderloin chicken filet mignon t-bone </p>
+                </li>
+                <li>
+                    <a href="">www.beispiel.de</a>
+                    <p>Bacon ipsum dolor sit amet pancetta beef ribs venison doner, pork loin brisket kielbasa pork chop fatback tri-tip turducken ground round jerky bresaola. Shoulder brisket shank doner strip steak. Capicola tenderloin chicken filet mignon t-bone </p>
+                </li>
+               </ul>
+               
+               <h2>Download Liste</h2>
+               
+               <ul class="downloadlist">
+                <li>
+                    <img src="" />
+                    <div class="content">
+                    <p>
+                        Bacon ipsum dolor sit amet pork loin chuck spare ribs, meatball leberkas frankfurter shankle tenderloin ham venison pig bresaola prosciutto pork filet mignon. Tail salami chuck flank ball tip pastrami leberkas.
+                    </p>
+                    <span class="info">Foto: Fotografen Name</span>
+                    <ul class="formats">
+                        <li>
+                            <a href="" >72dpi (42,5 KB)</a>
+                        </li>
+                        <li>
+                            <a href="" >300dpi (21,8 MB)</a>
+                        </li>
+                    
+                    </ul>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                
+                 <li>
+                    <img src="" />
+                    <div class="content">
+                    <p>
+                        Bacon ipsum dolor sit amet pork loin chuck spare prosciutto pork filet mignon. Tail salami chuck flank ball tip pastrami leberkas.
+                    </p>
+                    <span class="info">Foto: Fotografen Name</span>
+                    <ul class="formats">
+                        <li>
+                            <a href="" >72dpi (42,5 KB)</a>
+                        </li>
+                        <li>
+                            <a href="" >300dpi (21,8 MB)</a>
+                        </li>
+                    </ul>
+                    
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                
+               </ul>
+               <div class="clear"></div>
+				
+
+            </div>
+<div class="clear"></div>
+            <div id="footer">
+                <container id="210" name="bottom navigation" types="navigation" mode="optional" default="navigation_bottom">bottom navigation</container>
+                <container id="220" name="social media links" types="navigation" mode="optional" default="navigation_social_media">social media links</container>
+            </div>
+
+            <div id="copyright">
+                <container id="230" name="copyright notice" types="content" mode="optional" default="content_copyright_notice">copyright notice</container>
+            </div>
+
+        </div>
+
+        <container id="310" name="tracker script" types="script" mode="optional" default="script_tracker_google">tracker script</container>
+        <container id="320" name="tracker script" types="script" mode="optional" default="script_tracker_piwik">tracker script</container>
+
+    </body>
+
+    <script src="js/jquery-1.8.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery-ui-1.9.1.custom.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/main.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery.validate.js" type="text/javascript" charset="utf-8"></script>
+
+</html>
