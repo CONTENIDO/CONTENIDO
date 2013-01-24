@@ -83,14 +83,18 @@ class PropertyCollection extends ItemCollection
 	var $client;
 	
 	/**
-     * Constructor Function
-     * @param none
+     * Constructor function
+     * @param int $idclient  Client id
      */
-	function PropertyCollection ()
+	function PropertyCollection ($idclient = 0)
 	{
 		global $cfg, $client;
 		
-		$this->client = Contenido_Security::toInteger($client);
+        if (0 === $idclient) {
+            $idclient = $client;
+        }
+
+		$this->client = Contenido_Security::toInteger($idclient);
 		
 		parent::ItemCollection($cfg["tab"]["properties"], "idproperty");
 		
@@ -170,6 +174,7 @@ class PropertyCollection extends ItemCollection
 		{		
 			$this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");
 		} else {
+            // @fixme We never get here, since this class will always have a set client property!
 			$this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");			
 		}
 		
@@ -204,6 +209,7 @@ class PropertyCollection extends ItemCollection
 		{		
 			$this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."'");
 		} else {
+            // @fixme We never get here, since this class will always have a set client property!
 			$this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."'");			
 		}
 		
@@ -278,6 +284,7 @@ class PropertyCollection extends ItemCollection
       { 
          $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'"); 
       } else { 
+            // @fixme We never get here, since this class will always have a set client property!
          $this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'"); 
       } 
 
@@ -304,6 +311,7 @@ class PropertyCollection extends ItemCollection
       { 
          $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."'"); 
       } else { 
+            // @fixme We never get here, since this class will always have a set client property!
          $this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."'"); 
       } 
 
@@ -342,6 +350,7 @@ class PropertyCollection extends ItemCollection
       } 
       else 
       { 
+            // @fixme We never get here, since this class will always have a set client property!
          $this->select($field . " = '" . $fieldValue . "'" . $authString);
       } 
 
@@ -381,6 +390,7 @@ class PropertyCollection extends ItemCollection
       { 
          $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."'"); 
       } else { 
+            // @fixme We never get here, since this class will always have a set client property!
          $this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."'"); 
       } 
 
