@@ -32,7 +32,8 @@
                 $('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').val(value);
             } else {
                 // otherwise append a new field to the form
-                $('form[name="editcontent"]').append('<input type="hidden" value="' + value + '" name="' + name + '">');
+                $('form[name="editcontent"]').append('<input type="hidden" value="" name="' + name + '">');
+				$('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').val(value);
             }
         };
 
