@@ -2,8 +2,8 @@
 /**
  * Extractor for plugin archive files
  *
- * @package plugin
- * @subpackage Plugin Manager
+ * @package     CONTENIDO Plugins
+ * @subpackage  PluginManager
  * @version SVN Revision $Rev:$
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>

@@ -3,8 +3,8 @@
  * Abstract class for Contenido Setup operations When creating Install,
  * Uninstall, Update you must extend this class
  *
- * @package plugin
- * @subpackage Plugin Manager
+ * @package     CONTENIDO Plugins
+ * @subpackage  PluginManager
  * @version SVN Revision $Rev:$
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
