@@ -135,6 +135,9 @@ $cfg['default_perms']['file'] = 0664;
 // (int) octal value (with a leading zero!) for use in chmod
 $cfg['default_perms']['directory'] = 0775;
 
+// (bool) Use heap table to accelerate statitics (off by default)
+$cfg['statistics_heap_table'] = false;
+
 
 /*
  * PHP settings
@@ -160,11 +163,6 @@ $cfg['php_settings']['date.timezone'] = '';
 $cfg['php_error_reporting'] = E_ALL & ~(E_STRICT | E_NOTICE);
 
 
-
-// (bool) Use heap table to accelerate statitics (off by default)
-$cfg['statistics_heap_table'] = false;
-
-
 /* Global cache control flag
  * -----------------------------------------------------------------------------
  * This flag is for globally activating the caching feature in all frontends.
@@ -184,6 +182,7 @@ $cfg['cache']['disable'] = true;
 /* GenericDB settings
  * -----------------------------------------------------------------------------
  */
+
 // (string) The GenericDB driver to use, at the moment only 'mysql' is supported
 $cfg['sql']['gdb_driver'] = 'mysql';
 
@@ -211,6 +210,7 @@ $cfg['sql']['select_all_mode'] = true;
  *
  * See also http://forum.contenido.org/viewtopic.php?f=64&t=23280
  */
+
 // (string)  Name of UriBuilder to use.
 //           Feasible values are 'front_content', 'custom', 'custom_path' or a user defined name.
 //           Check out cUriBuilderFactory::getUriBuilder() in
@@ -228,6 +228,7 @@ $cfg['url_builder']['config'] = array();
  * -----------------------------------------------------------------------------
  * For more comments please look in class.user.php file
  */
+
 // (bool) Enable or disable checking password
 $cfg['password']['check_password_mask'] = true;
 
@@ -251,6 +252,7 @@ $cfg['password']['numbers_mandatory'] = 2;
 /* Content Type Settings
  * -----------------------------------------------------------------------------
  */
+
 // (array) Define here all content types which includes special module translations
 //         (dont forget the prefix 'CMS_'!)
 $cfg['translatable_content_types'] = array('CMS_TEASER', 'CMS_FILELIST');
@@ -267,6 +269,7 @@ $cfg['content_types']['CMS_LINKEDIT'] = array(
 /* DBFS (Database file system) Settings
  * -----------------------------------------------------------------------------
  */
+
 // (array) List of mimetypes where the output of the Content-Disposition header
 //         should be skipped
 $cfg['dbfs']['skip_content_disposition_header_for_mimetypes'] = array('application/x-shockwave-flash');
@@ -279,6 +282,7 @@ $cfg['dbfs']['skip_content_disposition_header_for_mimetypes'] = array('applicati
  * Enabling caching for a specific properties will preload all related entries
  * which enhances the performance during application lifecycle.
  */
+
 // (bool) Enable caching of user properties
 $cfg['properties']['user_prop']['enable_cache'] = true;
 
@@ -349,8 +353,10 @@ $cfg['images']['image_magick']['path'] = '';
 // (string) Name of code generator to use (e. g. 'Standard' to use class cCodeGeneratorStandard)
 $cfg['code_generator']['name'] = 'Standard';
 
+
 /* Inuse settings
- *  * -----------------------------------------------------------------------------
+ * -----------------------------------------------------------------------------
  */
 
+// (int) Livetime in seconds
 $cfg['inuse']['lifetime'] = 3600;
