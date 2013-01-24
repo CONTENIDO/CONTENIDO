@@ -25,24 +25,42 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /*
- * Custom properties ----------------- Custom properties are properties which
- * can be assigned to virtually any element in CONTENIDO and underlaying
- * websites. Table structure --------------- Field Size Description ----- ----
- * ----------- idproperty int(10) idproperty (automatically handled by this
- * class) itemtype varchar(32) Custom item type (e.g. idcat, idart, idartlang,
- * custom) itemid varchar(32) ID of the item type varchar(32) Property type name
- * varchar(32) Property name value text Property value author varchar(32) Author
- * (md5-hash of the username) created datetime Created date and time modified
- * datetime Modified date and time modifiedby varchar(32) Modified by (md5-hash
- * of the username) Example: -------- A module needs to store custom properties
- * for categories. Modifying the database would be a bad thing, since the
- * changes might get lost during an upgrade or reinstall. If the custom property
- * for a category would be the path to a category image, we would fill a row as
- * follows: itemtype: idcat itemid: <number of your category> type: category
- * name: image value: images/category01.gif idproperty, author, created,
- * modified and modifiedby are automatically handled by the class. If caching is
- * enabled, see $cfg['properties']['properties']['enable_cache'], configured
- * entries will be loaded at first time. If enabled, each call of
+ * Custom properties
+ * -----------------
+ * Custom properties are properties which can be assigned to virtually any element
+ * in CONTENIDO and underlaying websites.
+ *
+ * Table structure
+ * ---------------
+ * 
+ * Field       Size         Description
+ * -----       ----         -----------
+ * idproperty  int(10)      idproperty (automatically handled by this class)
+ * itemtype    varchar(32)  Custom item type (e.g. idcat, idart, idartlang, custom)
+ * itemid      varchar(32)  ID of the item
+ * type        varchar(32)  Property type
+ * name        varchar(32)  Property name value text Property value
+ * author      varchar(32)  Author (md5-hash of the username)
+ * created     datetime     Created date and time
+ * modified    datetime     Modified date and time
+ * modifiedby  varchar(32)  Modified by (md5-hash of the username)
+ *
+ * Example:
+ * --------
+ * A module needs to store custom properties for categories. Modifying the database
+ * would be a bad thing, since the changes might get lost during an upgrade or
+ * reinstall. If the custom property for a category would be the path to a category
+ * image, we would fill a row as follows:
+ *
+ * itemtype: idcat
+ * itemid:   <number of your category>
+ * type:     category
+ * name:     image
+ * value:    images/category01.gif
+ *
+ * idproperty, author, created, modified and modifiedby are automatically handled
+ * by the class. If caching is enabled, see $cfg['properties']['properties']['enable_cache'],
+ * configured entries will be loaded at first time. If enabled, each call of
  * cApiPropertyCollection functions to retrieve cacheable properties will return
  * the cached entries without stressing the database. The cApiPropertyCollection
  * class keeps also track of changed and deleted properties and synchronizes
@@ -87,11 +105,17 @@ class cApiPropertyCollection extends ItemCollection {
     protected static $_cacheItemtypes;
 
     /**
-     * Constructor Function
+     * Constructor function
+     * @param int $idclient  Client id
      */
-    public function __construct() {
+    public function __construct($idclient = 0) {
         global $cfg, $client, $lang;
-        $this->client = cSecurity::toInteger($client);
+
+        if (0 === $idclient) {
+            $idclient = $client;
+        }
+
+        $this->client = cSecurity::toInteger($idclient);
         parent::__construct($cfg['tab']['properties'], 'idproperty');
         $this->_setItemClass('cApiProperty');
 
@@ -106,7 +130,7 @@ class cApiPropertyCollection extends ItemCollection {
                     self::$_cacheItemtypes = $cfg['properties']['properties']['itemtypes'];
                     foreach (self::$_cacheItemtypes as $name => $value) {
                         if ('%client%' == $value) {
-                            self::$_cacheItemtypes[$name] = (int) $client;
+                            self::$_cacheItemtypes[$name] = (int) $idclient;
                         } elseif ('%lang%' == $value) {
                             self::$_cacheItemtypes[$name] = (int) $lang;
                         } else {
@@ -205,6 +229,7 @@ class cApiPropertyCollection extends ItemCollection {
         if (isset($this->client)) {
             $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "' AND name = '" . $name . "'");
         } else {
+            // @fixme We never get here, since this class will always have a set client property!
             $this->select("itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "' AND name = '" . $name . "'");
         }
 
@@ -240,6 +265,7 @@ class cApiPropertyCollection extends ItemCollection {
         if (isset($this->client)) {
             $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "'");
         } else {
+            // @fixme We never get here, since this class will always have a set client property!
             $this->select("itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "'");
         }
 
@@ -339,6 +365,7 @@ class cApiPropertyCollection extends ItemCollection {
         if (isset($this->client)) {
             $where = "idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "' AND name = '" . $name . "'";
         } else {
+            // @fixme We never get here, since this class will always have a set client property!
             $where = "itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "' AND name = '" . $name . "'";
         }
 
@@ -368,6 +395,7 @@ class cApiPropertyCollection extends ItemCollection {
         if (isset($this->client)) {
             $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "'");
         } else {
+            // @fixme We never get here, since this class will always have a set client property!
             $this->select("itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "'");
         }
 
@@ -404,6 +432,7 @@ class cApiPropertyCollection extends ItemCollection {
         if (isset($this->client)) {
             $this->select("idclient = " . (int) $this->client . " AND " . $field . " = '" . $fieldValue . "'" . $authString, '', 'itemid');
         } else {
+            // @fixme We never get here, since this class will always have a set client property!
             $this->select($field . " = '" . $fieldValue . "'" . $authString);
         }
 
@@ -440,6 +469,7 @@ class cApiPropertyCollection extends ItemCollection {
         if (isset($this->client)) {
             $where = "idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "'";
         } else {
+            // @fixme We never get here, since this class will always have a set client property!
             $where = "itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "'";
         }
 
@@ -466,6 +496,7 @@ class cApiPropertyCollection extends ItemCollection {
         if (isset($this->client)) {
             $where = "idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid IN (" . $in . ")";
         } else {
+            // @fixme We never get here, since this class will always have a set client property!
             $where = "itemtype = '" . $itemtype . "' AND itemid IN (" . $in . ")";
         }
 
