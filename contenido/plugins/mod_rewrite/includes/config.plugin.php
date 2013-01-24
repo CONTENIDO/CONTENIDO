@@ -5,8 +5,8 @@
  * This file will be included by CONTENIDO plugin loader routine, and the content
  * of this file ensures that the AMR Plugin will be initialized correctly.
  *
- * @package     plugin
- * @subpackage  Mod Rewrite
+ * @package     CONTENIDO Plugins
+ * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>

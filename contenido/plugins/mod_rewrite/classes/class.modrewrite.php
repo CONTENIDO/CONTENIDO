@@ -2,8 +2,8 @@
 /**
  * AMR Mod Rewrite helper class
  *
- * @package     plugin
- * @subpackage  Mod Rewrite
+ * @package     CONTENIDO Plugins
+ * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
  * @author      Stefan Seifarth / stese
@@ -24,8 +24,8 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * @author      Stefan Seifarth / stese
  * @author      Murat Purc <murat@purc.de>
- * @package     plugin
- * @subpackage  Mod Rewrite
+ * @package     CONTENIDO Plugins
+ * @subpackage  ModRewrite
  */
 class ModRewrite extends ModRewriteBase {
 

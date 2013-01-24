@@ -12,8 +12,8 @@
  * PHP needs write permissions to the folder, where this file resides. Mod Rewrite
  * configuration files will be created in this folder.
  *
- * @package     plugin
- * @subpackage  Mod Rewrite
+ * @package     CONTENIDO Plugins
+ * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>

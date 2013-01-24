@@ -9,8 +9,8 @@
  * CONTENIDO installation, creates the SEO URLs for each existing category/article
  * and resolves the generated URLs.
  *
- * @package     plugin
- * @subpackage  Mod Rewrite
+ * @package     CONTENIDO Plugins
+ * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>

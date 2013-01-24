@@ -2,8 +2,8 @@
 /**
  * AMR test class
  *
- * @package     plugin
- * @subpackage  Mod Rewrite
+ * @package     CONTENIDO Plugins
+ * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
@@ -21,8 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
  * Mod rewrite test class.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     plugin
- * @subpackage  Mod Rewrite
+ * @package     CONTENIDO Plugins
+ * @subpackage  ModRewrite
  */
 class ModRewriteTest {
 

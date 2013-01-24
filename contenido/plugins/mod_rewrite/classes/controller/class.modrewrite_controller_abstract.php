@@ -2,8 +2,8 @@
 /**
  * AMR abstract controller class
  *
- * @package     plugin
- * @subpackage  Mod Rewrite
+ * @package     CONTENIDO Plugins
+ * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
@@ -21,8 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
  * Abstract controller for all concrete mod_rewrite controller implementations.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     plugin
- * @subpackage  Mod Rewrite
+ * @package     CONTENIDO Plugins
+ * @subpackage  ModRewrite
  */
 abstract class ModRewrite_ControllerAbstract {
 

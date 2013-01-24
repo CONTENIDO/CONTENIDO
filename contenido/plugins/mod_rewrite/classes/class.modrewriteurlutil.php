@@ -2,8 +2,8 @@
 /**
  * AMR url utility class
  *
- * @package     plugin
- * @subpackage  Mod Rewrite
+ * @package     CONTENIDO Plugins
+ * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
@@ -23,8 +23,8 @@ if (!defined('CON_FRAMEWORK')) {
  * pattern and vice versa.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     plugin
- * @subpackage  Mod Rewrite
+ * @package     CONTENIDO Plugins
+ * @subpackage  ModRewrite
  */
 class ModRewriteUrlUtil extends ModRewriteBase {
 

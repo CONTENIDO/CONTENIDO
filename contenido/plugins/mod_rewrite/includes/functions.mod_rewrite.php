@@ -10,8 +10,8 @@
  * - $idart
  * - $idcat
  *
- * @package     plugin
- * @subpackage  Mod Rewrite
+ * @package     CONTENIDO Plugins
+ * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
  * @author      Stefan Seifarth / stese
