@@ -105,15 +105,16 @@ class cLayoutHandler {
      * Init all vars for the class
      *
      * @param int $layoutId
+     * @param string $layoutCode
      * @param array $cfg
      * @param string $encoding
      */
-    public function init($layoutId, $layoutCode, $cfg, $lang) {
+    public function init($layoutId, $layoutCode, $cfg, $encoding) {
         $this->_layoutCode = $layoutCode;
         $this->_cfg = $cfg;
 
         // set encoding
-        $this->_setEncoding($lang);
+        $this->_setEncoding($encoding);
 
         if ((int) $layoutId == 0) {
             return;

@@ -104,8 +104,8 @@ class ConUser extends cApiUser {
      * Calls constructor in base class.
      *
      * @param array $aCfg
-     * @param DB_Contenido $oDB
-     * @param string $sIdUser User ID the instnace of this class represents
+     * @param DB_Contenido $oDb
+     * @param string $sUserId User ID the instnace of this class represents
      *
      * @return ConUser
      * @throws ConUserException

@@ -291,8 +291,8 @@ class NoteLink extends cHTMLLink {
      * This link is used to show the popup from any position within the system.
      * The link contains the note image.
      *
-     * @param $sItemType    string    Item type (usually the class name)
-     * @param $sItemId        mixed    Item ID (usually the primary key)
+     * @param  string  $sItemType  Item type (usually the class name)
+     * @param mixed  $sItemID      Item ID (usually the primary key)
      * @return void
      */
     public function NoteLink($sItemType, $sItemID) {

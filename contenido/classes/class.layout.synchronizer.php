@@ -136,7 +136,7 @@ class cLayoutSynchronizer {
      * Update the con_mod, the field lastmodified
      *
      * @param int $timestamp timestamp of last modification
-     * @param int $idmod id of modul
+     * @param int $idlay Id of layout
      */
     public function setLastModified($timestamp, $idlay) {
         $oLay = new cApiLayout((int) $idlay);

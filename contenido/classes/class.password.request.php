@@ -34,99 +34,75 @@ class cPasswordRequest {
 
     /**
      * The CONTENIDO database object
-     *
-     * @var object
-     * @access private
+     * @var cDb
      */
     protected $_db;
 
     /**
      * The CONTENIDO configuration array
-     *
      * @var array
-     * @access private
      */
     protected $_cfg;
 
     /**
      * The CONTENIDO template object
-     *
-     * @var object
-     * @access private
+     * @var cTemplate
      */
     protected $_tpl;
 
     /**
      * Username of user which requests password
-     *
      * @var string
-     * @access private
      */
     protected $_username;
 
     /**
      * E-mail address of user which requests password
-     *
      * @var string
-     * @access private
      */
     protected $_email;
 
     /**
      * Time in minutes after which user is allowed to request a new password
-     *
-     * @var integer
-     * @access private
+     * @var int
      */
     protected $_reloadTime;
 
     /**
      * Length of new passwort, which is generated automatically
-     *
-     * @var integer
-     * @access private
+     * @var int
      */
     protected $_passLength;
 
     /**
      * Defines if passwort request is enabled or disabled.
      * Default: This feature is enabled
-     *
-     * @var boolean
-     * @access private
+     * @var bool
      */
     protected $_isEnabled;
 
     /**
      * E-mail address of the sender
-     *
      * @var string
-     * @access private
      */
     protected $_sendermail;
 
     /**
      * Name of the sender
-     *
      * @var string
-     * @access private
      */
     protected $_sendername;
 
     /**
      * Host of mailserver, which sends new password via mail
-     *
      * @var string
-     * @access private
      */
     protected $_mailhost;
 
     /**
      * Constructor of RequestPassword initializes class variables
-     *
-     * @param  object $db - The CONTENIDO database object
-     * @param  array $cfg - The CONTENIDO configuration array
-     * @access public
+     * @param  cDb  $db  The CONTENIDO database object
+     * @param  array $cfg  The CONTENIDO configuration array
      */
     public function __construct($db, $cfg) {
         //generate new dbobject, if it does not exist
@@ -184,9 +160,7 @@ class cPasswordRequest {
     /**
      * Function displays form for password request and sets new password, if password is submitted this function
      * also starts the passwort change an sending process
-     *
-     * @access public
-     * @param  bool    $return    Return or print template
+     * @param  bool  $return  Return or print template
      */
     public function renderForm($return = 0) {
         //if feature is not enabled, do nothing
@@ -236,9 +210,6 @@ class cPasswordRequest {
 
     /**
      * Function checks password request for errors an delegate request to setNewPassword() if there is no error
-     *
-     * @access private
-     * @param string - contains message for displaying (errors or success message)
      */
     protected function _handleNewPassword() {
         //notification message, which is returned to caller
@@ -296,8 +267,6 @@ class cPasswordRequest {
 
     /**
      * Function sets new password for user and sets last request time to now
-     *
-     * @access private
      */
     protected function _setNewPassword() {
         //generate new password, using generatePassword()
@@ -317,9 +286,7 @@ class cPasswordRequest {
 
     /**
      * Function submits new password to users mail adress
-     *
-     * @access private
-     * @param string $password - the new password
+     * @param string $password  The new password
      */
     protected function _submitMail($password) {
         $password = (string) $password;
@@ -336,9 +303,7 @@ class cPasswordRequest {
 
     /**
      * Function generates new password
-     *
-     * @access private
-     * @return string - the new password
+     * @return string  The new password
      */
     protected function _generatePassword() {
         //possible chars which were used in password

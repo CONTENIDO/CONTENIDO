@@ -144,7 +144,7 @@ class cSystemPurge {
     /**
      * Clear the cache directory for a client
      *
-     * @param int $sClientName
+     * @param int $clientId
      * @return bool
      */
     public function clearClientCache($clientId) {
@@ -165,7 +165,9 @@ class cSystemPurge {
     /**
      * Clear the cache directory for a client
      *
-     * @param int $sClientName
+     * @param int $clientId
+     * @param  bool $keep
+     * @param  int  $fileNumber
      * @return bool
      */
     public function clearClientHistory($clientId, $keep, $fileNumber) {
@@ -206,7 +208,6 @@ class cSystemPurge {
      * Clear client log file
      *
      * @param int $clientId
-     * @param string $logDir
      * @return bool
      */
     public function clearClientLog($clientId) {
@@ -227,7 +228,6 @@ class cSystemPurge {
     /**
      * Clear CONTENIDO log files
      *
-     * @param string $sLogDir
      * @return bool
      */
     public function clearConLog() {
@@ -248,7 +248,6 @@ class cSystemPurge {
     /**
      * Clear the cronjob directory
      *
-     * @param string $sLogDir
      * @return bool
      */
     public function clearConCronjob() {
@@ -269,7 +268,6 @@ class cSystemPurge {
     /**
      * Clear the cache directory for a client
      *
-     * @param int $sClientName
      * @return bool
      */
     public function clearConCache() {
@@ -372,7 +370,8 @@ class cSystemPurge {
     /**
      * Empty a file content
      *
-     * @param string $filePath
+     * @param string $dirPath
+     * @param array $types
      * @return bool
      */
     public function emptyFile($dirPath, $types) {

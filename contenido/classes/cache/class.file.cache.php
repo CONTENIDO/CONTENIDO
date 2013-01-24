@@ -183,7 +183,7 @@ class cFileCache {
 
     /**
      * Generates a ID for the given variables.
-     * @param mixed $variable variables to generate a ID for
+     * @param mixed $variables variables to generate a ID for
      * @return string generated ID
      */
     public function generateID($variables) {

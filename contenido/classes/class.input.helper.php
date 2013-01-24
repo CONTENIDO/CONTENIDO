@@ -45,7 +45,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * @param string $sID ID of the element
      * @param string $bDisabled Item disabled flag (non-empty to set disabled)
      * @param int $iTabIndex Tab index for form elements
-     * @param string $sAccesskey Key to access the field
+     * @param string $sAccessKey Key to access the field
      *
      * @return none
      *

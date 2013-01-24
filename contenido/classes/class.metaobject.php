@@ -83,8 +83,6 @@ class cMetaObject {
     }
 
     /**
-     * setObjectType ($type)
-     *
      * Sets the object type (either COBJECT_BASE or COBJECT_PLUGIN).
      *
      * @param int $type Constant with the object type
@@ -100,7 +98,6 @@ class cMetaObject {
     }
 
     /**
-     * setIcon ($icon)
      * Defines the icon for this object
      * @param string $icon Icon path
      * @return none
@@ -111,9 +108,7 @@ class cMetaObject {
     }
 
     /**
-     * getIcon ($icon)
      * Returns the icon for this object
-     * @param string $icon Icon path
      * @return none
      */
     function getIcon() {
