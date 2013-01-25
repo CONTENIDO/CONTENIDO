@@ -105,8 +105,8 @@ $oScriptTpl->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
 $oScriptTpl->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
 $oScriptTpl->set('s', 'IDARTLANG', $idartlang);
 $oScriptTpl->set('s', 'CON_PATH', cRegistry::getBackendUrl());
-$oScriptTpl->set('s', 'CLOSE', i18n('Close editor'));
-$oScriptTpl->set('s', 'SAVE', i18n('Close editor and save changes'));
+$oScriptTpl->set('s', 'CLOSE', utf8_encode(html_entity_decode(i18n('Close editor'))));
+$oScriptTpl->set('s', 'SAVE', utf8_encode(html_entity_decode(i18n('Close editor and save changes'))));
 $oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
 
 if (getEffectiveSetting('system', 'insight_editing_activated', 'true') == 'false') {
