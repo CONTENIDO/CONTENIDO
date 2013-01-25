@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * Table structure
  * ---------------
- * 
+ *
  * Field       Size         Description
  * -----       ----         -----------
  * idproperty  int(10)      idproperty (automatically handled by this class)
@@ -318,17 +318,17 @@ class cApiPropertyCollection extends ItemCollection {
      *        (possiblity to update name value and type))
      */
     public function setValue($itemtype, $itemid, $type, $name, $value, $idProp = 0) {
-        $itemtype = $this->db->escape($itemtype);
-        $itemid = $this->db->escape($itemid);
-        $type = $this->db->escape($type);
-        $name = $this->db->escape($name);
-        $value = $this->db->escape($value);
+        $itemtype = $itemtype;
+        $itemid = $itemid;
+        $type = $type;
+        $name = $name;
+        $value = $value;
         $idProp = (int) $idProp;
 
         if ($idProp == 0) {
-            $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "' AND name = '" . $name . "'");
+            $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $this->db->escape($itemtype) . "' AND itemid = '" . $this->db->escape(itemid) . "' AND type = '" . $this->db->escape(type) . "' AND name = '" . $this->db->escape(name) . "'");
         } else {
-            $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND idproperty = " . $idProp);
+            $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $this->db->escape(itemtype) . "' AND itemid = '" . $this->db->escape(itemid) . "' AND idproperty = " . $idProp);
         }
 
         if (($item = $this->next()) !== false) {
