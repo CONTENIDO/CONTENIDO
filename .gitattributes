@@ -15,7 +15,6 @@ cms/data/.htaccess -text
 cms/data/config/config.php -text
 cms/data/layouts/standard/standard.html -text
 cms/data/layouts/start_page/start_page.html -text svneol=unset#text/plain
-cms/data/layouts/temp-listen/temp-listen.html -text svneol=unset#text/plain
 cms/data/layouts/temp-suchergebnis/temp-suchergebnis.html -text svneol=unset#text/plain
 cms/data/logs/index.php -text
 cms/data/modules/config_copyright_notice/info.xml -text svneol=unset#text/plain
@@ -38,6 +37,11 @@ cms/data/modules/content_date/lang/lang_de_DE.txt -text
 cms/data/modules/content_date/php/content_date_input.php -text
 cms/data/modules/content_date/php/content_date_output.php -text
 cms/data/modules/content_date/template/get.tpl -text
+cms/data/modules/content_download_list/info.xml -text
+cms/data/modules/content_download_list/lang/lang_de_DE.txt -text
+cms/data/modules/content_download_list/php/content_download_list_input.php -text
+cms/data/modules/content_download_list/php/content_download_list_output.php -text
+cms/data/modules/content_download_list/template/get.tpl -text
 cms/data/modules/content_header_first/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_header_first/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/content_header_first/php/content_header_first_input.php -text
@@ -53,6 +57,11 @@ cms/data/modules/content_image/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/content_image/php/content_image_input.php -text
 cms/data/modules/content_image/php/content_image_output.php -text
 cms/data/modules/content_image/template/get.tpl -text
+cms/data/modules/content_link_list/info.xml -text
+cms/data/modules/content_link_list/lang/lang_de_DE.txt -text
+cms/data/modules/content_link_list/php/content_link_list_input.php -text
+cms/data/modules/content_link_list/php/content_link_list_output.php -text
+cms/data/modules/content_link_list/template/get.tpl -text
 cms/data/modules/content_picture_gallery/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_picture_gallery/php/content_picture_gallery_input.php -text
 cms/data/modules/content_picture_gallery/php/content_picture_gallery_output.php -text
@@ -153,6 +162,7 @@ cms/js/jquery-1.8.2.min.js -text svneol=unset#text/plain
 cms/js/jquery-ui-1.9.1.custom.min.js -text svneol=unset#text/plain
 cms/js/main.js -text svneol=unset#text/plain
 cms/robots.txt -text
+cms/templates/cms_filelist_style_default.html -text
 cms/templates/cms_teaser_image.html -text
 cms/templates/cms_teaser_slider.html -text
 cms/templates/cms_teaser_text.html -text

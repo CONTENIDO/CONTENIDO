@@ -564,6 +564,10 @@ ul.downloadlist > li p {
     font-size: 11px;
 }
 
+h2.downloadlist {
+	margin-top: 10px;
+}
+
 
 /* Overlays */
 .ui-widget-overlay {
