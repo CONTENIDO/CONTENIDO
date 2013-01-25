@@ -646,7 +646,7 @@ class cModuleHandler {
         }
 
         $content = cFileHandler::read($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_input.php');
-
+        $content = conHtmlentities($content);
         return iconv($this->_fileEncoding, $this->_encoding . '//IGNORE', $content);
     }
 
@@ -661,6 +661,7 @@ class cModuleHandler {
         }
 
         $content = cFileHandler::read($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_output.php');
+        $content = conHtmlentities($content);
         return iconv($this->_fileEncoding, $this->_encoding . '//IGNORE', $content);
     }
 
