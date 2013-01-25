@@ -122,7 +122,6 @@ class Table {
 
     /**
      * Begins the new table
-     * @param none
      * @return void
      */
     function start_table() {
@@ -141,7 +140,7 @@ class Table {
 
     /**
      * Outputs a header row
-     * @param none
+     * @param string $additional
      * @return void
      */
     function header_row($additional = "") {
@@ -156,7 +155,7 @@ class Table {
 
     /**
      * Outputs a regular row
-     * @param none
+     * @param string $id
      * @return void
      */
     function row($id = '') {
@@ -171,9 +170,11 @@ class Table {
 
     /**
      * Outputs a header cell
-     * @param $content The content which will fill the cell
-     * @param $align   The horizontal alignment of the cell, default "center"
-     * @param $valign  The vertical alignment of the cell, default "top"
+     * @param  string  $content The content which will fill the cell
+     * @param  string  $align   The horizontal alignment of the cell, default "center"
+     * @param  string  $valign  The vertical alignment of the cell, default "top"
+     * @param  string  $additional  Additional attributes
+     * @param  int  $borderTop
      * @return void
      */
     function header_cell($content, $align = "center", $valign = "top", $additional = "", $borderTop = 1) {
@@ -199,10 +200,11 @@ class Table {
 
     /**
      * Outputs a regular cell
-     * @param $content The content which will fill the cell
-     * @param $align   The horizontal alignment of the cell, default "center"
-     * @param $valign  The vertical alignment of the cell, default "top"
-     * @param $additional Additional flags for the table
+     * @param  string  $content The content which will fill the cell
+     * @param  string  $align   The horizontal alignment of the cell, default "center"
+     * @param  string  $valign  The vertical alignment of the cell, default "top"
+     * @param  string  $additional Additional flags for the table
+     * @param  bool  $bSetStyle
      */
     function cell($content, $align = "center", $valign = "top", $additional = "", $bSetStyle = true) {
         if (strlen($content) == 0) {
@@ -240,10 +242,10 @@ class Table {
 
     /**
      * Outputs a borderless cell
-     * @param $content The content which will fill the cell
-     * @param $align   The horizontal alignment of the cell, default "center"
-     * @param $valign  The vertical alignment of the cell, default "top"
-     * @param $additional Additional flags for the table
+     * @param  string  $content The content which will fill the cell
+     * @param  string  $align   The horizontal alignment of the cell, default "center"
+     * @param  string  $valign  The vertical alignment of the cell, default "top"
+     * @param  string  $additional Additional flags for the table
      */
     function borderless_cell($content, $align = "center", $valign = "top", $additional = "") {
         if (strlen($content) == 0) {
@@ -267,9 +269,9 @@ class Table {
 
     /**
      * Outputs a sum cell
-     * @param $content The content which will fill the cell
-     * @param $align   The horizontal alignment of the cell, default "center"
-     * @param $valign  The vertical alignment of the cell, default "top"
+     * @param  string  $content The content which will fill the cell
+     * @param  string  $align   The horizontal alignment of the cell, default "center"
+     * @param  string  $valign  The vertical alignment of the cell, default "top"
      */
     function sumcell($content, $align = "center", $valign = "top") {
         if (strlen($content) == 0) {
@@ -286,8 +288,6 @@ class Table {
 
     /**
      * Ends a row
-     * @param none
-     * @return void
      */
     function end_row() {
         $end_row = '</tr>';
@@ -303,8 +303,6 @@ class Table {
 
     /**
      * Ends a table
-     * @param none
-     * @return void
      */
     function end_table() {
         $end_table = '</table>';

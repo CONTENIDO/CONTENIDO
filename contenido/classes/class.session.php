@@ -10,9 +10,9 @@
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9 {@internal created
- *        2012-07-06 $Id: class.session.php 2486 2012-07-02 21:49:26Z xmurrix $:
- *        }}
+ * @since file available since CONTENIDO release 4.9
+ *
+ * $Id: class.session.php 2486 2012-07-02 21:49:26Z xmurrix $:
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -110,7 +110,7 @@ class cSession {
      * Checks if a variable is registered
      *
      * @param string $name The name of the variable (e.g. "idclient")
-     * @deprecated Please use isRegistered instead
+     * @deprecated [2012-07-10] Please use isRegistered instead
      */
     public function is_registered($name) {
         cDeprecated("Please use cSession::isRegistered() instead");
@@ -165,9 +165,7 @@ class cSession {
      * Attaches "&contenido=1" at the end of the current URL. This is no longer
      * needed to make sessions work but some CONTENIDO functions/classes rely on
      * it
-     *
-     * @param string $url A URL
-     * @deprecated Please use selfURL() instead
+     * @deprecated [2012-07-10]  use selfURL() instead
      */
     public function self_url() {
         cDeprecated("Please use cSession::selfURL() instead");
@@ -274,7 +272,7 @@ class cSession {
     /**
      * Dummy function. This is no longer needed and will always return "".
      *
-     * @deprecated Since this function is not needed anymore it shouldn't be
+     * @deprecated [2012-07-10] Since this function is not needed anymore it shouldn't be
      *             used
      */
     public function hidden_session() {

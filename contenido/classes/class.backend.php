@@ -248,7 +248,7 @@ class cBackend {
      * @param int $idart Article-ID
      * @param int $client Client-ID
      * @param int $lang Language-ID
-     * @param int|string $action Action (ID or canonical name)
+     * @param int|string $idaction  Action (ID or canonical name)
      */
     public function log($idcat, $idart, $client, $lang, $idaction) {
         global $perm, $auth;

@@ -44,7 +44,7 @@ class cDirHandler {
     /**
      * Removes a dir from the filesystem
      *
-     * @param string $filename the name and path of the file
+     * @param string $dirname  The path to the directory
      * @throws cInvalidArgumentException if the dir with the given dirname
      *         does not exist
      * @return bool true on success
@@ -60,7 +60,7 @@ class cDirHandler {
     /**
      * Moves a dir
      *
-     * @param string $dirname the name of the source dir
+     * @param string $filename  The path and name of the file
      * @param string $destination the destination. Note that the dir can also
      *            be renamed in the process of moving it
      * @throws cInvalidArgumentException if the dir with the given dirname
