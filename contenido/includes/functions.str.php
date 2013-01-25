@@ -1045,11 +1045,11 @@ function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true
 function strAssignTemplate($idcat, $client, $idTplCfg) {
     global $perm;
 
-    // Template permissition check
-    $iIdtplcfg = ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg')) ? (int) $iIdtplcfg : 0;
+    // Template permission check
+    $iIdtplcfg = ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg')) ? (int) $idTplCfg : 0;
 
     $idtpl = null;
-
+    echo "idtpl: " . $iIdtplcfg . "<br />";
     if ($iIdtplcfg == 0) {
         // Get default template
         $oTemplateColl = new cApiTemplateCollection('defaulttemplate = 1 AND idclient = ' . (int) $client);
