@@ -640,13 +640,17 @@ class cModuleHandler {
      *
      * @return string Contents of the Module file (_input.php)
      */
-    public function readInput() {
+    public function readInput($issource = false) {
         if (cFileHandler::exists($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_input.php') == false) {
             return false;
         }
 
         $content = cFileHandler::read($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_input.php');
-        $content = conHtmlentities($content);
+
+        if ($issource == true) {
+        	$content = conHtmlentities($content);
+        }
+
         return iconv($this->_fileEncoding, $this->_encoding . '//IGNORE', $content);
     }
 
@@ -655,13 +659,17 @@ class cModuleHandler {
      *
      * @return string Contents of the Module file( _output.php)
      */
-    public function readOutput() {
+    public function readOutput($issource = false) {
         if (cFileHandler::exists($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_output.php') == false) {
             return false;
         }
 
         $content = cFileHandler::read($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_output.php');
-        $content = conHtmlentities($content);
+
+        if ($issource == true) {
+        	$content = conHtmlentities($content);
+        }
+
         return iconv($this->_fileEncoding, $this->_encoding . '//IGNORE', $content);
     }
 

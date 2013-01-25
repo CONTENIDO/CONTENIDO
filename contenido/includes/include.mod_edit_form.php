@@ -170,8 +170,8 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
     // Read the input and output for the editing in Backend from file
     if ($contenidoModuleHandler->modulePathExists() == true) {
-        $sInputData = $contenidoModuleHandler->readInput();
-        $sOutputData = $contenidoModuleHandler->readOutput();
+        $sInputData = $contenidoModuleHandler->readInput(true);
+        $sOutputData = $contenidoModuleHandler->readOutput(true);
     }
 
     if ($sOptionDebugRows !== "never") {
