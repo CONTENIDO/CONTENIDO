@@ -206,7 +206,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
         $aCatsForArt[0] = 0;
     }
 
-    /// Get idtplcfg
+    // Get idtplcfg
     $idTplCfg = $oArtLang->get('idtplcfg');
 
     foreach ($idcatnew as $value) {
@@ -280,7 +280,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     }
 
     // Update idtplcfg
-    if ($idTplCfg != $newIdTplCfg) {
+    if (!empty($newIdTplCfg) && $idTplCfg != $newIdTplCfg) {
         $oArtLang->set('idtplcfg', $newIdTplCfg);
     }
 
