@@ -9,6 +9,72 @@ $(function() {
 });
 
 /**
+ * Section for script loader
+ */
+
+var loaded = new Object();
+var stack = new Object();
+
+/**
+ * Loads the given script and evaluates the given callback function
+ * when the script has been loaded successfully. The callback can be
+ * a simple string which is evaluated or a function which is called with
+ * the given scope and params.
+ *
+ * @param string script - the path to the script which should be loaded
+ * @param string|function callback - code which should be evaluated
+ *             after the script has been loaded or a callback function
+ *             which is called with the given params and the given scope
+ * @param object scope - the scope with which the callback function should be called
+ * @param array params - array of params which should be passed to the callback function
+ * @returns {Boolean}
+ */
+function conLoadFile(script, callback, scope, params) {
+    if (!callback) {
+        callback = '';
+    }
+    // check if callback has to be called on the scope object
+    var isObjectCallback = (typeof callback === 'function' && typeof scope === 'object');
+
+    // only load the script if it has not been loaded yet
+    if (loaded[script] != 'true') {
+        // initialise callback stack
+        if (stack[script] == undefined) {
+            stack[script] = Array();
+        }
+
+        // push new entry onto the callback stack depending on the callback type
+        if (isObjectCallback) {
+            var newCallback = new Object();
+            newCallback['callback'] = callback;
+            newCallback['scope'] = scope;
+            newCallback['params'] = params;
+            stack[script].push(newCallback);
+        } else {
+            stack[script].push(callback);
+        }
+
+        // if script is not already loading, load it and evaluate the callbacks
+        if (loaded[script] != 'pending') {
+            loaded[script] = 'pending';
+            $.getScript(script, function() {
+                loaded[script] = 'true';
+                conEvaluateCallbacks(stack[script]);
+            });
+        }
+    } else {
+        // script is already loaded, so just evaluate the callback
+        if (isObjectCallback) {
+            callback.apply(scope, params);
+        } else {
+            eval(callback);
+        }
+    }
+
+    return true;
+}
+
+/**
  * Javascript Multilink Example: <code>
  *    conMultiLink (
  *         "frame",
