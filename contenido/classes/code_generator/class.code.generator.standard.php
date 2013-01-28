@@ -153,22 +153,22 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         // add module CSS at {CSS} position, after title or after opening head tag
-		if (strpos($this->_layoutCode, '{CSS}') !== false) {
-			$this->_layoutCode = cString::iReplaceOnce('{CSS}', $cssFile, $this->_layoutCode);
-		} else if (!empty($cssFile)) {
-			if (strpos($this->_layoutCode, '</title>') !== false) {
-				$this->_layoutCode = cString::iReplaceOnce('</title>', '</title>' . $cssFile, $this->_layoutCode);
-			} else {
-				$this->_layoutCode = cString::iReplaceOnce('<head>', '<head>' . $cssFile, $this->_layoutCode);
-			}
-		}
+        if (strpos($this->_layoutCode, '{CSS}') !== false) {
+            $this->_layoutCode = cString::iReplaceOnce('{CSS}', $cssFile, $this->_layoutCode);
+        } else if (!empty($cssFile)) {
+            if (strpos($this->_layoutCode, '</title>') !== false) {
+                $this->_layoutCode = cString::iReplaceOnce('</title>', '</title>' . $cssFile, $this->_layoutCode);
+            } else {
+                $this->_layoutCode = cString::iReplaceOnce('<head>', '<head>' . $cssFile, $this->_layoutCode);
+            }
+        }
 
         // add module JS at {JS} position or before closing body tag if there is no {JS}
-		if (strpos($this->_layoutCode, '{JS}') !== false) {
-			$this->_layoutCode = cString::iReplaceOnce('{JS}', $jsFile, $this->_layoutCode);
-		} else if (!empty($jsFile)) {
-			$this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
-		}
+        if (strpos($this->_layoutCode, '{JS}') !== false) {
+            $this->_layoutCode = cString::iReplaceOnce('{JS}', $jsFile, $this->_layoutCode);
+        } else if (!empty($jsFile)) {
+            $this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
+        }
 
         // Save the generated code
         $this->_saveGeneratedCode($code, $idcatart);

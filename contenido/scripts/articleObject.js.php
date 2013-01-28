@@ -519,7 +519,7 @@ articleObject.prototype.disableNavForNewArt = function() {
  * @return void
  */
  articleObject.prototype.enableNavForArt = function() {
- 	var oRef = [];
+     var oRef = [];
 
     oRef[0] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
     oRef[1] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_1");

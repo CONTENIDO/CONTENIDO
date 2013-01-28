@@ -423,17 +423,17 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $filename = $fileData['filename'];
         $directoryName = $fileData['path'];
         $fileLink = $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $directoryName . '/' . $filename;
-		$filePath = $this->_cfgClient[$this->_client]['upl']['path'] . $directoryName . '/' . $filename;
+        $filePath = $this->_cfgClient[$this->_client]['upl']['path'] . $directoryName . '/' . $filename;
 
-		$info = exif_imagetype($filePath);
- 
-		if ($info & (IMAGETYPE_GIF | IMAGETYPE_JPEG | IMAGETYPE_PNG)) {
-			$imgSrc = capiImgScale($filePath, 148, 74);
-		} else {
-			file_put_contents($this->_cfgClient[$this->_client]['cache']['path'] . 'empty.gif',"\107\111\106\70\71\141\001\000\001\000\360\001\000\377\377\377\000\000\000\041\371\004\001\012\000\000\000\054\000\000\000\000\001\000\001\000\000\002\002\104\001\000\073");
-			$imgSrc = $this->_cfgClient[$this->_client]['cache']['frontendpath'] . 'empty.gif';
-		}
- 
+        $info = exif_imagetype($filePath);
+
+        if ($info & (IMAGETYPE_GIF | IMAGETYPE_JPEG | IMAGETYPE_PNG)) {
+            $imgSrc = capiImgScale($filePath, 148, 74);
+        } else {
+            file_put_contents($this->_cfgClient[$this->_client]['cache']['path'] . 'empty.gif',"\107\111\106\70\71\141\001\000\001\000\360\001\000\377\377\377\000\000\000\041\371\004\001\012\000\000\000\054\000\000\000\000\001\000\001\000\000\002\002\104\001\000\073");
+            $imgSrc = $this->_cfgClient[$this->_client]['cache']['frontendpath'] . 'empty.gif';
+        }
+
         $filesize = $fileData['filesize'];
         $metaData = $fileData['metadata'];
 
@@ -451,7 +451,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             $template->set('d', 'FILEMETA_COPYRIGHT', '');
         }
 
-		$template->set('d', 'FILETHUMB', $imgSrc);
+        $template->set('d', 'FILETHUMB', $imgSrc);
         $template->set('d', 'FILENAME', $filename);
         $template->set('d', 'FILESIZE', humanReadableSize($filesize));
         $template->set('d', 'FILEEXTENSION', $fileData['extension']);

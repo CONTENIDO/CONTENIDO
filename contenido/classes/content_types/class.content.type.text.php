@@ -51,8 +51,8 @@ class cContentTypeText extends cContentTypeAbstract {
             $this->_settings = $_POST[$this->_prefix . '_text_' . $this->_id];
             $this->_rawSettings = $this->_settings;
             $this->_storeSettings();
-			$this->_settings = stripslashes($this->_settings);
-			$this->_rawSettings = stripslashes($this->_rawSettings);
+            $this->_settings = stripslashes($this->_settings);
+            $this->_rawSettings = stripslashes($this->_rawSettings);
         }
     }
 

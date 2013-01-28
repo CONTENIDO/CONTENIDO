@@ -146,22 +146,22 @@ function getContentWindow() {
 
 /**
  * Returns an URLs params as array.
- * 
+ *
  * @param url to determine params from
  * @returns array
  */
 function getUrlParams(url) {
-	var params = [];
-	var parts = url.split('?');
-	if (0 < parts.length) {
-		var queryString = parts[1];
-		var queryString = queryString.split('&');
-		for (var i in queryString) {
-			var query = queryString[i].split('=');
-			params[query[0]] = query[1];
-		}
-	}
-	return params;
+    var params = [];
+    var parts = url.split('?');
+    if (0 < parts.length) {
+        var queryString = parts[1];
+        var queryString = queryString.split('&');
+        for (var i in queryString) {
+            var query = queryString[i].split('=');
+            params[query[0]] = query[1];
+        }
+    }
+    return params;
 }
 
 /**
@@ -174,8 +174,8 @@ function getTranslations() {
     var registry = getRegistry();
     // if the translations have not been loaded yet, do it now
     if (typeof registry.get('translations') === 'undefined') {
-    	// get param 'contenido' 
-    	var params = getUrlParams(window.location.search);
+        // get param 'contenido'
+        var params = getUrlParams(window.location.search);
         $.ajax({
             async : false,
             url : 'ajaxmain.php',
@@ -185,7 +185,7 @@ function getTranslations() {
                 registry.set('translations', data);
             },
             error: function(data) {
-            	alert('could not get translations');
+                alert('could not get translations');
             }
         });
     }

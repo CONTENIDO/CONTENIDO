@@ -491,7 +491,7 @@ ul.linklist li a:link,
 ul.linklist li a:active,
 ul.linklist li a:visited {
     color: #9ba21b;
-    background: url('../images/misc/sprite.png') no-repeat 0 -196px; 
+    background: url('../images/misc/sprite.png') no-repeat 0 -196px;
     padding-left: 9px;
 }
 ul.linklist li:hover a {
@@ -529,15 +529,15 @@ ul.downloadlist ul.formats li + li {
 ul.downloadlist ul.formats li a:link,
 ul.downloadlist ul.formats li a:visited,
 ul.downloadlist ul.formats li a:active {
-  background: url('../images/misc/sprite.png') no-repeat 0 -267px; 
-  padding-left: 35px; 
-  height: 19px; 
-  display: block; 
+  background: url('../images/misc/sprite.png') no-repeat 0 -267px;
+  padding-left: 35px;
+  height: 19px;
+  display: block;
   color: #9ba21b;
 }
 
 ul.downloadlist ul.formats li:hover a {
-   color: #0083cb; 
+   color: #0083cb;
 }
 
 ul.downloadlist > li > img {
@@ -565,7 +565,7 @@ ul.downloadlist > li p {
 }
 
 h2.downloadlist {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 
 
