@@ -12,46 +12,56 @@
     <script type="text/javascript" src="scripts/general.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-    <script type="text/javascript">
-        var sid = "{SID}";
-
-        /* Function for deleting
-           modules */
-        function deleteClient(iduser) {
-            var url_right_bottom  = 'main.php?area=client';
-            url_right_bottom += '&frame=4';
-            url_right_bottom += '&contenido=' + sid;
-
-            var url_right_top  = 'main.php?area=client';
-            url_right_top += '&frame=3';
-            url_right_top += '&contenido=' + sid;
-
-            var url_left_bottom  = 'main.php?area=client';
-            url_left_bottom += '&action=client_delete';
-            url_left_bottom += '&frame=2';
-            url_left_bottom += '&idclientdelete=' + iduser;
-            url_left_bottom += '&contenido=' + sid;
-
-            conMultiLink('right_top', url_right_top, 'right_bottom', url_right_bottom, 'left_bottom', url_left_bottom);
-        }
-    </script>
 </head>
 <body>
 
 <table width="100%" cellspacing="0" cellpadding="2" border="0">
     <!-- BEGIN:BLOCK -->
-    <tr {ID} class="text_medium" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
-            <td align="left" class="text_medium">{ICON}</td>
-            <td width="100%">{TEXT}</td><td align="right">{DELETE}</td>
+    <tr {ID} class="text_medium">
+        <td align="left" class="text_medium">{ICON}</td>
+        <td width="100%">{TEXT}</td><td align="right">{DELETE}</td>
     </tr>
     <!-- END:BLOCK -->
 
 </table>
 <script type="text/javascript">
-    if (document.getElementById('marked')) {
-        var markedRow = document.getElementById('marked');
-        row.click(markedRow);
+var sid = "{SID}";
+
+$(document).ready(function() {
+    // Register some events for rows
+    // @todo move this to rowMark.js
+    $("table tr").mouseover(function() {
+        row.over(this);
+    }).mouseout(function() {
+        row.out(this);
+    }).click(function() {
+        row.click(this);
+    })
+
+    // Mark element having the marked id value
+    if ($("#marked")) {
+        row.click($("#marked").get(0));
     }
+});
+
+// Function for deleting clients
+function deleteClient(iduser) {
+    var url_right_bottom  = 'main.php?area=client';
+    url_right_bottom += '&frame=4';
+    url_right_bottom += '&contenido=' + sid;
+
+    var url_right_top  = 'main.php?area=client';
+    url_right_top += '&frame=3';
+    url_right_top += '&contenido=' + sid;
+
+    var url_left_bottom  = 'main.php?area=client';
+    url_left_bottom += '&action=client_delete';
+    url_left_bottom += '&frame=2';
+    url_left_bottom += '&idclientdelete=' + iduser;
+    url_left_bottom += '&contenido=' + sid;
+
+    conMultiLink('right_top', url_right_top, 'right_bottom', url_right_bottom, 'left_bottom', url_left_bottom);
+}
 </script>
 </body>
 </html>
