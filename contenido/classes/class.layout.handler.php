@@ -157,7 +157,7 @@ class cLayoutHandler {
         $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . "/";
         $this->_fileName = $this->_layoutName . ".html";
 
-        // make directoryies for layout
+        // make directories for layout
         $this->_makeDirectories();
     }
 
@@ -442,7 +442,7 @@ class cLayoutHandler {
             // init class var for save
             $this->initWithDbObject($db);
             if ($this->saveLayoutByUpgrade($db->f("code")) == false) {
-                throw new cException('Can not save layout name: ' . $this->_layoutName);
+                throw new cException('Can not save layout.' . print_r($this, true));
             }
         }
 
