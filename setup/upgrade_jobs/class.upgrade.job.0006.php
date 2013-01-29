@@ -23,7 +23,9 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 class cUpgradeJob_0006 extends cUpgradeJobAbstract {
-
+	
+	public $maxVersion = "4.9.0-beta1";
+	
     const MODE = 0777;
 
     /**
@@ -39,7 +41,7 @@ class cUpgradeJob_0006 extends cUpgradeJobAbstract {
         'config.after.php' => 'data/config/config.after.php'
     );
 
-    public function execute() {
+    public function _execute() {
 
         global $cfg, $cfgClient;
 

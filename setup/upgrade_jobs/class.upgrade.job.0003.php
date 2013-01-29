@@ -24,7 +24,9 @@ if (!defined('CON_FRAMEWORK')) {
 
 class cUpgradeJob_0003 extends cUpgradeJobAbstract {
 
-    public function execute() {
+	public $maxVersion = "4.9.0-beta1";
+	
+    public function _execute() {
         global $cfg;
 
         convertToDatetime($this->_oDb, $cfg);

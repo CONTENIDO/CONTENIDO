@@ -22,8 +22,10 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 class cUpgradeJob_0001 extends cUpgradeJobAbstract {
+	
+	public $maxVersion = "0"; //this will be executed every time
 
-    public function execute() {
+    public function _execute() {
         global $cfg, $cfgClient;
         if ($this->_setupType == 'setup') {
             switch ($_SESSION['clientmode']) {

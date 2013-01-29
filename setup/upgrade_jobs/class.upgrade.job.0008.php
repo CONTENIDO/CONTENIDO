@@ -21,8 +21,10 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 class cUpgradeJob_0008 extends cUpgradeJobAbstract {
-
-    public function execute() {
+	
+	public $maxVersion = "4.9.0-beta1";
+	
+    public function _execute() {
         global $cfg, $db;
 
         if ($this->_setupType == 'upgrade') {

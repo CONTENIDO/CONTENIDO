@@ -23,8 +23,10 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 class cUpgradeJob_0004 extends cUpgradeJobAbstract {
+	
+	public $maxVersion = "4.9.0-beta1";
 
-    public function execute() {
+    public function _execute() {
         global $cfg;
 
         if ($this->_setupType != 'setup') {

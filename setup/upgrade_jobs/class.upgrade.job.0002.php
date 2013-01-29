@@ -26,6 +26,8 @@ checkAndInclude($cfg['path']['contenido'] . 'includes/functions.api.string.php')
 
 class cUpgradeJob_0002 extends cUpgradeJobAbstract {
 
+	public $maxVersion = "4.9.0-beta1";
+	
     /**
      * This method clean the name of moduls table $cfg['tab']['mod'].
      * Clean means all the charecters (�,*+#...) will be replaced.
@@ -36,7 +38,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
         $myDb = clone $this->_oDb;
         $db = clone $this->_oDb;
 
-        // select all moduls
+        // select all modules
         $sql = sprintf('SELECT * FROM %s', $cfg['tab']['mod']);
         $db->query($sql);
 
@@ -97,7 +99,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
         $db->query($sql);
     }
 
-    public function execute() {
+    public function _execute() {
         global $cfg;
         global $client, $lang, $cfgClient;  // is used in cLayoutHandler below!!!
 
