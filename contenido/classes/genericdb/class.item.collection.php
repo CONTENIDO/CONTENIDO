@@ -426,7 +426,6 @@ abstract class ItemCollection extends cItemBaseAbstract {
         // Fetch linked tables
         foreach ($this->_links as $link => $object) {
             $matches = $this->_findReverseJoinPartner(strtolower(get_class($this)), $link);
-
             if ($matches !== false) {
                 if (isset($matches['desttable'])) {
                     // Driver function: Build query parts
@@ -441,108 +440,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
                     }
                 }
             } else {
-                // Try forward search
-                $mobject = new $link;
-
-                $matches = $mobject->_findReverseJoinPartner($link, strtolower(get_class($this)));
-
-                if ($matches !== false) {
-                    if (isset($matches['desttable'])) {
-                        $i = $this->_driver->buildJoinQuery(
-                                $mobject->table, strtolower($link), $mobject->primaryKey, strtolower($matches['destclass']), $matches['key']
-                        );
-
-                        if ($i['field'] == ($link . '.' . $mobject->primaryKey) && $link == $ignoreRoot) {
-                            unset($i['join']);
-                        }
-                        $aParameters[] = $i;
-                    } else {
-                        foreach ($matches as $match) {
-                            $xobject = new $match['sourceclass'];
-
-                            $i = $this->_driver->buildJoinQuery(
-                                    $xobject->table, strtolower($match['sourceclass']), $xobject->primaryKey, strtolower($match['destclass']), $match['key']
-                            );
-
-                            if ($i['field'] == ($match['sourceclass'] . '.' . $xobject->primaryKey) &&
-                                    $match['sourceclass'] == $ignoreRoot) {
-                                unset($i['join']);
-                            }
-                            array_unshift($aParameters, $i);
-                        }
-                    }
-                } else {
-                    $bDualSearch = true;
-                    // Check first if we are a instance of another class
-                    foreach ($mobject->_JoinPartners as $sJoinPartner) {
-                        if (class_exists($sJoinPartner)) {
-                            if (is_subclass_of($this, $sJoinPartner)) {
-                                $matches = $mobject->_findReverseJoinPartner($link, strtolower($sJoinPartner));
-
-                                if ($matches !== false) {
-                                    if ($matches['destclass'] == strtolower($sJoinPartner)) {
-                                        $matches['destclass'] = get_class($this);
-
-                                        if (isset($matches['desttable'])) {
-                                            $i = $this->_driver->buildJoinQuery(
-                                                    $mobject->table, strtolower($link), $mobject->primaryKey, strtolower($matches['destclass']), $matches['key']
-                                            );
-
-                                            if ($i['field'] == ($link . '.' . $mobject->primaryKey) &&
-                                                    $link == $ignoreRoot) {
-                                                unset($i['join']);
-                                            }
-                                            $aParameters[] = $i;
-                                        } else {
-                                            foreach ($matches as $match) {
-                                                $xobject = new $match['sourceclass'];
-
-                                                $i = $this->_driver->buildJoinQuery(
-                                                        $xobject->table, strtolower($match['sourceclass']), $xobject->primaryKey, strtolower($match['destclass']), $match['key']
-                                                );
-
-                                                if ($i['field'] == ($match['sourceclass'] . '.' . $xobject->primaryKey) &&
-                                                        $match['sourceclass'] == $ignoreRoot) {
-                                                    unset($i['join']);
-                                                }
-                                                array_unshift($aParameters, $i);
-                                            }
-                                        }
-                                        $bDualSearch = false;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if ($bDualSearch) {
-                        // Try dual-side search
-                        $forward = $this->_resolveLinks();
-                        $reverse = $mobject->_resolveLinks();
-
-                        $result = array_intersect($forward, $reverse);
-
-                        if (count($result) > 0) {
-                            // Found an intersection, build references to it
-                            foreach ($result as $value) {
-                                $oIntersect = new $value;
-                                $oIntersect->link(strtolower(get_class($this)));
-                                $oIntersect->link(strtolower(get_class($mobject)));
-
-                                $aIntersectParameters = $oIntersect->_fetchJoinTables($ignoreRoot);
-
-                                $aFields = array_merge($aIntersectParameters['fields'], $aFields);
-                                $aTables = array_merge($aIntersectParameters['tables'], $aTables);
-                                $aJoins = array_merge($aIntersectParameters['joins'], $aJoins);
-                                $aWheres = array_merge($aIntersectParameters['wheres'], $aWheres);
-                            }
-                        } else {
-                            $msg = "Could not find join partner for class [$link] in class "
-                                    . get_class($this) . " in neither forward nor reverse direction.";
-                            throw new cException($msg);
-                        }
-                    }
-                }
+                throw new cUnexpectedValueException("The join partner '" . get_class($this) . "' is not registered and can not be used with link().");
             }
         }
 
@@ -732,8 +630,6 @@ abstract class ItemCollection extends cItemBaseAbstract {
                         $returns[] = $status;
                     }
 
-                    $obj = new $tmpClassname;
-
                     $returns[] = array(
                         'desttable' => $obj->table, 'destclass' => $tmpClassname,
                         'sourceclass' => $sParentClass, 'key' => $obj->primaryKey
@@ -742,8 +638,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
                 }
             }
         }
-
-        return false;
+		return false;
     }
 
     /**
