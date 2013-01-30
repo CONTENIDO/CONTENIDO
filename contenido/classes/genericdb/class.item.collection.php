@@ -638,7 +638,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
                 }
             }
         }
-		return false;
+        return false;
     }
 
     /**

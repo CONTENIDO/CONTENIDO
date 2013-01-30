@@ -23,9 +23,9 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 class cUpgradeJob_0006 extends cUpgradeJobAbstract {
-	
-	public $maxVersion = "4.9.0-beta1";
-	
+
+    public $maxVersion = "4.9.0-beta1";
+
     const MODE = 0777;
 
     /**

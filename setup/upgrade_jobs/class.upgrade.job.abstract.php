@@ -32,12 +32,12 @@ abstract class cUpgradeJobAbstract {
     protected static $_languages;
     protected static $_rootPath;
     protected static $_rootHttpPath;
-    
+
     /**
      * This must be set. 0 means this upgrade job will be executed every time.
      * Anyhting else should be a valid CONTENIDO version. Only if the upgraded version
      * is older than this string the job will be executed.
-     * 
+     *
      * Setting this to '4.8.18' would mean that any version lower than 4.8.18 will get the upgrade job.
      * @var string
      */
@@ -51,7 +51,7 @@ abstract class cUpgradeJobAbstract {
      * @param  version $version The CONTENIDO version which is upgraded
      */
     public function __construct($db, $cfg, $cfgClient, $version) {
-    	$this->version = $version;
+        $this->version = $version;
         $this->_oDb = $db;
         $this->_aCfg = (is_array($cfg)) ? $cfg : $GLOBALS['cfg'];
         $this->_aCfgClient = (is_array($cfgClient)) ? $cfg : $GLOBALS['cfgClient'];
@@ -73,16 +73,16 @@ abstract class cUpgradeJobAbstract {
             self::$_languages = $this->_getAllLanguages();
         }
     }
-    
+
     /**
      * This function will perform the version check and execute the job if it succeeds.
-     * 
+     *
      * Do not override this.
      */
     final public function execute() {
-    	if(version_compare($this->version, $this->maxVersion, "<") || $this->maxVersion === "0") {
-    		$this->_execute();
-    	}
+        if(version_compare($this->version, $this->maxVersion, "<") || $this->maxVersion === "0") {
+            $this->_execute();
+        }
     }
 
     /**
