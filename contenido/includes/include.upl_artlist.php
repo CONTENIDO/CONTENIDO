@@ -1,8 +1,7 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System
- * Description: Article list for upload
- * Requirements: @con_php_req 5.0
+ * Project: CONTENIDO Content Management System Description: Article list for
+ * upload Requirements: @con_php_req 5.0
  *
  *
  * @package CONTENIDO Backend Includes
@@ -51,6 +50,8 @@ $content[] = '<table border="0" cellspacing="0" cellpadding="0"><tr><td>';
 $content[] = '<a href="javascript://" onclick="' . $jslink . '"><img alt="' . i18n("Use this category") . '" title="' . i18n("Use this category") . '" style="padding-right: 4px;" src="images/folder_movedown.gif"></a></td><td>';
 $content[] = $cat_str;
 $content[] = '</td></tr></table></div>';
+
+$content[] = '<div>&#160;</div>';
 
 $cApiCategoryArticleCollection = new cApiCategoryArticleCollection();
 $cApiCategoryArticleCollection->link("cApiArticleCollection");
