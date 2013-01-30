@@ -30,7 +30,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
     public function _execute() {
         global $cfg;
 
-        $this->version = getContenidoVersion($this->_oDb, $cfg['tab']['system_prop']);
+        $this->_version = getContenidoVersion($this->_oDb, $cfg['tab']['system_prop']);
         $this->_executeInitialJobs();
 
         $upgradeJobs = $this->_getUpgradeJobFiles();
@@ -176,7 +176,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
                 continue;;
             }
             /* @var $obj cUpgradeJobAbstract */
-            $obj = new $className($this->_oDb, $this->_aCfg, $this->_aCfgClient, $this->version);
+            $obj = new $className($this->_oDb, $this->_aCfg, $this->_aCfgClient, $this->_version);
             $obj->execute();
         }
     }

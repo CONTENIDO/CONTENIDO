@@ -24,13 +24,44 @@ if (!defined('CON_FRAMEWORK')) {
 
 abstract class cUpgradeJobAbstract {
 
+    /**
+     * @var cDb
+     */
     protected $_oDb;
+
+    /**
+     * @var array
+     */
     protected $_aCfg;
+
+    /**
+     * @var string
+     */
     protected $_setupType;
-    protected $version;
+
+    /**
+     * @var string
+     */
+    protected $_version;
+
+    /**
+     * @var cApiClient[]
+     */
     protected static $_clients;
+
+    /**
+     * @var cApiLanguage[]
+     */
     protected static $_languages;
+
+    /**
+     * @var string
+     */
     protected static $_rootPath;
+
+    /**
+     * @var string
+     */
     protected static $_rootHttpPath;
 
     /**
@@ -51,7 +82,7 @@ abstract class cUpgradeJobAbstract {
      * @param  version $version The CONTENIDO version which is upgraded
      */
     public function __construct($db, $cfg, $cfgClient, $version) {
-        $this->version = $version;
+        $this->_version = $version;
         $this->_oDb = $db;
         $this->_aCfg = (is_array($cfg)) ? $cfg : $GLOBALS['cfg'];
         $this->_aCfgClient = (is_array($cfgClient)) ? $cfg : $GLOBALS['cfgClient'];
@@ -80,7 +111,7 @@ abstract class cUpgradeJobAbstract {
      * Do not override this.
      */
     final public function execute() {
-        if(version_compare($this->version, $this->maxVersion, "<") || $this->maxVersion === "0") {
+        if(version_compare($this->_version, $this->maxVersion, "<") || $this->maxVersion === "0") {
             $this->_execute();
         }
     }
