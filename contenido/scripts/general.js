@@ -271,3 +271,27 @@ function showNotification(title, description, additionalOptions) {
     var contentWindow = getContentWindow();
     contentWindow.$('<div>' + description + '</div>').dialog(options);
 }
+
+
+/**
+ * Marks submenu item in header, handles also context of different frames
+ * @param {String} id  The id of submenu
+ */
+function conMarkSubmenuItem(id) {
+    var menuItem;
+    try {
+        // Check if we are in a dual-frame or a quad-frame
+        if (parent.parent.frames[0].name == "header") {
+            if ($("#" + id, parent.frames["right_top"])) {
+                menuItem = $("#" + id + " a:first", parent.frames["right_top"]).get();
+                parent.frames["right_top"].sub.clicked(menuItem);
+            }
+        } else {
+            // Check if submenuItem is existing and mark it
+            if ($("#" + id, parent.parent.frames["right"].frames["right_top"])) {
+                menuItem = $("#" + id + " a:first", parent.parent.frames["right"].frames["right_top"]).get();
+                parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem);
+            }
+        }
+    } catch (e) {}
+}

@@ -270,6 +270,7 @@ function getParentAreaId($area) {
 function markSubMenuItem($menuitem, $return = false) {
     $str = '
     <script type="text/javascript">
+    // @todo  Use conMarkSubmenuItem(id) in general.js, but we have to ensure to load the file!
     (function(id){
         var menuItem;
 
