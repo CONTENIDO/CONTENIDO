@@ -62,6 +62,7 @@ return array(
     'cCharacterConverter' => 'contenido/classes/class.chartable.php',
     'ConUser' => 'contenido/classes/class.conuser.php',
     'CSV' => 'contenido/classes/class.csv.php',
+    'cDirHandler' => 'contenido/classes/class.dirhandler.php',
     'cEffectiveSetting' => 'contenido/classes/class.effective.setting.php',
     'ExcelWorksheet' => 'contenido/classes/class.excel.php',
     'cFileHandler' => 'contenido/classes/class.filehandler.php',
@@ -406,6 +407,7 @@ return array(
     'cHTMLList' => 'contenido/classes/html/class.html.list.php',
     'cHTMLListItem' => 'contenido/classes/html/class.html.listitem.php',
     'cHTMLNav' => 'contenido/classes/html/class.html.nav.php',
+    'cHTMLOptgroup' => 'contenido/classes/html/class.html.optgroup.php',
     'cHTMLOptionElement' => 'contenido/classes/html/class.html.optionelement.php',
     'cHTMLParagraph' => 'contenido/classes/html/class.html.paragraph.php',
     'cHTMLPasswordbox' => 'contenido/classes/html/class.html.passwordbox.php',
@@ -656,6 +658,5 @@ return array(
     'ContenidoXmlReader' => 'contenido/classes/xml/class.xml.reader.php',
     'cXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
     'ContenidoXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
-    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php',
-    'cDirHandler' => 'contenido/classes/class.dirhandler.php'
+    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php'
 );
