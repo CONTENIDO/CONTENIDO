@@ -781,6 +781,8 @@ function uplGetFileTypeDescription($sExtension) {
             return (i18n("MPEG Movie"));
         case "wmv":
             return (i18n("Windows Media Video"));
+        case "mp4":
+            return (i18n("MPEG-4 Movie"));
 
         default:
             return (i18n($sExtension . "-File"));
