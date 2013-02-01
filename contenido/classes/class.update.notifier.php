@@ -677,6 +677,13 @@ class cUpdateNotifier {
                     $sText = cApiStrTrimAfterWord($sText, 150) . '...';
                 }
 
+                // highlight newest rss news
+                if($iCnt == 0) {
+                    $oTpl->set("d", "NEWS_NEWEST_CSS", " style=\"background-color: #f1f1f1; padding: 2px;\"");
+                } else {
+                    $oTpl->set("d", "NEWS_NEWEST_CSS", "");
+                }
+
                 $oTpl->set("d", "NEWS_DATE", $date);
                 $oTpl->set("d", "NEWS_TITLE", $title);
                 $oTpl->set("d", "NEWS_TEXT", $sText);
