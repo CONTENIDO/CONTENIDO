@@ -96,7 +96,7 @@ function checkMySQLDatabaseCreation ($db, $database)
 		return true;	
 	} else {
 	
-		$db->query("CREATE DATABASE $database");
+		$db->query("CREATE DATABASE `$database`");
 		
 		if ($db->Errno != 0)
 		{
@@ -117,7 +117,7 @@ function checkMySQLDatabaseExists ($db, $database)
 		{
 			return true;	
 		} else {
-			$db->query("SHOW DATABASES LIKE '$database'");
+			$db->query("SHOW DATABASES LIKE `$database`");
 				
 			if ($db->next_record())
 			{
@@ -131,7 +131,7 @@ function checkMySQLDatabaseExists ($db, $database)
 		{
 			return true;	
 		} else {
-			$db->query("SHOW DATABASES LIKE '$database'");
+			$db->query("SHOW DATABASES LIKE `$database`");
 				
 			if ($db->next_record())
 			{
@@ -189,7 +189,7 @@ function checkMySQLLockTable ($db, $database, $table)
 		return false;
 	}
 	
-	$db->query("LOCK TABLES $table WRITE");
+	$db->query("LOCK TABLES `$table` WRITE");
 	
 	if ($db->Errno == 0)
 	{
@@ -224,7 +224,7 @@ function checkMySQLDropTable ($db, $database, $table)
 		return false;
 	}	
 	
-	$db->query("DROP TABLE $table");
+	$db->query("DROP TABLE `$table`");
 
 	if ($db->Errno == 0)
 	{
@@ -236,7 +236,7 @@ function checkMySQLDropTable ($db, $database, $table)
 
 function checkMySQLDropDatabase ($db, $database)
 {
-	$db->query("DROP DATABASE $database");
+	$db->query("DROP DATABASE `$database`");
 
 	if ($db->Errno == 0)
 	{
