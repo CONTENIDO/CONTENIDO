@@ -118,7 +118,7 @@ function checkMySQLDatabaseCreation($db, $database)
     if (checkMySQLDatabaseExists($db,  $database)) {
         return true;
     } else {
-        $db->query("CREATE DATABASE $database");
+        $db->query("CREATE DATABASE '$database'");
         if ($db->getErrorNumber() != 0) {
             return false;
         } else {
