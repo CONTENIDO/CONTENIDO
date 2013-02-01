@@ -58,6 +58,7 @@ cms/data/modules/content_image/php/content_image_input.php -text
 cms/data/modules/content_image/php/content_image_output.php -text
 cms/data/modules/content_image/template/get.tpl -text
 cms/data/modules/content_link_list/info.xml -text
+cms/data/modules/content_link_list/js/content_link_list.js -text svneol=unset#text/plain
 cms/data/modules/content_link_list/lang/lang_de_DE.txt -text
 cms/data/modules/content_link_list/php/content_link_list_input.php -text
 cms/data/modules/content_link_list/php/content_link_list_output.php -text

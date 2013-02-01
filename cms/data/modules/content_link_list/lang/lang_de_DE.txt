@@ -1,1 +1,2 @@
 LABEL_HEADER_LINKLIST=Linkliste
+usable_links=Nützliche Links
