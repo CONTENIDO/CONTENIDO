@@ -328,7 +328,7 @@ class UploadList extends FrontendList {
                     }
 
                     if (cApiDbfs::isDbfs($data)) {
-                        $href = $sess->url($frontendURL . "dbfs.php?file=" . $data);
+                        $href = $frontendURL . "dbfs.php?file=" . $data;
                     } else {
                         $href = $frontendURL . $cfgClient[$client]["upload"] . $data;
                     }
