@@ -140,6 +140,12 @@ class cArray {
         return $marray;
     }
 
+    /**
+     * Ensures that the passed array has the key, sets it by using te value
+     * @param  array  $aArray
+     * @param  string  $sKey
+     * @param  mixed  $mDefault
+     */
     public static function initializeKey(&$aArray, $sKey, $mDefault = '') {
         if (!is_array($aArray)) {
             if (isset($aArray)) {
