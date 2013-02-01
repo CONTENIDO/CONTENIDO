@@ -117,7 +117,7 @@ class cApiCategoryLanguageCollection extends ItemCollection {
     public function getStartIdartlangByIdcatAndIdlang($idcat, $idlang) {
         $sql = "SELECT startidartlang FROM `" . $this->table . "` WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $idlang . " AND startidartlang != 0";
         $this->db->query($sql);
-        return ($this->db->next_record())? $this->db->f('startidartlang') : 0;
+        return ($this->db->nextRecord())? $this->db->f('startidartlang') : 0;
     }
 
     /**
@@ -132,7 +132,7 @@ class cApiCategoryLanguageCollection extends ItemCollection {
         global $cfg;
         $sql = "SELECT al.idart FROM `" . $cfg['tab']['art_lang'] . "` AS al, `" . $this->table . "` " . "AS cl WHERE cl.idcat = " . (int) $idcat . " AND cl.startidartlang != 0 AND " . "cl.idlang = " . (int) $idlang . " AND cl.idlang = al.idlang AND cl.startidartlang = al.idartlang";
         $this->db->query($sql);
-        return ($this->db->next_record())? $this->db->f('idart') : 0;
+        return ($this->db->nextRecord())? $this->db->f('idart') : 0;
     }
 
     /**
@@ -155,7 +155,7 @@ class cApiCategoryLanguageCollection extends ItemCollection {
 
         $sql = "SELECT startidartlang FROM `" . $this->table . "` WHERE " . $where;
         $this->db->query($sql);
-        return ($this->db->next_record() && $this->db->f('startidartlang') != 0);
+        return ($this->db->nextRecord() && $this->db->f('startidartlang') != 0);
     }
 
 }

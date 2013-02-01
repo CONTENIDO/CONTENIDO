@@ -45,7 +45,7 @@ if ( !isset($idtplcfg) ) {
                 idtpl = '".cSecurity::toInteger($idtpl)."'";
 
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
 
     $idtplcfg = $db->f("idtplcfg");
 
@@ -71,7 +71,7 @@ if ( !isset($idtplcfg) ) {
 if (isset($idtplcfg)) {
         $sql = "SELECT number FROM ".$cfg["tab"]["container"]." WHERE idtpl='".cSecurity::toInteger($idtpl)."'";
         $db->query($sql);
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
                 $i = $db->f("number");
                 $CiCMS_VAR = "C".$i."CMS_VAR";
                 if (isset($_POST[$CiCMS_VAR])) {

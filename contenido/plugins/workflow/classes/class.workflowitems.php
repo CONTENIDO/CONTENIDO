@@ -73,7 +73,7 @@ class WorkflowItems extends ItemCollection {
         $aUserSequencesDelete = array();
         $sSql = 'SELECT idusersequence FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem = ' . $id . ';';
         $oDb->query($sSql);
-        while ($oDb->next_record()) {
+        while ($oDb->nextRecord()) {
             array_push($aUserSequencesDelete, cSecurity::escapeDB($oDb->f('idusersequence'), $oDb));
         }
 
@@ -96,7 +96,7 @@ class WorkflowItems extends ItemCollection {
         $sSql = 'SELECT idusersequence FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem = ' . cSecurity::escapeDB($idworkflowitem, $oDb) . ';';
 
         $oDb->query($sSql);
-        while ($oDb->next_record()) {
+        while ($oDb->nextRecord()) {
             array_push($aUserSequences, cSecurity::escapeDB($oDb->f('idusersequence'), $oDb));
         }
 
@@ -104,7 +104,7 @@ class WorkflowItems extends ItemCollection {
         if (count($aUserSequences) > 0) {
             $sSql = 'SELECT idartlang FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence in (' . implode(',', $aUserSequences) . ');';
             $oDb->query($sSql);
-            while ($oDb->next_record()) {
+            while ($oDb->nextRecord()) {
                 array_push($aIdArtLang, $oDb->f('idartlang'));
             }
             $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence in (' . implode(',', $aUserSequences) . ');';

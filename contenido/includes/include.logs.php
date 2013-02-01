@@ -131,7 +131,7 @@ $aDisplayLangauge = array();
 $aDisplayLangauge['%'] = i18n('All languages');
 $selectedLangauge = '%';
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $aDisplayLangauge[$db->f('idlang')] = $db->f('name');
 }
 

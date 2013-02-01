@@ -102,7 +102,7 @@ class cUpgradeJob_0007 extends cUpgradeJobAbstract {
             $columns = array();
             $sql = 'SHOW COLUMNS FROM ' . $cfg['tab']['mail_log_success'];
             $db->query($sql);
-            while ($db->next_record()) {
+            while ($db->nextRecord()) {
                 $columns[] = $db->f('Field');
             }
             if (in_array('idmail_resend', $columns)) {

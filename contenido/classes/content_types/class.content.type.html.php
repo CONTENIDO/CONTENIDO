@@ -71,7 +71,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
         $db = cRegistry::getDb();
         $sql = 'SELECT `idtype` FROM `' . $this->_cfg['tab']['type'] . '` WHERE `type`=\'' . $this->_type . '\'';
         $db->query($sql);
-        $db->next_record();
+        $db->nextRecord();
         $id .= $db->f('idtype') . '_' . $this->_id;
         $wysiwygDiv->setId($id);
 

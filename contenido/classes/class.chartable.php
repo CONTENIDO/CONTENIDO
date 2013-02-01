@@ -81,7 +81,7 @@ class cCharacterConverter {
 
         $this->_aCharCache[$sEncoding][$cNormalizedChar] = array();
 
-        while ($this->_oDB->next_record()) {
+        while ($this->_oDB->nextRecord()) {
             $aChars[] = chr($this->_oDB->f("charid"));
             $this->_aCharCache[$sEncoding][$cNormalizedChar][] = chr($this->_oDB->f("charid"));
         }
@@ -122,7 +122,7 @@ class cCharacterConverter {
 
         $this->_aAliasCache[$sEncoding][$cCharacter] = array();
 
-        while ($this->_oDB->next_record()) {
+        while ($this->_oDB->nextRecord()) {
             $aAliases[] = $this->_oDB->f("normalized_char");
             $this->_aAliasCache[$sEncoding][$cCharacter][] = $this->_oDB->f("normalized_char");
         }

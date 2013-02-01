@@ -273,19 +273,22 @@ function showNotification(title, description, additionalOptions) {
  */
 function conMarkSubmenuItem(id) {
     var menuItem;
-    try {
+//    try {
         // Check if we are in a dual-frame or a quad-frame
         if (parent.parent.frames[0].name == "header") {
             if ($("#" + id, parent.frames["right_top"])) {
-                menuItem = $("#" + id + " a:first", parent.frames["right_top"]).get();
+                menuItem = $("#" + id, parent.frames["right_top"]).find("a").get();
+console.log(">>menuItem 1", menuItem);
                 parent.frames["right_top"].sub.clicked(menuItem);
             }
+console.log(parent.frames["right_top"].document.documentElement.innerHTML);
         } else {
             // Check if submenuItem is existing and mark it
             if ($("#" + id, parent.parent.frames["right"].frames["right_top"])) {
-                menuItem = $("#" + id + " a:first", parent.parent.frames["right"].frames["right_top"]).get();
+                menuItem = $("#" + id + " a:first", parent.parent.frames["right"].frames["right_top"]).get(0);
+console.log(">>menuItem 2", menuItem);
                 parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem);
             }
         }
-    } catch (e) {}
+//    } catch (e) {}
 }

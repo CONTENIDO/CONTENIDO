@@ -109,7 +109,7 @@ function isCurrentEditor($uid) {
 
         $db2->query($sql);
 
-        while ($db2->next_record()) {
+        while ($db2->nextRecord()) {
             if ($db2->f("user_id") == $auth->auth["uid"]) {
                 return true;
             }
@@ -443,7 +443,7 @@ function doWorkflowAction($idartlang, $action) {
             $db = cRegistry::getDb();
             $sql = "SELECT idart, idlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idartlang = '" . cSecurity::escapeDB($idartlang, $db) . "'";
             $db->query($sql);
-            $db->next_record();
+            $db->nextRecord();
             $idart = $db->f("idart");
             $idlang = $db->f("idlang");
 

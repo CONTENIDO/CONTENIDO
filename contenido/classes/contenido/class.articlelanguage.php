@@ -155,7 +155,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
     public function getIdByArticleIdAndLanguageId($idart, $idlang) {
         $sql = "SELECT idartlang FROM `%s` WHERE idart = %d AND idlang = %d";
         $this->db->query($sql, $this->table, $idart, $idlang);
-        return ($this->db->next_record())? $this->db->f('idartlang') : 0;
+        return ($this->db->nextRecord())? $this->db->f('idartlang') : 0;
     }
 
 }
@@ -334,7 +334,7 @@ class cApiArticleLanguage extends Item {
 
         $sql = 'SELECT idartlang FROM `%s` WHERE idart = %d AND idlang = %d';
         $this->db->query($sql, $cfg['tab']['art_lang'], $idart, $idlang);
-        $this->db->next_record();
+        $this->db->nextRecord();
 
         return $this->db->f('idartlang');
     }
@@ -369,7 +369,7 @@ class cApiArticleLanguage extends Item {
         $this->db->query($sql, $cfg['tab']['content'], $cfg['tab']['type'], $this->get('idartlang'));
 
         $this->content = array();
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
         }
     }

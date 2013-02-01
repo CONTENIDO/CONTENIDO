@@ -99,7 +99,7 @@ $arrUsers['n/a'] = '-';
 
 $db->query($query);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $arrUsers[$db->f('username')] = $db->f('realname');
 }
 
@@ -338,7 +338,7 @@ $tpl->next();
 $categoryLink = "editcat";
 $editCategory = new cGuiFoldingRow("3498dbbb-ed4a-4618-8e49-3a3635396e22", i18n("Edit category"), $categoryLink);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $tplname = $db->f('name');
 
     if (strlen($tplname) > 18) {

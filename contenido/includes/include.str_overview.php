@@ -67,7 +67,7 @@ function buildCategorySelectRights() {
 
     $categories = array();
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $categories[$db->f("idcat")]["name"] = $db->f("name");
         $categories[$db->f("idcat")]["idcat"] = $db->f("idcat");
         if ($perm->have_perm_area_action($tmp_area, 'str_newcat') || $perm->have_perm_area_action_item($tmp_area, 'str_newcat', $db->f('idcat'))) {
@@ -156,7 +156,7 @@ function getTemplateSelect() {
     $sql = "SELECT idtpl, name, defaulttemplate FROM " . $cfg['tab']['tpl'] . " WHERE idclient = '" . $client . "' ORDER BY name";
 
     if ($db->query($sql)) {
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $bDefaultTemplate = $db->f('defaulttemplate');
             $oHtmlSelectOption = new cHTMLOptionElement($db->f('name'), $db->f('idtpl'), $bDefaultTemplate);
             $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
@@ -363,7 +363,7 @@ $bIgnore = false;
 $iIgnoreLevel = 0;
 
 $items = array();
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $bSkip = false;
 
     if ($bIgnore == true && $iIgnoreLevel >= $db->f('level')) {
@@ -509,14 +509,14 @@ $aInlineEditData = array();
 $sql = "SELECT idtplcfg, idtpl FROM " . $cfg["tab"]["tpl_conf"];
 $db->query($sql);
 $aTplconfigs = array();
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $aTplconfigs[$db->f('idtplcfg')] = $db->f('idtpl');
 }
 
 $sql = "SELECT name, description, idtpl FROM " . $cfg["tab"]["tpl"];
 $db->query($sql);
 $aTemplates = array();
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $aTemplates[$db->f('idtpl')] = array(
         'name' => $db->f('name'),
         'description' => $db->f('description')

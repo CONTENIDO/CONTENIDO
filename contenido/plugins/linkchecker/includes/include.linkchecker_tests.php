@@ -48,7 +48,7 @@ function checkLinks() {
         $sql = "SELECT idart, online FROM " . $cfg['tab']['art_lang'] . " WHERE idart IN (" . $sSearch . ")";
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $aFind[$db->f("idart")] = array(
                     "online" => $db->f("online")
             );
@@ -84,7 +84,7 @@ function checkLinks() {
         $sql = "SELECT idcat, startidartlang, visible FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat IN (" . $sSearch . ") AND idlang = '" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $aFind[$db->f("idcat")] = array(
                     "online" => $db->f("visible"),
                     "startidart" => $db->f("startidartlang")
@@ -112,7 +112,7 @@ function checkLinks() {
                 $sql = "SELECT idart FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang = '" . $aFind[$aSearchIDInfosCat[$i]['id']]['startidart'] . "' AND online = '1'";
                 $db->query($sql);
 
-                if ($db->num_rows() == 0) {
+                if ($db->numRows() == 0) {
                     $aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], array(
                             "error_type" => "startart"
                     ));
@@ -137,7 +137,7 @@ function checkLinks() {
         $sql = "SELECT idcatart FROM " . $cfg['tab']['cat_art'] . " WHERE idcatart IN (" . $sSearch . ")";
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $aFind[] = $db->f("idcatart");
         }
 
@@ -158,7 +158,7 @@ function checkLinks() {
         $sql = "SELECT username FROM " . $cfg['tab']['user'] . " WHERE user_id='" . cSecurity::escapeDB($auth->auth['uid'], $db) . "' AND perms LIKE '%admin%'";
         $db->query($sql);
 
-        if ($db->num_rows() > 0 || $cronjob == true) { // User is admin when he
+        if ($db->numRows() > 0 || $cronjob == true) { // User is admin when he
                                                        // is or when he run the
                                                        // cronjob
             $iAdmin = true;
@@ -208,7 +208,7 @@ function checkLinks() {
                 $sql = "SELECT iddbfs FROM " . $cfg['tab']['dbfs'] . " WHERE dirname IN('" . $sDirname . "', '" . conHtmlEntityDecode($sDirname) . "', '" . $sDirname . "') AND filename = '" . $sFilename . "'";
                 $db->query($sql);
 
-                if ($db->num_rows() == 0) {
+                if ($db->numRows() == 0) {
                     $aErrors['docimages'][] = array_merge($aSearchIDInfosNonID[$i], array(
                             "error_type" => "dbfs"
                     ));

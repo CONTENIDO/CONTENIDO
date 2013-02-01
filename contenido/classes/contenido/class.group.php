@@ -76,7 +76,7 @@ class cApiGroupCollection extends ItemCollection {
         $this->db->query($sql, $this->table, $cfg['tab']['groupmembers'], $userid);
         $this->_lastSQL = $sql;
 
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $aIds[] = $this->db->f('group_id');
         }
 

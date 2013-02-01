@@ -122,7 +122,7 @@ class cVersionLayout extends cVersion {
                     idlay = '" . cSecurity::toInteger($this->iIdentity) . "'";
 
         if ($this->oDB->query($sSql)) {
-            $this->oDB->next_record();
+            $this->oDB->nextRecord();
             $this->iClient = $this->oDB->f("idclient");
             $this->sName = $this->oDB->f("name");
             $this->sDescripion = $this->oDB->f("description");

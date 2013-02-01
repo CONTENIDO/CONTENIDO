@@ -50,7 +50,7 @@ function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user)
 
     $db2->query($sql);
 
-    while ($db2->next_record()) {
+    while ($db2->nextRecord()) {
         $arrSearchFor[] = "'".cSecurity::escapeDB($db2->f('group_id'), $db2)."'";
     }
 
@@ -65,7 +65,7 @@ function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user)
 
     $db2->query($sql);
 
-    if (!$db2->next_record()) {
+    if (!$db2->nextRecord()) {
         return false;
     } else {
         return true;

@@ -173,11 +173,11 @@ class TemplateConfig {
             #Article or cat is assigned to a template
             $sql = "SELECT * FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "'";
             $this->db->query($sql);
-            if ($this->db->next_record()) {
+            if ($this->db->nextRecord()) {
                 $idtpl = $this->db->f("idtpl");
                 $sql = "SELECT * FROM " . $cfg["tab"]["tpl"] . " WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "'";
                 $this->db->query($sql);
-                if ($this->db->next_record()) {
+                if ($this->db->nextRecord()) {
                     $idtplcfg = $this->db->f("idtplcfg");
                     $this->_getContainersByTplCfg($idtplcfg);
                     $arrData = $this->getData($containerid);
@@ -220,7 +220,7 @@ class TemplateConfig {
         //query
         $this->db->query($sql);
 
-        if (!$this->db->next_record()) {
+        if (!$this->db->nextRecord()) {
             return false;
         }
 
@@ -246,7 +246,7 @@ class TemplateConfig {
         cDeprecated('Use cApiTemplateConfiguration/cApiTemplateConfigurationCollection instead');
         $sql = "SELECT idcat FROM " . $this->cfg['tab']['cat_art'] . " WHERE idart='" . cSecurity::toInteger($idart) . "' ORDER BY idcat ASC LIMIT 1";
         $this->db->query($sql);
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             return $this->db->f("idcat");
         }
         return false;
@@ -266,7 +266,7 @@ class TemplateConfig {
         $sql = "SELECT idtplcfg FROM " . $this->cfg['tab']['cat_lang'] . " WHERE idcat='" . cSecurity::toInteger($idcat) . "'
                 AND idlang='" . cSecurity::toInteger($this->lang) . "'";
         $this->db->query($sql);
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             return $this->db->f("idtplcfg");
         }
         return false;
@@ -292,11 +292,11 @@ class TemplateConfig {
                 number ASC";
         $this->db->query($sql);
 
-        if ($this->db->nf() == 0) { //nothing found
+        if ($this->db->numRows() == 0) { //nothing found
             return false;
         } else {
             //get all results
-            while ($this->db->next_record()) {
+            while ($this->db->nextRecord()) {
                 $this->data[$this->db->f("number")] = $this->db->f("container");
             }
 

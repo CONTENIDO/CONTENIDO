@@ -139,7 +139,7 @@ EOT;
             $sql = 'SELECT `idcontent`, `idartlang`, `idtype`, `typeid`, `value` FROM `' . $cfg['tab']['content'] . '` WHERE `idtype`=' . $types['CMS_IMG'] . ' OR `idtype`=' . $types['CMS_IMGDESCR'] . ' ORDER BY `typeid` ASC';
             $db->query($sql);
             $result = array();
-            while ($db->next_record()) {
+            while ($db->nextRecord()) {
                 // create an array in which each entry contains the data needed for converting one entry
                 $idartlang = $db->f('idartlang');
                 $typeid = $db->f('typeid');
@@ -165,7 +165,7 @@ EOT;
                 // calculate the next unused typeid
                 $sql = 'SELECT MAX(typeid) AS maxtypeid FROM `' . $cfg['tab']['content'] . '` WHERE `idartlang`=' . $imageInfo['idartlang'] . ' AND `idtype`=' . $types['CMS_IMGEDITOR'];
                 $db->query($sql);
-                $db->next_record();
+                $db->nextRecord();
                 if ($db->f('maxtypeid') === false) {
                     $nextTypeId = 1;
                 } else {
@@ -177,7 +177,7 @@ EOT;
                 // save description in con_upl_meta if it does not already exist
                 $sql = 'SELECT `idlang` FROM `' . $cfg['tab']['art_lang'] . '` WHERE `idartlang`=' . $imageInfo['idartlang'];
                 $db->query($sql);
-                if ($db->next_record()) {
+                if ($db->nextRecord()) {
                     $idlang = $db->f('idlang');
                     $metaItem = new cApiUploadMeta();
                     $metaItemExists = $metaItem->loadByMany(array('idupl' => $imageInfo['idupl'], 'idlang' => $idlang));
@@ -210,7 +210,7 @@ EOT;
             $sql = 'SELECT `idcontent`, `idartlang`, `idtype`, `typeid`, `value` FROM `' . $cfg['tab']['content'] . '` WHERE `idtype`=' . $types['CMS_LINK'] . ' OR `idtype`=' . $types['CMS_LINKTARGET'] . ' OR `idtype`=' . $types['CMS_LINKDESCR'] . ' ORDER BY `typeid` ASC';
             $db->query($sql);
             $result = array();
-            while ($db->next_record()) {
+            while ($db->nextRecord()) {
                 // create an array in which each entry contains the data needed for converting one entry
                 $idartlang = $db->f('idartlang');
                 $typeid = $db->f('typeid');
@@ -239,7 +239,7 @@ EOT;
                 // calculate the next unused typeid
                 $sql = 'SELECT MAX(typeid) AS maxtypeid FROM `' . $cfg['tab']['content'] . '` WHERE `idartlang`=' . $linkInfo['idartlang'] . ' AND `idtype`=' . $types['CMS_LINKEDITOR'];
                 $db->query($sql);
-                $db->next_record();
+                $db->nextRecord();
                 if ($db->f('maxtypeid') === false) {
                     $nextTypeId = 1;
                 } else {

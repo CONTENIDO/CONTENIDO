@@ -33,7 +33,7 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
             $done = false;
             $sSql = "SHOW COLUMNS FROM " . $cfg['tab']['upl'];
             $this->_oDb->query($sSql);
-            while ($this->_oDb->next_record()) {
+            while ($this->_oDb->nextRecord()) {
                 if ($this->_oDb->f("Field") == 'description') {
                     $done = true;
                 }
@@ -55,7 +55,7 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
         $aUpl = array();
         $sSql = "SELECT * FROM " . $cfg['tab']['upl'] . " WHERE idclient = " . $client . " AND `description` != '' ORDER BY idupl ASC";
         $db->query($sSql);
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $aUpl[$db->f('idupl')]['description'] = $db->f('description');
             $aUpl[$db->f('idupl')]['author'] = $db->f('author');
             $aUpl[$db->f('idupl')]['created'] = $db->f('created');
@@ -65,7 +65,7 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
         $aLang = array();
         $sSql = "SELECT idlang FROM " . $cfg['tab']['clients_lang'] . " WHERE idclient = " . $client . " ORDER BY idlang ASC";
         $db->query($sSql);
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $aLang[] = $db->f('idlang');
         }
 
@@ -78,7 +78,7 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
                     $sSql = "SELECT * FROM " . $cfg['tab']['upl_meta'] . " WHERE idlang = " . $idlang . "  AND idupl = " . $idupl . " ORDER BY idupl ASC";
                     $db->query($sSql);
                     $i = 0;
-                    while ($db->next_record()) {
+                    while ($db->nextRecord()) {
                         $aUplMeta[$i]['description'] = $db->f('description');
                         $aUplMeta[$i]['id_uplmeta'] = $db->f('id_uplmeta');
                         $i++;

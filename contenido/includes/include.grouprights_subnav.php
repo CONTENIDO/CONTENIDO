@@ -43,7 +43,7 @@ if (isset($_GET['groupid'])) {
 
     $in_str = "";
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $in_str .= $db->f('idarea') . ',';
     }
 
@@ -67,7 +67,7 @@ if (isset($_GET['groupid'])) {
 
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         // Extract names from the XML document.
         $caption = $nav->getName($db->f("location"));
         $tmp_area = $db->f("name");

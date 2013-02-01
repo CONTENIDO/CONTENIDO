@@ -54,13 +54,13 @@ $disabled = '';
 if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_area_action_item($area, "con_meta_edit", $idcat)) {
     $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idcat=" . cSecurity::toInteger($idcat);
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
 
     $tmp_cat_art = $db->f("idcatart");
 
     $sql = "SELECT * FROM " . $cfg["tab"]["art_lang"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
 
     $tmp_is_start = isStartArticle($db->f("idartlang"), $idcat, $lang);
 
@@ -271,7 +271,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
                 c.idart    = " . cSecurity::toInteger($idart);
 
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
 
     $midcat = $db->f("idcat");
 
@@ -279,7 +279,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
         if (!isset($idartlang) || 0 == $idartlang) {
             $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
             $db->query($sql);
-            $db->next_record();
+            $db->nextRecord();
             $idartlang = $db->f("idartlang");
         }
     }
@@ -288,7 +288,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
         if (!isset($idcatlang) || 0 == $idcatlang) {
             $sql = "SELECT idcatlang FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat=" . cSecurity::toInteger($midcat) . " AND idlang=" . cSecurity::toInteger($lang);
             $db->query($sql);
-            $db->next_record();
+            $db->nextRecord();
             $idcatlang = $db->f("idcatlang");
         }
     }
@@ -297,7 +297,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
         if (!isset($idcatart) || 0 == $idcatart) {
             $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idcat=" . cSecurity::toInteger($midcat);
             $db->query($sql);
-            $db->next_record();
+            $db->nextRecord();
             $idcatart = $db->f("idcatart");
         }
     }
@@ -343,7 +343,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
 
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         if ($db->f("Field") != 'idmetatype') {
             if ($db->f("Field") === 'metatype') {
                 $tpl2->set('d', 'METATITLE', i18n('Field Value'));

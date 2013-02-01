@@ -89,7 +89,7 @@ class cApiClientLanguageCollection extends ItemCollection {
         $list = array();
         $sql = "SELECT idlang FROM `%s` WHERE idclient=%d";
         $this->db->query($sql, $this->table, $client);
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $list[] = $this->db->f("idlang");
         }
         return $list;
@@ -112,7 +112,7 @@ class cApiClientLanguageCollection extends ItemCollection {
                 ORDER BY idlang ASC";
 
         $this->db->query($sql, $this->table, $cfg['tab']['lang'], $client);
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $list[$this->db->f('idlang')] = $this->db->f('name');
         }
 
@@ -132,7 +132,7 @@ class cApiClientLanguageCollection extends ItemCollection {
 
         $this->db->query($sql, $this->table, $cfg['tab']['lang'], $client);
 
-        return ($this->db->next_record())? (int) $this->db->f('idlang') : null;
+        return ($this->db->nextRecord())? (int) $this->db->f('idlang') : null;
     }
 
 }
@@ -186,7 +186,7 @@ class cApiClientLanguage extends Item {
             // Query the database
             $sSQL = "SELECT %s FROM %s WHERE idclient = '%d' AND idlang = '%d'";
             $this->db->query($sSQL, $this->primaryKey, $this->table, $iIdClient, $iIdLang);
-            if ($this->db->next_record()) {
+            if ($this->db->nextRecord()) {
                 $this->loadByPrimaryKey($this->db->f($this->primaryKey));
             }
         }

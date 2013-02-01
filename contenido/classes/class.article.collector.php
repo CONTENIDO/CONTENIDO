@@ -181,7 +181,7 @@ class cArticleCollector implements SeekableIterator, Countable {
         $sql = "SELECT startidartlang, idcat FROM " . $cfg['tab']['cat_lang'] . " WHERE " . $sqlCat . " idlang=" . $this->_options['lang'];
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $startId = $db->f('startidartlang');
             if ($startId > 0) {
                 $this->_startArticles[$db->f('idcat')] = $startId;
@@ -218,7 +218,7 @@ class cArticleCollector implements SeekableIterator, Countable {
 
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $artLangId = $db->f('idartlang');
             $this->_articles[] = new cApiArticleLanguage($artLangId);
         }

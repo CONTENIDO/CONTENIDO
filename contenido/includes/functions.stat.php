@@ -75,7 +75,7 @@ function statsArchive($yearmonth) {
 
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $insertSQL = "INSERT INTO
                           " . $cfg["tab"]["stat_archive"] . "
                           ( archived, idcatart, idlang, idclient, visited, visitdate)
@@ -104,7 +104,7 @@ function statsArchive($yearmonth) {
 
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $insertSQL = "INSERT INTO
                           " . $cfg["tab"]["stat"] . "
                           ( idcatart, idlang, idclient, visited )
@@ -168,7 +168,7 @@ function statsOverviewAll($yearmonth) {
     $tpl->set('s', 'IMG_EXPAND', $backendUrl . $cfg['path']['images'] . 'open_all.gif');
     $tpl->set('s', 'IMG_COLLAPSE', $backendUrl . $cfg['path']['images'] . 'close_all.gif');
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         if ($db->f("level") == 0 && $db->f("preid") != 0) {
             $tpl->set('d', 'PADDING_LEFT', '10');
             $tpl->set('d', 'TEXT', '&nbsp;');
@@ -215,7 +215,7 @@ function statsOverviewAll($yearmonth) {
         //************** number of arts **************
         $sql = "SELECT COUNT(*) FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat=" . cSecurity::toInteger($idcat);
         $db2->query($sql);
-        $db2->next_record();
+        $db2->nextRecord();
 
         $numberOfArticles = $db2->f(0);
         $sumNumberOfArticles += $numberOfArticles;
@@ -232,7 +232,7 @@ function statsOverviewAll($yearmonth) {
             }
         }
         $db2->query($sql);
-        $db2->next_record();
+        $db2->nextRecord();
 
         $total = $db2->f(0);
 
@@ -251,7 +251,7 @@ function statsOverviewAll($yearmonth) {
         }
 
         $db2->query($sql);
-        $db2->next_record();
+        $db2->nextRecord();
 
         $inThisLanguage = $db2->f(0);
 
@@ -262,7 +262,7 @@ function statsOverviewAll($yearmonth) {
                 AND A.idart=B.idart AND B.idart=C.idart AND C.idlang=" . cSecurity::toInteger($lang) . " ORDER BY B.idart";
         $db2->query($sql);
 
-        $numrows = $db2->num_rows();
+        $numrows = $db2->numRows();
         $onclick = "";
 
         $online = $db->f("visible");
@@ -277,7 +277,7 @@ function statsOverviewAll($yearmonth) {
         $sSql = "SELECT COUNT(*) AS cat_count FROM " . $cfg["tab"]["cat"] . " WHERE parentid=" . cSecurity::toInteger($idcat) . ";";
         $db3 = cRegistry::getDb();
         $db3->query($sSql);
-        if ($db3->next_record()) {
+        if ($db3->nextRecord()) {
             $iSumSubCategories = $db3->f('cat_count');
         }
         $db3->free();
@@ -322,7 +322,7 @@ function statsOverviewAll($yearmonth) {
         $total = "";
         $inThisLanguage = "";
 
-        while ($db2->next_record()) {
+        while ($db2->nextRecord()) {
             $idart = $db2->f("idart");
 
             array_push($aRowname, $idart);
@@ -355,7 +355,7 @@ function statsOverviewAll($yearmonth) {
             }
 
             $db3->query($sql);
-            $db3->next_record();
+            $db3->nextRecord();
 
             $total = $db3->f(0);
 
@@ -375,7 +375,7 @@ function statsOverviewAll($yearmonth) {
             }
 
             $db3->query($sql);
-            $db3->next_record();
+            $db3->nextRecord();
 
             $inThisLanguage = $db3->f(0);
 
@@ -422,7 +422,7 @@ function statsOverviewAll($yearmonth) {
     }
 
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
 
     $total = $db->f(0);
 
@@ -441,7 +441,7 @@ function statsOverviewAll($yearmonth) {
     }
 
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
 
     $inThisLanguage = $db->f(0);
 
@@ -503,7 +503,7 @@ function statsOverviewYear($year) {
     $tpl->set('s', 'IMG_EXPAND', $backendUrl . $cfg['path']['images'] . 'open_all.gif');
     $tpl->set('s', 'IMG_COLLAPSE', $backendUrl . $cfg['path']['images'] . 'close_all.gif');
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         if ($db->f("level") == 0 && $db->f("preid") != 0) {
             $tpl->set('d', 'PADDING_LEFT', '10');
             $tpl->set('d', 'TEXT', '&nbsp;');
@@ -547,14 +547,14 @@ function statsOverviewYear($year) {
         //************** number of arts **************
         $sql = "SELECT COUNT(*) FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat=" . cSecurity::toInteger($idcat);
         $db2->query($sql);
-        $db2->next_record();
+        $db2->nextRecord();
 
         $numberOfArticles = $db2->f(0);
         $sumNumberOfArticles += $numberOfArticles;
         $sql = "SELECT SUM(visited) FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat_archive"] . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . cSecurity::toInteger($idcat) . "
                 AND B.idclient=" . cSecurity::toInteger($client) . " AND SUBSTRING(B.archived,1,4)=" . cSecurity::toInteger($year, $db2) . " GROUP BY SUBSTRING(B.archived,1,4)";
         $db2->query($sql);
-        $db2->next_record();
+        $db2->nextRecord();
 
         $total = $db2->f(0);
 
@@ -563,7 +563,7 @@ function statsOverviewYear($year) {
                 AND B.idlang=" . cSecurity::toInteger($lang) . " AND B.idclient=" . cSecurity::toInteger($client) . " AND SUBSTRING(B.archived,1,4)=" . $db2->escape($year) . "
                 GROUP BY SUBSTRING(B.archived,1,4)";
         $db2->query($sql);
-        $db2->next_record();
+        $db2->nextRecord();
 
         $inThisLanguage = $db2->f(0);
 
@@ -574,7 +574,7 @@ function statsOverviewYear($year) {
                 AND C.idlang=" . cSecurity::toInteger($lang) . " ORDER BY B.idart";
         $db2->query($sql);
 
-        $numrows = $db2->num_rows();
+        $numrows = $db2->numRows();
         $onclick = "";
 
         if ($bCatVisible == 0) {
@@ -588,7 +588,7 @@ function statsOverviewYear($year) {
         $sSql = "SELECT count(*) as cat_count from " . $cfg["tab"]["cat"] . " WHERE parentid=" . cSecurity::toInteger($idcat) . ";";
         $db3 = cRegistry::getDb();
         $db3->query($sSql);
-        if ($db3->next_record()) {
+        if ($db3->nextRecord()) {
             $iSumSubCategories = $db3->f('cat_count');
         }
         $db3->free();
@@ -635,7 +635,7 @@ function statsOverviewYear($year) {
         $total = "";
         $inThisLanguage = "";
 
-        while ($db2->next_record()) {
+        while ($db2->nextRecord()) {
             $idart = $db2->f("idart");
 
             array_push($aRowname, $idart);
@@ -658,7 +658,7 @@ function statsOverviewYear($year) {
                     AND A.idart=" . cSecurity::toInteger($idart) . " AND B.idclient=" . cSecurity::toInteger($client) . " AND SUBSTRING(B.archived,1,4)=" . $db3->escape($year) . "
                     GROUP BY SUBSTRING(B.archived,1,4)";
             $db3->query($sql);
-            $db3->next_record();
+            $db3->nextRecord();
 
             $total = $db3->f(0);
 
@@ -667,7 +667,7 @@ function statsOverviewYear($year) {
                     AND A.idart=" . cSecurity::toInteger($idart) . " AND B.idlang=" . cSecurity::toInteger($lang) . " AND B.idclient=" . cSecurity::toInteger($client) . "
                     AND SUBSTRING(B.archived,1,4)=" . $db3->escape($year) . " GROUP BY SUBSTRING(B.archived,1,4)";
             $db3->query($sql);
-            $db3->next_record();
+            $db3->nextRecord();
 
             $inThisLanguage = $db3->f(0);
 
@@ -706,7 +706,7 @@ function statsOverviewYear($year) {
     $sql = "SELECT SUM(visited) FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat_archive"] . " AS B WHERE A.idcatart=B.idcatart AND B.idclient=" . cSecurity::toInteger($client) . "
             AND SUBSTRING(B.archived,1,4)='" . $db->escape($year) . "' GROUP BY SUBSTRING(B.archived,1,4)";
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
 
     $total = $db->f(0);
 
@@ -714,7 +714,7 @@ function statsOverviewYear($year) {
     $sql = "SELECT SUM(visited) FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat_archive"] . " AS B WHERE A.idcatart=B.idcatart AND B.idlang=" . cSecurity::toInteger($lang) . "
             AND B.idclient=" . cSecurity::toInteger($client) . " AND SUBSTRING(B.archived,1,4)='" . $db->escape($year) . "' GROUP BY SUBSTRING(B.archived,1,4)";
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
 
     $inThisLanguage = $db->f(0);
 
@@ -784,7 +784,7 @@ function statsOverviewTop($yearmonth, $top) {
     $db->query($sql);
 
     $frontendURL = cRegistry::getFrontendUrl();
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $cat_name = "";
         statCreateLocationString($db->f(2), "&nbsp;/&nbsp;", $cat_name);
         $tpl->set('d', 'PADDING_LEFT', '5');
@@ -824,7 +824,7 @@ function statCreateLocationString($idcat, $seperator, &$cat_str) {
 
     $db4 = cRegistry::getDb();
     $db4->query($sql);
-    $db4->next_record();
+    $db4->nextRecord();
 
     $name = $db4->f("name");
     $parentid = $db4->f("parentid");
@@ -872,7 +872,7 @@ function statsOverviewTopYear($year, $top) {
 
     $db->query($sql);
     $frontendURL = cRegistry::getFrontendUrl();
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $cat_name = '';
         statCreateLocationString($db->f('idcat'), "&nbsp;/&nbsp;", $cat_name);
 
@@ -968,7 +968,7 @@ function statGetAvailableYears($client, $lang) {
                 SUBSTRING(`archived`,1,4) DESC";
 
     $db->query($sql);
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $availableYears[] = $db->f(0);
     }
 
@@ -999,7 +999,7 @@ function statGetAvailableMonths($year, $client, $lang) {
             ORDER BY SUBSTRING(`archived`,5,2) DESC";
 
     $db->query($sql);
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $availableYears[] = $db->f(0);
     }
 

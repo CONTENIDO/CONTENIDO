@@ -59,7 +59,7 @@ if (empty($categoryIdsString)) {
 $query = 'SELECT `al`.`idart`, `al`.`lastmodified`, `al`.`sitemapprio`, `al`.`changefreq`, UNIX_TIMESTAMP(`al`.`lastmodified`) as lastmod FROM `' . $cfg['tab']['art_lang'] . '` AS `al`, `' . $cfg['tab']['cat_art'] . '` AS `ca` WHERE `al`.`idart`=`ca`.`idart` AND `al`.`idlang`=' . $lang . ' AND `ca`.`idcat` IN (' . $categoryIdsString . ') AND `al`.`online`=1 AND `al`.`searchable`=1';
 $db->query($query);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     // construct the link
     $params = array(
         'idart' => $db->f('idart'),

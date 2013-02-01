@@ -121,7 +121,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
 
         $sql = $this->db->prepare($sql, $params);
         $this->db->query($sql);
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             $oItem = new cApiCategoryArticle();
             $oItem->loadByRecordSet($this->db->toArray());
             return $oItem;
@@ -180,7 +180,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
 
         $sql = "SELECT A.idcatart FROM `%s` as A, `%s` as B WHERE B.idclient = %d AND B.idcat = A.idcat";
         $this->db->query($sql, $this->table, $cfg['tab']['cat'], $idclient);
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $aIds[] = $this->db->f('idcatart');
         }
 
@@ -203,7 +203,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
         ));
         $this->db->query($sql);
 
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $aIdCats[] = $this->db->f('idcat');
         }
 
@@ -229,7 +229,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
         ));
         $this->db->query($sql);
 
-        return ($this->db->next_record())? true : false;
+        return ($this->db->nextRecord())? true : false;
     }
 
     /**
@@ -259,7 +259,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
             $sql = $this->db->prepare($sql, $this->table, $createcode, $idcatart);
         }
         $this->db->query($sql);
-        return $this->db->affected_rows();
+        return $this->db->affectedRows();
     }
 
 }

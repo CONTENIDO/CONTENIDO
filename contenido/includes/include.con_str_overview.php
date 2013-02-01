@@ -164,13 +164,13 @@ function showTree($iIdcat, &$aWholelist) {
                 // Fetch parent id and check if it is syncronized
                 $sql = "SELECT parentid FROM %s WHERE idcat = '%s'";
                 $db->query(sprintf($sql, $cfg["tab"]["cat"], $idcat));
-                if ($db->next_record()) {
+                if ($db->nextRecord()) {
                     if ($db->f("parentid") != 0) {
                         $parentid = $db->f("parentid");
                         $sql = "SELECT idcatlang FROM %s WHERE idcat = '%s' AND idlang = '%s'";
                         $db->query(sprintf($sql, $cfg["tab"]["cat_lang"], cSecurity::toInteger($parentid), cSecurity::toInteger($lang)));
 
-                        if ($db->next_record()) {
+                        if ($db->nextRecord()) {
                             $aCssClasses[] = 'con_sync';
                             $bIsSyncable = true;
                         }
@@ -375,7 +375,7 @@ if (isset($force)) {
 }
 
 $arrIn = array();
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $arrIn[] = $db->f('idcat');
 }
 
@@ -390,14 +390,14 @@ if (count($arrIn) > 0) {
             AND b.idart = a.idart";
     $db->query($sql2);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $arrArtCache[$db->f('idcat')][$db->f('idart')][$db->f('idlang')] = 'x';
     }
 }
 
 $db->query($sql);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $entry = array();
 
     $entry['articles'] = false;
@@ -464,7 +464,7 @@ if ($syncoptions == -1) {
 
 $db->query($sql2);
 $aStartOnlineArticles = array();
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     if ($db->f('startidartlang') > 0) {
         $aStartOnlineArticles[$db->f('idcat')]['is_start'] = true;
     } else {
@@ -601,7 +601,7 @@ if (!is_array($conexpandedList)) {
 $navigationTree = array();
 $aWholelist = array();
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     if (!isset($navigationTree[$db->f('parentid')][$db->f('idcat')]) && ($db->f('idlang') == $lang || $db->f('idlang') == $syncoptions)) {
         if (in_array($db->f('idcat'), $conexpandedList)) {
             $collapsed = false;

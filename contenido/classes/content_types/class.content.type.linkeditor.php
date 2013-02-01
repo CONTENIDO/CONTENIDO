@@ -318,7 +318,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                     a.idtree';
 
         $db->query($sql);
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $directory = array();
             $directory['idcat'] = $db->f('idcat');
             $directory['name'] = $db->f('name');
@@ -399,7 +399,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                         a.idtree';
             $db = cRegistry::getDb();
             $db->query($sql);
-            while ($db->next_record()) {
+            while ($db->nextRecord()) {
                 $activeIdcats = $this->_getParentIdcats($db->f('idcat'));
             }
         }
@@ -471,7 +471,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                     a.idtree';
         $db = cRegistry::getDb();
         $db->query($sql);
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $htmlSelectOption = new cHTMLOptionElement($db->f('title'), $db->f('idart'), ($db->f('idart') == $this->_settings['linkeditor_idart']));
             $htmlSelect->appendOptionElement($htmlSelectOption);
         }

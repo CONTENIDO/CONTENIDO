@@ -57,7 +57,7 @@ class FrontendNavigation {
         $this->db->query($sql);
 
         $navigation = array();
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $navigation[] = $this->db->f("idcat");
         }# end while
 
@@ -93,7 +93,7 @@ class FrontendNavigation {
 
         $this->db->query($sql);
 
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             return true;
         } else {
             return false;
@@ -132,7 +132,7 @@ class FrontendNavigation {
 
         $this->db->query($sql);
 
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             return $this->db->f("idcat");
         } else {
             return -1;
@@ -169,7 +169,7 @@ class FrontendNavigation {
 
         $this->db->query($sql);
 
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             return true;
         } else {
             return false;
@@ -204,7 +204,7 @@ class FrontendNavigation {
 
         $this->db->query($sql);
 
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             return $this->db->f("name");
         } else {
             return '';
@@ -239,7 +239,7 @@ class FrontendNavigation {
 
         $this->db->query($sql);
 
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             return $this->db->f("urlname");
         } else {
             return '';
@@ -273,7 +273,7 @@ class FrontendNavigation {
         }
 
         $this->db->query($sql);
-        $this->db->next_record();
+        $this->db->nextRecord();
 
         if ($this->db->f("visible") == 1) {
             return true;
@@ -309,7 +309,7 @@ class FrontendNavigation {
         }
 
         $this->db->query($sql);
-        $this->db->next_record();
+        $this->db->nextRecord();
 
         if ($this->db->f("public") == 1) {
             return true;
@@ -338,7 +338,7 @@ class FrontendNavigation {
                     a.idcat    = " . $catid . " ";
 
         $this->db->query($sql);
-        $this->db->next_record();
+        $this->db->nextRecord();
 
         if ($this->_bDebug) {
             echo "<pre>";
@@ -382,7 +382,7 @@ class FrontendNavigation {
             echo "</pre>";
         }
 
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             return $this->db->f("parentid");
         } else {
             return -1;
@@ -416,7 +416,7 @@ class FrontendNavigation {
             echo "</pre>";
         }
 
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             return true;
         } else {
             return false;
@@ -446,7 +446,7 @@ class FrontendNavigation {
             echo "</pre>";
         }
 
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             return $this->db->f("level");
         } else {
             return -1;
@@ -640,16 +640,16 @@ class FrontendNavigation {
 
         $this->db->query($sqlString);
 
-        # $this->db->Errno returns 0 (zero) if no error occurred.
-        if ($this->db->Errno == 0) {
-            if ($this->db->next_record()) {
+        # $this->db->getErrorNumber() returns 0 (zero) if no error occurred.
+        if ($this->db->getErrorNumber() == 0) {
+            if ($this->db->nextRecord()) {
                 return $this->db->f('idcat');
             } else {
                 return -1;
             }
         } else {
             if ($this->_bDebug) {
-                echo "<pre>Mysql Error:" . $this->db->Error . "(" . $this->db->Errno . ")</pre>";
+                echo "<pre>Mysql Error:" . $this->db->getErrorMessage() . "(" . $this->db->getErrorNumber() . ")</pre>";
             }
             return -1; # error occurred.
         }
@@ -734,7 +734,7 @@ class FrontendNavigation {
 
         $i = false;
 
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             if ($this->db->f("idcat") == $idcat_start) {
                 $curLevel = $this->db->f("level");
                 $i = true;

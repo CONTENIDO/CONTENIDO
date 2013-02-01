@@ -35,7 +35,7 @@ $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"
 $db->query($sql);
 
 $rights_list_old = array();
-while ($db->next_record()) { //set a new rights list for this user
+while ($db->nextRecord()) { //set a new rights list for this user
     $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f("idcat")] = "x";
 }
 
@@ -60,7 +60,7 @@ if (!isset($rights_perms) || $action == "" || !isset($action)) {
     $sql = "SELECT perms FROM " . $cfg['tab']['user'] . " WHERE user_id='$userid'";
 
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
     $rights_perms = $db->f("perms");
 }
 

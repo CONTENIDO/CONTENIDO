@@ -113,7 +113,7 @@ $sInGroupOptions = '';
 $aAddedUsers = array();
 $myUser = new cApiUser();
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $myUser->loadByPrimaryKey($db->f("user_id"));
     $aAddedUsers[] = $myUser->getField("username");
 

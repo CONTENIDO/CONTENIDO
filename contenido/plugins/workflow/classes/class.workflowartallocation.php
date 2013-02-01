@@ -54,7 +54,7 @@ class WorkflowArtAllocations extends ItemCollection {
                 " WHERE idartlang = '" . cSecurity::escapeDB($idartlang, $this->db) . "'";
 
         $this->db->query($sql);
-        if (!$this->db->next_record()) {
+        if (!$this->db->nextRecord()) {
             $this->lasterror = i18n("Article doesn't exist", "workflow");
             return false;
         }
@@ -162,7 +162,7 @@ class WorkflowArtAllocation extends Item {
 
                 $db->query($sql);
 
-                if ($db->next_record()) {
+                if ($db->nextRecord()) {
                     $idart = $db->f("idart");
                     $title = $db->f("title");
                     $author = $db->f("author");
@@ -172,14 +172,14 @@ class WorkflowArtAllocation extends Item {
                 $sql = "SELECT idcat FROM " . $cfg["tab"]["cat_art"] . " WHERE idart = '" . cSecurity::escapeDB($idart, $db) . "'";
                 $db->query($sql);
 
-                if ($db->next_record()) {
+                if ($db->nextRecord()) {
                     $idcat = $db->f("idcat");
                 }
 
                 $sql = "SELECT name FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = '" . cSecurity::escapeDB($idcat, $db) . "'";
                 $db->query($sql);
 
-                if ($db->next_record()) {
+                if ($db->nextRecord()) {
                     $catname = $db->f("name");
                 }
 
@@ -233,7 +233,7 @@ class WorkflowArtAllocation extends Item {
                                 group_id = '" . cSecurity::escapeDB($usersequence->get("iduser"), $db) . "'";
                         $db->query($sql);
 
-                        while ($db->next_record()) {
+                        while ($db->nextRecord()) {
                             $user->loadByPrimaryKey($db->f("user_id"));
                             $mailer->sendMail(null, $user->getField("email"), stripslashes(i18n('Workflow notification')), $filledMail);
                         }
@@ -262,7 +262,7 @@ class WorkflowArtAllocation extends Item {
                                 group_id = '" . cSecurity::escapeDB($usersequence->get("iduser"), $db) . "'";
                         $db->query($sql);
 
-                        while ($db->next_record()) {
+                        while ($db->nextRecord()) {
                             $user->loadByPrimaryKey($db->f("user_id"));
                             $mailer->sendMail(null, $user->getField("email"), stripslashes(i18n('Workflow escalation')), $filledMail);
                         }

@@ -42,7 +42,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
         $sql = sprintf('SELECT * FROM %s', $cfg['tab']['mod']);
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             // clear name from not allow charecters
             $newName = cApiStrCleanURLCharacters($db->f('name'));
             if ($newName != $db->f('name')) {
@@ -76,7 +76,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
             // create all main module directories
             $moduleHandler->createAllMainDirectories();
 
-            while ($db->next_record()) {
+            while ($db->nextRecord()) {
                 // init the ModulHandler with all data of the modul
                 // inclusive client
                 $moduleHandler->initWithDatabaseRow($db);
@@ -113,11 +113,11 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
             $sql = sprintf($sql, $cfg['tab']['clients']);
 
             $this->_oDb->query($sql);
-            if ($this->_oDb->num_rows() != 0) {
+            if ($this->_oDb->numRows() != 0) {
                 $sql = "SELECT * FROM " . $cfg['tab']['clients'];
                 $this->_oDb->query($sql);
 
-                while ($this->_oDb->next_record()) {
+                while ($this->_oDb->nextRecord()) {
                     updateClientCache($this->_oDb->f("idclient"), $this->_oDb->f("htmlpath"), $this->_oDb->f("frontendpath"));
                 }
 
@@ -143,7 +143,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
             $sql = sprintf($sql, $cfg['tab']['mod']);
 
             $this->_oDb->query($sql);
-            if ($this->_oDb->num_rows() == 0) {
+            if ($this->_oDb->numRows() == 0) {
                 cModuleHandler::setEncoding('ISO-8859-1');
                 $this->_convertModulesToFile();
             }
@@ -155,7 +155,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
             $db2 = getSetupMySQLDBConnection();
             $sql = "SELECT * FROM " . $cfg['tab']['lay'];
             $this->_oDb->query($sql);
-            while ($this->_oDb->next_record()) {
+            while ($this->_oDb->nextRecord()) {
                 if ($this->_oDb->f("alias") == "") {
                     $sql = "UPDATE " . $cfg['tab']['lay'] . " SET `alias`='" . $this->_oDb->f("name") . "' WHERE `idlay`='" . $this->_oDb->f("idlay") . "';";
                     $db2->query($sql);
@@ -164,7 +164,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
 
             $sql = "SELECT * FROM " . $cfg['tab']['mod'];
             $this->_oDb->query($sql);
-            while ($this->_oDb->next_record()) {
+            while ($this->_oDb->nextRecord()) {
                 if ($this->_oDb->f("alias") == "") {
                     $sql = "UPDATE " . $cfg['tab']['mod'] . " SET `alias`='" . $this->_oDb->f("name") . "' WHERE `idmod`='" . $this->_oDb->f("idmod") . "';";
                     $db2->query($sql);

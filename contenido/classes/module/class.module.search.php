@@ -139,7 +139,7 @@ class cModuleSearch extends cModuleHandler {
         $db->query($sql);
         $result = array();
 
-        while (($modul = $db->next_record()) !== false) {
+        while (($modul = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
             $result[$db->f('idmod')] = array(
                     'name' => $db->f('name'),
@@ -215,7 +215,7 @@ class cModuleSearch extends cModuleHandler {
         $db->query($sql);
         $result = array();
 
-        while (($module = $db->next_record()) !== false) {
+        while (($module = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
             $result[$db->f('idmod')] = array(
                     'name' => $db->f('name'),
@@ -245,7 +245,7 @@ class cModuleSearch extends cModuleHandler {
         $db->query($sql);
         $result = array();
 
-        while (($module = $db->next_record()) !== false) {
+        while (($module = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
             $result[$db->f('idmod')] = array(
                     'name' => $db->f('name'),
@@ -275,7 +275,7 @@ class cModuleSearch extends cModuleHandler {
         $db->query($sql);
         $result = array();
 
-        while (($module = $db->next_record()) !== false) {
+        while (($module = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
             $result[$db->f('idmod')] = array(
                     'name' => $db->f('name'),
@@ -306,7 +306,7 @@ class cModuleSearch extends cModuleHandler {
         $db->query($sql);
         $result = array();
 
-        while (($module = $db->next_record()) !== false) {
+        while (($module = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
             $result[$db->f('idmod')] = array(
                     'name' => $db->f('name'),
@@ -338,7 +338,7 @@ class cModuleSearch extends cModuleHandler {
         $db->query($sql);
         $result = array();
 
-        while (($module = $db->next_record()) !== false) {
+        while (($module = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
             $result[$db->f('idmod')] = array(
                     'name' => $db->f('name'),

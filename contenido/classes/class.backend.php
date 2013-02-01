@@ -134,7 +134,7 @@ class cBackend {
 
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
 
             // Save the action only access to the desired action is granted.
             // If this action is relevant for rights check if the user has
@@ -189,7 +189,7 @@ class cBackend {
 
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
 
             // Test if entry is a plug-in. If so don't add the Include path
             if (strstr($db->f('name'), '/')) {

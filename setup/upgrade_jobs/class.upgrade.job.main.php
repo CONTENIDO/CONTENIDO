@@ -94,7 +94,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
 
             $db2 = getSetupMySQLDBConnection();
 
-            while ($this->_oDb->next_record()) {
+            while ($this->_oDb->nextRecord()) {
                 $startidart = (int) $this->_oDb->f("idart");
                 $idcat = (int) $this->_oDb->f("idcat");
 
@@ -102,7 +102,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
                     $vlang = (int) $vlang;
                     $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = " . $startidart . " AND idlang = " . $vlang;
                     $db2->query($sql);
-                    if ($db2->next_record()) {
+                    if ($db2->nextRecord()) {
                         $idartlang = (int) $db2->f("idartlang");
                         $sql = "UPDATE " . $cfg["tab"]["cat_lang"] . " SET startidartlang = " . $idartlang . " WHERE idcat = " . $idcat . " AND idlang= " . $vlang;
                         $db2->query($sql);

@@ -122,7 +122,7 @@ class cApiModuleCollection extends ItemCollection {
         $sql = "SELECT type FROM `%s` WHERE idclient = %d GROUP BY type";
         $sql = $this->db->prepare($sql, $this->table, $idclient);
         $this->db->query($sql);
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $types[] = $this->db->f('type');
         }
 
@@ -150,8 +150,8 @@ class cApiModuleCollection extends ItemCollection {
         $db->query($sql);
 
         $aUsedTemplates = array();
-        if ($db->nf() != 0) {
-            while ($db->next_record()) {
+        if ($db->numRows() != 0) {
+            while ($db->nextRecord()) {
                 $aUsedTemplates[$db->f('idmod')][$db->f('idtpl')]['tpl_name'] = $db->f('name');
                 $aUsedTemplates[$db->f('idmod')][$db->f('idtpl')]['tpl_id'] = (int)$db->f('idtpl');
             }
@@ -421,13 +421,13 @@ class cApiModule extends Item {
                 ORDER BY t.name";
         $db->query($sql);
 
-        if ($db->nf() == 0) {
+        if ($db->numRows() == 0) {
             return false;
         } else {
             $i = 0;
             // save the datas of used templates in array
             if ($bSetData === true) {
-                while ($db->next_record()) {
+                while ($db->nextRecord()) {
                     $this->aUsedTemplates[$i]['tpl_name'] = $db->f('name');
                     $this->aUsedTemplates[$i]['tpl_id'] = (int)$db->f('idmod');
                     $i++;

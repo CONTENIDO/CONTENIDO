@@ -120,7 +120,7 @@ class cApiCategoryCollection extends ItemCollection {
         $list = array();
         $sql = 'SELECT idcat FROM `%s` WHERE idclient=%d';
         $this->db->query($sql, $this->table, $idclient);
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $list[] = $this->db->f('idcat');
         }
         return $list;
@@ -145,12 +145,12 @@ class cApiCategoryCollection extends ItemCollection {
     public function getNextPostCategoryId($idcat) {
         $sql = "SELECT idcat FROM `%s` WHERE preid = %d";
         $this->db->query($sql, $this->table, $idcat);
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             // Post element exists
             $idcat = $this->db->f('idcat');
             $sql = "SELECT parentid FROM `%s` WHERE idcat = %d";
             $this->db->query($sql, $this->table, $idcat);
-            if ($this->db->next_record()) {
+            if ($this->db->nextRecord()) {
                 // Parent from post can't be 0
                 $parentid = (int) $this->db->f('parentid');
                 return ($parentid != 0)? $idcat : 0;
@@ -186,18 +186,18 @@ class cApiCategoryCollection extends ItemCollection {
     public function getParentsNextPostCategoryId($idcat) {
         $sql = "SELECT parentid FROM `%s` WHERE idcat = %d";
         $this->db->query($sql, $this->table, $idcat);
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             // Parent exists
             $idcat = $this->db->f('parentid');
             if ($idcat != 0) {
                 $sql = "SELECT idcat FROM `%s` WHERE preid = %d";
                 $this->db->query($sql, $this->table, $idcat);
-                if ($this->db->next_record()) {
+                if ($this->db->nextRecord()) {
                     // Parent has post
                     $idcat = (int) $this->db->f('idcat');
                     $sql = "SELECT parentid FROM `%s` WHERE idcat = %d";
                     $this->db->query($sql, $this->table, $idcat);
-                    if ($this->db->next_record()) {
+                    if ($this->db->nextRecord()) {
                         // Parent from post must not be 0
                         $parentid = (int) $this->db->f('parentid');
                         return ($parentid != 0)? $idcat : 0;
@@ -244,7 +244,7 @@ class cApiCategoryCollection extends ItemCollection {
         $sql = "SELECT idcat FROM `%s` WHERE parentid = %d AND preid = 0";
         $sql = $this->db->prepare($sql, $this->table, $idcat);
         $this->db->query($sql);
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             $midcat = (int) $this->db->f('idcat');
             if (null == $idlang) {
                 return $midcat;
@@ -254,7 +254,7 @@ class cApiCategoryCollection extends ItemCollection {
             $sql = "SELECT idcatlang FROM `%s` WHERE idcat = %d AND idlang = %d";
             $sql = $this->db->prepare($sql, $cfg['tab']['cat_lang'], $idcat, $idlang);
             $this->db->query($sql);
-            return ($this->db->next_record())? $midcat : 0;
+            return ($this->db->nextRecord())? $midcat : 0;
         } else {
             // Deeper element does not exist
             return 0;
@@ -291,7 +291,7 @@ class cApiCategoryCollection extends ItemCollection {
 
         $sql = "SELECT idcat FROM `%s` WHERE parentid = %d AND preid = 0";
         $this->db->query($sql, $this->table, $idcat);
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             while ($bLoop) {
                 $midcat = $this->db->f('idcat');
                 if (null == $idlang) {
@@ -301,14 +301,14 @@ class cApiCategoryCollection extends ItemCollection {
                     $sql = "SELECT idcatlang FROM `%s` WHERE idcat = %d AND idlang = %d";
                     $db2->query($sql, $cfg['tab']['cat_lang'], $midcat, $idlang);
                     $db2->query($sql);
-                    if ($db2->next_record()) {
+                    if ($db2->nextRecord()) {
                         $aCats[] = $midcat;
                     }
                 }
 
                 $sql = "SELECT idcat FROM `%s` WHERE parentid = %d AND preid = %d";
                 $this->db->query($sql, $this->table, $idcat, $midcat);
-                if (!$this->db->next_record()) {
+                if (!$this->db->nextRecord()) {
                     $bLoop = false;
                 }
             }
@@ -370,7 +370,7 @@ class cApiCategoryCollection extends ItemCollection {
             ));
             $this->db->query($sql);
 
-            while ($this->db->next_record()) {
+            while ($this->db->nextRecord()) {
                 $openList[] = $this->db->f('idcat');
             }
         }
@@ -418,7 +418,7 @@ class cApiCategoryCollection extends ItemCollection {
         $sql = $this->db->prepare($sql, $cfg['tab']['cat_tree'], $cfg['tab']['cat'], $idclient);
         $this->db->query($sql);
 
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             if ($found && $this->db->f('level') <= $curLevel) { // ending part
                                                                 // of tree
                 $found = false;

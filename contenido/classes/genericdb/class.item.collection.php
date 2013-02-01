@@ -678,7 +678,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $this->_lastSQL = $sql;
         $this->_bAllMode = $this->_settings['select_all_mode'];
 
-        if ($this->db->num_rows() == 0) {
+        if ($this->db->numRows() == 0) {
             return false;
         } else {
             return true;
@@ -735,7 +735,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         // @todo  disable all mode in this method
         $this->_bAllMode = false;
 
-        if ($this->db->num_rows() == 0) {
+        if ($this->db->numRows() == 0) {
             return false;
         } else {
             return true;
@@ -752,7 +752,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $oDb = $this->_getSecondDBInstance();
         $sql = "SELECT `%s` FROM %s WHERE %s='%s'";
         $oDb->query($sql, $this->primaryKey, $this->table, $this->primaryKey, $mId);
-        return ($oDb->next_record()) ? true : false;
+        return ($oDb->nextRecord()) ? true : false;
     }
 
     /**
@@ -762,7 +762,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      */
     public function next() {
         $ret = false;
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             if ($this->_bAllMode) {
                 $aRs = $this->db->toArray(cDb::FETCH_BOTH);
                 $ret = $this->loadItem($aRs);
@@ -811,7 +811,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         $this->db->seek(0);
 
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             foreach ($aFields as $alias => $field) {
                 if ($alias != '') {
                     $aTable[$row][$alias] = $this->db->f($field);
@@ -869,7 +869,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         $this->db->seek(0);
 
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $aResult = $this->_recursiveStructuredFetch($aFetchObjects, $aResult);
         }
 
@@ -898,7 +898,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @return  int  Number of rows
      */
     public function count() {
-        return ($this->db->num_rows());
+        return ($this->db->numRows());
     }
 
     /**
@@ -993,7 +993,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
             $primaryKeyValue = $db->getLastInsertedId($this->table);
         }
 
-        if ($db->affected_rows() == 0) {
+        if ($db->affectedRows() == 0) {
             $this->_executeCallbacks(self::CREATE_FAILURE, $this->_itemClass, array());
         } else {
             $this->_executeCallbacks(self::CREATE_SUCCESS, $this->_itemClass, array(
@@ -1064,7 +1064,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         // Get all ids
         $sql = 'SELECT ' . $this->primaryKey . ' AS pk FROM `' . $this->table . '` WHERE ' . $sWhere;
         $oDb->query($sql);
-        while ($oDb->next_record()) {
+        while ($oDb->nextRecord()) {
             $aIds[] = $oDb->f('pk');
         }
 
@@ -1095,7 +1095,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         // Get all fields
         $sql = 'SELECT ' . $fields . ' FROM `' . $this->table . '` WHERE ' . $sWhere;
         $oDb->query($sql);
-        while ($oDb->next_record()) {
+        while ($oDb->nextRecord()) {
             $data = array();
             foreach ($aFields as $field) {
                 $data[$field] = $oDb->f($field);
@@ -1119,7 +1119,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         // Get all ids
         $sql = 'SELECT ' . $this->primaryKey . ' AS pk FROM `' . $this->table . '`';
         $oDb->query($sql);
-        while ($oDb->next_record()) {
+        while ($oDb->nextRecord()) {
             $aIds[] = $oDb->f('pk');
         }
 
@@ -1204,7 +1204,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $oProperties = $this->_getPropertiesCollectionInstance();
         $oProperties->deleteProperties($this->primaryKey, $mId);
 
-        if ($oDb->affected_rows() == 0) {
+        if ($oDb->affectedRows() == 0) {
             $this->_executeCallbacks(self::DELETE_FAILURE, $this->_itemClass, array($mId));
             return false;
         } else {
@@ -1232,7 +1232,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $in = "'" . implode("', '", $aEscapedIds) . "'";
         $sql = "DELETE FROM `%s` WHERE %s IN (" . $in . ")";
         $oDb->query($sql, $this->table, $this->primaryKey);
-        $numAffected = $oDb->affected_rows();
+        $numAffected = $oDb->affectedRows();
 
         // Delete cache entries
         $this->_oCache->removeItems($aIds);

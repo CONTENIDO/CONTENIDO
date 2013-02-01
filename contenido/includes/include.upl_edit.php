@@ -110,8 +110,8 @@ if ($upload = $uploads->next()) {
              LIMIT 0, 1";
     $db->query($sSql);
 
-    if ($db->num_rows() > 0) {
-        $db->next_record();
+    if ($db->numRows() > 0) {
+        $db->nextRecord();
     }
 
     // Add rows to $form

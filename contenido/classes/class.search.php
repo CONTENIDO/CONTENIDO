@@ -491,7 +491,7 @@ class cSearchIndex extends cSearchBaseAbstract {
 
         $place = $this->_place;
 
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $this->_keywordsOld[$this->db->f('keyword')] = $this->db->f($place);
         }
     }
@@ -598,7 +598,7 @@ class cSearchIndex extends cSearchBaseAbstract {
         $sql = "SELECT type, idtype FROM " . $this->cfg['tab']['type'] . ' ';
         $this->_debug('sql', $sql);
         $this->db->query($sql);
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $this->_cmsType[$this->db->f('type')] = $this->db->f('idtype');
             $this->_cmsTypeSuffix[$this->db->f('idtype')] = substr($this->db->f('type'), 4, strlen($this->db->f('type')));
         }
@@ -1021,7 +1021,7 @@ class cSearch extends cSearchBaseAbstract {
         $this->_debug('sql', $sql);
         $this->db->query($sql);
 
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
 
             $tmp_index_string = preg_split('/&/', $this->db->f('auto'), -1, PREG_SPLIT_NO_EMPTY);
 
@@ -1173,7 +1173,7 @@ class cSearch extends cSearchBaseAbstract {
 
         // $aSubCats = array();
         // $i = false;
-        // while ($this->db->next_record()) {
+        // while ($this->db->nextRecord()) {
         // if ($this->db->f('parentid') < $cat_start) {
         // // ending part of tree
         // $i = false;
@@ -1190,7 +1190,7 @@ class cSearch extends cSearchBaseAbstract {
         $aSubCats = array(
             $cat_start
         );
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             // ommit if cat is no child of any recognized descendant
             if (!in_array($this->db->f('parentid'), $aSubCats)) {
                 continue;
@@ -1287,7 +1287,7 @@ class cSearch extends cSearchBaseAbstract {
         $this->db->query($sql);
 
         $aIdArts = array();
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $aIdArts[] = $this->db->f('idart');
         }
         return $aIdArts;
@@ -1310,7 +1310,7 @@ class cSearch extends cSearchBaseAbstract {
         $this->_debug('sql', $sql);
         $this->db->query($sql);
         $aArtspec = array();
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $aArtspec[] = $this->db->f('idartspec');
         }
         return $aArtspec;
@@ -1347,7 +1347,7 @@ class cSearch extends cSearchBaseAbstract {
                     artspec = '" . $this->db->escape($sArtSpecName) . "' ";
         $this->_debug('sql', $sql);
         $this->db->query($sql);
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $this->_articleSpecs[] = $this->db->f('idartspec');
         }
     }
@@ -1714,7 +1714,7 @@ class cSearchResult extends cSearchBaseAbstract {
         $sql = "SELECT idcat FROM " . $this->cfg['tab']['cat_art'] . "
                 WHERE idart = " . cSecurity::toInteger($artid) . " ";
         $this->db->query($sql);
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             return $this->db->f('idcat');
         }
     }

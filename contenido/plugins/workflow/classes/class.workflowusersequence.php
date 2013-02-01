@@ -83,7 +83,7 @@ class WorkflowUserSequences extends ItemCollection {
         $aIdArtLang = array();
         $sSql = 'SELECT idartlang FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence = ' . cSecurity::escapeDB($idusersequence, $oDb) . ';';
         $oDb->query($sSql);
-        while ($oDb->next_record()) {
+        while ($oDb->nextRecord()) {
             array_push($aIdArtLang, $oDb->f('idartlang'));
         }
 
@@ -208,12 +208,12 @@ class WorkflowUserSequence extends Item {
                             " WHERE user_id = '" . cSecurity::escapeDB($value, $db) . "'";
                     $db->query($sql);
 
-                    if (!$db->next_record()) {
+                    if (!$db->nextRecord()) {
                         $sql = "SELECT group_id FROM " . $cfg["tab"]["groups"] .
                                 " WHERE group_id = '" . cSecurity::escapeDB($value, $db) . "'";
 
                         $db->query($sql);
-                        if (!$db->next_record()) {
+                        if (!$db->nextRecord()) {
                             $this->lasterror = i18n("Can't set user_id: User or group doesn't exist", "workflow");
                             return false;
                         }

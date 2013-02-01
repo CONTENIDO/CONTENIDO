@@ -51,7 +51,7 @@ $sSQL = "SELECT A.name AS name, A.idlang AS idlang, B.idclientslang AS idclients
 
 $db->query($sSQL);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $iID = $db->f("idclientslang");
     $oOption = new cHTMLOptionElement($db->f("name") . " (" . $db->f("idlang") . ")", $iID);
     $oSelRange->addOptionElement($iID, $oOption);

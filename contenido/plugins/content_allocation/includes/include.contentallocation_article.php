@@ -35,7 +35,7 @@ cInclude('includes', 'functions.pathresolver.php');
 // fetch idartlang for idart
 $sql = "SELECT idartlang FROM " . $cfg['tab']['art_lang'] . " WHERE idart=" . (int) $idart . " AND idlang=" . (int) $lang;
 $db->query($sql);
-$db->next_record();
+$db->nextRecord();
 $this_idartlang = $db->f('idartlang');
 
 $oPage = new cGuiPage("contentallocation_article", "content_allocation", "7");

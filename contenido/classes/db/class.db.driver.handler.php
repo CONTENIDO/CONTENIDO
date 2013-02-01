@@ -85,6 +85,20 @@ abstract class cDbDriverHandler {
     protected static $_profileData = array();
 
     /**
+     * List of deprecated properties mapped to new methods
+     * @var  array
+     */
+    protected static $_variablesToMethod = array(
+        'Errno' => 'getErrorNumber',
+        'Error' => 'getErrorMessage',
+        'Query_ID' => 'getQueryId',
+        'Link_ID' => 'getLinkId',
+        'Row' => 'getRow',
+        'Record' => 'getRecord',
+        'Halt_On_Error' => 'getHaltBehaviour',
+    );
+
+    /**
      * Constructor, sets passed options and connects to the DBMS, if not done before.
      *
      * Uses default connection settings, passed $options['connection'] settings
@@ -142,18 +156,9 @@ abstract class cDbDriverHandler {
      * @return mixed
      */
     public function __get($name) {
-        $variablesToMethod = array();
-        $variablesToMethod['Errno'] = 'getErrorNumber';
-        $variablesToMethod['Error'] = 'getErrorMessage';
-        $variablesToMethod['Query_ID'] = 'getQueryId';
-        $variablesToMethod['Link_ID'] = 'getLinkId';
-        $variablesToMethod['Row'] = 'getRow';
-        $variablesToMethod['Record'] = 'getRecord';
-        $variablesToMethod['Halt_On_Error'] = 'getHaltBehaviour';
+        $methodName = isset(self::$_variablesToMethod[$name]) ? self::$_variablesToMethod[$name] : null;
 
-        $methodName = $variablesToMethod[$name];
-
-        if (isset($methodName)) {
+        if (is_null($methodName)) {
             cDeprecated("Accessing class variable " . $name . " is deprecated. Use method " . $methodName . "() instead.");
             return $this->$methodName();
         }

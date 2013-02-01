@@ -169,7 +169,7 @@ $sql = "SELECT url FROM " . $cfg['tab']['whitelist'] . " WHERE lastview < " . (t
 $db->query($sql);
 
 $aWhitelist = array();
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $aWhitelist[] = $db->f("url");
 }
 
@@ -186,7 +186,7 @@ if ($sCache_errors && $_GET['live'] != 1) {
     $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " GROUP BY idcat";
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
 
         if ($cronjob != true) { // Check userrights, if no cronjob
             $iCheck = cCatPerm($db->f("idcat"), $db2);
@@ -223,7 +223,7 @@ if ($sCache_errors && $_GET['live'] != 1) {
             AND art.online = '1' AND art.redirect = '0'";
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
 
         // Text decode
         $value = $db->f("value");
@@ -244,7 +244,7 @@ if ($sCache_errors && $_GET['live'] != 1) {
             WHERE art.online = '1' AND art.redirect = '1' " . $aCats_Sql . " AND cat.idcat != '0' " . $sLang_Sql;
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
 
         // Search links
         searchLinks($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"), "Redirect");

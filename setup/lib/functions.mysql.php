@@ -95,7 +95,7 @@ function fetchMySQLVersion($db)
 {
     $db->query("SELECT VERSION()");
 
-    if ($db->next_record()) {
+    if ($db->nextRecord()) {
         return $db->f(0);
     } else {
         return false;
@@ -106,7 +106,7 @@ function fetchMySQLUser($db)
 {
     $db->query("SELECT USER()");
 
-    if ($db->next_record()) {
+    if ($db->nextRecord()) {
         return ($db->f(0));
     } else {
         return false;
@@ -136,7 +136,7 @@ function checkMySQLDatabaseExists($db, $database)
             return true;
         } else {
             $db->query("SHOW DATABASES LIKE `$database`");
-            if ($db->next_record()) {
+            if ($db->nextRecord()) {
                 return true;
             } else {
                 return false;
@@ -147,7 +147,7 @@ function checkMySQLDatabaseExists($db, $database)
             return true;
         } else {
             $db->query("SHOW DATABASES LIKE `$database`");
-            if ($db->next_record()) {
+            if ($db->nextRecord()) {
                 return true;
             } else {
                 return false;
@@ -252,7 +252,7 @@ function fetchMySQLStorageEngines($db)
 
     $engines = array();
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $engines[] = $db->f(0);
     }
 

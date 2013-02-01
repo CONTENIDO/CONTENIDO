@@ -89,7 +89,7 @@ $thisperm = explode(',', $auth->auth['perm']);
 
 $accessibleClients = $classclient->getAccessibleClients();
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
 
     $groupperm = explode(',', $db->f('perms'));
 

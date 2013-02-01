@@ -70,7 +70,7 @@ switch ($_REQUEST['mode']) {
 
         $loop = false;
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $tmp_catname = $db->f("name");
             $spaces = "";
 
@@ -105,7 +105,7 @@ switch ($_REQUEST['mode']) {
 
             $db2->query($sql2);
 
-            while ($db2->next_record()) {
+            while ($db2->nextRecord()) {
 
                 $tmp_title = $db2->f("title");
 
@@ -137,7 +137,7 @@ switch ($_REQUEST['mode']) {
 
         $loop = false;
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             if ($loop) {
                 $output .= ",";
             } else {
@@ -158,7 +158,7 @@ switch ($_REQUEST['mode']) {
 
         $loop = false;
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             if ($loop) {
                 $output .= ",";
             } else {
@@ -179,7 +179,7 @@ switch ($_REQUEST['mode']) {
 
         $loop = false;
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             if ($loop) {
                 $output .= ",";
             } else {

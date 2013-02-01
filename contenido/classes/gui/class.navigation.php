@@ -137,7 +137,7 @@ class cGuiNavigation {
         $db->query($sql);
 
         // Loop result and build array
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
 
             // Extract names from the XML document.
             $main = $this->getName($db->f('location'));
@@ -160,7 +160,7 @@ class cGuiNavigation {
 
             $db2->query($sql);
 
-            while ($db2->next_record()) {
+            while ($db2->nextRecord()) {
                 $area = $db2->f('area');
                 if ($perm->have_perm_area_action($area) || $db2->f('relevant') == 0) {
                     // if this menu entry is a plugin and plugins are disabled, ignore it

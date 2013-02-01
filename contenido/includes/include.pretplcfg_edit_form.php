@@ -37,7 +37,7 @@ $db->query($sql);
 
 $a_c = array();
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $a_c[$db->f("number")] = $db->f("container"); // 'varstring' is safed in $a_c
 }
 
@@ -64,7 +64,7 @@ $sql = "SELECT
             idclient = " . (int) $client . " AND idtpl = " . (int) $idtpl;
 
 $db->query($sql);
-$db->next_record();
+$db->nextRecord();
 $description = $db->f('description');
 
 $tpl->set('s', 'TEMPLATECAPTION', i18n("Template"). ": ");
@@ -73,7 +73,7 @@ $tpl->set('s', 'TEMPLATESELECTBOX', $db->f("name"));
 // For all Containers list module input
 $sql = "SELECT * FROM " . $cfg["tab"]["container"] . " WHERE idtpl=" . (int) $idtpl . " ORDER BY idcontainer ASC";
 $db->query($sql);
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $a_d[$db->f("number")] = $db->f("idmod");  // 'list of used modules' is safed in $a_d
 }
 
@@ -83,7 +83,7 @@ if (isset($a_d) && is_array($a_d)) {
         if ($value != 0) {
             $sql = "SELECT * FROM " . $cfg["tab"]["mod"] . " WHERE idmod = " . (int) $a_d[$cnumber];
             $db->query($sql);
-            $db->next_record();
+            $db->nextRecord();
 
             $input = "\n";
 

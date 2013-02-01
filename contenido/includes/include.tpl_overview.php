@@ -34,7 +34,7 @@ $tpl->reset();
 
 $tpl->set('s', 'SID', $sess->id);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
 
     if ($perm->have_perm_item($area, $db->f("idtpl")) || $perm->have_perm_area_action("tpl", "tpl_delete") || $perm->have_perm_area_action("tpl", "tpl_duplicate") || $perm->have_perm_area_action("tpl_edit", "tpl_edit") || $perm->have_perm_area_action("tpl_edit", "tpl_new") || $perm->have_perm_area_action("tpl_visual", "tpl_visedit")) {
         $name = $db->f('name');

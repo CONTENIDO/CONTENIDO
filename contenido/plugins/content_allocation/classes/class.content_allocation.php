@@ -105,7 +105,7 @@ class pApiContentAllocation {
 
         $items = array();
 
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $items[] = $this->db->f('idpica_alloc');
         }
         return $items;
@@ -123,7 +123,7 @@ class pApiContentAllocation {
 
         $this->db->query($sql);
 
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $tmp[$this->db->f("idpica_alloc")] = $this->treeObj->_fetchItemNameLang($this->db->f("idpica_alloc"));
 
             if ($firstonly) {

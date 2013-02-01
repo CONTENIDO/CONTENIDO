@@ -596,12 +596,12 @@ class cPermission {
                 $this->db->query($sql);
 
                 // If there are no rights for this area set the flag norights
-                if ($this->db->affected_rows() == 0) {
+                if ($this->db->affectedRows() == 0) {
                     $item_rights[$value] = 'noright';
                 }
 
                 // Set the rights
-                while ($this->db->next_record()) {
+                while ($this->db->nextRecord()) {
                     if ($this->db->f('idcat') == $itemid) {
                         $flg = true;
                     }
@@ -628,14 +628,14 @@ class cPermission {
             // parent_id uses the name not the idarea
             $sql = "SELECT name FROM " . $cfg['tab']['area'] . " WHERE idarea=$mainarea";
             $this->db->query($sql);
-            $this->db->next_record();
+            $this->db->nextRecord();
             $name = $this->db->f('name');
 
             // Check which subareas are there and write them in the array
             $sql = "SELECT idarea FROM " . $cfg['tab']['area'] . " WHERE parent_id='$name' OR idarea=$mainarea";
             $this->db->query($sql);
             $area_tree[$mainarea] = array();
-            while ($this->db->next_record()) {
+            while ($this->db->nextRecord()) {
                 $area_tree[$mainarea][] = $this->db->f('idarea');
             }
         }

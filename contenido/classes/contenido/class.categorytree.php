@@ -85,7 +85,7 @@ class cApiCategoryTreeCollection extends ItemCollection {
         ));
         $this->db->query($sql);
 
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $aCatTree[$this->db->f('idtree')] = array(
                 'idcat' => $this->db->f('idcat'),
                 'level' => $this->db->f('level'),

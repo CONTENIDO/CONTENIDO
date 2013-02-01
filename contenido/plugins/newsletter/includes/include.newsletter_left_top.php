@@ -139,7 +139,7 @@ $sSQL .= "ORDER BY tblCatTree.idtree";
 
 $oDB->query($sSQL);
 
-while ($oDB->next_record()) {
+while ($oDB->nextRecord()) {
     $sSpaces = str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $oDB->f("level"));
 
     $oOptionTemplate = new cHTMLOptionElement($sSpaces.$oDB->f("name"), $oDB->f("idcat"));
@@ -417,7 +417,7 @@ $oDB->query($sSQL);
 
 $aItems = array();
 $bUserInList = false;
-while ($oDB->next_record()) {
+while ($oDB->nextRecord()) {
     if ($oDB->f("author") == $auth->auth["uid"]) {
         $bUserInList = true;
     }

@@ -172,7 +172,7 @@ function conGenerateKeywords($client, $lang) {
     $oDB->query($sql);
 
     $aArticles = array();
-    while ($oDB->next_record()) {
+    while ($oDB->nextRecord()) {
         $aArticles[$oDB->f('idart')] = $oDB->f('idartlang');
     }
 
@@ -205,7 +205,7 @@ function conGetContentFromArticle($iIdArtLang) {
     $sql = 'SELECT * FROM ' . $cfg['tab']['content'] . ' AS A, ' . $cfg['tab']['art_lang'] . ' AS B, ' . $cfg['tab']['type'] . ' AS C
             WHERE A.idtype=C.idtype AND A.idartlang=B.idartlang AND A.idartlang=' . (int) $iIdArtLang;
     $oDB->query($sql);
-    while ($oDB->next_record()) {
+    while ($oDB->nextRecord()) {
         $aContent[$oDB->f('type')][$oDB->f('typeid')] = $oDB->f('value');
     }
 
@@ -264,7 +264,7 @@ function conGetCategoryArticleId($idcat, $idart) {
     $sql = $db->prepare($sql, $cfg['tab']['cat_art'], $idcat, $idart);
     $db->query($sql);
 
-    return ($db->next_record()) ? $db->f('idcatart') : null;
+    return ($db->nextRecord()) ? $db->f('idcatart') : null;
 }
 
 /**
@@ -285,7 +285,7 @@ function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client)
     $sql = $db->prepare($sql, $cfg['tab']['art_lang'], $cfg['tab']['art'], $idart, $lang, $client);
     $db->query($sql);
 
-    return ($db->next_record()) ? $db->f('idtplcfg') : null;
+    return ($db->nextRecord()) ? $db->f('idtplcfg') : null;
 }
 
 /**
@@ -305,5 +305,5 @@ function conGetTemplateConfigurationIdForCategory($idcat, $lang, $client) {
     $sql = $db->prepare($sql, $cfg['tab']['cat_lang'], $cfg['tab']['cat'], $idcat, $lang, $client);
     $db->query($sql);
 
-    return ($db->next_record()) ? $db->f('idtplcfg') : null;
+    return ($db->nextRecord()) ? $db->f('idtplcfg') : null;
 }

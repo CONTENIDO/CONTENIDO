@@ -113,7 +113,7 @@ class cApiActionCollection extends ItemCollection {
 
         $actions = array();
 
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $newentry['name'] = $this->db->f('name');
             $newentry['areaname'] = $this->db->f('areaname');
             $actions[$this->db->f('idaction')] = $newentry;
@@ -130,7 +130,7 @@ class cApiActionCollection extends ItemCollection {
      */
     public function getActionName($action) {
         $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
-        return ($this->db->next_record())? $this->db->f('name') : null;
+        return ($this->db->nextRecord())? $this->db->f('name') : null;
     }
 
     /**
@@ -146,7 +146,7 @@ class cApiActionCollection extends ItemCollection {
             $this->db->query("SELECT idarea FROM `%s` WHERE idaction = %d", $this->table, $action);
         }
 
-        return ($this->db->next_record())? $this->db->f('idarea') : null;
+        return ($this->db->nextRecord())? $this->db->f('idarea') : null;
     }
 
 }

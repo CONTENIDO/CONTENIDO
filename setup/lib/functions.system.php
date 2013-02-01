@@ -69,7 +69,7 @@ function checkExistingPlugin($db, $sPluginname) {
 
     if ($sSql) {
         $db->query($sSql, $sTable);
-        if ($db->next_record()) {
+        if ($db->nextRecord()) {
             return true;
         }
     }
@@ -106,7 +106,7 @@ function updateSystemProperties($db, $table) {
     foreach ($aStandardvalues as $aData) {
         $sql = "SELECT value FROM %s WHERE type='%s' AND name='%s'";
         $db->query(sprintf($sql, $table, $aData['type'], $aData['name']));
-        if ($db->next_record()) {
+        if ($db->nextRecord()) {
             $sValue = $db->f('value');
             if ($sValue == '') {
                 $sql = "UPDATE %s SET value = '%s' WHERE type='%s' AND name='%s'";
@@ -135,7 +135,7 @@ function updateContenidoVersion($db, $table, $version) {
     $sql = "SELECT idsystemprop FROM %s WHERE type='system' AND name='version'";
     $db->query(sprintf($sql, cSecurity::escapeDB($table, $db)));
 
-    if ($db->next_record()) {
+    if ($db->nextRecord()) {
         $sql = "UPDATE %s SET value = '%s' WHERE type='system' AND name='version'";
         $db->query(sprintf($sql, cSecurity::escapeDB($table, $db), cSecurity::escapeDB($version, $db)));
     } else {
@@ -155,7 +155,7 @@ function getContenidoVersion($db, $table) {
     $sql = "SELECT value FROM %s WHERE type='system' AND name='version'";
     $db->query(sprintf($sql, cSecurity::escapeDB($table, $db)));
 
-    if ($db->next_record()) {
+    if ($db->nextRecord()) {
         return $db->f("value");
     } else {
         return false;
@@ -167,7 +167,7 @@ function updateSysadminPassword($db, $table, $password, $mail) {
     $sql = "SELECT password FROM %s WHERE username='sysadmin'";
     $db->query(sprintf($sql, cSecurity::escapeDB($table, $db)));
 
-    if ($db->next_record()) {
+    if ($db->nextRecord()) {
         $sql = "UPDATE %s SET password='%s', email='%s' WHERE username='sysadmin'";
         $db->query(sprintf($sql, cSecurity::escapeDB($table, $db), md5($password), $mail));
         return true;
@@ -187,7 +187,7 @@ function listClients($db, $table) {
 
     $clients = array();
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $frontendPath = $cfgClient[$db->f('idclient')]['path']['frontend'];
         $htmlPath = $cfgClient[$db->f('idclient')]['path']['htmlpath'];
         $clients[$db->f("idclient")] = array("name" => $db->f("name"), "frontendpath" => $frontendPath, "htmlpath" => $htmlPath);

@@ -534,7 +534,7 @@ $tpl->set('s', 'REFRESH', $refreshScript);
 // Successfully stored Message
 $tpl->set('s', 'SEARCHSTOREDMESSAGE', $saveSuccessfull);
 
-$iAffectedRows = $db->affected_rows();
+$iAffectedRows = $db->affectedRows();
 
 if ($iAffectedRows <= 0 || (empty($where) && !$bLostAndFound)) {
     $sNoArticle = i18n("Missing search value.");
@@ -558,7 +558,7 @@ if ($iAffectedRows <= 0 || (empty($where) && !$bLostAndFound)) {
         // reinitialisiere Hilfs-String
         $sRow = '';
 
-        $db->next_record();
+        $db->nextRecord();
 
         $idcat = $db->f("idcat");
 
@@ -605,7 +605,7 @@ if ($iAffectedRows <= 0 || (empty($where) && !$bLostAndFound)) {
                     WHERE user_id IN ('".$sTmpUserString."') AND idclient = '".cSecurity::toInteger($client)."' AND idlang = '".cSecurity::toInteger($lang)."' AND idcat = '".cSecurity::toInteger($idcat)."'";
             $db2->query($sql);
 
-            if ($db2->num_rows() != 0) {
+            if ($db2->numRows() != 0) {
 
                 if (!$check_rights) {
                     $check_rights = $perm->have_perm_area_action_item("con", "con_makestart",$idcat);

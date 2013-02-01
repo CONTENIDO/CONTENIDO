@@ -179,7 +179,7 @@ function modTestModule($code, $id, $output = false) {
     // Put a $ in front of all CMS variables to prevent PHP error messages
     $sql = 'SELECT type FROM ' . $cfg['tab']['type'];
     $db->query($sql);
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $code = str_replace($db->f('type') . '[', '$' . $db->f('type') . '[', $code);
     }
 

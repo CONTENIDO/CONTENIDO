@@ -254,7 +254,7 @@ function strRemakeTreeTable() {
     $sql = "SELECT idcat, parentid, preid, postid FROM " . $cfg['tab']['cat'] . " WHERE idclient = " . (int) $client . " ORDER BY parentid ASC, preid ASC, postid ASC";
     $aCategories = array();
     $db->query($sql);
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $rs = $db->toArray();
         if (!isset($aCategories[$rs['parentid']])) {
             $aCategories[$rs['parentid']] = array();
@@ -1000,7 +1000,7 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
     $sql = "SELECT A.idart, B.idartlang FROM %s AS A, %s AS B WHERE A.idcat = %d AND B.idart = A.idart AND B.idlang = %s";
     $db->query($sql, $cfg['tab']['cat_art'], $cfg['tab']['art_lang'], $idcat, $lang);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $newidart = (int) conCopyArticle($db->f('idart'), $newidcat, '', $bUseCopyLabel);
         if ($db->f('idartlang') == $oOldCatLang->get('startidartlang')) {
             $oCatArtColl->resetQuery();
@@ -1099,7 +1099,7 @@ function strShowTreeTable() {
     $sql = "SELECT * FROM `" . $cfg['tab']['cat_tree'] . "` AS A, `" . $cfg['tab']['cat'] . "` AS B, `" . $cfg['tab']['cat_lang'] . "` AS C "
             . "WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang=" . (int) $lang . " AND B.idclient=" . (int) $client . " ORDER BY A.idtree";
     $db->query($sql);
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $tmp_id = $db->f("idcat");
         $tmp_name = $db->f("name");
         $tmp_level = $db->f("level");

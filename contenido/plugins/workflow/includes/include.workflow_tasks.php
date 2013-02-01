@@ -79,7 +79,7 @@ if (is_array($userids)) {
             $sql = "SELECT user_id FROM " . $cfg["tab"]["groupmembers"] . " WHERE group_id = '" . $value . "'";
             $db2->query(cSecurity::escapeDB($sql, $db2));
 
-            while ($db2->next_record()) {
+            while ($db2->nextRecord()) {
                 if ($db2->f("user_id") == $usershow) {
                     $isCurrent[$key] = true;
                 }
@@ -157,7 +157,7 @@ if (is_array($isCurrent)) {
 
             $db->query($sql);
 
-            if ($db->next_record()) {
+            if ($db->nextRecord()) {
                 global $area;
                 //$area = "con";
                 $idcat = $db->f("idcat");

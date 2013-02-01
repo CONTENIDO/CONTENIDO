@@ -238,10 +238,10 @@ class Contenido_Category {
 
         $db = cRegistry::getDb();
         $db->query($sSql);
-        if ($db->Errno != 0) {
+        if ($db->getErrorNumber() != 0) {
             return false;
         }
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $aSubCats[] = $db->f('idcat');
         }
         return $aSubCats;

@@ -73,7 +73,7 @@ function prResolvePathViaURLNames($path) {
     $db->query($sql);
 
     $catpath = array();
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $cat_str = '';
         prCreateURLNameLocationString($db->f('idcat'), '/', $cat_str, false, '', 0, 0, true, true);
 
@@ -170,7 +170,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
     $catpath = array();
     $arrLangMatches = array();
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $cat_str = '';
         $aTemp = '';
         $iFor = 0;
@@ -305,7 +305,7 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
                 a.idtplcfg  = d.idtplcfg";
 
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
 
     if ($db->f('level') >= $firstTreeElementToUse) {
         $name = $db->f('name');

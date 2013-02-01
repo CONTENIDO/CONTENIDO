@@ -819,7 +819,7 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
             'idcat' => (int) $idcat
     ));
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
 
     if ($db->f('level') >= $firstTreeElementToUse) {
         $name = $db->f('name');
@@ -942,7 +942,7 @@ function conGenerateCodeForAllartsUsingLayout($idlay) {
 
     $sql = "SELECT idtpl FROM " . $cfg["tab"]["tpl"] . " WHERE idlay='" . cSecurity::toInteger($idlay) . "'";
     $db->query($sql);
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         conGenerateCodeForAllartsUsingTemplate($db->f("idtpl"));
     }
 }
@@ -989,7 +989,7 @@ function conGenerateCodeForAllArtsUsingTemplate($idtpl) {
 
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $oCatArtColl->resetQuery();
         $ids = $oCatArtColl->getIdsByWhereClause('idcat = ' . (int) $db->f('idcat'));
         foreach ($ids as $id) {
@@ -1012,7 +1012,7 @@ function conGenerateCodeForAllArtsUsingTemplate($idtpl) {
 
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $oCatArtColl->resetQuery();
         $ids = $oCatArtColl->getIdsByWhereClause('idart = ' . (int) $db->f('idart'));
         foreach ($ids as $id) {
@@ -1031,7 +1031,7 @@ function conGenerateCodeForAllArts() {
 
     $sql = "SELECT idcatart FROM " . $cfg['tab']['cat_art'];
     $db->query($sql);
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         conSetCodeFlag($db->f("idcatart"));
     }
 }
@@ -1403,7 +1403,7 @@ function conGetTopmostCat($idcat, $minLevel = 0) {
             'idcat' => (int) $idcat
     ));
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
 
     $name = $db->f('name');
     $parentid = $db->f('parentid');

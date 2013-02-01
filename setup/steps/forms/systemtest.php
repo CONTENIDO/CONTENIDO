@@ -210,14 +210,14 @@ class cSetupSystemtest extends cSetupMask {
                     // Check if data already exists
                     $db->query('SHOW TABLES LIKE "%s_actions"', $_SESSION["dbprefix"]);
 
-                    if ($db->next_record()) {
+                    if ($db->nextRecord()) {
                         $this->systemtest->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("MySQL database already exists and seems to be filled"), sprintf(i18n("Setup checked the database %s and found the table %s. It seems that you already have a CONTENIDO installation in this database. If you want to install anyways, change the database prefix. If you want to upgrade from a previous version, choose 'upgrade' as setup type."), $_SESSION["dbname"], sprintf("%s_actions", $_SESSION["dbprefix"])));
                         return;
                     }
 
                     // Check if data already exists
                     $db->query('SHOW TABLES LIKE "%s_test"', $_SESSION["dbprefix"]);
-                    if ($db->next_record()) {
+                    if ($db->nextRecord()) {
                         $this->systemtest->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("MySQL test table already exists in the database"), sprintf(i18n("Setup checked the database %s and found the test table %s. Please remove it before continuing."), $_SESSION["dbname"], sprintf("%s_test", $_SESSION["dbprefix"])));
                         return;
                     }
@@ -272,7 +272,7 @@ class cSetupSystemtest extends cSetupMask {
                 // Check if data already exists
                 $sql = 'SHOW TABLES LIKE "%s_actions"';
                 $db->query(sprintf($sql, $_SESSION["dbprefix"]));
-                if (!$db->next_record()) {
+                if (!$db->nextRecord()) {
                     $this->systemtest->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("No data found for the upgrade"), sprintf(i18n("Setup tried to locate the data for the upgrade, however, the database %s contains no tables. You need to copy your database first before running setup."), $_SESSION["dbname"]));
                     return;
                 }

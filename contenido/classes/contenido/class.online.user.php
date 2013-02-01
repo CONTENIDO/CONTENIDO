@@ -219,7 +219,7 @@ class cApiOnlineUserCollection extends ItemCollection {
         $result = $this->db->query($sql, $this->table);
         $this->_lastSQL = $sql;
         if ($result) {
-            $this->db->next_record();
+            $this->db->nextRecord();
             return (int) $this->db->f('cnt');
         }
         return 0;

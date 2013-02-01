@@ -651,7 +651,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $sql = 'SELECT * FROM ' . $this->_cfg['tab']['type'] . ' ORDER BY type';
         $db = cRegistry::getDb();
         $db->query($sql);
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             if(in_array($db->f('type'), $this->_ignoreTypes)) { //we do not want certain content types
                 continue;
             }

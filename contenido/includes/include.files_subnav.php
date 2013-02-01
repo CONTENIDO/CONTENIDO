@@ -52,7 +52,7 @@ if (isset($_GET['file'])) {
     $db->query($sql);
 
     $in_str = '';
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $in_str .= $db->f('idarea') . ',';
     }
     $in_str = substr($in_str, 0, -1);
@@ -73,7 +73,7 @@ if (isset($_GET['file'])) {
 
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         // Extract names from the XML document.
         $caption = $nav->getName($db->f('location'));
 

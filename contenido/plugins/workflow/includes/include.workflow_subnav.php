@@ -47,7 +47,7 @@ $db->query($sql);
 
 $in_str = "";
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $in_str .= $db->f('idarea') . ',';
 }
 
@@ -70,7 +70,7 @@ $sql = "SELECT
 
 $db->query($sql);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
 
     // Extract caption from the xml language file
     $caption = $nav->getName($db->f("location"));

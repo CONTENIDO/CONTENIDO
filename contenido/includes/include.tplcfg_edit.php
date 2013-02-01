@@ -42,7 +42,7 @@ if ( $idtpl != 0 && $idtplcfg != 0 ) {
         $sql = "SELECT number FROM ".$cfg["tab"]["container"]." WHERE idtpl = '".cSecurity::toInteger($idtpl)."'";
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
 
                 $i = $db->f("number");
                 $CiCMS_VAR = "C".$i."CMS_VAR";
@@ -152,7 +152,7 @@ if ( $idtpl != 0 && $idtplcfg != 0 ) {
         /* Category */
         $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '".cSecurity::toInteger($idcat)."' AND idlang = '".cSecurity::toInteger($lang)."'";
         $db->query($sql);
-        $db->next_record();
+        $db->nextRecord();
         $tmp_idtplcfg = $db->f("idtplcfg");
 
         $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".cSecurity::toInteger($tmp_idtplcfg)."'";
@@ -172,7 +172,7 @@ if ( $idtpl != 0 && $idtplcfg != 0 ) {
         /* Article */
         $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '".cSecurity::toInteger($idart)."' AND idlang = '".cSecurity::toInteger($lang)."'";
         $db->query($sql);
-        $db->next_record();
+        $db->nextRecord();
         $tmp_idtplcfg = $db->f("idtplcfg");
 
         $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".cSecurity::toInteger($tmp_idtplcfg)."'";
@@ -197,7 +197,7 @@ if ( $idtpl != 0 && $idtplcfg != 0 ) {
         {
             $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '".cSecurity::toInteger($idcat)."' AND idlang = '".cSecurity::toInteger($lang)."'";
             $db->query($sql);
-            $db->next_record();
+            $db->nextRecord();
             $tmp_idtplcfg = $db->f("idtplcfg");
 
             $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".cSecurity::toInteger($tmp_idtplcfg)."'";
@@ -211,7 +211,7 @@ if ( $idtpl != 0 && $idtplcfg != 0 ) {
         {
             $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '".cSecurity::toInteger($idart)."' AND idlang = '".cSecurity::toInteger($lang)."'";
             $db->query($sql);
-            $db->next_record();
+            $db->nextRecord();
             $tmp_idtplcfg = $db->f("idtplcfg");
 
             $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".cSecurity::toInteger($tmp_idtplcfg)."'";

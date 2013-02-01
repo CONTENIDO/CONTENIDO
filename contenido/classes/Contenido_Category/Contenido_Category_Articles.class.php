@@ -80,9 +80,9 @@ class Contenido_Category_Articles extends Contenido_Category_Base
 
         $this->oDb->query($sSql);
 
-        $bHasErrors = $this->oDb->Errno == 0 ? $bHasErrors = false : $bHasErrors = true;
-        if ($bHasErrors === false && $this->oDb->num_rows() > 0) {
-            while ($this->oDb->next_record()) {
+        $bHasErrors = $this->oDb->getErrorNumber() == 0 ? $bHasErrors = false : $bHasErrors = true;
+        if ($bHasErrors === false && $this->oDb->numRows() > 0) {
+            while ($this->oDb->nextRecord()) {
                 $oArticle = new cApiArticleLanguage();
                 $oArticle->loadByArticleAndLanguageId($this->oDb->f('idart'), $this->getLang());
                 if ($bArticleIdAsKey === false) {
@@ -93,7 +93,7 @@ class Contenido_Category_Articles extends Contenido_Category_Base
             }
         }
         if ($bHasErrors === true) {
-            throw new cException('Error in SQL-Query! Errno: '.$this->oDb->Errno.', Error: '.$this->oDb->Error.', SQL: '.$sSql);
+            throw new cException('Error in SQL-Query! Errno: '.$this->oDb->getErrorNumber().', Error: '.$this->oDb->getErrorMessage().', SQL: '.$sSql);
         }
         return $aReturn;
     }
@@ -164,9 +164,9 @@ class Contenido_Category_Articles extends Contenido_Category_Base
             $this->oDbg->show($sSql, 'Contenido_Category_Articles::getArticlesInCategory() $sSql');
         }
         $this->oDb->query($sSql);
-        $bHasErrors = $this->oDb->Errno == 0 ? false : true;
-        if ($bHasErrors === false && $this->oDb->num_rows() > 0) {
-            while ($this->oDb->next_record()) {
+        $bHasErrors = $this->oDb->getErrorNumber() == 0 ? false : true;
+        if ($bHasErrors === false && $this->oDb->numRows() > 0) {
+            while ($this->oDb->nextRecord()) {
                 $oArticle = new cApiArticleLanguage();
                 $oArticle->loadByArticleAndLanguageId($this->oDb->f('idart'), $this->getLang());
                 if ($bArticleIdAsKey === false) {
@@ -177,7 +177,7 @@ class Contenido_Category_Articles extends Contenido_Category_Base
             }
         }
         if ($bHasErrors === true) {
-            throw new cException('Error in SQL-Query! Errno: '.$this->oDb->Errno.', Error: '.$this->oDb->Error.', SQL: '.$sSql);
+            throw new cException('Error in SQL-Query! Errno: '.$this->oDb->getErrorNumber().', Error: '.$this->oDb->getErrorMessage().', SQL: '.$sSql);
         }
         return $aReturn;
     }

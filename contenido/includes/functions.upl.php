@@ -198,7 +198,7 @@ function uplSyncDirectory($sPath) {
     // entries pointing to a non existing upload directory on the file system
     $sql = 'SELECT DISTINCT(dirname) AS dirname FROM ' . $cfg['tab']['upl'] . ' WHERE ' . 'idclient=' . (int) $client . ' AND dirname LIKE "' . $db->escape($sPath) . '%"';
     $db->query($sql);
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $sCurrDirname = $db->f('dirname');
         $sSubDir = substr($sCurrDirname, strlen($sPath));
         if (substr_count($sSubDir, '/') <= 1) {

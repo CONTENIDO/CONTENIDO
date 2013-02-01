@@ -60,10 +60,10 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $sql = "SELECT idlang FROM " . $cfg['tab']['lang'] . " WHERE active = '1'";
     $db->query($sql);
 
-    if($db->num_rows() > 1) {
+    if($db->numRows() > 1) {
         $langart = 0;
     } else {
-        $db->next_record();
+        $db->nextRecord();
         $langart = $db->f('idlang');
     }
 

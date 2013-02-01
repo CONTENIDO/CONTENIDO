@@ -66,7 +66,7 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
         // update language dropdown in header
         $new_idlang = 0;
         $db->query('SELECT MAX(idlang) AS newlang FROM ' . $cfg["tab"]["lang"] . ';');
-        if ($db->next_record()) {
+        if ($db->nextRecord()) {
             $new_idlang = $db->f('newlang');
         }
 
@@ -142,7 +142,7 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
                         B.idlang = " . cSecurity::toInteger($idlang);
 
             $db->query($sql);
-            $db->next_record();
+            $db->nextRecord();
 
             $form = new cGuiTableForm("lang_properties");
             $form->setVar("idlang", $idlang);

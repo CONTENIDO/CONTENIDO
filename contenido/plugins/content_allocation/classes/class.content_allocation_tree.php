@@ -137,7 +137,7 @@ class pApiTree {
         $this->db->query($sql);
 
         $result_tmp = array(); // tmp result array
-        while ($this->db->next_record()) { // walk resultset
+        while ($this->db->nextRecord()) { // walk resultset
             $item = $this->_fetchItemNameLang($this->db->f('idpica_alloc'));
 
             $itemStatus = 'expanded';
@@ -211,7 +211,7 @@ class pApiTree {
         $this->db->query($sql);
 
         $result_tmp = array(); // tmp result array
-        while ($this->db->next_record()) { // walk resultset
+        while ($this->db->nextRecord()) { // walk resultset
 
             $item = $this->_fetchItemNameLang($this->db->f('idpica_alloc'));
 
@@ -263,7 +263,7 @@ class pApiTree {
         $sql = "SELECT idpica_alloc FROM ".$this->table['pica_alloc']." WHERE parentId = " . cSecurity::toInteger($idpica_alloc);
         $this->db->query($sql);
 
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             return $this->fetchItem($this->db->f('idpica_alloc'));
         } else {
             return false;
@@ -295,7 +295,7 @@ class pApiTree {
         $this->db->query($sql);
 
         $result_tmp = array(); // tmp result array
-        while ($this->db->next_record()) { // walk resultset
+        while ($this->db->nextRecord()) { // walk resultset
             $item = $this->_fetchItemNameLang($this->db->f('idpica_alloc'));
 
             $itemStatus = 'expanded';
@@ -350,7 +350,7 @@ class pApiTree {
             $sql = "SELECT * FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . cSecurity::toInteger($treeItem['idpica_alloc']) . " AND idlang = " . cSecurity::toInteger($this->lang);
             $this->db->query($sql);
 
-            if ($this->db->num_rows() > 0) {
+            if ($this->db->numRows() > 0) {
                 #Update existing translation
                 $sql = "UPDATE " . $this->table['pica_lang'] . " SET name = '" . cSecurity::escapeDB($treeItem['name'], $this->db) . "' WHERE idpica_alloc = " . cSecurity::toInteger($treeItem['idpica_alloc']) . "
                         AND idlang = " . cSecurity::toInteger($this->lang);
@@ -359,7 +359,7 @@ class pApiTree {
                 $sql = "SELECT * FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . $treeItem['idpica_alloc'] . " ORDER BY idlang";
                 $this->db->query($sql);
 
-                if ($this->db->next_record()) {
+                if ($this->db->nextRecord()) {
                     $online_status = $this->db->f('online');
                 } else {
                     $online_status = 0;
@@ -427,7 +427,7 @@ class pApiTree {
 
         $item = $this->_fetchItemNameLang($idpica_alloc);
 
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             $row = array(
                 'idpica_alloc' => $idpica_alloc,
                 'parentid' => ($this->db->f('parentid') == NULL) ? false : $this->db->f('parentid'),
@@ -449,7 +449,7 @@ class pApiTree {
         $oDB->query($sSQL);
 
         $aResult = array();
-        if ($oDB->next_record()) { // item found for this language
+        if ($oDB->nextRecord()) { // item found for this language
 
             $aResult['name']   = $this->_outFilter($oDB->f('name'));
             $aResult['idlang'] = $oDB->f('idlang');
@@ -465,7 +465,7 @@ class pApiTree {
             $oDB->query($sSQL);
 
             $aNames = array();
-            while ($oDB->next_record()) {
+            while ($oDB->nextRecord()) {
                 $sKey = "k" . $oDB->f('idlang');
 
                 $aNames[$sKey]                 = array();
@@ -501,7 +501,7 @@ class pApiTree {
             $sql .= " WHERE parentid = " . cSecurity::toInteger($parentId);
         }
         $this->db->query($sql);
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
             return $this->db->f('max');
         } else {
             return 0;

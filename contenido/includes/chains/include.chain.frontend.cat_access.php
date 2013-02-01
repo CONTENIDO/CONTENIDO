@@ -52,7 +52,7 @@ function cecFrontendCategoryAccess($idlang, $idcat, $user)
     $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = " . cSecurity::toInteger($idcat) . " AND idlang = " . cSecurity::toInteger($idlang);
     $db->query($sql);
 
-    if ($db->next_record()) {
+    if ($db->nextRecord()) {
         $idcatlang = $db->f("idcatlang");
     } else {
         return false;

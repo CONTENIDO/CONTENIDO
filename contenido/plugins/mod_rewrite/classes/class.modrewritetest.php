@@ -131,14 +131,14 @@ class ModRewriteTest {
 
         $counter = 0;
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
 
             if (++$counter == $this->_iMaxItems) {
                 break; // break this loop
             }
 
             $idcat = $db->f('idcat');
-            $aStruct[$idcat] = $db->Record;
+            $aStruct[$idcat] = $db->getRecord();
             $aStruct[$idcat]['articles'] = array();
 
             $sql2 = "SELECT
@@ -158,9 +158,9 @@ class ModRewriteTest {
 
             $db2->query($sql2);
 
-            while ($db2->next_record()) {
+            while ($db2->nextRecord()) {
                 $idart = $db2->f('idart');
-                $aStruct[$idcat]['articles'][$idart] = $db2->Record;
+                $aStruct[$idcat]['articles'][$idart] = $db2->getRecord();
                 if (++$counter == $this->_iMaxItems) {
                     break 2; // break this and also superior loop
                 }

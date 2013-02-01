@@ -32,7 +32,7 @@ class cUpgradeJob_0008 extends cUpgradeJobAbstract {
             $columns = array();
             $sql = 'SHOW COLUMNS FROM ' . $cfg['tab']['plugins'];
             $db->query($sql);
-            while ($db->next_record()) {
+            while ($db->nextRecord()) {
                 $columns[] = $db->f('Field');
             }
             if (in_array('path', $columns)) {
@@ -41,7 +41,7 @@ class cUpgradeJob_0008 extends cUpgradeJobAbstract {
                 // from column "path" to column "folder"
                 $sql = 'SELECT `idplugin`, `path` FROM `' . $cfg['tab']['plugins'] . '`';
                 $db->query($sql);
-                while ($db->next_record()) {
+                while ($db->nextRecord()) {
                     $sql2 = 'UPDATE `' . $cfg['tab']['plugins'] . "` SET `folder`='" . $db->f('path') . "' WHERE `idplugin`=" . $db->f('idplugin');
                     $db2->query($sql2);
                 }

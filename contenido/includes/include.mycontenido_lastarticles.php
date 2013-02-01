@@ -43,7 +43,7 @@ $sql = "SELECT
         LIMIT 2";
 
 $db->query($sql);
-$db->next_record();
+$db->nextRecord();
 
 $lastlogin = $db->f("logtimestamp");
 
@@ -89,7 +89,7 @@ $no_article = true;
 
 $tpl->set('s', 'LASTARTICLES', i18n("Recently edited articles") . ":" . markSubMenuItem(1));
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $idtplcfg = $db->f("idtplcfg");
     $idartlang = $db->f("idartlang");
     $idlang = $db->f("idlang");
@@ -138,7 +138,7 @@ while ($db->next_record()) {
                     a.idtpl = b.idtpl";
 
         $db2->query($sql2);
-        $db2->next_record();
+        $db2->nextRecord();
 
         $a_tplname = $db2->f("tplname");
         $a_idtpl = $db2->f("idtpl");
@@ -215,7 +215,7 @@ $sql = "SELECT
             c.idtplcfg = b.idtplcfg";
 
 $db->query($sql);
-$db->next_record();
+$db->nextRecord();
 
 $cat_idtpl = $db->f("idtpl");
 

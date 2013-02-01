@@ -43,7 +43,7 @@ $db->query($sql);
 $tpl->set('s', 'TARGETCLIENT', $targetclient);
 
 $iLangCount = 0;
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $iLangCount++;
 
     $idlang = $db->f("idlang");

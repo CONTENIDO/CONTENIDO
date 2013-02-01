@@ -47,7 +47,7 @@ function getAvailableContentTypes($idartlang) {
 
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $a_content[$db->f('type')][$db->f('typeid')] = $db->f('value');
         $a_description[$db->f('type')][$db->f('typeid')] = i18n($db->f('description'));
     }
@@ -66,7 +66,7 @@ function isArtInMultipleUse($idart) {
     $sql = "SELECT idart FROM " . $cfg["tab"]["cat_art"] . " WHERE idart = " . (int) $idart;
     $db->query($sql);
 
-    return ($db->affected_rows() > 1);
+    return ($db->affectedRows() > 1);
 }
 
 /**
@@ -389,7 +389,7 @@ function getAllClientsAndLanguages() {
     $db->query($sql);
 
     $aRs = array();
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $aRs[] = array(
             'idlang' => $db->f('idlang'),
             'langname' => $db->f('langname'),
@@ -485,7 +485,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $cfgClient[$id]["path"]["frontend"] = $frontendpaths[$id];
     }
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $iClient = $db->f('idclient');
         $cfgClient['set'] = 'set';
 
@@ -769,7 +769,7 @@ function getArtspec() {
 
     $artspec = array();
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $artspec[$db->f("idartspec")]['artspec'] = $db->f("artspec");
         $artspec[$db->f("idartspec")]['online'] = $db->f("online");
         $artspec[$db->f("idartspec")]['default'] = $db->f("artspecdefault");
@@ -883,7 +883,7 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
 
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         if ($sValue != $db->f('idart')) {
             $html .= '<option value="' . $db->f('idart') . '" style="background-color:#EFEFEF">' . $db->f('title') . '</option>';
         } else {
@@ -929,13 +929,13 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = '') {
 
     $categories = array();
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $categories[$db->f("idcat")]["name"] = $db->f("name");
 
         $sql2 = "SELECT level FROM " . $cfg["tab"]["cat_tree"] . " WHERE idcat = " . (int) $db->f("idcat");
         $db2->query($sql2);
 
-        if ($db2->next_record()) {
+        if ($db2->nextRecord()) {
             $categories[$db->f("idcat")]["level"] = $db2->f("level");
         }
 
@@ -946,7 +946,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = '') {
 
         $db2->query($sql2);
 
-        while ($db2->next_record()) {
+        while ($db2->nextRecord()) {
             $categories[$db->f("idcat")]["articles"][$db2->f("idcatart")] = $db2->f("title");
         }
     }
@@ -1596,7 +1596,7 @@ function cleanupSessions() {
     // Expire old sessions
     $sql = "SELECT changed, sid FROM " . $cfg["tab"]["phplib_active_sessions"];
     $db->query($sql);
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         if ($db->f("changed") < $maxdate) {
             $sql = "DELETE FROM " . $cfg["tab"]["phplib_active_sessions"] . " WHERE sid = '" . $db2->escape($db->f("sid")) . "'";
             $db2->query($sql);
@@ -1608,7 +1608,7 @@ function cleanupSessions() {
     while (($c = $col->next()) !== false) {
         $sql = "SELECT sid FROM " . $cfg["tab"]["phplib_active_sessions"] . " WHERE sid = '" . $db2->escape($c->get("session")) . "'";
         $db2->query($sql);
-        if (!$db2->next_record()) {
+        if (!$db2->nextRecord()) {
             $col->delete($c->get("idinuse"));
         }
     }
@@ -1790,16 +1790,16 @@ function showLocation($area) {
     }
     $sql = "SELECT location FROM " . $cfg["tab"]["area"] . " as A, " . $cfg["tab"]["nav_sub"] . " as B " . "WHERE A.name='" . cSecurity::escapeDB($area, $db) . "' AND A.idarea=B.idarea AND A.online='1'";
     $db->query($sql);
-    if ($db->next_record()) {
+    if ($db->nextRecord()) {
         echo "<b>" . $xml->valueOf($db->f("location")) . "</b>";
     } else {
         $sql = "SELECT parent_id FROM " . $cfg["tab"]["area"] . " WHERE " . "name='" . cSecurity::escapeDB($area, $db) . "' AND online='1'";
         $db->query($sql);
-        $db->next_record();
+        $db->nextRecord();
         $parent = $db->f("parent_id");
         $sql = "SELECT location FROM " . $cfg["tab"]["area"] . " as A, " . $cfg["tab"]["nav_sub"] . " as B " . "WHERE A.name='" . cSecurity::escapeDB($parent, $db) . "' AND A.idarea = B.idarea AND A.online='1'";
         $db->query($sql);
-        $db->next_record();
+        $db->nextRecord();
         echo "<b>" . $xml->valueOf($db->f("location")) . $area . "</b>";
     }
 }
@@ -1812,8 +1812,8 @@ function showTable($tablename) {
     global $db;
     $sql = "SELECT * FROM $tablename";
     $db->query($sql);
-    while ($db->next_record()) {
-        while ((list($key, $value) = each($db->Record)) !== false) {
+    while ($db->nextRecord()) {
+        while ((list($key, $value) = each($db->getRecord())) !== false) {
             print(is_string($key)? "<b>$key</b>: $value | " : '');
         }
         print("<br>");

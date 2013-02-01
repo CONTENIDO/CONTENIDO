@@ -141,7 +141,7 @@ class cModuleFileTranslation extends cModuleHandler {
         $sql = $db->prepare($sql, $this->_cfg['tab']['clients_lang'], $this->_cfg['tab']['mod'], $this->_cfg['tab']['clients']);
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $contenidoTranslationsFromFile = new cModuleFileTranslation($db->f('idmod'));
             $contenidoTranslationsFromFile->saveTranslations();
         }
@@ -162,7 +162,7 @@ class cModuleFileTranslation extends cModuleHandler {
         $transArray = array();
         $saveModId = -1;
         $saveLangId = -1;
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $transArray[cSecurity::unfilter($db->f('original'))] = cSecurity::unfilter($db->f('translation'));
             if ($saveLangId != $db->f('idlang') || $saveModId != $db->f('idmod')) {
                 if ($saveLangId != -1 && $saveModId != -1) {
@@ -198,7 +198,7 @@ class cModuleFileTranslation extends cModuleHandler {
             self::$fileName = 'lang_' . $language . '_' . strtoupper($country) . '.txt';
 
             $translations = array();
-            while ($db->next_record()) {
+            while ($db->nextRecord()) {
                 $translations[cSecurity::unfilter($db->f('original'))] = cSecurity::unfilter($db->f('translation'));
             }
 

@@ -297,7 +297,7 @@ class ModRewrite extends ModRewriteBase {
             $aCatIds = array();
             $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid = 0";
             self::$_db->query($sql);
-            while (self::$_db->next_record()) {
+            while (self::$_db->nextRecord()) {
                 $aCatIds[] = "idcat = " . (int) self::$_db->f('idcat');
             }
             $sWhere .= " AND ( " . join(" OR ", $aCatIds) . ")";
@@ -383,7 +383,7 @@ class ModRewrite extends ModRewriteBase {
                     . " AND c.idcat = cl.idcat AND cl.idlang = " . $lang;
 
             self::$_db->query($sql);
-            while (self::$_db->next_record()) {
+            while (self::$_db->nextRecord()) {
                 $urlPath = self::$_db->f('urlpath');
                 if ($startFromRoot == 0 && strpos($urlPath, $catSeperator) > 0) {
                     // paths are stored with prefixed main category, but created
@@ -467,7 +467,7 @@ class ModRewrite extends ModRewriteBase {
 
         $sql = "SELECT idlang FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = " . $iCatId;
         self::$_db->query($sql);
-        while (self::$_db->next_record()) {
+        while (self::$_db->nextRecord()) {
             $aLanguages[] = self::$_db->f('idlang');
         }
 
@@ -889,7 +889,7 @@ class ModRewrite extends ModRewriteBase {
         }
 
         $db->query($sql);
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             //set new alias
             self::setCatWebsafeName($db->f('name'), $db->f('idcat'), $db->f('idlang'));
             $aCats[] = array('idcat' => $db->f('idcat'), 'idlang' => $db->f('idlang'));
@@ -932,7 +932,7 @@ class ModRewrite extends ModRewriteBase {
         }
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             //set new alias
             self::setArtWebsafeName($db->f('title'), $db->f('idart'), $db->f('idlang'));
         }

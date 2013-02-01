@@ -47,7 +47,7 @@ function dbGetIndexes($db, $table)
 
     $indexes = array();
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $indexes[$db->f('Key_name')] = $db->f('Key_name');
     }
 
@@ -258,7 +258,7 @@ function dbTableExists($db, $table)
         $tableCache = array();
         $sql = 'SHOW TABLES';
         $db->query($sql);
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $tableCache[] = $db->f(0);
         }
     }
@@ -293,7 +293,7 @@ function dbGetColumns($db, $table)
 
     $sql = 'SHOW COLUMNS FROM ' . $db->escape($table);
     $db->query($sql);
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $structure[$db->f('Field')] = $db->toArray();
     }
 

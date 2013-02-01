@@ -92,12 +92,12 @@ if (!is_numeric($lang) || $lang == '') {
     // search for the first language of this client
     $sql = "SELECT * FROM ".$cfg["tab"]["lang"]." AS A, ".$cfg["tab"]["clients_lang"]." AS B WHERE A.idlang=B.idlang AND idclient='".cSecurity::toInteger($client)."' ORDER BY A.idlang ASC";
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
     $lang = $db->f('idlang');
 
     if (!$perm->have_perm_client_lang($client, $lang)) {
         $lang = '';
-        while ($db->next_record() && ($lang == '')) {
+        while ($db->nextRecord() && ($lang == '')) {
             if ($perm->have_perm_client_lang($client, $db->f('idlang'))) {
                 $lang = $db->f('idlang');
             }

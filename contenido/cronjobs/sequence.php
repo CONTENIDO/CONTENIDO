@@ -22,12 +22,12 @@ $sql2 = 'SELECT *
 
 $sql = 'SHOW TABLES FROM  '.$cfg['db']['connection']['database'].'';
 $db->query($sql);
-if($db->Error !=0) {
-    echo "<pre>" . $sql . "\nMysql Error:" . $db->Error . "(" . $db->Errno . ")</pre>";
+if($db->getErrorMessage() !=0) {
+    echo "<pre>" . $sql . "\nMysql Error:" . $db->getErrorMessage() . "(" . $db->getErrorNumber() . ")</pre>";
 }
 
 $i = 0;
-while ($row = mysql_fetch_row($db->Query_ID)) {
+while ($row = mysql_fetch_row($db->getQueryId())) {
 
     if(in_array($row[0], $filterTables) === false) {
   # echo "<br/> Tabelle: {$row[0]}\n";
@@ -50,15 +50,15 @@ function getNextId($row) {
     $db = cRegistry::getDb();
     $sql = 'SHOW KEYS FROM '.$tableName.' WHERE Key_name="PRIMARY"';
     $db->query($sql);
-     while ($row = mysql_fetch_row($db->Query_ID)) {
+     while ($row = mysql_fetch_row($db->getQueryId())) {
 
         $primaryKey = $row[4];
         $dbAlter = cRegistry::getDb();
         $sqlAlter = 'ALTER TABLE `'.$tableName.'` CHANGE `'.$primaryKey.'` `'.$primaryKey.'` INT( 10 ) NOT NULL AUTO_INCREMENT';
         #echo '<br/>query:'.$sqlAlter;
         $dbAlter->query($sqlAlter);
-        if($db->Errno !=0) {
-            echo "<pre>" . $sqlAlter . "\nMysql Error:" . $db->Error . "(" . $db->Errno . ")</pre>";
+        if($db->getErrorNumber() !=0) {
+            echo "<pre>" . $sqlAlter . "\nMysql Error:" . $db->getErrorMessage() . "(" . $db->getErrorNumber() . ")</pre>";
         }
     }
 

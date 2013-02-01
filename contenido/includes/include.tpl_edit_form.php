@@ -53,7 +53,7 @@ $sql = "SELECT
 
 $db->query($sql);
 
-if ($db->next_record()) {
+if ($db->nextRecord()) {
     $idtpl = $db->f("idtpl");
     $tplname = $db->f("name");
     $description = $db->f("description");
@@ -70,7 +70,7 @@ $sql = "SELECT
         idtpl='" . cSecurity::toInteger($idtpl) . "'";
 
 $db->query($sql);
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $a_c[$db->f("number")] = $db->f("idmod");
 }
 
@@ -100,7 +100,7 @@ $sql = "SELECT
 
 $db->query($sql);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     if ($db->f("idlay") != $idlay) {
         $tpl2->set('d', 'VALUE', $db->f("idlay"));
         $tpl2->set('d', 'CAPTION', $db->f("name"));
@@ -128,7 +128,7 @@ $db->query($sql);
 
 $modules = array();
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $modules[$db->f("idmod")]["name"] = $db->f("name");
     $modules[$db->f("idmod")]["type"] = $db->f("type");
 }

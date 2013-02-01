@@ -70,7 +70,7 @@ if ($doedit == "1") {
 
                     $sql = "SELECT idupl FROM ".$cfg["tab"]["upl"]." WHERE dirname='$upldir' AND filename='$friendlyName'";
                     $db->query($sql);
-                    $db->next_record();
+                    $db->nextRecord();
 
                     $CMS_LINK = $rootpath . $upldir. $friendlyName;
 

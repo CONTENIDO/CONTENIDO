@@ -67,13 +67,13 @@ class WorkflowAllocations extends ItemCollection {
         $db = cRegistry::getDb();
         $sql = "SELECT idcat FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcatlang = '" . cSecurity::toInteger($idcatlang) . "'";
         $db->query($sql);
-        $db->next_record();
+        $db->nextRecord();
         $idcat = $db->f("idcat");
 
         $sql = "SELECT idart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat = '" . cSecurity::toInteger($idcat) . "'";
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $idarts[] = $db->f("idart");
         }
 
@@ -83,7 +83,7 @@ class WorkflowAllocations extends ItemCollection {
             foreach ($idarts as $idart) {
                 $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = '" . cSecurity::toInteger($idart) . "' and idlang = '" . cSecurity::toInteger($lang) . "'";
                 $db->query($sql);
-                if ($db->next_record()) {
+                if ($db->nextRecord()) {
                     $idartlangs[] = $db->f("idartlang");
                 }
             }
@@ -213,7 +213,7 @@ class WorkflowAllocation extends Item {
         $sql = "SELECT idcatlang FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcatlang = '" . cSecurity::toInteger($idcatlang) . "'";
         $db->query($sql);
 
-        if (!$db->next_record()) {
+        if (!$db->nextRecord()) {
             $this->lasterror = i18n("Category doesn't exist, assignment failed", "workflow");
             return false;
         }

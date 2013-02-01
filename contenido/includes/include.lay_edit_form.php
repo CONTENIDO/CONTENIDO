@@ -96,7 +96,7 @@ if ($refreshtemplates != "") {
 
     $fillTemplates = array();
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $fillTemplates[] = $db->f("idtpl");
     }
 

@@ -86,7 +86,7 @@ if ($doedit == "1") {
 
                 $sql = "SELECT idupl FROM " . $cfg["tab"]["upl"] . " WHERE dirname='" . $db->escape($upldir) . "' AND filename='" . $db->escape($friendlyName) . "'";
                 $db->query($sql);
-                $db->next_record();
+                $db->nextRecord();
 
                 $CMS_LINK = $rootpath . $upldir . $friendlyName;
             }
@@ -197,7 +197,7 @@ if ($a_link_intern_value != 0) {
     $intlink .= "<option value='0' selected>-- " . i18n("None") . " --</option>";
 }
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $spaces = "";
     for ($i = 0; $i < $db->f("level"); $i++) {
         $spaces .= "&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -234,13 +234,13 @@ $sql = "SELECT * FROM " . $cfg["tab"]["upl"] . " WHERE idclient='" . cSecurity::
 
 $db->query($sql);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     //get description from con_upl_meta pro id
     $db2 = cRegistry::getDb();
     $sql = "SELECT DISTINCT(description) FROM " . $cfg['tab']['upl_meta'] . " WHERE "
             . "idlang='" . $lang . "' AND idupl=" . $db->f('idupl') . " ORDER BY id_uplmeta";
     $db2->query($sql);
-    $db2->next_record();
+    $db2->nextRecord();
     $doclink.= "<option value=\"" . $db->f("dirname") . $db->f("filename") . "\">" . $db->f("dirname") . $db->f("filename") . " [" . $db2->f("description") . "]</option>";
 }
 
@@ -262,13 +262,13 @@ $sql = "SELECT * FROM " . $cfg["tab"]["upl"] . " WHERE idclient='" . cSecurity::
 
 $db->query($sql);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     //get description from con_upl_meta pro id
     $db2 = cRegistry::getDb();
     $sql = "SELECT DISTINCT(description) FROM " . $cfg['tab']['upl_meta'] . " WHERE "
             . "idlang='" . $lang . "' AND idupl=" . $db->f('idupl') . " ORDER BY id_uplmeta";
     $db2->query($sql);
-    $db2->next_record();
+    $db2->nextRecord();
     $imglink .= "<option value=\"" . $db->f("dirname") . $db->f("filename") . "\">" . $db->f("dirname") . $db->f("filename") . " [" . $db2->f("description") . "]</option>";
 }
 
@@ -290,13 +290,13 @@ $sql = "SELECT * FROM " . $cfg["tab"]["upl"] . " WHERE idclient='" . cSecurity::
 
 $db->query($sql);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     //get description from con_upl_meta pro id
     $db2 = cRegistry::getDb();
     $sql = "SELECT DISTINCT(description) FROM " . $cfg['tab']['upl_meta'] . " WHERE "
             . "idlang='" . $lang . "' AND idupl=" . $db->f('idupl') . " ORDER BY id_uplmeta";
     $db2->query($sql);
-    $db2->next_record();
+    $db2->nextRecord();
     $archivelink .= "<option value=\"" . $db->f("dirname") . $db->f("filename") . "\">" . $db->f("dirname") . $db->f("filename") . " [" . $db2->f("description") . "]</option>";
 }
 
@@ -318,13 +318,13 @@ $sql = "SELECT * FROM " . $cfg["tab"]["upl"] . " WHERE idclient='" . cSecurity::
 
 $db->query($sql);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     //get description from con_upl_meta pro id
     $db2 = cRegistry::getDb();
     $sql = "SELECT DISTINCT(description) FROM " . $cfg['tab']['upl_meta'] . " WHERE "
             . "idlang='" . $lang . "' AND idupl=" . $db->f('idupl') . " ORDER BY id_uplmeta";
     $db2->query($sql);
-    $db2->next_record();
+    $db2->nextRecord();
     $medialink .= "<option value=\"" . $db->f("dirname") . $db->f("filename") . "\">" . $db->f("dirname") . $db->f("filename") . " [" . $db2->f("description") . "]</option>";
 }
 
@@ -340,13 +340,13 @@ $sql = "SELECT * FROM " . $cfg["tab"]["upl"] . " WHERE idclient='" . cSecurity::
 
 $db->query($sql);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     //get description from con_upl_meta pro id
     $db2 = cRegistry::getDb();
     $sql = "SELECT DISTINCT(description) FROM " . $cfg['tab']['upl_meta'] . " WHERE "
             . "idlang='" . $lang . "' AND idupl=" . $db->f('idupl') . " ORDER BY id_uplmeta";
     $db2->query($sql);
-    $db2->next_record();
+    $db2->nextRecord();
     $anylink .= "<option value=\"" . $db->f("dirname") . $db->f("filename") . "\">" . $db->f("dirname") . $db->f("filename") . " [" . $db2->f("description") . "]</option>";
 }
 

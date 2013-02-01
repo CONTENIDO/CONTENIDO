@@ -86,7 +86,7 @@ if ($doedit == "1") {
 
                 $sql = "SELECT idupl FROM ".$cfg["tab"]["upl"]." WHERE dirname='".$db->escape($upldir)."' AND filename='".$db->escape($friendlyName)."'";
                 $db->query($sql);
-                $db->next_record();
+                $db->nextRecord();
 
                 $CMS_LINK = $rootpath . $upldir. $friendlyName;
             }

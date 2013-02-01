@@ -48,7 +48,7 @@ function cCatPerm($widcat, $db = null) {
 
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $_arrCatIDs_cCP[$db->f('idcat')] = '';
         }
     }
@@ -68,7 +68,7 @@ function getGroupIDs(&$db) {
 
     $_arrGroupIDs_gGI = array();
 
-    while ($db->next_record())
+    while ($db->nextRecord())
         $_arrGroupIDs_gGI[] = $db->f('group_id');
 
     return $_arrGroupIDs_gGI;

@@ -67,7 +67,7 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
     }
 
     $db->query($sql_count);
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $iArticleCount = $db->f("article_count");
     }
 
@@ -88,7 +88,7 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
     $db->query($sql);
     $num = 0;
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         if ($iArticleCount > 0 || ($iArticleCount <= 0 && $tpl->dyn_cnt == 0) ||
                 ($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $bNoArticle == 'true') ||
                 ($bNoArticle == 'true' && $action == 'saveart') ||

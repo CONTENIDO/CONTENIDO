@@ -44,7 +44,7 @@ if (isset($title)) {
         if (!isset($idartlang)) {
             $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart = $idart AND idlang = $lang";
             $db->query($sql);
-            $db->next_record();
+            $db->nextRecord();
             $idartlang = $db->f("idartlang");
         }
 
@@ -52,7 +52,7 @@ if (isset($title)) {
             $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".$idcat."' AND idart = '".$idart."'";
 
             $db->query($sql);
-            $db->next_record();
+            $db->nextRecord();
 
             $tmp_idcatart = $db->f("idcatart");
 
@@ -63,7 +63,7 @@ if (isset($title)) {
             if (!isset($is_start)) {
                 $sql = "SELECT * FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '$idcat' AND idlang = '$lang' AND startidartlang != '0' ";
                 $db->query($sql);
-                if ($db->next_record()) {
+                if ($db->nextRecord()) {
                     $tmp_startidartlang = $db->f('startidartlang');
                     if ($idartlang == $tmp_startidartlang) {
                         conMakeStart($tmp_idcatart, 0);
@@ -79,7 +79,7 @@ if (isset($title)) {
                 $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = $idcat AND idart = $idart";
 
                 $db->query($sql);
-                $db->next_record();
+                $db->nextRecord();
 
                 conSetCodeFlag( $db->f("idcatart") );
             }
@@ -93,7 +93,7 @@ if (isset($title)) {
         if (!isset($idartlang)) {
             $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart = $idart AND idlang = $lang";
             $db->query($sql);
-            $db->next_record();
+            $db->nextRecord();
             $idartlang = $db->f("idartlang");
         }
 
@@ -102,7 +102,7 @@ if (isset($title)) {
                 $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".$idcat."' AND idart = '".$idart."'";
 
                 $db->query($sql);
-                $db->next_record();
+                $db->nextRecord();
 
                 $tmp_idcatart = $db->f("idcatart");
 
@@ -113,7 +113,7 @@ if (isset($title)) {
                 if (!isset($is_start)) {
                     $sql = "SELECT * FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '$idcat' AND idlang = '$lang' AND startidartlang != '0' ";
                     $db->query($sql);
-                    if ($db->next_record()) {
+                    if ($db->nextRecord()) {
                         $tmp_startidartlang = $db->f('startidartlang');
                         if ($idartlang == $tmp_startidartlang) {
                             conMakeStart($tmp_idcatart, 0);
@@ -130,7 +130,7 @@ if (isset($title)) {
                 $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = $idcat AND idart = $idart";
 
                 $db->query($sql);
-                $db->next_record();
+                $db->nextRecord();
 
                 conSetCodeFlag($db->f("idcatart"));
             }

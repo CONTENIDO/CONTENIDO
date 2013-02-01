@@ -270,7 +270,7 @@ abstract class cCodeGeneratorAbstract {
 
         $sql = $this->_db->prepare($sql, $cfg['tab']['tpl'], $cfg['tab']['tpl_conf'], $this->_idtplcfg);
         $this->_db->query($sql);
-        $this->_db->next_record();
+        $this->_db->nextRecord();
         $data = $this->_db->toArray();
 
         if ($this->_layout !== false) {
@@ -508,7 +508,7 @@ abstract class cCodeGeneratorAbstract {
                 $sql, $cfg['tab']['content'], $cfg['tab']['art_lang'], $cfg['tab']['type'], $this->_idart, $this->_lang
         );
         $this->_db->query($sql);
-        while ($this->_db->next_record()) {
+        while ($this->_db->nextRecord()) {
             $return[$this->_db->f('type')][$this->_db->f('typeid')] = $this->_db->f('value');
         }
 

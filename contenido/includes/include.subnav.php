@@ -50,7 +50,7 @@ if (isset($_GET['idcat'])) {
 
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         // Extract names from the XML document.
         $caption = $nav->getName($db->f("location"));
 

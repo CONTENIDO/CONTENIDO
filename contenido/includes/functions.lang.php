@@ -122,7 +122,7 @@ function langDuplicateFromFirstLanguage($client, $idlang) {
     $sql = "SELECT * FROM " . $cfg['tab']['clients_lang'] . " WHERE idclient=" . $client . " ORDER BY idlang ASC";
 
     $db->query($sql);
-    if ($db->next_record()) {
+    if ($db->nextRecord()) {
         // if there is already a language copy from it
 
         $db2 = cRegistry::getDb();
@@ -138,7 +138,7 @@ function langDuplicateFromFirstLanguage($client, $idlang) {
         // Array storing the article->templatecfg allocations for later reallocation
         $aCfgArt = array();
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             // Store the idartlang->idplcfg allocation for later reallocation
             $aCfgArt[] = array('idartlang' => $db->f('idartlang'), 'idtplcfg' => $db->f('idtplcfg'));
 
@@ -158,7 +158,7 @@ function langDuplicateFromFirstLanguage($client, $idlang) {
             // duplicate entries in 'content' table
             $sql = "SELECT * FROM " . $cfg['tab']['content'] . " WHERE idartlang=" . (int) $iIdartLangOld;
             $db2->query($sql);
-            while ($db2->next_record()) {
+            while ($db2->nextRecord()) {
                 $aRs = $db2->toArray();
                 //$aRs['idcontent'] = (int) $db3->nextid($cfg['tab']['content']);
                 $aRs['idartlang'] = $iIdartLangNew;
@@ -176,7 +176,7 @@ function langDuplicateFromFirstLanguage($client, $idlang) {
         // Array storing the category->template allocations fot later reallocation
         $aCfgCat = array();
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             //$nextid = (int) $db2->nextid($cfg['tab']['cat_lang']);
             $aRs = $db->toArray();
             $aRs['visible'] = 0;
@@ -190,7 +190,7 @@ function langDuplicateFromFirstLanguage($client, $idlang) {
         // duplicate all entries in the 'stat' table
         $sql = "SELECT * FROM " . $cfg['tab']['stat'] . " WHERE idclient=" . $client . " AND idlang=" . $firstlang;
         $db->query($sql);
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $aRs = $db->toArray();
             //$aRs['idstat'] = (int) $db2->nextid($cfg['tab']['stat']);
             $aRs['idlang'] = $idlang;
@@ -207,7 +207,7 @@ function langDuplicateFromFirstLanguage($client, $idlang) {
         // Array storing the category->template allocations fot later reallocation
         $aCfgOldNew = array();
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             // $nextid = (int) $db2->nextid($cfg['tab']['tpl_conf']);
             $aRs = $db->toArray();
             $db2->insert($cfg['tab']['tpl_conf'], $aRs);
@@ -225,7 +225,7 @@ function langDuplicateFromFirstLanguage($client, $idlang) {
                     . " WHERE idtplcfg=" . $oldidtplcfg . " ORDER BY number ASC";
             $db->query($sql);
 
-            while ($db->next_record()) {
+            while ($db->nextRecord()) {
                 $aRs = array(
                     'idtplcfg' => $newidtplcfg,
                     'number' => (int) $db->f('number'),
@@ -295,7 +295,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
     $sql = "SELECT * FROM " . $cfg['tab']['art_lang'] . " AS A, " . $cfg['tab']['art'] . " AS B "
             . "WHERE A.idart=B.idart AND B.idclient=" . $iIdClient . " AND A.idlang=" . $iIdLang;
     $db->query($sql);
-    if ($db->next_record()) {
+    if ($db->nextRecord()) {
         conDeleteArt($db->f('idart'));
     }
 
@@ -303,7 +303,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
     $sql = "SELECT * FROM " . $cfg['tab']['cat_lang'] . " AS A, " . $cfg['tab']['cat'] . " AS B "
             . "WHERE A.idcat=B.idcat AND B.idclient=" . $iIdClient . " AND A.idlang=" . $iIdLang;
     $db->query($sql);
-    if ($db->next_record()) {
+    if ($db->nextRecord()) {
         strDeleteCategory($db->f('idcat'));
     }
 
@@ -318,7 +318,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
         $lastlanguage = 0;
         $sql = "SELECT COUNT(*) FROM " . $cfg['tab']['clients_lang'] . " WHERE idclient=" . $iIdClient;
         $db->query($sql);
-        $db->next_record();
+        $db->nextRecord();
         if ($db->f(0) == 1) {
             $lastlanguage = 1;
         }
@@ -327,7 +327,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
         $sql = "SELECT A.idtplcfg AS idtplcfg, idartlang, A.idart FROM " . $cfg['tab']['art_lang'] . " AS A, " . $cfg['tab']['art'] . " AS B WHERE A.idart=B.idart AND B.idclient=" . $iIdClient . "
                 AND idlang!=0 AND idlang=" . $iIdLang;
         $db->query($sql);
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $aIdArtLang[] = $db->f('idartlang');
             $aIdArt[] = $db->f('idart');
             $aIdTplCfg[] = $db->f('idtplcfg');
@@ -354,7 +354,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
         $sql = "SELECT A.idtplcfg AS idtplcfg, idcatlang, A.idcat FROM " . $cfg['tab']['cat_lang'] . " AS A, " . $cfg['tab']['cat'] . " AS B WHERE A.idcat=B.idcat AND B.idclient=" . $iIdClient . "
                 AND idlang!=0 AND idlang=" . $iIdLang;
         $db->query($sql);
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $aIdCatLang[] = $db->f('idcatlang');
             $aIdCat[] = $db->f('idcat');
             $aIdTplCfg[] = $db->f('idtplcfg'); // added

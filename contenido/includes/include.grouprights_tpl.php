@@ -34,7 +34,7 @@ $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"
 $db->query($sql);
 
 $rights_list_old = array();
-while ($db->next_record()) { //set a new rights list fore this user
+while ($db->nextRecord()) { //set a new rights list fore this user
     $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f("idcat")] = "x";
 }
 
@@ -135,7 +135,7 @@ $output = "";
 $sql = "SELECT * FROM " . $cfg["tab"]["tpl"] . " WHERE idclient='" . cSecurity::toInteger($rights_client) . "' ORDER BY name";
 $db->query($sql);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $tplname = conHtmlentities($db->f("name"));
     $description = conHtmlentities($db->f("description"));
 

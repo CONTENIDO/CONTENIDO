@@ -48,7 +48,7 @@ class cApiPathresolveCacheHelper {
             $sql = "SHOW TABLES LIKE '" . $db->escape($tableName) . "'";
             $db->query($sql);
 
-            if (!$db->next_record()) {
+            if (!$db->nextRecord()) {
                 // Important: This is really a hack! Don't use
                 // pathresolve_heapcache if you are
                 // not sure what it does.

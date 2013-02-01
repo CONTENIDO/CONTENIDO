@@ -115,7 +115,7 @@ class cSystemPurge {
             $sSql = ' UPDATE ' . $cfg['tab']['cat_art'] . ' cca, ' . $cfg['tab']['cat'] . ' cc, ' . $cfg['tab']['art'] . ' ca ' . ' SET cca.createcode=1 ' . ' WHERE cc.idcat = cca.idcat ' . ' AND ca.idart = cca.idart ' . ' AND cc.idclient = ' . (int) $clientId . ' AND ca.idclient = ' . (int) $clientId;
             $db->query($sSql);
 
-            return ($db->Error == '')? true : false;
+            return ($db->getErrorMessage() == '') ? true : false;
         } else {
             return false;
         }
@@ -135,7 +135,7 @@ class cSystemPurge {
             $sql = 'DELETE FROM ' . $cfg['tab']['inuse'];
             $db->query($sql);
 
-            return ($db->Error == '')? true : false;
+            return ($db->getErrorMessage() == '') ? true : false;
         } else {
             return false;
         }

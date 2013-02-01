@@ -715,8 +715,8 @@ function mr_i18n($key) {
  * $db  = cRegistry::getDb();
  * $sql = "SELECT * FROM foo WHERE bar='foobar'";
  * $db->query($sql);
- * $db->next_record();
- * $data = $db->Record;
+ * $db->nextRecord();
+ * $data = $db->getRecord();
  *
  * // new way
  * $sql  = "SELECT * FROM foo WHERE bar='foobar'";
@@ -734,7 +734,7 @@ function mr_queryAndNextRecord($query) {
     if (!$db->query($query)) {
         return null;
     }
-    return ($db->next_record()) ? $db->Record : null;
+    return ($db->nextRecord()) ? $db->getRecord() : null;
 }
 
 /**

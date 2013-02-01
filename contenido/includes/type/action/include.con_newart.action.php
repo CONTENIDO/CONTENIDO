@@ -38,7 +38,7 @@ $sql = "SELECT
             b.idcat     = a.idcat";
 
 $db->query($sql);
-$db->next_record();
+$db->nextRecord();
 
 if ($db->f("idtplcfg") != 0) {
     $newart = true;

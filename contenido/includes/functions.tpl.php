@@ -163,7 +163,7 @@ function tplDeleteTemplate($idtpl) {
         $idsToDelete = array();
         $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".cSecurity::toInteger($idtpl)."'";
         $db->query($sql);
-        while ( $db->next_record() ) {
+        while ( $db->nextRecord() ) {
             $idsToDelete[] = $db->f("idtplcfg");
         }
 
@@ -411,7 +411,7 @@ function tplDuplicateTemplate($idtpl) {
                 idtpl = '".cSecurity::toInteger($idtpl)."'";
 
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
 
     $idclient   = $db->f("idclient");
     $idlay      = $db->f("idlay");
@@ -456,7 +456,7 @@ function tplDuplicateTemplate($idtpl) {
 
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $a_containers[$db->f("number")] = $db->f("idmod");
     }
 
@@ -485,7 +485,7 @@ function tplDuplicateTemplate($idtpl) {
 
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
            $a_container_cfg[$db->f("number")] = $db->f("container");
         }
 
@@ -539,7 +539,7 @@ function tplIsTemplateInUse($idtpl) {
                 b.idtplcfg  IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')
             ORDER BY b.idlang ASC, b.name ASC ";
     $db->query($sql);
-    if ($db->num_rows() > 0) {
+    if ($db->numRows() > 0) {
         return true;
     }
 
@@ -557,7 +557,7 @@ function tplIsTemplateInUse($idtpl) {
 
     $db->query($sql);
 
-    if ($db->num_rows() > 0) {
+    if ($db->numRows() > 0) {
         return true;
     }
 
@@ -595,8 +595,8 @@ function tplGetInUsedData($idtpl) {
                 b.idtplcfg  IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')
             ORDER BY b.idlang ASC, b.name ASC ";
     $db->query($sql);
-    if ($db->num_rows() > 0) {
-        while ($db->next_record()) {
+    if ($db->numRows() > 0) {
+        while ($db->nextRecord()) {
             $aUsedData['cat'][] = array(
             'name' => $db->f('name'),
             'lang' => $db->f('idlang'),
@@ -619,8 +619,8 @@ function tplGetInUsedData($idtpl) {
 
     $db->query($sql);
 
-    if ($db->num_rows() > 0) {
-        while ($db->next_record()) {
+    if ($db->numRows() > 0) {
+        while ($db->nextRecord()) {
             $aUsedData['art'][] = array(
             'title' => $db->f('title'),
             'lang' => $db->f('idlang'),
@@ -657,7 +657,7 @@ function tplcfgDuplicate ($idtplcfg)
 
     $db->query($sql);
 
-    if ($db->next_record())
+    if ($db->nextRecord())
     {
         //$newidtplcfg = $db2->nextid($cfg["tab"]["tpl_conf"]);
         $idtpl = $db->f("idtpl");
@@ -685,7 +685,7 @@ function tplcfgDuplicate ($idtplcfg)
 
         $db->query($sql);
 
-        while ($db->next_record())
+        while ($db->nextRecord())
         {
             //$newidcontainerc = $db2->nextid($cfg["tab"]["container_conf"]);
             $number = $db->f("number");
@@ -731,7 +731,7 @@ function tplAutoFillModules ($idtpl)
     $sql = "SELECT idlay FROM ".$cfg["tab"]["tpl"]." WHERE idtpl = '".cSecurity::toInteger($idtpl)."'";
     $db_autofill->query($sql);
 
-    if (!$db_autofill->next_record())
+    if (!$db_autofill->nextRecord())
     {
         return false;
     }
@@ -760,7 +760,7 @@ function tplAutoFillModules ($idtpl)
 
                 $db_autofill->query($sql);
 
-                if ($db_autofill->next_record())
+                if ($db_autofill->nextRecord())
                 {
                     $idmod = $db_autofill->f("idmod");
 
@@ -769,7 +769,7 @@ function tplAutoFillModules ($idtpl)
 
                     $db_autofill->query($sql);
 
-                    if ($db_autofill->next_record())
+                    if ($db_autofill->nextRecord())
                     {
                         $sql =     "UPDATE ".$cfg["tab"]["container"].
                                 " SET idmod = '".cSecurity::toInteger($idmod)."' WHERE idtpl = '".cSecurity::toInteger($idtpl)."'".
@@ -797,7 +797,7 @@ function tplAutoFillModules ($idtpl)
 
                 $db_autofill->query($sql);
 
-                if ($db_autofill->next_record())
+                if ($db_autofill->nextRecord())
                 {
                     $idmod = $db_autofill->f("idmod");
 
@@ -807,7 +807,7 @@ function tplAutoFillModules ($idtpl)
 
                     $db_autofill->query($sql);
 
-                    if ($db_autofill->next_record())
+                    if ($db_autofill->nextRecord())
                     {
 
                     } else {

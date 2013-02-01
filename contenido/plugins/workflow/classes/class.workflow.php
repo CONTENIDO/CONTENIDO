@@ -94,7 +94,7 @@ class Workflows extends ItemCollection {
         $aItemIdsDelete = array();
         $sSql = 'SELECT idworkflowitem FROM ' . $cfg["tab"]["workflow_items"] . ' WHERE idworkflow = ' . cSecurity::toInteger($idWorkflow) . ';';
         $oDb->query($sSql);
-        while ($oDb->next_record()) {
+        while ($oDb->nextRecord()) {
             $aItemIdsDelete[] = cSecurity::escapeDB($oDb->f('idworkflowitem'), $oDb);
         }
 
@@ -102,7 +102,7 @@ class Workflows extends ItemCollection {
             $aUserSequencesDelete = array();
             $sSql = 'SELECT idusersequence FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
             $oDb->query($sSql);
-            while ($oDb->next_record()) {
+            while ($oDb->nextRecord()) {
                 $aUserSequencesDelete[] = cSecurity::escapeDB($oDb->f('idusersequence'), $oDb);
             }
 

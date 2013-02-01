@@ -134,10 +134,10 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
             $this->oDbg->show($sSql, 'Contenido_FrontendNavigation_Breadcrumb::getBreadcrumb($iBaseCategoryId, $iRootLevel = 0, $bReset = false): $sSql');
         }
         $this->oDb->query($sSql);
-        if ($this->oDb->Errno != 0) {
+        if ($this->oDb->getErrorNumber() != 0) {
             return false;
         }
-        $this->oDb->next_record();
+        $this->oDb->nextRecord();
         if ($this->_bAsArray === false) {
             $oContenidoCategory = new Contenido_Category(cRegistry::getDb(), $this->aCfg);
             $oContenidoCategory->load(intval($this->oDb->f('idcat')), true, $this->iLang);

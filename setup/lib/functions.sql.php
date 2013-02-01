@@ -101,7 +101,7 @@ function addSalts($db) {
     $sql = sprintf($sql, $cfg['tab']['user']);
 
     $db->query($sql);
-    if ($db->num_rows() == 0) {
+    if ($db->numRows() == 0) {
         $db2->query("ALTER TABLE ".$cfg["tab"]["user"]." CHANGE password password VARCHAR(64)");
         $db2->query("ALTER TABLE ".$cfg["tab"]["user"]." ADD salt VARCHAR(32) AFTER password");
     }
@@ -119,7 +119,7 @@ function addSalts($db) {
     $sql = sprintf($sql, $cfg['tab']['frontendusers']);
 
     $db->query($sql);
-    if ($db->num_rows() == 0) {
+    if ($db->numRows() == 0) {
         $db2->query("ALTER TABLE ".$cfg["tab"]["frontendusers"]." CHANGE password password VARCHAR(64)");
         $db2->query("ALTER TABLE ".$cfg["tab"]["frontendusers"]." ADD salt VARCHAR(32) AFTER password");
     }
@@ -163,7 +163,7 @@ function urlDecodeTable($db, $table, $checkTableExists = false) {
     $sql = "SELECT * FROM " . $table;
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $row = $db->toArray(FETCH_ASSOC);
         $sql = "UPDATE " . $table . " SET ";
         foreach ($row as $key => $value) {

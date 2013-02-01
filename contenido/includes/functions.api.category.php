@@ -85,7 +85,7 @@ function cApiCatGetLevelNode($idcat, $minLevel = 0)
                 a.idcat    = b.idcat";
 
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
 
     $parentid  = $db->f('parentid');
     $thislevel = $db->f('level');

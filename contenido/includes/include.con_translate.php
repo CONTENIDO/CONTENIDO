@@ -269,7 +269,7 @@ $db->query($sql);
 $allModules = array();
 $allTranslations = array();
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $idmod = $db->f('idmod');
     $allModules[$idmod] = $db->f('name');
     $module = new cApiModule($idmod);
@@ -319,7 +319,7 @@ $sql = "SELECT
             name";
 
 $db->query($sql);
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $aAllTemplates[$db->f("idtpl")] = $db->f('name');
 }
 
@@ -404,7 +404,7 @@ if (is_array($allLanguages)) {
 
     $langNames = array();
     $countExtraLangOptions = 0;
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $idlang = $db->f("idlang");
         $langString = $db->f("name") . " (" . $db->f("idlang") . ")";
         $langNames[$idlang] = $langString;

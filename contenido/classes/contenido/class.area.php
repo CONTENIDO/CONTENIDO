@@ -85,7 +85,7 @@ class cApiAreaCollection extends ItemCollection {
             $sql = "SELECT b.name FROM `%s` AS a, `%s` AS b WHERE a.name = '%s' AND b.name = a.parent_id";
         }
         $this->db->query($sql, $this->table, $this->table, $area);
-        return ($this->db->next_record())? $this->db->f('name') : $area;
+        return ($this->db->nextRecord())? $this->db->f('name') : $area;
     }
 
     /**
@@ -99,7 +99,7 @@ class cApiAreaCollection extends ItemCollection {
         $this->db->query($sql, $this->table, $nameOrId, $nameOrId);
 
         $ids = array();
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             $ids[] = $this->db->f('idarea');
         }
 

@@ -114,7 +114,7 @@ if ($idart) {
 
         $db->query($sql);
 
-        if ($db->next_record()) {
+        if ($db->nextRecord()) {
             // template configuration found
             $idtplcfg = $db->f('idtplcfg');
             $idtpl = $db->f('idtpl');
@@ -161,7 +161,7 @@ if ($idart) {
                 c.idclient  = " . (int) $client;
     $db->query($sql);
 
-    if ($db->next_record()) {
+    if ($db->nextRecord()) {
         // template configuration found
         $idtplcfg = $db->f('idtplcfg');
         $idtpl = $db->f('idtpl');
@@ -191,12 +191,12 @@ if ($idtpl == 0) {
 $sql = "SELECT idcontainerc FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg=" . (int) $idtplcfg;
 $db->query($sql);
 
-if (!$db->next_record()) {
+if (!$db->nextRecord()) {
     // There is no configuration for this $idtplcfg, check if template has a pre-configuration
     $sql = "SELECT idtplcfg, description FROM " . $cfg['tab']['tpl'] . " WHERE idtpl=" . (int) $idtpl;
 
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
     $description = $db->f('description');
     if (0 != $db->f('idtplcfg')) {
         // Template has a pre-configuration, copy pre-configuration data to
@@ -204,7 +204,7 @@ if (!$db->next_record()) {
         $sql = "SELECT * FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg=" . (int) $db->f('idtplcfg') . " ORDER BY number DESC";
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             // get data
             //$nextid    = $db3->nextid($cfg['tab']['container_conf']);
             $number = $db->f('number');
@@ -231,7 +231,7 @@ $db->query($sql);
 
 $a_c = array();
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     // varstring is stored in array $a_c
     $a_c[$db->f('number')] = $db->f('container');
 }
@@ -288,7 +288,7 @@ $tpl2->set('d', 'CAPTION', '--- ' . i18n("none") . ' ---');
 $tpl2->set('d', 'SELECTED', '');
 $tpl2->next();
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     if ($db->f('idtpl') != "$idtpl") {
         $tpl2->set('d', 'VALUE', $db->f('idtpl'));
         $tpl2->set('d', 'CAPTION', $db->f('name'));
@@ -310,7 +310,7 @@ $db->query($sql);
 
 $a_d = array();
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     // liste der benutzten module generieren
     $a_d[$db->f('number')] = $db->f('idmod');
 }
@@ -321,7 +321,7 @@ if (isset($a_d) && is_array($a_d)) {
         if (0 != $value) {
             $sql = "SELECT * FROM " . $cfg['tab']['mod'] . " WHERE idmod=" . (int) $a_d[$cnumber];
             $db->query($sql);
-            $db->next_record();
+            $db->nextRecord();
 
             global $cCurrentModule, $cCurrentContainer;
             $cCurrentModule = $db->f('idmod');
@@ -493,7 +493,7 @@ if (!$idtpl && $idcat && $idart) {
                 c.idtpl     = a.idtpl AND
                 c.idclient  = " . (int) $client;
     $db2->query($sql);
-    if ($db2->next_record()) {
+    if ($db2->nextRecord()) {
         $message = sprintf(i18n("This article has no template. Therefore the categories template (%s) is used. You can set the article template below."), $db2->f('name'));
     } else {
         $message = i18n("no template with this categories and/or article associated. You must be set a template.");

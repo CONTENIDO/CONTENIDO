@@ -118,7 +118,7 @@ $sql = "SELECT
 
 $db->query($sql);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     // Name
     $sArea = $db->f('name');
 
@@ -154,10 +154,10 @@ while ($db->next_record()) {
 }
 
 // Have area a menue
-if ($db->num_rows() == 0) {
+if ($db->numRows() == 0) {
     $sql = $db->prepare("SELECT menuless FROM `%s` WHERE name = '%s' AND parent_id = 0", $cfg['tab']['area'], $area);
     $db->query($sql);
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $bMenuless = $db->f('menuless') ? true : false;
     }
 }

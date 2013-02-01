@@ -39,7 +39,7 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $clients = array();
     $clientNames = array();
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $clients[] = $db->f('idclient');
     }
 

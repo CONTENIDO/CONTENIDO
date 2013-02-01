@@ -81,7 +81,7 @@ $sortID = array("CMS_HTMLHEAD", "CMS_HEAD", "CMS_HTML", "CMS_HTMLTEXT", "CMS_TEX
 $aIdtype = array();
 $sql = "SELECT DISTINCT typeid FROM %s WHERE idartlang = %d ORDER BY typeid";
 $db->query($sql, $cfg["tab"]["content"], $_REQUEST["idartlang"]);
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $aIdtype[] = $db->f("typeid");
 }
 
@@ -90,7 +90,7 @@ foreach ($sortID as $name) {
     $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM %s AS a, %s AS b "
          . "WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s' ORDER BY idtype, typeid, idcontent";
     $db->query($sql, $cfg["tab"]["content"], $cfg["tab"]["type"], $_REQUEST["idartlang"], $name);
-    while ($db->next_record() && $db->f("value") != '') {
+    while ($db->nextRecord() && $db->f("value") != '') {
         $result[$db->f("name")][$db->f("id")] = $db->f("value");
         if (!in_array($db->f("name"), $aList)) {
             $aList[$db->f("idtype")] = $db->f("name");
@@ -183,7 +183,7 @@ $catString = '';
 prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
 $sql = "SELECT * FROM " . $cfg["tab"]["art_lang"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
 $db->query($sql);
-$db->next_record();
+$db->nextRecord();
 $layoutcode .= '<div id="categorypath" class="categorypath">' . i18n("You are here") . ": " . $catString . ' > ' . conHtmlSpecialChars($db->f("title")) . '</div><p style="display:block;font-weight:bold;">' . i18n("Content administration") . '</p>';
 
 if (count($result) <= 0) {
@@ -345,7 +345,7 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
                         " AND a.idtype=b.idtype AND a.typeid = " . cSecurity::toInteger($val) . " AND b.type = '" . cSecurity::toString($type) . "'
                     ORDER BY a.idartlang, a.idtype, a.typeid";
                 $db->query($sql);
-                while ($db->next_record()) {
+                while ($db->nextRecord()) {
                     $idcontent = $db->f("idcontent");
                 }
                 $backendUrl = cRegistry::getBackendUrl();

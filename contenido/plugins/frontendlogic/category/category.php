@@ -75,7 +75,7 @@ class frontendlogic_category extends FrontendLogic
                  ORDER BY c.idtree ASC";
 
         $db->query($sSQL);
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $items[$db->f("idcatlang")] =
                 '<span style="padding-left: '.($db->f("level")*10).'px;">'.htmldecode($db->f("name")).'</span>';
 

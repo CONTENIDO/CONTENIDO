@@ -130,7 +130,7 @@ class cModuleSynchronizer extends cModuleHandler {
         $db->query($sql);
         $retIdMod = 0;
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $modulePath = $cfgClient[$db->f('idclient')]['module']['path'] . $db->f('alias') . '/' . $this->_directories['php'] . $db->f('alias');
 
             $lastmodified = $db->f('lastmodified');
@@ -295,7 +295,7 @@ class cModuleSynchronizer extends cModuleHandler {
         $db->query($sql);
 
         // a record is found
-        if ($db->next_record()) {
+        if ($db->nextRecord()) {
             return true;
         } else {
             return false;
@@ -318,7 +318,7 @@ class cModuleSynchronizer extends cModuleHandler {
         $db->query($sql);
 
         // a record is found
-        if ($db->next_record()) {
+        if ($db->nextRecord()) {
             $sqlUpdateName = sprintf("UPDATE %s SET alias='%s' WHERE idmod=%s", $this->_cfg['tab']['mod'], $newName, $db->f('idmod'));
             $db->query($sqlUpdateName);
             return;

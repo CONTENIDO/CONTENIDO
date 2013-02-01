@@ -105,7 +105,7 @@ $aDirectories = array();
 $sql = "SELECT DISTINCT(dirname) AS dirname FROM ".$cfg['tab']['upl']." WHERE "
      . "idclient='".$client."' AND filetype IN (" . $filetypes . ") ORDER BY dirname";
 $db->query($sql);
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $dirname = $db->f('dirname');
     $aParts = explode('/', trim($dirname, '/'));
     $aDirectories[] = array(
@@ -127,7 +127,7 @@ while ($oItem = $oUploadColl->next()) {
     $sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
          . "idlang='".$lang."' AND idupl=".$oItem->get('idupl')." ORDER BY id_uplmeta";
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
     $aImages[] = array(
         'selected' => ($a_content['CMS_IMG'][$typenr] == $oItem->get('idupl')),
         'idupl' => $oItem->get('idupl'),

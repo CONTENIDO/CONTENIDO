@@ -86,7 +86,7 @@ if (($handle = opendir($path)) !== false) {
             if ($perm->have_perm_area_action('style', $sActionDelete)) {
                 $sql = 'SELECT `idsfi` FROM `' . $cfg['tab']['file_information'] . '` WHERE `idclient`=' . cSecurity::toInteger($client) . " AND `filename`='" . cSecurity::toString($filename) . "'";
                 $db->query($sql);
-                if ($db->next_record()) {
+                if ($db->nextRecord()) {
                     $idsfi = $db->f('idsfi');
                 }
                 $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(' . $idsfi . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '"></a>');

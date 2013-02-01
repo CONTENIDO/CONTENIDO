@@ -56,7 +56,7 @@ class Cat {
                     idcat = '" . $category . "'";
 
         $db->query($sql);
-        $db->next_record();
+        $db->nextRecord();
 
         return ($db->f("name"));
     }

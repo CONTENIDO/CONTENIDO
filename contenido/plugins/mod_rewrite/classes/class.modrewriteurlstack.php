@@ -287,8 +287,8 @@ SQL;
         $aFields = array('', 'idart', 'idartlang', 'idcatart', 'idcat');
 
         $this->_oDb->query($sql);
-        while ($this->_oDb->next_record()) {
-            $aRS = $this->_oDb->Record;
+        while ($this->_oDb->nextRecord()) {
+            $aRS = $this->_oDb->getRecord();
 
             // loop thru fields array
             foreach ($aFields as $field) {

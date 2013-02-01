@@ -83,7 +83,7 @@ class PimPluginCollection extends ItemCollection {
         $sql = 'SELECT MAX(idplugin) AS id FROM ' . $cfg['tab']['plugins'];
         $this->db->query($sql);
 
-        if ($this->db->next_record()) {
+        if ($this->db->nextRecord()) {
 
             $result = $this->db->f('id');
 

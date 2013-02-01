@@ -159,7 +159,7 @@ class cLayoutSynchronizer {
         $db = cRegistry::getDb();
         $db->query($sql);
         $retIdMod = 0;
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $lastmodified = $db->f('lastmodified');
 
             //exist layout directory

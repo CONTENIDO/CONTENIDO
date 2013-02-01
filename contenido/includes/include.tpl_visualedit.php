@@ -52,7 +52,7 @@ $sql = "SELECT
         ORDER BY name";
 
 $db->query($sql);
-$db->next_record();
+$db->nextRecord();
 
 $idtpl          = (int) $db->f('idtpl');
 $tplname        = $db->f('name');
@@ -64,14 +64,14 @@ $bIsDefault     = $db->f('defaulttemplate');
 
 $sql = "SELECT number, idmod FROM " . $cfg['tab']['container'] . " WHERE idtpl='" . $idtpl . "'";
 $db->query($sql);
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $a_c[$db->f('number')] = $db->f('idmod');
 }
 
 $modules = array();
 $sql = "SELECT idmod, name, type FROM " . $cfg['tab']['mod'] . " WHERE idclient='" . $client . "' ORDER BY name";
 $db->query($sql);
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $modules[$db->f('idmod')]['name'] = $db->f('name');
     $modules[$db->f('idmod')]['type'] = $db->f('type');
 }

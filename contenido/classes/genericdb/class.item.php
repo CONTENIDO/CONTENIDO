@@ -132,14 +132,14 @@ abstract class Item extends cItemBaseAbstract {
 
         $this->_lastSQL = $sql;
 
-        if ($this->db->num_rows() > 1) {
+        if ($this->db->numRows() > 1) {
             $msg = "Tried to load a single line with field $sField and value $mValue from "
                     . $this->table . " but found more than one row";
             throw new cException($msg);
         }
 
         // Advance to the next record, return false if nothing found
-        if (!$this->db->next_record()) {
+        if (!$this->db->nextRecord()) {
             return false;
         }
 
@@ -195,13 +195,13 @@ abstract class Item extends cItemBaseAbstract {
 
         $this->_lastSQL = $sql;
 
-        if ($this->db->num_rows() > 1) {
+        if ($this->db->numRows() > 1) {
             $msg = 'Tried to load a single line with fields ' . print_r(array_keys($aAttributes), true) . ' and values ' . print_r(array_values($aAttributes), true) . ' from ' . $this->table . ' but found more than one row';
             throw new cException($msg);
         }
 
         // Advance to the next record, return false if nothing found
-        if (!$this->db->next_record()) {
+        if (!$this->db->nextRecord()) {
             return false;
         }
 
@@ -229,14 +229,14 @@ abstract class Item extends cItemBaseAbstract {
 
         $this->_lastSQL = $sql;
 
-        if ($this->db->num_rows() > 1) {
+        if ($this->db->numRows() > 1) {
             $msg = "Tried to load a single line with where clause '" . $sWhere . "' from "
                     . $this->table . " but found more than one row";
             throw new cException($msg);
         }
 
         // Advance to the next record, return false if nothing found
-        if (!$this->db->next_record()) {
+        if (!$this->db->nextRecord()) {
             return false;
         }
 
@@ -404,7 +404,7 @@ abstract class Item extends cItemBaseAbstract {
 
         $this->_lastSQL = $sql;
 
-        if ($this->db->affected_rows() > 0) {
+        if ($this->db->affectedRows() > 0) {
             $this->_oCache->addItem($this->oldPrimaryKey, $this->values);
             $this->_executeCallbacks(self::STORE_SUCCESS, get_class($this), array($this));
             return true;

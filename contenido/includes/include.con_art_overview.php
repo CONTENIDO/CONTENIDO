@@ -239,7 +239,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         // Getting article count, if necessary
         if ($elemperpage > 0) {
             $db->query($sql_count);
-            $db->next_record();
+            $db->nextRecord();
             $iArticleCount = $db->f("article_count");
 
             // If not beyond scope, limit
@@ -264,7 +264,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         $aArticles = Array();
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $sItem = "k" . $db->f("idart");
 
             if ($db->f("idlang") == $lang || !array_key_exists($sItem, $aArticles)) {
@@ -384,7 +384,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $db3 = cRegistry::getDb();
 
                 $db3->query($sql);
-                $db3->next_record();
+                $db3->nextRecord();
 
                 $starttimestamp = strtotime($datestart);
                 $endtimestamp = strtotime($dateend);
@@ -445,7 +445,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             if ($idlang != $lang) {
                 $sql = "SELECT idcatlang FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat='" . cSecurity::toInteger($idcat) . "' AND idlang='" . cSecurity::toInteger($lang) . "'";
                 $db->query($sql);
-                if ($db->next_record()) {
+                if ($db->nextRecord()) {
                     $tmp_sync = '<a href="' . $sess->url("main.php?area=con&action=con_syncarticle&idart=$idart&sourcelanguage=$idlang&frame=4&idcat=$idcat&next=$next") . '" title="' . i18n("Copy article to the current language") . '"><img src="' . $cfg["path"]["images"] . 'but_sync_art.gif" alt="' . i18n("Copy article to the current language") . '" title="' . i18n("Copy article to the current language") . '" border="0" style="margin-left:3px;"></a>';
                 } else {
                     $tmp_sync = '';
@@ -469,7 +469,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         a.idtpl = b.idtpl";
 
             $db2->query($sql2);
-            $db2->next_record();
+            $db2->nextRecord();
 
             $a_tplname = $db2->f("tplname");
             $a_idtpl = $db2->f("idtpl");
@@ -493,7 +493,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     c.idtpl     = a.idtpl AND
                     c.idclient  = " . cSecurity::toInteger($client);
                 $db2->query($sql2);
-                $db2->next_record();
+                $db2->nextRecord();
                 $a_tplname = $db2->f("name") ? '<i>'.$db2->f("name").'</i>' : "--- " . i18n("None") . " ---";
             }
 
@@ -876,7 +876,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         $db->query($sql);
 
-        if ($db->next_record()) {
+        if ($db->nextRecord()) {
             //$foreignlang = false;
             //conCreateLocationString($idcat, "&nbsp;/&nbsp;", $cat_name);
         }

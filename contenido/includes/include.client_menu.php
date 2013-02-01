@@ -44,7 +44,7 @@ $sql = "SELECT
 
 $db->query($sql);
 
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     $idclient = $db->f("idclient");
     if ((strpos($auth->auth["perm"], "admin[$idclient]") !== false) || (strpos($auth->auth["perm"], "sysadmin") !== false)) {
         $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';

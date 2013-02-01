@@ -83,8 +83,8 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
                                                             filename='$sFilename' AND
                                                             type='$sType';";
     $oDb->query($sSql);
-    if ($oDb->num_rows() > 0) {
-        $oDb->next_record();
+    if ($oDb->numRows() > 0) {
+        $oDb->nextRecord();
         $aFileInformation['idsfi'] = $oDb->f('idsfi');
         $aFileInformation['created'] = $oDb->f('created');
         $aFileInformation['lastmodified'] = $oDb->f('lastmodified');
@@ -132,7 +132,7 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
                                                             filename='$sFilename' AND
                                                             type='$sType';";
     $oDb->query($sSql);
-    if ($oDb->num_rows() == 0) {
+    if ($oDb->numRows() == 0) {
         // $iNextId = $oDb->nextid('con_style_file_information');
         $sSql = "INSERT INTO `" . $cfg["tab"]["file_information"] . "` (
                                                             `idclient` ,

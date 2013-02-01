@@ -438,7 +438,7 @@ class cLayoutHandler {
         $db = clone $this->_db;
         $db->query($sql);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             // init class var for save
             $this->initWithDbObject($db);
             if ($this->saveLayoutByUpgrade($db->f("code")) == false) {

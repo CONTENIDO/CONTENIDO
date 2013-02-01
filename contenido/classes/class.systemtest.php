@@ -945,7 +945,7 @@ class cSystemtest {
 
         $db = new cDb($dbCfg);
         $db->query('SELECT LOWER(@@GLOBAL.sql_mode) AS sql_mode');
-        if ($db->next_record()) {
+        if ($db->nextRecord()) {
             if (strpos($db->f('sql_mode'), 'strict_trans_tables') !== false || strpos($db->f('sql_mode'), 'strict_all_tables') !== false) {
                 return false;
             }
@@ -958,7 +958,7 @@ class cSystemtest {
 
         $errorMessage = "";
         if ($this->testMySQLiExtension() && !$this->testMySQLExtension()) {
-            $errorMessage = mysqli_error($handle->Link_ID);
+            $errorMessage = mysqli_error($handle->getLinkId());
         } else {
             $errorMessage = mysql_error();
         }

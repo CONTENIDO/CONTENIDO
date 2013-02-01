@@ -118,11 +118,11 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
             $this->oDbg->show($sSql, 'Contenido_FrontendNavigation::loadSubCategories($iIdcat, $bAsObjects = true): $sSql');
         }
         $this->oDb->query($sSql);
-        if ($this->oDb->Errno != 0) {
+        if ($this->oDb->getErrorNumber() != 0) {
             return false;
         }
         $this->aCategories = array();
-        while ($this->oDb->next_record()) {
+        while ($this->oDb->nextRecord()) {
             // check against fe-auth and against be-access
             if ($bUseAuth === true && intval($this->oDb->f('public')) == 0) {
                 $sPerms = strval($this->oAuth->auth['perm']);
@@ -184,11 +184,11 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
         }
         $sSql = 'SELECT level FROM ' . $this->aCfg["tab"]["cat_tree"] . ' WHERE idcat = ' . cSecurity::escapeDB(intval($iIdcat), $this->oDb);
         $this->oDb->query($sSql);
-        if ($this->oDb->Errno != 0) {
+        if ($this->oDb->getErrorNumber() != 0) {
             return -1;
         }
-        if ($this->oDb->num_rows() > 0) {
-            $this->oDb->next_record();
+        if ($this->oDb->numRows() > 0) {
+            $this->oDb->nextRecord();
             return intval($this->oDb->f('level'));
         }
         return -1;

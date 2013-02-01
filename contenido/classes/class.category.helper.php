@@ -299,7 +299,7 @@ class cCategoryHelper {
 
         $this->_subCategories = array();
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $catId = (int) $db->f('idcat');
             $catLevel = (int) $db->f('level');
 

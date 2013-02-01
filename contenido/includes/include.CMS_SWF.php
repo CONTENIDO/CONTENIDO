@@ -92,7 +92,7 @@ $cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie be
 
     $db->query($sql);
 
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
 
         if ($db->f("idupl") != $a_content['CMS_SWF'][$typenr]) {
             echo "<option value=\"".$db->f("idupl")."\">".$db->f("dirname").$db->f("filename")."</option>";

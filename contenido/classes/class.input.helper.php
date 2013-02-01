@@ -97,12 +97,12 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
 
             $oDB->query($sSQL);
 
-            $iCount = $oDB->num_rows();
+            $iCount = $oDB->numRows();
             if ($iCount == 0) {
                 return 0;
             } else {
                 $iCounter = count($this->_options);
-                while ($oDB->next_record()) {
+                while ($oDB->nextRecord()) {
                     // Generate new option element
                     $oOption = new cHTMLOptionElement($sSpaces . "&nbsp;&nbsp;&nbsp;" . substr($oDB->f("title"), 0, 32), $oDB->f("idcatart"));
 
@@ -171,12 +171,12 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
 
         $oDB->query($sSQL);
 
-        $iCount = $oDB->num_rows();
+        $iCount = $oDB->numRows();
         if ($iCount == 0) {
             return false;
         } else {
             $iCounter = count($this->_options);
-            while ($oDB->next_record()) {
+            while ($oDB->nextRecord()) {
                 $sSpaces = "";
                 $sStyle = "";
                 $iID = $oDB->f("idcat");
@@ -250,11 +250,11 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
 
             $oDB->query($sSQL);
 
-            $iCount = $oDB->num_rows();
+            $iCount = $oDB->numRows();
             if ($iCount == 0) {
                 return false;
             } else {
-                while ($oDB->next_record()) {
+                while ($oDB->nextRecord()) {
                     $sTypeIdentifier = "tblData.idtype = '" . $oDB->f('idtype') . "' AND tblData.typeid = '" . $oDB->f('typeid') . "'";
 
                     // Generate new option element

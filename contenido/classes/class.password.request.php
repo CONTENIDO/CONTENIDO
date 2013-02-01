@@ -223,7 +223,7 @@ class cPasswordRequest {
                  AND (valid_to >= NOW() OR valid_to = '0000-00-00' OR valid_to IS NULL)";
 
         $this->_db->query($sql);
-        if ($this->_db->next_record() && md5($this->_username) == md5($this->_db->f('username'))) {
+        if ($this->_db->nextRecord() && md5($this->_username) == md5($this->_db->f('username'))) {
             //by default user is allowed to request new password
             $isAllowed = true;
             $lastPwRequest = $this->_db->f('last_pw_request');

@@ -131,7 +131,7 @@ if (!is_numeric($lang) || $lang == '') {
     // search for the first language of this client
     $sql = "SELECT * FROM " . $cfg['tab']['lang'] . " AS A, " . $cfg['tab']['clients_lang'] . " AS B WHERE A.idlang=B.idlang AND idclient=" . cSecurity::toInteger($client) . " ORDER BY A.idlang ASC";
     $db->query($sql);
-    $db->next_record();
+    $db->nextRecord();
     $lang = $db->f('idlang');
 } else {
     $sess->register('lang');
