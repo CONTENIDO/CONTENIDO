@@ -21,12 +21,12 @@ var stack = new Object();
  * a simple string which is evaluated or a function which is called with
  * the given scope and params.
  *
- * @param string script - the path to the script which should be loaded
- * @param string|function callback - code which should be evaluated
+ * @param {String} script - the path to the script which should be loaded
+ * @param {String|Function} callback - code which should be evaluated
  *             after the script has been loaded or a callback function
  *             which is called with the given params and the given scope
- * @param object scope - the scope with which the callback function should be called
- * @param array params - array of params which should be passed to the callback function
+ * @param {Object} scope - the scope with which the callback function should be called
+ * @param {Array} params - array of params which should be passed to the callback function
  * @returns {Boolean}
  */
 function conLoadFile(script, callback, scope, params) {
@@ -147,7 +147,7 @@ function getContentWindow() {
 /**
  * Returns an URLs params as array.
  *
- * @param url to determine params from
+ * @param {String} url to determine params from
  * @returns array
  */
 function getUrlParams(url) {
@@ -196,13 +196,10 @@ function getTranslations() {
 /**
  * Shows a confirmation box with the help of jQuery UI Dialog.
  *
- * @param description
- *            {String} the text which is displayed in the dialog
- * @param callback
- *            a callback function which is called if the user confirmed
- * @param additionalOptions
- *            {Object} options which can be used to customise the behaviour of
- *            the dialog box
+ * @param  {String}  description  The text which is displayed in the dialog
+ * @param  {Function}  callback  A callback function which is called if the user confirmed
+ * @param  {Object}  additionalOptions  Options which can be used to customise the behaviour
+ *            of the dialog box
  */
 function showConfirmation(description, callback, additionalOptions) {
     // get the translations so that we can use them
@@ -241,13 +238,10 @@ function showConfirmation(description, callback, additionalOptions) {
 /**
  * Shows a notification box with the help of jQuery UI Dialog.
  *
- * @param title
- *            {String} the title of the box
- * @param description
- *            {String} the text which is displayed in the box
- * @param additionalOptions
- *            {Object} options which can be used to customise the behaviour of
- *            the dialog box
+ * @param  {String}  title The title of the box
+ * @param  {String}  description  The text which is displayed in the box
+ * @param  {Object}  additionalOptions  Options which can be used to customise the
+ *           behaviour of the dialog box
  */
 function showNotification(title, description, additionalOptions) {
     // get the translations so that we can use them
