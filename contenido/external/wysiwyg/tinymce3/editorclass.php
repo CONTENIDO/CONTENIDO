@@ -99,7 +99,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         $this->_setSetting("remove_linebreaks", false); // Remove linebreaks - GREAT idea...
 
         // Convert URLs and Relative URLs default
-        $this->_setSetting("convert_urls", true);
+        $this->_setSetting("convert_urls", false);
         $this->_setSetting("relative_urls", false);
 
         // Editor name (a comma spearated list of instances)
