@@ -118,7 +118,7 @@ function checkMySQLDatabaseCreation($db, $database)
     if (checkMySQLDatabaseExists($db,  $database)) {
         return true;
     } else {
-        $db->query("CREATE DATABASE '$database'");
+        $db->query("CREATE DATABASE `$database`");
         if ($db->getErrorNumber() != 0) {
             return false;
         } else {
@@ -135,7 +135,7 @@ function checkMySQLDatabaseExists($db, $database)
         if (@mysqli_select_db($database, $db->getLinkId())) {
             return true;
         } else {
-            $db->query("SHOW DATABASES LIKE '$database'");
+            $db->query("SHOW DATABASES LIKE `$database`");
             if ($db->next_record()) {
                 return true;
             } else {
@@ -146,7 +146,7 @@ function checkMySQLDatabaseExists($db, $database)
         if (@mysql_select_db($database, $db->getLinkId())) {
             return true;
         } else {
-            $db->query("SHOW DATABASES LIKE '$database'");
+            $db->query("SHOW DATABASES LIKE `$database`");
             if ($db->next_record()) {
                 return true;
             } else {
@@ -181,7 +181,7 @@ function checkMySQLTableCreation($db, $database, $table)
         return false;
     }
 
-    $db->query("CREATE TABLE '$table' (test INT( 1 ) NOT NULL) ENGINE = MYISAM ;");
+    $db->query("CREATE TABLE `$table` (test INT( 1 ) NOT NULL) ENGINE = MYISAM ;");
 
     if ($db->getErrorNumber() == 0) {
         return true;
@@ -196,7 +196,7 @@ function checkMySQLLockTable($db, $database, $table)
         return false;
     }
 
-    $db->query("LOCK TABLES '$table' WRITE");
+    $db->query("LOCK TABLES `$table` WRITE");
 
     if ($db->getErrorNumber() == 0) {
         return true;
@@ -226,7 +226,7 @@ function checkMySQLDropTable($db, $database, $table)
         return false;
     }
 
-    $db->query("DROP TABLE '$table'");
+    $db->query("DROP TABLE `$table`");
 
     if ($db->getErrorNumber() == 0) {
         return true;
@@ -237,7 +237,7 @@ function checkMySQLDropTable($db, $database, $table)
 
 function checkMySQLDropDatabase($db, $database)
 {
-    $db->query("DROP DATABASE '$database'");
+    $db->query("DROP DATABASE `$database`");
 
     if ($db->getErrorNumber() == 0) {
         return true;
