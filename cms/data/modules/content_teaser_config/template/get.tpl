@@ -1,15 +1,16 @@
-{if $isBackendEditMode == 'true'}
-    <!-- content_teaser_config -->
+{if true eq $isBackendEditMode}
+<!-- content_teaser_config -->
 
-    {if 0 lt $label|strlen}
-        <label class="content-type-label">{$label}</label>
-    {/if}
+	{if 0 lt $label|strlen}
+<label class="content-type-label">{$label}</label>
+	{/if}
 
-    {$editor}
-    {if {$image} != ''}
-        <br/>
-        <img src="{$image}" alt="" />
-    {/if}
+{$editor}
 
-    <!-- /content_teaser_config -->
+	{if {$image} != ''}
+<br />
+<img src="{$image}" alt="" />
+	{/if}
+
+<!-- /content_teaser_config -->
 {/if}

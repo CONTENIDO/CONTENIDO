@@ -16,8 +16,8 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // get text from content type HTML with index 1
-$teaserImageEditor = "CMS_IMGEDITOR [100]";
-$teaserImage = "CMS_IMG [100]";
+$teaserImageEditor = "CMS_IMGEDITOR[100]";
+$teaserImage = "CMS_IMG[100]";
 
 // When in backend edit mode add a label so the author
 // knows what to type in the shown field.
@@ -33,7 +33,7 @@ global $force;
 if (1 == $force) {
     $tpl->clearAllCache();
 }
-$tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode()? 'true' : 'false');
+$tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode());
 $tpl->assign('label', $label);
 $tpl->assign('image', $teaserImage);
 $tpl->assign('editor', $teaserImageEditor);
