@@ -95,6 +95,12 @@ abstract class ItemCollection extends cItemBaseAbstract {
     protected $_encoding;
 
     /**
+     * Item class instance
+     * @var object
+     */
+    protected $_itemClassInstance;
+
+    /**
      * Stores all operators which are supported by GenericDB
      * Unsupported operators are passed trough as-is.
      * @var  array
@@ -109,14 +115,49 @@ abstract class ItemCollection extends cItemBaseAbstract {
     protected $_bAllMode = false;
 
     /**
+     * Array with where conditions
+     * @var array
+     */
+    protected $_where;
+
+    /**
+     * Order mode with direction
+     * @var string
+     */
+    protected $_order;
+
+    /**
+     * Starting limit
+     * @var int
+     */
+    protected $_limitStart;
+
+    /**
+     * Amount of items for limit
+     * @var int
+     */
+    protected $_limitCount;
+
+    /**
+     * Last SQL statement
+     * @var string
+     */
+    protected $_lastSQL;
+
+    /**
+     * Array with linked tables
+     * @var array
+     */
+    protected $_links;
+
+    /**
      * Constructor Function
      *
      * @param  string  $sTable       The table to use as information source
      * @param  string  $sPrimaryKey  The primary key to use
-     * @param  int     $iLifetime
      */
-    public function __construct($sTable, $sPrimaryKey, $iLifetime = 10) {
-        parent::__construct($sTable, $sPrimaryKey, get_parent_class($this), $iLifetime);
+    public function __construct($sTable, $sPrimaryKey) {
+        parent::__construct($sTable, $sPrimaryKey, get_parent_class($this));
 
         $this->resetQuery();
 
@@ -410,13 +451,10 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * The where statement is combined with all other where statements
      * The fields to select from
      *
-     * @todo  Reduce complexity of this function, to much code...
-     *
-     * @param   ???    $ignoreRoot
      * @throws cException if no join partner could be found
      * @return  array  Array structure, see above
      */
-    protected function _fetchJoinTables($ignoreRoot) {
+    protected function _fetchJoinTables() {
         $aParameters = array();
         $aFields = array();
         $aTables = array();
@@ -507,7 +545,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         $aGroupWhereStatements = $this->_buildGroupWhereStatements();
         $sWhereStatements = $this->_buildWhereStatements();
-        $aParameters = $this->_fetchJoinTables(strtolower(get_class($this)));
+        $aParameters = $this->_fetchJoinTables();
 
         $aStatement = array(
             'SELECT',
@@ -968,12 +1006,12 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *        primary key value (string) or multiple column name - value pairs
      * @return Item The newly created object
      */
-    public function createNewItem($data = null) {
+    public function createNewItem($data = NULL) {
         $this->_executeCallbacks(self::CREATE_BEFORE, get_class($this), array());
 
         $db = $this->_getSecondDBInstance();
 
-        $primaryKeyValue = null;
+        $primaryKeyValue = NULL;
         // prepare the primary key value and the data depending on the type of $data
         if (is_array($data)) {
             if (array_key_exists($this->primaryKey, $data)) {
@@ -989,7 +1027,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $sql = $db->buildInsert($this->table, $data);
         $db->query($sql);
 
-        if ($primaryKeyValue === null) {
+        if ($primaryKeyValue === NULL) {
             $primaryKeyValue = $db->getLastInsertedId($this->table);
         }
 
@@ -1025,7 +1063,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         $destItem = self::createNewItem();
         if (!is_object($destItem)) {
-            return null;
+            return NULL;
         }
 
         $rs = $srcItem->toArray();
