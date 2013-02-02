@@ -118,7 +118,7 @@ abstract class cContentTypeAbstract {
     /**
      * CONTENIDO session object
      *
-     * @var Contenido_Session
+     * @var cSession
      */
     protected $_session;
 
