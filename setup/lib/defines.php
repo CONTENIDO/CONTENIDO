@@ -94,7 +94,7 @@ define('CON_SETUP_MIN_PHP_VERSION', '5.2.0');
 /**
  * @deprecated 2012-09-06 Constant has been renamed to CON_SETUP_VERSION
  */
-define('C_SETUP_VERSION', '4.9.0-beta1');
-define('CON_SETUP_VERSION', '4.9.0-beta1');
+define('C_SETUP_VERSION', '4.9.0-rc1');
+define('CON_SETUP_VERSION', '4.9.0-rc1');
 
 ?>
