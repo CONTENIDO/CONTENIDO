@@ -121,24 +121,10 @@ abstract class cItemBaseAbstract extends cGenericDb {
     public $virgin;
 
     /**
-     * Lifetime of results/created objects?
-     * FIXME  Not used at the moment!
-     * @var  int
-     */
-    protected $lifetime;
-
-    /**
      * Storage of the last occured error
      * @var  string
      */
     protected $lasterror = '';
-
-    /**
-     * Cache the result items
-     * FIXME  seems to not used, remove it!
-     * @var  array
-     */
-    protected $cache;
 
     /**
      * Classname of current instance
@@ -152,11 +138,10 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @param  string  $sTable       Name of table
      * @param  string  $sPrimaryKey  Primary key of table
      * @param  string  $sClassName   Name of parent class
-     * @param  int     $iLifetime    Lifetime of the object in seconds (NOT USED!)
      * @throws cInvalidArgumentException If table name or primary key is not set
      * @return void
      */
-    protected function __construct($sTable, $sPrimaryKey, $sClassName, $iLifetime = 10) {
+    protected function __construct($sTable, $sPrimaryKey, $sClassName) {
         global $cfg;
 
         $this->db = cRegistry::getDb();
@@ -178,7 +163,6 @@ abstract class cItemBaseAbstract extends cGenericDb {
         $this->table = $sTable;
         $this->primaryKey = $sPrimaryKey;
         $this->virgin = true;
-        $this->lifetime = $iLifetime;
         $this->_className = $sClassName;
     }
 

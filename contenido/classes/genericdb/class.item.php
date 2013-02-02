@@ -78,14 +78,20 @@ abstract class Item extends cItemBaseAbstract {
     protected $_metaObject;
 
     /**
+     * Last executed SQL statement
+     * @var  string
+     */
+    protected $_lastSQL;
+
+    /**
      * Constructor function
      *
      * @param  string  $sTable       The table to use as information source
      * @param  string  $sPrimaryKey  The primary key to use
      * @param  int     $iLifetime
      */
-    public function __construct($sTable = '', $sPrimaryKey = '', $iLifetime = 10) {
-        parent::__construct($sTable, $sPrimaryKey, get_parent_class($this), $iLifetime);
+    public function __construct($sTable, $sPrimaryKey) {
+        parent::__construct($sTable, $sPrimaryKey, get_parent_class($this));
     }
 
     /**
