@@ -83,16 +83,16 @@ class cTypeGenerator {
         self::$a_content[$this->_idart] = array();
 
         $sql = "SELECT
-							*
-						FROM
-							" . $this->cfg["tab"]["content"] . " AS A,
-							" . $this->cfg["tab"]["art_lang"] . " AS B,
-							" . $this->cfg["tab"]["type"] . " AS C
-						WHERE
-							A.idtype    = C.idtype AND
-							A.idartlang = B.idartlang AND
-							B.idart     = '" . Contenido_Security::toInteger($this->_idart) . "' AND
-							B.idlang    = '" . Contenido_Security::toInteger($this->_idlang) . "'";
+                    *
+                FROM
+                    " . $this->cfg["tab"]["content"] . " AS A,
+                    " . $this->cfg["tab"]["art_lang"] . " AS B,
+                    " . $this->cfg["tab"]["type"] . " AS C
+                WHERE
+                    A.idtype    = C.idtype AND
+                    A.idartlang = B.idartlang AND
+                    B.idart     = '" . Contenido_Security::toInteger($this->_idart) . "' AND
+                    B.idlang    = '" . Contenido_Security::toInteger($this->_idlang) . "'";
 
         self::$db->query($sql);
 
