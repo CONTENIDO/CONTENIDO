@@ -3,24 +3,48 @@ class cTypeGenerator {
 
     /**
      *
-     * @var cfg
+     * @var $cfg
      */
-    private $cfg = null;
+    private $cfg = NULL;
 
     /**
      *
-     * @var db
+     * @var $db
      */
-    private static $db = null;
+    private static $db = NULL;
+
+    /**
+     *
+     * @var $a_content
+     */
+    private static $a_content = array();
+
+    /**
+     *
+     * @var $_idart
+     */
+    private $_idart = NULL;
+
+    /**
+     *
+     * @var $_idlang
+     */
+    private $_idlang = NULL;
 
     /**
      * Constructor function
      */
     public function __construct() {
+
+        $this->_idart = cRegistry::getArticleId(true);
+        $this->_idlang = cRegistry::getLanguageId(true);
         $this->cfg = cRegistry::getConfig();
 
         if (self::$db === null) {
             self::$db = cRegistry::getDb();
+        }
+        if (!isset(self::$a_content[$this->_idart])) {
+            $this->fillContent();
         }
     }
 
@@ -41,7 +65,6 @@ class cTypeGenerator {
      *
      * @param string $type Content type, e. g. CMS_HTMLHEAD
      * @return string The full path e. g.
-     *
      * {path_to_contenido_includes}/type/code/include.CMS_HTMLHEAD.code.php
      * for content type CMS_HTMLHEAD
      */
@@ -52,12 +75,38 @@ class cTypeGenerator {
     }
 
     /**
+     * Fill content from db for current article
+     *
+     * @return void
+     */
+    private function fillContent() {
+        self::$a_content[$this->_idart] = array();
+
+        $sql = "SELECT
+							*
+						FROM
+							" . $this->cfg["tab"]["content"] . " AS A,
+							" . $this->cfg["tab"]["art_lang"] . " AS B,
+							" . $this->cfg["tab"]["type"] . " AS C
+						WHERE
+							A.idtype    = C.idtype AND
+							A.idartlang = B.idartlang AND
+							B.idart     = '" . Contenido_Security::toInteger($this->_idart) . "' AND
+							B.idlang    = '" . Contenido_Security::toInteger($this->_idlang) . "'";
+
+        self::$db->query($sql);
+
+        while (self::$db->next_record()) {
+            self::$a_content[$this->_idart][self::$db->f("type")][self::$db->f("typeid")] = self::$db->f("value");
+        }
+    }
+
+    /**
      *
      * @param string $type
      * @param int $index
      */
     private function _processCmsTags($type, $index) {
-
         $_typeList = array();
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
@@ -74,8 +123,7 @@ class cTypeGenerator {
 
                 $typeClassName = $this->_getContentTypeClassName($_typeItem->type);
                 $typeCodeFile = $this->_getContentTypeCodeFilePathName($_typeItem->type);
-
-                $cTypeObject = new $typeClassName(null, $index, $items);
+                $cTypeObject = new $typeClassName(self::$a_content[$this->_idart][$_typeItem->type][$index], $index, $items);
                 if (cRegistry::isBackendEditMode()) {
 
                     $tmp = $cTypeObject->generateEditCode();
@@ -87,6 +135,7 @@ class cTypeGenerator {
             }
         }
     }
+
 
     /**
      * Helper function to call a private function
