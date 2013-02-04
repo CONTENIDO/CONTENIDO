@@ -9,8 +9,13 @@
 <ul class="linklist">
 	<!-- BEGIN:BLOCK -->
 	<li>
-		{foreach $contents as $content}
-			{$content}</br>
+		{foreach from=$contents item=content key=kcontent}
+			{foreach from=$descriptions item=description key=kdesc }
+				{if $kcontent == $kdesc}
+					{$content}</br>
+					{$description}</br>
+				{/if}
+			{/foreach}
 		{/foreach}
 	</li>
 	{$inputfield}

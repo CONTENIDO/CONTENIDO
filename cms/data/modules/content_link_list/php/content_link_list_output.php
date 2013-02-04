@@ -26,6 +26,7 @@ $artId = cRegistry::getArticleId(true);
 $client = cRegistry::getClientId(true);
 $lang = cRegistry::getLanguageId(true);
 $val = array();
+$valDescription = array();
 // create typegenerator object
 $ocType = new cTypeGenerator();
 
@@ -60,7 +61,8 @@ if (1 == $force) {
 }
 
 for ($i = 0; $i < $linkCount; $i++) {
-    $val[$i] =  stripslashes($ocType->getGeneratedCmsTag("CMS_LINKEDITOR", $typeid + $i));
+    $val[$typeid + $i] = stripslashes($ocType->getGeneratedCmsTag("CMS_LINKEDITOR", $typeid + $i));
+    $valDescription[$typeid + $i] = stripslashes($ocType->getGeneratedCmsTag("CMS_HTML", $typeid + $i));
 }
 
 // assign data to the smarty template
@@ -70,6 +72,7 @@ $tpl->assign('usable_links', mi18n("usable_links"));
 // if article was successfully loaded assign the content
 if ($art->isLoaded()) {
     $tpl->assign('contents', $val);
+    $tpl->assign('descriptions', $valDescription);
 }
 $tpl->assign('inputfield', $input);
 $tpl->assign('button', $button);
