@@ -19,13 +19,13 @@ cInclude('classes', 'class.typegenerator.php');
 $tpl = Contenido_SmartyWrapper::getInstance();
 
 // initialize var's
-$type = "CMS_LINKEDITOR";
+$type = "CMS_TEXT";
 $typeid = 500;
 $idartlang = cRegistry::getArticleLanguageId(true);
 $artId = cRegistry::getArticleId(true);
 $client = cRegistry::getClientId(true);
 $lang = cRegistry::getLanguageId(true);
-
+$val = array();
 // create typegenerator object
 $ocType = new cTypeGenerator();
 
@@ -34,21 +34,19 @@ if (1 == $force) {
     $tpl->clearAllCache();
 }
 
+// create art object
+$art = new Article($artId, $client, $lang, $idartlang);
+$linkCount = (int) $art->getContent($type, $typeid);
+
 if ($_POST['linkCount']) {
-
-    $value = $_POST['linkCount'];
-    for ($i = 1; $i <= $value; $i++) {
-
-        $val = $val . $ocType->getGeneratedCmsTag("CMS_LINKEDITOR", $i);
-    }
-
-    conSaveContentEntry($idartlang, $type, $typeid, $val);
+    $linkCount = (int) $_POST['linkCount'];
+    conSaveContentEntry($idartlang, $type, $typeid, $linkCount);
 }
 
 // if backendmode then add additional fields
 if (cRegistry::isBackendEditMode()) {
     $label = mi18n("LABEL_HEADER_LINKLIST");
-    $input = '<input type="text" name="text_field" id="text_field"/>';
+    $input = '<input type="text" name="text_field" id="text_field" value="' . $linkCount . '"/>';
     $button = '<input type="button" id="create_linkfields" value="create"/>';
 } else {
     $label = NULL;
@@ -56,12 +54,13 @@ if (cRegistry::isBackendEditMode()) {
     $button = NULL;
 }
 
-// load article if exists otherwise create new one
-$art = new Article($artId, $client, $lang);
-
 global $force;
 if (1 == $force) {
     $tpl->clearAllCache();
+}
+
+for ($i = 0; $i < $linkCount; $i++) {
+    $val[$i] =  stripslashes($ocType->getGeneratedCmsTag("CMS_LINKEDITOR", $typeid + $i));
 }
 
 // assign data to the smarty template
@@ -70,7 +69,7 @@ $tpl->assign('usable_links', mi18n("usable_links"));
 
 // if article was successfully loaded assign the content
 if ($art->isLoaded()) {
-    $tpl->assign('contents', $art->getContent($type, $typeid));
+    $tpl->assign('contents', $val);
 }
 $tpl->assign('inputfield', $input);
 $tpl->assign('button', $button);

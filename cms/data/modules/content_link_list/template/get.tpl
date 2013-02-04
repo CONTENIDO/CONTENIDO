@@ -10,7 +10,7 @@
 	<!-- BEGIN:BLOCK -->
 	<li>
 		{foreach $contents as $content}
-			{$content}
+			{$content}</br>
 		{/foreach}
 	</li>
 	{$inputfield}
