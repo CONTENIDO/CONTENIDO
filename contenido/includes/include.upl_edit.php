@@ -34,8 +34,8 @@ $page->addScript("jquery/plugins/timepicker.js");
 
 //get language js files
 if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
-    $page->addScript("jquery/plugins/timepicker-".$lang_short.".js");
-    $page->addScript("jquery/plugins/datepicker-".$lang_short.".js");
+    $page->addScript("jquery/plugins/timepicker-" . $lang_short . ".js");
+    $page->addScript("jquery/plugins/datepicker-" . $lang_short . ".js");
 }
 
 $form = new cGuiTableForm("properties");
@@ -51,7 +51,7 @@ $form->setVar("thumbnailmode", $_REQUEST["thumbnailmode"]);
 $form->addHeader(i18n("Edit"));
 
 $properties = new cApiPropertyCollection();
-$uploads    = new cApiUploadCollection();
+$uploads = new cApiUploadCollection();
 
 if (cApiDbfs::isDbfs($_REQUEST["path"])) {
     $qpath = $_REQUEST["path"] . "/";
@@ -59,31 +59,31 @@ if (cApiDbfs::isDbfs($_REQUEST["path"])) {
     $qpath = $_REQUEST["path"];
 }
 
-if ((is_writable($cfgClient[$client]["upl"]["path"].$path) || cApiDbfs::isDbfs($path)) && (int) $client > 0) {
+if ((is_writable($cfgClient[$client]["upl"]["path"] . $path) || cApiDbfs::isDbfs($path)) && (int) $client > 0) {
     $bDirectoryIsWritable = true;
 } else {
     $bDirectoryIsWritable = false;
 }
 
-$uploads->select("idclient = '".$client."' AND dirname = '".$qpath."' AND filename='".$_REQUEST["file"]."'");
+$uploads->select("idclient = '" . $client . "' AND dirname = '" . $qpath . "' AND filename='" . $_REQUEST["file"] . "'");
 
 if ($upload = $uploads->next()) {
 
     // Which rows to display?
     $aListRows = array();
-    $aListRows["filename"]    = i18n("File name");
-    $aListRows["path"]        = i18n("Path");
+    $aListRows["filename"] = i18n("File name");
+    $aListRows["path"] = i18n("Path");
     $aListRows["replacefile"] = i18n("Replace file");
-    $aListRows["medianame"]   = i18n("Media name");
+    $aListRows["medianame"] = i18n("Media name");
     $aListRows["description"] = i18n("Description");
-    $aListRows["keywords"]    = i18n("Keywords");
-    $aListRows["medianotes"]  = i18n("Internal notes");
-    $aListRows["copyright"]   = i18n("Copyright");
-    $aListRows["protected"]   = i18n("Protection");
+    $aListRows["keywords"] = i18n("Keywords");
+    $aListRows["medianotes"] = i18n("Internal notes");
+    $aListRows["copyright"] = i18n("Copyright");
+    $aListRows["protected"] = i18n("Protection");
     $aListRows["timecontrol"] = i18n("Time control");
-    $aListRows["preview"]     = i18n("Preview");
-    $aListRows["author"]      = i18n("Author");
-    $aListRows["modified"]    = i18n("Last modified by");
+    $aListRows["preview"] = i18n("Preview");
+    $aListRows["author"] = i18n("Author");
+    $aListRows["modified"] = i18n("Last modified by");
 
     // Delete dbfs specific rows
     if (!cApiDbfs::isDbfs($_REQUEST["path"])) {
@@ -101,7 +101,6 @@ if ($upload = $uploads->next()) {
             }
         }
     }
-
 
     $iIdupl = $upload->get("idupl");
     $sSql = "SELECT * FROM " . $cfg['tab']['upl_meta'] . "
@@ -127,20 +126,16 @@ if ($upload = $uploads->next()) {
                 break;
 
             case "replacefile":
-                $uplelement = new cHTMLUpload("file",40);
+                $uplelement = new cHTMLUpload("file", 40);
                 $uplelement->setDisabled(!$bDirectoryIsWritable);
                 $sCell = $uplelement->render();
                 break;
 
             case "medianame":
                 if ($db->f('medianame')) {
-
                     $medianame = cSecurity::unFilter($db->f('medianame'));
-
                 } else {
-
-                    $medianame = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "medianame");
-
+                    $medianame = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "medianame");
                 }
 
                 $mnedit = new cHTMLTextbox("medianame", $medianame, 60);
@@ -149,10 +144,8 @@ if ($upload = $uploads->next()) {
 
             case "description":
                 if ($db->f('description')) {
-
                     $description = cSecurity::unFilter($db->f('description'));
                 } else {
-
                     $description = "";
                 }
 
@@ -162,11 +155,9 @@ if ($upload = $uploads->next()) {
 
             case "keywords":
                 if ($db->f('keywords')) {
-
                     $keywords = cSecurity::unFilter($db->f('keywords'));
                 } else {
-
-                    $keywords = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "keywords");
+                    $keywords = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "keywords");
                 }
 
                 $kwedit = new cHTMLTextarea("keywords", $keywords);
@@ -175,11 +166,9 @@ if ($upload = $uploads->next()) {
 
             case "medianotes":
                 if ($db->f('internal_notice')) {
-
                     $medianotes = cSecurity::unFilter($db->f('internal_notice'));
                 } else {
-
-                    $medianotes = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "medianotes");
+                    $medianotes = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "medianotes");
                 }
 
                 $moedit = new cHTMLTextarea("medianotes", $medianotes);
@@ -188,11 +177,9 @@ if ($upload = $uploads->next()) {
 
             case "copyright":
                 if ($db->f('copyright')) {
-
                     $copyright = cSecurity::unFilter($db->f('copyright'));
                 } else {
-
-                    $copyright = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "copyright");
+                    $copyright = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "copyright");
                 }
 
                 $copyrightEdit = new cHTMLTextarea("copyright", $copyright);
@@ -200,7 +187,7 @@ if ($upload = $uploads->next()) {
                 break;
 
             case "protected":
-                $vprotected = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "protected");
+                $vprotected = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "protected");
                 $protected = new cHTMLCheckbox("protected", "1");
                 $protected->setChecked($vprotected);
                 $protected->setLabelText(i18n("Protected for non-logged in users"));
@@ -208,21 +195,21 @@ if ($upload = $uploads->next()) {
                 break;
 
             case "timecontrol":
-                $iTimeMng   = (int) $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "timemgmt");
-                $sStartDate = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "datestart");
-                $sEndDate   = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "dateend");
+                $iTimeMng = (int) $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "timemgmt");
+                $sStartDate = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "datestart");
+                $sEndDate = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "dateend");
 
                 $oTimeCheckbox = new cHTMLCheckbox("timemgmt", i18n("Use time control"));
                 $oTimeCheckbox->setChecked($iTimeMng);
 
-                $sHtmlTimeMng  = "<table border='0' cellpadding='0' cellspacing='0' style='width: 100%;'>\n";
+                $sHtmlTimeMng = "<table border='0' cellpadding='0' cellspacing='0' style='width: 100%;'>\n";
                 $sHtmlTimeMng .= "<tr><td colspan='2'>" . $oTimeCheckbox->render() . "</td></tr>\n";
                 $sHtmlTimeMng .= "<tr><td style='padding-left: 20px;'><label for='datestart'>" . i18n("Start date") . "</label></td>\n";
                 $sHtmlTimeMng .= '<td><input type="text" name="datestart" id="datestart" value="' . $sStartDate . '"  size="20" maxlength="40" class="text_medium">' .
-                    '</td></tr>';
+                        '</td></tr>';
                 $sHtmlTimeMng .= "<tr><td style='padding-left: 20px;'><label for='dateend'>" . i18n("End date") . "</label></td>\n";
                 $sHtmlTimeMng .= '<td><input type="text" name="dateend" id="dateend" value="' . $sEndDate . '"  size="20" maxlength="40" class="text_medium">' .
-                    '</td></tr>';
+                        '</td></tr>';
                 $sHtmlTimeMng .= "</table>\n";
 
                 $sCell = $sHtmlTimeMng;
@@ -230,20 +217,20 @@ if ($upload = $uploads->next()) {
 
             case "preview":
                 if (cApiDbfs::isDbfs($_REQUEST["path"])) {
-                    $sCell = '<a target="_blank" href="'.$sess->url(cRegistry::getFrontendUrl() . "dbfs.php?file=".$qpath.$_REQUEST["file"]).'"><img class="bordered" src="'.uplGetThumbnail($qpath.$_REQUEST["file"], 350).'"></a>';
+                    $sCell = '<a target="_blank" href="' . $sess->url(cRegistry::getFrontendUrl() . "dbfs.php?file=" . $qpath . $_REQUEST["file"]) . '"><img class="bordered" src="' . uplGetThumbnail($qpath . $_REQUEST["file"], 350) . '"></a>';
                 } else {
-                    $sCell = '<a target="_blank" href="'.$cfgClient[$client]["upl"]["htmlpath"].$qpath.$_REQUEST["file"].'"><img class="bordered" src="'.uplGetThumbnail($qpath.$_REQUEST["file"], 350).'"></a>';
+                    $sCell = '<a target="_blank" href="' . $cfgClient[$client]["upl"]["htmlpath"] . $qpath . $_REQUEST["file"] . '"><img class="bordered" src="' . uplGetThumbnail($qpath . $_REQUEST["file"], 350) . '"></a>';
                 }
                 break;
 
             case "author":
                 $oUser = new cApiUser($upload->get("author"));
-                $sCell = $oUser->get('username') . " (". displayDatetime($upload->get("created")).")";
+                $sCell = $oUser->get('username') . " (" . displayDatetime($upload->get("created")) . ")";
                 break;
 
             case "modified":
                 $oUser = new cApiUser($upload->get("modifiedby"));
-                $sCell = $oUser->get('username') . " (". displayDatetime($upload->get("lastmodified")).")";
+                $sCell = $oUser->get('username') . " (" . displayDatetime($upload->get("lastmodified")) . ")";
                 break;
 
             default:
@@ -253,9 +240,8 @@ if ($upload = $uploads->next()) {
                 if ($_cecIterator->count() > 0) {
                     $contents = array();
                     while ($chainEntry = $_cecIterator->next()) {
-                        $contents[]  = $chainEntry->execute( $iIdupl, $qpath, $_REQUEST["file"], $sListRow);
+                        $contents[] = $chainEntry->execute($iIdupl, $qpath, $_REQUEST["file"], $sListRow);
                     }
-
                 }
                 $sCell = implode("", $contents);
         }
@@ -280,12 +266,12 @@ if ($upload = $uploads->next()) {
     }
 
     if ($bDirectoryIsWritable == false) {
-        $pager->displayError(i18n("Directory not writable")  . ' (' . $cfgClient[$client]["upl"]["path"].$path . ')');
+        $pager->displayError(i18n("Directory not writable") . ' (' . $cfgClient[$client]["upl"]["path"] . $path . ')');
     }
 
     $page->set("s", "FORM", $form->render() . $sScript);
 } else {
-   $page->displayCriticalError(sprintf(i18n("Could not load file %s"),$_REQUEST["file"]));
+    $page->displayCriticalError(sprintf(i18n("Could not load file %s"), $_REQUEST["file"]));
 }
 
 $page->render();
