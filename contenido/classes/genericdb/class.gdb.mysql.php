@@ -114,10 +114,10 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
     }
 
 }
-
 class gdbMySQL extends cGenericDbDriverMysql {
 
     /**
+     *
      * @deprecated Class was renamed to cGenericDbDriverMysql'
      */
     public function __construct() {

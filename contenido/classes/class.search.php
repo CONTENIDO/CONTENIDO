@@ -123,19 +123,21 @@ abstract class cSearchBaseAbstract {
     }
 
 }
-
 abstract class SearchBaseAbstract extends cSearchBaseAbstract {
 
     /**
+     *
      * @deprecated [2012-07-24] class was renamed to cSearchBaseAbstract
      */
     public function __construct($oDB = null, $bDebug = false) {
         cDeprecated('Class was renamed to cSearchBaseAbstract.');
         parent::__construct($oDB, $bDebug);
     }
+
 }
 
 /**
+ *
  * @deprecated [2012-02-25] Use cSearchIndex instead.
  */
 class Index extends cSearchIndex {
@@ -148,6 +150,7 @@ class Index extends cSearchIndex {
     public function Index($oDB = null) {
         $this->__construct($oDB);
     }
+
 }
 
 /**
@@ -192,7 +195,6 @@ class Index extends cSearchIndex {
  * Index.
  */
 cInclude('includes', 'functions.encoding.php');
-
 class cSearchIndex extends cSearchBaseAbstract {
 
     /**
@@ -362,7 +364,10 @@ class cSearchIndex extends cSearchBaseAbstract {
                         // remove backslash
                         $code = stripslashes($code);
                         // replace HTML line breaks with newlines
-                        $code = str_ireplace(array('<br>', '<br />'), "\n", $code);
+                        $code = str_ireplace(array(
+                            '<br>',
+                            '<br />'
+                        ), "\n", $code);
                         // remove html tags
                         $code = strip_tags($code);
                         if (strlen($code) > 0) {
@@ -503,9 +508,38 @@ class cSearchIndex extends cSearchBaseAbstract {
      */
     public function removeSpecialChars($key) {
         $aSpecialChars = array(
-            "-", "_", "'", ".", "!", "\"", "#", "$", "%", "&", "(", ")", "*", "+",
-            ",", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "`",
-            "{", "|", "}", "~"
+            "-",
+            "_",
+            "'",
+            ".",
+            "!",
+            "\"",
+            "#",
+            "$",
+            "%",
+            "&",
+            "(",
+            ")",
+            "*",
+            "+",
+            ",",
+            "/",
+            ":",
+            ";",
+            "<",
+            "=",
+            ">",
+            "?",
+            "@",
+            "[",
+            "\\",
+            "]",
+            "^",
+            "`",
+            "{",
+            "|",
+            "}",
+            "~"
         );
 
         for ($i = 127; $i < 192; $i++) {
@@ -658,7 +692,6 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
 }
-
 class SearchIndex extends cSearchIndex {
 
     /**
@@ -897,6 +930,7 @@ class cSearch extends cSearchBaseAbstract {
     /**
      * Array of article id's with information about cms-types, occurence of
      * keyword/searchword, similarity .
+     *
      *
      *
      *
@@ -1203,7 +1237,6 @@ class cSearch extends cSearchBaseAbstract {
         }
 
         return $aSubCats;
-
     }
 
     /**
@@ -1352,7 +1385,6 @@ class cSearch extends cSearchBaseAbstract {
     }
 
 }
-
 class Search extends cSearch {
 
     /**
@@ -1471,6 +1503,7 @@ class cSearchResult extends cSearchBaseAbstract {
     /**
      * Array of article id's with information about cms-types, occurence of
      * keyword/searchword, similarity .
+     *
      *
      *
      *
@@ -1595,7 +1628,9 @@ class cSearchResult extends cSearchBaseAbstract {
                         if (isset($match[0])) {
                             $pattern = $match[0];
                             $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
-                            $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize located searchwords
+                            $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize
+                                                                                                    // located
+                                                                                                    // searchwords
                         }
                     }
                 }
@@ -1612,7 +1647,9 @@ class cSearchResult extends cSearchBaseAbstract {
                             if (isset($match[0])) {
                                 $pattern = $match[0];
                                 $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
-                                $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize located searchwords
+                                $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize
+                                                                                                        // located
+                                                                                                        // searchwords
                             }
                         }
                     }
@@ -1719,7 +1756,6 @@ class cSearchResult extends cSearchBaseAbstract {
     }
 
 }
-
 class SearchResult extends cSearchResult {
 
     /**
