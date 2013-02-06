@@ -26,18 +26,24 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * cCharacterConverter
+ *
  * @deprecated [2013-02-06] This class is deprecated.
- * 
- * A diacritic mark or diacritic is a mark added to a letter to alter a
- * word's pronunciation or to distungish between similar words. However,
- * users of foreign languages are unable to type diacritics (either because
- * the keyboard mapping doesn't support them, or they are looking to similar
- * to other characters). Examples for conversions:
  *
- * German diacritic char � maps to u and ue.
+ *             A diacritic mark or diacritic is a mark added to a letter to
+ *             alter a
+ *             word's pronunciation or to distungish between similar words.
+ *             However,
+ *             users of foreign languages are unable to type diacritics (either
+ *             because
+ *             the keyboard mapping doesn't support them, or they are looking to
+ *             similar
+ *             to other characters). Examples for conversions:
  *
- * Developers can use the diacritic search implemented in the GenericDB to
- * automatically handle diacritic search conversion.
+ *             German diacritic char ï¿½ maps to u and ue.
+ *
+ *             Developers can use the diacritic search implemented in the
+ *             GenericDB to
+ *             automatically handle diacritic search conversion.
  */
 class cCharacterConverter {
 
@@ -69,15 +75,16 @@ class cCharacterConverter {
      *
      * @param unknown_type $sEncoding
      * @param unknown_type $cCharacter
-     * @throws cInvalidArgumentException if the given character is longer than one char
+     * @throws cInvalidArgumentException if the given character is longer than
+     *         one char
      * @return multitype:NULL
      */
     public function fetchNormalizedCharsForDiacriticCharacter($sEncoding, $cCharacter) {
-         return null;
+        return null;
     }
 
     protected function _correctEncoding($sEncoding) {
-           return null;
+        return null;
     }
 
 }
