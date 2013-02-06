@@ -190,7 +190,6 @@ class Index extends cSearchIndex {
  * setCmsOptions should be sourced out into a new helper-class.
  * Keep in mind that class Search and SearchResult uses an instance of object
  * Index.
- * Consider character tables in relation 'con_chartable'.
  */
 cInclude('includes', 'functions.encoding.php');
 

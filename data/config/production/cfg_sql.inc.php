@@ -34,7 +34,6 @@ $cfg['tab']['cat_art'] = $cfg['sql']['sqlprefix'] . '_cat_art';
 $cfg['tab']['cat_lang'] = $cfg['sql']['sqlprefix'] . '_cat_lang';
 $cfg['tab']['cat_tree'] = $cfg['sql']['sqlprefix'] . '_cat_tree';
 $cfg['tab']['cat'] = $cfg['sql']['sqlprefix'] . '_cat';
-$cfg['tab']['chartable'] = $cfg['sql']['sqlprefix'] . '_chartable';
 $cfg['tab']['clients_lang'] = $cfg['sql']['sqlprefix'] . '_clients_lang';
 $cfg['tab']['clients'] = $cfg['sql']['sqlprefix'] . '_clients';
 $cfg['tab']['code'] = $cfg['sql']['sqlprefix'] . '_code';

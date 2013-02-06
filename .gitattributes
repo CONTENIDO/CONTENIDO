@@ -2570,13 +2570,6 @@ pear/scripts/pearcmd.php -text
 setup/data/base.txt -text
 setup/data/base/base_actions1.sql -text
 setup/data/base/base_area1.sql -text
-setup/data/base/base_chartable1.sql -text
-setup/data/base/base_chartable2.sql -text
-setup/data/base/base_chartable3.sql -text
-setup/data/base/base_chartable4.sql -text
-setup/data/base/base_chartable5.sql -text
-setup/data/base/base_chartable6.sql -text
-setup/data/base/base_chartable7.sql -text
 setup/data/base/base_files1.sql -text
 setup/data/base/base_framefiles1.sql -text
 setup/data/base/base_framefiles2.sql -text
