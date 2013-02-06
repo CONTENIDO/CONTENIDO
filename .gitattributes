@@ -563,6 +563,7 @@ contenido/classes/contenido/class.group.member.php -text
 contenido/classes/contenido/class.group.php -text
 contenido/classes/contenido/class.group.property.php -text
 contenido/classes/contenido/class.inuse.php -text
+contenido/classes/contenido/class.keyword.php -text
 contenido/classes/contenido/class.lang.php -text
 contenido/classes/contenido/class.layout.php -text
 contenido/classes/contenido/class.maillog.php -text
