@@ -36,6 +36,7 @@ if (!defined('CON_FRAMEWORK')) {
  * Field       Size         Description
  * -----       ----         -----------
  * idproperty  int(10)      idproperty (automatically handled by this class)
+ * idclient    int(10)      Id of client
  * itemtype    varchar(32)  Custom item type (e.g. idcat, idart, idartlang, custom)
  * itemid      varchar(32)  ID of the item
  * type        varchar(32)  Property type
@@ -112,6 +113,8 @@ class cApiPropertyCollection extends ItemCollection {
         global $cfg, $client, $lang;
 
         if (0 === $idclient) {
+            // @todo Make client id parameter mandatory, otherwhise using the global variable
+            // may lead to unwanted issues!
             $idclient = $client;
         }
 
@@ -161,24 +164,26 @@ class cApiPropertyCollection extends ItemCollection {
      * Creates a new property item.
      *
      * Example:
-     * $proerty = $properties->create('idcat', 27, 'visual', 'image',
-     * 'images/tool.gif');
+     * <pre>
+     * $properties = new cApiPropertyCollection($clientid);
+     * $property = $properties->create('idcat', 27, 'visual', 'image', 'images/tool.gif');
+     * </pre>
      *
      * @param mixed $itemtype Type of the item (example: idcat)
      * @param mixed $itemid ID of the item (example: 31)
      * @param mixed $type Type of the data to store (arbitary data)
      * @param mixed $name Entry name
      * @param mixed $value Value
-     * @param bool $bInternally Optionally default false (on internal call do
+     * @param bool $bDontEscape Optionally default false (on internal call do
      *        not escape parameters again
      * @return cApiProperty
      */
-    public function create($itemtype, $itemid, $type, $name, $value, $bInternally = false) {
-        global $cfg, $auth;
+    public function create($itemtype, $itemid, $type, $name, $value, $bDontEscape = false) {
+        global $auth;
 
         $item = parent::createNewItem();
 
-        if (!$bInternally) {
+        if (!$bDontEscape) {
             $itemtype = $this->db->escape($itemtype);
             $itemid = $this->db->escape($itemid);
             $value = $this->db->escape($value);
@@ -208,7 +213,10 @@ class cApiPropertyCollection extends ItemCollection {
      * Returns the value for a given item.
      *
      * Example:
+     * <pre>
+     * $properties = new cApiPropertyCollection($clientid);
      * $value = $properties->getValue('idcat', 27, 'visual', 'image');
+     * </pre>
      *
      * @param mixed $itemtype Type of the item (example: idcat)
      * @param mixed $itemid ID of the item (example: 31)
@@ -244,7 +252,10 @@ class cApiPropertyCollection extends ItemCollection {
      * Returns the value for a given item.
      *
      * Example:
+     * <pre>
+     * $properties = new cApiPropertyCollection($clientid);
      * $values = $properties->getValuesByType('idcat', 27, 'visual');
+     * </pre>
      *
      * @param mixed $itemtype Type of the item (example: idcat)
      * @param mixed $itemid ID of the item (example: 31)
@@ -280,7 +291,10 @@ class cApiPropertyCollection extends ItemCollection {
      * Returns the values only by type and name.
      *
      * Example:
+     * <pre>
+     * $properties = new cApiPropertyCollection($clientid);
      * $values = $properties->getValuesOnlyByTypeName('note', 'category');
+     * </pre>
      *
      * @param mixed $itemtype Type of the item (example: idcat)
      * @param mixed $name Type of the data to store (arbitary data)
@@ -307,7 +321,10 @@ class cApiPropertyCollection extends ItemCollection {
      * Existing item will be updated, not existing item will be created.
      *
      * Example:
+     * <pre>
+     * $properties = new cApiPropertyCollection($clientid);
      * $properties->setValue('idcat', 27, 'visual', 'image', 'images/tool.gif');
+     * </pre>
      *
      * @param mixed $itemtype Type of the item (example: idcat)
      * @param mixed $itemid ID of the item (example: 31)
@@ -318,17 +335,17 @@ class cApiPropertyCollection extends ItemCollection {
      *        (possiblity to update name value and type))
      */
     public function setValue($itemtype, $itemid, $type, $name, $value, $idProp = 0) {
-        $itemtype = $itemtype;
-        $itemid = $itemid;
-        $type = $type;
-        $name = $name;
-        $value = $value;
+        $itemtype = $this->db->escape($itemtype);
+        $itemid = $this->db->escape($itemid);
+        $type = $this->db->escape($type);
+        $name = $this->db->escape($name);
+        $value = $this->db->escape($value);
         $idProp = (int) $idProp;
 
         if ($idProp == 0) {
-            $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $this->db->escape($itemtype) . "' AND itemid = '" . $this->db->escape(itemid) . "' AND type = '" . $this->db->escape(type) . "' AND name = '" . $this->db->escape(name) . "'");
+            $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "' AND name = '" . $name . "'");
         } else {
-            $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $this->db->escape(itemtype) . "' AND itemid = '" . $this->db->escape(itemid) . "' AND idproperty = " . $idProp);
+            $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND idproperty = " . $idProp);
         }
 
         if (($item = $this->next()) !== false) {
@@ -349,7 +366,10 @@ class cApiPropertyCollection extends ItemCollection {
      * Delete a property item.
      *
      * Example:
+     * <pre>
+     * $properties = new cApiPropertyCollection($clientid);
      * $properties->deleteValue('idcat', 27, 'visual', 'image');
+     * </pre>
      *
      * @param mixed $itemtype Type of the item (example: idcat)
      * @param mixed $itemid ID of the item (example: 31)
