@@ -63,6 +63,11 @@ cms/data/modules/content_link_list/lang/lang_de_DE.txt -text
 cms/data/modules/content_link_list/php/content_link_list_input.php -text
 cms/data/modules/content_link_list/php/content_link_list_output.php -text
 cms/data/modules/content_link_list/template/get.tpl -text
+cms/data/modules/content_map_google/info.xml -text svneol=unset#text/plain
+cms/data/modules/content_map_google/js/content_map_google.js -text svneol=unset#text/plain
+cms/data/modules/content_map_google/php/content_map_google_input.php -text
+cms/data/modules/content_map_google/php/content_map_google_output.php -text
+cms/data/modules/content_map_google/template/get.tpl -text
 cms/data/modules/content_picture_gallery/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_picture_gallery/php/content_picture_gallery_input.php -text
 cms/data/modules/content_picture_gallery/php/content_picture_gallery_output.php -text
