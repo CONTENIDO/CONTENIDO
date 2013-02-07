@@ -191,14 +191,28 @@ abstract class cItemBaseAbstract extends cGenericDb {
 
     /**
      * Returns properties instance, instantiates it if not done before.
+     * NOTE: This funtion changes always the client variable of property collection instance.
      *
+     * @param   int  $idclient  Id of client to use in property collection. If not passed
+     *                          it uses global variable
      * @return  cApiPropertyCollection
      */
-    protected function _getPropertiesCollectionInstance() {
+    protected function _getPropertiesCollectionInstance($idclient = 0) {
+        global $client;
+
+        if ((int) $idclient <= 0) {
+            $idclient = $client;
+        }
+
         // Runtime on-demand allocation of the properties object
         if (!isset($this->properties) || !($this->properties instanceof cApiPropertyCollection)) {
             $this->properties = new cApiPropertyCollection();
         }
+
+        if ((int) $idclient > 0) {
+            $this->properties->changeClient($idclient);
+        }
+
         return $this->properties;
     }
 

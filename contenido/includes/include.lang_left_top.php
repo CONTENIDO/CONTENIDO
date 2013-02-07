@@ -20,13 +20,48 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$clientname = $classclient->getClientname($client);
-
 $tpl->set('s', 'CLASS', 'text_medium');
+$tpl->set('s', 'OPTIONS', '');
+$tpl->set('s', 'CAPTION', '');
 $tpl->set('s', 'SESSID', $sess->id);
-$tpl->set('s', 'NEWLANG', '<a class="addfunction" href="javascript:languageNewConfirm()">' . i18n("Create language for client") . '</a>');
-$tpl->set('s', 'NAME', $clientname);
-$tpl->set('s', 'TARGETCLIENT', $client);
+
+$tpl->set('s', 'ACTION', '');
+$tpl->set('s', 'SID', $sess->id);
+
+$clients = $classclient->getAccessibleClients();
+
+
+$tpl2 = new cTemplate();
+$tpl2->set('s', 'ID', 'editclient');
+$tpl2->set('s', 'NAME', 'editclient');
+$tpl2->set('s', 'CLASS', 'text_medium');
+$tpl2->set('s', 'OPTIONS', '');
+
+$iClientcount = count($clients);
+
+foreach ($clients as $key => $value) {
+    $selected = ($client == $key) ? 'selected' : '';
+
+    if (strlen($value['name']) > 15) {
+        $value['name'] = substr($value['name'], 0, 12) . '...';
+    }
+
+    $tpl2->set('d', 'VALUE', $key);
+    $tpl2->set('d', 'CAPTION', $value['name']);
+    $tpl2->set('d', 'SELECTED', $selected);
+    $tpl2->next();
+}
+
+$select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true);
+
+$tpl->set('s', 'CLIENTSELECT', $select);
+
+if ($perm->have_perm_area_action($area, "lang_newlanguage") && $iClientcount > 0) {
+    $tpl->set('s', 'NEWLANG', '<a class="addfunction" href="javascript:void(0)">' . i18n("Create language for") . '</a>');
+} else if ($iClientcount == 0) {
+    $tpl->set('s', 'NEWLANG', i18n('No Client selected'));
+} else {
+    $tpl->set('s', 'NEWLANG', '');
+}
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lang_left_top']);
-

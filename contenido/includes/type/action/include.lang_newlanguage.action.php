@@ -29,5 +29,6 @@ if (!is_numeric($targetclient)) {
     $targetclient = $client;
 }
 
-$errno = langNewLanguage("-- ".i18n("New language")." --", $targetclient);
+$newidlang = langNewLanguage("-- ".i18n("New language")." --", $targetclient);
+
 ?>

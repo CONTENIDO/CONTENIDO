@@ -75,6 +75,20 @@
         }
     }
 
+    function languageSelectAdd(name, idlang) {
+        var text = name + ' (' + idlang + ')';
+        $("#cLanguageSelect").append(new Option(text, idlang, false, false));
+    }
+
+    function languageSelectRemove(idlang) {
+        $("#cLanguageSelect").find("option[value='" + idlang + "']").remove();
+    }
+
+    function languageSelectUpdate(name, idlang) {
+        var text = name + ' (' + idlang + ')';
+        $("#cLanguageSelect").find("option[value='" + idlang + "']").text(text);
+    }
+
     $(document).ready(function(){
         // initialize header menu
         {HEADER_MENU_OBJ}.initialize({HEADER_MENU_OPTIONS});

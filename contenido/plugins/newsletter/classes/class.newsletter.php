@@ -139,7 +139,7 @@ class NewsletterCollection extends ItemCollection
         $this->properties->query();
 
         while ($oPropertyItem = $this->properties->next()) {
-            $oItem->setProperty($oPropertyItem->get("type"), $oPropertyItem->get("name"), $oPropertyItem->get("value"));
+            $oItem->setProperty($oPropertyItem->get("type"), $oPropertyItem->get("name"), $oPropertyItem->get("value"), $client);
         }
 
         $oItem->store();

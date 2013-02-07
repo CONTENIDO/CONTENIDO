@@ -26,6 +26,10 @@ if (!isset($action)) {
     $action = '';
 }
 
+if (!is_numeric($targetclient)) {
+    $targetclient = $client;
+}
+
 $iGetIdlang = $idlang;
 
 $sql = "SELECT
@@ -35,7 +39,7 @@ $sql = "SELECT
         " . $cfg["tab"]["clients_lang"] . " AS B
         WHERE
         A.idlang=B.idlang AND
-        B.idclient='" . cSecurity::toInteger($client) . "'
+        B.idclient='" . cSecurity::toInteger($targetclient) . "'
         ORDER BY A.idlang";
 
 $db->query($sql);
@@ -55,7 +59,7 @@ while ($db->nextRecord()) {
     } else {
         // deactivate
         $message = i18n("Deactivate language");
-        $active = "<a title=\"$message\" class=action href=\"" . $sess->url("main.php?area=$area&action=lang_deactivatelanguage&frame=$frame&targetclient=$targetclient&idlang=" . $db->f("idlang")) . "#clickedhere\"><img src=\"" . $cfg["path"]["images"] . "online.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
+        $active = "<a title=\"$message\" class=\"action\" href=\"" . $sess->url("main.php?area=$area&action=lang_deactivatelanguage&frame=$frame&targetclient=$targetclient&idlang=" . $db->f("idlang")) . "#clickedhere\"><img src=\"" . $cfg["path"]["images"] . "online.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
     }
 
     // Delete Button
@@ -63,7 +67,7 @@ while ($db->nextRecord()) {
     $deleteAct = i18n("Delete language");
     $deletebutton = '<a title="' . $deleteAct . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $deleteMsg . '&quot;, function() { deleteLang(' . $db->f('idlang') . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $deleteAct . '" alt="' . $deleteAct . '"></a>';
 
-    $tpl->set('d', 'LANGUAGE', '<a target="right_bottom" href="' . $sess->url("main.php?area=lang_edit&idlang=$idlang&frame=4") . '">' . $db->f("name") . '</a>&nbsp;<span style="font-size:10px">(' . $idlang . ')</span>');
+    $tpl->set('d', 'LANGUAGE', '<a target="right_bottom" href="' . $sess->url("main.php?area=lang_edit&idlang=$idlang&targetclient=$targetclient&frame=4") . '">' . $db->f("name") . '&nbsp;<span style="font-size:10px">(' . $idlang . ')</span></a>');
     $tpl->set('d', 'ACTIVATEBUTTON', $active);
     $tpl->set('d', 'DELETEBUTTON', $deletebutton);
 

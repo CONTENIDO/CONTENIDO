@@ -59,6 +59,7 @@ function langEditLanguage($idlang, $langname, $encoding, $active, $direction = '
  *
  * @param  string  $name  Name of the language
  * @param  int  $client  Id of client
+ * @return int  New language id
  */
 function langNewLanguage($name, $client) {
     global $cfgClient, $notification;
@@ -83,9 +84,10 @@ function langNewLanguage($name, $client) {
 
         cFileHandler::rename($destPath . 'config.php.new', 'config.php');
     } else {
-        $notification->displayNotification('error', i18n("Could not set the language-ID in the file 'config.php'. Please set the language manually.")
-        );
+        $notification->displayNotification('error', i18n("Could not set the language-ID in the file 'config.php'. Please set the language manually."));
     }
+
+    return $oLangItem->get('idlang');
 }
 
 /**
@@ -400,6 +402,10 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
         //*********** delete from 'lang'-table
         $sql = "DELETE FROM " . $cfg['tab']['lang'] . " WHERE idlang=" . $iIdLang;
         $db->query($sql);
+
+        //*********** delete from 'properties'-table
+        $oPropertyColl = new cApiPropertyCollection($iIdClient);
+        $oPropertyColl->deleteProperties('idlang', $iIdLang);
     } else {
         return $notification->returnMessageBox('error', i18n("Could not delete language"), 0);
     }

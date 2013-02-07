@@ -20,10 +20,13 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 includePlugins('languages');
 
-$clang = new cApiLanguage($idlang);
+if ($action == "lang_newlanguage" && (int) $newidlang > 0) {
+    $idlang = $newidlang;
+}
+
+$oLanguage = new cApiLanguage($idlang);
 
 $page = new cGuiPage("lang_edit");
 
@@ -43,79 +46,56 @@ $sReload = '<script type="text/javascript">
             })();
             </script>';
 
-if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
+if ($action == "lang_newlanguage") {
 
-    if ($action == "lang_deletelanguage") {
-        $page->displayInfo(i18n("Deleted language successfully!"));
-        // finally delete from dropdown in header
-        $newOption = '<script type="text/javascript">
-                        (function() {
-                            var langList = top.header.document.getElementById("cLanguageSelect"),
-                                thepos = "", i;
-                            for (i = 0; i < langList.length; i++) {
-                                if (langList.options[i].value == ' . $idlang . ') {
-                                    thepos = langList.options[i].index;
-                                }
-                            }
-                            langList.remove(thepos);
-                        })();
-                      </script>';
-    }
+    $page->displayInfo(i18n("Created new language successfully!"));
 
-    if ($action == "lang_newlanguage") {
-        // update language dropdown in header
-        $new_idlang = 0;
-        $db->query('SELECT MAX(idlang) AS newlang FROM ' . $cfg["tab"]["lang"] . ';');
-        if ($db->nextRecord()) {
-            $new_idlang = $db->f('newlang');
-        }
-
-        $newOption = '<script type="text/javascript">
-                        (function() {
-                            var newLang = new Option("' . i18n("New language") . ' (' . $new_idlang . ')", "' . $new_idlang . '", false, false);
-                            var langList = top.header.document.getElementById("cLanguageSelect");
-                            langList.options[langList.options.length] = newLang;
-                        })();
-                      </script>';
-        $idlang = $new_idlang;
-        $page->displayInfo(i18n("Created new language successfully!"));
-    }
-
+    // update language dropdown in header, but only for current client
     if ($targetclient == $client) {
-        if (!empty($newOption)) {
-            $page->addScript($newOption);
-        }
+        $jsCode = '<script type="text/javascript">
+                        (function() {
+                            top.header.languageSelectAdd("' . i18n("New language") . '", "' . $idlang . '");
+                        })();
+                      </script>';
+        $page->addScript($jsCode);
     }
+
     if (!empty($sReload)) {
         $page->addScript($sReload);
     }
     $page->render();
+
+} elseif ($action == "lang_deletelanguage") {
+
+    $page->displayInfo(i18n("Deleted language successfully!"));
+
+    // finally delete from dropdown in header, but only for current client
+    if ($targetclient == $client) {
+        $jsCode = '<script type="text/javascript">
+                        (function() {
+                            top.header.languageSelectRemove(' . $idlang . ');
+                        })();
+                      </script>';
+        $page->addScript($jsCode);
+    }
+
+    if (!empty($sReload)) {
+        $page->addScript($sReload);
+    }
+    $page->render();
+
 } else {
+
     if ($action == "lang_edit") {
         callPluginStore('languages');
 
-        $language = new cApiLanguage($idlang);
+        $oLanguage->setProperty("dateformat", "full", stripslashes($datetimeformat), $targetclient);
+        $oLanguage->setProperty("dateformat", "date", stripslashes($dateformat), $targetclient);
+        $oLanguage->setProperty("dateformat", "time", stripslashes($timeformat), $targetclient);
+        $oLanguage->setProperty("dateformat", "locale", stripslashes($datetimelocale), $targetclient);
 
-        $language->setProperty("dateformat", "full", stripslashes($datetimeformat));
-        $language->setProperty("dateformat", "date", stripslashes($dateformat));
-        $language->setProperty("dateformat", "time", stripslashes($timeformat));
-        $language->setProperty("dateformat", "locale", stripslashes($datetimelocale));
-
-        $language->setProperty("language", "code", stripslashes($languagecode));
-        $language->setProperty("country", "code", stripslashes($countrycode));
-
-        // update dropdown in header
-        $newOption = '<script type="text/javascript">
-                        (function() {
-                            var langList = top.header.document.getElementById("cLanguageSelect"),
-                                thepos = "", i;
-                            for (i = 0; i < langList.length; i++) {
-                                if (langList.options[i].value == ' . $idlang . ') {
-                                    langList.options[i].innerHTML = \'' . $langname . ' (' . $idlang . ')\';
-                                }
-                            }
-                        })();
-                      </script>';
+        $oLanguage->setProperty("language", "code", stripslashes($languagecode), $targetclient);
+        $oLanguage->setProperty("country", "code", stripslashes($countrycode), $targetclient);
     }
 
     if (!$perm->have_perm_area_action($area, $action)) {
@@ -200,12 +180,12 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
             $languagecode = new cHTMLSelectElement("languagecode");
             $languagecode->setStyle('width:255px');
             $languagecode->autoFill($iso_639_2_tags);
-            $languagecode->setDefault($clang->getProperty("language", "code"));
+            $languagecode->setDefault($oLanguage->getProperty("language", "code", $targetclient));
 
             $countrycode = new cHTMLSelectElement("countrycode");
             $countrycode->setStyle('width:255px');
             $countrycode->autoFill($iso_3166_codes);
-            $countrycode->setDefault($clang->getProperty("country", "code"));
+            $countrycode->setDefault($oLanguage->getProperty("country", "code", $targetclient));
 
             $directionSelect = new cHTMLSelectElement("direction");
             $directionSelect->setStyle('width:255px');
@@ -213,13 +193,13 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
             $directionSelect->setDefault($db->f("direction"));
 
 
-            $fulldateformat = new cHTMLTextbox("datetimeformat", $clang->getProperty("dateformat", "full"), 40);
+            $fulldateformat = new cHTMLTextbox("datetimeformat", $oLanguage->getProperty("dateformat", "full", $targetclient), 40);
 
-            $dateformat = new cHTMLTextbox("dateformat", $clang->getProperty("dateformat", "date"), 40);
+            $dateformat = new cHTMLTextbox("dateformat", $oLanguage->getProperty("dateformat", "date", $targetclient), 40);
 
-            $timeformat = new cHTMLTextbox("timeformat", $clang->getProperty("dateformat", "time"), 40);
+            $timeformat = new cHTMLTextbox("timeformat", $oLanguage->getProperty("dateformat", "time", $targetclient), 40);
 
-            $dateLocale = new cHTMLTextbox("datetimelocale", $clang->getProperty("dateformat", "locale"), 40);
+            $dateLocale = new cHTMLTextbox("datetimelocale", $oLanguage->getProperty("dateformat", "locale", $targetclient), 40);
 
             $form->addHeader(i18n("Edit language"));
             $oTxtLang = new cHTMLTextBox("langname", conHtmlSpecialChars($db->f("name")), 40, 255);
@@ -241,10 +221,16 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage") {
 
             $page->setContent($form);
 
+            // update language dropdown in header, but only for current client
             if ($targetclient == $client) {
-                if (!empty($newOption)) {
-                    $page->addScript($newOption);
-                }
+                // update dropdown in header
+                $jsCode = '<script type="text/javascript">
+                            (function() {
+                                top.header.languageSelectUpdate("' . $langname . '", "' . $idlang . '");
+                            })();
+                          </script>';
+
+                $page->addScript($jsCode);
             }
 
             if ($_REQUEST['action'] != '') {

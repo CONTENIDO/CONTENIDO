@@ -11,47 +11,69 @@
     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
     <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/contenidoConfig.js"></script>
-    <script type="text/javascript">
-        var sessid = "{SESSID}";
-        var iLanguagecount = -1;
-
-        function resizeFrame() {
-            parent.parent.frameResize.resizeTopLeftFrame(document.getElementById('top_left_container').offsetHeight+1);
-        }
-
-        function languageNewConfirm() {
-            if (iLanguagecount == 0) {
-                langNewLanguage();
-            } else {
-                showConfirmation('i18n("Do you really want to create a new language?")', langNewLanguage);
-            }
-        }
-
-        function langNewLanguage() {
-            var element = document.getElementById("editclient");
-            var targetclient = {TARGETCLIENT};
-            var url = "";
-            url += "main.php?area=lang_edit";
-            url += "&action=lang_newlanguage";
-            url += "&frame=4";
-            url += "&targetclient="+targetclient;
-            url += "&contenido=" + sessid;
-            parent.parent.frames["right"].frames["right_bottom"].location.href = url;
-        }
-    </script>
+    <style type="text/css">
+    #top_left_container {border: 1px solid #B3B3B3; padding: 5px 0 5px 16px; margin-top: 1px;}
+    #top_left_container .sel {clear: both;}
+    </style>
 </head>
-<body onLoad="resizeFrame();">
+<body>
 
-<div id="top_left_container" style="border: 1px solid #B3B3B3; padding:5px 0 5px 16px; margin-top:1px">
-  {NEWLANG}
-  <div style="clear:both; font-weight: bold; margin-left: 20px;">{NAME}</div>
+<div id="top_left_container">
+    {NEWLANG}
+    <div class="sel">{CLIENTSELECT}</div>
 </div>
+
+<script type="text/javascript">
+var sessid = "{SESSID}";
+
+(function($) {
+
+    function _onCreateClick(e) {
+        showConfirmation('i18n("Do you really want to create a new language?")', _confirmCallback);
+    }
+
+    function _confirmCallback() {
+        var $element = $("#editclient"),
+            url = "";
+        url = "main.php?" + $.param({
+            "area": "lang_edit",
+            "action": "lang_newlanguage",
+            "frame": "4",
+            "targetclient": $element.val(),
+            "contenido": sessid
+        });
+        parent.parent.frames["right"].frames["right_bottom"].location.href = url;
+    }
+
+    function _onClientChange(e) {
+        var url = "main.php?" + $.param({
+            "area": "lang",
+            "frame": "2",
+            "targetclient": $(this).val(),
+            "contenido": sessid
+        });
+        parent.parent.frames["left"].frames["left_bottom"].location.href = url;
+    }
+
+    $(document).ready(function() {
+        // Resize frame
+        parent.parent.frameResize.resizeTopLeftFrame($("#top_left_container").offsetHeight + 1);
+
+        // Bind to create language click
+        $("#top_left_container a.addfunction").click(_onCreateClick);
+
+        // Bind to client change
+        $("#editclient").change(_onClientChange);
+    });
+
+})(jQuery);
+
+</script>
 
 </body>
 </html>
 <!--
 
-i18n("Create language for")
 i18n("Do you really want to create a new language?")
 
 -->

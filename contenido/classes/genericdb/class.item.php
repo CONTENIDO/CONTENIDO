@@ -454,9 +454,10 @@ abstract class Item extends cItemBaseAbstract {
      * @param   string  $sType   Specifies the type
      * @param   string  $sName   Specifies the name
      * @param   mixed   $mValue  Specifies the value
+     * @param   int     $iClient Id of client to set property for
      * @return  bool
      */
-    public function setProperty($sType, $sName, $mValue) {
+    public function setProperty($sType, $sName, $mValue, $iClient = 0) {
         // If this object wasn't loaded before, return false
         if ($this->virgin == true) {
             $this->lasterror = 'No item loaded';
@@ -464,7 +465,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         // Set the value
-        $oProperties = $this->_getPropertiesCollectionInstance();
+        $oProperties = $this->_getPropertiesCollectionInstance($iClient);
         $bResult = $oProperties->setValue(
                 $this->primaryKey, $this->get($this->primaryKey), $sType, $sName, $mValue
         );
@@ -476,9 +477,10 @@ abstract class Item extends cItemBaseAbstract {
      *
      * @param   string  $sType  Specifies the type
      * @param   string  $sName  Specifies the name
+     * @param   int     $iClient Id of client to set property for
      * @return  mixed   Value of the given property or false
      */
-    public function getProperty($sType, $sName) {
+    public function getProperty($sType, $sName, $iClient = 0) {
         // If this object wasn't loaded before, return false
         if ($this->virgin == true) {
             $this->lasterror = 'No item loaded';
@@ -486,7 +488,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         // Return the value
-        $oProperties = $this->_getPropertiesCollectionInstance();
+        $oProperties = $this->_getPropertiesCollectionInstance($iClient);
         $mValue = $oProperties->getValue(
                 $this->primaryKey, $this->get($this->primaryKey), $sType, $sName
         );

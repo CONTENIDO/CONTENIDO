@@ -11,31 +11,10 @@
     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
     <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
-    <script type="text/javascript">
-        var sid = "{SID}";
-
-        function deleteLang(idlang) {
-            str  = "";
-            str += "main.php?area=lang_edit";
-            str += "&action=lang_deletelanguage";
-            str += "&idlang=" + idlang;
-            str += "&targetclient={TARGETCLIENT}";
-            str += "&frame=4";
-            str += "&contenido=" + sid;
-
-            parent.parent.frames["right"].frames["right_bottom"].location.href = str;
-        }
-
-        function refreshLangCount() {
-            top.content.left.left_top.iLanguagecount = {LANG_COUNT};
-        }
-
-        if (!top.content.left.left_top && top.content.left.left_top.iLanguagecount) {
-            window.setTimeout("refreshLangCount()", 1000);
-        } else {
-            refreshLangCount();
-        }
-    </script>
+    <style type="text/css">
+    table tbody {vertical-align: top;}
+    td.first {padding-left: 10px;}
+    </style>
 </head>
 <body>
 
@@ -44,19 +23,57 @@
     {NOTIFICATION}
 
     <!-- BEGIN:BLOCK -->
-    <tr class="text_medium" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)"{MARKED}>
-        <td width="100%" style="padding-left:10px">{LANGUAGE}</td>
+    <tr class="text_medium" {MARKED}>
+        <td width="100%" class="first">{LANGUAGE}</td>
         <td>{ACTIVATEBUTTON}</td>
         <td>{DELETEBUTTON}</td>
     </tr>
     <!-- END:BLOCK -->
 
 </table>
+
 <script type="text/javascript">
-    if (document.getElementById('marked')) {
-        var markedRow = document.getElementById('marked');
-        row.click(markedRow);
+
+var sid = "{SID}";
+
+function deleteLang(idlang) {
+    var str  = "";
+    str += "main.php?area=lang_edit";
+    str += "&action=lang_deletelanguage";
+    str += "&idlang=" + idlang;
+    str += "&targetclient={TARGETCLIENT}";
+    str += "&frame=4";
+    str += "&contenido=" + sid;
+
+    parent.parent.frames["right"].frames["right_bottom"].location.href = str;
+}
+
+function refreshLangCount() {
+    top.content.left.left_top.iLanguagecount = {LANG_COUNT};
+}
+
+if (!top.content.left.left_top && top.content.left.left_top.iLanguagecount) {
+    window.setTimeout("refreshLangCount()", 1000);
+} else {
+    refreshLangCount();
+}
+
+$(document).ready(function() {
+    // Register some events for rows
+    // @todo move this to rowMark.js
+    $("table tr").mouseover(function() {
+        row.over(this);
+    }).mouseout(function() {
+        row.out(this);
+    }).click(function() {
+        row.click(this);
+    })
+
+    // Mark element having the marked id value
+    if ($("#marked")) {
+        row.click($("#marked").get(0));
     }
+});
 </script>
 </body>
 </html>
