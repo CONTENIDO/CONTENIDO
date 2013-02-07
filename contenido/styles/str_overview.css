@@ -49,7 +49,7 @@ img.spaced {
     padding: 0px 2px;
 }
 
-#category_list .str-style-c {
+#category_list .str-style-c, #category_list .str-style-d , #category_list .str-style-f {
     border:0;
     border-bottom:1px;
     border-right:1px;
@@ -58,6 +58,15 @@ img.spaced {
     white-space:nowrap;
     padding: 0px 2px;
 }
+
+#category_list .str-style-f  {
+border-width: 1px 1px 0px 0px;
+}
+
+#category_list .str-style-d {
+	border-width: 0px 0px 1px 1px;
+}
+
 
 #category_list {
     border:0px;

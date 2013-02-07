@@ -190,7 +190,7 @@ function insertEmptyStrRow($listColumns) {
     $tpl->set('d', 'DUPLICATEBUTTON', '&nbsp;');
     $tpl->set('d', 'TEMPLATEBUTTON', '&nbsp;');
     $tpl->set('d', 'MOUSEOVER', '');
-    $tpl->set('d', 'SUM_COLUMNS_EDIT', 14 + count($listColumns));
+    $tpl->set('d', 'SUM_COLUMNS_EDIT', 15 + count($listColumns));
     $tpl->set('d', 'CATID', '');
     $tpl->set('d', 'PARENTID', '');
     $tpl->set('d', 'LEVEL', '');
@@ -208,7 +208,7 @@ function insertEmptyStrRow($listColumns) {
     $additionalColumns = array();
     foreach ($listColumns as $content) {
         // Content rows
-        $additionalColumns[] = '<td style="border:0;border-bottom:1px;border-right:1px;border-color:#B3B3B3;border-style:solid;" nowrap="nowrap">&nbsp;</td>';
+        $additionalColumns[] = '<td style="border:0;border-bottom:1px;border-color:#B3B3B3;border-style:solid;" nowrap="nowrap">&nbsp;</td>';
     }
     $tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $additionalColumns));
     $tpl->next();
@@ -462,7 +462,7 @@ if ($_cecIterator->count() > 0) {
 
     foreach ($listColumns as $content) {
         // Header for additional columns
-        $additionalheaders[] = '<td class="header" nowrap="nowrap">' . $content . '</td>';
+        $additionalheaders[] = '<th class="header nowrap" nowrap="nowrap">' . $content . '</th>';
     }
 
     $additionalheader = implode('', $additionalheaders);
@@ -488,7 +488,7 @@ $tpl->set('s', 'EXPAND_ALL', $expandimg);
 $sMouseover = 'onmouseover="str.over(this)" onmouseout="str.out(this)" onclick="str.click(this)"';
 
 // Fill inline edit table row
-$tpl->set('s', 'SUM_COLUMNS_EDIT', 14 + count($listColumns));
+$tpl->set('s', 'SUM_COLUMNS_EDIT', 15 + count($listColumns));
 $tpl->set('s', 'ACTION_EDIT_URL', $sess->url("main.php?frame=$frame"));
 $tpl->set('s', 'SRC_CANCEL', $backendUrl . $cfg["path"]["images"] . 'but_cancel.gif');
 $tpl->set('s', 'SRC_OK', $backendUrl . $cfg["path"]["images"] . 'but_ok.gif');
@@ -789,7 +789,7 @@ foreach ($objects as $key => $value) {
             } else {
                 $columnContents[] = '';
             }
-            $columns[] = '<td class="str-style-c">' . implode("", $columnContents) . '</td>';
+            $columns[] = '<td class="str-style-d">' . implode("", $columnContents) . '</td>';
         }
 
         $tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $columns));
@@ -813,7 +813,7 @@ $string = markSubMenuItem(0, true);
 
 // Set DHTML generic Values
 $sImagepath = $cfg["path"]["images"];
-$tpl->set('s', 'SUM_COLUMNS', 14 + count($listColumns));
+$tpl->set('s', 'SUM_COLUMNS', 15 + count($listColumns));
 $tpl->set('s', 'HREF_ACTION', $sess->url("main.php?frame=$frame"));
 $tpl->set('s', 'CON_IMAGES', $backendUrl . $cfg["path"]["images"]);
 
