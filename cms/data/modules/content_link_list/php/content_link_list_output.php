@@ -46,9 +46,12 @@ if ($_POST['linkCount']) {
 
 // if backendmode then add additional fields
 if (cRegistry::isBackendEditMode()) {
+    $backend = TRUE;
     $label = mi18n("LABEL_HEADER_LINKLIST");
+    $createLabel = mi18n("createLabel");
+    $createButton = mi18n("createButton");
     $input = '<input type="text" name="text_field" id="text_field" value="' . $linkCount . '"/>';
-    $button = '<input type="button" id="create_linkfields" value="create"/>';
+    $button = '<input type="button" id="create_linkfields" value="' . $createButton . '"/>';
 } else {
     $label = NULL;
     $input = NULL;
@@ -67,8 +70,9 @@ for ($i = 0; $i < $linkCount; $i++) {
 
 // assign data to the smarty template
 $tpl->assign('label', $label);
+$tpl->assign('createLabel', $createLabel);
 $tpl->assign('usable_links', mi18n("usable_links"));
-
+$tpl->assign('breakForBackend', $backend);
 // if article was successfully loaded assign the content
 if ($art->isLoaded()) {
     $tpl->assign('contents', $val);

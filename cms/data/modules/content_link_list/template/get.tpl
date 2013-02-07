@@ -3,7 +3,6 @@
     <label class="content-type-label">{$label}</label>
 {/if}
 
-
 <h2>{$usable_links}</h2>
 
 <ul class="linklist">
@@ -12,12 +11,18 @@
         {foreach from=$contents item=content key=kcontent}
             {foreach from=$descriptions item=description key=kdesc }
                 {if $kcontent == $kdesc}
-                    {$content}</br>
-                    {$description}</br>
+                		<div>
+                    		{$content}</br>
+                    		{$description}</br>
+                		</div>
+					{if $breakForBackend === TRUE}
+						</br>
+					{/if}
                 {/if}
             {/foreach}
         {/foreach}
     </li>
+    {$createLabel}<br />
     {$inputfield}
     {$button}
     <!-- END:BLOCK -->
