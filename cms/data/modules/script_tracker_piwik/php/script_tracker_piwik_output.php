@@ -3,7 +3,7 @@
  * Description: Piwik Tracking
  *
  * @package Module
- * @subpackage content_header_first
+ * @subpackage script_tracker_piwik
  * @version SVN Revision $Rev:$
  * @author unkown
  * @copyright four for business AG
