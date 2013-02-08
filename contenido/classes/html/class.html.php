@@ -78,14 +78,14 @@ class cHTML {
      * Defines all scripts which are required by the current element
      *
      * @var array
-    */
+     */
     protected $_requiredScripts = array();
 
     /**
      * Defines if the current tag is a contentless tag
      *
      * @var bool
-    */
+     */
     protected $_contentlessTag = true;
 
     /**
@@ -99,14 +99,14 @@ class cHTML {
      * Style definitions
      *
      * @var array
-    */
+     */
     protected $_styleDefinitions = array();
 
     /**
      * Attributes
      *
      * @var array
-    */
+     */
     protected $_attributes;
 
     /**
@@ -155,7 +155,8 @@ class cHTML {
 
     /**
      * Setter for static $_generateXHTML property
-     * @param  bool  $value
+     *
+     * @param bool $value
      */
     public static function setGenerateXHTML($value) {
         self::$_generateXHTML = (bool) $value;
@@ -248,7 +249,11 @@ class cHTML {
      * @return cHTML $this
      */
     public function setClass($class) {
-        return $this->updateAttribute('class', $class);
+        if ($class != "") {
+            return $this->updateAttribute('class', $class);
+        } else {
+            return $this;
+        }
     }
 
     /**
