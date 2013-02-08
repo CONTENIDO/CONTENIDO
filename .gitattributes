@@ -90,11 +90,6 @@ cms/data/modules/content_sitemap_xml/lang/lang_de_DE.txt -text svneol=unset#text
 cms/data/modules/content_sitemap_xml/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/data/modules/content_sitemap_xml/php/content_sitemap_xml_input.php -text
 cms/data/modules/content_sitemap_xml/php/content_sitemap_xml_output.php -text
-cms/data/modules/content_sitemap_xml_simon/info.xml -text svneol=unset#text/plain
-cms/data/modules/content_sitemap_xml_simon/lang/lang_de_DE.txt -text svneol=unset#text/plain
-cms/data/modules/content_sitemap_xml_simon/lang/lang_en_GB.txt -text svneol=unset#text/plain
-cms/data/modules/content_sitemap_xml_simon/php/content_sitemap_xml_input.php -text
-cms/data/modules/content_sitemap_xml_simon/php/content_sitemap_xml_output.php -text
 cms/data/modules/content_teaser_config/info.xml -text
 cms/data/modules/content_teaser_config/lang/lang_de_DE.txt -text
 cms/data/modules/content_teaser_config/php/content_teaser_config_input.php -text
