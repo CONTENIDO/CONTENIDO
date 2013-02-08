@@ -160,7 +160,7 @@ function checkMySQLDatabaseExists($db, $database) {
 function checkMySQLDatabaseUse($db, $database) {
     $db->connect();
 
-    if (hasMySQLiExtension()) {
+    if (hasMySQLiExtension() && !hasMySQLExtension()) {
         if (@mysqli_select_db($db->getLinkId(), $database)) {
             return true;
         } else {
