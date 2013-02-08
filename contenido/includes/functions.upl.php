@@ -199,7 +199,7 @@ function uplSyncDirectory($sPath) {
     while ($db->nextRecord()) {
         $sCurrDirname = $db->f('dirname');
         $sSubDir = substr($sCurrDirname, strlen($sPath));
-        if (substr_count($sSubDir, '/') <= 1) {
+        if (substr_count($sSubDir, '/') <= 1 && !cApiDbfs::isDbfs($sCurrDirname)) {
             // subdirectory is a direct descendant, process this directory too
             $sFullPath = $cfgClient[$client]['upl']['path'] . $sCurrDirname;
             if (!is_dir($sFullPath)) {
