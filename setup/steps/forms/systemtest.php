@@ -441,9 +441,9 @@ class cSetupSystemtest extends cSetupMask
 					$db->connect();
 
 					/* Check MySQLi extension */
-					if(hasMySQLiExtension() === false) {
+					/*if(hasMySQLiExtension() === false) {
 					    $this->runTest(false, C_SEVERITY_INFO, i18n("MySQLi extension is not installed"), i18n("The MySQLi extension is not installed on this server. You can proceed with the installation, but the MySQL extension is deprecated and will be removed in a further PHP version."));
-					}
+					}*/
 
 					/* Check if data already exists */
 					$sql = 'SHOW TABLES LIKE "%s_actions"';
