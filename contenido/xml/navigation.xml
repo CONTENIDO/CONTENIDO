@@ -94,7 +94,7 @@ i18n("Info")
 i18n("Login")
 i18n("System integrity")
 i18n("Translations") 
-i18n("Module Templates")
+i18n("Module templates")
 -->
 <language>
     <navigation>
@@ -137,7 +137,7 @@ i18n("Module Templates")
                 <edit>Edit</edit>
                 <history>History</history>
                 <translation>Translation</translation>
-                <template>Module Templates</template>
+                <template>Module templates</template>
                 <style>CSS</style>
                 <script>JavaScript</script>
                 <import-export>Import/Export</import-export>
