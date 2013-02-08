@@ -421,7 +421,7 @@ class cSetupSystemtest extends cSetupMask
 
 		$db = new DB_Contenido($_SESSION["dbhost"], "", $_SESSION["dbuser"], $_SESSION["dbpass"]);
 
-		$this->runTest(!$this->isSqlModeStrict(), 
+		$this->runTest(!$this->isSqlModeStrict(),
                         C_SEVERITY_ERROR, i18n('MySQL is running in strict mode'),
                         i18n('MySQL is running in strict mode, Contenido will not work with this mode. Please change your sql_mode!'));
 
@@ -439,6 +439,11 @@ class cSetupSystemtest extends cSetupMask
 					/* Yes, database exists */
 					$db = new DB_Contenido($_SESSION["dbhost"], $_SESSION["dbname"], $_SESSION["dbuser"], $_SESSION["dbpass"]);
 					$db->connect();
+
+					/* Check MySQLi extension */
+					if(hasMySQLiExtension() === false) {
+					    $this->runTest(false, C_SEVERITY_INFO, i18n("MySQLi extension is not installed"), i18n("The MySQLi extension is not installed on this server. You can proceed with the installation, but the MySQL extension is deprecated and will be removed in a further PHP version."));
+					}
 
 					/* Check if data already exists */
 					$sql = 'SHOW TABLES LIKE "%s_actions"';

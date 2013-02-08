@@ -1728,6 +1728,7 @@ setup/lib/release.php -text
 setup/lib/release.xml -text svneol=unset#text/plain
 setup/locale/de_DE/LC_MESSAGES/contenido.mo -text
 setup/locale/de_DE/LC_MESSAGES/contenido.po -text
+setup/locale/potfiles.txt -text svneol=unset#text/plain
 setup/locale/setup.pot -text
 setup/makeconfig.php -text
 setup/script/pluginInfo.js -text svneol=unset#text/plain
