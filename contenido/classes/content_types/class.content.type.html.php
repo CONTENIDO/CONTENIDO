@@ -83,7 +83,12 @@ class cContentTypeHtml extends cContentTypeAbstract {
             'min-height' => '20px'
         ));
         $wysiwygDiv->updateAttribute('contentEditable', 'true');
-        $wysiwygDiv->setContent($this->_rawSettings);
+		if (strlen($this->_rawSettings) == 0) {
+			$wysiwygDiv->setContent('&nbsp;');
+		} else {
+			$wysiwygDiv->setContent($this->_rawSettings);
+		}
+        
 
         // construct edit button
         $editLink = $this->_session->url($this->_cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . 'front_content.php?action=10&idcat=' . $this->_idCat . '&idart=' . $this->_idArt . '&idartlang=' . $this->_idArtLang . '&type=' . $this->_type . '&typenr=' . $this->_id. '&client=' . $this->_client);
