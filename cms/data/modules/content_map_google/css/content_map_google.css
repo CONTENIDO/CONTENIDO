@@ -5,7 +5,7 @@
 }
 
 #address {
-	float: left;
+	float: right;
 	margin-left: 8px;
 	margin-top: 15px;
 }
@@ -18,7 +18,8 @@
 	clear: both;
 }
 
-/*.ui-dialog-titlebar-close {
-    
+/*
+.ui-dialog-titlebar-close {
     background-image:url('http://www.charlottemotorspeedway.com/images/icon_x.png');
-}*/
+}
+*/

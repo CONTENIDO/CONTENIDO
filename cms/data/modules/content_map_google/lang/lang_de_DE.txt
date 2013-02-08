@@ -1,4 +1,6 @@
-latitude=Latitude
-longitude=Longitude
-markerTitle=Marker beschreibung
-way=Wegbeschreibung
+HEADER=Kopfzeile
+ADDRESS=Adresse
+LATITUDE=Latitude
+LONGITUDE=Longitude
+MARKER_TITLE=Marker beschreibung
+WAY_DESCRIPTION=Wegbeschreibung
