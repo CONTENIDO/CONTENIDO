@@ -679,6 +679,8 @@ class cUpdateNotifier {
                     $sText = cApiStrTrimAfterWord($sText, 150) . '...';
                 }
 
+                $date = date(getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s"), strtotime($date));
+
                 // highlight newest rss news
                 if($iCnt == 0) {
                     $oTpl->set("d", "NEWS_NEWEST_CSS", " style=\"background-color: #f1f1f1; padding: 2px;\"");
