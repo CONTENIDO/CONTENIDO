@@ -3,8 +3,8 @@
  * Abstract class for Contenido Setup operations When creating Install,
  * Uninstall, Update you must extend this class
  *
- * @package     CONTENIDO Plugins
- * @subpackage  PluginManager
+ * @package CONTENIDO Plugins
+ * @subpackage PluginManager
  * @version SVN Revision $Rev:$
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
@@ -143,7 +143,7 @@ class PimPluginSetup {
         $this->_installAddNavMain($tempXml->contenido->nav_main, $pluginId);
 
         // add entries at *_nav_sub
-        $this->_installAddNavSub($tempXml->contenido->nav_sub);
+        $this->_installAddNavSub($tempXml->contenido->nav_sub, $pluginId);
 
         // add specific sql queries
         $this->_installAddSpecificSql();
@@ -172,8 +172,8 @@ class PimPluginSetup {
             // security check
             $area = cSecurity::escapeString($tempXml->area[$i]);
             $attributes = array(
-                    'parent' => cSecurity::escapeString($attributes['parent']),
-                    'menuless' => cSecurity::toInteger($attributes['menuless'])
+                'parent' => cSecurity::escapeString($attributes['parent']),
+                'menuless' => cSecurity::toInteger($attributes['menuless'])
             );
 
             // parent fix
@@ -274,10 +274,12 @@ class PimPluginSetup {
      *
      * @access protected
      * @param $tempXml temporary plugin definitions
+     * @param $pluginId plugin identifier
      * @return void
      */
-    protected function _installAddNavSub($tempXml) {
+    protected function _installAddNavSub($tempXml, $pluginId) {
         $navSubColl = new cApiNavSubCollection();
+        $pimPluginRelColl = new PimPluginRelationsCollection();
 
         $navCount = count($tempXml->nav);
         for ($i = 0; $i < $navCount; $i++) {
@@ -293,7 +295,10 @@ class PimPluginSetup {
             $attributes['area'] = cSecurity::toString($attributes['area']);
 
             // create a new entry at *_nav_sub
-            $navSubColl->create($attributes['navm'], $attributes['area'], $attributes['level'], $tempXml->nav[$i], 1);
+            $item = $navSubColl->create($attributes['navm'], $attributes['area'], $attributes['level'], $tempXml->nav[$i], 1);
+
+            // set a relation
+            $pimPluginRelColl->create($item->get('idnavs'), $pluginId, 'navs');
         }
     }
 
@@ -365,7 +370,7 @@ class PimPluginSetup {
             // relation to tables *_area and *_nav_main
             $index = $relation->get('type');
 
-            // is equivalent to idarea oridnavm
+            // is equivalent to idarea or idnavm column
             $value = $relation->get('iditem');
             $relations[$index][] = $value;
         }
@@ -470,21 +475,60 @@ class PimPluginSetup {
      */
     public function changeActiveStatus($pluginId, $page = null) {
         $pimPluginColl = new PimPluginCollection();
-        $pimPluginColl->setWhere('idplugin', $pluginId);
+        $pimPluginColl->setWhere('idplugin', cSecurity::toInteger($pluginId));
         $pimPluginColl->query();
         $plugin = $pimPluginColl->next();
         $pluginname = $plugin->get('name');
         $activeStatus = $plugin->get('active');
 
-        if ($activeStatus == 1) {
+        // get relations
+        $pimPluginRelColl = new PimPluginRelationsCollection();
+        $pimPluginRelColl->setWhere('idplugin', cSecurity::toInteger($pluginId));
+        $pimPluginRelColl->setWhere('type', 'navs');
+        $pimPluginRelColl->query();
+
+        if ($activeStatus == 1) { // set offline
             $plugin->set('active', 0);
             $plugin->store();
+
+            while (($relation = $pimPluginRelColl->next()) !== false) {
+                // is equivalent to idnavs column at *_nav_sub
+                $idnavs = $relation->get('iditem');
+                $this->_setNavSubOnlineStatus($idnavs, 0);
+            }
+
             $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been sucessfully disabled. To apply the changes please login into backend again.', 'pim'));
-        } else {
+        } else { // set online
             $plugin->set('active', 1);
             $plugin->store();
+
+            while (($relation = $pimPluginRelColl->next()) !== false) {
+                // is equivalent to idnavs column at *_nav_sub
+                $idnavs = $relation->get('iditem');
+                $this->_setNavSubOnlineStatus($idnavs, 1);
+            }
+
             $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been sucessfully enabled. To apply the changes please login into backend again.', 'pim'));
         }
+    }
+
+    /**
+     * Set the online status of nav_sub
+     *
+     * @param integer $idnavs Id of nav_sub menu (is equivalent to idnavs
+     * @param integer $online 0 = offline, 1 = online
+     * @return true
+     */
+    protected function _setNavSubOnlineStatus($idnavs, $online) {
+        $navSubColl = new cApiNavSubCollection();
+        $navSubColl->setWhere('idnavs', cSecurity::toInteger($idnavs));
+        $navSubColl->query();
+
+        $navSub = $navSubColl->next();
+        $navSub->set('online', cSecurity::toInteger($online));
+        $navSub->store();
+
+        return true;
     }
 
     /**
