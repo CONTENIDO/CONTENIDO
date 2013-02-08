@@ -77,6 +77,12 @@ cms/data/modules/content_rss_creator/lang/lang_de_DE.txt -text svneol=unset#text
 cms/data/modules/content_rss_creator/php/content_rss_creator_input.php -text
 cms/data/modules/content_rss_creator/php/content_rss_creator_output.php -text
 cms/data/modules/content_rss_creator/template/rss_edit.tpl -text
+cms/data/modules/content_search_results/info.xml -text svneol=unset#text/plain
+cms/data/modules/content_search_results/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/data/modules/content_search_results/php/content_search_results_input.php -text
+cms/data/modules/content_search_results/php/content_search_results_output.php -text
+cms/data/modules/content_search_results/php/old.php -text
+cms/data/modules/content_search_results/template/get.tpl -text
 cms/data/modules/content_sitemap_xml/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_sitemap_xml/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/content_sitemap_xml/lang/lang_en_GB.txt -text svneol=unset#text/plain
