@@ -85,6 +85,10 @@ cms/data/modules/content_search_results/php/content_search_results_input.php -te
 cms/data/modules/content_search_results/php/content_search_results_output.php -text
 cms/data/modules/content_search_results/php/old.php -text
 cms/data/modules/content_search_results/template/get.tpl -text
+cms/data/modules/content_sitemap_html/info.xml -text svneol=unset#text/plain
+cms/data/modules/content_sitemap_html/php/content_sitemap_html_input.php -text
+cms/data/modules/content_sitemap_html/php/content_sitemap_html_output.php -text
+cms/data/modules/content_sitemap_html/template/get.tpl -text
 cms/data/modules/content_sitemap_xml/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_sitemap_xml/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/content_sitemap_xml/lang/lang_en_US.txt -text svneol=unset#text/plain
