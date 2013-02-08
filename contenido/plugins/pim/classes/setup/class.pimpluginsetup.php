@@ -280,7 +280,6 @@ class PimPluginSetup {
     protected function _installAddNavMain($tempXml) {
         $navMainColl = new cApiNavMainCollection();
         $pimPluginRelColl = new PimPluginRelationsCollection();
-
         $pluginId = $this->getPluginId();
 
         $navCount = count($tempXml->nav);
