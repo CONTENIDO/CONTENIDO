@@ -28,6 +28,8 @@ class PimPluginSetup {
 
     protected $extractedPath;
 
+    protected $pluginId = 0;
+
     protected $_extractor; // TODO
     public function addArchiveObject($extractor) {
         $this->_extractor = $extractor;
@@ -84,6 +86,16 @@ class PimPluginSetup {
     }
 
     /**
+     * Get method for $pluginId
+     *
+     * @access public
+     * @return id of selected plugin
+     */
+    public function getPluginId() {
+        return $this->pluginId;
+    }
+
+    /**
      * Set method for $tempXml
      *
      * @access public
@@ -117,6 +129,17 @@ class PimPluginSetup {
     }
 
     /**
+     * Set method for $pluginId
+     *
+     * @access public
+     * @param $value id of selected plugin
+     * @return void
+     */
+    public function setPluginId($value) {
+        $this->pluginId = $value;
+    }
+
+    /**
      * Install a new plugin
      *
      * @access protected
@@ -130,8 +153,11 @@ class PimPluginSetup {
         $pimPlugin = $pimPluginColl->create($tempXml->general->plugin_name, $tempXml->general->description, $tempXml->general->author, $tempXml->general->copyright, $tempXml->general->mail, $tempXml->general->website, $tempXml->general->version, $tempXml->general->plugin_foldername, $tempXml->general->uuid, $tempXml->general->attributes()->active);
         $pluginId = $pimPlugin->get('idplugin');
 
+        // set pluginId
+        $this->setPluginId($pluginId);
+
         // add entries at *_area
-        $this->_installAddArea($tempXml->contenido->areas, $pluginId);
+        $this->_installAddArea($tempXml->contenido->areas);
 
         // add entries at *_actions
         $this->_installAddActions($tempXml->contenido->actions);
@@ -140,10 +166,10 @@ class PimPluginSetup {
         $this->_installAddFrames($tempXml->contenido->frames);
 
         // add entries at *_nav_main
-        $this->_installAddNavMain($tempXml->contenido->nav_main, $pluginId);
+        $this->_installAddNavMain($tempXml->contenido->nav_main);
 
         // add entries at *_nav_sub
-        $this->_installAddNavSub($tempXml->contenido->nav_sub, $pluginId);
+        $this->_installAddNavSub($tempXml->contenido->nav_sub);
 
         // add specific sql queries
         $this->_installAddSpecificSql();
@@ -154,12 +180,12 @@ class PimPluginSetup {
      *
      * @access protected
      * @param $tempXml temporary plugin definitions
-     * @param $pluginId plugin identifier
      * @return void
      */
-    protected function _installAddArea($tempXml, $pluginId) {
+    protected function _installAddArea($tempXml) {
         $areaColl = new cApiAreaCollection();
         $pimPluginRelColl = new PimPluginRelationsCollection();
+        $pluginId = $this->getPluginId();
 
         $areaCount = count($tempXml->area);
         for ($i = 0; $i < $areaCount; $i++) {
@@ -249,12 +275,13 @@ class PimPluginSetup {
      *
      * @access protected
      * @param $tempXml temporary plugin definitions
-     * @param $pluginId plugin identifier
      * @return void
      */
-    protected function _installAddNavMain($tempXml, $pluginId) {
+    protected function _installAddNavMain($tempXml) {
         $navMainColl = new cApiNavMainCollection();
         $pimPluginRelColl = new PimPluginRelationsCollection();
+
+        $pluginId = $this->getPluginId();
 
         $navCount = count($tempXml->nav);
         for ($i = 0; $i < $navCount; $i++) {
@@ -274,12 +301,12 @@ class PimPluginSetup {
      *
      * @access protected
      * @param $tempXml temporary plugin definitions
-     * @param $pluginId plugin identifier
      * @return void
      */
-    protected function _installAddNavSub($tempXml, $pluginId) {
+    protected function _installAddNavSub($tempXml) {
         $navSubColl = new cApiNavSubCollection();
         $pimPluginRelColl = new PimPluginRelationsCollection();
+        $pluginId = $this->getPluginId();
 
         $navCount = count($tempXml->nav);
         for ($i = 0; $i < $navCount; $i++) {
@@ -469,7 +496,7 @@ class PimPluginSetup {
     /**
      * Enable / disable plugins (active status)
      *
-     * @param unknown_type $pluginId
+     * @param integer $pluginId
      * @param $page page class for success or error message
      * @return void
      */
