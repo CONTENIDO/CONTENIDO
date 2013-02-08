@@ -1,21 +1,20 @@
 
 /* labels for contenttypes in backend edit mode */
 .content-type-label {
-    color: #F00;
-    background-color: #FEE;
+    color: #0060B1;
+    background-color: #BFCF00;
     display: block;
-    border-top: 1px solid #F00;
-    padding: 2px;
-    margin-top: 5px;
-    margin-bottom: 2px;
+    margin: 5px 0 2px 0;
+    border-top: 2px solid #0060B1;
+    border-right: 2px solid #0060B1;
+	padding: 2px;
     font-weight: bold;
 }
 .content-type-label-secondary {
-    color: #F00;
-    background-color: #FEE;
+    color: #0060B1;
+    background-color: #BFCF00;
     display: block;
+    margin: 5px 0 2px 0;
     padding: 2px;
-    margin-top: 5px;
-    margin-bottom: 2px;
     font-weight: normal;
 }
