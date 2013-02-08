@@ -11,24 +11,74 @@
  * @link http://www.contenido.org
  */
 
-if (cRegistry::isBackendEditMode()) {
-	"CMS_HTMLHEAD[600]";
-    "CMS_HTML[601]";
-}
-
 // use smarty template to output header text
 $tpl = Contenido_SmartyWrapper::getInstance();
 
+$typeHead = "CMS_HTMLHEAD";
+$typeText = "CMS_TEXT";
+$idartlang = cRegistry::getArticleLanguageId(true);
+$artId = cRegistry::getArticleId(true);
+$client = cRegistry::getClientId(true);
+$lang = cRegistry::getLanguageId(true);
+// add cms tags for backend edit mod
 
-$map = '<iframe width="425" height="350" frameborder="0"
-    	scrolling="no" marginheight="0" marginwidth="0"
-    	src="http://maps.google.de/maps?f=q&amp;source=s_q&amp;hl=de&amp;geocode=&amp;q=Nordring+82B,+Offenbach+am+Main&amp;aq=2&amp;oq=nordring+82B&amp;sll=50.112213,8.747968&amp;sspn=0.010252,0.01929&amp;ie=UTF8&amp;hq=&amp;hnear=Nordring+82B,+63067+Offenbach+am+Main,+Darmstadt,+Hessen&amp;t=m&amp;z=14&amp;ll=50.112213,8.747968&amp;output=embed&amp;iwloc=near"></iframe>';
+$artHeader = new Article($artId, $client, $lang, $idartlang);
+$header = $artHeader->getContent($typeHead, 600);
 
-$tpl->assign('map',$map);
-$tpl->assign('header', "CMS_TEXT[600]");
-$tpl->assign('address', strip_tags("CMS_TEXT[601]"));
+$artAddress = new Article($artId, $client, $lang, $idartlang);
+$address = $artAddress->getContent($typeHead, 601);
 
+$artLat = new Article($artId, $client, $lang, $idartlang);
+$lat = $artLat->getContent($typeText, 602);
+
+$artLon = new Article($artId, $client, $lang, $idartlang);
+$lon = $artLon->getContent($typeText, 603);
+
+$artMarkerTitle = new Article($artId, $client, $lang, $idartlang);
+$markerTitle = $artMarkerTitle->getContent($typeText, 604);
+
+$artWay = new Article($artId, $client, $lang, $idartlang);
+$way = $artWay->getContent($typeHead, 605);
+
+// get gmap api
+$gmapApiKey = '<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>';
+// assign data to the smarty template
+$tpl->assign('gmapApiKey', $gmapApiKey);
+
+if (cRegistry::isBackendEditMode()) {
+    echo "Header:";
+    echo "CMS_HTMLHEAD[600]";
+    echo "<br />";
+    echo "Adresse:";
+    echo "CMS_HTMLHEAD[601]";
+    echo "<br />";
+    echo mi18n("latitude") . ':';
+    echo "CMS_TEXT[602]";
+    echo "<br />";
+    echo mi18n("longitude") . ':';
+    echo "CMS_TEXT[603]";
+    echo "<br />";
+    echo mi18n("markerTitle") . ':';
+    echo "CMS_TEXT[604]";
+    echo "<br />";
+}
+
+if (FALSE === cRegistry::isBackendEditMode()) {
+    $tpl->assign('header', $header);
+    $tpl->assign('address', $address);
+    $tpl->assign('lat', $lat);
+    $tpl->assign('lon', $lon);
+    $tpl->assign('markerTitle', $markerTitle);
+    $tpl->assign('way', $way);
+    $tpl->assign('wayDescription', mi18n("way"));
+}
+
+// fetch template content
 echo $tpl->fetch('content_map_google/template/get.tpl');
 
+if (cRegistry::isBackendEditMode()) {
+    echo mi18n("way") . ':';
+    echo "CMS_HTMLHEAD[605]";
+}
 
 ?>

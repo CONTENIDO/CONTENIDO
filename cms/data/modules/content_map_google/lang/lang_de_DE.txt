@@ -1,0 +1,4 @@
+latitude=Latitude
+longitude=Longitude
+markerTitle=Marker beschreibung
+way=Wegbeschreibung
