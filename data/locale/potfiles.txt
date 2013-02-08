@@ -210,6 +210,7 @@
 ./classes/class.versionFile.php
 ./classes/class.layout.handler.php
 ./classes/class.todo.php
+./classes/class.typegenerator.php
 ./classes/class.request.password.php
 ./classes/widgets/class.widgets.switchabledatechooser.php
 ./classes/widgets/class.widgets.page.php
@@ -331,6 +332,7 @@
 ./classes/html/class.html.button.php
 ./classes/html/class.html.section.php
 ./classes/html/class.html.alignmenttable.php
+./classes/html/class.html.optgroup.php
 ./classes/html/class.html.nav.php
 ./classes/html/class.html.contentelement.php
 ./classes/html/class.html.selectelement.php
@@ -414,6 +416,7 @@
 ./classes/contenido/class.stat.php
 ./classes/contenido/class.group.member.php
 ./classes/contenido/class.templateconfig.php
+./classes/contenido/class.keyword.php
 ./classes/contenido/class.containerconfig.php
 ./classes/contenido/class.action.log.php
 ./classes/contenido/class.article.php
@@ -909,8 +912,10 @@
 ../data/config/production/cfg_sql.inc.php
 ../data/config/production/config.colors.php
 ../data/config/production/config.templates.php
+../data/config/production/config.clients.php
 ../data/config/production/config.chains.php
 ../data/config/production/config.chains.load.php
 ../data/config/production/config.autoloader.php
+../data/config/production/config.php
 ../data/config/production/cfg_actions.inc.php
 ../data/config/production/config.misc.php

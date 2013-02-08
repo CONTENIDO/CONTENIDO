@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-18 14:33+0100\n"
+"POT-Creation-Date: 2013-02-08 13:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: scripts/langref.php:8 templates/standard/template.str_overview.html:468
+#: scripts/langref.php:8 templates/standard/template.str_overview.html:473
 #: includes/include.client_artspec.php:133
 #: includes/include.str_overview.php:677
 #: includes/include.con_art_overview.php:562 backend_search.php:686
 msgid "Make offline"
 msgstr ""
 
-#: scripts/langref.php:9 templates/standard/template.str_overview.html:469
+#: scripts/langref.php:9 templates/standard/template.str_overview.html:474
 #: includes/include.client_artspec.php:130
 #: includes/include.str_overview.php:679 includes/include.str_overview.php:894
 #: includes/include.str_overview.php:896
@@ -136,7 +136,7 @@ msgstr ""
 #: includes/include.style_history.php:152 includes/include.js_history.php:152
 #: includes/include.mycontenido.tasks.edit.php:55
 #: includes/include.grouprights_mod.php:76
-#: includes/include.html_tpl_history.php:150 includes/include.upl_edit.php:78
+#: includes/include.html_tpl_history.php:151 includes/include.upl_edit.php:78
 #: includes/include.CMS_LINK.php:376 includes/include.todo.popup.php:55
 #: includes/include.style_edit_form.php:212
 #: includes/include.lay_history.php:110 includes/include.mod_edit_form.php:347
@@ -750,7 +750,7 @@ msgid "Teaser settings"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:607
-#: classes/content_types/class.content.type.filelist.php:514
+#: classes/content_types/class.content.type.filelist.php:525
 msgid "General"
 msgstr ""
 
@@ -759,12 +759,12 @@ msgid "Advanced"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:609
-#: classes/content_types/class.content.type.filelist.php:516
+#: classes/content_types/class.content.type.filelist.php:527
 msgid "Manual"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:672
-#: classes/content_types/class.content.type.filelist.php:583
+#: classes/content_types/class.content.type.filelist.php:594
 msgid "General settings"
 msgstr ""
 
@@ -816,7 +816,7 @@ msgstr ""
 #: classes/content_types/class.content.type.teaser.php:848
 #: classes/content_types/class.content.type.teaser.php:880
 #: classes/content_types/class.content.type.teaser.php:905
-#: includes/functions.general.php:875 includes/functions.general.php:915
+#: includes/functions.general.php:876 includes/functions.general.php:916
 #: includes/include.CMS_LINK.php:225 includes/include.CMS_LINK.php:253
 #: includes/include.CMS_LINK.php:281 includes/include.CMS_LINK.php:309
 #: includes/include.CMS_LINK.php:337 includes/include.str_overview.php:57
@@ -848,9 +848,9 @@ msgid "Teaser sort"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:820
-#: classes/content_types/class.content.type.filelist.php:591
+#: classes/content_types/class.content.type.filelist.php:602
 #: includes/include.rights_left_top.php:146 includes/include.mod_new.php:112
-#: includes/include.upl_artlist.php:80
+#: includes/include.upl_artlist.php:67
 #: includes/include.frontend.left_top.php:244
 #: includes/include.con_art_overview.php:75 backend_search.php:500
 msgid "Sort order"
@@ -894,7 +894,7 @@ msgid "Modification date"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:884
-#: classes/content_types/class.content.type.filelist.php:656
+#: classes/content_types/class.content.type.filelist.php:667
 #: includes/include.rights_left_top.php:109
 #: includes/include.frontend.user_menu.php:100 includes/include.mod_new.php:53
 #: includes/include.frontend.left_top.php:102
@@ -902,7 +902,7 @@ msgid "Ascending"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:887
-#: classes/content_types/class.content.type.filelist.php:659
+#: classes/content_types/class.content.type.filelist.php:670
 #: includes/include.rights_left_top.php:110
 #: includes/include.frontend.user_menu.php:101 includes/include.mod_new.php:53
 #: includes/include.frontend.left_top.php:103
@@ -942,9 +942,9 @@ msgstr ""
 #: classes/class.ajax.php:128 templates/standard/template.symbolhelp.html:21
 #: templates/standard/template.symbolhelp.html:166
 #: templates/standard/template.mycontenido_lastarticles.html:64
-#: templates/standard/template.str_overview.html:289
-#: templates/standard/template.str_overview.html:390
-#: templates/standard/template.str_overview.html:461
+#: templates/standard/template.str_overview.html:293
+#: templates/standard/template.str_overview.html:394
+#: templates/standard/template.str_overview.html:466
 #: includes/include.grouprights_str.php:74 includes/include.logs.php:283
 #: includes/include.con_edit_form.php:512 includes/include.rights_str.php:73
 #: includes/include.rights_con.php:73 includes/include.note.popup.php:87
@@ -955,7 +955,8 @@ msgstr ""
 #: classes/content_types/class.content.type.teaser.php:959
 #: classes/class.ajax.php:144 templates/standard/template.symbolhelp.html:20
 #: templates/standard/template.symbolhelp.html:102
-#: includes/include.logs.php:284 includes/include.con_subnav.php:114
+#: includes/include.logs.php:284 includes/include.upl_artlist.php:63
+#: includes/include.con_subnav.php:114
 #: includes/include.con_art_overview.php:71 backend_search.php:521
 msgid "Article"
 msgstr ""
@@ -970,7 +971,7 @@ msgid "Image settings"
 msgstr ""
 
 #: classes/content_types/class.content.type.imgeditor.php:269
-#: classes/content_types/class.content.type.filelist.php:513
+#: classes/content_types/class.content.type.filelist.php:524
 msgid "Directories"
 msgstr ""
 
@@ -991,7 +992,7 @@ msgstr ""
 #: classes/content_types/class.content.type.linkeditor.php:247
 #: templates/standard/template.mycontenido_lastarticles.html:63
 #: includes/include.stat_overview.php:101
-#: includes/include.con_edit_form.php:186 includes/include.upl_artlist.php:80
+#: includes/include.con_edit_form.php:186 includes/include.upl_artlist.php:64
 #: includes/include.con_meta_form.php:196
 #: includes/include.con_art_overview.php:72
 #: includes/include.con_art_overview.php:711 backend_search.php:491
@@ -1027,137 +1028,137 @@ msgstr ""
 #: includes/include.upl_search_results.php:162 includes/functions.stat.php:313
 #: includes/functions.stat.php:403 includes/functions.stat.php:626
 #: includes/functions.stat.php:695 includes/functions.stat.php:791
-#: includes/functions.stat.php:880 includes/include.upl_edit.php:75
+#: includes/functions.stat.php:856 includes/include.upl_edit.php:75
 msgid "Path"
 msgstr ""
 
 #: classes/content_types/class.content.type.imgeditor.php:522
 #: classes/content_types/class.content.type.imgeditor.php:523
-#: classes/content_types/class.content.type.filelist.php:910
-#: classes/content_types/class.content.type.filelist.php:911
+#: classes/content_types/class.content.type.filelist.php:921
+#: classes/content_types/class.content.type.filelist.php:922
 #: classes/content_types/class.content.type.linkeditor.php:632
 #: classes/content_types/class.content.type.linkeditor.php:633
 #: includes/include.upl_search_results.php:311
 msgid "No files found"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:508
+#: classes/content_types/class.content.type.filelist.php:519
 msgid "File list settings"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:515
+#: classes/content_types/class.content.type.filelist.php:526
 #: templates/standard/template.log_main.html:18
 #: templates/standard/template.grouprights_memberselect.html:90
 #: templates/standard/template.grouprights_memberselect.html:94
 msgid "Filter"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:555
+#: classes/content_types/class.content.type.filelist.php:566
 msgid "Source directory"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:585
+#: classes/content_types/class.content.type.filelist.php:596
 msgid "File list title"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:587
+#: classes/content_types/class.content.type.filelist.php:598
 msgid "File list style"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:589
+#: classes/content_types/class.content.type.filelist.php:600
 msgid "File list sort"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:593
+#: classes/content_types/class.content.type.filelist.php:604
 msgid "Include subdirectories?"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:595
+#: classes/content_types/class.content.type.filelist.php:606
 msgid "Include meta data?"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:614
+#: classes/content_types/class.content.type.filelist.php:625
 msgid "Default style"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:631
+#: classes/content_types/class.content.type.filelist.php:642
 #: includes/include.upl_edit.php:74
 msgid "File name"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:634
+#: classes/content_types/class.content.type.filelist.php:645
 #: templates/standard/template.upl_files_overview.html:168
 #: templates/standard/template.upl_files_overview.html:191
 msgid "File size"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:637
+#: classes/content_types/class.content.type.filelist.php:648
 #: includes/include.con_left_top.php:109
 msgid "Date created"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:640
+#: classes/content_types/class.content.type.filelist.php:651
 #: includes/include.con_left_top.php:110
 msgid "Date modified"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:703
+#: classes/content_types/class.content.type.filelist.php:714
 msgid "Filter settings"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:705
+#: classes/content_types/class.content.type.filelist.php:716
 msgid "Displayed file extensions"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:710
+#: classes/content_types/class.content.type.filelist.php:721
 msgid "Select all entries"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:712
+#: classes/content_types/class.content.type.filelist.php:723
 msgid "Ignore selection (use all)"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:715
+#: classes/content_types/class.content.type.filelist.php:726
 msgid "File size limit"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:722
+#: classes/content_types/class.content.type.filelist.php:733
 msgid "Creation date limit"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:729
+#: classes/content_types/class.content.type.filelist.php:740
 msgid "Modify date limit"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:736
+#: classes/content_types/class.content.type.filelist.php:747
 msgid "File count"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:816
+#: classes/content_types/class.content.type.filelist.php:827
 msgid "Manual settings"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:818
+#: classes/content_types/class.content.type.filelist.php:829
 msgid "Use manual file list?"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:825
+#: classes/content_types/class.content.type.filelist.php:836
 msgid "Existing files"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:827
+#: classes/content_types/class.content.type.filelist.php:838
 msgid "Already configured entries can be deleted by using double click"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:829
+#: classes/content_types/class.content.type.filelist.php:840
 msgid "Add file"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:830
+#: classes/content_types/class.content.type.filelist.php:841
 msgid "Directory"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:844
+#: classes/content_types/class.content.type.filelist.php:855
 #: classes/module/class.module.template.handler.php:461
 #: includes/include.mod_import_export.php:127
 #: includes/include.mod_import_export.php:129
@@ -1194,7 +1195,7 @@ msgid "Open in a new window"
 msgstr ""
 
 #: classes/class.update.notifier.php:445 classes/class.update.notifier.php:450
-#: classes/class.update.notifier.php:717
+#: classes/class.update.notifier.php:728
 msgid "Unable to check for new updates!"
 msgstr ""
 
@@ -1234,35 +1235,35 @@ msgstr ""
 msgid "RSS notification is disabled"
 msgstr ""
 
-#: classes/class.update.notifier.php:684
+#: classes/class.update.notifier.php:695
 msgid "read more"
 msgstr ""
 
-#: classes/class.update.notifier.php:689 classes/class.update.notifier.php:698
+#: classes/class.update.notifier.php:700 classes/class.update.notifier.php:709
 msgid "No RSS content available"
 msgstr ""
 
-#: classes/class.update.notifier.php:696 classes/class.update.notifier.php:748
+#: classes/class.update.notifier.php:707 classes/class.update.notifier.php:759
 msgid ""
 "Your webserver does not have write permissions for the directory /contenido/"
 "data/cache/!"
 msgstr ""
 
-#: classes/class.update.notifier.php:717
+#: classes/class.update.notifier.php:728
 msgid "Connection to contenido.org failed!"
 msgstr ""
 
-#: classes/class.update.notifier.php:751
+#: classes/class.update.notifier.php:762
 msgid ""
 "Update notification is disabled! For actual update information, please "
 "activate."
 msgstr ""
 
-#: classes/class.update.notifier.php:756
+#: classes/class.update.notifier.php:767
 msgid "You have an unknown or unsupported version of CONTENIDO!"
 msgstr ""
 
-#: classes/class.update.notifier.php:759
+#: classes/class.update.notifier.php:770
 #, php-format
 msgid ""
 "Your version of CONTENIDO is deprecated and not longer supported for any "
@@ -1270,21 +1271,21 @@ msgid ""
 "target='_blank'>Download now!</a>"
 msgstr ""
 
-#: classes/class.update.notifier.php:763
+#: classes/class.update.notifier.php:774
 #, php-format
 msgid ""
 "A new version of CONTENIDO is available! <br /> <a href='%s' class='blue' "
 "target='_blank'>Download %s now!</a>"
 msgstr ""
 
-#: classes/class.update.notifier.php:766
+#: classes/class.update.notifier.php:777
 #, php-format
 msgid ""
 "It seems to be that your version string was manipulated. CONTENIDO %s does "
 "not exist!"
 msgstr ""
 
-#: classes/class.update.notifier.php:769
+#: classes/class.update.notifier.php:780
 msgid "Your version of CONTENIDO is up to date!"
 msgstr ""
 
@@ -1432,7 +1433,7 @@ msgstr ""
 #: includes/include.style_history.php:39 includes/include.js_history.php:41
 #: includes/include.mod_style.php:54 includes/include.rights_tpl.php:44
 #: includes/include.mod_template.php:55
-#: includes/include.grouprights_mod.php:45 includes/include.lang_edit.php:114
+#: includes/include.grouprights_mod.php:45 includes/include.lang_edit.php:102
 #: includes/include.mail_log.php:27 includes/include.html_tpl_history.php:39
 #: includes/include.mod_script.php:65
 #: includes/include.upl_dirs_overview.php:319
@@ -1496,7 +1497,7 @@ msgstr ""
 #: includes/include.style_history.php:151 includes/include.js_history.php:151
 #: includes/include.mod_style.php:220
 #: includes/include.mycontenido_settings.php:128
-#: includes/include.html_tpl_history.php:149
+#: includes/include.html_tpl_history.php:150
 #: includes/include.mod_script.php:197
 #: includes/include.style_edit_form.php:211
 #: includes/include.lay_history.php:109 includes/include.mod_edit_form.php:345
@@ -1510,7 +1511,7 @@ msgstr ""
 #: includes/include.lay_edit_form.php:219
 #: includes/include.style_history.php:153 includes/include.js_history.php:153
 #: includes/include.mod_style.php:221
-#: includes/include.html_tpl_history.php:151
+#: includes/include.html_tpl_history.php:152
 #: includes/include.mod_script.php:198
 #: includes/include.style_edit_form.php:213
 #: includes/include.lay_history.php:111
@@ -1658,35 +1659,35 @@ msgid "File open"
 msgstr ""
 
 #: classes/phpmailer/class.phpmailer.php:1192
-#: includes/include.lang_edit.php:223
+#: includes/include.lang_edit.php:211
 msgid "Encoding"
 msgstr ""
 
-#: classes/class.password.request.php:224
+#: classes/class.password.request.php:198
 #: templates/standard/template.symbolhelp.html:73
 #: includes/include.con_translate.php:448
 msgid "Submit"
 msgstr ""
 
-#: classes/class.password.request.php:227
+#: classes/class.password.request.php:201
 msgid "Please enter your login"
 msgstr ""
 
-#: classes/class.password.request.php:270
+#: classes/class.password.request.php:241
 #, php-format
 msgid "Password requests are allowed every %s minutes."
 msgstr ""
 
-#: classes/class.password.request.php:278
-#: classes/class.password.request.php:291
+#: classes/class.password.request.php:249
+#: classes/class.password.request.php:262
 msgid "No matching data found. Please contact your systemadministrator."
 msgstr ""
 
-#: classes/class.password.request.php:284
+#: classes/class.password.request.php:255
 msgid "New password was submitted to your e-mail address."
 msgstr ""
 
-#: classes/class.password.request.php:328
+#: classes/class.password.request.php:295
 #, php-format
 msgid ""
 "Dear CONTENIDO-User %s,\n"
@@ -1698,7 +1699,7 @@ msgid ""
 "Your CONTENIDO sysadmin"
 msgstr ""
 
-#: classes/class.password.request.php:332
+#: classes/class.password.request.php:299
 msgid "Your new password for CONTENIDO Backend"
 msgstr ""
 
@@ -1995,20 +1996,20 @@ msgid "Time control"
 msgstr ""
 
 #: templates/standard/template.con_edit_form.html:200
-#: includes/include.upl_edit.php:215
+#: includes/include.upl_edit.php:202
 msgid "Use time control"
 msgstr ""
 
 #: templates/standard/template.con_edit_form.html:204
 #: templates/standard/template.log_main.html:39
-#: includes/include.upl_edit.php:220
+#: includes/include.upl_edit.php:207
 msgid "Start date"
 msgstr ""
 
 #: templates/standard/template.con_edit_form.html:209
 #: templates/standard/template.log_main.html:43
 #: includes/include.mycontenido.tasks.edit.php:59
-#: includes/include.upl_edit.php:223 includes/include.todo.popup.php:62
+#: includes/include.upl_edit.php:210 includes/include.todo.popup.php:62
 msgid "End date"
 msgstr ""
 
@@ -2020,11 +2021,7 @@ msgstr ""
 msgid "Make online after move"
 msgstr ""
 
-#: templates/standard/template.lang_left_top.html:54
-msgid "Create language for"
-msgstr ""
-
-#: templates/standard/template.lang_left_top.html:55
+#: templates/standard/template.lang_left_top.html:77
 msgid "Do you really want to create a new language?"
 msgstr ""
 
@@ -2197,8 +2194,8 @@ msgstr ""
 
 #: templates/standard/template.symbolhelp.html:112
 #: templates/standard/template.symbolhelp.html:177
-#: templates/standard/template.str_overview.html:313
-#: templates/standard/template.str_overview.html:463
+#: templates/standard/template.str_overview.html:317
+#: templates/standard/template.str_overview.html:468
 #: includes/include.con_left_top.php:363 includes/include.con_left_top.php:364
 #: includes/include.str_overview.php:886 includes/include.str_overview.php:889
 #: ../data/config/production/cfg_actions.inc.php:74
@@ -2301,7 +2298,7 @@ msgid "Select move target"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:242
-#: templates/standard/template.str_overview.html:465
+#: templates/standard/template.str_overview.html:470
 #: includes/include.str_overview.php:770
 #: ../data/config/production/cfg_actions.inc.php:73
 msgid "Duplicate category"
@@ -2460,14 +2457,13 @@ msgid "Your clients"
 msgstr ""
 
 #: templates/standard/template.mycontenido_lastarticles.html:62
-#: includes/include.upl_artlist.php:80
 msgid "Start"
 msgstr ""
 
 #: templates/standard/template.mycontenido_lastarticles.html:65
 #: includes/include.con_edit_form.php:274
 #: includes/include.frontend.user_menu.php:46
-#: includes/include.upl_artlist.php:80
+#: includes/include.upl_artlist.php:66
 #: includes/include.mycontenido.tasks.php:255
 #: includes/include.frontend.left_top.php:48
 msgid "Created"
@@ -2475,14 +2471,14 @@ msgstr ""
 
 #: templates/standard/template.mycontenido_lastarticles.html:66
 #: includes/include.frontend.user_menu.php:47
-#: includes/include.upl_artlist.php:80
+#: includes/include.upl_artlist.php:65
 #: includes/include.frontend.left_top.php:49
 msgid "Modified"
 msgstr ""
 
 #: templates/standard/template.mycontenido_lastarticles.html:67
-#: templates/standard/template.str_overview.html:396
-#: templates/standard/template.str_overview.html:480
+#: templates/standard/template.str_overview.html:400
+#: templates/standard/template.str_overview.html:485
 #: includes/include.tplcfg_edit_form.php:271
 #: includes/include.con_translate.php:557
 #: includes/include.pretplcfg_edit_form.php:70
@@ -2559,8 +2555,8 @@ msgid "Value"
 msgstr ""
 
 #: templates/standard/template.log_main.html:27 includes/include.logs.php:279
-#: includes/include.con_translate.php:499 includes/include.lang_edit.php:222
-#: includes/include.lang_edit.php:224 main.loginform.php:98
+#: includes/include.con_translate.php:499 includes/include.lang_edit.php:210
+#: includes/include.lang_edit.php:212 main.loginform.php:98
 msgid "Language"
 msgstr ""
 
@@ -2596,16 +2592,16 @@ msgstr ""
 msgid "Remove left side selected users from group"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:298
-#: templates/standard/template.str_overview.html:393
-#: templates/standard/template.str_overview.html:459
+#: templates/standard/template.str_overview.html:302
+#: templates/standard/template.str_overview.html:397
+#: templates/standard/template.str_overview.html:464
 #: includes/include.con_edit_form.php:189
 #: includes/include.str_overview.php:496
 msgid "Alias"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:304
-#: templates/standard/template.str_overview.html:479
+#: templates/standard/template.str_overview.html:308
+#: templates/standard/template.str_overview.html:484
 #: includes/include.str_overview.php:687 includes/include.str_overview.php:900
 #: includes/include.str_overview.php:902
 #: ../data/config/production/cfg_actions.inc.php:44
@@ -2613,18 +2609,18 @@ msgstr ""
 msgid "Protect category"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:322
-#: templates/standard/template.str_overview.html:460
+#: templates/standard/template.str_overview.html:326
+#: templates/standard/template.str_overview.html:465
 msgid "Category is a tree"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:329
-#: templates/standard/template.str_overview.html:478
+#: templates/standard/template.str_overview.html:333
+#: templates/standard/template.str_overview.html:483
 msgid "Position of category"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:399
-#: templates/standard/template.str_overview.html:458
+#: templates/standard/template.str_overview.html:403
+#: templates/standard/template.str_overview.html:463
 #: includes/include.mycontenido.tasks.php:256
 #: includes/include.frontend.left_top.php:147
 #: includes/include.upl_files_overview.php:449
@@ -2632,72 +2628,72 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:457
+#: templates/standard/template.str_overview.html:462
 #: includes/include.con_left_top.php:339 includes/include.str_overview.php:658
 #: ../data/config/production/cfg_actions.inc.php:75
 msgid "Edit category"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:462
+#: templates/standard/template.str_overview.html:467
 msgid "Categoryname"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:464
+#: templates/standard/template.str_overview.html:469
 #: includes/include.str_overview.php:698
 #: ../data/config/production/cfg_actions.inc.php:68
 msgid "Delete category"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:466
+#: templates/standard/template.str_overview.html:471
 msgid "Field category name is empty"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:467
+#: templates/standard/template.str_overview.html:472
 msgid "Form error"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:470
+#: templates/standard/template.str_overview.html:475
 #: includes/include.str_overview.php:740
 #: ../data/config/production/cfg_actions.inc.php:70
 msgid "Move category down"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:471
+#: templates/standard/template.str_overview.html:476
 #: includes/include.str_overview.php:726
 #: ../data/config/production/cfg_actions.inc.php:69
 msgid "Move category up"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:472
+#: templates/standard/template.str_overview.html:477
 #: includes/include.str_overview.php:749 includes/include.str_overview.php:763
 msgid "Move tree"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:473
+#: templates/standard/template.str_overview.html:478
 #: includes/include.str_overview.php:710 includes/include.str_overview.php:714
 msgid "One or more articles are existing, unable to delete."
 msgstr ""
 
-#: templates/standard/template.str_overview.html:474
+#: templates/standard/template.str_overview.html:479
 #: includes/include.str_overview.php:705
 msgid ""
 "One or more subtrees and one or more articles are existing, unable to delete."
 msgstr ""
 
-#: templates/standard/template.str_overview.html:475
+#: templates/standard/template.str_overview.html:480
 msgid "One or more subtrees are existing, unable to delete."
 msgstr ""
 
-#: templates/standard/template.str_overview.html:476
+#: templates/standard/template.str_overview.html:481
 #: includes/include.str_overview.php:753
 msgid "Place tree here"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:477
+#: templates/standard/template.str_overview.html:482
 msgid "Please select a new position for new category"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:481
+#: templates/standard/template.str_overview.html:486
 #: includes/include.str_overview.php:689
 msgid "Unprotect category"
 msgstr ""
@@ -2754,7 +2750,7 @@ msgstr ""
 #: includes/include.grouprights_overview.php:66
 #: includes/include.mycontenido_settings.php:67
 #: includes/include.mycontenido_settings.php:105
-#: includes/include.lang_edit.php:121 includes/functions.rights.php:347
+#: includes/include.lang_edit.php:109 includes/functions.rights.php:347
 #: includes/functions.rights.php:402 includes/include.con_content_list.php:57
 #: includes/include.con_content_list.php:65
 msgid "Changes saved"
@@ -2947,7 +2943,7 @@ msgstr ""
 #: includes/include.rights_create.php:156
 #: includes/include.rights_overview.php:217
 #: includes/include.mycontenido_settings.php:157
-#: includes/include.lang_edit.php:225
+#: includes/include.lang_edit.php:213
 msgid "Country"
 msgstr ""
 
@@ -3074,7 +3070,7 @@ msgstr ""
 
 #: includes/include.mod_history.php:82 includes/include.style_history.php:117
 #: includes/include.js_history.php:119
-#: includes/include.html_tpl_history.php:115
+#: includes/include.html_tpl_history.php:116
 #: includes/include.lay_history.php:74
 msgid "Show history entry"
 msgstr ""
@@ -3094,14 +3090,14 @@ msgstr ""
 
 #: includes/include.mod_history.php:126 includes/include.style_history.php:154
 #: includes/include.js_history.php:154
-#: includes/include.html_tpl_history.php:152
+#: includes/include.html_tpl_history.php:153
 #: includes/include.lay_history.php:112
 msgid "Copy to current"
 msgstr ""
 
 #: includes/include.mod_history.php:138 includes/include.style_history.php:171
 #: includes/include.js_history.php:173
-#: includes/include.html_tpl_history.php:171
+#: includes/include.html_tpl_history.php:172
 #: includes/include.lay_history.php:129
 msgid "Version history was cleared"
 msgstr ""
@@ -3136,18 +3132,18 @@ msgstr ""
 msgid "Full statistics"
 msgstr ""
 
-#: includes/include.stat_overview.php:68 includes/functions.stat.php:910
-#: includes/functions.stat.php:940
+#: includes/include.stat_overview.php:68 includes/functions.stat.php:886
+#: includes/functions.stat.php:916
 msgid "Top 10"
 msgstr ""
 
-#: includes/include.stat_overview.php:71 includes/functions.stat.php:911
-#: includes/functions.stat.php:941
+#: includes/include.stat_overview.php:71 includes/functions.stat.php:887
+#: includes/functions.stat.php:917
 msgid "Top 20"
 msgstr ""
 
-#: includes/include.stat_overview.php:74 includes/functions.stat.php:912
-#: includes/functions.stat.php:942
+#: includes/include.stat_overview.php:74 includes/functions.stat.php:888
+#: includes/functions.stat.php:918
 msgid "Top 30"
 msgstr ""
 
@@ -3193,7 +3189,7 @@ msgid "Renamed the JS-File successfully!"
 msgstr ""
 
 #: includes/include.rights_left_top.php:67 includes/include.rights.php:152
-#: includes/functions.stat.php:913 includes/functions.stat.php:943
+#: includes/functions.stat.php:889 includes/functions.stat.php:919
 #: includes/include.grouprights.php:122
 #: includes/include.grouprights_left_top.php:51
 #: includes/include.con_art_overview.php:828
@@ -3576,8 +3572,8 @@ msgid "Please fill in the start date and/or the end date!"
 msgstr ""
 
 #: includes/type/action/include.lang_newlanguage.action.php:32
-#: includes/include.con_translate.php:390 includes/include.lang_edit.php:70
-#: includes/include.lang_overview.php:81
+#: includes/include.con_translate.php:390 includes/include.lang_edit.php:57
+#: includes/include.lang_overview.php:87
 msgid "New language"
 msgstr ""
 
@@ -3684,6 +3680,7 @@ msgstr ""
 #: includes/include.style_left_top.php:54 includes/include.upl_left_top.php:41
 #: includes/include.frontend.left_top.php:163
 #: includes/include.frontend.left_top.php:422
+#: includes/include.lang_left_top.php:62
 #: includes/include.html_tpl_left_top.php:54
 #: includes/include.js_left_top.php:54
 msgid "No Client selected"
@@ -3760,11 +3757,11 @@ msgstr ""
 msgid "Error article/category not found!"
 msgstr ""
 
-#: includes/include.upl_artlist.php:65
+#: includes/include.upl_artlist.php:50
 msgid "Use this category"
 msgstr ""
 
-#: includes/include.upl_artlist.php:80
+#: includes/include.upl_artlist.php:68
 msgid "Online"
 msgstr ""
 
@@ -3788,7 +3785,7 @@ msgstr ""
 msgid "Specification name"
 msgstr ""
 
-#: includes/include.upl_files_upload.php:47 includes/include.upl_edit.php:283
+#: includes/include.upl_files_upload.php:47 includes/include.upl_edit.php:269
 #: includes/include.upl_files_overview.php:683
 msgid "Directory not writable"
 msgstr ""
@@ -4049,7 +4046,7 @@ msgid "No style history available"
 msgstr ""
 
 #: includes/include.js_history.php:123
-#: includes/include.html_tpl_history.php:119
+#: includes/include.html_tpl_history.php:120
 msgid "Edit JScript"
 msgstr ""
 
@@ -4103,17 +4100,17 @@ msgid "Common date formattings"
 msgstr ""
 
 #: includes/include.mycontenido_settings.php:177
-#: includes/include.lang_edit.php:229
+#: includes/include.lang_edit.php:217
 msgid "Date/Time format"
 msgstr ""
 
 #: includes/include.mycontenido_settings.php:178
-#: includes/include.lang_edit.php:230
+#: includes/include.lang_edit.php:218
 msgid "Date format"
 msgstr ""
 
 #: includes/include.mycontenido_settings.php:179
-#: includes/include.lang_edit.php:228 includes/include.lang_edit.php:231
+#: includes/include.lang_edit.php:216 includes/include.lang_edit.php:219
 msgid "Time format"
 msgstr ""
 
@@ -4286,191 +4283,195 @@ msgstr ""
 msgid "Edit group"
 msgstr ""
 
-#: includes/functions.upl.php:662
+#: includes/functions.upl.php:664
 msgid "OpenOffice.org Presentation"
 msgstr ""
 
-#: includes/functions.upl.php:664
+#: includes/functions.upl.php:666
 msgid "OpenOffice.org Presentation Template"
 msgstr ""
 
-#: includes/functions.upl.php:666
+#: includes/functions.upl.php:668
 msgid "Microsoft PowerPoint Screen Presentation"
 msgstr ""
 
-#: includes/functions.upl.php:668 includes/functions.upl.php:672
+#: includes/functions.upl.php:670 includes/functions.upl.php:674
 msgid "Microsoft PowerPoint Presentation Template"
 msgstr ""
 
-#: includes/functions.upl.php:670
+#: includes/functions.upl.php:672
 msgid "KDE KPresenter Document"
 msgstr ""
 
-#: includes/functions.upl.php:676
+#: includes/functions.upl.php:678
 msgid "Microsoft Word Document or regular text file"
 msgstr ""
 
-#: includes/functions.upl.php:678
+#: includes/functions.upl.php:680
 msgid "Microsoft Word Template"
 msgstr ""
 
-#: includes/functions.upl.php:680
+#: includes/functions.upl.php:682
 msgid "OpenOffice.org Text Document"
 msgstr ""
 
-#: includes/functions.upl.php:682
+#: includes/functions.upl.php:684
 msgid "OpenOffice.org Text Document Template"
 msgstr ""
 
-#: includes/functions.upl.php:684
+#: includes/functions.upl.php:686
 msgid "StarOffice 5.0 Text Document"
 msgstr ""
 
-#: includes/functions.upl.php:686
+#: includes/functions.upl.php:688
 msgid "KDE KWord Document"
 msgstr ""
 
-#: includes/functions.upl.php:690
+#: includes/functions.upl.php:692
 msgid "Microsoft Excel Worksheet"
 msgstr ""
 
-#: includes/functions.upl.php:692
+#: includes/functions.upl.php:694
 msgid "OpenOffice.org Table"
 msgstr ""
 
-#: includes/functions.upl.php:694
+#: includes/functions.upl.php:696
 msgid "OpenOffice.org Table Template"
 msgstr ""
 
-#: includes/functions.upl.php:696
+#: includes/functions.upl.php:698
 msgid "Microsoft Excel File"
 msgstr ""
 
-#: includes/functions.upl.php:698
+#: includes/functions.upl.php:700
 msgid "Microsoft Excel Template"
 msgstr ""
 
-#: includes/functions.upl.php:700
+#: includes/functions.upl.php:702
 msgid "Comma Seperated Value File"
 msgstr ""
 
-#: includes/functions.upl.php:702
+#: includes/functions.upl.php:704
 msgid "KDE KSpread Document"
 msgstr ""
 
-#: includes/functions.upl.php:704
+#: includes/functions.upl.php:706
 msgid "StarOffice 5.0 Table"
 msgstr ""
 
-#: includes/functions.upl.php:708
+#: includes/functions.upl.php:710
 msgid "Plain Text"
 msgstr ""
 
-#: includes/functions.upl.php:710
+#: includes/functions.upl.php:712
 msgid "Rich Text Format"
 msgstr ""
 
-#: includes/functions.upl.php:714
+#: includes/functions.upl.php:716
 msgid "GIF Image"
 msgstr ""
 
-#: includes/functions.upl.php:716
+#: includes/functions.upl.php:718
 msgid "PNG Image"
 msgstr ""
 
-#: includes/functions.upl.php:718 includes/functions.upl.php:720
+#: includes/functions.upl.php:720 includes/functions.upl.php:722
 msgid "JPEG Image"
 msgstr ""
 
-#: includes/functions.upl.php:722
+#: includes/functions.upl.php:724
 msgid "TIFF Image"
 msgstr ""
 
-#: includes/functions.upl.php:724
+#: includes/functions.upl.php:726
 msgid "Adobe Photoshop Image"
 msgstr ""
 
-#: includes/functions.upl.php:728 includes/functions.upl.php:730
+#: includes/functions.upl.php:730 includes/functions.upl.php:732
 msgid "Hypertext Markup Language Document"
 msgstr ""
 
-#: includes/functions.upl.php:732
+#: includes/functions.upl.php:734
 msgid "Cascading Style Sheets"
 msgstr ""
 
-#: includes/functions.upl.php:736
+#: includes/functions.upl.php:738
 msgid "LHA Archive"
 msgstr ""
 
-#: includes/functions.upl.php:738
+#: includes/functions.upl.php:740
 msgid "RAR Archive"
 msgstr ""
 
-#: includes/functions.upl.php:740
+#: includes/functions.upl.php:742
 msgid "ARJ Archive"
 msgstr ""
 
-#: includes/functions.upl.php:742
+#: includes/functions.upl.php:744
 msgid "bz2-compressed File"
 msgstr ""
 
-#: includes/functions.upl.php:744
+#: includes/functions.upl.php:746
 msgid "bzip-compressed File"
 msgstr ""
 
-#: includes/functions.upl.php:746
+#: includes/functions.upl.php:748
 msgid "ZIP Archive"
 msgstr ""
 
-#: includes/functions.upl.php:748
+#: includes/functions.upl.php:750
 msgid "TAR Archive"
 msgstr ""
 
-#: includes/functions.upl.php:750
+#: includes/functions.upl.php:752
 msgid "GZ Compressed File"
 msgstr ""
 
-#: includes/functions.upl.php:754
+#: includes/functions.upl.php:756
 msgid "C Program Code"
 msgstr ""
 
-#: includes/functions.upl.php:758
+#: includes/functions.upl.php:760
 msgid "C++ Program Code"
 msgstr ""
 
-#: includes/functions.upl.php:761
+#: includes/functions.upl.php:763
 msgid "C or C++ Program Header"
 msgstr ""
 
-#: includes/functions.upl.php:765
+#: includes/functions.upl.php:767
 msgid "PHP Program Code"
 msgstr ""
 
-#: includes/functions.upl.php:767
+#: includes/functions.upl.php:769
 msgid "PHP Source File"
 msgstr ""
 
-#: includes/functions.upl.php:770
+#: includes/functions.upl.php:772
 msgid "Adobe Acrobat Portable Document"
 msgstr ""
 
-#: includes/functions.upl.php:774
+#: includes/functions.upl.php:776
 msgid "QuickTime Movie"
 msgstr ""
 
-#: includes/functions.upl.php:776
+#: includes/functions.upl.php:778
 msgid "avi Movie"
 msgstr ""
 
-#: includes/functions.upl.php:779
+#: includes/functions.upl.php:781
 msgid "MPEG Movie"
 msgstr ""
 
-#: includes/functions.upl.php:781
+#: includes/functions.upl.php:783
 msgid "Windows Media Video"
 msgstr ""
 
-#: includes/functions.upl.php:784
+#: includes/functions.upl.php:785
+msgid "MPEG-4 Movie"
+msgstr ""
+
+#: includes/functions.upl.php:788
 msgid "-File"
 msgstr ""
 
@@ -4501,41 +4502,41 @@ msgstr ""
 msgid "Progress"
 msgstr ""
 
-#: includes/include.lang_edit.php:47
-msgid "Deleted language successfully!"
-msgstr ""
-
-#: includes/include.lang_edit.php:75
+#: includes/include.lang_edit.php:51
 msgid "Created new language successfully!"
 msgstr ""
 
-#: includes/include.lang_edit.php:204
+#: includes/include.lang_edit.php:70
+msgid "Deleted language successfully!"
+msgstr ""
+
+#: includes/include.lang_edit.php:192
 msgid "Left to right"
 msgstr ""
 
-#: includes/include.lang_edit.php:204
+#: includes/include.lang_edit.php:192
 msgid "Right to left"
 msgstr ""
 
-#: includes/include.lang_edit.php:216
+#: includes/include.lang_edit.php:204
 #: ../data/config/production/cfg_actions.inc.php:135
 msgid "Edit language"
 msgstr ""
 
-#: includes/include.lang_edit.php:218
+#: includes/include.lang_edit.php:206
 msgid "Language name"
 msgstr ""
 
-#: includes/include.lang_edit.php:220
+#: includes/include.lang_edit.php:208
 #: includes/include.frontend.user_edit.php:191
 msgid "Active"
 msgstr ""
 
-#: includes/include.lang_edit.php:226
+#: includes/include.lang_edit.php:214
 msgid "Text direction"
 msgstr ""
 
-#: includes/include.lang_edit.php:232
+#: includes/include.lang_edit.php:220
 msgid "Date/Time locale"
 msgstr ""
 
@@ -4815,8 +4816,8 @@ msgstr ""
 msgid "Results"
 msgstr ""
 
-#: includes/include.html_tpl_history.php:165
-#: includes/include.html_tpl_history.php:173
+#: includes/include.html_tpl_history.php:166
+#: includes/include.html_tpl_history.php:174
 msgid "No template history available"
 msgstr ""
 
@@ -4837,11 +4838,11 @@ msgstr ""
 msgid "Last modified by"
 msgstr ""
 
-#: includes/include.upl_edit.php:206
+#: includes/include.upl_edit.php:193
 msgid "Protected for non-logged in users"
 msgstr ""
 
-#: includes/include.upl_edit.php:288
+#: includes/include.upl_edit.php:274
 #, php-format
 msgid "Could not load file %s"
 msgstr ""
@@ -5032,17 +5033,17 @@ msgstr ""
 msgid "String list"
 msgstr ""
 
-#: includes/include.con_editcontent.php:108
+#: includes/include.con_editcontent.php:102
 #: includes/include.con_content_list.php:135
 msgid "Close editor"
 msgstr ""
 
-#: includes/include.con_editcontent.php:109
+#: includes/include.con_editcontent.php:103
 #: includes/include.con_content_list.php:136
 msgid "Close editor and save changes"
 msgstr ""
 
-#: includes/include.con_editcontent.php:110
+#: includes/include.con_editcontent.php:104
 #: includes/include.con_content_list.php:137
 msgid "Do you want to save changes?"
 msgstr ""
@@ -5207,8 +5208,8 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/include.lang_left_top.php:27
-msgid "Create language for client"
+#: includes/include.lang_left_top.php:60
+msgid "Create language for"
 msgstr ""
 
 #: includes/include.lay_preview.php:39
@@ -5397,13 +5398,13 @@ msgstr ""
 msgid "Manage group members"
 msgstr ""
 
-#: includes/functions.lang.php:86
+#: includes/functions.lang.php:87
 msgid ""
 "Could not set the language-ID in the file 'config.php'. Please set the "
 "language manually."
 msgstr ""
 
-#: includes/functions.lang.php:404
+#: includes/functions.lang.php:410
 msgid "Could not delete language"
 msgstr ""
 
@@ -5789,27 +5790,27 @@ msgstr ""
 msgid "Created new Template successfully!"
 msgstr ""
 
-#: includes/include.lang_overview.php:52
+#: includes/include.lang_overview.php:57
 #: ../data/config/production/cfg_actions.inc.php:130
 msgid "Activate language"
 msgstr ""
 
-#: includes/include.lang_overview.php:56
+#: includes/include.lang_overview.php:61
 #: ../data/config/production/cfg_actions.inc.php:131
 msgid "Deactivate language"
 msgstr ""
 
-#: includes/include.lang_overview.php:61
+#: includes/include.lang_overview.php:66
 #, php-format
 msgid "Do you really want to delete the language %s?"
 msgstr ""
 
-#: includes/include.lang_overview.php:62
+#: includes/include.lang_overview.php:67
 #: ../data/config/production/cfg_actions.inc.php:134
 msgid "Delete language"
 msgstr ""
 
-#: includes/include.lang_overview.php:95
+#: includes/include.lang_overview.php:102
 msgid "Language deleted"
 msgstr ""
 
