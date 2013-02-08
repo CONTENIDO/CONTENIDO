@@ -725,6 +725,45 @@ button.ui-button::-moz-focus-inner {
     margin-top: 10px;
 }
 
+/* ----- SITEMAP ----- */
+
+
+.sitemap {
+    margin: 0 0 30px 0;
+    padding: 0;
+    width: 100%;
+}
+.sitemap li {
+    list-style: none;
+}
+.sitemap li a {
+    display: block;
+    padding: 7px 0 7px 0;
+    color: #797979;
+    text-decoration: none;
+}
+.sitemap li a:hover {
+  color: #0083cb;  
+}
+
+/* styling the different levels */
+
+.sitemap>li {
+    border-bottom: 1px dashed #0384cc;
+}
+.sitemap>li>a {
+    font-weight: bold;
+}
+
+.sitemap>li ul li {
+    padding-left:35px;
+}
+.sitemap>li>ul>li>ul>li a:hover {
+    color: #9ba21b;
+}
+
+
+
 /* ----- SOCIAL MEDIA ----- */
 ul.social_media {
     float: right;
