@@ -807,39 +807,15 @@ function statsOverviewTop($yearmonth, $top) {
  * @return  void
  */
 function statCreateLocationString($idcat, $seperator, &$cat_str) {
-    global $cfg, $db, $client, $lang;
+    $cats = array();
 
-    $sql = "SELECT
-                a.name AS name,
-                a.idcat AS idcat,
-                b.parentid AS parentid
-            FROM
-                " . $cfg["tab"]["cat_lang"] . " AS a,
-                " . $cfg["tab"]["cat"] . " AS b
-            WHERE
-                a.idlang   = " . cSecurity::toInteger($lang) . " AND
-                b.idclient = " . cSecurity::toInteger($client) . " AND
-                b.idcat    = " . cSecurity::toInteger($idcat) . " AND
-                a.idcat    = b.idcat";
-
-    $db4 = cRegistry::getDb();
-    $db4->query($sql);
-    $db4->nextRecord();
-
-    $name = $db4->f("name");
-    $parentid = $db4->f("parentid");
-
-    $tmp_cat_str = $name . $seperator . $cat_str;
-    $cat_str = $tmp_cat_str;
-
-    if ($parentid != 0) {
-        statCreateLocationString($parentid, $seperator, $cat_str);
-    } else {
-        $sep_length = strlen($seperator);
-        $str_length = strlen($cat_str);
-        $tmp_length = $str_length - $sep_length;
-        $cat_str = substr($cat_str, 0, $tmp_length);
+    // get category path
+    $helper = cCategoryHelper::getInstance();
+    foreach ($helper->getCategoryPath($idcat) as $categoryLang) {
+        $cats[] = $categoryLang->getField('name');
     }
+
+    $cat_str = implode($seperator, $cats);
 }
 
 /**
