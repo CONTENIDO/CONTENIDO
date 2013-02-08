@@ -4,27 +4,30 @@
 <h1>Suchergebnisse der Webseite</h1>
 
 {* search form *}
-<form action="" method="">
-	<input type="text" class="full" id="search" title="Suche" />
+<form action="{$action}" method="{$method}" id="navigation_searchform_top">
+    {if $idart}<input type="hidden" name="idart" value="{$idart}" />{/if}
+    {if $idlang}<input type="hidden" name="idlang" value="{$idlang}" />{/if}
+    <input type="text" id="search_term" name="search_term" class="full" title="Suche" />
 	<input type="submit" class="submit search" value="Suchen &raquo;" />
 </form>
 
-{* message *}
-<h3>{$message}</h3>
+<h3>{$msgResult}</h3>
 
 {* top pagination *}
 {if 0 lt $prev|cat:$pages|cat:$next|trim|strlen}
 <div class="pagination">
-	<span>Ergebnisse 11-15 von 35</span>
+	<span>{$msgRange}</span>
 	<ul>
-		<li><a href="{$pre}">{$label.previous}</a></li>
-		{*
-		<li><a href="">1</a></li>
-		<li><a href="" class="active">2</a></li>
-		<li><a href="">3</a></li>
-		*}
-		<li>{$pages}</li>
+	{if 0 < $prev|strlen}
+		<li><a href="{$prev}">{$label.previous}</a></li>
+	{/if}
+	{foreach item=page from=$pages|array_keys}
+		{assign var="href" value=$pages.$page}
+		<li><a href="{$href}"{if $currentPage eq $page}{/if}>{$page}</a></li>
+	{/foreach}
+	{if 0 < $next|strlen}
 		<li><a href="{$next}">{$label.next}</a></li>
+	{/if}
 	</ul>
 </div>
 {/if}
@@ -34,7 +37,7 @@
 {foreach item=result from=$results}
 	<li>
 		<span>{$result.number}</span>
-		<a href="{$result.url}">{$result.headline}</a>
+		<a href="{$result.href}">{$result.headline}</a>
 		<p>{$result.paragraph}</p>
 	</li>
 {/foreach}
@@ -43,16 +46,18 @@
 {* bottom pagination *}
 {if 0 lt $prev|cat:$pages|cat:$next|trim|strlen}
 <div class="pagination">
-	<span>Ergebnisse 11-15 von 35</span>
+	<span>{$msgRange}</span>
 	<ul>
-		<li><a href="{$pre}">{$label.previous}</a></li>
-		{*
-		<li><a href="">1</a></li>
-		<li><a href="" class="active">2</a></li>
-		<li><a href="">3</a></li>
-		*}
-		<li>{$pages}</li>
+	{if 0 < $prev|strlen}
+		<li><a href="{$prev}">{$label.previous}</a></li>
+	{/if}
+	{foreach item=page from=$pages|array_keys}
+		{assign var="href" value=$pages.$page}
+		<li><a href="{$href}"{if $currentPage eq $page}{/if}>{$page}</a></li>
+	{/foreach}
+	{if 0 < $next|strlen}
 		<li><a href="{$next}">{$label.next}</a></li>
+	{/if}
 	</ul>
 </div>
 {/if}

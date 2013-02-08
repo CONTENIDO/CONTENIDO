@@ -65,27 +65,27 @@ $sMore = mi18n("MORE");
 
 // Get search term and pre-process it
 if (isset($_GET['searchterm'])) {
-    $searchterm = $_GET['searchterm'];
+    $searchTerm = $_GET['searchterm'];
 } elseif (isset($_POST['searchterm'])) {
-    $searchterm = $_POST['searchterm'];
+    $searchTerm = $_POST['searchterm'];
 }
-$searchterm = urldecode(conHtmlentities(strip_tags(stripslashes($searchterm))));
-$searchterm = str_replace(' + ', ' AND ', $searchterm);
-$searchterm = str_replace(' - ', ' NOT ', $searchterm);
-$searchterm_display = $searchterm;
+$searchTerm = urldecode(conHtmlentities(strip_tags(stripslashes($searchTerm))));
+$searchTerm = str_replace(' + ', ' AND ', $searchTerm);
+$searchTerm = str_replace(' - ', ' NOT ', $searchTerm);
+$searchterm_display = $searchTerm;
 
-if (strlen(trim($searchterm)) > 0) {
+if (strlen(trim($searchTerm)) > 0) {
     
     // Parse search term and set search options
-    $searchterm = conHtmlEntityDecode($searchterm);
+    $searchTerm = conHtmlEntityDecode($searchTerm);
     
-    if (stristr($searchterm, ' or ') === false) {
+    if (stristr($searchTerm, ' or ') === false) {
         $combine = 'and';
     } else {
         $combine = 'or';
     }
-    $searchterm = str_replace(' and ', ' ', strtolower($searchterm));
-    $searchterm = str_replace(' or ', ' ', strtolower($searchterm));
+    $searchTerm = str_replace(' and ', ' ', strtolower($searchTerm));
+    $searchTerm = str_replace(' or ', ' ', strtolower($searchTerm));
     
     $search = new cSearch(array(
         // use db function regexp
@@ -114,7 +114,7 @@ if (strlen(trim($searchterm)) > 0) {
     ));
     
     // Execute search
-    $aSearchResults = $search->searchIndex($searchterm, '');
+    $aSearchResults = $search->searchIndex($searchTerm, '');
     
     // Build results page
     if (0 < count($aSearchResults)) {
@@ -220,7 +220,7 @@ if (strlen(trim($searchterm)) > 0) {
                     implode('&', array(
                         'idcat=' . $idcat,
                         'idart=' . $idart,
-                        'searchterm=' . $searchterm,
+                        'searchterm=' . $searchTerm,
                         'page=' . $n . $sArtSpecs
                     ))
                 )));
@@ -263,7 +263,7 @@ if (strlen(trim($searchterm)) > 0) {
             try {
                 $pre = cUri::getInstance()->build($aParams);
             } catch (cInvalidArgumentException $e) {
-                $pre = $sess->url('front_content.php?idcat=' . $idcat . '&idart=' . $idart . '&searchterm=' . $searchterm . '&page=' . $p . $sArtSpecs);
+                $pre = $sess->url('front_content.php?idcat=' . $idcat . '&idart=' . $idart . '&searchterm=' . $searchTerm . '&page=' . $p . $sArtSpecs);
             }
             $prevpage .= '<a href="' . $pre . '" title="' . mi18n("VIEW_PREVIOUS_PAGE") . '"><img src="images/link_pfeil_klein_links.gif" alt="" />  ' . mi18n("PREVIOUS") . '</a> ';
             $tpl->assign('PREV', $prevpage);
@@ -357,7 +357,7 @@ if (strlen(trim($searchterm)) > 0) {
         }
     } else {
         // No results
-        $tpl->assign('MESSAGE', $sYourSearchFor . " '" . conHtmlSpecialChars(strip_tags($searchterm)) . "' " . mi18n("GAVE_NO_RESULTS") . ".");
+        $tpl->assign('MESSAGE', $sYourSearchFor . " '" . conHtmlSpecialChars(strip_tags($searchTerm)) . "' " . mi18n("GAVE_NO_RESULTS") . ".");
         $tpl->assign('NEXT', '');
         $tpl->assign('PREV', '');
         $tpl->assign('PAGES', '');
