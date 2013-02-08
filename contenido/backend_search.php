@@ -754,7 +754,7 @@ if ($iAffectedRows <= 0 || (empty($where) && !$bLostAndFound)) {
                       <td nowrap=\"nowrap\" class=\"bordercell\">".$db->f("artsort")."</td>
                       <td nowrap=\"nowrap\" class=\"bordercell\">$sTemplateName</td>
                       <td nowrap=\"nowrap\" class=\"bordercell\">
-                          <a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$todoListeSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=550');\" alt=\"$sReminder\" title=\"$sReminder\" href=\"#\"><img id=\"m2\" style=\"padding-left: 2px; padding-right: 2px;\" alt=\"$sReminder\" src=\"images/but_setreminder.gif\" border=\"0\"></a>
+                          <a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$todoListeSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=625');\" alt=\"$sReminder\" title=\"$sReminder\" href=\"#\"><img id=\"m2\" style=\"padding-left: 2px; padding-right: 2px;\" alt=\"$sReminder\" src=\"images/but_setreminder.gif\" border=\"0\"></a>
                           $properties
                           $tplconfig
                           $duplicate

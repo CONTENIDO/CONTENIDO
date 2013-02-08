@@ -48,10 +48,10 @@ if ($action == 'todo_save_item') {
     $ui->setVar('itemtype', $itemtype);
     $ui->setVar('itemid', $itemid);
 
-    $subject = new cHTMLTextbox('subject', htmldecode(stripslashes(urldecode($subject))),60);
+    $subject = new cHTMLTextbox('subject', stripslashes(urldecode($subject)),60);
     $ui->add(i18n('Subject'), $subject->render());
 
-    $message = new cHTMLTextarea('message', htmldecode(stripslashes(urldecode($message))));
+    $message = new cHTMLTextarea('message', stripslashes(urldecode($message)));
     $ui->add(i18n('Description'), $message->render());
 
     $reminderdate = new cHTMLTextbox('reminderdate', '', '', '', 'reminderdate');

@@ -151,7 +151,7 @@ class TODOLink extends cHTMLLink {
         $subject = urlencode($subject);
         $message = urlencode($message);
 
-        $this->setEvent('click', 'javascript:window.open(' . "'" . $sess->url("main.php?subject=$subject&message=$message&area=todo&frame=1&itemtype=$itemtype&itemid=$itemid") . "', 'todo', 'scrollbars=yes,resizable=yes,height=350,width=550');");
+        $this->setEvent('click', 'javascript:window.open(' . "'" . $sess->url("main.php?subject=$subject&message=$message&area=todo&frame=1&itemtype=$itemtype&itemid=$itemid") . "', 'todo', 'scrollbars=yes,resizable=yes,height=350,width=625');");
         $this->setEvent('mouseover', "this.style.cursor='pointer'");
 
         $img = new cHTMLImage('images/but_setreminder.gif');
