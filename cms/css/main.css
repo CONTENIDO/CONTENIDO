@@ -363,7 +363,7 @@ p a:hover {
 }
 
 /* ----- SEARCH RESULT ----- */
-#search.full {
+#search_term.full {
     width: 316px;
     height: 24px;
     padding: 0 5px;
