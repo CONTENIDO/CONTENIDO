@@ -248,6 +248,11 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * @see cDbDriverAbstract::free
      */
     public function free() {
+
+        if(!is_object($this->_handler->getQueryId())) {
+            return $this;
+        }
+
         mysqli_free_result($this->_handler->getQueryId());
         $this->_handler->setQueryId(0);
     }
