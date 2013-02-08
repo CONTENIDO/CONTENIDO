@@ -288,7 +288,7 @@ function uplSyncDirectory ($sPath)
 	while ($db->next_record()) {
 	    $sCurrDirname = $db->f('dirname');
 	    $sSubDir = substr($sCurrDirname, strlen($sPath));
-	    if (substr_count($sSubDir, '/') <= 1) {
+	    if (substr_count($sSubDir, '/') <= 1 && !is_dbfs($sCurrDirname)) {
 	        // subdirectory is a direct descendant, process this directory too
 	        $sFullPath = $cfgClient[$client]['upl']['path'] . $sCurrDirname;
 	        if (!is_dir($sFullPath)) {
