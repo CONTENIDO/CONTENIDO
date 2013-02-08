@@ -121,6 +121,13 @@ cContentTypeImgeditor.prototype.addTabbingEvents = function() {
  */
 cContentTypeImgeditor.prototype.addNaviActions = function() {
     var self = this;
+	
+	$(self.frameId + ' ul.menu li.upload').click(function() {
+		if (self.scriptLoaded == 1) {
+			self.imageFileUpload();
+		} 
+	});
+		
     $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').unbind('click');
     $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').click(function() {
         // update the "active" class
@@ -195,7 +202,7 @@ cContentTypeImgeditor.prototype.showFolderPath = function() {
     if (selectedPath !== '' && selectedPath !== 'upload') {
         selectedPath += '/';
     } else {
-        selectedPath = '';
+        selectedPath = '/';
     }
 
     // show the selected directory in the upload tab and set the form values accordingly
@@ -207,7 +214,7 @@ cContentTypeImgeditor.prototype.showFolderPath = function() {
 
     if (self.scriptLoaded == 1) {
         self.imageFileUpload();
-    }
+    } 
 };
 
 /**
