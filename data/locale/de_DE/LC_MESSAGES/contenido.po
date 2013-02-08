@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-08 13:50+0100\n"
-"PO-Revision-Date: 2013-02-08 14:59+0100\n"
+"PO-Revision-Date: 2013-02-08 15:13+0100\n"
 "Last-Translator: CONTENIDO <info@contenido.org>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -1363,11 +1363,11 @@ msgstr "Vorlage wurde erfolgreich umbenannt!"
 #: classes/module/class.module.template.handler.php:280
 #: classes/module/class.module.template.handler.php:283
 msgid "Created a new template file successfully!"
-msgstr "Neue Vorlagendatei wurde erfolgreich angelegt!"
+msgstr "Neues Template wurde erfolgreich angelegt!"
 
 #: classes/module/class.module.template.handler.php:297
 msgid "Deleted the template file successfully!"
-msgstr "Vorlagendatei wurde erfolgreich gelöscht!"
+msgstr "Template wurde erfolgreich gelöscht!"
 
 #: classes/module/class.module.template.handler.php:342
 #: classes/module/class.module.template.handler.php:349
@@ -1442,11 +1442,11 @@ msgstr "Datei bearbeiten"
 
 #: classes/module/class.module.template.handler.php:432
 msgid "Make new template file"
-msgstr "Neue Vorlagendatei erstellen"
+msgstr "Neues Template erstellen"
 
 #: classes/module/class.module.template.handler.php:446
 msgid "New template file"
-msgstr "Neue Vorlagendatei"
+msgstr "Neues Template"
 
 #: classes/module/class.module.template.handler.php:459
 #: classes/module/class.module.template.handler.php:460
