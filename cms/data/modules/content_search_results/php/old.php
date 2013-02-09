@@ -5,7 +5,7 @@
  * @version 1.0.2
  * @author Willi Man
  * @copyright four for business AG <www.4fb.de>
- *           
+ *
  *            {@internal
  *            created 2004-05-04
  *            $Id: search_output_output.php 3584 2012-10-26 10:50:54Z
@@ -75,10 +75,10 @@ $searchTerm = str_replace(' - ', ' NOT ', $searchTerm);
 $searchterm_display = $searchTerm;
 
 if (strlen(trim($searchTerm)) > 0) {
-    
+
     // Parse search term and set search options
     $searchTerm = conHtmlEntityDecode($searchTerm);
-    
+
     if (stristr($searchTerm, ' or ') === false) {
         $combine = 'and';
     } else {
@@ -86,7 +86,7 @@ if (strlen(trim($searchTerm)) > 0) {
     }
     $searchTerm = str_replace(' and ', ' ', strtolower($searchTerm));
     $searchTerm = str_replace(' or ', ' ', strtolower($searchTerm));
-    
+
     $search = new cSearch(array(
         // use db function regexp
         'db' => 'regexp',
@@ -112,27 +112,27 @@ if (strlen(trim($searchTerm)) > 0) {
         'htmltext',
         'text'
     ));
-    
+
     // Execute search
     $aSearchResults = $search->searchIndex($searchTerm, '');
-    
+
     // Build results page
     if (0 < count($aSearchResults)) {
-        
+
         // Build meessage
         $message = $sYourSearchFor . " '" . conHtmlSpecialChars(strip_tags($searchterm_display)) . "' " . mi18n("GAVE_RESULTS") . ":";
         $message = str_replace('$$$', count($aSearchResults), $message);
         $tpl->assign('MESSAGE', $message);
-        
+
         // Number of results per page
         $number_of_results = CON_SEARCH_ITEMSPERPAGE;
         $oSearchResults = new cSearchResult($aSearchResults, $number_of_results);
-        
+
         $num_res = $oSearchResults->getNumberOfResults() + $pdf_count;
         $num_pages = $oSearchResults->getNumberOfPages();
         // html-tags to emphasize the located searchterms
         $oSearchResults->setReplacement('<strong>', '</strong>');
-        
+
         // Get current result page
         if (isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0) {
             $page = $_GET['page'];
@@ -141,7 +141,7 @@ if (strlen(trim($searchTerm)) > 0) {
             $page = 1;
             $res_page = $oSearchResults->getSearchResultPage($page);
         }
-        
+
         // Build links to other result pages
         for ($i = 1; $i <= $num_pages; $i++) {
             // this is just for sample client - modify to your needs!
@@ -182,7 +182,7 @@ if (strlen(trim($searchTerm)) > 0) {
             }
         }
         $tpl->assign('PAGES', $nextlinks);
-        
+
         // Build link to next result page
         if ($page < $num_pages) {
             $n = $page + 1;
@@ -230,7 +230,7 @@ if (strlen(trim($searchTerm)) > 0) {
         } else {
             $tpl->assign('NEXT', '');
         }
-        
+
         // Build link to previous result page
         if ($page > 1) {
             $p = $page - 1;
@@ -270,7 +270,7 @@ if (strlen(trim($searchTerm)) > 0) {
         } else {
             $tpl->assign('PREV', '');
         }
-        
+
         if (count($res_page) > 0) {
             $i = 1;
             // Build single search result on result page
@@ -295,7 +295,7 @@ if (strlen(trim($searchTerm)) > 0) {
                     $show_pub_date .= $pub_system[6] . "." . $pub_system[0] . $pub_system[1] . $pub_system[2] . $pub_system[3] . "]";
                     $show_pub_date = "[" . $show_pub_date;
                 }
-                
+
                 // Get text and headline of current article
                 $aHeadline = $oSearchResults->getSearchContent($key, 'HTMLHEAD', 1);
                 $aSubheadline = $oSearchResults->getSearchContent($key, 'HTMLHEAD', 2);
@@ -305,12 +305,12 @@ if (strlen(trim($searchTerm)) > 0) {
                 // setReplacement('<strong>', '</strong>')
                 $headline = cApiStrTrimAfterWord($aHeadline[0], CON_SEARCH_MAXLEN_TEASERTEXT);
                 $subheadline = cApiStrTrimAfterWord($aSubheadline[0], CON_SEARCH_MAXLEN_TEASERTEXT);
-                
+
                 $cat_id = $oSearchResults->getArtCat($key);
                 $similarity = $oSearchResults->getSimilarity($key);
-                
+
                 $similarity = sprintf("%.0f", $similarity);
-                
+
                 // Send output to template
                 // this is just for sample client - modify to your needs!
                 if ($cfg['url_builder']['name'] == 'front_content' || $cfg['url_builder']['name'] == 'MR') {
@@ -351,7 +351,7 @@ if (strlen(trim($searchTerm)) > 0) {
                 $tpl->set('d', 'PUB_DATE', $show_pub_date);
                 $tpl->next();
                 $i++;
-            
+
             }
             $tpl->display('content_search_results/template/get.tpl');
         }
@@ -375,12 +375,12 @@ if (strlen(trim($searchTerm)) > 0) {
  * @param int $client
  */
 function getSearchRange($client) {
-    
+
     $clientObject = new cApiClient($client);
-    
+
     $searchRange = $clientObject->getProperty('searchrange', 'include');
     $searchRange = explode(',', $searchRange);
-    
+
     return $searchRange;
 
 }
@@ -392,24 +392,24 @@ function getSearchRange($client) {
  * @param int $lang
  */
 function getArticleSpecs($client, $lang) {
-    
+
     $cfg = cRegistry::getConfig();
     $db = cRegistry::getDb();
-    
+
     $sql = "-- getArticleSpecs()
-		SELECT
-			idartspec
-			, artspec
-		FROM
-			" . $cfg['tab']['art_spec'] . "
-		WHERE
-			client = $client
-			AND lang = $lang
-			AND online = 1
-		;";
-    
+        SELECT
+            idartspec
+            , artspec
+        FROM
+            " . $cfg['tab']['art_spec'] . "
+        WHERE
+            client = $client
+            AND lang = $lang
+            AND online = 1
+        ;";
+
     $db->query($sql);
-    
+
     $aArtSpecs = array();
     while ($db->next_record()) {
         $aArtSpecs[] = $db->f('idartspec');

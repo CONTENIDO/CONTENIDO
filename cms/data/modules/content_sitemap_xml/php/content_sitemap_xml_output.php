@@ -80,22 +80,22 @@ function addArticlesToSitemap(SimpleXMLElement $sitemap, $categoryIds) {
 
         // get articles from DB
         // needed fields: idart, lastmodified, sitemapprio, changefreq
-		$sql = '
-			SELECT
-				`al`.`idart`
-				, UNIX_TIMESTAMP(`al`.`lastmodified`) as lastmod
-				, `al`.`changefreq`
-				, `al`.`sitemapprio`
-			FROM
-				`' . $cfg['tab']['art_lang'] . '` AS `al`
-				, `' . $cfg['tab']['cat_art'] . '` AS `ca`
-			WHERE
-				`al`.`idart` = `ca`.`idart`
-				AND `al`.`idlang` = ' . $lang . '
-				AND `ca`.`idcat` IN (' . implode(',', $categoryIds) . ')
-				AND `al`.`online` = 1
-				AND `al`.`searchable` = 1
-			;';
+        $sql = '
+            SELECT
+                `al`.`idart`
+                , UNIX_TIMESTAMP(`al`.`lastmodified`) as lastmod
+                , `al`.`changefreq`
+                , `al`.`sitemapprio`
+            FROM
+                `' . $cfg['tab']['art_lang'] . '` AS `al`
+                , `' . $cfg['tab']['cat_art'] . '` AS `ca`
+            WHERE
+                `al`.`idart` = `ca`.`idart`
+                AND `al`.`idlang` = ' . $lang . '
+                AND `ca`.`idcat` IN (' . implode(',', $categoryIds) . ')
+                AND `al`.`online` = 1
+                AND `al`.`searchable` = 1
+            ;';
 
         $db->query($sql);
 
@@ -175,8 +175,8 @@ function iso8601Date($time) {
  *        be written
  */
 function saveSitemap(SimpleXMLElement $sitemap, $filename = '') {
-	$cfgClient = cRegistry::getClientConfig();
-	$client = cRegistry::getClientId();
+    $cfgClient = cRegistry::getClientConfig();
+    $client = cRegistry::getClientId();
     if (0 === strlen($filename)) {
         header('Content-type: text/xml');
         echo $sitemap->asXML();

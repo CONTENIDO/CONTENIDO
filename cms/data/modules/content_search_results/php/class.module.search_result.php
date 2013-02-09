@@ -75,7 +75,7 @@ class SearchResultModule {
      * @param array $options
      */
     public function __construct(array $options = NULL) {
-        
+
         // generic way to set options
         if (NULL !== $options) {
             foreach ($options as $name => $value) {
@@ -83,7 +83,7 @@ class SearchResultModule {
                 $this->$name = $value;
             }
         }
-        
+
         // get global variables from registry (the nice way)
         $this->_cfg = cRegistry::getConfig();
         $this->_db = cRegistry::getDb();
@@ -92,11 +92,11 @@ class SearchResultModule {
         $this->_idcat = cRegistry::getCategoryId();
         $this->_idart = cRegistry::getArticleId();
         $this->_sess = cRegistry::getSession();
-        
+
         // get global variables (the ugly way)
         global $sArtSpecs;
         $this->_artSpecs = $sArtSpecs;
-        
+
         // perform first preparation of searchterm
         $searchTerm = $this->_searchTerm;
         $searchTerm = stripslashes($searchTerm);
@@ -105,10 +105,10 @@ class SearchResultModule {
         $searchTerm = urldecode($searchTerm);
         $searchTerm = str_replace(' + ', ' AND ', $searchTerm);
         $searchTerm = str_replace(' - ', ' NOT ', $searchTerm);
-        
+
         // that's the search term suitable for display
         $this->_dispSearchTerm = $searchTerm;
-        
+
         // now parse search term and set search options
         if (strlen(trim($searchTerm)) > 0) {
             $searchTerm = conHtmlEntityDecode($searchTerm);
@@ -120,21 +120,21 @@ class SearchResultModule {
             $searchTerm = str_replace(' and ', ' ', strtolower($searchTerm));
             $searchTerm = str_replace(' or ', ' ', strtolower($searchTerm));
         }
-        
+
         // that's the search term suitable for the search itself
         $this->_prepSearchTerm = $searchTerm;
-        
+
         // perform search
         $this->_performSearch();
-    
+
     }
 
     /**
      */
     public function render() {
-        
+
         $tpl = Contenido_SmartyWrapper::getInstance();
-        
+
         $tpl->assign('label', $this->_label);
         $tpl->assign('searchTerm', $this->_dispSearchTerm);
         $tpl->assign('currentPage', $this->_page);
@@ -144,7 +144,7 @@ class SearchResultModule {
         $tpl->assign('prev', $this->_getPreviousLink());
         $tpl->assign('next', $this->_getNextLink());
         $tpl->assign('pages', $this->_getPageLinks());
-        
+
         // determine action & method for search form
         // depends upon if plugin mod_rewrite is enabled
         if (class_exists('ModRewrite') && ModRewrite::isEnabled()) {
@@ -157,15 +157,15 @@ class SearchResultModule {
             $tpl->assign('idart', cRegistry::getArticleLanguageId());
             $tpl->assign('idlang', cRegistry::getLanguageId());
         }
-        
+
         $tpl->display($this->_templateName);
-    
+
     }
 
     /**
      */
     protected function _performSearch() {
-        
+
         // build search object
         // only certain content types will be searched
         $search = new cSearch(array(
@@ -193,16 +193,16 @@ class SearchResultModule {
             'text'
         ));
         $searchResultArray = $search->searchIndex($this->_prepSearchTerm, '');
-        
+
         // get search results
         $this->_searchResults = new cSearchResult($searchResultArray, $this->_itemsPerPage);
-        
+
         // get number of pages
         $this->_numberOfPages = $this->_searchResults->getNumberOfPages();
-        
+
         // html-tags to emphasize the located searchterms
         $this->_searchResults->setReplacement('<strong>', '</strong>');
-        
+
         // create message to display
         $searchResultCount = count($searchResultArray);
         if (0 === $searchResultCount) {
@@ -210,7 +210,7 @@ class SearchResultModule {
         } else {
             $this->_msgResult = sprintf($this->_label['msgResultsFound'], $this->_dispSearchTerm, $searchResultCount);
         }
-    
+
     }
 
     /**
@@ -220,17 +220,17 @@ class SearchResultModule {
      * @return array
      */
     protected function _getSearchRange() {
-        
+
         $clientObject = cRegistry::getClient();
-        
+
         $searchRange = $clientObject->getProperty('searchable', 'idcats');
         if (false === $searchRange) {
             throw new Exception('client property searchable/idcats is not defined');
         }
         $searchRange = explode(',', $searchRange);
-        
+
         return $searchRange;
-    
+
     }
 
     /**
@@ -241,29 +241,29 @@ class SearchResultModule {
      * @return array
      */
     protected function _getArticleSpecs() {
-        
+
         $sql = "-- getArticleSpecs()
-			SELECT
-				idartspec
-				, artspec
-			FROM
-				" . $this->_cfg['tab']['art_spec'] . "
-			WHERE
-				client = $this->_client
-				AND lang = $this->_lang
-				AND online = 1
-			;";
-        
+            SELECT
+                idartspec
+                , artspec
+            FROM
+                " . $this->_cfg['tab']['art_spec'] . "
+            WHERE
+                client = $this->_client
+                AND lang = $this->_lang
+                AND online = 1
+            ;";
+
         $this->_db->query($sql);
-        
+
         $aArtSpecs = array();
         while ($this->_db->next_record()) {
             $aArtSpecs[] = $this->_db->f('idartspec');
         }
         $aArtSpecs[] = 0;
-        
+
         return $aArtSpecs;
-    
+
     }
 
     /**
@@ -271,48 +271,48 @@ class SearchResultModule {
      * @return array
      */
     protected function _getResults() {
-        
+
         // get current result page
         $searchResultPage = $this->_searchResults->getSearchResultPage($this->_page);
-        
+
         // skip if current page has no results
         if (0 == count($searchResultPage) > 0) {
             return array();
         }
-        
+
         // build single search result on result page
         $entries = array();
         $i = 0;
         foreach (array_keys($searchResultPage) as $idart) {
-            
+
             $i++;
-            
+
             // get absolute number of current search result
             $number = $this->_itemsPerPage * ($this->_page - 1) + $i;
-            
+
             // get headlines
             $headlines = $this->_searchResults->getSearchContent($idart, 'HTMLHEAD', 1);
             $headline = cApiStrTrimAfterWord($headlines[0], $this->_maxTeaserTextLen);
-            
+
             // get subheadlines
             $subheadlines = $this->_searchResults->getSearchContent($idart, 'HTMLHEAD', 2);
             $subheadline = cApiStrTrimAfterWord($subheadlines[0], $this->_maxTeaserTextLen);
-            
+
             // get paragraphs
             $paragraphs = $this->_searchResults->getSearchContent($idart, 'HTML', 1);
             $paragraph = cApiStrTrimAfterWord($paragraphs[0], $this->_maxTeaserTextLen);
-            
+
             // get similarity
             $similarity = $this->_searchResults->getSimilarity($idart);
             $similarity = sprintf("%.0f", $similarity);
-            
+
             // build link to that result page
             $href = cUri::getInstance()->build(array(
                 'lang' => cRegistry::getLanguageId(),
                 'idcat' => $this->_searchResults->getArtCat($idart),
                 'idart' => $idart
             ));
-            
+
             // assemble entry
             $entries[] = array(
                 'number' => $number,
@@ -322,17 +322,17 @@ class SearchResultModule {
                 'similarity' => $similarity,
                 'href' => $href
             );
-        
+
         }
-        
+
         $lower = ($this->_page - 1) * $this->_itemsPerPage + 1;
         $upper = $lower + count($entries) - 1;
         $total = $this->_searchResults->getNumberOfResults();
-        
+
         $this->_msgRange = sprintf($this->_label['msgRange'], $lower, $upper, $total);
-        
+
         return $entries;
-    
+
     }
 
     /**
@@ -340,17 +340,17 @@ class SearchResultModule {
      * @return string
      */
     protected function _getPreviousLink() {
-        
+
         // skip if there are no previous pages
         if (1 >= $this->_page) {
             return '';
         }
-        
+
         // build link to previous result page
         $url = $this->_getPageLink($this->_dispSearchTerm, $this->_page - 1);
-        
+
         return $url;
-    
+
     }
 
     /**
@@ -358,17 +358,17 @@ class SearchResultModule {
      * @return string
      */
     protected function _getNextLink() {
-        
+
         // skip if there are no next pages
         if ($this->_page >= $this->_numberOfPages) {
             return '';
         }
-        
+
         // build link to next result page
         $url = $this->_getPageLink($this->_dispSearchTerm, $this->_page + 1);
-        
+
         return $url;
-    
+
     }
 
     /**
@@ -377,14 +377,14 @@ class SearchResultModule {
      * @return string
      */
     protected function _getPageLinks() {
-        
+
         $pageLinks = array();
         for ($i = 1; $i <= $this->_numberOfPages; $i++) {
             $pageLinks[$i] = $this->_getPageLink($this->_dispSearchTerm, $i);
         }
-        
+
         return $pageLinks;
-    
+
     }
 
     /**
@@ -396,7 +396,7 @@ class SearchResultModule {
      * @return mixed
      */
     protected function _getPageLink($searchTerm = NULL, $page = NULL) {
-        
+
         // define standard params
         $params = array(
             'lang' => $this->_lang,
@@ -412,7 +412,7 @@ class SearchResultModule {
         }
         // store unaltered params for later use
         $defaultParams = $params;
-        
+
         // define special params when 'front_content' or 'MR' url builders are
         // *NOT* used in this case the standard params are wrapped as 'search'
         // and lang, idcat & level are aded cause they are needed to build the
@@ -429,7 +429,7 @@ class SearchResultModule {
                 'level' => 1
             );
         }
-        
+
         try {
             $url = cUri::getInstance()->build($params);
         } catch (cInvalidArgumentException $e) {
@@ -438,9 +438,9 @@ class SearchResultModule {
                 implode('&', $defaultParams)
             )));
         }
-        
+
         return $url;
-    
+
     }
 
 }

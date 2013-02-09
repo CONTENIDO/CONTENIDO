@@ -93,7 +93,7 @@ i18n("Mailing")
 i18n("Info")
 i18n("Login")
 i18n("System integrity")
-i18n("Translations") 
+i18n("Translations")
 i18n("Module templates")
 -->
 <language>
@@ -120,8 +120,8 @@ i18n("Module templates")
                 <edit>Edit</edit>
                 <fileupload>Upload files</fileupload>
             </upload>
-			<translations>
-            	<main>Translations</main>
+            <translations>
+                <main>Translations</main>
             </translations>
         </content>
         <style>

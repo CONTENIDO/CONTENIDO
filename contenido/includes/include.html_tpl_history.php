@@ -106,7 +106,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
         // Init Form variables of SelectBox
         $sSelectBox = '';
         $oVersionHtmlTemp->setVarForm('area', $area);
-		$oVersionHtmlTemp->setVarForm('action', '');
+        $oVersionHtmlTemp->setVarForm('action', '');
         $oVersionHtmlTemp->setVarForm('frame', $frame);
         $oVersionHtmlTemp->setVarForm('idhtml_tpl', $sFileName);
         $oVersionHtmlTemp->setVarForm('file', $sFileName);

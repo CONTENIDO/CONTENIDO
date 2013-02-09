@@ -1,6 +1,6 @@
 <!-- content_sitemap_html -->
 {if $error}
-	<h1>{$error}</h1>
+    <h1>{$error}</h1>
 {/if}
 
 <ul class="sitemap">
@@ -32,24 +32,24 @@
 {*
 {foreach $categories as $key => $category}
     <li>
- 			<a href="">{$key}.{$category->get('name')}</a></p>
- 			<ul>
- 				{foreach $articles as $keyArt => $article}
- 					{if $key == $keyArt}
- 					<ul>
- 						<li>
- 						{foreach $article as $keyArt => $art}
+             <a href="">{$key}.{$category->get('name')}</a></p>
+             <ul>
+                 {foreach $articles as $keyArt => $article}
+                     {if $key == $keyArt}
+                     <ul>
+                         <li>
+                         {foreach $article as $keyArt => $art}
 
- 							<a href="">{$art['title']}</a></p>
+                             <a href="">{$art['title']}</a></p>
 
- 						{/foreach}
- 						</li>
- 					</ul>
- 					{/if}
- 				{/foreach}
- 				</ul>
-	</li>
-		{/foreach}
+                         {/foreach}
+                         </li>
+                     </ul>
+                     {/if}
+                 {/foreach}
+                 </ul>
+    </li>
+        {/foreach}
 *}
 
 </ul>

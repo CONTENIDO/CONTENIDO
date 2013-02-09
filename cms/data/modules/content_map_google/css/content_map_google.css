@@ -1,21 +1,21 @@
 #googleMap {
-	width: 490px;
-	height: 150px;
-	float: left;
+    width: 490px;
+    height: 150px;
+    float: left;
 }
 
 #address {
-	float: right;
-	margin-left: 8px;
-	margin-top: 15px;
+    float: right;
+    margin-left: 8px;
+    margin-top: 15px;
 }
 
 #dialogContent {
-	display: none;
+    display: none;
 }
 
 #clearFloat {
-	clear: both;
+    clear: both;
 }
 
 /*

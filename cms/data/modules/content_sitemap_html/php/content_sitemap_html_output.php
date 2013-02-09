@@ -97,22 +97,22 @@ function getArticlesFromCategory($categoryId) {
     // get articles from DB
     // needed fields: idart, lastmodified, sitemapprio, changefreq
     $sql = '
-			SELECT
-				`al`.`idart`
-				, UNIX_TIMESTAMP(`al`.`lastmodified`) as lastmod
-				, `al`.`changefreq`
-				, `al`.`sitemapprio`
-            	, `al`.`title`
-			FROM
-				`' . $cfg['tab']['art_lang'] . '` AS `al`
-				, `' . $cfg['tab']['cat_art'] . '` AS `ca`
-			WHERE
-				`al`.`idart` = `ca`.`idart`
-				AND `al`.`idlang` = ' . $lang . '
-				AND `ca`.`idcat` IN (' . $categoryId . ')
-				AND `al`.`online` = 1
-				AND `al`.`searchable` = 1
-			;';
+            SELECT
+                `al`.`idart`
+                , UNIX_TIMESTAMP(`al`.`lastmodified`) as lastmod
+                , `al`.`changefreq`
+                , `al`.`sitemapprio`
+                , `al`.`title`
+            FROM
+                `' . $cfg['tab']['art_lang'] . '` AS `al`
+                , `' . $cfg['tab']['cat_art'] . '` AS `ca`
+            WHERE
+                `al`.`idart` = `ca`.`idart`
+                AND `al`.`idlang` = ' . $lang . '
+                AND `ca`.`idcat` IN (' . $categoryId . ')
+                AND `al`.`online` = 1
+                AND `al`.`searchable` = 1
+            ;';
 
     $ret = $db->query($sql);
 

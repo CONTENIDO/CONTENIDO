@@ -743,7 +743,7 @@ button.ui-button::-moz-focus-inner {
     text-decoration: none;
 }
 .sitemap li a:hover {
-  color: #0083cb;  
+    color: #0083cb;
 }
 
 /* styling the different levels */

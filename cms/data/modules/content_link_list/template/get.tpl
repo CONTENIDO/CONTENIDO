@@ -11,13 +11,13 @@
         {foreach from=$contents item=content key=kcontent}
             {foreach from=$descriptions item=description key=kdesc }
                 {if $kcontent == $kdesc}
-                		<div>
-                    		{$content}</br>
-                    		{$description}</br>
-                		</div>
-					{if $breakForBackend === TRUE}
-						</br>
-					{/if}
+                        <div>
+                            {$content}</br>
+                            {$description}</br>
+                        </div>
+                    {if $breakForBackend === TRUE}
+                        </br>
+                    {/if}
                 {/if}
             {/foreach}
         {/foreach}

@@ -186,7 +186,7 @@ function uplHasSubdirs($sDir) {
 function uplSyncDirectory($sPath) {
     global $cfgClient, $client, $cfg, $db;
 
-	if (cApiDbfs::isDbfs($sPath)) {
+    if (cApiDbfs::isDbfs($sPath)) {
         return uplSyncDirectoryDBFS($sPath);
     }
 
