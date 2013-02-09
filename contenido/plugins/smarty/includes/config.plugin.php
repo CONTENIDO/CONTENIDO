@@ -27,10 +27,19 @@ if (!defined('CON_FRAMEWORK')) {
 
 $client = (isset($client)) ? $client : $load_client;
 
-plugin_include('smarty', 'classes/class.Contenido_SmartyWrapper.php');
+// Load smarty
+if (!defined('SMARTY_DIR')) {
+    define('SMARTY_DIR', $cfg['path']['contenido'] . 'plugins/smarty/smarty_source/');
+}
+
+require_once(SMARTY_DIR . 'Smarty.class.php');
+
+plugin_include('smarty', 'classes/class.smarty.wrapper.php');
+plugin_include('smarty', 'classes/class.smarty.frontend.php');
+plugin_include('smarty', 'classes/class.smarty.backend.php');
 
 try {
-    new Contenido_SmartyWrapper($cfg, $cfgClient[$client], true);
+    new cSmartyFrontend($cfg, $cfgClient[$client], true);
 } catch (Exception $e) {
     cWarning($e->getFile(), $e->getLine(), $e->getMessage());
 }

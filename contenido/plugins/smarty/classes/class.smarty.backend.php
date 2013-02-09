@@ -1,5 +1,6 @@
 <?php
-class Contenido_Backend_SmartyWrapper extends Contenido_SmartyWrapper {
+class Contenido_Backend_SmartyWrapper extends cSmartyBackend {}
+class cSmartyBackend extends Contenido_SmartyWrapper {
 
     public function __construct(&$aCfg, &$aClientCfg, $bSanityCheck = false) {
         parent::__construct($aCfg, $aClientCfg, false);

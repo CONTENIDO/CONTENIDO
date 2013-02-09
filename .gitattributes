@@ -2072,8 +2072,9 @@ contenido/plugins/pim/xml/plugin_info.xsd -text svneol=unset#text/plain
 contenido/plugins/repository/custom/FrontendNavigation.php -text
 contenido/plugins/repository/keyword_density.php -text
 contenido/plugins/smarty/README.txt -text svneol=unset#text/plain
-contenido/plugins/smarty/classes/class.Contenido_Backend_SmartyWrapper.php -text
-contenido/plugins/smarty/classes/class.Contenido_SmartyWrapper.php -text
+contenido/plugins/smarty/classes/class.smarty.backend.php -text
+contenido/plugins/smarty/classes/class.smarty.frontend.php -text
+contenido/plugins/smarty/classes/class.smarty.wrapper.php -text
 contenido/plugins/smarty/includes/config.plugin.php -text
 contenido/plugins/smarty/plugin.xml -text
 contenido/plugins/smarty/smarty_source/Smarty.class.php -text
