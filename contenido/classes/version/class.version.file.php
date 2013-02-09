@@ -140,16 +140,12 @@ class cVersionFile extends cVersion {
     public function initXmlReader($sPath) {
         $aResult = array();
         if ($sPath != "") {
-            // Output this xml file
-            $sXML = simplexml_load_file($sPath);
-            if ($sXML) {
-                foreach ($sXML->body as $oBodyValues) {
-                    // If choose xml file read value an set it
-                    $aResult["name"] = $oBodyValues->name;
-                    $aResult["desc"] = $oBodyValues->description;
-                    $aResult["code"] = $oBodyValues->code;
-                }
-            }
+            $xml = new cXmlReader();
+            $xml->load($sPath);
+
+            $aResult['name'] = $xml->getXpathValue('/version/body/name');
+            $aResult['desc'] = $xml->getXpathValue('/version/body/description');
+            $aResult['code'] = $xml->getXpathValue('/version/body/code');
         }
 
         return $aResult;

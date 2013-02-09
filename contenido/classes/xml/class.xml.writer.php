@@ -42,11 +42,19 @@ class cXmlWriter extends cXmlBase {
      * @param DOMElement $rootElement root element (optional)
      * @param array $attributes array of attributes added to this element
      *        (optional)
+     * @param boolean $cdata whether the value is surround by CDATA blocks (optional)
      *
      * @return DOMElement created DOM element
      */
-    public function addElement($name, $value = '', $rootElement = null, $attributes = array()) {
-        $element = $this->_dom->createElement($name, $value);
+    public function addElement($name, $value = '', $rootElement = null, $attributes = array(), $cdata = false) {
+        if ($value == '' || ($value != '' && $cdata == true)) {
+            $element = $this->_dom->createElement($name);
+            if ($value != '' && $cdata == true) {
+                $element->appendChild($this->_dom->createCDATASection($value));
+            }
+        } else {
+            $element = $this->_dom->createElement($name, $value);
+        }
 
         $element = $this->_addElementAttributes($element, $attributes);
 

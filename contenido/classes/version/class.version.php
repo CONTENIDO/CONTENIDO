@@ -319,16 +319,16 @@ class cVersion {
 
         $oBodyElement = $oWriter->addElement('body', '', $oRootElement);
         foreach ($this->aBodyData as $sKey => $sValue) {
-            $oWriter->addElement($sKey, $sValue, $oBodyElement);
+            $oWriter->addElement($sKey, $sValue, $oBodyElement, array(), true);
         }
 
         return $oWriter->saveToFile($sDirectory, $sFileName);
     }
 
     /**
-     * This function creats new version in right folder.
+     * This function creates new version in right folder.
      *
-     * @return void
+     * @return boolean
      */
     public function createNewVersion() {
         if ($this->bVersioningActive == false) {
@@ -339,7 +339,7 @@ class cVersion {
         $sRevisionName = $this->getRevision();
 
         if (!is_dir($this->getFilePath())) {
-            $bCreate = mkdir($this->getFilePath(), 0777);
+            mkdir($this->getFilePath(), 0777);
             chmod($this->getFilePath(), 0777);
         }
 
@@ -455,7 +455,6 @@ class cVersion {
      * @return string the name of xml files
      */
     protected function getFirstRevision() {
-        $aKey = array();
         $this->initRevisions();
         $aKey = $this->aRevisionFiles;
         $sFirstRevision = '';
@@ -515,7 +514,7 @@ class cVersion {
      */
     public function buildSelectBox($sTableForm, $sAddHeader, $sLabelOfSelectBox, $sIdOfSelectBox) {
         $oForm = new cGuiTableForm($sTableForm);
-        $aMessage = array();
+
         // if exists xml files
         if (count($this->dTimestamp) > 0) {
 
