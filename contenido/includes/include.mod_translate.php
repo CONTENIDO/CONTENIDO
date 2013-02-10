@@ -36,22 +36,21 @@ $langstring = $langobj->get('name') . ' (' . $lang . ')';
 
 $page = new cGuiPage("mod_translate");
 
-$moduletranslations = new cApiModuleTranslationCollection();
 $module = new cApiModule($idmod);
 
-$orginalString = '';
-$uebersetztungString = '';
-$contenidoTranslateFromFile = new cModuleFileTranslation($idmod);
+$originalString = '';
+$translationString = '';
+$moduleTranslation = new cModuleFileTranslation($idmod);
 
 if ($action == 'mod_translation_save') {
-    $orginalString = $t_orig;
-    $uebersetztungString = $t_trans;
+    $originalString = $t_orig;
+    $translationString = $t_trans;
 
-    $transaltionArray = $contenidoTranslateFromFile->getTranslationArray();
+    $translationArray = $moduleTranslation->getTranslationArray();
 
-    $transaltionArray[stripslashes($t_orig)] = stripslashes($t_trans);
-    //print_r($transaltionArray);
-    if ($contenidoTranslateFromFile->saveTranslationArray($transaltionArray)) {
+    $translationArray[stripslashes($t_orig)] = stripslashes($t_trans);
+
+    if ($moduleTranslation->saveTranslationArray($translationArray)) {
         $page->displayInfo(i18n('Saved translation successfully!'));
     } else {
         $page->displayError(i18n("Can't save translation!"));
@@ -61,40 +60,40 @@ if ($action == 'mod_translation_save') {
 if (!isset($idmodtranslation)) {
     $idmodtranslation = 0;
 }
+
 // Get the mi18n strings from modul input/output
 $strings = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);
 
 // Get the strings from translation file
-$transaltionArray = $contenidoTranslateFromFile->getTranslationArray();
-
+$translationArray = $moduleTranslation->getTranslationArray();
 
 $myTrans = array();
 $save = false;
 // Insert new strings
 foreach ($strings as $string) {
-    if (isset($transaltionArray[$string])) {
-        $myTrans[$string] = $transaltionArray[$string];
+    if (isset($translationArray[$string])) {
+        $myTrans[$string] = $translationArray[$string];
     } else {
         $myTrans[$string] = '';
     }
 }
 
 // If changed save in file
-if (count(array_diff_assoc($myTrans, $transaltionArray)) > 0 || count(array_diff_assoc($transaltionArray, $myTrans)) > 0) {
-    $contenidoTranslateFromFile->saveTranslationArray($myTrans);
+if (count(array_diff_assoc($myTrans, $translationArray)) > 0 || count(array_diff_assoc($translationArray, $myTrans)) > 0) {
+    $moduleTranslation->saveTranslationArray($myTrans);
 }
 
 if (!isset($row)) {
     $row = count($strings) - 1; //last string
     $lastString = end($strings);
-    $lastUebersetzung = $myTrans[$lastString];
+    $lastTranslation = $myTrans[$lastString];
 } else {
     // Get the string
     $index = 0;
     foreach ($myTrans as $key => $value) {
         if ($index == $row) {
             $lastString = $key;
-            $lastUebersetzung = $value;
+            $lastTranslation = $value;
             break;
         }
         $index++;
@@ -130,7 +129,7 @@ $table = '<table border="0" width="600" border="0"><tr><td width="50%">' . i18n(
 $original = new cHTMLTextarea('t_orig', conHtmlSpecialChars($lastString)); ////$mtrans->get('original')));
 $original->setStyle('width:300px;');
 
-$translated = new cHTMLTextarea('t_trans', conHtmlSpecialChars($lastUebersetzung)); //$mtrans->get('translation')));
+$translated = new cHTMLTextarea('t_trans', conHtmlSpecialChars($lastTranslation)); //$mtrans->get('translation')));
 $translated->setStyle('width:300px;');
 
 $table .= '<tr><td>' . $original->render() . '</td><td>' . $translated->render() . '</td><td width="20">&nbsp;</td></tr></table>';

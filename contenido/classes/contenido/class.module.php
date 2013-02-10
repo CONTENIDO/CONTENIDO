@@ -9,7 +9,7 @@
  * Requirements:
  * @con_php_req 5.0
  *
- * @todo  Switch to SimpleXML
+ * @todo       Switch to SimpleXML
  *
  * @package    CONTENIDO API
  * @version    1.2.1
@@ -38,6 +38,7 @@ class cApiModuleCollection extends ItemCollection {
 
     /**
      * Constructor Function
+     *
      * @param none
      */
     public function __construct() {
@@ -55,28 +56,30 @@ class cApiModuleCollection extends ItemCollection {
     /**
      * Creates a new module item
      *
-     * @global  int  $client
+     * @global  int     $client
      * @global  object  $auth
-     * @param  string  $name
-     * @param  int  $idclient
-     * @param  string  $alias
-     * @param  string  $type
-     * @param  string  $error
-     * @param  string  $description
-     * @param  int  $deletable
-     * @param  string  $template
-     * @param  int  $static
-     * @param  string  $package_guid
-     * @param  string  $package_data
-     * @param  string  $author
-     * @param  string  $created
-     * @param  string  $lastmodified
+     *
+     * @param  string   $name
+     * @param  int      $idclient
+     * @param  string   $alias
+     * @param  string   $type
+     * @param  string   $error
+     * @param  string   $description
+     * @param  int      $deletable
+     * @param  string   $template
+     * @param  int      $static
+     * @param  string   $package_guid
+     * @param  string   $package_data
+     * @param  string   $author
+     * @param  string   $created
+     * @param  string   $lastmodified
+     *
      * @return cApiModule
      */
-    public function create($name, $idclient = null, $alias = '', $type = '', $error = 'none', $description = '', $deletable = 0, $template = '', $static = 0, $package_guid = '', $package_data = '', $author = '', $created = '', $lastmodified = '') {
+    public function create($name, $idclient = NULL, $alias = '', $type = '', $error = 'none', $description = '', $deletable = 0, $template = '', $static = 0, $package_guid = '', $package_data = '', $author = '', $created = '', $lastmodified = '') {
         global $client, $auth;
 
-        if (null === $idclient) {
+        if (NULL === $idclient) {
             $idclient = $client;
         }
 
@@ -113,7 +116,9 @@ class cApiModuleCollection extends ItemCollection {
 
     /**
      * Returns list of all types by client id
+     *
      * @param  int  $idclient
+     *
      * @return  array
      */
     public function getAllTypesByIdclient($idclient) {
@@ -156,6 +161,7 @@ class cApiModuleCollection extends ItemCollection {
                 $aUsedTemplates[$db->f('idmod')][$db->f('idtpl')]['tpl_id'] = (int)$db->f('idtpl');
             }
         }
+
         return $aUsedTemplates;
     }
 
@@ -183,6 +189,7 @@ class cApiModule extends Item {
 
     /**
      * Constructor Function
+     *
      * @param  mixed  $mId  Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -214,6 +221,7 @@ class cApiModule extends Item {
      * Returns the translated name of the module if a translation exists.
      *
      * @param none
+     *
      * @return string Translated module name or original
      */
     public function getTranslatedName() {
@@ -237,6 +245,7 @@ class cApiModule extends Item {
      * Sets the translated name of the module
      *
      * @param $name string Translated name of the module
+     *
      * @return none
      */
     public function setTranslatedName($name) {
@@ -320,6 +329,7 @@ class cApiModule extends Item {
         }
 
         /* Make the strings unique */
+
         return array_unique($strings);
     }
 
@@ -476,6 +486,7 @@ class cApiModule extends Item {
                     $value = i18n('- Unnamed module -');
                 }
         }
+
         return ($value);
     }
 
@@ -490,6 +501,7 @@ class cApiModule extends Item {
 
             conGenerateCodeForAllArtsUsingMod($this->get('idmod'));
         }
+
         return $success;
     }
 
@@ -497,6 +509,7 @@ class cApiModule extends Item {
      * Parse import xml file and returns its values.
      *
      * @param    string   $sFile   Filename including path of import xml file
+     *
      * @return   array   Array with module data from XML file
      */
     private function _parseImportFile($sFile) {
@@ -556,6 +569,7 @@ class cApiModule extends Item {
         // exist the modul in directory
         if (is_dir($sModulePath)) {
             $notification->displayNotification('error', i18n('Module exist!'));
+
             return false;
         }
 
@@ -577,10 +591,12 @@ class cApiModule extends Item {
                 $module->store();
             } else {
                 $notification->displayNotification('error', i18n('Import failed, could not extract zip file!'));
+
                 return false;
             }
         } else {
             $notification->displayNotification('error', i18n('Could not open the zip file!'));
+
             return false;
         }
 
@@ -603,10 +619,11 @@ class cApiModule extends Item {
             foreach ($aModuleData as $key => $value) {
                 if ($this->get($key) != $value) {
                     #the columns input/and outputs dont exist in table
-                    if ($key == 'output' || $key == 'input')
+                    if ($key == 'output' || $key == 'input') {
                         $inputOutput[$key] = $value;
-                    else
+                    } else {
                         $this->set($key, addslashes($value));
+                    }
                 }
             }
 
@@ -618,6 +635,7 @@ class cApiModule extends Item {
 
             if (is_dir($cfgClient[$client]['module']['path'] . $moduleAlias)) {
                 $notification->displayNotification('error', i18n('Module exist!'));
+
                 return false;
             } else {
                 // save it in db table
@@ -625,6 +643,7 @@ class cApiModule extends Item {
                 $contenidoModuleHandler = new cModuleHandler($this->get('idmod'));
                 if (!$contenidoModuleHandler->createModule($inputOutput['input'], $inputOutput['output'])) {
                     $notification->displayNotification('error', i18n('Could not make a module!'));
+
                     return false;
                 } else {
                     // save the modul data to modul info file
@@ -633,6 +652,7 @@ class cApiModule extends Item {
             }
         } else {
             $notification->displayNotification('error', i18n('Could not parse xml file!'));
+
             return false;
         }
 
@@ -641,7 +661,8 @@ class cApiModule extends Item {
 
     /**
      * Add recrusive folder to zip archive
-     * @param string $dir direcotry name
+     *
+     * @param string $dir        direcotry name
      * @param string $zipArchive name of the archive
      * @param string $zipdir
      */
@@ -663,7 +684,7 @@ class cApiModule extends Item {
                         }
                     } else {
                         // Add the files
-                        if ($zipArchive->addFile($dir . $file, $zipdir . $file) === FALSE) {
+                        if ($zipArchive->addFile($dir . $file, $zipdir . $file) === false) {
                             $notification = new cGuiNotification();
                             $notification->displayNotification('error', sprintf(i18n('Could not add file %s to zip!'), $file));
                         }
@@ -678,14 +699,14 @@ class cApiModule extends Item {
      */
     function export() {
         $notification = new cGuiNotification();
-        $contenidoModuleHandler = new cModuleHandler($this->get('idmod'));
+        $moduleHandler = new cModuleHandler($this->get('idmod'));
 
         // exist modul
-        if ($contenidoModuleHandler->modulePathExists()) {
+        if ($moduleHandler->modulePathExists()) {
             $zip = new ZipArchive();
             $zipName = $this->get('alias') . '.zip';
             if ($zip->open($zipName, ZipArchive::CREATE)) {
-                $retAddToFolder = $this->_addFolderToZip($contenidoModuleHandler->getModulePath(), $zip);
+                $this->_addFolderToZip($moduleHandler->getModulePath(), $zip);
 
                 $zip->close();
                 //Stream the file to the client
@@ -693,8 +714,9 @@ class cApiModule extends Item {
                 header('Content-Length: ' . filesize($zipName));
                 header("Content-Disposition: attachment; filename=\"$zipName\"");
                 readfile($zipName);
+
                 //erase the file
-                $ret = unlink($zipName);
+                unlink($zipName);
             } else {
                 $notification->displayNotification('error', i18n('Could not open the zip file!'));
             }
@@ -705,6 +727,7 @@ class cApiModule extends Item {
 
     /**
      * Userdefined setter for module fields.
+     *
      * @param  string  $name
      * @param  mixed   $value
      * @param  bool    $bSafe   Flag to run defined inFilter on passed value
@@ -730,32 +753,34 @@ class cApiModule extends Item {
     /**  @deprecated  [2012-02-29]  This function is not longer supported. */
     public function getPackageOverview($sFile) {
         cDeprecated('This function is not longer supported.');
+
         return false;
     }
 
     /** @deprecated  [2012-02-29]  This function is not longer supported. */
     public function importPackage($sFile, $aOptions = array()) {
         cDeprecated('This function is not longer supported.');
+
         return false;
     }
 
     /** @deprecated  [2012-02-29]  This function is not longer supported. */
     public function exportPackage($sPackageFileName, $bReturn = false) {
         cDeprecated('This function is not longer supported.');
+
         return false;
     }
 
 }
 
+/** @deprecated  [2013-02-10]  This class is not longer supported. */
 class cApiModuleTranslationCollection extends ItemCollection {
 
     protected $_error;
 
-    /**
-     * Constructor Function
-     * @param none
-     */
+    /** @deprecated  [2013-02-10]  This class is not longer supported. */
     public function __construct() {
+        cDeprecated("This class is not longer supported.");
         global $cfg;
         parent::__construct($cfg['tab']['mod_translations'], 'idmodtranslation');
         $this->_setItemClass('cApiModuleTranslation');
@@ -777,6 +802,7 @@ class cApiModuleTranslationCollection extends ItemCollection {
                 $item->set('translation', $translation);
                 $item->store();
             }
+
             return $item;
         } else {
             $item = parent::createNewItem();
@@ -785,6 +811,7 @@ class cApiModuleTranslationCollection extends ItemCollection {
             $item->set('original', $original);
             $item->set('translation', $translation);
             $item->store();
+
             return $item;
         }
     }
@@ -827,6 +854,7 @@ class cApiModuleTranslationCollection extends ItemCollection {
     public function import($idmod, $idlang, $file) {
         cDeprecated('This function is not longer supported.');
         $this->_error = 'This function is not longer supported.';
+
         return false;
     }
 
@@ -835,21 +863,18 @@ class cApiModuleTranslationCollection extends ItemCollection {
      */
     public function export($idmod, $idlang, $filename, $return = false) {
         cDeprecated('This function is not longer supported.');
+
         return false;
     }
 
 }
 
-/**
- * Module access class
- */
+/** @deprecated  [2013-02-10]  This class is not longer supported. */
 class cApiModuleTranslation extends Item {
 
-    /**
-     * Constructor Function
-     * @param $loaditem Item to load
-     */
+    /** @deprecated  [2013-02-10]  This class is not longer supported. */
     public function __construct($loaditem = false) {
+        cDeprecated("This class is not longer supported");
         global $cfg;
         parent::__construct($cfg['tab']['mod_translations'], 'idmodtranslation');
         if ($loaditem !== false) {
@@ -893,4 +918,5 @@ function cHandler_Translation($sName, $aAttribs, $sContent) {
     global $_mImport;
     $_mImport['translations'][$_mImport['current_item_area']][$_mImport['current_item_name']] = $sContent;
 }
+
 ?>

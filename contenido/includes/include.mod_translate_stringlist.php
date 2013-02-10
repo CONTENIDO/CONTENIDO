@@ -29,11 +29,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$contenidoTranslateFromFile = new cModuleFileTranslation($idmod);
-$translationsArray = $contenidoTranslateFromFile->getTranslationArray();
-
-$translations = new cApiModuleTranslationCollection;
-$translations->select("idmod = " . (int) $idmod . " AND idlang = " . (int) $lang);
+$moduleTranslation = new cModuleFileTranslation($idmod);
+$translationArray = $moduleTranslation->getTranslationArray();
 
 $page = new cGuiPage("mod_translate_stringlist");
 
@@ -46,26 +43,20 @@ $mylink = new cHTMLLink;
 
 $rowCount = 0;
 
-foreach ($translationsArray as $key => $value) {
-//while ($translation = $translations->next())
-    $string = $key; // $translation->get("original");
-    $tstring = $value; // $translation->get("translation");
-
+foreach ($translationArray as $key => $value) {
     $link->setCustom("idmod", $idmod);
-    //$link->setCustom("idmodtranslation", $translation->get("idmodtranslation"));
     $link->setCustom("row", $rowCount);
 
     $href = $link->getHREF();
     $mylink->setLink(conHtmlSpecialChars('javascript:parent.location="' . $href . '"'));
-    $mylink->setContent($string);
-    if ($rowCount == $row) {// $translation->get("idmodtranslation"))
+    $mylink->setContent($key);
+    if ($rowCount == $row) {
         $style = "active";
     } else {
         $style = "";
     }
-    //$v .= '<tr bgcolor="'.$bgcol.'"><td style="padding-left: 2px; padding-top:2px; padding-bottom: 2px;" width="50%"><a name="'.$translation->get("idmodtranslation").'"></a>'.$mylink->render().'</td><td style="padding-left: 2px;">'.$tstring.'</td></tr>';
 
-    $v .= '<tr class="' . $style . '"><td style="padding-left: 2px; padding-top:2px; padding-bottom: 2px;" width="50%"><a name="' . $rowCount . '"></a>' . $mylink->render() . '</td><td style="padding-left: 2px;">' . $tstring . '</td></tr>';
+    $v .= '<tr class="' . $style . '"><td style="padding-left: 2px; padding-top:2px; padding-bottom: 2px;" width="50%"><a name="' . $rowCount . '"></a>' . $mylink->render() . '</td><td style="padding-left: 2px;">' . $value . '</td></tr>';
     $rowCount++;
 }
 
