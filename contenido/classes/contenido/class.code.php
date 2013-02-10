@@ -19,18 +19,12 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/**
- * Code collection
- *
- * @package CONTENIDO API
- * @subpackage Model
- */
+/** @deprecated  [2013-02-10]  This class is not longer supported. */
 class cApiCodeCollection extends ItemCollection {
 
-    /**
-     * Constructor
-     */
+    /** @deprecated  [2013-02-10]  This class is not longer supported. */
     public function __construct() {
+        cDeprecated("This class is not longer supported.");
         global $cfg;
         parent::__construct($cfg['tab']['code'], 'idcode');
         $this->_setItemClass('cApiCode');
@@ -88,20 +82,12 @@ class cApiCodeCollection extends ItemCollection {
 
 }
 
-/**
- * Code item
- *
- * @package CONTENIDO API
- * @subpackage Model
- */
+/** @deprecated  [2013-02-10]  This class is not longer supported. */
 class cApiCode extends Item {
 
-    /**
-     * Constructor Function
-     *
-     * @param mixed $mId Specifies the ID of item to load
-     */
+    /** @deprecated  [2013-02-10]  This class is not longer supported. */
     public function __construct($mId = false) {
+        cDeprecated("This class is not longer supported.");
         global $cfg;
         parent::__construct($cfg['tab']['code'], 'idcode');
         $this->setFilters(array(), array());
