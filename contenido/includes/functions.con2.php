@@ -180,7 +180,6 @@ function conGenerateKeywords($client, $lang) {
         $aContent = conGetContentFromArticle($artlangid);
         if (count($aContent) > 0) {
             $oIndex = new cSearchIndex($oDB);
-            $oIndex->lang = $lang;
             $oIndex->start($artid, $aContent, 'auto', $options);
         }
     }
