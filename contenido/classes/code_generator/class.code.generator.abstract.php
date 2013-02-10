@@ -254,7 +254,7 @@ abstract class cCodeGeneratorAbstract {
         return (is_numeric($idtplcfg)) ? $idtplcfg : null;
     }
 
-    abstract protected function _processNoConfigurationError();
+    abstract protected function _processNoConfigurationError($idcatart);
 
     /**
      * Returns array containing used layout, template and template name

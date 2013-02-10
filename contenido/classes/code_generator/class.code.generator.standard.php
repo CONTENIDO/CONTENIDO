@@ -42,7 +42,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // Set configuration for article
         $this->_idtplcfg = $this->_getTemplateConfigurationId();
         if (null === $this->_idtplcfg) {
-            $this->_processNoConfigurationError();
+            $this->_processNoConfigurationError($idcatart);
             return '0601';
         }
 
@@ -171,7 +171,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         // Save the generated code
-        $this->_saveGeneratedCode($code, $idcatart);
+        $this->_saveGeneratedCode($idcatart);
 
         return $this->_layoutCode;
     }
@@ -180,21 +180,15 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * Will be invoked, if code generation wasn't able to find a configured article
      * or category.
      *
-     * Creates a error message as and writes this into the code cache table.
+     * Creates a error message and writes this into the code cache.
+     *
+     * @param  int   $idcatart  Category article id
      */
-    protected function _processNoConfigurationError() {
-        // fixme
+    protected function _processNoConfigurationError($idcatart) {
         cDebug::out('Neither CAT or ART are configured!<br><br>');
 
-        $code = '<html><body>No code was created for this art in this category.</body><html>';
-
-        $oCodeColl = new cApiCodeCollection();
-        $oCode = $oCodeColl->fetchByCatArtAndLang($this->_idcatart, $this->_lang);
-        if (!is_object($oCode)) {
-            $oCode = $oCodeColl->create($idcatart, $this->_lang, $this->_client, $code);
-        } else {
-            $oCode->updateCode($code);
-        }
+        $code = '<html><body>No code was created for this article in this category.</body><html>';
+        $this->_saveGeneratedCode($idcatart, $code, false);
     }
 
     /**
@@ -320,10 +314,11 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * Saves the generated code (if layout flag is false and save flag is true)
      *
      * @global  array  $cfgClient
-     * @param  string  $code  The generated code
      * @param  int   $idcatart  Category article id
+     * @param string $code parameter for setting code manually instead of using the generated layout code
+     * @param bool $flagCreateCode whether the create code flag in cat_art should be set or not (optional)
      */
-    protected function _saveGeneratedCode($code, $idcatart) {
+    protected function _saveGeneratedCode($idcatart, $code = '', $flagCreateCode = true) {
         global $cfgClient;
 
         // Write code in the cache of the client. If the folder does not exist create one.
@@ -333,12 +328,17 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 chmod($cfgClient[$this->_client]['code']['path'], 0777);
                 cFileHandler::write($cfgClient[$this->_client]['code']['path'] . '.htaccess', "Order Deny,Allow\nDeny from all\n");
             }
-            $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $this->_layoutCode;
+
+            $fileCode = ($code == '') ? $this->_layoutCode : $code;
+
+            $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $fileCode;
             cFileHandler::write($cfgClient[$this->_client]['code']['path'] . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
 
             // Update create code flag
-            $oCatArtColl = new cApiCategoryArticleCollection();
-            $oCatArtColl->setCreateCodeFlag($idcatart, 0);
+            if ($flagCreateCode == true) {
+                $oCatArtColl = new cApiCategoryArticleCollection();
+                $oCatArtColl->setCreateCodeFlag($idcatart, 0);
+            }
         }
     }
 
