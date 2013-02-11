@@ -34,8 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiModuleCollection extends ItemCollection {
-
+class cApiModuleCollection extends ItemCollection {	
     /**
      * Constructor Function
      *
@@ -173,6 +172,22 @@ class cApiModuleCollection extends ItemCollection {
  * @subpackage Model
  */
 class cApiModule extends Item {
+	/**
+     * var for finding module translations in source code of module
+     */
+	private $_translationPatternText = '/mi18n([\s]*)\("((\\\\"|[^"])*)"(([\s]*),([\s]*)[^\),]+)*\)/';
+	
+	/**
+     * var for finding basic module translations in source code of module
+     */
+	private $_translationPatternBase = '/mi18n([\s]*)\(([\s]*)"/';
+	
+	
+	/**
+     * var for replacing base module translations in source code of module
+     */
+	private $_translationReplacement = 'mi18n("';
+	
 
     protected $_error;
 
@@ -275,9 +290,9 @@ class cApiModule extends Item {
 
         // Initialize array
         $strings = array();
-
+		
         // Split the code into mi18n chunks
-        $varr = preg_split('/mi18n([\s]*)\(([\s]*)"/', $code, -1);
+        $varr = preg_split($this->_translationPatternBase, $code, -1);
 
         if (count($varr) > 1) {
             foreach ($varr as $key => $value) {
@@ -293,10 +308,10 @@ class cApiModule extends Item {
                 }
 
                 // Append mi18n again
-                $varr[$key] = 'mi18n("' . $value;
+                $varr[$key] = $this->_translationReplacement . $value;
 
                 // Parse for the mi18n stuff
-                preg_match_all('/mi18n([\s]*)\("(.*)"\)/', $varr[$key], $results);
+                preg_match_all($this->_translationPatternText, $varr[$key], $results);
 
                 // Append to strings array if there are any results
                 if (is_array($results[1]) && count($results[2]) > 0) {
@@ -355,7 +370,7 @@ class cApiModule extends Item {
         $strings = array();
 
         // Split the code into mi18n chunks
-        $varr = preg_split('/mi18n([\s]*)\(([\s]*)"/', $code, -1);
+        $varr = preg_split($this->_translationPatternBase, $code, -1);
 
         if (count($varr) > 1) {
             foreach ($varr as $key => $value) {
@@ -371,10 +386,10 @@ class cApiModule extends Item {
                 }
 
                 // Append mi18n again
-                $varr[$key] = 'mi18n("' . $value;
+                $varr[$key] = $this->_translationReplacement . $value;
 
                 // Parse for the mi18n stuff
-                preg_match_all('/mi18n([\s]*)\("(.*)"\)/', $varr[$key], $results);
+                preg_match_all($this->_translationPatternText, $varr[$key], $results);
 
                 // Append to strings array if there are any results
                 if (is_array($results[1]) && count($results[2]) > 0) {

@@ -441,6 +441,8 @@ function mi18n($string) {
     if ($string == '') {
         return 'No module translation ID specified.';
     }
+	
+	$string = addslashes($string);
 
     global $cCurrentModule;
 
@@ -451,18 +453,25 @@ function mi18n($string) {
     $args = func_num_args();
     $arrArgs = func_get_args();
 
-    if ((int) $args > 1) {
-        $result = call_user_func_array('sprintf', $arrArgs);
-    } else {
-        $result = $string;
-    }
+	$result = $string;
 
     $contenidoTranslateFromFile = new cModuleFileTranslation($cCurrentModule, true);
     $array = $contenidoTranslateFromFile->getLangarray();
 
     $untranslatedMessage = 'Module translation not found: ' . $result;
-
-    return ($array[$result] == '') ? $untranslatedMessage : $array[$result];
+	
+	$translation = $array[$result];
+	
+	if ((int) $args > 1) {
+		$arrArgs[0] = $translation;
+        $translation = call_user_func_array('sprintf', $arrArgs);
+    }
+	
+	if (strlen($translation) == 0) {
+		return $untranslatedMessage;
+	} else {
+		return $translation;
+	}
 }
 
 ?>
