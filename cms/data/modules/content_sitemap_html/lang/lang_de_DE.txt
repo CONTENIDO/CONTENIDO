@@ -1,0 +1,6 @@
+NOT_NUMERIC_VALUE=Bitte geben Sie die nummerischen Werte ein.
+HEADLINE=HTML Sitemap
+CATEGORY_LABEL=Kategorieeingabe(Nummerisch):
+LEVEL_LABEL=Tiefe(Nummerisch):
+GATEGORY_HINT_LABEL=Hinweis: Die Sitemap wird ab der angegebenen Kategorie rekursiv aufgebaut.
+LEVEL_HINT_LABEL=Hinweis: Die Tiefe gibt an wie viele Ebenen bei der generierung berücksichtigt werden.

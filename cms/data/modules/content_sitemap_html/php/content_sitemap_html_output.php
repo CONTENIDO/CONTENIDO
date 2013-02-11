@@ -3,63 +3,56 @@
 /**
  *
  * @package Module
- * @subpackage
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
+ * @subpackage content_sitemap_html
  * @version SVN Revision $Rev:$
+ * @author marcus.gnass@4fb.de
  * @author alexander.scheider@4fb.de
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
 
+// get smarty template instance
 $tpl = Contenido_SmartyWrapper::getInstance();
 
+// get needed id's
 $client = cRegistry::getClientId();
 $cfgClient = cRegistry::getClientConfig();
 $lang = cRegistry::getLanguageId();
 $idart = cRegistry::getArticleId();
-$catArray = array();
-$artArray = array();
 
-if (cRegistry::isBackendEditMode()) {
-    echo "CMS_TEXT[1]";
-}
+// assign module translation tags
+$tpl->assign('trans', array(
+    'headline' => mi18n("HEADLINE"),
+    'categoryLabel' => mi18n("CATEGORY_LABEL"),
+    'levelLabel' => mi18n("LEVEL_LABEL"),
+    'categoryHintLabel' => mi18n("GATEGORY_HINT_LABEL"),
+    'levelHintLabel' => mi18n("LEVEL_HINT_LABEL")
+));
 
+// assign CMS input fields
+$tpl->assign('category', "CMS_TEXT[1]");
+$tpl->assign('level', "CMS_TEXT[2]");
+
+// create article and get content of it
 $art = new Article($idart, $client, $lang);
 $content = $art->getContent("CMS_TEXT", 1);
+$level = $art->getContent("CMS_TEXT", 2);
 
-if (TRUE === is_numeric($content)) {
-
-    // // get all categories recursively
-    // $categoryCollection = new cApiCategoryCollection();
-    // $categoryIds = $categoryCollection->getAllCategoryIdsRecursive($content,
-    // $client);
+// check if content is numeric
+if (TRUE === is_numeric($content) && TRUE === is_numeric($level)) {
 
     // get category tree
     $categoryHelper = cCategoryHelper::getInstance();
     $categoryHelper->setAuth(cRegistry::getAuth());
 
-    $tree = $categoryHelper->getSubCategories($content, 10);
+    $tree = $categoryHelper->getSubCategories($content, $level);
     $tree = addArticlesToTree($tree);
 
     $tpl->assign('tree', $tree);
 } else {
-    $tpl->assign('error', 'NOT_NUMERIC_VALUE');
+    // assign error message
+    $tpl->assign('error', mi18n("NOT_NUMERIC_VALUE"));
 }
-
-$itemCount = 0;
-// $itemCount += addArticlesToSitemap($sitemap, $categoryIds);
 
 /**
  * Adds articles to categories in given array $tree as returned by
@@ -69,30 +62,23 @@ $itemCount = 0;
  * @return array
  */
 function addArticlesToTree(array $tree) {
-
     foreach ($tree as $key => $wrapper) {
         $tree[$key]['articles'] = getArticlesFromCategory($wrapper['idcat']);
         $tree[$key]['subcats'] = addArticlesToTree($tree[$key]['subcats']);
     }
 
     return $tree;
-
 }
 
 /**
  * Add all online and searchable articles of theses categories to the sitemap.
  *
- * @param int
+ * @param int $categoryId
  */
 function getArticlesFromCategory($categoryId) {
-
     $cfg = cRegistry::getConfig();
     $db = cRegistry::getDb();
     $lang = cRegistry::getLanguageId();
-
-    $itemCount = 0;
-
-    // check if there are categories
 
     // get articles from DB
     // needed fields: idart, lastmodified, sitemapprio, changefreq
@@ -119,40 +105,14 @@ function getArticlesFromCategory($categoryId) {
     $array = array();
     if (false !== $ret) {
         while ($db->next_record()) {
-            $array[] = $db->toArray();
+            $article = new cApiArticleLanguage();
+            $article->loadByPrimaryKey($db->f('idart'));
+            $array[] = $article;
         }
     }
 
     return $array;
-
 }
-
-// /**
-// *
-// * @param SimpleXMLElement $sitemap
-// * @param array $data
-// */
-// function addUrl(SimpleXMLElement $sitemap, array $data) {
-
-// $url = $sitemap->addChild('url');
-
-// $url->addChild('loc', $data['loc']);
-
-// if ($data['lastmod'] == '0000-00-00 00:00:00' || $data['lastmod'] == '') {
-// $url->addChild('lastmod', htmlspecialchars(iso8601Date(mktime())));
-// } else {
-// $url->addChild('lastmod', htmlspecialchars(iso8601Date($data['lastmod'])));
-// }
-
-// if (!empty($data['changefreq'])) {
-// $url->addChild('changefreq', $data['changefreq']);
-// }
-
-// if (!empty($data['priority']) || $data['priority'] == 0) {
-// $url->addChild('priority', $data['priority']);
-// }
-
-// }
 
 /**
  * Formats a date/time according to ISO 8601.
@@ -163,15 +123,14 @@ function getArticlesFromCategory($categoryId) {
  * @return string the formatted date string
  */
 function iso8601Date($time) {
-
     $tzd = date('O', $time);
     $tzd = substr(chunk_split($tzd, 3, ':'), 0, 6);
     $date = date('Y-m-d\TH:i:s', $time) . $tzd;
 
     return $date;
-
 }
 
+$tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode());
 echo $tpl->fetch('content_sitemap_html/template/get.tpl');
 
 ?>

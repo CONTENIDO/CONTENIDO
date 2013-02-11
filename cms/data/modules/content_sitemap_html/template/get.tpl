@@ -1,8 +1,18 @@
 <!-- content_sitemap_html -->
-{if $error}
-    <h1>{$error}</h1>
-{/if}
 
+{if true eq $isBackendEditMode}
+	<label class="content-type-label">{$trans.headline}</label>
+	<p>{$trans.categoryLabel}</p>
+	<label>{$trans.categoryHintLabel}</label>
+	<div>{$category}</div>
+	<p>{$trans.levelLabel}</p>
+	<label>{$trans.levelHintLabel}</label>
+	<div>{$level}</div>
+    {if $error}
+	    <p class="error">{$error}</p>
+    {/if}
+{/if}
+{if false eq $isBackendEditMode}
 <ul class="sitemap">
 
     {* loop categories *}
@@ -21,36 +31,13 @@
         {if 0 lt $wrapper.articles|count}
             {foreach from=$wrapper.articles item=article}
             <li>
-                <a href="{$url}" title="{$name}">{$name}</a>
+                <a href="{$article->getLink()}" title="{$article->get('title')}">{$article->get('title')}</a>
             </li>
             {/foreach}
         {/if}
 
         </li>
      {/foreach}
-
-{*
-{foreach $categories as $key => $category}
-    <li>
-             <a href="">{$key}.{$category->get('name')}</a></p>
-             <ul>
-                 {foreach $articles as $keyArt => $article}
-                     {if $key == $keyArt}
-                     <ul>
-                         <li>
-                         {foreach $article as $keyArt => $art}
-
-                             <a href="">{$art['title']}</a></p>
-
-                         {/foreach}
-                         </li>
-                     </ul>
-                     {/if}
-                 {/foreach}
-                 </ul>
-    </li>
-        {/foreach}
-*}
-
 </ul>
+{/if}
 <!-- /content_sitemap_html -->
