@@ -275,9 +275,11 @@
             document.compatMode        != "BackCompat"
         ) ? "documentElement" : "body";
 
-        $(document).ready(function() {
-            $('#category_list tr th.header:last').css('borderRight', 'none');
-        });
+		$(document).ready(function() {
+			$('#category_list tr th.header:last').css('borderRight', 'none');
+			$('.draggable').draggable({cancel : 'select'});
+		});
+		
 
         </script>
 </head>
