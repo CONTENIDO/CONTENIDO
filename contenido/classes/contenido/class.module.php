@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @package    CONTENIDO API
  * @subpackage Model
  */
-class cApiModuleCollection extends ItemCollection {	
+class cApiModuleCollection extends ItemCollection {
     /**
      * Constructor Function
      *
@@ -172,22 +172,22 @@ class cApiModuleCollection extends ItemCollection {
  * @subpackage Model
  */
 class cApiModule extends Item {
-	/**
+    /**
      * var for finding module translations in source code of module
      */
-	private $_translationPatternText = '/mi18n([\s]*)\("((\\\\"|[^"])*)"(([\s]*),([\s]*)[^\),]+)*\)/';
-	
-	/**
+    private $_translationPatternText = '/mi18n([\s]*)\("((\\\\"|[^"])*)"(([\s]*),([\s]*)[^\),]+)*\)/';
+
+    /**
      * var for finding basic module translations in source code of module
      */
-	private $_translationPatternBase = '/mi18n([\s]*)\(([\s]*)"/';
-	
-	
-	/**
+    private $_translationPatternBase = '/mi18n([\s]*)\(([\s]*)"/';
+
+
+    /**
      * var for replacing base module translations in source code of module
      */
-	private $_translationReplacement = 'mi18n("';
-	
+    private $_translationReplacement = 'mi18n("';
+
 
     protected $_error;
 
@@ -290,7 +290,7 @@ class cApiModule extends Item {
 
         // Initialize array
         $strings = array();
-		
+
         // Split the code into mi18n chunks
         $varr = preg_split($this->_translationPatternBase, $code, -1);
 

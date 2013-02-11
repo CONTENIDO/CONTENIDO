@@ -1,15 +1,15 @@
 <!-- content_sitemap_html -->
 
 {if true eq $isBackendEditMode}
-	<label class="content-type-label">{$trans.headline}</label>
-	<p>{$trans.categoryLabel}</p>
-	<label>{$trans.categoryHintLabel}</label>
-	<div>{$category}</div>
-	<p>{$trans.levelLabel}</p>
-	<label>{$trans.levelHintLabel}</label>
-	<div>{$level}</div>
+    <label class="content-type-label">{$trans.headline}</label>
+    <p>{$trans.categoryLabel}</p>
+    <label>{$trans.categoryHintLabel}</label>
+    <div>{$category}</div>
+    <p>{$trans.levelLabel}</p>
+    <label>{$trans.levelHintLabel}</label>
+    <div>{$level}</div>
     {if $error}
-	    <p class="error">{$error}</p>
+        <p class="error">{$error}</p>
     {/if}
 {/if}
 {if false eq $isBackendEditMode}
