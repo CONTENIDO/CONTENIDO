@@ -33,7 +33,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 class cApiLanguageCollection extends ItemCollection
 {
-/**
+    /**
 	 * Constructor
 	 */
 	function cApiLanguageCollection()
