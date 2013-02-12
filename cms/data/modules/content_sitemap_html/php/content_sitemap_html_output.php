@@ -25,6 +25,8 @@ $tpl->assign('trans', array(
     'headline' => mi18n("HEADLINE"),
     'categoryLabel' => mi18n("CATEGORY_LABEL"),
     'levelLabel' => mi18n("LEVEL_LABEL"),
+    'articleLabel' => mi18n("ARTICLE_LABEL"),
+    'articleHintLabel' => mi18n("ARTICLE_HINT_LABEL"),
     'categoryHintLabel' => mi18n("GATEGORY_HINT_LABEL"),
     'levelHintLabel' => mi18n("LEVEL_HINT_LABEL")
 ));
@@ -32,23 +34,29 @@ $tpl->assign('trans', array(
 // assign CMS input fields
 $tpl->assign('category', "CMS_TEXT[1]");
 $tpl->assign('level', "CMS_TEXT[2]");
+$tpl->assign('article', "CMS_TEXT[3]");
 
 // create article and get content of it
 $art = new Article($idart, $client, $lang);
 $content = $art->getContent("CMS_TEXT", 1);
 $level = $art->getContent("CMS_TEXT", 2);
-
+$article = $art->getContent("CMS_TEXT", 3);
 // check if content is numeric
 if (TRUE === is_numeric($content) && TRUE === is_numeric($level)) {
 
+    if($article == 0 || $article == 1) {
     // get category tree
     $categoryHelper = cCategoryHelper::getInstance();
     $categoryHelper->setAuth(cRegistry::getAuth());
 
     $tree = $categoryHelper->getSubCategories($content, $level);
+    if($article == 1) {
     $tree = addArticlesToTree($tree);
-
+    }
     $tpl->assign('tree', $tree);
+    } else {
+        $tpl->assign('errorArticle', mi18n("NOT_ZERO_OR_ONE"));
+    }
 } else {
     // assign error message
     $tpl->assign('error', mi18n("NOT_NUMERIC_VALUE"));
@@ -131,6 +139,6 @@ function iso8601Date($time) {
 }
 
 $tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode());
-echo $tpl->fetch('get.tpl');
+echo $tpl->fetch('content_sitemap_html/template/get.tpl');
 
 ?>
