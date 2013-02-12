@@ -34,6 +34,6 @@ if (1 == $force) {
 }
 $tpl->assign('label', $label);
 $tpl->assign('date', $date);
-$tpl->display('content_date/template/get.tpl');
+$tpl->display('get.tpl');
 
 ?>

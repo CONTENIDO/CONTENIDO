@@ -24,7 +24,7 @@
 
     $tpl->assign('pictures', $pictures);
 
-    $tpl->display('content_picture_gallery/template/picture_gallery.tpl');
+    $tpl->display('picture_gallery.tpl');
 
     if (cRegistry::isBackendEditMode()) {
         echo "CMS_FILELIST[1]";

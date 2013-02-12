@@ -69,6 +69,6 @@ if (!$isModRewriteEnabled) {
     $tpl->assign('idart', $searchResultIdart);
     $tpl->assign('idlang', cRegistry::getLanguageId());
 }
-$tpl->display('navigation_searchform_top/template/get.tpl');
+$tpl->display('get.tpl');
 
 ?>

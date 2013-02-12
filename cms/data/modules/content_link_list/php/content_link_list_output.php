@@ -82,6 +82,6 @@ if ($art->isLoaded()) {
 $tpl->assign('inputfield', $input);
 $tpl->assign('button', $button);
 
-echo $tpl->fetch('content_link_list/template/get.tpl');
+echo $tpl->fetch('get.tpl');
 
 ?>

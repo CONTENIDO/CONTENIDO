@@ -53,7 +53,7 @@ if (cRegistry::isBackendEditMode()) {
     }
     $tpl->assign('label', mi18n("LABEL_SOCIAL_MEDIA"));
     $tpl->assign('items', $items);
-    $tpl->display('config_social_media/template/get.tpl');
+    $tpl->display('get.tpl');
 
 }
 

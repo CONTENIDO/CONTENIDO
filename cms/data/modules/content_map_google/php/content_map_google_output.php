@@ -30,6 +30,6 @@ $tpl->assign('markerTitle', "CMS_HTML[604]");
 $tpl->assign('way', "CMS_HTML[605]");
 
 // fetch template content
-echo $tpl->fetch('content_map_google/template/get.tpl');
+echo $tpl->fetch('get.tpl');
 
 ?>

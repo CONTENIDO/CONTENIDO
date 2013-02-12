@@ -37,6 +37,6 @@ if (1 == $force) {
 }
 $tpl->assign('tree', $tree);
 $tpl->assign('path', $path);
-$tpl->display('navigation_top/template/get.tpl');
+$tpl->display('get.tpl');
 
 ?>

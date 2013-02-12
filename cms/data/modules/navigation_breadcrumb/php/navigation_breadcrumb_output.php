@@ -32,5 +32,5 @@ $tpl = Contenido_SmartyWrapper::getInstance();
 $tpl->assign('label_breadcrumb', mi18n("LABEL_BREADCRUMB"));
 $tpl->assign('breadcrumb', $breadcrumb);
 $tpl->assign('headline', $headline);
-$tpl->display('navigation_breadcrumb/template/breadcrumb.tpl');
+$tpl->display('breadcrumb.tpl');
 ?>

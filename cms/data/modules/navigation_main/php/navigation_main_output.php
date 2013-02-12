@@ -38,6 +38,6 @@ if (1 == $force) {
 $tpl->assign('ulId', 'navigation');
 $tpl->assign('tree', $tree);
 $tpl->assign('path', $path);
-$tpl->display('navigation_main/template/get.tpl');
+$tpl->display('get.tpl');
 
 ?>

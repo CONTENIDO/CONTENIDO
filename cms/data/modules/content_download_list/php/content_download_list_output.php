@@ -36,5 +36,5 @@
     }
     $tpl->assign('label', $label);
     $tpl->assign('filelist', $filelist);
-    $tpl->display('content_download_list/template/get.tpl');
+    $tpl->display('get.tpl');
 ?>

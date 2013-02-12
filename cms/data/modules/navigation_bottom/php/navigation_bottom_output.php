@@ -41,6 +41,6 @@ if (1 == $force) {
     $tpl->clearAllCache();
 }
 $tpl->assign('articles', $articles);
-$tpl->display('navigation_bottom/template/get.tpl');
+$tpl->display('get.tpl');
 
 ?>

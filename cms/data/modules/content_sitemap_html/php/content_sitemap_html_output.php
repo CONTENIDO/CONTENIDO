@@ -131,6 +131,6 @@ function iso8601Date($time) {
 }
 
 $tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode());
-echo $tpl->fetch('content_sitemap_html/template/get.tpl');
+echo $tpl->fetch('get.tpl');
 
 ?>

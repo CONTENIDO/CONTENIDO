@@ -37,6 +37,6 @@ $tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode());
 $tpl->assign('label', $label);
 $tpl->assign('image', $teaserImage);
 $tpl->assign('editor', $teaserImageEditor);
-$tpl->display('content_teaser_config/template/get.tpl');
+$tpl->display('get.tpl');
 
 ?>

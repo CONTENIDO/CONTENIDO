@@ -31,7 +31,7 @@ if (0< $configIdart) {
     }
 
     $tpl->assign('text', $text);
-    $tpl->display('content_copyright_notice/template/get.tpl');
+    $tpl->display('get.tpl');
 
 }
 

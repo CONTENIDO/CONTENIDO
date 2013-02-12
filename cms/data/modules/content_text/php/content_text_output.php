@@ -34,6 +34,6 @@ if (1 == $force) {
 }
 $tpl->assign('label', $label);
 $tpl->assign('text', $text);
-$tpl->display('content_text/template/get.tpl');
+$tpl->display('get.tpl');
 
 ?>

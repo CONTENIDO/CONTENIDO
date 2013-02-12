@@ -19,7 +19,7 @@ if ($account != '' && cRegistry::isTrackingAllowed()) {
         $tpl->clearAllCache();
     }
     $tpl->assign('account', $account);
-    $tpl->display('script_tracker_google/template/get.tpl');
+    $tpl->display('get.tpl');
 }
 
 ?>

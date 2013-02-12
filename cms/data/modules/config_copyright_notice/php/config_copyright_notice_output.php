@@ -27,7 +27,7 @@ if (cRegistry::isBackendEditMode()) {
     }
     $tpl->assign('label', mi18n("LABEL_COPYRIGHT"));
     $tpl->assign('text', $text);
-    $tpl->display('config_copyright_notice/template/get.tpl');
+    $tpl->display('get.tpl');
 
 }
 

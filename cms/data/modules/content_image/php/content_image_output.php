@@ -61,6 +61,6 @@ if (1 == $force) {
 $tpl->assign('label', $label);
 $tpl->assign('editor', $imageEditor);
 $tpl->assign('image', $image);
-$tpl->display('content_image/template/get.tpl');
+$tpl->display('get.tpl');
 
 ?>

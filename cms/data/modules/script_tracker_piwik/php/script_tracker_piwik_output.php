@@ -21,7 +21,7 @@ if ($url != '' && $site != '' && cRegistry::isTrackingAllowed()) {
     }
     $tpl->assign('url', $url);
     $tpl->assign('site', $site);
-    $tpl->display('script_tracker_piwik/template/get.tpl');
+    $tpl->display('get.tpl');
 }
 
 ?>

@@ -41,6 +41,6 @@ if (1 == $force) {
 }
 $tpl->assign('label', $label);
 $tpl->assign('header', $header);
-$tpl->display('content_header_second/template/get.tpl');
+$tpl->display('get.tpl');
 
 ?>

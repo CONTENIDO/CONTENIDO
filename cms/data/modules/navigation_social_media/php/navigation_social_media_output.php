@@ -37,7 +37,7 @@ if (0< $configIdart) {
         $tpl->clearAllCache();
     }
     $tpl->assign('url', $url);
-    $tpl->display('navigation_social_media/template/get.tpl');
+    $tpl->display('get.tpl');
 
 }
 
