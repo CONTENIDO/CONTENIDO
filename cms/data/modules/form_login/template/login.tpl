@@ -1,4 +1,4 @@
-<form action="{$form_action}" method="post">
+<form action="{$form_action}" method="post" class="login">
 	<fieldset>
 		<label for="username">{$label_name}</label> <input type="text" id="username" name="username" />
 		<br />

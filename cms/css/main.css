@@ -249,7 +249,9 @@ p a:hover {
     display: block;
 }
 
-.slider .images li a {
+.slider .images li a,
+.login input[type="submit"],
+.button.red {
     position: absolute;
     z-index:2;
     display: block;
@@ -259,13 +261,25 @@ p a:hover {
     color:#fff;
     background: #e50051;
     height: 25px;
-    line-height: 25px;
     border-radius: 9px;
-    margin: 200px 0 0 700px;
     border-bottom: 1px solid #c31250;
     border-right: 1px solid #c31250;
     border-top: 1px solid #d687a4;
     border-left: 1px solid #d687a4;
+    font-size: 12px;
+}
+
+p + .button.red,
+.login input[type="submit"] {
+    margin-top: 30px;
+    position: relative;
+}
+p + .button.red {
+    line-height: 25px;
+}
+.slider .images li a {
+   margin: 200px 0 0 700px; 
+   line-height: 25px;
 }
 
 .slider .pagination{
@@ -762,7 +776,15 @@ button.ui-button::-moz-focus-inner {
     color: #9ba21b;
 }
 
-
+/* ----- LOGIN FORM ----- */
+.login {
+    padding: 40px 0;
+    display: block;
+}
+.login label {
+    display: inline-block;
+    width: 150px;
+}
 
 /* ----- SOCIAL MEDIA ----- */
 ul.social_media {
