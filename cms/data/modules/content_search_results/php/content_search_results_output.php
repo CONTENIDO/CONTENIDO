@@ -1,6 +1,9 @@
 <?php
 
 /**
+ * Settings:
+ * Which articles are searchable can be defined by a clinet setting
+ * searchable/idcats
  *
  * @package Module
  * @subpackage search_result

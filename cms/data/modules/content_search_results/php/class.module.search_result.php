@@ -177,7 +177,7 @@ class SearchResultModule {
             // 'articles' is excluded, otherwise included (exclusive)
             'exclude' => false,
             // searchrange
-            'cat_tree' => $this->_getSearchRange(),
+            'cat_tree' => $this->_getSearchableIdcats(),
             // array of article specifications
             // => search only articles with these artspecs
             'artspecs' => $this->_getArticleSpecs(),
@@ -194,17 +194,23 @@ class SearchResultModule {
         ));
         $searchResultArray = $search->searchIndex($this->_prepSearchTerm, '');
 
-        // get search results
-        $this->_searchResults = new cSearchResult($searchResultArray, $this->_itemsPerPage);
+        $searchResultCount = 0;
+        if (false !== $searchResultArray) {
 
-        // get number of pages
-        $this->_numberOfPages = $this->_searchResults->getNumberOfPages();
+            $searchResultCount = count($searchResultArray);
 
-        // html-tags to emphasize the located searchterms
-        $this->_searchResults->setReplacement('<strong>', '</strong>');
+            // get search results
+            $this->_searchResults = new cSearchResult($searchResultArray, $this->_itemsPerPage);
+
+            // get number of pages
+            $this->_numberOfPages = $this->_searchResults->getNumberOfPages();
+
+            // html-tags to emphasize the located searchterms
+            $this->_searchResults->setReplacement('<strong>', '</strong>');
+
+        }
 
         // create message to display
-        $searchResultCount = count($searchResultArray);
         if (0 === $searchResultCount) {
             $this->_msgResult = sprintf($this->_label['msgNoResultsFound'], $this->_dispSearchTerm);
         } else {
@@ -214,22 +220,17 @@ class SearchResultModule {
     }
 
     /**
-     * Returns current clients property searchrange/include as array.
+     * Returns IDCATs of setting searchable/idcats as array.
+     * Default value is 1.
      *
-     * @throws Exception if client property searchable/idcats is not defined
      * @return array
      */
-    protected function _getSearchRange() {
+    protected function _getSearchableIdcats() {
 
-        $clientObject = cRegistry::getClient();
+        $searchableIdcats = getEffectiveSetting('searchable', 'idcats', 1);
+        $searchableIdcats = explode(',', $searchableIdcats);
 
-        $searchRange = $clientObject->getProperty('searchable', 'idcats');
-        if (false === $searchRange) {
-            throw new Exception('client property searchable/idcats is not defined');
-        }
-        $searchRange = explode(',', $searchRange);
-
-        return $searchRange;
+        return $searchableIdcats;
 
     }
 
@@ -243,16 +244,16 @@ class SearchResultModule {
     protected function _getArticleSpecs() {
 
         $sql = "-- getArticleSpecs()
-            SELECT
-                idartspec
-                , artspec
-            FROM
-                " . $this->_cfg['tab']['art_spec'] . "
-            WHERE
-                client = $this->_client
-                AND lang = $this->_lang
-                AND online = 1
-            ;";
+			SELECT
+				idartspec
+				, artspec
+			FROM
+				" . $this->_cfg['tab']['art_spec'] . "
+			WHERE
+				client = $this->_client
+				AND lang = $this->_lang
+				AND online = 1
+			;";
 
         $this->_db->query($sql);
 
@@ -271,6 +272,10 @@ class SearchResultModule {
      * @return array
      */
     protected function _getResults() {
+
+        if (NULL === $this->_searchResults) {
+            return array();
+        }
 
         // get current result page
         $searchResultPage = $this->_searchResults->getSearchResultPage($this->_page);
