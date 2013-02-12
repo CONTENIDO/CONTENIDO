@@ -500,9 +500,10 @@ abstract class Item extends cItemBaseAbstract {
      *
      * @param   string  $sType   Specifies the type
      * @param   string  $sName   Specifies the name
+     * @param   int     $iClient Id of client to delete properties
      * @return  bool
      */
-    public function deleteProperty($sType, $sName) {
+    public function deleteProperty($sType, $sName, $iClient = 0) {
         // If this object wasn't loaded before, return false
         if ($this->virgin == true) {
             $this->lasterror = 'No item loaded';
@@ -510,7 +511,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         // Delete the value
-        $oProperties = $this->_getPropertiesCollectionInstance();
+        $oProperties = $this->_getPropertiesCollectionInstance($iClient);
         $bResult = $oProperties->deleteValue(
                 $this->primaryKey, $this->get($this->primaryKey), $sType, $sName
         );
