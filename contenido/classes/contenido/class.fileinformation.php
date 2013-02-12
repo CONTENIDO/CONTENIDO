@@ -97,13 +97,17 @@ class cApiFileInformationCollection extends ItemCollection {
     }
 
     /**
-     * removes a new entry in the database
+     * Deletes all found items in the table matching the passed field and it's value.
+     * Deletes also cached e entries and any existing properties.
      *
      * @param array wioth parameters
      * @return void
      */
-    public function removeFileInformation($values) {
-        $this->deleteByMany($values);
+    public function removeFileInformation(array $values) {
+        $item = new cApiFileInformation();
+        $item->loadByMany($values);
+        $idsfi = $item->get('idsfi');
+        return $this->delete($idsfi);
     }
 
     /**
