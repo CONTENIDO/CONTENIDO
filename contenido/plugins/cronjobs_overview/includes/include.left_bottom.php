@@ -1,7 +1,7 @@
 <?php
 //Has the user permission for view the cronjobs
 if (!$perm->have_perm_area_action($area, 'cronjob_overview')) {
-    $notification->displayNotification('error', i18n('Permission denied', 'cronjob_overview'));
+    $notification->displayNotification('error', i18n('Permission denied', 'cronjobs_overview'));
     return -1;
 }
 
