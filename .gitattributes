@@ -120,6 +120,10 @@ cms/data/modules/content_text/template/get.tpl -text
 cms/data/modules/head_title/info.xml -text svneol=unset#text/plain
 cms/data/modules/head_title/php/head_title_input.php -text
 cms/data/modules/head_title/php/head_title_output.php -text
+cms/data/modules/layout_logo/info.xml -text
+cms/data/modules/layout_logo/php/layout_logo_input.php -text
+cms/data/modules/layout_logo/php/layout_logo_output.php -text
+cms/data/modules/layout_logo/template/get.tpl -text
 cms/data/modules/navigation_bottom/info.xml -text svneol=unset#text/plain
 cms/data/modules/navigation_bottom/php/navigation_bottom_input.php -text
 cms/data/modules/navigation_bottom/php/navigation_bottom_output.php -text
