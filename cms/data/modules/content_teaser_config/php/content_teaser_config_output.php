@@ -15,28 +15,11 @@
 // assert framework initialization
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// get text from content type HTML with index 1
-$teaserImageEditor = "CMS_IMGEDITOR[100]";
-$teaserImage = "CMS_IMG[100]";
-
-// When in backend edit mode add a label so the author
-// knows what to type in the shown field.
-if (cRegistry::isBackendEditMode()) {
-    $label = mi18n("LABEL_TEASERIMAGE");
-} else {
-    $label = NULL;
-}
-
-// use smarty template to output header text
 $tpl = Contenido_SmartyWrapper::getInstance();
-global $force;
-if (1 == $force) {
-    $tpl->clearAllCache();
-}
 $tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode());
-$tpl->assign('label', $label);
-$tpl->assign('image', $teaserImage);
-$tpl->assign('editor', $teaserImageEditor);
+$tpl->assign('label', mi18n("LABEL_TEASERIMAGE"));
+$tpl->assign('image', "CMS_IMG[100]");
+$tpl->assign('editor', "CMS_IMGEDITOR[100]");
 $tpl->display('get.tpl');
 
 ?>
