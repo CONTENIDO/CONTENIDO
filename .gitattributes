@@ -117,6 +117,12 @@ cms/data/modules/content_text/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/content_text/php/content_text_input.php -text
 cms/data/modules/content_text/php/content_text_output.php -text
 cms/data/modules/content_text/template/get.tpl -text
+cms/data/modules/form_login/info.xml -text
+cms/data/modules/form_login/lang/lang_de_DE.txt -text
+cms/data/modules/form_login/php/form_login_input.php -text
+cms/data/modules/form_login/php/form_login_output.php -text
+cms/data/modules/form_login/template/login.tpl -text
+cms/data/modules/form_login/template/logout.tpl -text
 cms/data/modules/head_title/info.xml -text svneol=unset#text/plain
 cms/data/modules/head_title/php/head_title_input.php -text
 cms/data/modules/head_title/php/head_title_output.php -text
