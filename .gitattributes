@@ -2257,6 +2257,7 @@ contenido/plugins/url_shortener/scripts/url_shortener.js -text svneol=unset#text
 contenido/plugins/url_shortener/styles/url_shortener.css -text svneol=unset#text/plain
 contenido/plugins/url_shortener/xml/lang_de_DE.xml -text svneol=unset#text/plain
 contenido/plugins/url_shortener/xml/lang_en_US.xml -text svneol=unset#text/plain
+contenido/plugins/user_forum/install/sql.txt -text
 contenido/plugins/workflow/classes/class.workflow.php -text
 contenido/plugins/workflow/classes/class.workflowactions.php -text
 contenido/plugins/workflow/classes/class.workflowallocation.php -text
