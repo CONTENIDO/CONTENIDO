@@ -292,17 +292,16 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
                 c.level as level,
                 d.idtpl as idtpl
             FROM
-                " . $cfg["tab"]["cat_lang"] . " AS a,
+                " . $cfg["tab"]["cat_lang"] . " AS a
+				LEFT JOIN " . $cfg["tab"]["tpl_conf"] . " AS d on a.idtplcfg  = d.idtplcfg,
                 " . $cfg["tab"]["cat"] . " AS b,
-                " . $cfg["tab"]["cat_tree"] . " AS c,
-                " . $cfg["tab"]["tpl_conf"] . " AS d
+                " . $cfg["tab"]["cat_tree"] . " AS c
             WHERE
                 a.idlang    = " . (int) $uselang . " AND
                 b.idclient  = " . (int) $client . " AND
                 b.idcat     = " . (int) $idcat . " AND
                 a.idcat     = b.idcat AND
-                c.idcat     = b.idcat AND
-                a.idtplcfg  = d.idtplcfg";
+                c.idcat     = b.idcat";
 
     $db->query($sql);
     $db->nextRecord();
@@ -315,7 +314,7 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
         }
 
         $parentid = $db->f('parentid');
-        $idtpl = $db->f('idtpl');
+        $idtpl = (int) $db->f('idtpl');
 
         if (!isset($GLOBALS['syncoptions'])) {
             $syncoptions = -1;
