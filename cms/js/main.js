@@ -46,14 +46,14 @@ $(function() {
 
     /* ----- HEADER SEARCH FIELD ----- */
 
-    $("#header #navigation_header #searchterm").on("focus", function(e) {
+    $("#header #navigation_header #search_term").on("focus", function(e) {
         $search_container = $(this).parent();
         if (!$search_container.hasClass("active")) {
             $search_container.addClass("active")
                              .animate({"width": "140px", "paddingLeft": "25px"}, 500, "swing");
         }
     });
-    $("#header #navigation_header #searchterm").on("blur", function(e) {
+    $("#header #navigation_header #search_term").on("blur", function(e) {
         $search_container = $(this).parent();
         $(this).val("");
         if ($search_container.hasClass("active")) {
