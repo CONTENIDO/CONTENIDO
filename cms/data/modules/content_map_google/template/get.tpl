@@ -37,7 +37,7 @@
         <input type="hidden" id="markerTitle" value="{$markerTitle|strip_tags}" />
     </div>
 
-    <input type="button" id="btndialog" value="{$trans.wayDescription}" />
+    <input type="button" id="btndialog" value="{$trans.wayDescription}"  class="button red"/>
 
     <div id="myDialog" title="{$trans.way}">
         <div id="dialogContent">{$way}</div>
