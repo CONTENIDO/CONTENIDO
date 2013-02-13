@@ -48,6 +48,9 @@ foreach (glob($path . '{*.txt,*.log}', GLOB_BRACE) as $filename) {
 if (!empty($files)) {
     $logHeader = new cHTMLDiv('', 'log-header');
 
+    $logDirectory = new cHTMLSpan($path);
+    $logHeader->appendContent($logDirectory);
+
     // create the config file select
     $select = new cHTMLSelectElement('logfile');
     foreach ($files as $file) {
