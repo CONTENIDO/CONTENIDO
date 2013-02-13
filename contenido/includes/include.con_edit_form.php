@@ -227,7 +227,9 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     $select = new cHTMLSelectElement("directlink");
     $select->setEvent("change", "var sVal=this.form.directlink.options[this.form.directlink.options.selectedIndex].value; document.getElementById('linkhint').value = sVal; if(sVal)document.getElementById('linkhintA').style.display='inline-block'; else document.getElementById('linkhintA').style.display='none';");
-    $select->setEvent("disabled", "disabled");
+    if (cSecurity::toInteger($idart) == 0) {
+	    $select->setEvent("disabled", "disabled");
+	}
 
     $baselink = cRegistry::getFrontendUrl() . "front_content.php?idart=$idart";
 
