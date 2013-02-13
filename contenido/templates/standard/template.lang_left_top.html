@@ -57,7 +57,7 @@ var sessid = "{SESSID}";
 
     $(document).ready(function() {
         // Resize frame
-        parent.parent.frameResize.resizeTopLeftFrame($("#top_left_container").offsetHeight + 1);
+        parent.parent.frameResize.resizeTopLeftFrame($("body").height() + 1);
 
         // Bind to create language click
         $("#top_left_container a.addfunction").click(_onCreateClick);
