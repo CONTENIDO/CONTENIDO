@@ -123,6 +123,11 @@ cms/data/modules/form_login/php/form_login_input.php -text
 cms/data/modules/form_login/php/form_login_output.php -text
 cms/data/modules/form_login/template/login.tpl -text
 cms/data/modules/form_login/template/logout.tpl -text
+cms/data/modules/form_newsletter_subscription/info.xml -text
+cms/data/modules/form_newsletter_subscription/lang/lang_de_DE.txt -text
+cms/data/modules/form_newsletter_subscription/php/form_newsletter_subscription_input.php -text
+cms/data/modules/form_newsletter_subscription/php/form_newsletter_subscription_output.php -text
+cms/data/modules/form_newsletter_subscription/template/get.tpl -text
 cms/data/modules/head_title/info.xml -text svneol=unset#text/plain
 cms/data/modules/head_title/php/head_title_input.php -text
 cms/data/modules/head_title/php/head_title_output.php -text
