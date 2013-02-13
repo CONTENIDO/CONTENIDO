@@ -912,10 +912,8 @@
 ../data/config/production/cfg_sql.inc.php
 ../data/config/production/config.colors.php
 ../data/config/production/config.templates.php
-../data/config/production/config.clients.php
 ../data/config/production/config.chains.php
 ../data/config/production/config.chains.load.php
 ../data/config/production/config.autoloader.php
-../data/config/production/config.php
 ../data/config/production/cfg_actions.inc.php
 ../data/config/production/config.misc.php
