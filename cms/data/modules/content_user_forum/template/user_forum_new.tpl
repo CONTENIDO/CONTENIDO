@@ -8,7 +8,7 @@
         <input type="hidden" name="idart" value="{$IDART}" />
         <input type="hidden" name="user_forum_action" value="save_new_forum" />
         <input type="hidden" name="user_forum_parent" value="{$USER_FORUM_PARENT}" />
-        <div style="width: 200px; padding-top:10px;">
+        <div style="padding-top:10px;">
             <div><strong>{$REALNAME}</strong></div>
             <div>{$INPUT_REALNAME}</div>
             <div style="padding-top:10px;"><strong>{$EMAIL}</strong></div>
@@ -17,10 +17,10 @@
             <div><textarea name="forum_quote" style="width:400px;height:90px;{$DISPLAY}">{$INPUT_FORUM_QUOTE}</textarea></div>
             <div style="padding-top:10px;"><strong>{$FORUM}</strong></div>
             <div><textarea name="forum" style="width:400px;height:90px;">{$INPUT_FORUM}</textarea></div>
-            <div style="padding-top: 5px;">
-                <a href="javascript:document.forms['new_user_forum'].submit();" class="submit">{$SAVE_FORUM}</a>
-                <a href="{$CANCEL_LINK}" class='cancel'>{$CANCEL_FORUM}</a>
-            </div>
+                <a href="{$CANCEL_LINK}" class='cancel button grey'>{$CANCEL_FORUM}</a>
+                <a href="javascript:document.forms['new_user_forum'].submit();" class="submit button red">{$SAVE_FORUM}</a>
+                
+           
         </div>
     </form>
 </div>

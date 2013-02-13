@@ -1,41 +1,44 @@
 .user_forum {
-    background-image: url("../images/buttons/hr.png");
-    background-position: left top;
-    background-repeat: repeat-x;
     font-size: 11px;
     padding: 10px 0;
+    
+}
+table#calendarTable {
+   width: 100%; 
 }
 
 .user_forum #calendarTable tr td {
-width: 425px;
+    vertical-align: top;
 }
 
 .user_forum #calendarTable tr td + td {
-width: 123px;
-}
-
+    width: 143px;
+    
+} 
 .user_forum #calendarTable .block{
-    background-image: url("../images/buttons/hr.png");
-    background-position: left top;
-    background-repeat: repeat-x;
     display: block;
     width: 100%;
-    min-height: 30px;
     padding-top: 10px;
+    border-top: 1px dotted #9ba21b;
+} 
+.user_forum #calendarTable td + td .block{
+    padding-left: 23px;
+    width: 120px;  
 }
+
 .user_forum a.reply,
 .user_forum a.reply_quote,
 .user_forum .like + a {
-background: url("../images/nav_bg.jpg") repeat-x 0 -10px transparent;
-display: block;
-float: right;
-color: #fff;
-text-decoration: none;
-height: 15px;
-line-height: 15px;
-padding: 0 5px;
-margin-bottom: 5px;
-margin-left: 6px;
+    background: url("../images/nav_bg.jpg") repeat-x 0 -10px transparent;
+    display: block;
+    float: right;
+    text-decoration: none;
+    height: 15px;
+    color: #0083cb;
+    line-height: 15px;
+    padding: 0 5px;
+    margin-bottom: 5px;
+    margin-left: 6px;
 }
 
 .user_forum div.like, 
@@ -47,59 +50,59 @@ margin-left: 6px;
     background-size: 18px;
     margin-bottom: 10px;
     cursor: pointer;
-}
+}   
 
 a.submit, 
 a.cancel {
     background: url("../images/nav_bg.jpg") repeat-x 0 -10px transparent;
-display: inline-block;
-color: #fff;
-text-decoration: none;
-height: 15px;
-line-height: 15px;
-padding: 0 5px;
-margin-bottom: 5px;
-margin-left: 6px;
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+    height: 15px;
+    line-height: 15px;
+    padding: 0 5px;
+    margin-bottom: 5px;
+    margin-left: 6px;
 }
-
 
 .user_forum div.like {
     background: url("../images/buttons/like.png") no-repeat;
     margin-right: 15px;
     color: #40aa3c;
-    }
+    } 
+    
 .user_forum div.like a {
-color: #40aa3c;
-text-decoration: none;
+    color: #40aa3c;
+    text-decoration: none;
 }
 
 .user_forum div.dislike {
     background: url("../images/buttons/dislike.png") no-repeat;
     color: #e9001d;
-    }
+}
+
 .user_forum div.dislike a {
     color: #e9001d;
     text-decoration: none;
-    }
+} 
     
 .user_forum p.right {
-    float: right;
     font-size: 9px;
     margin: 0;
 }
 
 .user_forum .number {
-color: #e9001d;
+    color: #0083cb; 
 }
 
 .user_forum .day {
-background: url("../images/buttons/calendar.png") center top no-repeat;
-display:inline-block;
-height: 25px;
-width: 25px;
-text-align: center;
-padding-top: 4px;
-font-size: 9px;
+    background: url("../images/buttons/calendar.png") center top no-repeat;
+    display:inline-block;
+    height: 25px;
+    width: 25px;
+    text-align: center;
+    padding-top: 4px;
+    font-size: 9px;
 }
 
 .forum_quote,
@@ -113,15 +116,13 @@ font-size: 9px;
 .replyment_handler {
     padding: 0 0 0 8px;
     background: url("../images/buttons/quote_tick.png") 0 20% no-repeat;
-    }
-
-
+}
 
 .form_status_message {
-background: #fefefe;
-padding:7px;
-border: 1px dashed #999;
-border-radius: 7px;
-margin-bottom: 7px;
-color: #e9001d;
-}
+    background: #fefefe;
+    padding:7px;
+    border: 1px dashed #999;
+    border-radius: 7px;
+    margin-bottom: 7px;
+    color: #e9001d;
+}  

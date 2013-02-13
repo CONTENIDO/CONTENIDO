@@ -269,12 +269,44 @@ p a:hover {
     font-size: 12px;
 }
 
-p + .button.red,
+.button.grey {
+    position: relative;
+    z-index:2;
+    display: block;
+    width: 150px;
+    text-align: center;
+    text-decoration: none;
+    color:#fff;
+    background: #ccc;
+    height: 25px;
+    border-radius: 9px;
+    border-bottom: 1px solid #bbb;
+    border-right: 1px solid #bbb;
+    border-top: 1px solid #efefef;
+    border-left: 1px solid #efefef;
+    font-size: 12px;
+}
+
+.button.red,
 .login input[type="submit"] {
     margin-top: 30px;
     position: relative;
 }
+
+.user_forum .button.red,
+.user_forum .button.grey{
+   line-height: 25px; 
+   width: 190px;
+   float: left;
+   margin-top: 20px;
+   margin-bottom: 20px;
+}
+
+#contactFormSubmitRight .button.red {
+    margin-top: 0px;
+}
 p + .button.red {
+
     line-height: 25px;
 }
 .slider .images li a {
@@ -784,6 +816,14 @@ button.ui-button::-moz-focus-inner {
 .login label {
     display: inline-block;
     width: 150px;
+}
+
+/* ----- Newsletter FORM ----- */
+
+#contactFormSubmitLeft,
+#contactFormSubmitRight {
+    float: left;
+    margin-right: 15px;
 }
 
 /* ----- SOCIAL MEDIA ----- */

@@ -25,10 +25,10 @@
             <div class="hr" /><hr /></div>
             <div id="contactFormSubmit" class="clearfix">
                 <div id="contactFormSubmitLeft">
-                    <input type="reset" value="{$LOESCHEN}" />
+                    <input type="reset" value="{$LOESCHEN}" class="button grey"/>
                 </div>
                 <div id="contactFormSubmitRight">
-                    <input type="submit" value="{$ABSCHICKEN}" />
+                    <input type="submit" value="{$ABSCHICKEN}" class="button red"/>
                 </div>
             </div>
         </fieldset>
