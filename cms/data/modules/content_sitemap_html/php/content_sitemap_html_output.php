@@ -35,6 +35,7 @@ $tpl->assign('trans', array(
 $tpl->assign('category', "CMS_TEXT[1]");
 $tpl->assign('level', "CMS_TEXT[2]");
 $tpl->assign('article', "CMS_TEXT[3]");
+$tpl->assign('first', false);
 
 // create article and get content of it
 $art = new Article($idart, $client, $lang);
