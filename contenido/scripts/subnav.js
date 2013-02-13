@@ -34,6 +34,18 @@ var sub = {
             }
         }
     },
+	
+	/**
+     * Highlights the active tab.
+     *
+     * @param {String}
+     *            cElm Clicked a-element, resp. the tab to highlight.
+     * @todo Consider new name ("highlight"?) and rename remaining instances.
+     */
+    clickedById : function(cElm) {
+		$('#navlist li a').attr('class', '');
+		$('#navlist li#'+cElm+' a').attr('class', 'current');
+    },
 
     /**
      * Highlights a tab by its element id. Useful for highlighting from an outer

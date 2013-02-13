@@ -460,30 +460,22 @@ articleObject.prototype.setProperties = function()
  * @param none
  * @return void
  */
-articleObject.prototype.disable = function() {
-    var oRef = [];
-
-    oRef[0] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-    oRef[1] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_1");
-    oRef[2] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_2");
-    oRef[3] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_3");
-    oRef[4] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_4");
-    oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_5");
-    oRef[6] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_6");
-    oRef[7] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_7");
-
-    if (this.vis == 1) {
-        for (var i=1; i < oRef.length; i++) {
-            links = oRef[i].getElementsByTagName("a");
-            links[0].style.visibility = "hidden";
-        }
-        parent.parent.frames["right"].frames["right_top"].sub.clicked(oRef[0].getElementsByTagName('a')[0]);
-
-        // This deselects the selected submenu item
-        // parent.parent.frames["right"].frames["right_top"].sub.click(oRef[0]);
-        // parent.parent.frames["right"].frames["right_top"].sub.markedRow.style.backgroundColor = "#C6C6D5";
-    }
-
+articleObject.prototype.disable = function() {	
+	var frame = parent.parent.frames["right"].frames["right_top"];
+	var oDoc = $(frame.document);
+	
+	var index = 0;
+	if (this.vis == 1) {
+		oDoc.find('ul#navlist li').each(function() {
+			if (index > 0) {
+				$(this).css('visibility', 'hidden');
+			}
+			index++;
+		});
+		
+		frame.sub.clickedById(oDoc.find('ul#navlist li:nth-child(1)').attr('id'));
+	}
+	
     this.vis = 0;
 }
 
@@ -494,22 +486,19 @@ articleObject.prototype.disable = function() {
  * @return void
  */
 articleObject.prototype.disableNavForNewArt = function() {
-    var oRef = [];
+	var frame = parent.parent.frames["right"].frames["right_top"];
+	var oDoc = $(frame.document);
+	
+	var index = 0;
 
-    oRef[0] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-    oRef[1] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_1");
-    oRef[2] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_2");
-    oRef[3] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_3");
-    oRef[4] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_4");
-    oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_5");
-    oRef[6] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_6");
-    oRef[7] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_7");
-
-    for (var i=2; i < oRef.length; i++) {
-        links = oRef[i].getElementsByTagName("a");
-        links[0].style.visibility = "hidden";
-    }
-    parent.parent.frames["right"].frames["right_top"].sub.clicked(oRef[1].getElementsByTagName('a')[0]);
+	oDoc.find('ul#navlist li').each(function() {
+		if (index > 1) {
+			$(this).css('visibility', 'hidden');
+		}
+		index++;
+	});
+	
+    frame.sub.clickedById(oDoc.find('ul#navlist li:nth-child(2)').attr('id'));
 }
 
 /**
@@ -519,22 +508,18 @@ articleObject.prototype.disableNavForNewArt = function() {
  * @return void
  */
  articleObject.prototype.enableNavForArt = function() {
-     var oRef = [];
-
-    oRef[0] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-    oRef[1] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_1");
-    oRef[2] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_2");
-    oRef[3] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_3");
-    oRef[4] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_4");
-    oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_5");
-    oRef[6] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_6");
-    oRef[7] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_7");
-
-    for (var i=2; i < oRef.length; i++) {
-        links = oRef[i].getElementsByTagName("a");
-        links[0].style.visibility = "visible";
-    }
-    parent.parent.frames["right"].frames["right_top"].sub.clicked(oRef[1].getElementsByTagName('a')[0]);
+	var frame = parent.parent.frames["right"].frames["right_top"];
+	var oDoc = $(frame.document);
+ 
+	var index = 0;
+	oDoc.find('ul#navlist li').each(function() {
+		if (index > 1) {
+			$(this).css('visibility', 'visible');
+		}
+		index++;
+	});
+	
+    frame.sub.clickedById(oDoc.find('ul#navlist li:nth-child(2)').attr('id'));
  }
 
 /**
@@ -544,24 +529,20 @@ articleObject.prototype.disableNavForNewArt = function() {
  * @return void
  */
 articleObject.prototype.enable = function() {
-    var oRef = [];
-
-    oRef[0] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-    oRef[1] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_1");
-    oRef[2] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_2");
-    oRef[3] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_3");
-    oRef[4] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_4");
-    oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_5");
-    oRef[6] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_6");
-    oRef[7] = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_7");
-
-    if (this.vis == 0) {
-        for (var i=0; i < oRef.length; i++) {
-            links = oRef[i].getElementsByTagName("a");
-            links[0].style.visibility = "visible";
-        }
-        parent.parent.frames["right"].frames["right_top"].sub.clicked(oRef[0].getElementsByTagName('a')[0]);
-    }
+	var frame = parent.parent.frames["right"].frames["right_top"];
+	var oDoc = $(frame.document);
+	
+	var index = 0;
+	if (this.vis == 0) {
+		oDoc.find('ul#navlist li').each(function() {
+			if (index > 0) {
+				$(this).css('visibility', 'visible');
+			}
+			index++;
+		});
+		
+		frame.sub.clickedById(oDoc.find('ul#navlist li:nth-child(1)').attr('id'));
+	}
 
     this.vis = 1;
 }

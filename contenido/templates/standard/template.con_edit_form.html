@@ -271,7 +271,7 @@
                 conMultiLink('right_top', 'main.php?area=con&frame=3&idcat={iIdcat}&idtpl={iIdtpl}&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&action=saveart&bNoArticle='+{bNoArticle});
                 if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1')) {
                     menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1');
-                    parent.parent.frames["right"].frames["right_top"].(menuItem.firstChild);
+                    parent.parent.frames["right"].frames["right_top"].menuItem.firstChild;
                 }
                 return true;
             });
