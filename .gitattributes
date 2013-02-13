@@ -200,6 +200,12 @@ cms/front_content.php -text
 cms/front_crcloginform.inc.php -text
 cms/images/backgrounds/bg.png -text
 cms/images/but_ok.gif -text
+cms/images/buttons/calendar.png -text
+cms/images/buttons/dislike.png -text
+cms/images/buttons/hr.png -text
+cms/images/buttons/like.png -text
+cms/images/buttons/quote_tick.png -text
+cms/images/buttons/refresh.png -text
 cms/images/index.php -text
 cms/images/misc/logo.png -text
 cms/images/misc/sprite.png -text
