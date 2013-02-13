@@ -10,8 +10,8 @@
 			<td valign="top" style="padding-left:{$PADDING}px">
 				<div class="block">
 				<p><span class="number">Nr.{$POST.NUMBER}</span> <span class="day">{$POST.DAY}</span> <span class="wrote_on">{$POST.TIMESTAMP}</span> {$POST.FROM} <strong>{$POST.REALNAME}</strong></p>
-				<div class="quote_handler">{$POST.FORUM_QUOTE}</div>
-				{$POST.FORUM}
+				<div class="quote_handler"><p>{$POST.FORUM_QUOTE}</p></div>
+				<p>{$POST.FORUM}</p>
 				{$POST.EDIT_INFORMATION}
 				</div>
 			</td>

@@ -185,6 +185,8 @@ h2 {
 
 p {
     text-align: justify;
+    line-height: 19px;
+
 }
 p + p {
     margin-top: 7px;
@@ -199,6 +201,12 @@ p a:hover {
     color: #9ba21b;
     text-decoration: none;
     border-bottom: 1px dotted #9ba21b;
+}
+
+#content ul,
+#content ol {
+    margin: 20px 0 20px 20px;
+    line-height: 19px;
 }
 
 /* ----- SLIDER ----- */
@@ -743,7 +751,8 @@ button.ui-button::-moz-focus-inner {
     padding: 0 20px;
     min-height: 30px;
     clear: both;
-    background: #a6d4ec;
+    background: #c9d400;
+    color: #fff;
 }
 
 #footer .navigation {
@@ -762,7 +771,7 @@ button.ui-button::-moz-focus-inner {
     font-size: 13px;
     text-decoration: none;
     line-height: 30px;
-    color: #797979;
+    color: #fff;
 }
 
 #copyright {
@@ -778,6 +787,9 @@ button.ui-button::-moz-focus-inner {
     margin: 0 0 30px 0;
     padding: 0;
     width: 100%;
+}
+.sitemap .sitemap {
+    margin: 0;
 }
 .sitemap li {
     list-style: none;
@@ -803,6 +815,7 @@ button.ui-button::-moz-focus-inner {
 
 .sitemap>li ul li {
     padding-left:35px;
+    
 }
 .sitemap>li>ul>li>ul>li a:hover {
     color: #9ba21b;
