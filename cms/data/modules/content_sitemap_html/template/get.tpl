@@ -19,7 +19,10 @@
     {/if}
 {/if}
 {if false eq $isBackendEditMode}
-<ul class="sitemap">
+
+{if $tree}
+<ul {if $first == false} class="sitemap" {/if} >
+{$first = true}
 
     {* loop categories *}
     {foreach from=$tree item=wrapper}
@@ -45,5 +48,6 @@
         </li>
      {/foreach}
 </ul>
+{/if}
 {/if}
 <!-- /content_sitemap_html -->
