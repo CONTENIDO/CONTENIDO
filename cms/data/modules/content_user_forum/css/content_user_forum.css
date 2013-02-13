@@ -12,7 +12,7 @@ table#calendarTable {
 }
 
 .user_forum #calendarTable tr td + td {
-    width: 143px;
+    width: 148px;
     
 } 
 .user_forum #calendarTable .block{
@@ -23,7 +23,7 @@ table#calendarTable {
 } 
 .user_forum #calendarTable td + td .block{
     padding-left: 23px;
-    width: 120px;  
+    width: 125px;  
 }
 
 .user_forum a.reply,
