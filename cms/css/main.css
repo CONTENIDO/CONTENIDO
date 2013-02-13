@@ -324,7 +324,7 @@ p + .button.red {
    line-height: 25px;
 }
 
-.slider .pagination{
+#content .slider ul.pagination{
     margin-top: 245px;
     left: 50%;
     position: absolute;
