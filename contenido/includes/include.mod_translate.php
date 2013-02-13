@@ -111,10 +111,6 @@ $form->setVar('idmod', $idmod);
 $form->setVar('row', $row);
 $form->setVar('action', 'mod_translation_save');
 
-$transmodname = new cHTMLTextbox('translatedname', $module->getTranslatedName(), 60);
-
-$form->add(i18n('Translated name'), $transmodname);
-
 $ilink = new cHTMLLink;
 $ilink->setCLink('mod_translate', 5, '');
 $ilink->setCustom('idmod', $idmod);
