@@ -47,8 +47,6 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         set_magic_quotes_gpc($name);
         set_magic_quotes_gpc($description);
 
-        $name = cApiStrCleanURLCharacters($name);
-
         if (!$idtpl) {
 
 //            $idtpl = $db->nextid($cfg["tab"]["tpl"]);
