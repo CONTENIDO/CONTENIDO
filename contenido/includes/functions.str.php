@@ -122,6 +122,8 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
 
+    $parentid = (int) $parentid;
+
     if (trim($catname) == '') {
         return;
     }
@@ -149,7 +151,7 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
 
     // Get previous category on same level, if exists
     $oCatColl = new cApiCategoryCollection();
-    $oCatColl->select('parentid=' . (int) $parentid . ' AND postid = 0');
+    $oCatColl->select('parentid=' . $parentid . ' AND postid = 0');
     $oPrevCat = $oCatColl->next();
     $preIdcat = (is_object($oPrevCat)) ? $oPrevCat->get('idcat') : 0;
 
