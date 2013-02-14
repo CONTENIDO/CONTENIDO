@@ -11,18 +11,18 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.3
- * @author     Ingo van Peeren
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @package CONTENIDO Backend Includes
+ * @version 1.0.3
+ * @author Ingo van Peeren
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  *
- * {@internal
- *   created unknown
- *   $Id: include.mod_translate.php 2987 2012-08-21 21:44:14Z xmurrix $:
- * }}
+ *       {@internal
+ *       created unknown
+ *       $Id: include.mod_translate.php 2987 2012-08-21 21:44:14Z xmurrix $:
+ *       }}
  */
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
@@ -36,7 +36,9 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
     function __construct() {
         parent::__construct(false);
         $this->objTable->setClass("generic alltranslations");
-        $this->objTable->updateAttributes(array("cellpadding" => "2"));
+        $this->objTable->updateAttributes(array(
+            "cellpadding" => "2"
+        ));
     }
 
     /**
@@ -45,7 +47,6 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
      * @param $row The current row which is being rendered
      */
     public function onRenderRow($row) {
-
     }
 
     /**
@@ -54,24 +55,23 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
      * @param $column The current column which is being rendered
      */
     public function onRenderColumn($column) {
-
         $iColums = count($this->data[0]);
 
         switch ($column) {
-            case 1 :
+            case 1:
                 $sClass = 'module';
                 break;
-            case 2 :
+            case 2:
                 $sClass = 'inuse';
                 break;
-            case 3 :
+            case 3:
                 $sClass = 'keyword';
                 break;
-            case $iColums :
+            case $iColums:
                 $sClass = 'actions';
                 break;
 
-            default :
+            default:
                 $sClass = 'translation';
                 break;
         }
@@ -82,8 +82,8 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
     /**
      * Sorts the list by a given field and a given order.
      *
-     * @param $field    Field index
-     * @param $order    Sort order (see php's sort documentation)
+     * @param $field Field index
+     * @param $order Sort order (see php's sort documentation)
      */
     public function sort($field, $order) {
         if ($order == "") {
@@ -112,9 +112,7 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
         } else {
             $this->data = cArray::csort($this->data, "$field", $order);
         }
-
     }
-
 }
 
 /**
@@ -151,7 +149,7 @@ if (!$perm->have_perm_area_action($area, $action)) {
 }
 
 // If there is no client selected, display empty pag
-if (!(int)$client > 0) {
+if (!(int) $client > 0) {
     $page->render();
     return;
 }
@@ -164,7 +162,10 @@ if ($inUse == true) {
 }
 
 // Initialize
-$elemPerPage = array(25 => "25", 50 => "50");
+$elemPerPage = array(
+    25 => "25",
+    50 => "50"
+);
 
 $db = cRegistry::getDb();
 
@@ -181,7 +182,9 @@ if (is_array($aTmpExtraLanguages)) {
         }
     }
 }
-$allLanguages = array_merge(array($lang), $extraLanguages);
+$allLanguages = array_merge(array(
+    $lang
+), $extraLanguages);
 
 $editstring = $_REQUEST["editstring"];
 $editlang = $_REQUEST["editlang"];
@@ -213,7 +216,8 @@ if (!is_numeric($_REQUEST["elemperpage"])) {
     $_REQUEST["elemperpage"] = 25;
 }
 if ($_REQUEST["elemperpage"] > 0) {
-    // -- All -- will not be stored, as it may be impossible to change this back to something more useful
+    // -- All -- will not be stored, as it may be impossible to change this back
+    // to something more useful
     $oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
 }
 unset($oUser);
@@ -301,7 +305,13 @@ while ($db->nextRecord()) {
             if (isset($allTranslations[$hash])) {
                 $allTranslations[$hash]['translations'][$idlang] = $currentTranslation;
             } else {
-                $allTranslations[$hash] = array('string' => $string, 'translations' => array($idlang => $currentTranslation), 'idmod' => $idmod);
+                $allTranslations[$hash] = array(
+                    'string' => $string,
+                    'translations' => array(
+                        $idlang => $currentTranslation
+                    ),
+                    'idmod' => $idmod
+                );
             }
         }
     }
@@ -356,7 +366,6 @@ if ($search != '' || ($filter != '' && $filter != -1)) {
                     $bFoundFilter = true;
                 }
             }
-
         } else {
             $bFoundFilter = true;
         }
@@ -387,7 +396,7 @@ if (is_array($allLanguages)) {
         $formExtraLangs->setVar('extralang[]', $idExtraLang);
     }
 
-    $labelExtraLangs = new cHTMLLabel(i18n("New language") . ':', 'newlang');
+    $labelExtraLangs = new cHTMLLabel(i18n("New language for editing") . ': ', 'newlang');
     $selectExtraLangs = new cHTMLSelectElement('extralang[]', 30, 'newlang');
 
     $sql = "SELECT
@@ -463,7 +472,7 @@ foreach ($extraLanguages as $idExtraLang) {
 $filterSelect = '<select name="filter">';
 $filterSelect .= '<option value="-1">' . i18n("-- filter by --") . '</option>';
 if (is_array($allModules) && count($allModules) > 0) {
-    $filterSelect .= '<optgroup label="' . i18n("Modules") . '">';
+    $filterSelect .= '<optgroup label="' . i18n("Module name") . '">';
     foreach ($allModules as $idmod => $sModule) {
         if ($_REQUEST["filter"] == 'module_' . $idmod) {
             $sSelected = ' selected';
@@ -475,7 +484,7 @@ if (is_array($allModules) && count($allModules) > 0) {
     $filterSelect .= '</optgroup>';
 }
 if (is_array($aAllTemplates) && count($aAllTemplates) > 0) {
-    $filterSelect .= '<optgroup label="' . i18n("Templates") . '">';
+    $filterSelect .= '<optgroup label="' . i18n("Template") . '">';
     foreach ($aAllTemplates as $idtpl => $sTemplate) {
         if ($_REQUEST["filter"] == 'template_' . $idtpl) {
             $sSelected = ' selected';
@@ -493,14 +502,22 @@ $formSearch->SetContent($filterSelect . $searchInput->render() . $searchSubmit->
 // The list of translations
 $list = new cGuiScrollListAlltranslations();
 // building parameter array
-$tableHeaders = array(addSortImages(0, i18n('Module')), addSortImages(1, i18n('In use by')), addSortImages(2, i18n('Keyword')), addSortImages(3, i18n('Current language') . ': ' . $langstring));
+$tableHeaders = array(
+    addSortImages(0, i18n('Module name')),
+    addSortImages(1, i18n('In use by')),
+    addSortImages(2, i18n('Translation ID')),
+    addSortImages(3, i18n('Current language') . ': ' . $langstring)
+);
 $i = 4;
 foreach ($extraLanguages as $idExtraLang) {
     $tableHeaders[] = '<span class="del" rel="' . $idExtraLang . '"></span> ' . addSortImages($i, i18n('Language') . ': ' . $langNames[$idExtraLang]);
     $i++;
 }
 $tableHeaders[] = i18n('Edit row');
-call_user_func_array(array($list, "setHeader"), $tableHeaders);
+call_user_func_array(array(
+    $list,
+    "setHeader"
+), $tableHeaders);
 $iHeaders = count($tableHeaders);
 for ($i = 0; $i < $iHeaders; $i++) {
     $list->setSortable($i, true);
@@ -515,8 +532,12 @@ foreach ($extraLanguages as $idExtraLang) {
     $list->setCustom("extralang[]", $idExtraLang);
 }
 $list->setResultsPerPage($_REQUEST["elemperpage"]);
-$list->objHeaderItem->updateAttributes(array('width' => 52));
-$list->objRow->updateAttributes(array('valign' => 'top'));
+$list->objHeaderItem->updateAttributes(array(
+    'width' => 52
+));
+$list->objRow->updateAttributes(array(
+    'valign' => 'top'
+));
 
 $submit = ' <input type="image" style="vertical-align:top;" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif">';
 $counter = 1;
@@ -553,9 +574,21 @@ foreach ($allTranslations as $hash => $translationArray) {
     }
     // building parameter array
     $countCurrentModuleInUse = count($modulesInUse[$translationArray['idmod']]);
-    $inUseString = i18n("Click for more information about usage");
-    $currentModuleInUse = '<a href="javascript:;" rel="' . $translationArray['idmod'] . '" class="in_used_mod"><img src="' . $cfg['path']['images'] . 'info.gif" border="0" title="' . $inUseString . '" alt="' . $inUseString . '">' . $countCurrentModuleInUse . ' ' . ($countCurrentModuleInUse == 1 ? i18n('Template') : i18n('Templates')) . ' </a>';
-    $fields = array($counter, $allModules[$translationArray['idmod']], $currentModuleInUse, $translationArray['string'], $sTranslationFirstLang);
+    if ($countCurrentModuleInUse == 0) {
+        $inUseString = '';
+        $currentModuleInUse = i18n('No template');
+    } else {
+
+        $inUseString = i18n("Click for more information about usage");
+        $currentModuleInUse = '<a href="javascript:;" rel="' . $translationArray['idmod'] . '" class="in_used_mod"><img src="' . $cfg['path']['images'] . 'info.gif" border="0" title="' . $inUseString . '" alt="' . $inUseString . '">' . $countCurrentModuleInUse . ' ' . ($countCurrentModuleInUse == 1? i18n('Template') : i18n('Templates')) . ' </a>';
+    }
+    $fields = array(
+        $counter,
+        $allModules[$translationArray['idmod']],
+        $currentModuleInUse,
+        $translationArray['string'],
+        $sTranslationFirstLang
+    );
     foreach ($extraLanguages as $idExtraLang) {
         if (!$inUse && $perm->have_perm_area_action($area, 'con_translate_edit') && $action == 'con_translate_edit' && ($editstring == 'all' || $editstring == $hash) && ($editlang == 'all' || $editlang == $idExtraLang)) {
             $oExtraTranslation = new cHTMLTextarea('modtrans[' . $translationArray['idmod'] . '][' . $hash . '][' . $idExtraLang . ']', $translationArray['translations'][$idExtraLang]);
@@ -614,7 +647,10 @@ foreach ($allTranslations as $hash => $translationArray) {
         }
         $fields[] = $sLinkEditRow;
     }
-    call_user_func_array(array($list, "setData"), $fields);
+    call_user_func_array(array(
+        $list,
+        "setData"
+    ), $fields);
     $counter++;
 }
 
@@ -637,7 +673,7 @@ $form->setVar('contenido', $contenido);
 $form->setContent($list->render());
 
 // Generate current content for Object Pager
-$pagerLink = new cHTMLLink;
+$pagerLink = new cHTMLLink();
 $pagerl = "pagerlink";
 $pagerLink->setTargetFrame('right_bottom');
 $pagerLink->setLink("main.php");
@@ -655,7 +691,7 @@ foreach ($extraLanguages as $idExtraLang) {
 $pagerLink->setCustom("contenido", $sess->id);
 $pager = new cGuiObjectPager("02420d6b-a77e-4a97-9395-7f6be480f471", $counter, $_REQUEST["elemperpage"], $_REQUEST["page"], $pagerLink, "page", $pagerl);
 
-$delLangLink = new cHTMLLink;
+$delLangLink = new cHTMLLink();
 $delLangLink->setTargetFrame('right_bottom');
 $delLangLink->setLink("main.php");
 $delLangLink->setCustom("elemperpage", $elemperpage);
@@ -677,11 +713,11 @@ $page->set("s", "SEARCH", $formSearch->render());
 $page->set("s", "ELEMPERPAGE", $formElementsPerPage->render());
 $page->set("s", "FORM", $form->render());
 $page->set("s", "PAGER", $pager->render(true));
-$page->set("s", "DELLANGIMG", $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'delete.gif');
+$page->set("s", "DELLANGIMG", $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_cancel.gif');
 $page->set("s", "DELLANGALT", i18n("Delete"));
 $page->set("s", "DELLANGHREF", $delLangHref);
 $page->set("s", "MODULEINUSETEXT", i18n("The module &quot;%s&quot; is used for following templates"));
-$page->set("s", "INFO", $message . '<p class="notify_general notify_info">' . i18n("WARNING: Translations have effects on every article that uses the module!") . '</p>');
+$page->set("s", "INFO", $message . '<p class="notify_general notify_warning">' . i18n("WARNING: Translations have effects on every article that uses the module!") . '</p>');
 $page->setMarkScript(2);
 $page->setEncoding($langobj->get('encoding'));
 $page->render();
