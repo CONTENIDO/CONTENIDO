@@ -163,10 +163,10 @@ function showNewForm() {
     oHideEditLayer.style.display = 'none';
 
     refreshSelectedBaseCategory();
-	
-	if ($('#category_list tr').length <= 4) {
-		$('#is_tree').attr('checked', 'checked');
-	}
+
+    if ($('#category_list tr').length <= 4) {
+        $('#is_tree').attr('checked', 'checked');
+    }
 
     oEditLayer.style.visibility = 'visible';
 }

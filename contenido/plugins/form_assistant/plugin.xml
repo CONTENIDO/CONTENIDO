@@ -14,8 +14,8 @@
         <min_contenido_version>4.9.0-beta1</min_contenido_version>
         <max_contenido_version></max_contenido_version>
     </general>
-	
-	 <contenido>
+
+     <contenido>
 
         <areas>
             <area>form</area>
@@ -24,10 +24,10 @@
 
         <frames>
             <frame area="form" filetype="main" name="form_assistant/includes/include.left_top.php" frameId="1" />
-			<frame area="form" filetype="main" name="form_assistant/includes/include.left_bottom.php" frameId="2" />
-			<frame area="form" filetype="main" name="form_assistant/includes/include.right_top.php" frameId="3" />
-			<frame area="form" filetype="main" name="form_assistant/includes/include.right_bottom.php" frameId="4" />
-			<frame area="form_ajax" filetype="main" name="form_assistant/includes/include.ajax.php" frameId="4" />
+            <frame area="form" filetype="main" name="form_assistant/includes/include.left_bottom.php" frameId="2" />
+            <frame area="form" filetype="main" name="form_assistant/includes/include.right_top.php" frameId="3" />
+            <frame area="form" filetype="main" name="form_assistant/includes/include.right_bottom.php" frameId="4" />
+            <frame area="form_ajax" filetype="main" name="form_assistant/includes/include.ajax.php" frameId="4" />
         </frames>
 
         <nav_sub>

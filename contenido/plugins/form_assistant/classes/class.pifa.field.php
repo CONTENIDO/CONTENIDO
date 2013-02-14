@@ -109,13 +109,13 @@ class PifaFieldCollection extends ItemCollection {
         $db = cRegistry::getDb();
 
         $sql = "-- PifaFieldCollection::reorder()
-		    UPDATE
-			    " . $cfg['tab']['pifa_field'] . "
-		    SET
-			    field_rank = FIND_IN_SET(idfield, '$idfields')
-		    WHERE
-		    	idform = $idform
-		    ;";
+            UPDATE
+                " . $cfg['tab']['pifa_field'] . "
+            SET
+                field_rank = FIND_IN_SET(idfield, '$idfields')
+            WHERE
+                idform = $idform
+            ;";
 
         $db->query($sql);
 
@@ -803,8 +803,8 @@ class PifaField extends Item {
                 // dateFormat: 'yy-mm-dd', // could be different
                 // altFormat as ISO_8601
                 $script = "jQuery(function(){jQuery('$sel').datepicker({
-	                altFormat: 'yy-mm-dd',
-	                altField: '$sel-hidden'
+                    altFormat: 'yy-mm-dd',
+                    altField: '$sel-hidden'
                 });});";
                 break;
             case self::CAPTCHA:
@@ -1062,14 +1062,14 @@ class PifaField extends Item {
 
         // update ranks of younger siblings
         $sql = "-- PifaField->delete()
-			UPDATE
-				" . $cfg['tab']['pifa_field'] . "
-			SET
-				field_rank = field_rank - 1
-			WHERE
-				idform = " . cSecurity::toInteger($this->get('idform')) . "
-				AND field_rank > " . cSecurity::toInteger($this->get('field_rank')) . "
-			;";
+            UPDATE
+                " . $cfg['tab']['pifa_field'] . "
+            SET
+                field_rank = field_rank - 1
+            WHERE
+                idform = " . cSecurity::toInteger($this->get('idform')) . "
+                AND field_rank > " . cSecurity::toInteger($this->get('field_rank')) . "
+            ;";
         if (false === $db->query($sql)) {
             // false is returned if no fields were updated
             // but that doesn't matter ...
@@ -1077,11 +1077,11 @@ class PifaField extends Item {
 
         // delete field
         $sql = "-- PifaField->delete()
-			DELETE FROM
-				" . $cfg['tab']['pifa_field'] . "
-			WHERE
-				idfield = " . cSecurity::toInteger($this->get('idfield')) . "
-			;";
+            DELETE FROM
+                " . $cfg['tab']['pifa_field'] . "
+            WHERE
+                idfield = " . cSecurity::toInteger($this->get('idfield')) . "
+            ;";
         if (false === $db->query($sql)) {
             throw new Exception('field could not be deleted');
         }
@@ -1091,11 +1091,11 @@ class PifaField extends Item {
             $pifaForm = new PifaForm($this->get('idform'));
             if (0 < strlen(trim($pifaForm->get('data_table')))) {
                 $sql = "-- PifaField->delete()
-    	            ALTER TABLE
-    					`" . cSecurity::toString($pifaForm->get('data_table')) . "`
-    	        	DROP COLUMN
-    					`" . cSecurity::toString($this->get('column_name')) . "`
-    				;";
+                    ALTER TABLE
+                        `" . cSecurity::toString($pifaForm->get('data_table')) . "`
+                    DROP COLUMN
+                        `" . cSecurity::toString($this->get('column_name')) . "`
+                    ;";
                 if (false === $db->query($sql)) {
                     throw new Exception('column could not be dropped');
                 }

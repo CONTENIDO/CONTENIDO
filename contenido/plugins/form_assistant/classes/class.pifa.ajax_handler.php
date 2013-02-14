@@ -530,15 +530,15 @@ class PifaAjaxHandler {
 
             // update ranks of younger siblings
             $sql = "-- PifaAjaxHandler->_editFieldFormKK()
-				UPDATE
-					" . $cfg['tab']['pifa_field'] . "
-				SET
-					field_rank = field_rank + 1
-				WHERE
-					idform = " . cSecurity::toInteger($idform) . "
-					AND field_rank >= " . cSecurity::toInteger($fieldRank) . "
-					AND idfield <> " . cSecurity::toInteger($pifaField->get('idfield')) . "
-				;";
+                UPDATE
+                    " . $cfg['tab']['pifa_field'] . "
+                SET
+                    field_rank = field_rank + 1
+                WHERE
+                    idform = " . cSecurity::toInteger($idform) . "
+                    AND field_rank >= " . cSecurity::toInteger($fieldRank) . "
+                    AND idfield <> " . cSecurity::toInteger($pifaField->get('idfield')) . "
+                ;";
 
             $db = cRegistry::getDb();
             if (false === $db->query($sql)) {

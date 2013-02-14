@@ -341,15 +341,15 @@ p + .button.red {
 
 .slider .pagination li a {
     display: block;
-    background: url('../images/misc/sprite.png') no-repeat -43px -316px; 
-    width: 30px; 
+    background: url('../images/misc/sprite.png') no-repeat -43px -316px;
+    width: 30px;
     height: 30px;
     text-indent:-9999px;
 }
 .slider .pagination li a:hover,
 .slider .pagination li a.active {
     background: url('../images/misc/sprite.png') no-repeat -2px -316px;
-    width: 30px; 
+    width: 30px;
     height: 30px;
 }
 
@@ -902,7 +902,7 @@ margin-top: 10px;
 }
 
 .blog .date {
-   font-size: 11px; 
+   font-size: 11px;
 }
 
 .blog a {
