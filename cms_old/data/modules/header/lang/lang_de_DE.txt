@@ -1,2 +1,0 @@
-WELCOME=Willkommen!
-TXT_WELCOME=Zur CONTENIDO Homepage

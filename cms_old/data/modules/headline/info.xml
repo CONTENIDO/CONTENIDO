@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module><name>Headline</name>
-<description>Output standard h1 headline</description>
-<type>Content</type>
-<alias>headline</alias>
-</module>

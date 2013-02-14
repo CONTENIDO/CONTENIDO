@@ -1,5 +1,0 @@
-XML_SITEMAP_SUCCES_WRITTEN=XML Sitemap erfolgreich geschrieben in 
-XML_SITEMAP_NOT_WRITTEN=XML sitemap konnte nicht geschrieben werden in 
-CHOOSE_TREE=Baum wählen:
-TXT_ENTER_FILENAME=Enter filename (optional)
-

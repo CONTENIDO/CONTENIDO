@@ -14,8 +14,6 @@ cms/data/version/layout/*
 cms/data/version/module/*
 cms/data/version/templates/*
 cms/xml/*
-cms_old/cache/*
-cms_old/cache/code/*
 contenido/cronjobs/*.job
 contenido/external/frontend/.htaccess_recommended
 contenido/includes/config.clients.php

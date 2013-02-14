@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module><name>Navigation_Main</name>
-<description>Display main navigation on left side.</description>
-<type>Navigation</type>
-<alias>navigation_main</alias>
-</module>

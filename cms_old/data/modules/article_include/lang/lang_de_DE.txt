@@ -1,2 +1,0 @@
-CHOOSE_ARTICLE=Artikel wählen
-PLEASE_CHOOSE=Bitte wählen

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module><name>News</name>
-<description>Teasers articles with CMS_TEASER</description>
-<type>Content</type>
-<alias>news</alias>
-</module>

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module><name>RSS_Reader</name>
-<description>Display an RSS Feed.</description>
-<type>Content</type>
-<alias>rss_reader</alias>
-</module>

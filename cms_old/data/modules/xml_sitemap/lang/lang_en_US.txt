@@ -1,4 +1,0 @@
-CHOOSE_TREE=Choose tree:
-TXT_ENTER_FILENAME=Enter filename (optional):
-XML_SITEMAP_SUCCES_WRITTEN=XML sitemap successfully written to %s
-XML_SITEMAP_NOT_WRITTEN=XML sitemap could not be written to %s
