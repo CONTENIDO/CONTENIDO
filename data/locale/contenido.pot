@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-13 17:34+0100\n"
+"POT-Creation-Date: 2013-02-14 13:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -812,10 +812,10 @@ msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:709
 #: classes/content_types/class.content.type.teaser.php:735
-#: classes/content_types/class.content.type.teaser.php:785
-#: classes/content_types/class.content.type.teaser.php:848
-#: classes/content_types/class.content.type.teaser.php:880
-#: classes/content_types/class.content.type.teaser.php:905
+#: classes/content_types/class.content.type.teaser.php:788
+#: classes/content_types/class.content.type.teaser.php:851
+#: classes/content_types/class.content.type.teaser.php:883
+#: classes/content_types/class.content.type.teaser.php:908
 #: includes/functions.general.php:876 includes/functions.general.php:916
 #: includes/include.CMS_LINK.php:225 includes/include.CMS_LINK.php:253
 #: includes/include.CMS_LINK.php:281 includes/include.CMS_LINK.php:309
@@ -835,19 +835,23 @@ msgstr ""
 msgid "Text style"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:815
-msgid "Advanced teaser settings"
-msgstr ""
-
-#: classes/content_types/class.content.type.teaser.php:816
-msgid "Teaser filter"
+#: classes/content_types/class.content.type.teaser.php:748
+msgid "Blog style"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:818
+msgid "Advanced teaser settings"
+msgstr ""
+
+#: classes/content_types/class.content.type.teaser.php:819
+msgid "Teaser filter"
+msgstr ""
+
+#: classes/content_types/class.content.type.teaser.php:821
 msgid "Teaser sort"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:820
+#: classes/content_types/class.content.type.teaser.php:823
 #: classes/content_types/class.content.type.filelist.php:602
 #: includes/include.rights_left_top.php:146 includes/include.mod_new.php:112
 #: includes/include.upl_artlist.php:67
@@ -856,44 +860,44 @@ msgstr ""
 msgid "Sort order"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:823
+#: classes/content_types/class.content.type.teaser.php:826
 msgid "Size settings"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:824
+#: classes/content_types/class.content.type.teaser.php:827
 msgid "Character length"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:826
+#: classes/content_types/class.content.type.teaser.php:829
 msgid "Image width"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:828
+#: classes/content_types/class.content.type.teaser.php:831
 msgid "Image height"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:830
+#: classes/content_types/class.content.type.teaser.php:833
 msgid "Image scale"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:852
+#: classes/content_types/class.content.type.teaser.php:855
 msgid "Sort sequence"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:855
+#: classes/content_types/class.content.type.teaser.php:858
 #: includes/include.mycontenido_lastarticles.php:176
 msgid "Creation date"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:858
+#: classes/content_types/class.content.type.teaser.php:861
 msgid "Published date"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:861
+#: classes/content_types/class.content.type.teaser.php:864
 msgid "Modification date"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:884
+#: classes/content_types/class.content.type.teaser.php:887
 #: classes/content_types/class.content.type.filelist.php:667
 #: includes/include.rights_left_top.php:109
 #: includes/include.frontend.user_menu.php:100 includes/include.mod_new.php:53
@@ -901,7 +905,7 @@ msgstr ""
 msgid "Ascending"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:887
+#: classes/content_types/class.content.type.teaser.php:890
 #: classes/content_types/class.content.type.filelist.php:670
 #: includes/include.rights_left_top.php:110
 #: includes/include.frontend.user_menu.php:101 includes/include.mod_new.php:53
@@ -909,36 +913,36 @@ msgstr ""
 msgid "Descending"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:909
+#: classes/content_types/class.content.type.teaser.php:912
 msgid "Scaled"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:912
+#: classes/content_types/class.content.type.teaser.php:915
 msgid "Cropped"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:932
+#: classes/content_types/class.content.type.teaser.php:935
 msgid "Manual teaser settings"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:933
+#: classes/content_types/class.content.type.teaser.php:936
 msgid "Manual teaser"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:936
+#: classes/content_types/class.content.type.teaser.php:939
 msgid "Included articles"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:949
-#: classes/content_types/class.content.type.teaser.php:985
+#: classes/content_types/class.content.type.teaser.php:952
+#: classes/content_types/class.content.type.teaser.php:988
 msgid "Unknown article"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:956
+#: classes/content_types/class.content.type.teaser.php:959
 msgid "Add article"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:957
+#: classes/content_types/class.content.type.teaser.php:960
 #: classes/class.ajax.php:128 templates/standard/template.symbolhelp.html:21
 #: templates/standard/template.symbolhelp.html:166
 #: templates/standard/template.mycontenido_lastarticles.html:64
@@ -952,7 +956,7 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:959
+#: classes/content_types/class.content.type.teaser.php:962
 #: classes/class.ajax.php:144 templates/standard/template.symbolhelp.html:20
 #: templates/standard/template.symbolhelp.html:102
 #: includes/include.logs.php:284 includes/include.upl_artlist.php:63
@@ -961,7 +965,7 @@ msgstr ""
 msgid "Article"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:961
+#: classes/content_types/class.content.type.teaser.php:964
 #: includes/include.con_translate.php:417
 msgid "Add"
 msgstr ""
@@ -4665,7 +4669,7 @@ msgstr ""
 msgid "Saved searches"
 msgstr ""
 
-#: includes/include.con_left_top.php:272 includes/include.mycontenido.php:200
+#: includes/include.con_left_top.php:272 includes/include.mycontenido.php:196
 #: includes/include.mycontenido_lastarticles.php:90 xml/navigation.xml:88
 msgid "Recently edited articles"
 msgstr ""
@@ -4760,13 +4764,13 @@ msgstr ""
 msgid "Mode"
 msgstr ""
 
-#: includes/functions.str.php:310
+#: includes/functions.str.php:312
 msgid ""
 "The list of categories is messed up. The order in the list creates an "
 "infinite loop. Check you database."
 msgstr ""
 
-#: includes/functions.str.php:964 includes/functions.tpl.php:418
+#: includes/functions.str.php:966 includes/functions.tpl.php:418
 #: includes/functions.con.php:1260
 #, php-format
 msgid "%s (Copy)"
@@ -5176,36 +5180,36 @@ msgstr ""
 msgid "Last login"
 msgstr ""
 
-#: includes/include.mycontenido.php:123 includes/include.mycontenido.php:156
+#: includes/include.mycontenido.php:136
+msgid "Change client"
+msgstr ""
+
+#: includes/include.mycontenido.php:141
+msgid "No clients available!"
+msgstr ""
+
+#: includes/include.mycontenido.php:152
 #, php-format
 msgid "Client %s (%s) has no languages"
 msgstr ""
 
-#: includes/include.mycontenido.php:140
-msgid "Change client"
-msgstr ""
-
-#: includes/include.mycontenido.php:145
-msgid "No clients available!"
-msgstr ""
-
-#: includes/include.mycontenido.php:194
+#: includes/include.mycontenido.php:190
 #, php-format
 msgid "Reminder list: %d Task open"
 msgstr ""
 
-#: includes/include.mycontenido.php:196
+#: includes/include.mycontenido.php:192
 #, php-format
 msgid "Reminder list: %d Tasks open"
 msgstr ""
 
-#: includes/include.mycontenido.php:199
+#: includes/include.mycontenido.php:195
 #: includes/include.frontend.group.subnav.php:34 xml/navigation.xml:11
 #: xml/navigation.xml:19 xml/navigation.xml:21 xml/navigation.xml:87
 msgid "Overview"
 msgstr ""
 
-#: includes/include.mycontenido.php:202 xml/navigation.xml:90
+#: includes/include.mycontenido.php:198 xml/navigation.xml:90
 msgid "Settings"
 msgstr ""
 
