@@ -103,7 +103,7 @@ $cfg['db'] = array(
         'database' => '{MYSQL_DB}',   // (string) The database name which you use
         'user'     => '{MYSQL_USER}', // (string) The username to access the database
         'password' => '{MYSQL_PASS}', // (string) The password to access the database
-        'charset'  => '',             // (string) The charset of connection to database
+        'charset'  => '{MYSQL_COLLATION}', // (string) The charset of connection to database
     ),
     'haltBehavior'    => 'report', // (string) Feasible values are 'yes', 'no' or 'report'
     'haltMsgPrefix'   => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',

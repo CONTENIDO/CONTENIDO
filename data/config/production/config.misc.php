@@ -159,6 +159,9 @@ $cfg['php_settings']['error_log'] = $cfg['path']['contenido_logs'] . 'errorlog.t
 // (string) valid PHP timezone http://php.net/manual/en/timezones.php
 $cfg['php_settings']['date.timezone'] = '';
 
+// (string) valid PHP default charset
+$cfg['php_settings']['default_charset'] = 'UTF-8';
+
 // (int) PHP error reporting setting
 $cfg['php_error_reporting'] = E_ALL & ~(E_STRICT | E_NOTICE);
 

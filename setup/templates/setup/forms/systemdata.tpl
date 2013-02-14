@@ -28,6 +28,10 @@
                     <td class="first"><div class="description">{LABEL_DBPREFIX}</div></td>
                     <td class="last">{INPUT_DBPREFIX}</td>
                 </tr>
+                <tr>
+                    <td class="first"><div class="description">{LABEL_DBCOLLATION}</div></td>
+                    <td class="last">{INPUT_DBCOLLATION}</td>
+                </tr>
             </table>
         </td>
         <td class="nav">{BACK}{NEXT}</td>

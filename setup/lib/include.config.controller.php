@@ -40,6 +40,7 @@ $tpl->set('s', 'MYSQL_DB', $cfg['db']['connection']['database']);
 $tpl->set('s', 'MYSQL_USER', $cfg['db']['connection']['user']);
 $tpl->set('s', 'MYSQL_PASS', $cfg['db']['connection']['password']);
 $tpl->set('s', 'MYSQL_PREFIX', $cfg['sql']['sqlprefix']);
+$tpl->set('s', 'MYSQL_COLLATION', $cfg['db']['connection']['charset']);
 
 if (hasMySQLiExtension() && !hasMySQLExtension()) {
     $tpl->set('s', 'DB_EXTENSION', 'mysqli');

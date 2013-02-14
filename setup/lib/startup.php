@@ -126,6 +126,7 @@ $cfg['db'] = array(
         'database' => (isset($_SESSION['dbname'])) ? $_SESSION['dbname'] : '',
         'user' => (isset($_SESSION['dbuser'])) ? $_SESSION['dbuser'] : '',
         'password' => (isset($_SESSION['dbpass'])) ? $_SESSION['dbpass'] : '',
+        'charset' => (isset($_SESSION['dbcollation'])) ? $_SESSION['dbcollation'] : ''
     ),
     'haltBehavior' => 'report',
     'haltMsgPrefix' => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',

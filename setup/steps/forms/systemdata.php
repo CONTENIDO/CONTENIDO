@@ -43,12 +43,14 @@ class cSetupSystemData extends cSetupMask
         cArray::initializeKey($_SESSION, "dbuser", "");
         cArray::initializeKey($_SESSION, "dbname", "");
         cArray::initializeKey($_SESSION, "dbpass", "");
+        cArray::initializeKey($_SESSION, "dbcollation", "");
 
         if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
             $contenido_host     = ""; // Just define the variables to avoid warnings in IDE
             $contenido_user     = "";
             $contenido_database = "";
             $contenido_password = "";
+            $contenido_collation = "";
 
             $cfgBackup = $cfg;
 
@@ -59,7 +61,8 @@ class cSetupSystemData extends cSetupMask
                 "dbuser" => $contenido_user,
                 "dbname" => $contenido_database,
                 "dbpass" => $contenido_password,
-                "dbprefix" => $cfg["sql"]["sqlprefix"]
+                "dbprefix" => $cfg["sql"]["sqlprefix"],
+                "dbcollation" => $contenido_collation
             );
 
             $cfg = $cfgBackup;
@@ -88,6 +91,10 @@ class cSetupSystemData extends cSetupMask
             $_SESSION["dbprefix"] = "con";
         }
 
+        if ($_SESSION["dbcollation"] == "" && $_SESSION["setuptype"] == 'setup') {
+            $_SESSION["dbcollation"] = "utf8";
+        }
+
         unset($_SESSION["install_failedchunks"]);
         unset($_SESSION["install_failedupgradetable"]);
         unset($_SESSION["configsavefailed"]);
@@ -111,6 +118,7 @@ class cSetupSystemData extends cSetupMask
         $dbpass_hidden = new cHTMLHiddenField("dbpass_changed", "false");
 
         $dbprefix = new cHTMLTextbox("dbprefix", $_SESSION["dbprefix"], 10, 30);
+        $dbcollation = new cHTMLTextbox("dbcollation", $_SESSION["dbcollation"], 10, 30);
 
         $this->_oStepTemplate->set("s", "LABEL_DBHOST", i18n("Database Server (IP or name)"));
 
@@ -118,18 +126,20 @@ class cSetupSystemData extends cSetupMask
             $this->_oStepTemplate->set("s", "LABEL_DBNAME", i18n("Database Name")."<br>".i18n("(use empty or non-existant database)"));
         } else {
             $this->_oStepTemplate->set("s", "LABEL_DBNAME", i18n("Database Name"));
+            $dbcollation->setDisabled(true);
         }
 
         $this->_oStepTemplate->set("s", "LABEL_DBUSERNAME", i18n("Database Username"));
         $this->_oStepTemplate->set("s", "LABEL_DBPASSWORD", i18n("Database Password"));
         $this->_oStepTemplate->set("s", "LABEL_DBPREFIX", i18n("Table Prefix"));
-
+        $this->_oStepTemplate->set("s", "LABEL_DBCOLLATION", i18n("Database collation"));
 
         $this->_oStepTemplate->set("s", "INPUT_DBHOST", $dbhost->render());
         $this->_oStepTemplate->set("s", "INPUT_DBNAME", $dbname->render());
         $this->_oStepTemplate->set("s", "INPUT_DBUSERNAME", $dbuser->render());
         $this->_oStepTemplate->set("s", "INPUT_DBPASSWORD", $dbpass->render().$dbpass_hidden->render());
         $this->_oStepTemplate->set("s", "INPUT_DBPREFIX", $dbprefix->render());
+        $this->_oStepTemplate->set("s", "INPUT_DBCOLLATION", $dbcollation->render());
 
         $this->setNavigation($previous, $next);
     }
