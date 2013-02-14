@@ -117,11 +117,7 @@ if (count($clients) > 1) {
     foreach ($clients as $key => $v_client) {
         if ($perm->hasClientPermission($key)) {
             $cApiClient->loadByPrimaryKey($key);
-            if ($cApiClient->hasLanguages()) {
                 $choices[$key] = $v_client['name'] . ' (' . $key . ')';
-            } else {
-                $warnings[] = sprintf(i18n('Client %s (%s) has no languages'), $v_client['name'], $key);
-            }
         }
     }
 
