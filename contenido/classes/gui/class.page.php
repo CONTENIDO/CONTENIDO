@@ -494,6 +494,8 @@ class cGuiPage {
         }
         if (!empty($meta)) {
             $this->_pagetemplate->set('s', 'META', $meta);
+        } else {
+            $this->_pagetemplate->set('s', 'META', "");
         }
 
         $strscript = $this->_subnav . "\n" . $this->_markscript . "\n";
