@@ -458,9 +458,13 @@ class cModuleTemplateHandler extends cModuleHandler {
         ));
         $form->add(i18n('Action'), $inputDelete->toHTML());
         $form->add(i18n('Action'), $inputAdd->toHTML());
-        $form->add(i18n('File'), $selectFile);
-        $form->add(i18n('Name'), $tb_name);
-        $form->add(i18n('Code'), $ta_code);
+
+        //add fields only if template file exists
+        if($this->_file) {
+            $form->add(i18n('File'), $selectFile);
+            $form->add(i18n('Name'), $tb_name);
+            $form->add(i18n('Code'), $ta_code);
+        }
         $this->_page->setContent(array(
             $form
         ));
