@@ -517,8 +517,6 @@ class PifaForm extends Item {
                     $string = file_get_contents($attachment);
                     $filename = $values[$column];
                     $mailer->AddStringAttachment($string, $filename);
-                } else {
-                    Util::log("PIFA: cannot find file '$attachment' as attachment");
                 }
             }
         }

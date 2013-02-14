@@ -18,8 +18,8 @@ try {
 	$page = new PifaRightBottomPage();
 	$page->render();
 } catch (Exception $e) {
-    Util::logException($e);
-    echo Util::notifyException($e);
+    Pifa::logException($e);
+    echo Pifa::notifyException($e);
 }
 
 ?>

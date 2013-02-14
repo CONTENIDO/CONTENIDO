@@ -17,9 +17,8 @@ try {
 	$page = new PifaLeftBottomPage();
 	$page->render();
 } catch (Exception $e) {
-    Util::logException($e);
-    $cGuiNotification = new cGuiNotification();
-    echo $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
+    Pifa::logException($e);
+    echo Pifa::notifyException($e);
 }
 
 ?>

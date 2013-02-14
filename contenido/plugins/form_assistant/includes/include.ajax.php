@@ -19,8 +19,8 @@ $ajaxHandler = new PifaAjaxHandler();
 try {
     $ajaxHandler->dispatch($action);
 } catch (Exception $e) {
-    Util::logException($e);
-    Util::displayException($e);
+    Pifa::logException($e);
+    Pifa::displayException($e);
 }
 
 ?>

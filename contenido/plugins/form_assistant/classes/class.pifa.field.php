@@ -116,7 +116,6 @@ class PifaFieldCollection extends ItemCollection {
 		    WHERE
 		    	idform = $idform
 		    ;";
-        Util::dump($sql);
 
         $db->query($sql);
 

@@ -42,13 +42,13 @@ abstract class PifaAbstractFormProcessor {
         // assure $idform to be an integer
         $idform = cSecurity::toInteger($idform);
         if (0 === $idform) {
-            throw new ModuleException('don\'t know which form to load');
+            throw new PifaException('don\'t know which form to load');
         }
 
         // load form
         $this->_form = new PifaForm($idform);
         if (false === $this->_form->isLoaded()) {
-            throw new ModuleException('could not load form');
+            throw new PifaException('could not load form');
         }
 
     }
@@ -105,7 +105,7 @@ abstract class PifaAbstractFormProcessor {
 
         // assert there is a form to process
         if (NULL === $this->_form) {
-            throw new ModuleException('there is no form to process');
+            throw new PifaException('there is no form to process');
         }
 
         // perform steps as described in documentation

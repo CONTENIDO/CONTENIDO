@@ -301,7 +301,7 @@ class PifaRightBottomPage extends cGuiPage {
                 try {
                     $this->set('s', 'form_form', $this->_showForm());
                 } catch (SmartyCompilerException $e) {
-                    $this->set('s', 'form_form', Util::notifyException($e));
+                    $this->set('s', 'form_form', Pifa::notifyException($e));
                 }
                 $this->_dispatch('show_fields');
                 $this->_dispatch('show_data');
@@ -311,7 +311,7 @@ class PifaRightBottomPage extends cGuiPage {
                 try {
                     $this->set('s', 'fields_form', $this->_showFields());
                 } catch (SmartyCompilerException $e) {
-                    $this->set('s', 'fields_form', Util::notifyException($e));
+                    $this->set('s', 'fields_form', Pifa::notifyException($e));
                 }
                 break;
 
@@ -319,7 +319,7 @@ class PifaRightBottomPage extends cGuiPage {
                 try {
                     $this->set('s', 'form_data', $this->_showData());
                 } catch (SmartyCompilerException $e) {
-                    $this->set('s', 'form_data', Util::notifyException($e));
+                    $this->set('s', 'form_data', Pifa::notifyException($e));
                 }
                 break;
 
@@ -328,7 +328,7 @@ class PifaRightBottomPage extends cGuiPage {
                 try {
                     $this->_storeForm();
                 } catch (Exception $e) {
-                    $notification = Util::notifyException($e);
+                    $notification = Pifa::notifyException($e);
                 }
                 $this->_dispatch('show_form', $notification);
                 break;
@@ -337,7 +337,7 @@ class PifaRightBottomPage extends cGuiPage {
                 try {
                     $this->_addField();
                 } catch (Exception $e) {
-                    $notification = Util::notifyException($e);
+                    $notification = Pifa::notifyException($e);
                 }
                 $this->_dispatch('show_form', $notification);
                 break;
@@ -346,7 +346,7 @@ class PifaRightBottomPage extends cGuiPage {
                 try {
                     $this->_storeField();
                 } catch (Exception $e) {
-                    $notification = Util::notifyException($e);
+                    $notification = Pifa::notifyException($e);
                 }
                 $this->_dispatch('show_form', $notification);
                 break;
@@ -529,13 +529,13 @@ class PifaRightBottomPage extends cGuiPage {
         try {
             $tpl->assign('fields', $this->_pifaForm->getFields());
         } catch (Exception $e) {
-            $tpl->assign('fields', Util::notifyException($e));
+            $tpl->assign('fields', Pifa::notifyException($e));
         }
 
         try {
             $tpl->assign('data', $this->_pifaForm->getData());
         } catch (Exception $e) {
-            $tpl->assign('data', Util::notifyException($e));
+            $tpl->assign('data', Pifa::notifyException($e));
         }
 
         $out = $tpl->fetch($cfg['templates']['pifa_right_bottom_data']);

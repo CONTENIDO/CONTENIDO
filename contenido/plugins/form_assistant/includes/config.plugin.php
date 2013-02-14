@@ -90,6 +90,75 @@ class Pifa {
     }
 
     /**
+     *
+     * @param Exception $e
+     */
+    public static function logException(Exception $e) {
+
+        $cfg = cRegistry::getConfig();
+
+        $log = new cLog(cLogWriter::factory('file', array(
+            'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
+        )), cLog::ERR);
+
+        $log->err($e->getMessage());
+        $log->err($e->getTraceAsString());
+
+    }
+
+    /**
+     * TODO build method to display erro & info box and just call it from here
+     *
+     * @param Exception $e
+     * @param bool $showTrace if trace should be displayed too
+     */
+    public static function displayException(Exception $e, $showTrace = false) {
+
+        if (true) {
+            // error box
+            $class = "ui-state-error";
+            $icon = "ui-icon-alert";
+        } else {
+            // info box
+            $class = "ui-state-highlight";
+            $icon = "ui-icon-info";
+        }
+
+        echo '<div class="ui-widget">';
+        echo '<div class="' . $class . ' ui-corner-all">';
+        echo '<p>';
+        echo '<span class="ui-icon ' . $icon . '"></span>';
+        // echo '<strong>Exception</strong>';
+        echo $e->getMessage();
+        if (true === $showTrace) {
+            echo '<pre style="overflow: auto">';
+            echo htmlentities($e->getTraceAsString());
+            echo '</pre>';
+        }
+        echo '</p>';
+        echo '</div>';
+        echo '</div>';
+
+    }
+
+    /**
+     * Creates a notification widget in order to display an exception message in
+     * backend.
+     *
+     * @param Exception $e
+     * @return string
+     */
+    public static function notifyException(Exception $e) {
+
+        $cGuiNotification = new cGuiNotification();
+        $level = cGuiNotification::LEVEL_ERROR;
+        $message = $e->getMessage();
+
+        return $cGuiNotification->returnNotification($level, $message);
+
+    }
+
+    /**
      */
     public static function getExtensionClasses($regex) {
 

@@ -1687,7 +1687,6 @@ class Securimage
             return false;
         } else if (function_exists('error_get_last') && null !== error_get_last() && ini_get('display_errors') != false) {
             // an error has been output and display_errors is on
-            Util::dump(error_get_last());
             return false;
         } else if (strlen((string)ob_get_contents()) > 0) {
             // headers haven't been sent, but there is data in the buffer that will break image and audio data

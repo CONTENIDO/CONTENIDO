@@ -78,7 +78,7 @@ abstract class AbstractFormModule {
                 break;
             default:
                 // FIXME I18N
-                throw new ModuleException('unknown request method');
+                throw new PifaException('unknown request method');
         }
 
         $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
