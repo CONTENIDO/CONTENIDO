@@ -1,3 +1,8 @@
+.blog-data {
+    width: 100%;
+    clear: both;
+}
+
 .user_forum {
     font-size: 11px;
     padding: 10px 0;
