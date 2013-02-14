@@ -174,7 +174,7 @@ foreach ($aPhpConfiguration as $sConfigName) {
         if ($sValue == '') {
             $sValue = '<span style="color:green">' . i18n('nothing disabled') . "</span>";
         } else {
-            $sValue = '<span style="color:red">' . $sValue . "</span>";
+            $sValue = '<span style="color:red">' . str_replace(',', ', ', $sValue) . "</span>";
         }
     }
 
