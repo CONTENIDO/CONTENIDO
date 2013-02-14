@@ -1,0 +1,48 @@
+
+== DONE ==
+
+[x] M: allowed chars for data table and column names: /a-z0-9_/i
+[x] M: add form fields for option labels and option values
+[x] M: add security confirmation on deletion of a form
+
+[x] S: fix sorting problem (due to float: left)
+
+[x] W: create translations for Pifa::i18n()
+
+== TODO ==
+
+[_] M: implement display of SELECT & SELECTMULTI
+[_] M: write proper CSS (Kostas, Anne)
+[_] M: FieldType File tries to store file even if none was selected
+		this also occurs if field is not mandatory ...
+
+[_] C: move securimage into form_assistant (needed for CAPTCHA)
+[_] C: implement display of DATEPICKER, INPUTFILE, PROCESSBAR, SLIDER, CAPTCHA, MATRIX
+[_] C: determine which data type to use for INPUTFILE, PROCESSBAR, SLIDER, CAPTCHA, MATRIX
+
+[_] W: write documentation
+[_] W: add but_ok.gif to field form
+[_] W: fix error on saving unchanged data (CONTENIDO GDB problem)
+[_] W: add different icons for different form field types in PifaField::getFieldTypeIcon
+[_] W: implement adding of fields to form by Drag & Drop from a list of field types
+
+== UNSORTED ==
+
+[_] schwarze schrift in field form dialog
+[_] einheitlicher submit-button in field form dialog
+[_] field form dialog: hit on enter produces:
+Fatal error: Uncaught exception 'Exception' with message 'field type 0 is not implemented' in /var/www/dorma/htdocs/contenido/plugins/form_assistant/classes/class.pifa.field.php:958 Stack trace: #0 /var/www/dorma/htdocs/contenido/plugins/form_assistant/classes/class.pifa.form.php(875): PifaField->getDbDataType() #1 /var/www/dorma/htdocs/contenido/plugins/form_assistant/classes/class.pifa.ajax_handler.php(512): PifaForm->addColumn(Object(PifaField)) #2 /var/www/dorma/htdocs/contenido/plugins/form_assistant/classes/class.pifa.ajax_handler.php(80): PifaAjaxHandler->_editFieldFormKK(0, 0) #3 /var/www/dorma/htdocs/contenido/plugins/form_assistant/includes/include.ajax.php(19): PifaAjaxHandler->dispatch('edit_field_form') #4 /var/www/dorma/htdocs/contenido/main.php(202): include_once('/var/www/dorma/...') #5 {main} thrown in /var/www/dorma/htdocs/contenido/plugins/form_assistant/classes/class.pifa.field.php on line 958
+[_] nach dem Herunterziehen wird die row falsch dargestellt.
+[_] Sicherheitsbafrage beim Löschen eines Feldes
+[_] Anzeige der Fehlermeldung bei fehlendem Spaltennamen
+[_] display label wird nicht gespeichert
+[_] error message hat textarea ist aber varchar 1023
+[x] beim Löschen eines Feldes ist die Animation weg
+[_] beim D&D eines Feldes verschwindet dieses
+[_] Submit darf nicht obligatory sein
+
+record in con_type bei Installation
+
+Autoloader anpassen mittels function add autoloadermapclass
+
+

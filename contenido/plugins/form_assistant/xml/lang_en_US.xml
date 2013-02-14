@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- CONTENIDO XML language file -->
+<language>
+    <plugins>
+        <label>plugins</label>
+        <form_assistant>
+            <label>form assistant</label>
+            <form>
+                <label>form</label>
+            </form>
+            <fields>
+                <label>fields</label>
+            </fields>
+        </form_assistant>
+    </plugins>
+</language>

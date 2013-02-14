@@ -1,0 +1,172 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: CONTENIDO FormAsistant\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2012-10-02 14:49+0100\n"
+"Last-Translator: Marcus Gnaß <marcus.gnass@4fb.de>\n"
+"Language-Team: Marcus Gnaß <marcus.gnass@4fb.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-KeywordsList: i18n\n"
+"X-Poedit-SearchPath-0: \n"
+
+
+msgid "Einzeiliges Eingabefeld"
+msgstr "Einzeiliges Eingabefeld"
+
+msgid "Mehrzeiliges Eingabefeld"
+msgstr "Mehrzeiliges Eingabefeld"
+
+msgid "Passwortfeld"
+msgstr "Passwortfeld"
+
+msgid "Radiobuttons"
+msgstr "Radiobuttons"
+
+msgid "Checkboxen"
+msgstr "Checkboxen"
+
+msgid "Auswahlliste"
+msgstr "Auswahlliste"
+
+msgid "Auswahlliste mit Mehrfachauswahl"
+msgstr "Auswahlliste mit Mehrfachauswahl"
+
+msgid "Datum & Uhrzeit"
+msgstr "Datum & Uhrzeit"
+
+msgid "Dateiupload"
+msgstr "Dateiupload"
+
+msgid "Fortschrittsbalken"
+msgstr "Fortschrittsbalken"
+
+msgid "Slider"
+msgstr "Slider"
+
+msgid "Captcha"
+msgstr "Captcha"
+
+msgid "Absenden-Button"
+msgstr "Absenden-Button"
+
+msgid "Abbrechen-Button"
+msgstr "Abbrechen-Button"
+
+msgid "Zurück-Button"
+msgstr "Zurück-Button"
+
+msgid "Matrix"
+msgstr "Matrix"
+
+################################################################################
+
+msgid "Do you really want to delete the following form:<br><br>%s<br>"
+msgstr "Do you really want to delete the following form:<br><br>%s<br>"
+
+msgid "add field"
+msgstr "add field"
+
+msgid "column name"
+msgstr "column name"
+
+msgid "create"
+msgstr "create"
+
+msgid "data"
+msgstr "data"
+
+msgid "data table name"
+msgstr "data table name"
+
+msgid "default value"
+msgstr "default value"
+
+msgid "delete"
+msgstr "delete"
+
+msgid "delete form"
+msgstr "delete form"
+
+msgid "edit"
+msgstr "edit"
+
+msgid "edit fields"
+msgstr "edit fields"
+
+msgid "error message"
+msgstr "error message"
+
+msgid "fields"
+msgstr "fields"
+
+msgid "field type"
+msgstr "field type"
+
+msgid "form"
+msgstr "form"
+
+msgid "form deleted"
+msgstr "form deleted"
+
+msgid "form name"
+msgstr "form name"
+
+msgid "help text"
+msgstr "help text"
+
+msgid "hidden input"
+msgstr "hidden input"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "label"
+msgstr "label"
+
+msgid "no fields found"
+msgstr "no fields found"
+
+msgid "obligatory"
+msgstr "obligatory"
+
+msgid "option labels"
+msgstr "option labels"
+
+msgid "option values"
+msgstr "option values"
+
+msgid "paragraph"
+msgstr "paragraph"
+
+msgid "please choose"
+msgstr "please choose"
+
+msgid "please save first"
+msgstr "please save first"
+
+msgid "please select a form"
+msgstr "please select a form"
+
+msgid "rank"
+msgstr "rank"
+
+msgid "request method"
+msgstr "request method"
+
+msgid "save"
+msgstr "save"
+
+msgid "show form"
+msgstr "show form"
+
+msgid "unknown"
+msgstr "unknown"
+
+msgid "validation rule"
+msgstr "validation rule"
+

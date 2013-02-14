@@ -218,6 +218,8 @@ cms/js/jquery-ui-1.9.1.custom.min.js -text svneol=unset#text/plain
 cms/js/main.js -text svneol=unset#text/plain
 cms/robots.txt -text
 cms/templates/cms_filelist_style_default.html -text
+cms/templates/cms_pifaform_get_default.tpl -text
+cms/templates/cms_pifaform_post_default.tpl -text
 cms/templates/cms_teaser_blog.html -text
 cms/templates/cms_teaser_image.html -text
 cms/templates/cms_teaser_slider.html -text
@@ -1763,6 +1765,147 @@ contenido/plugins/cronjobs_overview/templates/right_bottom_overview.html -text s
 contenido/plugins/cronjobs_overview/xml/cronjobs_overview.xml -text svneol=unset#text/plain
 contenido/plugins/cronjobs_overview/xml/lang_de_DE.xml -text svneol=unset#text/plain
 contenido/plugins/cronjobs_overview/xml/lang_en_EN.xml -text svneol=unset#text/plain
+contenido/plugins/form_assistant/classes/class.content.type.pifa_form.php -text
+contenido/plugins/form_assistant/classes/class.pifa.ajax_handler.php -text
+contenido/plugins/form_assistant/classes/class.pifa.exceptions.php -text
+contenido/plugins/form_assistant/classes/class.pifa.external_options_datasource_interface.php -text
+contenido/plugins/form_assistant/classes/class.pifa.field.php -text
+contenido/plugins/form_assistant/classes/class.pifa.form.php -text
+contenido/plugins/form_assistant/classes/class.pifa.form_post_helper.php -text
+contenido/plugins/form_assistant/classes/class.pifa.gui.php -text
+contenido/plugins/form_assistant/docs/.htaccess -text
+contenido/plugins/form_assistant/docs/example.module.css -text svneol=unset#text/plain
+contenido/plugins/form_assistant/docs/install.sql -text
+contenido/plugins/form_assistant/docs/todo.txt -text svneol=unset#text/plain
+contenido/plugins/form_assistant/docs/todo_de.txt -text svneol=unset#text/plain
+contenido/plugins/form_assistant/docs/uninstall.sql -text
+contenido/plugins/form_assistant/extensions/class.pifa.abstract_form_module.php -text
+contenido/plugins/form_assistant/extensions/class.pifa.default_form_module.php -text
+contenido/plugins/form_assistant/extensions/class.pifa.product_group_options_datasource.php -text
+contenido/plugins/form_assistant/images/btn_close.png -text
+contenido/plugins/form_assistant/images/button_close.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_1.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_10.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_11.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_12.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_13.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_14.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_15.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_17.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_18.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_19.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_2.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_20.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_3.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_4.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_5.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_6.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_7.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_8.png -text
+contenido/plugins/form_assistant/images/pifa_field_type_9.png -text
+contenido/plugins/form_assistant/includes/config.plugin.php -text
+contenido/plugins/form_assistant/includes/include.ajax.php -text
+contenido/plugins/form_assistant/includes/include.left_bottom.php -text
+contenido/plugins/form_assistant/includes/include.left_top.php -text
+contenido/plugins/form_assistant/includes/include.right_bottom.php -text
+contenido/plugins/form_assistant/includes/include.right_top.php -text
+contenido/plugins/form_assistant/locale/de_DE/LC_MESSAGES/form_assistant.po -text
+contenido/plugins/form_assistant/locale/en_US/LC_MESSAGES/form_assistant.po -text
+contenido/plugins/form_assistant/scripts/cmsPifaform.js -text svneol=unset#text/plain
+contenido/plugins/form_assistant/scripts/left_bottom.js -text svneol=unset#text/plain
+contenido/plugins/form_assistant/scripts/right_bottom.js -text svneol=unset#text/plain
+contenido/plugins/form_assistant/securimage/AHGBold.ttf -text
+contenido/plugins/form_assistant/securimage/LICENSE.txt -text svneol=unset#text/plain
+contenido/plugins/form_assistant/securimage/README.FONT.txt -text svneol=unset#text/plain
+contenido/plugins/form_assistant/securimage/README.txt -text svneol=unset#text/plain
+contenido/plugins/form_assistant/securimage/WavFile.php -text
+contenido/plugins/form_assistant/securimage/audio/0.wav -text
+contenido/plugins/form_assistant/securimage/audio/1.wav -text
+contenido/plugins/form_assistant/securimage/audio/10.wav -text
+contenido/plugins/form_assistant/securimage/audio/11.wav -text
+contenido/plugins/form_assistant/securimage/audio/12.wav -text
+contenido/plugins/form_assistant/securimage/audio/13.wav -text
+contenido/plugins/form_assistant/securimage/audio/14.wav -text
+contenido/plugins/form_assistant/securimage/audio/15.wav -text
+contenido/plugins/form_assistant/securimage/audio/16.wav -text
+contenido/plugins/form_assistant/securimage/audio/17.wav -text
+contenido/plugins/form_assistant/securimage/audio/18.wav -text
+contenido/plugins/form_assistant/securimage/audio/19.wav -text
+contenido/plugins/form_assistant/securimage/audio/2.wav -text
+contenido/plugins/form_assistant/securimage/audio/20.wav -text
+contenido/plugins/form_assistant/securimage/audio/3.wav -text
+contenido/plugins/form_assistant/securimage/audio/4.wav -text
+contenido/plugins/form_assistant/securimage/audio/5.wav -text
+contenido/plugins/form_assistant/securimage/audio/6.wav -text
+contenido/plugins/form_assistant/securimage/audio/7.wav -text
+contenido/plugins/form_assistant/securimage/audio/8.wav -text
+contenido/plugins/form_assistant/securimage/audio/9.wav -text
+contenido/plugins/form_assistant/securimage/audio/A.wav -text
+contenido/plugins/form_assistant/securimage/audio/B.wav -text
+contenido/plugins/form_assistant/securimage/audio/C.wav -text
+contenido/plugins/form_assistant/securimage/audio/D.wav -text
+contenido/plugins/form_assistant/securimage/audio/E.wav -text
+contenido/plugins/form_assistant/securimage/audio/F.wav -text
+contenido/plugins/form_assistant/securimage/audio/G.wav -text
+contenido/plugins/form_assistant/securimage/audio/H.wav -text
+contenido/plugins/form_assistant/securimage/audio/I.wav -text
+contenido/plugins/form_assistant/securimage/audio/J.wav -text
+contenido/plugins/form_assistant/securimage/audio/K.wav -text
+contenido/plugins/form_assistant/securimage/audio/L.wav -text
+contenido/plugins/form_assistant/securimage/audio/M.wav -text
+contenido/plugins/form_assistant/securimage/audio/MINUS.wav -text
+contenido/plugins/form_assistant/securimage/audio/N.wav -text
+contenido/plugins/form_assistant/securimage/audio/O.wav -text
+contenido/plugins/form_assistant/securimage/audio/P.wav -text
+contenido/plugins/form_assistant/securimage/audio/PLUS.wav -text
+contenido/plugins/form_assistant/securimage/audio/Q.wav -text
+contenido/plugins/form_assistant/securimage/audio/R.wav -text
+contenido/plugins/form_assistant/securimage/audio/S.wav -text
+contenido/plugins/form_assistant/securimage/audio/T.wav -text
+contenido/plugins/form_assistant/securimage/audio/TIMES.wav -text
+contenido/plugins/form_assistant/securimage/audio/U.wav -text
+contenido/plugins/form_assistant/securimage/audio/V.wav -text
+contenido/plugins/form_assistant/securimage/audio/W.wav -text
+contenido/plugins/form_assistant/securimage/audio/X.wav -text
+contenido/plugins/form_assistant/securimage/audio/Y.wav -text
+contenido/plugins/form_assistant/securimage/audio/Z.wav -text
+contenido/plugins/form_assistant/securimage/audio/error.wav -text
+contenido/plugins/form_assistant/securimage/audio/noise/check-point-1.wav -text
+contenido/plugins/form_assistant/securimage/audio/noise/crowd-talking-1.wav -text
+contenido/plugins/form_assistant/securimage/audio/noise/crowd-talking-6.wav -text
+contenido/plugins/form_assistant/securimage/audio/noise/crowd-talking-7.wav -text
+contenido/plugins/form_assistant/securimage/audio/noise/kids-playing-1.wav -text
+contenido/plugins/form_assistant/securimage/backgrounds/bg3.jpg -text
+contenido/plugins/form_assistant/securimage/backgrounds/bg4.jpg -text
+contenido/plugins/form_assistant/securimage/backgrounds/bg5.jpg -text
+contenido/plugins/form_assistant/securimage/backgrounds/bg6.png -text
+contenido/plugins/form_assistant/securimage/captcha.html -text svneol=unset#text/plain
+contenido/plugins/form_assistant/securimage/database/.htaccess -text
+contenido/plugins/form_assistant/securimage/database/index.html -text svneol=unset#text/plain
+contenido/plugins/form_assistant/securimage/database/securimage.sqlite -text
+contenido/plugins/form_assistant/securimage/example_form.ajax.php -text
+contenido/plugins/form_assistant/securimage/example_form.php -text
+contenido/plugins/form_assistant/securimage/examples/display_value.php -text
+contenido/plugins/form_assistant/securimage/examples/securimage_show_example.php -text
+contenido/plugins/form_assistant/securimage/examples/securimage_show_example2.php -text
+contenido/plugins/form_assistant/securimage/examples/static_captcha.php -text
+contenido/plugins/form_assistant/securimage/images/audio_icon.png -text
+contenido/plugins/form_assistant/securimage/images/refresh.png -text
+contenido/plugins/form_assistant/securimage/securimage.php -text
+contenido/plugins/form_assistant/securimage/securimage_play.php -text
+contenido/plugins/form_assistant/securimage/securimage_play.swf -text
+contenido/plugins/form_assistant/securimage/words/words.txt -text svneol=unset#text/plain
+contenido/plugins/form_assistant/styles/right_bottom.css -text svneol=unset#text/plain
+contenido/plugins/form_assistant/templates/template.ajax_field_form.tpl -text
+contenido/plugins/form_assistant/templates/template.ajax_field_row.tpl -text
+contenido/plugins/form_assistant/templates/template.ajax_option_row.tpl -text
+contenido/plugins/form_assistant/templates/template.left_bottom.html -text svneol=unset#text/plain
+contenido/plugins/form_assistant/templates/template.right_bottom.html -text svneol=unset#text/plain
+contenido/plugins/form_assistant/templates/template.right_bottom_data.tpl -text
+contenido/plugins/form_assistant/templates/template.right_bottom_fields.tpl -text
+contenido/plugins/form_assistant/templates/template.right_bottom_form.tpl -text
+contenido/plugins/form_assistant/xml/lang_de_DE.xml -text svneol=unset#text/plain
+contenido/plugins/form_assistant/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/plugins/frontendlogic/category/category.php -text
 contenido/plugins/frontendlogic/category/docs/conlogo.gif -text
 contenido/plugins/frontendlogic/category/docs/frontend.protectedcategories.html -text

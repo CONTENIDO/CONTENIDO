@@ -1,0 +1,465 @@
+
+/******************************************************************************/
+/* FORM: all forms                                                            */
+/******************************************************************************/
+
+form+form {
+    margin-top: 25px;
+}
+
+fieldset {
+    border: 1px solid grey;
+}
+
+legend {
+	/*
+	font-weight: bold;
+	font-size: 10pt;
+	margin: 0;
+	border: 2px dotted #afbF00;
+	padding: 2px 6px;
+	color: #0060B1;
+	background-color: #BFCF00;
+	width: 170px;
+	text-align: center;
+	*/
+	/*
+	width: 684px;
+    height: 30px;
+    margin: 0 2px;
+    border: 1px 1px 1px 0 solid grey;
+    color: black;
+	*/
+    background-color: #f1f1f1;
+	width: 100%;
+    height: 30px;
+    margin-top: 30px;
+}
+
+/******************************************************************************/
+/* FORM: form                                                                 */
+/******************************************************************************/
+
+#pifa-form div {
+    clear: left;
+    margin-top: 4px;
+    margin-bottom : 12px;
+}
+
+#pifa-form label {
+    float: left;
+    width: 20%;
+    text-align: center;
+}
+
+#pifa-form div input,
+#pifa-form div select {
+    width: 65%;
+}
+
+
+/******************************************************************************/
+/* FORM: add field                                                            */
+/******************************************************************************/
+
+#pifa-form-add-field {
+	padding-right: 281px;
+}
+
+/******************************************************************************/
+/* FORM: form fields                                                          */
+/******************************************************************************/
+
+#pifa-form fieldset {
+    width: 678px;
+    padding-right: 0;
+    margin-bottom: 30px;
+    
+}
+
+#pifa-form fieldset div {
+    width: 571px;
+    margin-top: 1px;
+    margin-bottom: 5px;
+}
+
+#pifa-form fieldset div input {
+    width: 231px;
+    margin-right: 28%;
+} 
+
+#pifa-form fieldset div select {
+    width: 231px;
+    margin-right: 200px;
+} 
+
+#pifa-form fieldset #image-new-form {
+    float: right;    
+}
+
+/* ORIGINAL STYLES
+*/
+
+.column_name label {
+    text-align: center;
+    float: left;
+}
+
+#field-list-field {
+    width: 673px;
+}
+
+#pifa-form-field-list {
+	list-style-type: none;
+	margin: 0;
+	border: 0;
+	padding: 5px;
+	cursor: move;
+    min-height: 200px;
+}
+
+#pifa-form-field-list:empty {
+    margin: 12px 10px 0 9px;
+    border: 1px dashed grey;
+}
+
+#pifa-form-field-list li {
+    background-color: #f1f1f1;
+    height: 51px;
+    border: 1px solid black;
+    clear: left;
+    margin: 1px;
+    padding-top: 3px;
+}
+
+#pifa-form-field-list li>div {
+    float: left;
+    padding: 3px;
+    border-collapse: collapse;    
+}
+
+#pifa-form-field-list .idfield {
+    width: 5%;
+}
+
+#pifa-form-field-list .edit {
+    width: 8%;
+    padding-left: 2px;
+    padding-top : 17px;
+    text-align: center;
+}
+
+#pifa-form-field-list .edit a {   
+    padding-right: 4px;   
+}
+
+#pifa-form-field-list .column_name,
+#pifa-form-field-list .label, 
+#pifa-form-field-list .field-type {
+    width: 27%;
+}
+
+#pifa-form-field-list li div div {
+    padding-left: 30px;
+    clear: left;
+}
+
+#pifa-form-field-list label {
+    float: left;
+    width: 20%;
+}
+
+#pifa-form-field-list div input {
+    width: 75%;
+}
+
+/******************************************************************************/
+/* FORM: fields buttons                                                       */
+/******************************************************************************/
+
+#field-buttons {
+    width: 684px;
+    border-bottom: 0;
+    padding: 0;
+    background-color: #E2E2E2;
+    font-family: verdana;
+}
+
+#field-buttons ul {
+    display: inline;    
+    list-style: none;  
+    padding: 0;
+    margin: 0;
+}
+
+/******************************************************************************/
+/* FORM: forms images                                                         */
+/******************************************************************************/
+
+#txt-add-options {
+    display: inline-block;
+    line-height: 16px;
+    position: absolute;
+    padding-left: 5px;
+}
+
+.descr-icon {
+    height: 40px;
+    width: 40px;
+    padding-right: 30px;
+    margin-left: 10px;
+    float : left;
+}
+
+#droppableField {
+    margin: 13px 10px;
+    height: 200px;
+    border: 1px dashed grey;    
+}
+
+#image-new-form {
+    margin-left: 110px;
+    padding-right: 0;
+}
+
+/******************************************************************************/
+/* FORM: Modal form                                                           */
+/******************************************************************************/
+
+.ui-widget-overlay {
+    height: 800px !important;
+}
+
+.ui-dialog-titlebar {
+    height: 20px;
+    font-size: 13px;
+}
+
+#value1, #value2 {
+    margin-bottom: 10px;
+}
+
+.textMiddle {
+    height: 46px;
+    width: 540px;
+    padding-top: 3px;
+    padding-right: 30px;
+    padding-left: 40px;
+    float: left;    
+}
+
+.li-label-name {
+    padding-top : 4px;
+    font-size: 12px;    
+}
+
+.li-column-name {
+    font-size: 12px;
+    color: grey;
+}
+
+.general {
+    padding-left: 12px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.editicon {
+    padding-right : 2px;
+}
+
+#display-descr {
+    display: inline-block;
+    line-height: 4px;
+    position: absolute;
+    margin-top: 4px;
+    padding-top: 4px;
+}
+
+/******************************************************************************/
+/* FORM: Dynamic Modal form                                                   */
+/******************************************************************************/
+
+.pseudo-legend {
+    height: 20px;
+    background-color: #e2e2e2;
+    -moz-border-radius:10px; /* Firefox */
+    -webkit-border-radius:10px; /* Safari, Chrome */
+    -khtml-border-radius:10px; /* Konqueror */
+    behavior:url(border-radius.htc); /* IE */
+    border-radius: 5px; /* CSS3 */
+    line-height: 20px;
+    padding-left: 10px;
+}
+
+.pseudo-fieldset {
+    background-color: #f1f1f1;
+	-moz-border-radius:10px; /* Firefox */
+    -webkit-border-radius:10px; /* Safari, Chrome */
+    -khtml-border-radius:10px; /* Konqueror */
+    border-radius: 5px; /* CSS3 */
+    padding: 10px;
+}
+
+.pseudo-fieldset label {
+	display: block;
+    float: left;
+    width: 12em;
+}
+
+.pseudo-fieldset input,
+.pseudo-fieldset select {
+	width: 212px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.display_label {
+    padding-top: 0;
+    padding-left: 115px;
+    padding-bottom: 2px;
+}
+
+.default_value, .help_text , .obligatory, 
+.rule , .error_message , .option-labels  , .option-values, 
+.field-type-dialog, .req-input {
+    margin-bottom: 5px;
+}
+
+#error_message, #help_text {
+	resize: none;
+}
+
+.label span {
+    padding-left: 12em;
+}
+
+.option-inner-label {
+    padding: 1px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.option-inner-value {
+    padding: 1px;
+    padding-bottom: 3px;
+
+}
+.option-outer {
+    background-color: #f1f1f1;
+    margin-bottom: 2px;    
+}
+
+#req-input {
+    margin : 0;
+}
+
+#field-type-text {
+    color: grey;
+}
+
+#obligatory {
+    padding :0;
+    margin :0;
+}
+
+#icons-bottom {
+    border-top: 1px solid #e2e2e2;
+    padding-left: 318px;
+    margin-top: 15px;
+}
+
+#display {
+    margin-left: 0;
+}
+
+/******************************************************************************/
+/* FORM: Dynamic Modal form                                                   */
+/******************************************************************************/
+
+#field-buttons ul {
+    padding: 0 10px 10px 0;
+}
+
+#field-buttons ul li a {
+	background-repeat: no-repeat;
+    cursor: move;
+    float: left;
+    height: 46px;
+    width: 46px;    
+    margin: 10px 0 0 10px;
+}
+
+#add-options-div {
+    height: 24px;
+    background-color: #f1f1f1;
+}
+
+#add-options-div input{
+	margin-top: 3px;
+}
+
+#add-options-div span{
+    margin-top: 3px;
+} 
+
+.ui-widget-header {
+    border: 1px solid #aaaaaa;
+    /*background: #cccccc url(images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;*/
+    background: #006dbf;
+    color: #222222;
+}
+
+#ui-dialog-title-fieldFormDialog {
+    color: white;
+}
+
+#save-image {
+    margin-top: 15px;
+    margin-bottom: 7px;
+}
+
+.ui-dialog .ui-dialog-titlebar-close span {
+  display: block; 
+  margin: 0;
+
+}
+
+.ui-dialog-titlebar-close .ui-icon {
+     height: 17px;
+     width: 17px;
+     background-image: url(../../../images/button_close.png);
+     background-position: 0;
+     margin-bottom: 4px;
+}
+
+.ui-dialog-titlebar-close:hover {
+    background: #006dbf;
+}
+
+.pifa-icon {
+    margin-top: 2px;
+    margin-left: 5px;
+}
+
+.pifa-icon-1, .pifa-field-type-1 {background-image:url(../images/pifa_field_type_1.png);}
+.pifa-icon-2, .pifa-field-type-2 {background-image:url(../images/pifa_field_type_2.png);}
+.pifa-icon-3, .pifa-field-type-3 {background-image:url(../images/pifa_field_type_3.png);}
+.pifa-icon-4, .pifa-field-type-4 {background-image:url(../images/pifa_field_type_4.png);}
+.pifa-icon-5, .pifa-field-type-5 {background-image:url(../images/pifa_field_type_5.png);}
+.pifa-icon-6, .pifa-field-type-6 {background-image:url(../images/pifa_field_type_6.png);}
+.pifa-icon-7, .pifa-field-type-7 {background-image:url(../images/pifa_field_type_7.png);}
+.pifa-icon-8, .pifa-field-type-8 {background-image:url(../images/pifa_field_type_8.png);}
+.pifa-icon-9, .pifa-field-type-9 {background-image:url(../images/pifa_field_type_9.png);}
+.pifa-icon-10, .pifa-field-type-10 {background-image:url(../images/pifa_field_type_10.png);}
+.pifa-icon-11, .pifa-field-type-11 {background-image:url(../images/pifa_field_type_11.png);}
+.pifa-icon-12, .pifa-field-type-12 {background-image:url(../images/pifa_field_type_12.png);}
+.pifa-icon-13, .pifa-field-type-13 {background-image:url(../images/pifa_field_type_13.png);}
+.pifa-icon-14, .pifa-field-type-14 {background-image:url(../images/pifa_field_type_14.png);}
+.pifa-icon-15, .pifa-field-type-15 {background-image:url(../images/pifa_field_type_15.png);}
+.pifa-icon-16, .pifa-field-type-16 {background-image:url(../images/pifa_field_type_16.png);}
+.pifa-icon-17, .pifa-field-type-17 {background-image:url(../images/pifa_field_type_17.png);}
+.pifa-icon-18, .pifa-field-type-18 {background-image:url(../images/pifa_field_type_18.png);}
+.pifa-icon-19, .pifa-field-type-19 {background-image:url(../images/pifa_field_type_19.png);}
+.pifa-icon-20, .pifa-field-type-20 {background-image:url(../images/pifa_field_type_20.png);}

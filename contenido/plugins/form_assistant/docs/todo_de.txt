@@ -1,0 +1,44 @@
+==== Folgende Themen haben wir den Ausbau des PIFA's besprochen ====
+
+	1.) Für jedes Feld kann aus einer Auswahl an fixen css-Klassen eine css-Klasse gewählt werden.
+	
+	2.) Die Formulare werden mandantenspezifisch angezeigt.
+	
+	3.) Für jedes Formular sollen die Mailtexte innerhalb des PIFAs definiert werden.
+		Für den ersten Schritt gibt es eine interne Email und eine externe Email.
+		Jede Email hat jeweils die folgenden Eingabefelder:
+		Absenderemail, Absendername, Betreff, Eingabefeld (Tiny).
+		Für die interne Mail werden im Standard erstmal alle Felder des Formulares
+		untereinander als Platzhalter eingefügt. Die Platzhalter stehen innerhalb des Tiny
+		nochmal als Auswahlmenü zur Verfügung.
+	
+	4.) Es wird ein allgemeines Modul entwickelt, welches für jedes Formular gültig ist.
+		Zusätzlich wird ein optionaler Contenttyp "cms_form" entwickelt, welcher das Formular
+		im Editor-Bereich im Backend auswählen lässt.
+	
+	5.) Entwicklung weiterer Formularfeldtypen
+		a.) zur Einbindung einer ext. Datenquelle
+			(z.B. für das Auslesen der Produktkategorien aus der Produktdatenbank)
+		b.) Fieldsets
+		c.) OptGroupy
+		d.) HiddenFields
+	
+	6.) Integration einer Option für Textfelder für nicht füllbare Felder/ ausgraben der Felder im Frontend
+	
+	7.) Integration des Senden einer Email in Abhängigkeit eines gesetzten Feldwertes
+	
+	8.) Implementierung der Eingabe von definierten Feldgrößen (Standardwert: 50)
+	
+	9.) Überlegungen zur Berechnung von Speicherplatz (MySQL)
+
+	10.) PifaField InputFile sollte eine maximale Dateigröße definieren können. 
+
+	11.) PifaField InputFile sollte eine Liste von erlaubten Suffices / MimeTypes definieren können. 
+
+==== Für die nächste Phase sind folgende Änderungen in Planung ====
+
+	1.) Duplizieren von bestehenden Formularen
+	
+	2.) Im-/Exportieren der Formularspezifikation als XML
+	
+	3.) Formulare synchronisieren

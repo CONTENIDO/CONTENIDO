@@ -1,0 +1,251 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: CONTENIDO FormAsistant\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2012-10-02 14:49+0100\n"
+"Last-Translator: Marcus Gnaß <marcus.gnass@4fb.de>\n"
+"Language-Team: Marcus Gnaß <marcus.gnass@4fb.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-KeywordsList: i18n\n"
+"X-Poedit-SearchPath-0: \n"
+
+msgid "Einzeiliges Eingabefeld"
+msgstr "Einzeiliges Eingabefeld"
+
+msgid "Mehrzeiliges Eingabefeld"
+msgstr "Mehrzeiliges Eingabefeld"
+
+msgid "Passwortfeld"
+msgstr "Passwortfeld"
+
+msgid "Radiobuttons"
+msgstr "Radiobuttons"
+
+msgid "Checkboxen"
+msgstr "Checkboxen"
+
+msgid "Auswahlliste"
+msgstr "Auswahlliste"
+
+msgid "Auswahlliste mit Mehrfachauswahl"
+msgstr "Auswahlliste mit Mehrfachauswahl"
+
+msgid "Datum & Uhrzeit"
+msgstr "Datum & Uhrzeit"
+
+msgid "Dateiupload"
+msgstr "Dateiupload"
+
+msgid "Fortschrittsbalken"
+msgstr "Fortschrittsbalken"
+
+msgid "Slider"
+msgstr "Slider"
+
+msgid "Captcha"
+msgstr "Captcha"
+
+msgid "Absenden-Button"
+msgstr "Absenden-Button"
+
+msgid "Abbrechen-Button"
+msgstr "Abbrechen-Button"
+
+msgid "Zurück-Button"
+msgstr "Zurück-Button"
+
+msgid "Matrix"
+msgstr "Matrix"
+
+################################################################################
+
+msgid "Do you really want to delete the following form:<br><br>%s<br>"
+msgstr "Möchten Sie wirklich dieses Formular löschen:<br><br>%s<br>"
+
+msgid "add field"
+msgstr "Formularfeld hinzufügen"
+
+msgid "column name"
+msgstr "Spaltenname:"
+
+msgid "create"
+msgstr "Erzeugen"
+
+msgid "data"
+msgstr "Formulardaten"
+
+msgid "data table name"
+msgstr "Datentabellenname"
+
+msgid "default value"
+msgstr "Standardwert:"
+
+msgid "delete"
+msgstr "Löschen"
+
+msgid "delete form"
+msgstr "Formular löschen"
+
+msgid "edit"
+msgstr "Editieren"
+
+msgid "edit fields"
+msgstr "Formularfelder editieren"
+
+msgid "error message"
+msgstr "Fehlermeldung:"
+
+msgid "fields"
+msgstr "Formularfelder"
+
+msgid "field type"
+msgstr "Formularfeldtyp:"
+
+msgid "form"
+msgstr "Formular"
+
+msgid "form deleted"
+msgstr "Formular wurde gelöscht"
+
+msgid "form name"
+msgstr "Formularname"
+
+msgid "help text"
+msgstr "Hilfetext:"
+
+msgid "hidden input"
+msgstr "Verstecktes Eingabefeld"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "label"
+msgstr "Bezeichnung:"
+
+msgid "no fields found"
+msgstr "Es wurden keine Formularfelder gefunden."
+
+msgid "obligatory"
+msgstr "zwingend"
+
+msgid "option labels"
+msgstr "Bezeichnungen der Auswahlmöglichkeiten"
+
+msgid "option values"
+msgstr "Werte der Auswahlmöglichkeiten"
+
+msgid "paragraph"
+msgstr "Absatz"
+
+msgid "please choose"
+msgstr "Bitte wählen Sie eine Auswahlmöglichkeit"
+
+msgid "please save first"
+msgstr "Bitte erst speichern ..."
+
+msgid "please select a form"
+msgstr "Bitte wählen Sie ein Formular"
+
+msgid "rank"
+msgstr "Rang"
+
+msgid "request method"
+msgstr "Anfragemethode"
+
+msgid "save"
+msgstr "Speichern"
+
+msgid "show form"
+msgstr "Formular anzeigen"
+
+msgid "unknown"
+msgstr "unbekannt"
+
+msgid "validation rule"
+msgstr "Prüfungsregel:"
+
+msgid "new form"
+msgstr "Neues Formular"
+
+msgid "table name"
+msgstr "Tabellennname"
+
+msgid "name"
+msgstr "Name"
+
+msgid "GET"
+msgstr "GET"
+
+msgid "POST"
+msgstr "POST"
+
+msgid "method"
+msgstr "Methode"
+
+msgid "options"
+msgstr "Optionen"
+
+msgid "Database"
+msgstr "Datenbank"
+
+msgid "general"
+msgstr "Allgemein"
+
+msgid "label"
+msgstr "Bezeichnung:"
+
+msgid "display label"
+msgstr "Bezeichnung anzeigen"
+
+msgid "form type"
+msgstr "Formularfeldtyp:"
+
+msgid "required"
+msgstr "Pflichtangabe:"
+
+msgid "validation rules"
+msgstr "Prüfungsregel:"
+
+msgid "error message"
+msgstr "Fehlermeldung:"
+
+msgid "help message"
+msgstr "Hilfetext:"
+
+msgid "column name"
+msgstr "Spaltenname:"
+
+msgid "Value 1:"
+msgstr "Wert 1:"
+
+msgid "Value 2:"
+msgstr "Wert 2:"
+
+msgid "Value 3:"
+msgstr "Wert 3:"
+
+msgid "Label 1:"
+msgstr "Label 1:"
+
+msgid "Label 2: 
+msgstr "Label 2:"
+
+msgid "Label 3:"
+msgstr "Label 3:"
+
+msgid "Form data"
+msgstr "Formulardaten"
+
+msgid "All form types"
+msgstr "Alle Formularfeld-Typen"
+
+msgid "edit form"
+msgstr "Formularfeld editieren"
+
+msgid "add options"
+msgstr "Optionen hinzufügen"
