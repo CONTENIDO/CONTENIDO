@@ -911,7 +911,6 @@ margin-top: 10px;
 }
 
 .blog a {
-    float:right;
     color: #0083cb;
     text-decoration: none;
 }
@@ -919,4 +918,8 @@ margin-top: 10px;
 .blog a:hover {
     color: #9ba21b;
     text-decoration: none;
+}
+
+.blog span + a {
+    float:right;
 }
