@@ -161,6 +161,7 @@ body {
     width: 920px;
     margin-left: 20px;
     padding-bottom:120px;
+    padding-top: 20px;
     min-height: 300px;
     float: left;
 }
@@ -193,6 +194,7 @@ p + p {
     margin-top: 7px;
 }
 
+
 p a {
     color: #0083cb;
     text-decoration: none;
@@ -203,7 +205,6 @@ p a:hover {
     text-decoration: none;
     border-bottom: 1px dotted #9ba21b;
 }
-
 #content ul,
 #content ol {
     margin: 20px 0 20px 20px;
@@ -366,6 +367,8 @@ p + .button.red {
 }
 .column_quarter .col {
     float: left;
+    height: 100%;
+    position: relative;
     width: 210px;
 }
 .column_quarter .col + .col {
@@ -412,6 +415,8 @@ p + .button.red {
     display: block;
     line-height:17px;
     margin-top:5px;
+    position: relative;
+    bottom: -10px;
 }
 .column_quarter .col a.more:hover {
     color: #0083cb;
@@ -883,4 +888,35 @@ ul.social_media li.youtube {
 
 ul.social_media li.twitter {
     background-position: -251px -388px;
+}
+
+/* ----- BLOG ----- */
+.blog {
+    margin-bottom: 45px;
+}
+.blog h2 {
+    font-size: 15px;
+    margin-top: 30px;
+}
+.blog h3 {
+    font-size: 11px;
+margin-top: 10px;
+}
+.blog p {
+    margin: 8px 0;
+}
+
+.blog .date {
+   font-size: 11px; 
+}
+
+.blog a {
+    float:right;
+    color: #0083cb;
+    text-decoration: none;
+}
+
+.blog a:hover {
+    color: #9ba21b;
+    text-decoration: none;
 }
