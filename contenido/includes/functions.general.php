@@ -2262,7 +2262,7 @@ function checkMySQLConnectivity() {
 	$selectDb = false;
 	if ( $res ) {
 		if ($cfg["database_extension"] == "mysqli") {
-			$selectDb = @ mysqli_select_db($contenido_database);
+			$selectDb = @ mysqli_select_db($res, $contenido_database);
 		} else {
 			$selectDb = @ mysql_select_db($contenido_database);
 		}
