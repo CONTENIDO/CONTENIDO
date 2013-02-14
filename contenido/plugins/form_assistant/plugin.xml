@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugin>
+
+    <general active="1">
+        <plugin_name>Form Assistant</plugin_name>
+        <plugin_foldername>form_assistant</plugin_foldername>
+        <uuid>34E59F15-606A-81F4-1520-59E86230BE37</uuid>
+        <description>Generating forms in backend, includes data storage and mailing</description>
+        <author>Marcus Gnaß (4fb)</author>
+        <copyright>four for business AG</copyright>
+        <mail>marcus.gnass@4fb.de</mail>
+        <website>http://www.4fb.de</website>
+        <version>1.0.0</version>
+        <min_contenido_version>4.9.0-beta1</min_contenido_version>
+        <max_contenido_version></max_contenido_version>
+    </general>
+	
+	 <contenido>
+
+        <areas>
+            <area>form</area>
+            <area parent="form">form_ajax</area>
+        </areas>
+
+        <frames>
+            <frame area="form" filetype="main" name="form_assistant/includes/include.left_top.php" frameId="1" />
+			<frame area="form" filetype="main" name="form_assistant/includes/include.left_bottom.php" frameId="2" />
+			<frame area="form" filetype="main" name="form_assistant/includes/include.right_top.php" frameId="3" />
+			<frame area="form" filetype="main" name="form_assistant/includes/include.right_bottom.php" frameId="4" />
+			<frame area="form_ajax" filetype="main" name="form_assistant/includes/include.ajax.php" frameId="4" />
+        </frames>
+
+        <nav_sub>
+            <nav area="form" level="0" navm="3">form_assistant/xml/lang_de_DE.xml;plugins/form_assistant/label</nav>
+        </nav_sub>
+
+    </contenido>
+</plugin>
