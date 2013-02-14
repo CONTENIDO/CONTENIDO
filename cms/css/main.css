@@ -136,7 +136,8 @@ body {
     color: #797979;
     display: block;
 }
-#menu .navigation li a:hover {
+#menu .navigation li a:hover,
+#menu .navigation li a.active {
     color: #0083cb;
 }
 
