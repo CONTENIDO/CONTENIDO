@@ -178,15 +178,17 @@ $(function() {
     //Navigate through pagination
     $(".slider .pagination li").delegate("a", "click", function(e) {
         e.preventDefault();
-        var index = $(".slider .images li.active").index(),
+        var old = $(".slider .pagination li a.active").parent().index(),
             next = $(this).parent().index();
-        $(".slider .images li:eq(" + index + ")").animate({"opacity": "0"}, 500, function() {
-            $(this).removeClass("active");
+        $(".slider .images li:eq(" + old + ")").animate({"opacity": "0"}, 500, function() {
+        	$(".slider .pagination li:eq(" + old + ") a").removeClass("active");
         });
-        $(".slider .images li:eq(" + next + ")").animate({"opacity": "1"}, 900, function() {
-            $(this).addClass("active");
-            $(".slider .pagination li:eq(" + next + ") a").addClass("active");
+        $(".slider .images li:eq(" + (next) + ")").animate({"opacity": "1"}, 900, function() {
+        	$(".slider .pagination li:eq(" + next + ") a").addClass("active");
         });
+        
+        
+        
     });
 
 });

@@ -138,7 +138,6 @@ body {
 }
 #menu .navigation li a:hover {
     color: #0083cb;
-    font-weight: bold;
 }
 
 #menu .navigation li ul li {
@@ -329,7 +328,6 @@ p + .button.red {
     left: 50%;
     position: absolute;
     z-index: 3;
-    background: #fff;
     padding: 0 25px;
 }
 .slider .pagination li {
@@ -342,19 +340,16 @@ p + .button.red {
 
 .slider .pagination li a {
     display: block;
-    width: 17px;
-    height: 17px;
-    line-height: 17px;
-    border: 1px dashed #797979;
-    color: #797979;
-    text-decoration: none;
-    text-align: center;
-    font-size: 15px;
+    background: url('../images/misc/sprite.png') no-repeat -43px -316px; 
+    width: 30px; 
+    height: 30px;
+    text-indent:-9999px;
 }
 .slider .pagination li a:hover,
 .slider .pagination li a.active {
-    border: 1px solid #0083cb;
-    color: #0083cb;
+    background: url('../images/misc/sprite.png') no-repeat -2px -316px;
+    width: 30px; 
+    height: 30px;
 }
 
 /* ----- NEWSTEASER ----- */
@@ -367,7 +362,6 @@ p + .button.red {
 }
 .column_quarter .col {
     float: left;
-    height: 100%;
     position: relative;
     width: 210px;
 }
