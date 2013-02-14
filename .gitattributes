@@ -218,6 +218,7 @@ cms/js/jquery-ui-1.9.1.custom.min.js -text svneol=unset#text/plain
 cms/js/main.js -text svneol=unset#text/plain
 cms/robots.txt -text
 cms/templates/cms_filelist_style_default.html -text
+cms/templates/cms_teaser_blog.html -text
 cms/templates/cms_teaser_image.html -text
 cms/templates/cms_teaser_slider.html -text
 cms/templates/cms_teaser_text.html -text
