@@ -305,23 +305,22 @@ p a:hover {
 
 .user_forum .button.red,
 .user_forum .button.grey{
-   line-height: 25px; 
-   width: 190px;
-   float: left;
-   margin-top: 20px;
-   margin-bottom: 20px;
+    line-height: 25px;
+    width: 190px;
+    float: left;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 #contactFormSubmitRight .button.red {
     margin-top: 0px;
 }
 p + .button.red {
-
     line-height: 25px;
 }
 .slider .images li a {
-   margin: 200px 0 0 700px; 
-   line-height: 25px;
+    margin: 200px 0 0 700px;
+    line-height: 25px;
 }
 
 #content .slider ul.pagination{
@@ -824,8 +823,7 @@ button.ui-button::-moz-focus-inner {
 }
 
 .sitemap>li ul li {
-    padding-left:35px;
-    
+    padding-left: 35px;
 }
 .sitemap>li>ul>li>ul>li a:hover {
     color: #9ba21b;

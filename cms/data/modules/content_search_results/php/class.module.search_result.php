@@ -244,16 +244,16 @@ class SearchResultModule {
     protected function _getArticleSpecs() {
 
         $sql = "-- getArticleSpecs()
-			SELECT
-				idartspec
-				, artspec
-			FROM
-				" . $this->_cfg['tab']['art_spec'] . "
-			WHERE
-				client = $this->_client
-				AND lang = $this->_lang
-				AND online = 1
-			;";
+            SELECT
+                idartspec
+                , artspec
+            FROM
+                " . $this->_cfg['tab']['art_spec'] . "
+            WHERE
+                client = $this->_client
+                AND lang = $this->_lang
+                AND online = 1
+            ;";
 
         $this->_db->query($sql);
 

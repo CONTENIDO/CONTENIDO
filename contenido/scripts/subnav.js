@@ -34,8 +34,8 @@ var sub = {
             }
         }
     },
-	
-	/**
+
+    /**
      * Highlights the active tab.
      *
      * @param {String}
@@ -43,8 +43,8 @@ var sub = {
      * @todo Consider new name ("highlight"?) and rename remaining instances.
      */
     clickedById : function(cElm) {
-		$('#navlist li a').attr('class', '');
-		$('#navlist li#'+cElm+' a').attr('class', 'current');
+        $('#navlist li a').attr('class', '');
+        $('#navlist li#'+cElm+' a').attr('class', 'current');
     },
 
     /**

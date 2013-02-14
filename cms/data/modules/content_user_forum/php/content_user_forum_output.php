@@ -60,24 +60,24 @@ if ($bAllowAnonymousforum) {
     $bAllowNewforum = false;
 }
 if ($_REQUEST['user_forum_action'] == 'like_forum' || $_REQUEST['user_forum_action'] == 'dislike_forum') {
-	$form_id = (int) $_REQUEST['user_forum_id'];
-	if ($form_id > 0) {
-		if ($_REQUEST['user_forum_action'] == 'like_forum') {
-			$fieldname = 'like';
-		} else {
-			$fieldname = 'dislike';
-		}
+    $form_id = (int) $_REQUEST['user_forum_id'];
+    if ($form_id > 0) {
+        if ($_REQUEST['user_forum_action'] == 'like_forum') {
+            $fieldname = 'like';
+        } else {
+            $fieldname = 'dislike';
+        }
 
-		$query = "UPDATE con_pi_user_forum SET
+        $query = "UPDATE con_pi_user_forum SET
                         `$fieldname` = `$fieldname` + 1
                     WHERE
                         id_user_forum = ".mysql_real_escape_string($form_id);
 
         $db->query($query);
-	}
+    }
 } else if (($_REQUEST['user_forum_action'] == 'delete_forum') && ($_REQUEST['user_forum_delete_id'] != '') && ($bAllowDeleting)) {
 
-	deleteUserForum($_REQUEST['user_forum_delete_id']);
+    deleteUserForum($_REQUEST['user_forum_delete_id']);
 
     $message = mi18n("Der Beitrag wurde gelÃ¶scht.");
     $messageText = mi18n("Der Beitrag wurde gelÃ¶scht.");
@@ -85,66 +85,66 @@ if ($_REQUEST['user_forum_action'] == 'like_forum' || $_REQUEST['user_forum_acti
 } elseif (($_REQUEST['user_forum_action'] == 'new_forum') && ($bAllowNewforum)) {
     //$tpl->clear_all_assign();
 
-	$tpl->assign('MESSAGE', $messageText);
+    $tpl->assign('MESSAGE', $messageText);
 
     $idquote = (int)$_REQUEST['user_forum_quote'];
-	if ($idquote > 0) {
-		$query = "SELECT * FROM con_pi_user_forum WHERE id_user_forum = ".mysql_real_escape_string($idquote);
-		$db->query($query);
+    if ($idquote > 0) {
+        $query = "SELECT * FROM con_pi_user_forum WHERE id_user_forum = ".mysql_real_escape_string($idquote);
+        $db->query($query);
 
-		if ($db->next_record()) {
-			$transTemplate = mi18n("Zitat von");
-			$tpl->assign('INPUT_FORUM_QUOTE', $transTemplate. ' ' .$db->f('realname'). "\n". $db->f('forum'));
-			$tpl->assign('DISPLAY','display:block');
-		} else {
-			$tpl->assign('DISPLAY','display:none');
-			$tpl->assign('INPUT_FORUM_QUOTE','');
-		}
-	} else {
-		$tpl->assign('DISPLAY','display:none');
-		$tpl->assign('INPUT_FORUM_QUOTE','');
-	}
+        if ($db->next_record()) {
+            $transTemplate = mi18n("Zitat von");
+            $tpl->assign('INPUT_FORUM_QUOTE', $transTemplate. ' ' .$db->f('realname'). "\n". $db->f('forum'));
+            $tpl->assign('DISPLAY','display:block');
+        } else {
+            $tpl->assign('DISPLAY','display:none');
+            $tpl->assign('INPUT_FORUM_QUOTE','');
+        }
+    } else {
+        $tpl->assign('DISPLAY','display:none');
+        $tpl->assign('INPUT_FORUM_QUOTE','');
+    }
 
 
 
-	$replyId = (int) $_REQUEST['user_forum_parent'];
-	if ($replyId > 0) {
-		$query = "SELECT * FROM con_pi_user_forum WHERE id_user_forum = ".mysql_real_escape_string($replyId);
-		$db->query($query);
+    $replyId = (int) $_REQUEST['user_forum_parent'];
+    if ($replyId > 0) {
+        $query = "SELECT * FROM con_pi_user_forum WHERE id_user_forum = ".mysql_real_escape_string($replyId);
+        $db->query($query);
 
-		if ($db->next_record()) {
-			$transTemplate = mi18n("Als Antwort auf");
-			$transTemplateAfter = mi18n("von");
-			$tpl->assign('FORUM_REPLYMENT', $transTemplate. '<br/>' .$db->f('forum'). "<br/><br/>". $transTemplateAfter.' '.$db->f('realname'));
-		} else {
-			$tpl->assign('FORUM_REPLYMENT', '');
-		}
-	} else {
-		$tpl->assign('FORUM_REPLYMENT', '');
-	}
+        if ($db->next_record()) {
+            $transTemplate = mi18n("Als Antwort auf");
+            $transTemplateAfter = mi18n("von");
+            $tpl->assign('FORUM_REPLYMENT', $transTemplate. '<br/>' .$db->f('forum'). "<br/><br/>". $transTemplateAfter.' '.$db->f('realname'));
+        } else {
+            $tpl->assign('FORUM_REPLYMENT', '');
+        }
+    } else {
+        $tpl->assign('FORUM_REPLYMENT', '');
+    }
 
-	$tpl->assign('INPUT_EMAIL', "<input type=\"text\" name=\"email\" value=\"\" />");
-	$tpl->assign('INPUT_REALNAME', "<input type=\"text\" name=\"realname\" value=\"\" />");
-	$tpl->assign('INPUT_FORUM','');
+    $tpl->assign('INPUT_EMAIL', "<input type=\"text\" name=\"email\" value=\"\" />");
+    $tpl->assign('INPUT_REALNAME', "<input type=\"text\" name=\"realname\" value=\"\" />");
+    $tpl->assign('INPUT_FORUM','');
 
     $tpl->assign('REALNAME', mi18n("Ihr Name"));
     $tpl->assign('EMAIL', mi18n("Ihre eMail-Adresse"));
     $tpl->assign('FORUM', mi18n("Ihr Beitrag"));
-	$tpl->assign('FORUM_QUOTE', mi18n("Zitat"));
+    $tpl->assign('FORUM_QUOTE', mi18n("Zitat"));
     $tpl->assign('IDCAT', $idcat);
     $tpl->assign('IDART', $idart);
     $tpl->assign('SAVE_FORUM', mi18n("Beitrag abspeichern"));
-	$tpl->assign('CANCEL_FORUM', mi18n("Abbrechen"));
-	$tpl->assign('CANCEL_LINK', "front_content.php?idart=$idart");
+    $tpl->assign('CANCEL_FORUM', mi18n("Abbrechen"));
+    $tpl->assign('CANCEL_LINK', "front_content.php?idart=$idart");
 
     $tpl->assign('USERID', $_REQUEST['userid']);
     $tpl->assign('DELETING', $_REQUEST['deleting']);
     $tpl->assign('CONTENIDO', $_REQUEST['contenido']);
-	$tpl->assign( 'USER_FORUM_PARENT', (int) $_REQUEST['user_forum_parent']);
+    $tpl->assign( 'USER_FORUM_PARENT', (int) $_REQUEST['user_forum_parent']);
 
     $tpl->display('user_forum_new.tpl');
 } elseif (($_REQUEST['user_forum_action'] == 'edit_forum') && ($bAllowDeleting)) {
-	//not implemented yet
+    //not implemented yet
     $idforum = $_REQUEST['user_forum_edit_id'];
 
     $userid = $_REQUEST['userid'];
@@ -164,11 +164,11 @@ if ($_REQUEST['user_forum_action'] == 'like_forum' || $_REQUEST['user_forum_acti
         $tpl->assign('SHOW_EMAIL', $email);
         $tpl->assign('SHOW_REALNAME', $realname);
         $tpl->assign('INPUT_FORUM', $forum);
-		$tpl->assign('INPUT_FORUM_QUOTE', $forum);
+        $tpl->assign('INPUT_FORUM_QUOTE', $forum);
 
         $tpl->assign('REALNAME', mi18n("Name"));
         $tpl->assign('EMAIL', mi18n("eMail-Adresse"));
-		$tpl->assign('FORUM_QUOTE', mi18n("Zitat"));
+        $tpl->assign('FORUM_QUOTE', mi18n("Zitat"));
         $tpl->assign('FORUM', mi18n("Ihr Beitrag"));
         $tpl->assign('IDCAT', $idcat);
         $tpl->assign('IDART', $idart);
@@ -201,11 +201,11 @@ if ($_REQUEST['user_forum_action'] == 'like_forum' || $_REQUEST['user_forum_acti
 
     $bInputOK = true;
 
-	$email = trim($_REQUEST['email']);
-	$realname = trim($_REQUEST['realname']);
-	$forum = trim($_REQUEST['forum']);
-	$parent = (int) $_REQUEST['user_forum_parent'];
-	$forum_quote = trim($_REQUEST['forum_quote']);
+    $email = trim($_REQUEST['email']);
+    $realname = trim($_REQUEST['realname']);
+    $forum = trim($_REQUEST['forum']);
+    $parent = (int) $_REQUEST['user_forum_parent'];
+    $forum_quote = trim($_REQUEST['forum_quote']);
 
     $message = '';
 
@@ -253,7 +253,7 @@ if ($_REQUEST['user_forum_action'] == 'like_forum' || $_REQUEST['user_forum_acti
         if ($bNewforum) {
             $query = "INSERT INTO con_pi_user_forum VALUES(
                 NULL,
-				$parent,
+                $parent,
                 $idart,
                 $idcat,
                 $lang,
@@ -261,9 +261,9 @@ if ($_REQUEST['user_forum_action'] == 'like_forum' || $_REQUEST['user_forum_acti
                 '".mysql_real_escape_string($email)."',
                 '".mysql_real_escape_string($realname)."',
                 '".mysql_real_escape_string($forum)."',
-				'".mysql_real_escape_string($forum_quote)."',
-				0,
-				0,
+                '".mysql_real_escape_string($forum_quote)."',
+                0,
+                0,
                 '',
                 '',
                 '".date("Y-m-d H:i:s")."',
@@ -296,50 +296,50 @@ if ($_REQUEST['user_forum_action'] == 'like_forum' || $_REQUEST['user_forum_acti
             $tpl->assign('INPUT_EMAIL', "<input type=\"text\" name=\"email\" value=\"$email\" />");
             $tpl->assign('INPUT_REALNAME', "<input type=\"text\" name=\"realname\" value=\"$realname\" />");
             $tpl->assign('INPUT_FORUM',$forum);
-			$tpl->assign('INPUT_FORUM_QUOTE',$forum_quote);
+            $tpl->assign('INPUT_FORUM_QUOTE',$forum_quote);
         }
 
-		if (strlen($forum_quote) > 0) {
-			$tpl->assign('DISPLAY','display:block');
-			$tpl->assign('INPUT_FORUM_QUOTE',$forum_quote);
-		} else {
-			$tpl->assign('DISPLAY','display:none');
-			$tpl->assign('INPUT_FORUM_QUOTE','');
-		}
+        if (strlen($forum_quote) > 0) {
+            $tpl->assign('DISPLAY','display:block');
+            $tpl->assign('INPUT_FORUM_QUOTE',$forum_quote);
+        } else {
+            $tpl->assign('DISPLAY','display:none');
+            $tpl->assign('INPUT_FORUM_QUOTE','');
+        }
 
         $tpl->assign('REALNAME', mi18n("Ihr Name"));
         $tpl->assign('EMAIL', mi18n("Ihre eMail-Adresse"));
         $tpl->assign('FORUM', mi18n("Ihr Beitrag"));
-		$tpl->assign('FORUM_QUOTE', mi18n("Zitat"));
+        $tpl->assign('FORUM_QUOTE', mi18n("Zitat"));
         $tpl->assign('IDCAT', $idcat);
         $tpl->assign('IDART', $idart);
         $tpl->assign('SAVE_FORUM', mi18n("Beitrag abspeichern"));
-		$tpl->assign( 'USER_FORUM_PARENT', (int) $_REQUEST['user_forum_parent']);
+        $tpl->assign( 'USER_FORUM_PARENT', (int) $_REQUEST['user_forum_parent']);
 
-		$tpl->assign('CANCEL_FORUM', mi18n("Abbrechen"));
-		$tpl->assign('CANCEL_LINK', "front_content.php?idart=$idart");
+        $tpl->assign('CANCEL_FORUM', mi18n("Abbrechen"));
+        $tpl->assign('CANCEL_LINK', "front_content.php?idart=$idart");
 
         $tpl->assign('USERID', $userid);
         $tpl->assign('DELETING', $bAllowDeleting);
         $tpl->assign('CONTENIDO', $contenido);
 
-		$replyId = (int) $_REQUEST['user_forum_parent'];
-		if ($replyId > 0) {
-			$query = "SELECT * FROM con_pi_user_forum WHERE id_user_forum = ".mysql_real_escape_string($replyId);
-			$db->query($query);
+        $replyId = (int) $_REQUEST['user_forum_parent'];
+        if ($replyId > 0) {
+            $query = "SELECT * FROM con_pi_user_forum WHERE id_user_forum = ".mysql_real_escape_string($replyId);
+            $db->query($query);
 
-			if ($db->next_record()) {
-				$transTemplate = mi18n("Als Antwort auf");
-				$transTemplateAfter = mi18n("von");
-				$tpl->assign('FORUM_REPLYMENT', $transTemplate. '<br/>' .$db->f('forum'). "<br/><br/>". $transTemplateAfter.' '.$db->f('realname'));
-			} else {
-				$tpl->assign('FORUM_REPLYMENT', '');
-			}
-		} else {
-			$tpl->assign('FORUM_REPLYMENT', '');
-		}
+            if ($db->next_record()) {
+                $transTemplate = mi18n("Als Antwort auf");
+                $transTemplateAfter = mi18n("von");
+                $tpl->assign('FORUM_REPLYMENT', $transTemplate. '<br/>' .$db->f('forum'). "<br/><br/>". $transTemplateAfter.' '.$db->f('realname'));
+            } else {
+                $tpl->assign('FORUM_REPLYMENT', '');
+            }
+        } else {
+            $tpl->assign('FORUM_REPLYMENT', '');
+        }
 
-		$generate = false;
+        $generate = false;
         $tpl->display('user_forum_new.tpl');
     }
 }
@@ -352,29 +352,29 @@ if (($_REQUEST['user_forum_action'] != 'new_forum') && ($_REQUEST['user_forum_ac
     if (count($arrUserforum) == 0) {
         //$tpl->clear_all_assign();
 
-		$tpl->assign('MESSAGE',mi18n("Der Artikel wurde bisher noch nicht kommentiert."));
-		$tpl->assign('FORUM_TEXT',mi18n("Beitrag(e)"));
-		if ($bAllowNewforum) {
-			$link = $new_forum_link;
-			$tpl->assign( 'LINK_NEW_FORUM', $link);
-		} else {
-			$tpl->assign( 'LINK_NEW_FORUM', mi18n("Zu diesem Artikel kÃ¶nnen keine Beitrage verfaÃŸt werden."));
-		}
-		$tpl->display('user_forum_list_empty.tpl');
+        $tpl->assign('MESSAGE',mi18n("Der Artikel wurde bisher noch nicht kommentiert."));
+        $tpl->assign('FORUM_TEXT',mi18n("Beitrag(e)"));
+        if ($bAllowNewforum) {
+            $link = $new_forum_link;
+            $tpl->assign( 'LINK_NEW_FORUM', $link);
+        } else {
+            $tpl->assign( 'LINK_NEW_FORUM', mi18n("Zu diesem Artikel kÃ¶nnen keine Beitrage verfaÃŸt werden."));
+        }
+        $tpl->display('user_forum_list_empty.tpl');
     } else {
         //$tpl->clear_all_assign();
         $tpl->assign('MESSAGE',$messageText);
         $tpl->assign( 'AMOUNT_forum', count($arrUserforum));
         $tpl->assign( 'FORUM_TEXT', mi18n("Beitrage"));
 
-		$number = 1;
-		$tplData = array();
+        $number = 1;
+        $tplData = array();
         foreach($arrUserforum as $key => $value) {
-			$record = array();
-			$record['REALNAME'] = $value['realname'];
-			$record['EMAIL'] = $value['email'];
-			$record['NUMBER'] = $number;
-			$number++;
+            $record = array();
+            $record['REALNAME'] = $value['realname'];
+            $record['EMAIL'] = $value['email'];
+            $record['NUMBER'] = $number;
+            $number++;
 
             $arrTmp = preg_split('/ /', $value['timestamp']);
             $arrTmp2 = preg_split('/-/',$arrTmp[0]);
@@ -382,18 +382,18 @@ if (($_REQUEST['user_forum_action'] != 'new_forum') && ($_REQUEST['user_forum_ac
             $ts = $arrTmp2[2].'.'.$arrTmp2[1].'.'.$arrTmp2[0].' '.mi18n("um").' ';
             $ts.= substr($arrTmp[1],0,5).' '.mi18n("Uhr");
 
-			$record['DAY'] = $arrTmp2[2];
-			$record['WROTE_ON'] = mi18n("schrieb am");
-			$record['WRITE_EMAIL'] = mi18n("eMail an den Verfasser des Beitrags schreiben");
-			$record['TIMESTAMP'] = $ts;
+            $record['DAY'] = $arrTmp2[2];
+            $record['WROTE_ON'] = mi18n("schrieb am");
+            $record['WRITE_EMAIL'] = mi18n("eMail an den Verfasser des Beitrags schreiben");
+            $record['TIMESTAMP'] = $ts;
 
-			if (strlen($value['forum_quote']) > 0) {
-				$record['FORUM_QUOTE'] = '<div class="forum_quote">' . $value['forum_quote'] . '</div>';
-			} else {
-				$record['FORUM_QUOTE'] = '';
-			}
+            if (strlen($value['forum_quote']) > 0) {
+                $record['FORUM_QUOTE'] = '<div class="forum_quote">' . $value['forum_quote'] . '</div>';
+            } else {
+                $record['FORUM_QUOTE'] = '';
+            }
 
-			$record['FORUM'] = $value['forum'];
+            $record['FORUM'] = $value['forum'];
 
             if (($value['editedby'] != '') && ($value['editedat'] != '')) {
                 $arrTmp = explode(' ',$value['editedat']);
@@ -408,42 +408,42 @@ if (($_REQUEST['user_forum_action'] != 'new_forum') && ($_REQUEST['user_forum_ac
                 $edit_information = sprintf($tmp, $editdate, $edittime, $value['editedby']);
 
                 if ((trim($_REQUEST['email']) != '' && trim($_REQUEST['realname']) != '' && trim($_REQUEST['forum']) != '') ||$edit) {
-				   $record['EDIT_INFORMATION'] = "<br /><br /><em>$edit_information</em>";
+                   $record['EDIT_INFORMATION'] = "<br /><br /><em>$edit_information</em>";
                 } else {
-					$record['EDIT_INFORMATION'] = "";
+                    $record['EDIT_INFORMATION'] = "";
                 }
             } else {
-				$record['EDIT_INFORMATION'] = "";
+                $record['EDIT_INFORMATION'] = "";
             }
 
             if ($bAllowDeleting || $edit) {
                 $path = $cfg['path']['contenido_fullhtml'].'external/backendedit/';
 
-				$deletelink = "<a href='".$path."front_content.php?changeview=edit&action=con_editart&client=$client&lang=$lang&idart=$idart&contenido=$contenido&idcat=$idcat&user_forum_action=delete_forum&user_forum_delete_id=".$key."'>".mi18n("LÃ¶schen")."</a>";
-				$editlink = "<a href='".$path."front_content.php?changeview=edit&userid=$userid&deleting=$bAllowDeleting&action=con_editart&client=$client&lang=$lang&idart=$idart&contenido=$contenido&idcat=$idcat&user_forum_action=edit_forum&user_forum_edit_id=".$key."'>".mi18n("Bearbeiten")."</a>";
+                $deletelink = "<a href='".$path."front_content.php?changeview=edit&action=con_editart&client=$client&lang=$lang&idart=$idart&contenido=$contenido&idcat=$idcat&user_forum_action=delete_forum&user_forum_delete_id=".$key."'>".mi18n("LÃ¶schen")."</a>";
+                $editlink = "<a href='".$path."front_content.php?changeview=edit&userid=$userid&deleting=$bAllowDeleting&action=con_editart&client=$client&lang=$lang&idart=$idart&contenido=$contenido&idcat=$idcat&user_forum_action=edit_forum&user_forum_edit_id=".$key."'>".mi18n("Bearbeiten")."</a>";
 
-				$record['DELETELINK'] = $deletelink;
-				$record['EDITLINK'] = "";
+                $record['DELETELINK'] = $deletelink;
+                $record['EDITLINK'] = "";
 
             } else {
-				$record['DELETELINK'] = "";
-				$record['EDITLINK'] = "";
-			}
+                $record['DELETELINK'] = "";
+                $record['EDITLINK'] = "";
+            }
 
-			$record['REPLY'] = sprintf($reply_forum_link, $key);
-			$record['REPLY_QUOTE'] = sprintf($reply_quote_forum_link, $key, $key);
-			$record['LIKE'] = sprintf($like_forum_link, $key, $value['like']);
-			$record['DISLIKE'] = sprintf($dislike_forum_link, $key, $value['dislike']);
-			$record['FROM'] = mi18n("von");
-			$record['OPINION'] = mi18n("Sind Sie gleicher Meinung?");
-			$record['LIKE_COUNT'] = $value['like'];
-			$record['DISLIKE_COUNT'] = $value['dislike'];
-			$record['PADDING'] = $value['level']*20;
+            $record['REPLY'] = sprintf($reply_forum_link, $key);
+            $record['REPLY_QUOTE'] = sprintf($reply_quote_forum_link, $key, $key);
+            $record['LIKE'] = sprintf($like_forum_link, $key, $value['like']);
+            $record['DISLIKE'] = sprintf($dislike_forum_link, $key, $value['dislike']);
+            $record['FROM'] = mi18n("von");
+            $record['OPINION'] = mi18n("Sind Sie gleicher Meinung?");
+            $record['LIKE_COUNT'] = $value['like'];
+            $record['DISLIKE_COUNT'] = $value['dislike'];
+            $record['PADDING'] = $value['level']*20;
 
-			array_push($tplData, $record);
+            array_push($tplData, $record);
         }
 
-		$tpl->assign( 'POSTS', $tplData);
+        $tpl->assign( 'POSTS', $tplData);
 
         $sTemp = mi18n("Beitrage anzeigen/ausblenden - aktuell: ___ Beitrag(e)");
         $sTemp = str_replace('___', count($arrUserforum), $sTemp);
@@ -451,12 +451,12 @@ if (($_REQUEST['user_forum_action'] != 'new_forum') && ($_REQUEST['user_forum_ac
         if ($bAllowNewforum) {
             $link = $new_forum_link;
 
-			$tplOptionList = new Template;
-			$tplOptionList->set('s', 'SHOW_forum', $sTemp);
+            $tplOptionList = new Template;
+            $tplOptionList->set('s', 'SHOW_forum', $sTemp);
 
-			$tpl->assign( 'SHOW_FORUM_OPTION', $tplOptionList->generate('templates/user_forum_option_list.tpl', 1));
+            $tpl->assign( 'SHOW_FORUM_OPTION', $tplOptionList->generate('templates/user_forum_option_list.tpl', 1));
 
-			$tpl->assign( 'LINK_NEW_FORUM', "<br />".$link."<br />");
+            $tpl->assign( 'LINK_NEW_FORUM', "<br />".$link."<br />");
 
         } else {
             $tpl->assign( 'LINK_NEW_FORUM', mi18n("Zu diesem Artikel kÃ¶nnen keine Beitrage verfaÃŸt werden."));
@@ -485,33 +485,33 @@ function getExistingforum($id_cat, $id_art, $id_lang) {
         $arrUsers[$db->f('user_id')]['realname'] = $db->f('realname');
     }
 
-	$arrforum = array();
+    $arrforum = array();
     getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
 
-	$result = array();
+    $result = array();
     normalizeArray($arrforum, $result);
-	return $result ;
+    return $result ;
 }
 
 function normalizeArray($arrforum, &$result, $level = 0) {
-	if (is_array($arrforum)) {
-		foreach($arrforum as $key => $value) {
-			$value['level'] = $level;
-			unset($value['children']);
-			$result[$key] = $value;
-			normalizeArray($arrforum[$key]['children'], $result, $level+1);
-		}
-	}
+    if (is_array($arrforum)) {
+        foreach($arrforum as $key => $value) {
+            $value['level'] = $level;
+            unset($value['children']);
+            $result[$key] = $value;
+            normalizeArray($arrforum[$key]['children'], $result, $level+1);
+        }
+    }
 }
 
 function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0) {
-	$db = new DB_Contenido();
+    $db = new DB_Contenido();
 
-	$query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat) AND (idlang = $id_lang) AND (id_user_forum_parent = $parent) ORDER BY timestamp DESC";
+    $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat) AND (idlang = $id_lang) AND (id_user_forum_parent = $parent) ORDER BY timestamp DESC";
 
     $db->query($query);
 
-	while ($db->next_record()) {
+    while ($db->next_record()) {
         $arrforum[$db->f('id_user_forum')]['userid'] = $db->f('userid');
 
         if (array_key_exists($db->f('userid'), $arrUsers)) {
@@ -523,31 +523,31 @@ function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $paren
         }
 
         $arrforum[$db->f('id_user_forum')]['forum'] = str_replace(chr(13).chr(10), '<br />', $db->f('forum'));
-		$arrforum[$db->f('id_user_forum')]['forum_quote'] = str_replace(chr(13).chr(10), '<br />', $db->f('forum_quote'));
+        $arrforum[$db->f('id_user_forum')]['forum_quote'] = str_replace(chr(13).chr(10), '<br />', $db->f('forum_quote'));
         $arrforum[$db->f('id_user_forum')]['timestamp'] = $db->f('timestamp');
-		$arrforum[$db->f('id_user_forum')]['like'] = $db->f('like');
-		$arrforum[$db->f('id_user_forum')]['dislike'] = $db->f('dislike');
+        $arrforum[$db->f('id_user_forum')]['like'] = $db->f('like');
+        $arrforum[$db->f('id_user_forum')]['dislike'] = $db->f('dislike');
 
         $arrforum[$db->f('id_user_forum')]['editedat'] = $db->f('editedat');
         $arrforum[$db->f('id_user_forum')]['editedby'] = $db->f('editedby');
 
-		getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum[$db->f('id_user_forum')]['children'], $db->f('id_user_forum'));
+        getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum[$db->f('id_user_forum')]['children'], $db->f('id_user_forum'));
     }
 }
 
 function deleteUserForum($id_forum) {
-	$id_forum = (int) $id_forum;
-	if ($id_forum > 0) {
-		$db = new DB_Contenido();
-		$query = "SELECT * FROM con_pi_user_forum WHERE id_user_forum_parent = ".mysql_real_escape_string($id_forum);
-		$db->query($query);
-		while ($db->next_record()) {
-			deleteUserForum($db->f('id_user_forum'));
-		}
+    $id_forum = (int) $id_forum;
+    if ($id_forum > 0) {
+        $db = new DB_Contenido();
+        $query = "SELECT * FROM con_pi_user_forum WHERE id_user_forum_parent = ".mysql_real_escape_string($id_forum);
+        $db->query($query);
+        while ($db->next_record()) {
+            deleteUserForum($db->f('id_user_forum'));
+        }
 
-		$query = "DELETE FROM con_pi_user_forum WHERE id_user_forum = ".mysql_real_escape_string($id_forum)." LIMIT 1";
+        $query = "DELETE FROM con_pi_user_forum WHERE id_user_forum = ".mysql_real_escape_string($id_forum)." LIMIT 1";
 
-		$db->query($query);
-	}
+        $db->query($query);
+    }
 }
 ?>

@@ -4,6 +4,6 @@ HEADLINE=HTML Sitemap
 CATEGORY_LABEL=Kategorieeingabe(Nummerisch):
 LEVEL_LABEL=Tiefe(Nummerisch):
 ARTICLE_LABEL=Artikeln anzeigen(0/1):
-ARTICLE_HINT_LABEL=Hinweis: 1 Artikeln anzeigen; 0 Artikeln nicht anzeigen 
+ARTICLE_HINT_LABEL=Hinweis: 1 Artikeln anzeigen; 0 Artikeln nicht anzeigen
 GATEGORY_HINT_LABEL=Hinweis: Die Sitemap wird ab der angegebenen Kategorie rekursiv aufgebaut.
 LEVEL_HINT_LABEL=Hinweis: Die Tiefe gibt an wie viele Ebenen bei der generierung berücksichtigt werden.

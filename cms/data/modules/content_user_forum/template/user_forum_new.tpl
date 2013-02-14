@@ -1,7 +1,7 @@
 <div class="user_forum">
     <div class="form_status_message">{$MESSAGE}</div>
-    <div class="replyment_handler"> 
-    <div class="replyment"> 
+    <div class="replyment_handler">
+    <div class="replyment">
     {$FORUM_REPLYMENT} </div></div>
     <form action="front_content.php" method="post" name="new_user_forum">
         <input type="hidden" name="idcat" value="{$IDCAT}" />
@@ -19,8 +19,8 @@
             <div><textarea name="forum" style="width:400px;height:90px;">{$INPUT_FORUM}</textarea></div>
                 <a href="{$CANCEL_LINK}" class='cancel button grey'>{$CANCEL_FORUM}</a>
                 <a href="javascript:document.forms['new_user_forum'].submit();" class="submit button red">{$SAVE_FORUM}</a>
-                
-           
+
+
         </div>
     </form>
 </div>

@@ -293,7 +293,7 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
                 d.idtpl as idtpl
             FROM
                 " . $cfg["tab"]["cat_lang"] . " AS a
-				LEFT JOIN " . $cfg["tab"]["tpl_conf"] . " AS d on a.idtplcfg  = d.idtplcfg,
+                LEFT JOIN " . $cfg["tab"]["tpl_conf"] . " AS d on a.idtplcfg  = d.idtplcfg,
                 " . $cfg["tab"]["cat"] . " AS b,
                 " . $cfg["tab"]["cat_tree"] . " AS c
             WHERE

@@ -41,7 +41,7 @@ $oPage = Contenido_SmartyWrapper::getInstance();
 
 global $force;
 if (1 == $force) {
-	$oPage->clearAllCache();
+    $oPage->clearAllCache();
 }
 
 $oPage->assign('FORM_ACTION', 'front_content.php?changelang='.$lang.'&idcatart='.

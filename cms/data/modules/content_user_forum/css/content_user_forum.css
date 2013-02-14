@@ -1,10 +1,10 @@
 .user_forum {
     font-size: 11px;
     padding: 10px 0;
-    
+
 }
 table#calendarTable {
-   width: 100%; 
+   width: 100%;
 }
 
 .user_forum #calendarTable tr td {
@@ -13,17 +13,16 @@ table#calendarTable {
 
 .user_forum #calendarTable tr td + td {
     width: 148px;
-    
-} 
+}
 .user_forum #calendarTable .block{
     display: block;
     width: 100%;
     padding-top: 10px;
     border-top: 1px dotted #9ba21b;
-} 
+}
 .user_forum #calendarTable td + td .block{
     padding-left: 23px;
-    width: 125px;  
+    width: 125px;
 }
 
 .user_forum a.reply,
@@ -41,18 +40,18 @@ table#calendarTable {
     margin-left: 6px;
 }
 
-.user_forum div.like, 
+.user_forum div.like,
 .user_forum div.dislike {
-    float: right; 
+    float: right;
     padding-left: 23px;
     height: 17px;
     line-height: 17px;
     background-size: 18px;
     margin-bottom: 10px;
     cursor: pointer;
-}   
+}
 
-a.submit, 
+a.submit,
 a.cancel {
     background: url("../images/nav_bg.jpg") repeat-x 0 -10px transparent;
     display: inline-block;
@@ -69,8 +68,8 @@ a.cancel {
     background: url("../images/buttons/like.png") no-repeat;
     margin-right: 15px;
     color: #40aa3c;
-    } 
-    
+}
+
 .user_forum div.like a {
     color: #40aa3c;
     text-decoration: none;
@@ -84,15 +83,15 @@ a.cancel {
 .user_forum div.dislike a {
     color: #e9001d;
     text-decoration: none;
-} 
-    
+}
+
 .user_forum p.right {
     font-size: 9px;
     margin: 0;
 }
 
 .user_forum .number {
-    color: #0083cb; 
+    color: #0083cb;
 }
 
 .user_forum .day {

@@ -8,14 +8,14 @@
     <p>{$trans.levelLabel}</p>
     <label>{$trans.levelHintLabel}</label>
     <div>{$level}</div>
-	<p>{$trans.articleLabel}</p>
-	<label>{$trans.articleHintLabel}</label>
-	<div>{$article}</div>
+    <p>{$trans.articleLabel}</p>
+    <label>{$trans.articleHintLabel}</label>
+    <div>{$article}</div>
     {if $error}
         <p class="error">{$error}</p>
     {/if}
     {if $errorArticle}
-	    <p class="error">{$errorArticle}</p>
+        <p class="error">{$errorArticle}</p>
     {/if}
 {/if}
 {if false eq $isBackendEditMode}

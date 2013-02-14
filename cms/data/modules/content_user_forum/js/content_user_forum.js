@@ -7,7 +7,7 @@ $(".like, .dislike").click(function(e){
 
 $("#calendarTable td").each(function(){
     if($(this).css("paddingLeft").replace("px", "") >= "200"){
-       $(this).parent().find(".reply, .reply_quote").remove(); 
+       $(this).parent().find(".reply, .reply_quote").remove();
     }
 });
 

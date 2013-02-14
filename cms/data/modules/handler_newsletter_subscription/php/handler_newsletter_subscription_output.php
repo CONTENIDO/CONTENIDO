@@ -70,10 +70,10 @@ if (!class_exists('cNewsletterJobCollection')) {
 
     $oPage = Contenido_SmartyWrapper::getInstance();
 
-	global $force;
-	if (1 == $force) {
-		$oPage->clearAllCache();
-	}
+    global $force;
+    if (1 == $force) {
+        $oPage->clearAllCache();
+    }
 
     // If there is no selection option set or if no groups has been selected,
     // activate option Default

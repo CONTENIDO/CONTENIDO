@@ -10,7 +10,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
- 
+
 $tpl = Contenido_SmartyWrapper::getInstance();
 
 global $force;
