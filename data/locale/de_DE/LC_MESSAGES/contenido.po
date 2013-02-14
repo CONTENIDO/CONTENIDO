@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-13 17:34+0100\n"
-"PO-Revision-Date: 2013-02-13 17:35+0100\n"
+"PO-Revision-Date: 2013-02-14 13:23+0100\n"
 "Last-Translator: Timo Trautmann <timo.trautmann@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -764,15 +764,15 @@ msgstr "Bitte wählen"
 
 #: classes/content_types/class.content.type.teaser.php:739
 msgid "Slider style"
-msgstr "Teaser-Darstellung"
+msgstr "Slider Darstellung"
 
 #: classes/content_types/class.content.type.teaser.php:742
 msgid "Image style"
-msgstr "Bildskalierung"
+msgstr "Image Darstellung"
 
 #: classes/content_types/class.content.type.teaser.php:745
 msgid "Text style"
-msgstr "Style erstellen"
+msgstr "Text Darstellung"
 
 #: classes/content_types/class.content.type.teaser.php:815
 msgid "Advanced teaser settings"
