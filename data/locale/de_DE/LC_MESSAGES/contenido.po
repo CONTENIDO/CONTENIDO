@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 13:36+0100\n"
-"PO-Revision-Date: 2013-02-14 13:38+0100\n"
-"Last-Translator: Timo Trautmann <timo.trautmann@4fb.de>\n"
+"POT-Creation-Date: 2013-02-14 16:58+0100\n"
+"PO-Revision-Date: 2013-02-14 17:01+0100\n"
+"Last-Translator: CONTENIDO <info@contenido.org>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -917,7 +917,7 @@ msgid "Article"
 msgstr "Artikel"
 
 #: classes/content_types/class.content.type.teaser.php:964
-#: includes/include.con_translate.php:417
+#: includes/include.con_translate.php:426
 msgid "Add"
 msgstr "Hinzufügen"
 
@@ -1120,7 +1120,7 @@ msgid "Directory"
 msgstr "Verzeichnis"
 
 #: classes/content_types/class.content.type.filelist.php:855
-#: classes/module/class.module.template.handler.php:461
+#: classes/module/class.module.template.handler.php:467
 #: includes/include.mod_import_export.php:127
 #: includes/include.mod_import_export.php:129
 #: includes/include.mod_edit_form.php:394
@@ -1401,7 +1401,7 @@ msgstr "Template wurde erfolgreich gelöscht!"
 #: includes/include.rights_con.php:44
 #: includes/include.grouprights_overview.php:28
 #: includes/include.tplcfg_edit_form.php:142
-#: includes/include.con_translate.php:148
+#: includes/include.con_translate.php:146
 #: includes/include.style_history.php:39
 #: includes/include.js_history.php:41
 #: includes/include.mod_style.php:54
@@ -1452,8 +1452,8 @@ msgstr "Neues Template erstellen"
 msgid "New template file"
 msgstr "Neues Template"
 
-#: classes/module/class.module.template.handler.php:459
-#: classes/module/class.module.template.handler.php:460
+#: classes/module/class.module.template.handler.php:461
+#: classes/module/class.module.template.handler.php:463
 #: templates/standard/template.log_main.html:35
 #: includes/include.logs.php:282
 #: includes/include.mail_log.php:91
@@ -1461,7 +1461,7 @@ msgstr "Neues Template"
 msgid "Action"
 msgstr "Aktion"
 
-#: classes/module/class.module.template.handler.php:462
+#: classes/module/class.module.template.handler.php:468
 #: classes/class.ajax.php:137
 #: classes/class.ajax.php:153
 #: templates/standard/template.tpl_edit_form.html:19
@@ -1490,7 +1490,7 @@ msgstr "Aktion"
 msgid "Name"
 msgstr "Name"
 
-#: classes/module/class.module.template.handler.php:463
+#: classes/module/class.module.template.handler.php:469
 #: includes/include.js_edit_form.php:219
 #: includes/include.html_tpl_edit_form.php:259
 #: includes/include.lay_edit_form.php:219
@@ -1653,7 +1653,7 @@ msgstr "Encoding"
 
 #: classes/class.password.request.php:198
 #: templates/standard/template.symbolhelp.html:73
-#: includes/include.con_translate.php:448
+#: includes/include.con_translate.php:457
 msgid "Submit"
 msgstr "Absenden"
 
@@ -2105,7 +2105,6 @@ msgstr "Layouts"
 
 #: templates/standard/template.symbolhelp.html:26
 #: templates/standard/template.symbolhelp.html:309
-#: includes/include.con_translate.php:466
 #: xml/navigation.xml:29
 #: xml/navigation.xml:58
 #: xml/navigation.xml:67
@@ -2114,8 +2113,7 @@ msgstr "Module"
 
 #: templates/standard/template.symbolhelp.html:27
 #: templates/standard/template.symbolhelp.html:336
-#: includes/include.con_translate.php:478
-#: includes/include.con_translate.php:557
+#: includes/include.con_translate.php:583
 #: xml/navigation.xml:37
 #: xml/navigation.xml:59
 #: xml/navigation.xml:68
@@ -2511,7 +2509,8 @@ msgstr "Geändert"
 #: templates/standard/template.str_overview.html:402
 #: templates/standard/template.str_overview.html:487
 #: includes/include.tplcfg_edit_form.php:271
-#: includes/include.con_translate.php:557
+#: includes/include.con_translate.php:487
+#: includes/include.con_translate.php:583
 #: includes/include.pretplcfg_edit_form.php:70
 #: includes/include.con_art_overview.php:76
 #: backend_search.php:526
@@ -2590,7 +2589,7 @@ msgstr "Wert"
 
 #: templates/standard/template.log_main.html:27
 #: includes/include.logs.php:279
-#: includes/include.con_translate.php:499
+#: includes/include.con_translate.php:513
 #: includes/include.lang_edit.php:210
 #: includes/include.lang_edit.php:212
 #: main.loginform.php:98
@@ -3087,7 +3086,7 @@ msgstr "Typ"
 #: includes/include.systemsettings.php:80
 #: includes/include.client_artspec.php:80
 #: includes/include.grouprights_overview.php:192
-#: includes/include.con_translate.php:681
+#: includes/include.con_translate.php:717
 msgid "Delete"
 msgstr "Löschen"
 
@@ -3095,9 +3094,9 @@ msgstr "Löschen"
 #: includes/include.systemsettings.php:76
 #: includes/include.systemsettings.php:79
 #: includes/include.client_artspec.php:76
-#: includes/include.con_translate.php:536
-#: includes/include.con_translate.php:574
-#: includes/include.con_translate.php:599
+#: includes/include.con_translate.php:557
+#: includes/include.con_translate.php:607
+#: includes/include.con_translate.php:632
 #: includes/include.upl_edit.php:51
 #: xml/navigation.xml:22
 #: xml/navigation.xml:26
@@ -3654,7 +3653,6 @@ msgid "Please fill in the start date and/or the end date!"
 msgstr "Bitte geben Sie Startzeitpunkt und/oder Endzeitpunkt ein!"
 
 #: includes/type/action/include.lang_newlanguage.action.php:32
-#: includes/include.con_translate.php:390
 #: includes/include.lang_edit.php:57
 #: includes/include.lang_overview.php:87
 msgid "New language"
@@ -3776,6 +3774,8 @@ msgstr "Link für Container %s bearbeiten"
 
 #: includes/include.rights_mod.php:72
 #: includes/include.mod_new.php:69
+#: includes/include.con_translate.php:475
+#: includes/include.con_translate.php:506
 #: includes/include.grouprights_mod.php:73
 msgid "Module name"
 msgstr "Modulname"
@@ -3976,73 +3976,77 @@ msgstr "Dieser Artikel hat keine Vorlage. Deshalb wird die Vorlage von der Kateg
 msgid "no template with this categories and/or article associated. You must be set a template."
 msgstr "Keine Template für diese Kategorie und/oder diesen Artikel assoziiert. Sie müssen eine Template einstellen."
 
-#: includes/include.con_translate.php:129
-#: includes/include.con_translate.php:130
+#: includes/include.con_translate.php:127
+#: includes/include.con_translate.php:128
 msgid "Sort"
 msgstr "Sortieren"
 
-#: includes/include.con_translate.php:160
+#: includes/include.con_translate.php:158
 #, php-format
 msgid "Translations are used by %s (%s)"
 msgstr "Übersetzungen werden benutzt von %s (%s)"
 
-#: includes/include.con_translate.php:259
+#: includes/include.con_translate.php:263
 #: includes/include.mod_translate.php:54
 msgid "Saved translation successfully!"
 msgstr "Übrsetzung wurde gespeichert!"
 
-#: includes/include.con_translate.php:261
+#: includes/include.con_translate.php:265
 #: includes/include.mod_translate.php:56
 msgid "Can't save translation!"
 msgstr "Kann Übersetzung nicht speichern!"
 
-#: includes/include.con_translate.php:438
+#: includes/include.con_translate.php:399
+msgid "New language for editing"
+msgstr "Neue Sprache zur Bearbeitung"
+
+#: includes/include.con_translate.php:447
 #: includes/include.con_art_overview.php:850
 msgid "Items per page:"
 msgstr "Elemente/Seite:"
 
-#: includes/include.con_translate.php:464
+#: includes/include.con_translate.php:473
 msgid "-- filter by --"
 msgstr "-- filtern --"
 
-#: includes/include.con_translate.php:490
+#: includes/include.con_translate.php:499
 #: includes/include.con_left_top.php:210
 msgid "Search"
 msgstr "Suche"
 
-#: includes/include.con_translate.php:496
-msgid "Module"
-msgstr "Module"
-
-#: includes/include.con_translate.php:496
+#: includes/include.con_translate.php:507
 msgid "In use by"
 msgstr "Verwendet von"
 
-#: includes/include.con_translate.php:496
-msgid "Keyword"
-msgstr "Keyword"
+#: includes/include.con_translate.php:508
+msgid "Translation ID"
+msgstr "Übersetzungsvariable"
 
-#: includes/include.con_translate.php:496
+#: includes/include.con_translate.php:509
 msgid "Current language"
 msgstr "Aktuelle Sprache"
 
-#: includes/include.con_translate.php:502
+#: includes/include.con_translate.php:516
 msgid "Edit row"
 msgstr "Zeile bearbeiten"
 
-#: includes/include.con_translate.php:556
+#: includes/include.con_translate.php:579
+msgid "No template"
+msgstr "Keine Vorlage"
+
+#: includes/include.con_translate.php:582
 #: includes/include.mod_overview.php:154
 #: includes/include.lay_overview.php:69
 #: includes/include.tpl_overview.php:62
 msgid "Click for more information about usage"
 msgstr "Klicken Sie für mehr Information über Verwendung"
 
-#: includes/include.con_translate.php:683
+#: includes/include.con_translate.php:719
 #, php-format
 msgid "The module &quot;%s&quot; is used for following templates"
 msgstr "Das Modul  '%s' wird in folgenden Vorlagen benutzt"
 
-#: includes/include.con_translate.php:684
+#: includes/include.con_translate.php:720
 msgid "WARNING: Translations have effects on every article that uses the module!"
 msgstr "ACHTUNG: Die Übersetzung hat Auswirkung auf alle Artikel, welche das Modul verwenden!"
 
@@ -6770,11 +6774,14 @@ msgstr "E-Mail senden"
 msgid "Fake permissions"
 msgstr "Berechtigungen emulieren"
 
+#~ msgid "Module"
+#~ msgstr "Module"
+
+#~ msgid "Keyword"
+#~ msgstr "Keyword"
+
 #~ msgid "Translated name"
 #~ msgstr "Übersetzter Name"
-
-#~ msgid "Create language for client"
-#~ msgstr "Sprache erstellen für Mandant"
 
 #~ msgid "Block style"
 #~ msgstr "Blockdarstellung"

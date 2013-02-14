@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 13:36+0100\n"
+"POT-Creation-Date: 2013-02-14 16:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -966,7 +966,7 @@ msgid "Article"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:964
-#: includes/include.con_translate.php:417
+#: includes/include.con_translate.php:426
 msgid "Add"
 msgstr ""
 
@@ -1163,7 +1163,7 @@ msgid "Directory"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:855
-#: classes/module/class.module.template.handler.php:461
+#: classes/module/class.module.template.handler.php:467
 #: includes/include.mod_import_export.php:127
 #: includes/include.mod_import_export.php:129
 #: includes/include.mod_edit_form.php:394
@@ -1433,7 +1433,7 @@ msgstr ""
 #: includes/include.client_artspec.php:55 includes/include.rights_con.php:44
 #: includes/include.grouprights_overview.php:28
 #: includes/include.tplcfg_edit_form.php:142
-#: includes/include.con_translate.php:148
+#: includes/include.con_translate.php:146
 #: includes/include.style_history.php:39 includes/include.js_history.php:41
 #: includes/include.mod_style.php:54 includes/include.rights_tpl.php:44
 #: includes/include.mod_template.php:55
@@ -1478,14 +1478,14 @@ msgstr ""
 msgid "New template file"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:459
-#: classes/module/class.module.template.handler.php:460
+#: classes/module/class.module.template.handler.php:461
+#: classes/module/class.module.template.handler.php:463
 #: templates/standard/template.log_main.html:35 includes/include.logs.php:282
 #: includes/include.mail_log.php:91 includes/include.mail_log.php:221
 msgid "Action"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:462
+#: classes/module/class.module.template.handler.php:468
 #: classes/class.ajax.php:137 classes/class.ajax.php:153
 #: templates/standard/template.tpl_edit_form.html:19
 #: includes/include.rights_create.php:116
@@ -1509,7 +1509,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: classes/module/class.module.template.handler.php:463
+#: classes/module/class.module.template.handler.php:469
 #: includes/include.js_edit_form.php:219
 #: includes/include.html_tpl_edit_form.php:259
 #: includes/include.lay_edit_form.php:219
@@ -1669,7 +1669,7 @@ msgstr ""
 
 #: classes/class.password.request.php:198
 #: templates/standard/template.symbolhelp.html:73
-#: includes/include.con_translate.php:448
+#: includes/include.con_translate.php:457
 msgid "Submit"
 msgstr ""
 
@@ -2097,16 +2097,14 @@ msgid "Layouts"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:26
-#: templates/standard/template.symbolhelp.html:309
-#: includes/include.con_translate.php:466 xml/navigation.xml:29
+#: templates/standard/template.symbolhelp.html:309 xml/navigation.xml:29
 #: xml/navigation.xml:58 xml/navigation.xml:67
 msgid "Modules"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:27
 #: templates/standard/template.symbolhelp.html:336
-#: includes/include.con_translate.php:478
-#: includes/include.con_translate.php:557 xml/navigation.xml:37
+#: includes/include.con_translate.php:583 xml/navigation.xml:37
 #: xml/navigation.xml:59 xml/navigation.xml:68
 msgid "Templates"
 msgstr ""
@@ -2485,7 +2483,8 @@ msgstr ""
 #: templates/standard/template.str_overview.html:402
 #: templates/standard/template.str_overview.html:487
 #: includes/include.tplcfg_edit_form.php:271
-#: includes/include.con_translate.php:557
+#: includes/include.con_translate.php:487
+#: includes/include.con_translate.php:583
 #: includes/include.pretplcfg_edit_form.php:70
 #: includes/include.con_art_overview.php:76 backend_search.php:526
 #: xml/navigation.xml:33
@@ -2560,7 +2559,7 @@ msgid "Value"
 msgstr ""
 
 #: templates/standard/template.log_main.html:27 includes/include.logs.php:279
-#: includes/include.con_translate.php:499 includes/include.lang_edit.php:210
+#: includes/include.con_translate.php:513 includes/include.lang_edit.php:210
 #: includes/include.lang_edit.php:212 main.loginform.php:98
 msgid "Language"
 msgstr ""
@@ -3041,7 +3040,7 @@ msgstr ""
 #: includes/include.systemsettings.php:80
 #: includes/include.client_artspec.php:80
 #: includes/include.grouprights_overview.php:192
-#: includes/include.con_translate.php:681
+#: includes/include.con_translate.php:717
 msgid "Delete"
 msgstr ""
 
@@ -3049,9 +3048,9 @@ msgstr ""
 #: includes/include.systemsettings.php:76
 #: includes/include.systemsettings.php:79
 #: includes/include.client_artspec.php:76
-#: includes/include.con_translate.php:536
-#: includes/include.con_translate.php:574
-#: includes/include.con_translate.php:599 includes/include.upl_edit.php:51
+#: includes/include.con_translate.php:557
+#: includes/include.con_translate.php:607
+#: includes/include.con_translate.php:632 includes/include.upl_edit.php:51
 #: xml/navigation.xml:22 xml/navigation.xml:26 xml/navigation.xml:30
 #: xml/navigation.xml:38
 msgid "Edit"
@@ -3581,8 +3580,7 @@ msgid "Please fill in the start date and/or the end date!"
 msgstr ""
 
 #: includes/type/action/include.lang_newlanguage.action.php:32
-#: includes/include.con_translate.php:390 includes/include.lang_edit.php:57
-#: includes/include.lang_overview.php:87
+#: includes/include.lang_edit.php:57 includes/include.lang_overview.php:87
 msgid "New language"
 msgstr ""
 
@@ -3701,6 +3699,8 @@ msgid "Edit link for container %s"
 msgstr ""
 
 #: includes/include.rights_mod.php:72 includes/include.mod_new.php:69
+#: includes/include.con_translate.php:475
+#: includes/include.con_translate.php:506
 #: includes/include.grouprights_mod.php:73
 msgid "Module name"
 msgstr ""
@@ -3902,72 +3902,76 @@ msgid ""
 "a template."
 msgstr ""
 
-#: includes/include.con_translate.php:129
-#: includes/include.con_translate.php:130
+#: includes/include.con_translate.php:127
+#: includes/include.con_translate.php:128
 msgid "Sort"
 msgstr ""
 
-#: includes/include.con_translate.php:160
+#: includes/include.con_translate.php:158
 #, php-format
 msgid "Translations are used by %s (%s)"
 msgstr ""
 
-#: includes/include.con_translate.php:259
+#: includes/include.con_translate.php:263
 #: includes/include.mod_translate.php:54
 msgid "Saved translation successfully!"
 msgstr ""
 
-#: includes/include.con_translate.php:261
+#: includes/include.con_translate.php:265
 #: includes/include.mod_translate.php:56
 msgid "Can't save translation!"
 msgstr ""
 
-#: includes/include.con_translate.php:438
+#: includes/include.con_translate.php:399
+msgid "New language for editing"
+msgstr ""
+
+#: includes/include.con_translate.php:447
 #: includes/include.con_art_overview.php:850
 msgid "Items per page:"
 msgstr ""
 
-#: includes/include.con_translate.php:464
+#: includes/include.con_translate.php:473
 msgid "-- filter by --"
 msgstr ""
 
-#: includes/include.con_translate.php:490
+#: includes/include.con_translate.php:499
 #: includes/include.con_left_top.php:210
 msgid "Search"
 msgstr ""
 
-#: includes/include.con_translate.php:496
-msgid "Module"
-msgstr ""
-
-#: includes/include.con_translate.php:496
+#: includes/include.con_translate.php:507
 msgid "In use by"
 msgstr ""
 
-#: includes/include.con_translate.php:496
-msgid "Keyword"
+#: includes/include.con_translate.php:508
+msgid "Translation ID"
 msgstr ""
 
-#: includes/include.con_translate.php:496
+#: includes/include.con_translate.php:509
 msgid "Current language"
 msgstr ""
 
-#: includes/include.con_translate.php:502
+#: includes/include.con_translate.php:516
 msgid "Edit row"
 msgstr ""
 
-#: includes/include.con_translate.php:556
+#: includes/include.con_translate.php:579
+msgid "No template"
+msgstr ""
+
+#: includes/include.con_translate.php:582
 #: includes/include.mod_overview.php:154 includes/include.lay_overview.php:69
 #: includes/include.tpl_overview.php:62
 msgid "Click for more information about usage"
 msgstr ""
 
-#: includes/include.con_translate.php:683
+#: includes/include.con_translate.php:719
 #, php-format
 msgid "The module &quot;%s&quot; is used for following templates"
 msgstr ""
 
-#: includes/include.con_translate.php:684
+#: includes/include.con_translate.php:720
 msgid ""
 "WARNING: Translations have effects on every article that uses the module!"
 msgstr ""
