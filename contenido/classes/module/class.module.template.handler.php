@@ -456,7 +456,10 @@ class cModuleTemplateHandler extends cModuleHandler {
         $ta_code->updateAttributes(array(
             'wrap' => getEffectiveSetting('html_editor', 'wrap', 'off')
         ));
+        //show only if file exists
+        if($this->_file) {
         $form->add(i18n('Action'), $inputDelete->toHTML());
+        }
         $form->add(i18n('Action'), $inputAdd->toHTML());
 
         //add fields only if template file exists
