@@ -744,6 +744,9 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         $htmlSelectOption = new cHTMLOptionElement(i18n("Text style"), 'cms_teaser_text.html', false);
         $htmlSelect->appendOptionElement($htmlSelectOption);
+		
+		$htmlSelectOption = new cHTMLOptionElement(i18n("Blog style"), 'cms_teaser_blog.html', false);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
 
         $additionalOptions = getEffectiveSettingsByType('cms_teaser');
         foreach ($additionalOptions as $sLabel => $sTemplate) {
