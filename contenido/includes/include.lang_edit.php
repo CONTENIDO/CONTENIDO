@@ -36,8 +36,12 @@ if(!defined('CON_FRAMEWORK')) {
 
 includePlugins("languages");
 
-$clang = new Language;
-$clang->loadByPrimaryKey($idlang);
+if ($action == "lang_newlanguage" && (int) $newidlang > 0) {
+    $idlang = $newidlang;
+}
+
+$oLanguage = new Language();
+$oLanguage->loadByPrimaryKey($idlang);
 
 #Script for refreshing Language Box in Header
 $newOption = '';
@@ -46,7 +50,6 @@ $db2 = new DB_Contenido;
 
 $sReload = '<script language="javascript">
                 var left_bottom = top.content.left.left_bottom;
-
                 if (left_bottom) {
                     var href = left_bottom.location.href;
                     href = href.replace(/&idlang[^&]*/, \'\');
@@ -75,18 +78,12 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
         
         if ($action == "lang_newlanguage") {
             // update language dropdown in header
-            $new_idlang = 0;
-            $db->query( 'SELECT max(idlang) as newlang FROM '.$cfg["tab"]["lang"].';' );
-            if ($db->next_record()) {
-                $new_idlang = $db->f('newlang');
-            }
 
             $newOption = '<script language="javascript">
-							var newLang = new Option("'.i18n("New language").' ('.$new_idlang.')", "'.$new_idlang.'", false, false);
+							var newLang = new Option("'.i18n("New language").' ('.$idlang.')", "'.$idlang.'", false, false);
 							var langList = top.header.document.getElementById("cLanguageSelect");
 							langList.options[langList.options.length] = newLang;
 							</script>';
-            $idlang = $new_idlang;
         }
         
         if ($targetclient == $client) {
@@ -100,18 +97,17 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
 	{
 		callPluginStore("languages");
 		
-		$language = new Language;
-    	$language->loadByPrimaryKey($idlang);
-    	
-    	$language->setProperty("dateformat", "full", stripslashes($datetimeformat));
-    	$language->setProperty("dateformat", "date", stripslashes($dateformat));
-    	$language->setProperty("dateformat", "time", stripslashes($timeformat));
-        
-    	$language->setProperty("language", "code", stripslashes($languagecode) );
-    	$language->setProperty("country", "code", stripslashes($countrycode) );
-		
-        // update dropdown in header
-        $newOption = '<script language="javascript">
+            $oLanguage->loadByPrimaryKey($idlang);
+
+            $oLanguage->setProperty("dateformat", "full", stripslashes($datetimeformat), $targetclient);
+            $oLanguage->setProperty("dateformat", "date", stripslashes($dateformat), $targetclient);
+            $oLanguage->setProperty("dateformat", "time", stripslashes($timeformat), $targetclient);
+
+            $oLanguage->setProperty("language", "code", stripslashes($languagecode), $targetclient);
+            $oLanguage->setProperty("country", "code", stripslashes($countrycode), $targetclient);
+
+            // update dropdown in header
+            $newOption = '<script language="javascript">
 						var langList = top.header.document.getElementById("cLanguageSelect");
 						var thepos="";
 						for(var i=0;i<langList.length;i++)
@@ -218,12 +214,12 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
 			$languagecode = new cHTMLSelectElement("languagecode");
 			$languagecode->setStyle('width:255px');
 			$languagecode->autoFill($iso_639_2_tags);
-			$languagecode->setDefault($clang->getProperty("language", "code"));
+			$languagecode->setDefault($oLanguage->getProperty("language", "code"), $targetclient);
 									
 			$countrycode = new cHTMLSelectElement("countrycode");
 			$countrycode->setStyle('width:255px');
 			$countrycode->autoFill($iso_3166_codes);
-			$countrycode->setDefault($clang->getProperty("country", "code"));
+			$countrycode->setDefault($oLanguage->getProperty("country", "code"), $targetclient);
 			
 			$directionSelect = new cHTMLSelectElement("direction");
 			$directionSelect->setStyle('width:255px');
@@ -231,11 +227,11 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
 			$directionSelect->setDefault($db->f("direction"));
 			
 			
-			$fulldateformat = new cHTMLTextbox("datetimeformat", $clang->getProperty("dateformat", "full"), 40);
+			$fulldateformat = new cHTMLTextbox("datetimeformat", $oLanguage->getProperty("dateformat", "full", $targetclient), 40);
 			
-			$dateformat = new cHTMLTextbox("dateformat", $clang->getProperty("dateformat", "date"), 40);
+			$dateformat = new cHTMLTextbox("dateformat", $oLanguage->getProperty("dateformat", "date", $targetclient), 40);
 			
-			$timeformat = new cHTMLTextbox("timeformat", $clang->getProperty("dateformat", "time"), 40);
+			$timeformat = new cHTMLTextbox("timeformat", $oLanguage->getProperty("dateformat", "time", $targetclient), 40);
 			
 			
 			displayPlugin("languages", $form);

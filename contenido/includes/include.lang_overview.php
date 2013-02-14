@@ -81,7 +81,7 @@ while ($db->next_record()) {
     $bgcolor = ( is_int($tpl->dyn_cnt / 2) ) ? $cfg["color"]["table_light"] : $cfg["color"]["table_dark"];
     
     $tpl->set('d', 'BGCOLOR',       $bgcolor);
-    $tpl->set('d', 'LANGUAGE',      '<a target="right_bottom" href="'.$sess->url("main.php?area=lang_edit&idlang=$idlang&frame=4").'">'.$db->f("name").'</a>&nbsp;<span style="font-size:10px">('.$idlang.')</span>');
+    $tpl->set('d', 'LANGUAGE',      '<a target="right_bottom" href="'.$sess->url("main.php?area=lang_edit&idlang=$idlang&targetclient=$targetclient&frame=4").'">'.$db->f("name").'&nbsp;<span style="font-size:10px">('.$idlang.')</span></a>');
     $tpl->set('d', 'ACTIVATEBUTTON',  $active);
     $tpl->set('d', 'DELETEBUTTON',  $deletebutton);
     //$tpl->set('d', 'ICON', '<a target="right_bottom" href="'.$sess->url("main.php?area=lang_edit&idlang=$idlang&frame=4").'"><img src="images/language.gif" border="0"></a>');
@@ -101,8 +101,8 @@ $newlanguageform = '<form name=newlanguage method="post" action="'.$sess->url("m
                     <input type="hidden" name="action" value="lang_newlanguage">
                     <table cellpadding="0" cellspacing="0" border="0">
                     <tr><td class="text_medium">'.i18n("New language").':
-                    <INPUT type="text" name="name">&nbsp;&nbsp;&nbsp;
-                    <INPUT type="image" src="'.$cfg['path']['images'].'but_ok.gif" border="0">
+                    <input type="text" name="name">&nbsp;&nbsp;&nbsp;
+                    <input type="image" src="'.$cfg['path']['images'].'but_ok.gif" border="0">
                     </td></tr></table></from>';
 
 $tpl->set('s', 'NEWLANGUAGEFORM', $newlanguageform);

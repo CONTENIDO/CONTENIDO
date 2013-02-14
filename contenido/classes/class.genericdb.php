@@ -1610,9 +1610,15 @@ class Item
 	 * @param string $type  Specifies the type
 	 * @param string $name  Specifies the name
 	 * @param string $value Specifies the value
+         * @param int $clientid Specifies the client id
 	 */
-	function setProperty($type, $name, $value)
+	function setProperty($type, $name, $value, $clientid = 0)
 	{
+            global $client;
+            if (0 == $clientid) {
+                $clientid = $client;
+            }
+
 		/* Runtime on-demand allocation of the properties object */
 		if (!is_object($this->properties))
 		{
@@ -1625,6 +1631,8 @@ class Item
 			$this->lasterror = "No item loaded";
 			return false;
 		}
+
+                $this->properties->changeClient($clientid);
 
 		/* Set the value */
 		return ($this->properties->setValue($this->primaryKey, $this->get($this->primaryKey), $type, $name, $value));
@@ -1635,10 +1643,16 @@ class Item
 	 * Sets a custom property
 	 * @param string $type  Specifies the type
 	 * @param string $name  Specifies the name
+         * @param int $clientid Specifies the client id
 	 * @return boolean Value of the given property
 	 */
-	function getProperty($type, $name)
+	function getProperty($type, $name, $clientid = 0)
 	{
+            global $client;
+            if (0 == $clientid) {
+                $clientid = $client;
+            }
+
 		/* Runtime on-demand allocation of the properties object */
 		if (!is_object($this->properties))
 		{
@@ -1652,6 +1666,8 @@ class Item
 			return false;
 		}
 
+                $this->properties->changeClient($clientid);
+
 		/* Return the value */
 		return ($this->properties->getValue($this->primaryKey, $this->get($this->primaryKey), $type, $name));
 	}
@@ -1661,9 +1677,15 @@ class Item
     * Deletes a custom property 
     * @param string $type   Specifies the type 
     * @param string $name   Specifies the name 
+         * @param int $clientid Specifies the client id
     */ 
-	function deleteProperty($type, $name) 
-	{ 
+	function deleteProperty($type, $name, $clientid = 0)
+	{
+            global $client;
+            if (0 == $clientid) {
+                $clientid = $client;
+            }
+
 		/* Runtime on-demand allocation of the properties object */ 
 		if (!is_object($this->properties)) 
 		{ 
@@ -1676,6 +1698,8 @@ class Item
 			$this->lasterror = "No item loaded"; 
 			return false; 
 		} 
+
+                $this->properties->changeClient($clientid);
 
 		/* Delete the value */ 
 		return ($this->properties->deleteValue($this->primaryKey, $this->get($this->primaryKey), $type, $name)); 

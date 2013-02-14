@@ -72,6 +72,8 @@ function langEditLanguage($idlang, $langname, $encoding, $active, $direction = "
  * Create a new language
  *
  * @param string $name Name of the language
+ * @param  int  $client  Id of client
+ * @return int  New language id
  *
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @author Olaf Niemann <Olaf.Niemann@4fb.de>
@@ -118,6 +120,7 @@ function langNewLanguage($name, $client) {
     } else {
         $notification->displayNotification("error", i18n("Could not set the language-ID in the file 'config.php'. Please set the language manually."));
     }
+    return $new_idlang;
 }
 
 
@@ -587,6 +590,10 @@ function langDeleteLanguage($idlang, $idclient = "") {
         //*********** delete from 'lang'-table*************
         $sql = "DELETE FROM ".$cfg["tab"]["lang"]." WHERE idlang='".Contenido_Security::toInteger($idlang)."'";
         $db->query($sql);
+
+        //*********** delete from 'properties'-table
+        $oPropertyColl = new PropertyCollection(Contenido_Security::toInteger($idclient));
+        $oPropertyColl->deleteProperties('idlang', Contenido_Security::toInteger($idlang));
     } else {
         return $notification->messageBox("error", i18n("Could not delete language"),0);
     }
