@@ -224,6 +224,14 @@ cms/templates/cms_teaser_slider.html -text
 cms/templates/cms_teaser_text.html -text
 cms/templates/error_page.html -text
 cms/templates/index.php -text
+cms/upload/contenido_diagramme/contenido_komponenten.png -text
+cms/upload/contenido_diagramme/contenido_output.png -text
+cms/upload/contenido_diagramme/contenido_priniciple.png -text
+cms/upload/contenido_diagramme/contenido_teaser.png -text
+cms/upload/contenido_diagramme/contenido_workflow.png -text
+cms/upload/downloads/4fb_logo_100x28.gif -text
+cms/upload/downloads/contenido_cms_garden_anzeige_60x90mm_20130122_sgr.pdf -text svneol=unset#unset
+cms/upload/downloads/logo_contenido_200x30.gif -text
 cms/upload/logos/logo.png -text
 cms/upload/picture_gallery/picture_1.jpg -text
 cms/upload/picture_gallery/picture_2.jpg -text
@@ -235,6 +243,14 @@ cms/upload/slider/slider_1.jpg -text
 cms/upload/slider/slider_2.jpg -text
 cms/upload/slider/slider_3.jpg -text
 cms/upload/slider/slider_4.jpg -text
+cms/upload/teaser/einfach_benutzen.jpg -text
+cms/upload/teaser/einfach_benutzen_teaser.jpg -text
+cms/upload/teaser/einfach_einfach.jpg -text
+cms/upload/teaser/einfach_einfach_teaser.jpg -text
+cms/upload/teaser/einfach_grenzenlos.jpg -text
+cms/upload/teaser/einfach_grenzenlos_teaser.jpg -text
+cms/upload/teaser/philosophie.jpg -text
+cms/upload/teaser/start.jpg -text
 cms_old/.htaccess_recommended -text
 cms_old/css/contenido_sample.css -text
 cms_old/css/index.php -text
