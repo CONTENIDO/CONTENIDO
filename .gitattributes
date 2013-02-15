@@ -492,6 +492,7 @@ contenido/classes/html/class.html.canvas.php -text
 contenido/classes/html/class.html.checkbox.php -text
 contenido/classes/html/class.html.contentelement.php -text
 contenido/classes/html/class.html.div.php -text
+contenido/classes/html/class.html.fieldset.php -text
 contenido/classes/html/class.html.footer.php -text
 contenido/classes/html/class.html.form.php -text
 contenido/classes/html/class.html.formelement.php -text
@@ -501,6 +502,7 @@ contenido/classes/html/class.html.hiddenfield.php -text
 contenido/classes/html/class.html.iframe.php -text
 contenido/classes/html/class.html.image.php -text
 contenido/classes/html/class.html.label.php -text
+contenido/classes/html/class.html.legend.php -text
 contenido/classes/html/class.html.link.php -text
 contenido/classes/html/class.html.list.php -text
 contenido/classes/html/class.html.listitem.php -text

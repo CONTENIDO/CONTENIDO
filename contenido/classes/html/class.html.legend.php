@@ -1,0 +1,40 @@
+<?php
+/**
+ * This file contains the cHTMLLegend class.
+ *
+ * @package Core
+ * @subpackage HTML
+ * @version SVN Revision $Rev:$
+ *
+ * @author Marcus Gnaß
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call');
+
+/**
+ * cHTMLLegend class represents a legend element.
+ *
+ * @package Core
+ * @subpackage Frontend
+ */
+class cHTMLLegend extends cHTMLContentElement {
+
+    /**
+     * Constructor.
+     * Creates an HTML legend element.
+     *
+     * @param mixed $content String or object with the contents
+     * @param string $class the class of this element
+     * @param string $id the ID of this element
+     * @return void
+     */
+    public function __construct($content = '', $class = '', $id = '') {
+        parent::__construct($content, $class, $id);
+        $this->_tag = 'legend';
+    }
+
+}
