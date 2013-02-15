@@ -2,15 +2,21 @@
 
 {if true eq $isBackendEditMode}
     <label class="content-type-label">{$trans.headline}</label>
-    <p>{$trans.categoryLabel}</p>
-    <label>{$trans.categoryHintLabel}</label>
-    <div>{$category}</div>
-    <p>{$trans.levelLabel}</p>
-    <label>{$trans.levelHintLabel}</label>
-    <div>{$level}</div>
-    <p>{$trans.articleLabel}</p>
-    <label>{$trans.articleHintLabel}</label>
-    <div>{$article}</div>
+    <div class="sitemapdiv">
+        <h2>{$trans.categoryLabel}</h2>
+        <label>{$trans.categoryHintLabel}</label>
+        <div>{$category}</div>
+    </div>
+    <div class="sitemapdiv">
+        <h2>{$trans.levelLabel}</h2>
+        <label>{$trans.levelHintLabel}</label>
+        <div>{$level}</div>
+    </div>
+    <div class="sitemapdiv">
+        <h2>{$trans.articleLabel}</h2>
+        <label>{$trans.articleHintLabel}</label>
+        <div>{$article}</div>
+    </div>
     {if $error}
         <p class="error">{$error}</p>
     {/if}
