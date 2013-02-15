@@ -232,9 +232,11 @@ p a:hover {
 .slider .images li.active {
     opacity:1;
 }
-.slider .images li img {
+#content .slider .images li img {
     position: absolute;
     z-index: 1;
+    margin: 0;
+    max-width: none;
 }
 
 .slider .images li h2,
