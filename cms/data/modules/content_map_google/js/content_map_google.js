@@ -23,7 +23,8 @@ $(function() {
         $('#dialogContent').css('display', 'inline');
         $("#myDialog").dialog({
             width : 500,
-            modal : true
+            modal : true,
+            closeText: "X"
         });
     });
 

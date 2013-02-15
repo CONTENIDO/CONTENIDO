@@ -108,8 +108,7 @@ body {
     color: #797979;
     font-weight: normal;
 }
-#breadcrumb ul li a:active,
-#breadcrumb ul li a:hover {
+#breadcrumb ul li a:active {
     font-weight: bold;
 }
 
@@ -747,9 +746,6 @@ button.ui-button::-moz-focus-inner {
     border-radius: 5px;
 }
 
-.ui-dialog-content {
-    text-align: center;
-}
 
 /* ----- FOOTER ----- */
 
@@ -930,4 +926,15 @@ margin-top: 10px;
 
 .blog span + a {
     float:right;
+}
+
+
+/* ------------ DIALOG -------------- */
+
+.ui-dialog {
+    border: 1px solid #ddd;
+    padding: 5px 25px 25px 25px;
+    border-radius: 7px;
+    box-shadow:2px 2px 32px #999;
+    -moz-box-shadow:2px 2px 32px #999;
 }
