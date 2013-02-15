@@ -672,9 +672,9 @@ class cUpdateNotifier {
                 $description = $doc->getXpathValue('*/channel/item/description', $iCnt);
                 $date = $doc->getXpathValue('*/channel/item/pubDate', $iCnt);
 
-                $title = conHtmlentities($title, ENT_QUOTES);
+                $title = conHtmlentities(utf8_encode($title), ENT_QUOTES);
 
-                $sText = conHtmlentities($description, ENT_QUOTES);
+                $sText = conHtmlentities(utf8_encode($description), ENT_QUOTES);
                 if (strlen($sText) > 150) {
                     $sText = cApiStrTrimAfterWord($sText, 150) . '...';
                 }
