@@ -65,7 +65,7 @@ body {
     outline: none;
     background: none;
     border: none;
-    width: 135px;
+    width: 130px;
     cursor: pointer;
 }
 #header #navigation_header form {
@@ -160,29 +160,34 @@ body {
 #content {
     width: 920px;
     margin-left: 20px;
-    padding-bottom:120px;
-    padding-top: 20px;
+    padding-bottom:145px;
     min-height: 300px;
     float: left;
 }
 
+
 #menu + #content {
     min-height: 50px;
-    width: 670px;
+    width: 660px;
     margin-left: 30px;
+}
+
+#content img {
+    margin: 20px 0;
+    max-width: 100%;
 }
 
 h1 {
     font-size: 19px;
     color: #9ba21b;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     font-weight: normal;
 }
 h2 {
     font-size: 13px;
     color: #0083cb;
     font-weight: normal;
-    margin-bottom: 7px;
+    margin-bottom: 9px;
 }
 
 p {
@@ -374,8 +379,8 @@ p + .button.red {
     line-height: 40px;
 }
 .column_quarter .col span.date {
-    font-size: 9px;
-    color: #ccc;
+    font-size: 10px;
+    color: #aaa;
 }
 .column_quarter .col .teaser_img {
     margin: 0;
@@ -459,17 +464,17 @@ p + .button.red {
 .pagination ul li a:hover {
     color: #0083cb;
 }
-#search_result {
+#content ul#search_result {
     display: inline;
 }
 #search_result li {
     list-style: none;
-    padding: 0 0 0 30px;
+    padding: 0 10px 0 20px;
 }
 #search_result li>span {
     position: absolute;
     width: 29px;
-    margin-left: -30px;
+    margin-left: -33px;
     text-align: right;
 }
 
