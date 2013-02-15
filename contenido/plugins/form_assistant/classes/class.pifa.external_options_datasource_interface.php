@@ -16,7 +16,7 @@
  *
  * @author marcus.gnass
  */
-abstract class ExternalOptionsDatasourceInterface {
+abstract class PifaExternalOptionsDatasourceInterface {
 
     /**
      *

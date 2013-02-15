@@ -10,14 +10,11 @@
  * @link http://www.4fb.de
  */
 
-// plugin
-plugin_include(Pifa::getName(), 'extensions/class.pifa.abstract_form_module.php');
-
 /**
  *
  * @author marcus.gnass
  */
-class DefaultFormModule extends AbstractFormModule {
+class DefaultFormModule extends PifaAbstractFormModule {
 
     /**
      *

@@ -98,11 +98,11 @@ function process_si_contact_form()
   $_SESSION['ctform'] = array(); // re-initialize the form session data
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST' && @$_POST['do'] == 'contact') {
-      // if the form has been submitted
+  	// if the form has been submitted
 
     foreach($_POST as $key => $value) {
       if (!is_array($key)) {
-          // sanitize the input data
+      	// sanitize the input data
         if ($key != 'ct_message') $value = strip_tags($value);
         $_POST[$key] = htmlspecialchars(stripslashes(trim($value)));
       }
@@ -166,7 +166,7 @@ function process_si_contact_form()
       $message = wordwrap($message, 70);
 
       if (isset($GLOBALS['DEBUG_MODE']) && $GLOBALS['DEBUG_MODE'] == false) {
-          // send the message with mail()
+      	// send the message with mail()
         mail($GLOBALS['ct_recipient'], $GLOBALS['ct_msg_subject'], $message, "From: {$GLOBALS['ct_recipient']}\r\nReply-To: {$email}\r\nContent-type: text/html; charset=ISO-8859-1\r\nMIME-Version: 1.0");
       }
 
@@ -180,7 +180,7 @@ function process_si_contact_form()
       $_SESSION['ctform']['ct_message'] = $message; // save message
 
       foreach($errors as $key => $error) {
-          // set up error messages to display with each field
+      	// set up error messages to display with each field
         $_SESSION['ctform'][$key] = "<span style=\"font-weight: bold; color: #f00\">$error</span>";
       }
 

@@ -132,7 +132,7 @@ class Pifa {
         echo $e->getMessage();
         if (true === $showTrace) {
             echo '<pre style="overflow: auto">';
-            echo htmlentities($e->getTraceAsString());
+            echo htmlentities($e->getTraceAsString(), ENT_COMPAT | ENT_HTML401, 'UTF-8');
             echo '</pre>';
         }
         echo '</p>';
@@ -159,11 +159,16 @@ class Pifa {
     }
 
     /**
+     * Returns array of extension classes that subclass the given $parentClass.
+     *
+     * @param string $parentClass
+     * @throws PifaException
+     * @return array
      */
-    public static function getExtensionClasses($regex) {
+    public static function getExtensionClasses($parentClass) {
 
         // ignore if extensions folder is missing
-        if (false !== $dh = opendir(Pifa::getPath() . 'extensions/')) {
+        if (false === $dh = opendir(Pifa::getPath() . 'extensions/')) {
             return array();
         }
 
@@ -177,27 +182,82 @@ class Pifa {
 
             // skip files that don't match regex
             $matches = array();
-            $matchCount = preg_match($regex, $file, $matches);
+            $matchCount = preg_match('/class\.pifa\.([^\.]+)\.php/', $file, $matches);
 
+            // REGEX failure ... just call Mr. T!
             if (false === $matchCount) {
-                // REGEX failure ... just call Mr. T!
-                throw new PifaException('REGEX failure');
-            } else if (0 === $matchCount) {
-                // some other file .. just skip it
-                continue;
-            } else {
-                // this is a proper
-                $optionClass = Pifa::toCamelCase($matches[1], true);
-                $extensionClasses[] = array(
-                    'value' => $optionClass,
-                    'label' => $optionClass
-                );
+                throw new PifaException('REGEX failed, could not determine class name of PIFA extension from file');
             }
+
+            // some other file .. just skip it
+            if (0 === $matchCount) {
+                continue;
+            }
+
+            // this is a proper PHP class
+            $optionClass = Pifa::toCamelCase($matches[1], true);
+
+            include_once Pifa::getPath() . 'extensions/'.$file;
+
+            $reflection = new ReflectionClass($optionClass);
+            if (false === $reflection->isSubclassOf($parentClass)) {
+                continue;
+            }
+
+            $extensionClasses[] = array(
+                'value' => $optionClass,
+                'label' => $optionClass
+            );
+
         }
 
         return $extensionClasses;
 
     }
+
+    /**
+     */
+    public static function getTemplates() {
+
+        $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
+
+        // ignore if template folder is missing
+        if (false === $dh = opendir($clientConfig['template']['path'])) {
+            return array();
+        }
+
+        $templates = array();
+        while (false !== $file = readdir($dh)) {
+
+            // skip folders
+            if (true === is_dir($file)) {
+                continue;
+            }
+
+            // skip files that don't match regex
+            $matches = array();
+            $matchCount = preg_match('/cms_pifaform_[^\.]+\.tpl/', $file, $matches);
+
+            // REGEX failure ... just call Mr. T!
+            if (false === $matchCount) {
+                throw new PifaException('REGEX failed, could not determine class name of PIFA extension from file');
+            }
+
+            // some other file .. just skip it
+            if (0 === $matchCount) {
+                continue;
+            }
+
+            $templates[] = array(
+                'value' => $file,
+                'label' => $file
+            );
+
+        }
+
+        return $templates;
+
+            }
 
     /**
      */
@@ -258,7 +318,7 @@ class Pifa {
 }
 
 // define plugin path
-$cfg['plugins'][Pifa::getName()] = $cfg['path']['contenido'] . 'plugins/' . Pifa::getName() . DIRECTORY_SEPARATOR;
+$cfg['plugins'][Pifa::getName()] = Pifa::getPath();
 
 // define template names
 // $cfg['templates']['form_left_bottom'] = $cfg['plugins']['form'] .
@@ -277,14 +337,30 @@ $cfg['tab']['pifa_field'] = $cfg['sql']['sqlprefix'] . '_pifa_field';
 // include CONTENIDO classes
 cInclude('classes', 'class.ui.php');
 
-// include plugin classes
-plugin_include(Pifa::getName(), 'classes/class.pifa.gui.php');
-plugin_include(Pifa::getName(), 'classes/class.pifa.form.php');
-plugin_include(Pifa::getName(), 'classes/class.pifa.field.php');
-plugin_include(Pifa::getName(), 'classes/class.pifa.form_post_helper.php');
-plugin_include(Pifa::getName(), 'classes/class.pifa.ajax_handler.php');
-plugin_include(Pifa::getName(), 'classes/class.pifa.exceptions.php');
-plugin_include(Pifa::getName(), 'securimage/securimage.php');
+// include necessary sources, setup autoloader for plugin
+// @todo Use config variables for $pluginClassPath below!
+$pluginClassPath = 'contenido/plugins/' . Pifa::getName() . '/';
+cAutoload::addClassmapConfig(array(
+    'PifaLeftBottomPage' => $pluginClassPath . 'classes/class.pifa.gui.php',
+    'PifaRightBottomPage' => $pluginClassPath . 'classes/class.pifa.gui.php',
+    'PifaFormCollection' => $pluginClassPath . 'classes/class.pifa.form.php',
+    'PifaForm' => $pluginClassPath . 'classes/class.pifa.form.php',
+    'PifaFieldCollection' => $pluginClassPath . 'classes/class.pifa.field.php',
+    'PifaField' => $pluginClassPath . 'classes/class.pifa.field.php',
+    'PifaAbstractFormModule' => $pluginClassPath . 'classes/class.pifa.abstract_form_module.php',
+    'PifaAbstractFormProcessor' => $pluginClassPath . 'classes/class.pifa.form_post_helper.php',
+    'PifaDefaultFormProcessor' => $pluginClassPath . 'classes/class.pifa.form_post_helper.php',
+    'PifaAjaxHandler' => $pluginClassPath . 'classes/class.pifa.ajax_handler.php',
+    'PifaException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
+    'PifaDatabaseException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
+    'NotImplementedException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
+    'IllegalStateException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
+    'PifaNotYetStoredException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
+    'PifaValidationException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
+    'PifaMailException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
+    'Securimage' => $pluginClassPath . 'securimage/securimage.php'
+));
+unset($pluginClassPath);
 
 // define chain functions
 $cecRegistry = cRegistry::getCecRegistry();

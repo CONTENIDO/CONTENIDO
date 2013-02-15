@@ -1768,6 +1768,7 @@ contenido/plugins/cronjobs_overview/xml/cronjobs_overview.xml -text svneol=unset
 contenido/plugins/cronjobs_overview/xml/lang_de_DE.xml -text svneol=unset#text/plain
 contenido/plugins/cronjobs_overview/xml/lang_en_EN.xml -text svneol=unset#text/plain
 contenido/plugins/form_assistant/classes/class.content.type.pifa_form.php -text
+contenido/plugins/form_assistant/classes/class.pifa.abstract_form_module.php -text
 contenido/plugins/form_assistant/classes/class.pifa.ajax_handler.php -text
 contenido/plugins/form_assistant/classes/class.pifa.exceptions.php -text
 contenido/plugins/form_assistant/classes/class.pifa.external_options_datasource_interface.php -text

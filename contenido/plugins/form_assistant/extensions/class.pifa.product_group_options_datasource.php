@@ -16,7 +16,7 @@ plugin_include(Pifa::getName(), 'classes/class.pifa.external_options_datasource_
  *
  * @author marcus.gnass
  */
-class ProductGroupOptionsDatasource extends ExternalOptionsDatasourceInterface {
+class ProductGroupOptionsDatasource extends PifaExternalOptionsDatasourceInterface {
 
     /**
      *

@@ -552,11 +552,11 @@ class PifaForm extends Item {
 
         // build SQL
         $sql = "-- PifaForm->getData()
-            SELECT
-                *
-            FROM
-                `$tableName`
-            ;";
+        	SELECT
+        		*
+        	FROM
+        		`$tableName`
+        	;";
 
         if (false === $db->query($sql)) {
             return array();
@@ -636,21 +636,21 @@ class PifaForm extends Item {
 
         // build SQL
         $sql = "-- PifaForm->_getCsvFromLocalDatabaseServer()
-            SELECT
-                *
-            INTO OUTFILE
-                '$filename'
-            FIELDS TERMINATED BY
-                ','
-            $optionally ENCLOSED BY
-                '\"'
-            ESCAPED BY
-                '\\\\'
-            LINES TERMINATED BY
-                '\\n'
-            FROM
-                `$tableName`
-            ;";
+		    SELECT
+		    	*
+		    INTO OUTFILE
+		    	'$filename'
+		    FIELDS TERMINATED BY
+		    	','
+		    $optionally ENCLOSED BY
+		    	'\"'
+		    ESCAPED BY
+		    	'\\\\'
+		    LINES TERMINATED BY
+		    	'\\n'
+		    FROM
+        		`$tableName`
+        	;";
 
         // execute SQL
         $db = cRegistry::getDb();
@@ -782,21 +782,21 @@ class PifaForm extends Item {
         if (true === $bySchema) {
             // using the information schema
             $sql = "-- PifaForm->existsTable()
-                SELECT
-                    *
-                FROM
-                    `information_schema.tables`
-                WHERE
-                    table_schema = '" . $cfg['db']['connection']['database'] . "'
-                    AND table_name = '$tableName'
-                ;";
+	    	    SELECT
+	    	    	*
+		        FROM
+		        	`information_schema.tables`
+		        WHERE
+		        	table_schema = '" . $cfg['db']['connection']['database'] . "'
+		        	AND table_name = '$tableName'
+	    	    ;";
         } else {
             // using show tables
             $sql = "-- PifaForm->existsTable()
-                SHOW TABLES
-                LIKE
-                    '$tableName';
-                ;";
+		        SHOW TABLES
+		        LIKE
+		        	'$tableName';
+	    	    ;";
         }
 
         // check table
@@ -833,10 +833,10 @@ class PifaForm extends Item {
 
         // prepare statement
         $sql = "-- PifaForm->createTable()
-            CREATE TABLE IF NOT EXISTS
-                `$tableName`
-            ($createDefinitions)
-            ;";
+        	CREATE TABLE IF NOT EXISTS
+        		`$tableName`
+        	($createDefinitions)
+        	;";
 
         // create table
         $db = cRegistry::getDb();
@@ -867,11 +867,11 @@ class PifaForm extends Item {
         }
 
         $sql = "-- PifaForm->addColumn()
-               ALTER TABLE
-                   `$tableName`
-               ADD
-                   `$columnName` $dataType
-            ;";
+           	ALTER TABLE
+           		`$tableName`
+           	ADD
+           		`$columnName` $dataType
+        	;";
 
         $db->query($sql);
     }
@@ -899,11 +899,11 @@ class PifaForm extends Item {
         }
 
         $sql = "-- PifaForm->renameTable()
-            RENAME TABLE
-                `$oldTableName`
-            TO
-                `$tableName`
-            ;";
+        	RENAME TABLE
+        		`$oldTableName`
+        	TO
+        		`$tableName`
+        	;";
 
         $db->query($sql);
     }
@@ -939,12 +939,12 @@ class PifaForm extends Item {
         }
 
         $sql = "-- PifaForm->renameColumn()
-            ALTER TABLE
-                `$tableName`
-            CHANGE
-                `$oldColumnName`
-                `$columnName` $dataType
-            ;";
+        	ALTER TABLE
+        		`$tableName`
+        	CHANGE
+        		`$oldColumnName`
+        		`$columnName` $dataType
+        	;";
 
         $db->query($sql);
 
@@ -964,22 +964,22 @@ class PifaForm extends Item {
 
         // delete form
         $sql = "-- PifaForm->delete()
-            DELETE FROM
-                `" . $cfg['tab']['pifa_form'] . "`
-            WHERE
-                idform = " . cSecurity::toInteger($this->get('idform')) . "
-            ;";
+			DELETE FROM
+				`" . $cfg['tab']['pifa_form'] . "`
+			WHERE
+				idform = " . cSecurity::toInteger($this->get('idform')) . "
+			;";
         if (false === $db->query($sql)) {
             throw new Exception('form could not be deleted');
         }
 
         // delete fields
         $sql = "-- PifaForm->delete()
-            DELETE FROM
-                `" . $cfg['tab']['pifa_field'] . "`
-            WHERE
-                idform = " . cSecurity::toInteger($this->get('idform')) . "
-            ;";
+			DELETE FROM
+				`" . $cfg['tab']['pifa_field'] . "`
+			WHERE
+				idform = " . cSecurity::toInteger($this->get('idform')) . "
+			;";
         if (false === $db->query($sql)) {
             throw new Exception('fields could not be deleted');
         }
@@ -987,9 +987,9 @@ class PifaForm extends Item {
         // drop data
         if (0 < strlen(trim($this->get('data_table')))) {
             $sql = "-- PifaForm->delete()
-                DROP TABLE IF EXISTS
-                    `" . cSecurity::toString($this->get('data_table')) . "`
-                ;";
+	        	DROP TABLE IF EXISTS
+					`" . cSecurity::toString($this->get('data_table')) . "`
+				;";
             if (false === $db->query($sql)) {
                 throw new Exception('data table could not be dropped');
             }

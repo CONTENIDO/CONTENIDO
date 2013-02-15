@@ -12,26 +12,26 @@ fieldset {
 }
 
 legend {
-    /*
-    font-weight: bold;
-    font-size: 10pt;
-    margin: 0;
-    border: 2px dotted #afbF00;
-    padding: 2px 6px;
-    color: #0060B1;
-    background-color: #BFCF00;
-    width: 170px;
-    text-align: center;
-    */
-    /*
-    width: 684px;
+	/*
+	font-weight: bold;
+	font-size: 10pt;
+	margin: 0;
+	border: 2px dotted #afbF00;
+	padding: 2px 6px;
+	color: #0060B1;
+	background-color: #BFCF00;
+	width: 170px;
+	text-align: center;
+	*/
+	/*
+	width: 684px;
     height: 30px;
     margin: 0 2px;
     border: 1px 1px 1px 0 solid grey;
     color: black;
-    */
+	*/
     background-color: #f1f1f1;
-    width: 100%;
+	width: 100%;
     height: 30px;
     margin-top: 30px;
 }
@@ -63,7 +63,7 @@ legend {
 /******************************************************************************/
 
 #pifa-form-add-field {
-    padding-right: 281px;
+	padding-right: 281px;
 }
 
 /******************************************************************************/
@@ -74,7 +74,7 @@ legend {
     width: 678px;
     padding-right: 0;
     margin-bottom: 30px;
-
+    
 }
 
 #pifa-form fieldset div {
@@ -86,15 +86,15 @@ legend {
 #pifa-form fieldset div input {
     width: 231px;
     margin-right: 28%;
-}
+} 
 
 #pifa-form fieldset div select {
     width: 231px;
     margin-right: 200px;
-}
+} 
 
 #pifa-form fieldset #image-new-form {
-    float: right;
+    float: right;    
 }
 
 /* ORIGINAL STYLES
@@ -110,11 +110,11 @@ legend {
 }
 
 #pifa-form-field-list {
-    list-style-type: none;
-    margin: 0;
-    border: 0;
-    padding: 5px;
-    cursor: move;
+	list-style-type: none;
+	margin: 0;
+	border: 0;
+	padding: 5px;
+	cursor: move;
     min-height: 200px;
 }
 
@@ -135,7 +135,7 @@ legend {
 #pifa-form-field-list li>div {
     float: left;
     padding: 3px;
-    border-collapse: collapse;
+    border-collapse: collapse;    
 }
 
 #pifa-form-field-list .idfield {
@@ -149,12 +149,12 @@ legend {
     text-align: center;
 }
 
-#pifa-form-field-list .edit a {
-    padding-right: 4px;
+#pifa-form-field-list .edit a {   
+    padding-right: 4px;   
 }
 
 #pifa-form-field-list .column_name,
-#pifa-form-field-list .label,
+#pifa-form-field-list .label, 
 #pifa-form-field-list .field-type {
     width: 27%;
 }
@@ -186,8 +186,8 @@ legend {
 }
 
 #field-buttons ul {
-    display: inline;
-    list-style: none;
+    display: inline;    
+    list-style: none;  
     padding: 0;
     margin: 0;
 }
@@ -214,7 +214,7 @@ legend {
 #droppableField {
     margin: 13px 10px;
     height: 200px;
-    border: 1px dashed grey;
+    border: 1px dashed grey;    
 }
 
 #image-new-form {
@@ -245,12 +245,12 @@ legend {
     padding-top: 3px;
     padding-right: 30px;
     padding-left: 40px;
-    float: left;
+    float: left;    
 }
 
 .li-label-name {
     padding-top : 4px;
-    font-size: 12px;
+    font-size: 12px;    
 }
 
 .li-column-name {
@@ -294,7 +294,7 @@ legend {
 
 .pseudo-fieldset {
     background-color: #f1f1f1;
-    -moz-border-radius:10px; /* Firefox */
+	-moz-border-radius:10px; /* Firefox */
     -webkit-border-radius:10px; /* Safari, Chrome */
     -khtml-border-radius:10px; /* Konqueror */
     border-radius: 5px; /* CSS3 */
@@ -302,14 +302,14 @@ legend {
 }
 
 .pseudo-fieldset label {
-    display: block;
+	display: block;
     float: left;
     width: 12em;
 }
 
 .pseudo-fieldset input,
 .pseudo-fieldset select {
-    width: 212px;
+	width: 212px;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -321,14 +321,14 @@ legend {
     padding-bottom: 2px;
 }
 
-.default_value, .help_text , .obligatory,
-.rule , .error_message , .option-labels  , .option-values,
+.default_value, .help_text , .obligatory, 
+.rule , .error_message , .option-labels  , .option-values, 
 .field-type-dialog, .req-input {
     margin-bottom: 5px;
 }
 
 #error_message, #help_text {
-    resize: none;
+	resize: none;
 }
 
 .label span {
@@ -348,7 +348,7 @@ legend {
 }
 .option-outer {
     background-color: #f1f1f1;
-    margin-bottom: 2px;
+    margin-bottom: 2px;    
 }
 
 #req-input {
@@ -383,11 +383,11 @@ legend {
 }
 
 #field-buttons ul li a {
-    background-repeat: no-repeat;
+	background-repeat: no-repeat;
     cursor: move;
     float: left;
     height: 46px;
-    width: 46px;
+    width: 46px;    
     margin: 10px 0 0 10px;
 }
 
@@ -397,12 +397,12 @@ legend {
 }
 
 #add-options-div input{
-    margin-top: 3px;
+	margin-top: 3px;
 }
 
 #add-options-div span{
     margin-top: 3px;
-}
+} 
 
 .ui-widget-header {
     border: 1px solid #aaaaaa;
@@ -421,7 +421,7 @@ legend {
 }
 
 .ui-dialog .ui-dialog-titlebar-close span {
-  display: block;
+  display: block; 
   margin: 0;
 
 }

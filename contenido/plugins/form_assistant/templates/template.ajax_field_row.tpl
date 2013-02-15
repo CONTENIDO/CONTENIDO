@@ -3,9 +3,9 @@
 <li id= "{$field->get('idfield')}">
     <div class="descr-icon pifa-icon pifa-icon-{$field->get('field_type')}"></div>
     <div class="textMiddle">
-        <div class="li-label-name">{$field->get('label')}</div>
-        <div class="li-column-name">{$field->get('column_name')}</div>
-    </div>
+	    <div class="li-label-name">{$field->get('label')}</div>
+	    <div class="li-column-name">{$field->get('column_name')}</div>
+    </div>      
     <div class="edit">
         <a href="{$editField}&amp;idfield={$field->get('idfield')}#tabs-2" class="pifa-icon-edit-field" title="{$trans.edit}">
             <img alt="{$trans.edit}" title="{$trans.edit}" src="images/editieren.gif" />
