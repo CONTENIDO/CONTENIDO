@@ -158,11 +158,11 @@ $layoutcode = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
     <meta http-equiv="expires" content="0">
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="pragma" content="no-cache">
-    <link rel="stylesheet" type="text/css" href="../contenido/styles/contenido.css">
-    <link rel="stylesheet" type="text/css" href="../contenido/styles/jquery/jquery-ui.css">
-    <script type="text/javascript" src="../contenido/scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="../contenido/scripts/jquery/jquery-ui.js"></script>
-    <script type="text/javascript" src="../contenido/scripts/general.js"></script>
+    <link rel="stylesheet" type="text/css" href="' . $backendUrl . 'styles/contenido.css">
+    <link rel="stylesheet" type="text/css" href="' . $backendUrl . 'contenido/styles/jquery/jquery-ui.css">
+    <script type="text/javascript" src="' . $backendUrl . 'contenido/scripts/jquery/jquery.js"></script>
+    <script type="text/javascript" src="' . $backendUrl . 'contenido/scripts/jquery/jquery-ui.js"></script>
+    <script type="text/javascript" src="' . $backendUrl . 'contenido/scripts/general.js"></script>
     <style>
     .contypeList {
         border: 1px solid #B3B3B3;
