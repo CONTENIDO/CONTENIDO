@@ -1240,7 +1240,7 @@ msgstr "Eine neue Version von CONTENIDO ist verfügbar! <br /> <a href='%s' clas
 #: classes/class.update.notifier.php:777
 #, php-format
 msgid "It seems to be that your version string was manipulated. CONTENIDO %s does not exist!"
-msgstr "Anscheinend wurde der CONTENIDO Versionsstring manipuliert wurde. CONTENIDO %s gibt es nicht!"
+msgstr "Anscheinend wurde der CONTENIDO Versionsstring manipuliert. CONTENIDO %s gibt es nicht!"
 
 #: classes/class.update.notifier.php:780
 msgid "Your version of CONTENIDO is up to date!"
