@@ -797,6 +797,9 @@ button.ui-button::-moz-focus-inner {
     padding: 0;
     width: 100%;
 }
+#content ul.sitemap ul {
+    margin: 0;
+}
 .sitemap .sitemap {
     margin: 0;
 }
