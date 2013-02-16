@@ -23,14 +23,15 @@ if (!defined('CON_FRAMEWORK')) {
  * @subpackage Authentication
  */
 class cAuthHandlerFrontend extends cAuthHandlerAbstract {
+    protected $_defaultNobody = true;
 
     public function preAuthorize() {
         $password = $_POST['password'];
 
         if ($password == '') {
             // Stay as nobody when an empty password is passed
-            $uid = $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
-            return $uid;
+            $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
+            return false;
         }
 
         return $this->validateCredentials();
@@ -46,15 +47,15 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
 
         $groupPerm = array();
 
-        if ($password == '') {
-            return false;
-        }
-
         if (isset($username)) {
             $this->auth['uname'] = $username;
         } elseif ($this->_defaultNobody == true) {
             $uid = $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
             return $uid;
+        }
+
+        if ($password == '') {
+            return false;
         }
 
         $uid = false;

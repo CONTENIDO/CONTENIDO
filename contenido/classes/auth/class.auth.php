@@ -108,10 +108,17 @@ class cAuth {
             }
         } else {
             $this->resetAuthInfo();
+
+            $userId = $this->preAuthorize();
+            if ($userId !== false) {
+                $this->_setAuthInfo($userId);
+                return true;
+            }
+
             if ($this->_defaultNobody == true) {
-                $this->_setAuthInfo(self::AUTH_UID_NOBODY);
+                $this->_setAuthInfo(self::AUTH_UID_NOBODY, 0x7fffffff);
             } else {
-                $this->_startLoginProcess();
+                $this->_fetchLoginForm();
             }
         }
     }
@@ -138,7 +145,7 @@ class cAuth {
         $this->auth['uid'] = ($nobody == false? '' : self::AUTH_UID_NOBODY);
         $this->auth['perm'] = '';
 
-        $this->_setExpiration($nobody == false? 0 : NULL);
+        $this->_setExpiration($nobody == false? 0 : 0x7fffffff);
     }
 
     /**
@@ -213,11 +220,12 @@ class cAuth {
      * Sets the authentication info for a user.
      *
      * @param string $userId user ID to set
+     * @param int $expiration expiration (optional, default: null)
      * @return void
      */
-    protected function _setAuthInfo($userId) {
+    protected function _setAuthInfo($userId, $expiration = NULL) {
         $this->auth['uid'] = $userId;
-        $this->_setExpiration();
+        $this->_setExpiration($expiration);
     }
 
     /**
@@ -228,28 +236,11 @@ class cAuth {
     protected function _fetchLoginForm() {
         $sess = cRegistry::getSession();
 
-        $this->_setAuthInfo(self::AUTH_UID_FORM);
+        $this->_setAuthInfo(self::AUTH_UID_FORM, 0x7fffffff);
         $this->displayLoginForm();
 
         $sess->freeze();
         exit();
-    }
-
-    /**
-     * Starts the login process by pre authorizing.
-     *
-     * @return void
-     */
-    protected function _startLoginProcess() {
-        $userId = $this->preAuthorize();
-        if ($userId !== false) {
-            $this->_setAuthInfo($userId);
-            return true;
-        }
-
-        $sess = cRegistry::getSession();
-
-        $this->_fetchLoginForm();
     }
 
     /**
