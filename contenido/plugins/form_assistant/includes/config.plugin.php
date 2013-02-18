@@ -353,6 +353,7 @@ cAutoload::addClassmapConfig(array(
     'PifaAjaxHandler' => $pluginClassPath . 'classes/class.pifa.ajax_handler.php',
     'PifaException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaDatabaseException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
+    'PifaExternalOptionsDatasourceInterface' => $pluginClassPath . 'classes/class.pifa.external_options_datasource_interface.php',
     'NotImplementedException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'IllegalStateException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaNotYetStoredException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',

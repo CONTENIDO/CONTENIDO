@@ -240,7 +240,12 @@ class PifaForm extends Item {
         $values = array();
         foreach ($this->getFields() as $pifaField) {
             // ommit fields which are not stored in database
-            if (NULL === $pifaField->getDbDataType()) {
+            try {
+                $isStored = NULL === $pifaField->getDbDataType();
+            } catch (Exception $e) {
+                $isStored = false;
+            }
+            if (false === $isStored) {
                 continue;
             }
             $values[$pifaField->get('column_name')] = $pifaField->getValue();

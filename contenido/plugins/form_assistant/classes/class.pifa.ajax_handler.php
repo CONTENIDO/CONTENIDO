@@ -152,7 +152,7 @@ class PifaAjaxHandler {
         }
 
         // get option classes
-        $optionClasses = Pifa::getExtensionClasses('ExternalOptionsDatasourceInterface');
+        $optionClasses = Pifa::getExtensionClasses('PifaExternalOptionsDatasourceInterface');
         array_unshift($optionClasses, array(
             'value' => '',
             'label' => Pifa::i18n('none')

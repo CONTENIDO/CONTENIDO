@@ -24,10 +24,10 @@ class DefaultFormModule extends PifaAbstractFormModule {
      */
     protected function doGet(array $values = array(), array $errors = array()) {
 
-        $this->templateName = $this->_settings['pifaform_template_get'];
+        $this->setTemplateName($this->getSetting('pifaform_template_get'));
 
         // create and load form
-        $pifaForm = new PifaForm($this->idform);
+        $pifaForm = new PifaForm($this->getIdform());
 
         // catch error
         if (true !== $pifaForm->isLoaded()) {
@@ -41,7 +41,7 @@ class DefaultFormModule extends PifaAbstractFormModule {
         $pifaForm->setErrors($errors);
 
         // assign rendered form
-        $this->_tpl->assign('form', $pifaForm->toHtml(array(
+        $this->getTpl()->assign('form', $pifaForm->toHtml(array(
             'action' => cUri::getInstance()->build(array(
                 'idart' => cRegistry::getArticleId(),
                 'lang' => cRegistry::getLanguageId()
@@ -54,9 +54,9 @@ class DefaultFormModule extends PifaAbstractFormModule {
      */
     protected function doPost() {
 
-        $this->templateName = $this->_settings['pifaform_template_post'];
+        $this->setTemplateName($this->getSetting('pifaform_template_post'));
 
-        $postProcessor = new ContentApplicationFormProcessor($this->idform);
+        $postProcessor = new ContentApplicationFormProcessor($this->getIdform());
         $postProcessor->fromAddress = $this->fromAddress;
         $postProcessor->fromName = $this->fromName;
         $postProcessor->toAddress = $this->toAddress;
@@ -67,7 +67,7 @@ class DefaultFormModule extends PifaAbstractFormModule {
 
             $postProcessor->process();
 
-            $this->_tpl->assign('reply', $this->label['reply']);
+            $this->getTpl()->assign('reply', $this->label['reply']);
 
         } catch (PifaValidationException $e) {
 
