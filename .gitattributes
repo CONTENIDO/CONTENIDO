@@ -127,6 +127,9 @@ cms/data/modules/content_user_forum/template/user_forum_list.tpl -text
 cms/data/modules/content_user_forum/template/user_forum_list_empty.tpl -text
 cms/data/modules/content_user_forum/template/user_forum_message.tpl -text
 cms/data/modules/content_user_forum/template/user_forum_new.tpl -text
+cms/data/modules/form_contact/info.xml -text
+cms/data/modules/form_contact/php/form_contact_input.php -text
+cms/data/modules/form_contact/php/form_contact_output.php -text
 cms/data/modules/form_login/info.xml -text
 cms/data/modules/form_login/lang/lang_de_DE.txt -text
 cms/data/modules/form_login/php/form_login_input.php -text
