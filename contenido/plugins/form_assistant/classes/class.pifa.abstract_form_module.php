@@ -161,7 +161,6 @@ abstract class PifaAbstractFormModule {
                 $this->doPost();
                 break;
             default:
-                // FIXME I18N
                 throw new PifaException('unknown request method');
         }
 

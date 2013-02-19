@@ -85,7 +85,7 @@ class PifaLeftBottomPage extends cGuiPage {
                 $form->delete();
 
                 $cGuiNotification = new cGuiNotification();
-                $this->set('s', 'notification', $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, Pifa::i18n('form deleted')));
+                $this->set('s', 'notification', $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, Pifa::i18n('FORM_DELETED')));
 
                 break;
 
@@ -131,21 +131,17 @@ class PifaLeftBottomPage extends cGuiPage {
             $link->setCLink($area, 4, 'show_form');
             $link->setTargetFrame('right_bottom');
             $link->setCustom('idform', $idform);
-            $link->setAlt(Pifa::i18n('show form'));
+            $link->setAlt(Pifa::i18n('SHOW_FORM'));
             $link->setContent('name ' . $formName);
             $menu->setLink($idform, $link);
 
             // add 'delete' action
-            $delTitle = Pifa::i18n('delete form');
-            $delDescr = Pifa::i18n('Do you really want to delete the following form:<br><br>%s<br>');
-            $delDescr = sprintf($delDescr, $formName);
-
             $delete = new cHTMLLink();
             $delete->setCLink($area, 2, 'delete_form');
             $delete->setTargetFrame('left_bottom');
             $delete->setCustom('idform', $idform);
             $delete->setClass('pifa-icon-delete-form');
-            $deleteForm = Pifa::i18n('delete form');
+            $deleteForm = Pifa::i18n('DELETE_FORM');
             $delete->setAlt($deleteForm);
             $delete->setContent('<img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');
             $menu->setActions($idform, 'delete', $delete);

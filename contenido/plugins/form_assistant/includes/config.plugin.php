@@ -67,7 +67,9 @@ class Pifa {
      * @return string
      */
     public static function i18n($key) {
-        return i18n($key, self::$_name);
+        $trans = i18n($key, self::$_name);
+        Util::log('i18n ' . $key . ' => ' . $trans);
+        return $trans;
     }
 
     /**

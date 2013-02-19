@@ -14,169 +14,31 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-SearchPath-0: \n"
 
-msgid "Einzeiliges Eingabefeld"
-msgstr "Einzeiliges Eingabefeld"
-
-msgid "Mehrzeiliges Eingabefeld"
-msgstr "Mehrzeiliges Eingabefeld"
-
-msgid "Passwortfeld"
-msgstr "Passwortfeld"
-
-msgid "Radiobuttons"
-msgstr "Radiobuttons"
-
-msgid "Checkboxen"
-msgstr "Checkboxen"
-
-msgid "Auswahlliste"
-msgstr "Auswahlliste"
-
-msgid "Auswahlliste mit Mehrfachauswahl"
-msgstr "Auswahlliste mit Mehrfachauswahl"
-
-msgid "Datum & Uhrzeit"
-msgstr "Datum & Uhrzeit"
-
-msgid "Dateiupload"
-msgstr "Dateiupload"
-
-msgid "Fortschrittsbalken"
-msgstr "Fortschrittsbalken"
-
-msgid "Slider"
-msgstr "Slider"
-
-msgid "Captcha"
-msgstr "Captcha"
-
-msgid "Absenden-Button"
-msgstr "Absenden-Button"
-
-msgid "Abbrechen-Button"
-msgstr "Abbrechen-Button"
-
-msgid "Zurück-Button"
-msgstr "Zurück-Button"
-
-msgid "Matrix"
-msgstr "Matrix"
-
-################################################################################
-
-msgid "Do you really want to delete the following form:<br><br>%s<br>"
-msgstr "Möchten Sie wirklich dieses Formular löschen:<br><br>%s<br>"
-
-msgid "add field"
-msgstr "Formularfeld hinzufügen"
-
-msgid "column name"
-msgstr "Spaltenname:"
-
-msgid "create"
-msgstr "Erzeugen"
-
-msgid "data"
-msgstr "Formulardaten"
-
-msgid "data table name"
-msgstr "Datentabellenname"
-
-msgid "default value"
-msgstr "Standardwert:"
-
-msgid "delete"
-msgstr "Löschen"
-
-msgid "delete form"
-msgstr "Formular löschen"
-
-msgid "edit"
-msgstr "Editieren"
-
-msgid "edit fields"
-msgstr "Formularfelder editieren"
-
-msgid "error message"
-msgstr "Fehlermeldung:"
-
-msgid "fields"
-msgstr "Formularfelder"
-
-msgid "field type"
-msgstr "Formularfeldtyp:"
+; class.content.type.pifa_form.php
 
 msgid "form"
 msgstr "Formular"
 
-msgid "form deleted"
-msgstr "Formular wurde gelöscht"
+msgid "classes & templates"
+msgstr "Klassen & Vorlagen"
 
-msgid "form name"
-msgstr "Formularname"
+msgid "client mail"
+msgstr "Benutzer-Mail"
 
-msgid "help text"
-msgstr "Hilfetext:"
+msgid "system mail"
+msgstr "System-Mail"
 
-msgid "hidden input"
-msgstr "Verstecktes Eingabefeld"
+msgid "none"
+msgstr "keine"
 
-msgid "ID"
-msgstr "ID"
+msgid "module"
+msgstr "Module"
 
-msgid "label"
-msgstr "Bezeichnung:"
+msgid "processor"
+msgstr "Prozessoren"
 
-msgid "no fields found"
-msgstr "Es wurden keine Formularfelder gefunden."
-
-msgid "obligatory"
-msgstr "zwingend"
-
-msgid "option labels"
-msgstr "Bezeichnungen der Auswahlmöglichkeiten"
-
-msgid "option values"
-msgstr "Werte der Auswahlmöglichkeiten"
-
-msgid "paragraph"
-msgstr "Absatz"
-
-msgid "please choose"
-msgstr "Bitte wählen Sie eine Auswahlmöglichkeit"
-
-msgid "please save first"
-msgstr "Bitte erst speichern ..."
-
-msgid "please select a form"
-msgstr "Bitte wählen Sie ein Formular"
-
-msgid "rank"
-msgstr "Rang"
-
-msgid "request method"
-msgstr "Anfragemethode"
-
-msgid "save"
-msgstr "Speichern"
-
-msgid "show form"
-msgstr "Formular anzeigen"
-
-msgid "unknown"
-msgstr "unbekannt"
-
-msgid "validation rule"
-msgstr "Prüfungsregel:"
-
-msgid "new form"
-msgstr "Neues Formular"
-
-msgid "table name"
-msgstr "Tabellennname"
-
-msgid "name"
-msgstr "Name"
+msgid "template"
+msgstr "Vorlagen"
 
 msgid "GET"
 msgstr "GET"
@@ -184,68 +46,218 @@ msgstr "GET"
 msgid "POST"
 msgstr "POST"
 
-msgid "method"
-msgstr "Methode"
+msgid "sender email"
+msgstr "Absender-Adresse"
 
-msgid "options"
-msgstr "Optionen"
+msgid "sender name"
+msgstr "Absender-Name"
 
-msgid "Database"
+msgid "subject"
+msgstr "Betreff"
+
+; class.pifa.ajax_handler.php
+
+msgid "ID"
+msgstr "ID"
+
+msgid "RANK"
+msgstr "Rang"
+
+msgid "FIELD_TYPE"
+msgstr "Feldtyp"
+
+msgid "COLUMN_NAME"
+msgstr "Spaltenname"
+
+msgid "LABEL"
+msgstr "Beschriftung"
+
+msgid "DISPLAY_LABEL"
+msgstr "Beschriftung darstellen"
+
+msgid "DEFAULT_VALUE"
+msgstr "Standardwert"
+
+msgid "HELP_TEXT"
+msgstr "Hilfetext"
+
+msgid "VALIDATION_RULE"
+msgstr "Validierungsregel"
+
+msgid "ERROR_MESSAGE"
+msgstr "Fehlermeldung"
+
+msgid "DATABASE"
 msgstr "Datenbank"
 
-msgid "general"
+msgid "OPTIONS"
+msgstr "Optionen"
+
+msgid "GENERAL"
 msgstr "Allgemein"
 
-msgid "label"
-msgstr "Bezeichnung:"
+msgid "OBLIGATORY"
+msgstr "Pflichtfeld"
 
-msgid "display label"
-msgstr "Bezeichnung anzeigen"
+msgid "VALUE"
+msgstr "Wert"
 
-msgid "form type"
-msgstr "Formularfeldtyp:"
+msgid "ADD_OPTION"
+msgstr "Option hinzufügen"
 
-msgid "required"
-msgstr "Pflichtangabe:"
+msgid "SAVE"
+msgstr "Speichern"
 
-msgid "validation rules"
-msgstr "Prüfungsregel:"
+msgid "STYLING"
+msgstr "Formatierung"
 
-msgid "error message"
-msgstr "Fehlermeldung:"
+msgid "CSS_CLASS"
+msgstr "CSS-Klasse"
 
-msgid "help message"
-msgstr "Hilfetext:"
+msgid "EXTERNAL_OPTIONS_DATASOURCE2"
+msgstr "externe Datenquelle für Optionen"
 
-msgid "column name"
-msgstr "Spaltenname:"
+msgid "EDIT"
+msgstr "Bearbeiten"
 
-msgid "Value 1:"
-msgstr "Wert 1:"
+msgid "DELETE"
+msgstr "Löschen"
 
-msgid "Value 2:"
-msgstr "Wert 2:"
+; class.pifa.field.php
 
-msgid "Value 3:"
-msgstr "Wert 3:"
+msgid "INPUTTEXT"
+msgstr "Einzeiliges Eingabefeld"
 
-msgid "Label 1:"
-msgstr "Label 1:"
+msgid "TEXTAREA"
+msgstr "Mehrzeiliges Eingabefeld"
 
-msgid "Label 2: 
-msgstr "Label 2:"
+msgid "INPUTPASSWORD"
+msgstr "Passwortfeld"
 
-msgid "Label 3:"
-msgstr "Label 3:"
+msgid "INPUTRADIO"
+msgstr "Radiobuttons"
 
-msgid "Form data"
+msgid "INPUTCHECKBOX"
+msgstr "Checkboxen"
+
+msgid "SELECT"
+msgstr "Auswahlliste"
+
+msgid "SELECTMULTI"
+msgstr "Auswahlliste mit Mehrfachauswahl"
+
+msgid "DATEPICKER"
+msgstr "Datum & Uhrzeit"
+
+msgid "INPUTFILE"
+msgstr "Dateiupload"
+
+msgid "PROCESSBAR"
+msgstr "Fortschrittsbalken"
+
+msgid "SLIDER"
+msgstr "Slider"
+
+msgid "CAPTCHA"
+msgstr "Captcha"
+
+msgid "BUTTONSUBMIT"
+msgstr "Absenden-Button"
+
+msgid "BUTTONRESET"
+msgstr "Abbrechen-Button"
+
+msgid "BUTTONBACK"
+msgstr "Zurück-Button"
+
+msgid "MATRIX"
+msgstr "Matrix"
+
+msgid "PARAGRAPH"
+msgstr "Absatz"
+
+msgid "INPUTHIDDEN"
+msgstr "Verstecktes Eingabefeld"
+
+msgid "FIELDSET_BEGIN"
+msgstr "Anfang einer Formularfeldgruppe"
+
+msgid "FIELDSET_END"
+msgstr "Ende einer Formularfeldgruppe"
+
+msgid "UNKNOWN"
+msgstr "unbekannt"
+
+; class.pifa.gui.php
+
+msgid "FORM_DELETED"
+msgstr "Formular wurde gelöscht"
+
+msgid "SHOW_FORM"
+msgstr "Formular anzeigen"
+
+msgid "DELETE_FORM"
+msgstr "Formular löschen"
+
+; class.pifa.gui.php TODO check if neccessary
+
+msgid "please select a form"
+msgstr "bitte wählen sie ein Formular aus"
+
+msgid "form"
+msgstr "Formular"
+
+msgid "fields"
+msgstr "Formularfelder"
+
+msgid "data"
 msgstr "Formulardaten"
 
+msgid "form name"
+msgstr "Formularname"
+
+msgid "data table"
+msgstr "Datentabelle"
+
+msgid "method"
+msgstr "Method"
+
+msgid "please choose"
+msgstr "bitte auswählen"
+
+msgid "save form"
+msgstr "Formular speichern"
+
 msgid "All form types"
-msgstr "Alle Formularfeld-Typen"
+msgstr "All form types"
+
+msgid "please save first"
+msgstr "please save first"
 
 msgid "edit form"
-msgstr "Formularfeld editieren"
+msgstr "edit form"
 
-msgid "add options"
-msgstr "Optionen hinzufügen"
+msgid "edit"
+msgstr "edit"
+
+msgid "delete"
+msgstr "delete"
+
+msgid "data"
+msgstr "data"
+
+msgid "please save first"
+msgstr "please save first"
+
+msgid "download data as CSV"
+msgstr "download data as CSV"
+
+; class.pifa.product_group_options_datasource.php
+
+msgid "CHOOSE_CATEGORY"
+msgstr "Please choose a category"
+
+; include.left_top.php
+
+msgid "CREATE_FORM"
+msgstr "create form"

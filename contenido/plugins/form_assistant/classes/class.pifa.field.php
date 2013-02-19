@@ -890,33 +890,33 @@ class PifaField extends Item {
 
         // TODO add proper translations
         $fieldTypeName = array(
-            self::INPUTTEXT => Pifa::i18n('Einzeiliges Eingabefeld'),
-            self::TEXTAREA => Pifa::i18n('Mehrzeiliges Eingabefeld'),
-            self::INPUTPASSWORD => Pifa::i18n('Passwortfeld'),
-            self::INPUTRADIO => Pifa::i18n('Radiobuttons'),
-            self::INPUTCHECKBOX => Pifa::i18n('Checkboxen'),
-            self::SELECT => Pifa::i18n('Auswahlliste'),
-            self::SELECTMULTI => Pifa::i18n('Auswahlliste mit Mehrfachauswahl'),
-            self::DATEPICKER => Pifa::i18n('Datum & Uhrzeit'),
-            self::INPUTFILE => Pifa::i18n('Dateiupload'),
-            self::PROCESSBAR => Pifa::i18n('Fortschrittsbalken'),
-            self::SLIDER => Pifa::i18n('Slider'),
-            self::CAPTCHA => Pifa::i18n('Captcha'),
-            self::BUTTONSUBMIT => Pifa::i18n('Absenden-Button'),
-            self::BUTTONRESET => Pifa::i18n('Abbrechen-Button'),
-            self::BUTTONBACK => Pifa::i18n('Zurück-Button'),
-            self::MATRIX => Pifa::i18n('Matrix'),
-            self::PARA => Pifa::i18n('paragraph'),
-            self::INPUTHIDDEN => Pifa::i18n('hidden input'),
-            self::FIELDSET_BEGIN => Pifa::i18n('fieldset begin'),
-            self::FIELDSET_END => Pifa::i18n('fieldset end')
+            self::INPUTTEXT => Pifa::i18n('INPUTTEXT'),
+            self::TEXTAREA => Pifa::i18n('TEXTAREA'),
+            self::INPUTPASSWORD => Pifa::i18n('INPUTPASSWORD'),
+            self::INPUTRADIO => Pifa::i18n('INPUTRADIO'),
+            self::INPUTCHECKBOX => Pifa::i18n('INPUTCHECKBOX'),
+            self::SELECT => Pifa::i18n('SELECT'),
+            self::SELECTMULTI => Pifa::i18n('SELECTMULTI'),
+            self::DATEPICKER => Pifa::i18n('DATEPICKER'),
+            self::INPUTFILE => Pifa::i18n('INPUTFILE'),
+            self::PROCESSBAR => Pifa::i18n('PROCESSBAR'),
+            self::SLIDER => Pifa::i18n('SLIDER'),
+            self::CAPTCHA => Pifa::i18n('CAPTCHA'),
+            self::BUTTONSUBMIT => Pifa::i18n('BUTTONSUBMIT'),
+            self::BUTTONRESET => Pifa::i18n('BUTTONRESET'),
+            self::BUTTONBACK => Pifa::i18n('BUTTONBACK'),
+            self::MATRIX => Pifa::i18n('MATRIX'),
+            self::PARA => Pifa::i18n('PARAGRAPH'),
+            self::INPUTHIDDEN => Pifa::i18n('INPUTHIDDEN'),
+            self::FIELDSET_BEGIN => Pifa::i18n('FIELDSET_BEGIN'),
+            self::FIELDSET_END => Pifa::i18n('FIELDSET_END')
         );
 
         if (array_key_exists($fieldTypeId, $fieldTypeName)) {
             return $fieldTypeName[$fieldTypeId];
         }
 
-        return Pifa::i18n('unknown');
+        return Pifa::i18n('UNKNOWN');
 
     }
 

@@ -88,12 +88,12 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $tplTop->set('s', 'ICON', 'images/but_editlink.gif');
         $tplTop->set('s', 'ID', $this->_id);
         $tplTop->set('s', 'PREFIX', $this->_prefix);
-        $tplTop->set('s', 'HEADLINE', i18n('PIFA form'));
+        $tplTop->set('s', 'HEADLINE', Pifa::i18n('form'));
         $codeTop = $tplTop->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_top.html', true);
 
         // available tabs
         $tabMenu = array(
-            'base' => i18n('form')
+            'base' => Pifa::i18n('form')
         );
 
         // build tab code
@@ -145,7 +145,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
             $this->_getSelectForm(),
 
             new cHTMLFieldset(array(
-                new cHTMLLegend(pifa::i18n('classes & templates')),
+                new cHTMLLegend(Pifa::i18n('classes & templates')),
                 $this->_getSelectModule(),
                 $this->_getSelectProcessor(),
                 $this->_getSelectTemplateGet(),
@@ -153,7 +153,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
             )),
 
             new cHTMLFieldset(array(
-                new cHTMLLegend(pifa::i18n('client mail')),
+                new cHTMLLegend(Pifa::i18n('client mail')),
                 $this->_getSelectMailClientTemplate(),
                 $this->_getInputMailClientFromEmail(),
                 $this->_getInputMailClientFromName(),
@@ -161,7 +161,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
             )),
 
             new cHTMLFieldset(array(
-                new cHTMLLegend(pifa::i18n('system mail')),
+                new cHTMLLegend(Pifa::i18n('system mail')),
                 $this->_getSelectMailSystemTemplate(),
                 $this->_getInputMailSystemFromEmail(),
                 $this->_getInputMailSystemFromName(),
@@ -472,7 +472,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     private function _getInputMailClientFromEmail() {
 
         // attributes of form field elements
-        $label = Pifa::i18n('from email');
+        $label = Pifa::i18n('sender email');
         $id = 'pifaform_mail_client_from_email_' . $this->_id;
         $value = $this->_settings['pifaform_mail_client_from_email'];
 
@@ -492,7 +492,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     private function _getInputMailClientFromName() {
 
         // attributes of form field elements
-        $label = Pifa::i18n('from name');
+        $label = Pifa::i18n('sender name');
         $id = 'pifaform_mail_client_from_name_' . $this->_id;
         $value = $this->_settings['pifaform_mail_client_from_name'];
 
@@ -580,7 +580,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     private function _getInputMailSystemFromEmail() {
 
         // attributes of form field elements
-        $label = Pifa::i18n('from email');
+        $label = Pifa::i18n('sender email');
         $id = 'pifaform_mail_system_from_email_' . $this->_id;
         $value = $this->_settings['pifaform_mail_system_from_email'];
 
@@ -600,7 +600,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     private function _getInputMailSystemFromName() {
 
         // attributes of form field elements
-        $label = Pifa::i18n('from name');
+        $label = Pifa::i18n('sender name');
         $id = 'pifaform_mail_system_from_name_' . $this->_id;
         $value = $this->_settings['pifaform_mail_system_from_name'];
 

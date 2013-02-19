@@ -17,7 +17,7 @@ global $area;
 $link = new cHTMLLink();
 //$link->setCLink($area, 4, 'show_form');
 $link->setMultiLink($area, 'show_form', $area, 'show_form');
-$link->setContent(Pifa::i18n('create') . ' ' . Pifa::i18n('form'));
+$link->setContent(Pifa::i18n('CREATE_FORM'));
 $link->setTargetFrame('right_bottom');
 
 $oUi = new UI_Left_Top();

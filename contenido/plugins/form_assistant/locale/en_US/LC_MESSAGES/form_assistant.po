@@ -8,165 +8,256 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: United States\n"
 "X-Poedit-Basepath: \n"
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-SearchPath-0: \n"
 
-
-msgid "Einzeiliges Eingabefeld"
-msgstr "Einzeiliges Eingabefeld"
-
-msgid "Mehrzeiliges Eingabefeld"
-msgstr "Mehrzeiliges Eingabefeld"
-
-msgid "Passwortfeld"
-msgstr "Passwortfeld"
-
-msgid "Radiobuttons"
-msgstr "Radiobuttons"
-
-msgid "Checkboxen"
-msgstr "Checkboxen"
-
-msgid "Auswahlliste"
-msgstr "Auswahlliste"
-
-msgid "Auswahlliste mit Mehrfachauswahl"
-msgstr "Auswahlliste mit Mehrfachauswahl"
-
-msgid "Datum & Uhrzeit"
-msgstr "Datum & Uhrzeit"
-
-msgid "Dateiupload"
-msgstr "Dateiupload"
-
-msgid "Fortschrittsbalken"
-msgstr "Fortschrittsbalken"
-
-msgid "Slider"
-msgstr "Slider"
-
-msgid "Captcha"
-msgstr "Captcha"
-
-msgid "Absenden-Button"
-msgstr "Absenden-Button"
-
-msgid "Abbrechen-Button"
-msgstr "Abbrechen-Button"
-
-msgid "Zurück-Button"
-msgstr "Zurück-Button"
-
-msgid "Matrix"
-msgstr "Matrix"
-
-################################################################################
-
-msgid "Do you really want to delete the following form:<br><br>%s<br>"
-msgstr "Do you really want to delete the following form:<br><br>%s<br>"
-
-msgid "add field"
-msgstr "add field"
-
-msgid "column name"
-msgstr "column name"
-
-msgid "create"
-msgstr "create"
-
-msgid "data"
-msgstr "data"
-
-msgid "data table name"
-msgstr "data table name"
-
-msgid "default value"
-msgstr "default value"
-
-msgid "delete"
-msgstr "delete"
-
-msgid "delete form"
-msgstr "delete form"
-
-msgid "edit"
-msgstr "edit"
-
-msgid "edit fields"
-msgstr "edit fields"
-
-msgid "error message"
-msgstr "error message"
-
-msgid "fields"
-msgstr "fields"
-
-msgid "field type"
-msgstr "field type"
+; class.content.type.pifa_form.php
 
 msgid "form"
 msgstr "form"
 
-msgid "form deleted"
-msgstr "form deleted"
+msgid "classes & templates"
+msgstr "classes & templates"
 
-msgid "form name"
-msgstr "form name"
+msgid "client mail"
+msgstr "client mail"
 
-msgid "help text"
-msgstr "help text"
+msgid "system mail"
+msgstr "system mail"
 
-msgid "hidden input"
-msgstr "hidden input"
+msgid "none"
+msgstr "none"
+
+msgid "module"
+msgstr "module"
+
+msgid "processor"
+msgstr "processor"
+
+msgid "template"
+msgstr "template"
+
+msgid "GET"
+msgstr "GET"
+
+msgid "POST"
+msgstr "POST"
+
+msgid "sender email"
+msgstr "sender email"
+
+msgid "sender name"
+msgstr "sender name"
+
+msgid "subject"
+msgstr "subject"
+
+; class.pifa.ajax_handler.php
 
 msgid "ID"
 msgstr "ID"
 
-msgid "label"
+msgid "RANK"
+msgstr "rank"
+
+msgid "FIELD_TYPE"
+msgstr "field type"
+
+msgid "COLUMN_NAME"
+msgstr "column name"
+
+msgid "LABEL"
 msgstr "label"
 
-msgid "no fields found"
-msgstr "no fields found"
+msgid "DISPLAY_LABEL"
+msgstr "display label"
 
-msgid "obligatory"
+msgid "DEFAULT_VALUE"
+msgstr "default value"
+
+msgid "HELP_TEXT"
+msgstr "help text"
+
+msgid "VALIDATION_RULE"
+msgstr "validation rule"
+
+msgid "ERROR_MESSAGE"
+msgstr "error message"
+
+msgid "DATABASE"
+msgstr "database"
+
+msgid "OPTIONS"
+msgstr "options"
+
+msgid "GENERAL"
+msgstr "general"
+
+msgid "OBLIGATORY"
 msgstr "obligatory"
 
-msgid "option labels"
-msgstr "option labels"
+msgid "VALUE"
+msgstr "value"
 
-msgid "option values"
-msgstr "option values"
+msgid "ADD_OPTION"
+msgstr "add option"
 
-msgid "paragraph"
+msgid "SAVE"
+msgstr "save"
+
+msgid "STYLING"
+msgstr "styling"
+
+msgid "CSS_CLASS"
+msgstr "CSS class"
+
+msgid "EXTERNAL_OPTIONS_DATASOURCE2"
+msgstr "external options datasource"
+
+msgid "EDIT"
+msgstr "edit"
+
+msgid "DELETE"
+msgstr "delete"
+
+; class.pifa.field.php
+
+msgid "INPUTTEXT"
+msgstr "single line input"
+
+msgid "TEXTAREA"
+msgstr "multi line input"
+
+msgid "INPUTPASSWORD"
+msgstr "password field"
+
+msgid "INPUTRADIO"
+msgstr "radio buttons"
+
+msgid "INPUTCHECKBOX"
+msgstr "checkboxes"
+
+msgid "SELECT"
+msgstr "selectbox"
+
+msgid "SELECTMULTI"
+msgstr "multi selectbox"
+
+msgid "DATEPICKER"
+msgstr "date & time"
+
+msgid "INPUTFILE"
+msgstr "upload"
+
+msgid "PROCESSBAR"
+msgstr "processbar"
+
+msgid "SLIDER"
+msgstr "slider"
+
+msgid "CAPTCHA"
+msgstr "captcha"
+
+msgid "BUTTONSUBMIT"
+msgstr "send button"
+
+msgid "BUTTONRESET"
+msgstr "reset button"
+
+msgid "BUTTONBACK"
+msgstr "back button"
+
+msgid "MATRIX"
+msgstr "matrix"
+
+msgid "PARAGRAPH"
 msgstr "paragraph"
 
-msgid "please choose"
-msgstr "please choose"
+msgid "INPUTHIDDEN"
+msgstr "hidden input"
 
-msgid "please save first"
-msgstr "please save first"
+msgid "FIELDSET_BEGIN"
+msgstr "fieldset begin"
+
+msgid "FIELDSET_END"
+msgstr "fieldset end"
+
+msgid "UNKNOWN"
+msgstr "unknown"
+
+; class.pifa.gui.php
+
+msgid "FORM_DELETED"
+msgstr "form was deleted"
+
+msgid "SHOW_FORM"
+msgstr "show form"
+
+msgid "DELETE_FORM"
+msgstr "delete form"
+
+; class.pifa.gui.php TODO check if neccessary
 
 msgid "please select a form"
 msgstr "please select a form"
 
-msgid "rank"
-msgstr "rank"
+msgid "form"
+msgstr "form"
 
-msgid "request method"
-msgstr "request method"
+msgid "fields"
+msgstr "fields"
 
-msgid "save"
-msgstr "save"
+msgid "data"
+msgstr "data"
 
-msgid "show form"
-msgstr "show form"
+msgid "form name"
+msgstr "form name"
 
-msgid "unknown"
-msgstr "unknown"
+msgid "data table"
+msgstr "data table"
 
-msgid "validation rule"
-msgstr "validation rule"
+msgid "method"
+msgstr "method"
 
+msgid "please choose"
+msgstr "please choose"
+
+msgid "save form"
+msgstr "save form"
+
+msgid "All form types"
+msgstr "All form types"
+
+msgid "please save first"
+msgstr "please save first"
+
+msgid "edit form"
+msgstr "edit form"
+
+msgid "edit"
+msgstr "edit"
+
+msgid "delete"
+msgstr "delete"
+
+msgid "data"
+msgstr "data"
+
+msgid "please save first"
+msgstr "please save first"
+
+msgid "download data as CSV"
+msgstr "download data as CSV"
+
+; class.pifa.product_group_options_datasource.php
+
+msgid "CHOOSE_CATEGORY"
+msgstr "please choose a category"
+
+; include.left_top.php
+
+msgid "CREATE_FORM"
+msgstr "create form"

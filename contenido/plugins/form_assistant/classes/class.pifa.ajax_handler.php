@@ -574,8 +574,8 @@ class PifaAjaxHandler {
 
         // translations
         $tpl->assign('trans', array(
-            'edit' => Pifa::i18n('edit'),
-            'delete' => Pifa::i18n('delete')
+            'edit' => Pifa::i18n('EDIT'),
+            'delete' => Pifa::i18n('DELETE')
         ));
 
         // the field
