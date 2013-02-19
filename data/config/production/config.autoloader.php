@@ -663,5 +663,6 @@ return array(
     'ContenidoXmlReader' => 'contenido/classes/xml/class.xml.reader.php',
     'cXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
     'ContenidoXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
-    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php'
+    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php',
+	'cContentTypePifaForm' => 'contenido/plugins/form_assistant/classes/class.content.type.pifa_form.php',
 );
