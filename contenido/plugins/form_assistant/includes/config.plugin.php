@@ -68,7 +68,6 @@ class Pifa {
      */
     public static function i18n($key) {
         $trans = i18n($key, self::$_name);
-        Util::log('i18n ' . $key . ' => ' . $trans);
         return $trans;
     }
 
