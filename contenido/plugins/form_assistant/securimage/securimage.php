@@ -1690,7 +1690,9 @@ class Securimage
             return false;
         } else if (strlen((string)ob_get_contents()) > 0) {
             // headers haven't been sent, but there is data in the buffer that will break image and audio data
-            return false;
+            //return false;
+            ob_clean();
+            return true;
         }
 
         return true;
