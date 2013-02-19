@@ -395,7 +395,7 @@ class PifaField extends Item {
                     $error_message = 'invalid data';
                 }
                 throw new PifaValidationException(array(
-                    $this->get('column_name') => $error_message
+                    $this->get('idfield') => $error_message
                 ));
             }
 
@@ -427,8 +427,8 @@ class PifaField extends Item {
             default:
 
                 $error = NULL;
-                if (array_key_exists($this->get('column_name'), $errors)) {
-                    $error = $errors[$this->get('column_name')];
+                if (array_key_exists($this->get('idfield'), $errors)) {
+                    $error = $errors[$this->get('idfield')];
                 }
 
                 // build HTML content
