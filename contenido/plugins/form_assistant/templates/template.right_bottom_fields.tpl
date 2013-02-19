@@ -19,29 +19,29 @@ AUTHOR marcus.gnass@4fb.de
 
 {* list of available form field types for selection *}
 <fieldset id="field-buttons">
-	<legend>{$trans.legend}</legend>
-	<ul>
-		{foreach from=$fieldTypes item=fieldType}
-		<li><a class="img-draggable pifa-field-type-{$fieldType}" href="{$dragParams}&field_type={$fieldType}"></a></li>
-		{/foreach}
-	</ul>
+    <legend>{$trans.legend}</legend>
+    <ul>
+        {foreach from=$fieldTypes item=fieldType}
+        <li><a class="img-draggable pifa-field-type-{$fieldType}" href="{$dragParams}&field_type={$fieldType}"></a></li>
+        {/foreach}
+    </ul>
 </fieldset>
 
 {* list of this forms fields *}
 <fieldset id="field-list-field">
-	<ul id="pifa-form-field-list">
-		{* $fields might be NULL, but the UL has to be displayed for dropping nonetheless *}
-	    {if NULL neq $fields}
-	        {foreach from=$fields item=field}
-	            {include
-	                file=$partialFieldRow
-	                field=$field
-					editField=$editField
-					deleteField=$deleteField
-					trans=$trans}
-			{/foreach}
-	    {/if}
-	</ul>
+    <ul id="pifa-form-field-list">
+        {* $fields might be NULL, but the UL has to be displayed for dropping nonetheless *}
+        {if NULL neq $fields}
+            {foreach from=$fields item=field}
+                {include
+                    file=$partialFieldRow
+                    field=$field
+                    editField=$editField
+                    deleteField=$deleteField
+                    trans=$trans}
+            {/foreach}
+        {/if}
+    </ul>
 </fieldset>
 
 {* dialog for field forms (form is posted via Ajax!) *}

@@ -14,8 +14,8 @@ defined('CON_FRAMEWORK') or die('Illegal call');
 
 // create and render page
 try {
-	$page = new PifaLeftBottomPage();
-	$page->render();
+    $page = new PifaLeftBottomPage();
+    $page->render();
 } catch (Exception $e) {
     Pifa::logException($e);
     echo Pifa::notifyException($e);

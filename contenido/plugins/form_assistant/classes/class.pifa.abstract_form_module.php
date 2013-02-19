@@ -83,49 +83,49 @@ abstract class PifaAbstractFormModule {
         $this->_settings = $_settings;
     }
 
-	/**
+    /**
      * @return the $_idform
      */
     public function getIdform() {
         return $this->_idform;
     }
 
-	/**
+    /**
      * @param number $_idform
      */
     public function setIdform($_idform) {
         $this->_idform = $_idform;
     }
 
-	/**
+    /**
      * @return the $_templateName
      */
     public function getTemplateName() {
         return $this->_templateName;
     }
 
-	/**
+    /**
      * @param string $_templateName
      */
     public function setTemplateName($_templateName) {
         $this->_templateName = $_templateName;
     }
 
-	/**
+    /**
      * @return the $_tpl
      */
     public function getTpl() {
         return $this->_tpl;
     }
 
-	/**
+    /**
      * @param Smarty $_tpl
      */
     public function setTpl($_tpl) {
         $this->_tpl = $_tpl;
     }
 
-	/**
+    /**
      * Helper method to determine the current request method.
      * The request method is returned as uppercase string.
      *

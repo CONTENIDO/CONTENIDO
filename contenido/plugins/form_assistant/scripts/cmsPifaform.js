@@ -12,7 +12,7 @@
 /**
  * Creates a new cContentTypePifaForm with the given properties. You most
  * probably want to call initialise() after creating a new object of this class.
- * 
+ *
  * @constructor
  * @property {String} frameId The ID of the frame in which the content type can
  *           be set up.

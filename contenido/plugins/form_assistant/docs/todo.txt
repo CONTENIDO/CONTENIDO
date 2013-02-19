@@ -14,7 +14,7 @@
 [_] M: implement display of SELECT & SELECTMULTI
 [_] M: write proper CSS (Kostas, Anne)
 [_] M: FieldType File tries to store file even if none was selected
-		this also occurs if field is not mandatory ...
+        this also occurs if field is not mandatory ...
 
 [_] C: move securimage into form_assistant (needed for CAPTCHA)
 [_] C: implement display of DATEPICKER, INPUTFILE, PROCESSBAR, SLIDER, CAPTCHA, MATRIX
