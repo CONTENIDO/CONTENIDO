@@ -426,6 +426,11 @@ class PifaField extends Item {
 
             default:
 
+                $error = NULL;
+                if (array_key_exists($this->get('column_name'), $errors)) {
+                    $error = $errors[$this->get('column_name')];
+                }
+
                 // build HTML content
                 $content = array();
                 try {
@@ -433,6 +438,9 @@ class PifaField extends Item {
                     $content[] = $this->_getElemField();
                     $content[] = $this->_getElemHelp();
                     $content[] = $this->_getElemScript();
+                    if (NULL !== $error) {
+                        $content[] = new cHTMLParagraph($error, 'pifa-error-message');
+                    }
                 } catch (NotImplementedException $e) {
                     return NULL; // PASS // warning?
                 }
@@ -453,7 +461,7 @@ class PifaField extends Item {
                     $class .= ' pifa-obligatory';
                 }
                 // optional error class for field
-                if (array_key_exists($this->get('column_name'), $errors)) {
+                if (NULL !== $error) {
                     $class .= ' pifa-error';
                 }
 
