@@ -197,7 +197,7 @@ class Pifa {
             // this is a proper PHP class
             $optionClass = Pifa::toCamelCase($matches[1], true);
 
-            include_once Pifa::getPath() . 'extensions/'.$file;
+            include_once Pifa::getPath() . 'extensions/' . $file;
 
             $reflection = new ReflectionClass($optionClass);
             if (false === $reflection->isSubclassOf($parentClass)) {
@@ -257,7 +257,7 @@ class Pifa {
 
         return $templates;
 
-            }
+    }
 
     /**
      */

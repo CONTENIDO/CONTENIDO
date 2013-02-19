@@ -439,7 +439,7 @@ class PifaAjaxHandler {
             }
         }
 
-        if ($pifaField->showField('option_labels')) {
+        if ($pifaField->showField('option_labels') && array_key_exists('option_labels', $_POST) && is_array($_POST['option_labels'])) {
             $optionLabels = implode(',', array_map(function ($value) {
                 $value = cSecurity::toString($value);
                 $value = trim($value);
@@ -451,7 +451,7 @@ class PifaAjaxHandler {
             }
         }
 
-        if ($pifaField->showField('option_values')) {
+        if ($pifaField->showField('option_values') && array_key_exists('option_values', $_POST) && is_array($_POST['option_values'])) {
             $optionValues = implode(',', array_map(function ($value) {
                 $value = cSecurity::toString($value);
                 $value = trim($value);
@@ -498,7 +498,7 @@ class PifaAjaxHandler {
             }
         }
 
-        if ($pifaField->showField('css_class')) {
+        if ($pifaField->showField('css_class') && array_key_exists('css_class', $_POST) && is_array($_POST['css_class'])) {
             $cssClass = implode(',', array_map(function ($value) {
                 $value = cSecurity::toString($value);
                 $value = trim($value);

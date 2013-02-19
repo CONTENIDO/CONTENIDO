@@ -241,7 +241,7 @@ class PifaForm extends Item {
         foreach ($this->getFields() as $pifaField) {
             // ommit fields which are not stored in database
             try {
-                $isStored = NULL === $pifaField->getDbDataType();
+                $isStored = NULL !== $pifaField->getDbDataType();
             } catch (Exception $e) {
                 $isStored = false;
             }
@@ -439,6 +439,13 @@ class PifaForm extends Item {
         // build insert statement
         $sql = $db->buildInsert($this->get('data_table'), $values);
 
+        if (NULL === $db->connect()) {
+            throw new PifaDatabaseException('could not connect to database');
+        }
+        if (0 === strlen(trim($sql))) {
+            throw new PifaDatabaseException('could not build SQL');
+        }
+
         // insert new row
         $success = $db->query($sql);
 
@@ -529,7 +536,7 @@ class PifaForm extends Item {
         // add attachments by string
         if (array_key_exists('attachmentStrings', $opt) && is_array($opt['attachmentStrings'])) {
             foreach ($opt['attachmentStrings'] as $filename => $string) {
-                $mailer->AddStringAttachment($string, $filename);
+                $mailer->AddStringAttachment($string, $filename, 'quoted-printable');
             }
         }
 
@@ -732,18 +739,18 @@ class PifaForm extends Item {
     public function getCsv($oneRowPerField = false, array $additionalFields = NULL) {
 
         // get values to be converted into CSV
-        $values = $this->getValues();
+        $data = $this->getValues();
 
         // add additional fields if given
         if (NULL !== $additionalFields) {
-            array_merge($values, $additionalFields);
+            array_merge($data, $additionalFields);
         }
 
         $out = '';
         if (true === $oneRowPerField) {
 
             // one line for each field containing its header and value
-            foreach ($values as $key => $value) {
+            foreach ($data as $key => $value) {
                 if (0 < strlen($out)) {
                     $out .= "\n";
                 }
@@ -757,7 +764,7 @@ class PifaForm extends Item {
 
             // one line for headers and another for values
             $header = $values = '';
-            foreach ($values as $key => $value) {
+            foreach ($data as $key => $value) {
                 if (0 < strlen($header)) {
                     $header .= ';';
                     $values .= ';';

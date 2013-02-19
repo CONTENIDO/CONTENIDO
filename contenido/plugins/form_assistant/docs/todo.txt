@@ -40,6 +40,7 @@ Fatal error: Uncaught exception 'Exception' with message 'field type 0 is not im
 [x] beim Löschen eines Feldes ist die Animation weg
 [_] beim D&D eines Feldes verschwindet dieses
 [_] Submit darf nicht obligatory sein
+[_] handle Spaltennamen mit Umlauten
 
 record in con_type bei Installation
 
