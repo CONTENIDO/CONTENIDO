@@ -458,6 +458,10 @@ function htmldecode($string) {
 function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
     global $cfg, $cfgClient, $errsite_idcat, $errsite_idart, $db;
 
+    if (!is_array($cfgClient)) {
+        $cfgClient = array();
+    }
+
     if (!is_object($db)) {
         $db = cRegistry::getDb();
     }
@@ -473,14 +477,15 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
     $htmlpaths = array();
     $frontendpaths = array();
     foreach($cfgClient as $id => $aclient) {
-        if(is_array($aclient)) {
+        if (is_array($aclient)) {
             $htmlpaths[$id] = $aclient["path"]["htmlpath"];
             $frontendpaths[$id] = $aclient["path"]["frontend"];
         }
     }
     unset($cfgClient);
     $cfgClient = array();
-    foreach($htmlpaths as $id => $path) {
+
+    foreach ($htmlpaths as $id => $path) {
         $cfgClient[$id]["path"]["htmlpath"] = $htmlpaths[$id];
         $cfgClient[$id]["path"]["frontend"] = $frontendpaths[$id];
     }
