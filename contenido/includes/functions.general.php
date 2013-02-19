@@ -78,7 +78,7 @@ function isArtInMultipleUse($idart) {
  */
 function isAlphanumeric($test, $umlauts = true) {
     if ($umlauts == true) {
-        $match = "/^[a-z0-9ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ]+$/i";
+        $match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
     } else {
         $match = "/^[a-z0-9 ]+$/i";
     }
