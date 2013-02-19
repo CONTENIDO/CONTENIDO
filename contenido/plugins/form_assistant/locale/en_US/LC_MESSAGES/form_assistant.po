@@ -243,12 +243,6 @@ msgstr "edit"
 msgid "delete"
 msgstr "delete"
 
-msgid "data"
-msgstr "data"
-
-msgid "please save first"
-msgstr "please save first"
-
 msgid "download data as CSV"
 msgstr "download data as CSV"
 

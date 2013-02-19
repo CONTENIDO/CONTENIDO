@@ -232,32 +232,26 @@ msgid "All form types"
 msgstr "All form types"
 
 msgid "please save first"
-msgstr "please save first"
+msgstr "bitte erst speichern"
 
 msgid "edit form"
-msgstr "edit form"
+msgstr "Formular bearbeiten"
 
 msgid "edit"
-msgstr "edit"
+msgstr "Bearbeiten"
 
 msgid "delete"
-msgstr "delete"
-
-msgid "data"
-msgstr "data"
-
-msgid "please save first"
-msgstr "please save first"
+msgstr "Löschen"
 
 msgid "download data as CSV"
-msgstr "download data as CSV"
+msgstr "Formulardaten als CSV herunterladen"
 
 ; class.pifa.product_group_options_datasource.php
 
 msgid "CHOOSE_CATEGORY"
-msgstr "Please choose a category"
+msgstr "bitte wählen sie ein Kategorie aus"
 
 ; include.left_top.php
 
 msgid "CREATE_FORM"
-msgstr "create form"
+msgstr "Formular erzeugen"
