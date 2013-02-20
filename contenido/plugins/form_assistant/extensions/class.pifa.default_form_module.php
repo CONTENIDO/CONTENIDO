@@ -60,11 +60,11 @@ class DefaultFormModule extends PifaAbstractFormModule {
         // set template to use
         $this->setTemplateName($this->getSetting('pifaform_template_post'));
 
-        // create processor and pass module in order to access its settings
-        // processorClass is subclass of
         try {
+
             // get name of processor class
             $processorClass = $this->getSetting('pifaform_processor');
+
             // get name of file in which processor class could be found
             $filename = Pifa::fromCamelCase($processorClass);
             $filename = "extensions/class.pifa.$filename.php";
@@ -75,18 +75,26 @@ class DefaultFormModule extends PifaAbstractFormModule {
             if (false === class_exists($processorClass)) {
                 throw new PifaException('missing processor class ' . $processorClass);
             }
+
             // create processor instance
+            // pass module in order to access its settings
+            // processorClass is subclass of PifaAbstractFormProcessor
             $postProcessor = new $processorClass($this);
-            // process processor
             $postProcessor->process();
+
             // assign reply to post template
             $this->getTpl()->assign('reply', $this->label['reply']);
+
         } catch (PifaValidationException $e) {
+
             // display form with valid values again
             $this->doGet($postProcessor->getForm()->getValues(), $e->getErrors());
+
         } catch (Exception $e) {
+
             Pifa::logException($e);
             Pifa::displayException($e);
+
         }
 
     }

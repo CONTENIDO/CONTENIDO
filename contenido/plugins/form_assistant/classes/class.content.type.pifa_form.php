@@ -702,7 +702,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
                 $out = $mod->render(true);
             } catch (Exception $e) {
                 Pifa::logException($e);
-                Pifa::displayException($e);
+                //Pifa::displayException($e);
             }
         }
 

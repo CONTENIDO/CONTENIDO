@@ -37,7 +37,7 @@ class PifaFormCollection extends ItemCollection {
      *
      * @param int $client
      * @param int $lang
-     * @throws Exception if forms could not be read
+     * @throws PifaException if forms could not be read
      * @return PifaFormCollection
      */
     private static function _getBy($client, $lang) {
@@ -66,7 +66,7 @@ class PifaFormCollection extends ItemCollection {
         // cause this would lead to an error message if no forms
         // were created yet.
         // if (false === $succ) {
-        // throw new Exception('forms could not be read');
+        // throw new PifaException('forms could not be read');
         // }
         // better return false in this case
         if (false === $succ) {
@@ -81,14 +81,14 @@ class PifaFormCollection extends ItemCollection {
      * Get forms of given client in any language.
      *
      * @param int $client
-     * @throws Exception if $client is not greater 0
-     * @throws Exception if forms could not be read
+     * @throws PifaException if $client is not greater 0
+     * @throws PifaException if forms could not be read
      * @return PifaFormCollection
      */
     public static function getByClient($client) {
 
         if (0 >= cSecurity::toInteger($client)) {
-            throw new Exception('$client is not greater 0');
+            throw new PifaException('$client is not greater 0');
         }
 
         return self::_getBy($client, 0);
@@ -99,14 +99,14 @@ class PifaFormCollection extends ItemCollection {
      * Get forms of any client in given language.
      *
      * @param int $lang
-     * @throws Exception if $lang is not greater 0
-     * @throws Exception if forms could not be read
+     * @throws PifaException if $lang is not greater 0
+     * @throws PifaException if forms could not be read
      * @return PifaFormCollection
      */
     public static function getByLang($lang) {
 
         if (0 >= cSecurity::toInteger($lang)) {
-            throw new Exception('$lang is not greater 0');
+            throw new PifaException('$lang is not greater 0');
         }
 
         return self::_getBy(0, $lang);
@@ -118,19 +118,19 @@ class PifaFormCollection extends ItemCollection {
      *
      * @param int $client
      * @param int $lang
-     * @throws Exception if $client is not greater 0
-     * @throws Exception if $lang is not greater 0
-     * @throws Exception if forms could not be read
+     * @throws PifaException if $client is not greater 0
+     * @throws PifaException if $lang is not greater 0
+     * @throws PifaException if forms could not be read
      * @return PifaFormCollection
      */
     public static function getByClientAndLang($client, $lang) {
 
         if (0 >= cSecurity::toInteger($client)) {
-            throw new Exception('$client is not greater 0');
+            throw new PifaException('$client is not greater 0');
         }
 
         if (0 >= cSecurity::toInteger($lang)) {
-            throw new Exception('$lang is not greater 0');
+            throw new PifaException('$lang is not greater 0');
         }
 
         return self::_getBy($client, $lang);
@@ -242,7 +242,7 @@ class PifaForm extends Item {
             // ommit fields which are not stored in database
             try {
                 $isStored = NULL !== $pifaField->getDbDataType();
-            } catch (Exception $e) {
+            } catch (PifaException $e) {
                 $isStored = false;
             }
             if (false === $isStored) {
@@ -402,16 +402,16 @@ class PifaForm extends Item {
             try {
                 $pifaField->validate();
             } catch (PifaValidationException $e) {
-                //$errors = array_merge($errors, $e->getErrors());
+                // $errors = array_merge($errors, $e->getErrors());
                 foreach ($e->getErrors() as $idfield => $error) {
-                    $errors[$idfield]=$error;
+                    $errors[$idfield] = $error;
                 }
             }
         }
 
         // if some fields were invalid
         if (0 < count($errors)) {
-            // throw ONE Exception with infos for all invalid fields
+            // throw ONE PifaValidationException with infos for all invalid fields
             throw new PifaValidationException($errors);
         }
     }
@@ -452,7 +452,6 @@ class PifaForm extends Item {
         // insert new row
         $success = $db->query($sql);
 
-        // throw exception on error
         if (false === $success) {
             throw new PifaDatabaseException('values could not be stored');
         }
@@ -551,13 +550,13 @@ class PifaForm extends Item {
 
     /**
      *
-     * @throws Exception if form is not loaded
-     * @throws Exception if table does not exist
+     * @throws PifaException if form is not loaded
+     * @throws PifaException if table does not exist
      * @return array
      */
     public function getData() {
         if (!$this->isLoaded()) {
-            throw new Exception('form is not loaded');
+            throw new PifaException('form is not loaded');
         }
 
         $db = cRegistry::getDb();
@@ -565,7 +564,7 @@ class PifaForm extends Item {
         // get table name and check if it exists
         $tableName = $this->get('data_table');
         if (!$this->existsTable($tableName, false)) {
-            throw new Exception('table does not exist');
+            throw new PifaException('table does not exist');
         }
 
         // build SQL
@@ -585,7 +584,7 @@ class PifaForm extends Item {
         }
 
         $data = array();
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $data[] = $db->toArray();
         }
 
@@ -598,8 +597,8 @@ class PifaForm extends Item {
      * for easier download.
      *
      * @param string $optionally
-     * @throws Exception if form is not loaded
-     * @throws Exception if table does not exist
+     * @throws PifaException if form is not loaded
+     * @throws PifaException if table does not exist
      */
     public function getDataAsCsv($optionally = 'OPTIONALLY') {
         $cfg = cRegistry::getConfig();
@@ -626,20 +625,20 @@ class PifaForm extends Item {
     /**
      *
      * @param string $optionally
-     * @throws Exception if form is not loaded
-     * @throws Exception if table does not exist
+     * @throws PifaException if form is not loaded
+     * @throws PifaException if table does not exist
      */
     private function _getCsvFromLocalDatabaseServer($optionally = 'OPTIONALLY') {
 
         // assert form is loaded
         if (!$this->isLoaded()) {
-            throw new Exception('form is not loaded');
+            throw new PifaException('form is not loaded');
         }
 
         // get table name and check if it exists
         $tableName = $this->get('data_table');
         if (!$this->existsTable($tableName, false)) {
-            throw new Exception('table does not exist');
+            throw new PifaException('table does not exist');
         }
 
         // assert $optionally to be either 'OPTIONALLY' or ''
@@ -686,8 +685,8 @@ class PifaForm extends Item {
     /**
      * TODO use fputcsv()
      *
-     * @throws Exception if form is not loaded
-     * @throws Exception if table does not exist
+     * @throws PifaException if form is not loaded
+     * @throws PifaException if table does not exist
      */
     private function _getCsvFromRemoteDatabaseServer() {
 
@@ -790,7 +789,7 @@ class PifaForm extends Item {
 
     /**
      *
-     * @throws Exception if existance of table could not be determined
+     * @throws PifaException if existance of table could not be determined
      * @see http://www.electrictoolbox.com/check-if-mysql-table-exists/
      */
     public function existsTable($tableName, $bySchema = false) {
@@ -820,7 +819,7 @@ class PifaForm extends Item {
         // check table
         $db = cRegistry::getDb();
         if (false === $db->query($sql)) {
-            throw new Exception('existance of table could not be determined ' + $db->getErrorMessage());
+            throw new PifaException('existance of table could not be determined ' + $db->getErrorMessage());
         }
 
         return (bool) (0 !== $db->num_rows());
@@ -828,20 +827,20 @@ class PifaForm extends Item {
 
     /**
      *
-     * @throws Exception if form is not loaded
-     * @throws Exception if existance of table could not be determined
-     * @throws Exception if table already exists
-     * @throws Exception if table could not be created
+     * @throws PifaException if form is not loaded
+     * @throws PifaException if existance of table could not be determined
+     * @throws PifaException if table already exists
+     * @throws PifaException if table could not be created
      */
     public function createTable() {
         if (!$this->isLoaded()) {
-            throw new Exception('form is not loaded');
+            throw new PifaException('form is not loaded');
         }
 
         // get & check table name
         $tableName = $this->get('data_table');
         if ($this->existsTable($tableName)) {
-            throw new Exception('table ' . $tableName . ' already exists');
+            throw new PifaException('table ' . $tableName . ' already exists');
         }
 
         // prepare column definitions
@@ -859,39 +858,8 @@ class PifaForm extends Item {
         // create table
         $db = cRegistry::getDb();
         if (false === $db->query($sql)) {
-            throw new Exception('table could not be created');
+            throw new PifaException('table could not be created');
         }
-    }
-
-    /**
-     * Adds a column for the current field to the table of the current form.
-     *
-     * @param PifaField $field
-     * @throws Exception if field is not loaded
-     */
-    public function addColumn(PifaField $field) {
-        $db = cRegistry::getDb();
-
-        if (!$field->isLoaded()) {
-            throw new Exception('field is not loaded');
-        }
-
-        $tableName = $this->get('data_table');
-        $columnName = $field->get('column_name');
-        $dataType = $field->getDbDataType();
-
-        if (NULL === $dataType) {
-            return;
-        }
-
-        $sql = "-- PifaForm->addColumn()
-           	ALTER TABLE
-           		`$tableName`
-           	ADD
-           		`$columnName` $dataType
-        	;";
-
-        $db->query($sql);
     }
 
     /**
@@ -901,13 +869,13 @@ class PifaForm extends Item {
      * The new table name has already been stored inside the pifaForm object!
      *
      * @param string $oldTableName
-     * @throws Exception if form is not loaded
+     * @throws PifaException if form is not loaded
      */
     public function renameTable($oldTableName) {
         $db = cRegistry::getDb();
 
         if (!$this->isLoaded()) {
-            throw new Exception('form is not loaded');
+            throw new PifaException('form is not loaded');
         }
 
         $tableName = $this->get('data_table');
@@ -927,36 +895,63 @@ class PifaForm extends Item {
     }
 
     /**
-     * rename column if name has changed
      *
-     * @param string $oldColumnName
      * @param PifaField $pifaField
-     * @throws Exception if form is not loaded
-     * @throws Exception if field is not loaded
+     * @param string $oldColumnName
+     * @throws PifaException if form is not loaded
+     * @throws PifaException if field is not loaded
      */
-    public function renameColumn($oldColumnName, PifaField $pifaField) {
-
-        $db = cRegistry::getDb();
+    public function storeColumn(PifaField $pifaField, $oldColumnName) {
 
         if (!$this->isLoaded()) {
-            throw new Exception('form is not loaded');
+            throw new PifaException('form is not loaded');
         }
         if (!$pifaField->isLoaded()) {
-            throw new Exception('field is not loaded');
+            throw new PifaException('field is not loaded');
         }
 
-        $tableName = $this->get('data_table');
         $columnName = $pifaField->get('column_name');
         $dataType = $pifaField->getDbDataType();
 
+        if (0 === strlen(trim($oldColumnName))) {
+            if (0 === strlen(trim($columnName))) {
+                // PASS
+            } else {
+                $this->addColumn($columnName, $dataType);
+            }
+        } else {
+            if (0 === strlen(trim($columnName))) {
+                $this->dropColumn($oldColumnName);
+            } else {
+                $this->changeColumn($columnName, $dataType, $oldColumnName);
+            }
+        }
+
+    }
+
+    /**
+     * rename column if name has changed
+     *
+     * @param string $columnName
+     * @param string $dataType
+     * @param string $oldColumnName
+     * @throws PifaException if form is not loaded
+     * @throws PifaException if field is not loaded
+     */
+    public function changeColumn($columnName, $dataType, $oldColumnName) {
+
+        $tableName = $this->get('data_table');
         if ($oldColumnName === $columnName) {
             return;
+        }
+        if (true === $this->_existsColumn($columnName)) {
+            throw new PifaException("column $columnName already exists");
         }
         if (NULL === $dataType) {
             return;
         }
 
-        $sql = "-- PifaForm->renameColumn()
+        $sql = "-- PifaForm->changeColumn()
         	ALTER TABLE
         		`$tableName`
         	CHANGE
@@ -964,7 +959,99 @@ class PifaForm extends Item {
         		`$columnName` $dataType
         	;";
 
-        $db->query($sql);
+        $db = cRegistry::getDb();
+        if (false === $db->query($sql)) {
+            throw new PifaException('column could not be changed');
+        }
+
+    }
+
+    /**
+     * Adds a column for the current field to the table of the current form.
+     *
+     * @param string $columnName
+     * @throws PifaException if field is not loaded
+     */
+    public function dropColumn($columnName) {
+
+        $tableName = $this->get('data_table');
+        if (false === $this->_existsColumn($columnName)) {
+            throw new PifaException("column $columnName already exists");
+        }
+
+        $sql = "-- PifaForm->dropColumn()
+        	ALTER TABLE
+        		`$tableName`
+        	DROP
+        		`$columnName`
+        	;";
+
+        $db = cRegistry::getDb();
+        if (false === $db->query($sql)) {
+            throw new PifaException('column could not be dropped');
+        }
+
+    }
+
+    /**
+     * Adds a column for the current field to the table of the current form.
+     *
+     * @param string $columnName
+     * @param string $dataType
+     * @throws PifaException if field is not loaded
+     */
+    public function addColumn($columnName, $dataType) {
+
+        $tableName = $this->get('data_table');
+        if (true === $this->_existsColumn($columnName)) {
+            throw new PifaException("column $columnName already exists");
+        }
+        if (NULL === $dataType) {
+            return;
+        }
+
+        $sql = "-- PifaForm->addColumn()
+           	ALTER TABLE
+           		`$tableName`
+           	ADD
+           		`$columnName` $dataType
+        	;";
+
+        $db = cRegistry::getDb();
+        if (false === $db->query($sql)) {
+            throw new PifaException('column could not be added');
+        }
+
+    }
+
+    /**
+     *
+     * @param string $columnName
+     * @throws PifaException if columns could not be read
+     * @return boolean
+     */
+    protected function _existsColumn($columnName) {
+
+        $tableName = $this->get('data_table');
+        $sql = "-- PifaForm->_existsColumn()
+           	SHOW FIELDS FROM
+           		`$tableName`
+        ;";
+
+        $db = cRegistry::getDb();
+        if (false === $db->query($sql)) {
+            throw new PifaException('columns could not be read');
+        }
+
+        // Field, Type, Null, Key, Default, Extra
+        while (false !== $db->nextRecord()) {
+            $field = $db->toArray();
+            if (strtolower($field['Field']) == strtolower($columnName)) {
+                return true;
+            }
+        }
+
+        return false;
 
     }
 
@@ -977,7 +1064,7 @@ class PifaForm extends Item {
         $db = cRegistry::getDb();
 
         if (!$this->isLoaded()) {
-            throw new Exception('form is not loaded');
+            throw new PifaException('form is not loaded');
         }
 
         // delete form
@@ -988,7 +1075,7 @@ class PifaForm extends Item {
 				idform = " . cSecurity::toInteger($this->get('idform')) . "
 			;";
         if (false === $db->query($sql)) {
-            throw new Exception('form could not be deleted');
+            throw new PifaException('form could not be deleted');
         }
 
         // delete fields
@@ -999,7 +1086,7 @@ class PifaForm extends Item {
 				idform = " . cSecurity::toInteger($this->get('idform')) . "
 			;";
         if (false === $db->query($sql)) {
-            throw new Exception('fields could not be deleted');
+            throw new PifaException('fields could not be deleted');
         }
 
         // drop data
@@ -1009,7 +1096,7 @@ class PifaForm extends Item {
 					`" . cSecurity::toString($this->get('data_table')) . "`
 				;";
             if (false === $db->query($sql)) {
-                throw new Exception('data table could not be dropped');
+                throw new PifaException('data table could not be dropped');
             }
         }
     }

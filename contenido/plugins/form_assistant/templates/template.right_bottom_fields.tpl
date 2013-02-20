@@ -21,8 +21,13 @@ AUTHOR marcus.gnass@4fb.de
 <fieldset id="field-buttons">
     <legend>{$trans.legend}</legend>
     <ul>
-        {foreach from=$fieldTypes item=fieldType}
-        <li><a class="img-draggable pifa-field-type-{$fieldType}" href="{$dragParams}&field_type={$fieldType}"></a></li>
+        {foreach from=$fieldTypes key=fieldTypeId item=fieldTypeName}
+        <li>
+        <a
+            class="img-draggable pifa-field-type-{$fieldTypeId}"
+            href="{$dragParams}&field_type={$fieldTypeId}"
+            title="{$fieldTypeName}"
+        ></a></li>
         {/foreach}
     </ul>
 </fieldset>

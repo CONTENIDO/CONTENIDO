@@ -952,13 +952,13 @@ class PifaField extends Item {
      * Returns a string describing this fields database data type as used in
      * MySQL CREATE and ALTER TABLE statements.
      *
-     * @throws Exception if field is not loaded
-     * @throws Exception if field type is not implemented
+     * @throws PifaException if field is not loaded
+     * @throws PifaException if field type is not implemented
      */
     public function getDbDataType() {
 
         if (!$this->isLoaded()) {
-            throw new Exception('field is not loaded');
+            throw new PifaException('field is not loaded');
         }
 
         $fieldType = cSecurity::toInteger($this->get('field_type'));
@@ -1036,7 +1036,7 @@ class PifaField extends Item {
                 return NULL;
 
             default:
-                throw new Exception('field type ' . $fieldType . ' is not implemented');
+                throw new PifaException('field type ' . $fieldType . ' is not implemented');
 
         }
 
@@ -1052,7 +1052,7 @@ class PifaField extends Item {
         $db = cRegistry::getDb();
 
         if (!$this->isLoaded()) {
-            throw new Exception('field is not loaded');
+            throw new PifaException('field is not loaded');
         }
 
         // update ranks of younger siblings
@@ -1078,12 +1078,15 @@ class PifaField extends Item {
                 idfield = " . cSecurity::toInteger($this->get('idfield')) . "
             ;";
         if (false === $db->query($sql)) {
-            throw new Exception('field could not be deleted');
+            throw new PifaException('field could not be deleted');
         }
 
         // drop column of data table
         if (0 < strlen(trim($this->get('column_name')))) {
             $pifaForm = new PifaForm($this->get('idform'));
+
+
+
             if (0 < strlen(trim($pifaForm->get('data_table')))) {
                 $sql = "-- PifaField->delete()
                     ALTER TABLE
@@ -1092,7 +1095,7 @@ class PifaField extends Item {
                         `" . cSecurity::toString($this->get('column_name')) . "`
                     ;";
                 if (false === $db->query($sql)) {
-                    throw new Exception('column could not be dropped');
+                    throw new PifaException('column could not be dropped');
                 }
             }
         }
@@ -1300,7 +1303,7 @@ class PifaField extends Item {
                 ));
 
             default:
-                throw new Exception('field type ' . $fieldType . ' is not implemented');
+                throw new PifaException('field type ' . $fieldType . ' is not implemented');
 
         }
 

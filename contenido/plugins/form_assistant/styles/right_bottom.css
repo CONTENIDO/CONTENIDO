@@ -405,10 +405,10 @@ legend {
 }
 
 .ui-widget-header {
+    /*color: #222222;*/
+    color: #ffffff;
+	background: #006dbf;
     border: 1px solid #aaaaaa;
-    /*background: #cccccc url(images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;*/
-    background: #006dbf;
-    color: #222222;
 }
 
 #ui-dialog-title-fieldFormDialog {

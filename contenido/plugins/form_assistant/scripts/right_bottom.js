@@ -221,6 +221,17 @@ $(function() {
                 } else {
                     $pifaFormFieldList.append(data);
                 }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $(jqXHR.responseText).appendTo('body').dialog({
+                    modal: true,
+                    title: errorThrown,
+                    buttons: {
+                        'close': function(event) {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
             }
         });
     });

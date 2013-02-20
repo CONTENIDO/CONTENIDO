@@ -478,7 +478,8 @@ class PifaRightBottomPage extends cGuiPage {
         $tpl->assign('idfield', $idfield);
 
         $tpl->assign('fields', $fields);
-        $tpl->assign('fieldTypes', PifaField::getFieldTypeIds());
+        //$tpl->assign('fieldTypes', PifaField::getFieldTypeIds());
+        $tpl->assign('fieldTypes', PifaField::getFieldTypeNames());
 
         // for partial
         $tpl->assign('editField', $editField);
@@ -812,8 +813,8 @@ class PifaRightBottomPage extends cGuiPage {
             throw new Exception('could not store field: ' . $this->_pifaField->getLastError());
         }
 
-        // rename column if name has changed
-        $this->_pifaForm->renameColumn($oldColumnName, $this->_pifaField);
+        // change column
+        $this->_pifaForm->changeColumn($oldColumnName, $this->_pifaField);
 
     }
 

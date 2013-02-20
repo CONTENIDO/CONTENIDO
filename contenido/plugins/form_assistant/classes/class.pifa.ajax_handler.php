@@ -376,6 +376,10 @@ class PifaAjaxHandler {
             }
         }
 
+        // store (add, drop or change) column in data table
+        $pifaForm = new PifaForm($idform);
+        $pifaForm->storeColumn($pifaField, $oldColumnName);
+
         // store item
         if (false === $pifaField->store()) {
             throw new PifaException('could not store field: ' . $pifaField->getLastError());
@@ -404,18 +408,6 @@ class PifaAjaxHandler {
                 // have no younger siblings
             }
 
-        }
-
-        // create or rename column in data table
-        $pifaForm = new PifaForm($idform);
-        $pifaForm->storeColumn($pifaField, $oldColumnName);
-
-        if (true === $isFieldCreated) {
-            // add column for current field to table of current form
-            $pifaForm->addColumn($pifaField);
-        } else {
-            // change column if name has changed
-            $pifaForm->changeColumn($oldColumnName, $pifaField);
         }
 
         // return new row to be displayed in list
