@@ -7,7 +7,7 @@ SELECT_ONE_GROUP=Bitte nur eine Gruppe auswählen.
 ERROR_REQUEST=Bei der Verarbeitung ist ein Fehler aufgetreten. Bitte wenden Sie sich an den Webseiten-Administrator.
 TXTMAILSUBSCRIBE=Sehr geehrter Interessent,<br><br>um Ihre Teilnahme am Newsletter zu bestätigen, klicken Sie bitte auf den unten stehenden Link:
 NEWSLETTER_CONFIRMATION=Newsletter: Bestätigung
-SUBCRIBED=
+SUBCRIBED=Abonnieren
 TXT_AFTER_CONFIRMATION=<br><br>Nach der Best&auml;tigung erhalten Sie ausserdem ein Passwort, mit dem Sie sich unter Verwendung Ihrer E-Mail-Adresse auf unserer Webseite einloggen k&ouml;nnen.
 TXT_PROBLEM_CREATING_ACCOUNT=<br><br>Leider ist ein Problem bei der Erzeugung Ihres Webseiten-Accounts aufgetreten. Bitte wenden Sie sich an den Webseiten-Administrator.
 TXT_SENDING_CONFIRMATION_MAIL=Leider ist ein Problem beim Versand der Best&auml;tigungsnachricht an Ihre E-Mail-Adresse aufgetreten. Bitte wenden Sie sich an den Webseiten-Administrator.
@@ -21,11 +21,9 @@ CONFIRMED_SUBSCRIPTION_NEWSLETTER=Vielen Dank! Sie haben Ihre Teilnahme am Newsl
 WELCOME_NEWSLETTER=Bereits der Willkommens-Newsletter ist auf dem Weg zu Ihnen!
 TXT_ACCOUNT_ACTIVATED=<br><br>Zus&auml;tzlich wurde Ihr Webseiten-Account aktiviert. Sie k&ouml;nnen sich nun mit dem folgenden Account und Passwort auf der Webseite einloggen:<br>
 USERNAME_COLON=Benutzername:
-
-
 _BR =
 TXTMAILPASSWORD=Sehr geehrter Abonnent, Ihr Account für unsere Webseite wurde aktiviert. Bitte verwenden Sie die folgenden Angaben zur Anmeldung auf unserer Webseite: 
-PASSWORD_COLON =Password:
+PASSWORD_COLON =Passwort:
 LOGIN_CLICK=Klicken Sie hier, um sich anzumelden: 
 WEBSITE_ACCOUNT=Webseiten-Account
 ACOUNT_DETAILS_EMAIL=Die Angaben zu Benutzername und Passwort wurden außerdem an Ihre E-Mail-Adresse gesendet.
