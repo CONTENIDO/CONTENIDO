@@ -322,8 +322,7 @@ class Pifa {
 $cfg['plugins'][Pifa::getName()] = Pifa::getPath();
 
 // define template names
-// $cfg['templates']['form_left_bottom'] = $cfg['plugins']['form'] .
-// 'templates/template.left_bottom.html';
+// $cfg['templates']['form_left_bottom'] = $cfg['plugins']['form'] . 'templates/template.left_bottom.html';
 $cfg['templates']['pifa_right_bottom_form'] = $cfg['plugins'][Pifa::getName()] . 'templates/template.right_bottom_form.tpl';
 $cfg['templates']['pifa_right_bottom_fields'] = $cfg['plugins'][Pifa::getName()] . 'templates/template.right_bottom_fields.tpl';
 $cfg['templates']['pifa_right_bottom_data'] = $cfg['plugins'][Pifa::getName()] . 'templates/template.right_bottom_data.tpl';
@@ -342,9 +341,6 @@ cInclude('classes', 'class.ui.php');
 // @todo Use config variables for $pluginClassPath below!
 $pluginClassPath = 'contenido/plugins/' . Pifa::getName() . '/';
 cAutoload::addClassmapConfig(array(
-
-    'Util' => $pluginClassPath . 'classes/class.util.helper.php',
-
     'PifaLeftBottomPage' => $pluginClassPath . 'classes/class.pifa.gui.php',
     'PifaRightBottomPage' => $pluginClassPath . 'classes/class.pifa.gui.php',
     'PifaFormCollection' => $pluginClassPath . 'classes/class.pifa.form.php',
@@ -362,7 +358,9 @@ cAutoload::addClassmapConfig(array(
     'PifaNotYetStoredException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaValidationException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaMailException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
-    'Securimage' => $pluginClassPath . 'securimage/securimage.php'
+    'Securimage' => $pluginClassPath . 'securimage/securimage.php',
+    // utility class; @todo should be removed when there is no more need for debugging
+    'Util' => $pluginClassPath . 'classes/class.util.helper.php'
 ));
 unset($pluginClassPath);
 

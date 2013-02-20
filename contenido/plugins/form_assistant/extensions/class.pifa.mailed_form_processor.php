@@ -46,8 +46,9 @@ class MailedFormProcessor extends DefaultFormProcessor {
         // client mail
         try {
             // get body from template
-            $tplMail = Contenido_SmartyWrapper::getInstance(true);
-            $body = $tplMail->fetch($this->getModule()->getSetting('pifaform_mail_client_template'));
+            $tplFile = $this->getModule()->getSetting('pifaform_mail_client_template');
+            $tplMail = cSmartyFrontend::getInstance(true);
+            $body = $tplMail->fetchGeneral($tplFile);
             // send mail
             $this->getForm()->toMailRecipient(array(
                 'from' => $this->getModule()->getSetting('pifaform_mail_client_from_email'),
@@ -64,14 +65,15 @@ class MailedFormProcessor extends DefaultFormProcessor {
         // system mail
         try {
             // get body from template
-            $tplMail = Contenido_SmartyWrapper::getInstance(true);
+            $tplFile = $this->getModule()->getSetting('pifaform_mail_system_template');
+            $tplMail = cSmartyFrontend::getInstance(true);
             $tplMail->assign('values', $values);
-            $body = $tplMail->fetch($this->getModule()->getSetting('pifaform_mail_system_template'));
+            $body = $tplMail->fetchGeneral($tplFile);
             // send mail
             $this->getForm()->toMailRecipient(array(
                 'from' => $this->getModule()->getSetting('pifaform_mail_system_from_email'),
                 'fromName' => $this->getModule()->getSetting('pifaform_mail_system_from_name'),
-                'to' => $this->getModule()->getSetting('pifaform_mail_system_recipient_email'),
+                'to' => $this->getModule()->getSetting('pifaform_mail_system_to_email'),
                 'subject' => $this->getModule()->getSetting('pifaform_mail_system_subject'),
                 'body' => $body,
                 'charSet' => 'UTF-8'

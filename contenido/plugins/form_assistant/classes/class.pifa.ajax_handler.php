@@ -214,151 +214,8 @@ class PifaAjaxHandler {
 
     }
 
-    // /**
-    // * Processes a form for editing a PIFA form field.
-    // *
-    // * @deprecated use _editFieldFormKK instead
-    // * @param int $idform
-    // * @param int $idfield
-    // * @throws Exception
-    // */
-    // private function _editFieldForm($idform, $idfield) {
-
-    // if (0 < $idfield) {
-    // // load field
-    // $pifaField = new PifaField($idform);
-    // if (!$pifaField->isLoaded()) {
-    // throw new Exception('field is not loaded');
-    // }
-    // } else {
-    // // get field type for new form field
-    // $fieldType = cSecurity::toInteger($_POST['field_type']);
-    // // create field
-    // $collection = new PifaFieldCollection();
-    // $pifaField = $collection->createNewItem(array(
-    // 'idform' => $idform,
-    // 'field_type' => $fieldType
-    // ));
-    // }
-
-    // // remember old column name
-    // $oldColumnName = $pifaField->get('column_name');
-
-    // /*
-    // * Read item data from form, validate item data and finally set item
-    // * data. Which data is editable depends upon the field type. So a
-    // * certain data will only be stored if its field is shown in the form.
-    // * Never, really never, call Item->set() if the value doesn't differ
-    // * from the previous one. Otherwise the genericDb thinks that the item
-    // * is modified and tries to store it resulting in a return value of
-    // * false!
-    // */
-
-    // // According to the MySQL documentation table and column names
-    // // must
-    // // not be longer than 64 charcters.
-    // if ($pifaField->showField('column_name')) {
-    // $columnName = cSecurity::toString($_POST['column_name']);
-    // $columnName = trim($columnName);
-    // $columnName = strtolower($columnName);
-    // $columnName = preg_replace('/[^a-z0-9_]/', '_', $columnName);
-    // $columnName = substr($columnName, 0, 64);
-    // if ($columnName !== $pifaField->get('column_name')) {
-    // $pifaField->set('column_name', $columnName);
-    // }
-    // }
-
-    // if ($pifaField->showField('label')) {
-    // $label = cSecurity::toString($_POST['label']);
-    // $label = trim($label);
-    // $label = substr($label, 0, 255);
-    // if ($label !== $pifaField->get('label')) {
-    // $pifaField->set('label', $label);
-    // }
-    // }
-
-    // if ($this->_pifaField->showField('default_value')) {
-    // $defaultValue = cSecurity::toString($_POST['default_value']);
-    // $defaultValue = trim($defaultValue);
-    // $defaultValue = substr($defaultValue, 0, 255);
-    // if ($defaultValue !== $pifaField->get('default_value')) {
-    // $pifaField->set('default_value', $defaultValue);
-    // }
-    // }
-
-    // if ($this->_pifaField->showField('option_labels')) {
-    // $optionLabels = cSecurity::toString($_POST['option_labels']);
-    // $optionLabels = join(',', array_map(function ($value) {
-    // return trim(cSecurity::toString($value));
-    // }, explode(',', $optionLabels)));
-    // $optionLabels = substr($optionLabels, 0, 1023);
-    // if ($optionLabels !== $pifaField->get('option_labels')) {
-    // $pifaField->set('option_labels', $optionLabels);
-    // }
-    // }
-
-    // if ($pifaField->showField('option_values')) {
-    // $optionValues = cSecurity::toString($_POST['option_values']);
-    // $optionValues = join(',', array_map(function ($value) {
-    // return trim(cSecurity::toString($value));
-    // }, explode(',', $optionValues)));
-    // $optionValues = substr($optionValues, 0, 1023);
-    // if ($optionValues !== $pifaField->get('option_values')) {
-    // $pifaField->set('option_values', $optionValues);
-    // }
-    // }
-
-    // if ($pifaField->showField('help_text')) {
-    // $helpText = cSecurity::toString($_POST['help_text']);
-    // $helpText = trim($helpText);
-    // $helpText = substr($helpText, 0, 255);
-    // if ($helpText !== $pifaField->get('help_text')) {
-    // $pifaField->set('help_text', $helpText);
-    // }
-    // }
-
-    // if ($this->_pifaField->showField('obligatory')) {
-    // $obligatory = cSecurity::toString($_POST['obligatory']);
-    // $obligatory = trim($obligatory);
-    // $obligatory = 'on' === $obligatory? 1 : 0;
-    // if ($obligatory !== $pifaField->get('obligatory')) {
-    // $pifaField->set('obligatory', $obligatory);
-    // }
-    // }
-
-    // if ($this->_pifaField->showField('rule')) {
-    // $rule = cSecurity::toString($_POST['rule']);
-    // $rule = trim($rule);
-    // $rule = substr($rule, 0, 255);
-    // if ($rule !== $pifaField->get('rule')) {
-    // $pifaField->set('rule', $rule);
-    // }
-    // }
-
-    // if ($this->_pifaField->showField('error_message')) {
-    // $errorMessage = cSecurity::toString($_POST['error_message']);
-    // $errorMessage = trim($errorMessage);
-    // $errorMessage = substr($errorMessage, 0, 255);
-    // if ($errorMessage !== $pifaField->get('error_message')) {
-    // $pifaField->set('error_message', $errorMessage);
-    // }
-    // }
-
-    // // store item
-    // if (false === $pifaField->store()) {
-    // throw new Exception('could not store field: ' .
-    // $pifaField->getLastError());
-    // }
-
-    // // rename column if name has changed
-    // $pifaForm = new PifaForm($idform);
-    // $pifaForm->renameColumn($oldColumnName, $pifaField);
-
-    // }
-
     /**
      * Processes a form for editing a PIFA form field.
-     * KKs version
      *
      * @param int $idform
      * @param int $idfield
@@ -390,16 +247,16 @@ class PifaAjaxHandler {
         }
 
         // remember old column name
+        // will be an empty string for new fields
         $oldColumnName = $pifaField->get('column_name');
 
         /*
          * Read item data from form, validate item data and finally set item
-         * data. Which data is editable depends upon the field type. So a
-         * certain data will only be stored if its field is shown in the form.
-         * Never, really never, call Item->set() if the value doesn't differ
-         * from the previous one. Otherwise the genericDb thinks that the item
-         * is modified and tries to store it resulting in a return value of
-         * false!
+         * data. Which data is editable depends upon the field type. So certain
+         * data will only be stored if its field is shown in the form. Never,
+         * really never, call Item->set() if the value doesn't differ from the
+         * previous one. Otherwise the genericDb thinks that the item is
+         * modified and tries to store it, resulting in a return value of false!
          */
 
         // set the new rank of the item
@@ -521,7 +378,7 @@ class PifaAjaxHandler {
 
         // store item
         if (false === $pifaField->store()) {
-            throw new Exception('could not store field: ' . $pifaField->getLastError());
+            throw new PifaException('could not store field: ' . $pifaField->getLastError());
         }
 
         // if a new field was created
@@ -551,12 +408,14 @@ class PifaAjaxHandler {
 
         // create or rename column in data table
         $pifaForm = new PifaForm($idform);
+        $pifaForm->storeColumn($pifaField, $oldColumnName);
+
         if (true === $isFieldCreated) {
             // add column for current field to table of current form
             $pifaForm->addColumn($pifaField);
         } else {
-            // rename column if name has changed
-            $pifaForm->renameColumn($oldColumnName, $pifaField);
+            // change column if name has changed
+            $pifaForm->changeColumn($oldColumnName, $pifaField);
         }
 
         // return new row to be displayed in list

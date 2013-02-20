@@ -433,7 +433,7 @@ class PifaField extends Item {
                     $content[] = $this->_getElemField();
                     $content[] = $this->_getElemHelp();
                     $content[] = $this->_getElemScript();
-                    /// add this fields error message
+                    // / add this fields error message
                     if (array_key_exists($this->get('idfield'), $errors)) {
                         $error = $errors[$this->get('idfield')];
                         $content[] = new cHTMLParagraph($error, 'pifa-error-message');
@@ -840,92 +840,6 @@ class PifaField extends Item {
     }
 
     /**
-     * Returns an array containing all field type ids.
-     *
-     * @return array
-     */
-    public static function getFieldTypeIds() {
-
-        return array(
-            self::INPUTTEXT,
-            self::TEXTAREA,
-            self::INPUTPASSWORD,
-            self::INPUTRADIO,
-            self::INPUTCHECKBOX,
-            self::SELECT,
-            self::SELECTMULTI,
-            self::DATEPICKER,
-            self::INPUTFILE,
-            self::PROCESSBAR,
-            self::SLIDER,
-            self::CAPTCHA,
-            self::BUTTONSUBMIT,
-            self::BUTTONRESET,
-            self::BUTTONBACK,
-            // self::MATRIX,
-            self::PARA,
-            self::INPUTHIDDEN,
-            self::FIELDSET_BEGIN,
-            self::FIELDSET_END
-        );
-
-    }
-
-    /**
-     * Return this fields type name.
-     *
-     * @param int $fieldType
-     * @return string
-     */
-    public function getMyFieldTypeName() {
-
-        return self::getFieldTypeName($this->get('field_type'));
-
-    }
-
-    /**
-     * Return the field type name for the given field type id.
-     *
-     * @param int $fieldType
-     * @return string
-     */
-    public static function getFieldTypeName($fieldTypeId) {
-
-        $fieldTypeId = cSecurity::toInteger($fieldTypeId);
-
-        // TODO add proper translations
-        $fieldTypeName = array(
-            self::INPUTTEXT => Pifa::i18n('INPUTTEXT'),
-            self::TEXTAREA => Pifa::i18n('TEXTAREA'),
-            self::INPUTPASSWORD => Pifa::i18n('INPUTPASSWORD'),
-            self::INPUTRADIO => Pifa::i18n('INPUTRADIO'),
-            self::INPUTCHECKBOX => Pifa::i18n('INPUTCHECKBOX'),
-            self::SELECT => Pifa::i18n('SELECT'),
-            self::SELECTMULTI => Pifa::i18n('SELECTMULTI'),
-            self::DATEPICKER => Pifa::i18n('DATEPICKER'),
-            self::INPUTFILE => Pifa::i18n('INPUTFILE'),
-            self::PROCESSBAR => Pifa::i18n('PROCESSBAR'),
-            self::SLIDER => Pifa::i18n('SLIDER'),
-            self::CAPTCHA => Pifa::i18n('CAPTCHA'),
-            self::BUTTONSUBMIT => Pifa::i18n('BUTTONSUBMIT'),
-            self::BUTTONRESET => Pifa::i18n('BUTTONRESET'),
-            self::BUTTONBACK => Pifa::i18n('BUTTONBACK'),
-            self::MATRIX => Pifa::i18n('MATRIX'),
-            self::PARA => Pifa::i18n('PARAGRAPH'),
-            self::INPUTHIDDEN => Pifa::i18n('INPUTHIDDEN'),
-            self::FIELDSET_BEGIN => Pifa::i18n('FIELDSET_BEGIN'),
-            self::FIELDSET_END => Pifa::i18n('FIELDSET_END')
-        );
-
-        if (array_key_exists($fieldTypeId, $fieldTypeName)) {
-            return $fieldTypeName[$fieldTypeId];
-        }
-
-        return Pifa::i18n('UNKNOWN');
-
-    }
-
-    /**
      * TODO add different icons for different form field types
      *
      * @param int $fieldType
@@ -955,6 +869,82 @@ class PifaField extends Item {
             case self::FIELDSET_END:
                 return 'icon.png';
         }
+
+    }
+
+    /**
+     * Returns an array containing all field type ids.
+     *
+     * @return array
+     */
+    public static function getFieldTypeIds() {
+
+        return array_keys(self::getFieldTypeNames());
+
+    }
+
+    /**
+     * Returns an array containing all field type ids mapped to their names.
+     *
+     * @return array
+     */
+    public static function getFieldTypeNames() {
+
+        return array(
+            self::INPUTTEXT => Pifa::i18n('INPUTTEXT'),
+            self::TEXTAREA => Pifa::i18n('TEXTAREA'),
+            self::INPUTPASSWORD => Pifa::i18n('INPUTPASSWORD'),
+            self::INPUTRADIO => Pifa::i18n('INPUTRADIO'),
+            self::INPUTCHECKBOX => Pifa::i18n('INPUTCHECKBOX'),
+            self::SELECT => Pifa::i18n('SELECT'),
+            self::SELECTMULTI => Pifa::i18n('SELECTMULTI'),
+            self::DATEPICKER => Pifa::i18n('DATEPICKER'),
+            self::INPUTFILE => Pifa::i18n('INPUTFILE'),
+            self::PROCESSBAR => Pifa::i18n('PROCESSBAR'),
+            self::SLIDER => Pifa::i18n('SLIDER'),
+            self::CAPTCHA => Pifa::i18n('CAPTCHA'),
+            self::BUTTONSUBMIT => Pifa::i18n('BUTTONSUBMIT'),
+            self::BUTTONRESET => Pifa::i18n('BUTTONRESET'),
+            self::BUTTONBACK => Pifa::i18n('BUTTONBACK'),
+            //self::MATRIX => Pifa::i18n('MATRIX'),
+            self::PARA => Pifa::i18n('PARAGRAPH'),
+            self::INPUTHIDDEN => Pifa::i18n('INPUTHIDDEN'),
+            self::FIELDSET_BEGIN => Pifa::i18n('FIELDSET_BEGIN'),
+            self::FIELDSET_END => Pifa::i18n('FIELDSET_END')
+        );
+
+    }
+
+    /**
+     * Return the field type name for the given field type id.
+     *
+     * @param int $fieldType
+     * @return string
+     */
+    public static function getFieldTypeName($fieldTypeId) {
+
+        $fieldTypeId = cSecurity::toInteger($fieldTypeId);
+        $fieldTypeNames = self::getFieldTypeNames();
+
+        if (array_key_exists($fieldTypeId, $fieldTypeNames)) {
+            $fieldTypeName = $fieldTypeNames[$fieldTypeId];
+        } else {
+            $fieldTypeName = Pifa::i18n('UNKNOWN');
+        }
+
+        return $fieldTypeName;
+
+    }
+
+    /**
+     * Return this fields type name.
+     *
+     * @param int $fieldType
+     * @return string
+     */
+    public function getMyFieldTypeName() {
+
+        return self::getFieldTypeName($this->get('field_type'));
 
     }
 
