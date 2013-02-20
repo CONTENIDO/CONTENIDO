@@ -667,7 +667,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     public function generateViewCode() {
 
         $code = '";?><?php echo (new %s(\'%s\', %s, %s))->buildCode(); ?><?php echo "';
-        $code = sprintf(get_class($this), $code, $this->_rawSettings, $this->_id, 'array()');
+        $code = sprintf($code, get_class($this), $this->_rawSettings, $this->_id, 'array()');
 
         return $code;
 
