@@ -107,7 +107,8 @@ $contenido_password = '{MYSQL_PASS}';
 
 $cfg["database_extension"] = '{DB_EXTENSION}';
 
-$cfg["nolock"] = '{NOLOCK}';
+/* (Boolean) Flag to lock tables */
+$cfg["nolock"] = {NOLOCK};
 
 $cfg["is_start_compatible"] = {START_COMPATIBLE};
 

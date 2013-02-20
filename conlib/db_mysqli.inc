@@ -254,7 +254,7 @@ class DB_Sql
     function lock($table, $mode = "write")
     {
         global $cfg;
-        if ($cfg["nolock"] == true)
+        if ($cfg["nolock"] === true)
         {
             return true;
         }
@@ -289,7 +289,7 @@ class DB_Sql
     function unlock()
     {
         global $cfg;
-        if ($cfg["nolock"] == true)
+        if ($cfg["nolock"] === true)
         {
             return true;
         }
