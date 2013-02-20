@@ -5,7 +5,7 @@ if (1 == $force) {
     $tpl->clearAllCache();
 }
 
-$db = new DB_Contenido();
+$db = cRegistry::getDb();
 
 $messageText = '';
 $generate = true;
@@ -451,7 +451,7 @@ if (($_REQUEST['user_forum_action'] != 'new_forum') && ($_REQUEST['user_forum_ac
         if ($bAllowNewforum) {
             $link = $new_forum_link;
 
-            $tplOptionList = new Template;
+            $tplOptionList = new cTemplate();
             $tplOptionList->set('s', 'SHOW_forum', $sTemp);
 
             $tpl->assign( 'SHOW_FORUM_OPTION', $tplOptionList->generate('templates/user_forum_option_list.tpl', 1));
@@ -472,7 +472,7 @@ function getExistingforum($id_cat, $id_art, $id_lang) {
 
     global $cfg;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $query = "SELECT * FROM ".$cfg['tab']['phplib_auth_user_md5'];
 
@@ -505,7 +505,7 @@ function normalizeArray($arrforum, &$result, $level = 0) {
 }
 
 function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0) {
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat) AND (idlang = $id_lang) AND (id_user_forum_parent = $parent) ORDER BY timestamp DESC";
 
@@ -538,7 +538,7 @@ function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $paren
 function deleteUserForum($id_forum) {
     $id_forum = (int) $id_forum;
     if ($id_forum > 0) {
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         $query = "SELECT * FROM con_pi_user_forum WHERE id_user_forum_parent = ".mysql_real_escape_string($id_forum);
         $db->query($query);
         while ($db->next_record()) {
