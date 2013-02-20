@@ -310,7 +310,7 @@ legend {
 .pseudo-fieldset input,
 .pseudo-fieldset textarea,
 .pseudo-fieldset select {
-	width: 310px;
+    width: 310px;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -408,7 +408,7 @@ legend {
 .ui-widget-header {
     /*color: #222222;*/
     color: #ffffff;
-	background: #006dbf;
+    background: #006dbf;
     border: 1px solid #aaaaaa;
 }
 

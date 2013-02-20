@@ -191,12 +191,12 @@ $(function() {
 
     });
 
-	var maxHeight = 0;
-	$(".column_quarter.text div.col").each(function() {
-		if (maxHeight < $(this).height()) {
-			maxHeight = $(this).height();
-		}
-	});
-	
-	$(".column_quarter.text div.col").css('height', maxHeight+20+'px');
+    var maxHeight = 0;
+    $(".column_quarter.text div.col").each(function() {
+        if (maxHeight < $(this).height()) {
+            maxHeight = $(this).height();
+        }
+    });
+
+    $(".column_quarter.text div.col").css('height', maxHeight+20+'px');
 });

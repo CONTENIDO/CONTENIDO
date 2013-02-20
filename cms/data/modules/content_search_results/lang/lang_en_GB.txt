@@ -1,7 +1,7 @@
 LINK_SEARCH_RESULTS=Link Search Result
 MORE=more
 MSG_NO_RESULTS_FOUND=Your search for '% s' has no results.
-MSG_RANGE=Results %d-%d of %d 
+MSG_RANGE=Results %d-%d of %d
 MSG_RESULTS_FOUND=Your search for '% s' has %d match result:
 NEXT=forward
 PREVIOUS=back

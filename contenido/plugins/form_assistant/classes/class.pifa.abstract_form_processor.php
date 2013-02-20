@@ -71,14 +71,14 @@ abstract class PifaAbstractFormProcessor {
         return $this->_module;
     }
 
-	/**
+    /**
      * @param PifaAbstractFormModule $_module
      */
     public function setModule($_module) {
         $this->_module = $_module;
     }
 
-	/**
+    /**
      *
      * @return PifaForm
      */
