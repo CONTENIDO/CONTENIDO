@@ -658,12 +658,28 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     }
 
     /**
-     * Get code of form.
+     * Generates the code which should be shown if this content type is shown in
+     * the frontend.
      *
      * @return string escaped HTML code which sould be shown if content type is
      *         shown in frontend
      */
     public function generateViewCode() {
+
+        $code = '";?><?php echo (new %s(\'%s\', %s, %s))->buildCode(); ?><?php echo "';
+        $code = sprintf(get_class($this), $code, $this->_rawSettings, $this->_id, 'array()');
+
+        return $code;
+
+    }
+
+    /**
+     * Get code of form.
+     *
+     * @return string escaped HTML code which sould be shown if content type is
+     *         shown in frontend
+     */
+    public function buildCode() {
 
         $out = '';
         if (0 === cSecurity::toInteger($this->_settings['pifaform_idform'])) {
