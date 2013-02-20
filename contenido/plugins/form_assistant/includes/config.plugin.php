@@ -342,6 +342,9 @@ cInclude('classes', 'class.ui.php');
 // @todo Use config variables for $pluginClassPath below!
 $pluginClassPath = 'contenido/plugins/' . Pifa::getName() . '/';
 cAutoload::addClassmapConfig(array(
+
+    'Util' => $pluginClassPath . 'classes/class.util.helper.php',
+
     'PifaLeftBottomPage' => $pluginClassPath . 'classes/class.pifa.gui.php',
     'PifaRightBottomPage' => $pluginClassPath . 'classes/class.pifa.gui.php',
     'PifaFormCollection' => $pluginClassPath . 'classes/class.pifa.form.php',

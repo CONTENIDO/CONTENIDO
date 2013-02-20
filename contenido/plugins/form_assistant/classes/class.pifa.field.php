@@ -426,11 +426,6 @@ class PifaField extends Item {
 
             default:
 
-                $error = NULL;
-                if (array_key_exists($this->get('idfield'), $errors)) {
-                    $error = $errors[$this->get('idfield')];
-                }
-
                 // build HTML content
                 $content = array();
                 try {
@@ -438,7 +433,9 @@ class PifaField extends Item {
                     $content[] = $this->_getElemField();
                     $content[] = $this->_getElemHelp();
                     $content[] = $this->_getElemScript();
-                    if (NULL !== $error) {
+                    /// add this fields error message
+                    if (array_key_exists($this->get('idfield'), $errors)) {
+                        $error = $errors[$this->get('idfield')];
                         $content[] = new cHTMLParagraph($error, 'pifa-error-message');
                     }
                 } catch (NotImplementedException $e) {

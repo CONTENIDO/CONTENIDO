@@ -402,7 +402,10 @@ class PifaForm extends Item {
             try {
                 $pifaField->validate();
             } catch (PifaValidationException $e) {
-                $errors = array_merge($errors, $e->getErrors());
+                //$errors = array_merge($errors, $e->getErrors());
+                foreach ($e->getErrors() as $idfield => $error) {
+                    $errors[$idfield]=$error;
+                }
             }
         }
 

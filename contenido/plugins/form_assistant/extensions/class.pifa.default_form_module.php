@@ -10,8 +10,6 @@
  * @link http://www.4fb.de
  */
 
-//cInclude('classes', 'class.util.helper.php');
-
 /**
  *
  * @author marcus.gnass
