@@ -1,14 +1,14 @@
 <!-- content_search_results/template/get.tpl -->
 
 {* headline *}
-<h1>Suchergebnisse der Webseite</h1>
+<h1>{$label.headline}</h1>
 
 {* search form *}
 <form action="{$action}" method="{$method}" id="navigation_searchform_top">
     {if $idart}<input type="hidden" name="idart" value="{$idart}" />{/if}
     {if $idlang}<input type="hidden" name="idlang" value="{$idlang}" />{/if}
     <input type="text" id="search_term" name="search_term" class="full" title="Suche" />
-    <input type="submit" class="submit search" value="Suchen &raquo;" />
+    <input type="submit" class="submit search" value="{$label.submit} &raquo;" />
 </form>
 
 <h3>{$msgResult}</h3>
