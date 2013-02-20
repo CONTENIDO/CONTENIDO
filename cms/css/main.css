@@ -31,7 +31,7 @@ body {
 }
 
 #header #logo {
-    margin-top:35px;
+    margin-top: 35px;
 }
 
 #header #navigation_header {
@@ -112,6 +112,7 @@ body {
     font-weight: bold;
 }
 
+
 /* ----- MENU ----- */
 #menu {
     width: 220px;
@@ -155,15 +156,15 @@ body {
     border-top: 1px dotted #ccc;
 }
 
+
 /* ----- CONTENT ----- */
 #content {
     width: 920px;
     margin-left: 20px;
-    padding-bottom:145px;
+    padding-bottom: 145px;
     min-height: 300px;
     float: left;
 }
-
 
 #menu + #content {
     min-height: 50px;
@@ -198,7 +199,6 @@ p + p {
     margin-top: 7px;
 }
 
-
 p a {
     color: #0083cb;
     text-decoration: none;
@@ -209,11 +209,13 @@ p a:hover {
     text-decoration: none;
     border-bottom: 1px dotted #9ba21b;
 }
+
 #content ul,
 #content ol {
     margin: 20px 0 20px 20px;
     line-height: 19px;
 }
+
 
 /* ----- SLIDER ----- */
 .slider {
@@ -222,7 +224,7 @@ p a:hover {
 }
 .slider .images {
     display: inline;
-    margin:0;
+    margin: 0;
 }
 .slider .images li {
     position: absolute;
@@ -230,7 +232,7 @@ p a:hover {
     list-style: none;
 }
 .slider .images li.active {
-    opacity:1;
+    opacity: 1;
 }
 #content .slider .images li img {
     position: absolute;
@@ -271,7 +273,7 @@ p a:hover {
 .button.red,
 div.button_red input {
     position: absolute;
-    z-index:2;
+    z-index: 2;
     display: block;
     width: 150px;
     text-align: center;
@@ -288,20 +290,20 @@ div.button_red input {
 }
 
 div.button_red input {
-	position: relative;
-	float:left;
-	margin-right: 20px;
+    position: relative;
+    float: left;
+    margin-right: 20px;
 }
 
 .button.grey,
 div.button_grey input {
     position: relative;
-    z-index:2;
+    z-index: 2;
     display: block;
     width: 150px;
     text-align: center;
     text-decoration: none;
-    color:#fff;
+    color: #fff;
     background: #ccc;
     height: 25px;
     border-radius: 9px;
@@ -319,7 +321,7 @@ div.button_grey input {
 }
 
 .user_forum .button.red,
-.user_forum .button.grey{
+.user_forum .button.grey {
     line-height: 25px;
     width: 190px;
     float: left;
@@ -338,7 +340,7 @@ p + .button.red {
     line-height: 25px;
 }
 
-#content .slider ul.pagination{
+#content .slider ul.pagination {
     margin-top: 245px;
     left: 50%;
     position: absolute;
@@ -358,7 +360,7 @@ p + .button.red {
     background: url('../images/misc/sprite.png') no-repeat -43px -316px;
     width: 30px;
     height: 30px;
-    text-indent:-9999px;
+    text-indent: -9999px;
 }
 .slider .pagination li a:hover,
 .slider .pagination li a.active {
@@ -366,6 +368,7 @@ p + .button.red {
     width: 30px;
     height: 30px;
 }
+
 
 /* ----- NEWSTEASER ----- */
 /* 4-culumn version */
@@ -419,18 +422,19 @@ p + .button.red {
 
 .column_quarter .col a.more {
     text-decoration: none;
-    color:#9ba21b;
-    text-align:right;
+    color: #9ba21b;
+    text-align: right;
     display: block;
-    line-height:17px;
-    margin-top:5px;
+    line-height: 17px;
+    margin-top: 5px;
     position: absolute;
     bottom: 0px;
-	right: 0px;
+    right: 0px;
 }
 .column_quarter .col a.more:hover {
     color: #0083cb;
 }
+
 
 /* ----- SEARCH RESULT ----- */
 #search_term.full {
@@ -459,7 +463,7 @@ p + .button.red {
 
 .pagination ul {
     display: inline;
-    margin:0;
+    margin: 0;
     float: right;
 }
 .pagination ul li {
@@ -498,6 +502,7 @@ p + .button.red {
 #search_result li p {
     margin: 5px 0 20px 0;
 }
+
 
 /* ----- GALERY ----- */
 .galery {
@@ -547,8 +552,8 @@ p + .button.red {
     color: #0083cb;
 }
 
-/* ----- LINKLIST ----- */
 
+/* ----- LINKLIST ----- */
 ul.linklist {
     display: inline;
 }
@@ -574,8 +579,8 @@ ul.linklist li p {
     margin-top: 7px;
 }
 
-/* ----- DOWNLOADLIST ----- */
 
+/* ----- DOWNLOADLIST ----- */
 ul.downloadlist {
     display: inline;
 }
@@ -588,7 +593,6 @@ ul.downloadlist > li {
 ul.downloadlist ul.formats {
     display: inline;
 }
-
 
 ul.downloadlist ul.formats li {
     list-style: none;
@@ -612,7 +616,7 @@ ul.downloadlist ul.formats li:hover a {
 }
 
 ul.downloadlist > li > img {
-    width:148px;
+    width: 148px;
     height: 74px;
     float: left;
     margin-right: 20px;
@@ -621,7 +625,6 @@ ul.downloadlist > li > img {
 ul.downloadlist > li > img + .content {
     float: left;
     width: 490px;
-
 }
 
 ul.downloadlist > li  span.info {
@@ -640,14 +643,7 @@ h2.downloadlist {
 }
 
 
-/* Overlays */
-.ui-widget-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
+/* ----- UI WIDGETS ----- */
 
 /* workarounds */
 button.ui-button::-moz-focus-inner {
@@ -655,10 +651,17 @@ button.ui-button::-moz-focus-inner {
     padding: 0; /* reset extra padding in Firefox */
 }
 
+/* ------------ DIALOG -------------- */
 .ui-dialog {
     position: absolute;
     overflow: hidden;
+    border: 1px solid #ddd;
+    padding: 5px 25px 25px 25px;
+    border-radius: 7px;
+    box-shadow: 2px 2px 32px #999;
+    -moz-box-shadow: 2px 2px 32px #999;
 }
+
 .ui-dialog .ui-dialog-titlebar {
     height: 30px;
     position: relative;
@@ -714,9 +717,7 @@ button.ui-button::-moz-focus-inner {
     cursor: move;
 }
 
-/* Component containers
-----------------------------------*/
-
+/* Component containers */
 .ui-widget input,
 .ui-widget select,
 .ui-widget textarea,
@@ -735,23 +736,29 @@ button.ui-button::-moz-focus-inner {
 .ui-widget-header a {
     color: #797979;
     text-decoration: none;
-    font-size:15px;
+    font-size: 15px;
     text-align: right;
 }
 
 /* Overlays */
 .ui-widget-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: #66;
     opacity: .5;
-    filter:Alpha(Opacity=50);
+    filter: Alpha(Opacity=50);
 }
+
 .ui-widget-shadow {
     margin: -5px 0 0 -5px;
     padding: 5px;
     background: #000;
     opacity: .2;
     filter: Alpha(Opacity=20);
-    -moz-border-radius:5px;
+    -moz-border-radius: 5px;
     -khtml-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
@@ -759,7 +766,6 @@ button.ui-button::-moz-focus-inner {
 
 
 /* ----- FOOTER ----- */
-
 #footer {
     width: 920px;
     padding: 0 20px;
@@ -767,13 +773,13 @@ button.ui-button::-moz-focus-inner {
     clear: both;
     background: #ccc;
     color: #fff;
-    position:absolute;
+    position: absolute;
     bottom: 90px;
 }
 
 #footer .navigation {
     display: inline;
-    margin:0;
+    margin: 0;
 }
 #footer .navigation li {
     list-style: none;
@@ -789,26 +795,23 @@ button.ui-button::-moz-focus-inner {
     text-decoration: none;
     line-height: 30px;
     color: #333;
-
 }
 
 #copyright {
     width: 920px;
     padding: 10px 20px 0 20px;
     height: 80px;
-    bottom:0;
+    bottom: 0;
     position: absolute;
     background: #fff;
     font-size: 10px;
 }
-#copyright p {
+#copyright p {
     line-height: 15px;
-
 }
 
+
 /* ----- SITEMAP ----- */
-
-
 #content ul.sitemap {
     margin: 0 0 30px 0;
     padding: 0;
@@ -849,6 +852,7 @@ button.ui-button::-moz-focus-inner {
     color: #9ba21b;
 }
 
+
 /* ----- LOGIN FORM ----- */
 .login {
     padding: 40px 0;
@@ -859,13 +863,14 @@ button.ui-button::-moz-focus-inner {
     width: 150px;
 }
 
-/* ----- Newsletter FORM ----- */
 
+/* ----- NEWSLETTER FORM ----- */
 #contactFormSubmitLeft,
 #contactFormSubmitRight {
     float: left;
     margin-right: 15px;
 }
+
 
 /* ----- SOCIAL MEDIA ----- */
 ul.social_media {
@@ -905,6 +910,7 @@ ul.social_media li.twitter {
     background-position: -251px -388px;
 }
 
+
 /* ----- BLOG ----- */
 .blog {
     margin-bottom: 45px;
@@ -915,7 +921,7 @@ ul.social_media li.twitter {
 }
 .blog h3 {
     font-size: 11px;
-margin-top: 10px;
+    margin-top: 10px;
 }
 .blog p {
     margin: 8px 0;
@@ -936,48 +942,38 @@ margin-top: 10px;
 }
 
 .blog span + a {
-    float:right;
+    float: right;
 }
 
-
-/* ------------ DIALOG -------------- */
-
-.ui-dialog {
-    border: 1px solid #ddd;
-    padding: 5px 25px 25px 25px;
-    border-radius: 7px;
-    box-shadow:2px 2px 32px #999;
-    -moz-box-shadow:2px 2px 32px #999;
-}
 
 /* ----- PIFAFORM ----- */
-
 .pifa-form {
-	margin-top: 30px;
+    margin-top: 30px;
 }
 
 .pifa-form label {
-	display: block;
-	width: 160px;
-	float: left;
+    display: block;
+    width: 160px;
+    float: left;
 }
 
-.pifa-form   div.checkboxWrapper label {
-	width: 438px;
+.pifa-form div.checkboxWrapper label {
+    width: 438px;
 }
 
-.pifa-form   div.privacy {
-	margin-bottom: 15px;
+.pifa-form div.privacy {
+    margin-bottom: 15px;
 }
 
-.pifa-form  div {
-	margin-bottom: 3px;
+.pifa-form div {
+    margin-bottom: 3px;
 }
 
 .pifa-form select {
-	width: 456px;
+    width: 456px;
 }
 
-.pifa-form input[type="text"], textarea {
-	width: 450px;
+.pifa-form input[type="text"],
+textarea {
+    width: 450px;
 }
