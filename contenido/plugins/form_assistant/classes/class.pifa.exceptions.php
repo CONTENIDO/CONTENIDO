@@ -13,105 +13,77 @@
 // assert CONTENIDO framework
 defined('CON_FRAMEWORK') or die('Illegal call');
 
-if (!class_exists('PifaException')) {
+/**
+ *
+ * @author marcus.gnass
+ */
+class PifaException extends Exception {
+}
+
+/**
+ *
+ * @author marcus.gnass
+ */
+class PifaDatabaseException extends PifaException {
+}
+
+/**
+ *
+ * @todo rename to PifaNotImplementedException
+ * @author marcus.gnass
+ */
+class NotImplementedException extends PifaException {
+}
+
+/**
+ *
+ * @todo rename to PifaIllegalStateException
+ * @author marcus.gnass
+ */
+class IllegalStateException extends PifaException {
+}
+
+/**
+ *
+ * @author marcus.gnass
+ */
+class PifaNotYetStoredException extends PifaException {
+}
+
+/**
+ *
+ * @author marcus.gnass
+ */
+class PifaValidationException extends PifaException {
 
     /**
      *
-     * @author marcus.gnass
+     * @var array
      */
-    class PifaException extends Exception {
+    private $_errors = NULL;
+
+    /**
+     *
+     * @param array $errors
+     */
+    public function __construct(array $errors) {
+        // parent::__construct($message, $code, $previous);
+        $this->_errors = $errors;
+    }
+
+    /**
+     *
+     * @return multitype:
+     */
+    public function getErrors() {
+        return $this->_errors;
     }
 
 }
 
-if (!class_exists('PifaDatabaseException')) {
-
-    /**
-     *
-     * @author marcus.gnass
-     */
-    class PifaDatabaseException extends PifaException {
-    }
-
+/**
+ *
+ * @author marcus.gnass
+ */
+class PifaMailException extends PifaException {
 }
-
-if (!class_exists('NotImplementedException')) {
-
-    /**
-     *
-     * @author marcus.gnass
-     */
-    class NotImplementedException extends PifaException {
-    }
-
-}
-
-if (!class_exists('IllegalStateException')) {
-
-    /**
-     *
-     * @author marcus.gnass
-     */
-    class IllegalStateException extends PifaException {
-    }
-
-}
-
-if (!class_exists('PifaNotYetStoredException')) {
-
-    /**
-     *
-     * @author marcus.gnass
-     */
-    class PifaNotYetStoredException extends PifaException {
-    }
-
-}
-
-if (!class_exists('PifaValidationException')) {
-
-    /**
-     *
-     * @author marcus.gnass
-     */
-    class PifaValidationException extends PifaException {
-
-        /**
-         *
-         * @var array
-         */
-        private $_errors = NULL;
-
-        /**
-         *
-         * @param array $errors
-         */
-        public function __construct(array $errors) {
-            // parent::__construct($message, $code, $previous);
-            $this->_errors = $errors;
-        }
-
-        /**
-         *
-         * @return multitype:
-         */
-        public function getErrors() {
-            return $this->_errors;
-        }
-
-    }
-
-}
-
-if (!class_exists('PifaMailException')) {
-
-    /**
-     *
-     * @author marcus.gnass
-     */
-    class PifaMailException extends PifaException {
-    }
-
-}
-
-?>

@@ -349,8 +349,7 @@ cAutoload::addClassmapConfig(array(
     'PifaFieldCollection' => $pluginClassPath . 'classes/class.pifa.field.php',
     'PifaField' => $pluginClassPath . 'classes/class.pifa.field.php',
     'PifaAbstractFormModule' => $pluginClassPath . 'classes/class.pifa.abstract_form_module.php',
-    'PifaAbstractFormProcessor' => $pluginClassPath . 'classes/class.pifa.form_post_helper.php',
-    'PifaDefaultFormProcessor' => $pluginClassPath . 'classes/class.pifa.form_post_helper.php',
+    'PifaAbstractFormProcessor' => $pluginClassPath . 'classes/class.pifa.abstract_form_processor.php',
     'PifaAjaxHandler' => $pluginClassPath . 'classes/class.pifa.ajax_handler.php',
     'PifaException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaDatabaseException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
@@ -367,5 +366,3 @@ unset($pluginClassPath);
 // define chain functions
 $cecRegistry = cRegistry::getCecRegistry();
 $cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'Pifa::afterLoadPlugins');
-
-?>

@@ -1795,6 +1795,7 @@ contenido/plugins/cronjobs_overview/xml/lang_de_DE.xml -text svneol=unset#text/p
 contenido/plugins/cronjobs_overview/xml/lang_en_EN.xml -text svneol=unset#text/plain
 contenido/plugins/form_assistant/classes/class.content.type.pifa_form.php -text
 contenido/plugins/form_assistant/classes/class.pifa.abstract_form_module.php -text
+contenido/plugins/form_assistant/classes/class.pifa.abstract_form_processor.php -text
 contenido/plugins/form_assistant/classes/class.pifa.ajax_handler.php -text
 contenido/plugins/form_assistant/classes/class.pifa.exceptions.php -text
 contenido/plugins/form_assistant/classes/class.pifa.external_options_datasource_interface.php -text
@@ -1808,8 +1809,9 @@ contenido/plugins/form_assistant/docs/install.sql -text
 contenido/plugins/form_assistant/docs/todo.txt -text svneol=unset#text/plain
 contenido/plugins/form_assistant/docs/todo_de.txt -text svneol=unset#text/plain
 contenido/plugins/form_assistant/docs/uninstall.sql -text
-contenido/plugins/form_assistant/extensions/class.pifa.abstract_form_module.php -text
 contenido/plugins/form_assistant/extensions/class.pifa.default_form_module.php -text
+contenido/plugins/form_assistant/extensions/class.pifa.default_form_processor.php -text
+contenido/plugins/form_assistant/extensions/class.pifa.mailed_form_processor.php -text
 contenido/plugins/form_assistant/extensions/class.pifa.product_group_options_datasource.php -text
 contenido/plugins/form_assistant/images/btn_close.png -text
 contenido/plugins/form_assistant/images/button_close.png -text

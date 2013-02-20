@@ -10,6 +10,9 @@
  * @link http://www.4fb.de
  */
 
+// assert CONTENIDO framework
+defined('CON_FRAMEWORK') or die('Illegal call');
+
 /**
  *
  * @author marcus.gnass
@@ -32,7 +35,7 @@ abstract class PifaAbstractFormModule {
      *
      * @var array
      */
-    private $_settings = array();
+    protected $_settings = array();
 
     /**
      *
@@ -63,6 +66,7 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
+     *
      * @return the $_settings
      */
     public function getSettings() {
@@ -70,6 +74,7 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
+     *
      * @return the $_settings
      */
     public function getSetting($key) {
@@ -77,6 +82,7 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
+     *
      * @param multitype: $_settings
      */
     public function setSettings($_settings) {
@@ -84,6 +90,7 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
+     *
      * @return the $_idform
      */
     public function getIdform() {
@@ -91,6 +98,7 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
+     *
      * @param number $_idform
      */
     public function setIdform($_idform) {
@@ -98,6 +106,7 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
+     *
      * @return the $_templateName
      */
     public function getTemplateName() {
@@ -105,6 +114,7 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
+     *
      * @param string $_templateName
      */
     public function setTemplateName($_templateName) {
@@ -112,6 +122,7 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
+     *
      * @return the $_tpl
      */
     public function getTpl() {
@@ -119,6 +130,7 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
+     *
      * @param Smarty $_tpl
      */
     public function setTpl($_tpl) {
@@ -187,5 +199,3 @@ abstract class PifaAbstractFormModule {
     abstract protected function doPost();
 
 }
-
-?>

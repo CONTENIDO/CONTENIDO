@@ -10,6 +10,9 @@
  * @link http://www.4fb.de
  */
 
+// assert CONTENIDO framework
+defined('CON_FRAMEWORK') or die('Illegal call');
+
 /**
  * Abstract class to read labels and values to be used for PIFA field options
  * from an external datasource.
@@ -31,5 +34,3 @@ abstract class PifaExternalOptionsDatasourceInterface {
     public abstract function getOptionValues();
 
 }
-
-?>

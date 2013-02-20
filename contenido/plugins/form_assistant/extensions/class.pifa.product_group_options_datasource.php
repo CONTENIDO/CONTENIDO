@@ -10,6 +10,9 @@
  * @link http://www.4fb.de
  */
 
+// assert CONTENIDO framework
+defined('CON_FRAMEWORK') or die('Illegal call');
+
 plugin_include(Pifa::getName(), 'classes/class.pifa.external_options_datasource_interface.php');
 
 /**
@@ -80,5 +83,3 @@ class ProductGroupOptionsDatasource extends PifaExternalOptionsDatasourceInterfa
     }
 
 }
-
-?>

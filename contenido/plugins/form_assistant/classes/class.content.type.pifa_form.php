@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cContentTypeLinkeditor class.
  *
@@ -51,6 +52,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
             'pifaform_mail_system_template',
             'pifaform_mail_system_from_email',
             'pifaform_mail_system_from_name',
+            'pifaform_mail_system_to_email',
             'pifaform_mail_system_subject'
         );
 
@@ -167,8 +169,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
                 $this->_getInputMailSystemFromName(),
                 $this->_getInputMailSystemSubject()
             ))
-        )
-        , $this->_prefix . '_panel_base', $this->_prefix . '_panel_base_' . $this->_id);
+        ), $this->_prefix . '_panel_base', $this->_prefix . '_panel_base_' . $this->_id);
         $wrapper->setStyle('clear:both');
 
         return $wrapper->render();
@@ -654,11 +655,11 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
                 $filename = Pifa::fromCamelCase($moduleClass);
                 $filename = "extensions/class.pifa.$filename.php";
                 if (false === file_exists(Pifa::getPath() . $filename)) {
-                    throw new PifaException('missing external options datasource file ' . $filename);
+                    throw new PifaException('missing module file ' . $filename);
                 }
                 plugin_include(Pifa::getName(), $filename);
                 if (false === class_exists($moduleClass)) {
-                    throw new PifaException('missing external options datasource class ' . $moduleClass);
+                    throw new PifaException('missing module class ' . $moduleClass);
                 }
                 $mod = new $moduleClass($this->_settings);
                 $out = $mod->render(true);
