@@ -3,8 +3,14 @@
 <li id= "{$field->get('idfield')}" title="idfield {$field->get('idfield')}">
     <div class="descr-icon pifa-icon pifa-icon-{$field->get('field_type')}"></div>
     <div class="textMiddle">
-        <div class="li-label-name">{$field->get('label')}</div>
-        <div class="li-column-name">{$field->get('column_name')}</div>
+        <div class="li-label-name">
+            {if 0 eq $field->get('display_label')}<i>{/if}
+            {$field->get('label')}
+            {if 0 eq $field->get('display_label')}</i>{/if}
+        </div>
+        <div class="li-column-name">
+            {$field->get('column_name')}
+        </div>
     </div>
     <div class="edit">
         <a href="{$editField}&amp;idfield={$field->get('idfield')}#tabs-2" class="pifa-icon-edit-field" title="{$trans.edit}">

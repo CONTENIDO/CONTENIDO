@@ -352,8 +352,11 @@ class PifaAjaxHandler {
             $rule = cSecurity::toString($_POST['rule']);
             $rule = trim($rule);
             $rule = substr($rule, 0, 1023);
-            if ($rule !== $pifaField->get('rule')) {
-                $pifaField->set('rule', $rule);
+            // check if rule is valid
+            if (false !== preg_match($rule, 'And always remember: the world is an orange!')) {
+                if ($rule !== $pifaField->get('rule')) {
+                    $pifaField->set('rule', $rule);
+                }
             }
         }
 

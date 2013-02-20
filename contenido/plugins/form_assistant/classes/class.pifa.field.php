@@ -479,6 +479,10 @@ class PifaField extends Item {
      */
     public function _getElemLabel() {
 
+        if (1 !== cSecurity::toInteger($this->get('display_label'))) {
+            return '';
+        }
+
         // get field data
         $idfield = cSecurity::toInteger($this->get('idfield'));
         $fieldType = cSecurity::toInteger($this->get('field_type'));
@@ -906,7 +910,7 @@ class PifaField extends Item {
             self::BUTTONSUBMIT => Pifa::i18n('BUTTONSUBMIT'),
             self::BUTTONRESET => Pifa::i18n('BUTTONRESET'),
             self::BUTTONBACK => Pifa::i18n('BUTTONBACK'),
-            //self::MATRIX => Pifa::i18n('MATRIX'),
+            // self::MATRIX => Pifa::i18n('MATRIX'),
             self::PARA => Pifa::i18n('PARAGRAPH'),
             self::INPUTHIDDEN => Pifa::i18n('INPUTHIDDEN'),
             self::FIELDSET_BEGIN => Pifa::i18n('FIELDSET_BEGIN'),
@@ -1085,8 +1089,6 @@ class PifaField extends Item {
         if (0 < strlen(trim($this->get('column_name')))) {
             $pifaForm = new PifaForm($this->get('idform'));
 
-
-
             if (0 < strlen(trim($pifaForm->get('data_table')))) {
                 $sql = "-- PifaField->delete()
                     ALTER TABLE
@@ -1135,15 +1137,17 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-//                     self::CAPTCHA,
-//                     self::BUTTONSUBMIT,
-//                     self::BUTTONRESET,
-//                     self::BUTTONBACK,
+                    // self::CAPTCHA,
+                    // self::BUTTONSUBMIT,
+                    // self::BUTTONRESET,
+                    // self::BUTTONBACK,
                     self::MATRIX,
-                    self::INPUTHIDDEN,
-//                     self::FIELDSET_BEGIN,
-//                     self::FIELDSET_END
-                    ));
+                    self::INPUTHIDDEN
+                    /*
+                    self::FIELDSET_BEGIN,
+                    self::FIELDSET_END
+                    */
+                ));
 
             case 'label':
             case 'display_label':
@@ -1165,9 +1169,11 @@ class PifaField extends Item {
                     self::BUTTONBACK,
                     self::MATRIX,
                     self::PARA,
-//                     self::INPUTHIDDEN,
-                    self::FIELDSET_BEGIN,
-//                     self::FIELDSET_END
+                    // self::INPUTHIDDEN,
+                    self::FIELDSET_BEGIN
+                    /*
+                    self::FIELDSET_END
+                    */
                     ));
 
             case 'default_value':
@@ -1237,9 +1243,9 @@ class PifaField extends Item {
                     self::PROCESSBAR,
                     self::SLIDER,
                     self::CAPTCHA,
-//                     self::BUTTONSUBMIT,
-//                     self::BUTTONRESET,
-//                     self::BUTTONBACK,
+                    // self::BUTTONSUBMIT,
+                    // self::BUTTONRESET,
+                    // self::BUTTONBACK,
                     self::MATRIX,
                     self::INPUTHIDDEN
                 ));
@@ -1258,9 +1264,9 @@ class PifaField extends Item {
                     self::PROCESSBAR,
                     self::SLIDER,
                     self::CAPTCHA,
-//                     self::BUTTONSUBMIT,
-//                     self::BUTTONRESET,
-//                     self::BUTTONBACK,
+                    // self::BUTTONSUBMIT,
+                    // self::BUTTONRESET,
+                    // self::BUTTONBACK,
                     self::MATRIX,
                     self::INPUTHIDDEN
                 ));
@@ -1279,9 +1285,9 @@ class PifaField extends Item {
                     self::PROCESSBAR,
                     self::SLIDER,
                     self::CAPTCHA,
-//                     self::BUTTONSUBMIT,
-//                     self::BUTTONRESET,
-//                     self::BUTTONBACK,
+                    // self::BUTTONSUBMIT,
+                    // self::BUTTONRESET,
+                    // self::BUTTONBACK,
                     self::MATRIX,
                     self::INPUTHIDDEN
                 ));
@@ -1304,8 +1310,10 @@ class PifaField extends Item {
                     self::BUTTONRESET,
                     self::BUTTONBACK,
                     self::MATRIX,
-                    self::PARA,
-//                     self::INPUTHIDDEN
+                    self::PARA
+                    /*
+                    self::INPUTHIDDEN
+                    */
                 ));
 
             default:
