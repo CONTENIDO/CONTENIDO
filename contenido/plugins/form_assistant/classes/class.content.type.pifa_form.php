@@ -666,14 +666,8 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
      */
     public function generateViewCode() {
 
-//         $code = '";?'.'><'.'?php echo (new %s(\'%s\', %s, %s))->buildCode(); ?'.'><'.'?php echo "';
-//         $code = sprintf($code, get_class($this), $this->_rawSettings, $this->_id, 'array()');
-
-        $code = '";?'.'><'.'?php
-                    $form = new cContentTypePifaForm(\'%s\', %s, %s);
-                    echo $form->buildCode();
-                 ?'.'><'.'?php echo "';
-        $code = sprintf($code, $this->_rawSettings, $this->_id, 'array()');
+        $code = '";?'.'><'.'?php $form = new %s(\'%s\', %s, %s); echo $form->buildCode(); ?'.'><'.'?php echo "';
+        $code = sprintf($code, get_class($this), $this->_rawSettings, $this->_id, 'array()');
 
         return $code;
 
@@ -712,6 +706,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
             }
         }
 
+        // don't encode cached code for output
         //$out = $this->_encodeForOutput($out);
 
         return $out;
