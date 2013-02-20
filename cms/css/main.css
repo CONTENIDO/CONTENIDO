@@ -268,7 +268,8 @@ p a:hover {
 
 .slider .images li a,
 .login input[type="submit"],
-.button.red {
+.button.red,
+div.button_red input {
     position: absolute;
     z-index:2;
     display: block;
@@ -286,7 +287,14 @@ p a:hover {
     font-size: 12px;
 }
 
-.button.grey {
+div.button_red input {
+	position: relative;
+	float:left;
+	margin-right: 20px;
+}
+
+.button.grey,
+div.button_grey input {
     position: relative;
     z-index:2;
     display: block;
@@ -940,4 +948,36 @@ margin-top: 10px;
     border-radius: 7px;
     box-shadow:2px 2px 32px #999;
     -moz-box-shadow:2px 2px 32px #999;
+}
+
+/* ----- PIFAFORM ----- */
+
+.pifa-form {
+	margin-top: 30px;
+}
+
+.pifa-form label {
+	display: block;
+	width: 160px;
+	float: left;
+}
+
+.pifa-form   div.checkboxWrapper label {
+	width: 438px;
+}
+
+.pifa-form   div.privacy {
+	margin-bottom: 15px;
+}
+
+.pifa-form  div {
+	margin-bottom: 3px;
+}
+
+.pifa-form select {
+	width: 456px;
+}
+
+.pifa-form input[type="text"], textarea {
+	width: 450px;
 }
