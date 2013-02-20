@@ -1,6 +1,6 @@
 <!-- form_assistant/templates/template.ajax_field_row.tpl -->
 
-<li id= "{$field->get('idfield')}">
+<li id= "{$field->get('idfield')}" title="idfield {$field->get('idfield')}">
     <div class="descr-icon pifa-icon pifa-icon-{$field->get('field_type')}"></div>
     <div class="textMiddle">
         <div class="li-label-name">{$field->get('label')}</div>

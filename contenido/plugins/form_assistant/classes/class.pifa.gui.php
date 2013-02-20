@@ -131,7 +131,7 @@ class PifaLeftBottomPage extends cGuiPage {
             $link->setCLink($area, 4, 'show_form');
             $link->setTargetFrame('right_bottom');
             $link->setCustom('idform', $idform);
-            $link->setAlt(Pifa::i18n('SHOW_FORM'));
+            $link->setAlt('idform ' . $idform);
             $link->setContent('name ' . $formName);
             $menu->setLink($idform, $link);
 
@@ -460,7 +460,7 @@ class PifaRightBottomPage extends cGuiPage {
         $tpl->assign('idfield', $idfield);
 
         $tpl->assign('fields', $fields);
-        //$tpl->assign('fieldTypes', PifaField::getFieldTypeIds());
+        // $tpl->assign('fieldTypes', PifaField::getFieldTypeIds());
         $tpl->assign('fieldTypes', PifaField::getFieldTypeNames());
 
         // for partial
