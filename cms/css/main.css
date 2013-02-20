@@ -416,8 +416,9 @@ p + .button.red {
     display: block;
     line-height:17px;
     margin-top:5px;
-    position: relative;
-    bottom: -10px;
+    position: absolute;
+    bottom: 0px;
+	right: 0px;
 }
 .column_quarter .col a.more:hover {
     color: #0083cb;
