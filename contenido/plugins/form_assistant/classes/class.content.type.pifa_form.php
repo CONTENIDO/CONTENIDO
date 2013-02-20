@@ -52,7 +52,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
             'pifaform_mail_system_template',
             'pifaform_mail_system_from_email',
             'pifaform_mail_system_from_name',
-            'pifaform_mail_system_to_email',
+            'pifaform_mail_system_recipient_email',
             'pifaform_mail_system_subject'
         );
 
@@ -167,6 +167,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
                 $this->_getSelectMailSystemTemplate(),
                 $this->_getInputMailSystemFromEmail(),
                 $this->_getInputMailSystemFromName(),
+                $this->_getInputMailSystemRecipientEmail(),
                 $this->_getInputMailSystemSubject()
             ))
         ), $this->_prefix . '_panel_base', $this->_prefix . '_panel_base_' . $this->_id);
@@ -604,6 +605,26 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $label = Pifa::i18n('sender name');
         $id = 'pifaform_mail_system_from_name_' . $this->_id;
         $value = $this->_settings['pifaform_mail_system_from_name'];
+
+        // build label element, input element & div element as wrapper
+        $div = new cHTMLDiv(array(
+            new cHTMLLabel($label, $id),
+            new cHTMLTextbox($id, $value, '', '', $id)
+        ));
+
+        // return div element
+        return $div;
+
+    }
+
+    /**
+     */
+    private function _getInputMailSystemRecipientEmail() {
+
+        // attributes of form field elements
+        $label = Pifa::i18n('recipient email');
+        $id = 'pifaform_mail_system_recipient_email_' . $this->_id;
+        $value = $this->_settings['pifaform_mail_system_recipient_email'];
 
         // build label element, input element & div element as wrapper
         $div = new cHTMLDiv(array(
