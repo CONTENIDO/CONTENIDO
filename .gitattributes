@@ -245,6 +245,8 @@ cms/js/main.js -text svneol=unset#text/plain
 cms/robots.txt -text
 cms/templates/cms_filelist_style_default.html -text
 cms/templates/cms_pifaform_get_default.tpl -text
+cms/templates/cms_pifaform_mail_system.tpl -text
+cms/templates/cms_pifaform_mail_user.tpl -text
 cms/templates/cms_pifaform_post_default.tpl -text
 cms/templates/cms_teaser_blog.html -text
 cms/templates/cms_teaser_image.html -text
