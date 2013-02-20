@@ -308,8 +308,9 @@ legend {
 }
 
 .pseudo-fieldset input,
+.pseudo-fieldset textarea,
 .pseudo-fieldset select {
-    width: 212px;
+	width: 310px;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;

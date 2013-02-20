@@ -18,6 +18,14 @@ GENERAL SETTINGS
 
 <div class="pseudo-fieldset">
 
+    {* showField returns false cause ist not editable but it should be displayed nonetheless *}
+    {*if $field->showField('field_type')*}
+    <div class="field-type-dialog">
+        <label>{$trans.fieldType}</label>
+        <span id="field-type-text">{$field->getMyFieldTypeName()}</span>
+    </div>
+    {*/if*}
+
     {if $field->showField('label')}
     <div class="label">
         <label for="label">{$trans.label}</label>
@@ -32,35 +40,6 @@ GENERAL SETTINGS
         <label for="display_label">{$trans.displayLabel}</label>
     </div>
     {/if}
-
-    {if $field->showField('idfield')}
-    <div class="idfield">
-        <label for="idfield">{$trans.idfield}</label>
-        <input type="text" id="idfield" name="idfield" value="{$field->get('idfield')}" />
-    </div>
-    {/if}
-
-    {if $field->showField('idform')}
-    <div class="idform">
-        <label for="idform">{$idformLabel}</label>
-        <input type="text" id="idform" name="idform" value="{$field->get('idform')}" />
-    </div>
-    {/if}
-
-    {if $field->showField('field_rank')}
-    <div class="field_rank">
-        <label for="field_rank">{$trans.fieldRank}</label>
-        <input type="text" id="field_rank" name="field_rank" value="{$field->get('field_rank')}" />
-    </div>
-    {/if}
-
-    {* showField returns false cause ist not editable but it should be displayed nonetheless *}
-    {*if $field->showField('field_type')*}
-    <div class="field-type-dialog">
-        <label>{$trans.fieldType}</label>
-        <span id="field-type-text">{$field->getMyFieldTypeName()}</span>
-    </div>
-    {*/if*}
 
     {if $field->showField('obligatory')}
     <div class="req-input">

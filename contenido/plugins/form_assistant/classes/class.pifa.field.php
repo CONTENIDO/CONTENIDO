@@ -1110,7 +1110,8 @@ class PifaField extends Item {
      */
     public function showField($columnName) {
 
-        $fieldType = cSecurity::toInteger($this->get('field_type'));
+        $fieldType = $this->get('field_type');
+        $fieldType = cSecurity::toInteger($fieldType);
 
         switch ($columnName) {
 
@@ -1134,15 +1135,18 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    self::CAPTCHA,
-                    self::BUTTONSUBMIT,
-                    self::BUTTONRESET,
-                    self::BUTTONBACK,
+//                     self::CAPTCHA,
+//                     self::BUTTONSUBMIT,
+//                     self::BUTTONRESET,
+//                     self::BUTTONBACK,
                     self::MATRIX,
-                    self::INPUTHIDDEN
-                ));
+                    self::INPUTHIDDEN,
+//                     self::FIELDSET_BEGIN,
+//                     self::FIELDSET_END
+                    ));
 
             case 'label':
+            case 'display_label':
                 return in_array($fieldType, array(
                     self::INPUTTEXT,
                     self::TEXTAREA,
@@ -1161,8 +1165,10 @@ class PifaField extends Item {
                     self::BUTTONBACK,
                     self::MATRIX,
                     self::PARA,
-                    self::FIELDSET_BEGIN
-                ));
+//                     self::INPUTHIDDEN,
+                    self::FIELDSET_BEGIN,
+//                     self::FIELDSET_END
+                    ));
 
             case 'default_value':
                 return in_array($fieldType, array(
@@ -1231,9 +1237,9 @@ class PifaField extends Item {
                     self::PROCESSBAR,
                     self::SLIDER,
                     self::CAPTCHA,
-                    self::BUTTONSUBMIT,
-                    self::BUTTONRESET,
-                    self::BUTTONBACK,
+//                     self::BUTTONSUBMIT,
+//                     self::BUTTONRESET,
+//                     self::BUTTONBACK,
                     self::MATRIX,
                     self::INPUTHIDDEN
                 ));
@@ -1252,9 +1258,9 @@ class PifaField extends Item {
                     self::PROCESSBAR,
                     self::SLIDER,
                     self::CAPTCHA,
-                    self::BUTTONSUBMIT,
-                    self::BUTTONRESET,
-                    self::BUTTONBACK,
+//                     self::BUTTONSUBMIT,
+//                     self::BUTTONRESET,
+//                     self::BUTTONBACK,
                     self::MATRIX,
                     self::INPUTHIDDEN
                 ));
@@ -1273,9 +1279,9 @@ class PifaField extends Item {
                     self::PROCESSBAR,
                     self::SLIDER,
                     self::CAPTCHA,
-                    self::BUTTONSUBMIT,
-                    self::BUTTONRESET,
-                    self::BUTTONBACK,
+//                     self::BUTTONSUBMIT,
+//                     self::BUTTONRESET,
+//                     self::BUTTONBACK,
                     self::MATRIX,
                     self::INPUTHIDDEN
                 ));
@@ -1299,11 +1305,11 @@ class PifaField extends Item {
                     self::BUTTONBACK,
                     self::MATRIX,
                     self::PARA,
-                    self::INPUTHIDDEN
+//                     self::INPUTHIDDEN
                 ));
 
             default:
-                throw new PifaException('field type ' . $fieldType . ' is not implemented');
+                throw new PifaException('field property ' . $columnName . ' is not implemented');
 
         }
 

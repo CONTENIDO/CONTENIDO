@@ -250,6 +250,12 @@ class PifaAjaxHandler {
         // will be an empty string for new fields
         $oldColumnName = $pifaField->get('column_name');
 
+        // set the new rank of the item
+        $fieldRank = cSecurity::toInteger($_POST['field_rank']);
+        if ($fieldRank !== $pifaField->get('field_rank')) {
+            $pifaField->set('field_rank', $fieldRank);
+        }
+
         /*
          * Read item data from form, validate item data and finally set item
          * data. Which data is editable depends upon the field type. So certain
@@ -259,18 +265,14 @@ class PifaAjaxHandler {
          * modified and tries to store it, resulting in a return value of false!
          */
 
-        // set the new rank of the item
-        $fieldRank = cSecurity::toInteger($_POST['field_rank']);
-        if ($fieldRank !== $pifaField->get('field_rank')) {
-            $pifaField->set('field_rank', $fieldRank);
-        }
-
         // According to the MySQL documentation table and column names
         // must not be longer than 64 charcters.
         if ($pifaField->showField('column_name')) {
             $columnName = cSecurity::toString($_POST['column_name']);
             $columnName = trim($columnName);
             $columnName = strtolower($columnName);
+            // does not seem to work
+            // $columnName = cApiStrReplaceDiacritics($columnName);
             $columnName = preg_replace('/[^a-z0-9_]/', '_', $columnName);
             $columnName = substr($columnName, 0, 64);
             if ($columnName !== $pifaField->get('column_name')) {
@@ -284,6 +286,15 @@ class PifaAjaxHandler {
             $label = substr($label, 0, 1023);
             if ($label !== $pifaField->get('label')) {
                 $pifaField->set('label', $label);
+            }
+        }
+
+        if ($pifaField->showField('display_label')) {
+            $displayLabel = cSecurity::toString($_POST['display_label']);
+            $displayLabel = trim($displayLabel);
+            $displayLabel = 'on' === $displayLabel? 1 : 0;
+            if ($displayLabel !== $pifaField->get('display_label')) {
+                $pifaField->set('display_label', $displayLabel);
             }
         }
 

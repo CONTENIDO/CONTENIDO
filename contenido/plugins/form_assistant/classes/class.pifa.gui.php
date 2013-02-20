@@ -286,8 +286,8 @@ class PifaRightBottomPage extends cGuiPage {
             return;
         }
 
-        // most of these actions can be deleted cause they are called via AJAX
-        // now
+        // dispatch actions
+        // @todo dont use actions here anymore
         switch ($action) {
             case 'show_form':
                 $this->set('s', 'notification', $notification);
@@ -323,24 +323,6 @@ class PifaRightBottomPage extends cGuiPage {
                 $notification = '';
                 try {
                     $this->_storeForm();
-                } catch (Exception $e) {
-                    $notification = Pifa::notifyException($e);
-                }
-                $this->_dispatch('show_form', $notification);
-                break;
-
-            case 'add_field':
-                try {
-                    $this->_addField();
-                } catch (Exception $e) {
-                    $notification = Pifa::notifyException($e);
-                }
-                $this->_dispatch('show_form', $notification);
-                break;
-
-            case 'store_fields':
-                try {
-                    $this->_storeField();
                 } catch (Exception $e) {
                     $notification = Pifa::notifyException($e);
                 }
@@ -621,232 +603,6 @@ class PifaRightBottomPage extends cGuiPage {
     }
 
     /**
-     * Handles a POST request of the second form, showing a select box to add
-     * new form fields.
-     * For new form fields the field_type and a label is stored.
-     */
-    private function _addField() {
-
-        // determine if item is loaded
-        if ($this->_pifaField->isLoaded()) {
-            throw new Exception('field is already loaded');
-        }
-
-        // read item data from form
-        $idform = $_POST['idform'];
-        $idform = cSecurity::toInteger($idform);
-        $fieldType = $_POST['field_type'];
-        $fieldType = cSecurity::toInteger($fieldType);
-        $columnName = $_POST['new_column_name'];
-        $columnName = trim($columnName);
-        $columnName = strtolower($columnName);
-
-        // validate item data
-        if (0 >= $idform) {
-            throw new Exception('form id must not be empty');
-        }
-        if (0 >= $fieldType) {
-            throw new Exception('field type must not be empty');
-        }
-        if (0 === strlen($columnName)) {
-            throw new Exception('column name must not be empty');
-        }
-
-        // create new item
-        $this->_pifaField = $this->_pifaFieldCollection->createNewItem();
-
-        // set item data
-        // Never, really never, call Item->set() if the value doesn't differ
-        // from the previous one. Otherwise the genericDb thinks that the item
-        // is modified and tries to store it resulting in a return value of
-        // false!
-        if ($idform !== $this->_pifaField->get('idform')) {
-            $this->_pifaField->set('idform', $idform);
-        }
-        if ($fieldType !== $this->_pifaField->get('field_type')) {
-            $this->_pifaField->set('field_type', $fieldType);
-        }
-        if ($columnName !== $this->_pifaField->get('column_name')) {
-            $this->_pifaField->set('column_name', $columnName);
-        }
-
-        // store item
-        if (false === $this->_pifaField->store()) {
-            throw new Exception('could not store field: ' . $this->_pifaField->getLastError());
-        }
-
-        // add column for current field to table of current form
-        $this->_pifaForm->addColumn($this->_pifaField);
-
-    }
-
-    /**
-     */
-    private function _deleteField() {
-
-        $this->_pifaField->delete();
-
-    }
-
-    /**
-     * Handles a POST request of the third form, storing a form fields details.
-     *
-     * @see http://dev.mysql.com/doc/refman/5.0/en/identifiers.html
-     */
-    private function _storeField() {
-
-        if (!$this->_pifaField->isLoaded()) {
-            throw new Exception('field is not loaded');
-        }
-
-        // remember old column name
-        $oldColumnName = $this->_pifaField->get('column_name');
-
-        /*
-         * Read item data from form, validate item data and finally set item
-         * data. Which data is editable depends upon the field type. So a
-         * certain data will only be stored if its field is shown in the form.
-         * Never, really never, call Item->set() if the value doesn't differ
-         * from the previous one. Otherwise the genericDb thinks that the item
-         * is modified and tries to store it resulting in a return value of
-         * false!
-         */
-
-        // According to the MySQL documentation table and column names must
-        // not be longer than 64 charcters.
-        if ($this->_pifaField->showField('column_name')) {
-            $columnName = cSecurity::toString($_POST['column_name']);
-            $columnName = trim($columnName);
-            $columnName = strtolower($columnName);
-            $columnName = preg_replace('/[^a-z0-9_]/', '_', $columnName);
-            $columnName = substr($columnName, 0, 64);
-            if ($columnName !== $this->_pifaField->get('column_name')) {
-                $this->_pifaField->set('column_name', $columnName);
-            }
-        }
-
-        if ($this->_pifaField->showField('label')) {
-            $label = cSecurity::toString($_POST['label']);
-            $label = trim($label);
-            $label = substr($label, 0, 255);
-            if ($label !== $this->_pifaField->get('label')) {
-                $this->_pifaField->set('label', $label);
-            }
-        }
-
-        if ($this->_pifaField->showField('default_value')) {
-            $defaultValue = cSecurity::toString($_POST['default_value']);
-            $defaultValue = trim($defaultValue);
-            $defaultValue = substr($defaultValue, 0, 255);
-            if ($defaultValue !== $this->_pifaField->get('default_value')) {
-                $this->_pifaField->set('default_value', $defaultValue);
-            }
-        }
-
-        if ($this->_pifaField->showField('option_labels')) {
-            $optionLabels = cSecurity::toString($_POST['option_labels']);
-            $optionLabels = join(',', array_map(function ($value) {
-                return trim(cSecurity::toString($value));
-            }, explode(',', $optionLabels)));
-            $optionLabels = substr($optionLabels, 0, 1023);
-            if ($optionLabels !== $this->_pifaField->get('option_labels')) {
-                $this->_pifaField->set('option_labels', $optionLabels);
-            }
-        }
-
-        if ($this->_pifaField->showField('option_values')) {
-            $optionValues = cSecurity::toString($_POST['option_values']);
-            $optionValues = join(',', array_map(function ($value) {
-                return trim(cSecurity::toString($value));
-            }, explode(',', $optionValues)));
-            $optionValues = substr($optionValues, 0, 1023);
-            if ($optionValues !== $this->_pifaField->get('option_values')) {
-                $this->_pifaField->set('option_values', $optionValues);
-            }
-        }
-
-        if ($this->_pifaField->showField('help_text')) {
-            $helpText = cSecurity::toString($_POST['help_text']);
-            $helpText = trim($helpText);
-            // no substr() cause help_text is of type TEXT!
-            // $helpText = substr($helpText, 0, );
-            if ($helpText !== $this->_pifaField->get('help_text')) {
-                $this->_pifaField->set('help_text', $helpText);
-            }
-        }
-
-        if ($this->_pifaField->showField('obligatory')) {
-            $obligatory = cSecurity::toString($_POST['obligatory']);
-            $obligatory = trim($obligatory);
-            $obligatory = 'on' === $obligatory? 1 : 0;
-            if ($obligatory !== $this->_pifaField->get('obligatory')) {
-                $this->_pifaField->set('obligatory', $obligatory);
-            }
-        }
-
-        if ($this->_pifaField->showField('rule')) {
-            $rule = cSecurity::toString($_POST['rule']);
-            $rule = trim($rule);
-            $rule = substr($rule, 0, 255);
-
-            // == handle CONTENIDO bug
-            // remove this line if bug is fixed!!!
-            $rule = str_replace('\\\\', '\\', $rule);
-            // == /handle CONTENIDO bug
-
-            if ($rule !== $this->_pifaField->get('rule')) {
-                $this->_pifaField->set('rule', $rule);
-            }
-        }
-
-        if ($this->_pifaField->showField('error_message')) {
-            $errorMessage = cSecurity::toString($_POST['error_message']);
-            $errorMessage = trim($errorMessage);
-            $errorMessage = substr($errorMessage, 0, 255);
-            if ($errorMessage !== $this->_pifaField->get('error_message')) {
-                $this->_pifaField->set('error_message', $errorMessage);
-            }
-        }
-
-        // store item
-        if (false === $this->_pifaField->store()) {
-            throw new Exception('could not store field: ' . $this->_pifaField->getLastError());
-        }
-
-        // change column
-        $this->_pifaForm->changeColumn($oldColumnName, $this->_pifaField);
-
-    }
-
-    // /**
-    // * Just a test to see how an objects values can smartly be updated by an
-    // * array with arbitrary keys so that only a set of predefined keys are
-    // * considered.
-    // *
-    // * @return array
-    // */
-    // function test() {
-
-    // // Would be clever to take the original objects array of values But I'm
-    // // not sure how it looks like if the object has to be created newly.
-    // //$defaultData = $this->_pifaField->values;
-
-    // $defaultData = array(
-    // 'column_name' => NULL,
-    // 'label' => NULL,
-    // 'default_value' => NULL,
-    // 'help_text' => NULL,
-    // 'obligatory' => NULL,
-    // 'rule' => NULL,
-    // 'error_message' => NULL
-    // );
-
-    // return array_merge($defaultData, array_intersect_key($_POST,
-    // $defaultData));
-
-    // }
-
-    /**
      * Returns a multidimensional array with available field types.
      * This array contains values for the label and icon of the field type.
      *
@@ -867,26 +623,6 @@ class PifaRightBottomPage extends cGuiPage {
 
     }
 
-    /**
-     * Returns a multidimensional array with available field types.
-     * This array contains values for the label and icon of the field type.
-     *
-     * @return array
-     */
-    private function _getMethodTypes() {
-
-        $methodTypes = array();
-        foreach (PifaField::getMethodTypeIds() as $methodTypeId) {
-            $methodTypes[$methodTypeId] = array();
-            $methodTypes[$methodTypeId]['id'] = $methodTypeId;
-            $methodTypes[$methodTypeId]['label'] = PifaField::getMethodTypeName($methodTypeId);
-            // icon is not used atm
-            $methodTypes[$methodTypeId]['icon'] = PifaField::getMethodTypeIcon($methodTypeId);
-        }
-
-        return $methodTypes;
-
-    }
 }
 
 ?>
