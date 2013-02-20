@@ -712,7 +712,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
             }
         }
 
-        $out = $this->_encodeForOutput($out);
+        //$out = $this->_encodeForOutput($out);
 
         return $out;
 
