@@ -985,6 +985,10 @@ textarea {
 	border: 1px solid #C31250;
 }
 
+.pifa-form .pifa-error input, .pifa-form .pifa-error textarea {
+	width: 454px;
+}
+
 .pifa-form .pifa-error label {
 	color: #C31250;
 }
