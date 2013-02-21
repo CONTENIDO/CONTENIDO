@@ -951,6 +951,7 @@ ul.social_media li.twitter {
 /* ----- PIFAFORM ----- */
 .pifa-form {
     margin-top: 30px;
+	position: relative;
 }
 
 .pifa-form label {
@@ -978,4 +979,23 @@ ul.social_media li.twitter {
 .pifa-form input[type="text"],
 textarea {
     width: 450px;
+}
+
+.pifa-form .pifa-error select, .pifa-form .pifa-error input, .pifa-form .pifa-error textarea {
+	border: 1px solid #C31250;
+}
+
+.pifa-form .pifa-error label {
+	color: #C31250;
+}
+
+.pifa-form p {
+	display: none;
+}
+
+.pifa-form .pifa-error:hover p {
+	display: block;
+	position: absolute;
+	top: 0px;
+	margin-top: -22px;
 }
