@@ -3989,7 +3989,7 @@ msgstr "Übersetzungen werden benutzt von %s (%s)"
 #: includes/include.con_translate.php:263
 #: includes/include.mod_translate.php:54
 msgid "Saved translation successfully!"
-msgstr "Übrsetzung wurde gespeichert!"
+msgstr "Übersetzung wurde gespeichert!"
 
 #: includes/include.con_translate.php:265
 #: includes/include.mod_translate.php:56
