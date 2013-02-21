@@ -256,6 +256,8 @@ cms/templates/cms_teaser_text.html -text
 cms/templates/error_page.html -text
 cms/templates/index.php -text
 cms/upload/contenido_diagramme/contenido_priniciple.png -text
+cms/upload/downloads/Logo_4fb.png -text
+cms/upload/downloads/Logo_CONTENIDO.png -text
 cms/upload/downloads/contenido_cms_garden_anzeige_60x90mm_20130122_sgr.pdf -text svneol=unset#unset
 cms/upload/logos/logo.png -text
 cms/upload/picture_gallery/picture_1.jpg -text
