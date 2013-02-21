@@ -185,6 +185,8 @@ $(function() {
         });
         $(".slider .images li:eq(" + (next) + ")").animate({"opacity": "1"}, 900, function() {
             $(".slider .pagination li:eq(" + next + ") a").addClass("active");
+			$(".slider .images li").removeClass('active');
+			$(".slider .images li:eq(" + (next) + ")").addClass('active');
         });
 
 
