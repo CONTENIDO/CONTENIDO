@@ -46,3 +46,6 @@
 [_] beim D&D eines Feldes verschwindet dieses
 [_] nach dem Herunterziehen wird die row falsch dargestellt.
 [_] error message hat textarea ist aber varchar 1023
+
+
+[_] images/but_editform.gif

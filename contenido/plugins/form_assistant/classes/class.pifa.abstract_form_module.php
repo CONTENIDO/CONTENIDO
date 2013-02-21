@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Abstract base class for all classes that are used as PIFA form module.
+ *
+ * In order for an extension class to be displayed in the CMS_PIFAFORM's editor
+ * as module class it has to extend this class and implement its abstract
+ * methods doGet() & doPost().
  *
  * @package Plugin
  * @subpackage PIFA Form Asistant
@@ -20,30 +25,38 @@ defined('CON_FRAMEWORK') or die('Illegal call');
 abstract class PifaAbstractFormModule {
 
     /**
+     * The HTTP GET request method.
      *
      * @var string
      */
     const GET = 'GET';
 
     /**
+     * The HTTP POST request method.
      *
      * @var string
      */
     const POST = 'POST';
 
     /**
+     * Array of settings as defined for a content type CMS_PIFAFORM.
      *
      * @var array
      */
     protected $_settings = array();
 
     /**
+     * The unique ID of the form to be displayed and processed by this module.
+     * This ID is read from the given settings (pifaform_idform).
      *
      * @var int
      */
     private $_idform = 0;
 
     /**
+     * The current template name to be used when displaying the form.
+     * This name usually depends upon the request method to be used.
+     * These names are read from the given settings.
      *
      * @var string
      */

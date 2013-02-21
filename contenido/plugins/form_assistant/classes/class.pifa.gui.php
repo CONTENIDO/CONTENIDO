@@ -113,7 +113,7 @@ class PifaLeftBottomPage extends cGuiPage {
             return '';
         }
 
-        $formIcon = $cfg['path']['images'] . 'form.gif';
+        $formIcon = $cfg['path']['images'] . 'but_editform.gif';
 
         // create menu
         $menu = new cGuiMenu();
@@ -624,5 +624,3 @@ class PifaRightBottomPage extends cGuiPage {
     }
 
 }
-
-?>

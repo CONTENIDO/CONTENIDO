@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains the cContentTypeLinkeditor class.
+ * This file contains the cContentTypePifaForm class.
  *
  * @package Plugin
  * @subpackage PIFA Form Assistant
@@ -59,18 +59,15 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         // encoding conversions to avoid problems with umlauts
         $rawSettings = conHtmlEntityDecode($rawSettings);
         $rawSettings = utf8_encode($rawSettings);
-        parent::__construct($rawSettings, $id, $contentTypes);
-        // optionally revert encoding for certain fields
-        // $this->_settings['foo'] = utf8_decode($this->_settings['foo']);
-        // $this->_settings['foo'] = conHtmlentities($this->_settings['foo']);
 
-        // if form is submitted, store the current teaser settings
+        parent::__construct($rawSettings, $id, $contentTypes);
+
+        // if form is submitted, store the current settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        if (isset($_POST['pifaform_action']) && $_POST['pifaform_action'] === 'store' && isset($_POST['pifaform_id']) && (int) $_POST['pifaform_id'] == $this->_id) {
-            // use htmlentities for certain fields
-            // otherwise umlauts will crash the XML parsing
-            // $_POST['foo'] = conHtmlentities($_POST['foo']);
+        $action = isset($_POST['pifaform_action'])? $_POST['pifaform_action'] : NULL;
+        $id = isset($_POST['pifaform_id'])? $_POST['pifaform_id'] : NULL;
+        if ('store' === $action && $this->_id == $id) {
             $this->_storeSettings();
         }
 
@@ -86,8 +83,8 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         // build top code
         $tplTop = new cTemplate();
         $tplTop->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
-        // TODO change icon
-        $tplTop->set('s', 'ICON', 'images/but_editlink.gif');
+        // $tplTop->set('s', 'ICON', 'images/but_editform.gif');
+        $tplTop->set('s', 'ICON', $cfg['path']['images'] . 'but_editform.gif');
         $tplTop->set('s', 'ID', $this->_id);
         $tplTop->set('s', 'PREFIX', $this->_prefix);
         $tplTop->set('s', 'HEADLINE', Pifa::i18n('form'));
@@ -135,8 +132,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     }
 
     /**
-     * Generates code for the base base panel in which all data can be
-     * specified.
+     * Generates code for the base panel in which all data can be specified.
      *
      * @return string - the code for the base panel
      */
@@ -144,8 +140,10 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         $wrapper = new cHTMLDiv(array(
 
+            // form
             $this->_getSelectForm(),
 
+            // module & processor class and GET & POST templates
             new cHTMLFieldset(array(
                 new cHTMLLegend(Pifa::i18n('classes & templates')),
                 $this->_getSelectModule(),
@@ -154,6 +152,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
                 $this->_getSelectTemplatePost()
             )),
 
+            // client mail settings
             new cHTMLFieldset(array(
                 new cHTMLLegend(Pifa::i18n('client mail')),
                 $this->_getSelectMailClientTemplate(),
@@ -162,6 +161,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
                 $this->_getInputMailClientSubject()
             )),
 
+            // system mail settings
             new cHTMLFieldset(array(
                 new cHTMLLegend(Pifa::i18n('system mail')),
                 $this->_getSelectMailSystemTemplate(),
@@ -181,7 +181,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
      * Builds a select element allowing to choose a single form that was created
      * for the current client.
      *
-     * @return cHTMLSelectElement
+     * @return cHTMLDiv
      */
     private function _getSelectForm() {
 
@@ -233,7 +233,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
      * Builds a select element allowing to choose a single module that handles
      * the chosen form.
      *
-     * @return cHTMLSelectElement
+     * @return cHTMLDiv
      */
     private function _getSelectModule() {
 
@@ -281,7 +281,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
      * Builds a select element allowing to choose a single class that
      * postprocesses the sent data.
      *
-     * @return cHTMLSelectElement
+     * @return cHTMLDiv
      */
     private function _getSelectProcessor() {
 
@@ -329,7 +329,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
      * Builds a select element allowing to choose a single template to respond a
      * GET request.
      *
-     * @return cHTMLSelectElement
+     * @return cHTMLDiv
      */
     private function _getSelectTemplateGet() {
 
@@ -377,7 +377,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
      * Builds a select element allowing to choose a single template to respond a
      * POST request.
      *
-     * @return cHTMLSelectElement
+     * @return cHTMLDiv
      */
     private function _getSelectTemplatePost() {
 
@@ -422,10 +422,11 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     }
 
     /**
-     * Builds a select element allowing to choose a single template the client
+     * Builds a select element allowing to choose a single template for the
+     * client
      * mail.
      *
-     * @return cHTMLSelectElement
+     * @return cHTMLDiv
      */
     private function _getSelectMailClientTemplate() {
 
@@ -470,6 +471,9 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     }
 
     /**
+     * Builds an input element allowing to set the client mail sender address.
+     *
+     * @return cHTMLDiv
      */
     private function _getInputMailClientFromEmail() {
 
@@ -490,6 +494,9 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     }
 
     /**
+     * Builds an input element allowing to set the client mail sender name.
+     *
+     * @return cHTMLDiv
      */
     private function _getInputMailClientFromName() {
 
@@ -510,6 +517,9 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     }
 
     /**
+     * Builds an input element allowing to set the client mail subject.
+     *
+     * @return cHTMLDiv
      */
     private function _getInputMailClientSubject() {
 
@@ -578,6 +588,9 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     }
 
     /**
+     * Builds an input element allowing to set the system mail sender address.
+     *
+     * @return cHTMLDiv
      */
     private function _getInputMailSystemFromEmail() {
 
@@ -598,6 +611,9 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     }
 
     /**
+     * Builds an input element allowing to set the system mail sender name.
+     *
+     * @return cHTMLDiv
      */
     private function _getInputMailSystemFromName() {
 
@@ -618,6 +634,10 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     }
 
     /**
+     * Builds an input element allowing to set the system mail recipient
+     * address.
+     *
+     * @return cHTMLDiv
      */
     private function _getInputMailSystemRecipientEmail() {
 
@@ -638,6 +658,9 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     }
 
     /**
+     * Builds an input element allowing to set the system mail subject.
+     *
+     * @return cHTMLDiv
      */
     private function _getInputMailSystemSubject() {
 
@@ -660,13 +683,16 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     /**
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
+     * This code is cached. Thatfor ist no more than the initialisation of this
+     * class and the call of its method buildCode(). Otherwise the generated
+     * HTML would have been cached.
      *
      * @return string escaped HTML code which sould be shown if content type is
      *         shown in frontend
      */
     public function generateViewCode() {
 
-        $code = '";?'.'><'.'?php $form = new %s(\'%s\', %s, %s); echo $form->buildCode(); ?'.'><'.'?php echo "';
+        $code = '";?' . '><' . '?php $form = new %s(\'%s\', %s, %s); echo $form->buildCode(); ?' . '><' . '?php echo "';
         $code = sprintf($code, get_class($this), $this->_rawSettings, $this->_id, 'array()');
 
         return $code;
@@ -674,7 +700,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     }
 
     /**
-     * Get code of form.
+     * Get code of form (either GET or POST request).
      *
      * @return string escaped HTML code which sould be shown if content type is
      *         shown in frontend
@@ -702,12 +728,12 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
                 $out = $mod->render(true);
             } catch (Exception $e) {
                 Pifa::logException($e);
-                //Pifa::displayException($e);
+                // Pifa::displayException($e);
             }
         }
 
         // don't encode cached code for output
-        //$out = $this->_encodeForOutput($out);
+        // $out = $this->_encodeForOutput($out);
 
         return $out;
 

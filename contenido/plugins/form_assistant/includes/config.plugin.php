@@ -219,6 +219,12 @@ class Pifa {
     }
 
     /**
+     * Returns array of client templates that that adhere to the naming
+     * convention cms_pifaform_FOOBAR.tpl where FOOBAR is any character but a
+     * dot.
+     *
+     * @throws PifaException
+     * @return array
      */
     public static function getTemplates() {
 
