@@ -177,6 +177,10 @@ body {
     max-width: 100%;
 }
 
+#content .mceEditor img {
+	margin: 0;
+}
+
 h1 {
     font-size: 19px;
     color: #9ba21b;
