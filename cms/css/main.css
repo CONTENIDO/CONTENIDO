@@ -626,7 +626,7 @@ ul.downloadlist > li > img {
 }
 ul.downloadlist > li > img + .content {
     float: left;
-    width: 490px;
+    width: 470px;
 }
 
 ul.downloadlist > li  span.info {
