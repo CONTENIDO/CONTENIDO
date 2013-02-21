@@ -557,11 +557,11 @@ p + .button.red {
 
 /* ----- LINKLIST ----- */
 div.linklist {
-	margin-top: 40px;
+    margin-top: 40px;
 }
 
 div.linklist h2 {
-	margin: 0px;
+    margin: 0px;
 }
 
 ul.linklist {
@@ -571,7 +571,7 @@ ul.linklist {
 ul.linklist li {
     list-style: none;
     margin: 18px 0;
-	margin-top: 0px;
+    margin-top: 0px;
 }
 
 ul.linklist li a:link,
@@ -874,8 +874,8 @@ button.ui-button::-moz-focus-inner {
     width: 150px;
 }
 .login input[type="text"] {
-	margin-bottom: 3px;
-} 
+    margin-bottom: 3px;
+}
 
 /* ----- NEWSLETTER FORM ----- */
 #contactFormSubmitLeft,
@@ -962,7 +962,7 @@ ul.social_media li.twitter {
 /* ----- PIFAFORM ----- */
 .pifa-form {
     margin-top: 30px;
-	position: relative;
+    position: relative;
 }
 
 .pifa-form label {
@@ -992,54 +992,56 @@ textarea {
     width: 450px;
 }
 
-.pifa-form .pifa-error select, .pifa-form .pifa-error input, .pifa-form .pifa-error textarea {
-	border: 1px solid #C31250;
+.pifa-form .pifa-error select, .pifa-form .pifa-error input,
+.pifa-form .pifa-error textarea {
+    border: 1px solid #C31250;
 }
 
-.pifa-form .pifa-error input[type="text"], .pifa-form .pifa-error textarea {
-	width: 454px;
+.pifa-form .pifa-error input[type="text"],
+.pifa-form .pifa-error textarea {
+    width: 454px;
 }
 
 .pifa-form .pifa-error label {
-	color: #C31250;
+    color: #C31250;
 }
 
 .pifa-form p {
-	display: none;
+    display: none;
 }
 
 .pifa-form .pifa-error:hover p {
-	display: block;
-	position: absolute;
-	top: 0px;
-	margin-top: -22px;
+    display: block;
+    position: absolute;
+    top: 0px;
+    margin-top: -22px;
 }
 
-/* ----- NEWSLETTERFORM ----- */
 
+/* ----- NEWSLETTERFORM ----- */
 #contactForm {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 
 #contactForm label {
-	display: block;
-	float: left;
-	width: 100px;
+    display: block;
+    float: left;
+    width: 100px;
 }
 
 #contactForm input[type="text"] {
-	width: 312px;
+    width: 312px;
 }
 
 #contactForm select {
-	width: 318px;
+    width: 318px;
 }
 
 #contactForm div.policy label {
-	width: 300px;
-	margin-left: 100px;
+    width: 300px;
+    margin-left: 100px;
 }
 
 #contactForm div.contactRow {
-	margin-bottom: 3px;
+    margin-bottom: 3px;
 }
