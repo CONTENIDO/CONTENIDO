@@ -222,6 +222,7 @@ cms/data/modules/script_tracker_piwik/template/get.tpl -text svneol=unset#text/p
 cms/data/version/.htaccess -text
 cms/dbfs.php -text
 cms/error.php -text
+cms/favicon.ico -text
 cms/front_content.php -text
 cms/front_crcloginform.inc.php -text
 cms/images/backgrounds/bg.png -text
