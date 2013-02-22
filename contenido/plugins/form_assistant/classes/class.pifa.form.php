@@ -853,6 +853,8 @@ class PifaForm extends Item {
             CREATE TABLE IF NOT EXISTS
                 `$tableName`
             ($createDefinitions)
+            ENGINE=MyISAM
+            DEFAULT CHARSET=utf8
             ;";
 
         // create table
