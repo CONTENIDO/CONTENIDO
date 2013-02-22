@@ -66,17 +66,14 @@ if ($artRetItem) {
 }
 
 // if check is true then set url, otherwise check for next language
-if ($checkedCatArt === true) {
+ if ($checkedCatArt === true) {
 
-    $url = $catRetItem->getLink() . '?' . "changelang=" . $selectedLang;
-    $urlSet = true;
-} else {
+   $url = $catRetItem->getLink($selectedLang);
+
+ } else {
     $config = cRegistry::getClientConfig(cRegistry::getClientId());
-    $url = $config[path][htmlpath];
-}
-// if url is not set, then set fallback url to the homepage
-if ($urlSet === false) {
-    $url = cRegistry::getFrontendUrl() . 'front_content.php' . '?' . "changelang=" . $selectedLang;
+    $url = $config[path][htmlpath] . 'front_content.php?changelang=' .$selectedLang;
+    echo $url;
 }
 
 $tpl->set('s', 'url', $url);
