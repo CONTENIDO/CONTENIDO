@@ -13,66 +13,6 @@
 // assert CONTENIDO framework
 defined('CON_FRAMEWORK') or die('Illegal call');
 
-// update con_pifa_field set field_type=1;
-// update con_pifa_field set field_type=6 where idfield IN (49, 54, 55, 56);
-// update con_pifa_field set field_type=12 where idfield IN (58);
-// update con_pifa_field set field_type=4 where idfield IN (52);
-
-// INSERT INTO con_pifa_form
-// (`idform`, `idclient`, `idlang`, `name`, `data_table`, `method`)
-// VALUES
-// ('3', '1', '1', 'form_test', 'con_pifo_form_test', 'post');
-
-// INSERT INTO con_pifa_field
-// (idform, field_rank, field_type, column_name, label, default_value,
-// option_labels, option_values, help_text, obligatory, rule, error_message)
-// VALUES
-// ('3', '1', '1', 'cnINPUTTEXT', 'lbINPUTTEXT', 'dvINPUTTEXT',
-// 'olINPUTTEXT1,olINPUTTEXT2', 'ovINPUTTEXT1,ovINPUTTEXT2', 'htINPUTTEXT', '1',
-// NULL, 'emINPUTTEXT'),
-// ('3', '2', '2', 'cnTEXTAREA', 'lbTEXTAREA', 'dvTEXTAREA',
-// 'olTEXTAREA1,olTEXTAREA2', 'ovTEXTAREA1,ovTEXTAREA2', 'htTEXTAREA', '1',
-// NULL, 'emTEXTAREA'),
-// ('3', '3', '3', 'cnINPUTPASSWORD', 'lbINPUTPASSWORD', 'dvINPUTPASSWORD',
-// 'olINPUTPASSWORD1,olINPUTPASSWORD2', 'ovINPUTPASSWORD1,ovINPUTPASSWORD2',
-// 'htINPUTPASSWORD', '1', NULL, 'emINPUTPASSWORD'),
-// ('3', '4', '4', 'cnINPUTRADIO', 'lbINPUTRADIO', 'dvINPUTRADIO',
-// 'olINPUTRADIO1,olINPUTRADIO2', 'ovINPUTRADIO1,ovINPUTRADIO2', 'htINPUTRADIO',
-// '1', NULL, 'emINPUTRADIO'),
-// ('3', '5', '5', 'cnINPUTCHECKBOX', 'lbINPUTCHECKBOX', 'dvINPUTCHECKBOX',
-// 'olINPUTCHECKBOX1,olINPUTCHECKBOX2', 'ovINPUTCHECKBOX1,ovINPUTCHECKBOX2',
-// 'htINPUTCHECKBOX', '1', NULL, 'emINPUTCHECKBOX'),
-// ('3', '6', '6', 'cnSELECT', 'lbSELECT', 'dvSELECT', 'olSELECT1,olSELECT2',
-// 'ovSELECT1,ovSELECT2', 'htSELECT', '1', NULL, 'emSELECT'),
-// ('3', '7', '7', 'cnSELECTMULTI', 'lbSELECTMULTI', 'dvSELECTMULTI',
-// 'olSELECTMULTI1,olSELECTMULTI2', 'ovSELECTMULTI1,ovSELECTMULTI2',
-// 'htSELECTMULTI', '1', NULL, 'emSELECTMULTI'),
-// ('3', '8', '8', 'cnDATEPICKER', 'lbDATEPICKER', 'dvDATEPICKER',
-// 'olDATEPICKER1,olDATEPICKER2', 'ovDATEPICKER1,ovDATEPICKER2', 'htDATEPICKER',
-// '1', NULL, 'emDATEPICKER'),
-// ('3', '9', '9', 'cnINPUTFILE', 'lbINPUTFILE', 'dvINPUTFILE',
-// 'olINPUTFILE1,olINPUTFILE2', 'ovINPUTFILE1,ovINPUTFILE2', 'htINPUTFILE', '1',
-// NULL, 'emINPUTFILE'),
-// ('3', '10', '10', 'cnPROCESSBAR', 'lbPROCESSBAR', 'dvPROCESSBAR',
-// 'olPROCESSBAR1,olPROCESSBAR2', 'ovPROCESSBAR1,ovPROCESSBAR2', 'htPROCESSBAR',
-// '1', NULL, 'emPROCESSBAR'),
-// ('3', '11', '11', 'cnSLIDER', 'lbSLIDER', 'dvSLIDER', 'olSLIDER1,olSLIDER2',
-// 'ovSLIDER1,ovSLIDER2', 'htSLIDER', '1', NULL, 'emSLIDER'),
-// ('3', '12', '12', 'cnCAPTCHA', 'lbCAPTCHA', 'dvCAPTCHA',
-// 'olCAPTCHA1,olCAPTCHA2', 'ovCAPTCHA1,ovCAPTCHA2', 'htCAPTCHA', '1', NULL,
-// 'emCAPTCHA'),
-// ('3', '13', '13', 'cnBUTTONSUBMIT', 'lbBUTTONSUBMIT', 'dvBUTTONSUBMIT',
-// 'olBUTTONSUBMIT1,olBUTTONSUBMIT2', 'ovBUTTONSUBMIT1,ovBUTTONSUBMIT2',
-// 'htBUTTONSUBMIT', '1', NULL, 'emBUTTONSUBMIT'),
-// ('3', '14', '14', 'cnBUTTONRESET', 'lbBUTTONRESET', 'dvBUTTONRESET',
-// 'olBUTTONRESET1,olBUTTONRESET2', 'ovBUTTONRESET1,ovBUTTONRESET2',
-// 'htBUTTONRESET', '1', NULL, 'emBUTTONRESET'),
-// ('3', '15', '15', 'cnBUTTONBACK', 'lbBUTTONBACK', 'dvBUTTONBACK',
-// 'olBUTTONBACK1,olBUTTONBACK2', 'ovBUTTONBACK1,ovBUTTONBACK2', 'htBUTTONBACK',
-// '1', NULL, 'emBUTTONBACK'),
-// ('3', '16', '16', 'cnMATRIX', 'lbMATRIX', 'dvMATRIX', 'olMATRIX1,olMATRIX2',
-// 'ovMATRIX1,ovMATRIX2', 'htMATRIX', '1', NULL, 'emMATRIX');
-
 /**
  *
  * @author marcus.gnass
