@@ -76,7 +76,7 @@ if ($checkedCatArt === true) {
 }
 // if url is not set, then set fallback url to the homepage
 if ($urlSet === false) {
-    $url = cRegistry::getFrontendUrl() . 'front_content.php?' . '&' . "changelang=" . $selectedLang;
+    $url = cRegistry::getFrontendUrl() . 'front_content.php?' . '?' . "changelang=" . $selectedLang;
 }
 
 $tpl->set('s', 'url', $url);
