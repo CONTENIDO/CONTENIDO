@@ -917,6 +917,14 @@ ul.social_media li.facebook {
     background-position: -323px -388px;
 }
 
+ul.social_media li.google {
+    background-position: -393px -388px;
+}
+
+ul.social_media li.xing {
+    background-position: -426px -388px;
+}
+
 ul.social_media li.rss {
     background-position: -358px -388px;
 }
