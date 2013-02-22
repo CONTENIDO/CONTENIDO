@@ -134,6 +134,11 @@ $(function() {
             width: "auto",
             height: "auto",
             closeText: "X",
+            position: {
+                my: "center",
+                at: "center",
+                of: window
+            },
             close: function() {
                 $(".galery").prepend('<div class="lightbox"></div>');
             }
