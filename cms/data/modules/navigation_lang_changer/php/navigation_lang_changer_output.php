@@ -68,7 +68,7 @@ if ($artRetItem) {
 // if check is true then set url, otherwise check for next language
 if ($checkedCatArt === true) {
 
-    $url = $catRetItem->getLink() . '&' . "changelang=" . $selectedLang;
+    $url = $catRetItem->getLink() . '?' . "changelang=" . $selectedLang;
     $urlSet = true;
 } else {
     $config = cRegistry::getClientConfig(cRegistry::getClientId());
