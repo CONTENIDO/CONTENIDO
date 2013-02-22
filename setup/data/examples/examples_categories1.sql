@@ -144,8 +144,8 @@ INSERT INTO `!PREFIX!_cat_lang` VALUES(51, 50, 1, 80, 'Suchergebnisse', 1, 1, 0,
 INSERT INTO `!PREFIX!_cat_lang` VALUES(52, 51, 1, 82, 'Implementierung', 1, 1, 0, 'sysadmin', '2013-02-13 09:19:46', '2013-02-13 09:23:26', 65, 'Implementierung', '');
 INSERT INTO `!PREFIX!_cat_lang` VALUES(53, 52, 1, 83, 'Upgrade', 1, 1, 0, 'sysadmin', '2013-02-13 09:23:37', '2013-02-13 09:25:36', 66, 'Upgrade', '');
 INSERT INTO `!PREFIX!_cat_lang` VALUES(54, 53, 1, 84, 'Einfach einfach', 1, 1, 0, 'sysadmin', '2013-02-13 09:43:59', '2013-02-13 09:51:28', 69, 'Einfach-einfach', '');
-INSERT INTO `!PREFIX!_cat_lang` VALUES(55, 54, 1, 85, 'Einfach benutzen', 1, 0, 0, 'sysadmin', '2013-02-13 09:44:48', '2013-02-22 09:17:49', 67, 'Einfach-benutzen', '');
-INSERT INTO `!PREFIX!_cat_lang` VALUES(56, 55, 1, 86, 'Einfach grenzenlos', 1, 0, 0, 'sysadmin', '2013-02-13 09:45:37', '2013-02-22 09:17:47', 68, 'Einfach-grenzenlos', '');
+INSERT INTO `!PREFIX!_cat_lang` VALUES(55, 54, 1, 85, 'Einfach benutzen', 1, 1, 0, 'sysadmin', '2013-02-13 09:44:48', '2013-02-22 09:17:49', 67, 'Einfach-benutzen', '');
+INSERT INTO `!PREFIX!_cat_lang` VALUES(56, 55, 1, 86, 'Einfach grenzenlos', 1, 1, 0, 'sysadmin', '2013-02-13 09:45:37', '2013-02-22 09:17:47', 68, 'Einfach-grenzenlos', '');
 INSERT INTO `!PREFIX!_cat_lang` VALUES(57, 56, 1, 90, 'Blog', 1, 1, 0, 'sysadmin', '2013-02-13 14:16:08', '2013-02-14 13:08:03', 77, 'Blog', '');
 INSERT INTO `!PREFIX!_cat_lang` VALUES(58, 57, 1, 92, 'Newsletter', 1, 1, 0, 'sysadmin', '2013-02-13 14:19:06', '2013-02-13 14:19:24', 71, 'Newsletter', '');
 INSERT INTO `!PREFIX!_cat_lang` VALUES(59, 5, 2, 98, 'Philosophy', 1, 1, 0, 'sysadmin', '2012-11-11 01:51:33', '2013-02-20 09:02:28', 78, 'Philosophy', '');
