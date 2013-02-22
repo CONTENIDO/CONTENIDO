@@ -73,7 +73,7 @@ if ($artRetItem) {
  } else {
     $config = cRegistry::getClientConfig(cRegistry::getClientId());
     $url = $config[path][htmlpath] . 'front_content.php?changelang=' .$selectedLang;
-    echo $url;
+
 }
 
 $tpl->set('s', 'url', $url);
