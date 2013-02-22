@@ -67,6 +67,22 @@ class cApiArticleCollection extends ItemCollection {
         $this->__construct($select);
     }
 
+    /**
+     * Returns list of ids by given client id.
+     *
+     * @param int $idclient
+     * @return array
+     */
+    public function getIdsByClientId($idclient) {
+        $sql = "SELECT idart FROM `%s` WHERE idclient=%d";
+        $this->db->query($sql, $this->table, $idclient);
+        $list = array();
+        while ($this->db->next_record()) {
+            $list[] = $this->db->f('idart');
+        }
+        return $list;
+    }
+
 }
 
 /**
