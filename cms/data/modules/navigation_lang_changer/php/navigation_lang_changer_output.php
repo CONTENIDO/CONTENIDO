@@ -37,6 +37,7 @@ foreach ($allLanguages as $langs) {
     if ($langs > $currentLanguage) {
         $tpl->set('s', 'label', $languageInstance->getLanguageName($langs));
         $tpl->set('s', 'title', $languageInstance->getLanguageName($langs));
+
         $selectedLang = $langs;
         $nextLang = true;
         break;
@@ -45,7 +46,10 @@ foreach ($allLanguages as $langs) {
 
 // otherwise set first language
 if ($nextLang === false) {
-    $tpl->set('s', 'label', $languageInstance->getLanguageName(reset($allLanguages)));
+    $languageName = $languageInstance->getLanguageName(reset($allLanguages));
+
+    $tpl->set('s', 'label', $languageName);
+    $tpl->set('s', 'title', $languageName);
     $selectedLang = reset($allLanguages);
 }
 
@@ -66,14 +70,11 @@ if ($artRetItem) {
 }
 
 // if check is true then set url, otherwise check for next language
- if ($checkedCatArt === true) {
-
-   $url = $catRetItem->getLink($selectedLang);
-
- } else {
+if ($checkedCatArt === true) {
+    $url = $catRetItem->getLink($selectedLang);
+} else {
     $config = cRegistry::getClientConfig(cRegistry::getClientId());
-    $url = $config[path][htmlpath] . 'front_content.php?changelang=' .$selectedLang;
-
+    $url = cRegistry::getFrontendUrl() . 'front_content.php?changelang=' . $selectedLang;
 }
 
 $tpl->set('s', 'url', $url);
