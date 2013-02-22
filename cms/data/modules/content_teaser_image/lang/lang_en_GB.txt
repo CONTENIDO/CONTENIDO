@@ -1,1 +1,1 @@
-MORE=to read on
+MORE=more
