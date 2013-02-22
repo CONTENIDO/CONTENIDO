@@ -1,4 +1,4 @@
-INSERT INTO `!PREFIX!_keywords` VALUES(5, 'first', '', '&2=1(CMS_HTMLHEAD-1)&5=1(CMS_HTMLHEAD-1)', '', 1);
+ï»¿INSERT INTO `!PREFIX!_keywords` VALUES(5, 'first', '', '&2=1(CMS_HTMLHEAD-1)&5=1(CMS_HTMLHEAD-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(6, 'header', '', '&2=2(CMS_HTMLHEAD-1,CMS_HTMLHEAD-2)&5=2(CMS_HTMLHEAD-1,CMS_HTMLHEAD-2)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(7, 'is', '', '&2=2(CMS_HTMLHEAD-1,CMS_HTMLHEAD-2)&5=3(CMS_HTMLHEAD-1,CMS_HTMLHEAD-2,CMS_HTML-1)&11=2(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(8, 'cmshtmlhead1', '', '&2=1(CMS_HTMLHEAD-1)&5=1(CMS_HTMLHEAD-1)', '', 1);
@@ -8,7 +8,7 @@ INSERT INTO `!PREFIX!_keywords` VALUES(11, 'text', '', '&5=1(CMS_HTML-1)&31=1(CM
 INSERT INTO `!PREFIX!_keywords` VALUES(12, 'cmshtml1', '', '&5=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(133, 'zweite', '', '&1=1(CMS_HTMLHEAD-2)&50=3(CMS_HTML-605)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(180, 'timeformat', '', '&2=1(CMS_DATE-1)&11=1(CMS_DATE-1)&13=1(CMS_DATE-1)', '', 1);
-INSERT INTO `!PREFIX!_keywords` VALUES(135, 'contenido', '', '&3=1(CMS_TEXT-1)&13=3(CMS_HTMLHEAD-1,CMS_HTML-1)&24=2(CMS_HTMLHEAD-2,CMS_HTML-1)&19=1(CMS_HTMLHEAD-2)&54=6(CMS_HTMLHEAD-2,CMS_HTML-1)&55=5(CMS_HTMLHEAD-2,CMS_HTML-1)&58=1(CMS_HTML-500)&61=2(CMS_HTML-1,CMS_HTMLHEAD-2)&31=1(CMS_HTML-1)&33=3(CMS_HTMLHEAD-2,CMS_HTML-1)&64=2(CMS_HTMLHEAD-2,CMS_HTML-1)&65=1(CMS_HTMLHEAD-1)&66=3(CMS_HTMLHEAD-2,CMS_HTML-1)&68=3(CMS_HTML-1,CMS_HTMLHEAD-2)&67=2(CMS_HTMLHEAD-2,CMS_HTML-1)&52=4(CMS_HTML-1)&53=6(CMS_HTML-1)&71=1(CMS_HTMLHEAD-2)&46=1(CMS_HTML-1)&76=1(CMS_HTMLHEAD-1)', '', 1);
+INSERT INTO `!PREFIX!_keywords` VALUES(135, 'contenido', '', '&3=1(CMS_TEXT-1)&13=3(CMS_HTMLHEAD-1,CMS_HTML-1)&24=2(CMS_HTMLHEAD-2,CMS_HTML-1)&19=1(CMS_HTMLHEAD-2)&54=6(CMS_HTMLHEAD-2,CMS_HTML-1)&55=5(CMS_HTMLHEAD-2,CMS_HTML-1)&58=1(CMS_HTML-500)&61=2(CMS_HTML-1,CMS_HTMLHEAD-2)&31=1(CMS_HTML-1)&33=3(CMS_HTMLHEAD-2,CMS_HTML-1)&64=2(CMS_HTMLHEAD-2,CMS_HTML-1)&65=2(CMS_HTMLHEAD-1,CMS_HTML-1)&66=3(CMS_HTMLHEAD-2,CMS_HTML-1)&68=3(CMS_HTML-1,CMS_HTMLHEAD-2)&67=2(CMS_HTMLHEAD-2,CMS_HTML-1)&52=4(CMS_HTML-1)&53=6(CMS_HTML-1)&71=1(CMS_HTMLHEAD-2)&46=1(CMS_HTML-1)&76=1(CMS_HTMLHEAD-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(136, 'beispielmandant', '', '&3=1(CMS_TEXT-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(137, 'httpwwwcontenidoorg', '', '&3=1(CMS_TEXT-2)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(138, 'lorem', '', '&3=4(CMS_HTML-1)&48=2(CMS_HTMLHEAD-1,CMS_HTMLHEAD-2)&73=2(CMS_HTMLHEAD-1,CMS_HTMLHEAD-2)', '', 1);
@@ -129,7 +129,7 @@ INSERT INTO `!PREFIX!_keywords` VALUES(248, 'must', '', '&11=1(CMS_HTMLHEAD-2)',
 INSERT INTO `!PREFIX!_keywords` VALUES(249, 'explain', '', '&11=1(CMS_HTMLHEAD-2)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(250, 'to', '', '&11=4(CMS_HTMLHEAD-2,CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(251, 'you', '', '&11=2(CMS_HTMLHEAD-2)', '', 1);
-INSERT INTO `!PREFIX!_keywords` VALUES(252, 'how', '', '&11=1(CMS_HTMLHEAD-2)', '', 1);
+INSERT INTO `!PREFIX!_keywords` VALUES(252, 'how', '', '&11=1(CMS_HTMLHEAD-2)&65=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(253, 'all', '', '&11=1(CMS_HTMLHEAD-2)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(254, 'this', '', '&11=1(CMS_HTMLHEAD-2)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(255, 'mistaken', '', '&11=1(CMS_HTMLHEAD-2)', '', 1);
@@ -537,7 +537,7 @@ INSERT INTO `!PREFIX!_keywords` VALUES(814, 'de212133747', '', '&7=1(CMS_HTML-1)
 INSERT INTO `!PREFIX!_keywords` VALUES(813, 'ustidnr', '', '&7=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(812, '41501', '', '&7=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(806, 'email', '', '&7=1(CMS_HTML-1)&50=2(CMS_HTML-601,CMS_HTML-604)', '', 1);
-INSERT INTO `!PREFIX!_keywords` VALUES(805, '8010820', '', '&7=1(CMS_HTML-1)&50=2(CMS_HTML-601,CMS_HTML-604)', '', 1);
+INSERT INTO `!PREFIX!_keywords` VALUES(805, '8010820', '', '&7=1(CMS_HTML-1)&50=2(CMS_HTML-601,CMS_HTML-604)&65=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(804, '69', '', '&7=1(CMS_HTML-1)&64=1(CMS_HTML-1)&65=1(CMS_HTML-1)&50=2(CMS_HTML-601,CMS_HTML-604)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(803, '49', '', '&7=1(CMS_HTML-1)&64=1(CMS_HTML-1)&65=2(CMS_HTMLHEAD-1,CMS_HTML-1)&50=2(CMS_HTML-601,CMS_HTML-604)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(784, 'inhaltspflege', '', '&53=1(CMS_HTMLHEAD-1)', '', 1);
@@ -672,14 +672,13 @@ INSERT INTO `!PREFIX!_keywords` VALUES(960, 'frontendbenutzer', '', '&33=1(CMS_H
 INSERT INTO `!PREFIX!_keywords` VALUES(961, 'getrennt', '', '&33=1(CMS_HTML-1)&52=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(962, 'nachhaltigkeit', '', '&64=1(CMS_HTMLHEAD-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(963, 'seit', '', '&64=2(CMS_HTMLHEAD-1,CMS_HTML-1)&46=1(CMS_HTML-1)', '', 1);
-INSERT INTO `!PREFIX!_keywords` VALUES(964, 'uÌber', '', '&64=1(CMS_HTMLHEAD-1)&65=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(965, 'leben', '', '&64=1(CMS_HTMLHEAD-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(966, 'implementierer', '', '&64=1(CMS_HTMLHEAD-2)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(967, 'ob', '', '&64=1(CMS_HTML-1)&52=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(968, 'extranet', '', '&64=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(969, 'intranets', '', '&64=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(1009, 'performance', '', '&65=1(CMS_HTMLHEAD-2)', '', 1);
-INSERT INTO `!PREFIX!_keywords` VALUES(971, 'ndash', '', '&64=1(CMS_HTML-1)&65=1(CMS_HTML-1)&53=1(CMS_HTML-1)', '', 1);
+INSERT INTO `!PREFIX!_keywords` VALUES(971, 'ndash', '', '&53=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(972, 'erhalten', '', '&64=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(973, 'passenden', '', '&64=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(974, 'onlineauftritt', '', '&64=1(CMS_HTML-1)', '', 1);
@@ -716,7 +715,7 @@ INSERT INTO `!PREFIX!_keywords` VALUES(1063, 'eigenen', '', '&68=1(CMS_HTML-1)',
 INSERT INTO `!PREFIX!_keywords` VALUES(1010, 'bestehendes', '', '&65=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(1011, 'aktualisieren', '', '&65=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(1012, 'spezialisten', '', '&65=1(CMS_HTML-1)', '', 1);
-INSERT INTO `!PREFIX!_keywords` VALUES(1013, 'verfuÌgen', '', '&65=1(CMS_HTML-1)', '', 1);
+INSERT INTO `!PREFIX!_keywords` VALUES(2662, 'entwicklung', '', '&64=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(1014, 'jahre', '', '&65=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(1015, 'reibungslose', '', '&65=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(1016, 'umstellung', '', '&65=1(CMS_HTML-1)', '', 1);
@@ -952,7 +951,6 @@ INSERT INTO `!PREFIX!_keywords` VALUES(1299, '37', '', '&68=1(CMS_IMGEDITOR-100)
 INSERT INTO `!PREFIX!_keywords` VALUES(1301, 'opensource', '', '&46=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(1302, 'markt', '', '&46=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(1303, 'vertreten', '', '&46=1(CMS_HTML-1)', '', 1);
-INSERT INTO `!PREFIX!_keywords` VALUES(1304, 'fuÌr', '', '&46=2(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(1305, 'contentsyndication', '', '&46=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(1306, 'contentprovider', '', '&46=1(CMS_HTML-1)', '', 1);
 INSERT INTO `!PREFIX!_keywords` VALUES(1307, 'eingesetzt', '', '&46=1(CMS_HTML-1)', '', 1);
@@ -1810,3 +1808,7 @@ INSERT INTO `!PREFIX!_keywords` VALUES(2611, 'me', '', '&69=1(CMS_HTML-1)&79=1(C
 INSERT INTO `!PREFIX!_keywords` VALUES(2612, 'what', '', '&69=1(CMS_HTML-1)&79=1(CMS_HTML-1)&80=1(CMS_HTML-1)&75=1(CMS_HTML-1)&74=1(CMS_HTML-1)', '', 2);
 INSERT INTO `!PREFIX!_keywords` VALUES(2613, 'isthe', '', '&69=1(CMS_HTML-1)&79=1(CMS_HTML-1)&80=1(CMS_HTML-1)&75=1(CMS_HTML-1)&74=1(CMS_HTML-1)', '', 2);
 INSERT INTO `!PREFIX!_keywords` VALUES(2614, 'subheadline', '', '&69=1(CMS_HTMLHEAD-2)&79=1(CMS_HTMLHEAD-2)&80=1(CMS_HTMLHEAD-2)&75=1(CMS_HTMLHEAD-2)&74=1(CMS_HTMLHEAD-2)', '', 2);
+INSERT INTO `!PREFIX!_keywords` VALUES(2660, 'know', '', '&65=1(CMS_HTML-1)', '', 1);
+INSERT INTO `!PREFIX!_keywords` VALUES(2661, 'preiswerte', '', '&65=1(CMS_HTML-1)', '', 1);
+INSERT INTO `!PREFIX!_keywords` VALUES(2663, 'herausforderungen', '', '&64=1(CMS_HTML-1)', '', 1);
+INSERT INTO `!PREFIX!_keywords` VALUES(2664, '820', '', '&64=1(CMS_HTML-1)', '', 1);
