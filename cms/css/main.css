@@ -232,6 +232,7 @@ p a:hover {
     position: absolute;
     opacity: 0;
     list-style: none;
+	left: 20px;
 }
 .slider .images li.active {
     opacity: 1;
@@ -349,6 +350,11 @@ p + .button.red {
     z-index: 3;
     padding: 0 25px;
 }
+
+#content .slider ul {
+	display: block;
+}
+
 .slider .pagination li {
     list-style: none;
     float: left;
