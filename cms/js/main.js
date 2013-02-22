@@ -99,7 +99,7 @@ $(function() {
         $(".galery .slider").html("");
         $(".galery .source li").slice(sliceFrom, sliceTo).each(function() {
             var $a = $(this).children("a");
-            $(".galery .slider").append('<li><a href="' + $a.attr("href") + '" rel="' + $a.attr("rel") + '" title="' + $a.attr("title") + '"><img src="' + $a.text() + '" alt="" /></a></li>');
+            $(".galery .slider").append('<li><a href="' + $a.attr("href") + '" rel="' + $a.attr("rel") + '" title="' + $a.attr("title") + '"><img src="' + $a.text() + '" alt="" style="' +$a.attr("style")+ '" /></a></li>');
         });
         $(".galery .slider li:odd").addClass("odd");
 
