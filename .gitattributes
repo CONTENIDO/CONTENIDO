@@ -234,6 +234,7 @@ cms/images/buttons/like.png -text
 cms/images/buttons/quote_tick.png -text
 cms/images/buttons/refresh.png -text
 cms/images/index.php -text
+cms/images/misc/download_misc.png -text
 cms/images/misc/logo.png -text
 cms/images/misc/sprite.png -text
 cms/includes/concache.php -text
