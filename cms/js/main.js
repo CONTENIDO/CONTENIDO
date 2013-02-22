@@ -127,21 +127,23 @@ $(function() {
         }
     });
 
-    $(".galery .slider").delegate("a", "click", function(e) {
-        e.preventDefault();
-        $(".galery .lightbox").html('<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + ': ' + $(this).attr("title") + '</p>').dialog({
-            modal: true,
-            width: "auto",
-            height: "auto",
-            closeText: "X",
-            position: {
-                my: "center",
-                at: "center",
-                of: window
-            },
-            close: function() {
-                $(".galery").prepend('<div class="lightbox"></div>');
-            }
+    jQuery(window).load(function() {
+        $(".galery .slider").delegate("a", "click", function(e) {
+            e.preventDefault();
+            $(".galery .lightbox").html('<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + ': ' + $(this).attr("title") + '</p>').dialog({
+                modal: true,
+                width: "auto",
+                height: "auto",
+                closeText: "X",
+                position: {
+                    my: "center",
+                    at: "center",
+                    of: window
+                },
+                close: function() {
+                    $(".galery").prepend('<div class="lightbox"></div>');
+                }
+            });
         });
     });
 
@@ -206,4 +208,11 @@ $(function() {
     });
 
     $(".column_quarter.text div.col").css('height', maxHeight+20+'px');
+    
+    //make teaser image clickable
+    $('.teaser_img').click(function() {
+        var link = $(this).children("p").children("a").attr('href');
+        document.location.href = link;
+        
+    });
 });
