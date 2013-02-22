@@ -265,7 +265,7 @@ INSERT INTO `!PREFIX!_content` VALUES(336, 110, 2, 1, '<p>CONTENIDO knows two ki
 INSERT INTO `!PREFIX!_content` VALUES(337, 110, 1, 2, '<p>Protected content is only visible to persons who logged in before with username and password.</p>', '', 'sysadmin', '2013-02-13 08:56:57', '2013-02-21 17:47:16');
 INSERT INTO `!PREFIX!_content` VALUES(338, 110, 22, 1, '4', '', 'sysadmin', '2013-02-13 13:16:24', '2013-02-13 13:17:41');
 INSERT INTO `!PREFIX!_content` VALUES(339, 110, 4, 1, '4', '', 'sysadmin', '2013-02-13 13:16:24', '2013-02-13 13:17:41');
-INSERT INTO `!PREFIX!_content` VALUES(340, 110, 5, 1, 'Eine schÃƒÂ¶ne Impression', '', 'sysadmin', '2013-02-13 13:16:24', '2013-02-13 13:17:41');
+INSERT INTO `!PREFIX!_content` VALUES(340, 110, 5, 1, 'Eine sch&ouml;ne Impression', '', 'sysadmin', '2013-02-13 13:16:24', '2013-02-13 13:17:41');
 INSERT INTO `!PREFIX!_content` VALUES(341, 111, 3, 500, '2', '', 'sysadmin', '2013-02-12 08:48:08', '2013-02-13 09:11:56');
 INSERT INTO `!PREFIX!_content` VALUES(342, 111, 24, 500, '<?xml version="1.0" encoding="utf-8"?>\n<linkeditor><type>external</type><externallink>http://www.contenido.org</externallink><title>CONTENIDO Website</title><newwindow>true</newwindow><idart></idart><filename></filename></linkeditor>\n', '', 'sysadmin', '2013-02-12 08:48:38', '2013-02-22 09:34:32');
 INSERT INTO `!PREFIX!_content` VALUES(343, 111, 2, 500, '<p>Link to the CONTENIDO website</p>', '', 'sysadmin', '2013-02-12 08:49:03', '2013-02-21 17:52:39');
