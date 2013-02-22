@@ -428,6 +428,14 @@ p + .button.red {
     -o-transition: all 0.4s; /* Opera */
 }
 
+.column_quarter .col .teaser_img p a  {
+	display: none;
+}
+
+.column_quarter .col .teaser_img:hover p a {
+	display: block
+}
+
 .column_quarter .col a.more {
     text-decoration: none;
     color: #9ba21b;
