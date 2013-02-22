@@ -506,17 +506,22 @@ class cApiCategory extends Item {
 
     /**
      * Returns the link to the current object.
-     *
+     * @param integer $changeLangId change language id for URL (optional)
      * @return string link
      */
-    public function getLink() {
+    public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {
             return '';
         }
 
         $options = array();
         $options['idcat'] = $this->get('idcat');
-        $options['lang'] = cRegistry::getLanguageId();
+        $options['lang'] = ($changeLangId == 0) ? cRegistry::getLanguageId() : $changeLangId;
+        if ($changeLangId > 0) {
+            $options['changelang'] = $changeLangId;
+        }
+
+
 
         return cUri::getInstance()->build($options);
     }

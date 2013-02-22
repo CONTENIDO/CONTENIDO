@@ -524,17 +524,20 @@ class cApiArticleLanguage extends Item {
 
     /**
      * Returns the link to the current object.
-     *
+     * @param integer $changeLangId change language id for URL (optional)
      * @return string link
      */
-    public function getLink() {
+    public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {
             return '';
         }
 
         $options = array();
         $options['idart'] = $this->get('idart');
-        $options['lang'] = $this->get('idlang');
+        $options['lang'] = ($changeLangId == 0) ? $this->get('idlang') : $changeLangId;
+        if ($changeLangId > 0) {
+            $options['changelang'] = $changeLangId;
+        }
 
         return cUri::getInstance()->build($options);
     }
