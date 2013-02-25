@@ -137,8 +137,9 @@ class cFileHandler {
         if ($append) {
             $flag = FILE_APPEND;
         }
-        $success = file_put_contents($filename, $content, $flag) === strlen($content);
-        if ($success) {
+
+        $success = file_put_contents($filename, $content, $flag);
+        if ((int) $success != 0) {
             self::setDefaultFilePerms($filename);
         }
 
