@@ -20,7 +20,7 @@ INSERT INTO `!PREFIX!_pifa_field` VALUES(18, 1, 12, 5, 'privacy', 'Datenschutzer
 CREATE TABLE `!PREFIX!_pifa_form` (`idform` int(10) unsigned NOT NULL auto_increment COMMENT 'unique identifier for a ConForm form',`idclient` int(10) unsigned NOT NULL default '0' COMMENT 'id of form client',`idlang` int(10) unsigned NOT NULL default '0' COMMENT 'id of form language',`name` varchar(1023) NOT NULL default 'new form' COMMENT 'human readable name of form',`data_table` varchar(64) NOT NULL default 'con_pifo_data' COMMENT 'unique name of data table',`method` enum('get','post') NOT NULL default 'post' COMMENT 'method to be used for form submission',PRIMARY KEY  (`idform`)) ENGINE=MyISAM COMMENT='contains meta data of PIFA forms' AUTO_INCREMENT=1 ;
 INSERT INTO `!PREFIX!_pifa_form` VALUES(1, 1, 1, 'contact', 'con_pifa_contact', 'post');
 INSERT INTO `!PREFIX!_area` (idarea, parent_id, name, relevant, online, menuless) VALUES (100001, '0', 'form', 1, 1, 0);
-INSERT INTO `!PREFIX!_area` (idarea, parent_id, name, relevant, online, menuless) VALUES (100002, '100001', 'form_ajax', 1, 1, 0);  
+INSERT INTO `!PREFIX!_area` (idarea, parent_id, name, relevant, online, menuless) VALUES (100002, '100001', 'form_ajax', 1, 1, 0);
 INSERT INTO `!PREFIX!_nav_sub` (idnavs, idnavm, idarea, level, location, online) VALUES (100001, 3, 100001, 0, 'form_assistant/xml/lang_de_DE.xml;plugins/form_assistant/label', 1);
 INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100001, 100001, 'form_assistant/includes/include.left_top.php', 'main');
 INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100002, 100001, 'form_assistant/includes/include.left_bottom.php', 'main');

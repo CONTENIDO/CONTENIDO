@@ -232,7 +232,7 @@ p a:hover {
     position: absolute;
     opacity: 0;
     list-style: none;
-	left: 20px;
+    left: 20px;
 }
 .slider .images li.active {
     opacity: 1;
@@ -352,7 +352,7 @@ p + .button.red {
 }
 
 #content .slider ul {
-	display: block;
+    display: block;
 }
 
 .slider .pagination li {
@@ -429,11 +429,11 @@ p + .button.red {
 }
 
 .column_quarter .col .teaser_img p a  {
-	display: none;
+    display: none;
 }
 
 .column_quarter .col .teaser_img:hover p a {
-	display: block
+    display: block
 }
 
 .column_quarter .col a.more {

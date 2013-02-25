@@ -208,11 +208,11 @@ $(function() {
     });
 
     $(".column_quarter.text div.col").css('height', maxHeight+20+'px');
-    
+
     //make teaser image clickable
     $('.teaser_img').click(function() {
         var link = $(this).children("p").children("a").attr('href');
         document.location.href = link;
-        
+
     });
 });
