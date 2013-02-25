@@ -83,8 +83,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         // build top code
         $tplTop = new cTemplate();
         $tplTop->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
-        // $tplTop->set('s', 'ICON', 'images/but_editform.gif');
-        $tplTop->set('s', 'ICON', Pifa::getUrl() . 'images/icon_form.png');
+        $tplTop->set('s', 'ICON', 'plugins/form_assistant/images/icon_form.png');
         $tplTop->set('s', 'ID', $this->_id);
         $tplTop->set('s', 'PREFIX', $this->_prefix);
         $tplTop->set('s', 'HEADLINE', Pifa::i18n('form'));
