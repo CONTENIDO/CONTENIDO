@@ -80,18 +80,15 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement $this
      */
     public function autoFill(array $stuff) {
-        if (is_array($stuff)) {
-            foreach ($stuff as $key => $row) {
-                if (is_array($row)) {
-                    $option = new cHTMLOptionElement($row[1], $row[0]);
-                    $this->addOptionElement($row[0], $option);
-                } else {
-                    $option = new cHTMLOptionElement($row, $key);
-                    $this->addOptionElement($key, $option);
-                }
+        foreach ($stuff as $key => $row) {
+            if (is_array($row)) {
+                $option = new cHTMLOptionElement($row[1], $row[0]);
+                $this->addOptionElement($row[0], $option);
+            } else {
+                $option = new cHTMLOptionElement($row, $key);
+                $this->addOptionElement($key, $option);
             }
         }
-
         return $this;
     }
 
@@ -105,7 +102,6 @@ class cHTMLSelectElement extends cHTMLFormElement {
      */
     public function addOptionElement($index, cHTMLOptionElement $element) {
         $this->_options[$index] = $element;
-
         return $this;
     }
 
@@ -117,7 +113,6 @@ class cHTMLSelectElement extends cHTMLFormElement {
      */
     public function appendOptionElement(cHTMLOptionElement $element) {
         $this->_options[] = $element;
-
         return $this;
     }
 
@@ -147,7 +142,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement $this
      */
     public function setDefault($lvalue) {
-        if (is_array($this->_options) && is_array($lvalue)) {
+        if (is_array($lvalue)) {
             foreach ($this->_options as $key => $value) {
                 if (in_array($value->getAttribute('value'), $lvalue)) {
                     $value->setSelected(true);
@@ -168,7 +163,6 @@ class cHTMLSelectElement extends cHTMLFormElement {
                 }
             }
         }
-
         return $this;
     }
 
@@ -178,14 +172,11 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return string bool "lvalue" or false
      */
     public function getDefault() {
-        if (is_array($this->_options)) {
-            foreach ($this->_options as $key => $value) {
-                if ($value->isSelected()) {
-                    return $key;
-                }
+        foreach ($this->_options as $key => $value) {
+            if ($value->isSelected()) {
+                return $key;
             }
         }
-
         return false;
     }
 
@@ -197,18 +188,15 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement $this
      */
     public function setSelected(array $elements) {
-        if (is_array($this->_options)) {
-            foreach ($this->_options as $key => $option) {
-                if (in_array($option->getAttribute('value'), $elements)) {
-                    $option->setSelected(true);
-                    $this->_options[$key] = $option;
-                } else {
-                    $option->setSelected(false);
-                    $this->_options[$key] = $option;
-                }
+        foreach ($this->_options as $key => $option) {
+            if (in_array($option->getAttribute('value'), $elements)) {
+                $option->setSelected(true);
+                $this->_options[$key] = $option;
+            } else {
+                $option->setSelected(false);
+                $this->_options[$key] = $option;
             }
         }
-
         return $this;
     }
 
@@ -219,7 +207,6 @@ class cHTMLSelectElement extends cHTMLFormElement {
      */
     public function toHtml() {
         $this->_setContent($this->_options);
-
         return parent::toHTML();
     }
 
