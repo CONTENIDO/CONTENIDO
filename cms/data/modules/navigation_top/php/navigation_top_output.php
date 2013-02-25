@@ -25,9 +25,10 @@ $categoryHelper->setAuth(cRegistry::getAuth());
 $tree = $categoryHelper->getSubCategories($rootIdcat, $depth);
 
 // get path (breadcrumb) of current category
-$path = array_map(function (cApiCategoryLanguage $categoryLanguage) {
+function navigation_top_filter(cApiCategoryLanguage $categoryLanguage) {
     return $categoryLanguage->get('idcat');
-}, $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1));
+}
+$path = array_map('navigation_top_filter', $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1));
 
 // use template to display navigation
 $tpl = Contenido_SmartyWrapper::getInstance();
