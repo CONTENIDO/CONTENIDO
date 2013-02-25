@@ -11,16 +11,22 @@
  * @link http://www.4fb.de
  */
 
-// get smarty template instance
-$tpl = Contenido_SmartyWrapper::getInstance();
-
-// get needed id's
+// get globals
 $client = cRegistry::getClientId();
-$cfgClient = cRegistry::getClientConfig();
 $lang = cRegistry::getLanguageId();
 $idart = cRegistry::getArticleId();
 
-// assign module translation tags
+// get content of current article
+$art = new Article($idart, $client, $lang);
+$content = $art->getContent('CMS_TEXT', 1);
+$level = $art->getContent('CMS_TEXT', 2);
+$article = $art->getContent('CMS_TEXT', 3);
+
+// get smarty template instance
+$tpl = Contenido_SmartyWrapper::getInstance();
+$tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode());
+
+// assign module translations
 $tpl->assign('trans', array(
     'headline' => mi18n("HEADLINE"),
     'categoryLabel' => mi18n("CATEGORY_LABEL"),
@@ -37,31 +43,23 @@ $tpl->assign('level', "CMS_TEXT[2]");
 $tpl->assign('article', "CMS_TEXT[3]");
 $tpl->assign('first', false);
 
-// create article and get content of it
-$art = new Article($idart, $client, $lang);
-$content = $art->getContent("CMS_TEXT", 1);
-$level = $art->getContent("CMS_TEXT", 2);
-$article = $art->getContent("CMS_TEXT", 3);
 // check if content is numeric
-if (TRUE === is_numeric($content) && TRUE === is_numeric($level)) {
-
-    if($article == 0 || $article == 1) {
+if (false === is_numeric($content) || false === is_numeric($level)) {
+    $tpl->assign('error', mi18n("NOT_NUMERIC_VALUE"));
+} else if ($article != 0 && $article != 1) {
+    $tpl->assign('error', mi18n("NOT_ZERO_OR_ONE"));
+} else {
     // get category tree
     $categoryHelper = cCategoryHelper::getInstance();
     $categoryHelper->setAuth(cRegistry::getAuth());
-
     $tree = $categoryHelper->getSubCategories($content, $level);
-    if($article == 1) {
-    $tree = addArticlesToTree($tree);
+    if (1 == $article) {
+        $tree = addArticlesToTree($tree);
     }
     $tpl->assign('tree', $tree);
-    } else {
-        $tpl->assign('errorArticle', mi18n("NOT_ZERO_OR_ONE"));
-    }
-} else {
-    // assign error message
-    $tpl->assign('error', mi18n("NOT_NUMERIC_VALUE"));
 }
+
+echo $tpl->fetch('content_sitemap_html/template/get.tpl');
 
 /**
  * Adds articles to categories in given array $tree as returned by
@@ -71,12 +69,14 @@ if (TRUE === is_numeric($content) && TRUE === is_numeric($level)) {
  * @return array
  */
 function addArticlesToTree(array $tree) {
+
     foreach ($tree as $key => $wrapper) {
         $tree[$key]['articles'] = getArticlesFromCategory($wrapper['idcat']);
         $tree[$key]['subcats'] = addArticlesToTree($tree[$key]['subcats']);
     }
 
     return $tree;
+
 }
 
 /**
@@ -85,29 +85,29 @@ function addArticlesToTree(array $tree) {
  * @param int $categoryId
  */
 function getArticlesFromCategory($categoryId) {
+
     $cfg = cRegistry::getConfig();
     $db = cRegistry::getDb();
-    $lang = cRegistry::getLanguageId();
 
     // get articles from DB
     // needed fields: idart, lastmodified, sitemapprio, changefreq
-    $sql = '
-            SELECT
-                `al`.`idart`
-                , UNIX_TIMESTAMP(`al`.`lastmodified`) as lastmod
-                , `al`.`changefreq`
-                , `al`.`sitemapprio`
-                , `al`.`title`
-            FROM
-                `' . $cfg['tab']['art_lang'] . '` AS `al`
-                , `' . $cfg['tab']['cat_art'] . '` AS `ca`
-            WHERE
-                `al`.`idart` = `ca`.`idart`
-                AND `al`.`idlang` = ' . $lang . '
-                AND `ca`.`idcat` IN (' . $categoryId . ')
-                AND `al`.`online` = 1
-                AND `al`.`searchable` = 1
-            ;';
+    $sql = '-- getArticlesFromCategory()
+        SELECT
+            al.idart
+            , UNIX_TIMESTAMP(al.lastmodified) AS lastmod
+            , al.changefreq
+            , al.sitemapprio
+            , al.title
+        FROM
+            `' . $cfg['tab']['art_lang'] . '` AS al
+            , `' . $cfg['tab']['cat_art'] . '` AS ca
+        WHERE
+            al.idart = ca.idart
+            AND al.idlang = ' . cSecurity::toInteger(cRegistry::getLanguageId()) . '
+            AND ca.idcat IN (' . $categoryId . ')
+            AND al.online = 1
+            AND al.searchable = 1
+        ;';
 
     $ret = $db->query($sql);
 
@@ -121,25 +121,7 @@ function getArticlesFromCategory($categoryId) {
     }
 
     return $array;
+
 }
-
-/**
- * Formats a date/time according to ISO 8601.
- * Example:
- * YYYY-MM-DDThh:mm:ss.sTZD (eg 1997-07-16T19:20:30.45+01:00)
- *
- * @param int $time a UNIX timestamp
- * @return string the formatted date string
- */
-function iso8601Date($time) {
-    $tzd = date('O', $time);
-    $tzd = substr(chunk_split($tzd, 3, ':'), 0, 6);
-    $date = date('Y-m-d\TH:i:s', $time) . $tzd;
-
-    return $date;
-}
-
-$tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode());
-echo $tpl->fetch('content_sitemap_html/template/get.tpl');
 
 ?>

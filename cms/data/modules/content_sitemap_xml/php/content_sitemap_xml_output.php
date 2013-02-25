@@ -152,6 +152,7 @@ function addUrl(SimpleXMLElement $sitemap, array $data) {
 
 /**
  * Formats a date/time according to ISO 8601.
+ *
  * Example:
  * YYYY-MM-DDThh:mm:ss.sTZD (eg 1997-07-16T19:20:30.45+01:00)
  *
@@ -159,11 +160,15 @@ function addUrl(SimpleXMLElement $sitemap, array $data) {
  * @return string the formatted date string
  */
 function iso8601Date($time) {
-    $tzd = date('O', $time);
-    $tzd = substr(chunk_split($tzd, 3, ':'), 0, 6);
-    $date = date('Y-m-d\TH:i:s', $time) . $tzd;
 
-    return $date;
+    $tzd = date('O', $time);
+    $tzd = chunk_split($tzd, 3, ':');
+    $tzd = substr($tzd, 0, 6);
+
+    $date = date('Y-m-d\TH:i:s', $time);
+
+    return $date . $tzd;
+
 }
 
 /**
