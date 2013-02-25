@@ -12,7 +12,10 @@
  * @link http://www.contenido.org
  */
 
-// there's no need to echo it ...
-"CMS_PIFAFORM[1]";
+if (cRegistry::isBackendEditMode()) {
+    echo '<label class="content-type-label">' . mi18n("LABEL_FORM_CONTACT") . '</label>';
+}
+
+echo "CMS_PIFAFORM[1]";
 
 ?>
