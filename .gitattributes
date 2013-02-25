@@ -1823,6 +1823,7 @@ contenido/plugins/form_assistant/extensions/class.pifa.mailed_form_processor.php
 contenido/plugins/form_assistant/extensions/class.pifa.product_group_options_datasource.php -text
 contenido/plugins/form_assistant/images/btn_close.png -text
 contenido/plugins/form_assistant/images/button_close.png -text
+contenido/plugins/form_assistant/images/icon_form.png -text
 contenido/plugins/form_assistant/images/pifa_field_type_1.png -text
 contenido/plugins/form_assistant/images/pifa_field_type_10.png -text
 contenido/plugins/form_assistant/images/pifa_field_type_11.png -text
