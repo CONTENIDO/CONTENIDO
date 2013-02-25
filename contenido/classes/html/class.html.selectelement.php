@@ -30,7 +30,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
      *
      * @var array
      */
-    protected $_options;
+    protected $_options = array();
 
     /**
      * Constructor.
