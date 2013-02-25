@@ -122,7 +122,7 @@ class cSmartyFrontend {
      *
      * @param boolean bResetTemplate     true if the template values shall all be resetted
      * @throws cException if singleton has not been instantiated yet
-     * @return smarty
+     * @return cSmartyWrapper
      */
     public static function getInstance($bResetTemplate = false) {
         if (!isset(self::$oSmarty)) {
