@@ -88,8 +88,8 @@ define('CON_SETUP_MAX_CHUNKS_PER_STEP', 50);
 /**
  * @deprecated 2012-09-06 Constant has been renamed to CON_SETUP_MIN_PHP_VERSION
  */
-define('C_SETUP_MIN_PHP_VERSION', '5.2.0');
-define('CON_SETUP_MIN_PHP_VERSION', '5.2.0');
+define('C_SETUP_MIN_PHP_VERSION', '5.2.3');
+define('CON_SETUP_MIN_PHP_VERSION', '5.2.3');
 
 /**
  * @deprecated 2012-09-06 Constant has been renamed to CON_SETUP_VERSION
