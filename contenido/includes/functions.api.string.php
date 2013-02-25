@@ -4,7 +4,7 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * CONTENIDO Strign API functions
+ * CONTENIDO String API functions
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.6.1
