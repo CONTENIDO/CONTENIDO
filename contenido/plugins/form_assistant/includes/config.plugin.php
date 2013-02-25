@@ -350,6 +350,7 @@ cInclude('classes', 'class.ui.php');
 // @todo Use config variables for $pluginClassPath below!
 $pluginClassPath = 'contenido/plugins/' . Pifa::getName() . '/';
 cAutoload::addClassmapConfig(array(
+    'cContentTypePifaForm' => $pluginClassPath . 'classes/class.content.type.pifa_form.php',
     'PifaLeftBottomPage' => $pluginClassPath . 'classes/class.pifa.gui.php',
     'PifaRightBottomPage' => $pluginClassPath . 'classes/class.pifa.gui.php',
     'PifaFormCollection' => $pluginClassPath . 'classes/class.pifa.form.php',
@@ -367,7 +368,7 @@ cAutoload::addClassmapConfig(array(
     'PifaNotYetStoredException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaValidationException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaMailException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
-    'Securimage' => $pluginClassPath . 'securimage/securimage.php'
+    'Securimage' => $pluginClassPath . 'securimage/securimage.php',
 ));
 unset($pluginClassPath);
 
