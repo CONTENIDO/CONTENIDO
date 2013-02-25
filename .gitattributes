@@ -1811,7 +1811,6 @@ contenido/plugins/form_assistant/classes/class.pifa.external_options_datasource_
 contenido/plugins/form_assistant/classes/class.pifa.field.php -text
 contenido/plugins/form_assistant/classes/class.pifa.form.php -text
 contenido/plugins/form_assistant/classes/class.pifa.gui.php -text
-contenido/plugins/form_assistant/classes/class.util.helper.php -text
 contenido/plugins/form_assistant/docs/.htaccess -text
 contenido/plugins/form_assistant/docs/example.module.css -text svneol=unset#text/plain
 contenido/plugins/form_assistant/docs/install.sql -text
