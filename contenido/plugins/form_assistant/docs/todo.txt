@@ -28,6 +28,7 @@
 [_] W: implement adding of fields to form by Drag & Drop from a list of field types
 [_] W: implement display of MATRIX
 [_] W: determine which data type to use for MATRIX
+[_] W: show asterisk for obli fields in backend
 
 == UNSORTED ==
 [x] schwarze schrift in field form dialog
@@ -42,10 +43,8 @@
 [x] handle Spaltennamen mit Umlauten
 [x] add record in con_type bei Installation
 [x] Autoloader anpassen mittels function add autoloadermapclass
+[x] images/but_editform.gif
 
 [_] beim D&D eines Feldes verschwindet dieses
 [_] nach dem Herunterziehen wird die row falsch dargestellt.
 [_] error message hat textarea ist aber varchar 1023
-
-
-[_] images/but_editform.gif

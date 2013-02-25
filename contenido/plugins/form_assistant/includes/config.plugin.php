@@ -367,11 +367,11 @@ cAutoload::addClassmapConfig(array(
     'PifaNotYetStoredException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaValidationException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaMailException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
-    'Securimage' => $pluginClassPath . 'securimage/securimage.php',
-    // utility class; @todo should be removed when there is no more need for
-    // debugging
-    'Util' => $pluginClassPath . 'classes/class.util.helper.php'
-));
+    'Securimage' => $pluginClassPath . 'securimage/securimage.php'
+// utility class; @todo should be removed when there is no more need for
+// debugging
+// 'Util' => $pluginClassPath . 'classes/class.util.helper.php'
+);
 unset($pluginClassPath);
 
 // define chain functions

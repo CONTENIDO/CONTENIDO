@@ -113,7 +113,7 @@ class PifaLeftBottomPage extends cGuiPage {
             return '';
         }
 
-        $formIcon = $cfg['path']['images'] . 'but_editform.gif';
+        // $formIcon = Pifa::getUrl() . 'images/icon_form.png';
 
         // create menu
         $menu = new cGuiMenu();
@@ -123,7 +123,7 @@ class PifaLeftBottomPage extends cGuiPage {
             $formName = $form->get('name');
 
             $menu->setTitle($idform, $formName);
-            $menu->setImage($idform, $formIcon);
+            // $menu->setImage($idform, $formIcon);
 
             // add 'show form' link
             $link = new cHTMLLink();
