@@ -1,4 +1,22 @@
 <?php
+$ip = $REMOTE_ADDR ? $REMOTE_ADDR : $_SERVER['REMOTE_ADDR'];
+$time = time();
+
+if($_REQUEST['user_forum_action'] == 'dislike_forum' && isset($_COOKIE['cookie'][$ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])){    
+    $bCounter = false;
+} elseif($_REQUEST['user_forum_action'] == 'dislike_forum' && !isset($_COOKIE['cookie'][$ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])) {
+    setcookie("cookie[".$ip."][".$_REQUEST['user_forum_id']."][".$_REQUEST['user_forum_action']."]", 1, $time+3600);
+    $bCounter = true;
+}
+if($_REQUEST['user_forum_action'] == 'like_forum' && isset($_COOKIE['cookie'][$ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])){
+    $bCounter = false;
+} elseif($_REQUEST['user_forum_action'] == 'like_forum' && !isset($_COOKIE['cookie'][$ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])) {
+    setcookie("cookie[".$ip."][".$_REQUEST['user_forum_id']."][".$_REQUEST['user_forum_action']."]", 1, $time+3600);
+    $bCounter = true;
+}
+//var_export($_COOKIE['cookie']);var_export($bCounter);
+
+
 $tpl = Contenido_SmartyWrapper::getInstance();
 global $force;
 if (1 == $force) {
@@ -68,12 +86,14 @@ if ($_REQUEST['user_forum_action'] == 'like_forum' || $_REQUEST['user_forum_acti
             $fieldname = 'dislike';
         }
 
-        $query = "UPDATE con_pi_user_forum SET
+        if($bCounter) {
+			$query = "UPDATE con_pi_user_forum SET
                         `$fieldname` = `$fieldname` + 1
                     WHERE
                         id_user_forum = ".mysql_real_escape_string($form_id);
 
-        $db->query($query);
+        	$db->query($query);
+		}
     }
 } else if (($_REQUEST['user_forum_action'] == 'delete_forum') && ($_REQUEST['user_forum_delete_id'] != '') && ($bAllowDeleting)) {
 
