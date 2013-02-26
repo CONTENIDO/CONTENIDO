@@ -4,189 +4,190 @@
 Release 4.9.0 RC 1
 ----------------------------------------------------------------------
 ** Bug
-    [CON-806] - Linkchecker: Update of results do not refresh cache
-    [CON-809] - Broken module description output
-    [CON-810] - Directories get default permissions for files when moved, renamed, copied with cFileHandler
-    [CON-811] - conLoadScript is only available with at least one TinyMCE editor
-    [CON-814] - Object of class cApiRightCollection could not be converted to string
-    [CON-839] - Login without any clients not possible
-    [CON-840] - Admin: Create User - Valid fields populate incorrectly
-    [CON-841] - Admin: Create User - Valid date and time - time does not show up
-    [CON-842] - Admin: PlugIn Manager - delete PlugIns
-    [CON-844] - Style-Modules: List options are not working properly
-    [CON-846] - Content:File management: .mov and .mp4 can not be uploaded
-    [CON-848] - File management: pictures are not displayed correctly in the database system
-    [CON-849] - Admin: PIM - not able to upload new plugin
-    [CON-851] - Style-Layout/Modules: " Sign changes name
-    [CON-852] - Content: Category: Language change; in the content is not changed in the language
-    [CON-853] - Category: the second level in the tree can´t edited
-    [CON-854] - Style-Java Script Editor: Typo when creating new js file
-    [CON-856] - Content: URL Shortener: short url does not work
-    [CON-858] - Content: Articles: articles can not be tagged
-    [CON-859] - Style-Modules: Selecting search results after using the list doesn't work properly
-    [CON-860] - Content: Article: when the workflow is enabled, there two icon for "Properties"
-    [CON-862] - Content: article: The category of a "frozen" artikels can be edited in the properties
-    [CON-863] - Content: Article: Edit: Content Type (Image): The metadata of the image on slide when deleted
-    [CON-865] - Content: Article: Edit: Content Type (Image) : Upload not work
-    [CON-866] - Content: Article: Edit: ContentType (Image): does not create a directory
-    [CON-867] - Content: Article: Edit: the TinyMCE will not work with Safari
-    [CON-870] - Extras-Workflow: problems with special characters
-    [CON-871] - Content: Article: Edit: Contenttype (Teaser) : With Firefox, the teaser settings are not displayed correctly.
-    [CON-872] - Style: Layouts: History: source code will not be saved to history
-    [CON-873] - Administration-Groups: Areas are not saved (white page)
-    [CON-875] - Content: AMR: AMR-Plugin does not remain activated
-    [CON-876] - Article Tree will fold up after log out
-    [CON-877] - Content-Article-Legende: Typo in German: Inktive synchronisierte Kategorie
-    [CON-878] - Content: Categories: Unfold more than 2 Trees not possible
-    [CON-879] - Content: Categories: moving a category it will fold up tree
-    [CON-880] - Content:Article: Editor: Video in TinyMCE
-    [CON-881] - Style: Module-Templates History does not show up
-    [CON-885] - Missing whitespace in german translation for max log size
-    [CON-887] - Template configurations gets lost on moving article to another category
-    [CON-888] - Content: Category: Tree will be deleted when moved
-    [CON-889] - Stats: Hits - More then 20 shows blank page in 'test'
-    [CON-891] - Metadata in CMS_FILELIST is not loaded
-    [CON-892] - Deletion of layout does not delete layout in filesystem
-    [CON-896] - Problems with database names containing hyphen
-    [CON-897] - Add full German translation
-    [CON-902] - Saving category expanded state may not work
-    [CON-903] - Uncaught exeption when parsing XML to array
-    [CON-904] - Style-Modules: Deleting template-histories not possible
-    [CON-905] - Upgrade creates invalid values for empty CMS_FILELIST
-    [CON-906] - Linkchecker: Sql error if $aCats is null
-    [CON-907] - Linkchecker: Action Id is hardcoded
-    [CON-908] - Style-Layouts: Can not delete layouts with quotation mark
-    [CON-909] - Style-Layouts: Can not delete layouts (IE)
-    [CON-911] - Linkchecker: Whitelist does not work (Active Cache)
-    [CON-912] - Ajax request to get translations does not contain BackendSessionId
-    [CON-913] - template specific CSS & JS files are always requested via HTTP
-    [CON-916] - Style-Modules: Modules per page navigation does not work
-    [CON-917] - Style-Modules: Error when synchronize modules one behind the other
-    [CON-918] - Style-Templates: Display error when duplicate one template
-    [CON-922] - Article nav sub does not work
-    [CON-923] - Create Layouts: Force alias value
-    [CON-926] - Embedding SWF files via DBFS
-    [CON-927] - Rights for the URL Shortener don't work
-    [CON-928] - Short-URL from mandant a is visible in mandant b with different links
-    [CON-930] - Groups: Permissions aren't saved
-    [CON-931] - User: Permissions aren't saved
-    [CON-932] - Article: Can't open articles (IE)
-    [CON-937] - i18n: Remove the backslash from double quotes in translation strings
-    [CON-939] - Error in search class if db search option is set to 'like' or 'exact'
-    [CON-940] - PHP-Warning at generateViewCode()
-    [CON-941] - Session problems due to missing client ID
-    [CON-942] - Language update fails for languages not assigned to the current client
-    [CON-946] - Transformation of modules und layouts does not work with multiple clients
-    [CON-947] - Single and double quotes in clients settings are escaped too often
-    [CON-953] - Content of copied articles is not stored
-    [CON-955] - cArticleCollector: Removal of start articles conflicts with configured article limit
-    [CON-956] - Article Collection: Wrong teaser display with startarticle option
-    [CON-957] - System-Purage: Submit button has no effect
-    [CON-958] - Style-Modules: Add standard order for module-list
-    [CON-959] - CMS_TYPE: Display error when force is active
-    [CON-961] - Content: Articles: Assigned template get lost when edited article properties
-    [CON-962] - Content: Article: Insite-editing: Entities bug for close and save icon
-    [CON-963] - Content: Article: No articles displayed at Link -> Article searching (Memory bug at _fetchJoinTables function)
-    [CON-964] - Content: Article: Wrong image path setted via insite-editing
-    [CON-965] - Content: New Category: Selected template aren't saved
-    [CON-966] - Style: Modules: &nbsp; replaced at editor with space
-    [CON-968] - Module translations are not found if they are created as formatted strings
-    [CON-969] - Session destroyed after click on preview image at file management
-    [CON-974] - Login in backend with IE is not possible
-    [CON-976] - Encoding and size problem in todo popup
-    [CON-977] - Workflow integration in category management does not work any longer
-    [CON-978] - PIM: Enabling and disabling plugins must enable/disable the corresponding menu entries
-    [CON-979] - Special javascript code crashes history XML file
-    [CON-981] - Content editing in small tiny not possible
-    [CON-982] - Uploads in root directory not possible
-    [CON-983] - Downloading config.php in setup is not possible
-    [CON-984] - "You are here" does not show any information unless template is configured
-    [CON-985] - Layout name is sanitized too
-    [CON-986] - Navigation does not reload after creating new article
-    [CON-992] - Untranslated error on creating first category
-    [CON-997] - Missing backend style in tab "Content"
-    [CON-1001] - Too much categories in left navigation are marked as active
-    [CON-1002] - Protected categories are accessible for unauthorized users
-    [CON-1005] - changing client action seems to be unaware of users login state
-    [CON-1007] - broken function cApiStrReplaceDiacritics
-    [CON-1010] - Switching language does not work with activated AMR plugin
+    * [CON-806] - Linkchecker: Update of results do not refresh cache
+    * [CON-809] - Broken module description output
+    * [CON-810] - Directories get default permissions for files when moved, renamed, copied with cFileHandler
+    * [CON-811] - conLoadScript is only available with at least one TinyMCE editor
+    * [CON-814] - Object of class cApiRightCollection could not be converted to string
+    * [CON-839] - Login without any clients not possible
+    * [CON-840] - Admin: Create User - Valid fields populate incorrectly
+    * [CON-841] - Admin: Create User - Valid date and time - time does not show up
+    * [CON-842] - Admin: PlugIn Manager - delete PlugIns
+    * [CON-844] - Style-Modules: List options are not working properly
+    * [CON-846] - Content:File management: .mov and .mp4 can not be uploaded
+    * [CON-848] - File management: pictures are not displayed correctly in the database system
+    * [CON-849] - Admin: PIM - not able to upload new plugin
+    * [CON-851] - Style-Layout/Modules: " Sign changes name
+    * [CON-852] - Content: Category: Language change; in the content is not changed in the language
+    * [CON-853] - Category: the second level in the tree can´t edited
+    * [CON-854] - Style-Java Script Editor: Typo when creating new js file
+    * [CON-856] - Content: URL Shortener: short url does not work
+    * [CON-858] - Content: Articles: articles can not be tagged
+    * [CON-859] - Style-Modules: Selecting search results after using the list doesn't work properly
+    * [CON-860] - Content: Article: when the workflow is enabled, there two icon for "Properties"
+    * [CON-862] - Content: article: The category of a "frozen" artikels can be edited in the properties
+    * [CON-863] - Content: Article: Edit: Content Type (Image): The metadata of the image on slide when deleted
+    * [CON-865] - Content: Article: Edit: Content Type (Image) : Upload not work
+    * [CON-866] - Content: Article: Edit: ContentType (Image): does not create a directory
+    * [CON-867] - Content: Article: Edit: the TinyMCE will not work with Safari
+    * [CON-870] - Extras-Workflow: problems with special characters
+    * [CON-871] - Content: Article: Edit: Contenttype (Teaser) : With Firefox, the teaser settings are not displayed correctly.
+    * [CON-872] - Style: Layouts: History: source code will not be saved to history
+    * [CON-873] - Administration-Groups: Areas are not saved (white page)
+    * [CON-875] - Content: AMR: AMR-Plugin does not remain activated
+    * [CON-876] - Article Tree will fold up after log out
+    * [CON-877] - Content-Article-Legende: Typo in German: Inktive synchronisierte Kategorie
+    * [CON-878] - Content: Categories: Unfold more than 2 Trees not possible
+    * [CON-879] - Content: Categories: moving a category it will fold up tree
+    * [CON-880] - Content:Article: Editor: Video in TinyMCE
+    * [CON-881] - Style: Module-Templates History does not show up
+    * [CON-885] - Missing whitespace in german translation for max log size
+    * [CON-887] - Template configurations gets lost on moving article to another category
+    * [CON-888] - Content: Category: Tree will be deleted when moved
+    * [CON-889] - Stats: Hits - More then 20 shows blank page in 'test'
+    * [CON-891] - Metadata in CMS_FILELIST is not loaded
+    * [CON-892] - Deletion of layout does not delete layout in filesystem
+    * [CON-896] - Problems with database names containing hyphen
+    * [CON-897] - Add full German translation
+    * [CON-902] - Saving category expanded state may not work
+    * [CON-903] - Uncaught exeption when parsing XML to array
+    * [CON-904] - Style-Modules: Deleting template-histories not possible
+    * [CON-905] - Upgrade creates invalid values for empty CMS_FILELIST
+    * [CON-906] - Linkchecker: Sql error if $aCats is null
+    * [CON-907] - Linkchecker: Action Id is hardcoded
+    * [CON-908] - Style-Layouts: Can not delete layouts with quotation mark
+    * [CON-909] - Style-Layouts: Can not delete layouts (IE)
+    * [CON-911] - Linkchecker: Whitelist does not work (Active Cache)
+    * [CON-912] - Ajax request to get translations does not contain BackendSessionId
+    * [CON-913] - template specific CSS & JS files are always requested via HTTP
+    * [CON-916] - Style-Modules: Modules per page navigation does not work
+    * [CON-917] - Style-Modules: Error when synchronize modules one behind the other
+    * [CON-918] - Style-Templates: Display error when duplicate one template
+    * [CON-922] - Article nav sub does not work
+    * [CON-923] - Create Layouts: Force alias value
+    * [CON-926] - Embedding SWF files via DBFS
+    * [CON-927] - Rights for the URL Shortener don't work
+    * [CON-928] - Short-URL from mandant a is visible in mandant b with different links
+    * [CON-930] - Groups: Permissions aren't saved
+    * [CON-931] - User: Permissions aren't saved
+    * [CON-932] - Article: Can't open articles (IE)
+    * [CON-937] - i18n: Remove the backslash from double quotes in translation strings
+    * [CON-939] - Error in search class if db search option is set to 'like' or 'exact'
+    * [CON-940] - PHP-Warning at generateViewCode()
+    * [CON-941] - Session problems due to missing client ID
+    * [CON-942] - Language update fails for languages not assigned to the current client
+    * [CON-946] - Transformation of modules und layouts does not work with multiple clients
+    * [CON-947] - Single and double quotes in clients settings are escaped too often
+    * [CON-953] - Content of copied articles is not stored
+    * [CON-955] - cArticleCollector: Removal of start articles conflicts with configured article limit
+    * [CON-956] - Article Collection: Wrong teaser display with startarticle option
+    * [CON-957] - System-Purage: Submit button has no effect
+    * [CON-958] - Style-Modules: Add standard order for module-list
+    * [CON-959] - CMS_TYPE: Display error when force is active
+    * [CON-961] - Content: Articles: Assigned template get lost when edited article properties
+    * [CON-962] - Content: Article: Insite-editing: Entities bug for close and save icon
+    * [CON-963] - Content: Article: No articles displayed at Link -> Article searching (Memory bug at _fetchJoinTables function)
+    * [CON-964] - Content: Article: Wrong image path setted via insite-editing
+    * [CON-965] - Content: New Category: Selected template aren't saved
+    * [CON-966] - Style: Modules: &nbsp; replaced at editor with space
+    * [CON-968] - Module translations are not found if they are created as formatted strings
+    * [CON-969] - Session destroyed after click on preview image at file management
+    * [CON-974] - Login in backend with IE is not possible
+    * [CON-976] - Encoding and size problem in todo popup
+    * [CON-977] - Workflow integration in category management does not work any longer
+    * [CON-978] - PIM: Enabling and disabling plugins must enable/disable the corresponding menu entries
+    * [CON-979] - Special javascript code crashes history XML file
+    * [CON-981] - Content editing in small tiny not possible
+    * [CON-982] - Uploads in root directory not possible
+    * [CON-983] - Downloading config.php in setup is not possible
+    * [CON-984] - "You are here" does not show any information unless template is configured
+    * [CON-985] - Layout name is sanitized too
+    * [CON-986] - Navigation does not reload after creating new article
+    * [CON-992] - Untranslated error on creating first category
+    * [CON-997] - Missing backend style in tab "Content"
+    * [CON-1001] - Too much categories in left navigation are marked as active
+    * [CON-1002] - Protected categories are accessible for unauthorized users
+    * [CON-1005] - changing client action seems to be unaware of users login state
+    * [CON-1007] - broken function cApiStrReplaceDiacritics
+	* [CON-1008] - security.txt will be created w/o permissions
+    * [CON-1010] - Switching language does not work with activated AMR plugin
 
 ** Improvement
-    [CON-752] - Change smarty template calls
-    [CON-834] - Respect "Do Not Track" (DNT) configuration of users browser on tracking
-    [CON-843] - Admin: PIM - Allow to delete uninstalled plugins
-    [CON-850] - Admin: PIM - Please rename the upload process from 'Installation' to 'Upload'
-    [CON-861] - Admin: Rights - Do not show drop-down-list with one value
-    [CON-864] - Admin: Client Properties box should be bigger
-    [CON-882] - Content-Article: Rename Tab Meta in SEO
-    [CON-884] - Content-Article: Legend: offline category is missing
-    [CON-910] - PIM: Tooltips for icons
-    [CON-919] - Added cDirHandler-Class
-    [CON-920] - Admin-User: Cache problems with user properties (not displayed)
-    [CON-924] - PIM: Implement enable / disable functionality
-    [CON-934] - Highlight newest CONTENIDO rss news at welcome page
-    [CON-936] - PIM: Order installed plugins by pluginname
-    [CON-943] - Replace the TinyMCE icons for save and cancel with existing CONTENIDO icons
-    [CON-944] - Add deletion notice to CMS_FILELIST
-    [CON-948] - Add switch to turn off stack trace in logfiles
-    [CON-949] - Check $contenido_path before inclusion
-    [CON-951] - Implement cHTML class for optgroup tag
-    [CON-954] - Implement check of version before perfoming upgrade steps
-    [CON-980] - Do not render empty class attributes in cHtml
-    [CON-988] - Multiple changes for mass translation page
-    [CON-991] - Add log directory path to log display
+    * [CON-752] - Change smarty template calls
+    * [CON-834] - Respect "Do Not Track" (DNT) configuration of users browser on tracking
+    * [CON-843] - Admin: PIM - Allow to delete uninstalled plugins
+    * [CON-850] - Admin: PIM - Please rename the upload process from 'Installation' to 'Upload'
+    * [CON-861] - Admin: Rights - Do not show drop-down-list with one value
+    * [CON-864] - Admin: Client Properties box should be bigger
+    * [CON-882] - Content-Article: Rename Tab Meta in SEO
+    * [CON-884] - Content-Article: Legend: offline category is missing
+    * [CON-910] - PIM: Tooltips for icons
+    * [CON-919] - Added cDirHandler-Class
+    * [CON-920] - Admin-User: Cache problems with user properties (not displayed)
+    * [CON-924] - PIM: Implement enable / disable functionality
+    * [CON-934] - Highlight newest CONTENIDO rss news at welcome page
+    * [CON-936] - PIM: Order installed plugins by pluginname
+    * [CON-943] - Replace the TinyMCE icons for save and cancel with existing CONTENIDO icons
+    * [CON-944] - Add deletion notice to CMS_FILELIST
+    * [CON-948] - Add switch to turn off stack trace in logfiles
+    * [CON-949] - Check $contenido_path before inclusion
+    * [CON-951] - Implement cHTML class for optgroup tag
+    * [CON-954] - Implement check of version before perfoming upgrade steps
+    * [CON-980] - Do not render empty class attributes in cHtml
+    * [CON-988] - Multiple changes for mass translation page
+    * [CON-991] - Add log directory path to log display
 
 ** New Feature
-    [CON-803] - Implement new log display
-    [CON-813] - Add support to set default charset for PHP and Database
-    [CON-815] - Integration of the new example client
-    [CON-816] - Integration of the form assistant plugin
-    [CON-835] - Update of cHTML classes with support for HTML5
-    [CON-847] - Implement getter method for configured articles in CMS_TEASER
-    [CON-857] - Add method getConfiguration to abstract content type class
-    [CON-890] - Add getter to fetch all configured files from content type CMS_FILELIST
-    [CON-900] - Implementing mass translations for CONTENIDO
-    [CON-935] - PIM: Add con_main entries to Plugin Manager functionality
-    [CON-945] - Add optional system property for backend label
+    * [CON-803] - Implement new log display
+    * [CON-813] - Add support to set default charset for PHP and Database
+    * [CON-815] - Integration of the new example client
+    * [CON-816] - Integration of the form assistant plugin
+    * [CON-835] - Update of cHTML classes with support for HTML5
+    * [CON-847] - Implement getter method for configured articles in CMS_TEASER
+    * [CON-857] - Add method getConfiguration to abstract content type class
+    * [CON-890] - Add getter to fetch all configured files from content type CMS_FILELIST
+    * [CON-900] - Implementing mass translations for CONTENIDO
+    * [CON-935] - PIM: Add con_main entries to Plugin Manager functionality
+    * [CON-945] - Add optional system property for backend label
 
 ** Story
-    [CON-868] - As a backend user I want a streamlined wording to be less confused and get an better overall impression
-    [CON-894] - As a editor I want the system to unlock all articles, which are in use, to allow modifications by others.
+    * [CON-868] - As a backend user I want a streamlined wording to be less confused and get an better overall impression
+    * [CON-894] - As a editor I want the system to unlock all articles, which are in use, to allow modifications by others.
 
 ** Task
-    [CON-838] - PIM: Make "copyright" mandatory field and set maxOccurs for general-fields to “1”
-    [CON-901] - Check user rights
-    [CON-915] - Add more configurable filetypes to CMS_LINKEDIT
-    [CON-971] - Removal of outdated character converter
-    [CON-973] - Add item and item collection classes for database table con_keywords
-    [CON-975] - German typos "Modul" and "Vorlage"
-    [CON-987] - Remove translated module name from module translation
-    [CON-996] - Add new cHTMLFieldset and cHTMLLegend classes
+    * [CON-838] - PIM: Make "copyright" mandatory field and set maxOccurs for general-fields to “1”
+    * [CON-901] - Check user rights
+    * [CON-915] - Add more configurable filetypes to CMS_LINKEDIT
+    * [CON-971] - Removal of outdated character converter
+    * [CON-973] - Add item and item collection classes for database table con_keywords
+    * [CON-975] - German typos "Modul" and "Vorlage"
+    * [CON-987] - Remove translated module name from module translation
+    * [CON-996] - Add new cHTMLFieldset and cHTMLLegend classes
 
 ** Activity
-    [CON-869] - Rename all entries from 'erzeugen' to 'erstellen'
+    * [CON-869] - Rename all entries from 'erzeugen' to 'erstellen'
 
 ** Defect
-    [CON-895] - Remove the locks from articles when the user leaves the system.
+    * [CON-895] - Remove the locks from articles when the user leaves the system.
 
 ** Technical task
-    [CON-817] - New Example Client: Implementation of the header
-    [CON-818] - New Example Client: Implementation of the footer
-    [CON-819] - New Example Client: Implementation of the menu and breadcrumb
-    [CON-820] - New Example Client: Implementation of the default content page
-    [CON-821] - New Example Client: Implementation of the slider
-    [CON-822] - New Example Client: Implementation of search and search results page
-    [CON-823] - New Example Client: Implementation of the downloads page
-    [CON-824] - New Example Client: Implementation of the linklist page
-    [CON-825] - New Example Client: Implementation of the news teaser
-    [CON-826] - New Example Client: Implementation of the lightbox
-    [CON-827] - New Example Client: Implementation of the new picture gallery
-    [CON-828] - New Example Client: Implementation of the newsletter handler
-    [CON-829] - New Example Client: Implementation of the error page
-    [CON-831] - New Example Client: Implementation of the RSS creator
-    [CON-832] - New Example Client: Configuration and implementation of the contact form
-    [CON-833] - Integration in setup process
-    [CON-883] - New Example Client: Implementation of title element module
+    * [CON-817] - New Example Client: Implementation of the header
+    * [CON-818] - New Example Client: Implementation of the footer
+    * [CON-819] - New Example Client: Implementation of the menu and breadcrumb
+    * [CON-820] - New Example Client: Implementation of the default content page
+    * [CON-821] - New Example Client: Implementation of the slider
+    * [CON-822] - New Example Client: Implementation of search and search results page
+    * [CON-823] - New Example Client: Implementation of the downloads page
+    * [CON-824] - New Example Client: Implementation of the linklist page
+    * [CON-825] - New Example Client: Implementation of the news teaser
+    * [CON-826] - New Example Client: Implementation of the lightbox
+    * [CON-827] - New Example Client: Implementation of the new picture gallery
+    * [CON-828] - New Example Client: Implementation of the newsletter handler
+    * [CON-829] - New Example Client: Implementation of the error page
+    * [CON-831] - New Example Client: Implementation of the RSS creator
+    * [CON-832] - New Example Client: Configuration and implementation of the contact form
+    * [CON-833] - Integration in setup process
+    * [CON-883] - New Example Client: Implementation of title element module
 
 ---------------------------------------------------------------------
 Release 4.9.0 Beta 1
