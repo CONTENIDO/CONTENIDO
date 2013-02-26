@@ -100,7 +100,9 @@ function updateSystemProperties($db, $table) {
         array('type' => 'versioning', 'name' => 'prune_limit', 'value' => '0'),
         array('type' => 'versioning', 'name' => 'path', 'value' => ''),
         array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => 'true'),
-        array('type' => 'backend', 'name' => 'backend_label', 'value' => '')
+        array('type' => 'backend', 'name' => 'backend_label', 'value' => ''),
+        array('type' => 'generator', 'name' => 'xhtml', 'value' => 'true'),
+        array('type' => 'generator', 'name' => 'basehref', 'value' => 'true')
     );
 
     foreach ($aStandardvalues as $aData) {
