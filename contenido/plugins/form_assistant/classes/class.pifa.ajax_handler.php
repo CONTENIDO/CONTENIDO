@@ -68,6 +68,9 @@ class PifaAjaxHandler {
      * @throws Exception
      */
     function dispatch($action) {
+        function pifa_ajax_handler_integer_cast_deep($value) {
+            return cSecurity::toInteger($value);
+        }
 
         switch ($action) {
 
@@ -94,9 +97,7 @@ class PifaAjaxHandler {
 
             case self::REORDER_FIELDS:
                 $idform = cSecurity::toInteger($_POST['idform']);
-                $idfields = implode(',', array_map(function ($value) {
-                    return cSecurity::toInteger($value);
-                }, explode(',', $_POST['idfields'])));
+                $idfields = implode(',', array_map('pifa_ajax_handler_integer_cast_deep', explode(',', $_POST['idfields'])));
                 $this->_reorderFields($idform, $idfields);
                 break;
 
@@ -307,12 +308,14 @@ class PifaAjaxHandler {
             }
         }
 
+        function pifa_ajax_handler_string_cast_deep($value) {
+            $value = cSecurity::toString($value);
+            $value = trim($value);
+            return $value;
+        }
+
         if ($pifaField->showField('option_labels') && array_key_exists('option_labels', $_POST) && is_array($_POST['option_labels'])) {
-            $optionLabels = implode(',', array_map(function ($value) {
-                $value = cSecurity::toString($value);
-                $value = trim($value);
-                return $value;
-            }, $_POST['option_labels']));
+            $optionLabels = implode(',', array_map('pifa_ajax_handler_string_cast_deep', $_POST['option_labels']));
             $optionLabels = substr($optionLabels, 0, 1023);
             if ($optionLabels !== $pifaField->get('option_labels')) {
                 $pifaField->set('option_labels', $optionLabels);

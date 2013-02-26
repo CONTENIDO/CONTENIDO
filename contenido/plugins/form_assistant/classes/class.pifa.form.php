@@ -708,15 +708,17 @@ class PifaForm extends Item {
             $out .= $columnName;
         }
 
+        function pifa_form_get_literal_line_endings($value) {
+            $value = str_replace("\n", '\n', $value);
+            $value = str_replace("\r", '\r', $value);
+            $value = "\"$value\"";
+            return $value;
+        }
+
         // add data rows
         foreach ($this->getData() as $row) {
             // replace \n & \r by it's literal representation
-            $row = array_map(function ($value) {
-                $value = str_replace("\n", '\n', $value);
-                $value = str_replace("\r", '\r', $value);
-                $value = "\"$value\"";
-                return $value;
-            }, $row);
+            $row = array_map('pifa_form_get_literal_line_endings', $row);
             // append value
             foreach ($columns as $index => $columnName) {
                 if (0 === $index) {
