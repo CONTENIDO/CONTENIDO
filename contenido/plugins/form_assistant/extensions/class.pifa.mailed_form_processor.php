@@ -73,7 +73,7 @@ class MailedFormProcessor extends DefaultFormProcessor {
             $this->getForm()->toMailRecipient(array(
                 'from' => $this->getModule()->getSetting('pifaform_mail_system_from_email'),
                 'fromName' => $this->getModule()->getSetting('pifaform_mail_system_from_name'),
-                'to' => $this->getModule()->getSetting('pifaform_mail_system_to_email'),
+                'to' => $this->getModule()->getSetting('pifaform_mail_system_recipient_email'),
                 'subject' => $this->getModule()->getSetting('pifaform_mail_system_subject'),
                 'body' => $body,
                 'charSet' => 'UTF-8'
