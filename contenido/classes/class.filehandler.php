@@ -382,8 +382,12 @@ class cFileHandler {
      */
     public static function setDefaultFilePerms($filename) {
         $cfg = cRegistry::getConfig();
-        $filePerms = $cfg['default_perms']['file'];
 
+        if (isset($cfg['default_perms']['file']) === false) {
+            return false;
+        }
+
+        $filePerms = $cfg['default_perms']['file'];
         return cFileHandler::chmod($filename, $filePerms);
     }
 
@@ -395,8 +399,12 @@ class cFileHandler {
      */
     public static function setDefaultDirPerms($pathname) {
         $cfg = cRegistry::getConfig();
-        $dirPerms = $cfg['default_perms']['directory'];
 
+        if (isset($cfg['default_perms']['directory']) === false) {
+            return false;
+        }
+
+        $dirPerms = $cfg['default_perms']['directory'];
         return cFileHandler::chmod($pathname, $dirPerms);
     }
 
