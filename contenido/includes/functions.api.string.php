@@ -216,9 +216,9 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'ISO-8859-1', $tar
     }
 
     // replace regular german umlauts and other common characters with diacritics
-    static $aSearch = null, $aReplace = null;
+    static $aSearch, $aReplace;
     if (!isset($aSearch)) {
-        $aSearch = array('�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�');
+        $aSearch = array('Ä', 'Ö', 'Ü', 'ä', 'ö', 'ü', 'ß', 'Á', 'À', 'Â', 'á', 'à', 'â', 'É', 'È', 'Ê', 'é', 'è', 'ê', 'Í', 'Ì', 'Î', 'í', 'ì', 'î', 'Ó', 'Ò', 'Ô', 'ó', 'ò', 'ô', 'Ú', 'Ù', 'Û', 'ú', 'ù', 'û');
         $aReplace = array('Ae', 'Oe', 'Ue', 'ae', 'oe', 'ue', 'ss', 'A', 'A', 'A', 'a', 'a', 'a', 'E', 'E', 'E', 'e', 'e', 'e', 'I', 'I', 'I', 'i', 'i', 'i', 'O', 'O', 'O', 'o', 'o', 'o', 'U', 'U', 'U', 'u', 'u', 'u');
     }
     $sString = str_replace($aSearch, $aReplace, $sString);
