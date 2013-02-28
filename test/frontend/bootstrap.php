@@ -101,10 +101,6 @@ $sess->register('errsite_idcat');
 $sess->register('errsite_idart');
 $sess->register('encoding');
 
-if ($cfgClient['set'] != 'set') {
-    rereadClients();
-}
-
 // Initialize encodings
 if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
     // Get encodings of all languages
