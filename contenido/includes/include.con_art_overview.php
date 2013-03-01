@@ -914,7 +914,10 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             if ($idcat != 0 && $cat_idtpl != 0) {
                 $tpl->set('s', 'NEWARTICLE_TEXT', '<a id="newArtTxt" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '">' . i18n("Create new article") . '</a>');
                 $tpl->set('s', 'NEWARTICLE_IMG', '<a id="newArtImg" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '" title="' . i18n("Create new article") . '"><img src="images/but_art_new.gif" border="0" alt="' . i18n("Create new article") . '"></a>');
+                $tpl->set('s', 'CATTEMPLATE', '');
             } else {
+                $notification_text = $notification->returnNotification("error", i18n("Creation of articles is only possible if the category has a assigned template."));
+                $tpl->set('s', 'CATTEMPLATE', $notification_text);
                 $tpl->set('s', 'NEWARTICLE_TEXT', '&nbsp;');
                 $tpl->set('s', 'NEWARTICLE_IMG', '&nbsp;');
             }
@@ -945,18 +948,6 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $tpl->set('s', 'SYNCOPTIONS', $syncoptions);
         $tpl->set('s', 'SESSION', $contenido);
         $tpl->set('s', 'DISPLAY_MENU', 1);
-
-        // Check category template
-        $item = new CategoryLanguageCollection();
-        $item->select("idcat = '" . cSecurity::toInteger($idcat) . "'");
-        $cat = $item->next();
-
-        if ($cat->get("idtplcfg") == 0) {
-            $notification_text = $notification->returnNotification("error", i18n("Creation of articles is only possible if the category has a assigned template."));
-            $tpl->set('s', 'CATTEMPLATE', $notification_text);
-        } else {
-            $tpl->set('s', 'CATTEMPLATE', '');
-        }
 
         // Generate template
         $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_art_overview']);
