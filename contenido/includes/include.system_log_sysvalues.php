@@ -23,26 +23,26 @@ $page = new cGuiPage('system_log_sysvalues');
 $path = $cfg['path']['frontend'] . DS . $cfg['path']['logs'];
 $numberOfLines = 100;
 
+$logfile = basename($_REQUEST['logfile']);
+
 // process the actions delete / clear log
-if ($action == 'deletelog' && !empty($_REQUEST['logfile'])) {
-    if (cFileHandler::remove($path . $_REQUEST['logfile'])) {
-        $page->displayInfo(sprintf(i18n('Logfile "%s" deleted successfully'), $_REQUEST['logfile']));
+if ($action == 'deletelog' && !empty($logfile)) {
+    if (cFileHandler::remove($path . $logfile)) {
+        $page->displayInfo(sprintf(i18n('Logfile "%s" deleted successfully'), $logfile));
     }
-} else if ($action == 'clearlog' && !empty($_REQUEST['logfile'])) {
-    $lines = file($path . $_REQUEST['logfile']);
-    $lines = array_slice($lines, (int) $_REQUEST['keepLines'] * -1);
-    cFileHandler::write($path . $_REQUEST['logfile'], implode('', $lines));
-    $logfile = $_REQUEST['logfile'];
-} else if ($action == 'showLog' && !empty($_REQUEST['logfile'])) {
+} else if ($action == 'clearlog' && !empty($logfile)) {
+    $lines = file($path . $logfile);
+    $lines = array_slice($lines, cSecurity::toInteger($_REQUEST['keepLines']) * -1);
+    cFileHandler::write($path . $logfile, implode('', $lines));
+} else if ($action == 'showLog' && !empty($logfile)) {
     if (!empty($_REQUEST['numberOfLines'])) {
-        $numberOfLines = $_REQUEST['numberOfLines'];
+        $numberOfLines = cSecurity::toInteger($_REQUEST['numberOfLines']);
     }
-    $logfile = $_REQUEST['logfile'];
 }
 
 $files = array();
 foreach (glob($path . '{*.txt,*.log}', GLOB_BRACE) as $filename) {
-    $files[] = $filename;
+	$files[] = $filename;
 }
 
 if (!empty($files)) {
@@ -71,10 +71,10 @@ if (!empty($files)) {
     $image = new cHTMLImage('images/submit.gif');
     $link->appendContent($image);
     $div = new cHTMLDiv(array(
-            new cHTMLSpan(i18n('Show ')),
-            new cHTMLTextbox('number-of-lines', $numberOfLines, 3),
-            new cHTMLSpan(i18n(' lines')),
-            $link
+        new cHTMLSpan(i18n('Show ')),
+        new cHTMLTextbox('number-of-lines', $numberOfLines, 3),
+        new cHTMLSpan(i18n(' lines')),
+        $link
     ), 'right');
     $logHeader->appendContent($div);
 
@@ -84,7 +84,7 @@ if (!empty($files)) {
     if (empty($logfile)) {
         $filename = $files[0];
     } else {
-        $filename = $path . $logfile;
+        $filename = $path . cSecurity::escapeString($logfile);
     }
 
     if (cFileHandler::exists($filename)) {
