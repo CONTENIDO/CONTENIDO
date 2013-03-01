@@ -116,7 +116,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                 return $link;
                 break;
             case 'internal':
-                return $this->_cfgClient[$this->_client]['path']['htmlpath'] . 'front_content.php?idart=' . $this->_settings['linkeditor_idart'];
+                if ($this->_settings['linkeditor_idart'] != "") {
+                    return $this->_cfgClient[$this->_client]['path']['htmlpath'] . 'front_content.php?idart=' . $this->_settings['linkeditor_idart'];
+                }
                 break;
             case 'file':
                 return $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $this->_settings['linkeditor_filename'];
