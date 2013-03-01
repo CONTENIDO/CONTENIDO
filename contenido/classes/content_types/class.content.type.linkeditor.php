@@ -66,7 +66,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         if (isset($_POST['linkeditor_action']) && $_POST['linkeditor_action'] === 'store' && isset($_POST['linkeditor_id']) && (int) $_POST['linkeditor_id'] == $this->_id) {
             // use htmlentities for the title
             // otherwise umlauts will crash the XML parsing
-            $_POST['linkeditor_title'] = conHtmlentities($_POST['linkeditor_title']);
+            $_POST['linkeditor_title'] = conHtmlentities(conHtmlEntityDecode($_POST['linkeditor_title']));
             $this->_storeSettings();
         }
     }
