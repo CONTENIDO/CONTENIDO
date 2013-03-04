@@ -216,17 +216,3 @@ $(function() {
 
     });
 });
-
-/* ----- COOKIE DIRECTIVE ----- */
-$(function() {
-	
-	$('#cookieNote .dismiss').click(function() {
-
-		document.cookie = 'allowCookie' + "=" + 1;
-		$('#cookieNote').fadeOut();
-		
-		return false;
-		
-	});
-	
-});
