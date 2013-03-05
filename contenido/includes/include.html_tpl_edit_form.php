@@ -7,7 +7,7 @@
  * Edit file
  *
  * @fixme: Rework logic for creation of cApiFileInformation entries
- *         It may happpen, that we have already a file but not a entry or vice versa!
+ * It may happpen, that we have already a file but not a entry or vice versa!
  *
  * @package CONTENIDO Backend Includes
  * @version 1.5.1
@@ -26,12 +26,11 @@ if (!defined('CON_FRAMEWORK')) {
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.file.php');
 
-$sFileType = 'html';
-
 $sActionCreate = 'htmltpl_create';
 $sActionEdit = 'htmltpl_edit';
 $sActionDelete = 'htmltpl_delete';
 $sFilename = '';
+
 $page = new cGuiPage('html_tpl_edit_form');
 
 $tpl->reset();
@@ -57,10 +56,10 @@ if ($action == $sActionDelete) {
             unlink($path . $_REQUEST['delfile']);
             $fileInfoCollection = new cApiFileInformationCollection();
 
-            $fileIds = $fileInfoCollection->getIdsByWhereClause("`filename`='".$_REQUEST["delfile"]."'");
+            $fileIds = $fileInfoCollection->getIdsByWhereClause("`filename`='" . $_REQUEST["delfile"] . "'");
 
-            if(is_dir($cfgClient[$client]['version']['path']."templates/".$fileIds[0])) {
-                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path']."templates/".$fileIds[0]);
+            if (is_dir($cfgClient[$client]['version']['path'] . "templates/" . $fileIds[0])) {
+                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "templates/" . $fileIds[0]);
             }
 
             $fileInfoCollection->removeFileInformation(array(
@@ -83,15 +82,26 @@ if ($action == $sActionDelete) {
 
     $page->addScript($sReloadScript);
     $page->render();
+
 } else {
+
     $path = $cfgClient[$client]['tpl']['path'];
+
     $sTempFilename = stripslashes($_REQUEST['tmp_file']);
     $sOrigFileName = $sTempFilename;
 
-    if (getFileType($_REQUEST['file']) != $sFileType && strlen(stripslashes(trim($_REQUEST['file']))) > 0) {
-        $sFilename .= stripslashes($_REQUEST['file']) . '.' . $sFileType;
+    // determine allowed extensions for template files in client template folder
+    $allowedExtensions = cRegistry::getConfigValue('client_template', 'allowed_extensions', 'html');
+    $allowedExtensions = explode(',', $allowedExtensions);
+    $allowedExtensions = array_map('trim', $allowedExtensions);
+
+    $sFilename = $_REQUEST['file'];
+    if (!in_array(cFileHandler::getExtension($sFilename), $allowedExtensions) && strlen(stripslashes(trim($sFilename))) > 0) {
+        // determine default extension for new template files
+        $defaultExtension = cRegistry::getConfigValue('client_template', 'default_extension', 'html');
+        $sFilename = stripslashes($sFilename) . '.' . $defaultExtension;
     } else {
-        $sFilename .= stripslashes($_REQUEST['file']);
+        $sFilename = stripslashes($sFilename);
     }
 
     if (stripslashes($_REQUEST['file'])) {
@@ -161,13 +171,15 @@ if ($action == $sActionDelete) {
         $fileInfoCollection = new cApiFileInformationCollection();
         $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
 
-        // @fixme: Rework logic. Even if we have already a file, there may be no db entry available!
+        // @fixme: Rework logic. Even if we have already a file, there may be no
+        // db entry available!
         if (0 == count($aFileInfo)) {
             // No entry, create it
             $fileInfoCollection->create('templates', $sFilename, $_REQUEST['description']);
         }
 
-        // @fixme: Check condition below, how is it possible to have an db entry with primary key?
+        // @fixme: Check condition below, how is it possible to have an db entry
+        // with primary key?
         if ((count($aFileInfo) > 0) && ($aFileInfo['idsfi'] != '')) {
             $oVersion = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame, $sOrigFileName);
             // Create new Layout Version in cms/version/css/ folder
@@ -196,9 +208,8 @@ if ($action == $sActionDelete) {
                 exit();
             }
         } else {
-            $sCode = stripslashes($_REQUEST['code']); // stripslashes is
-                                                      // required here in case
-                                                      // of creating a new file
+            // stripslashes is required here in case of creating a new file
+            $sCode = stripslashes($_REQUEST['code']);
         }
 
         // Try to validate html
@@ -267,9 +278,13 @@ if ($action == $sActionDelete) {
             $page->addScript($sReloadScript);
         }
         $page->render();
+
     } else {
+
         $page = new cGuiPage('generic_page');
         $page->setContent('');
         $page->render();
+
     }
+
 }

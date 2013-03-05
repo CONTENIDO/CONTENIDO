@@ -333,6 +333,43 @@ class cRegistry {
     }
 
     /**
+     * This function returns either a full configuration section or the value
+     * for a certain configuration option if a $optionName is given.
+     * In this case a $default value can be given which will be returned if this
+     * option is not defined.
+     *
+     * @param string $sectionName
+     * @param string $optionName optional
+     * @param string $defaultValue optional
+     * @return array string
+     */
+    public static function getConfigValue($sectionName = NULL, $optionName = NULL, $defaultValue = NULL) {
+
+        // get general configuration array
+        $cfg = self::getConfig();
+
+        // determine configuration section
+        $section = array();
+        if (array_key_exists($sectionName, $cfg)) {
+            $section = $cfg[$sectionName];
+        }
+        if (NULL === $optionName) {
+            return $section;
+        }
+
+        // determine configuration value for certain option name of
+        // configuration section
+        $value = $defaultValue;
+        if (is_array($cfg[$sectionName])) {
+            if (array_key_exists($optionName, $section)) {
+                $value = $section[$optionName];
+            }
+        }
+        return $value;
+
+    }
+
+    /**
      * Returns the client configuration array stored in the global variable
      * "cfgClient".
      * If no client ID is specified or is 0 the complete array is returned.

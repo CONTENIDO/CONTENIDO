@@ -363,3 +363,15 @@ $cfg['code_generator']['name'] = 'Standard';
 
 // (int) Livetime in seconds
 $cfg['inuse']['lifetime'] = 3600;
+
+/* Client template settings
+ * -----------------------------------------------------------------------------
+ */
+
+// (CSV) allowed extensions of template files in the client template folder
+// only files with these extensions will be shown in "Style | Module templates"
+$cfg['client_template']['allowed_extensions'] = 'html,tpl';
+
+// (string) default extensions of template files in the client template folder
+// if no extension is defined for new files this default will be assumed
+$cfg['client_template']['default_extension'] = 'html';

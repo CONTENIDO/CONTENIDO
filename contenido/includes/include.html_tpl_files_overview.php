@@ -33,7 +33,6 @@ if (!(int) $client > 0) {
 }
 
 $path = $cfgClient[$client]["tpl"]["path"];
-$sFileType = "html";
 
 $sSession = $sess->id;
 
@@ -51,14 +50,27 @@ $sScriptTemplate = '
 $tpl->set('s', 'JAVASCRIPT', $sScriptTemplate);
 
 if (($handle = opendir($path)) !== false) {
-    $aFiles = array();
 
+    // determine allowed extensions for template files in client template folder
+    $allowedExtensions = cRegistry::getConfigValue('client_template', 'allowed_extensions', 'html');
+    $allowedExtensions = explode(',', $allowedExtensions);
+    $allowedExtensions = array_map('trim', $allowedExtensions);
+
+    // gather template files to display
+    $aFiles = array();
     while (($file = readdir($handle)) !== false) {
-        if (substr($file, (strlen($file) - (strlen($sFileType) + 1)), (strlen($sFileType) + 1)) == ".$sFileType" && is_readable($path . $file)) {
-            $aFiles[] = $file;
-        } elseif (substr($file, (strlen($file) - (strlen($sFileType) + 1)), (strlen($sFileType) + 1)) == ".$sFileType" && !is_readable($path . $file)) {
-            $notification->displayNotification("error", $file . " " . i18n("is not readable!"));
+        // skip if extension is not one of allowed extensions
+        // see $cfg['client_template']['extensions']
+        if (!in_array(cFileHandler::getExtension($file), $allowedExtensions)) {
+            continue;
         }
+        // skip and notify if file is not readable
+        // TODO notification does not work
+        if (!cFileHandler::readable($path . $file)) {
+            $notification->displayNotification("error", $file . " " . i18n("is not readable!"));
+            continue;
+        }
+        $aFiles[] = $file;
     }
     closedir($handle);
 
