@@ -55,6 +55,5 @@ if (!isset($allowCookie)) {
     $tpl->display('get.tpl');
 
 }
-var_dump($allowCookie);
 
 ?>
