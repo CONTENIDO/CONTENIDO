@@ -213,7 +213,11 @@ cms/data/modules/navigation_top/info.xml -text svneol=unset#text/plain
 cms/data/modules/navigation_top/php/navigation_top_input.php -text
 cms/data/modules/navigation_top/php/navigation_top_output.php -text
 cms/data/modules/navigation_top/template/get.tpl -text
+cms/data/modules/script_cookie_directive/css/script_cookie_directive.css -text svneol=unset#text/plain
 cms/data/modules/script_cookie_directive/info.xml -text svneol=unset#text/plain
+cms/data/modules/script_cookie_directive/js/script_cookie_directive.js -text svneol=unset#text/plain
+cms/data/modules/script_cookie_directive/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/data/modules/script_cookie_directive/lang/lang_en_GB.txt -text svneol=unset#text/plain
 cms/data/modules/script_cookie_directive/php/script_cookie_directive_input.php -text
 cms/data/modules/script_cookie_directive/php/script_cookie_directive_output.php -text
 cms/data/modules/script_cookie_directive/template/get.tpl -text

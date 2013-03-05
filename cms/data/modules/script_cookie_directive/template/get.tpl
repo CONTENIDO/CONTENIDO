@@ -1,22 +1,14 @@
 ﻿<!-- script_cookie_directive/template/get.tpl -->
 
 <div id="cookieNote">
-    <div class="notify">
-    
-    	<h3>
-	    	Dieser Seite verwendet Cookies. 
-	        Dabei werden beispielsweise die Session-Informationen oder die 
-	        Spracheinstellung auf Ihrem Rechner gespeichert. 
-	        Ohne Cookies ist der Funktionsumfang der Seite eingeschränkt.
-    	</h3>
-    	
-    	<a 
-    		title="Schließen"
-    		href="{$pageUrl}"
-    		class="dismiss"
-    	>x</a>
-    	
-    </div>
+        
+    <h1>{$trans.title}</h1>
+    <p>{$trans.infoText}</p>
+    <input type="hidden" id="accept" value="{$trans.accept}" />
+    <input type="hidden" id="decline" value="{$trans.decline}" />
+    <input type="hidden" id="pageUrlDeny" value="{$pageUrlDeny}" />
+    <input type="hidden" id="pageUrlAccept" value="{$pageUrlAccept}" />
+
 </div>
 
 <!-- /script_cookie_directive/template/get.tpl -->
