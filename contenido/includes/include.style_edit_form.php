@@ -7,7 +7,7 @@
  * Edit file
  *
  * @fixme: Rework logic for creation of cApiFileInformation entries
- *         It may happpen, that we have already a file but not a entry or vice versa!
+ * It may happpen, that we have already a file but not a entry or vice versa!
  *
  * @package CONTENIDO Backend Includes
  * @author Olaf Niemann, Willi Mann
@@ -53,8 +53,8 @@ if ($action == 'style_delete') {
     if (!strrchr($_REQUEST['delfile'], '/')) {
         if (cFileHandler::exists($path . $filename)) {
             $fileId = $file->get("idsfi");
-            if(is_dir($cfgClient[$client]['version']['path']."css/".$fileId)) {
-                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path']."css/".$fileId);
+            if (is_dir($cfgClient[$client]['version']['path'] . "css/" . $fileId)) {
+                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "css/" . $fileId);
             }
 
             unlink($path . $filename);
@@ -98,6 +98,10 @@ if ($action == 'style_delete') {
     $sTypeContent = 'css';
     $fileInfoCollection = new cApiFileInformationCollection();
     $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
+
+    if(!cFileHandler::writeable($path . $sFilename)) {
+    	$notification->displayNotification('warning', i18n("You have no write permissions for this file"));
+    }
 
     // Create new file
     if ($_REQUEST['action'] == 'style_create' && $_REQUEST['status'] == 'send') {
@@ -145,13 +149,15 @@ if ($action == 'style_delete') {
         $fileInfoCollection = new cApiFileInformationCollection();
         $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
 
-        // @fixme: Rework logic. Even if we have already a file, there may be no db entry available!
+        // @fixme: Rework logic. Even if we have already a file, there may be no
+        // db entry available!
         if (0 == count($aFileInfo)) {
             // No entry, create it
             $fileInfoCollection->create('css', $sFilename, $_REQUEST['description']);
         }
 
-        // @fixme: Check condition below, how is it possible to have an db entry with primary key?
+        // @fixme: Check condition below, how is it possible to have an db entry
+        // with primary key?
         if ((count($aFileInfo) == 0) || ($aFileInfo['idsfi'] != '')) {
             $oVersion = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame, $sFilename);
             // Create new version
@@ -183,8 +189,8 @@ if ($action == 'style_delete') {
             $sCode = cFileHandler::read($path . $sFilename);
         } else {
             $sCode = stripslashes($_REQUEST['code']); // stripslashes is
-                                                      // required here in case
-                                                      // of creating a new file
+                                                          // required here in case
+                                                          // of creating a new file
         }
 
         $fileInfoCollection = new cApiFileInformationCollection();
