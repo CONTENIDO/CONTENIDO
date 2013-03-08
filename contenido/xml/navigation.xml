@@ -38,13 +38,13 @@ i18n("Templates")
 i18n("Edit")
 i18n("Preconfiguration")
 i18n("Visual edit")
-i18n("CSS editor")
+i18n("CSS")
 i18n("File")
 i18n("History")
-i18n("JavaScript editor")
+i18n("JavaScript")
 i18n("File")
 i18n("History")
-i18n("Module templates")
+i18n("HTML")
 i18n("File")
 i18n("History")
 i18n("Statistics")
@@ -94,7 +94,7 @@ i18n("Info")
 i18n("Login")
 i18n("System integrity")
 i18n("Translations")
-i18n("Module templates")
+i18n("HTML")
 -->
 <language>
     <navigation>
@@ -137,7 +137,7 @@ i18n("Module templates")
                 <edit>Edit</edit>
                 <history>History</history>
                 <translation>Translation</translation>
-                <template>Module templates</template>
+                <template>HTML</template>
                 <style>CSS</style>
                 <script>JavaScript</script>
                 <import-export>Import/Export</import-export>
@@ -149,17 +149,17 @@ i18n("Module templates")
                 <visual>Visual edit</visual>
             </templates>
             <styleeditor>
-                <main>CSS editor</main>
+                <main>CSS</main>
                 <file>File</file>
                 <history>History</history>
             </styleeditor>
             <jseditor>
-                <main>JavaScript editor</main>
+                <main>JavaScript</main>
                 <file>File</file>
                 <history>History</history>
             </jseditor>
             <tpleditor>
-                <main>Module templates</main>
+                <main>HTML</main>
                 <file>File</file>
                 <history>History</history>
             </tpleditor>
