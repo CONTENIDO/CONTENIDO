@@ -10,19 +10,19 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.2
- * @author     Olaf Niemann
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @package CONTENIDO Backend Includes
+ * @version 1.0.2
+ * @author Olaf Niemann
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  *
- * {@internal
- *   created 2003-01-24
- *   $Id$:
- * }}
+ *        {@internal
+ *        created 2003-01-24
+ *        $Id$:
+ *        }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -91,7 +91,7 @@ if ($action == "lay_new") {
 
 if ($refreshtemplates != "") {
     // Update all templates for containers with mode fixed and mandatory
-    $sql = "SELECT idtpl FROM ".$cfg["tab"]["tpl"]." WHERE idlay = '".cSecurity::toInteger($idlay)."'";
+    $sql = "SELECT idtpl FROM " . $cfg["tab"]["tpl"] . " WHERE idlay = '" . cSecurity::toInteger($idlay) . "'";
     $db->query($sql);
 
     $fillTemplates = array();
@@ -111,9 +111,13 @@ if (!$layout->virgin) {
     $idlay = $layout->get("idlay");
     $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
     $code = $layoutInFile->getLayoutCode();
-    #$code = $layout->get("code");
+    // code = $layout->get("code");
     $name = stripslashes_deep(conHtmlSpecialChars($layout->get("name")));
     $description = $layout->get("description");
+
+    if (!$layoutInFile->isWritable($name, $layoutInFile->_getLayoutPath())) {
+        $page->displayWarning(i18n("You have no write permissions for this file"));
+    }
 
     // Search for duplicate containers
     tplPreparseLayout($idlay);
@@ -129,7 +133,7 @@ if (!$layout->virgin) {
                 $container[$value] = 0;
 
                 // Search for old-style CMS_CONTAINER[x]
-                $container[$value] += substr_count($code,"CMS_CONTAINER[$value]");
+                $container[$value] += substr_count($code, "CMS_CONTAINER[$value]");
 
                 // Search for the new-style containers
                 $count = preg_match_all("/<container( +)id=\\\\\"$value\\\\\"(.*)>(.*)<\/container>/i", addslashes($code), $matches);
@@ -149,7 +153,7 @@ if (!$layout->virgin) {
 
         foreach ($container as $key => $value) {
             if ($value > 1) {
-                $msg .= sprintf(i18n("Container %s was defined %s times"), $key, $value)."<br>";
+                $msg .= sprintf(i18n("Container %s was defined %s times"), $key, $value) . "<br>";
             }
         }
     }
@@ -175,19 +179,19 @@ if (!$layout->virgin) {
             $attr = array();
 
             if ($value["name"] != "") {
-                $attr["name"] = "name '".$value["name"]."'";
+                $attr["name"] = "name '" . $value["name"] . "'";
             }
 
             if ($value["id"] != "") {
-                $attr["id"] = "id '".$value["id"]."'";
+                $attr["id"] = "id '" . $value["id"] . "'";
             }
 
-            $idqualifier = implode(", ",$attr);
+            $idqualifier = implode(", ", $attr);
 
             if ($idqualifier != "") {
                 $idqualifier = "($idqualifier)";
             }
-            $msg .= sprintf(i18n("Tag '%s' %s has no end tag (start tag is on line %s char %s)"), $value["tag"], $idqualifier, $value["line"],$value["char"]);
+            $msg .= sprintf(i18n("Tag '%s' %s has no end tag (start tag is on line %s char %s)"), $value["tag"], $idqualifier, $value["line"], $value["char"]);
             $msg .= "<br>";
         }
     }
@@ -204,19 +208,23 @@ if (!$layout->virgin) {
     $form->setVar("idlay", $idlay);
 
     $tb_name = new cHTMLTextbox("layname", $name, 60);
-    $ta_description = new cHTMLTextarea("description", $description,100, 10);
+    $ta_description = new cHTMLTextarea("description", $description, 100, 10);
     $ta_description->setStyle("font-family: monospace;width: 100%;");
-    $ta_description->updateAttributes(array("wrap" => "off"));
+    $ta_description->updateAttributes(array(
+        "wrap" => "off"
+    ));
 
-    $ta_code = new cHTMLTextarea("code", conHtmlSpecialChars($code), 100,20, 'code');
+    $ta_code = new cHTMLTextarea("code", conHtmlSpecialChars($code), 100, 20, 'code');
     $ta_code->setStyle("font-family: monospace;width: 100%;");
-    $ta_code->updateAttributes(array("wrap" => "off"));
+    $ta_code->updateAttributes(array(
+        "wrap" => "off"
+    ));
 
     $cb_refresh = new cHTMLCheckbox("refreshtemplates", i18n("On save, apply default modules to new containers"));
 
-    $form->add(i18n("Name"),$tb_name);
-    $form->add(i18n("Description"),$ta_description);
-    $form->add(i18n("Code"),$ta_code);
+    $form->add(i18n("Name"), $tb_name);
+    $form->add(i18n("Description"), $ta_description);
+    $form->add(i18n("Code"), $ta_code);
     $form->add(i18n("Options"), $cb_refresh);
 
     $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
@@ -231,19 +239,17 @@ if (!$layout->virgin) {
                             }
                         </script>';
 
-    $page->set('s', 'FORM', $form->render().$sScript);
+    $page->set('s', 'FORM', $form->render() . $sScript);
 } else {
     $page->set('s', 'FORM', '');
 }
-
-
 
 if (stripslashes($_REQUEST['idlay'] || $bReloadSyncSrcipt)) {
     $page->setReload();
 }
 
 if ($action == "lay_sync") {
-    $page->setSubnav("idlay=".$idlay."&dont_print_subnav=1", "lay");
+    $page->setSubnav("idlay=" . $idlay . "&dont_print_subnav=1", "lay");
 } else {
     $page->setSubnav("idlay=$idlay", "lay");
 }

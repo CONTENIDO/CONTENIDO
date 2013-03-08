@@ -91,6 +91,14 @@ class cLayoutHandler {
     }
 
     /**
+     * Get method for Layout path
+     * @return string
+     */
+    public function _getLayoutPath() {
+        return $this->_layoutPath;
+    }
+
+    /**
      * Look in layout directory if layout [$layoutAlias] directory exists
      *
      * @param string $layoutAlias
