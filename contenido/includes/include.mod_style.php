@@ -110,6 +110,10 @@ $sTypeContent = 'css';
 $fileInfoCollection = new cApiFileInformationCollection();
 $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
 
+if (!cFileHandler::writeable($path . $sFilename)) {
+    $page->displayWarning(i18n("You have no write permissions for this file"));
+}
+
 // Create new file
 if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
     $sTempFilename = $sFilename;
@@ -194,8 +198,8 @@ if (isset($actionRequest)) {
         $sCode = iconv($fileEncoding, cModuleHandler::getEncoding(), $sCode);
     } else {
         $sCode = stripslashes($_REQUEST['code']); // stripslashes is required
-                                                  // here in case of creating a
-                                                  // new file
+                                                      // here in case of creating a
+                                                      // new file
     }
     $fileInfoCollection = new cApiFileInformationCollection();
     $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, 'css');
