@@ -384,5 +384,5 @@ $cfg['client_template']['default_extension'] = 'html';
 // Number of lines
 $cfg['system_log']['number_of_lines'] = 100;
 
-// Seached file extensions
+// Searched file extensions
 $cfg['system_log']['file_extensions'] = array('txt', 'log');
