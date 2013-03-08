@@ -375,3 +375,14 @@ $cfg['client_template']['allowed_extensions'] = 'html,tpl';
 // (string) default extensions of template files in the client template folder
 // if no extension is defined for new files this default will be assumed
 $cfg['client_template']['default_extension'] = 'html';
+
+
+/* System log display settings
+ * -----------------------------------------------------------------------------
+ */
+
+// Number of lines
+$cfg['system_log']['number_of_lines'] = 100;
+
+// Seached file extensions
+$cfg['system_log']['file_extensions'] = array('txt', 'log');

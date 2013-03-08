@@ -21,7 +21,7 @@ cInclude('includes', 'functions.general.php');
 $page = new cGuiPage('system_log_sysvalues');
 
 $path = $cfg['path']['frontend'] . DS . $cfg['path']['logs'];
-$numberOfLines = 100;
+$numberOfLines = $cfg['system_log']['number_of_lines'];
 
 $logfile = basename($_REQUEST['logfile']);
 
@@ -41,7 +41,7 @@ if ($action == 'deletelog' && !empty($logfile)) {
 }
 
 $files = array();
-foreach (glob($path . '{*.txt,*.log}', GLOB_BRACE) as $filename) {
+foreach (glob($path . "{*." . implode(',*.', $cfg['system_log']['file_extensions']) . "}", GLOB_BRACE) as $filename) {
 	$files[] = $filename;
 }
 
