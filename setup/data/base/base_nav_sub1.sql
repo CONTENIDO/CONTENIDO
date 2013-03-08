@@ -59,10 +59,10 @@ INSERT INTO !PREFIX!_nav_sub VALUES('77', '0', '81', '1', 'navigation/style/modu
 INSERT INTO !PREFIX!_nav_sub VALUES('78', '0', '83', '1', 'navigation/administration/clients/clientsettings', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('79', '0', '6', '1', 'navigation/content/structure/overview', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('82', '3', '92', '1', 'navigation/style/modules/package', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('83', '0', '93', '1', 'navigation/style/modules/template', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('84', '0', '94', '1', 'navigation/style/modules/style', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('85', '0', '95', '1', 'navigation/style/modules/script', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES ('86', '0', '96', '1', 'navigation/style/modules/import-export', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('83', '0', '94', '1', 'navigation/style/modules/style', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('84', '0', '95', '1', 'navigation/style/modules/script', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('85', '0', '93', '1', 'navigation/style/modules/template', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('86', '0', '96', '1', 'navigation/style/modules/import-export', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('550', '5', '550', '1', 'navigation/administration/logs/mail_log', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('551', '0', '551', '1', 'navigation/administration/mail_log/overview', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('552', '0', '552', '1', 'navigation/administration/mail_log/detail', '1');

@@ -137,9 +137,9 @@ i18n("HTML")
                 <edit>Edit</edit>
                 <history>History</history>
                 <translation>Translation</translation>
-                <template>HTML</template>
                 <style>CSS</style>
                 <script>JavaScript</script>
+                <template>HTML</template>
                 <import-export>Import/Export</import-export>
             </modules>
             <templates>
