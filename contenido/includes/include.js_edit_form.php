@@ -100,6 +100,10 @@ if ($action == 'js_delete') {
         $sReloadScript = '';
     }
 
+    if(!cFileHandler::writeable($path . $sFilename)) {
+        $notification->displayNotification('warning', i18n("You have no write permissions for this file"));
+    }
+
     // Content Type is template
     $sTypeContent = 'js';
 
