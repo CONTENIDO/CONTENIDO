@@ -2168,7 +2168,19 @@ contenido/plugins/url_shortener/scripts/url_shortener.js -text svneol=unset#text
 contenido/plugins/url_shortener/styles/url_shortener.css -text svneol=unset#text/plain
 contenido/plugins/url_shortener/xml/lang_de_DE.xml -text svneol=unset#text/plain
 contenido/plugins/url_shortener/xml/lang_en_US.xml -text svneol=unset#text/plain
+contenido/plugins/user_forum/classes/class.article_forum.php -text
+contenido/plugins/user_forum/classes/class.article_forum_collection.php -text
+contenido/plugins/user_forum/classes/class.article_forum_left_bottom.php -text
+contenido/plugins/user_forum/classes/class.article_forum_right_bottom.php -text
+contenido/plugins/user_forum/includes/config.plugin.php -text
+contenido/plugins/user_forum/includes/include.left_bottom.php -text
+contenido/plugins/user_forum/includes/include.right_bottom.php -text
 contenido/plugins/user_forum/install/sql.txt -text
+contenido/plugins/user_forum/plugin.xml -text svneol=unset#text/plain
+contenido/plugins/user_forum/plugin_install.sql -text
+contenido/plugins/user_forum/plugin_uninstall.sql -text
+contenido/plugins/user_forum/xml/lang_de_DE.xml -text svneol=unset#text/plain
+contenido/plugins/user_forum/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/plugins/workflow/classes/class.workflow.php -text
 contenido/plugins/workflow/classes/class.workflowactions.php -text
 contenido/plugins/workflow/classes/class.workflowallocation.php -text

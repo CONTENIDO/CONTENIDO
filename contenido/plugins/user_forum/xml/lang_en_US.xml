@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- CONTENIDO XML language file -->
+<language>
+    <plugins>
+        <label>plugins</label>
+        <user_forum>
+            <label>User Forum</label>
+        </user_forum>
+    </plugins>
+</language>

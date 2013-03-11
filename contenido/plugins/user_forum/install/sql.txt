@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `con_pi_user_forum` (
-  `id_user_forum` int(11) NOT NULL auto_increment,
+  `id_user_forum` int(10) NOT NULL auto_increment,
   `id_user_forum_parent` int(11) NOT NULL,
   `idart` int(11) NOT NULL default '0',
   `idcat` int(11) NOT NULL default '0',
@@ -14,6 +14,6 @@ CREATE TABLE IF NOT EXISTS `con_pi_user_forum` (
   `editedat` datetime NOT NULL default '0000-00-00 00:00:00',
   `editedby` varchar(50) NOT NULL default '',
   `timestamp` datetime NOT NULL default '0000-00-00 00:00:00',
-  `ipaddress` varchar(32) NOT NULL default '',
+  `online` tinyint(1) NOT NULL,
   PRIMARY KEY  (`id_user_forum`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4;
