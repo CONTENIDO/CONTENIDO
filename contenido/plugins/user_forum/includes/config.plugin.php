@@ -14,4 +14,22 @@ cAutoload::addClassmapConfig(array(
     'ArticleForumRightBottom' => $pluginClassPath . 'classes/class.article_forum_right_bottom.php',
 ));
 
+
+class UserForum
+{
+    /**
+     * name of this plugin
+     *
+     * @var string
+     */
+    private static $_name = 'user_forum';
+
+    public static function i18n($key) {
+        $trans = i18n($key, self::$_name);
+        return $trans;
+    }
+}
+
+
+
 ?>

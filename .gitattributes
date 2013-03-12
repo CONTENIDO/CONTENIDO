@@ -2175,7 +2175,10 @@ contenido/plugins/user_forum/classes/class.article_forum_right_bottom.php -text
 contenido/plugins/user_forum/includes/config.plugin.php -text
 contenido/plugins/user_forum/includes/include.left_bottom.php -text
 contenido/plugins/user_forum/includes/include.right_bottom.php -text
+contenido/plugins/user_forum/includes/new[!!-~][!!-~]2.txt -text svneol=unset#text/plain
 contenido/plugins/user_forum/install/sql.txt -text
+contenido/plugins/user_forum/locale/de_DE/LC_MESSAGES/user_forum.po -text
+contenido/plugins/user_forum/locale/en_US/LC_MESSAGES/user_forum.po -text
 contenido/plugins/user_forum/plugin.xml -text svneol=unset#text/plain
 contenido/plugins/user_forum/plugin_install.sql -text
 contenido/plugins/user_forum/plugin_uninstall.sql -text

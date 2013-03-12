@@ -1,53 +1,10 @@
-<?php
-class ArticleForumLeftBottom extends cGuiPage{
-
-    function __construct(){
-        parent::__construct('left_bottom', 'articlelist');
-    }
-
-
-
-    public function getMenu()
-    {
-
-        $arts = new ArticleForumCollection();
-        $result = $arts->getAllCommentedArticles();
-       // echo $result['idcat'];
-
-        $tt = new cHTMLList();
-        global $area;
-        $ar = array();
-        $cfg = cRegistry::getConfig();
-        $client = cRegistry::getClientId();
-        $lang = cRegistry::getLanguageId();
-
-        // get all forms of current client in current language
-        $forms =  $arts->getAllCommentedArticles();
-
-        if (false === $forms) {
-            return '';
-        }
-
-        // $formIcon = Pifa::getUrl() . 'images/icon_form.png';
-
-        // create menu
-
-      //  var_dump($result);
-
-       // $ar = Array();
-
-
-        /////////// Tabelle +1 Spalte für Elemente
-
-
-
-        $menu = new cGuiMenu();
+ $menu = new cGuiMenu();
         for($i = 0; $i<count($forms); $i++){
 
 
            $res= $arts->getIdCat($result[$i]['idart']);
 
-//             $idform = " " ;//$result[$i]['title'];
+            $idform = " " ;//$result[$i]['title'];
             $formName = $result[$i]['title'];
 
             $menu->setTitle($idform, $formName);
@@ -75,15 +32,3 @@ class ArticleForumLeftBottom extends cGuiPage{
             $menu->setActions($idform, 'delete', $delete);
 
             $tt->appendContent($menu);
-
-        }
-
-        //print_r($ar);
-        return $tt;
-
-    }
-
-}
-
-
-?>

@@ -1,0 +1,46 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: CONTENIDO UserForum\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2013-03-13 10:49+0100\n"
+"Last-Translator: Claus Schunk <claus.schunk@4fb.de>\n"
+"Language-Team: Claus Schunk <claus.schunk@4fb.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-KeywordsList: i18n\n"
+"X-Poedit-SearchPath-0: \n"
+
+
+; class.article_forum_right_bottom.php
+
+msgid "EDIT"
+msgstr "Editieren"
+
+msgid "SAVE"
+msgstr "Speichern"
+
+msgid "DELETE"
+msgstr "Löschen"
+
+msgid "USER"
+msgstr "Name"
+
+msgid "EMAIL"
+msgstr "Email"
+
+msgid "LIKE"
+msgstr "gefällt"
+
+msgid "DISLIKE"
+msgstr "gefällt nicht"
+
+msgid "DATE"
+msgstr "Datum"
+
+msgid "COMMENT"
+msgstr "Kommentar"
+

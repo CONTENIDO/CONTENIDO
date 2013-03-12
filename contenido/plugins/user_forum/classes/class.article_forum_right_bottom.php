@@ -1,6 +1,24 @@
 <?php
+global $area;
 class ArticleForumRightBottom extends cGuiPage {
 
+    // Timo ...
+
+    // $form = new cGuiTableForm("lang_properties");
+    // $form->setVar("idlang", $idlang);
+    // $form->setVar("targetclient", $db->f("idclient"));
+    // $form->setVar("action", "lang_edit");
+    // $form->setVar("area", $area);
+    // $form->setVar("frame", $frame);
+    // [15:46:56] Timo Trautmann: $eselect = new
+    // cHTMLSelectElement("sencoding");
+    // $eselect->setStyle('width:255px');
+    // $eselect->autoFill($charsets);
+    // $eselect->setDefault($db->f("encoding"));
+    // [15:47:07] Timo Trautmann: $form->add(i18n("Encoding"), $eselect);
+    // [15:47:13] Timo Trautmann: $oTxtLang = new cHTMLTextBox("langname",
+    // conHtmlSpecialChars($db->f("name")), 40, 255);
+    // [15:47:21] Timo Trautmann: $page->setContent($form);
     private $_res = array();
 
     function getResult() {
@@ -49,12 +67,16 @@ class ArticleForumRightBottom extends cGuiPage {
             $arrforum[$db->f('id_user_forum')]['editedat'] = $db->f('editedat');
             $arrforum[$db->f('id_user_forum')]['editedby'] = $db->f('editedby');
 
+            // Added values to array for allocation
+            $arrforum[$db->f('id_user_forum')]['idcat'] = $db->f('idcat');
+            $arrforum[$db->f('id_user_forum')]['idart'] = $db->f('idart');
+            $arrforum[$db->f('id_user_forum')]['id_user_forum'] = $db->f('id_user_forum');
+            //
             $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum[$db->f('id_user_forum')]['children'], $db->f('id_user_forum'));
         }
     }
 
     function getMenu(&$result) {
-
         $maxWidth = $this->getMaxLevel($result);
         $maxHeight = count($result);
 
@@ -62,68 +84,147 @@ class ArticleForumRightBottom extends cGuiPage {
         $testet->setID("Content");
 
         $table = new cHTMLTable();
-
-        $table->updateAttributes(array("class" => "generic", "cellspacing" => "0", "cellpadding" => "2"));
-
-
-
+        $table->setCellPadding("100px");
+        global $area;
+        $table->updateAttributes(array(
+            "class" => "generic",
+            "cellspacing" => "0",
+            "cellpadding" => "2"
+        ));
 
         $menu = new cGuiMenu();
         $cfg = cRegistry::getConfig();
         $client = cRegistry::getClientId();
         $lang = cRegistry::getLanguageId();
 
+        $nameTag = UserForum::i18n('USER');
+        $emailTag = UserForum::i18n('EMAIL');
+        $likeTag = UserForum::i18n('LIKE');
+        $dislikeTag = UserForum::i18n('DISLIKE');
+        $dateTag = UserForum::i18n('DATE');
+        $CommentTag = UserForum::i18n('COMMENT');
 
+        // table
+        $table = new cHTMLTable();
         foreach ($result as $key => $cont) {
-
-
-            // echo $cont['forum'];
             $set = false;
-            // echo ($this->_res[1]['forum']);
-            if ($cont['level'] == 0) {
-                $this->appendContent($table);
-                $table = new cHTMLTable();
-                $table->updateAttributes(array("class" => "generic", "cellspacing" => "0", "cellpadding" => "2"));
-            }
+
+            $like = $cont['like'];
+            $dislike = $cont['dislike'];
+            $date = $cont['timestamp'];
+
+            // build Buttons
+            $edit = new cHTMLButton("edit");
+            $edit->setImageSource($cfg['path']['images'] . 'but_back.gif');
+            $id = $cont['id_user_forum'];
+            $edit->setEvent('click', "$('form[name=$id]').submit()");
+            $edit->setMode('image');
+            $edit->setAlt(UserForum::i18n('EDIT'));
+
+            $save = new cHTMLButton("save");
+            $save->setImageSource($cfg['path']['images'] . 'but_ok.gif');
+            $id = $cont['id_user_forum'];
+            $save->setEvent('click', "$('form[name=$id]').submit()");
+            $save->setAlt(UserForum::i18n('SAVE'));
+            $save->setMode('image');
+
+            $delete = new cHTMLButton("save");
+            $delete->setImageSource($cfg['path']['images'] . 'delete.gif');
+            $id = $cont['id_user_forum'];
+            $delete->setEvent('click', "$('form[name=$id]').submit()");
+            $delete->setAlt(UserForum::i18n('DELETE'));
+            $delete->setMode('image');
+
+            // row
             $tr = new cHTMLTableRow();
-            $tr->updateAttributes(array("class" => "textw_medium"));
+            $form = new cHTMLForm($cont['id_user_forum']);
+            $form->setAttribute('action', 'main.php?' . $area . '&frame=4');
 
+            $tdForm = new cHTMLTableData();
+            // $tdForm->setWidth(80);
 
-            for ($i = 0; $i < $maxWidth; $i++) {
+            $tdForm->setStyle('padding-left:' . $cont['level'] * 20 . 'px');
+            $tdButtons = new cHTMLTableData();
+            $tdButtons->setStyle('padding-left:' . 400 . 'px');
+            $tdButtons->appendContent($edit);
+            $tdButtons->appendContent($save);
+            $tdButtons->appendContent($delete);
 
+            // TextFields
+            // $user = new cHTMLTextbox('input' . $cont['id_user_forum']);
+            // $user->setValue($cont['realname']);
+            // $user->setWidth(30);
+            // $user->setDisabled(true);
+            $user = $cont['realname'];
+            // $email = new cHTMLTextbox('input' . $cont['id_user_forum']);
+            // $email->setValue($cont['email']);
+            // $email->setWidth(30);
+            // $email->setDisabled(true);
+            $email = $cont['email'];
+            // $text = new cHTMLTextarea('input' . $cont['id_user_forum']);
+            // $text->setValue($cont['forum']);
+            // $text->setWidth(40);
+            // $text->setDisabled(true);
+            $text = nl2br($CommentTag . " : <br> " . $cont['forum']);
 
-                if ($cont['level'] == $i && !$set) {
+            // hidden-fields
+            $hiddenIdart = new cHTMLHiddenField('idart');
+            $hiddenIdart->setValue($cont['idart']);
 
-                    //build buttons
-                    $del = new cHTMLButton("del");
-                    $del->setImageSource($cfg['path']['images'] . "delete.gif");
-                    $del->setMode('image');
-                    $save = new cHTMLButton("save");
-                    $save->setMode('image');
-                    $save->setImageSource($cfg['path']['images'] . "but_ok.gif");
-                    $edit = new cHTMLButton("edit");
-                    $edit->setImageSource($cfg['path']['images'] . "but_back.gif");
-                    $edit->setMode('image');
+            $hiddenIdcat = new cHTMLHiddenField('idcat');
+            $hiddenIdcat->setValue($cont['idcat']);
 
+            $hiddenId_user_forum = new cHTMLHiddenField('id_user_forum');
+            $hiddenId_user_forum->setValue($cont['id_user_forum']);
 
-                    $td = new cHTMLTableData( $edit->render(). $save->render(). $del->render()  ."<br>" . "User : " . $cont['realname'] . "<br>" . "Text : " . $cont['forum']);
-                    $tr->appendContent($td);
-                    $set = true;
-                } else {
-                    $td = new cHTMLTableData("");
-                    $tr->appendContent($td);
-                }
-            }
+            $hiddenLike = new cHTMLHiddenField('like');
+            $hiddenLike->setValue($cont['like']);
+
+            $hiddenDislike = new cHTMLHiddenField('dislike');
+            $hiddenDislike->setValue($cont['dislike']);
+
+            $hiddenName = new cHTMLHiddenField('realname');
+            $hiddenName->setValue($cont['realname']);
+
+            $hiddenEmail = new cHTMLHiddenField('email');
+            $hiddenEmail->setValue($cont['email']);
+
+            $form->appendContent($hiddenIdart);
+            $form->appendContent($hiddenIdcat);
+            $form->appendContent($hiddenId_user_forum);
+            $form->appendContent($hiddenLike);
+            $form->appendContent($hiddenDislike);
+            $form->appendContent($hiddenName);
+            $form->appendContent($hiddenEmail);
+
+            // $form->appendContent("<hr>");
+            $form->appendContent($nameTag . " : " . $user . " <br> " . $emailTag . " : " . $email);
+            // $form->appendContent("<hr>");
+            // $form->appendContent("email : " . $email);
+            // $form->appendContent("<hr>");
+            $form->appendContent("<br> " . $dateTag . ": " . $date . " <br> " . $likeTag . ": " . $like . " " . $dislikeTag . ": " . $dislike);
+            $form->appendContent("<hr>");
+            $form->appendContent($text);
+            $form->appendContent("<hr>");
+            $form->appendContent("<br><br>");
+
+            $tdForm->setContent($form);
+            $tr->setContent($tdForm);
+            $tr->appendContent($tdButtons);
             $table->appendContent($tr);
         }
 
-        //$testet->appendContent($table);
         $this->appendContent($table);
-        //$this->appendContent($testet);
-       // $this->render();
         return $this;
     }
 
+    /**
+     *
+     * @param unknown $id_cat
+     * @param unknown $id_art
+     * @param unknown $id_lang
+     * @return ArticleForumRightBottom
+     */
     function getExistingforum($id_cat, $id_art, $id_lang) {
         global $cfg;
 
