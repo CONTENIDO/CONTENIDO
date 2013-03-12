@@ -81,4 +81,3 @@ $tpl->set('s', 'url', $url);
 $tpl->generate('get.html');
 
 ?>
-
