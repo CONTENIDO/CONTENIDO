@@ -31,7 +31,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-global $cfg;
+global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 
 /* Initial PHP error handling settings.
  * NOTE: They will be overwritten below...
@@ -56,7 +56,7 @@ error_reporting(E_ALL ^E_NOTICE);
 if (!defined('CON_ENVIRONMENT')) {
     if (getenv('CONTENIDO_ENVIRONMENT')) {
         $sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
-    } else if(getenv('CON_ENVIRONMENT')) {
+    } elseif (getenv('CON_ENVIRONMENT')) {
         $sEnvironment = getenv('CON_ENVIRONMENT');
     } else {
         // @TODO: provide a possibility to set the environment value via file
@@ -75,13 +75,16 @@ if (!defined('CON_ENVIRONMENT')) {
 //          Use environment setting!
 $cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/config/' . CON_ENVIRONMENT . '/';
 
-include_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/includes/functions.php54.php');
+// Temporary backend path, will be re-set again later...
+$backendPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/..'));
+
+include_once($backendPath . '/includes/functions.php54.php');
 
 // Security check: Include security class and invoke basic request checks
-require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.registry.php');
-require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.security.php');
-require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.requestvalidator.php');
-require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.filehandler.php');
+require_once($backendPath . '/classes/class.registry.php');
+require_once($backendPath . '/classes/class.security.php');
+require_once($backendPath . '/classes/class.requestvalidator.php');
+require_once($backendPath . '/classes/class.filehandler.php');
 try {
     $requestValidator = cRequestValidator::getInstance();
     $requestValidator->checkParams();
@@ -90,14 +93,14 @@ try {
 }
 
 // "Workaround" for register_globals=off settings.
-require_once(dirname(__FILE__) . '/globals_off.inc.php');
+require_once($backendPath . '/includes/globals_off.inc.php');
 
 // Check if configuration file exists, this is a basic indicator to find out, if CONTENIDO is installed
 if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
-    $msg  = "<h1>Fatal Error</h1><br>"
-          . "Could not open the configuration file <b>config.php</b>.<br><br>"
-          . "Please make sure that you saved the file in the setup program."
-          . "If you had to place the file manually on your webserver, make sure that it is placed in your contenido/data/config/{environment}/ directory.";
+    $msg = "<h1>Fatal Error</h1><br>"
+         . "Could not open the configuration file <b>config.php</b>.<br><br>"
+         . "Please make sure that you saved the file in the setup program."
+         . "If you had to place the file manually on your webserver, make sure that it is placed in your contenido/data/config/{environment}/ directory.";
     die($msg);
 }
 
@@ -111,10 +114,16 @@ require_once($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
 
 if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
     require_once($cfg['path']['contenido_config'] . 'config.clients.php');
-    foreach($cfgClient as $id => $aclient) {
-        if(is_array($aclient)) {
-            $errsite_idcat[$id] = $aclient["errsite"]["idcat"];
-            $errsite_idart[$id] = $aclient["errsite"]["idart"];
+    if (is_array($errsite_idcat)) {
+        $errsite_idcat = array();
+    }
+    if (is_array($errsite_idart)) {
+        $errsite_idart = array();
+    }
+    foreach ($cfgClient as $id => $aClientCfg) {
+        if (is_array($aClientCfg)) {
+            $errsite_idcat[$id] = $aClientCfg['errsite']['idcat'];
+            $errsite_idart[$id] = $aClientCfg['errsite']['idart'];
         }
     }
 }
@@ -158,14 +167,18 @@ cAutoload::initialize($cfg);
 // Generate arrays for available login languages
 // Author: Martin Horwath
 $localePath = $cfg['path']['contenido_locale'];
-$handle = opendir($localePath);
-while (($locale = readdir($handle)) !== false) {
-    if (is_dir($localePath . $locale) && $locale != '..' && $locale != '.') {
-        if (cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.po') &&
-            cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.mo')) {
-            $cfg['login_languages'][] = $locale;
-            $cfg['lang'][$locale] = 'lang_' . $locale . '.xml';
+if (is_dir($localePath)) {
+    if ($handle = opendir($localePath)) {
+        while (($locale = readdir($handle)) !== false) {
+            if (is_dir($localePath . $locale) && $locale != '..' && $locale != '.') {
+                if (cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.po') &&
+                        cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.mo')) {
+                    $cfg['login_languages'][] = $locale;
+                    $cfg['lang'][$locale] = 'lang_' . $locale . '.xml';
+                }
+            }
         }
+        closedir($handle);
     }
 }
 
@@ -189,3 +202,5 @@ cDb::setDefaultConfiguration($cfg['db']);
 
 // Initialize UriBuilder, configuration is set in data/config/{environment}/config.misc.php
 cUriBuilderConfig::setConfig($cfg['url_builder']);
+
+unset($backendPath, $localePath, $timezoneCfg, $handle);

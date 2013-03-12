@@ -106,4 +106,26 @@ class cString {
         }
     }
 
+    /**
+     * Adds slashes to passed variable or array.
+     *
+     * @param   string|array  $value  Either a string or a multi-dimensional array of values
+     * @return  string|array
+     */
+    public static function addSlashes($value) {
+        $value = is_array($value) ? array_map(array('cString', 'addSlashes'), $value) : addslashes($value);
+        return $value;
+    }
+
+    /**
+     * Removes slashes from passed variable or array.
+     *
+     * @param   string|array  $value  Either a string or a multi-dimensional array of values
+     * @return  string|array
+     */
+    public static function stripSlashes($value) {
+        $value = is_array($value) ? array_map(array('cString', 'stripSlashes'), $value) : stripslashes($value);
+        return $value;
+    }
+
 }

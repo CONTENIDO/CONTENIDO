@@ -99,8 +99,8 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
         // Create Textarea and fill it with xml nodes
         if (count($aNodes) > 1) {
             // if choose xml file read value an set it
-            $sName = $oVersion->getTextBox("layname", stripslashes_deep(conHtmlentities(conHtmlSpecialChars($aNodes["name"]))), 60);
-            $description = $oVersion->getTextarea("laydesc", stripslashes_deep(conHtmlSpecialChars($aNodes["desc"])), 100, 10);
+            $sName = $oVersion->getTextBox("layname", cString::stripSlashes(conHtmlentities(conHtmlSpecialChars($aNodes["name"]))), 60);
+            $description = $oVersion->getTextarea("laydesc", cString::stripSlashes(conHtmlSpecialChars($aNodes["desc"])), 100, 10);
             $sCode = $oVersion->getTextarea("laycode", conHtmlSpecialChars($aNodes["code"]), 100, 30, "IdLaycode");
         }
     }

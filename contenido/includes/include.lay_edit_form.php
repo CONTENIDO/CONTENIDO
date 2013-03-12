@@ -112,7 +112,7 @@ if (!$layout->virgin) {
     $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
     $code = $layoutInFile->getLayoutCode();
     // code = $layout->get("code");
-    $name = stripslashes_deep(conHtmlSpecialChars($layout->get("name")));
+    $name = cString::stripSlashes(conHtmlSpecialChars($layout->get("name")));
     $description = $layout->get("description");
 
     if (!$layoutInFile->isWritable($name, $layoutInFile->_getLayoutPath())) {
