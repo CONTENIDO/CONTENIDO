@@ -151,7 +151,7 @@ class ArticleForumRightBottom extends cGuiPage {
             }
             $online->setMode('image');
             $edit = new cHTMLButton("edit");
-            $edit->setImageSource($cfg['path']['images'] . 'but_back.gif');
+            $edit->setImageSource($cfg['path']['images'] . 'but_todo.gif');
             $id = $cont['id_user_forum'];
             $edit->setEvent('click', "$('form[name=$id]').submit()");
             $edit->setMode('image');
@@ -278,17 +278,36 @@ class ArticleForumRightBottom extends cGuiPage {
     function getEditModeMenu($post) {
         global $area;
         $menu = new cGuiMenu();
-        $form1 = new cGuiTableForm("lang_properties");
-        $form1->setVar("idlang", "sadhfs");
-        // $form1->setVar("targetclient", $db->f("idclient"));
-        $form1->setVar("action", "lang_edit");
-        $form1->setVar("area", $area);
 
-        $eselect = new cHTMLSelectElement("sencoding");
-        $eselect->setStyle('width:255px');
+        $table = new cHTMLTable();
+
+        $tr = new cHTMLTableRow();
+
+        $th = new cHTMLTableHead();
+        $th->setContent(UserForum::i18n("FORUM_POST", "user_forum"));
+        $tr->appendContent($th);
+
+        $th = new cHTMLTableHead();
+        $th->setContent(UserForum::i18n("FORUM_ACTIONS", "user_forum"));
+        $th->setStyle('widht:50px');
+        $th->setAttribute('valign', 'top');
+        $tr->appendContent($th);
+
+     //   $table->appendContent($tr);
+
+
+        $form1 = new cGuiTableForm("lang_properties");
+       // $form1->setVar("idlang", "sadhfs");
+        // $form1->setVar("targetclient", $db->f("idclient"));
+      //  $form1->setVar("action", "lang_edit");
+      //  $form1->setVar("area", $area);
+
+        //$eselect = new cHTMLSelectElement("sencoding");
+        //$eselect->setStyle('width:255px');
 
         // Dialog EDITMODE :
         $id = $post['id_user_forum'];
+
 
         $name = new cHTMLTextBox("name." . $id, conHtmlSpecialChars($post['realname']), 40, 255);
         $email = new cHTMLTextBox("email." . $id, conHtmlSpecialChars($post['email']), 40, 255);
@@ -302,6 +321,8 @@ class ArticleForumRightBottom extends cGuiPage {
         $editedby = new cHTMLTextBox("editedby." . $id, conHtmlSpecialChars($post['editedby']), 40, 255);
         $editedby->setDisabled(true);
 
+        $form1->addHeader($tr);
+        $form1->addCancel("http://www.google.de");
         $form1->add($name, UserForum::i18n("USER"));
         $form1->add($email, UserForum::i18n("EMAIL"));
         $form1->add($like, UserForum::i18n("LIKE"));
@@ -310,10 +331,14 @@ class ArticleForumRightBottom extends cGuiPage {
         $form1->add($editedat, UserForum::i18n("EDITDAT"));
         $form1->add($editedby, UserForum::i18n("EDITEDBY"));
         $form1->add($forum, UserForum::i18n("COMMENT"));
+
+
         // echo $form1->render();
         // return $form1;
         // $form1->add($eselect, "content");
-        $this->appendContent($form1);
+        $table->appendContent($form1);
+
+        $this->appendContent($table);
 
         return $this;
     }
