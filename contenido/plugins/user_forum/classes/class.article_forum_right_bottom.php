@@ -134,14 +134,13 @@ class ArticleForumRightBottom extends cGuiPage {
             // echo ($cont['online']);
             $online = new cHTMLButton("online");
             if ($cont['online'] == 1) {
-                $online->setImageSource($cfg['path']['images'] . 'artikel_spez_akt.gif');
+                $online->setImageSource($cfg['path']['images'] . 'online.gif');
                 $online->setAlt('online');
             } else {
-                $online->setImageSource($cfg['path']['images'] . 'artikel_spez_inakt.gif');
+                $online->setImageSource($cfg['path']['images'] . 'offline.gif');
                 $online->setAlt('offline');
             }
             $online->setMode('image');
-
             $edit = new cHTMLButton("edit");
             $edit->setImageSource($cfg['path']['images'] . 'but_back.gif');
             $id = $cont['id_user_forum'];
@@ -149,12 +148,12 @@ class ArticleForumRightBottom extends cGuiPage {
             $edit->setMode('image');
             $edit->setAlt(UserForum::i18n('EDIT'));
 
-            $save = new cHTMLButton("save");
-            $save->setImageSource($cfg['path']['images'] . 'but_ok.gif');
-            $id = $cont['id_user_forum'];
-            $save->setEvent('click', "$('form[name=$id]').submit()");
-            $save->setAlt(UserForum::i18n('SAVE'));
-            $save->setMode('image');
+  //          $save = new cHTMLButton("save");
+  //          $save->setImageSource($cfg['path']['images'] . 'but_ok.gif');
+  //          $id = $cont['id_user_forum'];
+  //          $save->setEvent('click', "$('form[name=$id]').submit()");
+  //          $save->setAlt(UserForum::i18n('SAVE'));
+  //          $save->setMode('image');
 
             $delete = new cHTMLButton("save");
             $delete->setImageSource($cfg['path']['images'] . 'delete.gif');
@@ -174,8 +173,8 @@ class ArticleForumRightBottom extends cGuiPage {
             $tdForm->setStyle('padding-left:' . $cont['level'] * 20 . 'px');
             $tdButtons = new cHTMLTableData();
             $tdButtons->setStyle('padding-left:' . 400 . 'px');
+            $tdButtons->appendContent($online);
             $tdButtons->appendContent($edit);
-            $tdButtons->appendContent($save);
             $tdButtons->appendContent($delete);
 
             // TextFields
@@ -251,11 +250,9 @@ class ArticleForumRightBottom extends cGuiPage {
             // $form->appendContent("email : " . $email);
             // $form->appendContent("<hr>");
             $form->appendContent("<br> " . $dateTag . ": " . $date . " <br> " . $likeTag . ": " . $like . " " . $dislikeTag . ": " . $dislike);
-            $form->appendContent("<br>" . $online);
             $form->appendContent("<hr>");
             $form->appendContent($text);
             $form->appendContent("<hr>");
-            // $form->appendContent($online."<br>");
             $form->appendContent("<br><br>");
 
             $tdForm->setContent($form);
@@ -272,6 +269,7 @@ class ArticleForumRightBottom extends cGuiPage {
 
     function getEditModeMenu($post) {
         global $area;
+        $menu = new cGuiMenu();
         $form1 = new cGuiTableForm("lang_properties");
         $form1->setVar("idlang", "sadhfs");
         // $form1->setVar("targetclient", $db->f("idclient"));
@@ -282,29 +280,34 @@ class ArticleForumRightBottom extends cGuiPage {
         $eselect->setStyle('width:255px');
 
         // Dialog EDITMODE :
-        $name = new cHTMLTextBox("langname", conHtmlSpecialChars($post['realname']), 40, 255);
-        $email = new cHTMLTextBox("langname", conHtmlSpecialChars($post['email']), 40, 255);
-        $like = new cHTMLTextBox("langname", conHtmlSpecialChars($post['like']), 40, 255);
-        $dislike = new cHTMLTextBox("langname", conHtmlSpecialChars($post['dislike']), 40, 255);
-        $forum = new cHTMLTextArea("langname", conHtmlSpecialChars($post['forum']), 30, 10);
-        $timestamp = new cHTMLTextBox("langname", conHtmlSpecialChars($post['timestamp']), 40, 255);
+        $id = $post['id_user_forum'];
+
+        $name = new cHTMLTextBox("name.".$id, conHtmlSpecialChars($post['realname']), 40, 255);
+        $email = new cHTMLTextBox("email.".$id, conHtmlSpecialChars($post['email']), 40, 255);
+        $like = new cHTMLTextBox("like.".$id, conHtmlSpecialChars($post['like']), 40, 255);
+        $dislike = new cHTMLTextBox("dislike.".$id, conHtmlSpecialChars($post['dislike']), 40, 255);
+        $forum = new cHTMLTextArea("forum.".$id, conHtmlSpecialChars($post['forum']), 30, 10);
+        $timestamp = new cHTMLTextBox("timestamp.".$id, conHtmlSpecialChars($post['timestamp']), 40, 255);
         $timestamp->setDisabled(true);
-        $editedat = new cHTMLTextBox("langname", conHtmlSpecialChars($post['editedat']), 40, 255);
+        $editedat = new cHTMLTextBox("editedat.".$id, conHtmlSpecialChars($post['editedat']), 40, 255);
         $editedat->setDisabled(true);
-        $editedby = new cHTMLTextBox("langname", conHtmlSpecialChars($post['editedby']), 40, 255);
+        $editedby = new cHTMLTextBox("editedby.".$id, conHtmlSpecialChars($post['editedby']), 40, 255);
         $editedby->setDisabled(true);
 
         $form1->add($name, UserForum::i18n("USER"));
         $form1->add($email, UserForum::i18n("EMAIL"));
         $form1->add($like, UserForum::i18n("LIKE"));
         $form1->add($dislike, UserForum::i18n("DISLIKE"));
-        $form1->add($timestamp, "TIME");
-        $form1->add($editedat, "EDITDAT");
-        $form1->add($editedby, "EDITBY");
+        $form1->add($timestamp, UserForum::i18n("TIME"));
+        $form1->add($editedat, UserForum::i18n("EDITDAT"));
+        $form1->add($editedby, UserForum::i18n("EDITEDBY"));
         $form1->add($forum, UserForum::i18n("COMMENT"));
-        echo $form1->render();
+     //   echo $form1->render();
+     //   return $form1;
+        //$form1->add($eselect, "content");
+        $this->appendContent($form1);
 
-        $form1->add($eselect, "content");
+        return $this;
     }
 
     /**

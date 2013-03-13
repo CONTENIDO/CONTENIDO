@@ -44,3 +44,19 @@ msgstr "Datum"
 msgid "COMMENT"
 msgstr "Kommentar"
 
+msgid "TIME"
+msgstr "erstellt"
+
+msgid "EDITDAT"
+msgstr "zuletztet editiert"
+
+msgid "EDITEDBY"
+msgstr "editiert von"
+
+
+
+
+
+
+
+

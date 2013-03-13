@@ -7,6 +7,8 @@ if(isset($_POST['realname']))
 {
     $right = new ArticleForumRightBottom("content");
     $test = $right->getEditModeMenu($_POST);
+    $test->render();
+    //->render();
 //echo'<pre>';
 //echo print_r($_POST);
 //echo '</pre>';
