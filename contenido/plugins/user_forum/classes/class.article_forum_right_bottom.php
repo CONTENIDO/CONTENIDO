@@ -3,7 +3,6 @@ global $area;
 class ArticleForumRightBottom extends cGuiPage {
 
     // von Timo ...
-
     // $form = new cGuiTableForm("lang_properties");
     // $form->setVar("idlang", $idlang);
     // $form->setVar("targetclient", $db->f("idclient"));
@@ -19,10 +18,20 @@ class ArticleForumRightBottom extends cGuiPage {
     // [15:47:13] Timo Trautmann: $oTxtLang = new cHTMLTextBox("langname",
     // conHtmlSpecialChars($db->f("name")), 40, 255);
     // [15:47:21] Timo Trautmann: $page->setContent($form);
-    private $_res = array();
+  //  private $_res = array();
+
+    private $_indentFactor = 20;
 
     function getResult() {
         return $this->_res;
+    }
+
+    function setInfentFactor($indentFactor) {
+        $this->_indentFactor = $indentFactor;
+    }
+
+    function getInfentFactor() {
+        return $this->_indentFactor;
     }
 
     function __construct() {
@@ -93,20 +102,20 @@ class ArticleForumRightBottom extends cGuiPage {
             "class" => "generic",
             "cellspacing" => "0",
             "cellpadding" => "2"
-        ));      
-        
+        ));
+
         $tr = new cHTMLTableRow();
-        
+
         $th = new cHTMLTableHead();
         $th->setContent(i18n("FORUM_POST", "user_forum"));
         $tr->appendContent($th);
-        
+
         $th = new cHTMLTableHead();
         $th->setContent(i18n("FORUM_ACTIONS", "user_forum"));
         $th->setStyle('widht:50px');
         $th->setAttribute('valign', 'top');
         $tr->appendContent($th);
-        
+
         $table->appendContent($tr);
 
         $menu = new cGuiMenu();
@@ -148,12 +157,12 @@ class ArticleForumRightBottom extends cGuiPage {
             $edit->setMode('image');
             $edit->setAlt(UserForum::i18n('EDIT'));
 
-  //          $save = new cHTMLButton("save");
-  //          $save->setImageSource($cfg['path']['images'] . 'but_ok.gif');
-  //          $id = $cont['id_user_forum'];
-  //          $save->setEvent('click', "$('form[name=$id]').submit()");
-  //          $save->setAlt(UserForum::i18n('SAVE'));
-  //          $save->setMode('image');
+            // $save = new cHTMLButton("save");
+            // $save->setImageSource($cfg['path']['images'] . 'but_ok.gif');
+            // $id = $cont['id_user_forum'];
+            // $save->setEvent('click', "$('form[name=$id]').submit()");
+            // $save->setAlt(UserForum::i18n('SAVE'));
+            // $save->setMode('image');
 
             $delete = new cHTMLButton("save");
             $delete->setImageSource($cfg['path']['images'] . 'delete.gif');
@@ -168,9 +177,8 @@ class ArticleForumRightBottom extends cGuiPage {
             $form->setAttribute('action', 'main.php?' . $area . '&frame=4');
 
             $tdForm = new cHTMLTableData();
-            // $tdForm->setWidth(80);
 
-            $tdForm->setStyle('padding-left:' . $cont['level'] * 20 . 'px');
+            $tdForm->setStyle('padding-left:' . $cont['level'] * $this->_indentFactor . 'px');
             $tdButtons = new cHTMLTableData();
             $tdButtons->setStyle('padding-left:' . 400 . 'px');
             $tdButtons->appendContent($online);
@@ -282,16 +290,16 @@ class ArticleForumRightBottom extends cGuiPage {
         // Dialog EDITMODE :
         $id = $post['id_user_forum'];
 
-        $name = new cHTMLTextBox("name.".$id, conHtmlSpecialChars($post['realname']), 40, 255);
-        $email = new cHTMLTextBox("email.".$id, conHtmlSpecialChars($post['email']), 40, 255);
-        $like = new cHTMLTextBox("like.".$id, conHtmlSpecialChars($post['like']), 40, 255);
-        $dislike = new cHTMLTextBox("dislike.".$id, conHtmlSpecialChars($post['dislike']), 40, 255);
-        $forum = new cHTMLTextArea("forum.".$id, conHtmlSpecialChars($post['forum']), 30, 10);
-        $timestamp = new cHTMLTextBox("timestamp.".$id, conHtmlSpecialChars($post['timestamp']), 40, 255);
+        $name = new cHTMLTextBox("name." . $id, conHtmlSpecialChars($post['realname']), 40, 255);
+        $email = new cHTMLTextBox("email." . $id, conHtmlSpecialChars($post['email']), 40, 255);
+        $like = new cHTMLTextBox("like." . $id, conHtmlSpecialChars($post['like']), 40, 255);
+        $dislike = new cHTMLTextBox("dislike." . $id, conHtmlSpecialChars($post['dislike']), 40, 255);
+        $forum = new cHTMLTextArea("forum." . $id, conHtmlSpecialChars($post['forum']), 30, 10);
+        $timestamp = new cHTMLTextBox("timestamp." . $id, conHtmlSpecialChars($post['timestamp']), 40, 255);
         $timestamp->setDisabled(true);
-        $editedat = new cHTMLTextBox("editedat.".$id, conHtmlSpecialChars($post['editedat']), 40, 255);
+        $editedat = new cHTMLTextBox("editedat." . $id, conHtmlSpecialChars($post['editedat']), 40, 255);
         $editedat->setDisabled(true);
-        $editedby = new cHTMLTextBox("editedby.".$id, conHtmlSpecialChars($post['editedby']), 40, 255);
+        $editedby = new cHTMLTextBox("editedby." . $id, conHtmlSpecialChars($post['editedby']), 40, 255);
         $editedby->setDisabled(true);
 
         $form1->add($name, UserForum::i18n("USER"));
@@ -302,9 +310,9 @@ class ArticleForumRightBottom extends cGuiPage {
         $form1->add($editedat, UserForum::i18n("EDITDAT"));
         $form1->add($editedby, UserForum::i18n("EDITEDBY"));
         $form1->add($forum, UserForum::i18n("COMMENT"));
-     //   echo $form1->render();
-     //   return $form1;
-        //$form1->add($eselect, "content");
+        // echo $form1->render();
+        // return $form1;
+        // $form1->add($eselect, "content");
         $this->appendContent($form1);
 
         return $this;
