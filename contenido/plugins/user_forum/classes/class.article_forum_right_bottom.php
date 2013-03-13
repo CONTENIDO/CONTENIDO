@@ -216,6 +216,9 @@ class ArticleForumRightBottom extends cGuiPage {
             $hiddenTimestamp = new cHTMLHiddenField('timestamp');
             $hiddenTimestamp->setValue($cont['timestamp']);
 
+            $hiddenForum = new cHTMLHiddenField('forum');
+            $hiddenForum->setValue($cont['forum']);
+
             $form->appendContent($hiddenIdart);
             $form->appendContent($hiddenIdcat);
             $form->appendContent($hiddenId_user_forum);
@@ -224,6 +227,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $form->appendContent($hiddenName);
             $form->appendContent($hiddenEmail);
             $form->appendContent($hiddenLevel);
+            $form->appendContent($hiddenForum);
             $form->appendContent($hiddenEditdat);
             $form->appendContent($hiddenEditedby);
             $form->appendContent($hiddenTimestamp);
@@ -252,67 +256,43 @@ class ArticleForumRightBottom extends cGuiPage {
         return $this;
     }
 
-    function getEditModeMenu($post)
-    {
-
+    function getEditModeMenu($post) {
         global $area;
         $form1 = new cGuiTableForm("lang_properties");
         $form1->setVar("idlang", "sadhfs");
         // $form1->setVar("targetclient", $db->f("idclient"));
         $form1->setVar("action", "lang_edit");
         $form1->setVar("area", $area);
-        // $form1->setVar("frame", $frame);
-
-      //  $inputName = new cHTMLTextbox("$inputName");
-      //  $inputName->setValue($cont['realname']);
 
         $eselect = new cHTMLSelectElement("sencoding");
         $eselect->setStyle('width:255px');
-   //     $ar = array();
-   //     foreach ($result as $key => $forum) {
-    //        $ar[] = $forum['forum'];
-    //    }
 
-        // print_r ($ar);
+        // Dialog EDITMODE :
+        $name = new cHTMLTextBox("langname", conHtmlSpecialChars($post['realname']), 40, 255);
+        $email = new cHTMLTextBox("langname", conHtmlSpecialChars($post['email']), 40, 255);
+        $like = new cHTMLTextBox("langname", conHtmlSpecialChars($post['like']), 40, 255);
+        $dislike = new cHTMLTextBox("langname", conHtmlSpecialChars($post['dislike']), 40, 255);
+        $forum = new cHTMLTextArea("langname", conHtmlSpecialChars($post['forum']), 30, 10);
+        $timestamp = new cHTMLTextBox("langname", conHtmlSpecialChars($post['timestamp']), 40, 255);
+        $timestamp->setDisabled(true);
+        $editedat = new cHTMLTextBox("langname", conHtmlSpecialChars($post['editedat']), 40, 255);
+        $editedat->setDisabled(true);
+        $editedby = new cHTMLTextBox("langname", conHtmlSpecialChars($post['editedby']), 40, 255);
+        $editedby->setDisabled(true);
 
-  //      $eselect->autofill($ar);
-        // $eselect->setDefault($db->f("encoding"));
-
-        // $form1->add(UserForum::i18n("SAVE"), $eselect);
-        // $form1->appendContent($inputName);
-
-
-
-        //Dialog EDITMODE :
-                 $name = new cHTMLTextBox("langname", conHtmlSpecialChars($post['realname']), 40, 255);
-                 $email = new cHTMLTextBox("langname", conHtmlSpecialChars($post['email']), 40, 255);
-                 $like = new cHTMLTextBox("langname", conHtmlSpecialChars($post['like']), 40, 255);
-                 $dislike = new cHTMLTextBox("langname", conHtmlSpecialChars($post['dislike']), 40, 255);
-                $forum = new cHTMLTextBox("langname", conHtmlSpecialChars($post['forum']), 40, 255);
-                $timestamp = new cHTMLTextBox("langname", conHtmlSpecialChars($post['timestamp']), 40, 255);
-                $timestamp->setDisabled(true);
-                $editedat = new cHTMLTextBox("langname", conHtmlSpecialChars($post['editedat']), 40, 255);
-                $editedat->setDisabled(true);
-                $editedby = new cHTMLTextBox("langname", conHtmlSpecialChars($post['editedby']), 40, 255);
-                $editedby->setDisabled(true);
-                // $oTxtLang6 = new cHTMLTextBox("langname",
-                // conHtmlSpecialChars($cont['']), 40, 255);
-                // conHtmlSpecialChars($db->f("name")), 40, 255);
-                // $page->setContent($form);
-
-                $form1->add($name, UserForum::i18n("USER"));
-                $form1->add($email, UserForum::i18n("EMAIL"));
-                $form1->add($like, UserForum::i18n("LIKE"));
-                $form1->add($dislike, UserForum::i18n("DISLIKE"));
-                $form1->add($timestamp, "TIME");
-                $form1->add($editedat, "EDITDAT");
-                $form1->add($editedby, "EDITBY");
-                $form1->add($forum, UserForum::i18n("COMMENT"));
-                echo $form1->render();
+        $form1->add($name, UserForum::i18n("USER"));
+        $form1->add($email, UserForum::i18n("EMAIL"));
+        $form1->add($like, UserForum::i18n("LIKE"));
+        $form1->add($dislike, UserForum::i18n("DISLIKE"));
+        $form1->add($timestamp, "TIME");
+        $form1->add($editedat, "EDITDAT");
+        $form1->add($editedby, "EDITBY");
+        $form1->add($forum, UserForum::i18n("COMMENT"));
+        echo $form1->render();
 
         $form1->add($eselect, "content");
-
     }
+
     /**
      *
      * @param unknown $id_cat

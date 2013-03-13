@@ -7,7 +7,9 @@ if(isset($_POST['realname']))
 {
     $right = new ArticleForumRightBottom("content");
     $test = $right->getEditModeMenu($_POST);
-
+//echo'<pre>';
+//echo print_r($_POST);
+//echo '</pre>';
 }
 
 if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
