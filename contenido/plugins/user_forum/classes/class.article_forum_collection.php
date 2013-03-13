@@ -27,48 +27,40 @@ class ArticleForumCollection extends ItemCollection {
         return $data;
     }
 
-    function deleteComment($id_user_forum)
-    {
+    function deleteComment($id_user_forum) {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-        $sql = "DELETE FROM " .$this->table . "WHERE id_user_forum = $id_user_forum;";
+        $sql = "DELETE FROM " . $this->table . "WHERE id_user_forum = $id_user_forum;";
         $db->query($sql);
     }
 
-    function deleteComments(array $id_user_forum)
-    {
+    function deleteComments(array $id_user_forum) {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-        foreach ($id_user_forum as $key => $id)
-        {
-            $sql = "DELETE FROM " .$this->table . "WHERE id_user_forum = $id;";
+        foreach ($id_user_forum as $key => $id) {
+            $sql = "DELETE FROM " . $this->table . "WHERE id_user_forum = $id;";
             $db->query($sql);
         }
     }
 
-
-    function updateOnlineState($id_user_forum,$onlineState)
-    {
+    function updateOnlineState($id_user_forum, $onlineState) {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-        $sql = "UPDATE"  .$this->table . "SET online = $onlineState WHERE id_user_forum = $id_user_forum;";
+        $sql = "UPDATE" . $this->table . "SET online = $onlineState WHERE id_user_forum = $id_user_forum;";
         $db->query($sql);
     }
 
-    function updateAll($id_user_forum,$name,$email,$like,$dislike)
-   {
+    function updateAll($id_user_forum, $name, $email, $like, $dislike) {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-        $sql = "UPDATE"  .$this->table . "SET name = $name, email =$email, like = $like, dislike = $dislike WHERE id_user_forum = $id_user_forum;";
+        $sql = "UPDATE" . $this->table . "SET name = $name, email =$email, like = $like, dislike = $dislike WHERE id_user_forum = $id_user_forum;";
         $db->query($sql);
     }
 
-
-    public function getIdCat($idart)
-    {
+    public function getIdCat($idart) {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-        $sql = "SELECT DISTINCT idcat FROM " . $this->table . "  WHERE idart=" .$idart.";";
+        $sql = "SELECT DISTINCT idcat FROM " . $this->table . "  WHERE idart=" . $idart . ";";
 
         $db->query($sql);
 
@@ -78,8 +70,8 @@ class ArticleForumCollection extends ItemCollection {
         }
 
         return $data;
-
     }
+
     public function getCommentTextByID($idart) {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
@@ -95,7 +87,6 @@ class ArticleForumCollection extends ItemCollection {
     }
 
     public function deleteAllCommentsById($idart) {
-
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
         $sql = "DELETE FROM " . $this->table . " WHERE idart = " . $idart . " ;";
@@ -103,7 +94,6 @@ class ArticleForumCollection extends ItemCollection {
     }
 
     public function deleteCommentById($idart) {
-
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
         $sql = "DELETE FROM " . $this->table . " WHERE id_user_forum = " . $idart . " ;";
@@ -111,10 +101,9 @@ class ArticleForumCollection extends ItemCollection {
     }
 
     public function getAllChildrenComments($idart) {
-
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-        $sql = "Select id_user_forum_parent, id_user_forum, email,realname, forum FROM " . $this->table . " WHERE id_user_forum_parent != 0 AND idart = " .$idart . " ORDER BY id_user_forum_parent ASC ;";
+        $sql = "Select id_user_forum_parent, id_user_forum, email,realname, forum FROM " . $this->table . " WHERE id_user_forum_parent != 0 AND idart = " . $idart . " ORDER BY id_user_forum_parent ASC ;";
         $db->query($sql);
         $data = array();
         while ($db->next_record()) {
@@ -123,7 +112,6 @@ class ArticleForumCollection extends ItemCollection {
 
         return $data;
     }
-
 
 }
 

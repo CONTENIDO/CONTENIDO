@@ -29,7 +29,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $this->_indentFactor = $indentFactor;
     }
 
-    function getInfentFactor() {
+    function getIndentFactor() {
         return $this->_indentFactor;
     }
 
@@ -284,7 +284,7 @@ class ArticleForumRightBottom extends cGuiPage {
 
         $menu = new cGuiMenu();
 
-      //  $table = new cHTMLTable();
+        // $table = new cHTMLTable();
 
         $tr = new cHTMLTableRow();
 
@@ -297,8 +297,6 @@ class ArticleForumRightBottom extends cGuiPage {
         $th->setStyle('widht:50px');
         $th->setAttribute('valign', 'top');
         $tr->appendContent($th);
-
-
 
         $form1 = new cGuiTableForm("lang_properties", "http://www.google.de", "post");
         $form1->addHeader($tr);
@@ -326,7 +324,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $form1->setActionButton("test", $cfg['path']['images'] . 'offline.gif');
         }
 
-
+        // BACKBUTTON SINNVOLL ??
         $form1->addCancel("http://www.google.de");
 
         $form1->add(UserForum::i18n("USER"), $name, '');
@@ -337,11 +335,6 @@ class ArticleForumRightBottom extends cGuiPage {
         $form1->add(UserForum::i18n("EDITDAT"), $editedat, '');
         $form1->add(UserForum::i18n("EDITEDBY"), $editedby, '');
         $form1->add(UserForum::i18n("COMMENT"), $forum, '');
-
-        // echo $form1->render();
-        // return $form1;
-        // $form1->add($eselect, "content");
-        //$table->appendContent($form1);
 
         $this->appendContent($form1);
 
@@ -382,10 +375,6 @@ class ArticleForumRightBottom extends cGuiPage {
 
         return $ret;
     }
-
-
-
-
 
     function normalizeArray($arrforum, &$result, $level = 0) {
         if (is_array($arrforum)) {
