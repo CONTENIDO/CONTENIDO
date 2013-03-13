@@ -2,8 +2,13 @@
 
 
 
-print_r($_POST);
+//print_r($_POST);
+if(isset($_POST['realname']))
+{
+    $right = new ArticleForumRightBottom("content");
+    $test = $right->getEditModeMenu($_POST);
 
+}
 
 if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
 
