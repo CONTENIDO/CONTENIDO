@@ -93,7 +93,21 @@ class ArticleForumRightBottom extends cGuiPage {
             "class" => "generic",
             "cellspacing" => "0",
             "cellpadding" => "2"
-        ));
+        ));      
+        
+        $tr = new cHTMLTableRow();
+        
+        $th = new cHTMLTableHead();
+        $th->setContent(i18n("FORUM_POST", "user_forum"));
+        $tr->appendContent($th);
+        
+        $th = new cHTMLTableHead();
+        $th->setContent(i18n("FORUM_ACTIONS", "user_forum"));
+        $th->setStyle('widht:50px');
+        $th->setAttribute('valign', 'top');
+        $tr->appendContent($th);
+        
+        $table->appendContent($tr);
 
         $menu = new cGuiMenu();
         $cfg = cRegistry::getConfig();
@@ -108,7 +122,6 @@ class ArticleForumRightBottom extends cGuiPage {
         $CommentTag = UserForum::i18n('COMMENT');
 
         // table
-        $table = new cHTMLTable();
         foreach ($result as $key => $cont) {
             $set = false;
 
@@ -246,6 +259,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $form->appendContent("<br><br>");
 
             $tdForm->setContent($form);
+            $tdForm->setAttribute('valign', 'top');
             $tr->setContent($tdForm);
             $tr->appendContent($tdButtons);
             $table->appendContent($tr);
