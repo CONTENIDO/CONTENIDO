@@ -2174,6 +2174,7 @@ contenido/plugins/user_forum/classes/class.article_forum_left_bottom.php -text
 contenido/plugins/user_forum/classes/class.article_forum_right_bottom.php -text
 contenido/plugins/user_forum/includes/config.plugin.php -text
 contenido/plugins/user_forum/includes/include.left_bottom.php -text
+contenido/plugins/user_forum/includes/include.left_top.php -text
 contenido/plugins/user_forum/includes/include.right_bottom.php -text
 contenido/plugins/user_forum/includes/new[!!-~][!!-~]2.txt -text svneol=unset#text/plain
 contenido/plugins/user_forum/install/sql.txt -text
