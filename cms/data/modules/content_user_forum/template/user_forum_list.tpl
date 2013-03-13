@@ -20,8 +20,6 @@
             <p class="right">{$POST.OPINION}</p>
             <div class="dislike">-{$POST.DISLIKE}</div>
             <div class="like">+{$POST.LIKE}</div>
-                {$POST.DELETELINK}
-                {$POST.EDITLINK}
                 {$POST.REPLY}
                 {$POST.REPLY_QUOTE}
 
