@@ -140,17 +140,40 @@ class ArticleForumRightBottom extends cGuiPage {
             // build Buttons
             $id = $cont['id_user_forum'];
             // echo ($cont['online']);
-            $online = new cHTMLButton("online");
-            if ($cont['online'] == 1) {
-                $online->setImageSource($cfg['path']['images'] . 'online.gif');
-                $online->setAlt('online');
-                $online->setEvent('click', "$('form[name=$id]').submit()");
-            } else {
-                $online->setImageSource($cfg['path']['images'] . 'offline.gif');
-                $online->setEvent('click', "'action', 'main.php?' . $area . '&frame=4'");
-                $online->setAlt('offline');
+
+            $online = new cHTMLLink();
+            if($cont['online'] == 1)
+            {
+                $online->setImage($cfg['path']['images'] . 'online.gif');
+                $online->setCustom('action', 'online_toggle');
+
             }
-            $online->setMode('image');
+            else
+            {
+                $online->setImage($cfg['path']['images'] . 'offline.gif');
+                $online->setCustom('action', 'offline_toggle');
+
+            }
+            $online->setCLink($area, 4, 'show_form');
+            $online->setTargetFrame('right_buttom');
+            $online->setCustom('action', 'online_toggle');
+
+
+//             $online = new cHTMLButton("online");
+//             if ($cont['online'] == 1) {
+//                 $online->setImageSource($cfg['path']['images'] . 'online.gif');
+//                 $online->setAlt('online');
+//                 $online->setID($cont['id_user_forum'].".".$cont['online']);
+
+//                 $online->setEvent('click', "$('form[name=$id]').submit()");
+//                 //$online->setEvent('click', "'action', 'main.php?' . $area . '&frame=4&action=toogleOnline'");
+//             } else {
+//                 $online->setImageSource($cfg['path']['images'] . 'offline.gif');
+//                 $online->setEvent('click', "$('form[name=$id]').submit()");
+//                 //$online->setEvent('click', "'action', 'main.php?' . $area . '&frame=4&action=toogleOnline'");
+//                 $online->setAlt('offline');
+//             }
+//             $online->setMode('image');
             $edit = new cHTMLButton("edit");
             $edit->setImageSource($cfg['path']['images'] . 'but_todo.gif');
 

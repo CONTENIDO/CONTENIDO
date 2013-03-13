@@ -2,7 +2,8 @@
 
 
 
-//print_r($_POST);
+print_r($_POST);
+print_r($_GET);
 if(isset($_POST['realname']))
 {
     $right = new ArticleForumRightBottom("content");
@@ -17,7 +18,6 @@ if(isset($_POST['realname']))
 if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
 
     $idart = $_GET['idart'];
-    $idcat = $_GET['idcat'];
 
     if (isset($_GET['id_user_forum']) && isset($_GET['action'])) {
 
