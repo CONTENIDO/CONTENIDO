@@ -18,8 +18,7 @@ class ArticleForumRightBottom extends cGuiPage {
     // [15:47:13] Timo Trautmann: $oTxtLang = new cHTMLTextBox("langname",
     // conHtmlSpecialChars($db->f("name")), 40, 255);
     // [15:47:21] Timo Trautmann: $page->setContent($form);
-  //  private $_res = array();
-
+    // private $_res = array();
     private $_indentFactor = 20;
 
     function getResult() {
@@ -139,20 +138,22 @@ class ArticleForumRightBottom extends cGuiPage {
             $date = $cont['timestamp'];
 
             // build Buttons
-
+            $id = $cont['id_user_forum'];
             // echo ($cont['online']);
             $online = new cHTMLButton("online");
             if ($cont['online'] == 1) {
                 $online->setImageSource($cfg['path']['images'] . 'online.gif');
                 $online->setAlt('online');
+                $online->setEvent('click', "$('form[name=$id]').submit()");
             } else {
                 $online->setImageSource($cfg['path']['images'] . 'offline.gif');
+                $online->setEvent('click', "'action', 'main.php?' . $area . '&frame=4'");
                 $online->setAlt('offline');
             }
             $online->setMode('image');
             $edit = new cHTMLButton("edit");
             $edit->setImageSource($cfg['path']['images'] . 'but_todo.gif');
-            $id = $cont['id_user_forum'];
+
             $edit->setEvent('click', "$('form[name=$id]').submit()");
             $edit->setMode('image');
             $edit->setAlt(UserForum::i18n('EDIT'));
@@ -277,37 +278,32 @@ class ArticleForumRightBottom extends cGuiPage {
 
     function getEditModeMenu($post) {
         global $area;
+        $cfg = cRegistry::getConfig();
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
+
         $menu = new cGuiMenu();
 
-        $table = new cHTMLTable();
+      //  $table = new cHTMLTable();
 
         $tr = new cHTMLTableRow();
 
         $th = new cHTMLTableHead();
-        $th->setContent(UserForum::i18n("FORUM_POST", "user_forum"));
+        $th->setContent(UserForum::i18n("PARAMETER", "user_forum"));
         $tr->appendContent($th);
 
         $th = new cHTMLTableHead();
-        $th->setContent(UserForum::i18n("FORUM_ACTIONS", "user_forum"));
+        $th->setContent(UserForum::i18n("CONTENT", "user_forum"));
         $th->setStyle('widht:50px');
         $th->setAttribute('valign', 'top');
         $tr->appendContent($th);
 
-     //   $table->appendContent($tr);
 
 
-        $form1 = new cGuiTableForm("lang_properties");
-       // $form1->setVar("idlang", "sadhfs");
-        // $form1->setVar("targetclient", $db->f("idclient"));
-      //  $form1->setVar("action", "lang_edit");
-      //  $form1->setVar("area", $area);
-
-        //$eselect = new cHTMLSelectElement("sencoding");
-        //$eselect->setStyle('width:255px');
-
+        $form1 = new cGuiTableForm("lang_properties", "http://www.google.de", "post");
+        $form1->addHeader($tr);
         // Dialog EDITMODE :
         $id = $post['id_user_forum'];
-
 
         $name = new cHTMLTextBox("name." . $id, conHtmlSpecialChars($post['realname']), 40, 255);
         $email = new cHTMLTextBox("email." . $id, conHtmlSpecialChars($post['email']), 40, 255);
@@ -321,24 +317,33 @@ class ArticleForumRightBottom extends cGuiPage {
         $editedby = new cHTMLTextBox("editedby." . $id, conHtmlSpecialChars($post['editedby']), 40, 255);
         $editedby->setDisabled(true);
 
-        $form1->addHeader($tr);
-        $form1->addCancel("http://www.google.de");
-        $form1->add($name, UserForum::i18n("USER"));
-        $form1->add($email, UserForum::i18n("EMAIL"));
-        $form1->add($like, UserForum::i18n("LIKE"));
-        $form1->add($dislike, UserForum::i18n("DISLIKE"));
-        $form1->add($timestamp, UserForum::i18n("TIME"));
-        $form1->add($editedat, UserForum::i18n("EDITDAT"));
-        $form1->add($editedby, UserForum::i18n("EDITEDBY"));
-        $form1->add($forum, UserForum::i18n("COMMENT"));
+        $id = $post['id_user_forum'];
+        // echo ($cont['online']);
+        $online = new cHTMLButton("online");
+        if ($post['online'] == 1) {
+            $form1->setActionButton("test", $cfg['path']['images'] . 'online.gif');
+        } else {
+            $form1->setActionButton("test", $cfg['path']['images'] . 'offline.gif');
+        }
 
+
+        $form1->addCancel("http://www.google.de");
+
+        $form1->add(UserForum::i18n("USER"), $name, '');
+        $form1->add(UserForum::i18n("EMAIL"), $email, '');
+        $form1->add(UserForum::i18n("LIKE"), $like, '');
+        $form1->add(UserForum::i18n("DISLIKE"), $dislike, '');
+        $form1->add(UserForum::i18n("TIME"), $timestamp, '');
+        $form1->add(UserForum::i18n("EDITDAT"), $editedat, '');
+        $form1->add(UserForum::i18n("EDITEDBY"), $editedby, '');
+        $form1->add(UserForum::i18n("COMMENT"), $forum, '');
 
         // echo $form1->render();
         // return $form1;
         // $form1->add($eselect, "content");
-        $table->appendContent($form1);
+        //$table->appendContent($form1);
 
-        $this->appendContent($table);
+        $this->appendContent($form1);
 
         return $this;
     }
@@ -377,6 +382,10 @@ class ArticleForumRightBottom extends cGuiPage {
 
         return $ret;
     }
+
+
+
+
 
     function normalizeArray($arrforum, &$result, $level = 0) {
         if (is_array($arrforum)) {

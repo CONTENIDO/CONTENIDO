@@ -27,6 +27,43 @@ class ArticleForumCollection extends ItemCollection {
         return $data;
     }
 
+    function deleteComment($id_user_forum)
+    {
+        $cfg = cRegistry::getConfig();
+        $db = cRegistry::getDb();
+        $sql = "DELETE FROM " .$this->table . "WHERE id_user_forum = $id_user_forum;";
+        $db->query($sql);
+    }
+
+    function deleteComments(array $id_user_forum)
+    {
+        $cfg = cRegistry::getConfig();
+        $db = cRegistry::getDb();
+        foreach ($id_user_forum as $key => $id)
+        {
+            $sql = "DELETE FROM " .$this->table . "WHERE id_user_forum = $id;";
+            $db->query($sql);
+        }
+    }
+
+
+    function updateOnlineState($id_user_forum,$onlineState)
+    {
+        $cfg = cRegistry::getConfig();
+        $db = cRegistry::getDb();
+        $sql = "UPDATE"  .$this->table . "SET online = $onlineState WHERE id_user_forum = $id_user_forum;";
+        $db->query($sql);
+    }
+
+    function updateAll($id_user_forum,$name,$email,$like,$dislike)
+   {
+        $cfg = cRegistry::getConfig();
+        $db = cRegistry::getDb();
+        $sql = "UPDATE"  .$this->table . "SET name = $name, email =$email, like = $like, dislike = $dislike WHERE id_user_forum = $id_user_forum;";
+        $db->query($sql);
+    }
+
+
     public function getIdCat($idart)
     {
         $cfg = cRegistry::getConfig();
