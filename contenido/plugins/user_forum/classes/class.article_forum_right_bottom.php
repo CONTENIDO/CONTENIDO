@@ -274,34 +274,39 @@ class ArticleForumRightBottom extends cGuiPage {
         // $form1->add(UserForum::i18n("SAVE"), $eselect);
         // $form1->appendContent($inputName);
 
-        $oTxtLang = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['realname']), 40, 255);
-        $oTxtLang1 = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['email']), 40, 255);
-        $oTxtLang2 = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['like']), 40, 255);
-        $oTxtLang3 = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['dislike']), 40, 255);
-        $oTxtLang4 = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['forum']), 40, 255);
-        $oTxtLang5 = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['timestamp']), 40, 255);
-        $oTxtLang5->setDisabled(true);
-        $oTxtLang6 = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['editedat']), 40, 255);
-        $oTxtLang6->setDisabled(true);
-        $oTxtLang7 = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['editedby']), 40, 255);
-        $oTxtLang7->setDisabled(true);
-        // $oTxtLang6 = new cHTMLTextBox("langname",
-        // conHtmlSpecialChars($cont['']), 40, 255);
-        // conHtmlSpecialChars($db->f("name")), 40, 255);
-        // $page->setContent($form);
 
-        $form1->add($oTxtLang, UserForum::i18n("USER"));
-        $form1->add($oTxtLang1, UserForum::i18n("EMAIL"));
-        $form1->add($oTxtLang2, UserForum::i18n("LIKE"));
-        $form1->add($oTxtLang3, UserForum::i18n("DISLIKE"));
-        $form1->add($oTxtLang5, "TIME");
-        $form1->add($oTxtLang6, "EDITDAT");
-        $form1->add($oTxtLang7, "EDITBY");
-        $form1->add($oTxtLang4, UserForum::i18n("COMMENT"));
+        //Dialog EDITMODE :
+
+
+//         $oTxtLang = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['realname']), 40, 255);
+//         $oTxtLang1 = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['email']), 40, 255);
+//         $oTxtLang2 = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['like']), 40, 255);
+//         $oTxtLang3 = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['dislike']), 40, 255);
+//         $oTxtLang4 = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['forum']), 40, 255);
+//         $oTxtLang5 = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['timestamp']), 40, 255);
+//         $oTxtLang5->setDisabled(true);
+//         $oTxtLang6 = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['editedat']), 40, 255);
+//         $oTxtLang6->setDisabled(true);
+//         $oTxtLang7 = new cHTMLTextBox("langname", conHtmlSpecialChars($cont['editedby']), 40, 255);
+//         $oTxtLang7->setDisabled(true);
+//         // $oTxtLang6 = new cHTMLTextBox("langname",
+//         // conHtmlSpecialChars($cont['']), 40, 255);
+//         // conHtmlSpecialChars($db->f("name")), 40, 255);
+//         // $page->setContent($form);
+
+//         $form1->add($oTxtLang, UserForum::i18n("USER"));
+//         $form1->add($oTxtLang1, UserForum::i18n("EMAIL"));
+//         $form1->add($oTxtLang2, UserForum::i18n("LIKE"));
+//         $form1->add($oTxtLang3, UserForum::i18n("DISLIKE"));
+//         $form1->add($oTxtLang5, "TIME");
+//         $form1->add($oTxtLang6, "EDITDAT");
+//         $form1->add($oTxtLang7, "EDITBY");
+//         $form1->add($oTxtLang4, UserForum::i18n("COMMENT"));
+//         echo $form1->render();
 
         // $form1->add($eselect, "content");
 
-        echo $form1->render();
+
 
         return $this;
     }
