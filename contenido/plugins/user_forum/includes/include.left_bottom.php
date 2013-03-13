@@ -1,17 +1,18 @@
 <?php
 $arts = new ArticleForumCollection();
 
-$leftButtom = new ArticleForumLeftBottom('left_bottom','commentedArticleList');
+$leftBottom = new ArticleForumLeftBottom('left_bottom','commentedArticleList');
 
 
 if($_GET['action'] ==='delete_form')
 {
     $arts->deleteAllCommentsById($_GET['idart']);
-    $leftButtom->getMenu()->render();
 
 }
-else {
-    $leftButtom->getMenu()->render();
-}
+
+$page = new cGuiPage("rights_menu");
+$menu = $leftBottom->getMenu();
+$page->setContent($menu);
+$page->render();
 
 ?>
