@@ -2,23 +2,6 @@
 global $area;
 class ArticleForumRightBottom extends cGuiPage {
 
-    // von Timo ...
-    // $form = new cGuiTableForm("lang_properties");
-    // $form->setVar("idlang", $idlang);
-    // $form->setVar("targetclient", $db->f("idclient"));
-    // $form->setVar("action", "lang_edit");
-    // $form->setVar("area", $area);
-    // $form->setVar("frame", $frame);
-    // [15:46:56] Timo Trautmann: $eselect = new
-    // cHTMLSelectElement("sencoding");
-    // $eselect->setStyle('width:255px');
-    // $eselect->autoFill($charsets);
-    // $eselect->setDefault($db->f("encoding"));
-    // [15:47:07] Timo Trautmann: $form->add(i18n("Encoding"), $eselect);
-    // [15:47:13] Timo Trautmann: $oTxtLang = new cHTMLTextBox("langname",
-    // conHtmlSpecialChars($db->f("name")), 40, 255);
-    // [15:47:21] Timo Trautmann: $page->setContent($form);
-    // private $_res = array();
     private $_indentFactor = 20;
 
     function getResult() {
