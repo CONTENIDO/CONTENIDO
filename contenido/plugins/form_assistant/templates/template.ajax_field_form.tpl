@@ -35,9 +35,10 @@ GENERAL SETTINGS
 
     {if $field->showField('label')}
     <div class="display_label">
-        <span id="display-descr">&nbsp;</span>
-        <input type="checkbox" id="display_label" name="display_label" {if 1 eq $field->get('display_label')} checked="checked"{/if}/>
-        <label for="display_label">{$trans.displayLabel}</label>
+        <div class="indented">
+            <input type="checkbox" id="display_label" name="display_label" {if 1 eq $field->get('display_label')} checked="checked"{/if}/>
+            <label for="display_label">{$trans.displayLabel}</label>
+        </div>
     </div>
     {/if}
 

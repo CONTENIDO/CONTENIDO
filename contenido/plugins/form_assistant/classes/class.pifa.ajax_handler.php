@@ -195,7 +195,7 @@ class PifaAjaxHandler {
         $tpl->assign('field', $field);
 
         // CSS classes
-        $tpl->assign('cssClasses', explode(',', getEffectiveSetting('pifa', 'field-css-classes', 'pifa-field-1,pifa-field-2,pifa-field-3')));
+        $tpl->assign('cssClasses', explode(',', getEffectiveSetting('pifa', 'field-css-classes', 'half-row,full-row,line-bottom,line-top')));
 
         // option classes (external options datasources)
         $tpl->assign('optionClasses', $optionClasses);

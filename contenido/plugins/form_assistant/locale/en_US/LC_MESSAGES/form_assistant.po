@@ -114,7 +114,7 @@ msgstr "styling"
 msgid "CSS_CLASS"
 msgstr "CSS class"
 
-msgid "EXTERNAL_OPTIONS_DATASOURCE2"
+msgid "EXTERNAL_OPTIONS_DATASOURCE"
 msgstr "external options datasource"
 
 msgid "EDIT"

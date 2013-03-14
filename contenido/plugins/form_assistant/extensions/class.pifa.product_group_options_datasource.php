@@ -70,7 +70,7 @@ class ProductGroupOptionsDatasource extends PifaExternalOptionsDatasourceInterfa
 
         // get options
         $options = array(
-            'n/a' => Pifa::i18n("CHOOSE_CATEGORY")
+            'n/a' => mi18n("CHOOSE_OPTION")
         );
         foreach ($structure->categories as $category) {
             foreach ($category->children as $subcategory) {

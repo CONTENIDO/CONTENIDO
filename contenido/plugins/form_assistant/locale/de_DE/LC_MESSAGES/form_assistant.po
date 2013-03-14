@@ -114,7 +114,7 @@ msgstr "Formatierung"
 msgid "CSS_CLASS"
 msgstr "CSS-Klasse"
 
-msgid "EXTERNAL_OPTIONS_DATASOURCE2"
+msgid "EXTERNAL_OPTIONS_DATASOURCE"
 msgstr "externe Datenquelle für Optionen"
 
 msgid "EDIT"
