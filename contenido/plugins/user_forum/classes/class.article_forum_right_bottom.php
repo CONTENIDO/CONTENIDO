@@ -20,21 +20,21 @@ class ArticleForumRightBottom extends cGuiPage {
         parent::__construct('right_bottom', 'forumlist');
     }
 
-    function getMaxLevel(&$forum_content) {
-        $max = 0;
+    // function getMaxLevel(&$forum_content) {
+    // $max = 0;
 
-        foreach ($forum_content as $key => $content) {
-            if ($content['level'] > $max) {
-                $max = $content['level'];
-            }
-        }
-        return $max;
-    }
-
+    // foreach ($forum_content as $key => $content) {
+    // if ($content['level'] > $max) {
+    // $max = $content['level'];
+    // }
+    // }
+    // return $max;
+    // }
     function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0) {
         $db = cRegistry::getDb();
 
-        $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat) AND (idlang = $id_lang) AND (id_user_forum_parent = $parent) ORDER BY timestamp DESC";
+        $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat)
+                 AND (idlang = $id_lang) AND (id_user_forum_parent = $parent) ORDER BY timestamp DESC";
 
         $db->query($query);
 
@@ -65,20 +65,25 @@ class ArticleForumRightBottom extends cGuiPage {
             $arrforum[$db->f('id_user_forum')]['online'] = $db->f('online');
             $arrforum[$db->f('id_user_forum')]['editedat'] = $db->f('editedat');
             $arrforum[$db->f('id_user_forum')]['editedby'] = $db->f('editedby');
-            //
+
             $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum[$db->f('id_user_forum')]['children'], $db->f('id_user_forum'));
         }
     }
 
+    /**
+     * generate main menu
+     *
+     * @param $result array with comments
+     * @return ArticleForumRightBottom
+     */
     function getMenu(&$result) {
-        $maxWidth = $this->getMaxLevel($result);
-        $maxHeight = count($result);
-
+        // $maxWidth = $this->getMaxLevel($result);
+        // $maxHeight = count($result);
         $testet = new cHTMLContentElement();
-        $testet->setID("Content");
+        $testet->setID('Content');
 
         $table = new cHTMLTable();
-        $table->setCellPadding("100px");
+        $table->setCellPadding('100px');
         global $area;
         $table->updateAttributes(array(
             "class" => "generic",
@@ -127,9 +132,11 @@ class ArticleForumRightBottom extends cGuiPage {
             if ($cont['online'] == 1) {
                 $online->setImage($cfg['path']['images'] . 'online.gif');
                 $online->setCustom('action', 'online_toggle');
+                $online->setAlt(UserForum::i18n('SETOFFLINE'));
             } else {
                 $online->setImage($cfg['path']['images'] . 'offline.gif');
                 $online->setCustom('action', 'offline_toggle');
+                $online->setAlt(UserForum::i18n('SETONLINE'));
             }
 
             $online->setCLink($area, 4, 'show_form');
@@ -147,12 +154,30 @@ class ArticleForumRightBottom extends cGuiPage {
             $edit->setMode('image');
             $edit->setAlt(UserForum::i18n('EDIT'));
 
-            $delete = new cHTMLButton("save");
-            $delete->setImageSource($cfg['path']['images'] . 'delete.gif');
-            $id = $cont['id_user_forum'];
-            $delete->setEvent('click', "$('form[name=$id]').submit()");
+            $delete = new cHTMLLink();
+            $delete->setImage($cfg['path']['images'] . 'delete.gif');
             $delete->setAlt(UserForum::i18n('DELETE'));
-            $delete->setMode('image');
+
+            $delete->setCLink($area, 4, 'show_form');
+            $delete->setTargetFrame('right_bottom');
+            $delete->setCustom('action', 'deleteComment');
+            $delete->setCustom('level', $cont['level']);
+            $delete->setCustom('id_user_forum', $cont['id_user_forum']);
+            $delete->setCustom('idcat', $cont['idcat']);
+            $delete->setCustom('idart', $cont['idart']);
+
+            // $delete->setAttribute('method', 'get');
+
+            // $online->setCustom('idart', $cont['idart']);
+            // $online->setCustom('id_user_forum', $cont['id_user_forum']);
+            // $online->setCustom('idcat', $cont['idcat']);
+            // $online->setCustom('online', $cont['online']);
+
+            // $delete->setImageSource($cfg['path']['images'] . 'delete.gif');
+            // $id = $cont['id_user_forum'];
+            // $delete->setEvent('click', "$('form[name=$id]').submit()");
+            // $delete->setAlt(UserForum::i18n('DELETE'));
+            // $delete->setMode('image');
 
             // row
             $tr = new cHTMLTableRow();
@@ -164,7 +189,8 @@ class ArticleForumRightBottom extends cGuiPage {
             $tdForm->setStyle('padding-left:' . $cont['level'] * $this->_indentFactor . 'px');
 
             $tdButtons = new cHTMLTableData();
-            $tdButtons->setStyle('padding-bottom:130px');
+            $tdButtons->setAttribute('valign', 'top');
+            $tdButtons->setStyle('padding-left:4px');
             $tdButtons->appendContent($online);
             $tdButtons->appendContent($edit);
             $tdButtons->appendContent($delete);
@@ -236,6 +262,12 @@ class ArticleForumRightBottom extends cGuiPage {
         return $this;
     }
 
+    /**
+     * generate dialog for editmode
+     *
+     * @param unknown $post
+     * @return ArticleForumRightBottom
+     */
     function getEditModeMenu($post) {
         global $area;
         $cfg = cRegistry::getConfig();
@@ -243,19 +275,17 @@ class ArticleForumRightBottom extends cGuiPage {
         $lang = cRegistry::getLanguageId();
 
         $menu = new cGuiMenu();
-
-        // $table = new cHTMLTable();
         $tr = new cHTMLTableRow();
 
         $th = new cHTMLTableHead();
         $th->setContent(UserForum::i18n("PARAMETER", "user_forum"));
-        $tr->appendContent($th);
 
-        $th = new cHTMLTableHead();
-        $th->setContent(UserForum::i18n("CONTENT", "user_forum"));
-        $th->setStyle('widht:50px');
-        $th->setAttribute('valign', 'top');
+        $th2 = new cHTMLTableHead();
+        $th2->setContent(UserForum::i18n("CONTENT", "user_forum"));
+        $th2->setStyle('widht:50px');
+        $th2->setAttribute('valign', 'top');
         $tr->appendContent($th);
+        $tr->appendContent($th2);
 
         $form1 = new cGuiTableForm("comment", "main.php?area=user_forum&frame=4", "post");
         $form1->addHeader($tr);
@@ -358,29 +388,51 @@ class ArticleForumRightBottom extends cGuiPage {
         }
     }
 
+    /**
+     * toggles the given input with update in db.
+     *
+     * @param $onlineState
+     * @param primary key $id_user_forum
+     */
     public function toggleOnlineState($onlineState, $id_user_forum) {
         global $cfg;
 
         ($onlineState == 0)? $onlineState = 1 : $onlineState = 0;
 
         $db = cRegistry::getDb();
-
         $query = "UPDATE con_pi_user_forum SET online = $onlineState WHERE id_user_forum = $id_user_forum;";
-
         $db->query($query);
     }
 
+    /**
+     * set updates to db.
+     *
+     * parameters from user editdialog:
+     *
+     * @param primary key $id_user_forum
+     * @param $name
+     * @param $email
+     * @param $like
+     * @param $dislike
+     * @param $forum
+     * @param $online
+     * @param $checked
+     */
     public function updateValues($id_user_forum, $name, $email, $like, $dislike, $forum, $online, $checked) {
+        // method receives checked as string, DB needs integer.
         ($checked === 'set_online')? $online = 1 : $online = 0;
+        // check for negative inputs
         ($like >= 0)?  : $like = 0;
         ($dislike >= 0)?  : $dislike = 0;
-
+        // actual user
         $uuid = cRegistry::getAuth()->isAuthenticated();
         $timeStamp = date('Y-m-d H:i:s', time());
 
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-        $sql = "UPDATE con_pi_user_forum SET `realname` = '$name' ,`editedby` = '$uuid'  , `email` = '$email' , `forum` = '$forum' , `editedat` = '$timeStamp' , `like` = $like , `dislike` = $dislike , `online` = $online  WHERE id_user_forum = 26;";
+        $sql = "UPDATE con_pi_user_forum SET `realname` = '$name' ,`editedby` = '$uuid'  , `email` = '$email' ,
+               `forum` = '$forum' , `editedat` = '$timeStamp' , `like` = $like , `dislike` = $dislike ,
+               `online` = $online  WHERE id_user_forum = $id_user_forum;";
 
         $db->query($sql);
     }

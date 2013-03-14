@@ -28,7 +28,6 @@ if (isset($_POST['realname'])) {
             case 'update':
                 echo "JETZTABER!";
                 $right->updateValues($_POST['id_user_forum'], $_POST['realname'], $_POST['email'], $_POST['like'], $_POST['dislike'], $_POST['forum'], $_POST['online'], $_POST['onlineState']);
-
                 break;
 
             default:
@@ -49,29 +48,17 @@ if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
         switch ($action) {
 
             case 'online_toggle':
-                // echo 'online_toggle';
-                // echo $_POST['online'];
                 $right->toggleOnlineState($_GET['online'], $_GET['id_user_forum']);
-                // $collection = new ArticleForumCollection($sTable,
-                // $sPrimaryKey)
-                // $right = new ArticleForumRightBottom("content");
-                // $test = $right->getEditModeMenu($_POST);
-                // $test->render();
                 break;
 
-            case 'save':
+            case 'delete':
                 echo 'save';
-                break;
-
-            case 'edit':
-                echo 'edit';
                 break;
 
             default:
                 throw new Exception('$_GET["action"] type ' . $_GET["action"] . ' not implemented');
         }
     }
-
     $cfg = cRegistry::getConfig();
     $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();

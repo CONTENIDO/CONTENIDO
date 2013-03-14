@@ -30,7 +30,7 @@ class ArticleForumCollection extends ItemCollection {
     function deleteComment($id_user_forum) {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-        $sql = "DELETE FROM " . $this->table . "WHERE id_user_forum = $id_user_forum;";
+        $sql = "DELETE FROM " . $this->table . " WHERE id_user_forum = $id_user_forum;";
         $db->query($sql);
     }
 

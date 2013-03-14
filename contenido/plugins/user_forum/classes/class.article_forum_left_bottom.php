@@ -27,12 +27,9 @@ class ArticleForumLeftBottom extends cGuiPage {
         for ($i = 0; $i < count($forms); $i++) {
 
             $res = $arts->getIdCat($result[$i]['idart']);
-
-            // $idform = " " ;//$result[$i]['title'];
             $formName = $result[$i]['title'];
 
-            $menu->setTitle($idform, $formName);
-            // $menu->setImage($idform, $formIcon);
+            $menu->setTitle("", $formName);
 
             // add 'show form' link
             $link = new cHTMLLink();
@@ -41,18 +38,18 @@ class ArticleForumLeftBottom extends cGuiPage {
             $link->setCustom('idart', $result[$i]['idart']);
             $link->setCustom('idcat', $res[0]['idcat']);
             $link->setContent('name ' . $formName);
-            $menu->setLink($idform, $link);
+            $menu->setLink("", $link);
 
             // add 'delete' action
             $delete = new cHTMLLink();
-            $delete->setCLink($area, 4, 'delete_form');
+            $delete->setCLink($area, 2, 'delete_form');
             $delete->setTargetFrame('left_bottom');
             $delete->setCustom('idart', $result[$i]['idart']);
-            $delete->setClass('pifa-icon-delete-form');
-            $deleteForm = Pifa::i18n('DELETE_FORM');
+            //$delete->setClass('pifa-icon-delete-form');
+            $deleteForm = UserForum::i18n('DELETE_COMMENTS');
             $delete->setAlt($deleteForm);
             $delete->setContent('<img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');
-            $menu->setActions($idform, 'delete', $delete);
+            $menu->setActions("", 'delete', $delete);
 
             $tt->appendContent($menu);
         }

@@ -18,13 +18,13 @@ msgstr ""
 ; class.article_forum_right_bottom.php
 
 msgid "EDIT"
-msgstr "Editieren"
+msgstr "Kommentar editieren"
 
 msgid "SAVE"
 msgstr "Speichern"
 
 msgid "DELETE"
-msgstr "Löschen"
+msgstr "Kommentar löschen"
 
 msgid "USER"
 msgstr "Name"
@@ -52,6 +52,19 @@ msgstr "zuletztet editiert"
 
 msgid "EDITEDBY"
 msgstr "editiert von"
+
+msgid "SETONLINE"
+msgstr " Kommentar online setzen"
+
+msgid "SETOFFLINE"
+msgstr " Kommentar offline setzen"
+
+
+; class.article_forum_left_bottom.php
+
+msgid "DELETE_COMMENTS"
+msgstr "Kommentare löschen"
+
 
 
 

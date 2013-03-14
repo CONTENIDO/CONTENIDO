@@ -53,3 +53,16 @@ msgstr "last edit"
 msgid "EDITEDBY"
 msgstr "edited from"
 
+msgid "SETONLINE"
+msgstr "set comment online"
+
+msgid "SETOFFLINE"
+msgstr "set comment offline"
+
+
+; class.article_forum_left_bottom.php
+
+msgid "DELETE_COMMENTS"
+msgstr "delete comments"
+
+
