@@ -1,18 +1,14 @@
 <?php
-class ArticleForumLeftBottom extends cGuiPage{
+class ArticleForumLeftBottom extends cGuiPage {
 
-    function __construct(){
+    function __construct() {
         parent::__construct('left_bottom', 'articlelist');
     }
 
-
-
-    public function getMenu()
-    {
-
+    public function getMenu() {
         $arts = new ArticleForumCollection();
         $result = $arts->getAllCommentedArticles();
-       // echo $result['idcat'];
+        // echo $result['idcat'];
 
         $tt = new cHTMLList();
         global $area;
@@ -22,7 +18,7 @@ class ArticleForumLeftBottom extends cGuiPage{
         $lang = cRegistry::getLanguageId();
 
         // get all forms of current client in current language
-        $forms =  $arts->getAllCommentedArticles();
+        $forms = $arts->getAllCommentedArticles();
 
         if (false === $forms) {
             return '';
@@ -32,22 +28,18 @@ class ArticleForumLeftBottom extends cGuiPage{
 
         // create menu
 
-      //  var_dump($result);
+        // var_dump($result);
 
-       // $ar = Array();
+        // $ar = Array();
 
-
-        /////////// Tabelle +1 Spalte für Elemente
-
-
+        // ///////// Tabelle +1 Spalte für Elemente
 
         $menu = new cGuiMenu();
-        for($i = 0; $i<count($forms); $i++){
+        for ($i = 0; $i < count($forms); $i++) {
 
+            $res = $arts->getIdCat($result[$i]['idart']);
 
-           $res= $arts->getIdCat($result[$i]['idart']);
-
-//             $idform = " " ;//$result[$i]['title'];
+            // $idform = " " ;//$result[$i]['title'];
             $formName = $result[$i]['title'];
 
             $menu->setTitle($idform, $formName);
@@ -75,15 +67,12 @@ class ArticleForumLeftBottom extends cGuiPage{
             $menu->setActions($idform, 'delete', $delete);
 
             $tt->appendContent($menu);
-
         }
 
-        //print_r($ar);
+        // print_r($ar);
         return $tt;
-
     }
 
 }
-
 
 ?>

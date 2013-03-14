@@ -447,12 +447,17 @@ class ArticleForumRightBottom extends cGuiPage {
 
     public function updateValues($id_user_forum, $name, $email, $like, $dislike, $forum, $online, $checked) {
         ($checked === 'set_online')? $online = 1 : $online = 0;
-        //($checked === '' && $checked == 1)? $online = 0 : $online = 1;
-        $like = 5;
+        ($like >= 0)?  : $like = 0;
+        ($dislike >= 0)?  : $dislike = 0;
+
+        $uuid = cRegistry::getAuth()->isAuthenticated();
+        $timeStamp = date('Y-m-d H:i:s', time());
+
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-        $sql = "UPDATE con_pi_user_forum SET `realname` = '$name' , `email` = '$email' , `forum` = '$forum' , `like` = $like , `dislike` = $dislike , `online` = $online  WHERE id_user_forum = 26;";
-        //, email = $email, like = $like, dislike = $dislike forum = $forum online = $online
+        $sql = "UPDATE con_pi_user_forum SET `realname` = '$name' ,`editedby` = '$uuid'  , `email` = '$email' , `forum` = '$forum' , `editedat` = '$timeStamp' , `like` = $like , `dislike` = $dislike , `online` = $online  WHERE id_user_forum = 26;";
+        // , email = $email, like = $like, dislike = $dislike forum = $forum
+        // online = $online
         $db->query($sql);
     }
 
