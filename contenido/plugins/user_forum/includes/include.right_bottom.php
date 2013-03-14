@@ -2,6 +2,7 @@
 print_r($_POST);
 print_r($_GET);
 if (isset($_POST['realname'])) {
+
     $idcat = $_POST['idcat'];
     $idart = $_POST['idart'];
 
@@ -26,7 +27,6 @@ if (isset($_POST['realname'])) {
                 break;
 
             case 'update':
-                echo "JETZTABER!";
                 $right->updateValues($_POST['id_user_forum'], $_POST['realname'], $_POST['email'], $_POST['like'], $_POST['dislike'], $_POST['forum'], $_POST['online'], $_POST['onlineState']);
                 break;
 

@@ -30,6 +30,7 @@ class ArticleForumRightBottom extends cGuiPage {
     // }
     // return $max;
     // }
+
     function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0) {
         $db = cRegistry::getDb();
 
@@ -77,8 +78,7 @@ class ArticleForumRightBottom extends cGuiPage {
      * @return ArticleForumRightBottom
      */
     function getMenu(&$result) {
-        // $maxWidth = $this->getMaxLevel($result);
-        // $maxHeight = count($result);
+
         $testet = new cHTMLContentElement();
         $testet->setID('Content');
 
@@ -167,12 +167,10 @@ class ArticleForumRightBottom extends cGuiPage {
             $delete->setCustom('idart', $cont['idart']);
 
             // $delete->setAttribute('method', 'get');
-
             // $online->setCustom('idart', $cont['idart']);
             // $online->setCustom('id_user_forum', $cont['id_user_forum']);
             // $online->setCustom('idcat', $cont['idcat']);
             // $online->setCustom('online', $cont['online']);
-
             // $delete->setImageSource($cfg['path']['images'] . 'delete.gif');
             // $id = $cont['id_user_forum'];
             // $delete->setEvent('click', "$('form[name=$id]').submit()");
