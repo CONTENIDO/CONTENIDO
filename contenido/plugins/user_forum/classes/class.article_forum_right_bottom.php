@@ -445,9 +445,11 @@ class ArticleForumRightBottom extends cGuiPage {
 
     public function updateValues($id_user_forum, $name, $email, $like, $dislike, $forum, $online) {
         ($online === 'online')? $online = 1 : $online = 0;
+        $like = 5;
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-        $sql = "UPDATE con_pi_user_forum SET realname = $name, email =$email, like = $like, dislike = $dislike forum = $forum online = $online  WHERE id_user_forum = $id_user_forum;";
+        $sql = "UPDATE con_pi_user_forum SET `realname` = '$name' , `email` = '$email' , `forum` = '$forum' , `like` = $like , `dislike` = $dislike , `online` = $online  WHERE id_user_forum = 26;";
+        //, email = $email, like = $like, dislike = $dislike forum = $forum online = $online
         $db->query($sql);
     }
 
