@@ -308,11 +308,13 @@ class ArticleForumRightBottom extends cGuiPage {
         $editedby->setDisabled(true);
 
         if ($post['online'] == 1) {
-            $onlineBox = new cHTMLCheckbox("onlineState", 'online');
-            $onlineBox->setChecked(true);
-        } else {
-            $onlineBox = new cHTMLCheckbox("onlineState", 'offline');
+            $onlineBox = new cHTMLCheckbox("onlineState", 'set_offline');
             $onlineBox->setChecked(false);
+            $form1->setVar("checked", "1");
+        } else {
+            $onlineBox = new cHTMLCheckbox("onlineState", 'set_online');
+            $onlineBox->setChecked(false);
+            $form1->setVar("checked", "0");
         }
 
         // /////////////////////////////
@@ -443,8 +445,9 @@ class ArticleForumRightBottom extends cGuiPage {
         $db->query($query);
     }
 
-    public function updateValues($id_user_forum, $name, $email, $like, $dislike, $forum, $online) {
-        ($online === 'online')? $online = 1 : $online = 0;
+    public function updateValues($id_user_forum, $name, $email, $like, $dislike, $forum, $online, $checked) {
+        ($checked === 'set_online')? $online = 1 : $online = 0;
+        //($checked === '' && $checked == 1)? $online = 0 : $online = 1;
         $like = 5;
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
