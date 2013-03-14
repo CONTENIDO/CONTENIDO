@@ -1,17 +1,16 @@
 <?php
-$arts = new ArticleForumCollection();
 
-$leftBottom = new ArticleForumLeftBottom('left_bottom','commentedArticleList');
-
-
-if($_GET['action'] ==='delete_form')
-{
+// perform action delete_form
+if ($_GET['action'] === 'delete_form') {
+    $arts = new ArticleForumCollection();
     $arts->deleteAllCommentsById($_GET['idart']);
-
 }
 
-$page = new cGuiPage("rights_menu");
+// TODO duplicate instantiation of a cGuiPage
+$leftBottom = new ArticleForumLeftBottom('left_bottom', 'commentedArticleList');
 $menu = $leftBottom->getMenu();
+
+$page = new cGuiPage("rights_menu");
 $page->setContent($menu);
 $page->render();
 
