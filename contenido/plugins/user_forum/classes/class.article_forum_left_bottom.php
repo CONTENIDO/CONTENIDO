@@ -8,7 +8,6 @@ class ArticleForumLeftBottom extends cGuiPage {
     public function getMenu() {
         $arts = new ArticleForumCollection();
         $result = $arts->getAllCommentedArticles();
-        // echo $result['idcat'];
 
         $tt = new cHTMLList();
         global $area;
@@ -24,16 +23,6 @@ class ArticleForumLeftBottom extends cGuiPage {
             return '';
         }
 
-        // $formIcon = Pifa::getUrl() . 'images/icon_form.png';
-
-        // create menu
-
-        // var_dump($result);
-
-        // $ar = Array();
-
-        // ///////// Tabelle +1 Spalte für Elemente
-
         $menu = new cGuiMenu();
         for ($i = 0; $i < count($forms); $i++) {
 
@@ -47,7 +36,6 @@ class ArticleForumLeftBottom extends cGuiPage {
 
             // add 'show form' link
             $link = new cHTMLLink();
-            // main.php?area=form&frame=4&action=show_form&idform=6&contenido=75ijqvmgbgc2dt61gt8pfcmg01
             $link->setCLink($area, 4, 'show_form');
             $link->setTargetFrame('right_bottom');
             $link->setCustom('idart', $result[$i]['idart']);
@@ -69,7 +57,6 @@ class ArticleForumLeftBottom extends cGuiPage {
             $tt->appendContent($menu);
         }
 
-        // print_r($ar);
         return $tt;
     }
 

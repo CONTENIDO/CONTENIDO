@@ -36,6 +36,7 @@ class UserForum {
         $trans = i18n($key, self::$_name);
         return $trans;
     }
+
 }
 
 // define plugin path

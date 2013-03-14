@@ -131,15 +131,14 @@ class ArticleForumRightBottom extends cGuiPage {
 
         // table
         foreach ($result as $key => $cont) {
-            $set = false;
 
+            $set = false;
             $like = $cont['like'];
             $dislike = $cont['dislike'];
             $date = $cont['timestamp'];
 
             // build Buttons
             $id = $cont['id_user_forum'];
-            // echo ($cont['online']);
 
             $online = new cHTMLLink();
             if ($cont['online'] == 1) {
@@ -149,8 +148,8 @@ class ArticleForumRightBottom extends cGuiPage {
                 $online->setImage($cfg['path']['images'] . 'offline.gif');
                 $online->setCustom('action', 'offline_toggle');
             }
-            $online->setCLink($area, 4, 'show_form');
 
+            $online->setCLink($area, 4, 'show_form');
             $online->setTargetFrame('right_bottom');
             $online->setCustom('action', 'online_toggle');
             $online->setCustom('idart', $cont['idart']);
@@ -161,7 +160,6 @@ class ArticleForumRightBottom extends cGuiPage {
 
             $edit = new cHTMLButton("edit");
             $edit->setImageSource($cfg['path']['images'] . 'but_todo.gif');
-
             $edit->setEvent('click', "$('form[name=$id]').submit()");
             $edit->setMode('image');
             $edit->setAlt(UserForum::i18n('EDIT'));
@@ -175,15 +173,15 @@ class ArticleForumRightBottom extends cGuiPage {
 
             // row
             $tr = new cHTMLTableRow();
+
             $form = new cHTMLForm($cont['id_user_forum']);
             $form->setAttribute('action', 'main.php?' . "area=" . $area . '&frame=4');
 
             $tdForm = new cHTMLTableData();
-
             $tdForm->setStyle('padding-left:' . $cont['level'] * $this->_indentFactor . 'px');
+
             $tdButtons = new cHTMLTableData();
             $tdButtons->setStyle('padding-bottom:130px');
-            // $tdButtons->setStyle('padding-left:' . 5 . 'px',);
             $tdButtons->appendContent($online);
             $tdButtons->appendContent($edit);
             $tdButtons->appendContent($delete);
@@ -195,43 +193,30 @@ class ArticleForumRightBottom extends cGuiPage {
             // hidden-fields
             $hiddenIdart = new cHTMLHiddenField('idart');
             $hiddenIdart->setValue($cont['idart']);
-
             $hiddenIdcat = new cHTMLHiddenField('idcat');
             $hiddenIdcat->setValue($cont['idcat']);
-
             $hiddenId_user_forum = new cHTMLHiddenField('id_user_forum');
             $hiddenId_user_forum->setValue($cont['id_user_forum']);
-
             $hiddenLike = new cHTMLHiddenField('like');
             $hiddenLike->setValue($cont['like']);
-
             $hiddenDislike = new cHTMLHiddenField('dislike');
             $hiddenDislike->setValue($cont['dislike']);
-
             $hiddenName = new cHTMLHiddenField('realname');
             $hiddenName->setValue($cont['realname']);
-
             $hiddenEmail = new cHTMLHiddenField('email');
             $hiddenEmail->setValue($cont['email']);
-
             $hiddenLevel = new cHTMLHiddenField('level');
             $hiddenLevel->setValue($cont['level']);
-
             $hiddenEditdat = new cHTMLHiddenField('editedat');
             $hiddenEditdat->setValue($cont['editedat']);
-
             $hiddenEditedby = new cHTMLHiddenField('editedby');
             $hiddenEditedby->setValue($cont['editedby']);
-
             $hiddenTimestamp = new cHTMLHiddenField('timestamp');
             $hiddenTimestamp->setValue($cont['timestamp']);
-
             $hiddenForum = new cHTMLHiddenField('forum');
             $hiddenForum->setValue($cont['forum']);
-
             $hiddenOnline = new cHTMLHiddenField('online');
             $hiddenOnline->setValue($cont['online']);
-
             $hiddenMode = new cHTMLHiddenField('mode');
             $hiddenMode->setValue('edit');
 
@@ -277,7 +262,6 @@ class ArticleForumRightBottom extends cGuiPage {
         $menu = new cGuiMenu();
 
         // $table = new cHTMLTable();
-
         $tr = new cHTMLTableRow();
 
         $th = new cHTMLTableHead();
@@ -292,6 +276,7 @@ class ArticleForumRightBottom extends cGuiPage {
 
         $form1 = new cGuiTableForm("comment", "main.php?area=user_forum&frame=4", "post");
         $form1->addHeader($tr);
+
         // Dialog EDITMODE :
         $id = $post['id_user_forum'];
 
@@ -317,48 +302,13 @@ class ArticleForumRightBottom extends cGuiPage {
             $form1->setVar("checked", "0");
         }
 
-        // /////////////////////////////
-        // $id = $post['id_user_forum'];
-        // $online = new cHTMLLink();
-
         $hidden = new cHTMLHiddenField("test");
         $hidden->setValue("blabla");
-        // $online->setCLink($area, 4, 'show_form');
-        // $online->setTargetFrame('right_bottom');
-        // $online->setTargetFrame('right_bottom');
-        // $online->setCustom('action', 'online_toggle');
-        // $online->setCustom('idart', $post['idart']);
-        // $online->setCustom('id_user_forum', $post['id_user_forum']);
-        // $online->setCustom('idcat', $post['idcat']);
-        // $online->setCustom('online', $post['online']);
-        // $online->setCustom('realname', $post['realname']);
-        // $online->setAttribute('method', 'POST');
-        // if ($post['online'] == 1) {
-        // $online->setImage($cfg['path']['images'] . 'online.gif');
-        // $online->setCustom('action', 'online_toggle');
-        // // $form1->setActionButton("test", $cfg['path']['images'] .
-        // // 'online.gif');
-        // } else {
-        // $online->setImage($cfg['path']['images'] . 'offline.gif');
-        // $online->setCustom('action', 'online_toggle');
-        // // $form1->setActionButton("test", $cfg['path']['images'] .
-        // // 'offline.gif');
-        // }
 
-        // $td = new cHTMLTableData();
-        // $td->appendContent($online);
-        // $this->appendContent($td);
+        $idart = $post['idart'];
+        $idcat = $post['idcat'];
+        $form1->addCancel("main.php?area=user_forum&frame=4&action=back&idart=$idart&idcat=$idcat");
 
-        // $idart = $post['idart'];
-
-        // $idcat = $post['idart'];
-        // $idart = $post['idcat'];
-
-        // $hid = new cHTMLHiddenField('id_user_forum');
-        // $hid->setValue($post['id_user_forum']);
-
-        $form1->addCancel("main.php?area=user_forum&frame=4&action=show_form");
-        // $form1->add($hid,'');
         $form1->add(UserForum::i18n("USER"), $name, '');
         $form1->add(UserForum::i18n("EMAIL"), $email, '');
         $form1->add(UserForum::i18n("LIKE"), $like, '');
@@ -367,21 +317,14 @@ class ArticleForumRightBottom extends cGuiPage {
         $form1->add(UserForum::i18n("EDITDAT"), $editedat, '');
         $form1->add(UserForum::i18n("EDITEDBY"), $editedby, '');
         $form1->add(UserForum::i18n("STATUS"), $onlineBox, '');
-        // $form1->add(UserForum::i18n("IDCAT"), $idcat, '');
-        // $form1->add(UserForum::i18n("IDART"), $idart, '');
-        // $form1->add(UserForum::i18n("ID_USER_FORUM"), $id_user_forum, '');
         $form1->setVar("id_user_forum", $post['id_user_forum']);
         $form1->setVar("idart", $post['idart']);
         $form1->setVar("idcat", $post['idcat']);
         $form1->setVar("action", 'update');
         $form1->setVar("mode", "list");
 
-        // $form1->setVar("onlineState", $post['online']);
-        // $form1->add(UserForum::i18n("ID_USER_FORUM"), $hidden, '');
-
         $form1->add(UserForum::i18n("COMMENT"), $forum, '');
 
-        // $this->appendContent($hid);
         $this->appendContent($form1);
 
         return $this;
@@ -416,7 +359,6 @@ class ArticleForumRightBottom extends cGuiPage {
 
         $result = array();
         $this->normalizeArray($arrforum, $result);
-        // $this->_res = $result;
         $ret = $this->getMenu($result);
 
         return $ret;
@@ -456,11 +398,9 @@ class ArticleForumRightBottom extends cGuiPage {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
         $sql = "UPDATE con_pi_user_forum SET `realname` = '$name' ,`editedby` = '$uuid'  , `email` = '$email' , `forum` = '$forum' , `editedat` = '$timeStamp' , `like` = $like , `dislike` = $dislike , `online` = $online  WHERE id_user_forum = 26;";
-        // , email = $email, like = $like, dislike = $dislike forum = $forum
-        // online = $online
+
         $db->query($sql);
     }
 
-    // getExistingforum($idcat, $idart, 1);
 }
 ?>
