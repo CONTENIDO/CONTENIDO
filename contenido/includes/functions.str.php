@@ -419,7 +419,6 @@ function strNextDeeperAll($idcat, $ignoreLang = false) {
  * @return  void
  */
 function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
-    global $client;
 
     if (trim($newCategoryName) == '') {
         return;
@@ -431,14 +430,22 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
         return;
     }
 
+    $oldData = array(
+        'idcat' => $oCatLang->get('idcat'),
+        'name' => $oCatLang->get('name'),
+        'urlname' => $oCatLang->get('urlname')
+    );
+
     $name = $newCategoryName;
     $urlName = (trim($newCategoryAlias) != '') ? trim($newCategoryAlias) : $newCategoryName;
 
     if (trim($newCategoryAlias) != '') {
-        if ($oCatLang->get('urlname') != $newCategoryAlias) {
-            $urlName = $newCategoryAlias;
-        }
+        // overfluous assignment
+        // if ($oCatLang->get('urlname') != $newCategoryAlias) {
+        // $urlName = $newCategoryAlias;
+        // }
         cInclude('includes', 'functions.pathresolver.php');
+        $client = cRegistry::getClientId();
         prDeleteCacheFileContent($client, $lang);
     }
 
@@ -446,6 +453,15 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
     $oCatLang->set('urlname', $urlName);
     $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
     $oCatLang->store();
+
+    $newData = array(
+        'idcat' => $idcat,
+        'name' => $name,
+        'urlname' => $urlName
+    );
+
+    cApiCecHook::execute('Contenido.Category.strRenameCategory', $newData, $oldData);
+
 }
 
 /**
@@ -457,13 +473,17 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
  * @return  void
  */
 function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
-    global $client;
 
     $oCatLang = new cApiCategoryLanguage();
     if (!$oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
         // Couldn't load category language
         return;
     }
+
+    $oldData = array(
+        'idcat' => $oCatLang->get('idcat'),
+        'urlname' => $oCatLang->get('urlname')
+    );
 
     if (trim($newcategoryalias) == '') {
         // Use categoryname as default -> get it escape it save it as urlname
@@ -475,7 +495,16 @@ function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
     $oCatLang->store();
 
     cInclude('includes', 'functions.pathresolver.php');
+    $client = cRegistry::getClientId();
     prDeleteCacheFileContent($client, $lang);
+
+    $newData = array(
+        'idcat' => $idcat,
+        'urlname' => $newcategoryalias
+    );
+
+    cApiCecHook::execute('Contenido.Category.strRenameCategoryAlias', $newData, $oldData);
+
 }
 
 /**

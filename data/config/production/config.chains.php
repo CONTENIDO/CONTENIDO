@@ -27,7 +27,7 @@ $_cecRegistry = cApiCecRegistry::getInstance();
 /* Chain Contenido.Content.CreateCategoryLink
  * This chain is called when a frontend link to a category should be created.
  *
- * NOTE: The last chain entry "wins" - e.g. if you have two chain functions for
+ * NOTE: The last chain entry 'wins' - e.g. if you have two chain functions for
  * CreateCategoryLink, the last one returns the effective link.
  *
  * Parameters & order:
@@ -36,12 +36,12 @@ $_cecRegistry = cApiCecRegistry::getInstance();
  * Returns:
  * string    The link
  */
-$_cecRegistry->registerChain("Contenido.Content.CreateCategoryLink", "int");
+$_cecRegistry->registerChain('Contenido.Content.CreateCategoryLink', 'int');
 
 /* Chain Contenido.Content.CreateArticleLink
  * This chain is called when a frontend link to an article should be created.
  *
- * NOTE: The last chain entry "wins" - e.g. if you have two chain functions for
+ * NOTE: The last chain entry 'wins' - e.g. if you have two chain functions for
  * CreateArticleLink, the last one returns the effective link.
  *
  * Parameters & order:
@@ -51,7 +51,7 @@ $_cecRegistry->registerChain("Contenido.Content.CreateCategoryLink", "int");
  * Returns:
  * string    The link
  */
-$_cecRegistry->registerChain("Contenido.Content.CreateArticleLink", "int", "int");
+$_cecRegistry->registerChain('Contenido.Content.CreateArticleLink', 'int', 'int');
 
 /* Chain Contenido.Content.SaveContentEntry
  * This chain is called everytime when content is saved
@@ -65,7 +65,7 @@ $_cecRegistry->registerChain("Contenido.Content.CreateArticleLink", "int", "int"
  * Returns:
  * string    The processed value
  */
-$_cecRegistry->registerChain("Contenido.Content.SaveContentEntry", "int", "int", "int", "string");
+$_cecRegistry->registerChain('Contenido.Content.SaveContentEntry', 'int', 'int', 'int', 'string');
 
 /* Chain Contenido.Upload.UploadPreprocess
  * This chain is called everytime a file is uploaded
@@ -78,7 +78,7 @@ $_cecRegistry->registerChain("Contenido.Content.SaveContentEntry", "int", "int",
  * Returns:
  * mixed    Either returns the new filename or false if nothing was processed
  */
-$_cecRegistry->registerChain("Contenido.Upload.UploadPreprocess", "string", "string");
+$_cecRegistry->registerChain('Contenido.Upload.UploadPreprocess', 'string', 'string');
 
 /* Chain Contenido.Upload.UploadPostprocess
  * This chain is called everytime after a file is uploaded and stored in its
@@ -90,7 +90,7 @@ $_cecRegistry->registerChain("Contenido.Upload.UploadPreprocess", "string", "str
  * Returns:
  * nothing
  */
-$_cecRegistry->registerChain("Contenido.Upload.UploadPostprocess", "string");
+$_cecRegistry->registerChain('Contenido.Upload.UploadPostprocess', 'string');
 
 /* Chain Contenido.Frontend.CategoryAccess
  * This chain is called everytime the user tries to access a protected category
@@ -103,7 +103,7 @@ $_cecRegistry->registerChain("Contenido.Upload.UploadPostprocess", "string");
  * Returns:
  * boolean     Returns true if the user is allowed to connect
  */
-$_cecRegistry->registerChain("Contenido.Frontend.CategoryAccess", "int", "int", "string");
+$_cecRegistry->registerChain('Contenido.Frontend.CategoryAccess', 'int', 'int', 'string');
 
 /* Chain Contenido.ArticleCategoryList.ListItems
  * This chain is called when the category list in Content -> Articles should be build
@@ -113,20 +113,20 @@ $_cecRegistry->registerChain("Contenido.Frontend.CategoryAccess", "int", "int", 
  *
  * Returns:
  * array    Array with the items that should be added. Array items:
- *             $array["expandcollapseimage"]    Image which should be placed in front
+ *             $array['expandcollapseimage']    Image which should be placed in front
  *                                             of the folder icon. Recommended size is
  *                                             11x11 pixels so it doesnt break the layout.
  *                                             If empty or not set, a spacer image is
  *                                             inserted.
- *            $array["image"]                    Icon or image for the entry. Size should be
+ *            $array['image']                    Icon or image for the entry. Size should be
  *                                            15x15 pixels. If empty or not set, a 15x15
  *                                            spacer is inserted.
- *            $array["title"]                    Title of the entry, including all links.
- *            $array["bgcolor"]                Background color in hex format, e.g. #123456
- *            $array["id"]                    ID of the table data element
- *            $array["padding"]                Left padding in pixels.
+ *            $array['title']                    Title of the entry, including all links.
+ *            $array['bgcolor']                Background color in hex format, e.g. #123456
+ *            $array['id']                    ID of the table data element
+ *            $array['padding']                Left padding in pixels.
  */
-$_cecRegistry->registerChain("Contenido.ArticleCategoryList.ListItems");
+$_cecRegistry->registerChain('Contenido.ArticleCategoryList.ListItems');
 
 /* Chain Contenido.ArticleList.Columns
  * This chain is used to process the columns of the article list.
@@ -139,18 +139,18 @@ $_cecRegistry->registerChain("Contenido.ArticleCategoryList.ListItems");
  *
  * Notes about the array format:
  * $key is the column key. The following keys are predefined:
- * "start": Start article column
- * "title": Title of the article
- * "changeddate": Last changed date
- * "publisheddate": Published date
- * "sortorder": Sort order
- * "template": Template name
- * "actions": All actions (see the chain Contenido.ArticleList.Actions
+ * 'start': Start article column
+ * 'title': Title of the article
+ * 'changeddate': Last changed date
+ * 'publisheddate': Published date
+ * 'sortorder': Sort order
+ * 'template': Template name
+ * 'actions': All actions (see the chain Contenido.ArticleList.Actions
  *
  * If you want to use own columns, append your own key and title to the
  * array and use the chain Contenido.ArticleList.RenderColumn
  */
-$_cecRegistry->registerChain("Contenido.ArticleList.Columns", "array");
+$_cecRegistry->registerChain('Contenido.ArticleList.Columns', 'array');
 
 /* Chain Contenido.ArticleList.Actions
  * This chain is used to process the actions for articles
@@ -163,18 +163,18 @@ $_cecRegistry->registerChain("Contenido.ArticleList.Columns", "array");
  *
  * Notes about the array format:
  * $key is the action key. The following keys are predefined:
- * "todo": Shows the todo icon
- * "artconf": Shows the article property icon
- * "tplconf": Shows the template configuration icon
- * "online": Shows the online/offline icon
- * "locked": Shows the locked icon
- * "duplicate": Shows the duplicate icon
- * "delete": Shows the delete icon
- * "usetime": Shows the time management icon
+ * 'todo': Shows the todo icon
+ * 'artconf': Shows the article property icon
+ * 'tplconf': Shows the template configuration icon
+ * 'online': Shows the online/offline icon
+ * 'locked': Shows the locked icon
+ * 'duplicate': Shows the duplicate icon
+ * 'delete': Shows the delete icon
+ * 'usetime': Shows the time management icon
  *
  *
  */
-$_cecRegistry->registerChain("Contenido.ArticleList.Actions", "array");
+$_cecRegistry->registerChain('Contenido.ArticleList.Actions', 'array');
 
 /* Chain Contenido.ArticleList.RenderColumn
  * This chain is used to render a single column for a specific article
@@ -189,7 +189,7 @@ $_cecRegistry->registerChain("Contenido.ArticleList.Actions", "array");
  * string    String with the rendered contents
  *
  */
-$_cecRegistry->registerChain("Contenido.ArticleList.RenderColumn", "int", "int", "int", "string");
+$_cecRegistry->registerChain('Contenido.ArticleList.RenderColumn', 'int', 'int', 'int', 'string');
 
 /* Chain Contenido.ArticleList.RenderAction
  * This chain is used to render a single action for a specific article
@@ -204,7 +204,7 @@ $_cecRegistry->registerChain("Contenido.ArticleList.RenderColumn", "int", "int",
  * string    String with the rendered contents
  *
  */
-$_cecRegistry->registerChain("Contenido.ArticleList.RenderAction", "int", "int", "int", "string");
+$_cecRegistry->registerChain('Contenido.ArticleList.RenderAction', 'int', 'int', 'int', 'string');
 
 /* Chain Contenido.CategoryList.Columns
  * This chain is used to process the columns of the category list.
@@ -221,7 +221,7 @@ $_cecRegistry->registerChain("Contenido.ArticleList.RenderAction", "int", "int",
  * If you want to use own columns, append your own key and title to the
  * array and use the chain Contenido.CategoryList.RenderColumn
  */
-$_cecRegistry->registerChain("Contenido.CategoryList.Columns", "array");
+$_cecRegistry->registerChain('Contenido.CategoryList.Columns', 'array');
 
 /* Chain Contenido.CategoryList.RenderColumn
  * This chain is used to render a single column for a specific category
@@ -234,7 +234,7 @@ $_cecRegistry->registerChain("Contenido.CategoryList.Columns", "array");
  * string    String with the rendered contents
  *
  */
-$_cecRegistry->registerChain("Contenido.CategoryList.RenderColumn", "int", "string");
+$_cecRegistry->registerChain('Contenido.CategoryList.RenderColumn', 'int', 'string');
 
 /* Chain Contenido.Content.CopyArticle
  * This chain is called everytime when an article is duplicated
@@ -246,7 +246,7 @@ $_cecRegistry->registerChain("Contenido.CategoryList.RenderColumn", "int", "stri
  * Returns:
  * void
  */
-$_cecRegistry->registerChain("Contenido.Content.CopyArticle", "int", "int");
+$_cecRegistry->registerChain('Contenido.Content.CopyArticle', 'int', 'int');
 
 /* Chain Contenido.Content.CreateMetatags
  * This chain is used to build up an user defined metatag array
@@ -258,7 +258,7 @@ $_cecRegistry->registerChain("Contenido.Content.CopyArticle", "int", "int");
  * string    Array containing metatag informations
  *
  */
-$_cecRegistry->registerChain("Contenido.Content.CreateMetatags", "array");
+$_cecRegistry->registerChain('Contenido.Content.CreateMetatags', 'array');
 
 /* Chain Contenido.Content.CreateTitletag
  * This chain is used to build up a user defined title tag
@@ -270,7 +270,7 @@ $_cecRegistry->registerChain("Contenido.Content.CreateMetatags", "array");
  * string    New title tag
  *
  */
-$_cecRegistry->registerChain("Contenido.Content.CreateTitletag");
+$_cecRegistry->registerChain('Contenido.Content.CreateTitletag');
 
 /* Chain Contenido.Frontend.AllowEdit
  * This chain is used when an article is about to be edited. This chain can be used
@@ -288,7 +288,7 @@ $_cecRegistry->registerChain("Contenido.Content.CreateTitletag");
  *             editing an article with this chain, only disallow it.
  *
  */
-$_cecRegistry->registerChain("Contenido.Frontend.AllowEdit", "int", "int", "int", "string");
+$_cecRegistry->registerChain('Contenido.Frontend.AllowEdit', 'int', 'int', 'int', 'string');
 
 /* Chain Contenido.Permissions.User.Areas
  * This chain returns all areas which should appear in the user rights management.
@@ -300,14 +300,14 @@ $_cecRegistry->registerChain("Contenido.Frontend.AllowEdit", "int", "int", "int"
  * array    Array with all unique technical area names which should appear in the rights management.
  *
  * Return Example:
- * array("mynewarea", "mynewarea2");
+ * array('mynewarea', 'mynewarea2');
  *
  * Note:
  * Technical area names have nothing to do with the areas defined in con_area! Use the chain
  * Contenido.Permissions.GetAreaName to retrieve the localized name of the area.
  *
  */
-$_cecRegistry->registerChain("Contenido.Permissions.User.Areas", "");
+$_cecRegistry->registerChain('Contenido.Permissions.User.Areas', '');
 
 /* Chain Contenido.Permissions.User.GetAreaName
  * This chain returns the localized area name for a technical area name.
@@ -319,7 +319,7 @@ $_cecRegistry->registerChain("Contenido.Permissions.User.Areas", "");
  * mixed    Boolean false if the technical area name is not known, or a string with the localized name.
  *
  */
-$_cecRegistry->registerChain("Contenido.Permissions.User.GetAreaName", "string");
+$_cecRegistry->registerChain('Contenido.Permissions.User.GetAreaName', 'string');
 
 /* Chain Contenido.Permissions.User.GetAreaEditFilename
  * This chain returns the filename required for the permission editor.
@@ -331,7 +331,7 @@ $_cecRegistry->registerChain("Contenido.Permissions.User.GetAreaName", "string")
  * mixed    Boolean false if the technical area name is not known, or a string with the editor filename.
  *
  */
-$_cecRegistry->registerChain("Contenido.Permissions.User.GetAreaEditFilename", "string");
+$_cecRegistry->registerChain('Contenido.Permissions.User.GetAreaEditFilename', 'string');
 
 /* Chain Contenido.Permissions.FrontendUser.AfterDeletion
  * This chain function is called after a frontend user has been deleted from the database
@@ -343,7 +343,7 @@ $_cecRegistry->registerChain("Contenido.Permissions.User.GetAreaEditFilename", "
  * nothing
  *
  */
-$_cecRegistry->registerChain("Contenido.Permissions.FrontendUser.AfterDeletion", "string");
+$_cecRegistry->registerChain('Contenido.Permissions.FrontendUser.AfterDeletion', 'string');
 
 /* Chain Contenido.Permissions.Group.Areas
  * This chain returns all areas which should appear in the group rights management.
@@ -355,14 +355,14 @@ $_cecRegistry->registerChain("Contenido.Permissions.FrontendUser.AfterDeletion",
  * array    Array with all unique technical area names which should appear in the group rights management.
  *
  * Return Example:
- * array("mynewarea", "mynewarea2");
+ * array('mynewarea', 'mynewarea2');
  *
  * Note:
  * Technical area names have nothing to do with the areas defined in con_area! Use the chain
  * Contenido.Permissions.GetAreaName to retrieve the localized name of the area.
  *
  */
-$_cecRegistry->registerChain("Contenido.Permissions.Group.Areas", "");
+$_cecRegistry->registerChain('Contenido.Permissions.Group.Areas', '');
 
 /* Chain Contenido.Permissions.Group.GetAreaName
  * This chain returns the localized area name for a technical area name.
@@ -374,7 +374,7 @@ $_cecRegistry->registerChain("Contenido.Permissions.Group.Areas", "");
  * mixed    Boolean false if the technical area name is not known, or a string with the localized name.
  *
  */
-$_cecRegistry->registerChain("Contenido.Permissions.Group.GetAreaName", "string");
+$_cecRegistry->registerChain('Contenido.Permissions.Group.GetAreaName', 'string');
 
 /* Chain Contenido.Permissions.Group.GetAreaEditFilename
  * This chain returns the filename required for the permission editor.
@@ -386,7 +386,7 @@ $_cecRegistry->registerChain("Contenido.Permissions.Group.GetAreaName", "string"
  * mixed    Boolean false if the technical area name is not known, or a string with the editor filename.
  *
  */
-$_cecRegistry->registerChain("Contenido.Permissions.Group.GetAreaEditFilename", "string");
+$_cecRegistry->registerChain('Contenido.Permissions.Group.GetAreaEditFilename', 'string');
 
 /* Chain Contenido.Article.RegisterCustomTab
  * This chain registers a custom tab into the main article subnavigation (Overview/Properties/Configuration/Editor/Preview/***)
@@ -398,7 +398,7 @@ $_cecRegistry->registerChain("Contenido.Permissions.Group.GetAreaEditFilename", 
  * array    Name(s) of the custom tabs handled
  *
  */
-$_cecRegistry->registerChain("Contenido.Article.RegisterCustomTab", "string");
+$_cecRegistry->registerChain('Contenido.Article.RegisterCustomTab', 'string');
 
 /* Chain Contenido.Article.GetCustomTabProperties
  * This chain is called when the properties of a custom tabs need to be aquired. It is used to
@@ -409,10 +409,10 @@ $_cecRegistry->registerChain("Contenido.Article.RegisterCustomTab", "string");
  *
  * Returns:
  * mixed     either false if the technical area name is not known, or an array in the following format:
- *             array("area", "action", "customurlparameters");
+ *             array('area', 'action', 'customurlparameters');
  *
  */
-$_cecRegistry->registerChain("Contenido.Article.GetCustomTabProperties", "string");
+$_cecRegistry->registerChain('Contenido.Article.GetCustomTabProperties', 'string');
 
 /* Chain Contenido.Frontend.BaseHrefGeneration
  * This chain is called everytime the BASE HREF Tag is generated
@@ -423,7 +423,7 @@ $_cecRegistry->registerChain("Contenido.Article.GetCustomTabProperties", "string
  * Returns:
  * string     Returns modified BASE HREF URL
  */
-$_cecRegistry->registerChain("Contenido.Frontend.BaseHrefGeneration", "string");
+$_cecRegistry->registerChain('Contenido.Frontend.BaseHrefGeneration', 'string');
 
 /* Chain Contenido.Upl_edit.Delete
  * This chain function is called after a upl-file has been deleted
@@ -436,7 +436,7 @@ $_cecRegistry->registerChain("Contenido.Frontend.BaseHrefGeneration", "string");
  * Returns:
  * - none -
  */
-$_cecRegistry->registerChain("Contenido.Upl_edit.Delete", "int", "string", "string");
+$_cecRegistry->registerChain('Contenido.Upl_edit.Delete', 'int', 'string', 'string');
 
 /* Chain Contenido.Upl_edit.Rows
  * This chain is used to process the rows of the upl-details list.
@@ -450,7 +450,7 @@ $_cecRegistry->registerChain("Contenido.Upl_edit.Delete", "int", "string", "stri
  * If you want to use own rows, append your own key and title to the
  * array and use the chain Contenido.Upl_edit.RenderRows
  */
-$_cecRegistry->registerChain("Contenido.Upl_edit.Rows", "array");
+$_cecRegistry->registerChain('Contenido.Upl_edit.Rows', 'array');
 
 /* Chain Contenido.Upl_edit.RenderRows
  * This chain is used to render a single column for a specific article
@@ -465,7 +465,7 @@ $_cecRegistry->registerChain("Contenido.Upl_edit.Rows", "array");
  * string    String with the rendered contents
  *
  */
-$_cecRegistry->registerChain("Contenido.Upl_edit.RenderRows", "int", "string", "string", "string");
+$_cecRegistry->registerChain('Contenido.Upl_edit.RenderRows', 'int', 'string', 'string', 'string');
 
 /* Chain Contenido.Upl_edit.SaveRows
  * This chain is called everytime when upl-details is saved
@@ -479,11 +479,11 @@ $_cecRegistry->registerChain("Contenido.Upl_edit.RenderRows", "int", "string", "
  * - none -
  *
  */
-$_cecRegistry->registerChain("Contenido.Upl_edit.SaveRows", "int", "string", "string");
+$_cecRegistry->registerChain('Contenido.Upl_edit.SaveRows', 'int', 'string', 'string');
 
 /**
  * Chain Contenido.Action.str_newtree.AfterCall
- * This chain is called while executing code for action "str_newtree", see table con_action
+ * This chain is called while executing code for action 'str_newtree', see table con_action
  *
  * Parameters & order:
  * array    Assoziative array with several values as follows
@@ -499,11 +499,11 @@ $_cecRegistry->registerChain("Contenido.Upl_edit.SaveRows", "int", "string", "st
  * Returns:
  * array    Processed assoziative array, same as parameter above
  */
-$_cecRegistry->registerChain("Contenido.Action.str_newtree.AfterCall", "array");
+$_cecRegistry->registerChain('Contenido.Action.str_newtree.AfterCall', 'array');
 
 /**
  * Chain Contenido.Action.str_newcat.AfterCall
- * This chain is called while executing code for action "str_newcat", see table con_action
+ * This chain is called while executing code for action 'str_newcat', see table con_action
  *
  * Parameters & order:
  * array    Assoziative array with several values as follows
@@ -520,11 +520,11 @@ $_cecRegistry->registerChain("Contenido.Action.str_newtree.AfterCall", "array");
  * Returns:
  * array    Processed assoziative array, same as parameter above
  */
-$_cecRegistry->registerChain("Contenido.Action.str_newcat.AfterCall", "array");
+$_cecRegistry->registerChain('Contenido.Action.str_newcat.AfterCall', 'array');
 
 /**
  * Chain Contenido.Action.str_renamecat.AfterCall
- * This chain is called while executing code for action "str_renamecat", see table con_action
+ * This chain is called while executing code for action 'str_renamecat', see table con_action
  *
  * Parameters & order:
  * array    Assoziative array with several values as follows
@@ -539,11 +539,11 @@ $_cecRegistry->registerChain("Contenido.Action.str_newcat.AfterCall", "array");
  * Returns:
  * array    Processed assoziative array, same as parameter above
  */
-$_cecRegistry->registerChain("Contenido.Action.str_renamecat.AfterCall", "array");
+$_cecRegistry->registerChain('Contenido.Action.str_renamecat.AfterCall', 'array');
 
 /**
  * Chain Contenido.Action.str_moveupcat.AfterCall
- * This chain is called while executing code for action "str_moveupcat", see table con_action
+ * This chain is called while executing code for action 'str_moveupcat', see table con_action
  *
  * Parameters & order:
  * int        $idcat    Category ID
@@ -551,11 +551,11 @@ $_cecRegistry->registerChain("Contenido.Action.str_renamecat.AfterCall", "array"
  * Returns:
  * int    Processed category id, same as parameter above
  */
-$_cecRegistry->registerChain("Contenido.Action.str_moveupcat.AfterCall", "int");
+$_cecRegistry->registerChain('Contenido.Action.str_moveupcat.AfterCall', 'int');
 
 /**
  * Chain Contenido.Action.str_movedowncat.AfterCall
- * This chain is called while executing code for action "str_movedowncat", see table con_action
+ * This chain is called while executing code for action 'str_movedowncat', see table con_action
  *
  * Parameters & order:
  * int        $idcat    Category ID
@@ -563,7 +563,7 @@ $_cecRegistry->registerChain("Contenido.Action.str_moveupcat.AfterCall", "int");
  * Returns:
  * int    Processed category id, same as parameter above
  */
-$_cecRegistry->registerChain("Contenido.Action.str_movedowncat.AfterCall", "int");
+$_cecRegistry->registerChain('Contenido.Action.str_movedowncat.AfterCall', 'int');
 
 /**
  * Chain Contenido.Action.str_movesubtree.AfterCall
@@ -579,14 +579,34 @@ $_cecRegistry->registerChain("Contenido.Action.str_movedowncat.AfterCall", "int"
  * Returns:
  * array    Processed assoziative array, same as parameter above
  */
-$_cecRegistry->registerChain("Contenido.Action.str_movesubtree.AfterCall", "array");
+$_cecRegistry->registerChain('Contenido.Action.str_movesubtree.AfterCall', 'array');
 
 /**
  * Chain Contenido.Action.con_saveart.AfterCall
  * This chain is called while executing code for action con_saveart, see table con_action
  *
  * Parameters & order:
- * array    Assoziative array with several values as follows
+ * array    Assoziative array with several new values as follows
+ *          array(
+ *          'idcat'        => $idcat,
+ *          'idcatnew'     => $idcatnew,
+ *          'idart'        => $idart,
+ *          'is_start'     => $is_start,
+ *          'idtpl'        => $idtpl,
+ *          'idartlang'    => $idartlang,
+ *          'lang'         => $lang,
+ *          'title'        => $title,
+ *          'summary'      => $summary,
+ *          'artspec'      => $artspec,
+ *          'created'      => $created,
+ *          'lastmodified' => $lastmodified,
+ *          'author'       => $author,
+ *          'online'       => $online,
+ *          'datestart'    => $datestart,
+ *          'dateend'      => $dateend,
+ *          'artsort'      => $artsort
+ *          );
+ * array    Assoziative array with several old values as follows
  *          array(
  *          'idcat'        => $idcat,
  *          'idcatnew'     => $idcatnew,
@@ -610,7 +630,7 @@ $_cecRegistry->registerChain("Contenido.Action.str_movesubtree.AfterCall", "arra
  * Returns:
  * array    Processed assoziative array, same as parameter above
  */
-$_cecRegistry->registerChain("Contenido.Action.con_saveart.AfterCall", "array");
+$_cecRegistry->registerChain('Contenido.Action.con_saveart.AfterCall', 'array', 'array');
 
 /**
  * Chain Contenido.Article.conMoveArticles_Loop
@@ -627,7 +647,7 @@ $_cecRegistry->registerChain("Contenido.Action.con_saveart.AfterCall", "array");
  * Returns:
  * array    Processed assoziative array of actual dataset, same as parameter above
  */
-$_cecRegistry->registerChain("Contenido.Article.conMoveArticles_Loop", "array");
+$_cecRegistry->registerChain('Contenido.Article.conMoveArticles_Loop', 'array');
 
 /**
  * Chain Contenido.Article.conCopyArtLang_AfterInsert
@@ -644,7 +664,7 @@ $_cecRegistry->registerChain("Contenido.Article.conMoveArticles_Loop", "array");
  * Returns:
  * array    Processed assoziative array of actual dataset, same as parameter above
  */
-$_cecRegistry->registerChain("Contenido.Article.conCopyArtLang_AfterInsert", "array");
+$_cecRegistry->registerChain('Contenido.Article.conCopyArtLang_AfterInsert', 'array');
 
 /**
  * Chain Contenido.Article.conSyncArticle_AfterInsert
@@ -661,7 +681,7 @@ $_cecRegistry->registerChain("Contenido.Article.conCopyArtLang_AfterInsert", "ar
  * Returns:
  * array    Processed assoziative array of actual dataset, same as parameter above
  */
-$_cecRegistry->registerChain("Contenido.Article.conSyncArticle_AfterInsert", "array");
+$_cecRegistry->registerChain('Contenido.Article.conSyncArticle_AfterInsert', 'array');
 
 /**
  * Chain Contenido.Category.strSyncCategory_Loop
@@ -687,7 +707,7 @@ $_cecRegistry->registerChain("Contenido.Article.conSyncArticle_AfterInsert", "ar
  * Returns:
  * array    Processed assoziative array of actual dataset, same as parameter above
  */
-$_cecRegistry->registerChain("Contenido.Category.strSyncCategory_Loop", "array");
+$_cecRegistry->registerChain('Contenido.Category.strSyncCategory_Loop', 'array');
 
 /**
  * Chain Contenido.Category.strCopyCategory
@@ -704,7 +724,47 @@ $_cecRegistry->registerChain("Contenido.Category.strSyncCategory_Loop", "array")
  * Returns:
  * array    Processed assoziative array of objects, same as parameter above
  */
-$_cecRegistry->registerChain("Contenido.Category.strCopyCategory", "cApiCategory", "cApiCategory", "cApiCategoryLanguage");
+$_cecRegistry->registerChain('Contenido.Category.strCopyCategory', 'cApiCategory', 'cApiCategory', 'cApiCategoryLanguage');
+
+/**
+ * Chain Contenido.Category.strRenameCategory
+ * This chain is called after a category was renamed
+ *
+ * Parameters & order:
+ * array    Assoziative array of several objects
+ *          array(
+ *              'name'          => $newName,     // New category name
+ *              'urlname'       => $newUrlName   // New category alias
+ *          );
+ * array    Assoziative array of several objects
+ *          array(
+ *              'name'          => $oldName,     // Old category name
+ *              'urlname'       => $oldUrlName   // Old category alias
+ *          );
+ *
+ * Returns:
+ * array    Processed assoziative array of objects, same as parameter above
+ */
+$_cecRegistry->registerChain('Contenido.Category.strRenameCategory', 'array', 'array');
+
+/**
+ * Chain Contenido.Category.strRenameCategoryAlias
+ * This chain is called after a category alias was renamed
+ *
+ * Parameters & order:
+ * array    Assoziative array of several objects
+ *          array(
+ *              'urlname'       => $newUrlName   // New category alias
+ *          );
+ * array    Assoziative array of several objects
+ *          array(
+ *              'urlname'       => $oldUrlName   // Old category alias
+ *          );
+ *
+ * Returns:
+ * array    Processed assoziative array of objects, same as parameter above
+ */
+$_cecRegistry->registerChain('Contenido.Category.strRenameCategoryAlias', 'array', 'array');
 
 /**
  * Chain Contenido.Frontend.AfterLoadPlugins
@@ -717,7 +777,7 @@ $_cecRegistry->registerChain("Contenido.Category.strCopyCategory", "cApiCategory
  * Returns:
  * bool  Just a boolean return value
  */
-$_cecRegistry->registerChain("Contenido.Frontend.AfterLoadPlugins");
+$_cecRegistry->registerChain('Contenido.Frontend.AfterLoadPlugins');
 
 /**
  * Chain Contenido.Frontend.HTMLCodeOutput
@@ -729,7 +789,7 @@ $_cecRegistry->registerChain("Contenido.Frontend.AfterLoadPlugins");
  * Returns:
  * string     New code
  */
-$_cecRegistry->registerChain("Contenido.Frontend.HTMLCodeOutput", "string");
+$_cecRegistry->registerChain('Contenido.Frontend.HTMLCodeOutput', 'string');
 
 /**
  * Chain Contenido.Frontend.PreprocessUrlBuilding
@@ -747,7 +807,7 @@ $_cecRegistry->registerChain("Contenido.Frontend.HTMLCodeOutput", "string");
  * Returns:
  * array    Processed assoziative array, same as parameter above
  */
-$_cecRegistry->registerChain("Contenido.Frontend.PreprocessUrlBuilding", "array");
+$_cecRegistry->registerChain('Contenido.Frontend.PreprocessUrlBuilding', 'array');
 
 /**
  * Chain Contenido.Frontend.PostprocessUrlBuilding
@@ -760,7 +820,7 @@ $_cecRegistry->registerChain("Contenido.Frontend.PreprocessUrlBuilding", "array"
  * Returns:
  * string    Processed url
  */
-$_cecRegistry->registerChain("Contenido.Frontend.PostprocessUrlBuilding", "string");
+$_cecRegistry->registerChain('Contenido.Frontend.PostprocessUrlBuilding', 'string');
 
 /**
  * Chain Contenido.Content.conGenerateCode
@@ -772,7 +832,7 @@ $_cecRegistry->registerChain("Contenido.Frontend.PostprocessUrlBuilding", "strin
  * Returns:
  * string     New code
  */
-$_cecRegistry->registerChain("Contenido.Content.conGenerateCode", "string");
+$_cecRegistry->registerChain('Contenido.Content.conGenerateCode', 'string');
 
 /**
  * Chain Contenido.Content.XmlSitemapCreate
@@ -787,10 +847,10 @@ $_cecRegistry->registerChain("Contenido.Content.conGenerateCode", "string");
  * Returns:
  * SimpleXMLElement     the altered SimpleXMLElement
  */
-$_cecRegistry->registerChain("Contenido.Content.XmlSitemapCreate", "SimpleXMLElement");
+$_cecRegistry->registerChain('Contenido.Content.XmlSitemapCreate', 'SimpleXMLElement');
 
 /**
- * Chain Contenido.Backend.ConEditFormAdditionalRows"
+ * Chain Contenido.Backend.ConEditFormAdditionalRows'
  * This chain is called in the include.con_edit_form.php file.
  * You can add new rows to the article properties form with it.
  *
@@ -802,4 +862,4 @@ $_cecRegistry->registerChain("Contenido.Content.XmlSitemapCreate", "SimpleXMLEle
  * Returns:
  * string     HTML code defining additional table rows
  */
-$_cecRegistry->registerChain("Contenido.Backend.ConEditFormAdditionalRows", "int", "int", "int");
+$_cecRegistry->registerChain('Contenido.Backend.ConEditFormAdditionalRows', 'int', 'int', 'int');
