@@ -177,7 +177,7 @@ class cFileHandler {
      * @return bool true if the file can be written
      */
     public static function writeable($filename) {
-        return is_writeable($filename);
+        return is_writable($filename);
     }
 
     /**
