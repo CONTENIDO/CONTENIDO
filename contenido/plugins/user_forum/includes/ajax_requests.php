@@ -8,9 +8,13 @@
 
             case 'toggle_online':
 
+
             default:
                 throw new Exception('$_GET["action"] type ' . $_GET["action"] . ' not implemented');
         }
     }
+
+
+
 
 ?>

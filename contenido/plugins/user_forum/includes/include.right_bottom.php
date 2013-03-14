@@ -8,24 +8,42 @@ if(isset($_POST['realname']))
 {
     $right = new ArticleForumRightBottom("content");
     $test = $right->getEditModeMenu($_POST);
+
+    if(isset($_POST['action'])&& $_POST['action']!= NULL)
+    switch ($_POST['action']) {
+
+    	case 'online_toggle':
+    	    echo 'online_toggle';
+    	    $right->toggleOnlineState($_POST['online'], $_POST['id_user_forum']);
+    	    echo $_POST['online'];
+    	    break;
+
+    	default:
+    	    throw new Exception('$_POST["action"] type ' . $_POST["action"] . ' not implemented');
+    }
+
     $test->render();
-    //->render();
-//echo'<pre>';
-//echo print_r($_POST);
-//echo '</pre>';
+
 }
+
 
 if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
 
     $idart = $_GET['idart'];
-
+    $right = new ArticleForumRightBottom("content");
     if (isset($_GET['id_user_forum']) && isset($_GET['action'])) {
 
         $action = $_GET["action"];
         switch ($action) {
 
-            case 'delete':
-                echo 'delete';
+            case 'online_toggle':
+               // echo 'online_toggle';
+               // echo $_POST['online'];
+                $right->toggleOnlineState($_GET['online'], $_GET['id_user_forum']);
+                //$collection = new ArticleForumCollection($sTable, $sPrimaryKey)
+         //       $right = new ArticleForumRightBottom("content");
+         //       $test = $right->getEditModeMenu($_POST);
+         //       $test->render();
                 break;
 
             case 'save':
@@ -41,13 +59,16 @@ if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
         }
     }
 
+
+
     $cfg = cRegistry::getConfig();
     $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();
 
-    $right = new ArticleForumRightBottom("content");
+
     $test = $right->getExistingforum($idcat, $idart, $lang);
     $test->render();
+
 }
 
 /*

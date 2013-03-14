@@ -110,8 +110,8 @@ class ArticleForumRightBottom extends cGuiPage {
         $tr->appendContent($th);
 
         $th = new cHTMLTableHead();
-        $th->setContent(i18n("FORUM_ACTIONS", "user_forum"));
-        $th->setStyle('widht:50px');
+        $th->setContent(i18n("ACTIONS", "user_forum"));
+        $th->setStyle('widht:20px');
         $th->setAttribute('valign', 'top');
         $tr->appendContent($th);
 
@@ -155,38 +155,21 @@ class ArticleForumRightBottom extends cGuiPage {
 
             }
             $online->setCLink($area, 4, 'show_form');
-            $online->setTargetFrame('right_buttom');
+
+            $online->setTargetFrame('right_bottom');
             $online->setCustom('action', 'online_toggle');
+            $online->setCustom('idart', $cont['idart']);
+            $online->setCustom('id_user_forum', $cont['id_user_forum']);
+            $online->setCustom('idcat', $cont['idcat']);
+            $online->setCustom('online', $cont['online']);
+            $online->setAttribute('method','get');
 
-
-//             $online = new cHTMLButton("online");
-//             if ($cont['online'] == 1) {
-//                 $online->setImageSource($cfg['path']['images'] . 'online.gif');
-//                 $online->setAlt('online');
-//                 $online->setID($cont['id_user_forum'].".".$cont['online']);
-
-//                 $online->setEvent('click', "$('form[name=$id]').submit()");
-//                 //$online->setEvent('click', "'action', 'main.php?' . $area . '&frame=4&action=toogleOnline'");
-//             } else {
-//                 $online->setImageSource($cfg['path']['images'] . 'offline.gif');
-//                 $online->setEvent('click', "$('form[name=$id]').submit()");
-//                 //$online->setEvent('click', "'action', 'main.php?' . $area . '&frame=4&action=toogleOnline'");
-//                 $online->setAlt('offline');
-//             }
-//             $online->setMode('image');
             $edit = new cHTMLButton("edit");
             $edit->setImageSource($cfg['path']['images'] . 'but_todo.gif');
 
             $edit->setEvent('click', "$('form[name=$id]').submit()");
             $edit->setMode('image');
             $edit->setAlt(UserForum::i18n('EDIT'));
-
-            // $save = new cHTMLButton("save");
-            // $save->setImageSource($cfg['path']['images'] . 'but_ok.gif');
-            // $id = $cont['id_user_forum'];
-            // $save->setEvent('click', "$('form[name=$id]').submit()");
-            // $save->setAlt(UserForum::i18n('SAVE'));
-            // $save->setMode('image');
 
             $delete = new cHTMLButton("save");
             $delete->setImageSource($cfg['path']['images'] . 'delete.gif');
@@ -204,7 +187,8 @@ class ArticleForumRightBottom extends cGuiPage {
 
             $tdForm->setStyle('padding-left:' . $cont['level'] * $this->_indentFactor . 'px');
             $tdButtons = new cHTMLTableData();
-            $tdButtons->setStyle('padding-left:' . 400 . 'px');
+            $tdButtons->setStyle('padding-bottom:130px');
+           // $tdButtons->setStyle('padding-left:' . 5 . 'px',);
             $tdButtons->appendContent($online);
             $tdButtons->appendContent($edit);
             $tdButtons->appendContent($delete);
@@ -263,6 +247,10 @@ class ArticleForumRightBottom extends cGuiPage {
             $hiddenForum = new cHTMLHiddenField('forum');
             $hiddenForum->setValue($cont['forum']);
 
+            $hiddenOnline = new cHTMLHiddenField('online');
+            $hiddenOnline->setValue($cont['online']);
+
+
             $form->appendContent($hiddenIdart);
             $form->appendContent($hiddenIdcat);
             $form->appendContent($hiddenId_user_forum);
@@ -275,6 +263,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $form->appendContent($hiddenEditdat);
             $form->appendContent($hiddenEditedby);
             $form->appendContent($hiddenTimestamp);
+            $form->appendContent($hiddenOnline);
             // Hidden Fields
             // $form->appendContent("<hr>");
             $form->appendContent($nameTag . " : " . $user . " <br> " . $emailTag . " : " . $email);
@@ -311,6 +300,9 @@ class ArticleForumRightBottom extends cGuiPage {
 
         $tr = new cHTMLTableRow();
 
+
+
+
         $th = new cHTMLTableHead();
         $th->setContent(UserForum::i18n("PARAMETER", "user_forum"));
         $tr->appendContent($th);
@@ -338,17 +330,52 @@ class ArticleForumRightBottom extends cGuiPage {
         $editedby = new cHTMLTextBox("editedby." . $id, conHtmlSpecialChars($post['editedby']), 40, 255);
         $editedby->setDisabled(true);
 
-        $id = $post['id_user_forum'];
-        // echo ($cont['online']);
-        $online = new cHTMLButton("online");
-        if ($post['online'] == 1) {
-            $form1->setActionButton("test", $cfg['path']['images'] . 'online.gif');
-        } else {
-            $form1->setActionButton("test", $cfg['path']['images'] . 'offline.gif');
+        if($post['online'] ==1)
+        {
+            $onlineBox = new cHTMLCheckbox("onlineState",'online');
+            $onlineBox->setChecked(true);
+        }
+        else
+        {
+            $onlineBox = new cHTMLCheckbox("onlineState",'offline');
+            $onlineBox->setChecked(false);
         }
 
-        // BACKBUTTON SINNVOLL ??
-        $form1->addCancel("http://www.google.de");
+
+///////////////////////////////
+        $id = $post['id_user_forum'];
+      //  echo ($cont['online']);
+
+        $online = new cHTMLLink();
+
+        $online->setCLink($area, 4, 'show_form');
+        $online->setTargetFrame('right_bottom');
+        $online->setTargetFrame('right_bottom');
+        $online->setCustom('action', 'online_toggle');
+        $online->setCustom('idart', $post['idart']);
+        $online->setCustom('id_user_forum', $post['id_user_forum']);
+        $online->setCustom('idcat', $post['idcat']);
+        $online->setCustom('online', $post['online']);
+        $online->setCustom('realname', $post['realname']);
+        $online->setAttribute('method','POST');
+        if($post['online'] == 1)
+        {
+            $online->setImage($cfg['path']['images'] . 'online.gif');
+            $online->setCustom('action', 'online_toggle');
+         //   $form1->setActionButton("test", $cfg['path']['images'] . 'online.gif');
+
+        }
+        else
+        {
+            $online->setImage($cfg['path']['images'] . 'offline.gif');
+            $online->setCustom('action', 'online_toggle');
+         //   $form1->setActionButton("test", $cfg['path']['images'] . 'offline.gif');
+        }
+
+
+        $td = new cHTMLTableData();
+        $td->appendContent($online);
+        $this->appendContent($td);
 
         $form1->add(UserForum::i18n("USER"), $name, '');
         $form1->add(UserForum::i18n("EMAIL"), $email, '');
@@ -357,6 +384,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $form1->add(UserForum::i18n("TIME"), $timestamp, '');
         $form1->add(UserForum::i18n("EDITDAT"), $editedat, '');
         $form1->add(UserForum::i18n("EDITEDBY"), $editedby, '');
+        $form1->add(UserForum::i18n("STATUS"), $onlineBox, '');
         $form1->add(UserForum::i18n("COMMENT"), $forum, '');
 
         $this->appendContent($form1);
@@ -409,6 +437,20 @@ class ArticleForumRightBottom extends cGuiPage {
             }
         }
     }
+
+    public function toggleOnlineState($onlineState, $id_user_forum)
+    {
+        global $cfg;
+
+        ($onlineState == 0)? $onlineState = 1 : $onlineState = 0;
+
+        $db = cRegistry::getDb();
+
+        $query = "UPDATE con_pi_user_forum SET online = $onlineState WHERE id_user_forum = $id_user_forum;";
+
+        $db->query($query);
+    }
+
 
     // getExistingforum($idcat, $idart, 1);
 }
