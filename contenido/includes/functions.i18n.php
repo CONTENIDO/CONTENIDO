@@ -430,48 +430,46 @@ function i18nGetAvailableLanguages() {
 
 /**
  * Now the function supports formated strings like %s.
- * e.g. echo mi18n('May the %s be with %s', 'force', 'you');
- * will output:
- * May the force be with you
+ * e.g. echo mi18n("May the %s be with %s", 'force', 'you');
+ * will output: May the force be with you
  *
- * @param string $string the string to translate
+ * @param string $key the string to translate
  * @return string the translated string
  */
-function mi18n($string) {
-    if ($string == '') {
+function mi18n($key) {
+
+    // skip empty keys
+    if (0 === strlen(trim($key))) {
         return 'No module translation ID specified.';
     }
-
-    $string = addslashes($string);
-
-    global $cCurrentModule;
 
     // dont workd by setup/upgrade
     cInclude('classes', 'contenido/class.module.php');
     cInclude('classes', 'module/class.module.filetranslation.php');
 
-    $args = func_num_args();
-    $arrArgs = func_get_args();
-
-    $result = $string;
-
+    // get all translations of current module
+    $cCurrentModule = cRegistry::getCurrentModuleId();
     $contenidoTranslateFromFile = new cModuleFileTranslation($cCurrentModule, true);
-    $array = $contenidoTranslateFromFile->getLangarray();
+    $translations = $contenidoTranslateFromFile->getLangarray();
 
-    $untranslatedMessage = 'Module translation not found: ' . $result;
+    // addslash key cause keys of getLangarray() are addslashed :(
+    $translation = $translations[addslashes($key)];
 
-    $translation = $array[$result];
+    // consider key as untranslated if translation has length 0
+    // Don't trim translation, so that a string can be translated as ' '!
+    if (0 === strlen($translation)) {
+        return 'Module translation not found: ' . $key;
+    }
 
-    if ((int) $args > 1) {
+    // call sprintf on translation with additional params
+    if (1 < func_num_args()) {
+        $arrArgs = func_get_args();
         $arrArgs[0] = $translation;
         $translation = call_user_func_array('sprintf', $arrArgs);
     }
 
-    if (strlen($translation) == 0) {
-        return $untranslatedMessage;
-    } else {
-        return $translation;
-    }
+    return $translation;
+
 }
 
 ?>
