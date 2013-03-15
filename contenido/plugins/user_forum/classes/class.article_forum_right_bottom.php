@@ -141,6 +141,7 @@ class ArticleForumRightBottom extends cGuiPage {
             }
 
             $online->setCLink($area, 4, 'show_form');
+            $online->setStyle('margin-top:0px; margin-left:20px; margin-right:20px;');
             $online->setTargetFrame('right_bottom');
             $online->setCustom('action', 'online_toggle');
             $online->setCustom('idart', $cont['idart']);
@@ -150,12 +151,14 @@ class ArticleForumRightBottom extends cGuiPage {
             $online->setAttribute('method', 'get');
 
             $edit = new cHTMLButton("edit");
+            // $edit->setStyle('margin-top:0px; margin-left:20px;');
             $edit->setImageSource($cfg['path']['images'] . 'but_todo.gif');
             $edit->setEvent('click', "$('form[name=$id]').submit()");
             $edit->setMode('image');
             $edit->setAlt(UserForum::i18n('EDIT'));
 
             $delete = new cHTMLLink();
+            $delete->setStyle('margin-left:20px; margin-right:20px;');
             $delete->setImage($cfg['path']['images'] . 'delete.gif');
             $delete->setAlt(UserForum::i18n('DELETE'));
 
@@ -168,19 +171,14 @@ class ArticleForumRightBottom extends cGuiPage {
             $delete->setCustom('idcat', $cont['idcat']);
             $delete->setCustom('idart', $cont['idart']);
 
-            // $delete->setAttribute('method', 'get');
-            // $online->setCustom('idart', $cont['idart']);
-            // $online->setCustom('id_user_forum', $cont['id_user_forum']);
-            // $online->setCustom('idcat', $cont['idcat']);
-            // $online->setCustom('online', $cont['online']);
-            // $delete->setImageSource($cfg['path']['images'] . 'delete.gif');
-            // $id = $cont['id_user_forum'];
-            // $delete->setEvent('click', "$('form[name=$id]').submit()");
-            // $delete->setAlt(UserForum::i18n('DELETE'));
-            // $delete->setMode('image');
-
             // row
             $tr = new cHTMLTableRow();
+
+            $trLike = new cHTMLTableRow();
+            $tdLike = new cHTMLTableData();
+            $tdLike->appendContent("<br>" . $likeTag . ": " . $like . "<br>");
+            $tdLike->appendContent($dislikeTag . ": " . $dislike);
+            $trLike->appendContent($trLike);
 
             $form = new cHTMLForm($cont['id_user_forum']);
             $form->setAttribute('action', 'main.php?' . "area=" . $area . '&frame=4');
@@ -190,17 +188,19 @@ class ArticleForumRightBottom extends cGuiPage {
 
             $tdButtons = new cHTMLTableData();
             $tdButtons->setAttribute('valign', 'top');
-            $tdButtons->setStyle('padding-left:4px');
+            // $tdButtons->setStyle('padding-left:100 px');
+
             $tdButtons->appendContent($online);
             $tdButtons->appendContent($edit);
             $tdButtons->appendContent($delete);
-            // debugINFO
-            $tdButtons->appendContent($cont['level']);
-            $tdButtons->appendContent($key);
-            // debugINFO
+
             $user = $cont['realname'];
-            $email = $cont['email'];
-            $text = nl2br($CommentTag . " : <br> " . $cont['forum']);
+
+            $maili = new cHTMLLink();
+            $maili->setLink("mailto:" . $cont['email']);
+            $maili->setContent($cont['realname']);
+
+            $text = $cont['forum']; // n2bl
 
             // hidden-fields
             $hiddenIdart = new cHTMLHiddenField('idart');
@@ -236,13 +236,6 @@ class ArticleForumRightBottom extends cGuiPage {
             $hiddenKey = new cHTMLHiddenField('key');
             $hiddenKey->setValue($key);
 
-            // echo "MUHUHUHUHUHUHUHUHUHU : ". serialize($result);
-            // echo '<pre>';
-            // print_r($result);
-            // echo '</pre>';
-            // $hiddenResult = new cHTMLHiddenField('content');
-            // $hiddenResult->setValue(serialize($result));
-
             $form->appendContent($hiddenIdart);
             $form->appendContent($hiddenIdcat);
             $form->appendContent($hiddenId_user_forum);
@@ -259,20 +252,18 @@ class ArticleForumRightBottom extends cGuiPage {
             $form->appendContent($hiddenOnline);
             $form->appendContent($hiddenKey);
             // $form->appendContent($hiddenResult);
-            $form->appendContent($nameTag . " : " . $user . " <br> " . $emailTag . " : " . $email);
-            $form->appendContent("<br> " . $dateTag . ": " . $date . " <br> " . $likeTag . ": " . $like . " " . $dislikeTag . ": " . $dislike);
-            $form->appendContent("<hr>");
-            $form->appendContent($text);
-            $form->appendContent("<hr>");
-            $form->appendContent("<br><br>");
 
+            // $el->render();
+            $form->appendContent($maili . " schrieb am : " . $date . "<br><br>");
+            $form->appendContent($text . "<br>");
             $tdForm->setContent($form);
             $tdForm->setAttribute('valign', 'top');
             $tr->setContent($tdForm);
             $tr->appendContent($tdButtons);
             $table->appendContent($tr);
+            // $table->appendContent($trLike);
+            //
         }
-
         $this->appendContent($table);
 
         return $this;
@@ -313,12 +304,17 @@ class ArticleForumRightBottom extends cGuiPage {
         $email = new cHTMLTextBox("email", conHtmlSpecialChars($post['email']), 40, 255);
         $like = new cHTMLTextBox("like", conHtmlSpecialChars($post['like']), 40, 255);
         $dislike = new cHTMLTextBox("dislike", conHtmlSpecialChars($post['dislike']), 40, 255);
-        $forum = new cHTMLTextArea("forum", conHtmlSpecialChars($post['forum'], 30, 10));
+        $forum = new cHTMLTextArea("forum", conHtmlSpecialChars($post['forum']), 30, 10);
         $timestamp = new cHTMLTextBox("timestamp", conHtmlSpecialChars($post['timestamp']), 40, 255);
         $timestamp->setDisabled(true);
         $editedat = new cHTMLTextBox("editedat", conHtmlSpecialChars($post['editedat']), 40, 255);
         $editedat->setDisabled(true);
-        $editedby = new cHTMLTextBox("editedby", conHtmlSpecialChars($post['editedby']), 40, 255);
+
+        $user = new cApiUser();
+        $user->loadByPrimaryKey($post['editedby']);
+        $username = $user->getField('username');
+
+        $editedby = new cHTMLTextBox("editedby", conHtmlSpecialChars($username), 40, 255);
         $editedby->setDisabled(true);
 
         if ($post['online'] == 1) {
@@ -359,7 +355,7 @@ class ArticleForumRightBottom extends cGuiPage {
         return $this;
     }
 
-    public function deleteHierarchie($keyPost, $level, $idart, $idcat, $lang) {
+    function deleteHierarchie($keyPost, $level, $idart, $idcat, $lang) {
         global $cfg;
 
         $db = cRegistry::getDb();
@@ -378,7 +374,6 @@ class ArticleForumRightBottom extends cGuiPage {
         $id_user_forum = array();
         $lastLevel = 0;
         for ($i = 0; $i < count($arri); $i++) {
-
             // select Entry
             if ($arri[$i]['key'] == $keyPost) {
                 $idEntry = $arri[$i]['id_user_forum'];
@@ -406,7 +401,6 @@ class ArticleForumRightBottom extends cGuiPage {
             $query = "DELETE FROM con_pi_user_forum WHERE id_user_forum = $idEntry";
             $db->query($query);
             foreach ($id_user_forum as $com) {
-                // echo $com;
                 $query = "DELETE FROM con_pi_user_forum WHERE id_user_forum = $com";
                 $db->query($query);
             }
@@ -414,7 +408,7 @@ class ArticleForumRightBottom extends cGuiPage {
         }
     }
 
-    private function _getCommentHierachrie($id_cat, $id_art, $id_lang) {
+    function _getCommentHierachrie($id_cat, $id_art, $id_lang) {
         global $cfg;
 
         $db = cRegistry::getDb();
@@ -493,7 +487,7 @@ class ArticleForumRightBottom extends cGuiPage {
      * @param $onlineState
      * @param primary key $id_user_forum
      */
-    public function toggleOnlineState($onlineState, $id_user_forum) {
+    function toggleOnlineState($onlineState, $id_user_forum) {
         global $cfg;
 
         ($onlineState == 0)? $onlineState = 1 : $onlineState = 0;
@@ -517,14 +511,16 @@ class ArticleForumRightBottom extends cGuiPage {
      * @param $online
      * @param $checked
      */
-    public function updateValues($id_user_forum, $name, $email, $like, $dislike, $forum, $online, $checked) {
+    function updateValues($id_user_forum, $name, $email, $like, $dislike, $forum, $online, $checked) {
         // method receives checked as string, DB needs integer.
         ($checked === 'set_online')? $online = 1 : $online = 0;
         // check for negative inputs
         ($like >= 0)?  : $like = 0;
         ($dislike >= 0)?  : $dislike = 0;
         // actual user
+
         $uuid = cRegistry::getAuth()->isAuthenticated();
+
         $timeStamp = date('Y-m-d H:i:s', time());
 
         $cfg = cRegistry::getConfig();
@@ -537,4 +533,8 @@ class ArticleForumRightBottom extends cGuiPage {
     }
 
 }
+
+function receiveData() {
+}
+
 ?>
