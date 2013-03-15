@@ -20,16 +20,16 @@ class ArticleForumRightBottom extends cGuiPage {
         parent::__construct('right_bottom', 'forumlist');
     }
 
-    // function getMaxLevel(&$forum_content) {
-    // $max = 0;
+    function getMaxLevel(&$forum_content) {
+        $max = 0;
 
-    // foreach ($forum_content as $key => $content) {
-    // if ($content['level'] > $max) {
-    // $max = $content['level'];
-    // }
-    // }
-    // return $max;
-    // }
+        foreach ($forum_content as $key => $content) {
+            if ($content['level'] > $max) {
+                $max = $content['level'];
+            }
+        }
+        return $max;
+    }
 
     function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0) {
         $db = cRegistry::getDb();
@@ -78,7 +78,6 @@ class ArticleForumRightBottom extends cGuiPage {
      * @return ArticleForumRightBottom
      */
     function getMenu(&$result) {
-
         $testet = new cHTMLContentElement();
         $testet->setID('Content');
 
@@ -90,6 +89,8 @@ class ArticleForumRightBottom extends cGuiPage {
             "cellspacing" => "0",
             "cellpadding" => "2"
         ));
+
+        // print_r($result);
 
         $tr = new cHTMLTableRow();
 
@@ -162,6 +163,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $delete->setTargetFrame('right_bottom');
             $delete->setCustom('action', 'deleteComment');
             $delete->setCustom('level', $cont['level']);
+            $delete->setCustom('key', $key);
             $delete->setCustom('id_user_forum', $cont['id_user_forum']);
             $delete->setCustom('idcat', $cont['idcat']);
             $delete->setCustom('idart', $cont['idart']);
@@ -192,7 +194,10 @@ class ArticleForumRightBottom extends cGuiPage {
             $tdButtons->appendContent($online);
             $tdButtons->appendContent($edit);
             $tdButtons->appendContent($delete);
-
+            // debugINFO
+            $tdButtons->appendContent($cont['level']);
+            $tdButtons->appendContent($key);
+            // debugINFO
             $user = $cont['realname'];
             $email = $cont['email'];
             $text = nl2br($CommentTag . " : <br> " . $cont['forum']);
@@ -227,6 +232,17 @@ class ArticleForumRightBottom extends cGuiPage {
             $hiddenMode = new cHTMLHiddenField('mode');
             $hiddenMode->setValue('edit');
 
+            // echo "test";
+            $hiddenKey = new cHTMLHiddenField('key');
+            $hiddenKey->setValue($key);
+
+            // echo "MUHUHUHUHUHUHUHUHUHU : ". serialize($result);
+            // echo '<pre>';
+            // print_r($result);
+            // echo '</pre>';
+            // $hiddenResult = new cHTMLHiddenField('content');
+            // $hiddenResult->setValue(serialize($result));
+
             $form->appendContent($hiddenIdart);
             $form->appendContent($hiddenIdcat);
             $form->appendContent($hiddenId_user_forum);
@@ -241,6 +257,8 @@ class ArticleForumRightBottom extends cGuiPage {
             $form->appendContent($hiddenTimestamp);
             $form->appendContent($hiddenMode);
             $form->appendContent($hiddenOnline);
+            $form->appendContent($hiddenKey);
+            // $form->appendContent($hiddenResult);
             $form->appendContent($nameTag . " : " . $user . " <br> " . $emailTag . " : " . $email);
             $form->appendContent("<br> " . $dateTag . ": " . $date . " <br> " . $likeTag . ": " . $like . " " . $dislikeTag . ": " . $dislike);
             $form->appendContent("<hr>");
@@ -295,7 +313,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $email = new cHTMLTextBox("email", conHtmlSpecialChars($post['email']), 40, 255);
         $like = new cHTMLTextBox("like", conHtmlSpecialChars($post['like']), 40, 255);
         $dislike = new cHTMLTextBox("dislike", conHtmlSpecialChars($post['dislike']), 40, 255);
-        $forum = new cHTMLTextArea("forum", conHtmlSpecialChars($post['forum']), 30, 10);
+        $forum = new cHTMLTextArea("forum", conHtmlSpecialChars($post['forum'], 30, 10));
         $timestamp = new cHTMLTextBox("timestamp", conHtmlSpecialChars($post['timestamp']), 40, 255);
         $timestamp->setDisabled(true);
         $editedat = new cHTMLTextBox("editedat", conHtmlSpecialChars($post['editedat']), 40, 255);
@@ -339,6 +357,89 @@ class ArticleForumRightBottom extends cGuiPage {
         $this->appendContent($form1);
 
         return $this;
+    }
+
+    public function deleteHierarchie($keyPost, $level, $idart, $idcat, $lang) {
+        global $cfg;
+
+        $db = cRegistry::getDb();
+
+        $comments = $this->_getCommentHierachrie($idcat, $idart, $lang);
+        $ar = array();
+
+        echo $level . "<br>";
+        $arri = array();
+
+        foreach ($comments as $key => $com) {
+            $com['key'] = $key;
+            $arri[] = $com;
+        }
+        $idEntry = 0;
+        $id_user_forum = array();
+        $lastLevel = 0;
+        for ($i = 0; $i < count($arri); $i++) {
+
+            // select Entry
+            if ($arri[$i]['key'] == $keyPost) {
+                $idEntry = $arri[$i]['id_user_forum'];
+                if ($arri[$i]['level'] < $arri[$i + 1]['level']) {
+                    // $id_user_forum[] = $arri[$i + 1]['id_user_forum'];
+                    echo "nextEntry is subComment" . "<br>";
+                    // check for more subcomments
+                    for ($j = $i + 1; $j < $arri[$j]; $j++) {
+                        if ($arri[$i]['level'] < $arri[$j]['level']) {
+                            $id_user_forum[] = $arri[$j]['id_user_forum'];
+                        }
+                    }
+                }
+            }
+        }
+        echo $idEntry . "<br>";
+        print_r($id_user_forum);
+
+        if (empty($id_user_forum)) {
+            echo "DELETE $idEntry";
+            $query = "DELETE FROM con_pi_user_forum WHERE id_user_forum = $idEntry";
+            $db->query($query);
+        } else {
+
+            $query = "DELETE FROM con_pi_user_forum WHERE id_user_forum = $idEntry";
+            $db->query($query);
+            foreach ($id_user_forum as $com) {
+                // echo $com;
+                $query = "DELETE FROM con_pi_user_forum WHERE id_user_forum = $com";
+                $db->query($query);
+            }
+            echo "DELETE ARRAY";
+        }
+    }
+
+    private function _getCommentHierachrie($id_cat, $id_art, $id_lang) {
+        global $cfg;
+
+        $db = cRegistry::getDb();
+
+        $query = "SELECT * FROM " . $cfg['tab']['phplib_auth_user_md5'];
+
+        $db->query($query);
+
+        $arrUsers = array();
+
+        while ($db->next_record()) {
+            $arrUsers[$db->f('user_id')]['email'] = $db->f('email');
+            $arrUsers[$db->f('user_id')]['realname'] = $db->f('realname');
+        }
+
+        $arrforum = array();
+
+        $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
+
+        $result = array();
+
+        $this->normalizeArray($arrforum, $result);
+        // echo "REEEESUUUULLLTT";
+        // print_r ($result);
+        return $result;
     }
 
     /**

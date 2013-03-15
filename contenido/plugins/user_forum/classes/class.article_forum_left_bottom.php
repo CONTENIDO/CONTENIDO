@@ -5,6 +5,7 @@ class ArticleForumLeftBottom extends cGuiPage {
         parent::__construct('left_bottom', 'articlelist');
     }
 
+
     public function getMenu() {
         $arts = new ArticleForumCollection();
         $result = $arts->getAllCommentedArticles();

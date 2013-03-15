@@ -1,6 +1,11 @@
 <?php
-print_r($_POST);
-print_r($_GET);
+//print_r($_POST);
+//print_r($_GET);
+
+
+//echo unserialize($_POST['content']);
+
+
 if (isset($_POST['realname'])) {
 
     $idcat = $_POST['idcat'];
@@ -39,6 +44,9 @@ if (isset($_POST['realname'])) {
 
 if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
 
+    $cfg = cRegistry::getConfig();
+    $client = cRegistry::getClientId();
+    $lang = cRegistry::getLanguageId();
     $idart = $_GET['idart'];
     $idcat = $_GET['idcat'];
     $right = new ArticleForumRightBottom("content");
@@ -51,8 +59,8 @@ if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
                 $right->toggleOnlineState($_GET['online'], $_GET['id_user_forum']);
                 break;
 
-            case 'delete':
-                echo 'save';
+            case 'deleteComment':
+                 $right->deleteHierarchie($_GET['key'],$_GET['level'],$idart,$idcat,$lang);
                 break;
 
             default:

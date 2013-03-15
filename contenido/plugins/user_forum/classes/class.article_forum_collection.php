@@ -13,7 +13,7 @@ class ArticleForumCollection extends ItemCollection {
         // $this->select($where);
     }
 
-/*     public function getAllCommentedArticles() {
+     public function getAllCommentedArticles() {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
         $sql = "SELECT DISTINCT t.title, t.idart FROM con_art_lang t," . $this->table . " f WHERE f.idart=t.idart AND t.idlang = f.idlang ORDER BY id_user_forum ASC ;";
@@ -85,7 +85,7 @@ class ArticleForumCollection extends ItemCollection {
 
         return $data;
     }
- */
+
     public function deleteAllCommentsById($idart) {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
