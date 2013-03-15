@@ -495,6 +495,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $db = cRegistry::getDb();
         $query = "UPDATE con_pi_user_forum SET online = $onlineState WHERE id_user_forum = $id_user_forum;";
         $db->query($query);
+        //sleep(1);
     }
 
     /**
@@ -531,7 +532,6 @@ class ArticleForumRightBottom extends cGuiPage {
 
         $db->query($sql);
     }
-
 }
 
 function receiveData() {

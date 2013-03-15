@@ -12,15 +12,7 @@ if (isset($_POST['realname'])) {
     $idart = $_POST['idart'];
 
     $right = new ArticleForumRightBottom("content");
-    if ($_POST['mode'] === 'list') {
-        $cfg = cRegistry::getConfig();
-        $client = cRegistry::getClientId();
-        $lang = cRegistry::getLanguageId();
 
-        $test = $right->getExistingforum($idcat, $idart, $lang);
-    } else {
-        $test = $right->getEditModeMenu($_POST);
-    }
 
     if (isset($_POST['action']) && $_POST['action'] != NULL)
         switch ($_POST['action']) {
@@ -28,6 +20,7 @@ if (isset($_POST['realname'])) {
             case 'online_toggle':
                 echo 'online_toggle';
                 $right->toggleOnlineState($_POST['online'], $_POST['id_user_forum']);
+
                 echo $_POST['online'];
                 break;
 
@@ -37,6 +30,15 @@ if (isset($_POST['realname'])) {
 
             default:
                 throw new Exception('$_POST["action"] type ' . $_POST["action"] . ' not implemented');
+        }
+        if ($_POST['mode'] === 'list') {
+            $cfg = cRegistry::getConfig();
+            $client = cRegistry::getClientId();
+            $lang = cRegistry::getLanguageId();
+
+            $test = $right->getExistingforum($idcat, $idart, $lang);
+        } else {
+            $test = $right->getEditModeMenu($_POST);
         }
 
     $test->render();
