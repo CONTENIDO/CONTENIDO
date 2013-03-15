@@ -90,8 +90,6 @@ class ArticleForumRightBottom extends cGuiPage {
             "cellpadding" => "2"
         ));
 
-        // print_r($result);
-
         $tr = new cHTMLTableRow();
 
         $th = new cHTMLTableHead();
@@ -151,7 +149,6 @@ class ArticleForumRightBottom extends cGuiPage {
             $online->setAttribute('method', 'get');
 
             $edit = new cHTMLButton("edit");
-            // $edit->setStyle('margin-top:0px; margin-left:20px;');
             $edit->setImageSource($cfg['path']['images'] . 'but_todo.gif');
             $edit->setEvent('click', "$('form[name=$id]').submit()");
             $edit->setMode('image');
@@ -188,13 +185,9 @@ class ArticleForumRightBottom extends cGuiPage {
 
             $tdButtons = new cHTMLTableData();
             $tdButtons->setAttribute('valign', 'top');
-            // $tdButtons->setStyle('padding-left:100 px');
-
             $tdButtons->appendContent($online);
             $tdButtons->appendContent($edit);
             $tdButtons->appendContent($delete);
-
-            $user = $cont['realname'];
 
             $maili = new cHTMLLink();
             $maili->setLink("mailto:" . $cont['email']);
@@ -231,8 +224,6 @@ class ArticleForumRightBottom extends cGuiPage {
             $hiddenOnline->setValue($cont['online']);
             $hiddenMode = new cHTMLHiddenField('mode');
             $hiddenMode->setValue('edit');
-
-            // echo "test";
             $hiddenKey = new cHTMLHiddenField('key');
             $hiddenKey->setValue($key);
 
@@ -251,9 +242,8 @@ class ArticleForumRightBottom extends cGuiPage {
             $form->appendContent($hiddenMode);
             $form->appendContent($hiddenOnline);
             $form->appendContent($hiddenKey);
-            // $form->appendContent($hiddenResult);
 
-            // $el->render();
+            // generate output text
             $form->appendContent($maili . " schrieb am : " . $date . "<br><br>");
             $form->appendContent($text . "<br>");
             $tdForm->setContent($form);
@@ -261,8 +251,6 @@ class ArticleForumRightBottom extends cGuiPage {
             $tr->setContent($tdForm);
             $tr->appendContent($tdButtons);
             $table->appendContent($tr);
-            // $table->appendContent($trLike);
-            //
         }
         $this->appendContent($table);
 
@@ -297,6 +285,11 @@ class ArticleForumRightBottom extends cGuiPage {
         $form1 = new cGuiTableForm("comment", "main.php?area=user_forum&frame=4", "post");
         $form1->addHeader($tr);
 
+        // get User information
+        $user = new cApiUser();
+        $user->loadByPrimaryKey($post['editedby']);
+        $username = $user->getField('username');
+
         // Dialog EDITMODE :
         $id = $post['id_user_forum'];
 
@@ -306,15 +299,11 @@ class ArticleForumRightBottom extends cGuiPage {
         $dislike = new cHTMLTextBox("dislike", conHtmlSpecialChars($post['dislike']), 40, 255);
         $forum = new cHTMLTextArea("forum", conHtmlSpecialChars($post['forum']), 30, 10);
         $timestamp = new cHTMLTextBox("timestamp", conHtmlSpecialChars($post['timestamp']), 40, 255);
-        $timestamp->setDisabled(true);
         $editedat = new cHTMLTextBox("editedat", conHtmlSpecialChars($post['editedat']), 40, 255);
-        $editedat->setDisabled(true);
-
-        $user = new cApiUser();
-        $user->loadByPrimaryKey($post['editedby']);
-        $username = $user->getField('username');
-
         $editedby = new cHTMLTextBox("editedby", conHtmlSpecialChars($username), 40, 255);
+
+        $editedat->setDisabled(true);
+        $timestamp->setDisabled(true);
         $editedby->setDisabled(true);
 
         if ($post['online'] == 1) {
@@ -327,13 +316,10 @@ class ArticleForumRightBottom extends cGuiPage {
             $form1->setVar("checked", "0");
         }
 
-        $hidden = new cHTMLHiddenField("test");
-        $hidden->setValue("blabla");
-
         $idart = $post['idart'];
         $idcat = $post['idcat'];
-        $form1->addCancel("main.php?area=user_forum&frame=4&action=back&idart=$idart&idcat=$idcat");
 
+        $form1->addCancel("main.php?area=user_forum&frame=4&action=back&idart=$idart&idcat=$idcat");
         $form1->add(UserForum::i18n("USER"), $name, '');
         $form1->add(UserForum::i18n("EMAIL"), $email, '');
         $form1->add(UserForum::i18n("LIKE"), $like, '');
@@ -342,13 +328,13 @@ class ArticleForumRightBottom extends cGuiPage {
         $form1->add(UserForum::i18n("EDITDAT"), $editedat, '');
         $form1->add(UserForum::i18n("EDITEDBY"), $editedby, '');
         $form1->add(UserForum::i18n("STATUS"), $onlineBox, '');
+        $form1->add(UserForum::i18n("COMMENT"), $forum, '');
+        // set hidden fields
         $form1->setVar("id_user_forum", $post['id_user_forum']);
         $form1->setVar("idart", $post['idart']);
         $form1->setVar("idcat", $post['idcat']);
         $form1->setVar("action", 'update');
         $form1->setVar("mode", "list");
-
-        $form1->add(UserForum::i18n("COMMENT"), $forum, '');
 
         $this->appendContent($form1);
 
@@ -410,29 +396,22 @@ class ArticleForumRightBottom extends cGuiPage {
 
     function _getCommentHierachrie($id_cat, $id_art, $id_lang) {
         global $cfg;
-
         $db = cRegistry::getDb();
 
         $query = "SELECT * FROM " . $cfg['tab']['phplib_auth_user_md5'];
 
         $db->query($query);
-
         $arrUsers = array();
 
         while ($db->next_record()) {
             $arrUsers[$db->f('user_id')]['email'] = $db->f('email');
             $arrUsers[$db->f('user_id')]['realname'] = $db->f('realname');
         }
-
         $arrforum = array();
-
         $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
-
         $result = array();
-
         $this->normalizeArray($arrforum, $result);
-        // echo "REEEESUUUULLLTT";
-        // print_r ($result);
+
         return $result;
     }
 
@@ -488,14 +467,12 @@ class ArticleForumRightBottom extends cGuiPage {
      * @param primary key $id_user_forum
      */
     function toggleOnlineState($onlineState, $id_user_forum) {
-        global $cfg;
-
         ($onlineState == 0)? $onlineState = 1 : $onlineState = 0;
 
         $db = cRegistry::getDb();
         $query = "UPDATE con_pi_user_forum SET online = $onlineState WHERE id_user_forum = $id_user_forum;";
         $db->query($query);
-        //sleep(1);
+        // sleep(1);
     }
 
     /**
@@ -532,9 +509,10 @@ class ArticleForumRightBottom extends cGuiPage {
 
         $db->query($sql);
     }
-}
 
-function receiveData() {
+    function receiveData() {
+    }
+
 }
 
 ?>

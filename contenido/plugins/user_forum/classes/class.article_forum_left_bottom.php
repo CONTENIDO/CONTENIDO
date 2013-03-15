@@ -5,7 +5,6 @@ class ArticleForumLeftBottom extends cGuiPage {
         parent::__construct('left_bottom', 'articlelist');
     }
 
-
     public function getMenu() {
         $arts = new ArticleForumCollection();
         $result = $arts->getAllCommentedArticles();
@@ -23,7 +22,6 @@ class ArticleForumLeftBottom extends cGuiPage {
         if (false === $forms) {
             return '';
         }
-
         $menu = new cGuiMenu();
         for ($i = 0; $i < count($forms); $i++) {
 
@@ -46,12 +44,11 @@ class ArticleForumLeftBottom extends cGuiPage {
             $delete->setCLink($area, 2, 'delete_form');
             $delete->setTargetFrame('left_bottom');
             $delete->setCustom('idart', $result[$i]['idart']);
-            //$delete->setClass('pifa-icon-delete-form');
+            // $delete->setClass('pifa-icon-delete-form');
             $deleteForm = UserForum::i18n('DELETE_COMMENTS');
             $delete->setAlt($deleteForm);
             $delete->setContent('<img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');
             $menu->setActions("", 'delete', $delete);
-
             $tt->appendContent($menu);
         }
 
