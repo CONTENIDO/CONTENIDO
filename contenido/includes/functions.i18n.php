@@ -458,7 +458,7 @@ function mi18n($key) {
     // consider key as untranslated if translation has length 0
     // Don't trim translation, so that a string can be translated as ' '!
     if (0 === strlen($translation)) {
-        return 'Module translation not found: ' . $key;
+        $translation = 'Module translation not found: ' . $key;
     }
 
     // call sprintf on translation with additional params
