@@ -281,9 +281,6 @@ class cApiModule extends Item {
         }
 
         // Fetch the code, append input to output
-        //$code  = $this->get('output');
-        //$code .= $this->get('input');
-        //Get the code(input,output) from files
         $contenidoModuleHandler = new cModuleHandler($this->get('idmod'));
         $code = $contenidoModuleHandler->readOutput() . ' ';
         $code .= $contenidoModuleHandler->readInput();
@@ -293,8 +290,9 @@ class cApiModule extends Item {
 
         // Split the code into mi18n chunks
         $varr = preg_split($this->_translationPatternBase, $code, -1);
+        array_shift($varr);
 
-        if (count($varr) > 1) {
+        if (count($varr) > 0) {
             foreach ($varr as $key => $value) {
                 // Search first closing
                 $closing = strpos($value, '")');
@@ -344,7 +342,6 @@ class cApiModule extends Item {
         }
 
         /* Make the strings unique */
-
         return array_unique($strings);
     }
 
