@@ -324,9 +324,17 @@ class ArticleForumRightBottom extends cGuiPage {
     }
 
     function getForum($id_cat, $id_art, $id_lang) {
+
+        echo "<br>";
+        echo $id_cat . "<br>";
+        echo $id_art. "<br>";;
+        echo $id_lang. "<br>";;
+
         $arrUsers = $this->_collection->getExistingforum($id_cat, $id_art, $id_lang);
         $arrforum = array();
+        print_r($arrUsers);
 
+    //    echo ""
         $this->_collection->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
 
         $result = array();

@@ -1,8 +1,10 @@
 <?php
-// print_r($_POST);
-// print_r($_GET);
+ print_r($_POST);
+ print_r($_GET);
 
 // echo unserialize($_POST['content']);
+$idcat = $_POST['idcat'];
+$idart = $_POST['idart'];
 $collection = new ArticleForumCollection();
 if (isset($_POST['realname'])) {
 
@@ -32,6 +34,7 @@ if (isset($_POST['realname'])) {
         $client = cRegistry::getClientId();
         $lang = cRegistry::getLanguageId();
 
+
         $test = $right->getForum($idcat, $idart, $lang);
     } else {
         $test = $right->getEditModeMenu($_POST);
@@ -46,6 +49,10 @@ if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
     $lang = cRegistry::getLanguageId();
     $idart = $_GET['idart'];
     $idcat = $_GET['idcat'];
+ //   echo "$idart". "<br>";
+ //   echo "$idcat". "<br>";
+   // die();
+
     global $area;
     $right = new ArticleForumRightBottom("content");
     if (isset($_GET['id_user_forum']) && isset($_GET['action'])) {
@@ -68,6 +75,7 @@ if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
     $cfg = cRegistry::getConfig();
     $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();
+
 
     $test = $right->getForum($idcat, $idart, $lang);
     $test->render();

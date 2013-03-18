@@ -16,7 +16,7 @@ class ArticleForumCollection extends ItemCollection {
     public function getAllCommentedArticles() {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-        $sql = "SELECT DISTINCT t.title, t.idart FROM con_art_lang t," . $this->table . " f WHERE f.idart=t.idart AND t.idlang = f.idlang ORDER BY id_user_forum ASC ;";
+        $sql = "SELECT DISTINCT t.title, t.idart, f.idcat FROM con_art_lang t," . $this->table . " f WHERE f.idart=t.idart AND t.idlang = f.idlang ORDER BY id_user_forum ASC ;";
         $db->query($sql);
 
         $data = array();
@@ -195,6 +195,7 @@ class ArticleForumCollection extends ItemCollection {
             $arrUsers[$db->f('user_id')]['realname'] = $db->f('realname');
         }
 
+       // print_r($arrUsers);
         return $arrUsers;
     }
 

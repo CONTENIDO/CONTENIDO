@@ -9,6 +9,9 @@ class ArticleForumLeftBottom extends cGuiPage {
         $arts = new ArticleForumCollection();
         $result = $arts->getAllCommentedArticles();
 
+        echo"<pre>";
+       print_r($result);
+       echo"</pre>";
         $tt = new cHTMLList();
         global $area;
         $ar = array();
@@ -35,7 +38,7 @@ class ArticleForumLeftBottom extends cGuiPage {
             $link->setCLink($area, 4, 'show_form');
             $link->setTargetFrame('right_bottom');
             $link->setCustom('idart', $result[$i]['idart']);
-            $link->setCustom('idcat', $res[0]['idcat']);
+            $link->setCustom('idcat',$result[$i]['idcat']);
             $link->setContent('name ' . $formName);
             $menu->setLink("", $link);
 
