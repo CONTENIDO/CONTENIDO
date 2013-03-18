@@ -3,6 +3,7 @@
 // print_r($_GET);
 
 // echo unserialize($_POST['content']);
+$collection = new ArticleForumCollection();
 if (isset($_POST['realname'])) {
 
     $idcat = $_POST['idcat'];
@@ -21,7 +22,7 @@ if (isset($_POST['realname'])) {
                 break;
 
             case 'update':
-                $right->updateValues($_POST['id_user_forum'], $_POST['realname'], $_POST['email'], $_POST['like'], $_POST['dislike'], $_POST['forum'], $_POST['online'], $_POST['onlineState']);
+                $collection->updateValues($_POST['id_user_forum'], $_POST['realname'], $_POST['email'], $_POST['like'], $_POST['dislike'], $_POST['forum'], $_POST['online'], $_POST['onlineState']);
                 break;
             default:
                 throw new Exception('$_POST["action"] type ' . $_POST["action"] . ' not implemented');
@@ -31,7 +32,7 @@ if (isset($_POST['realname'])) {
         $client = cRegistry::getClientId();
         $lang = cRegistry::getLanguageId();
 
-        $test = $right->getExistingforum($idcat, $idart, $lang);
+        $test = $right->getForum($idcat, $idart, $lang);
     } else {
         $test = $right->getEditModeMenu($_POST);
     }
@@ -45,6 +46,7 @@ if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
     $lang = cRegistry::getLanguageId();
     $idart = $_GET['idart'];
     $idcat = $_GET['idcat'];
+    global $area;
     $right = new ArticleForumRightBottom("content");
     if (isset($_GET['id_user_forum']) && isset($_GET['action'])) {
 
@@ -52,10 +54,12 @@ if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
         switch ($action) {
 
             case 'online_toggle':
-                $right->toggleOnlineState($_GET['online'], $_GET['id_user_forum']);
+                $collection->toggleOnlineState($_GET['online'], $_GET['id_user_forum']);
                 break;
             case 'deleteComment':
-                $right->deleteHierarchie($_GET['key'], $_GET['level'], $idart, $idcat, $lang);
+               // ArticleForumCollection::deleteHierarchie($_GET['key'], $_GET['level'], $idart, $idcat, $lang);
+                $collection->deleteHierarchie($_GET['key'], $_GET['level'], $idart, $idcat, $lang);
+                $right->render();
                 break;
             default:
                 throw new Exception('$_GET["action"] type ' . $_GET["action"] . ' not implemented');
@@ -65,7 +69,7 @@ if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
     $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();
 
-    $test = $right->getExistingforum($idcat, $idart, $lang);
+    $test = $right->getForum($idcat, $idart, $lang);
     $test->render();
 }
 
