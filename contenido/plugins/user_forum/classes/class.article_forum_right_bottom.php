@@ -72,15 +72,76 @@ class ArticleForumRightBottom extends cGuiPage {
     }
 
     /**
+     * form foreach
+     *
+     * @param $key
+     * @param $cont
+     *
+     *
+     * @param $cfg
+     * @return array with buttons
+     */
+    function buildOnlineButtonBackendListMode(&$key, &$cont, &$cfg) {
+        global $area;
+
+        $buttons = array();
+
+        $id = $cont['id_user_forum'];
+        $online = new cHTMLLink();
+        if ($cont['online'] == 1) {
+            $online->setImage($cfg['path']['images'] . 'online.gif');
+            $online->setCustom('action', 'online_toggle');
+            $online->setAlt(UserForum::i18n('SETOFFLINE'));
+        } else {
+            $online->setImage($cfg['path']['images'] . 'offline.gif');
+            $online->setCustom('action', 'offline_toggle');
+            $online->setAlt(UserForum::i18n('SETONLINE'));
+        }
+
+        $online->setCLink($area, 4, 'show_form');
+        $online->setStyle('margin-top:0px; margin-left:8px;');
+        $online->setTargetFrame('right_bottom');
+        $online->setCustom('action', 'online_toggle');
+        $online->setCustom('idart', $cont['idart']);
+        $online->setCustom('id_user_forum', $cont['id_user_forum']);
+        $online->setCustom('idcat', $cont['idcat']);
+        $online->setCustom('online', $cont['online']);
+        $online->setAttribute('method', 'get');
+
+        $edit = new cHTMLButton("edit");
+        $edit->setImageSource($cfg['path']['images'] . 'but_todo.gif');
+        $edit->setEvent('click', "$('form[name=$id]').submit()");
+        $edit->setMode('image');
+        $edit->setAlt(UserForum::i18n('EDIT'));
+
+        $delete = new cHTMLLink();
+        // $delete->setStyle('margin-right:10px;');
+        $delete->setImage($cfg['path']['images'] . 'delete.gif');
+        $delete->setAlt(UserForum::i18n('DELETE'));
+
+        $delete->setCLink($area, 4, 'show_form');
+        $delete->setTargetFrame('right_bottom');
+        $delete->setCustom('action', 'deleteComment');
+        $delete->setCustom('level', $cont['level']);
+        $delete->setCustom('key', $key);
+        $delete->setCustom('id_user_forum', $cont['id_user_forum']);
+        $delete->setCustom('idcat', $cont['idcat']);
+        $delete->setCustom('idart', $cont['idart']);
+
+        $buttons['online'] = $online;
+        $buttons['edit'] = $edit;
+        $buttons['delete'] = $delete;
+
+        return $buttons;
+    }
+
+    /**
      * generate main menu
      *
      * @param $result array with comments
      * @return ArticleForumRightBottom
      */
     function getMenu(&$result) {
-        $testet = new cHTMLContentElement();
-        $testet->setID('Content');
-
         $table = new cHTMLTable();
         $table->setCellPadding('100px');
         global $area;
@@ -91,7 +152,6 @@ class ArticleForumRightBottom extends cGuiPage {
         ));
 
         $tr = new cHTMLTableRow();
-
         $th = new cHTMLTableHead();
         $th->setContent(i18n("FORUM_POST", "user_forum"));
         $tr->appendContent($th);
@@ -106,17 +166,23 @@ class ArticleForumRightBottom extends cGuiPage {
 
         $menu = new cGuiMenu();
         $cfg = cRegistry::getConfig();
-        $client = cRegistry::getClientId();
-        $lang = cRegistry::getLanguageId();
 
-        $nameTag = UserForum::i18n('USER');
-        $emailTag = UserForum::i18n('EMAIL');
-        $likeTag = UserForum::i18n('LIKE');
-        $dislikeTag = UserForum::i18n('DISLIKE');
-        $dateTag = UserForum::i18n('DATE');
-        $CommentTag = UserForum::i18n('COMMENT');
+        /**
+         *
+         * @todo check if needed
+         */
+        // $testet = new cHTMLContentElement();
+        // $testet->setID('Content');
+        // $client = cRegistry::getClientId();
+        // $lang = cRegistry::getLanguageId();
+        // $nameTag = UserForum::i18n('USER');
+        // $emailTag = UserForum::i18n('EMAIL');
+        // $dateTag = UserForum::i18n('DATE');
+        // $CommentTag = UserForum::i18n('COMMENT');
 
-        // table
+        // $likeTag = UserForum::i18n('LIKE');
+        // $dislikeTag = UserForum::i18n('DISLIKE');
+
         foreach ($result as $key => $cont) {
 
             $set = false;
@@ -126,56 +192,36 @@ class ArticleForumRightBottom extends cGuiPage {
 
             // build Buttons
             $id = $cont['id_user_forum'];
+            $buttons = array();
+            $buttons = $this->buildOnlineButtonBackendListMode($key, $cont, $cfg);
 
-            $online = new cHTMLLink();
-            if ($cont['online'] == 1) {
-                $online->setImage($cfg['path']['images'] . 'online.gif');
-                $online->setCustom('action', 'online_toggle');
-                $online->setAlt(UserForum::i18n('SETOFFLINE'));
-            } else {
-                $online->setImage($cfg['path']['images'] . 'offline.gif');
-                $online->setCustom('action', 'offline_toggle');
-                $online->setAlt(UserForum::i18n('SETONLINE'));
-            }
-
-            $online->setCLink($area, 4, 'show_form');
-            $online->setStyle('margin-top:0px; margin-left:20px; margin-right:20px;');
-            $online->setTargetFrame('right_bottom');
-            $online->setCustom('action', 'online_toggle');
-            $online->setCustom('idart', $cont['idart']);
-            $online->setCustom('id_user_forum', $cont['id_user_forum']);
-            $online->setCustom('idcat', $cont['idcat']);
-            $online->setCustom('online', $cont['online']);
-            $online->setAttribute('method', 'get');
-
-            $edit = new cHTMLButton("edit");
-            $edit->setImageSource($cfg['path']['images'] . 'but_todo.gif');
-            $edit->setEvent('click', "$('form[name=$id]').submit()");
-            $edit->setMode('image');
-            $edit->setAlt(UserForum::i18n('EDIT'));
-
-            $delete = new cHTMLLink();
-            $delete->setStyle('margin-left:20px; margin-right:20px;');
-            $delete->setImage($cfg['path']['images'] . 'delete.gif');
-            $delete->setAlt(UserForum::i18n('DELETE'));
-
-            $delete->setCLink($area, 4, 'show_form');
-            $delete->setTargetFrame('right_bottom');
-            $delete->setCustom('action', 'deleteComment');
-            $delete->setCustom('level', $cont['level']);
-            $delete->setCustom('key', $key);
-            $delete->setCustom('id_user_forum', $cont['id_user_forum']);
-            $delete->setCustom('idcat', $cont['idcat']);
-            $delete->setCustom('idart', $cont['idart']);
+            $online = $buttons['online'];
+            $edit = $buttons['edit'];
+            $delete = $buttons['delete'];
 
             // row
             $tr = new cHTMLTableRow();
 
             $trLike = new cHTMLTableRow();
+
+            $tdEmpty = new cHTMLTableData();
+            $tdEmpty->appendContent("<br>");
             $tdLike = new cHTMLTableData();
-            $tdLike->appendContent("<br>" . $likeTag . ": " . $like . "<br>");
-            $tdLike->appendContent($dislikeTag . ": " . $dislike);
-            $trLike->appendContent($trLike);
+            $tdEmpty->setAttribute('valign', 'top');
+            $tdLike->setAttribute('valign', 'top');
+
+            $likeButton = new cHTMLImage($cfg['path']['images'] . 'like.png');
+            $dislikeButton = new cHTMLImage($cfg['path']['images'] . 'dislike.png');
+
+            $tdLike->appendContent($likeButton);
+            $tdLike->appendContent(" $like ");
+            $tdLike->appendContent($dislikeButton);
+            $tdLike->appendContent(" $dislike");
+
+            // $tdLike->appendContent($likeTag . ": " . $like . "<br>");
+            // $tdLike->appendContent($dislikeTag . ": " . $dislike);
+            $trLike->appendContent($tdEmpty);
+            $trLike->appendContent($tdLike);
 
             $form = new cHTMLForm($cont['id_user_forum']);
             $form->setAttribute('action', 'main.php?' . "area=" . $area . '&frame=4');
@@ -250,6 +296,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $tdForm->setAttribute('valign', 'top');
             $tr->setContent($tdForm);
             $tr->appendContent($tdButtons);
+            $tr->appendContent($trLike);
             $table->appendContent($tr);
         }
         $this->appendContent($table);
@@ -265,9 +312,13 @@ class ArticleForumRightBottom extends cGuiPage {
      */
     function getEditModeMenu($post) {
         global $area;
-        $cfg = cRegistry::getConfig();
-        $client = cRegistry::getClientId();
-        $lang = cRegistry::getLanguageId();
+        /**
+         *
+         * @todo check if needed
+         */
+        // $cfg = cRegistry::getConfig();
+        // $client = cRegistry::getClientId();
+        // $lang = cRegistry::getLanguageId();
 
         $menu = new cGuiMenu();
         $tr = new cHTMLTableRow();
@@ -342,8 +393,7 @@ class ArticleForumRightBottom extends cGuiPage {
     }
 
     function deleteHierarchie($keyPost, $level, $idart, $idcat, $lang) {
-        global $cfg;
-
+        // global $cfg;
         $db = cRegistry::getDb();
 
         $comments = $this->_getCommentHierachrie($idcat, $idart, $lang);
@@ -395,7 +445,7 @@ class ArticleForumRightBottom extends cGuiPage {
     }
 
     function _getCommentHierachrie($id_cat, $id_art, $id_lang) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
         $query = "SELECT * FROM " . $cfg['tab']['phplib_auth_user_md5'];
@@ -417,13 +467,13 @@ class ArticleForumRightBottom extends cGuiPage {
 
     /**
      *
-     * @param unknown $id_cat
-     * @param unknown $id_art
-     * @param unknown $id_lang
+     * @param $id_cat
+     * @param $id_art
+     * @param $id_lang
      * @return ArticleForumRightBottom
      */
     function getExistingforum($id_cat, $id_art, $id_lang) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
 
         $db = cRegistry::getDb();
 
