@@ -224,8 +224,9 @@ class cApiClientLanguage extends Item {
      * @param mixed $mType Type of the data to store (arbitary data)
      * @param mixed $mName Entry name
      * @param mixed $mValue Value
+     * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
      */
-    public function setProperty($mType, $mName, $mValue) {
+    public function setProperty($mType, $mName, $mValue, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
         $oPropertyColl->setValue($this->primaryKey, $this->get($this->primaryKey), $mType, $mName, $mValue);
     }
@@ -237,9 +238,10 @@ class cApiClientLanguage extends Item {
      *
      * @param mixed $mType Type of the data to get
      * @param mixed $mName Entry name
+     * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
      * @return mixed Value
      */
-    public function getProperty($mType, $mName) {
+    public function getProperty($mType, $mName, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
         return $oPropertyColl->getValue($this->primaryKey, $this->get($this->primaryKey), $mType, $mName);
     }
@@ -252,9 +254,10 @@ class cApiClientLanguage extends Item {
      *
      * @param int $idprop Id of property
      * @param string $p2 Not used, is here to prevent PHP Strict warnings
+     * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
      * @return void
      */
-    public function deleteProperty($idprop, $p2) {
+    public function deleteProperty($idprop, $p2, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
         $oPropertyColl->delete($idprop);
     }
@@ -302,9 +305,10 @@ class cApiClientLanguage extends Item {
     /**
      * Lazy instantiation and return of properties object
      *
+     * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
      * @return cApiPropertyCollection
      */
-    protected function _getPropertiesCollectionInstance() {
+    protected function _getPropertiesCollectionInstance($client = 0) {
         // Runtime on-demand allocation of the properties object
         if (!is_object($this->_oPropertyCollection)) {
             $this->_oPropertyCollection = new cApiPropertyCollection();

@@ -127,7 +127,8 @@ class TODOCollection extends cApiCommunicationCollection {
 
 class TODOItem extends cApiCommunication {
 
-    public function setProperty($type, $name, $value) {
+    // @param int $client  Client id (not used, it's declared because of PHP strict warnings)
+    public function setProperty($type, $name, $value, $client = 0) {
         if ($type == 'todo' && $name == 'emailnoti') {
             if ($value) {
                 parent::setProperty('todo', 'emailnoti-sent', false);

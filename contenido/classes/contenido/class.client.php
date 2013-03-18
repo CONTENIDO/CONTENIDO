@@ -263,9 +263,10 @@ class cApiClient extends Item {
      *
      * @param mixed $type Type of the data to get
      * @param mixed $name Entry name
+     * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
      * @return mixed Value
      */
-    public function getProperty($type, $name) {
+    public function getProperty($type, $name, $client = 0) {
         $propertyColl = $this->_getPropertiesCollectionInstance();
         return $propertyColl->getValue('clientsetting', $this->idclient, $type, $name);
     }
@@ -275,9 +276,10 @@ class cApiClient extends Item {
      *
      * @param int $idProp Id of property
      * @param string $p2 Not used, is here to prevent PHP Strict warnings
+     * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
      * @return void
      */
-    public function deleteProperty($idProp, $p2 = "") {
+    public function deleteProperty($idProp, $p2 = "", $client = 0) {
         $propertyColl = $this->_getPropertiesCollectionInstance();
         $propertyColl->delete($idProp);
     }
@@ -357,10 +359,11 @@ class cApiClient extends Item {
 
     /**
      * Lazy instantiation and return of properties object
+     * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
      *
      * @return cApiPropertyCollection
      */
-    protected function _getPropertiesCollectionInstance() {
+    protected function _getPropertiesCollectionInstance($client = 0) {
         // Runtime on-demand allocation of the properties object
         if (!is_object($this->_oPropertyCollection)) {
             $this->_oPropertyCollection = new cApiPropertyCollection();
