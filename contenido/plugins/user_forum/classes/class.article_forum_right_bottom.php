@@ -21,7 +21,7 @@ class ArticleForumRightBottom extends cGuiPage {
      * @param $cfg
      * @return array with buttons
      */
-    function buildOnlineButtonBackendListMode(&$key, &$cont, &$cfg) {
+    protected function buildOnlineButtonBackendListMode(&$key, &$cont, &$cfg) {
         global $area;
 
         $buttons = array();
@@ -82,7 +82,7 @@ class ArticleForumRightBottom extends cGuiPage {
      * @param $result array with comments
      * @return ArticleForumRightBottom
      */
-    function getMenu(&$result) {
+   protected function getMenu(&$result) {
         $table = new cHTMLTable();
         $table->setCellPadding('100px');
         global $area;
@@ -142,9 +142,6 @@ class ArticleForumRightBottom extends cGuiPage {
             $tdLike->appendContent(" $like ");
             $tdLike->appendContent($dislikeButton);
             $tdLike->appendContent(" $dislike");
-
-            // $tdLike->appendContent($likeTag . ": " . $like . "<br>");
-            // $tdLike->appendContent($dislikeTag . ": " . $dislike);
 
             // in new row
             $trLike->appendContent($tdEmpty);
@@ -244,7 +241,7 @@ class ArticleForumRightBottom extends cGuiPage {
      * @param unknown $post
      * @return ArticleForumRightBottom
      */
-    function getEditModeMenu($post) {
+     protected function getEditModeMenu($post) {
         global $area;
         $cfg = cRegistry::getConfig();
         $menu = new cGuiMenu();
@@ -323,7 +320,7 @@ class ArticleForumRightBottom extends cGuiPage {
         return $this;
     }
 
-    function getForum($id_cat, $id_art, $id_lang) {
+   protected function getForum($id_cat, $id_art, $id_lang) {
         $arrUsers = $this->_collection->getExistingforum($id_cat, $id_art, $id_lang);
         $arrforum = array();
 
@@ -336,7 +333,7 @@ class ArticleForumRightBottom extends cGuiPage {
         return $ret;
     }
 
-    function normalizeArray($arrforum, &$result, $level = 0) {
+   protected function normalizeArray($arrforum, &$result, $level = 0) {
         if (is_array($arrforum)) {
             foreach ($arrforum as $key => $value) {
                 $value['level'] = $level;
@@ -347,7 +344,7 @@ class ArticleForumRightBottom extends cGuiPage {
         }
     }
 
-    function receiveData(&$get, &$post) {
+    public function receiveData(&$get, &$post) {
         global $area;
         $cfg = cRegistry::getConfig();
         $client = cRegistry::getClientId();

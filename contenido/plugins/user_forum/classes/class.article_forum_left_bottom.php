@@ -3,12 +3,12 @@ class ArticleForumLeftBottom extends cGuiPage {
 
     protected $_collection;
 
-    function __construct() {
+    public function __construct() {
         parent::__construct('left_bottom', 'articlelist');
         $this->_collection = new ArticleForumCollection();
     }
 
-    public function getMenu() {
+    protected function getMenu() {
         $arts = new ArticleForumCollection();
         $result = $arts->getAllCommentedArticles();
 
