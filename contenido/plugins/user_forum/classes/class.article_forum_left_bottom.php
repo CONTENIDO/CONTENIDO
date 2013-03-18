@@ -1,18 +1,18 @@
 <?php
 class ArticleForumLeftBottom extends cGuiPage {
 
+    protected $_collection;
+
     function __construct() {
         parent::__construct('left_bottom', 'articlelist');
+        $this->_collection = new ArticleForumCollection();
     }
 
     public function getMenu() {
         $arts = new ArticleForumCollection();
         $result = $arts->getAllCommentedArticles();
 
-        echo"<pre>";
-       print_r($result);
-       echo"</pre>";
-        $tt = new cHTMLList();
+        $list = new cHTMLList();
         global $area;
         $ar = array();
         $cfg = cRegistry::getConfig();
@@ -30,7 +30,6 @@ class ArticleForumLeftBottom extends cGuiPage {
 
             $res = $arts->getIdCat($result[$i]['idart']);
             $formName = $result[$i]['title'];
-
             $menu->setTitle("", $formName);
 
             // add 'show form' link
@@ -38,7 +37,7 @@ class ArticleForumLeftBottom extends cGuiPage {
             $link->setCLink($area, 4, 'show_form');
             $link->setTargetFrame('right_bottom');
             $link->setCustom('idart', $result[$i]['idart']);
-            $link->setCustom('idcat',$result[$i]['idcat']);
+            $link->setCustom('idcat', $result[$i]['idcat']);
             $link->setContent('name ' . $formName);
             $menu->setLink("", $link);
 
@@ -52,10 +51,18 @@ class ArticleForumLeftBottom extends cGuiPage {
             $delete->setAlt($deleteForm);
             $delete->setContent('<img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');
             $menu->setActions("", 'delete', $delete);
-            $tt->appendContent($menu);
+            $list->appendContent($menu);
         }
 
-        return $tt;
+        return $list;
+    }
+
+    public function receiveData(&$get) {
+        if ($_GET['action'] === 'delete_form') {
+            $this->_collection->deleteAllCommentsById($_GET['idart']);
+        }
+
+        $this->getMenu();
     }
 
 }

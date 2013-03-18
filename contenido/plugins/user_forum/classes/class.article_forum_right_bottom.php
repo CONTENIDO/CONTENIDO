@@ -324,17 +324,9 @@ class ArticleForumRightBottom extends cGuiPage {
     }
 
     function getForum($id_cat, $id_art, $id_lang) {
-
-        echo "<br>";
-        echo $id_cat . "<br>";
-        echo $id_art. "<br>";;
-        echo $id_lang. "<br>";;
-
         $arrUsers = $this->_collection->getExistingforum($id_cat, $id_art, $id_lang);
         $arrforum = array();
-        print_r($arrUsers);
 
-    //    echo ""
         $this->_collection->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
 
         $result = array();
@@ -355,10 +347,59 @@ class ArticleForumRightBottom extends cGuiPage {
         }
     }
 
-    function receiveData() {
-    }
+    function receiveData(&$get, &$post) {
+        global $area;
+        $cfg = cRegistry::getConfig();
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
+        if (isset($_POST['realname'])) {
 
-    function processReceivedData() {
+            $idcat = $_POST['idcat'];
+            $idart = $_POST['idart'];
+
+            if (isset($_POST['action']) && $_POST['action'] != NULL)
+                switch ($_POST['action']) {
+
+                    case 'online_toggle':
+                        echo 'online_toggle';
+                        $this->_collection->toggleOnlineState($_POST['online'], $_POST['id_user_forum']);
+                        break;
+                    case 'update':
+                        $this->_collection->updateValues($_POST['id_user_forum'], $_POST['realname'], $_POST['email'], $_POST['like'], $_POST['dislike'], $_POST['forum'], $_POST['online'], $_POST['onlineState']);
+                        break;
+                    default:
+                        throw new Exception('$_POST["action"] type ' . $_POST["action"] . ' not implemented');
+                }
+            if ($_POST['mode'] === 'list') {
+                $this->getForum($idcat, $idart, $lang);
+            } else {
+                $this->getEditModeMenu($_POST);
+            }
+        }
+
+        if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
+            $idart = $_GET['idart'];
+            $idcat = $_GET['idcat'];
+
+            if (isset($_GET['id_user_forum']) && isset($_GET['action'])) {
+
+                $action = $_GET["action"];
+                switch ($action) {
+
+                    case 'online_toggle':
+                        $this->_collection->toggleOnlineState($_GET['online'], $_GET['id_user_forum']);
+                        break;
+                    case 'deleteComment':
+                        $this->_collection->deleteHierarchie($_GET['key'], $_GET['level'], $idart, $idcat, $lang);
+                        $this->render();
+                        break;
+                    default:
+                        throw new Exception('$_GET["action"] type ' . $_GET["action"] . ' not implemented');
+                }
+            }
+
+            $this->getForum($idcat, $idart, $lang);
+        }
     }
 
 }
