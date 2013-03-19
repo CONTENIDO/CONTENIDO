@@ -101,16 +101,15 @@ function layEditLayout($idlay, $name, $description, $code) {
             if ($layoutInFile->rename($layoutInFile->getLayoutName(), $layoutAlias)) {
                 if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
                     $notification->displayNotification("error", i18n("Can't save layout in file!"));
-                } else {
-                    $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Renamed layout succsessfully!"));
-                    $layout = new cApiLayout(cSecurity::toInteger($idlay));
-                    $layout->set('name', $name);
-                    $layout->set('alias', $layoutAlias);
-                    $layout->set('description', $description);
-                    $layout->set('author', $author);
-                    $layout->set('lastmodified', $date);
-                    $layout->store();
                 }
+                $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Renamed layout succsessfully!"));
+                $layout = new cApiLayout(cSecurity::toInteger($idlay));
+                $layout->set('name', $name);
+                $layout->set('alias', $layoutAlias);
+                $layout->set('description', $description);
+                $layout->set('author', $author);
+                $layout->set('lastmodified', $date);
+                $layout->store();
             } else {
                 // Rename not successfully
                 // Save layout
@@ -122,16 +121,15 @@ function layEditLayout($idlay, $name, $description, $code) {
             // Name dont changed
             if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
                 $notification->displayNotification("error", i18n("Can't save layout in file!"));
-            } else {
-                $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
-                $layout = new cApiLayout(cSecurity::toInteger($idlay));
-                $layout->set('name', $name);
-                $layout->set('alias', $layoutAlias);
-                $layout->set('description', $description);
-                $layout->set('author', $author);
-                $layout->set('lastmodified', $date);
-                $layout->store();
             }
+            $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
+            $layout = new cApiLayout(cSecurity::toInteger($idlay));
+            $layout->set('name', $name);
+            $layout->set('alias', $layoutAlias);
+            $layout->set('description', $description);
+            $layout->set('author', $author);
+            $layout->set('lastmodified', $date);
+            $layout->store();
         }
 
         // Update CODE table
