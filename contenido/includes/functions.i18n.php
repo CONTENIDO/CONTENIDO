@@ -452,8 +452,7 @@ function mi18n($key) {
     $contenidoTranslateFromFile = new cModuleFileTranslation($cCurrentModule, true);
     $translations = $contenidoTranslateFromFile->getLangarray();
 
-    // addslash key cause keys of getLangarray() are addslashed :(
-    $translation = $translations[addslashes($key)];
+    $translation = $translations[$key];
 
     // consider key as untranslated if translation has length 0
     // Don't trim translation, so that a string can be translated as ' '!
