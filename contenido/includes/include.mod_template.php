@@ -21,7 +21,8 @@
  *
  *        {@internal
  *        created 2004-07-14
- *        $Id$:
+ *        $Id: include.mod_template.php 4323 2013-03-19 11:04:05Z
+ *        frederic.schneider $:
  *        }}
  */
 
@@ -54,6 +55,7 @@ if (!$perm->have_perm_area_action($area, $action)) {
     // If there is no client selected, display empty page
 } else {
     $contenidoModulTemplateHandler = new cModuleTemplateHandler($idmod);
+    $contenidoModulTemplateHandler->checkWritePermissions();
     $contenidoModulTemplateHandler->setAction($action);
     $contenidoModulTemplateHandler->setCode($_REQUEST['code']);
     $contenidoModulTemplateHandler->setFiles($_REQUEST['file'], $_REQUEST['tmp_file']);

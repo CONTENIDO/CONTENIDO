@@ -183,6 +183,20 @@ class cModuleTemplateHandler extends cModuleHandler {
     }
 
     /**
+     * Checks write permissions for module template
+     *
+     * @return $this warning notification
+     * @return boolean true
+     */
+    public function checkWritePermissions() {
+        if ($this->moduleWriteable('template') == false) {
+            return $this->_notification->displayNotification(cGuiNotification::LEVEL_WARNING, i18n("You have no write permissions for this module"));
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * The method decide what action is send from
      * user (form).
      *
@@ -456,14 +470,14 @@ class cModuleTemplateHandler extends cModuleHandler {
         $ta_code->updateAttributes(array(
             'wrap' => getEffectiveSetting('html_editor', 'wrap', 'off')
         ));
-        //show only if file exists
-        if($this->_file) {
-        $form->add(i18n('Action'), $inputDelete->toHTML());
+        // show only if file exists
+        if ($this->_file) {
+            $form->add(i18n('Action'), $inputDelete->toHTML());
         }
         $form->add(i18n('Action'), $inputAdd->toHTML());
 
-        //add fields only if template file exists
-        if($this->_file) {
+        // add fields only if template file exists
+        if ($this->_file) {
             $form->add(i18n('File'), $selectFile);
             $form->add(i18n('Name'), $tb_name);
             $form->add(i18n('Code'), $ta_code);
@@ -522,9 +536,12 @@ class cModuleTemplateHandler extends cModuleHandler {
     }
 
 }
-
 class Contenido_Module_Template_Handler extends cModuleTemplateHandler {
-    /** @deprecated [2012-07-24] class was renamed to cModuleTemplateHandler */
+
+    /**
+     *
+     * @deprecated [2012-07-24] class was renamed to cModuleTemplateHandler
+     */
     public function __construct($idmod) {
         cDeprecated('Class was renamed to cModuleTemplateHandler.');
         parent::__construct($idmod);

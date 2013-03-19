@@ -716,11 +716,12 @@ class cModuleHandler {
     /**
      * Check write permissions for this module
      *
+     * @param string $type php oder template
      * @return boolean true or false
      */
-    public function moduleWriteable() {
+    public function moduleWriteable($type) {
 
-        if(!cFileHandler::writeable($this->_modulePath . $this->_directories['php'])) {
+        if(!cFileHandler::writeable($this->_modulePath . $this->_directories[$type])) {
             return false;
         } else {
             return true;
