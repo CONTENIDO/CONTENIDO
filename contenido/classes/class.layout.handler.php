@@ -99,6 +99,14 @@ class cLayoutHandler {
     }
 
     /**
+     * Get method for Filename
+     * @return string
+     */
+    public function _getFileName() {
+        return $this->_fileName;
+    }
+
+    /**
      * Look in layout directory if layout [$layoutAlias] directory exists
      *
      * @param string $layoutAlias

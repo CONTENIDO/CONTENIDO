@@ -100,9 +100,10 @@ function layEditLayout($idlay, $name, $description, $code) {
             // Rename the directory
             if ($layoutInFile->rename($layoutInFile->getLayoutName(), $layoutAlias)) {
                 if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
-                    $notification->displayNotification("error", i18n("Can't save layout in file!"));
+                    $notification->displayNotification("warning", sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
+                } else {
+                	$notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Renamed layout succsessfully!"));
                 }
-                $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Renamed layout succsessfully!"));
                 $layout = new cApiLayout(cSecurity::toInteger($idlay));
                 $layout->set('name', $name);
                 $layout->set('alias', $layoutAlias);
@@ -120,9 +121,10 @@ function layEditLayout($idlay, $name, $description, $code) {
         } else {
             // Name dont changed
             if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
-                $notification->displayNotification("error", i18n("Can't save layout in file!"));
+                $notification->displayNotification("warning", sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
+            } else {
+            	$notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
             }
-            $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
             $layout = new cApiLayout(cSecurity::toInteger($idlay));
             $layout->set('name', $name);
             $layout->set('alias', $layoutAlias);
