@@ -41,8 +41,10 @@ if ($action == 'deletelog' && !empty($logfile)) {
 }
 
 $files = array();
-foreach (glob($path . "{*." . implode(',*.', $cfg['system_log']['file_extensions']) . "}", GLOB_BRACE) as $filename) {
-	$files[] = $filename;
+foreach (new DirectoryIterator($path) as $filename) {
+    if (in_array($filename->getExtension(), $cfg['system_log']['file_extensions'])) {
+        $files[] = $path . $filename->getFilename();
+    }
 }
 
 if (!empty($files)) {
