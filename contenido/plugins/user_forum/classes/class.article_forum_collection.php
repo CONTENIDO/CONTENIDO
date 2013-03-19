@@ -28,9 +28,6 @@ class ArticleForumCollection extends ItemCollection {
     public function deleteHierarchie($keyPost, $level, $idart, $idcat, $lang) {
         $comments = $this->_getCommentHierachrie($idcat, $idart, $lang);
 
-        $ar = array();
-
-        // echo $level . "<br>";
         $arri = array();
 
         foreach ($comments as $key => $com) {
@@ -95,40 +92,43 @@ class ArticleForumCollection extends ItemCollection {
     }
 
     public function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0) {
+        $db = cRegistry::getDb();
+
         $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat)
         AND (idlang = $id_lang) AND (id_user_forum_parent = $parent) ORDER BY timestamp DESC";
 
-        $this->db->query($query);
 
-        while ($this->db->next_record()) {
-            $arrforum[$this->db->f('id_user_forum')]['userid'] = $this->db->f('userid');
+        $db->query($query);
 
-            if (array_key_exists($this->db->f('userid'), $arrUsers)) {
-                $arrforum[$this->db->f('id_user_forum')]['email'] = $arrUsers[$this->db->f('userid')]['email'];
-                $arrforum[$this->db->f('id_user_forum')]['realname'] = $arrUsers[$this->db->f('userid')]['realname'];
+        while ($db->next_record()) {
+            $arrforum[$db->f('id_user_forum')]['userid'] = $db->f('userid');
+
+            if (array_key_exists($db->f('userid'), $arrUsers)) {
+                $arrforum[$db->f('id_user_forum')]['email'] = $arrUsers[$db->f('userid')]['email'];
+                $arrforum[$db->f('id_user_forum')]['realname'] = $arrUsers[$db->f('userid')]['realname'];
             } else {
-                $arrforum[$this->db->f('id_user_forum')]['email'] = $this->db->f('email');
-                $arrforum[$this->db->f('id_user_forum')]['realname'] = $this->db->f('realname');
+                $arrforum[$db->f('id_user_forum')]['email'] = $db->f('email');
+                $arrforum[$db->f('id_user_forum')]['realname'] = $db->f('realname');
             }
 
-            $arrforum[$this->db->f('id_user_forum')]['forum'] = str_replace(chr(13) . chr(10), '<br />', $this->db->f('forum'));
-            $arrforum[$this->db->f('id_user_forum')]['forum_quote'] = str_replace(chr(13) . chr(10), '<br />', $this->db->f('forum_quote'));
-            $arrforum[$this->db->f('id_user_forum')]['timestamp'] = $this->db->f('timestamp');
-            $arrforum[$this->db->f('id_user_forum')]['like'] = $this->db->f('like');
-            $arrforum[$this->db->f('id_user_forum')]['dislike'] = $this->db->f('dislike');
+            $arrforum[$db->f('id_user_forum')]['forum'] = str_replace(chr(13) . chr(10), '<br />', $db->f('forum'));
+            $arrforum[$db->f('id_user_forum')]['forum_quote'] = str_replace(chr(13) . chr(10), '<br />', $db->f('forum_quote'));
+            $arrforum[$db->f('id_user_forum')]['timestamp'] = $db->f('timestamp');
+            $arrforum[$db->f('id_user_forum')]['like'] = $db->f('like');
+            $arrforum[$db->f('id_user_forum')]['dislike'] = $db->f('dislike');
 
-            $arrforum[$this->db->f('id_user_forum')]['editedat'] = $this->db->f('editedat');
-            $arrforum[$this->db->f('id_user_forum')]['editedby'] = $this->db->f('editedby');
+            $arrforum[$db->f('id_user_forum')]['editedat'] = $db->f('editedat');
+            $arrforum[$db->f('id_user_forum')]['editedby'] = $db->f('editedby');
 
             // Added values to array for allocation
-            $arrforum[$this->db->f('id_user_forum')]['idcat'] = $this->db->f('idcat');
-            $arrforum[$this->db->f('id_user_forum')]['idart'] = $this->db->f('idart');
-            $arrforum[$this->db->f('id_user_forum')]['id_user_forum'] = $this->db->f('id_user_forum');
-            $arrforum[$this->db->f('id_user_forum')]['online'] = $this->db->f('online');
-            $arrforum[$this->db->f('id_user_forum')]['editedat'] = $this->db->f('editedat');
-            $arrforum[$this->db->f('id_user_forum')]['editedby'] = $this->db->f('editedby');
+            $arrforum[$db->f('id_user_forum')]['idcat'] = $db->f('idcat');
+            $arrforum[$db->f('id_user_forum')]['idart'] = $db->f('idart');
+            $arrforum[$db->f('id_user_forum')]['id_user_forum'] = $db->f('id_user_forum');
+            $arrforum[$db->f('id_user_forum')]['online'] = $db->f('online');
+            $arrforum[$db->f('id_user_forum')]['editedat'] = $db->f('editedat');
+            $arrforum[$db->f('id_user_forum')]['editedby'] = $db->f('editedby');
 
-            $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum[$this->db->f('id_user_forum')]['children'], $this->db->f('id_user_forum'));
+            $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum[$db->f('id_user_forum')]['children'], $db->f('id_user_forum'));
         }
     }
 

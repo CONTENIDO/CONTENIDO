@@ -275,7 +275,9 @@ class ArticleForumRightBottom extends cGuiPage {
         $email = new cHTMLTextBox("email", conHtmlSpecialChars($post['email']), 40, 255);
         $like = new cHTMLTextBox("like", conHtmlSpecialChars($post['like']), 40, 255);
         $dislike = new cHTMLTextBox("dislike", conHtmlSpecialChars($post['dislike']), 40, 255);
-        $forum = new cHTMLTextArea("forum", conHtmlSpecialChars($post['forum']), 30, 10);
+
+        $text = str_replace("<br />","\n", $post['forum']);
+        $forum = new cHTMLTextArea("forum",$text);
         $timestamp = new cHTMLTextBox("timestamp", conHtmlSpecialChars($post['timestamp']), 40, 255);
         $editedat = new cHTMLTextBox("editedat", conHtmlSpecialChars($post['editedat']), 40, 255);
         $editedby = new cHTMLTextBox("editedby", conHtmlSpecialChars($username), 40, 255);
@@ -325,7 +327,6 @@ class ArticleForumRightBottom extends cGuiPage {
         $arrforum = array();
 
         $this->_collection->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
-
         $result = array();
         $this->normalizeArray($arrforum, $result);
         $ret = $this->getMenu($result);
@@ -362,6 +363,7 @@ class ArticleForumRightBottom extends cGuiPage {
                         $this->_collection->toggleOnlineState($_POST['online'], $_POST['id_user_forum']);
                         break;
                     case 'update':
+                        echo $_POST['forum'];
                         $this->_collection->updateValues($_POST['id_user_forum'], $_POST['realname'], $_POST['email'], $_POST['like'], $_POST['dislike'], $_POST['forum'], $_POST['online'], $_POST['onlineState']);
                         break;
                     default:
@@ -388,7 +390,7 @@ class ArticleForumRightBottom extends cGuiPage {
                         break;
                     case 'deleteComment':
                         $this->_collection->deleteHierarchie($_GET['key'], $_GET['level'], $idart, $idcat, $lang);
-                        $this->render();
+                        //$this->render();
                         break;
                     default:
                         throw new Exception('$_GET["action"] type ' . $_GET["action"] . ' not implemented');
