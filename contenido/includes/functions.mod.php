@@ -80,20 +80,21 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 
         // Name of modul changed
         if ($change == true) {
-            // The new name of modul dont exist im modul dir
+            $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Renamed module successfully!'));
+            $cApiModule->set('name', $name);
+            $cApiModule->set('template', $template);
+            $cApiModule->set('description', $description);
+            $cApiModule->set('type', $type);
+            $cApiModule->set('lastmodified', $date);
+
+            // False: The new name of modul dont exist im modul dir
             if ($contenidoModuleHandler->renameModul($oldName, $alias) == false) {
-                $notification->displayNotification('error', i18n("Can't rename module, is a module file open ??? !"));
-                die();
+                $notification->displayNotification('warning', i18n("Can't rename module, is a module file open?! Saving only database changes!"));
             } else {
-                $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Renamed module successfully!'));
-                $cApiModule->set('name', $name);
-                $cApiModule->set('template', $template);
-                $cApiModule->set('description', $description);
-                $cApiModule->set('type', $type);
-                $cApiModule->set('lastmodified', $date);
                 $cApiModule->set('alias', $alias);
-                $cApiModule->store();
             }
+
+            $cApiModule->store();
 
             // Set the new module name
             $contenidoModuleHandler->changeModuleName($alias);
