@@ -6,14 +6,14 @@
  * Description:
  * Edit modules
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.2
- * @author     Olaf Niemann
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @package CONTENIDO Backend Includes
+ * @version 1.0.2
+ * @author Olaf Niemann
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ * @since file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -49,11 +49,14 @@ if ($action == "mod_delete") {
         // remove the navigation when module has been deleted
         $script = new cHTMLScript();
         $script->setContent('$(function() { $("#navlist", parent.parent.right.right_top.document).remove(); })');
-        $page->setContent(array($div, $script));
+        $page->setContent(array(
+            $div,
+            $script
+        ));
         // setReload so that the modules overview on the left is refreshed
         $page->setReload();
         $page->render();
-        exit;
+        exit();
     }
 }
 
@@ -69,8 +72,8 @@ if ($action == "mod_sync") {
     $idmodUpdate = $contenidoModuleSynchronizer->compareFileAndModulTimestamp();
 
     // if a module is deleted in filesystem but not in db make an update
-    #$idmodUpdate = $contenidoModuleSynchronizer->updateDirFromModuls();
-    #we need the idmod for refresh all frames
+    // idmodUpdate = $contenidoModuleSynchronizer->updateDirFromModuls();
+    // e need the idmod for refresh all frames
     if ($idmod == 0 && $idmodUpdate != 0) {
         $idmod = $idmodUpdate;
     }
@@ -168,6 +171,11 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $sInputData = "";
     $sOutputData = "";
 
+    // Check write permissions
+    if ($contenidoModuleHandler->isWriteable() == false) {
+        $page->displayWarning(i18n("You have no write permissions for this module"));
+    }
+
     // Read the input and output for the editing in Backend from file
     if ($contenidoModuleHandler->modulePathExists() == true) {
         $sInputData = $contenidoModuleHandler->readInput(true);
@@ -175,9 +183,24 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     }
 
     if ($sOptionDebugRows !== "never") {
-        $iInputNewLines = substr_count($sInputData, "\n") + 2; // +2: Just sanity, to have at least two more lines than the code
-        $iOutputNewLines = substr_count($sOutputData, "\n") + 2; // +2: Just sanity, to have at least two more lines than the code
-        // Have at least 15 + 2 lines (15 = code textarea lines count)
+        $iInputNewLines = substr_count($sInputData, "\n") + 2; // +2: Just
+                                                               // sanity, to
+                                                               // have at least
+                                                               // two more lines
+                                                               // than the code
+        $iOutputNewLines = substr_count($sOutputData, "\n") + 2; // +2: Just
+                                                                 // sanity, to
+                                                                 // have at
+                                                                 // least two
+                                                                 // more lines
+                                                                 // than the
+                                                                 // code
+                                                                 // Have at
+                                                                 // least 15 + 2
+                                                                 // lines (15 =
+                                                                 // code
+                                                                 // textarea
+                                                                 // lines count)
         if ($iInputNewLines < 21) {
             $iInputNewLines = 21;
         }
@@ -213,11 +236,19 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         }
         $oOutputRows = new cHTMLTextarea("txtOutputRows", $sRows, $iChars, 20);
 
-        $oInputRows->updateAttributes(array("wrap" => "off"));
-        $oOutputRows->updateAttributes(array("wrap" => "off"));
+        $oInputRows->updateAttributes(array(
+            "wrap" => "off"
+        ));
+        $oOutputRows->updateAttributes(array(
+            "wrap" => "off"
+        ));
 
-        $oInputRows->updateAttributes(array("readonly" => "true"));
-        $oOutputRows->updateAttributes(array("readonly" => "true"));
+        $oInputRows->updateAttributes(array(
+            "readonly" => "true"
+        ));
+        $oOutputRows->updateAttributes(array(
+            "readonly" => "true"
+        ));
 
         $oInputRows->setStyle("font-family: monospace;");
         $oOutputRows->setStyle("font-family: monospace;");
@@ -228,8 +259,12 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $output = new cHTMLTextarea("output", $sOutputData, 100, 20, 'output');
 
     // Style the fields
-    $input->updateAttributes(array("wrap" => "off"));
-    $output->updateAttributes(array("wrap" => "off"));
+    $input->updateAttributes(array(
+        "wrap" => "off"
+    ));
+    $output->updateAttributes(array(
+        "wrap" => "off"
+    ));
 
     $name->setDisabled($disabled);
     $descr->setDisabled($disabled);
@@ -240,7 +275,8 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $input->setStyle("width: 100%; font-family: monospace;");
     $output->setStyle("width: 100%; font-family: monospace;");
 
-    // Check, if tabs may be inserted in text areas (instead jumping to next element)
+    // Check, if tabs may be inserted in text areas (instead jumping to next
+    // element)
     if (getEffectiveSetting("modules", "edit-with-tabs", "false") == "true") {
         $input->setEvent("onkeydown", "return insertTab(event,this);");
         $output->setEvent("onkeydown", "return insertTab(event,this);");
@@ -269,9 +305,13 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
     if (is_array($typearray)) {
         asort($typearray);
-        $typeselect->autoFill(array_merge(array("" => "-- " . i18n("Custom") . " --"), $typearray));
+        $typeselect->autoFill(array_merge(array(
+            "" => "-- " . i18n("Custom") . " --"
+        ), $typearray));
     } else {
-        $typeselect->autoFill(array("" => "-- " . i18n("Custom") . " --"));
+        $typeselect->autoFill(array(
+            "" => "-- " . i18n("Custom") . " --"
+        ));
     }
 
     $typeselect->setEvent("change", "if (document.forms['mod_edit'].elements['type'].value == 0) { document.forms['mod_edit'].elements['customtype'].disabled=0;} else {document.forms['mod_edit'].elements['customtype'].disabled=1;}");
@@ -322,7 +362,8 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
             $inled = '<img align="right" src="images/but_online.gif" alt="' . $okMessage . '" title="' . $okMessage . '">';
         }
 
-        // Store error information in the database (to avoid re-eval for module overview/menu)
+        // Store error information in the database (to avoid re-eval for module
+        // overview/menu)
         if ($inputok && $outputok) {
             $sStatus = "none";
         } else if ($inputok) {
@@ -388,7 +429,11 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         $form2->setVar("action", "mod_importexport_module");
         $form2->setVar("use_encoding", "false");
         $form2->addHeader("Import/Export");
-        $form2->add(i18n("Mode"), array($export, "<br>", $import));
+        $form2->add(i18n("Mode"), array(
+            $export,
+            "<br>",
+            $import
+        ));
 
         if ($inputChecked != "" && $outputChecked != "") {
             $form2->add(i18n("File"), $upload, "vupload", "display: none;");
@@ -409,14 +454,13 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
                             document.getElementById(\'scroll\').style.paddingBottom=\'5px\';
                         }
                     </script>';
-        //Dont show form if we delete or synchronize a module
+        // Dont show form if we delete or synchronize a module
         if ($action == "mod_sync" || $action == "mod_delete") {
             $page->abortRendering();
         } else {
             $page->set("s", "FORM", $message . $form->render() . "<br>");
         }
     }
-
 
     if ($action) {
         if (stripslashes($idmod > 0) || $action == "mod_sync") {
@@ -429,7 +473,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
         $page->addScript($oCodeMirrorInput->renderScript() . $oCodeMirrorOutput->renderScript());
 
-        //dont print menu
+        // dont print menu
         if ($action == "mod_sync") {
             $page->set("s", "FORM", "");
             $page->setSubnav("idmod=" . $idmod . "&dont_print_subnav=1");

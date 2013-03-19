@@ -232,6 +232,21 @@ class cModuleHandler {
     }
 
     /**
+     * Check write permissions for this module
+     *
+     * @return boolean true or false
+     */
+    public function isWriteable() {
+
+        if(!cFileHandler::writeable($this->_modulePath . $this->_directories['php'])) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    /**
      * Save a content in the file, use for css/js
      *
      * @param unknown_type $frontendPath
