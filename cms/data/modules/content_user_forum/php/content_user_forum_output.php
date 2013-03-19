@@ -484,5 +484,147 @@ switch ($_REQUEST['user_forum_action']) {
         break;
     // Ende LISTFORUM
 }
+class UserForumArticle {
+
+    public function __construct() {
+    }
+
+    function receiveData($request) {
+        print_r($request);
+    }
+
+    function getUser($userid) {
+        $db = cRegistry::getDb();
+        $cfg = cRegistry::getConfig();
+        if (($userid != '') && ($userid != 'nobody')) {
+            $bUserLoggedIn = true;
+
+            $db->query("SELECT * FROM " . $cfg['tab']['phplib_auth_user_md5'] . " WHERE user_id = '$userid'");
+            $db->next_record();
+            $current_email = $db->f("email");
+            $current_realname = $db->f("realname");
+        } else {
+            $bUserLoggedIn = false;
+            $userid = '';
+        }
+    }
+
+    function incrementLike(&$form_id) {
+        $db = cRegistry::getDb();
+        $query = "UPDATE con_pi_user_forum pi SET pi.like = pi.like + 1
+              WHERE id_user_forum = " . mysql_real_escape_string($form_id);
+
+        $db->query($query);
+    }
+
+    function incrementDislike(&$form_id) {
+        $db = cRegistry::getDb();
+        $query = "UPDATE con_pi_user_forum pi SET pi.dislike = pi.dislike + 1
+              WHERE id_user_forum = " . mysql_real_escape_string($form_id);
+
+        $db->query($query);
+    }
+
+    function selectNameAndNameByForumId($idquote) {
+        $db = cRegistry::getDb();
+        $query = "SELECT realname,forum FROM con_pi_user_forum WHERE id_user_forum = " . mysql_real_escape_string($idquote);
+        $db->query($query);
+        $data = array();
+        while ($db->next_record()) {
+            array_push($data, $db->toArray());
+        }
+    }
+
+    function insertValues($parent, $idart, $idcat, $lang, $userid, $email, $realname, $forum, $forum_quote) {
+        $db = cRegistry::getDb();
+        $query = "INSERT INTO con_pi_user_forum VALUES(
+        NULL,
+        $parent,
+        $idart,
+        $idcat,
+        $lang,
+        '" . mysql_real_escape_string($userid) . "',
+			'" . mysql_real_escape_string($email) . "',
+			'" . mysql_real_escape_string($realname) . "',
+			'" . mysql_real_escape_string($forum) . "',
+			'" . mysql_real_escape_string($forum_quote) . "',
+			0,
+			0,
+			'',
+			'',
+			'" . date("Y-m-d H:i:s") . "',
+			'1'
+			)";
+        $db->query($query);
+    }
+
+    function getExistingforum($id_cat, $id_art, $id_lang) {
+        global $cfg;
+
+        $db = cRegistry::getDb();
+        $query = "SELECT * FROM " . $cfg['tab']['phplib_auth_user_md5'];
+        $db->query($query);
+
+        $arrUsers = array();
+
+        while ($db->next_record()) {
+            $arrUsers[$db->f('user_id')]['email'] = $db->f('email');
+            $arrUsers[$db->f('user_id')]['realname'] = $db->f('realname');
+        }
+
+        $arrforum = array();
+        getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
+
+        $result = array();
+        normalizeArray($arrforum, $result);
+        return $result;
+    }
+
+    function normalizeArray($arrforum, &$result, $level = 0) {
+        if (is_array($arrforum)) {
+            foreach ($arrforum as $key => $value) {
+                $value['level'] = $level;
+                unset($value['children']);
+                $result[$key] = $value;
+                normalizeArray($arrforum[$key]['children'], $result, $level + 1);
+            }
+        }
+    }
+
+    function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0) {
+        $db = cRegistry::getDb();
+
+        $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat) AND (idlang = $id_lang) AND (id_user_forum_parent = $parent) ORDER BY timestamp DESC";
+
+        $db->query($query);
+
+        while ($db->next_record()) {
+            $arrforum[$db->f('id_user_forum')]['userid'] = $db->f('userid');
+
+            if (array_key_exists($db->f('userid'), $arrUsers)) {
+                $arrforum[$db->f('id_user_forum')]['email'] = $arrUsers[$db->f('userid')]['email'];
+                $arrforum[$db->f('id_user_forum')]['realname'] = $arrUsers[$db->f('userid')]['realname'];
+            } else {
+                $arrforum[$db->f('id_user_forum')]['email'] = $db->f('email');
+                $arrforum[$db->f('id_user_forum')]['realname'] = $db->f('realname');
+            }
+
+            $arrforum[$db->f('id_user_forum')]['forum'] = str_replace(chr(13) . chr(10), '<br />', $db->f('forum'));
+            $arrforum[$db->f('id_user_forum')]['forum_quote'] = str_replace(chr(13) . chr(10), '<br />', $db->f('forum_quote'));
+            $arrforum[$db->f('id_user_forum')]['timestamp'] = $db->f('timestamp');
+            $arrforum[$db->f('id_user_forum')]['like'] = $db->f('like');
+            $arrforum[$db->f('id_user_forum')]['dislike'] = $db->f('dislike');
+
+            $arrforum[$db->f('id_user_forum')]['editedat'] = $db->f('editedat');
+            $arrforum[$db->f('id_user_forum')]['editedby'] = $db->f('editedby');
+
+            getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum[$db->f('id_user_forum')]['children'], $db->f('id_user_forum'));
+        }
+    }
+
+}
+
+$userForumArticle = new UserForumArticle();
+$userForumArticle->receiveData($_REQUEST);
 
 ?>
