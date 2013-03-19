@@ -172,7 +172,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $sOutputData = "";
 
     // Check write permissions
-    if ($contenidoModuleHandler->isWriteable() == false) {
+    if ($contenidoModuleHandler->moduleWriteable() == false) {
         $page->displayWarning(i18n("You have no write permissions for this module"));
     }
 
