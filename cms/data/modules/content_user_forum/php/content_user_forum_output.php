@@ -1,8 +1,4 @@
 <?php
-// cInclude('frontend',
-// 'contenido/plugins/user_forum/classes/class.article_collection.php');
-// include
-// '../contenido/plugins/user_forum/classes/class.article_forum_collection.php';
 class UserForumArticle {
 
     protected $tpl;
