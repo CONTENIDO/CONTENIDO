@@ -181,8 +181,76 @@ class ArticleForumCollection extends ItemCollection {
         return $arrUsers;
     }
 
+    function selectNameAndNameByForumId($idquote) {
+        $db = cRegistry::getDb();
+        $query = "SELECT realname,forum FROM con_pi_user_forum WHERE id_user_forum = " . mysql_real_escape_string($idquote);
+        $db->query($query);
+        $data = array();
+        while ($db->next_record()) {
+            array_push($data, $db->toArray());
+        }
+        return $data;
+    }
+    public function selectUser($userid)
+    {
+        $this->db->query("SELECT * FROM " . $this->cfg['tab']['phplib_auth_user_md5'] . " WHERE user_id = '$userid'");
+        return $this->db->next_record();
+    }
+
+
+    public function incrementLike($forum_user_id)
+    {
+        $db = cRegistry::getDb();
+        $query = "UPDATE con_pi_user_forum pi SET pi.like = pi.like + 1
+              WHERE id_user_forum = " . mysql_real_escape_string($forum_user_id);
+        $db->query($query);
+    }
+
+
+    public function incrementDislike($forum_user_id)
+    {
+        $db = cRegistry::getDb();
+        $query = "UPDATE con_pi_user_forum pi SET pi.dislike = pi.dislike + 1
+              WHERE id_user_forum = " . mysql_real_escape_string($forum_user_id);
+        $db->query($query);
+    }
+
+
+    public function insertValues($parent, $idart, $idcat, $lang, $userid, $email, $realname, $forum, $forum_quote) {
+        $db = cRegistry::getDb();
+        $query = "INSERT INTO con_pi_user_forum VALUES(
+        NULL, $parent, $idart, $idcat, $lang,'" . mysql_real_escape_string($userid) . "', '" . mysql_real_escape_string($email) . "',
+		'" . mysql_real_escape_string($realname) . "', '" . mysql_real_escape_string($forum) . "',
+		'" . mysql_real_escape_string($forum_quote) . "', 0, 0, '','', '" . date("Y-m-d H:i:s") . "', '1')";
+
+        $db->query($query);
+    }
     public function deleteAllCommentsById($idart) {
         $this->deleteBy('idart', $idart);
+    }
+    public function getExistingforumFrontend($id_cat, $id_art, $id_lang) {
+        global $cfg;
+
+        $db = cRegistry::getDb();
+        $query = "SELECT * FROM " . $cfg['tab']['phplib_auth_user_md5'];
+        $db->query($query);
+
+        $arrUsers = array();
+
+        while ($db->next_record()) {
+            $arrUsers[$db->f('user_id')]['email'] = $db->f('email');
+            $arrUsers[$db->f('user_id')]['realname'] = $db->f('realname');
+        }
+
+
+
+        $arrforum = array();
+        $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
+        // $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
+
+        $result = array();
+        $this->normalizeArray($arrforum, $result);
+        return $result;
     }
 
 }
