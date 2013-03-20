@@ -1,12 +1,6 @@
 <?php
 class UserForumArticle {
 
-    // out of constructor
-    // global $force;
-    // if (1 == $force) {
-    // $this->tpl->clearAllCache();
-    // }
-    // $this->$userid = $auth->auth['uid'];
     protected $tpl;
 
     protected $force;
@@ -253,7 +247,7 @@ class UserForumArticle {
         }
     }
 
-    function listForum($withEditLink = true) {
+    function listForum() {
         $like_forum_link = "<a href='front_content.php?userid=$this->userid&deleting=$this->bAllowDeleting&idart=$this->idart&user_forum_action=like_forum&user_forum_id=%s' class='like'>%s</a>";
         $dislike_forum_link = "<a href='front_content.php?userid=$this->userid&deleting=$this->bAllowDeleting&idart=$this->idart&user_forum_action=dislike_forum&user_forum_id=%s' class='dislike'>%s</a>";
         $new_forum_link = "<a href='front_content.php?userid=$this->userid&deleting=$this->bAllowDeleting&idart=$this->idart&user_forum_action=new_forum' class='new button red'>" . mi18n("writeNewEntry") . "</a>";
