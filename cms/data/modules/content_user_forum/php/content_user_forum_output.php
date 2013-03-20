@@ -1,4 +1,8 @@
 <?php
+// cInclude('frontend',
+// 'contenido/plugins/user_forum/classes/class.article_collection.php');
+// include
+// '../contenido/plugins/user_forum/classes/class.article_forum_collection.php';
 class UserForumArticle {
 
     protected $tpl;
@@ -27,6 +31,8 @@ class UserForumArticle {
 
     protected $idlang;
 
+    protected $collection;
+
     public function __construct() {
         $this->tpl = Contenido_SmartyWrapper::getInstance();
         $this->messageText = '';
@@ -34,6 +40,7 @@ class UserForumArticle {
         $this->idart = cRegistry::getArticleId();
         $this->idcat = cRegistry::getCategoryId();
         $this->idlang = cRegistry::getLanguageId();
+        $this->collection = new ArticleForumCollection();
     }
 
     function receiveData($request) {
@@ -61,6 +68,7 @@ class UserForumArticle {
             case 'new_forum':
                 $this->newEntry();
                 break;
+
             case 'save_new_forum':
                 $this->saveForum();
                 $this->listForum();
@@ -77,11 +85,9 @@ class UserForumArticle {
         $cfg = cRegistry::getConfig();
         if (($userid != '') && ($userid != 'nobody')) {
             $this->bUserLoggedIn = true;
-
-            $db->query("SELECT * FROM " . $cfg['tab']['phplib_auth_user_md5'] . " WHERE user_id = '$userid'");
-            $db->next_record();
-            $this->current_email = $db->f("email");
-            $this->current_realname = $db->f("realname");
+            $user = $this->collection->selectUser($userid);
+            $this->current_email = $user['email'];
+            $this->current_realname = $user['realname'];
         } else {
             $this->bUserLoggedIn = false;
             $this->userid = '';
@@ -91,56 +97,26 @@ class UserForumArticle {
     function incrementLike() {
         $form_id = (int) $_REQUEST['user_forum_id'];
         if ($form_id > 0 && $this->bCounter) {
-            $db = cRegistry::getDb();
-            $query = "UPDATE con_pi_user_forum pi SET pi.like = pi.like + 1
-              WHERE id_user_forum = " . mysql_real_escape_string($form_id);
-
-            $db->query($query);
+            $this->collection->incrementLike($form_id);
         }
     }
 
     function incrementDislike() {
         $form_id = (int) $_REQUEST['user_forum_id'];
         if ($form_id > 0 && $this->bCounter) {
-            $db = cRegistry::getDb();
-            $query = "UPDATE con_pi_user_forum pi SET pi.dislike = pi.dislike + 1
-              WHERE id_user_forum = " . mysql_real_escape_string($form_id);
-
-            $db->query($query);
+            $this->collection->incrementDislike($form_id);
         }
     }
 
-    function selectNameAndNameByForumId($idquote) {
-        $db = cRegistry::getDb();
-        $query = "SELECT realname,forum FROM con_pi_user_forum WHERE id_user_forum = " . mysql_real_escape_string($idquote);
-        $db->query($query);
-        $data = array();
-        while ($db->next_record()) {
-            array_push($data, $db->toArray());
-        }
-        return $data;
-    }
-
-    function insertValues($parent, $idart, $idcat, $lang, $userid, $email, $realname, $forum, $forum_quote) {
-        $db = cRegistry::getDb();
-
-        $query = "INSERT INTO con_pi_user_forum VALUES(
-        NULL, $parent, $idart, $idcat, $lang,'" . mysql_real_escape_string($userid) . "', '" . mysql_real_escape_string($email) . "',
-		'" . mysql_real_escape_string($realname) . "', '" . mysql_real_escape_string($forum) . "',
-		'" . mysql_real_escape_string($forum_quote) . "', 0, 0, '','', '" . date("Y-m-d H:i:s") . "', '1')";
-
-        $db->query($query);
-    }
-
+    /**
+     * submit for new entry
+     */
     function saveForum() {
         if ($this->bAllowNewforum) {
-
-            // AFTER ZITATSUBMIT
 
             $this->userid = $_REQUEST['userid'];
             $this->bAllowDeleting = $_REQUEST['deleting'];
             $contenido = $_REQUEST['contenido'];
-
             $bInputOK = true;
 
             $email = trim($_REQUEST['email']);
@@ -149,7 +125,6 @@ class UserForumArticle {
             $parent = (int) $_REQUEST['user_forum_parent'];
             $forum_quote = trim($_REQUEST['forum_quote']);
 
-            // $this->message = '';
             $this->getUser($this->userid);
 
             if ($this->bUserLoggedIn) {
@@ -176,7 +151,7 @@ class UserForumArticle {
             }
 
             if ($bInputOK) {
-                $this->insertValues($parent, $this->idart, $this->idcat, $this->idlang, $this->userid, $email, $realname, $forum, $forum_quote);
+                $this->collection->insertValues($parent, $this->idart, $this->idcat, $this->idlang, $this->userid, $email, $realname, $forum, $forum_quote);
                 $this->messageText .= mi18n("yourArticleSaved");
             } else {
 
@@ -219,7 +194,7 @@ class UserForumArticle {
                 $replyId = (int) $_REQUEST['user_forum_parent'];
                 if ($replyId > 0) {
 
-                    $content = $this->selectNameAndNameByForumId($replyId);
+                    $content = $this->collection->selectNameAndNameByForumId($replyId);
                     (count($content) > 0)? $empty = false : $empty = true;
 
                     if (!$empty) {
@@ -239,6 +214,9 @@ class UserForumArticle {
         }
     }
 
+    /**
+     * displays all existing comments
+     */
     function listForum() {
         $like_forum_link = "<a href='front_content.php?userid=$this->userid&deleting=$this->bAllowDeleting&idart=$this->idart&user_forum_action=like_forum&user_forum_id=%s' class='like'>%s</a>";
         $dislike_forum_link = "<a href='front_content.php?userid=$this->userid&deleting=$this->bAllowDeleting&idart=$this->idart&user_forum_action=dislike_forum&user_forum_id=%s' class='dislike'>%s</a>";
@@ -248,11 +226,9 @@ class UserForumArticle {
 
         if ($this->generate) {
 
-            $arrUserforum = $this->getExistingforum($this->idcat, $this->idart, $this->idlang);
+            $arrUserforum = $this->collection->getExistingforumFrontend($this->idcat, $this->idart, $this->idlang);
 
             if (count($arrUserforum) == 0) {
-                // $tpl->clear_all_assign();
-
                 $this->tpl->assign('MESSAGE', mi18n("noCommentsYet"));
                 $this->tpl->assign('FORUM_TEXT', mi18n("articles"));
                 if ($this->bAllowNewforum) {
@@ -263,7 +239,6 @@ class UserForumArticle {
                 }
                 $this->tpl->display('user_forum_list_empty.tpl');
             } else {
-                // $tpl->clear_all_assign();
                 $this->tpl->assign('MESSAGE', $this->messageText);
                 $this->tpl->assign('AMOUNT_forum', count($arrUserforum));
                 $this->tpl->assign('FORUM_TEXT', mi18n("articlesLabel"));
@@ -355,16 +330,17 @@ class UserForumArticle {
         }
     }
 
+    /**
+     * generate view for new entrys
+     */
     function newEntry() {
         if ($this->bAllowNewforum) {
-            // $tpl->clear_all_assign();
-            // ZitatAntwort
             $db = cRegistry::getDb();
             $this->tpl->assign('MESSAGE', $this->messageText);
             $idquote = (int) $_REQUEST['user_forum_quote'];
 
             if ($idquote > 0) {
-                $content = $this->selectNameAndNameByForumId($idquote);
+                $content = $this->collection->selectNameAndNameByForumId($idquote);
                 (count($content) > 0)? $empty = false : $empty = true;
                 if (!$empty) {
                     $transTemplate = mi18n("quoteFrom");
@@ -381,7 +357,7 @@ class UserForumArticle {
 
             $replyId = (int) $_REQUEST['user_forum_parent'];
             if ($replyId > 0) {
-                $content = $this->selectNameAndNameByForumId($replyId);
+                $content = $this->collection->selectNameAndNameByForumId($replyId);
                 (count($content) > 0)? $empty = false : $empty = true;
 
                 if (!$empty) {
@@ -398,7 +374,6 @@ class UserForumArticle {
             $this->tpl->assign('INPUT_EMAIL', "<input type=\"text\" name=\"email\" value=\"\" />");
             $this->tpl->assign('INPUT_REALNAME', "<input type=\"text\" name=\"realname\" value=\"\" />");
             $this->tpl->assign('INPUT_FORUM', '');
-
             $this->tpl->assign('REALNAME', mi18n("yourName"));
             $this->tpl->assign('EMAIL', mi18n("yourMailAddress"));
             $this->tpl->assign('FORUM', mi18n("yourArticle"));
@@ -408,80 +383,11 @@ class UserForumArticle {
             $this->tpl->assign('SAVE_FORUM', mi18n("saveArticle"));
             $this->tpl->assign('CANCEL_FORUM', mi18n("cancel"));
             $this->tpl->assign('CANCEL_LINK', "front_content.php?idart=$this->idart");
-
             $this->tpl->assign('USERID', $_REQUEST['userid']);
             $this->tpl->assign('DELETING', $_REQUEST['deleting']);
             $this->tpl->assign('CONTENIDO', $_REQUEST['contenido']);
             $this->tpl->assign('USER_FORUM_PARENT', (int) $_REQUEST['user_forum_parent']);
-
             $this->tpl->display('user_forum_new.tpl');
-
-            // ENDE ZitatANTWORT
-        }
-    }
-
-    function getExistingforum($id_cat, $id_art, $id_lang) {
-        global $cfg;
-
-        $db = cRegistry::getDb();
-        $query = "SELECT * FROM " . $cfg['tab']['phplib_auth_user_md5'];
-        $db->query($query);
-
-        $arrUsers = array();
-
-        while ($db->next_record()) {
-            $arrUsers[$db->f('user_id')]['email'] = $db->f('email');
-            $arrUsers[$db->f('user_id')]['realname'] = $db->f('realname');
-        }
-
-        $arrforum = array();
-        $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
-
-        $result = array();
-        $this->normalizeArray($arrforum, $result);
-        return $result;
-    }
-
-    function normalizeArray($arrforum, &$result, $level = 0) {
-        if (is_array($arrforum)) {
-            foreach ($arrforum as $key => $value) {
-                $value['level'] = $level;
-                unset($value['children']);
-                $result[$key] = $value;
-                $this->normalizeArray($arrforum[$key]['children'], $result, $level + 1);
-            }
-        }
-    }
-
-    function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0) {
-        $db = cRegistry::getDb();
-
-        $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat) AND (idlang = $id_lang)
-                 AND (id_user_forum_parent = $parent) ORDER BY timestamp DESC";
-
-        $db->query($query);
-
-        while ($db->next_record()) {
-            $arrforum[$db->f('id_user_forum')]['userid'] = $db->f('userid');
-
-            if (array_key_exists($db->f('userid'), $arrUsers)) {
-                $arrforum[$db->f('id_user_forum')]['email'] = $arrUsers[$db->f('userid')]['email'];
-                $arrforum[$db->f('id_user_forum')]['realname'] = $arrUsers[$db->f('userid')]['realname'];
-            } else {
-                $arrforum[$db->f('id_user_forum')]['email'] = $db->f('email');
-                $arrforum[$db->f('id_user_forum')]['realname'] = $db->f('realname');
-            }
-
-            $arrforum[$db->f('id_user_forum')]['forum'] = str_replace(chr(13) . chr(10), '<br />', $db->f('forum'));
-            $arrforum[$db->f('id_user_forum')]['forum_quote'] = str_replace(chr(13) . chr(10), '<br />', $db->f('forum_quote'));
-            $arrforum[$db->f('id_user_forum')]['timestamp'] = $db->f('timestamp');
-            $arrforum[$db->f('id_user_forum')]['like'] = $db->f('like');
-            $arrforum[$db->f('id_user_forum')]['dislike'] = $db->f('dislike');
-
-            $arrforum[$db->f('id_user_forum')]['editedat'] = $db->f('editedat');
-            $arrforum[$db->f('id_user_forum')]['editedby'] = $db->f('editedby');
-
-            $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum[$db->f('id_user_forum')]['children'], $db->f('id_user_forum'));
         }
     }
 
@@ -515,5 +421,4 @@ class UserForumArticle {
 
 $userForumArticle = new UserForumArticle();
 $userForumArticle->receiveData($_REQUEST);
-
 ?>
