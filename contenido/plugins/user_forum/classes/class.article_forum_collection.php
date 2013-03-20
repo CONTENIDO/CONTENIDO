@@ -97,7 +97,6 @@ class ArticleForumCollection extends ItemCollection {
         $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat)
         AND (idlang = $id_lang) AND (id_user_forum_parent = $parent) ORDER BY timestamp DESC";
 
-
         $db->query($query);
 
         while ($db->next_record()) {
@@ -142,11 +141,19 @@ class ArticleForumCollection extends ItemCollection {
 
         $uuid = cRegistry::getAuth()->isAuthenticated();
         $timeStamp = date('Y-m-d H:i:s', time());
-        $sql = "UPDATE con_pi_user_forum SET `realname` = '$name' ,`editedby` = '$uuid'  , `email` = '$email' ,
-            `forum` = '$forum' , `editedat` = '$timeStamp' , `like` = $like , `dislike` = $dislike ,
-            `online` = $online  WHERE id_user_forum = $id_user_forum;";
 
-        $this->db->query($sql);
+        $fields = array('realname' => $name,
+                        'editedby'=> $uuid,
+                        'email' => $email,
+                        'forum' => $forum,
+                        'editedat' => $timeStamp,
+                        'like' => $like,
+                        'dislike' => $dislike,
+                        'online' => $online);
+
+        $whereClauses = array('id_user_forum' => $id_user_forum);
+        $statement = $this->db->buildUpdate($this->table, $fields, $whereClauses);
+        $this->db->query($statement);
     }
 
     /**
@@ -157,8 +164,10 @@ class ArticleForumCollection extends ItemCollection {
      */
     public function toggleOnlineState($onlineState, $id_user_forum) {
         ($onlineState == 0)? $onlineState = 1 : $onlineState = 0;
-        $query = "UPDATE con_pi_user_forum SET online = $onlineState WHERE id_user_forum = $id_user_forum;";
-        $this->db->query($query);
+        $fields = array('online' => $onlineState);
+        $whereClauses = array('id_user_forum' => $id_user_forum);
+        $statement = $this->db->buildUpdate($this->table, $fields, $whereClauses);
+        $this->db->query($statement);
     }
 
     /**
@@ -191,30 +200,25 @@ class ArticleForumCollection extends ItemCollection {
         }
         return $data;
     }
-    public function selectUser($userid)
-    {
+
+    public function selectUser($userid) {
         $this->db->query("SELECT * FROM " . $this->cfg['tab']['phplib_auth_user_md5'] . " WHERE user_id = '$userid'");
         return $this->db->next_record();
     }
 
-
-    public function incrementLike($forum_user_id)
-    {
+    public function incrementLike($forum_user_id) {
         $db = cRegistry::getDb();
         $query = "UPDATE con_pi_user_forum pi SET pi.like = pi.like + 1
               WHERE id_user_forum = " . mysql_real_escape_string($forum_user_id);
         $db->query($query);
     }
 
-
-    public function incrementDislike($forum_user_id)
-    {
+    public function incrementDislike($forum_user_id) {
         $db = cRegistry::getDb();
         $query = "UPDATE con_pi_user_forum pi SET pi.dislike = pi.dislike + 1
               WHERE id_user_forum = " . mysql_real_escape_string($forum_user_id);
         $db->query($query);
     }
-
 
     public function insertValues($parent, $idart, $idcat, $lang, $userid, $email, $realname, $forum, $forum_quote) {
         $db = cRegistry::getDb();
@@ -225,9 +229,11 @@ class ArticleForumCollection extends ItemCollection {
 
         $db->query($query);
     }
+
     public function deleteAllCommentsById($idart) {
         $this->deleteBy('idart', $idart);
     }
+
     public function getExistingforumFrontend($id_cat, $id_art, $id_lang) {
         global $cfg;
 
@@ -242,11 +248,10 @@ class ArticleForumCollection extends ItemCollection {
             $arrUsers[$db->f('user_id')]['realname'] = $db->f('realname');
         }
 
-
-
         $arrforum = array();
         $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
-        // $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
+        // $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers,
+        // $arrforum);
 
         $result = array();
         $this->normalizeArray($arrforum, $result);
