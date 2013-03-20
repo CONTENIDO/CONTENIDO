@@ -43,8 +43,7 @@ class UserForumArticle {
         (stristr($auth->auth['perm'], 'admin') === FALSE)? $this->bAllowDeleting = false : $this->bAllowDeleting = true;
         (getEffectiveSetting('user_forum', 'allow_anonymous_forum', '1') == '1')? $bAllowAnonymousforum = true : $bAllowAnonymousforum = false;
 
-        $uuid = $auth->auth['uid'];
-        $this->getUser($uuid);
+        $this->getUser($auth->auth['uid']);
 
         ($bAllowAnonymousforum || $this->bUserLoggedIn && !$bAllowAnonymousforum)? $this->bAllowNewforum = true : $this->bAllowNewforum = false;
 
