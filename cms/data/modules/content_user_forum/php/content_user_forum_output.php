@@ -11,8 +11,6 @@ class UserForumArticle {
 
     protected $bAllowDeleting;
 
-    protected $bAllowAnonymousforum;
-
     protected $userid;
 
     protected $current_email;
@@ -22,8 +20,6 @@ class UserForumArticle {
     protected $bUserLoggedIn;
 
     protected $bAllowNewforum;
-
-    protected $ip;
 
     protected $bCounter;
 
@@ -47,12 +43,12 @@ class UserForumArticle {
         $this->checkForceState();
 
         (stristr($auth->auth['perm'], 'admin') === FALSE)? $this->bAllowDeleting = false : $this->bAllowDeleting = true;
-        (getEffectiveSetting('user_forum', 'allow_anonymous_forum', '1') == '1')? $this->bAllowAnonymousforum = true : $this->bAllowAnonymousforum = false;
+        (getEffectiveSetting('user_forum', 'allow_anonymous_forum', '1') == '1')? $bAllowAnonymousforum = true : $bAllowAnonymousforum = false;
 
         $uuid = $auth->auth['uid'];
         $this->getUser($uuid);
 
-        ($this->bAllowAnonymousforum || $this->bUserLoggedIn && !$this->bAllowAnonymousforum)? $this->bAllowNewforum = true : $this->bAllowNewforum = false;
+        ($bAllowAnonymousforum || $this->bUserLoggedIn && !$bAllowAnonymousforum)? $this->bAllowNewforum = true : $this->bAllowNewforum = false;
 
         switch ($_REQUEST['user_forum_action']) {
             case 'like_forum':
@@ -233,7 +229,7 @@ class UserForumArticle {
                     if (!$empty) {
                         $transTemplate = mi18n("answerToQuote");
                         $transTemplateAfter = mi18n("from");
-                        $this->tpl->assign('FORUM_REPLYMENT', $transTemplate . '<br/>' . $db->f('forum') . "<br/><br/>" . $transTemplateAfter . ' ' . $db->f('realname'));
+                        $this->tpl->assign('FORUM_REPLYMENT', $transTemplate . '<br/>' . $content['forum'] . "<br/><br/>" . $transTemplateAfter . ' ' . $content['realname']);
                     } else {
                         $this->tpl->assign('FORUM_REPLYMENT', '');
                     }
@@ -495,19 +491,19 @@ class UserForumArticle {
 
     function checkCookie() {
         // global $REMOTE_ADDR;
-        $this->ip = $REMOTE_ADDR? $REMOTE_ADDR : $_SERVER['REMOTE_ADDR'];
+        $ip = $REMOTE_ADDR? $REMOTE_ADDR : $_SERVER['REMOTE_ADDR'];
         $time = time();
 
-        if ($_REQUEST['user_forum_action'] == 'dislike_forum' && isset($_COOKIE['cookie'][$this->ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])) {
+        if ($_REQUEST['user_forum_action'] == 'dislike_forum' && isset($_COOKIE['cookie'][$ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])) {
             $this->bCounter = false;
-        } elseif ($_REQUEST['user_forum_action'] == 'dislike_forum' && !isset($_COOKIE['cookie'][$this->ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])) {
-            setcookie("cookie[" . $this->ip . "][" . $_REQUEST['user_forum_id'] . "][" . $_REQUEST['user_forum_action'] . "]", 1, $time + 3600);
+        } elseif ($_REQUEST['user_forum_action'] == 'dislike_forum' && !isset($_COOKIE['cookie'][$ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])) {
+            setcookie("cookie[" . $ip . "][" . $_REQUEST['user_forum_id'] . "][" . $_REQUEST['user_forum_action'] . "]", 1, $time + 3600);
             $this->bCounter = true;
         }
-        if ($_REQUEST['user_forum_action'] == 'like_forum' && isset($_COOKIE['cookie'][$this->ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])) {
+        if ($_REQUEST['user_forum_action'] == 'like_forum' && isset($_COOKIE['cookie'][$ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])) {
             $this->bCounter = false;
-        } elseif ($_REQUEST['user_forum_action'] == 'like_forum' && !isset($_COOKIE['cookie'][$this->ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])) {
-            setcookie("cookie[" . $this->ip . "][" . $_REQUEST['user_forum_id'] . "][" . $_REQUEST['user_forum_action'] . "]", 1, $time + 3600);
+        } elseif ($_REQUEST['user_forum_action'] == 'like_forum' && !isset($_COOKIE['cookie'][$ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])) {
+            setcookie("cookie[" . $ip . "][" . $_REQUEST['user_forum_id'] . "][" . $_REQUEST['user_forum_action'] . "]", 1, $time + 3600);
             $this->bCounter = true;
         }
     }
