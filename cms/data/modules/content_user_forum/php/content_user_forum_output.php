@@ -3,8 +3,6 @@ class UserForumArticle {
 
     protected $tpl;
 
-    protected $force;
-
     protected $messageText = '';
 
     protected $generate = true;
@@ -52,25 +50,18 @@ class UserForumArticle {
 
         switch ($_REQUEST['user_forum_action']) {
             case 'like_forum':
-                $form_id = (int) $_REQUEST['user_forum_id'];
-                if ($form_id > 0 && $this->bCounter) {
-                    $this->incrementLike($form_id);
-                }
+                $this->incrementLike();
                 $this->listForum();
                 break;
 
             case 'dislike_forum':
-                $form_id = (int) $_REQUEST['user_forum_id'];
-                if ($form_id > 0 && $this->bCounter) {
-                    $this->incrementDislike($form_id);
-                }
+                $this->incrementDislike();
                 $this->listForum();
                 break;
 
             case 'new_forum':
                 $this->newEntry();
                 break;
-
             case 'save_new_forum':
                 $this->saveForum();
                 $this->listForum();
@@ -98,20 +89,26 @@ class UserForumArticle {
         }
     }
 
-    function incrementLike(&$form_id) {
-        $db = cRegistry::getDb();
-        $query = "UPDATE con_pi_user_forum pi SET pi.like = pi.like + 1
+    function incrementLike() {
+        $form_id = (int) $_REQUEST['user_forum_id'];
+        if ($form_id > 0 && $this->bCounter) {
+            $db = cRegistry::getDb();
+            $query = "UPDATE con_pi_user_forum pi SET pi.like = pi.like + 1
               WHERE id_user_forum = " . mysql_real_escape_string($form_id);
 
-        $db->query($query);
+            $db->query($query);
+        }
     }
 
-    function incrementDislike(&$form_id) {
-        $db = cRegistry::getDb();
-        $query = "UPDATE con_pi_user_forum pi SET pi.dislike = pi.dislike + 1
+    function incrementDislike() {
+        $form_id = (int) $_REQUEST['user_forum_id'];
+        if ($form_id > 0 && $this->bCounter) {
+            $db = cRegistry::getDb();
+            $query = "UPDATE con_pi_user_forum pi SET pi.dislike = pi.dislike + 1
               WHERE id_user_forum = " . mysql_real_escape_string($form_id);
 
-        $db->query($query);
+            $db->query($query);
+        }
     }
 
     function selectNameAndNameByForumId($idquote) {
