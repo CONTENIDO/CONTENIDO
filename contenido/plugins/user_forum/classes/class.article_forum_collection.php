@@ -14,9 +14,16 @@ class ArticleForumCollection extends ItemCollection {
 
         parent::__construct($this->cfg['tab']['user_forum'], 'id_user_forum');
         $this->_setItemClass('ArticleForum');
-   //     $this->item = new ArticleForumItem();
+        $this->item = new ArticleForumItem();
     }
 
+    /**
+     *
+     * @todo
+     *
+     *
+     *
+     */
     public function getAllCommentedArticles() {
         $sql = "SELECT DISTINCT t.title, t.idart, f.idcat FROM con_art_lang t," . $this->table . " f WHERE f.idart=t.idart AND t.idlang = f.idlang ORDER BY id_user_forum ASC ;";
         $this->db->query($sql);
@@ -66,14 +73,10 @@ class ArticleForumCollection extends ItemCollection {
     }
 
     protected function _getCommentHierachrie($id_cat, $id_art, $id_lang) {
-        $query = "SELECT * FROM " . $this->cfg['tab']['phplib_auth_user_md5'];
-
-        $this->db->query($query);
-        $arrUsers = array();
-
-        while ($this->db->next_record()) {
-            $arrUsers[$this->db->f('user_id')]['email'] = $this->db->f('email');
-            $arrUsers[$this->db->f('user_id')]['realname'] = $this->db->f('realname');
+        $this->query();
+        while (false != $field = $this->next()) {
+            $arrUsers[$field->get('userid')]['email'] = $field->getField('email');
+            $arrUsers[$field->get('userid')]['realname'] = $field->getField('realname');
         }
         $arrforum = array();
         $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
@@ -94,6 +97,12 @@ class ArticleForumCollection extends ItemCollection {
         }
     }
 
+    /**
+     *
+     * @todo
+     *
+     *
+     */
     public function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0, $frontend = false) {
         $db = cRegistry::getDb();
 
@@ -134,7 +143,7 @@ class ArticleForumCollection extends ItemCollection {
             $arrforum[$db->f('id_user_forum')]['editedat'] = $db->f('editedat');
             $arrforum[$db->f('id_user_forum')]['editedby'] = $db->f('editedby');
 
-            $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum[$db->f('id_user_forum')]['children'], $db->f('id_user_forum'),$frontend);
+            $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum[$db->f('id_user_forum')]['children'], $db->f('id_user_forum'), $frontend);
         }
     }
 
@@ -191,57 +200,92 @@ class ArticleForumCollection extends ItemCollection {
      * @param $id_art
      * @param $id_lang
      * @return ArticleForumRightBottom
+     *
      */
     public function getExistingforum($id_cat, $id_art, $id_lang) {
-        $query = "SELECT * FROM " . $this->cfg['tab']['phplib_auth_user_md5'];
-        $this->db->query($query);
-        $arrUsers = array();
+        $userColl = new cApiUserCollection();
+        $userColl->query();
 
-        while ($this->db->next_record()) {
-            $arrUsers[$this->db->f('user_id')]['email'] = $this->db->f('email');
-            $arrUsers[$this->db->f('user_id')]['realname'] = $this->db->f('realname');
+        while (($field = $userColl->next()) != false) {
+
+            $arrUsers[$field->getfield('user_id')]['email'] = $field->getfield('email');
+            $arrUsers[$field->getfield('user_id')]['realname'] = $field->getfield('realname');
         }
-
         return $arrUsers;
     }
 
     function selectNameAndNameByForumId($idquote) {
-        $db = cRegistry::getDb();
-        $query = "SELECT realname,forum FROM con_pi_user_forum WHERE id_user_forum = " . mysql_real_escape_string($idquote);
-        $db->query($query);
-        $data = array();
-        while ($db->next_record()) {
-            array_push($data, $db->toArray());
-        }
-        return $data;
+        $ar = array();
+        $this->item->loadByPrimaryKey(mysql_real_escape_string($idquote));
+        $ar[] = $this->item->get('realname');
+        return $ar;
     }
 
     public function selectUser($userid) {
-        $this->db->query("SELECT * FROM " . $this->cfg['tab']['phplib_auth_user_md5'] . " WHERE user_id = '$userid'");
-        return $this->db->next_record();
+        return $this->item->loadByPrimaryKey($userid);
     }
 
     public function incrementLike($forum_user_id) {
         $db = cRegistry::getDb();
-        $query = "UPDATE con_pi_user_forum pi SET pi.like = pi.like + 1
-              WHERE id_user_forum = " . mysql_real_escape_string($forum_user_id);
-        $db->query($query);
+        $ar = array();
+        $this->item->loadByPrimaryKey($forum_user_id);
+        $ar = $this->item->toArray();
+        $current = $ar['like'];
+        $current += 1;
+
+        $fields = array(
+            'like' => $current
+        );
+        $whereClauses = array(
+            'id_user_forum' => $forum_user_id
+        );
+
+        $statement = $this->db->buildUpdate($this->table, $fields, $whereClauses);
+        $this->db->query($statement);
     }
 
     public function incrementDislike($forum_user_id) {
         $db = cRegistry::getDb();
-        $query = "UPDATE con_pi_user_forum pi SET pi.dislike = pi.dislike + 1
-              WHERE id_user_forum = " . mysql_real_escape_string($forum_user_id);
-        $db->query($query);
+        $ar = array();
+        $this->item->loadByPrimaryKey($forum_user_id);
+        $ar = $this->item->toArray();
+        $current = $ar['dislike'];
+        $current += 1;
+
+        $fields = array(
+            'dislike' => $current
+        );
+        $whereClauses = array(
+            'id_user_forum' => $forum_user_id
+        );
+
+        $statement = $this->db->buildUpdate($this->table, $fields, $whereClauses);
+        $this->db->query($statement);
     }
 
     public function insertValues($parent, $idart, $idcat, $lang, $userid, $email, $realname, $forum, $forum_quote) {
         $db = cRegistry::getDb();
-        $query = "INSERT INTO con_pi_user_forum VALUES(
-        NULL, $parent, $idart, $idcat, $lang,'" . mysql_real_escape_string($userid) . "', '" . mysql_real_escape_string($email) . "',
-		'" . mysql_real_escape_string($realname) . "', '" . mysql_real_escape_string($forum) . "',
-		'" . mysql_real_escape_string($forum_quote) . "', 0, 0, '','', '" . date("Y-m-d H:i:s") . "', '1')";
-        $db->query($query);
+
+        $fields = array(
+            'id_user_forum' => NULL,
+            'id_user_forum_parent' => $parent,
+            'idart' => $idart,
+            'idcat' => $idcat,
+            'idlang' => $lang,
+            'userid' => $userid,
+            'email' => $email,
+            'realname' => $realname,
+            'forum' => $forum,
+            'forum_quote' => $forum_quote,
+            'like' => 0,
+            'dislike' => 0,
+            'editedat' => NULL,
+            'editedby' => NULL,
+            'timestamp' => date("Y-m-d H:i:s"),
+            'online' => 1
+        );
+
+        $db->insert($this->table, $fields);
     }
 
     public function deleteAllCommentsById($idart) {
@@ -252,24 +296,44 @@ class ArticleForumCollection extends ItemCollection {
         global $cfg;
 
         $db = cRegistry::getDb();
-        $query = "SELECT * FROM " . $cfg['tab']['phplib_auth_user_md5'];
-        $db->query($query);
 
-        $arrUsers = array();
+        $userColl = new cApiUserCollection();
+        $userColl->query();
 
-        while ($db->next_record()) {
-            $arrUsers[$db->f('user_id')]['email'] = $db->f('email');
-            $arrUsers[$db->f('user_id')]['realname'] = $db->f('realname');
+
+        while (($field = $userColl->next()) != false) {
+
+          $arrUsers[$field->getfield('user_id')]['email'] = $field->getfield('email');
+          $arrUsers[$field->getfield('user_id')]['realname'] = $field->getfield('realname');
         }
 
         $arrforum = array();
-        $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum,0,true);
-        // $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers,
-        // $arrforum);
+
+        $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
 
         $result = array();
         $this->normalizeArray($arrforum, $result);
         return $result;
+    }
+
+}
+class ArticleForumItem extends Item {
+
+    protected $cfg;
+
+    protected $db;
+    // protected $item;
+    public function __construct() {
+        $this->db = cRegistry::getDb();
+        $this->cfg = cRegistry::getConfig();
+
+        parent::__construct($this->cfg['tab']['user_forum'], 'id_user_forum');
+
+        // $this->_setItemClass('ArticleForumItem');
+    }
+
+    public function getCfg() {
+        return $this->cfg;
     }
 
 }
