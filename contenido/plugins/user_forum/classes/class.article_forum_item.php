@@ -12,7 +12,7 @@ class ArticleForumItem extends Item {
         $this->cfg = cRegistry::getConfig();
 
         parent::__construct($this->cfg['tab']['user_forum'], 'id_user_forum');
-        $this->_setItemClass('ArticleForum');
+        $this->_setItemClass('ArticleForumItem');
     }
 
 }
