@@ -6,17 +6,20 @@ class ArticleForumCollection extends ItemCollection {
 
     protected $db;
 
+    protected $item;
+
     public function __construct() {
         $this->db = cRegistry::getDb();
         $this->cfg = cRegistry::getConfig();
+
         parent::__construct($this->cfg['tab']['user_forum'], 'id_user_forum');
         $this->_setItemClass('ArticleForum');
+   //     $this->item = new ArticleForumItem();
     }
 
     public function getAllCommentedArticles() {
         $sql = "SELECT DISTINCT t.title, t.idart, f.idcat FROM con_art_lang t," . $this->table . " f WHERE f.idart=t.idart AND t.idlang = f.idlang ORDER BY id_user_forum ASC ;";
         $this->db->query($sql);
-
         $data = array();
         while ($this->db->next_record()) {
             array_push($data, $this->db->toArray());
@@ -91,12 +94,16 @@ class ArticleForumCollection extends ItemCollection {
         }
     }
 
-    public function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0) {
+    public function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0, $frontend = false) {
         $db = cRegistry::getDb();
 
-        $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat)
+        if ($frontend) {
+            $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat)
+            AND (idlang = $id_lang) AND (id_user_forum_parent = $parent) AND (online = 1) ORDER BY timestamp DESC";
+        } else {
+            $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat)
         AND (idlang = $id_lang) AND (id_user_forum_parent = $parent) ORDER BY timestamp DESC";
-
+        }
         $db->query($query);
 
         while ($db->next_record()) {
@@ -127,7 +134,7 @@ class ArticleForumCollection extends ItemCollection {
             $arrforum[$db->f('id_user_forum')]['editedat'] = $db->f('editedat');
             $arrforum[$db->f('id_user_forum')]['editedby'] = $db->f('editedby');
 
-            $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum[$db->f('id_user_forum')]['children'], $db->f('id_user_forum'));
+            $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum[$db->f('id_user_forum')]['children'], $db->f('id_user_forum'),$frontend);
         }
     }
 
@@ -142,16 +149,20 @@ class ArticleForumCollection extends ItemCollection {
         $uuid = cRegistry::getAuth()->isAuthenticated();
         $timeStamp = date('Y-m-d H:i:s', time());
 
-        $fields = array('realname' => $name,
-                        'editedby'=> $uuid,
-                        'email' => $email,
-                        'forum' => $forum,
-                        'editedat' => $timeStamp,
-                        'like' => $like,
-                        'dislike' => $dislike,
-                        'online' => $online);
+        $fields = array(
+            'realname' => $name,
+            'editedby' => $uuid,
+            'email' => $email,
+            'forum' => $forum,
+            'editedat' => $timeStamp,
+            'like' => $like,
+            'dislike' => $dislike,
+            'online' => $online
+        );
 
-        $whereClauses = array('id_user_forum' => $id_user_forum);
+        $whereClauses = array(
+            'id_user_forum' => $id_user_forum
+        );
         $statement = $this->db->buildUpdate($this->table, $fields, $whereClauses);
         $this->db->query($statement);
     }
@@ -164,8 +175,12 @@ class ArticleForumCollection extends ItemCollection {
      */
     public function toggleOnlineState($onlineState, $id_user_forum) {
         ($onlineState == 0)? $onlineState = 1 : $onlineState = 0;
-        $fields = array('online' => $onlineState);
-        $whereClauses = array('id_user_forum' => $id_user_forum);
+        $fields = array(
+            'online' => $onlineState
+        );
+        $whereClauses = array(
+            'id_user_forum' => $id_user_forum
+        );
         $statement = $this->db->buildUpdate($this->table, $fields, $whereClauses);
         $this->db->query($statement);
     }
@@ -226,7 +241,6 @@ class ArticleForumCollection extends ItemCollection {
         NULL, $parent, $idart, $idcat, $lang,'" . mysql_real_escape_string($userid) . "', '" . mysql_real_escape_string($email) . "',
 		'" . mysql_real_escape_string($realname) . "', '" . mysql_real_escape_string($forum) . "',
 		'" . mysql_real_escape_string($forum_quote) . "', 0, 0, '','', '" . date("Y-m-d H:i:s") . "', '1')";
-
         $db->query($query);
     }
 
@@ -249,7 +263,7 @@ class ArticleForumCollection extends ItemCollection {
         }
 
         $arrforum = array();
-        $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
+        $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum,0,true);
         // $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers,
         // $arrforum);
 
