@@ -2170,6 +2170,7 @@ contenido/plugins/url_shortener/xml/lang_de_DE.xml -text svneol=unset#text/plain
 contenido/plugins/url_shortener/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/plugins/user_forum/classes/class.article_forum.php -text
 contenido/plugins/user_forum/classes/class.article_forum_collection.php -text
+contenido/plugins/user_forum/classes/class.article_forum_item.php -text
 contenido/plugins/user_forum/classes/class.article_forum_left_bottom.php -text
 contenido/plugins/user_forum/classes/class.article_forum_right_bottom.php -text
 contenido/plugins/user_forum/includes/config.plugin.php -text
