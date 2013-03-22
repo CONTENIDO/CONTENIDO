@@ -56,15 +56,14 @@ $aSearchIDInfosNonID = array();
 
 // Var initialization
 $aUrl = array(
-        'cms' => cRegistry::getFrontendUrl(),
-        'contenido' => cRegistry::getBackendUrl()
+    'cms' => cRegistry::getFrontendUrl(),
+    'contenido' => cRegistry::getBackendUrl()
 );
 
 // Template- and languagevars
 if ($cronjob != true) {
-    $tpl->set('s', 'FULLHTML', $aUrl['contenido']);
+    $tpl->set('s', 'URL_BACKEND', $aUrl['contenido']);
     $tpl->set('s', 'MODE', cSecurity::toInteger($_GET['mode']));
-    $tpl->set('s', 'URL', $aUrl['contenido']);
     $tpl->set('s', 'SID', $sess->id);
 }
 
@@ -84,12 +83,12 @@ $tpl->set('s', 'UPDATE_HREF', $sLink . cSecurity::toInteger($_GET['mode']) . '&l
 
 // Cache options
 $aCacheName = array(
-        'errors' => $sess->id,
-        'errorscount' => $aCacheName['errors'] . "ErrorsCountChecked"
+    'errors' => $sess->id,
+    'errorscount' => $aCacheName['errors'] . "ErrorsCountChecked"
 );
 $oCache = new cFileCache(array(
-        'cacheDir' => $cfgClient[$client]['cache']['path'],
-        'lifeTime' => $iCacheLifeTime
+    'cacheDir' => $cfgClient[$client]['cache']['path'],
+    'lifeTime' => $iCacheLifeTime
 ));
 
 /*
@@ -291,10 +290,10 @@ if (empty($aErrors) && $cronjob != true) {
 
     // error_output initialization
     $aError_output = array(
-            'art' => '',
-            'cat' => '',
-            'docimages' => '',
-            'others' => ''
+        'art' => '',
+        'cat' => '',
+        'docimages' => '',
+        'others' => ''
     );
 
     foreach ($aErrors as $sKey => $aRow) {
@@ -317,7 +316,8 @@ if (empty($aErrors) && $cronjob != true) {
             $tpl2->set('s', 'ERRORS_CATNAME', $aRow[$i]['namecat']);
             $tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($aRow[$i]['namecat'], 0, 20) . ((strlen($aRow[$i]['namecat']) > 20)? ' ...' : ''));
             $tpl2->set('s', 'MODE', $_GET['mode']);
-            $tpl2->set('s', 'URL', $aUrl['contenido']);
+            $tpl2->set('s', 'URL_BACKEND', $aUrl['contenido']);
+            $tpl2->set('s', 'URL_FRONTEND', $aUrl['cms']);
             $tpl2->set('s', 'SID', $sess->id);
 
             if ($aRow[$i]['error_type'] == "unknown") {
