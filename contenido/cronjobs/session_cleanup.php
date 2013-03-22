@@ -36,15 +36,4 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
-// CONTENIDO path
-$contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
-
-// CONTENIDO startup process
-include_once($contenidoPath . 'includes/startup.php');
-
-
-if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
-    cleanupSessions();
-}
-
 ?>
