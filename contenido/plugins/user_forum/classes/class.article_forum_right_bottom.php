@@ -179,7 +179,7 @@ class ArticleForumRightBottom extends cGuiPage {
             // row
             $tr = new cHTMLTableRow();
             $trLike = new cHTMLTableRow();
-            $trLike->setStyle('text-align: center');
+
 
             $likeButton = new cHTMLImage($cfg['path']['images'] . 'like.png');
             // $likeButton->setAttribute('valign','bottom');
@@ -214,17 +214,12 @@ class ArticleForumRightBottom extends cGuiPage {
                 $edit_information = "<br>";
             }
 
-
-
-
-
-
-
             $tdEmpty = new cHTMLTableData();
             $tdEmpty->appendContent($edit_information);
             $tdLike = new cHTMLTableData();
             $tdEmpty->setAttribute('valign', 'top');
             $tdLike->setAttribute('valign', 'top');
+            $tdLike->setStyle('text-align: center');
 
             $tdLike->appendContent($likeButton);
             $tdLike->appendContent(" $like ");
