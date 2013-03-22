@@ -184,8 +184,41 @@ class ArticleForumRightBottom extends cGuiPage {
             // $likeButton->setAttribute('valign','bottom');
             $dislikeButton = new cHTMLImage($cfg['path']['images'] . 'dislike.png');
 
+
+            // valid email
+            $maili = $this->checkValidEmail($cont['email'],$cont['realname']);
+            $text = $cont['forum']; // n2bl
+
+            $timestamp = $cont['editedat'];
+
+            $datearray = $this->formatTimeString($cont['timestamp']);
+            (empty($datearray))?$date ='':
+            $editdate = $datearray['day'].'.'.$datearray['month'].'.'.$datearray['year'] . ' '. UserForum::i18n("AT")  .' ' .
+            $datearray['hour'].':'.$datearray['minute']. ' '. UserForum::i18n("CLOCK") ;
+
+
+
+            $userColl = new cApiUserCollection();
+            $user = $userColl->loadItem($cont['editedby'])->get('username');
+
+            if (($cont['editedby'] != '') && ($cont['editedat'] != '')) {
+                // $tmp = mi18n("articleWasEditAt");
+                $edit_information = (UserForum::i18n("EDITED").$editdate.' '. UserForum::i18n("FROM"). $user);
+                $edit_information= "<em>$edit_information</em>";
+                //var_dump();
+            }
+            else {
+                $edit_information = "<br>";
+            }
+
+
+
+
+
+
+
             $tdEmpty = new cHTMLTableData();
-            $tdEmpty->appendContent("<br>");
+            $tdEmpty->appendContent($edit_information);
             $tdLike = new cHTMLTableData();
             $tdEmpty->setAttribute('valign', 'top');
             $tdLike->setAttribute('valign', 'top');
@@ -216,27 +249,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $tdButtons->appendContent('<br>');
 
 
-            // valid email
-            $maili = $this->checkValidEmail($cont['email'],$cont['realname']);
-            $text = $cont['forum']; // n2bl
-            $timestamp = $cont['editedat'];
 
-            $datearray = $this->formatTimeString($cont['timestamp']);
-            (empty($datearray))?$date ='':
-            $editdate = $datearray['day'].'.'.$datearray['month'].'.'.$datearray['year'] . ' '. UserForum::i18n("AT")  .' ' .
-            $datearray['hour'].':'.$datearray['minute']. ' '. UserForum::i18n("CLOCK") ;
-
-
-
-            $userColl = new cApiUserCollection();
-            $user = $userColl->loadItem($cont['editedby'])->get('username');
-
-            if (($cont['editedby'] != '') && ($cont['editedat'] != '')) {
-           // $tmp = mi18n("articleWasEditAt");
-            $edit_information = (UserForum::i18n("EDITED").$editdate.' '. UserForum::i18n("FROM"). $user);
-            $record['EDIT_INFORMATION'] = "<br /><br /><em>$edit_information</em>";
-            //var_dump();
-            }
 
 
 
@@ -295,7 +308,7 @@ class ArticleForumRightBottom extends cGuiPage {
 
             // generate output text
             $form->appendContent($date . " von ".$maili. " <br><br>");
-            $form->appendContent($text . "<br><br>" .$edit_information);
+            $form->appendContent($text . "<br><br>");
             $tdForm->setContent($form);
             $tdForm->setAttribute('valign', 'top');
             $tr->setContent($tdForm);
