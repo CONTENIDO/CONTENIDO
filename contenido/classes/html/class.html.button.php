@@ -99,6 +99,7 @@ class cHTMLButton extends cHTMLFormElement {
      * @return cHTMLButton $this
      */
     public function setImageSource($src) {
+        $this->setMode('image');
         return $this->updateAttribute('src', $src);
     }
 
