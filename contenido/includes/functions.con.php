@@ -61,7 +61,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
     $idcatart = $oCatArt->get('idcatart');
 
     $aLanguages = array(
-            $lang
+        $lang
     );
 
     // Table 'con_art_lang', one entry for every language
@@ -299,7 +299,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
  * @param int $typeid Serial number of the content element
  * @param string $value Content
  * @param bool $bForce Not used: Was a flag to use existing db instance in
- *            global scope
+ *        global scope
  * @return void
  */
 function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false) {
@@ -350,7 +350,8 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
 }
 
 /**
- * Generate index of article content. added by stese removed from function
+ * Generate index of article content.
+ * added by stese removed from function
  * conSaveContentEntry before Touch the article to update last modified date
  *
  * @see conSaveContentEntry
@@ -368,10 +369,10 @@ function conMakeArticleIndex($idartlang, $idart) {
     // cms types to be excluded from indexing
     // @todo Make this configurable!
     $aOptions = array(
-            'img',
-            'link',
-            'linktarget',
-            'swf'
+        'img',
+        'link',
+        'linktarget',
+        'swf'
     );
 
     $oIndex = new cSearchIndex($db);
@@ -590,8 +591,11 @@ function conDeleteart($idart) {
     $catArtColl->select('idart = ' . (int) $idart);
     while (($oCatArtItem = $catArtColl->next()) !== false) {
         // Delete from code cache
-        $mask = $cfgClient[$client]['code']['path'] . '*.' . $oCatArtItem->get('idcatart') . '.php';
-        array_map('unlink', glob($mask));
+        foreach (new DirectoryIterator($cfgClient[$client]['code']['path']) as $file) {
+            if ($file->getFilename() == $oCatArtItem->get('idcatart') && $file->getExtension() == "php") {
+                unlink($cfgClient[$client]['code']['path'] . $oCatArtItem->get('idcatart') . 'php');
+            }
+        }
 
         // Delete from 'stat'-table
         $statColl = new cApiStatCollection();
@@ -767,7 +771,7 @@ function conDeeperCategoriesArray($idcat) {
  * @param bool $makeLink Create location string with links
  * @param string $linkClass Stylesheet class for the links
  * @param int $firstTreeElementToUse First navigation Level location string
- *            should be printed out (first level = 0!!)
+ *        should be printed out (first level = 0!!)
  * @param int $uselang Id of language
  * @param bool $final
  * @param bool $usecache
@@ -811,12 +815,12 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
     $sql = "SELECT a.name AS name, a.idcat AS idcat, b.parentid AS parentid, c.level as level " . "FROM `:cat_lang` AS a, `:cat` AS b, `:cat_tree` AS c " . "WHERE a.idlang = :idlang AND b.idclient = :idclient AND b.idcat = :idcat AND a.idcat = b.idcat AND c.idcat = b.idcat";
 
     $sql = $db->prepare($sql, array(
-            'cat_lang' => $cfg['tab']['cat_lang'],
-            'cat' => $cfg['tab']['cat'],
-            'cat_tree' => $cfg['tab']['cat_tree'],
-            'idlang' => (int) $uselang,
-            'idclient' => (int) $client,
-            'idcat' => (int) $idcat
+        'cat_lang' => $cfg['tab']['cat_lang'],
+        'cat' => $cfg['tab']['cat'],
+        'cat_tree' => $cfg['tab']['cat_tree'],
+        'idlang' => (int) $uselang,
+        'idclient' => (int) $client,
+        'idcat' => (int) $idcat
     ));
     $db->query($sql);
     $db->nextRecord();
@@ -856,7 +860,8 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
 }
 
 /**
- * Set a start-article @fixme Do we still need the isstart. The old start
+ * Set a start-article @fixme Do we still need the isstart.
+ * The old start
  * compatibility has already been removed...
  *
  * @param int $idcatart Idcatart of the article
@@ -955,7 +960,7 @@ function conGenerateCodeForAllartsUsingLayout($idlay) {
 function conGenerateCodeForAllartsUsingMod($idmod) {
     $oContainerColl = new cApiContainerCollection();
     $rsList = $oContainerColl->getFieldsByWhereClause(array(
-            'idtpl'
+        'idtpl'
     ), 'idmod = ' . (int) $idmod);
     foreach ($rsList as $rs) {
         conGenerateCodeForAllArtsUsingTemplate($rs['idtpl']);
@@ -1127,11 +1132,11 @@ function conMoveArticles() {
 
     // Perform after-end updates
     $fields = array(
-            'idartlang',
-            'idart',
-            'time_move_cat',
-            'time_target_cat',
-            'time_online_move'
+        'idartlang',
+        'idart',
+        'time_move_cat',
+        'time_target_cat',
+        'time_online_move'
     );
     $where = "NOW() > dateend AND dateend != '0000-00-00 00:00:00' AND timemgmt = 1 AND time_move_cat = 1";
     $oArtLangColl = new cApiArticleLanguageCollection();
@@ -1183,7 +1188,7 @@ function conCopyContainerConf($srcidtplcfg, $dstidtplcfg) {
     while (($oContainerConf = $oContainerConfColl->next()) !== false) {
         $oNewContainerConfColl = new cApiContainerConfigurationCollection();
         $oNewContainerConfColl->copyItem($oContainerConf, array(
-                'idtplcfg' => (int) $dstidtplcfg
+            'idtplcfg' => (int) $dstidtplcfg
         ));
         $counter++;
     }
@@ -1203,7 +1208,7 @@ function conCopyContent($srcidartlang, $dstidartlang) {
     while (($oContent = $oContentColl->next()) !== false) {
         $oNewContentColl = new cApiContentCollection();
         $oNewContentColl->copyItem($oContent, array(
-                'idartlang' => (int) $dstidartlang
+            'idartlang' => (int) $dstidartlang
         ));
     }
 }
@@ -1221,7 +1226,7 @@ function conCopyMetaTags($srcidartlang, $dstidartlang) {
     while (($oMetaTag = $oMetaTagColl->next()) !== false) {
         $oNewMetaTagColl = new cApiMetaTagCollection();
         $oNewMetaTagColl->copyItem($oMetaTag, array(
-                'idartlang' => (int) $dstidartlang
+            'idartlang' => (int) $dstidartlang
         ));
     }
 }
@@ -1265,15 +1270,15 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true) {
     // Create an article language entry
     $oArtLangColl = new cApiArticleLanguageCollection();
     $fieldsToOverwrite = array(
-            'idart' => $idart,
-            'idlang' => $idlang,
-            'online' => 0,
-            'title' => $title,
-            'created' => date('Y-m-d H:i:s'),
-            'lastmodified' => date('Y-m-d H:i:s'),
-            'modifiedby' => $auth->auth['uname'],
-            'published' => '',
-            'publishedby' => ''
+        'idart' => $idart,
+        'idlang' => $idlang,
+        'online' => 0,
+        'title' => $title,
+        'created' => date('Y-m-d H:i:s'),
+        'lastmodified' => date('Y-m-d H:i:s'),
+        'modifiedby' => $auth->auth['uname'],
+        'published' => '',
+        'publishedby' => ''
     );
     $oNewArtLang = $oArtLangColl->copyItem($oSrcArtLang, $fieldsToOverwrite);
 
@@ -1289,11 +1294,11 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true) {
 
     // Execute CEC hook
     cApiCecHook::execute('Contenido.Article.conCopyArtLang_AfterInsert', array(
-            'idartlang' => (int) $oNewArtLang->get('idartlang'),
-            'idart' => (int) $idart,
-            'idlang' => (int) $idlang,
-            'idtplcfg' => (int) $idtplcfg,
-            'title' => $title
+        'idartlang' => (int) $oNewArtLang->get('idartlang'),
+        'idart' => (int) $idart,
+        'idlang' => (int) $idlang,
+        'idtplcfg' => (int) $idtplcfg,
+        'title' => $title
     ));
 
     // Update keyword list for new article
@@ -1335,11 +1340,11 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel
         // Insert destination category article entry
         $oCatArtColl2 = new cApiCategoryArticleCollection();
         $fieldsToOverwrite = array(
-                'idcat' => ($targetcat != 0)? $targetcat : $oCatArt->get('idcat'),
-                'idart' => $dstidart,
-                'status' => ($oCatArt->get('status') !== '')? $oCatArt->get('status') : 0,
-                'createcode' => 1,
-                'is_start' => 0
+            'idcat' => ($targetcat != 0)? $targetcat : $oCatArt->get('idcat'),
+            'idart' => $dstidart,
+            'status' => ($oCatArt->get('status') !== '')? $oCatArt->get('status') : 0,
+            'createcode' => 1,
+            'is_start' => 0
         );
         $oCatArtColl2->copyItem($oCatArt, $fieldsToOverwrite);
 
@@ -1395,12 +1400,12 @@ function conGetTopmostCat($idcat, $minLevel = 0) {
             AND c.idcat = b.idcat AND a.idcat = b.idcat";
 
     $sql = $db->prepare($sql, array(
-            'cat_lang' => $cfg['tab']['cat_lang'],
-            'cat' => $cfg['tab']['cat'],
-            'cat_tree' => $cfg['tab']['cat_tree'],
-            'idlang' => (int) $lang,
-            'idclient' => (int) $client,
-            'idcat' => (int) $idcat
+        'cat_lang' => $cfg['tab']['cat_lang'],
+        'cat' => $cfg['tab']['cat'],
+        'cat_tree' => $cfg['tab']['cat_tree'],
+        'idlang' => (int) $lang,
+        'idclient' => (int) $client,
+        'idcat' => (int) $idcat
     ));
     $db->query($sql);
     $db->nextRecord();
@@ -1452,25 +1457,25 @@ function conSyncArticle($idart, $srclang, $dstlang) {
     // Create an article language entry for destination language
     $artLangColl = new cApiArticleLanguageCollection();
     $fieldsToOverwrite = array(
-            'idart' => $idart,
-            'idlang' => $dstlang,
-            'artspec' => 0,
-            'online' => 0,
-            'created' => date('Y-m-d H:i:s'),
-            'lastmodified' => date('Y-m-d H:i:s'),
-            'modifiedby' => $auth->auth['uname'],
-            'published' => '',
-            'publishedby' => '',
-            'timemgmt' => 0,
-            'datestart' => '',
-            'dateend' => '',
-            'status' => 0,
-            'time_move_cat' => 0,
-            'time_target_cat' => 0,
-            'time_online_move' => 0,
-            'free_use_01' => '',
-            'free_use_02' => '',
-            'free_use_03' => ''
+        'idart' => $idart,
+        'idlang' => $dstlang,
+        'artspec' => 0,
+        'online' => 0,
+        'created' => date('Y-m-d H:i:s'),
+        'lastmodified' => date('Y-m-d H:i:s'),
+        'modifiedby' => $auth->auth['uname'],
+        'published' => '',
+        'publishedby' => '',
+        'timemgmt' => 0,
+        'datestart' => '',
+        'dateend' => '',
+        'status' => 0,
+        'time_move_cat' => 0,
+        'time_target_cat' => 0,
+        'time_online_move' => 0,
+        'free_use_01' => '',
+        'free_use_02' => '',
+        'free_use_03' => ''
     );
     $artLang = $artLangColl->copyItem($srcArtLang, $fieldsToOverwrite);
     if (!is_object($artLang)) {
@@ -1521,7 +1526,7 @@ function conGetCategoryAssignments($idart, $db = null) {
     $categories = array();
     $oCatArtColl = new cApiCategoryArticleCollection();
     $entries = $oCatArtColl->getFieldsByWhereClause(array(
-            'idcat'
+        'idcat'
     ), 'idart = ' . (int) $idart);
     foreach ($entries as $entry) {
         $categories[] = $entry['idcat'];
