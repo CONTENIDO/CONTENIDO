@@ -126,8 +126,11 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
     $properties->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
 
     // Clear the code cache
-    $mask = $cfgClient[$idclient]['cache']['path'] . $idclient . '*.php';
-    array_map('unlink', glob($mask));
+    foreach (new DirectoryIterator($cfgClient[$idclient]['cache']['path']) as $file) {
+        if ($file->getFilename() == $idclient && $file->getExtension() == "php") {
+            unlink($cfgClient[$idclient]['cache']['path'] . $idclient . 'php');
+        }
+    }
 
     $notification->displayNotification('info', i18n("Changes saved") . $sNewNotification);
 
