@@ -9,7 +9,7 @@
         <tr>
             <td valign="top" style="padding-left:{$PADDING}px">
                 <div class="block">
-                <p><span class="number">Nr.{$POST.NUMBER}</span> <span class="day">{$POST.DAY}</span> <span class="wrote_on">{$POST.TIMESTAMP}</span> {$POST.FROM} <strong>{$POST.REALNAME}</strong></p>
+                <p><span class="number">Nr.{$POST.NUMBER}</span> <span class="day">{$POST.DAY}</span> <span class="wrote_on">{$POST.TIMESTAMP}</span> {$POST.FROM} {$POST.LINKBEGIN}{$POST.EMAIL} <strong>{$POST.REALNAME}</strong>{$POST.LINKEND}</p>
                 <div class="quote_handler"><p>{$POST.FORUM_QUOTE}</p></div>
                 <p>{$POST.FORUM}</p>
                 {$POST.EDIT_INFORMATION}

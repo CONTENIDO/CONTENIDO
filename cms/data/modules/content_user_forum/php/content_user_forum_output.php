@@ -1,4 +1,5 @@
 <?php
+defined('CON_FRAMEWORK') or die('Illegal call');
 class UserForumArticle {
 
     protected $tpl;
@@ -37,8 +38,14 @@ class UserForumArticle {
         $this->idcat = cRegistry::getCategoryId();
         $this->idlang = cRegistry::getLanguageId();
         $this->collection = new ArticleForumCollection();
+        // $test = new ArticleForumItem();
     }
 
+    /**
+     * main method for controlling actions for different
+     *
+     * @param unknown $request
+     */
     function receiveData($request) {
         $this->checkCookie();
         $this->checkForceState();
@@ -47,7 +54,6 @@ class UserForumArticle {
         (getEffectiveSetting('user_forum', 'allow_anonymous_forum', '1') == '1')? $bAllowAnonymousforum = true : $bAllowAnonymousforum = false;
 
         $this->getUser($auth->auth['uid']);
-
         ($bAllowAnonymousforum || $this->bUserLoggedIn && !$bAllowAnonymousforum)? $this->bAllowNewforum = true : $this->bAllowNewforum = false;
 
         switch ($_REQUEST['user_forum_action']) {
@@ -90,6 +96,9 @@ class UserForumArticle {
         }
     }
 
+    /**
+     * increments the current number of likes
+     */
     function incrementLike() {
         $form_id = (int) $_REQUEST['user_forum_id'];
         if ($form_id > 0 && $this->bCounter) {
@@ -97,6 +106,9 @@ class UserForumArticle {
         }
     }
 
+    /**
+     * increments the current number of dislikes
+     */
     function incrementDislike() {
         $form_id = (int) $_REQUEST['user_forum_id'];
         if ($form_id > 0 && $this->bCounter) {
@@ -241,6 +253,7 @@ class UserForumArticle {
 
                 $number = 1;
                 $tplData = array();
+                $regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
                 foreach ($arrUserforum as $key => $value) {
                     $record = array();
                     $record['REALNAME'] = $value['realname'];
@@ -268,6 +281,10 @@ class UserForumArticle {
                     $record['FORUM'] = $value['forum'];
 
                     if (($value['editedby'] != '') && ($value['editedat'] != '')) {
+
+                      //  var_dump(($value['editedby']));
+                      //  var_dump(($value['editedat']));
+
                         $arrTmp = explode(' ', $value['editedat']);
 
                         $edittime = substr($arrTmp[1], 0, 5);
@@ -275,18 +292,18 @@ class UserForumArticle {
                         $arrTmp2 = explode('-', $arrTmp[0]);
                         $editdate = $arrTmp2[2] . '.' . $arrTmp2[1] . '.' . $arrTmp2[0];
 
+
+            //displays if comment was edited
+
                         $tmp = mi18n("articleWasEditAt");
 
-                        $edit_information = sprintf($tmp, $editdate, $edittime, $value['editedby']);
+                        $userColl = new cApiUserCollection();
+                        $user = $userColl->loadItem($value['editedby'])->get('username');
 
-                        if ((trim($_REQUEST['email']) != '' && trim($_REQUEST['realname']) != '' && trim($_REQUEST['forum']) != '') || $edit) {
+                        $edit_information = sprintf($tmp, $editdate, $edittime, $user);
                             $record['EDIT_INFORMATION'] = "<br /><br /><em>$edit_information</em>";
-                        } else {
-                            $record['EDIT_INFORMATION'] = "";
-                        }
-                    } else {
-                        $record['EDIT_INFORMATION'] = "";
-                    }
+
+                   }
 
                     $record['REPLY'] = sprintf($reply_forum_link, $key);
                     $record['REPLY_QUOTE'] = sprintf($reply_quote_forum_link, $key, $key);
@@ -297,6 +314,21 @@ class UserForumArticle {
                     $record['LIKE_COUNT'] = $value['like'];
                     $record['DISLIKE_COUNT'] = $value['dislike'];
                     $record['PADDING'] = $value['level'] * 20;
+
+
+                    // Run the preg_match() function on regex against the email
+                    // address
+                    if (preg_match($regex, $value['email'])) {
+                        $record['LINKBEGIN'] = "<a href='mailto:";
+                        $record['LINKEND'] = '</a>';
+                       // $record['MAILTO'] = 'mailto:';
+                        $record['EMAIL'] = $value['email']."'>";
+                    } else {
+                        $record['LINKBEGIN'] = "";
+                        $record['LINKEND'] = "";
+                        $record['MAILTO'] = '#';
+                        $record['EMAIL'] = '';
+                    }
 
                     array_push($tplData, $record);
                 }
