@@ -166,7 +166,6 @@ class ArticleForumCollection extends ItemCollection {
             $timeStamp = date('Y-m-d H:i:s', time());
         }
 
-        var_dump($like);
         // check for negative inputs
         (!preg_match('/\D/', $like))? :$like = $this->item->getField('like') ;
         (!preg_match('/\D/', $dislike))? :$dislike = $this->item->getField('dislike') ;
