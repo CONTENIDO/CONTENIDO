@@ -21,19 +21,19 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 if (!isset($idtpl)) {
-  $idtpl = false;
+    $idtpl = false;
 }
 
 if (!isset($artspec)) {
-  $artspec = "";
+    $artspec = '';
 }
 
 if (!isset($online)) {
-  $online = false;
+    $online = false;
 }
 
 if (!isset($searchable)) {
-  $searchable = false;
+    $searchable = false;
 }
 
 $oldData = array();
@@ -44,14 +44,14 @@ if (isset($title)) {
         $tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));
 
         if (!isset($idartlang)) {
-            $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart = $idart AND idlang = $lang";
+            $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = $idart AND idlang = $lang";
             $db->query($sql);
             $db->nextRecord();
             $idartlang = $db->f("idartlang");
         }
 
         if (in_array($idcat, $idcatnew)) {
-            $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".$idcat."' AND idart = '".$idart."'";
+            $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat = '" . $idcat . "' AND idart = '" . $idart . "'";
 
             $db->query($sql);
             $db->nextRecord();
@@ -63,7 +63,7 @@ if (isset($title)) {
             }
 
             if (!isset($is_start)) {
-                $sql = "SELECT * FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '$idcat' AND idlang = '$lang' AND startidartlang != '0' ";
+                $sql = "SELECT * FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = '$idcat' AND idlang = '$lang' AND startidartlang != '0' ";
                 $db->query($sql);
                 if ($db->nextRecord()) {
                     $tmp_startidartlang = $db->f('startidartlang');
@@ -78,15 +78,14 @@ if (isset($title)) {
 
         if (is_array($idcatnew)) {
             foreach ($idcatnew as $idcat) {
-                $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = $idcat AND idart = $idart";
+                $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat = $idcat AND idart = $idart";
 
                 $db->query($sql);
                 $db->nextRecord();
 
-                conSetCodeFlag( $db->f("idcatart") );
+                conSetCodeFlag($db->f("idcatart"));
             }
         }
-
     } else {
 
         // get old article data that will be passed to
@@ -136,7 +135,6 @@ if (isset($title)) {
             $oldData['idcat'] = $idcat;
             $oldData['idcatnew'] = $idcatold;
             $oldData['is_start'] = $wasStart;
-
         }
 
         conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, 0, $searchable, $sitemapprio, $changefreq);
@@ -144,7 +142,7 @@ if (isset($title)) {
         $tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));
 
         if (!isset($idartlang)) {
-            $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart = $idart AND idlang = $lang";
+            $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = $idart AND idlang = $lang";
             $db->query($sql);
             $db->nextRecord();
             $idartlang = $db->f("idartlang");
@@ -152,7 +150,7 @@ if (isset($title)) {
 
         if (is_array($idcatnew)) {
             if (in_array($idcat, $idcatnew)) {
-                $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".$idcat."' AND idart = '".$idart."'";
+                $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat = '" . $idcat . "' AND idart = '" . $idart . "'";
 
                 $db->query($sql);
                 $db->nextRecord();
@@ -164,7 +162,7 @@ if (isset($title)) {
                 }
 
                 if (!isset($is_start)) {
-                    $sql = "SELECT * FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '$idcat' AND idlang = '$lang' AND startidartlang != '0' ";
+                    $sql = "SELECT * FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = '$idcat' AND idlang = '$lang' AND startidartlang != '0' ";
                     $db->query($sql);
                     if ($db->nextRecord()) {
                         $tmp_startidartlang = $db->f('startidartlang');
@@ -180,7 +178,7 @@ if (isset($title)) {
 
         if (is_array($idcatnew)) {
             foreach ($idcatnew as $idcat) {
-                $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = $idcat AND idart = $idart";
+                $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat = $idcat AND idart = $idart";
 
                 $db->query($sql);
                 $db->nextRecord();

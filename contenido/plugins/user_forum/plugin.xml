@@ -24,7 +24,7 @@
         <frames>
             <frame area="user_forum" filetype="main" name="user_forum/includes/include.left_bottom.php" frameId="2" />
             <frame area="user_forum" filetype="main" name="user_forum/includes/include.right_bottom.php" frameId="4" />
-			<frame area="user_forum" filetype="main" name="user_forum/includes/include.left_top.php" frameId="1" />
+            <frame area="user_forum" filetype="main" name="user_forum/includes/include.left_top.php" frameId="1" />
         </frames>
 
         <nav_sub>

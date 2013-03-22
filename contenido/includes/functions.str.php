@@ -461,7 +461,6 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
     );
 
     cApiCecHook::execute('Contenido.Category.strRenameCategory', $newData, $oldData);
-
 }
 
 /**
@@ -504,7 +503,6 @@ function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
     );
 
     cApiCecHook::execute('Contenido.Category.strRenameCategoryAlias', $newData, $oldData);
-
 }
 
 /**
@@ -926,9 +924,7 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
 
             $oCatLangColl = new cApiCategoryLanguageCollection();
             $oNewCatLang = $oCatLangColl->create(
-                $aRs['idcat'], $targetlang, $aRs['name'], $aRs['urlname'], $urlpath,
-                $newidtplcfg, $visible, $aRs['public'], $aRs['status'], $aRs['author'],
-                $startidartlang, $aRs['created'], $aRs['lastmodified']
+                    $aRs['idcat'], $targetlang, $aRs['name'], $aRs['urlname'], $urlpath, $newidtplcfg, $visible, $aRs['public'], $aRs['status'], $aRs['author'], $startidartlang, $aRs['created'], $aRs['lastmodified']
             );
 
             // Execute CEC hook

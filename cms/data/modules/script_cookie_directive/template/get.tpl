@@ -1,7 +1,7 @@
 ﻿<!-- script_cookie_directive/template/get.tpl -->
 
 <div id="cookieNote">
-        
+
     <h1>{$trans.title}</h1>
     <p>{$trans.infoText}</p>
     <input type="hidden" id="accept" value="{$trans.accept}" />

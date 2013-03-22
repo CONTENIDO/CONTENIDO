@@ -177,7 +177,7 @@ abstract class cDbDriverHandler {
      * @return mixed
      */
     public function __get($name) {
-        $methodName = isset(self::$_variablesToMethod[$name])? self::$_variablesToMethod[$name] : null;
+        $methodName = isset(self::$_variablesToMethod[$name]) ? self::$_variablesToMethod[$name] : null;
 
         if (!is_null($methodName)) {
             cDeprecated("Accessing class variable " . $name . " is deprecated. Use method " . $methodName . "() instead.");
@@ -272,8 +272,8 @@ abstract class cDbDriverHandler {
      * @return mixed Either The connection (object, resource, integer) or null
      */
     protected function _getConnection($data) {
-        $hash = md5($this->_driverType . '-' . (is_array($data)? implode('-', $data) : (string) $data));
-        return (isset(self::$_connectionCache[$hash]))? self::$_connectionCache[$hash] : null;
+        $hash = md5($this->_driverType . '-' . (is_array($data) ? implode('-', $data) : (string) $data));
+        return (isset(self::$_connectionCache[$hash])) ? self::$_connectionCache[$hash] : null;
     }
 
     /**
@@ -284,7 +284,7 @@ abstract class cDbDriverHandler {
      * @return void
      */
     protected function _setConnection($data, $connection) {
-        $hash = md5($this->_driverType . '-' . (is_array($data)? implode('-', $data) : (string) $data));
+        $hash = md5($this->_driverType . '-' . (is_array($data) ? implode('-', $data) : (string) $data));
         self::$_connectionCache[$hash] = $connection;
     }
 
@@ -428,7 +428,7 @@ abstract class cDbDriverHandler {
             $arguments = array_map(array(
                 $this,
                 'escape'
-            ), $arguments);
+                    ), $arguments);
             array_unshift($arguments, $statement);
             $statement = call_user_func_array('sprintf', $arguments);
         }
@@ -802,7 +802,7 @@ abstract class cDbDriverHandler {
      */
     public function getMetaData($tableName = '', $full = false) {
         $databaseName = '';
-        $key = (string) $databaseName . '_' . $tableName . '_' . (($full)? '1' : '0');
+        $key = (string) $databaseName . '_' . $tableName . '_' . (($full) ? '1' : '0');
 
         if (!isset(self::$_metaCache[$key])) {
             // get meta data
@@ -872,7 +872,7 @@ abstract class cDbDriverHandler {
      */
     public function f($name, $default = null) {
         $record = $this->getRecord();
-        return (isset($record[$name]))? $record[$name] : $default;
+        return (isset($record[$name])) ? $record[$name] : $default;
     }
 
     /**

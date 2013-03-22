@@ -112,7 +112,7 @@ Release 4.9.0 RC 1
     * [CON-1008] - security.txt will be created w/o permissions
     * [CON-1010] - Switching language does not work with activated AMR plugin
     * [CON-1011] - MailedFormProcessor cannot send system mails
-    * [CON-1012] - Check for writable directories does not work properly 
+    * [CON-1012] - Check for writable directories does not work properly
 
 ** Improvement
     * [CON-752] - Change smarty template calls

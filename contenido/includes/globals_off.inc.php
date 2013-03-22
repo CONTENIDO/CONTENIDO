@@ -23,8 +23,8 @@
 /**
  * @deprecated 2012-09-06 Constant has been renamed to CON_STRIPSLASHES
  */
-if(phpversion() <= "5.3.0") {
-	define('CONTENIDO_STRIPSLASHES', get_magic_quotes_gpc());
+if (phpversion() <= "5.3.0") {
+    define('CONTENIDO_STRIPSLASHES', get_magic_quotes_gpc());
 }
 
 /**
@@ -32,8 +32,8 @@ if(phpversion() <= "5.3.0") {
  * Only with phpversion before 5.3.0
  * @var boolean
  */
-if(phpversion() <= "5.3.0") {
-	define('CON_STRIPSLASHES', get_magic_quotes_gpc());
+if (phpversion() <= "5.3.0") {
+    define('CON_STRIPSLASHES', get_magic_quotes_gpc());
 }
 
 // Simulate get_magic_quotes_gpc on if turned off
@@ -46,7 +46,7 @@ if (CON_STRIPSLASHES) {
      * @deprecated [2013-03-12]  This function is for internal usage, use cString::addSlashes() for own purposes
      */
     function addslashes_deep($value) {
-        $value = is_array($value)? array_map('addslashes_deep', $value) : addslashes($value);
+        $value = is_array($value) ? array_map('addslashes_deep', $value) : addslashes($value);
         return $value;
     }
 
@@ -57,7 +57,7 @@ if (CON_STRIPSLASHES) {
      * @deprecated [2013-03-12]  This function is for internal usage, use cString::stripSlashes() for own purposes
      */
     function stripslashes_deep($value) {
-        $value = is_array($value)? array_map('stripslashes_deep', $value) : stripslashes($value);
+        $value = is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value);
         return $value;
     }
 

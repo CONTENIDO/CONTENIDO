@@ -309,12 +309,12 @@ legend {
 }
 
 .pseudo-fieldset div.indented {
-	padding-left: 14.4em;
+    padding-left: 14.4em;
 }
 
 .pseudo-fieldset div.indented label {
     display: inline;
-	font-size: 1em;
+    font-size: 1em;
     float: none;
 }
 

@@ -102,7 +102,7 @@ function layEditLayout($idlay, $name, $description, $code) {
                 if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
                     $notification->displayNotification("warning", sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
                 } else {
-                	$notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Renamed layout succsessfully!"));
+                    $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Renamed layout succsessfully!"));
                 }
                 $layout = new cApiLayout(cSecurity::toInteger($idlay));
                 $layout->set('name', $name);
@@ -123,7 +123,7 @@ function layEditLayout($idlay, $name, $description, $code) {
             if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
                 $notification->displayNotification("warning", sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
             } else {
-            	$notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
+                $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
             }
             $layout = new cApiLayout(cSecurity::toInteger($idlay));
             $layout->set('name', $name);

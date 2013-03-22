@@ -99,8 +99,8 @@ if ($action == 'style_delete') {
     $fileInfoCollection = new cApiFileInformationCollection();
     $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
 
-    if(!cFileHandler::writeable($path . $sFilename)) {
-    	$notification->displayNotification('warning', i18n("You have no write permissions for this file"));
+    if (!cFileHandler::writeable($path . $sFilename)) {
+        $notification->displayNotification('warning', i18n("You have no write permissions for this file"));
     }
 
     // Create new file
@@ -183,14 +183,13 @@ if ($action == 'style_delete') {
     }
     // Generate edit form
     if (isset($_REQUEST['action'])) {
-        $sAction = ($_REQUEST['file'])? 'style_edit' : $_REQUEST['action'];
+        $sAction = ($_REQUEST['file']) ? 'style_edit' : $_REQUEST['action'];
 
         if ($_REQUEST['action'] == 'style_edit') {
             $sCode = cFileHandler::read($path . $sFilename);
         } else {
-            $sCode = stripslashes($_REQUEST['code']); // stripslashes is
-                                                          // required here in case
-                                                          // of creating a new file
+            // stripslashes is required here in case of creating a new file
+            $sCode = stripslashes($_REQUEST['code']);
         }
 
         $fileInfoCollection = new cApiFileInformationCollection();
@@ -218,9 +217,7 @@ if ($action == 'style_delete') {
         $form->add(i18n('Description'), $descr->render());
         $form->add(i18n('Code'), $ta_code);
 
-        $page->setContent(array(
-            $form
-        ));
+        $page->setContent(array($form));
 
         $oCodeMirror = new CodeMirror('code', 'css', substr(strtolower($belang), 0, 2), true, $cfg);
         $page->addScript($oCodeMirror->renderScript());
@@ -229,5 +226,6 @@ if ($action == 'style_delete') {
             $page->addScript($sReloadScript);
         }
     }
+
     $page->render();
 }
