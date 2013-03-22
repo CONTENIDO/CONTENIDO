@@ -95,6 +95,7 @@ class ArticleForumCollection extends ItemCollection {
      * @todo
      *
      *
+     *
      */
     public function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0, $frontend = false) {
         $db = cRegistry::getDb();
@@ -169,7 +170,7 @@ class ArticleForumCollection extends ItemCollection {
             'realname' => mysql_real_escape_string($name),
             'editedby' => mysql_real_escape_string($uuid),
             'email' => mysql_real_escape_string($email),
-            'forum' => mysql_real_escape_string($forum),
+            'forum' => $forum,
             'editedat' => mysql_real_escape_string($timeStamp),
             'like' => mysql_real_escape_string($like),
             'dislike' => mysql_real_escape_string($dislike),
