@@ -380,8 +380,11 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
         $db->query($sql);
 
         //********** delete from 'code'-cache
-        $mask = $cfgClient[$iIdClient]['code']['path'] . $iIdClient . "." . $iIdLang . ".*.php";
-        array_map("unlink", glob($mask));
+        foreach (new DirectoryIterator($cfgClient[$client]['code']['path']) as $file) {
+            if ($file->getFilename() == $iIdClient . "." . $iIdLang && $file->getExtension() == "php") {
+                unlink($cfgClient[$client]['code']['path'] . $iIdClient . "." . $iIdLang . 'php');
+            }
+        }
 
         foreach ($aIdTplCfg as $tplcfg) {
             $tplcfg = (int) $tplcfg;
