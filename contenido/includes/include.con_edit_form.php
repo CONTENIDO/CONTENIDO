@@ -392,8 +392,10 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $db->query($sql);
 
         if ($db->numRows() > 0) {
+            $tpl->set('s', 'NOTIFICATION_SYNCHRON', '<tr><td colspan="4" style="padding: 7px;">' . $notification->returnNotification('warning', i18n("This article was synchronized before and can not moved to another category!")) . '</td></tr>');
             $moveOK = false;
         } else {
+            $tpl->set('s', 'NOTIFICATION_SYNCHRON', '');
             $moveOK = true;
         }
 
