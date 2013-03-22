@@ -17,7 +17,6 @@ class ArticleForumCollection extends ItemCollection {
         $this->item = new ArticleForumItem();
     }
 
-
     public function getAllCommentedArticles() {
         $sql = "SELECT DISTINCT t.title, t.idart, f.idcat FROM con_art_lang t," . $this->table . " f WHERE f.idart=t.idart AND t.idlang = f.idlang ORDER BY id_user_forum ASC ;";
         $this->db->query($sql);
@@ -95,6 +94,7 @@ class ArticleForumCollection extends ItemCollection {
      *
      * @todo
      *
+     *
      */
     public function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0, $frontend = false) {
         $db = cRegistry::getDb();
@@ -142,33 +142,28 @@ class ArticleForumCollection extends ItemCollection {
 
     public function updateValues($id_user_forum, $name, $email, $like, $dislike, $forum, $online, $checked) {
         // method receives checked as string, DB needs integer.
-     if(isset($checked))
-     {
-        ($checked === 'set_online')? $online = 1 : $online = 0;
-     }
-
+        if (isset($checked)) {
+            ($checked === 'set_online')? $online = 1 : $online = 0;
+        }
 
         $uuid = cRegistry::getAuth()->isAuthenticated();
 
         $this->item->loadByPrimaryKey($id_user_forum);
 
-        if($this->item->getField('realname')== $name && $this->item->getField('email') == $email
-        && $this->item->getField('forum') == $forum){
+        if ($this->item->getField('realname') == $name && $this->item->getField('email') == $email && $this->item->getField('forum') == $forum) {
 
-
-                if ($this->item->getField('editedat') === "0000-00-00 00:00:00"){
-                    $timeStamp = "0000-00-00 00:00:00";
-                }
-                else{
-                    $timeStamp = $this->item->getField('editedat');
-                }
-        }else {
+            if ($this->item->getField('editedat') === "0000-00-00 00:00:00") {
+                $timeStamp = "0000-00-00 00:00:00";
+            } else {
+                $timeStamp = $this->item->getField('editedat');
+            }
+        } else {
             $timeStamp = date('Y-m-d H:i:s', time());
         }
 
         // check for negative inputs
-        (!preg_match('/\D/', $like))? :$like = $this->item->getField('like') ;
-        (!preg_match('/\D/', $dislike))? :$dislike = $this->item->getField('dislike') ;
+        (!preg_match('/\D/', $like))?  : $like = $this->item->getField('like');
+        (!preg_match('/\D/', $dislike))?  : $dislike = $this->item->getField('dislike');
 
         $fields = array(
             'realname' => mysql_real_escape_string($name),
@@ -312,11 +307,10 @@ class ArticleForumCollection extends ItemCollection {
         $userColl = new cApiUserCollection();
         $userColl->query();
 
-
         while (($field = $userColl->next()) != false) {
 
-          $arrUsers[$field->get('user_id')]['email'] = $field->get('email');
-          $arrUsers[$field->get('user_id')]['realname'] = $field->get('realname');
+            $arrUsers[$field->get('user_id')]['email'] = $field->get('email');
+            $arrUsers[$field->get('user_id')]['realname'] = $field->get('realname');
         }
 
         $arrforum = array();
@@ -340,7 +334,6 @@ class ArticleForumItem extends Item {
         $this->cfg = cRegistry::getConfig();
 
         parent::__construct($this->cfg['tab']['user_forum'], 'id_user_forum');
-
     }
 
     public function getCfg() {
