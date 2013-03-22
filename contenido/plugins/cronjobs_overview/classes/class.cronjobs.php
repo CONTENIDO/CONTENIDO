@@ -182,7 +182,7 @@ class Cronjobs {
             if ($dh = opendir($this->_cronjobDirectory)) {
                 while (($file = readdir($dh))!== false) {
                     #is file a dir or not
-                    if ($file!= ".."&& $file!= "."&& !is_dir($this->_cronjobDirectory. $file. "/") && substr($file,-4)=='.php' && $file != 'index.php') {
+                    if ($file!= ".."&& $file!= "."&& !is_dir($this->_cronjobDirectory. $file) && substr($file,-4)=='.php' && $file != 'index.php') {
 
                         $retArray[] = $file;
                     }
