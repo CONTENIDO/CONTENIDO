@@ -74,8 +74,10 @@ class ArticleForumRightBottom extends cGuiPage {
         }
 
         $online->setCLink($area, 4, 'show_form');
-        $online->setStyle('margin-top:0px; ');
+        //$online->setStyle('margin-top:10px ');
         $online->setTargetFrame('right_bottom');
+        $online->setStyle('margin-right:10px;');
+
         $online->setCustom('action', 'online_toggle');
         $online->setCustom('idart', $cont['idart']);
         $online->setCustom('id_user_forum', $cont['id_user_forum']);
@@ -87,6 +89,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $edit = new cHTMLButton("edit");
         $edit->setImageSource($cfg['path']['images'] . 'but_todo.gif');
         $edit->setEvent('click', "$('form[name=$id]').submit()");
+        $edit->setStyle('margin-right:10px; ');
         $edit->setMode('image');
         $edit->setAlt(UserForum::i18n('EDIT'));
 
@@ -96,6 +99,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $delete->setAlt(UserForum::i18n('DELETE'));
         $delete->setCLink($area, 4, 'show_form');
         $delete->setTargetFrame('right_bottom');
+
         $delete->setCustom('action', 'deleteComment');
         $delete->setCustom('level', $cont['level']);
         $delete->setCustom('key', $key);
@@ -125,6 +129,8 @@ class ArticleForumRightBottom extends cGuiPage {
             "cellspacing" => "0",
             "cellpadding" => "2"
         ));
+
+       // $bla = new c
 
         $tr = new cHTMLTableRow();
         $th = new cHTMLTableHead();
@@ -216,7 +222,7 @@ class ArticleForumRightBottom extends cGuiPage {
 
             $tdButtons = new cHTMLTableData();
             $tdButtons->setAttribute('valign', 'top');
-            $tdButtons->setStyle(' text-align: center;'); // horitontal-align:
+            $tdButtons->setStyle(' text-align: center'); // horitontal-align:
                                                           // middle;');
             $tdButtons->appendContent($online);
             $tdButtons->appendContent($edit);
