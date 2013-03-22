@@ -191,17 +191,19 @@ class ArticleForumRightBottom extends cGuiPage {
 
             $timestamp = $cont['editedat'];
 
-            $datearray = $this->formatTimeString($cont['timestamp']);
-            (empty($datearray))?$date ='':
-            $editdate = $datearray['day'].'.'.$datearray['month'].'.'.$datearray['year'] . ' '. UserForum::i18n("AT")  .' ' .
-            $datearray['hour'].':'.$datearray['minute']. ' '. UserForum::i18n("CLOCK") ;
+            $editarray = $this->formatTimeString($cont['editedat']);
+            (empty($editarray))?$editdate ='':
+            $editdate = $editarray['day'].'.'.$editarray['month'].'.'.$editarray['year'] . ' '. UserForum::i18n("AT")  .' ' .
+            $editarray['hour'].':'.$editarray['minute']. ' '. UserForum::i18n("CLOCK") ;
 
 
 
             $userColl = new cApiUserCollection();
             $user = $userColl->loadItem($cont['editedby'])->get('username');
 
-            if (($cont['editedby'] != '') && ($cont['editedat'] != '')) {
+            if (($cont['editedby'] != '') && ($cont['editedat'] != '') && $cont['editedat']!="0000-00-00 00:00:00" ) {
+              //  var_dump($cont['editedby']);
+              //  var_dump($cont['editedat']);
                 // $tmp = mi18n("articleWasEditAt");
                 $edit_information = (UserForum::i18n("EDITED").$editdate.' '. UserForum::i18n("FROM"). $user);
                 $edit_information= "<em>$edit_information</em>";
@@ -330,6 +332,7 @@ class ArticleForumRightBottom extends cGuiPage {
      */
      protected function getEditModeMenu($post) {
         global $area;
+        $changes = 0;
         $cfg = cRegistry::getConfig();
         $menu = new cGuiMenu();
         $tr = new cHTMLTableRow();
@@ -418,6 +421,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $form1->setVar("idcat", $post['idcat']);
         $form1->setVar("action", 'update');
         $form1->setVar("mode", "list");
+        $form1->setVar("activeChanges",$changes);
 
         $this->appendContent($form1);
 

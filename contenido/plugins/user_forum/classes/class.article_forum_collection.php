@@ -146,13 +146,30 @@ class ArticleForumCollection extends ItemCollection {
      {
         ($checked === 'set_online')? $online = 1 : $online = 0;
      }
-        // check for negative inputs
-        ($like >= 0)?  : $like = 0;
-        ($dislike >= 0)?  : $dislike = 0;
-        // actual user
+
 
         $uuid = cRegistry::getAuth()->isAuthenticated();
-        $timeStamp = date('Y-m-d H:i:s', time());
+
+        $this->item->loadByPrimaryKey($id_user_forum);
+
+        if($this->item->getField('realname')== $name && $this->item->getField('email') == $email
+        && $this->item->getField('forum') == $forum){
+
+
+                if ($this->item->getField('editedat') === "0000-00-00 00:00:00"){
+                    $timeStamp = "0000-00-00 00:00:00";
+                }
+                else{
+                    $timeStamp = $this->item->getField('editedat');
+                }
+        }else {
+            $timeStamp = date('Y-m-d H:i:s', time());
+        }
+
+        var_dump($like);
+        // check for negative inputs
+        (!preg_match('/\D/', $like))? :$like = $this->item->getField('like') ;
+        (!preg_match('/\D/', $dislike))? :$dislike = $this->item->getField('dislike') ;
 
         $fields = array(
             'realname' => mysql_real_escape_string($name),
