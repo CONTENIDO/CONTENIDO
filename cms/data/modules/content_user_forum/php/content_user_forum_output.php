@@ -282,8 +282,8 @@ class UserForumArticle {
 
                     if (($value['editedby'] != '') && ($value['editedat'] != '')) {
 
-                      //  var_dump(($value['editedby']));
-                      //  var_dump(($value['editedat']));
+                        // var_dump(($value['editedby']));
+                        // var_dump(($value['editedat']));
 
                         $arrTmp = explode(' ', $value['editedat']);
 
@@ -292,8 +292,7 @@ class UserForumArticle {
                         $arrTmp2 = explode('-', $arrTmp[0]);
                         $editdate = $arrTmp2[2] . '.' . $arrTmp2[1] . '.' . $arrTmp2[0];
 
-
-            //displays if comment was edited
+                        // displays if comment was edited
 
                         $tmp = mi18n("articleWasEditAt");
 
@@ -301,9 +300,8 @@ class UserForumArticle {
                         $user = $userColl->loadItem($value['editedby'])->get('username');
 
                         $edit_information = sprintf($tmp, $editdate, $edittime, $user);
-                            $record['EDIT_INFORMATION'] = "<br /><br /><em>$edit_information</em>";
-
-                   }
+                        $record['EDIT_INFORMATION'] = "<br /><br /><em>$edit_information</em>";
+                    }
 
                     $record['REPLY'] = sprintf($reply_forum_link, $key);
                     $record['REPLY_QUOTE'] = sprintf($reply_quote_forum_link, $key, $key);
@@ -315,14 +313,13 @@ class UserForumArticle {
                     $record['DISLIKE_COUNT'] = $value['dislike'];
                     $record['PADDING'] = $value['level'] * 20;
 
-
                     // Run the preg_match() function on regex against the email
                     // address
                     if (preg_match($regex, $value['email'])) {
                         $record['LINKBEGIN'] = "<a href='mailto:";
                         $record['LINKEND'] = '</a>';
-                       // $record['MAILTO'] = 'mailto:';
-                        $record['EMAIL'] = $value['email']."'>";
+                        // $record['MAILTO'] = 'mailto:';
+                        $record['EMAIL'] = $value['email'] . "'>";
                     } else {
                         $record['LINKBEGIN'] = "";
                         $record['LINKEND'] = "";
