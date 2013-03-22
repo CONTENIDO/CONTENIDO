@@ -59,6 +59,7 @@ class ArticleForumLeftBottom extends cGuiPage {
         return $list;
     }
 
+
     public function receiveData(&$get) {
         if ($_GET['action'] === 'delete_form') {
             $this->_collection->deleteAllCommentsById($_GET['idart']);

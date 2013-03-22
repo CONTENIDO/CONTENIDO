@@ -9,6 +9,52 @@ class ArticleForumRightBottom extends cGuiPage {
     function __construct() {
         $this->_collection = new ArticleForumCollection();
         parent::__construct('right_bottom', 'forumlist');
+        $this->addStyle('../plugins/user_forum/styles/right_bottom.css');
+    }
+
+    protected function formatTimeString($timeStamp)
+    {
+        $nullstring = '0';
+        if($timeStamp == "0000-00-00 00:00:00")
+        {
+            return array();
+        }
+        else
+        {
+            $ar = (date_parse($timeStamp));
+            (strlen($ar['day'])<2)? $ar['day']= $nullstring.$ar['day']: '';
+            (strlen($ar['month'])<2)? $ar['month']= $nullstring.$ar['month']: '';
+            (strlen($ar['minute'])<2)? $ar['minute']= $nullstring.$ar['minute']: '';
+            (strlen($ar['hour'])<2)? $ar['hour']= $nullstring.$ar['hour']: '';
+
+        }
+
+        //print_r($ar);
+        return $ar;
+
+    }
+
+
+    protected function checkValidEmail($emailadr,$realname)
+    {
+        $regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
+        // Run the preg_match() function on regex against the email address
+        if (preg_match($regex, $emailadr))
+        {
+            $mail = new cHTMLLink();
+            $mail->setClass('emailactive');
+            $mail->setLink("mailto:" . $emailadr);
+            $mail->setContent($realname);
+        }
+        else
+        {
+            $mail = new cHTMLLink();
+            $mail->setLink('#');
+            $mail->setClass('emaildeactive');
+            $mail->setContent($realname);
+
+        }
+        return $mail;
     }
 
     /**
@@ -95,11 +141,13 @@ class ArticleForumRightBottom extends cGuiPage {
         $tr = new cHTMLTableRow();
         $th = new cHTMLTableHead();
         $th->setContent(i18n("FORUM_POST", "user_forum"));
+        $th->setStyle('text-align: center');
         $tr->appendContent($th);
 
         $th = new cHTMLTableHead();
         $th->setContent(i18n("ACTIONS", "user_forum"));
         $th->setStyle('widht:20px');
+        $th->setStyle('text-align: center');
         $th->setAttribute('valign', 'top');
         $tr->appendContent($th);
 
@@ -113,10 +161,14 @@ class ArticleForumRightBottom extends cGuiPage {
             $set = false;
             $like = $cont['like'];
             $dislike = $cont['dislike'];
-            $date = $cont['timestamp'];
+            $timestamp = $cont['timestamp'];
 
-            // build Buttons
-            $id = $cont['id_user_forum'];
+            $datearray = $this->formatTimeString($cont['timestamp']);
+            (empty($datearray))?$date ='':
+            $date = $datearray['day'].'.'.$datearray['month'].'.'.$datearray['year'] . ' '. UserForum::i18n("AT")  .' ' .
+            $datearray['hour'].':'.$datearray['minute']. ' '. UserForum::i18n("CLOCK") ;
+
+
             $buttons = array();
             $buttons = $this->buildOnlineButtonBackendListMode($key, $cont, $cfg);
 
@@ -163,11 +215,32 @@ class ArticleForumRightBottom extends cGuiPage {
             $tdButtons->appendContent('<br>');
             $tdButtons->appendContent('<br>');
 
-            $maili = new cHTMLLink();
-            $maili->setLink("mailto:" . $cont['email']);
-            $maili->setContent($cont['realname']);
 
+            // valid email
+            $maili = $this->checkValidEmail($cont['email'],$cont['realname']);
             $text = $cont['forum']; // n2bl
+            $timestamp = $cont['editedat'];
+
+            $datearray = $this->formatTimeString($cont['timestamp']);
+            (empty($datearray))?$date ='':
+            $editdate = $datearray['day'].'.'.$datearray['month'].'.'.$datearray['year'] . ' '. UserForum::i18n("AT")  .' ' .
+            $datearray['hour'].':'.$datearray['minute']. ' '. UserForum::i18n("CLOCK") ;
+
+
+
+            $userColl = new cApiUserCollection();
+            $user = $userColl->loadItem($cont['editedby'])->get('username');
+
+            if (($cont['editedby'] != '') && ($cont['editedat'] != '')) {
+           // $tmp = mi18n("articleWasEditAt");
+            $edit_information = (UserForum::i18n("EDITED").$editdate.' '. UserForum::i18n("FROM"). $user);
+            $record['EDIT_INFORMATION'] = "<br /><br /><em>$edit_information</em>";
+            //var_dump();
+            }
+
+
+
+
 
             // create hidden-fields
             $hiddenIdart = new cHTMLHiddenField('idart');
@@ -197,7 +270,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $hiddenLevel->setValue($cont['level']);
             $hiddenEditdat->setValue($cont['editedat']);
             $hiddenEditedby->setValue($cont['editedby']);
-            $hiddenTimestamp->setValue($cont['timestamp']);
+            $hiddenTimestamp->setValue($date);
             $hiddenForum->setValue($cont['forum']);
             $hiddenOnline->setValue($cont['online']);
             $hiddenMode->setValue('edit');
@@ -221,8 +294,8 @@ class ArticleForumRightBottom extends cGuiPage {
             $form->appendContent($hiddenKey);
 
             // generate output text
-            $form->appendContent($maili . " schrieb am : " . $date . "<br><br>");
-            $form->appendContent($text . "<br>");
+            $form->appendContent($date . " von ".$maili. " <br><br>");
+            $form->appendContent($text . "<br><br>" .$edit_information);
             $tdForm->setContent($form);
             $tdForm->setAttribute('valign', 'top');
             $tr->setContent($tdForm);
@@ -234,6 +307,7 @@ class ArticleForumRightBottom extends cGuiPage {
 
         return $this;
     }
+
 
     /**
      * generate dialog for editmode
@@ -278,8 +352,19 @@ class ArticleForumRightBottom extends cGuiPage {
 
         $text = str_replace("<br />","\n", $post['forum']);
         $forum = new cHTMLTextArea("forum",$text);
-        $timestamp = new cHTMLTextBox("timestamp", conHtmlSpecialChars($post['timestamp']), 40, 255);
-        $editedat = new cHTMLTextBox("editedat", conHtmlSpecialChars($post['editedat']), 40, 255);
+
+        $datearray = $this->formatTimeString($post['timestamp']);
+        (empty($datearray))?$date ='':
+        $date = $datearray['day'].'.'.$datearray['month'].'.'.$datearray['year'] . ' '. UserForum::i18n("AT")  .' ' .
+        $datearray['hour'].':'.$datearray['minute']. ' '. UserForum::i18n("CLOCK") ;
+
+        $editedatearray = $this->formatTimeString($post['editedat']);
+        (empty($editedatearray))?$editedat ='':
+        $editedat = $editedatearray['day'].'.'.$editedatearray['month'].'.'.$editedatearray['year'] . ' '.
+        UserForum::i18n("AT")  .' ' . $editedatearray['hour'].':'.$editedatearray['minute']. ' '. UserForum::i18n("CLOCK") ;
+
+        $timestamp = new cHTMLTextBox("timestamp", conHtmlSpecialChars($date), 40, 255);
+        $editedat = new cHTMLTextBox("editedat", conHtmlSpecialChars($editedat), 40, 255);
         $editedby = new cHTMLTextBox("editedby", conHtmlSpecialChars($username), 40, 255);
 
         $editedat->setDisabled(true);
@@ -295,6 +380,8 @@ class ArticleForumRightBottom extends cGuiPage {
             $onlineBox->setChecked(false);
             $form1->setVar("checked", "0");
         }
+       // echo $onlineBox;
+       // die();
 
         $idart = $post['idart'];
         $idcat = $post['idcat'];
@@ -311,6 +398,8 @@ class ArticleForumRightBottom extends cGuiPage {
         $form1->add(UserForum::i18n("COMMENT"), $forum, '');
 
         // set hidden fields
+       // $form1->setvar('onlineState', $onlineBox);
+        $form1->setVar('online', $post['online']);
         $form1->setVar("id_user_forum", $post['id_user_forum']);
         $form1->setVar("idart", $post['idart']);
         $form1->setVar("idcat", $post['idcat']);
@@ -363,7 +452,7 @@ class ArticleForumRightBottom extends cGuiPage {
                         $this->_collection->toggleOnlineState($_POST['online'], $_POST['id_user_forum']);
                         break;
                     case 'update':
-                        echo $_POST['forum'];
+                        //echo $_POST['forum'];
                         $this->_collection->updateValues($_POST['id_user_forum'], $_POST['realname'], $_POST['email'], $_POST['like'], $_POST['dislike'], $_POST['forum'], $_POST['online'], $_POST['onlineState']);
                         break;
                     default:

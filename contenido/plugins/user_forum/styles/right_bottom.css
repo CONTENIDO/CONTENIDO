@@ -1,0 +1,17 @@
+form {
+	word-wrap: break-word;
+	max-width: 600px;
+}
+.emailactive{
+	font-weight:bold;
+	font-style: italic;
+}
+.emaildeactive{
+	font-weight:bold;
+	font-style: italic;	
+}
+a.emaildeactive:hover {
+	
+	color:#000000;	
+}
+

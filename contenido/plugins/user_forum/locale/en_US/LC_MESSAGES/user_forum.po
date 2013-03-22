@@ -59,6 +59,23 @@ msgstr "set comment online"
 msgid "SETOFFLINE"
 msgstr "set comment offline"
 
+msgid "AT"
+msgstr "at"
+
+msgid "Clock"
+msgstr "o clock"
+
+msgid "FORUM_POST"
+msgstr "comments"
+
+msgid "ACTIONS"
+msgstr "actions"
+
+msgid "EDITED"
+msgstr "last edit at : "
+
+msgid "FROM"
+msgstr "from : "
 
 ; class.article_forum_left_bottom.php
 

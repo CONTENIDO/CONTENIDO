@@ -17,13 +17,7 @@ class ArticleForumCollection extends ItemCollection {
         $this->item = new ArticleForumItem();
     }
 
-    /**
-     *
-     * @todo
-     *
-     *
-     *
-     */
+
     public function getAllCommentedArticles() {
         $sql = "SELECT DISTINCT t.title, t.idart, f.idcat FROM con_art_lang t," . $this->table . " f WHERE f.idart=t.idart AND t.idlang = f.idlang ORDER BY id_user_forum ASC ;";
         $this->db->query($sql);
@@ -75,8 +69,8 @@ class ArticleForumCollection extends ItemCollection {
     protected function _getCommentHierachrie($id_cat, $id_art, $id_lang) {
         $this->query();
         while (false != $field = $this->next()) {
-            $arrUsers[$field->get('userid')]['email'] = $field->getField('email');
-            $arrUsers[$field->get('userid')]['realname'] = $field->getField('realname');
+            $arrUsers[$field->get('userid')]['email'] = $field->get('email');
+            $arrUsers[$field->get('userid')]['realname'] = $field->get('realname');
         }
         $arrforum = array();
         $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
@@ -100,7 +94,6 @@ class ArticleForumCollection extends ItemCollection {
     /**
      *
      * @todo
-     *
      *
      */
     public function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0, $frontend = false) {
@@ -149,7 +142,10 @@ class ArticleForumCollection extends ItemCollection {
 
     public function updateValues($id_user_forum, $name, $email, $like, $dislike, $forum, $online, $checked) {
         // method receives checked as string, DB needs integer.
+     if(isset($checked))
+     {
         ($checked === 'set_online')? $online = 1 : $online = 0;
+     }
         // check for negative inputs
         ($like >= 0)?  : $like = 0;
         ($dislike >= 0)?  : $dislike = 0;
@@ -159,14 +155,14 @@ class ArticleForumCollection extends ItemCollection {
         $timeStamp = date('Y-m-d H:i:s', time());
 
         $fields = array(
-            'realname' => $name,
-            'editedby' => $uuid,
-            'email' => $email,
-            'forum' => $forum,
-            'editedat' => $timeStamp,
-            'like' => $like,
-            'dislike' => $dislike,
-            'online' => $online
+            'realname' => mysql_real_escape_string($name),
+            'editedby' => mysql_real_escape_string($uuid),
+            'email' => mysql_real_escape_string($email),
+            'forum' => mysql_real_escape_string($forum),
+            'editedat' => mysql_real_escape_string($timeStamp),
+            'like' => mysql_real_escape_string($like),
+            'dislike' => mysql_real_escape_string($dislike),
+            'online' => mysql_real_escape_string($online)
         );
 
         $whereClauses = array(
@@ -185,10 +181,10 @@ class ArticleForumCollection extends ItemCollection {
     public function toggleOnlineState($onlineState, $id_user_forum) {
         ($onlineState == 0)? $onlineState = 1 : $onlineState = 0;
         $fields = array(
-            'online' => $onlineState
+            'online' => mysql_real_escape_string($onlineState)
         );
         $whereClauses = array(
-            'id_user_forum' => $id_user_forum
+            'id_user_forum' => mysql_real_escape_string($id_user_forum)
         );
         $statement = $this->db->buildUpdate($this->table, $fields, $whereClauses);
         $this->db->query($statement);
@@ -208,8 +204,8 @@ class ArticleForumCollection extends ItemCollection {
 
         while (($field = $userColl->next()) != false) {
 
-            $arrUsers[$field->getfield('user_id')]['email'] = $field->getfield('email');
-            $arrUsers[$field->getfield('user_id')]['realname'] = $field->getfield('realname');
+            $arrUsers[$field->get('user_id')]['email'] = $field->get('email');
+            $arrUsers[$field->get('user_id')]['realname'] = $field->get('realname');
         }
         return $arrUsers;
     }
@@ -222,13 +218,13 @@ class ArticleForumCollection extends ItemCollection {
     }
 
     public function selectUser($userid) {
-        return $this->item->loadByPrimaryKey($userid);
+        return $this->item->loadByPrimaryKey(mysql_real_escape_string($userid));
     }
 
     public function incrementLike($forum_user_id) {
         $db = cRegistry::getDb();
         $ar = array();
-        $this->item->loadByPrimaryKey($forum_user_id);
+        $this->item->loadByPrimaryKey(mysql_real_escape_string($forum_user_id));
         $ar = $this->item->toArray();
         $current = $ar['like'];
         $current += 1;
@@ -247,7 +243,7 @@ class ArticleForumCollection extends ItemCollection {
     public function incrementDislike($forum_user_id) {
         $db = cRegistry::getDb();
         $ar = array();
-        $this->item->loadByPrimaryKey($forum_user_id);
+        $this->item->loadByPrimaryKey(mysql_real_escape_string($forum_user_id));
         $ar = $this->item->toArray();
         $current = $ar['dislike'];
         $current += 1;
@@ -268,15 +264,15 @@ class ArticleForumCollection extends ItemCollection {
 
         $fields = array(
             'id_user_forum' => NULL,
-            'id_user_forum_parent' => $parent,
-            'idart' => $idart,
-            'idcat' => $idcat,
-            'idlang' => $lang,
-            'userid' => $userid,
-            'email' => $email,
-            'realname' => $realname,
-            'forum' => $forum,
-            'forum_quote' => $forum_quote,
+            'id_user_forum_parent' => mysql_real_escape_string($parent),
+            'idart' => mysql_real_escape_string($idart),
+            'idcat' => mysql_real_escape_string($idcat),
+            'idlang' => mysql_real_escape_string($lang),
+            'userid' => mysql_real_escape_string($userid),
+            'email' => mysql_real_escape_string($email),
+            'realname' => mysql_real_escape_string($realname),
+            'forum' => mysql_real_escape_string($forum),
+            'forum_quote' => mysql_real_escape_string($forum_quote),
             'like' => 0,
             'dislike' => 0,
             'editedat' => NULL,
@@ -289,7 +285,7 @@ class ArticleForumCollection extends ItemCollection {
     }
 
     public function deleteAllCommentsById($idart) {
-        $this->deleteBy('idart', $idart);
+        $this->deleteBy('idart', mysql_real_escape_string(($idart)));
     }
 
     public function getExistingforumFrontend($id_cat, $id_art, $id_lang) {
@@ -303,8 +299,8 @@ class ArticleForumCollection extends ItemCollection {
 
         while (($field = $userColl->next()) != false) {
 
-          $arrUsers[$field->getfield('user_id')]['email'] = $field->getfield('email');
-          $arrUsers[$field->getfield('user_id')]['realname'] = $field->getfield('realname');
+          $arrUsers[$field->get('user_id')]['email'] = $field->get('email');
+          $arrUsers[$field->get('user_id')]['realname'] = $field->get('realname');
         }
 
         $arrforum = array();
@@ -322,14 +318,13 @@ class ArticleForumItem extends Item {
     protected $cfg;
 
     protected $db;
-    // protected $item;
+
     public function __construct() {
         $this->db = cRegistry::getDb();
         $this->cfg = cRegistry::getConfig();
 
         parent::__construct($this->cfg['tab']['user_forum'], 'id_user_forum');
 
-        // $this->_setItemClass('ArticleForumItem');
     }
 
     public function getCfg() {

@@ -59,11 +59,31 @@ msgstr " Kommentar online setzen"
 msgid "SETOFFLINE"
 msgstr " Kommentar offline setzen"
 
+msgid "AT"
+msgstr "um"
 
+msgid "CLOCK"
+msgstr "Uhr"
 ; class.article_forum_left_bottom.php
 
 msgid "DELETE_COMMENTS"
 msgstr "Kommentare löschen"
+
+msgid "FORUM_POST"
+msgstr "Kommentare"
+
+msgid "EDITED"
+msgstr "Zuletzt editiert am : "
+
+msgid "FROM"
+msgstr "von : "
+
+msgid "ACTIONS"
+msgstr "Aktionen"
+
+
+
+
 
 
 
