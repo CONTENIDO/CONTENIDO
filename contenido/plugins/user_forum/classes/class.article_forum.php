@@ -1,7 +1,6 @@
 <?php
 defined('CON_FRAMEWORK') or die('Illegal call');
-
-Class ArticleForum extends Item{
+class ArticleForum extends Item {
 
     public function __construct($id = false) {
         $cfg = cRegistry::getConfig();

@@ -30,7 +30,6 @@ class ArticleForumLeftBottom extends cGuiPage {
 
             $res = $arts->getIdCat($result[$i]['idart']);
 
-
             $formName = $result[$i]['title'];
             $menu->setTitle("", $formName);
 
@@ -59,11 +58,9 @@ class ArticleForumLeftBottom extends cGuiPage {
         return $list;
     }
 
-
     public function receiveData(&$get) {
         if ($_GET['action'] === 'delete_form') {
             $this->_collection->deleteAllCommentsById($_GET['idart']);
-
         }
 
         $this->appendContent($this->getMenu());
