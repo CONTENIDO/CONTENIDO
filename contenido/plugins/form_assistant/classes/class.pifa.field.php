@@ -1077,7 +1077,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTONBACK,
