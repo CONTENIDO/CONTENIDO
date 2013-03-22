@@ -87,11 +87,11 @@ class cSystemPurge {
         $cfgClient = cRegistry::getClientConfig();
 
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $mask = $cfgClient[$clientId]['cache']['path'] . 'code/*.php';
-            $arr = glob($mask);
-            foreach ($arr as $file) {
-                if (!unlink($file)) {
-                    return false;
+            foreach (new DirectoryIterator($cfgClient[$clientId]['cache']['path'] . 'code/') as $file) {
+                if ($file->getExtension() == "php") {
+                    if (!unlink($file)) {
+                        return false;
+                    }
                 }
             }
             return true;
@@ -115,7 +115,7 @@ class cSystemPurge {
             $sSql = ' UPDATE ' . $cfg['tab']['cat_art'] . ' cca, ' . $cfg['tab']['cat'] . ' cc, ' . $cfg['tab']['art'] . ' ca ' . ' SET cca.createcode=1 ' . ' WHERE cc.idcat = cca.idcat ' . ' AND ca.idart = cca.idart ' . ' AND cc.idclient = ' . (int) $clientId . ' AND ca.idclient = ' . (int) $clientId;
             $db->query($sSql);
 
-            return ($db->getErrorMessage() == '') ? true : false;
+            return ($db->getErrorMessage() == '')? true : false;
         } else {
             return false;
         }
@@ -135,7 +135,7 @@ class cSystemPurge {
             $sql = 'DELETE FROM ' . $cfg['tab']['inuse'];
             $db->query($sql);
 
-            return ($db->getErrorMessage() == '') ? true : false;
+            return ($db->getErrorMessage() == '')? true : false;
         } else {
             return false;
         }
@@ -166,8 +166,8 @@ class cSystemPurge {
      * Clear the cache directory for a client
      *
      * @param int $clientId
-     * @param  bool $keep
-     * @param  int  $fileNumber
+     * @param bool $keep
+     * @param int $fileNumber
      * @return bool
      */
     public function clearClientHistory($clientId, $keep, $fileNumber) {
