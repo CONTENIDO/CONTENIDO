@@ -142,10 +142,10 @@ class cGuiPage {
      * /styles/PAGENAME.css.
      *
      * @param string $pagename The name of the page which will be used to load
-     *            corresponding stylehseets, templates and scripts.
+     *        corresponding stylehseets, templates and scripts.
      * @param string $pluginname The name of the plugin in which the site is run
      * @param string $submenu The number of the submenu which should be
-     *            highlighted when this page is shown.
+     *        highlighted when this page is shown.
      */
     public function __construct($pagename, $pluginname = "", $submenu = "") {
         global $lang, $cfg;
@@ -175,26 +175,24 @@ class cGuiPage {
         $this->_pagetemplate->set("s", "SUBMENU", $submenu);
         $this->_pagetemplate->set("s", "PAGENAME", $pagename);
 
-        $stylefiles = glob($cfg['path']['styles'] . "*." . $pagename . ".css");
-        if ($stylefiles === false) {
-            $stylefiles = array();
-        }
-        if (cFileHandler::exists($cfg['path']['styles'] . $pagename . ".css")) {
-            $stylefiles[] = $cfg['path']['styles'] . $pagename . ".css";
-        }
-        foreach ($stylefiles as $stylefile) {
-            $this->addStyle(substr($stylefile, strpos($stylefile, "/") + 1));
+        foreach (new DirectoryIterator($cfg['path']['styles']) as $stylefile) {
+            if ($stylefiles === false) {
+                $stylefiles = array();
+            }
+            if ($stylefile->getFilename() == $pagename && $stylefile->getExtension() == "css") {
+                $stylefiles[] = $cfg['path']['styles'] . $pagename . ".css";
+                $this->addStyle(substr($stylefile, strpos($stylefile, "/") + 1));
+            }
         }
 
-        $scriptfiles = glob($cfg['path']['scripts'] . "*." . $pagename . ".js");
-        if ($scriptfiles === false) {
-            $scriptfiles = array();
-        }
-        if (cFileHandler::exists($cfg['path']['scripts'] . $pagename . ".js")) {
-            $scriptfiles[] = $cfg['path']['scripts'] . $pagename . ".js";
-        }
-        foreach ($scriptfiles as $scriptfile) {
-            $this->addScript(substr($scriptfile, strpos($scriptfile, "/") + 1));
+        foreach (new DirectoryIterator($cfg['path']['scripts']) as $scriptfile) {
+            if ($scriptfiles === false) {
+                $scriptfiles = array();
+            }
+            if ($scriptfile->getFilename() == $pagename && $scriptfile->getExtension() == "js") {
+                $scriptfiles[] = $cfg['path']['scripts'] . $pagename . ".js";
+                $this->addStyle(substr($scriptfile, strpos($scriptfile, "/") + 1));
+            }
         }
     }
 
@@ -259,7 +257,8 @@ class cGuiPage {
      * Adds a meta tag to the website.
      *
      * @param array $meta Associative array with the meta tag attributes
-     * @throws cInvalidArgumentException if an invalid attribute for the meta tag has been given
+     * @throws cInvalidArgumentException if an invalid attribute for the meta
+     *         tag has been given
      * @return void
      */
     public function addMeta(array $meta) {
@@ -282,9 +281,9 @@ class cGuiPage {
      * Loads the subnavigation of the current area upon rendering.
      *
      * @param string $additional Additional parameters the subnavigation might
-     *            need. These have to look like "key=value&key2=value2..."
+     *        need. These have to look like "key=value&key2=value2..."
      * @param string $aarea The area of the subnavigation. If none is given the
-     *            current area will be loaded
+     *        current area will be loaded
      */
     public function setSubnav($additional = "", $aarea = "") {
         global $area, $sess;
@@ -319,7 +318,7 @@ class cGuiPage {
      * Sets the encoding of the website
      *
      * @param string $encoding An encoding which should be valid to use in the
-     *            meta tag
+     *        meta tag
      */
     public function setEncoding($encoding) {
         if (empty($encoding)) {
@@ -418,7 +417,8 @@ class cGuiPage {
     }
 
     /**
-     * Appends all cHTML objects in an array (or a single object) which build up the
+     * Appends all cHTML objects in an array (or a single object) which build up
+     * the
      * site instead of a content template.
      * NOTE: All these objects must have a render() method or else they won't be
      * shown
@@ -434,6 +434,8 @@ class cGuiPage {
     }
 
     /**
+     *
+     *
      *
      *
      * Example:
@@ -467,7 +469,7 @@ class cGuiPage {
      * Renders the page and either prints it or returns it
      *
      * @param Template|null $template If set, use this content template instead
-     *            of the default one
+     *        of the default one
      * @param bool $return If true, the page will be returned instead of echoed
      * @return string void either the webpage or nothing
      */
