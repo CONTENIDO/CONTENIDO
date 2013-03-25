@@ -88,7 +88,6 @@ abstract class cUpgradeJobAbstract {
         $this->_aCfgClient = (is_array($cfgClient)) ? $cfg : $GLOBALS['cfgClient'];
         $this->_setupType = $_SESSION['setuptype'];
         // set default configuration for DB connection
-        DB_Contenido::setDefaultConfiguration($cfg['db']);
         cDb::setDefaultConfiguration($cfg['db']);
 
         if (!isset(self::$_rootPath)) {

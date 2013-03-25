@@ -239,7 +239,6 @@ class cAuth {
         $this->_setAuthInfo(self::AUTH_UID_FORM, 0x7fffffff);
         $this->displayLoginForm();
 
-        print_r($sess);
         $sess->freeze();
         exit();
     }

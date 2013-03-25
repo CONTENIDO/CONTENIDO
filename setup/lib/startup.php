@@ -111,7 +111,7 @@ $cfg['path']['frontend'] = CON_FRONTEND_PATH;
 $cfg['path']['contenido'] = $cfg['path']['frontend'] . '/contenido/';
 $cfg['path']['phplib'] = $cfg['path']['frontend'] . '/conlib/';
 $cfg['path']['pear'] = $cfg['path']['frontend'] . '/pear/';
-$cfg['path']['contenido_config'] = CON_FRONTEND_PATH . '/data/config/' . CONTENIDO_ENVIRONMENT . '/';
+$cfg['path']['contenido_config'] = CON_FRONTEND_PATH . '/data/config/' . CON_ENVIRONMENT . '/';
 
 // DB related settings
 $cfg['sql']['sqlprefix'] = (isset($_SESSION['dbprefix'])) ? $_SESSION['dbprefix'] : 'con';
@@ -203,8 +203,6 @@ if (hasMySQLiExtension() && !hasMySQLExtension()) {
     $sNotInstallableReason = 'database_extension';
     checkAndInclude(CON_SETUP_PATH . '/steps/notinstallable.php');
 }
-
-checkAndInclude($cfg['path']['phplib'] . 'prepend.php');
 
 if (isset($_SESSION['language'])) {
     i18nInit('locale/', $_SESSION['language']);
