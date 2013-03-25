@@ -58,16 +58,6 @@ class cApiArticleCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiArticleCollection($select = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($select);
-    }
-
-    /**
      * Returns list of ids by given client id.
      *
      * @param int $idclient
@@ -105,16 +95,6 @@ class cApiArticle extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
-    }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiArticle($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
     }
 
     /**

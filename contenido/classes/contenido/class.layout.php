@@ -37,16 +37,6 @@ class cApiLayoutCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiLayoutCollection() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
-    /**
      * Creates a layout entry.
      *
      * @param string $name
@@ -122,16 +112,6 @@ class cApiLayout extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
-    }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiLayout($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
     }
 
     /**

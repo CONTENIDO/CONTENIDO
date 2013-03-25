@@ -46,16 +46,6 @@ class cApiCategoryCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiCategoryCollection($select = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($select);
-    }
-
-    /**
      * Creates a category entry.
      *
      * @param int $idclient
@@ -463,16 +453,6 @@ class cApiCategory extends Item {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiCategory($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
-
-    /**
      * Updates lastmodified field and calls parents store method
      *
      * @return bool
@@ -524,64 +504,6 @@ class cApiCategory extends Item {
 
 
         return cUri::getInstance()->build($options);
-    }
-
-}
-
-// ##############################################################################
-// Old versions of category item collection and category item classes
-//
-// NOTE: Class implemetations below are deprecated and the will be removed in
-// future versions of contenido.
-// Don't use them, they are still available due to downwards compatibility.
-
-/**
- * Category collection
- *
- * @deprecated [2011-11-15] Use cApiCategoryCollection instead of this class.
- */
-class CategoryCollection extends cApiCategoryCollection {
-
-    public function __construct() {
-        cDeprecated("Use class cApiCategoryCollection instead");
-        parent::__construct();
-    }
-
-    public function CategoryCollection() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
-}
-
-/**
- * Single category item
- *
- * @deprecated [2011-11-15] Use cApiCategory instead of this class.
- */
-class CategoryItem extends cApiCategory {
-
-    public function __construct($mId = false) {
-        cDeprecated("Use class cApiCategory instead");
-        parent::__construct($mId);
-    }
-
-    public function CategoryItem($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
-
-    public function loadByPrimaryKey($key) {
-        if (parent::loadByPrimaryKey($key)) {
-            // Load all child language items
-            $catlangs = new cApiCategoryLanguageCollection();
-            $catlangs->select("idcat = " . (int) $key);
-            while (($item = $catlangs->next()) !== false) {
-                $this->lang[$item->get("idlang")] = $item;
-            }
-            return true;
-        }
-        return false;
     }
 
 }

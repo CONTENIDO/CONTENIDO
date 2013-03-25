@@ -316,15 +316,3 @@ class cAjaxRequest {
     }
 
 }
-
-class Ajax extends cAjaxRequest {
-
-    /**
-     *
-     * @deprecated Class was renamed to cAjaxRequest
-     */
-    public function __construct() {
-        cDeprecated('Class was renamed to cAjaxRequest');
-    }
-
-}

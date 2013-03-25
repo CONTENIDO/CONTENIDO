@@ -38,14 +38,4 @@ class cHTMLSpan extends cHTMLContentElement {
         $this->_contentlessTag = false;
         $this->_tag = 'span';
     }
-
-    /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLSpan($content = '') {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($content);
-    }
-
 }

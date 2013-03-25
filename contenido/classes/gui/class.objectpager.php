@@ -135,17 +135,3 @@ class cGuiObjectPager extends cGuiFoldingRow {
     }
 
 }
-
-/**
- * Old classname for downwards compatibility
- * @deprecated [2012-07-12] This class was renamed to cGuiObjectPager
- */
-class cObjectPager extends cGuiObjectPager {
-
-    public function __construct($uuid, $items, $itemsperpage, $currentpage, $link, $paraneterToAdd, $id = "") {
-        cDeprecated("This class was renamed to cGuiObjectPager");
-
-        parent::__construct($uuid, $items, $itemsperpage, $currentpage, $link, $parameterToAdd, $id);
-    }
-
-}

@@ -41,16 +41,6 @@ class cApiCategoryTreeCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiCategoryTreeCollection($select = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($select);
-    }
-
-    /**
      * Returns category tree structure by selecting the data from several tables
      * ().
      *
@@ -123,37 +113,6 @@ class cApiCategoryTree extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
-    }
-
-}
-
-// ##############################################################################
-// Old version of category tree class
-//
-// NOTE: Class implemetation below is deprecated and the will be removed in
-// future versions of contenido.
-// Don't use it, it's still available due to downwards compatibility.
-
-/**
- * Single category tree item
- *
- * @deprecated [2011-10-11] Use cApiCategoryTree instead of this class.
- */
-class cApiTree extends cApiCategoryTree {
-
-    public function __construct($mId = false) {
-        cDeprecated("Use class cApiCategoryTree instead");
-        parent::__construct($mId);
-    }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiTree($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
     }
 
 }

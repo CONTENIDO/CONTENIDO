@@ -43,33 +43,6 @@ class cApiTemplateCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiTemplateCollection($select = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($select);
-    }
-
-    /**
-     *
-     * @deprecated 2012-03-05 This function is not longer supported.
-     */
-    public function setDefaultTemplate($idtpl) {
-        cDeprecated("This function is not longer supported.");
-
-        global $cfg, $client;
-
-        $db = cRegistry::getDb();
-        $sql = 'UPDATE ' . $cfg['tab']['tpl'] . ' SET defaulttemplate=0 WHERE idclient=' . (int) $client;
-        $db->query($sql);
-
-        $sql = 'UPDATE ' . $cfg['tab']['tpl'] . ' SET defaulttemplate=1 WHERE idtpl=' . (int) $idtpl;
-        $db->query($sql);
-    }
-
-    /**
      * Returns the default template configuration item
      *
      * @param int $idclient return cApiTemplateConfiguration|null
@@ -117,15 +90,4 @@ class cApiTemplate extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiTemplate($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
-
 }

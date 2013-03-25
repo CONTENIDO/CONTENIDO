@@ -39,16 +39,6 @@ class cApiFileCollection extends ItemCollection {
         $this->_setJoinPartner('cApiAreaCollection');
     }
 
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiFileCollection() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
     public function create($area, $filename, $filetype = 'main') {
         $item = parent::createNewItem();
 
@@ -105,15 +95,4 @@ class cApiFile extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiFile($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
-
 }

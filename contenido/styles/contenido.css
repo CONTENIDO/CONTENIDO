@@ -1665,8 +1665,7 @@ div.shelf_elem_statuslabel {
  * @section Font
  */
 
-/** @deprecated  Use bold instead of fett */
-.fett, .bold {
+.bold {
 	font-weight: bold;
 }
 .color6 {

@@ -858,19 +858,6 @@ class ModRewrite extends ModRewriteBase {
     }
 
     /**
-     * Method to reset all aliases in categories.
-     *
-     * Clears all urlname entries in cat_lang table, and sets the value for all
-     * existing entries.
-     *
-     * @deprecated  see ModRewrite::recreateCategoriesAliases();
-     */
-    public static function resetCategoriesAliases() {
-        cDeprecated("Please use ModRewrite::recreateCategoriesAliases() instead");
-        self::recreateCategoriesAliases();
-    }
-
-    /**
      * Recreates all or only empty aliases in categories table.
      *
      * @param  bool  $bOnlyEmpty  Flag to reset only empty items
@@ -900,19 +887,6 @@ class ModRewrite extends ModRewriteBase {
         }
 
         unset($db, $aCats);
-    }
-
-    /**
-     * Method to reset all aliases in articles.
-     *
-     * Clears all urlname entries in art_lang table, and sets the value for all
-     * existing entries.
-     *
-     * @deprecated  see ModRewrite::recreateArticlesAliases();
-     */
-    public static function resetArticlesAliases() {
-        cDeprecated("Please user ModRewrite::recreateArticlesAliases() instead");
-        self::recreateArticlesAliases();
     }
 
     /**
@@ -960,32 +934,6 @@ class ModRewrite extends ModRewriteBase {
     public static function recreateAliases($bOnlyEmpty = false) {
         self::recreateCategoriesAliases($bOnlyEmpty);
         self::recreateArticlesAliases($bOnlyEmpty);
-    }
-
-    /**
-     * Used to postprocess resolved path
-     *
-     * Error site handling if category not found
-     *
-     * if percentage == 100 and there is no 100 percentage result value,
-     * error site will be shown - can be adjust by user settings for
-     * smooth similar effects - 80 to 95 will be best but have to check by user
-     *
-     * @deprecated Is no more used
-     *
-     * @param   array  $results  Pathresolver results array
-     * @return  mixed  Categoryid or false
-     */
-    public static function getIdFromPathresolverResult($results) {
-        cDeprecated("This function is no longer used");
-
-        $iMinPercentage = (int) parent::getConfig('category_resolve_min_percentage', 0);
-        $catId = key($results);
-        if ($iMinPercentage > 0 && $results[$catId] < $iMinPercentage) {
-            return false;
-        } else {
-            return $catId;
-        }
     }
 
     /**

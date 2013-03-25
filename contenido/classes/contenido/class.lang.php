@@ -38,16 +38,6 @@ class cApiLanguageCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiLanguageCollection() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
-    /**
      * Creates a language entry.
      *
      * @global object $auth
@@ -153,16 +143,6 @@ class cApiLanguage extends Item {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiLanguage($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
-
-    /**
      * Stores made changes.
      *
      * @return bool
@@ -170,51 +150,6 @@ class cApiLanguage extends Item {
     public function store() {
         $this->set('lastmodified', date('Y-m-d H:i:s'), false);
         return parent::store();
-    }
-
-}
-
-// ##############################################################################
-// Old versions of language item collection and language item classes
-//
-// NOTE: Class implemetations below are deprecated and the will be removed in
-// future versions of contenido.
-// Don't use them, they are still available due to downwards compatibility.
-
-/**
- * Language collection
- *
- * @deprecated [2011-11-15] Use cApiLanguageCollection instead of this class.
- */
-class Languages extends cApiLanguageCollection {
-
-    public function __construct() {
-        cDeprecated("Use class cApiLanguageCollection instead");
-        parent::__construct();
-    }
-
-    public function Languages() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
-}
-
-/**
- * Single language item
- *
- * @deprecated [2011-11-15] Use cApiLanguage instead of this class.
- */
-class Language extends cApiLanguage {
-
-    public function __construct($mId = false) {
-        cDeprecated("Use class cApiLanguage instead");
-        parent::__construct($mId);
-    }
-
-    public function Language($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
     }
 
 }

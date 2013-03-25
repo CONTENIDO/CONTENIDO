@@ -406,16 +406,6 @@ class cApiDbfsCollection extends ItemCollection {
     public function dateToTimestamp($sDate) {
         return strtotime($sDate);
     }
-
-    /**
-     *
-     * @deprecated [2012-06-20] Use cApiDbfs::stripPath()
-     */
-    public function strip_path($path) {
-        cDeprecated("Use cApiDbfs::stripPath()");
-        return cApiDbfs::stripPath($path);
-    }
-
 }
 
 /**
@@ -485,51 +475,6 @@ class cApiDbfs extends Item {
      */
     public static function isDbfs($file) {
         return (substr($file, 0, 5) == self::PROTOCOL_DBFS);
-    }
-
-}
-
-// ##############################################################################
-// Old versions of dbfs item collection and dbfs item classes
-//
-// NOTE: Class implemetations below are deprecated and the will be removed in
-// future versions of contenido.
-// Don't use them, they are still available due to downwards compatibility.
-
-/**
- * DBFS item collection
- *
- * @deprecated [2011-09-19] Use instead of this class.
- */
-class DBFSCollection extends cApiDbfsCollection {
-
-    public function __construct() {
-        cDeprecated("Use class cApiDbfsCollection instead");
-        parent::__construct();
-    }
-
-    public function DBFSCollection() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
-}
-
-/**
- * Single dbfs item
- *
- * @deprecated [2011-09-19] Use instead of this class.
- */
-class DBFSItem extends cApiDbfs {
-
-    public function __construct($mId = false) {
-        cDeprecated("Use class cApiDbfs instead");
-        parent::__construct($mId);
-    }
-
-    public function DBFSItem($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
     }
 
 }

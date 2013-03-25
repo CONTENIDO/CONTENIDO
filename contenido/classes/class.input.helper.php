@@ -55,15 +55,6 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
     }
 
     /**
-     *
-     * @deprecated 2012-08-24 Use __construct()
-     */
-    function cHTMLInputSelectElement($sName, $iWidth = "", $sID = "", $bDisabled = false, $iTabIndex = null, $sAccessKey = "") {
-        cDeprecated('Use __construct()');
-        $this->__construct($sName, $iWidth, $sID, $bDisabled, $iTabIndex, $sAccessKey);
-    }
-
-    /**
      * Function addArticles.
      * Adds articles to select box values.
      *
@@ -354,80 +345,6 @@ class UI_Config_Table {
         $this->_sTplTableFile = $sPath;
     }
 
-    /**
-     *
-     * @deprecated [2012-06-05] This function is no longer supported. Color
-     *             options are set in the CSS and the template itself.
-     */
-    function setLightColor($sColor) {
-        cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
-        $this->_sColorLight = $sColor;
-    }
-
-    /**
-     *
-     * @deprecated [2012-06-05] This function is no longer supported. Color
-     *             options are set in the CSS and the template itself.
-     */
-    function setDarkColor($sColor) {
-        cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
-        $this->_sColorDark = $sColor;
-    }
-
-    function setAddMultiSelJS($bEnabled = true) {
-        $this->_bAddMultiSelJS = (bool) $bEnabled;
-    }
-
-    /**
-     *
-     * @deprecated [2012-06-05] This function is no longer supported. Color
-     *             options are set in the CSS and the template itself.
-     */
-    function setWidth($sWidth) {
-        cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
-        $this->_sWidth = $sWidth;
-    }
-
-    /**
-     *
-     * @deprecated [2012-06-05] This function is no longer supported. Color
-     *             options are set in the CSS and the template itself.
-     */
-    function setPadding($sPadding) {
-        cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
-        $this->_sPadding = $sPadding;
-    }
-
-    /**
-     *
-     * @deprecated [2012-06-05] This function is no longer supported. Color
-     *             options are set in the CSS and the template itself.
-     */
-    function setBorder($sBorder) {
-        cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
-        $this->_sBorder = $sBorder;
-    }
-
-    /**
-     *
-     * @deprecated [2012-06-05] This function is no longer supported. Color
-     *             options are set in the CSS and the template itself.
-     */
-    function setBorderColor($sBorderColor) {
-        cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
-        $this->_sBorderColor = $sBorderColor;
-    }
-
-    /**
-     *
-     * @deprecated [2012-06-05] This function is no longer supported. Color
-     *             options are set in the CSS and the template itself.
-     */
-    function setSolidBorder($bSolidBorder = true) {
-        cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
-        $this->_bSolidBorder = (bool) $bSolidBorder;
-    }
-
     function setCell($sRow, $sCell, $sContent) {
         $this->_aCells[$sRow][$sCell] = $sContent;
         $this->_aCellAlignment[$sRow][$sCell] = "";
@@ -441,38 +358,8 @@ class UI_Config_Table {
         $this->_aCellVAlignment[$sRow][$sCell] = $sAlignment;
     }
 
-    /**
-     *
-     * @deprecated [2012-06-05] This function is no longer supported. Color
-     *             options are set in the CSS and the template itself.
-     */
-    function setCellColspan($sRow, $sCell, $iColSpan) {
-        cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
-        $this->_aCellColSpan[$sRow][$sCell] = $iColSpan;
-    }
-
     function setCellClass($sRow, $sCell, $sClass) {
         $this->_aCellClass[$sRow][$sCell] = $sClass;
-    }
-
-    /**
-     *
-     * @deprecated [2012-06-05] This function is no longer supported. Color
-     *             options are set in the CSS and the template itself.
-     */
-    function setRowBgColor($sRow, $sColor) {
-        cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
-        $this->_aRowBgColor[$sRow] = $sColor;
-    }
-
-    /**
-     *
-     * @deprecated [2012-06-05] This function is no longer supported. Color
-     *             options are set in the CSS and the template itself.
-     */
-    function setRowExtra($sRow, $sExtra) {
-        cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
-        $this->_aRowExtra[$sRow] = $sExtra;
     }
 
     function _addMultiSelJS() {

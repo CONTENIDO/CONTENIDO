@@ -24,46 +24,6 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_GRIDLINE_SOLID
- */
-define('TREEVIEW_GRIDLINE_SOLID', 'solid');
-
-/**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_GRIDLINE_DASHED
- */
-define('TREEVIEW_GRIDLINE_DASHED', 'dashed');
-
-/**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_GRIDLINE_DOTTED
- */
-define('TREEVIEW_GRIDLINE_DOTTED', 'dotted');
-
-/**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_GRIDLINE_NONE
- */
-define('TREEVIEW_GRIDLINE_NONE', 'none');
-
-/**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_BACKGROUND_NONE
- */
-define('TREEVIEW_BACKGROUND_NONE', 'none');
-
-/**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_BACKGROUND_SHADED
- */
-define('TREEVIEW_BACKGROUND_SHADED', 'shaded');
-
-/**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_MOUSEOVER_NONE
- */
-define('TREEVIEW_MOUSEOVER_NONE', 'none');
-
-/**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant cGuiTree::TREEVIEW_MOUSEOVER_MARK
- */
-define('TREEVIEW_MOUSEOVER_MARK', 'mark');
-
-/**
  * class cGuiTree
  * cGuiTree is a visual representation of a cTree. It supports folding,
  * optional gridline marks and item icons.
@@ -163,121 +123,6 @@ class cGuiTree extends cTree {
         $slist = serialize($xlist);
 
         $this->_user->setUserProperty("expandstate", $this->_uuid, $slist);
-    }
-
-    /**
-     * applies an action to all items in the tree.
-     *
-     * @deprecated [2012-07-12] Thisfunction doesn't do anything
-     * @param cApiClickableAction action action object
-     * @return void
-     * @access public
-     */
-    public function applyGlobalAction($action) {
-        cDeprecated("This function doesn't do anything.");
-    }
-
-    /**
-     * removes the action from all treeitems.
-     *
-     * @deprecated [2012-07-12] Thisfunction doesn't do anything
-     * @param cApiClickableAction action Removes the action from the global context.
-     * @return void
-     * @access public
-     */
-    public function removeGlobalAction($action) {
-        cDeprecated("This function doesn't do anything.");
-    }
-
-    /**
-     * flushes all actions
-     *
-     * @deprecated [2012-07-12] Thisfunction doesn't do anything
-     * @return void
-     * @access public
-     */
-    public function flushGlobalActions() {
-        cDeprecated("This function doesn't do anything.");
-    }
-
-    /**
-     * sets an action to a specific item.
-     *
-     * @deprecated [2012-07-12] Thisfunction doesn't do anything
-     * @param mixed item cTreeItem-Object or an id of a TreeItem-Object
-     * @param cApiClickableAction action
-     * @return void
-     * @access public
-     */
-    public function applyItemAction($item, $action) {
-        cDeprecated("This function doesn't do anything.");
-    }
-
-    /**
-     * unsets an action from a specific item. Note that you can unset global actions
-     * using this method!
-     *
-     * @deprecated [2012-07-12] Thisfunction doesn't do anything
-     * @param mixed item cTreeItem-Object or an id of a TreeItem-Object
-     * @param cApiClickableAction action Action to unset
-     * @return void
-     * @access public
-     */
-    public function removeItemAction($item, $action) {
-        cDeprecated("This function doesn't do anything.");
-    }
-
-    /**
-     * flushes all actions for a specific item
-     *
-     * @deprecated [2012-07-12] Thisfunction doesn't do anything
-     * @param mixed item cTreeItem-Object or an id of a TreeItem-Object
-     * @return void
-     * @access public
-     */
-    public function flushItemActions($item) {
-        cDeprecated("This function doesn't do anything.");
-    }
-
-    /**
-     * Applies an action to all items with a certain attribute set.
-     *
-     * @deprecated [2012-07-12] Thisfunction doesn't do anything
-     * @param array attributes Values which need to match. The array key is the attribute name. Multiple array
-     *        entries are connected with "AND".
-     * @param cApiClickableAction action Action to apply
-     * @return void
-     * @access public
-     */
-    public function applyActionByItemAttribute($attributes, $action) {
-        cDeprecated("This function doesn't do anything.");
-    }
-
-    /**
-     * Removes an action from all items with a certain attribute set.
-     *
-     * @deprecated [2012-07-12] Thisfunction doesn't do anything
-     * @param array attributes Values which need to match. The array key is the attribute name. Multiple array
-     *        entries are connected with "AND".
-     * @param cApiClickableAction action Action to remove
-     * @return void
-     * @access public
-     */
-    public function removeActionByItemAttribute($attributes, $action) {
-        cDeprecated("This function doesn't do anything.");
-    }
-
-    /**
-     * Removes all actions for items with specific attributes
-     *
-     * @deprecated [2012-07-12] Thisfunction doesn't do anything
-     * @param array attributes Values which need to match. The array key is the attribute name. Multiple array
-     *        entries are connected with "AND".
-     * @return void
-     * @access public
-     */
-    public function flushActionByItemAttribute($attributes) {
-        cDeprecated("This function doesn't do anything.");
     }
 
     /**
@@ -519,20 +364,6 @@ class cGuiTree extends cTree {
 
     public function setBaseLink($link) {
         $this->_baseLink = $link;
-    }
-
-}
-
-/**
- * Old classname for downwards compatibility
- * @deprecated [2012-07-12] This class was renamed to cGuiTree
- */
-class cWidgetTreeView extends cGuiTree {
-
-    public function __construct($uuid, $treename = false) {
-        cDeprecated("This class was renamed to cGuiTree");
-
-        parent::__construct($uuid, $treename);
     }
 
 }

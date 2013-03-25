@@ -56,15 +56,6 @@ class cHTMLFormElement extends cHTML {
     }
 
     /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLFormElement($name = '', $id = '', $disabled = '', $tabindex = '', $accesskey = '', $class = 'text_medium') {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
-    }
-
-    /**
      * Sets the "disabled" attribute of an element.
      * User Agents
      * usually are showing the element as "greyed-out".

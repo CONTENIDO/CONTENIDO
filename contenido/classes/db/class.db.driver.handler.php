@@ -98,21 +98,6 @@ abstract class cDbDriverHandler {
     protected static $_profileData = array();
 
     /**
-     * List of deprecated properties mapped to new methods
-     *
-     * @var array
-     */
-    protected static $_variablesToMethod = array(
-        'Errno' => 'getErrorNumber',
-        'Error' => 'getErrorMessage',
-        'Query_ID' => 'getQueryId',
-        'Link_ID' => 'getLinkId',
-        'Row' => 'getRow',
-        'Record' => 'getRecord',
-        'Halt_On_Error' => 'getHaltBehaviour'
-    );
-
-    /**
      * Constructor, sets passed options and connects to the DBMS, if not done
      * before.
      *
@@ -167,31 +152,6 @@ abstract class cDbDriverHandler {
             $this->setErrorMessage("Could not connect to database");
 
             throw new cDbException($this->getErrorMessage());
-        }
-    }
-
-    /**
-     * Magic getter function for old class variables.
-     *
-     * @param string $name name of the variable
-     * @return mixed
-     */
-    public function __get($name) {
-        $methodName = isset(self::$_variablesToMethod[$name]) ? self::$_variablesToMethod[$name] : null;
-
-        if (!is_null($methodName)) {
-            cDeprecated("Accessing class variable " . $name . " is deprecated. Use method " . $methodName . "() instead.");
-            return $this->$methodName();
-        }
-
-        if ($name == 'Database') {
-            cDeprecated("Accessing database configuration via class variables is deprecated.");
-            return $this->_dbCfg['connection']['database'];
-        }
-
-        if ($name == 'User' || $name == 'Password') {
-            cDeprecated("Accessing database configuration via class variables is deprecated.");
-            return 'This information is not longer available.';
         }
     }
 
@@ -995,93 +955,4 @@ abstract class cDbDriverHandler {
     public function next_record() {
         return $this->nextRecord();
     }
-
-    /**
-     *
-     * @deprecated 2012-10-02 This method is deprecated. Use getMetaData
-     *             instead.
-     */
-    public function metadata($tableName = '', $full = false) {
-        cDeprecated("This method is deprecated. Use getMetaData instead.");
-        return $this->getMetaData($tableName, $full);
-    }
-
-    /**
-     *
-     * @deprecated 2012-10-02 This method is deprecated. Use numRows instead.
-     */
-    public function nf() {
-        cDeprecated("This method is deprecated. Use numRows instead.");
-        return $this->numRows();
-    }
-
-    /**
-     *
-     * @deprecated 2012-10-02 This method is not longer supported.
-     */
-    public function np() {
-        cDeprecated("This method is not longer supported.");
-        print $this->numRows();
-    }
-
-    /**
-     *
-     * @deprecated 2012-10-02 This method is not longer supported.
-     */
-    public function p($name) {
-        cDeprecated("This method is not longer supported.");
-        $record = $this->getRecord();
-        if (isset($record[$name])) {
-            print $record[$name];
-        }
-    }
-
-    /**
-     *
-     * @deprecated 2012-10-02 This method is deprecated. Use disconnect instead.
-     */
-    public function close() {
-        cDeprecated("This method is deprecated. Use disconnect instead.");
-        $this->disconnect();
-    }
-
-    /**
-     *
-     * @deprecated 2012-10-02 This method is deprecated. Use reportHalt instead.
-     */
-    public function haltmsg($message) {
-        cDeprecated("This method is deprecated. Use reportHalt instead.");
-        $this->reportHalt($message);
-    }
-
-    /**
-     *
-     * @deprecated 2012-10-02 This method is deprecated. Use getTableNames
-     *             instead.
-     */
-    public function table_names() {
-        cDeprecated("This method is deprecated. Use getTableNames instead.");
-        return $this->getTableNames();
-    }
-
-    /**
-     *
-     * @deprecated 2012-10-02 This method is deprecated. Use getTableNames
-     *             instead.
-     */
-    public function server_info() {
-        cDeprecated("This method is deprecated. Use getServerInfo instead.");
-        return $this->getServerInfo();
-    }
-
-    /**
-     *
-     * @deprecated [2011-03-03] This method is deprecated. Use toArray()
-     *             instead.
-     */
-    public function copyResultToArray($sTable = '') {
-        cDeprecated('This method is deprecated. Use toArray() instead.');
-        return $this->toArray();
-    }
-
 }

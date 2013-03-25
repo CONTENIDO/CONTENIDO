@@ -132,7 +132,6 @@ EOT;
 
         getAvailableContentTypes($idartlang);
 
-        cInclude("includes", "functions.forms.php");
         global $typenr;
 
         $form = new cGuiTableForm("editcontent", $backendUrl . $cfg["path"]["includes"]."include.backendedit.php");

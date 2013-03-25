@@ -1027,17 +1027,4 @@ function buildHeapTable($sHeapTable, $db) {
     $db->query($sql);
 }
 
-/**
- * Returns the canonical month. Wrapper for function getCanonicalMonth()
- *
- * @deprecated 2012-02-09 this function is not supported any longer
- *
- * @param   int  $month  The digit representation of a month
- * @return  string  Textual representation of a month
- */
-function statReturnCanonicalMonth($month) {
-    cDeprecated("This function is not supported any longer.");
-    return getCanonicalMonth($month);
-}
-
 ?>

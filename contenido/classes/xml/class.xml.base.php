@@ -329,15 +329,3 @@ abstract class cXmlBase {
     }
 
 }
-
-abstract class ContenidoXmlBase extends cXmlBase {
-
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cXmlBase
-     */
-    public function __construct() {
-        cDeprecated('Class was renamed to cXmlBase.');
-    }
-
-}

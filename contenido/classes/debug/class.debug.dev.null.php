@@ -89,14 +89,3 @@ class cDebugDevNull implements cDebugInterface {
     }
 
 }
-class Debug_DevNull extends cDebugDevNull {
-
-    /**
-     *
-     * @deprecated Class was renamed to cDebugDevNull
-     */
-    private function __construct() {
-        cDeprecated('Class was renamed to cDebugDevNull');
-    }
-
-}

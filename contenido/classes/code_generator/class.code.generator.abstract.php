@@ -42,14 +42,6 @@ abstract class cCodeGeneratorAbstract {
     protected $_feDebugOptions = array();
 
     /**
-     * Debug flag, prints some status messages if enabled.
-     *
-     * @var bool
-     * @deprecated No longer needed. The backend chooses the debug mode.
-     */
-    protected $_debug = false;
-
-    /**
      * Collected CSS data for current template
      *
      * @var string
@@ -166,16 +158,6 @@ abstract class cCodeGeneratorAbstract {
 
     public function __construct() {
         $this->_db = cRegistry::getDb();
-    }
-
-    /**
-     * Setter for debug property
-     *
-     * @deprecated No longer needed. The backend chooses the debug mode.
-     * @param bool $debug
-     */
-    public function setDebug($debug) {
-        $this->_debug = $debug;
     }
 
     /**
@@ -361,10 +343,6 @@ abstract class cCodeGeneratorAbstract {
                 } else if (cFileHandler::exists($typeCodeFile)) {
                     // Include CMS type code file
                     include($typeCodeFile);
-                } elseif (!empty($_typeItem->code)) {
-                    // Old version, evaluate CMS type code
-                    cDeprecated("Move code for $type from table into file system (contenido/classes/content_types/ or  contenido/includes/cms/code/)");
-                    eval($_typeItem->code);
                 }
 
                 $search[$val] = sprintf('%s[%s]', $type, $val);
@@ -552,16 +530,4 @@ abstract class cCodeGeneratorAbstract {
     protected function getArtLangObject() {
        return $this->oArtLang;
     }
-
-    /**
-     * Outputs passed message, if debug is enabled
-     *
-     * @param string $msg
-     * @deprecated 2012-08-13 Use cDebug instead!
-     */
-    protected function _debug($msg) {
-        cDeprecated('Use cDebug instead!');
-        cDebug::out($msg);
-    }
-
 }

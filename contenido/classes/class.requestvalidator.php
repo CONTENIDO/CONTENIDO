@@ -23,54 +23,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cRequestValidator::CHECK_INTEGER
- */
-define('CON_CHECK_INTEGER', '/^[0-9]*$/');
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cRequestValidator::CHECK_PRIMITIVESTRING
- */
-define('CON_CHECK_PRIMITIVESTRING', '/^[a-zA-Z0-9 -_]*$/');
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cRequestValidator::CHECK_STRING
- */
-define('CON_CHECK_STRING', '/^[\w0-9 -_]*$/');
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cRequestValidator::CHECK_HASH32
- */
-define('CON_CHECK_HASH32', '/^[a-zA-Z0-9]{32}$/');
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cRequestValidator::CHECK_BELANG
- */
-define('CON_CHECK_BELANG', '/^de_DE|en_US|fr_FR|it_IT|nl_NL$/');
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cRequestValidator::CHECK_AREASTRING
- */
-define('CON_CHECK_AREASTRING', '/^[a-zA-Z_]*$/');
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cRequestValidator::CHECK_CHECK_PATHSTRING
- */
-define('CON_CHECK_PATHSTRING', '!([*]*\/)|(dbfs:\/[*]*)|(dbfs:)|(^)$!');
 class cRequestValidator {
 
     /**

@@ -110,17 +110,6 @@ class cSession {
      * Checks if a variable is registered
      *
      * @param string $name The name of the variable (e.g. "idclient")
-     * @deprecated [2012-07-10] Please use isRegistered instead
-     */
-    public function is_registered($name) {
-        cDeprecated("Please use cSession::isRegistered() instead");
-        return $this->isRegistered($name);
-    }
-
-    /**
-     * Checks if a variable is registered
-     *
-     * @param string $name The name of the variable (e.g. "idclient")
      */
     public function isRegistered($name) {
         if (isset($this->_pt[$name]) && $this->_pt[$name] == true) {
@@ -159,17 +148,6 @@ class cSession {
                 '%27'
         ), $url);
         return $url;
-    }
-
-    /**
-     * Attaches "&contenido=1" at the end of the current URL. This is no longer
-     * needed to make sessions work but some CONTENIDO functions/classes rely on
-     * it
-     * @deprecated [2012-07-10]  use selfURL() instead
-     */
-    public function self_url() {
-        cDeprecated("Please use cSession::selfURL() instead");
-        return $this->selfURL();
     }
 
     /**
@@ -267,17 +245,6 @@ class cSession {
      */
     public function delete() {
         session_destroy();
-    }
-
-    /**
-     * Dummy function. This is no longer needed and will always return "".
-     *
-     * @deprecated [2012-07-10] Since this function is not needed anymore it shouldn't be
-     *             used
-     */
-    public function hidden_session() {
-        cDeprecated("Since this function is not needed anymore it shouldn't be used");
-        return "";
     }
 
     /**

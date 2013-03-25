@@ -36,13 +36,6 @@ class NewsletterCollection extends ItemCollection
         $this->_setItemClass("Newsletter");
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function NewsletterCollection()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
     /**
      * Creates a new newsletter
      * @param $name string specifies the newsletter name
@@ -171,13 +164,6 @@ class Newsletter extends Item
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function Newsletter($mId = false)
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
     }
 
     /**
@@ -957,29 +943,5 @@ class Newsletter extends Item
         } else {
             return true;
         }
-    }
-
-    /**
-     * @deprecated >V4.6.15 - 21.05.2007
-     *
-     * Sends a newsletter
-     * @param $idcatart     integer specifies id of the 'BlackBox'-acrticle containing the 'BlackBox'-module for management
-     * @param $destination  string     specifies, who will receive the newsletter ("all", "default" = defaultgroup,
-     *                "selection" = selected groups, "single" = one recepient [e.g. Welcome-Newsletter])
-     * @param $to           array     specifies, which group of recipients shall receive the
-     *                newsletter ("all", "default" = defaultgroup, "4,5,6" = group IDs)
-     * @param $iChunkSize   integer    specifies size of chunks when sending in chunks, 0 = don't send in chunks
-     * @param $iChunk       integer    specifies current chunk number when sending in chunks
-     * result array         array of recipient names/e-mails
-     */
-    public function send($idcatart, $destination = "other", $to = "", $iChunkSize = 0, $iChunk = 0, $sEncoding = "iso-8859-1")
-    {
-        // What should we do with this deprecated method?
-        cDeprecated();
-
-        $aResult = array();
-        $aResult[] = 0;
-        $aResult[] = "Newsletter->send() not supported anymore (class.newsletter.php)";
-        return $aResult;
     }
 }

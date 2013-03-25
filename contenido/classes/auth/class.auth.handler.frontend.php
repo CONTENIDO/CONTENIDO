@@ -123,11 +123,3 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
     }
 
 }
-
-/**
- *
- * @deprecated 2012-09-22
- */
-class Contenido_Frontend_Challenge_Crypt_Auth extends cAuthHandlerFrontend {
-
-}

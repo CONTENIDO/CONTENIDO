@@ -35,13 +35,6 @@ cInclude('includes', 'functions.api.images.php');
 class cGuiNavigation {
 
     /**
-     * Flag to debug this vlass
-     * @deprecated No longer needed. The debug mode gets chosen by the system settings.
-     * @var  bool
-     */
-    public $debug = false;
-
-    /**
      * Array storing all data
      * @var  array
      */
@@ -451,20 +444,6 @@ class cGuiNavigation {
         $editButton->appendStyleDefinition('cursor', 'pointer');
 
         return $html . $editButton->render();
-    }
-
-}
-
-/**
- * Old classname for downwards compatibility
- * @deprecated [2012-07-12] This class was replaced by cGuiNavigation
- */
-class Contenido_Navigation extends cGuiNavigation {
-
-    public function __construct() {
-        cDeprecated("The class Contenido_Navigation was replaced by cGuiNavigation.");
-
-        parent::__construct();
     }
 
 }

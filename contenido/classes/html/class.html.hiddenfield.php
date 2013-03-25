@@ -45,15 +45,6 @@ class cHTMLHiddenField extends cHTMLFormElement {
     }
 
     /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLHiddenField($name, $value = '', $id = '') {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($name, $value, $id);
-    }
-
-    /**
      * Sets the value for the field
      *
      * @param string $value Value of the field

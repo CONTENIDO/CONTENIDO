@@ -141,15 +141,3 @@ class cDebugVisible implements cDebugInterface {
     }
 
 }
-
-class Debug_Visible extends cDebugVisible {
-
-    /**
-     *
-     * @deprecated Class was renamed to cDebugVisible
-     */
-    private function __construct() {
-        cDeprecated('cDebugVisible');
-    }
-
-}

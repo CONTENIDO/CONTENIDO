@@ -49,8 +49,6 @@ if (!defined('CON_FRAMEWORK')) {
  * Currently defined areas:
  *
  * frontend    Path to the *current* frontend
- * conlib      Path to conlib [deprecated]
- * pear        Path to the bundled pear copy [deprecated]
  * classes     Path to the CONTENIDO classes (see NOTE below)
  * cronjobs    Path to the cronjobs
  * external    Path to the external tools
@@ -91,7 +89,6 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
         case 'all_wysiwyg':
             $sInclude = $cfg['path']['all_wysiwyg'] . $sWhat;
             break;
-        case 'conlib':
         case 'phplib':
             $sInclude = $cfg['path']['phplib'] . $sWhat;
             break;
@@ -101,35 +98,6 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
                 return;
             }
             $sInclude = $backendPath  . $cfg['path'][$sWhere] . $sWhat;
-            break;
-        case 'pear':
-            if (function_exists('cDeprecated')) {
-                cDeprecated("The support for the PEAR library is deprecated. Do not use this classes!");
-            }
-
-            $sInclude = $sWhat;
-            $sIncludePath = ini_get('include_path');
-
-            if (!preg_match('|' . $cfg['path']['pear'] . '|i', $sIncludePath)) {
-                // CONTENIDO pear path is not set in include_path
-                // we try to add it via ini_set
-                if (!@ini_set('include_path', $sIncludePath . PATH_SEPARATOR . $cfg['path']['pear'])) {
-                    // not able to change include_path
-                    trigger_error("Can't add {$cfg['path']['pear']} to include_path", E_USER_NOTICE);
-                    $sInclude = $cfg['path']['pear'] . $sWhat;
-                    unset($sWhere);
-                } else {
-                    $aPaths = explode(PATH_SEPARATOR, ini_get('include_path'));
-                    $iLast  = count($aPaths) - 1;
-                    if ($iLast >= 2) {
-                        $tmp = $aPaths[1];
-                        $aPaths[1] = $aPaths[$iLast];
-                        $aPaths[$iLast] = $tmp;
-                        @ini_set('include_path', implode(PATH_SEPARATOR, $aPaths));
-                    }
-                    unset($aPaths, $iLast, $tmp);
-                }
-            }
             break;
         default:
             $sInclude = $backendPath  . $cfg['path'][$sWhere] . $sWhat;
@@ -173,7 +141,7 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
     }
 
     if ($bError) {
-        trigger_error("Error: Can't include $sInclude", E_USER_ERROR);
+        cError("Error: Can't include $sInclude", E_USER_ERROR);
         return;
     }
 
@@ -183,19 +151,6 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
     } else {
         include_once($sInclude);
     }
-}
-
-
-/**
- * Alias of cInclude.
- * @deprecated 2012-09-12
- */
-function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
-    if (function_exists('cDeprecated')) {
-        cDeprecated("This function is deprecated. Use cInclude instead.");
-    }
-
-    cInclude($sWhere, $sWhat, $bForce, $bReturnPath);
 }
 
 /**

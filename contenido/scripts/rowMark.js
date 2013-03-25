@@ -409,22 +409,3 @@ function reMark(sObjId)
     }
 }
 
-/**
- * Function returns offset left, top, width and heigth of a given htnmlelement as array
- *
- * @param object oElement - Object which should be analyzed
- * @return array - containing dimension information
- * @deprecated  Use jQuery .position()
- * @fixme  Redundant code, see str_overview.js
- */
-function getElementPostion(oElement) {
-    var iHeigth = oElement.offsetHeight,
-        iWidth = oElement.offsetWidth,
-        iTop = 0, iLeft = 0;
-    while (oElement) {
-        iTop += oElement.offsetTop || 0;
-        iLeft += oElement.offsetLeft || 0;
-        oElement = oElement.offsetParent;
-    };
-    return [iLeft, iTop, iHeigth, iWidth];
-}

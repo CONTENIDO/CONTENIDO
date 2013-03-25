@@ -38,14 +38,4 @@ class cHTMLDiv extends cHTMLContentElement {
         parent::__construct($content, $class, $id);
         $this->_tag = 'div';
     }
-
-    /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLDiv($content = '') {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($content);
-    }
-
 }

@@ -280,14 +280,6 @@ class cModuleHandler {
     }
 
     /**
-     * @deprecated 2012-09-19 Use the public method initWithDatabaseRow instead!
-     */
-    protected function _initWithDatabaseRow($db) {
-        cDeprecated('Use the public method initWithDatabaseRow instead!');
-        $this->initWithDatabaseRow($db);
-    }
-
-    /**
      * Init the vars of the class.
      *
      * @param array $modulData
@@ -935,88 +927,4 @@ class cModuleHandler {
     public function modulePathExists() {
         return is_dir($this->_modulePath);
     }
-
-    /**
-     * @deprecated 2012-09-10 Use cFileHandler::recursiveRmdir($dirname) instead
-     */
-    private function _rec_rmdir($path) {
-        cDeprecated('Use cFileHandler::recursiveRmdir($dirname) instead');
-        // schau' nach, ob das ueberhaupt ein Verzeichnis ist
-        if (!is_dir($path)) {
-            return -1;
-        }
-        // oeffne das Verzeichnis
-        $dir = @opendir($path);
-
-        // Fehler?
-        if (!$dir) {
-            return -2;
-        }
-
-        // gehe durch das Verzeichnis
-        while (($entry = @readdir($dir)) !== false) {
-            // wenn der Eintrag das aktuelle Verzeichnis oder das
-            // Elternverzeichnis
-            // ist, ignoriere es
-            if ($entry == '.' || $entry == '..') {
-                continue;
-            }
-
-            // wenn der Eintrag ein Verzeichnis ist, dann
-            if (is_dir($path . '/' . $entry)) {
-                // rufe mich selbst auf
-                $res = $this->_rec_rmdir($path . '/' . $entry);
-                // wenn ein Fehler aufgetreten ist
-                if ($res == -1) { // dies duerfte gar nicht passieren
-                    @closedir($dir); // Verzeichnis schliessen
-                    return -2; // normalen Fehler melden
-                } elseif ($res == -2) { // Fehler?
-                    @closedir($dir); // Verzeichnis schliessen
-                    return -2; // Fehler weitergeben
-                } elseif ($res == -3) { // nicht unterstuetzer Dateityp?
-                    @closedir($dir); // Verzeichnis schliessen
-                    return -3; // Fehler weitergeben
-                } elseif ($res != 0) { // das duerfe auch nicht passieren...
-                    @closedir($dir); // Verzeichnis schliessen
-                    return -2; // Fehler zurueck
-                }
-            } elseif (is_file($path . '/' . $entry) || is_link($path . '/' . $entry)) {
-                // ansonsten loesche diese Datei / diesen Link
-                $res = @unlink($path . '/' . $entry);
-                // Fehler?
-                if (!$res) {
-                    @closedir($dir); // Verzeichnis schliessen
-                    return -2; // melde ihn
-                }
-            } else {
-                // ein nicht unterstuetzer Dateityp
-                @closedir($dir); // Verzeichnis schliessen
-                return -3; // tut mir schrecklich leid...
-            }
-        }
-
-        // schliesse nun das Verzeichnis
-        @closedir($dir);
-
-        // versuche nun, das Verzeichnis zu loeschen
-        $res = @rmdir($path);
-
-        // gab's einen Fehler?
-        if (!$res) {
-            return -2; // melde ihn
-        }
-
-        // alles ok
-        return 0;
-    }
-
-}
-
-class Contenido_Module_Handler extends cModuleHandler {
-    /** @deprecated [2012-07-24] class was renamed to cModuleHandler */
-    public function __construct($idmod = NULL) {
-        cDeprecated('Class was renamed to cModuleHandler.');
-        parent::__construct($idmod);
-    }
-
 }

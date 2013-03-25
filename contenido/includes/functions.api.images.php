@@ -692,16 +692,4 @@ function cApiIsImageMagickAvailable() {
     return $imagemagickAvailable;
 }
 
-/** @deprecated  [2012-06-23] Use cApiImageIsAnimGif() */
-function isAnimGif($sFile) {
-    cDeprecated('Use cApiImageIsAnimGif()');
-    return cApiImageIsAnimGif($sFile);
-}
-
-/** @deprecated  [2012-06-23] Use cApiImageCheckImageEditingPosibility() */
-function checkImageEditingPosibility() {
-    cDeprecated('Use cApiImageCheckImageEditingPosibility()');
-    return cApiImageCheckImageEditingPosibility();
-}
-
 ?>

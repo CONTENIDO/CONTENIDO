@@ -50,12 +50,6 @@ class WorkflowAllocations extends ItemCollection {
         $this->_setItemClass("WorkflowAllocation");
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function WorkflowAllocations() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
     public function delete($idallocation) {
         global $cfg, $lang;
 
@@ -154,12 +148,6 @@ class WorkflowAllocation extends Item {
         global $cfg;
 
         parent::__construct($cfg["tab"]["workflow_allocation"], "idallocation");
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function WorkflowAllocation() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
     }
 
     /**

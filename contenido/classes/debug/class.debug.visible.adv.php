@@ -242,18 +242,6 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
 
 }
 
-class Debug_VisibleAdv extends cDebugVisibleAdv {
-
-    /**
-     * @deprecated Class was renamed to cDebugVisibleAdv
-     */
-    private function __construct() {
-        cDeprecated('Class was renamed to cDebugVisibleAdv');
-        $this->_aItems = array();
-    }
-
-}
-
 /**
  * An object representing one Debug item of a Debug_VisibleBlock.
  */
@@ -298,16 +286,4 @@ class cDebugVisibleAdvItem {
     public function getDescription() {
         return $this->_sDescription;
     }
-
-}
-
-class Debug_VisibleAdv_Item extends cDebugVisibleAdvItem {
-
-    /**
-     * @deprecated Class was renamed to cDebugVisibleAdvItem
-     */
-    public function __construct() {
-        cDeprecated('Class was renamed to cDebugVisibleAdvItem');
-    }
-
 }

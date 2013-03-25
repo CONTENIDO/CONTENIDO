@@ -23,28 +23,12 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_IMAGERESIZE_GD
- */
-define('E_IMAGERESIZE_GD', 1);
 define('CON_IMAGERESIZE_GD', 1);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_IMAGERESIZE_IMAGEMAGICK
- */
-define('E_IMAGERESIZE_IMAGEMAGICK', 2);
 define('CON_IMAGERESIZE_IMAGEMAGICK', 2);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_IMAGERESIZE_CANTCHECK
- */
-define('E_IMAGERESIZE_CANTCHECK', 3);
 define('CON_IMAGERESIZE_CANTCHECK', 3);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_IMAGERESIZE_NOTHINGAVAILABLE
- */
-define('E_IMAGERESIZE_NOTHINGAVAILABLE', 4);
 define('CON_IMAGERESIZE_NOTHINGAVAILABLE', 4);
 
 function checkImageResizer() {

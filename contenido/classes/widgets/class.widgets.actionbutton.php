@@ -23,19 +23,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cApiClickableAction::QUESTIONACTION_PROMPT
- */
-define('QUESTIONACTION_PROMPT', 'prompt');
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cApiClickableAction::QUESTIONACTION_YESNO
- */
-define('QUESTIONACTION_YESNO', 'yesno');
 
 /**
  * class cApiClickableAction
@@ -94,15 +81,6 @@ class cApiClickableAction extends cApiAction {
         $this->_parameters = array();
 
         $this->setEnabled();
-    }
-
-    /**
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     * compatibility
-     */
-    public function cApiClickableAction() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
     }
 
     /**
@@ -234,15 +212,6 @@ class cApiClickableQuestionAction extends cApiClickableAction {
 
     public function __construct() {
         parent::__construct();
-    }
-
-    /**
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     * compatibility
-     */
-    public function cApiClickableQuestionAction() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
     }
 
     public function setQuestionMode($mode) {

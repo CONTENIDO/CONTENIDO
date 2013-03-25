@@ -136,14 +136,3 @@ class cXmlReader extends cXmlBase {
     }
 
 }
-class ContenidoXmlReader extends cXmlReader {
-
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cXmlReader
-     */
-    public function __construct() {
-        cDeprecated('Class was renamed to cXmlReader.');
-    }
-
-}

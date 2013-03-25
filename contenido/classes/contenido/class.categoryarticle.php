@@ -42,16 +42,6 @@ class cApiCategoryArticleCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiCategoryArticleCollection($select = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($select);
-    }
-
-    /**
      * Creates an article item entry
      *
      * @param int $idcat
@@ -61,11 +51,9 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * @param string $created
      * @param string $lastmodified
      * @param int $createcode
-     * @param int $is_start NOTE: Is deprecated but still available due to
-     *        downwards compatibility.
      * @return cApiCategoryArticle
      */
-    public function create($idcat, $idart, $status = 0, $author = "", $created = "", $lastmodified = "", $createcode = 1, $is_start = 0) {
+    public function create($idcat, $idart, $status = 0, $author = "", $created = "", $lastmodified = "", $createcode = 1) {
         global $auth;
 
         if (empty($author)) {
@@ -82,7 +70,6 @@ class cApiCategoryArticleCollection extends ItemCollection {
 
         $item->set('idcat', (int) $idcat);
         $item->set('idart', (int) $idart);
-        $item->set('is_start', ($is_start == 0)? 0 : 1);
         $item->set('status', (int) $status);
         $item->set('author', $this->escape($author));
         $item->set('created', $this->escape($created));
@@ -285,15 +272,4 @@ class cApiCategoryArticle extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiCategoryArticle($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
-
 }

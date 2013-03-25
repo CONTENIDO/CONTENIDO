@@ -12,7 +12,7 @@
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.1
- * @author     Björn Behrens
+ * @author     Bjï¿½rn Behrens
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -43,13 +43,6 @@ class NewsletterLogCollection extends ItemCollection
         global $cfg;
         parent::__construct($cfg["tab"]["news_log"], "idnewslog");
         $this->_setItemClass("NewsletterLog");
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function NewsletterLogCollection()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
     }
 
     /**
@@ -248,47 +241,6 @@ class NewsletterLog extends Item
             $this->loadByPrimaryKey($mId);
         }
     }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function NewsletterLog($mId = false)
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
 }
 
-
-/** @deprecated 2012-03-01 Use NewsletterLogCollection instead */
-class cNewsletterLogCollection extends NewsletterLogCollection {
-    /** @deprecated 2012-03-01 Use NewsletterLogCollection instead */
-    public function __construct()
-    {
-        cDeprecated("Use NewsletterLogCollection instead");
-        parent::__construct();
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cNewsletterLogCollection()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-}
-
-/** @deprecated 2012-03-01 Use NewsletterLog instead */
-class cNewsletterLog extends NewsletterLog {
-    /** @deprecated 2012-03-01 Use NewsletterLog instead */
-    public function __construct()
-    {
-        cDeprecated("Use NewsletterLog instead");
-        parent::__construct();
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cNewsletterLog()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-}
 ?>

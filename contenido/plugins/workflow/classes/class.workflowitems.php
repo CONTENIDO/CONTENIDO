@@ -50,12 +50,6 @@ class WorkflowItems extends ItemCollection {
         $this->_setItemClass("WorkflowItem");
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function WorkflowItems() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
     public function delete($id) {
         global $cfg;
         $item = new WorkflowItem();
@@ -205,12 +199,6 @@ class WorkflowItem extends Item {
         global $cfg;
 
         parent::__construct($cfg["tab"]["workflow_items"], "idworkflowitem");
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function WorkflowItem() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
     }
 
     public function getStepRights() {

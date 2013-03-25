@@ -112,7 +112,7 @@ class cAuth {
             $userId = $this->preAuthorize();
             if ($userId !== false) {
                 $this->_setAuthInfo($userId);
-                return true;
+                return;
             }
 
             if ($this->_defaultNobody == true) {
@@ -239,108 +239,8 @@ class cAuth {
         $this->_setAuthInfo(self::AUTH_UID_FORM, 0x7fffffff);
         $this->displayLoginForm();
 
+        print_r($sess);
         $sess->freeze();
         exit();
     }
-
-    /**
-     *
-     * @deprecated 2012-09-22
-     */
-    public function is_authenticated() {
-        return $this->isAuthenticated();
-    }
-
-    /**
-     *
-     * @deprecated 2012-09-22
-     */
-    public function is_auth_form_uid() {
-        return $this->isLoginForm();
-    }
-
-    /**
-     *
-     * @deprecated 2012-09-22
-     */
-    public function unauth($nobody = false) {
-        return $this->resetAuthInfo($nobody);
-    }
-
-    /**
-     *
-     * @deprecated 2012-09-22
-     */
-    public function login_if($t) {
-        if ($t) {
-            $this->restart();
-        }
-    }
-
-    /**
-     *
-     * @deprecated 2012-09-22
-     */
-    public function auth_preauth() {
-        return $this->preAuthorize();
-    }
-
-    /**
-     *
-     * @deprecated 2012-09-22
-     */
-    public function auth_loginform() {
-        return $this->displayLoginForm();
-    }
-
-    /**
-     *
-     * @deprecated 2012-09-22
-     */
-    public function auth_validatelogin() {
-        return $this->validateCredentials();
-    }
-
-    /**
-     *
-     * @deprecated 2012-09-22
-     */
-    public function auth_loglogin() {
-        return $this->logSuccessfulAuth();
-    }
-
-    /**
-     *
-     * @deprecated 2012-09-22
-     */
-    public function url() {
-        $sess = cRegistry::getSession();
-        return $sess->selfURL();
-    }
-
-    /**
-     *
-     * @deprecated 2012-09-22
-     */
-    public function purl() {
-        $sess = cRegistry::getSession();
-        print $sess->selfURL();
-    }
-
-}
-
-/**
- *
- * @deprecated 2012-09-22
- */
-class Contenido_Auth extends cAuth {
-
-}
-
-/**
- *
- * @deprecated 2012-09-22
- */
-class Auth extends cAuth {
-
 }

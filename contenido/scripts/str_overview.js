@@ -213,26 +213,6 @@ function hideNewForm() {
 }
 
 /**
- * Function returns offset left, top, width and heigth of a given htnmlelement as array
- *
- * @param object oElement - Object which should be analyzed
- * @return array - containing dimension information
- * @deprecated  Use jQuery .position()
- * @fixme  Redundant code, see rowMark.js
- */
-function getElementPostion(oElement) {
-    var iHeigth = oElement.offsetHeight,
-        iWidth = oElement.offsetWidth,
-        iTop = 0, iLeft = 0;
-    while (oElement) {
-        iTop += oElement.offsetTop|| 0;
-        iLeft += oElement.offsetLeft || 0;
-        oElement = oElement.offsetParent;
-    };
-    return [iLeft, iTop, iHeigth, iWidth];
-}
-
-/**
  * Function toggles image and label for online status input, when user clicks on it
  * function also sets status value in hidden input visible_input
  *

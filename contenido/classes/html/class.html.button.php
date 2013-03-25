@@ -52,15 +52,6 @@ class cHTMLButton extends cHTMLFormElement {
     }
 
     /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLButton($name, $title = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $mode = 'submit') {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($name, $title, $id, $disabled, $tabindex, $accesskey, $mode);
-    }
-
-    /**
      * Sets the title (caption) for the button
      *
      * @param string $title The title to set

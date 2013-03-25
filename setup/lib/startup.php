@@ -59,11 +59,6 @@ if (!defined('CON_ENVIRONMENT')) {
         $sEnvironment = 'production';
     }
 
-    /**
-     * @deprecated 2012-09-06 Constant has been renamed to CON_ENVIRONMENT
-     */
-    define('CONTENIDO_ENVIRONMENT', $sEnvironment);
-
     define('CON_ENVIRONMENT', $sEnvironment);
 }
 

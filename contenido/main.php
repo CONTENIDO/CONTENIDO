@@ -38,7 +38,6 @@ $backendPath = cRegistry::getBackendPath();
 $cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
 
 cInclude('includes', 'functions.api.php');
-cInclude('includes', 'functions.forms.php');
 
 cRegistry::bootstrap(array(
     'sess' => 'cSession',
@@ -93,11 +92,6 @@ $notification = new cGuiNotification();
 $classarea = new cApiAreaCollection();
 $classlayout = new cApiLayout();
 $classclient = new cApiClientCollection();
-/**
- * @deprecated [2012-03-27] Uninitialized global cApiUser instance is no more
- * needed
- */
-$classuser = new cApiUser();
 
 $currentuser = new cApiUser($auth->auth['uid']);
 

@@ -53,15 +53,6 @@ class cHTMLSelectElement extends cHTMLFormElement {
     }
 
     /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLSelectElement($name, $width = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '') {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($name, $width, $id, $disabled, $tabindex, $accesskey);
-    }
-
-    /**
      * Automatically creates and fills cHTMLOptionElements
      *
      * Array format:

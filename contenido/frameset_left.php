@@ -48,7 +48,6 @@ cRegistry::bootstrap(array(
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
-cInclude('includes', 'functions.forms.php');
 
 // Create CONTENIDO classes
 $db  = cRegistry::getDb();

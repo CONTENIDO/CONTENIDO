@@ -785,16 +785,3 @@ class cUpdateNotifier {
     }
 
 }
-
-class Contenido_UpdateNotifier extends cUpdateNotifier {
-
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cUpdateNotifier
-     */
-    public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage) {
-        cDeprecated('Class was renamed to cUpdateNotifier.');
-        parent::__construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage);
-    }
-
-}

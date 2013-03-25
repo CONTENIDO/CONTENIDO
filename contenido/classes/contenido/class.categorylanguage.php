@@ -48,16 +48,6 @@ class cApiCategoryLanguageCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiCategoryLanguageCollection($select = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($select);
-    }
-
-    /**
      * Creates a category language entry.
      *
      * @param int $idcat
@@ -180,16 +170,6 @@ class cApiCategoryLanguage extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
-    }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiCategoryLanguage($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
     }
 
     /**
@@ -319,53 +299,6 @@ class cApiCategoryLanguage extends Item {
         }
 
         return cUri::getInstance()->build($options);
-    }
-
-}
-
-// ##############################################################################
-// Old versions of category language item collection and category language item
-// classes
-//
-// NOTE: Class implemetations below are deprecated and the will be removed in
-// future versions of contenido.
-// Don't use them, they are still available due to downwards compatibility.
-
-/**
- * Category language collection
- *
- * @deprecated [2011-11-15] Use cApiCategoryLanguageCollection instead of this
- *             class.
- */
-class CategoryLanguageCollection extends cApiCategoryLanguageCollection {
-
-    public function __construct() {
-        cDeprecated("Use class cApiCategoryLanguageCollection instead");
-        parent::__construct();
-    }
-
-    public function CategoryLanguageCollection() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
-}
-
-/**
- * Single category language item
- *
- * @deprecated [2011-11-15] Use instead of this class.
- */
-class CategoryLanguageItem extends cApiCategoryLanguage {
-
-    public function __construct($mId = false) {
-        cDeprecated("Use class cApiCategoryLanguage instead");
-        parent::__construct($mId);
-    }
-
-    public function CategoryLanguageItem($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
     }
 
 }

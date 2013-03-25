@@ -134,7 +134,6 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 
 getAvailableContentTypes($idartlang);
 
-cInclude("includes", "functions.forms.php");
 cInclude("includes", "functions.upl.php");
 
 global $typenr;

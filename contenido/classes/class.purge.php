@@ -439,34 +439,4 @@ class cSystemPurge {
             }
         }
     }
-
-    /**
-     *
-     * @deprecated 2012-09-19 Logic has been moved to cSystemPurge::_construct
-     */
-    private function _setSystemDirectory() {
-        cDeprecated('Logic has been moved to cSystemPurge::_construct');
-
-        $dirsToExcludeWithFiles = getSystemProperty('system', 'purge-dirstoexclude-withfiles');
-        $aDirsToExcludeWithFiles = array_map('trim', explode(',', $dirsToExcludeWithFiles));
-        if (count($aDirsToExcludeWithFiles) < 1 || empty($aDirsToExcludeWithFiles[0])) {
-            $aDirsToExcludeWithFiles = $this->_dirsExcludedWithFiles;
-            setSystemProperty('system', 'purge-dirstoexclude-withfiles', implode(',', $aDirsToExcludeWithFiles));
-        }
-
-        $this->_dirsExcludedWithFiles = $aDirsToExcludeWithFiles;
-    }
-
-}
-class Purge extends cSystemPurge {
-
-    /**
-     *
-     * @deprecated Class was renamed to cSystemPurge
-     */
-    public function __construct() {
-        cDeprecated('Class was renamed to cSystemPurge');
-        parent::__construct();
-    }
-
 }

@@ -106,14 +106,3 @@ class cDebugHidden implements cDebugInterface {
     }
 
 }
-class Debug_Hidden extends cDebugHidden {
-
-    /**
-     *
-     * @deprecated Class was renamed to cDebugHidden
-     */
-    private function __construct() {
-        cDeprecated('cDebugHidden');
-    }
-
-}

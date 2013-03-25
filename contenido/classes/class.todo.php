@@ -36,12 +36,6 @@ class TODOCollection extends cApiCommunicationCollection {
         $this->_setItemClass('TODOItem');
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function TODOCollection() {
-        cDeprecated('Use __construct() instead');
-        $this->__construct();
-    }
-
     public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
         if ($where == '') {
             $where = "comtype='todo'";
@@ -50,22 +44,6 @@ class TODOCollection extends cApiCommunicationCollection {
         }
 
         return parent::select($where, $group_by, $order_by, $limit);
-    }
-
-    /**
-     * Magic method to invoke inaccessible methods.
-     * Currently it works as a fallback for the not supported method create() which
-     * creates a PHP Strict warning.
-     * @param  string  $name
-     * @param  array   $arguments
-     * @return mixed
-     */
-    public function __call($name, $arguments) {
-        if ('create' === $name) {
-            // Catch old and not supported create() method
-            cDeprecated('Use TODOCollection->createItem() instead TODOCollection->create()');
-            return call_user_func_array(array($this, 'createItem'), $arguments);
-        }
     }
 
     /**

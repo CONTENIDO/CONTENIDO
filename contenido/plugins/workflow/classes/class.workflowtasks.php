@@ -50,12 +50,6 @@ class WorkflowTasks extends ItemCollection {
         $this->_setItemClass("WorkflowTask");
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function WorkflowTasks() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
     public function create() {
         $newitem = parent::createNewItem();
         return ($newitem);
@@ -91,13 +85,6 @@ class WorkflowTask extends Item {
         global $cfg;
         parent::__construct($cfg["tab"]["tasks"], "idtask");
     }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function WorkflowTask() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
 }
 
 ?>

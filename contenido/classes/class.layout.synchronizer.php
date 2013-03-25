@@ -272,17 +272,4 @@ class cLayoutSynchronizer {
 
 }
 
-
-/**
- * @deprecated [2011-11-15] Use cLayoutSynchronizer instead of this class.
- */
-class SynchronizeLayouts extends cLayoutSynchronizer {
-    /**
-     * @deprecated [2011-11-15] Use cLayoutHandler instead of this class.
-     */
-    public function __construct($cfg, $cfgClient, $lang, $client) {
-        cDeprecated("Use class cLayoutSynchronizer instead");
-        parent::__construct($cfg, $cfgClient, $lang, $client);
-    }
-}
 ?>

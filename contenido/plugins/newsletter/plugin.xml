@@ -49,11 +49,9 @@
             <frame area="news" filetype="main" name="newsletter/includes/include.newsletter_left_top.php" frameId="1" />
             <frame area="news" filetype="main" name="newsletter/includes/include.newsletter_menu.php" frameId="2" />
             <frame area="news" filetype="main" name="newsletter/includes/include.newsletter_edit.php" frameId="4" />
-            <frame area="news" filetype="inc" name="functions.forms.php" frameId="4" />
             <frame area="recipients" filetype="main" name="newsletter/includes/include.recipients_left_top.php" frameId="1" />
             <frame area="recipients" filetype="main" name="newsletter/includes/include.recipients_menu.php" frameId="2" />
             <frame area="recipients" filetype="main" name="include.subnav_blank.php" frameId="3" />
-            <frame area="recipients" filetype="inc" name="functions.forms.php" frameId="4" />
             <frame area="recipients" filetype="main" name="newsletter/includes/include.recipients_edit.php" frameId="4" />
             <frame area="news" filetype="main" name="newsletter/includes/include.newsletter_subnav.php" frameId="3" />
             <frame area="recipientgroups" filetype="main" name="newsletter/includes/include.recipients.group_menu.php" frameId="2" />

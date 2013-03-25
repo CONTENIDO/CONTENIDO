@@ -1029,27 +1029,6 @@ abstract class ItemCollection extends cItemBaseAbstract {
     }
 
     /**
-     * Magic method to invoke inaccessible methods.
-     * Currently it works as a fallback for the not supported method create()
-     * which
-     * creates a PHP Strict warning.
-     *
-     * @param string $name
-     * @param array $arguments
-     * @return mixed
-     */
-    public function __call($name, $arguments) {
-        if ('create' === $name) {
-            // Catch old and not supported create() method
-            cDeprecated('Use ItemCollection->createNewItem() instead ItemCollection->create()');
-            return call_user_func_array(array(
-                $this,
-                'createNewItem'
-            ), $arguments);
-        }
-    }
-
-    /**
      * Creates a new item in the table and loads it afterwards.
      *
      * @param string|array $data optional parameter for direct input of

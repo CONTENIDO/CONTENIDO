@@ -34,14 +34,4 @@ class cHTMLTableBody extends cHTMLContentElement {
         parent::__construct();
         $this->_tag = 'tbody';
     }
-
-    /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLTableBody() {
-        cDeprecated('Use __construct() instead');
-        $this->__construct();
-    }
-
 }

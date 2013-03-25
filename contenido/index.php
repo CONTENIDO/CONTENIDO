@@ -43,7 +43,6 @@ i18nInit($cfg['path']['contenido_locale'], $belang);
 require_once(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
-cInclude('includes', 'functions.forms.php');
 
 $sess->register('belang');
 
@@ -133,5 +132,4 @@ $tpl->set('s', 'CONTENIDOPATH', $backendUrl . 'favicon.ico');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset']);
 
 cRegistry::shutdown();
-
 ?>

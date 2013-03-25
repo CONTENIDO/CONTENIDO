@@ -43,15 +43,6 @@ class cWYSIWYGEditor {
         $this->_setEditorContent($sEditorContent);
     }
 
-    /**
-     *
-     * @deprecated 2012-08-24 Use __construct
-     */
-    function cWYSIWYGEditor($sEditorName, $sEditorContent) {
-        cDeprecated('Use __construct');
-        $this->__construct($sEditorName, $sEditorContent);
-    }
-
     protected function _setEditorContent($sContent) {
         $this->_sEditorContent = $sContent;
     }

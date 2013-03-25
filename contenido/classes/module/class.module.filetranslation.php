@@ -291,15 +291,4 @@ class cModuleFileTranslation extends cModuleHandler {
             return array();
         }
     }
-
-}
-
-class Contenido_Module_FileTranslation extends cModuleFileTranslation {
-
-    /** @deprecated [2012-07-24] class was renamed to cModuleFileTranslation */
-    public function __construct($idmodul = null, $static = false) {
-        cDeprecated('Class was renamed to cModuleFileTranslation.');
-        parent::__construct($idmodul, $static);
-    }
-
 }

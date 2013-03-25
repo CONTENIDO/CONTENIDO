@@ -41,16 +41,6 @@ class cApiClientLanguageCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiClientLanguageCollection() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
-    /**
      * Creates a client language entry.
      *
      * @param int $iClient
@@ -190,16 +180,6 @@ class cApiClientLanguage extends Item {
                 $this->loadByPrimaryKey($this->db->f($this->primaryKey));
             }
         }
-    }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiClientLanguage($iIdClientsLang = false, $iIdClient = false, $iIdLang = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($iIdClientsLang, $iIdClient, $iIdLang);
     }
 
     /**

@@ -97,9 +97,3 @@ function cApiCatGetLevelNode($idcat, $minLevel = 0)
     }
 }
 
-/** @deprecated  [2012-06-23] Use cApiCatGetLevelNode() */
-function capi_cat_getlevelnode($idcat, $minLevel = 0)
-{
-    cDeprecated('Use cApiCatGetLevelNode()');
-    return cApiCatGetLevelNode($idcat, $minLevel);
-}

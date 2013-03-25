@@ -407,18 +407,3 @@ class cGuiScrollList {
     }
 
 }
-
-/**
- * Old class name for downwards compatibility
- * @deprecated [2012-07-12] This class was renamed to cGuiScrollList
- */
-class cScrollList extends cGuiScrollList {
-
-    public function __construct($defaultstyle = true, $action = "") {
-        cDeprecated("This class was renamed to cGuiScrollList.");
-
-        parent::__construct($defaultstyle, $action);
-    }
-
-}
-

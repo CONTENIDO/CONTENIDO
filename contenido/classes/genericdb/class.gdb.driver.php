@@ -43,22 +43,3 @@ class cGenericDbDriver {
     }
 
 }
-
-class gdbDriver extends cGenericDbDriver {
-
-    /**
-     * @deprecated Class was renamed to cGenericDbDriver
-     */
-    public function __construct() {
-        cDeprecated('Class was renamed to cGenericDbDriver');
-    }
-
-    /**
-     * @deprecated Use __construct()
-     */
-    public function gdbDriver() {
-        cDeprecated('Use __construct()');
-        $this->__construct();
-    }
-
-}

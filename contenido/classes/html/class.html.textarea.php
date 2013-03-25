@@ -56,15 +56,6 @@ class cHTMLTextarea extends cHTMLFormElement {
     }
 
     /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLTextarea($name, $initvalue = '', $width = '', $height = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '') {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($name, $initvalue, $width, $height, $id, $disabled, $tabindex, $accesskey);
-    }
-
-    /**
      * Sets the width of the text box.
      *
      * @param int $width width of the text box

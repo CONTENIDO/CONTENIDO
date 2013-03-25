@@ -352,15 +352,3 @@ class cModuleSearch extends cModuleHandler {
     }
 
 }
-class Contenido_Module_Search extends cModuleSearch {
-
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cModuleSearch
-     */
-    public function __construct($searchOptions) {
-        cDeprecated('Class was renamed to cModuleSearch.');
-        parent::__construct($searchOptions);
-    }
-
-}

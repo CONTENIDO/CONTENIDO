@@ -95,16 +95,6 @@ class cApiUserCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiUserCollection($select = false) {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($select);
-    }
-
-    /**
      * Createa a user by user name.
      *
      * @param string $username
@@ -123,18 +113,6 @@ class cApiUserCollection extends ItemCollection {
         $item->store();
 
         return $item;
-    }
-
-    /**
-     * Removes the specified user from the database.
-     *
-     * @param string $userid Specifies the user ID
-     * @return bool True if the delete was successful
-     * @deprecated [2012-03-22] Use cApiUserCollection->delete() instead
-     */
-    public function deleteUserByID($userid) {
-        cDeprecated('Use cApiUserCollection->delete() instead');
-        return $this->delete($userid);
     }
 
     /**
@@ -420,27 +398,6 @@ class cApiUser extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
-    }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiUser($mId = false) {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($mId);
-    }
-
-    /**
-     * Wrapper for store() for downwards compatibility
-     *
-     * @return bool Return value of store()
-     */
-    public function save() {
-        cDeprecated('Use self::store() instead.');
-
-        return $this->store();
     }
 
     /**
@@ -737,15 +694,6 @@ class cApiUser extends Item {
     }
 
     /**
-     *
-     * @deprecated [2012-03-06] Function name should be more generic
-     */
-    public function getUseTiny() {
-        cDeprecated('Use getUseWysi()');
-        return $this->getUseWysi();
-    }
-
-    /**
      * Getter method to get user wysi
      *
      * @return int
@@ -888,15 +836,6 @@ class cApiUser extends Item {
         if ($this->get('address_country') != $sCountry) {
             $this->set('address_country', $sCountry);
         }
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-06] Function name should be more generic
-     */
-    public function setUseTiny($iUseTiny) {
-        cDeprecated('Use setUseWysi() instead');
-        $this->setUseWysi($iUseTiny);
     }
 
     /**
@@ -1132,13 +1071,7 @@ class cApiUser extends Item {
 
     /**
      * Retrieves all available properties of the user.
-     * Works with a downwards compatible mode.
      *
-     * NOTE: Even if downwards compatible mode is enbabled by default, this mode
-     * is deprecated...
-     *
-     * @param bool $beDownwardsCompatible Flag to return downwards compatible
-     *        values
      * @return array bool a array or false in downwards compatible mode,
      *         otherwhise a array.
      *         Return value in new mode is:
@@ -1149,33 +1082,18 @@ class cApiUser extends Item {
      *         - $arr[pos][name]
      *         - $arr[pos][type]
      */
-    public function getUserProperties($beDownwardsCompatible = true) {
+    public function getUserProperties() {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
         $userProps = $userPropColl->fetchByUserId();
 
         $props = array();
 
-        if (true === $beDownwardsCompatible) {
-            // @deprecated [2011-11-03]
-            cDeprecated('Param $beDownwardsCompatible should not be true');
-            if (count($userProps) == 0) {
-                return array();
-            }
-
-            foreach ($userProps as $userProp) {
-                $props[] = array(
-                    'name' => $userProp->get('name'),
-                    'type' => $userProp->get('type')
-                );
-            }
-        } else {
-            foreach ($userProps as $userProp) {
-                $props[$userProp->get('iduserprop')] = array(
-                    'name' => $userProp->get('name'),
-                    'type' => $userProp->get('type'),
-                    'value' => $userProp->get('value')
-                );
-            }
+        foreach ($userProps as $userProp) {
+            $props[$userProp->get('iduserprop')] = array(
+                'name' => $userProp->get('name'),
+                'type' => $userProp->get('type'),
+                'value' => $userProp->get('value')
+            );
         }
 
         return $props;
@@ -1247,343 +1165,6 @@ class cApiUser extends Item {
         }
 
         return $sError;
-    }
-
-}
-
-// ##############################################################################
-// Old versions of user item collection and user item classes
-//
-// NOTE: Class implemetations below are deprecated and the will be removed in
-// future versions of contenido.
-// Don't use them, they are still available due to downwards compatibility.
-
-/**
- * Uuser item collection
- *
- * @deprecated [[2012-03-22] Use cApiUserCollection instead of this class.
- */
-class Users {
-
-    var $table;
-
-    var $db;
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUserCollection() instead
-     */
-    function Users($table = '') {
-        cDeprecated('Use cApiUserCollection() instead');
-        global $cfg;
-        $this->table = ($table == '')? $cfg['tab']['user'] : $table;
-        $this->db = cRegistry::getDb();
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUserCollection->create() instead
-     */
-    function create($username) {
-        cDeprecated('Use cApiUserCollection->create() instead');
-        $oUserColl = new cApiUserCollection();
-        $item = $oUserColl->create($username);
-        return ($item)? $item->get('user_id') : false;
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUserCollection->delete() instead
-     */
-    function deleteUserByID($userid) {
-        cDeprecated('Use cApiUserCollection->delete() instead');
-        $oUserColl = new cApiUserCollection();
-        return $oUserColl->delete($userid);
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUserCollection->deleteUserByUsername()
-     *             instead
-     */
-    function deleteUserByUsername($username) {
-        cDeprecated('Use cApiUserCollection->deleteUserByUsername() instead');
-        $oUserColl = new cApiUserCollection();
-        return $oUserColl->deleteUserByUsername($username);
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUserCollection->getAccessibleUsers()
-     *             instead
-     */
-    function getAccessibleUsers($perms, $includeAdmins = false) {
-        cDeprecated('Use cApiUserCollection->getAccessibleUsers() instead');
-        $oUserColl = new cApiUserCollection();
-        return $oUserColl->getAccessibleUsers($perms, $includeAdmins);
-    }
-
-}
-
-/**
- * Single user item
- *
- * @deprecated [[2012-03-22] Use cApiUser instead of this class.
- */
-class User {
-
-    var $table;
-
-    var $db;
-
-    var $values;
-
-    var $modifiedValues;
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUser() instead
-     */
-    function User($table = '') {
-        cDeprecated('Use cApiUser() instead');
-        global $cfg;
-        $this->table = ($table == '')? $cfg['tab']['user'] : $table;
-        $this->db = cRegistry::getDb();
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUser->loadUserByUsername() instead
-     */
-    function loadUserByUsername($username) {
-        cDeprecated('Use cApiUser->loadUserByUsername() instead');
-        $oUser = new cApiUser();
-        if (!$oUser->loadUserByUsername($username)) {
-            return false;
-        }
-        $this->values = $oUser->toArray();
-        return true;
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUser->loadByPrimaryKey() instead
-     */
-    function loadUserByUserID($userID) {
-        cDeprecated('Use cApiUser->loadByPrimaryKey() instead');
-        $oUser = new cApiUser();
-        if (!$oUser->loadByPrimaryKey($userID)) {
-            return false;
-        }
-        $this->values = $oUser->toArray();
-        return true;
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUser->getEffectiveUserPerms() instead
-     */
-    function getEffectiveUserPerms() {
-        cDeprecated('Use cApiUser->getEffectiveUserPerms() instead');
-        $oUser = new cApiUser();
-        return $oUser->getEffectiveUserPerms();
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUser() instead
-     */
-    function getField($field) {
-        cDeprecated('Use cApiUser() instead');
-        return ($this->values[$field]);
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUser() instead
-     */
-    function setField($field, $value, $safe = true) {
-        cDeprecated('Use cApiUser() instead');
-        $this->modifiedValues[$field] = true;
-        $this->values[$field] = $value;
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUser() instead
-     */
-    function store() {
-        cDeprecated('Use cApiUser() instead');
-        $oUser = new cApiUser();
-        $oUser->loadByRecordSet($this->values);
-        foreach ($this->modifiedValues as $key => $value) {
-            $oUser->set($key, $value);
-        }
-        return $oUser->store();
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUserCollection->fetchAvailableUsers()
-     *             instead
-     */
-    function getAvailableUsers($sort = 'ORDER BY realname ASC') {
-        cDeprecated('Use cApiUserCollection->fetchAvailableUsers() instead');
-        $users = array();
-        $oUserColl = new cApiUserCollection();
-        $oUserColl->fetchAvailableUsers(str_ireplace('ORDER BY ', '', $sort));
-        while (($oItem = $oUserColl->next()) !== false) {
-            $users[$oItem->get('user_id')] = array(
-                'username' => $oItem->get('username'),
-                'realname' => $oItem->get('realname')
-            );
-        }
-        return $users;
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUserCollection->fetchSystemAdmins()
-     *             instead
-     */
-    function getSystemAdmins($forceActive = false) {
-        cDeprecated('Use cApiUserCollection->fetchSystemAdmins() instead');
-        $users = array();
-        $oUserColl = new cApiUserCollection();
-        $oUserList = $oUserColl->fetchSystemAdmins($forceActive);
-        foreach ($oUserList as $item) {
-            $users[$item->get('user_id')] = array(
-                'username' => $item->get('username'),
-                'realname' => $item->get('realname'),
-                'email' => $item->get('email')
-            );
-        }
-        return $users;
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUserCollection() instead
-     */
-    function getClientAdmins($client) {
-        cDeprecated('Use cApiUserCollection->fetchClientAdmins() instead');
-        $users = array();
-        $oUserColl = new cApiUserCollection();
-        $oUserList = $oUserColl->fetchClientAdmins($client);
-        foreach ($oUserList as $item) {
-            $users[$item->get('user_id')] = array(
-                'username' => $item->get('username'),
-                'realname' => $item->get('realname'),
-                'email' => $item->get('email')
-            );
-        }
-        return $users;
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUser() instead
-     */
-    function getUsername($userid) {
-        cDeprecated('Use cApiUser() instead');
-        $oUser = new cApiUser($userid);
-        return $oUser->get('username');
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUser() instead
-     */
-    function getRealname($userid, $bAllowFallbackOnUsername = false) {
-        cDeprecated('Use cApiUser() instead');
-        $oUser = new cApiUser($userid);
-        return $oUser->getEffectiveName();
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUser() instead
-     */
-    function getRealnameByUserName($username) {
-        cDeprecated('Use cApiUser() instead');
-        $oUser = new cApiUser();
-        $oUser->loadBy('username', $username);
-        return $oUser->get('realname');
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUser->getGroupNamesByUserID() instead
-     */
-    function getGroupsByUserID($userid) {
-        cDeprecated('Use cApiUser->getGroupNamesByUserID() instead');
-        $oUser = new cApiUser();
-        return $oUser->getGroupNamesByUserID($userid);
-    }
-
-    /**
-     *
-     * @deprecated [2012-03-22] Use cApiUser->getGroupIDsByUserID() instead
-     */
-    function getGroupNamesByUserID($userid) {
-        cDeprecated('Use cApiUser->getGroupIDsByUserID() instead');
-        $oUser = new cApiUser();
-        return $oUser->getGroupIDsByUserID($userid, true);
-    }
-
-    /**
-     *
-     * @deprecated [2011-11-03] Use cApiUser->getUserProperty()
-     */
-    function getUserProperty($type, $name, $group = false) {
-        cDeprecated('Use cApiUser->getUserProperty() instead');
-        $user = new cApiUser();
-        $user->values = $this->values;
-        return $user->getUserProperty($type, $name, $group);
-    }
-
-    /**
-     *
-     * @deprecated [2011-11-03] Use cApiUser->getUserPropertiesByType()
-     */
-    function getUserPropertiesByType($type, $group = false) {
-        cDeprecated('Use cApiUser->getUserPropertiesByType() instead');
-        $user = new cApiUser();
-        $user->values = $this->values;
-        return $user->getUserPropertiesByType($type, $group);
-    }
-
-    /**
-     *
-     * @deprecated [2011-11-03] Use cApiUser->getUserProperties()
-     */
-    function getUserProperties() {
-        cDeprecated('Use cApiUser->getUserProperties() instead');
-        $user = new cApiUser();
-        $user->values = $this->values;
-        return $user->getUserProperties(false);
-    }
-
-    /**
-     *
-     * @deprecated [2011-11-03] Use cApiUser->setUserProperty()
-     */
-    function setUserProperty($type, $name, $value) {
-        cDeprecated('Use cApiUser->setUserProperty() instead');
-        $user = new cApiUser();
-        $user->values = $this->values;
-        return $user->setUserProperty($type, $name, $value);
-    }
-
-    /**
-     *
-     * @deprecated [2011-11-03] Use cApiUser->deleteUserProperty()
-     */
-    function deleteUserProperty($type, $name) {
-        cDeprecated('Use cApiUser->deleteUserProperty() instead');
-        $user = new cApiUser();
-        $user->values = $this->values;
-        return $user->deleteUserProperty($type, $name);
     }
 
 }

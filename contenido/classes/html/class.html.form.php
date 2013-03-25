@@ -50,28 +50,6 @@ class cHTMLForm extends cHTMLContentElement {
     }
 
     /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLForm() {
-        cDeprecated('Use __construct() instead');
-        $this->__construct();
-    }
-
-    /**
-     * Adds content to the form
-     *
-     * @param string $content content to add
-     * @return cHTMLForm $this
-     * @deprecated 2012-09-12 Use appendContent($content) instead!
-     */
-    public function add($content) {
-        cDeprecated('Use appendContent($content) instead!');
-
-        return $this->appendContent($content);
-    }
-
-    /**
      * Sets the given var.
      *
      * @param string $var

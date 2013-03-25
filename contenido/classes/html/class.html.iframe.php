@@ -37,15 +37,6 @@ class cHTMLIFrame extends cHTML {
     }
 
     /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLIFrame() {
-        cDeprecated('Use __construct() instead');
-        $this->__construct();
-    }
-
-    /**
      * Sets this frame's source
      *
      * @param string|object $content String with the content or an object to

@@ -115,18 +115,3 @@ class cDebugFile implements cDebugInterface {
     }
 
 }
-
-class Debug_File extends cDebugFile {
-
-    /**
-     * @deprecated Class was renamed to cDebugFile
-     */
-    private function __construct() {
-        global $cfg; // omfg, I know... TODO
-        cDeprecated('Class was renamed to cDebugFile');
-        $this->_sPathToLogs = $cfg['path']['contenido_logs'];
-        $this->_sFileName = 'debug.log';
-        $this->_sPathToFile = $this->_sPathToLogs . $this->_sFileName;
-    }
-
-}

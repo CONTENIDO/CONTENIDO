@@ -83,12 +83,6 @@ class cGuiNotification {
         $this->_sPathImages = cRegistry::getBackendUrl() . $cfg['path']['images'];
     }
 
-    /** @deprecated  [2011-05-19] Old constructor function for downwards compatibility */
-    public function cGuiNotification() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
     /**
      * Generates message box and returns it back.
      *
@@ -191,26 +185,6 @@ class cGuiNotification {
      */
     public function displayMessageBox($sLevel, $sMessage, $iStyle = 1) {
         echo $this->returnMessageBox($sLevel, $sMessage, $iStyle) . '<br>';
-    }
-
-}
-
-/**
- * Old class name for downwards compatibility
- * @deprecated [2012-07-12] Please use cGuiNavigation instead
- */
-class Contenido_Notification extends cGuiNotification {
-
-    public function __construct() {
-        cDeprecated("The class Contenido_Notification was replaced by cGuiNotification.");
-
-        parent::__construct();
-    }
-
-    public function messageBox($sLevel, $sMessage, $iStyle = 1) {
-        cDeprecated("This function was renamed to returnMessageBox.");
-
-        return parent::returnMessageBox($sLevel, $sMessage, $iStyle);
     }
 
 }

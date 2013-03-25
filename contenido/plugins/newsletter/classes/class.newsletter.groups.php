@@ -12,7 +12,7 @@
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.1
- * @author     Björn Behrens
+ * @author     Bjï¿½rn Behrens
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -43,13 +43,6 @@ class NewsletterRecipientGroupCollection extends ItemCollection
         global $cfg;
         parent::__construct($cfg["tab"]["news_groups"], "idnewsgroup");
         $this->_setItemClass("NewsletterRecipientGroup");
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function NewsletterRecipientGroupCollection()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
     }
 
     /**
@@ -127,13 +120,6 @@ class NewsletterRecipientGroup extends Item
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function NewsletterRecipientGroup($mId = false)
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
-
     /**
      * Overriden store() method to ensure, that there is only one default group
      **/
@@ -178,13 +164,6 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
         $this->_setJoinPartner ('NewsletterRecipientGroupCollection');
         $this->_setJoinPartner ('NewsletterRecipientCollection');
         $this->_setItemClass("NewsletterRecipientGroupMember");
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function NewsletterRecipientGroupMemberCollection()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
     }
 
     /**
@@ -312,81 +291,6 @@ class NewsletterRecipientGroupMember extends Item
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function NewsletterRecipientGroupMember($mId = false)
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
-}
-
-/** @deprecated 2012-03-01 Use NewsletterRecipientGroupCollection instead */
-class RecipientGroupCollection extends NewsletterRecipientGroupCollection {
-    /** @deprecated 2012-03-01 Use NewsletterRecipientGroupCollection instead */
-    public function __construct()
-    {
-        cDeprecated("Use NewsletterRecipientGroupCollection instead");
-        parent::__construct();
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function RecipientGroupCollection()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-}
-
-/** @deprecated 2012-03-01 Use NewsletterRecipientGroup instead */
-class RecipientGroup extends NewsletterRecipientGroup {
-    /** @deprecated 2012-03-01 Use NewsletterRecipientGroup instead */
-    public function __construct()
-    {
-        cDeprecated("Use NewsletterRecipientGroup instead");
-        parent::__construct();
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function RecipientGroup()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-}
-
-/** @deprecated 2012-03-01 Use NewsletterRecipientGroupMemberCollection instead */
-class RecipientGroupMemberCollection extends NewsletterRecipientGroupMemberCollection {
-    /** @deprecated 2012-03-01 Use NewsletterRecipientGroupMemberCollection instead */
-    public function __construct()
-    {
-        cDeprecated("Use NewsletterRecipientGroupMemberCollection instead");
-        parent::__construct();
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function RecipientGroupMemberCollection()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-}
-
-/** @deprecated 2012-03-01 Use NewsletterRecipientGroupMember instead */
-class RecipientGroupMember extends NewsletterRecipientGroupMember {
-    /** @deprecated 2012-03-01 Use NewsletterRecipientGroupMember instead */
-    public function __construct()
-    {
-        cDeprecated("Use NewsletterRecipientGroupMember instead");
-        parent::__construct();
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function RecipientGroup()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
     }
 }
 ?>

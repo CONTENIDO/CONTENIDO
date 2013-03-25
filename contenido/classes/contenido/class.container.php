@@ -40,16 +40,6 @@ class cApiContainerCollection extends ItemCollection {
         }
     }
 
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiContainerCollection($select = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($select = false);
-    }
-
     public function clearAssignments($idtpl) {
         $this->select('idtpl = ' . (int) $idtpl);
         while (($item = $this->next()) !== false) {
@@ -98,15 +88,4 @@ class cApiContainer extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiContainer($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
-
 }

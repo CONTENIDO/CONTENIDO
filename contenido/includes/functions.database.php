@@ -325,9 +325,4 @@ function dbGetPrimaryKeyName($db, $table)
     return $sReturn;
 }
 
-
-/** @deprecated 2012-03-04 This function is not longer supported. */
-function dbUpdateSequence($sequencetable, $table, $db = false) {
-    cDeprecated('This function is not longer supported.');
-}
 ?>

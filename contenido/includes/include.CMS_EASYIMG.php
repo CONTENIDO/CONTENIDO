@@ -114,7 +114,7 @@ if ($doedit == "1") {
 <?php
 cDeprecated('Do not use CMS_EASYIMGEDIT any more - use CMS_IMGEDITOR instead!');
 $cNotification = new Contenido_Notification();
-$cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie bearbeiten einen veralteten Content-Typen (CMS_EASYIMGEDIT). Dieser Content-Typ wird in einer späteren Version von CONTENIDO nicht mehr unterstützt. Bitte wechseln Sie auf den neuen Content-Typen CMS_IMGEDITOR.');
+$cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie bearbeiten einen veralteten Content-Typen (CMS_EASYIMGEDIT). Dieser Content-Typ wird in einer spï¿½teren Version von CONTENIDO nicht mehr unterstï¿½tzt. Bitte wechseln Sie auf den neuen Content-Typen CMS_IMGEDITOR.');
 ?>
 <table width="100%"  border=0 cellspacing="0" cellpadding="0" bgcolor="#ffffff">
   <tr>
@@ -126,7 +126,6 @@ $cNotification->displayMessageBox(Contenido_Notification::LEVEL_WARNING, 'Sie be
     <td>
 
 <?php
-    cInclude("includes","functions.forms.php");
 
     getAvailableContentTypes($idartlang);
 

@@ -63,11 +63,6 @@ if (!defined('CON_ENVIRONMENT')) {
         $sEnvironment = 'production';
     }
 
-    /**
-     * @deprecated 2012-09-06 Constant has been renamed to CON_ENVIRONMENT
-     */
-    define('CONTENIDO_ENVIRONMENT', $sEnvironment);
-
     define('CON_ENVIRONMENT', $sEnvironment);
 }
 
@@ -108,7 +103,6 @@ if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
 require_once($cfg['path']['contenido_config'] . 'config.php');
 require_once($cfg['path']['contenido_config'] . 'config.path.php');
 require_once($cfg['path']['contenido_config'] . 'config.misc.php');
-require_once($cfg['path']['contenido_config'] . 'config.colors.php');
 require_once($cfg['path']['contenido_config'] . 'config.templates.php');
 require_once($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
 
@@ -184,7 +178,6 @@ if (is_dir($localePath)) {
 
 // Some general includes
 cInclude('includes', 'functions.general.php');
-cInclude('conlib', 'prepend.php');
 cInclude('includes', 'functions.i18n.php');
 
 // Initialization of CEC
@@ -197,7 +190,6 @@ if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.chains.load.
 }
 
 // Set default database connection parameter
-DB_Contenido::setDefaultConfiguration($cfg['db']);
 cDb::setDefaultConfiguration($cfg['db']);
 
 // Initialize UriBuilder, configuration is set in data/config/{environment}/config.misc.php

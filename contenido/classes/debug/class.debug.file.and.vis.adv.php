@@ -70,17 +70,3 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
     }
 
 }
-class Debug_FileAndVisAdv extends cDebugFileAndVisAdv {
-
-    /**
-     *
-     * @deprecated Class was renamed to cDebugFileAndVisAdv
-     */
-    private function __construct() {
-        global $cfg;
-        cDeprecated('Class was renamed to cDebugFileAndVisAdv');
-        $this->_aItems = array();
-        $this->_filePathName = $cfg['path']['contenido_logs'] . 'debug.log';
-    }
-
-}

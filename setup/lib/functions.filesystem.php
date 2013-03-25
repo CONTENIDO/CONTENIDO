@@ -22,76 +22,28 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_SUFFICIENT
- */
-define('C_PREDICT_SUFFICIENT', 1);
 define('CON_PREDICT_SUFFICIENT', 1);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_NOTPREDICTABLE
- */
-define('C_PREDICT_NOTPREDICTABLE', 2);
 define('CON_PREDICT_NOTPREDICTABLE', 2);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_CHANGEPERM_SAMEOWNER
- */
-define('C_PREDICT_CHANGEPERM_SAMEOWNER', 3);
 define('CON_PREDICT_CHANGEPERM_SAMEOWNER', 3);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_CHANGEPERM_SAMEGROUP
- */
-define('C_PREDICT_CHANGEPERM_SAMEGROUP', 4);
 define('CON_PREDICT_CHANGEPERM_SAMEGROUP', 4);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_CHANGEPERM_OTHERS
- */
-define('C_PREDICT_CHANGEPERM_OTHERS', 5);
 define('CON_PREDICT_CHANGEPERM_OTHERS', 5);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_CHANGEUSER
- */
-define('C_PREDICT_CHANGEUSER', 6);
 define('CON_PREDICT_CHANGEUSER', 6);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_CHANGEGROUP
- */
-define('C_PREDICT_CHANGEGROUP', 7);
 define('CON_PREDICT_CHANGEGROUP', 7);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_PREDICT_WINDOWS
- */
-define('C_PREDICT_WINDOWS', 8);
 define('CON_PREDICT_WINDOWS', 8);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_BASEDIR_NORESTRICTION
- */
-define('E_BASEDIR_NORESTRICTION', 1);
 define('CON_BASEDIR_NORESTRICTION', 1);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_BASEDIR_DOTRESTRICTION
- */
-define('E_BASEDIR_DOTRESTRICTION', 2);
 define('CON_BASEDIR_DOTRESTRICTION', 2);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_BASEDIR_RESTRICTIONSUFFICIENT
- */
-define('E_BASEDIR_RESTRICTIONSUFFICIENT', 3);
 define('CON_BASEDIR_RESTRICTIONSUFFICIENT', 3);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_BASEDIR_INCOMPATIBLE
- */
-define('E_BASEDIR_INCOMPATIBLE', 4);
 define('CON_BASEDIR_INCOMPATIBLE', 4);
 
 function canWriteFile($filename) {

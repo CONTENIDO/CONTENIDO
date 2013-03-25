@@ -46,12 +46,6 @@ class cApiModuleCollection extends ItemCollection {
         $this->_setItemClass('cApiModule');
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiModuleCollection() {
-        cDeprecated('Use __construct() instead');
-        $this->__construct();
-    }
-
     /**
      * Creates a new module item
      *
@@ -224,12 +218,6 @@ class cApiModule extends Item {
         if (isset($client) && $client != 0) {
             $this->_packageStructure = array('jsfiles' => $cfgClient[$client]['js']['path'], 'tplfiles' => $cfgClient[$client]['tpl']['path'], 'cssfiles' => $cfgClient[$client]['css']['path']);
         }
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiModule($mId = false) {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($mId);
     }
 
     /**
@@ -761,174 +749,6 @@ class cApiModule extends Item {
 
         parent::setField($name, $value, $bSafe);
     }
-
-    /**  @deprecated  [2012-02-29]  This function is not longer supported. */
-    public function getPackageOverview($sFile) {
-        cDeprecated('This function is not longer supported.');
-
-        return false;
-    }
-
-    /** @deprecated  [2012-02-29]  This function is not longer supported. */
-    public function importPackage($sFile, $aOptions = array()) {
-        cDeprecated('This function is not longer supported.');
-
-        return false;
-    }
-
-    /** @deprecated  [2012-02-29]  This function is not longer supported. */
-    public function exportPackage($sPackageFileName, $bReturn = false) {
-        cDeprecated('This function is not longer supported.');
-
-        return false;
-    }
-
-}
-
-/** @deprecated  [2013-02-10]  This class is not longer supported. */
-class cApiModuleTranslationCollection extends ItemCollection {
-
-    protected $_error;
-
-    /** @deprecated  [2013-02-10]  This class is not longer supported. */
-    public function __construct() {
-        cDeprecated("This class is not longer supported.");
-        global $cfg;
-        parent::__construct($cfg['tab']['mod_translations'], 'idmodtranslation');
-        $this->_setItemClass('cApiModuleTranslation');
-    }
-
-    /**
-     * Creates a new module translation item
-     */
-    public function create($idmod, $idlang, $original, $translation = false) {
-        // Check if the original already exists. If it does,
-        // update the translation if passed
-        $mod = new cApiModuleTranslation();
-        $sorg = $mod->_inFilter($original);
-
-        $this->select("idmod = '$idmod' AND idlang = '$idlang' AND original = '$sorg'");
-
-        if ($item = $this->next()) {
-            if ($translation !== false) {
-                $item->set('translation', $translation);
-                $item->store();
-            }
-
-            return $item;
-        } else {
-            $item = parent::createNewItem();
-            $item->set('idmod', $idmod);
-            $item->set('idlang', $idlang);
-            $item->set('original', $original);
-            $item->set('translation', $translation);
-            $item->store();
-
-            return $item;
-        }
-    }
-
-    /**
-     * Fetches a translation
-     *
-     * @param $module int Module ID
-     * @param $lang   int Language ID
-     * @param $string string String to lookup
-     */
-    public function fetchTranslation($module, $lang, $string) {
-        // If the f_obj does not exist, create one
-        if (!is_object($this->f_obj)) {
-            $this->f_obj = new cApiModuleTranslation();
-        }
-
-        // Create original string
-        $sorg = $this->f_obj->_inFilter($string);
-
-        // Look up
-        $this->select("idmod = '$module' AND idlang='$lang' AND original = '$sorg'");
-
-        if ($t = $this->next()) {
-            $translation = $t->get('translation');
-
-            if ($translation != '') {
-                return $translation;
-            } else {
-                return $string;
-            }
-        } else {
-            return $string;
-        }
-    }
-
-    /**
-     * @deprecated 2012-02-29 This function is not longer supported.
-     */
-    public function import($idmod, $idlang, $file) {
-        cDeprecated('This function is not longer supported.');
-        $this->_error = 'This function is not longer supported.';
-
-        return false;
-    }
-
-    /**
-     * @deprecated 2012-02-29 This function is not longer supported.
-     */
-    public function export($idmod, $idlang, $filename, $return = false) {
-        cDeprecated('This function is not longer supported.');
-
-        return false;
-    }
-
-}
-
-/** @deprecated  [2013-02-10]  This class is not longer supported. */
-class cApiModuleTranslation extends Item {
-
-    /** @deprecated  [2013-02-10]  This class is not longer supported. */
-    public function __construct($loaditem = false) {
-        cDeprecated("This class is not longer supported");
-        global $cfg;
-        parent::__construct($cfg['tab']['mod_translations'], 'idmodtranslation');
-        if ($loaditem !== false) {
-            $this->loadByPrimaryKey($loaditem);
-        }
-    }
-
-}
-
-/** @deprecated 2012-03-03 Not supported any longer. */
-function cHandler_ModuleData($sName, $aAttribs, $sContent) {
-    cDeprecated('This function is not longer supported.');
-    global $_mImport;
-    $_mImport['module'][$sName] = $sContent;
-}
-
-/** @deprecated 2012-03-03 Not supported any longer. */
-function cHandler_ItemArea($sName, $aAttribs, $sContent) {
-    cDeprecated('This function is not longer supported.');
-    global $_mImport;
-    $_mImport['current_item_area'] = $sContent;
-}
-
-/** @deprecated 2012-03-03 Not supported any longer. */
-function cHandler_ItemName($sName, $aAttribs, $sContent) {
-    cDeprecated('This function is not longer supported.');
-    global $_mImport;
-    $_mImport['current_item_name'] = $sContent;
-}
-
-/** @deprecated 2012-03-03 Not supported any longer. */
-function cHandler_ItemData($sName, $aAttribs, $sContent) {
-    cDeprecated('This function is not longer supported.');
-    global $_mImport;
-    $_mImport['items'][$_mImport['current_item_area']][$_mImport['current_item_name']][$sName] = $sContent;
-}
-
-/** @deprecated 2012-03-03 Not supported any longer. */
-function cHandler_Translation($sName, $aAttribs, $sContent) {
-    cDeprecated('This function is not longer supported.');
-    global $_mImport;
-    $_mImport['translations'][$_mImport['current_item_area']][$_mImport['current_item_name']] = $sContent;
 }
 
 ?>

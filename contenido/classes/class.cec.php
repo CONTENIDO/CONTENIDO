@@ -322,19 +322,6 @@ class cApiCecRegistry {
 }
 
 /**
- *
- * @deprecated [2012-02-25] Use cApiCecChainItem instead.
- */
-class pApiCECChainItem extends cApiCecChainItem {
-
-    public function __construct($sChainName, $sFunctionName, $aParameters) {
-        cDeprecated('Use cApiCecChainItem instead.');
-        $this->__construct($sChainName, $sFunctionName, $aParameters);
-    }
-
-}
-
-/**
  * CEC chain item class.
  *
  * @author Timo A. Hummel

@@ -161,11 +161,3 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
     }
 
 }
-
-/**
- *
- * @deprecated 2012-09-22
- */
-class Contenido_Challenge_Crypt_Auth extends cAuthHandlerBackend {
-
-}

@@ -40,16 +40,6 @@ class cApiActionCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiActionCollection() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
-    /**
      * Creates an action entry
      *
      * @param string|int $area
@@ -188,41 +178,4 @@ class cApiAction extends Item {
         // @todo Where is this used???
         $this->_wantParameters = array();
     }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiAction($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
-
-}
-
-// ##############################################################################
-// Old version of action class
-//
-// NOTE: Class implemetation below is deprecated and the will be removed in
-// future versions of contenido.
-// Don't use it, it's still available due to downwards compatibility.
-
-/**
- * Action
- *
- * @deprecated [2012-03-01] Use cApiActionCollection instead of this class.
- */
-class Action extends cApiActionCollection {
-
-    public function __construct() {
-        cDeprecated("Use class cApiActionCollection instead");
-        parent::__construct();
-    }
-
-    public function Action() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
 }

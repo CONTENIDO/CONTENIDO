@@ -52,15 +52,6 @@ class cDatatypeNumber extends cDatatype {
         parent::__construct();
     }
 
-    /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cDatatypeNumber() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
     public function set($value) {
         $this->_mValue = floatval($value);
     }

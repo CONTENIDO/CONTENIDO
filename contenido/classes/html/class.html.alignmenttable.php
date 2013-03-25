@@ -32,15 +32,6 @@ class cHTMLAlignmentTable extends cHTMLTable {
         $this->_contentlessTag = false;
     }
 
-    /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLAlignmentTable() {
-        cDeprecated('Use __construct() instead');
-        $this->__construct();
-    }
-
     public function render() {
         $tr = new cHTMLTableRow();
         $td = new cHTMLTableData();

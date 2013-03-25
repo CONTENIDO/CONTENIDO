@@ -122,15 +122,3 @@ class cXmlWriter extends cXmlBase {
     }
 
 }
-class ContenidoXmlWriter extends cXmlWriter {
-
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cXmlWriter
-     */
-    public function __construct($version = '', $encoding = '') {
-        cDeprecated('Class was renamed to cXmlWriter.');
-        parent::__construct($version, $encoding);
-    }
-
-}

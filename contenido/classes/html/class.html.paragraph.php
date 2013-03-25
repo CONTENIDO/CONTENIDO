@@ -37,14 +37,4 @@ class cHTMLParagraph extends cHTMLContentElement {
         parent::__construct($content, $class);
         $this->_tag = 'p';
     }
-
-    /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLParagraph($content = '') {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($content);
-    }
-
 }

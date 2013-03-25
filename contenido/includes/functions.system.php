@@ -180,20 +180,3 @@ function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false) {
     }
     return true;
 }
-
-/**
- * Get several server and CONTENIDO settings
- * parse system and CONTENIDO output into a string
- *
- * @deprecated 2012-02-26 Moved directly to include.system_sysvalues.php
- */
-function writeSystemValuesOutput($usage) {
-    cDeprecated("This function is not longer supported.");
-}
-
-
-/** @deprecated  [2012-07-04] Use function systemHavePerm() instead */
-function system_have_perm($client) {
-    cDeprecated("Use function systemHavePerm() instead");
-    return systemHavePerm($client);
-}

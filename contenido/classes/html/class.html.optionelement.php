@@ -57,15 +57,6 @@ class cHTMLOptionElement extends cHTMLFormElement {
     }
 
     /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLOptionElement($title, $value, $selected = false, $disabled = false) {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($title, $value, $selected, $disabled);
-    }
-
-    /**
      * Sets the selected flag
      *
      * @param bool $selected If true, adds the "selected" attribute

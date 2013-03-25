@@ -118,15 +118,6 @@ function conMultiLink() {
     }
 }
 
-/**
- * @deprecated 2012-09-17 This function does not do anything and should not be
- *             used.
- */
-function handleErrors() {
-
-    return true;
-}
-
 function getRegistry() {
     return window.top.header.ContenidoRegistry;
 }

@@ -66,15 +66,6 @@ class cHTMLCheckbox extends cHTMLFormElement {
     }
 
     /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLRadiobutton($name, $value, $id = '', $checked = false, $disabled = false, $tabindex = null, $accesskey = '') {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($name, $value, $id, $checked, $disabled, $tabindex, $accesskey);
-    }
-
-    /**
      * Sets the checked flag.
      *
      * @param bool $checked If true, the "checked" attribute will be assigned.

@@ -1104,13 +1104,4 @@ class PifaForm extends Item {
             }
         }
     }
-
-    /**
-     *
-     * @deprecated use $this->get('data_table') instead
-     */
-    public function getTableName() {
-        return $this->get('data_table');
-    }
-
 }

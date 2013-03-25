@@ -36,12 +36,6 @@ class NoteCollection extends cApiCommunicationCollection {
         $this->_setItemClass('NoteItem');
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    function NoteCollection() {
-        cDeprecated('Use __construct() instead');
-        $this->__construct();
-    }
-
     /**
      * Selects one or more items from the database
      *
@@ -58,22 +52,6 @@ class NoteCollection extends cApiCommunicationCollection {
         }
 
         return parent::select($where, $group_by, $order_by, $limit);
-    }
-
-    /**
-     * Magic method to invoke inaccessible methods.
-     * Currently it works as a fallback for the not supported method create() which
-     * creates a PHP Strict warning.
-     * @param  string  $name
-     * @param  array   $arguments
-     * @return mixed
-     */
-    public function __call($name, $arguments) {
-        if ('create' === $name) {
-            // Catch old and not supported create() method
-            cDeprecated('Use NoteCollection->createItem() instead NoteCollection->create()');
-            return call_user_func_array(array($this, 'createItem'), $arguments);
-        }
     }
 
     /**

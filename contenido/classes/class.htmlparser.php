@@ -36,36 +36,6 @@ if (!defined('CON_FRAMEWORK')) {
  */
 
 /**
- * @deprecated 2012-09-06 Unused in CONTENIDO core - should not be used any longer
- */
-define('NODE_TYPE_START', 0);
-
-/**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant HtmlParser::NODE_TYPE_ELEMENT
- */
-define('NODE_TYPE_ELEMENT', 1);
-
-/**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant HtmlParser::NODE_TYPE_ENDELEMENT
- */
-define('NODE_TYPE_ENDELEMENT', 2);
-
-/**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant HtmlParser::NODE_TYPE_TEXT
- */
-define('NODE_TYPE_TEXT', 3);
-
-/**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant HtmlParser::NODE_TYPE_COMMENT
- */
-define('NODE_TYPE_COMMENT', 4);
-
-/**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant HtmlParser::NODE_TYPE_DONE
- */
-define('NODE_TYPE_DONE', 5);
-
-/**
  * Class HtmlParser.
  * To use, create an instance of the class passing
  * HTML text. Then invoke parse() until it's false.

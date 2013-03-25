@@ -50,12 +50,6 @@ class WorkflowActions extends ItemCollection {
         $this->_setItemClass("WorkflowAction");
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function WorkflowActions() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
     public function get($idworkflowitem, $action) {
         $this->select("idworkflowitem = '" . cSecurity::escapeDB($idworkflowitem, NULL) . "' AND action = '" . cSecurity::escapeDB($action, NULL) . "'");
         if ($this->next()) {
@@ -125,13 +119,6 @@ class WorkflowAction extends Item {
 
         parent::__construct($cfg["tab"]["workflow_actions"], "idworkflowaction");
     }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function WorkflowAction() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
 }
 
 ?>

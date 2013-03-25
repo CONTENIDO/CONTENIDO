@@ -37,16 +37,6 @@ class cApiClientCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiClientCollection() {
-        cDeprecated('Use __construct() instead');
-        $this->__construct();
-    }
-
-    /**
      * Creates a new client entry
      *
      * @global object $auth
@@ -197,16 +187,6 @@ class cApiClient extends Item {
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
-    }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiClient($id = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($id);
     }
 
     /**
@@ -370,25 +350,6 @@ class cApiClient extends Item {
             $this->_oPropertyCollection->changeClient($this->idclient);
         }
         return $this->_oPropertyCollection;
-    }
-
-}
-
-/**
- * Client class
- *
- * @deprecated [2012-02-09] Use cApiClientCollection instead of this class.
- */
-class Client extends cApiClientCollection {
-
-    public function __construct() {
-        cDeprecated("Use class cApiClientCollection instead");
-        parent::__construct();
-    }
-
-    public function Client() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
     }
 
 }

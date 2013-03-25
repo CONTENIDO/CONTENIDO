@@ -38,10 +38,3 @@ interface cDebugInterface {
     public function out($sText);
 
 }
-
-/**
- * @deprecated [2012-07-24] interface was renamed to cDebugInterface
- */
-interface IDebug extends cDebugInterface {
-
-}

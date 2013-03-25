@@ -56,15 +56,6 @@ class cHTMLUpload extends cHTMLFormElement {
     }
 
     /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLUpload($name, $width = '', $maxlength = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '') {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($name, $width, $maxlength, $id, $disabled, $tabindex, $accesskey);
-    }
-
-    /**
      * Sets the width of the text box.
      *
      * @param int $width width of the text box

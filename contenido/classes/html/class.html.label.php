@@ -54,15 +54,6 @@ class cHTMLLabel extends cHTMLContentElement {
     }
 
     /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLLabel($text, $for) {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($text, $for);
-    }
-
-    /**
      * Renders the label
      *
      * @return string Rendered HTML

@@ -64,15 +64,6 @@ abstract class cSearchBaseAbstract {
     protected $client;
 
     /**
-     * Flag to enable debug
-     *
-     * @deprecated No longer needed. The debug mode gets chosen by the system
-     *             settings.
-     * @var bool
-     */
-    protected $bDebug;
-
-    /**
      * Initialises some properties
      *
      * @param cDb $oDB Optional database instance
@@ -95,18 +86,6 @@ abstract class cSearchBaseAbstract {
     }
 
     /**
-     * Setter for debug
-     *
-     * @deprecated No longer needed. The debug mode gets chosen by the system
-     *             settings.
-     * @param bool $bDebug
-     */
-    public function setDebug($bDebug) {
-        cDeprecated("This function is no longer needed. cDebug checks the available output methods for itself.");
-        $this->bDebug = (bool) $bDebug;
-    }
-
-    /**
      * Main debug function, prints dumps parameter if debugging is enabled
      *
      * @param string $msg Some text
@@ -120,35 +99,6 @@ abstract class cSearchBaseAbstract {
             $dump .= $var;
         }
         cDebug::out($dump);
-    }
-
-}
-abstract class SearchBaseAbstract extends cSearchBaseAbstract {
-
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cSearchBaseAbstract
-     */
-    public function __construct($oDB = null, $bDebug = false) {
-        cDeprecated('Class was renamed to cSearchBaseAbstract.');
-        parent::__construct($oDB, $bDebug);
-    }
-
-}
-
-/**
- *
- * @deprecated [2012-02-25] Use cSearchIndex instead.
- */
-class Index extends cSearchIndex {
-
-    public function __construct($oDB = null) {
-        cDeprecated('Use cSearchIndex instead.');
-        parent::SearchIndex($oDB);
-    }
-
-    public function Index($oDB = null) {
-        $this->__construct($oDB);
     }
 
 }
@@ -689,27 +639,6 @@ class cSearchIndex extends cSearchBaseAbstract {
      */
     public function getCmsTypeSuffix() {
         return $this->_cmsTypeSuffix;
-    }
-
-}
-class SearchIndex extends cSearchIndex {
-
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cSearchIndex
-     */
-    public function __construct($db = null) {
-        cDeprecated('Class was renamed to cSearchIndex.');
-        parent::__construct($db);
-    }
-
-    /**
-     *
-     * @deprecated [2012-07-24] use __construct()
-     */
-    public function SearchIndex($db = null) {
-        cDeprecated('Use __construct()');
-        $this->__construct($db);
     }
 
 }
@@ -1385,27 +1314,6 @@ class cSearch extends cSearchBaseAbstract {
     }
 
 }
-class Search extends cSearch {
-
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cSearch
-     */
-    public function __construct($options, $db = null) {
-        cDeprecated('Class was renamed to cSearch.');
-        parent::__construct($options, $db);
-    }
-
-    /**
-     *
-     * @deprecated Use __construct()
-     */
-    public function Search($options, $db = null) {
-        cDeprecated('Use __construct()');
-        $this->__construct($options, $db);
-    }
-
-}
 
 /**
  * CONTENIDO API - SearchResult Object
@@ -1753,27 +1661,6 @@ class cSearchResult extends cSearchBaseAbstract {
         if ($this->db->nextRecord()) {
             return $this->db->f('idcat');
         }
-    }
-
-}
-class SearchResult extends cSearchResult {
-
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cSearchResult
-     */
-    public function __construct($search_result, $result_per_page, $oDB = null, $bDebug = false) {
-        cDeprecated('Class was renamed to cSearchResult.');
-        parent::__construct($search_result, $result_per_page, $oDB, $bDebug);
-    }
-
-    /**
-     *
-     * @deprecated Use __construct()
-     */
-    public function cSearchResult($search_result, $result_per_page, $oDB = null, $bDebug = false) {
-        cDeprecated('Use __construct()');
-        parent::__construct($search_result, $result_per_page, $oDB, $bDebug);
     }
 
 }

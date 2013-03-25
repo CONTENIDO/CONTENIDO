@@ -27,14 +27,6 @@ if (!defined('CON_FRAMEWORK')) {
 class cBackend {
 
     /**
-     * Debug flag
-     *
-     * @deprecated [2012-03-12] No longer needed. The debug mode gets chosen by
-     *             the system settings.
-     */
-    protected $_debug = 0;
-
-    /**
      * Possible actions
      *
      * @var array
@@ -285,14 +277,6 @@ class cBackend {
         } else {
             echo $oldaction . ' is not in the actions table!<br><br>';
         }
-    }
-
-}
-
-class Contenido_Backend extends cBackend {
-    /** @deprecated [2012-07-24] class was renamed to cBackend */
-    public function __construct() {
-        cDeprecated('Class was renamed to cBackend.');
     }
 
 }

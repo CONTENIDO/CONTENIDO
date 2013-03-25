@@ -25,30 +25,6 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /**
- *
- * @deprecated [2012-03-16] use cI18n::getLanguage()
- */
-global $i18nLanguage;
-
-/**
- *
- * @deprecated [2012-03-16] use cI18n::getDomains()
- */
-global $i18nDomains;
-
-/**
- *
- * @deprecated [2012-03-16] use cI18n::getFiles()
- */
-global $transFile;
-
-/**
- *
- * @deprecated [2012-03-16] use cI18n::getCache()
- */
-global $_i18nTranslationCache;
-
-/**
  * gettext wrapper (for future extensions).
  * Usage:
  * trans('Your text which has to be translated');

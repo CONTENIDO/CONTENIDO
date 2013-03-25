@@ -37,16 +37,6 @@ class cApiAreaCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiAreaCollection() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
-    /**
      * Creates a area item entry
      *
      * @param string $name Name
@@ -170,55 +160,4 @@ class cApiArea extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiArea($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
-
-    /**
-     *
-     * @deprecated [2011-10-25] Use cApiAreaCollection->create()
-     */
-    public function create($name, $parentid = 0, $relevant = 1, $online = 1, $menuless = 0) {
-        cDeprecated("Use cApiAreaCollection->create() instead");
-
-        $oAreaColl = new cApiAreaCollection();
-        return $oAreaColl->create($name, $parentid, $relevant, $online, $menuless);
-    }
-
-    /**
-     *
-     * @deprecated [2012-02-24] Use cApiAreaCollection->create()
-     */
-    public function createAction($area, $name, $code, $location, $relevant) {
-        cDeprecated("Use cApiAreaCollection->create() instead");
-
-        $ac = new cApiActionCollection();
-        $a = $ac->create($area, $name, $code, $location, $relevant);
-    }
-
-}
-
-/**
- *
- * @deprecated [2012-02-25] Use cApiAreaCollection instead of this class.
- */
-class Area extends cApiAreaCollection {
-
-    public function __construct() {
-        cDeprecated("Use class cApiAreaCollection instead");
-        parent::__construct();
-    }
-
-    public function Area() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
 }

@@ -44,15 +44,6 @@ class cTree extends cTreeItem {
     }
 
     /**
-     *
-     * @deprecated 2012-08-24 Use __construct
-     */
-    function cTree($name = "") {
-        cDeprecated('Use __construct');
-        $this->__construct($name);
-    }
-
-    /**
      * sets a new name for the tree.
      *
      * @param string name Name of the tree

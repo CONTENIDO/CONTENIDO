@@ -43,16 +43,6 @@ class cApiArticleLanguageCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiArticleLanguageCollection($select = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($select);
-    }
-
-    /**
      * Creates an article language item entry.
      *
      * @global object $auth
@@ -278,16 +268,6 @@ class cApiArticleLanguage extends Item {
                 $this->_getArticleContent();
             }
         }
-    }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiArticleLanguage($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
     }
 
     /**

@@ -135,12 +135,3 @@ class cDebug {
     }
 
 }
-
-/** @deprecated  [2012-07-24]  Class was renamed to cDebug */
-class DebuggerFactory extends cDebug {
-    /** @deprecated Class was renamed to cDebug */
-    public static function getDebugger($sType = '') {
-        cDeprecated('Use cDebug::getDebugger()');
-        return cDebug::getDebugger($sType);
-    }
-}

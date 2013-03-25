@@ -41,12 +41,6 @@ class WorkflowArtAllocations extends ItemCollection {
         $this->_setItemClass("WorkflowArtAllocation");
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function WorkflowArtAllocations() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
     public function create($idartlang) {
         global $cfg;
 
@@ -94,12 +88,6 @@ class WorkflowArtAllocation extends Item {
         global $cfg;
 
         parent::__construct($cfg["tab"]["workflow_art_allocation"], "idartallocation");
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function WorkflowArtAllocation() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
     }
 
     public function getWorkflowItem() {

@@ -39,16 +39,6 @@ class cApiContainerConfigurationCollection extends ItemCollection {
         }
     }
 
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiContainerConfigurationCollection($select = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($select = false);
-    }
-
     public function create($idtplcfg, $number, $container) {
         $item = parent::createNewItem();
         $item->set('idtplcfg', (int) $idtplcfg);
@@ -80,15 +70,4 @@ class cApiContainerConfiguration extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiContainerConfiguration($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
-
 }

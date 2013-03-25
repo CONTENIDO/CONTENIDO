@@ -43,15 +43,6 @@ class cDatatype
     }
 
     /**
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cDatatype()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
-    /**
      * Sets this datatype to a specific value
      * @param  mixed  $value
      */

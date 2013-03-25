@@ -12,7 +12,7 @@
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.1
- * @author     Björn Behrens
+ * @author     Bjï¿½rn Behrens
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -43,13 +43,6 @@ class NewsletterRecipientCollection extends ItemCollection
         global $cfg;
         parent::__construct($cfg["tab"]["news_rcp"], "idnewsrcp");
         $this->_setItemClass("NewsletterRecipient");
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function NewsletterRecipientCollection()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
     }
 
     /**
@@ -229,13 +222,6 @@ class NewsletterRecipient extends Item
         }
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function NewsletterRecipient($mId = false)
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
-
     public function store()
     {
         global $auth;
@@ -270,37 +256,4 @@ class NewsletterRecipient extends Item
     }
 }
 
-/** @deprecated 2012-03-01 Use NewsletterRecipientCollection instead */
-class RecipientCollection extends NewsletterRecipientCollection {
-    /** @deprecated 2012-03-01 Use NewsletterRecipientCollection instead */
-    public function __construct()
-    {
-        cDeprecated("Use NewsletterRecipientCollection instead");
-        parent::__construct();
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function RecipientCollection()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-}
-
-/** @deprecated 2012-03-01 Use NewsletterRecipient instead */
-class Recipient extends NewsletterRecipient {
-    /** @deprecated 2012-03-01 Use NewsletterRecipient instead */
-    public function __construct()
-    {
-        cDeprecated("Use NewsletterRecipient instead");
-        parent::__construct();
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function Recipient()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-}
 ?>

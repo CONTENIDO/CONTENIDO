@@ -98,15 +98,6 @@ class cTreeItem {
     }
 
     /**
-     *
-     * @deprecated 2012-08-24 Use __construct()
-     */
-    function cTreeItem($id = "", $name = "", $collapsed = false) {
-        cDeprecated('Use __construct()');
-        $this->__construct($id, $name, $collapsed);
-    }
-
-    /**
      * Id getter
      *
      * @return string
@@ -233,26 +224,6 @@ class cTreeItem {
                 $level--;
             }
         }
-    }
-
-    /**
-     * Exports a tree as an array of arrays.
-     * Array format:
-     * array(
-     * array("id" => "Item ID", "name" => "Item name", "level" => 1,
-     * "attributes" => array("attr_name" => "attr_value"))
-     * );
-     *
-     * @return array
-     * @access public
-     * @deprecated 2011-08-22
-     */
-    public function exportTree() {
-        cDeprecated("This function never worked");
-        /*
-         * TODO: Function can't work... work in progress...
-         * $myobj->traverse($objlist);
-         */
     }
 
     /**

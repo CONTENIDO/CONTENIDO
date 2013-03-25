@@ -267,25 +267,3 @@ class cGuiTableForm {
     }
 
 }
-
-/**
- * Old classname for downwards compatibility
- * @deprecated [2012-07-12] This class was renamed to cGuiTableForm.
- */
-class UI_Table_Form extends cGuiTableForm {
-
-    public function __construct($name, $action = "", $method = "post") {
-        cDeprecated("This class was renamed to cGuiTableForm");
-
-        parent::__construct($name, $action, $method);
-    }
-
-    public function setAccessKey($key) {
-        cDeprecated("This function doesn't do anything. Please use CSS to style your pages.");
-    }
-
-    public function setWidth($width) {
-        cDeprecated("This function doesn't do anything. Please use CSS to style your pages.");
-    }
-
-}

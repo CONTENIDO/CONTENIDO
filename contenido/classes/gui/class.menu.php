@@ -148,39 +148,4 @@ class cGuiMenu {
 
 }
 
-/**
- * Old class name for downwards compatibility
- * @deprecated [2012-07-12] This class was renamend to cGuiMenu
- */
-class UI_Menu extends cGuiMenu {
-
-    public $extra;
-    public $border;
-    public $padding;
-    public $javascripts;
-
-    public function __construct() {
-        cDeprecated("This class was renamend to cGuiMenu");
-
-        parent::__construct();
-    }
-
-    public function setBgColor($color) {
-        cDeprecated("This functions doesn't do anything. Please use CSS to style your elements");
-    }
-
-    public function setPadding($padding) {
-        cDeprecated("This functions doesn't do anything. Please use CSS to style your elements");
-    }
-
-    public function setBorder($border) {
-        cDeprecated("This functions doesn't do anything. Please use CSS to style your elements");
-    }
-
-    public function setExtra($extra) {
-        cDeprecated("This functions doesn't do anything. Please use CSS to style your elements");
-    }
-
-}
-
 ?>

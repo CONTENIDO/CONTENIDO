@@ -30,16 +30,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant cDatatypeCurrency::LEFT
- */
-define('cDatatypeCurrency_Left', 1);
-
-/**
- * @deprecated 2012-09-06 Constant has been replaced by the class constant cDatatypeCurrency::RIGHT
- */
-define('cDatatypeCurrency_Right', 2);
-
 class cDatatypeCurrency extends cDatatypeNumber {
 
     protected $_cCurrencyLocation;
@@ -55,15 +45,6 @@ class cDatatypeCurrency extends cDatatypeNumber {
 
         $this->setCurrencySymbolLocation(self::RIGHT);
         $this->setCurrencySymbol("�");
-    }
-
-    /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cDatatypeCurrency() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
     }
 
     public function setCurrencySymbol($sSymbol) {

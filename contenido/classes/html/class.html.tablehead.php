@@ -34,14 +34,4 @@ class cHTMLTableHead extends cHTMLContentElement {
         parent::__construct();
         $this->_tag = 'th';
     }
-
-    /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLTableHead() {
-        cDeprecated('Use __construct() instead');
-        $this->__construct();
-    }
-
 }

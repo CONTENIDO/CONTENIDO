@@ -145,37 +145,12 @@ class cHTML {
     }
 
     /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTML() {
-        cDeprecated('Use __construct() instead');
-        $this->__construct();
-    }
-
-    /**
      * Setter for static $_generateXHTML property
      *
      * @param bool $value
      */
     public static function setGenerateXHTML($value) {
         self::$_generateXHTML = (bool) $value;
-    }
-
-    /**
-     * Contentless tag setter
-     *
-     * @param bool $contentlessTag
-     * @return cHTML $this
-     * @deprecated [2012-07-20] use $this->_contentLess directly or just use
-     *             setContent() - this function sets the contentLess attribute
-     *             to false
-     */
-    public function setContentlessTag($contentlessTag = true) {
-        cDeprecated('Use $this->_contentLess directly or just use setContent() - this function sets the contentLess attribute to false.');
-        $this->_contentlessTag = $contentlessTag;
-
-        return $this;
     }
 
     /**
@@ -326,53 +301,6 @@ class cHTML {
      */
     public function fillCloseSkeleton() {
         return sprintf($this->_skeletonClose, $this->_tag);
-    }
-
-    /**
-     *
-     * @param string $entity Entity to define
-     * @param string $definition Definition for the given entity
-     * @return cHTML $this
-     * @deprecated [2012-07-23] name change, use appendStyleDefinition
-     */
-    public function setStyleDefinition($entity, $definition) {
-        cDeprecated('Use appendStyleDefinition instead');
-        return $this->appendStyleDefinition($entity, $definition);
-    }
-
-    /**
-     * Attaches a style definition.
-     *
-     * This function is not restricted to a single style, e.g.
-     * you can set multiple style definitions as-is to the handler.
-     *
-     * $example->attachStyle('myIdentifier',
-     * 'border: 1px solid black; white-space: nowrap');
-     * $example->attachStyle('myIdentifier2',
-     * 'padding: 0px');
-     *
-     * Results in:
-     *
-     * style="border: 1px solid black; white-space: nowrap; padding: 0px;"
-     *
-     * @param string $name Name for a style definition
-     * @param string $definition Definition for the given entity
-     * @return cHTML $this
-     * @deprecated [2012-07-23] Set the definition via appendStyleDefinition and
-     *             do not use a name any more
-     */
-    public function attachStyleDefinition($name, $definition) {
-        cDeprecated('Set the definition via appendStyleDefinition and do not use a name any more');
-        // tokenize styles and add them via appendStyleDefinition
-        $styles = explode(';', $definition);
-        foreach ($styles as $style) {
-            $propVal = explode(':', $style);
-            if (count($propVal) === 2) {
-                $this->appendStyleDefinition(trim($propVal[0]), trim($propVal[1]));
-            }
-        }
-
-        return $this;
     }
 
     /**

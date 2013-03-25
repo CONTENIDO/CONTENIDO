@@ -44,15 +44,6 @@ class cHTMLImage extends cHTML {
     }
 
     /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLImage($src = null) {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($src);
-    }
-
-    /**
      * Sets the image's source file
      *
      * @param string $src source location
@@ -94,20 +85,6 @@ class cHTMLImage extends cHTML {
      */
     public function setBorder($border) {
         return $this->updateAttribute('border', $border);
-    }
-
-    /**
-     * Sets the alignment
-     *
-     * @param string $alignment the alignment of the image
-     * @return cHTMLImage $this
-     * @deprecated [2012-07-23] use CSS for alignment
-     */
-    public function setAlignment($alignment) {
-        cDeprecated('Use CSS for alignment!');
-        $this->updateAttribute('align', $alignment);
-
-        return $this;
     }
 
     /**

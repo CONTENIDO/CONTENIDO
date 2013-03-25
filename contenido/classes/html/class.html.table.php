@@ -40,15 +40,6 @@ class cHTMLTable extends cHTMLContentElement {
     }
 
     /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cHTMLTable() {
-        cDeprecated('Use __construct() instead');
-        $this->__construct();
-    }
-
-    /**
      * Sets the spacing between cells
      *
      * @param string $cellspacing Spacing

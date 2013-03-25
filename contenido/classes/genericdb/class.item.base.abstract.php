@@ -44,25 +44,6 @@ if (cFileHandler::exists($driver_filename)) {
 }
 
 /**
- * Class cItemException.
- * @author     Murat Purc <murat@purc.de>
- * @version    0.1
- * @copyright  four for business AG <www.4fb.de>
- * @deprecated 2012-09-04 Use one of the cException subclasses instead
- */
-class cItemException extends cException {
-
-    /**
-     * @deprecated 2012-09-04 Use one of the cException subclasses instead
-     */
-    public function __construct($message, $code, $previous) {
-        cDeprecated('Use one of the cException subclasses instead');
-        parent::__construct($message, $code, $previous);
-    }
-
-}
-
-/**
  * Class cItemBaseAbstract.
  * Base class with common features for database based items and item collections.
  */

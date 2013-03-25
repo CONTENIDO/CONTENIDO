@@ -26,7 +26,6 @@ include_once('../includes/startup.php');
 $fullstart = getmicrotime();
 
 cInclude('includes', 'functions.api.php');
-cInclude('includes', 'functions.forms.php');
 cInclude('includes', 'functions.con.php');
 
 cRegistry::bootstrap(array(
@@ -47,8 +46,6 @@ $notification = new cGuiNotification();
 $classarea = new cApiAreaCollection();
 $classlayout = new cApiLayout();
 $classclient = new cApiClientCollection();
-/** @deprecated [2012-03-27] Uninitialized global cApiUser instance is no more needed */
-$classuser = new cApiUser();
 
 // Change client
 if (is_numeric($changeclient)) {

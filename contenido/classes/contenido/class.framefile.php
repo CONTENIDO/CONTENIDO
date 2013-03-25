@@ -40,16 +40,6 @@ class cApiFrameFileCollection extends ItemCollection {
         $this->_setJoinPartner('cApiFileCollection');
     }
 
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiFrameFileCollection() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
     public function create($area, $idframe, $idfile) {
         $item = parent::createNewItem();
 
@@ -101,15 +91,4 @@ class cApiFrameFile extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiFrameFile($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
-    }
-
 }

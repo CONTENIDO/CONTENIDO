@@ -16,17 +16,9 @@
 ################################################################################
 # UnitTest Framework initialization
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_UNITTEST_LIB_DIR
- */
-define('UNITTEST_LIB_DIR', '');
 // set dir to PHPUnit location
 define('CON_UNITTEST_LIB_DIR', '');
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_TEST_PATH
- */
-define('CONTENIDO_TEST_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')));
 // set dir to CONTENIDO test location
 define('CON_TEST_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')));
 

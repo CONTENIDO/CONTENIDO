@@ -291,26 +291,3 @@ class cTemplate {
     }
 
 }
-
-class Template extends cTemplate {
-
-    /**
-     *
-     * @deprecated Class was renamed to cTemplate
-     */
-    public function __construct($tags = false) {
-        cDeprecated('Class was renamed to cTemplate');
-        parent::__construct($tags);
-    }
-
-    /**
-     *
-     * @deprecated [2012-06-07] Old constructor function for downwards
-     *             compatibility
-     */
-    public function Template($tags = false) {
-        cDeprecated('Use __construct() instead');
-        $this->__construct($tags);
-    }
-
-}

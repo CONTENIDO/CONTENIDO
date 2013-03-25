@@ -234,25 +234,6 @@ class cApiOnlineUserCollection extends ItemCollection {
     public function deleteUser($userId) {
         return $this->delete((string) $userId);
     }
-
-    /**
-     * Get the website name from table con_clients
-     * @modified Timo Trautmann: Local database instance needed, because this
-     * function ist used in
-     * findAllUser().
-     * findAllUser() already uses this connection
-     *
-     * @param int $iIdClient is the Client id
-     * @return string Returns the name if successful
-     * @deprecated [2012-03-21] Retrieving client name by client id should not
-     *             be responsibility of this class
-     */
-    public function getWebsiteName($iIdClient) {
-        cDeprecated('Use cApiClientCollection->getClientname() instead');
-        $oClientColl = new cApiClientCollection();
-        return $oClientColl->getClientname((int) $iIdClient);
-    }
-
 }
 
 /**
@@ -275,32 +256,6 @@ class cApiOnlineUser extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
-    }
-
-}
-
-// ##############################################################################
-// Old versions of active users class
-//
-// NOTE: Class implemetation below is deprecated and the will be removed in
-// future versions of CONTENIDO.
-// Don't use it, it is still available due to downwards compatibility.
-
-/**
- * Active users
- *
- * @deprecated [2012-03-20] Use cApiOnlineUserCollection instead of this class.
- */
-class ActiveUsers extends cApiOnlineUserCollection {
-
-    public function __construct() {
-        cDeprecated('Use class cApiOnlineUserCollection  instead');
-        parent::__construct();
-    }
-
-    public function ActiveUsers($oDb, $oCfg, $oAuth) {
-        cDeprecated('Use __construct() instead');
-        $this->__construct();
     }
 
 }

@@ -21,22 +21,10 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_EXTENSION_AVAILABLE
- */
-define('E_EXTENSION_AVAILABLE', 1);
 define('CON_EXTENSION_AVAILABLE', 1);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_EXTENSION_UNAVAILABLE
- */
-define('E_EXTENSION_UNAVAILABLE', 2);
 define('CON_EXTENSION_UNAVAILABLE', 2);
 
-/**
- * @deprecated 2012-09-06 Constant has been renamed to CON_EXTENSION_CANTCHECK
- */
-define('E_EXTENSION_CANTCHECK', 3);
 define('CON_EXTENSION_CANTCHECK', 3);
 
 /**

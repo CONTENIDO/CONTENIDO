@@ -41,16 +41,6 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiTemplateConfigurationCollection($select = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($select);
-    }
-
-    /**
      * Deletes template configuration entry, removes also all related container
      * configurations.
      *
@@ -148,16 +138,6 @@ class cApiTemplateConfiguration extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
-    }
-
-    /**
-     *
-     * @deprecated [2011-03-15] Old constructor function for downwards
-     *             compatibility
-     */
-    public function cApiTemplateConfiguration($mId = false) {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId = false);
     }
 
     /**

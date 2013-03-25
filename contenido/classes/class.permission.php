@@ -643,15 +643,3 @@ class cPermission {
     }
 
 }
-
-class Contenido_Perm extends cPermission {
-
-    /**
-     *
-     * @deprecated [2012-07-24] class was renamed to cPermission
-     */
-    public function __construct() {
-        cDeprecated('Class was renamed to cPermission.');
-    }
-
-}

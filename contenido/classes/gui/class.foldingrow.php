@@ -169,18 +169,4 @@ class cGuiFoldingRow extends cHTML {
 
 }
 
-/**
- * Old classname for downwards compatibility
- * @deprecated [2012-07-12] This class was renamed to cGuiFoldingRow
- */
-class cFoldingRow extends cGuiFoldingRow {
-
-    public function __construct($uuid, $caption = "", $link_id = "", $bExpanded = null) {
-        cDeprecated("This class was renamed to cGuiFoldingRow");
-
-        parent::__construct($uuid, $caption, $link_id, $bExpanded);
-    }
-
-}
-
 ?>

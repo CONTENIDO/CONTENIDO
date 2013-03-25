@@ -41,13 +41,6 @@ class NewsletterJobCollection extends ItemCollection
         $this->_setItemClass("NewsletterJob");
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function NewsletterJobCollection()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-
     /**
      * Creates a newsletter job
      * @param $name        string    Specifies the name of the newsletter, the same name may be used more than once
@@ -248,13 +241,6 @@ class NewsletterJob extends Item
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function NewsletterJob($mId = false)
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct($mId);
     }
 
     public function runJob()
@@ -488,40 +474,5 @@ class NewsletterJob extends Item
         }
 
         return parent::store();
-    }
-}
-
-
-/** @deprecated 2012-03-01 Use NewsletterJobCollection instead */
-class cNewsletterJobCollection extends NewsletterJobCollection {
-    /** @deprecated 2012-03-01 Use NewsletterJobCollection instead */
-    public function __construct()
-    {
-        cDeprecated("Use NewsletterJobCollection instead");
-        parent::__construct();
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cNewsletterJobCollection()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
-    }
-}
-
-/** @deprecated 2012-03-01 Use NewsletterJob instead */
-class cNewsletterJob extends NewsletterJob {
-    /** @deprecated 2012-03-01 Use NewsletterJob instead */
-    public function __construct()
-    {
-        cDeprecated("Use NewsletterJob instead");
-        parent::__construct();
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cNewsletterJob()
-    {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
     }
 }

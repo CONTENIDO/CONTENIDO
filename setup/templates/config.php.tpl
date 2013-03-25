@@ -110,15 +110,4 @@ $cfg['db'] = array(
     'enableProfiling' => false,    // (bool) Flag to enable profiling
 );
 
-/**
- * Following database settings ($contenido_host, $contenido_database, etc.)
- * are still available because of downwards compatibility.
- *
- * @deprecated [2011-08-23] Use new DB settings $cfg['db'] from above
- */
-$contenido_host = $cfg['db']['connection']['host'];
-$contenido_database = $cfg['db']['connection']['database'];
-$contenido_user = $cfg['db']['connection']['user'];
-$contenido_password = $cfg['db']['connection']['password'];
-
 ?>

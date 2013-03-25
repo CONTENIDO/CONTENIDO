@@ -336,10 +336,3 @@ class cApiCecHook {
 
 }
 
-class CEC_Hook extends cApiCecHook {
-    /** @deprecated Class was renamed to cApiCecHook */
-    public function __construct() {
-        cDeprecated('Class was renamed to cApiCecHook');
-    }
-
-}

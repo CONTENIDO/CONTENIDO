@@ -24,103 +24,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cDatatypeDateTime::FORMAT_UNIX
- */
-define('cDateTime_UNIX', 1);
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cDatatypeDateTime::FORMAT_ISO
- */
-define('cDateTime_ISO', 2);
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cDatatypeDateTime::FORMAT_LOCALE
- */
-define('cDateTime_Locale', 3);
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cDatatypeDateTime::FORMAT_LOCALE_TIMEONLY
- */
-define('cDateTime_Locale_TimeOnly', 4);
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cDatatypeDateTime::FORMAT_LOCALE_DATEONLY
- */
-define('cDateTime_Locale_DateOnly', 5);
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cDatatypeDateTime::FORMAT_MYSQL
- */
-define('cDateTime_MySQL', 6);
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cDatatypeDateTime::FORMAT_CUSTOM
- */
-define('cDateTime_Custom', 99);
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cDatatypeDateTime::SUNDAY
- */
-define('cDateTime_Sunday', 0);
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cDatatypeDateTime::MONDAY
- */
-define('cDateTime_Monday', 1);
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cDatatypeDateTime::TUESDAY
- */
-define('cDateTime_Tuesday', 2);
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cDatatypeDateTime::WEDNESDAY
- */
-define('cDateTime_Wednesday', 3);
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cDatatypeDateTime::THURSDAY
- */
-define('cDateTime_Thursday', 4);
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cDatatypeDateTime::FRIDAY
- */
-define('cDateTime_Friday', 5);
-
-/**
- *
- * @deprecated 2012-09-06 Constant has been replaced by the class constant
- *             cDatatypeDateTime::SATURDAY
- */
-define('cDateTime_Saturday', 6);
 class cDatatypeDateTime extends cDatatype {
 
     protected $_iFirstDayOfWeek;
@@ -238,15 +141,6 @@ class cDatatypeDateTime extends cDatatype {
 
         $this->setFirstDayOfWeek(self::MONDAY);
         parent::__construct();
-    }
-
-    /**
-     *
-     * @deprecated [2012-01-19] use __construct instead
-     */
-    public function cDatatypeDateTime() {
-        cDeprecated("Use __construct() instead");
-        $this->__construct();
     }
 
     public function setCustomTargetFormat($targetFormat) {
