@@ -82,4 +82,11 @@ msgstr "from : "
 msgid "DELETE_COMMENTS"
 msgstr "delete comments"
 
+msgid "ALLDELETEFROMCAT"
+msgstr "delete all comments  from this article ? "
 
+msgid "ARTICLES"
+msgstr "articles "
+
+msgid "ALLDELETEFROMCATHIER"
+msgstr "delete comments inclusive subcomments ? "

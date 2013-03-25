@@ -10,6 +10,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $this->_collection = new ArticleForumCollection();
         parent::__construct('right_bottom', 'forumlist');
         $this->addStyle('../plugins/user_forum/styles/right_bottom.css');
+        $this->addScript('../plugins/user_forum/scripts/location.js');
     }
 
     protected function formatTimeString($timeStamp) {
@@ -74,7 +75,7 @@ class ArticleForumRightBottom extends cGuiPage {
         }
 
         $online->setCLink($area, 4, 'show_form');
-        //$online->setStyle('margin-top:10px ');
+        // $online->setStyle('margin-top:10px ');
         $online->setTargetFrame('right_bottom');
         $online->setStyle('margin-right:10px;');
 
@@ -93,23 +94,20 @@ class ArticleForumRightBottom extends cGuiPage {
         $edit->setMode('image');
         $edit->setAlt(UserForum::i18n('EDIT'));
 
-        // link for delete action
-        $delete = new cHTMLLink();
-        $delete->setImage($cfg['path']['images'] . 'delete.gif');
-        $delete->setAlt(UserForum::i18n('DELETE'));
-        $delete->setCLink($area, 4, 'show_form');
-        $delete->setTargetFrame('right_bottom');
+        $message = UserForum::i18n('ALLDELETEFROMCATHIER');
+        $level = $cont['level'];
+        $keyy = $key;
+        $id = $cont['id_user_forum'];
+        $idacat = $cont['idcat'];
+        $idaart = $cont['idart'];
 
-        $delete->setCustom('action', 'deleteComment');
-        $delete->setCustom('level', $cont['level']);
-        $delete->setCustom('key', $key);
-        $delete->setCustom('id_user_forum', $cont['id_user_forum']);
-        $delete->setCustom('idcat', $cont['idcat']);
-        $delete->setCustom('idart', $cont['idart']);
+        $deleteButton = '<a title="' . $cont['title'] . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $message . '&quot;, function(){deleteArticlesByIdRight(' . $level . ',' . $keyy . ',' . $id . ',' . $idacat . ',' . $idaart . ');});return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $cont['title'] . " löschen" . '" alt="' . $cont['title'] . '"></a>';
+
+        // echo $deletebutton;
 
         $buttons['online'] = $online;
         $buttons['edit'] = $edit;
-        $buttons['delete'] = $delete;
+        $buttons['delete'] = $deleteButton;
 
         return $buttons;
     }
@@ -130,22 +128,24 @@ class ArticleForumRightBottom extends cGuiPage {
             "cellpadding" => "2"
         ));
 
-       // $bla = new c
+        // $bla = new c
 
-        $tr = new cHTMLTableRow();
-        $th = new cHTMLTableHead();
-        $th->setContent(i18n("FORUM_POST", "user_forum"));
-        $th->setStyle('text-align: center');
-        $tr->appendContent($th);
+        if (count($result > 0)) {
+            $tr = new cHTMLTableRow();
+            $th = new cHTMLTableHead();
+            $th->setContent(i18n("FORUM_POST", "user_forum"));
+            $th->setStyle('text-align: center');
+            $tr->appendContent($th);
 
-        $th = new cHTMLTableHead();
-        $th->setContent(i18n("ACTIONS", "user_forum"));
-        $th->setStyle('widht:20px');
-        $th->setStyle('text-align: center');
-        $th->setAttribute('valign', 'top');
-        $tr->appendContent($th);
+            $th = new cHTMLTableHead();
+            $th->setContent(i18n("ACTIONS", "user_forum"));
+            $th->setStyle('widht:20px');
+            $th->setStyle('text-align: center');
+            $th->setAttribute('valign', 'top');
+            $tr->appendContent($th);
 
-        $table->appendContent($tr);
+            $table->appendContent($tr);
+        }
 
         $menu = new cGuiMenu();
         $cfg = cRegistry::getConfig();
@@ -223,7 +223,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $tdButtons = new cHTMLTableData();
             $tdButtons->setAttribute('valign', 'top');
             $tdButtons->setStyle(' text-align: center'); // horitontal-align:
-                                                          // middle;');
+                                                         // middle;');
             $tdButtons->appendContent($online);
             $tdButtons->appendContent($edit);
             $tdButtons->appendContent($delete);
@@ -322,12 +322,10 @@ class ArticleForumRightBottom extends cGuiPage {
         $form1 = new cGuiTableForm("comment", "main.php?area=user_forum&frame=4", "post");
         $form1->addHeader($tr);
 
-        // get User information
         $user = new cApiUser();
         $user->loadByPrimaryKey($post['editedby']);
         $username = $user->getField('username');
 
-        // Dialog EDITMODE :
         $id = $post['id_user_forum'];
 
         $likeButton = new cHTMLImage($cfg['path']['images'] . 'like.png');
@@ -364,8 +362,6 @@ class ArticleForumRightBottom extends cGuiPage {
             $onlineBox->setChecked(false);
             $form1->setVar("checked", "0");
         }
-        // echo $onlineBox;
-        // die();
 
         $idart = $post['idart'];
         $idcat = $post['idcat'];
@@ -381,8 +377,6 @@ class ArticleForumRightBottom extends cGuiPage {
         $form1->add(UserForum::i18n("STATUS"), $onlineBox, '');
         $form1->add(UserForum::i18n("COMMENT"), $forum, '');
 
-        // set hidden fields
-        // $form1->setvar('onlineState', $onlineBox);
         $form1->setVar('online', $post['online']);
         $form1->setVar("id_user_forum", $post['id_user_forum']);
         $form1->setVar("idart", $post['idart']);
@@ -464,8 +458,12 @@ class ArticleForumRightBottom extends cGuiPage {
                         break;
                     case 'deleteComment':
                         $this->_collection->deleteHierarchie($_GET['key'], $_GET['level'], $idart, $idcat, $lang);
-                        // $this->render();
+                        $this->render();
                         break;
+                    case 'deleteComment':
+                        $this->render();
+                        break;
+
                     default:
                         throw new Exception('$_GET["action"] type ' . $_GET["action"] . ' not implemented');
                 }

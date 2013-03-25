@@ -66,6 +66,16 @@ msgid "CLOCK"
 msgstr "Uhr"
 ; class.article_forum_left_bottom.php
 
+msgid "ALLDELETEFROMCAT"
+msgstr "Alle Kommentare zu diesem Artikel löschen ? "
+
+msgid "ARTICLES"
+msgstr "Artikel "
+
+
+msgid "ALLDELETEFROMCATHIER"
+msgstr "Kommentar inklusive untergeordneten Kommentaren löschen ? "
+
 msgid "DELETE_COMMENTS"
 msgstr "Kommentare löschen"
 
