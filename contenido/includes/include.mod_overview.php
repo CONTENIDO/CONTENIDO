@@ -108,9 +108,11 @@ foreach ($allModules as $idmod => $module) {
         $link = new cHTMLLink;
         $link->setMultiLink("mod", "", "mod_edit", "");
         $link->setCustom("idmod", $idmod);
-        $link->updateAttributes(array("alt" => $module['description']));
-        $link->updateAttributes(array("title" => $module['description']));
-        $link->updateAttributes(array("style" => "margin-left:5px"));
+        $link->updateAttributes(array(
+            "alt" => htmlentities($module['description']),
+            "title" => htmlentities($module['description']),
+            "style" => "margin-left:5px"
+        ));
 
         $sName = cString::stripSlashes(conHtmlSpecialChars($module ['name'])); //$cApiModule->get("name");
 
