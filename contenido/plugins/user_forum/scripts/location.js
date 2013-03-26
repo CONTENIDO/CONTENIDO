@@ -31,7 +31,6 @@ function deleteArticlesByIdRight(level, key, id, idcat, idart) {
     url += id;
 
     reloadLeftBottom = 'main.php?area=user_forum';
-    // reloadLeftBottom += '&action=delete_form';
     reloadLeftBottom += '&frame=2';
     reloadLeftBottom += '&idart='
     reloadLeftBottom += idart;
