@@ -130,8 +130,8 @@ class cModuleFileTranslation extends cModuleHandler {
 
     /**
      * Save all translations from db in Filesystem.
-     * Warning let run once, twice will be erase the translation witch are
-     * there.
+     * Warning: Only run once! A second time would delete
+     * all translations.
      */
     public function saveTranslationsFromDbToFile() {
         $db = cRegistry::getDb();
@@ -242,19 +242,18 @@ class cModuleFileTranslation extends cModuleHandler {
     private function _unserializeArray($string) {
         $retArray = array();
 
-        $words = preg_split('((\r\n)|(\r)|(\n))', $string);
+        $words = preg_split('((\r\n)|(\r)|(\n))', substr($string, 0, strlen($string) - strlen(PHP_EOL)));
 
         foreach ($words as $key => $value) {
-            $oriTrans = explode(self::$originalTranslationDivider, $value);
+            $oriTrans = preg_split('/(?<!\\\\)'.self::$originalTranslationDivider.'/', $value);
 
-            if (!empty($oriTrans[0])) {
-                if (isset($oriTrans[1])) {
-                    $retArray[iconv($this->_fileEncoding, $this->_encoding, $oriTrans[0])] = iconv($this->_fileEncoding, $this->_encoding, $oriTrans[1]);
-                } else {
-                    $retArray[iconv($this->_fileEncoding, $this->_encoding, $oriTrans[0])] = '';
-                }
+            if (isset($oriTrans[1])) {
+                $retArray[iconv($this->_fileEncoding, $this->_encoding, $oriTrans[0])] = iconv($this->_fileEncoding, $this->_encoding, str_replace("\=", "=", $oriTrans[1]));
+            } else {
+                $retArray[end(array_keys($retArray))] .= PHP_EOL.iconv($this->_fileEncoding, $this->_encoding, str_replace("\=", "=", $oriTrans[0]));
             }
         }
+
         return $retArray;
     }
 
@@ -271,7 +270,14 @@ class cModuleFileTranslation extends cModuleHandler {
             return false;
         }
 
-        if (cFileHandler::write($fileName, $this->_serializeArray($wordListArray)) === false) {
+        $escapedArray = array();
+        foreach($wordListArray as $key => $value) {
+            $newKey = str_replace("=", "\=", $key);
+            $newValue = str_replace("=", "\=", $value);
+            $escapedArray[$newKey] = $newValue;
+        }
+
+        if (cFileHandler::write($fileName, $this->_serializeArray($escapedArray)) === false) {
             return false;
         } else {
             return true;

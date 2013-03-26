@@ -177,7 +177,7 @@ if (!$sess->isRegistered('client')) {
 }
 
 if (isset($username)) {
-    $auth->login_if(true);
+    $auth->restart();
 }
 
 // Send HTTP header with encoding
