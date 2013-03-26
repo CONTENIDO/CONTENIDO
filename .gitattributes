@@ -2169,6 +2169,7 @@ contenido/scripts/jquery/plugins/tipsy.js -text
 contenido/scripts/langref.php -text
 contenido/scripts/mail_log.js -text svneol=unset#text/plain
 contenido/scripts/md5.js -text
+contenido/scripts/mod_template.js -text svneol=unset#text/plain
 contenido/scripts/parameterCollector.js -text
 contenido/scripts/registerTipsy.js -text
 contenido/scripts/reload.js -text

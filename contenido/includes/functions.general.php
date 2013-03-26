@@ -1523,4 +1523,19 @@ function ipMatch($network, $mask, $ip) {
     }
 }
 
+/**
+ * Checks if the straing haystack ends with needle
+ * @param string $haystack the string to check
+ * @param string $needle the string with which it should end
+ * @return boolean
+ */
+function endsWith($haystack, $needle) {
+    $length = strlen($needle);
+    if ($length == 0) {
+        return true;
+    }
+
+    return (substr($haystack, -$length) === $needle);
+}
+
 ?>

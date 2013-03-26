@@ -103,9 +103,9 @@ class cModuleTemplateHandler extends cModuleHandler {
      */
     private $_testArea = 'htmltpl';
 
-    public function __construct($idmod) {
+    public function __construct($idmod, $page) {
         parent::__construct($idmod);
-        $this->_page = new cGuiPage('mod_template');
+        $this->_page = $page;
         $this->_notification = new cGuiNotification();
     }
 
@@ -204,13 +204,15 @@ class cModuleTemplateHandler extends cModuleHandler {
      * @return string [new, delete,empty,save,rename, default]
      */
     private function _getAction() {
+        global $newModTpl, $deleteModTpl;
+
         if (isset($this->_status)) {
 
-            if (isset($_POST['new_x'])) {
+            if (isset($newModTpl)) {
                 return 'new';
             }
 
-            if (isset($_POST['delete_x'])) {
+            if (isset($deleteModTpl)) {
                 return 'delete';
             }
 
@@ -415,10 +417,20 @@ class cModuleTemplateHandler extends cModuleHandler {
     }
 
     private function _makeFormular($belang) {
+        $fileForm = new cGuiTableForm("file_editor");
+        $fileForm->addHeader(i18n('Choose file'));
+        $fileForm->setTableid('choose_mod_template_file');
+        $fileForm->setVar('area', $this->_area);
+        $fileForm->setVar('action', $this->_action);
+        $fileForm->setVar('frame', $this->_frame);
+        $fileForm->setVar('status', 'send');
+        $fileForm->setVar('tmp_file', $this->_tmp_file);
+        $fileForm->setVar('idmod', $this->_idmod);
+        $fileForm->setVar('file', $this->_file);
+
         $form = new cGuiTableForm('file_editor');
         $form->setTableid('mod_template');
         $form->addHeader(i18n('Edit file'));
-
         $form->setVar('area', $this->_area);
         $form->setVar('action', $this->_action);
         $form->setVar('frame', $this->_frame);
@@ -426,8 +438,10 @@ class cModuleTemplateHandler extends cModuleHandler {
         $form->setVar('tmp_file', $this->_tmp_file);
         $form->setVar('idmod', $this->_idmod);
         $form->setVar('file', $this->_file);
+        $form->setVar('selectedFile', $this->_file);
 
         $selectFile = new cHTMLSelectElement('selectedFile');
+        $selectFile->setClass("fileChooser");
         // array with all files in template directory
         $filesArray = $this->getAllFilesFromDirectory('template');
 
@@ -443,22 +457,30 @@ class cModuleTemplateHandler extends cModuleHandler {
             $selectFile->addOptionElement($key, $optionField);
         }
 
-        $inputAdd = new cHTMLTextbox('new', i18n('Make new template file'), 60);
-        $inputAdd->setAttribute('type', 'image');
-        $inputAdd->setClass('addfunction');
-        // $inputAdd->setAttribute('alt',i18n('New template file'));
-
-        $inputDelete = new cHTMLTextbox('delete', $this->_file, 60);
-        $inputDelete->setAttribute('type', 'image');
-        $inputDelete->setClass('deletefunction');
-        // $inputDelete->setAttribute('alt',i18n('Delete file'));
-        $aDelete = new cHTMLLink('');
-        $aDelete->setContent($this->_file);
+        $aDelete = new cHTMLLink('main.php');
+        $aDelete->setId("deleteLink");
+        $aDelete->setContent(i18n("Delete template"));
         $aDelete->setClass('deletefunction');
+        $aDelete->setCustom("deleteModTpl", "1");
+        $aDelete->setCustom('area', $this->_area);
+        $aDelete->setCustom('action', $this->_action);
+        $aDelete->setCustom('frame', $this->_frame);
+        $aDelete->setCustom('status', 'send');
+        $aDelete->setCustom('idmod', $this->_idmod);
+        $aDelete->setCustom('file', $this->_file);
+        $aDelete->setCustom('tmp_file', $this->_tmp_file);
 
-        $aAdd = new cHTMLLink('');
-        $aAdd->setContent(i18n('New template file'));
+        $aAdd = new cHTMLLink('main.php');
+        $aAdd->setContent(i18n('New template'));
         $aAdd->setClass('addfunction');
+        $aAdd->setCustom("newModTpl", "1");
+        $aAdd->setCustom('area', $this->_area);
+        $aAdd->setCustom('action', $this->_action);
+        $aAdd->setCustom('frame', $this->_frame);
+        $aAdd->setCustom('status', 'send');
+        $aAdd->setCustom('tmp_file', $this->_tmp_file);
+        $aAdd->setCustom('idmod', $this->_idmod);
+        $aAdd->setCustom('file', $this->_file);
 
         // $tb_name = new cHTMLLabel($sFilename,'');
         $tb_name = new cHTMLTextbox('file', $this->_file, 60);
@@ -470,40 +492,43 @@ class cModuleTemplateHandler extends cModuleHandler {
         $ta_code->updateAttributes(array(
             'wrap' => getEffectiveSetting('html_editor', 'wrap', 'off')
         ));
+
+        $fileForm->add(i18n('Action'), $aAdd->toHTML());
         // show only if file exists
         if ($this->_file) {
-            $form->add(i18n('Action'), $inputDelete->toHTML());
+            $fileForm->add(i18n('Action'), $aDelete->toHTML());
+            $fileForm->add(i18n('File'), $selectFile);
         }
-        $form->add(i18n('Action'), $inputAdd->toHTML());
 
         // add fields only if template file exists
         if ($this->_file) {
-            $form->add(i18n('File'), $selectFile);
             $form->add(i18n('Name'), $tb_name);
             $form->add(i18n('Code'), $ta_code);
         }
         $this->_page->setContent(array(
-            $form
+            $fileForm
         ));
+        if($this->_file) {
+            $this->_page->appendContent($form);
+        }
 
         $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $this->_cfg);
         $this->_page->addScript($oCodeMirror->renderScript());
 
         // $this->_page->addScript('reload', $this->_reloadScript);
-        $this->_page->render();
     }
 
     /**
      * Display the form and evaluate the action and excute the action.
      *
      * @param cPermission $perm
-     * @param cGuiNotification $notificatioin
+     * @param cGuiNotification $notification
      */
-    public function display($perm, $notificatioin, $belang) {
+    public function display($perm, $notification, $belang) {
         $myAction = $this->_getAction();
 
-        // if the user dont have premissions
-        if ($this->_havePremission($perm, $notificatioin, $myAction) === -1) {
+        // if the user doesn't have premissions
+        if ($this->_havePremission($perm, $notification, $myAction) === -1) {
             return;
         }
 
@@ -527,11 +552,10 @@ class cModuleTemplateHandler extends cModuleHandler {
             }
 
             $this->_code = $this->getFilesContent('template', '', $this->_file);
-            $this->_validateHTML($notificatioin);
+            $this->_validateHTML($notification);
             $this->_makeFormular($belang);
         } catch (Exception $e) {
             $this->_page->displayError(i18n($e->getMessage()));
-            $this->_page->render();
         }
     }
 }

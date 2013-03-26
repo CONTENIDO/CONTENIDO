@@ -54,7 +54,7 @@ if (!$perm->have_perm_area_action($area, $action)) {
 } else if (!(int) $client > 0) {
     // If there is no client selected, display empty page
 } else {
-    $contenidoModulTemplateHandler = new cModuleTemplateHandler($idmod);
+    $contenidoModulTemplateHandler = new cModuleTemplateHandler($idmod, $page);
     $contenidoModulTemplateHandler->checkWritePermissions();
     $contenidoModulTemplateHandler->setAction($action);
     $contenidoModulTemplateHandler->setCode($_REQUEST['code']);

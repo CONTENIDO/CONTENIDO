@@ -2199,3 +2199,7 @@ div.bulk_editing_functions a img {
 .atfilter form, .atfilter input, .atfilter button, .atfilter a, .atpager form, .atpager input, .atpager button, .atpager a {
 	vertical-align: middle;
 }
+
+#choose_mod_template_file {
+	margin-bottom: 10px;
+}
