@@ -300,15 +300,10 @@ class UserForumArticle {
 
                 $number = 1;
                 $tplData = array();
-                // regular expression for email validation
-                $regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
 
                 // build array for smarty
                 foreach ($arrUserforum as $key => $value) {
 
-                    // echo'<pre>';
-                    // var_dump($value['id_user_forum']);
-                    // echo'</pre>';
                     $record = array();
                     $record['REALNAME'] = $value['realname'];
                     $record['EMAIL'] = $value['email'];
@@ -365,25 +360,14 @@ class UserForumArticle {
                     $record['LINKTEXT'] = mi18n("writeNewEntry");
                     $record['REPLYTEXT'] = mi18n("answers");
                     $record['QUOTETEXT'] = mi18n("replyQuote");
-                    ;
 
                     $record['FORMID'] = $value['id_user_forum'];
 
-                    // Run the preg_match() function on regex against the
-                    // emailaddress
-                    // valid addresses generate a mailto link with the given
-                    // username
-                    // for invalid adresses generate the username as rowtext
-                    if (preg_match($regex, $value['email'])) {
-                        $record['LINKBEGIN'] = "<a href='mailto:";
-                        $record['LINKEND'] = '</a>';
-                        $record['EMAIL'] = $value['email'] . "'>";
-                    } else {
                         $record['LINKBEGIN'] = "";
                         $record['LINKEND'] = "";
                         $record['MAILTO'] = '#';
                         $record['EMAIL'] = '';
-                    }
+
 
                     array_push($tplData, $record);
                 }
