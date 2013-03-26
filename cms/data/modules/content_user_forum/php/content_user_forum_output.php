@@ -234,7 +234,7 @@ class UserForumArticle {
 
         if ($this->generate) {
 
-            $arrUserforum = $this->collection->getExistingforumFrontend($this->idcat, $this->idart, $this->idlang);
+            $arrUserforum = $this->collection->getExistingforumFrontend($this->idcat, $this->idart, $this->idlang, true);
 
             if (count($arrUserforum) == 0) {
                 $this->tpl->assign('MESSAGE', mi18n("noCommentsYet"));
