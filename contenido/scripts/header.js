@@ -177,43 +177,6 @@ function resetHeaderMenu() {
     show.apply(oThis, [menu.getActiveSubMenu(), menu.getActiveMenu()]);
 }
 
-
-// #################################################################################################
-
-
-/**
- * Registry class
- *
- * @class  ContenidoRegistry
- * @static
- */
-ContenidoRegistry = {
-    _instances: [],
-
-    set: function(key, value) {
-        this._instances[key] = value;
-    },
-
-    get: function(key) {
-        if (this._instances[key] === "undefined") {
-            throw("No entry is registered for key '"+key+"'");
-        }
-        return this._instances[key];
-    },
-
-    isRegistered: function(key) {
-        return (this._instances[key] == "undefined");
-    },
-
-    remove: function(key) {
-        this._instances = this._instances.splice(this._instances.indexOf(key), 1);
-    }
-};
-
-
-// #################################################################################################
-
-
 /**
  * Header timer class to control the mouseout mouseover delay
  *

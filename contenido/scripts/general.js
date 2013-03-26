@@ -3,6 +3,43 @@
  * backend page. The file should therefore be included in every backend page.
  */
 
+
+// #################################################################################################
+
+
+/**
+ * Registry class
+ *
+ * @class  ContenidoRegistry
+ * @static
+ */
+ContenidoRegistry = {
+    _instances: [],
+
+    set: function(key, value) {
+        this._instances[key] = value;
+    },
+
+    get: function(key) {
+        if (this._instances[key] === "undefined") {
+            throw("No entry is registered for key '"+key+"'");
+        }
+        return this._instances[key];
+    },
+
+    isRegistered: function(key) {
+        return (this._instances[key] == "undefined");
+    },
+
+    remove: function(key) {
+        this._instances = this._instances.splice(this._instances.indexOf(key), 1);
+    }
+};
+
+
+// #################################################################################################
+
+
 $(function() {
     // get the translations once, so that they are already loaded
     getTranslations();
@@ -119,7 +156,10 @@ function conMultiLink() {
 }
 
 function getRegistry() {
-    return window.top.header.ContenidoRegistry;
+	if(window.top.header) {
+	    return window.top.header.ContenidoRegistry;
+	}
+	return window.top.ContenidoRegistry;
 }
 
 /**
@@ -129,6 +169,9 @@ function getRegistry() {
  * @returns the window object in which all content is being displayed
  */
 function getContentWindow() {
+	if(!window.top.content) {
+		return window;
+	}
     if (typeof window.top.content.right !== 'undefined') {
         return window.top.content.right.right_bottom;
     }
