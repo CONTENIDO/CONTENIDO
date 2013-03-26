@@ -230,7 +230,7 @@ class pApiTree {
         if (count($result_tmp) > 0) {
             $result = array(); // result array
             foreach ($result_tmp as $rs) { // run results
-                $children = $this->fetchTreeIds($rs['idpica_alloc'], $level + 1, $bUseTreeStatus);
+                $children = $this->fetchTreeIds($rs['idpica_alloc'], $level + 1, $showOffline);
                 if ($children !== false) {
                     $rs['children'] = $children;
                 }

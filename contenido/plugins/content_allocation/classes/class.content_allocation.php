@@ -242,7 +242,7 @@ class pApiContentAllocation {
         $this->db->query($sql);
 
         $aResult = array();
-        while ($oRow = $this->db->getResultObject()) {
+        while (false !== $oRow = $this->db->getResultObject()) {
             $aResult[] = $oRow;
         }
         return $aResult;
@@ -333,7 +333,7 @@ class pApiContentAllocation {
 
         $aResult = array();
 
-        while ($oRow = $this->db->getResultObject()) {
+        while (false !== $oRow = $this->db->getResultObject()) {
             if ($sResultType == 'article_language_id') {
                 $aResult[] = $oRow->idartlang;
             } else {
