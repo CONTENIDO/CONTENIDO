@@ -96,6 +96,8 @@ class ArticleForumCollection extends ItemCollection {
      *
      *
      *
+     *
+     *
      */
     public function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0, $frontend = false) {
         $db = cRegistry::getDb();
@@ -300,7 +302,7 @@ class ArticleForumCollection extends ItemCollection {
         $this->deleteBy('idart', mysql_real_escape_string(($idart)));
     }
 
-    public function getExistingforumFrontend($id_cat, $id_art, $id_lang) {
+    public function getExistingforumFrontend($id_cat, $id_art, $id_lang, $frontend) {
         global $cfg;
 
         $db = cRegistry::getDb();
@@ -315,8 +317,7 @@ class ArticleForumCollection extends ItemCollection {
         }
 
         $arrforum = array();
-
-        $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
+        $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum, 0, $frontend);
 
         $result = array();
         $this->normalizeArray($arrforum, $result);
