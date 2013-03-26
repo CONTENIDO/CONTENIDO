@@ -20,7 +20,6 @@
                 <a href="{$CANCEL_LINK}" class='cancel button grey'>{$CANCEL_FORUM}</a>
                 <a href="javascript:document.forms['new_user_forum'].submit();" class="submit button red">{$SAVE_FORUM}</a>
 
-
         </div>
     </form>
 </div>
