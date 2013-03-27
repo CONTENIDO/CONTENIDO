@@ -47,6 +47,20 @@
 
     <script type="text/javascript">
     $(document).ready(function () {
+    	
+    	var sysAdmin = document.getElementById("msysadmin1");
+		var adminRow = document.getElementById("rights_admin");
+		var clientRow = document.getElementById("rights_languages");
+		var langRow = document.getElementById("rights_clients");
+		adminRow.style.display = (sysAdmin.checked) ? "none" : "";
+		clientRow.style.display = (sysAdmin.checked) ? "none" : "";
+		langRow.style.display = (sysAdmin.checked) ? "none" : "";
+    	
+    	$("#msysadmin1").bind("change", function() {
+			adminRow.style.display = (adminRow.style.display == "") ? "none" : "";
+			clientRow.style.display = (clientRow.style.display == "") ? "none" : "";
+			langRow.style.display = (langRow.style.display == "") ? "none" : "";
+    	});
 
         $('#valid_from').datetimepicker({
              buttonImage: '{PATH_TO_CALENDER_PIC}',
@@ -106,7 +120,7 @@
         <th valign="top" align="left">{VALUE}</th>
     </tr>
     <!-- BEGIN:BLOCK -->
-    <tr>
+    <tr id="{ROW_ID}">
         <td valign="top">{CATNAME}</td>
         <td valign="top" align="left">{CATFIELD}</td>
     </tr>

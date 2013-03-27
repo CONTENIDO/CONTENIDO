@@ -167,10 +167,12 @@ $tpl->set('s', 'CANCELLINK', $sess->url("main.php?area=$area&frame=4&userid=$use
 $tpl->set('s', 'PROPERTY', i18n("Property"));
 $tpl->set('s', 'VALUE', i18n("Value"));
 
+$tpl->set('d', 'ROW_ID', "username");
 $tpl->set('d', 'CATNAME', i18n("Username"));
 $tpl->set('d', 'CATFIELD', $oUser->getField('username').'<img align="top" src="images/spacer.gif" height="20">');
 $tpl->next();
 
+$tpl->set('d', 'ROW_ID', "name");
 $tpl->set('d', 'CATNAME', i18n("Name"));
 $oTxtName = new cHTMLTextbox("realname", $oUser->getField('realname'), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtName->render());
@@ -178,42 +180,50 @@ $tpl->next();
 
 // @since 2006-07-04 Display password fields only if not authenticated via LDAP/AD
 if ($msysadmin || $oUser->getField('password') != 'active_directory_auth') {
+    $tpl->set('d', 'ROW_ID', "password");
     $tpl->set('d', 'CATNAME', i18n("New password"));
     $oTxtPass = new cHTMLPasswordbox('password', '', 40, 255);
     $tpl->set('d', 'CATFIELD', $oTxtPass->render());
     $tpl->next();
 
+    $tpl->set('d', 'ROW_ID', "confirm_password");
     $tpl->set('d', 'CATNAME', i18n("Confirm new password"));
     $oTxtWord = new cHTMLPasswordbox('passwordagain', '', 40, 255);
     $tpl->set('d', 'CATFIELD', $oTxtWord->render());
     $tpl->next();
 }
 
+$tpl->set('d', 'ROW_ID', "email");
 $tpl->set('d', 'CATNAME', i18n("E-Mail"));
 $oTxtEmail = new cHTMLTextbox('email', $oUser->getField('email'), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtEmail->render());
 $tpl->next();
 
+$tpl->set('d', 'ROW_ID', "phone_number");
 $tpl->set('d', 'CATNAME', i18n("Phone number"));
 $oTxtTel = new cHTMLTextbox('telephone', $oUser->getField('telephone'), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtTel->render());
 $tpl->next();
 
+$tpl->set('d', 'ROW_ID', "street");
 $tpl->set('d', 'CATNAME', i18n("Street"));
 $oTxtStreet = new cHTMLTextbox('address_street', $oUser->getField('address_street'), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtStreet->render());
 $tpl->next();
 
+$tpl->set('d', 'ROW_ID', "zip_code");
 $tpl->set('d', 'CATNAME', i18n("ZIP code"));
 $oTxtZip= new cHTMLTextbox('address_zip', $oUser->getField('address_zip'), 10, 10);
 $tpl->set('d', 'CATFIELD', $oTxtZip->render());
 $tpl->next();
 
+$tpl->set('d', 'ROW_ID', "city");
 $tpl->set('d', 'CATNAME', i18n("City"));
 $oTxtCity= new cHTMLTextbox('address_city', $oUser->getField('address_city'), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtCity->render());
 $tpl->next();
 
+$tpl->set('d', 'ROW_ID', "country");
 $tpl->set('d', 'CATNAME', i18n("Country"));
 $oTxtLand= new cHTMLTextbox('address_country', $oUser->getField('address_country'), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtLand->render());
@@ -235,6 +245,7 @@ $aAuthPerms = explode(',', $auth->auth['perm']);
 
 // sysadmin perm
 if (in_array('sysadmin', $aAuthPerms)) {
+    $tpl->set('d', 'ROW_ID', "rights_sysadmin");
     $tpl->set('d', 'CATNAME', i18n("System administrator"));
     $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', in_array('sysadmin', $aPerms));
     $tpl->set('d', 'CATFIELD', $oCheckbox->toHTML(false));
@@ -253,7 +264,8 @@ foreach ($aClients as $idclient => $item) {
     }
 }
 
-if ($sClientCheckboxes !== '' && !in_array('sysadmin', $aPerms)) {
+if ($sClientCheckboxes !== '') {
+    $tpl->set('d', 'ROW_ID', "rights_admin");
     $tpl->set('d', 'CATNAME', i18n("Administrator"));
     $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
     $tpl->next();
@@ -269,7 +281,8 @@ foreach ($aClients as $idclient => $item) {
     }
 }
 
-if ($sClientCheckboxes !== '' && !in_array('sysadmin', $aPerms)) {
+if ($sClientCheckboxes !== '') {
+    $tpl->set('d', 'ROW_ID', "rights_clients");
     $tpl->set('d', 'CATNAME', i18n("Access clients"));
     $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
     $tpl->next();
@@ -286,7 +299,8 @@ foreach ($aClientsLanguages as $item) {
     }
 }
 
-if ($sClientCheckboxes != '' && !in_array('sysadmin', $aPerms)) {
+if ($sClientCheckboxes != '') {
+    $tpl->set('d', 'ROW_ID', "rights_languages");
     $tpl->set('d', 'CATNAME', i18n("Access languages"));
     $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
     $tpl->next();
@@ -330,11 +344,13 @@ $table = '
         </tr>
     </table>';
 
+$tpl->set('d', 'ROW_ID', "user_defined_properties");
 $tpl->set('d', 'CATNAME', i18n("User-defined properties"));
 $tpl->set('d', 'CATFIELD', $table);
 $tpl->next();
 
 // wysiwyg
+$tpl->set('d', 'ROW_ID', "use_wysiwyg");
 $tpl->set('d', 'CATNAME', i18n("Use WYSIWYG-Editor"));
 $oCheckbox = new cHTMLCheckbox('wysi', '1', 'wysi1', $oUser->getField('wysi'));
 $tpl->set('d', 'CATFIELD', $oCheckbox->toHTML(false));
@@ -347,6 +363,7 @@ $sCurrentValueFrom = trim(str_replace('0000-00-00', '', $sCurrentValueFrom));
 $sInputValidFrom = '<input type="text" id="valid_from" name="valid_from" value="'.$sCurrentValueFrom.'">';
 
 
+$tpl->set('d', 'ROW_ID', "tr_valid_from");
 $tpl->set('d', 'CATNAME', i18n("Valid from"));
 $tpl->set('d', 'CATFIELD', $sInputValidFrom);
 $tpl->next();
@@ -357,6 +374,7 @@ $sCurrentValueTo = trim(str_replace('0000-00-00', '', $sCurrentValueTo));
 $sInputValidTo  = '<input type="text" id="valid_to" name="valid_to" value="'.$sCurrentValueTo.'">';
 
 
+$tpl->set('d', 'ROW_ID', "tr_valid_to");
 $tpl->set('d', 'CATNAME', i18n("Valid to"));
 $tpl->set('d', 'CATFIELD', $sInputValidTo);
 $tpl->next();
@@ -380,6 +398,7 @@ if (($sCurrentValueFrom > $sCurrentDate) || ($sCurrentValueTo < $sCurrentDate)) 
     $sAccountColor = 'green';
 }
 
+$tpl->set('d', 'ROW_ID', "active");
 $tpl->set('d', 'CATNAME', '&nbsp;');
 $tpl->set('d', 'CATFIELD', '<span style="color:'.$sAccountColor.';">'.$sAccountState.'</span>');
 $tpl->next();
@@ -394,6 +413,7 @@ if (count($aGroups) > 0) {
     $sGroups = i18n("none");
 }
 
+$tpl->set('d', 'ROW_ID', "group_membership");
 $tpl->set('d', 'CATNAME', i18n("Group membership"));
 $tpl->set('d', 'CATFIELD', $sGroups);
 $tpl->next();
