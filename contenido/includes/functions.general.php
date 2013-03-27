@@ -970,6 +970,11 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = '') {
     return $html;
 }
 
+/**
+ * Converts a size in bytes in a human readable form
+ * @param int $number Some number of bytes
+ * @return string
+ */
 function humanReadableSize($number) {
     $base = 1024;
     $suffixes = array(
@@ -993,6 +998,27 @@ function humanReadableSize($number) {
     $places = max($places, 0);
     $retval = number_format($n, $places, '.', '') . ' ' . $suffixes[$usesuf];
     return $retval;
+}
+
+/**
+ * Converts a byte size like "8M" to the absolute number of bytes
+ * @param string $sizeString contains the size acquired from ini_get for example
+ * @return number
+ */
+function machineReadableSize($sizeString) {
+    $val = trim($sizeString);
+    $last = strtolower($val[strlen($val)-1]);
+    $val = (float) substr($val, 0, strlen($val) - 1);
+    switch($last) {
+        case 'g':
+            $val *= 1024;
+        case 'm':
+            $val *= 1024;
+        case 'k':
+            $val *= 1024;
+    }
+
+    return $val;
 }
 
 /**

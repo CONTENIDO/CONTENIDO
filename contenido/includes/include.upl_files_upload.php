@@ -33,7 +33,23 @@ cInclude("includes", "functions.upl.php");
 
 $page = new cGuiPage("upl_files_upload");
 
+$maxUploadSize = 0;
+$maxPostSize = 0;
+
+if(ini_get("max_upload_size") == "") {
+    $maxUploadSize = (double) 99999999999999;
+} else {
+    $maxUploadSize = machineReadableSize(ini_get("max_upload_size"));
+}
+if(ini_get("post_max_size") == "") {
+    $maxPostSize = (double) 99999999999999;
+} else {
+    $maxPostSize = machineReadableSize(ini_get("post_max_size"));
+}
+
 if ((cFileHandler::writeable($cfgClient[$client]["upl"]["path"] . $path) || cApiDbfs::isDbfs($path)) && (int) $client > 0) {
+    $page->displayWarning(sprintf(i18n("Please note that you can only upload files up to a size of %s"), humanReadableSize(min($maxUploadSize, $maxPostSize))));
+
     if (cApiDbfs::isDbfs($path)) {
         $mpath = $path . "/";
     } else {
@@ -43,6 +59,7 @@ if ((cFileHandler::writeable($cfgClient[$client]["upl"]["path"] . $path) || cApi
     $page->set("s", "DISPLAY_PATH", $sDisplayPath);
 
     $page->set("s", "PATH", $path);
+    $page->set("s", "MAX_FILE_SIZE", min($maxUploadSize, $maxPostSize));
 } else {
     $page->displayCriticalError(i18n("Directory not writable") . ' (' . $cfgClient[$client]["upl"]["path"] . $path . ')');
 }

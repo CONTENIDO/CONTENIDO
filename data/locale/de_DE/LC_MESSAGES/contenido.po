@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-27 12:20+0100\n"
-"PO-Revision-Date: 2013-03-27 12:21+0100\n"
+"POT-Creation-Date: 2013-03-27 13:21+0100\n"
+"PO-Revision-Date: 2013-03-27 13:22+0100\n"
 "Last-Translator: Mischa Holz <mischa.holz@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -291,7 +291,7 @@ msgstr "O.K."
 #: includes/include.str_overview.php:502
 #: scripts/langref.php:21
 #: templates/standard/template.symbolhelp.html:68
-#: templates/standard/template.upl_files_upload.html:76
+#: templates/standard/template.upl_files_upload.html:80
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -1176,7 +1176,7 @@ msgid "Meta"
 msgstr "Meta"
 
 #: classes/content_types/class.content.type.imgeditor.php:271
-#: templates/standard/template.upl_files_upload.html:41
+#: templates/standard/template.upl_files_upload.html:45
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -1249,8 +1249,8 @@ msgstr "Erstelle Verzeichnis in"
 #: includes/include.upl_search_results.php:157
 #: includes/include.upl_search_results.php:160
 #: includes/include.upl_search_results.php:162
-#: templates/standard/template.upl_files_upload.html:36
-#: templates/standard/template.upl_files_upload.html:80
+#: templates/standard/template.upl_files_upload.html:40
+#: templates/standard/template.upl_files_upload.html:84
 msgid "Path"
 msgstr "Pfad"
 
@@ -1624,7 +1624,7 @@ msgstr "Letzte Seite"
 #: includes/include.rights_overview.php:164
 #: includes/include.system_configuration.php:165
 #: templates/standard/template.grouprights_memberselect.html:96
-#: templates/standard/template.upl_files_upload.html:81
+#: templates/standard/template.upl_files_upload.html:85
 msgid "Save changes"
 msgstr "Änderungen speichern"
 
@@ -5237,7 +5237,7 @@ msgstr "Startdatum"
 
 #: includes/include.upl_edit.php:269
 #: includes/include.upl_files_overview.php:683
-#: includes/include.upl_files_upload.php:47
+#: includes/include.upl_files_upload.php:64
 msgid "Directory not writable"
 msgstr "Verzeichnis nicht beschreibbar"
 
@@ -5300,6 +5300,11 @@ msgstr "Nächste Seite"
 #: includes/include.upl_search_results.php:379
 msgid "Page"
 msgstr "Seite"
+
+#: includes/include.upl_files_upload.php:51
+#, php-format
+msgid "Please note that you can only upload files up to a size of %s"
+msgstr "Es können nur Dateien bis zu einer Größe von %s hochgeladen werden."
 
 #: includes/include.upl_left_top.php:91
 msgid "Create directory in"
@@ -5905,38 +5910,42 @@ msgstr "Möchten Sie wirklich die folgende Datei löschen"
 msgid "Enter new filename"
 msgstr "Neuer Dateiname"
 
-#: templates/standard/template.upl_files_upload.html:15
-#: templates/standard/template.upl_files_upload.html:78
+#: templates/standard/template.upl_files_upload.html:16
+msgid "This file is too large."
+msgstr "Diese Datei ist zu groß."
+
+#: templates/standard/template.upl_files_upload.html:19
+#: templates/standard/template.upl_files_upload.html:82
 msgid "Drop your files here"
 msgstr "Dateien hier ablegen"
 
-#: templates/standard/template.upl_files_upload.html:31
-#: templates/standard/template.upl_files_upload.html:83
+#: templates/standard/template.upl_files_upload.html:35
+#: templates/standard/template.upl_files_upload.html:87
 #: xml/navigation.xml:23
 msgid "Upload files"
 msgstr "Dateien hochladen"
 
-#: templates/standard/template.upl_files_upload.html:75
+#: templates/standard/template.upl_files_upload.html:79
 msgid "Cancelling..."
 msgstr "Abbrechen..."
 
-#: templates/standard/template.upl_files_upload.html:77
+#: templates/standard/template.upl_files_upload.html:81
 msgid "Cancelled"
 msgstr "Abgebrochen"
 
-#: templates/standard/template.upl_files_upload.html:79
+#: templates/standard/template.upl_files_upload.html:83
 msgid "Finished!"
 msgstr "Abgeschlossen"
 
-#: templates/standard/template.upl_files_upload.html:82
+#: templates/standard/template.upl_files_upload.html:86
 msgid "Upload failed!"
 msgstr "Hochladen fehlgeschlagen!"
 
-#: templates/standard/template.upl_files_upload.html:84
+#: templates/standard/template.upl_files_upload.html:88
 msgid "Uploading..."
 msgstr "Hochladen..."
 
-#: templates/standard/template.upl_files_upload.html:85
+#: templates/standard/template.upl_files_upload.html:89
 msgid "Waiting..."
 msgstr "Warten..."
 

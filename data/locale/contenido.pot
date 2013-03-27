@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-27 12:20+0100\n"
+"POT-Creation-Date: 2013-03-27 13:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -249,7 +249,7 @@ msgstr ""
 #: classes/class.ajax.php:294 includes/include.CMS_HTML.php:102
 #: includes/include.CMS_HTMLHEAD.php:108 includes/include.str_overview.php:502
 #: scripts/langref.php:21 templates/standard/template.symbolhelp.html:68
-#: templates/standard/template.upl_files_upload.html:76
+#: templates/standard/template.upl_files_upload.html:80
 msgid "Cancel"
 msgstr ""
 
@@ -1235,7 +1235,7 @@ msgid "Meta"
 msgstr ""
 
 #: classes/content_types/class.content.type.imgeditor.php:271
-#: templates/standard/template.upl_files_upload.html:41
+#: templates/standard/template.upl_files_upload.html:45
 msgid "Upload"
 msgstr ""
 
@@ -1298,8 +1298,8 @@ msgstr ""
 #: includes/include.upl_search_results.php:157
 #: includes/include.upl_search_results.php:160
 #: includes/include.upl_search_results.php:162
-#: templates/standard/template.upl_files_upload.html:36
-#: templates/standard/template.upl_files_upload.html:80
+#: templates/standard/template.upl_files_upload.html:40
+#: templates/standard/template.upl_files_upload.html:84
 msgid "Path"
 msgstr ""
 
@@ -1661,7 +1661,7 @@ msgstr ""
 #: includes/include.rights_overview.php:164
 #: includes/include.system_configuration.php:165
 #: templates/standard/template.grouprights_memberselect.html:96
-#: templates/standard/template.upl_files_upload.html:81
+#: templates/standard/template.upl_files_upload.html:85
 msgid "Save changes"
 msgstr ""
 
@@ -5169,7 +5169,7 @@ msgstr ""
 
 #: includes/include.upl_edit.php:269
 #: includes/include.upl_files_overview.php:683
-#: includes/include.upl_files_upload.php:47
+#: includes/include.upl_files_upload.php:64
 msgid "Directory not writable"
 msgstr ""
 
@@ -5231,6 +5231,11 @@ msgstr ""
 #: includes/include.upl_files_overview.php:645
 #: includes/include.upl_search_results.php:379
 msgid "Page"
+msgstr ""
+
+#: includes/include.upl_files_upload.php:51
+#, php-format
+msgid "Please note that you can only upload files up to a size of %s"
 msgstr ""
 
 #: includes/include.upl_left_top.php:91
@@ -5807,37 +5812,41 @@ msgstr ""
 msgid "Enter new filename"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:15
-#: templates/standard/template.upl_files_upload.html:78
+#: templates/standard/template.upl_files_upload.html:16
+msgid "This file is too large."
+msgstr ""
+
+#: templates/standard/template.upl_files_upload.html:19
+#: templates/standard/template.upl_files_upload.html:82
 msgid "Drop your files here"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:31
-#: templates/standard/template.upl_files_upload.html:83 xml/navigation.xml:23
+#: templates/standard/template.upl_files_upload.html:35
+#: templates/standard/template.upl_files_upload.html:87 xml/navigation.xml:23
 msgid "Upload files"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:75
+#: templates/standard/template.upl_files_upload.html:79
 msgid "Cancelling..."
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:77
+#: templates/standard/template.upl_files_upload.html:81
 msgid "Cancelled"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:79
+#: templates/standard/template.upl_files_upload.html:83
 msgid "Finished!"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:82
+#: templates/standard/template.upl_files_upload.html:86
 msgid "Upload failed!"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:84
+#: templates/standard/template.upl_files_upload.html:88
 msgid "Uploading..."
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:85
+#: templates/standard/template.upl_files_upload.html:89
 msgid "Waiting..."
 msgstr ""
 

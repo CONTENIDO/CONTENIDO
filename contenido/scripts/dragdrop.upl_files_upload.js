@@ -170,7 +170,12 @@ function onDrop(e) {
     //go through all the files and start to upload them
     for(var i = 0; i < files.length; i++) {
         var file = files[i];
-
+        if(file.size > maxFileSize && maxFileSize != 0) {
+        	alert(file.name + ": " + $('<div />').html(text_fileIsTooBig).text());
+            e.preventDefault();
+        	continue;
+        }
+        
         var xhr = new XMLHttpRequest();
 
            uploads.push(xhr);
@@ -206,7 +211,7 @@ function onDrop(e) {
             running_upload = xhr;
         }
 
-          e.preventDefault();
+        e.preventDefault();
     } //end for
 }
 

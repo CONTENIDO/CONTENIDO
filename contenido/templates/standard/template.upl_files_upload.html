@@ -1,6 +1,7 @@
 <script type="text/javascript">
     var contenido_id = '1';
     var upload_path = '{PATH}';
+    var maxFileSize = {MAX_FILE_SIZE};
 
     var text_aborting = "i18n("Cancelling...")";
     var text_finished = "i18n("Finished!")";
@@ -9,6 +10,16 @@
     var text_uploading = "i18n("Uploading...")";
     var text_cancelButton = "i18n("Cancel")";
     var text_waiting = "i18n("Waiting...")";
+    var text_fileIsTooBig = "i18n("This file is too large.")";
+    
+    $(document).ready(function() {
+        $(".file_upload").bind('change', function() {
+        	if(this.files[0].size > maxFileSize) {
+        		this.files = null;
+        		alert(this.files[0].name + ": " + $('<div />').html(text_fileIsTooBig).text());
+        	}
+        });
+    });
 </script>
 
 <div id="dropbox_area">
@@ -17,19 +28,19 @@
 
     <form enctype="multipart/form-data" style="margin: 0px"
         name="properties" method="post" action="main.php">
-        <input type="hidden" name="frame" value="4"> <input
-            type="hidden" name="area" value="upl"> <input type="hidden"
-            name="path" value="{PATH}"> <input type="hidden" name="file"
-            value=""> <input type="hidden" name="action"
-            value="upl_upload"> <input type="hidden"
-            name="appendparameters" value=""> <input type="hidden"
-            name="contenido" value="1">
+        <input type="hidden" name="frame" value="4"> 
+        <input type="hidden" name="area" value="upl">
+        <input type="hidden" name="path" value="{PATH}">
+        <input type="hidden" name="file" value="">
+        <input type="hidden" name="action" value="upl_upload">
+        <input type="hidden" name="appendparameters" value="">
+        <input type="hidden" name="contenido" value="1">
+        <input type="hidden" name="MAX_FILE_SIZE" value="{MAX_FILE_SIZE}">
 
-        <table width="500" id="" class="generic" cellspacing="0"
-            cellpadding="2">
+        <table width="500" id="" class="generic" cellspacing="0" cellpadding="2">
             <tr>
                 <th colspan="2" valign="top">i18n("Upload files")
-                </td>
+                </th>
             </tr>
             <tr id="1">
                 <td nowrap="nowrap" valign="top"
@@ -37,23 +48,18 @@
                 <td nowrap="nowrap" valign="top" align="left">{DISPLAY_PATH}</td>
             </tr>
             <tr id="2">
-                <td nowrap="nowrap" valign="top"
-                    style="padding-left: 0px; white-space: nowrap;" width="1"><nobr>i18n("Upload
-                        files")</nobr></td>
-                <td nowrap="nowrap" valign="top" align="left"><input id="m1"
-                    name="file[]" class="text_medium" size="40" type="file"><br>
-                    <input id="m1" name="file[]" class="text_medium" size="40"
-                    type="file"><br> <input id="m1" name="file[]"
-                    class="text_medium" size="40" type="file"><br> <input
-                    id="m1" name="file[]" class="text_medium" size="40" type="file"><br>
-                    <input id="m1" name="file[]" class="text_medium" size="40"
-                    type="file"><br> <input id="m1" name="file[]"
-                    class="text_medium" size="40" type="file"><br> <input
-                    id="m1" name="file[]" class="text_medium" size="40" type="file"><br>
-                    <input id="m1" name="file[]" class="text_medium" size="40"
-                    type="file"><br> <input id="m1" name="file[]"
-                    class="text_medium" size="40" type="file"><br> <input
-                    id="m1" name="file[]" class="text_medium" size="40" type="file"><br>
+                <td nowrap="nowrap" valign="top" style="padding-left: 0px; white-space: nowrap;" width="1"><nobr>i18n("Upload files")</nobr></td>
+                <td nowrap="nowrap" valign="top" align="left">
+                <input id="m1" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                <input id="m1" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                <input id="m1" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                <input id="m1" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                <input id="m1" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                <input id="m1" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                <input id="m1" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                <input id="m1" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                <input id="m1" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                <input id="m1" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
                 </td>
             </tr>
             <tr id="3">
