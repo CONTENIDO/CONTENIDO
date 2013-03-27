@@ -902,3 +902,6 @@
 ./tools/mpAutoloaderClassMap/mpClassTypeFinder.php
 ./tools/phpcompatinfo.php
 ./xml/index.php
+./xml/legend.xml
+./xml/navigation.xml
+./xml/system.xml

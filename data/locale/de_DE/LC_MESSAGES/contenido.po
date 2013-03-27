@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-27 12:09+0100\n"
-"PO-Revision-Date: 2013-03-27 12:13+0100\n"
+"POT-Creation-Date: 2013-03-27 12:20+0100\n"
+"PO-Revision-Date: 2013-03-27 12:21+0100\n"
 "Last-Translator: Mischa Holz <mischa.holz@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -79,6 +79,7 @@ msgstr "Artikel"
 #: templates/standard/template.mycontenido_lastarticles.html:67
 #: templates/standard/template.str_overview.html:402
 #: templates/standard/template.str_overview.html:487
+#: xml/navigation.xml:33
 msgid "Template"
 msgstr "Vorlage"
 
@@ -229,6 +230,7 @@ msgstr "Keine Daten gefunden!"
 #: templates/standard/template.str_overview.html:468
 #: templates/standard/template.symbolhelp.html:21
 #: templates/standard/template.symbolhelp.html:166
+#: xml/navigation.xml:18
 msgid "Category"
 msgstr "Kategorie"
 
@@ -1149,6 +1151,9 @@ msgstr "Verzeichnis"
 #: includes/include.mod_edit_form.php:441
 #: includes/include.mod_import_export.php:127
 #: includes/include.mod_import_export.php:129
+#: xml/navigation.xml:42
+#: xml/navigation.xml:45
+#: xml/navigation.xml:48
 msgid "File"
 msgstr "Datei"
 
@@ -1538,6 +1543,7 @@ msgid "Saturday"
 msgstr "Samstag"
 
 #: classes/gui/class.navigation.php:257
+#: xml/navigation.xml:86
 msgid "My CONTENIDO"
 msgstr "My CONTENIDO"
 
@@ -1575,6 +1581,7 @@ msgstr "Warnung"
 
 #: classes/gui/class.notification.php:105
 #: templates/standard/template.mycontenido_lastarticles.html:68
+#: xml/navigation.xml:93
 msgid "Info"
 msgstr "Information"
 
@@ -2393,6 +2400,10 @@ msgstr "Löschen"
 #: includes/include.systemsettings.php:76
 #: includes/include.systemsettings.php:79
 #: includes/include.upl_edit.php:51
+#: xml/navigation.xml:22
+#: xml/navigation.xml:26
+#: xml/navigation.xml:30
+#: xml/navigation.xml:38
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -2515,6 +2526,7 @@ msgid "Yes"
 msgstr "Ja"
 
 #: includes/include.client_edit.php:245
+#: xml/system.xml:34
 msgid "Generate XHTML"
 msgstr "XHTML generieren"
 
@@ -2575,6 +2587,8 @@ msgstr "Verzeichnis / Datei"
 #: includes/include.upl_edit.php:84
 #: includes/include.upl_files_overview.php:445
 #: includes/include.upl_search_results.php:222
+#: xml/navigation.xml:15
+#: xml/navigation.xml:27
 msgid "Preview"
 msgstr "Vorschau"
 
@@ -2971,6 +2985,7 @@ msgstr "Gespeicherte Suchen"
 #: includes/include.con_left_top.php:272
 #: includes/include.mycontenido.php:196
 #: includes/include.mycontenido_lastarticles.php:90
+#: xml/navigation.xml:88
 msgid "Recently edited articles"
 msgstr "Zuletzt bearbeitete Artikel"
 
@@ -3163,6 +3178,9 @@ msgstr "Klicken Sie für mehr Information über Verwendung"
 #: includes/include.con_translate.php:583
 #: templates/standard/template.symbolhelp.html:27
 #: templates/standard/template.symbolhelp.html:336
+#: xml/navigation.xml:37
+#: xml/navigation.xml:59
+#: xml/navigation.xml:68
 msgid "Templates"
 msgstr "Vorlagen"
 
@@ -3177,6 +3195,10 @@ msgstr "ACHTUNG: Die Übersetzung hat Auswirkung auf alle Artikel, welche das Mo
 
 #: includes/include.frontend.group.subnav.php:34
 #: includes/include.mycontenido.php:195
+#: xml/navigation.xml:11
+#: xml/navigation.xml:19
+#: xml/navigation.xml:21
+#: xml/navigation.xml:87
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -4289,6 +4311,7 @@ msgid "Reminder list: %d Tasks open"
 msgstr "Wiedervorlage: %d Aufgaben offen"
 
 #: includes/include.mycontenido.php:198
+#: xml/navigation.xml:90
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -4606,6 +4629,7 @@ msgstr "Aktuell"
 #: includes/include.stat_overview.php:104
 #: templates/standard/template.symbolhelp.html:37
 #: templates/standard/template.symbolhelp.html:497
+#: xml/navigation.xml:51
 msgid "Hits"
 msgstr "Hits"
 
@@ -5155,6 +5179,8 @@ msgid "Please click here in order to rename automatically."
 msgstr "Bitte klicken Sie hier, um die Verzeichnisse automatisch umzubennennen."
 
 #: includes/include.upl_dirs_overview.php:246
+#: xml/navigation.xml:60
+#: xml/navigation.xml:69
 msgid "Categories"
 msgstr "Kategorien"
 
@@ -5302,6 +5328,7 @@ msgid "CONTENIDO Backend"
 msgstr "CONTENIDO Backend"
 
 #: main.loginform.php:100
+#: xml/navigation.xml:94
 msgid "Login"
 msgstr "Login"
 
@@ -5572,6 +5599,10 @@ msgstr "Allgemeines"
 
 #: templates/standard/template.symbolhelp.html:19
 #: templates/standard/template.symbolhelp.html:100
+#: xml/navigation.xml:9
+#: xml/navigation.xml:17
+#: xml/navigation.xml:57
+#: xml/navigation.xml:66
 msgid "Content"
 msgstr "Content"
 
@@ -5582,16 +5613,23 @@ msgstr "Dateiverwaltung"
 
 #: templates/standard/template.symbolhelp.html:24
 #: templates/standard/template.symbolhelp.html:280
+#: xml/navigation.xml:24
 msgid "Style"
 msgstr "Style"
 
 #: templates/standard/template.symbolhelp.html:25
 #: templates/standard/template.symbolhelp.html:282
+#: xml/navigation.xml:25
+#: xml/navigation.xml:56
+#: xml/navigation.xml:65
 msgid "Layouts"
 msgstr "Layouts"
 
 #: templates/standard/template.symbolhelp.html:26
 #: templates/standard/template.symbolhelp.html:309
+#: xml/navigation.xml:29
+#: xml/navigation.xml:58
+#: xml/navigation.xml:67
 msgid "Modules"
 msgstr "Module"
 
@@ -5612,6 +5650,7 @@ msgstr "Modul-Templates"
 
 #: templates/standard/template.symbolhelp.html:32
 #: templates/standard/template.symbolhelp.html:421
+#: xml/navigation.xml:91
 msgid "Extras"
 msgstr "Extras"
 
@@ -5626,31 +5665,37 @@ msgstr "Empfänger"
 
 #: templates/standard/template.symbolhelp.html:36
 #: templates/standard/template.symbolhelp.html:495
+#: xml/navigation.xml:50
 msgid "Statistics"
 msgstr "Statistiken"
 
 #: templates/standard/template.symbolhelp.html:39
 #: templates/standard/template.symbolhelp.html:522
+#: xml/navigation.xml:52
 msgid "Administration"
 msgstr "Administration"
 
 #: templates/standard/template.symbolhelp.html:40
 #: templates/standard/template.symbolhelp.html:524
+#: xml/navigation.xml:53
 msgid "Users"
 msgstr "Benutzer"
 
 #: templates/standard/template.symbolhelp.html:41
 #: templates/standard/template.symbolhelp.html:542
+#: xml/navigation.xml:61
 msgid "Groups"
 msgstr "Gruppen"
 
 #: templates/standard/template.symbolhelp.html:42
 #: templates/standard/template.symbolhelp.html:560
+#: xml/navigation.xml:70
 msgid "Languages"
 msgstr "Sprachen"
 
 #: templates/standard/template.symbolhelp.html:43
 #: templates/standard/template.symbolhelp.html:583
+#: xml/navigation.xml:72
 msgid "Clients"
 msgstr "Mandanten"
 
@@ -5867,6 +5912,7 @@ msgstr "Dateien hier ablegen"
 
 #: templates/standard/template.upl_files_upload.html:31
 #: templates/standard/template.upl_files_upload.html:83
+#: xml/navigation.xml:23
 msgid "Upload files"
 msgstr "Dateien hochladen"
 
@@ -5893,6 +5939,321 @@ msgstr "Hochladen..."
 #: templates/standard/template.upl_files_upload.html:85
 msgid "Waiting..."
 msgstr "Warten..."
+
+#: xml/legend.xml:9
+msgid "start article"
+msgstr "Startartikel"
+
+#: xml/legend.xml:10
+msgid "normal article"
+msgstr "Normaler Artikel"
+
+#: xml/legend.xml:11
+msgid "start article with redirection"
+msgstr "Startartikel mit Weiterleitung"
+
+#: xml/legend.xml:12
+msgid "redirection"
+msgstr "Weiterleitung"
+
+#: xml/legend.xml:13
+msgid "active article with time control"
+msgstr "Aktiver Artikel mit Zeitsteuerung"
+
+#: xml/legend.xml:14
+msgid "inactive article with time control"
+msgstr "Inaktiver Artikel mit Zeitsteuerung"
+
+#: xml/legend.xml:15
+msgid "category"
+msgstr "Kategorie"
+
+#: xml/legend.xml:16
+msgid "inactive category"
+msgstr "Inaktive Kategorie"
+
+#: xml/legend.xml:17
+msgid "inactive category without any active start article"
+msgstr "Inaktive Kategorie ohne aktiven Startartikel"
+
+#: xml/legend.xml:18
+msgid "category without any active start article"
+msgstr "Kategorie ohne aktiven Startartikel"
+
+#: xml/legend.xml:19
+msgid "protected category"
+msgstr "Geschützte Kategorie"
+
+#: xml/legend.xml:20
+msgid "protected category without any active start article"
+msgstr "Geschützte Kategorie ohne aktiven Startartikel"
+
+#: xml/legend.xml:21
+msgid "active synchronized category"
+msgstr "Aktive synchronisierte Kategorie"
+
+#: xml/legend.xml:22
+msgid "inactive synchronized category"
+msgstr "Inaktive synchronisierte Kategorie"
+
+#: xml/navigation.xml:10
+msgid "Articles"
+msgstr "Artikel"
+
+#: xml/navigation.xml:12
+msgid "Editor"
+msgstr "Editor"
+
+#: xml/navigation.xml:13
+#: xml/navigation.xml:54
+#: xml/navigation.xml:63
+#: xml/navigation.xml:73
+msgid "Properties"
+msgstr "Eigenschaften"
+
+#: xml/navigation.xml:14
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#: xml/navigation.xml:16
+msgid "SEO"
+msgstr "SEO"
+
+#: xml/navigation.xml:20
+msgid "File manager"
+msgstr "Dateiverwaltung"
+
+#: xml/navigation.xml:28
+#: xml/navigation.xml:31
+#: xml/navigation.xml:43
+#: xml/navigation.xml:46
+#: xml/navigation.xml:49
+msgid "History"
+msgstr "Historie"
+
+#: xml/navigation.xml:32
+msgid "Translation"
+msgstr "Übersetzung"
+
+#: xml/navigation.xml:34
+#: xml/navigation.xml:41
+msgid "CSS"
+msgstr "CSS"
+
+#: xml/navigation.xml:35
+#: xml/navigation.xml:44
+msgid "JavaScript"
+msgstr "JavaScript"
+
+#: xml/navigation.xml:36
+msgid "Import/Export"
+msgstr "Import/Export"
+
+#: xml/navigation.xml:39
+msgid "Preconfiguration"
+msgstr "Voreinstellungen"
+
+#: xml/navigation.xml:40
+msgid "Visual edit"
+msgstr "Visuelles Bearbeiten"
+
+#: xml/navigation.xml:47
+#: xml/navigation.xml:97
+msgid "HTML"
+msgstr "HTML"
+
+#: xml/navigation.xml:55
+#: xml/navigation.xml:64
+msgid "Areas"
+msgstr "Bereiche"
+
+#: xml/navigation.xml:62
+msgid "Members"
+msgstr "Mitglieder"
+
+#: xml/navigation.xml:71
+msgid "Plugins"
+msgstr "Plugins"
+
+#: xml/navigation.xml:74
+msgid "Article specifications"
+msgstr "Artikelspezifikationen"
+
+#: xml/navigation.xml:75
+msgid "Client settings"
+msgstr "Mandanteneinstellungen"
+
+#: xml/navigation.xml:76
+msgid "Logs"
+msgstr "Logs"
+
+#: xml/navigation.xml:77
+msgid "Debug"
+msgstr "Debug"
+
+#: xml/navigation.xml:78
+msgid "System"
+msgstr "System"
+
+#: xml/navigation.xml:79
+msgid "Expert settings"
+msgstr "Experteneinstellungen"
+
+#: xml/navigation.xml:80
+msgid "System variables"
+msgstr "Systemvariablen"
+
+#: xml/navigation.xml:81
+msgid "System settings"
+msgstr "Systemeinstellungen"
+
+#: xml/navigation.xml:82
+msgid "Purge"
+msgstr "Bereinigung"
+
+#: xml/navigation.xml:83
+msgid "Error report"
+msgstr "Fehlerbericht"
+
+#: xml/navigation.xml:84
+msgid "Frontend"
+msgstr "Frontend"
+
+#: xml/navigation.xml:85
+msgid "E-Mail-Log"
+msgstr "E-Mail Log"
+
+#: xml/navigation.xml:89
+msgid "Reminder list"
+msgstr "Wiedervorlage"
+
+#: xml/navigation.xml:92
+msgid "Mailing"
+msgstr "Mailing"
+
+#: xml/navigation.xml:95
+msgid "System integrity"
+msgstr "Systemintegrität"
+
+#: xml/navigation.xml:96
+msgid "Translations"
+msgstr "Übersetzungen"
+
+#: xml/system.xml:9
+msgid "Versioning activated"
+msgstr "Versionierung aktiviert"
+
+#: xml/system.xml:10
+msgid "Versioning"
+msgstr "Versionierung"
+
+#: xml/system.xml:11
+msgid "Serverpath to version files"
+msgstr "Serverpfad für Versionierungsdateien"
+
+#: xml/system.xml:12
+msgid "Maximum number of stored versions"
+msgstr "Maximale Anzahl gespeicherter Versionen"
+
+#: xml/system.xml:13
+msgid "Check for updates"
+msgstr "Auf Aktualisierungen prüfen"
+
+#: xml/system.xml:14
+msgid "Update notifier"
+msgstr "Update Benachrichtigung"
+
+#: xml/system.xml:15
+msgid "Get news from contenido.org"
+msgstr "Neuigkeiten von contenido.org lesen"
+
+#: xml/system.xml:16
+msgid "Update check period (minutes)"
+msgstr "Aktualisierungsperiode (Minuten)"
+
+#: xml/system.xml:17
+msgid "Clickable menu in backend"
+msgstr "Hauptmenüwechsel bei Klick"
+
+#: xml/system.xml:18
+msgid "Backend"
+msgstr "Backend"
+
+#: xml/system.xml:19
+msgid "Use TinyMce as insite editor"
+msgstr "TinyMce als Insite Editor verwenden"
+
+#: xml/system.xml:20
+msgid "Log mails"
+msgstr "Mails loggen"
+
+#: xml/system.xml:21
+msgid "Mailserver"
+msgstr "Mailserver"
+
+#: xml/system.xml:22
+msgid "Mailserver host"
+msgstr "Mailserver Host"
+
+#: xml/system.xml:23
+msgid "Mailserver user"
+msgstr "Mailserver Benutzername"
+
+#: xml/system.xml:24
+msgid "Mailserver password"
+msgstr "Mailserver Passwort"
+
+#: xml/system.xml:25
+msgid "Mailserver encryption"
+msgstr "Mailserver Verschlüsselung"
+
+#: xml/system.xml:26
+msgid "Mailserver port"
+msgstr "Mailserver Port"
+
+#: xml/system.xml:27
+msgid "Mailserver sender mail"
+msgstr "Mailserver Sendermail"
+
+#: xml/system.xml:28
+msgid "Mailserver sender name"
+msgstr "Mailserver Sendername"
+
+#: xml/system.xml:29
+msgid "Use passwordrequest in Backend"
+msgstr "Passwort vergessen Funktion benutzen"
+
+#: xml/system.xml:30
+msgid "Activate maintenance mode"
+msgstr "Wartungsmodus aktiviert"
+
+#: xml/system.xml:31
+msgid "Use CodeMirror for code highlighting"
+msgstr "CodeMirror für Syntax-Highlighting verwenden"
+
+#: xml/system.xml:32
+msgid "Default client (ID)"
+msgstr "Standardmandant (ID)"
+
+#: xml/system.xml:33
+msgid "Maximum log size in MiB (0 = infinite)"
+msgstr "Maximale Dateigröße aller Logs in MiB (0 = unendlich)"
+
+#: xml/system.xml:35
+msgid "Development"
+msgstr "Entwicklung"
+
+#: xml/system.xml:36
+msgid "Use image magic (if available)"
+msgstr "Image magic benutzen (wenn verfügbar)"
+
+#: xml/system.xml:37
+msgid "Debug to file"
+msgstr "Debug-Meldungen in einer Datei speichern"
+
+#: xml/system.xml:38
+msgid "Visible debug"
+msgstr "Debug-Meldungen anzeigen"
 
 #~ msgid "Clear contents"
 #~ msgstr "Inhalt leeren"
@@ -5939,233 +6300,8 @@ msgstr "Warten..."
 #~ msgid "Unable to create file %s"
 #~ msgstr "Konnte Datei %s nicht erstellen"
 
-#~ msgid "Versioning activated"
-#~ msgstr "Versionierung aktiviert"
-
-#~ msgid "Versioning"
-#~ msgstr "Versionierung"
-
-#~ msgid "Serverpath to version files"
-#~ msgstr "Serverpfad für Versionierungsdateien"
-
-#~ msgid "Maximum number of stored versions"
-#~ msgstr "Maximale Anzahl gespeicherter Versionen"
-
-#~ msgid "Check for updates"
-#~ msgstr "Auf Aktualisierungen prüfen"
-
-#~ msgid "Update notifier"
-#~ msgstr "Update Benachrichtigung"
-
-#~ msgid "Get news from contenido.org"
-#~ msgstr "Neuigkeiten von contenido.org lesen"
-
-#~ msgid "Update check period (minutes)"
-#~ msgstr "Aktualisierungsperiode (Minuten)"
-
-#~ msgid "Clickable menu in backend"
-#~ msgstr "Hauptmenüwechsel bei Klick"
-
-#~ msgid "Backend"
-#~ msgstr "Backend"
-
-#~ msgid "Use TinyMce as insight editor"
-#~ msgstr "TinyMce als Insight Editor verwenden"
-
-#~ msgid "Log mails"
-#~ msgstr "Mails loggen"
-
-#~ msgid "Mailserver"
-#~ msgstr "Mailserver"
-
-#~ msgid "Mailserver host"
-#~ msgstr "Mailserver Host"
-
-#~ msgid "Mailserver user"
-#~ msgstr "Mailserver Benutzername"
-
-#~ msgid "Mailserver password"
-#~ msgstr "Mailserver Passwort"
-
-#~ msgid "Mailserver encryption"
-#~ msgstr "Mailserver Verschlüsselung"
-
-#~ msgid "Mailserver port"
-#~ msgstr "Mailserver Port"
-
-#~ msgid "Mailserver sender mail"
-#~ msgstr "Mailserver Sendermail"
-
-#~ msgid "Mailserver sender name"
-#~ msgstr "Mailserver Sendername"
-
-#~ msgid "Use passwordrequest in Backend"
-#~ msgstr "Passwort vergessen Funktion benutzen"
-
-#~ msgid "Activate maintenance mode"
-#~ msgstr "Wartungsmodus aktiviert"
-
-#~ msgid "Use CodeMirror for code highlighting"
-#~ msgstr "CodeMirror für Syntax-Highlighting verwenden"
-
-#~ msgid "Default client (ID)"
-#~ msgstr "Standardmandant (ID)"
-
-#~ msgid "Maximum log size in MiB (0 = infinite)"
-#~ msgstr "Maximale Dateigröße aller Logs in MiB (0 = unendlich)"
-
-#~ msgid "Development"
-#~ msgstr "Entwicklung"
-
-#~ msgid "Use image magic (if available)"
-#~ msgstr "Image magic benutzen (wenn verfügbar)"
-
-#~ msgid "Debug to file"
-#~ msgstr "Debug-Meldungen in einer Datei speichern"
-
-#~ msgid "Visible debug"
-#~ msgstr "Debug-Meldungen anzeigen"
-
-#~ msgid "Articles"
-#~ msgstr "Artikel"
-
-#~ msgid "Editor"
-#~ msgstr "Editor"
-
-#~ msgid "Properties"
-#~ msgstr "Eigenschaften"
-
-#~ msgid "Configuration"
-#~ msgstr "Konfiguration"
-
-#~ msgid "SEO"
-#~ msgstr "SEO"
-
-#~ msgid "File manager"
-#~ msgstr "Dateiverwaltung"
-
-#~ msgid "History"
-#~ msgstr "Historie"
-
-#~ msgid "Translation"
-#~ msgstr "Übersetzung"
-
-#~ msgid "CSS"
-#~ msgstr "CSS"
-
-#~ msgid "JavaScript"
-#~ msgstr "JavaScript"
-
-#~ msgid "Import/Export"
-#~ msgstr "Import/Export"
-
-#~ msgid "Preconfiguration"
-#~ msgstr "Voreinstellungen"
-
-#~ msgid "Visual edit"
-#~ msgstr "Visuelles Bearbeiten"
-
 #~ msgid "JavaScript editor"
 #~ msgstr "JavaScript-Editor"
-
-#~ msgid "Areas"
-#~ msgstr "Bereiche"
-
-#~ msgid "Members"
-#~ msgstr "Mitglieder"
-
-#~ msgid "Plugins"
-#~ msgstr "Plugins"
-
-#~ msgid "Article specifications"
-#~ msgstr "Artikelspezifikationen"
-
-#~ msgid "Client settings"
-#~ msgstr "Mandanteneinstellungen"
-
-#~ msgid "Logs"
-#~ msgstr "Logs"
-
-#~ msgid "Debug"
-#~ msgstr "Debug"
-
-#~ msgid "System"
-#~ msgstr "System"
-
-#~ msgid "Expert settings"
-#~ msgstr "Experteneinstellungen"
-
-#~ msgid "System variables"
-#~ msgstr "Systemvariablen"
-
-#~ msgid "System settings"
-#~ msgstr "Systemeinstellungen"
-
-#~ msgid "Purge"
-#~ msgstr "Bereinigung"
-
-#~ msgid "Error report"
-#~ msgstr "Fehlerbericht"
-
-#~ msgid "Frontend"
-#~ msgstr "Frontend"
-
-#~ msgid "E-Mail-Log"
-#~ msgstr "E-Mail Log"
-
-#~ msgid "Reminder list"
-#~ msgstr "Wiedervorlage"
-
-#~ msgid "Mailing"
-#~ msgstr "Mailing"
-
-#~ msgid "System integrity"
-#~ msgstr "Systemintegrität"
-
-#~ msgid "Translations"
-#~ msgstr "Übersetzungen"
-
-#~ msgid "start article"
-#~ msgstr "Startartikel"
-
-#~ msgid "normal article"
-#~ msgstr "Normaler Artikel"
-
-#~ msgid "start article with redirection"
-#~ msgstr "Startartikel mit Weiterleitung"
-
-#~ msgid "redirection"
-#~ msgstr "Weiterleitung"
-
-#~ msgid "active article with time control"
-#~ msgstr "Aktiver Artikel mit Zeitsteuerung"
-
-#~ msgid "inactive article with time control"
-#~ msgstr "Inaktiver Artikel mit Zeitsteuerung"
-
-#~ msgid "category"
-#~ msgstr "Kategorie"
-
-#~ msgid "inactive category"
-#~ msgstr "Inaktive Kategorie"
-
-#~ msgid "inactive category without any active start article"
-#~ msgstr "Inaktive Kategorie ohne aktiven Startartikel"
-
-#~ msgid "category without any active start article"
-#~ msgstr "Kategorie ohne aktiven Startartikel"
-
-#~ msgid "protected category"
-#~ msgstr "Geschützte Kategorie"
-
-#~ msgid "protected category without any active start article"
-#~ msgstr "Geschützte Kategorie ohne aktiven Startartikel"
-
-#~ msgid "active synchronized category"
-#~ msgstr "Aktive synchronisierte Kategorie"
-
-#~ msgid "inactive synchronized category"
-#~ msgstr "Inaktive synchronisierte Kategorie"
 
 #~ msgid "Make category online"
 #~ msgstr "Kategorie online setzen"
