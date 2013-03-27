@@ -164,12 +164,12 @@ if (!$layout->virgin) {
         $v->validate($code);
 
         if (!$v->tagExists("body") && !$v->tagExists("BODY")) {
-            $msg .= sprintf(i18n("The body tag does not exist in the layout. This is a requirement for the in-site editing."));
+            $msg .= sprintf(i18n("The body tag does not exist in the layout. This is a requirement for the insite editing."));
             $msg .= "<br>";
         }
 
         if (!$v->tagExists("head") && !$v->tagExists("HEAD")) {
-            $msg .= sprintf(i18n("The head tag does not exist in the layout. This is a requirement for the in-site editing."));
+            $msg .= sprintf(i18n("The head tag does not exist in the layout. This is a requirement for the insite editing."));
             $msg .= "<br>";
         }
 

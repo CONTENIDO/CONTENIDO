@@ -16,7 +16,7 @@ i18n("Get news from contenido.org")
 i18n("Update check period (minutes)")
 i18n("Clickable menu in backend")
 i18n("Backend")
-i18n("Use TinyMce as insight editor")
+i18n("Use TinyMce as insite editor")
 i18n("Log mails")
 i18n("Mailserver")
 i18n("Mailserver host")
@@ -93,14 +93,14 @@ i18n("Visible debug")
                 <label>Clickable menu in backend</label>
                 <group>Backend</group>
             </clickmenu>
-            <insight_editing_activated>
+            <insite_editing_activated>
                 <values>
                     <array_value>true</array_value>
                     <array_value>false</array_value>
                 </values>
-                <label>Use TinyMce as insight editor</label>
+                <label>Use TinyMce as insite editor</label>
                 <group>Backend</group>
-            </insight_editing_activated>
+            </insite_editing_activated>
             <mail_log>
                 <values>
                     <array_value>true</array_value>

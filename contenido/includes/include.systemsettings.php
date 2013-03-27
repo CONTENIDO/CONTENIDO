@@ -27,7 +27,7 @@ $aManagedValues = array(
     'update_check_period', 'system_clickmenu', 'system_mail_host', 'system_mail_sender',
     'system_mail_sender_name', 'pw_request_enable', 'maintenance_mode', 'codemirror_activated',
     'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml', 'imagemagick_available',
-    'system_insight_editing_activated', 'backend_backend_label'
+    'system_insite_editing_activated', 'backend_backend_label'
 );
 
 if ($action == "systemsettings_save_item") {

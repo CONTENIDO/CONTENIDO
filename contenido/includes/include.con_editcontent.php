@@ -103,7 +103,7 @@ $oScriptTpl->set('s', 'CLOSE', utf8_encode(html_entity_decode(i18n('Close editor
 $oScriptTpl->set('s', 'SAVE', utf8_encode(html_entity_decode(i18n('Close editor and save changes'))));
 $oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
 
-if (getEffectiveSetting('system', 'insight_editing_activated', 'true') == 'false') {
+if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
     $oScriptTpl->set('s', 'USE_TINY', '');
 } else {
     $oScriptTpl->set('s', 'USE_TINY', 'swapTiny(this);');
