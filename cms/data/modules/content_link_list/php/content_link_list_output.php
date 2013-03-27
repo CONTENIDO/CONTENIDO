@@ -37,7 +37,8 @@ if (1 == $force) {
 }
 
 // create art object
-$art = new Article($artId, $client, $lang, $idartlang);
+$art = new cApiArticleLanguage();
+$art->loadByArticleAndLanguageId($artId, $lang);
 $linkCount = (int) $art->getContent($type, $typeid);
 
 if ($_POST['linkCount']) {

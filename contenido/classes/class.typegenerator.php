@@ -91,8 +91,8 @@ class cTypeGenerator {
                 WHERE
                     A.idtype    = C.idtype AND
                     A.idartlang = B.idartlang AND
-                    B.idart     = '" . Contenido_Security::toInteger($this->_idart) . "' AND
-                    B.idlang    = '" . Contenido_Security::toInteger($this->_idlang) . "'";
+                    B.idart     = '" . cSecurity::toInteger($this->_idart) . "' AND
+                    B.idlang    = '" . cSecurity::toInteger($this->_idlang) . "'";
 
         self::$db->query($sql);
 
