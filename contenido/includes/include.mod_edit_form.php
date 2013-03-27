@@ -69,7 +69,7 @@ if ($action == "mod_sync") {
     $contenidoModuleSynchronizer = new cModuleSynchronizer();
     $idmod = $contenidoModuleSynchronizer->synchronize();
 
-    $idmodUpdate = $contenidoModuleSynchronizer->compareFileAndModulTimestamp();
+    $idmodUpdate = $contenidoModuleSynchronizer->compareFileAndModuleTimestamp();
 
     // if a module is deleted in filesystem but not in db make an update
     // idmodUpdate = $contenidoModuleSynchronizer->updateDirFromModuls();
@@ -78,7 +78,7 @@ if ($action == "mod_sync") {
         $idmod = $idmodUpdate;
     }
 
-    // the actuly Modul is the last Modul from synchronize
+    // the actual module is the last module from synchronize
     $contenidoModuleHandler = new cModuleHandler($idmod);
 }
 

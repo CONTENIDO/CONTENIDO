@@ -118,7 +118,7 @@ class cModuleSynchronizer extends cModuleHandler {
      *
      * @return int id of last update module
      */
-    public function compareFileAndModulTimestamp() {
+    public function compareFileAndModuleTimestamp() {
         global $cfg, $cfgClient;
 
         $synchLock = 0;
@@ -131,18 +131,34 @@ class cModuleSynchronizer extends cModuleHandler {
         $retIdMod = 0;
 
         while ($db->nextRecord()) {
-            $modulePath = $cfgClient[$db->f('idclient')]['module']['path'] . $db->f('alias') . '/' . $this->_directories['php'] . $db->f('alias');
+            $modulePath = $cfgClient[$db->f('idclient')]['module']['path'] . $db->f('alias') . '/';
+            $modulePHP = $modulePath . $this->_directories['php'] . $db->f('alias');
 
             $lastmodified = $db->f('lastmodified');
 
             $lastmodInput = $lastmodOutput = 0;
 
-            if (cFileHandler::exists($modulePath . '_input.php')) {
-                $lastmodInput = filemtime($modulePath . '_input.php');
+            if (cFileHandler::exists($modulePHP . '_input.php')) {
+                $lastmodInput = filemtime($modulePHP . '_input.php');
             }
 
-            if (cFileHandler::exists($modulePath . '_output.php')) {
-                $lastmodOutput = filemtime($modulePath . '_output.php');
+            if (cFileHandler::exists($modulePHP . '_output.php')) {
+                $lastmodOutput = filemtime($modulePHP . '_output.php');
+            }
+
+            if(cFileHandler::exists($modulePath . "info.xml")) {
+                $lastModInfo = filemtime($modulePath . "info.xml");
+                if($lastModInfo > $lastmodified) {
+                    $modInfo = cXmlBase::xmlStringToArray(cFileHandler::read($modulePath . "info.xml"));
+                    $mod = new cApiModule($db->f("idmod"));
+                    if($modInfo["description"] != $mod->get("description")) {
+                        $mod->set("description", $modInfo["description"]);
+                        $this->setLastModified($lastModInfo, $db->f('idmod'));
+                    }
+                    $mod->store();
+                    $synchLock = 1;
+                    $notification->displayNotification('info', sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
+                }
             }
 
             if ($lastmodInput < $lastmodOutput) {
@@ -152,7 +168,7 @@ class cModuleSynchronizer extends cModuleHandler {
                     $synchLock = 1;
                     $this->setLastModified($lastmodOutput, $db->f('idmod'));
                     conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
-                    $notification->displayNotification('info', sprintf(i18n('Module %s successfull synchronized'), $db->f('name')));
+                    $notification->displayNotification('info', sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
                 }
             } else {
                 // use input
@@ -161,7 +177,7 @@ class cModuleSynchronizer extends cModuleHandler {
                     $synchLock = 1;
                     $this->setLastModified($lastmodInput, $db->f('idmod'));
                     conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
-                    $notification->displayNotification('info', sprintf(i18n('Module %s successfull synchronized'), $db->f('name')));
+                    $notification->displayNotification('info', sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
                 }
             }
 
@@ -225,7 +241,7 @@ class cModuleSynchronizer extends cModuleHandler {
     }
 
     /**
-     * Depend from client, this method
+     * Depending on the client, this method
      * will check the modul dir of the client and if found
      * a Modul(Dir) that not exist in Db-table this method will
      * insert the Modul in Db-table ([tab][mod]).
