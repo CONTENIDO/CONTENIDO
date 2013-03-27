@@ -36,6 +36,7 @@ i18n("Development")
 i18n("Use image magic (if available)")
 i18n("Debug to file")
 i18n("Visible debug")
+i18n("Allow all HTML tags and attributes in TinyMCE")
 
 -->
 
@@ -148,6 +149,16 @@ i18n("Visible debug")
                 <group>Mailserver</group>
             </mail_sender_name>
         </system>
+        <wysiwyg>
+        	<tinymce-valid-elements>
+        		<values>
+        			<array_value>true</array_value>
+        			<array_value>false</array_value>
+        		</values>
+        		<label>Allow all HTML tags and attributes in TinyMCE</label>
+        		<group>Backend</group>
+        	</tinymce-valid-elements>
+        </wysiwyg>
         <pw_request>
             <enable>
                 <values>

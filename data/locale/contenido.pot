@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-27 13:21+0100\n"
+"POT-Creation-Date: 2013-03-27 16:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -224,7 +224,7 @@ msgstr ""
 #: includes/include.mycontenido_settings.php:128
 #: includes/include.rights_create.php:116
 #: includes/include.rights_left_top.php:107
-#: includes/include.rights_overview.php:174
+#: includes/include.rights_overview.php:176
 #: includes/include.style_edit_form.php:216
 #: includes/include.style_history.php:151
 #: includes/include.systemsettings.php:63
@@ -249,7 +249,7 @@ msgstr ""
 #: classes/class.ajax.php:294 includes/include.CMS_HTML.php:102
 #: includes/include.CMS_HTMLHEAD.php:108 includes/include.str_overview.php:502
 #: scripts/langref.php:21 templates/standard/template.symbolhelp.html:68
-#: templates/standard/template.upl_files_upload.html:80
+#: templates/standard/template.upl_files_upload.html:82
 msgid "Cancel"
 msgstr ""
 
@@ -1235,7 +1235,6 @@ msgid "Meta"
 msgstr ""
 
 #: classes/content_types/class.content.type.imgeditor.php:271
-#: templates/standard/template.upl_files_upload.html:45
 msgid "Upload"
 msgstr ""
 
@@ -1298,8 +1297,8 @@ msgstr ""
 #: includes/include.upl_search_results.php:157
 #: includes/include.upl_search_results.php:160
 #: includes/include.upl_search_results.php:162
-#: templates/standard/template.upl_files_upload.html:40
-#: templates/standard/template.upl_files_upload.html:84
+#: templates/standard/template.upl_files_upload.html:47
+#: templates/standard/template.upl_files_upload.html:86
 msgid "Path"
 msgstr ""
 
@@ -1661,7 +1660,7 @@ msgstr ""
 #: includes/include.rights_overview.php:164
 #: includes/include.system_configuration.php:165
 #: templates/standard/template.grouprights_memberselect.html:96
-#: templates/standard/template.upl_files_upload.html:85
+#: templates/standard/template.upl_files_upload.html:87
 msgid "Save changes"
 msgstr ""
 
@@ -2361,7 +2360,7 @@ msgstr ""
 #: includes/include.grouprights_overview.php:202
 #: includes/include.rights_create.php:109
 #: includes/include.rights_overview.php:168
-#: includes/include.rights_overview.php:321
+#: includes/include.rights_overview.php:335
 #: includes/include.systemsettings.php:64
 #: includes/include.systemsettings.php:169
 #: templates/standard/template.log_main.html:19
@@ -2372,8 +2371,8 @@ msgstr ""
 #: includes/include.client_artspec.php:80
 #: includes/include.con_translate.php:717
 #: includes/include.grouprights_overview.php:192
-#: includes/include.rights_overview.php:313
-#: includes/include.rights_overview.php:322
+#: includes/include.rights_overview.php:327
+#: includes/include.rights_overview.php:336
 #: includes/include.systemsettings.php:77
 #: includes/include.systemsettings.php:80
 msgid "Delete"
@@ -2477,7 +2476,7 @@ msgstr ""
 #: includes/include.grouprights_overview.php:201
 #: includes/include.rights_create.php:108
 #: includes/include.rights_overview.php:167
-#: includes/include.rights_overview.php:320
+#: includes/include.rights_overview.php:334
 msgid "Property"
 msgstr ""
 
@@ -2781,7 +2780,7 @@ msgstr ""
 #: includes/include.con_content_list.php:190
 #: includes/include.con_left_top.php:334
 #: includes/include.frontend.user_edit.php:242
-#: includes/include.rights_overview.php:394
+#: includes/include.rights_overview.php:413
 #: includes/include.str_overview.php:153 includes/include.str_overview.php:615
 #: includes/include.tplcfg_edit_form.php:287
 #: includes/include.tpl_edit_form.php:84 includes/include.tpl_edit_form.php:89
@@ -3239,7 +3238,7 @@ msgstr ""
 #: includes/include.frontend.user_menu.php:42
 #: includes/include.frontend.user_menu.php:45
 #: includes/include.rights_create.php:111
-#: includes/include.rights_overview.php:170
+#: includes/include.rights_overview.php:171
 msgid "Username"
 msgstr ""
 
@@ -3362,7 +3361,7 @@ msgstr ""
 #: includes/include.frontend.user_edit.php:189
 #: includes/include.mycontenido_settings.php:137
 #: includes/include.rights_create.php:121
-#: includes/include.rights_overview.php:181
+#: includes/include.rights_overview.php:184
 msgid "New password"
 msgstr ""
 
@@ -3387,7 +3386,7 @@ msgid ""
 msgstr ""
 
 #: includes/include.frontend.user_edit.php:245
-#: includes/include.rights_overview.php:397
+#: includes/include.rights_overview.php:417
 msgid "Group membership"
 msgstr ""
 
@@ -3469,28 +3468,28 @@ msgstr ""
 #: includes/include.grouprights_create.php:98
 #: includes/include.grouprights_overview.php:122
 #: includes/include.rights_create.php:176
-#: includes/include.rights_overview.php:238
+#: includes/include.rights_overview.php:249
 msgid "System administrator"
 msgstr ""
 
 #: includes/include.grouprights_create.php:117
 #: includes/include.grouprights_overview.php:141
 #: includes/include.rights_create.php:195
-#: includes/include.rights_overview.php:257
+#: includes/include.rights_overview.php:269
 msgid "Administrator"
 msgstr ""
 
 #: includes/include.grouprights_create.php:132
 #: includes/include.grouprights_overview.php:157
 #: includes/include.rights_create.php:210
-#: includes/include.rights_overview.php:273
+#: includes/include.rights_overview.php:286
 msgid "Access clients"
 msgstr ""
 
 #: includes/include.grouprights_create.php:147
 #: includes/include.grouprights_overview.php:174
 #: includes/include.rights_create.php:225
-#: includes/include.rights_overview.php:290
+#: includes/include.rights_overview.php:304
 msgid "Access languages"
 msgstr ""
 
@@ -3547,12 +3546,12 @@ msgid "Groupname"
 msgstr ""
 
 #: includes/include.grouprights_overview.php:200
-#: includes/include.rights_overview.php:319
+#: includes/include.rights_overview.php:333
 msgid "Area/Type"
 msgstr ""
 
 #: includes/include.grouprights_overview.php:212
-#: includes/include.rights_overview.php:333
+#: includes/include.rights_overview.php:348
 msgid "User-defined properties"
 msgstr ""
 
@@ -3715,7 +3714,7 @@ msgstr ""
 #: includes/include.lang_edit.php:213
 #: includes/include.mycontenido_settings.php:157
 #: includes/include.rights_create.php:156
-#: includes/include.rights_overview.php:217
+#: includes/include.rights_overview.php:227
 msgid "Country"
 msgstr ""
 
@@ -4385,37 +4384,37 @@ msgstr ""
 
 #: includes/include.mycontenido_settings.php:138
 #: includes/include.rights_create.php:126
-#: includes/include.rights_overview.php:186
+#: includes/include.rights_overview.php:190
 msgid "Confirm new password"
 msgstr ""
 
 #: includes/include.mycontenido_settings.php:142
 #: includes/include.rights_create.php:131
-#: includes/include.rights_overview.php:192
+#: includes/include.rights_overview.php:197
 msgid "E-Mail"
 msgstr ""
 
 #: includes/include.mycontenido_settings.php:145
 #: includes/include.rights_create.php:136
-#: includes/include.rights_overview.php:197
+#: includes/include.rights_overview.php:203
 msgid "Phone number"
 msgstr ""
 
 #: includes/include.mycontenido_settings.php:148
 #: includes/include.rights_create.php:141
-#: includes/include.rights_overview.php:202
+#: includes/include.rights_overview.php:209
 msgid "Street"
 msgstr ""
 
 #: includes/include.mycontenido_settings.php:151
 #: includes/include.rights_create.php:146
-#: includes/include.rights_overview.php:207
+#: includes/include.rights_overview.php:215
 msgid "ZIP code"
 msgstr ""
 
 #: includes/include.mycontenido_settings.php:154
 #: includes/include.rights_create.php:151
-#: includes/include.rights_overview.php:212
+#: includes/include.rights_overview.php:221
 msgid "City"
 msgstr ""
 
@@ -4486,17 +4485,17 @@ msgid "User created"
 msgstr ""
 
 #: includes/include.rights_create.php:229
-#: includes/include.rights_overview.php:338
+#: includes/include.rights_overview.php:354
 msgid "Use WYSIWYG-Editor"
 msgstr ""
 
 #: includes/include.rights_create.php:236
-#: includes/include.rights_overview.php:350
+#: includes/include.rights_overview.php:367
 msgid "Valid from"
 msgstr ""
 
 #: includes/include.rights_create.php:242
-#: includes/include.rights_overview.php:360
+#: includes/include.rights_overview.php:378
 msgid "Valid to"
 msgstr ""
 
@@ -4504,11 +4503,11 @@ msgstr ""
 msgid "User deleted"
 msgstr ""
 
-#: includes/include.rights_overview.php:376
+#: includes/include.rights_overview.php:394
 msgid "This account is currently inactive."
 msgstr ""
 
-#: includes/include.rights_overview.php:379
+#: includes/include.rights_overview.php:397
 msgid "This account is currently active."
 msgstr ""
 
@@ -5812,41 +5811,38 @@ msgstr ""
 msgid "Enter new filename"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:16
-msgid "This file is too large."
-msgstr ""
-
-#: templates/standard/template.upl_files_upload.html:19
-#: templates/standard/template.upl_files_upload.html:82
+#: templates/standard/template.upl_files_upload.html:26
+#: templates/standard/template.upl_files_upload.html:84
 msgid "Drop your files here"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:35
-#: templates/standard/template.upl_files_upload.html:87 xml/navigation.xml:23
+#: templates/standard/template.upl_files_upload.html:42
+#: templates/standard/template.upl_files_upload.html:51
+#: templates/standard/template.upl_files_upload.html:89 xml/navigation.xml:23
 msgid "Upload files"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:79
+#: templates/standard/template.upl_files_upload.html:81
 msgid "Cancelling..."
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:81
+#: templates/standard/template.upl_files_upload.html:83
 msgid "Cancelled"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:83
+#: templates/standard/template.upl_files_upload.html:85
 msgid "Finished!"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:86
+#: templates/standard/template.upl_files_upload.html:88
 msgid "Upload failed!"
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:88
+#: templates/standard/template.upl_files_upload.html:90
 msgid "Uploading..."
 msgstr ""
 
-#: templates/standard/template.upl_files_upload.html:89
+#: templates/standard/template.upl_files_upload.html:91
 msgid "Waiting..."
 msgstr ""
 
@@ -6154,4 +6150,8 @@ msgstr ""
 
 #: xml/system.xml:38
 msgid "Visible debug"
+msgstr ""
+
+#: xml/system.xml:39
+msgid "Allow all HTML tags and attributes in TinyMCE"
 msgstr ""
