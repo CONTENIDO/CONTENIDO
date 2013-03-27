@@ -19,7 +19,7 @@ Release 4.9.0 RC 1
     * [CON-849] - Admin: PIM - not able to upload new plugin
     * [CON-851] - Style-Layout/Modules: " Sign changes name
     * [CON-852] - Content: Category: Language change; in the content is not changed in the language
-    * [CON-853] - Category: the second level in the tree can´t edited
+    * [CON-853] - Category: the second level in the tree canï¿½t edited
     * [CON-854] - Style-Java Script Editor: Typo when creating new js file
     * [CON-856] - Content: URL Shortener: short url does not work
     * [CON-858] - Content: Articles: articles can not be tagged
@@ -157,7 +157,7 @@ Release 4.9.0 RC 1
     * [CON-894] - As a editor I want the system to unlock all articles, which are in use, to allow modifications by others.
 
 ** Task
-    * [CON-838] - PIM: Make "copyright" mandatory field and set maxOccurs for general-fields to “1”
+    * [CON-838] - PIM: Make "copyright" mandatory field and set maxOccurs for general-fields to ï¿½1ï¿½
     * [CON-901] - Check user rights
     * [CON-915] - Add more configurable filetypes to CMS_LINKEDIT
     * [CON-971] - Removal of outdated character converter
@@ -587,3 +587,4 @@ Release 4.9.0 Alpha 1
     * [CON-524] - Port HTML_Common to cHTML
     * [CON-545] - Various tasks on localization
     * [CON-551] - Update system requirement checks
+    
