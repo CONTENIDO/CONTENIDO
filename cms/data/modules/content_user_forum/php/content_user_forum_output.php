@@ -2,6 +2,10 @@
 defined('CON_FRAMEWORK') or die('Illegal call');
 class UserForumArticle {
 
+    // Antworten auf beiträge möglich -> Kommentieren Button ausblenden.
+    // protected $_dat= 0;
+    protected $_qoute = true;
+
     protected $_messageText = '';
 
     protected $_generate = true;
@@ -85,6 +89,11 @@ class UserForumArticle {
         $this->_idcat = cRegistry::getCategoryId();
         $this->_idlang = cRegistry::getLanguageId();
         $this->_collection = new ArticleForumCollection();
+        $this->_setConfig();
+    }
+
+    private function _setConfig() {
+          $this->_qoute = ($this->_collection->getQuoteState($this->_idart));
     }
 
     /**
@@ -348,7 +357,13 @@ class UserForumArticle {
                         $record['EDIT_INFORMATION'] = "<br /><br /><em>$edit_information</em>";
                     }
 
-                    $record['REPLY'] = sprintf($linkText, $key);
+                    // ansers allowed or not.
+                    if ($this->_qoute) {
+                        $record['REPLY'] = sprintf($linkText, $key);
+                    } else {
+                        $record['REPLY'] = NULL;
+                    }
+
                     $record['REPLY_QUOTE'] = sprintf($linkText, $key, $key);
                     $record['LIKE'] = sprintf($linkText, $key, $value['like']);
                     $record['DISLIKE'] = sprintf($linkText, $key, $value['dislike']);
@@ -363,11 +378,10 @@ class UserForumArticle {
 
                     $record['FORMID'] = $value['id_user_forum'];
 
-                        $record['LINKBEGIN'] = "";
-                        $record['LINKEND'] = "";
-                        $record['MAILTO'] = '#';
-                        $record['EMAIL'] = '';
-
+                    $record['LINKBEGIN'] = "";
+                    $record['LINKEND'] = "";
+                    $record['MAILTO'] = '#';
+                    $record['EMAIL'] = '';
 
                     array_push($tplData, $record);
                 }
