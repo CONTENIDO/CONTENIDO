@@ -2251,11 +2251,15 @@ contenido/templates/standard/template.con_str_overview.html -text
 contenido/templates/standard/template.con_str_overview.list.html -text
 contenido/templates/standard/template.con_subnav.html -text
 contenido/templates/standard/template.con_translate.html -text svneol=unset#text/plain
+contenido/templates/standard/template.debug.header.html -text svneol=unset#text/plain
+contenido/templates/standard/template.debug.visible.html -text svneol=unset#text/plain
+contenido/templates/standard/template.debug.visibleadv.html -text svneol=unset#text/plain
 contenido/templates/standard/template.deco.html -text
 contenido/templates/standard/template.default_subnav.html -text
 contenido/templates/standard/template.error_page.html -text svneol=unset#text/plain
 contenido/templates/standard/template.file_subnav.html -text
 contenido/templates/standard/template.files_overview.html -text
+contenido/templates/standard/template.front.loginform.html -text svneol=unset#text/plain
 contenido/templates/standard/template.frontend.group_menu.html -text
 contenido/templates/standard/template.frontend.user_menu.html -text
 contenido/templates/standard/template.generic_form.html -text

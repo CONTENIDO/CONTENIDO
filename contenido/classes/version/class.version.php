@@ -528,7 +528,7 @@ class cVersion {
             $oForm->setConfirm('clearhistory', $aMessage['alt'], $aMessage['popup']);
             $oForm->setActionButton('submit', 'images/but_refresh.gif', i18n('Refresh'), 's');
 
-            return "<div style='width: 1%'>" . $oForm->render() . '</div><div style="margin-top:20px;"></div>';
+            return $oForm->render();
         } else {
             return '';
         }

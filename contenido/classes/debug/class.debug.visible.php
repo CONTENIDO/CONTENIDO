@@ -85,32 +85,36 @@ class cDebugVisible implements cDebugInterface {
                 $bPlainText = true;
             }
         }
-        echo '<div style="margin:5px 0;padding:5px;background-color: #ffff;border:1px solid #ccc;font-family:Georgia,serif;text-align: left;">' . "\n";
-        echo '<p style="font-size:80%;margin: 0px;padding:2px 5px;background-color:#ccc;color:#000;font-family:Verdana,sans-serif;text-align: left;"><b>DEBUG ' . $sVariableDescription . '</b></p>' . "\n";
+
+        $tpl = new cTemplate();
+        $tpl->set("s", "VAR_DESCRIPTION", $sVariableDescription);
+        $varText = "";
         if ($bTextarea === true) {
-            echo '<textarea rows="10" cols="100">';
+            $varText .= '<textarea rows="10" cols="100">';
         } elseif ($bPlainText === true) {
-            echo '<pre style="font-size:11px;background-color:#ffff;margin:0px;padding:5px;color:#000000;text-align:left;">';
+            $varText .= '<pre class="debug_output">';
         } else {
-            echo '<pre style="font-size:11px;background-color:#ffff;margin:0px;padding:5px;color:#000000;text-align:left;">';
+            $varText .= '<pre class="debug_output">';
         }
 
         if (is_array($mVariable)) {
-            print_r($mVariable);
+            $varText .= print_r($mVariable, true);
         } else {
-            var_dump($mVariable);
+            $varText .= var_dump($mVariable, true);
         }
 
         if ($bTextarea === true) {
-            echo '</textarea>';
+            $varText .= '</textarea>';
         } elseif ($bPlainText === true) {
-            echo '</pre>';
+            $varText .= '</pre>';
         } else {
-            echo '</pre>';
+            $varText .= '</pre>';
         }
-        echo '</div>';
+        $tpl->set("s", "VAR_TEXT", $varText);
+
+        $tpl->render($cfg["templates"]["debug_visible"]);
         if ($bExit === true) {
-            die('<p style="font-size:80%;margin:5px 0;padding:5px;background-color:#ccc;color:#000;text-align:left;"><b>debugg\'ed</b></p>' . "\n");
+            die('<p class="debug_footer"><b>debugg\'ed</b></p>');
         }
     }
 

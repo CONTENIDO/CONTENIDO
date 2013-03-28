@@ -98,57 +98,32 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     public function showAll() {
         $sHtml = "";
         if ($this->count() > 0) {
-            $sHtml = '<script type="text/javascript">
-            function con_dbg_toggle(myItem) {
-                var myItemObj = document.getElementById(myItem);
-                if (myItemObj) {
-                    if (myItemObj.style.display == \'\') {
-                        myItemObj.style.display = \'none\';
-                    } else {
-                        myItemObj.style.display = \'\';
-                    }
-                }
-            }
-            function con_dbg_hide(myItem) {
-                var myItemObj = document.getElementById(myItem);
-                if (myItemObj) {
-                    myItemObj.style.display = \'none\';
-                }
-            }
-        </script>
+            $tpl = new cTemplate();
 
-        <style type="text/css">
-            #conDbgBox { position:absolute; z-index:100000; left:5px; top:5px; margin:0; border:1px solid #ccc;padding:5px; background-color:#f6f6f6; text-align: left;color: #000000; }
-            #conDbgBox a { text-decoration:none; color: #000000; margin-top: 6px; }
-            #dbg_item_block { margin: 0px 0px 0px 20px; color: #000000; }
-            #dbg_item_block textarea, #dbg_item_block pre { font-size:11px; margin: 0px; padding: 5px; color: #000000; border: 1px solid #6c6c6c; background-color: #ffffff; }
-            #dbg_item_block a { display:block; color: #000000; }
-            #conDbgClose { padding-left:10px; }
-        </style>';
-            $sHtml .= '<div id="conDbgBox">
-            <a href="javascript:void(0);" title="Toggle Debug Output" onclick="con_dbg_toggle(\'dbg_item_block\');">con dbg</a>
-            <a id="conDbgClose" href="javascript:void(0);" title="Hide Debug Output" onclick="con_dbg_hide(\'conDbgBox\');">(x)</a>
-            <div id="dbg_item_block" style="display:none;">';
             $i = 1;
             foreach ($this->_aItems as $oItem) {
                 $sItemName = strlen($oItem->getDescription()) > 0? $oItem->getDescription() : ('debug item #' . $i);
                 $sItemValue = $this->_prepareValue($oItem->getValue());
-                $sHtml .= "\n" . '<a href="javascript:void(0);" title="Toggle Item" onclick="con_dbg_toggle(\'dbg_item_' . $i . '\');">' . $sItemName . '</a>
-                <div id="dbg_item_' . $i . '" style="display:none;margin-left:20px;">' . $sItemValue . '</div>' . "\n";
+
+                $tpl->set("d", "DBG_ITEM_COUNT", $i);
+                $tpl->set("d", "DBG_ITEM_NAME", $sItemName);
+                $tpl->set("d", "DBG_ITEM_VALUE", $sItemValue);
+                $tpl->next();
+
                 ++$i;
             }
-            $sHtml .= '</div>
-        </div>';
+            $sHtml .= $tpl->generate($cfg["template"]["debug_visibleadv"], true);
         }
-        $sHtml .= "<script type='text/javascript'> var aheader = null; if(parent.parent.header) {aheader = parent.parent.header;} else if(parent.parent.parent.header) {aheader = parent.parent.parent.header;} var dbg = aheader.document.getElementById('debug_msg'); dbg.innerHTML += \"<pre>";
 
         $buffer = str_replace("\'", "\\'", $this->_buffer);
         $buffer = str_replace("\"", "\\\"", $buffer);
         $buffer = str_replace("\n", '\n', $buffer);
         $buffer = str_replace(chr(13), "", $buffer);
-        $sHtml .= $buffer;
 
-        $sHtml .= "</pre><input type='button' onclick='selectText()' value='Select all'>\"; dbg.scrollTop = dbg.scrollHeight;</script>";
+        $tpl = new cTemplate();
+        $tpl->set("s", "DBG_MESSAGE_CONTENT", $buffer);
+        $sHtml .= $tpl->generate($cfg["templates"]["debug_header"], true);
+
         echo $sHtml;
     }
 

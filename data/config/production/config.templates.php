@@ -144,4 +144,10 @@ $cfg['templates']['inuse_lay_mod']        = 'template.inuse_lay_mod.html';
 
 $cfg['templates']['default_subnav']       = 'template.default_subnav.html';
 
+$cfg['templates']['debug_visibleadv']        = 'template.debug.visibleadv.html';
+$cfg['templates']['debug_header']        = 'template.debug.header.html';
+$cfg['templates']['debug_visible']        = 'template.debug.visible.html';
+
+$cfg["templates"]["front_loginform"]     = "template.front.loginform.html";
+
 ?>

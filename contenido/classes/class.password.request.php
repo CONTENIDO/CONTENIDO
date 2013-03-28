@@ -195,7 +195,7 @@ class cPasswordRequest {
         $form->setVar('belang', $GLOBALS['belang']);
 
         //generate submitbutton and fill the form
-        $form->setContent('<input type="image" src="images/submit.gif" alt="' . i18n('Submit') . '" title="' . i18n('Submit') . '" style="vertical-align:top; margin-top:2px; float:right; margin-right:6px;">' . $inputUsername->render());
+        $form->setContent('<input class="password_request_input" type="image" src="images/submit.gif" alt="' . i18n('Submit') . '" title="' . i18n('Submit') . '">' . $inputUsername->render());
         $this->_tpl->set('s', 'FORM', $form->render());
         $this->_tpl->set('s', 'MESSAGE', $message);
         $this->_tpl->set('s', 'LABEL', i18n('Please enter your login') . ':');

@@ -683,7 +683,7 @@ class cUpdateNotifier {
 
                 // highlight newest rss news
                 if($iCnt == 0) {
-                    $oTpl->set("d", "NEWS_NEWEST_CSS", " style=\"background-color: #f1f1f1; padding: 2px;\"");
+                    $oTpl->set("d", "NEWS_NEWEST_CSS", "newest_news");
                 } else {
                     $oTpl->set("d", "NEWS_NEWEST_CSS", "");
                 }

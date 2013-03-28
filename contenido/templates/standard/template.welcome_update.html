@@ -1,3 +1,12 @@
+<style>
+.newest_news {
+	background-color: #f1f1f1; 
+	padding: 2px;
+}
+</style>
+
+
+
 <div id="update_notifier" class="content_box_welcome">
     <h2 class="content_box">i18n('Update Information'):</h2>
     <p style="padding-right:20px;">{UPDATE_MESSAGE}</p>
@@ -16,7 +25,7 @@
     <hr style="display:{DISPLAY_DISABLED}" class="sep">
 
     <!-- BEGIN:BLOCK -->
-    <div{NEWS_NEWEST_CSS}>
+    <div class="{NEWS_NEWEST_CSS}">
     <span class="sep">{NEWS_DATE}</span><br>
     <a href="{NEWS_URL}" target="_blank" title="{LABEL_MORE}" alt="{LABEL_MORE}" class="blue" style="font-weight:bold">{NEWS_TITLE}</a><br>
     {NEWS_TEXT} <br>
