@@ -1,5 +1,6 @@
 <?php
 defined('CON_FRAMEWORK') or die('Illegal call');
+cInclude('classes', '/phpmailer/class.phpmailer.php');
 class ArticleForumCollection extends ItemCollection {
 
     protected $cfg;
@@ -28,6 +29,15 @@ class ArticleForumCollection extends ItemCollection {
         return $data;
     }
 
+    /**
+     * deletes comment with all subcomments from this comment
+     *
+     * @param $keyPost
+     * @param $level
+     * @param $idart
+     * @param $idcat
+     * @param $lang
+     */
     public function deleteHierarchie($keyPost, $level, $idart, $idcat, $lang) {
         $comments = $this->_getCommentHierachrie($idcat, $idart, $lang);
 
@@ -90,15 +100,6 @@ class ArticleForumCollection extends ItemCollection {
         }
     }
 
-    /**
-     *
-     * @todo
-     *
-     *
-     *
-     *
-     *
-     */
     public function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0, $frontend = false) {
         $db = cRegistry::getDb();
 
@@ -204,6 +205,70 @@ class ArticleForumCollection extends ItemCollection {
         $this->db->query($statement);
     }
 
+    public function mailToModerator($realname, $email, $forum, $idart, $forum_quote = 0) {
+        $mail = new phpmailer();
+        $mail->CharSet = 'UTF-8';
+
+        // $sToEmail = getEffectiveSetting('claus.schunk@4fb.de',
+        // 'claus.schunk@4fb.de');
+
+        $mail->From = 'automail@procise.com';
+        $mail->FromName = 'Procise Automailer';
+        $mail->AddAddress($this->getModEmail($idart));
+
+        $mail->Subject = UserForum::i18n("Neuer Forumseintrag");
+
+        $message = 'Neuer Forumseintrag mit folgendem Inhalt:' . "\n\n";
+        $message .= 'Name: ' . $realname . "\n";
+        $message .= 'E-Mail: ' . $email . "\n";
+        $message .= 'Beitrag: ' . $forum . "\n";
+        if ($forum_quote != 0) {
+            $message .= 'Zitat: ' . $forum_quote . "\n";
+        }
+
+        $mail->Body = $message;
+        $mail->Send();
+
+        // $mailer = new cMailer();
+        // $message = Swift_Message::newInstance($opt['subject'], $opt['body'],
+        // 'text/plain', $opt['charSet']);
+
+        // if (array_key_exists('attachmentNames', $opt) &&
+        // is_array($opt['attachmentNames'])) {
+        // $values = $this->getValues();
+        // foreach ($opt['attachmentNames'] as $column => $path) {
+        // if (!file_exists($path)) {
+        // Util::log('could not attach file cause it doesn\'t exist: ' . $path);
+        // continue;
+        // }
+        // $attachment = Swift_Attachment::fromPath($path);
+        // $filename = $values[$column];
+        // $attachment->setFilename($filename);
+        // $message->attach($attachment);
+        // }
+        // }
+
+        // if (array_key_exists('attachmentStrings', $opt) &&
+        // is_array($opt['attachmentStrings'])) {
+        // foreach ($opt['attachmentStrings'] as $filename => $string) {
+        // // TODO mime type should be configurale
+        // $attachment = Swift_Attachment::newInstance($string, $filename,
+        // 'text/csv');
+        // $message->attach($attachment);
+        // }
+        // }
+
+        // $message->addFrom($opt['from'], $opt['fromName']);
+        // foreach (explode(',', $opt['to']) as $to) {
+        // $message->setTo($to, $to);
+        // }
+
+        // if (!$mailer->send($message)) {
+        // throw new PifaMailException($this->ErrorInfo);
+        // }
+        // }
+    }
+
     /**
      *
      * @param $id_cat
@@ -276,6 +341,9 @@ class ArticleForumCollection extends ItemCollection {
     public function insertValues($parent, $idart, $idcat, $lang, $userid, $email, $realname, $forum, $forum_quote) {
         $db = cRegistry::getDb();
 
+        // comments are marked as offline if the moderator mode is turned on.
+        ($modCheck = $this->getModeModeActive($idart))? $online = 0 : $online = 1;
+
         $fields = array(
             'id_user_forum' => NULL,
             'id_user_forum_parent' => mysql_real_escape_string($parent),
@@ -285,17 +353,24 @@ class ArticleForumCollection extends ItemCollection {
             'userid' => mysql_real_escape_string($userid),
             'email' => mysql_real_escape_string($email),
             'realname' => mysql_real_escape_string($realname),
-            'forum' => mysql_real_escape_string($forum),
-            'forum_quote' => mysql_real_escape_string($forum_quote),
+            'forum' => $forum,
+            'forum_quote' => $forum_quote,
             'like' => 0,
             'dislike' => 0,
             'editedat' => NULL,
             'editedby' => NULL,
             'timestamp' => date("Y-m-d H:i:s"),
-            'online' => 1
+            'online' => $online
         );
 
         $db->insert($this->table, $fields);
+
+        // if moderator mode is turned on the moderator will receive an email
+        // with the new comment and is able to
+        // change the online state in the backend.
+        if ($modCheck) {
+            $this->mailToModerator($realname, $email, $forum, $idart, $forum_quote = 0);
+        }
     }
 
     public function deleteAllCommentsById($idart) {
@@ -322,6 +397,89 @@ class ArticleForumCollection extends ItemCollection {
         $result = array();
         $this->normalizeArray($arrforum, $result);
         return $result;
+    }
+
+    /**
+     * returns the emailadress from the moderator for this article
+     *
+     * @param articleid $idart
+     * @return string
+     */
+    public function getModEmail($idart) {
+        $data = $this->readXML();
+        for ($i = 0; $i < count($data); $i++) {
+            if ($data[$i]['idart'] == $idart) {
+                return $data[$i]["email"];
+            }
+        }
+        return NULL;
+    }
+
+    /**
+     * returns if moderator mode is actice for this article
+     *
+     * @param articleid $idart
+     * @return bool
+     */
+    public function getModeModeActive($idart) {
+        $data = $this->readXML();
+        for ($i = 0; $i < count($data); $i++) {
+            if ($data[$i]['idart'] == $idart) {
+
+                if ($data[$i]["modactive"] === 'false') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * returns if quotes to comments are allowes for this article
+     *
+     * @param articleid $idart
+     * @return bool
+     */
+    public function getQuoteState($idart) {
+        $data = $this->readXML();
+        for ($i = 0; $i < count($data); $i++) {
+            if ($data[$i]['idart'] == $idart) {
+                if ($data[$i]["subcomments"] === 'false') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * returns the xml content from the contentType
+     *
+     * @return array
+     */
+    public function readXML() {
+        // get variables from global context
+        $catId = cRegistry::getCategoryId();
+        $idclient = cRegistry::getClientId();
+        $cfgClient = cRegistry::getClientConfig();
+
+        $sql = "SELECT t.value,f.idart FROM con_art_lang f , con_content t WHERE idtype=100003 AND t.idartlang=f.idartlang;";
+        try {
+            $this->db->query($sql);
+            $data = array();
+            $ar = array();
+            while ($this->db->next_record()) {
+                array_push($data, $this->db->toArray());
+            }
+
+            for ($i = 0; $i < count($data); $i++) {
+                $ar[$i] = cXmlBase::xmlStringToArray($data[$i]['value']);
+                $ar[$i]['idart'] = $data[$i]['idart'];
+            }
+        } catch (Exception $e) {
+            // var_dump(e);
+        }
+        return $ar;
     }
 
 }

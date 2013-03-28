@@ -62,6 +62,7 @@ class ArticleForumLeftBottom extends cGuiPage {
             $tr = new cHTMLTableRow();
 
             $tdname = new cHTMLTableData();
+            $tdname->setStyle('text-align: center');
             $tdlink = new cHTMLTableData();
 
             $res = $arts->getIdCat($result[$i]['idart']);

@@ -91,9 +91,19 @@ msgstr "von : "
 msgid "ACTIONS"
 msgstr "Aktionen"
 
+; class.content.type.user_forum.php
 
+msgid "ADMINISTRATION"
+msgstr "Administration"
 
+msgid "MODEMAIL"
+msgstr "Email-Adresse"
 
+msgid "ACTIVATEMOD"
+msgstr "Moderatoren-Modus aktivieren"
+
+msgid "EDITABLE"
+msgstr "Antworten auf Beiträge möglich"
 
 
 

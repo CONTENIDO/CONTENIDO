@@ -90,3 +90,17 @@ msgstr "articles "
 
 msgid "ALLDELETEFROMCATHIER"
 msgstr "delete comments inclusive subcomments ? "
+
+; class.content.type.user_forum.php
+
+msgid "ADMINISTRATION"
+msgstr "administration"
+
+msgid "MODEMAIL"
+msgstr "email address moderator"
+
+msgid "ACTIVATEMOD"
+msgstr "activate moderator mode"
+
+msgid "EDITABLE"
+msgstr "subcomments allowed"

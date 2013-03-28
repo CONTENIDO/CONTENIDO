@@ -26,7 +26,6 @@ class ArticleForumRightBottom extends cGuiPage {
             (strlen($ar['hour']) < 2)? $ar['hour'] = $nullstring . $ar['hour'] : '';
         }
 
-        // print_r($ar);
         return $ar;
     }
 
@@ -121,6 +120,9 @@ class ArticleForumRightBottom extends cGuiPage {
      */
     protected function getMenu(&$result) {
         $table = new cHTMLTable();
+        if (count($result) < 1) {
+            return new cHTMLTable();
+        }
         $table->setCellPadding('100px');
         global $area;
         $table->updateAttributes(array(
@@ -189,12 +191,8 @@ class ArticleForumRightBottom extends cGuiPage {
             $user = $userColl->loadItem($cont['editedby'])->get('username');
 
             if (($cont['editedby'] != '') && ($cont['editedat'] != '') && $cont['editedat'] != "0000-00-00 00:00:00") {
-                // var_dump($cont['editedby']);
-                // var_dump($cont['editedat']);
-                // $tmp = mi18n("articleWasEditAt");
                 $edit_information = (UserForum::i18n("EDITED") . $editdate . ' ' . UserForum::i18n("FROM") . $user);
                 $edit_information = "<em>$edit_information</em>";
-                // var_dump();
             } else {
                 $edit_information = "<br>";
             }
@@ -223,8 +221,8 @@ class ArticleForumRightBottom extends cGuiPage {
 
             $tdButtons = new cHTMLTableData();
             $tdButtons->setAttribute('valign', 'top');
-            $tdButtons->setStyle(' text-align: center'); // horitontal-align:
-                                                         // middle;');
+            $tdButtons->setStyle(' text-align: center');
+
             $tdButtons->appendContent($online);
             $tdButtons->appendContent($edit);
             $tdButtons->appendContent($delete);
@@ -415,6 +413,7 @@ class ArticleForumRightBottom extends cGuiPage {
     }
 
     public function receiveData(&$get, &$post) {
+
         global $area;
         $cfg = cRegistry::getConfig();
         $client = cRegistry::getClientId();
@@ -459,11 +458,13 @@ class ArticleForumRightBottom extends cGuiPage {
                         break;
                     case 'deleteComment':
                         $this->_collection->deleteHierarchie($_GET['key'], $_GET['level'], $idart, $idcat, $lang);
-                        $this->render();
+                        // $this->render();
+
+                        // $this->getForum($idcat, $idart, $lang);
                         break;
-                    case 'deleteComment':
-                        $this->render();
-                        break;
+                    // case 'deleteComment':
+                    // $this->render();
+                    // break;
 
                     default:
                         throw new Exception('$_GET["action"] type ' . $_GET["action"] . ' not implemented');

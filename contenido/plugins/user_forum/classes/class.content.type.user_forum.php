@@ -44,7 +44,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         $this->_settingsType = self::SETTINGS_TYPE_XML;
         $this->_formFields = array(
             'userforum_email',
-            'userforum_boxedit',
+            'userforum_subcomments',
             'userforum_modactive'
         );
 
@@ -130,8 +130,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
             $this->_getModEmail(),
             $this->_getModMode(),
             $this->_getEditMode()
-        )
-        , $this->_prefix . '_panel_base', $this->_prefix . '_panel_base_' . $this->_id);
+        ), $this->_prefix . '_panel_base', $this->_prefix . '_panel_base_' . $this->_id);
         $wrapper->setStyle('clear:both');
 
         return $wrapper->render();
@@ -144,6 +143,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         $labelModMode = new cHTMLLabel(UserForum::i18n('ACTIVATEMOD'), $id);
         $checkBoxMod = new cHTMLCheckbox($id, '', $id);
         $checkBoxMod->setID($id);
+        ($this->_settings['userforum_modactive'] === 'false')? $checkBoxMod->setChecked(false) : $checkBoxMod->setChecked(true);
 
         // build select element
         // build div element as wrapper
@@ -158,12 +158,16 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
     }
 
     private function _getEditMode() {
-        $id = 'userforum_boxedit_' . $this->_id;
+        $id = 'userforum_subcomments_' . $this->_id;
 
         // build label element
         $labelModMode = new cHTMLLabel(UserForum::i18n('EDITABLE'), $id);
         $checkBoxMod = new cHTMLCheckbox($id, '', $id);
         $checkBoxMod->setID($id);
+
+        // ($this->_settings['userforum_subcomments']);
+
+        ($this->_settings['userforum_subcomments'] === 'false')? $checkBoxMod->setChecked(false) : $checkBoxMod->setChecked(true);
 
         // build select element
         // build div element as wrapper
@@ -231,10 +235,6 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
      *         shown in frontend
      */
     public function buildCode() {
-
-        // $this->_settings['userforum_input'];
-        // $this->_settings['userforum_boxedit'];
-        // $this->_settings['userforum_modactive'];
         $out = '';
 
         return $out;

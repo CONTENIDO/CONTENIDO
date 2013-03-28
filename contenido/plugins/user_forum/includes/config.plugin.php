@@ -37,6 +37,20 @@ class UserForum {
         return $trans;
     }
 
+    /**
+     * Return URL to this plugins folder.
+     *
+     * @return string
+     */
+    public static function getUrl() {
+        $cfg = cRegistry::getConfig();
+
+        $path = cRegistry::getBackendUrl() . $cfg['path']['plugins'];
+        $path .= self::$_name . '/';
+
+        return $path;
+    }
+
 }
 
 // define plugin path
@@ -55,7 +69,8 @@ cAutoload::addClassmapConfig(array(
     'ArticleForumCollection' => $pluginClassPath . 'classes/class.article_forum_collection.php',
     'ArticleForum' => $pluginClassPath . 'classes/class.article_forum.php',
     'ArticleForumLeftBottom' => $pluginClassPath . 'classes/class.article_forum_left_bottom.php',
-    'ArticleForumRightBottom' => $pluginClassPath . 'classes/class.article_forum_right_bottom.php'
+    'ArticleForumRightBottom' => $pluginClassPath . 'classes/class.article_forum_right_bottom.php',
+    'cContentTypeUserForum' => $pluginClassPath .'classes/class.content.type.user_forum.php'
 ));
 
 ?>
