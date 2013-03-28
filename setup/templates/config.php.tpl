@@ -57,9 +57,6 @@ $cfg['path']['contenido']               = $cfg['path']['frontend'] . '/contenido
 /* The root server path to the data directory */
 $cfg['path']['data']                    = $cfg['path']['frontend'] . '/data/';
 
-/* The root server path to the conlib directory */
-$cfg['path']['phplib']                  = $cfg['path']['frontend'] . '/conlib/';
-
 /* The root server path to the pear directory */
 $cfg['path']['pear']                    = $cfg['path']['frontend'] . '/pear/';
 
