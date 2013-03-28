@@ -254,7 +254,7 @@ class cGuiNavigation {
         $link->setClass('main');
         $link->setTargetFrame('content');
         $link->setLink($sess->url("frameset.php?area=mycontenido&frame=4"));
-        $link->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'my_contenido.gif" border="0" alt="My CONTENIDO" id="imgMyContenido" title="' . i18n("My CONTENIDO") . '">');
+        $link->setContent('<img class="vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'my_contenido.gif" border="0" alt="My CONTENIDO" id="imgMyContenido" title="' . i18n("My CONTENIDO") . '">');
         $main->set('s', 'MYCONTENIDO', $link->render());
 
         // info link
@@ -262,7 +262,7 @@ class cGuiNavigation {
         $link->setClass('main');
         $link->setTargetFrame('content');
         $link->setLink($sess->url('frameset.php?area=info&frame=4'));
-        $link->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'info.gif" border="0" alt="Info" title="Info" id="imgInfo">');
+        $link->setContent('<img class="vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'info.gif" border="0" alt="Info" title="Info" id="imgInfo">');
         $main->set('s', 'INFO', $link->render());
 
         $main->set('s', 'LOGOUT', $sess->url('logout.php'));
@@ -274,7 +274,7 @@ class cGuiNavigation {
             $link->setClass('main');
             $link->setLink('javascript://');
             $link->setEvent('click', 'callHelp($(\'#help\').attr(\'data\'));');
-            $link->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'but_help.gif" border="0" alt="Hilfe" title="Hilfe">');
+            $link->setContent('<img class="vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'but_help.gif" border="0" alt="Hilfe" title="Hilfe">');
             $main->set('s', 'HELP', $link->render());
         } else {
             $main->set('s', 'HELP', '');
@@ -353,7 +353,7 @@ class cGuiNavigation {
         $tpl = new cTemplate();
 
         $tpl->set('s', 'NAME', 'changelang');
-        $tpl->set('s', 'CLASS', 'text_medium');
+        $tpl->set('s', 'CLASS', 'vAlignMiddle text_medium');
         $tpl->set('s', 'ID', 'cLanguageSelect');
         $tpl->set('s', 'OPTIONS', 'onchange="changeContenidoLanguage(this.value)"');
 
@@ -416,7 +416,7 @@ class cGuiNavigation {
 
         $tpl = new cTemplate();
         $tpl->set('s', 'NAME', 'changeclient');
-        $tpl->set('s', 'CLASS', 'text_medium nodisplay');
+        $tpl->set('s', 'CLASS', 'vAlignMiddle text_medium nodisplay');
         $tpl->set('s', 'ID', 'cClientSelect');
         $tpl->set('s', 'OPTIONS', 'onchange="changeContenidoClient(this.value)"');
 
@@ -441,9 +441,9 @@ class cGuiNavigation {
         $html = $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
         $editButton = new cHTMLImage(cRegistry::getBackendUrl() . $cfg['path']['images'] . 'but_edithead.gif');
         $editButton->setID('changeclient');
+        $editButton->setClass("vAlignMiddle");
         $editButton->appendStyleDefinition('cursor', 'pointer');
 
         return $html . $editButton->render();
     }
-
 }

@@ -197,12 +197,7 @@ table.borderless tr td {
 }
 #operate {
 	float: right;
-	margin: 5px 0 0 0;
-	line-height: 25px;
-	vertical-align: middle;
-}
-#operate select {
-	margin: 0 10px 3px 0;
+	line-height: 30px;
 }
 #infobox {
 	float: left;
@@ -2200,6 +2195,17 @@ div.bulk_editing_functions a img {
 	vertical-align: middle;
 }
 
+/**
+ * Leaves a little margin after the file chooser in the mod html section
+ */
 #choose_mod_template_file {
 	margin-bottom: 10px;
+}
+
+/**
+ * aligns something vertically with a line of text
+ */
+.vAlignMiddle {
+	vertical-align: middle;
+	margin-bottom: 0.25em;
 }

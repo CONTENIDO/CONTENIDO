@@ -32,7 +32,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 // include editor config/combat file
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php');
 cInclude('external', 'wysiwyg/tinymce3/editorclass.php');
