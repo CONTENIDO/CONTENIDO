@@ -527,6 +527,7 @@ class cVersion {
             $oForm->setActionButton('clearhistory', 'images/but_delete.gif', $aMessage['alt'], 'c', 'history_truncate');
             $oForm->setConfirm('clearhistory', $aMessage['alt'], $aMessage['popup']);
             $oForm->setActionButton('submit', 'images/but_refresh.gif', i18n('Refresh'), 's');
+            $oForm->setTableid("version_selector");
 
             return $oForm->render();
         } else {

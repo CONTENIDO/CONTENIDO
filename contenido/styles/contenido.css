@@ -101,8 +101,6 @@ input.image_button {
 
 table.generic {
 	border-left: 1px solid #b3b3b3;
-	
-	margin-bottom: 10px;
 }
 
 table.fullborder {
@@ -2218,6 +2216,10 @@ div.bulk_editing_functions a img {
 	margin-top:2px; 
 	float:right; 
 	margin-right:6px;
+}
+
+#version_selector {
+	margin-bottom: 10px;
 }
 
 
