@@ -7,11 +7,14 @@
     <meta http-equiv="pragma" content="no-cache">
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
     <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
+    <script type="text/javascript" src="scripts/registerTipsy.js"></script>
     <script type="text/javascript">
         /* Session-ID */
         var sid = "{SID}";
@@ -64,7 +67,7 @@
 
 <table width="100%" cellspacing="0" cellpadding="2" border="0">
     <!-- BEGIN:BLOCK -->
-    <tr id="{ID}" onmouseover="lay.over(this)" onmouseout="lay.out(this)" onclick="lay.click(this)">
+    <tr class="tooltip-north" original-title="{DESCRIPTION}" id="{ID}" onmouseover="lay.over(this)" onmouseout="lay.out(this)" onclick="lay.click(this)">
         <td><img alt="" width="5" height="1" src="images/spacer.gif"></td>
         <td class="textw_small">{NAME}</td>
         <td align="right">{INUSE}&nbsp;{COPY}&nbsp;{DELETE}&nbsp;</td>

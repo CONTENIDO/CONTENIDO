@@ -31,6 +31,7 @@ class cGuiMenu {
 
     public $link;
     public $title;
+    public $tooltips;
     public $caption;
     public $type;
     public $image;
@@ -47,6 +48,10 @@ class cGuiMenu {
 
     public function setTitle($item, $title) {
         $this->title[$item] = $title;
+    }
+
+    public function setTooltip($item, $tooltip) {
+        $this->tooltips[$item] = $tooltip;
     }
 
     public function setRowmark($rowmark = true) {
@@ -117,7 +122,10 @@ class cGuiMenu {
                     $extra .= 'onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)" ';
                 }
                 if ($this->_marked === $key) {
-                    $extra .= "id='marked'";
+                    $extra .= "id='marked' ";
+                }
+                if($this->tooltips[$key] != "") {
+                    $extra .= "class='tooltip-north' original-title='".$this->tooltips[$key]."' ";
                 }
                 $tpl->set('d', 'EXTRA', $extra);
 

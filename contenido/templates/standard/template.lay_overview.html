@@ -7,8 +7,10 @@
     <meta http-equiv="pragma" content="no-cache">
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
     <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript">
@@ -45,6 +47,8 @@
                     );
                 }
             });
+            
+            $(".layout_row").tipsy();
         });
     </script>
 </head>
@@ -53,7 +57,7 @@
 <table class="borderless" style="margin: 5px 0 0 0;" width="100%" cellspacing="0" cellpadding="2" border="0">
 
     <!-- BEGIN:BLOCK -->
-    <tr id="{ID}" onmouseover="lay.over(this)" onmouseout="lay.out(this)" onclick="lay.click(this)">
+    <tr id="{ID}" class="layout_row" original-title="{DESCRIPTION}" nmouseover="lay.over(this)" onmouseout="lay.out(this)" onclick="lay.click(this)">
          <td></td>
         <td class="textw_small">{NAME}</td>
         <td align="right">{INUSE}&nbsp;{TODO}&nbsp;{DELETE}&nbsp;</td>

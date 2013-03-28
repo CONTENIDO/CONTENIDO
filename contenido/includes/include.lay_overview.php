@@ -54,6 +54,7 @@ while (($layout = $oLayouts->next()) !== false) {
         $descr, $descr, $name
     );
 
+    $tpl->set("d", "DESCRIPTION", ($descr == "") ? i18n("No description") : $descr);
     $tpl->set('d', 'NAME', $mstr);
 
     $oLay = new cApiLayout($idlay);

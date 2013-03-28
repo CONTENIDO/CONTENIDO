@@ -115,6 +115,7 @@ foreach ($allModules as $idmod => $module) {
         ));
 
         $sName = cString::stripSlashes(conHtmlSpecialChars($module ['name'])); //$cApiModule->get("name");
+        $descr = cString::stripSlashes(conHtmlSpecialChars($module ['description']));
 
         if ($sOptionModuleCheck !== "false" && $sOptionForceCheck !== "false") {
             // Check module and force check has been enabled - check module (surprisingly...)
@@ -144,6 +145,7 @@ foreach ($allModules as $idmod => $module) {
         $iMenu++;
 
         $mlist->setTitle($iMenu, $colName);
+        $mlist->setTooltip($iMenu, ($descr == "") ? i18n("No description") : $descr);
         if ($perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod) || $perm->have_perm_area_action_item("mod_translate", "mod_translation_save", $idmod)) {
             $mlist->setLink($iMenu, $link);
         }

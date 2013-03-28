@@ -4,5 +4,9 @@ $(function() {
             gravity : $.fn.tipsy.autoWE,
             html : true
         });
+        $('.tooltip-north').tipsy({
+            gravity : 'n',
+            html : true
+        });
     });
 });

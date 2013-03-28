@@ -75,8 +75,10 @@ if (($handle = opendir($path)) !== false) {
         sort($aFiles);
 
         foreach ($aFiles as $filename) {
+            $file = new cApiFileInformationCollection();
+            $fileInfo = $file->getFileInformation($filename, "js");
 
-            $tmp_mstr = '<a class=\"action\" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')" title="%s" alt="%s">%s</a>';
+            $tmp_mstr = '<a class=\"action\" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')" alt="%s">%s</a>';
 
             $html_filename = sprintf($tmp_mstr, 'right_top',
                            $sess->url("main.php?area=$area&frame=3&file=$filename"),
@@ -85,6 +87,7 @@ if (($handle = opendir($path)) !== false) {
                            $filename, $filename, conHtmlSpecialChars($filename));
 
             $tpl->set('d', 'FILENAME', $html_filename);
+            $tpl->set("d", "DESCRIPTION", ($fileInfo["description"] == "") ? i18n("No description") : $fileInfo["description"]);
 
             $delTitle = i18n("Delete File");
             $delDescr = sprintf(i18n("Do you really want to delete the following file:<br><br>%s<br>"),$filename);

@@ -7,17 +7,20 @@
     <meta http-equiv="pragma" content="no-cache">
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/general.js"></script>
+    <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
+    <script type="text/javascript" src="scripts/registerTipsy.js"></script>
     {JAVASCRIPT}
 </head>
 <body>
 
 <table class="borderless" width="100%" cellspacing="0" cellpadding="0" border="0">
     <!-- BEGIN:BLOCK -->
-    <tr {ID} onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
+    <tr class="tooltip-north" original-title="{DESCRIPTION}" {ID} onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
         <td><img alt="" width="10" src="images/spacer.gif"></td>
         <td>
             <table width="100%" cellspacing="0" cellpadding="3" border="0">
