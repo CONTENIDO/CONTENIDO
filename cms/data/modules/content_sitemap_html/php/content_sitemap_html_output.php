@@ -17,7 +17,8 @@ $lang = cRegistry::getLanguageId();
 $idart = cRegistry::getArticleId();
 
 // get content of current article
-$art = new Article($idart, $client, $lang);
+$art = new cApiArticleLanguage();
+$art->loadByArticleAndLanguageId($idart, $lang);
 $content = $art->getContent('CMS_TEXT', 1);
 $level = $art->getContent('CMS_TEXT', 2);
 $article = $art->getContent('CMS_TEXT', 3);

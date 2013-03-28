@@ -44,7 +44,7 @@
 
     echo "CMS_TEASER[5]";
 
-    $art = new Article(cRegistry::getArticleLanguageId(), cRegistry::getClientId(), cRegistry::getLanguageId());
+    $art = new cApiArticleLanguage(cRegistry::getArticleLanguageId());
     $contentValue = $art->getContent("TEASER", $teaserIndex);
 
     $teaser = new cContentTypeTeaser($contentValue, $teaserIndex, array());
