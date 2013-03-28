@@ -83,10 +83,10 @@
     border-bottom: 1px solid #B3B3B3;
     border-right: 1px solid #B3B3B3;
     cursor: pointer;
-    float: left;
     line-height: 20px;
     padding: 0 10px;
     width: auto;
+	display: inline-block;
 }
 
 .cms_abstract .menu li.active {

@@ -130,13 +130,8 @@ cContentTypeLinkeditor.prototype.addNaviActions = function() {
         });
         return false;
     });
-
-    // add possibility to expand and close directories
-    $(self.frameId + ' #internal #directoryList_' + self.id + ' em a').unbind('click');
-    $(self.frameId + ' #internal #directoryList_' + self.id + ' em a').click(function() {
-        var parentidcat = $(this).parent('em').parent().parent().parent().find('div a[class="on"]').attr('title');
-        var level = $(this).parents('ul').length - 1;
-        var divContainer = $(this).parent().parent();
+    
+    function _bindCollapsing(divContainer) {
         if (divContainer.next('ul').length > 0) {
             divContainer.next('ul').toggle(function() {
                 if (divContainer.next('ul').is(':hidden')) {
@@ -145,7 +140,19 @@ cContentTypeLinkeditor.prototype.addNaviActions = function() {
                     divContainer.parent().removeClass('collapsed');
                 }
             });
-        } else {
+            
+            return true;
+        }
+        return false;
+    }
+
+    // add possibility to expand and close directories for the article view
+    $(self.frameId + ' #internal #directoryList_' + self.id + ' em a').unbind('click');
+    $(self.frameId + ' #internal #directoryList_' + self.id + ' em a').click(function() {
+        var divContainer = $(this).parent().parent();
+        if(!_bindCollapsing(divContainer)) {
+            var parentidcat = $(this).parent('em').parent().parent().parent().find('div a[class="on"]').attr('title');
+            var level = $(this).parents('ul').length - 1;
             $.ajax({
                 type: 'POST',
                 url: self.pathBackend + 'ajaxmain.php',
@@ -183,20 +190,12 @@ cContentTypeLinkeditor.prototype.addNaviActions = function() {
         self.showFolderPath();
         return false;
     });
-    // add possibility to expand and close directories
+    // add possibility to expand and close directories for the file view
     $(self.frameId + ' #file #directoryList_' + self.id + ' em a').unbind('click');
     $(self.frameId + ' #file #directoryList_' + self.id + ' em a').click(function() {
         var divContainer = $(this).parent().parent();
-        var dirname = $(this).parent('em').parent().find('a[class="on"]').attr('title');
-        if (divContainer.next('ul').length > 0) {
-            divContainer.next('ul').toggle(function() {
-                if (divContainer.next('ul').is(':hidden')) {
-                    divContainer.parent().addClass('collapsed');
-                } else {
-                    divContainer.parent().removeClass('collapsed');
-                }
-            });
-        } else {
+        if(!_bindCollapsing(divContainer)) {
+            var dirname = $(this).parent('em').parent().find('a[class="on"]').attr('title');
             $.ajax({
                 type: 'POST',
                 url: self.pathBackend + 'ajaxmain.php',
