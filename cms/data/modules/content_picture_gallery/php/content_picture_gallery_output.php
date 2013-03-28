@@ -2,7 +2,8 @@
     $tpl = Contenido_SmartyWrapper::getInstance();
     $filelistIndex = 1;
 
-    $art = new Article(cRegistry::getArticleId(), cRegistry::getClientId(), cRegistry::getLanguageId());
+    $art = new cApiArticleLanguage();
+    $art->loadByArticleAndLanguageId(cRegistry::getArticleId(), cRegistry::getLanguageId());
     $contentValue = $art->getContent("FILELIST", $filelistIndex);
 
     $filelist = new cContentTypeFilelist($contentValue, $filelistIndex, array());
