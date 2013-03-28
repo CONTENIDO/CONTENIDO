@@ -93,7 +93,7 @@ class UserForumArticle {
     }
 
     private function _setConfig() {
-          $this->_qoute = ($this->_collection->getQuoteState($this->_idart));
+        $this->_qoute = ($this->_collection->getQuoteState($this->_idart));
     }
 
     /**
@@ -301,6 +301,7 @@ class UserForumArticle {
                 } else {
                     $this->_tpl->assign('LINK_NEW_FORUM', mi18n("noPosibleInputForArticle"));
                 }
+                $this->_tpl->assign('LINKTEXT', mi18n("writeNewEntry"));
                 $this->_tpl->display('user_forum_list_empty.tpl');
             } else {
                 $this->_tpl->assign('MESSAGE', $this->_messageText);
