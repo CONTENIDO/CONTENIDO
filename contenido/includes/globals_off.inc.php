@@ -21,13 +21,6 @@
  */
 
 /**
- * @deprecated 2012-09-06 Constant has been renamed to CON_STRIPSLASHES
- */
-if (phpversion() <= "5.3.0") {
-    define('CONTENIDO_STRIPSLASHES', get_magic_quotes_gpc());
-}
-
-/**
  * Set constant value depending on get_magic_quotes_gpc status
  * Only with phpversion before 5.3.0
  * @var boolean

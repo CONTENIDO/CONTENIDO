@@ -44,9 +44,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @var array
      */
-    private $_ignoreTypes = array(
-            "CMS_SWF"
-            );
+    private $_ignoreTypes = array();
 
     /**
      * If CMS_TEASER tries to load one of the content types listed as the keys of this array it will load the value of that key instead
@@ -55,15 +53,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * @var array
      */
     private $_forwardTypes = array(
-            "CMS_EASYIMGEDIT" => "CMS_IMG",
             "CMS_EASYIMG" => "CMS_IMG",
-            "CMS_HTMLTEXT" => "CMS_TEXT",
-            "CMS_LINKTITLE" => "CMS_LINKDESCR",
-            "CMS_LINKEDIT" => "CMS_LINK",
-            "CMS_SIMPLELINKEDIT" => "CMS_LINK",
-            "CMS_IMGTITLE" => "CMS_IMGDESCR",
-            "CMS_RAWLINK" => "CMS_LINK",
-            "CMS_IMGEDIT" => "CMS_IMG",
             "CMS_IMGEDITOR" => "CMS_IMG",
             "CMS_LINKEDITOR" => "CMS_LINK"
             );

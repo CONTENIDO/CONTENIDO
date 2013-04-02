@@ -72,10 +72,10 @@ if ($action == 'savecontype' || $action == 10) {
 $result = array();
 $aList = array();
 $typeAktuell = array();
-$sortID = array("CMS_HTMLHEAD", "CMS_HEAD", "CMS_HTML", "CMS_HTMLTEXT", "CMS_TEXT",
-    "CMS_IMG", "CMS_IMGDESCR", "CMS_IMGTITLE", "CMS_IMGEDIT", "CMS_IMGEDITOR",
-    "CMS_EASYIMGEDIT", "CMS_LINK", "CMS_LINKTARGET", "CMS_LINKDESCR", "CMS_LINKTITLE",
-    "CMS_LINKEDIT", "CMS_SIMPLELINKEDIT", "CMS_LINKEDITOR", "CMS_RAWLINK", "CMS_SWF",
+$sortID = array("CMS_HTMLHEAD", "CMS_HEAD", "CMS_HTML", "CMS_TEXT",
+    "CMS_IMG", "CMS_IMGDESCR", "CMS_IMGEDITOR",
+    "CMS_LINK", "CMS_LINKTARGET", "CMS_LINKDESCR",
+    "CMS_LINKEDITOR",
     "CMS_DATE", "CMS_TEASER", "CMS_FILELIST");
 
 $aIdtype = array();
