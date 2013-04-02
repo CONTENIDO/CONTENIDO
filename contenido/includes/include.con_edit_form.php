@@ -112,7 +112,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
             $inUse = true;
             $disabled = 'disabled="disabled"';
         }
-        $newArtStyle = '';
+        $newArtStyle = 'table-row';
     } else {
 
         //***************** this art is edited the first time *************
@@ -150,7 +150,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tmp_redirect_checked = '';
         $tmp_redirect_url = "http://";
         $tmp_external_redirect = '';
-        $newArtStyle = ' style="display: none;"';
+        $newArtStyle = 'none';
     }
 
     $dateformat = getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s");
@@ -191,21 +191,22 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     $arrArtSpecs = getArtSpec();
 
-    $tmp_inputArtSort = "<select $disabled name=\"artspec\" style=\"width:400px;\" class=\"text_medium\">";
+    $inputArtSortSelect = new cHTMLSelectELement("artspec", "400ox");
+    $inputArtSortSelect->setClass("text_medium");
     $iAvariableSpec = 0;
     foreach ($arrArtSpecs as $id => $value) {
         if ($arrArtSpecs[$id]['online'] == 1) {
             if (($arrArtSpecs[$id]['default'] == 1) && (strlen($tmp_artspec) == 0 || $tmp_artspec == 0)) {
-                $tmp_inputArtSort .= "<option value=\"$id\" selected>" . $arrArtSpecs[$id]['artspec'] . "</option>";
+                $inputArtSortSelect->appendOptionElement(new cHTMLOptionElement($arrArtSpecs[$id]['artspec'], $id, true));
             } elseif ($id == $tmp_artspec) {
-                $tmp_inputArtSort .= "<option value=\"$id\" selected>" . $arrArtSpecs[$id]['artspec'] . "</option>";
+                $inputArtSortSelect->appendOptionElement(new cHTMLOptionElement($arrArtSpecs[$id]['artspec'], $id, true));
             } else {
-                $tmp_inputArtSort .= "<option value=\"$id\">" . ucfirst($arrArtSpecs[$id]['artspec']) . "</option>";
+                $inputArtSortSelect->appendOptionElement(new cHTMLOptionElement($arrArtSpecs[$id]['artspec'], $id));
             }
             $iAvariableSpec++;
         }
     }
-    $tmp_inputArtSort .= "</select>";
+    $tmp_inputArtSort.= $inputArtSortSelect->toHTML();
 
     if ($iAvariableSpec == 0) {
         $tmp_inputArtSort = i18n("No article specifications found!");
@@ -214,10 +215,10 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'ARTIKELART', i18n("Article specification"));
     $tpl->set('s', 'ARTIKELARTSELECT', $tmp_inputArtSort);
 
-    $tpl->set('s', 'TITEL-FIELD', '<input ' . $disabled . ' style="width:400px;" type="text" class="text_medium" name="title" value="' . conHtmlSpecialChars($tmp_title) . '">');
+    $tpl->set('s', 'TITEL-FIELD', '<input ' . $disabled . ' type="text" class="text_medium" name="title" value="' . conHtmlSpecialChars($tmp_title) . '">');
 
     // plugin Advanced Mod Rewrite - edit by stese
-    $tpl->set('s', 'URLNAME-FIELD', '<input ' . $disabled . ' style="width:400px;" type="text" class="text_medium" name="urlname" value="' . conHtmlSpecialChars($tmp_urlname) . '">');
+    $tpl->set('s', 'URLNAME-FIELD', '<input ' . $disabled . ' type="text" class="text_medium" name="urlname" value="' . conHtmlSpecialChars($tmp_urlname) . '">');
     // end plugin Advanced Mod Rewrite
 
     $tpl->set('s', 'ARTIKELID', "idart");
@@ -245,7 +246,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $select->appendOptionElement($option[3]);
     $select->appendOptionElement($option[4]);
 
-    $tpl->set('s', 'DIRECTLINK', $select->render() . '<br /><br /><input style="width:400px;" class="text_medium" type="text" id="linkhint" readonly="readonly" ' . $disabled . '> <input id="linkhintA" type="button" value="'.i18n("open").'" style="display: none;" onclick="window.open(document.getElementById(\'linkhint\').value);">');
+    $tpl->set('s', 'DIRECTLINK', $select->render() . '<br /><br /><input class="text_medium" type="text" id="linkhint" readonly="readonly" ' . $disabled . '> <input id="linkhintA" type="button" value="'.i18n("open").'" style="display: none;" onclick="window.open(document.getElementById(\'linkhint\').value);">');
 
     $tpl->set('s', 'ZUORDNUNGSID', "idcatart");
     $tpl->set('s', 'ALLOCID', $tmp_cat_art ? $tmp_cat_art : '&nbsp;');
@@ -310,7 +311,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     } else {
         $forceDisable = "disabled";
     }
-    $tpl->set('s', 'URL', '<input type="text" ' . $disabled . ' ' . $forceDisable . ' class="text_medium" name="redirect_url" style="width:380px;" id="redirect_url" value="' . conHtmlSpecialChars($tmp_redirect_url) . '">');
+    $tpl->set('s', 'URL', '<input type="text" ' . $disabled . ' ' . $forceDisable . ' class="text_medium redirectURL" name="redirect_url" id="redirect_url" value="' . conHtmlSpecialChars($tmp_redirect_url) . '">');
 
     // Redirect - New window
     if (getEffectiveSetting("articles", "show-new-window-checkbox", "false") == "true") {
@@ -346,11 +347,11 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     // Sortierung
     $tpl->set('s', 'SORTIERUNG', i18n("Sort key"));
-    $tpl->set('s', 'SORTIERUNG-FIELD', '<input type="text" ' . $disabled . ' class="text_medium" name="artsort" style="width:400px;" value="' . $tmp_sort . '">');
+    $tpl->set('s', 'SORTIERUNG-FIELD', '<input type="text" ' . $disabled . ' class="text_medium" name="artsort" value="' . $tmp_sort . '">');
 
     // sitemap priority
     $tpl->set('s', 'SITEMAP-PRIORITY', i18n('Sitemap priority'));
-    $tpl->set('s', 'SITEMAP-PRIORITY-FIELD', '<input type="text" ' . $disabled . ' class="text_medium" name="sitemapprio" value="' . $tmp_sitemapprio . '">');
+    $tpl->set('s', 'SITEMAP-PRIORITY-FIELD', '<input type="text" ' . $disabled . ' class="text_medium sitemapPriority" name="sitemapprio" value="' . $tmp_sitemapprio . '">');
 
     // sitemap change frequency
     $select = new cHTMLSelectElement('changefreq');
@@ -392,7 +393,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $db->query($sql);
 
         if ($db->numRows() > 0) {
-            $tpl->set('s', 'NOTIFICATION_SYNCHRON', '<tr><td colspan="4" style="padding: 7px;">' . $notification->returnNotification('warning', i18n("This article was synchronized before and can not moved to another category!")) . '</td></tr>');
+            $tpl->set('s', 'NOTIFICATION_SYNCHRON', '<tr><td colspan="4">' . $notification->returnNotification('warning', i18n("This article was synchronized before and can not moved to another category!")) . '</td></tr>');
             $moveOK = false;
         } else {
             $tpl->set('s', 'NOTIFICATION_SYNCHRON', '');
@@ -406,7 +407,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
                 $tpl2->set('s', 'ID', 'catsel');
                 $tpl2->set('s', 'NAME', 'fake[]');
                 $tpl2->set('s', 'CLASS', 'text_medium');
-                $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;background:lightgrey;" disabled="disabled"');
+                $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" disabled="disabled"');
 
                 $rbutton = new cHTMLButton("removeassignment", i18n("Remove assignments"));
 
@@ -422,21 +423,21 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
                 $tpl2->set('s', 'ID', 'catsel');
                 $tpl2->set('s', 'NAME', 'idcatnew[]');
                 $tpl2->set('s', 'CLASS', 'text_medium');
-                $tpl2->set('s', 'OPTIONS', 'size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;" ' . $disabled);
+                $tpl2->set('s', 'OPTIONS', 'size="14" ' . $disabled);
             }
         } else {
             $note = i18n("Language parts of the articles are existing in other languages and are online. To change the category assignment, please set the other articles offline first.");
             $tpl2->set('s', 'ID', 'catsel');
             $tpl2->set('s', 'NAME', 'fake[]');
             $tpl2->set('s', 'CLASS', 'text_medium');
-            $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;background:lightgrey;" disabled="disabled"');
+            $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" disabled="disabled"');
         }
     } else {
         // Old behaviour
         $tpl2->set('s', 'ID', 'catsel');
         $tpl2->set('s', 'NAME', 'idcatnew[]');
         $tpl2->set('s', 'CLASS', 'text_medium');
-        $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" style="width:400px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#747488;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;" ' . $disabled);
+        $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14"' . $disabled);
     }
 
     if (isset($tplinputchanged) && $tplinputchanged == 1) {
@@ -549,8 +550,8 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl2 = new cTemplate();
     $tpl2->set('s', 'ID', 'catsel');
     $tpl2->set('s', 'NAME', 'time_target_cat');
-    $tpl2->set('s', 'CLASS', 'text_medium');
-    $tpl2->set('s', 'OPTIONS', 'size="1" style="width: 160px;scrollbar-face-color:#C6C6D5;scrollbar-highlight-color:#FFFFFF;scrollbar-3dlight-color:#B3B3B3;scrollbar-darkshadow-color:#000000;scrollbar-shadow-color:#334F77;scrollbar-arrow-color:#334F77;scrollbar-track-color:#C7C7D6;"' . $allow_usetimemgmt);
+    $tpl2->set('s', 'CLASS', 'text_medium categories');
+    $tpl2->set('s', 'OPTIONS', 'size="1"' . $allow_usetimemgmt);
 
     $sql = "SELECT
                 A.idcat,
@@ -593,7 +594,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $select = $tpl2->generate($cfg["path"]["templates"] . $cfg["templates"]["generic_select"], true);
 
     // Seitentitel
-    $title_input = '<input type="text" ' . $disabled . ' class="text_medium" name="page_title" style="width:400px;" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
+    $title_input = '<input type="text" ' . $disabled . ' class="text_medium" name="page_title" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
     $tpl->set("s", "TITLE-INPUT", $title_input);
 
     // Struktur
@@ -613,7 +614,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     // Summary
     $tpl->set('s', 'SUMMARY', i18n("Summary"));
-    $tpl->set('s', 'SUMMARY-INPUT', '<textarea ' . $disabled . ' style="width:400px" class="text_medium" name="summary" cols="50" rows="5">' . $tmp_summary . '</textarea>');
+    $tpl->set('s', 'SUMMARY-INPUT', '<textarea ' . $disabled . ' class="text_medium" name="summary" cols="50" rows="5">' . $tmp_summary . '</textarea>');
 
     $sql = "SELECT
                 b.idcat

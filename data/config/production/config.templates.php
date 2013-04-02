@@ -150,4 +150,5 @@ $cfg['templates']['debug_visible']        = 'template.debug.visible.html';
 
 $cfg["templates"]["front_loginform"]     = "template.front.loginform.html";
 
+$cfg["templates"]["art_search"]           = "template.art_search_foldingrow.html";
 ?>

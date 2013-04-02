@@ -209,106 +209,47 @@ if ($_REQUEST["bs_search_author"] != '') {
 
 $oSubmit = new cHTMLButton("submit", i18n("Search"));
 
-$content = '<div id="artsearch" style="border: 1px solid #B3B3B3; border-top: none; margin:0;padding:0; padding-bottom: 10px;">';
-$content .= '<form action="backend_search.php" method="post" name="backend_search" target="right_bottom" id="backend_search">';
+$tplSearch = new cTemplate();
+$tplSearch->set("s", "AREA", $area);
+$tplSearch->set("s", "FRAME", $frame);
+$tplSearch->set("s", "LANG", $lang);
+$tplSearch->set("s", "LANGTEXTDIRECTION", langGetTextDirection($lang));
 
-$content .= '<table class="borderless" dir="' . langGetTextDirection($lang) . '">';
-$content .= '<input type="hidden" name="area" value="' . $area . '">';
-$content .= '<input type="hidden" name="frame" value="' . $frame . '">';
-$content .= '<input type="hidden" name="contenido" value="' . $sess->id . '">';
-$content .= '<input type="hidden" name="speach" value="' . $lang . '">';
+$tplSearch->set("s", "TEXTBOX_ARTTITLE", $oTextboxArtTitle->render());
 
-$content .= '<tr>';
-$content .= '<td style="padding-left: 15px;">' . i18n("Title/Content") . '</td>';
-$content .= '<td>' . $oTextboxArtTitle->render() . '</td>';
-$content .= '</tr>';
+$tplSearch->set("s", "TEXTBOX_ARTID", $oTextboxArtID->render());
 
-$content .= '<tr>';
-$content .= '<td style="padding-left: 15px;">' . i18n("Article ID") . '</td>';
-$content .= '<td>' . $oTextboxArtID->render() . '</td>';
-$content .= '</tr>';
+$tplSearch->set("s", "SELECT_ARTDATE", $oSelectArtDateType->render());
 
-$content .= '<tr>';
-$content .= '<td style="padding-left: 15px;">' . i18n("Date") . '</td>';
-$content .= '<td><nobr>' . $oSelectArtDateType->render() . '</nobr></td>';
-$content .= '</tr>';
+$tplSearch->set("s", "SELECT_ARTDATEFROM", $oSelectArtDateFromDay->render() . $oSelectArtDateFromMonth->render() . $oSelectArtDateFromYear->render());
 
-$content .= '<tr id="tr_date_from" style="display:none;">';
-$content .= '<td>' . i18n("Date from") . '</td>';
-$content .= '<td><nobr>' . $oSelectArtDateFromDay->render() . $oSelectArtDateFromMonth->render() . $oSelectArtDateFromYear->render() . '</nobr></td>';
-$content .= '</tr>';
+$tplSearch->set("s", "SELECT_ARTDATETO", $oSelectArtDateToDay->render() . $oSelectArtDateToMonth->render() . $oSelectArtDateToYear->render());
 
-$content .= '<tr id="tr_date_to" style="display:none;">';
-$content .= '<td>' . i18n("Date to") . '</td>';
-$content .= '<td><nobr>' . $oSelectArtDateToDay->render() . $oSelectArtDateToMonth->render() . $oSelectArtDateToYear->render() . '</nobr></td>';
-$content .= '</tr>';
+$tplSearch->set("s", "SELECT_AUTHOR", $oSelectArtAuthor->render());
 
-$content .= '<tr>';
-$content .= '<td style="padding-left: 15px;">' . i18n("Author") . '</td>';
-$content .= '<td><nobr>' . $oSelectArtAuthor->render() . '</nobr></td>';
-$content .= '</tr>';
-
-$content .= '<tr>';
-$content .= '<td>&nbsp;</td>';
-$content .= '<td>' . $oSubmit->render() . '</td>';
-$content .= '</tr>';
-$content .= '</table>';
-$content .= '</form>';
+$tplSearch->set("s", "SUBMIT_BUTTON", $oSubmit->render());
 
 // Saved searches
-$content .= '<div  class="artikel_search">';
-
-$content .= '<div style="font-weight:bold; margin-bottom: 10px;">' . i18n("Saved searches") . ':</div>';
 
 $proppy = new cApiPropertyCollection();
 $savedSearchList = $proppy->getAllValues('type', 'savedsearch', $auth);
 
 $init_itemid = '';
 $init_itemtype = '';
-$content .= '<ul class="artikel_search">';
-
-// Recently edited articles search - predefined, not deleteable
-$searchRecentlyEdited = "javascript:conMultiLink('right_bottom', 'backend_search.php?area=" . $area . "&frame=4&contenido=" . $sess->id . "&recentedit=true'); resetSearchForm();";
-$content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle; padding-left: 3px;" src="images/delete_inact.gif"><a style="padding-left: 3px;" href="' . $searchRecentlyEdited . '">' . i18n("Recently edited articles") . '</a></li>';
-
-// My articles search - predefined, not deleteable
-$searchMyArticles = "javascript:conMultiLink('right_bottom', 'backend_search.php?area=" . $area . "&frame=4&contenido=" . $sess->id . "&myarticles=true'); resetSearchForm();";
-$content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle;padding-left: 3px;" src="images/delete_inact.gif"><a style="padding-left: 3px;" href="' . $searchMyArticles . '">' . i18n("My articles") . '</a></li>';
-
-//Lost and found - not deleteable
-$searchLostFound = "javascript:conMultiLink('right_bottom', 'backend_search.php?area=" . $area . "&frame=4&contenido=" . $sess->id . "&lostfound=true'); resetSearchForm();";
-$content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle;padding-left: 3px;" src="images/delete_inact.gif"><a style="padding-left: 3px;" href="' . $searchLostFound . '">' . i18n("Lost and found") . '</a></li>';
-
-// Workflow
-$link = $sess->url("main.php?area=con_workflow&frame=4");
-$sWorflowLink = 'conMultiLink(\'right_bottom\', \'' . $link . '\'); resetSearchForm();';
-$content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle;padding-left: 3px;" src="images/delete_inact.gif"><a style="padding-left: 3px;" href="javascript:' . $sWorflowLink . '">' . i18n("Workflow") . '</a></li>';
 
 foreach ($savedSearchList as $value) {
     if (($init_itemid != $value['itemid']) && ($init_itemtype != $value['itemtype'])) {
         $init_itemid = $value['itemid'];
         $init_itemtype = $value['itemtype'];
 
-        // Create delete icon
-        $deleteSearch = "javascript:conMultiLink('left_top', 'main.php?area=" . $area . "&frame=1&delsavedsearch=true&contenido=" . $sess->id . "&itemid=" . $value['itemid'] . "&itemtype=" . $value['itemtype'] . "')";
-        $content .= '<li style="margin-bottom: 3px;">';
-        $content .= '<a  href="' . $deleteSearch . '"><img style="padding-left: 3px; vertical-align:middle;" src="images/delete.gif"></a>';
-
-        // create new link
-        $savedSearchLink = "javascript:conMultiLink('right_bottom', 'backend_search.php?area=" . $area . "&frame=4&contenido=" . $sess->id . "&itemid=" . $value['itemid'] . "&itemtype=" . $value['itemtype'] . "')";
-        $content .= '<a style="padding-left: 3px;" href="' . $savedSearchLink . '">';
-    }
-    // Name the link
-    if ($value['name'] == 'save_name') {
-        $content .= $value['value'] . '</a>';
-        $content .= '</li>';
+        $tplSearch->set("d", "ITEM_ID", $value['itemid']);
+        $tplSearch->set("d", "ITEM_TYPE", $value['itemtype']);
+        $tplSearch->set("d", "SEARCH_NAME", $value['value']);
+        $tplSearch->next();
     }
 }
-$content .= '</ul>';
-$content .= '</div>';
-$content .= '</div>';
 
-$oListOptionRow->setContentData($content);
+$oListOptionRow->setContentData($tplSearch->generate($cfg['path']['templates'] . $cfg["templates"]["art_search"], true));
 
 $sSelfLink = 'main.php?area=' . $area . '&frame=2&' . $sess->name . "=" . $sess->id;
 $tpl->set('s', 'SELFLINK', $sSelfLink);

@@ -37,7 +37,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * Creates an HTML select field (aka "DropDown").
      *
      * @param string $name Name of the element
-     * @param int $width Width of the select element (note: not used)
+     * @param int $width Width of the select element
      * @param string $id ID of the element
      * @param bool $disabled Item disabled flag (non-empty to set disabled)
      * @param string $tabindex Tab index for form elements
@@ -50,6 +50,10 @@ class cHTMLSelectElement extends cHTMLFormElement {
         $this->_tag = 'select';
         $this->_contentlessTag = false;
         $this->setClass($class);
+
+        if($width != "") {
+            $this->appendStyleDefinition("width", $width);
+        }
     }
 
     /**

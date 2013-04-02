@@ -138,8 +138,10 @@ if (!empty($artspec)) {
                 $defLink->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'artikel_spez_inakt.gif" title="' . i18n("Make this article specification default") . '">');
                 $list->setCell($count, 2, $link->render() . $dlink->render() . $olink->render() . $defLink->render());
             } else {
-                $defLinkText = '<img src="' . $backendUrl . $cfg['path']['images'] . 'artikel_spez_akt.gif" title="' . i18n("This article specification is default") . '" style="padding-left:3px;">';
-                $list->setCell($count, 2, $link->render() . $dlink->render() . $olink->render() . $defLinkText);
+                $standardImage = new cHTMLImage($backendUrl . $cfg['path']['images'] . 'artikel_spez_akt.gif');
+                $standardImage->setAttribute("title", i18n("This is the default article specification"));
+                $standardImage->appendStyleDefinition("padding-left", "3px");
+                $list->setCell($count, 2, $link->render() . $dlink->render() . $olink->render() . $standardImage->toHTML());
             }
 
             $count++;

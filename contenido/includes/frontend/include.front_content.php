@@ -391,7 +391,7 @@ if ($contenido) {
 
     if ($perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat) && $inUse == false && $allow == true) {
         // Start editing table
-        $edit_preview = '<table cellspacing="0" cellpadding="4" border="0">';
+        $edit_preview = '<table id="LOOKIMUSED" cellspacing="0" cellpadding="4" border="0">';
 
         // Create buttons for editing
         if ($view == 'edit') {

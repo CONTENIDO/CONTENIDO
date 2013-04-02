@@ -869,9 +869,8 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
 
     $db = cRegistry::getDb();
 
-    $html = '';
-    $html .= '<select id="' . $sName . '" name="' . $sName . '">';
-    $html .= '  <option value="">' . i18n("Please choose") . '</option>';
+    $selectElem = new cHTMLSelectElement($sName, "", $sName);
+    $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
 
     $sql = "SELECT b.title, b.idart FROM
                " . $cfg["tab"]["art"] . " AS a, " . $cfg["tab"]["art_lang"] . " AS b, " . $cfg["tab"]["cat_art"] . " AS c
@@ -883,16 +882,15 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
 
     while ($db->nextRecord()) {
         if ($sValue != $db->f('idart')) {
-            $html .= '<option value="' . $db->f('idart') . '" style="background-color:#EFEFEF">' . $db->f('title') . '</option>';
+            $selectElem->appendOptionElement(new cHTMLOptionElement($db->f('title'), $db->f('idart')));
         } else {
-            $html .= '<option value="' . $db->f('idart') . '" style="background-color:#EFEFEF" selected="selected">' . $db->f('title') . '</option>';
+            $selectElem->appendOptionElement(new cHTMLOptionElement($db->f('title'), $db->f('idart'), true));
         }
     }
 
-    $html .= '</select>';
-
-    return $html;
+    return $selectElem->toHTML();
 }
+
 
 /**
  * Build a Category / Article select Box
@@ -900,18 +898,19 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
  * @param string Name of the SelectBox
  * @param string Value of the SelectBox
  * @param int Value of highest level that should be shown
- * @param string Optional style informations for select
+ * @param string Optional css class for select
  * @return string HTML
  */
-function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = '') {
+function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     global $cfg, $client, $lang;
 
     $db = cRegistry::getDb();
     $db2 = cRegistry::getDb();
 
-    $html = '';
-    $html .= '<select id="' . $sName . '" style="' . $sStyle . '" name="' . $sName . '">';
-    $html .= '  <option value="">' . i18n("Please choose") . '</option>';
+
+    $selectElem = new cHTMLSelectElement($sName, "", $sName);
+    $selectElem->setClass($sClass);
+    $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
 
     if ($sLevel > 0) {
         $addString = "AND c.level < " . (int) $sLevel;
@@ -959,15 +958,13 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = '') {
         $tmp_val = $tmpidcat;
 
         if ($sValue != $tmp_val) {
-            $html .= '<option value="' . $tmp_val . '" style="background-color:#EFEFEF">' . $spaces . ">" . $props["name"] . '</option>';
+            $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . ">" . $props["name"], $tmp_val));
         } else {
-            $html .= '<option value="' . $tmp_val . '" style="background-color:#EFEFEF" selected="selected">' . $spaces . ">" . $props["name"] . '</option>';
+            $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . ">" . $props["name"], $tmp_val, true));
         }
     }
 
-    $html .= '</select>';
-
-    return $html;
+    return $selectElem->toHTML();
 }
 
 /**

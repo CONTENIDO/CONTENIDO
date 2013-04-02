@@ -99,3 +99,33 @@
     var sQuestion = '{QUESTION}'; //Translation of save confirmation
 
 </script>
+
+<div id="categorypath" class="categorypath">i18n("You are here"): {CAT_STRING} &gt; {TITLE}</div><p style="display:block;font-weight:bold;">i18n("Content administration")</p>
+<!-- BEGIN:BLOCK -->
+<div class="contypeList {EXTRA_CLASS}">
+	<div class="headline">{NAME}<<{ID_TYPE}>>:</div>
+	{NAME}[{ID_TYPE}]
+</div>
+<!-- END:BLOCK -->
+<script type='text/javascript'>
+     $(document).ready(function(){
+         $('div#categorypath > a').click(function () {
+             var url = $(this).attr('href');
+             var sVal = url.split('idcat=');
+             var aVal = sVal[1].split('&');
+             var iIdcat = aVal[0];
+             sVal = url.split('idtpl=');
+             aVal = sVal[1].split('&');
+             var iIdtpl = aVal[0];
+             var path = url.split('?');
+             conMultiLink('right_top', path[0] + '?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu=1&syncoptions={SYNCOPTIONS}&contenido=1',
+             'right_bottom', url,
+             'left_bottom', path[0] + '?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido=1');
+             return false;
+         });
+     });
+</script>
+<form name="editcontent" method="post" action="{CONTENIDO_FULLHTML}main.php?area=con_content_list&action=savecontype&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
+    <input type="hidden" name="changeview" value="edit">
+    <input type="hidden" name="data" value="">
+</form>

@@ -134,7 +134,7 @@ class TODOLink extends cHTMLLink {
         $this->setEvent('mouseover', "this.style.cursor='pointer'");
 
         $img = new cHTMLImage('images/but_setreminder.gif');
-        $img->setStyle('padding-left:2px;padding-right:2px;');
+        $img->setClass("vAlignMiddle tableElement");
 
         $img->setAlt(i18n('Set reminder / add to todo list'));
         $this->setLink('#');

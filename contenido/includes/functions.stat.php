@@ -50,11 +50,15 @@ function statsDisplayInfo($id, $type, $x, $y, $w, $h) {
         $text = i18n("Info about directory") . " " . $id;
     }
 
-    $div = '<div id="idElement14" class="text_medium" style="background: #E8E8EE;
-             border: 1px; border-style: solid; border-color: #B3B3B3; position:absolute;
-             top:' . $x . 'px; left:' . $y . '.px; width:' . $w . 'px; height:' . $h . 'px;">' . $text . '</div>';
+    $div = new cHTMLDiv($text, "text_medium", "idElement14");
+    $div->appenStyleDefinition("border", "1px solid #e8e8ee");
+    $div->appendStyleDefinition("position", "absolute");
+    $div->appendStyleDefinition("top", $x."px");
+    $div->appendStyleDefinition("left", $y."px");
+    $div->appendStyleDefinition("width", $w."px");
+    $div->appendStyleDefinition("height", $h."px");
 
-    return $div;
+    return $div->toHTML();
 }
 
 /**
@@ -255,7 +259,7 @@ function statsOverviewAll($yearmonth) {
 
         $inThisLanguage = $db2->f(0);
 
-        $icon = '<img src="' . $cfg['path']['images'] . 'folder.gif" style="vertical-align:top;">';
+        $icon = '<img src="' . $cfg['path']['images'] . 'folder.gif" class="vAlignMiddle">';
 
         //************ art ********************************
         $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["art"] . " AS B, " . $cfg["tab"]["art_lang"] . " AS C WHERE A.idcat=" . cSecurity::toInteger($idcat) . "
@@ -296,7 +300,7 @@ function statsOverviewAll($yearmonth) {
                                                alt="' . i18n("Open category") . '"
                                                title="' . i18n("Open category") . '"
                                                id="' . implode('_', $aRowname) . '_img"
-                                               style="vertical-align:top; margin-top:6px;">
+                                               class="vAlignMiddle">
                                       </a>');
         } else {
             $tpl->set('d', 'EXPAND', '<img src="' . $cfg['path']['images'] . 'spacer.gif" width="7">');
@@ -385,7 +389,7 @@ function statsOverviewAll($yearmonth) {
                 $offonline = '<img src="' . $cfg['path']['images'] . 'online_off.gif" alt="' . i18n("Article is online") . '" title="' . i18n("Article is online") . '">';
             }
 
-            $icon = '<img src="' . $cfg['path']['images'] . 'article.gif" style="vertical-align:top;">';
+            $icon = '<img src="' . $cfg['path']['images'] . 'article.gif"  class="vAlignMiddle">';
             $tpl->set('d', 'PADDING_LEFT', $padding_left);
             $tpl->set('d', 'TEXT', $text.' (idart: '.cSecurity::toInteger($db3->f('idart')).')');
             $tpl->set('d', 'ONCLICK', "");
@@ -567,7 +571,7 @@ function statsOverviewYear($year) {
 
         $inThisLanguage = $db2->f(0);
 
-        $icon = '<img src="' . $cfg['path']['images'] . 'folder.gif" style="vertical-align:top;">';
+        $icon = '<img src="' . $cfg['path']['images'] . 'folder.gif" class="vAlignMiddle">';
 
         //************ art ********************************
         $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["art"] . " AS B, " . $cfg["tab"]["art_lang"] . " AS C WHERE A.idcat=" . cSecurity::toInteger($idcat) . " AND A.idart=B.idart AND B.idart=C.idart
@@ -609,7 +613,7 @@ function statsOverviewYear($year) {
                                                alt="' . i18n("Open category") . '"
                                                title="' . i18n("Open category") . '"
                                                id="' . implode('_', $aRowname) . '_img"
-                                               style="vertical-align:top; margin-top:6px;">
+                                               class="vAlignMiddle">
                                       </a>');
         } else {
             $tpl->set('d', 'EXPAND', '<img src="' . $cfg['path']['images'] . 'spacer.gif" width="7">');
@@ -677,7 +681,7 @@ function statsOverviewYear($year) {
                 $offonline = '<img src="' . $cfg['path']['images'] . 'online_off.gif" alt="' . i18n("Category is online") . '" title="' . i18n("Category is online") . '">';
             }
 
-            $icon = '<img src="' . $cfg['path']['images'] . 'article.gif" style="vertical-align:top;">';
+            $icon = '<img src="' . $cfg['path']['images'] . 'article.gif" class="vAlignMiddle">';
             $tpl->set('d', 'PADDING_LEFT', $padding_left);
             $tpl->set('d', 'TEXT', $text.' (idart: '.cSecurity::toInteger($idart).')');
             $tpl->set('d', 'ONCLICK', "");

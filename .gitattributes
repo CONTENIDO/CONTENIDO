@@ -2167,6 +2167,7 @@ contenido/scripts/str_overview.js -text
 contenido/scripts/subnav.js -text
 contenido/scripts/system_log_sysvalues.js -text svneol=unset#text/plain
 contenido/scripts/upl_files_overview.js -text svneol=unset#text/plain
+contenido/styles/con_content_list.css -text svneol=unset#text/plain
 contenido/styles/contenido.css -text
 contenido/styles/content_types/cms_abstract_tabbed.css -text svneol=unset#text/plain
 contenido/styles/content_types/cms_date.css -text svneol=unset#text/plain
@@ -2211,6 +2212,7 @@ contenido/templates/standard/index.php -text
 contenido/templates/standard/main.loginform.html -text
 contenido/templates/standard/submenu.html -text
 contenido/templates/standard/template.admin_frontend.html -text
+contenido/templates/standard/template.art_search_foldingrow.html -text svneol=unset#text/plain
 contenido/templates/standard/template.backend_search_results.html -text
 contenido/templates/standard/template.blank.html -text
 contenido/templates/standard/template.client_edit.html -text
@@ -2227,6 +2229,7 @@ contenido/templates/standard/template.cms_filelist_edit.html -text
 contenido/templates/standard/template.cms_filelist_metadata_limititem.html -text
 contenido/templates/standard/template.cms_text_js.html -text svneol=unset#text/plain
 contenido/templates/standard/template.con_art_overview.html -text
+contenido/templates/standard/template.con_content_list.html -text svneol=unset#text/plain
 contenido/templates/standard/template.con_edit_form.html -text
 contenido/templates/standard/template.con_editcontent.html -text
 contenido/templates/standard/template.con_left_top.html -text

@@ -116,7 +116,7 @@ class cGuiNotification {
         if ($iStyle == 1) {
             // Box on login page
             $sMessageBox =
-                    '<div class="alertbox ' . $sHeadClass . '_color" id="contenido_notification" style="border-top:0px;">' .
+                    '<div class="alertbox ' . $sHeadClass . '_color" id="contenido_notification">' .
                     '<h1 class="alertbox_head ' . $sHeadClass . '">' . $sHead . '</h1>' .
                     '<div class="alertbox_message">' . $sMessage . '</div>' .
                     '</div>';
@@ -157,7 +157,7 @@ class cGuiNotification {
                 break;
         }
 
-        $sNoti = '<div id="contenido_notification" style="position:relative;left:0;top:0;z-index:0;">';
+        $sNoti = '<div id="contenido_notification">';
         $sNoti .= $oNotifySpan->toHTML();
         $sNoti .= '</div>';
 

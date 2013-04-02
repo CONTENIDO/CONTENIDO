@@ -118,7 +118,7 @@ if ($aItems !== false) {
             $oInputboxType->setWidth(15);
 
             $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
-            $sSubmit = ' <input type="image" style="vertical-align:top;" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
+            $sSubmit = ' <input type="image" class="vAlignMiddle" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
 
             $oList->setData($iCounter, $oInputboxType->render(), $oInputboxName->render(), $oInputboxValue->render() . $hidden . $sSubmit, $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
         } else {

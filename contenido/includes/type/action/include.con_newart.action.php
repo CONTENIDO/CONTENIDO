@@ -43,29 +43,8 @@ $db->nextRecord();
 if ($db->f("idtplcfg") != 0) {
     $newart = true;
 } else {
-    $noti_html = '<table cellspacing="0" cellpadding="2" border="0">
-
-                    <tr class="text_medium">
-                        <td colspan="2">
-                            <b>Fehler bei der Erstellung des Artikels</b><br><br>
-                            Der Kategorie ist kein Template zugewiesen.
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2">&nbsp;</td>
-                    </tr>
-
-                  </table>';
-    $code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-    <head>
-        <title>Error</title>
-        <link rel="stylesheet" type="text/css" href="'. cRegistry::getBackendUrl() .$cfg["path"]["styles"].'contenido.css"></link>
-    </head>
-    <body style="margin: 10px">'.$notification->returnNotification("error", $noti_html).'</body>
-</html>';
-
-    echo $code;
+    $page = new cGuiPage("con_newart");
+    $page->displayCriticalError(i18n("This category has no templates assigned."));
+    $page->render();
 }
 ?>

@@ -114,80 +114,47 @@ $oEditor->setToolbar('inline_edit');
 $sConfigInlineEdit = $oEditor->getConfigInlineEdit();
 $sConfigFullscreen = $oEditor->getConfigFullscreen();
 
+$page = new cGuiPage("con_content_list");
 
 //Replace vars in Script
-$oScriptTpl = new cTemplate();
 
-$oScriptTpl->set('s', 'CONTENIDO_FULLHTML', $backendUrl);
+$page->set('s', 'CONTENIDO_FULLHTML', $backendUrl);
 
 //Set urls to file browsers
-$oScriptTpl->set('s', 'IMAGE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
-$oScriptTpl->set('s', 'FILE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
-$oScriptTpl->set('s', 'FLASH', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
-$oScriptTpl->set('s', 'MEDIA', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
-$oScriptTpl->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
+$page->set('s', 'IMAGE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
+$page->set('s', 'FILE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
+$page->set('s', 'FLASH', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
+$page->set('s', 'MEDIA', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
+$page->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 
 //Add tiny options and fill function leave_check()
-$oScriptTpl->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
-$oScriptTpl->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
-$oScriptTpl->set('s', 'IDARTLANG', $idartlang);
-$oScriptTpl->set('s', 'CON_PATH', $backendUrl);
-$oScriptTpl->set('s', 'CLOSE', i18n('Close editor'));
-$oScriptTpl->set('s', 'SAVE', i18n('Close editor and save changes'));
-$oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
+$page->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
+$page->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
+$page->set('s', 'IDARTLANG', $idartlang);
+$page->set('s', 'CON_PATH', $backendUrl);
+$page->set('s', 'CLOSE', i18n('Close editor'));
+$page->set('s', 'SAVE', i18n('Close editor and save changes'));
+$page->set('s', 'QUESTION', i18n('Do you want to save changes?'));
 
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
-    $oScriptTpl->set('s', 'USE_TINY', '');
+    $page->set('s', 'USE_TINY', '');
 } else {
-    $oScriptTpl->set('s', 'USE_TINY', 'swapTiny(this);');
+    $page->set('s', 'USE_TINY', 'swapTiny(this);');
 }
 
-$scripts = $oScriptTpl->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['con_editcontent'], 1);
-
-$contentform = '
-    <form name="editcontent" method="post" action="' . $sess->url($backendUrl . "main.php?area=con_content_list&action=savecontype&idart=$idart&idcat=$idcat&lang=$lang&idartlang=$idartlang&frame=4&client=$client") . '">
-        <input type="hidden" name="changeview" value="edit">
-        <input type="hidden" name="data" value="">
-    </form>
-    ';
-
-$layoutcode = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <link rel="stylesheet" type="text/css" href="' . $backendUrl . 'styles/contenido.css">
-    <link rel="stylesheet" type="text/css" href="' . $backendUrl . 'contenido/styles/jquery/jquery-ui.css">
-    <script type="text/javascript" src="' . $backendUrl . 'contenido/scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="' . $backendUrl . 'contenido/scripts/jquery/jquery-ui.js"></script>
-    <script type="text/javascript" src="' . $backendUrl . 'contenido/scripts/general.js"></script>
-    <style>
-    .contypeList {
-        border: 1px solid #B3B3B3;
-        padding: 10px;
-        margin: 10px 0;
-    }
-    .noactive {
-        border: 1px solid red;
-    }
-    .contypeList div {
-        min-height: 13px;
-    }
-    </style>
-</head>
-<body style="margin: 10px">';
 //Show path of selected category to user
 $catString = '';
 prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
 $sql = "SELECT * FROM " . $cfg["tab"]["art_lang"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
 $db->query($sql);
 $db->nextRecord();
-$layoutcode .= '<div id="categorypath" class="categorypath">' . i18n("You are here") . ": " . $catString . ' > ' . conHtmlSpecialChars($db->f("title")) . '</div><p style="display:block;font-weight:bold;">' . i18n("Content administration") . '</p>';
+$page->set("s", "CAT_STRING", $catString);
+$page->set("s", "TITLE", conHtmlSpecialChars($db->f("title")));
 
 if (count($result) <= 0) {
-    $layoutcode .= '<div>--- ' . i18n("none") . ' ---</div>';
+    $page->displayInfo(i18n("Nothing to do here"));
+    $page->abortRendering();
+    //$layoutcode .= '<div>--- ' . i18n("none") . ' ---</div>';
 } else {
     foreach ($aIdtype as $idtype) {
         foreach ($sortID as $name) {
@@ -197,8 +164,10 @@ if (count($result) <= 0) {
                 } else {
                     $class = ' noactive';
                 }
-                $layoutcode .= '<div class="contypeList' . $class . '">
-                <div class="headline">' . $name . '<<' . $idtype . '>>:</div>' . $name . '[' . $idtype . ']</div>';
+                $page->set("d", "EXTRA_CLASS", $class);
+                $page->set("d", "NAME", $name);
+                $page->set("d", "ID_TYPE", $idtype);
+                $page->next();
             }
         }
     }
@@ -209,28 +178,16 @@ if (!isset($syncfrom)) {
     $syncfrom = -1;
 }
 $syncoptions = $syncfrom;
-$layoutcode .= "<script type='text/javascript'>
-        $(document).ready(function(){
-            $('div#categorypath > a').click(function () {
-                var url = $(this).attr('href');
-                var sVal = url.split('idcat=');
-                var aVal = sVal[1].split('&');
-                var iIdcat = aVal[0];
-                sVal = url.split('idtpl=');
-                aVal = sVal[1].split('&');
-                var iIdtpl = aVal[0];
-                var path = url.split('?');
-                conMultiLink('right_top', path[0] + '?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu=1&syncoptions=" . $syncoptions . "&contenido=" . $contenido . "',
-                'right_bottom', url,
-                'left_bottom', path[0] + '?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido=" . $contenido . "');
-                return false;
-            });
-        });
-    </script>";
-$layoutcode .= '</body></html>';
+$page->set("s", "SYNCHOPTIONS", $syncoptions);
+
+$page->set("s", "IDART", $idart);
+$page->set("s", "IDCAT", $idcat);
+$page->set("s", "IDLANG", $lang);
+$page->set("s", "IDARTLANG", $idartlang);
+$page->set("s", "IDCLIENT", $client);
 
 // generate code
-$code = _processCmsTags($aList, $result, true, $layoutcode);
+$code = _processCmsTags($aList, $result, true, $page->render(null, true));;
 
 if ($code == "0601") {
     markSubMenuItem("1");
@@ -238,8 +195,6 @@ if ($code == "0601") {
 } else {
     // inject some additional markup
     $code = cString::iReplaceOnce("</head>", "$markSubItem $scripts\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=$encoding[$lang]\"></head>", $code);
-    $code = cString::iReplaceOnceReverse("</body>", "$contentform</body>", $code);
-    $code = cString::iReplaceOnce("<head>", "<head>\n" . '<base href="' . cRegistry::getFrontendUrl() . '">', $code);
 }
 
 if ($cfg["debug"]["codeoutput"]) {
@@ -359,11 +314,11 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
                     //echo "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
                 }
                 $replacements[$val] = $tmp .
-                        '<a style="text-decoration:none;" href="javascript:setcontent(\'1\',\'' . $path . '\');">
+                        '<a href="javascript:setcontent(\'1\',\'' . $path . '\');">
                 <img border="0" src="' . $backendUrl . 'images/delete.gif">
                 </a>';
                 $keycode[$type][$val] = $tmp .
-                        '<a style="text-decoration:none;" href="javascript:setcontent(\'1\',\'' . $path . '\');">
+                        '<a href="javascript:setcontent(\'1\',\'' . $path . '\');">
                 <img border="0" src="' . $backendUrl . 'images/delete.gif">
                 </a>';
             }

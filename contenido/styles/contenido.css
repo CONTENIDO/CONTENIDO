@@ -540,6 +540,7 @@ ul#con_str_tree {
  */
 .alertbox {
 	border: 1px solid;
+	border-top: 0px;
 	margin-left: 260px;
 	width: 275px;
 }
@@ -2222,4 +2223,29 @@ div.bulk_editing_functions a img {
 	margin-bottom: 10px;
 }
 
+/**
+ * Applies a small margin so that the elements in a row of a table (like buttons to edit, publish, ...) look a bit nicer
+ */
+.tableElement {
+	margin-left: 3px;
+}
 
+.conEditForm input.text_medium {
+	width: 400px;
+}
+
+.conEditForm input.sitemapPriority {
+	width: 140px;
+}
+
+.conEditForm input.redirectURL {
+	width: 380px;
+}
+
+.conEditForm select.categories {
+	width: 200px;
+}
+
+.conEditForm textarea {
+	width: 400px;
+}
