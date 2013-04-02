@@ -25,18 +25,18 @@ $test = new cSystemtest($cfg);
 $test->runTests();
 $results = $test->getResults();
 
-foreach($results as $result) {
-    if($result["severity"] == cSystemtest::C_SEVERITY_NONE) {
+foreach ($results as $result) {
+    if ($result["severity"] == cSystemtest::C_SEVERITY_NONE) {
         continue;
     }
 
-    if($result["result"] == true) {
+    if ($result["result"] == true) {
         $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/but_ok.gif");
-    } else if($result["severity"] == cSystemtest::C_SEVERITY_WARNING) {
+    } else if ($result["severity"] == cSystemtest::C_SEVERITY_WARNING) {
         $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/icon_warning.gif");
-    } else if($result["severity"] == cSystemtest::C_SEVERITY_ERROR) {
+    } else if ($result["severity"] == cSystemtest::C_SEVERITY_ERROR) {
         $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/icon_fatalerror.gif");
-    } else if($result["severity"] == cSystemtest::C_SEVERITY_INFO) {
+    } else if ($result["severity"] == cSystemtest::C_SEVERITY_INFO) {
         $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/info.gif");
     }
     $page->set("d", "HEADLINE", $result["headline"]);

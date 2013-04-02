@@ -34,31 +34,20 @@ cInclude('includes', 'functions.file.php');
  * @author rusmir.jusufovic
  */
 class cModuleTemplateHandler extends cModuleHandler {
+
     // Form fields
     private $_code;
-
     private $_file;
-
     private $_tmp_file;
-
     private $_area;
-
     private $_frame;
-
     private $_status;
-
     private $_action;
-
     private $_new;
-
     private $_delete;
-
     private $_selectedFile;
-
     private $_reloadScript;
-
     private $_page = NULL;
-
     private $_notification = null;
 
     /**
@@ -508,7 +497,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $this->_page->setContent(array(
             $fileForm
         ));
-        if($this->_file) {
+        if ($this->_file) {
             $this->_page->appendContent($form);
         }
 
@@ -558,4 +547,5 @@ class cModuleTemplateHandler extends cModuleHandler {
             $this->_page->displayError(i18n($e->getMessage()));
         }
     }
+
 }

@@ -25,19 +25,16 @@
  * }}
  */
 
-
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
 class cSystemtest {
-
     /**
      * The minimal PHP version
      * @var string
      */
     const CON_SETUP_MIN_PHP_VERSION = '5.2.0';
-
 
     /**
      * Messages have no influence on the result of the system integrity
@@ -62,7 +59,6 @@ class cSystemtest {
      * @var int
      */
     const C_SEVERITY_ERROR = 4;
-
 
     /**
      * Possible result of cSystemtest::predictCorrectFilePermissions()
@@ -128,7 +124,6 @@ class cSystemtest {
      */
     const CON_PREDICT_WINDOWS = 8;
 
-
     /**
      * Possible result of cSystemtest::checkOpenBaseDir().
      * No restrictions
@@ -161,7 +156,6 @@ class cSystemtest {
      */
     const CON_BASEDIR_INCOMPATIBLE = 4;
 
-
     /**
      * Possible result of cSystemtest::isPHPExtensionLoaded()
      * The extension is loaded
@@ -185,7 +179,6 @@ class cSystemtest {
      * @var int
      */
     const CON_EXTENSION_CANTCHECK = 3;
-
 
     /**
      * Possible result of cSystemtest::checkImageResizer()
@@ -267,7 +260,7 @@ class cSystemtest {
      * @param bool $testFileSystem If this is true the file system checks will be performed too with standard settings.
      */
     public function runTests($testFileSystem = true) {
-        $this->storeResult($this->testPHPVersion(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), self::CON_SETUP_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), self::CON_SETUP_MIN_PHP_VERSION), i18n("The PHP version is higher than ").self::CON_SETUP_MIN_PHP_VERSION);
+        $this->storeResult($this->testPHPVersion(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), self::CON_SETUP_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), self::CON_SETUP_MIN_PHP_VERSION), i18n("The PHP version is higher than ") . self::CON_SETUP_MIN_PHP_VERSION);
         $this->storeResult($this->testFileUploadSetting(), self::C_SEVERITY_WARNING, i18n("File uploads disabled"), sprintf(i18n("Your PHP version is not configured for file uploads. You can't upload files using CONTENIDO's file manager unless you configure PHP for file uploads. See %s for more information"), '<a target="_blank" href="http://www.php.net/manual/en/ini.core.php#ini.file-uploads">http://www.php.net/manual/en/ini.core.php#ini.file-uploads</a>'), i18n("PHP file upload is enabled"));
         $this->storeResult($this->testMagicQuotesRuntimeSetting(), self::C_SEVERITY_ERROR, i18n("PHP setting 'magic_quotes_runtime' is turned on"), i18n("The PHP setting 'magic_quotes_runtime' is turned on. CONTENIDO has been developed to comply with magic_quotes_runtime=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."), i18n("'magic_quotes_runtime' is turned off"));
         $this->storeResult($this->testMagicQuotesSybaseSetting(), self::C_SEVERITY_ERROR, i18n("PHP Setting 'magic_quotes_sybase' is turned on"), i18n("The PHP Setting 'magic_quotes_sybase' is turned on. CONTENIDO has been developed to comply with magic_quotes_sybase=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."), i18n("'magic_quotes_sybase' is turned off"));
@@ -293,7 +286,7 @@ class cSystemtest {
         $this->storeResult($this->testMemoryLimit(), self::C_SEVERITY_WARNING, i18n("PHP memory_limit directive too small"), i18n("The memory_limit directive is set to 32 MB or lower. This might be not enough for CONTENIDO to operate correctly. We recommend to disable this setting completely, as this can cause problems with large CONTENIDO projects."), i18n("Memory limit is either high enough or deactivated"));
         $this->storeResult($this->testPHPSQLSafeMode(), self::C_SEVERITY_ERROR, i18n("PHP sql.safe_mode turned on"), i18n("The PHP directive sql.safe_mode is turned on. This causes problems with the SQL queries issued by CONTENIDO. Please turn that directive off."), i18n("sql.safe_mode is deactivated"));
         $this->storeResult($this->isPHPExtensionLoaded("gd") == self::CON_EXTENSION_AVAILABLE, self::C_SEVERITY_WARNING, i18n("PHP GD-Extension is not loaded"), i18n("The PHP GD-Extension is not loaded. Some third-party modules rely on the GD functionality. If you don't enable the GD extension, you will encounter problems with modules like galleries."), i18n("GD extension loaded"));
-        if($this->isPHPExtensionLoaded("gd") == self::CON_EXTENSION_AVAILABLE) {
+        if ($this->isPHPExtensionLoaded("gd") == self::CON_EXTENSION_AVAILABLE) {
             $this->storeResult($this->testGDGIFRead(), self::C_SEVERITY_INFO, i18n("GD-Library GIF read support missing"), i18n("Your GD version doesn't support reading GIF files. This might cause problems with some modules."), i18n("GD is able to read GIFs"));
             $this->storeResult($this->testGDGIFWrite(), self::C_SEVERITY_INFO, i18n("GD-Library GIF write support missing"), i18n("Your GD version doesn't support writing GIF files. This might cause problems with some modules."), i18n("GD is able to write GIFs"));
             $this->storeResult($this->testGDJPEGRead(), self::C_SEVERITY_INFO, i18n("GD-Library JPEG read support missing"), i18n("Your GD version doesn't support reading JPEG files. This might cause problems with some modules."), i18n("GD is able to read JPEGs"));
@@ -325,7 +318,7 @@ class cSystemtest {
         $this->storeResult($this->testIconv(), self::C_SEVERITY_ERROR, i18n("PHP iconv functions are not available."), i18n("PHP has been compiled with the --without-iconv directive. CONTENIDO won't work without the iconv functions."), i18n("iconv is available"));
 
         $result = $this->testMySQL($this->_config['db']['connection']['host'], $this->_config['db']['connection']['user'], $this->_config['db']['connection']['password']);
-        switch($result) {
+        switch ($result) {
             case self::CON_MYSQL_OK:
                 $this->storeResult(true, self::C_SEVERITY_ERROR, "", "", i18n("Database connection works"));
                 break;
@@ -336,7 +329,7 @@ class cSystemtest {
                 $this->storeResult(false, self::C_SEVERITY_ERROR, i18n("MySQL database connect failed"), sprintf(i18n("Setup was unable to connect to the MySQL Server (Server %s, Username %s). Please correct the MySQL data and try again.<br><br>The error message given was: %s"), $this->_config['db']['connection']['host'], $this->_config['db']['connection']['user'], $result));
         }
 
-        if($testFileSystem) {
+        if ($testFileSystem) {
             $this->storeResult($this->testFilesystem(), self::C_SEVERITY_WARNING, i18n("Permission error"), i18n("CONTENIDO doesn't have the necessary permissions to write all the files it needs. Please check your filesystem permissions."), i18n("Filesystem checks"), i18n("CONTENIDO has all the necessary permissions to read and write files"));
         }
     }
@@ -352,7 +345,7 @@ class cSystemtest {
      * @param string $successMessage The message which will be stored in the case that $result is true
      */
     public function storeResult($result, $severity, $errorHeadline = "", $errorMessage = "", $successHeadline = "", $successMessage = "") {
-        if($result) {
+        if ($result) {
             $this->_messages[] = array(
                 "result" => $result,
                 "severity" => $severity,
@@ -453,12 +446,12 @@ class cSystemtest {
         $aFileinfo = array();
         $aFileinfo["info"] = $info;
         $aFileinfo["type"] = $type;
-        $aFileinfo["owner"]["read"] = ($oiFilePermissions & 0x0100)? true : false;
-        $aFileinfo["owner"]["write"] = ($oiFilePermissions & 0x0080)? true : false;
-        $aFileinfo["group"]["read"] = ($oiFilePermissions & 0x0020)? true : false;
-        $aFileinfo["group"]["write"] = ($oiFilePermissions & 0x0010)? true : false;
-        $aFileinfo["others"]["read"] = ($oiFilePermissions & 0x0004)? true : false;
-        $aFileinfo["others"]["write"] = ($oiFilePermissions & 0x0002)? true : false;
+        $aFileinfo["owner"]["read"] = ($oiFilePermissions & 0x0100) ? true : false;
+        $aFileinfo["owner"]["write"] = ($oiFilePermissions & 0x0080) ? true : false;
+        $aFileinfo["group"]["read"] = ($oiFilePermissions & 0x0020) ? true : false;
+        $aFileinfo["group"]["write"] = ($oiFilePermissions & 0x0010) ? true : false;
+        $aFileinfo["others"]["read"] = ($oiFilePermissions & 0x0004) ? true : false;
+        $aFileinfo["others"]["write"] = ($oiFilePermissions & 0x0002) ? true : false;
         $aFileinfo["owner"]["id"] = fileowner($sFilename);
         $aFileinfo["group"]["id"] = filegroup($sFilename);
         return ($aFileinfo);
@@ -510,9 +503,9 @@ class cSystemtest {
             return ($iUserId);
         } else {
             if (is_writeable("/tmp/")) {
-                cFileHandler::create("/tmp/".$sFilename, "w");
-                $iUserId = fileowner("/tmp/".$sFilename);
-                cFileHandler::remove("/tmp/".$sFilename);
+                cFileHandler::create("/tmp/" . $sFilename, "w");
+                $iUserId = fileowner("/tmp/" . $sFilename);
+                cFileHandler::remove("/tmp/" . $sFilename);
 
                 return ($iUserId);
             }
@@ -686,7 +679,7 @@ class cSystemtest {
                 }
             }
 
-            $this->storeResult(false, $severity, $title, $message."<br><br>".$predictMessage);
+            $this->storeResult(false, $severity, $title, $message . "<br><br>" . $predictMessage);
             throw new Exception();
         }
 
@@ -747,8 +740,8 @@ class cSystemtest {
     protected function doMySQLConnect($host, $username, $password) {
         $aOptions = array(
             'connection' => array(
-                'host'     => $host,
-                'user'     => $username,
+                'host' => $host,
+                'user' => $username,
                 'password' => $password,
             ),
         );
@@ -805,7 +798,6 @@ class cSystemtest {
      *
      * They all return true if the test passed and false if not
      */
-
     public function testPHPVersion() {
         if (version_compare(phpversion(), CON_SETUP_MIN_PHP_VERSION, '>=') == true) {
             return true;
@@ -876,42 +868,42 @@ class cSystemtest {
     }
 
     public function testGDGIFRead() {
-        if(($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
+        if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
         }
         return function_exists("imagecreatefromgif");
     }
 
     public function testGDGIFWrite() {
-        if(($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
+        if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
         }
         return function_exists("imagegif");
     }
 
     public function testGDJPEGRead() {
-        if(($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
+        if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
         }
         return function_exists("imagecreatefromjpeg");
     }
 
     public function testGDJPEGWrite() {
-        if(($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
+        if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
         }
         return function_exists("imagejpeg");
     }
 
     public function testGDPNGRead() {
-        if(($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
+        if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
         }
         return function_exists("imagecreatefrompng");
     }
 
     public function testGDPNGWrite() {
-        if(($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
+        if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
         }
         return function_exists("imagepng");
@@ -937,8 +929,8 @@ class cSystemtest {
         // host, user and password
         $dbCfg = array(
             'connection' => array(
-                'host'     => $host,
-                'user'     => $username,
+                'host' => $host,
+                'user' => $username,
                 'password' => $password,
             ),
         );
@@ -962,11 +954,11 @@ class cSystemtest {
         } else {
             $errorMessage = mysql_error();
         }
-        if($errorMessage != "") {
+        if ($errorMessage != "") {
             return $errorMessage;
         }
 
-        if(!$this->testMySQLModeStrict($host, $username, $password)) {
+        if (!$this->testMySQLModeStrict($host, $username, $password)) {
             return self::CON_MYSQL_STRICT_MODE;
         }
 
@@ -991,7 +983,7 @@ class cSystemtest {
             $this->testSingleFile($this->_config['path']['contenido_cronlog'] . "advance_workflow.php.job", self::C_SEVERITY_WARNING);
             $this->testSingleFile($this->_config['path']['contenido_cache'], self::C_SEVERITY_WARNING, true);
             $this->testSingleFile($this->_config['path']['contenido_temp'], self::C_SEVERITY_WARNING, true);
-            if($testFrontend) {
+            if ($testFrontend) {
                 $this->testSingleFile($this->_config['path']['frontend'] . "/cms/cache/", self::C_SEVERITY_WARNING, true);
                 $this->testSingleFile($this->_config['path']['frontend'] . "/cms/cache/code/", self::C_SEVERITY_WARNING, true);
                 $this->testSingleFile($this->_config['path']['frontend'] . "/cms/css/", self::C_SEVERITY_WARNING, true);
@@ -1008,10 +1000,10 @@ class cSystemtest {
                 $this->testSingleFile($this->_config['path']['frontend'] . "/cms/templates/", self::C_SEVERITY_WARNING, true);
                 $this->testSingleFile($this->_config['path']['frontend'] . "/cms/upload/", self::C_SEVERITY_WARNING, true);
             }
-            if($testConfig) {
-                $this->testSingleFile($this->_config['path']['contenido_config']."config.php", self::C_SEVERITY_ERROR);
+            if ($testConfig) {
+                $this->testSingleFile($this->_config['path']['contenido_config'] . "config.php", self::C_SEVERITY_ERROR);
             }
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $test = false;
         }
         return $test;
@@ -1077,5 +1069,7 @@ class cSystemtest {
             return self::CON_IMAGERESIZE_NOTHINGAVAILABLE;
         }
     }
+
 }
+
 ?>

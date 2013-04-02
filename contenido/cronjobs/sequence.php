@@ -16,29 +16,28 @@ $db->free();
 
 
 // first all values higher then 0
-$filterTables = array($cfg['sql']['sqlprefix'].'_pica_alloc_con', $cfg['sql']['sqlprefix'].'_pica_lang', $cfg['sql']['sqlprefix'].'_sequence');
+$filterTables = array($cfg['sql']['sqlprefix'] . '_pica_alloc_con', $cfg['sql']['sqlprefix'] . '_pica_lang', $cfg['sql']['sqlprefix'] . '_sequence');
 $sql2 = 'SELECT *
-        FROM '.$cfg['db']['connection']['database'].'.con_sequence';
+        FROM ' . $cfg['db']['connection']['database'] . '.con_sequence';
 
-$sql = 'SHOW TABLES FROM  '.$cfg['db']['connection']['database'].'';
+$sql = 'SHOW TABLES FROM  ' . $cfg['db']['connection']['database'] . '';
 $db->query($sql);
-if($db->getErrorMessage() !=0) {
+if ($db->getErrorMessage() != 0) {
     echo "<pre>" . $sql . "\nMysql Error:" . $db->getErrorMessage() . "(" . $db->getErrorNumber() . ")</pre>";
 }
 
 $i = 0;
 while ($row = mysql_fetch_row($db->getQueryId())) {
-
-    if(in_array($row[0], $filterTables) === false) {
-  # echo "<br/> Tabelle: {$row[0]}\n";
-       getNextId($row);
-       $i++;
+    if (in_array($row[0], $filterTables) === false) {
+        # echo "<br/> Tabelle: {$row[0]}\n";
+        getNextId($row);
+        $i++;
     }
 }
-echo "\n Result Rows:".$i;
+echo "\n Result Rows:" . $i;
 
-if($i > 70) {
-    $sql = 'drop table if exists '.$cfg['sql']['sqlprefix'].'_sequence';
+if ($i > 70) {
+    $sql = 'drop table if exists ' . $cfg['sql']['sqlprefix'] . '_sequence';
     $db->query($sql);
 }
 
@@ -48,20 +47,18 @@ function getNextId($row) {
     debug($row);
 
     $db = cRegistry::getDb();
-    $sql = 'SHOW KEYS FROM '.$tableName.' WHERE Key_name="PRIMARY"';
+    $sql = 'SHOW KEYS FROM ' . $tableName . ' WHERE Key_name="PRIMARY"';
     $db->query($sql);
-     while ($row = mysql_fetch_row($db->getQueryId())) {
-
+    while ($row = mysql_fetch_row($db->getQueryId())) {
         $primaryKey = $row[4];
         $dbAlter = cRegistry::getDb();
-        $sqlAlter = 'ALTER TABLE `'.$tableName.'` CHANGE `'.$primaryKey.'` `'.$primaryKey.'` INT( 10 ) NOT NULL AUTO_INCREMENT';
+        $sqlAlter = 'ALTER TABLE `' . $tableName . '` CHANGE `' . $primaryKey . '` `' . $primaryKey . '` INT( 10 ) NOT NULL AUTO_INCREMENT';
         #echo '<br/>query:'.$sqlAlter;
         $dbAlter->query($sqlAlter);
-        if($db->getErrorNumber() !=0) {
+        if ($db->getErrorNumber() != 0) {
             echo "<pre>" . $sqlAlter . "\nMysql Error:" . $db->getErrorMessage() . "(" . $db->getErrorNumber() . ")</pre>";
         }
     }
-
 }
 
 function debug($string) {

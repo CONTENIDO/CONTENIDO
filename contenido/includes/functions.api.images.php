@@ -38,7 +38,6 @@ if (!defined('CON_FRAMEWORK')) {
  * 3.) The function makes sense and is generically usable
  */
 
-
 /**
  * Returns the MD5 filename used for caching.
  *
@@ -69,7 +68,6 @@ function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand) {
     return $sMD5;
 }
 
-
 /**
  * Scales (or crops) an image.
  * If scaling, the aspect ratio is maintained.
@@ -92,31 +90,29 @@ function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand) {
  * @param  bool     $keepType   If true and a png file is source, output file is also png
  * @return string   url to the resulting image (http://...
  */
-function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
-                         $cacheTime = 10, $quality = 75, $keepType = false)
-{
-    global $cfgClient,  $client;
+function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 75, $keepType = false) {
+    global $cfgClient, $client;
 
     if (!cFileHandler::exists($img)) {
         return false;
     }
 
-    $filename  = $img;
-    $maxX      = (int) $maxX;
-    $maxY      = (int) $maxY;
+    $filename = $img;
+    $maxX = (int) $maxX;
+    $maxY = (int) $maxY;
     $cacheTime = (int) $cacheTime;
-    $quality   = (int) $quality;
+    $quality = (int) $quality;
 
     if ($quality <= 0 || $quality > 100) {
         $quality = 75;
     }
 
     $frontendURL = cRegistry::getFrontendUrl();
-    $filetype  = substr($filename, strlen($filename) -4, 4);
-    $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
+    $filetype = substr($filename, strlen($filename) - 4, 4);
+    $md5 = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache']['path'] . $cfileName;
-    $webFile   = $frontendURL . 'cache/' . $cfileName;
+    $webFile = $frontendURL . 'cache/' . $cfileName;
 
     if (cApiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
         return $webFile;
@@ -124,10 +120,14 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
 
     // Get out which file we have
     switch (strtolower($filetype)) {
-        case '.gif': $function = 'imagecreatefromgif'; break;
-        case '.png': $function = 'imagecreatefrompng'; break;
-        case '.jpg': $function = 'imagecreatefromjpeg'; break;
-        case 'jpeg': $function = 'imagecreatefromjpeg'; break;
+        case '.gif': $function = 'imagecreatefromgif';
+            break;
+        case '.png': $function = 'imagecreatefrompng';
+            break;
+        case '.jpg': $function = 'imagecreatefromjpeg';
+            break;
+        case 'jpeg': $function = 'imagecreatefromjpeg';
+            break;
         default: return false;
     }
 
@@ -199,31 +199,29 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
  * @param   bool    $keepType   If true and a png file is source, output file is also png
  * @return  string  Url to the resulting image (http://...)
  */
-function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
-                         $cacheTime = 10, $quality = 75, $keepType = true)
-{
+function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 75, $keepType = true) {
     global $cfgClient, $client;
 
     if (!cFileHandler::exists($img)) {
         return false;
     }
 
-    $filename  = $img;
-    $maxX      = (int) $maxX;
-    $maxY      = (int) $maxY;
+    $filename = $img;
+    $maxX = (int) $maxX;
+    $maxY = (int) $maxY;
     $cacheTime = (int) $cacheTime;
-    $quality   = (int) $quality;
+    $quality = (int) $quality;
 
     if ($quality <= 0 || $quality > 100) {
         $quality = 75;
     }
 
     $frontendURL = cRegistry::getFrontendUrl();
-    $filetype  = substr($filename, strlen($filename) -4, 4);
-    $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
+    $filetype = substr($filename, strlen($filename) - 4, 4);
+    $md5 = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache']['path'] . $cfileName;
-    $webFile   = $frontendURL . 'cache/' . $cfileName;
+    $webFile = $frontendURL . 'cache/' . $cfileName;
 
     if (cApiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
         return $webFile;
@@ -231,10 +229,14 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
 
     // Get out which file we have
     switch (strtolower($filetype)) {
-        case '.gif': $function = 'imagecreatefromgif'; break;
-        case '.png': $function = 'imagecreatefrompng'; break;
-        case '.jpg': $function = 'imagecreatefromjpeg'; break;
-        case 'jpeg': $function = 'imagecreatefromjpeg'; break;
+        case '.gif': $function = 'imagecreatefromgif';
+            break;
+        case '.png': $function = 'imagecreatefrompng';
+            break;
+        case '.jpg': $function = 'imagecreatefromjpeg';
+            break;
+        case 'jpeg': $function = 'imagecreatefromjpeg';
+            break;
         default: return false;
     }
 
@@ -262,7 +264,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
         $targetImage = imagecreatetruecolor($targetX, $targetY);
 
         // Preserve transparency
-        if (strtolower($filetype) == '.gif' or strtolower($filetype) == '.png'){
+        if (strtolower($filetype) == '.gif' or strtolower($filetype) == '.png') {
             imagecolortransparent($targetImage, imagecolorallocatealpha($targetImage, 0, 0, 0, 127));
             imagealphablending($targetImage, false);
             imagesavealpha($targetImage, true);
@@ -314,33 +316,29 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
  * @param   bool    $keepType   If true and a png file is source, output file is also png
  * @return  string  Url to the resulting image (http://...)
  */
-
-
-function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = false,
-                                  $cacheTime = 10, $quality = 75, $keepType = false)
-{
+function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 75, $keepType = false) {
     global $cfg, $cfgClient, $client;
 
     if (!cFileHandler::exists($img)) {
         return false;
     }
 
-    $filename  = $img;
-    $maxX      = (int) $maxX;
-    $maxY      = (int) $maxY;
+    $filename = $img;
+    $maxX = (int) $maxX;
+    $maxY = (int) $maxY;
     $cacheTime = (int) $cacheTime;
-    $quality   = (int) $quality;
+    $quality = (int) $quality;
 
     if ($quality <= 0 || $quality > 100) {
         $quality = 75;
     }
 
     $frontendURL = cRegistry::getFrontendUrl();
-    $filetype  = substr($filename, strlen($filename) -4, 4);
-    $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
+    $filetype = substr($filename, strlen($filename) - 4, 4);
+    $md5 = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache']['path'] . $cfileName;
-    $webFile   =$frontendURL . 'cache/' . $cfileName;
+    $webFile = $frontendURL . 'cache/' . $cfileName;
 
     if (cApiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
         return $webFile;
@@ -437,9 +435,7 @@ function cApiImageIsAnimGif($sFile) {
  * @param   bool     $keepType   If true and a png file is source, output file is also png
  * @return  string  Path to the resulting image
  */
-function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false,
-                       $cacheTime = 10, $wantHQ = false, $quality = 75, $keepType = true)
-{
+function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $wantHQ = false, $quality = 75, $keepType = true) {
     global $client, $cfgClient;
 
     $deleteAfter = false;
@@ -457,8 +453,8 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false,
         $deleteAfter = true;
     } else if (!cFileHandler::exists($img)) {
         // Try with upload string
-        if (cFileHandler::exists($cfgClient[$client]['upl']['path'].$img) && !is_dir($cfgClient[$client]['upl']['path'].$img)) {
-            $img = $cfgClient[$client]['upl']['path'].$img;
+        if (cFileHandler::exists($cfgClient[$client]['upl']['path'] . $img) && !is_dir($cfgClient[$client]['upl']['path'] . $img)) {
+            $img = $cfgClient[$client]['upl']['path'] . $img;
         } else {
             // No, it's neither in the upload directory nor in the dbfs. return.
             return false;
@@ -466,7 +462,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false,
     }
 
     $filename = $img;
-    $filetype = substr($filename, strlen($filename) -4,4);
+    $filetype = substr($filename, strlen($filename) - 4, 4);
 
     $mxdAvImgEditingPosibility = cApiImageCheckImageEditingPosibility();
     switch ($mxdAvImgEditingPosibility) {

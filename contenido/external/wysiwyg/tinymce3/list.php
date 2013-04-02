@@ -109,7 +109,7 @@ switch ($_REQUEST['mode']) {
 
                 $tmp_title = $db2->f("title");
 
-                if ( strlen($tmp_title) > 32 ) {
+                if (strlen($tmp_title) > 32) {
                     $tmp_title = substr($tmp_title, 0, 32);
                 }
 

@@ -256,7 +256,7 @@ $sTable = stripslashes($oTable->render());
 
 $sJsAfter .= "init('".i18n("Open category")."', '".i18n("Close category")."');";
 
-$oTpl->set("s", "NOTIFICATION","" );
+$oTpl->set("s", "NOTIFICATION", "");
 $oTpl->set("s", "OB_CONTENT", "");
 $oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
 $oTpl->set("s", "JS_SCRIPT_BEFORE", $sJsBefore);

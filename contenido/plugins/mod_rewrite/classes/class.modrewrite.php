@@ -78,7 +78,7 @@ class ModRewrite extends ModRewriteBase {
         $iParentId = 0;
         $sql = "SELECT parentid FROM " . $cfg['tab']['cat'] . " WHERE idcat = " . $iCatId;
         if ($aData = mr_queryAndNextRecord($sql)) {
-            $iParentId = ($aData['parentid'] > 0 ) ? (int) $aData['parentid'] : 0;
+            $iParentId = ($aData['parentid'] > 0) ? (int) $aData['parentid'] : 0;
         }
 
         // check if websafe name is in this category

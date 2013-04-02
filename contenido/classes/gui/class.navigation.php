@@ -314,7 +314,7 @@ class cGuiNavigation {
             $sClientUrl = cRegistry::getFrontendUrl();
             $frontendPath = cRegistry::getFrontendPath();
 
-            if ($clientImage !== false && $clientImage != "" && cFileHandler::exists( $frontendPath . $clientImage)) {
+            if ($clientImage !== false && $clientImage != "" && cFileHandler::exists($frontendPath . $clientImage)) {
                 $sClientImageTemplate = '<img src="%s" alt="%s" title="%s" />';
 
                 $sThumbnailPath = cApiImgScale($frontendPath . $clientImage, 80, 25, 0, 1);
@@ -446,4 +446,5 @@ class cGuiNavigation {
 
         return $html . $editButton->render();
     }
+
 }

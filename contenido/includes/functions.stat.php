@@ -192,7 +192,7 @@ function statsOverviewAll($yearmonth) {
             $currentRow++;
         }
 
-        $padding_left = 10 + ( 15 * $db->f("level") );
+        $padding_left = 10 + (15 * $db->f("level"));
         $text = $db->f(4);
         $idcat = $db->f("idcat");
         $bCatVisible = $db->f("visible");
@@ -336,7 +336,7 @@ function statsOverviewAll($yearmonth) {
             $total = "";
             $inThisLanguage = "";
 
-            $padding_left = 10 + ( 15 * ($db->f("level") + 1) );
+            $padding_left = 10 + (15 * ($db->f("level") + 1));
 
             $text = $db2->f("title");
             $online = $db2->f("online");
@@ -524,7 +524,7 @@ function statsOverviewYear($year) {
             $currentRow++;
         }
 
-        $padding_left = 10 + ( 15 * $db->f("level") );
+        $padding_left = 10 + (15 * $db->f("level"));
         $text = $db->f(4);
         $idcat = $db->f("idcat");
         $bCatVisible = $db->f("visible");
@@ -649,7 +649,7 @@ function statsOverviewYear($year) {
             $total = "";
             $inThisLanguage = "";
 
-            $padding_left = 10 + ( 15 * ($db->f("level") + 1) );
+            $padding_left = 10 + (15 * ($db->f("level") + 1));
 
             $text = $db2->f("title");
             $online = $db2->f("online");

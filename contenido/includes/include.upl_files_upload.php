@@ -36,12 +36,12 @@ $page = new cGuiPage("upl_files_upload");
 $maxUploadSize = 0;
 $maxPostSize = 0;
 
-if(ini_get("max_upload_size") == "") {
+if (ini_get("max_upload_size") == "") {
     $maxUploadSize = (double) 99999999999999;
 } else {
     $maxUploadSize = machineReadableSize(ini_get("max_upload_size"));
 }
-if(ini_get("post_max_size") == "") {
+if (ini_get("post_max_size") == "") {
     $maxPostSize = (double) 99999999999999;
 } else {
     $maxPostSize = machineReadableSize(ini_get("post_max_size"));

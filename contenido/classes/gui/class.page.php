@@ -179,16 +179,16 @@ class cGuiPage {
             $this->addStyle($pagename . ".css");
         }
         foreach (new DirectoryIterator($cfg['path']['styles']) as $stylefile) {
-            if(endsWith($stylefile->getFilename(), ".".$pagename.".css")) {
+            if (endsWith($stylefile->getFilename(), "." . $pagename . ".css")) {
                 $this->addStyle($scriptfile->getFilename());
             }
         }
 
         if (cFileHandler::exists($cfg['path']['scripts'] . $pagename . ".js")) {
-                $this->addScript($pagename . ".js");
+            $this->addScript($pagename . ".js");
         }
         foreach (new DirectoryIterator($cfg['path']['scripts']) as $scriptfile) {
-            if(endsWith($scriptfile->getFilename(), ".".$pagename.".js")) {
+            if (endsWith($scriptfile->getFilename(), "." . $pagename . ".js")) {
                 $this->addScript($scriptfile->getFilename());
             }
         }
@@ -432,10 +432,6 @@ class cGuiPage {
     }
 
     /**
-     *
-     *
-     *
-     *
      * Example:
      * setPluginScript('content_allocation', 'complexlist.js');
      * $this->_scripts[] =
@@ -570,11 +566,11 @@ class cGuiPage {
                         // code if the parameter is false.
                         $old_str = $str;
                         ob_start(); // We don't want any code outside the body
-                                    // (in case the object outputs directly we
-                                    // will catch this output)
+                        // (in case the object outputs directly we
+                        // will catch this output)
                         $str .= $obj->render(false); // We get the code either
-                                                     // directly or via the
-                                                     // output
+                        // directly or via the
+                        // output
                         $str .= ob_get_contents();
                         if ($old_str == $str) {
                             cWarning(__FILE__, __LINE__, "Rendering this object (" . print_r($obj, true) . ") doesn't seem to have any effect.");

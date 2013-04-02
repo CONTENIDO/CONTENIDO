@@ -12,6 +12,10 @@
  * @link http://www.contenido.org
  */
 
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
+
 /**
  * This class contains functions for database interaction based on MySQLi in CONTENIDO.
  *
@@ -248,8 +252,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * @see cDbDriverAbstract::free
      */
     public function free() {
-
-        if(!is_object($this->_handler->getQueryId())) {
+        if (!is_object($this->_handler->getQueryId())) {
             return $this;
         }
 

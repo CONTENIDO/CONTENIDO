@@ -157,13 +157,13 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '', $
         }
     }
 
-    if($isExtracted === true) {
+    if ($isExtracted === true) {
 
         // sql inserts
         $setup->install($tempXml);
 
         // success message
-        if($update == false) {
+        if ($update == false) {
             $page->displayInfo(i18n('The plugin has been successfully installed. To apply the changes please login into backend again.', 'pim'));
         } else {
             $page->displayInfo(i18n('The plugin has been successfully updated. To apply the changes please login into backend again.', 'pim'));
@@ -220,7 +220,7 @@ while (($plugin = $oItem->next()) !== false) {
     // enable / disable functionality
     $activeStatus = $plugin->get('active');
     $tempActiveStatusLink = $sess->url('main.php?area=pim&frame=4&pim_view=activestatus&pluginId=' . $plugin->get('idplugin'));
-    if($activeStatus == 1) {
+    if ($activeStatus == 1) {
         $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/online.gif" style="border: 0;vertical-align: middle;" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Disable plugin', 'pim') . '</a>');
     } else {
         $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/offline.gif" style="border: 0;vertical-align: middle;" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Enable plugin', 'pim') . '</a>');

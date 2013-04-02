@@ -24,6 +24,7 @@
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
+
 class cVersionLayout extends cVersion {
 
     /**
@@ -108,18 +109,15 @@ class cVersionLayout extends cVersion {
      * @return void
      */
     private function setLayoutTable() {
-        if (!is_object($this->oDB))
+        if (!is_object($this->oDB)) {
             $this->oDB = cRegistry::getDb();
+        }
 
         $sSql = "";
         $aLayout = array();
 
-        $sSql = "SELECT
-                    *
-                FROM
-                " . $this->aCfg["tab"]["lay"] . "
-                WHERE
-                    idlay = '" . cSecurity::toInteger($this->iIdentity) . "'";
+        $sSql = "SELECT * FROM " . $this->aCfg["tab"]["lay"] . "
+                 WHERE idlay = '" . cSecurity::toInteger($this->iIdentity) . "'";
 
         if ($this->oDB->query($sSql)) {
             $this->oDB->nextRecord();
@@ -131,7 +129,7 @@ class cVersionLayout extends cVersion {
             $this->dCreated = $this->oDB->f("created");
             $this->dLastModified = $this->oDB->f("lastmodified");
         }
-    } // end function
+    }
 
     /**
      * This function read an xml file nodes
@@ -175,12 +173,10 @@ class cVersionLayout extends cVersion {
     public function renderReloadScript($sArea, $iIdLayout, $sess) {
         $sReloadScript = "<script type=\"text/javascript\">
                  var left_bottom = top.content.left.left_bottom;
-
-                 if(left_bottom){
+                 if (left_bottom) {
                     var href = '" . $sess->url("main.php?area=$sArea&frame=2&idlay=$iIdLayout") . "';
                     left_bottom.location.href = href;
                  }
-
                  </script>";
         return $sReloadScript;
     }

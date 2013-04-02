@@ -38,8 +38,7 @@ function frontendusers_valid_from_display()
 
     $langscripts = '';
 
-    if(($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
-
+    if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
         $langscripts=  '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-'.$lang_short.'.js"></script>
         <script type="text/javascript" src="scripts/jquery/plugins/datepicker-'.$lang_short.'.js"></script>';
     }
@@ -83,7 +82,7 @@ function frontendusers_valid_from_display()
                     endDateTextBox.val(dateText);
                 }
             },
-            onSelect: function (selectedDateTime){
+            onSelect: function (selectedDateTime) {
                 var start = $(this).datetimepicker("getDate");
                 $("#valid_to").datetimepicker("option", "minDate", new Date(start.getTime()));
             }

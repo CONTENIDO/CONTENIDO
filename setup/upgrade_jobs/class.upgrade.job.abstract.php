@@ -110,7 +110,7 @@ abstract class cUpgradeJobAbstract {
      * Do not override this.
      */
     final public function execute() {
-        if(version_compare($this->_version, $this->maxVersion, "<") || $this->maxVersion === "0") {
+        if (version_compare($this->_version, $this->maxVersion, "<") || $this->maxVersion === "0") {
             $this->_execute();
         }
     }

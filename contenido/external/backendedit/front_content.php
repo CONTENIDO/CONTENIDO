@@ -36,6 +36,6 @@ chdir($frontendPath);
 include_once($cfgClient[$client]['config']['path'] . 'config.php');
 
 // Include article view handler
-include( cRegistry::getBackendPath() . $cfg['path']['includes'] . '/frontend/include.front_content.php');
+include(cRegistry::getBackendPath() . $cfg['path']['includes'] . '/frontend/include.front_content.php');
 
 ?>

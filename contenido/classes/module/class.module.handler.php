@@ -164,9 +164,7 @@ class cModuleHandler {
      * @var DB_Contenido
      */
     private $_db = NULL;
-
     protected static $_encodingStore = array();
-
     protected static $_overrideEncoding = '';
 
     /**
@@ -675,7 +673,8 @@ class cModuleHandler {
             if (!is_dir($this->_modulePath . $this->_directories[$type])) {
                 if (mkdir($this->_modulePath . $this->_directories[$type]) == false) {
                     return false;
-                } else
+                }
+                else
                     cFileHandler::setDefaultDirPerms($this->_modulePath . $this->_directories[$type]);
             } else {
                 return true;
@@ -712,13 +711,11 @@ class cModuleHandler {
      * @return boolean true or false
      */
     public function moduleWriteable($type) {
-
-        if(!cFileHandler::writeable($this->_modulePath . $this->_directories[$type])) {
+        if (!cFileHandler::writeable($this->_modulePath . $this->_directories[$type])) {
             return false;
         } else {
             return true;
         }
-
     }
 
     /**
@@ -895,19 +892,19 @@ class cModuleHandler {
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['php'] . $old . '_input.php'))
                 $retInput = rename($this->_path . $new . '/' . $this->_directories['php'] . $old . '_input.php', $this->_path . $new . '/' . $this->_directories['php'] . $new . '_input.php');
 
-                // if file output exist rename it
+            // if file output exist rename it
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['php'] . $old . '_output.php'))
                 $retOutput = rename($this->_path . $new . '/' . $this->_directories['php'] . $old . '_output.php', $this->_path . $new . '/' . $this->_directories['php'] . $new . '_output.php');
 
-                // rename the css file
+            // rename the css file
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['css'] . $old . '.css'))
                 rename($this->_path . $new . '/' . $this->_directories['css'] . $old . '.css', $this->_path . $new . '/' . $this->_directories['css'] . $new . '.css');
 
-                // rename the javascript file
+            // rename the javascript file
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['js'] . $old . '.js'))
                 rename($this->_path . $new . '/' . $this->_directories['js'] . $old . '.js', $this->_path . $new . '/' . $this->_directories['js'] . $new . '.js');
 
-                // rename the template file
+            // rename the template file
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['template'] . $old . '.html'))
                 rename($this->_path . $new . '/' . $this->_directories['template'] . $old . '.html', $this->_path . $new . '/' . $this->_directories['template'] . $new . '.html');
 
@@ -927,4 +924,5 @@ class cModuleHandler {
     public function modulePathExists() {
         return is_dir($this->_modulePath);
     }
+
 }

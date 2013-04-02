@@ -53,10 +53,10 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * @var array
      */
     private $_forwardTypes = array(
-            "CMS_EASYIMG" => "CMS_IMG",
-            "CMS_IMGEDITOR" => "CMS_IMG",
-            "CMS_LINKEDITOR" => "CMS_LINK"
-            );
+        "CMS_EASYIMG" => "CMS_IMG",
+        "CMS_IMGEDITOR" => "CMS_IMG",
+        "CMS_LINKEDITOR" => "CMS_LINK"
+    );
 
     /**
      * Placeholders for labels in frontend.
@@ -311,7 +311,6 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                 } else {
                     $this->_fillTeaserTemplateEntry($article, $template);
                 }
-
             }
         }
 
@@ -443,7 +442,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         // split ids, if there is only one id, array has only one place filled,
         // that is also ok
         foreach (explode(',', $ids) as $currentId) {
-            if($this->_forwardTypes[$contentTypeName] != "") {
+            if ($this->_forwardTypes[$contentTypeName] != "") {
                 $contentTypeName = $this->_forwardTypes[$contentTypeName];
             }
             $return .= ' ' . $article->getContent($contentTypeName, $currentId);
@@ -632,7 +631,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * @return void
      */
     private function _initCmsTypes() {
-        if(!empty($this->_cmsTypes)) {
+        if (!empty($this->_cmsTypes)) {
             return;
         }
 
@@ -642,7 +641,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $db = cRegistry::getDb();
         $db->query($sql);
         while ($db->nextRecord()) {
-            if(in_array($db->f('type'), $this->_ignoreTypes)) { //we do not want certain content types
+            if (in_array($db->f('type'), $this->_ignoreTypes)) { //we do not want certain content types
                 continue;
             }
             $this->_cmsTypes[$db->f('idtype')] = $db->f('type');
@@ -781,7 +780,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         // use $this->_cmsTypes as basis for this select box which contains all
         // avariable content types in system
         foreach ($this->_cmsTypes as $key => $value) {
-            if($this->_forwardTypes[$value] != "") {
+            if ($this->_forwardTypes[$value] != "") {
                 continue;
             }
             $htmlSelectOption = new cHTMLOptionElement($value, $value, false);

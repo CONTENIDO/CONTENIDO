@@ -201,7 +201,7 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
     $tpl->set('s', 'SUBMIT_TEXT', i18n("Send"));
     $tpl->set('s', 'NO_CLIENT_SELECTED', i18n("Please select a client or all clients."));
 
-    if(strpos($auth->auth["perm"], "sysadmin") === false) {
+    if (strpos($auth->auth["perm"], "sysadmin") === false) {
         $tpl->set('s', 'DEACTIVATED', "disabled");
     } else {
         $tpl->set('s', 'DEACTIVATED', "");

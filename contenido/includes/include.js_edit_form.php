@@ -51,7 +51,7 @@ if ($action == 'js_delete') {
             $fileInfoCollection = new cApiFileInformationCollection();
             $fileIds = $fileInfoCollection->getIdsByWhereClause("`filename`='".$_REQUEST["delfile"]."'");
 
-            if(is_dir($cfgClient[$client]['version']['path']."js/".$fileIds[0])) {
+            if (is_dir($cfgClient[$client]['version']['path']."js/".$fileIds[0])) {
                 cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path']."js/".$fileIds[0]);
             }
 
@@ -100,7 +100,7 @@ if ($action == 'js_delete') {
         $sReloadScript = '';
     }
 
-    if(!cFileHandler::writeable($path . $sFilename)) {
+    if (!cFileHandler::writeable($path . $sFilename)) {
         $notification->displayNotification('warning', i18n("You have no write permissions for this file"));
     }
 

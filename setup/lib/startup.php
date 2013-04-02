@@ -52,7 +52,7 @@ if (version_compare(PHP_VERSION, '6.0.0', '>=')) {
 if (!defined('CON_ENVIRONMENT')) {
     if (getenv('CONTENIDO_ENVIRONMENT')) {
         $sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
-    } else if(getenv('CON_ENVIRONMENT')) {
+    } else if (getenv('CON_ENVIRONMENT')) {
         $sEnvironment = getenv('CON_ENVIRONMENT');
     } else {
         // @TODO: provide a possibility to set the environment value via file

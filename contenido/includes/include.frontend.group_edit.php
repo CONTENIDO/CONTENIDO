@@ -96,8 +96,8 @@ if ($action != '') {
                              href = href.replace(/&idfrontendgroup[^&]*/, '');
                              href = href.replace(/&action[^&]*/, '');
                              left_bottom.location.href = href+'&idfrontendgroup='+".$idfrontendgroup.";
-                             if(window.top.content.left.left_top.refresh()){
-                             top.content.left.left_top.refresh();
+                             if (window.top.content.left.left_top.refresh()) {
+                                 top.content.left.left_top.refresh();
                              }
                          }
                      </script>";
@@ -116,8 +116,9 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
             } else {
                 $fegroup->set("groupname", stripslashes($groupname));
 
-                if(!isset($successMessage))
-                       $successMessage = i18n("Saved changes successfully!");
+                if (!isset($successMessage)) {
+                    $successMessage = i18n("Saved changes successfully!");
+                }
             }
         }
 

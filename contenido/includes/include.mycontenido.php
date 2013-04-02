@@ -78,22 +78,22 @@ if (in_array('sysadmin', explode(',', $vuser->getEffectiveUserPerms())) && $max_
 
 //check for data in the old data folders
 $foldersToCheck = array($cfg["path"]["frontend"]."/contenido/logs", $cfg["path"]["frontend"]."/contenido/temp");
-foreach($cfgClient as $iclient => $aclient) {
-    if(!is_numeric($iclient)) {
+foreach ($cfgClient as $iclient => $aclient) {
+    if (!is_numeric($iclient)) {
         continue;
     }
     $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend']."layouts";
     $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend']."logs";
 }
 $faultyFolders = array();
-foreach($foldersToCheck as $folder) {
+foreach ($foldersToCheck as $folder) {
     $handle = @opendir($folder);
-    if($handle != false) {
+    if ($handle != false) {
         $faultyFolders[] = $folder;
     }
 }
-foreach($faultyFolders as $folder) {
-    if(in_array("sysadmin", explode(",", $vuser->getEffectiveUserPerms()))) {
+foreach ($faultyFolders as $folder) {
+    if (in_array("sysadmin", explode(",", $vuser->getEffectiveUserPerms()))) {
         $page->displayWarning(sprintf(i18n("The folder located at %s contains data but it's no longer needed. You can delete it."), $folder));
     }
 }

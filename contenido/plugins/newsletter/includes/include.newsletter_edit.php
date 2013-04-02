@@ -409,7 +409,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
     $oRcpGroups->query();
 
     $aItems = array();
-    while ($oRcpGroup = $oRcpGroups->next()){
+    while ($oRcpGroup = $oRcpGroups->next()) {
         $sGroupName = $oRcpGroup->get("groupname");
         if ($oRcpGroup->get("defaultgroup")) {
             $sGroupName = $sGroupName . "*";
@@ -494,9 +494,9 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             $oCkbSaveAsDefault->toHTML(false)."&nbsp;".i18n("Save option settings as default", 'newsletter'));
 
     $oUser = new cApiUser($oNewsletter->get("author"));
-    $oForm->add(i18n("Author", 'newsletter'), $oUser->get('username') . " (". displayDatetime($oNewsletter->get("created")).")" );
+    $oForm->add(i18n("Author", 'newsletter'), $oUser->get('username') . " (". displayDatetime($oNewsletter->get("created")).")");
     $oUser = new cApiUser($oNewsletter->get("modifiedby"));
-    $oForm->add(i18n("Last modified by", 'newsletter'), $oUser->get('username') . " (". displayDatetime($oNewsletter->get("modified")).")" );
+    $oForm->add(i18n("Last modified by", 'newsletter'), $oUser->get('username') . " (". displayDatetime($oNewsletter->get("modified")).")");
 
     $sExecScript = '
     <script type="text/javascript">

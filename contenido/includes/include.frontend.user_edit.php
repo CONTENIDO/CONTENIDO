@@ -74,8 +74,8 @@ if ($idfrontenduser && $action != '') {
                              var href = left_bottom.location.href;
                              href = href.replace(/&frontenduser.*/, '');
                              left_bottom.location.href = href+'&frontenduser='+".$idfrontenduser.";
-                             if(window.top.content.left.left_top.refresh()){
-                             top.content.left.left_top.refresh();
+                             if (window.top.content.left.left_top.refresh()) {
+                                 top.content.left.left_top.refresh();
                              }
                          }
                      </script>";
@@ -242,12 +242,12 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
             $sTemp = i18n("none");
         }
 
-        $form->add(i18n("Group membership"), $sTemp );
+        $form->add(i18n("Group membership"), $sTemp);
 
         $oUser = new cApiUser($feuser->get("author"));
-        $form->add(i18n("Author"), $oUser->get('username') . " (". displayDatetime($feuser->get("created")).")" );
+        $form->add(i18n("Author"), $oUser->get('username') . " (". displayDatetime($feuser->get("created")).")");
         $oUser2 = new cApiUser($feuser->get("modifiedby"));
-        $form->add(i18n("Last modified by"), $oUser2->get('username') . " (". displayDatetime($feuser->get("modified")).")" );
+        $form->add(i18n("Last modified by"), $oUser2->get('username') . " (". displayDatetime($feuser->get("modified")).")");
     }
     $page->setContent($form);
     if (!empty($sReloadScript)) {

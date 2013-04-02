@@ -51,7 +51,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
         $this->_contentlessTag = false;
         $this->setClass($class);
 
-        if($width != "") {
+        if ($width != "") {
             $this->appendStyleDefinition("width", $width);
         }
     }

@@ -62,7 +62,7 @@ if (($handle = opendir($path)) !== false) {
     $aFiles = array();
 
     while (($file = readdir($handle)) !== false) {
-        if(substr($file, (strlen($file) - (strlen($sFileType) + 1)), (strlen($sFileType) + 1)) == ".$sFileType" AND is_readable($path.$file)) {
+        if (substr($file, (strlen($file) - (strlen($sFileType) + 1)), (strlen($sFileType) + 1)) == ".$sFileType" AND is_readable($path.$file)) {
             $aFiles[] = $file;
         } elseif (substr($file, (strlen($file) - (strlen($sFileType) + 1)), (strlen($sFileType) + 1)) == ".$sFileType" AND !is_readable($path.$file)) {
             $notification->displayNotification("error", $file." ".i18n("is not readable!"));

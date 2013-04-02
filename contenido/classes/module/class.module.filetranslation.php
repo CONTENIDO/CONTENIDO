@@ -137,7 +137,7 @@ class cModuleFileTranslation extends cModuleHandler {
         $db = cRegistry::getDb();
 
         $sql = 'SELECT cl.idlang AS idlang, c.idclient AS idclient, m.idmod AS idmod'
-             . 'FROM `%s` AS cl, `%s` AS m, `%s` AS c WHERE cl.idclient = c.idclient';
+                . 'FROM `%s` AS cl, `%s` AS m, `%s` AS c WHERE cl.idclient = c.idclient';
         $sql = $db->prepare($sql, $this->_cfg['tab']['clients_lang'], $this->_cfg['tab']['mod'], $this->_cfg['tab']['clients']);
         $db->query($sql);
 
@@ -155,7 +155,7 @@ class cModuleFileTranslation extends cModuleHandler {
         $db = cRegistry::getDb();
 
         $sql = 'SELECT m.idmod, mt.idlang, mt.original, mt.translation FROM `%s` AS mt, `%s` AS m '
-             . 'WHERE mt.idmod = m.idmod ORDER BY m.idmod, mt.idlang';
+                . 'WHERE mt.idmod = m.idmod ORDER BY m.idmod, mt.idlang';
         $sql = $db->prepare($sql, $this->_cfg['tab']['mod_translations'], $this->_cfg['tab']['mod']);
         $db->query($sql);
 
@@ -245,12 +245,12 @@ class cModuleFileTranslation extends cModuleHandler {
         $words = preg_split('((\r\n)|(\r)|(\n))', substr($string, 0, strlen($string) - strlen(PHP_EOL)));
 
         foreach ($words as $key => $value) {
-            $oriTrans = preg_split('/(?<!\\\\)'.self::$originalTranslationDivider.'/', $value);
+            $oriTrans = preg_split('/(?<!\\\\)' . self::$originalTranslationDivider . '/', $value);
 
             if (isset($oriTrans[1])) {
                 $retArray[iconv($this->_fileEncoding, $this->_encoding, $oriTrans[0])] = iconv($this->_fileEncoding, $this->_encoding, str_replace("\=", "=", $oriTrans[1]));
             } else {
-                $retArray[end(array_keys($retArray))] .= PHP_EOL.iconv($this->_fileEncoding, $this->_encoding, str_replace("\=", "=", $oriTrans[0]));
+                $retArray[end(array_keys($retArray))] .= PHP_EOL . iconv($this->_fileEncoding, $this->_encoding, str_replace("\=", "=", $oriTrans[0]));
             }
         }
 
@@ -271,7 +271,7 @@ class cModuleFileTranslation extends cModuleHandler {
         }
 
         $escapedArray = array();
-        foreach($wordListArray as $key => $value) {
+        foreach ($wordListArray as $key => $value) {
             $newKey = str_replace("=", "\=", $key);
             $newValue = str_replace("=", "\=", $value);
             $escapedArray[$newKey] = $newValue;
@@ -297,4 +297,5 @@ class cModuleFileTranslation extends cModuleHandler {
             return array();
         }
     }
+
 }

@@ -63,7 +63,7 @@ function showTree($iIdcat, &$aWholelist) {
 
         if ($check_rights) {
 
-            $idtpl = ( $aValue['idtpl'] != '' ) ? $aValue['idtpl'] : 0;
+            $idtpl = ($aValue['idtpl'] != '') ? $aValue['idtpl'] : 0;
 
             if (($aValue["idlang"] != $lang) || ($aValue['articles'] == true)) {
                 #$aCssClasses[] = 'con_sync';

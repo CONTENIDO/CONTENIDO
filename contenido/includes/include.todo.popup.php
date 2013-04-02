@@ -63,13 +63,12 @@ if ($action == 'todo_save_item') {
     $notiemail = new cHTMLCheckbox('notiemail', i18n('E-mail notification'));
     $langscripts = array();
 
-    if(($lang_short = substr(strtolower($belang), 0, 2)) != 'en') {
+    if (($lang_short = substr(strtolower($belang), 0, 2)) != 'en') {
         $langscripts[] = 'jquery/plugins/timepicker-' . $lang_short . '.js';
         $langscripts[] = 'jquery/plugins/datepicker-' . $lang_short . '.js';
     }
 
     $path_to_calender_pic =   cRegistry::getBackendUrl(). $cfg['path']['images'] . 'calendar.gif';
-
 
     $ui->add(i18n('Reminder options'), $notiemail->toHTML());
     $calscript = '

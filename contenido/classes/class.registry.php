@@ -16,6 +16,10 @@
  * @since file available since CONTENIDO release 4.9.0
  */
 
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
+
 /**
  * This class contains functions for global interaction in CONTENIDO.
  */
@@ -135,7 +139,7 @@ class cRegistry {
      * @return integer
      */
     public static function getLanguageId() {
-        return self::_fetchGlobalVariable('lang', self::_fetchGlobalVariable('load_lang', 0) );
+        return self::_fetchGlobalVariable('lang', self::_fetchGlobalVariable('load_lang', 0));
     }
 
     /**
@@ -153,7 +157,7 @@ class cRegistry {
      * @return integer
      */
     public static function getClientId() {
-        return self::_fetchGlobalVariable('client', self::_fetchGlobalVariable('load_client', 0) );
+        return self::_fetchGlobalVariable('client', self::_fetchGlobalVariable('load_client', 0));
     }
 
     /**
@@ -344,7 +348,6 @@ class cRegistry {
      * @return array string
      */
     public static function getConfigValue($sectionName = NULL, $optionName = NULL, $defaultValue = NULL) {
-
         // get general configuration array
         $cfg = self::getConfig();
 
@@ -366,7 +369,6 @@ class cRegistry {
             }
         }
         return $value;
-
     }
 
     /**
@@ -385,7 +387,7 @@ class cRegistry {
             return $clientConfig;
         }
 
-        return (isset($clientConfig[$clientId])? $clientConfig[$clientId] : array());
+        return (isset($clientConfig[$clientId]) ? $clientConfig[$clientId] : array());
     }
 
     /**
@@ -451,7 +453,7 @@ class cRegistry {
      * @return mixed
      */
     public static function getAppVar($key, $default = null) {
-        return (isset(self::$_appVars[$key]))? self::$_appVars[$key] : $default;
+        return (isset(self::$_appVars[$key])) ? self::$_appVars[$key] : $default;
     }
 
     /**

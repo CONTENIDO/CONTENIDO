@@ -125,8 +125,8 @@ function addSalts($db) {
     }
 
     $db->query("SELECT * FROM ".$cfg["tab"]["frontendusers"]);
-    while($db->nextRecord()) {
-        if($db->f("salt") == "") {
+    while ($db->nextRecord()) {
+        if ($db->f("salt") == "") {
             $salt = md5($db->f("username").rand(1000, 9999).rand(1000, 9999).rand(1000, 9999));
             $db2->query("UPDATE ".$cfg["tab"]["frontendusers"]." SET salt='".$salt."' WHERE idfrontenduser='".$db->f("idfrontenduser")."'");
             $db2->query("UPDATE ".$cfg["tab"]["frontendusers"]." SET password='".hash("sha256", $db->f("password").$salt)."' WHERE idfrontenduser='".$db->f("idfrontenduser")."'");

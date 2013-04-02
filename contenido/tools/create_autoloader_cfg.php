@@ -34,7 +34,7 @@ if (substr(PHP_SAPI, 0, 3) != 'cli') {
 if (!defined('CON_ENVIRONMENT')) {
     if (getenv('CONTENIDO_ENVIRONMENT')) {
         $environment = getenv('CONTENIDO_ENVIRONMENT');
-    } else if(getenv('CON_ENVIRONMENT')) {
+    } else if (getenv('CON_ENVIRONMENT')) {
         $environment = getenv('CON_ENVIRONMENT');
     } else {
         $environment = 'production';

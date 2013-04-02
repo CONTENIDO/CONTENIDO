@@ -388,7 +388,7 @@ class WavFile
      */
     public static function packSampleBlock($samples, $bitDepth) {
         $sampleBlock = '';
-        foreach($samples as $sample) {
+        foreach ($samples as $sample) {
             $sampleBlock .= self::packSample($sample, $bitDepth);
         }
 
@@ -815,9 +815,9 @@ class WavFile
 
     public function getMaxAmplitude()
     {
-        if($this->_bitsPerSample == 8) {
+        if ($this->_bitsPerSample == 8) {
             return 0xFF;
-        } elseif($this->_bitsPerSample == 32) {
+        } elseif ($this->_bitsPerSample == 32) {
             return 1.0;
         } else {
             return (1 << ($this->_bitsPerSample - 1)) - 1;
@@ -854,7 +854,7 @@ class WavFile
         $header .= pack('V', $this->getByteRate());                 // ByteRate
         $header .= pack('v', $this->getBlockAlign());               // BlockAlign
         $header .= pack('v', $this->getBitsPerSample());            // BitsPerSample
-        if($this->getFmtExtendedSize() == 24) {
+        if ($this->getFmtExtendedSize() == 24) {
             $header .= pack('v', 22);                               // extension size = 24 bytes, cbSize: 24 - 2 = 22 bytes
             $header .= pack('v', $this->getValidBitsPerSample());   // ValidBitsPerSample
             $header .= pack('V', $this->getChannelMask());          // ChannelMask

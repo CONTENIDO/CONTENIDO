@@ -146,12 +146,12 @@ class cModuleSynchronizer extends cModuleHandler {
                 $lastmodOutput = filemtime($modulePHP . '_output.php');
             }
 
-            if(cFileHandler::exists($modulePath . "info.xml")) {
+            if (cFileHandler::exists($modulePath . "info.xml")) {
                 $lastModInfo = filemtime($modulePath . "info.xml");
-                if($lastModInfo > $lastmodified) {
+                if ($lastModInfo > $lastmodified) {
                     $modInfo = cXmlBase::xmlStringToArray(cFileHandler::read($modulePath . "info.xml"));
                     $mod = new cApiModule($db->f("idmod"));
-                    if($modInfo["description"] != $mod->get("description")) {
+                    if ($modInfo["description"] != $mod->get("description")) {
                         $mod->set("description", $modInfo["description"]);
                         $this->setLastModified($lastModInfo, $db->f('idmod'));
                     }
@@ -186,7 +186,7 @@ class cModuleSynchronizer extends cModuleHandler {
             }
         }
 
-        if($synchLock == 0) {
+        if ($synchLock == 0) {
             $notification->displayNotification('info', 'All modules already synchronized');
         }
 
@@ -265,8 +265,8 @@ class cModuleSynchronizer extends cModuleHandler {
                             $this->_syncModule($dir, $file, $newFile);
                         } else { // dir not ok (with not allowed characters)
                             if (is_dir($dir . $newFile)) { // exist the new dir
-                                                           // name?
-                                                           // make new dirname
+                                // name?
+                                // make new dirname
                                 $newDirName = $newFile . substr(md5(time() . rand(0, time())), 0, 4);
 
                                 // rename
@@ -274,7 +274,7 @@ class cModuleSynchronizer extends cModuleHandler {
                                     $this->_syncModule($dir, $file, $newDirName);
                                 }
                             } else { // $newFile (dir) not exist
-                                     // rename dir old
+                                // rename dir old
                                 if ($this->_renameFileAndDir($dir, $file, $newFile, $this->_client) != false) {
                                     $this->_syncModule($dir, $file, $newFile);
                                 }

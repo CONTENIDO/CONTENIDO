@@ -42,12 +42,13 @@ class Cronjobs {
 
 
     public function __construct(array $contenidoVars, $phpFile = '') {
-
         $this->_conVars = $contenidoVars;
         $this->_phpFile = $phpFile;
+
         //get the name of the file withouth the mime type
-        if($phpFile != '')
+        if ($phpFile != '') {
             $this->_fileName = substr($phpFile,0,-4);
+        }
 
         $this->_cfg = $this->_conVars['cfg'];
         $this->_cronjobDirectory = $this->_cfg['path']['contenido'] . $this->_cfg['path']['cronjobs'];
@@ -88,11 +89,11 @@ class Cronjobs {
      * @return date
      */
     public function getDateLastExecute() {
-
         $timestamp = '';
-        if(cFileHandler::exists($this->_cronlogDirectory .$this->_phpFile.self::$JOB_ENDING))
-        if(($timestamp = cFileHandler::read($this->_cronlogDirectory.$this->_phpFile.self::$JOB_ENDING))) {
-            return date("d.m.Y H:i:s",$timestamp);
+        if (cFileHandler::exists($this->_cronlogDirectory .$this->_phpFile.self::$JOB_ENDING)) {
+            if (($timestamp = cFileHandler::read($this->_cronlogDirectory.$this->_phpFile.self::$JOB_ENDING))) {
+                return date("d.m.Y H:i:s",$timestamp);
+            }
         }
         return $timestamp;
     }
@@ -135,14 +136,12 @@ class Cronjobs {
 
 
     /**
-     *
      * Get the last lines of log file
      * @param int $lines
      * @return string, the lines
      */
     public function getLastLines($lines = 25) {
-
-        if(cFileHandler::exists($this->_cronlogDirectory . $this->_phpFile.self::$LOG_ENDING)) {
+        if (cFileHandler::exists($this->_cronlogDirectory . $this->_phpFile.self::$LOG_ENDING)) {
             $content = explode("\n", cFileHandler::read($this->_cronlogDirectory . $this->_phpFile.self::$LOG_ENDING));
             $number = count($content);
             $pos = $number - $lines;
@@ -162,14 +161,15 @@ class Cronjobs {
      * @return bool if exist
      */
     public function existFile() {
-
-        if(cFileHandler::exists($this->_cronjobDirectory.$this->_phpFile) && !is_dir($this->_cronjobDirectory.$this->_phpFile))
-            if(substr($this->_phpFile,-4)=='.php')
+        if (cFileHandler::exists($this->_cronjobDirectory.$this->_phpFile) && !is_dir($this->_cronjobDirectory.$this->_phpFile)) {
+            if (substr($this->_phpFile,-4) == '.php') {
                 return true;
-            else
+            } else {
                 return false;
-        else
+            }
+        } else {
             return false;
+        }
     }
     /**
      *

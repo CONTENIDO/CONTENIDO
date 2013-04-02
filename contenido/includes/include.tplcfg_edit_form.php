@@ -411,7 +411,7 @@ $script = '
         sData = "' . $idcat . '-' . $idtpl . '-"+obj.isOnline+"-"+obj.isPublic+"-"+obj.hasRight["template"]+"-"+obj.hasRight["online"]+"-"+obj.hasRight["public"];
 
         if (changed) {
-            obj.load( "' . $idcat . '", "' . $idtpl . '", obj.isOnline, obj.isPublic, obj.hasRight["template"], obj.hasRight["online"], obj.hasRight["public"], sData );
+            obj.load("' . $idcat . '", "' . $idtpl . '", obj.isOnline, obj.isPublic, obj.hasRight["template"], obj.hasRight["online"], obj.hasRight["public"], sData);
             parent.parent.frames["left"].frames["left_bottom"].location.href = "' . $sess->url("main.php?area=con&force=1&frame=2") . '";
         }
     }

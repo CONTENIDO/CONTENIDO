@@ -56,7 +56,7 @@ class cApiLayoutCollection extends ItemCollection {
             $idclient = $client;
         }
 
-        if(empty($alias)) {
+        if (empty($alias)) {
             $alias = strtolower(cApiStrCleanURLCharacters(i18n("-- New layout --")));
         }
 
@@ -164,7 +164,7 @@ class cApiLayout extends Item {
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'deletable':
-                $value = ($value == 1)? 1 : 0;
+                $value = ($value == 1) ? 1 : 0;
                 break;
             case 'idclient':
                 $value = (int) $value;

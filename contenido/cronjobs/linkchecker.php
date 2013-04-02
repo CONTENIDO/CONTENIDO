@@ -18,15 +18,7 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  *
- *
  * {@internal
- *   created  2007-11-01
- *   modified 2008-06-16, H. Librenz - Hotfix: checking for malicious calls added
- *   modified 2008-07-04, bilal arslan, added security fix
- *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
- *   modified 2011-05-12, Dominik Ziegler, forced include of startup.php [#CON-390]
- *   modified 2011-10-12, Murat Purc, absolute path to startup [#CON-447] and some cleanup
- *
  *   $Id$:
  * }}
  *
@@ -35,7 +27,6 @@
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
-
 
 
 // CONTENIDO path
@@ -60,7 +51,7 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $sql = "SELECT idlang FROM " . $cfg['tab']['lang'] . " WHERE active = '1'";
     $db->query($sql);
 
-    if($db->numRows() > 1) {
+    if ($db->numRows() > 1) {
         $langart = 0;
     } else {
         $db->nextRecord();
@@ -69,5 +60,4 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
     include_once($backendPath . 'plugins/linkchecker/includes/include.linkchecker.php');
 }
-
 ?>

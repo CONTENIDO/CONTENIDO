@@ -234,9 +234,9 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
     $oForm->add(i18n("Associated groups", 'newsletter'), $oGroupList->render());
 
     $oUser = new cApiUser($recipient->get("author"));
-    $oForm->add(i18n("Author", 'newsletter'), $oUser->get('username') . " (". $recipient->get("created").")" );
+    $oForm->add(i18n("Author", 'newsletter'), $oUser->get('username') . " (". $recipient->get("created").")");
     $oUser = new cApiUser($recipient->get("modifiedby"));
-    $oForm->add(i18n("Last modified by", 'newsletter'), $oUser->get('username') . " (". $recipient->get("lastmodified").")" );
+    $oForm->add(i18n("Last modified by", 'newsletter'), $oUser->get('username') . " (". $recipient->get("lastmodified").")");
 
     $oPage->setContent($oForm);
 }

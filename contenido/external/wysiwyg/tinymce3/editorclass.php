@@ -53,8 +53,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 cInclude("includes", "functions.lang.php");
 
-class cTinyMCEEditor extends cWYSIWYGEditor
-{
+class cTinyMCEEditor extends cWYSIWYGEditor {
+
     /** Stores base url of page
      *  @access private
      */
@@ -65,8 +65,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
      */
     var $_bUseGZIP = false;
 
-    function cTinyMCEEditor($sEditorName, $sEditorContent)
-    {
+    function cTinyMCEEditor($sEditorName, $sEditorContent) {
         global $belang, $cfg, $cfgClient, $client, $lang, $idart;
 
         parent::__construct($sEditorName, $sEditorContent);
@@ -78,12 +77,11 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         // For compatibility, read settings in previous syntax also (< V4.7, type "wysiwyg" vs. "tinymce")
         $this->_aSettings = array_merge(getEffectiveSettingsByType("wysiwyg"), $this->_aSettings);
 
-        $this->_setSetting("article_url_suffix", 'front_content.php?idart='.$idart, true); # modified 23.10.2006
-
+        $this->_setSetting("article_url_suffix", 'front_content.php?idart=' . $idart, true); # modified 23.10.2006
         // Default values
         $this->_setSetting("mode", "exact");
         $aPathFragments = explode('/', $cfgClient[$client]["path"]["htmlpath"]);
-        $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css");
+        $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css");
 
         $this->_setSetting("theme", "advanced");
         $this->_setSetting("theme_advanced_toolbar_location", "top");
@@ -97,7 +95,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         // Source formatting (ugh!)
         $this->_setSetting("apply_source_formatting", true);
         $this->_setSetting("remove_linebreaks", false); // Remove linebreaks - GREAT idea...
-
         // Convert URLs and Relative URLs default
         $this->_setSetting("convert_urls", false);
         $this->_setSetting("relative_urls", false);
@@ -112,7 +109,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
         // Set document base URL
         //$this->setSetting("document_base_url", $cfgClient[$client]["path"]["htmlpath"], true);
-
         // The following "base URL" is the URL used to reference JS script files
         // - it is not the base href value
         $this->setBaseURL(preg_replace('/^https?:\/\/[^\/]+(.*)$/', '$1', $this->_getEditorPath()));
@@ -170,7 +166,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         }
         $this->setToolbar(trim(strtolower($sMode)));
 
-        if(getSystemProperty("wysiwyg", "tinymce-valid-elements") == "true") {
+        if (getSystemProperty("wysiwyg", "tinymce-valid-elements") == "true") {
             $this->_setSetting("valid_elements", "+*[*]");
         } else {
             $this->_setSetting("valid_elements", "+a[name|href|target|title],strong/b[class],em/i[class],strike[class],u[class],p[dir|class|align],ol,ul,li,br,img[class|src|border=0|alt|title|hspace|vspace|width|height|align],sub,sup,blockquote[dir|style],table[border=0|cellspacing|cellpadding|width|height|class|align|style],tr[class|rowspan|width|height|align|valign|style],td[dir|class|colspan|rowspan|width|height|align|valign|style],div[dir|class|align],span[class|align],pre[class|align],address[class|align],h1[dir|class|align],h2[dir|class|align],h3[dir|class|align],h4[dir|class|align],h5[dir|class|align],h6[dir|class|align],hr");
@@ -178,8 +174,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
         // Extended valid elements, for compatibility also accepts "tinymce-extended-valid-elements"
         if (!array_key_exists("extended_valid_elements", $this->_aSettings) &&
-             array_key_exists("tinymce-extended-valid-elements", $this->_aSettings))
-        {
+                array_key_exists("tinymce-extended-valid-elements", $this->_aSettings)) {
             $this->_setSetting("extended_valid_elements", $this->_aSettings["tinymce-extended-valid-elements"]);
         }
         $this->_setSetting("extended_valid_elements", "form[name|action|method],textarea[name|style|cols|rows],input[type|name|value|style|onclick],a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]");
@@ -199,26 +194,15 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         // Remove CONTENIDO specific settings
         // contenido_background_color is used in getEditor
         unset(
-            $this->_aSettings["contenido_toolbar_mode"],
-            $this->_aSettings["contenido_lists"]
+                $this->_aSettings["contenido_toolbar_mode"], $this->_aSettings["contenido_lists"]
         );
         // Remove obsolete, deprecated values
         unset(
-            $this->_aSettings["tinymce-stylesheet-file"],
-            $this->_aSettings["tinymce-valid-elements"],
-            $this->_aSettings["tinymce-extended-valid-elements"],
-            $this->_aSettings["tinymce-lists"],
-            $this->_aSettings["tinymce-styles"],
-            $this->_aSettings["tinymce-toolbar-mode"],
-            $this->_aSettings["tinymce-toolbar1"],
-            $this->_aSettings["tinymce-toolbar2"],
-            $this->_aSettings["tinymce-toolbar3"],
-            $this->_aSettings["tinymce-plugins"]
+                $this->_aSettings["tinymce-stylesheet-file"], $this->_aSettings["tinymce-valid-elements"], $this->_aSettings["tinymce-extended-valid-elements"], $this->_aSettings["tinymce-lists"], $this->_aSettings["tinymce-styles"], $this->_aSettings["tinymce-toolbar-mode"], $this->_aSettings["tinymce-toolbar1"], $this->_aSettings["tinymce-toolbar2"], $this->_aSettings["tinymce-toolbar3"], $this->_aSettings["tinymce-plugins"]
         );
     }
 
-    function convertFormat($sInput)
-    {
+    function convertFormat($sInput) {
         $aFormatCodes = array(
             "y" => "%y",
             "Y" => "%Y",
@@ -239,8 +223,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         return ($sInput);
     }
 
-    function setUserDefinedStyles()
-    {
+    function setUserDefinedStyles() {
         $sStyles = "";
 
         if (array_key_exists("theme_advanced_styles", $this->_aSettings)) {
@@ -250,7 +233,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         }
 
         if ($sStyles) {
-            $this->_setSetting("theme_advanced_styles", preg_replace('/;$/i', '', str_replace("|","=", trim($sStyles))), true);
+            $this->_setSetting("theme_advanced_styles", preg_replace('/;$/i', '', str_replace("|", "=", trim($sStyles))), true);
         }
     }
 
@@ -258,8 +241,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
      * The special name "contenido_lists", for compatibility also accepts "tinymce-lists"
      * @param string    sLists    Deprecated, for compatibility, only
      */
-    function setLists($sLists = "")
-    {
+    function setLists($sLists = "") {
         global $lang, $client;
 
         if ($sLists == "") {
@@ -274,21 +256,20 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         $aLists = explode(",", strtolower(str_replace(" ", "", $sLists)));
 
         if (in_array("link", $aLists)) {
-            $this->_setSetting("external_link_list_url", $this->_sBaseURL."list.php?mode=link&lang=".$lang."&client=".$client."#", true);
+            $this->_setSetting("external_link_list_url", $this->_sBaseURL . "list.php?mode=link&lang=" . $lang . "&client=" . $client . "#", true);
         }
-        if(in_array("image", $aLists)) {
-            $this->_setSetting("external_image_list_url", $this->_sBaseURL."list.php?mode=image&lang=".$lang."&client=".$client."#", true);
+        if (in_array("image", $aLists)) {
+            $this->_setSetting("external_image_list_url", $this->_sBaseURL . "list.php?mode=image&lang=" . $lang . "&client=" . $client . "#", true);
         }
         if (in_array("flash", $aLists)) {
-            $this->_setSetting("flash_external_list_url", $this->_sBaseURL."list.php?mode=flash&lang=".$lang."&client=".$client."#", true);
+            $this->_setSetting("flash_external_list_url", $this->_sBaseURL . "list.php?mode=flash&lang=" . $lang . "&client=" . $client . "#", true);
         }
         if (in_array("media", $aLists)) {
-            $this->_setSetting("media_external_list_url", $this->_sBaseURL."list.php?mode=media&lang=".$lang."&client=".$client."#", true);
+            $this->_setSetting("media_external_list_url", $this->_sBaseURL . "list.php?mode=media&lang=" . $lang . "&client=" . $client . "#", true);
         }
     }
 
-    function setXHTMLMode($bEnabled = true)
-    {
+    function setXHTMLMode($bEnabled = true) {
         if ($bEnabled) {
             $this->_setSetting("cleanup_callback", "", true);
         } else {
@@ -296,8 +277,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         }
     }
 
-    function setGZIPMode($bEnabled = true)
-    {
+    function setGZIPMode($bEnabled = true) {
         if ($bEnabled) {
             $this->_bUseGZIP = true;
         } else {
@@ -308,8 +288,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
     /**
      * For compatibility also accepts "tinymce-toolbar-mode", "tinymce-toolbar1-3" and "tinymce-plugins"
      */
-    function setToolbar($sMode = "")
-    {
+    function setToolbar($sMode = "") {
         global $cfg, $cfgClient, $client;
 
         switch ($sMode) {
@@ -399,7 +378,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
                 $this->_setSetting("plugins", "table,inlinepopups,fullscreen,-close", true);
                 $this->_setSetting("mode", "exact", true);
                 $this->_setSetting("elements", "*", true);
-                $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css", true);
+                $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css", true);
 
                 if (!array_key_exists("auto_resize", $this->_aSettings)) {
                     $this->_setSetting("auto_resize", "false", true);
@@ -437,8 +416,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         }
     }
 
-    function cleanURLs()
-    {
+    function cleanURLs() {
         global $sess;
 
         // Add the path to the following values
@@ -468,47 +446,41 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
         foreach ($aParameters as $sParameter) {
             if (array_key_exists($sParameter, $this->_aSettings) &&
-                preg_match('/\\.php$/i', $this->_aSettings[$sParameter]))
-            {
-                $this->_setSetting($sParameter, $this->_aSettings[$sParameter].'?contenido='.$sess->id, true);
+                    preg_match('/\\.php$/i', $this->_aSettings[$sParameter])) {
+                $this->_setSetting($sParameter, $this->_aSettings[$sParameter] . '?contenido=' . $sess->id, true);
             }
         }
     }
 
-    function addPath($sFile)
-    {
+    function addPath($sFile) {
         global $cfgClient, $client;
 
         // Quick and dirty hack
         if (!preg_match('/^(http|https):\/\/((?:[a-zA-Z0-9_-]+\.?)+):?(\d*)/', $sFile)) {
-            if (preg_match('/^\//', $sFile))
-            {
-                $sFile = "http://".$_SERVER['HTTP_HOST'].$sFile;
+            if (preg_match('/^\//', $sFile)) {
+                $sFile = "http://" . $_SERVER['HTTP_HOST'] . $sFile;
             } else {
-                $sFile = $cfgClient[$client]["htmlpath"]["frontend"].$sFile;
+                $sFile = $cfgClient[$client]["htmlpath"]["frontend"] . $sFile;
             }
         }
         return $sFile;
     }
 
-    function setBaseURL($sBaseUrl)
-    {
+    function setBaseURL($sBaseUrl) {
         $this->_sBaseURL = $sBaseUrl;
     }
 
-    function _getScripts()
-    {
+    function _getScripts() {
         if ($this->_bUseGZIP) {
-            $sReturn = "\n<!-- tinyMCE -->\n".'<script language="javascript" type="text/javascript" src="'.$this->_sBaseURL.'jscripts/tiny_mce/tiny_mce_gzip.js"></script>';
+            $sReturn = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_sBaseURL . 'jscripts/tiny_mce/tiny_mce_gzip.js"></script>';
         } else {
-            $sReturn = "\n<!-- tinyMCE -->\n".'<script language="javascript" type="text/javascript" src="'.$this->_sBaseURL.'jscripts/tiny_mce/tiny_mce.js"></script>';
+            $sReturn = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_sBaseURL . 'jscripts/tiny_mce/tiny_mce.js"></script>';
         }
 
         return $sReturn;
     }
 
-    function _getEditor()
-    {
+    function _getEditor() {
         global $sess, $cfg, $lang, $client, $idart, $cfgClient;
 
         // TODO: Check functionality - doesn't seem to have any effect...
@@ -522,26 +494,26 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         // Set browser windows
         // Difference between file and image browser is with (file) or without categories/articles (image)
         $oTemplate = new cTemplate;
-        $oTemplate->set('s', 'IMAGEBROWSER', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
-        $oTemplate->set('s', 'FILEBROWSER', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=filebrowser');
-        $oTemplate->set('s', 'FLASHBROWSER', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
-        $oTemplate->set('s', 'MEDIABROWSER', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
+        $oTemplate->set('s', 'IMAGEBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
+        $oTemplate->set('s', 'FILEBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
+        $oTemplate->set('s', 'FLASHBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
+        $oTemplate->set('s', 'MEDIABROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
         $oTemplate->set('s', 'FRONTEND_PATH', $cfgClient[$client]["path"]["htmlpath"]);
 
         // GZIP support options
         if ($this->_bUseGZIP) {
-            $sGZIPScript =  "<script language=\"JavaScript\" type=\"text/javascript\">\n".
-                            "    tinyMCE_GZ.init({ \n".
-                            "    plugins : '" . $this->_aSettings["plugins"] . "', \n".
-                            "    themes : '" . $this->_aSettings["theme"] . "', \n".
-                            "    languages : '" . $this->_aSettings["language"] . "', \n".
-                            "    disk_cache : true, \n".
-                            "    debug : false \n".
-                            "});\n".
-                            "</script>\n";
-            $oTemplate->set('s', 'COMPRESSOR',  $sGZIPScript);
+            $sGZIPScript = "<script language=\"JavaScript\" type=\"text/javascript\">\n" .
+                    "    tinyMCE_GZ.init({ \n" .
+                    "    plugins : '" . $this->_aSettings["plugins"] . "', \n" .
+                    "    themes : '" . $this->_aSettings["theme"] . "', \n" .
+                    "    languages : '" . $this->_aSettings["language"] . "', \n" .
+                    "    disk_cache : true, \n" .
+                    "    debug : false \n" .
+                    "});\n" .
+                    "</script>\n";
+            $oTemplate->set('s', 'COMPRESSOR', $sGZIPScript);
         } else {
-            $oTemplate->set('s', 'COMPRESSOR',  '');
+            $oTemplate->set('s', 'COMPRESSOR', '');
         }
 
         // Calculate the configuration
@@ -557,11 +529,10 @@ class cTinyMCEEditor extends cWYSIWYGEditor
             }
 
             if ($sValue == "true" || $sValue == "false" ||
-                $sKey == "oninit" || $sKey == "onpageload" || $sKey == 'style_formats')
-            {
-                $sConfig .= "'$sKey': ".$sValue;
+                    $sKey == "oninit" || $sKey == "onpageload" || $sKey == 'style_formats') {
+                $sConfig .= "'$sKey': " . $sValue;
             } else {
-                $sConfig .= "'$sKey': '".$sValue."'";
+                $sConfig .= "'$sKey': '" . $sValue . "'";
             }
             $sConfig .= ",\n\t";
         }
@@ -574,16 +545,15 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
         $sBgColor = $this->_aSettings["contenido_background_color"];
 
-        $oTxtEditor->setStyle("width: ".$this->_aSettings["width"]."; height: ".$this->_aSettings["height"]."; background-color: ".$sBgColor.";");
+        $oTxtEditor->setStyle("width: " . $this->_aSettings["width"] . "; height: " . $this->_aSettings["height"] . "; background-color: " . $sBgColor . ";");
 
-        $sReturn  = $oTemplate->generate($cfg['path']['all_wysiwyg'] . $this->_sEditor . "/tinymce.tpl.html", true);
+        $sReturn = $oTemplate->generate($cfg['path']['all_wysiwyg'] . $this->_sEditor . "/tinymce.tpl.html", true);
         $sReturn .= $oTxtEditor->render();
 
         return $sReturn;
     }
 
-    function getConfigInlineEdit()
-    {
+    function getConfigInlineEdit() {
         $sConfig = '';
         $this->setToolbar('inline_edit');
 
@@ -597,11 +567,10 @@ class cTinyMCEEditor extends cWYSIWYGEditor
             }
 
             if ($sValue == "true" || $sValue == "false" ||
-                $sKey == "oninit" || $sKey == "onpageload" || $sKey == 'style_formats')
-            {
-                $sConfig .= "'$sKey': ".$sValue;
+                    $sKey == "oninit" || $sKey == "onpageload" || $sKey == 'style_formats') {
+                $sConfig .= "'$sKey': " . $sValue;
             } else {
-                $sConfig .= "'$sKey': '".$sValue."'";
+                $sConfig .= "'$sKey': '" . $sValue . "'";
             }
             $sConfig .= ",\n\t";
         }
@@ -611,19 +580,19 @@ class cTinyMCEEditor extends cWYSIWYGEditor
         return $sConfig;
     }
 
-    function getConfigFullscreen()
-    {
+    function getConfigFullscreen() {
         $sConfig = '';
         $this->setToolbar('fullscreen');
 
-        $sConfig .= "'theme_advanced_buttons1': '".$this->_aSettings['theme_advanced_buttons1']."',\n";
-        $sConfig .= "'theme_advanced_buttons2': '".$this->_aSettings['theme_advanced_buttons2']."',\n";
-        $sConfig .= "'theme_advanced_buttons3': '".$this->_aSettings['theme_advanced_buttons3']."',\n";
-        $sConfig .= "'theme_advanced_toolbar_align': '".$this->_aSettings['theme_advanced_toolbar_align']."',\n";
-        $sConfig .= "'plugins': '".$this->_aSettings['plugins']."'\n";
+        $sConfig .= "'theme_advanced_buttons1': '" . $this->_aSettings['theme_advanced_buttons1'] . "',\n";
+        $sConfig .= "'theme_advanced_buttons2': '" . $this->_aSettings['theme_advanced_buttons2'] . "',\n";
+        $sConfig .= "'theme_advanced_buttons3': '" . $this->_aSettings['theme_advanced_buttons3'] . "',\n";
+        $sConfig .= "'theme_advanced_toolbar_align': '" . $this->_aSettings['theme_advanced_toolbar_align'] . "',\n";
+        $sConfig .= "'plugins': '" . $this->_aSettings['plugins'] . "'\n";
 
         return $sConfig;
     }
+
 }
 
 ?>

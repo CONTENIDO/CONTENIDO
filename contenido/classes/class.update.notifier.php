@@ -682,7 +682,7 @@ class cUpdateNotifier {
                 $date = date(getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s"), strtotime($date));
 
                 // highlight newest rss news
-                if($iCnt == 0) {
+                if ($iCnt == 0) {
                     $oTpl->set("d", "NEWS_NEWEST_CSS", "newest_news");
                 } else {
                     $oTpl->set("d", "NEWS_NEWEST_CSS", "");

@@ -135,7 +135,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
         $clientBackup = $client;
         $langBackup = $lang;
 
-        foreach($cfgClient as $iClient => $aClient) {
+        foreach ($cfgClient as $iClient => $aClient) {
             $client = $iClient; //this should work for all clients now
 
             // Save all modules from db-table to the filesystem if exists

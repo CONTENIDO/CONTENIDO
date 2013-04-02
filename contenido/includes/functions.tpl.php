@@ -161,11 +161,11 @@ function tplDeleteTemplate($idtpl) {
         $idsToDelete = array();
         $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".cSecurity::toInteger($idtpl)."'";
         $db->query($sql);
-        while ( $db->nextRecord() ) {
+        while ($db->nextRecord()) {
             $idsToDelete[] = $db->f("idtplcfg");
         }
 
-        foreach ( $idsToDelete as $id ) {
+        foreach ($idsToDelete as $id) {
 
             $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".cSecurity::toInteger($id)."'";
             $db->query($sql);
@@ -422,7 +422,7 @@ function tplDuplicateTemplate($idtpl) {
     $lastmod    = time();
 
     $idtpl_conf = $db->f("idtplcfg");
-    if($idtpl_conf) {
+    if ($idtpl_conf) {
         // after inserted con_template, we have to update idptl
         $templateConf = array('idtpl'=>0, 'status'=>0, 'author'=>$author, 'created'=>$created);
         $db->insert($cfg["tab"]["tpl_conf"], $templateConf);
@@ -470,7 +470,7 @@ function tplDuplicateTemplate($idtpl) {
     }
 
     //modified (added) 2008-06-30 timo.trautmann added fix module settings were also copied
-    if($idtpl_conf) {
+    if ($idtpl_conf) {
         $a_container_cfg = array();
         $sql = "SELECT
                        *

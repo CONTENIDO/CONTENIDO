@@ -38,7 +38,7 @@ if (!isset($idtpl))
 {
     $idtpl = 0;
 }
-if ( $idtpl != 0 && $idtplcfg != 0 ) {
+if ($idtpl != 0 && $idtplcfg != 0) {
         $sql = "SELECT number FROM ".$cfg["tab"]["container"]." WHERE idtpl = '".cSecurity::toInteger($idtpl)."'";
         $db->query($sql);
 
@@ -80,7 +80,7 @@ if ( $idtpl != 0 && $idtplcfg != 0 ) {
         }
 
 
-        if ( $idart ) {
+        if ($idart) {
 
             //echo "art: idart: $idart, idcat: $idcat";
             $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET idtplcfg = '".cSecurity::toInteger($idtplcfg)."' WHERE idart='$idart' AND idlang='".cSecurity::toInteger($lang)."'";
@@ -115,7 +115,7 @@ if ( $idtpl != 0 && $idtplcfg != 0 ) {
 
         if ($changetemplate != 1) {
 
-            if ( isset($idart) && 0 != $idart ) {
+            if (isset($idart) && 0 != $idart) {
                 conGenerateCode($idcat, $idart, $lang, $client);
                 //backToMainArea($send);
 
@@ -127,11 +127,11 @@ if ( $idtpl != 0 && $idtplcfg != 0 ) {
             }
         }
 
-} elseif ( $idtpl == 0 ) {
+} elseif ($idtpl == 0) {
 
     /* template deselected */
 
-    if (isset($idtplcfg) && $idtplcfg != 0 ) {
+    if (isset($idtplcfg) && $idtplcfg != 0) {
 
         $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".cSecurity::toInteger($idtplcfg)."'";
         $db->query($sql);
@@ -147,7 +147,7 @@ if ( $idtpl != 0 && $idtplcfg != 0 ) {
         $changetemplate = 0;
     }
 
-    if ( $idcat != 0 && $changetemplate == 1 && !$idart ) {
+    if ($idcat != 0 && $changetemplate == 1 && !$idart) {
 
         /* Category */
         $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '".cSecurity::toInteger($idcat)."' AND idlang = '".cSecurity::toInteger($lang)."'";
@@ -167,7 +167,7 @@ if ( $idtpl != 0 && $idtplcfg != 0 ) {
         conGenerateCodeForAllartsInCategory($idcat);
         backToMainArea($send);
 
-    } elseif ( isset($idart) && $idart != 0 && $changetemplate == 1 ) {
+    } elseif (isset($idart) && $idart != 0 && $changetemplate == 1) {
 
         /* Article */
         $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '".cSecurity::toInteger($idart)."' AND idlang = '".cSecurity::toInteger($lang)."'";
@@ -191,7 +191,7 @@ if ( $idtpl != 0 && $idtplcfg != 0 ) {
 
 } else {
 
-    if ( $changetemplate == 1 )
+    if ($changetemplate == 1)
     {
         if (!$idart)
         {

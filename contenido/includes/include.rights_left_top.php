@@ -103,15 +103,13 @@ $tpl->set('s', 'CAPTION', '');
 #################
 # List Options
 #################
-$aSortByOptions = array(    "username" => i18n("User name"),
-                            "realname" => i18n("Name"));
+$aSortByOptions = array("username" => i18n("User name"), "realname" => i18n("Name"));
 
-$aSortOrderOptions = array(    "asc" => i18n("Ascending"),
-                            "desc" => i18n("Descending"));
+$aSortOrderOptions = array("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
 
 $listOptionId="listoption";
 $tpl->set('s', 'LISTOPLINK', $listOptionId);
-$oListOptionRow = new cGuiFoldingRow(    "5498dbba-ed4a-4618-8e49-3a3635396e22",    i18n("List options"), $listOptionId);
+$oListOptionRow = new cGuiFoldingRow("5498dbba-ed4a-4618-8e49-3a3635396e22", i18n("List options"), $listOptionId);
 $oListOptionRow->setExpanded('true');
 $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
 $oSelectItemsPerPage->autoFill(array(25 => 25, 50 => 50, 75 => 75, 100 => 100));

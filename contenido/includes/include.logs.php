@@ -68,8 +68,9 @@ $actionselect = '<option value="%">' . i18n("All actions") . '</option>';
 $clientList = $clientColl->getAccessibleClients();
 
 //select current client per default
-if(!isset($idqclient))
+if (!isset($idqclient)) {
     $idqclient = $client;
+}
 
 foreach ($clientList as $key => $value) {
     $selected = (strcmp($idqclient, $key) == 0) ? ' selected="selected"' : '';
@@ -135,11 +136,9 @@ while ($db->nextRecord()) {
     $aDisplayLangauge[$db->f('idlang')] = $db->f('name');
 }
 
-if(key_exists($_REQUEST['display_langauge'], $aDisplayLangauge)) {
+if (key_exists($_REQUEST['display_langauge'], $aDisplayLangauge)) {
     $selectedLangauge = $_REQUEST['display_langauge'];
 }
-
-
 
 
 $fromday = new cHTMLSelectElement('fromday');

@@ -25,9 +25,11 @@ include_once('../includes/startup.php');
 
 header('Content-Type: text/javascript');
 
-cRegistry::bootstrap(array('sess' => 'cSession',
-                'auth' => 'cAuthHandlerBackend',
-                'perm' => 'cPermission'));
+cRegistry::bootstrap(array(
+    'sess' => 'cSession',
+    'auth' => 'cAuthHandlerBackend',
+    'perm' => 'cPermission'
+));
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 require(cRegistry::getBackendPath() . 'includes/functions.includePluginConf.php');
@@ -35,18 +37,15 @@ require(cRegistry::getBackendPath() . 'includes/functions.includePluginConf.php'
 // it will print <script> tags which result in errors
 
 
-/* Fetch chains */
+// Fetch chains
 $iterator = $_cecRegistry->getIterator('Contenido.Article.RegisterCustomTab');
 
 echo '//itsameA';
 
 $aTabs = array();
-while ($chainEntry = $iterator->next())
-{
+while ($chainEntry = $iterator->next()) {
     $aTmpArray = $chainEntry->execute();
-
-    if (is_array($aTmpArray))
-    {
+    if (is_array($aTmpArray)) {
         echo '//itsame';
         $aTabs = array_merge($aTabs, $aTmpArray);
     }
@@ -59,8 +58,7 @@ while ($chainEntry = $iterator->next())
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-function articleObject(actionFrameName, frameNumber)
-{
+function articleObject(actionFrameName, frameNumber) {
     /* Name of the Actionframe.
        Defaults to 'right_bottom' */
     this.actionFrameName = actionFrameName || 'right_bottom';
@@ -105,21 +103,17 @@ function articleObject(actionFrameName, frameNumber)
     this.hrefOverview = null;
 
     <?php
-    print("/*DUMP:<pre>"); var_Dump($aTabs ); print("</pre>*/");
+    print("/*DUMP:<pre>"); var_Dump($aTabs); print("</pre>*/");
 
-    foreach ($aTabs as $key => $sTab)
-    {
+    foreach ($aTabs as $key => $sTab) {
         echo 'this.customTabs[\''.$sTab.'\'] = new Object();'."\n";
 
         $iterator = $_cecRegistry->getIterator("Contenido.Article.GetCustomTabProperties");
 
         $aTabs = array();
-        while ($chainEntry = $iterator->next())
-        {
+        while ($chainEntry = $iterator->next()) {
             $aTmpArray = $chainEntry->execute($sTab);
-
-            if (is_array($aTmpArray))
-            {
+            if (is_array($aTmpArray)) {
                 break;
             }
         }
@@ -137,8 +131,7 @@ function articleObject(actionFrameName, frameNumber)
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-articleObject.prototype.setGlobalVars = function(sessid, client, lang)
-{
+articleObject.prototype.setGlobalVars = function(sessid, client, lang) {
     this.sessid = sessid;
     this.client = client;
     this.lang   = lang;
@@ -151,11 +144,9 @@ articleObject.prototype.setGlobalVars = function(sessid, client, lang)
  * @author Timo Trautmann <timo.trautmann@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-articleObject.prototype.setHrefOverview = function(href)
-{
+articleObject.prototype.setHrefOverview = function(href) {
     /*copy url - cut all actions*/
     if (href.match(/backend_search.php$/g)) {
-
         this.hrefOverview = 'javascript:top.content.left.left_top.document.getElementById(\'backend_search\').submit.click();';
     } else if (href.match(/backend_search/g) || href.match(/area=con_workflow/g)) {
         this.hrefOverview = href.replace(/action=([^&]*)&?/g, '');
@@ -171,8 +162,7 @@ articleObject.prototype.setHrefOverview = function(href)
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-articleObject.prototype.reset = function()
-{
+articleObject.prototype.reset = function() {
     this.idart      = 0;
     this.idartlang  = 0;
     this.idcatlang  = 0;
@@ -187,8 +177,7 @@ articleObject.prototype.reset = function()
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-articleObject.prototype.sessUrl = function(str)
-{
+articleObject.prototype.sessUrl = function(str) {
     var tmp_str = str;
     tmp_str += '&frame=' + this.frame;
     tmp_str += '&'+this.sessionName+'='+this.sessid;
@@ -202,9 +191,7 @@ articleObject.prototype.sessUrl = function(str)
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-articleObject.prototype.doAction = function(str)
-{
-
+articleObject.prototype.doAction = function(str) {
     /* Flag if action will be executed. */
     var doAction = false;
 
@@ -214,8 +201,7 @@ articleObject.prototype.doAction = function(str)
     /* Default error string */
     var err_str = "<?php echo i18n("Error"); ?>";
 
-    switch (str)
-    {
+    switch (str) {
         /* Article overview mask */
         case 'con':
             /* Check if required parameters are set  */
@@ -223,7 +209,7 @@ articleObject.prototype.doAction = function(str)
                 url_str = this.hrefOverview;
                 doAction = true;
             } else {
-                if ( 0 != this.idcat ) {
+                if (0 != this.idcat) {
                     url_str = this.sessUrl(this.filename + "area=" + str + "&idcat=" + this.idcat + "&next=" + this.next);
                     doAction = true;
                 } else {
@@ -236,18 +222,16 @@ articleObject.prototype.doAction = function(str)
 
         /* Edit article properties */
         case 'con_editart':
-            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
-            {
+            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
                 err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
 
-                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0"))
-                {
+                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
                     menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                     parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                 }
             } else {
                 /* Check if required parameters are set  */
-                if ( 0 != this.idart ) {
+                if (0 != this.idart) {
                     url_str = this.sessUrl(this.filename + "area=" + str + "&action=con_edit&idart=" + this.idart + "&idcat=" + this.idcat);
                     doAction = true;
                 } else {
@@ -257,7 +241,7 @@ articleObject.prototype.doAction = function(str)
                        properties mask */
                     err_str = "<?php echo i18n("Article can't be displayed")."<br>".i18n("No article was selected"); ?>";
 
-                    if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
+                    if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
                         menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                         parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                     }
@@ -269,26 +253,23 @@ articleObject.prototype.doAction = function(str)
         case 'con_tplcfg':
 
             /* Check if required parameters are set  */
-            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
-            {
+            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
                 err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
 
-                if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
+                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
                     menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                     parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                 }
             } else {
-                if ( 0 != this.idart && 0 != this.idcat ) {
+                if (0 != this.idart && 0 != this.idcat) {
                     url_str = this.sessUrl(this.filename + "area=" + str + "&action=tplcfg_edit&idart=" + this.idart + "&idcat=" + this.idcat);
                     doAction = true;
                 } else {
-                    /* There is no selected article,
-                       we do not have the neccessary
-                       data to display the Template-
-                       configuration mask */
+                    /* There is no selected article, we do not have the neccessary
+                       data to display the Template- configuration mask */
                     err_str = "<?php echo i18n("Template configuration can't be displayed")."<br>".i18n("No article was selected"); ?>";
 
-                    if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
+                    if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
                         menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                         parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                     }
@@ -298,18 +279,17 @@ articleObject.prototype.doAction = function(str)
 
         /* Edit article */
         case 'con_editcontent':
-            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
-            {
+            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
                 err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
 
-                if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
+                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
                     menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                     parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                 }
             } else {
 
                 /* Check if required parameters are set  */
-                if ( 0 != this.idart && 0 != this.idartlang && 0 != this.idcat ) {
+                if (0 != this.idart && 0 != this.idartlang && 0 != this.idcat) {
                     url_str = this.sessUrl(this.filename + "area=" + str + "&action=con_editart&changeview=edit&idart=" + this.idart + "&idartlang=" + this.idartlang + "&idcat=" + this.idcat);
                     doAction = true;
                 } else {
@@ -318,7 +298,7 @@ articleObject.prototype.doAction = function(str)
                        data to display the Editor */
                     err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("No article was selected"); ?>";
 
-                    if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
+                    if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
                         menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                         parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                     }
@@ -330,14 +310,13 @@ articleObject.prototype.doAction = function(str)
         case 'con_preview':
 
             /* Check if required parameters are set  */
-            if ( 0 != this.idart && 0 != this.idartlang && 0 != this.idcat ) {
+            if (0 != this.idart && 0 != this.idartlang && 0 != this.idcat) {
                 url_str = this.sessUrl(this.filename + "area=con_editcontent&action=con_editart&changeview=prev&idart=" + this.idart + "&idartlang=" + this.idartlang + "&idcat=" + this.idcat + "&tmpchangelang="+ this.idlang);
                 doAction = true;
             } else {
-                /* There is no selected article,
-                   we do not have the neccessary
+                /* There is no selected article, we do not have the neccessary
                    data to display the Editor */
-                if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
+                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
                     menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                     parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                 }
@@ -347,18 +326,16 @@ articleObject.prototype.doAction = function(str)
 
         /* Meta article */
         case 'con_meta':
-            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
-            {
+            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
                 err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
 
-                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0"))
-                {
+                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
                     menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                     parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                 }
             } else {
                 /* Check if required parameters are set  */
-                if ( 0 != this.idart && 0 != this.idcat ) {
+                if (0 != this.idart && 0 != this.idcat) {
                     url_str = this.sessUrl(this.filename + "area=" + str + "&action=con_meta_edit&idart=" + this.idart + "&idcat=" + this.idcat);
                     doAction = true;
                 } else {
@@ -368,7 +345,7 @@ articleObject.prototype.doAction = function(str)
                        properties mask */
                     err_str = "<?php echo i18n("Article can't be displayed")."<br>".i18n("No article was selected"); ?>";
 
-                    if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
+                    if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
                         menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                         parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                     }
@@ -378,27 +355,25 @@ articleObject.prototype.doAction = function(str)
 
         /* Content: list of all content_type */
         case 'con_content_list':
-            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
-            {
+            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
                 err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
 
-                if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
+                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
                     menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                     parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                 }
             } else {
 
                 /* Check if required parameters are set  */
-                if ( 0 != this.idart && 0 != this.idartlang && 0 != this.idcat ) {
+                if (0 != this.idart && 0 != this.idartlang && 0 != this.idcat) {
                     url_str = this.sessUrl(this.filename + "area=" + str + "&action=con_content&changeview=edit&idart=" + this.idart + "&idartlang=" + this.idartlang + "&idcat=" + this.idcat + "&client=" + this.client + "&lang=" + this.lang);
                     doAction = true;
                 } else {
-                    /* There is no selected article,
-                       we do not have the neccessary
+                    /* There is no selected article, we do not have the neccessary
                        data to display the Editor */
                     err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("No article was selected"); ?>";
 
-                    if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
+                    if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
                         menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                         parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                     }
@@ -407,17 +382,15 @@ articleObject.prototype.doAction = function(str)
             break;
 
         default:
-            if (this.customTabs[str])
-            {
+            if (this.customTabs[str]) {
                 var obj = this.customTabs[str];
-                if ( 0 != this.idart && 0 != this.idartlang && 0 != this.idcat ) {
+                if (0 != this.idart && 0 != this.idartlang && 0 != this.idcat) {
                     url_str = this.sessUrl(this.filename + "area=" + obj["area"] + "&action=" + obj["action"] + "&idart=" + this.idart + "&idartlang=" + this.idartlang + "&idcat=" + this.idcat + "&tmpchangelang="+ this.idlang + "&" + obj["custom"]);
                     doAction = true;
                 } else {
-                    /* There is no selected article,
-                       we do not have the neccessary
+                    /* There is no selected article, we do not have the neccessary
                        data to display the Editor */
-                    if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
+                    if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
                         menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                         parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                     }
@@ -444,14 +417,13 @@ articleObject.prototype.doAction = function(str)
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-articleObject.prototype.setProperties = function()
-{
+articleObject.prototype.setProperties = function() {
     this.idart      = arguments[0];
     this.idartlang  = arguments[1];
     this.idcat      = arguments[2];
     this.idcatlang  = arguments[3];
     this.idcatart   = arguments[4];
-    this.idlang        = arguments[5];
+    this.idlang     = arguments[5];
 }
 
 /**

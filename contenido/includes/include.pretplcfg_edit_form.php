@@ -116,7 +116,7 @@ if (isset($a_d) && is_array($a_d)) {
             $CiCMS_Var = '$C'.$cnumber.'CMS_VALUE';
             $CiCMS_VALUE = '';
 
-            foreach ($varstring as $key3=>$value3){
+            foreach ($varstring as $key3 => $value3) {
                 $tmp = $value3;
                 $tmp = str_replace("\'", "'", $tmp);
                 $CiCMS_VALUE .= $CiCMS_Var.'['.$key3.']="'.$tmp.'"; ';

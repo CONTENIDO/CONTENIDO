@@ -41,7 +41,7 @@ if ($cApiClient->getProperty("stats", "tracking") == "off") {
 }
 
 //Display google account message
-if (($googleAccount = getEffectiveSetting('stats', 'ga_account', '')) != "" ) {
+if (($googleAccount = getEffectiveSetting('stats', 'ga_account', '')) != "") {
     $linkToGoogle = sprintf('<a target="_blank" href="http://www.google.com/intl/'.$belang.'/analytics/">%s</a>', i18n("here"));
     $googleNotification = $contenidoNotification->returnNotification('warning', sprintf(i18n("This client has been configured with Google Analytics account %s. Click %s to visit Google Analytics"),$googleAccount, $linkToGoogle));
 }

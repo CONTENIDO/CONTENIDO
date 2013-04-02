@@ -124,8 +124,8 @@ class cGuiMenu {
                 if ($this->_marked === $key) {
                     $extra .= "id='marked' ";
                 }
-                if($this->tooltips[$key] != "") {
-                    $extra .= "class='tooltip-north' original-title='".$this->tooltips[$key]."' ";
+                if ($this->tooltips[$key] != "") {
+                    $extra .= "class='tooltip-north' original-title='" . $this->tooltips[$key] . "' ";
                 }
                 $tpl->set('d', 'EXTRA', $extra);
 

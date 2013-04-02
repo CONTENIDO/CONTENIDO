@@ -70,9 +70,9 @@ function frontendusers_valid_to_display ()
                     startDateTextBox.val(dateText);
                 }
             },
-            onSelect: function (selectedDateTime){
+            onSelect: function (selectedDateTime) {
                 var end = $(this).datetimepicker("getDate");
-                $("#valid_from").datetimepicker("option", "maxDate", new Date(end.getTime()) );
+                $("#valid_from").datetimepicker("option", "maxDate", new Date(end.getTime()));
             }
         });
 </script>';

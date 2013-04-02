@@ -23,6 +23,7 @@
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
+
 class cVersionModule extends cVersion {
 
     /**
@@ -127,12 +128,10 @@ class cVersionModule extends cVersion {
     public function renderReloadScript($sArea, $iIdModule, $sess) {
         $sReloadScript = "<script type=\"text/javascript\">
                  var left_bottom = top.content.left.left_bottom;
-
-                 if(left_bottom){
+                 if (left_bottom) {
                     var href = '" . $sess->url("main.php?area=$sArea&frame=2&idmod=$iIdModule") . "';
                     left_bottom.location.href = href;
                  }
-
                  </script>";
         return $sReloadScript;
     }
