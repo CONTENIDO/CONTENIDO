@@ -15,22 +15,18 @@
  */
 ContenidoRegistry = {
     _instances: [],
-
     set: function(key, value) {
         this._instances[key] = value;
     },
-
     get: function(key) {
         if (this._instances[key] === "undefined") {
-            throw("No entry is registered for key '"+key+"'");
+            throw("No entry is registered for key '" + key + "'");
         }
         return this._instances[key];
     },
-
     isRegistered: function(key) {
         return (this._instances[key] == "undefined");
     },
-
     remove: function(key) {
         this._instances = this._instances.splice(this._instances.indexOf(key), 1);
     }
@@ -139,7 +135,7 @@ function conMultiLink() {
     // frame multilinks
     var len = (simpleFrame) ? arguments.length - 1 : arguments.length;
 
-    for ( var i = 0; i < len; i += 2) {
+    for (var i = 0; i < len; i += 2) {
         f = arguments[i];
         l = arguments[i + 1];
 
@@ -156,10 +152,10 @@ function conMultiLink() {
 }
 
 function getRegistry() {
-	if(window.top.header) {
-	    return window.top.header.ContenidoRegistry;
-	}
-	return window.top.ContenidoRegistry;
+    if (window.top.header) {
+        return window.top.header.ContenidoRegistry;
+    }
+    return window.top.ContenidoRegistry;
 }
 
 /**
@@ -169,9 +165,9 @@ function getRegistry() {
  * @returns the window object in which all content is being displayed
  */
 function getContentWindow() {
-	if(!window.top.content) {
-		return window;
-	}
+    if (!window.top.content) {
+        return window;
+    }
     if (typeof window.top.content.right !== 'undefined') {
         return window.top.content.right.right_bottom;
     }
@@ -211,11 +207,11 @@ function getTranslations() {
         // get param 'contenido'
         var params = getUrlParams(window.location.search);
         $.ajax({
-            async : false,
-            url : 'ajaxmain.php',
-            data : 'ajax=generaljstranslations&contenido=' + params['contenido'],
-            dataType : 'json',
-            success : function(data) {
+            async: false,
+            url: 'ajaxmain.php',
+            data: 'ajax=generaljstranslations&contenido=' + params['contenido'],
+            dataType: 'json',
+            success: function(data) {
                 registry.set('translations', data);
             },
             error: function(data) {
@@ -259,10 +255,10 @@ function showConfirmation(description, callback, additionalOptions) {
         $(this).parent().remove();
     };
     var options = {
-        buttons : buttons,
-        position : ['center', 50],
+        buttons: buttons,
+        position: ['center', 50],
         resizable: false,
-        title : translations['Confirmation Required']
+        title: translations['Confirmation Required']
     };
     options = $.extend(options, additionalOptions);
     // show the dialog in the content window
@@ -290,9 +286,9 @@ function showNotification(title, description, additionalOptions) {
         $(this).parent().remove();
     };
     var options = {
-        buttons : buttons,
-        position : ['center', 50],
-        title : title
+        buttons: buttons,
+        position: ['center', 50],
+        title: title
     };
     options = $.extend(options, additionalOptions);
     // show the dialog in the content window
@@ -325,5 +321,6 @@ function conMarkSubmenuItem(id) {
                 }
             }
         }
-    } catch (e) {}
+    } catch (e) {
+    }
 }

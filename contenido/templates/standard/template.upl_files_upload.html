@@ -11,13 +11,13 @@
     var text_cancelButton = "i18n("Cancel")";
     var text_waiting = "i18n("Waiting...")";
     var text_fileIsTooBig = "i18n("This file is too large.")";
-    
+
     $(document).ready(function() {
         $(".file_upload").bind('change', function() {
-        	if(this.files[0].size > maxFileSize) {
-        		this.files = null;
-        		alert(this.files[0].name + ": " + $('<div />').html(text_fileIsTooBig).text());
-        	}
+            if (this.files[0].size > maxFileSize) {
+                this.files = null;
+                alert(this.files[0].name + ": " + $('<div />').html(text_fileIsTooBig).text());
+            }
         });
     });
 </script>
@@ -28,7 +28,7 @@
 
     <form enctype="multipart/form-data" style="margin: 0px"
         name="properties" method="post" action="main.php">
-        <input type="hidden" name="frame" value="4"> 
+        <input type="hidden" name="frame" value="4">
         <input type="hidden" name="area" value="upl">
         <input type="hidden" name="path" value="{PATH}">
         <input type="hidden" name="file" value="">

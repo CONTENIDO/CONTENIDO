@@ -39,7 +39,6 @@ function cContentTypeLinkeditor(frameId, imageId, pathBackend, pathFrontend, idA
      * @type String
      */
     this.selectedPath = '';
-
 }
 
 // inherit from cContentTypeAbstractTabbed
@@ -130,7 +129,7 @@ cContentTypeLinkeditor.prototype.addNaviActions = function() {
         });
         return false;
     });
-    
+
     function _bindCollapsing(divContainer) {
         if (divContainer.next('ul').length > 0) {
             divContainer.next('ul').toggle(function() {
@@ -140,7 +139,7 @@ cContentTypeLinkeditor.prototype.addNaviActions = function() {
                     divContainer.parent().removeClass('collapsed');
                 }
             });
-            
+
             return true;
         }
         return false;
@@ -150,7 +149,7 @@ cContentTypeLinkeditor.prototype.addNaviActions = function() {
     $(self.frameId + ' #internal #directoryList_' + self.id + ' em a').unbind('click');
     $(self.frameId + ' #internal #directoryList_' + self.id + ' em a').click(function() {
         var divContainer = $(this).parent().parent();
-        if(!_bindCollapsing(divContainer)) {
+        if (!_bindCollapsing(divContainer)) {
             var parentidcat = $(this).parent('em').parent().parent().parent().find('div a[class="on"]').attr('title');
             var level = $(this).parents('ul').length - 1;
             $.ajax({
@@ -194,7 +193,7 @@ cContentTypeLinkeditor.prototype.addNaviActions = function() {
     $(self.frameId + ' #file #directoryList_' + self.id + ' em a').unbind('click');
     $(self.frameId + ' #file #directoryList_' + self.id + ' em a').click(function() {
         var divContainer = $(this).parent().parent();
-        if(!_bindCollapsing(divContainer)) {
+        if (!_bindCollapsing(divContainer)) {
             var dirname = $(this).parent('em').parent().find('a[class="on"]').attr('title');
             $.ajax({
                 type: 'POST',
@@ -222,7 +221,7 @@ cContentTypeLinkeditor.prototype.showFolderPath = function() {
     $(self.frameId + ' div[class="active"] a[class="on"]').each(function() {
         titles.push($(this).attr('title'));
     });
-    if (titles.length < 1){
+    if (titles.length < 1) {
         $(self.frameId + ' li#root>div').addClass('active');
     }
 
@@ -310,7 +309,7 @@ cContentTypeLinkeditor.prototype.createMKDir = function() {
                         data: 'ajax=dirlist&idartlang=' + self.idArtLang + '&id=' + self.id + '&dir=' + dirname + '&contenido=' + self.session,
                         success: function(msg) {
                             var title;
-                            if (self.selectedPath === 'upload'){
+                            if (self.selectedPath === 'upload') {
                                 title = folderName;
                             } else {
                                 title = dirname + folderName;

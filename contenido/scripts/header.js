@@ -32,20 +32,20 @@ function show(id, slink) {
         active_link.className = "main";
     }
 
-    $("#"+id).css("display", "block");
+    $("#" + id).css("display", "block");
     $("#head_nav1 span a").css("color", "#000000");
     if (slink) {
         if (typeof slink == "object") {
             $(slink).css("color", "#0060B1");
         } else {
-            $("#"+slink).css("color", "#0060B1");
+            $("#" + slink).css("color", "#0060B1");
         }
     }
     active_main = id;
 }
 
 function hide(id) {
-    $("#"+id).css("display", "none");
+    $("#" + id).css("display", "none");
     active_main = 0;
 }
 
@@ -55,10 +55,10 @@ function hide(id) {
  *
  * @param    {Integer}  idlang
  */
-function changeContenidoLanguage(idlang) {	
+function changeContenidoLanguage(idlang) {
     if (top.content.left) {
         if (top.content.left.left_top) {
-             top.content.left.left_top.location.href = replaceQueryString(top.content.left.left_top.location.href, 'changelang', idlang);
+            top.content.left.left_top.location.href = replaceQueryString(top.content.left.left_top.location.href, 'changelang', idlang);
         }
 
         if (top.content.left.left_bottom) {
@@ -83,14 +83,14 @@ function changeContenidoLanguage(idlang) {
         }
     }
 
-    if(top.content.right_bottom) {
-		var href = replaceQueryString(top.content.right_bottom.location.href, 'action', '');
+    if (top.content.right_bottom) {
+        var href = replaceQueryString(top.content.right_bottom.location.href, 'action', '');
         href = replaceQueryString(href, 'changelang', idlang);
         href = replaceQueryString(href, 'frame', 4);
         href = replaceQueryString(href, 'menuless', 1);
         top.content.right_bottom.location.href = href;
-	}
-    
+    }
+
     top.header.location.href = replaceQueryString(top.header.location.href, 'changelang', idlang);
 }
 
@@ -184,21 +184,18 @@ function resetHeaderMenu() {
  * @static
  */
 var HeaderTimer = {
-
     /**
      * Mouseout timeout handler
      *
      * @type  {Integer}
      */
     out: null,
-
     /**
      * Mouseover timeout handler
      *
      * @type  {Integer}
      */
     over: null,
-
     /**
      * Clear a existing mouseout handler
      */
@@ -207,7 +204,6 @@ var HeaderTimer = {
             clearTimeout(this.out);
         }
     },
-
     /**
      * Clear a existing mouseover handler
      */
@@ -229,12 +225,10 @@ var HeaderTimer = {
  * @static
  */
 var HeaderMenu = {
-
-    DEFAULT_MENU_ID:    "main_0",
+    DEFAULT_MENU_ID: "main_0",
     DEFAULT_SUBMENU_ID: "sub_0",
-    _currentActiveMenuId:     null,
+    _currentActiveMenuId: null,
     _currentActiveSubmenusId: null,
-
     /**
      * Menu initialization
      *
@@ -244,7 +238,6 @@ var HeaderMenu = {
     initialize: function(options) {
         throw("Abstract function: must be overwritten by child");
     },
-
     /**
      * Resets the stored menu ids (main menu and sub menu)
      */
@@ -252,7 +245,6 @@ var HeaderMenu = {
         this.setActiveMenu(this.DEFAULT_MENU_ID);
         this.setActiveSubMenu(this.DEFAULT_SUBMENU_ID);
     },
-
     /**
      * Getter for active main menu
      *
@@ -261,7 +253,6 @@ var HeaderMenu = {
     getActiveMenu: function() {
         return this._currentActiveMenuId;
     },
-
     /**
      * Setter for active main menu
      *
@@ -270,7 +261,6 @@ var HeaderMenu = {
     setActiveMenu: function(menuId) {
         this._currentActiveMenuId = menuId;
     },
-
     /**
      * Getter for active sub menu
      *
@@ -279,7 +269,6 @@ var HeaderMenu = {
     getActiveSubMenu: function() {
         return this._currentActiveSubmenusId;
     },
-
     /**
      * Setter for active sub menu
      *
@@ -288,7 +277,6 @@ var HeaderMenu = {
     setActiveSubMenu: function(subMenuId) {
         this._currentActiveSubmenusId = subMenuId;
     },
-
     /**
      * Returns the superior main menu id of passed sub menu id
      *
@@ -298,7 +286,6 @@ var HeaderMenu = {
     getMenuIdBySubMenuId: function(subMenuId) {
         return subMenuId.replace("sub_", "main_");
     },
-
     /**
      * Returns the inferior sub menu id of passed main menu id
      *
@@ -308,7 +295,6 @@ var HeaderMenu = {
     getSubMenuIdByMenuId: function(menuId) {
         return menuId.replace("main_", "sub_");
     },
-
     /**
      * Activates a menue.
      *
@@ -316,9 +302,8 @@ var HeaderMenu = {
      * @abstract
      */
     activate: function(obj) {
-       throw("Abstract function: must be overwritten by child");
-     },
-
+        throw("Abstract function: must be overwritten by child");
+    },
     /**
      * Deactivates a menu.
      *
@@ -326,9 +311,8 @@ var HeaderMenu = {
      * @abstract
      */
     deactivate: function(obj) {
-       throw("Abstract function: must be overwritten by child");
-     },
-
+        throw("Abstract function: must be overwritten by child");
+    },
     /**
      * Marks menu item as active menu when a anchor of one of its subitems is clicked.
      *
@@ -379,10 +363,10 @@ HeaderClickMenu.initialize = function(options) {
     this.setActiveMenu(options.menuId);
     this.setActiveSubMenu(options.subMenuId);
 
-    $("#head_nav1 a").click(function (){
+    $("#head_nav1 a").click(function() {
         HeaderClickMenu.activate(this);
     });
-    $("#submenus a").click(function (){
+    $("#submenus a").click(function() {
         HeaderClickMenu.markActive(this);
     });
 };
@@ -393,7 +377,7 @@ HeaderClickMenu.initialize = function(options) {
  * @param  {Object}  obj  Main menu item object
  */
 HeaderClickMenu.activate = function(obj) {
-    this._currentActiveMenuId     = $(obj).attr("id");
+    this._currentActiveMenuId = $(obj).attr("id");
     this._currentActiveSubmenusId = this.getSubMenuIdByMenuId(this._currentActiveMenuId);
     show(this._currentActiveSubmenusId, obj);
 };
@@ -422,7 +406,7 @@ var HeaderDelayMenu = jQuery.extend(true, {}, HeaderMenu);
 
 HeaderDelayMenu.initialize = function(options) {
     this._mouseOverDelay = 300;
-    this._mouseOutDelay  = 1000;
+    this._mouseOutDelay = 1000;
 
     if (typeof options == "undefined") {
         options = {};
@@ -441,22 +425,22 @@ HeaderDelayMenu.initialize = function(options) {
     }
 
     this._mouseOverDelay = options.mouseOverDelay;
-    this._mouseOutDelay  = options.mouseOutDelay;
+    this._mouseOutDelay = options.mouseOutDelay;
 
     this.setActiveMenu(options.menuId);
     this.setActiveSubMenu(options.subMenuId);
 
-    $("#head_nav1 a").mouseover(function (){
+    $("#head_nav1 a").mouseover(function() {
         HeaderDelayMenu.activate(this);
-    }).mouseout(function (){
+    }).mouseout(function() {
         HeaderDelayMenu.deactivate(this);
     });
 
-    $("#submenus a").click(function (){
+    $("#submenus a").click(function() {
         HeaderDelayMenu.markActive(this);
-    }).mouseover(function (){
+    }).mouseover(function() {
         HeaderTimer.resetOut();
-    }).mouseout(function (){
+    }).mouseout(function() {
         HeaderDelayMenu.deactivate(this);
     });
 };
@@ -492,13 +476,18 @@ HeaderDelayMenu.deactivate = function(obj) {
  * Firebug emulation, to prevent errors if firebug is not available
  */
 if (!("console" in window) || !("firebug" in console)) {
-(function(){
-    window.console = {
-        log:   function(){},
-        debug: function(){},
-        info:  function(){},
-        warn:  function(){},
-        error: function(){}
-    };
-})();
+    (function() {
+        window.console = {
+            log: function() {
+            },
+            debug: function() {
+            },
+            info: function() {
+            },
+            warn: function() {
+            },
+            error: function() {
+            }
+        };
+    })();
 }

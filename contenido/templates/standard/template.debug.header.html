@@ -1,11 +1,11 @@
-<script type='text/javascript'> 
-	var aheader = null; 
-	if(parent.parent.header) {
-		aheader = parent.parent.header;
-	} else if(parent.parent.parent.header) {
-		aheader = parent.parent.parent.header;
-	} 
-	var dbg = aheader.document.getElementById('debug_msg'); 
-	dbg.innerHTML += "<pre>{DBG_MESSAGE_CONTENT}</pre><input type='button' onclick='selectText()' value='Select all'>";
-	dbg.scrollTop = dbg.scrollHeight;
+<script type='text/javascript'>
+    var aheader = null;
+    if (parent.parent.header) {
+        aheader = parent.parent.header;
+    } else if (parent.parent.parent.header) {
+        aheader = parent.parent.parent.header;
+    }
+    var dbg = aheader.document.getElementById('debug_msg');
+    dbg.innerHTML += "<pre>{DBG_MESSAGE_CONTENT}</pre><input type='button' onclick='selectText()' value='Select all'>";
+    dbg.scrollTop = dbg.scrollHeight;
 </script>

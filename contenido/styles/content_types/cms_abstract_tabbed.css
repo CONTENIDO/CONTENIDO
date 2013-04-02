@@ -15,7 +15,7 @@
     z-index: 20000;
 }
 
-.cms_abstract  * {
+.cms_abstract * {
     margin: 0;
     padding: 0;
     line-height: 100%;
@@ -46,7 +46,8 @@
     width: 120px;
 }
 
-.cms_abstract input,.cms_abstract select {
+.cms_abstract input,
+.cms_abstract select {
     margin-bottom: 3px;
     width: 194px;
 }
@@ -86,7 +87,7 @@
     line-height: 20px;
     padding: 0 10px;
     width: auto;
-	display: inline-block;
+    display: inline-block;
 }
 
 .cms_abstract .menu li.active {

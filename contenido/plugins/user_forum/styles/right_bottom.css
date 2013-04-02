@@ -1,22 +1,18 @@
 form {
-	word-wrap: break-word;
-	max-width: 600px;
+    word-wrap: break-word;
+    max-width: 600px;
 }
-.emailactive{
-	font-weight:bold;
-	font-style: italic;
+.emailactive {
+    font-weight: bold;
+    font-style: italic;
 }
-.emaildeactive{
-	font-weight:bold;
-	font-style: italic;	
+.emaildeactive {
+    font-weight: bold;
+    font-style: italic;
 }
 a.emaildeactive:hover {
-	
-	color:#000000;	
+    color: #000;
 }
-
 .links {
-	
-	margin-left:33%;	
+    margin-left: 33%;
 }
-
