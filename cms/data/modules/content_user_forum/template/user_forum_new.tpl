@@ -1,3 +1,4 @@
+{*template for new entry dialog*}
 <div class="user_forum">
     <div class="form_status_message">{$MESSAGE}</div>
     <div class="replyment_handler">

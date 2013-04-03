@@ -1,3 +1,4 @@
+{*template for listing all comments*}
 <div class="user_forum">
     <div class="form_status_message">{$MESSAGE}</div>
     <br />
