@@ -1,6 +1,5 @@
 <?php
 defined('CON_FRAMEWORK') or die('Illegal call');
-cInclude('classes', '/phpmailer/class.phpmailer.php');
 /**
  *
  * @package plugins/user_forum
@@ -233,18 +232,16 @@ class ArticleForumCollection extends ItemCollection {
      * language string from frontend module.
      */
     public function mailToModerator($realname, $email, $forum, $idart, $forum_quote = 0) {
-        $mail = new phpmailer();
-        $mail->CharSet = 'UTF-8';
+
+        $mail = new cMailer();
+        $mail->setCharset('UTF-8');
+        //$mail = new phpmailer();
+        //$mail->CharSet = 'UTF-8';
 
         // $sToEmail = getEffectiveSetting('claus.schunk@4fb.de',
         // 'claus.schunk@4fb.de');
-
-        $mail->From = 'automail@procise.com';
-        $mail->FromName = 'Procise Automailer';
-
-        $mail->AddAddress($this->getModEmail($idart));
         // build mail content
-        $mail->Subject = $this->languageSync['NEWENTRY'] . "\n" . "\n";
+        $message= $this->languageSync['NEWENTRY'] . "\n" . "\n";
         $message .= $this->languageSync['USER'] . ' : ' . $realname . "\n";
         $message .= $this->languageSync['EMAIL'] . ' : ' . $email . "\n";
         $message .= $this->languageSync['COMMENT'] . ' : ' . $forum . "\n";
@@ -252,8 +249,8 @@ class ArticleForumCollection extends ItemCollection {
             $message .= UserForum::i18n('QUOTE') . ' : ' . $forum_quote . "\n";
         }
 
-        $mail->Body = $message;
-        $mail->Send();
+        $mail->sendMail('contenido@localhost.at',$this->getModEmail($idart), $this->languageSync['NEWENTRY'],$message);
+
     }
 
     /**
