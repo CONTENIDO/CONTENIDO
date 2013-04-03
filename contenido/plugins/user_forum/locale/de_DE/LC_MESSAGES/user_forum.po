@@ -99,6 +99,9 @@ msgstr "Aktionen"
 
 ; class.content.type.user_forum.php
 
+msgid "MODSETTINGS"
+msgstr "Einstellungen : "
+
 msgid "ADMINISTRATION"
 msgstr "Administration"
 

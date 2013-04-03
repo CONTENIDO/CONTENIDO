@@ -113,6 +113,9 @@ msgstr "subcomments allowed"
 
 ; class.article_forum_collection.php
 
+msgid "MODSETTINGS"
+msgstr "settings : "
+
 msgid "COMMENT"
 msgstr "comment"
 
