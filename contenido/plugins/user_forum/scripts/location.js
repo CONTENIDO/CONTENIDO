@@ -3,8 +3,9 @@ function deleteArticlesByIdLeft(idart) {
     url = 'main.php?area=user_forum';
     url += '&action=delete_form';
     url += '&frame=2';
-    url += '&idart='
+    url += '&idart=';
     url += idart;
+
 
     reloadRightBottom = 'main.php?area=user_forum';
     reloadRightBottom += '&action=empty';
