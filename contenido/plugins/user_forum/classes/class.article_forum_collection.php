@@ -235,8 +235,6 @@ class ArticleForumCollection extends ItemCollection {
 
         $mail = new cMailer();
         $mail->setCharset('UTF-8');
-        //$mail = new phpmailer();
-        //$mail->CharSet = 'UTF-8';
 
         // $sToEmail = getEffectiveSetting('claus.schunk@4fb.de',
         // 'claus.schunk@4fb.de');
