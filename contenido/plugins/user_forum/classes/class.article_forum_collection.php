@@ -22,6 +22,8 @@ class ArticleForumCollection extends ItemCollection {
     const idContentType = 100003;
 
     public function __construct() {
+        // sync time
+        date_default_timezone_set('Europe/Berlin');
         $this->db = cRegistry::getDb();
         $this->cfg = cRegistry::getConfig();
 
