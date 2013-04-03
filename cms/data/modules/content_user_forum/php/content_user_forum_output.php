@@ -216,8 +216,19 @@ class UserForumArticle {
             }
 
             if ($bInputOK) {
+                // build array for language synchonisation
+                $ar = array(
+                    'NEWENTRY' => mi18n("NEWENTRY"),
+                    'NEWENTRYTEXT' => mi18n("NEWENTRY"),
+                    'COMMENT' => mi18n("COMMENT"),
+                    'USER' => mi18n("USER"),
+                    'EMAIL' => mi18n("EMAIL")
+                );
+
+                $this->_collection->languageSync($ar);
                 // persist comment
                 $this->_collection->insertValues($parent, $this->_idart, $this->_idcat, $this->_idlang, $this->_userid, $email, $realname, $forum, $forum_quote);
+
                 $this->_messageText .= mi18n("yourArticleSaved");
             } else {
 
@@ -276,6 +287,7 @@ class UserForumArticle {
                 }
 
                 $this->_generate = false;
+                // template for new entry
                 $this->_tpl->display('user_forum_new.tpl');
             }
         }
@@ -406,7 +418,7 @@ class UserForumArticle {
                 }
 
                 $this->_tpl->assign('NUM_FORUM', count($arrUserforum));
-
+                // template : list all entries
                 $this->_tpl->display('user_forum_list.tpl');
             }
         }
