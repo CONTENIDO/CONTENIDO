@@ -17,6 +17,9 @@ msgstr ""
 
 ; class.article_forum_right_bottom.php
 
+msgid "STATUS"
+msgstr "Status"
+
 msgid "EDIT"
 msgstr "Kommentar editieren"
 
@@ -53,6 +56,9 @@ msgstr "zuletztet editiert"
 msgid "EDITEDBY"
 msgstr "editiert von"
 
+msgid "QUOTE"
+msgstr "Zitat"
+
 msgid "SETONLINE"
 msgstr " Kommentar online setzen"
 
@@ -64,6 +70,7 @@ msgstr "um"
 
 msgid "CLOCK"
 msgstr "Uhr"
+
 ; class.article_forum_left_bottom.php
 
 msgid "ALLDELETEFROMCAT"
@@ -71,7 +78,6 @@ msgstr "Alle Kommentare zu diesem Artikel löschen ? "
 
 msgid "ARTICLES"
 msgstr "Artikel "
-
 
 msgid "ALLDELETEFROMCATHIER"
 msgstr "Kommentar inklusive untergeordneten Kommentaren löschen ? "
@@ -105,11 +111,20 @@ msgstr "Moderatoren-Modus aktivieren"
 msgid "EDITABLE"
 msgstr "Antworten auf Beiträge möglich"
 
+; class.article_forum_collection.php
 
+msgid "NEWENTRY"
+msgstr "Neuer Kommentar hinzugefuegt : "
 
+msgid "NEWENTRYTEXT"
+msgstr "Neuer Kommentar mit folgendem Inhalt : "
 
+msgid "COMMENT"
+msgstr "Kommentar"
 
+msgid "USER"
+msgstr "Name"
 
-
-
+msgid "EMAIL"
+msgstr "Email"
 

@@ -1,13 +1,25 @@
 <?php
 defined('CON_FRAMEWORK') or die('Illegal call');
 cInclude('classes', '/phpmailer/class.phpmailer.php');
+/**
+ *
+ * @package plugins/user_forum
+ * @version SVN Revision $Rev:$
+ * @author claus.schunk
+ * @copyright four for business AG
+ * @link http://www.4fb.de
+ */
 class ArticleForumCollection extends ItemCollection {
 
-    protected $cfg;
+    protected $cfg = 0;
 
-    protected $db;
+    protected $db = 0;
 
-    protected $item;
+    protected $item = 0;
+    // contents array of translations from frontend module
+    protected $languageSync = 0;
+
+    const idContentType = 100003;
 
     public function __construct() {
         $this->db = cRegistry::getDb();
@@ -104,9 +116,11 @@ class ArticleForumCollection extends ItemCollection {
         $db = cRegistry::getDb();
 
         if ($frontend) {
+            // select only comments that are marked visible in frontendmode.
             $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat)
             AND (idlang = $id_lang) AND (id_user_forum_parent = $parent) AND (online = 1) ORDER BY timestamp DESC";
         } else {
+            // select all comments -> used in backendmode.
             $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat)
         AND (idlang = $id_lang) AND (id_user_forum_parent = $parent) ORDER BY timestamp DESC";
         }
@@ -156,12 +170,16 @@ class ArticleForumCollection extends ItemCollection {
 
         if ($this->item->getField('realname') == $name && $this->item->getField('email') == $email && $this->item->getField('forum') == $forum) {
 
+            // load timestamp from db to check if the article was already
+            // edited.
             if ($this->item->getField('editedat') === "0000-00-00 00:00:00") {
+                // case : never edited
                 $timeStamp = "0000-00-00 00:00:00";
             } else {
                 $timeStamp = $this->item->getField('editedat');
             }
         } else {
+            // actual timestamp: Content was edited
             $timeStamp = date('Y-m-d H:i:s', time());
         }
 
@@ -194,7 +212,9 @@ class ArticleForumCollection extends ItemCollection {
      * @param primary key $id_user_forum
      */
     public function toggleOnlineState($onlineState, $id_user_forum) {
+        // toggle state
         ($onlineState == 0)? $onlineState = 1 : $onlineState = 0;
+
         $fields = array(
             'online' => mysql_real_escape_string($onlineState)
         );
@@ -205,6 +225,11 @@ class ArticleForumCollection extends ItemCollection {
         $this->db->query($statement);
     }
 
+    /**
+     * email notification for registred moderator.
+     * before calling this function it is necessary to receive the converted
+     * language string from frontend module.
+     */
     public function mailToModerator($realname, $email, $forum, $idart, $forum_quote = 0) {
         $mail = new phpmailer();
         $mail->CharSet = 'UTF-8';
@@ -214,59 +239,19 @@ class ArticleForumCollection extends ItemCollection {
 
         $mail->From = 'automail@procise.com';
         $mail->FromName = 'Procise Automailer';
+
         $mail->AddAddress($this->getModEmail($idart));
-
-        $mail->Subject = UserForum::i18n("Neuer Forumseintrag");
-
-        $message = 'Neuer Forumseintrag mit folgendem Inhalt:' . "\n\n";
-        $message .= 'Name: ' . $realname . "\n";
-        $message .= 'E-Mail: ' . $email . "\n";
-        $message .= 'Beitrag: ' . $forum . "\n";
+        // build mail content
+        $mail->Subject = $this->languageSync['NEWENTRY'] . "\n" . "\n";
+        $message .= $this->languageSync['USER'] . ' : ' . $realname . "\n";
+        $message .= $this->languageSync['EMAIL'] . ' : ' . $email . "\n";
+        $message .= $this->languageSync['COMMENT'] . ' : ' . $forum . "\n";
         if ($forum_quote != 0) {
-            $message .= 'Zitat: ' . $forum_quote . "\n";
+            $message .= UserForum::i18n('QUOTE') . ' : ' . $forum_quote . "\n";
         }
 
         $mail->Body = $message;
         $mail->Send();
-
-        // $mailer = new cMailer();
-        // $message = Swift_Message::newInstance($opt['subject'], $opt['body'],
-        // 'text/plain', $opt['charSet']);
-
-        // if (array_key_exists('attachmentNames', $opt) &&
-        // is_array($opt['attachmentNames'])) {
-        // $values = $this->getValues();
-        // foreach ($opt['attachmentNames'] as $column => $path) {
-        // if (!file_exists($path)) {
-        // Util::log('could not attach file cause it doesn\'t exist: ' . $path);
-        // continue;
-        // }
-        // $attachment = Swift_Attachment::fromPath($path);
-        // $filename = $values[$column];
-        // $attachment->setFilename($filename);
-        // $message->attach($attachment);
-        // }
-        // }
-
-        // if (array_key_exists('attachmentStrings', $opt) &&
-        // is_array($opt['attachmentStrings'])) {
-        // foreach ($opt['attachmentStrings'] as $filename => $string) {
-        // // TODO mime type should be configurale
-        // $attachment = Swift_Attachment::newInstance($string, $filename,
-        // 'text/csv');
-        // $message->attach($attachment);
-        // }
-        // }
-
-        // $message->addFrom($opt['from'], $opt['fromName']);
-        // foreach (explode(',', $opt['to']) as $to) {
-        // $message->setTo($to, $to);
-        // }
-
-        // if (!$mailer->send($message)) {
-        // throw new PifaMailException($this->ErrorInfo);
-        // }
-        // }
     }
 
     /**
@@ -300,12 +285,20 @@ class ArticleForumCollection extends ItemCollection {
         return $this->item->loadByPrimaryKey(mysql_real_escape_string($userid));
     }
 
+    /**
+     * this function inkrements the actual value of likes from a comment and
+     * persists it.
+     *
+     * @param $forum_user_id identifies a comment.
+     */
     public function incrementLike($forum_user_id) {
         $db = cRegistry::getDb();
         $ar = array();
+        // load actual value
         $this->item->loadByPrimaryKey(mysql_real_escape_string($forum_user_id));
         $ar = $this->item->toArray();
         $current = $ar['like'];
+        // increment value
         $current += 1;
 
         $fields = array(
@@ -314,17 +307,25 @@ class ArticleForumCollection extends ItemCollection {
         $whereClauses = array(
             'id_user_forum' => $forum_user_id
         );
-
+        // persist inkremented value
         $statement = $this->db->buildUpdate($this->table, $fields, $whereClauses);
         $this->db->query($statement);
     }
 
+    /**
+     * this function inkrements the actual value of dislikes from a comment and
+     * persists it.
+     *
+     * @param $forum_user_id identifies a comment.
+     */
     public function incrementDislike($forum_user_id) {
         $db = cRegistry::getDb();
         $ar = array();
+        // load actual value
         $this->item->loadByPrimaryKey(mysql_real_escape_string($forum_user_id));
         $ar = $this->item->toArray();
         $current = $ar['dislike'];
+        // increment value
         $current += 1;
 
         $fields = array(
@@ -333,17 +334,31 @@ class ArticleForumCollection extends ItemCollection {
         $whereClauses = array(
             'id_user_forum' => $forum_user_id
         );
-
+        // persist inkremented value
         $statement = $this->db->buildUpdate($this->table, $fields, $whereClauses);
         $this->db->query($statement);
     }
 
+    /**
+     * persists a new comment created at the frontend module.
+     *
+     * @param $parent
+     * @param $idart
+     * @param $idcat
+     * @param $lang
+     * @param $userid
+     * @param $email
+     * @param $realname
+     * @param $forum
+     * @param $forum_quote
+     */
     public function insertValues($parent, $idart, $idcat, $lang, $userid, $email, $realname, $forum, $forum_quote) {
         $db = cRegistry::getDb();
 
         // comments are marked as offline if the moderator mode is turned on.
         ($modCheck = $this->getModeModeActive($idart))? $online = 0 : $online = 1;
 
+        // build array for sql statemant
         $fields = array(
             'id_user_forum' => NULL,
             'id_user_forum_parent' => mysql_real_escape_string($parent),
@@ -373,6 +388,11 @@ class ArticleForumCollection extends ItemCollection {
         }
     }
 
+    /**
+     * this function deletes all comments related to the same articleId
+     *
+     * @param articleId $idart
+     */
     public function deleteAllCommentsById($idart) {
         $this->deleteBy('idart', mysql_real_escape_string(($idart)));
     }
@@ -423,6 +443,9 @@ class ArticleForumCollection extends ItemCollection {
      */
     public function getModeModeActive($idart) {
         $data = $this->readXML();
+        // echo '<pre>';
+        // var_dump($data);
+        // echo '</pre>'
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['idart'] == $idart) {
 
@@ -435,12 +458,13 @@ class ArticleForumCollection extends ItemCollection {
     }
 
     /**
-     * returns if quotes to comments are allowes for this article
+     * returns if quotes for comments are allowed in this article
      *
      * @param articleid $idart
      * @return bool
      */
     public function getQuoteState($idart) {
+        // get content from con_type
         $data = $this->readXML();
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['idart'] == $idart) {
@@ -453,7 +477,9 @@ class ArticleForumCollection extends ItemCollection {
     }
 
     /**
-     * returns the xml content from the contentType
+     * This function loads and returns the xml content from the contentType
+     * aditionally the return array implies the articleId because of an easier
+     * mapping in the frontend.
      *
      * @return array
      */
@@ -474,6 +500,7 @@ class ArticleForumCollection extends ItemCollection {
 
             for ($i = 0; $i < count($data); $i++) {
                 $ar[$i] = cXmlBase::xmlStringToArray($data[$i]['value']);
+                // add articleId
                 $ar[$i]['idart'] = $data[$i]['idart'];
             }
         } catch (Exception $e) {
@@ -482,22 +509,23 @@ class ArticleForumCollection extends ItemCollection {
         return $ar;
     }
 
-}
-class ArticleForumItem extends Item {
-
-    protected $cfg;
-
-    protected $db;
-
-    public function __construct() {
-        $this->db = cRegistry::getDb();
-        $this->cfg = cRegistry::getConfig();
-
-        parent::__construct($this->cfg['tab']['user_forum'], 'id_user_forum');
+    /**
+     * this function is used to get translations from the language of the
+     * frontend module for example to generate
+     * the e-mail text with correct language settings.
+     *
+     * @param array $str
+     */
+    public function languageSync(array $str) {
+        $this->languageSync = $str;
     }
 
-    public function getCfg() {
-        return $this->cfg;
+    public function getlanguageSync(array $str) {
+        if ($this->languageSync != 0) {
+            return $this->languageSync;
+        } else {
+            return array();
+        }
     }
 
 }

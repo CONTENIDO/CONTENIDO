@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the cContentTypePifaForm class.
+ * This file contains the cContentTypeUserForum class.
  *
  * @package Plugin
  * @version SVN Revision $Rev:$
@@ -11,9 +11,6 @@
 
 // assert CONTENIDO framework
 defined('CON_FRAMEWORK') or die('Illegal call');
-
-// cInclude('includes', 'functions.con.php');
-// cInclude('includes', 'functions.upl.php');
 
 // Width from Container set in file cms/css/contenido_backend.css
 // .cms_userforum label {

@@ -1,4 +1,12 @@
 <?php
+/**
+ *
+ * @package plugins/user_forum
+ * @version SVN Revision $Rev:$
+ * @author claus.schunk
+ * @copyright four for business AG
+ * @link http://www.4fb.de
+ */
 defined('CON_FRAMEWORK') or die('Illegal call');
 global $area;
 class ArticleForumRightBottom extends cGuiPage {
@@ -47,7 +55,6 @@ class ArticleForumRightBottom extends cGuiPage {
     }
 
     /**
-     * form foreach
      *
      * @param $key
      * @param $cont
@@ -131,8 +138,6 @@ class ArticleForumRightBottom extends cGuiPage {
             "cellpadding" => "2"
         ));
 
-        // $bla = new c
-
         if (count($result > 0)) {
             $tr = new cHTMLTableRow();
             $th = new cHTMLTableHead();
@@ -204,6 +209,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $tdLike->setAttribute('valign', 'top');
             $tdLike->setStyle('text-align: center');
 
+            // add like/dislike functionality to table
             $tdLike->appendContent($likeButton);
             $tdLike->appendContent(" $like ");
             $tdLike->appendContent($dislikeButton);
@@ -213,12 +219,14 @@ class ArticleForumRightBottom extends cGuiPage {
             $trLike->appendContent($tdEmpty);
             $trLike->appendContent($tdLike);
 
+            // build form element
             $form = new cHTMLForm($cont['id_user_forum']);
             $form->setAttribute('action', 'main.php?' . "area=" . $area . '&frame=4');
 
             $tdForm = new cHTMLTableData();
             $tdForm->setStyle('padding-left:' . $cont['level'] * $this->_indentFactor . 'px');
 
+            // build buttons
             $tdButtons = new cHTMLTableData();
             $tdButtons->setAttribute('valign', 'top');
             $tdButtons->setStyle(' text-align: center');
@@ -245,6 +253,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $hiddenOnline = new cHTMLHiddenField('online');
             $hiddenMode = new cHTMLHiddenField('mode');
             $hiddenKey = new cHTMLHiddenField('key');
+            $hiddenaction = new cHTMLHiddenField('action');
 
             // set values
             $hiddenIdart->setValue($cont['idart']);
@@ -262,6 +271,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $hiddenOnline->setValue($cont['online']);
             $hiddenMode->setValue('edit');
             $hiddenKey->setValue($key);
+            $hiddenaction->setValue('edit');
 
             // append to hidden-fields to form
             $form->appendContent($hiddenIdart);
@@ -279,6 +289,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $form->appendContent($hiddenMode);
             $form->appendContent($hiddenOnline);
             $form->appendContent($hiddenKey);
+            $form->appendContent($hiddenaction);
 
             // generate output text
             $form->appendContent($date . " von " . $maili . " <br><br>");
@@ -305,6 +316,11 @@ class ArticleForumRightBottom extends cGuiPage {
         global $area;
         $changes = 0;
         $cfg = cRegistry::getConfig();
+
+        // echo '<pre>';
+        // var_dump($post);
+        // echo '</pre>';
+
         $menu = new cGuiMenu();
         $tr = new cHTMLTableRow();
 
@@ -318,6 +334,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $tr->appendContent($th);
         $tr->appendContent($th2);
 
+        // build form element
         $form1 = new cGuiTableForm("comment", "main.php?area=user_forum&frame=4", "post");
         $form1->addHeader($tr);
 
@@ -355,10 +372,12 @@ class ArticleForumRightBottom extends cGuiPage {
         if ($post['online'] == 1) {
             $onlineBox = new cHTMLCheckbox("onlineState", 'set_offline');
             $onlineBox->setChecked(false);
+            $onlineBox->setLabelText(UserForum::i18n('SETOFFLINE'));
             $form1->setVar("checked", "1");
         } else {
             $onlineBox = new cHTMLCheckbox("onlineState", 'set_online');
             $onlineBox->setChecked(false);
+            $onlineBox->setLabelText(UserForum::i18n('SETONLINE'));
             $form1->setVar("checked", "0");
         }
 
@@ -412,66 +431,68 @@ class ArticleForumRightBottom extends cGuiPage {
         }
     }
 
+    /**
+     * this function calls different actions depending on the received values
+     * via $_POST oder $_GET.
+     *
+     * @param $get
+     * @param $post
+     * @throws Exception
+     */
     public function receiveData(&$get, &$post) {
-
-        global $area;
-        $cfg = cRegistry::getConfig();
-        $client = cRegistry::getClientId();
-        $lang = cRegistry::getLanguageId();
-        if (isset($_POST['realname'])) {
-
-            $idcat = $_POST['idcat'];
-            $idart = $_POST['idart'];
-
-            if (isset($_POST['action']) && $_POST['action'] != NULL)
-                switch ($_POST['action']) {
-
-                    case 'online_toggle':
-                        echo 'online_toggle';
-                        $this->_collection->toggleOnlineState($_POST['online'], $_POST['id_user_forum']);
-                        break;
-                    case 'update':
-                        // echo $_POST['forum'];
-                        $this->_collection->updateValues($_POST['id_user_forum'], $_POST['realname'], $_POST['email'], $_POST['like'], $_POST['dislike'], $_POST['forum'], $_POST['online'], $_POST['onlineState']);
-                        break;
-                    default:
-                        throw new Exception('$_POST["action"] type ' . $_POST["action"] . ' not implemented');
-                }
-            if ($_POST['mode'] === 'list') {
-                $this->getForum($idcat, $idart, $lang);
-            } else {
-                $this->getEditModeMenu($_POST);
-            }
+        // debug infos
+        if (isset($_REQUEST['action']) && $_REQUEST['action'] != NULL) {
+            $this->switchActions();
         }
+    }
 
-        if (isset($_GET['idart']) && $_GET['idart'] !== NULL) {
-            $idart = $_GET['idart'];
-            $idcat = $_GET['idcat'];
+    protected function switchActions() {
+        // check bla
+        $lang = cRegistry::getLanguageId();
+        $idart = $_REQUEST['idart'];
+        $idcat = $_REQUEST['idcat'];
+        $action = $_REQUEST["action"];
 
-            if (isset($_GET['id_user_forum']) && isset($_GET['action'])) {
+        switch ($action) {
 
-                $action = $_GET["action"];
-                switch ($action) {
+            // after click on online button in std dialog
+            case 'online_toggle':
+                $this->_collection->toggleOnlineState($_REQUEST['online'], $_REQUEST['id_user_forum']);
+                $this->getForum($idcat, $idart, $lang);
+                break;
 
-                    case 'online_toggle':
-                        $this->_collection->toggleOnlineState($_GET['online'], $_GET['id_user_forum']);
-                        break;
-                    case 'deleteComment':
-                        $this->_collection->deleteHierarchie($_GET['key'], $_GET['level'], $idart, $idcat, $lang);
-                        // $this->render();
+            // only with ajax request useable.
+            // case 'online_toggle_editmode':
+            // $this->_collection->toggleOnlineState($_REQUEST['online'],
+            // $_REQUEST['id_user_forum']);
+            // var_dump ($_REQUEST['online']);
+            // $this->getEditModeMenu($_REQUEST);
+            // break;
 
-                        // $this->getForum($idcat, $idart, $lang);
-                        break;
-                    // case 'deleteComment':
-                    // $this->render();
-                    // break;
-
-                    default:
-                        throw new Exception('$_GET["action"] type ' . $_GET["action"] . ' not implemented');
-                }
-            }
-
-            $this->getForum($idcat, $idart, $lang);
+            // after click on delete button in std dialog
+            case 'deleteComment':
+                $this->_collection->deleteHierarchie($_REQUEST['key'], $_REQUEST['level'], $idart, $idcat, $lang);
+                $this->getForum($idcat, $idart, $lang);
+                break;
+            // after click on save button in edit dialog
+            case 'update':
+                $this->_collection->updateValues($_POST['id_user_forum'], $_POST['realname'], $_POST['email'], $_POST['like'], $_POST['dislike'], $_POST['forum'], $_POST['online'], $_POST['onlineState']);
+                $this->getForum($idcat, $idart, $lang);
+                break;
+            case 'show_form':
+                $this->getForum($idcat, $idart, $lang);
+                break;
+            case 'edit':
+                $this->getEditModeMenu($_POST);
+                break;
+            // cancel Button in edit dialog
+            case 'back':
+                $this->getForum($idcat, $idart, $lang);
+                break;
+                ;
+            default:
+                $this->getForum($idcat, $idart, $lang);
+                throw new Exception('$_GET["action"] type ' . $_REQUEST["action"] . ' not implemented');
         }
     }
 

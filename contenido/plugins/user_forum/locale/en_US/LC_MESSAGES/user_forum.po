@@ -17,6 +17,9 @@ msgstr ""
 
 ; class.article_forum_right_bottom.php
 
+msgid "STATUS"
+msgstr "State"
+
 msgid "EDIT"
 msgstr "edit"
 
@@ -43,6 +46,9 @@ msgstr "date"
 
 msgid "COMMENT"
 msgstr "comment"
+
+msgid "QUOTE"
+msgstr "qoute"
 
 msgid "TIME"
 msgstr "created"
@@ -104,3 +110,17 @@ msgstr "activate moderator mode"
 
 msgid "EDITABLE"
 msgstr "subcomments allowed"
+
+; class.article_forum_collection.php
+
+msgid "COMMENT"
+msgstr "comment"
+
+msgid "USER"
+msgstr "name"
+
+msgid "EMAIL"
+msgstr "email"
+
+msgid "NEWENTRYTEXT"
+msgstr "new comment with following content "

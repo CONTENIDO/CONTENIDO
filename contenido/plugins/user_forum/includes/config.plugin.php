@@ -3,7 +3,7 @@
 /**
  *
  * @package Plugin
- * @subpackage user forum
+ * @subpackage user_forum/includes/
  * @version SVN Revision $Rev:$
  * @author claus.schunk
  * @copyright four for business AG
@@ -12,46 +12,6 @@
 
 // assert CONTENIDO framework
 defined('CON_FRAMEWORK') or die('Illegal call');
-
-/**
- *
- * @author claus.schunk
- */
-class UserForum {
-
-    /**
-     * name of this plugin
-     *
-     * @var string
-     */
-    private static $_name = 'user_forum';
-
-    /**
-     */
-    public static function getName() {
-        return self::$_name;
-    }
-
-    public static function i18n($key) {
-        $trans = i18n($key, self::$_name);
-        return $trans;
-    }
-
-    /**
-     * Return URL to this plugins folder.
-     *
-     * @return string
-     */
-    public static function getUrl() {
-        $cfg = cRegistry::getConfig();
-
-        $path = cRegistry::getBackendUrl() . $cfg['path']['plugins'];
-        $path .= self::$_name . '/';
-
-        return $path;
-    }
-
-}
 
 // define plugin path
 $cfg['plugins']['user_forum'] = 'user_forum/';
@@ -70,6 +30,8 @@ cAutoload::addClassmapConfig(array(
     'ArticleForum' => $pluginClassPath . 'classes/class.article_forum.php',
     'ArticleForumLeftBottom' => $pluginClassPath . 'classes/class.article_forum_left_bottom.php',
     'ArticleForumRightBottom' => $pluginClassPath . 'classes/class.article_forum_right_bottom.php',
+    'ArticleForumItem' => $pluginClassPath .'classes/class.article_forum_item.php',
+    'UserForum' => $pluginClassPath .'classes/class.user_forum.php',
     'cContentTypeUserForum' => $pluginClassPath .'classes/class.content.type.user_forum.php'
 ));
 
