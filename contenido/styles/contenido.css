@@ -2211,6 +2211,11 @@ div.bulk_editing_functions a img {
     margin-bottom: 0.25em;
 }
 
+.vAlignTop {
+	vertical-align: top;
+	margin-top: 0.25em;
+}
+
 
 .password_request_input {
     vertical-align:top;
@@ -2242,10 +2247,74 @@ div.bulk_editing_functions a img {
     width: 380px;
 }
 
+.conEditForm input.shorter {
+	width: 380px;
+}
+
 .conEditForm select.categories {
     width: 200px;
 }
 
 .conEditForm textarea {
     width: 400px;
+}
+
+#cont_groups {
+	padding-left:15px;
+	border-top: 1px solid #B3B3B3;
+	padding-top: 5px;
+}
+
+#cont_groups span {
+	margin-left: 15px;
+} 
+
+.leftTopAction {
+	height: 2em;
+	border: 1px solid #B3B3B3;
+	padding: 5px 0 5px 16px;
+	margin-top: 1px;
+}
+
+.moduleError {
+	color: #B1AC58;
+}
+
+.moduleCriticalError {
+	color: red;
+}
+
+#myContenidoTodoButton {
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+.inactiveUser {
+	color: #b3b3b8;
+}
+
+.emptyCell {
+	border: 0;
+	border-bottom: 1px;
+	border-color: #B3B3B3;
+	border-style: solid;
+}
+
+.systemSetting {
+	vertical-align: middle;
+	margin-bottom: 0.25em;
+	
+	padding: 2px;
+}
+
+.unhighlighted {
+	color: grey;
+}
+
+.settingFine {
+	color: green;
+}
+
+.settingWrong {
+	color: red;
 }

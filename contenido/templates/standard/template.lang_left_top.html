@@ -15,15 +15,7 @@
     #top_left_container {border: 1px solid #B3B3B3; padding: 5px 0 5px 16px; margin-top: 1px;}
     #top_left_container .sel {clear: both;}
     </style>
-</head>
-<body>
-
-<div id="top_left_container">
-    {NEWLANG}
-    <div class="sel">{CLIENTSELECT}</div>
-</div>
-
-<script type="text/javascript">
+    <script type="text/javascript">
 var sessid = "{SESSID}";
 
 (function($) {
@@ -57,7 +49,7 @@ var sessid = "{SESSID}";
 
     $(document).ready(function() {
         // Resize frame
-        parent.parent.frameResize.resizeTopLeftFrame($("body").height() + 1);
+        parent.parent.frameResize.resizeTopLeftFrame($("#top_left_container").height() + 13);
 
         // Bind to create language click
         $("#top_left_container a.addfunction").click(_onCreateClick);
@@ -69,7 +61,13 @@ var sessid = "{SESSID}";
 })(jQuery);
 
 </script>
+</head>
+<body>
 
+<div id="top_left_container">
+    {NEWLANG}
+    {CLIENTSELECT}
+</div>
 </body>
 </html>
 <!--

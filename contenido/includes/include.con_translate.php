@@ -396,8 +396,9 @@ if (is_array($allLanguages)) {
         $formExtraLangs->setVar('extralang[]', $idExtraLang);
     }
 
-    $labelExtraLangs = new cHTMLLabel(i18n("New language for editing") . ': ', 'newlang');
-    $selectExtraLangs = new cHTMLSelectElement('extralang[]', 30, 'newlang');
+    $labelExtraLangs = new cHTMLSpan(i18n("New language for editing") . ': ', "vALignMiddle");
+    $selectExtraLangs = new cHTMLSelectElement('extralang[]', "100px", 'newlang');
+    $selectExtraLangs->setClass("vAlignTop");
 
     $sql = "SELECT
               A.name AS name, A.idlang AS idlang, B.idclientslang AS idclientslang
@@ -423,7 +424,7 @@ if (is_array($allLanguages)) {
             $countExtraLangOptions++;
         }
     }
-    $submitExtraLangs = new cHTMLButton('newlangsubmit', i18n("Add"), 'newlangsubmit', false, null, '', 'image');
+    $submitExtraLangs = new cHTMLButton('newlangsubmit', i18n("Add"), 'newlangsubmit', false, null, '', 'image', "vAlignTop tableElement");
     $submitExtraLangs->setImageSource($cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_art_new.gif');
 
     $formExtraLangs->setContent($labelExtraLangs->render() . $selectExtraLangs->render() . $submitExtraLangs->render());
@@ -539,7 +540,7 @@ $list->objRow->updateAttributes(array(
     'valign' => 'top'
 ));
 
-$submit = ' <input type="image" style="vertical-align:top;" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif">';
+$submit = ' <input type="image" class="vAlignTop" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif">';
 $counter = 1;
 
 foreach ($allTranslations as $hash => $translationArray) {

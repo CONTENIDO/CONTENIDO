@@ -121,7 +121,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
 
     $new = false;
 
-    updateClientCache($idclient, $htmlpath, $frontendpath);
+    $cfgClient = updateClientCache($idclient, $htmlpath, $frontendpath);
 
     $properties->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
 

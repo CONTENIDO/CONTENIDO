@@ -113,25 +113,30 @@
     </head>
     <body style="margin:10px">
         {NOTIFICATION}
-        {FORM}
-        <table class="generic" cellspacing="0" cellpadding="2" border="0">
-            <tr>
-                <th valign="top">{PROPERTY}</th>
-                <th valign="top" align="left">{VALUE}</th>
-            </tr>
-            <!-- BEGIN:BLOCK -->
-            <tr id="{ROW_ID}">
-                <td valign="top">{CATNAME}</td>
-                <td valign="top" align="left">{CATFIELD}</td>
-            </tr>
-            <!-- END:BLOCK -->
-            <tr class="text_medium" style="background-color:#FFFFFF;">
-                <td valign="top" style="border-right:0px; border-color:{BORDERCOLOR};">&nbsp;</td>
-                <td valign="top" style="border-color:{BORDERCOLOR};" align="right">
-                    <a href="{CANCELLINK}"><img border="0" src="images/but_cancel.gif" alt="{CANCELTEXT}" title="{CANCELTEXT}"></a><img src="images/spacer.gif" width="20"><input type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}" accesskey="s" border="0">
-                </td>
-            </tr>
-        </table>
-    </form>
+		<form name="user_properties" method="post" action="main.php?contenido=1">
+			<input type="hidden" name="area" value="{AREA}">
+			<input type="hidden" name="action" value="user_edit">
+			<input type="hidden" name="frame" value="{FRAME}">
+			<input type="hidden" name="userid" value="{USERID}">
+			<input type="hidden" name="idlang" value="{LANG}">
+	        <table class="generic" cellspacing="0" cellpadding="2" border="0">
+	            <tr>
+	                <th valign="top">{PROPERTY}</th>
+	                <th valign="top" align="left">{VALUE}</th>
+	            </tr>
+	            <!-- BEGIN:BLOCK -->
+	            <tr id="{ROW_ID}">
+	                <td valign="top">{CATNAME}</td>
+	                <td valign="top" align="left">{CATFIELD}</td>
+	            </tr>
+	            <!-- END:BLOCK -->
+	            <tr class="text_medium" style="background-color:#FFFFFF;">
+	                <td valign="top" style="border-right:0px; border-color:{BORDERCOLOR};">&nbsp;</td>
+	                <td valign="top" style="border-color:{BORDERCOLOR};" align="right">
+	                    <a href="{CANCELLINK}"><img border="0" src="images/but_cancel.gif" alt="{CANCELTEXT}" title="{CANCELTEXT}"></a><img src="images/spacer.gif" width="20"><input type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}" accesskey="s" border="0">
+	                </td>
+	            </tr>
+	        </table>
+	    </form>
 </body>
 </html>

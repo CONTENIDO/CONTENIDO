@@ -54,26 +54,13 @@ if ($action == 'user_delete') {
     $oRightColl = new cApiRightCollection();
     $oRightColl->deleteByUserId($userid);
 
-    $sNotification = $notification->displayNotification("info", i18n("User deleted"));
-    $sTemplate = '
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-    <title></title>
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <script type="text/javascript">
-        parent.parent.frames["left"].frames["left_bottom"].location.reload();
-    </script>
-</head>
-<body style="margin:10px">
-{NOTIFICATION}
-</body>
-</html>
-    ';
+    $page = new cGuiPage("rights_overview");
+    $page->displayInfo(i18n("User deleted"));
+    $page->setReload();
 
-    $tpl->reset();
-    $tpl->set('s', 'NOTIFICATION', $sNotification);
-    $tpl->generate($sTemplate);
+    $page->abortRendering();
+    $page->render();
+
     return;
 }
 
@@ -152,14 +139,10 @@ $tpl->reset();
 $tpl->set('s','SID', $sess->id);
 $tpl->set('s','NOTIFICATION', $sNotification);
 
-$form = '<form name="user_properties" method="post" action="'.$sess->url("main.php?").'">
-        <input type="hidden" name="area" value="'.$area.'">
-        <input type="hidden" name="action" value="user_edit">
-        <input type="hidden" name="frame" value="'.$frame.'">
-        <input type="hidden" name="userid" value="'.$userid.'">
-        <input type="hidden" name="idlang" value="'.$lang.'">';
-
-$tpl->set('s', 'FORM', $form);
+$tpl->set("s", "AREA", $area);
+$tpl->set("s", "FRAME", $frame);
+$tpl->set("s", "LANG", $lang);
+$tpl->set("s", "USERID", $userid);
 $tpl->set('s', 'GET_USERID', $userid);
 $tpl->set('s', 'SUBMITTEXT', i18n("Save changes"));
 $tpl->set('s', 'CANCELTEXT', i18n("Discard changes"));

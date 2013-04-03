@@ -34,8 +34,6 @@ $translationArray = $moduleTranslation->getTranslationArray();
 
 $page = new cGuiPage("mod_translate_stringlist");
 
-$v = '<table class="borderless" cellspacing="0" cellpadding="0" width="600">';
-
 $link = new cHTMLLink;
 $link->setCLink("mod_translate", 4, "");
 
@@ -56,13 +54,14 @@ foreach ($translationArray as $key => $value) {
         $style = "";
     }
 
-    $v .= '<tr class="' . $style . '"><td style="padding-left: 2px; padding-top:2px; padding-bottom: 2px;" width="50%"><a name="' . $rowCount . '"></a>' . $mylink->render() . '</td><td style="padding-left: 2px;">' . $value . '</td></tr>';
+    $page->set("d", "STYLE", $style);
+    $page->set("d", "TRANSLATION_LINK", $mylink->render());
+    $page->set("d", "TRANSLATION", $value);
+    $page->set("d", "ROWCOUNT", $rowCount);
+    $page->next();
+
     $rowCount++;
 }
-
-$v .= '</table>';
-
-$page->set("s", "FORM", $v);
 
 $clang = new cApiLanguage($lang);
 

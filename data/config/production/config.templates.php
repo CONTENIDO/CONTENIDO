@@ -150,5 +150,13 @@ $cfg['templates']['debug_visible']        = 'template.debug.visible.html';
 
 $cfg["templates"]["front_loginform"]     = "template.front.loginform.html";
 
-$cfg["templates"]["art_search"]           = "template.art_search_foldingrow.html";
+$cfg["templates"]["con_left_top_art_search"] = "template.con_left_top_art_search.html";
+$cfg["templates"]["con_left_top_cat_edit"] = "template.con_left_top_cat_edit.html";
+$cfg["templates"]["con_left_top_sync"] = "template.con_left_top_sync.html";
+
+$cfg["templates"]["frontend_left_top_filter"] = "template.frontend_left_top_filter.html";
+
+$cfg["templates"]["mod_left_top_filter"] = "template.mod_left_top_filter.html";
+
+$cfg["templates"]["rights_left_top_filter"] = "template.rights_left_top_filter.html";
 ?>

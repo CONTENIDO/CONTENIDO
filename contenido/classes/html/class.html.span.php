@@ -32,10 +32,11 @@ class cHTMLSpan extends cHTMLContentElement {
      * @param mixed $content String or object with the contents
      * @return void
      */
-    public function __construct($content = '') {
+    public function __construct($content = '', $class = "") {
         parent::__construct();
         $this->setContent($content);
         $this->_contentlessTag = false;
         $this->_tag = 'span';
+        $this->setClass($class);
     }
 }

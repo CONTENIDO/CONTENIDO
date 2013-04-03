@@ -41,7 +41,7 @@ $tpl->set('s', 'SESSID', $sess->id);
 
 $tpl->set('s', 'ACTION', $select);
 
-$tmp_mstr = '<div style="height:2em;line-height:2em;"><a class="addfunction" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a></div>';
+$tmp_mstr = '<div class="leftTopAction"><a class="addfunction" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a></div>';
 $area = "style";
 $mstr = sprintf($tmp_mstr, 'right_top',
                                    $sess->url("main.php?area=style&frame=3"),

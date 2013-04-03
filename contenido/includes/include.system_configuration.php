@@ -168,7 +168,6 @@ if (strpos($auth->auth['perm'], 'sysadmin') === false) {
 $groups = array();
 $currentGroup = '';
 $leftContent = '';
-$rowTemplate = '<p style="margin:0; padding:3px;">%s</p>';
 // iterate over all property types
 foreach ($propertyTypes as $type => $properties) {
     foreach ($properties as $name => $infos) {
@@ -193,7 +192,7 @@ foreach ($propertyTypes as $type => $properties) {
             $htmlElement = renderTextProperty($fieldName, $value, i18n($infos['label']));
         }
 
-        $groups[$infos['group']] .= sprintf($rowTemplate, $htmlElement['label'] . $htmlElement['input']);
+        $groups[$infos['group']] .= new cHTMLDiv($htmlElement['label'] . $htmlElement['input'], "systemSetting");
     }
 }
 

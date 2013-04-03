@@ -69,7 +69,7 @@ while (($layout = $oLayouts->next()) !== false) {
         $delDescr   = i18n("Layout is in use, cannot delete");
         $inUseDescr = i18n("Click for more information about usage");
         $inUseLink = '<a href="javascript:;" rel="' . $idlay . '" class="in_used_lay">'
-                   . '<img src="'.$cfg['path']['images'].'exclamation.gif" border="0" title="'.$inUseDescr.'" alt="'.$inUseDescr.'"></a>';
+                   . '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'exclamation.gif" border="0" title="'.$inUseDescr.'" alt="'.$inUseDescr.'"></a>';
         $tpl->set('d', 'INUSE', $inUseLink);
     } else {
         $tpl->set('d', 'INUSE', '');
@@ -79,10 +79,10 @@ while (($layout = $oLayouts->next()) !== false) {
         $delTitle = i18n("Delete layout");
         $delDescr = sprintf(i18n("Do you really want to delete the following layout:<br><br>%s<br>"), conHtmlentities(conHtmlSpecialChars($name)));
         $delLink  = '<a title="'.$delTitle.'" href="javascript://" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteLayout(' . $idlay . '); });return false;">'
-                  . '<img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
+                  . '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
         $tpl->set('d', 'DELETE', $delLink);
     } else {
-        $tpl->set('d', 'DELETE','<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$delDescr.'" alt="'.$delDescr.'">');
+        $tpl->set('d', 'DELETE','<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$delDescr.'" alt="'.$delDescr.'">');
     }
 
     $todo = new TODOLink('idlay', $idlay, i18n("Layout") . ': ' . $name, '');

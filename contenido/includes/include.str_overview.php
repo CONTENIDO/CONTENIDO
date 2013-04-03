@@ -141,7 +141,7 @@ function getStrExpandCollapseButton($item, $catName) {
             return '<a href="' . $collapselink . '">' . $img->render() . '</a>&nbsp;' . '<a href="' . $collapselink . '"' . $title . '>' . conHtmlSpecialChars($catName) . '</a>';
         }
     } else {
-        return '<img src="images/spacer.gif" style="padding:4px;" width="7" height="7">&nbsp;<span' . $title . '>' . conHtmlSpecialChars($catName) . '</span>';
+        return '<img src="images/spacer.gif" width="14" height="7">&nbsp;<span' . $title . '>' . conHtmlSpecialChars($catName) . '</span>';
     }
 }
 
@@ -208,7 +208,7 @@ function insertEmptyStrRow($listColumns) {
     $additionalColumns = array();
     foreach ($listColumns as $content) {
         // Content rows
-        $additionalColumns[] = '<td style="border:0;border-bottom:1px;border-color:#B3B3B3;border-style:solid;" nowrap="nowrap">&nbsp;</td>';
+        $additionalColumns[] = '<td class="emptyCell" nowrap="nowrap">&nbsp;</td>';
     }
     $tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $additionalColumns));
     $tpl->next();

@@ -36,9 +36,9 @@ if (!defined('CON_FRAMEWORK')) {
 $tpl->reset();
 
 if ((int) $client > 0) {
-    $tpl->set('s', 'ACTION', '<div style="height:2em;"><a class="addfunction" target="right_bottom" href="'.$sess->url("main.php?area=lay_edit&frame=4&action=lay_new").'">'.i18n("New Layout").'</a></div>');
+    $tpl->set('s', 'ACTION', '<a class="addfunction" target="right_bottom" href="main.php?area=lay_edit&frame=4&action=lay_new&contenido=1">'. i18n("New Layout") . '</a>');
     //synch button for layout
-    $tpl->set('s', 'ACTION2', '<div style="height:2em;"><a class="syncronizefunction" target="right_bottom" href="'.$sess->url("main.php?area=lay_edit&frame=4&action=lay_sync").'">'.i18n("Synchronize layouts").'</a></div>');
+    $tpl->set('s', 'ACTION2', '<a class="syncronizefunction" target="right_bottom" href="main.php?area=lay_edit&frame=4&action=lay_sync&contenido=1">' . i18n("Synchronize layouts") . '</a>');
 
 
 } else {

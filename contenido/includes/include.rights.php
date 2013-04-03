@@ -78,7 +78,7 @@ ob_start();
 $oTpl->set('s', 'RIGHTS_PERMS', $rights_perms);
 
 // Selectbox for clients
-$oHtmlSelect = new cHTMLSelectElement('rights_clientslang', '', 'rights_clientslang');
+$oHtmlSelect = new cHTMLSelectElement('rights_clientslang', '', 'rights_clientslang', false, null, "", "vAlignMiddle");
 
 $oClientColl = new cApiClientCollection();
 $clientList = $oClientColl->getAccessibleClients();
@@ -135,7 +135,7 @@ if (count($availableClients) > 1) {
 
     $oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
 } else {
-    $string = "<span style=\"vertical-align:middle;\">" . $availableClients[0]['value_name'] . " -> " . $availableClients[0]['lang_name'] . "</span>&nbsp;";
+    $string = "<span class='vAlignMiddle'>" . $availableClients[0]['value_name'] . " -> " . $availableClients[0]['lang_name'] . "</span>&nbsp;";
     $oTpl->set('s', 'INPUT_SELECT_CLIENT', $string);
 }
 

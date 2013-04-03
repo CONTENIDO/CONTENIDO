@@ -40,10 +40,10 @@ $tpl->reset();
 // New module link
 $str = '';
 if ((int) $client > 0) {
-    $str = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;line-height:100px;"><a style="margin-top:5px;" class="addfunction" target="right_bottom" href="' . $sess->url("main.php?area=mod_edit&frame=4&action=mod_new") . '">' . i18n("New module") . '</a> </div>';
-    $strSync = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;line-height:100px;"><a style="margin-top:5px;" class="syncronizefunction" target="right_bottom" href="' . $sess->url("main.php?area=mod_edit&frame=4&action=mod_sync") . '">' . i18n("Synchronize modules") . '</a></div>';
+    $str = '<div class="leftTopAction"><a class="addfunction" target="right_bottom" href="' . $sess->url("main.php?area=mod_edit&frame=4&action=mod_new") . '">' . i18n("New module") . '</a> </div>';
+    $strSync = '<div class="leftTopAction"><a class="syncronizefunction" target="right_bottom" href="' . $sess->url("main.php?area=mod_edit&frame=4&action=mod_sync") . '">' . i18n("Synchronize modules") . '</a></div>';
 } else {
-    $str = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;">' . i18n('No client selected') . '</div>';
+    $str = '<div class="leftTopAction">' . i18n('No client selected') . '</div>';
 }
 
 // Only show other options, if there is a active client
@@ -91,55 +91,25 @@ if ((int) $client > 0) {
     $oSelectTypeFilter->autoFill($aFilterType);
     $oSelectTypeFilter->setDefault($_REQUEST["filtertype"]);
     $oTextboxFilter = new cHTMLTextbox("filter", stripslashes($_REQUEST["filter"]), 15);
-    $content .= '<div style="border: 1px solid #B3B3B3;border-left:none;border-top:none;margin-bottom:1px;">';
-    // Ye stuff will be done in javascript on apply button
-    $content .= '<form action="javascript:execFilter(\'' . $sess->id . '\');" id="filter" name="filter" method="get">';
-    $content .= '<table class="borderless">';
-    $content .= '<input type="hidden" name="area" value="mod">';
-    $content .= '<input type="hidden" name="frame" value="1">';
-    $content .= '<input type="hidden" name="contenido" value="' . $sess->id . '">';
-    $content .= '<input type="hidden" name="' . $formcall . '" value="' . $formcall . '">';
-    $content .= '<input type="hidden" name="page" value="' . $_REQUEST["page"] . '">';
-    $content .= '<tr">';
-    $content .= '<td style="padding-left:15px;" nowrap>' . i18n("Items / page") . '</td>';
-    $content .= '<td>' . $oSelectItemsPerPage->render() . '</td>';
-    $content .= '</tr>';
-    $content .= '<tr>';
-    $content .= '<td style="padding-left:15px;">' . i18n("Sort by") . '</td>';
-    $content .= '<td>' . $oSelectSortBy->render() . '</td>';
-    $content .= '</tr>';
-    $content .= '<tr>';
-    $content .= '<td style="padding-left:15px;">' . i18n("Sort order") . '</td>';
-    $content .= '<td>' . $oSelectSortOrder->render() . '</td>';
-    $content .= '</tr>';
-    $content .= '<tr>';
-    $content .= '<td style="padding-left:15px;">' . i18n("Type filter") . '</td>';
-    $content .= '<td>' . $oSelectTypeFilter->render() . '</td>';
-    $content .= '</tr>';
-    $content .= '<tr>';
-    $content .= '<td style="padding-left:15px;">' . i18n("Search for") . '</td>';
-    $content .= '<td>' . $oTextboxFilter->render() . '</td>';
-    $content .= '</tr>';
-    $content .= '<td style="padding-left:15px;">' . i18n("Search in") . '</td>';
-    $content .= '<td>' . $oSelectSearchIn->render() . '</td>';
-    $content .= '</tr>';
-    $content .= '<tr>';
-    $content .= '<td style="padding-left:15px;">&nbsp;</td>';
-    $content .= '<td><input type="submit" value="' . i18n("Apply") . '"></td>';
-    $content .= '</tr>';
-    $content .= '</table>';
-    $content .= '</form>';
-    $content .= '</div>';
-    $oListOptionRow->setContentData($content);
+
+    $tplModFilter = new cTemplate();
+    $tplModFilter->set("s", "PAGE", $_REQUEST["page"]);
+    $tplModFilter->set("s", "ITEMS_PER_PAGE", $oSelectItemsPerPage->render());
+    $tplModFilter->set("s", "SORT_BY", $oSelectSortBy->render());
+    $tplModFilter->set("s", "SORT_ORDER", $oSelectSortOrder->render());
+    $tplModFilter->set("s", "TYPE_FILTER", $oSelectTypeFilter->render());
+    $tplModFilter->set("s", "SEARCH_FOR", $oTextboxFilter->render());
+    $tplModFilter->set("s", "SEARCH_IN", $oSelectSearchIn->render());
+    $oListOptionRow->setContentData($tplModFilter->generate($cfg["path"]["templates"] . $cfg["templates"]["mod_left_top_filter"], true));
 
     // Pager
-    $cApiModuleCollection = new cApiModuleCollection;
+    $cApiModuleCollection = new cApiModuleCollection();
     $cApiModuleCollection->setWhere("idclient", $client);
 
     $cApiModuleCollection->query();
     $iItemCount = $cApiModuleCollection->count();
 
-    $oPagerLink = new cHTMLLink;
+    $oPagerLink = new cHTMLLink();
     $pagerl = "pagerlink";
     $oPagerLink->setTargetFrame('left_bottom');
     $oPagerLink->setLink("main.php");
@@ -155,8 +125,7 @@ if ((int) $client > 0) {
 
     $tpl->set('s', 'PAGINGLINK', $pagerl);
 
-    $tpl->set('s', 'ACTION', $str . $strSync . '<table class="generic" style="margin-top:1px" border="0" cellspacing="0" cellpadding="0" width="100%">' . $oListOptionRow->render() . $oPager->render() . '</table>');
-    //$tpl->set('s', 'ACTION2', $str.'<table style="margin-top:1px" border="0" cellspacing="0" cellpadding="0" width="100%">'.$oListOptionRow->render().$oPager ->render().'</table>');
+    $tpl->set('s', 'ACTION', $str . $strSync . '<table class="generic" border="0" cellspacing="0" cellpadding="0" width="100%">' . $oListOptionRow->render() . $oPager->render() . '</table>');
 } else {
     $tpl->set('s', 'PAGINGLINK', '');
     $tpl->set('s', 'ACTION', $str);

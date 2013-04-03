@@ -110,8 +110,7 @@ foreach ($allModules as $idmod => $module) {
         $link->setCustom("idmod", $idmod);
         $link->updateAttributes(array(
             "alt" => htmlentities($module['description']),
-            "title" => htmlentities($module['description']),
-            "style" => "margin-left:5px"
+            "title" => htmlentities($module['description'])
         ));
 
         $sName = cString::stripSlashes(conHtmlSpecialChars($module ['name'])); //$cApiModule->get("name");
@@ -125,9 +124,9 @@ foreach ($allModules as $idmod => $module) {
             if ($inputok && $outputok) {        // Everything ok
                 $colName = $sName;            // The set default color: none :)
             } else if ($inputok || $outputok) {   // Input or output has a problem
-                $colName = '<span style="color:#B1AC58">' . $sName . '</span>';
+                $colName = '<span class="moduleError">' . $sName . '</span>';
             } else {                           // Input >and< output has a problem
-                $colName = '<span style="color:red">' . $sName . '</span>';
+                $colName = '<span class="moduleCriticalError">' . $sName . '</span>';
             }
         } else {
             // Do not check modules (or don't force it) - so, let's take a look into the database
@@ -136,9 +135,9 @@ foreach ($allModules as $idmod => $module) {
             if ($sModuleError == "none") {
                 $colName = $sName;
             } else if ($sModuleError == "input" || $sModuleError == "output") {
-                $colName = '<span style="color:#B1AC58">' . $sName . '</span>';
+                $colName = '<span class="moduleError">' . $sName . '</span>';
             } else {
-                $colName = '<span style="color:red">' . $sName . '</span>';
+                $colName = '<span class="moduleCriticalError">' . $sName . '</span>';
             }
         }
 

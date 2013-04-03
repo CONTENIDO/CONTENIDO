@@ -201,7 +201,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
         $tpl->set('s', 'NOTIFICATION', '');
     }
     // Page title
-    $title_input = '<input type="text" ' . $disabled . ' class="text_medium" name="page_title" style="width:400px;" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
+    $title_input = '<input type="text" ' . $disabled . ' class="text_medium" name="page_title" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
     $tpl->set("s", "TITLE-INPUT", $title_input);
 
     if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
@@ -223,13 +223,13 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
         switch ($value["fieldtype"]) {
             case "text":
                 if ($value["metatype"] == 'date') {
-                    $element = '<input ' . $disabled . ' class="text_medium" type="text" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" style="width:380px;" maxlength=' . $value["maxlength"] . ' value="' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '">';
+                    $element = '<input ' . $disabled . ' class="text_medium shorter" type="text" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" maxlength=' . $value["maxlength"] . ' value="' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '">';
                 } else {
-                    $element = '<input ' . $disabled . ' class="text_medium" type="text" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" style="width:400px;" maxlength=' . $value["maxlength"] . ' value="' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '">';
+                    $element = '<input ' . $disabled . ' class="text_medium" type="text" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" maxlength=' . $value["maxlength"] . ' value="' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '">';
                 }
                 break;
             case "textarea":
-                $element = '<textarea ' . $disabled . ' class="text_medium" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" style="width:400px;" rows=3>' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '</textarea>';
+                $element = '<textarea ' . $disabled . ' class="text_medium" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" rows=3>' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '</textarea>';
                 break;
         }
 
@@ -256,7 +256,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
 
     // Summary
     $tpl->set('s', 'SUMMARY', i18n("Summary"));
-    $tpl->set('s', 'SUMMARY-INPUT', '<textarea ' . $disabled . ' style="width:400px" class="text_medium" name="summary" cols="50" rows="5">' . $tmp_summary . '</textarea>');
+    $tpl->set('s', 'SUMMARY-INPUT', '<textarea ' . $disabled . ' class="text_medium" name="summary" cols="50" rows="5">' . $tmp_summary . '</textarea>');
 
     $sql = "SELECT
                 b.idcat
@@ -358,7 +358,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
             }
 
             if (!is_array($result[$db->f("Field")])) {
-                $str = '<input type="text" onblur="restoreOnBlur(this, \'' . $result[$db->f("Field")] . '\')" onfocus="clearOnFocus(this, \'' . $result[$db->f("Field")] . '\');" value="' . $result[$db->f("Field")] . '" maxlength="255" style="width:100%;" id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '" class="text_medium">';
+                $str = '<input type="text" onblur="restoreOnBlur(this, \'' . $result[$db->f("Field")] . '\')" onfocus="clearOnFocus(this, \'' . $result[$db->f("Field")] . '\');" value="' . $result[$db->f("Field")] . '" maxlength="255" id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '" class="text_medium">';
             } else {
                 $str = '<select id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '">';
                 foreach ($result[$db->f("Field")] as $item) {

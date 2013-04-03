@@ -200,6 +200,10 @@ class cGuiPage {
      * NOTE: This function will also add inline JavaScript in the form of
      * "<script...". However this shouldn't be used.
      *
+     * If the page was constructed in a plugin and the plugin name was given
+     * in the constructor it will find the JS script in plugins/PLUGINNAME/scripts/
+     * too.
+     *
      * @param string $script The filename of the script. It has to reside in
      *        /scripts/ in order to be found.
      */
@@ -209,6 +213,9 @@ class cGuiPage {
         $backendPath = cRegistry::getBackendPath();
 
         if (strpos(trim($script), 'http') === 0 || strpos(trim($script), '<script') === 0 || strpos(trim($script), '//') === 0) {
+            if(strpos(trim($script), '<script') === 0) {
+                cDeprecated("You shouldn't use inline JS for backend pages");
+            }
             // the given script path is absolute
             $this->_scripts[] = $script;
         } else if (cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['scripts'] . $script)) {
@@ -501,7 +508,6 @@ class cGuiPage {
             } else if (strpos($script, "<script") === false) {
                 $strscript .= '<script type="text/javascript" src="scripts/' . $script . '"></script>' . "\n";
             } else {
-                cDeprecated("You shouldn't use inline JS for the backend pages.");
                 $strscript .= $script;
             }
         }

@@ -289,7 +289,7 @@ while ($todo = $todoitems->next()) {
         }
 
         $link->setCustom("idcommunication", $todo->get("idcommunication"));
-        $link->setContent('<img src="images/but_todo.gif" border="0" style="padding-top: 2px; padding-bottom: 2px;">');
+        $link->setContent('<img id="myContenidoTodoButton" src="images/but_todo.gif" border="0">');
 
         $mimg = $link->render();
 

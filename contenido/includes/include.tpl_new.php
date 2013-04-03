@@ -4,7 +4,7 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Link für "neues Template"
+ * Link fï¿½r "neues Template"
  *
  * Requirements:
  * @con_php_req 5.0
@@ -36,7 +36,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 $tpl->reset();
 if ((int) $client > 0) {
-    $tpl->set('s', 'ACTION', '<div style="height:2em"><a class="addfunction" target="right_bottom" href="'.$sess->url("main.php?area=tpl_edit&frame=4&action=tpl_new").'">'.i18n("New template").'</a></div>');
+    $tpl->set('s', 'ACTION', '<a class="addfunction" target="right_bottom" href="'.$sess->url("main.php?area=tpl_edit&frame=4&action=tpl_new").'">'.i18n("New template").'</div>');
 } else {
     $tpl->set('s', 'ACTION', i18n('No Client selected'));
 }

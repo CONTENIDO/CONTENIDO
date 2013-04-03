@@ -100,39 +100,13 @@ if (!isset($row)) {
     }
 }
 
+$page->set("s", "IDMOD", $idmod);
+$page->set("s", "ROW", $row);
+$page->set("s", "HEADER", sprintf(i18n("Translate module '%s'"), $module->get('name')));
+$page->set("s", "TRANSLATION_FOR", sprintf(i18n("Translation for %s"), $langstring));
+$page->set("s", "LAST_STRING", conHtmlSpecialChars($lastString));
+$page->set("s", "LAST_TRANSLATION", conHtmlSpecialChars($lastTranslation));
 
-$form = new cGuiTableForm('translation');
-$form->setTableid('mod_translate');
-$form->addHeader(sprintf(i18n("Translate module '%s'"), $module->get('name')));
-$form->setVar('area', $area);
-$form->setVar('frame', $frame);
-$form->setVar('idmod', $idmod);
-//$form->setVar('idmodtranslation', $idmodtranslation);
-$form->setVar('row', $row);
-$form->setVar('action', 'mod_translation_save');
-
-$ilink = new cHTMLLink;
-$ilink->setCLink('mod_translate', 5, '');
-$ilink->setCustom('idmod', $idmod);
-$ilink->setCustom('row', $row);
-//$ilink->setCustom('idmodtranslation', $mtrans->get('idmodtranslation'));
-$ilink->setAnchor($row); //$mtrans->get('idmodtranslation'));
-
-$iframe = '<iframe frameborder="0" style="border:1px solid black;" width="620" src="' . $ilink->getHREF() . '"></iframe>';
-
-$table = '<table border="0" width="600" border="0"><tr><td width="50%">' . i18n("Original module string") . '</td><td width="50%">' . sprintf(i18n("Translation for %s"), $langstring) . '</td><td width="20">&nbsp;</td></tr><tr><td colspan="3">' . $iframe . '</td></tr>';
-
-$original = new cHTMLTextarea('t_orig', conHtmlSpecialChars($lastString)); ////$mtrans->get('original')));
-$original->setStyle('width:300px;');
-
-$translated = new cHTMLTextarea('t_trans', conHtmlSpecialChars($lastTranslation)); //$mtrans->get('translation')));
-$translated->setStyle('width:300px;');
-
-$table .= '<tr><td>' . $original->render() . '</td><td>' . $translated->render() . '</td><td width="20">&nbsp;</td></tr></table>';
-$table .= i18n("Hint: Hit ALT+SHIFT+S to save the translated entry and advance to the next string.");
-$form->add(i18n("String list"), $table);
-
-$page->set("s", "FORM", $form->render());
 $page->setMarkScript(2);
 $page->setEncoding($langobj->get('encoding'));
 

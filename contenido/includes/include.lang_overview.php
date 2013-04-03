@@ -67,7 +67,7 @@ while ($db->nextRecord()) {
     $deleteAct = i18n("Delete language");
     $deletebutton = '<a title="' . $deleteAct . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $deleteMsg . '&quot;, function() { deleteLang(' . $db->f('idlang') . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $deleteAct . '" alt="' . $deleteAct . '"></a>';
 
-    $tpl->set('d', 'LANGUAGE', '<a target="right_bottom" href="' . $sess->url("main.php?area=lang_edit&idlang=$idlang&targetclient=$targetclient&frame=4") . '">' . $db->f("name") . '&nbsp;<span style="font-size:10px">(' . $idlang . ')</span></a>');
+    $tpl->set('d', 'LANGUAGE', '<a target="right_bottom" href="' . $sess->url("main.php?area=lang_edit&idlang=$idlang&targetclient=$targetclient&frame=4") . '">' . $db->f("name") . '&nbsp;<span>(' . $idlang . ')</span></a>');
     $tpl->set('d', 'ACTIVATEBUTTON', $active);
     $tpl->set('d', 'DELETEBUTTON', $deletebutton);
 

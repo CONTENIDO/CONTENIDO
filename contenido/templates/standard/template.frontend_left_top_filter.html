@@ -1,0 +1,37 @@
+<div style="margin-left: 17px;">
+	<form action="javascript:execFilter();" id="filter" name="filter" method="get">
+		<input type="hidden" name="area" value="{AREA}">
+		<input type="hidden" name="frame" value="1">
+		<input type="hidden" name="contenido" value="1">
+		<table>
+			<tr>
+				<td>i18n("Items / page")</td>
+				<td>{ITEMS_PER_PAGE}</td>
+			</tr>
+			<tr>
+				<td>i18n("Sort by")</td>
+				<td>{SORT_BY}</td>
+			</tr>
+			<tr>
+				<td>i18n("Sort order")</td>
+				<td>{SORT_ORDER}</td>
+			</tr>
+			<tr>
+				<td>i18n("Show group")</td>
+				<td>{FILTER_GROUP}</td>
+			</tr>
+			<tr>
+				<td>i18n("Search for")</td>
+				<td>{FILTER_USER}</td>
+			</tr>
+			<tr>
+				<td>i18n("Search in")</td>
+				<td>{SEARCH_IN}</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><input type="submit" value="i18n("Apply")"></td>
+			</tr>
+		</table>
+	</form>
+</div>

@@ -388,11 +388,11 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $form->add(i18n("Description"), $descr->render());
 
     if ($sOptionDebugRows == "always" || ($sOptionDebugRows == "onerror" && (!$inputok || !$outputok))) {
-        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">' . i18n("Input") . '</td><td style="vertical-align: top;">' . $inled . '</td><td style="padding-left: 5px; vertical-align: top;">' . $oInputRows->render() . '</td></tr></table>', $input->render());
-        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">' . i18n("Output") . '</td><td style="vertical-align: top;">' . $outled . '</td><td style="padding-left: 5px; vertical-align: top;">' . $oOutputRows->render() . '</td></tr></table>', $output->render());
+        $form->add(i18n("Input") . $inled .  $oInputRows->render(), $input->render());
+        $form->add(i18n("Output") . $outled . $oOutputRows->render(), $output->render());
     } else {
-        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">' . i18n("Input") . '</td><td style="vertical-align: top;">' . $inled . '</td></tr></table>', $input->render());
-        $form->add('<table class="borderless" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">' . i18n("Output") . '</td><td style="vertical-align: top;">' . $outled . '</td></tr></table>', $output->render());
+        $form->add(i18n("Input") . $inled, $input->render());
+        $form->add(i18n("Output"). $outled, $output->render());
     }
 
     if ($module->isOldModule()) {

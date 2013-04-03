@@ -109,8 +109,8 @@ $clients = $clientCollection->getAccessibleClients();
 $cApiClient = new cApiClient();
 
 if (count($clients) > 1) {
-    $clientform = '<form style="margin: 0px" name="clientselect" method="post" target="_top" action="' . $sess->url('index.php') . '">';
     $select = new cHTMLSelectElement('changeclient');
+    $select->setClass("vAlignMiddle");
     $choices = array();
     $warnings = array();
 
@@ -126,22 +126,18 @@ if (count($clients) > 1) {
 
     $clientselect = $select->render();
 
-    $page->set('s', 'CLIENTFORM', $clientform);
-    $page->set('s', 'CLIENTFORMCLOSE', '</form>');
     $page->set('s', 'CLIENTSDROPDOWN', $clientselect);
 
     if ($perm->have_perm() && count($warnings) > 0) {
         $page->displayWarning(implode('<br>', $warnings));
     }
-    $page->set('s', 'OKBUTTON', '<input type="image" src="images/but_ok.gif" alt="' . i18n('Change client') . '" title="' . i18n('Change client') . '" border="0">');
+    $page->set('s', 'OKBUTTON', '<input class="vAlignMiddle" type="image" src="images/but_ok.gif" alt="' . i18n('Change client') . '" title="' . i18n('Change client') . '" border="0">');
 } else {
     $page->set('s', 'OKBUTTON', '');
-    $sClientForm = '';
+    $name = '';
     if (count($clients) == 0) {
-        $sClientForm = i18n('No clients available!');
+        $name = i18n('No clients available!');
     }
-    $page->set('s', 'CLIENTFORM', $sClientForm);
-    $page->set('s', 'CLIENTFORMCLOSE', '');
 
     foreach ($clients as $key => $v_client) {
         if ($perm->hasClientPermission($key)) {

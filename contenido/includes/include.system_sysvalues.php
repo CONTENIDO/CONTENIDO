@@ -90,7 +90,7 @@ foreach ($aServerConfiguration as $aConfData) {
     if (isset($aChecks[$aConfData[2]])) {
         $sValue = str_replace(
             $aChecks[$aConfData[2]],
-            '<span style="color:grey">' . $aChecks[$aConfData[2]] . '</span>',
+            '<span class="unhighlighted">' . $aChecks[$aConfData[2]] . '</span>',
             $sValue
         );
     }
@@ -172,17 +172,17 @@ foreach ($aPhpConfiguration as $sConfigName) {
 
     if ($sConfigName == 'disable_classes' || $sConfigName == 'disable_functions') {
         if ($sValue == '') {
-            $sValue = '<span style="color:green">' . i18n('nothing disabled') . "</span>";
+            $sValue = '<span class="settingFine">' . i18n('nothing disabled') . "</span>";
         } else {
-            $sValue = '<span style="color:red">' . str_replace(',', ', ', $sValue) . "</span>";
+            $sValue = '<span class="settingWrong">' . str_replace(',', ', ', $sValue) . "</span>";
         }
     }
 
     if ($sConfigName == 'sql.safe_mode') {
         if ($sValue == 1) {
-            $sValue = '<span style="color:red">' . i18n('activated') . "</span>";
+            $sValue = '<span class="settingWrong">' . i18n('activated') . "</span>";
         } else {
-            $sValue = '<span style="color:green">' . i18n('deactivated') . "</span>";
+            $sValue = '<span class="settingFine">' . i18n('deactivated') . "</span>";
         }
     }
 
@@ -193,7 +193,7 @@ foreach ($aPhpConfiguration as $sConfigName) {
 
 $extensions = get_loaded_extensions();
 sort($extensions);
-$oTpl2->set('s', 'ADDITIONAL', '<tr><td style="border:1px;border-top:0px;border-color:#B3B3B3;border-style:solid;" colspan="2"><b>' . i18n('Loaded extensions') . ':</b><br>' . implode(', ', $extensions) . '</td></tr>');
+$oTpl2->set('s', 'ADDITIONAL', '<tr><td colspan="2"><b>' . i18n('Loaded extensions') . ':</b><br>' . implode(', ', $extensions) . '</td></tr>');
 
 $sPhpConfig = $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['system_variables_block'], 1);
 $tpl->set('s', 'PHP_CONFIGURATION', $sPhpConfig);

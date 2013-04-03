@@ -119,14 +119,14 @@ $grouplink = "javascript:conMultiLink('left_bottom','main.php?area=frontendgroup
 $imgUserId = 'img_user';
 $tpl->set('s', 'IUSER', $imgUserId);
 
-$buttonRow .= '<a style="margin-right:5px;" href="' . $userlink . '" onclick="toggleContainer(\'' . $imgUserId . '\');">';
+$buttonRow .= '<a href="' . $userlink . '" onclick="toggleContainer(\'' . $imgUserId . '\');">';
 $buttonRow .= '<img onmouseover="hoverEffect(\'' . $imgUserId . '\', \'in\')" onmouseout="hoverEffect(\'' . $imgUserId . '\', \'out\')" alt="' . i18n("Frontend users") . '" title="' . i18n("Frontend users") . '" id="' . $imgUserId . '" src="' . $cfg["path"]["images"] . 'users.gif">';
 $buttonRow .= '</a>';
 
 // Frontend Groups
 $imgGroupId = 'img_group';
 $tpl->set('s', 'IGROUP', $imgGroupId);
-$buttonRow .= '<a style="margin-right:5px;" href="' . $grouplink . '" onclick="toggleContainer(\'' . $imgGroupId . '\');">';
+$buttonRow .= '<a class="tableElement" href="' . $grouplink . '" onclick="toggleContainer(\'' . $imgGroupId . '\');">';
 $buttonRow .= '<img onmouseover="hoverEffect(\'' . $imgGroupId . '\', \'in\')" onmouseout="hoverEffect(\'' . $imgGroupId . '\', \'out\')" alt="' . i18n("Frontend groups") . '" title="' . i18n("Frontend groups") . '" id="' . $imgGroupId . '" src="' . $cfg["path"]["images"] . 'groups.gif">';
 $buttonRow .= '</a>';
 
@@ -225,45 +225,15 @@ $oSelectRestrictGroup->autoFill($aFEGroups);
 $oSelectRestrictGroup->setDefault($_REQUEST["restrictgroup"]);
 $oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 20);
 
-$content = '<div style="margin-left: 17px;">';
-// Ye stuff will be done in javascript on apply button
-$content .= '<form action="javascript:execFilter();" id="filter" name="filter" method="get">';
-$content .= '<table>';
-$content .= '<input type="hidden" name="area" value="' . $area . '">';
-$content .= '<input type="hidden" name="frame" value="1">';
-$content .= '<input type="hidden" name="contenido" value="' . $sess->id . '">';
-$content .= '<tr>';
-$content .= '<td>' . i18n("Items / page") . '</td>';
-$content .= '<td>' . $oSelectItemsPerPage->render() . '</td>';
-$content .= '</tr>';
-$content .= '<tr>';
-$content .= '<td>' . i18n("Sort by") . '</td>';
-$content .= '<td>' . $oSelectSortBy->render() . '</td>';
-$content .= '</tr>';
-$content .= '<tr>';
-$content .= '<td>' . i18n("Sort order") . '</td>';
-$content .= '<td>' . $oSelectSortOrder->render() . '</td>';
-$content .= '</tr>';
-$content .= '<tr>';
-$content .= '<td>' . i18n("Show group") . '</td>';
-$content .= '<td>' . $oSelectRestrictGroup->render() . '</td>';
-$content .= '</tr>';
-$content .= '<tr>';
-$content .= '<td>' . i18n("Search for") . '</td>';
-$content .= '<td>' . $oTextboxFilter->render() . '</td>';
-$content .= '</tr>';
-$content .= '<tr>';
-$content .= '<td>' . i18n("Search in") . '</td>';
-$content .= '<td>' . $oSelectSearchIn->render() . '</td>';
-$content .= '</tr>';
-$content .= '<tr>';
-$content .= '<td>&nbsp;</td>';
-$content .= '<td><input type="submit" value="' . i18n("Apply") . '"></td>';
-$content .= '</tr>';
-$content .= '</table>';
-$content .= '</form>';
-$content .= '</div>';
-$oListOptionRow->setContentData($content);
+$tplFilter = new cTemplate();
+$tplFilter->set("s", "ITEMS_PER_PAGE", $oSelectItemsPerPage->render());
+$tplFilter->set("s", "SORT_BY", $oSelectSortBy->render());
+$tplFilter->set("s", "SORT_ORDER", $oSelectSortOrder->render());
+$tplFilter->set("s", "FILTER_GROUP", $oSelectRestrictGroup->render());
+$tplFilter->set("s", "FILTER_USER", $oTextboxFilter->render());
+$tplFilter->set("s", "SEARCH_IN", $oSelectSearchIn->render());
+$oListOptionRow->setContentData($tplFilter->generate($cfg["path"]["templates"] . $cfg["templates"]["frontend_left_top_filter"], true));
+
 $oFEUsers = new cApiFrontendUserCollection();
 $oFEUsers->setWhere("cApiFrontendUserCollection.idclient", $client);
 
@@ -446,8 +416,8 @@ $tpl->set('s', 'ID_USERS', $containerUsersId);
 // Container Groups
 // #####################
 $containerGroupsId = 'cont_groups';
-$containerGroups = '<div id="' . $containerGroupsId . '" style="padding-left:15px; border-top: 1px solid #B3B3B3;padding-top: 5px;">';
-$containerGroups .= '<span style="margin-left:15px">' . $menu->render(false) . '</span>';
+$containerGroups = '<div id="' . $containerGroupsId . '"';
+$containerGroups .= '<span>' . $menu->render(false) . '</span>';
 $containerGroups .= '</div>';
 $tpl->set('s', 'CGROUPS', $containerGroups);
 $tpl->set('s', 'ID_GROUPS', $containerGroupsId);

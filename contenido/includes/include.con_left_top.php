@@ -249,7 +249,7 @@ foreach ($savedSearchList as $value) {
     }
 }
 
-$oListOptionRow->setContentData($tplSearch->generate($cfg['path']['templates'] . $cfg["templates"]["art_search"], true));
+$oListOptionRow->setContentData($tplSearch->generate($cfg['path']['templates'] . $cfg["templates"]["con_left_top_art_search"], true));
 
 $sSelfLink = 'main.php?area=' . $area . '&frame=2&' . $sess->name . "=" . $sess->id;
 $tpl->set('s', 'SELFLINK', $sSelfLink);
@@ -291,41 +291,16 @@ while ($db->nextRecord()) {
     $tpl->next();
 }
 // Template Dropdown
-$editCat = '<div style="height:110px;padding-top:5px; padding-left: 17px; margin-bottom:-1px; border-right:1px solid #B3B3B3">';
-$editCat .= i18n("Template:") . "<br>";
-$editCat .= '<div style="">';
-$editCat .= $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
-$editCat .='<a id="changetpl" href="#"><img style="vertical-align: middle;" src="images/submit.gif" border="0"></a><br>';
-$editCat .= '</div>';
-// Category
-$editCat .= '<div style="margin: 5px 0 5px 0;">';
+$tplCatConfig = new cTemplate();
+$tplCatConfig->set("s", "TEMPLATE_SELECT", $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true));
+
+$editCategory->setContentData($tplCatConfig->generate($cfg["path"]["templates"] .  $cfg['templates']['con_left_top_cat_edit'], true));
+
 $tpl->set('s', 'CAT_HREF', $sess->url("main.php?area=con_tplcfg&action=tplcfg_edit&frame=4&mode=art") . '&idcat=');
 $tpl->set('s', 'IDCAT', $idcat);
-$editCat .= '<div id="oTemplatecfg_label"><a href="javascript:configureCategory();"><img style="vertical-align: middle;" id="oTemplatecfg" vspace="3" hspace="2" src="' . $cfg["path"]["images"] . 'but_cat_conf2.gif" border="0" title="' . i18n("Configure category") . '" alt="' . i18n("Configure Category") . '"><a>';
-$editCat .= '<a href="javascript:configureCategory();">' . i18n("Configure category") . '</a></div>';
-// Online / Offline
-$editCat .= '<div id="oOnline_label"><a href="#"><img style="vertical-align: middle;" id="oOnline" src="images/offline.gif" vspace="2" hspace="2" border="0" title="' . i18n("Online / Offline") . '" alt="' . i18n("Online / Offline") . '"></a>';
-$editCat .= '<a href="#">' . i18n("Online / Offline") . '</a></div>';
-// Lock / Unlock
-$editCat .= '<div id="oLock_label"><a href="#"><img style="vertical-align: middle;" id="oLock" src="images/folder_lock.gif" vspace="2" hspace="2"  border="0" title="' . i18n("Lock / Unlock") . '" alt="' . i18n("Lock / Unlock") . '"></a>';
-$editCat .= '<a href="#">' . i18n("Lock / Unlock") . '</a></div>';
-$editCat .= '<br>';
-$editCat .= '</div>';
-$editCat .= '</div>';
-
-$editCategory->setContentData($editCat);
 
 $tpl->set('s', 'EDIT', $editCategory->render());
 $tpl->set('s', 'CATEGORYLINK', $categoryLink);
-
-// Collapse / Expand / Config Category
-$selflink = "main.php";
-$expandlink = $sess->url($selflink . "?area=$area&frame=2&expand=all");
-$collapselink = $sess->url($selflink . "?area=$area&frame=2&collapse=all");
-$collapseimg = '<a target="left_bottom" class="black" id="collapser" href="' . $collapselink . '" alt="' . i18n("close all") . '" title="' . i18n("Close all categories") . '"><img src="images/close_all.gif" border="0">&nbsp;' . i18n("close all") . '</a>';
-$expandimg = '<a target="left_bottom"class="black" id="expander" href="' . $expandlink . '" alt="' . i18n("open all") . '" title="' . i18n("Open all categories") . '"><img src="images/open_all.gif" border="0">&nbsp;' . i18n("open all") . '</a>';
-$tpl->set('s', 'MINUS', $collapseimg);
-$tpl->set('s', 'PLUS', $expandimg);
 
 //  SYNCSTUFF
 $languages = getLanguageNamesByClient($client);
@@ -337,47 +312,29 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
         $oListOptionRow->setExpanded(true);
     }
 
-    #'dir="' . langGetTextDirection($lang) . '"');
-
     $selectbox = new cHTMLSelectElement("syncoptions");
 
     $option = new cHTMLOptionElement("--- " . i18n("None") . " ---", -1);
     $selectbox->addOptionElement(-1, $option);
-
     foreach ($languages as $languageid => $languagename) {
         if ($lang != $languageid && $perm->have_perm_client_lang($client, $languageid)) {
             $option = new cHTMLOptionElement($languagename . " (" . $languageid . ")", $languageid);
             $selectbox->addOptionElement($languageid, $option);
         }
     }
-
     $selectbox->setDefault($syncoptions);
-    $form = new cHTMLForm("syncfrom");
-    $form->setVar("area", $area);
-    $form->setVar("frame", $frame);
-    $form->appendContent($selectbox->render());
+
+    $tplSync = new cTemplate();
+    $tplSync->set("s", "TEXT_DIRECTION", langGetTextDirection($lang));
+    $tplSync->set("s", "AREA", $area);
+    $tplSync->set("s", "FRAME", $frame);
+    $tplSync->set("s", "SELECTBOX", $selectbox->render());
+
+    $oListOptionRow->setContentData($tplSync->generate($cfg["path"]["templates"] . $cfg["templates"]["con_left_top_sync"], true));
+
     $link = $sess->url("main.php?area=" . $area . "&frame=2") . '&syncoptions=';
     $sJsLink = 'conMultiLink(\'left_bottom\', \'' . $link . '\'+document.getElementsByName(\'syncoptions\')[0].value+\'&refresh_syncoptions=true\');';
     $tpl->set('s', 'UPDATE_SYNC_REFRESH_FRAMES', $sJsLink);
-
-    $form->appendContent('<img style="vertical-align:middle; margin-left:5px;" onMouseover="this.style.cursor=\'pointer\'" onclick="updateCurLanguageSync();" src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'submit.gif">');
-
-    $sSyncButton = '<div id="sync_cat_single" style="display:none;"><a href="javascript:generateSyncAction(0);"><img style="vertical-align: middle;" src="images/but_sync_cat.gif" vspace="2" hspace="2" border="0" title="' . i18n("Copy to current language") . '" alt="' . i18n("Copy to current language") . '"></a>';
-    $sSyncButton .= '<a href="javascript:generateSyncAction(0);">' . i18n("Copy to current language") . '</a></div>';
-    $sSyncButtonMultiple = '<div id="sync_cat_multiple" style="display:none;"><a href="javascript:generateSyncAction(1);"><img style="vertical-align: middle;" src="images/but_sync_cat.gif" vspace="2" hspace="2" border="0" title="' . i18n("Also copy subcategories") . '" alt="' . i18n("Also copy subcategories") . '"></a>';
-    $sSyncButtonMultiple .= '<a href="javascript:generateSyncAction(1);">' . i18n("Also copy subcategories") . '</a></div>';
-
-    $content = '<table class="borderless" style="padding:3px; margin-left:12px; border-right: 1px solid #B3B3B3;" width="100%" border="0" dir="' . langGetTextDirection($lang) . '">
-                    <tr>
-                        <td>' . $form->render() . '</td>
-                    </tr>
-                    <tr>
-                        <td>' . $sSyncButton . $sSyncButtonMultiple . '</td>
-                    </tr>
-                </table>';
-
-    $oListOptionRow->setContentData($content);
-
     $tpl->set('s', 'SYNCRONIZATION', $oListOptionRow->render());
     $tpl->set('s', 'SYNCLINK', $sListId);
     $sSyncLink = $sess->url($selflink . "?area=$area&frame=2&action=con_synccat");
@@ -388,6 +345,13 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
     $tpl->set('s', 'SYNC_HREF', '');
 }
 
+// Collapse / Expand / Config Category
+$selflink = "main.php";
+$expandlink = $sess->url($selflink . "?area=$area&frame=2&expand=all");
+$collapselink = $sess->url($selflink . "?area=$area&frame=2&collapse=all");
+$tpl->set('s', 'COLLAPSE_LINK', $collapselink);
+$tpl->set('s', 'EXPAND_LINK', $expandlink);
+
 // necessary for expanding/collapsing of navigation tree per javascript/AJAX (I. van Peeren)
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'SESSION', $contenido);
@@ -397,20 +361,23 @@ $tpl->set('s', 'AJAXURL', cRegistry::getBackendUrl() . 'ajaxmain.php');
 $legendlink = 'legend';
 $editCategory = new cGuiFoldingRow("31f52be2-7499-4d21-8175-3917129e6014", i18n("Legend"), $legendlink);
 
-$editLegend = '<div id="legend">';
+$divLegend = new cHTMLDiv("", "", "legend");
 
 $aInformation = array('imgsrc', 'description');
 $aData = xmlFileToArray($cfg['path']['xml'] . "legend.xml", $aData, $aInformation);
 
 foreach ($aData as $key => $item) {
-    $editLegend .= '<table class=' . $key . '>';
+    $divKey = new cHTMLDiv("", $key);
     foreach ($item as $data) {
-        $editLegend .= '<tr><td><img src="' . (string) $data['imgsrc'] . '"></td><td><span>' . i18n((string) $data['description']) . '</span></td></tr>';
+        $image = new cHTMLImage((string) $data['imgsrc'], "vAlignMiddle");
+        $description = new cHTMLSpan(i18n((string) $data['description']), "tableElement");
+        $divItem = new cHTMLDiv($image->render() . $description->render());
+        $divKey->appendContent($divItem->render());
     }
-    $editLegend .= '</table>';
+    $divLegend->appendContent($divKey->render());
 }
-$editLegend .= '</div>';
-$editCategory->setContentData($editLegend);
+
+$editCategory->setContentData($divLegend->render());
 $tpl->set('s', 'LEGEND', $editCategory->render());
 $tpl->set('s', 'LEGENDLINK', $legendlink);
 

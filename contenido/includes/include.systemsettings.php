@@ -106,7 +106,7 @@ if (is_array($settings)) {
                 $oInputboxType->setWidth(10);
 
                 $hidden = '<input type="hidden" name="csidsystemprop" value="' . $value['idsystemprop'] . '">';
-                $sSubmit = '<input type="image" style="vertical-align:top;" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
+                $sSubmit = '<input type="image" class="vAlignMiddle" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
 
                 $list->setCell($count, 1, $oInputboxType->render(true));
                 $list->setCell($count, 2, $oInputboxName->render(true));

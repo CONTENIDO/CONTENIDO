@@ -88,7 +88,7 @@ $select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic
 
 $tpl->set('s', 'ACTION', '');
 
-$tmp_mstr = '<div style="margin: 0pt 0pt 0pt 17px; height: 2em; padding-bottom: 5px;">
+$tmp_mstr = '<div class="leftTopAction">
               <a class="addfunction" href="javascript:conMultiLink(\'%s\', \'%s\')">%s</a></div>';
 $area = "user";
 $mstr = sprintf($tmp_mstr, 'right_bottom',$sess->url("main.php?area=user_create&frame=4"),i18n("Create user"));
@@ -126,36 +126,13 @@ $oSelectSortOrder->setDefault($_REQUEST["sortorder"]);
 $oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 20);
 $oTextboxFilter->setStyle('width:114px;');
 
-$content = '<div style="padding-left: 17px;">';
-$content .= '<form action="javascript:execFilter(\''.$sess->id.'\');" id="filter" name="filter" method="get">';
-$content .= '<table class="borderless">';
-$content .= '<input type="hidden" name="area" value="'.$area.'">';
-$content .= '<input type="hidden" name="frame" value="1">';
-$content .= '<input type="hidden" name="contenido" value="'.$sess->id.'">';
-$content .= '<tr>';
-$content .= '<td>'. i18n("Items / page").'</td>';
-$content .= '<td>'.$oSelectItemsPerPage->render().'</td>';
-$content .= '</tr>';
-$content .= '<tr>';
-$content .= '<td>'. i18n("Sort by").'</td>';
-$content .= '<td>'.$oSelectSortBy->render().'</td>';
-$content .= '</tr>';
-$content .= '<tr>';
-$content .= '<td>'. i18n("Sort order").'</td>';
-$content .= '<td>'.$oSelectSortOrder->render().'</td>';
-$content .= '</tr>';
-$content .= '<tr>';
-$content .= '<td>'. i18n("Search for").'</td>';
-$content .= '<td>'.$oTextboxFilter->render().'</td>';
-$content .= '</tr>';
-$content .= '<tr>';
-$content .= '<td>&nbsp;</td>';
-$content .= '<td><input type="submit" value="'.i18n("Apply").'"></td>';
-$content .= '</tr>';
-$content .= '</table>';
-$content .= '</form>';
-$content .= '</div>';
-$oListOptionRow->setContentData($content);
+$tplFilter = new cTemplate();
+$tplFilter->set("s", "AREA", $area);
+$tplFilter->set("s", "ITEMS_PER_PAGE", $oSelectItemsPerPage->render());
+$tplFilter->set("s", "SORT_BY", $oSelectSortBy->render());
+$tplFilter->set("s", "SORT_ORDER", $oSelectSortOrder->render());
+$tplFilter->set("s", "FILTER_USER", $oTextboxFilter->render());
+$oListOptionRow->setContentData($tplFilter->generate($cfg["path"]["templates"] . $cfg["templates"]["rights_left_top_filter"], true));
 $tpl->set('s', 'LISTOPTIONS', $oListOptionRow->render());
 
 #########
