@@ -145,10 +145,11 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         // build select element
         // build div element as wrapper
         $div = new cHTMLDiv(array(
-            '<br>',
+            '<br />',
             $labelModMode,
             $checkBoxMod
         ));
+        $div->setClass('modMode');
 
         // return div element
         return $div;
@@ -169,10 +170,10 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         // build select element
         // build div element as wrapper
         $div = new cHTMLDiv(array(
-            '<br>',
             $labelModMode,
             $checkBoxMod
         ));
+        $div->setClass('editMode');
 
         // return div element
         return $div;
@@ -198,12 +199,10 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
 
         // build div element as wrapper
         $div = new cHTMLDiv(array(
-            $infoLabel,
-            '<br>',
             $labelEmail,
             $inputEmail
         ));
-
+        $div->setClass('mail');
         // return div element
         return $div;
     }
