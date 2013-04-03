@@ -105,7 +105,8 @@ class ArticleForumLeftBottom extends cGuiPage {
     public function receiveData(&$get) {
         if ($_GET['action'] === 'delete_form') {
             // print_r($_GET['idart']);
-            $this->_collection->deleteAllCommentsById($_GET['idart']);
+            var_dump($get);
+            $this->_collection->deleteAllCommentsById($get['idart']);
         }
 
         $this->appendContent($this->getMenu());

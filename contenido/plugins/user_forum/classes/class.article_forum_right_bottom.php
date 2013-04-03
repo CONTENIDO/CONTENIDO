@@ -489,7 +489,10 @@ class ArticleForumRightBottom extends cGuiPage {
             case 'back':
                 $this->getForum($idcat, $idart, $lang);
                 break;
-                ;
+            case 'empty':
+               // $this->getForum($idcat, $idart, $lang);
+                break;
+
             default:
                 $this->getForum($idcat, $idart, $lang);
                 throw new Exception('$_GET["action"] type ' . $_REQUEST["action"] . ' not implemented');

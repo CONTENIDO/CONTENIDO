@@ -394,6 +394,7 @@ class ArticleForumCollection extends ItemCollection {
      * @param articleId $idart
      */
     public function deleteAllCommentsById($idart) {
+        var_dump($idart);
         $this->deleteBy('idart', mysql_real_escape_string(($idart)));
     }
 
