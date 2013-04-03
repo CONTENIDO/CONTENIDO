@@ -65,7 +65,7 @@ class ArticleForumLeftBottom extends cGuiPage {
             $tdname->setStyle('text-align: center');
             $tdlink = new cHTMLTableData();
 
-            $res = $arts->getIdCat($result[$i]['idart']);
+            $res = $result[$i]['idart'];
 
             $formName = $result[$i]['title'];
             $menu->setTitle("", $formName);
@@ -105,7 +105,6 @@ class ArticleForumLeftBottom extends cGuiPage {
     public function receiveData(&$get) {
         if ($_GET['action'] === 'delete_form') {
             // print_r($_GET['idart']);
-            var_dump($get);
             $this->_collection->deleteAllCommentsById($get['idart']);
         }
 
