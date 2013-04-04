@@ -220,7 +220,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
 
         $status = @mysql_data_seek($queryId, $pos);
         if ($status) {
-            $this->loader->setRow($pos);
+            $this->_handler->setRow($pos);
         } else {
             return 0;
         }
