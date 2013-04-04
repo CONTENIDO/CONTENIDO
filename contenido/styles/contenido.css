@@ -208,10 +208,6 @@ table.borderless tr td {
     float: right;
 }
 
-#cLanguageSelect {
-    vertical-align: top;
-}
-
 /**
  * #############################################################################
  * @section Page_Welcome
@@ -2211,6 +2207,11 @@ div.bulk_editing_functions a img {
     margin-bottom: 0.25em;
 }
 
+/* I have no idea why this is needed but it looks better for image inputs */
+input[type=image].vAlignMiddle {
+	margin-bottom: 0.1em;
+}
+
 .vAlignTop {
 	vertical-align: top;
 	margin-top: 0.25em;
@@ -2270,10 +2271,14 @@ div.bulk_editing_functions a img {
 } 
 
 .leftTopAction {
-	height: 2em;
+	min-height: 2em;
 	border: 1px solid #B3B3B3;
 	padding: 5px 0 5px 16px;
 	margin-top: 1px;
+}
+
+.leftTopAction input[type=text] {
+	width: 170px;
 }
 
 .moduleError {
@@ -2294,10 +2299,7 @@ div.bulk_editing_functions a img {
 }
 
 .emptyCell {
-	border: 0;
-	border-bottom: 1px;
-	border-color: #B3B3B3;
-	border-style: solid;
+	border-bottom: 0 !important;
 }
 
 .systemSetting {
@@ -2317,4 +2319,24 @@ div.bulk_editing_functions a img {
 
 .settingWrong {
 	color: red;
+}
+
+#dbfsTimecontrol {
+	width: 100%;
+	margin-left: 20px;
+}
+
+#cat_navbar {
+	border-bottom: 1px solid #b3b3b3;
+}
+
+.toolsRight {
+	display: inline-block;
+	float: right;
+}
+
+.toolsRight .vAlignMiddle {
+	display: inline-block;
+	width:100px;
+	padding:0px 5px;
 }

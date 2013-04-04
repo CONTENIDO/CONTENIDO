@@ -43,9 +43,9 @@ function cGenerateSetupStepsDisplay($iCurrentStep) {
     for ($i = 1; $i < CON_SETUP_STEPS + 1; $i++) {
         $sCssActive = '';
         if ($iCurrentStep == $i) {
-            $sCssActive = 'background-color:#fff;color:#0060B1;';
+            $sCssActive = 'active';
         }
-        $sStepsPath .= '<span style="' . $sCssActive . '">&nbsp;' . strval($i) . '&nbsp;</span>&nbsp;&nbsp;&nbsp;';
+        $sStepsPath .= '<span class="' . $sCssActive . '">&nbsp;' . strval($i) . '&nbsp;</span>&nbsp;&nbsp;&nbsp;';
     }
     return $sStepsPath;
 }

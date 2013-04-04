@@ -194,45 +194,45 @@ if ($sortby == 7 && $sortmode == "DESC") {
 }
 
 $sToolsRow = '<tr class="textg_medium">
-                  <th colspan="6" style="border-bottom: 1px solid #b3b3b3; height:20px; line-height:20px; vertical-align:middle; padding-left:5px;" id="cat_navbar">
-                      <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:300px; padding:0px 5px; text-align:right;">' . i18n("Searched for:") . " " . $searchfor . '</div>
-                      <div style="clear:both;"></div>
+                  <th colspan="6" id="cat_navbar">
+                      <div class="toolsRight">' . i18n("Searched for:") . " " . $searchfor . '</div>
                   </th>
               </tr>';
 
 // List wraps
 
 $sSpacedRow = '<tr height="10">
-                    <td colspan="6" style="border-bottom-width: 0px;"></td>
+                    <td colspan="6" class="emptyCell"></td>
                </tr>';
 
 $pagerwrap = '<tr>
-                <th colspan="6" id="cat_navbar">
-                    <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLRIGHT-</div>
-                    <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-PAGE-</div>
-                    <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLLEFT-</div>
-                    <span style="margin-right:10px; line-height:20px; vertical-align:middle;">' . i18n("Files per Page") . '</span> -C-FILESPERPAGE-
-                    <div style="clear:both;"></div>
+                <th colspan="6" id="cat_navbar" class="vAlignMiddle">
+                    <div class="toolsRight">
+                        <div class="vAlignMiddle">-C-SCROLLLEFT-</div>
+                        <div class="vAlignMiddle">-C-PAGE-</div>
+                        <div class="vAlignMiddle">-C-SCROLLRIGHT-</div>
+                    </div>
+                    ' . i18n("Files per Page") . ' -C-FILESPERPAGE-
                 </th>
             </tr>';
 
 $startwrap = '<table class="hoverbox generic" cellspacing="0" cellpadding="2" border="0">
                 ' . $pagerwrap . $sSpacedRow . $sToolsRow . $sSpacedRow . '
                <tr>
-                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . i18n("Preview") . '</th>
-                    <th width="100%" align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $fnsort . '</th>
-                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $pathsort . '</th>
-                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $sizesort . '</th>
-                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $typesort . '</th>
-                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $srelevance . '</th>
+                    <th>' . i18n("Preview") . '</th>
+                    <th width="100%">' . $fnsort . '</th>
+                    <th>' . $pathsort . '</th>
+                    <th>' . $sizesort . '</th>
+                    <th>' . $typesort . '</th>
+                    <th>' . $srelevance . '</th>
                 </tr>';
 $itemwrap = '<tr>
-                    <td align="center" valign="top" class="text_medium" style="white-space:nowrap;" nowrap="nowrap">%s</td>
-                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" nowrap="nowrap">%s</td>
-                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="200" nowrap="nowrap">%s</td>
-                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
-                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
-                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="75" nowrap="nowrap">%s</td>
+                    <td align="center">%s</td>
+                    <td class="vAlignTop nowrap">%s</td>
+                    <td class="vAlignTop nowrap">%s</td>
+                    <td class="vAlignTop nowrap">%s</td>
+                    <td class="vAlignTop nowrap">%s</td>
+                    <td class="vAlignTop nowrap">%s</td>
                 </tr>';
 $endwrap = $sSpacedRow . $sToolsRow . $sSpacedRow . $pagerwrap . '</table>';
 
@@ -390,7 +390,7 @@ $form->setVar("startpage", $startpage);
 $form->setVar("appendparameters", $appendparameters);
 
 $select = new cHTMLSelectElement("thumbnailmode_input");
-
+$select->setClass("vAlignMiddle tableElement");
 $values = array(
     25 => "25",
     50 => "50",
@@ -403,7 +403,7 @@ $select->autoFill($values);
 $select->setDefault($thumbnailmode);
 $select->setEvent('change', "document.options.thumbnailmode.value = this.value");
 
-$topbar = $select->render() . '<input type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif" style="vertical-align:middle; margin-left:5px;">';
+$topbar = $select->render() . '<input type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif" class="vAlignMiddle tableElement">';
 
 $output = str_replace("-C-FILESPERPAGE-", $topbar, $output);
 

@@ -110,7 +110,7 @@ if ($perm->have_perm_area_action($area, "workflow_task_user_select")) {
     $form->setVar("frame", $frame);
     $form->setVar("action", "workflow_task_user_select");
     $form->appendContent(i18n("Show users") . ": " . getUsers("show", $usershow));
-    $form->appendContent('<input style="vertical-align:middle;" type="image" src="' . $cfg["path"]["htmlpath"] . $cfg["path"]["images"] . "submit.gif" . '">');
+    $form->appendContent('<input class="vAlignMiddle" type="image" src="' . $cfg["path"]["htmlpath"] . $cfg["path"]["images"] . "submit.gif" . '">');
 
     $tpl->set('s', 'USERSELECT', $form->render(true));
 } else {
@@ -188,7 +188,7 @@ if (is_array($isCurrent)) {
 
                 $todoListeSubject = i18n("Reminder");
                 $sReminder = i18n("Set reminder / add to todo list");
-                $sReminderHtml = "<a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$todoListeSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=550');\" alt=\"$sReminder\" title=\"$sReminder\" href=\"#\"><img id=\"m2\" style=\"padding-left: 2px; padding-right: 2px;\" alt=\"$sReminder\" src=\"images/but_setreminder.gif\" border=\"0\"></a>";
+                $sReminderHtml = "<a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$todoListeSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=550');\" alt=\"$sReminder\" title=\"$sReminder\" href=\"#\"><img id=\"m2\" alt=\"$sReminder\" src=\"images/but_setreminder.gif\" border=\"0\"></a>";
 
                 $templatename = $db->f('tpl_name');
                 if (!empty($templatename)) {

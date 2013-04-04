@@ -60,11 +60,11 @@ if (mr_arrayValue($aMrCfg, 'article_word_seperator', '') == '') {
 // some settings
 $aSeparator = array(
     'pattern' => '/^[\/\-_\.\$~]{1}$/',
-    'info' => '<span style="font-family:courier;font-weight:bold;">/ - . _ ~</span>'
+    'info' => '<span class="text_medium_bold">/ - . _ ~</span>'
 );
 $aWordSeparator = array(
     'pattern' => '/^[\-_\.\$~]{1}$/',
-    'info' => '<span style="font-family:courier;font-weight:bold;">- . _ ~</span>'
+    'info' => '<span class="text_medium_bold">- . _ ~</span>'
 );
 
 $routingSeparator = '>>>';

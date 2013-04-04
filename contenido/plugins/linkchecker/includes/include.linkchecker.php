@@ -369,7 +369,7 @@ if (empty($aErrors) && $cronjob != true) {
         $tpl->set('s', 'ERRORS_SHOW_' . strtoupper($sKey), $aError_output[$sKey]);
 
         if (count($aErrors[$sKey]) > 0) {
-            $tpl->set('s', 'ERRORS_COUNT_ERRORS_' . strtoupper($sKey), '<span style="color: #FF0000;">' . count($aErrors[$sKey]) . '</span>');
+            $tpl->set('s', 'ERRORS_COUNT_ERRORS_' . strtoupper($sKey), '<span class="settingWrong">' . count($aErrors[$sKey]) . '</span>');
         } else {
             $tpl->set('s', 'ERRORS_COUNT_ERRORS_' . strtoupper($sKey), count($aErrors[$key]));
         }

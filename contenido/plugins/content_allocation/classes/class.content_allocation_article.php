@@ -60,7 +60,7 @@ class pApiContentAllocationArticle extends pApiTree {
             $item = array();
 
             $expandCollapseImg = 'images/spacer.gif';
-            $expandCollapse = '<img src="'.$expandCollapseImg.'" border="0" style="vertical-align: middle;" width="11" height="11">';
+            $expandCollapse = '<img class="vAlignMiddle" src="'.$expandCollapseImg.'" border="0" width="11" height="11">';
 
             $item['ITEMNAME'] = $expandCollapse . ' ' . $item_tmp['name'];
 

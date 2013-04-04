@@ -88,12 +88,6 @@ while ($db->nextRecord()) {
 
     $base = '<base href="' . cRegistry::getFrontendUrl() . '"' . $sElemClosing . '>';
     $tags = $base;
-    $tags .= '
-<style type="text/css">
-#tpl_visedit {height:100%; padding:0; margin:0;}
-#tpl_visedit .visedit_item {position:relative; height:26px; white-space:nowrap; font-size:12px;}
-</style>
-';
 
     $code = str_replace('<head>', "<head>\n".$tags ."\n", $code);
 

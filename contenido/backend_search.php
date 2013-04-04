@@ -722,12 +722,6 @@ if ($iAffectedRows <= 0 || (empty($where) && !$bLostAndFound)) {
                 $tpl->set('s', 'FIRST_ROWID', $sRowId);
             }
 
-            if ($online == 1 OR ($i % 2 == 1)) {
-                $bgColorRow = '#E2E2E2';
-            } else {
-                $bgColorRow = '#E2E2E2';
-            }
-
             if ($perm->have_perm_area_action_item("con_editcontent", "con_editart",$idcat)) {
                 $editart = "<a href=\"main.php?area=con_editcontent&action=con_editart&changeview=edit&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=4&contenido=$sSession\" title=\"idart: $idart idcatart: $idcatart\" alt=\"idart: $idart idcatart: $idcatart\">".$db->f("title")."</a>";
             } else {
@@ -746,7 +740,7 @@ if ($iAffectedRows <= 0 || (empty($where) && !$bLostAndFound)) {
                 $delete = "";
             }
 
-            $sRow = '<tr id="' . $sRowId . '" class="text_medium" style="' . $bgColorRow . '" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">' . "\n";
+            $sRow = '<tr id="' . $sRowId . '" class="text_medium" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">' . "\n";
             $sRow .= $makeStartarticle . "\n";
             $sRow .= "<td nowrap=\"nowrap\" class=\"bordercell\">$editart</td>
                       <td nowrap=\"nowrap\" class=\"bordercell\">$lastmodified</td>
@@ -754,7 +748,7 @@ if ($iAffectedRows <= 0 || (empty($where) && !$bLostAndFound)) {
                       <td nowrap=\"nowrap\" class=\"bordercell\">".$db->f("artsort")."</td>
                       <td nowrap=\"nowrap\" class=\"bordercell\">$sTemplateName</td>
                       <td nowrap=\"nowrap\" class=\"bordercell\">
-                          <a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$todoListeSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=625');\" alt=\"$sReminder\" title=\"$sReminder\" href=\"#\"><img id=\"m2\" style=\"padding-left: 2px; padding-right: 2px;\" alt=\"$sReminder\" src=\"images/but_setreminder.gif\" border=\"0\"></a>
+                          <a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$todoListeSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=625');\" alt=\"$sReminder\" title=\"$sReminder\" href=\"#\"><img id=\"m2\" alt=\"$sReminder\" src=\"images/but_setreminder.gif\" border=\"0\"></a>
                           $properties
                           $tplconfig
                           $duplicate
@@ -801,9 +795,9 @@ if (sizeof($_GET) == 0 && isset($_POST) && !$bNoCriteria) {
     $searchForm .= '<input type="hidden" name="'.$save_date_to.'" id="'.$save_date_to.'" value="'.$sSearchStrDateTo.'">';
     $searchForm .= '<input type="hidden" name="'.$save_date_field.'" id="'.$save_date_field.'" value="'.$sDateFieldName.'">';
     $searchForm .= '<input type="hidden" name="'.$save_author.'" id="'.$save_author.'" value="'.$sSearchStrAuthor.'">';
-    $searchForm .= '<label for="save_searchname">'.i18n("Search name").': </label>';
-    $searchForm .= '<input type="text" class="text_medium" name="'.$save_name.'" id="'.$save_name.'" value="Die Suche" style="vertical-align:middle;">';
-    $searchForm .= '<input type="image" style="margin-left: 5px; vertical-align: middle;" src="./images/but_ok.gif" alt="'.i18n('Store').'" title="'.i18n('Store').'" value="'.i18n('Store').'" name="submit">';
+    $searchForm .= '<label for="'.$save_name.'">'.i18n("Search name").': </label>';
+    $searchForm .= '<input type="text" class="text_medium" name="'.$save_name.'" id="'.$save_name.'" value="'.i18n("The search").'" class="vAlignMiddle">';
+    $searchForm .= '<input type="image" class="vAlignMiddle tableElement" src="./images/but_ok.gif" alt="'.i18n('Store').'" title="'.i18n('Store').'" value="'.i18n('Store').'" name="submit">';
     $searchForm .= '</form>';
     $tpl->set('s', 'STORESEARCHFORM', $searchForm);
 

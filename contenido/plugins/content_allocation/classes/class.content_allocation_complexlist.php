@@ -68,7 +68,7 @@ class pApiContentAllocationComplexList extends pApiTree {
 
             $li_closeElm = '';
             if ($cnt == $levelElms) {
-                $li_closeElm = 'style="border-bottom: 0;"';
+                $li_closeElm = 'class="lastElem"';
             }
             $cnt++;
 
@@ -79,7 +79,7 @@ class pApiContentAllocationComplexList extends pApiTree {
             $item_tmp['name'] = str_replace('-', '- ', $item_tmp['name']);
 
             $checkbox = '<input type="checkbox" name="allocation[]" onClick="addToList(this);" ' . $checked . '" id="e'.$item_tmp['idpica_alloc'].'" value="'.$item_tmp['idpica_alloc'].'">';
-            $item = "\n<li style=\"border-bottom: 1px solid #B3B3B3\" baseClass=\"" . $bgcolor . "\" ".$li_closeElm.">" . $checkbox . " " . $item_tmp['name'];
+            $item = "\n<li baseClass=\"" . $bgcolor . "\" ".$li_closeElm.">" . $checkbox . " " . $item_tmp['name'];
 
             $result .= $item;
 

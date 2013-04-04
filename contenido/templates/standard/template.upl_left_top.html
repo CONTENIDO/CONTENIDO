@@ -26,18 +26,25 @@
 
 <div id="top_left_container">
     {NOTIFICATION}
-    <div style="border: 1px solid #B3B3B3; border-bottom: 0px; padding:5px 0 10px 16px; margin:1px 0 0 0; display:{DISPLAY_SEARCH};">
+    <div class="leftTopAction" style="display:{DISPLAY_SEARCH};">
       <!-- SEARCH -->
       {SEARCHTITLE}:<br>
       {SEARCHFORM}
     </div>
     <!-- CREATE DIR -->
-    <div style="border: 1px solid #B3B3B3; padding:5px 0 5px 16px; margin:0 0 2px 0; display:{DISPLAY_DIR};">
+    <div class="leftTopAction" style="display:{DISPLAY_DIR};">
         <form method="POST" {TARGET} name="newdir">
+            <input type="hidden" name="path" value="{PATH}">
+                   <input type="hidden" name="contenido" value="1">
+                   <input type="hidden" name="frame" value="1">
+                   <input type="hidden" name="area" value="upl">
             <input name="selectedfile" type="hidden" id="selectedfile" value="">
-            {CAPTION}:<br>
+            i18n("Create directory in"):<br>
             <span id="caption2">{CAPTION2}</span><br>
-            <div>{ACTION}<span style="margin-left: 5px">{SUBMIT}</span></div>
+            <div>
+                  <input class="text_small vAlignMiddle" type="text" name="foldername" onChange="document.newdir.submit();">
+                  <input class="vAlignMiddle tableElement" type="image" src="images/submit.gif">
+            </div>
         </form>
     </div>
 </div>

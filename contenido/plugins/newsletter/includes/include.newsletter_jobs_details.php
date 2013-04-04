@@ -272,12 +272,12 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oList->sort($_REQUEST["sortby"], $_REQUEST["sortmode"]);
 
     // HerrB: Hardcore UI for browsing elements ... sorry
-    $sBrowseHTML = '<table width="100%" cellspacing="0" cellpadding="2" border="0">
+    $sBrowseHTML = '<table class="generic" width="100%" cellspacing="0" cellpadding="2" border="0">
     <tr>
         <td><img src="images/spacer.gif" width="1" height="10"></td>
     </tr>
-    <tr class="text_medium" style="background-color: #ffffff;">
-        <td style="border: 1px; border-color: #B3B3B3; border-style: solid; background-color: #E2E2E2; color:#666666"> ' .
+    <tr class="text_medium">
+        <td> ' .
         sprintf(i18n("Go to page: %s", 'newsletter'), $sBrowseLinks) . '</td>
     </tr>
 </table>';

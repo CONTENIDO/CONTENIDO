@@ -106,10 +106,10 @@ if ($action == "mod_new") {
 
     if ($contenidoModuleHandler->createModule() == false) {
         // logg error
-        $notification->displayNotification("error", i18n("Cant make a new modul!"));
+        $notification->displayNotification("error", i18n("Unable to create a new module!"));
         die();
     } else {
-        $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Created new module successfuly!"));
+        $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("New module created successfuly!"));
     }
 } else {
     $module = new cApiModule($idmod);
@@ -165,7 +165,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $form->addHeader(i18n("Edit module"));
 
     $name = new cHTMLTextbox("name", cString::stripSlashes(conHtmlSpecialChars($module->get("name"))), 60);
-    $descr = new cHTMLTextarea("descr", cString::stripSlashes(conHtmlSpecialChars($module->get("description"))), 100, 5);
+    $descr = new cHTMLTextarea("descr", str_replace(array('\r\n'), "\r\n", conHtmlSpecialChars($module->get("description"))), 100, 5);
 
     // Get input and output code; if specified, prepare row fields
     $sInputData = "";

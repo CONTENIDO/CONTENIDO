@@ -20,8 +20,8 @@ $link->setMultiLink($area, 'show_form', $area, 'show_form');
 $link->setContent(Pifa::i18n('CREATE_FORM'));
 $link->setTargetFrame('right_bottom');
 
-$oUi = new cGuiPage("left_top");
+$oUi = new cTemplate();
 $oUi->set("s", "ACTION", $link->render());
-$oUi->render();
+$oUi->generate($cfg["path"]["templates"] . $cfg["templates"]["left_top"]);
 
 ?>

@@ -250,7 +250,7 @@ $sContent = '
                 <td><label for="'.$oSelTestDestination->getID().'">'.i18n("Send test destination:", 'newsletter').'</label><br>'.$oSelTestDestination->render().'</td>
             </tr>
             <tr>
-                <td style="text-align:right;">'.$oBtnSave->render().'</td>
+                <td>'.$oBtnSave->render().'</td>
             </tr>
         </table>
     </form>

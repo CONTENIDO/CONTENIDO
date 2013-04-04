@@ -332,7 +332,7 @@ class UploadList extends FrontendList {
                     } else {
                         $href = $frontendURL . $cfgClient[$client]["upload"] . $data;
                     }
-                    $retValue = '<a class="jsZoom" href="' . $href . '" style="display:inline-block;">
+                    $retValue = '<a class="jsZoom" href="' . $href . '">
                             <img class="hover" name="smallImage" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
                             <img class="preview" name="prevImage" src="' . $sCacheThumbnail . '">
                         </a>';
@@ -396,7 +396,7 @@ if ($sortby == 6 && $sortmode == "DESC") {
 // Multiple deletes at top of table
 if ($perm->have_perm_area_action("upl", "upl_multidelete") && $bDirectoryIsWritable == true) {
     $sConfirmation = "showConfirmation('" . i18n('Are you sure you want to delete the selected files?') . "', function() { document.del.action.value = \'upl_multidelete\'; document.del.submit(); });return false;";
-    $sDelete = '<a href="javascript:void(0)" onclick="' . $sConfirmation . '"><img src="images/delete.gif" style="vertical-align:middle; margin-right:10px;" title="' . i18n("Delete selected files") . '" alt="' . i18n("Delete selected files") . '" onmouseover="this.style.cursor=\'pointer\'">' . i18n("Delete selected files") . '</a>';
+    $sDelete = '<a class="tableElement vAlignMiddle" href="javascript:void(0)" onclick="' . $sConfirmation . '"><img class="tableElement vAlignMiddle" src="images/delete.gif" title="' . i18n("Delete selected files") . '" alt="' . i18n("Delete selected files") . '" onmouseover="this.style.cursor=\'pointer\'"><span class="tableElement">' . i18n("Delete selected files") . '</span></a>';
 } else {
     $sDelete = '';
 }
@@ -410,51 +410,48 @@ if (cApiDbfs::isDbfs($path)) {
 $sDisplayPath = generateDisplayFilePath($mpath, 85);
 
 $sToolsRow = '<tr>
-                <th colspan="6" style="border-bottom: 1px solid #b3b3b3; height:20px; line-height:20px; vertical-align:middle; text-align:right; adding-left:5px;" id="cat_navbar">
-                    <div style="float:left; heigth:20px; line-height:20px; vertical-align:middle; width:400px; padding:0px 5px; text-align:left;">
-                        <a href="javascript:invertSelection();"><img style="margin-right:10px; vertical-align:middle;" src="images/but_invert_selection.gif" title="' . i18n("Flip Selection") . '" alt="' . i18n("Flip Selection") . '" onmouseover="this.style.cursor=\'pointer\'"> ' . i18n("Flip Selection") . '</a>
-                        <span style="padding-left:15px;">&nbsp;</span>
+                <th colspan="6" id="cat_navbar">
+                    <a class="tableElement vAlignMiddle" href="javascript:invertSelection();"><img class="tableElement vAlignMiddle" src="images/but_invert_selection.gif" title="' . i18n("Flip Selection") . '" alt="' . i18n("Flip Selection") . '" onmouseover="this.style.cursor=\'pointer\'"> ' . i18n("Flip Selection") . '</a>
                         ' . $sDelete . '
-                    </div>
-
+                    <div class="toolsRight">
                     ' . i18n("Path:") . " " . $sDisplayPath . '
-
-                    <div style="clear:both;"></div>
+                    </div>
                 </th>
             </tr>';
 $sSpacedRow = '<tr height="10">
-                    <td colspan="6" style="border-bottom-width: 0px;"></td>
+                    <td colspan="6" class="emptyCell"></td>
                </tr>';
 
 // List wraps
 
 $pagerwrap = '<tr>
-                <th colspan="6" style="border-top-width: 1px; border-bottom: 1px solid #b3b3b3; padding-left:5px;" id="cat_navbar">
-                    <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLRIGHT-</div>
-                    <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-PAGE-</div>
-                    <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLLEFT-</div>
-                    <span style="margin-right:10px; line-height:20px; vertical-align:middle;">' . i18n("Files per Page") . '</span> -C-FILESPERPAGE-
-                    <div style="clear:both;"></div>
+                <th colspan="6" id="cat_navbar">
+                    <div class="toolsRight">
+                        <div class="vAlignMiddle">-C-SCROLLLEFT-</div>
+                        <div class="vAlignMiddle">-C-PAGE-</div>
+                        <div class="vAlignMiddle">-C-SCROLLRIGHT-</div>
+                    </div>
+                    <span class="vAlignMiddle">' . i18n("Files per Page") . ' -C-FILESPERPAGE-</span>
                 </th>
             </tr>';
 
 $startwrap = '<table class="hoverbox generic" cellspacing="0" cellpadding="2" border="0">
                 ' . $pagerwrap . $sSpacedRow . $sToolsRow . $sSpacedRow . '
                <tr>
-                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . i18n("Mark") . '</th>
-                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . i18n("Preview") . '</th>
-                    <th width="100%" align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $fnsort . '</th>
-                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $sizesort . '</th>
-                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . $typesort . '</th>
-                    <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">' . i18n("Actions") . '</th>
+                    <th>' . i18n("Mark") . '</th>
+                    <th>' . i18n("Preview") . '</th>
+                    <th width="100%">' . $fnsort . '</th>
+                    <th>' . $sizesort . '</th>
+                    <th>' . $typesort . '</th>
+                    <th>' . i18n("Actions") . '</th>
                 </tr>';
 $itemwrap = '<tr>
-                    <td align="center" valign="top" class="text_medium" style="white-space:nowrap;" nowrap="nowrap">%s</td>
-                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" nowrap="nowrap">%s</td>
-                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="200" nowrap="nowrap">%s</td>
-                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
-                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
-                    <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="75" nowrap="nowrap">%s</td>
+                    <td align="center">%s</td>
+                    <td align="center">%s</td>
+                    <td class="vAlignTop nowrap">%s</td>
+                    <td class="vAlignTop nowrap">%s</td>
+                    <td class="vAlignTop nowrap">%s</td>
+                    <td class="vAlignTop nowrap">%s</td>
                 </tr>';
 $endwrap = $sSpacedRow . $sToolsRow . $sSpacedRow . $pagerwrap . '</table>';
 
@@ -558,7 +555,7 @@ while ($item = $uploads->next()) {
         $mstr = "";
     } else {
         $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-        $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$filename&startpage=$startpage&sortby=$sortby&sortmode=$sortmode&thumbnailmode=$thumbnailmode"), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$filename"), '<img style="margin-left: 2px; margin-right: 2px;" alt="' . $proptitle . '" title="' . $proptitle . '" src="images/but_art_conf2.gif" onmouseover="this.style.cursor=\'pointer\'">');
+        $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$filename&startpage=$startpage&sortby=$sortby&sortmode=$sortmode&thumbnailmode=$thumbnailmode"), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$filename"), '<img class="vAlignMiddle tableElement" alt="' . $proptitle . '" title="' . $proptitle . '" src="images/but_art_conf2.gif" onmouseover="this.style.cursor=\'pointer\'">');
     }
 
     $actions = $mstr . $actions;
@@ -659,7 +656,7 @@ $select->autoFill($values);
 $select->setDefault($thumbnailmode);
 $select->setEvent('change', "document.del.thumbnailmode.value = this.value;");
 
-$topbar = $select->render() . '<input type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif" style="vertical-align:middle; margin-left:5px;">';
+$topbar = $select->render() . '<input class="vAlignMiddle tableElement" type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif">';
 
 $output = str_replace("-C-FILESPERPAGE-", $topbar, $output);
 

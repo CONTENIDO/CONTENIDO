@@ -85,6 +85,10 @@
     border-bottom: 0px;
 }
 
+.domenabled ul#finder li.lastElem {
+    border-bottom: 1px #B3B3B3 solid !important;
+}
+
 .domenabled ul#finder input {
     float: left;
 }

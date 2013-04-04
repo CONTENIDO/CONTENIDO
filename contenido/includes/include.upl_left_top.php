@@ -38,7 +38,7 @@ $tpl->set('s', 'CAPTION2', $sDisplayPath);
 
 // Display notification, if there is no client
 if ((int) $client == 0) {
-    $sNoClientNotification = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;">' . i18n('No Client selected') . '</div>';
+    $sNoClientNotification = '<div class="leftTopAction>' . i18n('No Client selected') . '</div>';
     $tpl->set('s', 'NOTIFICATION', $sNoClientNotification);
 } else {
     $tpl->set('s', 'NOTIFICATION', '');
@@ -51,7 +51,7 @@ if ($appendparameters != 'filebrowser' && (int) $client > 0) {
     $sSearch = $search->render();
 
     $form = new cHTMLForm('search');
-    $form->appendContent('<table border="0" cellspacing="0" cellpadding="0"><tr><td>' . $sSearch . '</td><td><input style="margin-left: 5px;" type="image" src="images/submit.gif"></td></tr></table>');
+    $form->appendContent('<table border="0" cellspacing="0" cellpadding="0"><tr><td>' . $sSearch . '</td><td><input class="tableElement" type="image" src="images/submit.gif"></td></tr></table>');
     $form->setVar('area', $area);
     $form->setVar('frame', $frame);
     $form->setVar('contenido', $sess->id);
@@ -78,18 +78,10 @@ if ($perm->have_perm_area_action('upl', 'upl_mkdir') && (int) $client > 0) {
     }
 
     // Form for 'New Directory'
-    $inputfield = '<input type="hidden" name="path" value="' . $path . '">
-                   <input type="hidden" name="contenido" value="' . $sess->id . '">
-                   <input type="hidden" name="frame" value="1">
-                   <input type="hidden" name="area" value="' . $area . '">
-                   <input class="text_small" style="vertical-align:middle; width:170px;" type="text" name="foldername" onChange="document.newdir.submit();">';
-    $tpl->set('s', 'ACTION', $inputfield);
+    $tpl->set('s', 'PATH', $path);
     $sessURL = $sess->url("main.php?area=upl_mkdir&frame=2&appendparameters=$appendparameters");
     $tpl->set('s', 'TARGET', 'onsubmit="parent.frames[2].location.href=\'' . $sess->url("main.php?area=upl&action=upl_mkdir&frame=2&appendparameters=$appendparameters") .
             '&path=\'+document.newdir.path.value+\'&foldername=\'+document.newdir.foldername.value;"');
-    $tpl->set('s', 'SUBMIT', '<input type="image" src="' . $cfg["path"]["htmlpath"] . 'images/submit.gif" style="vertical-align:middle;">');
-    $tpl->set('s', 'CAPTION', i18n("Create directory in"));
-    $tpl->set('s', 'DEBUG', '<script>console.log(document.newdir.path.value)</script>');
     $tpl->set('s', 'DISPLAY_DIR', 'block');
 } else {
     // No permission with current rights
@@ -123,7 +115,7 @@ $tpl->set('d', 'BGCOLOR', $bgcolor);
 $tpl->set('d', 'INDENT', 3);
 $tpl->set('d', 'DIRNAME', $mstr);
 $tpl->set('d', 'EDITBUTTON', '');
-$tpl->set('d', 'DELETEBUTTON', '<img style="margin-left: 5px;" src="images/delete_inact.gif">');
+$tpl->set('d', 'DELETEBUTTON', '<img class="tableElement" src="images/delete_inact.gif">');
 $tpl->set('d', 'COLLAPSE', '');
 $tpl->next();
 

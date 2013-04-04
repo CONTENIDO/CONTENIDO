@@ -38,8 +38,7 @@ function ul2finder()
         if(!lis[i].getElementsByTagName('ul')[0])
         {
             //lis[i].className = "bright";
-            //cssjs('add',lis[i],styleBgColor);
-            lis[i].className = styleBgColor;
+            cssjs('add',lis[i],styleBgColor);
             continue;
         }
 
@@ -113,7 +112,7 @@ function ul2finder()
                 o.className=!cssjs('check',o,c1)?o.className.replace(c2,c1):o.className.replace(c1,c2);
             break;
             case 'add':
-                if(!cssjs('check',o,c1)){o.className+=o.className?' '+c1:c1;}
+                if(!cssjs('check',o,c1)){o.className+=(o.className)?' '+c1:c1;}
             break;
             case 'remove':
                 var rep=o.className.match(' '+c1)?' '+c1:c1;

@@ -202,12 +202,12 @@ if ($upload = $uploads->next()) {
                 $oTimeCheckbox = new cHTMLCheckbox("timemgmt", i18n("Use time control"));
                 $oTimeCheckbox->setChecked($iTimeMng);
 
-                $sHtmlTimeMng = "<table border='0' cellpadding='0' cellspacing='0' style='width: 100%;'>\n";
-                $sHtmlTimeMng .= "<tr><td colspan='2'>" . $oTimeCheckbox->render() . "</td></tr>\n";
-                $sHtmlTimeMng .= "<tr><td style='padding-left: 20px;'><label for='datestart'>" . i18n("Start date") . "</label></td>\n";
+                $sHtmlTimeMng = $oTimeCheckbox->render();
+                $sHtmlTimeMng .= "<table id='dbfsTimecontrol' class='borderless' border='0' cellpadding='0' cellspacing='0'>\n";
+                $sHtmlTimeMng .= "<tr><td><label for='datestart'>" . i18n("Start date") . "</label></td>\n";
                 $sHtmlTimeMng .= '<td><input type="text" name="datestart" id="datestart" value="' . $sStartDate . '"  size="20" maxlength="40" class="text_medium">' .
                         '</td></tr>';
-                $sHtmlTimeMng .= "<tr><td style='padding-left: 20px;'><label for='dateend'>" . i18n("End date") . "</label></td>\n";
+                $sHtmlTimeMng .= "<tr><td><label for='dateend'>" . i18n("End date") . "</label></td>\n";
                 $sHtmlTimeMng .= '<td><input type="text" name="dateend" id="dateend" value="' . $sEndDate . '"  size="20" maxlength="40" class="text_medium">' .
                         '</td></tr>';
                 $sHtmlTimeMng .= "</table>\n";

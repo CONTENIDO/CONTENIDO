@@ -44,9 +44,9 @@ function getUplExpandCollapseButton($item) {
         }
     } else {
         if ($item->custom["lastitem"]) {
-            return '<img src="images/but_lastnode.gif" align="middle" width="18" height="18">';
+            return '<img class="vAlignMiddle" src="images/but_lastnode.gif" width="18" height="18">';
         } else {
-            return '<img src="images/grid_collapse.gif" align="middle" width="18" height="18">';
+            return '<img class="vAlignMiddle" src="images/grid_collapse.gif" width="18" height="18">';
         }
     }
 }
@@ -273,7 +273,7 @@ $tpl->set('s', 'SID', $sess->id);
 
 // create javascript multilink
 $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\',\'%s\', \'%s\')">%s</a>';
-$mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), '<img src="images/ordner_oben.gif" align="middle" alt="" border="0"><img align="middle" src="images/spacer.gif" width="5" border="0">' . $file);
+$mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), '<img class="vAlignMiddle" src="images/ordner_oben.gif" align="middle" alt="" border="0"><img src="images/spacer.gif" width="5" border="0">' . $file);
 
 $tpl->set('d', 'PATH', $pathstring);
 $tpl->set('d', 'INDENT', 3);
@@ -305,13 +305,13 @@ if (is_array($objects)) {
 
         // create javascript multilink # -> better create meaningful comments
         $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-        $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), '<img src="images/grid_folder.gif" align="middle" border="0" alt=""><img src="images/spacer.gif" align="middle" width="5" border="0">' . $file);
+        $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), '<img class="vAlignMiddle" src="images/grid_folder.gif" border="0" alt=""><img src="images/spacer.gif" align="middle" width="5" border="0">' . $file);
 
         $hasFiles = uplHasFiles($pathstring);
         $hasSubdirs = uplHasSubdirs($pathstring);
 
         if ((!$hasSubdirs) && (!$hasFiles) && $perm->have_perm_area_action($tmp_area, "upl_rmdir")) {
-            $deletebutton = '<a style="margin-left:10px;" title="' . i18n("Delete directory") . '" href="javascript:void(0)" onclick="event.cancelBubble=true;showConfirmation(&quot;' . i18n("Do you really want to delete the following directory:") . '<b>' . $file . '</b>&quot;, function() { deleteDirectory(&quot;' . $pathstring . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . i18n("Delete directory") . '" alt="' . i18n("Delete directory") . '"></a>';
+            $deletebutton = '<a title="' . i18n("Delete directory") . '" href="javascript:void(0)" onclick="event.cancelBubble=true;showConfirmation(&quot;' . i18n("Do you really want to delete the following directory:") . '<b>' . $file . '</b>&quot;, function() { deleteDirectory(&quot;' . $pathstring . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . i18n("Delete directory") . '" alt="' . i18n("Delete directory") . '"></a>';
         } else {
             if ($hasFiles) {
                 $message = i18n("Directory contains files");
@@ -319,7 +319,7 @@ if (is_array($objects)) {
                 $message = i18n("Permission denied");
             }
 
-            $deletebutton = "<img style=\"margin-left:10px;\" src=\"" . $cfg["path"]["images"] . "delete_inact.gif\" border=\"0\" alt=\"" . $message . "\" title=\"" . $message . "\">";
+            $deletebutton = "<img src=\"" . $cfg["path"]["images"] . "delete_inact.gif\" border=\"0\" alt=\"" . $message . "\" title=\"" . $message . "\">";
         }
 
         $tpl->set('d', 'PATH', $pathstring);
@@ -329,9 +329,9 @@ if (is_array($objects)) {
 
         for ($i = 1; $i < $depth; $i++) {
             if ($dlevels[$i] == false && $i != 0) {
-                $gline .= '<img src="images/grid_linedown.gif" align="middle" width="18">';
+                $gline .= '<img class="vAlignMiddle" src="images/grid_linedown.gif" width="18">';
             } else {
-                $gline .= '<img src="images/spacer.gif" width="18" height="18" align="middle">';
+                $gline .= '<img class="vAlignMiddle" src="images/spacer.gif" width="18" height="18">';
             }
         }
 
@@ -387,7 +387,7 @@ $rootTreeItem->traverse($objects);
 unset($objects[0]);
 
 $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-$mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), '<img src="images/ordner_oben.gif" alt="" border="0"><img align="middle" src="images/spacer.gif" width="5" border="0">' . $file);
+$mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), '<img class="vAlignMiddle" src="images/ordner_oben.gif" alt="" border="0"><img src="images/spacer.gif" width="5" border="0">' . $file);
 
 $tpl->set('d', 'PATH', $pathstring);
 $tpl->set('d', 'INDENT', 3);
@@ -428,12 +428,12 @@ if (is_array($objects)) {
 
         // create javascript multilink
         $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-        $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), '<img src="images/grid_folder.gif" align="middle" border="0" alt=""><img src="images/spacer.gif" align="middle" width="5" border="0">' . $file);
+        $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), '<img class="vAlignMiddle" src="images/grid_folder.gif" border="0" alt=""><img src="images/spacer.gif" align="middle" width="5" border="0">' . $file);
 
         $hasFiles = $dbfsc->hasFiles($pathstring);
 
         if (!$hasFiles && $perm->have_perm_area_action($tmp_area, "upl_rmdir")) {
-            $deletebutton = '<a style="margin-left:10px;" title="' . i18n("Delete directory") . '" href="javascript:void(0)" onclick="event.cancelBubble=true;showConfirmation(&quot;' . i18n("Do you really want to delete the following directory:") . '<b>' . $file . '</b>' . '&quot;, function() { deleteDirectory(&quot;' . $pathstring . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . i18n("Delete directory") . '" alt="' . i18n("Delete directory") . '"></a>';
+            $deletebutton = '<a title="' . i18n("Delete directory") . '" href="javascript:void(0)" onclick="event.cancelBubble=true;showConfirmation(&quot;' . i18n("Do you really want to delete the following directory:") . '<b>' . $file . '</b>' . '&quot;, function() { deleteDirectory(&quot;' . $pathstring . '&quot;); });return false;"><img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . i18n("Delete directory") . '" alt="' . i18n("Delete directory") . '"></a>';
         } else {
             if ($hasFiles) {
                 $message = i18n("Directory contains files");
@@ -441,7 +441,7 @@ if (is_array($objects)) {
                 $message = i18n("Permission denied");
             }
 
-            $deletebutton = "<img style=\"margin-left:10px;\" src=\"" . $cfg["path"]["images"] . "delete_inact.gif\" border=\"0\" alt=\"" . $message . "\" title=\"" . $message . "\">";
+            $deletebutton = "<img class='vAlignMiddle' src=\"" . $cfg["path"]["images"] . "delete_inact.gif\" border=\"0\" alt=\"" . $message . "\" title=\"" . $message . "\">";
         }
 
         $tpl->set('d', 'PATH', $pathstring);
@@ -451,9 +451,9 @@ if (is_array($objects)) {
 
         for ($i = 1; $i < $depth; $i++) {
             if ($dlevels[$i] == false && $i != 0) {
-                $gline .= '<img src="images/grid_linedown.gif" align="middle">';
+                $gline .= '<img class="vAlignMiddle" src="images/grid_linedown.gif" align="middle">';
             } else {
-                $gline .= '<img src="images/spacer.gif" width="18" height="18" align="middle">';
+                $gline .= '<img class="vAlignMiddle" src="images/spacer.gif" width="18" height="18" align="middle">';
             }
         }
 

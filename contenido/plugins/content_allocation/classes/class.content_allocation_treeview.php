@@ -96,10 +96,10 @@ class pApiContentAllocationTreeView extends pApiTree {
                         $expandCollapseImg = 'images/open_all.gif';
                     }
 
-                    $expandCollapse = '<a href="main.php?contenido=' . $sess->id . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=collapse&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="' . $expandCollapseImg . '" border="0" style="vertical-align: middle; padding:4px;" width="7" height="7"></a>';
+                    $expandCollapse = '<a href="main.php?contenido=' . $sess->id . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=collapse&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="' . $expandCollapseImg . '" border="0" class="vAlignMiddle" width="7" height="7"></a>';
                 } else {
                     $expandCollapseImg = 'images/spacer.gif';
-                    $expandCollapse = '<img src="' . $expandCollapseImg . '" border="0" style="vertical-align: middle;" width="11" height="11">';
+                    $expandCollapse = '<img src="' . $expandCollapseImg . '" border="0" class="vAlignMiddle" width="11" height="11">';
                 }
 
                 $item['ITEMNAME'] = $expandCollapse . ' ' . $item_tmp['name'];

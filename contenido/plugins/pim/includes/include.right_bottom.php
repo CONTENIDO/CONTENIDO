@@ -221,9 +221,9 @@ while (($plugin = $oItem->next()) !== false) {
     $activeStatus = $plugin->get('active');
     $tempActiveStatusLink = $sess->url('main.php?area=pim&frame=4&pim_view=activestatus&pluginId=' . $plugin->get('idplugin'));
     if ($activeStatus == 1) {
-        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/online.gif" style="border: 0;vertical-align: middle;" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Disable plugin', 'pim') . '</a>');
+        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/online.gif" class="vAlignMiddle" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Disable plugin', 'pim') . '</a>');
     } else {
-        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/offline.gif" style="border: 0;vertical-align: middle;" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Enable plugin', 'pim') . '</a>');
+        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/offline.gif" class="vAlignMiddle" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Enable plugin', 'pim') . '</a>');
     }
 
     // uninstall link
@@ -233,7 +233,7 @@ while (($plugin = $oItem->next()) !== false) {
         $pagePlugins->set('s', 'LANG_WRITABLE', '');
     } else {
         $pagePlugins->set('s', 'UNINSTALL_LINK', '');
-        $pagePlugins->set('s', 'LANG_WRITABLE', '<span style="color: red;">' . i18n('This plugin is not writeable, please set the rights manually', 'pim') . '</span>');
+        $pagePlugins->set('s', 'LANG_WRITABLE', '<span class="settingWrong">' . i18n('This plugin is not writeable, please set the rights manually', 'pim') . '</span>');
     }
 
     // put foldername into array installedPluginFoldernames

@@ -26,7 +26,7 @@ cInclude("includes", "functions.con.php");
 $page = new cGuiPage("upl_artlist");
 
 conCreateLocationString($idcat, "/", $cat_str);
-
+die("test");
 $mcatlink = "";
 
 $_cecIterator = $_cecRegistry->getIterator("Contenido.Content.CreateCategoryLink");

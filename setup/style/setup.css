@@ -368,3 +368,8 @@ table.setupBodyOuterTableSystemData td.nav a, td.back_next a {
     border: none;
     padding-top: 10px;
 }
+
+.active {
+	background-color:#fff;
+	color:#0060B1;
+}
