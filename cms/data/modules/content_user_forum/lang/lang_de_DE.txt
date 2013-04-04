@@ -35,6 +35,6 @@ sameOpinion=Sind Sie gleicher Meinung?
 showHideArticles=Beitrage anzeigen/ausblenden - aktuell: ___ Beitrag(e)
 NEWENTRY=Neuer Kommentar hinzugefuegt
 NEWENTRYTEXT=Neuer Kommentar hinzugefuegt
-COMMENT=Kommentar 
+COMMENT=Kommentar
 USER=Name
 EMAIL=Email

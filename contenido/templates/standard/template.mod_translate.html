@@ -1,62 +1,62 @@
 <form  enctype="multipart/form-data" style="margin:0px" name="translation" method="post" action="main.php">
-	<input name="area" type="hidden" value="mod_translate" />
-	<input name="frame" type="hidden" value="4" />
-	<input name="idmod" type="hidden" value="{IDMOD}" />
-	<input name="row" type="hidden" value="{ROW}" />
-	<input name="action" type="hidden" value="mod_translation_save" />
-	<input name="contenido" type="hidden" value="1" />
-	
-	<table style="width: auto;" id="mod_translate" class="generic" cellspacing="0" cellpadding="2">
-		<tr>
-			<th colspan="2" valign="top">
-				{HEADER}
-			</th>
-		</tr>
-	
-		<tr>
-	    	<td nowrap="nowrap" valign="top" style="padding-left: 0px; white-space: nowrap;" width="1">
-	    		<nobr>i18n("String list")</nobr>
-	    	</td>
-			<td nowrap="nowrap" valign="top" align="left">
-				<table border="0" width="600" border="0">
-					<tr>
-						<td width="50%">
-							i18n("Original module string")
-						</td>
-						<td width="50%">
-							{TRANSLATION_FOR}
-						</td>
-						<td width="20">
-							&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td colspan="3">
-							<iframe frameborder="0" style="border:1px solid black;" width="620" src="main.php?area=mod_translate&frame=5&action=&idmod={IDMOD}&row={ROW}&contenido=1#{ROW}"></iframe>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<textarea id="m3" name="t_orig" cols="50" rows="5" style="width:300px;">{LAST_STRING}</textarea>
-						</td>
-						<td>
-							<textarea id="m4" name="t_trans" cols="50" rows="5" style="width:300px;">{LAST_TRANSLATION}</textarea>
-	    				</td>
-	    				<td width="20">
-	    					&nbsp;
-		    			</td>
-		    		</tr>
-	    		</table>
-	    		i18n("Hint: Hit ALT+SHIFT+S to save the translated entry and advance to the next string.");
-	  	  </td>
-		</tr>
-	
-		<tr>
-			<td nowrap="nowrap" valign="top" style="padding-left: 0px;">&nbsp;</td>
-			<td nowrap="nowrap" valign="top" style="white-space: nowrap;" align="right">
-				<input id="m13" name="submit" type="image" src="images/but_ok.gif" alt="i18n("Save changes")" title="i18n("Save changes")" accesskey="s" onclick="" />
-	        </td>
-	    </tr>
-	</table>
+    <input name="area" type="hidden" value="mod_translate" />
+    <input name="frame" type="hidden" value="4" />
+    <input name="idmod" type="hidden" value="{IDMOD}" />
+    <input name="row" type="hidden" value="{ROW}" />
+    <input name="action" type="hidden" value="mod_translation_save" />
+    <input name="contenido" type="hidden" value="1" />
+
+    <table style="width: auto;" id="mod_translate" class="generic" cellspacing="0" cellpadding="2">
+        <tr>
+            <th colspan="2" valign="top">
+                {HEADER}
+            </th>
+        </tr>
+
+        <tr>
+            <td nowrap="nowrap" valign="top" style="padding-left: 0px; white-space: nowrap;" width="1">
+                <nobr>i18n("String list")</nobr>
+            </td>
+            <td nowrap="nowrap" valign="top" align="left">
+                <table border="0" width="600" border="0">
+                    <tr>
+                        <td width="50%">
+                            i18n("Original module string")
+                        </td>
+                        <td width="50%">
+                            {TRANSLATION_FOR}
+                        </td>
+                        <td width="20">
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <iframe frameborder="0" style="border:1px solid black;" width="620" src="main.php?area=mod_translate&frame=5&action=&idmod={IDMOD}&row={ROW}&contenido=1#{ROW}"></iframe>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea id="m3" name="t_orig" cols="50" rows="5" style="width:300px;">{LAST_STRING}</textarea>
+                        </td>
+                        <td>
+                            <textarea id="m4" name="t_trans" cols="50" rows="5" style="width:300px;">{LAST_TRANSLATION}</textarea>
+                        </td>
+                        <td width="20">
+                            &nbsp;
+                        </td>
+                    </tr>
+                </table>
+                i18n("Hint: Hit ALT+SHIFT+S to save the translated entry and advance to the next string.");
+            </td>
+        </tr>
+
+        <tr>
+            <td nowrap="nowrap" valign="top" style="padding-left: 0px;">&nbsp;</td>
+            <td nowrap="nowrap" valign="top" style="white-space: nowrap;" align="right">
+                <input id="m13" name="submit" type="image" src="images/but_ok.gif" alt="i18n("Save changes")" title="i18n("Save changes")" accesskey="s" onclick="" />
+            </td>
+        </tr>
+    </table>
 </form>
 <script type="text/javascript">document.translation.t_trans.focus();</script>

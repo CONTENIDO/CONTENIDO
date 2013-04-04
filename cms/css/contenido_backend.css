@@ -19,16 +19,15 @@
     font-weight: normal;
 }
 
-
 #tpl_visedit {
-	height:100%; 
-	padding:0; 
-	margin:0;
+    height: 100%;
+    padding: 0;
+    margin: 0;
 }
 
 #tpl_visedit .visedit_item {
-	position:relative; 
-	height:26px; 
-	white-space:nowrap; 
-	font-size:12px;
+    position: relative;
+    height: 26px;
+    white-space: nowrap;
+    font-size: 12px;
 }

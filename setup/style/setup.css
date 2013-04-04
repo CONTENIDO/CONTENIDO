@@ -308,20 +308,18 @@ table.setupBodyOuterTableSystemData td.nav {
     text-align: right;
     vertical-align: bottom;
     white-space: nowrap;
-
-
 }
 
-table.setupBodyOuterTableSystemData td.nav a, td.back_next a {
-    width:16px;
-    height:16px;
-    margin-right:10px;
-
-
+table.setupBodyOuterTableSystemData td.nav a,
+td.back_next a {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
 }
 
 /*Styles for plugin information layer and other elements in step five timo.trautmann*/
-#setupBox, #setupFootnote {
+#setupBox,
+#setupFootnote {
     width: 750px;
     color: black;
     text-align: left;
@@ -370,6 +368,6 @@ table.setupBodyOuterTableSystemData td.nav a, td.back_next a {
 }
 
 .active {
-	background-color:#fff;
-	color:#0060B1;
+    background-color: #fff;
+    color: #0060B1;
 }

@@ -19,8 +19,8 @@
             <td valign="top">
             <div class="block">
             <p class="right">{$POST.OPINION}</p>
-            
-			<div class="dislike"><a href="front_content.php?userid={$POST.DISLIKE}&user_forum_action=dislike_forum&user_forum_id={$POST.FORMID}" class="dislike">-{$POST.DISLIKE_COUNT}</a></div>
+
+            <div class="dislike"><a href="front_content.php?userid={$POST.DISLIKE}&user_forum_action=dislike_forum&user_forum_id={$POST.FORMID}" class="dislike">-{$POST.DISLIKE_COUNT}</a></div>
             <div class="like"><a href="front_content.php?userid={$POST.LIKE}&user_forum_action=like_forum&user_forum_id={$POST.FORMID}" class="like">+{$POST.LIKE_COUNT}</a></div>
 
             {if isset($POST.REPLY)}

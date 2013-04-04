@@ -2209,20 +2209,20 @@ div.bulk_editing_functions a img {
 
 /* I have no idea why this is needed but it looks better for image inputs */
 input[type=image].vAlignMiddle {
-	margin-bottom: 0.1em;
+    margin-bottom: 0.1em;
 }
 
 .vAlignTop {
-	vertical-align: top;
-	margin-top: 0.25em;
+    vertical-align: top;
+    margin-top: 0.25em;
 }
 
 
 .password_request_input {
-    vertical-align:top;
-    margin-top:2px;
-    float:right;
-    margin-right:6px;
+    vertical-align: top;
+    margin-top: 2px;
+    float: right;
+    margin-right: 6px;
 }
 
 #version_selector {
@@ -2249,7 +2249,7 @@ input[type=image].vAlignMiddle {
 }
 
 .conEditForm input.shorter {
-	width: 380px;
+    width: 380px;
 }
 
 .conEditForm select.categories {
@@ -2261,82 +2261,81 @@ input[type=image].vAlignMiddle {
 }
 
 #cont_groups {
-	padding-left:15px;
-	border-top: 1px solid #B3B3B3;
-	padding-top: 5px;
+    padding-left: 15px;
+    border-top: 1px solid #B3B3B3;
+    padding-top: 5px;
 }
 
 #cont_groups span {
-	margin-left: 15px;
-} 
+    margin-left: 15px;
+}
 
 .leftTopAction {
-	min-height: 2em;
-	border: 1px solid #B3B3B3;
-	padding: 5px 0 5px 16px;
-	margin-top: 1px;
+    min-height: 2em;
+    border: 1px solid #B3B3B3;
+    padding: 5px 0 5px 16px;
+    margin-top: 1px;
 }
 
 .leftTopAction input[type=text] {
-	width: 170px;
+    width: 170px;
 }
 
 .moduleError {
-	color: #B1AC58;
+    color: #B1AC58;
 }
 
 .moduleCriticalError {
-	color: red;
+    color: red;
 }
 
 #myContenidoTodoButton {
-	padding-top: 2px;
-	padding-bottom: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 .inactiveUser {
-	color: #b3b3b8;
+    color: #b3b3b8;
 }
 
 .emptyCell {
-	border-bottom: 0 !important;
+    border-bottom: 0 !important;
 }
 
 .systemSetting {
-	vertical-align: middle;
-	margin-bottom: 0.25em;
-	
-	padding: 2px;
+    vertical-align: middle;
+    margin-bottom: 0.25em;
+    padding: 2px;
 }
 
 .unhighlighted {
-	color: grey;
+    color: grey;
 }
 
 .settingFine {
-	color: green;
+    color: green;
 }
 
 .settingWrong {
-	color: red;
+    color: red;
 }
 
 #dbfsTimecontrol {
-	width: 100%;
-	margin-left: 20px;
+    width: 100%;
+    margin-left: 20px;
 }
 
 #cat_navbar {
-	border-bottom: 1px solid #b3b3b3;
+    border-bottom: 1px solid #b3b3b3;
 }
 
 .toolsRight {
-	display: inline-block;
-	float: right;
+    display: inline-block;
+    float: right;
 }
 
 .toolsRight .vAlignMiddle {
-	display: inline-block;
-	width:100px;
-	padding:0px 5px;
+    display: inline-block;
+    width: 100px;
+    padding: 0 5px;
 }
