@@ -138,7 +138,7 @@ class ArticleForumCollection extends ItemCollection {
                 $arrforum[$db->f('id_user_forum')]['realname'] = $db->f('realname');
             }
 
-            $arrforum[$db->f('id_user_forum')]['forum'] = str_replace(chr(13) . chr(10), '<br />', $db->f('forum'));
+            $arrforum[$db->f('id_user_forum')]['forum'] = str_replace(chr(13) . chr(10), '<br />',$db->f('forum'));
             $arrforum[$db->f('id_user_forum')]['forum_quote'] = str_replace(chr(13) . chr(10), '<br />', $db->f('forum_quote'));
             $arrforum[$db->f('id_user_forum')]['timestamp'] = $db->f('timestamp');
             $arrforum[$db->f('id_user_forum')]['like'] = $db->f('like');
@@ -232,14 +232,13 @@ class ArticleForumCollection extends ItemCollection {
      * language string from frontend module.
      */
     public function mailToModerator($realname, $email, $forum, $idart, $forum_quote = 0) {
-
         $mail = new cMailer();
         $mail->setCharset('UTF-8');
 
         // $sToEmail = getEffectiveSetting('claus.schunk@4fb.de',
         // 'claus.schunk@4fb.de');
         // build mail content
-        $message= $this->languageSync['NEWENTRY'] . "\n" . "\n";
+        $message = $this->languageSync['NEWENTRY'] . "\n" . "\n";
         $message .= $this->languageSync['USER'] . ' : ' . $realname . "\n";
         $message .= $this->languageSync['EMAIL'] . ' : ' . $email . "\n";
         $message .= $this->languageSync['COMMENT'] . ' : ' . $forum . "\n";
@@ -247,8 +246,10 @@ class ArticleForumCollection extends ItemCollection {
             $message .= UserForum::i18n('QUOTE') . ' : ' . $forum_quote . "\n";
         }
 
-        $mail->sendMail('contenido@localhost.at',$this->getModEmail($idart), $this->languageSync['NEWENTRY'],$message);
-
+        // send mail only if modEmail is set.
+        if ($this->getModEmail($idart) != NULL) {
+            $mail->sendMail('info@contenido.org', $this->getModEmail($idart), $this->languageSync['NEWENTRY'], $message);
+        }
     }
 
     /**
@@ -323,7 +324,6 @@ class ArticleForumCollection extends ItemCollection {
         $ar = $this->item->toArray();
         $current = $ar['dislike'];
         // increment value
-        $current += 1;
 
         $fields = array(
             'dislike' => $current
@@ -365,8 +365,8 @@ class ArticleForumCollection extends ItemCollection {
             'userid' => mysql_real_escape_string($userid),
             'email' => mysql_real_escape_string($email),
             'realname' => mysql_real_escape_string($realname),
-            'forum' => $forum,
-            'forum_quote' => $forum_quote,
+            'forum' => ($forum),
+            'forum_quote' =>($forum_quote),
             'like' => 0,
             'dislike' => 0,
             'editedat' => NULL,
@@ -391,7 +391,7 @@ class ArticleForumCollection extends ItemCollection {
      * @param articleId $idart
      */
     public function deleteAllCommentsById($idart) {
-        var_dump($idart);
+        //var_dump($idart);
         $this->deleteBy('idart', mysql_real_escape_string(($idart)));
     }
 
@@ -514,18 +514,17 @@ class ArticleForumCollection extends ItemCollection {
      *
      * @param array $str
      */
-    public function languageSync(array $str) {
+    public function languageSync(array &$str) {
         $this->languageSync = $str;
     }
 
-    public function getlanguageSync(array $str) {
+    public function getlanguageSync() {
         if ($this->languageSync != 0) {
             return $this->languageSync;
         } else {
             return array();
         }
     }
-
 }
 
 ?>

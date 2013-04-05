@@ -1,21 +1,14 @@
 <?php
-
+// assert CONTENIDO framework
+defined('CON_FRAMEWORK') or die('Illegal call');
 /**
  *
  * @package Plugin
- * @subpackage user forum
+ * @subpackage user_forum
  * @version SVN Revision $Rev:$
  * @author claus.schunk
  * @copyright four for business AG
  * @link http://www.4fb.de
- */
-
-// assert CONTENIDO framework
-defined('CON_FRAMEWORK') or die('Illegal call');
-
-/**
- *
- * @author claus.schunk
  */
 class UserForum {
 
@@ -34,6 +27,7 @@ class UserForum {
 
     public static function i18n($key) {
         $trans = i18n($key, self::$_name);
+
         return $trans;
     }
 

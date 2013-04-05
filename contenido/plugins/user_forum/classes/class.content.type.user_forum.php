@@ -123,7 +123,6 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
      */
     private function _getPanel() {
         $wrapper = new cHTMLDiv(array(
-
             $this->_getModEmail(),
             $this->_getModMode(),
             $this->_getEditMode()
@@ -136,13 +135,14 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
     private function _getModMode() {
         $id = 'userforum_modactive_' . $this->_id;
 
-        // build label element
+        // build html elements
         $labelModMode = new cHTMLLabel(UserForum::i18n('ACTIVATEMOD'), $id);
         $checkBoxMod = new cHTMLCheckbox($id, '', $id);
         $checkBoxMod->setID($id);
+
+        // check state
         ($this->_settings['userforum_modactive'] === 'false')? $checkBoxMod->setChecked(false) : $checkBoxMod->setChecked(true);
 
-        // build select element
         // build div element as wrapper
         $div = new cHTMLDiv(array(
             '<br />',
@@ -158,16 +158,14 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
     private function _getEditMode() {
         $id = 'userforum_subcomments_' . $this->_id;
 
-        // build label element
+        // build html elements
         $labelModMode = new cHTMLLabel(UserForum::i18n('EDITABLE'), $id);
         $checkBoxMod = new cHTMLCheckbox($id, '', $id);
         $checkBoxMod->setID($id);
 
-        // ($this->_settings['userforum_subcomments']);
-
+        // check state
         ($this->_settings['userforum_subcomments'] === 'false')? $checkBoxMod->setChecked(false) : $checkBoxMod->setChecked(true);
 
-        // build select element
         // build div element as wrapper
         $div = new cHTMLDiv(array(
             $labelModMode,
@@ -186,10 +184,9 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
      * @return cHTMLDiv
      */
     private function _getModEmail() {
-
-        // attributes of form field elements
         $id = 'userforum_email_' . $this->_id;
 
+        // build html elements
         $infoLabel = new cHTMLLabel(UserForum::i18n('MODSETTINGS'), $id);
         $labelEmail = new cHTMLLabel(UserForum::i18n('MODEMAIL'), $id);
 
@@ -232,7 +229,6 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
      */
     public function buildCode() {
         $out = '';
-
         return $out;
     }
 

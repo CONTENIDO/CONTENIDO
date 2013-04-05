@@ -28,6 +28,8 @@ class ArticleForumRightBottom extends cGuiPage {
             return array();
         } else {
             $ar = (date_parse($timeStamp));
+            // if elements are smaller than 2 digits add a '0' at front. e.g
+            // 2:10 -> 02:10
             (strlen($ar['day']) < 2)? $ar['day'] = $nullstring . $ar['day'] : '';
             (strlen($ar['month']) < 2)? $ar['month'] = $nullstring . $ar['month'] : '';
             (strlen($ar['minute']) < 2)? $ar['minute'] = $nullstring . $ar['minute'] : '';
@@ -37,6 +39,14 @@ class ArticleForumRightBottom extends cGuiPage {
         return $ar;
     }
 
+    /**
+     * this function returns an deactive link or an link with mail-to directive
+     * if the given mail adress is valid
+     *
+     * @param string $emailadr
+     * @param string $realname
+     * @return cHTMLLink
+     */
     protected function checkValidEmail($emailadr, $realname) {
         $regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
         // Run the preg_match() function on regex against the email address
@@ -55,6 +65,7 @@ class ArticleForumRightBottom extends cGuiPage {
     }
 
     /**
+     * this function builds buttons for user interactions
      *
      * @param $key
      * @param $cont
@@ -69,6 +80,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $buttons = array();
 
         $id = $cont['id_user_forum'];
+
         // shows onlineState
         $online = new cHTMLLink();
         if ($cont['online'] == 1) {
@@ -82,7 +94,6 @@ class ArticleForumRightBottom extends cGuiPage {
         }
 
         $online->setCLink($area, 4, 'show_form');
-        // $online->setStyle('margin-top:10px ');
         $online->setTargetFrame('right_bottom');
         $online->setStyle('margin-right:10px;');
 
@@ -108,10 +119,10 @@ class ArticleForumRightBottom extends cGuiPage {
         $idacat = $cont['idcat'];
         $idaart = $cont['idart'];
 
+        // button with delete action
         $deleteButton = '<a title="' . $cont['title'] . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $message . '&quot;, function(){deleteArticlesByIdRight(' . $level . ',' . $keyy . ',' . $id . ',' . $idacat . ',' . $idaart . ');});return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $cont['title'] . " löschen" . '" alt="' . $cont['title'] . '"></a>';
 
-        // echo $deletebutton;
-
+        // insert buttons to array for return
         $buttons['online'] = $online;
         $buttons['edit'] = $edit;
         $buttons['delete'] = $deleteButton;
@@ -267,7 +278,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $hiddenEditdat->setValue($cont['editedat']);
             $hiddenEditedby->setValue($cont['editedby']);
             $hiddenTimestamp->setValue($date);
-            $hiddenForum->setValue($cont['forum']);
+            $hiddenForum->setValue(($cont['forum']));
             $hiddenOnline->setValue($cont['online']);
             $hiddenMode->setValue('edit');
             $hiddenKey->setValue($key);
@@ -293,7 +304,7 @@ class ArticleForumRightBottom extends cGuiPage {
 
             // generate output text
             $form->appendContent($date . " von " . $maili . " <br><br>");
-            $form->appendContent($text . "<br><br>");
+            $form->appendContent(($text) . "<br><br>");
             $tdForm->setContent($form);
             $tdForm->setAttribute('valign', 'top');
             $tr->setContent($tdForm);
@@ -316,10 +327,6 @@ class ArticleForumRightBottom extends cGuiPage {
         global $area;
         $changes = 0;
         $cfg = cRegistry::getConfig();
-
-        // echo '<pre>';
-        // var_dump($post);
-        // echo '</pre>';
 
         $menu = new cGuiMenu();
         $tr = new cHTMLTableRow();
@@ -352,7 +359,12 @@ class ArticleForumRightBottom extends cGuiPage {
         $like = new cHTMLTextBox("like", conHtmlSpecialChars($post['like']), 40, 255);
         $dislike = new cHTMLTextBox("dislike", conHtmlSpecialChars($post['dislike']), 40, 255);
 
+
+        //hier
+
+
         $text = str_replace("<br />", "\n", $post['forum']);
+
         $forum = new cHTMLTextArea("forum", $text);
 
         $datearray = $this->formatTimeString($post['timestamp']);
@@ -410,6 +422,7 @@ class ArticleForumRightBottom extends cGuiPage {
 
     protected function getForum($id_cat, $id_art, $id_lang) {
         $arrUsers = $this->_collection->getExistingforum($id_cat, $id_art, $id_lang);
+
         $arrforum = array();
 
         $this->_collection->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
@@ -440,14 +453,17 @@ class ArticleForumRightBottom extends cGuiPage {
      * @throws Exception
      */
     public function receiveData(&$get, &$post) {
-        // debug infos
         if (isset($_REQUEST['action']) && $_REQUEST['action'] != NULL) {
             $this->switchActions();
         }
     }
 
+    /**
+     * switch case action calling
+     *
+     * @throws Exception
+     */
     protected function switchActions() {
-        // check bla
         $lang = cRegistry::getLanguageId();
         $idart = $_REQUEST['idart'];
         $idcat = $_REQUEST['idcat'];
@@ -460,15 +476,6 @@ class ArticleForumRightBottom extends cGuiPage {
                 $this->_collection->toggleOnlineState($_REQUEST['online'], $_REQUEST['id_user_forum']);
                 $this->getForum($idcat, $idart, $lang);
                 break;
-
-            // only with ajax request useable.
-            // case 'online_toggle_editmode':
-            // $this->_collection->toggleOnlineState($_REQUEST['online'],
-            // $_REQUEST['id_user_forum']);
-            // var_dump ($_REQUEST['online']);
-            // $this->getEditModeMenu($_REQUEST);
-            // break;
-
             // after click on delete button in std dialog
             case 'deleteComment':
                 $this->_collection->deleteHierarchie($_REQUEST['key'], $_REQUEST['level'], $idart, $idcat, $lang);
@@ -480,9 +487,11 @@ class ArticleForumRightBottom extends cGuiPage {
                 $this->getForum($idcat, $idart, $lang);
                 break;
             case 'show_form':
+                // lists all comments from given articleId
                 $this->getForum($idcat, $idart, $lang);
                 break;
             case 'edit':
+                // shows edit mode for a comment
                 $this->getEditModeMenu($_POST);
                 break;
             // cancel Button in edit dialog
@@ -490,9 +499,8 @@ class ArticleForumRightBottom extends cGuiPage {
                 $this->getForum($idcat, $idart, $lang);
                 break;
             case 'empty':
-               // $this->getForum($idcat, $idart, $lang);
+                // $this->getForum($idcat, $idart, $lang);
                 break;
-
             default:
                 $this->getForum($idcat, $idart, $lang);
                 throw new Exception('$_GET["action"] type ' . $_REQUEST["action"] . ' not implemented');
