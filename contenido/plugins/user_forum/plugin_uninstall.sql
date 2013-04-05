@@ -1,1 +1,1 @@
-DELETE FROM  con_type WHERE idtype = '100003';
+DELETE FROM !PREFIX!_user_forum
