@@ -128,7 +128,7 @@ if ($_GET['step'] == 'createRoot') { // create new root item
     $oDiv->updateAttributes(array('style' => 'padding: 5px; width: 400px; border: 1px #B3B3B3 solid; background-color: #FFFFFF;'));
     $oDiv->setContent($form);
 } else {
-    $oDiv->setContent('<a href="main.php?action='.$action.'&step=createRoot&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img  src="images/folder_new.gif" border="0" class="vAlignMiddle"><span class="tableElement">'.i18n("Create new tree", 'content_allocation').'</span></a><div style="height:10px"></div>');
+    $oDiv->setContent('<a href="main.php?action='.$action.'&step=createRoot&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img  src="images/folder_new.gif" border="0" class="vAlignMiddle"><span class="tableElement">'.i18n("Create new tree", 'content_allocation').'</span></a>');
 }
 
 $treeDiv = new cHTMLDiv();

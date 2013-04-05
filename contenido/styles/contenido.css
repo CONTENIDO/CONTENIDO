@@ -2339,3 +2339,7 @@ input[type=image].vAlignMiddle {
     width: 100px;
     padding: 0 5px;
 }
+
+#todoList {
+	margin-bottom: 10px;
+}

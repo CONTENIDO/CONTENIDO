@@ -34,7 +34,7 @@ class cApiCategoryTreeCollection extends ItemCollection {
         // set the join partners so that joins can be used via link() method
         $this->_setJoinPartner('cApiCategoryCollection');
 
-        $this->_setItemClass('cApiTree');
+        $this->_setItemClass('cApiCategoryTree');
         if ($select !== false) {
             $this->select($select);
         }

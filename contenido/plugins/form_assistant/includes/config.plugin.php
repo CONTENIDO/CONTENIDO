@@ -343,9 +343,6 @@ $cfg['templates']['pifa_ajax_option_row'] = $cfg['plugins'][Pifa::getName()] . '
 $cfg['tab']['pifa_form'] = $cfg['sql']['sqlprefix'] . '_pifa_form';
 $cfg['tab']['pifa_field'] = $cfg['sql']['sqlprefix'] . '_pifa_field';
 
-// include CONTENIDO classes
-cInclude('classes', 'class.ui.php');
-
 // include necessary sources, setup autoloader for plugin
 // @todo Use config variables for $pluginClassPath below!
 $pluginClassPath = 'contenido/plugins/' . Pifa::getName() . '/';

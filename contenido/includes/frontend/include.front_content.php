@@ -333,19 +333,14 @@ if ($cfg['cache']['disable'] != '1') {
 // Backend / Frontend editing
 
 /**
- * If user has CONTENIDO-backend rights.
- * $contenido <==> the cotenido backend session as http global
- * In Backend: e.g.
- * contenido/index.php?contenido=dac651142d6a6076247d3afe58c8f8f2
- * Can also be set via
- * front_content.php?contenido=dac651142d6a6076247d3afe58c8f8f2
+ * First we have to figure out if the user is allowed to edit the article.
  *
- * Note: In backend the file contenido/external/backendedit/front_content.php is
- * included!
- * The reason is to avoid cross-site scripting errors in the backend, if the
- * backend domain differs from
- * the frontend domain.
+ * We'll check if it's inuse, if they want to edit it and if all plugins allow it.
+ *
  */
+$inUse = false;
+$allow = false;
+$view = false;
 if ($contenido) {
     $perm->load_permissions();
 
@@ -388,57 +383,6 @@ if ($contenido) {
     cApiCecHook::setBreakCondition(false, true); // break at 'false', default
                                                  // value 'true'
     $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.AllowEdit', $lang, $idcat, $idart, $auth->auth['uid']);
-
-    if ($perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat) && $inUse == false && $allow == true) {
-        // Start editing table
-        $edit_preview = '<table id="LOOKIMUSED" cellspacing="0" cellpadding="4" border="0">';
-
-        // Create buttons for editing
-        if ($view == 'edit') {
-            $edit_preview = '<tr>
-                                <td width="18">
-                                    <a title="Preview" style="font-family:verdana;font-size:10px;color:#000;text-decoration:none" href="' . $sess->url("front_content.php?changeview=prev&idcat=$idcat&idart=$idart") . '"><img src="' . $backendUrl . $cfg['path']['images'] . 'but_preview.gif" alt="Preview" title="Preview" border="0"></a>
-                                </td>
-                                <td width="18">
-                                    <a title="Preview" style="font-family:verdana;font-size:10px;color:#000;text-decoration:none" href="' . $sess->url("front_content.php?changeview=prev&idcat=$idcat&idart=$idart") . '">Preview</a>
-                                </td>
-                            </tr>';
-        } else {
-            $edit_preview = '<tr>
-                                <td width="18">
-                                    <a title="Preview" style="font-family:verdana;font-size:10px;color:#000;text-decoration:none" href="' . $sess->url("front_content.php?changeview=edit&idcat=$idcat&idart=$idart") . '"><img src="' . $backendUrl . $cfg['path']['images'] . 'but_edit.gif" alt="Preview" title="Preview" border="0"></a>
-                                </td>
-                                <td width="18">
-                                    <a title="Preview" style="font-family:verdana;font-size:10px;color:#000;text-decoration:none" href="' . $sess->url("front_content.php?changeview=edit&idcat=$idcat&idart=$idart") . '">Edit</a>
-                                </td>
-                            </tr>';
-        }
-
-        // List category articles
-        $a = 1;
-        $edit_preview .= '<tr><td colspan="2"><table cellspacing="0" cellpadding="2" border="0"></tr><td style="font-family:verdana;font-size:10;color:#000;text-decoration:none">Articles in category:<br>';
-
-        $oCatArtColl = new cApiCategoryArticleCollection();
-        if ($oCatArtColl->select('idcat = ' . (int) $idcat, '', 'idart')) {
-            while ($oCatArtItem = $oCatArtColl->next()) {
-                $class = 'font-family:verdana;font-size:10;color:#000;text-decoration:underline;font-weight:normal';
-                if (!isset($idart)) {
-                    if (isStartArticle(getArtLang($idart, $lang), $idcat, $lang)) {
-                        $class = 'font-family:verdana;font-size:10;color:#000;text-decoration:underline;font-weight:bold';
-                    }
-                } else {
-                    if ($idart == $oCatArtItem->get('idart')) {
-                        $class = 'font-family:verdana;font-size:10;color:#000;text-decoration:underline;font-weight:bold';
-                    }
-                }
-                $edit_preview .= '<a style="' . $class . '" href="' . $sess->url('front_content.php?idart=' . $oCatArtItem->get('idart') . "&idcat=$idcat") . '">' . $a . '</a>&nbsp;';
-                $a++;
-            }
-        }
-
-        // End editing table
-        $edit_preview .= '</td></tr></table></td></tr></table>';
-    }
 }
 
 // If mode is 'edit' and user has permission to edit articles in the current

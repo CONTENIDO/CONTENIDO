@@ -2327,6 +2327,7 @@ contenido/templates/standard/template.system_variables_block.html -text
 contenido/templates/standard/template.tpl_edit_form.html -text
 contenido/templates/standard/template.tpl_overview.html -text
 contenido/templates/standard/template.tplcfg_edit_form.html -text
+contenido/templates/standard/template.upl_artlist.html -text svneol=unset#text/plain
 contenido/templates/standard/template.upl_dirs_overview.html -text
 contenido/templates/standard/template.upl_edit.html -text
 contenido/templates/standard/template.upl_files_overview.html -text

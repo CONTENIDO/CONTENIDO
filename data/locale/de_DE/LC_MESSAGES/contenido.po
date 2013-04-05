@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-04 16:39+0200\n"
-"PO-Revision-Date: 2013-04-04 16:41+0100\n"
+"POT-Creation-Date: 2013-04-05 13:59+0200\n"
+"PO-Revision-Date: 2013-04-05 14:00+0100\n"
 "Last-Translator: Mischa Holz <mischa.holz@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -28,8 +28,8 @@ msgstr "Vielen Dank für die Speicherung dieser Suche!"
 #: includes/include.con_edit_form.php:186
 #: includes/include.con_meta_form.php:196
 #: includes/include.stat_overview.php:101
-#: includes/include.upl_artlist.php:64
 #: templates/standard/template.mycontenido_lastarticles.html:63
+#: templates/standard/template.upl_artlist.html:11
 msgid "Title"
 msgstr "Titel"
 
@@ -47,7 +47,6 @@ msgstr "Veröffentlicht"
 #: classes/content_types/class.content.type.filelist.php:609
 #: classes/content_types/class.content.type.teaser.php:812
 #: includes/include.con_art_overview.php:76
-#: includes/include.upl_artlist.php:67
 #: templates/standard/template.frontend_left_top_filter.html:16
 #: templates/standard/template.mod_left_top_filter.html:17
 #: templates/standard/template.rights_left_top_filter.html:16
@@ -64,9 +63,9 @@ msgstr "Suchergebnisse"
 #: includes/include.con_art_overview.php:72
 #: includes/include.con_subnav.php:114
 #: includes/include.logs.php:283
-#: includes/include.upl_artlist.php:63
 #: templates/standard/template.symbolhelp.html:20
 #: templates/standard/template.symbolhelp.html:102
+#: templates/standard/template.upl_artlist.html:10
 msgid "Article"
 msgstr "Artikel"
 
@@ -328,8 +327,8 @@ msgstr "Synchronisation fehlgeschlagen, konnte layout nicht löschen: "
 msgid "Synchronization successfully!"
 msgstr "Sychronisierung war erfolgreich!"
 
-#: classes/class.note.php:282
-#: classes/class.note.php:285
+#: classes/class.note.php:283
+#: classes/class.note.php:286
 msgid "View notes / add note"
 msgstr "Notizen anzeigen / hinzufügen"
 
@@ -1793,7 +1792,7 @@ msgid "Alternative path %s does not exist. Version was saved in frondendpath."
 msgstr "Der alternative Pfad %s existiert nicht. Die Verison wurde im Frontendpfad gespeichert."
 
 #: classes/version/class.version.php:529
-#: includes/include.mycontenido.tasks.php:357
+#: includes/include.mycontenido.tasks.php:358
 msgid "Refresh"
 msgstr "Aktualisieren"
 
@@ -1904,7 +1903,7 @@ msgstr "Fehlerseite"
 msgid "Error article/category not found!"
 msgstr "Fehler: Artikel/Kategorie nicht gefunden!"
 
-#: includes/frontend/include.front_content.php:368
+#: includes/frontend/include.front_content.php:363
 #: includes/include.con_edit_form.php:105
 #: includes/include.con_meta_form.php:120
 #: includes/include.tplcfg_edit_form.php:54
@@ -2412,7 +2411,7 @@ msgstr "Artikelspezifikation"
 
 #: includes/include.client_artspec.php:70
 #: includes/include.lay_edit_form.php:228
-#: includes/include.mycontenido.tasks.php:373
+#: includes/include.mycontenido.tasks.php:374
 #: includes/include.mycontenido_settings.php:163
 msgid "Options"
 msgstr "Optionen"
@@ -2760,8 +2759,8 @@ msgstr "erstellt von"
 #: includes/include.frontend.left_top.php:48
 #: includes/include.frontend.user_menu.php:46
 #: includes/include.mycontenido.tasks.php:255
-#: includes/include.upl_artlist.php:66
 #: templates/standard/template.mycontenido_lastarticles.html:65
+#: templates/standard/template.upl_artlist.html:13
 msgid "Created"
 msgstr "Erstelldatum"
 
@@ -3105,8 +3104,8 @@ msgstr "Benutzername"
 
 #: includes/include.frontend.left_top.php:49
 #: includes/include.frontend.user_menu.php:47
-#: includes/include.upl_artlist.php:65
 #: templates/standard/template.mycontenido_lastarticles.html:66
+#: templates/standard/template.upl_artlist.html:12
 msgid "Modified"
 msgstr "Geändert"
 
@@ -4204,15 +4203,15 @@ msgstr "Element löschen"
 msgid "Edit item"
 msgstr "Element bearbeiten"
 
-#: includes/include.mycontenido.tasks.php:353
+#: includes/include.mycontenido.tasks.php:354
 msgid "Restrict display"
 msgstr "Anzeige einschränken"
 
-#: includes/include.mycontenido.tasks.php:363
+#: includes/include.mycontenido.tasks.php:364
 msgid "Hide done tasks"
 msgstr "Erledigte Aufgaben ausblenden"
 
-#: includes/include.mycontenido.tasks.php:376
+#: includes/include.mycontenido.tasks.php:377
 msgid "No tasks found"
 msgstr "Keine Aufgaben gefunden"
 
@@ -4956,14 +4955,6 @@ msgstr "Vorlage duplizieren"
 #, php-format
 msgid "The template '%s' is used for following categories and articles"
 msgstr "Die Vorlage '%s' wird bei folgenden Kategorien und Artikeln benutzt"
-
-#: includes/include.upl_artlist.php:50
-msgid "Use this category"
-msgstr "Diese Kategorie verwenden"
-
-#: includes/include.upl_artlist.php:68
-msgid "Online"
-msgstr "Online"
 
 #: includes/include.upl_dirs_overview.php:120
 msgid "Failed to delete the following files:"
@@ -5799,6 +5790,10 @@ msgstr "CONTENIDO Fehlerlog"
 msgid "clear error log"
 msgstr "Fehlerlog leeren"
 
+#: templates/standard/template.upl_artlist.html:14
+msgid "Online"
+msgstr "Online"
+
 #: templates/standard/template.upl_files_overview.html:144
 #: templates/standard/template.upl_files_overview.html:188
 msgid "Sort files"
@@ -6192,6 +6187,9 @@ msgstr "Debug-Meldungen anzeigen"
 #: xml/system.xml:39
 msgid "Allow all HTML tags and attributes in TinyMCE"
 msgstr "Erlaube alle HTML Tag und Attribute in TinyMCE"
+
+#~ msgid "Use this category"
+#~ msgstr "Diese Kategorie verwenden"
 
 #~ msgid "Cant make a new modul!"
 #~ msgstr "Kann neues Modul nicht erstellen!"

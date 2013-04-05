@@ -180,7 +180,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
                               "start" => true,
                               "offline" => true,
                               "order" => "title");
-        $oTemplateArticles = new ArticleCollection($aOptions);
+        $oTemplateArticles = new cArticleCollector($aOptions);
 
         $aItems = array();
         $aItems[] = array(0, i18n("-- none --", 'newsletter'));

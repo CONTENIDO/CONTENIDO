@@ -104,12 +104,12 @@ class cGuiNotification {
             case self::LEVEL_INFO:
                 $sHead = i18n('Info');
                 $sHeadClass = 'alertbox_info';
-                $sMessage = '<span style="color:#435d06">' . $sMessage . '</span>';
+                $sMessage = '<span>' . $sMessage . '</span>';
                 break;
             default:
                 $sHead = i18n('Notification');
                 $sHeadClass = 'alertbox_notification';
-                $sMessage = '<span style="color:#435d06">' . $sMessage . '</span>';
+                $sMessage = '<span>' . $sMessage . '</span>';
                 break;
         }
 

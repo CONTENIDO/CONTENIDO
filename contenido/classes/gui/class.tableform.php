@@ -131,7 +131,7 @@ class cGuiTableForm {
         $this->custom[$id]["confirmdescription"] = $description;
     }
 
-    public function setTableid($tableid) {
+    public function setTableID($tableid) {
         $this->tableid = $tableid;
     }
 

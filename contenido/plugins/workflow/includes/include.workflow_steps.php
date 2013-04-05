@@ -332,7 +332,6 @@ function getWorkflowUsers($idworkflowitem) {
         $moveup->setCustom("idworkflow", $idworkflow);
         $moveup->setCustom("position", $pos);
         $moveup->setAlt(i18n("Move user up", "workflow"));
-        #$moveup->setContent('<img border="0" style="padding-left: 2px" src="images/pfeil_hoch.gif">');
         $moveup->setContent('<img border="0" src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/no_verschieben.gif" . '">');
 
         $movedown = new cHTMLLink();

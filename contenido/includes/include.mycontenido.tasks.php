@@ -350,6 +350,7 @@ while ($todo = $todoitems->next()) {
 }
 
 $form = new cGuiTableForm("restrict");
+$form->setTableID("todoList");
 $form->addHeader(i18n("Restrict display"));
 $form->setVar("listsubmit", "true");
 

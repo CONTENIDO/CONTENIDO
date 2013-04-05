@@ -883,6 +883,7 @@
 ./templates/standard/template.tplcfg_edit_form.html
 ./templates/standard/template.tpl_edit_form.html
 ./templates/standard/template.tpl_overview.html
+./templates/standard/template.upl_artlist.html
 ./templates/standard/template.upl_dirs_overview.html
 ./templates/standard/template.upl_edit.html
 ./templates/standard/template.upl_files_overview.html

@@ -1,12 +1,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Linkchecker\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-09-05 15:28+0100\n"
-"Last-Translator: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-04-05 13:55+0200\n"
+"PO-Revision-Date: 2013-04-05 13:56+0100\n"
+"Last-Translator: Mischa Holz <mischa.holz@4fb.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
@@ -14,90 +15,122 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-SearchPath-0: H:\\frederic.schneider\\contenido\\plugins\\linkchecker\\includes\n"
 
-msgid "Link analysis from "
-msgstr "Link-Analyse vom "
+#: includes/include.linkchecker.php:32
+msgid "No Client selected"
+msgstr "Kein Client ausgewählt"
 
-msgid "%Y-%m-%d"
-msgstr "%d.%m.%Y"
-
-msgid "<strong>No errors</strong> were found."
-msgstr "Es wurden <strong>keine Fehler</strong> gefunden."
-
-msgid "Total checked links"
-msgstr "Insgesamt geprüfte Links"
-
-msgid "idart"
-msgstr "idart"
-
-msgid "Article"
-msgstr "Artikel"
-
-msgid "idcat"
-msgstr "idcat"
-
-msgid "Category"
-msgstr "Kategorie"
-
-msgid "Description"
-msgstr "Beschreibung"
-
-msgid "Linkerror"
-msgstr "Linkfehler"
-
-msgid "Links to articles"
-msgstr "Links auf Artikel"
-
-msgid "Links to categories"
-msgstr "Links auf Kategorien"
-
-msgid "Links to documents and images"
-msgstr "Links auf Bilder und Dokumente"
-
-msgid "Links to extern sites and not defined links"
-msgstr "Links zu externen Quellen und nicht definierte Links"
-
-msgid "Wrong links"
-msgstr "Fehlerhafte Links"
-
-msgid "Unknown: articles, documents etc. do not exist."
-msgstr "Unknown: Artikel, Dokumente et cetera existieren nicht."
-
-msgid "Offline: article or category is offline."
-msgstr "Offline: Artikel oder Kategorie ist offline."
-
-msgid "dbfs: no matches found in the dbfs database."
-msgstr "dbfs: In der dbfs-Datenbank ist die gesuchte Datei nicht vorhanden."
-
-msgid "No errors for this type."
-msgstr "Es wurden für diesen Linktyp keine Fehler gefunden."
-
-msgid "%Y-%m-%d, %I:%M%S %p"
-msgstr "%d.%m.%Y, %H:%M:%S"
-
-msgid "Links at whitelist"
-msgstr "Links auf der Whitelist"
-
-msgid "Delete"
-msgstr "Entfernen"
-
-msgid "Entry"
-msgstr "Eintragung"
-
-msgid "URLs"
-msgstr "Links"
-
-msgid "This links are on the whitelist. Whitelist-links won't be check at linkchecker."
-msgstr "Diese Links befinden sich auf der Whitelist und werden nicht vom Linkchecker überprüft."
-
-msgid "View whitelist"
-msgstr "Whitelist anzeigen"
-
+#: includes/include.linkchecker.php:75
 msgid "Interns"
 msgstr "Interne"
 
+#: includes/include.linkchecker.php:77
 msgid "Externs"
 msgstr "Externe"
 
+#: includes/include.linkchecker.php:79
 msgid "Intern/extern Links"
 msgstr "Interne/externe Links"
 
+#: includes/include.linkchecker.php:264
+msgid "Link analysis from "
+msgstr "Link-Analyse vom "
+
+#: includes/include.linkchecker.php:264
+msgid "%Y-%m-%d"
+msgstr "%d.%m.%Y"
+
+#: includes/include.linkchecker.php:273
+msgid "<strong>No errors</strong> were found."
+msgstr "Es wurden <strong>keine Fehler</strong> gefunden."
+
+#: includes/include.linkchecker.php:277
+msgid "Total checked links"
+msgstr "Insgesamt geprüfte Links"
+
+#: includes/include.linkchecker.php:278
+msgid "idart"
+msgstr "idart"
+
+#: includes/include.linkchecker.php:279
+msgid "Article"
+msgstr "Artikel"
+
+#: includes/include.linkchecker.php:280
+msgid "idcat"
+msgstr "idcat"
+
+#: includes/include.linkchecker.php:281
+msgid "Category"
+msgstr "Kategorie"
+
+#: includes/include.linkchecker.php:282
+msgid "Description"
+msgstr "Beschreibung"
+
+#: includes/include.linkchecker.php:283
+msgid "Linkerror"
+msgstr "Linkfehler"
+
+#: includes/include.linkchecker.php:284
+msgid "Links to articles"
+msgstr "Links auf Artikel"
+
+#: includes/include.linkchecker.php:285
+msgid "Links to categories"
+msgstr "Links auf Kategorien"
+
+#: includes/include.linkchecker.php:286
+msgid "Links to documents and images"
+msgstr "Links auf Bilder und Dokumente"
+
+#: includes/include.linkchecker.php:287
+msgid "Links to extern sites and not defined links"
+msgstr "Links zu externen Quellen und nicht definierte Links"
+
+#: includes/include.linkchecker.php:289
+msgid "Wrong links"
+msgstr "Fehlerhafte Links"
+
+#: includes/include.linkchecker.php:324
+msgid "Unknown: articles, documents etc. do not exist."
+msgstr "Unknown: Artikel, Dokumente et cetera existieren nicht."
+
+#: includes/include.linkchecker.php:326
+#: includes/include.linkchecker.php:328
+msgid "Offline: article or category is offline."
+msgstr "Offline: Artikel oder Kategorie ist offline."
+
+#: includes/include.linkchecker.php:330
+msgid "dbfs: no matches found in the dbfs database."
+msgstr "dbfs: In der dbfs-Datenbank ist die gesuchte Datei nicht vorhanden."
+
+#: includes/include.linkchecker.php:365
+msgid "No errors for this type."
+msgstr "Es wurden für diesen Linktyp keine Fehler gefunden."
+
+#: includes/include.linkchecker_whitelist.php:59
+msgid "%Y-%m-%d, %I:%M%S %p"
+msgstr "%d.%m.%Y, %H:%M:%S"
+
+#: includes/include.linkchecker_whitelist.php:65
+msgid "Links at whitelist"
+msgstr "Links auf der Whitelist"
+
+#: includes/include.linkchecker_whitelist.php:66
+msgid "Delete"
+msgstr "Entfernen"
+
+#: includes/include.linkchecker_whitelist.php:67
+msgid "Entry"
+msgstr "Eintragung"
+
+#: includes/include.linkchecker_whitelist.php:68
+msgid "URLs"
+msgstr "Links"
+
+#: includes/include.linkchecker_whitelist.php:69
+msgid "This links are on the whitelist. Whitelist-links won't be check at linkchecker."
+msgstr "Diese Links befinden sich auf der Whitelist und werden nicht vom Linkchecker überprüft."
+
+#~ msgid "View whitelist"
+#~ msgstr "Whitelist anzeigen"

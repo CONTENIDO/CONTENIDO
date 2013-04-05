@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-04 16:39+0200\n"
+"POT-Creation-Date: 2013-04-05 13:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,8 +28,9 @@ msgstr ""
 #: includes/include.con_art_overview.php:678
 #: includes/include.con_edit_form.php:186
 #: includes/include.con_meta_form.php:196
-#: includes/include.stat_overview.php:101 includes/include.upl_artlist.php:64
+#: includes/include.stat_overview.php:101
 #: templates/standard/template.mycontenido_lastarticles.html:63
+#: templates/standard/template.upl_artlist.html:11
 msgid "Title"
 msgstr ""
 
@@ -45,7 +46,6 @@ msgstr ""
 #: classes/content_types/class.content.type.filelist.php:609
 #: classes/content_types/class.content.type.teaser.php:812
 #: includes/include.con_art_overview.php:76
-#: includes/include.upl_artlist.php:67
 #: templates/standard/template.frontend_left_top_filter.html:16
 #: templates/standard/template.mod_left_top_filter.html:17
 #: templates/standard/template.rights_left_top_filter.html:16
@@ -60,9 +60,9 @@ msgstr ""
 #: classes/content_types/class.content.type.teaser.php:951
 #: includes/include.con_art_overview.php:72
 #: includes/include.con_subnav.php:114 includes/include.logs.php:283
-#: includes/include.upl_artlist.php:63
 #: templates/standard/template.symbolhelp.html:20
 #: templates/standard/template.symbolhelp.html:102
+#: templates/standard/template.upl_artlist.html:10
 msgid "Article"
 msgstr ""
 
@@ -289,7 +289,7 @@ msgstr ""
 msgid "Synchronization successfully!"
 msgstr ""
 
-#: classes/class.note.php:282 classes/class.note.php:285
+#: classes/class.note.php:283 classes/class.note.php:286
 msgid "View notes / add note"
 msgstr ""
 
@@ -1816,7 +1816,7 @@ msgid "Alternative path %s does not exist. Version was saved in frondendpath."
 msgstr ""
 
 #: classes/version/class.version.php:529
-#: includes/include.mycontenido.tasks.php:357
+#: includes/include.mycontenido.tasks.php:358
 msgid "Refresh"
 msgstr ""
 
@@ -1921,7 +1921,7 @@ msgstr ""
 msgid "Error article/category not found!"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:368
+#: includes/frontend/include.front_content.php:363
 #: includes/include.con_edit_form.php:105
 #: includes/include.con_meta_form.php:120
 #: includes/include.tplcfg_edit_form.php:54
@@ -2403,7 +2403,7 @@ msgstr ""
 
 #: includes/include.client_artspec.php:70
 #: includes/include.lay_edit_form.php:228
-#: includes/include.mycontenido.tasks.php:373
+#: includes/include.mycontenido.tasks.php:374
 #: includes/include.mycontenido_settings.php:163
 msgid "Options"
 msgstr ""
@@ -2752,8 +2752,8 @@ msgstr ""
 #: includes/include.frontend.left_top.php:48
 #: includes/include.frontend.user_menu.php:46
 #: includes/include.mycontenido.tasks.php:255
-#: includes/include.upl_artlist.php:66
 #: templates/standard/template.mycontenido_lastarticles.html:65
+#: templates/standard/template.upl_artlist.html:13
 msgid "Created"
 msgstr ""
 
@@ -3087,8 +3087,8 @@ msgstr ""
 
 #: includes/include.frontend.left_top.php:49
 #: includes/include.frontend.user_menu.php:47
-#: includes/include.upl_artlist.php:65
 #: templates/standard/template.mycontenido_lastarticles.html:66
+#: templates/standard/template.upl_artlist.html:12
 msgid "Modified"
 msgstr ""
 
@@ -4153,15 +4153,15 @@ msgstr ""
 msgid "Edit item"
 msgstr ""
 
-#: includes/include.mycontenido.tasks.php:353
+#: includes/include.mycontenido.tasks.php:354
 msgid "Restrict display"
 msgstr ""
 
-#: includes/include.mycontenido.tasks.php:363
+#: includes/include.mycontenido.tasks.php:364
 msgid "Hide done tasks"
 msgstr ""
 
-#: includes/include.mycontenido.tasks.php:376
+#: includes/include.mycontenido.tasks.php:377
 msgid "No tasks found"
 msgstr ""
 
@@ -4910,14 +4910,6 @@ msgstr ""
 #: includes/include.tpl_overview.php:95
 #, php-format
 msgid "The template '%s' is used for following categories and articles"
-msgstr ""
-
-#: includes/include.upl_artlist.php:50
-msgid "Use this category"
-msgstr ""
-
-#: includes/include.upl_artlist.php:68
-msgid "Online"
 msgstr ""
 
 #: includes/include.upl_dirs_overview.php:120
@@ -5723,6 +5715,10 @@ msgstr ""
 
 #: templates/standard/template.system_variables.html:30
 msgid "clear error log"
+msgstr ""
+
+#: templates/standard/template.upl_artlist.html:14
+msgid "Online"
 msgstr ""
 
 #: templates/standard/template.upl_files_overview.html:144

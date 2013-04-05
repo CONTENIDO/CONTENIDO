@@ -75,7 +75,7 @@ function prepareWorkflowItems() {
                 if (($item = $wfa->next()) !== false) {
                     $wfa->delete($item->get("idallocation"));
                     // delete user sequences for listing in tasklist for each included article
-                    $oArticles = new ArticleCollection(array('idcat' => $idcatlang, 'start' => true, 'offline' => true));
+                    $oArticles = new cArticleCollector(array('idcat' => $idcatlang, 'start' => true, 'offline' => true));
                     while (($oArticle = $oArticles->nextArticle()) !== false) {
                         setUserSequence($oArticle->getField('idartlang'), -1);
                     }
@@ -89,7 +89,7 @@ function prepareWorkflowItems() {
                 } else {
                     $wfa->create($asworkflow, $idcatlang);
                     // generate user sequences for listing in tasklist for each included article
-                    $oArticles = new ArticleCollection(array('idcat' => $tmp_cat, 'start' => true, 'offline' => true));
+                    $oArticles = new cArticleCollector(array('idcat' => $tmp_cat, 'start' => true, 'offline' => true));
                     while (($oArticle = $oArticles->nextArticle()) !== false) {
                         setUserSequence($oArticle->getField('idartlang'), $asworkflow);
                     }
@@ -115,7 +115,7 @@ function prepareWorkflowItems() {
             }
 
             // generate user sequences for listing in tasklist for each included article
-            $oArticles = new ArticleCollection(array('idcat' => $modidcat, 'start' => true, 'offline' => true));
+            $oArticles = new cArticleCollector(array('idcat' => $modidcat, 'start' => true, 'offline' => true));
             while (($oArticle = $oArticles->nextArticle()) !== false) {
                 setUserSequence($oArticle->getField('idartlang'), $GLOBALS[$seltpl]);
             }
@@ -129,7 +129,7 @@ function prepareWorkflowItems() {
             $wfa->delete($alloc);
 
             // delete user sequences for listing in tasklist for each included article
-            $oArticles = new ArticleCollection(array('idcat' => $modidcat, 'start' => true, 'offline' => true));
+            $oArticles = new cArticleCollector(array('idcat' => $modidcat, 'start' => true, 'offline' => true));
             while (($oArticle = $oArticles->nextArticle()) !== false) {
                 setUserSequence($oArticle->getField('idartlang'), -1);
             }

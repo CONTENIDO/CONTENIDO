@@ -222,19 +222,20 @@ class NoteListItem extends cHTMLDiv {
 
         if ($this->_bDeleteable == true) {
             $oDeleteable = new cHTMLLink();
+            $oDeleteable->setClass("vAlignMiddle tableElement");
             $oDeletePic = new cHTMLImage(cRegistry::getBackendUrl() . '/images/delete.gif');
             $oDeleteable->setContent($oDeletePic);
             $oDeleteable->setLink($sess->url("main.php?frame=2&area=note&itemtype=$itemtype&itemid=$itemid&action=note_delete&deleteitem=$deleteitem"));
 
-            $table .= '</td><td style="padding-left:4px;" width="1">' . $oDeleteable->render();
+            $table .= '</td><td width="1">' . $oDeleteable->render();
         }
         $table .= '</td></tr></table>';
 
         $oMessage = new cHTMLDiv;
         $oMessage->setContent($this->_sMessage);
-        $oMessage->setStyle("padding-bottom: 8px;");
+        $oMessage->setStyle("padding-bottom: 8px; margin-top: 4px;");
 
-        $this->setContent(array($table, '<hr style="margin-top:2px;margin-bottom:2px;>', $oMessage));
+        $this->setContent(array($table, $oMessage));
 
         return parent::render();
     }
