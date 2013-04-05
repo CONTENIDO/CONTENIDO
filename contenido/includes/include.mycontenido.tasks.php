@@ -78,6 +78,12 @@ class TODOBackendList extends cGuiScrollList
         } else {
             $this->objItem->updateAttributes(array("align" => "left"));
         }
+
+        if($column == 7) {
+            $this->objItem->updateAttributes(array("style" => "width: 85px;"));
+        } else {
+            $this->objItem->updateAttributes(array("style" => ""));
+        }
     }
 
     function convert($key, $value, $hidden) {
