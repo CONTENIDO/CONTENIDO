@@ -1,5 +1,34 @@
 <?php
+/**
+ * Project:
+ * Contenido Content Management System
+ *
+ * Description:
+ * Wrapper class for Integration of smarty
+ *
+ * Requirements:
+ *
+ *
+ * @package    Contenido Template classes
+ * @version    1.3.0
+ * @author     Andreas Dieter
+ * @copyright  four for business AG <info@contenido.org>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since
+ *
+ * {@internal
+ *     created     2010-07-22
+ * }}
+ */
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
+
 class Contenido_Backend_SmartyWrapper extends cSmartyBackend {}
+
 class cSmartyBackend extends Contenido_SmartyWrapper {
 
     public function __construct(&$aCfg, &$aClientCfg, $bSanityCheck = false) {
