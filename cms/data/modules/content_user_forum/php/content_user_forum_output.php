@@ -131,7 +131,6 @@ class UserForumArticle {
                 $this->saveForum();
                 $this->listForum();
                 break;
-
             default:
                 $this->listForum();
                 break;
@@ -219,13 +218,14 @@ class UserForumArticle {
                 // build array for language synchonisation
                 $ar = array(
                     'NEWENTRY' => mi18n("NEWENTRY"),
-                    'NEWENTRYTEXT' => mi18n("NEWENTRY"),
+                    'NEWENTRYTEXT' => mi18n("NEWENTRYTEXT"),
                     'COMMENT' => mi18n("COMMENT"),
                     'USER' => mi18n("USER"),
-                    'EMAIL' => mi18n("EMAIL")
+                    'EMAIL' => mi18n("EMAILADR"),
+                    'ARTICLE' => mi18n("INARTICLE")
                 );
-
                 $this->_collection->languageSync($ar);
+               // var_dump($this->_collection->getlanguageSync());
                 // persist comment
                 $this->_collection->insertValues($parent, $this->_idart, $this->_idcat, $this->_idlang, $this->_userid, $email, $realname, $forum, $forum_quote);
 
@@ -351,7 +351,7 @@ class UserForumArticle {
 
                     $record['FORUM'] = $value['forum'];
 
-                    if (($value['editedby'] != '') && ($value['editedat'] != '')) {
+                    if (($value['editedby'] != '') && ($value['editedat'] != "0000-00-00 00:00:00")) {
 
                         // string manipulation for edittime
                         $arrTmp = explode(' ', $value['editedat']);
@@ -388,9 +388,7 @@ class UserForumArticle {
                     $record['LINKTEXT'] = mi18n("writeNewEntry");
                     $record['REPLYTEXT'] = mi18n("answers");
                     $record['QUOTETEXT'] = mi18n("replyQuote");
-
                     $record['FORMID'] = $value['id_user_forum'];
-
                     $record['LINKBEGIN'] = "";
                     $record['LINKEND'] = "";
                     $record['MAILTO'] = '#';
@@ -450,14 +448,19 @@ class UserForumArticle {
             }
 
             $replyId = (int) $_REQUEST['user_forum_parent'];
+
             if ($replyId > 0) {
                 $content = $this->_collection->selectNameAndNameByForumId($replyId);
                 (count($content) > 0)? $empty = false : $empty = true;
 
                 if (!$empty) {
+                     // Quote anser content
+                    $ar = $this->_collection->getCommentContent($replyId);
                     $transTemplate = mi18n("answerToQuote");
+                    $transTemplateContent =  $ar['content'];
                     $transTemplateAfter = mi18n("from");
-                    $this->_tpl->assign('FORUM_REPLYMENT', $transTemplate . '<br/>' . $content['forum'] . "<br/><br/>" . $transTemplateAfter . ' ' . $content['realname']);
+                    $transTemplateName = $ar['name'];
+                    $this->_tpl->assign('FORUM_REPLYMENT', $transTemplate . '<br/>' . $transTemplateContent . "<br/><br/>" . $transTemplateAfter . ' ' . $transTemplateName);
                 } else {
                     $this->_tpl->assign('FORUM_REPLYMENT', '');
                 }
