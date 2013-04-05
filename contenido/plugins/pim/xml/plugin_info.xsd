@@ -8,6 +8,7 @@
             <xsd:element name="general" type="GeneralTyp" minOccurs="1" maxOccurs="1" />
             <xsd:element name="plugin_dependencies" type="PluginDependenciesTyp" minOccurs="0" />
             <xsd:element name="contenido" type="ContenidoTyp" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="content_types" type="ContentTypes" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
     </xsd:complexType>
 
@@ -117,6 +118,12 @@
                     </xsd:simpleContent>
                 </xsd:complexType>
             </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+	<xsd:complexType name="ContentTypes">
+		<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+        	<xsd:element name="type" type="xsd:string" />
         </xsd:sequence>
     </xsd:complexType>
 

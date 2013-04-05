@@ -175,6 +175,9 @@ class PimPluginSetup {
 
         // add specific sql queries
         $this->_installAddSpecificSql();
+
+        // add content types
+        $this->_installAddContentTypes($tempXml->content_types);
     }
 
     /**
@@ -391,6 +394,36 @@ class PimPluginSetup {
     }
 
     /**
+     * Add content types (*_type)
+     *
+     * @access protected
+     * @param $tempXml temporary plugin definitions
+     * @return void
+     */
+    protected function _installAddContentTypes($tempXml) {
+        $typeColl = new cApiTypeCollection();
+        $pimPluginRelColl = new PimPluginRelationsCollection();
+        $pluginId = $this->getPluginId();
+
+        $pattern = '/^CMS_.+/';
+
+        $typeCount = count($tempXml->type);
+        for ($i = 0; $i < $typeCount; $i++) {
+
+            $type = cSecurity::toString($tempXml->type[$i]);
+
+            if (preg_match($pattern, $type)) {
+
+                // create new content type
+                $item = $typeColl->create($type, '');
+
+                // set a relation
+                $pimPluginRelColl->create($item->get('idtype'), $pluginId, 'ctype');
+            }
+        }
+    }
+
+    /**
      * Uninstall a plugin
      *
      * @access public
@@ -412,6 +445,7 @@ class PimPluginSetup {
         $frameFileColl = new cApiFrameFileCollection();
         $navMainColl = new cApiNavMainCollection();
         $navSubColl = new cApiNavSubCollection();
+        $typeColl = new cApiTypeCollection();
         $pimPluginColl = new PimPluginCollection();
 
         // get relations
@@ -422,10 +456,10 @@ class PimPluginSetup {
         $relations = array();
 
         while (($relation = $pimPluginRelColl->next()) !== false) {
-            // relation to tables *_area and *_nav_main
+            // relation to tables *_area, *_nav_main and *_type
             $index = $relation->get('type');
 
-            // is equivalent to idarea or idnavm column
+            // is equivalent to idarea, idnavm or idtype column
             $value = $relation->get('iditem');
             $relations[$index][] = $value;
         }
@@ -442,6 +476,11 @@ class PimPluginSetup {
         // delete entries from *_nav_main
         if (!empty($relations['navm'])) {
             $navMainColl->deleteByWhereClause("idnavm IN('" . join("', '", $relations['navm']) . "')");
+        }
+
+        // delete content types
+        if (!empty($relations['ctype'])) {
+            $typeColl->deleteByWhereClause("idtype IN('" . join("', '", $relations['ctype']) . "')");
         }
 
         // get plugininformations
