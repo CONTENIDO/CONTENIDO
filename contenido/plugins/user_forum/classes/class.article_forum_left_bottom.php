@@ -14,6 +14,10 @@ class ArticleForumLeftBottom extends cGuiPage {
     protected function getMenu() {
         $arts = new ArticleForumCollection();
         $result = $arts->getAllCommentedArticles();
+        if(count($result) == 0)
+        {
+            echo UserForum::i18n("NOENTRY");
+        }
 
         // $this->addScript('../scripts/location.js');
         $list = new cHTMLList();
