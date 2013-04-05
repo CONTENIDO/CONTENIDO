@@ -69,7 +69,8 @@ class cApiDbfsCollection extends ItemCollection {
             $properties = new cApiPropertyCollection();
             // Check if we're allowed to access it
             $protocol = cApiDbfs::PROTOCOL_DBFS;
-            if ($properties->getValue('upload', $protocol . '/' . $dir . '/' . $file, 'file', 'protected') == '1') {
+
+            if ($properties->getValue('upload', $protocol . $dir . '/' . $file, 'file', 'protected') == '1') {
                 if ($auth->auth['uid'] == 'nobody') {
                     header('HTTP/1.0 403 Forbidden');
                     return;

@@ -74,7 +74,7 @@ class cSession {
                 $url = cRegistry::getFrontendUrl();
             }
             $url = parse_url($url);
-            session_set_cookie_params(0, $url['path']);
+            session_set_cookie_params(0, "/");
             session_name($this->_prefix);
             session_start();
             $this->id = session_id();
@@ -126,12 +126,12 @@ class cSession {
      */
     public function url($url) {
         // Remove existing session info from url
-        $url = preg_replace('/([&?])' . quotemeta(urlencode($this->name)) . '=' . $this->id . '(&|$)/', "\\1", $url);
+        $url = preg_replace('/([&?])' . quotemeta(urlencode($this->name)) . '=1(&|$)/', "\\1", $url);
 
         // Remove trailing ?/& if needed
         $url = preg_replace('/[&?]+$/', '', $url);
 
-        $url .= (strpos($url, '?') != false? '&' : '?') . urlencode($this->name) . '=' . $this->id;
+        $url .= (strpos($url, '?') != false? '&' : '?') . urlencode($this->name) . '=1';
 
         // Encode naughty characters in the URL
         $url = str_replace(array(

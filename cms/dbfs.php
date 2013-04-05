@@ -33,7 +33,9 @@ if (!is_file($contenido_path . 'includes/startup.php')) {
 }
 include_once($contenido_path . 'includes/startup.php');
 
-if ($contenido) {
+chdir($contenido_path);
+
+if ($_REQUEST["contenido"]) {
     cRegistry::bootstrap(array(
         'sess' => 'cSession',
         'auth' => 'cAuthHandlerBackend',
@@ -46,6 +48,8 @@ if ($contenido) {
         'perm' => 'cPermission'
     ));
 }
+
+chdir(dirname(__FILE__));
 
 // Shorten load time
 $client = $load_client;
