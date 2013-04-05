@@ -2,8 +2,8 @@
 /**
  * Plugin Manager Backend View
  *
- * @package     CONTENIDO Plugins
- * @subpackage  PluginManager
+ * @package CONTENIDO Plugins
+ * @subpackage PluginManager
  * @version SVN Revision $Rev:$
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
@@ -62,7 +62,8 @@ switch ($viewAction) {
 
 // TODO: Move the following function into classes
 /**
- * Installation steps to install a new plugin. Function differ between extracted
+ * Installation steps to install a new plugin.
+ * Function differ between extracted
  * and Zip archive plugins
  *
  * @param cGuiPage $page
@@ -168,7 +169,6 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '', $
         } else {
             $page->displayInfo(i18n('The plugin has been successfully updated. To apply the changes please login into backend again.', 'pim'));
         }
-
     } else {
 
         // success message
@@ -176,7 +176,6 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '', $
 
         // close extracted archive
         $extractor->closeArchive();
-
     }
 }
 
@@ -227,14 +226,8 @@ while (($plugin = $oItem->next()) !== false) {
     }
 
     // uninstall link
-    if (is_writable($cfg['path']['contenido'] . $cfg['path']['plugins'] . $plugin->get('folder'))) {
-        $tempUninstallLink = $sess->url('main.php?area=pim&frame=4&pim_view=uninstall&pluginId=' . $plugin->get('idplugin'));
-        $pagePlugins->set('s', 'UNINSTALL_LINK', '<a href="javascript:void(0)" onclick="javascript:showConfirmation(\'' . i18n('Are you sure to delete this plugin? Files are not deleted in filesystem.', 'pim') . '\', function() { window.location.href=\'' . $tempUninstallLink . '\';})">' . i18n('Uninstall', 'pim') . '</a>');
-        $pagePlugins->set('s', 'LANG_WRITABLE', '');
-    } else {
-        $pagePlugins->set('s', 'UNINSTALL_LINK', '');
-        $pagePlugins->set('s', 'LANG_WRITABLE', '<span class="settingWrong">' . i18n('This plugin is not writeable, please set the rights manually', 'pim') . '</span>');
-    }
+    $tempUninstallLink = $sess->url('main.php?area=pim&frame=4&pim_view=uninstall&pluginId=' . $plugin->get('idplugin'));
+    $pagePlugins->set('s', 'UNINSTALL_LINK', '<a href="javascript:void(0)" onclick="javascript:showConfirmation(\'' . i18n('Are you sure to delete this plugin? Files are not deleted in filesystem.', 'pim') . '\', function() { window.location.href=\'' . $tempUninstallLink . '\';})">' . i18n('Uninstall', 'pim') . '</a>');
 
     // put foldername into array installedPluginFoldernames
     $installedPluginFoldernames[] = $plugin->get('folder');
@@ -258,7 +251,15 @@ while ($pluginFoldername = readdir($handle)) {
         $pagePlugins->set('s', 'LANG_TOOLTIP_UNINSTALL', i18n('Uninstall extracted plugin (deleted plugin files from filesystem)', 'pim'));
         $pagePlugins->set('s', 'FOLDERNAME', $pluginFoldername);
         $pagePlugins->set('s', 'INSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=install-extracted&pluginFoldername=' . $pluginFoldername));
-        $pagePlugins->set('s', 'UNINSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall-extracted&pluginFoldername=' . $pluginFoldername));
+
+        // uninstall link
+        if (is_writable($cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername)) {
+            $pagePlugins->set('s', 'UNINSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall-extracted&pluginFoldername=' . $pluginFoldername));
+            $pagePlugins->set('s', 'LANG_WRITABLE', '');
+        } else {
+            $pagePlugins->set('s', 'UNINSTALL_LINK', 'javascript://');
+            $pagePlugins->set('s', 'LANG_WRITABLE', '(<span class="settingWrong">' . i18n('This plugin is not writeable, please set the rights manually', 'pim') . '</span>)');
+        }
 
         $pluginsExtracted .= $pagePlugins->generate($tempTplPath . '/template.pim_plugins_extracted.html', true, false);
     }
