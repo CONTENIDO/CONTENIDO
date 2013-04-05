@@ -30,6 +30,8 @@ class PimPluginSetup {
 
     protected $pluginId = 0;
 
+    protected $allAreas = array();
+
     protected $_extractor; // TODO
     public function addArchiveObject($extractor) {
         $this->_extractor = $extractor;
@@ -187,6 +189,13 @@ class PimPluginSetup {
         $pimPluginRelColl = new PimPluginRelationsCollection();
         $pluginId = $this->getPluginId();
 
+        // get all area names from database
+        $oItem = new cApiAreaCollection();
+        $oItem->select(null, null, 'name');
+        while (($areas = $oItem->next()) !== false) {
+            $this->allAreas[] = $areas->get('name');
+        }
+
         $areaCount = count($tempXml->area);
         for ($i = 0; $i < $areaCount; $i++) {
 
@@ -212,6 +221,9 @@ class PimPluginSetup {
 
             // set a relation
             $pimPluginRelColl->create($item->get('idarea'), $pluginId, 'area');
+
+            // add new area to all area array
+            $this->allAreas[] = $area;
         }
     }
 
@@ -233,6 +245,11 @@ class PimPluginSetup {
             // security check
             $area = cSecurity::escapeString($area);
             $action = cSecurity::escapeString($tempXml->action[$i]);
+
+            // check for valid area
+            if (!in_array($area, $this->allAreas)) {
+                $this->errorArea($area);
+            }
 
             // create a new entry
             $actionColl->create($area, $action, '', '', '', 1);
@@ -258,6 +275,11 @@ class PimPluginSetup {
             // build attributes with security checks
             foreach ($tempXml->frame[$i]->attributes() as $sKey => $sValue) {
                 $attributes[$sKey] = cSecurity::escapeString($sValue);
+            }
+
+            // check for valid area
+            if (!in_array($attributes['area'], $this->allAreas)) {
+                $this->errorArea($attributes['area']);
             }
 
             // create a new entry at *_files
@@ -320,6 +342,11 @@ class PimPluginSetup {
             // convert area to string
             $attributes['area'] = cSecurity::toString($attributes['area']);
 
+            // check for valid area
+            if (!in_array($attributes['area'], $this->allAreas)) {
+                $this->errorArea($attributes['area']);
+            }
+
             // create a new entry at *_nav_sub
             $item = $navSubColl->create($attributes['navm'], $attributes['area'], $attributes['level'], $tempXml->nav[$i], 1);
 
@@ -369,9 +396,10 @@ class PimPluginSetup {
      * @access public
      * @param $pluginId id of uninstall plugid
      * @param $page page class for success message
+     * @param $sql true or false
      * @return void
      */
-    public function uninstall($pluginId, $page = null) {
+    public function uninstall($pluginId, $page = null, $sql = true) {
         $cfg = cRegistry::getConfig();
 
         // security check
@@ -424,7 +452,9 @@ class PimPluginSetup {
         $foldername = $pimPluginSql->get('folder');
 
         // delete specific sql entries or tables
-        $this->_uninstallDeleteSpecificSql($foldername);
+        if ($sql == true) {
+            $this->_uninstallDeleteSpecificSql($foldername);
+        }
 
         // pluginname
         $pluginname = $pimPluginSql->get('name');
@@ -435,7 +465,7 @@ class PimPluginSetup {
 
         // success message
         if ($page instanceof cGuiPage) {
-            $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been successfully uninstalled. To apply the changes please login into backend again.', 'pim'));
+            $page->displayInfo(i18n('The plugin', 'pim') . ' <strong>' . $pluginname . '</strong> ' . i18n('has been successfully uninstalled. To apply the changes please login into backend again.', 'pim'));
         }
     }
 
@@ -488,9 +518,9 @@ class PimPluginSetup {
 
         // success message
         if ($page instanceof cGuiPage && !cFileHandler::exists($folderpath)) {
-            $page->displayInfo(i18n('The pluginfolder <strong>', 'pim') . $foldername . i18n('</strong> has been successfully uninstalled.', 'pim'));
+            $page->displayInfo(i18n('The pluginfolder', 'pim') . ' <strong>' . $foldername . '</strong> ' . i18n('has been successfully uninstalled.', 'pim'));
         } else if (cFileHandler::exists($folderpath)) {
-            $page->displayError(i18n('The pluginfolder <strong>', 'pim') . $foldername . i18n('</strong> could not be uninstalled.', 'pim'));
+            $page->displayError(i18n('The pluginfolder', 'pim') . ' <strong>' . $foldername . '</strong> ' . i18n('could not be uninstalled.', 'pim'));
         }
     }
 
@@ -525,7 +555,7 @@ class PimPluginSetup {
                 $this->_setNavSubOnlineStatus($idnavs, 0);
             }
 
-            $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been sucessfully disabled. To apply the changes please login into backend again.', 'pim'));
+            $page->displayInfo(i18n('The plugin', 'pim') . ' <strong>' . $pluginname . '</strong> ' . i18n('has been sucessfully disabled. To apply the changes please login into backend again.', 'pim'));
         } else { // set online
             $plugin->set('active', 1);
             $plugin->store();
@@ -536,7 +566,7 @@ class PimPluginSetup {
                 $this->_setNavSubOnlineStatus($idnavs, 1);
             }
 
-            $page->displayInfo(i18n('The plugin <strong>', 'pim') . $pluginname . i18n('</strong> has been sucessfully enabled. To apply the changes please login into backend again.', 'pim'));
+            $page->displayInfo(i18n('The plugin', 'pim') . ' <strong>' . $pluginname . '</strong> ' . i18n('has been sucessfully enabled. To apply the changes please login into backend again.', 'pim'));
         }
     }
 
@@ -650,6 +680,27 @@ class PimPluginSetup {
             $pageError->render();
             exit();
         }
+    }
+
+    /**
+     * Error message function for not existing areas
+     *
+     * @access protected
+     * @param string $area name of not existing area
+     */
+    protected function errorArea($area) {
+        $sess = cRegistry::getSession();
+
+        // uninstall plugin from database
+        $this->uninstall($this->pluginId, null, false);
+
+        // error template
+        $pageError = new cGuiPage('pim_error', 'pim');
+        $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
+        $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
+        $pageError->displayError(i18n('Defined area', 'pim') . ' <strong>' . $area . '</strong> ' . i18n('are not found on your CONTENIDO installation. Please contact your plugin author.', 'pim'));
+        $pageError->render();
+        exit();
     }
 
 }
