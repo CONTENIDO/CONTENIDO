@@ -46,21 +46,15 @@ class cSetupSystemData extends cSetupMask
         cArray::initializeKey($_SESSION, "dbcollation", "");
 
         if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
-            $contenido_host     = ""; // Just define the variables to avoid warnings in IDE
-            $contenido_user     = "";
-            $contenido_database = "";
-            $contenido_password = "";
-            $contenido_collation = "";
-
             $cfgBackup = $cfg;
 
             @include($cfg['path']['contenido_config'] . 'config.php');
 
             $aVars = array(
-                "dbhost" => $contenido_host,
-                "dbuser" => $contenido_user,
-                "dbname" => $contenido_database,
-                "dbpass" => $contenido_password,
+                "dbhost" => $cfg["db"]["connection"]["host"],
+                "dbuser" => $cfg["db"]["connection"]["user"],
+                "dbname" => $cfg["db"]["connection"]["database"],
+                "dbpass" => $cfg["db"]["connection"]["password"],
                 "dbprefix" => $cfg["sql"]["sqlprefix"],
                 "dbcollation" => $contenido_collation
             );
