@@ -353,9 +353,10 @@ class PimPluginSetup {
         $tempSqlContent = explode("\n", $tempSqlContent);
         $tempSqlLines = count($tempSqlContent);
 
-        for ($i = 0; $i < $tempSqlLines; $i++) {
+        $pattern = '/(CREATE TABLE IF NOT EXISTS|INSERT INTO|UPDATE|ALTER TABLE) ' . $this->sqlPrefix . '\b/';
 
-            if (strpos($tempSqlContent[$i], 'CREATE TABLE IF NOT EXISTS ' . $this->sqlPrefix) === 0 || strpos($tempSqlContent[$i], 'INSERT INTO ' . $this->sqlPrefix) === 0 || strpos($tempSqlContent[$i], 'UPDATE ' . $this->sqlPrefix) === 0 || strpos($tempSqlContent[$i], 'ALTER TABLE ' . $this->sqlPrefix) === 0) {
+        for ($i = 0; $i < $tempSqlLines; $i++) {
+            if (preg_match($pattern, $tempSqlContent[$i])) {
                 $tempSqlContent[$i] = str_replace($this->sqlPrefix, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
                 $db->query($tempSqlContent[$i]);
             }
@@ -460,9 +461,10 @@ class PimPluginSetup {
         $tempSqlContent = explode("\n", $tempSqlContent);
         $tempSqlLines = count($tempSqlContent);
 
-        for ($i = 0; $i < $tempSqlLines; $i++) {
+        $pattern = '/(DELETE FROM|DROP TABLE) ' . $this->sqlPrefix . '\b/';
 
-            if (strpos($tempSqlContent[$i], 'DELETE FROM ' . $this->sqlPrefix) === 0 || strpos($tempSqlContent[$i], 'DROP TABLE ' . $this->sqlPrefix) === 0) {
+        for ($i = 0; $i < $tempSqlLines; $i++) {
+            if (preg_match($pattern, $tempSqlContent[$i])) {
                 $tempSqlContent[$i] = str_replace($this->sqlPrefix, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
                 $db->query($tempSqlContent[$i]);
             }
