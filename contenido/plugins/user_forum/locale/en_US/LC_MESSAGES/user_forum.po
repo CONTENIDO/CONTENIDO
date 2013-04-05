@@ -85,6 +85,9 @@ msgstr "from"
 
 ; class.article_forum_left_bottom.php
 
+msgid "NOENTRY"
+msgstr "no entries available" 
+
 msgid "DELETE_COMMENTS"
 msgstr "delete comments"
 

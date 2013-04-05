@@ -73,6 +73,9 @@ msgstr "Uhr"
 
 ; class.article_forum_left_bottom.php
 
+msgid "NOENTRY"
+msgstr "Noch keine Einträge vorhanden" 
+
 msgid "ALLDELETEFROMCAT"
 msgstr "Alle Kommentare zu diesem Artikel löschen ? "
 
