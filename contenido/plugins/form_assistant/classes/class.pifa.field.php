@@ -758,6 +758,7 @@ class PifaField extends Item {
                 break;
             case self::CAPTCHA:
                 $sel = '#pifa-field-' . $idfield . ' label';
+                $newCaptchaCode = mi18n("NEW_CAPTCHA_CODE");
                 $script = "jQuery(function(){\n";
                 // implement captcha reload on click
                 $script .= "jQuery('$sel').click(function (e) {\n";
@@ -766,7 +767,7 @@ class PifaField extends Item {
                 $script .= "jQuery(this).parent().find('img').attr('src', url);\n";
                 $script .= "});\n";
                 // append 'New Captcha Code' to label
-                $script .= "jQuery('$sel').append('<br/><br/><span style=\"cursor:pointer\">New Captcha Code</span>');";
+                $script .= "jQuery('$sel').append('<br/><br/><span style=\"cursor:pointer\">$newCaptchaCode</span>');";
                 $script .= "});\n";
                 break;
             default:

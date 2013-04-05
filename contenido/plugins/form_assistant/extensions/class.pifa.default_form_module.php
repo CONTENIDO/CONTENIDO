@@ -83,7 +83,10 @@ class DefaultFormModule extends PifaAbstractFormModule {
             $postProcessor->process();
 
             // assign reply to post template
-            $this->getTpl()->assign('reply', $this->label['reply']);
+            $this->getTpl()->assign('reply', array(
+                'headline' => mi18n("REPLY_HEADLINE"),
+                'text' => mi18n("REPLY_TEXT")
+            ));
 
         } catch (PifaValidationException $e) {
 

@@ -41,6 +41,13 @@ abstract class PifaAbstractFormProcessor {
     protected $_form = NULL;
 
     /**
+     * Instantiates the processor.
+     * The processor aggregates the form module and the form.
+     * The idform is read from the given modules settings.
+     *
+     * In former implementations of the processor the modules had no settings
+     * and thus no idform. Thats why optionally the idfrm gan be given
+     * explicitly. This shoud be removed when all processors are refactored.
      *
      * @param int $idform
      * @throws ModuleException
@@ -65,6 +72,7 @@ abstract class PifaAbstractFormProcessor {
     }
 
     /**
+     *
      * @return PifaAbstractFormModule
      */
     public function getModule() {
@@ -72,6 +80,7 @@ abstract class PifaAbstractFormProcessor {
     }
 
     /**
+     *
      * @param PifaAbstractFormModule $_module
      */
     public function setModule($_module) {

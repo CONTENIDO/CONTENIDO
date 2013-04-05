@@ -1,7 +1,8 @@
 <?php
 
-// error_reporting(E_ALL); ini_set('display_errors', 1); // uncomment this line
-// for debugging
+// uncomment this for debugging
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
 /**
  * Project: Securimage: A PHP class for creating and managing form CAPTCHA
@@ -373,7 +374,7 @@ class Securimage {
      * @var int
      */
     public $captcha_type = self::SI_CAPTCHA_STRING; // or
-                                                     // self::SI_CAPTCHA_MATHEMATIC;
+                                                    // self::SI_CAPTCHA_MATHEMATIC;
 
     /**
      * The captcha namespace, use this if you have multiple forms on a single page, blank if you do not use multiple forms on one page
@@ -382,6 +383,17 @@ class Securimage {
      * <?php/**
      * The captcha namespace, use this if you have multiple forms on a single
      * page, blank if you do not use multiple forms on one page
+     *
+     * @var string <code>
+     *      <?php/**
+     * The captcha namespace, use this if you have multiple forms on a single
+     * page, blank if you do not use multiple forms on one page
+     *
+     * @var string <code>
+     *      <?php/**
+     *      The captcha namespace, use this if you have multiple forms on a
+     *      single
+     *      page, blank if you do not use multiple forms on one page
      *
      * @var string <code>
      *      <?php
@@ -395,6 +407,7 @@ class Securimage {
      *      }
      *      </code>
      */
+
     public $namespace;
 
     /**
@@ -701,10 +714,10 @@ class Securimage {
         if ($this->no_session != true) {
             // Initialize session or attach to existing
             if (session_id() == '') { // no session has been started yet,
-                                        // which is needed for validation
+                                      // which is needed for validation
                 if (!is_null($this->session_name) && trim($this->session_name) != '') {
                     session_name(trim($this->session_name)); // set session name
-                                                             // if provided
+                                                                 // if provided
                 }
                 session_start();
             }
@@ -834,7 +847,7 @@ class Securimage {
      * If none exists yet, an empty string is returned
      *
      * @param $array bool True to receive an array containing the code and
-     *            properties
+     *        properties
      * @return array string if $array = true, otherwise a string containing the
      *         code
      */
@@ -960,7 +973,6 @@ class Securimage {
         }
 
         $this->gdsignaturecolor = imagecolorallocate($this->im, $this->signature_color->r, $this->signature_color->g, $this->signature_color->b);
-
     }
 
     /**
@@ -1121,7 +1133,6 @@ class Securimage {
         // DEBUG
         // $this->im = $this->tmpimg;
         // $this->output();
-
     }
 
     /**
@@ -1239,10 +1250,10 @@ class Securimage {
             $size = rand(7, 10);
             if ($x - $size <= 0 && $y - $size <= 0)
                 continue; // dont cover
-                                                                  // 0,0 since
-                                                                  // it is used
-                                                                  // by
-                                                                  // imagedistortedcopy
+                              // 0,0 since
+                              // it is used
+                              // by
+                              // imagedistortedcopy
             imagefilledarc($this->tmpimg, $x, $y, $size, $size, 0, 360, $this->gdnoisecolor, IMG_ARC_PIE);
         }
 
@@ -1308,14 +1319,19 @@ class Securimage {
                     break;
             }
         } else {
-            echo '<hr /><strong>' . 'Failed to generate captcha image, content has already been ' . 'output.<br />This is most likely due to misconfiguration or ' . 'a PHP error was sent to the browser.</strong>';
+            echo '<hr />
+            <strong>
+            Failed to generate captcha image, content has already been output.<br />
+            This is most likely due to misconfiguration or a PHP error was sent to the browser.
+            </strong>';
         }
 
         imagedestroy($this->im);
         restore_error_handler();
 
-        if (!$this->no_exit)
+        if (!$this->no_exit) {
             exit();
+        }
     }
 
     /**
@@ -1329,7 +1345,7 @@ class Securimage {
         $fsize = filesize($this->wordlist_file);
         if ($fsize < 128)
             return false; // too small of a list to be
-                                            // effective
+                              // effective
 
         fseek($fp, rand(0, $fsize - 64), SEEK_SET); // seek to a random position
                                                     // of file from 0 to
@@ -1348,8 +1364,8 @@ class Securimage {
         }
 
         return strtolower(substr($data, $start, $end - $start)); // return a
-                                                                 // line of the
-                                                                 // file
+                                                                     // line of the
+                                                                     // file
     }
 
     /**
@@ -1377,7 +1393,7 @@ class Securimage {
         if (!is_string($this->code) || strlen($this->code) == 0) {
             $code = $this->getCode();
             // returns stored code, or an empty string if no stored code was
-        // found
+            // found
             // checks the session and sqlite database if enabled
         } else {
             $code = $this->code;
@@ -1418,7 +1434,6 @@ class Securimage {
             $_SESSION['securimage_code_disp'][$this->namespace] = $this->code_display;
             $_SESSION['securimage_code_value'][$this->namespace] = $this->code;
             $_SESSION['securimage_code_ctime'][$this->namespace] = time();
-
         }
 
         $this->saveCodeToDatabase();
@@ -1617,7 +1632,7 @@ class Securimage {
      *
      * @param string $color
      * @param Securimage_Color $default The defalt color to use if $color is
-     *            invalid
+     *        invalid
      */
     protected function initColor($color, $default) {
         if ($color == null) {

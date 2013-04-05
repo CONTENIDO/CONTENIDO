@@ -305,17 +305,6 @@ legend {
     display: block;
     float: left;
     width: 12em;
-    font-size: 1.4em;
-}
-
-.pseudo-fieldset div.indented {
-    padding-left: 14.4em;
-}
-
-.pseudo-fieldset div.indented label {
-    display: inline;
-    font-size: 1em;
-    float: none;
 }
 
 .pseudo-fieldset input,
@@ -325,6 +314,11 @@ legend {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
+}
+
+.pseudo-fieldset input[type=checkbox] {
+    padding-left: 0;
+    margin-left: 0;
 }
 
 .default_value, .help_text , .obligatory,
@@ -363,11 +357,6 @@ legend {
 
 #field-type-text {
     color: grey;
-}
-
-#obligatory {
-    padding :0;
-    margin :0;
 }
 
 #icons-bottom {
