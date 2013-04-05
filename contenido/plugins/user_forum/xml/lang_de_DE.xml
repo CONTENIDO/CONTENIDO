@@ -4,7 +4,7 @@
     <plugins>
         <label>plugins</label>
         <user_forum>
-            <label>Benutzer Forum</label>
+            <label>Benutzer-Forum</label>
         </user_forum>
     </plugins>
 </language>

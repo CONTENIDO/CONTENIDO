@@ -4,7 +4,7 @@
     <plugins>
         <label>Plugins</label>
         <form_assistant>
-            <label>Formular Assistent</label>
+            <label>Formular-Assistent</label>
             <form>
                 <label>Formular</label>
             </form>
